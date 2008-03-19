@@ -212,7 +212,6 @@ class pApiContentAllocation {
 		}	
 		
 		$sql = $this->_buildQuery_MatchingContentByContentAllocationByCategories($aContentAllocation, $aCategories, $iOffset, $iNumOfRows);
-echo 'sql:'.$sql.'<br />';
 		$this->db->query($sql);
     	
 	    $aResult = array();

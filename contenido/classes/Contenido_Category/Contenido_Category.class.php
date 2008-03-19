@@ -141,7 +141,7 @@ class Contenido_Category extends Contenido_Category_Base {
         $sSql = 'SELECT 
 					idclient, parentid, parentid, preid, postid, status, author, created, lastmodified 
 				FROM 
-					' . mysql_real_escape_string($this->aCfg['tab']['cat']) . ' 
+					' . $this->aCfg['tab']['cat'] . ' 
 				WHERE 
 					idcat = ' . intval($iIdCat);
 	    if ($this->bDbg === true) {
@@ -671,7 +671,7 @@ class Contenido_Category_Language extends Contenido_Category_Base {
 	        $sSql = 'SELECT 
 						idcatlang, idtplcfg, name, visible, public, status, author, created, lastmodified, startidartlang, urlname 
 					FROM 
-						' . mysql_real_escape_string($this->aCfg["tab"]["cat_lang"]) . ' 
+						' . $this->aCfg["tab"]["cat_lang"] . ' 
 					WHERE 
 						idcat = ' . $this->getIdCat() . ' AND idlang = ' . $this->getIdLang();
         } else {

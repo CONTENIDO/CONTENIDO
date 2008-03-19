@@ -54,7 +54,7 @@ class Contenido_Navigation {
 
    function getName($location) {
 
-        global $cfg, $belang;
+      global $cfg, $belang;
 
       # Extract caption from the xml language file
       # including plugins extended multilang version
@@ -232,9 +232,9 @@ class Contenido_Navigation {
                     } 
                     else 
                     {
-												$sub->set('d', 'CAPTION', '<a class="sub" target="content" href="'.
-												$sess->url("frameset.php?area=$value[1]").
-												'"">'.$value[0].'</a>');                    	
+                        $sub->set('d', 'CAPTION', '<a class="sub" target="content" href="'.
+                        $sess->url("frameset.php?area=$value[1]").
+                        '"">'.$value[0].'</a>');                    	
                     }
                     $sub->next();
                     $genSubMenu = true;
@@ -256,7 +256,7 @@ class Contenido_Navigation {
                 $main->set('d', 'SIZE', $imgsize);
                 $main->set('d', 'MIMGID', 'mimg_'.$id);
                 $main->set('d', 'OPTIONS', 'style="background-color:#A9AEC2" id="'.$id.'"');
-								$main->set('d', 'CAPTION', '<a class="main" id="main_'.$id.'" ident="sub_'.$id.'" href="javascript://">'.$item[0].'</a>');
+				$main->set('d', 'CAPTION', '<a class="main" id="main_'.$id.'" ident="sub_'.$id.'" href="javascript://">'.$item[0].'</a>');
                 $main->next();
 
                 $numSubMenus ++;
@@ -269,6 +269,11 @@ class Contenido_Navigation {
 			      $sub->set('s', 'LEFTPOS', $submenuIndent);
             $t_sub .= $sub->generate($cfg['path']['templates'] . $cfg['templates']['submenu'], true);
             $cnt ++;
+        }
+        
+        if ($numSubMenus == 0) {
+            $main->set('d', 'CAPTION', '&nbsp;');
+            $main->next();
         }
 
         $main->set('s', 'RIGHTBORDER', 'border_light_dark');

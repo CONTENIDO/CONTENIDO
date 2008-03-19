@@ -9,6 +9,7 @@
 * Author     :   Bilal.Arslan
 * Modified   :   Timo Trautmann *Table Config added* 08.02.2008
 * Modified   :   Timo Trautmann Bugfix in getWebsiteName -> solution: second database instance 12.02.2008
+* Modified   :   Timo Trautmann Special functions for mysql replaced 18.02.2008
 * Created on :   28.01.2008
 *
 * © four for business AG
@@ -80,9 +81,9 @@ class ActiveUsers {
 	 * 
 	 * @return  Returns true if successful else false
 	 **/
-	function insertOnlineUser($iUserId) {
-
-		$userid= mysql_real_escape_string($iUserId);
+	function insertOnlineUser($sUserId) {
+        
+		$userid = (string) $sUserId;
 		$sql= "";
 		$sql= "INSERT INTO `" . $this->oCfg["tab"]["online_user"] . "`(`user_id`,`lastaccessed`) VALUES('$userid', NOW())";
 
@@ -100,10 +101,10 @@ class ActiveUsers {
 	 * 
 	 * @return Returns true if this User is found, else false
 	 **/
-	function findUser($iUserId) {
+	function findUser($sUserId) {
 
-		$userid= mysql_real_escape_string($iUserId);
-		$bReturn= false;
+		$userid = (string) $sUserId;
+		$bReturn = false;
 		$sql= "";
 		$sql= "SELECT user_id FROM `" . $this->oCfg["tab"]["online_user"] . "` WHERE `user_id`='$userid'";
 		$this->oDb->query($sql);
@@ -213,9 +214,9 @@ class ActiveUsers {
 	 * 
 	 * @return  Returns true if successful, else false
 	 **/
-	function updateUser($iUserId) {
+	function updateUser($sUserId) {
 
-		$userid= mysql_real_escape_string($iUserId);
+		$userid= (string) $sUserId;
 		$sql= "";
 		$sql= "UPDATE `" . $this->oCfg["tab"]["online_user"] . "` SET `lastaccessed`=NOW() WHERE `user_id`='$userid'";
 		if ($this->oDb->query($sql)) {
@@ -272,9 +273,9 @@ class ActiveUsers {
 	 * 
 	 * @return  Returns true if successful, else false
 	 **/
-	function deleteUser($iUserId) {
+	function deleteUser($sUserId) {
 
-		$userid= mysql_real_escape_string($iUserId);
+		$userid= (string) $sUserId;
 		$sql= "DELETE FROM `" . $this->oCfg["tab"]["online_user"] . "` WHERE `user_id` = '$userid'";
 
 		if ($this->oDb->query($sql))
@@ -294,7 +295,7 @@ class ActiveUsers {
 	 **/
 	function getWebsiteName($iIdClient) {
         $oDbLocal = new DB_contenido();
-		$iClientId= mysql_real_escape_string($iIdClient);
+		$iClientId= (int) $iIdClient;
 		$sql= "";
 		$sName= "";
 		$sql= "SELECT `name` as myname  FROM `" . $this->oCfg["tab"]["clients"] . "` WHERE `idclient` = '$iClientId'";

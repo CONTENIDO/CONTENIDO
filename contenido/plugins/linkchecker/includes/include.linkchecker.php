@@ -18,6 +18,13 @@ if(!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
 if(empty($_REQUEST['mode'])) {
     $_REQUEST['mode'] = 3;
 }
+
+//If no action definied
+if(empty($_REQUEST['action'])) {
+    $_REQUEST['action'] = 'linkchecker';
+    $action = "linkchecker";
+}
+
 include_once($cfg['path']['contenido'].$cfg['path']['plugins'].'linkchecker/includes/config.plugin.php');
 require_once($cfg['plugins']['linkchecker'] . "includes/include.checkperms.php");
 require_once($cfg['plugins']['linkchecker'] . "includes/include.linkchecker_tests.php");

@@ -161,7 +161,7 @@ class Users {
                     username,
                     realname
                 FROM
-                ". $cfg["tab"]["phplib_auth_user_md5"]. " WHERE 1 AND ".$limitSQL;
+                ". $cfg["tab"]["phplib_auth_user_md5"]. " WHERE 1 AND ".$limitSQL." ORDER BY realname, username";
                 
         $db->query($sql);
 

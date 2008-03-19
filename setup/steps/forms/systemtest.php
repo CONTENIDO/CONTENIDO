@@ -184,11 +184,6 @@ class cSetupSystemtest extends cSetupMask
 		$this->runTest( getPHPOpenBasedirSetting(),
 						C_SEVERITY_NONE,
 						"getPHPOpenBasedirSetting()");
-						
-		$this->runTest( isRegisterLongArraysActive(),
-						C_SEVERITY_WARNING,
-						i18n("PHP setting 'register_long_arrays' is off"),
-						i18n("The directive 'register_long_arrays' is turned off and you are running PHP5. Please turn the directive to 'on' in your php.ini file, otherwise Contenido won't work properbly."));
 		
 		$iResult = checkOpenBasedirCompatibility();
 		

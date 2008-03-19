@@ -45,7 +45,6 @@ class pApiContentAllocationTreeView extends pApiTree {
 	 */
 	function _buildRenderTree ($tree) {
 		global $action, $frame, $area, $sess;
-		
 		$result = array();
 		foreach ($tree as $item_tmp) {
 			$item = array();
@@ -84,14 +83,14 @@ class pApiContentAllocationTreeView extends pApiTree {
 						}
 					</script>';
 			} else {
-				
 				if ($item_tmp['children'] || $item_tmp['status'] == 'collapsed') {
-					$expandCollapseImg = 'images/but_minus.gif';
+					$expandCollapseImg = 'images/close_all.gif';
 					if ($item_tmp['status'] == 'collapsed' ) {
-						$expandCollapseImg = 'images/but_plus.gif';
+						$expandCollapseImg = 'images/open_all.gif';
 					}
-					$expandCollapse = '<a href="main.php?contenido='.$sess->id.'&idart='.$idart.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=collapse&idpica_alloc='.$item_tmp['idpica_alloc'].'"><img src="'.$expandCollapseImg.'" border="0" style="vertical-align: middle;" width="11" height="11"></a>';
-				} else {
+                    
+					$expandCollapse = '<a href="main.php?contenido='.$sess->id.'&idart='.$idart.'&action='.$action.'&frame='.$frame.'&area='.$area.'&step=collapse&idpica_alloc='.$item_tmp['idpica_alloc'].'"><img src="'.$expandCollapseImg.'" border="0" style="vertical-align: middle; padding:4px;" width="7" height="7"></a>';
+                } else {
 					$expandCollapseImg = 'images/spacer.gif';
 					$expandCollapse = '<img src="'.$expandCollapseImg.'" border="0" style="vertical-align: middle;" width="11" height="11">';
 				}
@@ -171,7 +170,6 @@ class pApiContentAllocationTreeView extends pApiTree {
 				array_push($result, $item);
 			}
 		}
-		
 		return $result;
 	}
 	
@@ -192,7 +190,7 @@ class pApiContentAllocationTreeView extends pApiTree {
 		#echo "</pre>";
 
 		$tree = $this->_buildRenderTree($tree);
-		
+        
 		$even = true;
 		foreach ($tree as $item) {
 			$even = !$even;

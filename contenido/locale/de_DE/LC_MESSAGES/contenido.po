@@ -5884,3 +5884,14 @@ msgstr "Entfernen"
 
 msgid "Remove all"
 msgstr "Alle entfernen"
+
+msgid "Categorytemplate configuration"
+msgstr "Kategorietemplate konfigurieren"
+
+msgid "Articletemplate configuration"
+msgstr "Artikeltemplate konfigurieren"
+
+msgid "Template preconfiguration"
+msgstr "Template Vorkonfiguration"
+
+

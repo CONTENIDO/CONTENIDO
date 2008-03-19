@@ -550,90 +550,37 @@ if ( $perm->have_perm_area_action($area) ) {
             $tpl->set('d', 'HEIGTH', 'height:25px');
             $tpl->set('d', 'BORDER_CLASS', 'str-style-c');
 
-            /*//if ($action == 30 && $perm->have_perm_area_action_item($tmp_area, "str_renamecat", $idcat)) {
-            if ( $action === "str_renamecat" && !isset($newcategoryname) ) {
+            $spaces = "";
 
-                // if ($value->custom['idcat'] != $idcat) {
-
-                    $spaces = "";
-
-                    $tpl->set('d', 'INDENT', ($value->custom['level'] * 16) . "px");
-                    $tpl->set('d', 'CATEGORY', htmlspecialchars($value->name));
-                    if ($value->custom['alias']) {
-                        $tpl->set('d', 'ALIAS', htmlspecialchars($value->custom['alias']));
-                    } else {
-                         $tpl->set('d', 'ALIAS', '&nbsp;');
+            $tpl->set('d', 'INDENT', ($value->custom['level'] * 16) . "px");
+            $sCategoryname = $value->name;
+            if (strlen($value->name) > 30) {
+                $sCategoryname = capiStrTrimHard($sCategoryname, 30);
+            } 
+            
+            //$tpl->set('d', 'CATEGORY', $sCategoryname);
+            if (strlen($value->name) > 30) {
+                $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', 'onmouseover="Tip(\''.$value->name.'\', BALLOON, true, ABOVE, true);"');
+            } else {
+                $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', '');
+            }
+            
+            $tpl->set('d', 'COLLAPSE_CATEGORY_NAME', getExpandCollapseButton($value, $sCategoryname));
+            if ($value->custom['alias']) {
+                    $sCategoryalias = $value->custom['alias'];
+                    if (strlen($value->custom['alias']) > 30) {
+                        $sCategoryalias = capiStrTrimHard($sCategoryalias, 30);
                     }
-                    $tpl->set('d', 'COLLAPSE', getExpandCollapseButton($value));
-
-                } else {
-					
-                    $html = '<a name="renamethis">
-                                <table cellspacing="0" cellpadding="0" border="0">
-
-                                    <form name="renamecategory" method="post" action="'.$sess->url("main.php?frame=$frame").'">
-
-                                    <input type="hidden" name="contenido" value="'.$sess->id.'" />
-                                    <input type="hidden" name="action" value="str_renamecat" />
-                                    <input type="hidden" name="idcat" value="'.$idcat.'" />
-
-                                    <tr>
-                                        <td class="text_medium"><input class="text_medium" type="text" name="newcategoryname" value="'.htmlspecialchars($value->name).'"></td>
-                                        <td>&nbsp;
-                                            <a href="'.$cancel.'"><img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_cancel.gif" border="0"></a>
-                                            <input type="image" src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_ok.gif">
-                                        </td>
-                                    </tr>
-
-                                    </form>
-
-                                </table>';
-
-
-                    $html .=  " <script language=\"JavaScript\">
-                                <!--
-                                document.renamecategory.newcategoryname.focus();
-                                //-->
-                                </script>";
-
-					$tpl->set('d', 'INDENT', ($value->custom['level'] * 16) . "px");
-                    $tpl->set('d', 'CATEGORY', $html);
-					$tpl->set('d', 'COLLAPSE', ' ');
-                }
-
-            } else {*/
-                $spaces = "";
-
-                $tpl->set('d', 'INDENT', ($value->custom['level'] * 16) . "px");
-                $sCategoryname = $value->name;
-                if (strlen($value->name) > 30) {
-                    $sCategoryname = capiStrTrimHard($sCategoryname, 30);
-                } 
-                
-                //$tpl->set('d', 'CATEGORY', $sCategoryname);
-                if (strlen($value->name) > 30) {
-                    $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', 'onmouseover="Tip(\''.$value->name.'\', BALLOON, true, ABOVE, true);"');
-                } else {
-                    $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', '');
-                }
-                
-                $tpl->set('d', 'COLLAPSE_CATEGORY_NAME', getExpandCollapseButton($value, $sCategoryname));
-                if ($value->custom['alias']) {
-                        $sCategoryalias = $value->custom['alias'];
-                        if (strlen($value->custom['alias']) > 30) {
-                            $sCategoryalias = capiStrTrimHard($sCategoryalias, 30);
-                        }
-                        $tpl->set('d', 'ALIAS', $sCategoryalias);
-                        if (strlen($value->custom['alias']) > 30) {
-                            $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', 'onmouseover="Tip(\''.$value->custom['alias'].'\', BALLOON, true, ABOVE, true);"');
-                        } else {
-                            $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', '');
-                        }
-                } else {
-                         $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', '');
-                         $tpl->set('d', 'ALIAS', '&nbsp;');
-                }
-            //}
+                    $tpl->set('d', 'ALIAS', $sCategoryalias);
+                    if (strlen($value->custom['alias']) > 30) {
+                        $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', 'onmouseover="Tip(\''.$value->custom['alias'].'\', BALLOON, true, ABOVE, true);"');
+                    } else {
+                        $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', '');
+                    }
+            } else {
+                     $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', '');
+                     $tpl->set('d', 'ALIAS', '&nbsp;');
+            }
 
             $template = $tpl->getTemplateNameFromTPLCFG($value->custom['idtplcfg']);
 						$templateDescription = $tpl->getTemplateDescription($value->custom['idtplcfg']);
@@ -856,10 +803,7 @@ if ( $perm->have_perm_area_action($area) ) {
 			
 			$tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $columns));
             $tpl->next();
-
-
         }//end if -> perm
-
     }
     
     $jsDataArray = "";
@@ -884,6 +828,7 @@ if ( $perm->have_perm_area_action($area) ) {
     $tpl->set('s', 'HREF_ACTION', $sess->url("main.php?frame=$frame"));
     $tpl->set('s', 'CON_IMAGES', $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]);
     
+    //Generate input fields for category new layer and category edit layer
     $oSession = new cHTMLHiddenField ($sess->name, $sess->id);
     $oActionEdit = new cHTMLHiddenField ('action', 'str_renamecat');
     $oIdcat = new cHTMLHiddenField ('idcat');
@@ -966,7 +911,6 @@ if ( $perm->have_perm_area_action($area) ) {
         } else {
             $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<img src="'.$sImagepath.'folder_locked.gif" id="public_image" title="'.i18n('Protect category').'" alt="'.i18n('Protect category').'">');
         }
-        
     } else {
         $tpl->set('s', 'NEWCAT', $string);
         
@@ -983,7 +927,6 @@ if ( $perm->have_perm_area_action($area) ) {
         $tpl->set('s', 'NEW_ACTION', 'str_newcat');
         $tpl->set('s', 'SELECT_TEMPLATE', '');
     }
-    
 
     # Generate template
 	$clang = new Language;
@@ -991,6 +934,5 @@ if ( $perm->have_perm_area_action($area) ) {
 	
 	$tpl->setEncoding($clang->get("encoding"));
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['str_overview']);
-
 }
 ?>

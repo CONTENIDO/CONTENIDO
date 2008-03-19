@@ -22,6 +22,7 @@
  * $cfg is the equivalent to global $cfg array in contenido.
  * If no encoding is found or any parameter is not valid, the function will return
  * false, otherwise the encoding as string like it is stored in database.
+ * modified 18.03.2008 - Removed special mySQl behaviour (using db object instead) Timo Trautmann
  * 
  * @param DB_Contenido $oDb
  * @param int $iLang
@@ -47,8 +48,8 @@ function getEncodingByLanguage (&$oDb, $iLang, $cfg) {
 			idlang = " . $iLang;
 
 		if ($oDb->query($sQuery)) {
-			if ($oResult = mysql_fetch_object($oDb->Query_ID)) {
-				$sResult = trim($oResult->encoding);
+			if ($oDb->next_record()) {
+				$sResult = trim($oDb->f('encoding'));
 			}
 		}
 	}

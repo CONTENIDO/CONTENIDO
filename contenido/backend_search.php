@@ -177,6 +177,18 @@ function generateJs ($aValues) {
     }
 }
 
+/** Function masks string for inserting into SQL statement 
+ *
+ * @param string $sString
+ * @return string
+ */
+function mask ($sString) {
+    $sString = str_replace('\\', '\\\\', $sString);
+    $sString = str_replace('\'', '\\\'', $sString);
+    $sString = str_replace('"', '\\"', $sString);
+    return $sString;
+}
+
 $sScript = '';
 
 /* Searches in generic db for a - Search */
@@ -416,24 +428,24 @@ if (!is_null($iSearchID)) {
 
 // es soll nach Text gesucht werden
 if (!empty($sSearchStr)) {
-    $where.= " AND ((a.title LIKE '%" . mysql_real_escape_string($sSearchStr) .  "%')";
-    $where.= " OR (f.value LIKE '%" . mysql_real_escape_string($sSearchStr) .  "%'))";
+    $where.= " AND ((a.title LIKE '%" . mask($sSearchStr) .  "%')";
+    $where.= " OR (f.value LIKE '%" . mask($sSearchStr) .  "%'))";
 	$bNoCriteria = false;
 }
 
 if (!empty($sSearchStrDateFrom) && ($sDateFieldName != '')) {
-    $where.= " AND (a.".$sDateFieldName." >= '".mysql_real_escape_string($sSearchStrDateFrom)."')";
+    $where.= " AND (a.".$sDateFieldName." >= '".mask($sSearchStrDateFrom)."')";
 	$bNoCriteria = false;
 }
 
 if (!empty($sSearchStrDateTo) && ($sDateFieldName != '')) {
-    $where.= " AND (a.".$sDateFieldName." <= '".mysql_real_escape_string($sSearchStrDateTo)."')";
+    $where.= " AND (a.".$sDateFieldName." <= '".mask($sSearchStrDateTo)."')";
 	$bNoCriteria = false;
 }
 
 if (!empty($sSearchStrAuthor) && ($sSearchStrAuthor != 'n/a')) {
     // es soll nach Autor gesucht werden
-    $where.= " AND ((a.author = '" . mysql_real_escape_string($sSearchStrAuthor) .  "') OR (a.modifiedby = '" . mysql_real_escape_string($sSearchStrAuthor)."'))";
+    $where.= " AND ((a.author = '" . mask($sSearchStrAuthor) .  "') OR (a.modifiedby = '" . mask($sSearchStrAuthor)."'))";
 	$bNoCriteria = false;
 }
 

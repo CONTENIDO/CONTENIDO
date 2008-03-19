@@ -404,67 +404,11 @@ $expandimg 		= '<a target="left_bottom"class="black" id="expander" href="'.$expa
 $tpl->set('s', 'MINUS', $collapseimg);
 $tpl->set('s', 'PLUS', $expandimg);
 
-
-/*
-##########################################
-# Linkchecker
-##########################################
-# modified 11/22/2007 by Frederic Schneider for Linkchecker
-
-# New instance
-$oListLinkchecker = new cFoldingRow("3498dbba-ed4a-4618-8e49-3a3635396e22", i18n("Linkchecker"), "linkchecker");
-
-# Mode Types
-$arrModeTypes = array(1 => i18n("Interns"), 2 => i18n("Externs"), 3 => i18n("Intern/extern Links"));
-
-# Mode
-$oSelectMode = new cHTMLSelectElement("mode");
-$oSelectMode->autoFill($arrModeTypes);
-$oSelectMode->setStyle('width:149px;');
-$oSelectMode->setDefault(3);
-
-# Content
-$link  = $sess->url("main.php?area=linkchecker&frame=4&action=linkchecker");
-$link2 = $sess->url("main.php?area=linkchecker&frame=3");
-
-$content  = '<div id="linkchecker" style="border-bottom: 1px solid #B3B3B3; border-right:1px solid #B3B3B3;padding-left:12px;background:'.$cfg['color']['table_dark'].';">';
-$content .= '<script type="text/javascript" src="scripts/general.js"></script>';
-$content .= '<form action="'.$link.'" method="post" target="right_bottom" id="backend_linkchecker">';
-$content .= '<table dir="'.langGetTextDirection($lang).'">';
-
-$content .= '<tr>';
-$content .= '<td>'. i18n("Mode").'</td>';
-$content .= '<td>'.$oSelectMode->render().'</td>';
-$content .= '</tr>';
-
-$content .= '<tr>';
-$content .= '<td>&nbsp;</td>';
-$content .= '<td><input type="submit" name="submit" class="text_medium" value="'.i18n("Search").'" onclick="conMultiLink(\'right_top\', \''.$link2.'\');"></td>';
-$content .= '</tr>';
-
-$content .= '</table>';
-$content .= '</form>';
-$content .= '</div>';
-
-# Output
-if ($perm->have_perm_area_action("linkchecker", "linkchecker")) 
-{
-	$oListLinkchecker->setContentData($content);
-	$tpl->set('s', 'LINKCHECKERLINK', "linkchecker");
-	$tpl->set('s', 'LINKCHECKER', $oListLinkchecker->render());
-}
-else
-{
-	$tpl->set('s', 'LINKCHECKERLINK', '');
-	$tpl->set('s', 'LINKCHECKER', '');
-}
-*/
-
 /**************/
 /*  SYNCSTUFF */
 /**************/
 $languages = getLanguageNamesByClient($client);
-if (count($languages) > 1) {
+if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat")) {
 	$sListId = 'sync';
 	$oListOptionRow = new cFoldingRow("4808dbba-ed4a-4618-8e49-3a3635396e22", i18n("Synchronize from"), $sListId);
 	

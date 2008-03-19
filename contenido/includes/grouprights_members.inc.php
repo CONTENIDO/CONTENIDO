@@ -110,8 +110,9 @@ if(!$perm->have_perm_area_action($area,$action))
     				group_id = '".$groupid."' order by ".$tab2.".".$sortby;
     	} else {
     		#Show previous behaviour by default
-    	    $sql = "select idgroupuser, user_id FROM ". $cfg["tab"]["groupmembers"] ." WHERE
-    	            group_id = '".$groupid."'";
+    	    $sql = "select ".$tab1.".idgroupuser, ".$tab1.".user_id FROM ".$tab1." 
+    				INNER JOIN ".$tab2." ON ".$tab1.".user_id = ".$tab2.".user_id WHERE
+    				group_id = '".$groupid."' order by ".$tab2.".realname, ".$tab2.".username";
     	}
 
         $db->query($sql);
