@@ -1,0 +1,4684 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Contenido 4.4\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-12-10 20:00+0100\n"
+"Last-Translator: \n"
+"Language-Team: Contenido Translators <translators@contenido.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: it\n"
+"X-Poedit-Country: IT\n"
+"X-Poedit-Basepath: D:\\1_Eigene_Dateien\\00_Downloads\\Contenido\\contenido-4.6.4 + italienisch\\contenido-4.6.4\\\n"
+"X-Poedit-KeywordsList: i18n;trans\n"
+"X-Poedit-Keywords: i18n,trans\n"
+"X-Poedit-SearchPath-0: contenido\n"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:252
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:252
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:252
+#: contenido/external/wysiwyg/spaw/dialogs/img_library.php:181
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:260
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:276
+msgid "OK"
+msgstr "OK"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:60
+#: contenido/external/wysiwyg/spaw/dialogs/img_library.php:182
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:263
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:277
+#: contenido/scripts/messageBox.js.php:58
+#: contenido/scripts/langref.php:21
+#: contenido/templates/standard/template.symbolhelp.html:181
+msgid "Cancel"
+msgstr "Cancellare"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/external/wysiwyg/spaw/dialogs/colorpicker.php:23
+#: contenido/external/wysiwyg/spaw/dialogs/colorpicker.php:23
+msgid "Colorpicker"
+msgstr "Selezione Colore"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:69
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:69
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:69
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:23
+msgid "Insert Link"
+msgstr "Inserire collegamento"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:69
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:69
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:69
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:92
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:82
+#: contenido/includes/include.CMS_LINK.php:192
+msgid "Internal link"
+msgstr "Collegamento interno"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:78
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:198
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:236
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:78
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:198
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:236
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:78
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:198
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:236
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:96
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:212
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:229
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:86
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:224
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:262
+#: contenido/includes/functions.general.php:1010
+#: contenido/includes/include.CMS_LINK.php:197
+#: contenido/includes/include.CMS_LINK.php:213
+#: contenido/includes/include.CMS_LINK.php:228
+#: contenido/includes/include.CMS_LINK.php:243
+#: contenido/includes/include.CMS_LINK.php:259
+msgid "Please choose"
+msgstr "Scelgiere prego"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:13
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:115
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:248
+#: contenido/includes/include.mycontenido_lastarticles.php:211
+#: contenido/includes/include.CMS_IMG.php:220
+#: contenido/includes/include.CMS_LINK.php:162
+#: contenido/includes/include.CMS_LINK.php:164
+#: contenido/includes/cfg_language_de.inc.php:330
+#: contenido/includes/include.con_str_overview.php:480
+#: contenido/includes/include.CMS_SWF.php:60
+#: contenido/includes/include.upl_search_results.php:38
+#: contenido/includes/include.con_art_overview.php:587
+msgid "None"
+msgstr "Nessun"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/external/wysiwyg/spaw/dialogs/insert_link.php:178
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:208
+msgid "PDF"
+msgstr "PDF"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/external/wysiwyg/spaw/dialogs/insert_link.php:195
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:225
+msgid "Media"
+msgstr "Media"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:212
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:212
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:212
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:242
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:238
+#: contenido/includes/include.CMS_LINK.php:135
+msgid "External link"
+msgstr "Collegamento esterno"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:215
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:246
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:241
+msgid "Target"
+msgstr "Destino"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:217
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:217
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:217
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:249
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:243
+msgid "Open in same window"
+msgstr "Aprire nella stessa finestra"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:218
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:218
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:218
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:250
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:244
+#: contenido/includes/include.CMS_LINK.php:330
+msgid "Open in new window"
+msgstr "Aprire in nuova finestra"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:215
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:251
+msgid "Open in parent frame"
+msgstr "Aprire nel parent-frame"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:217
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:217
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:217
+#: contenido/external/wysiwyg/spaw/dialogs/insert_link.php:252
+msgid "Open in top frame"
+msgstr "Aprire nel top-frame"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:13
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:170
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:172
+#: contenido/includes/include.tpl_edit_form.php:74
+#: contenido/includes/include.tpl_edit_form.php:79
+#: contenido/includes/include.tpl_edit_form.php:202
+#: contenido/includes/include.tplcfg_edit_form.php:326
+#: contenido/includes/include.tpl_visualedit.php:145
+#: contenido/includes/include.con_left_top.php:38
+#: contenido/includes/include.str_overview.php:402
+msgid "none"
+msgstr "nessun"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:221
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:221
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:221
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:247
+#: contenido/includes/include.rights_create.php:162
+#: contenido/includes/include.recipients_menu.php:42
+#: contenido/includes/include.recipients_edit.php:125
+#: contenido/includes/include.mycontenido_settings.php:88
+#: contenido/includes/include.rights_overview.php:222
+msgid "E-Mail"
+msgstr "e-mail"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:225
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:225
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:225
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:251
+#: contenido/templates/standard/template.symbolhelp.html:53
+#: contenido/templates/standard/template.symbolhelp.html:816
+msgid "Style"
+msgstr "Stile"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:227
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:227
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:227
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:253
+#: contenido/includes/include.tpl_edit_form.php:144
+msgid "Default"
+msgstr "Standard"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:228
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:228
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:228
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:254
+msgid "Mail"
+msgstr "Mail"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:255
+#: contenido/templates/standard/template.symbolhelp.html:38
+#: contenido/templates/standard/template.symbolhelp.html:277
+msgid "Content"
+msgstr "Contenuto"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
+#: contenido/external/wysiwyg/htmlarea2/insert_link.php:258
+msgid "Contenido image"
+msgstr "Immagine di Contenido"
+
+# e:\timo\contenido431/cms/front_content.php:180
+# e:\timo\contenido431/cms/front_content.php:202
+# e:\timo\contenido431/contenido/external/frontend/front_content.php:180
+# e:\timo\contenido431/contenido/external/frontend/front_content.php:202
+# e:\timo\contenido431/client2/front_content.php:180
+# e:\timo\contenido431/client2/front_content.php:202
+#: contenido/external/backendedit/front_content.php:256
+#: contenido/external/backendedit/front_content.php:310
+#: contenido/external/frontend/front_content.php:248
+#: contenido/external/frontend/front_content.php:302
+msgid "No start article for this category"
+msgstr "Nessun articolo d'inizio per questa categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#: contenido/external/backendedit/front_content.php:389
+#: contenido/external/frontend/front_content.php:381
+#: contenido/includes/include.con_edit_form.php:113
+#: contenido/includes/include.tplcfg_edit_form.php:39
+#, php-format
+msgid "Article is in use by %s (%s)"
+msgstr "L'articolo &egrave; in uso di %s (%s)"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:22
+#: contenido/scripts/messageBox.js.php:57
+#: contenido/scripts/langref.php:20
+msgid "Confirm"
+msgstr "Conferma"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:156
+#: contenido/scripts/messageBox.js.php:59
+#: contenido/scripts/langref.php:22
+msgid "Close window"
+msgstr "Chiudere finestra"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:282
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:307
+#: contenido/scripts/HTMLObj.js.php:191
+#: contenido/scripts/langref.php:8
+#: contenido/includes/include.str_overview.php:422
+#: contenido/includes/include.con_art_overview.php:678
+msgid "Make offline"
+msgstr "Mettere offline"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:290
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:309
+#: contenido/scripts/HTMLObj.js.php:194
+#: contenido/scripts/HTMLObj.js.php:197
+#: contenido/scripts/langref.php:9
+#: contenido/includes/include.str_overview.php:424
+#: contenido/includes/include.con_art_overview.php:686
+msgid "Make online"
+msgstr "Mettere online"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:119
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:138
+#: contenido/scripts/HTMLObj.js.php:200
+#: contenido/scripts/langref.php:10
+msgid "Protect"
+msgstr "Proteggere"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:74
+#: contenido/scripts/HTMLObj.js.php:203
+#: contenido/scripts/langref.php:11
+msgid "Remove protection"
+msgstr "Cancellare protezione"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#: contenido/scripts/HTMLObj.js.php:207
+#: contenido/scripts/langref.php:12
+#: contenido/includes/include.con_left_top.php:33
+msgid "Choose template"
+msgstr "Scelgiere Template"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:13
+#: contenido/scripts/langref.php:13
+#: contenido/scripts/articleObject.js.php:157
+msgid "Overview cannot be displayed"
+msgstr "La supervista non pu&ograve; essere visualizzata"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:14
+#: contenido/scripts/langref.php:14
+#: contenido/scripts/articleObject.js.php:138
+#: contenido/scripts/articleObject.js.php:141
+msgid "Error"
+msgstr "Errore"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:15
+#: contenido/scripts/langref.php:15
+#: contenido/scripts/articleObject.js.php:184
+msgid "Article can't be displayed"
+msgstr "Articolo non pu&ograve; essere visualizzato"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#: contenido/scripts/langref.php:16
+#: contenido/scripts/articleObject.js.php:184
+#: contenido/scripts/articleObject.js.php:216
+#: contenido/scripts/articleObject.js.php:247
+#: contenido/scripts/articleObject.js.php:273
+msgid "No article was selected"
+msgstr "Nessun articolo &egrave; stato selezionato"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:95
+#: contenido/scripts/langref.php:17
+#: contenido/scripts/articleObject.js.php:216
+msgid "Template configuration can't be displayed"
+msgstr "Configuratzione del Template non pu&ograve; essere visualizzata"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:18
+#: contenido/scripts/langref.php:18
+#: contenido/scripts/articleObject.js.php:166
+#: contenido/scripts/articleObject.js.php:201
+#: contenido/scripts/articleObject.js.php:230
+#: contenido/scripts/articleObject.js.php:247
+msgid "Editor can't be displayed"
+msgstr "L'Editor non pu&ograve; essere visualizzato"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:19
+#: contenido/scripts/langref.php:19
+#: contenido/scripts/articleObject.js.php:273
+msgid "Preview can't be displayed"
+msgstr "Previsione non pu&ograve; essere visualizzata"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:25
+#: contenido/scripts/langref.php:23
+#: contenido/scripts/rights.js.php:36
+#: contenido/scripts/rights.js.php:39
+#: contenido/scripts/iZoom.js.php:36
+#: contenido/scripts/iZoom.js.php:39
+msgid "Click to close"
+msgstr "Clicca per chiudere"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:26
+#: contenido/scripts/langref.php:24
+msgid "Headline / HTML"
+msgstr "Titolo / HTML"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:27
+#: contenido/scripts/langref.php:25
+msgid "Text / HTML"
+msgstr "Testo / HTML"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:28
+#: contenido/scripts/langref.php:26
+msgid "Text / Standard"
+msgstr "Testo / Standard"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:29
+#: contenido/scripts/langref.php:27
+msgid "Picture"
+msgstr "Immagine"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.upl_files_overview.html:79
+#: contenido/scripts/langref.php:28
+#: contenido/includes/grouprights_tpl.inc.php:35
+#: contenido/includes/grouprights_mod.inc.php:35
+#: contenido/includes/include.tpl_edit_form.php:140
+#: contenido/includes/include.CMS_LINK.php:296
+#: contenido/includes/rights_lay.inc.php:36
+#: contenido/includes/rights_tpl.inc.php:36
+#: contenido/includes/include.upl_edit.php:80
+#: contenido/includes/rights_mod.inc.php:36
+#: contenido/includes/include.todo.popup.php:36
+#: contenido/includes/include.grouprights_overview.php:129
+#: contenido/includes/include.mycontenido.tasks.edit.php:42
+#: contenido/includes/include.mod_edit_form.php:212
+#: contenido/includes/include.grouprights_create.php:119
+#: contenido/includes/include.CMS_SIMPLELINK.php:135
+#: contenido/includes/include.mod_history.php:113
+#: contenido/includes/grouprights_lay.inc.php:35
+#: contenido/includes/include.lay_edit_form.php:190
+#: contenido/templates/standard/template.lay_edit_form.html:29
+#: contenido/templates/standard/template.tpl_edit_form.html:26
+#: contenido/templates/standard/template.upl_files_overview.html:79
+#: contenido/templates/standard/template.mod_edit_form.html:30
+msgid "Description"
+msgstr "Descrizione"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.upl_files_overview.html:79
+#: contenido/scripts/langref.php:29
+msgid "Description / Standard"
+msgstr "Descrizione / Standard"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:32
+#: contenido/scripts/langref.php:30
+msgid "Flash Movie"
+msgstr "Flash-Movie"
+
+# e:\timo\contenido431/contenido/scripts/langref.php:33
+#: contenido/scripts/langref.php:31
+#: contenido/includes/include.CMS_SIMPLELINK.php:132
+msgid "Link"
+msgstr "Collegamento"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_edit_form.html:21
+# e:\timo\contenido_head/contenido/templates/standard/template.lay_edit_form.html:19
+# e:\timo\contenido_head/contenido/templates/standard/template.mod_edit_form.html:20
+# e:\timo\contenido_head/contenido/templates/standard/template.style_edit_form.html:21
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:16
+#: contenido/scripts/langref.php:32
+msgid "Frame"
+msgstr "Frame"
+
+#: contenido/scripts/articleObject.js.php:166
+#: contenido/scripts/articleObject.js.php:201
+#: contenido/scripts/articleObject.js.php:230
+msgid "Can't edit articles in foreign languages."
+msgstr "Non si pu&ograve; pubblicare articoli in lingue straniere."
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#: contenido/includes/functions.stat.php:21
+msgid "Info about article"
+msgstr "Informazione sull'Articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/functions.stat.php:23
+msgid "Info about directory"
+msgstr "Informazione sul directory"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:290
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:309
+#: contenido/includes/functions.stat.php:218
+msgid "Category is online"
+msgstr "La categoria &egrave online"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:98
+#: contenido/includes/functions.stat.php:220
+msgid "Category is offline"
+msgstr "La categoria &egrave; offline"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.stat.php:323
+#: contenido/includes/functions.stat.php:354
+msgid "Sum"
+msgstr "Somma"
+
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:756
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:785
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:31
+#: contenido/includes/functions.stat.php:787
+#: contenido/includes/functions.stat.php:816
+#: contenido/includes/include.stat_overview.php:31
+msgid "Top 10"
+msgstr "Top 10"
+
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:757
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:786
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:34
+#: contenido/includes/functions.stat.php:788
+#: contenido/includes/functions.stat.php:817
+#: contenido/includes/include.stat_overview.php:34
+msgid "Top 20"
+msgstr "Top 20"
+
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:758
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:787
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:37
+#: contenido/includes/functions.stat.php:789
+#: contenido/includes/functions.stat.php:818
+#: contenido/includes/include.stat_overview.php:37
+msgid "Top 30"
+msgstr "Top 30"
+
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:759
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:788
+#: contenido/includes/functions.stat.php:790
+#: contenido/includes/functions.stat.php:819
+#: contenido/includes/include.rights_left_top.php:41
+#: contenido/includes/include.grouprights_left_top.php:40
+msgid "All"
+msgstr "Tutti"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_new.php:17
+#: contenido/includes/include.mod_new.php:20
+msgid "New module"
+msgstr "nuovo modulo"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:90
+#: contenido/includes/grouprights_tpl.inc.php:17
+#: contenido/includes/include.upl_dirs_overview.php:420
+#: contenido/includes/include.upl_dirs_overview.php:565
+#: contenido/includes/include.logs.php:25
+#: contenido/includes/grouprights_mod.inc.php:17
+#: contenido/includes/rights_str.inc.php:18
+#: contenido/includes/include.con_edit_form.php:687
+#: contenido/includes/include.tpl_edit_form.php:25
+#: contenido/includes/include.rights_create.php:16
+#: contenido/includes/include.style_edit_form.php:32
+#: contenido/includes/include.client_edit.php:29
+#: contenido/includes/rights_lay.inc.php:24
+#: contenido/includes/rights_area.inc.php:24
+#: contenido/includes/include.tplcfg_edit_form.php:142
+#: contenido/includes/rights_tpl.inc.php:18
+#: contenido/includes/include.client_artspec.php:10
+#: contenido/includes/include.client_artspec.php:20
+#: contenido/includes/include.client_artspec.php:30
+#: contenido/includes/include.client_artspec.php:40
+#: contenido/includes/grouprights_con.inc.php:17
+#: contenido/includes/rights_mod.inc.php:18
+#: contenido/includes/grouprights_area.inc.php:24
+#: contenido/includes/include.grouprights_overview.php:21
+#: contenido/includes/include.js_edit_form.php:32
+#: contenido/includes/include.grouprights_create.php:19
+#: contenido/includes/rights_con.inc.php:17
+#: contenido/includes/grouprights_members.inc.php:24
+#: contenido/includes/grouprights_str.inc.php:17
+#: contenido/includes/include.html_tpl_edit_form.php:32
+#: contenido/includes/include.con_art_overview.php:1037
+#: contenido/includes/grouprights_lay.inc.php:23
+#: contenido/includes/include.lay_edit_form.php:32
+#: contenido/includes/include.rights_overview.php:40
+#: contenido/includes/include.lang_edit.php:48
+msgid "Permission denied"
+msgstr "Permesso negato"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:249
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:62
+#: contenido/includes/grouprights_tpl.inc.php:34
+#: contenido/includes/rights_tpl.inc.php:35
+msgid "Template name"
+msgstr "Nome del Template"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:47
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:64
+#: contenido/includes/functions.system.php:21
+msgid "error log successfully cleared"
+msgstr "error-log svuotato con successo"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:47
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:64
+#: contenido/includes/functions.system.php:30
+msgid "install error log successfully cleared"
+msgstr "install-error-log svuotato con successo"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
+#: contenido/includes/functions.system.php:265
+msgid "Contenido version"
+msgstr "Versione di Contenido"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/functions.system.php:268
+msgid "Contenido path"
+msgstr "Percorso di Contenido"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+#: contenido/includes/functions.system.php:283
+msgid "Host name"
+msgstr "Nome del Host"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+#: contenido/includes/functions.system.php:308
+msgid "client settings"
+msgstr "Regolazioni del cliente"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:141
+#: contenido/includes/functions.system.php:309
+msgid "values"
+msgstr "valori"
+
+# e:\timo\contenido_head/contenido/includes/grouprights.inc.php:182
+# e:\timo\contenido_head/contenido/includes/rights.inc.php:179
+#: contenido/includes/functions.system.php:340
+msgid "language(s)"
+msgstr "lingua(e)"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:162
+#: contenido/includes/functions.system.php:349
+msgid "htmlpath"
+msgstr "Percorso HTML"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/functions.system.php:353
+msgid "frontendpath"
+msgstr "Percorso del Frontend"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:336
+#: contenido/includes/functions.system.php:366
+msgid "No permissions!"
+msgstr "Nessun permesso!"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:173
+#: contenido/includes/functions.system.php:372
+msgid "Number of installed clients: "
+msgstr "Numero di clienti installati: "
+
+#: contenido/includes/functions.system.php:375
+msgid "Client informations"
+msgstr "Informazioni sul cliente"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:173
+#: contenido/includes/functions.system.php:383
+msgid "Number of users: "
+msgstr "Numero di utenti: "
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:173
+#: contenido/includes/functions.system.php:391
+#: contenido/includes/include.stat_overview.php:75
+msgid "Number of articles"
+msgstr "Numero di Articoli"
+
+#: contenido/includes/functions.system.php:394
+msgid "Server operating system"
+msgstr "Sistema operativo dell Server"
+
+#: contenido/includes/functions.system.php:404
+#: contenido/includes/functions.system.php:410
+msgid "MySQL server version"
+msgstr "Versione dell MySQL-Server"
+
+#: contenido/includes/functions.system.php:415
+msgid "Installed PHP version"
+msgstr "Versione della PHP installata"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:160
+#: contenido/includes/functions.system.php:420
+#: contenido/includes/functions.system.php:424
+#: contenido/includes/functions.system.php:428
+#: contenido/includes/functions.system.php:449
+msgid "activated"
+msgstr "attivato"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:160
+#: contenido/includes/functions.system.php:420
+#: contenido/includes/functions.system.php:424
+#: contenido/includes/functions.system.php:428
+#: contenido/includes/functions.system.php:449
+msgid "deactivated"
+msgstr "disattivato"
+
+#: contenido/includes/functions.system.php:441
+msgid "nothing disabled"
+msgstr "niente dissativato"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:331
+#: contenido/includes/functions.system.php:442
+msgid "Disabled functions"
+msgstr "Funzioni dissativati"
+
+#: contenido/includes/functions.system.php:445
+msgid "loaded"
+msgstr "caricato"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#: contenido/includes/functions.system.php:445
+msgid "not loaded"
+msgstr "non caricato"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+#: contenido/includes/functions.system.php:456
+#: contenido/includes/main.login.php:147
+msgid "Settings"
+msgstr "Regolazioni"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:141
+#: contenido/includes/functions.system.php:457
+msgid "Values"
+msgstr "Valori"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:410
+#: contenido/includes/functions.system.php:620
+msgid "an error occured while sending your bug report! Please try again"
+msgstr "Un errore ha accaduto mentre trasmetteva il vostro rapporto dell bug! Prego prova ancora"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:414
+#: contenido/includes/functions.system.php:623
+msgid "bug report forwarded"
+msgstr "Rapporto-Bug spedito"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:419
+#: contenido/includes/functions.system.php:629
+msgid "please fill out all mandatory fields"
+msgstr "Prego compilare tutti i campi obbligatori"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:423
+#: contenido/includes/functions.system.php:633
+msgid "please enter a valid E-Mail adress"
+msgstr "Prego inserire indirizzo e-mail valido"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:427
+#: contenido/includes/functions.system.php:637
+msgid "you must agree the declaration of consent"
+msgstr "Si deve confermare la dichiarazione di consenso per continuare"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.mod_translate.php:117
+#, php-format
+msgid "Translate module \"%s\""
+msgstr "Tradurre Modulo \"%s\""
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+#: contenido/includes/include.mod_translate.php:126
+msgid "Translated Name"
+msgstr "Nome tradotto"
+
+#: contenido/includes/include.mod_translate.php:136
+msgid "Original module string"
+msgstr "Stringa del modulo orginale"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+#: contenido/includes/include.mod_translate.php:136
+#, php-format
+msgid "Translation for %s"
+msgstr "Traduzione %s"
+
+#: contenido/includes/include.mod_translate.php:144
+msgid "Hint: Hit ALT+S to save the translated entry and advance to the next string."
+msgstr "Nota: Colpisca ALT+S per conservare l'entrata tradotta ed avanzamento alla stringa seguente."
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+#: contenido/includes/include.mod_translate.php:145
+msgid "Lista della stringe"
+msgstr "Zeichenkettenliste"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:30
+#: contenido/includes/include.mod_translate.php:163
+#: contenido/includes/include.mod_edit_form.php:265
+msgid "Mode"
+msgstr "Modo"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.log_main.html:15
+#: contenido/includes/include.mod_translate.php:164
+#: contenido/includes/include.mod_edit_form.php:268
+#: contenido/includes/include.mod_edit_form.php:270
+msgid "File"
+msgstr "File"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:249
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:62
+#: contenido/includes/include.pretplcfg_edit_form.php:53
+#: contenido/includes/include.tplcfg_edit_form.php:300
+#: contenido/includes/include.con_art_overview.php:63
+#: contenido/templates/standard/template.mycontenido_lastarticles.html:66
+#: contenido/templates/standard/template.str_overview.html:66
+msgid "Template"
+msgstr "Template"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#: contenido/includes/include.pretplcfg_edit_form.php:89
+#, php-format
+msgid "Module in Container %s"
+msgstr "Modulo in Container %s"
+
+# e:\timo\contenido431/contenido/includes/include.style_edit_form.php:75
+#: contenido/includes/include.style_files_overview.php:75
+#: contenido/includes/include.js_files_overview.php:75
+#: contenido/includes/include.html_tpl_files_overview.php:75
+msgid "is not readable!"
+msgstr "Dati non leggibili!"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.style_files_overview.php:95
+#: contenido/includes/include.js_files_overview.php:95
+#: contenido/includes/include.html_tpl_files_overview.php:95
+msgid "Delete File"
+msgstr "Cancellare dati"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.style_files_overview.php:96
+#: contenido/includes/include.js_files_overview.php:96
+#: contenido/includes/include.html_tpl_files_overview.php:96
+#, php-format
+msgid "Do you really want to delete the following file:<br><br>%s<br>"
+msgstr "Desidera veramente di cancellare le seguente date:<br><br><b>%s</b>"
+
+# e:\timo\contenido431/contenido/includes/include.style_edit_form.php:75
+#: contenido/includes/include.style_files_overview.php:112
+#: contenido/includes/include.js_files_overview.php:112
+#: contenido/includes/include.html_tpl_files_overview.php:112
+msgid "Directory is not existing or readable!"
+msgstr "L'indice non esiste o non &egrave; leggibile!"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_edit_form.html:21
+# e:\timo\contenido_head/contenido/templates/standard/template.lay_edit_form.html:19
+# e:\timo\contenido_head/contenido/templates/standard/template.mod_edit_form.html:20
+# e:\timo\contenido_head/contenido/templates/standard/template.style_edit_form.html:21
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:16
+#: contenido/includes/include.newsletter_menu.php:33
+#: contenido/includes/include.newsletter_edit.php:123
+#: contenido/includes/include.rights_menu.php:24
+#: contenido/includes/include.mod_overview.php:31
+#: contenido/includes/include.tpl_edit_form.php:137
+#: contenido/includes/include.rights_create.php:144
+#: contenido/includes/include.style_edit_form.php:95
+#: contenido/includes/include.recipients_menu.php:41
+#: contenido/includes/include.recipients_edit.php:124
+#: contenido/includes/include.systemsettings.php:39
+#: contenido/includes/include.systemsettings.php:112
+#: contenido/includes/include.clientsettings.php:29
+#: contenido/includes/include.clientsettings.php:93
+#: contenido/includes/include.js_edit_form.php:95
+#: contenido/includes/include.mod_edit_form.php:210
+#: contenido/includes/include.mod_history.php:111
+#: contenido/includes/include.html_tpl_edit_form.php:95
+#: contenido/includes/include.lay_edit_form.php:189
+#: contenido/includes/include.rights_overview.php:201
+#: contenido/templates/standard/template.lay_edit_form.html:19
+#: contenido/templates/standard/template.tpl_edit_form.html:16
+#: contenido/templates/standard/template.mod_edit_form.html:20
+msgid "Name"
+msgstr "Nome"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.newsletter_menu.php:35
+#: contenido/includes/cfg_language_de.inc.php:171
+msgid "Delete newsletter"
+msgstr "Cancellare il bollettino"
+
+#: contenido/includes/include.newsletter_menu.php:36
+msgid "Do you really want to delete the following newsletter:<br>"
+msgstr "Desidera veramente di cancellare il seguente bollettino: <br>"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
+#: contenido/includes/include.newsletter_menu.php:38
+#: contenido/includes/cfg_language_de.inc.php:172
+msgid "Send newsletter"
+msgstr "Inviare bollettino"
+
+#: contenido/includes/include.newsletter_menu.php:39
+msgid "Do you really want to send the following newsletter:<br>"
+msgstr "Desidera veramente di inviare il seguente bolettino: <br>"
+
+#: contenido/includes/include.newsletter_menu.php:41
+msgid "Duplicate newsletter"
+msgstr "Duplicare il bollettino"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:63
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:49
+#: contenido/includes/include.newsletter_menu.php:44
+#: contenido/includes/include.recipients_menu.php:50
+#: contenido/includes/include.mycontenido.tasks.php:247
+#: contenido/includes/include.frontend.user_menu.php:356
+#: contenido/includes/include.upl_files_overview.php:346
+#: contenido/includes/include.con_art_overview.php:64
+#: contenido/templates/standard/template.str_overview.html:67
+msgid "Actions"
+msgstr "Azioni"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:478
+#: contenido/includes/include.newsletter_menu.php:49
+#: contenido/includes/cfg_language_de.inc.php:170
+#: contenido/templates/standard/template.symbolhelp.html:1292
+msgid "Create newsletter"
+msgstr "Generare un bollettino"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:63
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:49
+#: contenido/includes/include.newsletter_menu.php:57
+#: contenido/includes/include.client_artspec.php:50
+#: contenido/includes/include.recipients_menu.php:86
+#: contenido/includes/include.mycontenido.tasks.php:370
+#: contenido/includes/include.mycontenido_settings.php:98
+#: contenido/includes/include.lay_edit_form.php:192
+msgid "Options"
+msgstr "Opzioni"
+
+#: contenido/includes/include.newsletter_menu.php:92
+#: contenido/includes/include.recipients.group_edit.php:149
+msgid "Note: Hold &lt;Ctrl&gt; to<br>select multiple items."
+msgstr "Nota: Tenere &lt;Ctrl&gt; per selezionare multipli articoli."
+
+#: contenido/includes/include.newsletter_menu.php:151
+msgid "Note: Set to 0 to send chunks manually."
+msgstr "Nota: Scegliere 0 per spedire blocchi manuale."
+
+#: contenido/includes/include.newsletter_menu.php:163
+#: contenido/includes/include.recipients_menu.php:90
+msgid "Save"
+msgstr "salvare"
+
+#: contenido/includes/include.newsletter_menu.php:179
+msgid "Send to these recipients:"
+msgstr "Trasmettere a questi detinari"
+
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:759
+# e:\timo\contenido_head/contenido/includes/functions.stat.php:788
+#: contenido/includes/include.newsletter_menu.php:180
+msgid "all"
+msgstr "tutti"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.newsletter_menu.php:181
+msgid "in default group"
+msgstr "in gruppo standard"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.newsletter_menu.php:182
+msgid "in selected group(s):"
+msgstr "in gruppo(i) scelto(i):"
+
+#: contenido/includes/include.newsletter_menu.php:186
+msgid "Send in chunks:"
+msgstr "Trasmettere in blocchi:"
+
+#: contenido/includes/include.newsletter_menu.php:187
+#: contenido/includes/include.newsletter_menu.php:199
+msgid "Enable"
+msgstr "Attivare"
+
+#: contenido/includes/include.newsletter_menu.php:190
+msgid "Dispatch count:"
+msgstr "Conteggio della spedizione:"
+
+#: contenido/includes/include.newsletter_menu.php:194
+msgid "Dispatch delay:"
+msgstr "Conteggio del ritardo:"
+
+#: contenido/includes/include.newsletter_menu.php:195
+msgid "sec."
+msgstr "Secondi"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:174
+#: contenido/includes/include.newsletter_menu.php:198
+msgid "Log to file:"
+msgstr "Salvare Log su:"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:74
+#: contenido/includes/include.newsletter_menu.php:211
+#: contenido/includes/include.rights_menu.php:30
+#: contenido/includes/include.mod_overview.php:35
+#: contenido/includes/include.recipients_menu.php:118
+#: contenido/includes/include.frontend.user_menu.php:81
+msgid "List options"
+msgstr "Opzioni di esposizione "
+
+#: contenido/includes/include.newsletter_menu.php:214
+#: contenido/includes/include.mod_overview.php:66
+#: contenido/includes/include.recipients_menu.php:121
+msgid "-- All --"
+msgstr "-- Tutte --"
+
+#: contenido/includes/include.newsletter_menu.php:227
+#: contenido/includes/include.rights_menu.php:26
+#: contenido/includes/include.mod_overview.php:33
+#: contenido/includes/include.recipients_menu.php:134
+#: contenido/includes/include.frontend.user_menu.php:78
+msgid "Ascending"
+msgstr "Ascendere"
+
+#: contenido/includes/include.newsletter_menu.php:227
+#: contenido/includes/include.rights_menu.php:27
+#: contenido/includes/include.mod_overview.php:33
+#: contenido/includes/include.recipients_menu.php:134
+#: contenido/includes/include.frontend.user_menu.php:78
+msgid "Descending"
+msgstr "Discendere"
+
+#: contenido/includes/include.newsletter_menu.php:233
+#: contenido/includes/include.recipients_menu.php:160
+#: contenido/includes/include.frontend.user_menu.php:23
+msgid "-- All fields --"
+msgstr "-- Tutti i campi --"
+
+#: contenido/includes/include.newsletter_menu.php:244
+#: contenido/includes/include.rights_menu.php:46
+#: contenido/includes/include.mod_overview.php:83
+#: contenido/includes/include.recipients_menu.php:171
+#: contenido/includes/include.frontend.user_menu.php:125
+msgid "Apply"
+msgstr "Applicare"
+
+#: contenido/includes/include.newsletter_menu.php:253
+#: contenido/includes/include.rights_menu.php:55
+#: contenido/includes/include.mod_overview.php:93
+#: contenido/includes/include.recipients_menu.php:180
+#: contenido/includes/include.frontend.user_menu.php:134
+msgid "Items / page"
+msgstr "Elementi / Pagina"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:186
+#: contenido/includes/include.newsletter_menu.php:257
+#: contenido/includes/include.rights_menu.php:59
+#: contenido/includes/include.mod_overview.php:97
+#: contenido/includes/include.recipients_menu.php:184
+#: contenido/includes/include.frontend.user_menu.php:138
+msgid "Sort by"
+msgstr "Scegliere per"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:61
+#: contenido/includes/include.newsletter_menu.php:261
+#: contenido/includes/include.rights_menu.php:63
+#: contenido/includes/include.mod_overview.php:101
+#: contenido/includes/include.recipients_menu.php:188
+#: contenido/includes/include.frontend.user_menu.php:142
+#: contenido/includes/include.con_art_overview.php:62
+msgid "Sort order"
+msgstr "Ordine di scelta"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:26
+#: contenido/includes/include.newsletter_menu.php:265
+#: contenido/includes/include.upl_dirs_overview.php:287
+#: contenido/includes/include.rights_menu.php:67
+#: contenido/includes/include.mod_overview.php:109
+#: contenido/includes/include.recipients_menu.php:196
+#: contenido/includes/include.frontend.user_menu.php:150
+msgid "Search for"
+msgstr "Cerca per"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:26
+#: contenido/includes/include.newsletter_menu.php:269
+#: contenido/includes/include.recipients_menu.php:200
+#: contenido/includes/include.frontend.user_menu.php:154
+msgid "Search in"
+msgstr "Cerca in"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.upl_dirs_overview.php:114
+msgid "Failed to delete the following files:"
+msgstr "Le date seguenti non sono state cancellate:"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.upl_dirs_overview.php:120
+#, php-format
+msgid "Failed to remove directory %s"
+msgstr "Le indice seguenti non sono state cancellate: %s"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:47
+#: contenido/includes/include.upl_dirs_overview.php:254
+msgid "Categories"
+msgstr "Categorie"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:296
+#: contenido/includes/include.upl_dirs_overview.php:328
+msgid "Enter the new directory name:"
+msgstr "Prego inserire nouvo nome dell'indice:"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_menu.php:118
+#: contenido/includes/include.upl_dirs_overview.php:339
+msgid "Search results"
+msgstr "Resultati della ricerca"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.upl_dirs_overview.php:412
+#: contenido/includes/include.upl_dirs_overview.php:557
+msgid "Delete directory"
+msgstr "Cancellare indice"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.upl_dirs_overview.php:412
+#: contenido/includes/include.upl_dirs_overview.php:557
+msgid "Do you really want to delete the following directory:"
+msgstr "Desidera veramente di cancellare il seguente indice: <br><br><b></b>"
+
+# e:\timo\contenido431/contenido/includes/include.upl_dirs_overview.php:89
+#: contenido/includes/include.upl_dirs_overview.php:417
+#: contenido/includes/include.upl_dirs_overview.php:562
+msgid "Directory contains files"
+msgstr "Indice contiene date"
+
+#: contenido/includes/include.upl_dirs_overview.php:465
+msgid "Database Filesystem"
+msgstr "Sistema Database"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.frontend.group_menu.php:30
+#: contenido/includes/include.recipients.group_menu.php:28
+#: contenido/includes/cfg_language_de.inc.php:143
+#: contenido/includes/include.grouprights_left_top.php:71
+msgid "Create group"
+msgstr "Creare gruppo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.frontend.group_menu.php:46
+msgid "Delete frontend group"
+msgstr "Cancellare gruppo del Frontend"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.frontend.group_menu.php:47
+#, php-format
+msgid "Do you really want to delete the following frontend group:<br><b>%s</b>"
+msgstr "Desidera veramente di cancellare il seguente gruppo del Frontend:<br><b>%s</b>"
+
+#: contenido/includes/include.newsletter_edit.php:28
+msgid "-- new newsletter --"
+msgstr "-- nuovo bollettino --"
+
+#: contenido/includes/include.newsletter_edit.php:64
+msgid "Could not set new newsletter name: name already exists"
+msgstr "Impossibile regolare il nuovo nome: Nome del bollettino esiste gi&agrave;"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
+#: contenido/includes/include.newsletter_edit.php:114
+#: contenido/includes/cfg_language_de.inc.php:169
+msgid "Edit newsletter"
+msgstr "Modificare bollettino"
+
+#: contenido/includes/include.newsletter_edit.php:124
+msgid "Welcome-Newsletter"
+msgstr "Bollettino di benvenuto"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:134
+#: contenido/includes/include.newsletter_edit.php:125
+msgid "From"
+msgstr "Mittente"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:141
+#: contenido/includes/include.newsletter_edit.php:126
+#: contenido/includes/include.mycontenido.tasks.php:247
+#: contenido/includes/include.todo.popup.php:33
+#: contenido/includes/include.mycontenido.tasks.edit.php:39
+msgid "Subject"
+msgstr "Oggetto"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:179
+#: contenido/includes/include.newsletter_edit.php:127
+msgid "Message"
+msgstr "Messaggio"
+
+#: contenido/includes/include.newsletter_edit.php:129
+msgid "Special message tags (will be replaced when sending)"
+msgstr "Modifiche del messaggio speciali (saranno sostituite durante la trasmissione)"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:170
+#: contenido/includes/include.newsletter_edit.php:130
+msgid "Name of the recipient"
+msgstr "Nome del destinatario"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:171
+#: contenido/includes/include.newsletter_edit.php:131
+msgid "Date, when the mail has been sent"
+msgstr "Data, quando la posta &egrave; stata trasmessa"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:172
+#: contenido/includes/include.newsletter_edit.php:132
+msgid "Time, when the mail has been sent"
+msgstr "Orario, quando la posta &egrave; stata trasmessa"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:173
+#: contenido/includes/include.newsletter_edit.php:133
+msgid "Number of recipients"
+msgstr "Numero di destinatari"
+
+#: contenido/includes/include.newsletter_edit.php:134
+msgid "Link to change the e-mail adress"
+msgstr "Collegamento per cambiare l'indirizzo e-mail"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:174
+#: contenido/includes/include.newsletter_edit.php:135
+msgid "Link to unsubscribe"
+msgstr "Collegamento per disabbonare il bollettino"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:175
+#: contenido/includes/include.newsletter_edit.php:136
+msgid "Link to pause the subscription"
+msgstr "Collegamento per pausare il bollettino"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:176
+#: contenido/includes/include.newsletter_edit.php:137
+msgid "Link to resume the subscription"
+msgstr "Collegamento da riprendere il bollettino"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:157
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:183
+#: contenido/includes/include.newsletter_edit.php:163
+#: contenido/includes/include.con_edit_form.php:248
+#: contenido/includes/include.upl_edit.php:89
+#: contenido/includes/include.recipients_edit.php:153
+#: contenido/includes/include.frontend.user_edit.php:202
+msgid "Author"
+msgstr "Autore"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:47
+#: contenido/includes/include.newsletter_edit.php:164
+#: contenido/includes/include.upl_edit.php:90
+#: contenido/includes/include.recipients_edit.php:154
+#: contenido/includes/include.frontend.user_edit.php:203
+msgid "Last modified by"
+msgstr "Ultima modificzione da"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.mycontenido_lastarticles.php:122
+#: contenido/includes/main.login.php:145
+msgid "Recently edited articles"
+msgstr "Ultimi articoli modificati"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#: contenido/includes/include.mycontenido_lastarticles.php:249
+#: contenido/includes/include.con_art_overview.php:680
+msgid "Article is online"
+msgstr "Articolo &egrave; online"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:292
+#: contenido/includes/include.mycontenido_lastarticles.php:252
+#: contenido/includes/include.con_art_overview.php:688
+msgid "Article is offline"
+msgstr "Articolo &egrave; offline"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#: contenido/includes/include.mycontenido_lastarticles.php:321
+msgid "No article found"
+msgstr "Nessun articolo trovato"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:226
+#: contenido/includes/include.rights_menu.php:23
+#: contenido/includes/include.frontend.user_edit.php:154
+msgid "User name"
+msgstr "Nome utente"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.rights_menu.php:170
+#: contenido/includes/include.frontend.user_menu.php:288
+#, php-format
+msgid "Do you really want to delete the user %s?"
+msgstr "Desidera veramente di cancellare il seguente utente:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.rights_menu.php:173
+#: contenido/includes/cfg_language_de.inc.php:139
+#: contenido/includes/include.frontend.user_menu.php:290
+msgid "Delete user"
+msgstr "Cancellare utente"
+
+#: contenido/includes/include.frontend.group_edit.php:25
+#: contenido/includes/include.recipients.group_edit.php:28
+msgid "-- new group --"
+msgstr "-- nuovo gruppo --"
+
+#: contenido/includes/include.frontend.group_edit.php:55
+#: contenido/includes/include.recipients.group_edit.php:54
+msgid "Could not set new group name: Group already exists"
+msgstr "Impossibile di regolare il nuovo nome: Gruppo esiste gi&agrave;"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:126
+#: contenido/includes/include.frontend.group_edit.php:85
+#: contenido/includes/include.recipients.group_edit.php:90
+#: contenido/includes/cfg_language_de.inc.php:142
+msgid "Edit group"
+msgstr "Modificare gruppo"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_members.inc.php:94
+#: contenido/includes/include.frontend.group_edit.php:124
+msgid "No users are added to this group yet"
+msgstr "Nessun utente &egrave; aggiunto a questo gruppo ancora."
+
+# e:\timo\contenido_head/contenido/includes/include.grouprights_create.php:113
+#: contenido/includes/include.frontend.group_edit.php:152
+#: contenido/includes/include.recipients.group_edit.php:146
+#: contenido/includes/include.grouprights_create.php:113
+msgid "Group name"
+msgstr "Nome del gruppo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.frontend.group_edit.php:153
+#: contenido/includes/include.recipients.group_edit.php:147
+msgid "Default group"
+msgstr "Gruppo di default"
+
+#: contenido/includes/include.frontend.group_edit.php:154
+msgid "Users in Group"
+msgstr "Utenti nel gruppo"
+
+# e:\timo\contenido_head/contenido/includes/include.logs.php:55
+#: contenido/includes/include.frontend.group_edit.php:155
+msgid "Add users"
+msgstr "Aggiungere utenti"
+
+#: contenido/includes/include.frontend.group_edit.php:155
+msgid "Note: Hold ctrl to select multiple items."
+msgstr "Nota: Tenere &lt;Ctrl&gt; per selezionare multipli articoli."
+
+# e:\timo\contenido_head/contenido/includes/include.logs.php:44
+#: contenido/includes/include.logs.php:43
+msgid "Submit query"
+msgstr "Trasmettere Query"
+
+# e:\timo\contenido_head/contenido/includes/include.logs.php:55
+#: contenido/includes/include.logs.php:54
+msgid "All users"
+msgstr "Tutti gli utenti"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:63
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:49
+#: contenido/includes/include.logs.php:56
+msgid "All actions"
+msgstr "Tutti gli azioni"
+
+# e:\timo\contenido_head/contenido/includes/include.logs.php:126
+#: contenido/includes/include.logs.php:177
+msgid "Unlimited"
+msgstr "Illimitato"
+
+# e:\timo\contenido_head/contenido/includes/include.logs.php:127
+# e:\timo\contenido_head/contenido/includes/include.logs.php:128
+# e:\timo\contenido_head/contenido/includes/include.logs.php:129
+# e:\timo\contenido_head/contenido/includes/include.logs.php:130
+# e:\timo\contenido_head/contenido/includes/include.logs.php:131
+#: contenido/includes/include.logs.php:178
+#: contenido/includes/include.logs.php:179
+#: contenido/includes/include.logs.php:180
+#: contenido/includes/include.logs.php:181
+#: contenido/includes/include.logs.php:182
+msgid "Entries"
+msgstr "Entrate"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_menu.php:118
+#: contenido/includes/include.logs.php:253
+msgid "No results"
+msgstr "Nessun risultato"
+
+# e:\timo\contenido431/contenido/includes/functions.lang.php:96
+#: contenido/includes/functions.lang.php:108
+msgid "Could not set the language-ID in the file 'config.php'. Please set the language manually."
+msgstr "Non ha potuto regolare la language-ID nel file 'config.php '. Regoli manualmente la lingua prego."
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/functions.lang.php:614
+msgid "Could not delete language"
+msgstr "Non ha potuto cancellare la lingua"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.style_left_top.php:30
+msgid "Create style"
+msgstr "Generare stile"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#: contenido/includes/grouprights_mod.inc.php:34
+#: contenido/includes/rights_mod.inc.php:35
+msgid "Module name"
+msgstr "Nome del modulo"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:36
+#: contenido/includes/include.info.php:20
+msgid "You can find many information and a community forum on the <a href=\"http://www.contenido.org\" target=\"_blank\">Contenido Portal</a>"
+msgstr "Potete trovare molte informazioni ed una tribuna della comunit&agrave; sul <a href=\"http://www.contenido.org\" target=\"_blank\">Portale di Contenido</a>"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:47
+#: contenido/includes/rights_str.inc.php:35
+#: contenido/includes/include.note.popup.php:62
+#: contenido/includes/include.con_edit_form.php:479
+#: contenido/includes/grouprights_con.inc.php:35
+#: contenido/includes/rights_con.inc.php:35
+#: contenido/includes/grouprights_str.inc.php:34
+#: contenido/plugins/frontendlogic/category/category.php:10
+#: contenido/templates/standard/template.mycontenido_lastarticles.html:63
+#: contenido/templates/standard/template.log_main.html:53
+#: contenido/templates/standard/template.str_overview.html:65
+#: contenido/templates/standard/template.symbolhelp.html:44
+#: contenido/templates/standard/template.symbolhelp.html:472
+msgid "Category"
+msgstr "Categoria"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_area.inc.php:50
+# e:\timo\contenido_head/contenido/includes/grouprights_str.inc.php:65
+# e:\timo\contenido_head/contenido/includes/rights_area.inc.php:50
+# e:\timo\contenido_head/contenido/includes/rights_lay.inc.php:65
+# e:\timo\contenido_head/contenido/includes/rights_mod.inc.php:57
+# e:\timo\contenido_head/contenido/includes/rights_str.inc.php:64
+#: contenido/includes/rights_str.inc.php:73
+#: contenido/includes/rights_lay.inc.php:74
+#: contenido/includes/rights_area.inc.php:59
+#: contenido/includes/rights_mod.inc.php:66
+#: contenido/includes/grouprights_area.inc.php:59
+#: contenido/includes/grouprights_str.inc.php:73
+msgid "Check all"
+msgstr "Contrassegnare tutti"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_con.inc.php:139
+# e:\timo\contenido_head/contenido/includes/grouprights_str.inc.php:131
+# e:\timo\contenido_head/contenido/includes/rights_con.inc.php:139
+# e:\timo\contenido_head/contenido/includes/rights_str.inc.php:130
+#: contenido/includes/rights_str.inc.php:124
+#: contenido/includes/grouprights_con.inc.php:132
+#: contenido/includes/rights_con.inc.php:131
+#: contenido/includes/grouprights_str.inc.php:123
+msgid "Apply rights for this category to all categories on the same level or above"
+msgstr "Appliccare i diritti per questa categoria a tutte le categorie dello stesso livello o sopra"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_con.inc.php:140
+# e:\timo\contenido_head/contenido/includes/grouprights_str.inc.php:132
+# e:\timo\contenido_head/contenido/includes/rights_con.inc.php:140
+# e:\timo\contenido_head/contenido/includes/rights_str.inc.php:131
+#: contenido/includes/rights_str.inc.php:125
+#: contenido/includes/grouprights_con.inc.php:133
+#: contenido/includes/rights_con.inc.php:132
+#: contenido/includes/grouprights_str.inc.php:124
+msgid "Apply rights for this category to all categories below the current category"
+msgstr "Appliccare i diritti per questa categoria a tutte le categorie sotto il livello corrente"
+
+#: contenido/includes/include.note.popup.php:35
+msgid "Add note"
+msgstr "Aggiungere una nota"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:296
+#: contenido/includes/include.note.popup.php:47
+msgid "No category"
+msgstr "Nessuna categoria"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:13
+#: contenido/includes/include.note.popup.php:61
+msgid "Note"
+msgstr "Nota"
+
+#: contenido/includes/include.mod_overview.php:31
+#: contenido/includes/include.systemsettings.php:38
+#: contenido/includes/include.systemsettings.php:108
+#: contenido/includes/include.clientsettings.php:29
+#: contenido/includes/include.clientsettings.php:89
+#: contenido/includes/include.mod_edit_form.php:211
+#: contenido/includes/include.upl_search_results.php:199
+#: contenido/includes/include.upl_search_results.php:204
+#: contenido/includes/include.upl_search_results.php:207
+#: contenido/includes/include.mod_history.php:112
+#: contenido/includes/include.upl_files_overview.php:317
+#: contenido/includes/include.upl_files_overview.php:321
+#: contenido/includes/include.upl_files_overview.php:323
+msgid "Type"
+msgstr "Tipo"
+
+#: contenido/includes/include.mod_overview.php:67
+msgid "-- Without type --"
+msgstr "-- senza tipo --"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+#: contenido/includes/include.mod_overview.php:105
+msgid "Type filter"
+msgstr "Tipo del modulo"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_overview.php:79
+#: contenido/includes/include.mod_overview.php:247
+msgid "In use"
+msgstr "In uso"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_overview.php:74
+#: contenido/includes/include.mod_overview.php:249
+msgid "Module in use, cannot delete"
+msgstr "Modulo in uso, cancellamento non possibile"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.mod_overview.php:255
+#: contenido/includes/cfg_language_de.inc.php:125
+msgid "Delete module"
+msgstr "Cancellare modulo"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.mod_overview.php:256
+#, php-format
+msgid "Do you really want to delete the following module:<br><br>%s<br>"
+msgstr "Desidera veramente di cancellare il seguente modulo:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:336
+#: contenido/includes/include.mod_overview.php:260
+#: contenido/includes/include.lay_overview.php:75
+#: contenido/includes/include.mod_edit_form.php:35
+#: contenido/includes/include.str_overview.php:448
+msgid "No permission"
+msgstr "Nessun permesso"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#: contenido/includes/include.CMS_IMG.php:171
+#: contenido/includes/include.CMS_EASYIMG.php:138
+#, php-format
+msgid "Edit image for container %s"
+msgstr "Modificare l'immagine per il container %s"
+
+# e:\timo\contenido431/contenido/includes/include.upl_dirs_overview.php:89
+#: contenido/includes/include.CMS_IMG.php:260
+msgid "Directory / File"
+msgstr "Indice / File"
+
+#: contenido/includes/include.str_aliases.php:13
+msgid "Edit URL names"
+msgstr "Modificare nomi URL"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:67
+# e:\timo\contenido_head/contenido/includes/include.rights_details.php:52
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:88
+#: contenido/includes/include.rights_details.php:53
+#: contenido/includes/include.rights_create.php:91
+#: contenido/includes/include.mycontenido_settings.php:43
+#: contenido/includes/include.rights_overview.php:109
+msgid "Passwords don't match"
+msgstr "Le password non corrispondono"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:338
+#: contenido/includes/include.rights_details.php:101
+#: contenido/includes/include.CMS_EASYIMG.php:150
+#: contenido/includes/include.rights_create.php:126
+#: contenido/includes/include.client_edit.php:198
+#: contenido/includes/include.grouprights_overview.php:106
+#: contenido/includes/include.grouprights_create.php:101
+#: contenido/includes/grouprights_members.inc.php:132
+#: contenido/includes/grouprights_members.inc.php:150
+#: contenido/includes/include.rights_overview.php:177
+#: contenido/classes/class.ui.php:302
+#: contenido/classes/widgets/class.widgets.views.php:58
+#: contenido/classes/widgets/class.widgets.tableedit.php:156
+msgid "Save changes"
+msgstr "Salvare cambiamenti"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.client_left_top.php:30
+#: contenido/includes/cfg_language_de.inc.php:186
+msgid "Create client"
+msgstr "Generare cliente"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:24
+#: contenido/includes/functions.general.php:105
+#: contenido/templates/standard/calendar.php:30
+msgid "January"
+msgstr "Gennaio"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:25
+#: contenido/includes/functions.general.php:108
+#: contenido/templates/standard/calendar.php:31
+msgid "February"
+msgstr "Febbraio"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:26
+#: contenido/includes/functions.general.php:111
+#: contenido/templates/standard/calendar.php:32
+msgid "March"
+msgstr "Marzo"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:27
+#: contenido/includes/functions.general.php:114
+#: contenido/templates/standard/calendar.php:33
+msgid "April"
+msgstr "Aprile"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:28
+#: contenido/includes/functions.general.php:117
+#: contenido/templates/standard/calendar.php:34
+msgid "May"
+msgstr "Maggio"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:29
+#: contenido/includes/functions.general.php:120
+#: contenido/templates/standard/calendar.php:35
+msgid "June"
+msgstr "Giugno"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:30
+#: contenido/includes/functions.general.php:123
+#: contenido/templates/standard/calendar.php:36
+msgid "July"
+msgstr "Luglio"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:31
+#: contenido/includes/functions.general.php:126
+#: contenido/templates/standard/calendar.php:37
+msgid "August"
+msgstr "Agosto"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:32
+#: contenido/includes/functions.general.php:129
+#: contenido/templates/standard/calendar.php:38
+msgid "September"
+msgstr "Settembre"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:33
+#: contenido/includes/functions.general.php:132
+#: contenido/templates/standard/calendar.php:39
+msgid "October"
+msgstr "Ottobre"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:34
+#: contenido/includes/functions.general.php:135
+#: contenido/templates/standard/calendar.php:40
+msgid "November"
+msgstr "Novembre"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:35
+#: contenido/includes/functions.general.php:138
+#: contenido/templates/standard/calendar.php:41
+msgid "December"
+msgstr "Dicembre"
+
+#: contenido/includes/functions.general.php:2032
+#, php-format
+msgid "MySQL Database not reachable for installation %s"
+msgstr "MySQL-Database non raggiungibile per l'installazione %s"
+
+#: contenido/includes/functions.general.php:2035
+#, php-format
+msgid "The MySQL Database for the installation %s is not reachable. Please check if this is a temporary problem or if it is a real fault."
+msgstr "MySQL-Database non raggiungibile per l'installazione %s. Controlli prego se questo &egrave un problema provvisorio o se &egrave; un difetto reale."
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:129
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:58
+#: contenido/includes/include.con_edit_form.php:186
+#: contenido/includes/include.upl_artlist.php:54
+#: contenido/includes/include.stat_overview.php:73
+#: contenido/includes/include.con_art_overview.php:59
+#: contenido/includes/include.con_art_overview.php:838
+#: contenido/templates/standard/template.mycontenido_lastarticles.html:62
+msgid "Title"
+msgstr "Titolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#: contenido/includes/include.con_edit_form.php:193
+#: contenido/includes/include.client_artspec.php:130
+msgid "No article specifications found!"
+msgstr "Nessuna specifica del articolo trovata!"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+#: contenido/includes/include.con_edit_form.php:212
+#: contenido/includes/include.client_artspec.php:49
+msgid "Article specification"
+msgstr "Specifiche degli articoli"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#: contenido/includes/include.con_edit_form.php:220
+msgid "Display article link"
+msgstr "Visuallizare collegamento del articolo"
+
+#: contenido/includes/include.con_edit_form.php:228
+msgid "Select an entry to display link"
+msgstr "Selezionare un'entrata per visualizzare il collegamento"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#: contenido/includes/include.con_edit_form.php:229
+msgid "Article only"
+msgstr "Solo articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:318
+#: contenido/includes/include.con_edit_form.php:230
+msgid "Article with Category"
+msgstr "Articolo e categoria"
+
+#: contenido/includes/include.con_edit_form.php:231
+msgid "Article with Category and Language"
+msgstr "Articolo con categoria e lingua"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:139
+# e:\timo\contenido_head/contenido/includes/include.lang_overview.php:43
+#: contenido/includes/include.con_edit_form.php:232
+msgid "Article with Language"
+msgstr "Articolo e categoria"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:59
+#: contenido/includes/include.con_edit_form.php:254
+#: contenido/includes/include.upl_artlist.php:54
+#: contenido/includes/include.mycontenido.tasks.php:247
+#: contenido/templates/standard/template.mycontenido_lastarticles.html:64
+msgid "Created"
+msgstr "Generato"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:47
+#: contenido/includes/include.con_edit_form.php:258
+msgid "Last modified"
+msgstr "Ultima Modificazione"
+
+#: contenido/includes/include.con_edit_form.php:262
+msgid "Publishing date"
+msgstr "Data di pubblicazione"
+
+#: contenido/includes/include.con_edit_form.php:266
+#: contenido/includes/include.con_art_overview.php:439
+msgid "not yet published"
+msgstr "non ancora pubblicato"
+
+#: contenido/includes/include.con_edit_form.php:269
+msgid "Publisher"
+msgstr "Editore"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:149
+#: contenido/includes/include.con_edit_form.php:277
+msgid "Redirect"
+msgstr "Redirect"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:156
+#: contenido/includes/include.con_edit_form.php:291
+msgid "New Window"
+msgstr "nouva finestra"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#: contenido/includes/include.con_edit_form.php:317
+#: contenido/includes/include.con_art_overview.php:641
+msgid "Start article"
+msgstr "Articolo d'inzio"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:186
+#: contenido/includes/include.con_edit_form.php:321
+#: contenido/includes/include.con_art_overview.php:882
+msgid "Sort key"
+msgstr "Chiave di ordinamento"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:74
+#: contenido/includes/include.con_edit_form.php:358
+msgid "Remove assignments"
+msgstr "Cancellare assegnazioni"
+
+#: contenido/includes/include.con_edit_form.php:360
+msgid "Remove multiple category assignments"
+msgstr "Cancellare assegnazioni multiple di categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.con_edit_form.php:361
+msgid "Do you really want to remove the assignments to all categories except the current one?"
+msgstr "Realmente desiderate rimuovere le assegnazioni a tutte le categorie tranne quella corrente?"
+
+#: contenido/includes/include.con_edit_form.php:377
+msgid "Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first."
+msgstr "Le parti di lingua degli articoli sono attuali in altre lingue e sono online. Per cambiare l'assegnazione di categoria, regoli prego lo stato degli altri articoli a fuori linea primamente."
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:407
+#: contenido/includes/include.con_edit_form.php:609
+msgid "Summary"
+msgstr "Sommario"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:100
+#: contenido/includes/include.CMS_EASYIMG.php:145
+msgid "Upload image"
+msgstr "Upload immagine"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:338
+#: contenido/includes/include.CMS_EASYIMG.php:149
+#: contenido/includes/include.client_edit.php:199
+#: contenido/includes/include.grouprights_overview.php:107
+#: contenido/includes/grouprights_members.inc.php:133
+#: contenido/includes/grouprights_members.inc.php:151
+#: contenido/includes/include.rights_overview.php:178
+msgid "Discard changes"
+msgstr "Scartare i cambiamenti"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#: contenido/includes/include.tpl_edit_form.php:30
+msgid "- New Template -"
+msgstr "-- nuovo Template --"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#: contenido/includes/include.tpl_edit_form.php:134
+#: contenido/includes/cfg_language_de.inc.php:131
+msgid "Edit template"
+msgstr "Modificare Template"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+#: contenido/includes/include.tpl_edit_form.php:146
+#: contenido/includes/include.lay_overview.php:99
+#: contenido/templates/standard/template.tpl_edit_form.html:39
+msgid "Layout"
+msgstr "Layout"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.upl_files_overview.html:79
+#: contenido/includes/include.tpl_edit_form.php:147
+#: contenido/templates/standard/template.tpl_edit_form.html:52
+msgid "Layout description"
+msgstr "Descrizione del Layout"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#: contenido/includes/include.CMS_LINK.php:124
+#: contenido/includes/include.CMS_SIMPLELINK.php:121
+#, php-format
+msgid "Edit link for container %s"
+msgstr "Modificare collegamento per container %s"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.CMS_LINK.php:199
+#: contenido/includes/include.CMS_LINK.php:209
+msgid "Link to a document"
+msgstr "Collegamento ad un documento"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:174
+#: contenido/includes/include.CMS_LINK.php:225
+msgid "Link to an image"
+msgstr "Collegamento ad un'immagine"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:174
+#: contenido/includes/include.CMS_LINK.php:240
+msgid "Link to an archive"
+msgstr "Collegamento ad un archivio"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.CMS_LINK.php:245
+#: contenido/includes/include.CMS_LINK.php:255
+msgid "Link to a media file"
+msgstr "Collegamento ad un media-file"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:174
+#: contenido/includes/include.CMS_LINK.php:271
+msgid "Link to any file"
+msgstr "Collegamento a qualsiasi file"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:100
+#: contenido/includes/include.CMS_LINK.php:295
+msgid "Upload file"
+msgstr "Upload File"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:215
+#: contenido/includes/include.CMS_LINK.php:300
+msgid "Target frame"
+msgstr "Target frame"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:218
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:218
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:218
+#: contenido/includes/include.CMS_LINK.php:308
+msgid "Open link in new window"
+msgstr "Aprire collegamento in una nuova finestra"
+
+#: contenido/includes/include.rights_create.php:24
+msgid "Username can't be empty"
+msgstr "Il nome del utente non pu&ograve; essere vuoto"
+
+#: contenido/includes/include.rights_create.php:64
+msgid "Username already exists"
+msgstr "Nome del utente gi&agrave; esistente"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:119
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:138
+#: contenido/includes/include.rights_create.php:132
+#: contenido/includes/include.client_edit.php:207
+#: contenido/includes/include.grouprights_overview.php:115
+#: contenido/includes/include.grouprights_overview.php:265
+#: contenido/includes/include.grouprights_create.php:107
+#: contenido/includes/include.rights_overview.php:187
+#: contenido/includes/include.rights_overview.php:394
+msgid "Property"
+msgstr "Assegnazione"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:141
+#: contenido/includes/include.rights_create.php:135
+#: contenido/includes/include.client_edit.php:210
+#: contenido/includes/include.systemsettings.php:40
+#: contenido/includes/include.systemsettings.php:117
+#: contenido/includes/include.grouprights_overview.php:119
+#: contenido/includes/include.grouprights_overview.php:265
+#: contenido/includes/include.clientsettings.php:29
+#: contenido/includes/include.clientsettings.php:97
+#: contenido/includes/include.grouprights_create.php:110
+#: contenido/includes/include.rights_overview.php:190
+#: contenido/includes/include.rights_overview.php:394
+#: contenido/templates/standard/template.log_main.html:16
+msgid "Value"
+msgstr "Valore"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:226
+#: contenido/includes/include.rights_create.php:138
+#: contenido/includes/include.frontend.user_menu.php:23
+#: contenido/includes/include.frontend.user_menu.php:24
+#: contenido/includes/include.rights_overview.php:194
+msgid "Username"
+msgstr "Nome utente"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:127
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:187
+#: contenido/includes/include.rights_create.php:150
+#: contenido/includes/include.mycontenido_settings.php:84
+#: contenido/includes/include.frontend.user_edit.php:155
+#: contenido/includes/include.rights_overview.php:208
+msgid "New password"
+msgstr "Nuova password"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:133
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:194
+#: contenido/includes/include.rights_create.php:156
+#: contenido/includes/include.mycontenido_settings.php:85
+#: contenido/includes/include.rights_overview.php:215
+msgid "Confirm new password"
+msgstr "Confermare nuova password"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:131
+#: contenido/includes/include.rights_create.php:168
+#: contenido/includes/include.rights_overview.php:229
+msgid "Phone number"
+msgstr "Numero di telefono"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:151
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:215
+#: contenido/includes/include.rights_create.php:174
+#: contenido/includes/include.rights_overview.php:236
+msgid "Street"
+msgstr "Indirizzo"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:157
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:222
+#: contenido/includes/include.rights_create.php:180
+#: contenido/includes/include.rights_overview.php:243
+msgid "ZIP code"
+msgstr "CAP"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:163
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:229
+#: contenido/includes/include.rights_create.php:186
+#: contenido/includes/include.rights_overview.php:250
+msgid "City"
+msgstr "Citt&agrave;"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:169
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:236
+#: contenido/includes/include.rights_create.php:192
+#: contenido/includes/include.rights_overview.php:257
+msgid "Country"
+msgstr "Paese"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
+#: contenido/includes/include.rights_create.php:203
+#: contenido/includes/include.grouprights_overview.php:141
+#: contenido/includes/include.grouprights_create.php:130
+#: contenido/includes/include.rights_overview.php:267
+msgid "System administrator"
+msgstr "Amministratore del sistema"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
+#: contenido/includes/include.rights_create.php:227
+#: contenido/includes/include.grouprights_overview.php:165
+#: contenido/includes/include.grouprights_create.php:154
+#: contenido/includes/include.rights_overview.php:292
+msgid "Administrator"
+msgstr "Amministratore"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:14
+#: contenido/includes/include.rights_create.php:247
+#: contenido/includes/include.grouprights_overview.php:190
+#: contenido/includes/include.grouprights_create.php:176
+#: contenido/includes/include.rights_overview.php:317
+msgid "Access clients"
+msgstr "Accesso ai clienti"
+
+# e:\timo\contenido_head/contenido/includes/include.grouprights_overview.php:219
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:256
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:325
+#: contenido/includes/include.rights_create.php:277
+#: contenido/includes/include.grouprights_overview.php:229
+#: contenido/includes/include.grouprights_create.php:208
+#: contenido/includes/include.rights_overview.php:354
+msgid "Access languages"
+msgstr "Accesso alle lingue"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:262
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:373
+#: contenido/includes/include.rights_create.php:283
+#: contenido/includes/include.rights_overview.php:409
+msgid "Use WYSIWYG-Editor"
+msgstr "usare WYSIWYG-Editor"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.client_menu.php:65
+msgid "Delete client"
+msgstr "Cancellare cliente"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.client_menu.php:66
+#, php-format
+msgid "Do you really want to delete the following client:<br><br>%s<br>"
+msgstr "Desidera veramente di cancellare il seguente cliente:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:139
+# e:\timo\contenido_head/contenido/includes/include.lang_overview.php:43
+#: contenido/includes/include.lang_overview.php:43
+#: contenido/includes/cfg_language_de.inc.php:147
+msgid "Activate language"
+msgstr "Attivare lingua"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:160
+#: contenido/includes/include.lang_overview.php:47
+#: contenido/includes/cfg_language_de.inc.php:148
+msgid "Deactivate language"
+msgstr "Disattivare lingua"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.lang_overview.php:52
+#, php-format
+msgid "Do you really want to delete the language %s?"
+msgstr "Desidera veramente di cancellare la lingua %s?"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.lang_overview.php:53
+#: contenido/includes/cfg_language_de.inc.php:151
+msgid "Delete language"
+msgstr "Cancellare lingua"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.lang_overview.php:71
+msgid "New language"
+msgstr "Nuova lingua"
+
+# e:\timo\contenido_head/contenido/includes/include.lang_edit.php:97
+#: contenido/includes/include.lang_overview.php:86
+msgid "Language deleted"
+msgstr "Lingua cancellata"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#: contenido/includes/include.style_edit_form.php:82
+#: contenido/includes/include.js_edit_form.php:82
+#: contenido/includes/include.html_tpl_edit_form.php:82
+msgid "Edit file"
+msgstr "Modificare File"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:30
+#: contenido/includes/include.style_edit_form.php:96
+#: contenido/includes/include.js_edit_form.php:96
+#: contenido/includes/include.html_tpl_edit_form.php:96
+#: contenido/includes/include.lay_edit_form.php:191
+#: contenido/includes/include.lay_edit_form.php:202
+msgid "Code"
+msgstr "Codice"
+
+# e:\timo\contenido431/contenido/includes/include.client_edit.php:31
+#: contenido/includes/include.client_edit.php:34
+msgid "No client ID passed"
+msgstr "Nessun client-ID passato"
+
+# e:\timo\contenido_head/contenido/includes/include.client_edit.php:91
+#: contenido/includes/include.client_edit.php:94
+msgid "Couldn't write the file config.php."
+msgstr "Non ha potuto scrivere la config.php"
+
+# e:\timo\contenido_head/contenido/includes/include.client_edit.php:101
+#: contenido/includes/include.client_edit.php:105
+#, php-format
+msgid "The directory %s already exists. The client was created, but you have to copy the frontend-template yourself"
+msgstr "L'indice %s gi&agrave; esiste.  Il cliente &egrave stato generato, ma dovete copiare lo frontend-template voi stessi."
+
+# e:\timo\contenido_head/contenido/includes/include.client_edit.php:119
+#: contenido/includes/include.client_edit.php:131
+msgid "You changed the client path. You might need to copy the frontend to the new location"
+msgstr "Avete cambiato il percorso del cliente. Potreste avere bisogno di copiare il frontend alla nuova posizione."
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:60
+#: contenido/includes/include.client_edit.php:156
+#: contenido/includes/include.grouprights_overview.php:66
+#: contenido/includes/grouprights.inc.php:384
+#: contenido/includes/rights.inc.php:387
+#: contenido/includes/include.rights_overview.php:106
+#: contenido/includes/include.rights_overview.php:129
+#: contenido/includes/include.lang_edit.php:61
+msgid "Changes saved"
+msgstr "Salvare cambiamenti"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#: contenido/includes/include.client_edit.php:213
+msgid "Client name"
+msgstr "Nome del cliente"
+
+# e:\timo\contenido_head/contenido/includes/include.client_edit.php:196
+#: contenido/includes/include.client_edit.php:226
+msgid "Server path"
+msgstr "Percorso del Server"
+
+# e:\timo\contenido_head/contenido/includes/include.client_edit.php:209
+#: contenido/includes/include.client_edit.php:239
+msgid "Web address"
+msgstr "Indirizzo Web"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:318
+#: contenido/includes/include.client_edit.php:245
+msgid "Error page category"
+msgstr "categoria della pagina di errore"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#: contenido/includes/include.client_edit.php:251
+msgid "Error page article"
+msgstr "pagina di errore per articoli"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#: contenido/includes/include.client_edit.php:259
+msgid "Client logo"
+msgstr "Logo del cliente"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:13
+#: contenido/includes/include.client_edit.php:266
+msgid "No"
+msgstr "No"
+
+#: contenido/includes/include.client_edit.php:267
+msgid "Yes"
+msgstr "Si"
+
+#: contenido/includes/include.client_edit.php:279
+msgid "Generate XHTML"
+msgstr "Generare XHTML"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.client_edit.php:287
+msgid "Copy frontend template"
+msgstr "Coppiare Frontend-Template"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+#: contenido/includes/rights_lay.inc.php:34
+#: contenido/includes/grouprights_lay.inc.php:33
+msgid "Layout name"
+msgstr "Nome del Layout"
+
+#: contenido/includes/functions.str.php:970
+#: contenido/includes/functions.tpl.php:391
+#: contenido/includes/functions.con.php:1780
+#, php-format
+msgid "Copy of %s"
+msgstr "Copia di %s"
+
+#: contenido/includes/include.recipients.group_menu.php:46
+#: contenido/includes/cfg_language_de.inc.php:179
+msgid "Delete recipient group"
+msgstr "Cancellare gruppo del destinatario"
+
+#: contenido/includes/include.recipients.group_menu.php:47
+msgid "Do you really want to delete the following newsletter recipient group:<br>"
+msgstr "Desidera veramente di cancellare il seguente gruppo di destinatari del bolettino:<br>"
+
+#: contenido/includes/include.recipients.group_edit.php:119
+msgid "No recipients are added to this group yet"
+msgstr "Nessun destinatario &egrave; aggiunto a questo gruppo ancora"
+
+#: contenido/includes/include.recipients.group_edit.php:148
+msgid "Recipients in group"
+msgstr "Destinatari nel gruppo"
+
+#: contenido/includes/include.recipients.group_edit.php:149
+msgid "Add recipients"
+msgstr "Aggiungere destinatari"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#: contenido/includes/include.tplcfg_edit_form.php:59
+#, php-format
+msgid "Category Template configuration is in use by %s (%s)"
+msgstr "La configurazione del template per la categoria &egrave; in uso da %s (%s)"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#: contenido/includes/include.tplcfg_edit_form.php:390
+msgid "Module in container"
+msgstr "Modulo in container"
+
+#: contenido/includes/include.tpl_visualedit.php:81
+#: contenido/includes/include.lay_preview.php:9
+msgid "No such layout"
+msgstr "Nessun tale layout"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:296
+#: contenido/includes/include.upl_artlist.php:39
+msgid "Use this category"
+msgstr "Usa questa categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:151
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:215
+#: contenido/includes/include.upl_artlist.php:54
+#: contenido/includes/include.con_art_overview.php:58
+#: contenido/templates/standard/template.mycontenido_lastarticles.html:61
+msgid "Start"
+msgstr "Start"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:47
+#: contenido/includes/include.upl_artlist.php:54
+#: contenido/templates/standard/template.mycontenido_lastarticles.html:65
+msgid "Modified"
+msgstr "Modificato"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:61
+#: contenido/includes/include.upl_artlist.php:54
+msgid "Sort Order"
+msgstr "Ordine di scelta"
+
+#: contenido/includes/include.upl_artlist.php:54
+msgid "Online"
+msgstr "Online"
+
+# e:\timo\contenido_head/contenido/includes/include.grouprights_left_top.php:41
+# e:\timo\contenido_head/contenido/includes/include.rights_left_top.php:42
+#: contenido/includes/include.rights_left_top.php:42
+#: contenido/includes/include.grouprights_left_top.php:41
+msgid "Frontend only"
+msgstr "solamente Frontend"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:290
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:309
+#: contenido/includes/include.rights_left_top.php:43
+#: contenido/includes/include.grouprights_left_top.php:42
+msgid "Backend only"
+msgstr "solamente Backend"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.rights_left_top.php:72
+#: contenido/includes/cfg_language_de.inc.php:138
+#: contenido/includes/include.frontend.user_menu.php:361
+#: contenido/templates/standard/template.symbolhelp.html:1848
+msgid "Create user"
+msgstr "Generare Utente"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:100
+#: contenido/includes/include.upl_files_upload.php:34
+msgid "Upload"
+msgstr "Upload"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:100
+#: contenido/includes/include.upl_files_upload.php:37
+#: contenido/includes/cfg_language_de.inc.php:115
+msgid "Upload files"
+msgstr "Upload files"
+
+# e:\timo\contenido431/contenido/includes/include.upl_dirs_overview.php:89
+#: contenido/includes/include.upl_files_upload.php:41
+msgid "Directory not writable"
+msgstr "Indice non scrivibile"
+
+#: contenido/includes/include.client_artspec.php:117
+msgid "Make this article specification default"
+msgstr "Faccia questa specificazione dell'articolo standard"
+
+#: contenido/includes/include.client_artspec.php:121
+msgid "This article specification is default"
+msgstr "Questa specificazione dell'articolo &egrave; standard"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:442
+#: contenido/includes/include.client_artspec.php:142
+msgid "Create new article specification"
+msgstr "Generare la nuova specifica dell'articolo"
+
+#: contenido/includes/include.client_artspec.php:145
+msgid "Specification name"
+msgstr "Nome della specifica"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:121
+#: contenido/includes/include.upl_edit.php:35
+msgid "Edit"
+msgstr "Modificare"
+
+#: contenido/includes/include.upl_edit.php:64
+msgid "Protected for non-logged in users"
+msgstr "Protetto per utenti non-annotati"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:20
+#: contenido/includes/include.upl_edit.php:76
+msgid "File name"
+msgstr "Nome del File"
+
+#: contenido/includes/include.upl_edit.php:77
+#: contenido/includes/include.upl_search_results.php:171
+#: contenido/includes/include.upl_search_results.php:176
+#: contenido/includes/include.upl_search_results.php:179
+msgid "Path"
+msgstr "Precorso"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+#: contenido/includes/include.upl_edit.php:78
+msgid "Replace file"
+msgstr "Sostituire il File"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/external/wysiwyg/spaw/dialogs/insert_link.php:195
+#: contenido/includes/include.upl_edit.php:79
+msgid "Media name"
+msgstr "Nome della Media"
+
+#: contenido/includes/include.upl_edit.php:81
+msgid "Keywords"
+msgstr "Parole chiavi"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:69
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:69
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:69
+#: contenido/includes/include.upl_edit.php:82
+msgid "Internal notes"
+msgstr "Nota interna"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:119
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:138
+#: contenido/includes/include.upl_edit.php:86
+msgid "Protection"
+msgstr "Protezzione"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:86
+#: contenido/includes/include.upl_edit.php:88
+#: contenido/includes/include.upl_search_results.php:233
+#: contenido/includes/include.upl_files_overview.php:342
+msgid "Preview"
+msgstr "Prevista"
+
+#: contenido/includes/include.upl_edit.php:94
+#, php-format
+msgid "Could not load file %s"
+msgstr "Non ha potuto caricare il file %s"
+
+#: contenido/includes/include.recipients_menu.php:27
+#, php-format
+msgid "%d recipients, with no or incompatible key has been updated. Deactivate update function."
+msgstr "%d destinatari, senza chiave o con chiave incompatibile sono stati aggiornati. Disattivi la funzione update."
+
+#: contenido/includes/include.recipients_menu.php:43
+#: contenido/includes/include.recipients_edit.php:126
+msgid "Confirmed"
+msgstr "Confermato"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:160
+#: contenido/includes/include.recipients_menu.php:44
+#: contenido/includes/include.recipients_edit.php:127
+msgid "Deactivated"
+msgstr "Disattivato"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.recipients_menu.php:46
+#: contenido/includes/cfg_language_de.inc.php:178
+msgid "Delete recipient"
+msgstr "Cancellare destinatario"
+
+#: contenido/includes/include.recipients_menu.php:47
+msgid "Do you really want to delete the following recipient:<br>"
+msgstr "Desidera veramente di cancellare il seguente destinatario:<br>"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.recipients_menu.php:55
+#: contenido/includes/cfg_language_de.inc.php:177
+#: contenido/templates/standard/template.symbolhelp.html:1386
+msgid "Create recipient"
+msgstr "Generare destinatario"
+
+#: contenido/includes/include.recipients_menu.php:63
+#: contenido/includes/include.recipients_menu.php:82
+msgid "Purge recipients"
+msgstr "Pulire i destinatori"
+
+#: contenido/includes/include.recipients_menu.php:83
+#, php-format
+msgid "Do you really want to remove recipients, which hasn't been confirmed since %d days and over?"
+msgstr "Realmente desiderate rimuovere i destinatari, che non sono stati confermati da pi&ugrave; di %d giorni?"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:215
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:215
+#: contenido/includes/include.recipients_menu.php:105
+msgid "Purge timeframe"
+msgstr "Purge timeframe"
+
+#: contenido/includes/include.recipients_menu.php:106
+msgid "days"
+msgstr "giorni"
+
+#: contenido/includes/include.recipients_menu.php:138
+msgid "-- All groups --"
+msgstr "-- tutti i gruppi --"
+
+#: contenido/includes/include.recipients_menu.php:192
+#: contenido/includes/include.frontend.user_menu.php:146
+msgid "Show group"
+msgstr "Visualizzare gruppo"
+
+#: contenido/includes/include.recipients_edit.php:31
+msgid "-- new recipient --"
+msgstr "-- nuovo destinatario --"
+
+#: contenido/includes/include.recipients_edit.php:46
+#, php-format
+msgid "%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed."
+msgstr "%1backslashdollard destinatari, che non hanno confermato da pi&ugrave; di %2backslashdollard giorni, sono stati cancellati."
+
+#: contenido/includes/include.recipients_edit.php:70
+msgid "Could not set new e-mail adress: Other recipient with same e-mail adress already exists"
+msgstr "Non ha potuto regolare il nouvo indirizzo e-mail: Un destinatario con questo indirizzo e-mail esiste gi&agrave;"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.recipients_edit.php:115
+#: contenido/includes/cfg_language_de.inc.php:176
+msgid "Edit recipient"
+msgstr "Modificare destinatario"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.js_left_top.php:30
+#: contenido/includes/cfg_language_de.inc.php:163
+msgid "Create script"
+msgstr "Generare Script"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+#: contenido/includes/include.systemsettings.php:94
+#: contenido/includes/include.clientsettings.php:78
+msgid "No defined properties"
+msgstr "Nessuna proprietà definita"
+
+#: contenido/includes/include.systemsettings.php:105
+#: contenido/includes/include.clientsettings.php:86
+msgid "Add new variable"
+msgstr "Aggiungere nuova variabile"
+
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:28
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:41
+#: contenido/includes/include.stat_overview.php:28
+#: contenido/includes/include.stat_overview.php:41
+msgid "Full statistics"
+msgstr "Statistiche complete"
+
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:60
+#: contenido/includes/include.stat_overview.php:60
+msgid "Yearly"
+msgstr "Annuale"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#: contenido/includes/include.stat_overview.php:64
+msgid "Current"
+msgstr "Corrente"
+
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:74
+#: contenido/includes/include.stat_overview.php:74
+#: contenido/includes/include.mycontenido.tasks.php:247
+#: contenido/includes/include.mycontenido.tasks.edit.php:98
+msgid "Status"
+msgstr "Stato"
+
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:76
+#: contenido/includes/include.stat_overview.php:76
+#: contenido/templates/standard/template.symbolhelp.html:89
+#: contenido/templates/standard/template.symbolhelp.html:1485
+msgid "Hits"
+msgstr "Colpi"
+
+# e:\timo\contenido_head/contenido/includes/include.stat_overview.php:78
+#: contenido/includes/include.stat_overview.php:78
+msgid "Hits in this language"
+msgstr "Colpi in questa lingua"
+
+#: contenido/includes/include.mycontenido.tasks.php:100
+msgid "No status type set"
+msgstr "Nessun tipo di stato aggiornato"
+
+#: contenido/includes/include.mycontenido.tasks.php:126
+#, php-format
+msgid "%d %% complete"
+msgstr "%d %% completo"
+
+#: contenido/includes/include.mycontenido.tasks.php:167
+msgid "Today"
+msgstr "Oggi"
+
+#: contenido/includes/include.mycontenido.tasks.php:172
+#: contenido/includes/include.mycontenido.tasks.php:174
+msgid "Day(s)"
+msgstr "Giorno(i)"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:64
+#: contenido/includes/include.mycontenido.tasks.php:247
+msgid "End Date"
+msgstr "Data finale"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:119
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:138
+#: contenido/includes/include.mycontenido.tasks.php:247
+#: contenido/includes/include.mycontenido.tasks.edit.php:93
+msgid "Priority"
+msgstr "Priorit&agrave;"
+
+#: contenido/includes/include.mycontenido.tasks.php:247
+#, php-format
+msgid "%% complete"
+msgstr "%% completo"
+
+#: contenido/includes/include.mycontenido.tasks.php:247
+msgid "Due in"
+msgstr "Dovuto entro"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+#: contenido/includes/include.mycontenido.tasks.php:273
+msgid "Unnamed item"
+msgstr "Articolo non specificato"
+
+#: contenido/includes/include.mycontenido.tasks.php:285
+msgid "No status set"
+msgstr "Nessun stato aggiornato"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.mycontenido.tasks.php:309
+msgid "Delete item"
+msgstr "Cancellare articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#: contenido/includes/include.mycontenido.tasks.php:316
+msgid "Edit item"
+msgstr "Modoficare articolo"
+
+#: contenido/includes/include.mycontenido.tasks.php:347
+msgid "Restrict display"
+msgstr "Limitare l'esposizione"
+
+#: contenido/includes/include.mycontenido.tasks.php:351
+#: contenido/includes/include.mod_history.php:123
+msgid "Refresh"
+msgstr "attualizzare"
+
+#: contenido/includes/include.mycontenido.tasks.php:357
+msgid "Hide done tasks"
+msgstr "Nascondere operazioni terminate"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#: contenido/includes/include.mycontenido.tasks.php:374
+msgid "No tasks found"
+msgstr "Nessuna operazione trovata"
+
+#: contenido/includes/include.todo.popup.php:24
+msgid "Add TODO item"
+msgstr "Aggiungere TODO"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:64
+#: contenido/includes/include.todo.popup.php:41
+#: contenido/includes/include.mycontenido.tasks.edit.php:71
+msgid "Reminder date"
+msgstr "Data di ricordo"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:64
+#: contenido/includes/include.todo.popup.php:45
+#: contenido/includes/include.mycontenido.tasks.edit.php:46
+#: contenido/templates/standard/template.con_edit_form.html:106
+#: contenido/templates/standard/template.log_main.html:35
+msgid "End date"
+msgstr "Data terminale"
+
+#: contenido/includes/include.todo.popup.php:47
+msgid "eMail notification"
+msgstr "notificazione e-mail"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:74
+#: contenido/includes/include.todo.popup.php:49
+#: contenido/includes/include.mycontenido.tasks.edit.php:52
+msgid "Reminder options"
+msgstr "Opzioni di ricordo"
+
+#: contenido/includes/include.todo.popup.php:75
+#: contenido/includes/include.mycontenido.tasks.edit.php:36
+msgid "Assigned to"
+msgstr "Assegnato a"
+
+#: contenido/includes/functions.upl.php:696
+msgid "OpenOffice.org Presentation"
+msgstr "OpenOffice.org rappresentazione"
+
+#: contenido/includes/functions.upl.php:697
+msgid "OpenOffice.org Presentation Template"
+msgstr "OpenOffice.org Template di rappresentazione"
+
+#: contenido/includes/functions.upl.php:698
+msgid "Microsoft PowerPoint Screen Presentation"
+msgstr "Microsoft PowerPoint rappresentazione dello schermo"
+
+#: contenido/includes/functions.upl.php:699
+#: contenido/includes/functions.upl.php:701
+msgid "Microsoft PowerPoint Presentation Template"
+msgstr "Microsoft PowerPoint Template di rappresentazione"
+
+#: contenido/includes/functions.upl.php:700
+msgid "KDE KPresenter Document"
+msgstr "documento KDE KPresenter"
+
+#: contenido/includes/functions.upl.php:704
+msgid "Microsoft Word Document or regular text file"
+msgstr "documento o file di testo normale Microsoft Word"
+
+#: contenido/includes/functions.upl.php:705
+msgid "Microsoft Word Template"
+msgstr "Microsoft Word Template"
+
+#: contenido/includes/functions.upl.php:706
+msgid "OpenOffice.org Text Document"
+msgstr "OpenOffice.org documento di testo"
+
+#: contenido/includes/functions.upl.php:707
+msgid "OpenOffice.org Text Document Template"
+msgstr "OpenOffice.org documento di testo Template"
+
+#: contenido/includes/functions.upl.php:708
+msgid "StarOffice 5.0 Text Document"
+msgstr "StarOffice 5.0 documento di testo"
+
+#: contenido/includes/functions.upl.php:709
+msgid "KDE KWord Document"
+msgstr "KDE KWord Documento"
+
+#: contenido/includes/functions.upl.php:712
+msgid "Microsoft Excel Worksheet"
+msgstr "Microsoft Excel Worksheet"
+
+#: contenido/includes/functions.upl.php:713
+msgid "OpenOffice.org Table"
+msgstr "OpenOffice.org tabella"
+
+#: contenido/includes/functions.upl.php:714
+msgid "OpenOffice.org Table Template"
+msgstr "OpenOffice.org Template per tabelle"
+
+#: contenido/includes/functions.upl.php:715
+msgid "Microsoft Excel File"
+msgstr "file Microsoft Excel"
+
+#: contenido/includes/functions.upl.php:716
+msgid "Microsoft Excel Template"
+msgstr "Microsoft Excel Template"
+
+#: contenido/includes/functions.upl.php:717
+msgid "Comma Seperated Value File"
+msgstr "Comma Seperated Value File"
+
+#: contenido/includes/functions.upl.php:718
+msgid "KDE KSpread Document"
+msgstr "documento KDE KSpread"
+
+#: contenido/includes/functions.upl.php:719
+msgid "StarOffice 5.0 Table"
+msgstr "StarOffice 5.0 tabelle"
+
+#: contenido/includes/functions.upl.php:722
+msgid "Plain Text"
+msgstr "Plain Text"
+
+#: contenido/includes/functions.upl.php:723
+msgid "Rich Text Format"
+msgstr "Rich Text Format"
+
+#: contenido/includes/functions.upl.php:726
+msgid "GIF Image"
+msgstr "immagine GIF"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_menu.php:116
+#: contenido/includes/functions.upl.php:727
+msgid "PNG Image"
+msgstr "immagine PNG"
+
+#: contenido/includes/functions.upl.php:728
+#: contenido/includes/functions.upl.php:729
+msgid "JPEG Image"
+msgstr "immagine JPEG"
+
+#: contenido/includes/functions.upl.php:730
+msgid "TIFF Image"
+msgstr "immagine TIFF"
+
+#: contenido/includes/functions.upl.php:731
+msgid "Adobe Photoshop Image"
+msgstr "immagine Adobe Photoshop"
+
+#: contenido/includes/functions.upl.php:734
+#: contenido/includes/functions.upl.php:735
+msgid "Hypertext Markup Language Document"
+msgstr "documento Hypertext Markup Language"
+
+#: contenido/includes/functions.upl.php:738
+msgid "LHA Archive"
+msgstr "archivio LHA"
+
+#: contenido/includes/functions.upl.php:739
+msgid "RAR Archive"
+msgstr "archivio RAR"
+
+#: contenido/includes/functions.upl.php:740
+msgid "ARJ Archive"
+msgstr "archivio ARJ"
+
+#: contenido/includes/functions.upl.php:741
+msgid "bz2-compressed File"
+msgstr "bz2-compressed File"
+
+#: contenido/includes/functions.upl.php:742
+msgid "bzip-compressed File"
+msgstr "bzip-compressed File"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:157
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:222
+#: contenido/includes/functions.upl.php:743
+msgid "ZIP Archive"
+msgstr "archivio ZIP"
+
+#: contenido/includes/functions.upl.php:744
+msgid "TAR Archive"
+msgstr "archivio TAR"
+
+#: contenido/includes/functions.upl.php:745
+msgid "GZ-compressed File"
+msgstr "GZ-compressed File"
+
+#: contenido/includes/functions.upl.php:748
+msgid "C Program Code"
+msgstr "codice programma C"
+
+#: contenido/includes/functions.upl.php:751
+msgid "C++ Program Code"
+msgstr "codice programma C++"
+
+#: contenido/includes/functions.upl.php:753
+msgid "C or C++ Program Header"
+msgstr "C o C++ Program-Header"
+
+#: contenido/includes/functions.upl.php:756
+msgid "PHP Program Code"
+msgstr "codice programma PHP"
+
+#: contenido/includes/functions.upl.php:757
+msgid "PHP Source File"
+msgstr "Archivio sorgente PHP"
+
+#: contenido/includes/functions.upl.php:759
+msgid "Adobe Acrobat Portable Document"
+msgstr "Adobe Acrobat Portable Document"
+
+#: contenido/includes/functions.upl.php:760
+msgid "Unknown Type"
+msgstr "Tipo sconosciuto"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:253
+#: contenido/includes/cfg_language_de.inc.php:83
+#: contenido/includes/include.con_art_overview.php:617
+#: contenido/templates/standard/template.symbolhelp.html:377
+msgid "Configure template"
+msgstr "configurare Template"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:442
+#: contenido/includes/cfg_language_de.inc.php:84
+msgid "Create article"
+msgstr "Generare articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:253
+#: contenido/includes/cfg_language_de.inc.php:85
+msgid "Configure article"
+msgstr "configurare articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#: contenido/includes/cfg_language_de.inc.php:86
+msgid "Save article"
+msgstr "salvare articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:442
+#: contenido/includes/cfg_language_de.inc.php:87
+#: contenido/includes/include.con_art_overview.php:533
+msgid "Freeze article"
+msgstr "ghiaccare articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#: contenido/includes/cfg_language_de.inc.php:88
+#: contenido/includes/cfg_language_de.inc.php:90
+msgid "Edit article"
+msgstr "modificare articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+#: contenido/includes/cfg_language_de.inc.php:89
+msgid "Edit article properties"
+msgstr "Modificare le proprietà del articolo"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:88
+#: contenido/includes/cfg_language_de.inc.php:91
+msgid "Help"
+msgstr "Aiuto"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:290
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:309
+#: contenido/includes/cfg_language_de.inc.php:92
+msgid "Make category online"
+msgstr "Mettere categorie online"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#: contenido/includes/cfg_language_de.inc.php:93
+msgid "Change template"
+msgstr "Cambiare Template"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#: contenido/includes/cfg_language_de.inc.php:94
+msgid "Set start article"
+msgstr "dichiarare articolo d'inizio"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:290
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:309
+#: contenido/includes/cfg_language_de.inc.php:95
+msgid "Make article online"
+msgstr "Mettere articolo offline"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:418
+#: contenido/includes/cfg_language_de.inc.php:96
+msgid "Syncronize Category"
+msgstr "Sincronizzare la categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:253
+#: contenido/includes/cfg_language_de.inc.php:97
+msgid "Syncronize Article"
+msgstr "Sincronizzare l'articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:318
+#: contenido/includes/cfg_language_de.inc.php:98
+#: contenido/includes/cfg_language_de.inc.php:106
+#: contenido/includes/include.str_overview.php:432
+msgid "Protect category"
+msgstr "Proteggere la categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:99
+#: contenido/includes/include.con_art_overview.php:711
+#: contenido/templates/standard/template.symbolhelp.html:425
+msgid "Delete article"
+msgstr "Cancellare l'articolo"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:95
+#: contenido/includes/cfg_language_de.inc.php:100
+msgid "Edit template configuration"
+msgstr "Modificare la configurazione del Template"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:101
+msgid "Duplicate Article"
+msgstr "Duplicare l'articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+#: contenido/includes/cfg_language_de.inc.php:102
+#: contenido/includes/include.str_overview.php:408
+#: contenido/templates/standard/template.symbolhelp.html:524
+msgid "Rename category"
+msgstr "Cambiare il titolo della categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:296
+#: contenido/includes/cfg_language_de.inc.php:103
+#: contenido/includes/include.str_overview.php:415
+msgid "New category"
+msgstr "Nuova Categoria"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:98
+#: contenido/includes/cfg_language_de.inc.php:104
+msgid "Set category on- or offline"
+msgstr "Mettere la categoria in o fuori linea"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:331
+#: contenido/includes/cfg_language_de.inc.php:105
+msgid "Disable category"
+msgstr "Inabilitare la categoria"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:101
+#: contenido/includes/cfg_language_de.inc.php:107
+msgid "Frontend access"
+msgstr "Accesso Frontend"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:331
+#: contenido/includes/cfg_language_de.inc.php:108
+#: contenido/includes/include.str_overview.php:445
+msgid "Delete category"
+msgstr "Cancellare categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:363
+#: contenido/includes/cfg_language_de.inc.php:109
+#: contenido/includes/include.str_overview.php:475
+msgid "Move category up"
+msgstr "Muovere la categoria su un livello superiore"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:363
+#: contenido/includes/cfg_language_de.inc.php:110
+#: contenido/templates/standard/template.symbolhelp.html:665
+msgid "Move category"
+msgstr "Mouvere la catergoria"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:478
+#: contenido/includes/cfg_language_de.inc.php:111
+#: contenido/includes/include.str_overview.php:646
+msgid "Create new tree"
+msgstr "Generare nuovo albero"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:331
+#: contenido/includes/cfg_language_de.inc.php:112
+#: contenido/includes/include.str_overview.php:512
+#: contenido/templates/standard/template.symbolhelp.html:701
+msgid "Duplicate category"
+msgstr "Duplicare categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:398
+#: contenido/includes/cfg_language_de.inc.php:113
+#: contenido/includes/include.str_overview.php:521
+#: contenido/templates/standard/template.symbolhelp.html:314
+#: contenido/templates/standard/template.symbolhelp.html:506
+msgid "Configure category"
+msgstr "Configurare Categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/cfg_language_de.inc.php:114
+msgid "Create directory"
+msgstr "Generare Indice"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:116
+msgid "Delete files"
+msgstr "Cancellare file"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/cfg_language_de.inc.php:117
+msgid "Remove directory"
+msgstr "Cancellare Indice"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/cfg_language_de.inc.php:118
+msgid "Rename directory"
+msgstr "Cambiare titolo dell'indice"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:147
+#: contenido/includes/cfg_language_de.inc.php:119
+msgid "Modify file"
+msgstr "Modificare file"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+#: contenido/includes/cfg_language_de.inc.php:120
+#: contenido/includes/include.upl_files_overview.php:456
+msgid "Rename file"
+msgstr "Cambiare titolo del file"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:121
+msgid "Multidelete Files"
+msgstr "Cancellare multiple file"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:122
+#: contenido/includes/include.lay_overview.php:90
+msgid "Delete layout"
+msgstr "Cancellare Layout"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:111
+#: contenido/includes/cfg_language_de.inc.php:123
+msgid "Modify layout"
+msgstr "Modificare Layout"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:124
+msgid "Create layout"
+msgstr "Generare Layout"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_new.php:17
+#: contenido/includes/cfg_language_de.inc.php:126
+#: contenido/includes/include.mod_edit_form.php:104
+msgid "Edit module"
+msgstr "Modificare Modulo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:127
+#: contenido/templates/standard/template.symbolhelp.html:935
+msgid "Create module"
+msgstr "Generare Modulo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:128
+msgid "Translate modules"
+msgstr "Tradurre Modulo"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+#: contenido/includes/cfg_language_de.inc.php:129
+msgid "Translation import/export"
+msgstr "Traduzione import/export"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:130
+#: contenido/includes/include.tpl_overview.php:84
+msgid "Delete template"
+msgstr "Cancellare Template"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:132
+msgid "Create template"
+msgstr "Generare Template"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:253
+#: contenido/includes/cfg_language_de.inc.php:133
+#: contenido/includes/cfg_language_de.inc.php:134
+#: contenido/includes/include.tpl_overview.php:94
+#: contenido/templates/standard/template.symbolhelp.html:1029
+msgid "Duplicate template"
+msgstr "Duplicare Template"
+
+#: contenido/includes/cfg_language_de.inc.php:135
+msgid "Visual edit"
+msgstr "Modificazione visuale"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:120
+#: contenido/includes/cfg_language_de.inc.php:136
+msgid "Edit rights"
+msgstr "Modificare i diriti"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:121
+#: contenido/includes/cfg_language_de.inc.php:137
+#: contenido/includes/include.frontend.user_edit.php:146
+msgid "Edit user"
+msgstr "Modificare l'utente"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:140
+msgid "Delete group members"
+msgstr "Cancellare i membri del gruppo"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:125
+#: contenido/includes/cfg_language_de.inc.php:141
+msgid "Add group members"
+msgstr "Aggiungere i membri del gruppo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:144
+#: contenido/includes/include.grouprights_menu.php:175
+msgid "Delete group"
+msgstr "Cancellare il gruppo"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:129
+#: contenido/includes/cfg_language_de.inc.php:145
+msgid "Show statistics"
+msgstr "Visualizare le statistiche"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+#: contenido/includes/cfg_language_de.inc.php:149
+msgid "Rename language"
+msgstr "Cambiare il titolo della lingua"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/cfg_language_de.inc.php:150
+#: contenido/includes/include.lang_left_top.php:60
+msgid "Create language"
+msgstr "Generare la lingua"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:137
+#: contenido/includes/cfg_language_de.inc.php:152
+#: contenido/includes/include.lang_edit.php:87
+msgid "Edit language"
+msgstr "Modificare la lingua"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:143
+#: contenido/includes/cfg_language_de.inc.php:154
+msgid "Install/Remove plugins"
+msgstr "Installazione/deinstallazione Plugin"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:155
+#: contenido/includes/include.upl_files_overview.php:457
+msgid "Delete file"
+msgstr "Cancellare file"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:147
+#: contenido/includes/cfg_language_de.inc.php:158
+msgid "Modify CSS"
+msgstr "Modificare CSS"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:59
+#: contenido/includes/cfg_language_de.inc.php:159
+msgid "Create CSS"
+msgstr "Generare CSS"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:160
+msgid "Delete CSS"
+msgstr "Cancellare CSS"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/cfg_language_de.inc.php:161
+msgid "Edit script"
+msgstr "Modificare Script"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/cfg_language_de.inc.php:162
+msgid "Delete script"
+msgstr "Cancellare Script"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:22
+#: contenido/includes/cfg_language_de.inc.php:164
+msgid "Modify HTML-Template"
+msgstr "Modificare HTML-Template"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:165
+#: contenido/includes/include.html_tpl_left_top.php:30
+msgid "Create HTML-Template"
+msgstr "Generare HTML-Template"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:166
+msgid "Delete HTML-Template"
+msgstr "Cancellare HTML-Template"
+
+#: contenido/includes/cfg_language_de.inc.php:180
+#: contenido/templates/standard/template.symbolhelp.html:1422
+msgid "Create recipient group"
+msgstr "Generare Gruppo di destinatori"
+
+#: contenido/includes/cfg_language_de.inc.php:181
+msgid "Delete recipient from group"
+msgstr "Cancellare destinatore del gruppo"
+
+#: contenido/includes/cfg_language_de.inc.php:182
+msgid "Save recipient group"
+msgstr "Salvare gruppo di destinatori"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:161
+#: contenido/includes/cfg_language_de.inc.php:187
+msgid "Edit client"
+msgstr "Modificare cliente"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:74
+#: contenido/includes/cfg_language_de.inc.php:188
+msgid "Remove client"
+msgstr "Cancellare cliente"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/cfg_language_de.inc.php:189
+msgid "Delete clientsetting"
+msgstr "Cancellare assegnamenti del cliente"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+#: contenido/includes/cfg_language_de.inc.php:190
+msgid "Edit clientsetting"
+msgstr "Modificare assegnamenti del cliente"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+#: contenido/includes/cfg_language_de.inc.php:191
+msgid "Save clientsetting"
+msgstr "Salvare assegnamenti del cliente"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+#: contenido/includes/cfg_language_de.inc.php:192
+msgid "Create/Edit articlespecifications"
+msgstr "Generare/Modificare specifiche del articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:193
+msgid "Delete articlespecifications"
+msgstr "Cancellare specifiche del articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:194
+msgid "Define default articlespecification"
+msgstr "Definire specifiche del articolo standard"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:196
+msgid "Save frontenduser"
+msgstr "Salvare utente Frontend"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:197
+msgid "Create frontenduser"
+msgstr "Generare utente Frontend"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:198
+msgid "Delete frontenduser"
+msgstr "Cancellare utente Frontend"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:199
+msgid "Delete frontendgroup"
+msgstr "Cancelare gruppo Frontend"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:200
+msgid "Save frontendgroup"
+msgstr "Salvare Gruppo-Frontend"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:201
+msgid "Create frontendgroup"
+msgstr "Generare gruppo Frontend"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/cfg_language_de.inc.php:202
+msgid "Delete frontenduser in frontendgroup"
+msgstr "Cancellare utente Frontend in gruppo Frontend"
+
+#: contenido/includes/include.newsletter_left_top.php:27
+#: contenido/templates/standard/template.symbolhelp.html:77
+#: contenido/templates/standard/template.symbolhelp.html:1261
+msgid "Newsletter"
+msgstr "Bollettino"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.newsletter_left_top.php:31
+#: contenido/templates/standard/template.symbolhelp.html:80
+msgid "Recipients"
+msgstr "Destinatori"
+
+#: contenido/includes/include.newsletter_left_top.php:35
+msgid "Recipient groups"
+msgstr "Gruppo destinatori"
+
+# e:\timo\contenido_head/contenido/includes/include.grouprights_overview.php:122
+#: contenido/includes/include.grouprights_overview.php:122
+msgid "Groupname"
+msgstr "Nome del gruppo"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:50
+#: contenido/includes/include.grouprights_overview.php:265
+#: contenido/includes/include.rights_overview.php:394
+msgid "Area/Type"
+msgstr "Zona/tipo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+#: contenido/includes/include.grouprights_overview.php:273
+#: contenido/includes/include.rights_overview.php:402
+msgid "User-defined properties"
+msgstr "Propriet&agrave; prestabilite dal utente"
+
+# e:\timo\contenido_head/contenido/includes/include.lay_overview.php:73
+#: contenido/includes/include.lay_overview.php:80
+msgid "Layout is in use, cannot delete"
+msgstr "Layout in uso, non possibile cacellare"
+
+# e:\timo\contenido_head/contenido/includes/include.lay_overview.php:74
+#: contenido/includes/include.lay_overview.php:81
+msgid "Layout is in use"
+msgstr "Layout in uso"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.lay_overview.php:91
+#, php-format
+msgid "Do you really want to delete the following layout:<br><br>%s<br>"
+msgstr "Desidera veramente di cancellare il seguente layout:<br><br><b>%s</b>"
+
+#: contenido/includes/include.mycontenido_settings.php:38
+msgid "Old password incorrect"
+msgstr "Vecchio password errato"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:338
+#: contenido/includes/include.mycontenido_settings.php:51
+msgid "Password changed"
+msgstr "Password cambiato!"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+#: contenido/includes/include.mycontenido_settings.php:68
+#, php-format
+msgid "Settings for %s"
+msgstr "Regolazioni per %s"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:127
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:187
+#: contenido/includes/include.mycontenido_settings.php:83
+msgid "Old password"
+msgstr "Vecchio password"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:262
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:373
+#: contenido/includes/include.mycontenido_settings.php:92
+msgid "Use WYSIWYG Editor"
+msgstr "usare WYSIWYG-Editor"
+
+#: contenido/includes/include.mycontenido_settings.php:96
+msgid "Use JAVA Module Editor (experimental)"
+msgstr "usare JAVA-Modul Editor (sperimentale)"
+
+#: contenido/includes/include.mycontenido_settings.php:100
+msgid "The format is equal to PHP's date() function."
+msgstr "La disposizione è uguale alla funzione date() del PHP."
+
+#: contenido/includes/include.mycontenido_settings.php:102
+msgid "Common date formattings"
+msgstr "Disposizioni comuni della data"
+
+#: contenido/includes/include.mycontenido_settings.php:112
+#: contenido/includes/include.lang_edit.php:126
+msgid "Date/Time format"
+msgstr "Disposizione data/orario"
+
+#: contenido/includes/include.mycontenido_settings.php:113
+#: contenido/includes/include.lang_edit.php:127
+msgid "Date format"
+msgstr "Disposizione data"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:55
+#: contenido/includes/include.mycontenido_settings.php:114
+#: contenido/includes/include.lang_edit.php:128
+msgid "Time format"
+msgstr "Disposizione orario"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:296
+#: contenido/includes/include.con_str_overview.php:39
+#: contenido/includes/include.str_overview.php:40
+msgid "Open category"
+msgstr "Aprire categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:363
+#: contenido/includes/include.con_str_overview.php:45
+#: contenido/includes/include.str_overview.php:46
+msgid "Close category"
+msgstr "Chiudere categoria"
+
+#: contenido/includes/include.con_str_overview.php:472
+msgid "Syncronize from"
+msgstr "Syncronizare da"
+
+# e:\timo\contenido_head/contenido/includes/include.con_str_overview.php:226
+#: contenido/includes/include.con_str_overview.php:525
+#: contenido/includes/include.str_overview.php:290
+msgid "Close all categories"
+msgstr "Chiudere tutte le categorie"
+
+# e:\timo\contenido_head/contenido/includes/include.con_str_overview.php:227
+#: contenido/includes/include.con_str_overview.php:526
+#: contenido/includes/include.str_overview.php:291
+msgid "Open all categories"
+msgstr "Aprire tutte le categorie"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.con_str_overview.php:910
+#: contenido/includes/include.con_str_overview.php:914
+msgid "Copy to current language"
+msgstr "Copiare alla lingua corrente"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:131
+#: contenido/includes/include.con_subnav.php:70
+#: contenido/templates/standard/template.log_main.html:54
+#: contenido/templates/standard/template.symbolhelp.html:41
+#: contenido/templates/standard/template.symbolhelp.html:283
+msgid "Article"
+msgstr "Articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#: contenido/includes/include.system_sysvalues.php:50
+#: contenido/includes/include.system_sysvalues.php:86
+msgid "No error log entries found"
+msgstr "Nessun'entrata del errore log file trovato"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#: contenido/includes/include.system_sysvalues.php:57
+msgid "No error log file found"
+msgstr "Nessun error log file trovato"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.system_sysvalues.php:71
+#: contenido/includes/include.system_sysvalues.php:79
+msgid "No install error log entries found"
+msgstr "Nessuna entrata nel install error log trovata."
+
+#: contenido/includes/functions.file.php:20
+msgid "Please insert filename."
+msgstr "Inserire prego il nome del file."
+
+#: contenido/includes/functions.file.php:25
+#: contenido/includes/functions.file.php:98
+#: contenido/includes/functions.file.php:129
+msgid "Wrong filename."
+msgstr "Nome del file errato"
+
+#: contenido/includes/functions.file.php:36
+#, php-format
+msgid "Could not open file %s"
+msgstr "Non ha potuto aprire il file %s"
+
+#: contenido/includes/functions.file.php:42
+#, php-format
+msgid "Could not write file %s"
+msgstr "Non ha potuto scrivere il file %s"
+
+# e:\timo\contenido431/contenido/includes/include.style_edit_form.php:75
+#: contenido/includes/functions.file.php:55
+#: contenido/includes/functions.file.php:146
+#, php-format
+msgid "%s is not writable"
+msgstr "%s non &egrvae; scrivibile"
+
+#: contenido/includes/functions.file.php:69
+#, php-format
+msgid "Can not open file %s "
+msgstr "Non pu&ograve; aprire il file %s"
+
+#: contenido/includes/functions.file.php:111
+msgid "Unable to change file access permission."
+msgstr "Incapace cambiare permesso d'accesso del file."
+
+#: contenido/includes/functions.file.php:117
+#, php-format
+msgid "Unable to create file %s"
+msgstr "Incapace di generare file %s"
+
+#: contenido/includes/functions.file.php:141
+#, php-format
+msgid "Can not rename file %s"
+msgstr "Non pu&ograve; cambiare titolo del file %s"
+
+#: contenido/includes/include.frontend.user_menu.php:112
+msgid "-- All Groups --"
+msgstr "-- tutti i gruppi --"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.tpl_overview.php:85
+#, php-format
+msgid "Do you really want to delete the following template:<br><br>%s<br>"
+msgstr "Desidera veramente di cancellare il seguente template:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:100
+#: contenido/includes/include.frontend.group_rights.php:20
+msgid "Invalid plugin"
+msgstr "Plugin non valido"
+
+#: contenido/includes/include.frontend.group_rights.php:69
+#, php-format
+msgid "Permissions for plugin '%s'"
+msgstr "Diriti per plugin '%s'"
+
+#: contenido/includes/include.frontend.group_rights.php:82
+msgid "Global rights"
+msgstr "Diriti globali"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#: contenido/includes/include.frontend.group_rights.php:106
+msgid "No items found"
+msgstr "Nessun articolo trovato"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:37
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:283
+#: contenido/includes/include.frontend.user_edit.php:49
+msgid "-- new user --"
+msgstr "-- nuovo utente --"
+
+#: contenido/includes/include.frontend.user_edit.php:76
+msgid "Could not set new username: Username already exists"
+msgstr "Impossibile regolare il nuovo nome del utente: Nome del utente esiste gi&agrave;"
+
+#: contenido/includes/include.frontend.user_edit.php:84
+msgid "Could not set new password: Passwords don't match"
+msgstr "Impossibile regolare la nuova pasword:  Le password non corrispondono"
+
+# e:\timo\contenido_head/contenido/includes/include.rights_create.php:127
+# e:\timo\contenido_head/contenido/includes/include.rights_overview.php:187
+#: contenido/includes/include.frontend.user_edit.php:156
+msgid "New password (again)"
+msgstr "Nuova password (di nuovo)"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:63
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:49
+#: contenido/includes/include.frontend.user_edit.php:157
+#: contenido/includes/include.lang_edit.php:110
+msgid "Active"
+msgstr "Attivo"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.grouprights_menu.php:164
+#, php-format
+msgid "Do you really want to delete the group %s?"
+msgstr "Desidera veramente di cancellare il seguente gruppo:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.grouprights_menu.php:176
+#, php-format
+msgid "Do you really want to delete the following group:<br><br>%s<br>"
+msgstr "Desidera veramente di cancellare il seguente gruppo:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.lang_left_top.php:59
+msgid "Do you really want to create a new language?"
+msgstr "Desidera veramente di generare una nuova lingua?"
+
+#: contenido/includes/include.mycontenido.tasks.edit.php:14
+msgid "Edit Reminder item"
+msgstr "Modificare ricordo"
+
+#: contenido/includes/include.mycontenido.tasks.edit.php:48
+msgid "E-Mail notification"
+msgstr "Notficazione e-mail"
+
+#: contenido/includes/include.mycontenido.tasks.edit.php:101
+msgid "Progress"
+msgstr "Progresso"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.mod_overview.php:37
+#: contenido/includes/include.mod_edit_form.php:41
+#: contenido/classes/contenido/class.module.php:243
+msgid "- Unnamed Module -"
+msgstr "- Modulo non specificato -"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.upl_files_overview.html:79
+#: contenido/includes/include.mod_edit_form.php:42
+msgid "<your module description>"
+msgstr "<la vostra descrizione del modulo>"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:157
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:183
+#: contenido/includes/include.mod_edit_form.php:42
+msgid "Author: "
+msgstr "Autore:"
+
+#: contenido/includes/include.mod_edit_form.php:42
+msgid "Version:"
+msgstr "Versione:"
+
+#: contenido/includes/include.mod_edit_form.php:66
+#, php-format
+msgid "Error while importing XML file: %s"
+msgstr "Errore mentre importando XML-file: %s"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#: contenido/includes/include.mod_edit_form.php:94
+#, php-format
+msgid "Module is in use by %s (%s)"
+msgstr "Modulo in uso da %s (%s)"
+
+#: contenido/includes/include.mod_edit_form.php:165
+msgid "Custom"
+msgstr "Specifiche dell'untente"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:44
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:61
+#: contenido/includes/include.mod_edit_form.php:192
+#: contenido/includes/include.mod_edit_form.php:202
+#, php-format
+msgid "Error in module. Error location: %s"
+msgstr "Errore in modulo. Posizione del errore:: %s"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:47
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:64
+#: contenido/includes/include.mod_edit_form.php:195
+#: contenido/includes/include.mod_edit_form.php:205
+msgid "Module successfully compiled"
+msgstr "Il modulo &egrave; stato compilato con successo"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:51
+#: contenido/includes/include.mod_edit_form.php:216
+#: contenido/includes/include.mod_edit_form.php:225
+#: contenido/includes/include.mod_history.php:114
+msgid "Input"
+msgstr "Input"
+
+# e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:67
+#: contenido/includes/include.mod_edit_form.php:217
+#: contenido/includes/include.mod_edit_form.php:226
+#: contenido/includes/include.mod_history.php:115
+msgid "Output"
+msgstr "Output"
+
+#: contenido/includes/include.mod_edit_form.php:239
+msgid "This module uses variables and/or functions which are probably not available in this Contenido version. Please make sure that you use up-to-date modules."
+msgstr "Questo modulo usa le variabili e/o le funzioni che non sono probabilmente disponibili in questa versione di Contenido. Assicurarsi di utilizzare moduli aggiornati prego."
+
+# e:\timo\contenido_head/contenido/includes/include.grouprights_overview.php:122
+#: contenido/includes/include.grouprights_create.php:51
+msgid "New Group"
+msgstr "Nuovo gruppo"
+
+#: contenido/includes/include.newsletter_send.php:84
+#: contenido/includes/include.newsletter_send.php:90
+#: contenido/includes/include.newsletter_send.php:99
+msgid "Newsletter has been sent ..."
+msgstr "Bollettino &egrave; stato trasmesso ..."
+
+#: contenido/includes/include.newsletter_send.php:84
+#: contenido/includes/include.newsletter_send.php:90
+msgid "Chunk"
+msgstr "Bloccho"
+
+#: contenido/includes/include.newsletter_send.php:86
+#: contenido/includes/include.newsletter_send.php:95
+msgid "Stop sending"
+msgstr "Termina trasmissione"
+
+#: contenido/includes/include.newsletter_send.php:87
+msgid "Send next chunk"
+msgstr "Trasmettere prossimo bloccho"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:86
+#: contenido/includes/include.frontend.group.subnav.php:16
+#: contenido/includes/include.recipients.group.subnav.php:14
+#: contenido/includes/main.login.php:144
+msgid "Overview"
+msgstr "Descrizione"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_members.inc.php:94
+#: contenido/includes/grouprights_members.inc.php:94
+msgid "The following users were added to this group"
+msgstr "I seguenti utenti sono stati aggiunti a questo gruppo"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_members.inc.php:98
+#: contenido/includes/grouprights_members.inc.php:98
+msgid "The following users are already existing in the group and where not added"
+msgstr "I seguenti utenti sono gi&agrave; esistenti nel gruppo e non sono stati aggiunti"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_members.inc.php:155
+#: contenido/includes/grouprights_members.inc.php:155
+msgid "Group member"
+msgstr "Membro del gruppo"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:63
+# e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:49
+#: contenido/includes/grouprights_members.inc.php:159
+#: contenido/templates/standard/template.log_main.html:27
+#: contenido/templates/standard/template.log_main.html:52
+msgid "Action"
+msgstr "Azione"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/grouprights_members.inc.php:177
+msgid "Delete"
+msgstr "Cancellare"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#: contenido/includes/grouprights_members.inc.php:236
+msgid "No users found"
+msgstr "Nessun utente trovato"
+
+# e:\timo\contenido_head/contenido/includes/grouprights_members.inc.php:216
+#: contenido/includes/grouprights_members.inc.php:250
+msgid "Add group member"
+msgstr "Aggiungere membro del gruppo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#: contenido/includes/grouprights_members.inc.php:257
+msgid "Choose user"
+msgstr "Scegliere utente"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.upl_files_overview.html:79
+#: contenido/includes/include.upl_search_results.php:157
+#: contenido/includes/include.upl_search_results.php:162
+#: contenido/includes/include.upl_search_results.php:165
+#: contenido/includes/include.upl_files_overview.php:293
+#: contenido/includes/include.upl_files_overview.php:297
+#: contenido/includes/include.upl_files_overview.php:299
+msgid "Filename / Description"
+msgstr "Nome del File / descrizione"
+
+#: contenido/includes/include.upl_search_results.php:185
+#: contenido/includes/include.upl_search_results.php:190
+#: contenido/includes/include.upl_search_results.php:193
+#: contenido/includes/include.upl_files_overview.php:305
+#: contenido/includes/include.upl_files_overview.php:309
+#: contenido/includes/include.upl_files_overview.php:311
+msgid "Size"
+msgstr "grandezza"
+
+#: contenido/includes/include.upl_search_results.php:213
+#: contenido/includes/include.upl_search_results.php:218
+#: contenido/includes/include.upl_search_results.php:221
+msgid "Relevance"
+msgstr "relevanza"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#: contenido/includes/include.upl_search_results.php:364
+#: contenido/includes/include.upl_files_overview.php:509
+msgid "No files found"
+msgstr "Nessun file trovato"
+
+#: contenido/includes/include.upl_search_results.php:392
+#: contenido/includes/include.upl_files_overview.php:536
+msgid "Previous Page"
+msgstr "Pagina precedente"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_menu.php:116
+#: contenido/includes/include.upl_search_results.php:397
+#: contenido/includes/include.upl_files_overview.php:541
+msgid "Next Page"
+msgstr "Pagina seguente"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_menu.php:116
+#: contenido/includes/include.upl_search_results.php:408
+#: contenido/includes/include.upl_files_overview.php:580
+msgid "Page"
+msgstr "Pagina"
+
+#: contenido/includes/include.upl_search_results.php:421
+#: contenido/includes/include.upl_files_overview.php:594
+msgid "No thumbnails"
+msgstr "Nessun Thumbnail"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:26
+#: contenido/includes/include.upl_search_results.php:433
+msgid "Searched for:"
+msgstr "Termine cercato:"
+
+#: contenido/includes/include.upl_search_results.php:436
+#: contenido/includes/include.upl_files_overview.php:619
+msgid "Thumbnail size:"
+msgstr "grandezza del Thumbnail"
+
+#: contenido/includes/include.upl_search_results.php:489
+#: contenido/includes/include.upl_files_overview.php:674
+msgid "Enter new filename"
+msgstr "Inserire nome del nuovo file"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#: contenido/includes/grouprights.inc.php:132
+#: contenido/includes/rights.inc.php:132
+msgid "Client / Language"
+msgstr "Cliente / lingua"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/grouprights.inc.php:244
+#: contenido/includes/grouprights.inc.php:233
+msgid "Current group doesn't have any rights to any client/language."
+msgstr "Il gruppo corrente non ha alcuni diritti ad alcun cliente/lingua."
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:320
+#: contenido/includes/include.str_overview.php:434
+msgid "Unprotect category"
+msgstr "Sbloccare categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.str_overview.php:444
+#, php-format
+msgid "Do you really want to delete the following category:<br><br><b>%s</b>"
+msgstr "Desidera veramente di cancellare le seguente categorie:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:340
+#: contenido/includes/include.str_overview.php:452
+msgid "One or more subtrees are existing, unable to delete"
+msgstr "Uno o pi&ugrave; sotto-alberi sono essistenti, incapace cancellare"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:345
+#: contenido/includes/include.str_overview.php:457
+msgid "One or more articles are existing, unable to delete"
+msgstr "Uno o pi&ugrave; articoli sono essistenti, incapace cancellare"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:349
+#: contenido/includes/include.str_overview.php:461
+msgid "One or more subtrees and one or more articles are existing, unable to delete."
+msgstr "Uno o pi&ugrave; sotto-alberi ed uno o pi&ugrave; articoli sono essistenti, incapace cancellare"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:375
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:390
+#: contenido/includes/include.str_overview.php:487
+#: contenido/includes/include.str_overview.php:502
+msgid "Move tree"
+msgstr "Muovere albero"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:380
+#: contenido/includes/include.str_overview.php:492
+msgid "Place tree here"
+msgstr "Dispongare l'albero qui"
+
+#: contenido/includes/include.str_overview.php:511
+#, php-format
+msgid "Do you really want to duplicate the following category:<br><br><b>%s</b><br><br>Notice: The duplicate process can take up to several minutes, depending on how many subitems and articles you've got."
+msgstr "Desidera veramente di duplicare la seguente categoria::<br><br><b>%s</b><br><br>Avviso: Il processo di duplicazione pu&ograve; durare parecchi minuti, secondo quante categorie ed articoli contiene."
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#: contenido/includes/include.mod_history.php:74
+msgid "Module history"
+msgstr "Storia del modulo"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#: contenido/includes/include.mod_history.php:106
+msgid "Module data"
+msgstr "Date del modulo"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#: contenido/includes/include.mod_history.php:118
+msgid "Copy to current"
+msgstr "Copiare alla corrente"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#: contenido/includes/include.mod_history.php:121
+#: contenido/includes/include.mod_history.php:122
+msgid "Clear module history"
+msgstr "Cancellare la storia del modulo"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/includes/include.mod_history.php:122
+msgid "Do you really want to clear the module history?"
+msgstr "Desidera veramente di cancellare la storia del modulo?"
+
+#: contenido/includes/include.mod_history.php:122
+msgid "Note: This only affects the current module."
+msgstr "Nota: Ci&ograve; affeta soltanto il modulo corrente."
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:35
+#: contenido/includes/include.mod_history.php:129
+msgid "No history available"
+msgstr "Storia del modulo non esiste"
+
+#: contenido/includes/include.mod_history.php:136
+msgid "Module history disabled by system administrator"
+msgstr "Storia del modulo inabilitata dal amministratore del systema."
+
+# e:\timo\contenido_head/contenido/includes/include.lay_new.php:17
+#: contenido/includes/include.lay_new.php:17
+msgid "New Layout"
+msgstr "Nuovo Layout"
+
+# e:\timo\contenido_head/contenido/includes/functions.general.php:26
+#: contenido/includes/include.upl_files_overview.php:341
+msgid "Mark"
+msgstr "Contrasegnare"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+#: contenido/includes/include.upl_files_overview.php:472
+msgid "Display properties"
+msgstr "Visualizzare le propriet&agrave;"
+
+#: contenido/includes/include.upl_files_overview.php:616
+msgid "Path:"
+msgstr "Precorso:"
+
+#: contenido/includes/include.upl_files_overview.php:692
+msgid "With selected:"
+msgstr "Con selezionato:"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:60
+#: contenido/includes/include.con_art_overview.php:60
+msgid "Changed"
+msgstr "Cambiato"
+
+#: contenido/includes/include.con_art_overview.php:61
+msgid "Published"
+msgstr "Pubblicato"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#: contenido/includes/include.con_art_overview.php:454
+msgid "Article is in use"
+msgstr "Articolo &egrave; in uso"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#: contenido/includes/include.con_art_overview.php:455
+#, php-format
+msgid "Article in use by %s (%s)"
+msgstr "Articolo &egrave; in uso da %s (%s)"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:442
+#: contenido/includes/include.con_art_overview.php:530
+msgid "Unfreeze article"
+msgstr "Sghiaccare articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#: contenido/includes/include.con_art_overview.php:540
+msgid "Article is frozen"
+msgstr "Articolo &egrave; ghiaccato"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:284
+#: contenido/includes/include.con_art_overview.php:543
+msgid "Article is not frozen"
+msgstr "Articolo non &egrave; ghiaccato"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+#: contenido/includes/include.con_art_overview.php:566
+msgid "Article properties"
+msgstr "Proprietà del articolo"
+
+#: contenido/includes/include.con_art_overview.php:577
+msgid "Copy article to the current language"
+msgstr "Copiare l'articolo alla lingua corrente"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:263
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:265
+#: contenido/includes/include.con_art_overview.php:634
+msgid "Flag as start article"
+msgstr "Marcare come articolo d'inizio"
+
+#: contenido/includes/include.con_art_overview.php:637
+msgid "Flag as normal article"
+msgstr "Marcare come articolo normale"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/include.con_art_overview.php:651
+#: contenido/templates/standard/template.symbolhelp.html:413
+msgid "Duplicate article"
+msgstr "Duplicare articolo"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:173
+#: contenido/includes/include.con_art_overview.php:663
+#, php-format
+msgid "Reminder for Article '%s'"
+msgstr "Ricordo per articolo '%s'"
+
+#: contenido/includes/include.con_art_overview.php:666
+#, php-format
+msgid ""
+"Reminder for Article '%s'\n"
+"Category: %s"
+msgstr "Ricordo per articolo '%s'Categoria: %s"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:309
+#: contenido/includes/include.con_art_overview.php:710
+#, php-format
+msgid "Are you sure to delete the following article:<br><br><b>%s</b>"
+msgstr "Vuole veramente cancellare il seguente articolo:<br><br><b>%s</b>"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
+#: contenido/includes/include.con_art_overview.php:873
+#: contenido/includes/include.con_art_overview.php:948
+msgid "No articles found"
+msgstr "Nessun articolo trovato"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:337
+#: contenido/includes/include.con_art_overview.php:879
+msgid "Alphabetical"
+msgstr "Alfabetico"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:338
+#: contenido/includes/include.con_art_overview.php:880
+msgid "Last change"
+msgstr "Ultimo cambiamento"
+
+#: contenido/includes/include.con_art_overview.php:881
+msgid "Published date"
+msgstr "Data di pubblicazione"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#: contenido/includes/include.con_art_overview.php:901
+msgid "Sort articles :"
+msgstr "Ordine articoli:"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:418
+#: contenido/includes/include.con_art_overview.php:976
+#: contenido/includes/include.con_art_overview.php:977
+msgid "Configure Category"
+msgstr "Configurazione Categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:442
+#: contenido/includes/include.con_art_overview.php:1008
+#: contenido/includes/include.con_art_overview.php:1009
+#: contenido/templates/standard/template.symbolhelp.html:329
+msgid "Create new article"
+msgstr "Generare nuovo articolo"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:101
+#: contenido/includes/include.frontend.left_top.php:24
+msgid "Frontend users"
+msgstr "Utente Frontend"
+
+# e:\timo\contenido_head/contenido/includes/include.grouprights_left_top.php:41
+# e:\timo\contenido_head/contenido/includes/include.rights_left_top.php:42
+#: contenido/includes/include.frontend.left_top.php:27
+msgid "Frontend groups"
+msgstr "Gruppo Frontend"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/rights.inc.php:250
+#: contenido/includes/rights.inc.php:233
+msgid "Current user doesn't have any rights to any client/language."
+msgstr "L'utente corrente non ha alcuni diritti ad alcun cliente/lingua"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:296
+#: contenido/includes/include.upl_left_top.php:19
+msgid "New directory in"
+msgstr "Nuovo Indice in"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:227
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:227
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:227
+#: contenido/includes/functions.con.php:298
+#: contenido/includes/functions.con.php:499
+msgid "Default title"
+msgstr "Articolo d'inizio"
+
+# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
+#: contenido/includes/include.tpl_new.php:14
+msgid "New template"
+msgstr "Nuovo template"
+
+# e:\timo\contenido_head/contenido/includes/include.lay_new.php:17
+#: contenido/includes/include.lay_edit_form.php:35
+msgid "-- New Layout --"
+msgstr "-- nuovo Layout --"
+
+#: contenido/includes/include.lay_edit_form.php:112
+#, php-format
+msgid "Container %s was defined %s times"
+msgstr "Container %s &egrave; stato definito %sx  volte"
+
+#: contenido/includes/include.lay_edit_form.php:125
+msgid "The body tag does not exist in the layout. This is a requirement for the in-site editing."
+msgstr "Il body tag non esiste nel corpo del layout. &Egrave; un requisito per l'in-site editing."
+
+#: contenido/includes/include.lay_edit_form.php:131
+msgid "The head tag does not exist in the layout. This is a requirement for the in-site editing."
+msgstr "Il head tag non esiste nel corpo del layout. &Egrave; un requisito per l'in-site editing."
+
+#: contenido/includes/include.lay_edit_form.php:157
+#, php-format
+msgid "Tag '%s' %s has no end tag (start tag is on line %s char %s)"
+msgstr "Tag '%s' %s non ha un tag-terminale (tag-iniziale &egrave; in linea %s posizione %s)"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+#: contenido/includes/include.lay_edit_form.php:171
+msgid "Edit Layout"
+msgstr "Modificare Layout"
+
+#: contenido/includes/include.lay_edit_form.php:187
+msgid "On save, apply default modules to new containers"
+msgstr "Su salvazione, appliccare i moduli default ai nuovi container"
+
+# e:\timo\contenido_head/contenido/includes/include.stat_menu.php:18
+#: contenido/includes/include.stat_menu.php:18
+msgid "Current Report"
+msgstr "Statistiche correnti"
+
+# e:\timo\contenido_head/contenido/includes/include.stat_menu.php:26
+#: contenido/includes/include.stat_menu.php:26
+msgid "Statistics Overview"
+msgstr "Supervista Statistiche"
+
+# e:\timo\contenido_head/contenido/includes/include.stat_menu.php:37
+#: contenido/includes/include.stat_menu.php:37
+msgid "Archived Statistics"
+msgstr "Statistiche archiviate"
+
+# e:\timo\contenido_head/contenido/includes/include.lang_edit.php:97
+#: contenido/includes/include.lang_edit.php:101
+msgid "Language name"
+msgstr "Nome della lingua"
+
+# e:\timo\contenido_head/contenido/includes/include.lang_edit.php:118
+#: contenido/includes/include.lang_edit.php:102
+msgid "Encoding"
+msgstr "Encoding"
+
+#: contenido/includes/include.lang_edit.php:105
+msgid "Left to right"
+msgstr "Dalla sinistra alla destra"
+
+#: contenido/includes/include.lang_edit.php:105
+msgid "Right to left"
+msgstr "Dalla destra alla sinistra"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/includes/include.lang_edit.php:108
+msgid "Text direction"
+msgstr "Direzzione testo"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:35
+#: contenido/includes/main.login.php:42
+msgid "No Login Information available."
+msgstr "Nessuna informazione di Login disponibile."
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:45
+#: contenido/includes/main.login.php:52
+msgid "Welcome"
+msgstr "Benvenuto"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:46
+#: contenido/includes/main.login.php:53
+msgid "You are logged in as"
+msgstr "Sei logged-in come"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:47
+#: contenido/includes/main.login.php:54
+msgid "Last login"
+msgstr "Ultimo Login"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#: contenido/includes/main.login.php:79
+#, php-format
+msgid "Client %s (%s) has no languages"
+msgstr "Cliente %s (%s) non contiene nessuna lingua"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:74
+#: contenido/includes/main.login.php:101
+msgid "Change client"
+msgstr "Cambiare cliente"
+
+#: contenido/includes/main.login.php:146
+#, php-format
+msgid "Reminder list: %d Tasks open"
+msgstr "Listino ricordi: %d operazioni aperte"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:120
+#: contenido/includes/main.login.php:186
+msgid "Symbol help"
+msgstr "Simbolo aiuto"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/includes/main.login.php:190
+msgid "Contenido Manual"
+msgstr "Contenido manuale del redattore"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:296
+#: contenido/plugins/frontendlogic/category/category.php:16
+msgid "Access category"
+msgstr "Accesso categoria"
+
+#: contenido/cronjobs/send_reminder.php:84
+#, php-format
+msgid ""
+"Hello %s,\n"
+"\n"
+"you've got a new reminder for the client '%s' at\n"
+"%s:\n"
+"\n"
+"%s"
+msgstr ""
+"Ciao %s,\n"
+"\n"
+"hai ottenuto un nuovo ricordo per il cliente '%s' &agrave\n"
+"%s:\n"
+"\n"
+"%s"
+
+#: contenido/classes/class.newsletter.php:230
+#: contenido/classes/class.newsletter.php:235
+msgid "No recipients found"
+msgstr "Nessun destinatario trovato"
+
+#: contenido/classes/class.newsletter.php:267
+msgid "No (more) recipients found"
+msgstr "Nessun destinatario trovato"
+
+#: contenido/classes/class.newsletter.php:296
+#, php-format
+msgid "Newsletter to %s could not be sent"
+msgstr "Bollettino &agrave; %s non &egrave; stato spedito"
+
+#: contenido/classes/class.newsletter.php:298
+msgid "Sent successfully"
+msgstr "Trasmesso con successo"
+
+#: contenido/classes/class.newsletter.php:301
+#, php-format
+msgid "Newsletter to %s could not be sent (recipient has an incompatible or empty key)."
+msgstr "Il bollettino a %s non &egrave; stato trasmesso (destinatario ha una chiave incompatibile o vuota)."
+
+#: contenido/classes/class.todo.php:75
+msgid "New"
+msgstr "Nuovo"
+
+#: contenido/classes/class.todo.php:76
+msgid "In progress"
+msgstr "In progresso"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:13
+#: contenido/classes/class.todo.php:77
+msgid "Done"
+msgstr "Fatto"
+
+#: contenido/classes/class.todo.php:78
+msgid "Waiting for action"
+msgstr "Aspettando azione"
+
+#: contenido/classes/class.todo.php:79
+msgid "Deferred"
+msgstr "Prorogato"
+
+#: contenido/classes/class.todo.php:85
+msgid "Low"
+msgstr "Basso"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/external/wysiwyg/spaw/dialogs/insert_link.php:195
+#: contenido/classes/class.todo.php:86
+msgid "Medium"
+msgstr "Medio"
+
+#: contenido/classes/class.todo.php:87
+msgid "High"
+msgstr "Alto"
+
+#: contenido/classes/class.todo.php:88
+msgid "Immediately"
+msgstr "Immediatamente"
+
+#: contenido/classes/class.todo.php:133
+#: contenido/classes/class.todo.php:136
+msgid "Set reminder / add to todo list"
+msgstr "Marcare ricordo / aggiungere al listino TODO"
+
+#: contenido/classes/class.inuse.php:230
+msgid "Click here if you want to override the lock"
+msgstr "Clicca qui per escludere la serratura"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
+#: contenido/classes/class.inuse.php:234
+msgid "Do you really want to override the lock?"
+msgstr "Desidera veramente di escludere la serratura?"
+
+#: contenido/classes/class.inuse.php:236
+msgid "Override lock"
+msgstr "Escludere la serratura"
+
+#: contenido/classes/class.inuse.php:236
+msgid "Hide notification"
+msgstr "Nascondere notificazione"
+
+#: contenido/classes/class.note.php:311
+#: contenido/classes/class.note.php:314
+msgid "View notes / add note"
+msgstr "Visualizzare / aggiungere notificazioni"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#: contenido/classes/class.navigation.php:357
+#: contenido/classes/class.navigation.php:359
+#: contenido/templates/standard/template.log_main.html:19
+#: contenido/templates/standard/template.log_main.html:49
+msgid "Client"
+msgstr "Cliente"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:226
+#: contenido/classes/class.navigation.php:361
+#: contenido/templates/standard/template.log_main.html:23
+#: contenido/templates/standard/template.log_main.html:51
+#: contenido/templates/standard/template.symbolhelp.html:1836
+msgid "User"
+msgstr "Utente"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/classes/class.client.php:110
+#: contenido/classes/contenido/class.client.php:90
+msgid "No client"
+msgstr "Nessun cliente"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:10
+#: contenido/classes/widgets/class.widgets.datawidgets.php:314
+#: contenido/classes/widgets/class.widgets.datawidgets.php:315
+msgid "Clear contents"
+msgstr "Cancellare contenuto"
+
+#: contenido/classes/widgets/class.widgets.pager.php:22
+msgid "Paging"
+msgstr "Navigazione pagine"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_edit_form.html:21
+# e:\timo\contenido_head/contenido/templates/standard/template.lay_edit_form.html:19
+# e:\timo\contenido_head/contenido/templates/standard/template.mod_edit_form.html:20
+# e:\timo\contenido_head/contenido/templates/standard/template.style_edit_form.html:21
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:16
+#: contenido/classes/widgets/class.widgets.pager.php:46
+msgid "First page"
+msgstr "Prima pagina"
+
+#: contenido/classes/widgets/class.widgets.pager.php:53
+msgid "Previous page"
+msgstr "Pagina precedente"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_menu.php:116
+#: contenido/classes/widgets/class.widgets.pager.php:67
+#, php-format
+msgid "Page %s"
+msgstr "Pagina %s"
+
+# e:\timo\contenido_head/contenido/includes/include.recipients_menu.php:116
+#: contenido/classes/widgets/class.widgets.pager.php:83
+msgid "Next page"
+msgstr "Pagina seguente"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:338
+#: contenido/classes/widgets/class.widgets.pager.php:93
+msgid "Last page"
+msgstr "Ultima pagina"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.stat.php:323
+#: contenido/templates/standard/calendar.php:43
+msgid "Su"
+msgstr "DO"
+
+#: contenido/templates/standard/calendar.php:44
+msgid "Mo"
+msgstr "LU"
+
+#: contenido/templates/standard/calendar.php:45
+msgid "Tu"
+msgstr "MA"
+
+#: contenido/templates/standard/calendar.php:46
+msgid "We"
+msgstr "ME"
+
+#: contenido/templates/standard/calendar.php:47
+msgid "Th"
+msgstr "GI"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:134
+#: contenido/templates/standard/calendar.php:48
+msgid "Fr"
+msgstr "VE"
+
+#: contenido/templates/standard/calendar.php:49
+msgid "Sa"
+msgstr "SA"
+
+#: contenido/templates/standard/calendar.php:142
+msgid "Previous year"
+msgstr "Anno precedente"
+
+#: contenido/templates/standard/calendar.php:142
+msgid "Previous month"
+msgstr "Mese precedente"
+
+#: contenido/templates/standard/calendar.php:144
+msgid "Next month"
+msgstr "Mese seguente"
+
+#: contenido/templates/standard/calendar.php:144
+msgid "Next year"
+msgstr "Anno seguente"
+
+# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:129
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:58
+#: contenido/templates/standard/calendar.php:191
+msgid "Time"
+msgstr "Orario"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/templates/standard/template.mycontenido_lastarticles.html:30
+msgid "Your clients"
+msgstr "I vostri clienti"
+
+#: contenido/templates/standard/template.mycontenido_lastarticles.html:67
+msgid "Info"
+msgstr "Informazione"
+
+#: contenido/templates/standard/template.info.html:12
+msgid "Concept and Implementation"
+msgstr "Concetto ed esecuzione"
+
+#: contenido/templates/standard/template.info.html:12
+msgid "Germany"
+msgstr "Germania"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.info.html:13
+#: contenido/templates/standard/template.info.html:12
+msgid "Phone"
+msgstr "Telefono"
+
+#: contenido/templates/standard/template.info.html:42
+msgid "Conceptual Project Management / Testing"
+msgstr "Gestione di progetti concettuale/esaminare"
+
+#: contenido/templates/standard/template.info.html:43
+msgid "Technical Project Management / Testing"
+msgstr "Gestione di progetti tecnica/esaminare"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:14
+#: contenido/templates/standard/template.welcome.html:15
+msgid "Available clients"
+msgstr "Clienti disponibili"
+
+#: contenido/templates/standard/template.welcome.html:53
+msgid "Help about Contenido"
+msgstr "aiuto su Contenido"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
+#: contenido/templates/standard/template.welcome.html:58
+msgid "Contact System Administrators"
+msgstr "contatare amministratore(i) del sistema"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
+#: contenido/templates/standard/template.welcome.html:58
+msgid "Contact Client Administrators"
+msgstr "contatare amministratore(i) del cliente"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:55
+#: contenido/templates/standard/template.con_edit_form.html:97
+msgid "Time control"
+msgstr "Controllo orario"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:296
+#: contenido/templates/standard/template.con_edit_form.html:100
+msgid "Use time control"
+msgstr "Usare controllo orario"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#: contenido/templates/standard/template.con_edit_form.html:102
+#: contenido/templates/standard/template.log_main.html:31
+msgid "Start date"
+msgstr "Data d'inizio"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:320
+#: contenido/templates/standard/template.con_edit_form.html:109
+msgid "When expired, move to category"
+msgstr "Una volta espirato, muoversi verso la categoria"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:290
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:309
+#: contenido/templates/standard/template.con_edit_form.html:111
+msgid "Make online after move"
+msgstr "Marca online dopo movimento"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#: contenido/templates/standard/template.con_edit_form.html:159
+msgid "Page title"
+msgstr "Titolo della pagina"
+
+#: contenido/templates/standard/template.con_edit_form.html:165
+msgid "Meta tags"
+msgstr "Meta-Tags"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.log_main.html:15
+#: contenido/templates/standard/template.log_main.html:15
+msgid "Filter"
+msgstr "Filtro"
+
+#: contenido/templates/standard/template.log_main.html:39
+#: contenido/templates/standard/template.recipient_menu.html:85
+msgid "Limit"
+msgstr "Limite"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.con_edit_form.html:64
+#: contenido/templates/standard/template.log_main.html:50
+msgid "Date"
+msgstr "Data"
+
+#: contenido/templates/standard/template.recipient_menu.html:89
+msgid "Search"
+msgstr "Cerca"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:269
+#: contenido/templates/standard/template.upl_files_overview.html:56
+msgid "Sort files"
+msgstr "Ordine files"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:20
+#: contenido/templates/standard/template.upl_files_overview.html:77
+msgid "Filename"
+msgstr "Nome file"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:20
+#: contenido/templates/standard/template.upl_files_overview.html:81
+msgid "File size"
+msgstr "Grandezza file"
+
+#: contenido/templates/standard/template.upl_files_overview.html:83
+msgid "Image size"
+msgstr "Grandezza immagine"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:10
+#: contenido/templates/standard/template.symbolhelp.html:26
+msgid "Table of contents"
+msgstr "Indice"
+
+#: contenido/templates/standard/template.symbolhelp.html:32
+#: contenido/templates/standard/template.symbolhelp.html:135
+msgid "Common"
+msgstr "Generalmente"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:20
+#: contenido/templates/standard/template.symbolhelp.html:47
+#: contenido/templates/standard/template.symbolhelp.html:740
+msgid "File management"
+msgstr "File management"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+#: contenido/templates/standard/template.symbolhelp.html:56
+#: contenido/templates/standard/template.symbolhelp.html:822
+msgid "Layouts"
+msgstr "Layouts"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:30
+#: contenido/templates/standard/template.symbolhelp.html:59
+#: contenido/templates/standard/template.symbolhelp.html:904
+msgid "Modules"
+msgstr "Moduli"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:249
+# e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:62
+#: contenido/templates/standard/template.symbolhelp.html:62
+#: contenido/templates/standard/template.symbolhelp.html:998
+msgid "Templates"
+msgstr "Templates"
+
+#: contenido/templates/standard/template.symbolhelp.html:65
+#: contenido/templates/standard/template.symbolhelp.html:1068
+msgid "CSS editor"
+msgstr "Editor CSS"
+
+#: contenido/templates/standard/template.symbolhelp.html:68
+#: contenido/templates/standard/template.symbolhelp.html:1123
+msgid "Script editor"
+msgstr "Editor Script"
+
+# e:\timo\contenido_head/contenido/includes/include.logs.php:127
+# e:\timo\contenido_head/contenido/includes/include.logs.php:128
+# e:\timo\contenido_head/contenido/includes/include.logs.php:129
+# e:\timo\contenido_head/contenido/includes/include.logs.php:130
+# e:\timo\contenido_head/contenido/includes/include.logs.php:131
+#: contenido/templates/standard/template.symbolhelp.html:74
+#: contenido/templates/standard/template.symbolhelp.html:1255
+msgid "Extras"
+msgstr "Extra"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:129
+#: contenido/templates/standard/template.symbolhelp.html:86
+#: contenido/templates/standard/template.symbolhelp.html:1479
+msgid "Statistics"
+msgstr "Statistiche"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
+#: contenido/templates/standard/template.symbolhelp.html:95
+#: contenido/templates/standard/template.symbolhelp.html:1561
+msgid "Administration"
+msgstr "Amministrazione"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:226
+#: contenido/templates/standard/template.symbolhelp.html:98
+#: contenido/templates/standard/template.symbolhelp.html:1567
+msgid "Users"
+msgstr "Utenti"
+
+#: contenido/templates/standard/template.symbolhelp.html:101
+#: contenido/templates/standard/template.symbolhelp.html:1622
+msgid "Groups"
+msgstr "Gruppi"
+
+# e:\timo\contenido_head/contenido/includes/grouprights.inc.php:182
+# e:\timo\contenido_head/contenido/includes/rights.inc.php:179
+#: contenido/templates/standard/template.symbolhelp.html:104
+#: contenido/templates/standard/template.symbolhelp.html:1677
+msgid "Languages"
+msgstr "Lingue"
+
+# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
+#: contenido/templates/standard/template.symbolhelp.html:107
+#: contenido/templates/standard/template.symbolhelp.html:1747
+msgid "Clients"
+msgstr "Clienti"
+
+# e:\timo\contenido431/contenido/templates/standard/template.symbolhelp.html:10
+#: contenido/templates/standard/template.symbolhelp.html:129
+msgid "Table of Contents"
+msgstr "Indice"
+
+#: contenido/templates/standard/template.symbolhelp.html:166
+msgid "Execute query / Save"
+msgstr "Esegua la domanda / Salva"
+
+# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.stat.php:323
+#: contenido/templates/standard/template.symbolhelp.html:196
+msgid "Submit"
+msgstr "Trasmettere"
+
+#: contenido/templates/standard/template.symbolhelp.html:208
+msgid "Change to MyContenido (Personal Settings)"
+msgstr "Cambia a MyContenido (Regolazioni Personali)"
+
+#: contenido/templates/standard/template.symbolhelp.html:220
+msgid "Information (Impressum)"
+msgstr "Informazioni (Contatti)"
+
+# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:39
+#: contenido/templates/standard/template.symbolhelp.html:235
+msgid "Logout"
+msgstr "Logout"
+
+#: contenido/templates/standard/template.symbolhelp.html:341
+msgid "Article is start article / is not start article"
+msgstr "L'articolo &egrave; articolo d'inizio / non &egrave; articolo d'inizio"
+
+#: contenido/templates/standard/template.symbolhelp.html:353
+#: contenido/templates/standard/template.symbolhelp.html:868
+#: contenido/templates/standard/template.symbolhelp.html:962
+msgid "Set template / Add to To-Do list"
+msgstr "Marca Template / aggiungere al listino TODO"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:212
+#: contenido/templates/standard/template.symbolhelp.html:365
+msgid "Configure article properties"
+msgstr "Configurazione delle propriet&agrave; dell'articolo"
+
+#: contenido/templates/standard/template.symbolhelp.html:389
+msgid "Element is online / offline (change through click)"
+msgstr "L'elemento &egrave; in linea / fuori linea (cambiamento con il clicc)"
+
+#: contenido/templates/standard/template.symbolhelp.html:401
+msgid "Element is protected / accessible (change through click)"
+msgstr "L'elemento &egrave; protetto / accessibile (cambiamento con il clicc)"
+
+#: contenido/templates/standard/template.symbolhelp.html:439
+msgid "Lock / unlock folder (change through click)"
+msgstr "Blocchare / sblocchare folder (cambiamento con il clicc)"
+
+#: contenido/templates/standard/template.symbolhelp.html:451
+msgid "Set folder offline / online (change through click)"
+msgstr "Marcare folder in linea / fuori linea (cambiamento con il clicc)"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+#: contenido/templates/standard/template.symbolhelp.html:542
+msgid "Create category"
+msgstr "Generare categoria"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:98
+#: contenido/templates/standard/template.symbolhelp.html:560
+msgid "Set category online / offline"
+msgstr "Marcare categoria in linea / fuori linea"
+
+#: contenido/templates/standard/template.symbolhelp.html:578
+msgid "Category is online and unprotected / protected"
+msgstr "La categoria &egrave; in linea e non protetta/protetta"
+
+#: contenido/templates/standard/template.symbolhelp.html:596
+msgid "Category is offline and unprotected / protected"
+msgstr "La categoria &egrave; fuori linea e non protetta/protetta"
+
+#: contenido/templates/standard/template.symbolhelp.html:614
+msgid "Category is online, contains an error and is unprotected / protected"
+msgstr "La categoria &egrave; in linea, contiene errori ed &egrave; non protetta/protetta"
+
+#: contenido/templates/standard/template.symbolhelp.html:632
+msgid "Category is offline, contains an error and is unprotected / protected"
+msgstr "La categoria &egrave; fuori linea, contiene errori ed &egrave; non protetta/protetta"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:363
+#: contenido/templates/standard/template.symbolhelp.html:650
+msgid "Move up one category"
+msgstr "Muovere una categoria in su"
+
+#: contenido/templates/standard/template.symbolhelp.html:683
+msgid "Select move target"
+msgstr "Scegliere destino del movimento"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: contenido/templates/standard/template.symbolhelp.html:716
+#: contenido/templates/standard/template.symbolhelp.html:880
+#: contenido/templates/standard/template.symbolhelp.html:974
+#: contenido/templates/standard/template.symbolhelp.html:1044
+#: contenido/templates/standard/template.symbolhelp.html:1099
+#: contenido/templates/standard/template.symbolhelp.html:1154
+#: contenido/templates/standard/template.symbolhelp.html:1209
+#: contenido/templates/standard/template.symbolhelp.html:1319
+#: contenido/templates/standard/template.symbolhelp.html:1434
+#: contenido/templates/standard/template.symbolhelp.html:1598
+#: contenido/templates/standard/template.symbolhelp.html:1653
+#: contenido/templates/standard/template.symbolhelp.html:1723
+#: contenido/templates/standard/template.symbolhelp.html:1778
+#: contenido/templates/standard/template.symbolhelp.html:1884
+msgid "Delete / Delete not available"
+msgstr "Cancellazione / Cancellazione non disponibile"
+
+# e:\timo\contenido_head/contenido/includes/include.upl_files_overview.php:100
+#: contenido/templates/standard/template.symbolhelp.html:762
+msgid "Root upload folder"
+msgstr "Root cartella upload"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:289
+#: contenido/templates/standard/template.symbolhelp.html:780
+msgid "Regular folder"
+msgstr "cartella normale"
+
+# e:\timo\contenido_head/contenido/includes/include.lay_overview.php:74
+#: contenido/templates/standard/template.symbolhelp.html:853
+msgid "Layout in use"
+msgstr "Layout in uso"
+
+# e:\timo\contenido_head/contenido/includes/include.tplcfg_edit_form.php:332
+#: contenido/templates/standard/template.symbolhelp.html:947
+msgid "Module in use"
+msgstr "Modulo in uso"
+
+#: contenido/templates/standard/template.symbolhelp.html:1178
+msgid "HTML editor"
+msgstr "Editor HTML"
+
+# e:\timo\contenido_head/contenido/includes/include.str_overview.php:478
+#: contenido/templates/standard/template.symbolhelp.html:1307
+msgid "Copy newsletter"
+msgstr "Copiare Bollettino"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/templates/standard/template.symbolhelp.html:1343
+#: contenido/templates/standard/template.symbolhelp.html:1374
+msgid "Recipient"
+msgstr "Destinatore"
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:74
+#: contenido/templates/standard/template.symbolhelp.html:1398
+msgid "Remove recipient"
+msgstr "Cancellare destinatore"
+
+#: contenido/templates/standard/template.symbolhelp.html:1410
+msgid "Recipient group"
+msgstr "Gruppo destinatori"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:292
+#: contenido/templates/standard/template.symbolhelp.html:1516
+msgid "Article is online / offline"
+msgstr "Articolo &egrave; in linea / fuori linea"
+
+# e:\timo\contenido_head/contenido/includes/include.lang_edit.php:97
+#: contenido/templates/standard/template.symbolhelp.html:1708
+msgid "Language active / not active"
+msgstr "Lingua &egrave; attiva / non attiva"
+
+#: contenido/templates/standard/template.symbolhelp.html:1860
+msgid "User group"
+msgstr "Gruppo utenti"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: contenido/templates/standard/template.symbolhelp.html:1872
+msgid "Create user group"
+msgstr "Generare gruppo utenti"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:95
+#: contenido/templates/standard/template.system_variables.html:11
+msgid "Your system configuration"
+msgstr "La vostra configuraizone del sitstema"
+
+# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:122
+# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:141
+#: contenido/templates/standard/template.system_variables.html:16
+msgid "Variable"
+msgstr "Variabile"
+
+#: contenido/templates/standard/template.system_variables.html:17
+msgid "Local value"
+msgstr "Valore locale"
+
+# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
+# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
+#: contenido/templates/standard/template.system_variables.html:31
+msgid "Contenido Error Log"
+msgstr "Contenido Error Log"
+
+#: contenido/templates/standard/template.system_variables.html:38
+msgid "clear error log"
+msgstr "svuotare Error Log"
+
+#: contenido/templates/standard/template.system_variables.html:45
+msgid "Contenido Upgrade Error Log"
+msgstr "Contenido Upgrade Error Log"
+
+#: contenido/templates/standard/template.system_variables.html:52
+msgid "clear upgrade error log"
+msgstr "svuotare Upgrade Error Log"
+

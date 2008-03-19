@@ -1,0 +1,131 @@
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css"/>
+    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/general.js"></script>
+    <script type="text/javascript" src="scripts/browserCheck.js"></script>
+    <script language="JavaScript" src="scripts/cfoldingrow.js"></script>
+    <script language="JavaScript" src="scripts/parameterCollector.js"></script>
+    <style type="text/css">
+        tr.row, tr.con_sync {
+            padding-left: 20px;
+            text-align: left;
+        }
+        td.cat {
+            padding:5px 0 0 3px;
+        }
+        td.img {
+            vertical-align:top;
+            white-space:nowrap;
+            padding:4px 0 0px 0px;
+        }
+    </style>
+</head>
+<body>
+
+<div style="margin-top:10px"></div>
+
+<table id="mtable" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-left:3px;" {DIRECTION}>
+		<!--{SYNCRONIZATION}-->
+		<tr class="row">
+			<td><img src="images/folder_on.gif" /><span class="text_medium">&nbsp;Root</span></td>
+		</tr>
+
+    <!-- BEGIN:BLOCK -->
+    <tr id="{CFGDATA}" {CSS_CLASS} style="background-color: {BGCOLOR};" {MARK}>		
+        <td>
+            <table cellspacing="0" cellpadding="0" border="0" {DIRECTION}>
+              <tr>
+                  {VERT}
+                  <td style="padding-left:{INDENT}px;">{COLLAPSE}{IMAGE}</td>
+                  <td class="cat">{CAT}</td>
+              </tr>
+          </table>
+      </td>
+    </tr>
+    <!-- END:BLOCK -->
+</table>
+
+<script language="javascript">
+    // Ugly frame concept seems to lead to ugly timeout problem -> wait some millis
+    if(!getReference())
+    {
+        setTimeout("irgendwas()", 1000);
+    }
+    else
+    {
+        irgendwas();
+    }	
+
+    function reloadRightFrame() {
+        var refCfg = getReference();
+        var sRowId = cfg.getRowId();
+        
+        top.content.right.right_bottom.location.reload();
+        top.content.right.right_top.location.reload();
+    }
+
+    function getReference() {
+    	return top.content.left.left_top.cfg;
+    }
+			
+    function irgendwas()
+    {
+        if (cfg = getReference())
+        {
+            var sRowId = cfg.getRowId();
+            var oRow   = document.getElementById(sRowId);
+            if (is.NS)
+            {
+                window.scrollTo(cfg.scrollX, cfg.scrollY);
+            }
+
+            if ( oRow )
+            {
+                con.over( oRow );
+                con.click( oRow );
+            } else {
+                con.reset();
+                //cfg.reset();
+                refreshSyncScreen(0);
+            }
+        }
+    }
+		   
+    {RELOAD_RIGHT}
+    var frameResize = parent.parent.frameResize;
+    var myTable = document.getElementById('mtable');
+
+    frameResize.optimalSize = myTable.offsetWidth;
+    
+    function markCat(idcat) {
+        var oTableRows = document.getElementsByTagName('tr');
+        var bFround = false;
+        for (var i=0; i < oTableRows.length; i++) {
+            if (oTableRows[i].id && oTableRows[i].id != '') {
+                if (oTableRows[i].id.match(/^(\d+)-/g)) {
+                    if (parseInt(RegExp.$1) == idcat) {
+                        con.click( oTableRows[i] );
+                        //var aPostion = getElementPostion(oTableRows[i]);
+                        //window.scrollTo(0, aPostion[1]-50);
+                        bFround = true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if (!bFround) {
+            con.reset();
+            cfg.reset();
+        }
+    }
+
+</script>
+
+</body>
+</html>

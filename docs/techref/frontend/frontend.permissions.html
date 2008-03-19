@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Contenido - Frontend Session Information</title>
+  <style type="text/css">
+body            {
+                    background-color: #ffffff;
+                    scrollbar-face-color:#C6C6D5;
+                    scrollbar-highlight-color:#FFFFFF;
+                    scrollbar-3dlight-color:#747488;
+                    scrollbar-darkshadow-color:#000000;
+                    scrollbar-shadow-color:#334F77;
+                    scrollbar-arrow-color:#334F77;
+                    scrollbar-track-color:#C7C7D6;
+		    font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
+                }
+
+h1 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 20px; color: #000000;
+ margin-top: 0px;
+}
+
+h2 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 15px; color: #000000;
+}
+
+  </style>
+</head>
+<body alink="#000099" vlink="#990099" link="#000099"
+ style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<table
+ style="border-bottom: 1px solid; text-align: left; background-color: rgb(255, 255, 255); width: 100%;"
+ border="0" cellspacing="2" cellpadding="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><img
+ style="width: 190px; height: 112px; padding-right: 20px;" align="left"
+ alt="Contenido" src="conlogo.gif">
+      <h1>Frontend Permissions<br>
+      </h1>
+      <table style="text-align: left;" border="0" cellspacing="2"
+ cellpadding="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">Author</td>
+            <td style="vertical-align: top;">Timo A. Hummel</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Created</td>
+            <td style="vertical-align: top;">20th May 2005</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Audience<br>
+            </td>
+            <td style="vertical-align: top;">Site Integrators, Module Developers<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Applies to<br>
+            </td>
+            <td style="vertical-align: top;">Contenido 4.6 or later<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Introduction</h2>
+Using Contenido's Frontend Permissions, Site Integrators and Module Developers
+can check individual &quot;objects&quot; for access permissions.<br>
+<h2>Concept</h2>
+
+<p>Contenido 4.6 introduces so-called frontend users. These users are splitted
+  apart the regular backend users, because they should be seen and handled completely
+  different as backend users. Frontend users themselves can't have permissions,
+  all permissions are assigned to groups.</p>
+<h2>Defining objects and permissions</h2>
+<p>Frontend objects and permissions are designed to be very generic. Basically,
+the developer has to define:</p>
+<p>- A class which defines how the object works<br>
+  - Checks to make the permissions effective<br>
+  <br>
+Step by Step manual:</p>
+<p>1. Think of a name for the object you're going to use. The name should be
+  lowercase. In this example, we're going to use &quot;object&quot;.<br>
+  2. If the folder &quot;frontendlogic&quot; in the plugins directory doesn't exist, create
+  it<br>
+  3. Create a folder with the object name you're going to use in the folder &quot;frontendlogic&quot;<br>
+  4. Create a file with the objectname and &quot;.php&quot; as extension. In our example,
+  you would have the path &quot;plugins/frontendlogic/object/object.php&quot;.<br>
+  5. Extend the class FrontendLogic. Your class name must have the name &quot;frontendlogic_&quot;
+  plus your object name, in our example it would be &quot;frontendlogic_object&quot;.<br>
+  6. Override the methods getFriendlyName(), listActions() and listItems().
+You can find descriptions for these methods in the FrontendLogic phpDoc.<br>
+7. Define the object name in the variable $cfg['plugins']['frontendlogic'], e.g.
+$cfg['plugins']['frontendlogic'][] = &quot;object&quot;. You should place this in the file
+config.local.php, so your changes are preserved during updates.</p>
+<p>Test your object:</p>
+<p>Login into Contenido. Go to the frontend groups, create a new group (or edit
+  an existing). In the subnavigation beneath &quot;Overview&quot;, you should see your
+  object name which you defined in the method &quot;getFriendlyName()&quot;. Click on it.
+  In the list, you should see all actions you defined, and all items you return.
+  Your administrators can now start to apply permissions to the items.</p>
+<p>Checking permissions:</p>
+<p>This is actually pretty easy. Create a new FrontendPermissionCollection-Item
+  and use the method checkPerm() to query if a specific permission is set:</p>
+<p>$myPermissionCheck = new FrontendPermissionCollection;<br>
+  var_dump(
+$myPermissionCheck-&gt;checkPerm(2, &quot;object&quot;, &quot;permissionname&quot;, &quot;itemid&quot;));</p>
+<p>If you want to check for a global right, replace &quot;itemid&quot; with &quot;__GLOBAL__&quot;.</p>
+<h2>&nbsp;</h2>
+</body>
+</html>

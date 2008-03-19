@@ -1,0 +1,11 @@
+examples/examples_articles1.sql
+examples/examples_categories1.sql
+examples/examples_container1.sql
+examples/examples_container2.sql
+examples/examples_content1.sql
+examples/examples_misc1.sql
+examples/examples_misc2.sql
+examples/examples_misc3.sql
+examples/examples_misc4.sql
+examples/examples_misc5.sql
+examples/examples_misc6.sql

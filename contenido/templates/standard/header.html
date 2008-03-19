@@ -1,0 +1,237 @@
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <script language="javascript" src="scripts/browserCheck.js"></script>
+    <script language="javascript" src="scripts/header.js"></script>
+    <script language="javascript" src="scripts/help.js.php?contenido={SID}"></script>
+		<script language="javascript" src="scripts/rowMark.js"></script>    
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css"/>
+    <script language="javascript">
+
+        if (is.IE) // Internet Explorer
+            document.writeln('<link rel="stylesheet" type="text/css" href="styles/{IESTYLE}"/>');
+            
+        else if (is.NS) // Mozilla and Netscape
+            document.writeln('<link rel="stylesheet" type="text/css" href="styles/{NSSTYLE}"/>');
+            
+        else // Every other browser
+            document.writeln('<link rel="stylesheet" type="text/css" href="styles/{OTHERSTYLE}"/>');
+
+        var sid = "{SID}";
+        
+        // Function to change the backend language
+        function changeContenidoLanguage(idlang)
+        {
+            var url = "index.php?contenido="+sid+"&changelang="+idlang;
+            parent.frames.top.location.href = url;
+        }
+
+				/*******************************************************
+				* Some functions for menu hovering effects
+				* Currently selected menu = active menu
+				* Menu preview that appears while hovering = hover menu
+				*******************************************************/ 
+				var currentActiveMenuId = 'main_0';
+				var currentActiveSubmenusId = 'sub_0';
+                
+        function navi_reset() {
+            currentActiveMenuId = 'main_0';
+		    currentActiveSubmenusId = 'sub_0';
+            
+            var submenus = document.getElementById('submenus').getElementsByTagName('a');
+            for(var i = 0; i < submenus.length; i++)
+            {
+          	    submenus[i].className = "sub";
+            }
+            
+            var oThis = this;
+            show.apply(oThis, [currentActiveSubmenusId, document.getElementById(currentActiveMenuId)]);            
+            
+        }
+				
+        function addEvent (elm, type, fnc) 
+        {
+        	if (window.addEventListener) 
+        	{
+        		elm.addEventListener(type, fnc, false);
+        	} 
+        	else 
+        	{
+        		elm.attachEvent("on" + type, fnc);
+        	}
+        }
+
+        function addHooks() 
+        {
+          var menuLinksLevel1 = document.getElementById('head_nav1').getElementsByTagName('a');
+          var menuLinksLevel2 = document.getElementById('submenus').getElementsByTagName('a');
+          
+					// Hooks for menu level 1
+          for(var i = 0; i < menuLinksLevel1.length; i++) 
+          {
+            addEvent(menuLinksLevel1[i], "mouseover", activateMenuWithDelay);
+            addEvent(menuLinksLevel1[i], "mouseout", deactivateMenu);
+          }
+					// Hooks for menu level 2
+          for(var i = 0; i < menuLinksLevel2.length; i++)
+          {
+ 						addEvent(menuLinksLevel2[i], "click", markActive);
+ 						addEvent(menuLinksLevel2[i], "mouseover", submenuStopMainTimer);
+ 						addEvent(menuLinksLevel2[i], "mouseout", deactivateMenu);
+          }
+        }
+        
+        // marks menu item as active menu when on of its subitems is clicked
+        function markActive()
+        {
+        	// reset color for all links
+        	var submenus = document.getElementById('submenus').getElementsByTagName('a');
+          for(var i = 0; i < submenus.length; i++)
+          {
+          	submenus[i].className = "sub";
+          }
+        	// remember name for clicked
+        	var curElement = '';
+          if (window.event)
+          { 
+            srcElm = window.event.srcElement;
+            curElement = srcElm.parentNode.id;
+            // set color for the one clicked
+        	srcElm.className = "activemenu";
+          } 
+          
+          // W3C DOM (FF, Mozilla, Safari)
+          else 
+          { 
+            curElement = this.parentNode.id;
+            // set color for the one clicked
+        	this.className = "activemenu";
+          }            
+          
+        	// If we are here this means a submenu item was clicked
+        	// Now find out the related menu item on level 1 and store it
+        	// We need to do this for restoring highlighting of the current active menu on mouseout of hover menu
+        	currentActiveMenuId = getNavForSubnavWithId(curElement);
+        	currentActiveSubmenusId = curElement;
+        }
+        
+        function getNavForSubnavWithId(elm)
+        {
+        	var pos = elm.indexOf('_');
+        	var num = elm.substring(pos+1, elm.length);
+        	return "main_" + num;
+        }
+        
+        var Timer = {};
+        Timer.out = false; // onmouseout timer
+        Timer.over = false; // onmouseover timer
+        
+        
+        function submenuStopMainTimer()
+        {
+          if (Timer.out) { // clear onmouseout timer on every main-nav mouseover
+          	clearTimeout(Timer.out);
+          	//console.log("reset main timer");
+          }
+        }
+        
+        function activateMenuWithDelay()
+        {
+        //console.log("activate menu with delay");
+          if (Timer.out) { // clear onmouseout timer on every main-nav mouseover
+          	clearTimeout(Timer.out);
+          	//console.log("reset main timer");
+          }
+  
+          var oThis = this;
+               
+          // IE & Opera
+          if (window.event)
+          { 
+            srcElm = window.event.srcElement;
+            oThis = srcElm;
+            var sIdValue = oThis.id;
+            var sExpression = /^main_(\d+)$/;
+            sExpression.exec(sIdValue);
+            ident = 'sub_'+ RegExp.$1;            
+          } 
+          // W3C DOM (FF, Mozilla, Safari)
+          else 
+          { 
+            ident = this.attributes["ident"].value;
+          }
+         
+          if(Timer.over)
+          {
+            clearTimeout(Timer.over);            
+          }
+
+          Timer.over = setTimeout(function() { show(ident, oThis); }, 300); 
+           
+        }
+        
+        function deactivateMenu()
+        {
+        //console.log("deactivate menu");
+          var oThis = this;
+					                    
+          if(Timer.out)
+          {
+            clearTimeout(Timer.out);
+          }
+          
+          Timer.out = setTimeout(function() { show.apply(oThis, [currentActiveSubmenusId, document.getElementById(currentActiveMenuId)]); }, 1000);
+        }
+
+    </script>
+</head>
+<body onLoad="addHooks();" style="color:black;border-bottom: 1px solid #666666; background-color: #F1F1F1;" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<div style="border-top: 1px solid #0060b1;"></div>
+
+<div id="head">
+  <a id="head_logo" target="content" href="{MAINLOGINLINK}" onclick="navi_reset()"><img title="Contenido Website." alt="Contenido Website." src="images/conlogo.gif"></a>
+  
+  <div id="mhighlight">
+      <table cellspacing="0" cellpadding="0" border="0">
+          <tr>
+              <span id="htext"></span>
+          </tr>
+      </table>
+  </div>
+  
+  <div id="head_info" class="head_nav left_dist">
+    <div id="infobox">
+      <span class="textg_medium">{CHOSENCLIENT}&nbsp;&nbsp;&nbsp;{CHOSENUSER}</span>
+    </div>
+    <div id="operate">
+      {LANG}
+      {MYCONTENIDO}
+      {INFO}
+      {HELP}
+      <a class="main" href="{LOGOUT}" target="_top">
+        <img src="images/but_logout.gif" border="0" alt="Logout" title="Logout">
+      </a>
+    </div>
+  </div>
+  
+  
+  <div id="head_nav1" class="head_nav left_dist">
+    <!-- BEGIN:BLOCK -->
+    <span class="right_margin_menu">{CAPTION}</span>
+    <!-- END:BLOCK -->
+  </div>
+
+  <!-- Submenu Layers -->
+  <div id="sub_0" class="head_nav left_dist">&nbsp;</div>
+  <div id="submenus">{SUBMENUS}</div>
+</div>
+
+<script language="javascript"> 
+  h = new Highlight("mhighlight", "htext", {WIDTH}); 
+</script>
+</body>
+</html>

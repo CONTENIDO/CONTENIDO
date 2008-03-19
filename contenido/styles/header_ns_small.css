@@ -1,0 +1,17 @@
+/*****************************************
+*
+* $Id: header_ns.css,v 1.1 2003/09/26 15:46:34 jan Exp $
+*
+* File      :   $RCSfile: header_ns.css,v $
+* Project   :
+* Descr     :
+*
+* Author    :   $Author: jan $
+* Modified  :   $Date: 2003/09/26 15:46:34 $
+*
+* © four for business AG, www.4fb.de
+******************************************/
+
+#firstrow   { margin-left: 85px; height: 20px; z-index: 99999; }
+#secondrow  { margin-left: 100px; height: 20px; }
+#thirdrow   { padding-right: 10px; height: 22px; border-bottom: 1px solid #000000; text-align: right; padding-top: 7px}

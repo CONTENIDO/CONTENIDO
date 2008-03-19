@@ -1,0 +1,178 @@
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/infoBox.js"></script>
+    <script type="text/javascript">
+        var bMsie = (document.all) ? true : false;
+        var sExpandString = 'i18n("Open category")';
+        var sCollapseString = 'i18n("Close category")';
+        var sCollapseButton = '{IMG_COLLAPSE}';
+        var sExpandButton = '{IMG_EXPAND}';
+    
+        function top10Action(selObj) {
+
+            var url = '{SELF_URL}';
+            var i = selObj.selectedIndex;
+            var sortkey = selObj.options[i].value;
+
+            window.location.href = url + '&action=stat_show&displaytype=' + sortkey + '&yearmonth=' + document.hiddenValues.yearmonth.value;
+
+        }
+        function top10ActionYearly(selObj) {
+
+            var url = '{SELF_URL}';
+            var i = selObj.selectedIndex;
+            var sortkey = selObj.options[i].value;
+
+            window.location.href = url + '&action=stat_show&displaytype=' + sortkey + '&showYear=1&year=' + document.hiddenValues.yearmonth.value;
+
+        }
+        
+        function collapseAll() {  
+            var aStatrows = document.getElementsByTagName('tr');
+            for (var i = 0; i < aStatrows.length; i++) {
+                var aIds = aStatrows[i].id.split('_');
+                
+                if (aIds.length > 1) {
+                    aStatrows[i].style.display = 'none';
+                }
+                
+                var oButton = aStatrows[i].getElementsByTagName('img')[0];
+                if (oButton && oButton.id == aStatrows[i].id+'_img') {
+                    oButton.src = sExpandButton;
+                    oButton.title = sExpandString;
+                    oButton.alt = sExpandString;
+                }
+            }
+        }
+        
+        function expandAll() {      
+            var aStatrows = document.getElementsByTagName('tr');
+            var sDisplay = '';
+            
+            if (bMsie) {
+                sDisplay = 'block';
+            } else {
+                sDisplay = 'table-row';
+            }
+                
+            for (var i = 0; i < aStatrows.length; i++) {
+                if (aStatrows[i].id) {
+                    aStatrows[i].style.display = sDisplay;
+                    
+                    var oButton = aStatrows[i].getElementsByTagName('img')[0];
+                    if (oButton && oButton.id == aStatrows[i].id+'_img') {
+                        oButton.src = sCollapseButton;
+                        oButton.title = sCollapseString;
+                        oButton.alt = sCollapseString;
+                    }
+                }
+            }
+        }
+        
+        function changeVisibility (sIdClicked, iLevel, iIdCat) {
+            var sDisplay = '';
+            var aIdsClicked = sIdClicked.split('_');
+            
+            var oButton = document.getElementById (sIdClicked+'_img');
+            
+            if (oButton.src == sExpandButton) {
+                oButton.src = sCollapseButton;
+                oButton.title = sCollapseString;
+                oButton.alt = sCollapseString;
+                if (bMsie) {
+                    sDisplay = 'block';
+                } else {
+                    sDisplay = 'table-row';
+                }
+            } else {
+                oButton.src = sExpandButton;
+                oButton.title = sExpandString;
+                oButton.alt = sExpandString;
+                sDisplay = 'none';
+            }
+            
+            var aStatrows = document.getElementsByTagName('tr');
+            for (var i = 0; i < aStatrows.length; i++) {
+                var aIds = aStatrows[i].id.split('_');
+               
+                if (aIds[iLevel] == iIdCat) {
+                    if (sDisplay == 'none' && aIds.length > aIdsClicked.length) {
+                        aStatrows[i].style.display = sDisplay;
+                        
+                        var oButton = aStatrows[i].getElementsByTagName('img')[0];
+                        if (oButton && oButton.id == aStatrows[i].id+'_img') {
+                            oButton.src = sExpandButton;
+                            oButton.title = sExpandString;
+                            oButton.alt = sExpandString;
+                        }
+                    } else if ((aIdsClicked.length+1) == aIds.length) {
+                        aStatrows[i].style.display = sDisplay;
+                    }
+                }
+            }
+        }
+
+    </script>
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+</head>
+<body style="margin:10px">
+
+<table width="100%" cellspacing="0" cellpadding="2" border="0">
+    <tr class="text_medium" style="background-color: {BGCOLOR};">
+        <td valign="top">{STATTITLE}</td>
+        <td valign="top" align="right">{DROPDOWN}{YEARMONTH}</td>
+    </tr>
+</table>
+
+<table id="stats" style="border:0px; border-bottom: 1px; border-color: {BORDERCOLOR}; border-style: solid;" width="100%" cellspacing="0" cellpadding="2" border="0">
+    <tr class="textg_medium">
+        <td colspan="5" style="border:1px solid {BORDERCOLOR}; background-color: {TITLEBGCOLOR}; padding-left:5px;">
+        <a class="black" href="javascript:collapseAll();" alt="i18n("Close all categories") title="i18n("Close all categories")"><img src="images/close_all.gif">&nbsp;i18n("Close all categories")</a>
+        <span style="padding-left:15px;">&nbsp;</span>
+        <a class="black" href="javascript:expandAll();" alt="i18n("Open all categories") title="i18n("Open all categories")"><img src="images/open_all.gif">&nbsp;i18n("Open all categories")</a>
+        </td>
+    </tr>
+    
+    <tr class="textg_medium">
+            <td colspan="5">&nbsp;</td>
+    </tr>
+    
+    <tr class="textg_medium" style="font-weight:bold; background-color: {TITLEBGCOLOR};">
+        <td class="textg_medium" width="80%" style="border: 0px; border-left:1px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:{TITLEPADDING_LEFT}px" nowrap>{TITLETEXT}</td>
+        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLESTATUS}</td>
+        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLENUMBEROFARTICLES}</td>
+        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLETOTAL}</td>
+        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLEINTHISLANGUAGE}</td>
+    </tr>
+    <!-- BEGIN:BLOCK -->
+    <tr id="{ROWNAME}" class="text_medium" style="background-color: {BGCOLOR}; display:{DISPLAY_ROW};" onmouseover="row.over(this)" onmouseout="row.out(this)" {ONCLICK}>
+        <td class="td_stats1" style="padding-left:{PADDING_LEFT}px;">{EXPAND} {ICON} {TEXT}</td>
+        <td class="td_stats2">{STATUS}&nbsp;</td>
+        <td class="td_stats3">{NUMBEROFARTICLES}&nbsp;</td>
+        <td class="td_stats3">{TOTAL}&nbsp;</td>
+        <td class="td_stats3">{INTHISLANGUAGE}&nbsp;</td>
+    </tr>
+    <!-- END:BLOCK -->
+</table>
+<br>
+<table style="border:0px; border-left:1px; border-bottom: 1px;border-color: {BORDERCOLOR}; border-style: solid;" width="100%" cellspacing="0" cellpadding="2" border="0">
+    <tr class="text_medium" style="font-weight:bold; background-color: {TITLEBGCOLOR};">
+        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:{TITLEPADDING_LEFT}px" nowrap>{TITLETEXT}</td>
+        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLENUMBEROFARTICLES}</td>
+        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLETOTAL}</td>
+        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLEINTHISLANGUAGE}</td>
+    </tr>
+    <tr class="text_medium" style="background-color: {SUMBGCOLOR};">
+        <td width="80%" style="border: 0px; border-bottom:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:{TITLEPADDING_LEFT}px" nowrap>{SUMTEXT}&nbsp;</td>
+        <td style="border: 0px; border-bottom:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{SUMNUMBEROFARTICLES}&nbsp;</td>
+        <td style="border: 0px; border-bottom:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{SUMTOTAL}&nbsp;</td>
+        <td style="border: 0px; border-bottom:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{SUMINTHISLANGUAGE}&nbsp;</td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!-- subnav template -->
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/subnav.js"></script>
+    <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SESSID}"></script>
+	<script type="text/javascript">
+        var artObj = null;
+        function refreshArticleProp() {
+    		var leftTopFrame = parent.parent.frames["left"].frames["left_top"];
+    		artObj = parent.parent.frames["left"].frames["left_top"].artObj;
+    		artObj.setGlobalVars("{SESSID}", {CLIENT}, {LANG});
+    		artObj.idcat = {IDCAT};	
+        }
+        refreshArticleProp();
+    </script>
+</head>
+<body>
+
+<div id="navcontainer">
+  <div style="float:left;">
+    <img src="images/frame_handle_re.gif" style="border:0px;float:left;">
+    <img style="margin:7px 0 0 7px;" id="toggleimage" onclick="parent.parent.frameResize.toggle()" src="images/spacer.gif" border="0">
+  </div>
+    
+  <ul id="navlist">
+  	<!-- BEGIN:BLOCK -->
+      <li id="{ID}">{CAPTION}</li>
+      <!-- END:BLOCK -->
+  </ul>
+</div>
+
+
+<script type="text/javascript">
+	sub.init();
+    parent.parent.frameResize.init();
+</script>
+
+</body>
+</html>

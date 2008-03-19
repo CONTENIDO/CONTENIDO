@@ -1,0 +1,32 @@
+<!-- subnav template -->
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <script type="text/javascript" src="scripts/subnav.js"></script>
+</head>
+<body>
+
+<div id="navcontainer" style="padding-left: 250px;">
+    <ul id="navlist">
+    	<!-- BEGIN:BLOCK -->
+        <li id="{ID}">{CAPTION}</li>
+        <!-- END:BLOCK -->
+    </ul>
+</div>
+
+<script type="text/javascript">
+
+    if (parent.parent.frames[0].name != "header") {
+        parent.parent.frameResize.init();
+    }
+
+    sub.init();
+    
+</script>
+
+</body>
+</html>

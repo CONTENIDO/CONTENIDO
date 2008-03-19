@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Contenido - Creating login modules</title>
+  <style type="text/css">
+body            {
+                    background-color: #ffffff;
+                    scrollbar-face-color:#C6C6D5;
+                    scrollbar-highlight-color:#FFFFFF;
+                    scrollbar-3dlight-color:#747488;
+                    scrollbar-darkshadow-color:#000000;
+                    scrollbar-shadow-color:#334F77;
+                    scrollbar-arrow-color:#334F77;
+                    scrollbar-track-color:#C7C7D6;
+		    font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
+                }
+
+h1 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 20px; color: #000000;
+ margin-top: 0px;
+}
+
+h2 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 15px; color: #000000;
+}
+
+  </style>
+</head>
+<body alink="#000099" vlink="#990099" link="#000099"
+ style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<table
+ style="border-bottom: 1px solid; text-align: left; background-color: rgb(255, 255, 255); width: 100%;"
+ border="0" cellspacing="2" cellpadding="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><img
+ style="width: 190px; height: 112px; padding-right: 20px;" align="left"
+ alt="Contenido" src="conlogo.gif">
+      <h1>Creating a frontend login module using Contenido</h1>
+      <table style="text-align: left;" border="0" cellspacing="2"
+ cellpadding="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">Author</td>
+            <td style="vertical-align: top;">Timo A. Hummel</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Modified</td>
+            <td style="vertical-align: top;">13th June 2006</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Audience<br>
+            </td>
+            <td style="vertical-align: top;">Module Developers<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Applies to<br>
+            </td>
+            <td style="vertical-align: top;">Contenido 4.6 or later<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Introduction</h2>
+The Contenido login mechanism has been made alot easier from Version
+4.4 and upwards. Logins are now directly handled by Contenido's
+frontend, and you only need to pass the parameters "username" and
+"password" to Contenido. Logins are now handled as "pro-active" logins,
+which means that the methods explained here need to issued before a
+protected category is accessed.<br>
+<h2>Logging in - manually</h2>
+Each frontend login can be triggered manually. In order to test your
+logins, you should insert the following statement into either a layout
+or module:<br>
+<br>
+<pre>echo $auth-&gt;auth["uid"];</pre>
+This statement shows the current logged in user. For anonymous sessions
+(i.e. nobody is logged in), the "uid" is always "nobody". To test the
+login, create a new user in Contenido's Backend, then call the frontend
+like this:<br>
+<br>
+<pre>front_content.php?username=&lt;youruser&gt;&amp;password=&lt;yourpassword&gt;</pre>
+If previously the test statement returned "nobody", it should now
+display your user id.<br>
+<br>
+<h2>Logging in - automatically</h2>
+Of course, the method above is pretty uncomfortable for end users. You
+could simply write a module which outputs a login form - it's up to
+you. All you need to do is to pass "username" and "password" - exactly
+as shown above.<br>
+<br>
+<h2>Logging out</h2>
+Of course, your users want to log out if necessary - just pass the
+parameter "logout" with any value to the system. Example:<br>
+<pre>front_content.php?logout=true</pre><br>
+<h2>How all this interacts with protected folders</h2>
+In the past, a login form was only displayed if a protected category.
+If you are already logged in with the above method, and if you have
+access rights to that category, everything is alright. But if you are
+not logged in or if you don't have access rights, the (pretty old) file
+"front_crcloginform.inc.php" will be called.<br>
+<br>
+If you want to show a custom login form, you can do the following:<br>
+<br>
+Specify a client setting with the following values:<br>
+<pre style="margin-left: 40px;">
+Type: login_error_page
+Name: idcatart
+Value: &lt;Specify the idcatart of the article containing the login form&gt;</pre>
+<br>
+You can also use:<br>
+<pre style="margin-left: 40px;">
+Type: login_error_page
+Name: idcat
+Value: &lt;Specify the idcat of the category containing the article with the login form&gt;</pre>
+<br>
+and/or
+<pre style="margin-left: 40px;">
+Type: login_error_page
+Name: idart
+Value: &lt;Specify the idart of the article containing the login form&gt;</pre>
+<br>
+Please note, that if the idcatart has been specified, idcat and idart are ignored. idcat and idart may be
+specified both (and then the idart should be an article in the category specified by idcat) or
+one of them, only.<br>
+<br>
+The article/category specified has to be public/online.
+<br>
+<br>
+<h2>Creating users</h2>
+Of course, you don't want to create a user in the backend every time.
+You can automate the user creation process using the class "User":<br>
+<br>
+<pre style="margin-left: 40px;">$myUsers = new Users;	// User Collection<br>$myUser = new User;	// Single user<br><br>$ret = $myUsers-&gt;create("nameofuser");<br><br>/* Note the three equal signs: This checks for the boolean type */<br>if ($ret === false)<br>{<br>  /* User already exists */<br>  die("User already exists");<br>} else {<br>  /* User was successfully created, now we can set the password */<br>  $user-&gt;loadUserByUserID($ret);<br>  $user-&gt;setField("password", md5("theuserspassword"));<br>}</pre>
+<br>
+You can also assign custom properties to your users (to attach almost
+every kind of data to a user) by using the methods "setUserProperty"
+and "getUserProperty". See the API documentation for more information.
+</body>
+</html>

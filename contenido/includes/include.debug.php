@@ -1,0 +1,104 @@
+<?php
+/*****************************************
+* File      :   $RCSfile: include.debug.php,v $
+* Project   :   Contenido
+* Descr     :   Contenido Debug Interface
+*
+* Author    :   
+*               
+* Created   :   04.06.2003
+* Modified  :   $Date: 2006/04/28 09:20:54 $
+*
+* © four for business AG, www.4fb.de
+*
+* $Id: include.debug.php,v 1.3 2006/04/28 09:20:54 timo.hummel Exp $
+******************************************/
+
+$areaList = new Area();
+$areas = $areaList = $areaList->getAvailableAreas();
+
+$areaSelectTemplate= new Template;
+$areaSelectTemplate->set('s', 'NAME', 'areaselect');
+
+foreach ($areas as $key => $value)
+{
+	$areaSelectTemplate->set('d', 'VALUE', $key);
+	$areaSelectTemplate->set('d', 'CAPTION', $value['name']);
+	$areaSelectTemplate->set('d', 'SELECTED','');
+	$areaSelectTemplate->next();
+} 
+
+$areaSelector = $areaSelectTemplate->generate($cfg['path']['templates'].$cfg['templates']['generic_select'], true);
+
+$actionList = new Action();
+$actions = $actionList = $actionList->getAvailableActions();
+
+$actionSelectTemplate= new Template;
+$actionSelectTemplate->set('s', 'NAME', 'actionselect');
+
+foreach ($actions as $key => $value)
+{
+	$actionSelectTemplate->set('d', 'VALUE', $key);
+	$actionSelectTemplate->set('d', 'CAPTION', $value['name']);
+	$actionSelectTemplate->set('d', 'SELECTED','');
+	$actionSelectTemplate->next();
+} 
+
+$actionSelector = $actionSelectTemplate->generate($cfg['path']['templates'].$cfg['templates']['generic_select'], true);
+
+if ($querytype == "areaactionitem")
+{
+	$res = $perm->have_perm_area_action_item($areaselect, $actionselect, $itemid);
+	
+	if ($res)
+	{
+		$result = "has right for have_perm_area_action_item($areaselect, $actionselect, $itemid)";
+	} else {
+		$result = "has no right for have_perm_area_action_item($areaselect, $actionselect, $itemid)";
+	}
+}
+
+if ($querytype == "areaaction")
+{
+	$res = $perm->have_perm_area_action($areaselect, $actionselect);
+	
+	if ($res)
+	{
+		$result = "has right for have_perm_area_action($areaselect, $actionselect)";
+	} else {
+		$result = "has no right for have_perm_area_action($areaselect, $actionselect)";
+	}
+}
+if ($querytype == "area")
+{
+	$res = $perm->have_perm_area_action($areaselect, 0);
+	
+	if ($res)
+	{
+		$result = "has right for have_perm_area_action($areaselect, 0)";
+	} else {
+		$result = "has no right for have_perm_area_action($areaselect, 0)";
+	}
+}
+
+
+echo "<h1>Debug</h1>";
+echo "<h4>Check for right:</h4>";
+$form = '<form name="group_properties" method="post" action="'.$sess->url("main.php?").'">
+                 '.$sess->hidden_session().'
+                 <input type="hidden" name="area" value="'.$area.'">
+                 <input type="hidden" name="action" value="group_edit">
+                 <input type="hidden" name="frame" value="'.$frame.'">
+				 <input type="hidden" name="groupid" value="'.$groupid.'">
+                 <input type="hidden" name="idlang" value="'.$lang.'">';
+echo $form;   
+echo "Area:".$areaSelector."<br>";
+echo "Action:".$actionSelector."<br>";
+echo 'Item:<input type="text" name="itemid">';
+echo "<br>Type:<br>";
+echo "<input type='radio' name='querytype' value='areaactionitem'>have_perm_area_action_item<br>";
+echo "<input type='radio' name='querytype' value='areaaction'>have_perm_area_action<br>";
+echo "<input type='radio' name='querytype' value='area'>have_perm_area_action without action (i.e. area access right)<br>";
+echo "<input type='submit'><br><br>Result:<br>";
+echo "<textarea rows=20 cols=80>$result</textarea></form>";
+?>

@@ -1,0 +1,139 @@
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <script language="JavaScript" src="scripts/cfoldingrow.js"></script>
+    <script language="JavaScript" src="scripts/general.js"></script>
+    <script language="JavaScript" src="scripts/parameterCollector.js"></script>
+      
+    <script>
+      // save status of buttons
+      var selectedButton = '';
+			var actionURL='';
+			var listoptionURL='';
+			var pagingURL='';
+      
+      // Buttons and their images
+	    var butUser     = { imgId:'{IUSER}', containerId:'{ID_USERS}', imgOff:'images/users_o.gif', imgOn:'images/users.gif'};
+	    var butGroups   = { imgId:'{IGROUP}', containerId:'{ID_GROUPS}', imgOff:'images/groups_o.gif', imgOn:'images/groups.gif'};
+      var buttonArray = new Array(butUser, butGroups);
+      
+			function resizeFrame(arg)
+			{
+				if(arg == '')
+				{
+				  // Fetch links and store for later usage
+					var actionLink = document.getElementById('{ACTIONLINK}');
+					var listoptionLink = document.getElementById('{LISTOPTIONLINK}');
+					var pagingLink = document.getElementById('{PAGINGLINK}');
+          
+					actionURL = actionLink.href;
+					listoptionURL = listoptionLink.href;
+					pagingURL = pagingLink.href;
+					
+					// clicking the link now calls this function
+					actionLink.href = "javascript:resizeFrame('{ACTIONLINK}')";
+					listoptionLink.href = "javascript:resizeFrame('{LISTOPTIONLINK}')";
+					pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}')";
+          
+  				// for first load set focus to newsletter
+  				toggleContainer('{IUSER}');
+  				hoverEffect('{ID_USERS}', 'on');
+				}
+				else if(arg == '{ACTIONLINK}')
+				{
+					window.location.href=actionURL;
+				}
+				else if(arg == '{LISTOPTIONLINK}')
+				{
+					window.location.href=listoptionURL;
+				}
+				else if(arg == '{PAGINGLINK}')
+				{
+					window.location.href=pagingURL;
+				}
+				
+				// resizing frame
+				window.setTimeout("parent.parent.frameResize.resizeTopLeftFrame(document.getElementById('top_left_container').offsetHeight+1)", 10);
+			}
+      
+			function toggleContainer(activeButton)
+			{
+			  // remember selected
+			  selectedButton = activeButton;
+
+			  for(var i=0; i < buttonArray.length; i++)
+			  {
+			    // make selected container visible
+			    if(activeButton == buttonArray[i].imgId)
+			    {
+			      document.getElementById(buttonArray[i].containerId).style.display = 'block';
+			    }
+			    // render other containers invisible
+			    else
+		      {
+		        document.getElementById(buttonArray[i].containerId).style.display = 'none'; 
+		      }
+			  }
+			  hoverEffect(activeButton, 'in');
+			  resizeFrame(activeButton);
+			}
+			
+			function hoverEffect(actButton, stat)
+			{
+		    // fetch the button object
+		    for(var i=0; i < buttonArray.length; i++)
+		    {
+		      // highlight image on enter, gray image on mouse out
+		      if(buttonArray[i].imgId == actButton && actButton != selectedButton)
+		      {
+		        if(stat == 'in')
+		        {
+		          document.getElementById(buttonArray[i].imgId).src=buttonArray[i].imgOn;
+		        }
+		        else
+	          {
+	            document.getElementById(buttonArray[i].imgId).src=buttonArray[i].imgOff;  
+	          }
+		      }
+		      else if(buttonArray[i].imgId != selectedButton)
+	        {
+	          document.getElementById(buttonArray[i].imgId).src=buttonArray[i].imgOff;
+	        }
+		    }
+			}
+
+			function execFilter()
+			{
+        var multilink = "main.php?";
+			  var formelements = document.filter;
+
+			  for(var i=0; i<formelements.length; i++)
+			  {
+			    if(i>0 && formelements[i].name != "" && formelements[i].value != "")
+			    {
+			      multilink += "&";
+			    }
+			    if(formelements[i].name != "" && formelements[i].value != "")
+			    {
+			      multilink += formelements[i].name + "=" + formelements[i].value;
+			    }
+			  }
+			  conMultiLink("left_bottom", multilink);
+			}
+
+    </script>			
+</head>
+
+<body onLoad="resizeFrame('')" bgcolor="#FFFFFF">
+<div id="top_left_container" style="margin: 1px 0 0 0; border: 1px solid #B3B3B3;padding-top: 7px">
+  <div style="height:2em;margin: 0 0 0 17px;padding-bottom:5px;">{BUTTONROW}</div>
+  {CUSERS}
+  {CGROUPS}
+  
+</div>  
+</body>
+</html>

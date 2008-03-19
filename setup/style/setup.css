@@ -1,0 +1,184 @@
+body, td {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		color: #334F77;
+		padding: 0;
+		margin: 0;
+}
+
+p, td, input {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		color: #334F77;
+}
+
+input.small {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 10px;
+		color: #334F77;
+		min-width: 515px;
+}
+
+a {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #0060B1;
+	text-decoration: none;
+	
+}
+span.headerbar {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-weight: bold;
+		font-size: 13px;
+		color: black;
+}
+
+h1 {
+	font-size: 12px;
+	font-weight: bold;
+	color: #0060B1;
+	margin: 0px;
+	margin-bottom: 8px;
+}
+
+div.description {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		color: black;
+}
+
+.black {
+	color: black;
+}
+
+input.textbox {
+	border: 1px solid #999999;
+	width: 240px;
+	height: 18px;
+	font-size: 10px;
+	vertical-align: middle;
+	
+}
+
+div.errorlist {
+	font-size: 10px;
+	color: black;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	background-color: #e8e8ee;
+}
+
+div.entry_closed {
+	margin: 0px;
+	width: 100%;
+	color: #666666;
+	display: none;
+}
+
+div.entry_open {
+	color: #666666;
+	margin: 0px;
+	width: 100%;
+	padding-top: 4px;
+}
+
+div.entry_open a {
+	font-size: 10px;
+}
+
+td.entry {
+	color: black;
+	font-size: 10px;
+	padding: 3px;
+	padding-top: 5px;	
+	border-bottom: 1px solid white;
+}
+
+td.entry_nowrap {
+	color: black;
+	font-size: 10px;
+	padding: 3px;
+	padding-top: 5px;	
+	border-bottom: 1px solid white;
+	white-space: nowrap;
+}
+
+
+img.closer {
+	cursor: pointer;
+}
+
+img.button {
+	cursor: pointer;
+}
+
+td.icon {
+	width: 14px;
+	padding: 4px;
+	padding-left: 7px;
+	border-bottom: 1px solid white;
+}
+
+p.plugin_select {
+    padding:0; 
+    margin:0; 
+    height:20px; 
+    line-height:20px; 
+    vertical-align:middle;
+}
+
+
+
+/* additions rbi 2008-02-26 */
+input {
+	border:1px solid #B3B3B8;
+	width:240px;
+}
+table td, p {
+	color:#000;
+}
+
+table.setupBodyOuterTable {
+	width:730px;
+	height:300px;
+}
+
+#setupBox, #setupFootnote {
+	width:750px;
+	color:#000;
+	text-align:left;
+	border:1px solid #B3B3B8;
+}
+
+#setupHead {
+	background-color:#fff;
+	height:70px;
+	padding:30px 0 0 30px;
+}
+* html #setupHead {
+	height:100px;
+}
+
+#setupHeadlinePath {
+	background-color:#E2E2E2;
+	height:30px;
+	line-height:30px;
+	padding:0 0 0 10px;
+	font-size:14px;
+	font-weight:bold;
+}
+
+#setupBody {
+	background-color:#F1F1F1;
+	padding:20px 10px 10px 10px;
+	height:300px;
+}
+
+#setupFootnote {
+	color:#ccc;
+	font-size:10px;
+	border:0;
+	padding-top:10px;
+}

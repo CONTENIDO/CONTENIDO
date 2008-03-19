@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="pragma" content="no-cache">    
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+		<script language="JavaScript" src="scripts/cfoldingrow.js"></script>
+		<script language="JavaScript" src="scripts/parameterCollector.js"></script>
+		<script language="JavaScript" src="scripts/general.js"></script>
+		
+    <script language="javascript">
+			var listopURL='';
+			var pagingURL='';
+			
+			// need to insert function in Article Search link
+			function resizeFrame(arg)
+			{
+				if(arg == '')
+				{
+					var listopLink = document.getElementById('{LISTOPLINK}');
+					var pagingLink = document.getElementById('{PAGINGLINK}');
+					
+					// store current link for later use
+					listopURL = listopLink.href;
+					pagingURL = pagingLink.href;
+					
+					// clicking the link now calls this function
+					listopLink.href = "javascript:resizeFrame('{LISTOPLINK}');";
+					pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}');";
+				}
+				else if(arg == '{LISTOPLINK}')
+				{
+					window.location.href=listopURL;
+				}
+				else if(arg == '{PAGINGLINK}')
+				{
+					window.location.href=pagingURL;
+				}
+				
+				// resizing frame
+				window.setTimeout("parent.parent.frameResize.resizeTopLeftFrame(document.getElementById('top_left_container').offsetHeight)", 10);
+			}
+			
+			function execFilter()
+			{
+        var multilink = "main.php?";
+			  var formelements = document.filter;
+
+			  for(var i=0; i<formelements.length; i++)
+			  {
+			    if(i>0 && formelements[i].name != "" && formelements[i].value != "")
+			    {
+			      multilink += "&";
+			    }
+			    if(formelements[i].name != "" && formelements[i].value != "")
+			    {
+			      multilink += formelements[i].name + "=" + formelements[i].value;
+			    }
+			  }
+			  conMultiLink("left_bottom", multilink);
+			}
+    </script>    
+</head>
+<body bgcolor="#FFFFFF" onLoad="resizeFrame('');">
+
+<div id="top_left_container">
+		{ACTION}
+</div>
+
+</body>
+</html>

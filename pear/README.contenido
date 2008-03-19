@@ -1,0 +1,4 @@
+This is the bundled PEAR for Contenido. The reason why we bundled PEAR is that
+we are going to move parts of Contenido to PEAR, but we don't want to "loose"
+users of older PHP versions and/or people which providers don't allow PEAR
+stuff.

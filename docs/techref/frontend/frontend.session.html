@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Contenido - Frontend Session Information</title>
+  <style type="text/css">
+body            {
+                    background-color: #ffffff;
+                    scrollbar-face-color:#C6C6D5;
+                    scrollbar-highlight-color:#FFFFFF;
+                    scrollbar-3dlight-color:#747488;
+                    scrollbar-darkshadow-color:#000000;
+                    scrollbar-shadow-color:#334F77;
+                    scrollbar-arrow-color:#334F77;
+                    scrollbar-track-color:#C7C7D6;
+		    font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
+                }
+
+h1 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 20px; color: #000000;
+ margin-top: 0px;
+}
+
+h2 {
+ font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 15px; color: #000000;
+}
+
+  </style>
+</head>
+<body alink="#000099" vlink="#990099" link="#000099"
+ style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<table
+ style="border-bottom: 1px solid; text-align: left; background-color: rgb(255, 255, 255); width: 100%;"
+ border="0" cellspacing="2" cellpadding="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><img
+ style="width: 190px; height: 112px; padding-right: 20px;" align="left"
+ alt="Contenido" src="conlogo.gif">
+      <h1>Frontend Session Information<br>
+      </h1>
+      <table style="text-align: left;" border="0" cellspacing="2"
+ cellpadding="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">Author</td>
+            <td style="vertical-align: top;">Timo A. Hummel</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Created</td>
+            <td style="vertical-align: top;">20th October 2003</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Audience<br>
+            </td>
+            <td style="vertical-align: top;">Module Developers<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">Applies to<br>
+            </td>
+            <td style="vertical-align: top;">Contenido 4.4 or later<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Introduction</h2>
+In order to identify a website visitor, the default Contenido Frontend
+delivers a session mechanism.<br>
+<h2>Concept</h2>
+The frontend automatically stores a cookie including the session ID. As
+the contenido frontend is based on the PHPLIB session management, the
+session ID can always be retrieved by calling $sess-&gt;id as long as
+the $sess object is made global.<br>
+<h2>Why Cookies?</h2>
+This has several reasons. The most important ones are:<br>
+<br>
+- Module developers don't need to care about session ID's, as this is
+managed transparently by the system.<br>
+- There's no need to re-process links that were inserted using the
+WYSIWYG.<br>
+- Users tend to copy'n'paste interesting web sites from the location
+bar. As this usually includes the session, we would no longer be able
+to identify a visitor uniquely.<br>
+<br>
+Drawbacks:<br>
+<br>
+- Some browsers and/or visitors don't like cookies. That makes it
+impossible for us to identify them. However, this is only the minority,
+and I guess we can expect that a visitor has cookies turned on in these
+days, since almost no web application (like shop systems, bulletin
+boards etc) will work without cookies.<br>
+<br>
+Also note that the site will still be browsable - you just can't use
+the session to store data for the frontend.<br>
+<br>
+<h2>Is there some way around cookies?</h2>
+Yes, you can modify the file "local.php" in the conlib directory. Look
+for the class "Contenido_Frontend_Session" (currently on line 137, but
+this might change or has already been changed):<br>
+<br>
+<pre>class Contenido_Frontend_Session extends Session {<br>&nbsp; var $classname = "Contenido_Frontend_Session";<br>&nbsp; var $cookiename&nbsp;&nbsp;&nbsp;&nbsp; = "sid";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ## defaults to classname<br>&nbsp; var $magic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "Phillipip";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ## ID seed<br>&nbsp; var $mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "cookie";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ## We propagate session IDs with cookies<br>&nbsp; var $fallback_mode&nbsp; = "cookie";<br>&nbsp; var $lifetime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ## 0 = do session cookies, else minutes<br>&nbsp; var $that_class&nbsp;&nbsp;&nbsp;&nbsp; = "Contenido_CT_Sql"; ## name of data storage container<br>&nbsp; var $gc_probability = 5; <br></pre>
+<pre>  function Contenido_Frontend_Session ()<br>&nbsp; {<br>&nbsp; &nbsp;&nbsp;&nbsp; global $load_lang, $load_client;<br>      $this-&gt;cookiename = "sid_".$load_client."_".$load_lang;<br>  }<br>}<br><br><br></pre>
+The important variables are "$mode" and "$fallback_mode". Both of these
+can either be "get" or "cookie". Remember that if you set "get", you
+have to rewrite most of your modules (in fact, each module which
+generates or display links). <br>
+<br>
+Remember: Using "get" as frontend session mode is neither supported nor
+recommended - use it on your own risk.<br>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Text_Diff</name>
+  <summary>Engine for performing and rendering text diffs</summary>
+  <description>This package provides a text-based diff engine and renderers for multiple diff output formats.</description>
+  <maintainers>
+    <maintainer>
+      <user>chagenbu</user>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+      <role>lead</role>
+    </maintainer>
+    <maintainer>
+      <user>jon</user>
+      <name>Jon Parise</name>
+      <email>jon@horde.org</email>
+      <role>lead</role>
+    </maintainer>
+    <maintainer>
+      <user>pmjones</user>
+      <name>Paul M Jones</name>
+      <email>pmjones@memphis.edu</email>
+      <role>lead</role>
+    </maintainer>
+    <maintainer>
+      <user>yunosh</user>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>0.1.1</version>
+    <date>2005-08-19</date>
+    <license>LGPL</license>
+    <state>beta</state>
+    <notes>* Restore compatibility with PHP 4.2.0 (PEAR Bug #5152).</notes>
+    <deps>
+      <dep type="php" rel="ge" version="4.2.0"/>
+      <dep type="ext" rel="has" optional="yes">xdiff</dep>
+    </deps>
+    <provides type="class" name="Text_Diff" />
+    <provides type="class" name="Text_Diff3" />
+    <provides type="class" name="Text_MappedDiff" />
+    <provides type="class" name="Text_Diff_Renderer" />
+    <filelist>
+      <file role="php" baseinstalldir="/Text" md5sum="99f2f5eb228255e884451ac7b7af657c" name="Diff.php"/>
+      <file role="php" baseinstalldir="/Text" md5sum="1e2db89feba4c7a8e639dd2e9799fff6" name="Diff3.php"/>
+      <file role="php" baseinstalldir="/Text" md5sum="a24679636cfc2a151b9e71b5a0a82688" name="Diff/Renderer.php"/>
+      <file role="php" baseinstalldir="/Text" md5sum="17f74c9d17de2d7359cb801b00af01a7" name="Diff/Renderer/inline.php"/>
+      <file role="php" baseinstalldir="/Text" md5sum="b824168c08a752686dfffc525a704010" name="Diff/Renderer/unified.php"/>
+      <file role="doc" baseinstalldir="/Text" md5sum="d0e483e9f20738417d7a2a4fa56e074f" name="docs/examples/diff.php"/>
+      <file role="doc" baseinstalldir="/Text" md5sum="5fbdf5388905ed07026b876126aeee5a" name="docs/examples/1.txt"/>
+      <file role="doc" baseinstalldir="/Text" md5sum="011c4dad4506a4843ded1f12cab69909" name="docs/examples/2.txt"/>
+      <file role="test" baseinstalldir="/Text" md5sum="5fbdf5388905ed07026b876126aeee5a" name="tests/1.txt"/>
+      <file role="test" baseinstalldir="/Text" md5sum="011c4dad4506a4843ded1f12cab69909" name="tests/2.txt"/>
+      <file role="test" baseinstalldir="/Text" md5sum="adbb8551c010b970f9feb184a023c79d" name="tests/diff.phpt"/>
+      <file role="test" baseinstalldir="/Text" md5sum="7c2df75e9afc32c9fe4546f0322ebb0d" name="tests/inline.phpt"/>
+      <file role="test" baseinstalldir="/Text" md5sum="3b1e784b27e9215081ec65340bc7621a" name="tests/inline2.phpt"/>
+      <file role="test" baseinstalldir="/Text" md5sum="d9e7d84dd705feb329eca01d142f4145" name="tests/pear_bug4879.phpt"/>
+      <file role="test" baseinstalldir="/Text" md5sum="b8032a56a1ca4086caa4e90e76f1c486" name="tests/unified.phpt"/>
+      <file role="test" baseinstalldir="/Text" md5sum="f71a1255bdc21a43f03ee070df7c99b9" name="tests/unified2.phpt"/>
+    </filelist>
+  </release>
+  <changelog>
+    <release>
+      <version>0.1.0</version>
+      <date>2005-08-16</date>
+      <state>beta</state>
+      <notes>* Fix Renderer::getParams() (PEAR Bug #4549)
+* Encode HTML entities in the inline renderer (Horde Bug #2181)
+* Fix endless loop in inline renderer with certain whitespaces (PEAR Bug #4879)
+</notes>
+    </release>
+    <release>
+      <version>0.0.5</version>
+      <date>2005-05-04</date>
+      <state>beta</state>
+      <notes>* Fixed variable name in Text_MappedDiff.
+* Removed output buffering code.
+* Fixed additional empty lines being added with the inline renderer (Bug 3730).
+* Fixed multiple calls to _endBlock per block (Bug 4065).
+</notes>
+    </release>
+    <release>
+      <version>0.0.4</version>
+      <date>2004-10-13</date>
+      <state>beta</state>
+      <notes>* Generalized Diff Renderer parameter handling.
+* Added an inline renderer contributed by Ciprian Popovici (ciprian@zuavra.net).
+* Fixed PHPDoc.
+* Fixed a PHP 5 incompatibility.
+</notes>
+    </release>
+    <release>
+      <version>0.0.3</version>
+      <date>2004-05-13</date>
+      <state>alpha</state>
+      <notes>Renamed final() and orig() methods to avoid conflict with final keyword in PHP5
+</notes>
+    </release>
+    <release>
+      <version>0.0.2</version>
+      <date>2004-03-16</date>
+      <state>alpha</state>
+      <notes>Added optional xdiff support
+</notes>
+    </release>
+    <release>
+      <version>0.0.1</version>
+      <date>2004-01-09</date>
+      <state>alpha</state>
+      <notes>Initial package release
+</notes>
+    </release>
+  </changelog>
+</package>

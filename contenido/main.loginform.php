@@ -1,0 +1,190 @@
+<?php
+
+/******************************************
+* File      :   main.loginform.php
+* Project   :   Contenido
+* Descr     :   Login form
+*
+*
+* Author    :   Jan Lengowski
+* Created   :   21.01.2003
+* Modified  :   21.01.2003
+*
+* © four for business AG
+******************************************/
+
+global $cfg, $username;
+
+cInclude ("includes", 'functions.i18n.php');
+cInclude ("classes", "class.notification.php");
+
+$noti = "";
+if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
+{
+	$aMessages = array();
+	
+	// Check, if setup folder is still available
+	if (file_exists(dirname(dirname(__FILE__))."/setup"))
+	{
+		$aMessages[] = "The setup directory still exists. Please remove the setup directory before you continue.";	 
+	}
+	
+	// Check, if sysadmin and/or admin accounts are still using well-known default passwords
+	$db   = new DB_Contenido;
+	$sSQL = "SELECT * FROM ".$cfg["tab"]["phplib_auth_user_md5"]." 
+			 WHERE (username = 'sysadmin' AND password = '48a365b4ce1e322a55ae9017f3daf0c0') 
+				 OR (username = 'admin' AND password = '21232f297a57a5a743894a0e4a801fc3')";
+	$db->query($sSQL);
+	
+	if ($db->num_rows() > 0)
+	{
+		$aMessages[] = "The sysadmin and/or the admin account still contains a well-known default password. Please change immediately after login.";
+	}
+	unset ($db);
+
+	if (count($aMessages) > 0)
+	{
+		$notification = new Contenido_Notification;
+		$noti = $notification->messageBox("warning", implode("<br />", $aMessages), 1). "<br />";
+	}
+}
+
+?>
+<html>
+<head>
+		<base href="<?php echo $cfg['path']['contenido_fullhtml'] ?>" />
+    <title>:: :: :: :: Contenido Login</title>
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+		<link REL="SHORTCUT ICON" HREF="<?php echo $cfg["path"]["contenido_fullhtml"]."favicon.ico"; ?>" />    
+    <script type="text/javascript" src="scripts/md5.js"></script>
+    
+    <script type="text/javascript">
+			if(top!=self) 
+			{
+				top.location="index.php";
+			} 
+
+			function doChallengeResponse() 
+			{
+				str = document.login.username.value + ":" +
+        MD5(document.login.password.value) + ":" +
+        document.login.challenge.value;
+
+				document.login.response.value = MD5(str);
+				document.login.password.value = "";
+				document.login.submit();
+				
+			}
+    </script>		
+
+</head>
+<body>
+<div style="border-top: 1px solid #0060b1;"></div>	
+<div id="head">
+	<a id="head_logo" href="http://www.contenido.org"><img title="Contenido Website." alt="Contenido Website." src="images/conlogo.gif" /></a>
+	
+	<div id="head_content" class="left_menu_dist">
+		<div id="head_info" class="left_dist">
+			&nbsp;
+		</div>
+			<form name="login" method="post" action="<?php echo $this->url() ?>">
+			<div id="head_nav1" class="left_dist head_nav_login">
+				
+				<select id="lang" name="belang" tabindex="3" class="text_medium">
+					<?php
+					#cInclude ("includes", 'functions.i18n.php'); 
+
+					$aLangs = i18nStripAcceptLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE']); 
+
+					foreach ($aLangs as $sValue)
+					{
+						$sEncoding = i18nMatchBrowserAccept($sValue);
+						
+						if ($sEncoding !== false)
+						{
+							break; 
+						} 
+					}
+
+					$aAvailableLangs = i18nGetAvailableLanguages();
+					
+					foreach ($aAvailableLangs as $sCode => $aEntry)
+					{
+						if (isset($cfg["login_languages"]))
+						{
+							if (in_array($sCode, $cfg["login_languages"]))
+							{
+								list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
+								
+								if ($sCode == $sEncoding)
+								{
+									$sSelected = ' selected="selected"';
+								} else {
+									$sSelected = '';
+								}
+
+								echo '<option value="'.$sCode.'"'.$sSelected.'>'.$sLanguage.' ('.$sCountry.')</option>';
+							}
+						} else {
+							list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
+							
+							if ($sCode == $sEncoding)
+							{
+								$sSelected = ' selected="selected"';
+							} else {
+								$sSelected = '';
+							}
+							
+							echo '<option value="'.$sCode.'"'.$sSelected.'>'.$sLanguage.' ('.$sCountry.')</option>';
+						}
+					}
+					?>
+					</select>
+                  <label id="lbllang" for="lang">Language:</label>
+                  
+                  <span class="text_medium_bold">Contenido Backend</span>
+				   <label id="lblusername" for="username">Login:</label>
+				   <input id="username" tabindex="1" type="text" class="text_medium" name="username" size="25" maxlength="32" value="<?php echo ( isset($this->auth["uname"]) ) ? $this->auth["uname"] : ""  ?>" />
+                  
+
+				
+			</div>
+			<div id="head_nav2" class="head_nav_login left_dist">
+                <input id="okbutton" tabindex="4" type="image" title="Login" alt="Login" src="images/but_ok.gif" />
+                <div style="float:right; margin-right:25px;" class="text_error">
+                    <?php if ( isset($username) ) { ?>
+                    Invalid Login or Password!
+                    <?php } ?>
+                </div>
+                
+                <span class="text_medium_bold" style="visibility:hidden">Contenido Backend</span>
+                <label id="lblpasswd" for="passwd">Password:</label>
+                <input id="passwd" tabindex="2" type="password" class="text_medium" name="password" size="25" maxlength="32" />
+
+                <input type="hidden" name="vaction" value="login" />
+                <input type="hidden" name="formtimestamp" value="<?php echo time(); ?>" />
+			</div>
+		</form>
+	</div>
+
+	<div id="navcontainer" style="border-top: 1px solid #666666;clear: left;">
+	</div>
+</div>  
+
+<div id="alertbox">
+	<?php echo $noti; ?>
+</div>	
+	
+<script type="text/javascript">
+    if (document.login.username.value == '') 
+    {
+      document.login.username.focus();
+    } 
+    else 
+    {
+    	document.login.password.focus();
+    }
+</script>
+<!-- <?php echo $cfg['datetag']; ?> -->
+</body>
+</html>

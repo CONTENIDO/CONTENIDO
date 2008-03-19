@@ -1,0 +1,51 @@
+<form action="main.php" method="post" name="systemtool" >
+<input type="hidden" name="area" value="{area}" />
+<input type="hidden" name="frame" value="{frame}" />
+<input type="hidden" name="{action_name}" value="{action_value}" />
+<input type="hidden" name="{action2_name}" value="{action2_value}" />
+<input type="hidden" name="contenido" value="{session}" />
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #B3B3B3; border-bottom: 0px; margin: 0px;">
+		<tr valign="top" style="background-color: #E2E2E2;">
+			<th colspan="2" class="textg_medium" style="text-align: left;">{title}</th>
+		</tr>
+		<tr valign="top" style="background-color: #FFFFFF;">
+			<td class="ColAttr" style="text-align: left; padding: 10px;"><p class="text_medium">{notification}</p><p>{warning}</p>{options}{options2}</td>
+		</tr>
+		<tr valign="top" style="background-color: #ffffff;">
+			<td class="ColAttr" style="text-align: right;"><input type="image" name="img" src="images/but_ok.gif" onclick="return confirmAction('i18n("Do you really want to"):', '{confirm}');" title="{title}"/></td>
+		</tr>
+	</table>
+</form>
+<script language="javascript">
+/**
+ * from phpMyAdmin-2.6.3-pl1
+ * Checks/unchecks all tables
+ *
+ * @param   string   the form name
+ * @param   boolean  whether to check or to uncheck the element
+ *
+ * @return  boolean  always true
+ */
+function setCheckboxes(the_form, do_check, the_elements)
+{
+    var elts = (typeof(document.forms[the_form].elements[the_elements]) != 'undefined')
+				? document.forms[the_form].elements[the_elements]
+				: (typeof(document.forms[the_form].elements[the_elements]) != 'undefined')
+				? document.forms[the_form].elements[the_elements]
+				: document.forms[the_form].elements[the_elements];
+    var elts_cnt = (typeof(elts.length) != 'undefined')
+				? elts.length
+				: 0;
+
+    if (elts_cnt) {
+        for (var i = 0; i < elts_cnt; i++) {
+            elts[i].checked = do_check;
+        } 
+    } else {
+        elts.checked = do_check;
+    } 
+
+    return true;
+}
+
+</script>

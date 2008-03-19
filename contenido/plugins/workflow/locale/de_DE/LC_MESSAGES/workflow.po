@@ -1,0 +1,381 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-08-26 13:13+0100\n"
+"Last-Translator: Christian End <che@4fb.de>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: M:\\Projekte_Persoenlich\\timo.hummel\\plugin_sources\\\n"
+"X-Poedit-KeywordsList: i18n\n"
+"X-Poedit-SearchPath-0: workflow\n"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:86
+msgid "Recently edited articles"
+msgstr "Zuletzt bearbeitete Artikel"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:113
+msgid "Change client"
+msgstr "Mandanten wechseln"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:124
+msgid "Welcome"
+msgstr "Willkommen"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:125
+msgid "You are logged in as"
+msgstr "Sie sind angemeldet als"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:126
+msgid "Last login"
+msgstr "Letzter Login"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:168
+#: workflow/includes/functions.workflow.php:34
+#: workflow/includes/functions.workflow.php:285
+#: workflow/includes/config.plugin.php:100
+msgid "None"
+msgstr ""
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:206
+msgid "Article is online"
+msgstr "Artikel ist online"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:209
+msgid "Article is offline"
+msgstr "Artikel ist offline"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:278
+msgid "No article found"
+msgstr "Kein Artikel gefunden"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:325
+msgid "Current workflow tasks"
+msgstr "Aktuelle Workflow Aufgaben"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:468
+msgid "Client"
+msgstr "Mandant"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:469
+msgid "Language"
+msgstr "Sprache"
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:470
+msgid "Article Count"
+msgstr ""
+
+#: workflow/includes/include.workflow_mycontenido_lastarticles.php:490
+msgid "No tasks found"
+msgstr "Keine Aufgabe gefunden"
+
+#: workflow/includes/include.workflow_steps.php:9
+#: workflow/includes/include.workflow_steps.php:354
+msgid "Add User"
+msgstr "Benutzer hinzuf&uuml;gen"
+
+#: workflow/includes/include.workflow_steps.php:47
+msgid "New Workflow Step"
+msgstr "Neuer Workflow Schritt"
+
+#: workflow/includes/include.workflow_steps.php:120
+msgid "Seconds"
+msgstr "Sekunden"
+
+#: workflow/includes/include.workflow_steps.php:120
+msgid "Minutes"
+msgstr "Minuten"
+
+#: workflow/includes/include.workflow_steps.php:120
+msgid "Hours"
+msgstr "Stunden"
+
+#: workflow/includes/include.workflow_steps.php:120
+msgid "Days"
+msgstr "Tage"
+
+#: workflow/includes/include.workflow_steps.php:120
+msgid "Weeks"
+msgstr "Wochen"
+
+#: workflow/includes/include.workflow_steps.php:120
+msgid "Months"
+msgstr "Monate"
+
+#: workflow/includes/include.workflow_steps.php:120
+msgid "Years"
+msgstr "Jahre"
+
+#: workflow/includes/include.workflow_steps.php:172
+msgid "Move step up"
+msgstr "Schritt nach oben bewegen"
+
+#: workflow/includes/include.workflow_steps.php:180
+msgid "Move step down"
+msgstr "Schritt nach unten verschieben"
+
+#: workflow/includes/include.workflow_steps.php:188
+msgid "Delete step"
+msgstr "Schritt l&ouml;schen"
+
+#: workflow/includes/include.workflow_steps.php:220
+msgid "Create new step"
+msgstr "Neuen Schritt erzeugen"
+
+#: workflow/includes/include.workflow_steps.php:255
+msgid "Edit workflow step"
+msgstr "Workflow Schritt bearbeiten"
+
+#: workflow/includes/include.workflow_steps.php:256
+msgid "Step name"
+msgstr "Name des Schritts"
+
+#: workflow/includes/include.workflow_steps.php:257
+msgid "Step description"
+msgstr "Beschreibung des Schritts"
+
+#: workflow/includes/include.workflow_steps.php:264
+msgid "Actions"
+msgstr "Aktionen"
+
+#: workflow/includes/include.workflow_steps.php:265
+msgid "Assigned users"
+msgstr "Zugeordnete Benutzer"
+
+#: workflow/includes/include.workflow_steps.php:295
+msgid "Move user up"
+msgstr "Benutzer nach oben verschieben"
+
+#: workflow/includes/include.workflow_steps.php:303
+msgid "Move user down"
+msgstr "Benutzer nach unten verschieben"
+
+#: workflow/includes/include.workflow_steps.php:312
+msgid "Delete user"
+msgstr "Benutzer l&ouml;schen"
+
+#: workflow/includes/include.workflow_steps.php:318
+msgid "Notify this user via E-Mail"
+msgstr "Diesen Benutzer per e-Mail benachrichtigen"
+
+#: workflow/includes/include.workflow_steps.php:319
+msgid "Escalate to this user via E-Mail"
+msgstr "An diesen Benutzer per e-Mail eskalieren"
+
+#: workflow/includes/include.workflow_left_top.php:8
+#: workflow/includes/config.plugin.php:9
+msgid "Create workflow"
+msgstr "Neuer Workflow"
+
+#: workflow/includes/include.workflow_tasks.php:107
+msgid "Show users"
+msgstr "Zeige Benutzer"
+
+#: workflow/includes/include.workflow_tasks.php:117
+msgid "Article"
+msgstr "Artikel"
+
+#: workflow/includes/include.workflow_tasks.php:118
+#: workflow/includes/include.workflow_edit.php:62
+msgid "Created"
+msgstr "Erstellt"
+
+#: workflow/includes/include.workflow_tasks.php:119
+msgid "Changed"
+msgstr "Ge&auml;ndert"
+
+#: workflow/includes/include.workflow_tasks.php:120
+msgid "Status"
+msgstr "Status"
+
+#: workflow/includes/include.workflow_tasks.php:122
+msgid "Step"
+msgstr "Schritt"
+
+#: workflow/includes/include.workflow_edit.php:49
+msgid "Create new workflow"
+msgstr "Neuer Workflow erzeugen"
+
+#: workflow/includes/include.workflow_edit.php:51
+#: workflow/includes/config.plugin.php:10
+msgid "Edit workflow"
+msgstr "Workflow bearbeiten"
+
+#: workflow/includes/include.workflow_edit.php:59
+msgid "Workflow name"
+msgstr "Workflow Name"
+
+#: workflow/includes/include.workflow_edit.php:60
+msgid "Description"
+msgstr "Beschreibung"
+
+#: workflow/includes/include.workflow_edit.php:61
+msgid "Author"
+msgstr "Autor"
+
+#: workflow/includes/include.workflow_list.php:45
+#: workflow/includes/config.plugin.php:7
+msgid "Delete workflow"
+msgstr "Workflow l&ouml;schen"
+
+#: workflow/includes/include.workflow_list.php:46
+#, php-format
+msgid "Do you really want to delete the following workflow:<br><br>%s<br>"
+msgstr "Wollen Sie wirklich den folgenden Workflow l&ouml;schen:<br><br>%s<br>"
+
+#: workflow/includes/functions.workflow.php:162
+msgid "Confirm"
+msgstr "Best&auml;tigen"
+
+#: workflow/includes/functions.workflow.php:170
+msgid "Back to last editor"
+msgstr "Zur&uuml;ck zum letzten Bearbeiter"
+
+#: workflow/includes/functions.workflow.php:178
+#: workflow/classes/class.workflowactions.php:63
+msgid "Reject article"
+msgstr "Artikel ablehnen"
+
+#: workflow/includes/functions.workflow.php:186
+#: workflow/classes/class.workflowactions.php:67
+msgid "Revise article"
+msgstr "Artikel &uuml;berarbeiten"
+
+#: workflow/includes/functions.workflow.php:273
+msgid "Rejected"
+msgstr "Abgelehnt"
+
+#: workflow/includes/functions.workflow.php:276
+msgid "Revised"
+msgstr "&uuml;berarbeitet"
+
+#: workflow/includes/functions.workflow.php:279
+msgid "Last"
+msgstr "Letzter"
+
+#: workflow/includes/functions.workflow.php:282
+msgid "Confirmed"
+msgstr "Best&auml;tigt"
+
+#: workflow/includes/functions.workflow.php:493
+#: workflow/includes/config.plugin.php:13
+msgid "Inherit workflow down"
+msgstr "Workflow nach unten vererben"
+
+#: workflow/includes/config.plugin.php:8
+msgid "Show workflow"
+msgstr "Workflow zeigen"
+
+#: workflow/includes/config.plugin.php:11
+msgid "Process workflow step"
+msgstr ""
+
+#: workflow/includes/config.plugin.php:12
+msgid "Assign workflow to category"
+msgstr "Workflow einer Kategorie zuordnen"
+
+#: workflow/includes/config.plugin.php:125
+msgid "Workflow"
+msgstr "Workflow"
+
+#: workflow/includes/config.plugin.php:232
+msgid "Workflow Step"
+msgstr "Workflow Schritt"
+
+#: workflow/includes/config.plugin.php:233
+msgid "Workflow Action"
+msgstr "Workflow Aktion"
+
+#: workflow/includes/config.plugin.php:234
+msgid "Workflow Editor"
+msgstr "Workflow Bearbeiter"
+
+#: workflow/includes/config.plugin.php:235
+msgid "Last status"
+msgstr "Letzter Status"
+
+#: workflow/classes/class.workflowusersequence.php:72
+msgid "Workflow item doesn't exist. Can't create entry."
+msgstr ""
+
+#: workflow/classes/class.workflowusersequence.php:98
+#: workflow/classes/class.workflowusersequence.php:107
+#: workflow/classes/class.workflowitems.php:69
+#: workflow/classes/class.workflowitems.php:78
+msgid "Swapping items failed: Item doesn't exist"
+msgstr ""
+
+#: workflow/classes/class.workflowusersequence.php:179
+msgid "Can't set user_id: User or group doesn't exist"
+msgstr ""
+
+#: workflow/classes/class.workflowallocation.php:100
+#: workflow/classes/class.workflowallocation.php:202
+msgid "Category already has a workflow assigned"
+msgstr "Kategorie ist bereits Workflow zugeordnet"
+
+#: workflow/classes/class.workflowallocation.php:109
+#: workflow/classes/class.workflowallocation.php:178
+#: workflow/classes/class.workflowitems.php:221
+msgid "Workflow doesn't exist"
+msgstr "Workflow existiert nicht"
+
+#: workflow/classes/class.workflowallocation.php:212
+msgid "Category doesn't exist, assignment failed"
+msgstr "Kategorie existiert nicht, Zuordnung fehlgeschlagen"
+
+#: workflow/classes/class.workflowitems.php:102
+msgid "Can't add item to workflow: Workflow doesn't exist"
+msgstr ""
+
+#: workflow/classes/class.workflowitems.php:173
+msgid "No item loaded"
+msgstr ""
+
+#: workflow/classes/class.workflowitems.php:198
+msgid "Requested task doesn't exist, can't assign"
+msgstr "Gew&uuml;nschte Aufgabe existiert nicht, Zuordnung nicht m&ouml;glich"
+
+#: workflow/classes/class.workflowitems.php:229
+msgid "Position in this workflow already exists."
+msgstr "Position existiert bereits in diesem Workflow."
+
+#: workflow/classes/class.workflowartallocation.php:56
+msgid "Article doesn't exist"
+msgstr "Artikel existiert nicht."
+
+#: workflow/classes/class.workflowartallocation.php:64
+msgid "Article is already assigned to a usersequence step."
+msgstr "Artikel ist bereits Benutzerschritt zugeordnet."
+
+#: workflow/classes/class.workflowactions.php:60
+msgid "Publish article"
+msgstr "Artikel ver&ouml;ffentlichen"
+
+#: workflow/classes/class.workflowactions.php:61
+msgid "Lock article"
+msgstr "Artikel sperren"
+
+#: workflow/classes/class.workflowactions.php:62
+msgid "Move back to last editor"
+msgstr "Zur&uuml;ck zum letzten Bearbeiter"
+
+#: workflow/classes/class.workflowactions.php:64
+msgid "Edit article content"
+msgstr "Artikelinhalt bearbeiten"
+
+#: workflow/classes/class.workflowactions.php:65
+msgid "Edit article properties"
+msgstr "Artikeleigenschaften bearbeiten"
+
+#: workflow/classes/class.workflowactions.php:66
+msgid "Edit template"
+msgstr "Template bearbeiten"
+
+msgid "Workflow tasks"
+msgstr "Workflow Aufgaben"
+
+msgid "Current Editor"
+msgstr "Verantwortliche(r)"
