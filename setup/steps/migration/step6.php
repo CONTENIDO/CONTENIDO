@@ -1,6 +1,21 @@
 <?php
-checkAndInclude("steps/forms/setupsummary.php");
+/**
+* $RCSfile$
+*
+* Description: Step 6 of installation
+*
+* @version 1.0.0
+* @author Rudi Bieller
+* @copyright four for business AG <www.4fb.de>
+*
+* {@internal
+* created 2008-03-14
+* }}
+*
+* $Id$
+*/
+checkAndInclude("steps/forms/additionalplugins.php");
 
-$cSetupSetupSummary = new cSetupSetupSummary(6, "migration5", "domigration");
+$cSetupSetupSummary = new cSetupAdditionalPlugins(6, "migration5", "migration7");
 $cSetupSetupSummary->render();
 ?>

@@ -12,7 +12,7 @@
 * © four for business AG
 *****************************************/
 
-
+cInclude("includes", "functions.database.php");
 
 function statsDisplayInfo($id, $type, $x, $y, $w, $h)
 {
@@ -121,7 +121,17 @@ function statsOverviewAll($yearmonth)
 	global $cfg, $db, $tpl, $client, $lang;
     
     $sDisplay = 'table-row';
-    
+	
+	$bUseHeapTable = $cfg["statistics_heap_table"];
+	
+	$sHeapTable = $cfg['tab']['stat_heap_table'];
+
+	if ($bUseHeapTable) {
+		if (!dbTableExists ($db, $sHeapTable)) {
+			buildHeapTable ($sHeapTable, $db);
+		}
+	}
+
     if (preg_match('/MSIE/', $_SERVER['HTTP_USER_AGENT'])) {
         $sDisplay = 'block';
     }
@@ -206,25 +216,31 @@ function statsOverviewAll($yearmonth)
         $numberOfArticles = $db2->f(0);
 		$sumNumberOfArticles += $numberOfArticles;
         //************** hits of category total**************
-        if (strcmp($yearmonth,"current") == 0)
-        {
+        if (strcmp($yearmonth,"current") == 0) {
             $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND B.idclient='$client'";
         } else {
-            $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND B.idclient='$client' AND B.archived = ".$yearmonth;
-        }
+			if(!$bUseHeapTable) {
+            	$sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND B.idclient='$client' AND B.archived = ".$yearmonth;
+	        } else {
+	            $sql = "SELECT SUM(visited) FROM ".$sHeapTable." WHERE idcat='$idcat' AND idclient='$client' AND archived = ".$yearmonth;
+	        }
+	    }
         $db2->query($sql);
         $db2->next_record();
 
         $total = $db2->f(0);
 
         //************** hits of category in this language ***************
-        if (strcmp($yearmonth,"current") == 0)
-        {
+        if (strcmp($yearmonth,"current") == 0) {
             $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND B.idlang='$lang' AND B.idclient='$client'";
         } else {
-            $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND B.idlang='$lang' AND B.idclient='$client' AND B.archived = ".$yearmonth;
-        }
-
+			if(!$bUseHeapTable) {
+            	$sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND B.idlang='$lang' AND B.idclient='$client' AND B.archived = ".$yearmonth;
+	        } else {
+	            $sql = "SELECT SUM(visited) FROM ".$sHeapTable." WHERE idcat='$idcat' AND idlang='$lang' AND idclient='$client' AND archived = ".$yearmonth;
+			}
+		}
+				
         $db2->query($sql);
         $db2->next_record();
 
@@ -316,24 +332,32 @@ function statsOverviewAll($yearmonth)
           	$db3 = new DB_contenido;
 
            	//************** hits of art total **************
-           	if (strcmp($yearmonth,"current") == 0)
-           	{
+           	if (strcmp($yearmonth,"current") == 0) {
                 $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND A.idart='$idart' AND B.idclient='$client'";
             } else {
-                $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND A.idart='$idart' AND B.idclient='$client' and B.archived = ".$yearmonth;
+				if(!$bUseHeapTable) {
+	                $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND A.idart='$idart' AND B.idclient='$client' and B.archived = ".$yearmonth;
+	            } else {
+	                $sql = "SELECT SUM(visited) FROM ".$sHeapTable." WHERE idcat='$idcat' AND idart='$idart' AND idclient='$client' and archived = ".$yearmonth;
+	            }
             }
+
             $db3->query($sql);
             $db3->next_record();
 
             $total = $db3->f(0);
 
             //************** hits of art in this language ***************
-            if (strcmp($yearmonth,"current") == 0)
-           	{
+            if (strcmp($yearmonth,"current") == 0) {
           	     $sql = "SELECT visited FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND A.idart='$idart' AND B.idlang='$lang' AND B.idclient='$client'";
           	} else {
-          	     $sql = "SELECT visited FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND A.idart='$idart' AND B.idlang='$lang' AND B.idclient='$client' AND B.archived = ".$yearmonth;
-          	}
+				if(!$bUseHeapTable) {
+          	    	 $sql = "SELECT visited FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='$idcat' AND A.idart='$idart' AND B.idlang='$lang' AND B.idclient='$client' AND B.archived = ".$yearmonth;
+	          	} else {
+    	      	     $sql = "SELECT visited FROM ".$sHeapTable." WHERE idcat='$idcat' AND idart='$idart' AND idlang='$lang' AND idclient='$client' AND archived = ".$yearmonth;
+        		}
+		  	}
+	        
             $db3->query($sql);
             $db3->next_record();
 
@@ -369,12 +393,16 @@ function statsOverviewAll($yearmonth)
     }
 
     //************** hits total**************
-    if (strcmp($yearmonth,"current") == 0)
-    {
-        $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND B.idclient='$client'";
-    } else {
-       $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND B.idclient='$client' AND B.archived = ".$yearmonth;
-    }
+	    if (strcmp($yearmonth,"current") == 0) {
+	        $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND B.idclient='$client'";
+	    } else {
+			if(!$bUseHeapTable) {
+	       		$sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND B.idclient='$client' AND B.archived = ".$yearmonth;
+		    } else {
+		       $sql = "SELECT SUM(visited) FROM ".$sHeapTable." WHERE idclient='$client' AND archived = ".$yearmonth;
+		    }
+	    }
+
     //$sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["stat"]." WHERE idclient='$client'";
     $db->query($sql);
     $db->next_record();
@@ -382,12 +410,16 @@ function statsOverviewAll($yearmonth)
     $total = $db->f(0);
 
     //************** hits total on this language ***************
-    if (strcmp($yearmonth,"current") == 0)
-    {
+    if (strcmp($yearmonth,"current") == 0) {
         $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat"]." AS B WHERE A.idcatart=B.idcatart AND B.idlang='$lang' AND B.idclient='$client'";
     } else {
-        $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND B.idlang='$lang' AND B.idclient='$client' AND B.archived = ".$yearmonth;
-    }
+		if(!$bUseHeapTable) {
+        	$sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND B.idlang='$lang' AND B.idclient='$client' AND B.archived = ".$yearmonth;
+	    } else {
+	        $sql = "SELECT SUM(visited) FROM ".$sHeapTable." WHERE idlang='$lang' AND idclient='$client' AND archived = ".$yearmonth;
+		}
+	}
+	
     $db->query($sql);
     $db->next_record();
 
@@ -1016,11 +1048,31 @@ function statResetStatistic ($client) {
          $db->query($sql);
 }
 
+function buildHeapTable ($sHeapTable, $db) {
+	
+	global $cfg;	
+	
+	$sql = "DROP TABLE IF EXISTS ".$sHeapTable.";";  
+	$db->query($sql); 
+			
+	$sql = "CREATE TABLE ".$sHeapTable." TYPE=HEAP
+				SELECT 
+					A.idcatart,
+					A.idcat,
+					A.idart,
+					B.idstatarch,
+					B.archived,
+					B.idlang,
+					B.idclient,
+					B.visited
+				FROM
+					".$cfg['tab']['cat_art']." AS A, ".$cfg['tab']['stat_archive']." AS B
+				WHERE
+					A.idcatart = B.idcatart;";
+	$db->query($sql); 
 
+	$sql = "ALTER TABLE `".$sHeapTable."` ADD PRIMARY KEY (`idcatart`,`idcat` ,`idart`,`idstatarch` ,`archived`,`idlang`,`idclient` ,`visited`);";  
+	$db->query($sql); 
 
-
-
-
-
-
+}
 ?>

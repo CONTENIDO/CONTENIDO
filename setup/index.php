@@ -105,7 +105,10 @@ switch ($iStep)
 		break;
 	case "setup7":
 		checkAndInclude("steps/setup/step7.php");
-		break;				
+		break;	
+	case "setup8":
+		checkAndInclude("steps/setup/step8.php");
+		break;
 	case "migration1":
 		checkAndInclude("steps/migration/step1.php");
 		break;	
@@ -127,6 +130,9 @@ switch ($iStep)
 	case "migration7":
 		checkAndInclude("steps/migration/step7.php");
 		break;		
+	case "migration8":
+		checkAndInclude("steps/migration/step8.php");
+		break;
 	case "upgrade1":
 		checkAndInclude("steps/upgrade/step1.php");
 		break;	
@@ -145,6 +151,9 @@ switch ($iStep)
 	case "upgrade6":
 		checkAndInclude("steps/upgrade/step6.php");
 		break;			
+	case "upgrade7":
+		checkAndInclude("steps/upgrade/step7.php");
+		break;
 	case "domigration":
 		checkAndInclude("steps/migration/domigration.php");
 		break;			

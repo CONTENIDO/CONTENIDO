@@ -103,6 +103,12 @@ if ($handle = opendir($path))
             	$tpl->set('d', 'DELETE', '');
             }
             
+            if (stripslashes($_REQUEST['file']) == $filename) {
+                $tpl->set('d', 'ID', 'id="marked"');
+            } else {
+                $tpl->set('d', 'ID', '');
+            }
+            
             $tpl->next();
   
        }

@@ -126,6 +126,9 @@ error_reporting (E_ALL ^E_NOTICE);
 /* default container is sql */
 $cfg["session_container"] = 'sql';
 
+/* Use heap table to accelerate statitics (off by default) */
+$cfg["statistics_heap_table"] = false;
+
 /* HTTP parameter check
  * 
  * This feature checks GET and POST parameters against a whitelist defined in

@@ -137,6 +137,8 @@ function getExpandCollapseButton ($item, $catName)
 	$selflink = "main.php";
 	
 	$img = new cHTMLImage;
+    $img->updateAttributes(array ("style" => "padding:4px;"));
+    
 
 	if (count($item->subitems) > 0)
 	{
@@ -458,7 +460,6 @@ if ( $perm->have_perm_area_action($area) ) {
     
     //Fill inline edit table row
     $tpl->set('s', 'SUM_COLUMNS_EDIT', 14+count($listColumns));
-    $tpl->set('s', 'CON_SESS', $sess->id);
     $tpl->set('s', 'ACTION_EDIT_URL', $sess->url("main.php?frame=$frame"));
     $tpl->set('s', 'SRC_CANCEL', $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_cancel.gif');
     $tpl->set('s', 'SRC_OK', $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_ok.gif');
@@ -468,7 +469,6 @@ if ( $perm->have_perm_area_action($area) ) {
     $message = addslashes(i18n("Do you really want to duplicate the following category:<br><br><b>%s</b><br><br>Notice: The duplicate process can take up to several minutes, depending on how many subitems and articles you've got."));
     $tpl->set('s', 'DUPLICATE_MESSAGE', $message);
     $tpl->set('s', 'DELETE_MESSAGE', i18n("Do you really want to delete the following category:<br><br><b>%s</b>"));
-    
 
     $bAreaAddNewCategory = false;
     
@@ -520,7 +520,6 @@ if ( $perm->have_perm_area_action($area) ) {
                 $tpl->set('d', 'MOUSEOVER', '');
                 $tpl->set('d', 'SUM_COLUMNS_EDIT', 14+count($listColumns));
                 $tpl->set('d', 'CATID', '');
-                $tpl->set('d', 'CON_SESS', '');
                 $tpl->set('d', 'ACTION_EDIT_URL', '');
                 $tpl->set('d', 'INPUT_CATEGORY', '');
                 $tpl->set('d', 'LABEL_ALIAS_NAME', '');
@@ -607,7 +606,9 @@ if ( $perm->have_perm_area_action($area) ) {
 
                 $tpl->set('d', 'INDENT', ($value->custom['level'] * 16) . "px");
                 $sCategoryname = $value->name;
-                $sCategoryname = capiStrTrimHard($sCategoryname, 30);
+                if (strlen($value->name) > 30) {
+                    $sCategoryname = capiStrTrimHard($sCategoryname, 30);
+                } 
                 
                 //$tpl->set('d', 'CATEGORY', $sCategoryname);
                 if (strlen($value->name) > 30) {
@@ -619,7 +620,9 @@ if ( $perm->have_perm_area_action($area) ) {
                 $tpl->set('d', 'COLLAPSE_CATEGORY_NAME', getExpandCollapseButton($value, $sCategoryname));
                 if ($value->custom['alias']) {
                         $sCategoryalias = $value->custom['alias'];
-                        $sCategoryalias = capiStrTrimHard($sCategoryalias, 30);
+                        if (strlen($value->custom['alias']) > 30) {
+                            $sCategoryalias = capiStrTrimHard($sCategoryalias, 30);
+                        }
                         $tpl->set('d', 'ALIAS', $sCategoryalias);
                         if (strlen($value->custom['alias']) > 30) {
                             $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', 'onmouseover="Tip(\''.$value->custom['alias'].'\', BALLOON, true, ABOVE, true);"');
@@ -650,7 +653,9 @@ if ( $perm->have_perm_area_action($area) ) {
 			}						
             
             $sTemplatename = $template;
-            $sTemplatename = capiStrTrimHard($sTemplatename, 20);
+            if (strlen($template) > 20) {
+                $sTemplatename = capiStrTrimHard($sTemplatename, 20);
+            }
             
             $tpl->set('d', 'TPLNAME', $sTemplatename);
             $tpl->set('d', 'TPLDESC', $descString);
@@ -852,89 +857,10 @@ if ( $perm->have_perm_area_action($area) ) {
 			$tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $columns));
             $tpl->next();
 
-            /*if ($action === "str_newcat" && !isset($categoryname) && $value->id==$idcat && $perm->have_perm_area_action_item($tmp_area,"str_newcat",$idcat)) {
-
-				$html  = '<table cellspacing="0" cellpadding="0" border="0">';
-                $html .= "<FORM style=\"margin:0px; padding: 0px;\" name=\"addsubcategory\" method=post action=\"".$sess->url("main.php?frame=$frame")."\"><tr><td><a style=\"margin: 0px; padding: 0px;\" class=\"text_medium\" name=newcathere>";
-                $html .= $sess->hidden_session();
-                $html .= "    <INPUT type=hidden name=action VALUE=\"str_newcat\">
-                              <input type=hidden name=send value=1>
-                              <INPUT type=hidden name=idcat VALUE=\"".$value->id."\">
-                              <INPUT type=text class=\"text_medium\" ".'dir="' . langGetTextDirection($lang) . '"'."  name=categoryname></td>";
-                $html2 = "<td><a href=\"$cancel\"><img src=\"".$cfg["path"]["images"]."but_cancel.gif\" border=0></a>
-                              <INPUT type=image src=\"".$cfg["path"]["images"]."but_ok.gif\" border=0></td></tr></table>
-                             </FORM>";
-
-                $html2 .= "  <script language=\"JavaScript\">
-                            <!--
-                                document.addsubcategory.categoryname.focus();
-                            //-->
-                            </script>";
-
-                $tpl->set('d', 'BGCOLOR', $bgcolor);
-                $tpl->set('d', 'BGCOLOR_EDIT', '#F1F1F1');
-                $tpl->set('d', 'CATEGORY', $html.$html2);
-                $tpl->set('d', 'INDENT', '3px');
-                $tpl->set('d', 'RENAMEBUTTON', '&nbsp;');
-                $tpl->set('d', 'NEWCATEGORYBUTTON', '&nbsp;');
-                $tpl->set('d', 'VISIBLEBUTTON', '&nbsp;');
-                $tpl->set('d', 'TPLNAME', '&nbsp;');
-                $tpl->set('d', 'PUBLICBUTTON', '&nbsp;');
-                $tpl->set('d', 'DELETEBUTTON', '&nbsp;');
-                $tpl->set('d', 'UPBUTTON', '&nbsp;');
-                $tpl->set('d', 'MOVEBUTTON', '&nbsp;');
-                $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');
-                $tpl->set('d', 'TEMPLATEBUTTON', '&nbsp;');
-                $tpl->set('d', 'COLLAPSE', '');
-                
-                $additionalColumns = array();
-                
-				foreach ($listColumns as $content)
-				{
-					$additionalColumns[] = '<td style="white-space: nowrap; border: 0px; border-right: 1px; border-color: #B3B3B3; border-style: solid;" nowrap="nowrap">&nbsp;</td>';
-				}	      
-				$tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $additionalColumns));                    
-                $tpl->next();
-
-            }*/
 
         }//end if -> perm
 
     }
-
-    /*if (($treename == "") && ($action==="str_newtree") && ($perm->have_perm_area_action($tmp_area,"str_newtree"))) {
-        $html  = "<a name=newtreehere><FORM style=\"margin:0px\" name=\"newtree\" method=post action=\"".$sess->url("main.php?frame=$frame")."\">
-                 ";
-        $html .= $sess->hidden_session();
-        $html .= "<INPUT type=hidden name=action VALUE=\"str_newtree\">
-                  <INPUT type=text name=treename>";
-        $html2 = "<a href=\"$cancel\"><img src=\"".$cfg["path"]["images"]."but_cancel.gif\" border=0></a>
-                  <INPUT type=image src=\"".$cfg["path"]["images"]."but_ok.gif\" border=0>
-                  </FORM>";
-
-        $html2 .= "<script language=\"JavaScript\">
-                      document.newtree.treename.focus();
-                  </script>";
-
-        $tpl->set('d', 'BGCOLOR', $bgcolor);
-        $tpl->set('d', 'BGCOLOR_EDIT', '#F1F1F1');
-        $tpl->set('d', 'CATEGORY', $html);
-        $tpl->set('d', 'INDENT', '3px');
-        $tpl->set('d', 'ALIAS', '');
-        $tpl->set('d', 'RENAMEBUTTON', '&nbsp;');
-        $tpl->set('d', 'NEWCATEGORYBUTTON', $html2);
-        $tpl->set('d', 'TPLNAME', '&nbsp;');
-        $tpl->set('d', 'VISIBLEBUTTON', '&nbsp;');
-        $tpl->set('d', 'PUBLICBUTTON', '&nbsp;');
-        $tpl->set('d', 'DELETEBUTTON', '&nbsp;');
-        $tpl->set('d', 'UPBUTTON', '&nbsp;');
-        $tpl->set('d', 'MOVEBUTTON', '&nbsp;');
-        $tpl->set('d', 'DUPLICATEBUTTON', '&nbsp;');
-        $tpl->set('d', 'COLLAPSE', '');
-        $tpl->set('d', 'TEMPLATEBUTTON', '&nbsp;');
-        $tpl->set('d', 'ADDITIONALCOLUMNS', '');
-        $tpl->next();
-    }*/
     
     $jsDataArray = "";
     foreach ($aInlineEditData as $iIdCat => $aData) {
@@ -956,9 +882,40 @@ if ( $perm->have_perm_area_action($area) ) {
     $sImagepath = $cfg["path"]["images"];
     $tpl->set('s', 'SUM_COLUMNS', 14+count($listColumns));
     $tpl->set('s', 'HREF_ACTION', $sess->url("main.php?frame=$frame"));
-    $tpl->set('s', 'CON_SESS', $sess->id);
     $tpl->set('s', 'CON_IMAGES', $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]);
+    
+    $oSession = new cHTMLHiddenField ($sess->name, $sess->id);
+    $oActionEdit = new cHTMLHiddenField ('action', 'str_renamecat');
+    $oIdcat = new cHTMLHiddenField ('idcat');
+    
+    $tpl->set('s', 'INPUT_SESSION', $oSession->render());
+    $tpl->set('s', 'INPUT_ACTION_EDIT', $oActionEdit->render());
+    $tpl->set('s', 'INPUT_IDCAT', $oIdcat->render());
+    
+    $oVisible = new cHTMLHiddenField ('visible', 0, 'visible_input');
+    $oPublic = new cHTMLHiddenField ('public', 1, 'public_input');
+    $oTemplate = new cHTMLHiddenField ('idtplcfg', 0, 'idtplcfg_input');
+    
+    $tpl->set('s', 'INPUT_VISIBLE', $oVisible->render());
+    $tpl->set('s', 'INPUT_PUBLIC', $oPublic->render());
+    $tpl->set('s', 'INPUT_TEMPLATE', $oTemplate->render());
+    
+    $oCatName = new cHTMLTextbox ('categoryname', '', '', '', 'cat_categoryname');
+    $oCatName->setStyle('width:150px; vertical-align:middle;');
+    $tpl->set('s', 'INPUT_CATNAME_NEW', $oCatName->render());
+    
+    $oAlias = new cHTMLTextbox ('categoryalias');
+    $oAlias->setStyle('width:150px; vertical-align:middle;');
+    $tpl->set('s', 'INPUT_ALIAS_NEW', $oAlias->render());
 
+    $oNewCatName = new cHTMLTextbox ('newcategoryname');
+    $oNewCatName->setStyle('width:150px; vertical-align:middle;');
+    $tpl->set('s', 'INPUT_CATNAME_EDIT', $oNewCatName->render());
+    
+    $oNewAlias = new cHTMLTextbox ('newcategoryalias');
+    $oNewAlias->setStyle('width:150px; vertical-align:middle;');
+    $tpl->set('s', 'INPUT_ALIAS_EDIT', $oNewAlias->render());     
+    
     $sCategorySelect = buildCategorySelectRights('idcat', '');
 
     # Show Layerbutton for adding new Cateogries and set options according to Permisssions
@@ -968,11 +925,12 @@ if ( $perm->have_perm_area_action($area) ) {
         if ($perm->have_perm_area_action($tmp_area,"str_newtree")) {
             if ($perm->have_perm_area_action($tmp_area,"str_newcat") || $bAreaAddNewCategory) {
                 $tpl->set('s', 'PERMISSION_NEWTREE', '');
-                $tpl->set('s', 'NEW_ACTION', 'str_newcat');
+                $oActionNew = new cHTMLHiddenField ('action', 'str_newcat', 'cat_new_action');
             } else {
                 $tpl->set('s', 'PERMISSION_NEWTREE', 'disabled checked');
-                $tpl->set('s', 'NEW_ACTION', 'str_newtree');
+                $oActionNew = new cHTMLHiddenField ('action', 'str_newcat', 'str_newtree');
             }
+            $tpl->set('s', 'INPUT_ACTION_NEW', $oActionNew->render());
             $tpl->set('s', 'PERMISSION_NEWTREE_DISPLAY', 'block');
             
         } else {        

@@ -1,6 +1,6 @@
 <table cellspacing="0" cellpadding="0" border="0" class="setupBodyOuterTable">
 <tr>
-	<td valign="top" colspan="2">
+	<td valign="top" colspan="2" style="height:70px;">
 		<h1>{TITLE}</h1>
 		{DESCRIPTION}
 	</td>

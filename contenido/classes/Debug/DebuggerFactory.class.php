@@ -27,6 +27,10 @@ class DebuggerFactory {
                 include_once('Debug_Hidden.class.php');
                 $oDebugger = Debug_Hidden::getInstance();
                 break;
+            case 'file':
+                include_once('Debug_File.class.php');
+                $oDebugger = Debug_File::getInstance();
+                break;
             default:
                 throw new InvalidArgumentException('This type of debugger is unknown to DebuggerFactory');
                 break;

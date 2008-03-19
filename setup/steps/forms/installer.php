@@ -16,20 +16,20 @@ class cSetupInstaller extends cSetupMask
 			case "setup":
 				$this->_oStepTemplate->set("s", "DONEINSTALLATION", i18n("Setup completed installing. Click on next to continue."));
 				$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Setup is installing, please wait..."));			
-				$_SESSION["upgrade_nextstep"] = "setup7";
-				$this->setNavigation("", "setup7");
+				$_SESSION["upgrade_nextstep"] = "setup8";
+				$this->setNavigation("", "setup8");
 				break;
 			case "upgrade":
 				$this->_oStepTemplate->set("s", "DONEINSTALLATION", i18n("Setup completed upgrading. Click on next to continue."));
 				$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Setup is upgrading, please wait..."));			
-				$_SESSION["upgrade_nextstep"] = "ugprade6";
-				$this->setNavigation("", "upgrade6");
+				$_SESSION["upgrade_nextstep"] = "ugprade7";
+				$this->setNavigation("", "upgrade7");
 				break;
 			case "migration":
 				$this->_oStepTemplate->set("s", "DONEINSTALLATION", i18n("Setup completed migration. Click on next to continue."));
 				$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Setup is migrating, please wait..."));			
-				$_SESSION["upgrade_nextstep"] = "migration7";
-				$this->setNavigation("", "migration7");
+				$_SESSION["upgrade_nextstep"] = "migration8";
+				$this->setNavigation("", "migration8");
 				break;
 		}
 

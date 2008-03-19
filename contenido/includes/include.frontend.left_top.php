@@ -188,7 +188,7 @@ $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
 
 $content = '<div style="margin-left: 17px;">';
 // Ye stuff will be done in javascript on apply button
-$content .= '<form action="'.$sess->url("main.php").' id="filter" name="filter" method="get">';
+$content .= '<form action="'.$sess->url("main.php").'" id="filter" name="filter" method="get">';
 $content .= '<table>';
 $content .= '<input type="hidden" name="area" value="'.$area.'">';
 $content .= '<input type="hidden" name="frame" value="1">';

@@ -117,6 +117,8 @@ $oListOptionRow->setContentData($content);
 # Pager
 #######
 $cApiModuleCollection	= new cApiModuleCollection;
+$cApiModuleCollection->setWhere("idclient", $client);
+
 $cApiModuleCollection->query();
 $iItemCount = $cApiModuleCollection->count();
 

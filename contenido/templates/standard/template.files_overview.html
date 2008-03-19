@@ -11,7 +11,7 @@
 
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
     <!-- BEGIN:BLOCK -->
-    <tr style="background-color: {BGCOLOR}" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+    <tr {ID} style="background-color: {BGCOLOR}" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
 				<td><img alt="" width="10" src="images/spacer.gif"></td>
         <td>
             <table width="100%" cellspacing="0" cellpadding="3" border="0">
@@ -27,4 +27,9 @@
 </table>
 
 </body>
+<script language="javascript">
+    if (document.getElementById('marked')) {
+        row.click(document.getElementById('marked'));
+    }
+</script>
 </html> 

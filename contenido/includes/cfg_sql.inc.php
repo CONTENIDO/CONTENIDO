@@ -81,4 +81,5 @@ $cfg["tab"]["dbfs"] 						   = $cfg['sql']['sqlprefix']."_dbfs";
 $cfg["tab"]["chartable"]					   = $cfg['sql']['sqlprefix']."_chartable";
 $cfg["tab"]["upl_meta"]					       = $cfg['sql']['sqlprefix']."_upl_meta";
 $cfg["tab"]["online_user"]					   = $cfg['sql']['sqlprefix']."_online_user";
+$cfg["tab"]["stat_heap_table"]					= $cfg['sql']['sqlprefix']."_stat_heap_table";
 ?>

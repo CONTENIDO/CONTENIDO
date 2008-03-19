@@ -18,14 +18,20 @@ cInclude("classes", "class.properties.php");
 
 $page = new cPage;
 
-$sReloadScript = "<script type=\"text/javascript\">
-                     var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                     if (left_bottom) {
-                         var href = left_bottom.location.href;
-                         left_bottom.location.href = href+'&frontenduser='+".$idfrontenduser.";
+if ($idfrontenduser) {
+    $sReloadScript = "<script type=\"text/javascript\">
+                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+                         if (left_bottom) {
+                             var href = left_bottom.location.href;
+                             href = href.replace(/&frontenduser.*/, '');
+                             left_bottom.location.href = href+'&frontenduser='+".$idfrontenduser.";
 
-                     }
-                 </script>";
+                         }
+                     </script>";
+} else {
+    $sReloadScript = "";
+}
+                 
 
 $feusers = new FrontendUserCollection;
 

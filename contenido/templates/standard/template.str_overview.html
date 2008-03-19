@@ -107,27 +107,27 @@
 <body style="margin:10px">
 <script type="text/javascript" src="scripts/wz_tooltip.js"></script>
 <script type="text/javascript" src="scripts/tip_balloon.js"></script>
-
+<!-- catnewlayer -->
 <div id="cat_edit" class="cat_new_layer">
    <form style="margin:0px" name="newtree" method="post" action="{HREF_ACTION}" onsubmit="return checkForm();">
        <div class="cat_spacer"></div>
-       <input type="hidden" name="action" value="{NEW_ACTION}" id="cat_new_action"/>
-       <input type="hidden" name="contenido" value="{CON_SESS}" />
+       {INPUT_ACTION_NEW}
+       {INPUT_SESSION}
        
        <div class="cat_label">i18n("Category")</div>
-       <div class="cat_input"><input type="text" class="text_medium"  style="width:150px; vertical-align:middle;" id="cat_categoryname" name="categoryname"></div>
+       <div class="cat_input">{INPUT_CATNAME_NEW}</div>
        <div class="cat_icon">
            {MAKEVISIBLE_BUTTON_NEW}
-           <input type="hidden" name="visible" value="0" id="visible_input">
+           {INPUT_VISIBLE}
        </div>
        <div class="cat_icon_text" id="visible_label">i18n('Make online')</div>
        <div class="cat_end_row"></div>
        
        <div class="cat_label">i18n("Alias")</div>
-       <div class="cat_input"><input class="text_medium" type="text" style="width:150px;" name="categoryalias"></div>
+       <div class="cat_input">{INPUT_ALIAS_NEW}</div>
        <div class="cat_icon">
            {MAKEPUBLIC_BUTTON_NEW}
-           <input type="hidden" name="public" value="1" id="public_input">
+           {INPUT_PUBLIC}
        </div>
        <div class="cat_icon_text" id="public_label">i18n("Protect category")</div>
        <div class="cat_end_row"></div>
@@ -136,7 +136,7 @@
        <div class="cat_input">&nbsp;</div>
        <div class="cat_icon">
            {TEMPLATE_BUTTON_NEW}
-           <input type="hidden" name="idtplcfg" value="0" id="idtplcfg_input">
+           {INPUT_TEMPLATE}
        </div>
        <div class="cat_icon_text">i18n("Configure category")</div>
        <div class="cat_end_row"></div>
@@ -172,10 +172,12 @@
    </form>
 </div>
 
+<!-- hidelayer for catnewlayer -->
 <div id="cat_new_layer_disable" class="cat_new_layer_disable" style="background-color:transparent">
     <img src="{CON_IMAGES}spacer.gif" id="cat_new_layer_disable_image">
 </div>
 
+<!-- layer for template selection when a new category is created -->
 <div id="cat_set_template_layer" class="cat_set_template">
     <div class="cat_spacer"></div>
     <div class="cat_label">i18n('Template')</div>
@@ -193,6 +195,7 @@
     <div class="cat_spacer"></div>
 </div>
 
+<!-- Begin listing of existing categories -->
 <table  cellspacing="0" id="category_list">
      <tr class="textg_medium">
         <td colspan="{SUM_COLUMNS}" id="cat_navbar">
@@ -221,19 +224,20 @@
         </td>
         {ADDITIONALHEADERS}
     </tr>
+    <!-- layer for inline editing of existing categories -->
     <tr style="background-color: {BGCOLOR_EDIT};" id="cat_inline_layer">
         <form name="renamecategory" method="post" action="{ACTION_EDIT_URL}">       
-            <input type="hidden" name="action" value="str_renamecat" />
-            <input type="hidden" name="idcat" value="" />
-            <input type="hidden" name="contenido" value="{CON_SESS}" />
+            {INPUT_ACTION_EDIT}
+            {INPUT_IDCAT}
+            {INPUT_SESSION}
     
             <td class="str-style-a" valign="middle">&nbsp;</td>
             <td colspan="{SUM_COLUMNS_EDIT}" class="str-style-c" style="padding-left:15px; vertical-align:middle;">
                 
-                <span id="cat_name">i18n('Categoryname') &nbsp; <input  class="text_medium" type="text" style="width:150px; vertical-align:middle;" name="newcategoryname"><span style="padding-left:15px;">&nbsp;</span></span>
+                <span id="cat_name">i18n('Categoryname') &nbsp; {INPUT_CATNAME_EDIT}<span style="padding-left:15px;">&nbsp;</span></span>
                 
                 {LABEL_ALIAS_NAME}  
-                <input  class="text_medium" type="text" style="width:150px; vertical-align:middle;" name="newcategoryalias" value="">
+                {INPUT_ALIAS_EDIT}
                 <span style="padding-left:15px;">&nbsp;</span>
                 
                 <span id="tpl_cfg"><a href="{TEMPLATE_URL}" id="tplcfg_href"><img src="images/template_properties.gif" title="i18n('Configure category')" alt="i18n('Configure category')" border="0" style="vertical-align:middle"> &nbsp; i18n('Configure category')</a><span style="padding-left:15px;">&nbsp;</span></span>

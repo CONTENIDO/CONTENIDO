@@ -6,7 +6,7 @@
 <div id="choosenList">
 	<ul id="choosenValues">
 	</ul>
-	<br /><a href="javascript:removeAll();">Remove all</a>
+	<br /><a href="javascript:removeAll();">{REMOVE_ALL}</a>
 </div>
 {DIV}
 </form>
@@ -26,7 +26,7 @@ function addToList(obj) {
 			text = obj.nextSibling.innerHTML;	
 		}
 		
-		var removeLink = "<a href=\"javascript:removeFromList("+elmId+")\">[remove]</a> " + text;
+		var removeLink = "<a href=\"javascript:removeFromList("+elmId+")\">[{REMOVE}]</a> " + text;
 	
 		listelm = document.createElement("LI");
 		listelm.innerHTML = removeLink;

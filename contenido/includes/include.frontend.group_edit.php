@@ -21,6 +21,7 @@ if ($idfrontendgroup) {
                          var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
                          if (left_bottom) {
                              var href = left_bottom.location.href;
+                             href = href.replace(/&idfrontendgroup.*/, '');
                              left_bottom.location.href = href+'&idfrontendgroup='+".$idfrontendgroup.";
 
                          }

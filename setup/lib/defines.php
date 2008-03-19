@@ -5,13 +5,13 @@ if (array_key_exists("setuptype", $_SESSION))
 	switch ($_SESSION["setuptype"])
 	{
 		case "setup":
-			define("C_SETUP_STEPS", 7);	
+			define("C_SETUP_STEPS", 8);	
 			break;
 		case "upgrade":
-			define("C_SETUP_STEPS", 6);
+			define("C_SETUP_STEPS", 7);
 			break;
 		case "migration":
-			define("C_SETUP_STEPS", 7);
+			define("C_SETUP_STEPS", 8);
 			break;
 	}
 }

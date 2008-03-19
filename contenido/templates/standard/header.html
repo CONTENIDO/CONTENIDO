@@ -51,7 +51,8 @@
             show.apply(oThis, [currentActiveSubmenusId, document.getElementById(currentActiveMenuId)]);            
             
         }
-				
+		
+		//platform independent function for adding events to objects
         function addEvent (elm, type, fnc) 
         {
         	if (window.addEventListener) 
@@ -63,7 +64,8 @@
         		elm.attachEvent("on" + type, fnc);
         	}
         }
-
+        
+        //adding events to menu an submenu items in navigation (events for a tags)
         function addHooks() 
         {
           var menuLinksLevel1 = document.getElementById('head_nav1').getElementsByTagName('a');
@@ -78,9 +80,9 @@
 					// Hooks for menu level 2
           for(var i = 0; i < menuLinksLevel2.length; i++)
           {
- 						addEvent(menuLinksLevel2[i], "click", markActive);
- 						addEvent(menuLinksLevel2[i], "mouseover", submenuStopMainTimer);
- 						addEvent(menuLinksLevel2[i], "mouseout", deactivateMenu);
+            addEvent(menuLinksLevel2[i], "click", markActive);
+            addEvent(menuLinksLevel2[i], "mouseover", submenuStopMainTimer);
+            addEvent(menuLinksLevel2[i], "mouseout", deactivateMenu);
           }
         }
         

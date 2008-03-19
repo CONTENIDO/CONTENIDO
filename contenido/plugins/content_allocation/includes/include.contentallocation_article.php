@@ -73,6 +73,9 @@ if ($result === false) {
 	$tpl->set('s', 'DIV', '<br>' . $oDiv->render());
 	
 	$tpl->set('s', 'TREE', $result);
+
+	$tpl->set('s', 'REMOVE_ALL', i18n("Remove all"));
+	$tpl->set('s', 'REMOVE', i18n("Remove"));
 	
 	$result = $tpl->generate($cfg['pica']['treetemplate_complexlist'], true);
 	

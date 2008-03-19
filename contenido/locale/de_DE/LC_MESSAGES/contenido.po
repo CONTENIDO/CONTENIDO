@@ -2062,7 +2062,7 @@ msgstr "Kategorie"
 #: contenido/includes/rights_con.inc.php:131
 #: contenido/includes/rights_str.inc.php:124
 msgid "Apply rights for this category to all categories on the same level or above"
-msgstr "Rechte dieser Kategorie allen Kategorien auf derselben Ebene oder dar&uuml;ber zuweisen"
+msgstr "Rechte dieser Kategorie allen Kategorien auf derselben Ebene oder darüber zuweisen"
 
 # e:\timo\contenido_head/contenido/includes/grouprights_con.inc.php:140
 # e:\timo\contenido_head/contenido/includes/grouprights_str.inc.php:132
@@ -5878,3 +5878,9 @@ msgstr "Pluginrechte / Andere Rechte"
 
 msgid "Add frontendusers"
 msgstr "Frontendbenutzer hinzuf&uuml;gen"
+
+msgid "Remove"
+msgstr "Entfernen"
+
+msgid "Remove all"
+msgstr "Alle entfernen"

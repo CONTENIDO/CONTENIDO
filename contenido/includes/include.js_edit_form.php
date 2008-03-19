@@ -41,6 +41,20 @@ if (!$perm->have_perm_area_action($area, $action))
     {
     	$sFilename .= stripslashes($_REQUEST['file']);
     }
+    
+    if (stripslashes($_REQUEST['file'])) {
+        $sReloadScript = "<script type=\"text/javascript\">
+                             var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+                             if (left_bottom) {
+                                 var href = left_bottom.location.href;
+                                 href = href.replace(/&file.*/, '');
+                                 left_bottom.location.href = href+'&file='+'".$sFilename."';
+
+                             }
+                         </script>";
+    } else {
+        $sReloadScript = "";
+    }
         
 	# create new file
     if ( $_REQUEST['action'] == $sActionCreate AND $_REQUEST['status'] == 'send')
@@ -96,7 +110,7 @@ if (!$perm->have_perm_area_action($area, $action))
         $form->add(i18n("Code"),$ta_code);            
         
         $page->setContent($form->render());
-        $page->setReload();
+        $page->addScript('reload', $sReloadScript);
     	$page->render();  
     	  
     }

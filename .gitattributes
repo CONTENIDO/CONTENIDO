@@ -123,10 +123,12 @@ contenido/classes/Contenido_FrontendNavigation/Contenido_Frontend_Navigation.cla
 contenido/classes/Contenido_FrontendNavigation/Contenido_Frontend_Navigation_Base.class.php -text
 contenido/classes/Contenido_FrontendNavigation/Contenido_Frontend_Navigation_Breadcrumb.class.php -text
 contenido/classes/Contenido_FrontendNavigation/Sample.php -text
+contenido/classes/Debug/Debug_File.class.php -text
 contenido/classes/Debug/Debug_Hidden.class.php -text
 contenido/classes/Debug/Debug_Visible.class.php -text
 contenido/classes/Debug/DebuggerFactory.class.php -text
 contenido/classes/Debug/IDebug.php -text
+contenido/classes/Debug/Sample.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilder.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilderConfig.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php -text
@@ -3537,6 +3539,7 @@ setup/lib/release.xml -text
 setup/locale/de_DE/LC_MESSAGES/contenido.mo -text
 setup/locale/de_DE/LC_MESSAGES/contenido.po -text
 setup/makeconfig.php -text
+setup/steps/forms/additionalplugins.php -text
 setup/steps/forms/clientadjust.php -text
 setup/steps/forms/clientmode.php -text
 setup/steps/forms/configmode.php -text
@@ -3555,6 +3558,7 @@ setup/steps/migration/step4.php -text
 setup/steps/migration/step5.php -text
 setup/steps/migration/step6.php -text
 setup/steps/migration/step7.php -text
+setup/steps/migration/step8.php -text
 setup/steps/notinstallable.php -text
 setup/steps/setup/doinstall.php -text
 setup/steps/setup/step1.php -text
@@ -3564,6 +3568,7 @@ setup/steps/setup/step4.php -text
 setup/steps/setup/step5.php -text
 setup/steps/setup/step6.php -text
 setup/steps/setup/step7.php -text
+setup/steps/setup/step8.php -text
 setup/steps/setuptype.php -text
 setup/steps/upgrade/doupgrade.php -text
 setup/steps/upgrade/step1.php -text
@@ -3572,12 +3577,14 @@ setup/steps/upgrade/step3.php -text
 setup/steps/upgrade/step4.php -text
 setup/steps/upgrade/step5.php -text
 setup/steps/upgrade/step6.php -text
+setup/steps/upgrade/step7.php -text
 setup/style/setup.css -text
 setup/templates/cfoldablerow.tpl -text
 setup/templates/config.php.tpl -text
 setup/templates/crow.tpl -text
 setup/templates/languagechooser.tpl -text
 setup/templates/setup.tpl -text
+setup/templates/setup/forms/additionalplugins.tpl -text
 setup/templates/setup/forms/clientmode.tpl -text
 setup/templates/setup/forms/configmode.tpl -text
 setup/templates/setup/forms/configmodewopass.tpl -text

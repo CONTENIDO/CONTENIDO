@@ -1,6 +1,6 @@
 <?php
-checkAndInclude("steps/forms/setupresults.php");
+checkAndInclude("steps/forms/setupsummary.php");
 
-$cSetupResults = new cSetupResults(6);
-$cSetupResults->render();
+$cSetupSetupSummary = new cSetupSetupSummary(6, "upgrade5", "doupgrade");
+$cSetupSetupSummary->render();
 ?>

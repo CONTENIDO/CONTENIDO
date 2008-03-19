@@ -1,6 +1,6 @@
 <?php
 checkAndInclude("steps/forms/installer.php");
 
-$cSetupInstaller = new cSetupInstaller(6);
+$cSetupInstaller = new cSetupInstaller(7);
 $cSetupInstaller->render();
 ?>

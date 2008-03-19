@@ -22,6 +22,7 @@ class pApiContentAllocation {
 	var $db = null;
 	var $table = null;
 	var $lang = null;
+	var $client = null;
 
 	var $treeObj = null;
 
@@ -36,7 +37,7 @@ class pApiContentAllocation {
 		$this->table = $cfg['tab'];
 		$this->lang = $lang;
 		$this->client = $client;
-		
+
 		# use this option carefully and only temporary.
 		# the hidden debug output as html-comments can cause display problems. 
 		$this->bDebug = false;
@@ -79,7 +80,14 @@ class pApiContentAllocation {
 	}
 	
 	function loadAllocationsWithNames ($idartlang, $parent, $firstonly = false) {
-		$sql = "SELECT pica_alloc.idpica_alloc FROM pica_alloc INNER JOIN pica_alloc_con ON pica_alloc.idpica_alloc = pica_alloc_con.idpica_alloc WHERE (pica_alloc.parentid = $parent) AND (pica_alloc_con.idartlang=$idartlang) ORDER BY pica_alloc.sortorder";
+		
+		global $cfg;
+		
+		$sql = "SELECT ".$cfg['tab']['pica_alloc'].".idpica_alloc FROM ".$cfg['tab']['pica_alloc']." 
+					INNER JOIN ".$cfg['tab']['pica_alloc_con']." ON 
+					".$cfg['tab']['pica_alloc'].".idpica_alloc = ".$cfg['tab']['pica_alloc_con'].".idpica_alloc 
+					WHERE (".$cfg['tab']['pica_alloc'].".parentid = $parent) AND (".$cfg['tab']['pica_alloc_con'].".idartlang=$idartlang) 
+					ORDER BY ".$cfg['tab']['pica_alloc'].".sortorder";
 		
 		$this->db->query($sql);
 
@@ -118,7 +126,13 @@ class pApiContentAllocation {
 	 */
 	function _buildQuery ($restrictions, $aCategoriesToExclude, $max) {
 		
+		global $cfg;
+		
 		$size = sizeof($restrictions);
+		
+		if ($size == 0) {
+			return '';
+		}
 		
 		$sql_concat = unserialize('a:78:{i:0;s:2:"aa";i:1;s:2:"ab";i:2;s:2:"ac";i:3;s:2:"ad";i:4;s:2:"ae";i:5;s:2:"af";i:6;s:2:"ag";i:7;s:2:"ah";i:8;s:2:"ai";i:9;s:2:"aj";i:10;s:2:"ak";i:11;s:2:"al";i:12;s:2:"am";i:13;s:2:"an";i:14;s:2:"ao";i:15;s:2:"ap";i:16;s:2:"aq";i:17;s:2:"ar";i:18;s:2:"as";i:19;s:2:"at";i:20;s:2:"au";i:21;s:2:"av";i:22;s:2:"aw";i:23;s:2:"ax";i:24;s:2:"ay";i:25;s:2:"az";i:26;s:2:"ca";i:27;s:2:"cb";i:28;s:2:"cc";i:29;s:2:"cd";i:30;s:2:"ce";i:31;s:2:"cf";i:32;s:2:"cg";i:33;s:2:"ch";i:34;s:2:"ci";i:35;s:2:"cj";i:36;s:2:"ck";i:37;s:2:"cl";i:38;s:2:"cm";i:39;s:2:"cn";i:40;s:2:"co";i:41;s:2:"cp";i:42;s:2:"cq";i:43;s:2:"cr";i:44;s:2:"cs";i:45;s:2:"ct";i:46;s:2:"cu";i:47;s:2:"cv";i:48;s:2:"cw";i:49;s:2:"cx";i:50;s:2:"cy";i:51;s:2:"cz";i:52;s:1:"a";i:53;s:1:"b";i:54;s:1:"c";i:55;s:1:"d";i:56;s:1:"e";i:57;s:1:"f";i:58;s:1:"g";i:59;s:1:"h";i:60;s:1:"i";i:61;s:1:"j";i:62;s:1:"k";i:63;s:1:"l";i:64;s:1:"m";i:65;s:1:"n";i:66;s:1:"o";i:67;s:1:"p";i:68;s:1:"q";i:69;s:1:"r";i:70;s:1:"s";i:71;s:1:"t";i:72;s:1:"u";i:73;s:1:"v";i:74;s:1:"w";i:75;s:1:"x";i:76;s:1:"y";i:77;s:1:"z";}');
 		
@@ -129,16 +143,16 @@ class pApiContentAllocation {
 
 		for ($i = 0; $i < $size; $i++) {
 			if ($i == 0) { // first
-				$tables[] = " pica_alloc_con AS " . $sql_concat[$i];
+				$tables[] = " ".$cfg['tab']['pica_alloc_con']." AS " . $sql_concat[$i];
 			} else {
-				$tables[] = " LEFT JOIN pica_alloc_con AS " . $sql_concat[$i] . " USING (idartlang)";
+				$tables[] = " LEFT JOIN ".$cfg['tab']['pica_alloc_con']." AS " . $sql_concat[$i] . " USING (idartlang)";
 			}
 			if (is_int((int)$restrictions[$i]) AND $restrictions[$i] > 0)
 			{
 				$where[] =  $sql_concat[$i] . ".idpica_alloc = " . $restrictions[$i];
 			}
 		}
-		
+
 		# fetch only articles which are online
 		$where[] = 'cal.online = 1';	
 		
@@ -198,7 +212,7 @@ class pApiContentAllocation {
 		}	
 		
 		$sql = $this->_buildQuery_MatchingContentByContentAllocationByCategories($aContentAllocation, $aCategories, $iOffset, $iNumOfRows);
-		
+echo 'sql:'.$sql.'<br />';
 		$this->db->query($sql);
     	
 	    $aResult = array();
@@ -216,6 +230,8 @@ class pApiContentAllocation {
 	 */
 	function _buildQuery_MatchingContentByContentAllocationByCategories ($aContentAllocation, $aCategories, $iOffset, $iNumOfRows) {
 		
+		global $cfg;
+		
 		$size = sizeof($aContentAllocation);
 		
 		$sql_concat = unserialize('a:78:{i:0;s:2:"aa";i:1;s:2:"ab";i:2;s:2:"ac";i:3;s:2:"ad";i:4;s:2:"ae";i:5;s:2:"af";i:6;s:2:"ag";i:7;s:2:"ah";i:8;s:2:"ai";i:9;s:2:"aj";i:10;s:2:"ak";i:11;s:2:"al";i:12;s:2:"am";i:13;s:2:"an";i:14;s:2:"ao";i:15;s:2:"ap";i:16;s:2:"aq";i:17;s:2:"ar";i:18;s:2:"as";i:19;s:2:"at";i:20;s:2:"au";i:21;s:2:"av";i:22;s:2:"aw";i:23;s:2:"ax";i:24;s:2:"ay";i:25;s:2:"az";i:26;s:2:"ca";i:27;s:2:"cb";i:28;s:2:"cc";i:29;s:2:"cd";i:30;s:2:"ce";i:31;s:2:"cf";i:32;s:2:"cg";i:33;s:2:"ch";i:34;s:2:"ci";i:35;s:2:"cj";i:36;s:2:"ck";i:37;s:2:"cl";i:38;s:2:"cm";i:39;s:2:"cn";i:40;s:2:"co";i:41;s:2:"cp";i:42;s:2:"cq";i:43;s:2:"cr";i:44;s:2:"cs";i:45;s:2:"ct";i:46;s:2:"cu";i:47;s:2:"cv";i:48;s:2:"cw";i:49;s:2:"cx";i:50;s:2:"cy";i:51;s:2:"cz";i:52;s:1:"a";i:53;s:1:"b";i:54;s:1:"c";i:55;s:1:"d";i:56;s:1:"e";i:57;s:1:"f";i:58;s:1:"g";i:59;s:1:"h";i:60;s:1:"i";i:61;s:1:"j";i:62;s:1:"k";i:63;s:1:"l";i:64;s:1:"m";i:65;s:1:"n";i:66;s:1:"o";i:67;s:1:"p";i:68;s:1:"q";i:69;s:1:"r";i:70;s:1:"s";i:71;s:1:"t";i:72;s:1:"u";i:73;s:1:"v";i:74;s:1:"w";i:75;s:1:"x";i:76;s:1:"y";i:77;s:1:"z";}');
@@ -229,9 +245,9 @@ class pApiContentAllocation {
 		{
 			if ($i == 0) 
 			{ // first
-				$tables[] = " pica_alloc_con AS " . $sql_concat[$i];
+				$tables[] = " ".$cfg['tab']['pica_alloc_con']." AS " . $sql_concat[$i];
 			} else {
-				$tables[] = " LEFT JOIN pica_alloc_con AS " . $sql_concat[$i] . " USING (idartlang)";
+				$tables[] = " LEFT JOIN ".$cfg['tab']['pica_alloc']." AS " . $sql_concat[$i] . " USING (idartlang)";
 			}
 			if (is_int((int)$aContentAllocation[$i]) AND $aContentAllocation[$i] > 0)
 			{
@@ -247,7 +263,7 @@ class pApiContentAllocation {
 		{
 			$where[] = "cat.idcat IN (".implode(',', $aCategories).")";	
 		}
-		
+
 		// join art_lang for idart
 		$tables[] = " LEFT JOIN ".$this->table['art_lang']." AS cal USING (idartlang)";
 		$tables[] = " LEFT JOIN ".$this->table['cat_art']." AS cart USING (idart)";
@@ -273,7 +289,7 @@ class pApiContentAllocation {
 	}
 	
 	/**
-	 * Search articles by catgories without stratarticles
+	 * Search articles by catgories without start articles
 	 * @param array $aCategories
 	 * @param int $iOffset
 	 * @param int $iNumOfRows
@@ -293,10 +309,11 @@ class pApiContentAllocation {
 		}	
 		
 		$sql = $this->_buildQuery_MatchingContentByCategories($aCategories, $iOffset, $iNumOfRows);
-		
+
 		$this->db->query($sql);
 
 	    $aResult = array();
+		
 		while($oRow = mysql_fetch_object($this->db->Query_ID))
 		{
 			if ($sResultType == 'article_language_id')

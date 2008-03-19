@@ -60,6 +60,7 @@ if(	in_array($_REQUEST['action'], $aContactTypeActions) &&
 				$sContactType = $oContactTypes->getContactTypeById($iIdContactType);
 				$oContactActions->storeAction($aContactPluginProperties['view_contacts_idarea'], $aContactPluginProperties['actionprefix'] . $sContactType . "-$client-$lang");
 				$sHtmlOutput = $notification->returnNotification("info", '"' . $sContactTypeLabel . "' " . i18n("was created!", "contacts"));
+                $sHtmlOutput .= '<script type="text/javascript">top.content.left.left_bottom.location.reload();</script>';
 			}
 			
 			break;
