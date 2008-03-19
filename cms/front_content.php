@@ -138,15 +138,20 @@ if (is_numeric($tmpchangelang) && $tmpchangelang > 0)
 }
 
 // Checking basic data input
-// TODO: Put this elsewhere? E.g. startup.php?
-$aCheckVars = array ('changeclient', 'changelang', 'client', 'lang', 
-					 'idart', 'idcat', 'idcatart');
-foreach ($aCheckVars as $sVar)
-{
-	if (isset($$sVar) && !is_numeric($$sVar))
-	{
-        unset ($$sVar);
-	}
+if (isset($changeclient) && !is_numeric($changeclient)) {
+	unset ($changeclient);
+}
+
+if (isset($client) && !is_numeric($client)) {
+	unset ($client);
+}
+
+if (isset($changelang) && !is_numeric($changelang)) {
+	unset ($changelang);
+}
+
+if (isset($lang) && !is_numeric($lang)) {
+	unset ($lang);
 }
 
 // Change client
@@ -432,6 +437,7 @@ if (getEffectiveSetting('generator', 'concache') == '1') {
 	$oCacheHandler->start($iStartTime); // $iStartTime ist optional und ist die startzeit des scriptes, z. b. am anfang von fron_content.php
 }
 // END: concache
+
 
 ##############################################
 # BACKEND / FRONTEND EDITING

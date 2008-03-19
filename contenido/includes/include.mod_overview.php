@@ -38,7 +38,7 @@ if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) ||
 }
 if (!is_numeric($_REQUEST["elemperpage"])) 
 {
-	$_REQUEST["elemperpage"] = 25;
+	$_REQUEST["elemperpage"] = 0;
 }
 if ($_REQUEST["elemperpage"] > 0) 
 {

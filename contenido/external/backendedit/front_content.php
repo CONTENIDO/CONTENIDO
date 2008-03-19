@@ -38,14 +38,20 @@
  * A coding convention has to be implemented. Obviously the code below is old programming style.
  * The Contenido Architecture has to be redesigned.
  * 
+ * NOTE:
+ * If you edit this file you must synchronise the files
+ * ./contenido/external/frontend/front_content.php
+ * and
+ * ./contenido/external/backendedit/front_content.php
+ * 
  * created 2003/01/21
- * modified $Date: 2007/08/20 19:24:29 $
+ * modified $Date: 2007/08/20 19:24:28 $
  *
  * © four for business AG, www.4fb.de
  *
  * This file is part of the Contenido Content Management System. 
  *
- * $Id: front_content.php,v 1.18 2007/08/20 19:24:29 bjoern.behrens Exp $
+ * $Id: front_content.php,v 1.85 2007/08/20 19:24:28 bjoern.behrens Exp $
  ****************************************************************/
 
 /*
@@ -64,6 +70,13 @@ chdir($cfgClient[$client]["path"]["frontend"]);
 cInclude("includes", "functions.general.php");
 cInclude("includes", "functions.i18n.php");
 # END Backend modification
+
+// check HTTP parameters, if requested
+if ($cfg['http_params_check']['enabled'] === true) {
+	cInclude('classes', 'class.httpinputvalidator.php');
+	$oHttpInputValidator = 
+		new HttpInputValidator($cfg["path"]["contenido"] . $cfg["path"]["includes"] . '/config.http_check.php');
+}
 
 cInclude("includes", "functions.con.php");
 cInclude("includes", "functions.con2.php");
@@ -140,12 +153,15 @@ if (is_numeric($tmpchangelang) && $tmpchangelang > 0)
 if (isset($changeclient) && !is_numeric($changeclient)) {
 	unset ($changeclient);
 }
+
 if (isset($client) && !is_numeric($client)) {
 	unset ($client);
 }
+
 if (isset($changelang) && !is_numeric($changelang)) {
 	unset ($changelang);
 }
+
 if (isset($lang) && !is_numeric($lang)) {
 	unset ($lang);
 }
@@ -425,6 +441,15 @@ if ($idartlang === false)
 {
 	header($errsite);	
 }
+
+// START: concache, murat purc
+if (getEffectiveSetting('generator', 'concache') == '1') {
+	cInclude('frontend', 'includes/concache.php');
+	$oCacheHandler = new cConCacheHandler($GLOBALS['cfgConCache'], $db);
+	$oCacheHandler->start($iStartTime); // $iStartTime ist optional und ist die startzeit des scriptes, z. b. am anfang von fron_content.php
+}
+// END: concache
+
 
 ##############################################
 # BACKEND / FRONTEND EDITING
@@ -925,6 +950,13 @@ else
 	}
 }
 
+// START: concache, murat purc
+if (getEffectiveSetting('generator', 'concache') == '1') {
+	$oCacheHandler->end();
+	#echo $oCacheHandler->getInfo();
+}
+// END: concache
+
 /*
  * configuration settings after the site is displayed. 
  */
@@ -939,9 +971,6 @@ if (isset ($savedlang))
 }
 
 page_close();
-
-
-
 
 /**
  * IP_match

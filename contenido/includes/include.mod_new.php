@@ -22,6 +22,12 @@ cInclude("classes", "widgets/class.widgets.foldingrow.php");
 cInclude("classes", "widgets/class.widgets.pager.php");
 cInclude("classes", "class.ui.php");
 
+$oUser = new cApiUser($auth->auth["uid"]);
+if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0) 
+{
+	$_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
+}
+
                                    
 $tpl->reset();
 
@@ -71,10 +77,10 @@ $oSelectTypeFilter->setDefault($_REQUEST["filtertype"]);
 $oTextboxFilter = new cHTMLTextbox("filter", stripslashes($_REQUEST["filter"]), 15);
 $content .= '<div style="border: 1px solid #B3B3B3;border-left:none;border-top:none;margin-bottom:1px;">';
 // Ye stuff will be done in javascript on apply button
-$content .= '<form action="javascript:execFilter(\''.$sess->id.'\');" id="filter" name="filter" method="get">';
+$content .= '<form action="'.$sess->url("main.php").'" id="filter" name="filter" method="get">';
 $content .= '<table>';
 $content .= '<input type="hidden" name="area" value="mod">';
-$content .= '<input type="hidden" name="frame" value="2">';
+$content .= '<input type="hidden" name="frame" value="1">';
 $content .= '<input type="hidden" name="contenido" value="'.$sess->id.'">';
 $content .= '<input type="hidden" name="'.$formcall.'" value="'.$formcall.'">';
 $content .= '<input type="hidden" name="page" value="'.$_REQUEST["page"].'">';
@@ -100,7 +106,7 @@ $content .= '<td>'.$oTextboxFilter->render().'</td>';
 $content .= '</tr>';
 $content .= '<tr>';
 $content .= '<td style="padding-left:15px;">&nbsp;</td>';
-$content .= '<td><input type="button" value="'.i18n("Apply").'" onclick="javascript:execFilter(\''.$sess->id.'\');"</td>';
+$content .= '<td><input type="submit" value="'.i18n("Apply").'" onclick="javascript:execFilter(\''.$sess->id.'\');"</td>';
 $content .= '</tr>';
 $content .= '</table>';
 $content .= '</form>';
@@ -110,6 +116,10 @@ $oListOptionRow->setContentData($content);
 #######
 # Pager
 #######
+$cApiModuleCollection	= new cApiModuleCollection;
+$cApiModuleCollection->query();
+$iItemCount = $cApiModuleCollection->count();
+
 $oPagerLink = new cHTMLLink;
 $pagerl="pagerlink";
 $tpl->set('s', 'PAGINGLINK', $pagerl);

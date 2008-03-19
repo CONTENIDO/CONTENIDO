@@ -1,4 +1,4 @@
-<?
+<?php
 
 class cContactData {
 	var $oDBI;
@@ -13,14 +13,16 @@ class cContactData {
 	}
 	
 	function getNextIdContactDataGroup() {
-		return $this->oDBI->nextid('pi_contact_data_idcontactdatagroup');
+		return $this->oDBI->nextid($cfg['tab']['contact_data']);
 	}
 
 	function storeContactData($iIdContactDataGroup, $iIdContactProperty, $sContent) {
+        global $cfg;
+        
 		$sql = "INSERT INTO
-					pi_contact_data
+					".$cfg['tab']['contact_data']."
 				SET
-					idcontactdata='".($this->oDBI->nextid('pi_contact_data'))."',
+					idcontactdata='".($this->oDBI->nextid($cfg['tab']['contact_data']))."',
 					idcontactdatagroup='".$iIdContactDataGroup."',
 					idcontactproperty='".$iIdContactProperty."',
 					content='".urlencode($sContent)."',
@@ -31,14 +33,16 @@ class cContactData {
 	}	
 	
 	function getContactData($iIdContactType, $sOrderBy = "c.idcontactdatagroup DESC, b.ordernum ASC") {
+        global $cfg;
+        
 		$sql = "SELECT
 					c.idcontactdatagroup,
 					c.idcontactproperty,
 					c.content
 				FROM
-					pi_contact_types as a,
-					pi_contact_properties as b,
-					pi_contact_data as c
+					".$cfg['tab']['contact_types']." as a,
+					".$cfg['tab']['contact_properties']." as b,
+					".$cfg['tab']['contact_data']." as c
 				WHERE
 					a.idcontacttype='".$iIdContactType."' AND
 					b.idcontacttype=a.idcontacttype AND
@@ -58,8 +62,10 @@ class cContactData {
 	}
 	
 	function deleteContactDataGroup($iIdContactDataGroup) {
+        global $cfg;
+        
 		$sql = "DELETE FROM
-					pi_contact_data
+					".$cfg['tab']['contact_data']."
 				WHERE
 					idcontactdatagroup='".$iIdContactDataGroup."'";
 		$this->oDBI->query($sql);
@@ -68,8 +74,10 @@ class cContactData {
 	}
 	
 	function deleteContactDataByProperty($iIdContactProperty) {
+        global $cfg;
+        
 		$sql = "DELETE FROM
-					pi_contact_data
+					".$cfg['tab']['contact_data']."
 				WHERE
 					 idcontactproperty='".$iIdContactProperty."'";
 		$this->oDBI->query($sql);

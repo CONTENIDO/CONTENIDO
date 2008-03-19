@@ -45,8 +45,16 @@ class cObjectPager extends cFoldingRow
 	
 	function render ()
 	{
+        global $area;
+        #Do not display Page navigation if there is only one Page and we are not in newsletter section
+        if ($this->_cPager->getMaxPages() == 1 && $area != 'news') {
+            return;
+        }
+        
 		$items = $this->_cPager->getPagesInRange();
-		
+		//echo '<pre>';
+        //print_r($items);
+        //echo '</pre>';
 		$link = $this->_pagerLink;
 		
 		if (!$this->_cPager->isFirstPage() || count($items) > 2)
@@ -177,6 +185,7 @@ class cPager
      */		
 	function cPager ($items, $itemsPerPage, $currentPage)
 	{
+        
 		$this->_items = $items;
 		$this->_itemsPerPage = $itemsPerPage;
 		$this->_currentPage = $currentPage;
@@ -224,10 +233,11 @@ class cPager
      */		
 	function getMaxPages ()
 	{
-		if ($this->_items == 0)
-		{
+		if ($this->_items == 0){
 			return 1;	
-		} else {
+		} else if ($this->_itemsPerPage == 0) {
+            return 1;
+        } else {
 			return (ceil($this->_items / $this->_itemsPerPage));
 		}	
 	}

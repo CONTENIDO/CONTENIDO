@@ -10,6 +10,10 @@ cInclude("classes", "class.lang.php");
 
 global $aContactPluginProperties, $belang;
 
+$cfg['tab']['contact_types'] = $cfg['sql']['sqlprefix'].'_pi_contact_types';
+$cfg['tab']['contact_properties'] = $cfg['sql']['sqlprefix'].'_pi_contact_properties';
+$cfg['tab']['contact_data'] = $cfg['sql']['sqlprefix'].'_pi_contact_data';
+
 $belang_temp = $belang;
 
 $belang = "en_US";

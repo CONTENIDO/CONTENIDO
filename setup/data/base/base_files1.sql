@@ -207,10 +207,6 @@ INSERT INTO !PREFIX!_files VALUES ('602', '601', 'workflow/includes/include.work
 INSERT INTO !PREFIX!_files VALUES ('603', '600', 'workflow/includes/include.workflow_subnav.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('604', '602', 'workflow/includes/include.workflow_steps.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('605', '604', 'workflow/includes/include.workflow_tasks.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('700', '700', 'systemtools/includes/include.left_top.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('701', '700', 'systemtools/includes/include.left_bottom.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('702', '700', 'systemtools/includes/include.right_top.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('703', '700', 'systemtools/includes/include.right_bottom.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('800', '801', 'content_allocation/includes/include.left_top.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('801', '801', 'content_allocation/includes/include.left_bottom.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('802', '801', 'content_allocation/includes/include.right_top.php', 'main');

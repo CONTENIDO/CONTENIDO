@@ -51,13 +51,20 @@
  *
  * This file is part of the Contenido Content Management System. 
  *
- * $Id: front_content.php,v 1.39 2007/08/20 19:24:28 bjoern.behrens Exp $
+ * $Id: front_content.php,v 1.85 2007/08/20 19:24:28 bjoern.behrens Exp $
  ****************************************************************/
 
 # include the config file of the frontend to init the Client and Language Id
 include_once ("config.php"); 
 # Contenido startup process
 include_once ($contenido_path."includes/startup.php");
+
+// check HTTP parameters, if requested
+if ($cfg['http_params_check']['enabled'] === true) {
+	cInclude('classes', 'class.httpinputvalidator.php');
+	$oHttpInputValidator = 
+		new HttpInputValidator($cfg["path"]["contenido"] . $cfg["path"]["includes"] . '/config.http_check.php');
+}
 
 cInclude("includes", "functions.con.php");
 cInclude("includes", "functions.con2.php");
@@ -90,6 +97,13 @@ else
 	page_open(array ('sess' => 'Contenido_Frontend_Session', 'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth', 'perm' => 'Contenido_Perm'));
 }
 
+/**
+ * Bugfix
+ * @see http://contenido.org/forum/viewtopic.php?t=18291
+ * 
+ * added by H. Librenz (2007-12-07)
+ */
+//includePluginConf();
 /**
  * fixed bugfix - using functions brokes variable scopes!
  * 
@@ -124,15 +138,20 @@ if (is_numeric($tmpchangelang) && $tmpchangelang > 0)
 }
 
 // Checking basic data input
-// TODO: Put this elsewhere? E.g. startup.php?
-$aCheckVars = array ('changeclient', 'changelang', 'client', 'lang', 
-					 'idart', 'idcat', 'idcatart');
-foreach ($aCheckVars as $sVar)
-{
-	if (isset($$sVar) && !is_numeric($$sVar))
-	{
-        unset ($$sVar);
-	}
+if (isset($changeclient) && !is_numeric($changeclient)) {
+	unset ($changeclient);
+}
+
+if (isset($client) && !is_numeric($client)) {
+	unset ($client);
+}
+
+if (isset($changelang) && !is_numeric($changelang)) {
+	unset ($changelang);
+}
+
+if (isset($lang) && !is_numeric($lang)) {
+	unset ($lang);
 }
 
 // Change client
@@ -418,6 +437,7 @@ if (getEffectiveSetting('generator', 'concache') == '1') {
 	$oCacheHandler->start($iStartTime); // $iStartTime ist optional und ist die startzeit des scriptes, z. b. am anfang von fron_content.php
 }
 // END: concache
+
 
 ##############################################
 # BACKEND / FRONTEND EDITING
@@ -939,9 +959,6 @@ if (isset ($savedlang))
 }
 
 page_close();
-
-
-
 
 /**
  * IP_match

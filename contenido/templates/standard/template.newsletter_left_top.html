@@ -65,31 +65,47 @@
 					actionURL = actionLink.href;
 					settingsURL = settingsLink.href;
 					listoptionURL = listoptionLink.href;
-					pagingURL = pagingLink.href;
+                    if (pagingLink) {
+                        pagingURL = pagingLink.href;
+                    }
 					listoptionURLDisp = listoptionLinkDisp.href;
-					pagingURLDisp = pagingLinkDisp.href;
+                    if (pagingLinkDisp) {
+                        pagingURLDisp = pagingLinkDisp.href;
+                    }
 					actionURLRec = actionLinkRec.href;
 					settingsURLRec = settingsLinkRec.href;
 					listoptionURLRec = listoptionLinkRec.href;
-					pagingURLRec = pagingLinkRec.href;
+                    if (pagingLinkRec) {
+                        pagingURLRec = pagingLinkRec.href;
+                    }
 					actionURLGroup = actionLinkGroup.href;
 					listoptionURLGroup = listoptionLinkGroup.href;
-					pagingURLGroup = pagingLinkGroup.href;
+                    if (pagingLinkGroup) {
+                        pagingURLGroup = pagingLinkGroup.href;
+                    }
 					
 					// clicking the link now calls this function
 					actionLink.href = "javascript:resizeFrame('{ACTIONLINK}')";
 					settingsLink.href = "javascript:resizeFrame('{SETTINGSLINK}')";
 					listoptionLink.href = "javascript:resizeFrame('{LISTOPTIONLINK}')";
-					pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}')";
+                    if (pagingLink) {
+                        pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}')";
+                    }
 					listoptionLinkDisp.href = "javascript:resizeFrame('{LISTOPTIONLINKDISP}')";
-					pagingLinkDisp.href = "javascript:resizeFrame('{PAGINGLINKDISP}')";
+                    if (pagingLinkDisp) {
+                        pagingLinkDisp.href = "javascript:resizeFrame('{PAGINGLINKDISP}')";
+                    }
 					actionLinkRec.href = "javascript:resizeFrame('{ACTIONLINKREC}')";
 					settingsLinkRec.href = "javascript:resizeFrame('{SETTINGSLINKREC}')";
 					listoptionLinkRec.href = "javascript:resizeFrame('{LISTOPTIONLINKREC}')";
-					pagingLinkRec.href = "javascript:resizeFrame('{PAGINGLINKREC}')";
-          actionLinkGroup.href = "javascript:resizeFrame('{ACTIONLINKGROUP}')";
-          listoptionLinkGroup.href = "javascript:resizeFrame('{LISTOPTIONLINKGROUP}')";
-          pagingLinkGroup.href = "javascript:resizeFrame('{PAGINGLINKGROUP}')";
+                    if (pagingLinkRec) {
+                        pagingLinkRec.href = "javascript:resizeFrame('{PAGINGLINKREC}')";
+                    }
+                    actionLinkGroup.href = "javascript:resizeFrame('{ACTIONLINKGROUP}')";
+                    listoptionLinkGroup.href = "javascript:resizeFrame('{LISTOPTIONLINKGROUP}')";
+                    if (pagingLinkGroup) {
+                        pagingLinkGroup.href = "javascript:resizeFrame('{PAGINGLINKGROUP}')";
+                    }
           
   				// for first load set focus to newsletter
   				toggleContainer('{INEWSLETTER}');

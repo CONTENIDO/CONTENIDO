@@ -23,15 +23,20 @@
 			if(arg == '')
 			{
 				var listopLink = document.getElementById('{LISTOPLINK}');
-				var pagingLink = document.getElementById('{PAGINGLINK}');
+                var pagingLink = document.getElementById('{PAGINGLINK}');
+
 				
 				// store current link for later use
 				listopURL = listopLink.href;
-				pagingURL = pagingLink.href;
+                if (pagingLink) {
+                    pagingURL = pagingLink.href;
+                }
 				
 				// clicking the link now calls this function
 				listopLink.href = "javascript:resizeFrame('{LISTOPLINK}');";
-				pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}');";
+                if (pagingLink) {
+                    pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}');";
+                }
 			}
 			else if(arg == '{LISTOPLINK}')
 			{
@@ -59,24 +64,37 @@
 			parent.parent.frames["left"].frames["left_bottom"].location.href = url;
 		}
 		
-    function execFilter()
+      function execFilter()
       {
-      var multilink = "main.php?";
-      var formelements = document.filter;
-    
-      for(var i=0; i<formelements.length; i++)
-        {
-        if(i>0 && formelements[i].name != "" && formelements[i].value != "")
+          var multilink = "main.php?";
+          var formelements = document.filter;
+        
+          for(var i=0; i<formelements.length; i++)
           {
-          multilink += "&";
+            if(i>0 && formelements[i].name != "" && formelements[i].name != "area" && formelements[i].name != "frame" &&formelements[i].value != "")
+            {
+              multilink += "&";
+            }
+            if(formelements[i].name != "" && formelements[i].value != "" && formelements[i].name != "area" && formelements[i].name != "frame" )
+            {
+              multilink += formelements[i].name + "=" + formelements[i].value;
+            }
           }
-        if(formelements[i].name != "" && formelements[i].value != "")
-          {
-          multilink += formelements[i].name + "=" + formelements[i].value;
-          }
+          conMultiLink("left_bottom", multilink+'&area=user&frame=2');
+      }
+      
+        if (document.location.href.match(/[?&]page=(\d+)/g)) {
+            var iPage = RegExp.$1;
+            if (top.content.left && top.content.left.left_bottom) {
+                var href = top.content.left.left_bottom.document.location.href;
+                if (href.match(/([?&]page=)(\d+)/g)) {
+                    href = href.replace(/([?&]page=)(\d+)/g, '&page='+iPage);
+                } else {
+                    href = href+'&page='+iPage;
+                }
+                top.content.left.left_bottom.document.location.href = href;
+            }
         }
-      conMultiLink("left_bottom", multilink);
-      }		
 	</script>
 </head>
 <body bgcolor="#FFFFFF" onLoad="resizeFrame('');">

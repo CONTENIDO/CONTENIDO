@@ -15,13 +15,13 @@
 * $Id: class.workflow.php,v 1.6 2003/08/18 11:59:22 timo.hummel Exp $
 ******************************************/
 
-$cfg["tab"]["workflow"] = "piwf_workflow";
-$cfg["tab"]["workflow_allocation"] = "piwf_allocation";
-$cfg["tab"]["workflow_art_allocation"] = "piwf_art_allocation";
-$cfg["tab"]["workflow_items"] = "piwf_items";
-$cfg["tab"]["workflow_tasks"] = "piwf_tasks";
-$cfg["tab"]["workflow_user_sequences"] = "piwf_user_sequences";
-$cfg["tab"]["workflow_actions"] = "piwf_actions";
+$cfg["tab"]["workflow"] = $cfg['sql']['sqlprefix']."_piwf_workflow";
+$cfg["tab"]["workflow_allocation"] = $cfg['sql']['sqlprefix']."_piwf_allocation";
+$cfg["tab"]["workflow_art_allocation"] = $cfg['sql']['sqlprefix']."_piwf_art_allocation";
+$cfg["tab"]["workflow_items"] = $cfg['sql']['sqlprefix']."_piwf_items";
+$cfg["tab"]["workflow_tasks"] = $cfg['sql']['sqlprefix']."_piwf_tasks";
+$cfg["tab"]["workflow_user_sequences"] = $cfg['sql']['sqlprefix']."_piwf_user_sequences";
+$cfg["tab"]["workflow_actions"] = $cfg['sql']['sqlprefix']."_piwf_actions";
 
 $workflowPath = $cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/classes/";
 require_once($cfg["path"]["contenido"] . $cfg["path"]["classes"]. "class.genericdb.php");

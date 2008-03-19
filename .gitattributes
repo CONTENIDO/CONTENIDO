@@ -23,6 +23,7 @@ cms/images/logo.gif -text
 cms/images/navi_pfeil.gif -text
 cms/images/navi_pfeil_rechts.gif -text
 cms/images/schraffur_rechts_oben.gif -text
+cms/includes/class.concache.php -text
 cms/includes/class.input.helper.php -text
 cms/includes/concache.php -text
 cms/includes/functions.include.php -text
@@ -245,6 +246,7 @@ contenido/external/frontend/error.php -text
 contenido/external/frontend/front_content.php -text
 contenido/external/frontend/front_crcloginform.inc.php -text
 contenido/external/frontend/images/index.php -text
+contenido/external/frontend/includes/class.concache.php -text
 contenido/external/frontend/includes/concache.php -text
 contenido/external/frontend/includes/index.php -text
 contenido/external/frontend/index.php -text
@@ -3359,7 +3361,12 @@ docs/techref/plugins/conlogo.gif -text
 docs/techref/plugins/plugin.config.html -text
 docs/translators/translating.doc -text
 docs/whitepaper/info.txt -text
+pear/CACHE/Cache.php -text
+pear/CACHE/Container.php -text
+pear/CACHE/Container/file.php -text
+pear/CACHE/Error.php -text
 pear/CACHE/Lite.php -text
+pear/CACHE/Output.php -text
 pear/HTML/Common.php -text
 pear/Log.php -text
 pear/Log/composite.php -text

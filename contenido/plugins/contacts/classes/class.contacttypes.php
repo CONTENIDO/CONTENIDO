@@ -1,4 +1,4 @@
-<?
+<?php
 /**********************************************************************************
 * File			:   class.contacttypes.php
 * Project		:   Contact Form Administration Plugin
@@ -29,10 +29,12 @@ class cContactTypes {
 	}
 
 	function getIdContactType($client, $lang, $sContactType) {
+        global $cfg;
+        
 		$sql = "SELECT
 					idcontacttype
 				FROM
-					pi_contact_types
+					".$cfg['tab']['contact_types']."
 				WHERE
 					idclient='".$client."' AND
 					idlang='".$lang."' AND
@@ -49,10 +51,12 @@ class cContactTypes {
 	}
 	
 	function getContactTypeById($iIdContactType) {
+        global $cfg;
+        
 		$sql = "SELECT
 					type
 				FROM
-					pi_contact_types
+					".$cfg['tab']['contact_types']."
 				WHERE
 					idcontacttype='".$iIdContactType."'";
 		$this->oDBI->query($sql);
@@ -69,10 +73,12 @@ class cContactTypes {
 	}
 
 	function getContactLabelByType($sContactType, $client, $lang) {
+        global $cfg;
+        
 		$sql = "SELECT
 					label
 				FROM
-					pi_contact_types
+					".$cfg['tab']['contact_types']."
 				WHERE
 					type='".$sContactType."' AND
 					idclient='".$client."' AND
@@ -91,11 +97,13 @@ class cContactTypes {
 	}
 
 	function getContactTypes($sOrderBy = array("'idcontacttype'")) {
+        global $cfg;
+        
 		$aExtractedFields = array("idclient", "idlang", "type", "label", "created", "createdby", "modified", "modifiedby");
 		$sql = "SELECT
 					*
 				FROM
-					pi_contact_types
+					".$cfg['tab']['contact_types']."
 				WHERE " . (implode(" AND ", $this->aGetByProperties)) . "
 				ORDER BY " . (implode(" ,", $sOrderBy));
 					
@@ -116,10 +124,12 @@ class cContactTypes {
 	}
 	
 	function existsContactType($iIdContactType) {
+        global $cfg;
+        
 		$sql = "SELECT
 					idcontacttype
 				FROM
-					pi_contact_types
+					".$cfg['tab']['contact_types']."
 				WHERE
 					idcontacttype='".$iIdContactType."'";
 		$this->oDBI->query($sql);
@@ -137,12 +147,14 @@ class cContactTypes {
 	}
 	
 	function storeContactType($sLabel, $client, $lang, $sIdAuthor) {
+        global $cfg;
+        
 		$sType = $this->makeContactType($sLabel);
 				
-		$iIdContactTypeNext = $this->oDBI->nextid("pi_contact_types");
+		$iIdContactTypeNext = $this->oDBI->nextid($cfg['tab']['contact_types']);
 		
 		$sql = "INSERT INTO
-					pi_contact_types
+					".$cfg['tab']['contact_types']."
 				SET
 					idcontacttype='" . $iIdContactTypeNext . "', 
 					idclient='".$client."',
@@ -159,8 +171,10 @@ class cContactTypes {
 	}
 	
 	function deleteContactType($iIdContactType) {
+        global $cfg;
+        
 		$sql = "DELETE FROM
-					pi_contact_types
+					".$cfg['tab']['contact_types']."
 				WHERE
 					idcontacttype='".$iIdContactType."'";
 		$this->oDBI->query($sql);

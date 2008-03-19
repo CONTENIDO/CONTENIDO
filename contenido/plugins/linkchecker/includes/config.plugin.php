@@ -9,8 +9,8 @@ Modified    	: 2007-12-13
 
 $plugin_name = "linkchecker";
 $cfg['plugins']['linkchecker'] = $cfg['path']['contenido'] . "plugins/" . $plugin_name . "/";
-$cfg['tab']['externlinks'] = 'pi_externlinks';
-$cfg['tab']['whitelist'] = 'pi_linkwhitelist';
+$cfg['tab']['externlinks'] = $cfg['sql']['sqlprefix'].'_pi_externlinks';
+$cfg['tab']['whitelist'] = $cfg['sql']['sqlprefix'].'_pi_linkwhitelist';
 
 // Templates
 $cfg['templates']['linkchecker_overview'] = $cfg['plugins']['linkchecker'] . "templates/standard/template.linkchecker_overview.html";

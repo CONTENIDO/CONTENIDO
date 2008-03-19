@@ -1,4 +1,4 @@
-<?
+<?php
 /**********************************************************************************
 * File			:   class.contacttypes.php
 * Project		:   Contact Form Administration Plugin
@@ -29,10 +29,12 @@ class cContactProperties {
 	}
 	
 	function getIdContactProperty($iIdContactType, $sContactProperty) {
+        global $cfg;
+        
 		$sql = "SELECT
 					idcontactproperty
 				FROM
-					pi_contact_properties
+					".$cfg['tab']['contact_properties']."
 				WHERE
 					idcontacttype='".$iIdContactType."' AND
 					type='".$sContactProperty."'";
@@ -48,11 +50,13 @@ class cContactProperties {
 	}
 
 	function getContactProperties($sOrderBy = array("'idcontactproperty'")) {
+        global $cfg;
+        
 		$aExtractedFields = array("idcontacttype", "type", "label", "ordernum", "created", "createdby", "modified", "modifiedby");
 		$sql = "SELECT
 					*
 				FROM
-					pi_contact_properties
+					".$cfg['tab']['contact_properties']."
 				WHERE " . (implode(" AND ", $this->aGetByProperties)) . "
 				ORDER BY " . (implode(" ,", $sOrderBy));
 					
@@ -73,10 +77,12 @@ class cContactProperties {
 	}
 	
 	function getCountContactProperties($iIdContactType) {
+        global $cfg;
+        
 		$sql = "SELECT
 					count(idcontactproperty) as count
 				FROM
-					pi_contact_properties
+					".$cfg['tab']['contact_properties']."
 				WHERE
 					idcontacttype='".$iIdContactType."'";
 		$this->oDBI->query($sql);
@@ -91,12 +97,14 @@ class cContactProperties {
 	}
 	
 	function storeContactProperty($sLabel, $iIdContactType, $sIdAuthor) {
+        global $cfg;
+        
 		$sType = $this->makeContactPropertyType($sLabel);
 				
 		$sql = "INSERT INTO
-					pi_contact_properties
+					".$cfg['tab']['contact_properties']."
 				SET
-					idcontactproperty='" . ($this->oDBI->nextid("pi_contact_properties")) . "', 
+					idcontactproperty='" . ($this->oDBI->nextid($cfg['tab']['contact_properties'])) . "', 
 					idcontacttype='".$iIdContactType."',
 					type='".$sType."',
 					label='".urlencode($sLabel)."',
@@ -111,8 +119,10 @@ class cContactProperties {
 	}
 
 	function updateAttr($iIdContactProperty, $sAttrName, $sAttrValue) {
+        global $cfg;
+        
 		$sql = "UPDATE
-					pi_contact_properties
+					".$cfg['tab']['contact_properties']."
 				SET
 					".$sAttrName."='".urlencode($sAttrValue)."'
 				WHERE
@@ -123,8 +133,10 @@ class cContactProperties {
 	} 
 	
 	function rewriteFailedOrder($iIdContactType, $iOrderNum) {
+        global $cfg;
+        
 		$sql = "UPDATE
-					pi_contact_properties
+					".$cfg['tab']['contact_properties']."
 				SET
 					ordernum=ordernum-1
 				WHERE
@@ -136,8 +148,10 @@ class cContactProperties {
 	}
 	
 	function deleteContactProperty($iIdContactProperty) {
+        global $cfg;
+        
 		$sql = "DELETE FROM
-					pi_contact_properties
+					".$cfg['tab']['contact_properties']."
 				WHERE
 					idcontactproperty='".$iIdContactProperty."'";
 		$this->oDBI->query($sql);
@@ -146,8 +160,10 @@ class cContactProperties {
 	}
 
 	function deleteContactPropertyByType($iIdContactType) {
+        global $cfg;
+        
 		$sql = "DELETE FROM
-					pi_contact_properties
+					".$cfg['tab']['contact_properties']."
 				WHERE
 					idcontacttype='".$iIdContactType."'";
 		$this->oDBI->query($sql);

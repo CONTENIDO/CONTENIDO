@@ -71,4 +71,3 @@ INSERT INTO !PREFIX!_nav_sub VALUES('503', '0', '501', '1', 'linkchecker/xml/lan
 INSERT INTO !PREFIX!_nav_sub VALUES('600', '3', '600', '0', 'workflow/plugin_workflow.xml;navigation/extra/workflow/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('601', '0', '601', '1', 'navigation/extra/workflow/settings', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('602', '0', '602', '1', 'navigation/extra/workflow/steps', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('700', '5', '700', '0', 'systemtools/xml/plugin.xml;plugin/sub_navi', '1');

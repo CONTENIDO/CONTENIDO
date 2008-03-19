@@ -148,6 +148,7 @@ $oActionRow->setContentData($oLink->render());
 ######################
 $listOptionLink="listoptionlink";
 $oListOptionRow = new cFoldingRow("f081b6ab-370d-4fd8-984f-6b38590fe48b", i18n("List options"), $listOptionLink);
+$oListOptionRow->setExpanded(true);
 $tpl->set('s', 'LISTOPTIONLINK', $listOptionLink);									
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelectItemsPerPage->autoFill(array(25 => 25, 50 => 50, 75 => 75, 100 => 100));
@@ -187,10 +188,10 @@ $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
 
 $content = '<div style="margin-left: 17px;">';
 // Ye stuff will be done in javascript on apply button
-$content .= '<form action="javascript:execFilter(\''.$sess->id.'\');" id="filter" name="filter" method="get">';
+$content .= '<form action="'.$sess->url("main.php").' id="filter" name="filter" method="get">';
 $content .= '<table>';
 $content .= '<input type="hidden" name="area" value="'.$area.'">';
-$content .= '<input type="hidden" name="frame" value="2">';
+$content .= '<input type="hidden" name="frame" value="1">';
 $content .= '<input type="hidden" name="contenido" value="'.$sess->id.'">';
 $content .= '<tr>';
 $content .= '<td>'. i18n("Items / page").'</td>';
@@ -218,7 +219,7 @@ $content .= '<td>'.$oSelectSearchIn->render().'</td>';
 $content .= '</tr>';
 $content .= '<tr>';
 $content .= '<td>&nbsp;</td>';
-$content .= '<td><input type="button" value="'.i18n("Apply").'" onclick="javascript:execFilter(\''.$sess->id.'\');"</td>';
+$content .= '<td><input type="submit" value="'.i18n("Apply").'" onclick="javascript:execFilter(\''.$sess->id.'\');"</td>';
 $content .= '</tr>';
 $content .= '</table>';
 $content .= '</form>';
@@ -374,8 +375,9 @@ $oPagerLink->setCustom("frame", $frame);
 $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
-$oPager = new cObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iItemCount, $elemperpage, $mPage, $oPagerLink, "page", $pagingLink);
 
+$oPager = new cObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iItemCount, $_REQUEST['elemperpage'], $mPage, $oPagerLink, "page", $pagingLink);
+$oPager->setExpanded(true);
 
 ######################
 # Groups create Groups

@@ -32,12 +32,16 @@
           
 					actionURL = actionLink.href;
 					listoptionURL = listoptionLink.href;
-					pagingURL = pagingLink.href;
+                    if (pagingLink) {
+                        pagingURL = pagingLink.href;
+                    }
 					
 					// clicking the link now calls this function
 					actionLink.href = "javascript:resizeFrame('{ACTIONLINK}')";
 					listoptionLink.href = "javascript:resizeFrame('{LISTOPTIONLINK}')";
-					pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}')";
+                    if (pagingLink) {
+                        pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}')";
+                    }
           
   				// for first load set focus to newsletter
   				toggleContainer('{IUSER}');
@@ -106,24 +110,37 @@
 		    }
 			}
 
-			function execFilter()
-			{
-        var multilink = "main.php?";
-			  var formelements = document.filter;
-
-			  for(var i=0; i<formelements.length; i++)
-			  {
-			    if(i>0 && formelements[i].name != "" && formelements[i].value != "")
-			    {
-			      multilink += "&";
-			    }
-			    if(formelements[i].name != "" && formelements[i].value != "")
-			    {
-			      multilink += formelements[i].name + "=" + formelements[i].value;
-			    }
-			  }
-			  conMultiLink("left_bottom", multilink);
-			}
+    	  function execFilter()
+          {
+              var multilink = "main.php?";
+              var formelements = document.filter;
+            
+              for(var i=0; i<formelements.length; i++)
+              {
+                if(i>0 && formelements[i].name != "" && formelements[i].name != "area" && formelements[i].name != "frame" &&formelements[i].value != "")
+                {
+                  multilink += "&";
+                }
+                if(formelements[i].name != "" && formelements[i].value != "" && formelements[i].name != "area" && formelements[i].name != "frame" )
+                {
+                  multilink += formelements[i].name + "=" + formelements[i].value;
+                }
+              }
+              conMultiLink("left_bottom", multilink+'&area=frontend&frame=2');
+          }
+          
+          if (document.location.href.match(/[?&]page=(\d+)/g)) {
+            var iPage = RegExp.$1;
+            if (top.content.left && top.content.left.left_bottom) {
+                var href = top.content.left.left_bottom.document.location.href;
+                if (href.match(/([?&]page=)(\d+)/g)) {
+                    href = href.replace(/([?&]page=)(\d+)/g, '&page='+iPage);
+                } else {
+                    href = href+'&page='+iPage;
+                }
+                top.content.left.left_bottom.document.location.href = href;
+            }
+        }
 
     </script>			
 </head>

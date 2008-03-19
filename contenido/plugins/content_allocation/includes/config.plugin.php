@@ -15,9 +15,9 @@ plugin_include('content_allocation', 'classes/class.content_allocation_complexli
 #plugin_include('repository', 'log/class.logger.php');
 
 // plugin_variables
-$cfg['tab']['pica_alloc'] = 'pica_alloc';
-$cfg['tab']['pica_alloc_con'] = 'pica_alloc_con';
-$cfg['tab']['pica_lang'] = 'pica_lang';
+$cfg['tab']['pica_alloc'] = $cfg['sql']['sqlprefix'].'_pica_alloc';
+$cfg['tab']['pica_alloc_con'] = $cfg['sql']['sqlprefix'].'_pica_alloc_con';
+$cfg['tab']['pica_lang'] = $cfg['sql']['sqlprefix'].'_pica_lang';
 
 $cfg['pica']['logpath'] = $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'repository/log/data/';
 $cfg['pica']['loglevel'] = 'warn';

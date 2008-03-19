@@ -16,6 +16,21 @@ cInclude("classes", "widgets/class.widgets.foldingrow.php");
 cInclude("classes", "widgets/class.widgets.pager.php");
 cInclude("classes", "class.ui.php");
 
+$oUser = new cApiUser($auth->auth["uid"]);
+if (!isset($elemperpage) || !is_numeric($elemperpage) || $elemperpage < 0) 
+{
+	$elemperpage = $oUser->getProperty("itemsperpage", $area);
+    $_REQUEST['elemperpage'] = $elemperpage;
+    if ((int) $elemperpage <= 0) {
+        $oUser->setProperty("itemsperpage", $area, 25);
+        $elemperpage = 25;
+        $_REQUEST['elemperpage'] = 25;
+    }
+} else {
+    $oUser->setProperty("itemsperpage", $area, $elemperpage);
+    $_REQUEST['elemperpage'] = $elemperpage;
+}
+
 // The following lines unset all right objects since 
 // I don't know (or I was unable to find out) if they
 // are global and/or session variables - so if you are
@@ -85,7 +100,7 @@ $aSortOrderOptions = array(	"asc" => i18n("Ascending"),
 $listOptionId="listoption";
 $tpl->set('s', 'LISTOPLINK', $listOptionId);
 $oListOptionRow = new cFoldingRow(	"5498dbba-ed4a-4618-8e49-3a3635396e22",	i18n("List options"), $listOptionId);
-
+$oListOptionRow->setExpanded('true');
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelectItemsPerPage->autoFill(array(25 => 25, 50 => 50, 75 => 75, 100 => 100));
 $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
@@ -102,10 +117,10 @@ $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
 $oTextboxFilter->setStyle('width:114px;');
 
 $content = '<div style="border-bottom: 1px solid #B3B3B3; padding-left: 17px; background: '.$cfg['color']['table_dark'].';">';
-$content .= '<form action="javascript:execFilter(\''.$sess->id.'\');" id="filter" name="filter" method="get">';
+$content .= '<form action="'.$sess->url("main.php").'" id="filter" name="filter" method="get">';
 $content .= '<table>';
 $content .= '<input type="hidden" name="area" value="'.$area.'">';
-$content .= '<input type="hidden" name="frame" value="2">';
+$content .= '<input type="hidden" name="frame" value="1">';
 $content .= '<input type="hidden" name="contenido" value="'.$sess->id.'">';
 $content .= '<tr>';
 $content .= '<td>'. i18n("Items / page").'</td>';
@@ -125,7 +140,7 @@ $content .= '<td>'.$oTextboxFilter->render().'</td>';
 $content .= '</tr>';
 $content .= '<tr>';
 $content .= '<td>&nbsp;</td>';
-$content .= '<td><input type="button" value="'.i18n("Apply").'" onclick="javascript:execFilter(\''.$sess->id.'\');"</td>';
+$content .= '<td><input type="submit" value="'.i18n("Apply").'" onclick="javascript:execFilter(\''.$sess->id.'\');"</td>';
 $content .= '</tr>';
 $content .= '</table>';
 $content .= '</form>';
@@ -136,6 +151,10 @@ $tpl->set('s', 'LISTOPTIONS', $oListOptionRow->render());
 #########
 # Paging
 #########
+$cApiUserCollection	= new cApiUserCollection;
+$cApiUserCollection->query();
+$iItemCount = $cApiUserCollection->count();
+
 $oPagerLink = new cHTMLLink;
 $oPagerLink->setLink("main.php");
 $oPagerLink->setCustom("elemperpage", $elemperpage);
@@ -148,7 +167,8 @@ $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 
 $pagerID="pager";
-$oPager = new cObjectPager("44b41691-0dd4-443c-a594-66a8164e25fd", $iItemCount, $elemperpage, $mPage, $oPagerLink, "page", $pagerID);
+$oPager = new cObjectPager("44b41691-0dd4-443c-a594-66a8164e25fd", $iItemCount, $elemperpage, $page, $oPagerLink, "page", $pagerID);
+$oPager->setExpanded('true');
 $tpl->set('s', 'PAGINGLINK', $pagerID);
 $tpl->set('s', 'PAGING', $oPager->render());
 

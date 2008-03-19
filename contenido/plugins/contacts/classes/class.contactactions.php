@@ -1,4 +1,4 @@
-<?
+<?php
 
 class cContactActions {
 	var $oDBI;
@@ -13,6 +13,8 @@ class cContactActions {
 	}
 	
 	function getNextIdAction() {
+        global $cfg;
+        
 		$sql = "SELECT
 					MAX(idaction)+1 as nextidaction
 				FROM
@@ -30,6 +32,8 @@ class cContactActions {
 	}
 	
 	function storeAction($area, $sName) {
+        global $cfg;
+        
 		$iIdActionNext = $this->getNextIdAction();
 		
 		$sql = "INSERT INTO
@@ -45,6 +49,8 @@ class cContactActions {
 	} 
 	
 	function deleteActionByName($sName) {
+        global $cfg;
+        
 		$sql = "DELETE FROM
 					".$this->cfg['sql']['sqlprefix']."_actions
 				WHERE
@@ -55,6 +61,8 @@ class cContactActions {
 	}
 	
 	function getAvalibleActions() {
+        global $cfg;
+        
 		$sql = "SELECT
 					name
 				FROM

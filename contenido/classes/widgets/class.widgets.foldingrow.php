@@ -74,11 +74,12 @@ class cFoldingRow extends cHTML
 		
 		$this->addRequiredScript("parameterCollector.js");
 		$this->addRequiredScript("cfoldingrow.js");
+        
+        $user = new cApiUser($auth->auth["uid"]);
 		
 		if ($bExpanded == null) {
 			/* Check for expandstate */
-			$user = new cApiUser($auth->auth["uid"]);
-			
+
 			if (!$user->virgin)
 			{
 				if ($user->getProperty("expandstate", $uuid) == "true")
