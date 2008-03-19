@@ -1,5 +1,6 @@
 <?php
 //set the areas which are in use fore selecting these
+
 $possible_area = "'".implode("','", $area_tree[$perm->showareas("con")])."'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='$userid' AND idclient='$rights_client' AND A.type = 0 AND idlang='$rights_lang' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
@@ -19,7 +20,6 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
 }
         echo '<script type="text/javascript" src="scripts/addImageTags.js"></script>';
         echo '<script type="text/javascript" src="scripts/expandCollapse.js"></script>';
-
         // declare new javascript variables;
         echo"<script type=\"text/javascript\">
               var itemids=new Array();
@@ -36,6 +36,7 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
         echo i18n("Category")."</TH>";
         echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">&nbsp;</TH>";
 
+        $sCheckboxesRow = '';
         $possible_areas=array();
         // look for possible actions   in mainarea []   in str and con
         foreach($right_list["con"] as $value2)
@@ -43,30 +44,41 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
                //if there are some actions
                if(is_array($value2["action"]))
                  foreach($value2["action"] as $key3 => $value3)
-                 {       //set the areas that are in use
+                 {       
+                    if ((in_array($value3, $aViewRights) && !$bExclusive) || 
+                        (!in_array($value3, $aViewRights) && $bExclusive) ||
+                        (count($aViewRights) == 0)) {
+                        //set the areas that are in use
                          $possible_areas[$value2["perm"]]="";
-
+                       
 
                          $colspan++;
                          //set  the possible areas and actions for this areas
 
                          //checkbox for the whole action
                          echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\" valign=\"bottom\">";
-                        echo"<script type=\"text/javascript\">
+                         echo"<script type=\"text/javascript\">
                                actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";
                               </script>";
+                         echo $lngAct[$value2["perm"]][$value3]."<br></TH>";
                          
-                         echo $lngAct[$value2["perm"]][$value3]."<br>
-                         <input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">
-                         </TH>";
+                          $sCheckboxesRow .= "<td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\" valign=\"bottom\"><input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\"></td>";
+                    }
 
                  }
         }
 
         //checkbox for all rights
         echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-        echo i18n('Check all')."<br><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\"></TH></TR>";
+        echo i18n('Check all')."</TH></TR>";
         $colspan++;
+        
+        echo "<tr style=\"background-color: ". $cfg["color"]["table_header"] .";\">
+                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">&nbsp;</td>
+                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">&nbsp;</td>
+                    ".$sCheckboxesRow."
+                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\"><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\"></td>
+              </tr>";
 
         $sql = "SELECT A.idcat, level, name,parentid FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='$rights_lang' AND B.idclient='$rights_client' ORDER BY idtree";
 
@@ -146,6 +158,9 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
                                 if(is_array($value2["action"]))
                                   foreach($value2["action"] as $key3 => $value3)
                                   {
+                                        if ((in_array($value3, $aViewRights) && !$bExclusive) || 
+                                            (!in_array($value3, $aViewRights) && $bExclusive) ||
+                                            (count($aViewRights) == 0)) {
                                            //does the user have the right
                                            if(in_array($value2["perm"]."|$value3|".$db->f("idcat"),array_keys($rights_list_old)))
                                                $checked="checked=\"checked\"";
@@ -154,6 +169,7 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
 
                                            //set the checkbox    the name consits of      areaid+actionid+itemid        the    id  =  parebntid+couter for these parentid+areaid+actionid
                                            echo"<td  class=\"td_rights2\"><input type=\"checkbox\" id=\"str_".$parentid."_".$counter[$parentid]."_".$value2["perm"]."_$value3\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idcat")."]\" value=\"x\" $checked></td>";
+                                    }
                                   }
                         }
 

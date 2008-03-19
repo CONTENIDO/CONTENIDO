@@ -143,7 +143,7 @@ INSERT INTO !PREFIX!_actions VALUES('441', '90', '', 'news_job_run', '', '', '1'
 INSERT INTO !PREFIX!_actions VALUES('442', '91', '', 'recipients_import_exec', '', '', '0');
 INSERT INTO !PREFIX!_actions VALUES('443', '92', '', 'mod_importexport_package', '', '', '0');
 INSERT INTO !PREFIX!_actions VALUES ('500', '500', '', 'linkchecker', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('501', '500', '', '', '', '', '1');
+INSERT INTO !PREFIX!_actions VALUES ('501', '500', '', 'whitelist_view', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('600', '601', '', 'workflow_show', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('601', '601', '', 'workflow_create', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('602', '601', '', 'workflow_save', '', '', '1');

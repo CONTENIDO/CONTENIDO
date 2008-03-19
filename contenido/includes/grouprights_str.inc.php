@@ -36,7 +36,7 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
 		$table->header_cell("&nbsp;","left");
 
         $possible_areas=array();
-
+        $aSecondHeaderRow = array();
         // look for possible actions   in mainarea []   in str and con
         foreach($right_list["str"] as $value2) {
                //if there are some actions
@@ -56,15 +56,26 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
                                actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";
                               </script>";
 
-                         $table->header_cell($lngAct[$value2["perm"]][$value3]."<br><input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
+                         $table->header_cell($lngAct[$value2["perm"]][$value3]);
+                         array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
                         }
                  }
         }
 
         //checkbox for all rights
-        $table->header_cell(i18n("Check all")."<br><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
+        $table->header_cell(i18n("Check all"));
+        array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
         $table->end_row();
         $colspan++;
+        
+        $table->header_row();
+        $table->header_cell('&nbsp',"center", '', '', 0);
+        $table->header_cell('&nbsp',"center", '', '', 0);
+        
+        foreach ($aSecondHeaderRow as $value) {
+            $table->header_cell($value,"center", '', '', 0);
+        }
+        $table->end_row();
 
         $sql = "SELECT A.idcat, level, name,parentid FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='$rights_lang' AND B.idclient='$rights_client' ORDER BY idtree";
         $db->query($sql);

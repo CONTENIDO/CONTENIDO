@@ -11,6 +11,7 @@ $plugin_name = "linkchecker";
 $cfg['plugins']['linkchecker'] = $cfg['path']['contenido'] . "plugins/" . $plugin_name . "/";
 $cfg['tab']['externlinks'] = $cfg['sql']['sqlprefix'].'_pi_externlinks';
 $cfg['tab']['whitelist'] = $cfg['sql']['sqlprefix'].'_pi_linkwhitelist';
+$lngAct["linkchecker"]["whitelist_view"] = i18n("View whitelist", "linkchecker");
 
 // Templates
 $cfg['templates']['linkchecker_overview'] = $cfg['plugins']['linkchecker'] . "templates/standard/template.linkchecker_overview.html";

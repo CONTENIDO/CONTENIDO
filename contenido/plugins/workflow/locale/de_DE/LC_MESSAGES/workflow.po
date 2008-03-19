@@ -270,7 +270,7 @@ msgstr "Workflow zeigen"
 
 #: workflow/includes/config.plugin.php:11
 msgid "Process workflow step"
-msgstr ""
+msgstr "Worflow Schritt durchf&uuml;hren"
 
 #: workflow/includes/config.plugin.php:12
 msgid "Assign workflow to category"
@@ -377,5 +377,36 @@ msgstr "Template bearbeiten"
 msgid "Workflow tasks"
 msgstr "Workflow Aufgaben"
 
-msgid "Current Editor"
-msgstr "Verantwortliche(r)"
+msgid "Edit workflow step"
+msgstr "Workflowschritt bearbeiten"
+
+msgid "Move workflowstep up"
+msgstr "Workflowschritt nach oben verschieben"
+
+msgid "Move workflowstep down"
+msgstr "Workflowschritt nach unten verschieben"
+
+msgid "Create workflowstep"
+msgstr "Workflowschritt erstellen"
+
+msgid "Delete workflowstep"
+msgstr "Workflowschritt l&ouml;schen"
+
+msgid "Move workflowstepuser up"
+msgstr "Workflowschrittbenutzer nach oben verschieben"
+
+msgid "Move workflowstepuser down"
+msgstr "Workflowschrittbenutzer nach unten verschieben"
+
+msgid "Create Workflowstepuser"
+msgstr "Workflowschrittbenutzer erstellen"
+
+msgid "Delete Workflowstepuser"
+msgstr "Workflowschrittbenutzer l&ouml;schen"
+
+msgid "Save Workflowstep"
+msgstr "Workflowschritt speichen"
+
+msgid "Associate workflow with category"
+msgstr "Workflow zu Kategorien zuweisen"
+

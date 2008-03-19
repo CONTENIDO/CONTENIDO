@@ -5861,5 +5861,20 @@ msgstr "F&uuml;ge rechts ausgew&auml;hlte Benutzer der Gruppe hinzu"
 msgid "Remove left side selected users from group"
 msgstr "Entferne links ausgew&auml;hlte Benutzer aus der Gruppe"
 
-msgid "Execute Workflow"
-msgstr "Workflow ausführen"
+msgid "Rights type"
+msgstr "Rechtegruppe"
+
+msgid "Article rights"
+msgstr "Artikelrechte"
+
+msgid "Category rights"
+msgstr "Kategorierechte"
+
+msgid "Template rights"
+msgstr "Templaterechte"
+
+msgid "Plugin/Other rights"
+msgstr "Pluginrechte / Andere Rechte"
+
+msgid "Add frontendusers"
+msgstr "Frontendbenutzer hinzuf&uuml;gen"

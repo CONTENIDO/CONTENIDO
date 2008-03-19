@@ -170,10 +170,58 @@ echo "<SELECT class=\"text_medium\" name=\"rights_clientslang\" SIZE=1>";
     }
 
 echo $clientselect;
-echo "</SELECT></td><td style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\">";
-echo '<input type="image" style="margin-left:5px;line-height: 1em;" src="images/submit.gif">';
-echo "</td></tr>";
-echo"</table>";
+echo "</SELECT></td>";
+      if ($area != 'groups_content') {
+        echo "<td style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;padding-left:5px;padding-right:10px;\"><input type=\"image\" src=\"images/submit.gif\"></td></tr></table>";
+      } else {
+        echo "<td style=\"border: 0px; border-top:1px; border-right:0px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;padding-left:5px;padding-right:10px;\">".i18n('Rights type').": </td><td style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\">";
+
+        #filter for displaying rights
+        $oHtmlSelect = new 	cHTMLSelectElement ('filter_rights', '', "filter_rights");  
+        $oHtmlSelectOption = new cHTMLOptionElement('--- '.i18n("All").' ---', '', false);
+        $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Article rights"), 'article', false);
+        $oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Category rights"), 'category', false);
+        $oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Template rights"), 'template', false);
+        $oHtmlSelect->addOptionElement(3, $oHtmlSelectOption);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Plugin/Other rights"), 'other', false);
+        $oHtmlSelect->addOptionElement(4, $oHtmlSelectOption);
+        $oHtmlSelect->setEvent('change', "document.rightsform.submit();");
+        $oHtmlSelect->setDefault($_POST['filter_rights']);
+
+        echo $oHtmlSelect->render();
+        echo "</td><td style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;padding-left:5px;padding-right:10px;\"><input type=\"image\" src=\"images/submit.gif\"></td></tr></table>";
+
+        #set global array which defines rights to display
+        $aArticleRights = array('con_syncarticle', 'con_lock', 'con_deleteart', 'con_makeonline', 'con_makestart', 'con_duplicate', 'con_editart', 'con_newart', 'con_edit');
+        $aCategoryRights = array('con_synccat', 'con_makecatonline', 'con_makepublic');
+        $aTempalteRights = array('con_changetemplate', 'con_tplcfg_edit');
+
+        $aViewRights = array();
+        $bExclusive = false;
+        if (isset($_POST['filter_rights'])) {
+            switch($_POST['filter_rights']) {
+                case 'article':
+                    $aViewRights = $aArticleRights;
+                    break;
+                case 'category':
+                    $aViewRights = $aCategoryRights;
+                    break;
+                case 'template':
+                    $aViewRights = $aTempalteRights;
+                    break;
+                case 'other':
+                    $aViewRights = array_merge($aArticleRights, $aCategoryRights, $aTempalteRights);
+                    $bExclusive = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
 
 if(!isset($rights_clientslang))
 {

@@ -39,14 +39,18 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
         $possible_areas=array();
 
 
-
+        $sCheckboxesRow = '';
         // look for possible actions   in mainarea []   in str and con
         foreach($right_list["con"] as $value2)
         {
                //if there are some actions
                if(is_array($value2["action"]))
                  foreach($value2["action"] as $key3 => $value3)
-                 {       //set the areas that are in use
+                 {  
+                    if ((in_array($value3, $aViewRights) && !$bExclusive) || 
+                        (!in_array($value3, $aViewRights) && $bExclusive) ||
+                        (count($aViewRights) == 0)) {
+                        //set the areas that are in use
                          $possible_areas[$value2["perm"]]="";
 
 
@@ -55,13 +59,12 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
 
                          //checkbox for the whole action
                          echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\" valign=\"bottom\">";
-                        echo"<script type=\"text/javascript\">
+                         echo"<script type=\"text/javascript\">
                                actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";
                               </script>"; 
-                         echo $lngAct[$value2["perm"]][$value3]."<br>
-                         <input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">
-                         </TH>";
-
+                         echo $lngAct[$value2["perm"]][$value3]."</TH>";
+                         $sCheckboxesRow .= "<td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\" valign=\"bottom\"><input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\"></td>";
+                    }
                  }
         }
 
@@ -71,7 +74,16 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
 
         //checkbox for all rights
         echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-        echo"Check all<br><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\"></TH></TR>";
+        echo i18n('Check all')."</TH></TR>";
+        
+        echo "<tr style=\"background-color: ". $cfg["color"]["table_header"] .";\">
+                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">&nbsp;</td>
+                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">&nbsp;</td>
+                    ".$sCheckboxesRow."
+                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\"><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\"></td>
+              </tr>";
+        
+        
         $colspan++;
 
 
@@ -157,20 +169,23 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
                         // look for possible actions in mainarea[]
 
                         foreach($right_list["con"] as $value2){
+                            //if there area some
+                            if(is_array($value2["action"]))
+                              foreach($value2["action"] as $key3 => $value3)
+                              {
+                                 if ((in_array($value3, $aViewRights) && !$bExclusive) || 
+                                    (!in_array($value3, $aViewRights) && $bExclusive) ||
+                                    (count($aViewRights) == 0)) {
+                                       //does the user have the right
+                                       if(in_array($value2["perm"]."|$value3|".$db->f("idcat"),array_keys($rights_list_old)))
+                                           $checked="checked=\"checked\"";
+                                       else
+                                           $checked="";
 
-                                //if there area some
-                                if(is_array($value2["action"]))
-                                  foreach($value2["action"] as $key3 => $value3)
-                                  {
-                                           //does the user have the right
-                                           if(in_array($value2["perm"]."|$value3|".$db->f("idcat"),array_keys($rights_list_old)))
-                                               $checked="checked=\"checked\"";
-                                           else
-                                               $checked="";
-
-                                           //set the checkbox    the name consits of      areaid+actionid+itemid        the    id  =  parebntid+couter for these parentid+areaid+actionid
-                                           echo"<td class=\"td_rights2\"><input type=\"checkbox\" id=\"str_".$parentid."_".$counter[$parentid]."_".$value2["perm"]."_$value3\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idcat")."]\" value=\"x\" $checked></td>";
-                                  }
+                                       //set the checkbox    the name consits of      areaid+actionid+itemid        the    id  =  parebntid+couter for these parentid+areaid+actionid
+                                       echo"<td class=\"td_rights2\"><input type=\"checkbox\" id=\"str_".$parentid."_".$counter[$parentid]."_".$value2["perm"]."_$value3\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idcat")."]\" value=\"x\" $checked></td>";
+                                }
+                              }
                         }
 
                          //checkbox for checking all actions fore this itemid

@@ -57,7 +57,8 @@ $lngAct["edit_contact_types"]["contact_property_set_order"] = i18n("Change order
 $lngAct["edit_contact_types"]["contact_property_add"] = i18n("Add a contact field", "contacts");
 $lngAct["edit_contact_types"]["contact_property_delete"] = i18n("Delete a contact field", "contacts");
 $lngAct["edit_contact_types"]["contact_type_details"] = i18n("View details of a contact type", "contacts");
-
+$lngAct["edit_contact_types"]["contact_type_sync"] = i18n("Synchronize contact types", "contacts");
+ 
 $belang = $belang_temp;
 
 ?>

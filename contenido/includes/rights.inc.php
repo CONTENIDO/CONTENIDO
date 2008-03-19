@@ -131,8 +131,8 @@ ob_start();
 
 echo"<table style=\"border:0px; border-left:1px; border-bottom: 1px;border-color: ". $cfg["color"]["table_border"] . "; border-style: solid;\" cellspacing=\"0\" cellpadding=\"2\" >";
 echo"<tr class=\"text_medium\" style=\"background-color: ". $cfg["color"]["table_dark"] .";\">";
-echo"<td valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">".i18n("Client / Language").":</td>";
-echo"<td valign=\"top\" style=\"border: 0px; border-top:1px; border-right:0px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"right\">";
+echo"<td valign=\"top\" style=\"border: 0px; border-top:1px; border-right:0px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid; vertical-align:middle;\" align=\"left\">".i18n("Client / Language").":</td>";
+echo"<td valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"right\">";
 echo"<input type=\"hidden\" name=\"rights_perms\" value=\"$rights_perms\">";
 
 //selectbox for clients
@@ -185,11 +185,58 @@ echo "<SELECT class=\"text_medium\" name=\"rights_clientslang\" SIZE=1>";
 
 
 echo $clientselect;
-echo "</SELECT></td><td style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\">";
-echo '<input type="image" src="images/submit.gif">';
+echo "</SELECT></td>";
+      
+      if ($area != 'user_content') {
+        echo "<td style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;padding-left:5px;padding-right:10px;\"><input type=\"image\" src=\"images/submit.gif\"></td></tr></table>";
+      } else {
+        echo "<td style=\"border: 0px; border-top:1px; border-right:0px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;padding-left:5px;padding-right:10px;\">".i18n('Rights type').": </td><td style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\">";
 
-echo "</td></tr>";
+        #filter for displaying rights
+        $oHtmlSelect = new 	cHTMLSelectElement ('filter_rights', '', "filter_rights");  
+        $oHtmlSelectOption = new cHTMLOptionElement('--- '.i18n("All").' ---', '', false);
+        $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Article rights"), 'article', false);
+        $oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Category rights"), 'category', false);
+        $oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Template rights"), 'template', false);
+        $oHtmlSelect->addOptionElement(3, $oHtmlSelectOption);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Plugin/Other rights"), 'other', false);
+        $oHtmlSelect->addOptionElement(4, $oHtmlSelectOption);
+        $oHtmlSelect->setEvent('change', "document.rightsform.submit();");
+        $oHtmlSelect->setDefault($_POST['filter_rights']);
 
+        echo $oHtmlSelect->render();
+        echo "</td><td style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;padding-left:5px;padding-right:10px;\"><input type=\"image\" src=\"images/submit.gif\"></td></tr></table>";
+
+        #set global array which defines rights to display
+        $aArticleRights = array('con_syncarticle', 'con_lock', 'con_deleteart', 'con_makeonline', 'con_makestart', 'con_duplicate', 'con_editart', 'con_newart', 'con_edit');
+        $aCategoryRights = array('con_synccat', 'con_makecatonline', 'con_makepublic');
+        $aTempalteRights = array('con_changetemplate', 'con_tplcfg_edit');
+
+        $aViewRights = array();
+        $bExclusive = false;
+        if (isset($_POST['filter_rights'])) {
+            switch($_POST['filter_rights']) {
+                case 'article':
+                    $aViewRights = $aArticleRights;
+                    break;
+                case 'category':
+                    $aViewRights = $aCategoryRights;
+                    break;
+                case 'template':
+                    $aViewRights = $aTempalteRights;
+                    break;
+                case 'other':
+                    $aViewRights = array_merge($aArticleRights, $aCategoryRights, $aTempalteRights);
+                    $bExclusive = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 //navigation
 /*echo "<td>
         <a href=\"".$sess->url("main.php?area=user")."\" class=\"action\">User</a>

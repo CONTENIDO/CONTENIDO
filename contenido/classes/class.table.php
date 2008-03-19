@@ -191,9 +191,9 @@ class Table {
      * @param $valign  The vertical alignment of the cell, default "top"
      * @return void
      */
-    function header_cell($content, $align="center", $valign="top", $additional=""){
+    function header_cell($content, $align="center", $valign="top", $additional="", $borderTop = 1){
 
-         $header_cell = '<th class="textg_medium" valign="' . $valign . '" style="border: 0px; border-top:1px; border-right:1px; border-color: '. $this->border_color . '; border-style: ' . $this->border_style . '" align="' . $align . '"' . $additional . '>' . $content . '</th>';
+         $header_cell = '<th class="textg_medium" valign="' . $valign . '" style="border: 0px; border-top:'.$borderTop.'px; border-right:1px; border-color: '. $this->border_color . '; border-style: ' . $this->border_style . '" align="' . $align . '"' . $additional . '>' . $content . '</th>';
          
          if ($this->first_cell)
          {

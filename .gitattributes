@@ -2982,6 +2982,9 @@ contenido/plugins/contacts/pear/Spreadsheet/Writer/Validator.php -text
 contenido/plugins/contacts/pear/Spreadsheet/Writer/Workbook.php -text
 contenido/plugins/contacts/pear/Spreadsheet/Writer/Worksheet.php -text
 contenido/plugins/contacts/xml/contacts.xml -text
+contenido/plugins/contacts/xml/lang_de_DE.xml -text svneol=unset#text/plain
+contenido/plugins/contacts/xml/lang_en_EN.xml -text svneol=unset#text/plain
+contenido/plugins/contacts/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/content_allocation/classes/class.content_allocation.php -text
 contenido/plugins/content_allocation/classes/class.content_allocation_article.php -text
 contenido/plugins/content_allocation/classes/class.content_allocation_complexlist.php -text

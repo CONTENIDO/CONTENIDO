@@ -118,3 +118,5 @@ msgstr "Links"
 msgid "This links are on the whitelist. Whitelist-links won't be check at linkchecker."
 msgstr "Diese Links befinden sich auf der wei&szlig;en Liste und werden nicht vom Linkchecker &uuml;berpr&uuml;ft."
 
+msgid "View whitelist"
+msgstr "Whitelist anzeigen"

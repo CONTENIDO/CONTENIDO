@@ -57,7 +57,6 @@ echo"<th class=\"textg_medium\" valign=\"top\" style=\"font-weight:normal;border
 echo i18n("Check all")."<br><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAllAreas()\"></TH></TR>";
 
 $nav = new Contenido_Navigation;
-
 foreach($right_list as $key => $value){
         // look for possible actions in mainarea
         foreach($value as $key2 =>$value2)

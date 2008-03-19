@@ -159,3 +159,9 @@ msgstr "Sind Sie sicher, die markierten Kontakte zu l&ouml;schen?"
 msgid "Delete contacts"
 msgstr "Kontakte l&ouml;schen"
 
+msgid "View Contacts"
+msgstr "Kontakte verwalten"
+
+msgid "Synchronize contact types"
+msgstr "Kontakte synchronisieren"
+

@@ -35,6 +35,7 @@ echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1
 echo i18n("Description")."</TH>";
 
 $possible_areas=array();
+$sCheckboxesRow = '';
 // look for possible actions   in mainarea []
 foreach($right_list["lay"] as $value2)
 {
@@ -50,16 +51,22 @@ foreach($right_list["lay"] as $value2)
 
 		//checkbox for the whole action
 		echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-		echo $lngAct[$value2["perm"]][$value3]."<br>
-		                         <input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">
-		                         </TH>";
+		echo $lngAct[$value2["perm"]][$value3]."</TH>";
+        $sCheckboxesRow .= "<td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\" valign=\"bottom\"><input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\"></td>";
 	}
 }
 
-//checkbox for all rights
-echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-echo"Check all<br><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\"></TH></TR>";
-$colspan++;
+        //checkbox for all rights
+        echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
+        echo i18n('Check all')."</TH></TR>";
+        $colspan++;
+
+        echo "<tr style=\"background-color: ". $cfg["color"]["table_header"] .";\">
+                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">&nbsp;</td>
+                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">&nbsp;</td>
+                    ".$sCheckboxesRow."
+                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\"><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\"></td>
+              </tr>";
 
 //Select the itemid´s
 $sql = "SELECT * FROM ".$cfg["tab"]["lay"]." WHERE idclient='$rights_client' ORDER BY name";

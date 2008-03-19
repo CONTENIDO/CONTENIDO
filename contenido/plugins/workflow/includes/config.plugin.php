@@ -5,13 +5,24 @@ include_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/in
 global $lngAct, $modidartlang;
 
 $lngAct["workflow"]["workflow_delete"] = i18n("Delete workflow", "workflow");
+
 $lngAct["workflow_common"]["workflow_show"] = i18n("Show workflow", "workflow");
 $lngAct["workflow_common"]["workflow_create"] = i18n("Create workflow", "workflow");
 $lngAct["workflow_common"]["workflow_save"] = i18n("Edit workflow", "workflow");
 $lngAct["con"]["workflow_do_action"] = i18n("Process workflow step", "workflow");
-$lngAct["str"]["workflow_cat_assign"] = i18n("Assign workflow to category", "workflow");
 $lngAct["str"]["workflow_inherit_down"] = i18n("Inherit workflow down", "workflow");
-
+$lngAct["str"]["workflow_inherit_down"] = i18n("Inherit workflow down", "workflow");
+$lngAct["workflow_steps"]["workflow_step_edit"] = i18n("Edit workflow step", "workflow");
+$lngAct["workflow_steps"]["workflow_step_up"] = i18n("Move workflowstep up", "workflow");
+$lngAct["workflow_steps"]["workflow_step_down"] = i18n("Move workflowstep down", "workflow");
+$lngAct["workflow_steps"]["workflow_save_step"] = i18n("Save Workflowstep", "workflow");
+$lngAct["workflow_steps"]["workflow_create_step"] = i18n("Create workflowstep", "workflow");
+$lngAct["workflow_steps"]["workflow_step_delete"] = i18n("Delete workflowstep", "workflow");
+$lngAct["workflow_steps"]["workflow_user_up"] = i18n("Move workflowstepuser up", "workflow");
+$lngAct["workflow_steps"]["workflow_user_down"] = i18n("Move workflowstepuser down", "workflow");
+$lngAct["workflow_steps"]["workflow_create_user"] = i18n("Create Workflowstepuser", "workflow");
+$lngAct["workflow_steps"]["workflow_user_delete"] = i18n("Delete Workflowstepuser", "workflow");
+$lngAct["str"]["workflow_cat_assign"] = i18n("Associate workflow with category", "workflow");
 
 $_cecRegistry->addChainFunction("Contenido.ArticleCategoryList.ListItems", "piworkflowCreateTasksFolder");
 $_cecRegistry->addChainFunction("Contenido.ArticleList.Columns", "piworkflowProcessArticleColumns");

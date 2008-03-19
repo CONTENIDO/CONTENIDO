@@ -33,7 +33,7 @@ $table->start_table();
 $table->header_row();
 $table->header_cell(i18n("Module name"));
 $table->header_cell(i18n("Description"));
-
+$aSecondHeaderRow = array();
 $possible_areas=array();
 // look for possible actions   in mainarea []
 foreach($right_list["mod"] as $value2)
@@ -51,17 +51,27 @@ foreach($right_list["mod"] as $value2)
                               </script>";
 
                          //checkbox for the whole action
-                         $table->header_cell($lngAct[$value2["perm"]][$value3]."<br>
-                         <input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
+                         $table->header_cell($lngAct[$value2["perm"]][$value3]);
+                         array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
 
                  }
 }
 
 
 //checkbox for all rights
-$table->header_cell("Check all<br><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
+$table->header_cell(i18n('Check all'));
+array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
 $table->end_row();
 $colspan++;
+
+$table->header_row();
+$table->header_cell('&nbsp',"center", '', '', 0);
+$table->header_cell('&nbsp',"center", '', '', 0);
+
+foreach ($aSecondHeaderRow as $value) {
+    $table->header_cell($value,"center", '', '', 0);
+}
+$table->end_row();
 
 //Select the itemid´s
 $sql = "SELECT * FROM ".$cfg["tab"]["mod"]." WHERE idclient='$rights_client' ORDER BY name";
