@@ -534,8 +534,8 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
     $sDate = date('Y-m-d');
 
     $this->db->query(sprintf("select user_id,perms,password from %s where username = '%s' AND
-                              (valid_from <= '".$sDate."' OR valid_from = '0000-00-00' OR valid_from = '') AND 
-                              (valid_to >= '".$sDate."' OR valid_to = '0000-00-00' OR valid_to = '')",
+                              (valid_from <= '".$sDate."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND 
+                              (valid_to >= '".$sDate."' OR valid_to = '0000-00-00' OR valid_to is NULL)",
 							 $this->database_table,
 							 addslashes($username)));
 

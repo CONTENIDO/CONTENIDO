@@ -117,6 +117,23 @@ contenido/applets/src/NumberedViewFactory.java -text
 contenido/applets/src/Test.java -text
 contenido/applets/src/TextEditorPane.java -text
 contenido/backend_search.php -text
+contenido/classes/Contenido_Category/Contenido_Category.class.php -text
+contenido/classes/Contenido_Category/Sample.php -text
+contenido/classes/Contenido_FrontendNavigation/Contenido_Frontend_Navigation.class.php -text
+contenido/classes/Contenido_FrontendNavigation/Contenido_Frontend_Navigation_Base.class.php -text
+contenido/classes/Contenido_FrontendNavigation/Contenido_Frontend_Navigation_Breadcrumb.class.php -text
+contenido/classes/Contenido_FrontendNavigation/Sample.php -text
+contenido/classes/Debug/Debug_Hidden.class.php -text
+contenido/classes/Debug/Debug_Visible.class.php -text
+contenido/classes/Debug/DebuggerFactory.class.php -text
+contenido/classes/Debug/IDebug.php -text
+contenido/classes/UrlBuilder/Contenido_UrlBuilder.class.php -text
+contenido/classes/UrlBuilder/Contenido_UrlBuilderConfig.class.php -text
+contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php -text
+contenido/classes/UrlBuilder/Contenido_UrlBuilder_Custom.class.php -text
+contenido/classes/UrlBuilder/Contenido_UrlBuilder_CustomPath.class.php -text
+contenido/classes/UrlBuilder/Contenido_UrlBuilder_Frontcontent.class.php -text
+contenido/classes/UrlBuilder/Sample.php -text
 contenido/classes/class.action.php -text
 contenido/classes/class.activeusers.php -text
 contenido/classes/class.area.php -text
@@ -3016,6 +3033,7 @@ contenido/plugins/linkchecker/xml/._lang_de_DE.xml -text
 contenido/plugins/linkchecker/xml/._lang_en_EN.xml -text
 contenido/plugins/linkchecker/xml/lang_de_DE.xml -text
 contenido/plugins/linkchecker/xml/lang_en_EN.xml -text
+contenido/plugins/linkchecker/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/repository/custom/FrontendNavigation.php -text
 contenido/plugins/repository/keyword_density.php -text
 contenido/plugins/systemtools/classes/Controls.php -text
@@ -3134,6 +3152,9 @@ contenido/plugins/workflow/locale/de_DE/LC_MESSAGES/workflow.po -text
 contenido/plugins/workflow/plugin_workflow.xml -text
 contenido/plugins/workflow/templates/template.workflow_steps.html -text
 contenido/plugins/workflow/templates/template.workflow_tasks.html -text
+contenido/plugins/workflow/xml/lang_de_DE.xml -text svneol=unset#text/plain
+contenido/plugins/workflow/xml/lang_en_EN.xml -text svneol=unset#text/plain
+contenido/plugins/workflow/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/scripts/HTMLObj.js.php -text
 contenido/scripts/addImageTags.js -text
 contenido/scripts/articleObject.js.php -text
@@ -3144,6 +3165,7 @@ contenido/scripts/contenidoConfig.js -text
 contenido/scripts/contextMenu.js -text
 contenido/scripts/expandCollapse.js -text
 contenido/scripts/general.js -text
+contenido/scripts/group_association.js -text
 contenido/scripts/header.js -text
 contenido/scripts/help.js.php -text
 contenido/scripts/iZoom.js.php -text

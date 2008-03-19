@@ -27,7 +27,7 @@ $url = array('cms' => $cfgClient[$client]['path']['htmlpath'], 'contenido' => $c
 
 // Initialization of cache
 require_once($cfg['path']['pear'] . "PEAR.php");
-require_once($cfg['path']['pear'] . "CACHE/Lite.php");
+require_once($cfg['path']['pear'] . "Cache/Lite.php");
 
 $cacheName = array('errors' => $sess->id, 'errorscount' => $cacheName['errors'] . "ErrorsCountChecked");
 $cache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['path']['frontend'] . "cache/", 'caching' => true, 'lifeTime' => 60, 'automaticCleaningFactor' => 1));

@@ -176,4 +176,4 @@ INSERT INTO !PREFIX!_actions VALUES ('908', '900', '', 'contact_data_view', '', 
 INSERT INTO !PREFIX!_actions VALUES ('909', '900', '', 'contact_data_delete', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('910', '900', '', 'contact_data_export', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('911', '901', '', 'contact_type_sync', '', '', '1');
-
+INSERT INTO !PREFIX!_actions VALUES ('444', '77', '', 'frontendgroup_user_add', '', '', '1');

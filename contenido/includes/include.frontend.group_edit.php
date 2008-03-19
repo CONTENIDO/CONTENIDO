@@ -14,7 +14,6 @@ cInclude("classes", "class.ui.php");
 cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "class.frontend.users.php");
 cInclude("classes", "class.frontend.groups.php");
-
 $page = new cPage;
 
 if ($idfrontendgroup) {
@@ -48,9 +47,32 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
 {
    $fegroup = $fegroups->create(" ".i18n("-- new group --"));
    $idfrontendgroup = $fegroup->get("idfrontendgroup");   
-} else if ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action))
-{
-   $groupmembers->remove($idfrontendgroup, $idfrontenduser);
+} else if ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action)) {
+    $aDeleteMembers = array();
+    if (!is_array($_POST['user_in_group'])) {
+        if ($_POST['user_in_group'] > 0) {
+            array_push($aDeleteMembers, $_POST['user_in_group']);
+        }
+    } else {
+        $aDeleteMembers = $_POST['user_in_group'];
+    }
+    foreach ($aDeleteMembers as $idfrontenduser) {
+        $groupmembers->remove($idfrontendgroup, $idfrontenduser);
+    }
+    
+    # also save other variables
+    $action = "frontendgroup_save_group";
+} else if ($action == "frontendgroup_user_add" && $perm->have_perm_area_action($area, $action)) {
+    if (count($newmember) > 0)
+    {
+        foreach ($newmember as $add)
+        {
+            $groupmembers->create($idfrontendgroup, $add);
+        }	
+    }
+
+    # also save other variables
+    $action = "frontendgroup_save_group"; 
 } else if ($action == "frontendgroup_delete" && $perm->have_perm_area_action($area, $action))
 {
    $fegroups->delete($idfrontendgroup);
@@ -75,14 +97,6 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
     		}
 		}
 		
-		if (count($adduser) > 0)
-		{
-			foreach ($adduser as $add)
-			{
-				$groupmembers->create($idfrontendgroup, $add);
-			}	
-		}
-    	
         //Reset all default groups
         if ($defaultgroup == 1) {
             $sSql = 'UPDATE '.$cfg["tab"]["frontendgroups"].' SET defaultgroup = 0 WHERE idclient='.$client.';';
@@ -122,97 +136,67 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
 		$notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
 	}
 	
-	
-	$form = new UI_Table_Form("properties");
-	$form->setVar("frame", $frame);
-	$form->setVar("area", $area);
-	$form->setVar("action", "frontendgroup_save_group");
-	$form->setVar("idfrontendgroup", $idfrontendgroup);
+    $tpl->reset();
 
-	$form->addHeader(i18n("Edit group"));
-	
 	$feusers = new FrontendUserCollection;
 	$feusers->select("idclient='$client'");
 	
 	$addedusers = $groupmembers->getUsersInGroup($idfrontendgroup,false, true);
 	$addeduserobjects = $groupmembers->getUsersInGroup($idfrontendgroup,true, true);
 
-	$addeduserlist = new UI_List;
-	$addeduserlist->setWidth("100%");
-	$addeduserlist->setBorder(0);
-    
-	$del = new Link;
-	$del->setCLink("frontendgroups", 4, "frontendgroups_user_delete");
-	$del->setContent('<img src="images/delete.gif">');
-	$del->setCustom("idfrontendgroup", $idfrontendgroup);
-	
 	$cells = array();
 	foreach ($addeduserobjects as $addeduserobject)
 	{
 		$cells[$addeduserobject->get("idfrontenduser")] = $addeduserobject->get("username");
 	}
-	
+
 	asort($cells);
 	
+    $sInGroupOptions = '';
 	foreach ($cells as $idfrontenduser => $name)
 	{
-		$del->setCustom("idfrontenduser", $idfrontenduser);
-
-		$addeduserlist->setCell($idfrontenduser,1,'<img align="left" src="images/users.gif">'.$name);
-		$addeduserlist->setCell($idfrontenduser,2,$del->render());
-		$addeduserlist->setCellAlignment($idfrontenduser,2, "right");
+        $sInGroupOptions .= '<option value="'.$idfrontenduser.'">'.$name.'</option>'."\n";
 	}
-    
-	
-	if (count($addeduserobjects) == 0)
-	{
-		$addeduserlist->setCell(0,1,i18n("No users are added to this group yet"));	
-	}
-		
-    $filter = htmlspecialchars($filter); 
+    $tpl->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
 
-	$oInputFilter = new cHTMLTextbox('filter', $filter, '30', '50', 'filter');
-	$oInputFilter->setStyle('width:400px;');
-	
 	$items = array();
 	while ($feuser = $feusers->next())
 	{
 		$idfrontenduser = $feuser->get("idfrontenduser");
-		
-		$bShowEntry = false;
 		$sUsername = $feuser->get("username");
 
-		if ($filter == '') {
-			$bShowEntry = true;						
-		} elseif (strpos(strtolower($sUsername), strtolower($filter)) !== FALSE) {
-			$bShowEntry = true;
-		}
-	
-		if (!in_array($idfrontenduser,$addedusers) && $bShowEntry)
+		if (!in_array($idfrontenduser,$addedusers))
 		{
 			$items[$idfrontenduser] = $sUsername;
 		}	
 	}
 	
 	asort($items);
-	
-	$select = new cHTMLSelectElement("adduser[]");
-	$select->setSize(20);
-	$select->setStyle("width: 400px;");
-	$select->setMultiSelect();
-	$select->autoFill($items);
+    
+    $sNonGroupOptions = '';
+	foreach ($items as $idfrontenduser => $name)
+	{
+        $sNonGroupOptions .= '<option value="'.$idfrontenduser.'">'.$name.'</option>'."\n";
+	}
+    $tpl->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
 	
 	$groupname = new cHTMLTextbox("groupname", $fegroup->get("groupname"),40);
 	
 	$defaultgroup = new cHTMLCheckbox("defaultgroup", "1");
 	$defaultgroup->setChecked($fegroup->get("defaultgroup"));
 	
-	$form->add(i18n("Group name"), $groupname->render());
-	$form->add(i18n("Default group"), $defaultgroup->toHTML(false));
-	$form->add(i18n("Users in Group"), $addeduserlist->render());
-	$form->add(i18n("Filter users"), $oInputFilter->render());
-	$form->add(i18n("Add users"), $select->render()."<br>".i18n("Note: Hold ctrl to select multiple items."));
-
+    $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
+    $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
+    $tpl->set('d', 'LABEL', i18n("Group name"));
+    $tpl->set('d', 'INPUT', $groupname->render());
+    $tpl->next();
+    
+    $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
+    $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
+    $tpl->set('d', 'LABEL', i18n("Default group"));
+    $tpl->set('d', 'INPUT', $defaultgroup->toHTML(false));
+    $tpl->next();
+    
 	$pluginOrder = trim_array(explode(",",getSystemProperty("plugin", "frontendgroups-pluginorder")));
 
 	/* Check out if there are any plugins */
@@ -231,25 +215,55 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
 				{
 					foreach ($plugTitle as $key => $value)
 					{
-						$form->add($value, $display[$key]);
+                        $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
+                        $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
+                        $tpl->set('d', 'LABEL', $value);
+                        $tpl->set('d', 'INPUT', $display[$key]);
+                        $tpl->next();
 					}
 				} else {
 					if (is_array($plugTitle) || is_array($display))
 					{
-						$form->add("WARNING", "The plugin $plugin delivered an array for the displayed titles, but did not return an array for the contents.");
+                        $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
+                        $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
+                        $tpl->set('d', 'LABEL', "WARNING");
+                        $tpl->set('d', 'INPUT', "The plugin $plugin delivered an array for the displayed titles, but did not return an array for the contents.");
+                        $tpl->next();
 					} else {
-						$form->add($plugTitle, $display);
+                        $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
+                        $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
+                        $tpl->set('d', 'LABEL', $plugTitle);
+                        $tpl->set('d', 'INPUT', $display);
+                        $tpl->next();
 					}
 				}
 			}
 		}
 	}
+    
+    $tpl->set('s', 'CATNAME', i18n("Edit group"));
+    $tpl->set('s', 'BGCOLOR',  $cfg["color"]["table_header"]);
+    $tpl->set('s', 'BGCOLOR_CONTENT',  $cfg["color"]["table_dark"]);
+    $tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
+    $tpl->set('s', 'CATFIELD', "&nbsp;");
+    $tpl->set('s', 'FORM_ACTION', $sess->url('main.php'));
+    $tpl->set('s', 'AREA', $area);
+    $tpl->set('s', 'GROUPID', $idfrontendgroup);
+    $tpl->set('s', 'FRAME', $frame);
+    $tpl->set('s', 'IDLANG', $lang);
+    $tpl->set('s', 'STANDARD_ACTION', 'frontendgroup_save_group');
+    $tpl->set('s', 'ADD_ACTION', 'frontendgroup_user_add');
+    $tpl->set('s', 'DELETE_ACTION', 'frontendgroups_user_delete');
+    $tpl->set('s', 'DISPLAY_OK', 'block');
+    $tpl->set('s', 'IN_GROUP_VALUE', $_POST['filter_in']);
+    $tpl->set('s', 'NON_GROUP_VALUE', $_POST['filter_non']);
+    $tpl->set('s', 'RECORD_ID_NAME', 'idfrontendgroup');
 
-	$page->setContent($notis . $form->render(true));
+    $tpl = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_memberselect']);
 } else {
-	$page->setContent("");	
+    $page = new UI_Page;
+    $page->setContent("");
+    $page->addScript('reload', $sReloadScript);	
+    $page->render();
 }
-
-$page->addScript('reload', $sReloadScript);
-$page->render();
 ?>

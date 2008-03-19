@@ -741,4 +741,13 @@ ul.artikel_search{
     overflow: hidden;
 }
 
+/*Styles for associating groups and users in Administration backend*/
+select.memberselect {width: 350px; height: 270px; vertical-align:middle;}
+input.filterBox {width: 280px; margin-bottom: 3px; vertical-align:middle;}
+div.memberselect {width: 350px; float: left; vertical-align:middle;}
+img.submit_image {vertical-align:top; margin-top: 1px;}
+div.memberselect_button {width:50px; float:left; vertical-align:middle; padding-top:140px; padding-left:5px; padding-right:5px;}
+div.memberselect_button input {width:50px;}
+div.clear {clear:both;}
+p.column_header {padding 0; marign: 0; font-weight: bold;}
 

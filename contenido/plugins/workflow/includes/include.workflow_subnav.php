@@ -16,16 +16,9 @@
 * $Id: include.workflow_subnav.php,v 1.1 2003/07/31 13:44:03 timo.hummel Exp $
 ******************************************/
 
+$nav = new Contenido_Navigation;
 
 
-# load language file
-        if ($xml->load($cfg["path"]["contenido"]. $cfg['path']['plugins'] ."workflow/plugin_workflow.xml") == false)
-        {
-        	/*if ($xml->load($cfg['path']['xml'] . 'plugin_workflow_en_US.xml') == false)
-        	{*/
-        		die("Unable to load any XML language file");
-        	//}
-        }
 
     $parentarea = getParentAreaID($area);
     $sql = "SELECT
@@ -69,7 +62,7 @@
 
         # Extract caption from
         # the xml language file
-        $caption = $xml->valueOf( $db->f("location") );
+        $caption = $nav->getName($db->f("location"));
 
         $tmp_area = $db->f("name");
 

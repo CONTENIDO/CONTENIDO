@@ -872,7 +872,6 @@ class ItemCollection
 		}
 
 		$sql = "SELECT ".$this->primaryKey." FROM ".$this->table.$where.$group_by.$order_by.$limit;
-
 		$this->db->query($sql);
 		$this->_lastSQL = $sql;
 		$this->_mode = "manual";

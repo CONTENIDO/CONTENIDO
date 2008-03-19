@@ -5846,5 +5846,20 @@ msgstr "Synchronisieren von"
 msgid "Articlelink"
 msgstr "Artikellink"
 
+msgid "Non Groupmembers"
+msgstr "Nicht Gruppenmitglieder"
 
+msgid "Groupmembers"
+msgstr "Gruppenmitglieder"
 
+msgid "Manage group members"
+msgstr "Gruppenmitglieder verwalten"
+
+msgid "Add right side selected users to group"
+msgstr "F&uuml;ge rechts ausgew&auml;hlte Benutzer der Gruppe hinzu"
+
+msgid "Remove left side selected users from group"
+msgstr "Entferne links ausgew&auml;hlte Benutzer aus der Gruppe"
+
+msgid "Execute Workflow"
+msgstr "Workflow ausführen"

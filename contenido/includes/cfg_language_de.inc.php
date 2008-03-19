@@ -93,6 +93,7 @@ $lngAct["con"]["con_makepublic"]                    = i18n("Protect category");
 $lngAct["con"]["con_deleteart"]                    = i18n("Delete article");
 $lngAct["con"]["con_tplcfg_edit"]   = i18n("Edit template configuration");
 $lngAct["con"]["con_duplicate"] 	= i18n("Duplicate Article");
+$lngAct["con"]["workflow_do_action"] 	= i18n("Execute Workflow");
 $lngAct["str"]["str_renamecat"]                    = i18n("Rename category");
 $lngAct["str"]["str_newcat"]                    = i18n("New category");
 $lngAct["str"]["str_makevisible"]                    = i18n("Set category on- or offline");

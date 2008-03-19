@@ -144,7 +144,7 @@ class FrontendGroupMemberCollection extends ItemCollection {
 	function create ($idfrontendgroup, $idfrontenduser)
 	{
 		$this->select("idfrontendgroup = '$idfrontendgroup' AND idfrontenduser = '$idfrontenduser'");
-		
+
 		if ($this->next())
 		{
 			return false;	
@@ -183,6 +183,7 @@ class FrontendGroupMemberCollection extends ItemCollection {
 	function getUsersInGroup ($idfrontendgroup, $asObjects = true)
 	{
 		$this->select("idfrontendgroup = '$idfrontendgroup'");
+        
 		
 		$objects = array();
 		

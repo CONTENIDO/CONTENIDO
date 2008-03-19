@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<language>
+
+    <navigation>
+    
+        <extra>
+            <workflow>
+            	<main>Workflow</main>
+                <settings>Workflow-Einstellungen</settings>
+                <steps>Schritte</steps>
+            </workflow>
+        </extra>
+
+    </navigation>
+    
+
+</language>

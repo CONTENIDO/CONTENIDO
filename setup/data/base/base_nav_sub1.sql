@@ -68,6 +68,6 @@ INSERT INTO !PREFIX!_nav_sub VALUES('82', '3', '92', '1', 'navigation/style/modu
 INSERT INTO !PREFIX!_nav_sub VALUES('500', '1', '500', '0', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('502', '0', '500', '1', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('503', '0', '501', '1', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/whitelist', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('600', '3', '600', '0', 'workflow/plugin_workflow.xml;navigation/extra/workflow/main', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('601', '0', '601', '1', 'navigation/extra/workflow/settings', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('602', '0', '602', '1', 'navigation/extra/workflow/steps', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('600', '3', '600', '0', 'workflow/xml/lang_de_DE.xml;navigation/extra/workflow/main', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('601', '0', '601', '1', 'workflow/xml/lang_de_DE.xml;navigation/extra/workflow/settings', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('602', '0', '602', '1', 'workflow/xml/lang_de_DE.xml;navigation/extra/workflow/steps', '1');

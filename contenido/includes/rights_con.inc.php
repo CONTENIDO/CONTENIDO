@@ -25,7 +25,7 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
               var itemids=new Array();
               var actareaids=new Array();
         </script>";
-
+        
         $colspan=0;
         echo "<br>";
         
@@ -37,7 +37,6 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
         echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">&nbsp;</TH>";
 
         $possible_areas=array();
-
         // look for possible actions   in mainarea []   in str and con
         foreach($right_list["con"] as $value2)
         {
@@ -55,7 +54,8 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
                          echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\" valign=\"bottom\">";
                         echo"<script type=\"text/javascript\">
                                actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";
-                              </script>"; 
+                              </script>";
+                         
                          echo $lngAct[$value2["perm"]][$value3]."<br>
                          <input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">
                          </TH>";
@@ -65,7 +65,7 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
 
         //checkbox for all rights
         echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-        echo"Check all<br><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\"></TH></TR>";
+        echo i18n('Check all')."<br><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\"></TH></TR>";
         $colspan++;
 
         $sql = "SELECT A.idcat, level, name,parentid FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='$rights_lang' AND B.idclient='$rights_client' ORDER BY idtree";
