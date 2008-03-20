@@ -1,5 +1,39 @@
 <?php
 
+function updatePwRequest($db, $table) {
+    $aStandardvalues = array ( 'enable' => 'true',
+                               'sender_mail' => 'info%40contenido.org',
+                               'sender_name' => 'Contenido+Backend',
+                               'mail_host' => 'localhost'
+                                );
+                                
+    $sql = "SELECT name, value FROM %s WHERE type='pw_request'";
+    $db->query(sprintf($sql, $table));
+    
+    $aExists = array();
+    $aKeys = array_keys($aStandardvalues);
+    
+    while ($db->next_record()) {
+        $sName = $db->f('name');
+        $sValue = $db->f('value');
+
+        array_push($aExists, $sName);
+        
+        if ($sValue == '' && in_array($sName, $aKeys)) {
+            $sql = "UPDATE %s SET value = '%s' WHERE type='pw_request' AND name='%s'";
+            $db->query(sprintf($sql, $table, $aStandardvalues[$sName], $sName));
+        }
+    }
+    
+    foreach ($aStandardvalues as $key => $value) {
+        if (!in_array($key, $aExists)) {
+            $id = $db->nextid($table);
+            $sql = "INSERT INTO %s SET idsystemprop = '%s', type='pw_request', name='%s', value='%s'";
+            $db->query(sprintf($sql, $table, $id, $key, $value));
+        }
+    }
+}
+
 function updateContenidoVersion ($db, $table, $version)
 {
 	$sql = "SELECT idsystemprop FROM %s WHERE type='system' AND name='version'";

@@ -22,6 +22,8 @@ form, h1, h2, h3, h4{
 #head{
 	background-color: #F1F1F1;
     width: 1000px;
+    float:left;
+    margin-right: -3px;
 }
 .left_top_dist{
 	padding-left:17px;
@@ -66,6 +68,8 @@ form, h1, h2, h3, h4{
   background-color: #FFF;
   width: 700px;
   line-height: 25px;
+  float:right;
+  margin-right: 30px;
 }  
 hr.sep{
   border: 0;
@@ -73,18 +77,26 @@ hr.sep{
   background-color: #b4b4b4;
   color: #b4b4b4;
 }
+
+div.login_title {
+    float:left;
+    width: 125px;
+}
+
 /* form on loginpage */
 #lblusername{
-	margin-left: 64px;
+    margin-left: 64px;
 }
 #username{
-	margin-left: 34px;
+    margin-left: 13px;
+    margin-top:3px;
 }
 #lblpasswd{
     margin-left: 64px;
 }
 #passwd{
-    margin-left: 10px;
+    margin-left: 13px;
+    margin-top:3px;
 }
 #lang {
     margin-top: 3px;

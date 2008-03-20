@@ -808,13 +808,10 @@ class UI_Page
 			return $rendered;
 		}
 	}
-
-		
 }
 
 class Link
 {
-	
 	var $link;
 	var $title;
 	var $targetarea;
@@ -955,8 +952,6 @@ class Link
 				return ($link.'<img src="'.$this->images.'" border="0" width="'.$this->img_width.'" height="'.$this->img_height.'"/></a>');
 			}
 	}
-	
-	
 }
 
 class UI_List

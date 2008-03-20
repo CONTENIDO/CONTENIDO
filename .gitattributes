@@ -178,6 +178,7 @@ contenido/classes/class.note.php -text
 contenido/classes/class.notification.php -text
 contenido/classes/class.phpmailer.php -text
 contenido/classes/class.properties.php -text
+contenido/classes/class.request.password.php -text
 contenido/classes/class.search.php -text
 contenido/classes/class.smtp.php -text
 contenido/classes/class.structure.php -text
@@ -3322,6 +3323,7 @@ contenido/templates/standard/template.newsletter_menu.html -text
 contenido/templates/standard/template.recipient_edit.html -text
 contenido/templates/standard/template.recipient_left_top.html -text
 contenido/templates/standard/template.recipient_menu.html -text
+contenido/templates/standard/template.request_password.html -text svneol=unset#text/plain
 contenido/templates/standard/template.right_top_blank.html -text
 contenido/templates/standard/template.rights_create.html -text
 contenido/templates/standard/template.rights_details.html -text

@@ -775,6 +775,7 @@ class cHTMLTextbox extends cHTMLFormElement
 	function cHTMLTextbox($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
 	{
 		cHTMLFormElement :: cHTMLFormElement($name, $id, $disabled, $tabindex, $accesskey);
+        
 		$this->_tag = "input";
 		$this->setContentlessTag();
 		$this->setValue($initvalue);

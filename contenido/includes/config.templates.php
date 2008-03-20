@@ -134,6 +134,8 @@ $cfg['templates']['system_subnav']		  = 'template.system_subnav.html';
 $cfg['templates']['system_errorreport']   = 'template.system_errorreport.html';
 $cfg['templates']['systam_variables_mailattach']	= 'template.system_sysval_mailattach.html';
 
+$cfg['templates']['request_password']      = 'template.request_password.html';
+
 $cfg['templates']['blank']                = 'template.blank.html';
 
 ?>

@@ -5894,4 +5894,50 @@ msgstr "Artikeltemplate konfigurieren"
 msgid "Template preconfiguration"
 msgstr "Template Vorkonfiguration"
 
+msgid "Category %s successfully renamed!"
+msgstr "Kategorie %s erfolgreich umbenannt!"
 
+msgid "New Category %s successfully stored!"
+msgstr "Neue Kategorie %s erfolgreich erstellt!"
+
+msgid "Category successfully deleted!"
+msgstr "Kategorie erfolgreich gel&ouml;scht!"
+
+msgid "Please enter a category name."
+msgstr "Bitte geben Sie einen Kategorienamen ein."
+
+msgid "Dear Contenidouser %s,\n\nYour password to log in Content Management System Contenido is: %s\n\nBest regards\n\nYour Contenido sysadmin"
+msgstr "Lieber Contenidouser %s,\n\nIhr Passwort für das Login in das Content Management System Contenido ist: %s\n\nViele Grüße\n\nIhr Contenido Systemadministrator"
+
+msgid "Your new password for Contenido Backend"
+msgstr "Ihr neues Passwort für das Contenido Backend"
+
+msgid "Password"
+msgstr "Passwort"
+
+msgid "The setup directory still exists. Please remove the setup directory before you continue."
+msgstr "Das Setupverzeichnis exitiert noch. Bitte löschen Sie das Setupverzeichnis, bevor Sie fortfahren."
+
+msgid "The sysadmin and/or the admin account still contains a well-known default password. Please change immediately after login."
+msgstr "Der Syadmin und/oder Admin Account ist noch auf das Standardpasswort gesetzt. Bitte &auml;ndern Sie gleich nach dem Login diese Passw&ouml;rter."
+
+msgid "Request password?"
+msgstr "Passwort vergessen?"
+
+msgid "Please enter your login"
+msgstr "Bitte geben Sie hier Ihren Login ein"
+
+msgid "This user does not exist."
+msgstr "Der eingegebene Nutzername existiert nicht."
+
+msgid "Password requests are allowed every %s minutes."
+msgstr "Passw&ouml;rter k&ouml;nnen nur alle %s Minuten angefordert werden."
+
+msgid "New password was submitted to your e-mail address."
+msgstr "Das neue Passwort wurde Ihnen soeben an Ihre E-Mailadresse gesendet."
+
+msgid "The requested user has no valid e-mail address. Submitting new password is not possible. Please contact your system- administrator for further support."
+msgstr "Der betroffene Nutzer hat keine g&uuml;ltige E-Mailadresse hinterlegt. Die Zusendung eines neuen Passworts ist nicht m&ouml;glich. Bitte kontaktieren Sie Ihren System- administrator f&uuml;r weitere Unterst&uuml;tzung."
+
+msgid "Invalid Login or Password!"
+msgstr "Login fehlgeschlagen!"

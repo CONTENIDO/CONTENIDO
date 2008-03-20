@@ -35,6 +35,7 @@ INSERT INTO !PREFIX!_actions VALUES('345', '32', '', 'js_create', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('346', '11', '', 'mod_new', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('351', '20', '', 'stat_show', '', '', '0');
 INSERT INTO !PREFIX!_actions VALUES('350', '49', '', 'log_show', '', '', '0');
+INSERT INTO !PREFIX!_actions VALUES('64', '24', '', 'request_pw', '', '', '0');
 INSERT INTO !PREFIX!_actions VALUES('35', '47', '10', 'lang_newlanguage', 'if (!is_numeric($targetclient)) { $targetclient = $client; } $errno = langNewLanguage("-- ".i18n("New language")." --",$targetclient);', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('36', '22', '21', 'lang_renamelanguage', '$errno = langRenameLanguage($idlang, $name);', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('37', '47', '31', 'lang_deletelanguage', 'if (!is_numeric($targetclient)) { $targetclient = $client; } $errno = langDeleteLanguage($idlang,$targetclient);', '', '1');

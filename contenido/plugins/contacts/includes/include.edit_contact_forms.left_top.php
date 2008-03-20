@@ -15,7 +15,7 @@ $oUi = new UI_Left_Top;
 $oLink = new Link;
 
 if($perm->have_perm_area_action('contacts', 'contact_type_create')) {
-	$oLink->setCLink($area, 4, 'contact_type_create');
+    $oLink->setMultilink($area, "", $area, 'contact_type_create');
 	$oLink->setAlt(i18n('Create new contact type', "contacts"));
 	$oLink->setContent(i18n('Create new contact type', "contacts"));
 	$oLink->updateAttributes(array('class' => 'addfunction'));

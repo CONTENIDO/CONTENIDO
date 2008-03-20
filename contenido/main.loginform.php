@@ -17,6 +17,25 @@ global $cfg, $username;
 
 cInclude ("includes", 'functions.i18n.php');
 cInclude ("classes", "class.notification.php");
+cInclude ("classes", "class.request.password.php");
+
+$aLangs = i18nStripAcceptLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE']); 
+
+foreach ($aLangs as $sValue)
+{
+    $sEncoding = i18nMatchBrowserAccept($sValue);
+    $GLOBALS['belang'] = $sEncoding;
+    
+    if ($sEncoding !== false)
+    {
+        break; 
+    } 
+}
+
+if (isset($_POST['belang']) && $_POST['belang'] != '') {
+    $sSelectedLang = $_POST['belang'];
+    $GLOBALS['belang'] = $sSelectedLang;
+}
 
 $noti = "";
 if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
@@ -26,7 +45,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
 	// Check, if setup folder is still available
 	if (file_exists(dirname(dirname(__FILE__))."/setup"))
 	{
-		$aMessages[] = "The setup directory still exists. Please remove the setup directory before you continue.";	 
+		$aMessages[] = i18n("The setup directory still exists. Please remove the setup directory before you continue.");	 
 	}
 	
 	// Check, if sysadmin and/or admin accounts are still using well-known default passwords
@@ -38,7 +57,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
 	
 	if ($db->num_rows() > 0)
 	{
-		$aMessages[] = "The sysadmin and/or the admin account still contains a well-known default password. Please change immediately after login.";
+		$aMessages[] = i18n("The sysadmin and/or the admin account still contains a well-known default password. Please change immediately after login.");
 	}
 	unset ($db);
 
@@ -57,29 +76,31 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
     <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
 		<link REL="SHORTCUT ICON" HREF="<?php echo $cfg["path"]["contenido_fullhtml"]."favicon.ico"; ?>" />    
     <script type="text/javascript" src="scripts/md5.js"></script>
+    <script type="text/javascript" src="scripts/str_overview.js"></script>
     
     <script type="text/javascript">
-			if(top!=self) 
-			{
-				top.location="index.php";
-			} 
+        if(top!=self) 
+        {
+            top.location="index.php";
+        } 
 
-			function doChallengeResponse() 
-			{
-				str = document.login.username.value + ":" +
-        MD5(document.login.password.value) + ":" +
-        document.login.challenge.value;
+        function doChallengeResponse() 
+        {
+            str = document.login.username.value + ":" +
+    MD5(document.login.password.value) + ":" +
+    document.login.challenge.value;
 
-				document.login.response.value = MD5(str);
-				document.login.password.value = "";
-				document.login.submit();
-				
-			}
+            document.login.response.value = MD5(str);
+            document.login.password.value = "";
+            document.login.submit();
+            
+        }
     </script>		
 
 </head>
 <body>
 <div style="border-top: 1px solid #0060b1;"></div>	
+
 <div id="head">
 	<a id="head_logo" href="http://www.contenido.org"><img title="Contenido Website." alt="Contenido Website." src="images/conlogo.gif" /></a>
 	
@@ -90,21 +111,8 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
 			<form name="login" method="post" action="<?php echo $this->url() ?>">
 			<div id="head_nav1" class="left_dist head_nav_login">
 				
-				<select id="lang" name="belang" tabindex="3" class="text_medium">
+				<select id="lang" name="belang" tabindex="3" class="text_medium" onchange="document.login.submit();">
 					<?php
-					#cInclude ("includes", 'functions.i18n.php'); 
-
-					$aLangs = i18nStripAcceptLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE']); 
-
-					foreach ($aLangs as $sValue)
-					{
-						$sEncoding = i18nMatchBrowserAccept($sValue);
-						
-						if ($sEncoding !== false)
-						{
-							break; 
-						} 
-					}
 
 					$aAvailableLangs = i18nGetAvailableLanguages();
 					
@@ -116,8 +124,13 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
 							{
 								list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
 								
-								if ($sCode == $sEncoding)
-								{
+                                if ($sSelectedLang) {
+                                    if ($sSelectedLang == $sCode) {
+                                        $sSelected = ' selected="selected"';
+                                    } else {
+                                        $sSelected = '';
+                                    }
+                                } else if ($sCode == $sEncoding) {
 									$sSelected = ' selected="selected"';
 								} else {
 									$sSelected = '';
@@ -128,8 +141,13 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
 						} else {
 							list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
 							
-							if ($sCode == $sEncoding)
-							{
+                            if ($sSelectedLang) {
+                                if ($sSelectedLang == $sCode) {
+                                    $sSelected = ' selected="selected"';
+                                } else {
+                                    $sSelected = '';
+                                }
+                            } else if ($sCode == $sEncoding) {
 								$sSelected = ' selected="selected"';
 							} else {
 								$sSelected = '';
@@ -140,10 +158,11 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
 					}
 					?>
 					</select>
-                  <label id="lbllang" for="lang">Language:</label>
+                  <label id="lbllang" for="lang"><?php echo i18n('Language'); ?></label>
                   
-                  <span class="text_medium_bold">Contenido Backend</span>
-				   <label id="lblusername" for="username">Login:</label>
+                  <div class="text_medium_bold login_title"><?php echo i18n('Contenido Backend'); ?></div>
+                  
+				   <label id="lblusername" for="username" style="width:75px; display:block; float:left;"><?php echo i18n('Login'); ?>:</label>
 				   <input id="username" tabindex="1" type="text" class="text_medium" name="username" size="25" maxlength="32" value="<?php echo ( isset($this->auth["uname"]) ) ? $this->auth["uname"] : ""  ?>" />
                   
 
@@ -152,24 +171,34 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
 			<div id="head_nav2" class="head_nav_login left_dist">
                 <input id="okbutton" tabindex="4" type="image" title="Login" alt="Login" src="images/but_ok.gif" />
                 <div style="float:right; margin-right:25px;" class="text_error">
-                    <?php if ( isset($username) ) { ?>
-                    Invalid Login or Password!
-                    <?php } ?>
+                    <?php if ( isset($username) && $username != '') {
+                                echo i18n('Invalid Login or Password!'); 
+                            }
+                     ?>
                 </div>
-                
-                <span class="text_medium_bold" style="visibility:hidden">Contenido Backend</span>
-                <label id="lblpasswd" for="passwd">Password:</label>
+                <div style="clear:both;display:none;"></div>
+                <div class="text_medium_bold login_title">&nbsp;</div>
+             
+                <label id="lblpasswd" for="passwd" style="width:75px; display:block; float:left;"><?php echo i18n('Password'); ?>:</label>
                 <input id="passwd" tabindex="2" type="password" class="text_medium" name="password" size="25" maxlength="32" />
-
+                
                 <input type="hidden" name="vaction" value="login" />
                 <input type="hidden" name="formtimestamp" value="<?php echo time(); ?>" />
 			</div>
 		</form>
 	</div>
 
-	<div id="navcontainer" style="border-top: 1px solid #666666;clear: left;">
+	<div id="navcontainer" style="border-top: 1px solid #666666;clear:left;">
+    <?php 
+        //class implements passwort recovery, all functionality is implemented there
+        $oRequestPassword = new RequestPassword($db, $cfg);
+        $oRequestPassword->renderForm();
+    ?>
 	</div>
 </div>  
+
+<div style="background-color: #F1F1F1;height:80px;">&nbsp;</div>
+<div id="navcontainer" style="border-top: 1px solid #666666;">&nbsp;</div>
 
 <div id="alertbox">
 	<?php echo $noti; ?>

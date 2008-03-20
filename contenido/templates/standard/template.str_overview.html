@@ -41,15 +41,8 @@
             sTemplate = sTemplate.replace(/{IDCAT}/g, idcat);
             var block = document.createElement('span');
             block.innerHTML = sTemplate;
-            if (parseInt(selected) > 0) {
-                var options = block.getElementsByTagName('option');
-                for (var i = 0; i < options.length; i++) {
-                    if (parseInt(selected) == parseInt(options[i].value)) {
-                        options[i].selected = true;
-                    }
-                }
-            }
-            
+            block.firstChild.value = selected;
+
             parent.removeChild(script);
             parent.appendChild(block);
         }

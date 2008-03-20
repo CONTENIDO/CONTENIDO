@@ -33,8 +33,9 @@ $aContactPropertyActions =
 /*contact type part*/
 if(	in_array($_REQUEST['action'], $aContactTypeActions) && 
 	$perm->have_perm_area_action($area, $_REQUEST['action'])) {
-
-	$bValidIdContactType = $oContactTypes->existsContactType($_REQUEST['idcontacttype']); 
+    
+    $iIdContactType = $_REQUEST['idcontacttype'];
+	$bValidIdContactType = $oContactTypes->existsContactType($iIdContactType); 
 
 	switch($_REQUEST['action']) {
 		case 'contact_type_create':
@@ -60,19 +61,20 @@ if(	in_array($_REQUEST['action'], $aContactTypeActions) &&
 				$sContactType = $oContactTypes->getContactTypeById($iIdContactType);
 				$oContactActions->storeAction($aContactPluginProperties['view_contacts_idarea'], $aContactPluginProperties['actionprefix'] . $sContactType . "-$client-$lang");
 				$sHtmlOutput = $notification->returnNotification("info", '"' . $sContactTypeLabel . "' " . i18n("was created!", "contacts"));
-                $sHtmlOutput .= '<script type="text/javascript">top.content.left.left_bottom.location.reload();</script>';
-			}
-			
-			break;
-		
+                $sHtmlOutput .= '<script type="text/javascript">top.content.left.left_bottom.location.reload();top.content.right.right_top.location.href = top.content.right.right_top.location.href+\'&idcontacttype=\'+'.$iIdContactType.';</script>';
+            }
+
 		case 'contact_type_details':
+            $bValidIdContactType = $oContactTypes->existsContactType($iIdContactType); 
+            
 			if(!$bValidIdContactType) {
 				break;
 			}
+            
 			$oContactTypes->resetGetByProperties();
 			$oContactTypes->addGetByProperty("idclient", $client);
 			$oContactTypes->addGetByProperty("idlang", $lang);
-			$oContactTypes->addGetByProperty("idcontacttype", $_REQUEST['idcontacttype']);
+			$oContactTypes->addGetByProperty("idcontacttype", $iIdContactType);
 	
 			$aContactTypes = $oContactTypes->getContactTypes();
 			
