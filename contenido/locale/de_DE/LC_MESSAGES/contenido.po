@@ -5941,3 +5941,7 @@ msgstr "Der betroffene Nutzer hat keine g&uuml;ltige E-Mailadresse hinterlegt. D
 
 msgid "Invalid Login or Password!"
 msgstr "Login fehlgeschlagen!"
+
+msgid "No matching data found. Please contact your systemadministrator."
+msgstr "Keine passenden Daten gefunden. Bitte wenden Sie sich an Ihren System- administrator."
+

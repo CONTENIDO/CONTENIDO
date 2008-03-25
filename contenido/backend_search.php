@@ -1,4 +1,4 @@
-<?
+<?php
 /*****************************************
  * File      :   backend_search.php
  * Project   :   Contenido

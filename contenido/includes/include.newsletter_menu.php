@@ -70,6 +70,9 @@ $oNewsletters = new NewsletterCollection;
 $oNewsletters->setWhere("idclient", $client);
 $oNewsletters->setWhere("idlang", $lang);
 
+$aFields = array();
+$aFields["name"]  		= array("field" => "name", "caption" => i18n("Name"), "type" => "base,sort,search");
+
 if ($_REQUEST["filter"] != "") {
 	if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
 		foreach ($aFields as $sKey => $aData) {
@@ -79,7 +82,7 @@ if ($_REQUEST["filter"] != "") {
 		}
 		$oNewsletters->setInnerGroupCondition("filter", "OR");
 	} else {
-		$oNewsletters->setWhere($_REQUEST["searchin"], $_REQUEST["filter"], "LIKE");
+		$oNewsletters->setWhere('name', $_REQUEST["filter"], "LIKE");
 	}
 }
 

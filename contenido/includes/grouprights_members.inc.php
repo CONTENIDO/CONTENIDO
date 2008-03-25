@@ -199,6 +199,7 @@ if(!$perm->have_perm_area_action($area,$action))
         $tpl3->set('s', 'IN_GROUP_VALUE', $_POST['filter_in']);
         $tpl3->set('s', 'NON_GROUP_VALUE', $_POST['filter_non']);
         $tpl3->set('s', 'DISPLAY_OK', 'none');
+        $tpl3->set('s', 'RELOADSCRIPT', '');
 
         # Generate template
         $tpl3gen = $tpl3->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_memberselect'],true);

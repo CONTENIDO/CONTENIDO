@@ -17,22 +17,7 @@ cInclude("classes", "class.frontend.groups.php");
 cInclude("classes", "class.properties.php");
 
 $page = new cPage;
-
-if ($idfrontenduser) {
-    $sReloadScript = "<script type=\"text/javascript\">
-                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                         if (left_bottom) {
-                             var href = left_bottom.location.href;
-                             href = href.replace(/&frontenduser.*/, '');
-                             left_bottom.location.href = href+'&frontenduser='+".$idfrontenduser.";
-
-                         }
-                     </script>";
-} else {
-    $sReloadScript = "";
-}
-                 
-
+          
 $feusers = new FrontendUserCollection;
 
 if (is_array($cfg['plugins']['frontendusers']))
@@ -63,8 +48,20 @@ if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "fr
 {
 		$feuser = $feusers->create(" ".i18n("-- new user --"));
 		$idfrontenduser = $feuser->get("idfrontenduser");
-		$page->addScript('reload', $sReloadScript);
-		
+}
+
+if ($idfrontenduser && $action != '') {
+    $sReloadScript = "<script type=\"text/javascript\">
+                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+                         if (left_bottom) {
+                             var href = left_bottom.location.href;
+                             href = href.replace(/&frontenduser.*/, '');
+                             left_bottom.location.href = href+'&frontenduser='+".$idfrontenduser.";
+                             top.content.left.left_top.refresh();
+                         }
+                     </script>";
+} else {
+    $sReloadScript = "";
 }
 
 if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "frontend_delete"))

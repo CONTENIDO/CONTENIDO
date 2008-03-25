@@ -15,21 +15,6 @@ cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "class.frontend.users.php");
 cInclude("classes", "class.frontend.groups.php");
 $page = new cPage;
-
-if ($idfrontendgroup) {
-    $sReloadScript = "<script type=\"text/javascript\">
-                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
-                         if (left_bottom) {
-                             var href = left_bottom.location.href;
-                             href = href.replace(/&idfrontendgroup.*/, '');
-                             left_bottom.location.href = href+'&idfrontendgroup='+".$idfrontendgroup.";
-
-                         }
-                     </script>";
-} else {
-    $sReloadScript = '';
-}
-
 $fegroups 		= new FrontendGroupCollection;
 
 if (is_array($cfg['plugins']['frontendgroups']))
@@ -43,11 +28,16 @@ if (is_array($cfg['plugins']['frontendgroups']))
 $fegroup 		= new FrontendGroup;
 $groupmembers	= new FrontendGroupMemberCollection;
 $fegroup->loadByPrimaryKey($idfrontendgroup);
+$sRefreshRightTopLinkJs = "";
 
 if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $action))
 {
    $fegroup = $fegroups->create(" ".i18n("-- new group --"));
-   $idfrontendgroup = $fegroup->get("idfrontendgroup");   
+   $idfrontendgroup = $fegroup->get("idfrontendgroup");
+   $sRefreshRightTopLink = $sess->url('main.php?frame=3&area='.$area.'&idfrontendgroup='.$idfrontendgroup); 
+   $sRefreshRightTopLink = "conMultiLink('right_top', '".$sRefreshRightTopLink."')";
+   $sRefreshRightTopLinkJs = "<script type=\"text/javascript\">".$sRefreshRightTopLink."</script>";
+   
 } else if ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action)) {
     $aDeleteMembers = array();
     if (!is_array($_POST['user_in_group'])) {
@@ -79,6 +69,20 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
    $fegroups->delete($idfrontendgroup);
    $idfrontendgroup= 0;
    $fegroup = new FrontendGroup;   
+}
+
+if ($action != '') {
+    $sReloadScript = "<script type=\"text/javascript\">
+                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+                         if (left_bottom) {
+                             var href = left_bottom.location.href;
+                             href = href.replace(/&idfrontendgroup.*/, '');
+                             left_bottom.location.href = href+'&idfrontendgroup='+".$idfrontendgroup.";
+                             top.content.left.left_top.refresh();
+                         }
+                     </script>";
+} else {
+    $sReloadScript = '';
 }
 
 if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
@@ -259,6 +263,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
     $tpl->set('s', 'IN_GROUP_VALUE', $_POST['filter_in']);
     $tpl->set('s', 'NON_GROUP_VALUE', $_POST['filter_non']);
     $tpl->set('s', 'RECORD_ID_NAME', 'idfrontendgroup');
+    $tpl->set('s', 'RELOADSCRIPT', $sReloadScript.$sRefreshRightTopLinkJs);
 
     $tpl = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_memberselect']);
 } else {

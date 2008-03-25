@@ -62,31 +62,52 @@
           var listoptionLinkGroup = document.getElementById('{LISTOPTIONLINKGROUP}');
           var pagingLinkGroup = document.getElementById('{PAGINGLINKGROUP}');
           
-					actionURL = actionLink.href;
-					settingsURL = settingsLink.href;
+                    if (actionLink) {
+                        actionURL = actionLink.href;
+                    }
+                    
+                    if (settingsLink) {
+                        settingsURL = settingsLink.href;
+                    }
 					listoptionURL = listoptionLink.href;
+                    
                     if (pagingLink) {
                         pagingURL = pagingLink.href;
                     }
+                    
 					listoptionURLDisp = listoptionLinkDisp.href;
+                    
                     if (pagingLinkDisp) {
                         pagingURLDisp = pagingLinkDisp.href;
                     }
-					actionURLRec = actionLinkRec.href;
+                    
+                    if (actionLinkRec) {
+                        actionURLRec = actionLinkRec.href;
+                    }
+                    
 					settingsURLRec = settingsLinkRec.href;
 					listoptionURLRec = listoptionLinkRec.href;
+                    
                     if (pagingLinkRec) {
                         pagingURLRec = pagingLinkRec.href;
                     }
-					actionURLGroup = actionLinkGroup.href;
+                    
+                    if (actionLinkGroup) {
+                        actionURLGroup = actionLinkGroup.href;
+                    }
+                    
 					listoptionURLGroup = listoptionLinkGroup.href;
                     if (pagingLinkGroup) {
                         pagingURLGroup = pagingLinkGroup.href;
                     }
 					
 					// clicking the link now calls this function
-					actionLink.href = "javascript:resizeFrame('{ACTIONLINK}')";
-					settingsLink.href = "javascript:resizeFrame('{SETTINGSLINK}')";
+                    if (actionLink) {
+                        actionLink.href = "javascript:resizeFrame('{ACTIONLINK}')";
+                    }
+                    if (settingsLink) {
+                        settingsLink.href = "javascript:resizeFrame('{SETTINGSLINK}')";
+                    }
 					listoptionLink.href = "javascript:resizeFrame('{LISTOPTIONLINK}')";
                     if (pagingLink) {
                         pagingLink.href = "javascript:resizeFrame('{PAGINGLINK}')";
@@ -95,13 +116,17 @@
                     if (pagingLinkDisp) {
                         pagingLinkDisp.href = "javascript:resizeFrame('{PAGINGLINKDISP}')";
                     }
-					actionLinkRec.href = "javascript:resizeFrame('{ACTIONLINKREC}')";
+                    if (actionLinkRec) {
+                        actionLinkRec.href = "javascript:resizeFrame('{ACTIONLINKREC}')";
+                    }
 					settingsLinkRec.href = "javascript:resizeFrame('{SETTINGSLINKREC}')";
 					listoptionLinkRec.href = "javascript:resizeFrame('{LISTOPTIONLINKREC}')";
                     if (pagingLinkRec) {
                         pagingLinkRec.href = "javascript:resizeFrame('{PAGINGLINKREC}')";
                     }
-                    actionLinkGroup.href = "javascript:resizeFrame('{ACTIONLINKGROUP}')";
+                    if (actionLinkGroup) {
+                        actionLinkGroup.href = "javascript:resizeFrame('{ACTIONLINKGROUP}')";
+                    }
                     listoptionLinkGroup.href = "javascript:resizeFrame('{LISTOPTIONLINKGROUP}')";
                     if (pagingLinkGroup) {
                         pagingLinkGroup.href = "javascript:resizeFrame('{PAGINGLINKGROUP}')";

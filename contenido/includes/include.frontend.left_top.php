@@ -23,6 +23,8 @@ $tpl->reset();
 
 $oPage = new cPage;
 
+$user = new cApiUser($auth->auth["uid"]);
+
 $tpl->set('s', '{SESSID}', $sess->id);
 
 /* Set default values */
@@ -112,15 +114,17 @@ $userlink->setCLink("frontend", 2, "");
 $grouplink = new cHTMLLink;
 $grouplink->setCLink("frontendgroups", 2, "");
 
-$userlink="javascript:conMultiLink('left_bottom','main.php?area=frontend&frame=2&action=&contenido=".$sess->id."')";
+$userlink="javascript:execFilter();";
 $grouplink="javascript:conMultiLink('left_bottom','main.php?area=frontendgroups&frame=2&action=&contenido=".$sess->id."')";
 
-// Frontend users
+// Init view by javascript (decide which tab is activated)
 $imgUserId='img_user';
 $tpl->set('s', 'IUSER', $imgUserId);
+
 $buttonRow .= '<a style="margin-right:5px;" href="'.$userlink.'" onclick="toggleContainer(\''.$imgUserId.'\');">';
 $buttonRow .= '<img onmouseover="hoverEffect(\''.$imgUserId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgUserId.'\', \'out\')" alt="'.i18n("Frontend users").'" title="'.i18n("Frontend users").'" id="'.$imgUserId.'" src="'.$cfg["path"]["images"].'users.gif"/>';
 $buttonRow .= '</a>';
+
 // Frontend Groups
 $imgGroupId='img_group';
 $tpl->set('s', 'IGROUP', $imgGroupId);
@@ -130,11 +134,27 @@ $buttonRow .= '</a>';
 
 $tpl->set('s', 'BUTTONROW', $buttonRow);
 
+if(isset($_GET['view']) && $_GET['view'] == $imgGroupId) {
+    $tpl->set('s', 'IINIT', $imgGroupId);
+} else {
+    $tpl->set('s', 'IINIT', $imgUserId);
+}
+
 ################
 # Users Actions
 ################
 $actionLink="actionlink";
-$oActionRow = new cFoldingRow("28cf9b31-e6d7-4657-a9a7-db31478e7a5c",i18n("Actions"), $actionLink);
+$sActionUuid = '28cf9b31-e6d7-4657-a9a7-db31478e7a5c';
+
+$oActionRow = new cFoldingRow($sActionUuid ,i18n("Actions"), $actionLink);
+if(isset($_GET['actionrow']) && $_GET['actionrow'] == 'collapsed') {
+    $oActionRow->setExpanded(false);
+    $user->setProperty("expandstate", $sActionUuid, 'false');
+} else if (isset($_GET['actionrow']) && $_GET['actionrow'] == 'expanded') {
+    $oActionRow->setExpanded(true);
+    $user->setProperty("expandstate", $sActionUuid, 'true');
+}
+
 $tpl->set('s', 'ACTIONLINK', $actionLink);
 $oLink = new cHTMLLink;
 $oLink->setMultiLink("frontend","","frontend","frontend_create");
@@ -146,9 +166,20 @@ $oActionRow->setContentData($oLink->render());
 ######################
 # Users List Options
 ######################
+
+$sListOptionId = 'f081b6ab-370d-4fd8-984f-6b38590fe48b';
 $listOptionLink="listoptionlink";
-$oListOptionRow = new cFoldingRow("f081b6ab-370d-4fd8-984f-6b38590fe48b", i18n("List options"), $listOptionLink);
+$oListOptionRow = new cFoldingRow($sListOptionId, i18n("List options"), $listOptionLink);
 $oListOptionRow->setExpanded(true);
+
+if(isset($_GET['filterrow']) && $_GET['filterrow'] == 'collapsed') {
+    $oActionRow->setExpanded(false);
+    $user->setProperty("expandstate", $sListOptionId, 'false');
+} else if (isset($_GET['filterrow']) && $_GET['filterrow'] == 'expanded') {
+    $oActionRow->setExpanded(true);
+    $user->setProperty("expandstate", $sListOptionId, 'true');
+}
+
 $tpl->set('s', 'LISTOPTIONLINK', $listOptionLink);									
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelectItemsPerPage->autoFill(array(25 => 25, 50 => 50, 75 => 75, 100 => 100));
@@ -384,7 +415,7 @@ $oPager->setExpanded(true);
 ######################
 $link = new Link;
 $menu = new UI_Menu;
-$link->setMultiLink("frontendgroups","","frontendgroups","frontendgroup_create");
+$link->setLink('javascript:conMultiLink(\'right_bottom\', \''.$sess->url("main.php?area=frontendgroups&frame=4&action=frontendgroup_create").'\');');
 $menu->setImage("-2", $cfg["path"]["images"] . "folder_new.gif");	
 $menu->setLink("-2", $link);
 $menu->setTitle("-2", i18n("Create group"));

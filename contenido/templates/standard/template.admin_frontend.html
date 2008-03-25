@@ -9,7 +9,7 @@
     <script language="JavaScript" src="scripts/general.js"></script>
     <script language="JavaScript" src="scripts/parameterCollector.js"></script>
       
-    <script>
+    <script language="JavaScript">
       // save status of buttons
       var selectedButton = '';
 			var actionURL='';
@@ -44,7 +44,6 @@
                     }
           
   				// for first load set focus to newsletter
-  				toggleContainer('{IUSER}');
   				hoverEffect('{ID_USERS}', 'on');
 				}
 				else if(arg == '{ACTIONLINK}')
@@ -110,7 +109,17 @@
 		    }
 			}
 
-    	  function execFilter()
+            function refresh() {
+                var sFilterParam = execFilter(1);
+                var sActionsRowState = document.getElementById('m9').value;
+                var sFilterRowState = document.getElementById('m17').value;
+                
+                sFilterParam += '&frame=1&view='+selectedButton+'&actionrow='+sActionsRowState+'&filterrow='+sFilterRowState;
+
+                window.location.href = sFilterParam;
+            }
+            
+    	  function execFilter(bGet)
           {
               var multilink = "main.php?";
               var formelements = document.filter;
@@ -126,7 +135,12 @@
                   multilink += formelements[i].name + "=" + formelements[i].value;
                 }
               }
-              conMultiLink("left_bottom", multilink+'&area=frontend&frame=2');
+              
+              if (bGet == 1) {
+                return multilink+'&area=frontend';
+              } else {
+                conMultiLink("left_bottom", multilink+'&area=frontend&frame=2');
+              }
           }
           
           if (document.location.href.match(/[?&]page=(\d+)/g)) {
@@ -152,5 +166,8 @@
   {CGROUPS}
   
 </div>  
+<script language="JavaScript">
+    toggleContainer('{IINIT}');
+</script>
 </body>
 </html>

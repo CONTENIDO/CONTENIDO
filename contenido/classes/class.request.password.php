@@ -177,7 +177,7 @@ class RequestPassword {
         }
         
         //get systemproperty for senders mail and validate mailadress, if not set use standard sender
-        $sSendermail = getSystemProperty('pw_request', 'sender_mail');
+        $sSendermail = getSystemProperty('system', 'mail_sender');
         if (preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $sSendermail)) {
             $this->sSendermail = $sSendermail;
         } else {
@@ -185,7 +185,7 @@ class RequestPassword {
         }
         
         //get systemproperty for senders name, if not set use Contenido Backend
-        $sSendername = getSystemProperty('pw_request', 'sender_name');
+        $sSendername = getSystemProperty('system', 'mail_sender_name');
         if ($sSendername != '') {
             $this->sSendername = $sSendername;
         } else {
@@ -193,7 +193,7 @@ class RequestPassword {
         }
         
         //get systemproperty for location of mailserver, if not set use localhost
-        $sMailhost = getSystemProperty('pw_request', 'mail_host');
+        $sMailhost = getSystemProperty('system', 'mail_host');
         if ($sMailhost != '') {
             $this->sMailhost = $sMailhost;
         } else {
@@ -217,7 +217,12 @@ class RequestPassword {
         
         //if form is sumbitted call function handleNewPassword() and set submitted username to class variable $sUsername
         if (isset($_POST['action']) && $_POST['action'] == 'request_pw') {
-            $this->sUsername = $_POST['request_username'];
+            //avoid SQL-Injection, first check if submitted vars are escaped automatically
+            if (!get_magic_quotes_gpc()) {
+                $this->sUsername = addslashes($_POST['request_username']);
+            } else {
+                $this->sUsername = $_POST['request_username'];
+            }
             $sMessage = $this->handleNewPassword();
             //if form is submitted, show corresponding password request layer
             $this->oTpl->set('s', 'JS_CALL', 'showRequestLayer();');
@@ -287,7 +292,8 @@ class RequestPassword {
             //check if syntax of users mail adress is correct and there is no standard mailadress like admin_kunde@IhreSite.de or sysadmin@IhreSite.de
             if ((!preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $this->sEmail) || $this->sEmail == 'sysadmin@IhreSite.de' || $this->sEmail == 'admin_kunde@IhreSite.de') && $bIsAllowed) {
                 $bIsAllowed = false;
-                $sMessage = i18n('The requested user has no valid e-mail address. Submitting new password is not possible. Please contact your system- administrator for further support.');
+                //$sMessage = i18n('The requested user has no valid e-mail address. Submitting new password is not possible. Please contact your system- administrator for further support.');
+                $sMessage = i18n('No matching data found. Please contact your systemadministrator.');
             }
             
             //if there are no errors, call function setNewPassword(), else wait a while, then return error message
@@ -299,7 +305,8 @@ class RequestPassword {
             }
         } else {
             //slepp a while, then return error message
-            $sMessage = i18n('This user does not exist.');
+            //$sMessage = i18n('This user does not exist.');
+            $sMessage = i18n('No matching data found. Please contact your systemadministrator.');
             sleep(5);
         }        
         return $sMessage;

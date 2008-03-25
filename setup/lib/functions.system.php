@@ -1,9 +1,43 @@
 <?php
 
+//Fuction checks if a plugin is already installed
+function checkExistingPlugin($db, $sPluginname) {
+    $sPluginname = (string)$sPluginname;
+    $sTable = $_SESSION["dbprefix"]."_nav_sub";
+    $sSql = "";
+
+    switch ($sPluginname) {
+        case 'plugin_conman':
+            $sSql = "SELECT * FROM %s WHERE idnavs='900'";
+            break;
+            
+        case 'plugin_content_allocation':
+            $sSql = "SELECT * FROM %s WHERE idnavs='800'";
+           break;
+           
+        case 'plugin_newsletter':
+           $sSql = "SELECT * FROM %s WHERE idnavs='610'";
+           break;
+        
+        default:
+            $sSql = "";
+            break;
+    }
+    
+    if ($sSql) {
+        $db->query(sprintf($sSql, $sTable));
+        if ($db->next_record()) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 function updatePwRequest($db, $table) {
     $aStandardvalues = array ( 'enable' => 'true',
-                               'sender_mail' => 'info%40contenido.org',
-                               'sender_name' => 'Contenido+Backend',
+                               'mail_sender_name' => 'info%40contenido.org',
+                               'mail_sender' => 'Contenido+Backend',
                                'mail_host' => 'localhost'
                                 );
                                 
@@ -20,16 +54,28 @@ function updatePwRequest($db, $table) {
         array_push($aExists, $sName);
         
         if ($sValue == '' && in_array($sName, $aKeys)) {
-            $sql = "UPDATE %s SET value = '%s' WHERE type='pw_request' AND name='%s'";
-            $db->query(sprintf($sql, $table, $aStandardvalues[$sName], $sName));
+            $sType = '';
+            if ($sName == 'enable') {
+                $sType = 'pw_request';
+            } else {
+                $sType = 'system';
+            }
+            $sql = "UPDATE %s SET value = '%s' WHERE type='%s' AND name='%s'";
+            $db->query(sprintf($sql, $table, $aStandardvalues[$sName], $sType, $sName));
         }
     }
     
     foreach ($aStandardvalues as $key => $value) {
         if (!in_array($key, $aExists)) {
             $id = $db->nextid($table);
-            $sql = "INSERT INTO %s SET idsystemprop = '%s', type='pw_request', name='%s', value='%s'";
-            $db->query(sprintf($sql, $table, $id, $key, $value));
+            $sType = '';
+            if ($key == 'enable') {
+                $sType = 'pw_request';
+            } else {
+                $sType = 'system';
+            }
+            $sql = "INSERT INTO %s SET idsystemprop = '%s', type='%s', name='%s', value='%s'";
+            $db->query(sprintf($sql, $table, $id, $sType, $key, $value));
         }
     }
 }

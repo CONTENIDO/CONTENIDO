@@ -10,6 +10,7 @@
 *
 * {@internal
 * created 2008-03-14
+* modified 2008-03-25 by Timo Trautmann: integrated function checkExistingPlugin() which checks if a plugin is already installed
 * Note: Code design of the Setup routine is such a piece of... Hopefully Setup will be rewritten someday...
 * When adding new steps, you need to: 
 * modify index.php
@@ -28,6 +29,8 @@ class cSetupAdditionalPlugins extends cSetupMask
 {
 	function cSetupAdditionalPlugins ($step, $previous, $next)
 	{
+        $db = new DB_Contenido($_SESSION["dbhost"], $_SESSION["dbname"], $_SESSION["dbuser"], $_SESSION["dbpass"]);
+        
 		cSetupMask::cSetupMask("templates/setup/forms/additionalplugins.tpl", $step);
 		$this->setHeader(i18n("Additional Plugins"));
 		$this->_oStepTemplate->set("s", "TITLE", i18n("Additional Plugins"));
@@ -42,7 +45,7 @@ class cSetupAdditionalPlugins extends cSetupMask
 		$sCheckBoxes = '';
 		if (sizeof($aPlugins) > 0) {
 			foreach ($aPlugins as $sInternalName => $aPluginData) {
-				$sChecked = (isset($_SESSION[$sInternalName]) && strval($_SESSION[$sInternalName]) == 'true') ? ' checked="checked"' : '';
+				$sChecked = ((isset($_SESSION[$sInternalName]) && strval($_SESSION[$sInternalName]) || checkExistingPlugin($db, $sInternalName)) == 'true') ? ' checked="checked"' : '';
 				$sCheckBoxes .= '<p class="plugin_select" style="padding-left:2px;"><input type="checkbox" style="vertical-align:middle;border:0;width:auto;" id="'.$sInternalName.'" name="'.$sInternalName.'" value="true"'.$sChecked.'> <label for="'.$sInternalName.'">'.$aPluginData['label'].'<!-- ('.$aPluginData['desc'].')--></label></p>';
 			}
 		} else {

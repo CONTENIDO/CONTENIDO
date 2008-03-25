@@ -91,25 +91,25 @@ $oUser->setProperty("newsletter", "test_idnewsgrp", $_REQUEST["selTestDestinatio
 // Newsletter
 $imgNewsletterId='img_newsletter';
 $tpl->set('s', 'INEWSLETTER', $imgNewsletterId);
-$buttonRow  = '<a style="margin-right:5px;" target="left_bottom" href="main.php?area=news&frame=2&sortby='.$_REQUEST["sortby"].'&contenido='.$sess->id.'" onclick="toggleContainer(\''.$imgNewsletterId.'\');">';
+$buttonRow  = '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgNewsletterId.'\');reloadLeftBottomAndTransportFormVars(document.newsletter_listoptionsform);">';
 $buttonRow .= '<img onmouseover="hoverEffect(\''.$imgNewsletterId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgNewsletterId.'\', \'out\')" alt="'.i18n("Newsletter").'" title="'.i18n("Newsletter").'" name="'.$imgNewsletterId.'" id="'.$imgNewsletterId.'" src="'.$cfg["path"]["images"].'newsletter_on.gif"/>';
 $buttonRow .= '</a>';
 // Dispatch
 $imgDispatchId='img_dispatch';
 $tpl->set('s', 'IDISPATCH', $imgDispatchId);
-$buttonRow .= '<a style="margin-right:5px;" target="left_bottom" href="main.php?area=news_jobs&frame=2&action=&contenido='.$sess->id.'" onclick="toggleContainer(\''.$imgDispatchId.'\');">';
+$buttonRow .= '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgDispatchId.'\');reloadLeftBottomAndTransportFormVars(document.dispatch_listoptionsform);">';
 $buttonRow .= '<img onmouseover="hoverEffect(\''.$imgDispatchId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgDispatchId.'\', \'out\')" alt="'.i18n("Dispatch").'" title="'.i18n("Dispatch").'" name="'.$imgDispatchId.'" id="'.$imgDispatchId.'" src="'.$cfg["path"]["images"].'newsletter_dispatch_on.gif"/>';
 $buttonRow .= '</a>';
 // Recipients
 $imgRecipientId='img_recipient';
 $tpl->set('s', 'IRECIPIENTS', $imgRecipientId);
-$buttonRow .= '<a style="margin-right:5px;" target="left_bottom" href="main.php?area=recipients&frame=2&sortby='.$_REQUEST["sortby"].'&contenido='.$sess->id.'" onclick="toggleContainer(\''.$imgRecipientId.'\');">';
+$buttonRow .= '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgRecipientId.'\');reloadLeftBottomAndTransportFormVars(document.recipients_listoptionsform);">';
 $buttonRow .= '<img onmouseover="hoverEffect(\''.$imgRecipientId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgRecipientId.'\', \'out\')" alt="'.i18n("Recipients").'" title="'.i18n("Recipients").'" id="'.$imgRecipientId.'" src="'.$cfg["path"]["images"].'newsletter_recipients_on.gif"/>';
 $buttonRow .= '</a>';
 // Recipient Groups
 $imgRecipientGroupId='img_recipientgroup';
 $tpl->set('s', 'IRECIPIENTGROUP', $imgRecipientGroupId);
-$buttonRow .= '<a style="margin-right:5px;" target="left_bottom" href="main.php?area=recipientgroups&frame=2&action=&contenido='.$sess->id.'" onclick="toggleContainer(\''.$imgRecipientGroupId.'\');">';
+$buttonRow .= '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgRecipientGroupId.'\');reloadLeftBottomAndTransportFormVars(groups_listoptionsform);">';
 $buttonRow .= '<img onmouseover="hoverEffect(\''.$imgRecipientGroupId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgRecipientGroupId.'\', \'out\')" alt="'.i18n("Recipient groups").'" title="'.i18n("Recipient groups").'" id="'.$imgRecipientGroupId.'" src="'.$cfg["path"]["images"].'newsletter_recipientgroups_on.gif"/>';
 $buttonRow .= '</a>';
 
@@ -1332,8 +1332,12 @@ $oPagerGroup = new cObjectPager("1d27e488-1120-11dc-8314-0800200c9a66", $iItemCo
 $containerNewsletterId='cont_newsletter';
 $containerNewsletter  = '<div id="'.$containerNewsletterId.'">';
 $containerNewsletter .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">';
-$containerNewsletter .= $oActionRow->render();
-$containerNewsletter .= $oSettingsRow->render();
+if ($perm->have_perm_area_action($area, "news_create")) {
+    $containerNewsletter .= $oActionRow->render();
+}
+if ($perm->have_perm_area_action($area, "news_html_settings")) {
+    $containerNewsletter .= $oSettingsRow->render();
+}
 $containerNewsletter .= $oListOptionRow->render();
 $containerNewsletter .= $oPager->render();
 $containerNewsletter .= '</table>';
@@ -1360,7 +1364,9 @@ $tpl->set('s', 'ID_CDISPATCH', $containerDispatchId);
 $containerRecipientId='cont_recipients';
 $containerRecipient = '<div id="'.$containerRecipientId.'">';
 $containerRecipient .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">';
-$containerRecipient .= $oListActionRowRec->render();
+if ($perm->have_perm_area_action($area, "recipients_delete")) {
+    $containerRecipient .= $oListActionRowRec->render();
+}
 $containerRecipient .= $oSettingsRowRec->render();
 $containerRecipient .= $oListOptionsRec->render();
 $containerRecipient .= $oPagerRec->render();
@@ -1375,7 +1381,9 @@ $tpl->set('s', 'ID_CRECIPIENTS', $containerRecipientId);
 $containerRecipientGroupId='cont_recipientgroup';
 $containerRecipientGroup  = '<div id="'.$containerRecipientGroupId.'">';
 $containerRecipientGroup .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">';
-$containerRecipientGroup .= $oListActionRowGroup->render();
+if ($perm->have_perm_area_action("recipientgroups", "recipientgroup_create")) {
+    $containerRecipientGroup .= $oListActionRowGroup->render();
+}
 $containerRecipientGroup .= $oListOptionRowGroup->render();
 $containerRecipientGroup .= $oPagerGroup->render();
 $containerRecipientGroup .= '</table>';
