@@ -27,6 +27,22 @@ $lIDCatArt		= (int)$oClientLang->getProperty("newsletter", "idcatart"); // Get i
 if (!is_object($oDB)) {
 	$oDB = new DB_Contenido;
 }
+
+$oUser = new cApiUser($auth->auth["uid"]);
+$oClientLang 	= new cApiClientLanguage(false, $client, $lang);
+
+// HTML Newsletter: Store settings
+if (isset($_REQUEST['action_html']) && $_REQUEST['action_html'] == 'save_newsletter_properties' && $perm->have_perm_area_action($area, "news_html_settings")) {
+    if (isset($_REQUEST["ckbHTMLNewsletter"])) {
+        $oClientLang->setProperty("newsletter", "html_newsletter", "true");
+    } else {
+        $oClientLang->setProperty("newsletter", "html_newsletter", "false");
+    }
+    $oClientLang->setProperty("newsletter", "html_template_idcat",   $_REQUEST["selHTMLTemplateCat"]);
+	$oClientLang->setProperty("newsletter", "html_newsletter_idcat", $_REQUEST["selHTMLNewsletterCat"]);
+    $oUser->setProperty("newsletter", "test_idnewsgrp", $_REQUEST["selTestDestination"]);
+}
+
 // Initialization
 $sDelTitle		= i18n("Delete newsletter");
 $sDelDescr		= i18n("Do you really want to delete the following newsletter:<br>");
@@ -37,12 +53,10 @@ $sAddJobTitle       = i18n("Add newsletter dispatch job");
 $sAddJobTitleOff    = i18n("Add newsletter dispatch job (disabled, check newsletter sender e-mail address and handler article selection)");
 $sCopyTitle			= i18n("Duplicate newsletter");
 
-
 ##################################
 # Getting values for sorting, etc.
 ##################################
 // Items per page (value stored per area in user property)
-$oUser = new cApiUser($auth->auth["uid"]);
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0) {
 	$_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
@@ -284,6 +298,39 @@ $oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/mes
 $oPage->addScript('exec', $execScript);
 $oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
+
+$oPagerLink = new cHTMLLink;
+$oPagerLink->setLink("main.php");
+$oPagerLink->setTargetFrame('left_bottom');
+$oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);
+$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
+$oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
+$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
+$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
+$oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
+$oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
+$oPagerLink->setCustom("frame", 2);
+$oPagerLink->setCustom("area", $area);
+$oPagerLink->enableAutomaticParameterAppend();
+$oPagerLink->setCustom("contenido", $sess->id);
+$oPager = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e301", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerl);
+
+$sPagerContent = $oPager->render(1);
+$sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
+$sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
+
+$sRefreshPager = '
+    <script type="text/javascript">
+        var sNavigation = \''.$sPagerContent.'\';
+        var left_top = parent.left_top;
+        if (left_top.document) {
+            var oPager = left_top.document.getElementById(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e302\').firstChild;
+            left_top.newsletter_listoptionsform_curPage = '.$_REQUEST["page"].'
+        }
+        oPager.innerHTML = sNavigation;
+    </script>';
+    
+$oPage->addScript('refreshpager', $sRefreshPager);    
 
 $oPage->setContent($oMenu->render(false));
 $oPage->render();

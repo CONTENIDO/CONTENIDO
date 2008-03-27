@@ -250,7 +250,7 @@ $content .= '<td>'.$oSelectSearchIn->render().'</td>';
 $content .= '</tr>';
 $content .= '<tr>';
 $content .= '<td>&nbsp;</td>';
-$content .= '<td><input type="submit" value="'.i18n("Apply").'" onclick="javascript:execFilter(\''.$sess->id.'\');"</td>';
+$content .= '<td><input type="submit" value="'.i18n("Apply").'" onclick="javascript:execFilter(2);"></td>';
 $content .= '</tr>';
 $content .= '</table>';
 $content .= '</form>';

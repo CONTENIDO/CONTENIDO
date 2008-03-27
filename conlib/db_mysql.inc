@@ -400,6 +400,11 @@ class DB_Sql {
     @mysql_free_result($h);
     return $return;
   }
+  
+  /* public: Escape string for using in SQL-Statement */
+  function escape ($sString) {
+      return mysql_escape_string($sString);
+  } 
 
   /* private: error handling */
   function halt($msg) {

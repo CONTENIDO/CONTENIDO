@@ -33,7 +33,8 @@ if ($action == "recipients_create" && $perm->have_perm_area_action($area, $actio
 	$recipient = new Recipient;	
 	$oPage->setReload();
 } elseif ($action == "recipients_purge" && $perm->have_perm_area_action($area, "recipients_delete")) {
-	$timeframe = getSystemProperty("newsletter","purgetimeframe");
+    $oClient = new cApiClient($client);
+    $timeframe = $oClient->getProperty("newsletter", "purgetimeframe");
 	if (!$timeframe) {
 		$timeframe = 30;
 	}

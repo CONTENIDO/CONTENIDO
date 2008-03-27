@@ -147,7 +147,7 @@ class RequestPassword {
       * @param  object $oDb - The contenido database object
       * @param  array $aCfg - The contenido configuration array
       * @access public
-     */
+      */
     function RequestPassword ($oDb, $aCfg) {
         //generate new dbobject, if it does not exist
         if (!is_object($oDb)) {
@@ -206,7 +206,7 @@ class RequestPassword {
       * also starts the passwort change an sending process
       *
       * @access public
-     */
+      */
     function renderForm () {
         //if feature is not enabled, do nothing
         if (!$this->bIsEnabled) {
@@ -218,11 +218,8 @@ class RequestPassword {
         //if form is sumbitted call function handleNewPassword() and set submitted username to class variable $sUsername
         if (isset($_POST['action']) && $_POST['action'] == 'request_pw') {
             //avoid SQL-Injection, first check if submitted vars are escaped automatically
-            if (!get_magic_quotes_gpc()) {
-                $this->sUsername = addslashes($_POST['request_username']);
-            } else {
-                $this->sUsername = $_POST['request_username'];
-            }
+            $this->sUsername = $_POST['request_username'];
+
             $sMessage = $this->handleNewPassword();
             //if form is submitted, show corresponding password request layer
             $this->oTpl->set('s', 'JS_CALL', 'showRequestLayer();');
@@ -258,21 +255,21 @@ class RequestPassword {
       *
       * @access private
       * @param string - contains message for displaying (errors or success message)
-     */
+      */
     function handleNewPassword () {
         //notification message, which is returned to caller
         $sMessage = '';
-        
+        $this->sUsername = stripslashes($this->sUsername);
+
         //check if requested username exists, also get email and  timestamp when user last requests a new password (last_pw_request)
-        $sSql = "SELECT last_pw_request, email FROM ".$this->aCfg["tab"]["phplib_auth_user_md5"]." 
-			             WHERE username = '".$this->sUsername."'";
+        $sSql = "SELECT username, last_pw_request, email FROM ".$this->aCfg["tab"]["phplib_auth_user_md5"]." 
+			             WHERE username = '".$this->oDb->escape($this->sUsername)."'";
      
     	$this->oDb->query($sSql);
-    	if ($this->oDb->next_record()) {
+    	if ($this->oDb->next_record() && md5($this->sUsername) == md5($this->oDb->f('username'))) {
             //by default user is allowed to request new password
             $bIsAllowed = true;
             $sLast_pw_request = $this->oDb->f('last_pw_request');
-            
             //store users mail adress to class variable
             $this->sEmail = $this->oDb->f('email');
             
@@ -316,7 +313,7 @@ class RequestPassword {
       * Function sets new password for user and sets last request time to now
       *
       * @access private
-     */
+      */
     function setNewPassword () {
         //generate new password, using generatePassword()
         $sPassword = $this->generatePassword();
@@ -337,7 +334,7 @@ class RequestPassword {
       *
       * @access private
       * @param string $sPassword - the new password
-     */
+      */
     function submitMail ($sPassword) {
         $sPassword = (string) $sPassword;
         
@@ -373,7 +370,7 @@ class RequestPassword {
       *
       * @access private
       * @return string - the new password
-     */
+      */
     function generatePassword () {
        //possible chars which were used in password
 	   $sChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz123456789";

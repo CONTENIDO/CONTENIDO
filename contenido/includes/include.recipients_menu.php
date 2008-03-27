@@ -27,6 +27,18 @@ if (getSystemProperty("newsletter", "updatekeys")) {
 	$notis = $notification->returnNotification("info", sprintf(i18n("%d recipients, with no or incompatible key has been updated. Deactivate update function."),$updatedrecipients));
 }
 
+
+//Update purgetimeframe if submitted
+$sRefreshTop = '';
+$oClient = new cApiClient($client);
+$iTimeframe = $oClient->getProperty("newsletter", "purgetimeframe");
+if (isset($_REQUEST["purgetimeframe"]) && is_numeric($_REQUEST["purgetimeframe"]) && $_REQUEST["purgetimeframe"] > 0 
+    && $_REQUEST["purgetimeframe"] != $iTimeframe && $perm->have_perm_area_action($area, "recipients_delete")) 
+{
+    $oClient->setProperty("newsletter", "purgetimeframe", $_REQUEST["purgetimeframe"]);
+    $sRefreshTop = '<script language="JavaScript">parent.left_top.purgetimeframe = '.$_REQUEST["purgetimeframe"].'</script>';
+}
+
 // Set default values
 $oUser = new cApiUser($auth->auth["uid"]);
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0) {
@@ -178,6 +190,7 @@ $oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/mes
 $oPage->addScript('exec', $execScript);
 $oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
+$oPage->addScript('refreshTop', $sRefreshTop);
 
 $oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0" width="100%">', '</table>', $oMenu->render(false)));
 $oPage->render();

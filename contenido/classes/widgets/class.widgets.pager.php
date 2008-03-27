@@ -43,7 +43,7 @@ class cObjectPager extends cFoldingRow
 		
 	}
 	
-	function render ()
+	function render ($bContentOnly = 0)
 	{
         global $area;
         #Do not display Page navigation if there is only one Page and we are not in newsletter section
@@ -60,17 +60,18 @@ class cObjectPager extends cFoldingRow
 		if (!$this->_cPager->isFirstPage() || count($items) > 2)
 		{
 			$img = new cHTMLImage("images/paging/first.gif");
+            
 			$link->setAlt(i18n("First page"));
 			$link->setContent($img);
-			$link->setCustom($this->_parameterToAdd, 1);
+            $link->setCustom($this->_parameterToAdd, 1);
 			$output .= $link->render();
 			$output .= " ";
 			
 			$img = new cHTMLImage("images/paging/previous.gif");
 			$link->setAlt(i18n("Previous page"));
 			$link->setContent($img);
-			$link->setCustom($this->_parameterToAdd, $this->_cPager->_currentPage - 1);
-			
+           
+            $link->setCustom($this->_parameterToAdd, $this->_cPager->_currentPage - 1);
 			
 			$output .= $link->render();
 			$output .= " ";			
@@ -82,7 +83,7 @@ class cObjectPager extends cFoldingRow
 		{
 			$link->setContent($key);
 			$link->setAlt(sprintf(i18n("Page %s"), $key));
-			$link->setCustom($this->_parameterToAdd, $key);
+            $link->setCustom($this->_parameterToAdd, $key);
 			
 			switch ($item)
 			{
@@ -99,14 +100,14 @@ class cObjectPager extends cFoldingRow
 			$img = new cHTMLImage("images/paging/next.gif");
 			$link->setAlt(i18n("Next page"));
 			$link->setContent($img);
-			$link->setCustom($this->_parameterToAdd, $this->_cPager->_currentPage + 1);
+            $link->setCustom($this->_parameterToAdd, $this->_cPager->_currentPage + 1);
 			
 			$output .= $link->render();
 			$output .= " ";
 			
 			$img = new cHTMLImage("images/paging/last.gif");
 			
-			$link->setCustom($this->_parameterToAdd, $this->_cPager->getMaxPages());
+            $link->setCustom($this->_parameterToAdd, $this->_cPager->getMaxPages());
 			$link->setAlt(i18n("Last page"));
 			$link->setContent($img);
 			
@@ -121,7 +122,12 @@ class cObjectPager extends cFoldingRow
 		$this->_contentData->setClass("foldingrow_content");
 		$this->_contentData->setContent($output);
 		
-		return cFoldingRow::render();
+        if ($bContentOnly) {
+            return $output;
+        } else {
+            return cFoldingRow::render();
+        }
+		
 	}	
 }
 

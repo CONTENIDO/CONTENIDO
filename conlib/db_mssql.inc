@@ -131,6 +131,12 @@ class DB_Sql {
     }
   }
   
+    /* public: Escape string for using in SQL-Statement */
+  function escape ($sString) {
+      //ToDo implement specific database behaviour
+      return addslashes ($sString);
+  } 
+  
   function num_rows() {
     return mssql_num_rows($this->Query_ID);
   }

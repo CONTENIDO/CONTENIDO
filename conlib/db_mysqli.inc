@@ -452,6 +452,14 @@ if (!$this->Link_ID)
 		return $res;
 	}
 
+    /* public: Escape string for using in SQL-Statement */
+    function escape ($sString) {
+        if (!$this->connect()) {
+            return 0;
+        };
+        return mysqli_escape_string($this->Link_ID, $sString);
+    } 
+
 	/* public: find available table names */
 	function table_names()
 	{
@@ -470,6 +478,8 @@ if (!$this->Link_ID)
 		return $return;
 	}
 
+    
+    
 	/* private: error handling */
 	function halt($msg)
 	{

@@ -4508,8 +4508,8 @@ msgstr "Empf&auml;nger aufr&auml;umen"
 
 #: contenido/includes/include.newsletter_left_top.php:860
 #, php-format
-msgid "Do you really want to remove recipients, that have not been confirmed since %d days and over?"
-msgstr "Wollen Sie wirklich alle Empf&auml;nger, die ihre E-Mail-Adresse seit mehr als %d Tagen nicht best&auml;tigt haben, l&ouml;schen?"
+msgid "Do you really want to remove recipients, that have not been confirmed since %s days and over?"
+msgstr "Wollen Sie wirklich alle Empf&auml;nger, die ihre E-Mail-Adresse seit mehr als %s Tagen nicht best&auml;tigt haben, l&ouml;schen?"
 
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:215
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:215

@@ -157,9 +157,9 @@ foreach ($isCurrent as $key => $value)
     	$sql = "SELECT B.idcat AS idcat, A.title AS title, A.created AS created, A.lastmodified AS changed, 
                        A.idart as idart, E.name as tpl_name, A.idartlang as idartlang, F.idcatlang as idcatlang,
                        B.idcatart as idcatart, A.idlang as art_lang, F.startidartlang as startidartlang
-    			FROM ".$cfg["tab"]["art_lang"]." AS A,
+    			FROM (".$cfg["tab"]["art_lang"]." AS A,
                      ".$cfg["tab"]["cat_art"]." AS B,
- 					 ".$cfg["tab"]["art"]." AS C
+ 					 ".$cfg["tab"]["art"]." AS C)
                       LEFT JOIN ".$cfg['tab']['tpl_conf']." as D ON A.idtplcfg = D.idtplcfg
                       LEFT JOIN ".$cfg['tab']['tpl']." as E ON D.idtpl = E.`idtpl`
                       LEFT JOIN ".$cfg['tab']['cat_lang']." as F ON B.idcat = F.`idcat`

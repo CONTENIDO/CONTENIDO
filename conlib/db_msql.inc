@@ -153,5 +153,11 @@ class DB_Sql {
     printf("<b>MSQL Error</b>: %s<br>\n", $this->Error);
     die("Session halted.");
   }
+  
+  /* public: Escape string for using in SQL-Statement */
+  function escape ($sString) {
+      //ToDo implement specific database behaviour
+      return addslashes ($sString);
+  } 
 }
 ?>

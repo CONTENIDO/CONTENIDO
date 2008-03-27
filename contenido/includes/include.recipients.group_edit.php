@@ -32,13 +32,18 @@ if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $a
 {
    $oRGroup = $oRGroups->create(" ".i18n("-- new group --"));
    $_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
-   $oPage->setReload();   
+   $oPage->setReload();
+   
 } elseif ($action == "recipientgroup_delete" && $perm->have_perm_area_action($area, $action))
 {
    $oRGroups->delete($_REQUEST["idrecipientgroup"]);
+   $refreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.removeGroupOption(\''.$_REQUEST["idrecipientgroup"].'\')</script>';
+   $oPage->addScript('refreshlefttop', $refreshLeftTopScript);
+   
    $_REQUEST["idrecipientgroup"] = 0;
    $oRGroup = new RecipientGroup;
    $oPage->setReload();
+   
 } else {
 	$oRGroup->loadByPrimaryKey($_REQUEST["idrecipientgroup"]);
 }

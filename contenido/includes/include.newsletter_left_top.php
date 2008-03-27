@@ -64,13 +64,6 @@ if (!is_numeric($_REQUEST["selHTMLNewsletterCat"]) || $_REQUEST["selHTMLNewslett
 	$_REQUEST["selHTMLNewsletterCat"] = 0;
 }
 
-// HTML Newsletter: Store settings
-if ($perm->have_perm_area_action($area, "news_html_settings"))
-{
-	$oClientLang->setProperty("newsletter", "html_template_idcat",   $_REQUEST["selHTMLTemplateCat"]);
-	$oClientLang->setProperty("newsletter", "html_newsletter_idcat", $_REQUEST["selHTMLNewsletterCat"]);
-}
-
 // HTML Newsletter: Deactivate HTML newsletters, if necessary idcats have not been specified
 if ($_REQUEST["selHTMLTemplateCat"] == 0 || $_REQUEST["selHTMLNewsletterCat"] == 0) {
 	unset ($_REQUEST["ckbHTMLNewsletter"]);
@@ -83,7 +76,7 @@ if (!isset($_REQUEST["selTestDestination"]) || !is_numeric($_REQUEST["selTestDes
 if (!is_numeric($_REQUEST["selTestDestination"]) || !$perm->have_perm_area_action($area, "news_send_test")) {
 	$_REQUEST["selTestDestination"] = 0; // E-Mail address of current user
 } 
-$oUser->setProperty("newsletter", "test_idnewsgrp", $_REQUEST["selTestDestination"]);
+
 
 ############
 # 0. BUTTONS
@@ -175,13 +168,7 @@ $tpl->set('s', 'SETTINGSLINK', $settingsLink);
 
 // HTML Newsletter: Enabled option
 $bHTMLNewsletter = false;
-if (isset($_REQUEST["ckbHTMLNewsletter"]) && $perm->have_perm_area_action($area, "news_html_settings"))
-{
-	$bHTMLNewsletter = true;
-	$oClientLang->setProperty("newsletter", "html_newsletter", "true");
-} else if ($_REQUEST["action_html"] == "save" && $perm->have_perm_area_action($area, "news_html_settings")) {
-	$oClientLang->setProperty("newsletter", "html_newsletter", "false");
-} else if ($oClientLang->getProperty("newsletter", "html_newsletter") == "true") {
+if ($oClientLang->getProperty("newsletter", "html_newsletter") == "true") {
 	$bHTMLNewsletter = true;
 }
 $oCkbHTMLNewsletter 		= new cHTMLCheckbox("ckbHTMLNewsletter", "enabled", "", $bHTMLNewsletter);
@@ -278,10 +265,10 @@ $sSendTestDescr = sprintf(i18n("Do you really want to send the newsletter to:<br
 
 $oBtnSubmitSettings = new cHTMLButton("submit", i18n("Save"));
 
-$sContent  = '<div style="border-bottom: 1px solid #B3B3B3; padding-left:17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
-$sContent .= '  <form onsubmit="append_registered_parameters(this);" id="htmlnewsletter" name="htmlnewsletter" method="get" action="main.php?1">'.chr(10);
+$sContent  = '<div style="border-bottom: 0px solid #B3B3B3; padding-left:17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
+$sContent .= '  <form target="left_bottom" onsubmit="append_registered_parameters(this);" id="htmlnewsletter" name="htmlnewsletter" method="get" action="main.php?1">'.chr(10);
 $sContent .= '   <input type="hidden" name="area" value="'.$area.'">'.chr(10);
-$sContent .= '   <input type="hidden" name="frame" value="'.$frame.'">'.chr(10);
+$sContent .= '   <input type="hidden" name="frame" value="2">'.chr(10);
 $sContent .= '   <input type="hidden" name="contenido" value="'.$sess->id.'">'.chr(10);
 $sContent .= '   <input type="hidden" name="elemperpage" value="'.$_REQUEST["elemperpage"].'">'.chr(10);
 $sContent .= '   <input type="hidden" name="sortby" value="'.$_REQUEST["sortby"].'">'.chr(10);
@@ -289,7 +276,7 @@ $sContent .= '   <input type="hidden" name="sortorder" value="'.$_REQUEST["sorto
 $sContent .= '   <input type="hidden" name="restrictgroup" value="'.$_REQUEST["restrictgroup"].'">'.chr(10);
 $sContent .= '   <input type="hidden" name="filter" value="'.$_REQUEST["filter"].'">'.chr(10);
 $sContent .= '   <input type="hidden" name="searchin" value="'.$_REQUEST["searchin"].'">'.chr(10);
-$sContent .= '   <input type="hidden" name="action_html" value="save">'.chr(10);
+$sContent .= '   <input type="hidden" name="action_html" value="save_newsletter_properties">'.chr(10);
 $sContent .= '   <table>'.chr(10);
 $sContent .= '      <tr>'.chr(10);
 $sContent .= '         <td>'.$oCkbHTMLNewsletter->toHTML(false).' '.i18n("Enable HTML Newsletter").'</td>'.chr(10);
@@ -339,7 +326,7 @@ $oSelectSearchIn->setDefault($_REQUEST["searchin"]);
 // Submit Button
 $oSubmit = new cHTMLButton("submit", i18n("Apply"));
 
-$sContentNewsletter  = '<div style="border-bottom: 1px solid #B3B3B3; padding-left: 17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
+$sContentNewsletter  = '<div style="border-bottom: 0px solid #B3B3B3; padding-left: 17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
 $sContentNewsletter .= '<form target="left_bottom" onsubmit="reloadLeftBottomAndTransportFormVars(this);"  id="newsletter_listoptionsform" name="newsletter_listoptionsform" method="get" action="">'.chr(10);
 $sContentNewsletter .= '   <input type="hidden" name="area" value="'.$area.'">'.chr(10);
 $sContentNewsletter .= '   <input type="hidden" name="frame" value="2">'.chr(10);
@@ -488,6 +475,7 @@ while ($oNewsletter = $oNewsletters->next()) {
 #########################
 $oPagerLink = new cHTMLLink;
 $oPagerLink->setLink("main.php");
+$oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);
 $oPagerLink->setCustom("filter", $_REQUEST["filter"]);
 $oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
@@ -495,14 +483,14 @@ $oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
 $oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
 $oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
 $oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
-$oPagerLink->setCustom("frame", $frame);
+$oPagerLink->setCustom("frame", 2);
 $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 
 $pagerl="pagerlink";
 $tpl->set('s', 'PAGINGLINK', $pagerl);
-$oPager = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e301", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerl);
+$oPager = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e302", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, 'page', $pagerl);
 
 ##############################
 # 2. DISPATCH
@@ -607,7 +595,7 @@ $oSelectSearchIn->setDefault($_REQUEST["searchin"]);
 
 $oSubmit = new cHTMLButton("submit", i18n("Apply"));
 // DISPATCH
-$sContent  = '<div style="border-bottom: 1px solid #B3B3B3; padding-left: 17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
+$sContent  = '<div style="border-bottom: 0px solid #B3B3B3; padding-left: 17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
 $sContent .= '<form target="left_bottom" onsubmit="reloadLeftBottomAndTransportFormVars(this);"  id="dispatch_listoptionsform" name="dispatch_listoptionsform" method="get" action="">'.chr(10);
 $sContent .= '   <input type="hidden" name="area" value="news_jobs">'.chr(10);
 $sContent .= '   <input type="hidden" name="frame" value="2">'.chr(10);
@@ -764,7 +752,6 @@ $oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
 $oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
 $oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
 $oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
-$oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
 $oPagerLink->setCustom("frame", $frame);
 $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
@@ -818,7 +805,7 @@ $aFields["deactivated"] = array("field" => "deactivated", "caption" => i18n("Dea
 $sMsgDelTitle   = i18n("Delete recipient");
 $sMsgDelDescr   = i18n("Do you really want to delete the following recipient:<br>");
 
-$sContent  =  '<div style="padding: 4px; padding-left: 17px; border-bottom: 1px solid black; background: '.$cfg['color']['table_dark'].';">'.chr(10);
+$sContent  =  '<div style="padding: 4px; padding-left: 17px; border-bottom: 0px solid black; background: '.$cfg['color']['table_dark'].';">'.chr(10);
 
 // Create a link to add a recipient 
 if ($perm->have_perm_area_action("recipients", "recipients_create"))
@@ -852,18 +839,18 @@ if ($perm->have_perm_area_action($area, "recipients_delete"))
 	if (isset($_REQUEST["purgetimeframe"]) && is_numeric($_REQUEST["purgetimeframe"]) && $_REQUEST["purgetimeframe"] > 0 && $_REQUEST["purgetimeframe"] != $iTimeframe) 
 	{
 		$iTimeframe = $_REQUEST["purgetimeframe"];
-		$oClient->setProperty("newsletter", "purgetimeframe", $iTimeframe);
 	}
 	unset ($oClient);
 	
 	$oLink = new cHTMLLink;
-	$oLink->setLink('javascript:showPurgeMsg("'.i18n('Purge recipients').'", "'.sprintf(i18n("Do you really want to remove recipients, that have not been confirmed since %d days and over?"), $iTimeframe).'")');
+	$oLink->setLink('javascript:showPurgeMsg("'.i18n('Purge recipients').'", "'.sprintf(i18n("Do you really want to remove recipients, that have not been confirmed since %s days and over?"), '"+purgetimeframe+"').'")');
 
 	$oLink->setContent('<img style="padding-right: 4px;" src="'.$cfg["path"]["images"] . 'delete.gif" align="middle">'.i18n("Purge recipients").'</a>');
 
 	$sContent .= $oLink->render();
 }
 $sContent .= '</div>'.chr(10);
+$tpl->set('s', 'VALUE_PURGETIMEFRAME', $iTimeframe);
 
 #########################
 # 3.1 Actions folding row
@@ -893,8 +880,8 @@ unset ($oClient);
 $oTxtTimeframe 	= new cHTMLTextbox("purgetimeframe", $iTimeframe, 5);
 $oBtnSubmitOptions 	= new cHTMLButton("submit", i18n("Save"));
 
-$sContent  = '<div style="border-bottom: 1px solid #B3B3B3; padding-left: 17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
-$sContent .= '<form onsubmit="append_registered_parameters(this);" id="options" name="options" method="get" action="main.php?1">'.chr(10);
+$sContent  = '<div style="border-bottom: 0px solid #B3B3B3; padding-left: 17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
+$sContent .= '<form target="left_bottom" onsubmit="append_registered_parameters(this);" id="options" name="options" method="get" action="main.php?1">'.chr(10);
 $sContent .= '   <input type="hidden" name="area" value="recipients">'.chr(10);
 $sContent .= '   <input type="hidden" name="frame" value="2">'.chr(10);
 $sContent .= '   <input type="hidden" name="contenido" value="'.$sess->id.'">'.chr(10);
@@ -957,6 +944,7 @@ $oRGroups->setWhere("idlang", $lang);
 $oRGroups->setOrder("defaultgroup DESC, groupname ASC");
 $oRGroups->query();
 
+$i = 1;
 while ($oRGroup = $oRGroups->next()) {
 	if ($oRGroup->get("defaultgroup") == 1) {
 		$sGroupname = $oRGroup->get("groupname") . "*";
@@ -964,7 +952,8 @@ while ($oRGroup = $oRGroups->next()) {
 		$sGroupname = $oRGroup->get("groupname");
 	}
 	$oOption = new cHTMLOptionElement($sGroupname, $oRGroup->get("idnewsgroup"));
-	$oSelRestrictGroup->addOptionElement($sGroupname, $oOption);
+	$oSelRestrictGroup->addOptionElement($i, $oOption);
+    $i++;
 }
 
 $oSelRestrictGroup->setDefault($_REQUEST["restrictgroup"]);
@@ -986,7 +975,7 @@ $oSelSearchIn->setDefault($_REQUEST["searchin"]);
 $oBtnSubmitFilter = new cHTMLButton("submit", i18n("Apply"));
 
 
-$sContent  = '<div style="border-bottom: 1px solid #B3B3B3; padding-left: 17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
+$sContent  = '<div style="border-bottom: 0px solid #B3B3B3; padding-left: 17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
 $sContent .= '<form target="left_bottom" onsubmit="reloadLeftBottomAndTransportFormVars(this);"  id="recipients_listoptionsform" name="recipients_listoptionsform" method="get" action="">'.chr(10);
 $sContent .= '   <input type="hidden" name="area" value="recipients">'.chr(10);
 $sContent .= '   <input type="hidden" name="frame" value="2">'.chr(10);
@@ -1152,7 +1141,7 @@ $sDelDescr	= i18n("Do you really want to delete the following newsletter recipie
 ###################
 # 4.1 Actions
 ###################
-$sContent  =  '<div style="padding: 4px; padding-left: 17px; border-bottom: 1px solid black; background: '.$cfg['color']['table_dark'].';">'.chr(10);
+$sContent  =  '<div style="padding: 4px; padding-left: 17px; border-bottom: 0px solid black; background: '.$cfg['color']['table_dark'].';">'.chr(10);
 
 // Create a link to add a group
 if ($perm->have_perm_area_action("recipientgroups", "recipientgroup_create"))
@@ -1208,7 +1197,7 @@ $oSelSearchIn->setDefault($_REQUEST["searchin"]);
 
 $oBtnSubmitFilter = new cHTMLButton("submit", i18n("Apply"));
 
-$sContent  = '<div style="border-bottom: 1px solid #B3B3B3; padding-left: 17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
+$sContent  = '<div style="border-bottom: 0px solid #B3B3B3; padding-left: 17px; background: '.$cfg['color']['table_dark'].';">'.chr(10);
 $sContent .= '<form target="left_bottom" onsubmit="reloadLeftBottomAndTransportFormVars(this);" id="groups_listoptionsform" name="groups_listoptionsform" method="get" action="">'.chr(10);
 $sContent .= '   <input type="hidden" name="area" value="recipientgroups">'.chr(10);
 $sContent .= '   <input type="hidden" name="frame" value="2">'.chr(10);

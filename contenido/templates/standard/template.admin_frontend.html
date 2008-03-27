@@ -115,7 +115,6 @@
                 var sFilterRowState = document.getElementById('m17').value;
                 
                 sFilterParam += '&frame=1&view='+selectedButton+'&actionrow='+sActionsRowState+'&filterrow='+sFilterRowState;
-
                 window.location.href = sFilterParam;
             }
             
@@ -136,13 +135,17 @@
                 }
               }
               
+              if (document.location.href.match(/[?&](page=\d+)/g) && bGet != 2) {
+                    multilink += '&'+RegExp.$1;
+              }
+              
               if (bGet == 1) {
                 return multilink+'&area=frontend';
               } else {
                 conMultiLink("left_bottom", multilink+'&area=frontend&frame=2');
               }
           }
-          
+         
           if (document.location.href.match(/[?&]page=(\d+)/g)) {
             var iPage = RegExp.$1;
             if (top.content.left && top.content.left.left_bottom) {
@@ -154,7 +157,7 @@
                 }
                 top.content.left.left_bottom.document.location.href = href;
             }
-        }
+          }
 
     </script>			
 </head>

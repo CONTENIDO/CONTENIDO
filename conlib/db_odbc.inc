@@ -158,6 +158,12 @@ class DB_Sql {
   function num_fields() {
     return count($this->Record)/2;
   }
+  
+  /* public: Escape string for using in SQL-Statement */
+  function escape ($sString) {
+      //ToDo implement specific database behaviour
+      return addslashes ($sString);
+  } 
 
   function nf() {
     return $this->num_rows();

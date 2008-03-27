@@ -106,7 +106,7 @@ $content .= '<td>'.$oTextboxFilter->render().'</td>';
 $content .= '</tr>';
 $content .= '<tr>';
 $content .= '<td style="padding-left:15px;">&nbsp;</td>';
-$content .= '<td><input type="submit" value="'.i18n("Apply").'" onclick="javascript:execFilter(\''.$sess->id.'\');"</td>';
+$content .= '<td><input type="submit" value="'.i18n("Apply").'" onclick="javascript:execFilter(\''.$sess->id.'\');"></td>';
 $content .= '</tr>';
 $content .= '</table>';
 $content .= '</form>';

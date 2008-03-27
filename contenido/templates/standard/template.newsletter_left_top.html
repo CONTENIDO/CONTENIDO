@@ -16,26 +16,29 @@
    
 
     <script language="JavaScript">
-      var sid = '{SESSID}';
-      box = new messageBox("", "", "", 0, 0);
-			var actionURL='';
-			var settingsURL='';
-			var listoptionURL='';
-			var pagingURL='';
-      var listoptionURLDisp ='';
-      var pagingURLDisp ='';
-			var	actionURLRec = '';
-			var	settingsURLRec = '';
-			var	listoptionURLRec = '';
-			var	pagingURLRec = '';
-      var	actionURLGroup = '';
-      var	listoptionURLGroup = '';
-      var	pagingURLGroup = '';
+        var newsletter_listoptionsform_curPage = 1
+    
+        var sid = '{SESSID}';
+        box = new messageBox("", "", "", 0, 0);
+        var actionURL='';
+        var settingsURL='';
+        var listoptionURL='';
+        var pagingURL='';
+        var listoptionURLDisp ='';
+        var pagingURLDisp ='';
+        var	actionURLRec = '';
+        var	settingsURLRec = '';
+        var	listoptionURLRec = '';
+        var	pagingURLRec = '';
+        var	actionURLGroup = '';
+        var	listoptionURLGroup = '';
+        var	pagingURLGroup = '';
+        var purgetimeframe = {VALUE_PURGETIMEFRAME};
+
+        // save status of buttons
+        var selectedButton = '';
       
-      // save status of buttons
-      var selectedButton = '';
-      
-      // Buttons and their images
+        // Buttons and their images
 	    var butNewsletter     = { imgId:'{INEWSLETTER}', containerId:'{ID_CNEWSLETTER}', imgOff:'images/newsletter_off.gif', imgOn:'images/newsletter_on.gif'};
 	    var butDispatch       = { imgId:'{IDISPATCH}', containerId:'{ID_CDISPATCH}', imgOff:'images/newsletter_dispatch_off.gif', imgOn:'images/newsletter_dispatch_on.gif'};
 	    var butRecipients     = { imgId:'{IRECIPIENTS}', containerId:'{ID_CRECIPIENTS}', imgOff:'images/newsletter_recipients_off.gif', imgOn:'images/newsletter_recipients_on.gif'};
@@ -301,6 +304,12 @@
 			
 			function reloadLeftBottomAndTransportFormVars(theform)
 			{
+                var iPage = 1;
+
+                if (theform.name == 'newsletter_listoptionsform') {
+                   iPage = newsletter_listoptionsform_curPage;
+                }
+
 				var formElements = theform.elements;
 				var multilink = "main.php?";
 			  for(var i=0; i<formElements.length; i++)
@@ -314,6 +323,8 @@
 			      multilink += formElements[i].name + "=" + formElements[i].value;
 			    }
 			  }
+              
+              multilink += '&page='+iPage;
 			  conMultiLink("left_bottom", multilink);
 			}
 
@@ -339,9 +350,35 @@
 	      url += "&elemperpage=" + oForm.elemperpage.value;
 	
 	      parent.parent.right.right_bottom.location.href = url;
-			}
-			
-						
+	  }	
+      
+      function removeGroupOption(idGroup) {
+        var oPossibleObjects = document.getElementsByTagName('select');
+        var iCount = oPossibleObjects.length;
+        
+        for (var i = 0; i < iCount; i++) {
+            if (oPossibleObjects[i].name == 'restrictgroup') {
+                dropOptionElement(oPossibleObjects[i], idGroup);
+            }
+            
+            if (oPossibleObjects[i].name == 'selTestDestination') {
+                dropOptionElement(oPossibleObjects[i], idGroup);
+            }
+        }
+      }
+      
+      function dropOptionElement (select, value) {
+          var oOptions = select.getElementsByTagName('option');
+          var jCount = oOptions.length;
+          for (var j = 0; j < jCount; j++) {
+              if (oOptions[j].value == value) {
+                  select.removeChild(oOptions[j]);
+                  break;
+              }
+          }
+      }
+      
+      
     </script>
   
 	  

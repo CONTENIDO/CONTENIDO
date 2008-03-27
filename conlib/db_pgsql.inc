@@ -223,5 +223,11 @@ class DB_Sql {
      }
     return $return;
   }
+  
+  /* public: Escape string for using in SQL-Statement */
+  function escape ($sString) {
+      //ToDo implement specific database behaviour
+     return addslashes ($sString);
+  } 
 }
 ?>
