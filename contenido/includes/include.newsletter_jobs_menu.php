@@ -149,8 +149,12 @@ if ($_REQUEST["filter"] != "") {
 
 if ($_REQUEST["elemperpage"] > 0) {
 	$oJobs->query();
+
 	$iItemCount = $oJobs->count(); // Getting item count without limit (for page function) - better idea anyone (performance)?
-	
+    
+    if ($_REQUEST["elemperpage"]*($_REQUEST["page"]) >= $iItemCount+$_REQUEST["elemperpage"] && $_REQUEST["page"]  != 1) {
+        $_REQUEST["page"]--;
+    }
 	$oJobs->setLimit($_REQUEST["elemperpage"] * ($_REQUEST["page"] - 1), $_REQUEST["elemperpage"]);
 } else {
 	$iItemCount = 0;
@@ -297,8 +301,48 @@ $oPage->addScript('exec', $execScript);
 $oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
 
-//$oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0" width="100%">', $oActionRow, $oListOptionRow, $oPager, '</table>', $mList->render(false)));
-$oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0" width="100%">', $oListOptionRow, $oPager, '</table>', $oMenu->render(false)));
+//generate current content for Object Pager
+$oPagerLink = new cHTMLLink;
+$oPagerLink->setLink("main.php");
+$oPagerLink->setTargetFrame('left_bottom');
+$oPagerLink->setCustom("selAuthor", $_REQUEST["selAuthor"]);
+$oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);
+$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
+$oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
+$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
+$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
+$oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
+$oPagerLink->setCustom("frame", $frame);
+$oPagerLink->setCustom("area", $area);
+$oPagerLink->enableAutomaticParameterAppend();
+$oPagerLink->setCustom("contenido", $sess->id);
+
+$oPager = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e303", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerlDisp);
+
+//add slashes, to insert in javascript
+$sPagerContent = $oPager->render(1);
+$sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
+$sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
+
+//send new object pager to left_top
+$sRefreshPager = '
+    <script type="text/javascript">
+        var sNavigation = \''.$sPagerContent.'\';
+        var left_top = parent.left_top;
+        if (left_top.document) {
+            var oPager = left_top.document.getElementById(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e303\');
+            if (oPager) {
+                oInsert = oPager.firstChild;
+                oInsert.innerHTML = sNavigation;
+                 left_top.dispatch_listoptionsform_curPage = '.$_REQUEST["page"].';
+                 left_top.toggle_pager(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e303\');
+            }
+        }
+    </script>';
+    
+$oPage->addScript('refreshpager', $sRefreshPager);  
+
+$oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0" width="100%">', $oListOptionRow, '</table>', $oMenu->render(false)));
 $oPage->render();
 
 ?>

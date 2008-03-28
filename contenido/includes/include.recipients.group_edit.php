@@ -33,11 +33,13 @@ if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $a
    $oRGroup = $oRGroups->create(" ".i18n("-- new group --"));
    $_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
    $oPage->setReload();
+   $refreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'add\')</script>';
+   $oPage->addScript('refreshlefttop', $refreshLeftTopScript);
    
 } elseif ($action == "recipientgroup_delete" && $perm->have_perm_area_action($area, $action))
 {
    $oRGroups->delete($_REQUEST["idrecipientgroup"]);
-   $refreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.removeGroupOption(\''.$_REQUEST["idrecipientgroup"].'\')</script>';
+   $refreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'remove\')</script>';
    $oPage->addScript('refreshlefttop', $refreshLeftTopScript);
    
    $_REQUEST["idrecipientgroup"] = 0;
@@ -91,6 +93,10 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 				}
 			}
 		}
+        
+        $refreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'remove\');
+                                                                top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'add\', \''.$sGroupName.'\');</script>';
+        $oPage->addScript('refreshlefttop', $refreshLeftTopScript);
 	}
 	
 	if (count($aMessages) > 0) {

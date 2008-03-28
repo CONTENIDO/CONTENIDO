@@ -114,7 +114,7 @@ $userlink->setCLink("frontend", 2, "");
 $grouplink = new cHTMLLink;
 $grouplink->setCLink("frontendgroups", 2, "");
 
-$userlink="javascript:execFilter();";
+$userlink="javascript:execFilter(2);";
 $grouplink="javascript:conMultiLink('left_bottom','main.php?area=frontendgroups&frame=2&action=&contenido=".$sess->id."')";
 
 // Init view by javascript (decide which tab is activated)
@@ -219,7 +219,7 @@ $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
 
 $content = '<div style="margin-left: 17px;">';
 // Ye stuff will be done in javascript on apply button
-$content .= '<form action="'.$sess->url("main.php").'" id="filter" name="filter" method="get">';
+$content .= '<form action="javascript:execFilter();" id="filter" name="filter" method="get">';
 $content .= '<table>';
 $content .= '<input type="hidden" name="area" value="'.$area.'">';
 $content .= '<input type="hidden" name="frame" value="1">';
@@ -250,7 +250,7 @@ $content .= '<td>'.$oSelectSearchIn->render().'</td>';
 $content .= '</tr>';
 $content .= '<tr>';
 $content .= '<td>&nbsp;</td>';
-$content .= '<td><input type="submit" value="'.i18n("Apply").'" onclick="javascript:execFilter(2);"></td>';
+$content .= '<td><input type="submit" value="'.i18n("Apply").'"></td>';
 $content .= '</tr>';
 $content .= '</table>';
 $content .= '</form>';
@@ -395,6 +395,7 @@ $pagingLink="paginglink";
 $tpl->set('s', 'PAGINGLINK', $pagingLink);
 
 $oPagerLink = new cHTMLLink;
+$oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setLink("main.php");
 $oPagerLink->setCustom("elemperpage", $elemperpage);
 $oPagerLink->setCustom("filter", $_REQUEST["filter"]);
@@ -402,7 +403,7 @@ $oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
 $oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
 $oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
 $oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
-$oPagerLink->setCustom("frame", $frame);
+$oPagerLink->setCustom("frame", 2);
 $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
@@ -448,6 +449,8 @@ $containerGroups .= '<span style="margin-left:15px">'.$menu->render(false).'</sp
 $containerGroups .= '</div>';
 $tpl->set('s', 'CGROUPS', $containerGroups);
 $tpl->set('s', 'ID_GROUPS', $containerGroupsId);
+
+$tpl->set('s', 'PAGE', $_REQUEST["page"]);
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['admin_frontend']);
 

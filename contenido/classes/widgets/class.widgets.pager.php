@@ -45,10 +45,10 @@ class cObjectPager extends cFoldingRow
 	
 	function render ($bContentOnly = 0)
 	{
-        global $area;
         #Do not display Page navigation if there is only one Page and we are not in newsletter section
-        if ($this->_cPager->getMaxPages() == 1 && $area != 'news') {
-            return;
+        if ($this->_cPager->getMaxPages() == 1) {
+            $this->_headerRow->setStyle("display:none");
+            $this->_contentRow->setStyle("display:none");
         }
         
 		$items = $this->_cPager->getPagesInRange();
@@ -120,6 +120,12 @@ class cObjectPager extends cFoldingRow
 		
 		$this->_contentData->setAlignment("center");
 		$this->_contentData->setClass("foldingrow_content");
+        
+        #Do not display Page navigation if there is only one Page and we are not in newsletter section
+        if ($this->_cPager->getMaxPages() == 1) {
+            $output = '';
+        }
+        
 		$this->_contentData->setContent($output);
 		
         if ($bContentOnly) {

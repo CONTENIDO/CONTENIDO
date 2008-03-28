@@ -16,8 +16,17 @@
    
 
     <script language="JavaScript">
-        var newsletter_listoptionsform_curPage = 1
+        var sDisplay = 'table-row';
+        var bMsie = (document.all) ? true : false;
+        if (bMsie) {
+            sDisplay = 'block';
+        }
     
+        var newsletter_listoptionsform_curPage = 1
+        var dispatch_listoptionsform_curPage = 1;
+        var recipients_listoptionsform_curPage = 1;
+        var groups_listoptionsform_curPage = 1;
+
         var sid = '{SESSID}';
         box = new messageBox("", "", "", 0, 0);
         var actionURL='';
@@ -46,7 +55,7 @@
       
       var buttonArray = new Array(butNewsletter, butDispatch, butRecipients, butRecipientgroup);
       
-			function resizeFrame(arg)
+			function resizeFrame(arg, bIgnore)
 			{
 				if(arg == '')
 				{
@@ -151,7 +160,7 @@
 				{
 					window.location.href=listoptionURL;
 				}
-				else if(arg == '{PAGINGLINK}')
+				else if(arg == '{PAGINGLINK}' && bIgnore != 1)
 				{
 					window.location.href=pagingURL;
 				}
@@ -159,7 +168,7 @@
 				{
 					window.location.href=listoptionURLDisp;
 				}
-				else if(arg == '{PAGINGLINKDISP}')
+				else if(arg == '{PAGINGLINKDISP}' && bIgnore != 1)
 				{
 					window.location.href=pagingURLDisp;
 				}
@@ -175,7 +184,7 @@
 				{
 					window.location.href=listoptionURLRec;
 				}
-				else if(arg == '{PAGINGLINKREC}')
+				else if(arg == '{PAGINGLINKREC}' && bIgnore != 1)
 				{
 					window.location.href=pagingURLRec;
 				}
@@ -186,8 +195,9 @@
 				else if(arg == '{LISTOPTIONLINKGROUP}')
 				{
 					window.location.href=listoptionURLGroup;
+                    
 				}
-				else if(arg == '{PAGINGLINKGROUP}')
+				else if(arg == '{PAGINGLINKGROUP}' && bIgnore != 1)
 				{
 					window.location.href=pagingURLGroup;
 				}
@@ -309,6 +319,18 @@
                 if (theform.name == 'newsletter_listoptionsform') {
                    iPage = newsletter_listoptionsform_curPage;
                 }
+                
+                if (theform.name == 'dispatch_listoptionsform') {
+                   iPage = dispatch_listoptionsform_curPage;
+                }
+                
+                if (theform.name == 'recipients_listoptionsform') {
+                   iPage = recipients_listoptionsform_curPage;
+                }
+                
+                if (theform.name == 'groups_listoptionsform') {
+                   iPage = groups_listoptionsform_curPage;
+                }
 
 				var formElements = theform.elements;
 				var multilink = "main.php?";
@@ -352,17 +374,25 @@
 	      parent.parent.right.right_bottom.location.href = url;
 	  }	
       
-      function removeGroupOption(idGroup) {
+      function refreshGroupOption(idGroup, sMode, sGroupname) {
         var oPossibleObjects = document.getElementsByTagName('select');
         var iCount = oPossibleObjects.length;
         
         for (var i = 0; i < iCount; i++) {
             if (oPossibleObjects[i].name == 'restrictgroup') {
-                dropOptionElement(oPossibleObjects[i], idGroup);
+                if (sMode == 'remove') {
+                    dropOptionElement(oPossibleObjects[i], idGroup);
+                } else if (sMode == 'add') {
+                    addOptionElement(oPossibleObjects[i], idGroup, sGroupname);
+                }
             }
             
             if (oPossibleObjects[i].name == 'selTestDestination') {
-                dropOptionElement(oPossibleObjects[i], idGroup);
+                if (sMode == 'remove') {
+                    dropOptionElement(oPossibleObjects[i], idGroup);
+                } else if (sMode == 'add') {
+                    addOptionElement(oPossibleObjects[i], idGroup, sGroupname);
+                }
             }
         }
       }
@@ -376,6 +406,65 @@
                   break;
               }
           }
+      }
+      
+      function addOptionElement (select, value, sGroupname) {
+          var oNewOption = document.createElement("option");
+          if (!sGroupname) {
+            var sGroupname = 'i18n("-- new group --")';
+          }
+          oNewOption.value = value;
+          var oNewLabel = document.createTextNode(sGroupname);
+          oNewOption.appendChild(oNewLabel);
+      
+          var oOptions = select.getElementsByTagName('option');
+          var jCount = oOptions.length;
+          var oPrev = null;
+          
+          for (var j = 1; j < jCount; j++) {
+            var sOptionLabel = '';
+            if (oOptions[j].firstChild) {
+                sOptionLabel = oOptions[j].firstChild.nodeValue;
+            }
+            
+            if (sOptionLabel > sGroupname) {
+                select.insertBefore(oNewOption, oOptions[j]);
+                return;
+            }
+          }
+          
+          select.appendChild(oNewOption);
+      }
+      
+      function toggle_pager(sId) {
+        var oBase = document.getElementById(sId);
+        if (oBase) {
+            if (oBase.firstChild && oBase.firstChild.firstChild && oBase.firstChild.firstChild) {
+                oBase.previousSibling.style.display = sDisplay;
+                oBase.style.display = sDisplay;
+            } else if (oBase){
+                oBase.previousSibling.style.display = 'none';
+                oBase.style.display = 'none';
+            }
+        }
+        
+        switch(sId) {
+            case '0ed6d632-6adf-4f09-a0c6-1e38ab60e305':
+                resizeFrame('{PAGINGLINKGROUP}', 1);
+                break;
+                
+            case '0ed6d632-6adf-4f09-a0c6-1e38ab60e304':
+                resizeFrame('{PAGINGLINKREC}', 1);
+                break;
+                
+            case '0ed6d632-6adf-4f09-a0c6-1e38ab60e303':
+                resizeFrame('{PAGINGLINKDISP}', 1);
+                break;
+                
+             case '0ed6d632-6adf-4f09-a0c6-1e38ab60e302':
+                resizeFrame('{PAGINGLINK}', 1);
+                break;
+        }
       }
       
       

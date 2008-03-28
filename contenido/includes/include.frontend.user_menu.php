@@ -36,6 +36,7 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 	$_REQUEST["page"] = 1;
 }
 
+
 $aFieldsToSearch = array("--all--" => i18n("-- All fields --"), "username" => i18n("Username"));
 $aFieldsToSort = array("username" => i18n("Username"));
 
@@ -196,6 +197,7 @@ if ($_REQUEST["restrictgroup"] != "" && $_REQUEST["restrictgroup"] != "--all--")
 $mPage 			= $_REQUEST["page"];
 $elemperpage	= $_REQUEST["elemperpage"];
 
+$iFullTableCount = 0;
 if ($bUsePlugins == false)
 {
 	$oFEUsers->query();
@@ -204,6 +206,14 @@ if ($bUsePlugins == false)
 	
 	$oFEUsers->setOrder(implode(" ", array($oSelectSortBy->getDefault(), $oSelectSortOrder->getDefault())));
 	$oFEUsers->setLimit($elemperpage * ($mPage - 1), $elemperpage);
+} else {
+    $oFEUsers->query();
+    $iFullTableCount = $oFEUsers->count();
+}
+
+if ($_REQUEST["elemperpage"]*($_REQUEST["page"]) >= $iFullTableCount+$_REQUEST["elemperpage"] && $_REQUEST["page"]  != 1) {
+    $_REQUEST["page"]--;
+    $mPage--;
 }
 
 $oFEUsers->query();
@@ -370,6 +380,46 @@ $oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/mes
 $oPage->addScript('delete', $deleteScript);
 //$oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
+
+//generate current content for Object Pager
+$oPagerLink = new cHTMLLink;
+$oPagerLink->setTargetFrame('left_bottom');
+$oPagerLink->setLink("main.php");
+$oPagerLink->setCustom("elemperpage", $elemperpage);
+$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
+$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
+$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
+$oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
+$oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
+$oPagerLink->setCustom("frame", $frame);
+$oPagerLink->setCustom("area", $area);
+$oPagerLink->enableAutomaticParameterAppend();
+$oPagerLink->setCustom("contenido", $sess->id);
+
+$oPager = new cObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iFullTableCount, $_REQUEST['elemperpage'], $mPage, $oPagerLink, "page", $pagingLink);
+
+//add slashes, to insert in javascript
+$sPagerContent = $oPager->render(1);
+$sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
+$sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
+
+//send new object pager to left_top
+$sRefreshPager = '
+    <script type="text/javascript">
+        var sNavigation = \''.$sPagerContent.'\';
+        var left_top = parent.left_top;
+        if (left_top.document) {
+            var oPager = left_top.document.getElementById(\'25c6a67d-a3f1-4ea4-8391-446c131952c9\');
+            if (oPager) {
+                oInsert = oPager.firstChild;
+                oInsert.innerHTML = sNavigation;
+                 left_top.iPage = '.$_REQUEST["page"].';
+                 left_top.toggle_pager(\'25c6a67d-a3f1-4ea4-8391-446c131952c9\');
+            }
+        }
+    </script>';
+    
+$oPage->addScript('refreshpager', $sRefreshPager); 
 
 //$oPage->setContent(array ('<table border="0" cellspacing="0" cellpadding="0" width="100%">', $oListActionRow, $oListOptionRow, $oPager, '</table>', $mlist->render(false)));
 $oPage->setContent($mlist->render(false).$sInitRowMark);

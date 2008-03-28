@@ -25,6 +25,7 @@ cInclude("classes", "contenido/class.clientslang.php");
 ##################################
 $oUser = new cApiUser($auth->auth["uid"]);
 $oClientLang 	= new cApiClientLanguage(false, $client, $lang);
+$oUser = new cApiUser($auth->auth["uid"]);
 
 // Items per Page
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0){
@@ -32,9 +33,6 @@ if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) ||
 }
 if (!is_numeric($_REQUEST["elemperpage"])){
 	$_REQUEST["elemperpage"] = 25;
-}
-if ($_REQUEST["elemperpage"] > 0){ 
-	$oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
 }
 // Current page
 if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST["page"]) || $_REQUEST["page"] <= 0 || $_REQUEST["elemperpage"] == 0) {
@@ -129,8 +127,6 @@ $sAddJobTitleOff	= i18n("Add newsletter dispatch job (disabled, check newsletter
 $sCopyTitle			= i18n("Duplicate newsletter");
 $sDelTitle			= i18n("Delete newsletter");
 $sDelDescr 			= i18n("Do you really want to delete the following newsletter:<br>");
-
-unset ($oUser); // Object not needed anymore
 
 ##########################
 # 1.2 Actions folding row
@@ -302,6 +298,11 @@ $oSettingsRow->setContentData($sContent);
 # 1.3 List options folding row
 ###############################
 // Items per Page
+$iElemPerPage = (int) $oUser->getProperty("itemsperpage", 'news');
+if ($iElemPerPage < 25) {
+    $iElemPerPage = $_REQUEST["elemperpage"];
+}
+
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelectItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
 $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
@@ -309,7 +310,7 @@ $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
 $oSelectSortBy = new cHTMLSelectElement("sortby");
 $oOption = new cHTMLOptionElement("Name", "name");
 $oSelectSortBy->addOptionElement($sKey, $oOption);
-$oSelectSortBy->setDefault($_REQUEST["sortby"]);
+$oSelectSortBy->setDefault($iElemPerPage);
 // Sort Order
 $oSelectSortOrder = new cHTMLSelectElement("sortorder");
 $oSelectSortOrder->autoFill(array("ASC" => i18n("Ascending"), "DESC" => i18n("Descending")));
@@ -505,7 +506,6 @@ if ($_REQUEST["selAuthor"] == "") {
 }
 
 // Items per page (value stored per area in user property)
-$oUser = new cApiUser($auth->auth["uid"]);
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0) {
 	$_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
@@ -516,7 +516,6 @@ if ($_REQUEST["elemperpage"] > 0) {
 	// -- All -- will not be stored, as it may be impossible to change this back to something more useful
 	$oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
 }
-unset ($oUser);
 
 // Current page
 if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST["page"]) || $_REQUEST["page"] <= 0 || $_REQUEST["elemperpage"] == 0) {
@@ -559,9 +558,14 @@ if (!$bUserInTheList) {
 }
 $oSelAuthor->setDefault($_REQUEST["selAuthor"]);
 
+$iElemPerPage = (int) $oUser->getProperty("itemsperpage", 'news_jobs');
+if ($iElemPerPage < 25) {
+    $iElemPerPage = $_REQUEST["elemperpage"];
+}
+
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelectItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
-$oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
+$oSelectItemsPerPage->setDefault($iElemPerPage);
 
 $oSelectSortBy = new cHTMLSelectElement("sortby");
 foreach ($aFields as $sKey => $aData) {
@@ -745,6 +749,7 @@ while ($oJob = $oJobs->next())
 
 $oPagerLink = new cHTMLLink;
 $oPagerLink->setLink("main.php");
+$oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("selAuthor", $_REQUEST["selAuthor"]);
 $oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);
 $oPagerLink->setCustom("filter", $_REQUEST["filter"]);
@@ -759,7 +764,7 @@ $oPagerLink->setCustom("contenido", $sess->id);
 
 $pagerlDisp="pagerlinkdisp";
 $tpl->set('s', 'PAGINGLINKDISP', $pagerlDisp);
-$oPagerDisp     = new cObjectPager("89e76440-0ad0-11db-9cd8-0800200c9a66", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerlDisp);
+$oPagerDisp     = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e303", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerlDisp);
 
 
 ##############################
@@ -772,7 +777,6 @@ if (getSystemProperty("newsletter", "updatekeys")) {
 }
 
 // Set default values
-$oUser = new cApiUser($auth->auth["uid"]);
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0) {
 	$_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
@@ -783,7 +787,6 @@ if ($_REQUEST["elemperpage"] > 0) {
 	// -- All -- will not be stored, as it may be impossible to change this back to something more useful
 	$oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
 }
-unset ($oUser);
 
 if (!isset($_REQUEST['restrictgroup']) || !is_numeric($_REQUEST['restrictgroup'])) {
 	$_REQUEST['restrictgroup'] = "--all--";
@@ -913,9 +916,14 @@ $tpl->set('s', 'SETTINGSLINKREC', $SettingsLinkRec);
 ###############################
 # 3.3 List options folding row
 ###############################
+$iElemPerPage = (int) $oUser->getProperty("itemsperpage", 'recipients');
+if ($iElemPerPage < 25) {
+    $iElemPerPage = $_REQUEST["elemperpage"];
+}
+
 $oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
-$oSelItemsPerPage->setDefault($_REQUEST["elemperpage"]);
+$oSelItemsPerPage->setDefault($iElemPerPage);
 
 $oSelSortBy = new cHTMLSelectElement("sortby");
 foreach ($aFields as $sKey => $aData) {
@@ -1092,6 +1100,7 @@ $tpl->set('s', 'LISTOPTIONLINKREC', $ListOptionsLinkRec);
 #############
 $oPagerLink = new cHTMLLink;
 $oPagerLink->setLink("main.php");
+$oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);
 $oPagerLink->setCustom("filter", $_REQUEST["filter"]);
 $oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
@@ -1106,13 +1115,12 @@ $oPagerLink->setCustom("contenido", $sess->id);
 // to template
 $PagingLinkRec="pagingrec";
 $tpl->set('s', 'PAGINGLINKREC', $PagingLinkRec);
-$oPagerRec = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e301", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $PagingLinkRec);
+$oPagerRec = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e304", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $PagingLinkRec);
 
 ###################
 # 4 Recipientgroup
 ###################
 // Set default values
-$oUser = new cApiUser($auth->auth["uid"]);
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0) {
 	$_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
@@ -1123,7 +1131,6 @@ if ($_REQUEST["elemperpage"] > 0) {
 	// -- All -- will not be stored, as it may be impossible to change this back to something more useful
 	$oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
 }
-unset ($oUser);
 
 if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['page'] <= 0 || $_REQUEST["elemperpage"] == 0) {
 	$_REQUEST["page"] = 1;
@@ -1161,9 +1168,15 @@ $tpl->set('s', 'ACTIONLINKGROUP', $ActionLinkGroup);
 ###################
 # 4.2 List Options
 ###################
+
+$iElemPerPage = (int) $oUser->getProperty("itemsperpage", 'recipientgroups');
+if ($iElemPerPage < 25) {
+    $iElemPerPage = $_REQUEST["elemperpage"];
+}
+
 $oSelItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
-$oSelItemsPerPage->setDefault($_REQUEST["elemperpage"]);
+$oSelItemsPerPage->setDefault($iElemPerPage);
 
 $oSelSortBy = new cHTMLSelectElement("sortby");
 foreach ($aFields as $sKey => $aData) {
@@ -1299,6 +1312,7 @@ $tpl->set('s', 'LISTOPTIONLINKGROUP', $ListOptionsLinkGroup);
 ###################
 $oPagerLink = new cHTMLLink;
 $oPagerLink->setLink("main.php");
+$oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);
 $oPagerLink->setCustom("filter", $_REQUEST["filter"]);
 $oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
@@ -1312,7 +1326,7 @@ $oPagerLink->setCustom("contenido", $sess->id);
 // to template
 $PagingLinkGroup="paginggroup";
 $tpl->set('s', 'PAGINGLINKGROUP', $PagingLinkGroup);
-$oPagerGroup = new cObjectPager("1d27e488-1120-11dc-8314-0800200c9a66", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $PagingLinkGroup);
+$oPagerGroup = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e305", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $PagingLinkGroup);
 
 
 #######################
