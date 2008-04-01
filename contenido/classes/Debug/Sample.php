@@ -46,13 +46,13 @@ $oDbgVisible->show($aMyArray, 'some comments if needed');
 $oDbgVisible->show($fMyFloat, 'some comments if needed');
 
 // print debug info to screen in html comments
-$oDbgHidden = DebuggerFactory::getDebugger('visible');
+$oDbgHidden = DebuggerFactory::getDebugger('hidden'); 
 $oDbgHidden->show($oMyObj, 'some comments if needed');
 $oDbgHidden->show($aMyArray, 'some comments if needed');
 $oDbgHidden->show($fMyFloat, 'some comments if needed');
 
 // print debug info to a logfile
-$oDbgFile = DebuggerFactory::getDebugger('visible');
+$oDbgFile = DebuggerFactory::getDebugger('file');
 $oDbgFile->show($oMyObj, 'some comments if needed');
 $oDbgFile->show($aMyArray, 'some comments if needed');
 $oDbgFile->show($fMyFloat, 'some comments if needed');

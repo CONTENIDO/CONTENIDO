@@ -20,7 +20,7 @@
 */
 include_once('IDebug.php');
 
-class Debug_File implements Debug {
+class Debug_File implements IDebug {
 	
 	static private $_instance;
 	static private $_hFileHandle;

@@ -5945,3 +5945,11 @@ msgstr "Login fehlgeschlagen!"
 msgid "No matching data found. Please contact your systemadministrator."
 msgstr "Keine passenden Daten gefunden. Bitte wenden Sie sich an Ihren System- administrator."
 
+msgid "Set category online"
+msgstr "Kategorie online setzen"
+
+msgid "Set category offline"
+msgstr "Kategorie offline setzen"
+
+msgid "Are you sure to delete the following category?"
+msgstr "Sind Sie sicher, dass Sie die folgende Kategorie L&ouml;schen wollen?"
