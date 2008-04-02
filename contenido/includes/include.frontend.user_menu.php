@@ -410,11 +410,16 @@ $sRefreshPager = '
         var left_top = parent.left_top;
         if (left_top.document) {
             var oPager = left_top.document.getElementById(\'25c6a67d-a3f1-4ea4-8391-446c131952c9\');
+            var sDisplay = oPager.style.display;
+
             if (oPager) {
                 oInsert = oPager.firstChild;
                 oInsert.innerHTML = sNavigation;
                  left_top.iPage = '.$_REQUEST["page"].';
                  left_top.toggle_pager(\'25c6a67d-a3f1-4ea4-8391-446c131952c9\');
+                 if (sDisplay == \'none\') {
+                    oPager.style.display = sDisplay;
+                 }
             }
         }
     </script>';

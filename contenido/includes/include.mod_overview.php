@@ -61,6 +61,10 @@ if ($_REQUEST["elemperpage"] > 0)
 	{
 		$_REQUEST["page"] = 1;
 	}
+    
+    if ($_REQUEST["elemperpage"]*($_REQUEST["page"]) >= $iItemCount+$_REQUEST["elemperpage"] && $_REQUEST["page"]  != 1) {
+        $_REQUEST["page"]--;
+    }
 
 	$cApiModuleCollection->setLimit(($_REQUEST["elemperpage"] * ($_REQUEST["page"] -1)), $_REQUEST["elemperpage"]);
 } 
@@ -249,5 +253,46 @@ $oPage->addScript('delete', $deleteScript);
 $oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
 $oPage->setContent($mlist->render(false));
+
+//generate current content for Object Pager
+$oPagerLink = new cHTMLLink;
+$pagerl="pagerlink";
+$oPagerLink->setTargetFrame('left_bottom');
+$oPagerLink->setLink("main.php");
+$oPagerLink->setCustom("elemperpage", $elemperpage);
+$oPagerLink->setCustom("filter", stripslashes($_REQUEST["filter"]));
+$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
+$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
+$oPagerLink->setCustom("frame", $frame);
+$oPagerLink->setCustom("area", $area);
+$oPagerLink->enableAutomaticParameterAppend();
+$oPagerLink->setCustom("contenido", $sess->id);
+$oPager = new cObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerl);
+
+//add slashes, to insert in javascript
+$sPagerContent = $oPager->render(1);
+$sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
+$sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
+
+//send new object pager to left_top
+$sRefreshPager = '
+    <script type="text/javascript">
+        var sNavigation = \''.$sPagerContent.'\';
+        var left_top = parent.left_top;
+        if (left_top.document) {
+            var oPager = left_top.document.getElementById(\'02420d6b-a77e-4a97-9395-7f6be480f497\');
+            var sDisplay = oPager.style.display;
+            if (oPager) {
+                oInsert = oPager.firstChild;
+                oInsert.innerHTML = sNavigation;
+                left_top.toggle_pager(\'02420d6b-a77e-4a97-9395-7f6be480f497\');
+                if (sDisplay == \'none\') {
+                    oPager.style.display = sDisplay;
+                }
+            }
+        }
+    </script>';
+$oPage->addScript('refreshpager', $sRefreshPager); 
+
 $oPage->render();
 ?>

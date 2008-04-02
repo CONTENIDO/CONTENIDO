@@ -80,29 +80,42 @@ if (!is_numeric($_REQUEST["selTestDestination"]) || !$perm->have_perm_area_actio
 # 0. BUTTONS
 ############
 // Newsletter
-$imgNewsletterId='img_newsletter';
-$tpl->set('s', 'INEWSLETTER', $imgNewsletterId);
-$buttonRow  = '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgNewsletterId.'\');reloadLeftBottomAndTransportFormVars(document.newsletter_listoptionsform);">';
-$buttonRow .= '<img onmouseover="hoverEffect(\''.$imgNewsletterId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgNewsletterId.'\', \'out\')" alt="'.i18n("Newsletter").'" title="'.i18n("Newsletter").'" name="'.$imgNewsletterId.'" id="'.$imgNewsletterId.'" src="'.$cfg["path"]["images"].'newsletter_on.gif"/>';
-$buttonRow .= '</a>';
-// Dispatch
-$imgDispatchId='img_dispatch';
-$tpl->set('s', 'IDISPATCH', $imgDispatchId);
-$buttonRow .= '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgDispatchId.'\');reloadLeftBottomAndTransportFormVars(document.dispatch_listoptionsform);">';
-$buttonRow .= '<img onmouseover="hoverEffect(\''.$imgDispatchId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgDispatchId.'\', \'out\')" alt="'.i18n("Dispatch").'" title="'.i18n("Dispatch").'" name="'.$imgDispatchId.'" id="'.$imgDispatchId.'" src="'.$cfg["path"]["images"].'newsletter_dispatch_on.gif"/>';
-$buttonRow .= '</a>';
-// Recipients
-$imgRecipientId='img_recipient';
-$tpl->set('s', 'IRECIPIENTS', $imgRecipientId);
-$buttonRow .= '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgRecipientId.'\');reloadLeftBottomAndTransportFormVars(document.recipients_listoptionsform);">';
-$buttonRow .= '<img onmouseover="hoverEffect(\''.$imgRecipientId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgRecipientId.'\', \'out\')" alt="'.i18n("Recipients").'" title="'.i18n("Recipients").'" id="'.$imgRecipientId.'" src="'.$cfg["path"]["images"].'newsletter_recipients_on.gif"/>';
-$buttonRow .= '</a>';
-// Recipient Groups
-$imgRecipientGroupId='img_recipientgroup';
-$tpl->set('s', 'IRECIPIENTGROUP', $imgRecipientGroupId);
-$buttonRow .= '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgRecipientGroupId.'\');reloadLeftBottomAndTransportFormVars(groups_listoptionsform);">';
-$buttonRow .= '<img onmouseover="hoverEffect(\''.$imgRecipientGroupId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgRecipientGroupId.'\', \'out\')" alt="'.i18n("Recipient groups").'" title="'.i18n("Recipient groups").'" id="'.$imgRecipientGroupId.'" src="'.$cfg["path"]["images"].'newsletter_recipientgroups_on.gif"/>';
-$buttonRow .= '</a>';
+if ($perm->have_perm_area_action('news')) {
+    $imgNewsletterId='img_newsletter';
+    $tpl->set('s', 'INEWSLETTER', $imgNewsletterId);
+    $buttonRow  = '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgNewsletterId.'\');reloadLeftBottomAndTransportFormVars(document.newsletter_listoptionsform);">';
+    $buttonRow .= '<img onmouseover="hoverEffect(\''.$imgNewsletterId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgNewsletterId.'\', \'out\')" alt="'.i18n("Newsletter").'" title="'.i18n("Newsletter").'" name="'.$imgNewsletterId.'" id="'.$imgNewsletterId.'" src="'.$cfg["path"]["images"].'newsletter_on.gif"/>';
+    $buttonRow .= '</a>';
+}
+
+
+if ($perm->have_perm_area_action('news_jobs')) {
+    // Dispatch
+    $imgDispatchId='img_dispatch';
+    $tpl->set('s', 'IDISPATCH', $imgDispatchId);
+    $buttonRow .= '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgDispatchId.'\');reloadLeftBottomAndTransportFormVars(document.dispatch_listoptionsform);">';
+    $buttonRow .= '<img onmouseover="hoverEffect(\''.$imgDispatchId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgDispatchId.'\', \'out\')" alt="'.i18n("Dispatch").'" title="'.i18n("Dispatch").'" name="'.$imgDispatchId.'" id="'.$imgDispatchId.'" src="'.$cfg["path"]["images"].'newsletter_dispatch_on.gif"/>';
+    $buttonRow .= '</a>';
+}
+
+
+if ($perm->have_perm_area_action('recipients')) {
+    // Recipients
+    $imgRecipientId='img_recipient';
+    $tpl->set('s', 'IRECIPIENTS', $imgRecipientId);
+    $buttonRow .= '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgRecipientId.'\');reloadLeftBottomAndTransportFormVars(document.recipients_listoptionsform);">';
+    $buttonRow .= '<img onmouseover="hoverEffect(\''.$imgRecipientId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgRecipientId.'\', \'out\')" alt="'.i18n("Recipients").'" title="'.i18n("Recipients").'" id="'.$imgRecipientId.'" src="'.$cfg["path"]["images"].'newsletter_recipients_on.gif"/>';
+    $buttonRow .= '</a>';
+}
+
+if ($perm->have_perm_area_action('recipientgroups')) {
+    // Recipient Groups
+    $imgRecipientGroupId='img_recipientgroup';
+    $tpl->set('s', 'IRECIPIENTGROUP', $imgRecipientGroupId);
+    $buttonRow .= '<a style="margin-right:5px;" href="javascript://" onclick="toggleContainer(\''.$imgRecipientGroupId.'\');reloadLeftBottomAndTransportFormVars(groups_listoptionsform);">';
+    $buttonRow .= '<img onmouseover="hoverEffect(\''.$imgRecipientGroupId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgRecipientGroupId.'\', \'out\')" alt="'.i18n("Recipient groups").'" title="'.i18n("Recipient groups").'" id="'.$imgRecipientGroupId.'" src="'.$cfg["path"]["images"].'newsletter_recipientgroups_on.gif"/>';
+    $buttonRow .= '</a>';
+}
 
 $tpl->set('s', 'BUTTONROW', $buttonRow);
 
@@ -831,6 +844,7 @@ if ($perm->have_perm_area_action("recipients", "recipients_create"))
 }
 
 // Create a link to purge subscribed but not confirmed recipients
+$iTimeframe = 0;
 if ($perm->have_perm_area_action($area, "recipients_delete"))
 {
 	$oClient = new cApiClient($client);
@@ -909,7 +923,7 @@ $sContent .= '</div>'.chr(10);
 
 // to template
 $SettingsLinkRec="settingsrec";
-$oSettingsRowRec = new cFoldingRow("5ddbe820-e6f1-11d9-8cd6-0800200c9a66",i18n("Settings"), $SettingsLinkRec);
+$oSettingsRowRec = new cFoldingRow("5ddbe820-e6f1-11d9-8cd6-0800200c9a69",i18n("Settings"), $SettingsLinkRec);
 $oSettingsRowRec->setContentData($sContent);
 $tpl->set('s', 'SETTINGSLINKREC', $SettingsLinkRec);
 

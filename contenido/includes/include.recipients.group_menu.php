@@ -89,6 +89,7 @@ $oRcpGroups->query();
 
 $oMenu	= new UI_Menu;
 $iMenu		= 0;
+
 while ($oRcpGroup = $oRcpGroups->next())
 {
 	$iMenu++;
@@ -181,11 +182,15 @@ $sRefreshPager = '
         var left_top = parent.left_top;
         if (left_top.document) {
             var oPager = left_top.document.getElementById(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e305\');
+            var sDisplay = oPager.style.display;
             if (oPager) {
                 oInsert = oPager.firstChild;
                 oInsert.innerHTML = sNavigation;
                 left_top.groups_listoptionsform_curPage = '.$_REQUEST["page"].';
                 left_top.toggle_pager(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e305\');
+                if (sDisplay == \'none\') {
+                    oPager.style.display = sDisplay;
+                }
             }
         }
     </script>';

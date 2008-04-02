@@ -688,7 +688,7 @@ foreach ($objects as $key=>$value) {
 	if (!$check_global_rights) {
 		$check_rights = false;
 		
-		#Check if any rights are applied to current user or his groups
+		/*#Check if any rights are applied to current user or his groups - variable $tmp_userstring does not exist in this context
 		$sql = "SELECT *
 				FROM ".$cfg["tab"]["rights"]."
 				WHERE user_id IN ('".$tmp_userstring."') AND idclient = '$client' AND idlang = '$lang' AND idcat = '".$value->id."'";
@@ -705,7 +705,7 @@ foreach ($objects as $key=>$value) {
 			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con", "con_tplcfg_edit",$value->id);}
 			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con", "con_makecatonline",$value->id);}
 			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con", "con_changetemplate",$value->id);}
-		}
+		}*/
 	} else {
 		$check_rights = true;
 	}

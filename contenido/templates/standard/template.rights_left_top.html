@@ -16,9 +16,15 @@
 		var listopURL='';
 		var pagingURL='';
 		var sid = "{SID}";
+        
+        var sDisplay = 'table-row';
+        var bMsie = (document.all) ? true : false;
+        if (bMsie) {
+            sDisplay = 'block';
+        }
 
 		// need to insert function in Article Search link
-		function resizeFrame(arg)
+		function resizeFrame(arg, bIgnore)
 		{
 			if(arg == '')
 			{
@@ -42,7 +48,7 @@
 			{
 				window.location.href=listopURL;
 			}
-			else if(arg == '{PAGINGLINK}')
+			else if(arg == '{PAGINGLINK}' && bIgnore != 1)
 			{
 				window.location.href=pagingURL;
 			}
@@ -83,18 +89,24 @@
           conMultiLink("left_bottom", multilink+'&area=user&frame=2');
       }
       
-        if (document.location.href.match(/[?&]page=(\d+)/g)) {
-            var iPage = RegExp.$1;
-            if (top.content.left && top.content.left.left_bottom) {
-                var href = top.content.left.left_bottom.document.location.href;
-                if (href.match(/([?&]page=)(\d+)/g)) {
-                    href = href.replace(/([?&]page=)(\d+)/g, '&page='+iPage);
-                } else {
-                    href = href+'&page='+iPage;
-                }
-                top.content.left.left_bottom.document.location.href = href;
+      function toggle_pager(sId) {
+        var oBase = document.getElementById(sId);
+        if (oBase) {
+            if (oBase.firstChild && oBase.firstChild.firstChild && oBase.firstChild.firstChild) {
+                oBase.previousSibling.style.display = sDisplay;
+                oBase.style.display = sDisplay;
+            } else if (oBase){
+                oBase.previousSibling.style.display = 'none';
+                oBase.style.display = 'none';
             }
         }
+        
+        switch(sId) {
+            case '44b41691-0dd4-443c-a594-66a8164e25fd':
+                resizeFrame('{PAGINGLINK}', 1);
+                break;
+        }
+      }
 	</script>
 </head>
 <body bgcolor="#FFFFFF" onLoad="resizeFrame('');">

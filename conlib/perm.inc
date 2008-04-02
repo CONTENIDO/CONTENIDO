@@ -674,7 +674,7 @@ class Contenido_Perm
 				// if the flag noright is set there are no rights in this area
 				if ($item_rights[$value] == "noright")
 				{
-					return false;
+					continue;
 
 				}
 				elseif (is_array($item_rights[$value]))

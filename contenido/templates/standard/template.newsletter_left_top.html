@@ -53,8 +53,8 @@
 	    var butRecipients     = { imgId:'{IRECIPIENTS}', containerId:'{ID_CRECIPIENTS}', imgOff:'images/newsletter_recipients_off.gif', imgOn:'images/newsletter_recipients_on.gif'};
 	    var butRecipientgroup = { imgId:'{IRECIPIENTGROUP}', containerId:'{ID_CRECIPIENTGROUP}', imgOff:'images/newsletter_recipientgroups_off.gif', imgOn:'images/newsletter_recipientgroups_on.gif'};
       
-      var buttonArray = new Array(butNewsletter, butDispatch, butRecipients, butRecipientgroup);
-      
+        var buttonArray = new Array(butNewsletter, butDispatch, butRecipients, butRecipientgroup);
+        
 			function resizeFrame(arg, bIgnore)
 			{
 				if(arg == '')
@@ -145,7 +145,13 @@
                     }
           
   				// for first load set focus to newsletter
-  				toggleContainer('{INEWSLETTER}');
+                for(var i=0; i < buttonArray.length; i++) {
+                    if (document.getElementById(buttonArray[i].imgId)) {
+                        toggleContainer(buttonArray[i].imgId);
+                        break;
+                    }
+                }
+  				
   				hoverEffect('{ID_CNEWSLETTER}', 'on');
 				}
 				else if(arg == '{ACTIONLINK}')
@@ -307,7 +313,9 @@
 		      }
 		      else if(buttonArray[i].imgId != selectedButton)
 	        {
-	          document.getElementById(buttonArray[i].imgId).src=buttonArray[i].imgOff;
+              if (document.getElementById(buttonArray[i].imgId)) {
+                document.getElementById(buttonArray[i].imgId).src=buttonArray[i].imgOff;
+              }
 	        }
 		    }
 			}

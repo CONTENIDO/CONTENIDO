@@ -23,10 +23,6 @@ $oJobs	= new cNewsletterJobCollection;
 ##################################
 # Getting values for sorting, etc.
 ##################################
-// Author
-if ($_REQUEST["selAuthor"] == "") {
-	$_REQUEST["selAuthor"] = $auth->auth["uid"];
-}
 // Items per page
 $oUser = new cApiUser($auth->auth["uid"]);
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0) {
@@ -132,7 +128,9 @@ $oSubmit = new cHTMLButton("submit", i18n("Apply"));
 // Request data
 $oJobs->setWhere("idclient", $client);
 $oJobs->setWhere("idlang", $lang);
-$oJobs->setWhere("author", $_REQUEST["selAuthor"]);
+if ($_REQUEST["selAuthor"] == "") {
+    $oJobs->setWhere("author", $_REQUEST["selAuthor"]);
+}
 
 if ($_REQUEST["filter"] != "") {
 	if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
@@ -331,11 +329,15 @@ $sRefreshPager = '
         var left_top = parent.left_top;
         if (left_top.document) {
             var oPager = left_top.document.getElementById(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e303\');
+            var sDisplay = oPager.style.display;
             if (oPager) {
                 oInsert = oPager.firstChild;
                 oInsert.innerHTML = sNavigation;
-                 left_top.dispatch_listoptionsform_curPage = '.$_REQUEST["page"].';
-                 left_top.toggle_pager(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e303\');
+                left_top.dispatch_listoptionsform_curPage = '.$_REQUEST["page"].';
+                left_top.toggle_pager(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e303\');
+                if (sDisplay == \'none\') {
+                    oPager.style.display = sDisplay;
+                }
             }
         }
     </script>';

@@ -759,6 +759,7 @@ class ItemCollection
 		}
 
 		$sql = implode(" ", $statement);
+
 		$this->db->query($sql);
 		$this->_lastSQL = $sql;
 		$this->_mode = "automatic";

@@ -77,7 +77,7 @@ $oSelectTypeFilter->setDefault($_REQUEST["filtertype"]);
 $oTextboxFilter = new cHTMLTextbox("filter", stripslashes($_REQUEST["filter"]), 15);
 $content .= '<div style="border: 1px solid #B3B3B3;border-left:none;border-top:none;margin-bottom:1px;">';
 // Ye stuff will be done in javascript on apply button
-$content .= '<form action="'.$sess->url("main.php").'" id="filter" name="filter" method="get">';
+$content .= '<form action="javascript:execFilter(\''.$sess->id.'\');" id="filter" name="filter" method="get">';
 $content .= '<table>';
 $content .= '<input type="hidden" name="area" value="mod">';
 $content .= '<input type="hidden" name="frame" value="1">';
@@ -106,7 +106,7 @@ $content .= '<td>'.$oTextboxFilter->render().'</td>';
 $content .= '</tr>';
 $content .= '<tr>';
 $content .= '<td style="padding-left:15px;">&nbsp;</td>';
-$content .= '<td><input type="submit" value="'.i18n("Apply").'" onclick="javascript:execFilter(\''.$sess->id.'\');"></td>';
+$content .= '<td><input type="submit" value="'.i18n("Apply").'"></td>';
 $content .= '</tr>';
 $content .= '</table>';
 $content .= '</form>';
@@ -124,18 +124,19 @@ $iItemCount = $cApiModuleCollection->count();
 
 $oPagerLink = new cHTMLLink;
 $pagerl="pagerlink";
-$tpl->set('s', 'PAGINGLINK', $pagerl);
+$oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setLink("main.php");
 $oPagerLink->setCustom("elemperpage", $elemperpage);
 $oPagerLink->setCustom("filter", stripslashes($_REQUEST["filter"]));
 $oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
 $oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
-$oPagerLink->setCustom("frame", $frame);
+$oPagerLink->setCustom("frame", 2);
 $oPagerLink->setCustom("area", $area);
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido", $sess->id);
 $oPager = new cObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerl);
 
+$tpl->set('s', 'PAGINGLINK', $pagerl);
 #################
 # New Module Link
 #################

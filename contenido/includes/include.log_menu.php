@@ -1,4 +1,4 @@
-<?
+<?php
 /******************************************
 * File      :   include.stat_overview.php
 * Project   :   Contenido

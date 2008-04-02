@@ -57,7 +57,7 @@ class cObjectPager extends cFoldingRow
         //echo '</pre>';
 		$link = $this->_pagerLink;
 		
-		if (!$this->_cPager->isFirstPage() || count($items) > 2)
+		if (!$this->_cPager->isFirstPage())
 		{
 			$img = new cHTMLImage("images/paging/first.gif");
             

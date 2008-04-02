@@ -18,6 +18,8 @@ cInclude("classes", "class.ui.php");
 $oPage = new cPage;
 
 $cApiUserCollection = new cApiUserCollection;
+$cApiUserCollection->query();
+$iSumUsers = $cApiUserCollection->count();
 
 if (isset($_REQUEST["sortby"]) && $_REQUEST["sortby"] != "")
 {
@@ -62,6 +64,12 @@ if ($elemperpage == 0)
 
 $mlist = new UI_Menu;
 $sToday = date('Y-m-d');
+
+
+if (($elemperpage*$mPage) >= $iSumUsers+$elemperpage && $mPage  != 1) {
+    $_REQUEST["page"]--;
+    $mPage--;
+}
 
 while ($cApiUser = $cApiUserCollection->next())
 {
@@ -178,6 +186,49 @@ $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="s
 $oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
 $oPage->addScript('delete', $deleteScript);
 $oPage->setContent($mlist->render(false).$markActiveScript);
+
+//generate current content for Object Pager
+$oPagerLink = new cHTMLLink;
+$oPagerLink->setLink("main.php");
+$oPagerLink->setTargetFrame('left_bottom');
+$oPagerLink->setCustom("elemperpage", $elemperpage);
+$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
+$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
+$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
+$oPagerLink->setCustom("frame", $frame);
+$oPagerLink->setCustom("area", $area);
+$oPagerLink->enableAutomaticParameterAppend();
+$oPagerLink->setCustom("contenido", $sess->id);
+
+$pagerID="pager";
+$oPager = new cObjectPager("44b41691-0dd4-443c-a594-66a8164e25fd", $iItemCount, $elemperpage, $page, $oPagerLink, "page", $pagerID);
+
+
+//add slashes, to insert in javascript
+$sPagerContent = $oPager->render(1);
+$sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
+$sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
+
+//send new object pager to left_top
+$sRefreshPager = '
+    <script type="text/javascript">
+        var sNavigation = \''.$sPagerContent.'\';
+        var left_top = parent.left_top;
+        if (left_top.document) {
+            var oPager = left_top.document.getElementById(\'44b41691-0dd4-443c-a594-66a8164e25fd\');
+            var sDisplay = oPager.style.display;
+            if (oPager) {
+                oInsert = oPager.firstChild;
+                oInsert.innerHTML = sNavigation;
+                left_top.toggle_pager(\'44b41691-0dd4-443c-a594-66a8164e25fd\');
+                if (sDisplay == \'none\') {
+                    oPager.style.display = sDisplay;
+                }
+            }
+        }
+    </script>';
+$oPage->addScript('refreshpager', $sRefreshPager); 
+
 $oPage->render();
 
 ?>
