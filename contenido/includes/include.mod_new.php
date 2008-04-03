@@ -49,6 +49,16 @@ $oSelectSortOrder = new cHTMLSelectElement("sortorder");
 $oSelectSortOrder->autoFill($aSortOrderOptions);
 $oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
 
+$oSelectSearchIn = new cHTMLSelectElement("searchin");
+$oSelectSearchIn->autoFill(array('' => i18n("-- All --"), 
+                                 'name' => i18n("Modulname"), 
+                                 'description' => i18n("Description"), 
+                                 'type' => i18n("Type"), 
+                                 'input' => i18n("Input"), 
+                                 'output' => i18n("Output")));
+                                 
+$oSelectSearchIn->setDefault($_REQUEST["searchin"]);
+
 // build list with filter types
 $sql = "SELECT
            type
@@ -103,6 +113,9 @@ $content .= '</tr>';
 $content .= '<tr>';
 $content .= '<td style="padding-left:15px;">'.i18n("Search for").'</td>';
 $content .= '<td>'.$oTextboxFilter->render().'</td>';
+$content .= '</tr>';
+$content .= '<td style="padding-left:15px;">'.i18n("Search in").'</td>';
+$content .= '<td>'.$oSelectSearchIn->render().'</td>';
 $content .= '</tr>';
 $content .= '<tr>';
 $content .= '<td style="padding-left:15px;">&nbsp;</td>';

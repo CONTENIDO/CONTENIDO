@@ -3544,6 +3544,7 @@ setup/lib/release.xml -text
 setup/locale/de_DE/LC_MESSAGES/contenido.mo -text
 setup/locale/de_DE/LC_MESSAGES/contenido.po -text
 setup/makeconfig.php -text
+setup/script/pluginInfo.js -text
 setup/steps/forms/additionalplugins.php -text
 setup/steps/forms/clientadjust.php -text
 setup/steps/forms/clientmode.php -text

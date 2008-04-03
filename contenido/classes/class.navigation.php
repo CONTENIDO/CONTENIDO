@@ -339,7 +339,11 @@ class Contenido_Navigation {
                     $tpl->set('d', 'SELECTED', '');
             	}
 
-              $tpl->set('d', 'VALUE', $key);
+                if (strlen($value) > 20) {
+                    $value = capiStrTrimHard($value, 20);
+                }
+                
+                $tpl->set('d', 'VALUE', $key);
             	$tpl->set('d', 'CAPTION', $value.' ('.$key.')');
             	$tpl->next();
 

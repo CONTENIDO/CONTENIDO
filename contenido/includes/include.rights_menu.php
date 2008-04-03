@@ -216,14 +216,11 @@ $sRefreshPager = '
         var left_top = parent.left_top;
         if (left_top.document) {
             var oPager = left_top.document.getElementById(\'44b41691-0dd4-443c-a594-66a8164e25fd\');
-            var sDisplay = oPager.style.display;
+
             if (oPager) {
                 oInsert = oPager.firstChild;
                 oInsert.innerHTML = sNavigation;
                 left_top.toggle_pager(\'44b41691-0dd4-443c-a594-66a8164e25fd\');
-                if (sDisplay == \'none\') {
-                    oPager.style.display = sDisplay;
-                }
             }
         }
     </script>';

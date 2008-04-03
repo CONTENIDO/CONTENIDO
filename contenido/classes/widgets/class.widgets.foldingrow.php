@@ -67,13 +67,13 @@ class cFoldingRow extends cHTML
 		
 		$this->_headerData->setClass("foldingrow");
 		
+        $this->_hiddenField = new cHTMLHiddenField("expandstate_".$this->_contentRow->getID());
+        
 		$this->_foldingImage = new cHTMLImage;
 		$this->_foldingImage->setStyle("margin-right: 4px;");
 		
 		$this->setExpanded(false);
-		
-		$this->_hiddenField = new cHTMLHiddenField("expandstate_".$this->_contentRow->getID());
-		
+
 		$this->addRequiredScript("parameterCollector.js");
 		$this->addRequiredScript("cfoldingrow.js");
         
@@ -95,8 +95,7 @@ class cFoldingRow extends cHTML
 			} else {
 				$this->setExpanded(false);
 			}
-		}
-		
+		} 
 	}
 	
 	function setExpanded ($expanded = false)
@@ -106,10 +105,12 @@ class cFoldingRow extends cHTML
 			$this->_foldingImage->setSrc("images/widgets/foldingrow/expanded.gif");
 			$this->_foldingImage->updateAttributes(array("data" => "expanded"));
 			$this->_contentRow->setStyle("display: ;");
+            $this->_hiddenField->setValue('expanded');
 		} else {
 			$this->_foldingImage->setSrc("images/widgets/foldingrow/collapsed.gif");
 			$this->_foldingImage->updateAttributes(array("data" => "collapsed"));
 			$this->_contentRow->setStyle("display: none;");
+            $this->_hiddenField->setValue('collapsed');
 		}
 		$this->_expanded = $expanded;	
 	}

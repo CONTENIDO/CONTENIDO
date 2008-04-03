@@ -105,6 +105,7 @@ td.entry_nowrap {
 	white-space: nowrap;
 }
 
+/* additions rbi 2008-02-26 */
 
 img.closer {
 	cursor: pointer;
@@ -121,17 +122,6 @@ td.icon {
 	border-bottom: 1px solid white;
 }
 
-p.plugin_select {
-    padding:0; 
-    margin:0; 
-    height:20px; 
-    line-height:20px; 
-    vertical-align:middle;
-}
-
-
-
-/* additions rbi 2008-02-26 */
 input {
 	border:1px solid #B3B3B8;
 	width:240px;
@@ -145,6 +135,7 @@ table.setupBodyOuterTable {
 	height:300px;
 }
 
+/*Styles for plugin information layer and other elements in step five timo.trautmann*/
 #setupBox, #setupFootnote {
 	width:750px;
 	color:#000;
@@ -159,6 +150,27 @@ table.setupBodyOuterTable {
 }
 * html #setupHead {
 	height:100px;
+}
+
+p.plugin_select {
+    padding:0; 
+    margin:0; 
+    height:20px; 
+    line-height:20px; 
+    vertical-align:middle;
+    padding-left:2px;
+}
+
+input.plugin_checkbox {
+    vertical-align:middle;
+    border:0;
+    width:auto;
+}
+
+img.plugin_info {
+    margin-left:3px; 
+    vertical-align:middle; 
+    border:0px;
 }
 
 #setupHeadlinePath {
@@ -182,3 +194,32 @@ table.setupBodyOuterTable {
 	border:0;
 	padding-top:10px;
 }
+
+#plugin_layer {
+    font-size: 10px;
+    color: black;
+    margin: 0px;
+    padding: 0px;
+    background-color: #e8e8ee;
+    width: 440px; 
+    height: 140px; 
+    padding:5px; 
+    overflow: auto; 
+    border: 1px solid black; 
+    position:absolute; 
+    display:none;
+}
+
+#plugin_layer  div{
+    float:right; 
+    font-weight:bold
+}
+
+#plugin_header {
+    font-size:12px;
+}
+
+#plugin_description {
+    margin-top:3px;
+}
+

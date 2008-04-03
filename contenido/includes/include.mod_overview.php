@@ -52,6 +52,63 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 	$_REQUEST["page"] = 1;
 }
 
+// Sort by requested
+if (isset ($_REQUEST["sortby"]) && $_REQUEST["sortby"] != "")
+{
+	$cApiModuleCollection->setOrder($_REQUEST["sortby"]." ".$_REQUEST["sortorder"]);
+} 
+else
+{
+	$cApiModuleCollection->setOrder("name asc");
+}
+
+
+// Search filter requested
+if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == '')
+{
+	$cApiModuleCollection->setWhereGroup("default", "name", "%".$_REQUEST["filter"]."%", "LIKE");
+	$cApiModuleCollection->setWhereGroup("default", "description", "%".$_REQUEST["filter"]."%", "LIKE");
+	$cApiModuleCollection->setWhereGroup("default", "type", "%".$_REQUEST["filter"]."%", "LIKE");
+	$cApiModuleCollection->setWhereGroup("default", "input", "%".$_REQUEST["filter"]."%", "LIKE");
+	$cApiModuleCollection->setWhereGroup("default", "output", "%".$_REQUEST["filter"]."%", "LIKE");
+	$cApiModuleCollection->setInnerGroupCondition("default", "OR");
+} else if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == 'name') {
+    $cApiModuleCollection->setWhereGroup("default", "name", "%".$_REQUEST["filter"]."%", "LIKE");
+    $cApiModuleCollection->setInnerGroupCondition("default", "OR");
+} else if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == 'description') {
+    $cApiModuleCollection->setWhereGroup("default", "description", "%".$_REQUEST["filter"]."%", "LIKE");
+    $cApiModuleCollection->setInnerGroupCondition("default", "OR");
+} else if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == 'type') {
+    $cApiModuleCollection->setWhereGroup("default", "type", "%".$_REQUEST["filter"]."%", "LIKE");
+    $cApiModuleCollection->setInnerGroupCondition("default", "OR");
+} else if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == 'input') {
+    $cApiModuleCollection->setWhereGroup("default", "input", "%".$_REQUEST["filter"]."%", "LIKE");
+    $cApiModuleCollection->setInnerGroupCondition("default", "OR");
+} else if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == 'output') {
+    $cApiModuleCollection->setWhereGroup("default", "output", "%".$_REQUEST["filter"]."%", "LIKE");
+    $cApiModuleCollection->setInnerGroupCondition("default", "OR");
+}
+
+// Type filter requested
+if (isset($_REQUEST["filtertype"]))
+{
+	switch ($_REQUEST["filtertype"])
+	{
+		case "--all--":
+			break;
+		case "--wotype--":
+			$cApiModuleCollection->setWhere("type", "");
+			break;
+		default:
+			$cApiModuleCollection->setWhere("type", $_REQUEST["filtertype"]);
+			break;	
+	}
+}
+
+// Items per page requested
+$cApiModuleCollection->setWhere("idclient", $client);
+
+
 if ($_REQUEST["elemperpage"] > 0) 
 {
 	$cApiModuleCollection->query();
@@ -73,46 +130,6 @@ else
 	$iItemCount 		= 0;
 }
 
-// Sort by requested
-if (isset ($_REQUEST["sortby"]) && $_REQUEST["sortby"] != "")
-{
-	$cApiModuleCollection->setOrder($_REQUEST["sortby"]." ".$_REQUEST["sortorder"]);
-} 
-else 
-{
-	$cApiModuleCollection->setOrder("name asc");
-}
-
-
-// Search filter requested
-if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != "")
-{
-	$cApiModuleCollection->setWhereGroup("default", "name", "%".$_REQUEST["filter"]."%", "LIKE");
-	$cApiModuleCollection->setWhereGroup("default", "description", "%".$_REQUEST["filter"]."%", "LIKE");
-	$cApiModuleCollection->setWhereGroup("default", "type", "%".$_REQUEST["filter"]."%", "LIKE");
-	$cApiModuleCollection->setWhereGroup("default", "input", "%".$_REQUEST["filter"]."%", "LIKE");
-	$cApiModuleCollection->setWhereGroup("default", "output", "%".$_REQUEST["filter"]."%", "LIKE");
-	$cApiModuleCollection->setInnerGroupCondition("default", "OR");
-}
-
-// Type filter requested
-if (isset($_REQUEST["filtertype"]))
-{
-	switch ($_REQUEST["filtertype"])
-	{
-		case "--all--":
-			break;
-		case "--wotype--":
-			$cApiModuleCollection->setWhere("type", "");
-			break;
-		default:
-			$cApiModuleCollection->setWhere("type", $_REQUEST["filtertype"]);
-			break;	
-	}
-}
-
-// Items per page requested
-$cApiModuleCollection->setWhere("idclient", $client);
 
 // Build list for left_bottom considering filter values
 $mlist 				      = new UI_Menu;
@@ -281,14 +298,10 @@ $sRefreshPager = '
         var left_top = parent.left_top;
         if (left_top.document) {
             var oPager = left_top.document.getElementById(\'02420d6b-a77e-4a97-9395-7f6be480f497\');
-            var sDisplay = oPager.style.display;
             if (oPager) {
                 oInsert = oPager.firstChild;
                 oInsert.innerHTML = sNavigation;
                 left_top.toggle_pager(\'02420d6b-a77e-4a97-9395-7f6be480f497\');
-                if (sDisplay == \'none\') {
-                    oPager.style.display = sDisplay;
-                }
             }
         }
     </script>';

@@ -5916,7 +5916,7 @@ msgid "Password"
 msgstr "Passwort"
 
 msgid "The setup directory still exists. Please remove the setup directory before you continue."
-msgstr "Das Setupverzeichnis exitiert noch. Bitte löschen Sie das Setupverzeichnis, bevor Sie fortfahren."
+msgstr "Das Setupverzeichnis exitiert noch. Bitte l&ouml;schen Sie das Setupverzeichnis, bevor Sie fortfahren."
 
 msgid "The sysadmin and/or the admin account still contains a well-known default password. Please change immediately after login."
 msgstr "Der Syadmin und/oder Admin Account ist noch auf das Standardpasswort gesetzt. Bitte &auml;ndern Sie gleich nach dem Login diese Passw&ouml;rter."

@@ -234,43 +234,6 @@
           document.getElementById("groupselect").disabled = true;
         }
       }
-
-      /* Function for sending test newsletter */
-      /*
-      function sendTestNewsletter(idnewsletter)
-      {
-        oForm = document.getElementById("filterform");
-        url  = "main.php?area=news";
-        url += "&action=news_send_test";
-        url += "&frame=4";
-        url += "&idnewsletter=" + idnewsletter;
-        url += "&contenido=" + sid;
-        url += get_registered_parameters();
-        url += "&sortby=" + oForm.sortby.value;
-        url += "&sortorder=" + oForm.sortorder.value;
-        url += "&filter=" + oForm.filter.value;
-        url += "&elemperpage=" + oForm.elemperpage.value;
-        parent.parent.right.right_bottom.location.href = url;
-      }
-			*/
-      /* Function for deleting newsletters */
-      /*
-      function deleteNewsletter(idnewsletter)
-      {
-        oForm = document.getElementById("filterform");
-        url  = "main.php?area=news";
-        url += "&action=news_delete";
-        url += "&frame=4";
-        url += "&idnewsletter=" + idnewsletter;
-        url += "&contenido=" + sid;
-        url += get_registered_parameters();
-        url += "&sortby=" + oForm.sortby.value;
-        url += "&sortorder=" + oForm.sortorder.value;
-        url += "&filter=" + oForm.filter.value;
-        url += "&elemperpage=" + oForm.elemperpage.value;
-        parent.parent.right.right_bottom.location.href = url;
-      }
-			*/
 			
 			function toggleContainer(activeButton)
 			{
@@ -448,8 +411,13 @@
         var oBase = document.getElementById(sId);
         if (oBase) {
             if (oBase.firstChild && oBase.firstChild.firstChild && oBase.firstChild.firstChild) {
+                var sExpandstate = document.getElementsByName('expandstate_'+sId)[0].value;
                 oBase.previousSibling.style.display = sDisplay;
-                oBase.style.display = sDisplay;
+                if (sExpandstate == 'expanded') {
+                    oBase.style.display = sDisplay;
+                } else {
+                    oBase.style.display = 'none';
+                }
             } else if (oBase){
                 oBase.previousSibling.style.display = 'none';
                 oBase.style.display = 'none';

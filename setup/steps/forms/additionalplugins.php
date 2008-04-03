@@ -35,7 +35,7 @@ class cSetupAdditionalPlugins extends cSetupMask
 		$this->setHeader(i18n("Additional Plugins"));
 		$this->_oStepTemplate->set("s", "TITLE", i18n("Additional Plugins"));
 		$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please select Plugins to be installed"));
-		
+        
 		// add new plugins to this array and you're done.
 		$aPlugins = array();
 		$aPlugins['plugin_conman'] = array('label' => i18n('ConMan'), 'desc' => i18n('Contenido Contact Manager'));
@@ -46,7 +46,13 @@ class cSetupAdditionalPlugins extends cSetupMask
 		if (sizeof($aPlugins) > 0) {
 			foreach ($aPlugins as $sInternalName => $aPluginData) {
 				$sChecked = ((isset($_SESSION[$sInternalName]) && strval($_SESSION[$sInternalName]) || checkExistingPlugin($db, $sInternalName)) == 'true') ? ' checked="checked"' : '';
-				$sCheckBoxes .= '<p class="plugin_select" style="padding-left:2px;"><input type="checkbox" style="vertical-align:middle;border:0;width:auto;" id="'.$sInternalName.'" name="'.$sInternalName.'" value="true"'.$sChecked.'> <label for="'.$sInternalName.'">'.$aPluginData['label'].'<!-- ('.$aPluginData['desc'].')--></label></p>';
+				$sCheckBoxes .= '<p class="plugin_select">
+                                     <input type="checkbox" class="plugin_checkbox" id="'.$sInternalName.'" name="'.$sInternalName.'" value="true"'.$sChecked.'> 
+                                     <label for="'.$sInternalName.'">'.$aPluginData['label'].'</label>
+                                     <a href="javascript://" onclick="showPluginInfo(\''.$aPluginData['label'].'\', \''.$aPluginData['desc'].'\');">
+                                         <img src="../contenido/images/info.gif" alt="'.i18n('More information').'" title="'.i18n('More information').'" class="plugin_info">
+                                     </a>
+                                 </p>';
 			}
 		} else {
 			$sCheckBoxes = i18n("None available");

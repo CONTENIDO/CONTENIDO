@@ -329,15 +329,11 @@ $sRefreshPager = '
         var left_top = parent.left_top;
         if (left_top.document) {
             var oPager = left_top.document.getElementById(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e303\');
-            var sDisplay = oPager.style.display;
             if (oPager) {
                 oInsert = oPager.firstChild;
                 oInsert.innerHTML = sNavigation;
                 left_top.dispatch_listoptionsform_curPage = '.$_REQUEST["page"].';
                 left_top.toggle_pager(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e303\');
-                if (sDisplay == \'none\') {
-                    oPager.style.display = sDisplay;
-                }
             }
         }
     </script>';

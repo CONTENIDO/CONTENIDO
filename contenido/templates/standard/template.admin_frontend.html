@@ -157,9 +157,15 @@
             var oBase = document.getElementById(sId);
 
             if (oBase) {
-                if (oBase.firstChild && oBase.firstChild.firstChild) {
+                if (oBase.firstChild && oBase.firstChild.firstChild && oBase.firstChild.firstChild) {
+                    var sExpandstate = document.getElementsByName('expandstate_'+sId)[0].value;
+
                     oBase.previousSibling.style.display = sDisplay;
-                    oBase.style.display = sDisplay;
+                    if (sExpandstate == 'expanded') {
+                        oBase.style.display = sDisplay;
+                    } else {
+                        oBase.style.display = 'none';
+                    }
                 } else if (oBase){
                     oBase.previousSibling.style.display = 'none';
                     oBase.style.display = 'none';
