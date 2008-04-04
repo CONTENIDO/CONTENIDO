@@ -711,7 +711,7 @@ class Contenido_Perm
 					//if there are no rights for this area set the flag norights
 					if ($this->db->affected_rows() == 0)
 					{
-						$item_rights[$area] = "noright";
+						$item_rights[$value] = "noright";
 					}
 
 					//set the rights
