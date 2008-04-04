@@ -11,16 +11,16 @@
 * {@internal
 * created 2008-02-15
 * 
-* @requires Contenido_Frontend_Navigation_Base
+* @requires Contenido_FrontendNavigation_Base
 * @todo Add possibility to load subcategories
 * }}
 *
 * $Id$
 */
 
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_Frontend_Navigation_Base.class.php');
+cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Base.class.php');
 
-class Contenido_Frontend_Navigation_Breadcrumb extends Contenido_Frontend_Navigation_Base {
+class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigation_Base {
     /**
      * @var int
      * @access private
@@ -92,7 +92,7 @@ class Contenido_Frontend_Navigation_Breadcrumb extends Contenido_Frontend_Naviga
 	                catlang.idcat     = cat.idcat AND
 					cattree.idcat = cat.idcat';
         if ($this->bDbg === true) {
-	        $this->oDbg->show($sSql, 'Contenido_Frontend_Navigation_Breadcrumb::getBreadcrumb($iBaseCategoryId, $iRootLevel = 0, $bReset = false): $sSql');
+	        $this->oDbg->show($sSql, 'Contenido_FrontendNavigation_Breadcrumb::getBreadcrumb($iBaseCategoryId, $iRootLevel = 0, $bReset = false): $sSql');
 	    }
 	    $this->oDb->query($sSql);
 	    if ($this->oDb->Errno != 0) {

@@ -3,15 +3,13 @@
 $oPage = new cPage();
 $oPage->setMargin(10);
 $oPage->setMessageBox();
-$notify = new Contenido_Notification;
 $oTree = new pApiContentAllocationTreeView('f7771624-4874-4745-8b7e-21a49a71a447');
 
 // store item
-if ($_POST['step'] == 'store') 
-{ 
+if ($_POST['step'] == 'store') { 
 	$pNotify = '<div style="width:410px;margin-bottom:20px;">';
 	$sMessage = sprintf(i18n("New Category %s successfully stored!"), $treeItem['name']);
-	$pNotify .= $notify->messageBox('info', $sMessage,0);
+    $notification->displayNotification("info", $sMessage);
 	$pNotify .= '</div>';
 	$oTree->storeItem($_POST['treeItem']);
 }
@@ -19,7 +17,7 @@ if ($_POST['step'] == 'store')
 if ($_POST['step'] == 'storeRename') { 
 	$pNotify = '<div style="width:410px;margin-bottom:20px;">';
 	$sMessage = sprintf(i18n("Category %s successfully renamed!"), $treeItem['name']);
-	$pNotify .= $notify->messageBox('info', $sMessage,0);
+    $notification->displayNotification("info", $sMessage);
 	$pNotify .= '</div>';
 	$oTree->storeItem($_POST['treeItem']);
 }
@@ -27,10 +25,11 @@ if ($_POST['step'] == 'storeRename') {
 if ($_GET['step'] == 'moveup') { 
 	$oTree->itemMoveUp($_GET['idpica_alloc']);
 }
+
 if ($_GET['step'] == 'deleteItem') { // delete item
 	$pNotify = '<div style="width:410px;margin-bottom:20px;">';
 	$sMessage = i18n("Category successfully deleted!");
-	$pNotify .= $notify->messageBox('info', $sMessage.'!',0);
+    $notification->displayNotification("info", $sMessage);
 	$pNotify .= '</div>';
 	$oTree->deleteItem($_GET['idpica_alloc']);
 }
@@ -47,6 +46,7 @@ if ($_GET['step'] == 'offline') {
 $oDiv = new cHTMLDiv;
 $oDiv->updateAttributes(array('style' => 'padding: 5px; width: 400px; border: 1px #B3B3B3 solid; background-color: #FFFFFF;'));
 $sTemp = '';
+
 if ($_GET['step'] == 'createRoot') { // create new root item
 	$form = '
 		<table cellspacing="0" cellpaddin="0" border="0">
@@ -74,7 +74,7 @@ if ($_GET['step'] == 'createRoot') { // create new root item
 					controller.focus();
 					return false;
 				}
-			return true;
+                return true;
 			}
 		</script>';
 	$oDiv->setContent($form);

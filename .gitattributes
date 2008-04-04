@@ -122,9 +122,9 @@ contenido/applets/src/TextEditorPane.java -text
 contenido/backend_search.php -text
 contenido/classes/Contenido_Category/Contenido_Category.class.php -text
 contenido/classes/Contenido_Category/Sample.php -text
-contenido/classes/Contenido_FrontendNavigation/Contenido_Frontend_Navigation.class.php -text
-contenido/classes/Contenido_FrontendNavigation/Contenido_Frontend_Navigation_Base.class.php -text
-contenido/classes/Contenido_FrontendNavigation/Contenido_Frontend_Navigation_Breadcrumb.class.php -text
+contenido/classes/Contenido_FrontendNavigation/Contenido_FrontendNavigation.class.php -text
+contenido/classes/Contenido_FrontendNavigation/Contenido_FrontendNavigation_Base.class.php -text
+contenido/classes/Contenido_FrontendNavigation/Contenido_FrontendNavigation_Breadcrumb.class.php -text
 contenido/classes/Contenido_FrontendNavigation/Sample.php -text
 contenido/classes/Debug/Debug_File.class.php -text
 contenido/classes/Debug/Debug_Hidden.class.php -text

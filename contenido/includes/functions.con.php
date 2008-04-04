@@ -552,7 +552,7 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
  * Save a content element and generate index
  *
  * @param integer $idartlang idartlang of the article
- * @param integer $type Type of content element
+ * @param string $type Type of content element
  * @param integer $typeid Serial number of the content element
  * @param string $value Content
  *
@@ -595,16 +595,9 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value)
     $db->query($sql);
 
     if ($db->next_record()) {
-
             //echo "Updated - idartlang:$idartlang / type:$type / typeid:$typeid / value:$value<br><br>";
-
             $sql = "UPDATE ".$cfg["tab"]["content"]." SET value='$value', author='$author', lastmodified='$date' WHERE idartlang='$idartlang' AND idtype='$idtype' AND typeid='$typeid'";
             $db->query($sql);
-
-            // Save the main article last modified date
-            $sql = "UPDATE " . $cfg["tab"]["art_lang"]." SET lastmodified='$date' WHERE idartlang='$idartlang'";
-            $db->query($sql);
-
     } else {
 
             $sql = "INSERT INTO ".$cfg["tab"]["content"]." (idcontent, idartlang, idtype, typeid, value, author, created, lastmodified) VALUES('".$db->nextid($cfg["tab"]["content"])."', '$idartlang', '$idtype', '$typeid', '$value', '$author', '$date', '$date')";

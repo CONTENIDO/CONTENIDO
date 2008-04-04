@@ -150,10 +150,12 @@ class cApiClient extends Item
 	
 	function loadByPrimaryKey ($value)
 	{
-		if (parent::loadByPrimaryKey($value) == true)
-		{
+		if (parent::loadByPrimaryKey($value) == true) 
+        {
 			$this->idclient = $value;
+            return true;
 		}
+        return false;
 	}
 	
 	/**

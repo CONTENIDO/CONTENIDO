@@ -1,4 +1,4 @@
-INSERT INTO !PREFIX!_clients VALUES('1', 'Website 1', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '<!--{contenido_root}-->/cms/', '<!--{contenido_web}-->/cms/', '0', '0');
+INSERT INTO !PREFIX!_clients VALUES('1', 'Contenido Demo', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '<!--{contenido_root}-->/cms/', '<!--{contenido_web}-->/cms/', '0', '0');
 INSERT INTO !PREFIX!_clients_lang VALUES('1', '1', '1');
 INSERT INTO !PREFIX!_clients_lang VALUES('2', '1', '2');
 INSERT INTO !PREFIX!_lang VALUES('1', 'deutsch', '1', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'iso-8859-1', 'ltr');

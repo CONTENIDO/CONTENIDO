@@ -32,7 +32,7 @@ i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
 
 # Variablen initialisieren
 $db = new DB_Contenido;
-//$db2 = new DB_Contenido;
+$db2 = new DB_Contenido;
 
 // Session
 $sSession = '';
@@ -545,9 +545,9 @@ if ($iAffectedRows <= 0) {
 			$sql = "SELECT *
 					FROM ".$cfg["tab"]["rights"]."
 					WHERE user_id IN ('".$auth->auth["uid"]."') AND idclient = '$client' AND idlang = '$lang' AND idcat = '".$idcat."'";
-			$db->query($sql);
+			$db2->query($sql);
 			
-			if ($db->num_rows() != 0) {
+			if ($db2->num_rows() != 0) {
 				if (!$check_rights) {
 					$check_rights = $perm->have_perm_area_action_item("con", "con_makestart",$idcat);
 				}

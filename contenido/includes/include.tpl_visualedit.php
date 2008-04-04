@@ -86,9 +86,9 @@ if (!$db->next_record())
 	/* Insert base href */
 	$base = '<base href="'.$cfgClient[$client]["path"]["htmlpath"].'">';
 	$tags = $base;
-	
+    	
 	$code = str_replace("<head>", "<head>\n".$tags ."\n", $code);
-	
+        
 	tplPreparseLayout($idlay);
 	$containers = tplBrowseLayoutForContainers($idlay);
 	
@@ -104,8 +104,6 @@ if (!$db->next_record())
 			
 			$modselect = new cHTMLSelectElement("c[".$value."]");
 			$modselect->setAlt("Container $value ($name)");
-
-			
 			
 
 			if ($name != "")
@@ -125,8 +123,14 @@ if (!$db->next_record())
     			{
     				if ($val["name"] == $default)
     				{
-        				$option = new cHTMLOptionElement($val["name"], $key);
-        				$option->setAlt("Container $value ($name)");
+                        if (strlen($val["name"]) > 20) {
+                            $short_name = capiStrTrimHard($val["name"], 20);
+                            $option = new cHTMLOptionElement($short_name, $key);
+            				$option->setAlt("Container $value ($name) ".$val["name"]);
+                        } else {
+            				$option = new cHTMLOptionElement($val["name"], $key);
+            				$option->setAlt("Container $value ($name)");
+                        }
         				
         				if ($a_c[$value] == $key)
         				{
@@ -137,7 +141,7 @@ if (!$db->next_record())
     				}
     			}								
 			} else {
-				
+
 				$default = tplGetContainerDefault($idlay, $value);
 				
 				if ($mode == "optional" || $mode == "")
@@ -159,7 +163,16 @@ if (!$db->next_record())
 
     			foreach ($modules as $key => $val)
     			{
-    				$option = new cHTMLOptionElement($val["name"], $key);
+                    $short_name = $val["name"];
+                    if (strlen($val["name"]) > 20) {
+                        $short_name = capiStrTrimHard($val["name"], 20);
+                    }
+                    
+                    $option = new cHTMLOptionElement($short_name, $key);
+                    
+                    if (strlen($val["name"]) > 20) {
+                        $option->setAlt("Container $value ($name) ".$val["name"]);
+                    }
     				
     				if ($a_c[$value] == $key || ($a_c[$value] == 0 && $val["name"] == $default))
     				{
@@ -177,11 +190,11 @@ if (!$db->next_record())
     				}
     			}
 			}
-
-			$code = str_replace("CMS_CONTAINER[$value]","$value:".$modselect->render(), $code);	
+            
+			$code = str_replace("CMS_CONTAINER[$value]","<div style=\"position:relative; height:26px;white-space:nowrap;font-size:12px;\" onmouseover=\"this.style.zIndex = '20'\" onmouseout=\"this.style.zIndex = '10'\"> $value:".$modselect->render() .'</div>', $code);	
 			
 			/* Try to find a container */
-			$code = preg_replace("/<container(.*)id=\"$value\"(.*)>/i", "$value:".$modselect->render(), $code);
+			$code = preg_replace("/<container(.*)id=\"$value\"(.*)>/i", "<div style=\"position:relative; height:26px;white-space:nowrap;font-size:12px;\" onmouseover=\"this.style.zIndex = '20'\" onmouseout=\"this.style.zIndex = '10'\"> $value:".$modselect->render()  .'</div>', $code);
 			
 		}
 		

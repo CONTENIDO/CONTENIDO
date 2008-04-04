@@ -198,34 +198,48 @@ li#kontakt.welcome {
 
 /* Notification */
 .alertbox{
-	border: 1px solid #D83208;
-	border-top: 0;
+	border: 1px solid;
 	margin-left: 260px;
-	width: 275px;
-	color: #D43414; 
+	width: 275px; 
 }
 .alertbox_line{
-	border: 1px solid #D83208;
-	/* width: 200px; */
-	color: #D43414; 
+   border: 1px solid;
+   width: 275px; 
 }
 .alertbox_head{
 	font-family: Verdana, Arial, Helvetica, Sans-Serif; 
 	font-size: 11px;
 	line-height: 30px; 
-	color: #D43414; 
 	font-weight: bold;
-	border-bottom: 1px solid #B3B3B3;
+	border-bottom: 1px solid;
 	padding-left: 40px;
 }
+
+.alertbox_error_color {
+    border-color: #d73211;
+    color: #d73211;
+}
+
 .alertbox_error{
-	background: #fff url(../images/icon_fatalerror.gif) no-repeat 10px 7px;
+    background: #fff url(../images/icon_fatalerror.gif) no-repeat 10px 7px;
 }
+
+.alertbox_warning_color {
+    border-color: #fea513;
+    color: #fea513;
+}
+
 .alertbox_warning{
-	background: #fff url(../images/icon_warning.gif) no-repeat 10px 7px;
+    background: #fff url(../images/icon_warning.gif) no-repeat 10px 7px;
 }
+
+.alertbox_info_color {
+    border-color: #bfcf00;
+    color: #bfcf00;
+}
+
 .alertbox_info{
-	background: #fff url(../images/info.gif) no-repeat 10px 7px;
+    background: #fff url(../images/info.gif) no-repeat 10px 7px;
 }
 .alertbox_message{
 	padding: 5px 20px 10px 10px;

@@ -704,7 +704,7 @@ class Contenido_Perm
 					                        user_id IN ('".implode("','", $groupsForUser)."') AND
 					                        idclient = '$client' AND
 					                        idlang = '$lang' AND
-					                        idarea = '$area' AND
+					                        idarea = '$value' AND
 					                        idcat != '0'";
 					$this->db->query($sql);
 

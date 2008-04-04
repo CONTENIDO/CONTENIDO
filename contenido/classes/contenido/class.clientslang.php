@@ -72,7 +72,9 @@ class cApiClientLanguage extends Item
 		if (parent::loadByPrimaryKey($iID) == true)
 		{
 			$this->idclient = $this->get("idclient");
+            return true;
 		}
+        return false;
 	}
 	
 	/**

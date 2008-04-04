@@ -21,7 +21,7 @@
 cInclude('classes', 'Debug/DebuggerFactory.class.php');
 cInclude('classes', 'Contenido_Category/Contenido_Category.class.php');
 
-class Contenido_Frontend_Navigation_Base {
+class Contenido_FrontendNavigation_Base {
     /**#@+
      * @var int
      * @access protected

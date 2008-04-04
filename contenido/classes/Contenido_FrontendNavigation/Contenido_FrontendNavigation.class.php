@@ -11,15 +11,15 @@
 * {@internal
 * created 2008-02-15
 * 
-* @requires Contenido_Frontend_Navigation_Base
+* @requires Contenido_FrontendNavigation_Base
 * }}
 *
 * $Id$
 */
 
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_Frontend_Navigation_Base.class.php');
+cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Base.class.php');
 
-class Contenido_Frontend_Navigation extends Contenido_Frontend_Navigation_Base {
+class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
     /**
      * @var obj
      * @access protected
@@ -99,7 +99,7 @@ class Contenido_Frontend_Navigation extends Contenido_Frontend_Navigation_Base {
 				ORDER BY
 					cattree.idtree';
 	    if ($this->bDbg === true) {
-	        $this->oDbg->show($sSql, 'Contenido_Frontend_Navigation::loadSubCategories($iIdcat, $bAsObjects = true): $sSql');
+	        $this->oDbg->show($sSql, 'Contenido_FrontendNavigation::loadSubCategories($iIdcat, $bAsObjects = true): $sSql');
 	    }
 	    $this->oDb->query($sSql);
 	    if ($this->oDb->Errno != 0) {

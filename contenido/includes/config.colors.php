@@ -31,9 +31,9 @@ $cfg['color']['table_light_sync']       = '#ddecf9';
 $cfg['color']['table_light_offline']    = '#E9E5E5';
 $cfg['color']['table_active']			= '#ECF1B2';
 $cfg['color']['table_dark_offline']     = '#E2D9D9';
-$cfg['color']['notify_error']           = '#660000';
-$cfg['color']['notify_warning']         = '#D73211';
-$cfg['color']['notify_info']            = '#006600';
+$cfg['color']['notify_error']           = '#d73211';
+$cfg['color']['notify_warning']         = '#fea513';
+$cfg['color']['notify_info']            = '#bfcf00';
 $cfg['color']['notify']                 = '#006600';
 
 ?>

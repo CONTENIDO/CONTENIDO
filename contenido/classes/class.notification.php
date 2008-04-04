@@ -7,6 +7,7 @@ cInclude("classes", "class.table.php");
  * Class for displaying notifications
  *
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
+ * @modified 04-04-2008 Timo Trautmann -  added new colors and functions for direct output
  * @copyright four for business AG <http://www.4fb.de>
  *
  */
@@ -29,55 +30,53 @@ class Contenido_Notification {
         switch ($level)
         {
         case "error":
-					$head = i18n('Error');
-					$head_class = 'alertbox_head alertbox_error';
-          $frameColor = $cfg["color"]["notify_error"];
-          $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."icon_fatalerror.gif";
+            $head = i18n('Error');
+            $head_class = 'alertbox_error';
+            $frameColor = $cfg["color"]["notify_error"];
+            $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."icon_fatalerror.gif";
           break;
                 
         case "warning":
-					$head = i18n('Warning');
-					$head_class = 'alertbox_head alertbox_warning';
-          $bgColor = $cfg["color"]["notify_warning"];
-          $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."icon_warning.gif";
+            $head = i18n('Warning');
+            $head_class = 'alertbox_warning';
+            $bgColor = $cfg["color"]["notify_warning"];
+            $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."icon_warning.gif";
           break;
                 
         case "info":
-					$head = i18n('Info');
-					$head_class = 'alertbox_head alertbox_info';
-          $bgColor = $cfg["color"]["notify_info"];
-            //$imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."icon_ok.gif";
-            $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."spacer.gif";
+            $head = i18n('Info');
+            $head_class = 'alertbox_info';
+            $message = '<span style="color:#435d06">'.$message.'</span>';
+            $bgColor = $cfg["color"]["notify_info"];
+            $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif";
           break;
 
         default:
-					$head = i18n('Notification');
-					$head_class = 'alertbox_head alertbox_notification';
-          $bgColor = $cfg["color"]["notify"];
-            //$imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."icon_ok.gif";
-            $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."spacer.gif";
+            $head = i18n('Notification');
+            $head_class = 'alertbox_notification';
+            $message = '<span style="color:#435d06">'.$message.'</span>';
+            $bgColor = $cfg["color"]["notify"];
+            $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif";
           break;
         }
 		
 				// Box on login page
-				if($style == 1)
-					{
+				if($style == 1) {
 					$messageBox = 
-						'<div class="alertbox">' .
-							'<h1 class="' . $head_class . '">' . $head . '</h1>' .
+						'<div class="alertbox '.$head_class.'_color">' .
+							'<h1 class="alertbox_head ' . $head_class . '">' . $head . '</h1>' .
 							'<div class="alertbox_message">' . $message . '</div>' .
 						'</div>';
 						
-					}
+				}
 				// Simple box
-				else
-					{
+				else {
 					$messageBox = 
-						'<div class="alertbox_line">' .
-							'<h1 class="' . $head_class . '">' . $head . '</h1>' .
-							'<div class="alertbox_message">' . $message . '</div>' .
+						'<div class="alertbox_line '.$head_class.'_color">' .
+							'<h1 class=" alertbox_head ' . $head_class . ' '.$head_class.'_color">' . $head . '</h1>' .
+							'<div class="alertbox_message '.$head_class.'_color">' . $message . '</div>' .
 						'</div>';
-					}
+			    }
 		return $messageBox;
 	}
 	
@@ -98,15 +97,15 @@ class Contenido_Notification {
                 break;
                 
             case "info":
+                $message = '<span style="color:#435d06">'.$message.'</span>';
                 $bgColor = $cfg["color"]["notify_info"];
-                //$imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."icon_ok.gif";
-                $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."spacer.gif";
+                $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif";
                 break;
 
             default:
+                $message = '<span style="color:#435d06">'.$message.'</span>';
                 $bgColor = $cfg["color"]["notify"];
-                //$imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."icon_ok.gif";
-                $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."spacer.gif";
+                $imgPath = $cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif";
                 break;
         }
 
@@ -125,15 +124,24 @@ class Contenido_Notification {
     }
     
     /**
-     * Begins the new table
-     * @param none
+     * Function displays small message box directly
+     * @param string $level - warning, error or info
+     * @param string $message - displayed messagestring
      * @return void
      */
     function displayNotification($level, $message) {
-
         echo $this->returnNotification($level,$message)."<br>"; 
-        
-        
+    } # end function
+    
+    /**
+     * Function displays large message box directly
+     * @param string $level - warning, error or info
+     * @param string $message - displayed messagestring
+     * @param boolean $style - use styles for display or not
+     * @return void
+     */
+    function displayMessageBox($level, $message, $style = 1) {
+        echo $this->messageBox($level, $message, $style)."<br>";  
     } # end function
 
 } # end class

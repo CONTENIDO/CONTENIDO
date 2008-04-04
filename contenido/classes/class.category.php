@@ -49,16 +49,18 @@ class CategoryItem extends Item
 	
 	function loadByPrimaryKey ($key)
 	{
-		parent::loadByPrimaryKey($key);
-		
-		/* Load all child language items */
-		$catlangs = new CategoryLanguageCollection;
-		$catlangs->select("idcat = '$key'");
-		
-		while ($item = $catlangs->next())
-		{
-			$this->lang[$item->get("idlang")] = $item;	
-		}
+		if (parent::loadByPrimaryKey($key)) {
+    		/* Load all child language items */
+    		$catlangs = new CategoryLanguageCollection;
+    		$catlangs->select("idcat = '$key'");
+    		
+    		while ($item = $catlangs->next())
+    		{
+    			$this->lang[$item->get("idlang")] = $item;	
+    		}
+            return true;
+        }
+        return false;
 	}	
 }
 

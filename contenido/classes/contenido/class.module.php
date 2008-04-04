@@ -84,19 +84,19 @@ class cApiModule extends Item
 
 	function loadByPrimaryKey ($id)
 	{
-		parent::loadByPrimaryKey($id);
-		
-		if ($this->_shouldLoadFromFiles())
-		{
-			global $cfg;
-			$sRootPath = $cfg['path']['contenido'] . $cfg['path']['modules'] . $this->get("idclient")."/" . $this->get("idmod").".xml";
+		if (parent::loadByPrimaryKey($id)) {
+    		if ($this->_shouldLoadFromFiles()) {
+    			global $cfg;
+    			$sRootPath = $cfg['path']['contenido'] . $cfg['path']['modules'] . $this->get("idclient")."/" . $this->get("idmod").".xml";
 
-			if (file_exists($sRootPath))
-			{
-				$this->import($sRootPath);		
-			}
-			
-		}
+    			if (file_exists($sRootPath)) {
+    				$this->import($sRootPath);		
+    			}
+    		}
+            return true;
+        }
+        return false;
+        
 	}
 
 	/**

@@ -2,7 +2,7 @@
 /**
 * $RCSfile$
 *
-* Description: Sample on how to use Contenido_Frontend_Navigation.
+* Description: Sample on how to use Contenido_FrontendNavigation.
 * 
 * This will show you how to create a standard Frontend-Navigation and a standard Breadcrumb-Navigation
 *
@@ -21,10 +21,10 @@
 // ########### standard navigation
 // ########### retrieve subcategories of a given category and output them with idcat and name
 // #####################################################################################################################
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_Frontend_Navigation.class.php');
+cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation.class.php');
 
 try {
-	$oFeNav = new Contenido_Frontend_Navigation($db, $cfg, $client, $lang, $cfgClient);
+	$oFeNav = new Contenido_FrontendNavigation($db, $cfg, $client, $lang, $cfgClient);
 	$oContenidoCategories = $oFeNav->getSubCategories($idcat, true); // use some valid idcat of "home" or whatever
     //$oContenidoCategories = $oFeNav->getSubCategories($idcat, true, true, 2); // for loading subcategories up to level 2
     if ($oContenidoCategories->count() > 0) {
@@ -44,10 +44,10 @@ try {
 // ########### breadcrumb navigation
 // ########### retrieve breadcrumb from a given category up to a given level and output the categories with idcat and name
 // #####################################################################################################################
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_Frontend_Navigation_Breadcrumb.class.php');
+cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Breadcrumb.class.php');
 
 try {
-	$oBreadcrumb = new Contenido_Frontend_Navigation_Breadcrumb($db, $cfg, $client, $lang, $cfgClient);
+	$oBreadcrumb = new Contenido_FrontendNavigation_Breadcrumb($db, $cfg, $client, $lang, $cfgClient);
 	$oBreadCategories = $oBreadcrumb->get($idcat);
 	foreach ($oBreadCategories as $oBreadCategory) {
 		echo '<p>Bread '.$oBreadCategory->getIdCat().', '.$oBreadCategory->getCategoryLanguage()->getName().'</p>';
@@ -68,12 +68,12 @@ try {
 // ########### http://www.someurl.com/index-b-13-91.html
 // ########### /path/path/path/rocknroll,goodies,1,2,3.4fb
 // #####################################################################################################################
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_Frontend_Navigation.class.php');
+cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation.class.php');
 
 // build Navigation with different types of URL style
 $aUrlStyleFunky = array('prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ','); // to create some other style of url
 try {
-	$oFeNav = new Contenido_Frontend_Navigation($db, $cfg, $client, $lang, $cfgClient);
+	$oFeNav = new Contenido_FrontendNavigation($db, $cfg, $client, $lang, $cfgClient);
 	$oContenidoCategories = $oFeNav->getSubCategories(12, true); // use some valid idcat of "home" or whatever
     if ($oContenidoCategories->count() > 0) {
 		foreach ($oContenidoCategories as $oContenidoCategory) {
