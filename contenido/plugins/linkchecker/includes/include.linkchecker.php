@@ -4,7 +4,10 @@ Description 	: Linkchecker 2.0.0
 Author      	: Frederic Schneider (4fb)
 Urls        	: http://www.4fb.de
 Create date 	: 2007-08-08
-Modified		: Andreas Lindner (4fb), 08.02.2008, Performance enhancements  
+Create date 	: 2007-08-08
+Modified		: Andreas Lindner (4fb), 08.02.2008, Performance enhancements
+Modified        : Holger Librenz (4fb), 05.04.2008, fixed wrong include-path for
+                                                    PEAR cache module
 *******************************************************************************/
 
 $plugin_name = "linkchecker";
@@ -34,7 +37,7 @@ $url = array('cms' => $cfgClient[$client]['path']['htmlpath'], 'contenido' => $c
 
 // Initialization of cache
 require_once($cfg['path']['pear'] . "PEAR.php");
-require_once($cfg['path']['pear'] . "Cache/Lite.php");
+require_once($cfg['path']['pear'] . "CACHE/Lite.php");
 
 $cacheName = array('errors' => $sess->id, 'errorscount' => $cacheName['errors'] . "ErrorsCountChecked");
 $cache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['path']['frontend'] . "cache/", 'caching' => true, 'lifeTime' => 60, 'automaticCleaningFactor' => 1));
@@ -164,15 +167,15 @@ if($errors = $cache->get($cacheName['errors'], intval($_REQUEST['mode']))) {  //
 	// Select all categorys
 	$sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " GROUP BY idcat";
 	$db->query($sql);
-    
+
     $db2 = new DB_Contenido();
-    
+
 	while($db->next_record()) {
 
 		if($cronjob != true) { // Check userrights, if no cronjob
 
 			$check = cCatPerm($db->f("idcat"), $db2);
-			
+
 			if($check == true) {
 				$cats[] = $db->f("idcat");
 			}
@@ -196,7 +199,7 @@ if($errors = $cache->get($cacheName['errors'], intval($_REQUEST['mode']))) {  //
 			LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
 			LEFT JOIN " . $cfg['tab']['content'] . " con ON (con.idartlang = art.idartlang)
 			WHERE (con.value LIKE '%action%' OR con.value LIKE '%data%' OR con.value LIKE '%href%' OR con.value LIKE '%src%')
-			AND cat.idcat IN (0, " . join(", ", $cats) . ") AND cat.idcat != '0' " . $lang_where . " 
+			AND cat.idcat IN (0, " . join(", ", $cats) . ") AND cat.idcat != '0' " . $lang_where . "
 			AND art.online = '1' AND art.redirect = '0'";
 	$db->query($sql);
 
@@ -219,7 +222,7 @@ if($errors = $cache->get($cacheName['errors'], intval($_REQUEST['mode']))) {  //
 	$sql = "SELECT art.title, art.redirect_url, art.idlang, cat.idart, cat.idcat, catName.name AS namecat FROM " . $cfg['tab']['cat_art'] . " cat
 			LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
 			LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
-			WHERE cat.idcat IN (0, " . join(", ", $cats) . ") AND cat.idcat != '0' " . $lang_where . " 
+			WHERE cat.idcat IN (0, " . join(", ", $cats) . ") AND cat.idcat != '0' " . $lang_where . "
 			AND art.online = '1' AND art.redirect = '1'";
 	$db->query($sql);
 
