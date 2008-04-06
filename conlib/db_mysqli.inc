@@ -9,7 +9,7 @@
  * $Id$
  *
  */
- 
+
 $mysqli_type = array();
 $mysqli_type[0] = "decimal";
 $mysqli_type[1] = "tinyint";
@@ -98,12 +98,12 @@ class DB_Sql
 			if (($iPos = strpos($Host, ":")) !== false)
 			{
 				list($sHost, $sPort) = explode(":", $Host);
-				
+
 				$this->Link_ID = @mysqli_connect($sHost, $User, $Password, "", $sPort);
 			} else {
-				$this->Link_ID = @mysqli_connect($Host, $User, $Password);	
+				$this->Link_ID = @mysqli_connect($Host, $User, $Password);
 			}
-			
+
 
 if (!$this->Link_ID)
          {
@@ -214,7 +214,7 @@ if (!$this->Link_ID)
 		{
 			$this->halt("seek($pos) failed: result has ".$this->num_rows()." rows.");
 
-			/* half assed attempt to save the day, 
+			/* half assed attempt to save the day,
 			 * but do not consider this documented or even
 			 * desireable behaviour.
 			 */
@@ -362,7 +362,7 @@ if (!$this->Link_ID)
 	function metadata($table = "", $full = false)
 	{
 		global $mysqli_type;
-		
+
 		$count = 0;
 		$id = 0;
 		$res = array ();
@@ -454,11 +454,14 @@ if (!$this->Link_ID)
 
     /* public: Escape string for using in SQL-Statement */
     function escape ($sString) {
-        if (!$this->connect()) {
-            return 0;
+        $sResult = '';
+
+        if (is_resource($this->Link_ID) || $this->connect()) {
+            $sResult = mysqli_real_escape_string($this->Link_ID, $sString);
         };
-        return mysqli_escape_string($this->Link_ID, $sString);
-    } 
+
+        return $sResult;
+    }
 
 	/* public: find available table names */
 	function table_names()
@@ -478,8 +481,8 @@ if (!$this->Link_ID)
 		return $return;
 	}
 
-    
-    
+
+
 	/* private: error handling */
 	function halt($msg)
 	{
@@ -501,7 +504,7 @@ if ($this->Link_ID) {
 		printf("</td></tr></table><b>Database error:</b> %s<br>\n", $msg);
 		printf("<b>MySQL Error</b>: %s (%s)<br>\n", $this->Errno, $this->Error);
 	}
-	
+
     function close()
     {
        if ($this->Link_ID) {
@@ -510,11 +513,34 @@ if ($this->Link_ID) {
            return false;
        }
     }
-   
+
     function server_info()
     {
-        $arr['description'] = mysqli_get_server_info($this->Link_ID); 
+        $arr['description'] = mysqli_get_server_info($this->Link_ID);
         return $arr;
     }
+
+
+  /**
+   * This method equates to mysqli_fetch_object(). It returns the current
+   * result set as object or null if no result set is left. If optional
+   * param $sClassName is set, the result object is an instance of class
+   * $sClassName.
+   *
+   * @return object
+   *
+   * @author Holger Librenz <holger.librenz@4fb.de>
+   * @version 1.0
+   */
+  function getResultObject ($sClassName = null) {
+      $oResult = null;
+
+      if (is_resource($this->Link_ID) && is_resource($this->Query_ID)) {
+          $this->next_record();
+          $oResult = mysqli_fetch_object($this->Query_ID, $sClassName);
+      }
+
+      return $oResult;
+  }
 }
 ?>

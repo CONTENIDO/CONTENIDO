@@ -7,10 +7,10 @@
  *
  * $Id: db_mysql.inc,v 1.1.1.1 2002/07/21 08:35:41 root Exp $
  *
- */ 
+ */
 
 class DB_Sql {
-  
+
   /* public: connection parameters */
   var $Host     = "";
   var $Database = "";
@@ -38,7 +38,7 @@ class DB_Sql {
   /* private: link and query handles */
   var $Link_ID  = 0;
   var $Query_ID = 0;
-  
+
 
 
   /* public: constructor */
@@ -46,7 +46,7 @@ class DB_Sql {
   	  global $cfg;
   	  $this->Seq_Table = $cfg["tab"]["sequence"];
       $this->query($query);
-      
+
   }
 
   /* public: some trivial reporting */
@@ -89,7 +89,7 @@ class DB_Sql {
 	      }
 	  }
     }
-    
+
     return $this->Link_ID;
   }
 
@@ -108,7 +108,7 @@ class DB_Sql {
        * like these: '$db = new DB_Sql_Subclass;'
        */
       return 0;
-	
+
     if (!$this->connect()) {
       return 0; /* we already complained in connect() about that. */
     };
@@ -122,9 +122,9 @@ class DB_Sql {
     if ($this->Debug)
       printf("Debug: query = %s<br>\n", $Query_String);
 
- 
+
     $this->Query_ID = @mysql_query($Query_String,$this->Link_ID);
-    
+
     $this->Row   = 0;
     $this->Errno = mysql_errno();
     $this->Error = mysql_error();
@@ -176,7 +176,7 @@ class DB_Sql {
     else {
       $this->halt("seek($pos) failed: result has ".$this->num_rows()." rows.");
 
-      /* half assed attempt to save the day, 
+      /* half assed attempt to save the day,
        * but do not consider this documented or even
        * desireable behaviour.
        */
@@ -193,7 +193,7 @@ class DB_Sql {
   	global $cfg;
   	if ($cfg["nolock"] == true)
   	{
-  		return true;	
+  		return true;
   	}
     $query = "lock tables ";
     if (is_array($table)) {
@@ -216,7 +216,7 @@ class DB_Sql {
     }
     return $res;
   }
-  
+
   function unlock() {
     global $cfg;
     if ($cfg["nolock"] == true)
@@ -268,7 +268,7 @@ class DB_Sql {
   /* public: sequence numbers */
   function nextid($seq_name) {
   	global $cfg;
-  	
+
     $this->connect();
     $this->Seq_Table = $cfg["tab"]["sequence"];
 
@@ -279,7 +279,7 @@ class DB_Sql {
                 $seq_name);
       $id  = @mysql_query($q, $this->Link_ID);
       $res = @mysql_fetch_array($id);
-      
+
       /* No current value, make one */
       if (!is_array($res)) {
         $currentid = 0;
@@ -347,13 +347,13 @@ class DB_Sql {
         return false;
       }
     } else {
-      $id = $this->Query_ID; 
+      $id = $this->Query_ID;
       if (!$id) {
         $this->halt("No query specified.");
         return false;
       }
     }
- 
+
     $count = @mysql_num_fields($id);
 
     // made this IF due to performance (one if is faster than $count if's)
@@ -367,7 +367,7 @@ class DB_Sql {
       }
     } else { // full
       $res["num_fields"]= $count;
-    
+
       for ($i=0; $i<$count; $i++) {
         $res[$i]["table"] = @mysql_field_table ($id, $i);
         $res[$i]["name"]  = @mysql_field_name  ($id, $i);
@@ -377,7 +377,7 @@ class DB_Sql {
         $res["meta"][$res[$i]["name"]] = $i;
       }
     }
-    
+
     // free the result only if we were called on a table
     if ($table) {
       @mysql_free_result($id);
@@ -396,15 +396,21 @@ class DB_Sql {
       $return[$i]["database"]        = $this->Database;
       $i++;
     }
-    
+
     @mysql_free_result($h);
     return $return;
   }
-  
+
   /* public: Escape string for using in SQL-Statement */
   function escape ($sString) {
-      return mysql_escape_string($sString);
-  } 
+      $sResult = '';
+
+      if (is_resource($this->Link_ID) || $this->connect()) {
+        $sResult = mysql_real_escape_string($sString, $this->Link_ID);
+      }
+
+      return $sResult;
+  }
 
   /* private: error handling */
   function halt($msg) {
@@ -427,15 +433,37 @@ class DB_Sql {
       $this->Errno,
       $this->Error);
   }
-  
+
   function close ()
   {
   }
 
   function server_info()
-  { 
-     $arr['description'] = mysql_get_server_info(); 
-     return $arr; 
+  {
+     $arr['description'] = mysql_get_server_info();
+     return $arr;
+  }
+
+  /**
+   * This method equates to mysql_fetch_object(). It returns the current
+   * result set as object or null if no result set is left. If optional
+   * param $sClassName is set, the result object is an instance of class
+   * $sClassName.
+   *
+   * @return object
+   *
+   * @author Holger Librenz <holger.librenz@4fb.de>
+   * @version 1.0
+   */
+  function getResultObject ($sClassName = null) {
+      $oResult = null;
+
+      if (is_resource($this->Link_ID) && is_resource($this->Query_ID)) {
+          $this->next_record();
+          $oResult = mysql_fetch_object($this->Query_ID, $sClassName);
+      }
+
+      return $oResult;
   }
 }
 ?>

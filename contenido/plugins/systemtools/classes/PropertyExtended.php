@@ -1,7 +1,7 @@
 <?php
 /**
  * file PropertyExtended.php
- * 
+ *
  * @version	2.0.0
  * @author Willi Man
  * @copyright four for business AG <www.4fb.de>
@@ -11,10 +11,10 @@
 
 class PropertyExtended
 {
-		
+
 	/**
      * Constructor
-     * 
+     *
      * @param object $oDBInstance instance of class DB_Contenido
      * @param array $globalConfig
      * @param int $iClient
@@ -28,27 +28,27 @@ class PropertyExtended
 		$this->sTable = $this->globalConfig['tab']['properties'];
 		$this->bDebug = false;
 	}
-	
+
 	/**
 	 * Get property value.
 	 *
-	 * @return string 
-	 */	
+	 * @return string
+	 */
 	function getPropertyValue ($sItemType, $sItemId, $sType, $sName)
 	{
-		
+
 		$sqlString = "
-		SELECT 
+		SELECT
 			value
-		FROM 
-			".$this->sTable." 
-		WHERE 
+		FROM
+			".$this->sTable."
+		WHERE
 			idclient = ".$this->iClient." AND itemtype = '".$sItemType."' AND itemid = '".$sItemId."' AND type = '".$sType."' AND name = '".$sName."' ";
-			
+
 		if ($this->bDebug) {echo "<pre>".$sqlString."</pre>";}
-		
+
 		$this->oDBInstance->query($sqlString);
-		
+
 		# $this->oDBInstance->Errno returns 0 (zero) if no error occurred.
 		if ($this->oDBInstance->Errno == 0)
 		{
@@ -58,59 +58,60 @@ class PropertyExtended
 		{
 			if ($this->bDebug) {echo "<pre>Mysql Error:".$this->oDBInstance->Error."(".$this->oDBInstance->Errno.")</pre>";}
 			return ''; # error occurred.
-		} 
+		}
 	}
-	
+
 	/**
 	 * Get properties by item type
 	 *
-	 * @return object 
-	 */	
+	 * @return object
+	 */
 	function getPropertiesByItemType ($sItemType)
 	{
-		
+
 		$sqlString = "
-		SELECT 
+		SELECT
 			*
-		FROM 
-			".$this->sTable." 
-		WHERE 
+		FROM
+			".$this->sTable."
+		WHERE
 			idclient = ".$this->iClient." AND itemtype = '".$sItemType."' ";
-			
+
 		if ($this->bDebug) {echo "<pre>".$sqlString."</pre>";}
-		
+
 		$this->oDBInstance->query($sqlString);
-		
+
 		$aResult = array();
-		while($oRow = mysql_fetch_object($this->oDBInstance->Query_ID))
+		//while($oRow = mysql_fetch_object($this->oDBInstance->Query_ID))
+		while($oRow = $this->oDBInstance->getResultObject())
 		{
 			$aResult[] = $oRow;
 		}
 		return $aResult;
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Get item ids by value.
 	 *
  	 * @param  string $sValue
 	 * @return array
-	 */	
+	 */
 	function getItemIdsByValue ($sValue, $sItemType, $sType)
-	{	
+	{
 		$sqlString = "
-		SELECT 
+		SELECT
 			 itemid
-		FROM 
-			".$this->sTable." 
-		WHERE 
+		FROM
+			".$this->sTable."
+		WHERE
 			idclient = ".$this->iClient." AND itemtype = '".$sItemType."' AND type = '".$sType."' AND value = '".urlencode($sValue)."' ";
-			
+
 		if ($this->bDebug) {echo "<pre>".$sqlString."</pre>";}
-		
+
 		$this->oDBInstance->query($sqlString);
-		
+
 		# $this->oDBInstance->Errno returns 0 (zero) if no error occurred.
 		if ($this->oDBInstance->Errno == 0)
 		{
@@ -124,29 +125,29 @@ class PropertyExtended
 		{
 			if ($this->bDebug) {echo "<pre>Mysql Error:".$this->oDBInstance->Error."(".$this->oDBInstance->Errno.")</pre>";}
 			return array(); # error occurred.
-		} 
+		}
 	}
-	
+
 	/**
 	 * Get item ids by value and name.
 	 *
  	 * @param  string $sValue
-	 * @return array 
-	 */	
+	 * @return array
+	 */
 	function getItemIdsByValueAndName ($sValue, $sItemType, $sType, $sName)
-	{	
+	{
 		$sqlString = "
-		SELECT 
+		SELECT
 			 itemid
-		FROM 
-			".$this->sTable." 
-		WHERE 
+		FROM
+			".$this->sTable."
+		WHERE
 			idclient = ".$this->iClient." AND itemtype = '".$sItemType."' AND type = '".$sType."' AND name LIKE '%".$sName."%' AND value = '".urlencode($sValue)."' ";
-			
+
 		if ($this->bDebug) {echo "<pre>".$sqlString."</pre>";}
-		
+
 		$this->oDBInstance->query($sqlString);
-		
+
 		# $this->oDBInstance->Errno returns 0 (zero) if no error occurred.
 		if ($this->oDBInstance->Errno == 0)
 		{
@@ -160,30 +161,30 @@ class PropertyExtended
 		{
 			if ($this->bDebug) {echo "<pre>Mysql Error:".$this->oDBInstance->Error."(".$this->oDBInstance->Errno.")</pre>";}
 			return array(); # error occurred.
-		} 
-	}		
-	
+		}
+	}
+
 	/**
 	 * Check if property exist.
 	 *
  	 * @param  string $sName
-	 * @return boolean 
-	 */	
+	 * @return boolean
+	 */
 	function checkProperty ($sItemType, $sItemId, $sType, $sName)
 	{
-		
+
 		$sqlString = "
-		SELECT 
+		SELECT
 			value
-		FROM 
-			".$this->sTable." 
-		WHERE 
+		FROM
+			".$this->sTable."
+		WHERE
 			idclient = ".$this->iClient." AND itemtype = '".$sItemType."' AND itemid = '".$sItemId."' AND type = '".$sType."' AND name = '".$sName."' ";
-			
+
 		if ($this->bDebug) {echo "<pre>".$sqlString."</pre>";}
-		
+
 		$this->oDBInstance->query($sqlString);
-		
+
 		# $this->oDBInstance->Errno returns 0 (zero) if no error occurred.
 		if ($this->oDBInstance->Errno == 0)
 		{
@@ -198,31 +199,31 @@ class PropertyExtended
 		{
 			if ($this->bDebug) {echo "<pre>Mysql Error:".$this->oDBInstance->Error."(".$this->oDBInstance->Errno.")</pre>";}
 			return false; # error occurred.
-		} 
-		
-	}	
-	
+		}
+
+	}
+
 	/**
 	 * Set property.
 	 *
  	 * @param  string $sName
 	 * @param  string $sValue
-	 * @return string 
-	 */	
+	 * @return string
+	 */
 	function setProperty ($sItemType, $sItemId, $sType, $sName, $sValue)
 	{
 		$sValue = urlencode($sValue);
-		
-		$sqlString = "   
+
+		$sqlString = "
   		INSERT INTO ".$this->sTable."
-        	(idproperty, idclient, itemtype, itemid, type, name, value, author, created, modified, modifiedby) 
-		VALUES 
-			(".$this->oDBInstance->nextid($this->sTable).", ".$this->iClient.", '".$sItemType."', '".$sItemId."', '".$sType."', '".$sName."', '".$sValue."', '".$this->globalAuth->auth["uid"]."', NOW(), NOW(), '".$this->globalAuth->auth["uid"]."')"; 
-          	
+        	(idproperty, idclient, itemtype, itemid, type, name, value, author, created, modified, modifiedby)
+		VALUES
+			(".$this->oDBInstance->nextid($this->sTable).", ".$this->iClient.", '".$sItemType."', '".$sItemId."', '".$sType."', '".$sName."', '".$sValue."', '".$this->globalAuth->auth["uid"]."', NOW(), NOW(), '".$this->globalAuth->auth["uid"]."')";
+
 		if ($this->bDebug) {echo "<pre>".$sqlString."</pre>";}
-		
+
 		$this->oDBInstance->query($sqlString);
-		
+
 		# $this->oDBInstance->Errno returns 0 (zero) if no error occurred.
 		if ($this->oDBInstance->Errno == 0)
 		{
@@ -231,40 +232,40 @@ class PropertyExtended
 		{
 			# error occurred.
 			if ($this->bDebug) {echo "<pre>Mysql Error:".$this->oDBInstance->Error."(".$this->oDBInstance->Errno.")</pre>";}
-			return false; 
-		} 
-	}	
-	
+			return false;
+		}
+	}
+
 	/**
 	 * Chang property.
-	 * 
+	 *
  	 * @param  string $sName
 	 * @param  string $sValue
-	 * @return string 
-	 */	
+	 * @return string
+	 */
 	function changeProperty ($sItemType, $sItemId, $sType, $sName, $sValue)
 	{
-	
+
 		$sValue = urlencode($sValue);
-		
-		$sqlString = "   
-  		UPDATE 
+
+		$sqlString = "
+  		UPDATE
 			".$this->sTable."
-        SET 
+        SET
 			value = '".$sValue."',
-			modifiedby = '".$this->globalAuth->auth["uid"]."',		
+			modifiedby = '".$this->globalAuth->auth["uid"]."',
 			modified = NOW()
-		WHERE 
+		WHERE
 			idclient = ".$this->iClient." AND
 			itemtype = '".$sItemType."' AND
-			itemid = '".$sItemId."' AND		
+			itemid = '".$sItemId."' AND
 			type = '".$sType."' AND
 			name = '".$sName."' ";
-		
+
 		if ($this->bDebug) {echo "<pre>".$sqlString."</pre>";}
-		
+
 		$this->oDBInstance->query($sqlString);
-		
+
 		# $this->oDBInstance->Errno returns 0 (zero) if no error occurred.
 		if ($this->oDBInstance->Errno == 0)
 		{
@@ -273,10 +274,10 @@ class PropertyExtended
 		{
 			# error occurred.
 			if ($this->bDebug) {echo "<pre>Mysql Error:".$this->oDBInstance->Error."(".$this->oDBInstance->Errno.")</pre>";}
-			return false; 
-		} 
-	}		
-	
+			return false;
+		}
+	}
+
 }
 
 ?>
