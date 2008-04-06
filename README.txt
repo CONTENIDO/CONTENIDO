@@ -65,9 +65,10 @@ I:       Deutsche Version README
 2) Installation
 3) Voraussetzungen Upgrade
 4) Upgrade von
-   4.0) 4.4.x -> 4.6.x
-   4.1) 4.3.x -> 4.4.0
-   4.2) 4.2   -> 4.4.0
+   4.0) 4.6.x -> 4.8.x
+   4.1) 4.4.x -> 4.6.x
+   4.2) 4.3.x -> 4.4.0
+   4.3) 4.2   -> 4.4.0
    Ein Upgrade von Contenido 4.1RC oder früher ist nicht möglich!
 5) Handbuch
 
@@ -78,9 +79,10 @@ II:      English version README
 2) Installation
 3) Upgrade requirements
 4) Upgrade
-   4.0) 4.4.x -> 4.6.x
-   4.1) 4.3.x -> 4.4.0
-   4.2) 4.2   -> 4.4.0
+   4.0) 4.6.x -> 4.8.x
+   4.1) 4.4.x -> 4.6.x
+   4.2) 4.3.x -> 4.4.0
+   4.3) 4.2   -> 4.4.0
    Upgrades based on Contenido 4.1RC and previous versions are
    not possible!
 5) Handbook (only available in german)
@@ -104,9 +106,9 @@ I:       Deutsche Version README
   getestet:
   Linux (Redhat 7.2, 8.0, 9.0, SuSE 7.2)
   Sun Solaris
-  Windows (2000, NT)
+  Windows (2000, NT, XP, Vista)
 
-  Browser: Sämtliche Browser der neueren Generationen (Internet Explorer 5.5,
+  Browser: Sämtliche Browser der neueren Generationen (Internet Explorer 6,
   Mozilla, Firefox). Nicht getestet wurden Opera, Konqueror, Safari. 
   
   Wichtig: Bitte deaktivieren Sie sämtliche Firewalls wie Zone Alarm, Norton
@@ -197,8 +199,27 @@ die vorhanden Accounts (sysadmin und ggf. admin)!
 4) Upgrade
 -------------------------------------------------------------------
 
+4.0) Upgrade von Contenido 4.6.x -> Contenido 4.8.x
+-------------------------------------------------------------------
 
-4.0) Upgrade von Contenido 4.4.x -> Contenido 4.6.x
+HINWEIS: Nehmen Sie eine Sicherung Ihrer Daten vor, bevor Sie das
+Upgrade vornehmen!!!
+
+1.
+Entpacken Sie die ZIP-Datei der entsprechenden Version und überschreiben
+Sie die alten Dateien mit den neuen Dateien.
+
+2.
+Rufen Sie die Datei "setup/index.php" auf, wählen Sie 'Upgrade' und
+folgen Sie der Anleitung. Im Rahmen des Upgrades werden einige
+Tabellen ergänzt und modifiziert und einige Tabellen neu angelegt. Weiterhin
+werden notwendige Anpassungen am System automatisch erledigt.
+
+3.
+Nach dem Upgrade sollte der Ordner 'setup' gelöscht werden.
+
+
+4.1) Upgrade von Contenido 4.4.x -> Contenido 4.6.x
 -------------------------------------------------------------------
 
 HINWEIS: Nehmen Sie eine Sicherung Ihrer Daten vor, bevor Sie das
@@ -228,7 +249,7 @@ verwendet werden, so können alte Startartikel mit dem Script
 Nach dem Upgrade sollte der Ordner 'setup' gelöscht werden.
 
 
-4.1) Upgrade von Contenido 4.3.x -> Contenido 4.4.0
+4.2) Upgrade von Contenido 4.3.x -> Contenido 4.4.0
 -------------------------------------------------------------------
 
 HINWEIS: Nehmen Sie eine Sicherung Ihrer Daten vor, bevor Sie das
@@ -247,8 +268,7 @@ Tabellen ergänzt und modifiziert und einige Tabellen neu angelegt.
 Nach dem Upgrade sollte der Ordner 'setup' gelöscht werden.
 
 
-
-4.2) Upgrade von Contenido 4.2 -> Contenido 4.4.0
+4.3) Upgrade von Contenido 4.2 -> Contenido 4.4.0
 -------------------------------------------------------------------
 
 Ein Upgrade von Contenido 4.2 ist leider derzeit noch nicht möglich.
@@ -281,7 +301,7 @@ II:       English Version README
 - Contenido is OS independent. The following OS are tested:
   Linux (Redhat 7.2, 8.0, 9.0, SuSE 7.2)
   Sun Solaris
-  Windows (2000, NT)
+  Windows (2000, NT, XP, Vista)
 
 
 -------------------------------------------------------------------
@@ -366,6 +386,27 @@ Change the passwords immediately after succesful installation
 -------------------------------------------------------------------
 
 
+4.0) Upgrade from Contenido 4.6.x -> Contenido 4.8.x
+-------------------------------------------------------------------
+
+NOTE: Please backup your data first before you start the
+upgrade procedure!!!
+
+1.
+Copy the unzipped data of the new version to your webserver, which 
+should replace the existing files.
+
+2.
+Start the upgrade with "setup/index.php", choose the option
+'Upgrade' and follow the instructions. The upgrade procedure will 
+extend and modifiy some tables. New tables will be created. Within 
+the next step the data from the old tables will be moved to the 
+new ones.
+
+3.
+The 'setup' directory should be deleted after the upgrade procedure.
+
+
 4.0) Upgrade from Contenido 4.4.x -> Contenido 4.6.x
 -------------------------------------------------------------------
 
@@ -373,8 +414,8 @@ NOTE: Please backup your data first before you start the
 upgrade procedure!!!
 
 1.
-Copy the unzipped data of the new version to your webserver, which should
-replace the existing files.
+Copy the unzipped data of the new version to your webserver, which 
+should replace the existing files.
 
 2.
 Start the upgrade with "setup/index.php", choose the option
@@ -388,8 +429,8 @@ The start article function was changed. The new functions will
 be used by default. If you need to use the old functions, please
 set $cfg["is_start_compatible"] in your config.php to true.
 If you like to use the new functions, you can convert your old
-articles using "convert_startarticles.php". You should use the compatibility
-option if you use older navigation modules.
+articles using "convert_startarticles.php". You should use the 
+compatibility option if you use older navigation modules.
 
 3.
 The 'setup' directory should be deleted after the upgrade
@@ -403,8 +444,8 @@ NOTE: Please backup your data first before you start the
 upgrade procedure!!!
 
 1.
-Copy the unzipped data of the new version to your webserver, which should
-replace the existing files.
+Copy the unzipped data of the new version to your webserver, which 
+should replace the existing files.
 
 2.
 Start the upgrade with "setup/index.php", choose the option
@@ -416,8 +457,6 @@ old tables will be moved to the new ones.
 3.
 The 'setup' directory should be deleted after the upgrade
 procedure.
-
-
 
 
 4.1) Upgrade Contenido 4.2 -> Contenido 4.4.0
