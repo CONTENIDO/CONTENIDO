@@ -7,9 +7,49 @@ CONTENIDO CHANGELOG
 $Id: CHANGELOG.txt,v 1.111 2007/08/20 21:55:52 bjoern.behrens Exp $
 
 
-4.6.19
+4.9
 ----------------------------------------------------------------------
 
+4.8
+----------------------------------------------------------------------
+- Bug in Backendsearch bei eingeschränkten Berechtigungen entfernt
+- Bug in functions con - Überflüssiges SQL Statement entfernt und 
+  Kommentierung angepasst
+- Vereinheitlichung der Contenidohinweisboxen und Einführung dreier
+  globaler Farben für Hinweis, Error und Information/Erfolg
+- Fehler in perm.inc behoben:
+  Siehe http://contenido.org/forum/viewtopic.php?t=16227
+- Platzhalter für Templateselectboxen damit diese in CSS-Layouts 
+  weniger überlagert sind. Kürzung von langen Templatenamen
+- Contenido FrontendNavigation-Klassen überarbeitet
+- Diverse Fixes an der Seitennavigation des Backends in allen 
+  Seitennavigationen. Refresh mit JavaScript
+- "Warning: Call-time pass-by-reference has been deprecated;" in
+  Modul Suchausgabe fixxed
+- Setup: Integration eines Layers der Details über optional zu 
+  installierende Plugins beinhaltet.
+- Modulfilter, Angabe von Bereich in dem Gesucht werden soll
+  (Kommentar, Input, Output, Name)
+- Sprachenname im Header wird gekürzt damit Header bei langen
+  Bezeichnungen nicht umbricht.
+- Löschenicons in Administration->System, Bugentfernung in den neuen
+  Debugklassen unter contenido/classes/debug, Einfügen fehlender
+  Übersetzungen in die deutsche Sprache.
+- Newsletterbugfix des left_top Frames, kleinere weitere Fixes
+- Kleinere Bugfixxes bei Passwort vergessen, Administration->Frontend,
+  Erkennung von Installierten Plugins bei Update
+- Passwort vergessen Funktion, wenn der Benutzer eine Mailadresse
+  hinterlegt hat (kann unter Administration->System->
+  Systemeinstellungen konfiguriert und auch abgeschaltet werden).
+- Rechtezuweisung in Content nun durch Typisierung und Auswahl
+  übersichtlicher, Rechteübersetzungen, Anpassungen, Fixing,
+  Darstellungsbugs
+- Administration -> Frontend: Überarbeitetes Interface zur Zuweisung 
+  von Benutzern zu Gruppen
+- Tabellenpraefixe wurden den Plugintabellen hinzugefügt. Bitte bei 
+  einer Aktualisierung diese Praefixe manuell nachtragen oder neu 
+  installieren. Das Setup wurde angepasst, Update an dieser Stelle 
+  nicht möglich.
 
 4.6.18
 ----------------------------------------------------------------------
