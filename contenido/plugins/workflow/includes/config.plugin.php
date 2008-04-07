@@ -153,7 +153,6 @@ function piworkflowCategoryRenderColumn ($idcat, $type)
 
 	switch ($type)
 	{
-   
 		case "workflow":
 			//$value = workflowInherit($idcat).workflowSelect($idcat,getWorkflowForCat($idcat), $idcat);
             $value = workflowInherit($idcat).'<script type="text/javascript" id="wf'.$idcat.'">printWorkflowSelect('.$idcat.', '.(int)getWorkflowForCat($idcat).');</script>';

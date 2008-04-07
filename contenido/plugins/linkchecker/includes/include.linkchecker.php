@@ -17,7 +17,7 @@ if(!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
 	exit;
 }
 
-if ((int) $client > 0) {
+if ((int) $client == 0) {
     $notification->displayNotification("error", i18n("No client selected"));
     exit;
 }
