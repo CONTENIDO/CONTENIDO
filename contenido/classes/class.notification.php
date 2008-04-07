@@ -63,7 +63,7 @@ class Contenido_Notification {
 				// Box on login page
 				if($style == 1) {
 					$messageBox = 
-						'<div class="alertbox '.$head_class.'_color">' .
+						'<div class="alertbox '.$head_class.'_color" id="contenido_notification">' .
 							'<h1 class="alertbox_head ' . $head_class . '">' . $head . '</h1>' .
 							'<div class="alertbox_message">' . $message . '</div>' .
 						'</div>';
@@ -72,7 +72,7 @@ class Contenido_Notification {
 				// Simple box
 				else {
 					$messageBox = 
-						'<div class="alertbox_line '.$head_class.'_color">' .
+						'<div class="alertbox_line '.$head_class.'_color" id="contenido_notification">' .
 							'<h1 class=" alertbox_head ' . $head_class . ' '.$head_class.'_color">' . $head . '</h1>' .
 							'<div class="alertbox_message '.$head_class.'_color">' . $message . '</div>' .
 						'</div>';

@@ -232,7 +232,7 @@ class InUseCollection extends ItemCollection {
             		
             		$warnmessage = i18n("Do you really want to override the lock?");
             		$script = "javascript:if (window.confirm('$warnmessage') == true) { window.location.href  = '$link';}";
-            		$override = '<br><br><a alt="'.$alt.'" title="'.$alt.'" href="'.$script.'">['.i18n("Override lock").']</a> <a href="javascript://" onclick="elem = document.getElementById(\'contenido_notification\'); elem.style.visibility=\'hidden\'">['.i18n("Hide notification").']</a>';
+            		$override = '<br><br><a alt="'.$alt.'" title="'.$alt.'" href="'.$script.'" class="standard">['.i18n("Override lock").']</a> <a href="javascript://" class="standard" onclick="elem = document.getElementById(\'contenido_notification\'); elem.style.display=\'none\'">['.i18n("Hide notification").']</a>';
             	} else {
             		$override = "";
             	}
