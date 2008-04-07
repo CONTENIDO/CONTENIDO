@@ -30,7 +30,7 @@ if (isset($_REQUEST['path'])) {
 #####################
 # Form for 'Search'
 #####################
-if ($appendparameters != 'filebrowser') {
+if ($appendparameters != 'filebrowser' && (int) $client > 0) {
     $search = new cHTMLTextbox("searchfor", $_REQUEST['searchfor'], 26);
     $sSearch = $search->render();
     $sSearch = str_replace('>', 'style="width:170px;">', $sSearch);
@@ -49,7 +49,7 @@ if ($appendparameters != 'filebrowser') {
     $tpl->set('s', 'DISPLAY_SEARCH', 'none');
 }
     
-if ($perm->have_perm_area_action("upl", "upl_mkdir") )
+if ($perm->have_perm_area_action("upl", "upl_mkdir") && (int) $client > 0)
 {		
     $sCurrentPathInfo = "";
     if ($sess->is_registered("upl_last_path") && !isset($path))

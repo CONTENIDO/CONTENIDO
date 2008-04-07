@@ -28,7 +28,10 @@ $mstr = sprintf($tmp_mstr, 'right_top',
                                    'right_bottom',
                                    $sess->url("main.php?area=js&frame=4&action=js_create"),
                                    i18n("Create script"));
-$tpl->set('s', 'NEWSCRIPT', $mstr);
-
+if ((int) $client > 0) {
+    $tpl->set('s', 'NEWSCRIPT', $mstr);
+} else {
+    $tpl->set('s', 'NEWSCRIPT', i18n('No Client selected'));
+}
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['js_left_top']);
 ?>

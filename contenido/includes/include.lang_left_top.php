@@ -30,6 +30,8 @@ $tpl2->set('s', 'NAME', 'editclient');
 $tpl2->set('s', 'CLASS', 'text_medium');
 $tpl2->set('s', 'OPTIONS', 'onchange="langChangeClient()"');
 
+$iClientcount = count($clients);
+
 foreach ($clients as $key => $value) {
 
         if ($client == $key)
@@ -55,8 +57,10 @@ $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic
 
 $tpl->set('s', 'CLIENTSELECT', $select);
 
-if ($perm->have_perm_area_action($area, "lang_newlanguage")) {
+if ($perm->have_perm_area_action($area, "lang_newlanguage") && $iClientcount > 0) {
     $tpl->set('s', 'NEWLANG', '<a class="addfunction" href="javascript:languageNewConfirm()">'.i18n("Create language").'</a>');
+} else if ($iClientcount == 0) {
+    $tpl->set('s', 'NEWLANG', i18n('No Client selected'));
 } else {
     $tpl->set('s', 'NEWLANG', '');
 }

@@ -5953,3 +5953,9 @@ msgstr "Kategorie offline setzen"
 
 msgid "Are you sure to delete the following category?"
 msgstr "Sind Sie sicher, dass Sie die folgende Kategorie L&ouml;schen wollen?"
+
+msgid "No Client selected"
+msgstr "Kein Mandant ausgew&auml;hlt"
+
+msgid "-- No Language available --"
+msgstr "-- Keine Sprache verf&uuml;gbar --"

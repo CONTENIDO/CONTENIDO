@@ -153,8 +153,11 @@ $tpl->set('s', 'PAGINGLINK', $pagerl);
 #################
 # New Module Link
 #################
-$str .= '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="addfunction" target="right_bottom" href="'.$sess->url("main.php?area=mod_edit&frame=4&action=mod_new").'">'.i18n("New module").'</a></div>';
-
+if ((int) $client > 0) {
+    $str .= '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="addfunction" target="right_bottom" href="'.$sess->url("main.php?area=mod_edit&frame=4&action=mod_new").'">'.i18n("New module").'</a></div>';
+} else {
+    $str .= '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;">'.i18n('No Client selected').'</div>';
+}
 ############################
 # generate template
 ############################

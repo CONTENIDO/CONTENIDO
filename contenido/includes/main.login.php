@@ -95,11 +95,24 @@ if (count($clients) > 1) {
 } else {
 	$tpl->set('s', 'OKBUTTON', '');
 	$tpl->set('s', 'CLIENTFORM', '');
-	$tpl->set('s', 'WARNINGS', '');
 
 	foreach ($clients as $key => $v_client) {
-		$name= $v_client['name'] . " (" . $key . ')';
+        if ($perm->hasClientPermission($key)) {
+            $cApiClient->loadByPrimaryKey($key);
+			if ($cApiClient->hasLanguages()) {
+                $name= $v_client['name'] . " (" . $key . ')';
+            } else {
+				$warnings[]= sprintf(i18n("Client %s (%s) has no languages"), $v_client['name'], $key);
+			}
+        }
 	}
+    
+    if ($perm->have_perm() && count($warnings) > 0) {
+		$tpl->set('s', 'WARNINGS', "<br>" . $notification->messageBox("warning", implode("<br>", $warnings), 0));
+	} else {
+		$tpl->set('s', 'WARNINGS', '');
+	}
+    
 	$tpl->set('s', 'PULL_DOWN_MANDANTEN', $name);
 }
 

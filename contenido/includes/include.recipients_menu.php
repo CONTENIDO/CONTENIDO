@@ -80,20 +80,6 @@ $oRecipients->setWhere("recipientcollection.idlang", $lang);
 // sort by and sort order
 $oRecipients->setOrder("recipientcollection.".$_REQUEST["sortby"]." ".$_REQUEST["sortorder"]);
 
-// Items / page
-if ($_REQUEST["elemperpage"] > 0) 
-	{
-	$oRecipients->query();
-	$iItemCount = $oRecipients->count();
-    if ($_REQUEST["elemperpage"]*($_REQUEST["page"]) >= $iItemCount+$_REQUEST["elemperpage"] && $_REQUEST["page"]  != 1) {
-        $_REQUEST["page"]--;
-    }
-	$oRecipients->setLimit($_REQUEST["elemperpage"] * ($_REQUEST["page"] - 1), $_REQUEST["elemperpage"]);
-	} 
-else 
-	{
-	$iItemCount = 0;
-	}
 // Show group
 if ($_REQUEST["restrictgroup"] != "--all--") 
 	{
@@ -120,6 +106,21 @@ if ($_REQUEST["filter"] != "")
 		}
 	}
 
+    // Items / page
+if ($_REQUEST["elemperpage"] > 0) 
+	{
+	$oRecipients->query();
+	$iItemCount = $oRecipients->count();
+    if ($_REQUEST["elemperpage"]*($_REQUEST["page"]) >= $iItemCount+$_REQUEST["elemperpage"] && $_REQUEST["page"]  != 1) {
+        $_REQUEST["page"]--;
+    }
+	$oRecipients->setLimit($_REQUEST["elemperpage"] * ($_REQUEST["page"] - 1), $_REQUEST["elemperpage"]);
+	} 
+else 
+	{
+	$iItemCount = 0;
+	}
+    
 $oRecipients->query();
 
 // Output data

@@ -28,7 +28,10 @@ $mstr = sprintf($tmp_mstr, 'right_top',
                                    'right_bottom',
                                    $sess->url("main.php?area=style&frame=4&action=style_create"),
                                    i18n("Create style"));
-$tpl->set('s', 'NEWSTYLE', $mstr);
-
+if ((int) $client > 0) {
+    $tpl->set('s', 'NEWSTYLE', $mstr);
+} else {
+    $tpl->set('s', 'NEWSTYLE', i18n('No Client selected'));
+}
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['style_left_top']);
 ?>

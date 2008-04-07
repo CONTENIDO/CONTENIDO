@@ -21,7 +21,7 @@ cInclude("includes", "functions.upl.php");
 
 $page = new UI_Page;
 
-if (is_writable($cfgClient[$client]["upl"]["path"].$path) || is_dbfs($path))
+if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || is_dbfs($path)) && (int) $client > 0)
 {
     $form = new UI_Table_Form("properties");
     $form->setVar("frame", $frame);

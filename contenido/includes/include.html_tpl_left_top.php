@@ -28,7 +28,11 @@ $mstr = sprintf($tmp_mstr, 'right_top',
                                    'right_bottom',
                                    $sess->url("main.php?area=htmltpl&frame=4&action=htmltpl_create"),
                                    i18n("Create module template"));
-$tpl->set('s', 'NEWSTYLE', $mstr);
+if ((int) $client > 0) {
+    $tpl->set('s', 'NEWSTYLE', $mstr);
+} else {
+    $tpl->set('s', 'NEWSTYLE', i18n('No Client selected'));
+}
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['html_tpl_left_top']);
 ?>

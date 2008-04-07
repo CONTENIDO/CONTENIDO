@@ -353,7 +353,7 @@ class Contenido_Navigation {
 			}
 		} else {
             $tpl->set('d', 'VALUE', 0);
-            $tpl->set('d', 'CAPTION', '-- Sprache anlegen --');
+            $tpl->set('d', 'CAPTION', i18n('-- No Language available --'));
             $tpl->next();
 		}
 

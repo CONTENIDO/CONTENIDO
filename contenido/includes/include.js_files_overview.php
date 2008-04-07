@@ -115,7 +115,9 @@ if ($handle = opendir($path))
     }
 }else
 {
-	$notification->displayNotification("error", i18n("Directory is not existing or readable!")."<br>$path");	
+    if ((int) $client > 0) {
+        $notification->displayNotification("error", i18n("Directory is not existing or readable!")."<br>$path");
+    }	
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['files_overview']);
