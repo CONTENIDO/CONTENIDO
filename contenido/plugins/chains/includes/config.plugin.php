@@ -1,7 +1,7 @@
 <?php
 global $_cecRegistry, $cfg;
 
-$cfg['plugins']['frontendlogic'][] = "category";
+#$cfg['plugins']['frontendlogic'][] = "category";
 
 cInclude("plugins", "chains/includes/include.chain.frontend.cat_backendaccess.php");
 cInclude("plugins", "chains/includes/include.chain.frontend.cat_access.php");

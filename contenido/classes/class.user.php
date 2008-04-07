@@ -42,10 +42,10 @@ class Users {
 
 
     /**
-     * deleteUserByID ($userid)
-     * Removes the specified user from the database
-	 * @param string $userid Specifies the user ID
-	 * @return bool True if the delete was successful
+     * create ($username)
+     * creates a new user by specifying its username
+	 * @param string $username Specifies the username
+	 * @return int userid of created user
      */	
 	function create ($username)
 	{
