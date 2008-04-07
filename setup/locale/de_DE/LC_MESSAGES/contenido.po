@@ -24,6 +24,9 @@ msgstr "Newsletterfunktionalität zum Versand von Textnewslettern und HTML-Newsle
 msgid "Contenido Content Allocation"
 msgstr "Zur Darstellung und Verwaltung des Contents entwickelte 4fb die Content Allocation und Content include Technik. Diese Technik erlaubt es, auf Basis eines Templates, den Content an unterschiedlichen Stellen und in unterschiedlicher Form dynamisch nach mehreren Kriterien selektiert darzustellen."
 
+msgid "Please use username <b>sysadmin</b> and password <b>sysadmin</b> to login into Contenido Backend."
+msgstr "Bitte benutzen Sie den Benutzernamen <b>sysadmin</b> und das Passwort <b>sysadmin</b>, um sich in das Backend von Contenido einzuloggen."
+
 #: setup/steps/setuptype.php:9
 msgid "Please choose your setup type"
 msgstr "Bitte wählen Sie die Installationsart"

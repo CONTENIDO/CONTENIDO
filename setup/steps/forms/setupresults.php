@@ -11,6 +11,11 @@ class cSetupResults extends cSetupMask
 			cSetupMask::cSetupMask("templates/setup/forms/setupresults.tpl", $step); 
 			$this->_oStepTemplate->set("s", "TITLE", i18n("Results"));
 			$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Contenido was installed and configured successfully on your server."));
+            if ($_SESSION["setuptype"] == 'setup') {
+                $this->_oStepTemplate->set("s", "LOGIN_INFO", '<p>'.i18n("Please use username <b>sysadmin</b> and password <b>sysadmin</b> to login into Contenido Backend.").'</p>');
+            } else {
+                $this->_oStepTemplate->set("s", "LOGIN_INFO", '');
+            }
 			$this->_oStepTemplate->set("s", "CHOOSENEXTSTEP", i18n("Please choose an item to start working:"));
 			$this->_oStepTemplate->set("s", "FINISHTEXT", i18n("You can now start using Contenido. Please delete the folder named 'setup'!"));
 			

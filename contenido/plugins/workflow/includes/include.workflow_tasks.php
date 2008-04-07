@@ -120,15 +120,15 @@ if ($perm->have_perm_area_action($area, "workflow_task_user_select"))
     $form->setEvent("submit", "setUsershow();");
     $form->setVar("frame", $frame);
     $form->setVar("action", "workflow_task_user_select");
-    $form->add("select",'<p class="text_medium">'.i18n("Show users").": ".getUsers("show",$usershow));
-    $form->add("button", '<input style="vertical-align:middle;" type="image" src="'.$cfg["path"]["htmlpath"].$cfg["path"]["images"]."submit.gif".'">'.'</p>');
+    $form->add("select",i18n("Show users").": ".getUsers("show",$usershow));
+    $form->add("button", '<input style="vertical-align:middle;" type="image" src="'.$cfg["path"]["htmlpath"].$cfg["path"]["images"]."submit.gif".'">');
     
     $tpl->set('s', 'USERSELECT', $form->render(true));
 } else {
     $tpl->set('s', 'USERSELECT', '');
 }
 
-$pageTitle = i18n('Workflow tasks', 'workflow');
+$pageTitle = i18n('Search results').' - '.i18n('Workflow tasks', 'workflow');
 $tpl->set('s', 'PAGE_TITLE', $pageTitle);
 
 $tpl->set('s', 'TH_START', i18n("Article"));
@@ -238,9 +238,10 @@ foreach ($isCurrent as $key => $value)
 }
 
 if ($i > 0) 	{
-    $tpl->set('s', 'DISPLAY', 'block');
+    $tpl->set('s', 'NO_ARTICLES_ROW');
 } else {
-    $tpl->set('s', 'DISPLAY', 'none');
+    $sRow = '<tr><td colspan="8" class="bordercell">' . i18n("No article found.") . '</td></tr>';
+    $tpl->set('s', 'NO_ARTICLES_ROW', $sRow);
 }
 
 $sLoadSubnavi = 'parent.parent.frames["right"].frames["right_top"].location.href = \'main.php?area=con&frame=3&idcat=' . $iIDCat . '&idtpl=' . $iIDTpl . '&contenido=' . $sSession . "';";

@@ -17,7 +17,7 @@
         # Generate template
 		$tpl->reset();
 		
-		$message = sprintf(i18n("You can find many information and a community forum on the <a href=\"http://www.contenido.org\" target=\"_blank\">Contenido Portal</a>"));
+		$message = sprintf(i18n("You can find many information and a community forum on the <a href=\"http://forum.contenido.org\" target=\"_blank\">Contenido Portal</a>"));
 		
 		$tpl->set('s', 'VERSION', $cfg['version']);
 		$tpl->set('s', 'PORTAL', $message); 

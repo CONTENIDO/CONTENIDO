@@ -2,7 +2,8 @@
 <tr>
 	<td valign="top" colspan="2">
 		<h1>{TITLE}</h1>
-		{DESCRIPTION}
+		<p>{DESCRIPTION}</p>
+        {LOGIN_INFO}
 	</td>
 </tr>
 <tr>
