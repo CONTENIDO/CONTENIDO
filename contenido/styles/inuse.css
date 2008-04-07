@@ -1,0 +1,33 @@
+.alertbox_line{
+   border: 1px solid;
+   width: 350px; 
+   border-color: #fea513;
+   color: #fea513;
+   font-family: Verdana, Arial, Helvetica, Sans-Serif;
+   font-size: 11px;
+   background-color: #fff;
+   margin: 10px;
+}
+
+.alertbox_head{
+    font-family: Verdana, Arial, Helvetica, Sans-Serif; 
+    font-size: 11px;
+    line-height: 30px; 
+    font-weight: bold;
+    border-bottom: 1px solid #fea513;
+    padding-left: 40px;
+    background-color: #fff;
+}
+
+.alertbox_message {
+    padding: 10px;
+}
+
+.alertbox_warning{
+    background: url(../images/icon_warning.gif) no-repeat 10px 7px;
+}
+
+a.standard:link      {font-family: Verdana, Arial, Helvetica, Sans-Serif; color: #000000; text-decoration: none; font-size: 11px}
+a.standard:visited   {font-family: Verdana, Arial, Helvetica, Sans-Serif; color: #000000; text-decoration: none; font-size: 11px}
+a.standard:active    {font-family: Verdana, Arial, Helvetica, Sans-Serif; color: #000000; text-decoration: none; font-size: 11px}
+a.standard:hover     {font-family: Verdana, Arial, Helvetica, Sans-Serif; color: #0060B1; text-decoration: none; font-size: 11px}
