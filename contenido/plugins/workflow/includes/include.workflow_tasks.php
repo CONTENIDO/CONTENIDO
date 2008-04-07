@@ -146,8 +146,6 @@ $currentUserSequence = new WorkflowUserSequence;
     		
 if (is_array($isCurrent))
 {
-$a = fopen('test.txt', 'a');
-fputs($a, print_r($isCurrent, 1));
 
 foreach ($isCurrent as $key => $value)
 {
