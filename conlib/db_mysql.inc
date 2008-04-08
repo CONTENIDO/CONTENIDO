@@ -459,7 +459,6 @@ class DB_Sql {
       $oResult = null;
 
       if (is_resource($this->Link_ID) && is_resource($this->Query_ID)) {
-          $this->next_record();
           $oResult = mysql_fetch_object($this->Query_ID, $sClassName);
       }
 

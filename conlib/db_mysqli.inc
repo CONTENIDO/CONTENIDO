@@ -536,7 +536,6 @@ if ($this->Link_ID) {
       $oResult = null;
 
       if (is_resource($this->Link_ID) && is_resource($this->Query_ID)) {
-          $this->next_record();
           $oResult = mysqli_fetch_object($this->Query_ID, $sClassName);
       }
 
