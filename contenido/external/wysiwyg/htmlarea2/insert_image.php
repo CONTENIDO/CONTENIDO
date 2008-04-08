@@ -171,7 +171,7 @@ document.all.txtFileName.value=document.all.selecttxtName.value;
 
 <BODY id=bdy onload="Init()" style="background: threedface; color: windowtext;" scroll=no>
 <DIV id=divconName style="left: 0.98em; top: 1.2168em; width: 7em; height: 1.2168em; ">Contenido Image:</DIV>
-<?
+<?php
 include('../../../includes/config.php');
 $db = new DB_Contenido;
 

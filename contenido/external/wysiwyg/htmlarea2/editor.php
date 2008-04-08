@@ -401,7 +401,7 @@ function editor_action(button_id) {
       // insert link
       if(cmdID.toLowerCase() == 'link'){
       x=Math.random();
-      var links=showModalDialog(_editor_url + "insert_link.php?client=<?echo $client;?>&lang=<?echo $lang;?>&zuff="+x, editdoc, "dialogWidth:430px; dialogHeight: 250px; resizable: no; help: no; status: no; scroll: no; ");
+      var links=showModalDialog(_editor_url + "insert_link.php?client=<?php echo $client;?>&lang=<?php echo $lang;?>&zuff="+x, editdoc, "dialogWidth:430px; dialogHeight: 250px; resizable: no; help: no; status: no; scroll: no; ");
       if(links!=''){
          editor_insertHTML(objname,links,'</a>');
       }
@@ -412,7 +412,7 @@ function editor_action(button_id) {
       // insert image
       else if (cmdID.toLowerCase() == 'insertimage'){
       x=Math.random();
-      showModalDialog(_editor_url + "insert_image.php?client=<?echo $client;?>&zuff="+x, editdoc, "dialogWidth:430px; dialogHeight: 250px; resizable: no; help: no; status: no; scroll: no; ");
+      showModalDialog(_editor_url + "insert_image.php?client=<?php echo $client;?>&zuff="+x, editdoc, "dialogWidth:430px; dialogHeight: 250px; resizable: no; help: no; status: no; scroll: no; ");
       }
 
 
@@ -1175,7 +1175,7 @@ function editor_cMenu(obj,menuIdx,objname) {
 _editor_url = "<?php print $cfg["path"]["wysiwyg_html"] ?>";
 
 </script>
-<?
+<?php
 
 echo "<td bgcolor=\"$bg\"><textarea name=\"CMS_HTML\" rows=\"20\" cols=\"52\" style=\"width:650\">".urldecode($a_content[$type][$typenr])."</textarea></td>\n";
 

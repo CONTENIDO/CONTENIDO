@@ -59,7 +59,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
         if ($type == "CMS_HEAD") {
                 echo "  <TR><TD valign=\"top\" class=text_medium>&nbsp;".$typenr.".&nbsp;".$a_description[$type][$typenr].":&nbsp;</TD><TD class=content>";
-                echo "  <INPUT type=text name=\"CMS_HEAD\" VALUE=\"".urldecode($a_content[$type][$typenr])."\" SIZE=90>";
+                echo "  <INPUT type=text name=\"CMS_HEAD\" VALUE=\"".htmlentities(urldecode($a_content[$type][$typenr]))."\" SIZE=90>";
                 echo "  </TD></TR>";
         }
         
