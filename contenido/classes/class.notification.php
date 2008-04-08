@@ -63,7 +63,7 @@ class Contenido_Notification {
 				// Box on login page
 				if($style == 1) {
 					$messageBox = 
-						'<div class="alertbox '.$head_class.'_color" id="contenido_notification">' .
+						'<div class="alertbox '.$head_class.'_color" id="contenido_notification" style="border-top:0px;">' .
 							'<h1 class="alertbox_head ' . $head_class . '">' . $head . '</h1>' .
 							'<div class="alertbox_message">' . $message . '</div>' .
 						'</div>';
