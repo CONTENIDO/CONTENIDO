@@ -320,7 +320,7 @@ class ItemCollection
 	{
 		$field = strtolower($field);
 
-		if (array_key_exists($this->_where["global"][$field]))
+		if (is_array($this->_where["global"]) && array_key_exists($field, $this->_where["global"]) && is_array($this->_where["global"][$field]))
 		{
 			if ($this->_where["global"][$field]["operator"] == $operator && $this->_where["global"][$field]["restriction"] == $restriction)
 			{
@@ -351,7 +351,7 @@ class ItemCollection
 	{
 		$field = strtolower($field);
 
-		if (array_key_exists($this->_where["global"][$field]))
+		if (is_array($this->_where["groups"][$group]) && array_key_exists($field, $this->_where["groups"][$group]) && is_array($this->_where["groups"][$group][$field]))
 		{
 			if ($this->_where["groups"][$group][$field]["operator"] == $operator && $this->_where["groups"][$group][$field]["restriction"] == $restriction)
 			{
