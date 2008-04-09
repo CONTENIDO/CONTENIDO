@@ -107,7 +107,7 @@ class DBFSCollection extends ItemCollection
 			return true;
 		}
 		
-		$this->select("dirname LIKE '$path%' AND idclient = '$client' LIMIT 1");
+		$this->select("dirname LIKE '$path%' AND idclient = '$client' LIMIT 2");
 
 		if ($this->count() > 1)
 		{
