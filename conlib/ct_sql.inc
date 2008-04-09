@@ -56,17 +56,17 @@ class CT_Sql {
                     addslashes($name)));
     }
 
-  function ac_store($id, $name, $str) {
+    function ac_store($id, $name, $str) {
     $ret = true;
 
     switch ( $this->encoding_mode ) {
-      case "slashes":
-        $str = addslashes($name . ":" . $str);
-      break;
+     case "slashes":
+      $str = addslashes($name . ":" . $str);
+     break;
 
-      case "base64":
-      default:
-        $str = base64_encode($name . ":" . $str);
+     case "base64":
+     default:
+      $str = base64_encode($name . ":" . $str);
     };
 
     $name = addslashes($name);
@@ -76,24 +76,25 @@ class CT_Sql {
 
     $now = date("YmdHis", time());
     $uquery = sprintf("update %s set val='%s', changed='%s' where sid='%s' and name='%s'",
-      $this->database_table,
-      $str,
-      $now,
-      $id,
-      $name);
+     $this->database_table,
+     $str,
+     $now,
+     $id,
+     $name);
     $squery = sprintf("select count(*) from %s where val='%s' and changed='%s' and sid='%s' and name='%s'",
-      $this->database_table,
-      $str,
-      $now,
-      $id,
-      $name);
+     $this->database_table,
+     $str,
+     $now,
+     $id,
+     $name);
     $iquery = sprintf("insert into %s ( sid, name, val, changed ) values ('%s', '%s', '%s', '%s')",
-      $this->database_table,
-      $id,
-      $name,
-      $str,
-      $now);
+     $this->database_table,
+     $id,
+     $name,
+     $str,
+     $now);
 
+    $this->db->lock($this->database_table);
     $this->db->query($uquery);
 
     # FIRST test to see if any rows were affected.
@@ -108,12 +109,15 @@ class CT_Sql {
     # FOURTH, insert the row as we've determined that it does not exist.
 
     if ( $this->db->affected_rows() == 0
-        && $this->db->query($squery)
-        && $this->db->next_record() && $this->db->f(0) == 0
-        && !$this->db->query($iquery)) {
+      && $this->db->query($squery)
+      && $this->db->next_record() && $this->db->f(0) == 0
+      && !$this->db->query($iquery)) {
 
-        $ret = false;
+      $ret = false;
     }
+
+    $this->db->unlock();
+
     return $ret;
   }
 
