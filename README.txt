@@ -96,9 +96,9 @@ I:       Deutsche Version README
 1) Voraussetzungen für die Installation
 -------------------------------------------------------------------
 
-- MySQL, ab Version 3.23.37
-- PHP4 >= 4.1.0
-- Webserver Apache, IIS oder andere (Empfehlung: Apache)
+- MySQL, ab Version 5
+- PHP5 PHP-Module: GDI, MySQL
+- Webserver Apache ab Version 2, IIS oder andere (Empfehlung: Apache)
 - Erstellte Datenbank - WICHTIG: Bestehende Tabellen mit
   identischen Namen werden überschrieben (ausser bei einem
   Upgrade)!
@@ -108,8 +108,9 @@ I:       Deutsche Version README
   Sun Solaris
   Windows (2000, NT, XP, Vista)
 
-  Browser: Sämtliche Browser der neueren Generationen (Internet Explorer 6,
-  Mozilla, Firefox). Nicht getestet wurden Opera, Konqueror, Safari. 
+  Browser: Sämtliche Browser der neueren Generationen (Internet Explorer ab Version 6,
+           Firefox ab Version 2.0, Safari für Mac ab Version 3) 
+           Nicht getestet wurden Opera, Konqueror. 
   
   Wichtig: Bitte deaktivieren Sie sämtliche Firewalls wie Zone Alarm, Norton
   Internet Security und Popup- bzw. Werbeblocker. Diese Anwendungen verhindern
@@ -292,9 +293,9 @@ II:       English Version README
 1) Installation requirements
 -------------------------------------------------------------------
 
-- MySQL, Version 3.23.37 or higher
-- PHP4 >= 4.1.0
-- Webserver Apache, IIS or others (Recommendation: Apache)
+- MySQL, Version 5 or higher
+- PHP-Modules: GDI, MySQL
+- Webserver Apache Version 2, IIS or others (Recommendation: Apache)
 - Existing Database - WARNING: Existing tables with the same
   names as Contenido tables will be removed (only preserved
   during an update)
@@ -302,6 +303,9 @@ II:       English Version README
   Linux (Redhat 7.2, 8.0, 9.0, SuSE 7.2)
   Sun Solaris
   Windows (2000, NT, XP, Vista)
+- Browser (Internet Explorer Version 6 or higher,
+           Firefox Version 2.0 or higher, Safari für Mac Version 3 or 
+           higher)
 
 
 -------------------------------------------------------------------
