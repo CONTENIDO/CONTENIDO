@@ -1285,7 +1285,7 @@ if ($_REQUEST["elemperpage"] > 0) {
 	$iItemCount = 0;
 }
 
-$oRcpGroups->setOrder("defaultgroup DESC, ".$_REQUEST["sortby"]." ".$_REQUEST["sortorder"]);
+$oRcpGroups->setOrder("defaultgroup DESC, groupname ".$_REQUEST["sortorder"]);
 $oRcpGroups->query();
 
 $oMenu	= new UI_Menu;
