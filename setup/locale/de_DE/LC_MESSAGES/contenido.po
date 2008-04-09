@@ -15,17 +15,32 @@ msgstr ""
 "X-Poedit-SourceCharset: iso-8859-1\n"
 "X-Poedit-SearchPath-0: setup\n"
 
-msgid "Contenido Contact Manager"
+msgid "Sense of this plugin is to store, contactdata into tables and prepares it for displaying in backend. This contactdata is collected with forms. If you have for example two contact forms for different purposes, you can define in backend, which fields from it you like to store."
 msgstr "Sinn dieses Plugins ist, Kontaktdaten, die über Formulare gesammelt werden, in eigene Tabellen zu speichern und entsprechend aufbereitet im Backend zur Verfügung zu stellen.<br>Hat man beispielsweise zwei Kontaktformulare für verschiedene Zwecke, kann man diese im Backend anlegen und definieren, welche Felder daraus man speichern möchte."
 
-msgid "Contenido Newsletter"
+msgid "Newsletterfunctionality for dispatching text newsletters and HTML-Newsletters, extensible with professional newsletter extensions. Definition of newsletter recipients and groups of recipients. Layout design of the HTML-Newsletters by Contenido articles."
 msgstr "Newsletterfunktionalität zum Versand von Textnewslettern und HTML-Newslettern, erweiterbar mit professionellen Newsletter Erweiterungen. Definition von Newsletterempfängern und Empfängergruppen. Layouterstellung des HTML-Newsletters mit Hilfe von Contenidoartikeln."
 
-msgid "Contenido Content Allocation"
+msgid "For the representation and administration of content, 4fb developed the Content Allocation and content include technology. This technology dynamically allows on basis of a Template, to put the content in different places and in different formats according to several criteria."
 msgstr "Zur Darstellung und Verwaltung des Contents entwickelte 4fb die Content Allocation und Content include Technik. Diese Technik erlaubt es, auf Basis eines Templates, den Content an unterschiedlichen Stellen und in unterschiedlicher Form dynamisch nach mehreren Kriterien selektiert darzustellen."
 
 msgid "Please use username <b>sysadmin</b> and password <b>sysadmin</b> to login into Contenido Backend."
 msgstr "Bitte benutzen Sie den Benutzernamen <b>sysadmin</b> und das Passwort <b>sysadmin</b>, um sich in das Backend von Contenido einzuloggen."
+
+msgid "An old Version of Plugin %s is installed on your system."
+msgstr "Eine alte Version des Plugin %s ist auf Ihrem System installiert."
+
+msgid "Old Plugins are still installed"
+msgstr "Alte Plugins sind noch installiert"
+
+msgid "Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of contenido. Also delete the old plugin tables after data transfer."
+msgstr "Bitte entfernen Sie alle alten Plugins bevor Sie fortfahren. Um die alten Plugindaten zu &uuml;bertragen, kopieren Sie bitte die alten Daten aus den Plugintabellen nach der Installation in die neuen Plugintabellen. Die neuen Plugintabellen haben die gleiche Bezeichnung, besitzen jedoch zus&auml;tzlich den Contenido Tabellenpr&auml;fix. Bitte entfernen Sie auch nach der Daten&uuml;bertragung die alten Plugintabellen."
+
+msgid "Contenido demo client requires PHP 5 or higher"
+msgstr "Contenido Demo Mandant ben&ouml;tigt PHP5 oder h&ouml;her"
+
+msgid "The Contenido demo client requires PHP 5 or higher. If you want to install the demo client, please update your PHP version."
+msgstr "Der Contenido Demo Mandant ben&ouml;tigt PHP5 oder h&ouml;her. Wenn Sie den Demo Mandanten installieren m&ouml;chten, aktualisieren Sie bitte zuvor Ihre PHP version."
 
 #: setup/steps/setuptype.php:9
 msgid "Please choose your setup type"

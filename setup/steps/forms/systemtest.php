@@ -41,6 +41,11 @@ class cSetupSystemtest extends cSetupMask
 		
 		
 		$this->doFileSystemTests();
+        
+        #Check if there is an old version of integrated plugins installed in upgrademode.
+        if ($_SESSION["setuptype"] == 'upgrade') {
+            $this->doExistingOldPluginTests();
+        }
 		
 		$cHTMLFoldableErrorMessages = array();
 		
@@ -81,12 +86,53 @@ class cSetupSystemtest extends cSetupMask
 		} else {
 			$this->setNavigation($previous, $next);	
 		}
-		
-		
-		
-		
 	}
 	
+    function doExistingOldPluginTests() {
+        $db = new DB_Contenido($_SESSION["dbhost"], "", $_SESSION["dbuser"], $_SESSION["dbpass"]);
+        $sMessage = '';
+        
+        //get all tables in database and list it into array
+        $aAvariableTableNames = array();
+        $aTableNames = $db->table_names();
+        if (!is_array($aTableNames)) {
+            return;
+        }
+        
+        foreach ($aTableNames as $aTable) {
+            array_push($aAvariableTableNames, $aTable['table_name']);
+        }
+        
+        //list of plugin tables to copy into new plugin tables
+        $aOldPluginTables = array('Workflow'              => array('piwf_actions', 'piwf_allocation', 'piwf_art_allocation', 
+                                                                    'piwf_items', 'piwf_user_sequences', 'piwf_workflow'),  
+                                   'Contacts'             => array ('pi_contact_data', 'pi_contact_properties', 'pi_contact_types'),
+                                   'Content Allocation'   => array ('pica_alloc', 'pica_alloc_con', 'pica_lang'),
+                                   'Linkchecker'          => array ('pi_externlinks', 'pi_linkwhitelist'));
+        
+        foreach ($aOldPluginTables as $sPlugin => $aTables) {
+            $bPluginExists = false;
+            foreach ($aTables as $sCurrentTable) {
+                if (in_array($sCurrentTable, $aAvariableTableNames)) {
+                    $bPluginExists = true;
+                }
+            }
+            
+            if ($bPluginExists) {
+                $sMessage .= sprintf(i18n('An old Version of Plugin %s is installed on your system.')."<br>\n", $sPlugin);
+            }
+        }
+        
+        if ($sMessage) {
+            $sMessage .= '<br>'.i18n('Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of contenido. Also delete the old plugin tables after data transfer.');
+        
+            $this->runTest(	false,
+                C_SEVERITY_WARNING,
+                i18n("Old Plugins are still installed"),
+                $sMessage);
+        }
+    }
+    
 	function runTest ($mResult, $iSeverity, $sHeadline = "", $sErrorMessage = "")
 	{
 		/**
@@ -101,6 +147,16 @@ class cSetupSystemtest extends cSetupMask
 	
 	function doPHPTests ()
 	{
+        #new demo client requires PHP5
+        if (!version_compare(phpversion(), "5.0.0", ">=") && $_SESSION["setuptype"] == 'setup')
+        {
+            $this->runTest(	false,
+    						C_SEVERITY_WARNING,
+    						i18n('Contenido demo client requires PHP 5 or higher'),
+                            i18n('The Contenido demo client requires PHP 5 or higher. If you want to install the demo client, please update your PHP version.')
+                          );
+        }
+    
 		$this->runTest(	phpversion(),
 						C_SEVERITY_NONE,
 						"PHP Version");
@@ -684,17 +740,17 @@ class cSetupSystemtest extends cSetupMask
 						$sPredictMessage = sprintf(i18n("Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file or directory %s, especially in environments where ACL (Access Control Lists) are used."), dirname($sFile));
 						break;
 					case C_PREDICT_CHANGEPERM_SAMEOWNER:
-						$mfileperms = substr(sprintf("%o", fileperms($sTarget)), -3);
+						$mfileperms = substr(sprintf("%o", @fileperms($sTarget)), -3);
 						$mfileperms{0} = intval($mfileperms{0}) | 0x6;
 						$sPredictMessage = sprintf(i18n("Your web server and the owner of your directory are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the directory mask to %s or set the owner to allow writing the directory."), dirname($sFile), $mfileperms);
 						break;
 					case C_PREDICT_CHANGEPERM_SAMEGROUP:
-						$mfileperms = substr(sprintf("%o", fileperms($sTarget)), -3);
+						$mfileperms = substr(sprintf("%o", @fileperms($sTarget)), -3);
 						$mfileperms{1} = intval($mfileperms{1}) | 0x6;
 						$sPredictMessage = sprintf(i18n("Your web server's group and the group of your directory are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the directory mask to %s or set the group to allow writing the directory."), dirname($sFile), $mfileperms);
 						break;					
 					case C_PREDICT_CHANGEPERM_OTHERS:
-						$mfileperms = substr(sprintf("%o", fileperms($sTarget)), -3);
+						$mfileperms = substr(sprintf("%o", @fileperms($sTarget)), -3);
 						$mfileperms{2} = intval($mfileperms{2}) | 0x6;
 						$sPredictMessage = sprintf(i18n("Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."), dirname($sFile), $mfileperms);
 						break;		

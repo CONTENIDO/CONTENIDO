@@ -42,7 +42,7 @@ class DBFSCollection extends ItemCollection
 			$dir = "";
 		}
 		
-		$this->select("dirname = '$dir' AND filename = '$file' AND idclient = '$client'");
+		$this->select("dirname = '$dir' AND filename = '$file' AND idclient = '$client' LIMIT 1");
 		
 		if ($item = $this->next())
 		{
@@ -101,13 +101,13 @@ class DBFSCollection extends ItemCollection
 		$path = $this->strip_path($path);
 		
 		/* Are there any subdirs? */
-		$this->select("dirname LIKE '$path/%' AND idclient = '$client'");
+		$this->select("dirname LIKE '$path/%' AND idclient = '$client' LIMIT 1");
 		if ($this->count() > 0)
 		{
 			return true;
 		}
 		
-		$this->select("dirname LIKE '$path%' AND idclient = '$client'");
+		$this->select("dirname LIKE '$path%' AND idclient = '$client' LIMIT 1");
 
 		if ($this->count() > 1)
 		{
@@ -136,7 +136,7 @@ class DBFSCollection extends ItemCollection
 			$dir = "";	
 		}
 		
-		$this->select("dirname = '$dir' AND filename = '$file' AND idclient = '$client'");
+		$this->select("dirname = '$dir' AND filename = '$file' AND idclient = '$client' LIMIT 1");
 		if ($this->next())
 		{
 			return true;
@@ -156,7 +156,7 @@ class DBFSCollection extends ItemCollection
 			return true;
 		}		
 		
-		$this->select("dirname = '$path' AND filename = '.' AND idclient = '$client'");
+		$this->select("dirname = '$path' AND filename = '.' AND idclient = '$client' LIMIT 1");
 		if ($this->next())
 		{
 			return true;
@@ -199,7 +199,7 @@ class DBFSCollection extends ItemCollection
 			if ($dir != "")
 			{
     			/* Check if the directory exists. If not, create it. */
-    			$this->select("dirname = '$dir' AND filename = '.' AND idclient = '$client'");
+    			$this->select("dirname = '$dir' AND filename = '.' AND idclient = '$client' LIMIT 1");
     			if (!$this->next())
     			{
     				$this->create($dir."/.");
@@ -262,7 +262,7 @@ class DBFSCollection extends ItemCollection
 			$dirname = "";	
 		}
 				
-		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client'");
+		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client' LIMIT 1");
 		if ($item = $this->next())
 		{
 			$item->set("content", $content);
@@ -285,7 +285,7 @@ class DBFSCollection extends ItemCollection
 			$dirname = "";
 		}
 				
-		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client'");
+		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client' LIMIT 1");
 		if ($item = $this->next())
 		{
 			return $item->get("size");
@@ -304,7 +304,7 @@ class DBFSCollection extends ItemCollection
 			$dirname = "";	
 		}
 				
-		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client'");
+		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client' LIMIT 1");
 		if ($item = $this->next())
 		{
 			return ($item->get("content"));	
@@ -325,7 +325,7 @@ class DBFSCollection extends ItemCollection
 		}
 				
 		
-		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client'");
+		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client' LIMIT 1");
 		if ($item = $this->next())
 		{
 			$this->delete($item->get("iddbfs"));	
