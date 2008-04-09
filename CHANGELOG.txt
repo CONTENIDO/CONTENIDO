@@ -50,6 +50,20 @@ $Id: CHANGELOG.txt,v 1.111 2007/08/20 21:55:52 bjoern.behrens Exp $
   einer Aktualisierung diese Praefixe manuell nachtragen oder neu 
   installieren. Das Setup wurde angepasst, Update an dieser Stelle 
   nicht möglich.
+- Auf der Login Seite können sich Benutzer des Systems ihr Passwort 
+  zusenden lassen.
+- Bei der Sprachsynchronisation ist es jetzt möglich, neben einzelnen 
+  Kategorien, auch alle Unterkateggorien mit zu kopieren. 
+  
+4.6.23
+----------------------------------------------------------------------
+- Bugfix fŸr Session Container 'file'
+- Bugfix fŸr Sprachrechte
+
+4.6.19 - 4.6.22
+----------------------------------------------------------------------
+- Newsletter: Removed some bugs.
+- Removed UTF-8 issue
 
 4.6.18
 ----------------------------------------------------------------------
