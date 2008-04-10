@@ -88,7 +88,7 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
         $newOption .= '{';
         $newOption .= 'if(langList.options[i].value == '.$idlang.')';
         $newOption .= ' {';
-        $newOption .= ' langList.options[i].innerHTML = \''.$langname.'\';';
+        $newOption .= ' langList.options[i].innerHTML = \''.$langname.' ('.$idlang.')\';';
         $newOption .= ' }';
         $newOption .= '}';
         $newOption .= '</script>';
