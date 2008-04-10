@@ -46,6 +46,20 @@ if (is_dbfs($path))
 	$qpath = $path;	
 }
 
+if ($path && $action != '') {
+    $sReloadScript = "<script type=\"text/javascript\">
+                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+                         if (left_bottom) {
+                             var href = left_bottom.location.href;
+                             href = href.replace(/&path.*/, '');
+                             left_bottom.location.href = href+'&path='+'".$path."';
+                             top.content.left.left_top.refresh();
+                         }
+                     </script>";
+} else {
+    $sReloadScript = "";
+}
+
 if ($action == "upl_modify_file")
 {
 	/* Did the user upload a new file? */
@@ -373,7 +387,7 @@ class UploadList extends FrontendList
 
 function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 {
-	global $cfg, $client, $cfgClient, $area, $frame, $sess, $browserparameters, $appendparameters, $perm, $auth;
+	global $cfg, $client, $cfgClient, $area, $frame, $sess, $browserparameters, $appendparameters, $perm, $auth, $sReloadScript;
 
 	if ($sortby == "")
 	{
@@ -488,6 +502,7 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 	
 	/* Object initializing */
 	$page = new UI_Page;
+    $page->addScript('reloadscript', $sReloadScript);
 	$list2 = new UploadList($startwrap, $endwrap, $itemwrap);
 	
 	$uploads = new UploadCollection;
@@ -918,6 +933,7 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
                                </style>');
     
 	$page->setContent($delform->render());
+    
 	$page->render();
 }
 

@@ -207,7 +207,7 @@ class DBFSCollection extends ItemCollection
 			}
 		} else {
 			$parent = $this->parent_dir($dir);
-
+            
 			if ($parent != ".")
 			{
     			if (!$this->dir_exists($parent))
@@ -217,22 +217,23 @@ class DBFSCollection extends ItemCollection
 			}
 		}
 		
-		$item = parent::create();
-		$item->set("idclient", $client);
-		$item->set("dirname", $dir);
-		$item->set("filename", $file);
-		$item->set("size", strlen($content));
-		
-		if ($mimetype != "")
-		{
-			$item->set("mimetype", $mimetype);
-		}
-		
-		$item->set("content", $content);
-		$item->set("created", date("Y-m-d H:i:s"));
-		$item->set("author", $auth->auth["uid"]);
-		$item->store();
-
+        if ($dir && !$this->dir_exists($dir) || $file != ".") {
+    		$item = parent::create();
+    		$item->set("idclient", $client);
+    		$item->set("dirname", $dir);
+    		$item->set("filename", $file);
+    		$item->set("size", strlen($content));
+    		
+    		if ($mimetype != "")
+    		{
+    			$item->set("mimetype", $mimetype);
+    		}
+    		
+    		$item->set("content", $content);
+    		$item->set("created", date("Y-m-d H:i:s"));
+    		$item->set("author", $auth->auth["uid"]);
+    		$item->store();
+        }
 		return ($item);	
 	}
 	

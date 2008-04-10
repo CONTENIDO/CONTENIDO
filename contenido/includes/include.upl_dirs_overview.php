@@ -54,12 +54,13 @@ function getExpandCollapseButton($item)
 #################
 # Create Folder
 #################
-$newdirFolder = $_GET['foldername'];
+#Fixxed by Timo Trautmann double database entries also called by action upl_mkdir
+/*$newdirFolder = $_GET['foldername'];
 $newdirPath = $_GET['path'];
 if($newdirFolder != '')
 {
 	uplmkdir($newdirPath, $newdirFolder);
-}
+}*/
 
 // Use remembered path from upl_last_path (from session)
 if (!isset($path) && $sess->is_registered("upl_last_path"))
@@ -325,7 +326,7 @@ $tpl->set('d', 'BGCOLOR', $bgcolor);
 $tpl->set('d', 'INDENT', 3);
 $tpl->set('d', 'DIRNAME', $mstr);
 $tpl->set('d', 'EDITBUTTON', '');
-$tpl->set('d', 'DELETEBUTTON', '<img src="images/delete_inact.gif">');
+$tpl->set('d', 'DELETEBUTTON', '');
 $tpl->set('d', 'COLLAPSE', '');
 $tpl->next();
 
@@ -465,7 +466,7 @@ $tpl->set('d', 'BGCOLOR', $bgcolor);
 $tpl->set('d', 'INDENT', 3);
 $tpl->set('d', 'DIRNAME', $mstr);
 $tpl->set('d', 'EDITBUTTON', '');
-$tpl->set('d', 'DELETEBUTTON', '<img style="margin-left:10px;" src="images/delete_inact.gif">');
+$tpl->set('d', 'DELETEBUTTON', '');
 $tpl->set('d', 'COLLAPSE', '');
 $tpl->next();
 
@@ -553,7 +554,7 @@ if (is_array($objects))
 	}
 }
 
-
+$tpl->set('s', 'ID_PATH', $path);
 chdir($cfg["path"]["contenido"]);
 $tpl->generate($cfg['path']['templates'].$cfg['templates']['upl_dirs_overview']);
 
