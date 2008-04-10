@@ -44,7 +44,7 @@ function langEditLanguage($idlang, $langname, $encoding, $active, $direction = "
                idlang = ".$idlang;
 
     $db->query($sql);
-
+    
     return true;
         
 }
@@ -72,15 +72,7 @@ function langNewLanguage($name, $client)
   $db->query($sql);
   $sql = "INSERT INTO ".$cfg["tab"]["clients_lang"]." (idclientslang, idclient, idlang) VALUES ('".$db->nextid($cfg["tab"]["clients_lang"])."', '$client','$new_idlang')";
   $db->query($sql);
-  
-  // update language dropdown in header
-  $newOption = '<script>';
-  $newOption .= 'var newLang = new Option("'.$name.' ('.$new_idlang.')", "'.$new_idlang.'", false, false);';
-  $newOption .= 'var langList = top.header.document.getElementById("cLanguageSelect");';
-  $newOption .= 'langList.options[langList.options.length] = newLang;';
-  $newOption .= '</script>';
-  echo $newOption;
-  
+    
   // Ab hyr seynd Drachen
   $destPath = $cfgClient[$client]["path"]["frontend"];
   
@@ -620,23 +612,7 @@ function langDeleteLanguage($idlang, $idclient = "") {
                 $db->query($sql);                
         } else {
             return $notification->messageBox("error", i18n("Could not delete language"),0);
-        }
-        
-        // finally delete from dropdown in header
-        $newOption = '<script>';
-        $newOption .= 'var langList = top.header.document.getElementById("cLanguageSelect");';
-        $newOption .= 'var thepos="";';
-        $newOption .= 'for(var i=0;i<langList.length;i++)';
-        $newOption .= '{';
-        $newOption .= 'if(langList.options[i].value == '.$idlang.')';
-        $newOption .= ' {';
-        $newOption .= ' thepos = langList.options[i].index;';
-        $newOption .= ' }';
-        $newOption .= '}';
-        $newOption .= 'langList.remove(thepos);';
-        $newOption .= '</script>';
-        echo $newOption;
-        
+        }       
 }
 
 /**

@@ -21,6 +21,8 @@ includePlugins("languages");
 $clang = new Language;
 $clang->loadByPrimaryKey($idlang);
 
+#Script for refreshing Language Box in Header
+$newOption = '';
 
 $db2 = new DB_Contenido;
 
@@ -36,6 +38,34 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
 {
     	$page = new UI_Page;
     	$page->addScript('reload', $sReload);
+        
+        if ($action == "lang_deletelanguage") {
+            // finally delete from dropdown in header
+            $newOption = '<script>';
+            $newOption .= 'var langList = top.header.document.getElementById("cLanguageSelect");';
+            $newOption .= 'var thepos="";';
+            $newOption .= 'for(var i=0;i<langList.length;i++)';
+            $newOption .= '{';
+            $newOption .= 'if(langList.options[i].value == '.$idlang.')';
+            $newOption .= ' {';
+            $newOption .= ' thepos = langList.options[i].index;';
+            $newOption .= ' }';
+            $newOption .= '}';
+            $newOption .= 'langList.remove(thepos);';
+            $newOption .= '</script>';
+        }
+        
+        if ($action == "lang_newlanguage") {
+             // update language dropdown in header
+            $new_idlang = $db->nextid($cfg["tab"]["lang"])-1;
+            $newOption = '<script language="javascript">';
+            $newOption .= 'var newLang = new Option("'.i18n("New language").' ('.$new_idlang.')", "'.$new_idlang.'", false, false);';
+            $newOption .= 'var langList = top.header.document.getElementById("cLanguageSelect");';
+            $newOption .= 'langList.options[langList.options.length] = newLang;';
+            $newOption .= '</script>';
+        }
+        
+        $page->addScript('refreshHeader', $newOption);
     	$page->render();	
 } else
 {
@@ -49,6 +79,19 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
     	$language->setProperty("dateformat", "full", stripslashes($datetimeformat));
     	$language->setProperty("dateformat", "date", stripslashes($dateformat));
     	$language->setProperty("dateformat", "time", stripslashes($timeformat));
+        
+        // update dropdown in header
+        $newOption = '<script language="javascript">';
+        $newOption .= 'var langList = top.header.document.getElementById("cLanguageSelect");';
+        $newOption .= 'var thepos="";';
+        $newOption .= 'for(var i=0;i<langList.length;i++)';
+        $newOption .= '{';
+        $newOption .= 'if(langList.options[i].value == '.$idlang.')';
+        $newOption .= ' {';
+        $newOption .= ' langList.options[i].innerHTML = \''.$langname.'\';';
+        $newOption .= ' }';
+        $newOption .= '}';
+        $newOption .= '</script>';
 	}
     if(!$perm->have_perm_area_action($area, $action))
     {
@@ -140,6 +183,8 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
     	$page = new UI_Page;
     	$page->setContent($noti.$form->render());
     	$page->addScript('reload', $sReload);
+        $page->addScript('refreshHeader', $newOption);
+        
     	$page->render();
     }
     } 
