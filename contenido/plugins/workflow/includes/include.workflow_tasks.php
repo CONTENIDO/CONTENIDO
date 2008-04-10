@@ -176,7 +176,7 @@ foreach ($isCurrent as $key => $value)
             $idart = $db->f("idart");       
 
     		 # create javascript multilink
-        	$tmp_mstr = '<a href="javascript://" onclick="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+        	$tmp_mstr = '<a href="javascript://" onclick="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: '.$db->f('idart').' idcatart: '.$db->f('idcatart').'" alt="idart: '.$db->f('idart').' idcatart: '.$db->f('idcatart').'">%s</a>';
 
         	$mstr = sprintf($tmp_mstr, 'right_top',
                                    $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"),

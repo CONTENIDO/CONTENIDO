@@ -670,7 +670,7 @@ if ($iAffectedRows <= 0) {
 		    }
 
 			if ($perm->have_perm_area_action_item("con_editcontent", "con_editart",$idcat)) {
-				$editart = "<a href=\"main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=4&contenido=$sSession\" title=\"idart: $idart dcatart: $idcatart\">".$db->f("title")."</a>";
+				$editart = "<a href=\"main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=4&contenido=$sSession\" title=\"idart: $idart idcatart: $idcatart\" alt=\"idart: $idart idcatart: $idcatart\">".$db->f("title")."</a>";
 			} else {
 				$editart = $db->f("title");
 			}
