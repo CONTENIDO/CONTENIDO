@@ -1,4 +1,6 @@
 <?php
+cInclude("includes", "functions.pathresolver.php");
+
 function str_replace_recursive ($array) {
 	if (!is_array($array)) return false;
 	
@@ -42,14 +44,22 @@ if ($_GET['step'] == 'collapse') {
 	$oTree->setTreeStatus($_GET['idpica_alloc']);
 }
 
+#build category path
+$catString = '';
+prCreateURLNameLocationString($idcat, '/', $catString);
+$oArticle = new Article ($idart, $client, $lang);
+$sArticleTitle = $oArticle->getField('title');
+
+$sLocationString = "<div class=\"categorypath\">".$catString.'/'.htmlspecialchars($sArticleTitle)."</div>";
+
 // load allocations
 $loadedAllocations = $oAlloc->loadAllocations($this_idartlang);
 
 $oTree->setChecked($loadedAllocations);
 $result = $oTree->renderTree(true);
 
-if ($result === false) {
-	$result = '&nbsp;';
+if ($result == false) {
+    $result = $notification->returnNotification("warning", i18n('There is no Content Allocation tree.'));
 } else {
 	if (!is_object($tpl)) { $tpl = new Template; }
 	$hiddenfields = '<input type="hidden" name="action" value="storeallocation">
@@ -85,7 +95,7 @@ if ($result === false) {
 }
 
 
-$oPage->setContent($result . markSubMenuItem(5, true));
+$oPage->setContent($sLocationString.$result . markSubMenuItem(5, true));
 $oPage->render();
 
 ?>

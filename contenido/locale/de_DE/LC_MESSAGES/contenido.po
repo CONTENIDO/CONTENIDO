@@ -5959,3 +5959,6 @@ msgstr "Kein Mandant ausgew&auml;hlt"
 
 msgid "-- No Language available --"
 msgstr "-- Keine Sprache verf&uuml;gbar --"
+
+msgid "There is no Content Allocation tree."
+msgstr "Es exisitiert kein Content Allocation Baum."

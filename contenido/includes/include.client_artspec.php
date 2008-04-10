@@ -122,7 +122,7 @@ if (is_array($artspec))
     	
     	if ($artspec[$id]['default'] == 0)
     	{
-    		$defLink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'artikel_spez_akt.gif" title="'.i18n("Make this article specification default").'">');
+    		$defLink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'artikel_spez_inakt.gif" title="'.i18n("Make this article specification default").'">');
 		
     	
     		$list->setCell($count,2, $link->render().$dlink->render().$olink->render().$defLink->render());
@@ -130,7 +130,7 @@ if (is_array($artspec))
 			
     	} else
     	{
-	   		$defLinkText = '<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'artikel_spez_inakt.gif" title="'.i18n("This article specification is default").'" style="padding-left:3px;">';
+	   		$defLinkText = '<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'artikel_spez_akt.gif" title="'.i18n("This article specification is default").'" style="padding-left:3px;">';
     		
     		$list->setCell($count,2, $link->render().$dlink->render().$olink->render().$defLinkText);
    		

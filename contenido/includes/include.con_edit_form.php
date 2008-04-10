@@ -197,25 +197,28 @@ else {
 		$arrArtSpecs = getArtSpec();
 
 		$tmp_inputArtSort = "<select $disabled name=\"artspec\" style=\"width:400px;\" class=\"text_medium\">";
-		if (count($arrArtSpecs) == 0)
+		$iAvariableSpec = 0;
+        foreach ($arrArtSpecs as $id => $value)
+	    {
+            if ($arrArtSpecs[$id]['online'] == 1) {
+                if (($arrArtSpecs[$id]['default'] == 1) && (strlen($tmp_artspec) == 0 || $tmp_artspec == 0))
+                {
+                    $tmp_inputArtSort .= "<option value=\"$id\" selected>".urldecode($arrArtSpecs[$id]['artspec'])."</option>";
+                } elseif ($id == $tmp_artspec)
+                {
+                    $tmp_inputArtSort .= "<option value=\"$id\" selected>".urldecode($arrArtSpecs[$id]['artspec'])."</option>";
+                } else
+                {
+                    $tmp_inputArtSort .= "<option value=\"$id\">".ucfirst($arrArtSpecs[$id]['artspec'])."</option>";
+                }
+                $iAvariableSpec++;
+            }
+        }
+        $tmp_inputArtSort .= "</select>";
+        
+        if ($iAvariableSpec == 0)
 		{
 			$tmp_inputArtSort = i18n("No article specifications found!");
-		} else
-		{
-			foreach ($arrArtSpecs as $id => $value)
-			{
-				if (($arrArtSpecs[$id]['default'] == 1) && (strlen($tmp_artspec) == 0 || $tmp_artspec == 0))
-				{
-					$tmp_inputArtSort .= "<option value=\"$id\" selected>".urldecode($arrArtSpecs[$id]['artspec'])."</option>";
-				} elseif ($id == $tmp_artspec)
-				{
-					$tmp_inputArtSort .= "<option value=\"$id\" selected>".urldecode($arrArtSpecs[$id]['artspec'])."</option>";
-				} else
-				{
-					$tmp_inputArtSort .= "<option value=\"$id\">".ucfirst($arrArtSpecs[$id]['artspec'])."</option>";
-				}
-			}
-			$tmp_inputArtSort .= "</select>";
 		}
 
 		$tpl->set('s', 'ARTIKELART', i18n("Article specification"));
