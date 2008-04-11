@@ -26,10 +26,23 @@ class cApiTemplateConfigurationCollection extends ItemCollection
 		}
 	}
 	
+    function delete ($idtplcfg) {
+        $item = parent::delete($idtplcfg);
+        $oContainerConfCollection = new cApiContainerConfigurationCollection ("idtplcfg = '$idTplcfgStandard'");
+        $aDelContainerConfIds = array();
+        while ($oContainerConf = $oContainerConfCollection->next()) {
+            array_push($aDelContainerConfIds, $oContainerConf->get('idcontainerc'));
+        }
+        
+        foreach($aDelContainerConfIds as $iDelContainerConfId) {
+            $oContainerConfCollection->delete($iDelContainerConfId);
+        }
+    }
+    
 	function create ($idtpl)
 	{
         global $auth;
-        
+
 		$item = parent::create();
 		$item->set("idtpl", $idtpl);
         $item->set("author", $auth->auth['uname']);
@@ -37,7 +50,27 @@ class cApiTemplateConfigurationCollection extends ItemCollection
         $item->set("created", date('YmdHis'));
         $item->set("lastmodified", '0000-00-00 00:00:00');
 		$item->store();
-		
+        
+		$iNewTplCfgId = $item->get("idtplcfg");
+        
+        #if there is a preconfiguration of template, copy its settings into templateconfiguration
+        $templateCollection = new cApiTemplateCollection("idtpl = '$idtpl'");
+        
+        if ($template = $templateCollection->next()) {
+            $idTplcfgStandard = $template->get("idtplcfg");
+            if ($idTplcfgStandard > 0) {
+                $oContainerConfCollection = new cApiContainerConfigurationCollection ("idtplcfg = '$idTplcfgStandard'");
+                $aStandardconfig = array();
+                while ($oContainerConf = $oContainerConfCollection->next()) {
+                    $aStandardconfig[$oContainerConf->get('number')] = $oContainerConf->get('container');
+                }
+                
+                foreach ($aStandardconfig as $iContainernumber => $sContainer) {
+                    $oContainerConfCollection->create($iNewTplCfgId, $iContainernumber, $sContainer);
+                }
+            }
+        }
+        
 		return ($item);
 	}
 	

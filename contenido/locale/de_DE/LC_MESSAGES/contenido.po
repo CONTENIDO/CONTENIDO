@@ -5962,3 +5962,14 @@ msgstr "-- Keine Sprache verf&uuml;gbar --"
 
 msgid "There is no Content Allocation tree."
 msgstr "Es exisitiert kein Content Allocation Baum."
+
+msgid "Form error"
+msgstr "Formularfehler"
+
+msgid "Please select a new Position for new category"
+msgstr "Bitte w&auml;hlen Sie eine Position f&uuml;r die neue Kategorie"
+
+msgid "Field category name is empty"
+msgstr "Das Feld Kateogoriename ist leer"
+
+

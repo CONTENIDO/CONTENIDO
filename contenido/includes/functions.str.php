@@ -683,13 +683,9 @@ function strDeleteCategory ($idcat) {
         if (strHasArticles($idcat)) {
             return "0202";        // category has arts
         } else {
-
-            /* Delete language dependend part */
-            $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='$idcat' AND idlang='$lang'";
-            $db->query($sql);
-
             $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='$idcat' AND idlang='$lang'";
             $db->query($sql);
+            
             while ($db->next_record()) {
                 ////// delete entry in 'tpl_conf'-table
                 $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg='".$db->f("idtplcfg")."'";
@@ -698,6 +694,10 @@ function strDeleteCategory ($idcat) {
                 $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".$db->f("idtplcfg")."'";
                 $db2->query($sql);
             }
+            
+            /* Delete language dependend part */
+            $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='$idcat' AND idlang='$lang'";
+            $db->query($sql);
 
             /* Are there any additional languages? */
             $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='$idcat'";
@@ -744,6 +744,7 @@ function strDeleteCategory ($idcat) {
                 $db2->query($sql);
 
                 $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".$db->f("idtplcfg")."'";
+                echo $sql;
                 $db2->query($sql);
             }
 
