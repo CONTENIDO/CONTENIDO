@@ -4815,7 +4815,7 @@ msgstr "Mindestens eine Unterkategorie existiert, löschen nicht möglich"
 # e:\timo\contenido_head/contenido/includes/include.str_overview.php:345
 #: contenido/includes/include.str_overview.php:686
 msgid "One or more articles are existing, unable to delete"
-msgstr "Ein oder mehrere Artikel existieren, l&ouml;schen nicht m&ouml;glich"
+msgstr "Ein oder mehrere Artikel existieren, löschen nicht möglich"
 
 # e:\timo\contenido_head/contenido/includes/include.str_overview.php:349
 #: contenido/includes/include.str_overview.php:690
