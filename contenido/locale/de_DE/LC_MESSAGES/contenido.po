@@ -4810,7 +4810,7 @@ msgstr "M&ouml;chten Sie die folgende Kategorie wirklich l&ouml;schen:<br><br><b
 # e:\timo\contenido_head/contenido/includes/include.str_overview.php:340
 #: contenido/includes/include.str_overview.php:681
 msgid "One or more subtrees are existing, unable to delete"
-msgstr "Mindestens eine Unterkategorie existiert, l&ouml;schen nicht m&ouml;glich"
+msgstr "Mindestens eine Unterkategorie existiert, löschen nicht möglich"
 
 # e:\timo\contenido_head/contenido/includes/include.str_overview.php:345
 #: contenido/includes/include.str_overview.php:686
@@ -4820,7 +4820,7 @@ msgstr "Ein oder mehrere Artikel existieren, l&ouml;schen nicht m&ouml;glich"
 # e:\timo\contenido_head/contenido/includes/include.str_overview.php:349
 #: contenido/includes/include.str_overview.php:690
 msgid "One or more subtrees and one or more articles are existing, unable to delete."
-msgstr "Mindestens eine Unterkategorie sowie mindestens ein Artikel existieren, l&ouml;schen nicht m&ouml;glich"
+msgstr "Mindestens eine Unterkategorie sowie mindestens ein Artikel existieren, löschen nicht möglich"
 
 # e:\timo\contenido_head/contenido/includes/include.str_overview.php:375
 # e:\timo\contenido_head/contenido/includes/include.str_overview.php:390
