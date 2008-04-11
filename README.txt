@@ -116,6 +116,8 @@ I:       Deutsche Version README
   Internet Security und Popup- bzw. Werbeblocker. Diese Anwendungen verhindern
   die ordnungsgemäße Funktionsweise von Contenido.
   
+  Contenido Backend 4.8 wird derzeit nur in den Sprachen Deutsch und Englisch unterstützt.
+  
 
 -------------------------------------------------------------------
 2) Installation
@@ -306,7 +308,8 @@ II:       English Version README
 - Browser (Internet Explorer Version 6 or higher,
            Firefox Version 2.0 or higher, Safari für Mac Version 3 or 
            higher)
-
+           
+  Contenido Backend 4.8 supports languages german and english only.
 
 -------------------------------------------------------------------
 2) Installation

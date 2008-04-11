@@ -870,6 +870,11 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 					delcheckboxes[i].checked = !(delcheckboxes[i].checked);
 				}
 			}
+            
+            if ( parent.parent.frames["right"].frames["right_top"].document.getElementById(\'c_0\') ) {
+                menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById(\'c_0\');
+                parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
+            }
     </script>
     <!--[if IE 6]>
         <script type="text/javascript">
