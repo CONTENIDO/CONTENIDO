@@ -28,8 +28,14 @@ class cApiTemplateConfigurationCollection extends ItemCollection
 	
 	function create ($idtpl)
 	{
+        global $auth;
+        
 		$item = parent::create();
 		$item->set("idtpl", $idtpl);
+        $item->set("author", $auth->auth['uname']);
+        $item->set("status", 0);
+        $item->set("created", date('YmdHis'));
+        $item->set("lastmodified", '0000-00-00 00:00:00');
 		$item->store();
 		
 		return ($item);
