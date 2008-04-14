@@ -29,6 +29,18 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
     private $_iCurrentLevel;
     
     /**
+     * @var boolean
+     * @access private
+     */
+    private $_bAsArray;
+    
+    /**
+     * @var array
+     * @access private
+     */
+    private $_aCategories;
+    
+    /**
      * Constructor.
      * @access public
      * @param DB_Contenido $oDb
@@ -41,6 +53,7 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
     public function __construct(DB_Contenido $oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
         parent::__construct($oDb, $aCfg, $iClient, $iLang, $aCfgClient);
         $this->oCategories = null;
+        $this->_bAsArray = false;
     }
     
     /**
@@ -58,6 +71,24 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
         $this->getBreadcrumb($iBaseCategoryId, $iRootLevel, $bReset);
         $this->oCategories->reverse(); // For a breadcrumb, we start at the main category, not the current one.
         return $this->oCategories;
+    }
+    
+    /**
+     * Assuming we are in a Sub-Category and need to get the path to it starting at its root.
+     * Here, the path starts at root node.
+     * @access public
+     * @param int $iBaseCategoryId idcat of Sub-Category
+     * @param int $iRootLevel Level until which the path should be created
+     * @param boolean $bReset If true, will reset internal property $this->oCategories to an empty object
+     * @return array
+     * @author Rudi Bieller
+     * @todo Add possibility to return an array
+     */
+    public function getAsArray($iBaseCategoryId, $iRootLevel = 0, $bReset = false) {
+        $this->_bAsArray = true;
+        $this->getBreadcrumb($iBaseCategoryId, $iRootLevel, $bReset);
+        $this->_aCategories = array_reverse($this->_aCategories); // For a breadcrumb, we start at the main category, not the current one.
+        return $this->_aCategories;
     }
     
     /**
@@ -99,9 +130,13 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
 	        return false;
 	    }
 	    $this->oDb->next_record();
-	    $oContenidoCategory = new Contenido_Category(new DB_Contenido(), $this->aCfg);
-	    $oContenidoCategory->load(intval($this->oDb->f('idcat')), true, $this->iLang);
-	    $this->oCategories->add($oContenidoCategory, $oContenidoCategory->getIdCat());
+	    if ($this->_bAsArray === false) {
+		    $oContenidoCategory = new Contenido_Category(new DB_Contenido(), $this->aCfg);
+		    $oContenidoCategory->load(intval($this->oDb->f('idcat')), true, $this->iLang);
+		    $this->oCategories->add($oContenidoCategory, $oContenidoCategory->getIdCat());
+	    } else {
+	        $this->_aCategories[] = intval($this->oDb->f('idcat'));
+	    }
 	    $this->_iCurrentLevel = (int) $this->oDb->f('level');
 	    // if we are not at level 0, loop until we are
 	    if ($this->_iCurrentLevel > $iRootLevel) {
@@ -109,7 +144,11 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
 	            $this->getBreadcrumb($this->oDb->f('parentid'), $iRootLevel);
 	        }
 	    }
-	    return $this->oCategories;
+	    if ($this->_bAsArray === false) {
+	        return $this->oCategories;
+	    } else {
+	        return $this->_aCategories;
+	    }
     }
 }
 ?>
