@@ -289,7 +289,7 @@ img {
 	color:#333;
 }
 #content h1 {
-	line-height:18px;
+	line-height:22px;
 }
 #content h1 a {
 	color:#0060b1;
@@ -362,9 +362,10 @@ img.hr {
 	color:#999;
 }
 #footerContentLeft {
-	width:460px;
+	width:450px;
 	margin:10px 0 0 30px;
 	font-size:10px;
+	padding-right:10px;
 }
 * html #footerContentLeft {
 	margin-left:15px; /* hae? */
