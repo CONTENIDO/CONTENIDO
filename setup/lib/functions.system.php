@@ -2,6 +2,11 @@
 
 //Fuction checks if a plugin is already installed
 function checkExistingPlugin($db, $sPluginname) {
+    #new install: all plugins are checked
+    if ($_SESSION["setuptype"] == "setup") {
+        return true;
+    }
+    
     $sPluginname = (string)$sPluginname;
     $sTable = $_SESSION["dbprefix"]."_nav_sub";
     $sSql = "";

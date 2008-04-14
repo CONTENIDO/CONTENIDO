@@ -15,9 +15,6 @@ msgstr ""
 "X-Poedit-SourceCharset: iso-8859-1\n"
 "X-Poedit-SearchPath-0: setup\n"
 
-msgid "Sense of this plugin is to store, contactdata into tables and prepares it for displaying in backend. This contactdata is collected with forms. If you have for example two contact forms for different purposes, you can define in backend, which fields from it you like to store."
-msgstr "Sinn dieses Plugins ist, Kontaktdaten, die über Formulare gesammelt werden, in eigene Tabellen zu speichern und entsprechend aufbereitet im Backend zur Verfügung zu stellen.<br>Hat man beispielsweise zwei Kontaktformulare für verschiedene Zwecke, kann man diese im Backend anlegen und definieren, welche Felder daraus man speichern möchte."
-
 msgid "Newsletterfunctionality for dispatching text newsletters and HTML-Newsletters, extensible with professional newsletter extensions. Definition of newsletter recipients and groups of recipients. Layout design of the HTML-Newsletters by Contenido articles."
 msgstr "Newsletterfunktionalität zum Versand von Textnewslettern und HTML-Newslettern, erweiterbar mit professionellen Newsletter Erweiterungen. Definition von Newsletterempfängern und Empfängergruppen. Layouterstellung des HTML-Newsletters mit Hilfe von Contenidoartikeln."
 
@@ -110,14 +107,6 @@ msgstr "Zusätzliche Plugins"
 #: setup/steps/forms/additionalplugins.php:32
 msgid "Please select Plugins to be installed"
 msgstr "Bitte wählen Sie die zu installierenden Plugins"
-
-#: setup/steps/forms/additionalplugins.php:36
-msgid "ConMan"
-msgstr "ConMan"
-
-#: setup/steps/forms/additionalplugins.php:36
-msgid "Contenido Contact Manager"
-msgstr "Contenido Contact Manager"
 
 #: setup/steps/forms/additionalplugins.php:37
 msgid "Newsletter"

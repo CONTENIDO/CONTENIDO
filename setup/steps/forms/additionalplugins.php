@@ -38,7 +38,6 @@ class cSetupAdditionalPlugins extends cSetupMask
         
 		// add new plugins to this array and you're done.
 		$aPlugins = array();
-		$aPlugins['plugin_conman'] = array('label' => i18n('ConMan'), 'desc' => i18n('Sense of this plugin is to store, contactdata into tables and prepares it for displaying in backend. This contactdata is collected with forms. If you have for example two contact forms for different purposes, you can define in backend, which fields from it you like to store.'));
 		$aPlugins['plugin_newsletter'] = array('label' => i18n('Newsletter'), 'desc' => i18n('Newsletterfunctionality for dispatching text newsletters and HTML-Newsletters, extensible with professional newsletter extensions. Definition of newsletter recipients and groups of recipients. Layout design of the HTML-Newsletters by Contenido articles.'));
 		$aPlugins['plugin_content_allocation'] = array('label' => i18n('Content Allocation'), 'desc' => i18n('For the representation and administration of content, 4fb developed the Content Allocation and content include technology. This technology dynamically allows on basis of a Template, to put the content in different places and in different formats according to several criteria.'));
 		

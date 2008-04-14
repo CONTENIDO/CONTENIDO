@@ -91,5 +91,3 @@ INSERT INTO !PREFIX!_area VALUES ('603', 'workflow', 'workflow_step_edit', '1', 
 INSERT INTO !PREFIX!_area VALUES ('604', 'con', 'con_workflow', '0', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('801', '0', 'content_allocation', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('802', 'con', 'con_contentallocation', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES ('900', '0', 'view_contacts', '1', '1', '0');
-INSERT INTO !PREFIX!_area VALUES ('901', '0', 'edit_contact_types', '1', '1', '0');

@@ -212,11 +212,3 @@ INSERT INTO !PREFIX!_files VALUES ('801', '801', 'content_allocation/includes/in
 INSERT INTO !PREFIX!_files VALUES ('802', '801', 'content_allocation/includes/include.right_top.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('803', '801', 'content_allocation/includes/include.right_bottom.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('804', '802', 'content_allocation/includes/include.contentallocation_article.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('900', '900', 'contacts/includes/include.view_contacts.left_top.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('901', '900', 'contacts/includes/include.view_contacts.left_bottom.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('902', '900', 'contacts/includes/include.view_contacts.right_top.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('903', '900', 'contacts/includes/include.view_contacts.right_bottom.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('904', '901', 'contacts/includes/include.edit_contact_forms.left_top.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('905', '901', 'contacts/includes/include.edit_contact_forms.left_bottom.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('906', '901', 'contacts/includes/include.edit_contact_forms.right_top.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('907', '901', 'contacts/includes/include.edit_contact_forms.right_bottom.php', 'main');

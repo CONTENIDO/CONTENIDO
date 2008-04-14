@@ -1,4 +1,4 @@
-Contenido 4.8.0
+Contenido 4.8.1
 Lizenz:        GNU General Public Licence (GPL)
 Copyright:     (c) 2003-2005, four for business AG
 Informationen: http://www.contenido.org

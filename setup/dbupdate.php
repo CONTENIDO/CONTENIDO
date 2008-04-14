@@ -126,11 +126,6 @@ $contentChunks = explode("\n", file_get_contents("data/examples.txt"));
 
 $sysadminChunk = explode("\n", file_get_contents("data/sysadmin.txt"));
 
-if ($_SESSION["plugin_conman"] == 'true') {
-    $conman = explode("\n", file_get_contents("data/plugin_conman.txt"));
-    $pluginChunks = array_merge($pluginChunks, $conman);
-}
-
 if ($_SESSION["plugin_newsletter"] == 'true') {
     $newsletter = explode("\n", file_get_contents("data/plugin_newsletter.txt"));
     $pluginChunks = array_merge($pluginChunks, $newsletter);

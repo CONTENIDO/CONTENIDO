@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- Plugin Contact XML language file -->
-<plugin>
-	<contacts>ConMan</contacts>
-	<view_contacts>Kontakte anzeigen</view_contacts>
-	<edit_contact_types>Kontakte bearbeiten</edit_contact_types>
-</plugin>

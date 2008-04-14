@@ -165,16 +165,4 @@ INSERT INTO !PREFIX!_actions VALUES ('616', '6', '', 'workflow_inherit_down', ''
 INSERT INTO !PREFIX!_actions VALUES ('617', '604', '', 'workflow_task_user_select', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('618', '604', '', 'workflow_do_action', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('800', '802', '', 'storeallocation', '', '', 1);
-INSERT INTO !PREFIX!_actions VALUES ('900', '901', '', 'contact_type_create', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('901', '901', '', 'contact_type_store', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('902', '901', '', 'contact_type_details', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('903', '901', '', 'contact_type_delete', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('904', '901', '', 'contact_properties_overview', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('905', '901', '', 'contact_property_set_order', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('906', '901', '', 'contact_property_add', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('907', '901', '', 'contact_property_delete', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('908', '900', '', 'contact_data_view', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('909', '900', '', 'contact_data_delete', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('910', '900', '', 'contact_data_export', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('911', '901', '', 'contact_type_sync', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('444', '77', '', 'frontendgroup_user_add', '', '', '1');
