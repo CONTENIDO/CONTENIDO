@@ -334,7 +334,7 @@ class Contenido_Category extends Contenido_Category_Base {
     }
     
     public function getCategoryLanguage() {
-        return !is_null($this->oCategoryLanguage) ? $this->oCategoryLanguage : new Contenido_Category_Language();
+        return !is_null($this->oCategoryLanguage) ? $this->oCategoryLanguage : new Contenido_Category_Language($this->oDb, $this->aCfg);
     }
     
     public function getIdCat() {
@@ -696,7 +696,7 @@ class Contenido_Category_Language extends Contenido_Category_Base {
 	    $this->setIdTemplateConfig($this->oDb->f('idtplcfg'));
 	    $this->setName($this->oDb->f('name'));
 	    $this->setVisible($this->oDb->f('visible'));
-	    $this->setPublic($this->oDb->f('postid'));
+	    $this->setPublic($this->oDb->f('public'));
 	    $this->setStatus($this->oDb->f('status'));
 	    $this->setAuthor($this->oDb->f('author'));
 	    $this->setDateCreated($this->oDb->f('created'));
