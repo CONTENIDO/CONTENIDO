@@ -1285,34 +1285,34 @@ function conMakeStart($idcatart, $is_start)
 
 	if ($cfg["is_start_compatible"] == true)
 	{
-    	$sql = "SELECT idcat, is_start FROM ".$cfg["tab"]["cat_art"]." WHERE idcatart = '$idcatart'";
+        $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idcatart = '$idcatart'";
 
-    	$db->query($sql);
-    	$db->next_record();
+        $db->query($sql);
+        $db->next_record();
 
-    	$tmp_idcat = $db->f("idcat");
+        $tmp_idcat = $db->f("idcat");
     
-    	$set = $is_start;
     
-		$sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET is_start = 0 WHERE idcat = $tmp_idcat";
-    	$db->query($sql);
-
-    	$sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET is_start='$set' WHERE idcatart = '$idcatart'";
-    	$db->query($sql);
-    
-        if ( $set == 1 )
+        $sql = "SELECT tblCatArt.idcatart ".
+                       "FROM ".$cfg["tab"]["cat_art"]." tblCatArt, ". $cfg["tab"]["art_lang"]." tblArtLang ".
+                              "WHERE tblCatArt.idart = tblArtLang.idart AND tblCatArt.is_start = '1' AND ".
+                                    "tblArtLang.idlang = '$lang' AND tblCatArt.idcat = '$tmp_idcat'";
+        $db->query($sql);
+       
+        $aIDs = array();
+        while ($db->next_record())
         {
-       		// deactivate timemanagement if article is a start-article   		
-       		$sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcatart = $idcatart";
-       		
-       		$db->query($sql);
-       		$db->next_record();
-       		
-       		$idart = $db->f("idart");
-       		
-       		$sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET timemgmt = 0 WHERE idart = $idart AND idlang = $lang";
-       		$db->query($sql); 
+            $aIDs[] = $db->f("idcatart");
         }
+      
+        if (count($aIDs) > 0)
+        {
+            $sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET is_start = 0 WHERE idcatart IN ('" . implode("','", $aIDs) . "')";
+            $db->query($sql);
+        }
+
+    	$sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET is_start='$is_start' WHERE idcatart = '$idcatart'";
+    	$db->query($sql);
 	} else {
 		$sql = "SELECT idcat, idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcatart='$idcatart'";
 		$db->query($sql);
