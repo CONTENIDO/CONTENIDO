@@ -219,6 +219,7 @@ class pApiContentAllocation {
 		}
 
 		$sql = $this->_buildQuery_MatchingContentByContentAllocationByCategories($aContentAllocation, $aCategories, $iOffset, $iNumOfRows);
+
 		$this->db->query($sql);
 
 	    $aResult = array();
@@ -254,7 +255,7 @@ class pApiContentAllocation {
 			{ // first
 				$tables[] = " ".$cfg['tab']['pica_alloc_con']." AS " . $sql_concat[$i];
 			} else {
-				$tables[] = " LEFT JOIN ".$cfg['tab']['pica_alloc']." AS " . $sql_concat[$i] . " USING (idartlang)";
+				$tables[] = " LEFT JOIN ".$cfg['tab']['pica_alloc_con']." AS " . $sql_concat[$i] . " USING (idartlang)";
 			}
 			if (is_int((int)$aContentAllocation[$i]) AND $aContentAllocation[$i] > 0)
 			{
