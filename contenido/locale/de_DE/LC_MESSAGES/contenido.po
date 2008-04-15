@@ -1667,7 +1667,7 @@ msgstr "Kein Zugriff!"
 # e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:173
 #: contenido/includes/functions.system.php:372
 msgid "Number of installed clients: "
-msgstr "Anzahl der installierten Mandanten"
+msgstr "Anzahl der installierten Mandanten: "
 
 #: contenido/includes/functions.system.php:375
 msgid "Client informations"
