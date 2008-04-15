@@ -67,6 +67,44 @@ function canReadFile ($sFilename)
 
 function canWriteFile ($sFilename)
 {
+    #check dir perms, create a new file read it and delete it
+    if (is_dir($sFilename)) {
+    
+        $sRandFilenamePath = $sFilename;
+        $i = 0;
+        
+        #try to find a random filename for write test, which does not exist
+        while (file_exists($sRandFilenamePath) &&  $i < 100) {
+            $sRandFilename = 'con_test'.rand(0,1000000000).'con_test';
+            $sRandFilenamePath = '';
+            
+            if ($sFilename{strlen($sFilename)-1} == '/') {
+                $sRandFilenamePath = $sFilename.$sRandFilename;
+            } else {
+                $sRandFilenamePath = $sFilename.'/'.$sRandFilename;
+            }
+            
+            $i++;
+        }
+        
+        #there is no file name which does not exist, exit after 100 trials
+        if ($i == 100) {
+            return false;
+        }
+
+        /* Ignore errors in case isWriteable() returns
+		 * a wrong information
+		 */
+		$fp = @fopen($sRandFilenamePath, "w");
+        if ($fp) {
+            unlink($sRandFilenamePath);
+            @fclose($fp);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 	if (isWriteable(dirname($sFilename)))
 	{
 		if (file_exists($sFilename))
