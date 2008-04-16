@@ -387,17 +387,19 @@ class DB_Sql {
 
   /* public: find available table names */
   function table_names() {
+    $return = array();
     $this->connect();
     $h = @mysql_query("show tables", $this->Link_ID);
     $i = 0;
-    while ($info = @mysql_fetch_row($h)) {
-      $return[$i]["table_name"]      = $info[0];
-      $return[$i]["tablespace_name"] = $this->Database;
-      $return[$i]["database"]        = $this->Database;
-      $i++;
+    if (isset($h) && @mysql_num_rows($h) > 0) {
+        while ($info = @mysql_fetch_row($h)) {
+          $return[$i]["table_name"]      = $info[0];
+          $return[$i]["tablespace_name"] = $this->Database;
+          $return[$i]["database"]        = $this->Database;
+          $i++;
+        }
+        @mysql_free_result($h);
     }
-
-    @mysql_free_result($h);
     return $return;
   }
 

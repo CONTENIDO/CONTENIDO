@@ -464,24 +464,24 @@ if (!$this->Link_ID)
     }
 
 	/* public: find available table names */
-	function table_names()
-	{
+	function table_names() {
+        $return = array();
 		$this->connect();
 		$h = @ mysqli_query($this->Link_ID, "show tables");
 		$i = 0;
-		while ($info = mysqli_fetch_row($h))
-		{
-			$return[$i]["table_name"] = $info[0];
-			$return[$i]["tablespace_name"] = $this->Database;
-			$return[$i]["database"] = $this->Database;
-			$i ++;
-		}
+        if (isset($h) && @mysqli_num_rows($h) > 0) {
+    		while ($info = mysqli_fetch_row($h))
+    		{
+    			$return[$i]["table_name"] = $info[0];
+    			$return[$i]["tablespace_name"] = $this->Database;
+    			$return[$i]["database"] = $this->Database;
+    			$i ++;
+    		}
 
-		mysqli_free_result($h);
+    		mysqli_free_result($h);
+        }
 		return $return;
 	}
-
-
 
 	/* private: error handling */
 	function halt($msg)
