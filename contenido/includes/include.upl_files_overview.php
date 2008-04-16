@@ -20,6 +20,13 @@ cInclude("includes", "api/functions.frontend.list.php");
 cInclude("classes", "class.properties.php");
 cInclude("classes", "class.todo.php");
 
+if (!(int) $client > 0) {
+  #if there is no client selected, display empty page
+  $oPage = new cPage;
+  $oPage->render();
+  return;
+}
+
 $appendparameters = $_REQUEST["appendparameters"];
 if (!is_array($browserparameters) && ($appendparameters != "imagebrowser" || $appendparameters != "filebrowser"))
 {

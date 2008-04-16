@@ -27,6 +27,14 @@ if (isset($_REQUEST['path'])) {
     $tpl->set('s', 'CAPTION2',	$sCurrentPathInfo);
 }
 
+#display notification, if there is no client
+if ((int) $client == 0) {
+    $sNoClientNotification = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;">'.i18n('No Client selected').'</div>';
+    $tpl->set('s', 'NOTIFICATION', $sNoClientNotification);
+} else {
+    $tpl->set('s', 'NOTIFICATION', '');
+}
+
 #####################
 # Form for 'Search'
 #####################
@@ -91,8 +99,6 @@ else
   $tpl->set('s', 'ACTION',	'');
   $tpl->set('s', 'DISPLAY_DIR',	'none');
 }
-
-
 
 #############
 # Searching

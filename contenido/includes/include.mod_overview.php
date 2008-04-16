@@ -22,6 +22,12 @@ cInclude("classes", "widgets/class.widgets.foldingrow.php");
 cInclude("classes", "widgets/class.widgets.pager.php");
 cInclude("classes", "class.ui.php");
 
+if (!(int) $client > 0) {
+  #if there is no client selected, display empty page
+  $oPage = new cPage;
+  $oPage->render();
+  return;
+}
 
 ############################
 # Now build bottom with list

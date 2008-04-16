@@ -17,7 +17,6 @@
 cInclude("classes", "class.ui.php");
 cInclude("classes", "widgets/class.widgets.page.php");
 
-$path = $cfgClient[$client]["js"]["path"];
 $sFileType = "js";
 
 $sActionCreate = 'js_create';
@@ -30,8 +29,11 @@ $tpl->reset();
 if (!$perm->have_perm_area_action($area, $action))
 {
     $notification->displayNotification("error", i18n("Permission denied"));
-}else 
-{
+} else if (!(int) $client > 0) {
+  #if there is no client selected, display empty page
+  $page->render();
+} else {
+    $path = $cfgClient[$client]["js"]["path"];
 	$sTempFilename = stripslashes($_REQUEST['tmp_file']);
 	
 	if (getFileType($_REQUEST['file']) != $sFileType AND strlen(stripslashes(trim($_REQUEST['file']))) > 0)

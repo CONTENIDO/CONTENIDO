@@ -15,6 +15,13 @@
 
 $tpl->reset();
 
+if (!(int) $client > 0) {
+  #if there is no client selected, display empty page
+  $oPage = new cPage;
+  $oPage->render();
+  return;
+}
+
 $path = $cfgClient[$client]["tpl"]["path"];
 $sFileType = "html";
 

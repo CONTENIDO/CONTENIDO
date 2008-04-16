@@ -157,9 +157,14 @@ if(isset($_GET['actionrow']) && $_GET['actionrow'] == 'collapsed') {
 
 $tpl->set('s', 'ACTIONLINK', $actionLink);
 $oLink = new cHTMLLink;
-$oLink->setMultiLink("frontend","","frontend","frontend_create");
+if ((int) $client > 0) {
+    $oLink->setMultiLink("frontend","","frontend","frontend_create");
+    $oLink->setContent(i18n("Create user"));
+} else {
+    $oLink->setLink('');
+    $oLink->setContent(i18n("No Client selected"));
+}
 $oLink->setClass("addfunction");
-$oLink->setContent(i18n("Create user"));
 $oLink->setStyle('margin-left: 17px;margin-top:5px');
 $oActionRow->setContentData($oLink->render());
 
@@ -416,15 +421,19 @@ $oPager->setExpanded(true);
 ######################
 $link = new Link;
 $menu = new UI_Menu;
-$link->setLink('javascript:conMultiLink(\'right_bottom\', \''.$sess->url("main.php?area=frontendgroups&frame=4&action=frontendgroup_create").'\');');
+if ((int) $client > 0) {
+    $link->setLink('javascript:conMultiLink(\'right_bottom\', \''.$sess->url("main.php?area=frontendgroups&frame=4&action=frontendgroup_create").'\');');
+    $menu->setTitle("-2", i18n("Create group"));
+} else {
+    $link->setLink('');
+    $menu->setTitle("-2", i18n("No Client selected"));
+}
 $menu->setImage("-2", $cfg["path"]["images"] . "folder_new.gif");	
 $menu->setLink("-2", $link);
-$menu->setTitle("-2", i18n("Create group"));
 $menu->setLink("10", $link);
 $menu->setTitle("10", "");
 $menu->setImage("10", "");
 $menu->setRowmark(false);
-
 
 #######################
 # Container Users

@@ -17,7 +17,6 @@
 cInclude("classes", "class.ui.php");
 cInclude("classes", "widgets/class.widgets.page.php");
 
-$path = $cfgClient[$client]["css"]["path"];
 $sFileType = "css";
 
 $sActionCreate = 'style_create';
@@ -30,8 +29,11 @@ $tpl->reset();
 if (!$perm->have_perm_area_action($area, $action))
 {
     $notification->displayNotification("error", i18n("Permission denied"));
-}else 
-{
+} else if (!(int) $client > 0) {
+  #if there is no client selected, display empty page
+  $page->render();
+} else {
+    $path = $cfgClient[$client]["css"]["path"];
     if (stripslashes($_REQUEST['file'])) {
         $sReloadScript = "<script type=\"text/javascript\">
                              var left_bottom = parent.parent.frames['left'].frames['left_bottom'];

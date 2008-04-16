@@ -18,7 +18,7 @@ if(!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
 }
 
 if ((int) $client == 0) {
-    $notification->displayNotification("error", i18n("No client selected"));
+    $notification->displayNotification("error", i18n("No Client selected"));
     exit;
 }
 // If no mode defined
@@ -146,6 +146,8 @@ function url_is_uri($url) {
 	}
 
 }
+
+$cats = array();
 
 /* Whitelist: Add */
 if(!empty($_GET['whitelist'])) {
