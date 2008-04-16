@@ -62,6 +62,7 @@ img {
 	background-image:url('../images/header_bild_beispiel.gif');
 	background-repeat:no-repeat;
 	background-position:240px 0;
+	width:960px;
 }
 
 #head a#logoTop {
