@@ -13,6 +13,8 @@
 *
 * © four for business AG, www.4fb.de
 ******************************************/
+//Identify IE
+var bMsie = (document.all) ? true : false;
 
 /**
  * Object ResizeScroll - Object for resizing textareas (Constructor)
@@ -176,6 +178,8 @@ document.onselectstart = function(e) {
     if (resizer.globalClicked) {
         return false; 
     } else {
-        routeEvent(e);
+        if (!bMsie) {
+            routeEvent(e);
+        }
     }
-};
+}
