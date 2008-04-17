@@ -12,6 +12,7 @@
  * @created 2004/01/15 11:00:00
  * @modified $Date: 2007/01/30 20:00:01 $
  * @modifiedby $Author: bjoern.behrens $
+ * @modifiedby $Author: timo.trautmann $
  * 
  * © four for business AG, www.4fb.de
  */
@@ -481,6 +482,33 @@ class Index
 		return $key;
     }
 
+    /**
+      * @modified 2008-04-17, Timo Trautmann - reverse function to removeSpecialChars 
+      *                                        (important for syntaxhighlighting searchterm in searchresults)
+	 * adds umlauts to search term
+	 * @param $key Keyword
+	 * @return $key 
+	 */ 
+    function addSpecialUmlauts ($key) {
+        $key = htmlentities($key, NULL, getEncodingByLanguage($this->db, $this->lang, $this->cfg));
+        $aUmlautMap = array (
+            'ue'    => '&Uuml;',
+            'ue'    => '&uuml;',
+            'ae'    => '&Auml;',
+            'ae'    => '&auml;',
+            'oe'    => '&Ouml;',
+            'oe'    => '&ouml;',
+            'ss'    => '&szlig;'
+        );
+        
+        foreach ($aUmlautMap as $sUmlaut => $sMapped) {
+            $key = str_replace($sUmlaut, $sMapped, $key);
+        }
+
+        $key = html_entity_decode($key); 
+        return $key;
+    }
+    
 	/**
 	 * set the array of stopwords which should not be indexed
 	 * @param array $aStopwords 
@@ -1566,12 +1594,15 @@ class SearchResult
 			
 			if (isset($cms_nr) AND is_numeric($cms_nr)) // get content of cms_type[cms_nr]
 			{
-				$cms_content = strip_tags($article->getContent($cms_type, $cms_nr));
-    				
+                //build consistent escaped string(Timo Trautmann) 2008-04-17
+				$cms_content = htmlentities(html_entity_decode(strip_tags($article->getContent($cms_type, $cms_nr))));	
 				if (count($this->replacement) == 2) 
 				{
     				foreach($search_words as $word)
     				{
+                        //build consistent escaped string, replace ae ue .. with original html entities (Timo Trautmann) 2008-04-17
+                        $word = htmlentities(html_entity_decode($this->index->addSpecialUmlauts($word)));
+
     					preg_match("/$word/i", $cms_content, $match);
     					if (isset($match[0]))
     					{
@@ -1581,7 +1612,7 @@ class SearchResult
     					}
     				}
 				}
-				$content[] = $cms_content;	
+				$content[] = htmlspecialchars_decode($cms_content);	
 			}else // get content of cms_type[$id], where $id are the cms_type numbers found in search
 			{
     			foreach ($id_type as $id)
