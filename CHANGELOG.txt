@@ -7,8 +7,35 @@ CONTENIDO CHANGELOG
 $Id: CHANGELOG.txt,v 1.111 2007/08/20 21:55:52 bjoern.behrens Exp $
 
 
-4.9
+
+
+Release 4.8.2
 ----------------------------------------------------------------------
+** Bug
+    * [CON-64] - conMakeStart bei start_compatible = true fehlerhaft
+    * [CON-80] - Bugs in Content Allocation und conlib/mysql.inc
+    * [CON-82] - demo mandant unschönheiten
+    * [CON-90] - Update auf leere DB
+    * [CON-91] - Fehler im Dateimanager bei Install ohne Mandant
+    * [CON-93] - Frontenduser im Mustermandanten fehlt
+    * [CON-96] - Installation Error: MySQL-Error 1292 - Fehlende Standardwerte in INSERT STATEMENTS für sysadmin und admin
+    * [CON-97] - Markieren des Modulcodes nicht möglich in IE7
+    * [CON-98] - short_open_tag direktive
+** Improvement
+    * [CON-54] - Integration of tinyMCE V3.0.6.1
+    * [CON-95] - Usability "neuer Mandant" - "keine Sprache angelegt"
+** Task
+    * [CON-83] - Titel bei Startseite Setup
+
+
+Release 4.8.1
+----------------------------------------------------------------------    
+** Bug
+    * [CON-77] - Reiter in der Dateiverwaltung wechselt nach Upload nicht in Übersichtsseite
+    * [CON-78] - strip_tags() im Modul "Suchausgabe"
+** Improvement
+    * [CON-79] - anmerkungen zum release
+
 
 4.8
 ----------------------------------------------------------------------
