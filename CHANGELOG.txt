@@ -14,13 +14,14 @@ Release 4.8.2
 ** Bug
     * [CON-64] - conMakeStart bei start_compatible = true fehlerhaft
     * [CON-80] - Bugs in Content Allocation und conlib/mysql.inc
-    * [CON-82] - demo mandant unschšnheiten
+    * [CON-82] - demo mandant unschönheiten
     * [CON-90] - Update auf leere DB
     * [CON-91] - Fehler im Dateimanager bei Install ohne Mandant
     * [CON-93] - Frontenduser im Mustermandanten fehlt
     * [CON-96] - Installation Error: MySQL-Error 1292 - Fehlende Standardwerte in INSERT STATEMENTS fŸr sysadmin und admin
     * [CON-97] - Markieren des Modulcodes nicht mšglich in IE7
     * [CON-98] - short_open_tag direktive
+    * [CON-101]- Beispielmandant login
 ** Improvement
     * [CON-54] - Integration of tinyMCE V3.0.6.1
     * [CON-95] - Usability "neuer Mandant" - "keine Sprache angelegt"
