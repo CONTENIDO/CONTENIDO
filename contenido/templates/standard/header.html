@@ -87,37 +87,45 @@
         }
         
         // marks menu item as active menu when on of its subitems is clicked
-        function markActive()
+        function markActive(oObject)
         {
-        	// reset color for all links
-        	var submenus = document.getElementById('submenus').getElementsByTagName('a');
-          for(var i = 0; i < submenus.length; i++)
-          {
-          	submenus[i].className = "sub";
-          }
-        	// remember name for clicked
-        	var curElement = '';
-          if (window.event)
-          { 
-            srcElm = window.event.srcElement;
-            curElement = srcElm.parentNode.id;
-            // set color for the one clicked
-        	srcElm.className = "activemenu";
-          } 
-          
-          // W3C DOM (FF, Mozilla, Safari)
-          else 
-          { 
-            curElement = this.parentNode.id;
-            // set color for the one clicked
-        	this.className = "activemenu";
-          }            
-          
-        	// If we are here this means a submenu item was clicked
-        	// Now find out the related menu item on level 1 and store it
-        	// We need to do this for restoring highlighting of the current active menu on mouseout of hover menu
-        	currentActiveMenuId = getNavForSubnavWithId(curElement);
-        	currentActiveSubmenusId = curElement;
+            // reset color for all links
+            var submenus = document.getElementById('submenus').getElementsByTagName('a');
+            for(var i = 0; i < submenus.length; i++)
+            {
+                submenus[i].className = "sub";
+            }
+            // remember name for clicked
+            var curElement = '';
+                
+            if (oObject && oObject.id) {
+                srcElm = oObject;
+                curElement = oObject.parentNode.id;
+                // set color for the one clicked
+            	srcElm.className = "activemenu";
+            } else {
+              if (window.event)
+              { 
+                srcElm = window.event.srcElement;
+                curElement = srcElm.parentNode.id;
+                // set color for the one clicked
+            	srcElm.className = "activemenu";
+              } 
+              
+              // W3C DOM (FF, Mozilla, Safari)
+              else 
+              { 
+                curElement = this.parentNode.id;
+                // set color for the one clicked
+            	this.className = "activemenu";
+              }  
+              
+            }  
+            // If we are here this means a submenu item was clicked
+            // Now find out the related menu item on level 1 and store it
+            // We need to do this for restoring highlighting of the current active menu on mouseout of hover menu
+            currentActiveMenuId = getNavForSubnavWithId(curElement);
+            currentActiveSubmenusId = curElement;
         }
         
         function getNavForSubnavWithId(elm)

@@ -225,14 +225,14 @@ class Contenido_Navigation {
                     $sub->set('d', 'SUBIMGID', 'img_'.$id.'_'.$sub->dyn_cnt);
                     if ($cfg['help'] == true)
                     {
-                    	$sub->set('d', 'CAPTION', '<a class="sub" target="content" href="'.
+                    	$sub->set('d', 'CAPTION', '<a class="sub" id="sub_'.$value[1].'" target="content" href="'.
 																$sess->url("frameset.php?area=$value[1]").
 																'" onclick="document.getElementById(\'help\').setAttribute(\'data\',\''.
 																$value[0].'\'); ">'.$value[0].'</a>');
                     } 
                     else 
                     {
-                        $sub->set('d', 'CAPTION', '<a class="sub" target="content" href="'.
+                        $sub->set('d', 'CAPTION', '<a id="sub_'.$value[1].'" class="sub" target="content" href="'.
                         $sess->url("frameset.php?area=$value[1]").
                         '"">'.$value[0].'</a>');                    	
                     }

@@ -24,7 +24,7 @@ $tpl->set('s', 'ACTION', $select);
 $tmp_mstr = '<a class="addfunction" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 $area = "client";
 $mstr = sprintf($tmp_mstr, 'right_top',
-                                   $sess->url("main.php?area=client_edit&frame=3"),
+                                   $sess->url("main.php?area=client&frame=3"),
                                    'right_bottom',
                                    $sess->url("main.php?area=client_edit&action=client_new&frame=4"),
                                    i18n("Create client"));

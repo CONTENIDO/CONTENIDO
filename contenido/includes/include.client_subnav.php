@@ -84,8 +84,9 @@ if ( isset($_GET['idclient']) && ($_GET['idclient'] != 0)) {
     $tpl->generate($cfg["path"]["templates"] . $cfg['templates']['client_subnav']);
 
 } else {
-
-    include ($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
+    $tpl->reset();
+    $tpl->set('s', 'ACTION', '');
+    $tpl->generate($cfg["path"]["templates"] . $cfg['templates']['right_top_blank']);
 
 }
 

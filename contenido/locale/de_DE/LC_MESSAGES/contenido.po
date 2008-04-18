@@ -1203,7 +1203,7 @@ msgstr "Sprache umbenennen"
 #: contenido/includes/cfg_language_de.inc.php:146
 #: contenido/includes/include.lang_left_top.php:60
 msgid "Create language"
-msgstr "Sprache erstellen"
+msgstr "Sprache erstellen f&uuml;r"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
 #: contenido/includes/cfg_language_de.inc.php:147
@@ -5972,4 +5972,8 @@ msgstr "Bitte w&auml;hlen Sie eine Position f&uuml;r die neue Kategorie"
 msgid "Field category name is empty"
 msgstr "Das Feld Kateogoriename ist leer"
 
+msgid "Notice: In order to use this client, you must create a new language for it."
+msgstr "Hinweis: Um den neuen Mandanten zu nutzen, m&uuml;ssen Sie eine neue Sprache daf&uuml;r anlegen."
 
+msgid "Please click %shere%s to create a new language."
+msgstr "Bitte klicken Sie %shier%s, um dies zu tun."

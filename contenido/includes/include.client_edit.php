@@ -142,7 +142,13 @@ if(!$perm->have_perm_area_action($area))
 	        $sql = "DELETE FROM ".$cfg["tab"]["code"]." WHERE idclient = '$idclient'";
 	        $db->query($sql);
 	        
-	        $notification->displayNotification("info", i18n("Changes saved"));
+            $sLangNotification = i18n('Notice: In order to use this client, you must create a new language for it.');
+            $sTarget = $sess->url('frameset.php?area=lang');
+            $sJsLink = "parent.parent.location.href='".$sTarget."';
+                        top.header.markActive(top.header.document.getElementById('sub_lang'));";
+            $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="'.$sJsLink.'">', '</a>');
+	        
+            $notification->displayNotification("info", i18n("Changes saved").'<br>'.$sLangNotification.'<br>'.$sLangNotificationLink);
 	
 	    	$cApiClient = new cApiClient;
 	    	$cApiClient->loadByPrimaryKey($idclient);
