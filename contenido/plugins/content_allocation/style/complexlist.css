@@ -52,7 +52,7 @@
 
 .domenabled ul#finder li a {
 	color: #000;
-	background: url(normal.gif) no-repeat transparent 0 50%;
+	background: url(../images/normal.gif) no-repeat transparent 0 50%;
 	/*adding-left: 16px;*/
 	text-decoration: none;
 	padding-right: 16px;
