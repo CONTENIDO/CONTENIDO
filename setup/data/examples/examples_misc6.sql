@@ -151,6 +151,8 @@ INSERT INTO !PREFIX!_properties VALUES (31, 1, 'user_id', '48a365b4ce1e322a55ae9
 INSERT INTO !PREFIX!_properties VALUES (32, 1, 'clientsetting', '1', 'language', 'separator', '%A7%A7%A7', '48a365b4ce1e322a55ae9017f3daf0c0', '2008-04-14 17:56:26', '2008-04-14 17:56:26', '48a365b4ce1e322a55ae9017f3daf0c0');
 INSERT INTO !PREFIX!_properties VALUES (33, 1, 'clientsetting', '1', 'navigation', 'idcat-home', '1', '48a365b4ce1e322a55ae9017f3daf0c0', '2008-04-14 17:58:09', '2008-04-14 17:58:09', '48a365b4ce1e322a55ae9017f3daf0c0');
 INSERT INTO !PREFIX!_properties VALUES (34, 1, 'idclient', '1', 'backend', 'clientimage', '', '48a365b4ce1e322a55ae9017f3daf0c0', '2008-04-14 18:10:40', '2008-04-14 18:10:40', '48a365b4ce1e322a55ae9017f3daf0c0');
+INSERT INTO !PREFIX!_properties VALUES (35, 1, 'clientsetting', '1', 'login_error_page', 'idart', '1', '48a365b4ce1e322a55ae9017f3daf0c0', '2008-04-18 14:30:12', '2008-04-18 14:30:12', '48a365b4ce1e322a55ae9017f3daf0c0');
+INSERT INTO !PREFIX!_properties VALUES (36, 1, 'clientsetting', '1', 'login_error_page', 'idcat', '1', '48a365b4ce1e322a55ae9017f3daf0c0', '2008-04-18 14:31:00', '2008-04-18 14:31:00', '48a365b4ce1e322a55ae9017f3daf0c0');
 INSERT INTO !PREFIX!_frontendusers VALUES (1, 1, 'Thomas+Contenido', '8b1fa8eaa7b7ebbeaf06e2560c588fe2', 1, '48a365b4ce1e322a55ae9017f3daf0c0', '2008-04-14 15:48:44', '2008-04-14 15:48:58', '48a365b4ce1e322a55ae9017f3daf0c0', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 INSERT INTO !PREFIX!_frontendpermissions VALUES (1, 1, 1, 'category', 'access', '__GLOBAL__');
 INSERT INTO !PREFIX!_frontendgroups VALUES (1, 1, 'Contenidos', 1);
