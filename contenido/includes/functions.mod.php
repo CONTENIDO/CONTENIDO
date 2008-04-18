@@ -162,9 +162,17 @@ function modTestModule ($code, $id, $output = false)
     	$modErrorMessage = str_replace("<br />","",$modErrorMessage);
     }
 
+    /* check if there are any php short tags in code, and display error*/
+    $bHasShortTags = false;
+    if (preg_match('/<\?\s+/', $code) && $magicvalue == 941) {
+        $bHasShortTags = true;
+        $modErrorMessage = i18n('Please do not use short open Tags. (Use <?php instead of <?).');
+    }
+    
+    
     /* Now, check if the magic value is 941. If not, the function
        didn't compile */
-    if ($magicvalue != 941)
+    if ($magicvalue != 941 || $bHasShortTags)
     {
     	return false;
     } else {
