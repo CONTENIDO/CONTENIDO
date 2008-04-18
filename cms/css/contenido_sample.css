@@ -16,7 +16,7 @@ html, body, div, p, td, a, input, textarea, select {
 html, body {
 	margin:0;
 	padding:0;
-	overflow:auto;
+	/*overflow:auto;*/
 }
 html {
 	background-image:url('../images/pattern_contenido.gif');
