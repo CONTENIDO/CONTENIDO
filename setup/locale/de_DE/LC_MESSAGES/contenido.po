@@ -218,7 +218,7 @@ msgstr "Contenido wird installiert, bitte warten"
 
 #: setup/steps/forms/installer.php:17
 msgid "Setup completed installing. Click on next to continue."
-msgstr "Setup hat die Installation abgeschlossen. Klicken Sie auf Weiter, um fortzufahren."
+msgstr "Setup hat die Installation abgeschlossen. Klicken Sie auf den blauen Pfeil, um fortzufahren."
 
 #: setup/steps/forms/installer.php:18
 msgid "Setup is installing, please wait..."
