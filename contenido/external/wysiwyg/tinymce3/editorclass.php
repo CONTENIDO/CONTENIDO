@@ -81,7 +81,9 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		$this->setSetting("remove_script_host", false);
 		$this->setSetting("file_browser_callback", "myCustomFileBrowser", true);
 		$this->setSetting("urlconverter_callback", "CustomURLConverter");
-
+		// New in V3.x
+		$this->setSetting("theme_advanced_resizing", true);
+		$this->setSetting("pagebreak_separator", "<!-- my page break -->"); // needs pagebreak plugin
 		// Source formatting (ugh!)
 		$this->setSetting("apply_source_formatting", true);
 		$this->setSetting("remove_linebreaks", false); // Remove linebreaks - GREAT idea...
@@ -343,23 +345,22 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		switch ($sMode)
 		{
 			case "full": // Show all options
-				$this->setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,separator,search,replace,separator,undo,redo,separator,bold,italic,underline,strikethrough,sub,sup,separator,insertdate,inserttime,preview,separator,styleselect", true);
-				//$this->setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,flash,advhr,separator,bullist,numlist,separator,outdent,indent,separator,justifyleft,justifycenter,justifyright,justifyfull,removeformat,separator,forecolor,backcolor,separator,ltr,rtl,separator,fullscreen,visualaid,charmap,cleanup,separator,code", true);
-				$this->setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,advhr,separator,bullist,numlist,separator,outdent,indent,separator,justifyleft,justifycenter,justifyright,justifyfull,removeformat,separator,forecolor,backcolor,separator,ltr,rtl,separator,fullscreen,visualaid,charmap,cleanup,separator,code", true);
-				$this->setSetting("theme_advanced_buttons3", "tablecontrols,separator,formatselect,fontselect,fontsizeselect", true);
-				//$this->setSetting("plugins", "table,save,advhr,advimage,advlink,insertdatetime,preview,zoom,flash,searchreplace,print,contextmenu,paste,directionality,fullscreen,inlinepopups", true);
-				$this->setSetting("plugins", "table,save,advhr,advimage,advlink,insertdatetime,preview,zoom,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,inlinepopups", true);
+				$this->setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,help", true);
+				$this->setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,advhr,|,<bullist,numlist>,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,fullscreen,visualaid,charmap,cleanup,|,code", true);
+				$this->setSetting("theme_advanced_buttons3", "tablecontrols,|,styleselect,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak", true);
+				//safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template
+				$this->setSetting("plugins", "safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups", true);
 				break;
 
 			case "simple": // Does not show font and table options
-				$this->setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,separator,search,replace,separator,undo,redo,separator,bold,italic,underline,strikethrough,sub,sup,separator,insertdate,inserttime,preview,separator,styleselect", true);
-				$this->setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,flash,advhr,separator,bullist,numlist,separator,outdent,indent,separator,justifyleft,justifycenter,justifyright,justifyfull,removeformat,separator,forecolor,backcolor,separator,ltr,rtl,separator,visualaid,charmap,cleanup,separator,code", true);
+				$this->setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect", true);
+				$this->setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,flash,advhr,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
 				$this->setSetting("theme_advanced_buttons3", "", true);
-				$this->setSetting("plugins", "advhr,advimage,advlink,insertdatetime,preview,zoom,flash,searchreplace,print,contextmenu,paste,directionality", true);
+				$this->setSetting("plugins", "advhr,advimage,advlink,insertdatetime,preview,flash,searchreplace,print,contextmenu,paste,directionality", true);
 				break;
 
 			case "mini": // Minimal toolbar
-				$this->setSetting("theme_advanced_buttons1", "undo,redo,separator,bold,italic,underline,strikethrough,separator,link", true);
+				$this->setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link", true);
 				$this->setSetting("theme_advanced_buttons2", "", true);
 				$this->setSetting("theme_advanced_buttons3", "", true);
 				$this->setSetting("plugins", "advlink", true);
@@ -376,8 +377,8 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				break;
 				
 		   default: // Default options
-		      $this->setSetting("theme_advanced_buttons1", "undo,redo,separator,bold,italic,underline,strikethrough,separator,link,unlink,anchor,image,flash,advhr,separator,tablecontrols", true);
-		      $this->setSetting("theme_advanced_buttons2", "styleselect,separator,bullist,numlist,separator,outdent,indent,separator,justifyleft,justifycenter,justifyright,justifyfull,removeformat,separator,forecolor,backcolor,separator,sub,sup,separator,code", true);
+		      $this->setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link,unlink,anchor,image,flash,advhr,|,tablecontrols", true);
+		      $this->setSetting("theme_advanced_buttons2", "styleselect,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,sub,sup,|,code", true);
 		      $this->setSetting("theme_advanced_buttons3", "", true);
 		      $this->setSetting("plugins", "table,advhr,advimage,advlink,flash,searchreplace,contextmenu,paste", true);
 		}
@@ -622,7 +623,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 			}
 			
 			if ($sValue == "true" || $sValue == "false" ||
-	//			preg_match('/callback/i',$sKey) ||
 				$sKey == "oninit" || $sKey == "onpageload")
 			{
 				$sConfig .= "'$sKey': ".$sValue;

@@ -2557,6 +2557,7 @@ contenido/external/wysiwyg/tinymce2/readme -text
 contenido/external/wysiwyg/tinymce2/tinymce.tpl.html -text
 contenido/external/wysiwyg/tinymce3/TINYMCE_INTEGRATION_HOWTO.txt -text
 contenido/external/wysiwyg/tinymce3/changelog.txt -text
+contenido/external/wysiwyg/tinymce3/compressor_changelog.txt -text
 contenido/external/wysiwyg/tinymce3/config.php -text
 contenido/external/wysiwyg/tinymce3/editor.php -text
 contenido/external/wysiwyg/tinymce3/editorclass.php -text
@@ -3443,6 +3444,9 @@ contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/utils/mctabs.js -text
 contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/utils/validate.js -text
 contenido/external/wysiwyg/tinymce3/list.php -text
 contenido/external/wysiwyg/tinymce3/readme -text
+contenido/external/wysiwyg/tinymce3/readme.txt -text
+contenido/external/wysiwyg/tinymce3/tiny_mce_gzip.js -text
+contenido/external/wysiwyg/tinymce3/tiny_mce_gzip.php -text
 contenido/external/wysiwyg/tinymce3/tinymce.tpl.html -text
 contenido/favicon.ico -text
 contenido/frameset.php -text
