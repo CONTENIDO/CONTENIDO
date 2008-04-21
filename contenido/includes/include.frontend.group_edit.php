@@ -76,7 +76,8 @@ if ($action != '') {
                          var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
                          if (left_bottom) {
                              var href = left_bottom.location.href;
-                             href = href.replace(/&idfrontendgroup.*/, '');
+                             href = href.replace(/&idfrontendgroup[^&]*/, '');
+                             href = href.replace(/&action[^&]*/, '');
                              left_bottom.location.href = href+'&idfrontendgroup='+".$idfrontendgroup.";
                              top.content.left.left_top.refresh();
                          }

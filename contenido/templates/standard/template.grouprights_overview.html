@@ -9,7 +9,10 @@
     <script type="text/javascript">
 
         //parent.parent.frames["left"].frames['left_bottom'].location.reload();
-        var href = parent.parent.frames["left"].frames['left_bottom'].location.href+'&groupid={GET_GROUPID}';
+        var href = parent.parent.frames["left"].frames['left_bottom'].location.href;
+		href = href.replace(/&groupid[^&]*/, '');
+        href = href.replace(/&action[^&]*/, '');
+		href += '&groupid={GET_GROUPID}';
         parent.parent.frames["left"].frames['left_bottom'].location.href = href;
 
     </script>
