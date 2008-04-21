@@ -441,34 +441,51 @@ class pApiTree {
 	}
 	
 	function _fetchItemNameLang ($idpica_alloc) {
-		$db = new DB_Contenido; // temp instance
+		$oDB = new DB_Contenido; // temp instance
 		
-		$sql = "SELECT name, idlang, online FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . $idpica_alloc . " AND idlang = " . $this->lang;
-		$db->query($sql);
+		$sSQL = "SELECT name, idlang, online FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . $idpica_alloc . " AND idlang = " . $this->lang;
+		$oDB->query($sSQL);
 		
-		$name = array();
-		if ($db->next_record()) { // item found for this language
+		$aResult = array();
+		if ($oDB->next_record()) { // item found for this language
 			#$this->logger->debug("fetchItemNameLang() - Item (#" . $idpica_alloc . ") (current lang) found for: " . $sql);
 
-			$name['name'] = $this->_outFilter($db->f('name'));
-			$name['idlang'] = $db->f('idlang');
-			$name['online'] = $db->f('online');
+			$aResult['name']   = $this->_outFilter($oDB->f('name'));
+			$aResult['idlang'] = $oDB->f('idlang');
+			$aResult['online'] = $oDB->f('online');
 			
 		} else { // no item in this language found
 			// fetch alternative language name
+			// HerrB, 2008-04-21: Get all translations, try to use defaultLang translation, use
+			// first available, otherwise. Only using defaultLang results in "ghost" elements, if 
+			// created in a non-default language. See CON-110 for details. 
 			#$this->logger->debug("fetchItemNameLang() - no Item (#" . $idpica_alloc . ") (current lang) found for: " . $sql);
 			
-			$sql = "SELECT name, idlang, online FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . $idpica_alloc . " AND idlang = " . $this->defaultLang;
-			$db->query($sql);
-			$db->next_record();
+			$sSQL = "SELECT name, idlang, online FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . $idpica_alloc . " ORDER BY idlang";
+			$oDB->query($sSQL);
 			
-			$name['name'] = $this->_outFilter($db->f('name'));
-			$name['idlang'] = $db->f('idlang');
-			$name['online'] = $db->f('online');
+			$aNames = array();
+			while ($oDB->next_record()) {
+				$sKey = "k" . $oDB->f('idlang');
+				
+				$aNames[$sKey] 				= array();
+				$aNames[$sKey]['name']		= $this->_outFilter($oDB->f('name'));
+				$aNames[$sKey]['idlang']	= $oDB->f('idlang');
+				$aNames[$sKey]['online']	= $oDB->f('online');
+			}
+			
+			if ($aNames["k" . $this->defaultLang]) {
+				// defaultLang translation available
+				$aResult = $aNames["k" . $this->defaultLang];
+			} else {
+				// no defaultLang translation available, use first in line (reset returns first element)
+				$aResult = reset($aNames);
+			}
 		}
-		unset ($db);
+		unset ($oDB);
+		unset ($aNames);
 		
-		return $name;
+		return $aResult;
 	}
 	
 	function _fetchMaxOrder ($parentId = false) {
