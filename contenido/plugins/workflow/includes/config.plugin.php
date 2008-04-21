@@ -270,14 +270,22 @@ function piworkflowProcessArticleColumns ($array)
 	if ($defaultidworkflow != 0)
 	{
 		$narray = array();
-		$narray["start"] = $array["start"];
-		$narray["wftitle"] = $array["title"];
-		$narray["wfstep"] = i18n("Workflow Step", "workflow");
-		$narray["wfaction"] = i18n("Workflow Action", "workflow");
-		$narray["wfeditor"] = i18n("Workflow Editor", "workflow");
-		$narray["wflaststatus"] = i18n("Last status", "workflow");
-		$narray["template"] = $array["template"];
-		$narray["actions"] = $array["actions"];
+		$bInserted = false;
+		foreach ($array as $sKey => $sValue) {
+			$narray[$sKey] = $sValue;
+			if ($sKey == 'title' && !$bInserted) {
+				$narray["wftitle"] = $array["title"];
+				$narray["wfstep"] = i18n("Workflow Step", "workflow");
+				$narray["wfaction"] = i18n("Workflow Action", "workflow");
+				$narray["wfeditor"] = i18n("Workflow Editor", "workflow");
+				$narray["wflaststatus"] = i18n("Last status", "workflow");
+				$bInserted = true;
+			}
+		}		
+        unset ($narray['title']);
+		unset ($narray['changeddate']);
+		unset ($narray['publisheddate']);
+		unset ($narray['sortorder']);
 	} else {
 		$narray = $array;	
 	}
