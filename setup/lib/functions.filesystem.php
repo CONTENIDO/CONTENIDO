@@ -19,7 +19,7 @@ define("E_BASEDIR_INCOMPATIBLE",			4);
  * workaround where is_writable doesn't return a value of type
  * boolean. Also clears the stat cache and checks if the file
  * exists.
- * 
+ *
  * @param $file string	Path to the file, accepts absolute and relative files
  * @return boolean true if the file exists and is writeable, false otherwise
  */
@@ -28,26 +28,26 @@ function isWriteable ($file)
 	clearstatcache();
 	if (!file_exists($file))
 	{
-		return false;	
+		return false;
 	}
-	
+
 	$bStatus = is_writable($file);
 	/* PHP 4.0.4 workaround */
 	settype($bStatus, "boolean");
-	
+
 	return $bStatus;
 }
 
 /**
  * isReadable
  * Checks if a file is readable.
- * 
+ *
  * @param $file string Path to the file, accepts absolute and relative files
  * @return boolean true if the file exists and is readable, false otherwise
  */
 function isReadable ($file)
 {
-	return is_readable($file);	
+	return is_readable($file);
 }
 
 function canReadFile ($sFilename)
@@ -58,10 +58,10 @@ function canReadFile ($sFilename)
 		{
 			$fp = fopen($sFilename, "r");
 			fclose($fp);
-			
-			return true;	
+
+			return true;
 		}
-	} 
+	}
 	return false;
 }
 
@@ -69,24 +69,24 @@ function canWriteFile ($sFilename)
 {
     #check dir perms, create a new file read it and delete it
     if (is_dir($sFilename)) {
-    
+
         $sRandFilenamePath = $sFilename;
         $i = 0;
-        
+
         #try to find a random filename for write test, which does not exist
         while (file_exists($sRandFilenamePath) &&  $i < 100) {
             $sRandFilename = 'con_test'.rand(0,1000000000).'con_test';
             $sRandFilenamePath = '';
-            
+
             if ($sFilename{strlen($sFilename)-1} == '/') {
                 $sRandFilenamePath = $sFilename.$sRandFilename;
             } else {
                 $sRandFilenamePath = $sFilename.'/'.$sRandFilename;
             }
-            
+
             $i++;
         }
-        
+
         #there is no file name which does not exist, exit after 100 trials
         if ($i == 100) {
             return false;
@@ -97,8 +97,8 @@ function canWriteFile ($sFilename)
 		 */
 		$fp = @fopen($sRandFilenamePath, "w");
         if ($fp) {
-            unlink($sRandFilenamePath);
             @fclose($fp);
+            unlink($sRandFilenamePath);
             return true;
         } else {
             return false;
@@ -113,22 +113,22 @@ function canWriteFile ($sFilename)
 			{
 				return false;
 			} else {
-				return true;	
+				return true;
 			}
 		}
-		
+
 		/* Ignore errors in case isWriteable() returns
 		 * a wrong information
 		 */
 		$fp = @fopen($sFilename, "w");
 		@fclose($fp);
-		
+
 		if (file_exists($sFilename))
 		{
 			@unlink($sFilename);
-			return true;	
+			return true;
 		} else {
-			return false;	
+			return false;
 		}
 	} else {
 		if (file_exists($sFilename))
@@ -137,7 +137,7 @@ function canWriteFile ($sFilename)
 			{
 				return false;
 			} else {
-				return true;	
+				return true;
 			}
 		}
 	}
@@ -148,15 +148,15 @@ function canDeleteFile ($sFilename)
 	if (isWriteable($sFilename))
 	{
 		unlink($sFilename);
-		
+
 		if (file_exists($sFilename))
 		{
-			return false;	
+			return false;
 		} else {
-			return true;	
+			return true;
 		}
 	} else {
-		return false;	
+		return false;
 	}
 }
 
@@ -164,16 +164,16 @@ function getFileInfo ($sFilename)
 {
 	if (!file_exists($sFilename))
 	{
-		return false;	
+		return false;
 	}
-	
+
 	$oiFilePermissions = fileperms($sFilename);
-	
+
 	if ($oiFilePermissions === false)
 	{
-		return false;	
-	} 
-	
+		return false;
+	}
+
 	switch (true)
 	{
 		case (($oiFilePermissions & 0xC000) == 0xC000):
@@ -187,19 +187,19 @@ function getFileInfo ($sFilename)
 		case (($oiFilePermissions & 0x8000) == 0x8000):
 						$info = '-';
 						$type = "regular file";
-						break;		
+						break;
 		case (($oiFilePermissions & 0x6000) == 0x6000):
 						$info = 'b';
 						$type = "block special";
-						break;	
+						break;
 		case (($oiFilePermissions & 0x4000) == 0x4000):
 						$info = 'd';
 						$type = "directory";
-						break;		
+						break;
 		case (($oiFilePermissions & 0x2000) == 0x2000):
 						$info = 'c';
 						$type = "character special";
-						break;		
+						break;
 		case (($oiFilePermissions & 0x1000) == 0x1000):
 						$info = 'p';
 						$type = "FIFO pipe";
@@ -209,13 +209,13 @@ function getFileInfo ($sFilename)
 						$type = "Unknown";
 						break;
 	}
-	
+
 	$aFileinfo = array();
 	$aFileinfo["info"] = $info;
 	$aFileinfo["type"] = $type;
 	$aFileinfo["owner"]["read"]   = ($oiFilePermissions & 0x0100) ? true : false;
 	$aFileinfo["owner"]["write"]  = ($oiFilePermissions & 0x0080) ? true : false;
-	$aFileinfo["group"]["read"]   = ($oiFilePermissions & 0x0020) ? true : false;		
+	$aFileinfo["group"]["read"]   = ($oiFilePermissions & 0x0020) ? true : false;
 	$aFileinfo["group"]["write"]  = ($oiFilePermissions & 0x0010) ? true : false;
 	$aFileinfo["others"]["read"]  = ($oiFilePermissions & 0x0004) ? true : false;
 	$aFileinfo["others"]["write"] = ($oiFilePermissions & 0x0002) ? true : false;
@@ -227,26 +227,26 @@ function getFileInfo ($sFilename)
 function checkOpenBasedirCompatibility ()
 {
 	$value = getPHPIniSetting("open_basedir");
-	
+
 	if (isWindows())
 	{
 		$aBasedirEntries = explode(";", $value);
 	} else {
 		$aBasedirEntries = explode(":", $value);
 	}
-	
+
 	if (count($aBasedirEntries) == 1 && $aBasedirEntries[0] == $value)
 	{
-		return E_BASEDIR_NORESTRICTION;	
+		return E_BASEDIR_NORESTRICTION;
 	}
-	
+
 	if (in_array(".", $aBasedirEntries) && count($aBasedirEntries) == 1)
 	{
 		return E_BASEDIR_DOTRESTRICTION;
 	}
-	
+
 	$sCurrentDirectory = getcwd();
-	
+
 	foreach ($aBasedirEntries as $entry)
 	{
 		if (stristr($sCurrentDirectory, $entry))
@@ -254,7 +254,7 @@ function checkOpenBasedirCompatibility ()
 			return E_BASEDIR_RESTRICTIONSUFFICIENT;
 		}
 	}
-	
+
 	return E_BASEDIR_INCOMPATIBLE;
 }
 
@@ -265,9 +265,9 @@ function predictCorrectFilepermissions ($file)
 	 */
 	if (isWindows())
 	{
-		return C_PREDICT_WINDOWS;	
+		return C_PREDICT_WINDOWS;
 	}
-	
+
 	/* Check if the file is read- and writeable. If yes, we don't need
 	 * to do any further checks.
 	 */
@@ -277,7 +277,7 @@ function predictCorrectFilepermissions ($file)
 	}
 
 	$iServerUID = getServerUID();
-		
+
 	/*
 	 * If we can't find out the web server UID, we cannot
 	 * predict the correct mask.
@@ -286,9 +286,9 @@ function predictCorrectFilepermissions ($file)
 	{
 		return C_PREDICT_NOTPREDICTABLE;
 	}
-	
+
 	$iServerGID = getServerGID();
-	
+
 	/*
 	 * If we can't find out the web server GID, we cannot
 	 * predict the correct mask.
@@ -297,42 +297,42 @@ function predictCorrectFilepermissions ($file)
 	{
 		return C_PREDICT_NOTPREDICTABLE;
 	}
-	
-	$aFilePermissions = getFileInfo($file);	
-			
+
+	$aFilePermissions = getFileInfo($file);
+
 	if (getSafeModeStatus())
 	{
 		/* SAFE-Mode related checks */
 		if ($iServerUID == $aFilePermissions["owner"]["id"])
 		{
-			return C_PREDICT_CHANGEPERM_SAMEOWNER;	
-		}		
-		
+			return C_PREDICT_CHANGEPERM_SAMEOWNER;
+		}
+
 		if (getSafeModeGidStatus())
 		{
 			/* SAFE-Mode GID related checks */
 			if ($iServerGID == $aFilePermissions["group"]["id"])
 			{
-				return C_PREDICT_CHANGEPERM_SAMEGROUP;	
+				return C_PREDICT_CHANGEPERM_SAMEGROUP;
 			}
-			
+
 			return C_PREDICT_CHANGEGROUP;
 		}
-		
-		
+
+
 	} else {
 		/* Regular checks */
-		
+
 		if ($iServerUID == $aFilePermissions["owner"]["id"])
 		{
-			return C_PREDICT_CHANGEPERM_SAMEOWNER;	
+			return C_PREDICT_CHANGEPERM_SAMEOWNER;
 		}
-		
+
 		if ($iServerGID == $aFilePermissions["group"]["id"])
 		{
-			return C_PREDICT_CHANGEPERM_SAMEGROUP;	
+			return C_PREDICT_CHANGEPERM_SAMEGROUP;
 		}
-		
+
 		return C_PREDICT_CHANGEPERM_OTHERS;
 	}
 }
