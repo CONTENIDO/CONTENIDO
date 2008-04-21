@@ -70,8 +70,10 @@ class WorkflowItems extends ItemCollection {
 
         $this->updateArtAllocation($id, 1);
         
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idusersequence in ('.implode(',', $aUserSequencesDelete).');';
-        $oDb->query($sSql);
+        if (count($aUserSequencesDelete) > 0) {
+            $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idusersequence in ('.implode(',', $aUserSequencesDelete).');';
+            $oDb->query($sSql);
+        }
 	}
     
     function updateArtAllocation ($idworkflowitem, $delete = false) {
@@ -87,14 +89,15 @@ class WorkflowItems extends ItemCollection {
         }
         
         $aIdArtLang = array();
-		$sSql = 'SELECT idartlang FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence in ('.implode(',', $aUserSequences).');';
-        $oDb->query($sSql);
-        while ($oDb->next_record()) {
-            array_push($aIdArtLang, $oDb->f('idartlang'));
+        if (count($aUserSequences) > 0) {
+            $sSql = 'SELECT idartlang FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence in ('.implode(',', $aUserSequences).');';
+            $oDb->query($sSql);
+            while ($oDb->next_record()) {
+                array_push($aIdArtLang, $oDb->f('idartlang'));
+            }
+            $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence in ('.implode(',', $aUserSequences).');';
+            $oDb->query($sSql);
         }
-
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence in ('.implode(',', $aUserSequences).');';
-        $oDb->query($sSql);
         
         if ($delete) {
             parent::delete($idworkflowitem);
