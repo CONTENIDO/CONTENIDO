@@ -606,7 +606,19 @@ else {
 
 		/* Meta-Tags */
 		$availableTags = conGetAvailableMetaTagTypes();
-		 
+		
+        $sMetaDate =   '<script type="text/javascript">
+                            Calendar.setup(
+                            {
+                                inputField  : "METAdate",
+                                ifFormat    : "%Y-%m-%d %H:%M",
+                                button      : "METAdate_button",
+                                weekNumbers	: true,
+                                firstDay	:	1,
+                                showsTime	: true
+                            }
+                        );
+                        </script>';        
 		 
 		foreach ($availableTags as $key => $value)
 		{
@@ -615,12 +627,19 @@ else {
 			switch ($value["fieldtype"])
 			{
 				case "text":
-					$element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" style="width:400px;" maxlength='.$value["maxlength"].' value="'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'">';
-					break;
+                    if ($value["name"] == 'date') {
+                        $element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:380px;" maxlength='.$value["maxlength"].' value="'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'">
+                                    <img src="images/calendar.gif" width="16" height="16" style="vertical-align:top;margin-top:2px;" id="METAdate_button" title="'.i18n("Select date").'" alt="'.i18n("Select date").'">'.$sMetaDate;
+                    } else {
+                        $element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:400px;" maxlength='.$value["maxlength"].' value="'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'">';
+					}
+                    break;
 				case "textarea":
-					$element = '<textarea '.$disabled.' class="text_medium" name="META'.$value["name"].'" style="width:400px;" rows=3>'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'</textarea>';
+					$element = '<textarea '.$disabled.' class="text_medium" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:400px;" rows=3>'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'</textarea>';
 					break;
 			}
+            
+            
 
 			$tpl->set('d', 'METAFIELDTYPE', $element);
 			//$tpl->set('d', 'METAVALUE', conGetMetaValue($tmp_idartlang,$key));

@@ -5977,3 +5977,6 @@ msgstr "Hinweis: Um den neuen Mandanten zu nutzen, m&uuml;ssen Sie eine neue Spr
 
 msgid "Please click %shere%s to create a new language."
 msgstr "Bitte klicken Sie %shier%s, um dies zu tun."
+
+msgid "Select date"
+msgstr "Datum auswählen"
