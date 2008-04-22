@@ -32,17 +32,23 @@
 				// Timecontrol enabled => disable Online and Startaticle
 				if(document.getElementById("timemgmt").checked == true)
 				{
-					document.getElementById("online").checked = false;
 					document.getElementById("is_start").checked = false;
-					document.getElementById("online").disabled = true;
 					document.getElementById("is_start").disabled = true;
+                    if (document.getElementById("datestart").value != '') {
+                        document.getElementById("online").checked = false;
+                        document.getElementById("online").disabled = true;
+                    }
 				}
 				// Timecontrol disable => enable Online and Startarticle
 				else
 				{
-					document.getElementById("online").disabled = false;
 					document.getElementById("is_start").disabled = false;
+                    document.getElementById("online").disabled = false;
 				}
+                
+                if (document.getElementById("datestart").value == '') {
+                    document.getElementById("online").disabled = false;
+                }
 			}
 	</script>        
 </head>
@@ -130,7 +136,7 @@
   <table border="0" cellspacing="0" cellpadding="0">
   <tr><td valign="top"><input type="checkbox" onclick="javascript:disableFunctionsOnTimeControl();" name="timemgmt" id="timemgmt" value="1" {TIMEMGMTCHECKED}></td><td colspan="2" class="text_medium"><label for="timemgmt">i18n("Use time control")</label></td>
   <tr><td valign="top">&nbsp;</td>
- <td class="text_medium">i18n("Start date"):</td><td><input type="text" name="datestart" id="datestart" value="{STARTDATE}" {SDOPTS} size="20" maxlength="40" class="text_medium">
+ <td class="text_medium">i18n("Start date"):</td><td><input type="text" name="datestart" id="datestart" onkeyup = "disableFunctionsOnTimeControl();" onchange = "disableFunctionsOnTimeControl();" value="{STARTDATE}" {SDOPTS} size="20" maxlength="40" class="text_medium">
  {CHOOSESTART}</td></tr>
 
    <tr><td valign="top">&nbsp;</td>

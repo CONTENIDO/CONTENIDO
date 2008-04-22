@@ -1596,7 +1596,7 @@ function conFlagOnOffline() {
     $db2 = new DB_Contenido;
 
     /* Set all articles which are before our starttime to offline */
-    $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE NOW() < datestart AND timemgmt = 1";
+    $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE NOW() < datestart AND datestart != '0000-00-00 00:00:00' AND datestart IS NOT NULL AND timemgmt = 1";
 
     $db->query($sql);
 
