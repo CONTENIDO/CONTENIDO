@@ -35,6 +35,7 @@ if(!$perm->have_perm_area_action($area))
 	} else {
 	    if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action)))
 	    {
+	    	$sNewNotification = '';
 	        if ($active != "1")
 	        {
 	            $active = "0";
@@ -42,6 +43,13 @@ if(!$perm->have_perm_area_action($area))
 	        
 	        if ($new == true)
 	        {
+	        	
+	        	$sLangNotification = i18n('Notice: In order to use this client, you must create a new language for it.');
+           	    $sTarget = $sess->url('frameset.php?area=lang');
+                $sJsLink = "parent.parent.location.href='".$sTarget."';
+                            top.header.markActive(top.header.document.getElementById('sub_lang'));";
+                $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="'.$sJsLink.'">', '</a>');
+            	$sNewNotification = '<br>'.$sLangNotification.'<br>'.$sLangNotificationLink;
 	             if (substr($path, strlen($frontendpath)-1) != "/")
 	             {
 	                $frontendpath .= "/";
@@ -142,13 +150,7 @@ if(!$perm->have_perm_area_action($area))
 	        $sql = "DELETE FROM ".$cfg["tab"]["code"]." WHERE idclient = '$idclient'";
 	        $db->query($sql);
 	        
-            $sLangNotification = i18n('Notice: In order to use this client, you must create a new language for it.');
-            $sTarget = $sess->url('frameset.php?area=lang');
-            $sJsLink = "parent.parent.location.href='".$sTarget."';
-                        top.header.markActive(top.header.document.getElementById('sub_lang'));";
-            $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="'.$sJsLink.'">', '</a>');
-	        
-            $notification->displayNotification("info", i18n("Changes saved").'<br>'.$sLangNotification.'<br>'.$sLangNotificationLink);
+            $notification->displayNotification("info", i18n("Changes saved").$sNewNotification);
 	
 	    	$cApiClient = new cApiClient;
 	    	$cApiClient->loadByPrimaryKey($idclient);
