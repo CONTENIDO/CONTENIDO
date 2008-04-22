@@ -36,7 +36,7 @@
 "pica_alloc";"sortorder";"int(10)";"";"";"0";"";"1"
 "pica_alloc_con";"idpica_alloc";"int(10)";"";"PRI";"0";"";"1"
 "pica_alloc_con";"idartlang";"int(10)";"";"";"0";"";"1"
-"pica_lang";"idpica_alloc";"int(10)";"";"";"0";"";"1"
+"pica_lang";"idpica_alloc";"int(10)";"";"PRI";"0";"";"1"
 "pica_lang";"idlang";"int(10)";"";"";"0";"";"1"
 "pica_lang";"name";"varchar(255)";"YES";"";"NULL";"";"1"
 "pica_lang";"online";"tinyint(1)";"";"";"0";"";"1"
