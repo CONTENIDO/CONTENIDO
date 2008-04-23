@@ -13,9 +13,9 @@
 *
 * $Id: include.workflow_tasks.php,v 1.4 2003/08/14 13:07:32 timo.hummel Exp $
 ******************************************/
-include_once ($cfg["path"]["classes"] . 'class.ui.php');
-include_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/classes/class.workflow.php"); 
-include_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/includes/functions.workflow.php");
+plugin_include('workflow', 'classes/class.workflow.php');
+plugin_include('workflow', 'includes/functions.workflow.php');
+cInclude("classes", "class.ui.php");
 
 global $sess;
 $sSession = $sess->id;

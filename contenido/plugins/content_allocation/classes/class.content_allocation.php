@@ -16,8 +16,7 @@
  * @modified 06.04.2008 by Holger Librenz
  *           direct mysql_* calls removed, using DB_Contenido::* methods instead
  */
-
-include_once ($cfg['path']['contenido'].$cfg['path']['plugins'].'repository/custom/FrontendNavigation.php');
+plugin_include('repository', 'custom/FrontendNavigation.php');
 
 class pApiContentAllocation {
 

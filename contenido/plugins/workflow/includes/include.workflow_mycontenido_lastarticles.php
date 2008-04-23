@@ -324,9 +324,9 @@ $clients = $classclient->getAccessibleClients();
 echo "<br>";
 echo i18n("Current workflow tasks", "workflow").":<br>";
 
-include_once ($cfg["path"]["classes"] . 'class.ui.php');
-include_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/classes/class.workflow.php"); 
-include_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/includes/functions.workflow.php");
+plugin_include('workflow', 'classes/class.workflow.php');
+plugin_include('workflow', 'includes/functions.workflow.php');
+cInclude('classes', 'class.ui.php');
 
 $wfa = new WorkflowArtAllocations;
 $wfu = new WorkflowUserSequences;

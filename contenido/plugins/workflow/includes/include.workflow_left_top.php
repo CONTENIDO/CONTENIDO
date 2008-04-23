@@ -1,6 +1,5 @@
 <?php
-
-include_once ($cfg["path"]["classes"] . 'class.ui.php');
+cInclude("classes", "class.ui.php");
 
 $create = new Link;
 $create->setMultiLink("workflow","","workflow_common","workflow_create");

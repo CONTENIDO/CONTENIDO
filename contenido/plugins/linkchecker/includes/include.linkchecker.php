@@ -32,16 +32,16 @@ if(empty($_REQUEST['action'])) {
     $action = "linkchecker";
 }
 
-include_once($cfg['path']['contenido'].$cfg['path']['plugins'].'linkchecker/includes/config.plugin.php');
-require_once($cfg['plugins']['linkchecker'] . "includes/include.checkperms.php");
-require_once($cfg['plugins']['linkchecker'] . "includes/include.linkchecker_tests.php");
+plugin_include('linkchecker', 'includes/config.plugin.php');
+plugin_include('linkchecker', 'includes/include.checkperms.php');
+plugin_include('linkchecker', 'includes/include.linkchecker_tests.php');
 
 // Var initialization
 $url = array('cms' => $cfgClient[$client]['path']['htmlpath'], 'contenido' => $cfg['path']['contenido_fullhtml']);
 
 // Initialization of cache
-require_once($cfg['path']['pear'] . "PEAR.php");
-require_once($cfg['path']['pear'] . "CACHE/Lite.php");
+cInclude('pear', 'PEAR.php');
+cInclude('pear', 'CACHE/Lite.php');
 
 $cacheName = array('errors' => $sess->id, 'errorscount' => $cacheName['errors'] . "ErrorsCountChecked");
 $cache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['path']['frontend'] . "cache/", 'caching' => true, 'lifeTime' => 60, 'automaticCleaningFactor' => 1));

@@ -1,6 +1,6 @@
 <?php
-include_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/classes/class.workflow.php");
-include_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/includes/functions.workflow.php");
+plugin_include('workflow', 'classes/class.workflow.php');
+plugin_include('workflow', 'includes/functions.workflow.php');
 
 global $lngAct, $modidartlang;
 

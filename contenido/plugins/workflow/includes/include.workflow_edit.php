@@ -15,8 +15,7 @@
 * $Id: include.workflow_edit.php,v 1.3 2006/01/13 15:54:41 timo.hummel Exp $
 ******************************************/
 
-$workflowPath = $cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/classes/";
-require_once ($workflowPath . "class.workflow.php");
+plugin_include('workflow', 'classes/class.workflow.php');
  
 $form = new UI_Table_Form("workflow_edit");
 $userclass = new User;

@@ -16,26 +16,27 @@
 ******************************************/
 
 include_once ('../../../includes/startup.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.user.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.xml.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.navigation.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.template.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.backend.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.table.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.notification.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.area.php');
 
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.layout.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.client.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.cat.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.treeitem.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'cfg_sql.inc.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'cfg_language_de.inc.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'functions.general.php');
-include_once ('../../../includes/functions.con.php');
-include_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/classes/class.workflow.php"); 
-include_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/includes/functions.workflow.php");
+cInclude("classes", "class.user.php");
+cInclude("classes", "class.xml.php");
+cInclude("classes", "class.navigation.php");
+cInclude("classes", "class.template.php");
+cInclude("classes", "class.backend.php");
+cInclude("classes", "class.table.php");
+cInclude("classes", "class.notification.php");
+cInclude("classes", "class.area.php");
 
+cInclude("classes", "class.layout.php");
+cInclude("classes", "class.client.php");
+cInclude("classes", "class.cat.php");
+cInclude("classes", "class.treeitem.php");
+cInclude("includes", "cfg_sql.inc.php");
+cInclude("includes", "cfg_language_de.inc.php");
+cInclude("includes", "functions.general.php");
+cInclude("includes", "functions.con.php");
+
+plugin_include('workflow', 'classes/class.workflow.php');
+plugin_include('workflow', 'includes/functions.workflow.php');
 
 $workflowartallocations = new WorkflowArtAllocations;
 $workflowusersequences = new WorkflowUserSequences;

@@ -15,8 +15,8 @@
 ******************************************/
 $iIdMarked = (int) $_GET['idworkflow'];
 
-include_once ($cfg["path"]["classes"] . 'class.ui.php');
-include_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/classes/class.workflow.php"); 
+plugin_include('workflow', 'classes/class.workflow.php');
+cInclude("classes", "class.ui.php");
 
 $workflows = new Workflows;
 $sScript = '';

@@ -1,8 +1,7 @@
 <?php
-require_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/classes/class.workflow.php");
-require_once ($cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/includes/functions.workflow.php");
+plugin_include('workflow', 'classes/class.workflow.php');
+plugin_include('workflow', 'includes/functions.workflow.php');
 cInclude("includes", "functions.encoding.php");
-
 
 $iIdMarked = (int) $_GET['idworkflowitem'];
 

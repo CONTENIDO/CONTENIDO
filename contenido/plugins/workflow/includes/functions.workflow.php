@@ -15,6 +15,7 @@
 * $Id: functions.workflow.php,v 1.8 2006/01/13 15:54:41 timo.hummel Exp $
 ******************************************/
 cInclude("includes", "functions.con.php");
+plugin_include('workflow', 'classes/class.workflowitems.php');
 
 function getUsers ($listid, $default)
 {

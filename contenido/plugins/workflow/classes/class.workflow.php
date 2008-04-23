@@ -23,14 +23,13 @@ $cfg["tab"]["workflow_tasks"] = $cfg['sql']['sqlprefix']."_piwf_tasks";
 $cfg["tab"]["workflow_user_sequences"] = $cfg['sql']['sqlprefix']."_piwf_user_sequences";
 $cfg["tab"]["workflow_actions"] = $cfg['sql']['sqlprefix']."_piwf_actions";
 
-$workflowPath = $cfg["path"]['contenido'] . $cfg["path"]["plugins"] . "workflow/classes/";
-require_once($cfg["path"]["contenido"] . $cfg["path"]["classes"]. "class.genericdb.php");
-require_once ($cfg["path"]["contenido"] . $cfg["path"]["classes"] . 'class.ui.php');
-require_once ($workflowPath . "class.workflowactions.php");
-require_once ($workflowPath . "class.workflowallocation.php");
-require_once ($workflowPath . "class.workflowartallocation.php");
-require_once ($workflowPath . "class.workflowitems.php");
-require_once ($workflowPath . "class.workflowusersequence.php");
+cInclude('classes', 'class.genericdb.php');
+cInclude('classes', 'class.ui.php');
+plugin_include('workflow', 'classes/class.workflowactions.php');
+plugin_include('workflow', 'classes/class.workflowallocation.php');
+plugin_include('workflow', 'classes/class.workflowartallocation.php');
+plugin_include('workflow', 'classes/class.workflowitems.php');
+plugin_include('workflow', 'classes/class.workflowusersequence.php');
 
 /**
  * Class Workflows
