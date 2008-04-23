@@ -39,49 +39,28 @@ function checkExistingPlugin($db, $sPluginname) {
     return false;
 }
 
-function updatePwRequest($db, $table) {
-    $aStandardvalues = array ( 'enable' => 'true',
-                               'mail_sender_name' => 'info%40contenido.org',
-                               'mail_sender' => 'Contenido+Backend',
-                               'mail_host' => 'localhost'
-                                );
-                                
-    $sql = "SELECT name, value FROM %s WHERE type='pw_request'";
-    $db->query(sprintf($sql, $table));
-    
-    $aExists = array();
-    $aKeys = array_keys($aStandardvalues);
-    
-    while ($db->next_record()) {
-        $sName = $db->f('name');
-        $sValue = $db->f('value');
-
-        array_push($aExists, $sName);
-        
-        if ($sValue == '' && in_array($sName, $aKeys)) {
-            $sType = '';
-            if ($sName == 'enable') {
-                $sType = 'pw_request';
-            } else {
-                $sType = 'system';
-            }
-            $sql = "UPDATE %s SET value = '%s' WHERE type='%s' AND name='%s'";
-            $db->query(sprintf($sql, $table, $aStandardvalues[$sName], $sType, $sName));
-        }
-    }
-    
-    foreach ($aStandardvalues as $key => $value) {
-        if (!in_array($key, $aExists)) {
-            $id = $db->nextid($table);
-            $sType = '';
-            if ($key == 'enable') {
-                $sType = 'pw_request';
-            } else {
-                $sType = 'system';
-            }
-            $sql = "INSERT INTO %s SET idsystemprop = '%s', type='%s', name='%s', value='%s'";
-            $db->query(sprintf($sql, $table, $id, $sType, $key, $value));
-        }
+function updateSystemProperties($db, $table) {
+    $aStandardvalues = array ( array('type' => 'pw_request', 'name' => 'enable', 'value' => 'true'),
+                               array('type' => 'system', 'name' => 'mail_sender_name', 'value' => 'info%40contenido.org'),
+                               array('type' => 'system', 'name' => 'mail_sender', 'value' => 'Contenido+Backend'),
+                               array('type' => 'system', 'name' => 'mail_host', 'value' => 'localhost'),
+                               array('type' => 'maintenance', 'name' => 'mode', 'value' => 'disabled'),
+                              );
+ 
+    foreach ($aStandardvalues as $aData) {
+    	$sql = "SELECT value FROM %s WHERE type='".$aData['type']."' AND name='".$aData['name']."'";
+    	$db->query(sprintf($sql, $table));
+    	if ($db->next_record()) {
+			$sValue = $db->f('value');
+			if ($sValue == '') {
+				$sql = "UPDATE %s SET value = '%s' WHERE type='%s' AND name='%s'";
+            	$db->query(sprintf($sql, $table, $aData['value'], $aData['type'], $aData['name']));
+			}
+    	} else {
+    		$id = $db->nextid($table);
+    		$sql = "INSERT INTO %s SET idsystemprop = '%s', type='%s', name='%s', value='%s'";
+            $db->query(sprintf($sql, $table, $id, $aData['type'], $aData['name'], $aData['value']));
+    	}
     }
 }
 

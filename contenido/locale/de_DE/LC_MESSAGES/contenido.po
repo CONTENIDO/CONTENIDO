@@ -5980,3 +5980,6 @@ msgstr "Bitte klicken Sie %shier%s, um dies zu tun."
 
 msgid "Select date"
 msgstr "Datum auswählen"
+
+msgid "Contenido is in maintenance mode. Only sysadmins are allowed to login. Please try again later."
+msgstr "Contenido befindet sich im Wartungsmodus. Nur Systemadministratoren k&ouml;nnen sich einloggen. Bitte versuchen Sie es zu einem sp&auml;teren Zeitpunkt erneut."

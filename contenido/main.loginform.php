@@ -68,6 +68,10 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
 	}
 	unset ($db);
 
+	if (getSystemProperty('maintenance', 'mode') == 'enabled') {
+        $aMessages[] = i18n("Contenido is in maintenance mode. Only sysadmins are allowed to login. Please try again later.");
+    }
+
 	if (count($aMessages) > 0)
 	{
 		$notification = new Contenido_Notification;

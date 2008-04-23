@@ -218,7 +218,7 @@ if ($currentstep < $totalsteps)
 	}		
 	
 	updateContenidoVersion($db, $_SESSION["dbprefix"]."_system_prop", C_SETUP_VERSION);
-    updatePwRequest($db, $_SESSION["dbprefix"]."_system_prop");
+    updateSystemProperties($db, $_SESSION["dbprefix"]."_system_prop");
 	
 	if (isset($_SESSION["sysadminpass"]) && $_SESSION["sysadminpass"] != "")
 	{

@@ -539,12 +539,27 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
 							 $this->database_table,
 							 addslashes($username)));
 
+    $sMaintenanceMode = getSystemProperty('maintenance', 'mode');
     while($this->db->next_record()) {
 		$uid   = $this->db->f("user_id");
 		$perm  = $this->db->f("perms");
 		$pass  = $this->db->f("password");   ## Password is stored as a md5 hash
 
-		if (is_array($auth_handlers))
+		$bInMaintenance = false;
+        if ($sMaintenanceMode == 'enabled') {
+            #sysadmins are allowed to login every time
+            if (!preg_match('/sysadmin/', $perm)) {
+                $bInMaintenance = true;
+            }
+        }
+
+        if ($bInMaintenance) {
+            unset($uid);
+            unset($perm);
+            unset($pass);
+        }
+        
+		if (is_array($auth_handlers) && !$bInMaintenance)
 		{
     		if (array_key_exists($pass, $auth_handlers))
     		{
