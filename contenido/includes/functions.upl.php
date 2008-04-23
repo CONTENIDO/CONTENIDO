@@ -18,6 +18,49 @@ cInclude("classes", "class.upload.php");
 cInclude("classes", "class.properties.php");
 cInclude("classes", "class.dbfs.php");
 
+/**
+ * Function reduces long path names and creates a dynamic tooltipp which shows
+ * the full path name on mouseover
+ *
+ * @author Timo Trautmann (4fb)
+ * @param string $sDisplayPath - original filepath
+ * @param int $iLimit - limit of chars which were displayed directly. If the path 
+ *                      string is shorter there will be no tooltipp
+ * @return string - string, which contains short path name and tooltipp if neccessary
+ */
+function generateDisplayFilePath ($sDisplayPath, $iLimit) {
+    $sDisplayPath = (string) $sDisplayPath;
+    $iLimit = (int) $iLimit;
+    
+    if (strlen($sDisplayPath) > $iLimit) {
+        $sDisplayPathShort = capiStrTrimHard($sDisplayPath, $iLimit);
+        
+        $sTooltippString = '';
+        $iCharcount = 0;
+        
+        $aPathFragments = split('/', $sDisplayPath);
+            
+        foreach ($aPathFragments as $sFragment) {
+            if ($sFragment != '') {
+                if (strlen($sFragment) > ($iLimit-5)) {
+                    $sFragment = capiStrTrimHard($sFragment, $iLimit);
+                }
+            
+                if($iCharcount+strlen($sFragment)+1 > $iLimit) {
+                    $sTooltippString .= '<br>'.$sFragment.'/';
+                    $iCharcount = strlen($sFragment);
+                } else {
+                    $iCharcount = $iCharcount+1+strlen($sFragment);
+                    $sTooltippString .= $sFragment.'/';
+                }
+            }
+        }
+        
+        $sDisplayPath = '<span onmouseover="Tip(\''.$sTooltippString.'\', BALLOON, true, ABOVE, true);">'.$sDisplayPathShort.'</span>';
+    }
+    return $sDisplayPath;
+}
+
 function uplDirectoryListRecursive ($currentdir, $startdir=NULL, $files=array(), $depth=-1, $pathstring="") {
     $depth++;
 

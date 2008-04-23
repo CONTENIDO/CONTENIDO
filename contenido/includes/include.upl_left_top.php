@@ -21,11 +21,15 @@ cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.upl.php");
 
 $tpl->set('s', 'FORMACTION', '');
+$sDisplayPath = '';
 if (isset($_REQUEST['path'])) {
-    $tpl->set('s', 'CAPTION2',	$_REQUEST['path']);
+    $sDisplayPath = $_REQUEST['path'];
 } else { 
-    $tpl->set('s', 'CAPTION2',	$sCurrentPathInfo);
+    $sDisplayPath = $sCurrentPathInfo;
 }
+
+$sDisplayPath = generateDisplayFilePath($sDisplayPath, 35);
+$tpl->set('s', 'CAPTION2', $sDisplayPath);
 
 #display notification, if there is no client
 if ((int) $client == 0) {
@@ -40,8 +44,8 @@ if ((int) $client == 0) {
 #####################
 if ($appendparameters != 'filebrowser' && (int) $client > 0) {
     $search = new cHTMLTextbox("searchfor", $_REQUEST['searchfor'], 26);
+    $sSearch->setStyle = "width:170px;";
     $sSearch = $search->render();
-    $sSearch = str_replace('>', 'style="width:170px;">', $sSearch);
 
     $form = new UI_Form("search");
     $form->add("search", '<table border="0" cellspacing="0" cellpadding="0"><tr><td>'.$sSearch.'</td><td><input style="margin-left: 5px;" type="image" src="images/submit.gif"></td></tr></table>');

@@ -247,7 +247,7 @@ class RequestPassword {
         $this->oTpl->set('s', 'LABEL', i18n('Please enter your login').':');
 
         //if handleNewPassword() returns a message, display it
-        $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates']..$this->aCfg['templates']['request_password']);
+        $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates'].$this->aCfg['templates']['request_password']);
     }
 
     /**

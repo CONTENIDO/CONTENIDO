@@ -93,6 +93,8 @@ if ($upload = $uploads->next())
 	
 	$uplelement = new cHTMLUpload("file",40);
 	
+    $qpath = generateDisplayFilePath($qpath, 65);
+
 	$form->add(i18n("File name"), $_REQUEST["file"]);
 	$form->add(i18n("Path"), $qpath);
 	$form->add(i18n("Replace file"), $uplelement->render());
@@ -168,7 +170,11 @@ if ($upload = $uploads->next())
 					endcal.time_comp = true;\n</script>\n\n\n";
 	}
 	
-	$page->setContent($form->render() . $sScript);
+    $sScriptinBody = '<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
+                      <script type="text/javascript" src="scripts/tip_balloon.js"></script>';
+	$page->addScript('style', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
+    
+	$page->setContent($sScriptinBody.$form->render() . $sScript);
 }
 else 
 {

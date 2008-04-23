@@ -461,6 +461,8 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 		$mpath = "upload:/".$path;	
 	}
     
+    $sDisplayPath = generateDisplayFilePath($mpath, 85);
+    
     $sToolsRow = '<tr class="textg_medium">
                         <td colspan="6" style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; vertical-align:middle; text-align:right; border-style: solid; background-color: #E2E2E2; padding-left:5px;" id="cat_navbar">
                             <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle; width:400px; padding:0px 5px; text-align:left;">
@@ -469,7 +471,7 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
                                 '.$sDelete.'
                             </div>
                             
-                            '.i18n("Path:")." ". $mpath.'
+                            '.i18n("Path:")." ". $sDisplayPath.'
 
                             <div style="clear:both;"></div>
                         </td>
@@ -734,16 +736,6 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 	$output = str_replace("-C-SCROLLRIGHT-", $nextpage, $output);
 	$output = str_replace("-C-PAGE-", i18n("Page")." ".$curpage, $output);
 
-	/*$form = new UI_Form("options");
-	$form->setVar("contenido", $sess->id);
-	$form->setVar("area", $area);
-	$form->setVar("frame", $frame);
-	$form->setVar("path", $path);
-	$form->setVar("sortmode", $sortmode);
-	$form->setVar("sortby", $sortby);
-	$form->setVar("startpage", $startpage);
-	$form->setVar("appendparameters", $appendparameters);*/
-
 	$select = new cHTMLSelectElement("thumbnailmode");
 
 	$values = Array(
@@ -944,7 +936,11 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
                                
                                </style>');
     
-	$page->setContent($delform->render());
+    $sScriptinBody = '<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
+                      <script type="text/javascript" src="scripts/tip_balloon.js"></script>';
+	$page->addScript('style', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
+    
+    $page->setContent($sScriptinBody.$delform->render());
     
 	$page->render();
 }

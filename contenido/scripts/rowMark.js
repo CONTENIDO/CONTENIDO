@@ -355,7 +355,8 @@ str = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'refreshSelectedBaseCategory(
 
 /* rowMark instance for the
    Upload area */
-upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'setPath(oRow)', 'upl');
+//upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'setPath(oRow)', 'upl');
+upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2');
 
 /* Create a new rowMark
    Instance for the Content-
