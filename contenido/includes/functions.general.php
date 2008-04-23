@@ -85,7 +85,7 @@ function is_alphanumeric($test, $umlauts = true)
 
 	if ($umlauts == true)
 	{
-		$match = "/^[a-z0-9ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ]+$/i";
+		$match = "/^[a-z0-9??????? ]+$/i";
 	} else
 	{
 		$match = "/^[a-z0-9 ]+$/i";
@@ -690,7 +690,7 @@ function isValidMail($sEMail, $bStrict = false)
 		
 		$sLocalChar		= '-a-z0-9_!#\\$&\'\\*\\+\\/=\\?\\^`\\{\\|\\}~'; 
 		$sLocalRegEx	= '['.$sLocalChar.'](\\.*['.$sLocalChar.'])*'; 
-		$sDomainChar	= 'a-zÃ¤Ã¶Ã¼'; 
+		$sDomainChar	= 'a-zäöü'; 
 		$sDomainRegEx	= $sDomainRegEx  = '((['.$sDomainChar.']|['.$sDomainChar.']['.$sDomainChar.'0-9-]{0,61}['.$sDomainChar.'0-9])\\.)+';
 		$sTLDChar		= 'a-z';
 		$sTLDRegEx		= '['.$sTLDChar.']{2,}'; 
