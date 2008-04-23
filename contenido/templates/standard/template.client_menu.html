@@ -21,13 +21,21 @@
            modules */
 
         function deleteClient(iduser) {
-            url  = 'main.php?area=client';
-            url += '&action=client_delete';
-            url += '&frame=2';
-            url += '&idclient=' + iduser;
-            url += '&contenido=' + sid;
-            window.location.href = url;
-
+			url_right_bottom  = 'main.php?area=client';
+            url_right_bottom += '&frame=4';
+            url_right_bottom += '&contenido=' + sid;
+			
+			url_right_top  = 'main.php?area=client';
+            url_right_top += '&frame=3';
+            url_right_top += '&contenido=' + sid;
+			
+            url_left_bottom  = 'main.php?area=client';
+            url_left_bottom += '&action=client_delete';
+            url_left_bottom += '&frame=2';
+            url_left_bottom += '&idclient=' + iduser;
+            url_left_bottom += '&contenido=' + sid;
+			
+			conMultiLink('right_top', url_right_top, 'right_bottom', url_right_bottom, 'left_bottom', url_left_bottom);
         }
     </script>      
 </head>

@@ -111,7 +111,7 @@ class Contenido_Notification {
 
         $table = new Table($bgColor, "solid", 0, 2, "#FFFFFF", "#FFFFFF", "#FFFFFF", true, false);
         
-        $noti = '<div id="contenido_notification" style="position: relative; left: 0; top: 0; z-index: 100000000;">';
+        $noti = '<div id="contenido_notification" style="position: relative; left: 0; top: 0; z-index: 10;">';
         $noti .= $table->start_table();
         $noti .= $table->header_row();
         $noti .= $table->borderless_cell('<img src="'.$imgPath.'" />');
