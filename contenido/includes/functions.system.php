@@ -438,6 +438,7 @@ function writeSystemValuesOutput($usage)
 	$sysvalues[$i]['variable'] = "sql.safe_mode";
 	$sysvalues[$i ++]['value'] = $sql_safe_mode;
 	// gdlib with installed features
+	$gdLib = array();
 	$gdLib = getPhpModuleInfo($moduleName = 'gd');
 	$gdLibFeatures = "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"2\" border=\"0\">
 	        <tr class=\"textg_medium\" style=\"background-color: #E2E2E2\">
