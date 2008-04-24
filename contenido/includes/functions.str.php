@@ -559,7 +559,11 @@ function strShowTreeTable() {
 function strRenameCategory ($idcat, $lang, $newcategoryname, $newcategoryalias) {
         global $db;
         global $cfg;
-		// Flag to rebuild the category table
+        
+        global $cfgClient;
+        global $client;
+        
+        // Flag to rebuild the category table
 		global $remakeCatTable;
 		global $remakeStrTable;
 		$remakeCatTable = true;
