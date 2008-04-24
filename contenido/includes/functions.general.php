@@ -617,7 +617,7 @@ function getGroupOrUserName($uid)
  */
 function getPhpModuleInfo($moduleName)
 {
-
+	$moduleSettings = array();
 	ob_start();
 	phpinfo(INFO_MODULES); // get information vor modules
 	$string = ob_get_contents();
