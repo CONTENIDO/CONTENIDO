@@ -4,12 +4,13 @@
 *
 * Description: Object to build a Contenido Frontend Navigation 
 *
-* @version 0.1.0
+* @version 0.2.0
 * @author Rudi Bieller
 * @copyright four for business AG <www.4fb.de>
 *
 * {@internal
 * created 2008-02-15
+* modified 2008-04-25 added method getLevel() and property aLevel, modified loadSubCategories() accordingly
 * 
 * @requires Contenido_FrontendNavigation_Base
 * }}
@@ -25,6 +26,12 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
      * @access protected
      */
     protected $oAuth; // for validating against fe-authentication
+    
+    /**
+     * @var array
+     * @access protected
+     */
+    protected $aLevel;
     
     /**
      * Constructor.
@@ -58,9 +65,9 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
                         (get_class($this->oAuth) != 'Auth' && get_class($this->oAuth) != 'Contenido_Frontend_Challenge_Crypt_Auth')) 
                         ? false 
                         : true;
-        $sFieldsToSelect = 'cattree.idcat';
+        $sFieldsToSelect = 'cattree.idcat, cattree.level';
         if ($bUseAuth === true) { // adapted from FrontendNavigation by Willi Man
-            $sFieldsToSelect = 'cattree.idcat, catlang.public, catlang.idcatlang';
+            $sFieldsToSelect = 'cattree.idcat, cattree.level, catlang.public, catlang.idcatlang';
        		// load needed classes
             cInclude("classes","class.frontend.permissions.php");
 			cInclude("classes","class.frontend.groups.php");
@@ -113,12 +120,14 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 	                for ($i = 0; $i < $iNumFeGroups; $i++) {
 						if($oFrontendPermissionCollection->checkPerm($aFeGroups[$i], 'category', 'access', $this->oDb->f('idcatlang'), true)) {
 							$this->aCategories[] = (int) $this->oDb->f('idcat');
+							$this->aLevel[(int) $this->oDb->f('idcat')] = (int) $this->oDb->f('level');
 							break;
 						}
 					}
 	            }
 	        } else {
 	            $this->aCategories[] = (int) $this->oDb->f('idcat');
+	            $this->aLevel[(int) $this->oDb->f('idcat')] = (int) $this->oDb->f('level');
 	        }
 	    }
 	    if ($bAsObjects === true) {
@@ -146,6 +155,28 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
     public function getSubCategories($iIdcat, $bAsObjects = true, $bWithSubCategories = false, $iSubCategoriesLoadDepth = 3) {
         $this->loadSubCategories($iIdcat, $bAsObjects, $bWithSubCategories, $iSubCategoriesLoadDepth);
         return $bAsObjects === true ? $this->oCategories : $this->aCategories;
+    }
+    
+    /**
+     * Get Level of a given idcat. If idcat wasn't loaded yet, level will be queried.
+     * @access public
+     * @param int $iIdcat
+     * @return int Level of requested idcat. In case of an error, -1 is returned.
+     */
+    public function getLevel($iIdcat) {
+        if (isset($this->aLevel[intval($iIdcat)])) {
+            return $this->aLevel[intval($iIdcat)];
+        }
+        $sSql = 'SELECT level FROM ' . $this->aCfg["tab"]["cat_tree"] . ' WHERE idcat = ' . intval($iIdcat);
+        $this->oDb->query($sSql);
+        if ($this->oDb->Errno != 0) {
+	        return -1;
+	    }
+	    if ($this->oDb->num_rows() > 0) {
+	        $this->oDb->next_record();
+	        return intval($this->oDb->f('level'));
+	    }
+        return -1;
     }
     
     /**
