@@ -50,12 +50,12 @@ if(!$perm->have_perm_area_action($area))
                             top.header.markActive(top.header.document.getElementById('sub_lang'));";
                 $sLangNotificationLink = sprintf(i18n('Please click %shere%s to create a new language.'), '<a href="javascript://" onclick="'.$sJsLink.'">', '</a>');
             	$sNewNotification = '<br>'.$sLangNotification.'<br>'.$sLangNotificationLink;
-	             if (substr($path, strlen($frontendpath)-1) != "/")
+	             if (substr($frontendpath, strlen($frontendpath)-1) != "/")
 	             {
 	                $frontendpath .= "/";
 	             }
 	
-	             if (substr($path, strlen($htmlpath)-1) != "/")
+	             if (substr($htmlpath, strlen($htmlpath)-1) != "/")
 	             {
 	                $htmlpath .= "/";
 	             }
