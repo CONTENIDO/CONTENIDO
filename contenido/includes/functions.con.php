@@ -742,11 +742,15 @@ function conMakeCatOnline($idcat, $lang, $status)
 function conMakePublic($idcat, $lang, $public)
 {
     global $db, $cfg;
+    $public = (int) $public;
+    if ($public != 1) {
+        $public = 0;
+    }
     
 	$a_catstring = conDeeperCategoriesArray($idcat);
 	foreach ($a_catstring as $value) {
 		$sql = "UPDATE ".$cfg["tab"]["cat_lang"].
-			   " SET public='".!$public."', lastmodified = '".date("Y-m-d H:i:s").
+			   " SET public='".$public."', lastmodified = '".date("Y-m-d H:i:s").
 			   "' WHERE idcat='$value' AND idlang='$lang' ";
 		$db->query($sql);
 	}	
