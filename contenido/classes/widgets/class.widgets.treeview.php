@@ -291,6 +291,12 @@ entries are connected with "AND".
 		$r_leftcell = new cHTMLTableData;
 		$r_rightcell = new cHTMLTableData;
 		$r_actioncell = new cHTMLTableData;
+        
+        $img_spacer = new cHTMLImage;
+        $img_spacer->updateAttributes(array('width' => '16', 'height' => '20'));
+        $img_spacer->setAlt("");
+        $img_spacer->setSrc("images/spacer.gif");
+        $img_spacer->advanceID();	
 		
 		$r_table->setCellPadding(0);
 		$r_table->setCellSpacing(0);
@@ -338,12 +344,12 @@ entries are connected with "AND".
 						} else {
 							if ($level == 1 && $with_root == false)
 							{
-								$img->setSrc("images/treeview/spacer.gif");
+								$out .= $img_spacer->render();
 							} else {
 								$img->setSrc($this->_buildImagePath("grid_linedownrightend.gif"));
+                                $img->advanceID();							
+                                $out .= $img->render();
 							}
-				        	$img->advanceID();							
-                    		$out .= $img->render();
 						}
                     	$lastitem[$level] = true;
                     } else {
@@ -358,11 +364,11 @@ entries are connected with "AND".
 						} else {
 							if ($level == 1 && $with_root == false)
 							{							
-								$img->setSrc("images/treeview/spacer.gif");
+								$out .= $img_spacer->render();
 							} else {
 								$img->setSrc($this->_buildImagePath("grid_linedownright.gif"));
+                                $out .= $img->render();
 							}
-							$out .= $img->render();
 						}                    	
                     	
                     	$lastitem[$level] = false;
@@ -370,18 +376,16 @@ entries are connected with "AND".
         		} else {
         			if ($lastitem[$level] == true)
         			{
-        				$img->setSrc("images/treeview/spacer.gif");
-			        	$img->advanceID();							        				
-        				$out .= $img->render();
+        				$out .= $img_spacer->render();
         			} else {
 						if ($level == 1 && $with_root == false)
 						{							
-							$img->setSrc("images/treeview/spacer.gif");
+							$out .= $img_spacer->render();
 						} else {        				
         					$img->setSrc($this->_buildImagePath("/grid_linedown.gif"));
+                            $img->advanceID();													
+                            $out .= $img->render();	
 						}
-			        	$img->advanceID();													
-        				$out .= $img->render();	
         			}	
         		}
         	}
