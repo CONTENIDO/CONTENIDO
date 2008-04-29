@@ -8,7 +8,32 @@ $Id: CHANGELOG.txt,v 1.111 2008/04/29 11:45:33 timo.trautmann Exp $
 
 Release 4.8.3
 ----------------------------------------------------------------------
-TODO
+** Bug
+    * [CON-58] - Suchfunktion (&DB?) scheitert bei bestimmten Sonderzeich
+    * [CON-94] - Newsfeed und Teaser rechts gehen nicht
+    * [CON-105] - Interaction Contenido & Workflow PlugIn
+    * [CON-106] - Create Client Problem
+    * [CON-107] - Error Message on XAMP
+    * [CON-108] - SQL Bug in Plugin Workflow
+    * [CON-110] - Content Allocation: Translation logic changed/Bugfix
+    * [CON-111] - Artikel wird bei setzen eines Endzeitpunkts und ohne Angabe des Startzeitpunkts immer offline gesetzt wird
+    * [CON-112] - sicherheitslücken
+    * [CON-116] - File functions.general.php has UTF-8 Encoding
+    * [CON-118] - Many modules / plugins working with PEAR::CACHE references the wrong location
+    * [CON-120] - Diverse Darstellungsprobleme unter Administration->Mandanten
+    * [CON-121] - Fehlermeldung unter "Administration -> System" bei bestimmten GD-Konfigurationen
+    * [CON-122] - Fehlende globale Variablen in strRenameCategory() (functions.str.php) $cfgClient und $client nicht global definiert
+    * [CON-123] - Fehlende Überprüfung ob $tpl instanziiert ist in Modulen
+    * [CON-124] - Contenido adds double slashes to client paths when a new client is created
+    * [CON-125] - Wrong path to non existing spacer.gif in class.widgets.treeview.php
+    * [CON-126] - !$public in functions.con.php conMakePublic() causes some problems.
+
+** Improvement
+    * [CON-114] - lange Pfadangaben in Content - Dateiverwaltung
+
+** Task
+    * [CON-117] - Maintenance Feature
+
 
 Release 4.8.2
 ----------------------------------------------------------------------
