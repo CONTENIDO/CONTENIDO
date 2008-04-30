@@ -38,7 +38,7 @@ class cSetupResults extends cSetupMask
 			$cHTMLButtonLink = new cHTMLButtonLink("http://www.contenido.org/", "Contenido Website");
 			$this->_oStepTemplate->set("s", "WEBSITE", $cHTMLButtonLink->render());			
 			
-			$cHTMLButtonLink = new cHTMLButtonLink("http://www.contenido.org/forum/", "Contenido Forum");
+			$cHTMLButtonLink = new cHTMLButtonLink("http://forum.contenido.org/", "Contenido Forum");
 			$this->_oStepTemplate->set("s", "FORUM", $cHTMLButtonLink->render());
 		} else {
 			cSetupMask::cSetupMask("templates/setup/forms/setupresultsfail.tpl", $step); 
