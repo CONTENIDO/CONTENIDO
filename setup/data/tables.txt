@@ -509,4 +509,3 @@
 "upl_meta";"modifiedby";"varchar(32)";"";"";"";"";""
 "online_user";"user_id";"varchar(32)";"";"PRI";"";"";""
 "online_user";"lastaccessed";"timestamp(14)";"YES";"";"";"";""
-
