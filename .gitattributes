@@ -9,6 +9,7 @@ cms/css/contenido_sample.css -text
 cms/css/index.php -text
 cms/dbfs.php -text
 cms/error.php -text
+cms/favicon.ico -text
 cms/front_content.php -text
 cms/front_crcloginform.inc.php -text
 cms/images/bg.gif -text
