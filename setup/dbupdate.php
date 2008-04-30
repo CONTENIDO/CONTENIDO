@@ -232,8 +232,6 @@ if ($currentstep < $totalsteps)
 	$sql = "UPDATE %s SET createcode = '1'";
 	$db->query(sprintf($sql, $_SESSION["dbprefix"]."_cat_art"));
 	
-	$db->query(sprintf($sql, $_SESSION["dbprefix"]."_phplib_active_sessions"));
-	
 	if ($_SESSION["setuptype"] == "migration")
 	{
 		$aClients = listClients($db, $_SESSION["dbprefix"]."_clients");

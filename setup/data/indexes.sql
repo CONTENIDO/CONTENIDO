@@ -17,7 +17,6 @@ ALTER TABLE !PREFIX!_art_lang ADD INDEX idart_2 (idart, idlang);
 
 ALTER TABLE !PREFIX!_art_spec ADD INDEX client (client);
 ALTER TABLE !PREFIX!_art_spec ADD INDEX lang (lang);
-ALTER TABLE !PREFIX!_art_spec ADD INDEX artspecid (artspecid);
 
 ALTER TABLE !PREFIX!_cat ADD INDEX idclient (idclient);
 ALTER TABLE !PREFIX!_cat ADD INDEX idcat (idcat);
@@ -46,7 +45,6 @@ ALTER TABLE !PREFIX!_code ADD INDEX idclient (idclient);
 ALTER TABLE !PREFIX!_container ADD INDEX idtpl (idtpl);
 ALTER TABLE !PREFIX!_container ADD INDEX number (number);
 
-ALTER TABLE !PREFIX!_container_conf ADD INDEX idtpl (idtpl);
 ALTER TABLE !PREFIX!_container_conf ADD INDEX idtplcfg (idtplcfg);
 
 ALTER TABLE !PREFIX!_content ADD INDEX idartlang (idartlang);
