@@ -85,7 +85,7 @@ function is_alphanumeric($test, $umlauts = true)
 
 	if ($umlauts == true)
 	{
-		$match = "/^[a-z0-9??????? ]+$/i";
+		$match = "/^[a-z0-9ƒд÷ц№ья ]+$/i";
 	} else
 	{
 		$match = "/^[a-z0-9 ]+$/i";
