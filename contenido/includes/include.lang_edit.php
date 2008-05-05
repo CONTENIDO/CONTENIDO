@@ -27,9 +27,11 @@ $newOption = '';
 $db2 = new DB_Contenido;
 
 $sReload = '<script language="javascript">
-                var left_bottom = parent.parent.frames[\'left\'].frames[\'left_bottom\'];
+                var left_bottom = top.content.left.left_bottom;
+
                 if (left_bottom) {
                     var href = left_bottom.location.href;
+                    href = href.replace(/&idlang[^&]*/, \'\');
                     left_bottom.location.href = href+"&idlang="+"'.$idlang.'";
                 }
             </script>';
@@ -37,7 +39,6 @@ $sReload = '<script language="javascript">
 if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
 {
     	$page = new UI_Page;
-    	$page->addScript('reload', $sReload);
         
         if ($action == "lang_deletelanguage") {
             // finally delete from dropdown in header
@@ -56,16 +57,26 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
         }
         
         if ($action == "lang_newlanguage") {
-             // update language dropdown in header
-            $new_idlang = $db->nextid($cfg["tab"]["lang"])-1;
+            // update language dropdown in header
+            $new_idlang = 0;
+            $sSql = 'SELECT max(idlang) as newlang FROM '.$cfg["tab"]["lang"].';';
+            $db->query($sSql);
+            if ($db->next_record()) {
+                $new_idlang = $db->f('newlang');
+            }
+
             $newOption = '<script language="javascript">';
             $newOption .= 'var newLang = new Option("'.i18n("New language").' ('.$new_idlang.')", "'.$new_idlang.'", false, false);';
             $newOption .= 'var langList = top.header.document.getElementById("cLanguageSelect");';
             $newOption .= 'langList.options[langList.options.length] = newLang;';
             $newOption .= '</script>';
+            $idlang = $new_idlang;
         }
         
-        $page->addScript('refreshHeader', $newOption);
+        if ($targetclient == $client) {
+            $page->addScript('refreshHeader', $newOption);
+        }
+        $page->addScript('reload', $sReload);
     	$page->render();	
 } else
 {
@@ -178,13 +189,14 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
       	$form->add(i18n("Date format"), $dateformat->render());
       	$form->add(i18n("Time format"), $timeformat->render());
     
-        
-    
     	$page = new UI_Page;
     	$page->setContent($noti.$form->render());
-    	$page->addScript('reload', $sReload);
-        $page->addScript('refreshHeader', $newOption);
-        
+        if ($targetclient == $client) {
+            $page->addScript('refreshHeader', $newOption);
+        }
+        if ($_REQUEST['action'] != '') {
+            $page->addScript('reload', $sReload);
+        }
     	$page->render();
     }
     } 
