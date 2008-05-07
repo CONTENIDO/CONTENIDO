@@ -17,6 +17,7 @@ cInclude("classes","class.ui.php");
 cInclude("classes","class.htmlelements.php");
 cInclude("classes","widgets/class.widgets.page.php");
 cInclude("includes","functions.upl.php");
+cInclude("external", "edit_area/class.edit_area.php");
 
 $noti				= "";
 $bOptionUseJava		= getEffectiveSetting("modules", "java-edit", false);
@@ -173,8 +174,8 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 			$oOutputRows->setStyle("font-family: monospace;");
     	}
     	
-    	$input	= new cHTMLTextarea("input",  $sInputData, 100, 15, 'top_box');
-    	$output = new cHTMLTextarea("output", $sOutputData, 100, 15, 'bottom_box'); 
+    	$input	= new cHTMLTextarea("input",  $sInputData, 100, 20, 'input');
+    	$output = new cHTMLTextarea("output", $sOutputData, 100, 20, 'output'); 
     	
     	// Style the fields
     	$input->updateAttributes(array("wrap" => "off"));
@@ -376,13 +377,11 @@ window.onload = scrolltheother;
                 ';
 				$page->addScript("syncScript", $sSyncScript);
 				
-				$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oInputRows->render().'</td></tr></table>', $input->render(), 'top');
-                $form->add('', '', 'scroll');
-                $form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oOutputRows->render().'</td></tr></table>', $output->render(), 'bottom');
+				$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oInputRows->render().'</td></tr></table>', $input->render());
+                $form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oOutputRows->render().'</td></tr></table>', $output->render());
 			} else {
-				$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td></tr></table>', $input->render(), 'top');
-				$form->add('', '', 'scroll');
-                $form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td></tr></table>', $output->render(), 'bottom');
+				$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td></tr></table>', $input->render());
+                $form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td></tr></table>', $output->render());
 			}
 		} else {
 			$inputApplet  = '<applet id="einput" codebase="'.$cfg["path"]["contenido_fullhtml"].'applets/" code="Test.class" width="100%" height="400"></applet>';
@@ -466,8 +465,9 @@ window.onload = scrolltheother;
 		}
 		if (!($action == "mod_importexport_module" && $mode == "export"))
 		{
-            $page->setEvent('onload', 'initMouseEvent();');
-            $page->addScript('resizeArea', '<script type="text/javascript" src="scripts/resizeAreas.js"></script>');
+            $oEditAreaInput = new EditArea('input', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+            $oEditAreaOutput = new EditArea('output', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
+            $page->addScript('editarea', $oEditAreaInput->renderScript().$oEditAreaOutput->renderScript());
 			            
             $page->render();
 		}

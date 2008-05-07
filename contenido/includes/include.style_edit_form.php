@@ -16,6 +16,7 @@
 
 cInclude("classes", "class.ui.php");
 cInclude("classes", "widgets/class.widgets.page.php");
+cInclude("external", "edit_area/class.edit_area.php");
 
 $sFileType = "css";
 
@@ -118,7 +119,7 @@ if (!$perm->have_perm_area_action($area, $action))
         $form->setVar("tmp_file", $sTempFilename);
         
         $tb_name = new cHTMLTextbox("file", $sFilename, 60);
-        $ta_code = new cHTMLTextarea("code", htmlspecialchars($sCode), 100, 40);
+        $ta_code = new cHTMLTextarea("code", htmlspecialchars($sCode), 100, 40, "code");
         $ta_code->setStyle("font-family: monospace;width: 100%;");
         $ta_code->updateAttributes(array("wrap" => getEffectiveSetting('style_editor', 'wrap', 'off')));
         
@@ -126,6 +127,10 @@ if (!$perm->have_perm_area_action($area, $action))
         $form->add(i18n("Code"),$ta_code);            
         
         $page->setContent($form->render());
+        
+        $oEditArea = new EditArea('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
+        $page->addScript('editarea', $oEditArea->renderScript());
+        
         $page->addScript('reload', $sReloadScript);
     	$page->render();  
     	  

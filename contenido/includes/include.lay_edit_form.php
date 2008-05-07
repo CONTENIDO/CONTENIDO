@@ -14,6 +14,7 @@ cInclude("classes", "contenido/class.layout.php");
 cInclude("classes", "class.htmlvalidator.php");
 cInclude("classes", "class.ui.php");
 cInclude("classes", "widgets/class.widgets.page.php");
+cInclude("external", "edit_area/class.edit_area.php");
 
 if (!isset($idlay)) $idlay = 0;
 
@@ -171,20 +172,19 @@ if (!$layout->virgin)
 	$form->setVar("idlay", $idlay);
 	
 	$tb_name = new cHTMLTextbox("layname", $name, 60);
-	$ta_description = new cHTMLTextarea("description", $description,100, 10, 'top_box');
+	$ta_description = new cHTMLTextarea("description", $description,100, 10);
 	$ta_description->setStyle("font-family: monospace;width: 100%;");
 	$ta_description->updateAttributes(array("wrap" => "off"));
 	
-	$ta_code = new cHTMLTextarea("code", htmlspecialchars($code), 100,20, 'bottom_box');
+	$ta_code = new cHTMLTextarea("code", htmlspecialchars($code), 100,20, 'code');
 	$ta_code->setStyle("font-family: monospace;width: 100%;");
 	$ta_code->updateAttributes(array("wrap" => "off"));
 	
 	$cb_refresh = new cHTMLCheckbox("refreshtemplates", i18n("On save, apply default modules to new containers"));
 	
 	$form->add(i18n("Name"),$tb_name);
-	$form->add(i18n("Description"),$ta_description, 'top');
-    $form->add('', '', 'scroll');
-	$form->add(i18n("Code"),$ta_code, 'bottom');
+	$form->add(i18n("Description"),$ta_description);
+	$form->add(i18n("Code"),$ta_code);
 	$form->add(i18n("Options"), $cb_refresh);
 	
     # Set static pointers
@@ -201,8 +201,8 @@ if (!$layout->virgin)
     $tpl->set('d', 'NAME',    'code');
     $tpl->next();
     
-    $page->setEvent('onload', 'initMouseEvent();');
-    $page->addScript('resizeArea', '<script type="text/javascript" src="scripts/resizeAreas.js"></script>');
+    $oEditArea = new EditArea('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
+    $page->addScript('editarea', $oEditArea->renderScript());
     
     $sScript = '<script type="text/javascript">
                             if (document.getElementById(\'scroll\')) {
