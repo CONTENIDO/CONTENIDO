@@ -96,11 +96,11 @@ class EditArea {
       * @param  boolean $bAddScript - defines if edit_area script is included or not
       *                               interesting when there is more than only one editor on page
       * @param  array $aCfg - The contenido configuration array
-      * @param  boolean $bInUse - Optional defines if content is editable or not
+      * @param  boolean $bEditable - Optional defines if content is editable or not
       *
       * @access public
       */
-    function EditArea($sId, $sSyntax, $sLang, $bAddScript, $aCfg, $bInUse = false) {
+    function EditArea($sId, $sSyntax, $sLang, $bAddScript, $aCfg, $bEditable = true) {
         //datatype check
         $sId = (string) $sId;
         $sSyntax = (string) $sSyntax;
@@ -125,7 +125,7 @@ class EditArea {
         $this->setProperty('toolbar', 'search, go_to_line, fullscreen, |, undo, redo, |, select_font,|, change_smooth_selection, highlight, reset_highlight, |, charmap, |, help', false);
         
         //make content not editable if not allowed
-        if ($bInUse == false) {
+        if ($bEditable == false) {
             $this->setProperty('is_editable', 'false', true);
         } else {
             $this->setProperty('is_editable', 'true', true);
