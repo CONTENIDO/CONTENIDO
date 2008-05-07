@@ -4,7 +4,6 @@ Description 	: Linkchecker 2.0.1
 Author      	: Frederic Schneider (4fb)
 Urls        	: http://www.4fb.de
 Create date 	: 2008-02-28
-Modified		: Andreas Lindner (4fb), 08.02.2008, Performance enhancements
 Modified		: Frederic Schneider (4fb), 06.05.2008, Fix for big pages
 *******************************************************************************/
 

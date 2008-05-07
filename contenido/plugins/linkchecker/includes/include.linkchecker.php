@@ -4,7 +4,6 @@ Description 	: Linkchecker 2.0.1
 Author      	: Frederic Schneider (4fb)
 Urls        	: http://www.4fb.de
 Create date 	: 2007-08-08
-Create date 	: 2007-08-08
 Modified		: Andreas Lindner (4fb), 08.02.2008, Performance enhancements
 Modified        : Holger Librenz (4fb), 05.04.2008, Fixed wrong include-path for
 				  PEAR cache module
@@ -70,7 +69,7 @@ $tpl->set('s', 'EXTERNS_LABEL', i18n("Externs"));
 $tpl->set('s', 'INTERNS_EXTERNS_HREF', $sLink.'3');
 $tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links"));
 
-// Caching
+// Cache options
 $cacheName = array('errors' => $sess->id, 'errorscount' => $cacheName['errors'] . "ErrorsCountChecked");
 $cache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['path']['frontend'] . "cache/", 'caching' => true, 'lifeTime' => 60, 'automaticCleaningFactor' => 1));
 
@@ -175,7 +174,7 @@ if($errors = $cache->get($cacheName['errors'], intval($_REQUEST['mode']))) {  //
 	$sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " GROUP BY idcat";
 	$db->query($sql);
 
-    $db2 = new DB_Contenido();
+	$db2 = new DB_Contenido();
 
 	while($db->next_record()) {
 
@@ -281,7 +280,7 @@ if(empty($errors)) {
 	$tpl->set('s', 'ERRORS_HELP_ERRORS', i18n("Wrong links", $plugin_name));
 
 	// error_output initialization
-	$error_output = array("art" => "", "cat" => "", "docimages" => "", "others" => "");
+	$error_output = array('art' => '', 'cat' => '', 'docimages' => '', 'others' => '');
 
 	foreach($errors as $key => $row) {
 
