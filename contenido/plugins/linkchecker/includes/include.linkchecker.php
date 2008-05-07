@@ -1,13 +1,14 @@
 <?php
 /******************************************************************************
-Description 	: Linkchecker 2.0.0
+Description 	: Linkchecker 2.0.1
 Author      	: Frederic Schneider (4fb)
 Urls        	: http://www.4fb.de
 Create date 	: 2007-08-08
 Create date 	: 2007-08-08
 Modified		: Andreas Lindner (4fb), 08.02.2008, Performance enhancements
-Modified        : Holger Librenz (4fb), 05.04.2008, fixed wrong include-path for
-                                                    PEAR cache module
+Modified        : Holger Librenz (4fb), 05.04.2008, Fixed wrong include-path for
+				  PEAR cache module
+Modified		: Frederic Schneider (4fb), 06.05.2008, Fix for big pages
 *******************************************************************************/
 
 $plugin_name = "linkchecker";
@@ -17,16 +18,17 @@ if(!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
 	exit;
 }
 
-if ((int) $client == 0) {
+if((int) $client == 0) {
     $notification->displayNotification("error", i18n("No Client selected"));
     exit;
 }
-// If no mode defined
+
+// If no mode defined, use mode three
 if(empty($_REQUEST['mode'])) {
     $_REQUEST['mode'] = 3;
 }
 
-//If no action definied
+// If no action definied
 if(empty($_REQUEST['action'])) {
     $_REQUEST['action'] = 'linkchecker';
     $action = "linkchecker";
@@ -36,20 +38,17 @@ plugin_include('linkchecker', 'includes/config.plugin.php');
 plugin_include('linkchecker', 'includes/include.checkperms.php');
 plugin_include('linkchecker', 'includes/include.linkchecker_tests.php');
 
-// Var initialization
-$url = array('cms' => $cfgClient[$client]['path']['htmlpath'], 'contenido' => $cfg['path']['contenido_fullhtml']);
-
 // Initialization of cache
 cInclude('pear', 'PEAR.php');
 cInclude('pear', 'CACHE/Lite.php');
 
-$cacheName = array('errors' => $sess->id, 'errorscount' => $cacheName['errors'] . "ErrorsCountChecked");
-$cache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['path']['frontend'] . "cache/", 'caching' => true, 'lifeTime' => 60, 'automaticCleaningFactor' => 1));
-
 // Initialization
 $actionID = 500;
-$area = "linkchecker";
+$cats = array();
 $whitelist_timeout = 2592000; // 30 days
+
+// Var initialization
+$url = array('cms' => $cfgClient[$client]['path']['htmlpath'], 'contenido' => $cfg['path']['contenido_fullhtml']);
 
 // Template- and languagevars
 if($cronjob != true) {
@@ -60,16 +59,20 @@ if($cronjob != true) {
 	$tpl->set('s', 'SID', $sess->id);
 }
 
-//Fill Subnav
+// Fill Subnav I
+$sLink = $sess->url("main.php?area=linkchecker&frame=4&action=linkchecker") . '&mode=';
 
-$sLink = $sess->url("main.php?area=linkchecker&frame=4&action=linkchecker").'&mode=';
-//Fill Subnav
-$tpl->set('s', 'INTERNS_HREF', $sLink.'1');
+// Fill Subnav II
+$tpl->set('s', 'INTERNS_HREF', $sLink . '1');
 $tpl->set('s', 'INTERNS_LABEL', i18n("Interns"));
-$tpl->set('s', 'EXTERNS_HREF', $sLink.'2');
+$tpl->set('s', 'EXTERNS_HREF', $sLink . '2');
 $tpl->set('s', 'EXTERNS_LABEL', i18n("Externs"));
 $tpl->set('s', 'INTERNS_EXTERNS_HREF', $sLink.'3');
 $tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links"));
+
+// Caching
+$cacheName = array('errors' => $sess->id, 'errorscount' => $cacheName['errors'] . "ErrorsCountChecked");
+$cache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['path']['frontend'] . "cache/", 'caching' => true, 'lifeTime' => 60, 'automaticCleaningFactor' => 1));
 
 /* *********
 Program code
@@ -86,7 +89,7 @@ function linksort($errors) {
 
 		array_multisort($errors, SORT_ASC, SORT_STRING, $nameart);
 
-	}  elseif($_GET['sort'] == "namecat") {
+	} elseif($_GET['sort'] == "namecat") {
 
 		foreach($errors as $key => $row) {
 			$namecat[$key] = $row['namecat'];
@@ -94,7 +97,7 @@ function linksort($errors) {
 
 		array_multisort($errors, SORT_ASC, SORT_STRING, $namecat);
 
-	}  elseif($_GET['sort'] == "wronglink") {
+	} elseif($_GET['sort'] == "wronglink") {
 
 		foreach($errors as $key => $row) {
 			$wronglink[$key] = $row['url'];
@@ -147,8 +150,6 @@ function url_is_uri($url) {
 
 }
 
-$cats = array();
-
 /* Whitelist: Add */
 if(!empty($_GET['whitelist'])) {
 	$sql = "INSERT INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . base64_decode($_GET['whitelist']) . "', '" . time() . "')";
@@ -192,13 +193,13 @@ if($errors = $cache->get($cacheName['errors'], intval($_REQUEST['mode']))) {  //
 
 	}
 
-	// Where, if lang not 0
+	// Use SQL-WHERE if lang is not zero
 	if($langart != 0) {
 		$lang_where = "AND art.idlang = '" . $langart . "' AND catName.idlang = '" . $langart . "'";
 	} elseif(!isset($langart)) {
 		$lang_where = "AND art.idlang = '" . $lang . "' AND catName.idlang = '" . $lang . "'";
 	}
-
+    
 	// How many articles exists? [Text]
 	$sql = "SELECT art.title, art.idlang, cat.idart, cat.idcat, catName.name AS namecat, con.value FROM " . $cfg['tab']['cat_art'] . " cat
 			LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)

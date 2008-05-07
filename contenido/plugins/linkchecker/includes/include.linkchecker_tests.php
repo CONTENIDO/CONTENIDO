@@ -1,15 +1,16 @@
 <?php
 /******************************************************************************
-Description 	: Linkchecker 2.0.0
+Description 	: Linkchecker 2.0.1
 Author      	: Frederic Schneider (4fb)
 Urls        	: http://www.4fb.de
 Create date 	: 2008-02-28
 Modified		: Andreas Lindner (4fb), 08.02.2008, Performance enhancements
+Modified		: Frederic Schneider (4fb), 06.05.2008, Fix for big pages
 *******************************************************************************/
 
 // Checks all links without front_content.php
 function checkLinks() {
-	global $auth, $cfgClient, $client, $cfg, $cronjob, $db, $errors, $lang, $langart;
+	global $auth, $cfgClient, $client, $cfg, $cronjob, $db, $errors, $lang, $langart, $whitelist;
 	global $searchIDInfosArt, $searchIDInfosCat, $searchIDInfosCatArt, $searchIDInfosNonID;
 
 	if(count($searchIDInfosArt) > 0) { // Checks idarts
@@ -143,14 +144,12 @@ function checkLinks() {
 		}
 
 		// Clean extern-links database-cache, when mode 2 is active and user has admin-rights
-		if($_REQUEST['mode'] == 2) {
+		if($_REQUEST['mode'] == 2 && $admin == true) {
 
-			if($admin == true) {
 				$sql = "DELETE FROM " . $cfg['tab']['externlinks'] . $lang_where;
 				$db->query($sql);
-			}
 
-		} elseif($_REQUEST['mode'] == 3) { // When mode is 3: Select cached extern links from database
+		} elseif($_REQUEST['mode'] == 3) { // When mode is three: Select cached extern links from database
 
 			$sql = "SELECT * FROM " . $cfg['tab']['externlinks'] . $lang_where;
 			$db->query($sql);
@@ -164,7 +163,7 @@ function checkLinks() {
 									"error_type" => "unknown");
 
 				$check = cCatPerm($db->f("idcat"), $db2);
-				if($check == true) {
+				if($check == true && !in_array($db->f("url"), $whitelist)) {
 
 					if(url_is_image($db->f("url"))) {
 						$errors['docimages'][] = $temp_array;
@@ -219,7 +218,7 @@ function checkLinks() {
 
 			} elseif(substr($searchIDInfosNonID[$i]['url'], strlen($searchIDInfosNonID[$i]['url'])-5, 5) == ".html") {
 
-				$ping = @fopen($cfgClient[$client]['path']['htmlpath'] . $searchIDInfosNonID[$i]['url'], 'r', false);
+				$ping = @file_exists($cfgClient[$client]['path']['htmlpath'] . $searchIDInfosNonID[$i]['url']);
 
 				if(!$ping) {
 					$errors['art'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "unknown"));
@@ -327,7 +326,8 @@ function searchFrontContentLinks($value, $idart, $nameart, $idcat, $namecat) {
 function searchLinks($value, $idart, $nameart, $idcat, $namecat, $lang, $fromtype = "") {
 	global $url, $searchIDInfosNonID, $whitelist;
 
-	if(preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $value, $matches) && $_REQUEST['mode'] != 1) { // Extern URL
+	// Extern URL
+	if(preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $value, $matches) && $_REQUEST['mode'] != 1) {
 
 		for($i = 0; $i < count($matches[1]); $i++) {
 
@@ -341,26 +341,21 @@ function searchLinks($value, $idart, $nameart, $idcat, $namecat, $lang, $fromtyp
 
 	// Redirect
 	if($fromtype == "Redirect" && (preg_match('!(' . preg_quote($url['cms']) . '[^\s]*)!i', $value, $matches)
-	|| preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $matches))
+	|| (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $matches) && $_REQUEST['mode'] != 1))
 	&& !eregi("front_content.php", $value)
 	&& !in_array($matches[0], $whitelist)) {
-		$searchIDInfosNonID[] = array("url" => $matches[0], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "lang" => $lang, "urltype" => "unkown");
+		$searchIDInfosNonID[] = array("url" => $matches[0], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "lang" => $lang, "urltype" => "unknown");
 	}
 
-	if(preg_match_all('~(?:(?:action|data|href|src)=["\'])(?!file://)(?!ftp://)(?!http://)(?!https://)(?!ww)(?!mailto)(?!\#)(?!/\#)([^"\']+)(?:["\'])~i', $value, $matches) && $_REQUEST['mode'] != 2) { // Intern URL
+	// Intern URL
+	if(preg_match_all('~(?:(?:action|data|href|src)=["\'])(?!file://)(?!ftp://)(?!http://)(?!https://)(?!ww)(?!mailto)(?!\#)(?!/\#)([^"\']+)(?:["\'])~i', $value, $matches) && $_REQUEST['mode'] != 2) {
 
-		if(count($matches[1]) > 1) {
+		for($i = 0; $i < count($matches[1]); $i++) {
 
-			for($i = 0; $i < count($matches[1]); $i++) {
+			if(strpos($matches[1][$i], "front_content.php") === false && !in_array($matches[1][$i], $whitelist)) {
+				$searchIDInfosNonID[] = array("url" => $matches[1][$i], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "lang" => $lang, "urltype" => "intern");
+            }
 
-				if(strpos($matches[1][$i], "front_content.php") === false && !in_array($matches[1][$i], $whitelist)) {
-					$searchIDInfosNonID[] = array("url" => $matches[1][$i], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "lang" => $lang, "urltype" => "intern");
-				}
-
-			}
-
-		} elseif(strpos($matches[1][0], "front_content.php") === false && !in_array($matches[1][0], $whitelist)) {
-			$searchIDInfosNonID[] = array("url" => $matches[1][0], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "lang" => $lang, "urltype" => "intern");
 		}
 
 	}

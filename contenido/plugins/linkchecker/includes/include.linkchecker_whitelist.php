@@ -1,6 +1,6 @@
 <?php
 /******************************************************************************
-Description 	: Linkchecker 2.0.0
+Description 	: Linkchecker 2.0.1
 Author      	: Frederic Schneider (4fb)
 Urls        	: http://www.4fb.de
 Create date 	: 2007-11-02
