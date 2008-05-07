@@ -120,6 +120,7 @@ contenido/classes/Contenido_FrontendNavigation/Contenido_FrontendNavigation.clas
 contenido/classes/Contenido_FrontendNavigation/Contenido_FrontendNavigation_Base.class.php -text
 contenido/classes/Contenido_FrontendNavigation/Contenido_FrontendNavigation_Breadcrumb.class.php -text
 contenido/classes/Contenido_FrontendNavigation/Sample.php -text
+contenido/classes/Debug/Debug_DevNull.class.php -text
 contenido/classes/Debug/Debug_File.class.php -text
 contenido/classes/Debug/Debug_Hidden.class.php -text
 contenido/classes/Debug/Debug_Visible.class.php -text
