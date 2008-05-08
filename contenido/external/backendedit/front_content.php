@@ -494,11 +494,13 @@ if ($contenido)
 	list ($inUse, $message) = $col->checkAndMark("article", $idartlang, true, i18n("Article is in use by %s (%s)"), true, "front_content.php?changeview=edit&action=con_editart&idartlang=$idartlang&type=$type&typenr=$typenr&idart=$idart&idcat=$idcat&idcatart=$idcatart&client=$client&lang=$lang");
 
     $sHtmlInUse = '';
+    $sHtmlInUseMessage = '';
 	if ($inUse == true)
 	{
 		$disabled = 'disabled="disabled"';
-        $sHtmlInUse = '<link rel="stylesheet" type="text/css" href="'.$cfg['path']['contenido_fullhtml'].'styles/inuse.css"/></head>'.$message;
-	}
+        $sHtmlInUseCss = '<link rel="stylesheet" type="text/css" href="'.$cfg['path']['contenido_fullhtml'].'styles/inuse.css" />';
+        $sHtmlInUseMessage = $message;
+    }
 
 	$sql = "SELECT locked FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".$idart."' AND idlang = '".$lang."'";
 	$db->query($sql);
@@ -703,8 +705,9 @@ else
 	$code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
     
     /* If article is in use, display notification */
-    if ($sHtmlInUse) {
-        $code = preg_replace("/<\/head>(\s*)<body>/i", "$sHtmlInUse", $code, 1);
+    if ($sHtmlInUseCss && $sHtmlInUseMessage) {
+        $code = preg_replace("/<\/head>/i", "$sHtmlInUseCss\n</head>", $code, 1);
+        $code = preg_replace("/(<body[^>]*)>/i", "\${1}> \n $sHtmlInUseMessage", $code, 1);
     }
 
 	/* Check if category is public */
