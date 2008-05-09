@@ -30,7 +30,6 @@ $sql = "SELECT url, lastview FROM " . $cfg['tab']['whitelist'] . " WHERE lastvie
 		AND lastview > " . (time() - $whitelist_timeout) . " ORDER BY lastview DESC";
 $db->query($sql);
 
-$x = 0;
 while($db->next_record()) {
 
 	$tpl2 = new Template;
@@ -43,7 +42,6 @@ while($db->next_record()) {
 	$tpl2->set('s', 'ENTRY', strftime(i18n('%Y-%m-%d, %I:%M%S %p', $plugin_name), $db->f("lastview")));
 
 	$whitelist .= $tpl2->generate($cfg['templates']['linkchecker_whitelist_urls'], 1);
-	$x++;
     
 }
 
@@ -55,7 +53,7 @@ $tpl->set('s', 'HEADLINE_URLS', i18n("URLs", $plugin_name));
 $tpl->set('s', 'HELP', i18n("This links are on the whitelist. Whitelist-links won't be check at linkchecker.", $plugin_name));
 $tpl->set('s', 'TITLE', "Whitelist");
 $tpl->set('s', 'WHITELIST', $whitelist);
-$tpl->set('s', 'WHITELIST_COUNT', $x);
+$tpl->set('s', 'WHITELIST_COUNT', $db->num_rows());
 
 $tpl->generate($cfg['templates']['linkchecker_whitelist']);
 ?>

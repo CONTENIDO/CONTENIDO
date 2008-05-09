@@ -4,7 +4,7 @@ Description 	: Linkchecker 2.0.1
 Author      	: Frederic Schneider (4fb)
 Urls        	: http://www.4fb.de
 Create date 	: 2008-02-28
-Modified		: Frederic Schneider (4fb), 07-09.05.2008, Fix for big pages
+Modified		: Frederic Schneider (4fb), 07-09.05.2008, New version
 *******************************************************************************/
 
 // Checks all links without front_content.php
@@ -160,21 +160,6 @@ function checkLinks() {
 						$errors['others'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "unknown"));
 					}
 
-					if($admin == true) {
-
-						if($langart == 0) { // If more than one language is active, get lang-var from searchIDInfosNonID-array
-							$lang_insert = ", '" . $searchIDInfosNonID[$i]['lang'] . "'";
-						}
-
-						// Write all extern links in the database for caching
-						$sql = "INSERT INTO " . $cfg['tab']['externlinks'] . " VALUES ('" . $searchIDInfosNonID[$i]['url'] . "',
-								'" . $searchIDInfosNonID[$i]['idart'] . "',	'" . $searchIDInfosNonID[$i]['nameart'] . "',
-								'" . $searchIDInfosNonID[$i]['idcat'] . "', '" . $searchIDInfosNonID[$i]['namecat'] . "',
-								'" . $searchIDInfosNonID[$i]['urltype'] . "'" . $lang_insert . ", '1')";
-						$db->query($sql);
-
-					}
-
 				}
 
 			} elseif(substr($searchIDInfosNonID[$i]['url'], strlen($searchIDInfosNonID[$i]['url'])-5, 5) == ".html") {
@@ -288,7 +273,7 @@ function searchLinks($value, $idart, $nameart, $idcat, $namecat, $lang, $fromtyp
 	global $url, $searchIDInfosNonID, $whitelist;
 
 	// Extern URL
-	if(preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $value, $matches) && $_REQUEST['mode'] != 1) {
+	if(preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $value, $matches) && $_GET['mode'] != 1) {
 
 		for($i = 0; $i < count($matches[1]); $i++) {
 
@@ -302,14 +287,14 @@ function searchLinks($value, $idart, $nameart, $idcat, $namecat, $lang, $fromtyp
 
 	// Redirect
 	if($fromtype == "Redirect" && (preg_match('!(' . preg_quote($url['cms']) . '[^\s]*)!i', $value, $matches)
-	|| (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $matches) && $_REQUEST['mode'] != 1))
+	|| (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $matches) && $_GET['mode'] != 1))
 	&& !eregi("front_content.php", $value)
 	&& !in_array($matches[0], $whitelist)) {
 		$searchIDInfosNonID[] = array("url" => $matches[0], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "lang" => $lang, "urltype" => "unknown");
 	}
 
 	// Intern URL
-	if(preg_match_all('~(?:(?:action|data|href|src)=["\'])(?!file://)(?!ftp://)(?!http://)(?!https://)(?!ww)(?!mailto)(?!\#)(?!/\#)([^"\']+)(?:["\'])~i', $value, $matches) && $_REQUEST['mode'] != 2) {
+	if(preg_match_all('~(?:(?:action|data|href|src)=["\'])(?!file://)(?!ftp://)(?!http://)(?!https://)(?!ww)(?!mailto)(?!\#)(?!/\#)([^"\']+)(?:["\'])~i', $value, $matches) && $_GET['mode'] != 2) {
 
 		for($i = 0; $i < count($matches[1]); $i++) {
 

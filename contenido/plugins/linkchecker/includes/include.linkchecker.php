@@ -7,7 +7,7 @@ Create date 	: 2007-08-08
 Modified		: Andreas Lindner (4fb), 08.02.2008, Performance enhancements
 Modified        : Holger Librenz (4fb), 05.04.2008, Fixed wrong include-path for
 				  PEAR cache module
-Modified		: Frederic Schneider (4fb), 07-09.05.2008, Fix for big pages
+Modified		: Frederic Schneider (4fb), 07-09.05.2008, New version
 *******************************************************************************/
 
 $plugin_name = "linkchecker";
@@ -28,8 +28,8 @@ if(empty($_GET['mode'])) {
 }
 
 // If no action definied
-if(empty($_REQUEST['action'])) {
-	$_REQUEST['action'] = 'linkchecker';
+if(empty($_GET['action'])) {
+	$_GET['action'] = 'linkchecker';
 	$action = "linkchecker";
 }
 
@@ -74,7 +74,7 @@ $tpl->set('s', 'UPDATE_HREF', $sLink . intval($_GET['mode']) . '&live=1');
 
 // Cache options
 $cacheName = array('errors' => $sess->id, 'errorscount' => $cacheName['errors'] . "ErrorsCountChecked");
-$cache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['path']['frontend'] . "cache/", 'caching' => true, 'lifeTime' => 60, 'automaticCleaningFactor' => 1));
+$cache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['path']['frontend'] . "cache/", 'caching' => true, 'lifeTime' => 1209600, 'automaticCleaningFactor' => 1));
 
 /* *********
 Program code
@@ -171,8 +171,6 @@ while($db->next_record()) {
 /* Get all links */
 // Cache errors
 $cache_errors = $cache->get($cacheName['errors'], intval($_GET['mode']));
-echo "Cache: ";
-print_r(unserialize($cache_errors)); // temp.
 
 // Search if cache doesn't exist or we're in live mode
 if($cache_errors && $_GET['live'] != 1) {
@@ -182,8 +180,6 @@ if($cache_errors && $_GET['live'] != 1) {
 	// Select all categorys
 	$sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " GROUP BY idcat";
 	$db->query($sql);
-
-	$db2 = new DB_Contenido();
 
 	while($db->next_record()) {
 
@@ -265,13 +261,9 @@ if($cronjob != true) {
 }
 
 // If no errors found, say that
-if(empty($errors)) {
-
-	if($cronjob != true) {
-		$tpl->set('s', 'NO_ERRORS', i18n("<strong>No errors</strong> were found.", $plugin_name));
-		$tpl->generate($cfg['templates']['linkchecker_noerrors']);
-	}
-
+if(empty($errors) && $cronjob != true) {
+	$tpl->set('s', 'NO_ERRORS', i18n("<strong>No errors</strong> were found.", $plugin_name));
+	$tpl->generate($cfg['templates']['linkchecker_noerrors']);
 } elseif(!empty($errors) && $cronjob != true) {
 
 	$tpl->set('s', 'ERRORS_HEADLINE', i18n("Total checked links", $plugin_name));
@@ -370,8 +362,7 @@ if(empty($errors)) {
 
 	$tpl->generate($cfg['templates']['linkchecker_test']);
 
-	/* Cache */
-    
+	/* Cache */    
 	// Remove older cache
 	$cache->remove($cacheName['errors'], intval($_GET['mode']));
     
