@@ -471,7 +471,13 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 
 		/* HTML does not allow ID for meta tags */
 		$oMetaTagGen->removeAttribute("id");
-		$sMetatags .= $oMetaTagGen->render()."\n";
+        
+        /*Check if metatag already exists*/
+        if (preg_match('/(<meta(?:\s+)name(?:\s*)=(?:\s*)(?:\\\\"|\\\\\')(?:\s*)'.$value["name"].'(?:\s*)(?:\\\\"|\\\\\')(?:[^>]+)>\r?\n?)/i', $code, $aTmetatagfound)) {
+            $code = str_replace($aTmetatagfound[1], $oMetaTagGen->render()."\n", $code);
+        } else {
+            $sMetatags .= $oMetaTagGen->render()."\n";
+        }
 	}
 
 	/* Add meta tags */
