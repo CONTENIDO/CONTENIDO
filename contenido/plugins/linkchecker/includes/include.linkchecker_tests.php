@@ -4,7 +4,7 @@ Description 	: Linkchecker 2.0.1
 Author      	: Frederic Schneider (4fb)
 Urls        	: http://www.4fb.de
 Create date 	: 2008-02-28
-Modified		: Frederic Schneider (4fb), 06.05.2008, Fix for big pages
+Modified		: Frederic Schneider (4fb), 07-09.05.2008, Fix for big pages
 *******************************************************************************/
 
 // Checks all links without front_content.php
@@ -142,74 +142,36 @@ function checkLinks() {
 			$admin = true;
 		}
 
-		// Clean extern-links database-cache, when mode 2 is active and user has admin-rights
-		if($_REQUEST['mode'] == 2 && $admin == true) {
-
-				$sql = "DELETE FROM " . $cfg['tab']['externlinks'] . $lang_where;
-				$db->query($sql);
-
-		} elseif($_REQUEST['mode'] == 3) { // When mode is three: Select cached extern links from database
-
-			$sql = "SELECT * FROM " . $cfg['tab']['externlinks'] . $lang_where;
-			$db->query($sql);
-			
-			$db2 = new DB_Contenido();
-
-			while($db->next_record()) {
-
-				$temp_array = array("url" => $db->f("url"), "idart" => $db->f("idart"), "nameart" => $db->f("nameart"),
-									"idcat" => $db->f("idcat"),	"namecat" => $db->f("namecat"), "urltype" => $db->f("urltype"),
-									"error_type" => "unknown");
-
-				$check = cCatPerm($db->f("idcat"), $db2);
-				if($check == true && !in_array($db->f("url"), $whitelist)) {
-
-					if(url_is_image($db->f("url"))) {
-						$errors['docimages'][] = $temp_array;
-					} else {
-						$errors['others'][] = $temp_array;
-					}
-
-				}
-
-			}
-
-		}
-
 		for($i = 0; $i < count($searchIDInfosNonID); $i++) {
 
 			if(url_is_uri($searchIDInfosNonID[$i]['url'])) {
 
-				if($_REQUEST['mode'] == 2) { // Live only for mode 2
+				if(substr($searchIDInfosNonID[$i]['url'], 0, strlen($searchIDInfosNonID[$i]['url'])) == $cfgClient[$client]['path']['htmlpath']) {
+					$ping = @file_exists(str_replace($cfgClient[$client]['path']['htmlpath'], $cfgClient[$client]['path']['frontend'], $searchIDInfosNonID[$i]['url']));
+				} else {
+					$ping = @fopen($searchIDInfosNonID[$i]['url'], 'r');
+				}
 
-					if(substr($searchIDInfosNonID[$i]['url'], 0, strlen($searchIDInfosNonID[$i]['url'])) == $cfgClient[$client]['path']['htmlpath']) {
-						$ping = @file_exists(str_replace($cfgClient[$client]['path']['htmlpath'], $cfgClient[$client]['path']['frontend'], $searchIDInfosNonID[$i]['url']));
+				if(!$ping) {
+
+					if(url_is_image($searchIDInfosNonID[$i]['url'])) {
+						$errors['docimages'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "unknown"));
 					} else {
-						$ping = @fopen($searchIDInfosNonID[$i]['url'], 'r');
+						$errors['others'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "unknown"));
 					}
 
-					if(!$ping) {
+					if($admin == true) {
 
-						if(url_is_image($searchIDInfosNonID[$i]['url'])) {
-							$errors['docimages'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "unknown"));
-						} else {
-							$errors['others'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "unknown"));
+						if($langart == 0) { // If more than one language is active, get lang-var from searchIDInfosNonID-array
+							$lang_insert = ", '" . $searchIDInfosNonID[$i]['lang'] . "'";
 						}
 
-						if($admin == true) {
-
-							if($langart == 0) { // If more than one language is active, get lang-var from searchIDInfosNonID-array
-								$lang_insert = ", '" . $searchIDInfosNonID[$i]['lang'] . "'";
-							}
-
-							// Write all extern links in the database for caching
-							$sql = "INSERT INTO " . $cfg['tab']['externlinks'] . " VALUES ('" . $searchIDInfosNonID[$i]['url'] . "',
-									'" . $searchIDInfosNonID[$i]['idart'] . "',	'" . $searchIDInfosNonID[$i]['nameart'] . "',
-									'" . $searchIDInfosNonID[$i]['idcat'] . "', '" . $searchIDInfosNonID[$i]['namecat'] . "',
-									'" . $searchIDInfosNonID[$i]['urltype'] . "'" . $lang_insert . ")";
-							$db->query($sql);
-
-						}
+						// Write all extern links in the database for caching
+						$sql = "INSERT INTO " . $cfg['tab']['externlinks'] . " VALUES ('" . $searchIDInfosNonID[$i]['url'] . "',
+								'" . $searchIDInfosNonID[$i]['idart'] . "',	'" . $searchIDInfosNonID[$i]['nameart'] . "',
+								'" . $searchIDInfosNonID[$i]['idcat'] . "', '" . $searchIDInfosNonID[$i]['namecat'] . "',
+								'" . $searchIDInfosNonID[$i]['urltype'] . "'" . $lang_insert . ", '1')";
+						$db->query($sql);
 
 					}
 

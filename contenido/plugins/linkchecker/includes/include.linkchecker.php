@@ -7,30 +7,30 @@ Create date 	: 2007-08-08
 Modified		: Andreas Lindner (4fb), 08.02.2008, Performance enhancements
 Modified        : Holger Librenz (4fb), 05.04.2008, Fixed wrong include-path for
 				  PEAR cache module
-Modified		: Frederic Schneider (4fb), 06.05.2008, Fix for big pages
+Modified		: Frederic Schneider (4fb), 07-09.05.2008, Fix for big pages
 *******************************************************************************/
 
 $plugin_name = "linkchecker";
 global $cfg;
 
-if(!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
+if(!$perm->have_perm_area_action($plugin_name, $plugin_name) && $cronjob != true) {
 	exit;
 }
 
-if((int) $client == 0) {
-    $notification->displayNotification("error", i18n("No Client selected"));
-    exit;
+if((int) $client == 0 && $cronjob != true) {
+	$notification->displayNotification("error", i18n("No Client selected"));
+	exit;
 }
 
 // If no mode defined, use mode three
-if(empty($_REQUEST['mode'])) {
-    $_REQUEST['mode'] = 3;
+if(empty($_GET['mode'])) {
+	$_GET['mode'] = 3;
 }
 
 // If no action definied
 if(empty($_REQUEST['action'])) {
-    $_REQUEST['action'] = 'linkchecker';
-    $action = "linkchecker";
+	$_REQUEST['action'] = 'linkchecker';
+	$action = "linkchecker";
 }
 
 plugin_include('linkchecker', 'includes/config.plugin.php');
@@ -53,7 +53,7 @@ $url = array('cms' => $cfgClient[$client]['path']['htmlpath'], 'contenido' => $c
 if($cronjob != true) {
 	$tpl->set('s', 'AREA', 'lc_whitelist');
 	$tpl->set('s', 'FULLHTML', $url['contenido']);
-	$tpl->set('s', 'MODE', $_REQUEST['mode']);
+	$tpl->set('s', 'MODE', intval($_GET['mode']));
 	$tpl->set('s', 'URL', $url['contenido']);
 	$tpl->set('s', 'SID', $sess->id);
 }
@@ -68,6 +68,9 @@ $tpl->set('s', 'EXTERNS_HREF', $sLink . '2');
 $tpl->set('s', 'EXTERNS_LABEL', i18n("Externs"));
 $tpl->set('s', 'INTERNS_EXTERNS_HREF', $sLink.'3');
 $tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links"));
+
+// Fill Subnav III
+$tpl->set('s', 'UPDATE_HREF', $sLink . intval($_GET['mode']) . '&live=1');
 
 // Cache options
 $cacheName = array('errors' => $sess->id, 'errorscount' => $cacheName['errors'] . "ErrorsCountChecked");
@@ -166,8 +169,14 @@ while($db->next_record()) {
 }
 
 /* Get all links */
-if($errors = $cache->get($cacheName['errors'], intval($_REQUEST['mode']))) {  // If cache exists
-	$errors = unserialize($errors);
+// Cache errors
+$cache_errors = $cache->get($cacheName['errors'], intval($_GET['mode']));
+echo "Cache: ";
+print_r(unserialize($cache_errors)); // temp.
+
+// Search if cache doesn't exist or we're in live mode
+if($cache_errors && $_GET['live'] != 1) {
+	$errors = unserialize($cache_errors);
 } else { // If no cache exists
 
 	// Select all categorys
@@ -301,7 +310,7 @@ if(empty($errors)) {
 			$tpl2->set('s', 'ERRORS_LINK_SHORT', substr($row[$i]['url'], 0, 55) . ((strlen($row[$i]['url']) > 55) ? ' ...' : ''));
 			$tpl2->set('s', 'ERRORS_CATNAME', $row[$i]['namecat']);
 			$tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($row[$i]['namecat'], 0, 20) . ((strlen($row[$i]['namecat']) > 20) ? ' ...' : ''));
-			$tpl2->set('s', 'MODE', $_REQUEST['mode']);
+			$tpl2->set('s', 'MODE', $_GET['mode']);
 			$tpl2->set('s', 'URL', $url['contenido']);
 			$tpl2->set('s', 'SID', $sess->id);
 
@@ -326,7 +335,7 @@ if(empty($errors)) {
 	}
 
 	/* Counter */
-	if($counter = $cache->get($cacheName['errorscount'], intval($_REQUEST['mode']))) { // Cache exists?
+	if($counter = $cache->get($cacheName['errorscount'], intval($_GET['mode']))) { // Cache exists?
 		$errors_count_checked = $counter;
 	} else { // Count searched links: idarts + idcats + idcatarts + others
 		$errors_count_checked = count($searchIDInfosArt) + count($searchIDInfosCat) + count($searchIDInfosCatArt) + count($searchIDInfosNonID);
@@ -362,8 +371,13 @@ if(empty($errors)) {
 	$tpl->generate($cfg['templates']['linkchecker_test']);
 
 	/* Cache */
-	$cache->save(serialize($errors), $cacheName['errors'], intval($_REQUEST['mode']));
-	$cache->save($errors_count_checked, $cacheName['errorscount'], intval($_REQUEST['mode']));
+    
+	// Remove older cache
+	$cache->remove($cacheName['errors'], intval($_GET['mode']));
+    
+	// Build new cache
+	$cache->save(serialize($errors), $cacheName['errors'], intval($_GET['mode']));
+	$cache->save($errors_count_checked, $cacheName['errorscount'], intval($_GET['mode']));
 
 }
 
