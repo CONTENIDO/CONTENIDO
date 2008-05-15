@@ -13,6 +13,7 @@
 
 cInclude("classes", "class.lang.php");
 cInclude("includes", "functions.api.string.php");
+cInclude("includes", "functions.api.images.php");
 
 class Contenido_Navigation {
 
@@ -370,11 +371,13 @@ class Contenido_Navigation {
             $sClientName = capiStrTrimHard($sClientName, 25);
         }
         
-        if ($clientImage !== false && $clientImage != "")
+        if ($clientImage !== false && $clientImage != "" && file_exists($cfgClient[$client]["path"]["frontend"].$clientImage))
         {
         	$id = $classclient->getClientName($client).' ('.$client.')';
 			$hints = 'alt="'.$id.'" title="'.$id.'"';
-        	$clientImage = '<img src="'.$cfgClient[$client]["path"]["htmlpath"].$clientImage.'" '.$hints.'>';
+            
+            $sThumbnailPath = capiImgScale ($cfgClient[$client]["path"]["frontend"].$clientImage, 30, 30, 0, 1);
+        	$clientImage = '<img src="'.$sThumbnailPath.'" '.$hints.'>';
         	$main->set('s', 'CHOSENCLIENT', "<b>".i18n("Client").":</b>&nbsp;".$clientImage);
         } else {
         	$main->set('s', 'CHOSENCLIENT', "<b>".i18n("Client").":</b> ".$sClientName." (".$client.")");
