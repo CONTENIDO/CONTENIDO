@@ -210,7 +210,7 @@ class cApiClient extends Item
 			$this->properties->changeClient($this->idclient);
 		}
 		
-		$this->properties->select("itemid='".$this->idclient."' AND itemtype='clientsetting'", "", "type, value ASC");
+		$this->properties->select("itemid='".$this->idclient."' AND itemtype='clientsetting'", "", "type, name, value ASC");
 		
 		if ($this->properties->count() > 0)
 		{
