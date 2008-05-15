@@ -4,85 +4,85 @@ Description 	: Linkchecker 2.0.1
 Author      	: Frederic Schneider (4fb)
 Urls        	: http://www.4fb.de
 Create date 	: 2008-02-28
-Modified		: Frederic Schneider (4fb), 07-09.05.2008, New version
+Modified		: Frederic Schneider (4fb), 07-14.05.2008, New version
 *******************************************************************************/
 
 // Checks all links without front_content.php
 function checkLinks() {
-	global $auth, $cfgClient, $client, $cfg, $cronjob, $db, $errors, $lang, $langart, $whitelist;
-	global $searchIDInfosArt, $searchIDInfosCat, $searchIDInfosCatArt, $searchIDInfosNonID;
+	global $auth, $cfgClient, $client, $cfg, $cronjob, $db, $aErrors, $lang, $langart, $whitelist;
+	global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt, $aSearchIDInfosNonID;
 
-	if(count($searchIDInfosArt) > 0) { // Checks idarts
+	if(count($aSearchIDInfosArt) > 0) { // Checks idarts
 
-		for($i = 0; $i < count($searchIDInfosArt); $i++) {
+		for($i = 0; $i < count($aSearchIDInfosArt); $i++) {
 
 			if($i == 0) {
-				$search = $searchIDInfosArt[$i]['id'];
+				$sSearch = $aSearchIDInfosArt[$i]['id'];
 			} else {
-				$search .= ", " . $searchIDInfosArt[$i]['id'];
+				$sSearch .= ", " . $aSearchIDInfosArt[$i]['id'];
 			}
 
 		}
 
 		// Check articles
-		$sql = "SELECT idart, online FROM " . $cfg['tab']['art_lang'] . " WHERE idart IN (" . $search . ")";
+		$sql = "SELECT idart, online FROM " . $cfg['tab']['art_lang'] . " WHERE idart IN (" . $sSearch . ")";
 		$db->query($sql);
 
 		while($db->next_record()) {
-			$find[$db->f("idart")] = array("online" => $db->f("online"));
+			$aFind[$db->f("idart")] = array("online" => $db->f("online"));
 		}
 
-		for($i = 0; $i < count($searchIDInfosArt); $i++) {
+		for($i = 0; $i < count($aSearchIDInfosArt); $i++) {
 
-			if(isset($find[$searchIDInfosArt[$i]['id']]) && $find[$searchIDInfosArt[$i]['id']]['online'] == 0) {
-				$errors['art'][] = array_merge($searchIDInfosArt[$i], array("error_type" => "offline"));
-			} elseif(!isset($find[$searchIDInfosArt[$i]['id']])) {
-				$errors['art'][] = array_merge($searchIDInfosArt[$i], array("error_type" => "unknown"));
+			if(isset($aFind[$aSearchIDInfosArt[$i]['id']]) && $aFind[$aSearchIDInfosArt[$i]['id']]['online'] == 0) {
+				$aErrors['art'][] = array_merge($aSearchIDInfosArt[$i], array("error_type" => "offline"));
+			} elseif(!isset($aFind[$aSearchIDInfosArt[$i]['id']])) {
+				$aErrors['art'][] = array_merge($aSearchIDInfosArt[$i], array("error_type" => "unknown"));
 			}
 
 		}
 
 	}
 
-	if(count($searchIDInfosCat) > 0) { // Checks idcats
+	if(count($aSearchIDInfosCat) > 0) { // Checks idcats
     
-		for($i = 0; $i < count($searchIDInfosCat); $i++) {
+		for($i = 0; $i < count($aSearchIDInfosCat); $i++) {
 
 			if($i == 0) {
-				$search = $searchIDInfosCat[$i]['id'];
+				$sSearch = $aSearchIDInfosCat[$i]['id'];
 			} else {
-				$search .= ", " . $searchIDInfosCat[$i]['id'];
+				$sSearch .= ", " . $aSearchIDInfosCat[$i]['id'];
 			}
 
 		}
 
-		unset($find);
+		unset($aFind);
 
 		// Check categorys
-		$sql = "SELECT idcat, startidartlang, visible FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat IN (" . $search . ") AND idlang = '" . $lang . "'";
+		$sql = "SELECT idcat, startidartlang, visible FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat IN (" . $sSearch . ") AND idlang = '" . $lang . "'";
 		$db->query($sql);
 
 		while($db->next_record()) {
-			$find[$db->f("idcat")] = array("online" => $db->f("visible"), "startidart" => $db->f("startidartlang"));
+			$aFind[$db->f("idcat")] = array("online" => $db->f("visible"), "startidart" => $db->f("startidartlang"));
 		}
 
-		for($i = 0; $i < count($searchIDInfosCat); $i++) {
+		for($i = 0; $i < count($aSearchIDInfosCat); $i++) {
 
-			if(is_array($find[$searchIDInfosCat[$i]['id']]) && $find[$searchIDInfosCat[$i]['id']]['startidart'] == 0) {
-				$errors['cat'][] = array_merge($searchIDInfosCat[$i], array("error_type" => "startart"));
-			} elseif(is_array($find[$searchIDInfosCat[$i]['id']]) && $find[$searchIDInfosCat[$i]['id']]['online'] == 0) {
-				$errors['cat'][] = array_merge($searchIDInfosCat[$i], array("error_type" => "offline"));
-			} elseif(!is_array($find[$searchIDInfosCat[$i]['id']])) {
-				$errors['cat'][] = array_merge($searchIDInfosCat[$i], array("error_type" => "unknown"));
+			if(is_array($aFind[$aSearchIDInfosCat[$i]['id']]) && $aFind[$aSearchIDInfosCat[$i]['id']]['startidart'] == 0) {
+				$aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], array("error_type" => "startart"));
+			} elseif(is_array($aFind[$aSearchIDInfosCat[$i]['id']]) && $aFind[$aSearchIDInfosCat[$i]['id']]['online'] == 0) {
+				$aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], array("error_type" => "offline"));
+			} elseif(!is_array($aFind[$aSearchIDInfosCat[$i]['id']])) {
+				$aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], array("error_type" => "unknown"));
 			}
 
-			if(is_array($find[$searchIDInfosCat[$i]['id']]) && $find[$searchIDInfosCat[$i]['id']]['startidart'] != 0) {
+			if(is_array($aFind[$aSearchIDInfosCat[$i]['id']]) && $aFind[$aSearchIDInfosCat[$i]['id']]['startidart'] != 0) {
 
-				$sql = "SELECT idart FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = '" . $find[$searchIDInfosCat[$i]['id']]['startidart'] . "' AND online = '1'";
+				$sql = "SELECT idart FROM " . $cfg['tab']['art_lang'] . " WHERE idartlang = '" . $aFind[$aSearchIDInfosCat[$i]['id']]['startidart'] . "' AND online = '1'";
 				$db->query($sql);
 
 				if($db->num_rows() == 0) {
-					$errors['cat'][] = array_merge($searchIDInfosCat[$i], array("error_type" => "startart"));
+					$aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], array("error_type" => "startart"));
 				}
 
 			}
@@ -91,109 +91,109 @@ function checkLinks() {
 
 	}
 
-	if(count($searchIDInfosCatArt) > 0) { // Checks idcatarts
+	if(count($aSearchIDInfosCatArt) > 0) { // Checks idcatarts
 
-		for($i = 0; $i < count($searchIDInfosCatArt); $i++) {
+		for($i = 0; $i < count($aSearchIDInfosCatArt); $i++) {
 
 			if($i == 0) {
-				$search = $searchIDInfosCatArt[$i]['id'];
+				$sSearch = $aSearchIDInfosCatArt[$i]['id'];
 			} else {
-				$search .= ", " . $searchIDInfosCatArt[$i]['id'];
+				$sSearch .= ", " . $aSearchIDInfosCatArt[$i]['id'];
 			}
 
 		}
 
-		unset($find);
+		unset($aFind);
 
 		// Check articles
-		$sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'] . " WHERE idcatart IN (" . $search . ")";
+		$sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'] . " WHERE idcatart IN (" . $sSearch . ")";
 		$db->query($sql);
 
 		while($db->next_record()) {
-			$find[] = $db->f("idcatart");
+			$aFind[] = $db->f("idcatart");
 		}
 
-		for($i = 0; $i < count($searchIDInfosCatArt); $i++) {
+		for($i = 0; $i < count($aSearchIDInfosCatArt); $i++) {
 
-			if(!in_array($searchIDInfosCatArt[$i]['id'], $find)) {
-				$errors['art'][] = array_merge($searchIDInfosCatArt[$i], array("error_type" => "unknown"));
+			if(!in_array($aSearchIDInfosCatArt[$i]['id'], $aFind)) {
+				$aErrors['art'][] = array_merge($aSearchIDInfosCatArt[$i], array("error_type" => "unknown"));
 			}
 
 		}
 
 	}
 
-	if(count($searchIDInfosNonID) != 0) { // Checks other links (e. g. http, www, dfbs)
+	if(count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http, www, dfbs)
 
 		// Lang-Fix
 		if($langart != 0) { // If langart is 0 than get langart (cronjob-special var)
-			$lang_insert = ", '" . $langart . "'";
-			$lang_where = " WHERE lang = '" . $langart . "'";
+			$sLang_insert = ", '" . $langart . "'";
+			$sLang_where = " WHERE lang = '" . $langart . "'";
 		} elseif(!isset($langart)) { // If langart isn't defined than get lang-var
-			$lang_insert = ", '" . $lang . "'";
-			$lang_where = " WHERE lang = '" . $lang . "'";
+			$sLang_insert = ", '" . $lang . "'";
+			$sLang_where = " WHERE lang = '" . $lang . "'";
 		}
 
 		// Select userrights (is the user admin or sysadmin?)
-		$sql = "SELECT username FROM " . $cfg['tab']['phplib_auth_user_md5'] . " WHERE user_id='" . $auth->auth["uid"] . "' AND perms LIKE '%admin%'";
+		$sql = "SELECT username FROM " . $cfg['tab']['phplib_auth_user_md5'] . " WHERE user_id='" . $auth->auth['uid'] . "' AND perms LIKE '%admin%'";
 		$db->query($sql);
 
 		if($db->num_rows() > 0 || $cronjob == true) { // User is admin when he is or when he run the cronjob
-			$admin = true;
+			$iAdmin = true;
 		}
 
-		for($i = 0; $i < count($searchIDInfosNonID); $i++) {
+		for($i = 0; $i < count($aSearchIDInfosNonID); $i++) {
 
-			if(url_is_uri($searchIDInfosNonID[$i]['url'])) {
+			if(url_is_uri($aSearchIDInfosNonID[$i]['url'])) {
 
-				if(substr($searchIDInfosNonID[$i]['url'], 0, strlen($searchIDInfosNonID[$i]['url'])) == $cfgClient[$client]['path']['htmlpath']) {
-					$ping = @file_exists(str_replace($cfgClient[$client]['path']['htmlpath'], $cfgClient[$client]['path']['frontend'], $searchIDInfosNonID[$i]['url']));
+				if(substr($aSearchIDInfosNonID[$i]['url'], 0, strlen($aSearchIDInfosNonID[$i]['url'])) == $cfgClient[$client]['path']['htmlpath']) {
+					$iPing = @file_exists(str_replace($cfgClient[$client]['path']['htmlpath'], $cfgClient[$client]['path']['frontend'], $aSearchIDInfosNonID[$i]['url']));
 				} else {
-					$ping = @fopen($searchIDInfosNonID[$i]['url'], 'r');
+					$iPing = @fopen($aSearchIDInfosNonID[$i]['url'], 'r');
 				}
 
-				if(!$ping) {
+				if(!$iPing) {
 
-					if(url_is_image($searchIDInfosNonID[$i]['url'])) {
-						$errors['docimages'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "unknown"));
+					if(url_is_image($aSearchIDInfosNonID[$i]['url'])) {
+						$aErrors['docimages'][] = array_merge($aSearchIDInfosNonID[$i], array("error_type" => "unknown"));
 					} else {
-						$errors['others'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "unknown"));
+						$aErrors['others'][] = array_merge($aSearchIDInfosNonID[$i], array("error_type" => "unknown"));
 					}
 
 				}
 
-			} elseif(substr($searchIDInfosNonID[$i]['url'], strlen($searchIDInfosNonID[$i]['url'])-5, 5) == ".html") {
+			} elseif(substr($aSearchIDInfosNonID[$i]['url'], strlen($aSearchIDInfosNonID[$i]['url'])-5, 5) == ".html") {
 
-				$ping = @file_exists($cfgClient[$client]['path']['htmlpath'] . $searchIDInfosNonID[$i]['url']);
+				$iPing = @file_exists($cfgClient[$client]['path']['htmlpath'] . $aSearchIDInfosNonID[$i]['url']);
 
-				if(!$ping) {
-					$errors['art'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "unknown"));
+				if(!$iPing) {
+					$aErrors['art'][] = array_merge($aSearchIDInfosNonID[$i], array("error_type" => "unknown"));
 				}
 
-			} elseif(substr($searchIDInfosNonID[$i]['url'], 0, 20) == "dbfs.php?file=dbfs:/") {
+			} elseif(substr($aSearchIDInfosNonID[$i]['url'], 0, 20) == "dbfs.php?file=dbfs:/") {
 
-				$dburl = substr($searchIDInfosNonID[$i]['url'], 20, strlen($searchIDInfosNonID[$i]['url']));
+				$sDBurl = substr($aSearchIDInfosNonID[$i]['url'], 20, strlen($aSearchIDInfosNonID[$i]['url']));
 
-				$pos = strrpos($dburl, '/');
-				$dirname = substr($dburl, 0, $pos);
-				$filename = substr($dburl, $pos + 1);
+				$iPos = strrpos($sDBurl, '/');
+				$sDirname = substr($sDBurl, 0, $iPos);
+				$sFilename = substr($sDBurl, $iPos + 1);
 
 				// Check categorys
-				$sql = "SELECT iddbfs FROM " . $cfg['tab']['dbfs'] . " WHERE dirname IN('" . $dirname . "', '" . html_entity_decode($dirname) . "', '" . urldecode($dirname) . "') AND filename = '" . $filename . "'";
+				$sql = "SELECT iddbfs FROM " . $cfg['tab']['dbfs'] . " WHERE dirname IN('" . $sDirname . "', '" . html_entity_decode($sDirname) . "', '" . urldecode($sDirname) . "') AND filename = '" . $sFilename . "'";
 				$db->query($sql);
 
 				if($db->num_rows() == 0) {
-					$errors['docimages'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "dbfs"));
+					$aErrors['docimages'][] = array_merge($aSearchIDInfosNonID[$i], array("error_type" => "dbfs"));
 				}
 
 			} else {
 
-				if(!file_exists($cfgClient[$client]['path']['frontend'] . $searchIDInfosNonID[$i]['url'])) {
+				if(!file_exists($cfgClient[$client]['path']['frontend'] . $aSearchIDInfosNonID[$i]['url'])) {
 
-					if(url_is_image($searchIDInfosNonID[$i]['url'])) {
-						$errors['docimages'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "unknown"));
+					if(url_is_image($aSearchIDInfosNonID[$i]['url'])) {
+						$aErrors['docimages'][] = array_merge($aSearchIDInfosNonID[$i], array("error_type" => "unknown"));
 					} else {
-						$errors['others'][] = array_merge($searchIDInfosNonID[$i], array("error_type" => "unknown"));
+						$aErrors['others'][] = array_merge($aSearchIDInfosNonID[$i], array("error_type" => "unknown"));
 					}
 
 				}
@@ -204,64 +204,64 @@ function checkLinks() {
 
 	}
 
-	return $errors;
+	return $aErrors;
 
 }
 
 // Searchs front_content.php-links
-function searchFrontContentLinks($value, $idart, $nameart, $idcat, $namecat) {
-	global $searchIDInfosArt, $searchIDInfosCat, $searchIDInfosCatArt, $whitelist;
+function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
+	global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt, $aWhitelist;
 
-	if(preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idart=([0-9]*)/i', $value, $matches)) { // idart
+	if(preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idart=([0-9]*)/i', $sValue, $matches)) { // idart
 
 		if(count($matches[0]) > 1) {
 
 			for($i = 0; $i < count($matches[0]); $i++) {
 
-				if(!in_array($matches[0][$i], $whitelist)) {
-					$searchIDInfosArt[] = array("id" => $matches[1][$i], "url" => $matches[0][$i], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "urltype" => "intern");
+				if(!in_array($aMatches[0][$i], $aWhitelist)) {
+					$aSearchIDInfosArt[] = array("id" => $matches[1][$i], "url" => $matches[0][$i], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
 				}
 
 			}
 
 		} elseif(!in_array($matches[0][0], $whitelist)) {
-			$searchIDInfosArt[] = array("id" => $matches[1][0], "url" => $matches[0][0], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "urltype" => "intern");
+			$aSearchIDInfosArt[] = array("id" => $matches[1][0], "url" => $matches[0][0], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
 		}
 
 	}
 
-	if(preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idcat=([0-9]*)/i', $value, $matches)) { // idcat
+	if(preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idcat=([0-9]*)/i', $sValue, $aMatches)) { // idcat
 
-		if(count($matches[0]) > 1) {
+		if(count($aMatches[0]) > 1) {
 
-			for($i = 0; $i < count($matches[0]); $i++) {
+			for($i = 0; $i < count($aMatches[0]); $i++) {
 
-				if(!in_array($matches[0][$i], $whitelist)) {
-					$searchIDInfosCat[] = array("id" => $matches[1][$i], "url" => $matches[0][$i], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "urltype" => "intern");
+				if(!in_array($aMatches[0][$i], $aWhitelist)) {
+					$aSearchIDInfosCat[] = array("id" => $aMatches[1][$i], "url" => $matches[0][$i], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
 				}
 
 			}
 
-		} elseif(!in_array($matches[0][0], $whitelist)) {
-			$searchIDInfosCat[] = array("id" => $matches[1][0], "url" => $matches[0][0], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "urltype" => "intern");
+		} elseif(!in_array($aMatches[0][0], $aWhitelist)) {
+			$aSearchIDInfosCat[] = array("id" => $aMatches[1][0], "url" => $aMatches[0][0], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
 		}
 
 	}
 
-	if(preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idcatart=([0-9]*)/i', $value, $matches)) { // idcatart
+	if(preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idcatart=([0-9]*)/i', $sValue, $aMatches)) { // idcatart
 
-		if(count($matches[0]) > 1) {
+		if(count($aMatches[0]) > 1) {
 
-			for($i = 0; $i < count($matches[0]); $i++) {
+			for($i = 0; $i < count($aMatches[0]); $i++) {
 
-				if(!in_array($matches[0][$i], $whitelist)) {
-					$searchIDInfosCatArt[] = array("id" => $matches[1][$i], "url" => $matches[0][$i], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "urltype" => "intern");
+				if(!in_array($aMatches[0][$i], $aWhitelist)) {
+					$aSearchIDInfosCatArt[] = array("id" => $aMatches[1][$i], "url" => $aMatches[0][$i], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
 				}
 
 			}
 
-		} elseif(!in_array($matches[0][0], $whitelist)) {
-			$searchIDInfosCatArt[] = array("id" => $matches[1][0], "url" => $matches[0][0], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "urltype" => "intern");
+		} elseif(!in_array($aMatches[0][0], $aWhitelist)) {
+			$aSearchIDInfosCatArt[] = array("id" => $aMatches[1][0], "url" => $aMatches[0][0], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
 		}
 
 	}
@@ -269,16 +269,16 @@ function searchFrontContentLinks($value, $idart, $nameart, $idcat, $namecat) {
 }
 
 // Searchs extern and intern links
-function searchLinks($value, $idart, $nameart, $idcat, $namecat, $lang, $fromtype = "") {
-	global $url, $searchIDInfosNonID, $whitelist;
+function searchLinks($sValue, $iArt, $sArt, $iCat, $sCat, $iLang, $sFromtype = "") {
+	global $aUrl, $aSearchIDInfosNonID, $aWhitelist;
 
 	// Extern URL
-	if(preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $value, $matches) && $_GET['mode'] != 1) {
+	if(preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $sValue, $aMatches) && $_GET['mode'] != 1) {
 
-		for($i = 0; $i < count($matches[1]); $i++) {
+		for($i = 0; $i < count($aMatches[1]); $i++) {
 
-			if(!in_array($matches[1][$i], $whitelist)) {
-				$searchIDInfosNonID[] = array("url" => $matches[1][$i], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "lang" => $lang, "urltype" => "extern");
+			if(!in_array($aMatches[1][$i], $aWhitelist)) {
+				$aSearchIDInfosNonID[] = array("url" => $aMatches[1][$i], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "lang" => $iLang, "urltype" => "extern");
 			}
 
 		}
@@ -286,21 +286,21 @@ function searchLinks($value, $idart, $nameart, $idcat, $namecat, $lang, $fromtyp
 	}
 
 	// Redirect
-	if($fromtype == "Redirect" && (preg_match('!(' . preg_quote($url['cms']) . '[^\s]*)!i', $value, $matches)
-	|| (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $matches) && $_GET['mode'] != 1))
-	&& !eregi("front_content.php", $value)
-	&& !in_array($matches[0], $whitelist)) {
-		$searchIDInfosNonID[] = array("url" => $matches[0], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "lang" => $lang, "urltype" => "unknown");
+	if($sFromtype == "Redirect" && (preg_match('!(' . preg_quote($aUrl['cms']) . '[^\s]*)!i', $sValue, $aMatches)
+	|| (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $sValue, $aMatches) && $_GET['mode'] != 1))
+	&& !eregi("front_content.php", $sValue)
+	&& !in_array($aMatches[0], $aWhitelist)) {
+		$aSearchIDInfosNonID[] = array("url" => $aMatches[0], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "lang" => $iLang, "urltype" => "unknown");
 	}
 
 	// Intern URL
-	if(preg_match_all('~(?:(?:action|data|href|src)=["\'])(?!file://)(?!ftp://)(?!http://)(?!https://)(?!ww)(?!mailto)(?!\#)(?!/\#)([^"\']+)(?:["\'])~i', $value, $matches) && $_GET['mode'] != 2) {
+	if(preg_match_all('~(?:(?:action|data|href|src)=["\'])(?!file://)(?!ftp://)(?!http://)(?!https://)(?!ww)(?!mailto)(?!\#)(?!/\#)([^"\']+)(?:["\'])~i', $sValue, $aMatches) && $_GET['mode'] != 2) {
 
-		for($i = 0; $i < count($matches[1]); $i++) {
+		for($i = 0; $i < count($aMatches[1]); $i++) {
 
-			if(strpos($matches[1][$i], "front_content.php") === false && !in_array($matches[1][$i], $whitelist)) {
-				$searchIDInfosNonID[] = array("url" => $matches[1][$i], "idart" => $idart, "nameart" => $nameart, "idcat" => $idcat, "namecat" => $namecat, "lang" => $lang, "urltype" => "intern");
-            }
+			if(strpos($aMatches[1][$i], "front_content.php") === false && !in_array($aMatches[1][$i], $aWhitelist)) {
+				$aSearchIDInfosNonID[] = array("url" => $aMatches[1][$i], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "lang" => $iLang, "urltype" => "intern");
+			}
 
 		}
 

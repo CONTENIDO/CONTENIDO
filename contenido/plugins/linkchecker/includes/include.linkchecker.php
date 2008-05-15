@@ -7,7 +7,7 @@ Create date 	: 2007-08-08
 Modified		: Andreas Lindner (4fb), 08.02.2008, Performance enhancements
 Modified        : Holger Librenz (4fb), 05.04.2008, Fixed wrong include-path for
 				  PEAR cache module
-Modified		: Frederic Schneider (4fb), 07-09.05.2008, New version
+Modified		: Frederic Schneider (4fb), 07-14.05.2008, New version
 *******************************************************************************/
 
 $plugin_name = "linkchecker";
@@ -43,18 +43,17 @@ cInclude('pear', 'CACHE/Lite.php');
 
 // Initialization
 $actionID = 500;
-$cats = array();
-$whitelist_timeout = 2592000; // 30 days
+$aCats = array();
+$iWhitelist_timeout = 2592000; // 30 days
 
 // Var initialization
-$url = array('cms' => $cfgClient[$client]['path']['htmlpath'], 'contenido' => $cfg['path']['contenido_fullhtml']);
+$aUrl = array('cms' => $cfgClient[$client]['path']['htmlpath'], 'contenido' => $cfg['path']['contenido_fullhtml']);
 
 // Template- and languagevars
 if($cronjob != true) {
-	$tpl->set('s', 'AREA', 'lc_whitelist');
-	$tpl->set('s', 'FULLHTML', $url['contenido']);
+	$tpl->set('s', 'FULLHTML', $aUrl['contenido']);
 	$tpl->set('s', 'MODE', intval($_GET['mode']));
-	$tpl->set('s', 'URL', $url['contenido']);
+	$tpl->set('s', 'URL', $aUrl['contenido']);
 	$tpl->set('s', 'SID', $sess->id);
 }
 
@@ -66,71 +65,71 @@ $tpl->set('s', 'INTERNS_HREF', $sLink . '1');
 $tpl->set('s', 'INTERNS_LABEL', i18n("Interns"));
 $tpl->set('s', 'EXTERNS_HREF', $sLink . '2');
 $tpl->set('s', 'EXTERNS_LABEL', i18n("Externs"));
-$tpl->set('s', 'INTERNS_EXTERNS_HREF', $sLink.'3');
+$tpl->set('s', 'INTERNS_EXTERNS_HREF', $sLink . '3');
 $tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links"));
 
 // Fill Subnav III
 $tpl->set('s', 'UPDATE_HREF', $sLink . intval($_GET['mode']) . '&live=1');
 
 // Cache options
-$cacheName = array('errors' => $sess->id, 'errorscount' => $cacheName['errors'] . "ErrorsCountChecked");
-$cache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['path']['frontend'] . "cache/", 'caching' => true, 'lifeTime' => 1209600, 'automaticCleaningFactor' => 1));
+$aCacheName = array('errors' => $sess->id, 'errorscount' => $aCacheName['errors'] . "ErrorsCountChecked");
+$oCache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['path']['frontend'] . "cache/", 'caching' => true, 'lifeTime' => 1209600, 'automaticCleaningFactor' => 1));
 
 /* *********
 Program code
 ********* */
 
 /* function linksort */
-function linksort($errors) {
+function linksort($sErrors) {
 
 	if($_GET['sort'] == "nameart") {
 
-		foreach($errors as $key => $row) {
-			$nameart[$key] = $row['nameart'];
+		foreach($sErrors as $key => $aRow) {
+			$aNameart[$key] = $aRow['nameart'];
 		}
 
-		array_multisort($errors, SORT_ASC, SORT_STRING, $nameart);
+		array_multisort($sErrors, SORT_ASC, SORT_STRING, $aNameart);
 
 	} elseif($_GET['sort'] == "namecat") {
 
-		foreach($errors as $key => $row) {
-			$namecat[$key] = $row['namecat'];
+		foreach($sErrors as $key => $aRow) {
+			$aNamecat[$key] = $aRow['namecat'];
 		}
 
-		array_multisort($errors, SORT_ASC, SORT_STRING, $namecat);
+		array_multisort($sErrors, SORT_ASC, SORT_STRING, $aNamecat);
 
 	} elseif($_GET['sort'] == "wronglink") {
 
-		foreach($errors as $key => $row) {
-			$wronglink[$key] = $row['url'];
+		foreach($sErrors as $key => $aRow) {
+			$aWronglink[$key] = $aRow['url'];
 		}
 
-		array_multisort($errors, SORT_ASC, SORT_STRING, $wronglink);
+		array_multisort($sErrors, SORT_ASC, SORT_STRING, $aWronglink);
 
 	} elseif($_GET['sort'] == "error_type") {
 
-		foreach($errors as $key => $row) {
-			$error_type[$key] = $row['error_type'];
+		foreach($sErrors as $key => $aRow) {
+			$aError_type[$key] = $aRow['error_type'];
 		}
 
-		array_multisort($errors, SORT_ASC, SORT_STRING, $error_type);
+		array_multisort($sErrors, SORT_ASC, SORT_STRING, $aError_type);
 
 	}
 
-	return $errors;
+	return $sErrors;
 
 }
 
 // function url_is_image
-function url_is_image($url) {
+function url_is_image($sUrl) {
 
-	if(substr($url, -3, 3) == "gif"
-	|| substr($url, -3, 3) == "jpg"
-	|| substr($url, -4, 4) == "jpeg"
-	|| substr($url, -3, 3) == "png"
-	|| substr($url, -3, 3) == "tif"
-	|| substr($url, -3, 3) == "psd"
-	|| substr($url, -3, 3) == "bmp") {
+	if(substr($sUrl, -3, 3) == "gif"
+	|| substr($sUrl, -3, 3) == "jpg"
+	|| substr($sUrl, -4, 4) == "jpeg"
+	|| substr($sUrl, -3, 3) == "png"
+	|| substr($sUrl, -3, 3) == "tif"
+	|| substr($sUrl, -3, 3) == "psd"
+	|| substr($sUrl, -3, 3) == "bmp") {
 		return true;
 	} else {
 		return false;
@@ -139,18 +138,23 @@ function url_is_image($url) {
 }
 
 // function url_is_uri
-function url_is_uri($url) {
+function url_is_uri($sUrl) {
 
-	if(substr($url, 0, 4) == "file"
-	|| substr($url, 0, 3) == "ftp"
-	|| substr($url, 0, 4) == "http"
-	|| substr($url, 0, 2) == "ww") {
+	if(substr($sUrl, 0, 4) == "file"
+	|| substr($sUrl, 0, 3) == "ftp"
+	|| substr($sUrl, 0, 4) == "http"
+	|| substr($sUrl, 0, 2) == "ww") {
 		return true;
 	} else {
 		return false;
 	}
 
 }
+
+/* Check: Changes after last check? */
+$sql = "SELECT lastmodified FROM " . $cfg['tab']['content'] . " content
+		LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idartlang = content.idartlang)
+		WHERE art.online = '1'";
 
 /* Whitelist: Add */
 if(!empty($_GET['whitelist'])) {
@@ -159,22 +163,22 @@ if(!empty($_GET['whitelist'])) {
 }
 
 /* Whitelist: Get */
-$sql = "SELECT url FROM " . $cfg['tab']['whitelist'] . " WHERE lastview < " . (time() + $whitelist_timeout) . "
-		AND lastview > " . (time() - $whitelist_timeout);
+$sql = "SELECT url FROM " . $cfg['tab']['whitelist'] . " WHERE lastview < " . (time() + $iWhitelist_timeout) . "
+		AND lastview > " . (time() - $iWhitelist_timeout);
 $db->query($sql);
 
-$whitelist = array();
+$aWhitelist = array();
 while($db->next_record()) {
-	$whitelist[] = $db->f("url");
+	$aWhitelist[] = $db->f("url");
 }
 
 /* Get all links */
 // Cache errors
-$cache_errors = $cache->get($cacheName['errors'], intval($_GET['mode']));
+$sCache_errors = $oCache->get($aCacheName['errors'], intval($_GET['mode']));
 
 // Search if cache doesn't exist or we're in live mode
-if($cache_errors && $_GET['live'] != 1) {
-	$errors = unserialize($cache_errors);
+if($sCache_errors && $_GET['live'] != 1) {
+	$aErrors = unserialize($sCache_errors);
 } else { // If no cache exists
 
 	// Select all categorys
@@ -185,32 +189,32 @@ if($cache_errors && $_GET['live'] != 1) {
 
 		if($cronjob != true) { // Check userrights, if no cronjob
 
-			$check = cCatPerm($db->f("idcat"), $db2);
+			$iCheck = cCatPerm($db->f("idcat"), $db2);
 
-			if($check == true) {
-				$cats[] = $db->f("idcat");
+			if($iCheck == true) {
+				$aCats[] = $db->f("idcat");
 			}
 
 		} else {
-			$cats[] = $db->f("idcat");
+			$aCats[] = $db->f("idcat");
 		}
 
 	}
 
 	// Use SQL-WHERE if lang is not zero
 	if($langart != 0) {
-		$lang_where = "AND art.idlang = '" . $langart . "' AND catName.idlang = '" . $langart . "'";
+		$sLang_where = "AND art.idlang = '" . $langart . "' AND catName.idlang = '" . $langart . "'";
 	} elseif(!isset($langart)) {
-		$lang_where = "AND art.idlang = '" . $lang . "' AND catName.idlang = '" . $lang . "'";
+		$sLang_where = "AND art.idlang = '" . $lang . "' AND catName.idlang = '" . $lang . "'";
 	}
-    
+
 	// How many articles exists? [Text]
 	$sql = "SELECT art.title, art.idlang, cat.idart, cat.idcat, catName.name AS namecat, con.value FROM " . $cfg['tab']['cat_art'] . " cat
 			LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
 			LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
 			LEFT JOIN " . $cfg['tab']['content'] . " con ON (con.idartlang = art.idartlang)
 			WHERE (con.value LIKE '%action%' OR con.value LIKE '%data%' OR con.value LIKE '%href%' OR con.value LIKE '%src%')
-			AND cat.idcat IN (0, " . join(", ", $cats) . ") AND cat.idcat != '0' " . $lang_where . "
+			AND cat.idcat IN (0, " . join(", ", $aCats) . ") AND cat.idcat != '0' " . $sLang_where . "
 			AND art.online = '1' AND art.redirect = '0'";
 	$db->query($sql);
 
@@ -223,7 +227,7 @@ if($cache_errors && $_GET['live'] != 1) {
 		searchLinks($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"));
 
 		// Search front_content.php-links
-		if($_REQUEST['mode'] != 2) {
+		if($_GET['mode'] != 2) {
 			searchFrontContentLinks($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"));
 		}
 
@@ -233,7 +237,7 @@ if($cache_errors && $_GET['live'] != 1) {
 	$sql = "SELECT art.title, art.redirect_url, art.idlang, cat.idart, cat.idcat, catName.name AS namecat FROM " . $cfg['tab']['cat_art'] . " cat
 			LEFT JOIN " . $cfg['tab']['art_lang'] . " art ON (art.idart = cat.idart)
 			LEFT JOIN " . $cfg['tab']['cat_lang'] . " catName ON (catName.idcat = cat.idcat)
-			WHERE cat.idcat IN (0, " . join(", ", $cats) . ") AND cat.idcat != '0' " . $lang_where . "
+			WHERE cat.idcat IN (0, " . join(", ", $aCats) . ") AND cat.idcat != '0' " . $sLang_where . "
 			AND art.online = '1' AND art.redirect = '1'";
 	$db->query($sql);
 
@@ -243,7 +247,7 @@ if($cache_errors && $_GET['live'] != 1) {
 		searchLinks($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"), "Redirect");
 
 		// Search front_content.php-links
-		if($_REQUEST['mode'] != 2) {
+		if($_GET['mode'] != 2) {
 			searchFrontContentLinks($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"));
 		}
 
@@ -261,10 +265,10 @@ if($cronjob != true) {
 }
 
 // If no errors found, say that
-if(empty($errors) && $cronjob != true) {
+if(empty($aErrors) && $cronjob != true) {
 	$tpl->set('s', 'NO_ERRORS', i18n("<strong>No errors</strong> were found.", $plugin_name));
 	$tpl->generate($cfg['templates']['linkchecker_noerrors']);
-} elseif(!empty($errors) && $cronjob != true) {
+} elseif(!empty($aErrors) && $cronjob != true) {
 
 	$tpl->set('s', 'ERRORS_HEADLINE', i18n("Total checked links", $plugin_name));
 	$tpl->set('s', 'ERRORS_HEADLINE_ARTID', i18n("idart", $plugin_name));
@@ -281,45 +285,45 @@ if(empty($errors) && $cronjob != true) {
 	$tpl->set('s', 'ERRORS_HELP_ERRORS', i18n("Wrong links", $plugin_name));
 
 	// error_output initialization
-	$error_output = array('art' => '', 'cat' => '', 'docimages' => '', 'others' => '');
+	$aError_output = array('art' => '', 'cat' => '', 'docimages' => '', 'others' => '');
 
-	foreach($errors as $key => $row) {
+	foreach($aErrors as $sKey => $aRow) {
 
-		$row = linksort($row);
+		$aRow = linksort($aRow);
 
-		for($i = 0; $i < count($row); $i++) {
+		for($i = 0; $i < count($aRow); $i++) {
 
 			$tpl2 = new Template;
 			$tpl2->reset();
 
-			$tpl2->set('s', 'ERRORS_ERROR_TYPE', $row[$i]['error_type']);
-			$tpl2->set('s', 'ERRORS_ARTID', $row[$i]['idart']);
-			$tpl2->set('s', 'ERRORS_ARTICLE', $row[$i]['nameart']);
-			$tpl2->set('s', 'ERRORS_ARTICLE_SHORT', substr($row[$i]['nameart'], 0, 20) . ((strlen($row[$i]['nameart']) > 20) ? ' ...' : ''));
-			$tpl2->set('s', 'ERRORS_CATID', $row[$i]['idcat']);
-			$tpl2->set('s', 'ERRORS_LINK', $row[$i]['url']);
-			$tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($row[$i]['url']));
-			$tpl2->set('s', 'ERRORS_LINK_SHORT', substr($row[$i]['url'], 0, 55) . ((strlen($row[$i]['url']) > 55) ? ' ...' : ''));
-			$tpl2->set('s', 'ERRORS_CATNAME', $row[$i]['namecat']);
-			$tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($row[$i]['namecat'], 0, 20) . ((strlen($row[$i]['namecat']) > 20) ? ' ...' : ''));
+			$tpl2->set('s', 'ERRORS_ERROR_TYPE', $aRow[$i]['error_type']);
+			$tpl2->set('s', 'ERRORS_ARTID', $aRow[$i]['idart']);
+			$tpl2->set('s', 'ERRORS_ARTICLE', $aRow[$i]['nameart']);
+			$tpl2->set('s', 'ERRORS_ARTICLE_SHORT', substr($aRow[$i]['nameart'], 0, 20) . ((strlen($aRow[$i]['nameart']) > 20) ? ' ...' : ''));
+			$tpl2->set('s', 'ERRORS_CATID', $aRow[$i]['idcat']);
+			$tpl2->set('s', 'ERRORS_LINK', $aRow[$i]['url']);
+			$tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($aRow[$i]['url']));
+			$tpl2->set('s', 'ERRORS_LINK_SHORT', substr($aRow[$i]['url'], 0, 55) . ((strlen($aRow[$i]['url']) > 55) ? ' ...' : ''));
+			$tpl2->set('s', 'ERRORS_CATNAME', $aRow[$i]['namecat']);
+			$tpl2->set('s', 'ERRORS_CATNAME_SHORT', substr($aRow[$i]['namecat'], 0, 20) . ((strlen($aRow[$i]['namecat']) > 20) ? ' ...' : ''));
 			$tpl2->set('s', 'MODE', $_GET['mode']);
-			$tpl2->set('s', 'URL', $url['contenido']);
+			$tpl2->set('s', 'URL', $aUrl['contenido']);
 			$tpl2->set('s', 'SID', $sess->id);
 
-			if($row[$i]['error_type'] == "unknown") {
+			if($aRow[$i]['error_type'] == "unknown") {
 				$tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Unknown: articles, documents etc. do not exist.", $plugin_name));
-			} elseif($row[$i]['error_type'] == "offline") {
+			} elseif($aRow[$i]['error_type'] == "offline") {
 				$tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Offline: article or category is offline.", $plugin_name));
-			} elseif($row[$i]['error_type'] == "startart") {
+			} elseif($aRow[$i]['error_type'] == "startart") {
 				$tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("Offline: article or category is offline.", $plugin_name));
-			} elseif($row[$i]['error_type'] == "dbfs") {
+			} elseif($aRow[$i]['error_type'] == "dbfs") {
 				$tpl2->set('s', 'ERRORS_ERROR_TYPE_HELP', i18n("dbfs: no matches found in the dbfs database.", $plugin_name));
 			}
 
-			if($key != "cat") {
-				$error_output[$key] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors'], 1);
+			if($sKey != "cat") {
+				$aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors'], 1);
 			} else {
-				$error_output[$key] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors_cat'], 1); // special template for idcats
+				$aError_output[$sKey] .= $tpl2->generate($cfg['templates']['linkchecker_test_errors_cat'], 1); // special template for idcats
 			}
 
 		}
@@ -327,35 +331,35 @@ if(empty($errors) && $cronjob != true) {
 	}
 
 	/* Counter */
-	if($counter = $cache->get($cacheName['errorscount'], intval($_GET['mode']))) { // Cache exists?
-		$errors_count_checked = $counter;
+	if($iCounter = $oCache->get($aCacheName['errorscount'], intval($_GET['mode']))) { // Cache exists?
+		$iErrors_count_checked = $iCounter;
 	} else { // Count searched links: idarts + idcats + idcatarts + others
-		$errors_count_checked = count($searchIDInfosArt) + count($searchIDInfosCat) + count($searchIDInfosCatArt) + count($searchIDInfosNonID);
+		$iErrors_count_checked = count($aSearchIDInfosArt) + count($aSearchIDInfosCat) + count($aSearchIDInfosCatArt) + count($aSearchIDInfosNonID);
 	}
 
 	// Count errors
-	foreach($errors as $key => $row) {
-		$errors_counted += count($errors[$key]);
+	foreach($aErrors as $sKey => $aRow) {
+		$iErrors_counted += count($aErrors[$sKey]);
 	}
 
-	$tpl->set('s', 'ERRORS_COUNT_CHECKED', $errors_count_checked);
-	$tpl->set('s', 'ERRORS_COUNT_ERRORS', $errors_counted);
-	$tpl->set('s', 'ERRORS_COUNT_ERRORS_PERCENT', round(($errors_counted * 100) / $errors_count_checked, 2));
+	$tpl->set('s', 'ERRORS_COUNT_CHECKED', $iErrors_count_checked);
+	$tpl->set('s', 'ERRORS_COUNT_ERRORS', $iErrors_counted);
+	$tpl->set('s', 'ERRORS_COUNT_ERRORS_PERCENT', round(($iErrors_counted * 100) / $iErrors_count_checked, 2));
 
 	/* Template output */
-	foreach($error_output as $key => $value) {
+	foreach($aError_output as $sKey => $sValue) {
 
-		if(empty($error_output[$key])) { // Errors for this type?
+		if(empty($aError_output[$sKey])) { // Errors for this type?
 			$tpl2->set('s', 'ERRORS_NOTHING', i18n("No errors for this type.", $plugin_name));
-			$error_output[$key] = $tpl2->generate($cfg['templates']['linkchecker_test_nothing'], 1);
+			$aError_output[$sKey] = $tpl2->generate($cfg['templates']['linkchecker_test_nothing'], 1);
 		}
 
-		$tpl->set('s', 'ERRORS_SHOW_' . strtoupper($key), $error_output[$key]);
+		$tpl->set('s', 'ERRORS_SHOW_' . strtoupper($sKey), $aError_output[$sKey]);
 
-		if(count($errors[$key]) > 0) {
-			$tpl->set('s', 'ERRORS_COUNT_ERRORS_' . strtoupper($key), '<span style="color: #FF0000;">' . count($errors[$key]) . '</span>');
+		if(count($aErrors[$sKey]) > 0) {
+			$tpl->set('s', 'ERRORS_COUNT_ERRORS_' . strtoupper($sKey), '<span style="color: #FF0000;">' . count($aErrors[$sKey]) . '</span>');
 		} else {
-			$tpl->set('s', 'ERRORS_COUNT_ERRORS_' . strtoupper($key), count($errors[$key]));
+			$tpl->set('s', 'ERRORS_COUNT_ERRORS_' . strtoupper($sKey), count($aErrors[$key]));
 		}
 
 	}
@@ -364,11 +368,11 @@ if(empty($errors) && $cronjob != true) {
 
 	/* Cache */    
 	// Remove older cache
-	$cache->remove($cacheName['errors'], intval($_GET['mode']));
+	$oCache->remove($aCacheName['errors'], intval($_GET['mode']));
     
 	// Build new cache
-	$cache->save(serialize($errors), $cacheName['errors'], intval($_GET['mode']));
-	$cache->save($errors_count_checked, $cacheName['errorscount'], intval($_GET['mode']));
+	$oCache->save(serialize($aErrors), $aCacheName['errors'], intval($_GET['mode']));
+	$oCache->save($iErrors_count_checked, $aCacheName['errorscount'], intval($_GET['mode']));
 
 }
 

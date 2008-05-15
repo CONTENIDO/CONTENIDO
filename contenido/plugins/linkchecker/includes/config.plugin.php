@@ -4,13 +4,12 @@ Description 	: Linkchecker 2.0.1
 Author      	: Frederic Schneider (4fb)
 Urls        	: http://www.4fb.de
 Create date 	: 2007-08-08
-Modified    	: 2007-12-13
+Modified    	: 2007-12-13, 2008-05-15
 *******************************************************************************/
 
 $plugin_name = "linkchecker";
 $cfg['plugins']['linkchecker'] = $cfg['path']['contenido'] . "plugins/" . $plugin_name . "/";
-$cfg['tab']['externlinks'] = $cfg['sql']['sqlprefix'].'_pi_externlinks';
-$cfg['tab']['whitelist'] = $cfg['sql']['sqlprefix'].'_pi_linkwhitelist';
+$cfg['tab']['whitelist'] = $cfg['sql']['sqlprefix'] . '_pi_linkwhitelist';
 
 // Templates
 $cfg['templates']['linkchecker_test'] = $cfg['plugins']['linkchecker'] . "templates/standard/template.linkchecker_test.html";
