@@ -131,7 +131,7 @@ $form->setVar("action", "tpl_edit");
 $form->setVar("idtpl", $idtpl);
 $form->addHeader(i18n("Edit template"));
 
-$name = new cHTMLTextbox("tplname",$tplname,35,30);
+$name = new cHTMLTextbox("tplname",$tplname,35);
 $form->add(i18n("Name"), $name->render());
 
 $descr = new cHTMLTextarea("description", $description);
