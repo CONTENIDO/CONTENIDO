@@ -823,10 +823,6 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
 						$templateDescription = $artitem['templateDescription'];
 						$descString = '<b>'.$artitem[$key].'</b>';
 						
-						if( sizeof($templateDescription)>0 )
-						{
-							$descString .= '<br>'.$templateDescription;
-						}
                         $sTemplatename = capiStrTrimHard($artitem[$key], 20);
                         if (strlen($artitem[$key]) > 20) {
                             $cells[] = '<td nowrap="nowrap" class="bordercell" onmouseover="Tip(\''.$descString.'\', BALLOON, true, ABOVE, true);">'.$sTemplatename.'</td>';
