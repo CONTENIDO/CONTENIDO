@@ -526,6 +526,7 @@ class UI_Table_Form
 					$tpl->set('d', 'CATFIELD', $value);
 					$tpl->set('d', 'ROWNAME', $this->rownames[$key]);
 					$tpl->set('d', 'STYLES', $this->styles[$key]);
+                    $tpl->set('d', 'PADDING_LEFT', '0');
 					
 					$dark = !$dark;
 					
@@ -611,6 +612,8 @@ class UI_Table_Form
 		}
 		
 		$tpl->set('s', 'EXTRAB', $extra);
+        $tpl->set('s', 'PADDING_LEFT', '0');
+        $tpl->set('s', 'ROWNAME', $this->id);
 		
 		$rendered = $tpl->generate($cfg["path"]["contenido"].$cfg['path']['templates'] . $cfg['templates']['generic_table_form'],true);
 		
