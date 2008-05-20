@@ -8,6 +8,26 @@ $Id: CHANGELOG.txt,v 1.112 2008/05/21 12:14:59 timo.trautmann Exp $
 
 Release 4.8.4
 ----------------------------------------------------------------------
+** Bug
+    * [CON-127] - release.php/release.xml aktualisieren - manuelle Änderungen in setup/data/base ungünstig - conAlloc-Primary Key-Definition - Plugins berücksichtigen
+    * [CON-128] - Idlang for new languages skips ids example: 4 6 8 10 for new language ids
+    * [CON-129] - todo mails were not send to user
+    * [CON-131] - InUse Notification in Article edit does not appear, if <body> tag of client has attributes
+    * [CON-133] - Logo for clients crashes back end
+    * [CON-135] - Dateiverwaltung: It is not possible to come back to root directory
+    * [CON-136] - Eingabe von Templatenamen länger 30 Zeichen unmöglich
+    * [CON-137] - Klasse UI_Table_Form setzt Template-Variablen nicht.
+    * [CON-138] - Artikelsperrung wird aufgehoben durch Linkwahldialog
+
+** Improvement
+    * [CON-132] - Avoid double definiton of metatags, if meta tag is already defined in layout
+    * [CON-134] - Unterschiedliches Verhalten von "Administration -> Benutzer -> Bereiche" und "Administration -> Gruppen -> Bereiche", wenn keine Übersetzungen der Actions vorhanden sind
+
+** New feature
+    * [CON-104] - Highlighting of code
+
+** Task
+    * [CON-130] - Redesign of edit_area
 
 
 Release 4.8.3
