@@ -28,6 +28,10 @@ Release 4.8.4
 
 ** Task
     * [CON-130] - Redesign of edit_area
+    * Plugin Linkchecker 
+        - Table !PREFIX!_pi_externlinks removed
+        - Results were stored for 14 days
+        - Possibility to refresh result (refresh button)
 
 
 Release 4.8.3
