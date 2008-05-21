@@ -267,7 +267,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         <td><img src="images/spacer.gif" width="1" height="10"></td>
     </tr>
 	<tr class="text_medium" style="background-color: #ffffff;">
-        <td style="border: 1px; border-color: #747488; border-style: solid; background-color: #F4F4F7"> ' .
+        <td style="border: 1px; border-color: #B3B3B3; border-style: solid; background-color: #E2E2E2; color:#666666"> ' .
         sprintf(i18n("Go to page: %s"), $sBrowseLinks) . '</td>
     </tr>
 </table>';
