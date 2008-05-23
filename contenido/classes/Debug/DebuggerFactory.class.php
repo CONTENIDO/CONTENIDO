@@ -4,16 +4,17 @@
 *
 * Description: Static Debugger Factory
 *
-* @version 1.1.0
+* @version 1.2.0
 * @author Rudi Bieller
 * @copyright four for business AG <www.4fb.de>
 *
 * {@internal
 * created 2007-03-27
 * modified 2008-05-07 Added Debug_DevNull, extended Exception message.
+* modified 2008-05-21 Added Debug_VisibleAdv
 * }}
 *
-* $Id$
+* $Id$:
 */
 
 class DebuggerFactory {
@@ -23,6 +24,10 @@ class DebuggerFactory {
             case 'visible':
                 include_once('Debug_Visible.class.php');
                 $oDebugger = Debug_Visible::getInstance();
+                break;
+			case 'visible_adv':
+                include_once('Debug_VisibleAdv.class.php');
+                $oDebugger = Debug_VisibleAdv::getInstance();
                 break;
             case 'hidden':
                 include_once('Debug_Hidden.class.php');
