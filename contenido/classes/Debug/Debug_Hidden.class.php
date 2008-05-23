@@ -4,15 +4,16 @@
 *
 * Description: Debug object to show info hidden in HTML comment-blocks.
 *
-* @version 1.0.0
+* @version 1.1.0
 * @author Rudi Bieller
 * @copyright four for business AG <www.4fb.de>
 *
 * {@internal
 * created 2007-01-01
+* modified 2008-05-21 Added methods add(), reset(), showAll()
 * }}
 *
-* $Id$
+* $Id$:
 */
 include_once('IDebug.php');
 
@@ -68,5 +69,26 @@ class Debug_Hidden implements IDebug {
 			die();
 		}
 	}
+	
+    /**
+	 * Interface implementation
+	 * @access public
+	 * @param mixed $mVariable
+	 * @param string $sVariableDescription
+	 * @return void
+	 */
+	public function add($mVariable, $sVariableDescription = '') {}
+	/**
+	 * Interface implementation
+	 * @access public
+	 * @return void
+	 */
+	public function reset() {}
+	/**
+	 * Interface implementation
+	 * @access public
+	 * @return string Here an empty string
+	 */
+	public function showAll() {}
 }
 ?>
