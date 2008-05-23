@@ -13,16 +13,20 @@
 * to screen, to html comments and to a file.
 * 
 * When using Debug_File, there will be a debug.log created in /contenido/logs/
+* 
+* Using the Factory you can simply change the type of debugger by passing the type to load. 
+* By using "devnull" you can keep your debug code while in production systems and turn it on again by changing to "file" or "hidden" if needed.
 *
-* @version 1.0.0
+* @version 1.1.0
 * @author Rudi Bieller
 * @copyright four for business AG <www.4fb.de>
 *
 * {@internal
 * created 2008-02-19
+* modified 2008-05-23 Added Debug_DevNull and Debug_VisibleAdv
 * }}
 *
-* $Id$
+* $Id$:
 */
 
 cInclude('classes', 'Debug/DebuggerFactory.class.php');
@@ -45,6 +49,14 @@ $oDbgVisible->show($oMyObj, 'some comments if needed');
 $oDbgVisible->show($aMyArray, 'some comments if needed');
 $oDbgVisible->show($fMyFloat, 'some comments if needed');
 
+// print debug info to screen inside a box that can be toggled and does not crash your layout
+$oDbgVisibleAdv = DebuggerFactory::getDebugger('visible_adv');
+$oDbgVisibleAdv->add($oMyObj, 'some comments if needed');
+$oDbgVisibleAdv->add($aMyArray, 'some comments if needed');
+$oDbgVisibleAdv->add($fMyFloat, 'some comments if needed');
+$oDbgVisibleAdv->showAll(); // prints out a small html box at left top of page
+$oDbgVisibleAdv->show($fMyFloat, 'some comments if needed'); // also possible here
+
 // print debug info to screen in html comments
 $oDbgHidden = DebuggerFactory::getDebugger('hidden'); 
 $oDbgHidden->show($oMyObj, 'some comments if needed');
@@ -56,4 +68,10 @@ $oDbgFile = DebuggerFactory::getDebugger('file');
 $oDbgFile->show($oMyObj, 'some comments if needed');
 $oDbgFile->show($aMyArray, 'some comments if needed');
 $oDbgFile->show($fMyFloat, 'some comments if needed');
+
+// send debug info to dev/null
+$oDbgDevnull = DebuggerFactory::getDebugger('devnull');
+$oDbgDevnull->show($oMyObj, 'some comments if needed');
+$oDbgDevnull->show($aMyArray, 'some comments if needed');
+$oDbgDevnull->show($fMyFloat, 'some comments if needed');
 ?>
