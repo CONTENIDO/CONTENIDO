@@ -149,6 +149,7 @@ $lngAct["lang_edit"]["lang_deletelanguage"] = i18n("Delete language");
 $lngAct["lang_edit"]["lang_edit"] = i18n("Edit language");
 
 $lngAct["linkchecker"]["linkchecker"]                   = i18n("Linkchecker");
+$lngAct["linkchecker"]["whitelist_view"]                   = i18n("Linkchecker Whitelist");
 
 
 $lngAct["plug"]["10"]                    = i18n("Install/Remove plugins");
