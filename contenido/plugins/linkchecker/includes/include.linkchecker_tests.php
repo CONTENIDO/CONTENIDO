@@ -4,7 +4,7 @@ Description 	: Linkchecker 2.0.1
 Author      	: Frederic Schneider (4fb)
 Urls        	: http://www.4fb.de
 Create date 	: 2008-02-28
-Modified		: Frederic Schneider (4fb), 07-14.05.2008, New version
+Modified		: Frederic Schneider (4fb), 2008-06-05
 *******************************************************************************/
 
 // Checks all links without front_content.php
@@ -224,7 +224,7 @@ function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
 
 			}
 
-		} elseif(!in_array($matches[0][0], $whitelist)) {
+		} elseif(!in_array($matches[0][0], $aWhitelist)) {
 			$aSearchIDInfosArt[] = array("id" => $matches[1][0], "url" => $matches[0][0], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
 		}
 
