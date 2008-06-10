@@ -7,12 +7,13 @@
  * is a little bit "re-writed" for better interaction with contenido.
  * Thanks to Andreas Kummer (aka kummer) for this great idea!
  * 
- * @version	$Revision: 1.1 $
+ * @version	$Revision: 1.1.1 $
  * @author Andreas Kummer <kummer@atelierq.ch>, Holger Librenz <holger.librenz@4fb.de>
  * @copyright atelierQ Kummer, 4fb AG
  * 
  * @internal {
  * 	created 2008-02-06
+ * 	modified 2008-06-10, I. van Peeren - initially set $this->bLog as $bLog in config file
  * 
  * 	$Id: class.httpinputvalidator.php,v 1.1 2008/02/08 18:36:09 holger.librenz Exp $
  * }
@@ -31,7 +32,7 @@ define('CON_CHECK_HASH32', '/^[a-zA-Z0-9]{32}$/'); // 32-character hash
  * This class is the extended version of excelent 
  * code made by kummer.
  * 
- * @version 1.0.0
+ * @version 1.0.1
  * @see http://contenido.org/forum/viewtopic.php?p=113492#113492
  */
 class HttpInputValidator {
@@ -123,8 +124,10 @@ class HttpInputValidator {
 		if (file_exists(dirname($this->sConfigPath) . '/config.http_check.local.php')) {
 			require (dirname($this->sConfigPath) . '/config.http_check.local.php');
 		}
+		
+		$this->bLog = $bLog;
 
-		if ($bLog === true) {
+		if ($this->bLog === true) {
 			if (!empty($sLogPath) && is_writable(dirname($sLogPath))) {
 				$this->sLogPath = realpath($sLogPath);
 			} else {
