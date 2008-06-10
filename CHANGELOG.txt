@@ -6,22 +6,37 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id: CHANGELOG.txt,v 1.112 2008/05/21 12:14:59 timo.trautmann Exp $
 
+Release 4.8.5
+----------------------------------------------------------------------
+** Bug
+    * [CON-147] - Recipients import didn't import plugin data
+
 Release 4.8.4
 ----------------------------------------------------------------------
 ** Bug
-    * [CON-127] - release.php/release.xml aktualisieren - manuelle Änderungen in setup/data/base ungünstig - conAlloc-Primary Key-Definition - Plugins berücksichtigen
-    * [CON-128] - Idlang for new languages skips ids example: 4 6 8 10 for new language ids
+    * [CON-127] - release.php/release.xml aktualisieren - manuelle 
+                  Änderungen in setup/data/base ungünstig - 
+                  conAlloc-Primary Key-Definition - Plugins 
+                  berücksichtigen
+    * [CON-128] - Idlang for new languages skips ids example: 4 6 8 10 
+                  for new language ids
     * [CON-129] - todo mails were not send to user
-    * [CON-131] - InUse Notification in Article edit does not appear, if <body> tag of client has attributes
+    * [CON-131] - InUse Notification in Article edit does not appear, 
+                  if <body> tag of client has attributes
     * [CON-133] - Logo for clients crashes back end
-    * [CON-135] - Dateiverwaltung: It is not possible to come back to root directory
+    * [CON-135] - Dateiverwaltung: It is not possible to come back to 
+                  root directory
     * [CON-136] - Eingabe von Templatenamen länger 30 Zeichen unmöglich
     * [CON-137] - Klasse UI_Table_Form setzt Template-Variablen nicht.
     * [CON-138] - Artikelsperrung wird aufgehoben durch Linkwahldialog
 
 ** Improvement
-    * [CON-132] - Avoid double definiton of metatags, if meta tag is already defined in layout
-    * [CON-134] - Unterschiedliches Verhalten von "Administration -> Benutzer -> Bereiche" und "Administration -> Gruppen -> Bereiche", wenn keine Übersetzungen der Actions vorhanden sind
+    * [CON-132] - Avoid double definiton of metatags, if meta tag is 
+                  already defined in layout
+    * [CON-134] - Unterschiedliches Verhalten von "Administration -> 
+                  Benutzer -> Bereiche" und "Administration -> 
+                  Gruppen -> Bereiche", wenn keine Übersetzungen der 
+                  Actions vorhanden sind
 
 ** New feature
     * [CON-104] - Highlighting of code
@@ -37,24 +52,35 @@ Release 4.8.4
 Release 4.8.3
 ----------------------------------------------------------------------
 ** Bug
-    * [CON-58] - Suchfunktion (&DB?) scheitert bei bestimmten Sonderzeich
-    * [CON-94] - Newsfeed und Teaser rechts gehen nicht
+    * [CON-58]  - Suchfunktion (&DB?) scheitert bei bestimmten 
+                  Sonderzeichen
+    * [CON-94]  - Newsfeed und Teaser rechts gehen nicht
     * [CON-105] - Interaction Contenido & Workflow PlugIn
     * [CON-106] - Create Client Problem
     * [CON-107] - Error Message on XAMP
     * [CON-108] - SQL Bug in Plugin Workflow
     * [CON-110] - Content Allocation: Translation logic changed/Bugfix
-    * [CON-111] - Artikel wird bei setzen eines Endzeitpunkts und ohne Angabe des Startzeitpunkts immer offline gesetzt wird
+    * [CON-111] - Artikel wird bei setzen eines Endzeitpunkts und ohne 
+                  Angabe des Startzeitpunkts immer offline gesetzt wird
     * [CON-112] - sicherheitslücken
     * [CON-116] - File functions.general.php has UTF-8 Encoding
-    * [CON-118] - Many modules / plugins working with PEAR::CACHE references the wrong location
-    * [CON-120] - Diverse Darstellungsprobleme unter Administration->Mandanten
-    * [CON-121] - Fehlermeldung unter "Administration -> System" bei bestimmten GD-Konfigurationen
-    * [CON-122] - Fehlende globale Variablen in strRenameCategory() (functions.str.php) $cfgClient und $client nicht global definiert
-    * [CON-123] - Fehlende Überprüfung ob $tpl instanziiert ist in Modulen
-    * [CON-124] - Contenido adds double slashes to client paths when a new client is created
-    * [CON-125] - Wrong path to non existing spacer.gif in class.widgets.treeview.php
-    * [CON-126] - !$public in functions.con.php conMakePublic() causes some problems.
+    * [CON-118] - Many modules / plugins working with PEAR::CACHE 
+                  references the wrong location
+    * [CON-120] - Diverse Darstellungsprobleme unter Administration ->
+                  Mandanten
+    * [CON-121] - Fehlermeldung unter "Administration -> System" bei 
+                  bestimmten GD-Konfigurationen
+    * [CON-122] - Fehlende globale Variablen in strRenameCategory() 
+                  (functions.str.php) $cfgClient und $client nicht 
+                  global definiert
+    * [CON-123] - Fehlende Überprüfung ob $tpl instanziiert ist in 
+                  Modulen
+    * [CON-124] - Contenido adds double slashes to client paths when 
+                  a new client is created
+    * [CON-125] - Wrong path to non existing spacer.gif in 
+                  class.widgets.treeview.php
+    * [CON-126] - !$public in functions.con.php conMakePublic() 
+                  causes some problems.
 
 ** Improvement
     * [CON-114] - lange Pfadangaben in Content - Dateiverwaltung
@@ -66,28 +92,34 @@ Release 4.8.3
 Release 4.8.2
 ----------------------------------------------------------------------
 ** Bug
-    * [CON-64] - conMakeStart bei start_compatible = true fehlerhaft
-    * [CON-80] - Bugs in Content Allocation und conlib/mysql.inc
-    * [CON-82] - demo mandant unschönheiten
-    * [CON-90] - Update auf leere DB
-    * [CON-91] - Fehler im Dateimanager bei Install ohne Mandant
-    * [CON-93] - Frontenduser im Mustermandanten fehlt
-    * [CON-96] - Installation Error: MySQL-Error 1292 - Fehlende Standardwerte in INSERT STATEMENTS fŸr sysadmin und admin
-    * [CON-97] - Markieren des Modulcodes nicht mšglich in IE7
-    * [CON-98] - short_open_tag direktive
-    * [CON-101]- Beispielmandant login
+    * [CON-64]  - conMakeStart bei start_compatible = true fehlerhaft
+    * [CON-80]  - Bugs in Content Allocation und conlib/mysql.inc
+    * [CON-82]  - demo mandant unschönheiten
+    * [CON-90]  - Update auf leere DB
+    * [CON-91]  - Fehler im Dateimanager bei Install ohne Mandant
+    * [CON-93]  - Frontenduser im Mustermandanten fehlt
+    * [CON-96]  - Installation Error: MySQL-Error 1292 - Fehlende 
+                  Standardwerte in INSERT STATEMENTS fŸr sysadmin und 
+                  admin
+    * [CON-97]  - Markieren des Modulcodes nicht mšglich in IE7
+    * [CON-98]  - short_open_tag direktive
+    * [CON-101] - Beispielmandant login
+    
 ** Improvement
-    * [CON-54] - Integration of tinyMCE V3.0.6.1
-    * [CON-95] - Usability "neuer Mandant" - "keine Sprache angelegt"
+    * [CON-54]  - Integration of tinyMCE V3.0.6.1
+    * [CON-95]  - Usability "neuer Mandant" - "keine Sprache angelegt"
+    
 ** Task
-    * [CON-83] - Titel bei Startseite Setup
+    * [CON-83]  - Titel bei Startseite Setup
 
 
 Release 4.8.1
 ----------------------------------------------------------------------    
 ** Bug
-    * [CON-77] - Reiter in der Dateiverwaltung wechselt nach Upload nicht in †bersichtsseite
+    * [CON-77] - Reiter in der Dateiverwaltung wechselt nach Upload 
+                 nicht in Übersichtsseite
     * [CON-78] - strip_tags() im Modul "Suchausgabe"
+    
 ** Improvement
     * [CON-79] - anmerkungen zum release
 

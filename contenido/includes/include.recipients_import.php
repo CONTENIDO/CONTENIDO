@@ -28,28 +28,6 @@ if ($_REQUEST["selDelimiter"] == "") {
 	$_REQUEST["selDelimiter"] = "tab";
 }
 
-/*
-  // Text, der durchsucht werden soll 
-  // 
-  $subject = 'Der Hund schläft in der Maschine - immernoch ...'; 
-  // 
-  // Der Reguläre Ausdruck 
-  // 
-  $pattern = '&[^a-z0-9]*&is'; 
-  // 
-  // Ersatzstring 
-  // 
-  $replace = ''; 
-  // 
-  // RegExp auswerten, Ersetzung durchführen 
-  // 
-  $result = preg_replace($pattern, $replace, $subject); 
-  // 
-  // Ergebnis ausgeben 
-  // 
-  echo '<p>Ergebnis: '.htmlspecialchars($result).'</p>'; 
- */
-
 $aFields 		= array();
 $aFieldDetails	= array();
 $aFields["name"]							= strtolower(i18n("Name"));
@@ -221,9 +199,11 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 					$iDublettes++;
 				} else {
 					unset ($sLine);
-					if ($oRecipient = $oRecipients->create($sEMail, $sName))
+					
+					// Must be $recipient for plugins
+					if ($recipient = $oRecipients->create($sEMail, $sName))
 					{
-						$iID = $oRecipient->get($oRecipient->primaryKey);
+						$iID = $recipient->get($recipient->primaryKey);
 						$iAdded++;
 						
 						unset($aPluginValue);
@@ -247,26 +227,26 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 													(is_numeric($sValue) && $sValue > 0) ||
 													$sValue == "html")
 												{
-													$oRecipient->set($sKey, 1);
+													$recipient->set($sKey, 1);
 													
 													if ($sKey == "confirmed") {
 														// Ensure, that if a recipient is confirmed, a confirmed date 
 														// is available. As "confirmeddate" will be set after "confirmed"
 														// a specified confirmeddate will overwrite this default
-														$oRecipient->set("confirmeddate", date("Y-m-d H:i:s"), false);
+														$recipient->set("confirmeddate", date("Y-m-d H:i:s"), false);
 													}
 												} else {
-													$oRecipient->set($sKey, 0);
+													$recipient->set($sKey, 0);
 												}
 												break;
 											case "date":
 												// TODO: Check conversion: Result may be unpredictable...
 												$sValue = trim($aParts[$aDetails["col"]]);
-												$oRecipient->set($sKey, date("Y-m-d H:i:s", strtotime($sValue)), false);
+												$recipient->set($sKey, date("Y-m-d H:i:s", strtotime($sValue)), false);
 												break;
 											default:
 												$sValue = trim($aParts[$aDetails["col"]]);
-												$oRecipient->set($sKey, $sValue);
+												$recipient->set($sKey, $sValue);
 										}
 										break;
 									case "plugin":
@@ -293,7 +273,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 							}
 						}
 						// Store all base data
-						$oRecipient->store();
+						$recipient->store();
 						
 						// Store plugin data (to store plugin data, only, where the column has been found in the data
 						// should be faster than going through all plugins and store mostly empty arrays) 
