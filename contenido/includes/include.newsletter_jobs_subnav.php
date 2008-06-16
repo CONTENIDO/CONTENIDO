@@ -10,6 +10,8 @@
 * $Id$
 ******************************************/
 
+if ( $_REQUEST['cfg'] ) { exit; }
+
 if (isset($_GET['idnewsjob']) && (int)$_GET['idnewsjob'] > 0)
 {
     $sCaption = i18n("View");
