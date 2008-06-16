@@ -61,6 +61,10 @@ if (isset($_GET['idnewsletter']))
 	# Generate the third navigation layer
 	$tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
 } else {
+	// modified rbi 2008-06-16
+	if (isset($_REQUEST['cfg'])) {
+		die();
+	}
 	include ($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
 }
 
