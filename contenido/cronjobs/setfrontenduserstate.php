@@ -4,17 +4,21 @@
 *
 * Description: Job to set frontendusers active / inactive depending on the date entered in BE
 *
-* @version 1.0.0
+* @version $Revision$
 * @author Rudi Bieller
 * @copyright four for business AG <www.4fb.de>
 *
 * {@internal
 * created 2007-07-24
 * modified 2007-10-12
+*  modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call
 * }}
 *
 * $Id$
 */
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
 
 if (isset($cfg['path']['contenido'])) {
 	include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'startup.php');
@@ -46,14 +50,14 @@ if ($_SERVER["PHP_SELF"] == "" || function_exists("runJob") || $area == "cronjob
 {
 	$db = new DB_Contenido();
 
-	$sSql = "UPDATE " . $cfg['tab']['frontendusers'] . " 
-				SET active = 0 
-				WHERE 
-					(valid_to < NOW() AND valid_to != '0000-00-00 00:00:00') 
-					OR 
+	$sSql = "UPDATE " . $cfg['tab']['frontendusers'] . "
+				SET active = 0
+				WHERE
+					(valid_to < NOW() AND valid_to != '0000-00-00 00:00:00')
+					OR
 					(valid_from > NOW() AND valid_from != '0000-00-00 00:00:00') ";
 	//echo $sSql;
 	$db->query($sSql);
-    
+
 }
 ?>
