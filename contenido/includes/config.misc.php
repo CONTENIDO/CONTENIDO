@@ -16,17 +16,17 @@ global $cfg;
 
 /* IMPORTANT! Put your modifications into the file "config.local.php"
    to prevent that your changes are overwritten during a system update. */
-   
+
 /* Misc settings
  * ----------------------------------
  *
  * Actually no variables, but important settings
  * for error handling and logging.
  */
- 
+
 /* Current Contenido Version. You shouldn't change this
    value unless you know what you are doing. */
-$cfg['version'] = '4.8.4';
+$cfg['version'] = '4.8.5';
 
 /* CVS Date tag */
 $cfg['datetag'] = '$Date: 2007/07/20 22:18:31 $';
@@ -35,7 +35,7 @@ $cfg['datetag'] = '$Date: 2007/07/20 22:18:31 $';
 $cfg["backend"]["timeout"] = 60;
 
 /* Use Pseudo-Cron? */
-$cfg["use_pseudocron"] = true; 
+$cfg["use_pseudocron"] = true;
 
 /* If you want to measure function timing set this to true */
 $cfg["debug"]["functiontiming"] = false;
@@ -130,15 +130,15 @@ $cfg["session_container"] = 'sql';
 $cfg["statistics_heap_table"] = false;
 
 /* HTTP parameter check
- * 
+ *
  * This feature checks GET and POST parameters against a whitelist defined in
  * $cfg['http_params_check']['config']. Depending on mode administrated in the
  * same config as the whitelist contenido will stop processing in case of unknown
  * or invalid GET parameter.
- * 
+ *
  * For further informations and initial discussion see  http://contenido.org/forum/viewtopic.php?p=113492!
- * 
- * Special thx to kummer! 
+ *
+ * Special thx to kummer!
  */
 // turns parameter checking on or off
 $cfg['http_params_check']['enabled'] = false;
@@ -165,8 +165,8 @@ $cfg['help'] = false;
 /* Configure page if Contenido is unable to run (e.g. no database connection)
  * It is wise to create a maintenance HTML page for redirection, so you won't
  * confuse your customers.
- * 
- * Note: The URL should be absolute with http:// in front of it. 
+ *
+ * Note: The URL should be absolute with http:// in front of it.
  */
 $cfg["contenido"]["errorpage"] = "";
 
