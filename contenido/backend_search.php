@@ -22,6 +22,9 @@
  */
 
 # Include
+if (isset($_REQUEST['cfg'])) {
+	die();
+}
 include_once ($cfg['path']['contenido']."includes/config.php");
 include_once ($cfg['path']['contenido']."includes/startup.php");
 
