@@ -1,19 +1,26 @@
 <?php
-
-/*****************************************
-* File      :   $RCSfile: optimize_database.php,v $
-* Project   :   Contenido
-* Descr     :   Cron Job to move old statistics into the stat_archive table
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   26.05.2003
-* Modified  :   $Date: 2007/10/12 13:53:00 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: optimize_database.php,v 1.8 2006/04/28 09:20:55 timo.hummel Exp $
-******************************************/
+ /**
+ * File      :   $RCSfile: optimize_database.php,v $
+ * Project   :   Contenido
+ * Descr     :   Cron Job to move old statistics into the stat_archive table
+ *
+ * Author    :   Timo A. Hummel
+ *
+ * Created   :   26.05.2003
+ * Modified  :   $Date: 2007/10/12 13:53:00 $
+ *
+ * @version $Revision$
+ * @copyright four for business AG, www.4fb.de
+ *
+ * @internal  {
+ *  modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call
+ *
+ *  $Id: move_old_stats.php,v 1.11 2006/04/28 09:20:55 timo.hummel Exp $
+ * }
+ **/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
 
 if (isset($cfg['path']['contenido'])) {
 	include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'startup.php');
@@ -41,15 +48,15 @@ include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'functions.st
 global $cfg;
 
 if($_SERVER["PHP_SELF"] == "" || function_exists("runJob") || $area == "cronjobs") {
-    $db = new DB_Contenido;   
-    
+    $db = new DB_Contenido;
+
     foreach ($cfg["tab"] as $key => $value)
     {
     	$sql = "OPTIMIZE TABLE ".$value;
     	$db->query($sql);
-		
+
     }
-	
+
 	if ($cfg["statistics_heap_table"]) {
 		$sHeapTable = $cfg['tab']['stat_heap_table'];
 
