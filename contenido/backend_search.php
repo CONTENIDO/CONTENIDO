@@ -7,6 +7,7 @@
  * Authors   :   Holger Librenz, Andreas Lindner
  *
  * Created   :   20.04.2007
+ * Modified: 16.06.2008 Rudi Bieller Bugfix CON-149
  *
  * based on article in contenido forum:
  * http://www.contenido.org/forum/viewtopic.php?t=12437
@@ -21,8 +22,8 @@
  */
 
 # Include
-include_once ($contenido_path."includes/config.php");
-include_once ($contenido_path."includes/startup.php");
+include_once ($cfg['path']['contenido']."includes/config.php");
+include_once ($cfg['path']['contenido']."includes/startup.php");
 
 page_open(array('sess' => 'Contenido_Session',
 	'auth' => 'Contenido_Challenge_Crypt_Auth',
