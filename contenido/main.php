@@ -9,10 +9,22 @@
 *               Jan Lengowski
 *
 * Created   :   20.01.2003
-* Modified  :   21.03.2003
+* Modified  :   $Date$
 *
-* � four for business AG, www.4fb.de
+* @version $Revision$
+* @copyright four for business AG <www.4fb.de>
+*
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
+*
+*   $Id$
+* }
+*
 ******************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Invalid call!');
+}
+
 include_once ('./includes/startup.php');
 cInclude ("includes", 'functions.general.php');
 
@@ -48,7 +60,7 @@ i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
 /**
  * Bugfix
  * @see http://contenido.org/forum/viewtopic.php?t=18291
- * 
+ *
  * added by H. Librenz (2007-12-07)
  */
 //includePluginConf();
@@ -62,7 +74,7 @@ if ($cfg["use_pseudocron"] == true)
     if ($frame == 1)
     {
 			$sess->freeze();
-			
+
 			$oldpwd = getcwd();
 
 			chdir($cfg["path"]["contenido"].$cfg["path"]["cronjobs"]);
@@ -73,13 +85,13 @@ if ($cfg["use_pseudocron"] == true)
 			{
 				// Some cronjobs might overwrite important system variables.
 				// We are thaw'ing the session again to re-register these variables.
-				$sess->thaw();	
+				$sess->thaw();
 			}
     }
 }
 
 
-/* Remove all own marks, only for frame 1 and 4  if $_REQUEST['appendparameters'] == 'filebrowser' 
+/* Remove all own marks, only for frame 1 and 4  if $_REQUEST['appendparameters'] == 'filebrowser'
    filebrowser is used in tiny in this case also do not remove session marks*/
 if (($frame == 1 || $frame == 4) && $_REQUEST['appendparameters'] != 'filebrowser')
 {
@@ -93,7 +105,7 @@ if (isset($overrideid) && isset($overridetype))
 	$col = new InUseCollection;
 	$col->removeItemMarks($overridetype, $overrideid);
 }
-		
+
 # Create Contenido classes
 $db = new DB_Contenido;
 $notification = new Contenido_Notification;
@@ -116,11 +128,11 @@ if (isset($changeclient) && is_numeric($changeclient) ) {
 if (isset($changelang) && is_numeric($changelang) ) {
 	unset($area_rights);
 	unset($item_rights);
-	
+
     $lang = $changelang;
 }
 
-if (!is_numeric($client) || 
+if (!is_numeric($client) ||
 	(!$perm->have_perm_client("client[".$client."]") &&
 	 !$perm->have_perm_client("admin[".$client."]")))
 {
@@ -128,11 +140,11 @@ if (!is_numeric($client) ||
     $sess->register("client");
     $sql = "SELECT idclient FROM ".$cfg["tab"]["clients"]." ORDER BY idclient ASC";
     $db->query($sql);
-    
+
     while ($db->next_record())
     {
     	$mclient = $db->f("idclient");
-    	
+
     	if ($perm->have_perm_client("client[".$mclient."]") ||
     		$perm->have_perm_client("admin[".$mclient."]") )
     	{
@@ -156,7 +168,7 @@ if (!is_numeric($lang) || $lang == "") {
 	$sess->register("lang");
 }
 
-// send right encoding http header  
+// send right encoding http header
 sendEncodingHeader($db, $cfg, $lang);
 
 $perm->load_permissions();
@@ -223,7 +235,7 @@ if (isset($action) && $action != "")
 	{
 		$idart = 0;
 	}
-	
+
     $backend->log($idcat, $idart, $client, $lang, $action);
 }
 
@@ -236,7 +248,7 @@ if (isset($action)) {
             echo '</pre>';
         }
         eval($backend->getCode($action));
-				
+
     } else {
         if ($backend->debug == 1) {
             echo '<pre style="font-family: verdana; font-size: 10px"><b>Executing:</b>'."\n";
@@ -248,16 +260,16 @@ if (isset($action)) {
 
 # Include the 'main' file for the selected area.
 # Usually there is only one main file
-if (is_array($backend->getFile('main'))) 
+if (is_array($backend->getFile('main')))
 {
-	foreach ($backend->getFile('main') as $id => $filename) 
+	foreach ($backend->getFile('main') as $id => $filename)
 	{
   	include_once($cfg['path']['contenido'].$filename);
   }
 
-} 
-else 
-{	
+}
+else
+{
 	include_once($cfg['path']['contenido'].$cfg['path']['includes'] ."include.blank.php");
 }
 
@@ -267,7 +279,7 @@ if ($cfg["debug"]["rendering"] == true)
 {
 	echo "Building this page (excluding contenido includes) took: " . ($cfg["debug"]["backend_exectime"]["end"] - $cfg["debug"]["backend_exectime"]["start"])." seconds<br>";
 	echo "Building the complete page took: " . ($cfg["debug"]["backend_exectime"]["end"] - $cfg["debug"]["backend_exectime"]["fullstart"])." seconds<br>";
-	
+
 	if (function_exists("memory_get_usage"))
 	{
 		echo "Include memory usage: ".human_readable_size(memory_get_usage()-$oldmemusage)."<br>";
@@ -277,14 +289,14 @@ if ($cfg["debug"]["rendering"] == true)
 
 /**
  * Test code from Bilal Arslan
- * 
+ *
  **/
 cInclude("classes", "class.activeusers.php");
 
 $oActiveUser = new ActiveUsers($db, $cfg, $auth);
 $oActiveUser->startUsersTracking();
 /**
- * 
+ *
  * End of the test
  */
 

@@ -1,4 +1,19 @@
 <?php
+/**
+ * Returns session-dependent rights javascript
+ *
+ * @version $Revision$
+ * @copyright four for business AG <www.4fb.de>
+ *
+ * @internal {
+ *   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
+ *
+ *   $Id$
+ * }
+ ******************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
 
 include_once ('../includes/startup.php');
 
@@ -42,7 +57,7 @@ function iZoom(path)
     zwin.document.open();
     zwin.document.write(zcon);
     zwin.document.close();
-    
+
 }
 
 
@@ -68,9 +83,9 @@ function setRightsForAllAreas(){
 
 // Fixed function to be use in ns/moz JL
 
-        checked = document.forms["rightsform"].elements["checkall"].checked;			
+        checked = document.forms["rightsform"].elements["checkall"].checked;
 		var elements = document.getElementsByTagName("INPUT");
-	
+
 		for (i=0; i<elements.length; i++)
 		{
 			if (elements[i].type == "checkbox")
@@ -83,10 +98,10 @@ function setRightsForArea(key){
          checked=document.forms["rightsform"].elements["checkall_"+key].checked;
 
 
-		 flag = true;	
+		 flag = true;
 
 		 var foo = document.forms["rightsform"].elements["checkall_"+key];
-			
+
 		var str = "";
 
 	for (var p in areatree[key])
@@ -99,18 +114,18 @@ function setRightsForArea(key){
          for(var key2 in areatree[key]){
 			 try {
 				if (flag)
-				{	
+				{
 					row = foo.offsetParent.parentNode;
 					cboxes = row.getElementsByTagName('INPUT');
 					cboxes[0].checked = !cboxes[0].checked;
 					flag = false;
 				}
-				
+
 //alert(areatree[key][key2]);
-				
+
              	document.getElementById(areatree[key][key2]).checked = checked;
 
-			} catch(e) {				
+			} catch(e) {
 			}
          }
 }

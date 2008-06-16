@@ -1,8 +1,12 @@
 <?php
+// added 2008-06-16, H. Librenz - Hotfix: checking for dirty calls!
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
+
 /**
  * very dirty hack
  */
-
 $ipc_conpluginpath = $cfg['path']['contenido'].$cfg["path"]['plugins'];
 
     $ipc_dh = opendir($ipc_conpluginpath);

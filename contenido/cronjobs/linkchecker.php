@@ -1,4 +1,21 @@
 <?php
+/**
+ * Link Checker
+ *
+ * @author Frederic Schneider
+ * @version $Revision$
+ * @copyright four for business AG <www.4fb.de>
+ *
+ * @internal {
+ *  modified 2008-06-16, H. Librenz - Hotfix: checking for malicious calls added
+ *
+ *  $Id$
+ * }
+ */
+if (isset($_REQUEST['cfg']) || isset ($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
+
 include_once('../includes/startup.php');
 
 include_once($cfg['path']['contenido'] . 'plugins/linkchecker/includes/config.plugin.php');
@@ -33,7 +50,7 @@ if($db->num_rows() > 1) {
     $langart = 0;
 } else {
     $db->next_record();
-    $langart = $db->f("idlang");    
+    $langart = $db->f("idlang");
 }
 
 include_once($cfg['path']['contenido'] . 'plugins/linkchecker/includes/include.linkchecker.php');

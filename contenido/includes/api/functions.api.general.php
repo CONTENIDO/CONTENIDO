@@ -5,14 +5,22 @@
 * Descr     :   Contenido General API functions
 *
 * Author    :   Timo A. Hummel
-*               
+*
 * Created   :   01.09.2003
 * Modified  :   $Date: 2007/06/24 18:02:00 $
 *
-* © four for business AG, www.4fb.de
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: added check for illegal calling
 *
-* $Id: functions.api.general.php,v 1.21 2007/06/24 18:02:00 bjoern.behrens Exp $
+*   $Id: functions.api.general.php,v 1.21 2007/06/24 18:02:00 bjoern.behrens Exp $
+* }
+*
+* © four for business AG, www.4fb.de
 ******************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
+
 if ( !defined('PATH_SEPARATOR') ) {
     define('PATH_SEPARATOR', ( substr(PHP_OS, 0, 3) == 'WIN' ) ? ';' : ':');
 }
@@ -30,7 +38,7 @@ if ( !defined('DIRECTORY_SEPARATOR') ) {
  * 3.) The function makes sense and is generically usable
  *
  */
- 
+
 /**
  * contenido_include: Includes a file
  * and takes care of all path transformations.
@@ -166,7 +174,7 @@ function contenido_include ($where, $what, $force = false, $returnpath = false)
       include_once($include);
    }
 
-} 
+}
 
 
 /**
@@ -175,8 +183,8 @@ function contenido_include ($where, $what, $force = false, $returnpath = false)
  * @see contenido_include
  *
  * @param $where string The area which should be included
- * @param $what string The filename of the include 
- * @param $force boolean If true, force the file to be included   
+ * @param $what string The filename of the include
+ * @param $force boolean If true, force the file to be included
  *
  * @return none
  *
@@ -195,7 +203,7 @@ function cInclude ($where, $what, $force = false)
  * plugin_include("formedit", "classes/class.formedit.php");
  *
  * @param $which string The name of the plugin
- * @param $what string The filename of the include 
+ * @param $what string The filename of the include
  *
  * @return none
  *
@@ -203,10 +211,10 @@ function cInclude ($where, $what, $force = false)
 function plugin_include ($where, $what)
 {
 	global $cfg;
-	
+
 	$include = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $where. "/" . $what;
 
-	include_once($include);  
+	include_once($include);
 }
 
 

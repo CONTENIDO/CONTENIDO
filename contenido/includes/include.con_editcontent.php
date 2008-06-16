@@ -9,10 +9,19 @@
 * Author    :   Jan Lengowski
 *
 * Created   :   00.00.0000
-* Modified  :   15.04.2003
+* Modified  :   $Date$
 *
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: check for illegal calls added
+*
+*   $Id$
+* }
 * © four for business AG
 ******************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
+
 
 $edit 		= "true";
 
@@ -40,7 +49,7 @@ if ( isset($idcat) )
 				conSaveContentEntry($value[0], "CMS_".$value[1], $value[2], $value[3]);
 				//echo "conSaveContentEntry({$value[0]}, CMS_{$value[1]}, {$value[2]}, value)<br>\n";
 			}
-                
+
 			conMakeArticleIndex ($idartlang, $idart);
 
 			// restore orginal values
@@ -55,9 +64,9 @@ if ( isset($idcat) )
 	{
 		header("Location: ".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php?type=$type&typenr=$typenr&client=$client&lang=$lang&idcat=$idcat&idart=$idart&idartlang=$idartlang&contenido=$contenido&lang=$lang");
 	} else {
-        
+
 		$markSubItem = markSubMenuItem(3, true);
-    
+
 	$scripts .= <<<EOD
 
 <script language="javascript">
@@ -77,10 +86,10 @@ function getCellClass(element) {
     if ( cell.id == '' ) {
        cell.id = 'yes';
        var flg = 'yes'
-       
+
     } else {
        var flg = cell.id;
-       
+
     }
 
     //else go to the tagname table above   and search dowen for the tr tags
@@ -161,7 +170,7 @@ function setcontent(idartlang, act) {
     if ( act != 0 ) {
         document.forms.editcontent.action = act;
     }
-    
+
     // if there are 3 arguments, the className has to be seached
     if (arguments.length > 2){
        //search the class of the above element
@@ -204,13 +213,13 @@ function addDataEntry(idartlang, type, typeid, value) {
 EOD;
 
         $scripts .= '<script src="'.$cfg["path"]["contenido_fullhtml"].'external/mozile/mozileLoader.js" type="text/javascript"></script>';
-        
+
         $contentform  = "<form name=\"editcontent\" method=\"post\" action=\"".$sess->url("front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&lang=$lang&action=20")."\">\n";
         $contentform .= "<input type=\"hidden\" name=\"changeview\" value=\"edit\">\n";
         $contentform .= "<input type=\"hidden\" name=\"data\" value=\"\">\n";
         $contentform .= "<input type=\"hidden\" name=\"con_class\" value=\"\">\n";
         $contentform .= "</form>";
-        
+
         #
         # extract IDCATART
         #
@@ -221,10 +230,10 @@ EOD;
                 WHERE
                     idcat = '".$idcat."' AND
                     idart = '".$idart."'";
-                    
+
         $db->query($sql);
         $db->next_record();
-        
+
         $idcatart = $db->f("idcatart");
 
         #
@@ -235,7 +244,7 @@ EOD;
         # configured, no code will be
         # created and an error occurs.
         #
-        
+
         $sql = "SELECT
                     a.idtplcfg AS idtplcfg
                 FROM
@@ -272,9 +281,9 @@ EOD;
 
             while ( $db2->next_record() ) {
                 $a_c[$db2->f("number")] = $db2->f("container");
-                
+
             }
-                
+
         } else {
 
             #
@@ -344,12 +353,12 @@ EOD;
 
                 $cat_name = "";
                 conCreateLocationString($idcat, "&nbsp;/&nbsp;", $cat_name);
-                
+
                 $sql = "SELECT name FROM ".$cfg["tab"]["lang"]." WHERE idlang = '".$lang."'";
                 $db->query($sql);
                 $db->next_record();
                 $lang_name = $db->f("name");
-                
+
                 $sql = "SELECT name FROM ".$cfg["tab"]["clients"]." WHERE idclient = '".$client."'";
                 $db->query($sql);
                 $db->next_record();
@@ -364,33 +373,33 @@ EOD;
                                         <br><br>
                                     </td>
                                 </tr>
-                                
+
                                 <tr class="text_medium">
                                     <td >'.i18n("Article").':</td>
                                     <td><b>'.$art_name.'</b></td>
                                 </tr>
-                                
+
                                 <tr class="text_medium">
                                     <td >'.i18n("Category").':</td>
                                     <td><b>'.$cat_name.'</b></td>
                                 </tr>
-                                
+
                                 <tr class="text_medium">
                                     <td>'.i18n("Language").':</td>
                                     <td><b>'.$lang_name.'</b></td>
                                 </tr>
-                                
+
                                 <tr class="text_medium">
                                     <td>'.i18n("Client").':</td>
                                     <td><b>'.$client_name.'</b></td>
                                 </tr>
-                                
+
                                 <tr>
                                     <td colspan="2">&nbsp;</td>
                                 </tr>
 
                               </table>';
-                
+
                 $code = '
                         <html>
                             <head>
@@ -399,11 +408,11 @@ EOD;
                             </head>
                             <body style="margin: 10px">'.$notification->returnNotification("error", $noti_html).'</body>
                         </html>';
-                
+
                 $sql = "SELECT * FROM ".$cfg["tab"]["code"]." WHERE idcatart='".$idcatart."' AND idlang='".$lang."'";
-                
+
                 $db->query($sql);
-                
+
                 if ($db->next_record()) {
                     $sql = "UPDATE ".$cfg["tab"]["code"]." SET code='".$code."', idlang='".$lang."', idclient='".$client."' WHERE idcatart='".$idcatart."' AND idlang='".$lang."'";
                     $db->query($sql);
@@ -414,9 +423,9 @@ EOD;
                 }
 
                 echo $code;
-                    
+
             }
-            
+
         }
 
         #
@@ -452,7 +461,7 @@ EOD;
                     number ASC";
 
         $db->query($sql);
-        
+
         while ( $db->next_record() ) {
             $a_d[$db->f("number")] = $db->f("idmod");
         }
@@ -462,10 +471,10 @@ EOD;
         # Get code from Layout
         #
         $sql = "SELECT * FROM ".$cfg["tab"]["lay"]." WHERE idlay = '".$idlay."'";
-        
+
         $db->query($sql);
         $db->next_record();
-        
+
         $code = $db->f("code");
         $code = AddSlashes($code);
 
@@ -475,27 +484,27 @@ EOD;
         if ($idlay) {
 				tplPreparseLayout($idlay);
                 $tmp_returnstring = tplBrowseLayoutForContainers($idlay);
-                
+
                 $a_container = explode("&", $tmp_returnstring);
-                
+
                 foreach ($a_container as $key=>$value) {
 
 					$CiCMS_VALUE = "";
-					
+
                     $sql = "SELECT * FROM ".$cfg["tab"]["mod"]." WHERE idmod='".$a_d[$value]."'";
-                    
+
                     $db->query($sql);
                     $db->next_record();
-                    
+
 					if (is_numeric($a_d[$value]))
 					{
 						$thisModule = '<?php $cCurrentModule = '.((int)$a_d[$value]).'; ?>';
 						$thisContainer = '<?php $cCurrentContainer = '.((int)$value).'; ?>';
 					}
-                    
+
                     $output = $thisModule . $thisContainer . $db->f("output");
                     $output = AddSlashes($output);
-					
+
                     $template = $db->f("template");
 
 					if (array_key_exists($value, $a_c))
@@ -503,11 +512,11 @@ EOD;
 						$a_c[$value] = preg_replace("/(&\$)/","", $a_c[$value]);
 	                    $tmp1 = preg_split("/&/", $a_c[$value]);
 					} else {
-						$tmp1 = array();	
+						$tmp1 = array();
 					}
-                    
+
                     $varstring = array();
-                    
+
                     foreach ($tmp1 as $key1=>$value1) {
                             $tmp2 = explode("=", $value1);
                             foreach ($tmp2 as $key2 => $value2) {
@@ -517,7 +526,7 @@ EOD;
 
                    	$CiCMS_Var = '$C'.$value.'CMS_VALUE';
                     $CiCMS_VALUE = '';
-                    
+
                     foreach ($varstring as $key3=>$value3){
                       $tmp = urldecode($value3);
                       $tmp = str_replace("\'", "'", $tmp);
@@ -525,22 +534,22 @@ EOD;
                       $output = str_replace("\$CMS_VALUE[$key3]", $tmp, $output);
                       $output = str_replace("CMS_VALUE[$key3]", $tmp, $output);
                     }
-                    
+
                     $output = str_replace("CMS_VALUE", $CiCMS_Var, $output);
-                    $output = str_replace("\$".$CiCMS_Var, $CiCMS_Var, $output); 
+                    $output = str_replace("\$".$CiCMS_Var, $CiCMS_Var, $output);
 
                     $output = eregi_replace("(CMS_VALUE\[)([0-9]*)(\])", "", $output);
-                    
+
                     /* Long syntax with closing tag */
                     $code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)>(.*)<\/container>/i", "CMS_CONTAINER[$value]", $code);
-                    
+
                     /* Short syntax */
                     $code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)\/>/i", "CMS_CONTAINER[$value]", $code);
-                    
+
                     $code = str_ireplace("CMS_CONTAINER[$value]", "<?php $CiCMS_VALUE ?>\r\n".$output, $code);
-                    
-                    
-                        
+
+
+
                 }
         }
 
@@ -558,18 +567,18 @@ EOD;
                     A.idartlang = B.idartlang AND
                     B.idart     = '".$idart."' AND
                     B.idlang    = '".$lang."'";
-        
+
         $db->query($sql);
-        
+
         while ( $db->next_record() ) {
             $a_content[$db->f("type")][$db->f("typeid")] = $db->f("value");
         }
 
         $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".$idart."' AND idlang='".$lang."'";
-        
+
         $db->query($sql);
         $db->next_record();
-        
+
         $idartlang = $db->f("idartlang");
 
         #
@@ -588,19 +597,19 @@ EOD;
 
     		$search = array();
     		$replacements = array();
-    
+
 
             foreach ($a_[strtolower($db->f("type"))] as $val)
             {
                 eval ($db->f("code"));
-                
+
                 $search[$val] = $db->f("type") ."[$val]";
                 $replacements[$val] = $tmp;
             }
-            
+
             $code  = str_ireplace($search, $replacements, $code);
 		}
-		
+
 		unset($tmp);
 
         /* output the code */
@@ -612,14 +621,14 @@ EOD;
       	{
 			echo "<textarea>".htmlspecialchars($code)."</textarea>";
       	}
-      
+
         $code = str_ireplace_once("<head>", "<head>\n".'<base href="'.$cfgClient[$client]["path"]["htmlpath"].'">', $code);
-        
+
         chdir($cfgClient[$client]["path"]["frontend"]);
       	eval("?>\n".$code."\n<?php\n");
-      	    	
-      		
-      	
+
+
+
     }
 }
 page_close();

@@ -1,5 +1,19 @@
 <?php
-
+/**
+ * iZoom JavaScript "pipe"
+ *
+ * @version $Revision$
+ * @copyright four for business AG <www.4fb.de>
+ *
+ * @internal {
+ *  modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls
+ *
+ *  $Id$
+ * }
+ */
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Invalid calls');
+}
 include_once ('../includes/startup.php');
 
 include_once ($cfg["path"]["contenido"].$cfg["path"]["includes"] . 'functions.i18n.php');
@@ -42,5 +56,5 @@ function iZoom(path)
     zwin.document.open();
     zwin.document.write(zcon);
     zwin.document.close();
-    
+
 }

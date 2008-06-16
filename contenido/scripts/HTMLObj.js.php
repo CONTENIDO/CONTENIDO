@@ -11,7 +11,17 @@
 * Modified  :   $Date: 2004/02/24 10:12:39 $
 *
 * © four for business AG, www.4fb.de
+*
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
+*
+*   $Id$
+* }
+*
 ******************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
 
 include_once ('../includes/startup.php');
 
@@ -140,18 +150,18 @@ HTMLObj.prototype.setMethods = function(type) {
             /*
             this.obj.onmouseover    = showAction;
             this.obj.onmouseout     = hideAction;
-            
-            
+
+
             */
-            
+
             this.obj.onclick        = doAction;
-            
+
             //Also make corresponding Labels clickable
             this.obj.parentNode.nextSibling.onclick        = doAction;
             this.obj.parentNode.nextSibling.onmouseover    = showAction;
             this.obj.parentNode.nextSibling.onmouseout     = hideAction;
-            
-					
+
+
             break;
 
         case 'select':
@@ -247,14 +257,14 @@ function showAction() {
  */
 function doAction() {
     var str = this.src;
-    
+
     //if Label is clicked, get src from previous image
     if (!str) {
         var str = this.previousSibling.firstChild.src;
     }
-    
+
 		// Set Category Offline
-    if ( str.indexOf('online.gif') != -1 ) 
+    if ( str.indexOf('online.gif') != -1 )
     {
         str  = "";
         str += "main.php?area=con";
@@ -264,17 +274,17 @@ function doAction() {
         str += "&online=" + cfg.isOnline;
         str += "&contenido=" + sid;
 
-        if (cfg.catId != 0 && cfg.hasRight['online'] ) 
+        if (cfg.catId != 0 && cfg.hasRight['online'] )
         {
             cfg.setAction(str);
 
             /* change image source */
-            if ( this.status == "out" ) 
+            if ( this.status == "out" )
             {
                 cfg.objRef[1].over()
                 cfg.isOnline = ( cfg.isOnline == 0 ) ? 1 : 0;
-            } 
-            else 
+            }
+            else
             {
                 cfg.objRef[1].out()
                 cfg.isOnline = ( cfg.isOnline == 0 ) ? 1 : 0;
@@ -282,7 +292,7 @@ function doAction() {
         }
     }
     // Set Category Online
-    else if ( str.indexOf('offline.gif') != -1 ) 
+    else if ( str.indexOf('offline.gif') != -1 )
     {
         str  = "";
         str += "main.php?area=con";
@@ -292,24 +302,24 @@ function doAction() {
         str += "&online=" + cfg.isOnline;
         str += "&contenido=" + sid;
 
-        if (cfg.catId != 0  && cfg.hasRight['online'] ) 
+        if (cfg.catId != 0  && cfg.hasRight['online'] )
         {
             cfg.setAction(str);
 
             /* change image source */
-            if ( this.status == "out" ) 
+            if ( this.status == "out" )
             {
                 cfg.objRef[1].over()
                 cfg.isOnline = ( cfg.isOnline == 0 ) ? 1 : 0;
-            } 
-            else 
+            }
+            else
             {
                 cfg.objRef[1].out()
                 cfg.isOnline = ( cfg.isOnline == 0 ) ? 1 : 0;
             }
         }
     }
-    // 
+    //
     else if ( str.indexOf('folder_delock.gif') != -1 )
     {
         str  = "";
@@ -320,25 +330,25 @@ function doAction() {
         str += "&public=" + cfg.isPublic;
         str += "&contenido=" + sid;
 
-        if (cfg.catId != 0 && cfg.hasRight['public'] ) 
+        if (cfg.catId != 0 && cfg.hasRight['public'] )
         {
             cfg.setAction(str);
 
             /* change image source */
-            if ( this.status == "out" ) 
+            if ( this.status == "out" )
             {
                 cfg.objRef[2].over()
                 cfg.isPublic = ( cfg.isPublic == 0 ) ? 1 : 0;
-            } 
-            else 
+            }
+            else
             {
                 cfg.objRef[2].out()
                 cfg.isPublic = ( cfg.isPublic == 0 ) ? 1 : 0;
             }
         }
     }
-    // Set C 
-    else if ( str.indexOf('folder_lock.gif') != -1 ) 
+    // Set C
+    else if ( str.indexOf('folder_lock.gif') != -1 )
     {
         str  = "";
         str += "main.php?area=con";
@@ -353,12 +363,12 @@ function doAction() {
             cfg.setAction(str);
 
             /* change image source */
-            if ( this.status == "out" ) 
+            if ( this.status == "out" )
             {
                 cfg.objRef[2].over();
                 cfg.isPublic = ( cfg.isPublic == 0 ) ? 1 : 0;
-            } 
-            else 
+            }
+            else
             {
                 cfg.objRef[2].out();
                 cfg.isPublic = ( cfg.isPublic == 0 ) ? 1 : 0;

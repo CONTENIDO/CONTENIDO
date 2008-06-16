@@ -1,5 +1,4 @@
 <?php
-
 /******************************************
 * File      :   include.CMS_HTML.php
 * Project   :   Contenido
@@ -8,10 +7,18 @@
 *
 * Author    :   Jan Lengowski
 * Created   :   07.05.2003
-* Modified  :   07.05.2003
+* Modified  :   $Date$
 *
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: check for illegal calls added
+*
+*   $Id$
+* }
 * © four for business AG
 ******************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
 
 if ( $doedit == "1" || $doedit == "2" )
 {
@@ -43,7 +50,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
     <td>
 <?php
 	getAvailableContentTypes($idartlang);
-	
+
 	echo "      <form method=\"post\" action=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php\">\n";
 	echo "        ".$sess->hidden_session();
 	echo "        <input type=hidden name=lang value=\"$lang\">\n";
@@ -56,19 +63,19 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 	echo "        <input type=hidden name=idcat value=\"$idcat\">\n";
 	echo "        <input type=hidden name=idartlang value=\"$idartlang\">\n";
 	echo "        <input type=hidden name=changeview value=\"edit\">\n";
-	
+
 	echo "        <table cellpadding=\"2\" width=\"100%\" cellspacing=\"0\" border=\"0\">\n";
 	echo "          <tr>\n";
 	echo "            <td valign=\"top\" class=\"text_medium\" nowrap>&nbsp;".$typenr.".&nbsp;".$a_description[$type][$typenr].":&nbsp;</td>\n";
 	echo "          </tr>\n";
 	echo "          <tr>\n";
 	echo "            <td>";
-	
+
 	include ($cfg["path"]["wysiwyg"] . 'editor.php');
-	
+
 	echo "\n            </td>\n";
 	echo "          </tr>\n";
-	
+
 	$tmp_area = "con_editcontent";
 	echo "          <tr valign=\"top\">\n";
 	echo "            <td colspan=\"2\"><br>\n";

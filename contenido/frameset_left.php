@@ -8,10 +8,19 @@
 *               Jan Lengowski
 *
 * Created   :   20.01.2003
-* Modified  :   21.03.2003
+* Modified  :   $Revision$
+*
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: added check for illegal calling
+*
+*   $Id$
+* }
 *
 * © four for business AG, www.4fb.de
 ******************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
 
 include_once ('./includes/startup.php');
 include_once ($cfg["path"]["classes"] . 'class.template.php');

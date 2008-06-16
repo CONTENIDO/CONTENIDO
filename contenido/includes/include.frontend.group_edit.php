@@ -5,10 +5,17 @@
 * Descr     :   Frontend group editor
 * Modified  :   $Date: 2004/01/14 17:30:48 $
 *
-* © four for business AG, www.4fb.de
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: check for illegal calls added
 *
-* $Id: include.frontend.group_edit.php,v 1.2 2004/01/14 17:30:48 timo.hummel Exp $
+*   $Id: include.frontend.group_edit.php,v 1.2 2004/01/14 17:30:48 timo.hummel Exp $
+* }
+* © four for business AG
 ******************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
+
 cInclude("classes", "widgets/class.widgets.page.php");
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.htmlelements.php");
@@ -34,10 +41,10 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
 {
    $fegroup = $fegroups->create(" ".i18n("-- new group --"));
    $idfrontendgroup = $fegroup->get("idfrontendgroup");
-   $sRefreshRightTopLink = $sess->url('main.php?frame=3&area='.$area.'&idfrontendgroup='.$idfrontendgroup); 
+   $sRefreshRightTopLink = $sess->url('main.php?frame=3&area='.$area.'&idfrontendgroup='.$idfrontendgroup);
    $sRefreshRightTopLink = "conMultiLink('right_top', '".$sRefreshRightTopLink."')";
    $sRefreshRightTopLinkJs = "<script type=\"text/javascript\">".$sRefreshRightTopLink."</script>";
-   
+
 } else if ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action)) {
     $aDeleteMembers = array();
     if (!is_array($_POST['user_in_group'])) {
@@ -50,7 +57,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
     foreach ($aDeleteMembers as $idfrontenduser) {
         $groupmembers->remove($idfrontendgroup, $idfrontenduser);
     }
-    
+
     # also save other variables
     $action = "frontendgroup_save_group";
 } else if ($action == "frontendgroup_user_add" && $perm->have_perm_area_action($area, $action)) {
@@ -59,16 +66,16 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
         foreach ($newmember as $add)
         {
             $groupmembers->create($idfrontendgroup, $add);
-        }	
+        }
     }
 
     # also save other variables
-    $action = "frontendgroup_save_group"; 
+    $action = "frontendgroup_save_group";
 } else if ($action == "frontendgroup_delete" && $perm->have_perm_area_action($area, $action))
 {
    $fegroups->delete($idfrontendgroup);
    $idfrontendgroup= 0;
-   $fegroup = new FrontendGroup;   
+   $fegroup = new FrontendGroup;
 }
 
 if ($action != '') {
@@ -91,25 +98,25 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
 	if ($action == "frontendgroup_save_group" && $perm->have_perm_area_action($area, $action))
 	{
 		$messages = array();
-		
+
 		if ($fegroup->get("groupname") != stripslashes($groupname))
 		{
     		$fegroups->select("groupname = '$groupname' and idclient='$client'");
     		if ($fegroups->next())
     		{
-    			$messages[] = i18n("Could not set new group name: Group already exists");	
+    			$messages[] = i18n("Could not set new group name: Group already exists");
     		} else {
     			$fegroup->set("groupname", stripslashes($groupname));
     		}
 		}
-		
+
         //Reset all default groups
         if ($defaultgroup == 1) {
             $sSql = 'UPDATE '.$cfg["tab"]["frontendgroups"].' SET defaultgroup = 0 WHERE idclient='.$client.';';
             $db->query($sSql);
         }
     	$fegroup->set("defaultgroup", $defaultgroup);
-    	
+
 		/* Check out if there are any plugins */
 		if (is_array($cfg['plugins']['frontendgroups']))
 		{
@@ -133,20 +140,20 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
 				}
 			}
 		}
-    	
-    	$fegroup->store();		
+
+    	$fegroup->store();
 	}
-	
+
 	if (count($messages) > 0)
 	{
 		$notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
 	}
-	
+
     $tpl->reset();
 
 	$feusers = new FrontendUserCollection;
 	$feusers->select("idclient='$client'");
-	
+
 	$addedusers = $groupmembers->getUsersInGroup($idfrontendgroup,false, true);
 	$addeduserobjects = $groupmembers->getUsersInGroup($idfrontendgroup,true, true);
 
@@ -157,7 +164,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
 	}
 
 	asort($cells);
-	
+
     $sInGroupOptions = '';
 	foreach ($cells as $idfrontenduser => $name)
 	{
@@ -174,35 +181,35 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
 		if (!in_array($idfrontenduser,$addedusers))
 		{
 			$items[$idfrontenduser] = $sUsername;
-		}	
+		}
 	}
-	
+
 	asort($items);
-    
+
     $sNonGroupOptions = '';
 	foreach ($items as $idfrontenduser => $name)
 	{
         $sNonGroupOptions .= '<option value="'.$idfrontenduser.'">'.$name.'</option>'."\n";
 	}
     $tpl->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
-	
+
 	$groupname = new cHTMLTextbox("groupname", $fegroup->get("groupname"),40);
-	
+
 	$defaultgroup = new cHTMLCheckbox("defaultgroup", "1");
 	$defaultgroup->setChecked($fegroup->get("defaultgroup"));
-	
+
     $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
     $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('d', 'LABEL', i18n("Group name"));
     $tpl->set('d', 'INPUT', $groupname->render());
     $tpl->next();
-    
+
     $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
     $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('d', 'LABEL', i18n("Default group"));
     $tpl->set('d', 'INPUT', $defaultgroup->toHTML(false));
     $tpl->next();
-    
+
 	$pluginOrder = trim_array(explode(",",getSystemProperty("plugin", "frontendgroups-pluginorder")));
 
 	/* Check out if there are any plugins */
@@ -246,7 +253,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
 			}
 		}
 	}
-    
+
     $tpl->set('s', 'CATNAME', i18n("Edit group"));
     $tpl->set('s', 'BGCOLOR',  $cfg["color"]["table_header"]);
     $tpl->set('s', 'BGCOLOR_CONTENT',  $cfg["color"]["table_dark"]);
@@ -270,7 +277,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
 } else {
     $page = new UI_Page;
     $page->setContent("");
-    $page->addScript('reload', $sReloadScript);	
+    $page->addScript('reload', $sReloadScript);
     $page->render();
 }
 ?>

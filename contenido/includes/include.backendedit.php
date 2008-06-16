@@ -1,4 +1,20 @@
 <?php
+/**
+ * Backend Edit Include
+ *
+ * @version $Revision$
+ * @copyright four for business AG <www.4fb.de>
+ *
+ * @internal {
+ *  modified 2008-06-16, H. Librenz - Hotfix: checking for illegal calls
+ *
+ *  $Id$
+ * }
+ */
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
+
 include_once ('../includes/startup.php');
 cInclude ("includes", 'functions.general.php');
 $fullstart = getmicrotime();
@@ -57,7 +73,7 @@ if ( is_numeric($changeclient) ) {
 if ( is_numeric($changelang) ) {
 	unset($area_rights);
 	unset($item_rights);
-	
+
     $lang = $changelang;
 }
 

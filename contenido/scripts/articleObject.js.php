@@ -7,11 +7,22 @@
 *
 * Author    :   Jan Lengowski
 * Created   :   08.05.2003
-* Modified  :   23.06.2003
+* Modified  :   $Date$
 *
+* @author Jan Lengowski
+* @version $Revision$
+* @copyright four for business AG <www.4fb.de>
+*
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
+*
+*   $Id$
+* }
 * © four for business AG
 ******************************************/
-
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Invalid call!');
+}
 
 include_once ('../includes/startup.php');
 include_once ($cfg["path"]["contenido"].$cfg["path"]["includes"] . 'functions.i18n.php');
@@ -36,11 +47,11 @@ $aTabs = array();
 while ($chainEntry = $iterator->next())
 {
 	$aTmpArray = $chainEntry->execute();
-	
+
 	if (is_array($aTmpArray))
 	{
 		echo "//itsame";
-		$aTabs = array_merge($aTabs, $aTmpArray);	
+		$aTabs = array_merge($aTabs, $aTmpArray);
 	}
 }
 ?>
@@ -51,7 +62,7 @@ while ($chainEntry = $iterator->next())
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-function articleObject(actionFrameName, frameNumber) 
+function articleObject(actionFrameName, frameNumber)
 {
     /* Name of the Actionframe.
        Defaults to 'right_bottom' */
@@ -71,7 +82,7 @@ function articleObject(actionFrameName, frameNumber)
     /* Contenido session name -
        defaults to 'contenido' */
     this.sessionName = "contenido"
-    
+
     /* Current page selection (first shown article number) */
     this.next       = 0;
 
@@ -87,29 +98,29 @@ function articleObject(actionFrameName, frameNumber)
     this.idcatlang  = 0;
     this.idcatart   = 0;
 	this.idlang	    = 0;
-    
+
     /* Menu visible / invisible */
     this.vis        = 1;
-    
+
     this.customTabs = new Array();
-    
+
     /* Href of OverviewPage */
     this.hrefOverview = null;
-    
-    <?php 
+
+    <?php
     print("/*DUMP:<pre>"); var_Dump($aTabs ); print("</pre>*/");
-    
+
     foreach ($aTabs as $key => $sTab)
     {
     	echo 'this.customTabs[\''.$sTab.'\'] = new Object();'."\n";
-    	
+
     	$iterator = $_cecRegistry->getIterator("Contenido.Article.GetCustomTabProperties");
 
 		$aTabs = array();
 		while ($chainEntry = $iterator->next())
 		{
 			$aTmpArray = $chainEntry->execute($sTab);
-			
+
 			if (is_array($aTmpArray))
 			{
 				break;
@@ -117,7 +128,7 @@ function articleObject(actionFrameName, frameNumber)
 		}
     	echo 'this.customTabs[\''.$sTab.'\'][\'area\'] = "'.$aTmpArray[0].'";'."\n";
 		echo 'this.customTabs[\''.$sTab.'\'][\'action\'] = "'.$aTmpArray[1].'";'."\n";
-		echo 'this.customTabs[\''.$sTab.'\'][\'custom\'] = "'.$aTmpArray[2].'";'."\n";  
+		echo 'this.customTabs[\''.$sTab.'\'][\'custom\'] = "'.$aTmpArray[2].'";'."\n";
     }
     ?>
 }
@@ -129,8 +140,8 @@ function articleObject(actionFrameName, frameNumber)
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.setGlobalVars = function(sessid, client, lang) 
-{	
+articleObject.prototype.setGlobalVars = function(sessid, client, lang)
+{
     this.sessid = sessid;
     this.client = client;
     this.lang   = lang;
@@ -143,11 +154,11 @@ articleObject.prototype.setGlobalVars = function(sessid, client, lang)
  * @author Timo Trautmann <timo.trautmann@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.setHrefOverview = function(href) 
-{	
+articleObject.prototype.setHrefOverview = function(href)
+{
     /*copy url - cut all actions*/
     if (href.match(/backend_search.php$/g)) {
-        
+
         this.hrefOverview = 'javascript:top.content.left.left_top.document.getElementById(\'backend_search\').submit.click();';
     } else if (href.match(/backend_search/g) || href.match(/area=con_workflow/g)) {
         this.hrefOverview = href.replace(/action=([^&]*)&?/g, '');
@@ -163,13 +174,13 @@ articleObject.prototype.setHrefOverview = function(href)
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.reset = function() 
+articleObject.prototype.reset = function()
 {
     this.idart      = 0;
     this.idartlang  = 0;
     this.idcatlang  = 0;
     this.idcatart   = 0;
-	this.idlang     = 0;    
+	this.idlang     = 0;
 }
 
 /**
@@ -179,12 +190,12 @@ articleObject.prototype.reset = function()
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.sessUrl = function(str) 
+articleObject.prototype.sessUrl = function(str)
 {
     var tmp_str = str;
     tmp_str += '&frame=' + this.frame;
     tmp_str += '&'+this.sessionName+'='+this.sessid;
-    return tmp_str;    
+    return tmp_str;
 }
 
 /**
@@ -194,12 +205,12 @@ articleObject.prototype.sessUrl = function(str)
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.doAction = function(str) 
+articleObject.prototype.doAction = function(str)
 {
 
     /* Flag if action will be executed. */
     var doAction = false;
-    
+
     /* create messageBox instance */
     var box = new messageBox("", "", "", 0, 0);
 
@@ -209,7 +220,7 @@ articleObject.prototype.doAction = function(str)
     /* Default error string */
     var err_str = "<?php echo i18n("Error"); ?>";
 
-    switch (str) 
+    switch (str)
     {
         /* Article overview mask */
         case 'con':
@@ -235,7 +246,7 @@ articleObject.prototype.doAction = function(str)
 			{
 				err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
-                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0")) 
+                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0"))
                 {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
@@ -251,7 +262,7 @@ articleObject.prototype.doAction = function(str)
                        data to display the Article-
                        properties mask */
                     err_str = "<?php echo i18n("Article can't be displayed")."<br>".i18n("No article was selected"); ?>";
-    
+
                     if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
                         menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
@@ -282,7 +293,7 @@ articleObject.prototype.doAction = function(str)
                        data to display the Template-
                        configuration mask */
                     err_str = "<?php echo i18n("Template configuration can't be displayed")."<br>".i18n("No article was selected"); ?>";
-                    
+
     				if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
                         menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
@@ -312,7 +323,7 @@ articleObject.prototype.doAction = function(str)
                        we do not have the neccessary
                        data to display the Editor */
                     err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("No article was selected"); ?>";
-    
+
                     if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
                         menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
@@ -339,7 +350,7 @@ articleObject.prototype.doAction = function(str)
                 err_str = "<?php echo i18n("Preview can't be displayed")."<br>".i18n("No article was selected"); ?>";
             }
             break;
-            
+
 		default:
 			if (this.customTabs[str])
 			{
@@ -355,7 +366,7 @@ articleObject.prototype.doAction = function(str)
 	                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
 	                    parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
 	                }
-	                err_str = "<?php echo i18n("Tab can't be displayed")."<br>".i18n("No article was selected"); ?>";				
+	                err_str = "<?php echo i18n("Tab can't be displayed")."<br>".i18n("No article was selected"); ?>";
 				}
 			}
 			break;
@@ -365,9 +376,9 @@ articleObject.prototype.doAction = function(str)
         this.actionFrame.location.href = url_str;
         return true;
     } else {
-        box.notify(headline, err_str);        
+        box.notify(headline, err_str);
     }
-    
+
     return false;
 }
 
@@ -378,7 +389,7 @@ articleObject.prototype.doAction = function(str)
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  */
-articleObject.prototype.setProperties = function() 
+articleObject.prototype.setProperties = function()
 {
     this.idart      = arguments[0];
     this.idartlang  = arguments[1];
@@ -394,7 +405,7 @@ articleObject.prototype.setProperties = function()
  * @param none
  * @return void
  */
-articleObject.prototype.disable = function() 
+articleObject.prototype.disable = function()
 {
     var oRef = [];
 
@@ -405,9 +416,9 @@ articleObject.prototype.disable = function()
     oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_4" );
     oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_5" );
 
-    if (this.vis == 1) 
+    if (this.vis == 1)
     {
-        for (i=1; i<oRef.length; i++) 
+        for (i=1; i<oRef.length; i++)
         {
             links = oRef[i].getElementsByTagName("a");
             links[0].style.visibility = "hidden";
@@ -429,7 +440,7 @@ articleObject.prototype.disable = function()
  * @param none
  * @return void
  */
-articleObject.prototype.enable = function() 
+articleObject.prototype.enable = function()
 {
     var oRef = [];
 
@@ -440,9 +451,9 @@ articleObject.prototype.enable = function()
     oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_4" );
 	oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_5" );
 
-    if ( this.vis == 0 ) 
+    if ( this.vis == 0 )
     {
-        for (i=0; i<oRef.length; i++) 
+        for (i=0; i<oRef.length; i++)
         {
             links = oRef[i].getElementsByTagName("a");
             links[0].style.visibility = "visible";

@@ -1,15 +1,23 @@
 <?php
 /******************************************
-* File      :   include.logs.php
+* File      :   includeinclude.logs.php
 * Project   :   Contenido
 * Descr     :   Displays log entries
 *
 * Author    :   Timo A. Hummel
 * Created   :   09.05.2003
-* Modified  :   09.05.2003
+* Modified  :   $Date$
+*
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls
+* }
 *
 * © four for business AG
 *****************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
+
 cInclude("classes", "class.htmlelements.php");
 include_once ($cfg["path"]["contenido"] . $cfg["path"]["classes"] . "class.user.php");
 include_once ($cfg["path"]["contenido"] . $cfg["path"]["classes"] . "class.action.php");
@@ -48,31 +56,31 @@ if(!$perm->have_perm_area_action($area))
     $structureclass = new Structure();
     $artclass = new Art();
     $actionclass = new Action();
-    
-    $clients = $clientclass->getAccessibleClients(); 
+
+    $clients = $clientclass->getAccessibleClients();
     $users = $userclass->getAccessibleUsers(split(',',$auth->auth["perm"]));
     $userselect = "<option value=\"%\">".i18n("All users")."</option>";
     $actions = $actionclass->getAvailableActions();
     $actionselect = "<option value=\"%\">".i18n("All actions")."</option>";
    	$clientList = $clientclass->getAccessibleClients();
-   	
+
    	foreach ($clientList as $key=>$value) {
         if (strcmp($idqclient,$key) == 0) {
             $selected = "SELECTED";
         } else {
             $selected = "";
         }
-        
+
         $clientselect .= "<option value=\"".$key."\" ".$selected.">".$value["name"]."</option>";
     }
-   	
+
     foreach ($users as $key=>$value) {
         if (strcmp($idquser,$key) == 0) {
             $selected = "SELECTED";
         } else {
             $selected = "";
         }
-        
+
         $userselect .= "<option value=\"".$key."\" ".$selected.">".$value["username"]." (".$value["realname"].")</option>";
     }
 
@@ -90,89 +98,89 @@ if(!$perm->have_perm_area_action($area))
         {
             $actionDescription = $value["name"];
         }
-        
+
         $actionselect .= "<option value=\"".$key."\" ".$selected.">".$value["name"]." (".$actionDescription.")"."</option>";
     }
-  
+
 	$days = array();
-	
+
 	for ($i = 1; $i < 32; $i ++)
 	{
-		$days[$i] = $i;	
+		$days[$i] = $i;
 	}
-	
+
 	$months = array();
-	
+
 	for ($i = 1; $i < 13; $i++)
 	{
-		$months[$i] = $i;	
+		$months[$i] = $i;
 	}
-	
+
 	$years = array();
 	for ($i = 2000; $i < 2020; $i++)
 	{
-		$years[$i] = $i;	
+		$years[$i] = $i;
 	}
-	
+
 	$fromday = new cHTMLSelectElement("fromday");
 	$fromday->autoFill($days);
-	
+
 	if ($_REQUEST["fromday"] > 0)
 	{
 		$fromday->setDefault($_REQUEST["fromday"]);
 	} else {
-		$fromday->setDefault(date("j"));	
+		$fromday->setDefault(date("j"));
 	}
 	$today = new cHTMLSelectElement("today");
 	$today->autoFill($days);
-	
+
 	if ($_REQUEST["today"] > 0)
 	{
 		$today->setDefault($_REQUEST["today"]);
 	} else {
-		$today->setDefault(date("j"));	
+		$today->setDefault(date("j"));
 	}
-	
+
 	$frommonth = new cHTMLSelectElement("frommonth");
 	$frommonth->autoFill($months);
-	
+
 	if ($_REQUEST["frommonth"] > 0)
 	{
 		$frommonth->setDefault($_REQUEST["frommonth"]);
 	} else {
-		$frommonth->setDefault(date("n"));	
-	}	
-	
+		$frommonth->setDefault(date("n"));
+	}
+
 	$tomonth = new cHTMLSelectElement("tomonth");
 	$tomonth->autoFill($months);
-	
+
 	if ($_REQUEST["tomonth"] > 0)
 	{
 		$tomonth->setDefault($_REQUEST["tomonth"]);
 	} else {
-		$tomonth->setDefault(date("n"));	
+		$tomonth->setDefault(date("n"));
 	}
 
 	$fromyear = new cHTMLSelectElement("fromyear");
 	$fromyear->autoFill($years);
-	
+
 	if ($_REQUEST["fromyear"] > 0)
 	{
 		$fromyear->setDefault($_REQUEST["fromyear"]);
 	} else {
-		$fromyear->setDefault(date("Y"));	
+		$fromyear->setDefault(date("Y"));
 	}
-	
+
 	$toyear = new cHTMLSelectElement("toyear");
 	$toyear->autoFill($years);
-	
+
 	if ($_REQUEST["toyear"] > 0)
 	{
 		$toyear->setDefault($_REQUEST["toyear"]);
 	} else {
-		$toyear->setDefault(date("Y"));	
-	}	
-	
+		$toyear->setDefault(date("Y"));
+	}
+
 	$entries = array();
 	$entries[0] = i18n("Unlimited");
 	$entries[10] = "10 ". i18n("Entries");
@@ -180,17 +188,17 @@ if(!$perm->have_perm_area_action($area))
 	$entries[30] = "30 ". i18n("Entries");
 	$entries[50] = "50 ". i18n("Entries");
 	$entries[100] = "100 ". i18n("Entries");
-	
+
 	$olimit = new cHTMLSelectElement("limit");
 	$olimit->autoFill($entries);
-	
+
 	if (isset($_REQUEST["limit"]))
 	{
 		$olimit->setDefault($_REQUEST["limit"]);
 	} else {
-		$olimit->setDefault(10);	
-	}	
-            
+		$olimit->setDefault(10);
+	}
+
     $tpl->set('s', 'USERS', $userselect);
     $tpl->set('s', 'CLIENTS', $clientselect);
     $tpl->set('s', 'ACTION', $actionselect);
@@ -215,22 +223,22 @@ if(!$perm->have_perm_area_action($area))
 	if ($idquser == "%")
 	{
 		$users = $userclass->getAccessibleUsers(split(',',$auth->auth["perm"]));
-		
+
 		foreach ($users as $key=>$value) {
 			$userarray[] = $key;
 		}
-      
+
       	$uservalues = implode('", "',$userarray);
 		$userquery = 'IN ("'.$uservalues.'")';
 	} else {
 		$userquery = "LIKE '".$idquser."'";
 	}
-	
+
      $sql = 'SELECT
                 idlog,
                 user_id,
                 idaction,
-		      idlang,      
+		      idlang,
 		      idclient,
                 idcatart,
                 logtimestamp
@@ -251,13 +259,13 @@ if(!$perm->have_perm_area_action($area))
     {
         $noresults = '<tr class="text_medium" style="background-color: '.$bgcolor.';" >'.
                      '<td valign="top" colspan="6" style="border: 0px; border-top:1px; border-right:1px;border-color: '.$cfg["color"]["table_border"].'; border-style: solid;">'.i18n("No results").'</td></tr>';
-        
+
     } else {
         $noresults = "";
     }
 
         $tpl->set('s', 'NORESULTS', $noresults);
-        
+
 
     while ($db->next_record())
     {
@@ -270,10 +278,10 @@ if(!$perm->have_perm_area_action($area))
         } else {
             $bgcolor = $cfg["color"]["table_light"];
         }
-        
+
 		$structureName = $structureclass->getStructureName($structureclass->getStructureIDForCatArt($db->f("idcatart")),$db->f("idlang"));
 		$artName = $artclass->getArtName($artclass->getArtIDForCatArt($db->f("idcatart")),$db->f("idlang"));
- 
+
         if ($structureName == "") { $structureName = "-"; }
         if ($artName == "") { $artName = "-"; }
 
@@ -292,11 +300,11 @@ if(!$perm->have_perm_area_action($area))
         $tpl->set('d', 'RSTR', $structureName);
         $tpl->set('d', 'RPAGE', $artName);
 
-        $tpl->next(); 
-        
+        $tpl->next();
+
     }
 
-    
+
     # Generate template
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['log_main']);
 }

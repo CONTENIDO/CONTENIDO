@@ -7,10 +7,20 @@
 *
 * Author    :   Jan Lengowski
 * Created   :   08.05.2003
-* Modified  :   08.05.2003
+* Modified  :   $Date$
 *
-* © four for business AG
+* @version $Revision$
+* @copyright four for business AG <www.4fb.de>
+*
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
+*
+*   $Id$
+* }
 ******************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
 
 include_once ('../includes/startup.php');
 include_once ($cfg["path"]["contenido"].$cfg["path"]["includes"] . 'functions.i18n.php');
@@ -107,7 +117,7 @@ var bMsie = (document.all) ? true : false;
  * @param htmlTemplate
  *
  *
- 
+
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  * @version 0.9
@@ -143,7 +153,7 @@ function messageBox(headline, message, htmlTemplate, width, height) {
     /* Reference to the pop-up
        window. */
     this.winRef = false;
-    
+
     this.actionFrameName = window.name;
 }
 
@@ -179,7 +189,7 @@ messageBox.prototype.notify = function(head, msg) {
     displayFrame = null;
 
     if (top.content.frames["right"]) {
-        displayFrame = top.content.frames["right"].frames["right_bottom"];  
+        displayFrame = top.content.frames["right"].frames["right_bottom"];
     } else if (top.content.frames["right_bottom"]) {
         displayFrame = top.content.frames["right_bottom"];
     }
@@ -189,7 +199,7 @@ messageBox.prototype.notify = function(head, msg) {
     if (bMsie) {
         iFrameHeigth = displayFrame.document.body.clientWidth-250;
     }
-    
+
     var iPosLeft = parseInt((iFrameWidth-this.width)/2);
     var iPosTop = parseInt(((iFrameHeigth-this.height)/4)+displayFrame.document.body.scrollTop);
 
@@ -202,15 +212,15 @@ messageBox.prototype.notify = function(head, msg) {
     box.style.zIndex = '1000000';
     box.id = 'message_box';
     box.innerHTML = template;
-    
+
     var oScript = displayFrame.document.createElement("script");
     oScript.type = "text/javascript";
     oScript.text = script;
-    
+
     if (typeof(displayFrame.window.msgCancel) == 'function') {
         displayFrame.window.msgCancel();
     }
-    
+
     displayFrame.window.document.body.appendChild(oScript);
     displayFrame.window.document.body.appendChild(box);
 
@@ -248,7 +258,7 @@ messageBox.prototype.confirm = function(head, msg, callback) {
     var script      = this.script;
     var msg         = msg || this.message;
     var head        = head || this.headline;
-    
+
     /* X and Y position where the
        pop-up is centered */
     var x = parseInt( (screen.availWidth / 2) - (this.width / 2) );
@@ -289,9 +299,9 @@ messageBox.prototype.confirm = function(head, msg, callback) {
     template = template.replace(/{HEIGHT}/,     this.height);
 
     displayFrame = null;
-    
+
     if (top.content.right) {
-        displayFrame = top.content.right.right_bottom;  
+        displayFrame = top.content.right.right_bottom;
     } else if (top.content.right_bottom) {
         displayFrame = top.content.right_bottom;
     }
@@ -300,7 +310,7 @@ messageBox.prototype.confirm = function(head, msg, callback) {
     if (bMsie) {
         iFrameHeigth = displayFrame.document.body.clientWidth-250;
     }
-    
+
     var iPosLeft = parseInt((iFrameWidth-this.width)/2);
     var iPosTop = parseInt(((iFrameHeigth-this.height)/4)+displayFrame.document.body.scrollTop);
 
@@ -313,11 +323,11 @@ messageBox.prototype.confirm = function(head, msg, callback) {
     box.style.zIndex = '1000000';
     box.id = 'message_box';
     box.innerHTML = template;
-    
+
     var oScript = displayFrame.document.createElement("script");
     oScript.type = "text/javascript";
     oScript.text = script;
-    
+
     if (typeof(displayFrame.window.msgCancel) == 'function') {
         displayFrame.window.msgCancel();
     }
@@ -325,16 +335,16 @@ messageBox.prototype.confirm = function(head, msg, callback) {
     displayFrame.document.body.appendChild(oScript);
     displayFrame.document.body.appendChild(box);
 
-    
+
     /* Open a new pop-up window */
     // this.winRef = window.open("", "", "left="+x+",top="+y+",width="+this.width+",height="+this.height+"\"");
     //this.winRef.moveTo(x, y);
-		
+
     /* Write template */
     //this.winRef.document.open();
     //this.winRef.document.write(template);
     //this.winRef.document.close();
-    
+
     /* Focus the pop-up */
     //this.winRef.focus();
 }
@@ -350,7 +360,7 @@ function performAction (area, action, frame, itemtype, itemid, sid)
     url += '&frame='+frame;
     url += '&' + itemtype + '=' + itemid;
     url += '&contenido=' + sid;
-    
+
 	if (frame == 1)
     {
 		parent.parent.left.left_top.location.href = url;
@@ -362,7 +372,7 @@ function performAction (area, action, frame, itemtype, itemid, sid)
 	if (frame == 3)
     {
 		parent.parent.right.right_top.location.href = url;
-    }    
+    }
 	if (frame == 4)
     {
 		parent.parent.right.right_bottom.location.href = url;

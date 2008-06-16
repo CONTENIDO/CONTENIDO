@@ -9,10 +9,22 @@
 *               Jan Lengowski
 *
 * Created   :   20.01.2003
-* Modified  :   23.01.2003
+* Modified  :   $Date$
 *
+* @version $Revision$
+* @copyright four for business AG <www.4fb.de>
+*
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
+*
+*   $Id$
+* }
 * © four for business AG, www.4fb.de
 ******************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Invalid call');
+}
+
 include_once ('./includes/startup.php');
 
 cInclude ("includes", 'functions.i18n.php');
@@ -34,7 +46,7 @@ i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
 /**
  * Bugfix
  * @see http://contenido.org/forum/viewtopic.php?t=18291
- * 
+ *
  * added by H. Librenz (2007-12-07)
  */
 //includePluginConf();
@@ -50,8 +62,8 @@ $db  = new DB_Contenido;
 $tpl = new Template;
 
 // Sprache wechseln
-if (isset($changelang) && is_numeric($changelang)) 
-{ 
+if (isset($changelang) && is_numeric($changelang))
+{
     $lang = $changelang;
 }
 
@@ -62,15 +74,15 @@ if (isset($changeclient) && is_numeric($changeclient))
      unset($lang);
 }
 
-// Preselect client, if definied 
-if (!$sess->is_registered("client")) { // only check at first login into backend 
-    $iTmpClient = getEffectiveSetting ("backend", "preferred_idclient", false); 
+// Preselect client, if definied
+if (!$sess->is_registered("client")) { // only check at first login into backend
+    $iTmpClient = getEffectiveSetting ("backend", "preferred_idclient", false);
 
-    if ($iTmpClient && ($perm->have_perm_client("admin[".$iTmpClient."]") || $perm->have_perm_client("client[".$iTmpClient."]"))) { 
-      $client = $iTmpClient; 
-      unset($lang); 
-    } 
-    unset($iTmpClient); 
+    if ($iTmpClient && ($perm->have_perm_client("admin[".$iTmpClient."]") || $perm->have_perm_client("client[".$iTmpClient."]"))) {
+      $client = $iTmpClient;
+      unset($lang);
+    }
+    unset($iTmpClient);
 }
 
 if (!is_numeric($client) || $client == "") {
@@ -82,7 +94,7 @@ if (!is_numeric($client) || $client == "") {
 } else {
     $sess->register("client");
 }
-    
+
 if (!is_numeric($lang) || $lang == "") {
     $sess->register("lang");
     // search for the first language of this client
@@ -93,7 +105,7 @@ if (!is_numeric($lang) || $lang == "") {
 
 	if (!$perm->have_perm_client_lang($client, $lang)) {
 		$lang = '';
-		
+
 		while ($db->next_record() && ($lang == '')) {
 			if ($perm->have_perm_client_lang($client, $db->f('idlang'))) {
 				$lang = $db->f("idlang");

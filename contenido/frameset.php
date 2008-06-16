@@ -8,10 +8,18 @@
 *               Jan Lengowski
 *
 * Created   :   20.01.2003
-* Modified  :   21.03.2003
+* Modified  :   $Revision$
 *
+* @internal {
+*   modified 2008-06-16, H. Librenz - Hotfix: added check for illegal calling
+*
+*   $Id$
+* }
 * © four for business AG, www.4fb.de
 ******************************************/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
 
 include_once ('./includes/startup.php');
 include_once ($cfg["path"]["classes"] . 'class.template.php');
@@ -62,7 +70,7 @@ foreach ($aMetadata as $aFieldDescriptor)
 {
 	if ($aFieldDescriptor["name"] == "menuless")
 	{
-		$bFound = true;	
+		$bFound = true;
 		break;
 	}
 }
@@ -74,7 +82,7 @@ if ($bFound == true)
 	/* Yes, a menuless column does exist */
 	$sql = "SELECT name FROM ".$cfg["tab"]["area"]." WHERE menuless='1'";
 	$db->query($sql);
-	
+
 	while ($db->next_record())
 	{
 	    $menuless_areas[] = $db->f("name");
@@ -98,7 +106,7 @@ if ( in_array($area, $menuless_areas) || (isset($menuless) && $menuless == 1)) {
 	  $tpl->set('s', 'FRAME[1]', $sess->url("main.php?area=$area&frame=1"));
 		$tpl->set('s', 'FRAME[2]', $sess->url("main.php?area=$area&frame=2"));
 		$tpl->set('s', 'FRAME[3]', $sess->url("main.php?area=$area&frame=3"));
-		$tpl->set('s', 'FRAME[4]', $sess->url("main.php?area=$area&frame=4"));		
+		$tpl->set('s', 'FRAME[4]', $sess->url("main.php?area=$area&frame=4"));
 	}
 }
 $tpl->set('s', 'CONTENIDOPATH', $cfg["path"]["contenido_fullhtml"]."favicon.ico");

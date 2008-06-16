@@ -10,32 +10,36 @@ Release 4.8.5
 ----------------------------------------------------------------------
 ** Bug
     * [CON-147] - Recipients import didn't import plugin data
+    * [CON-152] - Security fixes in cronjobs
+    * contenido/tools files cleaned - this files are deprecated cause
+        this kind of scripts are evil in productive environments
+    * [CON-150] - Security fixes
 
 Release 4.8.4
 ----------------------------------------------------------------------
 ** Bug
-    * [CON-127] - release.php/release.xml aktualisieren - manuelle 
-                  Änderungen in setup/data/base ungünstig - 
-                  conAlloc-Primary Key-Definition - Plugins 
+    * [CON-127] - release.php/release.xml aktualisieren - manuelle
+                  Änderungen in setup/data/base ungünstig -
+                  conAlloc-Primary Key-Definition - Plugins
                   berücksichtigen
-    * [CON-128] - Idlang for new languages skips ids example: 4 6 8 10 
+    * [CON-128] - Idlang for new languages skips ids example: 4 6 8 10
                   for new language ids
     * [CON-129] - todo mails were not send to user
-    * [CON-131] - InUse Notification in Article edit does not appear, 
+    * [CON-131] - InUse Notification in Article edit does not appear,
                   if <body> tag of client has attributes
     * [CON-133] - Logo for clients crashes back end
-    * [CON-135] - Dateiverwaltung: It is not possible to come back to 
+    * [CON-135] - Dateiverwaltung: It is not possible to come back to
                   root directory
     * [CON-136] - Eingabe von Templatenamen länger 30 Zeichen unmöglich
     * [CON-137] - Klasse UI_Table_Form setzt Template-Variablen nicht.
     * [CON-138] - Artikelsperrung wird aufgehoben durch Linkwahldialog
 
 ** Improvement
-    * [CON-132] - Avoid double definiton of metatags, if meta tag is 
+    * [CON-132] - Avoid double definiton of metatags, if meta tag is
                   already defined in layout
-    * [CON-134] - Unterschiedliches Verhalten von "Administration -> 
-                  Benutzer -> Bereiche" und "Administration -> 
-                  Gruppen -> Bereiche", wenn keine Übersetzungen der 
+    * [CON-134] - Unterschiedliches Verhalten von "Administration ->
+                  Benutzer -> Bereiche" und "Administration ->
+                  Gruppen -> Bereiche", wenn keine Übersetzungen der
                   Actions vorhanden sind
 
 ** New feature
@@ -43,7 +47,7 @@ Release 4.8.4
 
 ** Task
     * [CON-130] - Redesign of edit_area
-    * Plugin Linkchecker 
+    * Plugin Linkchecker
         - Table !PREFIX!_pi_externlinks removed
         - Results were stored for 14 days
         - Possibility to refresh result (refresh button)
@@ -52,7 +56,7 @@ Release 4.8.4
 Release 4.8.3
 ----------------------------------------------------------------------
 ** Bug
-    * [CON-58]  - Suchfunktion (&DB?) scheitert bei bestimmten 
+    * [CON-58]  - Suchfunktion (&DB?) scheitert bei bestimmten
                   Sonderzeichen
     * [CON-94]  - Newsfeed und Teaser rechts gehen nicht
     * [CON-105] - Interaction Contenido & Workflow PlugIn
@@ -60,26 +64,26 @@ Release 4.8.3
     * [CON-107] - Error Message on XAMP
     * [CON-108] - SQL Bug in Plugin Workflow
     * [CON-110] - Content Allocation: Translation logic changed/Bugfix
-    * [CON-111] - Artikel wird bei setzen eines Endzeitpunkts und ohne 
+    * [CON-111] - Artikel wird bei setzen eines Endzeitpunkts und ohne
                   Angabe des Startzeitpunkts immer offline gesetzt wird
     * [CON-112] - sicherheitslücken
     * [CON-116] - File functions.general.php has UTF-8 Encoding
-    * [CON-118] - Many modules / plugins working with PEAR::CACHE 
+    * [CON-118] - Many modules / plugins working with PEAR::CACHE
                   references the wrong location
     * [CON-120] - Diverse Darstellungsprobleme unter Administration ->
                   Mandanten
-    * [CON-121] - Fehlermeldung unter "Administration -> System" bei 
+    * [CON-121] - Fehlermeldung unter "Administration -> System" bei
                   bestimmten GD-Konfigurationen
-    * [CON-122] - Fehlende globale Variablen in strRenameCategory() 
-                  (functions.str.php) $cfgClient und $client nicht 
+    * [CON-122] - Fehlende globale Variablen in strRenameCategory()
+                  (functions.str.php) $cfgClient und $client nicht
                   global definiert
-    * [CON-123] - Fehlende Überprüfung ob $tpl instanziiert ist in 
+    * [CON-123] - Fehlende Überprüfung ob $tpl instanziiert ist in
                   Modulen
-    * [CON-124] - Contenido adds double slashes to client paths when 
+    * [CON-124] - Contenido adds double slashes to client paths when
                   a new client is created
-    * [CON-125] - Wrong path to non existing spacer.gif in 
+    * [CON-125] - Wrong path to non existing spacer.gif in
                   class.widgets.treeview.php
-    * [CON-126] - !$public in functions.con.php conMakePublic() 
+    * [CON-126] - !$public in functions.con.php conMakePublic()
                   causes some problems.
 
 ** Improvement
@@ -98,28 +102,28 @@ Release 4.8.2
     * [CON-90]  - Update auf leere DB
     * [CON-91]  - Fehler im Dateimanager bei Install ohne Mandant
     * [CON-93]  - Frontenduser im Mustermandanten fehlt
-    * [CON-96]  - Installation Error: MySQL-Error 1292 - Fehlende 
-                  Standardwerte in INSERT STATEMENTS fŸr sysadmin und 
+    * [CON-96]  - Installation Error: MySQL-Error 1292 - Fehlende
+                  Standardwerte in INSERT STATEMENTS fŸr sysadmin und
                   admin
     * [CON-97]  - Markieren des Modulcodes nicht mšglich in IE7
     * [CON-98]  - short_open_tag direktive
     * [CON-101] - Beispielmandant login
-    
+
 ** Improvement
     * [CON-54]  - Integration of tinyMCE V3.0.6.1
     * [CON-95]  - Usability "neuer Mandant" - "keine Sprache angelegt"
-    
+
 ** Task
     * [CON-83]  - Titel bei Startseite Setup
 
 
 Release 4.8.1
-----------------------------------------------------------------------    
+----------------------------------------------------------------------
 ** Bug
-    * [CON-77] - Reiter in der Dateiverwaltung wechselt nach Upload 
+    * [CON-77] - Reiter in der Dateiverwaltung wechselt nach Upload
                  nicht in Übersichtsseite
     * [CON-78] - strip_tags() im Modul "Suchausgabe"
-    
+
 ** Improvement
     * [CON-79] - anmerkungen zum release
 
@@ -127,20 +131,20 @@ Release 4.8.1
 4.8
 ----------------------------------------------------------------------
 - Bug in Backendsearch bei eingeschränkten Berechtigungen entfernt
-- Bug in functions con - Überflüssiges SQL Statement entfernt und 
+- Bug in functions con - Überflüssiges SQL Statement entfernt und
   Kommentierung angepasst
 - Vereinheitlichung der Contenidohinweisboxen und Einführung dreier
   globaler Farben für Hinweis, Error und Information/Erfolg
 - Fehler in perm.inc behoben:
   Siehe http://contenido.org/forum/viewtopic.php?t=16227
-- Platzhalter für Templateselectboxen damit diese in CSS-Layouts 
+- Platzhalter für Templateselectboxen damit diese in CSS-Layouts
   weniger überlagert sind. Kürzung von langen Templatenamen
 - Contenido FrontendNavigation-Klassen überarbeitet
-- Diverse Fixes an der Seitennavigation des Backends in allen 
+- Diverse Fixes an der Seitennavigation des Backends in allen
   Seitennavigationen. Refresh mit JavaScript
 - "Warning: Call-time pass-by-reference has been deprecated;" in
   Modul Suchausgabe fixxed
-- Setup: Integration eines Layers der Details über optional zu 
+- Setup: Integration eines Layers der Details über optional zu
   installierende Plugins beinhaltet.
 - Modulfilter, Angabe von Bereich in dem Gesucht werden soll
   (Kommentar, Input, Output, Name)
@@ -158,17 +162,17 @@ Release 4.8.1
 - Rechtezuweisung in Content nun durch Typisierung und Auswahl
   übersichtlicher, Rechteübersetzungen, Anpassungen, Fixing,
   Darstellungsbugs
-- Administration -> Frontend: Überarbeitetes Interface zur Zuweisung 
+- Administration -> Frontend: Überarbeitetes Interface zur Zuweisung
   von Benutzern zu Gruppen
-- Tabellenpraefixe wurden den Plugintabellen hinzugefügt. Bitte bei 
-  einer Aktualisierung diese Praefixe manuell nachtragen oder neu 
-  installieren. Das Setup wurde angepasst, Update an dieser Stelle 
+- Tabellenpraefixe wurden den Plugintabellen hinzugefügt. Bitte bei
+  einer Aktualisierung diese Praefixe manuell nachtragen oder neu
+  installieren. Das Setup wurde angepasst, Update an dieser Stelle
   nicht möglich.
-- Auf der Login Seite können sich Benutzer des Systems ihr Passwort 
+- Auf der Login Seite können sich Benutzer des Systems ihr Passwort
   zusenden lassen.
-- Bei der Sprachsynchronisation ist es jetzt möglich, neben einzelnen 
-  Kategorien, auch alle Unterkateggorien mit zu kopieren. 
-  
+- Bei der Sprachsynchronisation ist es jetzt möglich, neben einzelnen
+  Kategorien, auch alle Unterkateggorien mit zu kopieren.
+
 4.6.23
 ----------------------------------------------------------------------
 - Bugfix fŸr Session Container 'file'
@@ -187,12 +191,12 @@ Release 4.8.1
   - Tests unter base_dir-Restriktionen
   - Konzept: Restart: Sind 5 Minuten zuviel und/oder sollte die
     Zeit über Systemeinstellungen festgelegt werden können?
-  - Konzept: Senden: Sollte man einen Abbruch erzwingen können 
+  - Konzept: Senden: Sollte man einen Abbruch erzwingen können
     (nach dem aktuellen Block)?
   - Konzept für Restart: Soll man manuell einen Neustart auch
     unabhängig der 5 Minuten anstoßen können?
-    
-- Newsletter: Zur Verwendung von Ankern kann das base-Tag beim 
+
+- Newsletter: Zur Verwendung von Ankern kann das base-Tag beim
   Senden aus dem Newsletter-Artikel entfernt werden (siehe techref)
 - Newsletter: Ausgabe der Newsletter und Jobs optimiert (kein Array)
 - Newsletter: Empfänger-Gruppen-Bereich überarbeitet
@@ -200,19 +204,19 @@ Release 4.8.1
 - Newsletter: Wird ein Newsletter gelöscht, wird auch der HTML-
   Nachrichten-Artikel gelöscht (jedoch aus Performance-Gründen nicht
   über die Klasse, sondern in includes.newsletter_edit.php)
-- Newsletter: Wurde der HTML-Nachricht-Artikel gelöscht (ups), 
+- Newsletter: Wurde der HTML-Nachricht-Artikel gelöscht (ups),
   erscheint ein entsprechender Hinweis und die Artikel-ID im
   Newsletter-Objekt auf 0 gesetzt.
 - Newsletter: Wurde der Template-Artikel gelöscht (ups) und der HTML-
-  Nachricht-Artikel existiert noch, wird aus diesem wieder ein Template 
+  Nachricht-Artikel existiert noch, wird aus diesem wieder ein Template
   erzeugt.
 - Übersetzung aktualisiert
 - Newsletter-Empfänger: Import möglich
-- Newsletter: "Hängende" Jobs (d.h. Jobs, die seit 10 Minuten 
-  "gesendet" werden), werden automatisch neu gestartet (cronjob) oder 
+- Newsletter: "Hängende" Jobs (d.h. Jobs, die seit 10 Minuten
+  "gesendet" werden), werden automatisch neu gestartet (cronjob) oder
   können manuell wieder angestoßen werden (ohne cronjob).
 - Newsletter: Einstellungen werden sprachabhängig gespeichert
-  (HTML-Templates, -Artikel, Gruppen sowie weitere Einstellungen 
+  (HTML-Templates, -Artikel, Gruppen sowie weitere Einstellungen
   können sich damit von Sprache zu Sprache unterscheiden)
 - Newsletter: Globale Auswahl von Empfängern ist entfallen.
 - Newsletter: Tags werden auch in HTML-Nachricht unterstützt
@@ -241,17 +245,17 @@ Release 4.8.1
   die nicht mehr von PopUp-Blockern behindert werden (Ausnahme:
   Dateiauswahl)
 - tinyMCE: Standardmäßig wird HTML-Code nun formatiert und mit
-  Zeilenumbrüchen ausgegeben (apply_source_formatting, 
+  Zeilenumbrüchen ausgegeben (apply_source_formatting,
   remove_linebreaks)
 - tinyMCE/Backend-Customizing: Die Einstellungen für den tinyMCE
   wurden vom Typ wysiwyg/* in tinymce/* geändert. Außerdem werden die
   Parameter gemäß Schreibweise der tinyMCE-Dokumentation verwendet.
-  Damit können nun fast alle möglichen Parameter über System-, 
+  Damit können nun fast alle möglichen Parameter über System-,
   Mandanten-, Gruppen- oder Nutzereinstellungen festgelegt werden
 - Dateiverwaltung speichert für die Dauer einer Session das
   zuletzt besuchte Verzeichnis und verwendet dieses bei erneutem
   Aufruf als Startverzeichnis (yeah!)
-- Hinweis bei Login ergänzt, wenn sysadmin- bzw. admin-Accounts 
+- Hinweis bei Login ergänzt, wenn sysadmin- bzw. admin-Accounts
   noch über Standard-Passwörter verfügen
 - Einem Mandanten-Admin ist es nicht mehr möglich, Benutzer
   zu erzeugen, die nicht für "seinen" Mandanten berechtigt sind
@@ -267,61 +271,61 @@ Release 4.8.1
 
 4.6.17
 ----------------------------------------------------------------------
-- Sicherheitslücke für Remove Code Injections unter bestimmten 
+- Sicherheitslücke für Remove Code Injections unter bestimmten
   PHP-Konfigurationen geschlossen (aktualisiert)
 
 4.6.16
 ----------------------------------------------------------------------
 - tinyMCE 2.0.8 integriert. Plugin advlink modifiziert. Anchor Funktion
   erweitert.
-  
+
 4.6.15
 ----------------------------------------------------------------------
 - Probleme bei Eingabe von besonderen Zeichen behoben (u.a. ', ", $)
 - Kategorie-Übersicht: Template auf CSS-Klassen umgestellt
   (Performance)
-- Bei allen Abfragen mit getEffectiveSetting Abfrage auf Boolean 
+- Bei allen Abfragen mit getEffectiveSetting Abfrage auf Boolean
   geprüft und ggf. durch Prüfung auf String ersetzt (true vs. "true")
-- Dateiverwaltung: Sicherheitsabfrage vor dem Löschen einer Datei 
+- Dateiverwaltung: Sicherheitsabfrage vor dem Löschen einer Datei
   ergänzt (Löschen einer einzelnen Datei)
 - Fehlerkorrektur in Dateiverwaltung: Ordner mit Dateien können nicht
   mehr gelöscht werden
 - Fehlerkorrektur bei XHTML-Prüfung in front_content.php
 - Einbindung der italienischen Übersetzung von mvf
-- Für die Einbindung neuer Sprachen genügt nun die Erstellung der 
+- Für die Einbindung neuer Sprachen genügt nun die Erstellung der
   Sprach-XML-Datei (contenido/xml) und der contenido.po und
   contenido.mo im Unterverzeichnis unter contenido/locale
 - Endlich dieses <br /> aus den Modul-Fehlermeldungen entfernt
-- Für Ein- und Ausgabebereiche von Modulen können immer, nur bei 
+- Für Ein- und Ausgabebereiche von Modulen können immer, nur bei
   Fehler oder nie (Default) Zeilennummern eingeblendet werden
-- Module werden nur noch beim Speichern evaluiert, nicht mehr bei 
+- Module werden nur noch beim Speichern evaluiert, nicht mehr bei
   jedem Aufruf von Style -> Module (jedoch erzwingbar über Backend-
   Einstellung)
-- Tabulator kann in Eingabe- und Ausgabefeldern von Modulen verwendet 
+- Tabulator kann in Eingabe- und Ausgabefeldern von Modulen verwendet
   werden (d.h. es wird nicht zum nächsten Feld gewechselt, optionale
   Backend-Einstellung)
 - Korrektur in prCreateURLNameLocationString ($cfgClient undefiniert)
-- Korrektur in render-Methode der Link-Klasse in class.ui.php (für 
+- Korrektur in render-Methode der Link-Klasse in class.ui.php (für
   den Fall, dass für einen Link ein Bild spezifiert wird - Bildpfad
   muss relativ zu Contenido-Pfad sein)
 - Korrektur in layoutInUse-Methode in classes/class.layout.php
   (bei Übergabe eines Namens statt einer ID)
 - exportTree-Methode in classes/tree/class.ctreeitem.php deaktiviert
   (ohne Funktion)
-- Fehlerkorrektur in der deleteGroupByGroupName der 
+- Fehlerkorrektur in der deleteGroupByGroupName der
   classes/class.group
-- Der create-Methode der dbfs-Klasse kann nun direkt Inhalt übergeben 
+- Der create-Methode der dbfs-Klasse kann nun direkt Inhalt übergeben
   werden ($content wird nun optional als Parameter übergeben)
 - Übersetzung und Einbindung Frontend-Kategorie-Berechtigung
   korrigiert
 - Ergänzung einer Systemeinstellung zur Festlegung des bevorzugten
   Mandanten (System-, Mandant- oder Nutzereinstellung)
-- Überarbeitung der have_perm_client_lang, da fehlerhaft bei 
+- Überarbeitung der have_perm_client_lang, da fehlerhaft bei
   Prüfung auf admin-Eigenschaft, wenn zu überprüfende idclient nicht
   identisch mit aktueller idclient
 - Umgehung der Funktion ini_restore in functions.mod.php (Umgehung
   der Deaktivierung bei einigen Providern wegen Sicherheitslücke
-  in PHP) - ini_restore wird aber weiterhin in functions.general.php 
+  in PHP) - ini_restore wird aber weiterhin in functions.general.php
   bei restore_include_path()-Emulation (nur für PHP < 4.3.0)
   verwendet!
 - Setup setzt createcode-Flag für alle vorhandenen Artikel, um
@@ -336,13 +340,13 @@ Release 4.8.1
 - Fehlerkorrektur bei Verwendung von $ bzw. \ in HTML-Feldern.
 - Location wird im Titel angezeigt.
 - Menüpunkt "HTML Editor" in "Modul-Templates" geändert.
-- Mozile 0.52d integriert (bessere Zusammenarbeit mit Mozile 
+- Mozile 0.52d integriert (bessere Zusammenarbeit mit Mozile
   Extension).
-- Auswahl der Elemente pro Seite wird nun für Frontend User, Module, 
+- Auswahl der Elemente pro Seite wird nun für Frontend User, Module,
   Newsletter und Newsletter-Empfänger gespeichert.
 - -- Alle -- -Option für Module und Newsletter-Empfänger ergänzt.
 - Wird die Systemeinstellung Typ: phpmailer, Name: mail_set_f_option
-  mit dem Wert true gesetzt, wird beim Senden über 
+  mit dem Wert true gesetzt, wird beim Senden über
   class.phpmailer.php, Typ "mail" automatisch der Wert aus ->From
   als ->Sender gesetzt, sofern kein anderer Sender gesetzt wurde.
 - Löschen einer Sprache "anderer" Mandanten korrigiert. Die Funktion
@@ -357,7 +361,7 @@ Release 4.8.1
   (fehlerhafte Einbindung führte erneut zu cAPIClient-Meldungen)
 - Modul-Anzahl-Einstellung in Style -> Module werden nutzerabhängig
   gespeichert.
-- Artikel-Index-Erzeugung (Keywords) überarbeitet, so dass pro 
+- Artikel-Index-Erzeugung (Keywords) überarbeitet, so dass pro
   Artikel-Speicherung nur einmal der Index aktualisiert wird
 - Plugins für Frontend User Groups ergänzt.
 - Erweiterte Einstellungen für die Weiterleitung im Fehlerfall
@@ -371,14 +375,14 @@ Release 4.8.1
 - Verfügt der Nutzer nicht über die Einstellung "WYSIWYG-Editor" wird
   nun - wenn tinyMCE des Systemeditor ist - ein Textfeld statt des
   Editors angezeigt.
-- Probleme mit DBFS korrigiert (Anzeige von Bildern und Thumbnails in 
+- Probleme mit DBFS korrigiert (Anzeige von Bildern und Thumbnails in
   der Dateiverwaltung)
 - Verschiedene Korrekturen im Dateibrowser (tinyMCE)
 - Recht zum Löschen eines Verzeichnisses wird nun berücksichtigt.
-- Bei einem Artikel, der nicht in der ersten Sprache angelegt wird, 
+- Bei einem Artikel, der nicht in der ersten Sprache angelegt wird,
   wird nun bereits bei der ersten Speicherung die Online-Eigenschaft
   (und das Änderungsdatum) berücksichtigt.
-- Änderung in con_type für CMS_HTMLHEAD und CMS_HTML: \ wird 
+- Änderung in con_type für CMS_HTMLHEAD und CMS_HTML: \ wird
   durch Entity ersetzt - löst Probleme mit bestimmten Satzkonstrukten
 - Es wurde eine neue Chain eingeführt, der nach dem Löschen eines
   Artikels ausgeführt wird (Contenido.Content.DeleteArticle).
@@ -399,21 +403,21 @@ Release 4.8.1
   Administratoren und Administratoren wurde verständlicher gestaltet.
 - Magic_Quotes-Behandlung korrigiert.
 - Public/Private-Schaltung einer Kategorie unter Content -> Artikel
-  korrigiert; es werden nun auch die Unterkategorien geschützt 
+  korrigiert; es werden nun auch die Unterkategorien geschützt
   (analog Content -> Kategorien)
 - Neue tinyMCE-Option tinymce-lists zur Anzeige von DropDown-Listen
   in Insert Link, Insert Image bzw. Insert Flash Popup-Fenstern.
-- Einbinden von Styles in tinyMCE DropDown-Menü über wysiwyg, 
+- Einbinden von Styles in tinyMCE DropDown-Menü über wysiwyg,
   tinymce-styles-Einstellung korrigiert.
 - Anzeige der Links im tinyMCE Link-Einfügen-Dialog funktioniert nun
-- Berechtigung zum Löschen und Mehrfachlöschung in der 
+- Berechtigung zum Löschen und Mehrfachlöschung in der
   Dateiverwaltung wird nun beachtet.
 - Übernahme des Start-Parameters bei cHTMLDiv und cHTMLSpan
 - Änderung class.ui.php, so dass diese auch im Frontend genutzt
   werden kann.
-- Modul-Historie wird nun komplett übernommen und Modul aus der 
+- Modul-Historie wird nun komplett übernommen und Modul aus der
   Historie übernommen werden  (inkl. Beschrteibung und Typ). Der Typ
-  für Module wurde bis vor 4.6.13 nicht in die Historie übernommen. 
+  für Module wurde bis vor 4.6.13 nicht in die Historie übernommen.
 - Basis-Variablen werden in front_content.php auf numerischen Wert
   geprüft.
 - delete()-Methode für Item aus genericdb deaktiviert, ohne Funktion.
@@ -433,12 +437,12 @@ Release 4.8.1
   damit wieder global zur Verfügung.
 - Aktuelle Version der class.newsletter.php integriert (Versand für
   mehr Nutzer, Integration von Empfänger-Plugins)
-- Diverse Korrekturen im Beispiel-Mandanten (IMG-Platzhalter, Komma 
+- Diverse Korrekturen im Beispiel-Mandanten (IMG-Platzhalter, Komma
   in SQL-Abfrage des Hauptnavigations-Moduls, html_entity_code-Fix für
   Such-Modul bei PHP < 4.3, url_file_access-Fix bei Illustrations-
   Modul, Beachtung der Startartikel-Option beim News-Modul, aktuelle
   Version der Newsletter-Module/Template).
-  
+
 4.6.13
 ----------------------------------------------------------------------
 - bei dem CMS-Typ "CMS_HTMLHEAD" wurde &nbsp; in ASCII-Zeichen
@@ -449,7 +453,7 @@ Release 4.8.1
   im Filebrowser/Imagebrowser befindet, sollte es jetzt nicht mehr
   vorkommen, daß sich der Fokus auf die normale Dateiverwaltung
   verstellt.
-- cHTMLCheckbox verwendet nun die parent-Klasse, um die Ausgabe zu 
+- cHTMLCheckbox verwendet nun die parent-Klasse, um die Ausgabe zu
   rendern und erbt damit auch alle von der Basisklasse cHTML zur
   Verfügung gestellten Funktionalitäten.
 - Der MySQL-GenericDB-Treiber erzeugt keine Fehlermeldung mehr, wenn
@@ -498,7 +502,7 @@ Release 4.8.1
 - Es wurde ein neues Kalender-Widget entwickelt (cCalendarControl),
   welches zusammen mit einem Kalender-Textfeld (cDateChooser) für
   Datumsauswahlen verwendet werden kann.
-  
+
 4.6.9
 ----------------------------------------------------------------------
 - "sysadmin" ist ab sofort wieder das Standardpasswort, die Möglichkeit
@@ -514,7 +518,7 @@ Release 4.8.1
   einfacheren Abgleich mit anderen Systemen vorzunehmen. DIESE FUNKTION
   IST ALS HÖCHST EXPERIMENTELL EINGESTUFT - BENUTZUNG AUF EIGENE GEFAHR.
 
- 
+
 4.6.8
 ----------------------------------------------------------------------
 - Einbau von TinyMCE 2.0.1. Die neue Version des TinyMCE unterstützt
@@ -542,7 +546,7 @@ Release 4.8.1
 - Einbau einer Systemeinstellung, die es erlaubt, die automatische
   Generierung der BASE HREF-Tags zu umgehen.
 
-  
+
 4.6.6
 ----------------------------------------------------------------------
 - Die Chain Contenido.Frontend.AllowEdit wurde eingeführt, um trotz
@@ -553,18 +557,18 @@ Release 4.8.1
 4.6.5
 ----------------------------------------------------------------------
 - Der Operator "DIACRITICS" der GenericDB setzt Escapes jetzt richtig,
-  wenn der Suchbegriff Metazeichen enthält. Weiterhin wird der 
-  _inFilter auf den Suchbegriff angewendet, damit die Suchergebnisse 
+  wenn der Suchbegriff Metazeichen enthält. Weiterhin wird der
+  _inFilter auf den Suchbegriff angewendet, damit die Suchergebnisse
   mit den GenericDB-Filtern gefunden werden können.
 
 
 4.6.4
 ----------------------------------------------------------------------
-- Sicherheitslücke für Remove Code Injections unter bestimmten 
+- Sicherheitslücke für Remove Code Injections unter bestimmten
   PHP-Konfigurationen geschlossen
 - Der Pathresolve-Cache wird bei Verwendung richtig aktualisiert,
   wenn Kategorien on- bzw offline gesetzt werden.
-- Die JOIN-Syntax wurde an die von MySQL 5.0.12 angepasst. 
+- Die JOIN-Syntax wurde an die von MySQL 5.0.12 angepasst.
 
 
 4.6.3
@@ -573,7 +577,7 @@ Release 4.8.1
   Webauftritten wurden behoben.
 - Der SPAW-Editor kann jetzt auch als nicht-Standardeditor (z.b. in
   Plugins) verwendet werden.
-- Die GenericDB-Klassen funktionieren jetzt richtig mit Joins, die von 
+- Die GenericDB-Klassen funktionieren jetzt richtig mit Joins, die von
   abgeleiteten Klassen verwendet werden.
 - PHP-Workaround in der MySQL-Treiberklasse, bei der PHP Resourcen
   ungültigerweise schließt
@@ -583,8 +587,8 @@ Release 4.8.1
 ----------------------------------------------------------------------
 - Erneutes Release der 4.6.1 mit Korrektur der Fehler, die beim
   Erzeugen von Contenido 4.6.1 entstanden sind.
-  
-  
+
+
 4.6.1
 ----------------------------------------------------------------------
 - Bugfix für die korrekte ImageMagick-Erkennung auf Windows-Servern
@@ -669,7 +673,7 @@ Release 4.8.1
 - Aufklappzustand bei Artikeln und Kategorien werden userabhängig gespeichert
 - Neuer Upload-Manager
 - InUse-Anzeige für Module
-- Objekte, die in Benutzung sind, können vom aktuellen Bearbeiter 
+- Objekte, die in Benutzung sind, können vom aktuellen Bearbeiter
   nach Bestätigung trotzdem bearbeitet werden
 - Modulübersetzungen sind nun möglich
 - optionale Java-basierte Modulein- und Ausgabefelder mit Zeilennummern
@@ -680,7 +684,7 @@ Release 4.8.1
 4.4.1 - 4.4.5
 ----------------------------------------------------------------------
 
-ÄNDERUNGEN: 
+ÄNDERUNGEN:
 - Bugfixes only
 
 
@@ -688,7 +692,7 @@ Release 4.8.1
 4.4.0
 ----------------------------------------------------------------------
 
-NEU: 
+NEU:
 - Automatischer Session-Cleanup (über cronjob)
 - Optimierung der Datenbank (einmal täglich über cronjob)
 - Sperren von Artikeln
