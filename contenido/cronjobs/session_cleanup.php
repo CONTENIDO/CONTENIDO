@@ -1,19 +1,26 @@
 <?php
-
-/*****************************************
-* File      :   $RCSfile: session_cleanup.php,v $
-* Project   :   Contenido
-* Descr     :   Cron Job to move old statistics into the stat_archive table
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   26.05.2003
-* Modified  :   $Date: 2007/10/12 13:53:00 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: session_cleanup.php,v 1.8 2006/04/28 09:20:55 timo.hummel Exp $
-******************************************/
+/**
+ * File      :   $RCSfile: session_cleanup.php,v $
+ * Project   :   Contenido
+ * Descr     :   Cron Job to move old statistics into the stat_archive table
+ *
+ * Author    :   Timo A. Hummel
+ *
+ * Created   :   26.05.2003
+ * Modified  :   $Date: 2007/10/12 13:53:00 $
+ *
+ * @version $Revision$
+ * @copyright four for business AG, www.4fb.de
+ *
+ * @internal  {
+ *  modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call
+ *
+ *  $Id$
+ * }
+ **/
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
 
 if (isset($cfg['path']['contenido'])) {
 	include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'startup.php');
