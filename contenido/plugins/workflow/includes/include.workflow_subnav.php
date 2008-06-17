@@ -16,6 +16,12 @@
 * $Id: include.workflow_subnav.php,v 1.1 2003/07/31 13:44:03 timo.hummel Exp $
 ******************************************/
 
+// Bugfix  17-06.2008
+if (isset($_REQUEST['cfg'])) {
+    die ('Illegal call!');
+}
+
+
 $nav = new Contenido_Navigation;
 
 

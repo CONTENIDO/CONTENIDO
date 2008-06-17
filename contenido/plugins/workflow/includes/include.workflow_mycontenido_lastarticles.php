@@ -13,6 +13,11 @@
 * © four for business AG
 *****************************************/
 
+if (isset($_REQUEST['cfg'])) {
+    die ('Illegal call!');
+}
+
+
 
 $debug = false;
 
