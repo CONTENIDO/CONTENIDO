@@ -39,10 +39,10 @@ if (isset($_GET["return"]) || isset($_POST["return"])){
 	$aLocator = Array();
 
 	if ($idcat > 0) {
-		$aLocator[] = "idcat=$idcat";
+		$aLocator[] = "idcat=".intval($idcat);
 	}
 	if ($idart > 0) {
-		$aLocator[] = "idart=$idart";
+		$aLocator[] = "idart=".intval($idart);
 	}
 
 	if (isset($_POST["username"]) || isset($_GET["username"])){
@@ -107,7 +107,7 @@ if (isset($_GET["return"]) || isset($_POST["return"])){
                         <td><input type="password" class="text_medium" name="password" size="20" maxlength="32">
                             <input type="hidden" name="vaction" value="login">
                             <input type="hidden" name="formtimestamp" value="<?php echo time(); ?>">
-							<input type="hidden" name="idcat" value="<?php echo $idcat; ?>">
+							<input type="hidden" name="idcat" value="<?php echo intval($idcat); ?>">
                             </td>
                     </tr>
                     <tr>
