@@ -36,22 +36,26 @@ include_once($cfg['path']['contenido'].$cfg['path']['includes'] . 'functions.gen
 
 global $cfg;
 
-// Create Contenido DB_class
-$db = new DB_Contenido;
+if (!isRunningFromWeb() || function_exists("runJob") || $area == "cronjobs") {
 
-// Start linkchecker
-$cronjob = true;
-$_REQUEST['mode'] = 2;
+    // Create Contenido DB_class
+    $db = new DB_Contenido;
 
-$sql = "SELECT idlang FROM " . $cfg['tab']['lang'] . " WHERE active = '1'";
-$db->query($sql);
+    // Start linkchecker
+    $cronjob = true;
+    $_REQUEST['mode'] = 2;
 
-if($db->num_rows() > 1) {
-    $langart = 0;
-} else {
-    $db->next_record();
-    $langart = $db->f("idlang");
+    $sql = "SELECT idlang FROM " . $cfg['tab']['lang'] . " WHERE active = '1'";
+    $db->query($sql);
+
+    if($db->num_rows() > 1) {
+        $langart = 0;
+    } else {
+        $db->next_record();
+        $langart = $db->f("idlang");
+    }
+
+    include_once($cfg['path']['contenido'] . 'plugins/linkchecker/includes/include.linkchecker.php');
+
 }
-
-include_once($cfg['path']['contenido'] . 'plugins/linkchecker/includes/include.linkchecker.php');
 ?>
