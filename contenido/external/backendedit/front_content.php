@@ -61,6 +61,18 @@
  */
 # START Backend modification
 # Contenido startup process
+if (isset($_REQUEST['belang'])) {
+	$aValid = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
+	if (!in_array(strval($_REQUEST['belang']), $aValid)) {
+		die('Please use a valid language!');
+	}
+}
+if (isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['cfgClient'])) {
+    die ('Illegal call!');
+}
 include_once ("../../includes/startup.php");
 cInclude("includes", "functions.general.php");
 rereadClients();
