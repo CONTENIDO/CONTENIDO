@@ -44,7 +44,7 @@ include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'cfg_language
 include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'functions.general.php');
 include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'functions.con.php');
 
-if($_SERVER["PHP_SELF"] == "" || function_exists("runJob") || $area == "cronjobs") {
+if(!isRunningFromWeb() || function_exists("runJob") || $area == "cronjobs") {
 
 	$db = new DB_Contenido;
 

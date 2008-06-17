@@ -46,7 +46,7 @@ include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'functions.st
 
 require_once($cfg['path']['contenido'].$cfg["path"]["includes"] . 'pseudo-cron.inc.php');
 
-if ($_SERVER["PHP_SELF"] == "" || function_exists("runJob") || $area == "cronjobs")
+if (!isRunningFromWeb() || function_exists("runJob") || $area == "cronjobs")
 {
 	$db = new DB_Contenido();
 

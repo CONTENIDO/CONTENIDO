@@ -47,7 +47,7 @@ include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'functions.st
 
 global $cfg;
 
-if($_SERVER["PHP_SELF"] == "" || function_exists("runJob") || $area == "cronjobs") {
+if(!isRunningFromWeb() || function_exists("runJob") || $area == "cronjobs") {
     $db = new DB_Contenido;
 
     foreach ($cfg["tab"] as $key => $value)
