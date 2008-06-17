@@ -12,6 +12,10 @@
 * $Id: config.path.php,v 1.9 2006/03/16 10:52:50 timo.hummel Exp $
 ******************************************/
 
+if (isset($_REQUEST['cfg'])) {
+    die ('Illegal call!');
+}
+
 global $cfg;
 
 /* IMPORTANT! Put your modifications into the file "config.local.php"
