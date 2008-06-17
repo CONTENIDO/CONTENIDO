@@ -404,7 +404,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	/* add/replace title */
 	if ($pagetitle != "")
 	{
-		$code = preg_replace("/<title>.*?<\/title>/i", "{TITLE}", $code);
+		$code = preg_replace("/<title>.*?<\/title>/is", "{TITLE}", $code);
 
 		if (strstr($code, "{TITLE}"))
 		{
