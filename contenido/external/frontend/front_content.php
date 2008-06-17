@@ -58,6 +58,18 @@
 if (isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }
+if (isset($_REQUEST['belang'])) {
+	$aValid = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
+	if (!in_array(strval($_REQUEST['belang']), $aValid)) {
+		die('Please use a valid language!');
+	}
+}
+if (isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['cfgClient'])) {
+    die ('Illegal call!');
+}
 
 # include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
