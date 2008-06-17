@@ -1,4 +1,9 @@
 <?php
+
+if (isset($_REQUEST['contenido_path']) || isset($_REQUEST['cfg']) || isset($_REQUEST['cfgClient'])) {
+    die ('Illegal call!');
+}
+
 cInclude("includes", "functions.pathresolver.php");
 
 function str_replace_recursive ($array) {
@@ -14,7 +19,7 @@ function str_replace_recursive ($array) {
 }
 
 // fetch idartlang for idart
-$sql = "SELECT idartlang FROM ".$cfg['tab']['art_lang']." WHERE idart=".$idart." AND idlang=".$lang;
+$sql = "SELECT idartlang FROM ".$cfg['tab']['art_lang']." WHERE idart=".intval($idart)." AND idlang=".intval($lang);
 $db->query($sql);
 $db->next_record();
 $this_idartlang = $db->f('idartlang');

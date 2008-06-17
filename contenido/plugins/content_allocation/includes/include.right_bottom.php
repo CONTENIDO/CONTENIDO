@@ -1,5 +1,9 @@
 <?php
 
+if (isset($_REQUEST['treeItem'])) {
+    die ('Illegal call!');
+}
+
 $oPage = new cPage();
 $oPage->setMargin(10);
 $oPage->setMessageBox();
@@ -52,7 +56,7 @@ if ($_GET['step'] == 'createRoot') { // create new root item
 		<table cellspacing="0" cellpaddin="0" border="0">
 		<form name="create" action="main.php" method="POST" onsubmit="return fieldCheck();">
 		<input type="hidden" name="action" value="'.$action.'" />
-		<input type="hidden" name="frame" value="'.$frame.'" />
+		<input type="hidden" name="frame" value="'.intval($frame).'" />
 		<input type="hidden" name="contenido" value="'.$sess->id.'" />
 		<input type="hidden" name="area" value="'.$area.'" />
 		<input type="hidden" name="step" value="store" />
