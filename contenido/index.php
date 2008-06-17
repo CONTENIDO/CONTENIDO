@@ -16,6 +16,7 @@
 *
 * @internal {
 *   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
+*   modified 2008-06-17, rbi - Hotfix: Added check for XSS at "contenido" amd "belang".
 *
 *   $Id$
 * }
@@ -23,6 +24,19 @@
 ******************************************/
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Invalid call');
+}
+
+if (isset($_REQUEST['contenido'])) {
+	$sPattern = '/^[a-zA-Z0-9]+$/i';
+	if (!preg_match($sPattern, $_REQUEST['contenido'])) {
+		die ('Invalid call');
+	}
+}
+if (isset($_REQUEST['belang'])) {
+	$aValid = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
+	if (!in_array(strval($_REQUEST['belang']), $aValid)) {
+		die('Please use a valid language!');
+	}
 }
 
 include_once ('./includes/startup.php');
