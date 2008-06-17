@@ -24,6 +24,20 @@
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Invalid call!');
 }
+if (isset($_REQUEST['belang'])) {
+	$aValid = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
+	if (!in_array(strval($_REQUEST['belang']), $aValid)) {
+		die('Please use a valid language!');
+	}
+}
+if (isset($_REQUEST['changeclient'])) {
+	$_REQUEST['changeclient'] = intval($_REQUEST['changeclient']);
+	$changeclient = intval($_REQUEST['changeclient']);
+}
+if (isset($_REQUEST['changelang'])) {
+	$_REQUEST['changelang'] = intval($_REQUEST['changelang']);
+	$changelang = intval($_REQUEST['changelang']);
+}
 
 include_once ('./includes/startup.php');
 cInclude ("includes", 'functions.general.php');
