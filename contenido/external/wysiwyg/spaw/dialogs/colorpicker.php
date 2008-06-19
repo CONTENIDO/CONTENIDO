@@ -8,12 +8,13 @@
 // SPAW1.0.3 for Contenido 4.3.2.1, 2003-10-08 v0.1
 // ================================================
 
+if (isset($_REQUEST['cfg'])) {
+    die ('Illegal call!');
+}
+
 // include wysiwyg config
-
-    include_once (dirname(__FILE__) . '/../../../../includes/startup.php');
-    include ($cfg["path"]["wysiwyg"]."config/spaw_control.config.php");
-
-
+include_once (dirname(__FILE__) . '/../../../../includes/startup.php');
+include ($cfg["path"]["wysiwyg"]."config/spaw_control.config.php");
 ?>
 <html>
   <head>
