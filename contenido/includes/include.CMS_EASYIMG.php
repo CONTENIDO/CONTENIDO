@@ -17,6 +17,10 @@
 * $Id: include.CMS_EASYIMG.php,v 1.4 2006/06/13 18:45:18 bjoern.behrens Exp $
 ******************************************/
 
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
+
 if ($doedit == "1") {
 	cInclude("includes","functions.upl.php");
 	$rootpath = $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"];

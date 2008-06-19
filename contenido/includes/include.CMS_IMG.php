@@ -17,6 +17,10 @@
 * $Id: include.CMS_IMG.php,v 1.30 2007/07/19 20:31:34 bjoern.behrens Exp $
 ******************************************/
 
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
+    die ('Illegal call!');
+}
+
 if ($doedit == "1") {
     conSaveContentEntry ($idartlang, "CMS_IMG", $typenr, $CMS_IMG);
     conSaveContentEntry ($idartlang, "CMS_IMGDESCR", $typenr, $CMS_IMGDESCR);
