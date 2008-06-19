@@ -13,7 +13,7 @@
 *  $Id: include.frontend.group_rights.php,v 1.5 2006/09/22 08:57:55 bjoern.behrens Exp $
 * }
 */
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path']) || isset($_REQUEST['useplugin'])) {
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path']) || (isset($_REQUEST['useplugin']) && $_REQUEST['useplugin'] != "category")) {
     die ('Illegal call!');
 }
 
