@@ -13,6 +13,10 @@
 * © four for business AG, www.4fb.de
 ******************************************/
 
+if (isset($_REQUEST['cfg'])) {
+    die ('Illegal call!');
+}
+
 include_once ('./includes/startup.php');
 include_once ($cfg["path"]["classes"] . 'class.template.php');
 
