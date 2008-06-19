@@ -6,6 +6,13 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id: CHANGELOG.txt,v 1.112 2008/05/21 12:14:59 timo.trautmann Exp $
 
+Release 4.8.7
+----------------------------------------------------------------------
+* Removed SPAW editor
+* Removed Java Applets
+* Some XSS/RFI Bugfixes
+* Added new Debug object Debug_VisibleAdv.class.php
+
 Release 4.8.6
 ----------------------------------------------------------------------
 * Additional hot- and bugfixes added
