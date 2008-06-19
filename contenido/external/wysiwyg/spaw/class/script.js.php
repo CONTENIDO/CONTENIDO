@@ -13,6 +13,9 @@
 // SPAW1.0.3 for Contenido 4.4.x, 2003-10-31 v0.2
 // ================================================
 
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['spaw_dir']) || isset($_REQUEST['cfgClient'])) {
+    die ('Illegal call!');
+}
 
 if (!$spaw_inline_js) {
   $lang = ( isset($_GET['lang']) ) ? $_GET['lang'] : 0;
@@ -246,13 +249,13 @@ if (!$spaw_inline_js) {
     var myLink = new Object();
     if (hyp)
     {
-        myLink.Href = hyp.href.replace('<?php echo $cfgClient[$client]['path']['htmlpath'];?>', '');
+        myLink.Href = hyp.href.replace('<?php echo $cfgClient[intval($client)]['path']['htmlpath'];?>', '');
         myLink.Target = hyp.target;
     } else {
         myLink = false;
     }
 
-    var slink = showModalDialog("<?php echo $spaw_dir ?>" + "dialogs/insert_link.php?client=<?php echo $client;?>&lang=<?php echo $lang;?>&belang=<?php echo $belang;?>",myLink,"dialogHeight: 170px; dialogWidth: 430px; resizable: no; help: no; status: no; scroll: no; " );
+    var slink = showModalDialog("<?php echo $spaw_dir ?>" + "dialogs/insert_link.php?client=<?php echo intval($client);?>&lang=<?php echo intval($lang);?>&belang=<?php echo intval($belang);?>",myLink,"dialogHeight: 170px; dialogWidth: 430px; resizable: no; help: no; status: no; scroll: no; " );
 
 	if (typeof(slink) != "undefined")
 	{
@@ -294,7 +297,7 @@ if (!$spaw_inline_js) {
   {
     window.frames[editor+'_rEdit'].focus();
 
-    var imgSrc = showModalDialog('<?php echo $spaw_dir?>dialogs/img_library.php?client=<?php echo $client; ?>&lang=' + document.all['SPAW_'+editor+'_lang'].value + '&theme=' + document.all['SPAW_'+editor+'_theme'].value, '',
+    var imgSrc = showModalDialog('<?php echo $spaw_dir?>dialogs/img_library.php?client=<?php echo intval($client); ?>&lang=' + document.all['SPAW_'+editor+'_lang'].value + '&theme=' + document.all['SPAW_'+editor+'_theme'].value, '',
       'dialogHeight:321px; dialogWidth:600px; resizable:no; status:no');
 
     if(imgSrc != null)
@@ -1801,7 +1804,7 @@ function SPAW_import_template_click(editor, sender)
         var ref = window.frames[editor + '_rEdit'].document;
         var selection = ref.selection.createRange();
         
-        var slink = showModalDialog("<?php echo $spaw_dir ?>" + "dialogs/selecttemplate.php?client=<?php echo $client;?>&lang=<?php echo $lang;?>&belang=<?php echo $belang;?>", "","dialogHeight: 400px; dialogWidth: 600px; resizable: yes; help: no; status: no; scroll: no; " );
+        var slink = showModalDialog("<?php echo $spaw_dir ?>" + "dialogs/selecttemplate.php?client=<?php echo intval($client);?>&lang=<?php echo intval($lang);?>&belang=<?php echo intval($belang);?>", "","dialogHeight: 400px; dialogWidth: 600px; resizable: yes; help: no; status: no; scroll: no; " );
             
         if (slink != null)
         {
