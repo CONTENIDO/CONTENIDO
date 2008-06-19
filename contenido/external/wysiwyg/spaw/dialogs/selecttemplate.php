@@ -10,6 +10,10 @@
  * @copyright four for business AG 2003
  */
  
+ if (isset($_REQUEST['cfg'])) {
+    die ('Illegal call!');
+}
+ 
 $contenido_path = "../../../../";
 
 include ($contenido_path . "includes/startup.php"); 

@@ -8,10 +8,13 @@
 // SPAW1.0.3 for Contenido 4.3.2.1, 2003-10-08 v0.1
 // ================================================
 
-// include wysiwyg config
-    include_once (dirname(__FILE__) . '/../../../../includes/startup.php');
-    include ($cfg["path"]["wysiwyg"]."config/spaw_control.config.php");
+if (isset($_REQUEST['cfg'])) {
+    die ('Illegal call!');
+}
 
+// include wysiwyg config
+include_once (dirname(__FILE__) . '/../../../../includes/startup.php');
+include ($cfg["path"]["wysiwyg"]."config/spaw_control.config.php");
 
 $theme = empty($_POST['theme'])?(empty($_GET['theme'])?$spaw_default_theme:$_GET['theme']):$_POST['theme'];
 $theme_path = $spaw_dir.'lib/themes/'.$theme.'/';

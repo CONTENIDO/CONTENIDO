@@ -12,10 +12,13 @@
 // v.1.0, 2003-04-01
 // ================================================
 
-// include wysiwyg config
-    include_once (dirname(__FILE__) . '/../../../../includes/startup.php');
-    include ($cfg["path"]["wysiwyg"]."config/spaw_control.config.php");
+if (isset($_REQUEST['cfg'])) {
+    die ('Illegal call!');
+}
 
+// include wysiwyg config
+include_once (dirname(__FILE__) . '/../../../../includes/startup.php');
+include ($cfg["path"]["wysiwyg"]."config/spaw_control.config.php");
 
 $theme = empty($_GET['theme'])?$spaw_default_theme:$_GET['theme'];
 $theme_path = $spaw_dir.'lib/themes/'.$theme.'/';

@@ -12,11 +12,15 @@
 // v.1.0, 2003-04-01
 // ================================================
 
+if (isset($_REQUEST['cfg'])) {
+    die ('Illegal call!');
+}
+
 // include wysiwyg config
-   $contenido_path = "../../../../"; // CONTENIDO
-  @include ("config.php"); // CONTENIDO
-  @include ($contenido_path . "includes/config.php"); // CONTENIDO
-   include $cfg["path"]["wysiwyg"].'config/spaw_control.config.php'; // CONTENIDO
+$contenido_path = "../../../../"; // CONTENIDO
+@include ("config.php"); // CONTENIDO
+@include ($contenido_path . "includes/config.php"); // CONTENIDO
+include $cfg["path"]["wysiwyg"].'config/spaw_control.config.php'; // CONTENIDO
 
 $theme = empty($_GET['theme'])?$spaw_default_theme:$_GET['theme'];
 $theme_path = $spaw_dir.'lib/themes/'.$theme.'/';
