@@ -1,3 +1,9 @@
+<?php
+if (isset($_REQUEST['cfg'])) {
+    die ('Illegal call!');
+}
+?>
+
 <script language="javascript">
 
 //
@@ -401,7 +407,7 @@ function editor_action(button_id) {
       // insert link
       if(cmdID.toLowerCase() == 'link'){
       x=Math.random();
-      var links=showModalDialog(_editor_url + "insert_link.php?client=<?php echo $client;?>&lang=<?php echo $lang;?>&zuff="+x, editdoc, "dialogWidth:430px; dialogHeight: 250px; resizable: no; help: no; status: no; scroll: no; ");
+      var links=showModalDialog(_editor_url + "insert_link.php?client=<?php echo intval($client);?>&lang=<?php echo intval($lang);?>&zuff="+x, editdoc, "dialogWidth:430px; dialogHeight: 250px; resizable: no; help: no; status: no; scroll: no; ");
       if(links!=''){
          editor_insertHTML(objname,links,'</a>');
       }
@@ -412,7 +418,7 @@ function editor_action(button_id) {
       // insert image
       else if (cmdID.toLowerCase() == 'insertimage'){
       x=Math.random();
-      showModalDialog(_editor_url + "insert_image.php?client=<?php echo $client;?>&zuff="+x, editdoc, "dialogWidth:430px; dialogHeight: 250px; resizable: no; help: no; status: no; scroll: no; ");
+      showModalDialog(_editor_url + "insert_image.php?client=<?php echo intval($client);?>&zuff="+x, editdoc, "dialogWidth:430px; dialogHeight: 250px; resizable: no; help: no; status: no; scroll: no; ");
       }
 
 
