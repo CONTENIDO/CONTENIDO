@@ -12,6 +12,10 @@
 * $Id: startup.php,v 1.13 2007/07/11 15:36:56 wirths Exp $
 ******************************************/
 
+if (isset($_REQUEST['cfg'])) {
+    die ('Illegal call!');
+}
+
 /* "Workaround" for register_globals=off settings. */
 require_once ( dirname(__FILE__) . '/globals_off.inc.php');
 
