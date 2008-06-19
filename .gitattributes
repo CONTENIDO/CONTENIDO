@@ -103,16 +103,6 @@ conlib/perm.inc -text
 conlib/prepend.php -text
 conlib/query_sql.inc -text
 conlib/session.inc -text
-contenido/applets/NumberedEditorKit.class -text
-contenido/applets/NumberedParagraphView.class -text
-contenido/applets/NumberedViewFactory.class -text
-contenido/applets/Test.class -text
-contenido/applets/TextEditorPane.class -text
-contenido/applets/src/NumberedEditorKit.java -text
-contenido/applets/src/NumberedParagraphView.java -text
-contenido/applets/src/NumberedViewFactory.java -text
-contenido/applets/src/Test.java -text
-contenido/applets/src/TextEditorPane.java -text
 contenido/backend_search.php -text
 contenido/classes/Contenido_Category/Contenido_Category.class.php -text
 contenido/classes/Contenido_Category/Sample.php -text
