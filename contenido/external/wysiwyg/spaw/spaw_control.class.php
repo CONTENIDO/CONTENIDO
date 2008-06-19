@@ -13,6 +13,10 @@
 // SPAW1.0.3 for Contenido 4.4.x, 2003-10-31 v0.2
 // ================================================
 
+if (isset($_REQUEST['cfg']) || isset($_REQUEST['spaw_root'])) {
+    die ('Illegal call!');
+}
+
 if (!file_exists($spaw_root)) { die ("can't include external file");}
 
 include $spaw_root.'class/toolbars.class.php';
