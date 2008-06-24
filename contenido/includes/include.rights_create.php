@@ -8,6 +8,9 @@
 * Created   :   30.04.2003
 * Modified  :   07.05.2003
 *
+* @internal {
+*      modified 2008-06-24 timo.trautmann storage for valid from valid to added
+* }
 * © four for business AG
 *****************************************/
 
@@ -92,6 +95,8 @@ if (!$perm->have_perm_area_action($area, $action))
 					                            address_country="'.$address_country.'",
 					        	        	    address_zip="'.$address_zip.'",
 					                            wysi="'.$wysi.'",
+                                                valid_from="'.$valid_from.'",
+							                    valid_to="'.$valid_to.'",
 					                            perms="'.implode(",", $stringy_perms).'",
 					        		            user_id="'.$newuserid.'"';
 

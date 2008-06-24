@@ -8,6 +8,9 @@
 * Created   :   30.04.2003
 * Modified  :   30.04.2003
 *
+* @internal {
+*      modified 2008-06-24 timo.trautmann storage for valid from valid to added
+* }
 * © four for business AG
 *****************************************/
 
@@ -97,6 +100,8 @@ if ( !isset($userid) )
                               address_country="'.$address_country.'",
                               address_zip="'.$address_zip.'",
                               wysi="'.$wysi.'",
+							  valid_from="'.$valid_from.'",
+							  valid_to="'.$valid_to.'",
                               perms="'.implode(",",$stringy_perms).'" 
                             WHERE
                               user_id = "'.$userid.'"';
