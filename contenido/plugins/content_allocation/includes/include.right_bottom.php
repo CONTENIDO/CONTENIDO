@@ -4,6 +4,29 @@ if (isset($_REQUEST['treeItem'])) {
     die ('Illegal call!');
 }
 
+#added 24.06.08 timo.trautmann security fix filter submitted treeItemPost array before insertion, name also changed according to security fix
+$aPostTreeItem = array();
+if (!is_object($db)) {
+	$db = new DB_contenido();
+}
+
+if (isset($_REQUEST['treeItemPost']['idpica_alloc'])) {
+  $aPostTreeItem['idpica_alloc'] = (int) $_REQUEST['treeItemPost']['idpica_alloc'];
+}
+
+if (isset($_REQUEST['treeItemPost']['parentid'])) {
+  $aPostTreeItem['parentid'] = (int) $_REQUEST['treeItemPost']['parentid'];
+}
+
+if (isset($_REQUEST['treeItemPost']['name'])) {
+  $sName = stripslashes($_REQUEST['treeItemPost']['name']);
+  $sName =$db->escape($sName); 
+  $aPostTreeItem['name'] = $sName;
+}
+
+$_GET['idpica_alloc'] = (int) $_GET['idpica_alloc'];
+#end added 24.06.08 timo.trautmann
+
 $oPage = new cPage();
 $oPage->setMargin(10);
 $oPage->setMessageBox();
@@ -15,7 +38,7 @@ if ($_POST['step'] == 'store') {
 	$sMessage = sprintf(i18n("New Category %s successfully stored!"), $treeItem['name']);
     $notification->displayNotification("info", $sMessage);
 	$pNotify .= '</div>';
-	$oTree->storeItem($_POST['treeItem']);
+	$oTree->storeItem($aPostTreeItem);
 }
 // rename item
 if ($_POST['step'] == 'storeRename') { 
@@ -23,7 +46,7 @@ if ($_POST['step'] == 'storeRename') {
 	$sMessage = sprintf(i18n("Category %s successfully renamed!"), $treeItem['name']);
     $notification->displayNotification("info", $sMessage);
 	$pNotify .= '</div>';
-	$oTree->storeItem($_POST['treeItem']);
+	$oTree->storeItem($aPostTreeItem);
 }
 // rename item
 if ($_GET['step'] == 'moveup') { 
@@ -60,10 +83,10 @@ if ($_GET['step'] == 'createRoot') { // create new root item
 		<input type="hidden" name="contenido" value="'.$sess->id.'" />
 		<input type="hidden" name="area" value="'.$area.'" />
 		<input type="hidden" name="step" value="store" />
-		<input type="hidden" name="treeItem[parentid]" value="root" />
+		<input type="hidden" name="treeItemPost[parentid]" value="root" />
 		<tr><td colspan="2" class="text_medium">'.i18n("Create new tree").'</td></tr>
 		<tr>
-			<td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItem[name]" value=""></td>
+			<td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value=""></td>
 			<td>&nbsp;<a href="main.php?action='.$action.'&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img src="images/but_cancel.gif" border="0" /></a>
 			<input type="image" src="images/but_ok.gif" /></td>
 		</tr>

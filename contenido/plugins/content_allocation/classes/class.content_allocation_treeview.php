@@ -9,6 +9,7 @@
  * @copyright four for business AG
  * @modified 27.10.2005 by Willi Man
  * @modified 24.01.2008 by Andreas Lindner  
+ * @modified 26.06.2008 by Timo Trautmann changed post var from   treeItem to treeItemPost (security issue)
  */
  
 /**
@@ -61,9 +62,9 @@ class pApiContentAllocationTreeView extends pApiTree {
 					<input type="hidden" name="contenido" value="'.$sess->id.'" />
 					<input type="hidden" name="area" value="'.$area.'" />
 					<input type="hidden" name="step" value="storeRename" />
-					<input type="hidden" name="treeItem[idpica_alloc]" value="'.$item_tmp['idpica_alloc'].'" />
+					<input type="hidden" name="treeItemPost[idpica_alloc]" value="'.$item_tmp['idpica_alloc'].'" />
 					<tr>
-					<td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItem[name]" value="'.$item_tmp['name'].'"></td>
+					<td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value="'.$item_tmp['name'].'"></td>
 					<td>&nbsp;
 					<a href="main.php?action='.$action.'&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img src="images/but_cancel.gif" border="0" /></a>
 					<input type="image" src="images/but_ok.gif" />
@@ -137,9 +138,9 @@ class pApiContentAllocationTreeView extends pApiTree {
 					<input type="hidden" name="contenido" value="'.$sess->id.'" />
 					<input type="hidden" name="area" value="'.$area.'" />
 					<input type="hidden" name="step" value="store" />
-					<input type="hidden" name="treeItem[parentid]" value="'.$_GET['parentid'].'" />
+					<input type="hidden" name="treeItemPost[parentid]" value="'.$_GET['parentid'].'" />
 					<tr>
-					<td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItem[name]" value=""></td>
+					<td class="text_medium"><input id="itemname" class="text_medium" type="text" name="treeItemPost[name]" value=""></td>
 					<td>&nbsp;
 					<a href="main.php?action='.$action.'&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img src="images/but_cancel.gif" border="0" /></a>
 					<input type="image" src="images/but_ok.gif" />
