@@ -1,14 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.clientslang.php,v $
-* Project   :   Contenido
-* Descr     :   Language to client mapping class
-* Modified  :   $Date: 2007/05/25 08:06:29 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.clientslang.php,v 1.4 2007/05/25 08:06:29 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Language to client mapping class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.4
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2007-05-25
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+cInclude('classes', 'class.security.php');
 
 class cApiClientLanguageCollection extends ItemCollection
 {
@@ -56,7 +78,8 @@ class cApiClientLanguage extends Item
 			} */ 
 			
 			$sSQL = "SELECT ".$this->primaryKey." FROM ".$this->table.
-					" WHERE idclient = '".$idclient."' AND idlang = '".$idlang."'";
+					#" WHERE idclient = '".$idclient."' AND idlang = '".$idlang."'";
+					" WHERE idclient = '" . Contenido_Security::escapeDB($idclient, $this->db) . "' AND idlang = '" . Contenido_Security::escapeDB($idlang, $this->db) . "'";
 
 			/* Query the database */
 			$this->db->query($sSQL);
@@ -128,7 +151,7 @@ class cApiClientLanguage extends Item
 			$this->properties->changeClient($this->idclient);
 		}
 		
-		$this->properties->select("itemtype='".$this->primaryKey."' AND itemid='".$this->get($this->primaryKey)."'", "", "type, value ASC");
+		$this->properties->select("itemtype='".Contenido_Security::escapeDB($this->primaryKey, $this->db)."' AND itemid='".Contenido_Security::escapeDB($this->get($this->primaryKey), $this->db)."'", "", "type, value ASC");
 		
 		if ($this->properties->count() > 0)
 		{
