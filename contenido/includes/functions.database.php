@@ -1,20 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Database Functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.3.1
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-06-04
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: functions.database.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Database Functions
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   04.06.2003
-* Modified  :   $Date: 2006/04/28 09:20:54 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: functions.database.php,v 1.31 2006/04/28 09:20:54 timo.hummel Exp $
-******************************************/
-
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 function dbGetIndexes ($db, $table)
 {
@@ -23,7 +39,7 @@ function dbGetIndexes ($db, $table)
 		return false;	
 	}
 	
-	$sql = "SHOW INDEX FROM $table";
+	$sql = "SHOW INDEX FROM ".Contenido_Security::escapeDB($table, $db);
 	$db->query($sql);
 	
 	$indexes = array();
@@ -43,13 +59,13 @@ function dbDumpArea ($db, $id)
 		return false;	
 	}
 	
-	$sql = 'SELECT name FROM con_area WHERE idarea = $id';
+	$sql = 'SELECT name FROM con_area WHERE idarea = "'.Contenido_Security::toInteger($id).'"';
 	$db->query($sql);
 	if (!$db->next_record()) { return false; }
 	$name = $db->f("name");
 	
 	// First step: Dump
-	$sql = "SELECT * FROM con_area WHERE idarea = $id OR parent_id = '$name'";
+	$sql = "SELECT * FROM con_area WHERE idarea = '".Contenido_Security::toInteger($id)."' OR parent_id = '".Contenido_Security::escapeDB($name, $db)."'";
 	$db->query($sql);
 	
 	//if (!$db->next_record()) { return; }
@@ -96,7 +112,7 @@ function dbDumpAreasAsArray ($arrayname, $db)
                      "'] = '".
                      $value."';\n";
                      
-                $sql = 'SELECT * FROM '.$cfg["tab"]["nav_sub"].' WHERE idarea = '.$db->f("idarea");
+                $sql = 'SELECT * FROM '.$cfg["tab"]["nav_sub"].' WHERE idarea = "'.Contenido_Security::toInteger($db->f("idarea")).'"';
                 $db2 = new DB_Upgrade;
                 $db2->query($sql);
                 dbDumpNavSub('$navsub', $db2, $nextid);
@@ -138,7 +154,7 @@ function dbDumpNavSub ($arrayname, $db, $nextidarea)
                      "'] = '".
                      $value."';\n";
                      
-                $sql = 'SELECT * FROM '.$cfg["tab"]["nav_sub"].' WHERE idarea = '.$db->f("idarea");
+                $sql = 'SELECT * FROM '.$cfg["tab"]["nav_sub"].' WHERE idarea = "'.Contenido_Security::toInteger($db->f("idarea")).'"';
                 $db2 = new DB_Upgrade;
                 //dbDumpNavSub('$navsub', $db2);
     		}
@@ -154,11 +170,11 @@ function dbInsertData ( $table, $data )
 {
 	$db = new DB_Upgrade;
 	
-	$sql = "INSERT INTO $table SET ";
+	$sql = "INSERT INTO ".Contenido_Security::escapeDB($table, $db)." SET ";
 	
 	foreach ($data as $key => $value)
 	{
-		$sql .= $key . ", '".$value."' ";
+		$sql .= Contenido_Security::escapeDB($key, $db) . ", '" . Contenido_Security::escapeDB($value, $db) . "' ";
 	}
 
 
@@ -218,14 +234,14 @@ function dbUpgradeTable ($db, $table, $field, $type, $null, $key, $default, $ext
 	*  If set, create a default value */
 	if ($default != "") {
 		if (((strpos($type, 'timestamp') !== FALSE) && ($default != '')) || ($default == 'NULL')) {
-			$parameter['DEFAULT'] = "DEFAULT $default";
+			$parameter['DEFAULT'] = "DEFAULT ".Contenido_Security::escapeDB($default, $db);
 		} else {
-			$parameter['DEFAULT'] = "DEFAULT '$default'";
+			$parameter['DEFAULT'] = "DEFAULT '".Contenido_Security::escapeDB($default, $db)."'";
 		}
 	}
    
 	if (!dbTableExists($db, $table)) {
-		$createTable = "  CREATE TABLE $table ($field $type ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'] .")";
+		$createTable = "  CREATE TABLE ".Contenido_Security::escapeDB($table, $db)." (".Contenido_Security::escapeDB($field, $db)." $type ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'] .")";
 		$db->query($createTable);
 		$tableCache[] = $table;
 		return true;
@@ -240,7 +256,8 @@ function dbUpgradeTable ($db, $table, $field, $type, $null, $key, $default, $ext
 		{
 			$structure[$field]['NULL'] = "NOT NULL";	
 		}
-		$alterField = "  ALTER TABLE $table CHANGE COLUMN $field $field $type ".$structure[$field]['NULL']." ".$structure[$field]['DEFAULT']." ".$structure[$field]['KEY'];
+		$alterField = "ALTER TABLE ".Contenido_Security::escapeDB($table, $db)." CHANGE COLUMN ".Contenido_Security::escapeDB($field, $db)." ".Contenido_Security::escapeDB($field, $db)."
+                       ".Contenido_Security::escapeDB($type, $db)." ".$structure[$field]['NULL']." ".$structure[$field]['DEFAULT']." ".$structure[$field]['KEY'];
 
 		$db->query($alterField);
 	}		
@@ -256,12 +273,12 @@ function dbUpgradeTable ($db, $table, $field, $type, $null, $key, $default, $ext
    			{
    				if ($structure[$field]['Key'] == "PRI")
    				{
-   					$sql = "ALTER TABLE $table DROP PRIMARY KEY";
+   					$sql = "   ALTER TABLE ".Contenido_Security::escapeDB($table, $db)." DROP PRIMARY KEY";
    				} else {
    					$sql = "";	
    				}	
    			} else {
-	   			$sql = "ALTER TABLE $table DROP INDEX $index";
+	   			$sql = "   ALTER TABLE ".Contenido_Security::escapeDB($table, $db)."' DROP INDEX ".Contenido_Security::escapeDB($index, $db);
    			}
    			
    			$db->query($sql);
@@ -297,9 +314,11 @@ function dbUpgradeTable ($db, $table, $field, $type, $null, $key, $default, $ext
 		if ($blnFound) {
 			/* Rename column, update array, proceed */
 			if ($structure[$strPrevious]['Null'] == 'YES') {
-				$alterField = "  ALTER TABLE `$table` CHANGE COLUMN `$strPrevious` `$field` ".$structure[$strPrevious]['Type']." DEFAULT '".$structure[$strPrevious]['Default']."'";
+				$alterField = "  ALTER TABLE `".Contenido_Securiy::escapeDB($table, $db)."` CHANGE COLUMN `".Contenido_Security::escapeDB($strPrevious, $db)."` `".Contenido_Security::escapeDB($field, $db)."`
+                ".$structure[$strPrevious]['Type']." DEFAULT '".$structure[$strPrevious]['Default']."'";
 			} else {
-				$alterField = "  ALTER TABLE `$table` CHANGE COLUMN `$strPrevious` `$field` ".$structure[$strPrevious]['Type']." NOT NULL DEFAULT '".$structure[$strPrevious]['Default']."'";
+				$alterField = "  ALTER TABLE `".Contenido_Security:escapeDB($table, $db)."` CHANGE COLUMN `".Contenido_Security:escapeDB($strPrevious, $db)."` `".Contenido_Security:escapeDB($field, $db)."`
+                ".$structure[$strPrevious]['Type']." NOT NULL DEFAULT '".$structure[$strPrevious]['Default']."'";
 			}
 
 			$db->query($alterField);
@@ -308,7 +327,8 @@ function dbUpgradeTable ($db, $table, $field, $type, $null, $key, $default, $ext
 			$structure = dbGetColumns($db, $table);
 		} else {
 			/* Add column as specified */
-			$createField = "  ALTER TABLE $table ADD COLUMN $field $type ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'];
+			$createField = "  ALTER TABLE ".Contenido_Security:escapeDB($table, $db)." ADD COLUMN ".Contenido_Security:escapeDB($field, $db)." ".Contenido_Security:escapeDB($type, $db)."
+            ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'];
 			$db->query($createField);
 if ($bDebug) {echo 'createField:'.$createField.'<br />';}			
 			$columnCache[$table] = "";
@@ -326,7 +346,7 @@ if ($bDebug) {echo 'createField:'.$createField.'<br />';}
 	   ($structure[$field]['Extra'] != $extra)) {
       
 		if ($structure[$field]['Key'] == "PRI") {
-			$alterField = "  ALTER TABLE $table ADD PRIMARY KEY ('$field') ";
+			$alterField = "  ALTER TABLE ".Contenido_Security:escapeDB($table, $db)." ADD PRIMARY KEY ('".Contenido_Security:escapeDB($field, $db)."') ";
 		} else {
 			$alterField = "  ALTER TABLE $table CHANGE COLUMN $field $field $type ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'];	
 		}
@@ -382,7 +402,7 @@ function dbGetColumns ($db, $table)
 		return $columnCache[$table];
 	}
 	
-	$sql = "SHOW COLUMNS FROM $table";
+	$sql = "SHOW COLUMNS FROM ".Contenido_Security:escapeDB($table, $db);
 	
 	$db->query($sql);
 	
@@ -519,7 +539,7 @@ function dbDumpData ($table)
 	$sql = "SELECT * FROM " . $cfg["tab"][$table];
 	//echo $sql;
 	
-	echo '$db = new DB_Upgrade; $db->query("DELETE FROM ".$cfg["tab"]["'.$table.'"]);'."\n";
+	echo '$db = new DB_Upgrade; $db->query("DELETE FROM ".$cfg["tab"]["'.Contenido_Security:escapeDB($table, $db).'"]);'."\n";
 	$db->query($sql);
 	
 	while ($db->next_record())
@@ -551,7 +571,7 @@ function dbUpgradeData ($table, $valuesArray)
 	$sql = "INSERT INTO ".$cfg["tab"][$table]." SET ";
 	foreach ($valuesArray as $key => $value)
 		{
-			$addValues[] = "$key = '$value'";
+			$addValues[] = Contenido_Security:escapeDB($key, $db)." = '".Contenido_Security:escapeDB($value, $db)."'";
 		}
 		
 		$param = implode(', ', $addValues);
@@ -579,7 +599,7 @@ function dbUpdateSequence($sequencetable, $table, $db = false)
 	
 	if ($key != "" && $key != $sequencetable)
 	{
-    	$sql = "SELECT ".$key." FROM ". $table ." ORDER BY " . $key ." DESC";
+    	$sql = "SELECT ".Contenido_Security:escapeDB($key, $db)." FROM ". Contenido_Security:escapeDB($table, $db) ." ORDER BY " . Contenido_Security:escapeDB($key, $db) ." DESC";
     	$db->query($sql);
     	
     	if ($db->next_record())
@@ -589,10 +609,10 @@ function dbUpdateSequence($sequencetable, $table, $db = false)
     		$highestval = 0;
     	}
     	
-    	$sql = "DELETE FROM " . $sequencetable . " WHERE seq_name = '".$table."'";
+    	$sql = "DELETE FROM " . Contenido_Security:escapeDB($sequencetable, $db) . " WHERE seq_name = '".Contenido_Security:escapeDB($table, $db)."'";
     	$db->query($sql);
     	
-    	$sql = "INSERT INTO " . $sequencetable ." SET seq_name = '".$table."', nextid = '".($highestval)."'";
+    	$sql = "INSERT INTO " . Contenido_Security:escapeDB($sequencetable, $db) ." SET seq_name = '".Contenido_Security:escapeDB($table, $db)."', nextid = '".Contenido_Security::toInteger($highestval)."'";
     	$db->query($sql);
 	}
 	
