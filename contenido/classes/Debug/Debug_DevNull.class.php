@@ -1,23 +1,38 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Debug object to not output info at all.
-*
-* Note: Be careful when using $bExit = true as this will NOT cause a die() in this object!
-*
-* @version 1.1.1
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-05-07
-* modified 2008-05-21 Added methods add(), reset(), showAll()
-* modified 2008-06-25 Removed die() from show() method
-* }}
-*
-* $Id$:
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Debug object to not output info at all.
+ * Note: Be careful when using $bExit = true as this will NOT cause a die() in this object!
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.1.1
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-05-07
+ *   modified 2008-05-21 Added methods add(), reset(), showAll()
+ *   modified 2008-06-25 Removed die() from show() method
+ * 
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 include_once('IDebug.php');
 
 class Debug_DevNull implements IDebug {
