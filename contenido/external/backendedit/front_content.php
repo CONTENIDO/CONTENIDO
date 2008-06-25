@@ -54,6 +54,8 @@
  * $Id: front_content.php,v 1.85 2007/08/20 19:24:28 bjoern.behrens Exp $
  ****************************************************************/
 
+define("CON_FRAMEWORK", true);
+
 /*
  * Note: In backend this file contenido/external/backendedit/front_content.php is included!
  * The reason is to avoid cross-site scripting errors in the backend, if the backend domain differs from
