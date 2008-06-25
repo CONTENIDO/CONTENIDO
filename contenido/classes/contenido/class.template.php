@@ -1,14 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.template.php,v $
-* Project   :   Contenido
-* Descr     :   Template access class
-* Modified  :   $Date: 2004/08/04 09:00:54 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.template.php,v 1.4 2004/08/04 09:00:54 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Area management class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.4
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2004-08-04
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+
 cInclude("classes", "class.genericdb.php");
 
 class cApiTemplateCollection extends ItemCollection
@@ -30,10 +52,10 @@ class cApiTemplateCollection extends ItemCollection
 		global $cfg, $client;
 		
 		$db = new DB_Contenido;
-		$sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = 0 WHERE idclient = '$client'";
+		$sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = 0 WHERE idclient = '" . Contenido_Security::escapeDB($client , $db) . "'";
 		$db->query($sql);
 		
-		$sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = 1 WHERE idtpl = '$idtpl'";
+		$sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = 1 WHERE idtpl = '" . Contenido_Security::escapeDB($idtpl, $db) . "'";
 		$db->query($sql);
 	}	
 }
