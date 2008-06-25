@@ -1,25 +1,41 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Sample on how to use Contenido_Category / Contenido_Categories / Contenido_Category_Language.
-* 
-* Contenido_Category represets a Contenido Category (yes, indeed) with tbl. "con_cat".
-* Optionally it can be loaded with values of "con_cat_lang" which is represented by Contenido_Category_Language.
-* If you need a "Collection" of Contenido_Category objects, use Contenido_Categories.
-* 
-* These objects cannot be used for creating/updating Categories!!!
-*
-* @version 1.0.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-02-19
-* }}
-*
-* $Id$
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Sample on how to use Contenido_Category / Contenido_Categories / Contenido_Category_Language.
+ * 
+ * Contenido_Category represets a Contenido Category (yes, indeed) with tbl. "con_cat".
+ * Optionally it can be loaded with values of "con_cat_lang" which is represented by Contenido_Category_Language.
+ * If you need a "Collection" of Contenido_Category objects, use Contenido_Categories.
+ * 
+ * These objects cannot be used for creating/updating Categories!!!
+ *  
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-02-19
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude('classes', 'Contenido_Category/Contenido_Category.class.php');
 
