@@ -1,23 +1,35 @@
 <?php
-/******************************************
-* File      :   messageBox.js
-* Project   :   Contenido
-* Descr     :   Message Box for errors
-*               and / or confirms
-*
-* Author    :   Jan Lengowski
-* Created   :   08.05.2003
-* Modified  :   $Date$
-*
-* @version $Revision$
-* @copyright four for business AG <www.4fb.de>
-*
-* @internal {
-*   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
-*
-*   $Id$
-* }
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Message box for errors and / or confirms
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend sripts
+ * @version    1.0.0
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release 4.8.7
+ * 
+ * {@internal 
+ *   created 2003-05-08
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+define("CON_FRAMEWORK", true);
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }

@@ -1,24 +1,35 @@
 <?php
-/*****************************************
-*
-* $Id: HTMLObj.js.php,v 1.9 2004/02/24 10:12:39 timo.hummel Exp $
-*
-* File      :   $RCSfile: HTMLObj.js.php,v $
-* Project   :
-* Descr     :
-*
-* Author    :   $Author: timo.hummel $
-* Modified  :   $Date: 2004/02/24 10:12:39 $
-*
-* © four for business AG, www.4fb.de
-*
-* @internal {
-*   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
-*
-*   $Id$
-* }
-*
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * HTML object
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend sripts
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release 4.8.7
+ * 
+ * {@internal 
+ *   created 2004-04-24
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+define("CON_FRAMEWORK", true);
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }
