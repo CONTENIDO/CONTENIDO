@@ -1,16 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: startup.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Startup Engine
-*
-* Created   :   24.02.2004
-* Modified  :   $Date: 2007/07/11 15:36:56 $
-*
-* � four for business AG, www.4fb.de
-*
-* $Id: startup.php,v 1.13 2007/07/11 15:36:56 wirths Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Global contenido file with includes
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     four for Business AG
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-25, Frederic Schneider, add con_framework check and include contenido_secure
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(CON_FRAMEWORK != true) {
+    die('Illegal call');
+}
 
 if (isset($_REQUEST['cfg'])) {
     die ('Illegal call!');
@@ -63,6 +83,8 @@ while ($locale = readdir($handle))
       }
    }
 }
+
+cInclude("classes", "class.security.php");
 
 cInclude("includes", "cfg_sql.inc.php");
 cInclude("includes", "functions.general.php");
