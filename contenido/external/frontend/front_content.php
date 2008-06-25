@@ -447,8 +447,14 @@ if ($idartlang === false)
 	header($errsite);
 }
 
+/*
+ * removed database roundtrip for checking
+ * if cache is enabled
+ * CON-115
+ * 2008-06-25 Thorsten Granz
+ */
 // START: concache, murat purc
-if (getEffectiveSetting('generator', 'concache') == '1') {
+if ($cfg["cache"]["disable"] != '1') {
 	cInclude('frontend', 'includes/concache.php');
 	$oCacheHandler = new cConCacheHandler($GLOBALS['cfgConCache'], $db);
 	$oCacheHandler->start($iStartTime); // $iStartTime ist optional und ist die startzeit des scriptes, z. b. am anfang von fron_content.php
@@ -964,8 +970,14 @@ else
 	}
 }
 
+/*
+ * removed database roundtrip for checking
+ * if cache is enabled
+ * CON-115
+ * 2008-06-25 Thorsten Granz
+ */
 // START: concache, murat purc
-if (getEffectiveSetting('generator', 'concache') == '1') {
+if ($cfg["cache"]["disable"] != '1') {
 	$oCacheHandler->end();
 	#echo $oCacheHandler->getInfo();
 }
