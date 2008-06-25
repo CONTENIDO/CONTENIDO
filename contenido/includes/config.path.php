@@ -1,16 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: config.path.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Path Configurations
-*
-* Created   :   24.02.2004
-* Modified  :   $Date: 2006/03/16 10:52:50 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: config.path.php,v 1.9 2006/03/16 10:52:50 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Path Configurations
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.9.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2004-02-24
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if (isset($_REQUEST['cfg'])) {
     die ('Illegal call!');

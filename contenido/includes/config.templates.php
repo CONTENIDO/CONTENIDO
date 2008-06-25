@@ -1,16 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: config.templates.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Template Configurations
-*
-* Created   :   24.02.2004
-* Modified  :   $Date: 2007/05/25 08:06:29 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: config.templates.php,v 1.4 2007/05/25 08:06:29 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Template Configurations
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.4.0
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2004-02-24
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 global $cfg;
 

@@ -1,22 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: functions.api.general.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido General API functions
-*
-* Author    :   Timo A. Hummel
-*
-* Created   :   01.09.2003
-* Modified  :   $Date: 2007/06/24 18:02:00 $
-*
-* @internal {
-*   modified 2008-06-16, H. Librenz - Hotfix: added check for illegal calling
-*
-*   $Id: functions.api.general.php,v 1.21 2007/06/24 18:02:00 bjoern.behrens Exp $
-* }
-*
-* © four for business AG, www.4fb.de
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido General API functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-09-01
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }

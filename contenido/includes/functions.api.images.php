@@ -1,19 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Image API functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.4.3
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-08-08
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: functions.api.images.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Image API functions
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   08.08.2003
-* Modified  :   $Date: 2007/06/24 17:52:17 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: functions.api.images.php,v 1.43 2007/06/24 17:52:17 bjoern.behrens Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /* Info:
  * This file contains Contenido Image API functions.

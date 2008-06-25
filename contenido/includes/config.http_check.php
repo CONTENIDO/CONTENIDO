@@ -1,8 +1,39 @@
+
 <?php
 /**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Configuration file for HTTP parameter check feature.
  * 
- * Do not edit or add anything in check array here, use config.http_check.local.php for custom entries. Otherwise
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.1.0
+ * @author     Holger Librenz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2008-02-08
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+/* Do not edit or add anything in check array here, use config.http_check.local.php for custom entries. Otherwise
  * your changes could be damaged on next update!
  * 
  * The syntax is very simple. The array $aCheck contains as first key the parameter type - i.e. GET or POST.
@@ -12,12 +43,7 @@
  *	CON_CHECK_PRIMITIVESTRING	=> simple string
  *	CON_CHECK_STRING			=> more complex string
  *	CON_CHECK_HASH32			=> 32-character hash
- * 
- * @version $Revision: 1.1 $
- * @author $Author: holger.librenz $
- * @copyright four for business AG <www.4fb.de>
- * 
- * $Id: config.http_check.php,v 1.1 2008/02/08 18:36:09 holger.librenz Exp $
+ *
  */
 
 #### Logging and mode ####

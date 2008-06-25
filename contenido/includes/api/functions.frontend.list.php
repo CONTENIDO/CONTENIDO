@@ -1,18 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: functions.frontend.list.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Frontend list
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   09.10.2003
-* Modified  :   $Date: 2006/04/28 09:20:55 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: functions.frontend.list.php,v 1.4 2006/04/28 09:20:55 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Frontend list
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-10-09
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * Class FrontendList

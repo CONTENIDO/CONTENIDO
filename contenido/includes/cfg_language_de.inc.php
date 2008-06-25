@@ -1,13 +1,36 @@
 <?php
-/******************************************************************************
-Description : Language Strings for "Deutsch"
-Copyright   : four for business AG, 2002
-Author      : Olaf Niemann
-Urls        : www.contenido.de
-Create date : 2002-03-02
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Language string for "Deutsch" (German)
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2002-03-02
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-Remarks     : For Contenido-backend only!!!
-*******************************************************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("includes", "functions.i18n.php");
 

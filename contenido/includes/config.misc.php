@@ -1,16 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: config.misc.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Misc Configurations
-*
-* Created   :   24.02.2004
-* Modified  :   $Date: 2007/07/20 22:18:31 $
-*
-* � four for business AG, www.4fb.de
-*
-* $Id: config.misc.php,v 1.47 2007/07/20 22:18:31 holger.librenz Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Misc Configurations
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.4.7
+ * @author     Holger Librenz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2004-02-24
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 global $cfg;
 
