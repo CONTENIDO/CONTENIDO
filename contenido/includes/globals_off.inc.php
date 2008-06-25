@@ -1,10 +1,35 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Makes available those super global arrays that are made available in versions of PHP after v4.1.0
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Martin Horwath
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unkown
+ *   modified 2008-06-25, Frederic Schneider, add stripslashes_deep and contenido_stripslashes constant
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
+define('CONTENIDO_STRIPSLASHES', true);
 
-// REGISTER GLOBAL VARS
-// Author Martin Horwath [horwath@dayside.net]
-
-// Makes available those super global arrays that are made available in versions of PHP after v4.1.0
 if (phpversion() <= "4.1.0")
 {
 
@@ -42,12 +67,21 @@ if (!isset ($HTTP_POST_VARS) && isset ($_POST))
 
 // simulate get_magic_quotes_gpc on if turned off 
 if (!get_magic_quotes_gpc()) { 
+
 	function addslashes_deep($value) 
 	{ 
 		$value = is_array($value) ? array_map('addslashes_deep', $value) : addslashes($value); 
 
 		return $value;
 	} 
+    
+	function stripslashes_deep($value) 
+	{ 
+		$value = is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value); 
+
+		return $value;
+	} 
+
 
 	$_POST   = array_map('addslashes_deep', $_POST); 
 	$_GET    = array_map('addslashes_deep', $_GET); 
