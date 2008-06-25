@@ -1,14 +1,34 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.action.php,v $
-* Project   :   Contenido
-* Descr     :   Action management class
-* Modified  :   $Date: 2006/06/09 12:46:27 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.action.php,v 1.4 2006/06/09 12:46:27 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Action management class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.4
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2006-06-09
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude('classes', 'class.genericdb.php');
 cInclude('classes', 'contenido/class.area.php');
