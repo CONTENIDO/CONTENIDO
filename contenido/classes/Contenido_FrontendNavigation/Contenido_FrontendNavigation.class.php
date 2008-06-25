@@ -1,24 +1,39 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Object to build a Contenido Frontend Navigation 
-*
-* @version 0.2.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-02-15
-* modified 2008-04-25 added method getLevel() and property aLevel, modified loadSubCategories() accordingly
-* 
-* @requires Contenido_FrontendNavigation_Base
-* }}
-*
-* $Id$
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Object to build a Contenido Frontend Navigation 
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    0.2.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-02-15
+ *   modified 2008-04-25 added method getLevel() and property aLevel, modified loadSubCategories() accordingly
+ * 
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Base.class.php');
+cInclude("classes", "class.security.php");
 
 class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
     /**
@@ -98,11 +113,11 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 				WHERE
 					cattree.idcat    = cat.idcat AND
 					cat.idcat    = catlang.idcat AND
-					cat.idclient = '.$this->iClient.' AND
-					catlang.idlang   = '.$this->iLang.' AND
+					cat.idclient = '.Contenido_Security::escapeDB($this->iClient, $this->oDb).' AND
+					catlang.idlang   = '.Contenido_Security::escapeDB($this->iLang, $this->oDb).' AND
 					catlang.visible  = 1 AND ' . 
                     $sSqlPublic . '
-					cat.parentid = '.$iIdcat.'
+					cat.parentid = '.Contenido_Security::escapeDB($iIdcat, $this->oDb).'
 				ORDER BY
 					cattree.idtree';
 	    if ($this->bDbg === true) {
@@ -167,7 +182,7 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
         if (isset($this->aLevel[intval($iIdcat)])) {
             return $this->aLevel[intval($iIdcat)];
         }
-        $sSql = 'SELECT level FROM ' . $this->aCfg["tab"]["cat_tree"] . ' WHERE idcat = ' . intval($iIdcat);
+        $sSql = 'SELECT level FROM ' . $this->aCfg["tab"]["cat_tree"] . ' WHERE idcat = ' . Contenido_Security::escapeDB(intval($iIdcat), $this->oDb);
         $this->oDb->query($sSql);
         if ($this->oDb->Errno != 0) {
 	        return -1;
