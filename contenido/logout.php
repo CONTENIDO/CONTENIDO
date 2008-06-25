@@ -15,6 +15,8 @@
 * $Id: logout.php,v 1.11 2006/04/28 09:20:55 timo.hummel Exp $
 ******************************************/
 
+define("CON_FRAMEWORK", true);
+
 include_once ('./includes/startup.php');
 
 cInclude ("includes", 'functions.i18n.php');
