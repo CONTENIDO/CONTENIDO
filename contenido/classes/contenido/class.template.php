@@ -32,6 +32,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 
 cInclude("classes", "class.genericdb.php");
+cInclude("classes", "class.security.php");
 
 class cApiTemplateCollection extends ItemCollection
 {
