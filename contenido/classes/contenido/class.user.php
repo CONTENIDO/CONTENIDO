@@ -1,15 +1,38 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.user.php,v $
-* Project   :   Contenido
-* Descr     :   User access class
-* Modified  :   $Date: 2007/06/24 17:45:57 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.user.php,v 1.6 2007/06/24 17:45:57 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * User access class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.6
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2007-06-24
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+
 cInclude("classes", "class.genericdb.php");
+cInclude("classes", "class.security.php");
 
 class cApiUserCollection extends ItemCollection
 {
@@ -104,9 +127,9 @@ class cApiUser extends Item
 		}
 		
 		$sql = "SELECT value FROM " .$cfg["tab"]["user_prop"]."
-				WHERE user_id = '".$this->values['user_id']."'
-			      AND type = '$type'
-				  AND name = '$name'";
+				WHERE user_id = '" . Contenido_Security::escapeDB($this->values['user_id'], $this->db) . "'
+			      AND type = '" . Contenido_Security::escapeDB($type, $this->db) . "'
+				  AND name = '" . Contenido_Security::escapeDB($name, $this->db) . "'";
 		$this->db->query($sql);
 		 
 		if ($this->db->next_record())
@@ -150,8 +173,8 @@ class cApiUser extends Item
 	 			foreach ($aGroups as $iID)
 	 			{
 	 				$sSQL = "SELECT name, value FROM " .$cfg["tab"]["group_prop"]." 
-                			 WHERE group_id = '".$iID."' 
-                   			 AND type = '".$sType."'";
+                			 WHERE group_id = '" . Contenido_Security::escapeDB($iID, $this->db) . "' 
+                   			 AND type = '".Contenido_Security::escapeDB($sType, $this->db)."'";
 					$this->db->query($sSQL);
 					
 					while ($this->db->next_record())
@@ -163,8 +186,8 @@ class cApiUser extends Item
 	 	}
 	 	
 	 	$sSQL = "SELECT name, value FROM " .$cfg["tab"]["user_prop"]." 
-            	 WHERE user_id = '".$this->values['user_id']."' 
-                 AND type = '$sType'";
+            	 WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."' 
+                 AND type = '". Contenido_Security::escapeDB($sType, $this->db) . "'";
 		$this->db->query($sSQL);
 		
 		while ($this->db->next_record())
@@ -185,7 +208,7 @@ class cApiUser extends Item
 		global $cfg;
 		
 		$sql = "SELECT type, name FROM " .$cfg["tab"]["user_prop"]."
-				WHERE user_id = '".$this->values['user_id']."'";
+				WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."'";
 		$this->db->query($sql);
 
 		if ($this->db->num_rows() == 0)
@@ -222,17 +245,17 @@ class cApiUser extends Item
 	
 			$sql = "UPDATE ".$cfg["tab"]["user_prop"]."
 					SET value = '$value'
-					WHERE user_id = '".$this->values['user_id']."'
-			      	AND type = '$type'
-				  	AND name = '$name'";
+					WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."'
+			      	AND type = '" . Contenido_Security::escapeDB($type, $this->db) . "'
+				  	AND name = '" . Contenido_Security::escapeDB($name, $this->db) . "'";
 			$this->db->query($sql);
 		} else {
 			$sql = "INSERT INTO  ".$cfg["tab"]["user_prop"]."
-					SET value = '$value',
-						user_id = '".$this->values['user_id']."',
-			      		type = '$type',
-				  		name = '$name',
-                        iduserprop = '" .$this->db->nextid($cfg["tab"]["user_prop"])."'";
+					SET value = '" . Contenido_Security::escapeDB($value, $this->db) . "',
+						user_id = '" . Contenido_Security::escapeDB($this->values['user_id'], $this->db) . "',
+			      		type = '" . Contenido_Security::escapeDB($type, $this->db) . "',
+				  		name = '" . Contenido_Security::escapeDB($name, $this->db) . "',
+                        iduserprop = " .$this->db->nextid($cfg["tab"]["user_prop"]);
 			$this->db->query($sql);
 		}
 	}
@@ -249,9 +272,9 @@ class cApiUser extends Item
 		
 		/* Check if such an entry already exists */
 		$sql = "DELETE FROM  ".$cfg["tab"]["user_prop"]."
-					WHERE user_id = '".$this->values['user_id']."' AND
-			      		type = '$type' AND
-				  		name = '$name'";
+					WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."' AND
+			      		type = '" . Contenido_Security::escapeDB($type, $this->db) . "' AND
+				  		name = '" . Contenido_Security::escapeDB($name, $this->db) . "'";
 		$this->db->query($sql);
 	}	
 }
