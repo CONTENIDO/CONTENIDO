@@ -1,25 +1,35 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Objects for Category handling.
-* 
-* Contenido_Category
-* Contenido_Categories
-* Contenido_Category_Language
-* Contenido_Category_Base
-*
-* @version 0.8.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-02-15
-* modified 2008-02-22 Contenido_Categories now implements Countable
-* }}
-*
-* $Id$
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Objects for Category handling.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    0.8.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-02-15
+ *   modified 2008-02-22 Contenido_Categories now implements Countable
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude('classes', 'Debug/DebuggerFactory.class.php');
 
@@ -143,7 +153,7 @@ class Contenido_Category extends Contenido_Category_Base {
 				FROM 
 					' . $this->aCfg['tab']['cat'] . ' 
 				WHERE 
-					idcat = ' . intval($iIdCat);
+					idcat = ' . Contenido_Security::escapeDB($iIdCat, $this->oDb);
 	    if ($this->bDbg === true) {
 	        $this->oDbg->show($sSql, 'Contenido_Category::load($iIdCat, $bIncludeLanguage = false, $iIdlang = -1): $sSql');
 	    }
@@ -239,10 +249,10 @@ class Contenido_Category extends Contenido_Category_Base {
 				WHERE
 					cattree.idcat    = cat.idcat AND
 					cat.idcat    = catlang.idcat AND
-					cat.idclient = '.$this->iIdClient.' AND
-					catlang.idlang   = '.$this->iIdLang.' AND
+					cat.idclient = ' . Contenido_Security::escapeDB($this->iIdClient, $this->oDb) . ' AND
+					catlang.idlang   = ' . Contenido_Security::escapeDB($this->iIdLang, $this->oDb) . ' AND
 					catlang.visible  = 1 AND 
-					cat.parentid = '.$iIdcat.'
+					cat.parentid = ' . Contenido_Security::escapeDB($iIdcat, $this->oDb) .'
 				ORDER BY
 					cattree.idtree';
         if ($this->bDbg === true) {
@@ -434,9 +444,6 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
                 $iIdLang = $this->getIdLang();
                 $oCategory = new Contenido_Category($this->oDb, $this->aCfg);
                 $oCategory->setDebug($this->bDbg, $this->sDbgMode);
-//                if ($iIdLang != -1) {
-//                    $oCategory->setIdLang($iIdLang);
-//                }
                 $oCategory->setloadSubCategories($this->bLoadSubCategories, $this->iSubCategoriesLoadDepth);
                 $oCategory->load($iId, $bIncludeLanguage, $iIdLang);
                 $this->add($oCategory);
@@ -453,7 +460,6 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
      * @author Rudi Bieller
      */
     public function add(Contenido_Category $oContenidoCategory, $iOffset = null) {
-        //$this->aContenidoCategories[] = $oContenidoCategory;
         $this->offsetSet($iOffset, $oContenidoCategory);
     }
     
@@ -673,18 +679,16 @@ class Contenido_Category_Language extends Contenido_Category_Base {
 					FROM 
 						' . $this->aCfg["tab"]["cat_lang"] . ' 
 					WHERE 
-						idcat = ' . $this->getIdCat() . ' AND idlang = ' . $this->getIdLang();
+						idcat = ' . Contenido_Security::escapeDB($this->getIdCat(), $this->oDb) . ' AND 
+						idlang = ' . Contenido_Security::escapeDB($this->getIdLang(), $this->oDb);
         } else {
 	        $sSql = 'SELECT 
 						idcatlang, idtplcfg, name, visible, public, status, author, created, lastmodified, startidartlang, urlname 
 					FROM 
 						' . $this->aCfg["tab"]["cat_lang"] . ' 
 					WHERE 
-						idcatlang = ' . intval($iIdCatLang);
+						idcatlang = ' . Contenido_Security::escapeDB(intval($iIdCatLang), $this->oDb);
         }
-//	    if ($this->bDbg === true) {
-//	        $this->oDbg->show($sSql, 'Seminar2_Date::load($iSeminarId, $iLocationId): $sSql');
-//	    }
 	    $this->oDb->query($sSql);
 	    if ($this->oDb->Errno != 0) {
 	        return false;
