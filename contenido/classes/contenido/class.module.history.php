@@ -1,19 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Area management class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.2
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-12-14
+ *   modified 2007-07-19
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.module.history.php,v $
-* Project   :   Contenido
-* Descr     :   Module history
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   14.12.2003
-* Modified  :   $Date: 2007/07/19 20:27:58 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.module.history.php,v 1.9 2007/07/19 20:27:58 bjoern.behrens Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+
 cInclude("classes", "class.genericdb.php");
 
 class cApiModuleHistoryCollection extends ItemCollection
