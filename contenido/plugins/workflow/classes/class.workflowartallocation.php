@@ -9,12 +9,14 @@
 *               
 * Created   :   18.07.2003
 * Modified  :   $Date: 2006/01/13 15:54:41 $
+* modified : 2008-06-25 - use php mailer class instead of mail()
 *
 * © four for business AG, www.4fb.de
 *
 * $Id: class.workflowartallocation.php,v 1.4 2006/01/13 15:54:41 timo.hummel Exp $
 ******************************************/
 
+cInclude('classes', 'class.phpmailer.php');
 
 /**
  * Class WorkflowArtAllocations
@@ -138,6 +140,18 @@ class WorkflowArtAllocation extends Item {
 	{
 		global $cfg;
 		
+		$sMailhost = getSystemProperty('system', 'mail_host');
+        if ($sMailhost == '') {
+            $sMailhost = 'localhost';
+        } 
+		
+		//modified : 2008-06-25 - use php mailer class instead of mail()
+		$oMail = new phpmailer;
+        $oMail->Host = $sMailhost;
+        $oMail->IsHTML(0);
+		$oMail->WordWrap = 1000;
+		$oMail->IsMail();
+		
 		if (array_key_exists("idusersequence",$this->modifiedValues))
 		{
 			$usersequence = new WorkflowUserSequence;
@@ -237,7 +251,7 @@ class WorkflowArtAllocation extends Item {
                                 			date("Y-m-d H:i:s", $starttime),
                                 			date("Y-m-d H:i:s", $maxtime));
 					$user = new User;
-					
+
                     if (isGroup($usersequence->get("iduser")))
                     {
                     	    $sql = "select idgroupuser, user_id FROM ". $cfg["tab"]["groupmembers"] ." WHERE
@@ -247,12 +261,20 @@ class WorkflowArtAllocation extends Item {
             				while ($db->next_record())
             				{
             					$user->loadUserByUserID($db->f("user_id"));
-								mail($user->getField("email"),"Workflow notification",$filledMail);	
+								//modified : 2008-06-25 - use php mailer class instead of mail()
+								$oMail->AddAddress($user->getField("email"), "");
+						        $oMail->Subject = stripslashes (i18n('Workflow notification'));
+						        $oMail->Body = $filledMail;
+								$oMail->Send();
             				}
             				
                     } else {
                     	$user->loadUserByUserID($usersequence->get("iduser"));
-                    	mail($user->getField("email"),"Workflow notification",$filledMail);
+						//modified : 2008-06-25 - use php mailer class instead of mail()
+                    	$oMail->AddAddress($user->getField("email"), "");
+				        $oMail->Subject = stripslashes (i18n('Workflow notification'));
+				        $oMail->Body = $filledMail;
+						$oMail->Send();
                     }
                     
             	} else {
@@ -289,13 +311,21 @@ class WorkflowArtAllocation extends Item {
             				{
             					$user->loadUserByUserID($db->f("user_id"));
             					echo "mail to ".$user->getField("email")."<br>";
-								mail($user->getField("email"),"Workflow escalation",$filledMail);	
+								//modified : 2008-06-25 - use php mailer class instead of mail()
+								$oMail->AddAddress($user->getField("email"), "");
+						        $oMail->Subject = stripslashes (i18n('Workflow escalation'));
+						        $oMail->Body = $filledMail;
+								$oMail->Send();								
             				}
             				
                     } else {
                     	$user->loadUserByUserID($usersequence->get("iduser"));
                     	echo "mail to ".$user->getField("email")."<br>";
-                    	mail($user->getField("email"),"Workflow escalation",$filledMail);
+						//modified : 2008-06-25 - use php mailer class instead of mail()
+						$oMail->AddAddress($user->getField("email"), "");
+						$oMail->Subject = stripslashes (i18n('Workflow escalation'));
+						$oMail->Body = $filledMail;
+						$oMail->Send();	
                     }
             	}           		
             		
