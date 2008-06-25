@@ -1,25 +1,40 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Content Functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * @con_notice Please add only stuff which is relevant for the frontend
+ *             AND the backend. This file should NOT contain any backend editing
+ *             functions to improve frontend performance:
+ *
+ *
+ * @package    Contenido Backend includes
+ * @version    1.3.5
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-12-15
+ *   modified 2008-06-25, Timo Trautmann, user meta tags and system meta tags were merged, not replaced
+ *   modified 2008-06-25, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: functions.con2.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Content Functions
-*				NOTE: Please add only stuff which is relevant for
-*					  the frontend AND the backend. This file should
-*					  NOT contain any backend editing functions to
-*					  improve frontend performance.
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   15.12.2003
-* Modified  :   $Date: 2007/01/30 20:14:25 $
-* modified : 2008-06-25 Timo.Trautmann - user meta tags and system meta tags were merged, not replaced
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: functions.con2.php,v 1.35 2007/01/30 20:14:25 bjoern.behrens Exp $
-******************************************/
-
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * Generates the code for one
@@ -54,8 +69,8 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	                FROM
 	                    ".$cfg["tab"]["cat_art"]."
 	                WHERE
-	                    idcat = '".$idcat."' AND
-	                    idart = '".$idart."'";
+	                    idcat = '".Contenido_Security::toInteger($idcat)."' AND
+	                    idart = '".Contenido_Security::toInteger($idart)."'";
 
 	$db->query($sql);
 	$db->next_record();
@@ -72,10 +87,10 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	                    ".$cfg["tab"]["art_lang"]." AS a,
 	                    ".$cfg["tab"]["art"]." AS b
 	                WHERE
-	                    a.idart     = '".$idart."' AND
-	                    a.idlang    = '".$lang."' AND
+	                    a.idart     = '".Contenido_Security::toInteger($idart)."' AND
+	                    a.idlang    = '".Contenido_Security::escapeDB($lang)."' AND
 	                    b.idart     = a.idart AND
-	                    b.idclient  = '".$client."'";
+	                    b.idclient  = '".Contenido_Security::escapeDB($client)."'";
 
 	$db->query($sql);
 	$db->next_record();
@@ -96,7 +111,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 		                     FROM
 		                        ".$cfg["tab"]["container_conf"]."
 		                     WHERE
-		                        idtplcfg = '".$idtplcfg."'
+		                        idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'
 		                     ORDER BY
 		                        number ASC";
 
@@ -119,10 +134,10 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 		                        ".$cfg["tab"]["cat_lang"]." AS a,
 		                        ".$cfg["tab"]["cat"]." AS b
 		                    WHERE
-		                        a.idcat     = '".$idcat."' AND
-		                        a.idlang    = '".$lang."' AND
+		                        a.idcat     = '".Contenido_Security::toInteger($idcat)."' AND
+		                        a.idlang    = '".Contenido_Security::escapeDB($lang)."' AND
 		                        b.idcat     = a.idcat AND
-		                        b.idclient  = '".$client."'";
+		                        b.idclient  = '".Contenido_Security::escapeDB($client)."'";
 
 		$db->query($sql);
 		$db->next_record();
@@ -144,7 +159,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 			                         FROM
 			                            ".$cfg["tab"]["container_conf"]."
 			                         WHERE
-			                            idtplcfg = '".$idtplcfg."'
+			                            idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'
 			                         ORDER BY
 			                            number ASC";
 
@@ -169,17 +184,19 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 
 			$code = '<html><body>No code was created for this art in this category.</body><html>';
 
-			$sql = "SELECT * FROM ".$cfg["tab"]["code"]." WHERE idcatart='$idcatart' AND idlang='$lang'";
+			$sql = "SELECT * FROM ".$cfg["tab"]["code"]." WHERE idcatart='".Contenido_Security::toInteger($idcatart)."' AND idlang='".Contenido_Security::escapeDB($lang)."'";
 
 			$db->query($sql);
 
 			if ($db->next_record())
 			{
-				$sql = "UPDATE ".$cfg["tab"]["code"]." SET code='$code', idlang='$lang', idclient='$client' WHERE idcatart='$idcatart' AND idlang='$lang'";
+				$sql = "UPDATE ".$cfg["tab"]["code"]." SET code='".Contenido_Security::escapeDB($code)."', idlang='".Contenido_Security::escapeDB($lang)."', idclient='".Contenido_Security::escapeDB($client)."'
+                        WHERE idcatart='".Contenido_Security::toInteger($idcatart)."' AND idlang='".Contenido_Security::escapeDB($lang)."'";
 				$db->query($sql);
 			} else
 			{
-				$sql = "INSERT INTO ".$cfg["tab"]["code"]." (idcode, idcatart, code, idlang, idclient) VALUES ('".$db->nextid($cfg["tab"]["code"])."', '$idcatart', '$code', '$lang', '$client')";
+				$sql = "INSERT INTO ".$cfg["tab"]["code"]." (idcode, idcatart, code, idlang, idclient) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["code"]))."', '".Contenido_Security::toInteger($idcatart)."',
+                        '".Contenido_Security::escapeDB($code)."', '".Contenido_Security::escapeDB($lang)."', '".Contenido_Security::escapeDB($client)."')";
 				$db->query($sql);
 			}
 
@@ -197,7 +214,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	                    ".$cfg["tab"]["tpl"]." AS a,
 	                    ".$cfg["tab"]["tpl_conf"]." AS b
 	                WHERE
-	                    b.idtplcfg  = '".$idtplcfg."' AND
+	                    b.idtplcfg  = '".Contenido_Security::toInteger($idtplcfg)."' AND
 	                    b.idtpl     = a.idtpl";
 
 	$db->query($sql);
@@ -222,7 +239,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	                FROM
 	                    ".$cfg["tab"]["container"]."
 	                WHERE
-	                    idtpl = '".$idtpl."'
+	                    idtpl = '".Contenido_Security::toInteger($idtpl)."'
 	                ORDER BY
 	                    number ASC";
 
@@ -234,7 +251,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	}
 
 	/* Get code from Layout */
-	$sql = "SELECT * FROM ".$cfg["tab"]["lay"]." WHERE idlay = '".$idlay."'";
+	$sql = "SELECT * FROM ".$cfg["tab"]["lay"]." WHERE idlay = '".Contenido_Security::toInteger($idlay)."'";
 
 	$db->query($sql);
 	$db->next_record();
@@ -349,8 +366,8 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	                WHERE
 	                    A.idtype    = C.idtype AND
 	                    A.idartlang = B.idartlang AND
-	                    B.idart     = '".$idart."' AND
-	                    B.idlang    = '".$lang."'";
+	                    B.idart     = '".Contenido_Security::toInteger($idart)."' AND
+	                    B.idlang    = '".Contenido_Security::escapeDB($lang)."'";
 
 	$db->query($sql);
 
@@ -359,7 +376,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 		$a_content[$db->f("type")][$db->f("typeid")] = $db->f("value");
 	}
 
-	$sql = "SELECT idartlang, pagetitle FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".$idart."' AND idlang='".$lang."'";
+	$sql = "SELECT idartlang, pagetitle FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang='".Contenido_Security::escapeDB($lang)."'";
 
 	$db->query($sql);
 	$db->next_record();
@@ -425,6 +442,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	foreach ($availableTags as $key => $value)
 	{
 		$metavalue = conGetMetaValue($idartlang, $key);
+
 		if (strlen($metavalue) > 0)
 		{
 			//$metatags[$value["name"]] = array(array("attribute" => $value["fieldname"], "value" => $metavalue), ...);
@@ -432,7 +450,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 		}
 
 	}
-	
+
 	/* contenido */
 	$metatags[] = array ('name' => 'generator', 'content' => 'CMS Contenido '.$cfg['version']);
 	if (getEffectiveSetting('generator', 'xhtml', "false") == "true")
@@ -455,41 +473,40 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 			if (is_array($tmpMetatags))
 			{
 				//check for all system meta tags if there is already a user meta tag
-			    foreach ($tmpMetatags as $aAutValue) {
-				  $bExists = false;
-				  
-				  //get name of meta tag for search
-				  $sSearch = '';
-				  if (array_key_exists('name', $aAutValue)) {
-					$sSearch = $aAutValue['name'];
-				  } else if (array_key_exists('http-equiv', $aAutValue)) {
-				    $sSearch = $aAutValue['http-equiv'];
-				  }
-				  
-				  //check if meta tag is already in list of user meta tags
-				  if (strlen($sSearch) > 0) {
-					  foreach ($metatags as $aValue) {
-					      if (array_key_exists('name', $aValue)) {
-						      if ($sSearch == $aValue['name']) {
-							      $bExists = true;
-								  break;
-							  }
-					      } else if (array_key_exists('http-equiv', $aAutValue)) {
-						      if ($sSearch == $aValue['http-equiv']) {
-							      $bExists = true;
-								  break;
-							  }
-					      }
-					  }
-				  }
-				  
-				  //add system meta tag if there is no user meta tag
-				  if ($bExists == false && strlen($aAutValue['content']) > 0) { 
-				    array_push($metatags, $aAutValue);
-				  }
+				foreach ($tmpMetatags as $aAutValue) {
+					$bExists = false;
+    
+					//get name of meta tag for search
+					$sSearch = '';
+					if (array_key_exists('name', $aAutValue)) {
+						$sSearch = $aAutValue['name'];
+					} else if (array_key_exists('http-equiv', $aAutValue)) {
+						$sSearch = $aAutValue['http-equiv'];
+					}
+    
+					//check if meta tag is already in list of user meta tags
+					if (strlen($sSearch) > 0) {
+						foreach ($metatags as $aValue) {
+							if (array_key_exists('name', $aValue)) {
+								if ($sSearch == $aValue['name']) {
+									$bExists = true;
+									break;
+								}
+							} else if (array_key_exists('http-equiv', $aAutValue)) {
+								if ($sSearch == $aValue['http-equiv']) {
+									$bExists = true;
+									break;
+								}
+							}
+						}
+					}
+    
+					//add system meta tag if there is no user meta tag
+					if ($bExists == false && strlen($aAutValue['content']) > 0) {
+						array_push($metatags, $aAutValue);
+					}
 				}
-			}
-			//end added 2008-06-25 Timo Trautmann 
+			} 
 		}
 	}
 
@@ -508,11 +525,11 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 		$oMetaTagGen->removeAttribute("id");
         
         /*Check if metatag already exists*/
-		if (preg_match('/(<meta(?:\s+)name(?:\s*)=(?:\s*)(?:\\\\"|\\\\\')(?:\s*)'.$value["name"].'(?:\s*)(?:\\\\"|\\\\\')(?:[^>]+)>\r?\n?)/i', $code, $aTmetatagfound)) {
-			$code = str_replace($aTmetatagfound[1], $oMetaTagGen->render()."\n", $code);
-		} else {
-			$sMetatags .= $oMetaTagGen->render()."\n";
-		}
+        if (preg_match('/(<meta(?:\s+)name(?:\s*)=(?:\s*)(?:\\\\"|\\\\\')(?:\s*)'.$value["name"].'(?:\s*)(?:\\\\"|\\\\\')(?:[^>]+)>\r?\n?)/i', $code, $aTmetatagfound)) {
+            $code = str_replace($aTmetatagfound[1], $oMetaTagGen->render()."\n", $code);
+        } else {
+            $sMetatags .= $oMetaTagGen->render()."\n";
+        }
 	}
 
 	/* Add meta tags */
@@ -531,17 +548,19 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 		{
 			if ($debug)
 				echo "UPDATED code for lang:$lang, client:$client, idcatart:$idcatart";
-			$sql = "UPDATE ".$cfg["tab"]["code"]." SET code='".addslashes($code)."', idlang='".$lang."', idclient='".$client."' WHERE idcatart='".$idcatart."' AND idlang='".$lang."'";
+			$sql = "UPDATE ".$cfg["tab"]["code"]." SET code='".Contenido_Security::escapeDB($code)."', idlang='".Contenido_Security::escapeDB($lang)."', idclient='".Contenido_Security::escapeDB($client)."'
+					WHERE idcatart='".Contenido_Security::toInteger($idcatart)."' AND idlang='".Contenido_Security::escapeDB($lang)."'";
 			$db->query($sql);
 		} else
 		{
 			if ($debug)
 				echo "INSERTED code for lang:$lang, client:$client, idcatart:$idcatart";
-			$sql = "INSERT INTO ".$cfg["tab"]["code"]." (idcode, idcatart, code, idlang, idclient) VALUES ('".$db->nextid($cfg["tab"]["code"])."', '".$idcatart."', '".addslashes($code)."', '".$lang."', '".$client."')";
+			$sql = "INSERT INTO ".$cfg["tab"]["code"]." (idcode, idcatart, code, idlang, idclient) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["code"]))."', '".Contenido_Security::toInteger($idcatart)."',
+					'".Contenido_Security::escapeDB($code)."', '".Contenido_Security::escapeDB($lang)."', '".Contenido_Security::escapeDB($client)."')";
 			$db->query($sql);
 		}
 
-		$sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET createcode = '0' WHERE idcatart='".$idcatart."'";
+		$sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET createcode = '0' WHERE idcatart='".Contenido_Security::toInteger($idcatart)."'";
 		$db->query($sql);
 	}
 
@@ -563,7 +582,7 @@ function getArtLang($idart, $idlang)
 	global $cfg;
 
 	$db = new DB_Contenido;
-	$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE "."idart = '$idart' AND idlang = '$idlang'";
+	$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE "."idart = '".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($idlang)."'";
 
 	$db->query($sql);
 	if ($db->next_record())
@@ -590,7 +609,7 @@ function conGetAvailableMetaTagTypes()
 	$db = new DB_Contenido;
 
 	$sql = "SELECT idmetatype, metatype, fieldtype, maxlength, fieldname
-					FROM ".$cfg["tab"]["meta_type"];
+			FROM ".$cfg["tab"]["meta_type"];
 
 	$db->query($sql);
 
@@ -630,8 +649,8 @@ function conGetMetaValue($idartlang, $idmetatype)
 	$db = new DB_Contenido;
 
 	$sql = "SELECT metavalue
-					FROM ".$cfg["tab"]["meta_tag"]." WHERE idartlang = '$idartlang'
-						 AND idmetatype = '$idmetatype'";
+			FROM ".$cfg["tab"]["meta_tag"]." WHERE idartlang = '".Contenido_Security::toInteger($idartlang)."'
+			AND idmetatype = '".Contenido_Security::toInteger($idmetatype)."'";
 
 	$db->query($sql);
 
@@ -661,17 +680,17 @@ function conSetMetaValue($idartlang, $idmetatype, $value)
 
 	$db = new DB_Contenido;
 	$sql = "DELETE FROM ".$cfg["tab"]["meta_tag"]."
-				WHERE idartlang = '$idartlang'
-						 AND idmetatype = '$idmetatype'";
+			WHERE idartlang = '".Contenido_Security::toInteger($idartlang)."'
+			AND idmetatype = '".Contenido_Security($idmetatype)."'";
 
 	$db->query($sql);
 
 	$nextid = $db->nextid($cfg["tab"]["meta_tag"]);
 
-	$sql = "INSERT INTO ".$cfg["tab"]["meta_tag"]." SET idartlang = '$idartlang',
-						   idmetatype = '$idmetatype',
-						   idmetatag = '$nextid',
-	                       metavalue = '".addslashes($value)."'";
+	$sql = "INSERT INTO ".$cfg["tab"]["meta_tag"]." SET idartlang = '".Contenido_Security::toInteger($idartlang)."',
+			idmetatype = '".Contenido_Security::toInteger($idmetatype)."',
+			idmetatag = '".Cotnenido_Security::toInteger($nextid)."',
+			metavalue = '".Contenido_Security::escapeDB($value)."'";
 
 	$db->query($sql);
 
@@ -702,8 +721,8 @@ function conGenerateKeywords($client, $lang)
 	    			".$cfg["tab"]["art_lang"]." AS b
 	    		WHERE
 	    			a.idart    = b.idart AND
-	    			a.idclient = $client AND
-	    			b.idlang = $lang";
+	    			a.idclient = ".Contenido_Security::escapeDB($client)." AND
+	    			b.idlang = ".Contenido_Security::escapeDB($lang);
 
 	$db_art->query($sql);
 
@@ -759,7 +778,7 @@ function conGetContentFromArticle($article_lang)
 				WHERE
 					A.idtype    = C.idtype AND
 					A.idartlang = B.idartlang AND
-					A.idartlang     = '".$article_lang."' ";
+					A.idartlang     = '".Contenido_Security::escapeDB($article_lang)."' ";
 
 	$db_con->query($sql);
 
