@@ -10,8 +10,13 @@
 * Created   :   20.01.2003
 * Modified  :   21.03.2003
 *
+* @internal {
+*   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added.
+* }
 * © four for business AG, www.4fb.de
 ******************************************/
+
+define("CON_FRAMEWORK", true);
 
 if (isset($_REQUEST['cfg'])) {
     die ('Illegal call!');

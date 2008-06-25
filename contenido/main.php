@@ -16,11 +16,13 @@
 *
 * @internal {
 *   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
-*
-*   $Id$
+*   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added.
 * }
 *
 ******************************************/
+
+define("CON_FRAMEWORK", true);
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Invalid call!');
 }

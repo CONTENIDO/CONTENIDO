@@ -10,7 +10,14 @@
 * Modified  :   18.03.2003
 *
 * (C) four for business AG
+* 
+* @internal {
+* 	modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added.
+* }
 ******************************************/
+
+define("CON_FRAMEWORK", true);
+
 include_once ('./includes/startup.php');
 
 cInclude ("includes", 'functions.i18n.php');

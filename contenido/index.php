@@ -17,11 +17,15 @@
 * @internal {
 *   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
 *   modified 2008-06-17, rbi - Hotfix: Added check for XSS at "contenido" amd "belang".
-*
+*   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added.
+* 
 *   $Id$
 * }
 * © four for business AG, www.4fb.de
 ******************************************/
+
+define("CON_FRAMEWORK", true);
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Invalid call');
 }
