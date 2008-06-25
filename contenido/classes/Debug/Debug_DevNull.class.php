@@ -4,15 +4,16 @@
 *
 * Description: Debug object to not output info at all.
 *
-* Note: Be careful when using $bExit = true as this will cause a die() with a message!
+* Note: Be careful when using $bExit = true as this will NOT cause a die() in this object!
 *
-* @version 1.1.0
+* @version 1.1.1
 * @author Rudi Bieller
 * @copyright four for business AG <www.4fb.de>
 *
 * {@internal
 * created 2008-05-07
 * modified 2008-05-21 Added methods add(), reset(), showAll()
+* modified 2008-06-25 Removed die() from show() method
 * }}
 *
 * $Id$:
@@ -48,16 +49,10 @@ class Debug_DevNull implements IDebug {
 	 * @access public
 	 * @param mixed $mVariable The variable to be displayed
 	 * @param string $sVariableDescription The variable's name or description
-	 * @param boolean $bExit If set to true, your app will die() after output of current var
+	 * @param boolean $bExit If set to true, your app will NOT die() after output of current var
 	 * @return void
 	 */
-	public function show($mVariable, $sVariableDescription='', $bExit = false)
-	{
-		// no action taken, except
-		if ($bExit === true) {
-			die('<p style="font-size:80%;margin:5px 0;padding:5px;background-color:#ccc;color:#000;"><b>debugg\'ed to /dev/null</b></p>'."\n");
-		}
-	}
+	public function show($mVariable, $sVariableDescription='', $bExit = false) {}
 	
 	/**
 	 * Interface implementation
