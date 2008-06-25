@@ -687,7 +687,7 @@ class Contenido_Category_Language extends Contenido_Category_Base {
 					FROM 
 						' . $this->aCfg["tab"]["cat_lang"] . ' 
 					WHERE 
-						idcatlang = ' . Contenido_Security::escapeDB(intval($iIdCatLang), $this->oDb);
+						idcatlang = ' . Contenido_Security::escapeDB($iIdCatLang, $this->oDb);
         }
 	    $this->oDb->query($sSql);
 	    if ($this->oDb->Errno != 0) {
