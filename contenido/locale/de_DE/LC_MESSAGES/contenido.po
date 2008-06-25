@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Contenido 4.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-07 12:12+0100\n"
-"PO-Revision-Date: 2008-02-07 12:29+0100\n"
-"Last-Translator: Timo Trautmann <timo.trautmann@4fb.de>\n"
+"PO-Revision-Date: 2008-06-25 13:28+0100\n"
+"Last-Translator: \n"
 "Language-Team: Contenido Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -4421,7 +4421,6 @@ msgstr "Newsletter kopieren"
 msgid "Do you really want to delete the following newsletter:<br>"
 msgstr "Sind Sie sicher, dass Sie den folgenden Newsletter l&ouml;schen m&ouml;chten:<br>"
 
-
 #: contenido/includes/include.newsletter_left_top.php:195
 #: contenido/includes/include.newsletter_left_top.php:197
 msgid "Please select"
@@ -5801,9 +5800,6 @@ msgstr "Momentan"
 msgid "Users online"
 msgstr "Benutzer online"
 
-#~ msgid "Copy article to the current language"
-#~ msgstr "Artikel in die aktuelle Sprache kopieren"
-
 msgid "Warning"
 msgstr "Warnung"
 
@@ -5906,8 +5902,22 @@ msgstr "Kategorie erfolgreich gel&ouml;scht!"
 msgid "Please enter a category name."
 msgstr "Bitte geben Sie einen Kategorienamen ein."
 
-msgid "Dear Contenidouser %s,\n\nYour password to log in Content Management System Contenido is: %s\n\nBest regards\n\nYour Contenido sysadmin"
-msgstr "Lieber Contenidouser %s,\n\nIhr Passwort für das Login in das Content Management System Contenido ist: %s\n\nViele Grüße\n\nIhr Contenido Systemadministrator"
+msgid ""
+"Dear Contenidouser %s,\n"
+"\n"
+"Your password to log in Content Management System Contenido is: %s\n"
+"\n"
+"Best regards\n"
+"\n"
+"Your Contenido sysadmin"
+msgstr ""
+"Lieber Contenidouser %s,\n"
+"\n"
+"Ihr Passwort für das Login in das Content Management System Contenido ist: %s\n"
+"\n"
+"Viele Grüße\n"
+"\n"
+"Ihr Contenido Systemadministrator"
 
 msgid "Your new password for Contenido Backend"
 msgstr "Ihr neues Passwort für das Contenido Backend"
@@ -5983,3 +5993,13 @@ msgstr "Datum auswählen"
 
 msgid "Contenido is in maintenance mode. Only sysadmins are allowed to login. Please try again later."
 msgstr "Contenido befindet sich im Wartungsmodus. Nur Systemadministratoren k&ouml;nnen sich einloggen. Bitte versuchen Sie es zu einem sp&auml;teren Zeitpunkt erneut."
+
+msgid "Your Contenido Version"
+msgstr "Ihre Contenido Version"
+
+msgid "Latest Contenido Version"
+msgstr "Aktuelle Contenido Version"
+
+#~ msgid "Copy article to the current language"
+#~ msgstr "Artikel in die aktuelle Sprache kopieren"
+
