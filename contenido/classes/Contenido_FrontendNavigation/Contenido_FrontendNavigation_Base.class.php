@@ -1,22 +1,35 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Object to build a Contenido Frontend Navigation 
-*
-* @version 0.1.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-02-15
-* 
-* @requires DebuggerFactory
-* @requires Contenido_Category, Contenido_Categories for concrete implementations.
-* }}
-*
-* $Id$
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Object to build a Contenido Frontend Navigation 
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.2
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-02-15
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude('classes', 'Debug/DebuggerFactory.class.php');
 cInclude('classes', 'Contenido_Category/Contenido_Category.class.php');
