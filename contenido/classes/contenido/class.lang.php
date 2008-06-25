@@ -1,14 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.lang.php,v $
-* Project   :   Contenido
-* Descr     :   Language management class
-* Modified  :   $Date: 2007/05/25 08:06:29 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.lang.php,v 1.4 2007/05/25 08:06:29 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Language management class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.4
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2007-05-25
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+
 cInclude('classes', 'class.genericdb.php');
 
 
