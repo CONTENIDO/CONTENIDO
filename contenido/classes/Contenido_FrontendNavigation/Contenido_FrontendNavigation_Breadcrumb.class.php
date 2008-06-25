@@ -1,24 +1,39 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Object to build a Contenido Frontend Navigation Breadcrumb
-*
-* @version 0.2.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-02-15
-* 
-* @requires Contenido_FrontendNavigation_Base
-* @todo Add possibility to load subcategories
-* }}
-*
-* $Id$
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Area management class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    0.2.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-02-15
+ *   @todo Add possibility to load subcategories
+ * 
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Base.class.php');
+cInclude("classes", "class.security.php");
 
 class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigation_Base {
     /**
@@ -117,10 +132,10 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
 	                '.$this->aCfg["tab"]["cat"].' AS cat,
 					'.$this->aCfg["tab"]["cat_tree"].' AS cattree
 	            WHERE
-	                catlang.idlang = '.$this->iLang.' AND
-					cat.idclient  = '.$this->iClient.' AND
-	                cat.idcat = '.$iBaseCategoryId.' AND
-	                catlang.idcat     = cat.idcat AND
+	                catlang.idlang = ' . Contenido_Security::escapeDB($this->iLang, $this->oDb) . ' AND
+					cat.idclient  = ' . Contenido_Security::escapeDB($this->iClient, $this->oDb) . ' AND
+	                cat.idcat = ' . Contenido_Security::escapeDB($iBaseCategoryId, $this->oDb) . ' AND
+	                catlang.idcat = cat.idcat AND
 					cattree.idcat = cat.idcat';
         if ($this->bDbg === true) {
 	        $this->oDbg->show($sSql, 'Contenido_FrontendNavigation_Breadcrumb::getBreadcrumb($iBaseCategoryId, $iRootLevel = 0, $bReset = false): $sSql');
