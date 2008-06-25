@@ -234,7 +234,7 @@ while ($cApiModule = $cApiModuleCollection->next())
 				//$deletebutton = '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescription.'" alt="'.$delDescription.'">';	
 			}
 			
-			$todo = new TODOLink("idmod", $db->f("idmod"), "Module: $name", "");
+			$todo = new TODOLink("idmod", $db->f("idmod"), "Module: $sName", "");
 			
 			$mlist->setActions($iMenu, "todo", $todo->render());
 			$mlist->setActions($iMenu, "delete", $deletebutton);

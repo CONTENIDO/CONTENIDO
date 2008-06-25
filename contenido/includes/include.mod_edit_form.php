@@ -116,17 +116,17 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
     	
     	if ($sOptionDebugRows !== "never" && $bOptionUseJava == false)
     	{
-    		$iInputNewLines		= substr_count($sInputData,  "\r\n") + 2; // +2: Just sanity, to have at least two more lines than the code
-    		$iOutputNewLines	= substr_count($sOutputData, "\r\n") + 2; // +2: Just sanity, to have at least two more lines than the code
+    		$iInputNewLines		= substr_count($sInputData,  "\n") + 2; // +2: Just sanity, to have at least two more lines than the code
+    		$iOutputNewLines	= substr_count($sOutputData, "\n") + 2; // +2: Just sanity, to have at least two more lines than the code
     		
     		// Have at least 15 + 2 lines (15 = code textarea lines count)
-    		if ($iInputNewLines < 17)
+    		if ($iInputNewLines < 21)
     		{
-    			$iInputNewLines = 17;
+    			$iInputNewLines = 21;
     		}
-    		if ($iOutputNewLines < 17)
+    		if ($iOutputNewLines < 21)
     		{
-    			$iOutputNewLines = 17;
+    			$iOutputNewLines = 21;
     		}
 
 			// Calculate how many characters are needed (e.g. 2 for lines ip to 99)
@@ -150,7 +150,7 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
     			}
     			$sRows .= sprintf("%0".$iChars."d", $i);
     		}
-    		$oInputRows = new cHTMLTextarea("txtInputRows", $sRows, $iChars, 15);
+    		$oInputRows = new cHTMLTextarea("txtInputRows", $sRows, $iChars, 20);
     		
 			$sRows = "";
 			for ($i = 1; $i <= $iOutputNewLines; $i++)
@@ -161,7 +161,7 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 				}
 				$sRows .= sprintf("%0".$iChars."d", $i);
 			}
-			$oOutputRows = new cHTMLTextarea("txtOutputRows", $sRows, $iChars, 15);
+			$oOutputRows = new cHTMLTextarea("txtOutputRows", $sRows, $iChars, 20);
 			
 			$oInputRows->updateAttributes(array("wrap" => "off"));
 			$oOutputRows->updateAttributes(array("wrap" => "off"));
