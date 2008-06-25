@@ -165,12 +165,19 @@ function strNewTree($catname, $catalias = '', $bVisible = 0, $bPublic = 1, $iIdt
         		
             /* Assign template, if default template exists */
             
-            $catCollection = new cApiCategoryLanguageCollection("idcat = '$tmp_newid'");
             
-            while ($cat = $catCollection->next())
-            {
-            	$cat->assignTemplate($idtpl);
-            }        	
+        } else {
+          //2008-06-25 timo.trautmann also set default template if it is selcted by user and there is no default template
+          if ($iIdtplcfg > 0) {
+	          $idtpl = $iIdtplcfg;
+	          
+	          $catCollection = new cApiCategoryLanguageCollection("idcat = '$tmp_newid'");
+	            
+	          while ($cat = $catCollection->next())
+	          {
+	            	$cat->assignTemplate($idtpl);
+	          }  
+          }      	
         }
 
         
@@ -306,7 +313,19 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
             {
             	$cat->assignTemplate($idtpl);
             }        	
-        }        
+        } else {
+          //2008-06-25 timo.trautmann also set default template if it is selcted by user and there is no default template
+          if ($iIdtplcfg > 0) {
+	          $idtpl = $iIdtplcfg;
+	          
+	          $catCollection = new cApiCategoryLanguageCollection("idcat = '$tmp_newid'");
+	            
+	          while ($cat = $catCollection->next())
+	          {
+	            	$cat->assignTemplate($idtpl);
+	          }  
+          }      	
+        }      
 
         return($tmp_newid);
 
