@@ -24,7 +24,7 @@
  *   created unknown
  *   modified 2008-11-24, Mario Diaz, function conFlagOnOffline: Set publish date if article goes online
  *   modified 2008-06-25, Frederic Schneider, add security fix
- *
+ *   modified 2008-06-26, Timo.Trautmann, add security fix fix setting article online was not possible
  *   $Id$:
  * }}
  * 
@@ -671,7 +671,7 @@ function conMakeOnline($idart, $lang)
 	}else{
 		$publisher_info = '';
 	}
-    $sql = "UPDATE ".$cfg["tab"]["art_lang"]."  SET ".Contenido_Security::escapeDB($publisher_info, $db)." online = '".Contenido_Security::toInteger($set)."' WHERE idart = '".Contenido_Security::toInteger($idart)."'
+    $sql = "UPDATE ".$cfg["tab"]["art_lang"]."  SET ".$publisher_info." online = '".Contenido_Security::toInteger($set)."' WHERE idart = '".Contenido_Security::toInteger($idart)."'
             AND idlang = '".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
 }
