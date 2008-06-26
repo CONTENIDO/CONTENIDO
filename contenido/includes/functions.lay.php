@@ -1,16 +1,36 @@
 <?php
-/******************************************
-* File      :   functions.lay.php
-* Project   :   Contenido
-* Descr     :   Defines the Layout
-*               related functions
-*
-* Author    :   Jan Lengowski
-* Created   :   00.00.0000
-* Modified  :   09.05.2003
-*
-* © four for business AG
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Defines the Layout related functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.3.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003
+ *   modified 2008-06-26, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude ("includes", "functions.tpl.php");
 cInclude ("includes", "functions.con.php");
@@ -46,7 +66,9 @@ function layEditLayout($idlay, $name, $description, $code) {
         $tmp_newid = $db->nextid($cfg["tab"]["lay"]);
         $idlay = $tmp_newid;
 
-        $sql = "INSERT INTO ".$cfg["tab"]["lay"]." (idlay,name, description, deletable, code, idclient, author, created, lastmodified) VALUES ('$tmp_newid','$name', '$description', '1', '$code', '$client', '$author', '$date', '$date')";
+        $sql = "INSERT INTO ".$cfg["tab"]["lay"]." (idlay,name, description, deletable, code, idclient, author, created, lastmodified) VALUES ('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::escapeDB($name, $db)."',
+                '".Contenido_Security::escapeDB($description, $db)."', '1', '".Contenido_Security::escapeDB($code, $db)."', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($author, $db)."',
+                '".Contenido_Security::escapeDB($date, $db)."', '".Contenido_Security::escapeDB($date, $db)."').";
         $db->query($sql);
 
         // set correct rights for element
@@ -57,7 +79,8 @@ function layEditLayout($idlay, $name, $description, $code) {
 
     } else {
 
-        $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='$name', description='$description', code='$code', author='$author', lastmodified='$date' WHERE idlay='$idlay'";
+        $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".Contenido_Security::escapeDB($name, $db)."', description='".Contenido_Security::escapeDB($description, $db)."', code='".Contenido_Security::escapeDB($code, $db)."',
+                author='".Contenido_Security::escapeDB($author, $db)."', lastmodified='".Contenido_Security::escapeDB($date, $db)."' WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
         $db->query($sql);
 
         /* Update CODE table*/
@@ -68,15 +91,6 @@ function layEditLayout($idlay, $name, $description, $code) {
 
 }
 
-/**
- *
- *
- *
- *
- *
- *
- */
-
 function layDeleteLayout($idlay) {
         global $db;
         global $client;
@@ -84,12 +98,12 @@ function layDeleteLayout($idlay) {
         global $area_tree;
         global $perm;
 
-        $sql = "SELECT * FROM ".$cfg["tab"]["tpl"]." WHERE idlay='$idlay'";
+        $sql = "SELECT * FROM ".$cfg["tab"]["tpl"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
         $db->query($sql);
         if ($db->next_record()) {
                 return "0301";                // layout is still in use, you cannot delete it
         } else {
-                $sql = "DELETE FROM ".$cfg["tab"]["lay"]." WHERE idlay='$idlay'";
+                $sql = "DELETE FROM ".$cfg["tab"]["lay"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
                 $db->query($sql);
         }
 
