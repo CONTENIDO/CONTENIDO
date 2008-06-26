@@ -1,4 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Some system functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.2.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-26, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.phpmailer.php");
 
 /**
@@ -327,7 +360,7 @@ function writeSystemValuesOutput($usage)
 			        	FROM ".$cfg["tab"]["clients"]." a
 			        	LEFT JOIN ".$cfg["tab"]["clients_lang"]." b ON a.idclient = b.idclient
 			        	LEFT JOIN ".$cfg["tab"]["lang"]." c ON b.idlang = c.idlang
-			        	WHERE a.idclient=".$db->f("idclient")." AND c.name IS NOT NULL";
+			        	WHERE a.idclient=".Contenido_Security::toInteger($db->f("idclient"))." AND c.name IS NOT NULL";
 			$db2->query($sql);
 			while ($db2->next_record())
 			{
@@ -341,7 +374,7 @@ function writeSystemValuesOutput($usage)
 			                	<td class=\"text_medium\" width=\"60%\" style=\"border:1px; border-left:0px; border-top:0px; border-color: #B3B3B3; border-style: solid; \" nowrap=\"nowrap\">$clientlang&nbsp;</td>
 			           		</tr>";
 
-			$sql = "SELECT frontendpath, htmlpath FROM ".$cfg["tab"]["clients"]." WHERE idclient=".$db->f("idclient");
+			$sql = "SELECT frontendpath, htmlpath FROM ".$cfg["tab"]["clients"]." WHERE idclient='".Contenido_Security::toInteger($db->f("idclient"))."'";
 			$db2->query($sql);
 			while ($db2->next_record())
 			{
@@ -357,7 +390,6 @@ function writeSystemValuesOutput($usage)
 			$clientPermCount ++;
 		}
 
-		//$clientdata = "".urldecode($db->f("clientname"))." => ".urldecode($clientlang)."<br>";		
 	}
 
 	if ($clientPermCount == 0)
@@ -375,16 +407,14 @@ function writeSystemValuesOutput($usage)
 	$sysvalues[$i]['variable'] = i18n('Client informations');
 	$sysvalues[$i ++]['value'] = "$clientdata";
 	// get number of users installed
-	$sql = "SELECT count(user_id) usercount FROM
-	    		".$cfg["tab"]["phplib_auth_user_md5"];
+	$sql = "SELECT count(user_id) usercount FROM ".$cfg["tab"]["phplib_auth_user_md5"];
 	$db->query($sql);
 	$db->next_record();
 	// number of users
 	$sysvalues[$i]['variable'] = i18n('Number of users');
 	$sysvalues[$i ++]['value'] = $db->f("usercount");
 	//get number of articles
-	$sql = "SELECT count(idart) articlecount FROM
-	    		".$cfg["tab"]["art"];
+	$sql = "SELECT count(idart) articlecount FROM ".$cfg["tab"]["art"];
 	$db->query($sql);
 	$db->next_record();
 	// number of articles
