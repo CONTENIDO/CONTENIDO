@@ -1,18 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: functions.i18n.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido i18n Functions
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   03.07.2003
-* Modified  :   $Date: 2007/06/28 23:00:04 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: functions.i18n.php,v 1.28 2007/06/28 23:00:04 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido i18n Functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.2.8
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-07-03
+ *   modified 2008-06-26, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * trans($string)
