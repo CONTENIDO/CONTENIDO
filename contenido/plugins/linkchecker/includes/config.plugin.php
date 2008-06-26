@@ -1,11 +1,36 @@
 <?php
-/******************************************************************************
-Description 	: Linkchecker 2.0.1
-Author      	: Frederic Schneider (4fb)
-Urls        	: http://www.4fb.de
-Create date 	: 2007-08-08
-Modified    	: 2007-12-13, 2008-05-15
-*******************************************************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Config file for the plugin linkchecker
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend plugins
+ * @version    2.0.1
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release 4.8.7
+ * 
+ * {@internal 
+ *   created 2007-08-08
+ *   modified 2007-12-13, 2008-05-15
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $plugin_name = "linkchecker";
 $cfg['plugins']['linkchecker'] = $cfg['path']['contenido'] . "plugins/" . $plugin_name . "/";

@@ -1,14 +1,41 @@
 <?php
-/******************************************************************************
-Description 	: Linkchecker 2.0.1
-Author      	: Frederic Schneider (4fb)
-Urls        	: http://www.4fb.de
-Create date 	: 2007-08-08
-Modified		: Andreas Lindner (4fb), 08.02.2008, Performance enhancements
-Modified        : Holger Librenz (4fb), 05.04.2008, Fixed wrong include-path for
-				  PEAR cache module
-Modified		: Frederic Schneider (4fb), 07-14.05.2008, New version
-*******************************************************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Main file for the plugin linkchecker
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend plugins
+ * @version    2.0.1
+ * @author     Frederic Schneider
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release 4.8.7
+ * 
+ * {@internal 
+ *   created 2007-08-08
+ *   modified 2008-02-08, Andread Lindner, performance enhancements
+ *   modified 2008-04-05, Holger Librenz, fixed wrong include-path for
+ *                        PEAR cache module
+ *   modified 2008-05-14, Frederic Schneider, new version
+ *   modified 2008-06-21, Frederic Schneider, array initalization
+ *   modified 2008-06-26, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $plugin_name = "linkchecker";
 global $cfg;
@@ -44,6 +71,9 @@ cInclude('pear', 'CACHE/Lite.php');
 // Initialization
 $actionID = 500;
 $aCats = array();
+$aSearchIDInfosArt = array();
+$aSearchIDInfosCatArt = array();
+$aSearchIDInfosNonID = array();
 $iWhitelist_timeout = 2592000; // 30 days
 
 // Var initialization

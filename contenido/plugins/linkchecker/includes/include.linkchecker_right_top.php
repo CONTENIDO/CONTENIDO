@@ -1,12 +1,36 @@
 <?php
-/******************************************************************************
-Description 	: Linkchecker 2.0.1
-Author      	: Frederic Schneider (4fb)
-Urls        	: http://www.4fb.de
-Create date 	: 2007-12-05
-Modified    	: 2007-12-06
-Based on    	: Jan Legowski (2003)
-*******************************************************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * right_top frame for Linkchecker
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend plugins
+ * @version    2.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release 4.8.7
+ * 
+ * {@internal 
+ *   created 2007-12-05 (based on 2003)
+ *   modified 2007-12-06, Frederic Schneider
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if($_REQUEST['cfg']) {
 	exit;

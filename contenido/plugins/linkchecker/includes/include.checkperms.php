@@ -1,13 +1,37 @@
 <?php
-/********************************************************************
- * Created on 08.06.2006
- * Author: Mario Diaz (4fb)
- * Modified: Frederic Schneider (4fb), 07.11.2007
- * Modified: Andreas Lindner (4fb), 08.02.2008, Performance enhancements  
+/**
+ * Project: 
+ * Contenido Content Management System
  * 
- * Nachprüfen, ob ein Benutzer mit BE-Rechten Zugriff auf eine Cat
- * im FE hat
-********************************************************************/
+ * Description: 
+ * Checks userrights for cats
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend plugins
+ * @version    1.0.1
+ * @author     Mario Diaz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release 4.8.7
+ * 
+ * {@internal 
+ *   created 2006-06-08
+ *   modified 2007-11-07, Frederic Schneider
+ *   modified 2008-02-08, Andread Lindner, Performance enhancements
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 function cCatPerm($widcat, $db = null)
 {
