@@ -1,4 +1,5 @@
 <?php
+define("CON_FRAMEWORK", true);
 function checkAndInclude ($filename)
 {
 	if (file_exists($filename) && is_readable($filename))

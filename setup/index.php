@@ -1,4 +1,5 @@
 <?php
+define("CON_FRAMEWORK", true);
 header("Content-Type: text/html; charset=ISO-8859-1");
 
 function checkAndInclude ($filename)
