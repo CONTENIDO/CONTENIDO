@@ -1,31 +1,37 @@
 <?php
 /**
- * $RCSfile: functions.pathresolver.php,v $
- * 
  * Project: 
  * Contenido Content Management System
  * 
  * Description: 
  * Path resolving functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * LICENSE: 
- * Contenido is written and distributed under the GNU General Public License which
- * means that its source code is freely-distributed and available to the general public.
- *
- * @version	   $Revision: 1.18 $
- * @author     Timo Hummel
+ * @package    Contenido Backend includes
+ * @version    1.1.8
+ * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
  * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- * modified 14.12.2006, init array $results in fct prResolvePathViaURLNames, prResolvePathViaCategoryNames, return type 
- * is now integer
+ *   created unknown
+ *   modified 2006-12-14, init array $results in fct prResolvePathViaURLNames, prResolvePathViaCategoryNames, return type is now integer
+ *   modified 2008-06-26, Frederic Schneider, add security fix
+ *
+ *   $Id$:
  * }}
  * 
- * $Id: functions.pathresolver.php,v 1.18 2006/12/14 11:38:45 willi.man Exp $
  */
 
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * prResolvePathViaURLNames: Resolves a path using some fuzzy logic.
@@ -58,7 +64,7 @@ function prResolvePathViaURLNames($path)
 	{
 		$pathresolve_tablename = $cfg["sql"]["sqlprefix"]."_pathresolve_cache";
 
-		$sql = "SHOW TABLES LIKE '$pathresolve_tablename'";
+		$sql = "SHOW TABLES LIKE '".Contenido_Security::escapeDB($pathresolve_tablename, $db)."'";
 		$db->query($sql);
 
 		if (!$db->next_record())
@@ -69,7 +75,7 @@ function prResolvePathViaURLNames($path)
 			 * Important: This is really a hack! Don't use pathresolve_heapcache if you are
 			 * not sure what it does.
 			 */
-			$sql = 'CREATE TABLE `'.$pathresolve_tablename.'` (
+			$sql = 'CREATE TABLE `'.Contenido_Security::escapeDB($pathresolve_tablename, $db).'` (
 							`idpathresolvecache` INT( 10 ) NOT NULL PRIMARY KEY ,
 							`path` VARCHAR( 255 ) NOT NULL ,
 							`idcat` INT( 10 ) NOT NULL ,
@@ -81,7 +87,7 @@ function prResolvePathViaURLNames($path)
 		}
 
 		$sql = "SELECT idpathresolvecache, idcat, lastcached FROM %s WHERE path LIKE '%s' AND idlang='%s' ORDER BY lastcached DESC LIMIT 1";
-		$db->query(sprintf($sql, $pathresolve_tablename, $path, $lang));
+		$db->query(sprintf($sql, Contenido_Security::escapeDB($pathresolve_tablename, $db), Contenido_Security::escapeDB($path, $db), Contenido_Security::toInteger($lang)));
 
 		if ($db->next_record())
 		{
@@ -98,7 +104,7 @@ function prResolvePathViaURLNames($path)
 			if ($db->f("lastcached") + $iCacheTime < time())
 			{
 				$sql = "DELETE FROM %s WHERE idpathresolvecache = '%s'";
-				$db->query(sprintf($sql, $pathresolve_tablename, $db->f("idpathresolvecache")));
+				$db->query(sprintf($sql, Contenido_Security::escapeDB($pathresolve_tablename, $db), Contenido_Security::toInteger($db->f("idpathresolvecache"))));
 
 			} else
 			{
@@ -108,7 +114,8 @@ function prResolvePathViaURLNames($path)
 	}
 
 	/* Fetch all category names, build path strings */
-	$sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='$lang' AND C.visible = 1 AND B.idclient='$client' ORDER BY A.idtree";
+	$sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".Contenido_Security::toInteger($lang)."'
+            AND C.visible = 1 AND B.idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idtree";
 	$db->query($sql);
 
 	$catpath = array ();
@@ -161,7 +168,7 @@ function prResolvePathViaURLNames($path)
 		$nid = $db->nextid($pathresolve_tablename);
 
 		$sql = "INSERT INTO %s SET idpathresolvecache='%s', path='%s', idcat='%s', idlang='%s', lastcached=%s";
-		$db->query(sprintf($sql, $pathresolve_tablename, $nid, addslashes($path), key($results), $lang, time()));
+		$db->query(sprintf($sql, Contenido_Security::toInteger($pathresolve_tablename), Contenido_Security::toInteger($nid), Contenido_Security::escapeDB($path, $db), Contenido_Security::toInteger(key($results)), Contenido_Security::toInteger($lang), time()));
 	}
 
 	return (int) key($results);
@@ -194,7 +201,8 @@ function prResolvePathViaCategoryNames($path)
 	$path = strtolower(str_replace(" ", "", $path));
 
 	/* Fetch all category names, build path strings */
-	$sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='$lang' AND C.visible = 1 AND B.idclient='$client' ORDER BY A.idtree";
+	$sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".Contenido_Security::toInteger($lang)."'
+            AND C.visible = 1 AND B.idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idtree";
 	$db->query($sql);
 
 	$catpath = array ();
@@ -314,9 +322,9 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
 	                ".$cfg["tab"]["cat"]." AS b,
 					".$cfg["tab"]["cat_tree"]." AS c
 	            WHERE
-	                a.idlang    = '".$uselang."' AND
-	                b.idclient  = '".$client."' AND
-	                b.idcat     = '".$idcat."' AND
+	                a.idlang    = '".Contenido_Security::toInteger($uselang)."' AND
+	                b.idclient  = '".Contenido_Security::toInteger($client)."' AND
+	                b.idcat     = '".Contenido_Security::toInteger($idcat)."' AND
 	                a.idcat     = b.idcat AND
 					c.idcat = b.idcat";
 
