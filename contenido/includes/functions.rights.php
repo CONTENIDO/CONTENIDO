@@ -1,16 +1,34 @@
 <?php
-/******************************************
-* File      :   functions.rights.php
-* Project   :   Contenido
-* Descr    :   Defines the 'rights' related
-*            functions
-*
-* Author   :   Martin Horwath
-* Created   :   25.11.2004
-* Modified   :   12.12.2004
-*
-* © dayside.net
-*****************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Defines the "rights" related functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Martin Horwath
+ * @copyright  dayside.net
+ * @link       http://www.dayside.net
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2004-11-25
+ *   modified 2008-06-26, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * Duplicate rights for any element
@@ -35,25 +53,8 @@ function copyRightsForElement ($area, $iditem, $newiditem, $idlang=false) {
    $userIDContainer = $perm->getGroupsForUser($auth->auth["uid"]); // add groups if available
    $userIDContainer[] = $auth->auth["uid"]; // add user_id of current user
    
-   // long way start
-   /*
-      $sql = "SELECT
-            group_id
-         FROM
-            ".$cfg["tab"]["groupmembers"]."
-         WHERE
-            user_id = '".$userIDContainer[0]."'";
-
-   $db->query($sql);
-
-   while ($db->next_record()) {
-      $userIDContainer[] = $db->f("group_id"); // add group_ids
-   }
-   */
-   // long way end
-
    foreach ($userIDContainer as $key) {
-      $statement_where2[] = "user_id = '".$key."' ";
+      $statement_where2[] = "user_id = '".Contenido_Security::toInteger($key)."' ";
    }
 
    $where_users =   "(".implode(" OR ", $statement_where2 ) .")"; // only duplicate on user and where user is member of
@@ -61,23 +62,6 @@ function copyRightsForElement ($area, $iditem, $newiditem, $idlang=false) {
    // get all idarea values for $area
    // short way
    $AreaContainer = $area_tree[$perm->showareas($area)];
-
-   // long way
-   /*
-   $AreaContainer[0] = $perm->getIDForArea($area);
-   $sql = "SELECT
-            idarea
-         FROM
-            ".$cfg["tab"]["area"]."
-         WHERE
-            parent_id = '".$area."'";
-
-   $db->query($sql);
-
-   while ($db->next_record()) {
-      $AreaContainer[] = $db->f("idarea");
-   }
-   */
 
    // long version start
    // get all actions for corresponding area
@@ -96,7 +80,7 @@ function copyRightsForElement ($area, $iditem, $newiditem, $idlang=false) {
 
    // build sql statement for con_rights
    foreach ($AreaActionContainer as $key) {
-      $statement_where[] = "( idarea = ".$key["idarea"]." AND idaction = ".$key["idaction"]." )";
+      $statement_where[] = "( idarea = ".Contenido_Security::toInteger($key["idarea"])." AND idaction = ".Contenido_Security::toInteger($key["idaction"])." )";
    }
 
    $where_area_actions = "(".implode(" OR ", $statement_where ) .")"; // only correct area action pairs possible
@@ -112,20 +96,6 @@ function copyRightsForElement ($area, $iditem, $newiditem, $idlang=false) {
             idcat = {$iditem}";
    // long version end
 
-   /*
-   // short version start
-   $sql = "SELECT
-            *
-         FROM
-            ".$cfg["tab"]["rights"]."
-         WHERE
-            idarea IN (".implode (',', $AreaContainer).") AND
-            idaction != 0 AND
-            {$where_users} AND
-            idcat = {$iditem}";
-   // short version end
-   */
-
    if ($idlang) {
       $sql.= " AND idlang='$idlang'";
    }
@@ -133,7 +103,10 @@ function copyRightsForElement ($area, $iditem, $newiditem, $idlang=false) {
    $db->query($sql);
 
    while ($db->next_record()) {
-      $sql = "INSERT INTO ".$cfg["tab"]["rights"]." (idright,user_id,idarea,idaction,idcat,idclient,idlang,`type`) VALUES ('".$db2->nextid($cfg["tab"]["rights"])."','".$db->f("user_id")."','".$db->f("idarea")."','".$db->f("idaction")."','".$newiditem."','".$db->f("idclient")."','".$db->f("idlang")."','".$db->f("type")."');";
+      $sql = "INSERT INTO ".$cfg["tab"]["rights"]." (idright,user_id,idarea,idaction,idcat,idclient,idlang,`type`) VALUES ('".Contenido_Security::toInteger($db2->nextid($cfg["tab"]["rights"]))."', 
+              '".Contenido_Security::toInteger($db->f("user_id"))."', '".Contenido_Security::toInteger($db->f("idarea"))."', '".Contenido_Security::toInteger($db->f("idaction"))."',
+              '".Contenido_Security::toInteger($newiditem)."','".Contenido_Security::toInteger($db->f("idclient"))."', '".Contenido_Security::toInteger($db->f("idlang"))."',
+              '".Contenido_Security::toInteger($db->f("type"))."');";
       $db2->query($sql);
    }
 
@@ -176,7 +149,7 @@ function createRightsForElement ($area, $iditem, $idlang=false) {
    $userIDContainer[] = $auth->auth["uid"]; // add user_id of current user
 
    foreach ($userIDContainer as $key) {
-      $statement_where2[] = "user_id = '".$key."' ";
+      $statement_where2[] = "user_id = '".Contenido_Security::toInteger($key)."' ";
    }
 
    $where_users =   "(".implode(" OR ", $statement_where2 ) .")"; // only duplicate on user and where user is member of
@@ -190,14 +163,14 @@ function createRightsForElement ($area, $iditem, $idlang=false) {
         FROM
            ".$cfg["tab"]["rights"]."
         WHERE
-           idclient='$client' AND
+           idclient='".Contenido_Security::toInteger($client)."' AND
            idarea IN (".implode (',', $AreaContainer).") AND
            idcat != 0 AND
            idaction!='0' AND
            {$where_users}";
 
    if ($idlang) {
-      $sql.= " AND idlang='$idlang'";
+      $sql.= " AND idlang='".Contenido_Security::toInteger($idlang)."'";
    }
 
    $db->query($sql);
@@ -221,7 +194,9 @@ function createRightsForElement ($area, $iditem, $idlang=false) {
 
                $sql="INSERT INTO ".$cfg["tab"]["rights"]."
                     (idright, user_id,idarea,idaction,idcat,idclient,idlang,`type`)
-                    VALUES ('".$db2->nextid($cfg["tab"]["rights"])."', '".$userid."','".$idarea."','".$idaction."','$iditem','$client','".$idlang."','".$type."')";
+                    VALUES ('".Contenido_Security::toInteger($db2->nextid($cfg["tab"]["rights"]))."', '".Contenido_Security::toInteger($userid)."', '".Contenido_Security::toInteger($idarea)."',
+                    '".Contenido_Security::toInteger($idaction)."', '".Contenido_Security::toInteger($iditem)."', '".Contenido_Security::toInteger($client)."',
+                    '".Contenido_Security::toInteger($idlang)."', '".Contenido_Security::toInteger($type)."')";
                $db2->query($sql);
             }
          }
@@ -249,13 +224,13 @@ function deleteRightsForElement ($area, $iditem, $idlang=false) {
    global $cfg, $perm, $area_tree, $client;
 
    // get all idarea values for $area
-   $AreaContainer = $area_tree[$perm->showareas($area)];
+   $AreaContainer = $area_tree[$perm->showareas(Contenido_Security::toInteger($area))];
 
    $db = new DB_Contenido;
 
-   $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE idcat='$iditem' AND idclient='$client' AND idarea IN (".implode (',', $AreaContainer).")";
+   $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE idcat='".Contenido_Security::toInteger($iditem)."' AND idclient='".Contenido_Security::toInteger($client)."' AND idarea IN (".implode (',', $AreaContainer).")";
    if ($idlang) {
-      $sql.= " AND idlang='$idlang'";
+      $sql.= " AND idlang='".Contenido_Security::toInteger($idlang)."'";
    }
    $db->query($sql);
 
