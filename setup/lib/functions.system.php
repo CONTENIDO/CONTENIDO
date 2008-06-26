@@ -45,7 +45,9 @@ function updateSystemProperties($db, $table) {
                                array('type' => 'system', 'name' => 'mail_sender', 'value' => 'Contenido+Backend'),
                                array('type' => 'system', 'name' => 'mail_host', 'value' => 'localhost'),
                                array('type' => 'maintenance', 'name' => 'mode', 'value' => 'disabled'),
-                               array('type' => 'edit_area', 'name' => 'activated', 'value' => 'true')
+                               array('type' => 'edit_area', 'name' => 'activated', 'value' => 'true'),
+							   array('type' => 'update', 'name' => 'check', 'value' => 'true'),
+                               array('type' => 'update', 'name' => 'news_feed', 'value' => 'true')
                               );
  
     foreach ($aStandardvalues as $aData) {
