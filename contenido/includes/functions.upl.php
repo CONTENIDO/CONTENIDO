@@ -1,18 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: functions.upl.php,v $
-* Project   :   Contenido
-* Descr     :   Upload functions
-*
-* Author    :   Jan Lengowski
-*               
-* Created   :   28.12.2003
-* Modified  :   $Date: 2007/08/06 22:38:57 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: functions.upl.php,v 1.30 2007/08/06 22:38:57 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Upload functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.3.0
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-12-28
+ *   modified 2008-06-26, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.upload.php");
 cInclude("classes", "class.properties.php");
@@ -131,7 +149,7 @@ function upldelete($path, $files) {
 //                        uplrecursivermdir($path.urldecode($files[$i]));
                         uplRecursiveRmDirIfEmpty($path.urldecode($files[$i]));
 
-                        $sql = "DELETE FROM ".$cfg["tab"]["upl"]." WHERE dirname='".$files[$i]."/'";
+                        $sql = "DELETE FROM ".$cfg["tab"]["upl"]." WHERE dirname='".Contenido_Security::escapeDB($files[$i], $db)."/'";
                         $db->query($sql);
                 } else {
                         if (file_exists ($cfgClient[$client]["path"]["frontend"].$con_cfg['PathFrontendTmp'].urldecode($files[$i]))) {
@@ -146,15 +164,14 @@ function upldelete($path, $files) {
                         $sql = "SELECT idupl
                                           FROM ".$cfg["tab"]["upl"]."
                                           WHERE
-                                          idclient='$client'
+                                          idclient='".Contenido_Security::toInteger($client)."'
                                           AND
-                                          filename='$file_name'
+                                          filename='".Contenido_Security::toInteger($file_name)."'
                                           AND
-                                          dirname='$sql_dirname'";
+                                          dirname='".Contenido_Security::escapeDB($sql_dirname)."'";
                         $db->query($sql);
                         if ($db->next_record()) {
-                                $sql = "DELETE FROM ".$cfg["tab"]["upl"]." WHERE idupl='".$db->f("idupl")."'";
-
+                                $sql = "DELETE FROM ".$cfg["tab"]["upl"]." WHERE idupl='".Contenido_Security::toInteger($db->f("idupl"))."'";
                                 $db->query($sql);
                         }
 
@@ -183,7 +200,6 @@ function uplRecursiveRmDirIfEmpty($dir) {
                             uplrecursivermdir($dir."/".$dir_entry);
                     } else {
                             $notification->displayNotification("warning", "Im Verzeichnis $dir sind noch Dateien vorhanden. L&ouml;schen nicht m&ouml;glich.");
-                            //unlink($dir."/".$dir_entry);
                     }
             }
     }
@@ -436,7 +452,7 @@ function uplRenameDirectory ($oldpath, $newpath, $parent)
 	
 	/* Fetch all directory strings starting with the old path, and replace them
        with the new path */
-	$sql = "SELECT dirname, idupl FROM ".$cfg["tab"]["upl"]." WHERE idclient='$client' AND dirname LIKE '{$parent}{$oldpath}%'";
+	$sql = "SELECT dirname, idupl FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND dirname LIKE '{".Contenido_Security::escapeDB($parent, $db)."}{".Contenido_Security::escapeDB($oldpath, $db)."}%'";
 	$db->query($sql);
 
 	while ($db->next_record())
@@ -447,12 +463,12 @@ function uplRenameDirectory ($oldpath, $newpath, $parent)
 		$newpath2 = $parent . $newpath . $junk; 
  
 		$idupl = $db->f("idupl");
-		$sql = "UPDATE ".$cfg["tab"]["upl"]." SET dirname='$newpath2' WHERE idupl = '$idupl'";
+		$sql = "UPDATE ".$cfg["tab"]["upl"]." SET dirname='".Contenido_Security::escapeDB($newpath2)."' WHERE idupl = '".Contenido_Security::toInteger($idupl)."'";
 		$db2->query($sql);
 		
 	}
 	
-	$sql = "SELECT itemid, idproperty FROM ".$cfg["tab"]["properties"]." WHERE itemid LIKE '{$parent}{$oldpath}%'";
+	$sql = "SELECT itemid, idproperty FROM ".$cfg["tab"]["properties"]." WHERE itemid LIKE '{".Contenido_Security::escapeDB($parent, $db)."}{".Contenido_Security::escapeDB($oldpath, $db)."}%'";
 	$db->query($sql);
 	
 	while ($db->next_record())
@@ -546,12 +562,6 @@ function uplRecursiveDBDirectoryList ($directory, &$rootitem, $level)
 		$level = substr_count($dirname, "/")+2;
 		$file = basename($dbitem->get("dirname"));
 		$parent = dirname($dbitem->get("dirname"));
-
-//		echo "dirname:".$dirname.'<br>';
-//		echo "level:".$level.'<br>';
-//		echo "file:".$file.'<br>';
-//		echo "parent:".$parent.'<br>';
-//		echo "<br>";
 
 		if ($dirname != "." && $file != ".")
 		{
@@ -837,7 +847,7 @@ function uplSearch ($searchfor)
     $mysearch = urlencode($searchfor);
     
     /* Search for keywords first, ranking +5 */
-    $properties->select("idclient='$client' AND itemtype = 'upload' AND type='file' AND name='keywords' AND value LIKE '%$mysearch%'","itemid");
+    $properties->select("idclient='".Contenido_Security::toInteger($client)."' AND itemtype = 'upload' AND type='file' AND name='keywords' AND value LIKE '%".Contenido_Security::escapeDB($mysearch, $db)."%'","itemid");
 
     while ($item = $properties->next())
     {
@@ -845,7 +855,7 @@ function uplSearch ($searchfor)
     }
 
     /* Search for medianame , ranking +4 */
-    $properties->select("idclient='$client' AND itemtype = 'upload' AND type='file' AND name='medianame' AND value LIKE '%$mysearch%'","itemid");
+    $properties->select("idclient='".Contenido_Security::toInteger($client)."' AND itemtype = 'upload' AND type='file' AND name='medianame' AND value LIKE '%".Contenido_Security::escapeDB($mysearch, $db)."%'","itemid");
 
     while ($item = $properties->next())
     {
@@ -853,7 +863,7 @@ function uplSearch ($searchfor)
     }
     
     /* Search for media notes, ranking +3 */
-    $properties->select("idclient='$client' AND itemtype = 'upload' AND type='file' AND name='medianotes' AND value LIKE '%$mysearch%'","itemid");
+    $properties->select("idclient='".Contenido_Security::toInteger($client)."' AND itemtype = 'upload' AND type='file' AND name='medianotes' AND value LIKE '%".Contenido_Security::escapeDB($mysearch, $db)."%'","itemid");
 
     while ($item = $properties->next())
     {
@@ -861,7 +871,7 @@ function uplSearch ($searchfor)
     }
 
     /* Search for description, ranking +2 */
-    $uploads->select("idclient='$client' AND description LIKE '%$mysearch%'", "idupl");
+    $uploads->select("idclient='".Contenido_Security::toInteger($client)."' AND description LIKE '%".Contenido_Security::escapeDB($mysearch, $db)."%'", "idupl");
 
     while ($item = $uploads->next())
     {
@@ -869,7 +879,7 @@ function uplSearch ($searchfor)
     }
     
     /* Search for file name, ranking +1 */
-    $uploads->select("idclient='$client' AND filename LIKE '%$mysearch%'", "idupl");
+    $uploads->select("idclient='".Contenido_Security::toInteger($client)."' AND filename LIKE '%".Contenido_Security::escapeDB($mysearch, $db)."%'", "idupl");
 
     while ($item = $uploads->next())
     {
