@@ -193,10 +193,6 @@ function langDuplicateFromFirstLanguage($client, $idlang) {
                                 }
                         }
 
-                        #$sql = "SELECT MAX(idartlang)+1 FROM ".$cfg["tab"]["art_lang"];
-                        #$db2->query($sql);
-                        #$db2->next_record();
-                        #$tmp_idartlang_neu = $db2->f(0);
                         $tmp_idartlang_neu = $db2->nextid($cfg["tab"]["art_lang"]);
 
                         $keystring = $keystring.",idartlang";
