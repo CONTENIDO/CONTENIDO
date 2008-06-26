@@ -6003,3 +6003,36 @@ msgstr "Aktuelle Contenido Version"
 #~ msgid "Copy article to the current language"
 #~ msgstr "Artikel in die aktuelle Sprache kopieren"
 
+msgid "Update notification"
+msgstr "Update-Benachrichtigung"
+
+msgid "Unable to check for new updates!"
+msgstr "Update-&Uuml;berpr&uuml;fung kann nicht durchgef&uuml;hrt werden!"
+
+msgid "Connection to contenido.org failed!"
+msgstr "Verbindung zu contenido.org fehlgeschlagen!"
+
+msgid "Could not handle server response!"
+msgstr "Server-Antwort konnte nicht verarbeitet werden!"
+
+msgid "Could not determine vendor version!"
+msgstr "Hersteller-Version konnte nicht gelesen werden!"
+
+msgid "You have an unknown or unsupported version of Contenido!"
+msgstr "Du hast eine unbekannte oder nicht unterst&uuml;tzte Version von Contenido!"
+
+msgid "Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version!"
+msgstr "Deine Version von Contenido wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisiere auf eine h&ouml;here Version!"
+
+msgid "A new version of Contenido (<b>%s</b>) is available! - <a href="%s">Download now!</a>"
+msgstr "Eine neue Version von Contenido (<b>%s</b>) ist verf&uuml;gbar! - <a href="%s">Jetzt herunterladen!</a>"
+
+msgid "It seems to be that your version string was manipulated. Contenido %s does not exist!"
+msgstr "Anscheinend wurde deine Version manipuliert. Contenido %s existiert nicht!"
+
+msgid "Your version of Contenido is up to date!"
+msgstr "Deine Version von Contenido ist aktuell!"
+
+msgid "Update notification is disabled!"
+msgstr "Die Update-&Uuml;berpr&uuml;fung wurde deaktiviert!" 
+

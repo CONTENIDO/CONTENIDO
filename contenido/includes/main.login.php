@@ -9,7 +9,8 @@
 * Author    :   Jan Lengowski
 * Created   :   21.01.2003
 * Modified  :   21.01.2003
-*
+* Modified 2008-06-26 timo.trautmann update notifier class added
+* 
 * © four for business AG
 ******************************************/
 
@@ -18,6 +19,7 @@ $tpl->reset();
 cInclude("classes", "class.todo.php");
 cInclude("classes", "contenido/class.client.php");
 cInclude("classes", "class.activeusers.php");
+cInclude("classes", "class.update.notifier.php");
 
 if ($saveLoginTime == true) {
 	$sess->register("saveLoginTime");
@@ -254,6 +256,11 @@ if($perm->isSysadmin($vuser) && $cfg["backend"]["newsfeed"] == true){
 else{
 	$tpl->set('s', 'CONTENIDO_NEWS', '');
 }
+
+// check for new updates
+$oUpdateNotifier = new Contenido_UpdateNotifier($cfg['version']);
+$sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
+$tpl->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 
 $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["welcome"]);
 

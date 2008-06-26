@@ -164,6 +164,9 @@ h2.content_box{
 #user_online{
   background: url(../images/user_online.gif) no-repeat 0 2px;
 }
+#update_notifier{
+  background: url(../images/my_contenido.gif) no-repeat 0 2px;
+}
 #messageboard{
   
 }
