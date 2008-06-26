@@ -1,17 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Defines the "mod" related functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.2
+ * @author     Olaf Niemann, Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003
+ *   modified 2008-06-26, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   functions.mod.php
-* Project   :   Contenido
-* Descr     :   Defines the 'mod' related
-*               functions
-*
-* Author    :   Olaf Niemann, Jan Lengowski
-* Created   :   21.01.2003
-* Modified  :   25.03.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude ("includes", "functions.tpl.php");
 cInclude ("includes", "functions.con.php");
 cInclude ("classes", "contenido/class.module.history.php");
@@ -63,7 +83,7 @@ function modDeleteModule($idmod)
     # Global vars
     global $db, $sess, $client, $cfg, $area_tree, $perm;
 
-    $sql = "DELETE FROM ".$cfg["tab"]["mod"]." WHERE idmod = '".$idmod."' AND idclient = '".$client."'";
+    $sql = "DELETE FROM ".$cfg["tab"]["mod"]." WHERE idmod = '".Contenido_Security::toInteger($idmod)."' AND idclient = '".Contenido_Security::toInteger($client)."'";
     $db->query($sql);
 
 
