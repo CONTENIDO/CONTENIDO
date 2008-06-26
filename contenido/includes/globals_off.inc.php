@@ -22,7 +22,7 @@
  * {@internal 
  *   created unkown
  *   modified 2008-06-25, Frederic Schneider, add stripslashes_deep and contenido_stripslashes constant
- *
+ *   modified 2008-06-26 Removed $_SERVER and $_ENV because this global vars are read only
  *   $Id$:
  * }}
  * 
@@ -32,13 +32,10 @@ define('CONTENIDO_STRIPSLASHES', true);
 
 if (phpversion() <= "4.1.0")
 {
-
-	$_SERVER = & $HTTP_SERVER_VARS;
 	$_GET = & $HTTP_GET_VARS;
 	$_POST = & $HTTP_POST_VARS;
 	$_COOKIE = & $HTTP_COOKIE_VARS;
 	$_FILES = & $HTTP_POST_FILES;
-	$_ENV = & $HTTP_ENV_VARS;
 
 	// _SESSION is the only superglobal which is conditionally set
 	if (isset ($HTTP_SESSION_VARS))
@@ -53,9 +50,7 @@ if (!isset ($HTTP_POST_VARS) && isset ($_POST))
 {
 	$HTTP_POST_VARS = & $_POST;
 	$HTTP_GET_VARS = & $_GET;
-	$HTTP_SERVER_VARS = & $_SERVER;
 	$HTTP_COOKIE_VARS = & $_COOKIE;
-	$HTTP_ENV_VARS = & $_ENV;
 	$HTTP_POST_FILES = & $_FILES;
 
 	// _SESSION is the only superglobal which is conditionally set
@@ -103,7 +98,7 @@ if (!get_magic_quotes_gpc()) {
    }
 
 // register globals
-$types_to_register = array ('GET', 'POST', 'SERVER', 'COOKIE', 'SESSION');
+$types_to_register = array ('GET', 'POST', 'COOKIE', 'SESSION');
 foreach ($types_to_register as $global_type)
 {
 	$arr = @ ${'_'.$global_type};
