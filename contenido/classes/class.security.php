@@ -42,12 +42,12 @@ class Contenido_Security {
      * @param string $sVar
      * @return true or false
      */
-    public static function isInteger($sVar) {
+    public static function isInteger($iVar) {
 
-        $sTempVar = $sVar;
-        $sVar = (int) $sVar;
+        $iTempVar = $iVar;
+        $iVar = (int) $iVar;
 
-        if($sTempVar === $sVar) {
+        if($iTempVar === $iVar) {
             return true;
         } else {
             return false;
