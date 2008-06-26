@@ -9,6 +9,7 @@ function checkAndInclude ($filename)
 	}
 }
 session_start();
+checkAndInclude("../contenido/classes/class.security.php");
 checkAndInclude("lib/defines.php");
 checkAndInclude("lib/functions.filesystem.php");
 checkAndInclude("lib/functions.environment.php");
