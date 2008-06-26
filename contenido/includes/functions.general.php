@@ -1,18 +1,36 @@
 <?php
-/*****************************************
-*
-* $Id: functions.general.php,v 1.106 2007/08/31 21:05:06 holger.librenz Exp $
-*
-* File      :   $RCSfile: functions.general.php,v $
-* Project   :   Contenido
-* Descr     :   Defines the general
-*               contenido functions
-*
-* Author    :   Jan Lengowski
-* Modified  :   $Date: 2007/08/31 21:05:06 $
-*
-* (C) four for business AG, www.4fb.de
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Defines the general contenido functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.3.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-26, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * Extracts the available content-
@@ -41,7 +59,7 @@ function getAvailableContentTypes($idartlang)
 	            WHERE
 	                a.idtype    = c.idtype AND
 	                a.idartlang = b.idartlang AND
-	                b.idartlang = '".$idartlang."'";
+	                b.idartlang = '".Contenido_Security::toInteger($idartlang)."'";
 
 	$db->query($sql);
 
@@ -67,7 +85,7 @@ function isArtInMultipleUse($idart)
 	global $cfg, $client;
 
 	$db = new DB_Contenido;
-	$sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".$idart."'";
+	$sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($idart)."'";
 	$db->query($sql);
 
 	return ($db->affected_rows() > 1);
@@ -151,7 +169,7 @@ function getIDForArea($area)
 		                FROM
 		                    ".$cfg["tab"]["area"]."
 		                WHERE
-		                    name = '".$area."'";
+		                    name = '".Contenido_Security::escapeDB($area, $db)."'";
 
 		$db->query($sql);
 		if ($db->next_record())
@@ -179,7 +197,7 @@ function getParentAreaId($area)
 		                    ".$cfg["tab"]["area"]." AS a,
 		                    ".$cfg["tab"]["area"]." AS b
 		                WHERE
-		                    a.idarea = '".$area."' AND
+		                    a.idarea = '".Contenido_Security::toInteger($area)."' AND
 		                    b.name = a.parent_id";
 	} else
 	{
@@ -189,7 +207,7 @@ function getParentAreaId($area)
 		                    ".$cfg["tab"]["area"]." AS a,
 		                    ".$cfg["tab"]["area"]." AS b
 		                WHERE
-		                    a.name = '".$area."' AND
+		                    a.name = '".Contenido_Security::escapeDB($area, $db)."' AND
 		                    b.name = a.parent_id";
 
 	}
@@ -279,7 +297,7 @@ function backToMainArea($send)
 		                    ".$cfg["tab"]["area"]." AS a,
 		                    ".$cfg["tab"]["area"]." AS b
 		                WHERE
-		                    b.name      = '".$area."' AND
+		                    b.name      = '".Contenido_Security::escapeDB($area, $db)."' AND
 		                    b.parent_id = a.name";
 
 		$db->query($sql);
@@ -319,7 +337,7 @@ function showLocation($area)
 
 	$sql = "SELECT location
 	              FROM ".$cfg["tab"]["area"]." as A, ".$cfg["tab"]["nav_sub"]." as B
-	              Where A.name='$area' AND A.idarea=B.idarea AND A.online='1'";
+	              Where A.name='".Contenido_Security::escapeDB($area, $db)."' AND A.idarea=B.idarea AND A.online='1'";
 
 	$db->query($sql);
 	if ($db->next_record())
@@ -332,14 +350,14 @@ function showLocation($area)
 
 		$sql = "SELECT parent_id
 		                    FROM ".$cfg["tab"]["area"]."
-		                    WHERE name='$area' AND online='1'";
+		                    WHERE name='".Contenido_Security::escapeDB($area, $db)."' AND online='1'";
 		$db->query($sql);
 		$db->next_record();
 		$parent = $db->f("parent_id");
 
 		$sql = "SELECT location
 		                    FROM ".$cfg["tab"]["area"]." as A, ".$cfg["tab"]["nav_sub"]." as B
-		                    Where A.name='$parent' AND A.idarea = B.idarea AND A.online='1'";
+		                    Where A.name='".Contenido_Security::escapeDB($parent, $db)."' AND A.idarea = B.idarea AND A.online='1'";
 
 		$db->query($sql);
 		$db->next_record();
@@ -371,7 +389,7 @@ function getLanguagesByClient($client)
 	global $db;
 	global $cfg;
 
-	$sql = "SELECT idlang FROM ".$cfg["tab"]["clients_lang"]." WHERE idclient='$client'";
+	$sql = "SELECT idlang FROM ".$cfg["tab"]["clients_lang"]." WHERE idclient='".Contenido_Security::toInteger($client)."'";
 	$db->query($sql);
 	while ($db->next_record())
 	{
@@ -393,7 +411,7 @@ function getLanguageNamesByClient($client)
 	                  ".$cfg["tab"]["clients_lang"]." AS a,
 	                  ".$cfg["tab"]["lang"]." AS b
 	                WHERE
-	                    idclient='$client' AND
+	                    idclient='".Contenido_Security::toInteger($client)."' AND
 	                    a.idlang = b.idlang
 	                ORDER BY
 	                    idlang ASC";
@@ -506,7 +524,7 @@ function cleanupSessions()
 	{
 		if ($db->f("changed") < $maxdate)
 		{
-			$sql = "DELETE FROM ".$cfg["tab"]["phplib_active_sessions"]." WHERE sid = '".$db->f("sid")."'";
+			$sql = "DELETE FROM ".$cfg["tab"]["phplib_active_sessions"]." WHERE sid = '".Contenido_Security::escapeDB($db->f("sid"), $db2)."'";
 			$db2->query($sql);
 			$col->removeSessionMarks($db->f("sid"));
 		}
@@ -517,7 +535,7 @@ function cleanupSessions()
 
 	while ($c = $col->next())
 	{
-		$sql = "SELECT sid FROM ".$cfg["tab"]["phplib_active_sessions"]." WHERE sid = '".$c->get("session")."'";
+		$sql = "SELECT sid FROM ".$cfg["tab"]["phplib_active_sessions"]." WHERE sid = '".Contenido_Security::escapeDB($c->get("session"), $db2)."'";
 		$db2->query($sql);
 		if (!$db2->next_record())
 		{
@@ -775,14 +793,14 @@ function setSystemProperty($type, $name, $value, $idsystemprop = 0)
 		return false;
 	}
     
-    $idsystemprop = (int) $idsystemprop;
+    $idsystemprop = Contenido_Security::toInteger($idsystemprop);
     
 	$db_systemprop = new DB_Contenido;
 
 	$value = urlencode($value);
     
     if ($idsystemprop == 0) {
-        $sql = "SELECT idsystemprop FROM ".$cfg["tab"]["system_prop"]." WHERE type='$type' AND name='$name'";
+        $sql = "SELECT idsystemprop FROM ".$cfg["tab"]["system_prop"]." WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."' AND name='".Contenido_Security::escapeDB($name, $db_systemprop)."'";
     } else {
         $sql = "SELECT idsystemprop FROM ".$cfg["tab"]["system_prop"]." WHERE idsystemprop='$idsystemprop'";
     }
@@ -792,14 +810,17 @@ function setSystemProperty($type, $name, $value, $idsystemprop = 0)
 	if ($db_systemprop->num_rows() > 0)
 	{
         if ($idsystemprop == 0) {
-            $sql = "UPDATE ".$cfg["tab"]["system_prop"]." SET value='$value' WHERE type='$type' AND name='$name'";
+            $sql = "UPDATE ".$cfg["tab"]["system_prop"]." SET value='".Contenido_Security::escapeDB($value, $db_systemprop)."' WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."'
+                    AND name='".Contenido_Security::escapeDB($name, $db_systemprop)."'";
         } else {
-            $sql = "UPDATE ".$cfg["tab"]["system_prop"]." SET value='$value', type='$type', name='$name' WHERE idsystemprop='$idsystemprop'";
+            $sql = "UPDATE ".$cfg["tab"]["system_prop"]." SET value='".Contenido_Security::escapeDB($value, $db_systemprop)."', type='".Contenido_Security::escapeDB($type, $db_systemprop)."',
+                    name='".Contenido_Security::escapeDB($name, $db_systemprop)."' WHERE idsystemprop='$idsystemprop'";
         }
 	} else
 	{
 		$idsystemprop = $db_systemprop->nextid($cfg["tab"]["system_prop"]);
-		$sql = "INSERT INTO ".$cfg["tab"]["system_prop"]." (idsystemprop, value, type, name) VALUES ('$idsystemprop', '$value', '$type', '$name')";
+		$sql = "INSERT INTO ".$cfg["tab"]["system_prop"]." (idsystemprop, value, type, name) VALUES ('$idsystemprop', '".Contenido_Security::escapeDB($value, $db_systemprop)."',
+                '".Contenido_Security::escapeDB($type, $db_systemprop)."', '".Contenido_Security::escapeDB($name, $db_systemprop)."')";
 	}
 
 	$db_systemprop->query($sql);
@@ -817,7 +838,7 @@ function deleteSystemProperty($type, $name)
 
 	$db_systemprop = new DB_Contenido;
 
-	$sql = "DELETE FROM ".$cfg["tab"]["system_prop"]." WHERE type='$type' AND name='$name'";
+	$sql = "DELETE FROM ".$cfg["tab"]["system_prop"]." WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."' AND name='".Contenido_Security::escapeDB($name, $db_systemprop)."'";
 	$db_systemprop->query($sql);
 }
 
@@ -874,7 +895,7 @@ function getSystemProperty($type, $name)
 
 	$db_systemprop = new DB_Contenido;
 
-	$sql = "SELECT value FROM ".$cfg["tab"]["system_prop"]." WHERE type='$type' AND name='$name'";
+	$sql = "SELECT value FROM ".$cfg["tab"]["system_prop"]." WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."' AND name='".Contenido_Security::escapeDB($name, $db_systemprop)."'";
 	$db_systemprop->query($sql);
 
 	if ($db_systemprop->next_record())
@@ -900,7 +921,7 @@ function getSystemPropertiesByType($sType)
 	
 	$db_systemprop = new DB_Contenido;
 	
-	$sSQL = "SELECT name, value FROM ".$cfg["tab"]["system_prop"]." WHERE type='$sType' ORDER BY name";
+	$sSQL = "SELECT name, value FROM ".$cfg["tab"]["system_prop"]." WHERE type='".Contenido_Security::escapeDB($sType, $db_systemprop)."' ORDER BY name";
 	$db_systemprop->query($sSQL);
 	
 	while ($db_systemprop->next_record())
@@ -1007,7 +1028,7 @@ function getArtspec()
 {
 	global $db, $cfg, $lang, $client;
 	$sql = "SELECT artspec, idartspec, online, artspecdefault FROM ".$cfg['tab']['art_spec']."
-			WHERE client=$client AND lang=$lang ORDER BY artspec ASC";
+			WHERE client='".Contenido_Security::toInteger($client)."' AND lang='".Contenido_Security::toInteger($lang)."' ORDER BY artspec ASC";
 	$db->query($sql);
 
 	$artspec = array ();
@@ -1035,16 +1056,17 @@ function addArtspec($artspectext, $online)
 	if (isset ($_POST['idartspec']))
 	{ //update
 		$sql = "UPDATE ".$cfg['tab']['art_spec']." SET 
-						artspec='".urldecode($artspectext)."',
-						online='".$online."'
-					WHERE idartspec=".$_POST['idartspec']."";
+						artspec='".Contenido_Security::escapeDB(urldecode($artspectext), $db)."',
+						online='".Contenido_Security::toInteger($online)."'
+					WHERE idartspec=".Contenido_Security::toInteger($_POST['idartspec'])."";
 		$db->query($sql);
 	} else
 	{
 		$sql = "INSERT INTO ".$cfg['tab']['art_spec']."
-		    		(idartspec, client, lang, artspec, online, artspecdefault)
-		    		VALUES
-		    		(".$db->nextid($cfg['tab']['art_spec']).", $client, $lang, '".urldecode($artspectext)."', 0, 0)";
+					(idartspec, client, lang, artspec, online, artspecdefault)
+					VALUES
+					(".Contenido_Security::toInteger($db->nextid($cfg['tab']['art_spec'])).", '".Contenido_Security::toInteger($client)."', '".Contenido_Security::toInteger($lang)."',
+					'".Contenido_Security::escapeDB(urldecode($artspectext), $db)."', 0, 0)";
 		$db->query($sql);
 	}
 }
@@ -1059,10 +1081,10 @@ function addArtspec($artspectext, $online)
 function deleteArtspec($idartspec)
 {
 	global $db, $cfg;
-	$sql = "DELETE FROM ".$cfg['tab']['art_spec']." WHERE idartspec = '".$idartspec."'";
+	$sql = "DELETE FROM ".$cfg['tab']['art_spec']." WHERE idartspec = '".Contenido_Security::toInteger($idartspec)."'";
 	$db->query($sql);
 
-	$sql = "UPDATE ".$cfg["tab"]["art_lang"]." set artspec = '0' WHERE artspec = '$idartspec'";
+	$sql = "UPDATE ".$cfg["tab"]["art_lang"]." set artspec = '0' WHERE artspec = '".Contenido_Security::toInteger($idartspec)."'";
 	$db->query($sql);
 }
 
@@ -1079,7 +1101,7 @@ function deleteArtspec($idartspec)
 function setArtspecOnline($idartspec, $online)
 {
 	global $db, $cfg;
-	$sql = "UPDATE ".$cfg['tab']['art_spec']." SET online=".$online." WHERE idartspec=".$idartspec."";
+	$sql = "UPDATE ".$cfg['tab']['art_spec']." SET online=".Contenido_Security::toInteger($online)." WHERE idartspec=".Contenido_Security::toInteger($idartspec)."";
 	$db->query($sql);
 }
 
@@ -1095,10 +1117,10 @@ function setArtspecOnline($idartspec, $online)
 function setArtspecDefault($idartspec)
 {
 	global $db, $cfg, $lang, $client;
-	$sql = "UPDATE ".$cfg['tab']['art_spec']." SET artspecdefault=0 WHERE client=$client AND lang=$lang";
+	$sql = "UPDATE ".$cfg['tab']['art_spec']." SET artspecdefault=0 WHERE client='".Contenido_Security::toInteger($client)."' AND lang='".Contenido_Security::toInteger($lang)."'";
 	$db->query($sql);
 
-	$sql = "UPDATE ".$cfg['tab']['art_spec']." SET artspecdefault=1 WHERE idartspec=$idartspec";
+	$sql = "UPDATE ".$cfg['tab']['art_spec']." SET artspecdefault=1 WHERE idartspec='".Contenido_Security::toInteger($idartspec)."'";
 	$db->query($sql);
 }
 
@@ -1128,8 +1150,8 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0)
 
 	$sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
 	    	   ".$cfg["tab"]["cat"]." AS a, ".$cfg["tab"]["cat_lang"]." AS b,
-	    	   ".$cfg["tab"]["cat_tree"]." AS c WHERE a.idclient = '".$client."'
-	    	   AND b.idlang = '".$lang."' AND b.idcat = a.idcat AND c.idcat = a.idcat $addString
+	    	   ".$cfg["tab"]["cat_tree"]." AS c WHERE a.idclient = '".Contenido_Security::toInteger($client)."'
+	    	   AND b.idlang = '".Contenido_Security::toInteger($lang)."' AND b.idcat = a.idcat AND c.idcat = a.idcat ".Contenido_Security::escapeDB($addString)."
 	           ORDER BY c.idtree";
 
 	$db->query($sql);
@@ -1140,7 +1162,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0)
 	{
 		$categories[$db->f("idcat")]["name"] = $db->f("name");
 
-		$sql2 = "SELECT level FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat = '".$db->f("idcat")."'";
+		$sql2 = "SELECT level FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat = '".Contenido_Security::toInteger($db->f("idcat"))."'";
 		$db2->query($sql2);
 
 		if ($db2->next_record())
@@ -1151,7 +1173,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0)
 		$sql2 = "SELECT a.title AS title, b.idcatart AS idcatart FROM
 		                ".$cfg["tab"]["art_lang"]." AS a,  ".$cfg["tab"]["cat_art"]." AS b
 		    			WHERE b.idcat = '".$db->f("idcat")."' AND a.idart = b.idart AND
-		    			a.idlang = '".$lang."'";
+		    			a.idlang = '".Contenido_Security::toInteger($lang)."'";
 
 		$db2->query($sql2);
 
@@ -1471,7 +1493,7 @@ function getClientName($idclient)
 
 	$db = new DB_Contenido;
 
-	$sql = "SELECT name FROM ".$cfg["tab"]["clients"]." WHERE idclient='$idclient'";
+	$sql = "SELECT name FROM ".$cfg["tab"]["clients"]." WHERE idclient='".Contenido_Security::toInteger($idclient)."'";
 
 	$db->query($sql);
 
@@ -2356,50 +2378,4 @@ function sendEncodingHeader ($db, $cfg, $lang) {
     
     }
 }
-
-
-/**
- * function includes plugins if exist
- * and sets i18domain for plugin
- *
- * @see http://contenido.org/forum/viewtopic.php?t=18291
- * 
- * @author Oldperl (added by H. Librenz (4fb))
- * @version 1.0
- * 
- */
-//function includePluginConf()
-//{
-//   global $cfg;
-//
-//    $conpluginpath = $cfg['path']['contenido'].$cfg["path"]['plugins'];
-//
-//    $dh = opendir($conpluginpath);
-//
-//    while (($plugin = readdir($dh)) !== false)
-//    {
-//       if (is_dir($conpluginpath.$plugin)  && $plugin != ".." && $plugin != ".")
-//          {
-//            $configfile = $conpluginpath.$plugin. "/includes/config.plugin.php";
-//         $langfile   = $conpluginpath.$plugin. "/includes/language.plugin.php";
-//         $localedir  = $conpluginpath.$plugin. "/locale/";
-//
-//            if (file_exists($localedir))
-//           {
-//               i18nRegisterDomain($plugin, $localedir);
-//           }
-//
-//           if (file_exists($langfile))
-//           {
-//               include_once($langfile);
-//           }
-//           if (file_exists($configfile))
-//           {
-//               include_once($configfile);
-//           }
-//       }
-//    }
-//    closedir($dh);
-//}
-
 ?>
