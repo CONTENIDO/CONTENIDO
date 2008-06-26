@@ -1,4 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Group Rights
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-26, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 // declare new javascript variables;
 echo"<script type=\"text/javascript\">
      var areatree=new Array();
@@ -8,7 +41,7 @@ $debug = 0;
 
 //set the areas which are in use fore selecting these
 
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='$groupid' AND idclient='$rights_client' AND idlang='$rights_lang' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".Contenido_Security::escapeDB($groupid, $db)."' AND idclient='".Contenido_Security::toInteger($rights_client)."' AND idlang='".Contenido_Security::toInteger($rights_lang)."' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
 $db->query($sql);
 $rights_list_old = array ();
 while ($db->next_record()) { //set a new rights list fore this user
@@ -25,12 +58,10 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
     }
 }
 
-
-
 if(!isset($rights_perms)||$action==""||!isset($action))
 {
     //search for the permissions of this user
-    $sql="SELECT perms FROM ".$cfg["tab"]["groups"]." WHERE group_id='$groupid'";
+    $sql="SELECT perms FROM ".$cfg["tab"]["groups"]." WHERE group_id='".Contenido_Security::escapeDB($groupid, $db)."'";
     
     $db->query($sql);
     $db->next_record();
@@ -72,7 +103,6 @@ foreach($right_list as $key => $value){
                        else
                               $checked="";
 
-
                         $darkRow = !$darkRow;
                         if ($darkRow) {
                             $bgColor = $cfg["color"]["table_dark"];
@@ -112,9 +142,7 @@ foreach($right_list as $key => $value){
                              </script>";
 
                }
-
-
-
+			   
                //if there area some
                if(is_array($value2["action"]))
                  foreach($value2["action"] as $key3 => $value3)
@@ -164,17 +192,6 @@ foreach($right_list as $key => $value){
                  }
         }
         //checkbox for checking all actions fore this itemid
-
-
-
-
-
-//        emptyRow();
-//        emptyCell();
-
-
-        
-
 
 }
 echo"</tr>";

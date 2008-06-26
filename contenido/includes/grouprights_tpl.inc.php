@@ -1,7 +1,40 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Group Rights
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-26, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 //set the areas which are in use fore selecting these
 $possible_area = "'".implode("','", $area_tree[$perm->showareas("tpl")])."'";
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='$groupid' AND idclient='$rights_client' AND A.type = 1 AND idlang='$rights_lang' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".Contenido_Security::escapeDB($groupid, $db)."' AND idclient='".Contenido_Security::toInteger($rights_client)."' AND A.type = 1 AND idlang='".Contenido_Security::toInteger($rights_lang)."' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 $rights_list_old = array ();
 while ($db->next_record()) { //set a new rights list fore this user
@@ -79,7 +112,7 @@ $table->end_row();
 
 
 //Select the itemid´s
-$sql = "SELECT * FROM ".$cfg["tab"]["tpl"]." WHERE idclient='$rights_client' ORDER BY name";
+$sql = "SELECT * FROM ".$cfg["tab"]["tpl"]." WHERE idclient='".Contenido_Security::toInteger($rights_client)."' ORDER BY name";
 $db->query($sql);
 
 
@@ -117,14 +150,6 @@ while ($db->next_record()) {
         }
         //checkbox for checking all actions fore this itemid
         $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idtpl")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idtpl")."')\">","", "", " class=\"td_rights3\"", false);
-
-
-
-
-
-
-
-
 }
 $table->end_row();
 $table->row();

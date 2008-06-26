@@ -1,18 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: grouprights_members.inc.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Group Member Edit Page
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   03.06.2003
-* Modified  :   $Date: 2006/07/07 09:47:28 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: grouprights_members.inc.php,v 1.13 2006/07/07 09:47:28 andreas.lindner Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Group Member Edit Page
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.1.3
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-06-03
+ *   modified 2008-06-26, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $db2 = new DB_Contenido;
 $tpl3 = new Template;
@@ -37,7 +55,7 @@ if(!$perm->have_perm_area_action($area,$action))
             }
             
             foreach ($aDeleteMembers as $idgroupuser) {
-                $idgroupuser = (int) $idgroupuser;
+                $idgroupuser = Contenido_Security::toInteger($idgroupuser);
             
                 $sql = "DELETE FROM "
     		 			.$cfg["tab"]["groupmembers"]."
@@ -66,17 +84,17 @@ if(!$perm->have_perm_area_action($area,$action))
                    				
                    				$sql = "SELECT * FROM
                    						".$cfg["tab"]["groupmembers"]." WHERE
-                   						group_id = '".$groupid."' AND
-        								user_id = '".$myUser->getField("user_id")."'";
+                   						group_id = '".Contenido_Security::escapeDB($groupid, $db)."' AND
+        								user_id = '".Contenido_Security::escapeDB($myUser->getField("user_id"), $db)."'";
     							$db->query($sql);
     							if (!$db->next_record())
     							{
                        				$nextid = $db->nextid($cfg["tab"]["groupmembers"]);
                        				$sql = "INSERT INTO
             								 ".$cfg["tab"]["groupmembers"]."
-            								SET idgroupuser = '".$nextid."',
-            									group_id = '".$groupid."',
-            									user_id = '".$myUser->getField("user_id")."'";
+            								SET idgroupuser = '".Contenido_Security::toInteger($nextid)."',
+            									group_id = '".Contenido_Security::escapeDB($groupid, $db)."',
+            									user_id = '".Contenido_Security::escapeDB($myUser->getField("user_id"), $db)."'";
             									
             						$db->query($sql);
                        			
@@ -107,12 +125,12 @@ if(!$perm->have_perm_area_action($area,$action))
     	if ($sortby!='') {	
     		$sql = "select ".$tab1.".idgroupuser, ".$tab1.".user_id FROM ".$tab1." 
     				INNER JOIN ".$tab2." ON ".$tab1.".user_id = ".$tab2.".user_id WHERE
-    				group_id = '".$groupid."' order by ".$tab2.".".$sortby;
+    				group_id = '".Contenido_Security::escapeDB($groupid, $db)."' order by ".$tab2.".".$sortby;
     	} else {
     		#Show previous behaviour by default
     	    $sql = "select ".$tab1.".idgroupuser, ".$tab1.".user_id FROM ".$tab1." 
     				INNER JOIN ".$tab2." ON ".$tab1.".user_id = ".$tab2.".user_id WHERE
-    				group_id = '".$groupid."' order by ".$tab2.".realname, ".$tab2.".username";
+    				group_id = '".Contenido_Security::escapeDB($groupid, $db)."' order by ".$tab2.".realname, ".$tab2.".username";
     	}
 
         $db->query($sql);
