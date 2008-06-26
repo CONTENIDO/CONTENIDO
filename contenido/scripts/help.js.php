@@ -1,21 +1,42 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: help.js.php,v $
-* Project   :   Contenido
-* Descr     :   Help System
-* Modified  :   $Date: 2005/08/22 12:21:18 $
-*
-* © four for business AG, www.4fb.de
-*
-* @internal {
-*   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
-* }
-*
-* $Id: help.js.php,v 1.3 2005/08/22 12:21:18 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Help system
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend scripts
+ * @version    1.3
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-16, H. Librenz, Hotfix: Added check for invalid calls
+ *   modified 2008-06-26, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }
+
 include_once ('../includes/startup.php');
 
 include_once ($cfg["path"]["contenido"].$cfg["path"]["includes"] . 'functions.i18n.php');
