@@ -247,7 +247,7 @@ function langDuplicateFromFirstLanguage($client, $idlang) {
 
                         //********* make changes to new entry*************
                         $date = date("Y-m-d H:i:s");
-                        $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." AS A, ".$cfg["tab"]["art"]." AS B WHERE A.idart=B.idart AND B.idclient='".Contenido_Security::toInteger($client)."' AND idlang='".Contenido_Security::toInteger(($idlang)."'";
+                        $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." AS A, ".$cfg["tab"]["art"]." AS B WHERE A.idart=B.idart AND B.idclient='".Contenido_Security::toInteger($client)."' AND idlang='".Contenido_Security::toInteger($idlang)."'";
                         $db2->query($sql);
                         while ($db2->next_record()) {
                                 $a_artlang[] = $db2->f("idartlang");
