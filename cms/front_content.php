@@ -1,11 +1,10 @@
 <?php
-/****************************************************************
- * $RCSfile: front_content.php,v $
- *
- * Project: Contenido Content Management System
- *
- * Description:
- *
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+*
  * This file handles the view of an article.
  *
  * To handle the page we use the Database Abstraction Layer, the Session, Authentication and Permissions Handler of the
@@ -26,36 +25,35 @@
  * Contenido Extension Chainer.
  *
  * Finally the 'code' of an article will by evaluated and displayed.
- *
- * @author Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.
- * @version 4.6.0
- * @see http://www.contenido.org
- * @see ./docs/techref/
- * @see ./docs/techref/plugins/Contenido Extension Chainer.pdf
- *
- * TODO:
- * The startup process and the way to handle the view of an article has to be redesigned.
- * A coding convention has to be implemented. Obviously the code below is old programming style.
- * The Contenido Architecture has to be redesigned.
- *
- * NOTE:
- * If you edit this file you must synchronise the files
+ * Requirements: 
+ * @con_php_req 5.0
+ * @con_notice If you edit this file you must synchronise the files
  * ./contenido/external/frontend/front_content.php
  * and
  * ./contenido/external/backendedit/front_content.php
+ * 
  *
- * created 2003/01/21
- * modified $Date: 2007/08/20 19:24:28 $
+ * @package    Contenido Frontend
+ * @version    4.8
+ * @author     Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-01-21
+ *   modified 2008-06-16, H. Librenz, Hotfix: checking for potential unsecure call
+ *   modified 2008-06-26, Frederic Schneider, add security fix
  *
- * © four for business AG, www.4fb.de
- *
- * This file is part of the Contenido Content Management System.
- *
- * @internal {
- *  modified 2008-06-16, H. Librenz - Hotfix: checking for potential unsecure call
- *  $Id: front_content.php,v 1.85 2007/08/20 19:24:28 bjoern.behrens Exp $
- * }
- ****************************************************************/
+ *   $Id$:
+ * }}
+ * 
+ */
+
+define("CON_FRAMEWORK", true);
+
 if (isset($_REQUEST['contenido_path'])) {
     die ('Illegal call');
 }
