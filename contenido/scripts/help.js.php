@@ -29,9 +29,7 @@
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
-}
+define("CON_FRAMEWORK", true);
 
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');

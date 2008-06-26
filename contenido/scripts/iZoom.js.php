@@ -1,16 +1,37 @@
 <?php
-/**
+
+/* 
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * iZoom JavaScript "pipe"
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * @version $Revision$
- * @copyright four for business AG <www.4fb.de>
+ * @package    Contenido Backend scripts
+ * @version    1.0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-16, H. Librenz, Hotfix: Added check for invalid calls
+ *   modified 2008-06-26, Frederic Schneider, add security fix
  *
- * @internal {
- *  modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls
- *
- *  $Id$
- * }
- */
+ *   $Id$:
+ * }}
+ * 
+ */ 
+ 
+define("CON_FRAMEWORK", true);
+ 
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Invalid calls');
 }
