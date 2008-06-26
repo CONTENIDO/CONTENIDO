@@ -1,20 +1,36 @@
 <?php
 /**
- * Encoding Helper Function
+ * Project: 
+ * Contenido Content Management System
  * 
- * @file $RCSfile: functions.encoding.php,v $
- *  
- * @description Some little function to retrieving current encoding.
+ * Description: 
+ * Some little function to retrieving current encoding.
  * 
- * @version 1.0.0
- * @author Holger Librenz
- * @copyright four for business AG <www.4fb.de>
+ * Requirements: 
+ * @con_php_req 5.0
  * 
- * @modified $Date: 2007/10/11 15:45:33 $
- * @modifiedby $Author: holger.librenz $
+ *
+ * @package    Contenido Backend includes
+ * @version    1.3.1
+ * @author     Holger Librenz
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
  * 
- * $Id: functions.encoding.php,v 1.1 2007/10/11 15:45:33 holger.librenz Exp $
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-26, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * Returns encoding for language with ID $iLang (global $lang in contenido style).
@@ -45,7 +61,7 @@ function getEncodingByLanguage (&$oDb, $iLang, $cfg) {
 		FROM 
 			" .  $cfg["tab"]["lang"] . "
 		WHERE 
-			idlang = " . $iLang;
+			idlang = " . Contenido_Security::toInteger($iLang);
 
 		if ($oDb->query($sQuery)) {
 			if ($oDb->next_record()) {
