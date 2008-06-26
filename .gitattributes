@@ -178,6 +178,7 @@ contenido/classes/class.templateconfig.php -text
 contenido/classes/class.todo.php -text
 contenido/classes/class.treeitem.php -text
 contenido/classes/class.ui.php -text
+contenido/classes/class.update.notifier.php -text
 contenido/classes/class.upload.php -text
 contenido/classes/class.user.php -text
 contenido/classes/class.wysiwyg_editor.php -text
