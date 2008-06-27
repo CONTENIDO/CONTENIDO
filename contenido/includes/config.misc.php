@@ -75,12 +75,6 @@ $cfg["urlpathresolve"] = false;
 /* E-Mail-Address where bug reports will be sent to */
 $cfg['bugreport']['targetemail'] = 'bugreport@contenido.de';
 
-/* Show version and update info on mycontenido page */
-$cfg["backend"]["updateinfo"] = true;
-
-/* Show newsfeed on mycontenido page */
-$cfg["backend"]["newsfeed"] = true;
-
 /* The available charsets */
 $cfg['AvailableCharsets'] = array(
     'iso-8859-1',
