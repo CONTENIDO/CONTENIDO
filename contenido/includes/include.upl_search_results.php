@@ -1,19 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * File Manager Search Engine Reulsts
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.9.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-12-29
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: include.upl_search_results.php,v $
-* Project   :   Contenido
-* Descr     :   File manager
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   29.12.2003
-* Modified  :   $Date: 2006/06/12 17:29:07 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.upl_search_results.php,v 1.9 2006/06/12 17:29:07 bjoern.behrens Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.htmlelements.php");
@@ -132,11 +149,7 @@ class UploadList extends FrontendList
 							break;
 				default:
                             $sCacheThumbnail = uplGetThumbnail($data, 150);
-                            return 
-                                //<a target="_blank" href="'.$sess->url($cfgClient[$client]["path"]["htmlpath"]."dbfs.php?file=".$data).'">
-                                    '<img class="hover_none" name="smallImage" src="'.$sCacheThumbnail.'">';
-                                    //<img class="preview" name="prevImage" src="'.uplGetThumbnail($data, 200).'">';
-                                //</a>
+                            return '<img class="hover_none" name="smallImage" src="'.$sCacheThumbnail.'">';
 			}
 		}
 
@@ -391,13 +404,6 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
 		$medianame = $properties->getValue("upload", $mydirname.$filename, "file", "medianame");
 		$medianotes = $properties->getValue("upload", $mydirname.$filename, "file", "medianotes");
 
-		/*if ($medianame != "")
-		{
-			$showfilename = $medianame . " (".$filename.")";	
-		} else {
-			$showfilename = $filename;
-		}*/
-
 		$showfilename = $filename;
 		$bgColor = false;
 		
@@ -513,17 +519,6 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
     
     $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
 
-	/*$topbar = '<table cellspacing="0" cellpadding="2" border="0">
-	                    <tr bgcolor="'.$cfg["color"]["table_light"].'" style="border-color:#747488; border-style: solid;border-top: 1px;">
-							<td colspan="3" align="left" valign="middle" class="text_medium" style="border: 0px; border-left: 1px; border-top: 1px; border-bottom: 1px; border-right: 1px; border-color: #747488; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.i18n("Searched for:")." ".$searchfor.'</td>
-						</tr>
-						<tr bgcolor="'.$cfg["color"]["table_light"].'" style="border-color:#747488; border-style: solid;border-top: 1px;">
-							<td align="left" valign="middle" class="text_medium" style="border: 0px; border-left: 1px; border-bottom: 1px; border-color: #747488; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.i18n("Thumbnail size:").'</td>
-	                        <td align="left" valign="middle" class="text_medium" style="border: 0px; border-bottom: 1px; border-color: #747488; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.$select->render().'</td>
-	                        <td align="left" valign="middle" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #747488; border-style: solid; white-space:nowrap;" nowrap="nowrap"><input type="image" src="images/submit.gif"></td>
-	                    </tr></table>';
-	$form->add("select", $topbar);*/
-
 	$script = '<script type="text/javascript">
         /* Session-ID */
         var sid = "{SID}";
@@ -633,4 +628,3 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
 
 uplRender($searchfor, $sortby, $sortmode, $startpage, $thumbnailmode);
 ?>
-

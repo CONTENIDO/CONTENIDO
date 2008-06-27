@@ -1,18 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.upl_files_overview.php,v $
-* Project   :   Contenido
-* Descr     :   File manager
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   29.12.2003
-* Modified  :   $Date: 2007/08/10 14:55:45 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.upl_files_overview.php,v 1.54 2007/08/10 14:55:45 andreas.lindner Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * File manager
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.5.4
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-12-29
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.htmlelements.php");
@@ -118,8 +136,6 @@ if ($action == "upl_modify_file")
 			}
 		}
 	}
-	
-
 
 	$uploads->select("idclient = '$client' AND dirname = '$qpath' AND filename='$file'");
 	$upload = $uploads->next();
@@ -152,10 +168,10 @@ if ($action == "upl_modify_file")
 			$iNextId = $db->nextid($cfg['tab']['upl_meta']);
 			$sSql = "INSERT INTO " . $cfg['tab']['upl_meta'] . " " .
 					"SET id_uplmeta = $iNextId, idupl = $iIdupl, idlang = $lang, " .
-					"medianame = '" . addslashes($medianame) . "', " . 
-					"description = '" . addslashes($description) . "', " . 
-					"keywords = '" . addslashes($keywords) . "', " . 
-					"internal_notice = '" . addslashes($medianotes) . "', " .
+					"medianame = '" . Contenido_Security::escapeDB($medianame, $db) . "', " . 
+					"description = '" . Contenido_Security::escapeDB($description, $db) . "', " . 
+					"keywords = '" . Contenido_Security::escapeDB($keywords, $db) . "', " . 
+					"internal_notice = '" . Contenido_Security::escapeDB($medianotes, $db) . "', " .
 					"author = '" . $auth->auth['uid'] . "', " .
 					"created = NOW(), modified = NOW(), modifiedby = '" . $auth->auth['uid'] . "'";
 		} else {	// update entry
@@ -163,10 +179,10 @@ if ($action == "upl_modify_file")
 			$iIduplmeta = $db->f('id_uplmeta');
 			$sSql = "UPDATE " . $cfg['tab']['upl_meta'] . " " . 
 					"SET " . 
-					"medianame = '" . addslashes($medianame) . "', " . 
-					"description = '" . addslashes($description) . "', " . 
-					"keywords = '" . addslashes($keywords) . "', " . 
-					"internal_notice = '" . addslashes($medianotes) . "', " . 
+					"medianame = '" . Contenido_Security::escapeDB($medianame, $db) . "', " . 
+					"description = '" . Contenido_Security::escapeDB($description, $db) . "', " . 
+					"keywords = '" . Contenido_Security::escapeDB($keywords, $db) . "', " . 
+					"internal_notice = '" . Contenido_Security::escapeDB($medianotes, $db) . "', " . 
 					"modified = NOW(), modifiedby = '" . $auth->auth['uid'] . "' " . 
 					"WHERE id_uplmeta = " . $iIduplmeta;
 		}
@@ -370,11 +386,7 @@ class UploadList extends FrontendList
 							break;
 				default:
                         $sCacheThumbnail = uplGetThumbnail($data, 150);
-                        return 
-                            //<a target="_blank" href="'.$sess->url($cfgClient[$client]["path"]["htmlpath"]."dbfs.php?file=".$data).'">
-                                '<img class="hover_none" name="smallImage" src="'.$sCacheThumbnail.'">';
-                                //<img class="preview" name="prevImage" src="'.uplGetThumbnail($data, 200).'">';
-                            //</a>
+                        return '<img class="hover_none" name="smallImage" src="'.$sCacheThumbnail.'">';
 			}	
 		}
 		if ($field == 1)
@@ -602,22 +614,8 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 				$filesize = filesize($cfgClient[$client]["upl"]["path"].$dirname . $filename);
 			}
 		}
-	    
-	    if ($perm->have_perm_area_action("upl", "upl_delete"))
-	    {
-	    	/*
-	    	$actions = '<a title="{DELETEALT}" href="javascript://" onclick="showDelMsg(\'{FILE}\', \'{PATH}\', \'{FILE}\', {STARTPAGE});"><img style="margin-right: 2px;" src="images/delete.gif" alt="{DELETEALT}" title="{DELETEALT}"></a>';
-	    	$actions = "";
-		    $actions = str_replace("{RENAMEALT}", i18n("Rename file"), $actions);
-		    $actions = str_replace("{DELETEALT}", i18n("Delete file"), $actions);
-		    $actions = str_replace("{STARTPAGE}", intval($startpage), $actions);
-		    $actions = str_replace("{PATH}", $path, $actions);
-		    $actions = str_replace("{FILE}", $filename, $actions);
-				*/
-	    	$actions = "";
-	    } else {
-	    	$actions = "";
-	    }
+        
+    	$actions = "";
 	    
 	    $medianame = $properties->getValue ("upload", $path.$filename, "file", "medianame");
 		$medianotes = $properties->getValue ("upload", $path.$filename, "file", "medianotes");
@@ -753,8 +751,6 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 	$select->setDefault($thumbnailmode);	
     
     $topbar = $select->render().'<input type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" style="vertical-align:middle; margin-left:5px;">';
-                	    
-	//$form->add("select", $topbar);
     
     $output = str_replace("-C-FILESPERPAGE-", $topbar, $output);
     
@@ -914,11 +910,6 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 	// Table with (preview) images
 	$delform->add("list", $output);
 	
-	/*// Multiple deletes at bottom of table
-	if ($perm->have_perm_area_action("upl", "upl_multidelete")) 
-	{    
-		$delform->add("delbutton", '<table border="0"><tr><td>'.i18n("With selected:").'</td><td><input type="image" src="images/delete.gif"></tr></table>');
-	}*/
 	
 	$page->addScript('iZoom', '<script type="text/javascript" src="'.$sess->url("scripts/iZoom.js.php").'"></script>');
     $page->addScript('style', '<style type="text/css">

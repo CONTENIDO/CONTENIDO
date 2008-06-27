@@ -1,19 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Directory overview
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.2.3
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-12-28
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: include.upl_dirs_overview.php,v $
-* Project   :   Contenido
-* Descr     :   Directory overview
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   28.12.2003
-* Modified  :   $Date: 2007/08/20 21:29:04 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.upl_dirs_overview.php,v 1.23 2007/08/20 21:29:04 bjoern.behrens Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.htmlelements.php");
@@ -62,13 +79,6 @@ function getExpandCollapseButton($item)
 # Create Folder
 #################
 #Fixxed by Timo Trautmann double database entries also called by action upl_mkdir
-/*$newdirFolder = $_GET['foldername'];
-$newdirPath = $_GET['path'];
-if($newdirFolder != '')
-{
-	uplmkdir($newdirPath, $newdirFolder);
-}*/
-
 // Use remembered path from upl_last_path (from session)
 if (!isset($path) && $sess->is_registered("upl_last_path"))
 {
@@ -302,27 +312,9 @@ if ($appendparameters == "filebrowser")
 	$tpl->set('s', 'APPENDPARAMETERS', 'url += \'&appendparameters='.$appendparameters.'\'');
 }
 
-//$tpl->set('s', 'PATH_0', '');
-//$tpl->set('s', 'BGCOLOR_0', $bgcolor);
-//$tpl->set('s', 'INDENT_0', 3);
-//$tpl->set('s', 'DIRNAME_0', '');
-//$tpl->set('s', 'EDITBUTTON_0', '');
-//$tpl->set('s', 'DELETEBUTTON_0', '');
-
 chdir($cfg['path']['contenido']);
 
-//$tpl->set('d', 'PATH', '');
-//$tpl->set('d', 'BGCOLOR', $bgcolor);
-//$tpl->set('d', 'INDENT', 3);
-//$tpl->set('d', 'DIRNAME', '&nbsp;');
-//$tpl->set('d', 'EDITBUTTON', '');
-//$tpl->set('d', 'DELETEBUTTON', '');
-//$tpl->set('d', 'COLLAPSE', '');
-//$tpl->next();
-
 $tpl->set('s', 'SID', $sess->id);
-//$tpl->set('s', 'RENAME', i18n("Enter the new directory name:"));
-
 
 # create javascript multilink
 $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\',\'%s\', \'%s\',\'%s\', \'%s\')">%s</a>';

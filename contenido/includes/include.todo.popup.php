@@ -1,4 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Popup for todo
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "widgets/class.widgets.page.php");
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.todo.php");
@@ -47,7 +80,6 @@ if ($action == "todo_save_item")
 	$reminderdue = new cHTMLTextbox("enddate", '', '', '', "enddate");
     $duepopup = ' <img src="images/calendar.gif" width="16" height="16" alt="Endzeitpunkt wählen" id="end_date" style="vertical-align:middle;">';
     $ui->add(i18n("End date"),$reminderdue->render().$duepopup);    
-    //$notibackend = new cHTMLCheckbox("notibackend", i18n("Backend notification"));
     $notiemail = new cHTMLCheckbox("notiemail", i18n("eMail notification"));
     
     $ui->add(i18n("Reminder options"), $notiemail->toHTML());

@@ -1,16 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Left top
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-04-01
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.upl_left_top.php
-* Project   :   Contenido 
-* Descr     :
-*
-* Author    :   Olaf Niemann
-* Created   :   01.04.2003
-* Modified  :   01.04.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "class.properties.php");

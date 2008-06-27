@@ -1,18 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.upl_files_upload.php,v $
-* Project   :   Contenido
-* Descr     :   Directory overview
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   30.12.2003
-* Modified  :   $Date: 2006/06/12 17:29:07 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.upl_files_upload.php,v 1.7 2006/06/12 17:29:07 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Upload files
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.7.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-12-30
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.htmlelements.php");

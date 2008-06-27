@@ -1,4 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Article list for upload
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "widgets/class.widgets.page.php");
 cInclude("includes", "functions.con.php");
 cInclude("classes", "contenido/class.article.php");
@@ -6,7 +39,6 @@ cInclude("classes", "contenido/class.articlelanguage.php");
 cInclude("classes", "contenido/class.categorylanguage.php");
 cInclude("classes", "contenido/class.category.php");
 cInclude("classes", "contenido/class.categoryarticle.php");
-
 
 $page = new cPage;
 
@@ -54,7 +86,6 @@ $cApiCategoryArticleCollection->query();
 $headlines = array(i18n("Start"), i18n("Title"), i18n("Created"), i18n("Modified"), i18n("Sort Order"), i18n("Online"));
 $fields = array("is_start", "title", "created", "lastmodified", "artsort", "online");
 
-
 $content[] = '<table width="100%" style="margin-top: 10px; border-left: 1px solid '.$cfg['color']['table_border'].'; border-top: 1px solid '.$cfg['color']['table_border'].';" cellspacing="0" cellpadding="0"><tr>';
 
 foreach ($headlines as $headline)
@@ -80,12 +111,12 @@ while ($cApiCategoryArticle = $cApiCategoryArticleCollection->next())
 	} else {
 		$mcol = $cfg['color']['table_dark'];
 	}
-		
+
 	$content[] = '<tr>';	
-	
+
 	$martlink = "";
 	$idart = $obj->get("idart");
-	
+
 	$_cecIterator = $_cecRegistry->getIterator("Contenido.Content.CreateArticleLink");
 	if ($_cecIterator->count() > 0)
 	{

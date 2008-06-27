@@ -1,18 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.upl_edit.php,v $
-* Project   :   Contenido
-* Descr     :   Directory overview
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   30.12.2003
-* Modified  :   $Date: 2006/04/28 09:20:54 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.upl_edit.php,v 1.7 2006/04/28 09:20:54 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Directory overview
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.7.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-12-30
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.htmlelements.php");
@@ -117,11 +135,8 @@ if ($upload = $uploads->next())
 		$sHtmlTimeMng .= '<td><input type="text" name="datestart" id="datestart" value="' . $sStartDate . '"  size="20" ' .
 							'maxlength="40" class="text_medium">' .
 							'&nbsp;<img src="images/calendar.gif" id="trigger_start" width="16" height="16" border="0" alt="" /></td></tr>';
-	
-	
+
 		$sHtmlTimeMng .= "<tr><td style='padding-left: 20px;'>" . i18n("End date") . "</td>\n";
-		
-		
 		
 		$sHtmlTimeMng .= '<td><input type="text" name="dateend" id="dateend" value="' . $sEndDate . '"  size="20" ' .
 							'maxlength="40" class="text_medium">' .
