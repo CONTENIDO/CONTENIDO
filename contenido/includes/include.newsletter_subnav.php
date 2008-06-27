@@ -7,9 +7,14 @@
 *
 * © four for business AG, www.4fb.de
 *
-* $Id$
-******************************************/
-if ( $_REQUEST['cfg'] ) { exit; }
+ * @internal {
+ *  modified 2008-06-17, H. Librenz - Hotfix: Added check for malicious script calls
+ *  $Id$
+ * }
+ */
+if (isset($_REQUEST['contenido_path']) || isset($_REQUEST['cfg'])  || isset($_REQUEST['cfgClient'])) {
+    die ('Malicious call!');
+}
 
 if (isset($_GET['idnewsletter']))
 {
