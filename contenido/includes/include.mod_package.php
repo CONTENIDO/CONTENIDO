@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2008-06-27, OliverL fix import module translation bug, checkin timo.trautmann (http://forum.contenido.org/viewtopic.php?t=19064)
  *
  *   $Id$:
  * }}
@@ -91,7 +92,7 @@ function getFiles ($sPath, $sFileType, &$sNoti)
 			    	
 			    	if (in_array($iID, $aLangs))
 			    	{
-			    		$aFiles[$iID] = strtolower($oLang->get("name"));
+			    		$aFiles[] = array($iID, strtolower($oLang->get("name")).' ('.$iID.')' );  // Edit: 2008-06-27 By: OliverL
 			    	}
 			    }
 		    }
@@ -161,12 +162,22 @@ function displayFiles ($aFiles, $aSelected, &$oForm, $sCaption, $sField, $sDisab
 		$iCounter = 1;
 		foreach ($aFiles as $sID => $sFile)
 		{
-			if (in_array($sID, $aSelected))
+			if (is_array($sFile))   // Edit: 2008-06-27 By: OliverL
 			{
-				$oOption = new cHTMLOptionElement(htmlspecialchars($sFile), $sID, true);
+				if (in_array($sFile[0], $aSelected))
+				{
+					$oOption = new cHTMLOptionElement(htmlspecialchars($sFile[1]), $sFile[0], true);
+				} else {
+					$oOption = new cHTMLOptionElement(htmlspecialchars($sFile[1]), $sFile[0]);
+				}
 			} else {
-				$oOption = new cHTMLOptionElement(htmlspecialchars($sFile), $sID);
-			}
+				if (in_array($sID, $aSelected))
+				{
+					$oOption = new cHTMLOptionElement(htmlspecialchars($sFile), $sID, true);
+				} else {
+					$oOption = new cHTMLOptionElement(htmlspecialchars($sFile), $sID);
+				}
+			} // End-Edit
 			$oSelFiles->addOptionElement($iCounter, $oOption);
 			$iCounter++;
 		}
@@ -264,7 +275,8 @@ if ($idmod > 0 && $perm->have_perm_area_action_item("mod_edit", "mod_edit", $idm
 											if (is_array($aDataFiles))
 											{
 												$oSelLang = new cHTMLSelectElement("selAssignTrans[".htmlspecialchars($sFile)."]");
-												$oSelLang->autoFill(array_merge(array(0 => $sMsg["- Select -"]), $aDataFiles));
+												// $oSelLang->autoFill(array_merge(array(0 => $sMsg["- Select -"]), $aDataFiles)); // Old Version
+												$oSelLang->autoFill(array_merge(array(array(0 , $sMsg["- Select -"])), $aDataFiles));  // Edit: 2008-06-27 By: OliverL
 												
 												// Try to assign existing language
 												if (in_array($sFile, $aDataFiles))
