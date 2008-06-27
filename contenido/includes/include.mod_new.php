@@ -1,17 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Add new module
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.7.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-03-21
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: include.mod_new.php,v $
-* Project   :   Contenido
-* Descr     :   Module left top
-*               
-* Created   :   21.03.2003
-* Modified  :   $Date: 2003/12/28 14:57:11 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.mod_new.php,v 1.7 2003/12/28 14:57:11 timo.hummel Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "class.todo.php");
@@ -27,8 +46,7 @@ if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) ||
 {
 	$_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
-
-                                   
+   
 $tpl->reset();
 
 #################
@@ -77,7 +95,7 @@ if ((int) $client > 0) {
             FROM
                ".$cfg["tab"]["mod"]."
             WHERE
-               idclient = '".$client."'
+               idclient = '".Contenido_Security::toInteger($client)."'
             GROUP BY type";
 
     $db->query($sql);
@@ -175,5 +193,4 @@ if ((int) $client > 0) {
 # generate template
 ############################
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['mod_left_top']);
-
 ?>
