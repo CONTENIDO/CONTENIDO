@@ -1,18 +1,37 @@
-<?php 
-/******************************************
-* File      :   include.rights_create.php
-* Project   :   Contenido
-* Descr     :   Displays languages
-*
-* Author    :   Timo A. Hummel
-* Created   :   30.04.2003
-* Modified  :   07.05.2003
-*
-* @internal {
-*      modified 2008-06-24 timo.trautmann storage for valid from valid to added
-* }
-* © four for business AG
-*****************************************/
+<?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Display languages
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.2
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-04-30
+ *   modified 2008-06-24, Timo Trautmann, storage for valid from valid to added
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if (!$perm->have_perm_area_action($area, $action))
 {
@@ -69,8 +88,7 @@ if (!$perm->have_perm_area_action($area, $action))
 				}
 			}
 
-			$sql = "SELECT user_id FROM ".$cfg["tab"]["phplib_auth_user_md5"].' WHERE LOWER(username) = "'.strtolower($username).'"';
-
+			$sql = "SELECT user_id FROM ".$cfg["tab"]["phplib_auth_user_md5"].' WHERE LOWER(username) = "'.Contenido_Security::escapeDB(strtolower($username), $db).'"';
 			$db->query($sql);
 
 			if ($db->next_record())
@@ -85,20 +103,20 @@ if (!$perm->have_perm_area_action($area, $action))
 					$sql = 'INSERT INTO
 					                            '.$cfg["tab"]["phplib_auth_user_md5"].'
 					                          SET
-					                		    username="'.$username.'",
+					                		    username="'.Contenido_Security::escapeDB($username, $db).'",
 					                            password="'.md5($password).'",
-					                            realname="'.$realname.'",
-					                            email="'.$email.'",
-					                            telephone="'.$telephone.'",
-					                            address_street="'.$address_street.'",
-					                            address_city="'.$address_city.'",
-					                            address_country="'.$address_country.'",
-					        	        	    address_zip="'.$address_zip.'",
-					                            wysi="'.$wysi.'",
-                                                valid_from="'.$valid_from.'",
-							                    valid_to="'.$valid_to.'",
+					                            realname="'.Contenido_Security::escapeDB($realname, $db).'",
+					                            email="'.Contenido_Security::escapeDB($email, $db).'",
+					                            telephone="'.Contenido_Security::escapeDB($telephone, $db).'",
+					                            address_street="'.Contenido_Security::escapeDB($address_street, $db).'",
+					                            address_city="'.Contenido_Security::escapeDB($address_city, $db).'",
+					                            address_country="'.Contenido_Security::escapeDB($address_country, $db).'",
+					        	        	    address_zip="'.Contenido_Security::escapeDB($address_zip, $db).'",
+					                            wysi="'.Contenido_Security::toInteger($wysi).'",
+                                                valid_from="'.Contenido_Security::escapeDB($valid_from, $db).'",
+							                    valid_to="'.Contenido_Security::escapeDB($valid_to, $db).'",
 					                            perms="'.implode(",", $stringy_perms).'",
-					        		            user_id="'.$newuserid.'"';
+					        		            user_id="'.Contenido_Security::escapeDB($newuserid, $db).'"';
 
 					$db->query($sql);
 
@@ -119,7 +137,7 @@ if (!$perm->have_perm_area_action($area, $action))
 	            FROM
 	                ".$cfg["tab"]["phplib_auth_user_md5"]."
 	            WHERE
-	                user_id = '".$userid."'";
+	                user_id = '".Contenido_Security::escapeDB($userid, $db)."'";
 
 	$db->query($sql);
 
@@ -282,7 +300,6 @@ if (!$perm->have_perm_area_action($area, $action))
 
 	while ($db2->next_record())
 	{
-		//            if($perm->have_perm_client_lang($client, $db2->f("idlang")in_array("lang[".$db2->f("idlang")."]",$userperm) || in_array("sysadmin",$userperm) || $perm->have_perm())
 		if ($perm->have_perm_client("lang[".$db2->f("idlang")."]") || $perm->have_perm_client("admin[".$db2->f("idclient")."]"))
 		{
 			$client_list .= formGenerateCheckbox("mlang[".$db2->f("idlang")."]", $db2->f("idlang"), in_array("lang[".$db2->f("idlang")."]", $user_perms), $db2->f("name")." (".$db2->f("clientname").")")."<br>";

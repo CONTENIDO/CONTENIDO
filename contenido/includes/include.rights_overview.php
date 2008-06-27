@@ -1,21 +1,39 @@
 <?php
-/******************************************
-* File      :   include.rights_overview.php
-* Project   :   Contenido
-* Descr     :   Displays rights
-*
-* Author    :   Timo A. Hummel
-* Created   :   30.04.2003
-* Modified  :   30.04.2003
-*
-* @internal {
-*      modified 2008-06-24 timo.trautmann storage for valid from valid to added
-* }
-* © four for business AG
-*****************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Display rights
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.2
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-04-30
+ *   modified 2008-06-24, Timo Trautmann, storage for valid from valid to added
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $users = new Users;
-
 
 if (($action == "user_delete") && ($perm->have_perm_area_action($area, $action))) {
 
@@ -23,12 +41,12 @@ if (($action == "user_delete") && ($perm->have_perm_area_action($area, $action))
    
    $sql = "DELETE FROM "
 			.$cfg["tab"]["groupmembers"]."
-				WHERE user_id = '". $userid."'";
+				WHERE user_id = '".Contenido_Security::escapeDB($userid, $db)."'";
 	$db->query($sql);
 	
 	$sql = "DELETE FROM ".
    			$cfg["tab"]["rights"].
-   			" WHERE user_id = \"" .$userid."\"";
+   			" WHERE user_id = \"".Contenido_Security::escapeDB($userid, $db)."\"";
    			
    $db->query($sql);
    
@@ -84,7 +102,7 @@ if ( !isset($userid) )
                             SET
                                 password="'.md5($password).'"
                             WHERE
-                                user_id = "'.$userid.'"';
+                                user_id = "'.Contenido_Security::escapeDB($userid, $db).'"';
 
                     $db->query($sql);
 
@@ -92,19 +110,19 @@ if ( !isset($userid) )
                     $sql = 'UPDATE
                              '.$cfg["tab"]["phplib_auth_user_md5"].'
                             SET
-                              realname="'.$realname.'",
-                              email="'.$email.'",
-                              telephone="'.$telephone.'",
-                              address_street="'.$address_street.'",
-                              address_city="'.$address_city.'",
-                              address_country="'.$address_country.'",
-                              address_zip="'.$address_zip.'",
-                              wysi="'.$wysi.'",
-							  valid_from="'.$valid_from.'",
-							  valid_to="'.$valid_to.'",
+                              realname="'.Contenido_Security::escapeDB($realname, $db).'",
+                              email="'.Contenido_Security::escapeDB($email, $db).'",
+                              telephone="'.Contenido_Security::escapeDB($telephone, $db).'",
+                              address_street="'.Contenido_Security::escapeDB($address_street, $db).'",
+                              address_city="'.Contenido_Security::escapeDB($address_city, $db).'",
+                              address_country="'.Contenido_Security::escapeDB($address_country, $db).'",
+                              address_zip="'.Contenido_Security::escapeDB($address_zip, $db).'",
+                              wysi="'.Contenido_Security::toInteger($wysi).'",
+							  valid_from="'.Contenido_Security::escapeDB($valid_from, $db).'",
+							  valid_to="'.Contenido_Security::escapeDB($valid_to, $db).'",
                               perms="'.implode(",",$stringy_perms).'" 
                             WHERE
-                              user_id = "'.$userid.'"';
+                              user_id = "'.Contenido_Security::escapeDB($userid, $db).'"';
  
                     $db->query($sql);
 
@@ -117,19 +135,19 @@ if ( !isset($userid) )
                 $sql = 'UPDATE
                          '.$cfg["tab"]["phplib_auth_user_md5"].'
                         SET
-                          realname="'.$realname.'",
-                          email="'.$email.'",
-                          telephone="'.$telephone.'",
-                          address_street="'.$address_street.'",
-                          address_city="'.$address_city.'",
-                          address_country="'.$address_country.'",
-                          address_zip="'.$address_zip.'",
-                          wysi="'.$wysi.'",
-                          valid_from="'.$valid_from.'",
-                          valid_to="'.$valid_to.'",
+                          realname="'.Contenido_Security::escapeDB($realname, $db).'",
+                          email="'.Contenido_Security::escapeDB($email, $db).'",
+                          telephone="'.Contenido_Security::escapeDB($telephone, $db).'",
+                          address_street="'.Contenido_Security::escapeDB($address_street, $db).'",
+                          address_city="'.Contenido_Security::escapeDB($address_city, $db).'",
+                          address_country="'.Contenido_Security::escapeDB($address_country, $db).'",
+                          address_zip="'.Contenido_Security::escapeDB($address_zip, $db).'",
+                          wysi="'.Contenido_Security::toInteger($wysi).'",
+                          valid_from="'.Contenido_Security::escapeDB($valid_from, $db).'",
+                          valid_to="'.Contenido_Security::escapeDB($valid_to, $db).'",
                           perms="'.implode(",",$stringy_perms).'" 
                         WHERE
-                          user_id = "'.$userid.'"';
+                          user_id = "'.Contenido_Security::escapeDB($userid, $db).'"';
 
                 $db->query($sql);
 
@@ -145,7 +163,7 @@ if ( !isset($userid) )
             FROM
                 ".$cfg["tab"]["phplib_auth_user_md5"]."
             WHERE
-                user_id = '".$userid."'";
+                user_id = '".Contenido_Security::escapeDB($userid, $db)."'";
 
     $db->query($sql);
 
@@ -153,7 +171,7 @@ if ( !isset($userid) )
 
         $db3 = new DB_Contenido;
         //search for the permissions of this user
-        $sql="SELECT perms FROM ".$cfg["tab"]["phplib_auth_user_md5"]." WHERE user_id='$userid'";
+        $sql="SELECT perms FROM ".$cfg["tab"]["phplib_auth_user_md5"]." WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."'";
     
         $db3->query($sql);
         $db3->next_record();
@@ -310,7 +328,6 @@ if ( !isset($userid) )
         $gen = 0;
         while($db2->next_record())
         {
-             
             if(in_array("admin[".$db2->f("idclient")."]",$userperm) || in_array("sysadmin",$userperm)){
                 $client_list .= formGenerateCheckbox("madmin[".$db2->f("idclient")."]",$db2->f("idclient"),in_array("admin[".$db2->f("idclient")."]",$user_perms), $db2->f("name")." (".$db2->f("idclient").")")."<br>";
                 $gen = 1;
@@ -329,19 +346,15 @@ if ( !isset($userid) )
             $tpl->next(); 
         }
 
-
     $sql = "SELECT * FROM " .$cfg["tab"]["clients"];
     $db2->query($sql);
     $client_list = "";
-    
-
     
     while ($db2->next_record())
     {
             if((in_array("client[".$db2->f("idclient")."]",$userperm) || in_array("sysadmin",$userperm) || in_array("admin[".$db2->f("idclient")."]",$userperm)) && !in_array("admin[".$db2->f("idclient")."]",$user_perms)) {
                 $client_list .= formGenerateCheckbox("mclient[".$db2->f("idclient")."]",$db2->f("idclient"),in_array("client[".$db2->f("idclient")."]",$user_perms), $db2->f("name")." (". $db2->f("idclient") . ")")."<br>";
             }
-
     }
     
     if ($client_list != "" && !in_array("sysadmin",$user_perms))
@@ -371,11 +384,8 @@ if ( !isset($userid) )
     $db2->query($sql);
     $client_list = "";
     
-
-    
     while ($db2->next_record())
     {
-//            if($perm->have_perm_client_lang($client, $db2->f("idlang")in_array("lang[".$db2->f("idlang")."]",$userperm) || in_array("sysadmin",$userperm) || $perm->have_perm())
             if(($perm->have_perm_client("lang[".$db2->f("idlang")."]") || $perm->have_perm_client("admin[".$db2->f("idclient")."]" )) && !in_array("admin[".$db2->f("idclient")."]",$user_perms))
             {
                 $client_list .= formGenerateCheckbox("mlang[".$db2->f("idlang")."]",$db2->f("idlang"),in_array("lang[".$db2->f("idlang")."]",$user_perms), $db2->f("name")." (". $db2->f("clientname") .")") ."<br>";
@@ -449,8 +459,8 @@ if ( !isset($userid) )
     $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', formGenerateCheckbox("wysi", "1", $db->f("wysi")));
-		$tpl->set('d', 'BRDT', 0);
-		$tpl->set('d', 'BRDB', 1);
+	$tpl->set('d', 'BRDT', 0);
+	$tpl->set('d', 'BRDB', 1);
     $tpl->next();
     
 	$sCurrentValueFrom = str_replace('00:00:00', '', $db->f("valid_from"));
@@ -478,8 +488,8 @@ if ( !isset($userid) )
     $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
     $tpl->set('d', "BGCOLOR", $cfg["color"]["table_dark"]);
     $tpl->set('d', "CATFIELD", $sInputValidFrom);
-		$tpl->set('d', 'BRDT', 0);
-		$tpl->set('d', 'BRDB', 1);
+	$tpl->set('d', 'BRDT', 0);
+	$tpl->set('d', 'BRDB', 1);
     $tpl->next(); 
 
 	$sCurrentValueTo = str_replace('00:00:00', '', $db->f("valid_to"));
@@ -503,8 +513,8 @@ if ( !isset($userid) )
     $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
     $tpl->set('d', "BGCOLOR", $cfg["color"]["table_light"]);
     $tpl->set('d', "CATFIELD", $sInputValidTo);
-		$tpl->set('d', 'BRDT', 0);
-		$tpl->set('d', 'BRDB', 1);
+	$tpl->set('d', 'BRDT', 0);
+	$tpl->set('d', 'BRDB', 1);
     $tpl->next(); 
 
 	if ($sCurrentValueFrom == '') {
@@ -535,8 +545,8 @@ if ( !isset($userid) )
     $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
     $tpl->set('d', "BGCOLOR", $cfg["color"]["table_dark"]);
     $tpl->set('d', "CATFIELD", '<span style="color:'.$sAccountColor.';">'.$sAccountState.'</span>');
-		$tpl->set('d', 'BRDT', 0);
-		$tpl->set('d', 'BRDB', 1);
+	$tpl->set('d', 'BRDT', 0);
+	$tpl->set('d', 'BRDB', 1);
     $tpl->next(); 
 
 	#Show backend user's group memberships

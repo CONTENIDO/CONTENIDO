@@ -1,17 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Builds the third navigation layer
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-01-25
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.subnav.php
-* Project   :   Contenido
-* Descr     :   Builds the third navigation
-*               layer
-*
-* Author    :   Jan Lengowski
-* Created   :   25.01.2003
-* Modified  :   25.01.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 if ( $_REQUEST['cfg'] ) { exit; }
 
 if ( isset($_GET['userid']) ) {
@@ -25,8 +45,8 @@ if ( isset($_GET['userid']) ) {
             FROM
                 ".$cfg["tab"]["area"]." AS a
             WHERE
-                a.name = '".$area."' OR
-                a.parent_id = '".$area."'
+                a.name = '".Contenido_Security::escapeDB($area, $db)."' OR
+                a.parent_id = '".Contenido_Security::escapeDB($area, $db)."'
             ORDER BY
                 idarea";
 
@@ -66,7 +86,6 @@ if ( isset($_GET['userid']) ) {
 
         $tmp_area = $db->f("name");
 
-
         if ($perm->have_perm_area_action($tmp_area))
         {
             # Set template data
@@ -97,8 +116,8 @@ if ( isset($_GET['userid']) ) {
 				    if ($aInfo2 !== false)
 				    {
 				    	$sAreaName = $aInfo2;
-				    	break;	
-				    }		    	
+				    	break;
+				    }
 			    }
 			    
 			    if ($sAreaName !== false)
@@ -108,7 +127,7 @@ if ( isset($_GET['userid']) ) {
 		            $tpl->set("d", "CLASS",     '');
 		            $tpl->set("d", "OPTIONS",   '');
 		            $tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=user_external&frame=4&external_area=$sAreaID&userid=$userid").'">'.$sAreaName.'</a>');
-		            $tpl->next();			    	
+		            $tpl->next();
 			    }
 		    }
 		}
@@ -120,9 +139,6 @@ if ( isset($_GET['userid']) ) {
     $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
 
 } else {
-
     include ($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
-
 }
-
 ?>
