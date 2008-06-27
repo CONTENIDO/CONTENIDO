@@ -1,15 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Frontend user list
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.1.9
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: include.frontend.user_menu.php,v $
-* Project   :   Contenido
-* Descr     :   Frontend user list
-* Modified  :   $Date: 2007/08/13 10:07:47 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.frontend.user_menu.php,v 1.19 2007/08/13 10:07:47 andreas.lindner Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "class.todo.php");
 cInclude("classes", "class.frontend.users.php");
@@ -36,7 +58,6 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 	$_REQUEST["page"] = 1;
 }
 
-
 $aFieldsToSearch = array("--all--" => i18n("-- All fields --"), "username" => i18n("Username"));
 $aFieldsToSort = array("username" => i18n("Username"));
 
@@ -51,7 +72,6 @@ if ($bUsePlugins == "false")
 } else {
 	$bUsePlugins = true;	
 }
-
 
 if (is_array($cfg['plugins']['frontendusers']))
 {
@@ -97,7 +117,6 @@ if ($bUsePlugins == true)
 	}
 }
 
-
 $aSortOrderOptions = array ("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
 
 $oListOptionRow = new cFoldingRow("f081b6ab-370d-4fd8-984f-6b38590fe48b", i18n("List options"));
@@ -138,47 +157,6 @@ $oSelectRestrictGroup->setDefault($_REQUEST["restrictgroup"]);
 
 $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
 
-//$oSubmit = new cHTMLButton("submit", i18n("Apply"));
-
-//$content = '<div style="border-bottom: 1px solid black; background: '.$cfg['color']['table_dark'].';">';
-//$content .= '<form onsubmit="append_registered_parameters(this);" id="filter" name="filter" method="get" action="main.php?1">';
-//$content .= '<table>';
-//$content .= '<input type="hidden" name="area" value="'.$area.'">';
-//$content .= '<input type="hidden" name="frame" value="'.$frame.'">';
-//$content .= '<input type="hidden" name="contenido" value="'.$sess->id.'">';
-//$content .= '<tr>';
-//$content .= '<td>'. i18n("Items / page").'</td>';
-//$content .= '<td>'.$oSelectItemsPerPage->render().'</td>';
-//$content .= '</tr>';
-//$content .= '<tr>';
-//$content .= '<td>'. i18n("Sort by").'</td>';
-//$content .= '<td>'.$oSelectSortBy->render().'</td>';
-//$content .= '</tr>';
-//$content .= '<tr>';
-//$content .= '<td>'. i18n("Sort order").'</td>';
-//$content .= '<td>'.$oSelectSortOrder->render().'</td>';
-//$content .= '</tr>';
-//$content .= '<tr>';
-//$content .= '<td>'. i18n("Show group").'</td>';
-//$content .= '<td>'.$oSelectRestrictGroup->render().'</td>';
-//$content .= '</tr>';
-//$content .= '<tr>';
-//$content .= '<td>'. i18n("Search for").'</td>';
-//$content .= '<td>'.$oTextboxFilter->render().'</td>';
-//$content .= '</tr>';
-//$content .= '<tr>';
-//$content .= '<td>'. i18n("Search in").'</td>';
-//$content .= '<td>'.$oSelectSearchIn->render().'</td>';
-//$content .= '</tr>';
-//$content .= '<tr>';
-//$content .= '<td>&nbsp;</td>';
-//$content .= '<td>'.$oSubmit->render().'</td>';
-//$content .= '</tr>';
-//$content .= '</table>';
-//$content .= '</form>';
-//$content .= '</div>';
-//$oListOptionRow->setContentData($content);
-
 $oFEUsers = new FrontendUserCollection;
 $oFEUsers->setWhere("FrontendUserCollection.idclient", $client);
 
@@ -189,7 +167,6 @@ if (strlen($_REQUEST["filter"]) > 0 && $bUsePlugins == false)
 
 if ($_REQUEST["restrictgroup"] != "" && $_REQUEST["restrictgroup"] != "--all--")
 {
-
 	$oFEUsers->link("FrontendGroupMemberCollection");
 	$oFEUsers->setWhere("FrontendGroupMemberCollection.idfrontendgroup", $_REQUEST["restrictgroup"]);
 }
@@ -322,21 +299,6 @@ if ($bUsePlugins == false)
 	$iItemCount = $iFullTableCount;
 }
 
-//$oPagerLink = new cHTMLLink;
-//$oPagerLink->setLink("main.php");
-//$oPagerLink->setCustom("elemperpage", $elemperpage);
-//$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
-//$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
-//$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
-//$oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
-//$oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
-//$oPagerLink->setCustom("frame", $frame);
-//$oPagerLink->setCustom("area", $area);
-//$oPagerLink->enableAutomaticParameterAppend();
-//$oPagerLink->setCustom("contenido", $sess->id);
-//
-//$oPager = new cObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $iItemCount, $elemperpage, $mPage, $oPagerLink, "page");
-
 $deleteScript = '<script>
       var sid = "'.$sess->id.'";
       var box = new messageBox("", "", "", 0, 0);
@@ -366,14 +328,6 @@ $sInitRowMark = "<script type=\"text/javascript\">
                      row.markedRow = document.getElementById('marked');
                  }
             </script>";
-//$oListActionRow = new cFoldingRow("339b79d1-48f7-4ac6-ba17-b958c5b3bb2b", i18n("Actions"));
-
-// Create the link to show/edit the frontend user */
-//$link = new cHTMLLink;
-//$link->setMultiLink("frontend","","frontend","frontend_create");
-//$link->setContent('<img style="padding-right: 4px;" src="'.$cfg["path"]["images"] . 'users_add.gif" align="middle">'.i18n("Create user").'</a>');
-//$actionDiv = '<div style="padding: 4px; padding-left: 12px; border-bottom: 1px solid black; background: '.$cfg['color']['table_dark'].';">';
-//$oListActionRow->setContentData(array($actionDiv, $link, '</div>'));
 
 $oPage->setMargin(0);
 $oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
@@ -421,10 +375,7 @@ $sRefreshPager = '
     </script>';
     
 $oPage->addScript('refreshpager', $sRefreshPager); 
-
-//$oPage->setContent(array ('<table border="0" cellspacing="0" cellpadding="0" width="100%">', $oListActionRow, $oListOptionRow, $oPager, '</table>', $mlist->render(false)));
 $oPage->setContent($mlist->render(false).$sInitRowMark);
-
 $oPage->render();
 
 ?>

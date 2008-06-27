@@ -1,14 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.frontend.user_menu.php,v $
-* Project   :   Contenido
-* Descr     :   Frontend group list
-* Modified  :   $Date: 2004/01/14 17:30:48 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.frontend.user_menu.php,v 1.2 2004/01/14 17:30:48 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Frontend group list
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.2.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "widgets/class.widgets.page.php");
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.frontend.users.php");
@@ -19,16 +42,6 @@ $menu = new UI_Menu;
 
 $fegroups = new FrontendGroupCollection;
 $fegroups->select("idclient = '$client'","", "groupname ASC");
-
-// Create the link to show/edit the frontend user
-//$link = new Link;
-//$link->setMultiLink("frontendgroups","","frontendgroups","frontendgroup_create");
-//$menu->setImage("-2", $cfg["path"]["images"] . "folder_new.gif");	
-//$menu->setLink("-2", $link);
-//$menu->setTitle("-2", i18n("Create group"));
-//$menu->setLink("-1", "");
-//$menu->setTitle("-1", "");
-//$menu->setImage("-1", "");
 
 while ($fegroup = $fegroups->next())
 {
@@ -52,7 +65,6 @@ while ($fegroup = $fegroups->next())
         $menu->setExtra($idfegroup, 'id="marked" ');
     } 
 } 
-
 
 $sInitRowMark = "<script type=\"text/javascript\">
                  if (document.getElementById('marked')) {

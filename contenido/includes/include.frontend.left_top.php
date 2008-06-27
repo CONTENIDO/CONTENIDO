@@ -1,14 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.frontend.left_top.php,v $
-* Project   :   Contenido
-* Descr     :   Left top pane
-* Modified  :   $Date: 2004/01/14 15:20:03 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.frontend.left_top.php,v 1.1 2004/01/14 15:20:03 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Left top pane
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.1.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "class.todo.php");
@@ -101,7 +123,6 @@ if ($bUsePlugins == true)
 		}
 	}
 }
-
 
 $aSortOrderOptions = array ("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
 

@@ -1,17 +1,38 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.frontend.group_edit.php,v $
-* Project   :   Contenido
-* Descr     :   Frontend group editor
-* Modified  :   $Date: 2004/01/14 17:30:48 $
-*
-* @internal {
-*   modified 2008-06-16, H. Librenz - Hotfix: check for illegal calls added
-*
-*   $Id: include.frontend.group_edit.php,v 1.2 2004/01/14 17:30:48 timo.hummel Exp $
-* }
-* © four for business AG
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Frontend group editor
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.2.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2007-06-16, Holger Librenz, Hotfix: check for illegal calls added
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }

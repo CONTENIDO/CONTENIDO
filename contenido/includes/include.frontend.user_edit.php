@@ -1,14 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.frontend.user_edit.php,v $
-* Project   :   Contenido
-* Descr     :   Frontend user editor
-* Modified  :   $Date: 2007/05/28 18:26:04 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.frontend.user_edit.php,v 1.19 2007/05/28 18:26:04 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Frontend user editor
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.1.9
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "widgets/class.widgets.page.php");
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.htmlelements.php");
