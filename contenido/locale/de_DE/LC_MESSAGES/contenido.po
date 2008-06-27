@@ -6019,19 +6019,19 @@ msgid "Could not determine vendor version!"
 msgstr "Hersteller-Version konnte nicht gelesen werden!"
 
 msgid "You have an unknown or unsupported version of Contenido!"
-msgstr "Du hast eine unbekannte oder nicht unterst&uuml;tzte Version von Contenido!"
+msgstr "Sie haben eine unbekannte oder nicht unterst&uuml;tzte Version von Contenido!"
 
 msgid "Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version!"
-msgstr "Deine Version von Contenido wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisiere auf eine h&ouml;here Version!"
+msgstr "Ihre Version von Contenido wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisieren Sie auf eine h&ouml;here Version!"
 
 msgid "A new version of Contenido (<b>%s</b>) is available! - <a href="%s">Download now!</a>"
 msgstr "Eine neue Version von Contenido (<b>%s</b>) ist verf&uuml;gbar! - <a href="%s">Jetzt herunterladen!</a>"
 
 msgid "It seems to be that your version string was manipulated. Contenido %s does not exist!"
-msgstr "Anscheinend wurde deine Version manipuliert. Contenido %s existiert nicht!"
+msgstr "Anscheinend wurde Ihre Version manipuliert. Contenido %s existiert nicht!"
 
 msgid "Your version of Contenido is up to date!"
-msgstr "Deine Version von Contenido ist aktuell!"
+msgstr "Ihre Version von Contenido ist aktuell!"
 
 msgid "Update notification is disabled! <a href="%s">Enable notifications</a>"
 msgstr "Die Update-Benachrichtigung wurde deaktiviert! <a href="%s">Benachrichtigungen aktivieren</a>" 
