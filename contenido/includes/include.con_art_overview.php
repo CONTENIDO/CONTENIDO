@@ -1,18 +1,38 @@
-<?php
 
-/******************************************
- * File      :   includes.con_art_overview.php
- * Project   :   Contenido
- * Descr     :   Displays all articles
- *               of a category
+<?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Displays all articles of a category
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * Author    :   Jan Lengowski
- * Created   :   26.01.2003
- * Modified  :   23.06.2003
- * Modified  :   23.06.2005 by Andreas Lindner
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-01-26
+ *   modified 2005-06-23, Andreas Lindner
+ *   modified 2008-06-27, Frederic Schneider, add security fix
  *
- * © four for business AG
- *****************************************/
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("includes","functions.tpl.php");
 cInclude("includes","functions.str.php");
@@ -43,7 +63,7 @@ if ($action == "con_duplicate")
 if ($action == "con_syncarticle")
 {
 	/* Verify that the category is available in this language */
-	$sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='$idcat' AND idlang='$lang'";
+	$sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
 	$db->query($sql);
 	if ($db->next_record())
 	{
@@ -62,17 +82,6 @@ $listColumns = array(	"start" => i18n("Article"),
 						"sortorder" => i18n("Sort order"),
 						"template" => i18n("Template"),
 						"actions" => i18n("Actions"));
-
-/* Which actions to display? 
-$actionList = array(	"online",
-						"tplconf",
-						"duplicate",
-						"locked",
-						"todo",
-						"artconf",
-						"delete",
-						"usetime");
-*/
 
 /* Which actions to display? */
 $actionList = array(	"online",
@@ -128,13 +137,6 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
 	{
 		$currentuser->setUserProperty("system","elemperpage-idlang-$lang-idcat-$idcat", $elemperpage);
 
-		/* Currently save all settings, as "all" is "old" behaviour and just in case there is some bug
-		 * with article browsing...
-		 if ($elemperpage > 0)
-		 {
-			// Don't save "all" (= 0) as you may not get back to a save harbor
-			...
-			} */
 	} else {
 		$elemperpage = $currentuser->getUserProperty("system","elemperpage-idlang-$lang-idcat-$idcat");
 
@@ -214,11 +216,11 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
 					".$cfg["tab"]["art"]." AS b,
 					".$cfg["tab"]["cat_art"]." AS c
 				 WHERE
-					(a.idlang   = '".$lang."' {SYNCOPTIONS}) AND
+					(a.idlang   = '".Contenido_Security::toInteger($lang)."' {SYNCOPTIONS}) AND
 					a.idart     = b.idart AND
-					b.idclient  = '".$client."' AND
+					b.idclient  = '".Contenido_Security::toInteger($client)."' AND
 					b.idart     = c.idart AND
-					c.idcat     = '".$idcat."'";
+					c.idcat     = '".Contenido_Security::toInteger($idcat)."'";
 
 		if ($cfg["is_start_compatible"] == true)
 		{
@@ -300,8 +302,7 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
 				$aArticles[$sItem]["idlang"]	= $db->f("idlang");
 				$aArticles[$sItem]["idartlang"]	= $db->f("idartlang");
 				$aArticles[$sItem]["title"]	= $db->f("title");
-				if ($cfg["is_start_compatible"]	== true)
-				{
+				if ($cfg["is_start_compatible"]	== true) {
 					$aArticles[$sItem]["is_start"] = $db->f("is_start");
 				} else {
 					$aArticles[$sItem]["is_start"] = isStartArticle($db->f("idartlang"), $idcat, $lang);
@@ -374,25 +375,7 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
 			if ($idlang != $lang)
 			{
 				$bgcolor = ( is_int($dyn_cnt / 2) ) ? $cfg["color"]["table_light_sync"] : $cfg["color"]["table_dark_sync"];
-            } else {
-            }
-
-			// Zeitsteuerung
-			/*
-			else 
-				{
-				if ($online == 1) 
-					{
-					$bgcolor = ( is_int($dyn_cnt / 2) ) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
-					} 
-				else 
-					{
-					$bgcolor = ( is_int($dyn_cnt / 2) ) ? $cfg["color"]["table_light_offline"] : $cfg["color"]["table_dark_offline"];
-					}
-				}
-			*/
-
-
+			}
 
 			/* Id of the row,
 			 stores informations about
@@ -443,7 +426,6 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
 			} else {
 				$usetime = "";
 			}
-
 
 			# Article Title
 			if (($perm->have_perm_area_action( "con", "con_lock" ) ||
@@ -497,7 +479,7 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
             if ($idlang != $lang)
             {   
                 
-                $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='$idcat' AND idlang='$lang'";
+                $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
                 
                 $db->query($sql);
                 if ($db->next_record())
@@ -524,7 +506,7 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
 	        ".$cfg["tab"]["tpl_conf"]." AS a,
 	        ".$cfg["tab"]["tpl"]." AS b
         WHERE
-	        a.idtplcfg = '".$idtplcfg."' AND
+	        a.idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."' AND
 	        a.idtpl = b.idtpl";
 
 			$db2->query($sql2);
@@ -923,9 +905,9 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
                 ON
                     d.idtpl = c.idtpl
                 WHERE
-                    a.idclient = '".$client."' AND
-                    a.idcat    = '".$idcat."' AND
-                    b.idlang   = '".$lang."' AND
+                    a.idclient = '".Contenido_Security::toInteger($client)."' AND
+                    a.idcat    = '".Contenido_Security::toInteger($idcat)."' AND
+                    b.idlang   = '".Contenido_Security::toInteger($lang)."' AND
                     b.idcat    = a.idcat AND
                     c.idtplcfg = b.idtplcfg";
 
@@ -936,19 +918,7 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
 			//$foreignlang = false;
 			//conCreateLocationString($idcat, "&nbsp;/&nbsp;", $cat_name);
 		} 
-		/*else {
-			if ($syncoptions != "")
-			{
-				$foreignlang = true;
-				conCreateLocationString($idcat, "&nbsp;/&nbsp;", $cat_name, false, "", 0, $syncoptions);
-			} 
-			else {
-				$foreignlang = false;
-				conCreateLocationString($idcat, "&nbsp;/&nbsp;", $cat_name);
-			}
-		}*/
-		
-		
+
 		// Show path of selected category to user
 		prCreateURLNameLocationString($idcat, '/', $cat_name_tmp);
 		
@@ -959,7 +929,7 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
 		} else {
 			$cat_name = '';
 		}
-		
+
 		$cat_idtpl = $db->f("idtpl");
 
 		# Hinweis wenn kein Artikel gefunden wurde
@@ -992,8 +962,6 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
 		$perm->have_perm_area_action( "con", "con_tplcfg_edit" )) && $foreignlang == false) {
 
 			if ( 0 != $idcat ) {
-								//$tmp_link = '<a href="'.$sess->url("main.php?area=con_tplcfg&action=tplcfg_edit&idcat=$idcat&frame=4&mode=art").'">'.i18n("Configure Category").'</a>';
-								//$tmp_img  = '<a href="'.$sess->url("main.php?area=con_tplcfg&action=tplcfg_edit&idcat=$idcat&frame=4&mode=art").'"><img src="'.$cfg["path"]["images"].'but_cat_conf2.gif" border="0" title="'.i18n("Configure Category").'" alt="'.i18n("Configure Category").'"></a>';
 
 				$tpl->set('s', 'CATEGORY', $cat_name);
 				$tpl->set('s', 'CATEGORY_CONF', $tmp_img);
@@ -1038,7 +1006,6 @@ if ( is_numeric($idcat) && ($idcat >= 0)) {
 		/* Session ID */
 		$tpl->set('s', 'SID', $sess->id);
 
-		 
 		$tpl->set('s', 'NOTIFICATION', $str);
 
 		# Generate template

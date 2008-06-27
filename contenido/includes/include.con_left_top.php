@@ -1,17 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Misc. functions of area con
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-03-26
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.con_left_top.php
-* Project   :   Contenido 
-* Descr     :   Misc. functions for area
-*               con
-*
-* Author    :   Jan Lengowski
-* Created   :   26.03.2003
-* Modified  :   26.03.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes","class.htmlelements.php");
 cInclude("classes","class.ui.php");
 cInclude("includes","functions.str.php");
@@ -327,7 +347,7 @@ $sql = "SELECT
         FROM
             ".$cfg['tab']['tpl']."
         WHERE
-            idclient = '".$client."'
+            idclient = '".Contenido_Security::toInteger($client)."'
         ORDER BY
             name";
 
@@ -469,7 +489,6 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
     $tpl->set('s', 'SYNCLINK',$sListId);
 	$tpl->set('s', 'SYNC_HREF', '');	
 }
-
 
 ##########################################
 # Help

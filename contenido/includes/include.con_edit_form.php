@@ -1,20 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Form for editing the article properties
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.5.2
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-01-21
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
- * File      :   $RCSfile: include.con_edit_form.php,v $
- * Project   :   Contenido
- * Descr     :   Form for editing the
- *               article properties
- *
- * Author    :
- *
- * Created   :   21.01.2003
- * Modified  :   $Date: 2007/08/20 19:59:02 $
- *
- * © four for business AG, www.4fb.de
- *
- * $Id: include.con_edit_form.php,v 1.52 2007/08/20 19:59:02 bjoern.behrens Exp $
- ******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("includes", "functions.str.php");
 cInclude("classes", "class.htmlelements.php");
@@ -23,15 +39,9 @@ cInclude("includes", "functions.pathresolver.php");
 
 $tpl->reset();
 
-$idcat;
-
-//echo '<pre>';
-//print_r($cfg);
-//echo '</pre>';
-
 if ($action == "remove_assignments")
 {
-	$sql = "DELETE FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '$idart' AND idcat != '$idcat'";
+	$sql = "DELETE FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($idart)."' AND idcat != '".Contenido_Security::toInteger($idcat)."'";
 	$db->query($sql);
 }
 if ($action == "con_newart" && $newart != true)
@@ -44,18 +54,18 @@ else {
 	if ($perm->have_perm_area_action($area, "con_edit") ||
 	$perm->have_perm_area_action_item($area,"con_edit", $idcat)) {
 
-		$sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".$idart."' AND idcat = '".$idcat."'";
+		$sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($idart)."' AND idcat = '".Contenido_Security::toInteger($idcat)."'";
 		$db->query($sql);
 		$db->next_record();
 
 		if ($cfg["is_start_compatible"] == true)
 		{
-			$tmp_is_start     = $db->f("is_start");
+			$tmp_is_start = $db->f("is_start");
 		}
 		 
-		$tmp_cat_art      = $db->f("idcatart");
+		$tmp_cat_art = $db->f("idcatart");
 
-		$sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '$idart' AND idlang = '$lang'";
+		$sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
 
 		$db->query($sql);
 		$db->next_record();
@@ -135,7 +145,7 @@ else {
 
 			//***************** this art is edited the first time *************
 
-			if (!$idart) $tmp_firstedit    = 1;                //**** is needed when input is written to db (update or insert)
+			if (!$idart) $tmp_firstedit = 1; //**** is needed when input is written to db (update or insert)
 
 			$tmp_idartlang      = 0;
 			$tmp_idlang         = $lang;
@@ -230,7 +240,6 @@ else {
 		$tpl->set('s', 'ARTID', $idart);
 
 		$tpl->set('s', 'DIRECTLINKTEXT', i18n("Articlelink"));
-		//$tpl->set('s', 'DIRECTLINK', $cfgClient[$client]["path"]["htmlpath"]."/front_content.php?idart=);
 
 		$select = new cHTMLSelectElement("directlink");
 		$select->setEvent("change", "document.getElementById('linkhint').value = this.form.directlink.options[this.form.directlink.options.selectedIndex].value;");
@@ -250,8 +259,6 @@ else {
 		$select->addOptionElement(4, $option[4]);
 
 		$tpl->set('s', 'DIRECTLINK', $select->render().'<br><br><input style="width:400px;" class="text_medium" type="text" id="linkhint">');
-
-
 
 		$tpl->set('s', 'ZUORDNUNGSID', "idcatart");
 		$tpl->set('s', 'ALLOCID', $tmp_cat_art);
@@ -349,7 +356,7 @@ else {
 
 		if ($cValue == false || $sValue == false)
 		{
-			$sql = "SELECT idartlang, online FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '$idart' AND online='1' AND idlang != '$lang'";
+			$sql = "SELECT idartlang, online FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".Contenido_Security::toInteger($idart)."' AND online='1' AND idlang != '".Contenido_Security::toInteger($lang)."'";
 			$db->query($sql);
 				
 			if ($db->num_rows() > 0)
@@ -410,7 +417,7 @@ else {
 			$tmp_idcat_in_art = $idcatnew;
 
 		} else {
-			$sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart='".$idart."'";          // get all idcats that contain art
+			$sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart='".$idart."'"; // get all idcats that contain art
 			$db->query($sql);
 
 			while ( $db->next_record() ) {
@@ -421,8 +428,6 @@ else {
 				$tmp_idcat_in_art[0] = $idcat;
 			}
 		}
-
-
 
 		/* Start date */
 		if ($tmp_datestart == "0000-00-00 00:00:00")
@@ -452,8 +457,8 @@ else {
                 WHERE
                     A.idcat=B.idcat AND
                     B.idcat=C.idcat AND
-                    C.idlang='$lang' AND
-                    B.idclient='$client'
+                    C.idlang='".Contenido_Security::toInteger($lang)."' AND
+                    B.idclient='".Contenido_Security::toInteger($client)."'
                 ORDER BY
                     A.idtree";
 
@@ -567,8 +572,8 @@ else {
                 WHERE
                     A.idcat=B.idcat AND
                     B.idcat=C.idcat AND
-                    C.idlang='$lang' AND
-                    B.idclient='$client'
+                    C.idlang='".Contenido_Security::toInteger($lang)."' AND
+                    B.idclient='".Contenido_Security::toInteger($client)."'
                 ORDER BY
                     A.idtree";
 
@@ -676,10 +681,10 @@ else {
                     ".$cfg["tab"]["cat_lang"]." AS b,
                     ".$cfg["tab"]["cat_art"]." AS c
                 WHERE
-                    a.idclient = '".$client."' AND
+                    a.idclient = '".Contenido_Security::toInteger($client)."' AND
                     a.idcat    = b.idcat AND
                     c.idcat    = b.idcat AND
-                    c.idart    = '".$idart."'";
+                    c.idart    = '".Contenido_Security::toInteger($idart)."'";
 
 		$db->query($sql);
 		$db->next_record();
@@ -689,7 +694,7 @@ else {
 		if ( isset($idart) ) {
 
 			if ( !isset($idartlang) || 0 == $idartlang ) {
-				$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = $idart AND idlang = $lang";
+				$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
 				$db->query($sql);
 				$db->next_record();
 				$idartlang = $db->f("idartlang");
@@ -700,7 +705,7 @@ else {
 		if ( isset($midcat) ) {
 
 			if ( !isset($idcatlang) || 0 == $idcatlang ) {
-				$sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = $midcat AND idlang = $lang";
+				$sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '".Contenido_Security::toInteger($midcat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
 				$db->query($sql);
 				$db->next_record();
 				$idcatlang = $db->f("idcatlang");
@@ -711,7 +716,7 @@ else {
 		if ( isset($midcat) && isset($idart) ) {
 
 			if ( !isset($idcatart) || 0 == $idcatart ) {
-				$sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = $idart AND idcat = $midcat";
+				$sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($idart)."' AND idcat = '".Contenido_Security::toInteger($midcat)."'";
 				$db->query($sql);
 				$db->next_record();
 				$idcatart = $db->f("idcatart");
@@ -721,14 +726,12 @@ else {
 
 		if ( 0 != $idart && 0 != $midcat ) {
 			$script = 'artObj.setProperties("'.$idart.'", "'.$idartlang.'", "'.$midcat.'", "'.$idcatlang.'", "'.$idcatart.'", "'.$lang.'");';
-            //$script .= 'top.content.left.left_bottom.markCat('.$midcat.');';
         } else {
 			$script = 'artObj.reset();';
 		}
 
 		$tpl->set('s', 'DATAPUSH', $script);
 
-		 
 		$tpl->set('s', 'BUTTONDISABLE', $disabled);
 		 
 		if ($inUse == true)
@@ -742,7 +745,6 @@ else {
 
 		/* Genereate the Template */
 		$tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_edit_form']);
-
 
 	} else {
 

@@ -1,18 +1,38 @@
 <?php
-/******************************************
-* File      :   includes.con_str_overview.php
-* Project   :   Contenido
-* Descr     :   Displays the structure in
-*               the left frame.
-*
-* Author    :   Jan Lengowski
-* Created   :   26.01.2003
-* Modified  :   24.04.2003
-* Modified	:	24.04.2007 H. Librenz (4fb)
-* Modified	:	13.02.2008 A. Lindner (4fb)
-*
-* (c) four for business AG
-*****************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Displays the structure in the left frame
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2002-03-02
+ *   modified 2007-04-24, Holger Librenz
+ *   modified 2008-02-13, Andreas Lindner
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes","class.htmlelements.php");
 cInclude("classes","class.ui.php");
@@ -76,21 +96,8 @@ function getExpandCollapseButton ($item)
 
 	}
  	else {
-		/*return '<img src="images/spacer.gif" width="2" height="11">';*/
             $img->setSrc($item->lastnode_icon);
 		    $img->setAlt('');
-            
-            /*
-			if($item->custom['postid'] == 0)
-			{
-				$img->setSrc($item->lastnode_icon);
-				$img->setAlt(i18n("Close category"));
-			}
-			else
-			{
-				$img->setSrc($item->expanded_icon);
-				$img->setAlt(i18n("Close category"));
-			}*/
 			return($img->render());
 	}
 }
@@ -187,8 +194,8 @@ if ($syncoptions == -1)
                 ".$cfg["tab"]["tpl_conf"]." AS d
                 ON d.idtplcfg = b.idtplcfg
             WHERE
-                a.idclient  = '".$client."' AND
-                b.idlang    = '".$lang."' AND
+                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
+                b.idlang    = '".Contenido_Security::toInteger($lang)."' AND
                 c.idcat     = b.idcat AND
                 b.idcat     = a.idcat
             ORDER BY
@@ -213,9 +220,9 @@ if ($syncoptions == -1)
                 ".$cfg["tab"]["tpl_conf"]." AS d
                 ON d.idtplcfg = b.idtplcfg
             WHERE
-                a.idclient  = '".$client."' AND
-                (b.idlang    = '".$lang."' OR
-				 b.idlang	 = '".$syncoptions."') AND
+                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
+                (b.idlang    = '".Contenido_Security::toInteger($lang)."' OR
+				 b.idlang	 = '".Contenido_Security::toInteger($syncoptions)."') AND
                 c.idcat     = b.idcat AND
                 b.idcat     = a.idcat
             ORDER BY
@@ -325,7 +332,7 @@ $sIn = implode(',',$arrIn);
 
 $sql2 = "SELECT b.idcat, a.idart, idlang FROM ".$cfg["tab"]["art_lang"]." AS a,
 							  ".$cfg["tab"]["cat_art"]." AS b
-		WHERE b.idcat IN ($sIn) AND (a.idlang = '".$syncoptions."' OR a.idlang = '".$lang."') 
+		WHERE b.idcat IN (".Contenido_Security::escapeDB($sIn, $db).") AND (a.idlang = '".Contenido_Security::toInteger($syncoptions)."' OR a.idlang = '".Contenido_Security::toInteger($lang)."') 
         AND b.idart = a.idart";
 $db->query($sql2);
 
@@ -343,16 +350,6 @@ while ($db->next_record()) {
 	$entry['articles'] = false;
 
 	if ($db->f("idlang") == $lang) {
-		#    	$sql = "SELECT a.idart, idlang FROM ".$cfg["tab"]["art_lang"]." AS a,
-		#    								  ".$cfg["tab"]["cat_art"]." AS b
-		#    			WHERE b.idcat = '".$db->f("idcat")."' AND (a.idlang = '".$syncoptions."' OR a.idlang = '".$lang."') 
-		#                AND b.idart = a.idart";
-		#        $db2->query($sql);
-		#        $arts = Array();
-		#	
-		#		while ($db2->next_record()) {
-		#       		$arts[$db2->f("idart")][$db2->f("idlang")] = 1;
-		#      	}
 
         $arts = Array();
       	
@@ -687,25 +684,6 @@ foreach ($objects as $key=>$value) {
 	#Check rights per cat
 	if (!$check_global_rights) {
 		$check_rights = false;
-		
-		/*#Check if any rights are applied to current user or his groups - variable $tmp_userstring does not exist in this context
-		$sql = "SELECT *
-				FROM ".$cfg["tab"]["rights"]."
-				WHERE user_id IN ('".$tmp_userstring."') AND idclient = '$client' AND idlang = '$lang' AND idcat = '".$value->id."'";
-		$db->query($sql);
-
-		if ($db->num_rows() != 0) {
-			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con_editart", "con_edit",$value->id);}
-			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con_editart", "con_saveart",$value->id);}
-			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con", "con_deleteart",$value->id);}
-			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con_editcontent", "con_editart",$value->id);}
-			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con_editart", "con_newart",$value->id);}
-			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con", "con_makestart",$value->id);}
-			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con", "con_makeonline",$value->id);}
-			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con", "con_tplcfg_edit",$value->id);}
-			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con", "con_makecatonline",$value->id);}
-			if (!$check_rights) {$check_rights = $perm->have_perm_area_action_item("con", "con_changetemplate",$value->id);}
-		}*/
 	} else {
 		$check_rights = true;
 	}
@@ -744,8 +722,6 @@ foreach ($objects as $key=>$value) {
                                    $sess->url("main.php?area=$area&frame=3&idcat=$idcat&idtpl=$idtpl"),
                                    'right_bottom',
                                    $sess->url("main.php?area=$area&frame=4&idcat=$idcat&idtpl=$idtpl"),
-//                                   'left_top',
-//                                   $sess->url("main.php?area=$area&frame=1&idcat=$idcat&idtpl=$idtpl"),
                                    $name);
 
 		if (($value->custom["idlang"] != $lang) || ($value->custom['articles'] == true))
@@ -839,11 +815,11 @@ foreach ($objects as $key=>$value) {
                             ".$cfg["tab"]["art"]." AS b,
                             ".$cfg["tab"]["cat_art"]." AS c
                         WHERE
-                            a.idlang = ".$lang." AND
+                            a.idlang = ".Contenido_Security::toInteger($lang)." AND
                             a.idart = b.idart AND
-                            b.idclient = '".$client."' AND
+                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
                             b.idart = c.idart AND
-                            c.idcat = '".$idcat."'";
+                            c.idcat = '".Contenido_Security::toInteger($idcat)."'";
 			} else {
                 $sql2 = "SELECT
                             a.online AS online,
@@ -854,12 +830,12 @@ foreach ($objects as $key=>$value) {
                             ".$cfg["tab"]["art"]." AS b,
                             ".$cfg["tab"]["cat_art"]." AS c
                         WHERE
-                            a.idlang = ".$lang." AND
+                            a.idlang = ".Contenido_Security::toInteger($lang)." AND
                             a.idart = b.idart AND
-                            b.idclient = '".$client."' AND
+                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
                             b.idart = c.idart AND
-                            c.idcat = '".$idcat."'";				
-				
+                            c.idcat = '".Contenido_Security::toInteger($idcat)."'";
+
 			}
 		} else {
 			if ($cfg["is_start_compatible"] == true)
@@ -874,9 +850,9 @@ foreach ($objects as $key=>$value) {
                             ".$cfg["tab"]["cat_art"]." AS c
                         WHERE
                             a.idart = b.idart AND
-                            b.idclient = '".$client."' AND
+                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
                             b.idart = c.idart AND
-                            c.idcat = '".$idcat."'";
+                            c.idcat = '".Contenido_Security::toInteger($idcat)."'";
 			} else {
                 $sql2 = "SELECT
 							a.idartlang AS idartlang,
@@ -888,13 +864,11 @@ foreach ($objects as $key=>$value) {
                             ".$cfg["tab"]["cat_art"]." AS c
                         WHERE
                             a.idart = b.idart AND
-                            b.idclient = '".$client."' AND
+                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
                             b.idart = c.idart AND
-                            c.idcat = '".$idcat."'";				
+                            c.idcat = '".Contenido_Security::toInteger($idcat)."'";				
 			}
-		}			
-			
-			
+		}
 
         $db2->query($sql2);
 
@@ -992,17 +966,15 @@ foreach ($objects as $key=>$value) {
        			{
        				$parentid = $db->f("parentid");
        				$sql = "SELECT idcatlang FROM %s WHERE idcat = '%s' AND idlang = '%s'";
-       				$db->query(sprintf($sql, $cfg["tab"]["cat_lang"], $parentid, $lang));
+       				$db->query(sprintf($sql, $cfg["tab"]["cat_lang"], Contenido_Security::toInteger($parentid), Contenido_Security::toInteger($lang)));
        				
        				if ($db->next_record())
        				{
-								//$img_folder .= sprintf('<a href="%s"><img src="images/%s" alt="%s" title="%s"></a>', $sess->url("main.php?area=$area&frame=$frame&action=con_synccat&syncfromlang=$syncoptions&syncidcat=$idcat"), "but_sync_cat.gif", i18n("Copy to current language"),i18n("Copy to current language"));       					
                                 $tmp_img = "but_sync_cat_off.gif";
                                 $bIsSyncable = true;
                     }
        				
        			} else {
-       				//$img_folder .= sprintf('<a href="%s"><img src="images/%s" alt="%s" title="%s"></a>', $sess->url("main.php?area=$area&frame=$frame&action=con_synccat&syncfromlang=$syncoptions&syncidcat=$idcat"), "but_sync_cat.gif", i18n("Copy to current language"),i18n("Copy to current language"));	
                     $tmp_img = "but_sync_cat_off.gif";
                     $bIsSyncable = true;
                 }	
@@ -1028,7 +1000,6 @@ foreach ($objects as $key=>$value) {
         
         $img_folder = sprintf('<img style="margin: 0px 2px 7px 0px;" src="images/dash.gif"><img src="images/%s" alt="">', $tmp_img);
 
-				
 				/**
 				 * preparing the vertical lines
 				 **/
@@ -1039,8 +1010,7 @@ foreach ($objects as $key=>$value) {
 				$itemlevels = $value->custom['vertline'];
 				$lvl=$value->level;
 				$indent="0";
-				
-				
+
 				if($value->level >= 2)
 				{
 					if($value->custom['vertline'] != NULL)
@@ -1048,7 +1018,7 @@ foreach ($objects as $key=>$value) {
 						$indent=8;
 					}
 				}
-				
+
 				// iterate over level
 				for($i=0; $i < (($value->level)-1); $i++)
 				{
@@ -1097,7 +1067,7 @@ foreach ($objects as $key=>$value) {
         $tpl->set('d', 'INDENT',		$indent);
         
         // DIRECTION
-				$tpl->set('d', 'DIRECTION', 'dir="' . $text_direction . '"');
+		$tpl->set('d', 'DIRECTION', 'dir="' . $text_direction . '"');
         
         $tpl->next();
 

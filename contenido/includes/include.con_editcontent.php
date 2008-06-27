@@ -1,27 +1,41 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Include for editing the content in an article
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003
+ *   modified 2008-06-16, Holger Librenz, Hotfix: check for illegal calls added
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.con_editcontent.php
-* Project   :   Contenido
-* Descr     :   Include for editing the
-*               content in an article
-*
-* Author    :   Jan Lengowski
-*
-* Created   :   00.00.0000
-* Modified  :   $Date$
-*
-* @internal {
-*   modified 2008-06-16, H. Librenz - Hotfix: check for illegal calls added
-*
-*   $Id$
-* }
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }
-
 
 $edit 		= "true";
 
@@ -47,7 +61,6 @@ if ( isset($idcat) )
 				}
 
 				conSaveContentEntry($value[0], "CMS_".$value[1], $value[2], $value[3]);
-				//echo "conSaveContentEntry({$value[0]}, CMS_{$value[1]}, {$value[2]}, value)<br>\n";
 			}
 
 			conMakeArticleIndex ($idartlang, $idart);
@@ -251,10 +264,10 @@ EOD;
                     ".$cfg["tab"]["art_lang"]." AS a,
                     ".$cfg["tab"]["art"]." AS b
                 WHERE
-                    a.idart     = '".$idart."' AND
-                    a.idlang    = '".$lang."' AND
+                    a.idart     = '".Contenido_Security::toInteger($idart)."' AND
+                    a.idlang    = '".Contenido_Security::toInteger($lang)."' AND
                     b.idart     = a.idart AND
-                    b.idclient  = '".$client."'";
+                    b.idclient  = '".Contenido_Security::toInteger($client)."'";
 
         $db->query($sql);
         $db->next_record();
@@ -273,7 +286,7 @@ EOD;
                      FROM
                         ".$cfg["tab"]["container_conf"]."
                      WHERE
-                        idtplcfg = '".$idtplcfg."'
+                        idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'
                      ORDER BY
                         number ASC";
 
@@ -296,10 +309,10 @@ EOD;
                         ".$cfg["tab"]["cat_lang"]." AS a,
                         ".$cfg["tab"]["cat"]." AS b
                     WHERE
-                        a.idcat     = '".$idcat."' AND
-                        a.idlang    = '".$lang."' AND
+                        a.idcat     = '".Contenido_Security::toInteger($idcat)."' AND
+                        a.idlang    = '".Contenido_Security::toInteger($lang)."' AND
                         b.idcat     = a.idcat AND
-                        b.idclient  = '".$client."'";
+                        b.idclient  = '".Contenido_Security::toInteger($client)."'";
 
             $db->query($sql);
             $db->next_record();
@@ -319,7 +332,7 @@ EOD;
                          FROM
                             ".$cfg["tab"]["container_conf"]."
                          WHERE
-                            idtplcfg = '".$idtplcfg."'
+                            idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'
                          ORDER BY
                             number ASC";
 
@@ -346,7 +359,7 @@ EOD;
                     $notification = new Contenido_Notification;
                 }
 
-                $sql = "SELECT title FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang = '".$idartlang."'";
+                $sql = "SELECT title FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang = '".Contenido_Security::toInteger($idartlang)."'";
                 $db->query($sql);
                 $db->next_record();
                 $art_name = $db->f("title");
@@ -354,12 +367,12 @@ EOD;
                 $cat_name = "";
                 conCreateLocationString($idcat, "&nbsp;/&nbsp;", $cat_name);
 
-                $sql = "SELECT name FROM ".$cfg["tab"]["lang"]." WHERE idlang = '".$lang."'";
+                $sql = "SELECT name FROM ".$cfg["tab"]["lang"]." WHERE idlang = '".Contenido_Security::toInteger($lang)."'";
                 $db->query($sql);
                 $db->next_record();
                 $lang_name = $db->f("name");
 
-                $sql = "SELECT name FROM ".$cfg["tab"]["clients"]." WHERE idclient = '".$client."'";
+                $sql = "SELECT name FROM ".$cfg["tab"]["clients"]." WHERE idclient = '".Contenido_Security::toInteger($client)."'";
                 $db->query($sql);
                 $db->next_record();
                 $client_name = $db->f("name");
@@ -409,16 +422,16 @@ EOD;
                             <body style="margin: 10px">'.$notification->returnNotification("error", $noti_html).'</body>
                         </html>';
 
-                $sql = "SELECT * FROM ".$cfg["tab"]["code"]." WHERE idcatart='".$idcatart."' AND idlang='".$lang."'";
-
+                $sql = "SELECT * FROM ".$cfg["tab"]["code"]." WHERE idcatart='".Contenido_Security::toInteger($idcatart)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
                 $db->query($sql);
 
                 if ($db->next_record()) {
-                    $sql = "UPDATE ".$cfg["tab"]["code"]." SET code='".$code."', idlang='".$lang."', idclient='".$client."' WHERE idcatart='".$idcatart."' AND idlang='".$lang."'";
+                    $sql = "UPDATE ".$cfg["tab"]["code"]." SET code='".Contenido_Security::escapeDB($code, $db)."', idlang='".Contenido_Security::toInteger($lang)."', idclient='".Contenido_Security::toInteger($client)."'
+                            WHERE idcatart='".Contenido_Security::toInteger($idcatart)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
                     $db->query($sql);
-
                 } else {
-                    $sql = "INSERT INTO ".$cfg["tab"]["code"]." (idcode, idcatart, code, idlang, idclient) VALUES ('".$db->nextid($cfg["tab"]["code"])."', '".$idcatart."', '".$code."', '".$lang."', '".$client."')";
+                    $sql = "INSERT INTO ".$cfg["tab"]["code"]." (idcode, idcatart, code, idlang, idclient) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["code"]))."', '".Contenido_Security::toInteger($idcatart)."',
+                            '".Contenido_Security::escapeDB($code, $db)."', '".Contenido_Security::toInteger($lang)."', '".Contenido_Security::toInteger($client)."')";
                     $db->query($sql);
                 }
 
@@ -438,7 +451,7 @@ EOD;
                     ".$cfg["tab"]["tpl"]." AS a,
                     ".$cfg["tab"]["tpl_conf"]." AS b
                 WHERE
-                    b.idtplcfg  = '".$idtplcfg."' AND
+                    b.idtplcfg  = '".Contenido_Security::toInteger($idtplcfg)."' AND
                     b.idtpl     = a.idtpl";
 
         $db->query($sql);
@@ -456,7 +469,7 @@ EOD;
                 FROM
                     ".$cfg["tab"]["container"]."
                 WHERE
-                    idtpl = '".$idtpl."'
+                    idtpl = '".Contenido_Security::toInteger($idtpl)."'
                 ORDER BY
                     number ASC";
 
@@ -466,11 +479,10 @@ EOD;
             $a_d[$db->f("number")] = $db->f("idmod");
         }
 
-
         #
         # Get code from Layout
         #
-        $sql = "SELECT * FROM ".$cfg["tab"]["lay"]." WHERE idlay = '".$idlay."'";
+        $sql = "SELECT * FROM ".$cfg["tab"]["lay"]." WHERE idlay = '".Contenido_Security::toInteger($idlay)."'";
 
         $db->query($sql);
         $db->next_record();
@@ -491,7 +503,7 @@ EOD;
 
 					$CiCMS_VALUE = "";
 
-                    $sql = "SELECT * FROM ".$cfg["tab"]["mod"]." WHERE idmod='".$a_d[$value]."'";
+                    $sql = "SELECT * FROM ".$cfg["tab"]["mod"]." WHERE idmod='".Contenido_Security::toInteger($a_d[$value])."'";
 
                     $db->query($sql);
                     $db->next_record();
@@ -565,8 +577,8 @@ EOD;
                 WHERE
                     A.idtype    = C.idtype AND
                     A.idartlang = B.idartlang AND
-                    B.idart     = '".$idart."' AND
-                    B.idlang    = '".$lang."'";
+                    B.idart     = '".Contenido_Security::toInteger($idart)."' AND
+                    B.idlang    = '".Contenido_Security::toInteger($lang)."'";
 
         $db->query($sql);
 
@@ -574,7 +586,7 @@ EOD;
             $a_content[$db->f("type")][$db->f("typeid")] = $db->f("value");
         }
 
-        $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".$idart."' AND idlang='".$lang."'";
+        $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
 
         $db->query($sql);
         $db->next_record();
