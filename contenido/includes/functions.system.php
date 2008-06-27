@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-06-27, Timo Trautmann, add check to emptyLogFile if there is a permission to write file
  *
  *   $Id$:
  * }}
@@ -47,20 +48,24 @@ function emptyLogFile()
 	global $cfg, $notification;
 	if ($_GET['log'] == 1)
 	{ // clear errorlog.txt
-		if (file_exists($cfg['path']['contenido']."logs/errorlog.txt"))
+		if (file_exists($cfg['path']['contenido']."logs/errorlog.txt") && is_writeable($cfg['path']['contenido']."logs/errorlog.txt"))
 		{
 			$errorLogHandle = fopen($cfg['path']['contenido']."logs/errorlog.txt", "wb+");
 			fclose($errorLogHandle);
 			$tmp_notification = $notification->returnNotification("info", i18n("error log successfully cleared"));
+		} else if (file_exists($cfg['path']['contenido']."logs/errorlog.txt") && !is_writeable($cfg['path']['contenido']."logs/errorlog.txt")) {
+		    $tmp_notification = $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
 		}
 	}
 	elseif ($_GET['log'] == 2)
 	{
-		if (file_exists($cfg['path']['contenido']."logs/install.log.txt"))
+		if (file_exists($cfg['path']['contenido']."logs/install.log.txt") && is_writeable($cfg['path']['contenido']."logs/install.log.txt"))
 		{ // clear install.log.txt
 			$errorLogHandle = fopen($cfg['path']['contenido']."logs/install.log.txt", "wb+");
 			fclose($errorLogHandle);
 			$tmp_notification = $notification->returnNotification("info", i18n("install error log successfully cleared"));
+		} else if (file_exists($cfg['path']['contenido']."logs/install.log.txt") && !is_writeable($cfg['path']['contenido']."logs/install.log.txt")) {
+		    $tmp_notification = $notification->returnNotification("error", i18n("Can't clear install error log : Access is denied!"));
 		}
 	}
 	return $tmp_notification;

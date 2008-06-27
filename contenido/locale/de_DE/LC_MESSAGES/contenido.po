@@ -6036,3 +6036,8 @@ msgstr "Deine Version von Contenido ist aktuell!"
 msgid "Update notification is disabled!"
 msgstr "Die Update-&Uuml;berpr&uuml;fung wurde deaktiviert!" 
 
+msgid "Can't clear error log : Access is denied!"
+msgstr "Fehlerlog konnte nicht geleert werden: Zugriff verweigert!" 
+
+msgid "Can't clear install error log : Access is denied!"
+msgstr "Upgrade-Errorlog konnte nicht geleert werden: Zugriff verweigert!" 
