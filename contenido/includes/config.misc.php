@@ -202,8 +202,4 @@ $cfg["contenido"]["notifyonerror"] = "";
 /* Configure how often the notification email is sent, in minutes */
 $cfg["contenido"]["notifyinterval"] = 20;
 
-/* URL to the handbook */
-$cfg["contenido"]["handbook_url"] = $cfg['path']['contenido_fullhtml'] . "../docs/handbuch/Handbuch_Contenido_Version_44.pdf";
-$cfg["contenido"]["handbook_path"] = $cfg['path']['contenido'] . "../docs/handbuch/Handbuch_Contenido_Version_44.pdf";
-
 ?>
