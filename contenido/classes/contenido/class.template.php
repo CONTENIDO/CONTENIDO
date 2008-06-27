@@ -20,6 +20,7 @@
  * 
  * {@internal 
  *   created 2004-08-04
+ *   modified 2008-06-27, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
@@ -29,7 +30,6 @@
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
-
 
 cInclude("classes", "class.genericdb.php");
 cInclude("classes", "class.security.php");
@@ -53,10 +53,10 @@ class cApiTemplateCollection extends ItemCollection
 		global $cfg, $client;
 		
 		$db = new DB_Contenido;
-		$sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = 0 WHERE idclient = '" . Contenido_Security::escapeDB($client , $db) . "'";
+		$sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = 0 WHERE idclient = '" . Contenido_Security::toInteger($client) . "'";
 		$db->query($sql);
 		
-		$sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = 1 WHERE idtpl = '" . Contenido_Security::escapeDB($idtpl, $db) . "'";
+		$sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = 1 WHERE idtpl = '" . Contenido_Security::toInteger($idtpl) . "'";
 		$db->query($sql);
 	}	
 }
