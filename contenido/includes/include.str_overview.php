@@ -1,16 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Displays structure
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-03-28
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   includes.str_overview.php
-* Project   :   Contenido
-* Descr     :   Displays structure
-*
-* Author    :   Olaf Niemann
-* Created   :   28.03.2003
-* Modified  :   28.03.2003
-*
-* © four for business AG
-*****************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes","class.htmlelements.php");
 $debug = false;
 
@@ -33,15 +54,16 @@ if (isset($_POST['newcategoryalias']) && isset($_POST['action']) && $_POST['acti
     if(! ($perm->have_perm_area_action($tmp_area, "str_renamecat") || $perm->have_perm_area_action_item($tmp_area, "str_renamecat", $iIdCat)) ) {
         if (trim($_POST['newcategoryalias']) != '') {
             $sUrlName = capiStrCleanURLCharacters($_POST['newcategoryalias']);
-            $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '". $sUrlName ."' WHERE idcat = '".$iIdCat."' AND idlang = '$lang'";
+            $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '". Contenido_Security::escapeDB($sUrlName, $db) ."' WHERE idcat = '".Contenido_Security::toInteger($iIdCat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
         } else {
             //Use categoryname as default -> get it escape it save it as urlname
-            $sql = "SELECT name from {$cfg['tab']['cat_lang']} WHERE idcat = '".$iIdCat."' AND idlang = '$lang'";
+            $sql = "SELECT name from {$cfg['tab']['cat_lang']} WHERE idcat = '".Contenido_Security::toInteger($iIdCat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
             
             if ($db->next_record()) {
                 $sUrlName = capiStrCleanURLCharacters($db->f('name'));
-                $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '". $sUrlName ."' WHERE idcat = '".$iIdCat."' AND idlang = '$lang'";
+                $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '". $sUrlName ."' WHERE idcat = '".Contenido_Security::toInteger($iIdCat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
                 $db->query($sql);
+				$lang = Contenido_Security::escapeDB($lang, null);
                 @unlink($cfgClient[$client]["path"]["frontend"]."cache/locationstring-url-cache-$lang.txt");
             }
         }
@@ -68,8 +90,8 @@ function buildCategorySelectRights() {
 
 	$sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
 	    	   ".$cfg["tab"]["cat"]." AS a, ".$cfg["tab"]["cat_lang"]." AS b,
-	    	   ".$cfg["tab"]["cat_tree"]." AS c WHERE a.idclient = '".$client."'
-	    	   AND b.idlang = '".$lang."' AND b.idcat = a.idcat AND c.idcat = a.idcat $addString
+	    	   ".$cfg["tab"]["cat_tree"]." AS c WHERE a.idclient = '".Contenido_Security::toInteger($client)."'
+	    	   AND b.idlang = '".Contenido_Security::toInteger($lang)."' AND b.idcat = a.idcat AND c.idcat = a.idcat $addString
 	           ORDER BY c.idtree";
 
 	$db->query($sql);
@@ -87,7 +109,7 @@ function buildCategorySelectRights() {
             $categories[$db->f("idcat")]["perm"] = 0;
         }
 
-		$sql2 = "SELECT level FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat = '".$db->f("idcat")."'";
+		$sql2 = "SELECT level FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat = '".Contenido_Security::toInteger($db->f("idcat"))."'";
 		$db2->query($sql2);
 
 		if ($db2->next_record())
@@ -301,7 +323,6 @@ function buildTree (&$rootItem, &$items)
 
 }
 
-
 if ( $perm->have_perm_area_action($area) ) {
 
     $sql = "SELECT
@@ -313,12 +334,10 @@ if ( $perm->have_perm_area_action($area) ) {
             WHERE
                 A.idcat     = B.idcat AND
                 B.idcat     = C.idcat AND
-                C.idlang    = '".$lang."' AND
-                B.idclient  = '".$client."'
+                C.idlang    = '".Contenido_Security::toInteger($lang)."' AND
+                B.idclient  = '".Contenido_Security::toInteger($client)."'
             ORDER BY
                 idtree";
-
-
 
     # Debug info
     if ( $debug ) {
@@ -474,9 +493,6 @@ if ( $perm->have_perm_area_action($area) ) {
     
     $aInlineEditData = array();
     foreach ($objects as $key=>$value) {
-        /*echo '<pre>';
-        print_r($value);
-        echo '</pre>';*/
         // check if there area any permission for this $idcat   in the mainarea 6 (=str) and there subareas
         $bCheck = false;
 		if (!$bCheck) { $bCheck = $perm->have_perm_area_action($tmp_area, "str_newtree"); }
@@ -607,22 +623,16 @@ if ( $perm->have_perm_area_action($area) ) {
             $tpl->set('d', 'TPLNAME', $sTemplatename);
             $tpl->set('d', 'TPLDESC', $descString);
             
-            ///////// "Kategorie umbenennen" Button 
-                //$tpl->set('d', 'RENAMEBUTTON', "<a class=action href=\"".$sess->url("main.php?area=$area&action=str_renamecat&frame=$frame&idcat=".$value->id)."#renamethis\"><img src=\"".$cfg["path"]["images"]."but_rename.gif\" border=\"0\" title=\"".i18n("Rename category")."\" alt=\"".i18n("Rename category")."\"></a>");
             if($perm->have_perm_area_action($tmp_area, "str_renamecat") || $perm->have_perm_area_action_item($tmp_area, "str_renamecat", $value->id)) {
-                //$tpl->set('d', 'INPUT_CATEGORY', i18n('Categoryname').'&nbsp; <input  class="text_medium" type="text" style="width:150px; vertical-align:middle;" name="newcategoryname" value="'.htmlspecialchars($value->name).'"><span style="padding-left:15px;">&nbsp;</span>');                
                 $bPermRename = 1;
             }else{
                 $bPermRename = 0;
-                //$tpl->set('d', 'INPUT_CATEGORY', '');
             }
             
             if ($perm->have_perm_area_action("str_tplcfg", "str_tplcfg") || $perm->have_perm_area_action_item("str_tplcfg","str_tplcfg",$value->id))
             {
                 $bPermTplcfg = 1;
-                //$tpl->set('d', 'TEMPLATEBUTTON', "<a href=\"".$sess->url("main.php?area=str_tplcfg&frame=$frame&idcat=".$value->id."&idtpl=".$value->custom['idtplcfg'])."\"><img src=\"".$cfg["path"]["images"]."template_properties.gif\" title=\"".i18n("Configure category")."\" alt=\"".i18n("Configure category")."\" border=\"0\" style=\"vertical-align:middle\"> &nbsp; ".i18n("Configure category")."</a><span style=\"padding-left:15px;\">&nbsp;</span>");
             } else {
-                //$tpl->set('d', 'TEMPLATEBUTTON', "&nbsp;");
                 $bPermTplcfg = 0;
             }
             
@@ -648,11 +658,7 @@ if ( $perm->have_perm_area_action($area) ) {
             
             $tpl->set('d', 'MOUSEOVER', $sMouseover);
 
-            ///////// "neue Unterkategorie" Button
             if($perm->have_perm_area_action($tmp_area, "str_newcat") || $perm->have_perm_area_action_item($tmp_area, "str_newcat", $value->id)) {
-                /*$tpl->set('d', 'NEWCATEGORYBUTTON', "<a href=\"".$sess->url("main.php?area=$area&action=str_newcat&frame=$frame&idcat=".$value->id)."#newcathere\"><img src=\"".$cfg["path"]["images"]."folder_new.gif\" border=\"0\" title=\"".i18n("New category")."\" alt=\"".i18n("New category")."\"></a>");
-            }else{
-               $tpl->set('d', 'NEWCATEGORYBUTTON', '&nbsp;');*/
                $bAreaAddNewCategory = true;
             }
 
@@ -784,7 +790,6 @@ if ( $perm->have_perm_area_action($area) ) {
 					
 					if ($_cecIterator->count() > 0)
 					{
-						
 						while ($chainEntry = $_cecIterator->next())
 						{
 						    $columnContents[]  = $chainEntry->execute($value->id, $key);
@@ -868,7 +873,6 @@ if ( $perm->have_perm_area_action($area) ) {
         $perm->have_perm_area_action($tmp_area,"str_newcat") || 
         $bAreaAddNewCategory)
         && (int) $client > 0 && (int) $lang > 0) {
-        // $tpl->set('s', 'NEWTREE', $string . "<a class=\"black\" href=\"".$sess->url("main.php?area=$area&action=str_newtree&frame=$frame")."#newtreehere\"><img style=\"vertical-align:middle\" src=\"images/folder_new.gif\">&nbsp;".i18n('Create new tree')."</a>");
         $tpl->set('s', 'NEWCAT', $string . "<a class=\"black\" href=\"javascript:showNewForm();\"><img src=\"images/folder_new.gif\">&nbsp;".i18n('Create new category')."</a>");
         if ($perm->have_perm_area_action($tmp_area,"str_newtree")) {
             if ($perm->have_perm_area_action($tmp_area,"str_newcat") || $bAreaAddNewCategory) {
