@@ -1,16 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Left_top frame for grouprights
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-04-29
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.stat_left_top.php
-* Project   :   Contenido 
-*
-*
-* Author    :   Timo A. Hummel
-* Created   :   29.04.2003
-* Modified  :   29.04.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 // The following lines unset all right objects since 
 // I don't know (or I was unable to find out) if they
@@ -29,7 +49,6 @@ $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'SESSID', $sess->id);
 $tpl->set('s', 'SID', $sess->id);
-
 
 $tpl2 = new Template;
 $tpl2->set('s', 'NAME', 'restrict');
@@ -59,7 +78,7 @@ foreach ($limit as $key => $value) {
 
 $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true);
 
-//$tpl->set('s', 'CAPTION', $select);
+
 $tpl->set('s', 'CAPTION', '');
 
 $tmp_mstr = '<a class="addfunction" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';

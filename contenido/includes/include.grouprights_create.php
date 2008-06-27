@@ -1,18 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.grouprights_create.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Create Group Function
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   30.05.2003
-* Modified  :   $Date: 2006/04/28 09:20:54 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.grouprights_create.php,v 1.7 2006/04/28 09:20:54 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Create Group Function
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.7.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-30
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if(!$perm->have_perm_area_action($area, $action))
 {
@@ -59,10 +77,10 @@ if(!$perm->have_perm_area_action($area, $action))
     	     $sql = 'INSERT INTO
                         '.$cfg["tab"]["groups"].'
                       SET
-            		    groupname="'.$groupname.'",
+            		    groupname="'.Contenido_Security::escapeDB($groupname, $db).'",
                         perms="'.implode(",",$stringy_perms).'",
-						description="'.$description.'",
-    		            group_id="'.$newgroupid.'"';
+						description="'.Contenido_Security::escapeDB($description, $db).'",
+    		            group_id="'.Contenido_Security::escapeDB($newgroupid, $db).'"';
                    
         $db->query($sql); 
       
@@ -76,7 +94,7 @@ if(!$perm->have_perm_area_action($area, $action))
             FROM
                 ".$cfg["tab"]["groups"]."
             WHERE
-                group_id = '".$groupid."'";
+                group_id = '".Contenido_Security::escapeDB($groupid, $db)."'";
 
     $db->query($sql);
     $db->next_record();
@@ -85,16 +103,13 @@ if(!$perm->have_perm_area_action($area, $action))
     $group_perms = explode(",", $db->f("perms"));
     $db2 = new DB_Contenido;
 
-
     $form = '<form name="group_properties" method="post" action="'.$sess->url("main.php?").'">
                  '.$sess->hidden_session().'
                  <input type="hidden" name="area" value="'.$area.'">
                  <input type="hidden" name="action" value="group_create">
                  <input type="hidden" name="frame" value="'.$frame.'">
                  <input type="hidden" name="idlang" value="'.$lang.'">';
-                 
-    
-    
+
     $tpl->set('s', 'FORM', $form);
     $tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('s', 'BGCOLOR', $cfg["color"]["table_dark"]);
@@ -122,7 +137,6 @@ if(!$perm->have_perm_area_action($area, $action))
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "description", $db->f("description"), 40, 255));
     $tpl->next();
   
-
     $groupperm = split(",", $auth->auth["perm"]);
 
     if(in_array("sysadmin",$groupperm)){
@@ -134,14 +148,12 @@ if(!$perm->have_perm_area_action($area, $action))
         $tpl->next();
     }
 
-
         $sql="SELECT * FROM ".$cfg["tab"]["clients"];
         $db2->query($sql);
         $client_list = "";
         $gen = 0;
         while($db2->next_record())
         {
-             
             if(in_array("admin[".$db2->f("idclient")."]",$groupperm) || in_array("sysadmin",$groupperm)){
                 $client_list .= formGenerateCheckbox("madmin[".$db2->f("idclient")."]",$db2->f("idclient"),in_array("admin[".$db2->f("idclient")."]",$group_perms), $db2->f("name")." (".$db2->f("idclient").")")."<br>";
                 $gen = 1;
@@ -162,8 +174,6 @@ if(!$perm->have_perm_area_action($area, $action))
     $sql = "SELECT * FROM " .$cfg["tab"]["clients"];
     $db2->query($sql);
     $client_list = "";
-    
-
     
     while ($db2->next_record())
     {
@@ -193,11 +203,9 @@ if(!$perm->have_perm_area_action($area, $action))
     $db2->query($sql);
     $client_list = "";
     
-
-    
     while ($db2->next_record())
     {
-//            if($perm->have_perm_client_lang($client, $db2->f("idlang")in_array("lang[".$db2->f("idlang")."]",$userperm) || in_array("sysadmin",$userperm) || $perm->have_perm())
+
             if($perm->have_perm_client("lang[".$db2->f("idlang")."]") || $perm->have_perm_client("admin[".$db2->f("idclient")."]" ))
             {
                 $client_list .= formGenerateCheckbox("mlang[".$db2->f("idlang")."]",$db2->f("idlang"),in_array("lang[".$db2->f("idlang")."]",$group_perms), $db2->f("name")." (". $db2->f("clientname") .")")."<br>";

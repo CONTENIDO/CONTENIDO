@@ -1,20 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.grouprights_menu.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Groups Menu
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   30.05.2003
-* Modified  :   $Date: 2006/04/28 09:20:54 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.grouprights_menu.php,v 1.11 2006/04/28 09:20:54 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Groups Menu
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.1.1
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-30
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $tpl->reset();
 $tpl->set('s', 'SID', $sess->id);
@@ -24,19 +40,19 @@ if (($action == "group_delete") && ($perm->have_perm_area_action($area, $action)
    $sql = "DELETE FROM "
              .$cfg["tab"]["groups"].	
           " WHERE
-             group_id = \"" .$groupid."\"";
+             group_id = \"" .Contenido_Security::escapeDB($groupid, $db)."\"";
    $db->query($sql);
    
    $sql = "DELETE FROM ".
    			$cfg["tab"]["groupmembers"].
-   			" WHERE group_id = \"" .$groupid."\"";
+   			" WHERE group_id = \"" .Contenido_Security::escapeDB($groupid, $db)."\"";
    			
    $db->query($sql);
           
           
    $sql = "DELETE FROM ".
    			$cfg["tab"]["rights"].
-   			" WHERE user_id = \"" .$groupid."\"";
+   			" WHERE user_id = \"" .Contenido_Security::escapeDB($groupid, $db)."\"";
    			
    $db->query($sql);          
 }
@@ -66,7 +82,6 @@ if ($restriction == 1)
 			group_id
         ORDER BY
             groupname ASC";
-            
 }
 
 if ($restriction == 3)
@@ -88,7 +103,6 @@ if ($restriction == 3)
             groupname ASC";
 }
 $db->query($sql);
-
 
 // Empty Row
 $bgcolor = '#FFFFFF';
@@ -144,7 +158,6 @@ while ($db->next_record())
         $groupname = $db->f("groupname");
         
         $groupname = substr($groupname, 4);
-        
 
         $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
         $area = "groups";
@@ -191,8 +204,6 @@ while ($db->next_record())
         $tpl->next();
     }
 }
-
-
 
 # Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_menu']);

@@ -1,18 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.grouprights_overview.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Groups Overview Page
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   30.05.2003
-* Modified  :   $Date: 2006/04/28 09:20:54 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.grouprights_overview.php,v 1.10 2006/04/28 09:20:54 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Groups Overview PAge
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.1.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-30
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $db2 = new DB_Contenido;
 
@@ -25,7 +43,6 @@ if ( !isset($groupid) )
 {
 
 } else {
-
 
     if (($action == "group_edit") && ($perm->have_perm_area_action($area, $action)))
     {
@@ -56,10 +73,10 @@ if ( !isset($groupid) )
                            $sql = 'UPDATE
                          '.$cfg["tab"]["groups"].'
                         SET
-                          description="'.$description.'",
-                          perms="'.implode(",",$stringy_perms).'" 
+                          description="'.Contenido_Security::escapeDB($description, $db).'",
+                          perms="'.Contenido_Security::escapeDB(implode(",",$stringy_perms), $db).'" 
                         WHERE
-                          group_id = "'.$groupid.'"';
+                          group_id = "'.Contenido_Security::escapeDB($groupid, $db).'"';
 
                 $db->query($sql);
 
@@ -67,18 +84,15 @@ if ( !isset($groupid) )
 
         
  }    
-        
 
-
-    $tpl->reset();
-    
+    $tpl->reset();    
     
     $sql = "SELECT
                 groupname, description, perms
             FROM
                 ".$cfg["tab"]["groups"]."
             WHERE
-                group_id = '".$groupid."'";
+                group_id = '".Contenido_Security::escapeDB($groupid, $db)."'";
 
     $db->query($sql);
     $db->next_record();
@@ -96,10 +110,7 @@ if ( !isset($groupid) )
                  <input type="hidden" name="frame" value="'.$frame.'">
 				 <input type="hidden" name="groupid" value="'.$groupid.'">
                  <input type="hidden" name="idlang" value="'.$lang.'">';
-                 
- 
-    
-    
+   
     $tpl->set('s', 'FORM', $form);
     $tpl->set('s', 'GET_GROUPID', $groupid);
     
@@ -119,8 +130,8 @@ if ( !isset($groupid) )
     $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
     $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('d', 'CATFIELD', i18n("Value"));
-		$tpl->set('d', 'BRDB', 0);
-		$tpl->set('d', 'BRDT', 1);
+	$tpl->set('d', 'BRDB', 0);
+	$tpl->set('d', 'BRDT', 1);
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', i18n("Groupname"));
@@ -141,7 +152,6 @@ if ( !isset($groupid) )
 	$tpl->set('d', 'BRDT', 0);
     $tpl->next();
   
-
     $groupperm = split(",", $auth->auth["perm"]);
 
     if(in_array("sysadmin",$groupperm)){
@@ -155,14 +165,12 @@ if ( !isset($groupid) )
         $tpl->next();
     }
 
-
         $sql="SELECT * FROM ".$cfg["tab"]["clients"];
         $db2->query($sql);
         $client_list = "";
         $gen = 0;
         while($db2->next_record())
         {
-             
             if(in_array("admin[".$db2->f("idclient")."]",$groupperm) || in_array("sysadmin",$groupperm)){
                 $client_list .= formGenerateCheckbox("madmin[".$db2->f("idclient")."]",$db2->f("idclient"),in_array("admin[".$db2->f("idclient")."]",$group_perms), $db2->f("name")." (".$db2->f("idclient").")")."<br>";
                 $gen = 1;
@@ -176,24 +184,20 @@ if ( !isset($groupid) )
             $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
             $tpl->set('d', "BGCOLOR", $cfg["color"]["table_dark"]);
             $tpl->set('d', "CATFIELD", $client_list);
-						$tpl->set('d', 'BRDB', 1);
-						$tpl->set('d', 'BRDT', 0);
+			$tpl->set('d', 'BRDB', 1);
+			$tpl->set('d', 'BRDT', 0);
             $tpl->next(); 
         }
 
-
     $sql = "SELECT * FROM " .$cfg["tab"]["clients"];
     $db2->query($sql);
-    $client_list = "";
-    
+    $client_list = "";  
 
-    
     while ($db2->next_record())
     {
             if((in_array("client[".$db2->f("idclient")."]",$groupperm) || in_array("sysadmin",$groupperm) || in_array("admin[".$db2->f("idclient")."]",$groupperm)) && !in_array("admin[".$db2->f("idclient")."]",$group_perms)) {
                 $client_list .= formGenerateCheckbox("mclient[".$db2->f("idclient")."]",$db2->f("idclient"),in_array("client[".$db2->f("idclient")."]",$group_perms), $db2->f("name")." (". $db2->f("idclient") . ")")."<br>";
             }
-
     }
     
     if ($client_list != "" && !in_array("sysadmin",$group_perms))
@@ -223,8 +227,6 @@ if ( !isset($groupid) )
     $db2->query($sql);
     $client_list = "";
     
-
-    
     while ($db2->next_record())
     {
             if(($perm->have_perm_client("lang[".$db2->f("idlang")."]") || $perm->have_perm_client("admin[".$db2->f("idclient")."]")) && !in_array("admin[".$db2->f("idclient")."]",$group_perms))
@@ -233,7 +235,6 @@ if ( !isset($groupid) )
             }
 
     }
-    
     
     if ($client_list != "" && !in_array("sysadmin",$group_perms))
     {

@@ -1,21 +1,42 @@
 <?php
-/******************************************
-* File      :   include.rights_overview.php
-* Project   :   Contenido
-* Descr     :   Displays rights 
-*
-* Author    :   Timo A. Hummel
-* Created   :   30.04.2003
-* Modified  :   30.04.2003
-*
-* © four for business AG
-*****************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Display rights
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-04-30
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $idclient = 2;
 $idlang = 2;
 die;
 
-$sql = 'SELECT * FROM '.$cfg["tab"]["rights"].' WHERE idlang = 2 AND idclient = 2 AND user_id = \"'.$userid.'\"';
+$sql = 'SELECT * FROM '.$cfg["tab"]["rights"].' WHERE idlang = 2 AND idclient = 2 AND user_id = \"'.Contenido_Security::escapeDB($userid, $db).'\"';
 echo $sql;
 
 $db->query($sql);
@@ -23,15 +44,12 @@ $db->query($sql);
 while ($db->next_record())
 {
     echo $db->f(0)."<br>";
-
 }
-
 
 if ( !isset($useridas) )
 {
 
 } else {
-
 
     if ($action == "user_edit")
     {
@@ -45,7 +63,7 @@ if ( !isset($useridas) )
                         SET
                             password="'.md5($password).'"
                         WHERE
-                            user_id = "'.$userid.'"';
+                            user_id = "'.Contenido_Security::escapeDB($userid, $db).'"';
 
                 $db->query($sql);
             } else {
@@ -56,15 +74,15 @@ if ( !isset($useridas) )
         $sql = 'UPDATE
                     '.$cfg["tab"]["phplib_auth_user_md5"].'
                 SET
-                    realname="'.$realname.'",
-                    email="'.$email.'",
-                    telephone="'.$telephone.'",
-                    address_street="'.$address_street.'",
-                    address_city="'.$address_city.'",
-                    address_country="'.$address_country.'",
-                    wysi="'.$wysi.'"
+                    realname="'.Contenido_Security::escapeDB($realname, $db).'",
+                    email="'.Contenido_Security::escapeDB($email, $db).'",
+                    telephone="'.Contenido_Security::escapeDB($telephone, $db).'",
+                    address_street="'.Contenido_Security::escapeDB($address_street, $db).'",
+                    address_city="'.Contenido_Security::escapeDB($address_city, $db).'",
+                    address_country="'.Contenido_Security::escapeDB($address_country, $db).'",
+                    wysi="'.Contenido_Security::toInteger($wysi).'"
                 WHERE
-                    user_id = "'.$userid.'"';
+                    user_id = "'.Contenido_Security::escapeDB($userid, $db).'"';
                     
         $db->query($sql);
     }
@@ -77,7 +95,7 @@ if ( !isset($useridas) )
             FROM
                 ".$cfg["tab"]["phplib_auth_user_md5"]."
             WHERE
-                user_id = '".$userid."'";
+                user_id = '".Contenido_Security::escapeDB($userid, $db)."'";
 
     $db->query($sql);
 
@@ -146,7 +164,6 @@ if ( !isset($useridas) )
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', formGenerateCheckbox("wysi", "1", $db->f("wysi")));
     $tpl->next();
-    
 
     # Generate template
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['rights_details']);
