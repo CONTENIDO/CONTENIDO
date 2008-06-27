@@ -1,37 +1,52 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Displays all last edited articles of a category
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.3.1
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-08-05
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   includes.mycontenido_lastarticles.php
-* Project   :   Contenido
-* Descr     :   Displays all last edited articles
-*               of a category 
-*
-* Author    :   Timo A. Hummel
-* Created   :   08.05.2003
-* Modified  :   08.05.2003
-*
-* © four for business AG
-*****************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("includes", "functions.con.php");
 
 $debug = false;
-
-
-
 
         $sql = "SELECT
                     logtimestamp
                 FROM
                     ".$cfg["tab"]["actionlog"]."
                 WHERE
-                   user_id = '". $auth->auth["uid"] . "'
+                   user_id = '".Contenido_Security::escapeDB($auth->auth["uid"], $db). "'
                 ORDER BY
                     logtimestamp DESC
                 LIMIT 2";
 
         $db->query($sql);
-        $db->next_record();
         $db->next_record();
 
         $lastlogin = $db->f("logtimestamp");
@@ -58,12 +73,12 @@ $debug = false;
                     ".$cfg["tab"]["cat_art"]." AS c,
                     ".$cfg["tab"]["actionlog"]." AS d
                 WHERE
-                    a.idlang    = '".$lang."' AND
+                    a.idlang    = '".Contenido_Security::toInteger($lang)."' AND
                     a.idart     = b.idart AND
-                    b.idclient  = '".$client."' AND
+                    b.idclient  = '".Contenido_Security::toInteger($client)."' AND
                     b.idart     = c.idart AND
-                    d.idaction  = '".$idaction."' AND
-                    d.user_id    = '" . $auth->auth["uid"] ."' AND 
+                    d.idaction  = '".Contenido_Security::toInteger($idaction)."' AND
+                    d.user_id    = '".Contenido_Security::escapeDB($auth->auth["uid"], $db)."' AND 
                     d.idcatart  = c.idcatart
                     GROUP BY
                         c.idcatart
@@ -88,12 +103,12 @@ $debug = false;
                     ".$cfg["tab"]["cat_art"]." AS c,
                     ".$cfg["tab"]["actionlog"]." AS d
                 WHERE
-                    a.idlang    = '".$lang."' AND
+                    a.idlang    = '".Contenido_Security::toInteger($lang)."' AND
                     a.idart     = b.idart AND
-                    b.idclient  = '".$client."' AND
+                    b.idclient  = '".Contenido_Security::toInteger($client)."' AND
                     b.idart     = c.idart AND
-                    d.idaction  = '".$idaction."' AND
-                    d.user_id    = '" . $auth->auth["uid"] ."' AND 
+                    d.idaction  = '".Contenido_Security::toInteger($idaction)."' AND
+                    d.user_id    = '".Contenido_Security::escapeDB($auth->auth["uid"], $db)."' AND 
                     d.idcatart  = c.idcatart
                     GROUP BY
                         c.idcatart
@@ -120,49 +135,6 @@ $debug = false;
         $no_article = true;
 
         $tpl->set('s', 'LASTARTICLES', i18n("Recently edited articles").":".markSubMenuItem(1));
-
-		/*$clients = $classclient->getAccessibleClients();
-
-        if(count($clients) > 1)
-        {
-        
-            $clientform = '<form style="margin: 0px" name="clientselect" method="post" target="_top" action="'.$sess->url("index.php").'">';
-            $clientselect = '<select class="text_medium" name="changeclient">';
-
-            foreach ($clients as $key => $v_client)
-            {
-                if ($perm->have_perm_client_lang($key, $lang))
-                {
-
-                    $selected = "";
-                    if ($key == $client)
-                    {
-                        $selected = "selected";
-                    }
-                    $clientselect .= '<option value="'.$key.'" '.$selected.'>'.$v_client['name']." (". $key . ')</option>';
-                }
-            }
-
-            $clientselect .= "</select>";
-            $tpl->set('s', 'CLIENTFORM', $clientform);
-            $tpl->set('s', 'PULL_DOWN_MANDANTEN', $clientselect);
-            $tpl->set('s', 'OKBUTTON', '<input type="image" src="images/but_ok.gif" alt="'.i18n("Change client").'" title="'.i18n("Change client").'" border="0">');
-         } else {
-            $tpl->set('s', 'OKBUTTON', '');
-            $tpl->set('s', 'CLIENTFORM', '');
-            foreach ($clients as $key => $v_client)
-            {
-                $name = $v_client['name']." (". $key . ')';
-            }
-            $tpl->set('s', 'PULL_DOWN_MANDANTEN', $name);
-         }
-
-		$str  = i18n("Welcome") ." <b>" .$classuser->getRealname($auth->auth["uid"]). "</b>. ";
-		$str .= i18n("You are logged in as").": <b>" . $auth->auth["uname"] . "</b>.<br><br>";
-		$str .= i18n("Last login").": ".$lastlogin;
-
-         $tpl->set('s', 'LASTLOGIN',$str);
-*/
 
         while ( $db->next_record() ) {
             $idtplcfg   = $db->f("idtplcfg");
@@ -224,7 +196,7 @@ $debug = false;
                             ".$cfg["tab"]["tpl_conf"]." AS a,
                             ".$cfg["tab"]["tpl"]." AS b
                          WHERE
-                            a.idtplcfg = '".$idtplcfg."' AND
+                            a.idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."' AND
                             a.idtpl = b.idtpl";
                             
                 $db2->query($sql2);
@@ -303,9 +275,9 @@ $debug = false;
                 ON
                     d.idtpl = c.idtpl
                 WHERE
-                    a.idclient = '".$client."' AND
-                    a.idcat = '".$idcat."' AND
-                    b.idlang = '".$lang."' AND
+                    a.idclient = '".Contenido_Security::toInteger($client)."' AND
+                    a.idcat = '".Contenido_Security::toInteger($idcat)."' AND
+                    b.idlang = '".Contenido_Security::toInteger($lang)."' AND
                     b.idcat = a.idcat AND
                     c.idtplcfg = b.idtplcfg";
 
@@ -344,7 +316,5 @@ $debug = false;
 
         # Generate template
         $tpl->generate($cfg['path']['templates'] . $cfg['templates']['mycontenido_lastarticles']);
-    
-
 
 ?>

@@ -1,15 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.mycontenido_subnav.php,v $
-* Project   :   Contenido
-* Descr     :   MyContenido Subnavigation
-* Modified  :   $Date: 2005/02/07 19:16:18 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.mycontenido_subnav.php,v 1.11 2005/02/07 19:16:18 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * MyContenido Subnavigation
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.1.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 	$nav = new Contenido_Navigation;
 
@@ -19,8 +40,8 @@
             FROM
                 ".$cfg["tab"]["area"]." AS a
             WHERE
-                a.name = '".$parentarea."' OR
-                a.parent_id = '".$parentarea."'
+                a.name = '".Contenido_Security::escapeDB($parentarea, $db)."' OR
+                a.parent_id = '".Contenido_Security::escapeDB($parentarea, $db)."'
             ORDER BY
                 idarea";
 
@@ -77,11 +98,9 @@
     $tpl->set('s', 'SESSID', $sess->id);
     $tpl->set('s', 'CLIENT', $client);
     $tpl->set('s', 'LANG', $lang);
-    
 
     # Generate the third
     # navigation layer
     $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["mycontenido_subnav"]);
-
 
 ?>

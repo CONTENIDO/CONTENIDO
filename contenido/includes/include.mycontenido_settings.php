@@ -1,14 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.mycontenido_settings.php,v $
-* Project   :   Contenido
-* Descr     :   MyContenido 
-* Modified  :   $Date: 2006/07/06 14:36:45 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.mycontenido_settings.php,v 1.12 2006/07/06 14:36:45 rudi.bieller Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * MyContenido
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.1.2
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.ui.php");
 cInclude("classes", "widgets/class.widgets.page.php");
 cInclude("classes", "contenido/class.user.php");

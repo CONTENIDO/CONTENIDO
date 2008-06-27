@@ -1,4 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * MyContenido task edit page
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "widgets/class.widgets.page.php");
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.todo.php");
@@ -21,7 +54,6 @@ $ui->setVar("idcommunication", $idcommunication);
     
 $userselect = new cHTMLSelectElement("userassignment");
 
-
 $userclass = new User;
 foreach ($userclass->getAvailableUsers(split(',',$auth->auth["perm"])) as $key => $value)
 {
@@ -32,7 +64,6 @@ asort($acusers);
 
 $userselect->autoFill($acusers);
 $userselect->setDefault($auth->auth["uid"]);
-
 
 $ui->add(i18n("Assigned to"), $userselect->render());
 
@@ -119,5 +150,4 @@ $cpage->addScript("cal", '<style type="text/css">@import url(scripts/jscalendar/
 	                      <script type="text/javascript" src="scripts/jscalendar/calendar-setup.js"></script>');
 
 $cpage->render();
-
 ?>
