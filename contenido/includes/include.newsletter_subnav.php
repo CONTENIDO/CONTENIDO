@@ -1,19 +1,35 @@
 <?php
-/*****************************************
-* File      :   $RCSfile$
-* Project   :   Contenido
-* Descr     :   Custom subnavigation for the newsletters
-* Modified  :   $Date$
-*
-* © four for business AG, www.4fb.de
-*
- * @internal {
- *  modified 2008-06-17, H. Librenz - Hotfix: Added check for malicious script calls
- *  $Id$
- * }
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Custom subnavigation for the newsletters
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
-if (isset($_REQUEST['contenido_path']) || isset($_REQUEST['cfg'])  || isset($_REQUEST['cfgClient'])) {
-    die ('Malicious call!');
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
 }
 
 if (isset($_GET['idnewsletter']))
@@ -36,40 +52,11 @@ if (isset($_GET['idnewsletter']))
 	$tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=news_edit&frame=4&idnewsletter=$idnewsletter").'">'.$sCaption.'</a>');
 	$tpl->next();
 	
-	# Currently no plugin, as this code is a very specific one for frontend group security 
-	/* if (is_array($cfg['plugins']['newsletterlogic']))
-	{
-		foreach ($cfg['plugins']['newsletterlogic'] as $plugin)
-		{
-			cInclude("plugins", "newsletterlogic/$plugin/".$plugin.".php");
-		
-			$className = "newsletterlogic_".$plugin;
-	
-			if (class_exists($className))
-			{
-				$class = new $className;
-				
-				$sCaption = $class->getFriendlyName();
-				
-				$tmp_area = "foo2";		
-				$tpl->set("d", "ID",		'c_'.$tpl->dyn_cnt);
-				$tpl->set("d", "CLASS",	 '');
-				$tpl->set("d", "OPTIONS",   '');
-				$tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=frontendgroups_rights&frame=4&useplugin=$plugin&idnewsletter=$idnewsletter").'">'.$sCaption.'</a>');
-				$tpl->next();
-			}   	
-		}
-	} */ 
-	
 	$tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
 
 	# Generate the third navigation layer
 	$tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
 } else {
-	// modified rbi 2008-06-16
-	if (isset($_REQUEST['cfg'])) {
-		die();
-	}
 	include ($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
 }
 

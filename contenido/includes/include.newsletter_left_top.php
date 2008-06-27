@@ -1,14 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.newsletter_left_top.php,v $
-* Project   :   Contenido
-* Descr     :   Left top pane
-* Modified  :   $Date: 2007/06/19 23:18:38 $
-*
-* © four for business AG, www.4fb.de, modified by HerrB
-*
-* $Id: include.newsletter_left_top.php,v 1.10 2007/06/19 23:18:38 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Left top pane
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "widgets/class.widgets.page.php");
 cInclude("classes", "class.ui.php");
@@ -88,7 +110,6 @@ if ($perm->have_perm_area_action('news')) {
     $buttonRow .= '</a>';
 }
 
-
 if ($perm->have_perm_area_action('news_jobs')) {
     // Dispatch
     $imgDispatchId='img_dispatch';
@@ -97,7 +118,6 @@ if ($perm->have_perm_area_action('news_jobs')) {
     $buttonRow .= '<img onmouseover="hoverEffect(\''.$imgDispatchId.'\', \'in\')" onmouseout="hoverEffect(\''.$imgDispatchId.'\', \'out\')" alt="'.i18n("Dispatch").'" title="'.i18n("Dispatch").'" name="'.$imgDispatchId.'" id="'.$imgDispatchId.'" src="'.$cfg["path"]["images"].'newsletter_dispatch_on.gif"/>';
     $buttonRow .= '</a>';
 }
-
 
 if ($perm->have_perm_area_action('recipients')) {
     // Recipients
@@ -118,7 +138,6 @@ if ($perm->have_perm_area_action('recipientgroups')) {
 }
 
 $tpl->set('s', 'BUTTONROW', $buttonRow);
-
 
 ##############################
 # 1. NEWSLETTER
@@ -166,8 +185,6 @@ else
 	$oActionRow->setContentData("");
 }
 
-
-
 ###########################
 # 1.2 Settings folding row
 ###########################
@@ -197,7 +214,7 @@ $sSQL  = "SELECT tblCat.idcat AS idcat, tblCatLang.name AS name, tblCatTree.leve
 $sSQL .= "tblCatLang.visible AS visible, tblCatLang.public AS public FROM ";
 $sSQL .= $cfg["tab"]["cat"]." AS tblCat, ".$cfg["tab"]["cat_lang"]." AS tblCatLang, ";
 $sSQL .= $cfg["tab"]["cat_tree"]." AS tblCatTree ";
-$sSQL .= "WHERE tblCat.idclient = '".$client."' AND tblCatLang.idlang = '".$lang."' AND ";
+$sSQL .= "WHERE tblCat.idclient = '".Contenido_Security::toInteger($client)."' AND tblCatLang.idlang = '".Contenido_Security::toInteger($lang)."' AND ";
 $sSQL .= "tblCatLang.idcat = tblCat.idcat AND tblCatTree.idcat = tblCat.idcat ";
 $sSQL .= "ORDER BY tblCatTree.idtree";
 
@@ -240,8 +257,8 @@ $oOption = new cHTMLOptionElement(i18n("My mail address"), 0);
 $oSelTestDestination->addOptionElement(0, $oOption);
 
 $oRcpGroups = new RecipientGroupCollection;
-$oRcpGroups->setWhere("idclient", $client);
-$oRcpGroups->setWhere("idlang", $lang);
+$oRcpGroups->setWhere("idclient", Contenido_Security::toInteger($client));
+$oRcpGroups->setWhere("idlang", Contenido_Security::toInteger($lang));
 $oRcpGroups->setOrder("groupname");
 $oRcpGroups->query();
 

@@ -1,18 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Functions for tplcfg, use in combination with include.tplcfg_edit_form.php
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2002
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   includes.tplcfg_edit.php
-* Project   :   Contenido
-* Descr     :   Functions for tplcfg
-*               Use in combination with
-*               include.tplcfg_edit_form.php
-*
-* Author    :   Olaf Niemann
-* Created   :   2002
-* Modified  :   28.03.2003
-*
-* © four for business AG
-*****************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 if ( !isset($idtplcfg) ) {
 
     $sql = "SELECT
@@ -20,7 +39,7 @@ if ( !isset($idtplcfg) ) {
             FROM
                 ".$cfg["tab"]["tpl"]."
             WHERE
-                idtpl = '".$idtpl."'";
+                idtpl = '".Contenido_Security::toInteger($idtpl)."'";
 
     $db->query($sql);
     $db->next_record();
@@ -32,26 +51,22 @@ if ( !isset($idtplcfg) ) {
         $nextid = $db->nextid($cfg["tab"]["tpl_conf"]);
         $timestamp = time();
         
-        $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET idtplcfg = '".$nextid."' WHERE idtpl = '".$idtpl."'";
+        $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET idtplcfg = '".Contenido_Security::toInteger($nextid)."' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
         $db->query($sql);
         
         $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]."
                     (idtplcfg, idtpl, status, author, created, lastmodified)
                 VALUES
-                    ('".$nextid."', '".$idtpl."', '', '', '".$timestamp."', '".$timestamp."')";
-
-        $db->query($sql);
+                    ('".Contenido_Security::toInteger($nextid)."', '".Contenido_Security::toInteger($idtpl)."', '', '', '".$timestamp."', '".$timestamp."')";
         
+		$db->query($sql);
         $idtplcfg = $nextid;
-
-
     }
 
 }
 
 if (isset($idtplcfg)) {
-
-        $sql = "SELECT number FROM ".$cfg["tab"]["container"]." WHERE idtpl='$idtpl'";
+        $sql = "SELECT number FROM ".$cfg["tab"]["container"]." WHERE idtpl='".Contenido_Security::toInteger($idtpl)."'";
         $db->query($sql);
         while ($db->next_record()) {
                 $i = $db->f("number");
@@ -74,34 +89,34 @@ if (isset($idtplcfg)) {
         // update/insert in container_conf
         if (isset($varstring) && is_array($varstring)) {
             // delete all containers
-            $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg='".$idtplcfg."'";
+            $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'";
             $db->query($sql);
 
             foreach ($varstring as $col=>$val) {
                 // insert all containers
                 $sql  = "INSERT INTO ".$cfg["tab"]["container_conf"]." (idcontainerc, idtplcfg, number, container) ".
-                        "VALUES ('".$db->nextid($cfg["tab"]["container_conf"])."', '".$idtplcfg."', '".$col."', '".$val."') ";
+                        "VALUES ('".$db->nextid($cfg["tab"]["container_conf"])."', '".Contenido_Security::toInteger($idtplcfg)."', '".Contenido_Security::toInteger($col)."', '".Contenido_Security::escapeDB($val, $db)."') ";
                 $db->query($sql);
             }
         }
         
 
         if (!isset($idart)) {
-            $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET idtplcfg='$idtplcfg' WHERE idcat='$idcat' AND idlang='$lang'";
+            $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET idtplcfg='".Contenido_Security::toInteger($idtplcfg)."' WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
             $db->query($sql);
         } else {
-            $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET idtplcfg='$idtplcfg' WHERE idart='$idart' AND idlang='$lang'";
+            $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET idtplcfg='".Contenido_Security::toInteger($idtplcfg)."' WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
             $db->query($sql);
         }
 
 
         if ($changetemplate == 1) {
             // set new template
-            $sql = "UPDATE ".$cfg["tab"]["tpl_conf"]." SET idtpl='$idtpl' WHERE idtplcfg='$idtplcfg'";
+            $sql = "UPDATE ".$cfg["tab"]["tpl_conf"]." SET idtpl='".Contenido_Security::toInteger($idtpl)."' WHERE idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'";
             $db->query($sql);
 
             // delete old configured containers
-            $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg='$idtplcfg'";
+            $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'";
             $db->query($sql);
             $changetemplate == 0;
         }
@@ -114,7 +129,7 @@ if (isset($idtplcfg)) {
                         conGenerateCodeForAllartsInCategory($idcat);
                 }
                 
-                $sql = "SELECT name FROM ".$cfg["tab"]["tpl"]." WHERE idtpl='$idtpl' ORDER BY name";
+                $sql = "SELECT name FROM ".$cfg["tab"]["tpl"]." WHERE idtpl='".Contenido_Security::toInteger($idtpl)."' ORDER BY name";
                 $db->query($sql);
                 $db->next_record();
         }

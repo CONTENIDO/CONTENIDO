@@ -1,14 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.recipients_menu.php,v $
-* Project   :   Contenido
-* Descr     :   Recipient user list
-* Modified  :   $Date: 2007/06/19 23:18:38 $
-*
-* © four for business AG, www.4fb.de, updated by HerrB (25.06.2005)
-*
-* $Id: include.recipients_menu.php,v 1.22 2007/06/19 23:18:38 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Recipient user list
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.2.2
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "widgets/class.widgets.page.php");
 cInclude("classes", "widgets/class.widgets.foldingrow.php");
 cInclude("classes", "widgets/class.widgets.pager.php");
@@ -26,7 +49,6 @@ if (getSystemProperty("newsletter", "updatekeys")) {
 	$updatedrecipients = $recipients->updateKeys();
 	$notis = $notification->returnNotification("info", sprintf(i18n("%d recipients, with no or incompatible key has been updated. Deactivate update function."),$updatedrecipients));
 }
-
 
 //Update purgetimeframe if submitted
 $sRefreshTop = '';

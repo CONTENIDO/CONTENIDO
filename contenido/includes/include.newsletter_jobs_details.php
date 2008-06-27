@@ -1,14 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile$
-* Project   :   Contenido
-* Descr     :   Shows job details
-* Modified  :   $Date$
-*
-* © four for business AG, www.4fb.de
-*
-* $Id$
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Shows job details
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.newsletter.jobs.php");
 cInclude("classes", "class.newsletter.logs.php");
 cInclude("classes", "widgets/class.widgets.page.php");
@@ -93,7 +116,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 	}
 	
 	// Initialize
-	$iNextPage	= (int)$_GET['nextpage'];
+	$iNextPage	= Contenido_Security::toInteger($_GET['nextpage']);
 	if ($iNextPage <= 0) {
 		$iNextPage = 1;
 	}

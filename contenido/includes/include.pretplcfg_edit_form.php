@@ -1,19 +1,40 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Displays form for configuring a template
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2002
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   includes.tplcfg_edit_form.php
-* Project   :   Contenido
-* Descr     :   Displays form for configuring a template
-*
-* Author    :   Olaf Niemann
-* Created   :   2002
-* Modified  :   28.03.2003
-*
-* © four for business AG
-*****************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 $tpl->reset();
 
-$sql = "SELECT * FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg='".$idtplcfg."'";
+$sql = "SELECT * FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'";
 $db->query($sql);
 
 $a_c = array();
@@ -44,8 +65,8 @@ $sql = "SELECT
         FROM
             ".$cfg["tab"]["tpl"]."
         WHERE
-            idclient = '".$client."' AND
-            idtpl    = '".$idtpl."'";
+            idclient = '".Contenido_Security::toInteger($client)."' AND
+            idtpl    = '".Contenido_Security::toInteger($idtpl)."'";
         
 $db->query($sql);
 $db->next_record();
@@ -59,7 +80,7 @@ $sql = "SELECT
         FROM
             ".$cfg["tab"]["container"]."
         WHERE
-            idtpl='$idtpl' ORDER BY idcontainer ASC";
+            idtpl='".Contenido_Security::toInteger($idtpl)."' ORDER BY idcontainer ASC";
         
 $db->query($sql);
 while ($db->next_record()) {
@@ -76,7 +97,7 @@ if (isset($a_d) && is_array($a_d)) {
                         FROM
                             ".$cfg["tab"]["mod"]."
                         WHERE
-                            idmod = '".$a_d[$cnumber]."'";
+                            idmod = '".Contenido_Security::toInteger($a_d[$cnumber])."'";
                         
                 $db->query($sql);
                 $db->next_record();
@@ -146,5 +167,4 @@ $tpl->set('s', 'BUTTONS', $buttons);
 
 # Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tplcfg_edit_form']);
-
 ?>
