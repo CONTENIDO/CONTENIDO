@@ -1,4 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Client Settings
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-26, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude('classes', 'contenido/class.client.php');
 cInclude('classes', 'contenido/class.clientslang.php');
@@ -32,19 +64,10 @@ $sSQL = "SELECT A.name AS name, A.idlang AS idlang, B.idclientslang AS idclients
         ".$cfg["tab"]["clients_lang"]." AS B
         WHERE
         A.idlang=B.idlang AND
-        B.idclient='$idclient'
+        B.idclient='".Contenido_Security::toInteger($idclient)."'
         ORDER BY A.idlang";
         
 $db->query($sSQL);
-
-/* Doesn't work as for unknown reasons: idclientslang will be identified
- * as link between both tables... and anyway, we are not getting all needed 
- * fields from the genericdb (no language name)...
-$oLanguages = new cApiLanguageCollection;
-$oLanguages->link("cApiClientLanguageCollection");
-$oLanguages->setWhere("capiclientlanguagecollection.idclient", $idclient);
-$oLanguages->setOrder("capilanguagecollection.idlang");
-$oLanguages->query(); */
 
 while ($db->next_record()) {
 	$iID = $db->f("idclientslang");

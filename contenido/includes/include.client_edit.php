@@ -1,16 +1,36 @@
 <?php
-/******************************************
-* File      :   $RCSfile: include.client_edit.php,v $
-* Project   :   Contenido
-* Descr     :   Edit clients
-*
-* Author    :   Timo A. Hummel
-* Created   :   30.04.2003
-* Modified  :   $Date: 2006/10/06 00:02:39 $
-* Modified by : $Author: bjoern.behrens $
-*
-* © four for business AG
-*****************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Edit clients
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-04-30
+ *   modified 2008-06-26, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.htmlelements.php");
 cInclude('classes', 'contenido/class.client.php');
@@ -63,14 +83,14 @@ if(!$perm->have_perm_area_action($area))
 	             $sql = "INSERT INTO
 	                ".$cfg["tab"]["clients"]."
 	                SET
-	                    name = '".$clientname."',
-	                    frontendpath = '".$frontendpath."',
-	                    htmlpath = '". $htmlpath."',
-	                    errsite_cat = '".$errsite_cat."',
-	                    errsite_art = '".$errsite_art."',
-	                    idclient = ".$idclient;
+	                    name = '".Contenido_Security::escapeDB($clientname, $db)."',
+	                    frontendpath = '".Contenido_Security::escapeDB($frontendpath, $db)."',
+	                    htmlpath = '".Contenido_Security::escapeDB($htmlpath, $db)."',
+	                    errsite_cat = '".Contenido_Security::toInteger($errsite_cat)."',
+	                    errsite_art = '".Contenido_Security::toInteger($errsite_art)."',
+	                    idclient = '".Contenido_Security::toInteger($idclient)."'";
 	                 
-				$properties->setValue("idclient", $idclient, "backend", "clientimage",$clientlogo);
+				$properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
 				
 				// Copy the client template to the real location
 				$destPath = $frontendpath;
@@ -111,7 +131,6 @@ if(!$perm->have_perm_area_action($area))
 	            }
 				rereadClients();
 	        } else {
-	
 	            $pathwithoutslash = $frontendpath;
 	            if (substr($frontendpath, strlen($frontendpath)-1) != "/")
 	            {
@@ -131,23 +150,23 @@ if(!$perm->have_perm_area_action($area))
 	            $sql = "UPDATE 
 	                    ".$cfg["tab"]["clients"]."
 	                    SET
-	                        name = '".$clientname."',
-	                        frontendpath = '".$frontendpath."',
-	                        htmlpath = '".$htmlpath."',
-	                        errsite_cat = '".$errsite_cat."',
-	                        errsite_art = '".$errsite_art."'
-	                    WHERE
-	                        idclient = ".$idclient;
+							name = '".Contenido_Security::escapeDB($clientname, $db)."',
+							frontendpath = '".Contenido_Security::escapeDB($frontendpath, $db)."',
+							htmlpath = '".Contenido_Security::escapeDB($htmlpath, $db)."',
+							errsite_cat = '".Contenido_Security::toInteger($errsite_cat)."',
+							errsite_art = '".Contenido_Security::toInteger($errsite_art)."'
+						WHERE
+							idclient = '".Contenido_Security::toInteger($idclient)."'";
 	        }
 	
 	        $db->query($sql);
 	        $new = false;
 	        rereadClients();
 	        
-	        $properties->setValue("idclient", $idclient, "backend", "clientimage",$clientlogo);
+	        $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
 	        
 	        /* Clear the con_code table */
-	        $sql = "DELETE FROM ".$cfg["tab"]["code"]." WHERE idclient = '$idclient'";
+	        $sql = "DELETE FROM ".$cfg["tab"]["code"]." WHERE idclient = '".Contenido_Security::toInteger($idclient)."'";
 	        $db->query($sql);
 	        
             $notification->displayNotification("info", i18n("Changes saved").$sNewNotification);
@@ -171,7 +190,7 @@ if(!$perm->have_perm_area_action($area))
 	            FROM
 	                ".$cfg["tab"]["clients"]."
 	            WHERE
-	                idclient = '".$idclient."'";
+	                idclient = '".Contenido_Security::toInteger($idclient)."'";
 	
 	    $db->query($sql);
 	

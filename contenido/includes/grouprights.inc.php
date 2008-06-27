@@ -1,4 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Group Rights
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-26, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 if(!is_object($db2))
 $db2 = new DB_Contenido;
 
@@ -10,43 +43,6 @@ if(!is_array($right_list)){
          //$sess->register("right_list");
 
          $plugxml=new XML_Doc();
-        /*
-        the right list:
-
-
-        [1] => Array                                                     => main areaid
-        (
-            [1] => Array                                                 =>  areaid
-                (
-                    [perm] => con                                        => areaname  = permission
-                    [location] => navigation/content/article             => location for the name in the languagefile only for the main areaid
-                    [action] => Array
-                        (
-                            [0] => 10                                    =>actionnames
-                            [1] => 33
-                            [2] => 41
-                            [3] => 50
-                        )
-
-                )
-
-            [2] => Array                            =>  areaid
-                (
-                    [perm] => con_editcontent
-                )
-
-            [3] => Array                            =>  areaid
-                (
-                    [perm] => con_editart
-                    [action] => Array
-                        (
-                            [0] => 30
-                        )
-
-                )
-
-
-         */
 
          //select all rights , actions an theeir locations   without area login
         $sql="SELECT A.idarea, A.parent_id, B.location,A.name FROM ".$cfg["tab"]["area"]." as A LEFT JOIN ".$cfg["tab"]["nav_sub"]." as B ON  A.idarea = B.idarea WHERE A.name!='login' AND A.relevant='1' AND A.online='1' GROUP BY A.name ORDER BY A.idarea";
@@ -57,39 +53,23 @@ if(!is_array($right_list)){
                 if($db->f("parent_id")=="0"){
                              $right_list[$db->f("name")][$db->f("name")]["perm"]=$db->f("name");
                              $right_list[$db->f("name")][$db->f("name")]["location"]=$db->f('location');
-
-
                 }else{
                              $right_list[$db->f("parent_id")][$db->f("name")]["perm"]=$db->f("name");
                              $right_list[$db->f("parent_id")][$db->f("name")]["location"] = $db->f('location');
                 }
 
-                $sql="SELECT * FROM ".$cfg["tab"]["actions"]." WHERE idarea='".$db->f("idarea")."' AND relevant='1'";
+                $sql="SELECT * FROM ".$cfg["tab"]["actions"]." WHERE idarea='".Contenido_Security::toInteger($db->f("idarea"))."' AND relevant='1'";
                 $db2->query($sql);
                 while($db2->next_record())
                 {
-
                       if($db->f("parent_id")=="0"){
                               $right_list[$db->f("name")][$db->f("name")]["action"][]=$db2->f("name");
-
-
                       }else{
                               $right_list[$db->f("parent_id")][$db->f("name")]["action"][]=$db2->f("name");
-
                       }
-
-
-
                 }
-
-
          }
-
 }
-
-
-
-
 
 echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
 echo "<html>";
@@ -102,10 +82,6 @@ echo "<script type=\"text/javascript\" src=\"scripts/rights.js.php?contenido=".$
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/contenido.css\" />";
 echo "</head>";
 echo "<body style=\"margin:10px\">";
-
-
-
-
 
 if(!isset($actionarea)){
     $actionarea="area";
@@ -134,7 +110,7 @@ echo "<SELECT class=\"text_medium\" name=\"rights_clientslang\" SIZE=1>";
   	$firstsel = false;
   	
    	foreach ($clientList as $key=>$value) {
-   		$sql="SELECT * FROM ".$cfg["tab"]["lang"]." as A, ".$cfg["tab"]["clients_lang"]." as B WHERE B.idclient=$key AND A.idlang=B.idlang";
+   		$sql="SELECT * FROM ".$cfg["tab"]["lang"]." as A, ".$cfg["tab"]["clients_lang"]." as B WHERE B.idclient='".Contenido_Security::toInteger($key)."' AND A.idlang=B.idlang";
 		$db->query($sql);
 
 		while($db->next_record())
@@ -247,7 +223,7 @@ function saverightsarea()
 
          if(!isset($rights_perms)){
              //search for the permissions of this user
-             $sql="SELECT perms FROM ".$cfg["tab"]["groups"]." WHERE group_id='$groupid'";
+             $sql="SELECT perms FROM ".$cfg["tab"]["groups"]." WHERE group_id='".Contenido_Security::escapeDB($groupid, $db)."'";
              $db->query($sql);
              $db->next_record();
              $rights_perms=$db->f("perms");
@@ -290,17 +266,13 @@ function saverightsarea()
          $rights_perms=preg_replace("/^,/","",$rights_perms);
 
          //update table
-         $sql="UPDATE ".$cfg["tab"]["groups"]." SET perms='$rights_perms' WHERE group_id='$groupid'";
+         $sql="UPDATE ".$cfg["tab"]["groups"]." SET perms='".Contenido_Security::escapeDB($rights_perms, $db)."' WHERE group_id='".Contenido_Security::escapeDB($groupid, $db)."'";
                 
          $db->query($sql);
          
          //save the other rights
          saverights();
-
-
 }
-
-
 
 function saverights() {
 
@@ -313,31 +285,19 @@ function saverights() {
       $rights_list = array ();
    }
 
-   /*
-   echo "<pre>old:";
-   print_r($rights_list_old);
-   echo "new:";
-   print_r($rights_list);
-   echo "</pre>";
-   */
-
    //search all checks which are not in the new Rights_list for deleting
    $arraydel = array_diff(array_keys($rights_list_old), array_keys($rights_list));
    //search all checks which are not in the Rights_list_old for saving
    $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
 
    if (is_array($arraydel)) {
-
       foreach ($arraydel as $value) {
-
          $data = explode("|", $value);
          $data[0] = $perm->getIDForArea($data[0]);
          $data[1] = $perm->getIDForAction($data[1]);
 
-         $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE user_id='$groupid' AND idclient='$rights_client' AND idlang='$rights_lang' AND idarea='$data[0]' AND idcat='$data[2]' AND idaction='$data[1]' AND type=1";
+         $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE user_id='".Contenido_Security::escapeDB($groupid, $db)."' AND idclient='".Contenido_Security::toInteger($rights_client)."' AND idlang='".Contenido_Security::toInteger($rights_lang)."' AND idarea='".Contenido_Security::toInteger($data[0])."' AND idcat='".Contenido_Security::toInteger($data[2])."' AND idaction='".Contenido_Security::toInteger($data[1])."' AND type=1";
          $db->query($sql);
-         //echo $sql."<br>";
-
       }
    }
 
@@ -361,16 +321,13 @@ function saverights() {
          // Insert new right
          $sql = "INSERT INTO ".$cfg["tab"]["rights"]."
                   (idright, user_id,idarea,idaction,idcat,idclient,idlang, type)
-                  VALUES ('".$db->nextid($cfg["tab"]["rights"])."', '$groupid','$data[0]','$data[1]','$data[2]','$rights_client','$rights_lang',1)";
+                  VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["rights"]))."', '".Contenido_Security::escapeDB($groupid, $db)."', '".Contenido_Security::toInteger($data[0])."','".Contenido_Security::toInteger($data[1])."', '".Contenido_Security::toInteger($data[2])."', '".Contenido_Security::toInteger($rights_client)."', '".Contenido_Security::toInteger($rights_lang)."', 1)";
          $db->query($sql);
-         //echo $sql."<br>";
       }
 
    }
    $rights_list_old = $rights_list;
 
    $notification->displayNotification("info", i18n("Changes saved"));
-
 }
-
 ?>

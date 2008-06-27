@@ -1,17 +1,37 @@
-<?php        
-/******************************************
-* File      :   include.lang_menu.php
-* Project   :   Contenido
-* Descr     :   Displays languages
-*
-* Author    :   Timo A. Hummel
-* Created   :   08.05.2003
-* Modified  :   08.05.2003
-*
-* © four for business AG
-*****************************************/
+<?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Displays languages
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-08
+ *   modified 2008-06-26, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-//$area="lang";
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 $tpl->set('s', 'SID', $sess->id);
 
 if (!isset($action)) $action = "";
@@ -23,7 +43,7 @@ if ($action == "client_delete")
    $sql = "DELETE FROM "
              .$cfg["tab"]["clients"].	
           " WHERE
-             idclient = \"" .$idclient."\"";
+             idclient = '".Contenido_Security::toInteger($idclient)."'";
    $db->query($sql);
     } 
           
@@ -49,8 +69,7 @@ while ($db->next_record()) {
     	}
 
         $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-        //$area = "lang";
-        $idclient = $db->f("idclient");
+		$idclient = $db->f("idclient");
         $mstr = sprintf($tmp_mstr, 'right_top',
                                        $sess->url("main.php?area=$area&frame=3&idclient=$idclient"),
                                        'right_bottom',
@@ -82,6 +101,4 @@ while ($db->next_record()) {
 }    
 # Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['client_menu']);
-
-
 ?>

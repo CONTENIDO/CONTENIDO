@@ -1,18 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Builds the third navigation layer
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-01-25
+ *   modified 2008-06-26, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.subnav.php
-* Project   :   Contenido
-* Descr     :   Builds the third navigation
-*               layer
-*
-* Author    :   Jan Lengowski
-* Created   :   25.01.2003
-* Modified  :   25.01.2003
-*
-* © four for business AG
-******************************************/
-if ( $_REQUEST['cfg'] ) { exit; }
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if ( isset($_GET['idclient']) && ($_GET['idclient'] != 0)) {
 
@@ -23,8 +41,8 @@ if ( isset($_GET['idclient']) && ($_GET['idclient'] != 0)) {
             FROM
                 ".$cfg["tab"]["area"]." AS a
             WHERE
-                a.name = '".$area."' OR
-                a.parent_id = '".$area."'
+                a.name = '".Contenido_Security::escapeDB($area, $db)."' OR
+                a.parent_id = '".Contenido_Security::escapeDB($area, $db)."'
             ORDER BY
                 idarea";
 
@@ -67,7 +85,6 @@ if ( isset($_GET['idclient']) && ($_GET['idclient'] != 0)) {
         $tpl->set("d", "CLASS",     '');
         $tpl->set("d", "OPTIONS",   '');
         $tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=$tmp_area&frame=4&idclient=$idclient&contenido=".$sess->id."").'">'.$caption.'</a>');
-        //$tpl->set("d", "CAPTION",   '<a class="white" href="javascript://" onclick="sub.clicked(this);artObj.doAction(\''.$tmp_area.'\')">'.$caption.'</a>');
         $tpl->next();
 
     }
@@ -87,7 +104,5 @@ if ( isset($_GET['idclient']) && ($_GET['idclient'] != 0)) {
     $tpl->reset();
     $tpl->set('s', 'ACTION', '');
     $tpl->generate($cfg["path"]["templates"] . $cfg['templates']['right_top_blank']);
-
 }
-
 ?>

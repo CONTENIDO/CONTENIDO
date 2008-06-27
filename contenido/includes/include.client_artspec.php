@@ -1,4 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Client Article Specifications
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-26, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes","class.ui.php");
 cInclude("classes","class.htmlelements.php");
@@ -53,11 +85,7 @@ $list->setBgColor(1,$cfg['color']['table_header']);
 $list->setBorder(1);
 $list->setWidth ("250px");
 
-
-
 $count = 2;
-
-
 
 $link = new Link;
 $link->setCLink($area, $frame, "client_artspec_edit");
@@ -77,7 +105,6 @@ $artspec = getArtspec();
 
 if (is_array($artspec))
 {
-
 	foreach ($artspec as $id => $tmp_artspec)
 	{
 		$link->setCustom("idartspec", $id);
@@ -123,17 +150,11 @@ if (is_array($artspec))
     	if ($artspec[$id]['default'] == 0)
     	{
     		$defLink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'artikel_spez_inakt.gif" title="'.i18n("Make this article specification default").'">');
-		
-    	
     		$list->setCell($count,2, $link->render().$dlink->render().$olink->render().$defLink->render());
-		
-			
     	} else
     	{
 	   		$defLinkText = '<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'artikel_spez_akt.gif" title="'.i18n("This article specification is default").'" style="padding-left:3px;">';
-    		
     		$list->setCell($count,2, $link->render().$dlink->render().$olink->render().$defLinkText);
-   		
     	}
 
 		$count++;
@@ -145,9 +166,7 @@ if (is_array($artspec))
 	$list->setCell($count,2, '');
 }
 
-
 unset($form);
-
 
 $form = new UI_Table_Form("artspec");
 $form->setVar("area",$area);
@@ -160,5 +179,4 @@ $form->add(i18n("Specification name"),$inputbox->render());
 
 $page->setContent($list->render()."<br>".$form->render());
 $page->render();
-
 ?>
