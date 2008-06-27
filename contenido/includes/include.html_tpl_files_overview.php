@@ -1,17 +1,37 @@
+
 <?php
-/******************************************
-* File      :   include.html_tpl_files_overview.php
-* Project   :   Contenido
-* Descr     :   Display files from specified directory
-* Frame		: 	left_bottom
-* Area		: 	htmltpl
-*
-* Author    :   Willi Man
-* Created   :   14.07.2004
-* Modified  :   15.07.2004
-*
-* © four for business AG
-*****************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Display files from specified directory
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Willi Mann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2004-07-14
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $tpl->reset();
 
