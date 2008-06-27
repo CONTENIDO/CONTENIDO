@@ -236,7 +236,7 @@ if(!$perm->have_perm_area_action($area))
     {
         $limitsql = "";
     } else {
-        $limitsql = "LIMIT ".$limit;
+        $limitsql = "LIMIT ".Contenido_Security::escapeDB($limit, $db);
     }
 
 	if ($idquser == "%")
@@ -244,13 +244,13 @@ if(!$perm->have_perm_area_action($area))
 		$users = $userclass->getAccessibleUsers(split(',',$auth->auth["perm"]));
 
 		foreach ($users as $key=>$value) {
-			$userarray[] = Contenido_Security::toInteger($key);
+			$userarray[] = $key;
 		}
 
       	$uservalues = implode('", "',$userarray);
 		$userquery = 'IN ("'.$uservalues.'")';
 	} else {
-		$userquery = "LIKE '".Contenido_Security::escapeDB($idquser, $db)."'";
+		$userquery = "LIKE '".$idquser."'";
 	}
 
      $sql = 'SELECT
@@ -264,8 +264,8 @@ if(!$perm->have_perm_area_action($area))
             FROM
               '. $cfg["tab"]["actionlog"] . '
             WHERE
-                user_id '.Contenido_Security::escapeDB($userquery, $db).' AND
-                idaction LIKE "'.Contenido_Security::toInteger($idqaction).'" AND
+                user_id '.$userquery.' AND
+                idaction LIKE "'.Contenido_Security::escapeDB($idqaction, $db).'" AND
                 logtimestamp > "'.Contenido_Security::escapeDB($fromdate, $db).'" AND
                 logtimestamp < "'.Contenido_Security::escapeDB($todate, $db).'" AND
                 idclient LIKE "'.Contenido_Security::escapeDB($idqclient, $db).'"
