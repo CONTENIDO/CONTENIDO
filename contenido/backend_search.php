@@ -23,6 +23,7 @@
  *   created 2007-04-20
  *   modified 2008-06-15, Rudi Bieller, Bugfix CON-149
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2008-06-27, Timo.Trautmann Encoding Header added
  *
  *   $Id$:
  * }}
@@ -792,5 +793,6 @@ if( sizeof($_GET) == 0 && isset($_POST) ) {
 
 
 $tpl->set('s', 'SUBNAVI', $sLoadSubnavi);
+sendEncodingHeader($db, $cfg, $lang);
 $tpl->generate($cfg['path']['templates'] . 'template.backend_search_results.html');
 ?>
