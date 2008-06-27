@@ -1,25 +1,42 @@
 <?php
-/*****************************************
- * File      :   backend_search.php
- * Project   :   Contenido
- * Descr     :   Contenido main file
- *
- * Authors   :   Holger Librenz, Andreas Lindner
- *
- * Created   :   20.04.2007
- * Modified: 16.06.2008 Rudi Bieller Bugfix CON-149
- *
- * based on article in contenido forum:
- * http://www.contenido.org/forum/viewtopic.php?t=12437
+/**
+ * Project: 
+ * Contenido Content Management System
  * 
- * (c) four for business AG, www.4fb.de
- ******************************************/
+ * Description: 
+ * Contenido main file
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend
+ * @version    1.0.3
+ * @author     Holger Librenz, Andreas Lindner
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2007-04-20
+ *   modified 2008-06-15, Rudi Bieller, Bugfix CON-149
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
 /*
  * 16.01.2008
  * Thorsten Granz
  * Added 'store search' function
  * Added showinng values of search in searchform (Timo Trautmann)
  */
+
+define("CON_FRAMEWORK", true);
 
 # Include
 if (isset($_REQUEST['cfg'])) {
