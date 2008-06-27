@@ -1,18 +1,36 @@
 <?php
-/******************************************
-* File      :   $RCSfile: include.js_edit_form.php,v $
-* Project   :   Contenido
-* Descr     :   Edit file
-* Frame		: 	right_bottom
-* Area		:	js
-*
-* Author    :   Willi Man
-* Created   :   14.07.2004
-* Modified  :   $Date: 2005/09/22 11:44:19 $
-*
-* © four for business AG, www.4fb.de
-* $Id: include.js_edit_form.php,v 1.10 2005/09/22 11:44:19 willi.man Exp $
-*****************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Edit file
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.1.0
+ * @author     Willi Mann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2004-07-14
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.ui.php");
 cInclude("classes", "widgets/class.widgets.page.php");
@@ -121,7 +139,7 @@ if (!$perm->have_perm_area_action($area, $action))
     	$page->render();  
     	  
     }
-	
+
 }
 
 ?> 

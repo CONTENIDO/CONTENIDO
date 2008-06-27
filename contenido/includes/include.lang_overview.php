@@ -1,15 +1,36 @@
-<?php        
-/******************************************
-* File      :   include.lang_overview.php
-* Project   :   Contenido
-* Descr     :   Displays languages
-*
-* Author    :   Olaf Niemann
-* Created   :   02.04.2003
-* Modified  :   02.04.2003
-*
-* © four for business AG
-*****************************************/
+<?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Display languages
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-04-02
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $area="lang";
 
@@ -29,7 +50,7 @@ $sql = "SELECT
         ".$cfg["tab"]["clients_lang"]." AS B
         WHERE
         A.idlang=B.idlang AND
-        B.idclient='$targetclient'
+        B.idclient='".Contenido_Security::toInteger($targetclient)."'
         ORDER BY A.idlang";
         
 $db->query($sql);
@@ -105,6 +126,5 @@ $tpl->set('s', 'LANG_COUNT', $iLangCount);
 
 # Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lang_overview']);
-
 
 ?>
