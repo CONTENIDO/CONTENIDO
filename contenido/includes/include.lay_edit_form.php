@@ -1,14 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Edit form for layout
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-01-24
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.lay_edit_form.php
-*
-* Author    :   Olaf Niemann
-* Created   :   24.01.2003
-* Modified  :   24.01.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "contenido/class.layout.php");
 cInclude("classes", "class.htmlvalidator.php");
@@ -40,7 +62,7 @@ if ($action == "lay_new")
 if ($refreshtemplates != "")
 {
 		/* Update all templates for containers with mode fixed and mandatory */
-		$sql = "SELECT idtpl FROM ".$cfg["tab"]["tpl"]." WHERE idlay = '$idlay'";
+		$sql = "SELECT idtpl FROM ".$cfg["tab"]["tpl"]." WHERE idlay = '".Contenido_Security::toInteger($idlay)."'";
 		$db->query($sql);
 		
 		$fillTemplates = array();
@@ -63,7 +85,7 @@ if (!$layout->virgin)
     $tpl->reset();
 
 	$idlay = $layout->get("idlay");
-	$code = $layout->get("code");
+	$code = Contenido_Security::unescapeDB($layout->get("code"));
 	$name = $layout->get("name");
 	$description = $layout->get("description");
 	
@@ -156,7 +178,6 @@ if (!$layout->virgin)
 		}
 		
 	}
-	
 	
 	if ($msg != "")
 	{

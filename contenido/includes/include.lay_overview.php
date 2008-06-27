@@ -1,16 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * List layouts in database
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-03-27
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.lay_overview.php
-* Project   :   Contenido
-* Descr     :   Listet die layouts auf
-*
-* Author    :   Olaf Niemann
-* Created   :   27.03.2003
-* Modified  :   27.03.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.todo.php");
 cInclude("classes", "contenido/class.layout.php");
@@ -45,13 +65,7 @@ while ($layout = $layouts->next()) {
                                        'right_bottom',
                                        $sess->url("main.php?area=lay_edit&frame=4&idlay=$idlay"),
                                        $descr, $descr, $name);
-        	//$mstr2 = sprintf($tmp_mstr, 'right_top',
-            //                           $sess->url("main.php?area=$area&frame=3&idlay=$idlay"),
-            //                           'right_bottom',
-            //                           $sess->url("main.php?area=lay_edit&frame=4&idlay=$idlay"),
-            //                           $descr, $descr, '<img src="images/layout.gif" width="16" height="16">');                                       
-        	
-        	//$tpl->set('d', 'IMGLINK', $mstr2);
+
             $tpl->set('d', 'NAME',  $mstr);
         } else {
         	//$tpl->set('d', 'IMGLINK', '<img src="images/layout.gif" width="16" height="16">');
@@ -105,10 +119,6 @@ while ($layout = $layouts->next()) {
 
     }
 }
+
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lay_overview']);
-
-
-
-
-
 ?>
