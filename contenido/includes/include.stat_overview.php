@@ -1,22 +1,41 @@
 <?php
-/******************************************
-* File      :   include.stat_overview.php
-* Project   :   Contenido
-* Descr     :   Displays languages
-*
-* Author    :   Olaf Niemann
-* Created   :   23.04.2003
-* Modified  :   29.04.2003
-*
-* © four for business AG
-*****************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Displays languages
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Olaf Niemann
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-04-29
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $tpl->reset();
 
 if ($action == "stat_show")
 {
-
         if (strlen($yearmonth) < 4)
         {
             $yearmonth = "current";
