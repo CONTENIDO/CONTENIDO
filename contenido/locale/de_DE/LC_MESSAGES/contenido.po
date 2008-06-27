@@ -6033,8 +6033,8 @@ msgstr "Anscheinend wurde deine Version manipuliert. Contenido %s existiert nich
 msgid "Your version of Contenido is up to date!"
 msgstr "Deine Version von Contenido ist aktuell!"
 
-msgid "Update notification is disabled!"
-msgstr "Die Update-&Uuml;berpr&uuml;fung wurde deaktiviert!" 
+msgid "Update notification is disabled! <a href="%s">Enable notifications</a>"
+msgstr "Die Update-Benachrichtigung wurde deaktiviert! <a href="%s">Benachrichtigungen aktivieren</a>" 
 
 msgid "Can't clear error log : Access is denied!"
 msgstr "Fehlerlog konnte nicht geleert werden: Zugriff verweigert!" 

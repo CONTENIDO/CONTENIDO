@@ -244,7 +244,7 @@ else{
 }
 
 // check for new updates
-$oUpdateNotifier = new Contenido_UpdateNotifier($cfg['version']);
+$oUpdateNotifier = new Contenido_UpdateNotifier($cfg['version'], $cfg['path'], $vuser, $perm, $sess);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 $tpl->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 
