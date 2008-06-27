@@ -1,19 +1,38 @@
 <?php
-/******************************************
-* File      :   includeinclude.logs.php
-* Project   :   Contenido
-* Descr     :   Displays log entries
-*
-* Author    :   Timo A. Hummel
-* Created   :   09.05.2003
-* Modified  :   $Date$
-*
-* @internal {
-*   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls
-* }
-*
-* © four for business AG
-*****************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Display log entries
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.2
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-09
+ *   modified 2008-06-16, Holger Librenz, Hotfix: added check for invalid calls
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }
@@ -225,31 +244,31 @@ if(!$perm->have_perm_area_action($area))
 		$users = $userclass->getAccessibleUsers(split(',',$auth->auth["perm"]));
 
 		foreach ($users as $key=>$value) {
-			$userarray[] = $key;
+			$userarray[] = Contenido_Security::toInteger($key);
 		}
 
       	$uservalues = implode('", "',$userarray);
 		$userquery = 'IN ("'.$uservalues.'")';
 	} else {
-		$userquery = "LIKE '".$idquser."'";
+		$userquery = "LIKE '".Contenido_Security::escapeDB($idquser, $db)."'";
 	}
 
      $sql = 'SELECT
                 idlog,
                 user_id,
                 idaction,
-		      idlang,
-		      idclient,
+		        idlang,
+		        idclient,
                 idcatart,
                 logtimestamp
             FROM
               '. $cfg["tab"]["actionlog"] . '
             WHERE
-                user_id '.$userquery.' AND
-                idaction LIKE "'.$idqaction.'" AND
-                logtimestamp > "'.$fromdate.'" AND
-                logtimestamp < "'.$todate.'" AND
-            idclient LIKE "'.$idqclient.'"
+                user_id '.Contenido_Security::escapeDB($userquery, $db).' AND
+                idaction LIKE "'.Contenido_Security::toInteger($idqaction).'" AND
+                logtimestamp > "'.Contenido_Security::escapeDB($fromdate, $db).'" AND
+                logtimestamp < "'.Contenido_Security::escapeDB($todate, $db).'" AND
+                idclient LIKE "'.Contenido_Security::escapeDB($idqclient, $db).'"
                 ORDER BY logtimestamp DESC '
                 . $limitsql;
 
@@ -264,8 +283,7 @@ if(!$perm->have_perm_area_action($area))
         $noresults = "";
     }
 
-        $tpl->set('s', 'NORESULTS', $noresults);
-
+    $tpl->set('s', 'NORESULTS', $noresults);
 
     while ($db->next_record())
     {
@@ -304,9 +322,8 @@ if(!$perm->have_perm_area_action($area))
 
     }
 
-
     # Generate template
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['log_main']);
-}
 
+}
 ?>

@@ -67,7 +67,7 @@ function layEditLayout($idlay, $name, $description, $code) {
         $idlay = $tmp_newid;
 
         $sql = "INSERT INTO ".$cfg["tab"]["lay"]." (idlay,name, description, deletable, code, idclient, author, created, lastmodified) VALUES ('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::escapeDB($name, $db)."',
-                '".Contenido_Security::escapeDB($description, $db)."', '1', '".Contenido_Security::escapeDB($code, $db)."', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($author, $db)."',
+                '".Contenido_Security::escapeDB($description, $db)."', '1', '".$code."', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($author, $db)."',
                 '".Contenido_Security::escapeDB($date, $db)."', '".Contenido_Security::escapeDB($date, $db)."').";
         $db->query($sql);
 
@@ -79,7 +79,7 @@ function layEditLayout($idlay, $name, $description, $code) {
 
     } else {
 
-        $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".Contenido_Security::escapeDB($name, $db)."', description='".Contenido_Security::escapeDB($description, $db)."', code='".Contenido_Security::escapeDB($code, $db)."',
+        $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".Contenido_Security::escapeDB($name, $db)."', description='".Contenido_Security::escapeDB($description, $db)."', code='".$code."',
                 author='".Contenido_Security::escapeDB($author, $db)."', lastmodified='".Contenido_Security::escapeDB($date, $db)."' WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
         $db->query($sql);
 
@@ -101,7 +101,7 @@ function layDeleteLayout($idlay) {
         $sql = "SELECT * FROM ".$cfg["tab"]["tpl"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
         $db->query($sql);
         if ($db->next_record()) {
-                return "0301";                // layout is still in use, you cannot delete it
+                return "0301"; // layout is still in use, you cannot delete it
         } else {
                 $sql = "DELETE FROM ".$cfg["tab"]["lay"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
                 $db->query($sql);

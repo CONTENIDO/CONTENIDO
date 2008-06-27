@@ -85,7 +85,7 @@ if (!$layout->virgin)
     $tpl->reset();
 
 	$idlay = $layout->get("idlay");
-	$code = Contenido_Security::unescapeDB($layout->get("code"));
+	$code = $layout->get("code");
 	$name = $layout->get("name");
 	$description = $layout->get("description");
 	
