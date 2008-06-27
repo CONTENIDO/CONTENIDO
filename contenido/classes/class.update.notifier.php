@@ -427,7 +427,7 @@ class Contenido_UpdateNotifier {
 			$sOutput = $this->renderOutput($sMessage);
 		} else if ($this->checkPatchLevel() == "-1") {
 			$sVendorDownloadURL = $this->getDownloadURL();
-			$sMessage = sprintf(i18n('A new version of Contenido (<b>%s</b>) is available! - <a href="%s">Download now!</a>'), $this->sVendorVersion, $sVendorDownloadURL);
+			$sMessage = sprintf(i18n('A new version of Contenido (<b>%s</b>) is available! - <a href="%s" target="_blank">Download now!</a>'), $this->sVendorVersion, $sVendorDownloadURL);
 			$sOutput = $this->renderOutput($sMessage);
 		} else if ($this->checkPatchLevel() == "1") {
 			$sMessage = sprintf(i18n('It seems to be that your version string was manipulated. Contenido %s does not exist!'), $this->sContenidoVersion);
