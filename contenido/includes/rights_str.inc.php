@@ -1,9 +1,43 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Rights for str
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 //set the areas which are in use fore selecting these
 $possible_area = "'".implode("','", $area_tree[$perm->showareas("str")])."'";
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='$userid' AND idclient='$rights_client' AND A.type = 0 AND idlang='$rights_lang' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".Contenido_Security::escapeDB($userid)."'
+        AND idclient='".Contenido_Security::escapeDB($rights_client, $db)."' AND A.type = 0 AND idlang='".Contenido_Security::escapeDB($rights_lang, $db)."' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
+
 $rights_list_old = array ();
 while ($db->next_record()) { //set a new rights list fore this user
    $rights_list_old[$db->f(3)."|".$db->f(4)."|".$db->f("idcat")] = "x";
@@ -51,7 +85,6 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
                         {
                          $possible_areas[$value2["perm"]]="";
 
-
                          $colspan++;
                          //set  the possible areas and actions for this areas
                          echo"<script type=\"text/javascript\">
@@ -79,8 +112,10 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
         }
         $table->end_row();
 
-        $sql = "SELECT A.idcat, level, name,parentid FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='$rights_lang' AND B.idclient='$rights_client' ORDER BY idtree";
+        $sql = "SELECT A.idcat, level, name,parentid FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat
+                AND C.idlang='".Contenido_Security::toInteger($rights_lang)."' AND B.idclient='".Contenido_Security::toInteger($rights_client)."' ORDER BY idtree";
         $db->query($sql);
+
         $counter=array();
         $parentid="leer";
         $sScript = "";
@@ -113,8 +148,7 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
                 
                         //find out parentid for inheritance
                         //if parentid is the same increase the counter
-                        if($parentid==$db->f("parentid")){
-
+                        if($parentid==$db->f("parentid")) {
                            $counter[$parentid]++;
                         }else{
                            $parentid=$db->f("parentid");
@@ -130,10 +164,6 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
                         //set javscript array for itemids
                         $sScript.="itemids[\"".$db->f("idcat")."\"]=\"x\";\n";
 
-                        #$spaces = "";
-                        #for ($i=0; $i<$db->f("level"); $i++) {
-                        #     $spaces = $spaces . "&nbsp;&nbsp;&nbsp;&nbsp;";
-                        #}
 						$spaces='<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a>';
 
                         $table->row("id=\"".implode('_', $aRowname)."\"");
@@ -154,14 +184,14 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
                                         if ($value3 != "str_newtree")
                                         {
                                            //does the user have the right
-                                           if(in_array($value2["perm"]."|$value3|".$db->f("idcat"),array_keys($rights_list_old)))
+                                           if(in_array($value2["perm"]."|$value3|".$db->f("idcat"),array_keys($rights_list_old))) {
                                                $checked="checked=\"checked\"";
-                                           else
+                                           } else {
                                                $checked="";
+                                            }
 
                                            //set the checkbox    the name consits of      areaid+actionid+itemid        the    id  =  parebntid+couter for these parentid+areaid+actionid
                                            $table->cell("<input type=\"checkbox\" id=\"str_".$parentid."_".$counter[$parentid]."_".$value2["perm"]."_$value3\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idcat")."]\" value=\"x\" $checked>","", "", " class=\"td_rights2\"", false);
-
 
                                   }
                                   }

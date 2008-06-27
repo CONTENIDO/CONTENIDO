@@ -1,9 +1,43 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Rights for Modules
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 //set the areas which are in use fore selecting these
 $possible_area = "'".implode("','", $area_tree[$perm->showareas("mod")])."'";
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='$userid' AND idclient='$rights_client' AND A.type = 0 AND idlang='$rights_lang' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".Contenido_Security::escapeDB($userid)."'
+        AND idclient='".Contenido_Security::escapeDB($rights_client, $db)."' AND A.type = 0 AND idlang='".Contenido_Security::escapeDB($rights_lang, $db)."' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
+
 $rights_list_old = array ();
 while ($db->next_record()) { //set a new rights list fore this user
    $rights_list_old[$db->f(3)."|".$db->f(4)."|".$db->f("idcat")] = "x";
@@ -18,7 +52,6 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
     $notification->displayNotification("error", i18n("Permission denied"));
     }
 }
-
 
 // declare new javascript variables;
 echo"<script type=\"text/javascript\">
@@ -57,10 +90,6 @@ foreach($right_list["mod"] as $value2)
                  }
 }
 
-
-
-
-
 //checkbox for all rights
 $table->header_cell(i18n('Check all'));
 array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
@@ -76,10 +105,10 @@ foreach ($aSecondHeaderRow as $value) {
 }
 $table->end_row();
 
-
 //Select the itemid´s
-$sql = "SELECT * FROM ".$cfg["tab"]["mod"]." WHERE idclient='$rights_client' ORDER BY name";
+$sql = "SELECT * FROM ".$cfg["tab"]["mod"]." WHERE idclient='".Contenido_Security::toInteger($rights_client)."' ORDER BY name";
 $db->query($sql);
+
 $sScript = "";
 
 while ($db->next_record()) {
@@ -110,7 +139,6 @@ while ($db->next_record()) {
 
                           //set the checkbox    the name consits of      areait+actionid+itemid
                           $table->cell("<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idmod")."]\" value=\"x\" $checked>","", "", " class=\"td_rights2\"", false);
-
 
                  }
         }
