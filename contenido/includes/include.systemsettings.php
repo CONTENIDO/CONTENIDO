@@ -1,18 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.systemsettings.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido System Settings Screen
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   18.11.2003
-* Modified  :   $Date: 2007/06/24 18:00:26 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.systemsettings.php,v 1.7 2007/06/24 18:00:26 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido System Settings Screen
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.7.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-11-18
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes","class.ui.php");
 cInclude("classes","class.htmlelements.php");
