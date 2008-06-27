@@ -1,17 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Include file for editing content of type CMS_HEAD
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-07
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.CMS_HEAD.php
-* Project   :   Contenido
-* Descr     :   Include file for editiing
-*               content of type CMS_HEAD
-*
-* Author    :   Jan Lengowski
-* Created   :   07.05.2003
-* Modified  :   07.05.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if ( $doedit == "1" ) {
     conSaveContentEntry ($idartlang, "CMS_HEAD", $typenr, $CMS_HEAD);

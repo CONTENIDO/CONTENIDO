@@ -1,17 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Include file for editiing content of type CMS_LINK
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-07
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.CMS_LINK.php
-* Project   :   Contenido 
-* Descr     :   Include file for editiing
-*               content of type CMS_LINK
-*
-* Author    :   Jan Lengowski
-* Created   :   07.05.2003
-* Modified  :   07.05.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 if ($doedit == "1") {
 	global $cfgClient;
 	global $client;
@@ -60,7 +80,7 @@ if ($doedit == "1") {
     			
         		if ($path == "") { $path = "/"; }
         		
-        		$sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='$upldir' AND filename='$friendlyName'";
+        		$sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='".Contenido_Security::escapeDB($upldir, $db)."' AND filename='".Contenido_Security::escapeDB($friendlyName, $db)."'";
         		$db->query($sql);
         		$db->next_record();
         		
@@ -146,11 +166,11 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                 WHERE
                     a.idcat = b.idcat AND
                     b.idcat = d.idcat AND
-                    d.idlang = '".$lang."' AND
+                    d.idlang = '".Contenido_Security::toInteger($lang)."' AND
                     b.idart  = e.idart AND
                     c.idcat = a.idcat AND
-                    c.idclient = '".$client."' AND
-					e.idlang = '".$lang."'
+                    c.idclient = '".Contenido_Security::toInteger($client)."' AND
+					e.idlang = '".Contenido_Security::toInteger($lang)."'
                 ORDER BY
                     a.idtree";
         
@@ -197,7 +217,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         $pdflink.= "<SELECT name=\"selectpdf\" SIZE=1>";
         $pdflink.= "<option value=\"\" selected>".i18n("Please choose")."</option>";
         
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".$client."' AND filetype IN ('pdf','doc','ppt','xls','rtf','dot') ORDER BY dirname, filename";
+        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('pdf','doc','ppt','xls','rtf','dot') ORDER BY dirname, filename";
         
         $db->query($sql);
 
@@ -213,7 +233,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         $imglink .= "<SELECT name=\"selectimg\" SIZE=1>";
         $imglink .= "<option value=\"\" selected>".i18n("Please choose")."</option>";
         
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".$client."' AND filetype IN ('png','gif','tif','jpg','jpeg','psd','pdd','iff','bmp','rle','eps','fpx','pcx','jpe','pct','pic','pxr','tga') ORDER BY dirname, filename";
+        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('png','gif','tif','jpg','jpeg','psd','pdd','iff','bmp','rle','eps','fpx','pcx','jpe','pct','pic','pxr','tga') ORDER BY dirname, filename";
         
         $db->query($sql);
 
@@ -243,7 +263,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         $audiolink .= "<SELECT name=\"selectaudio\" SIZE=1>";
         $audiolink .= "<option value=\"\" selected>".i18n("Please choose")."</option>";
         
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".$client."' AND filetype IN ('mp3','mp2','avi','mpg','mpeg','mid','wav','mov','wmv') ORDER BY dirname, filename";
+        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('mp3','mp2','avi','mpg','mpeg','mid','wav','mov','wmv') ORDER BY dirname, filename";
         
         $db->query($sql);
 
@@ -259,7 +279,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         $anylink .= "<SELECT name=\"selectany\" SIZE=1>";
         $anylink .= "<option value=\"\" selected>".i18n("Please choose")."</option>";
         
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".$client."' ORDER BY dirname, filename";
+        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' ORDER BY dirname, filename";
         
         $db->query($sql);
 

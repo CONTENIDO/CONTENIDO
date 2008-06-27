@@ -1,22 +1,38 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Include file for editiing content of type CMS_HTMLHEAD
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2002-03-02
+ *   modified 2008-06-16, Holger Librenz, Hotfix: check for illegal calls added
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.CMS_HTMLHEAD.php
-* Project   :   Contenido
-* Descr     :   Include file for editiing
-*               content of type CMS_HTMLHEAD
-*
-* Author    :   Jan Lengowski
-* Created   :   07.05.2003
-* Modified  :   $Date$
-*
-* @internal {
-*   modified 2008-06-16, H. Librenz - Hotfix: check for illegal calls added
-*
-*   $Id$
-* }
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }

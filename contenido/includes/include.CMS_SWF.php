@@ -1,17 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Include file for editiing content of type CMS_SWF
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-07
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.CMS_SWF.php
-* Project   :   Contenido 
-* Descr     :   Include file for editiing
-*               content of type CMS_SWF
-*
-* Author    :   Jan Lengowski
-* Created   :   07.05.2003
-* Modified  :   26.05.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if ($doedit == "1") {
     conSaveContentEntry ($idartlang, "CMS_SWF", $typenr, $CMS_SWF);
@@ -60,7 +79,7 @@ if ($doedit == "1") {
                 echo "<SELECT name=CMS_SWF SIZE=1>";
                 echo "<option value=0>-- ".i18n("None")." --</option>";
                 
-                $sql = "SELECT idupl, dirname, filename FROM ".$cfg["tab"]["upl"]." WHERE idclient='".$client."' AND filetype = 'swf' ORDER BY filename";
+                $sql = "SELECT idupl, dirname, filename FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype = 'swf' ORDER BY filename";
 
                 $db->query($sql);
 

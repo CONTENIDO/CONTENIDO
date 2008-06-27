@@ -1,17 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Include file for editiing content of type CMS_LINK
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-07
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.CMS_LINK.php
-* Project   :   Contenido 
-* Descr     :   Include file for editiing
-*               content of type CMS_LINK
-*
-* Author    :   Jan Lengowski
-* Created   :   07.05.2003
-* Modified  :   07.05.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 if ($doedit == "1") {
 	global $cfgClient;
 	global $client;
@@ -60,7 +80,7 @@ if ($doedit == "1") {
     			
         		if ($path == "") { $path = "/"; }
         		
-        		$sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='$upldir' AND filename='$friendlyName'";
+        		$sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='".Contenido_Security::escapeDB($upldir, $db)."' AND filename='".Contenido_Security::escapeDB($friendlyName, $db)."'";
         		$db->query($sql);
         		$db->next_record();
         		

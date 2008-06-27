@@ -1,21 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * CMS_IMG editor
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.3.1
+ * @author     Ing. Christian Schuller (www.maurer-it.com)
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-12-10
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: include.CMS_IMG.php,v $
-* Descr     :   CMS_IMG editor 
-*
-* Author    :   
-*               
-* Created   :   10.12.2003
-* Modified  :   $Date: 2007/07/19 20:31:34 $
-*
-* © four for business AG, www.4fb.de
-*
-* Contributions by:
-* 21.11.2003 (Ing. Christian Schuller - www.maurer-it.com)
-*
-* $Id: include.CMS_IMG.php,v 1.30 2007/07/19 20:31:34 bjoern.behrens Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
