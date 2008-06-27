@@ -7,10 +7,13 @@
  *
  * @internal {
  *  modified 2008-06-16, H. Librenz - Hotfix: checking for illegal calls
+ *  modified 2008-06-27, timo.trautmann - global framework var added, because this file is called by contenido external
  *
  *  $Id$
  * }
  */
+define("CON_FRAMEWORK", true);
+ 
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }
