@@ -234,20 +234,6 @@ require_once 'Log.php';
 $file = &Log::factory('file', 'd:/contenido.log', '');
 $file->log(2);
 
-// convenient check if Contenido installation is up to date
-if($perm->isSysadmin($vuser) == 1 && $cfg["backend"]["updateinfo"] == true){
-	$versioncheck = "<p>";
-	$versioncheck .= "<strong>" . i18n("Your Contenido Version") . '</strong>:&nbsp;' . $cfg['version'];
-	$versioncheck .= "</p>";
-	$versioncheck .= "<p>";
-	$versioncheck .= "<strong>" . i18n("Latest Contenido Version") . '</strong>:&nbsp;' . $cfg['version'];
-	$versioncheck .= "</p>";
-	$tpl->set('s', 'CONTENIDO_VERSION', $versioncheck);
-}
-else{
-	$tpl->set('s', 'CONTENIDO_VERSION', '');
-}
-
 // rss feed
 if($perm->isSysadmin($vuser) && $cfg["backend"]["newsfeed"] == true){
 	$newsfeed = 'some news';
