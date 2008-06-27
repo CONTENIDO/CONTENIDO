@@ -1,18 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Displays form for configuring a template
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2002
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   includes.tplcfg_edit_form.php
-* Project   :   Contenido
-* Descr     :   Displays form for
-*               configuring a template
-*
-* Author    :   Jan Lengowski
-*
-* Created   :   2002
-* Modified  :   28.03.2003
-*
-* © four for business AG
-*****************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("includes", "functions.pathresolver.php");
 
 if ( isset($idart) ) {
@@ -70,18 +89,6 @@ if ( !isset($idlay) ) $idlay = 0;
 if ( !isset($db2) || !is_object($db2) ) $db2 = new DB_Contenido;
 if ( !isset($db3) || !is_object($db3) ) $db3 = new DB_Contenido;
 
-
-/*
-echo "<pre>";
-echo "GET: \n\n";
-print_r($_GET);
-echo "\n\n\n";
-echo "POST: \n\n";
-print_r($_POST);
-echo "\n\n\n";
-echo "</pre>";
-*/
-
 $tpl->reset();
 
 if ( $idart ) {
@@ -100,8 +107,8 @@ if ( $idart ) {
                 ".$cfg["tab"]["art_lang"]." AS b,
                 ".$cfg["tab"]["tpl"]." AS c
             WHERE
-                b.idart     = '".$idart."' AND
-                b.idlang    = '".$lang."' AND
+                b.idart     = '".Contenido_Security::toInteger($idart)."' AND
+                b.idlang    = '".Contenido_Security::toInteger($lang)."' AND
                 b.idtplcfg  = a.idtplcfg AND
                 c.idtpl     = a.idtpl";
 
@@ -124,11 +131,11 @@ if ( $idart ) {
             /* create new configuration entry */
             $nextid = $db3->nextid($cfg["tab"]["tpl_conf"]);
 
-            $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]." (idtplcfg, idtpl) VALUES ('".$nextid."', '".$idtpl."')";
+            $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]." (idtplcfg, idtpl) VALUES ('".Contenido_Security::toInteger($nextid)."', '".Contenido_Security::toInteger($idtpl)."')";
             $db->query($sql);
 
             /* update art_lang */
-            $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET idtplcfg = '".$nextid."' WHERE idart='".$idart."' AND idlang='".$lang."'";
+            $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET idtplcfg = '".Contenido_Security::toInteger($nextid)."' WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
             $db->query($sql);
 
             $idtplcfg = $nextid;
@@ -137,8 +144,6 @@ if ( $idart ) {
         
     }
     
-    /* DEBUG HELP */
-    //echo "article matched: $idtpl / $idtplcfg<br><br>";
     } else {
     	$notification->displayNotification("error", i18n("Permission denied"));
     	exit;	
@@ -155,11 +160,11 @@ if ( $idart ) {
                 ".$cfg["tab"]["cat_lang"]." AS b,
                 ".$cfg["tab"]["tpl"]." AS c
             WHERE
-                b.idcat     = '".$idcat."' AND
-                b.idlang    = '".$lang."' AND
+                b.idcat     = '".Contenido_Security::toInteger($idcat)."' AND
+                b.idlang    = '".Contenido_Security::toInteger($lang)."' AND
                 b.idtplcfg  = a.idtplcfg AND
                 c.idtpl     = a.idtpl AND
-                c.idclient  = '$client'";
+                c.idclient  = '".Contenido_Security::toInteger($client)."'";
     $db->query($sql);
     
     if ( $db->next_record() ) {
@@ -171,52 +176,37 @@ if ( $idart ) {
     } else {
         if ($idtpl) {
 
-            /* JL: 14.05.03
-               Deprecated because we have default
-               configurations for every template */
-
             /* create new configuration entry */
             $nextid = $db3->nextid($cfg["tab"]["tpl_conf"]);
 
-            $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]." (idtplcfg, idtpl) VALUES ('".$nextid."', '".$idtpl."')";
+            $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]." (idtplcfg, idtpl) VALUES ('".Contenido_Security::toInteger($nextid)."', '".Contenido_Security::toInteger($idtpl)."')";
             $db->query($sql);
 
             /* update cat_lang */
-            $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET idtplcfg = '".$nextid."' WHERE idcat='".$idcat."' AND idlang='".$lang."'";
+            $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET idtplcfg = '".Contenido_Security::toInteger($nextid)."' WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
             $db->query($sql);
 
             $idtplcfg = $nextid;
         }
 
     }
-
-    /* DEBUG HELP */
-    //echo "category matched: $idtpl / $idtplcfg<br><br>";
-
 }
 
 
 /* change template to '--- Nothing ---' */
 if ( $idtpl == 0 ) { 
 	$idtplcfg = 0;
-	
-	
 }
 
-/* Check if a configuration for this $idtplcfg exists,
-   yes -> use it
-   no  -> check if a pre-configuration exists
-       yes -> use pre-configured idtplcfg
-       no  -> write new entry to 'template_conf'
-              and 'container_conf' */
-$sql = "SELECT idcontainerc FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".$idtplcfg."'";
+/* Check if a configuration for this $idtplcfg exists */
+$sql = "SELECT idcontainerc FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
 $db->query($sql);
 
 if ( !$db->next_record() ) {
 
     /* There is no configuration for this $idtplcfg,
        check if template has a pre-configuration */
-    $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["tpl"]." WHERE idtpl = '".$idtpl."'";
+    $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["tpl"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
 
     $db->query($sql);
     $db->next_record();
@@ -227,7 +217,7 @@ if ( !$db->next_record() ) {
            copy pre-configuration data to
            category configuration with the
            $idtplcfg from the category*/
-        $sql = "SELECT * FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".$db->f("idtplcfg")."' ORDER BY number DESC";
+        $sql = "SELECT * FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."' ORDER BY number DESC";
         $db->query($sql);
         
         while ( $db->next_record() ) {
@@ -242,20 +232,17 @@ if ( !$db->next_record() ) {
                         ".$cfg["tab"]["container_conf"]."
                         (idcontainerc, idtplcfg, number, container)
                     VALUES
-                        ('".$nextid."', '".$idtplcfg."', '".$number."', '".$container."')";
+                        ('".Contenido_Security::toInteger($nextid)."', '".Contenido_Security::toInteger($idtplcfg)."', '".Contenido_Security::toInteger($number)."', '".Contenido_Security::escapeDB($container, $db2)."')";
                         
             $db2->query($sql);
-
         }
-
     }
-    
 }
 
 /* Get template configuration from
    'con_container_conf' and create
    configuration data array */
-$sql = "SELECT * FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".$idtplcfg."' ORDER BY number";
+$sql = "SELECT * FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."' ORDER BY number";
 
 $db->query($sql);
 
@@ -266,23 +253,11 @@ while ($db->next_record()) {
     $a_c[$db->f("number")] = $db->f("container");
 }
 
-
-/*
-if ( "str_tplcfg" == $area ) {
-    $tmp_area = "str_tplcfg";
-
-} else {
-    $tmp_area = "con_tplcfg";
-
-}
-*/
-
 $tmp_area = "tplcfg";
 
 
 //Form
 $formaction = $sess->url("main.php");
-#<input type="hidden" name="action" value="tplcfg_edit">
 $hidden     = '<input type="hidden" name="area" value="'.$area.'">
                <input type="hidden" name="frame" value="'.$frame.'">
                <input type="hidden" name="idcat" value="'.$idcat.'">
@@ -324,7 +299,7 @@ $sql = "SELECT
         FROM
             ".$cfg['tab']['tpl']."
         WHERE
-            idclient = '".$client."'
+            idclient = '".Contenido_Security::toInteger($client)."'
         ORDER BY
             name";
         
@@ -362,7 +337,7 @@ $tpl->set('s', 'TEMPLATESELECTBOX', $select );
         FROM
             ".$cfg["tab"]["container"]."
         WHERE
-            idtpl='$idtpl' ORDER BY number ASC";
+            idtpl='".Contenido_Security::toInteger($idtpl)."' ORDER BY number ASC";
             
 $db->query($sql);
 
@@ -375,9 +350,7 @@ while ($db->next_record()) {
 }
 
 if (isset($a_d) && is_array($a_d)) {
-
     foreach ($a_d as $cnumber=>$value) {
-
         /* show only the containers which
            contain a module */
         if ( 0 != $value ) {
@@ -387,7 +360,7 @@ if (isset($a_d) && is_array($a_d)) {
                         FROM
                             ".$cfg["tab"]["mod"]."
                         WHERE
-                            idmod='".$a_d[$cnumber]."'";
+                            idmod='".Contenido_Security::toInteger($a_d[$cnumber])."'";
 
                 $db->query($sql);
                 $db->next_record();
@@ -536,5 +509,4 @@ if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
 }
 # Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tplcfg_edit_form']);
-
 ?>

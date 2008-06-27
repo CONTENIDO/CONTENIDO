@@ -1,17 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.tpl_edit_form.php,v $
-* Project   :   Contenido
-* Descr     :   Template edit form
-*
-* Author    :   Timo A. Hummel
-*               
-* Modified  :   $Date: 2006/04/28 09:20:54 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.tpl_edit_form.php,v 1.20 2006/04/28 09:20:54 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Template edit form
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.2.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes","contenido/class.module.history.php");
 cInclude("classes","class.ui.php");
 cInclude("classes","class.htmlelements.php");
@@ -35,7 +55,7 @@ $sql = "SELECT
         LEFT JOIN
         ".$cfg["tab"]["lay"]." AS b
         ON a.idlay=b.idlay
-        WHERE a.idtpl='$idtpl'
+        WHERE a.idtpl='".Contenido_Security::toInteger($idtpl)."'
         ORDER BY name";
 
 $db->query($sql);
@@ -55,7 +75,7 @@ $sql = "SELECT
         FROM
         ".$cfg["tab"]["container"]."
         WHERE
-        idtpl='$idtpl'";
+        idtpl='".Contenido_Security::toInteger($idtpl)."'";
 
 $db->query($sql);
 while( $db->next_record() ) {
@@ -83,7 +103,7 @@ $sql = "SELECT
         FROM
         ".$cfg["tab"]["lay"]."
         WHERE
-        idclient='$client'
+        idclient='".Contenido_Security::toInteger($client)."'
         ORDER BY name";
         
 $db->query($sql);
@@ -109,7 +129,7 @@ $sql = "SELECT
         FROM
         ".$cfg["tab"]["mod"]."
         WHERE
-        idclient='$client'
+        idclient='".Contenido_Security::toInteger($client)."'
         ORDER BY name";
         
 $db->query($sql);
@@ -159,9 +179,6 @@ if ($idlay)
 			$name = tplGetContainerName($idlay, $value);
 			
 			$modselect = new cHTMLSelectElement("c[".$value."]");
-
-			
-			
 
 			if ($name != "")
 			{
@@ -235,7 +252,6 @@ if ($idlay)
     			}
 			}
 			
-			
 			$form->add($caption, $modselect->render());
 		}
 	}
@@ -252,7 +268,5 @@ if ($action != "tpl_duplicate")
 }
 
 $page->render();
-
 } 
-
 ?>

@@ -1,18 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Start Screen
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.2
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-01-21
+ *   modified 2008-06-26, Dominik Ziegler, update notifier class added
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-
-/******************************************
-* File      :   main.login.php
-* Project   :   contendio
-* Descr     :   contenido start screen
-*
-* Author    :   Jan Lengowski
-* Created   :   21.01.2003
-* Modified  :   21.01.2003
-* Modified 2008-06-26 timo.trautmann update notifier class added
-* 
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $tpl->reset();
 
@@ -46,7 +65,7 @@ if ($lastlogin == "") {
 
 $userid= $auth->auth["uid"];
 
-$sql= "SELECT realname FROM " . $cfg["tab"]["phplib_auth_user_md5"] . " WHERE user_id = '" . $userid . "'";
+$sql= "SELECT realname FROM " . $cfg["tab"]["phplib_auth_user_md5"] . " WHERE user_id = '" . Contenido_Security::escapeDB($userid, $db) . "'";
 
 $db->query($sql);
 $db->next_record();
@@ -140,7 +159,6 @@ while ($todo= $todoitems->next()) {
 	if ($todo->getProperty("todo", "status") != "done") {
 		$todoitems++;
 	}
-
 }
 
 $mycontenido_overview= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido&frame=4") . '">' . i18n("Overview") . '</a>';
@@ -153,10 +171,6 @@ $tpl->set('s', 'MYCONTENIDO_LASTARTICLES', $mycontenido_lastarticles);
 $tpl->set('s', 'MYCONTENIDO_TASKS', $mycontenido_tasks);
 $tpl->set('s', 'MYCONTENIDO_SETTINGS', $mycontenido_settings);
 $admins= $classuser->getSystemAdmins();
-
-//echo '<pre>';
-//print_r($admins);
-//echo '</pre>';
 
 $sAdminTemplate = '<li class="welcome">%s, %s</li>';
 
@@ -173,21 +187,6 @@ foreach ($admins as $key => $value) {
 	}
 }
 
-//$adminstring= implode(", ", $aAdmins);
-
-/*** We dont need this Client-Admins Information any more
-$mclientadmins= array ();
-$clientadmins= $classuser->getClientAdmins($client);
-
-foreach ($clientadmins as $key => $value) {
-	if ($value["email"] != "") {
-		$mclientadmins[]= '<a href="mailto:' . $value["email"] . '">' . $value["email"] . '</a>';
-	}
-}
-
-$clientadminstring= implode(", ", $mclientadmins);
-*/
-
 $tpl->set('s', 'ADMIN_EMAIL', $sOutputAdmin);
 
 $tpl->set('s', 'SYMBOLHELP', '<a href="' . $sess->url("frameset.php?area=symbolhelp&frame=4") . '">' . i18n("Symbol help") . '</a>');
@@ -198,12 +197,10 @@ if (file_exists($cfg["contenido"]["handbook_path"])) {
 	$tpl->set('s', 'CONTENIDOMANUAL', '');
 }
 
-
 // For display current online user in Contenido-Backend
 $aMemberList= array ();
 $oActiveUsers= new ActiveUsers($db, $cfg, $auth);
 $iNumberOfUsers = 0;
-
 
 // Start()
 $oActiveUsers->startUsersTracking();

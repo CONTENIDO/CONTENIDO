@@ -1,24 +1,43 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Shows all templates in the left frame
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-03-27
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.tpl_overview.php
-* Project   :   Contenido 
-* Descr     :   Shows all templates in the
-*               left frame
-*
-* Author    :   Jan Lengowski
-* Created   :   27.03.2003
-* Modified  :   11.05.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 $sql = "SELECT
             *
         FROM
             ".$cfg["tab"]["tpl"]."
         WHERE
-            idclient = '".$client."'
+            idclient = '".Contenido_Security::toInteger($client)."'
         ORDER BY
             name";
 
@@ -61,19 +80,10 @@ while ( $db->next_record() ) {
                                        $name);
 			
 		}
-		
-		//$mstr2 = sprintf($tmp_mstr, htmlspecialchars($descr), 'right_top',
-        //                               $sess->url("main.php?area=tpl&frame=3&idtpl=$idtpl"),
-        //                               'right_bottom',
-        //                               $sess->url("main.php?area=tpl_edit&frame=4&idtpl=$idtpl"),
-        //                               '<img src="images/template.gif" width="16" height="16">'); 
-
 
         if ($perm->have_perm_area_action_item("tpl_edit","tpl_edit",$db->f("idtpl"))) {
-        //	$tpl->set('d', 'IMGLINK', $mstr2);
             $tpl->set('d', 'NAME',  $mstr);
         } else {
-        //	$tpl->set('d', 'IMGLINK', '<img src="images/template.gif" width="16" height="16">');
             $tpl->set('d', 'NAME', $name);
         }
 
@@ -87,8 +97,6 @@ while ( $db->next_record() ) {
                 $tpl->set('d', 'DELETE', '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteTemplate('.$idtpl.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>');
                 
             } else {
-                //$inUseTitle = i18n('Template in use, cannot delete');
-                //$tpl->set('d', 'DELETE','<img src="'.$cfg['path']['images'].'delete_inact.gif" alt="'.$inUseTitle.'" title="'.$inUseTitle.'">');
                 $tpl->set('d', 'DELETE', '<img src="images/spacer.gif" width="16">');
             }
 

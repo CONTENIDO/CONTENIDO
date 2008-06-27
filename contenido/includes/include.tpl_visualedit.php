@@ -1,19 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.tpl_visualedit.php,v $
-* Project   :   Contenido
-* Descr     :   Visual Template Editor
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   15.12.2003
-* Modified  :   $Date: 2007/07/29 17:32:13 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.tpl_visualedit.php,v 1.10 2007/07/29 17:32:13 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Visual Template Editor
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.1.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-12-15
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes","contenido/class.module.history.php");
 cInclude("classes","class.ui.php");
@@ -27,7 +44,7 @@ $sql = "SELECT
         LEFT JOIN
         ".$cfg["tab"]["lay"]." AS b
         ON a.idlay=b.idlay
-        WHERE a.idtpl='$idtpl'
+        WHERE a.idtpl='".Contenido_Security::toInteger($idtpl)."'
         ORDER BY name";
 
 $db->query($sql);
@@ -47,7 +64,7 @@ $sql = "SELECT
         FROM
         ".$cfg["tab"]["container"]."
         WHERE
-        idtpl='$idtpl'";
+        idtpl='".Contenido_Security::toInteger($idtpl)."'";
 
 $db->query($sql);
 while( $db->next_record() ) {
@@ -59,7 +76,7 @@ $sql = "SELECT
         FROM
         ".$cfg["tab"]["mod"]."
         WHERE
-        idclient='$client'
+        idclient='".Contenido_Security::toInteger($client)."'
         ORDER BY name";
         
 $db->query($sql);
@@ -73,7 +90,7 @@ while ($db->next_record())
 }
 
 
-$sql = "SELECT code FROM ".$cfg["tab"]["lay"]." WHERE idlay='$idlay'";
+$sql = "SELECT code FROM ".$cfg["tab"]["lay"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
 $db->query($sql);
 
 if (!$db->next_record())
@@ -195,9 +212,7 @@ if (!$db->next_record())
 			
 			/* Try to find a container */
 			$code = preg_replace("/<container(.*)id=\"$value\"(.*)>/i", "<div style=\"position:relative; height:26px;white-space:nowrap;font-size:12px;\" onmouseover=\"this.style.zIndex = '20'\" onmouseout=\"this.style.zIndex = '10'\"> $value:".$modselect->render()  .'</div>', $code);
-			
 		}
-		
 	}
 	
 	/* Get rid of any forms */
