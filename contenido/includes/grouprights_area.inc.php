@@ -32,6 +32,10 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+if ( $_REQUEST['cfg'] ) { 
+	die('Illegal call');
+}
+
 // declare new javascript variables;
 echo"<script type=\"text/javascript\">
      var areatree=new Array();

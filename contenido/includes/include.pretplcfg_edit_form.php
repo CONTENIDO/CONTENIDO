@@ -32,6 +32,10 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+if ( $_REQUEST['cfg'] ) { 
+	die('Illegal call');
+}
+
 $tpl->reset();
 
 $sql = "SELECT * FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'";

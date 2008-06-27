@@ -32,6 +32,10 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+if ( $_REQUEST['cfg'] ) { 
+	die('Illegal call');
+}
+
 if (isset($_GET['idnewsjob']) && (int)$_GET['idnewsjob'] > 0)
 {
     $sCaption = i18n("View");

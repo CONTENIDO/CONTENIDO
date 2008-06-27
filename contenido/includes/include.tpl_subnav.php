@@ -32,6 +32,10 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+if ( $_REQUEST['cfg'] ) { 
+	die('Illegal call');
+}
+
 if ( isset($_GET['idtpl']) ) {
 
     $area = $_GET['area'];

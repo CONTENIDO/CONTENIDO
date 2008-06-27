@@ -1,4 +1,41 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Rights Area
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+if ( $_REQUEST['cfg'] ) { 
+	die('Illegal call');
+}
+
 // declare new javascript variables;
 echo"<script type=\"text/javascript\">
      var areatree=new Array();
@@ -8,7 +45,7 @@ $debug = 0;
 
 //set the areas which are in use for selecting these
 
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='$userid' AND idclient='$rights_client' AND idlang='$rights_lang' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."' AND idclient='".Contenido_Security::toInteger($rights_client)."' AND idlang='".Contenido_Security::toInteger($rights_lang)."' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
 $db->query($sql);
 
 $rights_list_old = array ();
@@ -26,8 +63,6 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
     }
 }
 
-
-
 if(!isset($rights_perms)||$action==""||!isset($action)){
 
     //search for the permissions of this user
@@ -38,11 +73,6 @@ if(!isset($rights_perms)||$action==""||!isset($action)){
     $rights_perms=$db->f("perms");
 
 }
-
-
-
-
-
 
 echo"<table style=\"border:0px; border-left:1px; border-bottom: 1px;border-color: ". $cfg["color"]["table_border"] . "; border-style: solid;\" cellspacing=\"0\" cellpadding=\"2\" >";
 
@@ -67,7 +97,6 @@ foreach($right_list as $key => $value){
                               $checked="checked=\"checked\"";
                        else
                               $checked="";
-
 
                         $darkRow = !$darkRow;
                         if ($darkRow) {
@@ -104,10 +133,7 @@ foreach($right_list as $key => $value){
                               areatree[\"$key\"]=new Array();
                               areatree[\"$key\"][\"".$value2["perm"]."0\"]=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\";
                              </script>";
-
                }
-
-
 
                //if there area some
                if(is_array($value2["action"]))
@@ -158,18 +184,6 @@ foreach($right_list as $key => $value){
                  }
         }
         //checkbox for checking all actions fore this itemid
-
-
-
-
-
-//        emptyRow();
-//        emptyCell();
-
-
-        
-
-
 }
 echo"</tr>";
 
