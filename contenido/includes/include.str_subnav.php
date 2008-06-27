@@ -1,17 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Builds the third navigation layer
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend includes
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-01
+ *   modified 2008-06-27, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   include.subnav.php
-* Project   :   Contenido
-* Descr     :   Builds the third navigation
-*               layer
-*
-* Author    :   Jan Lengowski
-* Created   :   25.01.2003
-* Modified  :   25.01.2003
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 	if (!isset($path))
 	{
@@ -26,8 +45,8 @@
             FROM
                 ".$cfg["tab"]["area"]." AS a
             WHERE
-                a.name = '".$area."' OR
-                a.parent_id = '".$area."'
+                a.name = '".Contenido_Security::escapeDB($area, $db)."' OR
+                a.parent_id = '".Contenido_Security::escapeDB($area, $db)."'
             ORDER BY
                 idarea";
 
@@ -65,7 +84,6 @@
 		
         $tmp_area = $db->f("name");
 
-
         if ($perm->have_perm_area_action($tmp_area))
         {
         	if ($tmp_area != "upl_edit")
@@ -85,6 +103,5 @@
 
     # Generate the third
     # navigation layer
-    //$tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
     $tpl->generate($cfg["path"]["templates"] . "template.subnav_noleft.html");
 ?>
