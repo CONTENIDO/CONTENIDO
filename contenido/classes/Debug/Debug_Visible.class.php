@@ -1,20 +1,38 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Debug object to show info on screen.
-*
-* @version 1.1.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2007-01-01
-* modified 2008-05-21 Added methods add(), reset(), showAll()
-* }}
-*
-* $Id$:
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Debug object to show info on screen.
+ * In case you cannot output directly to screen when debugging a live system, this object writes 
+ * the info to a file located in /contenido/logs/debug.log.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.1.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2007-01-01
+ *   modified 2008-05-21 Added methods add(), reset(), showAll()
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 include_once('IDebug.php');
 
 class Debug_Visible implements IDebug {
