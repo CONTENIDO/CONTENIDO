@@ -1,12 +1,37 @@
 <?php
-
 /**
- * Class Action
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Class for action information and management
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 1.0
- * @copyright four for business 2003
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.1
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id$;
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 class Action {
 
     /**
@@ -64,7 +89,7 @@ class Action {
                 FROM
                 ". $cfg["tab"]["actions"] ."
                 WHERE
-                    idaction = '".$action."'";
+                    idaction = '".Contenido_Security::toInteger($action)."'";
 
         $db->query($sql);
         $db->next_record();
@@ -90,14 +115,14 @@ class Action {
                 FROM
                 ". $cfg["tab"]["actions"] ."
                 WHERE
-                    name = '".$action."'";
+                    name = '".Contenido_Security::escapeDB($action, $db)."'";
         } else {
         $sql = "SELECT
                     idarea
                 FROM
                 ". $cfg["tab"]["actions"] ."
                 WHERE
-                    idaction = '".$action."'";
+                    idaction = '".Contenido_Security::toInteger($action)."'";
         }
 
         $db->query($sql);

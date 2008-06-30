@@ -1,12 +1,37 @@
 <?php
-
 /**
- * Class Area
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Class for user information and management
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 1.0
- * @copyright four for business 2003
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.1
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id$;
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 class Area {
 
     /**
@@ -39,11 +64,8 @@ class Area {
         
         while ($db->next_record())
         {
-            
             $newentry["name"] = $db->f("name");
-
             $areas[$db->f("idarea")] = $newentry;
-
         }
 
         return ($areas);
@@ -64,7 +86,7 @@ class Area {
                 FROM
                 ". $cfg["tab"]["area"] ."
                 WHERE
-                    idarea = '".$area."'";
+                    idarea = '".Contenido_Security::escapeDB($area, $db)."'";
         $db->query($sql);
         $db->next_record();
 
@@ -87,7 +109,7 @@ class Area {
                 FROM
                 ". $cfg["tab"]["area"] ."
                 WHERE
-                    name = '".$area."'";
+                    name = '".Contenido_Security::escapeDB($area, $db)."'";
 
         $db->query($sql);
         $db->next_record();

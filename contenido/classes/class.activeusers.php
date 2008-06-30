@@ -1,19 +1,39 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Display current online user
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.1
+ * @author     Bilal Arsland
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2008-01-28
+ *   modified 2008-02-08, Timo Trautmann, table config added
+ *   modified 2008-02-12, Timo Trautmann, bugfix in getWebsiteName
+ *   modified 2008-02-18, Timo Trautmann, special functions for mysql replaced
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id$;
+ * }}
+ * 
+ */
 
-
-/******************************************
-* File       :   class.activeusers.php
-* Project    :   Contenido-Umbau Online-User
-* Descr      :   Display current online-user
-*
-* Author     :   Bilal.Arslan
-* Modified   :   Timo Trautmann *Table Config added* 08.02.2008
-* Modified   :   Timo Trautmann Bugfix in getWebsiteName -> solution: second database instance 12.02.2008
-* Modified   :   Timo Trautmann Special functions for mysql replaced 18.02.2008
-* Created on :   28.01.2008
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 class ActiveUsers {
 
@@ -85,7 +105,7 @@ class ActiveUsers {
         
 		$userid = (string) $sUserId;
 		$sql= "";
-		$sql= "INSERT INTO `" . $this->oCfg["tab"]["online_user"] . "`(`user_id`,`lastaccessed`) VALUES('$userid', NOW())";
+		$sql= "INSERT INTO `" . $this->oCfg["tab"]["online_user"] . "`(`user_id`,`lastaccessed`) VALUES('".Contenido_Security::escapeDB($userid, $this->oDb)."', NOW())";
 
 		if ($this->oDb->query($sql)) {
 			return true;
@@ -106,11 +126,9 @@ class ActiveUsers {
 		$userid = (string) $sUserId;
 		$bReturn = false;
 		$sql= "";
-		$sql= "SELECT user_id FROM `" . $this->oCfg["tab"]["online_user"] . "` WHERE `user_id`='$userid'";
+		$sql= "SELECT user_id FROM `" . $this->oCfg["tab"]["online_user"] . "` WHERE `user_id`='".Contenido_Security::escapeDB($userid, $this->oDb)."'";
 		$this->oDb->query($sql);
 		if ($this->oDb->next_record()) {
-			#$aArray['lastaccessed']= $this->oDb->f('lastaccessed');
-			#$aArray['userid']= $this->oDb->f('user_id');
 			$bReturn= true;
 		}
 		return $bReturn;
@@ -218,7 +236,7 @@ class ActiveUsers {
 
 		$userid= (string) $sUserId;
 		$sql= "";
-		$sql= "UPDATE `" . $this->oCfg["tab"]["online_user"] . "` SET `lastaccessed`=NOW() WHERE `user_id`='$userid'";
+		$sql= "UPDATE `" . $this->oCfg["tab"]["online_user"] . "` SET `lastaccessed`=NOW() WHERE `user_id`='".Contenido_Security::escapeDB($userid, $this->oDb)."'";
 		if ($this->oDb->query($sql)) {
 			return true;
 		} else
@@ -242,10 +260,12 @@ class ActiveUsers {
 			$iSetTimeOut= 10;
 		$sql= "";
 		$sql= "DELETE FROM `" . $this->oCfg["tab"]["online_user"] . "` WHERE  DATE_SUB(now(), INTERVAL '$iSetTimeOut' Minute) >= `lastaccessed`";
-		if ($this->oDb->query($sql))
+		if ($this->oDb->query($sql)) {
 			return true;
-		else
+		} else {
 			return false;
+		}
+
 	}
 
 	/**
@@ -276,12 +296,14 @@ class ActiveUsers {
 	function deleteUser($sUserId) {
 
 		$userid= (string) $sUserId;
-		$sql= "DELETE FROM `" . $this->oCfg["tab"]["online_user"] . "` WHERE `user_id` = '$userid'";
+		$sql= "DELETE FROM `" . $this->oCfg["tab"]["online_user"] . "` WHERE `user_id` = '".Contenido_Security::escapeDB($userid, $this->oDb)."'";
 
-		if ($this->oDb->query($sql))
+		if ($this->oDb->query($sql)) {
 			return true;
-		else
+		} else {
 			return false;
+		}
+
 	}
 
 	/**
@@ -298,7 +320,7 @@ class ActiveUsers {
 		$iClientId= (int) $iIdClient;
 		$sql= "";
 		$sName= "";
-		$sql= "SELECT `name` as myname  FROM `" . $this->oCfg["tab"]["clients"] . "` WHERE `idclient` = '$iClientId'";
+		$sql= "SELECT `name` as myname  FROM `" . $this->oCfg["tab"]["clients"] . "` WHERE `idclient` = '".Contenido_Security::toInteger($iClientId)."'";
 		$oDbLocal->query($sql);
 		if ($oDbLocal->next_record()) {
 			$sName= $oDbLocal->f('myname');
