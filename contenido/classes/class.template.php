@@ -1,18 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Template Engine
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.2.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id$: 
+ * }}
+ * 
+ */
 
-/*****************************************
-*
-* $Id: class.template.php,v 1.21 2006/06/13 12:11:40 bjoern.behrens Exp $
-*
-* File      :   $RCSfile: class.template.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Template Engine
-*
-* Author    :   Jan Lengowski
-* Modified  :   $Date: 2006/06/13 12:11:40 $
-*
-* © four for business AG, www.4fb.de
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * class Template
@@ -26,6 +44,7 @@
  */
 class Template
 {
+
 	/**
 	 * Needles (static)
 	 * @var array
@@ -318,7 +337,7 @@ class Template
 		                FROM
 		                ".$cfg["tab"]["tpl_conf"]."
 		                WHERE
-		                    idtplcfg = '".$tplid."'";
+		                    idtplcfg = '".Contenido_Security::toInteger($tplid)."'";
 
 		$this->db->query($sql);
 		$this->db->next_record();
@@ -329,7 +348,7 @@ class Template
 		                FROM
 		                ".$cfg["tab"]["tpl"]."
 		                WHERE
-		                    idtpl = '".$idTpl."'";
+		                    idtpl = '".Contenido_Security::toInteger($idTpl)."'";
 		
 		$this->db->query($sql);
 		$this->db->next_record();
@@ -358,7 +377,7 @@ class Template
 		                FROM
 		                ".$cfg["tab"]["tpl_conf"]."
 		                WHERE
-		                    idtplcfg = '".$tplcfg."'";
+		                    idtplcfg = '".Contenido_Security::toInteger($tplcfg)."'";
 		$this->db->query($sql);
 		$this->db->next_record();
 
