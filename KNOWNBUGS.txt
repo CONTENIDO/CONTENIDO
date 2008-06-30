@@ -8,4 +8,4 @@
   DHTML editing component, which converts the XHTML formatting to their
   "standards". Workaround: Don't use XHTML or don't use Insite Editing.
   
-  This doesn't happen using Firefox/Mozilla.
+  This doesn't happen using Firefox/Mozilla. 
