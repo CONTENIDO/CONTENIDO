@@ -1,21 +1,36 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Implementation of IContenido_Frontend_Navigation_UrlBuilder to build URL in style index-a-1.html
-* 				without category path.
-*
-* @version 1.0.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-02-20
-* modified 2008-02-28 Changed to using Config for URL style
-* }}
-*
-* $Id$
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Implementation of IContenido_Frontend_Navigation_UrlBuilder to build URL in style index-a-1.html without category path.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-02-20
+ *   modified 2008-02-28 Changed to using Config for URL style
+ * 
+ *   $Id:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 include_once('Contenido_UrlBuilder.class.php');
 
