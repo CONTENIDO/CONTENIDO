@@ -1,29 +1,39 @@
 <?php
 /**
- * $RCSfile$: class.request.password.php
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Class for handling passwort recovery for backend users. If a user has set his e-mail address, this class
+ * generates a new Password for user and submits to his e-mail adress. Submitting a new Password is
+ * only possible every 30 minutes Mailsender, Mailsendername and Mailserver are set into system properties.
+ * There it is also possible to deactivate this feature.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * Project:
- * Contenido Content Management System Backend
- *
- * Description: Class for handling passwort recovery for backend users. If a user has set his e-mail address, this class
- *              generates a new Password for user and submits to his e-mail adress. Submitting a new Password is
- *              only possible every 30 minutes Mailsender, Mailsendername and Mailserver are set into system properties.
- *              There it is also possible to deactivate this feature.
- *
- * @package    Contenido Backend
+ * @package    Contenido Backend classes
  * @version    1.0.0
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
  * @since      file available since 2008-03-20
+ * 
+ * {@internal 
+ *   created 2008-03-20
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
  *
- * {@internal
- *    created 2008-03-20
+ *   $Id$:
  * }}
- *
- * $Id$
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude ("classes", "class.ui.php");
 cInclude ("classes", "class.phpmailer.php");

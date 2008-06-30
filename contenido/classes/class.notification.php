@@ -1,16 +1,40 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Class for displaying notifications
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-04-04, Timo Trautmann, added new colors and functions for direct output
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.table.php");
 
-/**
- * class Contenido_Notification
- *
- * Class for displaying notifications
- *
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @modified 04-04-2008 Timo Trautmann -  added new colors and functions for direct output
- * @copyright four for business AG <http://www.4fb.de>
- *
- */
 class Contenido_Notification {
 
     /**
@@ -145,5 +169,4 @@ class Contenido_Notification {
     } # end function
 
 } # end class
-
 ?>

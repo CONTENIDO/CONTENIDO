@@ -1,19 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Custom properties
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.1.6
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-12-21
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.properties.php,v $
-* Project   :   Contenido
-* Descr     :   Custom properties
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   21.12.2003
-* Modified  :   $Date: 2007/06/24 17:45:58 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.properties.php,v 1.16 2007/06/24 17:45:58 bjoern.behrens Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.genericdb.php");
 
@@ -73,7 +90,7 @@ class PropertyCollection extends ItemCollection
 	{
 		global $cfg, $client;
 		
-		$this->client = $client;
+		$this->client = Contenido_Security::toInteger($client);
 		
 		parent::ItemCollection($cfg["tab"]["properties"], "idproperty");
 		
@@ -102,14 +119,14 @@ class PropertyCollection extends ItemCollection
 		$item = parent::create();
 
 		$item->set("idclient", $this->client);
-		$item->set("itemtype", $itemtype, false);
-		$item->set("itemid", $itemid, false);
-		$item->set("type", $type, false);
-		$item->set("name", $name, false);
-		$item->set("value", $value);
+		$item->set("itemtype", Contenido_Security::escapeDB($itemtype, null), false);
+		$item->set("itemid", Contenido_Security::escapeDB($itemid, null), false);
+		$item->set("type", Contenido_Security::escapeDB($type, null), false);
+		$item->set("name", Contenido_Security::escapeDB($name, null), false);
+		$item->set("value", Contenido_Security::escapeDB($value, null));
 
 		$item->set("created", date("Y-m-d H:i:s"), false);
-		$item->set("author", $auth->auth["uid"]);
+		$item->set("author", Contenido_Security::escapeDB($auth->auth["uid"], null));
 		$item->store();
 
 		return ($item);	
@@ -135,11 +152,16 @@ class PropertyCollection extends ItemCollection
 	 **/	
 	function getValue ($itemtype, $itemid, $type, $name, $default = false)
 	{
+		$itemtype 	= Contenido_Security::escapeDB($itemtype, null);
+		$itemid 	= Contenido_Security::escapeDB($itemid, null);
+		$type 		= Contenido_Security::escapeDB($type, null);
+		$name 		= Contenido_Security::escapeDB($name, null);
+		
 		if (isset($this->client))
 		{		
-			$this->select("idclient = '".$this->client."' AND itemtype = '$itemtype' AND itemid = '$itemid' AND type = '$type' AND name = '$name'");
+			$this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
 		} else {
-			$this->select("itemtype = '$itemtype' AND itemid = '$itemid' AND type = '$type' AND name = '$name'");			
+			$this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");			
 		}
 		
 		if ($item = $this->next())
@@ -165,12 +187,15 @@ class PropertyCollection extends ItemCollection
 	function getValuesByType ($itemtype, $itemid, $type)
 	{
 		$aResult = array();
+		$itemtype 	= Contenido_Security::escapeDB($itemtype, null);
+		$itemid 	= Contenido_Security::escapeDB($itemid, null);
+		$type 		= Contenido_Security::escapeDB($type, null);
 		
 		if (isset($this->client))
-		{
-			$this->select("idclient = '".$this->client."' AND itemtype = '$itemtype' AND itemid = '$itemid' AND type = '$type'");
+		{		
+			$this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."'");
 		} else {
-			$this->select("itemtype = '$itemtype' AND itemid = '$itemid' AND type = '$type'");
+			$this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."'");			
 		}
 		
 		while ($item = $this->next())
@@ -193,15 +218,22 @@ class PropertyCollection extends ItemCollection
  	 * @param type	 	 mixed Type of the data to store (arbitary data)
  	 * @param name		 mixed Entry name
 	 * @param value		 mixed Value
-      * @param idProp		 int id of database record (if set, update on this basis (possiblity to update name value and type))
+      * @param idProp	 int id of database record (if set, update on this basis (possiblity to update name value and type))
 	 **/	
 	function setValue ($itemtype, $itemid, $type, $name, $value, $idProp = 0)
 	{
-        $idProp = (int) $idProp;
+
+		$itemtype 	= Contenido_Security::escapeDB($itemtype, null);
+		$itemid 	= Contenido_Security::escapeDB($itemid, null);
+		$type 		= Contenido_Security::escapeDB($type, null);
+		$name 		= Contenido_Security::escapeDB($name, null);
+		$value 		= Contenido_Security::escapeDB($value, null);
+		$idProp 	= Contenido_Security::toInteger($idProp);
+		
         if ($idProp == 0) {
-            $this->select("idclient = '".$this->client."' AND itemtype = '$itemtype' AND itemid = '$itemid' AND type = '$type' AND name = '$name'");
+            $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
 		} else {
-            $this->select("idclient = '".$this->client."' AND itemtype = '$itemtype' AND itemid = '$itemid' AND idproperty = '$idProp'");
+            $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND idproperty = '".$idProp."'");
         }
         if ($item = $this->next())
 		{
@@ -222,17 +254,22 @@ class PropertyCollection extends ItemCollection
     * $properties->deleteValue("idcat", 27, "visual", "image"); 
     * 
     * @param itemtype   mixed Type of the item (example: idcat) 
-    * @param itemid   mixed ID of the item (example: 31) 
-    * @param type      mixed Type of the data to store (arbitary data) 
-    * @param name      mixed Entry name 
+    * @param itemid   	mixed ID of the item (example: 31) 
+    * @param type      	mixed Type of the data to store (arbitary data) 
+    * @param name      	mixed Entry name 
     */ 
    function deleteValue ($itemtype, $itemid, $type, $name) 
    { 
+   		$itemtype 	= Contenido_Security::escapeDB($itemtype, null);
+		$itemid 	= Contenido_Security::escapeDB($itemid, null);
+		$type 		= Contenido_Security::escapeDB($type, null);
+		$name 		= Contenido_Security::escapeDB($name, null);
+		
       if (isset($this->client)) 
       { 
-         $this->select("idclient = '".$this->client."' AND itemtype = '$itemtype' AND itemid = '$itemid' AND type = '$type' AND name = '$name'"); 
+         $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'"); 
       } else { 
-         $this->select("itemtype = '$itemtype' AND itemid = '$itemid' AND type = '$type' AND name = '$name'"); 
+         $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'"); 
       } 
 
       if ($item = $this->next()) 
@@ -251,11 +288,14 @@ class PropertyCollection extends ItemCollection
     */ 
    function getProperties ($itemtype, $itemid) 
    { 
+		$itemtype 	= Contenido_Security::escapeDB($itemtype, null);
+		$itemid 	= Contenido_Security::escapeDB($itemid, null);
+
       if (isset($this->client)) 
       { 
-         $this->select("idclient = '".$this->client."' AND itemtype = '$itemtype' AND itemid = '$itemid'"); 
+         $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."'"); 
       } else { 
-         $this->select("itemtype = '$itemtype' AND itemid = '$itemid'"); 
+         $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."'"); 
       } 
 
       $result[$itemid] = false; 
@@ -267,9 +307,7 @@ class PropertyCollection extends ItemCollection
                                                                 1=>$item->get("name"),  "name"=>$item->get("name"), 
                                                                 2=>$item->get("value"), "value"=>$item->get("value")); 
       } 
-
       return $result; 
-
    } 
 
 	/** 
@@ -305,11 +343,11 @@ class PropertyCollection extends ItemCollection
       		'idproperty' 	=> $item->get("idproperty"),
       		'idclient' 		=> $item->get("idclient"),
       		'itemtype' 		=> $item->get("itemtype"),
-      		'itemid' 			=> $item->get("itemid"),
-      		'type' 				=> $item->get("type"),
-      		'name' 				=> $item->get("name"),
-      		'value' 			=> $item->get("value"),
-      		'author' 			=> $item->get("author"),
+      		'itemid' 		=> $item->get("itemid"),
+      		'type' 			=> $item->get("type"),
+      		'name' 			=> $item->get("name"),
+      		'value' 		=> $item->get("value"),
+      		'author' 		=> $item->get("author"),
       		'created' 		=> $item->get("created"),
       		'modified' 		=> $item->get("modified"),
       		'modifiedby'	=> $item->get("modifiedby")
@@ -327,11 +365,14 @@ class PropertyCollection extends ItemCollection
     */ 
    function deleteProperties ($itemtype, $itemid) 
    { 
+   		$itemtype 	= Contenido_Security::escapeDB($itemtype, null);
+		$itemid 	= Contenido_Security::escapeDB($itemid, null);
+		
       if (isset($this->client)) 
       { 
-         $this->select("idclient = '".$this->client."' AND itemtype = '$itemtype' AND itemid = '$itemid'"); 
+         $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."'"); 
       } else { 
-         $this->select("itemtype = '$itemtype' AND itemid = '$itemid'"); 
+         $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."'"); 
       } 
 
 		$deleteProperties = Array(); 
@@ -344,14 +385,12 @@ class PropertyCollection extends ItemCollection
 		foreach($deleteProperties as $idproperty) { 
 			$this->delete($idproperty); 
 		} 
-
 	}
 	
 	function changeClient($idclient)
 	{
 		$this->client = $idclient;
 	}
-	
 }
 
 class PropertyItem extends Item
@@ -400,9 +439,5 @@ class PropertyItem extends Item
 		
 		parent::setField($field, $value, $safe);
 	}
-	
 }
-
-
-
 ?>
