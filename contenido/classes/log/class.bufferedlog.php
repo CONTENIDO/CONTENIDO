@@ -1,41 +1,53 @@
 <?php
-/**********************************************************************************
-* File      :   $RCSfile: class.bufferedlog.php,v $
-* Project   :   Contenido 
-* Descr     :   Buffered Log facility
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   28.09.2004
-* Modified  :   $Date: 2006/04/28 09:20:55 $
-*
-* © four for business AG, www.4fb.de
-*
-* This file is part of the Contenido Content Management System. 
-*
-* $Id: class.bufferedlog.php,v 1.2 2006/04/28 09:20:55 timo.hummel Exp $
-***********************************************************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Buffered Log facility
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.2
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2004-09-28
+ *   
+ *   $Id: class.bufferedlog.php,v 1.2 2006/04/28 09:20:55 timo.hummel Exp $
+ * }}
+ * 
+ */
 
+ /** Examples **
 
-/** Examples **
+  Buffered logging
 
-Buffered logging
+  $log = new cBufferedLog;
+  $log->buffer("this is a log message");
+  $log->buffer("another log message");
+  $log->commit();
 
-$log = new cBufferedLog;
-$log->buffer("this is a log message");
-$log->buffer("another log message");
-$log->commit();
+  The commit call commits all messages on the stack.
 
-The commit call commits all messages on the stack.
+  $log = new cBufferedLog;
+  $log->buffer("this is a log message");
+  $log->buffer("another log message");
+  $log->revoke();
 
-$log = new cBufferedLog;
-$log->buffer("this is a log message");
-$log->buffer("another log message");
-$log->revoke();
-
-The revoke call revokes (Discards) all messages on the stack.
-
+  The revoke call revokes (Discards) all messages on the stack.
 */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 
 cInclude("classes", "log/class.log.php");
