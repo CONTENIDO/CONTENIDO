@@ -23,7 +23,7 @@
  *   created unknown
  *   modified 2008-06-30, Frederic Schneider, add security fix
  *
- *   $Id: 
+ *   $Id$: 
  * }}
  * 
  */

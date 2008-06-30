@@ -1,17 +1,32 @@
 <?php
-/*****************************************
-*
-* $Id: class.templateconfig.php,v 1.10 2006/04/28 09:20:55 timo.hummel Exp $
-*
-* File      :   $RCSfile: class.templateconfig.php,v $
-* Project   :   Contenido
-* Descr     :   Template Config Object
-*
-* Author    :   Marco Jahn
-* Modified  :   $Date: 2006/04/28 09:20:55 $
-*
-* © four for business AG, www.4fb.de
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Template Config Object
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.1
+ * @author     Marco Jahn
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id$: 
+ * }}
+ * 
+ */
 
 /**
  * Object of a contenido template configuration
@@ -39,6 +54,11 @@
  * @copyright four for business 2003
  * @package Contenido_API
  */
+ 
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+ 
 class TemplateConfig
 {
 	/**
@@ -93,6 +113,7 @@ class TemplateConfig
     		$this->data = $this->_getContainersByTplCfg($idtplcfg);
 		}
 	}
+
 	/**
 	* reset data array
 	*
@@ -157,11 +178,11 @@ class TemplateConfig
 
 		if ($idtplcfg) {
 			#Article or cat is assigned to a template
-			$sql = "SELECT * FROM ".$cfg["tab"]["template_conf"]." WHERE idtplcfg = ".$idtplcfg;
+			$sql = "SELECT * FROM ".$cfg["tab"]["template_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
 			$this->db->query($sql);
 			if ($this->db->next_record()) {
 				$idtpl = $this->db->f("idtpl");
-				$sql = "SELECT * FROM ".$cfg["tab"]["template"]." WHERE idtpl = ".$idtpl;
+				$sql = "SELECT * FROM ".$cfg["tab"]["template"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
 				$this->db->query($sql);
 				if ($this->db->next_record()) {
 					$idtplcfg = $this->db->f("idtplcfg");
@@ -198,9 +219,9 @@ class TemplateConfig
             idtplcfg
          FROM ".$this->cfg['tab']['art_lang']."
             WHERE
-                  idart=".$idart."
+                  idart='".Contenido_Security::toInteger($idart)."'
                AND
-                  idlang=".$this->lang;
+                  idlang='".Contenido_Security::toInteger($this->lang)."'";
 
       //query
       $this->db->query($sql);
@@ -234,7 +255,7 @@ class TemplateConfig
 	
 	function _getIdCatByIdArt($idart)
 	{
-		$sql = "SELECT idcat FROM ".$this->cfg['tab']['cat_art']." WHERE idart=$idart ORDER BY idcat ASC LIMIT 1";
+		$sql = "SELECT idcat FROM ".$this->cfg['tab']['cat_art']." WHERE idart='".Contenido_Security::toInteger($idart)."' ORDER BY idcat ASC LIMIT 1";
 		$this->db->query($sql);
 		if ($this->db->next_record())
 		{
@@ -253,7 +274,8 @@ class TemplateConfig
 	 */
 	function _getTplCfgByCatId ($idcat)
 	{
-		$sql = "SELECT idtplcfg FROM ".$this->cfg['tab']['cat_lang']." WHERE idcat=$idcat AND idlang=".$this->lang;
+		$sql = "SELECT idtplcfg FROM ".$this->cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'
+				AND idlang='".Contenido_Security::toInteger($this->lang)."'";
 		$this->db->query($sql);
 		if ($this->db->next_record())
 		{
@@ -276,7 +298,7 @@ class TemplateConfig
 			SELECT
 				number, container
 			FROM ".$this->cfg['tab']['container_conf']."
-				WHERE idtplcfg=".$idtplcfg."
+				WHERE idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'
 			ORDER BY
 				number ASC";
 		$this->db->query($sql);
