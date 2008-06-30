@@ -281,9 +281,9 @@ if(!$perm->have_perm_area_action($area))
 	    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
 	    $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
 	    $tpl->set('d', 'CATFIELD', formGenerateField ("text", "errsite_art", $db->f("errsite_art"), 10, 10));
-			$tpl->set('d', 'BRDRT', 0);
-			$tpl->set('d', 'BRDRB', 1);
-			$tpl->set('d', 'FONT', 'text_medium');
+		$tpl->set('d', 'BRDRT', 0);
+		$tpl->set('d', 'BRDRB', 1);
+		$tpl->set('d', 'FONT', 'text_medium');
 	    $tpl->next(); 
 	    
 	    $clientLogo = $properties->getValue ("idclient", $idclient, "backend", "clientimage");
@@ -315,6 +315,9 @@ if(!$perm->have_perm_area_action($area))
 	    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
 	    $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 	    $tpl->set('d', 'CATFIELD', $oXHTMLSelect->render());
+		$tpl->set('d', 'BRDRT', 0);
+	    $tpl->set('d', 'BRDRB', 1);
+		$tpl->set('d', 'FONT', 'text_medium');
 	    $tpl->next();
 	
 	    if ($new == true)
