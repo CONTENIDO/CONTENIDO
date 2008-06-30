@@ -1,14 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.cec.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Extension Chainer (CEC)
-* Modified  :   $Date: 2005/11/08 16:24:39 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.cec.php,v 1.3 2005/11/08 16:24:39 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Extension Chainer (CEC)
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 class cApiCECRegistry
 {
@@ -21,8 +43,9 @@ class cApiCECRegistry
 	
 	function registerChain ($sChainName)
 	{
-		$aParam = array();
+		$sChainName = Contenido_Security::escapeDB($sChainName, null);
 		
+		$aParam = array();
 		$iNumArgs = func_num_args();
 
 		for ($iCount = 0; $iCount < $iNumArgs; $iCount++)
@@ -47,21 +70,22 @@ class cApiCECRegistry
 	function addChainFunction ($sChainName, $sFunctionName)
 	{
 		$bError = false;
+		$sChainName 	= Contenido_Security::escapeDB($sChainName, null);
+		$sFunctionName 	= Contenido_Security::escapeDB($sFunctionName, null);
 
 		/* Check if the chain exists */
 		if (!array_key_exists($sChainName, $this->_aChains))
 		{
-			cWarning(__FILE__, __LINE__, "Chain $sChainName doesn't exist.");	
+			cWarning(__FILE__, __LINE__, "Chain ".$sChainName." doesn't exist.");	
 			$bError = true;
 		}
 		
 		/* Check if the function exists */
 		if (!function_exists($sFunctionName))
 		{
-			cWarning(__FILE__, __LINE__, "Function $sFunctionName doesn't exist, can't add to chain $sChainName");	
+			cWarning(__FILE__, __LINE__, "Function ".$sFunctionName." doesn't exist, can't add to chain ".$sChainName);	
 			$bError = true;
 		}
-		
 		
 		/* Check if an error occured */
 		if ($bError == true)
@@ -78,6 +102,7 @@ class cApiCECRegistry
 	
 	function getIterator ($sChainName)
 	{
+		$sChainName = Contenido_Security::escapeDB($sChainName);
 		cInclude("classes", "class.iterator.php");
 		
 		$oIterator = new cIterator($this->_aChains[$sChainName]["functions"]);
@@ -85,7 +110,6 @@ class cApiCECRegistry
 		return ($oIterator);
 	}
 }
-
 
 class pApiCECChainItem
 {
@@ -95,9 +119,9 @@ class pApiCECChainItem
 	
 	function pApiCECChainItem ($sChainName, $sFunctionName, $aParameters)
 	{
-		$this->_sChainName = $sChainName;
-		$this->_sFunctionName = $sFunctionName;
-		$this->_aParameters = $aParameters;
+		$this->_sChainName 		= Contenido_Security::escapeDB($sChainName, null);
+		$this->_sFunctionName 	= Contenido_Security::escapeDB($sFunctionName, null);
+		$this->_aParameters 	= $aParameters;
 	}
 	
 	function execute ()

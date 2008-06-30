@@ -1,12 +1,37 @@
 <?php
-
 /**
- * Class Client
- * Class for client information and management
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 1.0
- * @copyright four for business 2003
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido client class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 class Client {
 
     /**
@@ -38,11 +63,8 @@ class Client {
         
         while ($db->next_record())
         {
-            
             $newentry["name"] = $db->f("name");
-
             $clients[$db->f("idclient")] = $newentry;
-
         }
 
         return ($clients);
@@ -73,9 +95,7 @@ class Client {
                 $perm->have_perm_client("admin[".$db->f("idclient")."]") ||
                 $perm->have_perm_client())
             {
-            
                 $newentry["name"] = $db->f("name");
-
                 $clients[$db->f("idclient")] = $newentry;
             }
 
@@ -92,6 +112,7 @@ class Client {
     function getClientname ($clientid)
     {
         global $cfg;
+		$clientid = Contenido_Security::toInteger($clientid);
 
         $db = new DB_Contenido;
 
@@ -100,7 +121,7 @@ class Client {
                 FROM
                 ". $cfg["tab"]["clients"]."
                 WHERE
-                    idclient = \"".$clientid."\"";
+                    idclient = '".$clientid."'";
 
         $db->query($sql);
         if ($db->next_record())
@@ -120,6 +141,7 @@ class Client {
     function hasLanguageAssigned ($clientid)
     {
         global $cfg;
+		$clientid = Contenido_Security::toInteger($clientid);
 
         $db = new DB_Contenido;
 
@@ -128,7 +150,7 @@ class Client {
                 FROM
                 ". $cfg["tab"]["clients_lang"]."
                 WHERE
-                    idclient = \"".$clientid."\"";
+                    idclient = '".$clientid."'";
 
         $db->query($sql);
         if ($db->next_record())

@@ -1,12 +1,37 @@
 <?php
-
 /**
- * Class Cat
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Class for category information and management
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 1.0
- * @copyright four for business 2003
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 class Cat {
 
     /**
@@ -26,6 +51,8 @@ class Cat {
         global $cfg;
 
         $db = new DB_Contenido;
+		$idlang 	= Contenido_Security::toInteger($idlang);
+		$category 	= Contenido_Security::toInteger($category);
 
         $sql = "SELECT
                     name
@@ -43,5 +70,4 @@ class Cat {
     } // end function
 
 } // end class
-
 ?>

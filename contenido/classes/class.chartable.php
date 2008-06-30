@@ -1,8 +1,39 @@
 <?php
 /**
- * cCharacterConverter
+ * Project: 
+ * Contenido Content Management System
  * 
+ * Description: 
  * Converts characters between their normalized and diacritic representation.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+/**
+ * cCharacterConverter
  * 
  * A diacritic mark or diacritic is a mark added to a letter to alter a
  * word's pronunciation or to distungish between similar words. However,
@@ -32,7 +63,9 @@ class cCharacterConverter
 	{
 		global $cfg;
 
-		$sEncoding = $this->correctEncoding($sEncoding);
+		$cNormalizedChar 	= Contenido_Security::escapeDB($cNormalizedChar, $this->_oDB);
+		$sEncoding 			= Contenido_Security::escapeDB($sEncoding, $this->_oDB);
+		$sEncoding 			= $this->correctEncoding($sEncoding);
 		
 		if (!array_key_exists($sEncoding, $this->_aCharCache))
 		{
@@ -64,7 +97,9 @@ class cCharacterConverter
 	{
 		global $cfg;
 		
-		$sEncoding = $this->correctEncoding($sEncoding);
+		$cNormalizedChar 	= Contenido_Security::escapeDB($cNormalizedChar, $this->_oDB);
+		$sEncoding 			= Contenido_Security::escapeDB($sEncoding, $this->_oDB);
+		$sEncoding			= $this->correctEncoding($sEncoding);
 		
 		if (strlen($cCharacter) > 1)
 		{
