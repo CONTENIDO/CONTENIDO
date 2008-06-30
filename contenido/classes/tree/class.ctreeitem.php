@@ -1,14 +1,35 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.ctreeitem.php,v $
-* Project   :   Contenido
-* Descr     :   Logical cTreeItem
-* Modified  :   $Date: 2006/10/05 23:45:30 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.ctreeitem.php,v 1.6 2006/10/05 23:45:30 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Logical cTreeItem
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.12
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2006-10-05
+ *   
+ *   $Id: class.ctreeitem.php,v 1.6 2006-10-05 23:45:30 bjoern.behrens Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 /**
  * class cTreeItem
