@@ -317,7 +317,7 @@ class Contenido_Backend {
 		$idart 		= Contenido_Security::toInteger($idart);
 		$client 	= Contenido_Security::toInteger($client);
 		$lang 		= Contenido_Security::toInteger($lang);
-		$idaction 	= Contenido_Security::toInteger($idaction);
+		$idaction 	= Contenido_Security::escapeDB($idaction, $db_log);
 		$area		= Contenido_Security::escapeDB($area, $db_log);
 
         if (!Contenido_Security::isInteger($client)) { return; }
