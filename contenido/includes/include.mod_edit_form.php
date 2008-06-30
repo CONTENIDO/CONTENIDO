@@ -435,8 +435,8 @@ window.onload = scrolltheother;
 			$import = new cHTMLRadiobutton("mode", "import");
 			$export = new cHTMLRadiobutton("mode", "export");
 
-			$import->setLabelText("Import from file");
-			$export->setLabelText("Export to file");
+			$import->setLabelText(i18n("Import from file"));
+			$export->setLabelText(i18n("Export to file"));
                 
 			$import->setEvent("click", "document.getElementById('vupload').style.display = '';");
 			$export->setEvent("click", "document.getElementById('vupload').style.display = 'none';");

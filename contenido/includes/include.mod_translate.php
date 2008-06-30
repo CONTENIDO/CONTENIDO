@@ -142,7 +142,7 @@ while ($d_modtrans = $moduletranslations->next())
 $page = new cPage;
 
 $form = new UI_Table_Form("translation");
-$form->addHeader(sprintf(i18n("Translate module \"%s\""), $module->get("name"))); 
+$form->addHeader(sprintf(i18n("Translate module '%s'"), $module->get("name"))); 
 $form->setVar("area", $area);
 $form->setVar("frame", $frame);
 $form->setVar("idmod", $idmod);
@@ -177,8 +177,8 @@ $mark = '<script language="JavaScript">document.translation.t_trans.focus();</sc
 
 $import = new cHTMLRadiobutton("mode", "import");
 $export = new cHTMLRadiobutton("mode", "export");
-$export->setLabelText("Export to file");
-$import->setLabelText("Import from file");
+$export->setLabelText(i18n("Export to file"));
+$import->setLabelText(i18n("Import from file"));
 
 $import->setEvent("click", "document.getElementById('vupload').style.display = '';");
 $export->setEvent("click", "document.getElementById('vupload').style.display = 'none';");

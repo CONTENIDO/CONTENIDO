@@ -456,8 +456,8 @@ if ($idmod > 0 && $perm->have_perm_area_action_item("mod_edit", "mod_edit", $idm
 		$oRadImport = new cHTMLRadiobutton("mode", "import1");
 		$oRadExport = new cHTMLRadiobutton("mode", "export");
 	
-		$oRadImport->setLabelText("Import from file");
-		$oRadExport->setLabelText("Export to file");
+		$oRadImport->setLabelText(i18n("Import from file"));
+		$oRadExport->setLabelText(i18n("Export to file"));
 	        
 		$oRadImport->setEvent("click", "document.getElementById('vupload').style.display = '';");
 		$oRadExport->setEvent("click", "document.getElementById('vupload').style.display = 'none';");

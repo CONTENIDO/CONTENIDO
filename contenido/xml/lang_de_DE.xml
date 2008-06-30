@@ -41,7 +41,7 @@
                 <main>Templates</main>
                 <edit>Editieren</edit>
                 <conf>Vorkonfiguration</conf>
-                <visual>Visuelles editieren</visual>
+                <visual>Visuelles Editieren</visual>
             </templates>
             <styleeditor>Styleeditor</styleeditor>
             <jseditor>Skripteditor</jseditor>

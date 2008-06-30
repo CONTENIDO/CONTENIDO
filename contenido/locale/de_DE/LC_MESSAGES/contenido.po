@@ -5961,8 +5961,8 @@ msgstr "Kategorie online setzen"
 msgid "Set category offline"
 msgstr "Kategorie offline setzen"
 
-msgid "Are you sure to delete the following category?"
-msgstr "Sind Sie sicher, dass Sie die folgende Kategorie L&ouml;schen wollen?"
+msgid "Are you sure to delete the following category"
+msgstr "Sind Sie sicher, dass Sie die folgende Kategorie L&ouml;schen wollen"
 
 msgid "No Client selected"
 msgstr "Kein Mandant ausgew&auml;hlt"
@@ -6041,3 +6041,15 @@ msgstr "Fehlerlog konnte nicht geleert werden: Zugriff verweigert!"
 
 msgid "Can't clear install error log : Access is denied!"
 msgstr "Upgrade-Errorlog konnte nicht geleert werden: Zugriff verweigert!" 
+
+msgid "Export to file"
+msgstr "In Datei exportieren"
+
+msgid "Import from file"
+msgstr "Aus Datei importieren"
+
+msgid "Show History Entry"
+msgstr "Historieneintrag anzeigen"
+
+msgid "Translate module '%s'"
+msgstr "Modul &uuml;bersetzen \"%s\""

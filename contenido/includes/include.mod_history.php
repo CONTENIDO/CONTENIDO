@@ -112,7 +112,7 @@ if (!$perm->have_perm_area_action_item("mod_edit","mod_edit",$idmod))
         
         $select->setDefault($idmodhistory);
         
-        $form->add("Show History Entry", $select->render());
+        $form->add(i18n("Show History Entry"), $select->render());
         
         $mod = new cApiModuleHistory;
         $mod->loadByPrimaryKey($idmodhistory);
@@ -120,7 +120,7 @@ if (!$perm->have_perm_area_action_item("mod_edit","mod_edit",$idmod))
         $user = new User;
         $user->loadUserByUserID($mod->get("changedby"));
         
-        $form2->add("Changed by", $user->getField("realname"));
+        $form2->add(i18n("Changed by"), $user->getField("realname"));
         $form2->addHeader(i18n("Module data"));
         $descr  = new cHTMLTextarea("descr", htmlspecialchars($mod->get("description")), 120,5);
         $input  = new cHTMLTextarea("input", htmlspecialchars($mod->get("input")), 120,15);
