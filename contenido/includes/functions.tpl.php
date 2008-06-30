@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-01-21
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-06-30 timo.trautmann added fix module settings were also copied in function tplDuplicateTemplate
  *
  *   $Id$:
  * }}
@@ -410,19 +411,25 @@ function tplDuplicateTemplate($idtpl) {
     $idclient   = $db->f("idclient");
     $idlay      = $db->f("idlay");
     $new_idtpl  = $db->nextid($cfg["tab"]["tpl"]);
+	//modified (added) 2008-06-30 timo.trautmann added fix module settings were also copied
+	$idtpl_conf = $db->f("idtplcfg");
+    if($idtpl_conf) {
+	    $new_idtpl_conf  = $db->nextid($cfg["tab"]["tpl_conf"]);  
+    }
+	//modified (added) 2008-06-30 end
     $name       = sprintf(i18n("%s (Copy)"), $db->f("name"));
     $descr      = $db->f("description");
     $author     = $auth->auth["uname"];
     $created    = time();
     $lastmod    = time();
 
+	//modified (added) 2008-06-30 : idtplcfg ->  $new_idtpl 
     $sql = "INSERT INTO
                 ".$cfg["tab"]["tpl"]."
-                (idclient, idlay, idtpl, name, description, deletable,author, created, lastmodified)
+                (idclient, idlay, idtpl, ".($idtpl_conf?'idtplcfg,':'')." name, description, deletable,author, created, lastmodified)
             VALUES
-                ('".Contenido_Security::toInteger($idclient)."', '".Contenido_Security::toInteger($idlay)."', '".Contenido_Security::toInteger($new_idtpl)."', '".Contenido_Security::escapeDB($name, $db)."',
+                ('".Contenido_Security::toInteger($idclient)."', '".Contenido_Security::toInteger($idlay)."', '".Contenido_Security::toInteger($new_idtpl)."',  ".($idtpl_conf?"'".Contenido_Security::toInteger($new_idtpl_conf)."', ":'')." '".Contenido_Security::escapeDB($name, $db)."',
                  '".Contenido_Security::escapeDB($descr, $db)."', '1', '".Contenido_Security::escapeDB($author, $db)."', '".Contenido_Security::escapeDB($created, $db)."', '".Contenido_Security::escapeDB($lastmod, $db)."')";
-
     $db->query($sql);
 
     $a_containers = array();
@@ -452,6 +459,37 @@ function tplDuplicateTemplate($idtpl) {
         $db->query($sql);
 
     }
+	
+	//modified (added) 2008-06-30 timo.trautmann added fix module settings were also copied
+	if($idtpl_conf) {
+        $a_container_cfg = array();
+        $sql = "SELECT
+					   *
+				 FROM
+					   ".$cfg["tab"]["container_conf"]."
+				 WHERE
+					   idtplcfg = '".Contenido_Security::toInteger($idtpl_conf)."'
+				 ORDER BY
+					   number";
+   
+        $db->query($sql);
+   
+        while ($db->next_record()) {
+		   $a_container_cfg[$db->f("number")] = $db->f("container");
+        }
+   
+        foreach ($a_container_cfg as $key => $value) {
+   
+		   $nextid = $db->nextid($cfg["tab"]["container_conf"]);
+
+		   $sql = "INSERT INTO ".$cfg["tab"]["container_conf"]."
+					   (idcontainerc, idtplcfg, number, container) VALUES ('".Contenido_Security::toInteger($nextid)."', '".Contenido_Security::toInteger($new_idtpl_conf)."', '".Contenido_Security::escapeDB($key, $db)."', '".Contenido_Security::escapeDB($value, $db)."')";
+
+		   $db->query($sql);
+   
+        }
+    } 
+	//modified (added) 2008-06-30 end
 
     cInclude ("includes", "functions.rights.php");
     copyRightsForElement("tpl", $idtpl, $new_idtpl);
