@@ -6025,7 +6025,7 @@ msgid "Your version of Contenido is deprecated and not longer supported for any 
 msgstr "Ihre Version von Contenido wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisieren Sie auf eine h&ouml;here Version!"
 
 msgid "A new version of Contenido (<b>%s</b>) is available! - <a href="%s">Download now!</a>"
-msgstr "Eine neue Version von Contenido (<b>%s</b>) ist verf&uuml;gbar! - <a href="%s">Jetzt herunterladen!</a>"
+msgstr "Eine neue Version von Contenido (<b>%s</b>) ist verf&uuml;gbar! - <a href="%s" target="_blank">Jetzt herunterladen!</a>"
 
 msgid "It seems to be that your version string was manipulated. Contenido %s does not exist!"
 msgstr "Anscheinend wurde Ihre Version manipuliert. Contenido %s existiert nicht!"
