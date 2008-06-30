@@ -25,7 +25,7 @@
  *   created 2004-01-15
  *   modified 2008-06-30, Frederic Schneider, add security fix
  *
- *   $Id: 
+ *   $Id$: 
  * }}
  * 
  */
