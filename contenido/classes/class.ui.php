@@ -1,19 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido UI Classes
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.5.2
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-20
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.ui.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido UI Classes
-*
-* Author    :   Timo A. Hummel
-*
-* Created   :   20.05.2003
-* Modified  :   $Date: 2007/05/25 08:06:29 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.ui.php,v 1.52 2007/05/25 08:06:29 bjoern.behrens Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.htmlelements.php");
 
@@ -148,7 +165,6 @@ class UI_Menu
 
 	}
 
-
 	function render($print = true)
 	{
 		global $sess, $cfg;
@@ -178,18 +194,8 @@ class UI_Menu
 
 		if (is_array($this->link))
 		{
-
-//		echo '<pre>';
-//		print_r($this->link);
-//		echo '</pre>';
-
     		foreach ($this->link as $key => $value)
     		{
-
-				#echo '<br> key: ' . $key . ' value: ' . $value;
-
-
-
     			if ($value != NULL)
     			{
     				if ($this->imagewidth[$key] != 0)
@@ -235,13 +241,10 @@ class UI_Menu
         	 		   $bgColor = $cfg["color"]["table_light_active"];
        				 }
 
-
-
 	                if ($this->extra[$key] == 'id="marked" ') {
 	                    $bgColor = $cfg["color"]["table_light_active"];
 	                }
     			}
-
 
         		$tpl->set('d', 'NAME', $link);
 
@@ -253,7 +256,6 @@ class UI_Menu
             {
               $tpl->set('d', 'ICON', $img);
             }
-
 
         		if ($this->extra[$key] != "" || $this->rowmark == true)
         		{
@@ -269,11 +271,9 @@ class UI_Menu
         			$tpl->set('d', 'EXTRA', '');
         		}
 
-
 				$fullactions = "";
         		if (is_array($this->actions[$key]))
         		{
-
 
         			$fullactions = '<table border="0"><tr>';
 
@@ -463,7 +463,6 @@ class UI_Table_Form
 		unset($this->custom[$id]);
 	}
 
-
 	function render ($return = true)
 	{
 		global $sess, $cfg;
@@ -624,8 +623,6 @@ class UI_Table_Form
 			echo $rendered;
 		}
 	}
-
-
 }
 
 class UI_Form
@@ -678,11 +675,9 @@ class UI_Form
 
 	function add ($field, $content = "")
 	{
-
 		$this->id++;
 		$this->items[$this->id] = $field;
 		$this->content[$this->id] = $content;
-
 	}
 
 	function render ($return = true)
@@ -725,13 +720,10 @@ class UI_Form
 			echo $rendered;
 		}
 	}
-
-
 }
 
 class UI_Page
 {
-
 	var $scripts;
 	var $content;
 	var $margin;
@@ -1187,7 +1179,6 @@ class cScrollList
      * @var string
      */
 	var $sortlink;
-
 
 	/**
      * Table item

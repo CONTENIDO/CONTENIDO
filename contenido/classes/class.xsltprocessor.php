@@ -1,18 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * XSLT_Processor class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    4fb_XML
+ * @version    1.0.0
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-*
-* $Id: class.xsltprocessor.php,v 1.4 2006/04/28 09:20:55 timo.hummel Exp $
-*
-* File      :   $RCSfile: class.xsltprocessor.php,v $
-* Project   :
-* Descr     :   
-*
-* Author    :   Jan Lengowski
-* Modified  :   $Date: 2006/04/28 09:20:55 $
-*
-* © four for business AG, www.4fb.de
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * XSLT_Processor 
@@ -29,11 +47,7 @@
  * $xslt->setXslFile("bar.xslt");
  *  
  * $html = $xslt->process();
- * 
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
- * @version 1.0
- * @package 4fb_XML
+ *
  */
 class XsltProcessor
 {

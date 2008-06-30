@@ -1,4 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Class XML_doc
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    4fb_XML
+ * @version    0.9.7
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified unknown, Martin Horwath <horwath@dayside.net>
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * Class XML_doc
@@ -12,11 +45,6 @@
  * the root node name. Can't access node
  * attributes yet.
  *
- * @copyright four for business AG <http://www.4fb.de>
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @modified Martin Horwath <horwath@dayside.net>
- * @version 0.9.7
- * @package 4fb_XML
  */
 class XML_doc {
 

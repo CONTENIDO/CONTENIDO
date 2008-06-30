@@ -1,26 +1,40 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Tree Item Class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.1.4
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-20
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.treeitem.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Tree Item Class
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   20.05.2003
-* Modified  :   $Date: 2006/04/28 09:20:55 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.treeitem.php,v 1.14 2006/04/28 09:20:55 timo.hummel Exp $
-******************************************/
-
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * Class TreeItem
  * Class to create tree-based items
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.4
  *
  * The treeitem class allows you to logically store
  * tree-based structures.

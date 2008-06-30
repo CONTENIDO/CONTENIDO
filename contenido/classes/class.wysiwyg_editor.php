@@ -1,18 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.wysiwyg_editor.php,v $
-* Project   :   Contenido
-* Descr     :   Base class for all WYSIWYG editors
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   27.06.2005
-* Modified  :   $Date: 2007/06/24 17:45:58 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.wysiwyg_editor.php,v 1.6 2007/06/24 17:45:58 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Base class for all WYSIWYG editors
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.6
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2005-06-27
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.htmlelements.php");
 
 class cWYSIWYGEditor

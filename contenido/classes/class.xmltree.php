@@ -1,4 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * XmlTree and XmlNode Class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    4fb_XML
+ * @version    1.0.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
 * XmlTree class
@@ -29,11 +61,6 @@
 *
 * !! ALWAYS use '=&' with the addRoot and appendChild methods. !!
 *
-* @author Jan Lengowski <Jan.Lengowski@4fb.de>
-* @copyright four for business AG 2003
-*
-* @package 4fb_XML
-* @version 1.1
 */
 class XmlTree
 {	
@@ -174,11 +201,6 @@ class XmlTree
 *
 * !! ALWAYS use '=&' with the addRoot and appendChild methods. !!
 *
-* @author Jan Lengowski <Jan.Lengowski@4fb.de>
-* @copyright four for business AG 2003
-*
-* @package 4fb_XML
-* @version 1.1
 */
 class XmlNode 
 {	

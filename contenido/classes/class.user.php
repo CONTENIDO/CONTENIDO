@@ -1,12 +1,37 @@
 <?php
-
 /**
- * Class Users
- * Container class for all system users
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 1.0
- * @copyright four for business AG 2003
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido User classes
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 class Users {
 	
 	/**
@@ -50,14 +75,14 @@ class Users {
 	function create ($username)
 	{
 		$newuserid = md5($username);
-		$sql = "SELECT user_id FROM ".$this->table." WHERE user_id = '$newuserid'";
+		$sql = "SELECT user_id FROM ".$this->table." WHERE user_id = '".Contenido_Security::escapeDB($newuserid, $this->db)."'";
 		$this->db->query($sql);
 		if ($this->db->next_record())
 		{
 			return false;
 		}
 		
-		$sql = "INSERT INTO ".$this->table." SET user_id = '$newuserid', username = '$username'";
+		$sql = "INSERT INTO ".$this->table." SET user_id = '".Contenido_Security::escapeDB($newuserid, $this->db)."', username = '".Contenido_Security::escapeDB($username, $this->db)."'";
 		$this->db->query($sql);
 
 		return $newuserid;
@@ -74,7 +99,7 @@ class Users {
 	{
 		$sql = "DELETE FROM "
 				.$this->table.
-				" WHERE user_id = '".$userid."'";
+				" WHERE user_id = '".Contenido_Security::escapeDB($userid, $this->db)."'";
 	    
 	    $this->db->query($sql);
 	    if ($this->db->affected_rows() == 0)
@@ -95,7 +120,7 @@ class Users {
 	{
 		$sql = "DELETE FROM "
 				.$this->table.
-				" WHERE username = '".$username."'";
+				" WHERE username = '".Contenido_Security::escapeDB($username, $this->db)."'";
 	    
 	    $this->db->query($sql);
 	    if ($this->db->affected_rows() == 0)
@@ -116,10 +141,6 @@ class Users {
 		global $cfg;
 		
 		$clientclass = new Client;
-		/*if (!in_array("sysadmin", $perms))
-		{
-			$limit[] = 'perms NOT LIKE "%sysadmin%"';
-		}*/
 		
 		$allClients = $clientclass->getAvailableClients();
 
@@ -179,9 +200,6 @@ class Users {
 
         return ($users);
     } // end function
-
-
-	
 }
 
 /**
@@ -249,7 +267,7 @@ class User {
 		/* SQL-Statement to select by username */
 		$sql = "SELECT * FROM ".
 				$this->table
-				." WHERE username = '" .$username."'";
+				." WHERE username = '".Contenido_Security::escapeDB($username, $this->db)."'";
 		
 		/* Query the database */
 		$this->db->query($sql);
@@ -277,7 +295,7 @@ class User {
 		/* SQL-Statement to select by userID */
 		$sql = "SELECT * FROM ".
 				$this->table
-				." WHERE user_id = '" .$userID."'";
+				." WHERE user_id = '".Contenido_Security::escapeDB($userID, $this->db)."'";
 		
 		/* Query the database */
 		$this->db->query($sql);
@@ -337,7 +355,7 @@ class User {
 			}
 		}
 		
-		$sql .= " WHERE user_id = '" . $this->values['user_id']."'";
+		$sql .= " WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."'";
 		
 		$this->db->query($sql);
 		
@@ -377,9 +395,9 @@ class User {
     			foreach ($groups as $value)
     			{
     				$sql = "SELECT value FROM " .$cfg["tab"]["group_prop"]."
-    				WHERE group_id = '".$value."'
-    			      AND type = '$type'
-    				  AND name = '$name'";
+    				WHERE group_id = '".Contenido_Security::escapeDB($value, $this->db)."'
+    			      AND type = '".Contenido_Security::escapeDB($type, $this->db)."'
+    				  AND name = '".Contenido_Security::escapeDB($name, $this->db)."'";
     				$this->db->query($sql);		
     				
     				if ($this->db->next_record())
@@ -391,9 +409,9 @@ class User {
 		}
 		
 		$sql = "SELECT value FROM " .$cfg["tab"]["user_prop"]."
-				WHERE user_id = '".$this->values['user_id']."'
-			      AND type = '$type'
-				  AND name = '$name'";
+				WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."'
+			      AND type = '".Contenido_Security::escapeDB($type, $this->db)."'
+				  AND name = '".Contenido_Security::escapeDB($name, $this->db)."'";
 		$this->db->query($sql);
 		 
 		if ($this->db->next_record())
@@ -437,8 +455,8 @@ class User {
 	 			foreach ($aGroups as $iID)
 	 			{
 	 				$sSQL = "SELECT name, value FROM " .$cfg["tab"]["group_prop"]." 
-                			 WHERE group_id = '".$iID."' 
-                   			 AND type = '".$sType."'";
+                			 WHERE group_id = '".Contenido_Security::escapeDB($iID, $this->db)."' 
+                   			 AND type = '".Contenido_Security::escapeDB($sType, $this->db)."'";
 					$this->db->query($sSQL);
 					
 					while ($this->db->next_record())
@@ -450,8 +468,8 @@ class User {
 	 	}
 	 	
 	 	$sSQL = "SELECT name, value FROM " .$cfg["tab"]["user_prop"]." 
-            	 WHERE user_id = '".$this->values['user_id']."' 
-                 AND type = '$sType'";
+            	 WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."' 
+                 AND type = '".Contenido_Security::escapeDB($sType, $this->db)."'";
 		$this->db->query($sSQL);
 		
 		while ($this->db->next_record())
@@ -472,7 +490,7 @@ class User {
 		global $cfg;
 		
 		$sql = "SELECT type, name FROM " .$cfg["tab"]["user_prop"]."
-				WHERE user_id = '".$this->values['user_id']."'";
+				WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."'";
 		$this->db->query($sql);
 
 		if ($this->db->num_rows() == 0)
@@ -508,18 +526,18 @@ class User {
 		{
 	
 			$sql = "UPDATE ".$cfg["tab"]["user_prop"]."
-					SET value = '$value'
-					WHERE user_id = '".$this->values['user_id']."'
-			      	AND type = '$type'
-				  	AND name = '$name'";
+					SET value = '".Contenido_Security::escapeDB($value, $this->db)."'
+					WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."'
+			      	AND type = '".Contenido_Security::escapeDB($type, $this->db)."'
+				  	AND name = '".Contenido_Security::escapeDB($name, $this->db)."'";
 			$this->db->query($sql);
 		} else {
 			$sql = "INSERT INTO  ".$cfg["tab"]["user_prop"]."
-					SET value = '$value',
-						user_id = '".$this->values['user_id']."',
-			      		type = '$type',
-				  		name = '$name',
-                        iduserprop = '" .$this->db->nextid($cfg["tab"]["user_prop"])."'";
+					SET value = '".Contenido_Security::escapeDB($value, $this->db)."',
+						user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."',
+			      		type = '".Contenido_Security::escapeDB($type, $this->db)."',
+				  		name = '".Contenido_Security::escapeDB($name, $this->db)."',
+                        iduserprop = '".Contenido_Security::toInteger($this->db->nextid($cfg["tab"]["user_prop"]))."'";
 			$this->db->query($sql);
 		}
 	}
@@ -536,9 +554,9 @@ class User {
 		
 		/* Check if such an entry already exists */
 		$sql = "DELETE FROM  ".$cfg["tab"]["user_prop"]."
-					WHERE user_id = '".$this->values['user_id']."' AND
-			      		type = '$type' AND
-				  		name = '$name'";
+					WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."' AND
+			      		type = '".Contenido_Security::escapeDB($type, $this->db)."' AND
+				  		name = '".Contenido_Security::escapeDB($name, $this->db)."'";
 		$this->db->query($sql);
 	}
     /**
@@ -564,12 +582,10 @@ class User {
         
         while ($db->next_record())
         {
-            
             $newentry["username"] = $db->f("username");
             $newentry["realname"] = $db->f("realname");
 
             $users[$db->f("user_id")] = $newentry;
-
         }
 
         return ($users);
@@ -623,6 +639,8 @@ class User {
         global $cfg;
 
         $db = new DB_Contenido;
+		
+		$client = Contenido_Security::escapeDB($client, $db);
 
         $sql = "SELECT
                     user_id,
@@ -670,7 +688,7 @@ class User {
                 FROM
                 ". $cfg["tab"]["phplib_auth_user_md5"]."
                 WHERE
-                    user_id = \"".$userid."\"";
+                    user_id = '".Contenido_Security::escapeDB($userid, $db)."'";
 
         $db->query($sql);
         $db->next_record();
@@ -694,7 +712,7 @@ class User {
                 FROM
                 ". $cfg["tab"]["phplib_auth_user_md5"]."
                 WHERE
-                    user_id = \"".$userid."\"";
+                    user_id = '".Contenido_Security::escapeDB($userid, $db)."'";
 
         $db->query($sql);
         $db->next_record();
@@ -719,7 +737,7 @@ class User {
                 FROM
                 ". $cfg["tab"]["phplib_auth_user_md5"]."
                 WHERE
-                    username = \"".$username."\"";
+                    username = '".Contenido_Security::escapeDB($username, $db)."'";
 
         $db->query($sql);
         $db->next_record();
@@ -747,7 +765,7 @@ class User {
 				WHERE
 					(a.group_id  = b.group_id)
 					AND 
-					(b.user_id = '".$userid."')
+					(b.user_id = '".Contenido_Security::escapeDB($userid, $db)."')
 				";
 
         $db->query($sql);
