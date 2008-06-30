@@ -1151,7 +1151,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0)
 	$sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
 	    	   ".$cfg["tab"]["cat"]." AS a, ".$cfg["tab"]["cat_lang"]." AS b,
 	    	   ".$cfg["tab"]["cat_tree"]." AS c WHERE a.idclient = '".Contenido_Security::toInteger($client)."'
-	    	   AND b.idlang = '".Contenido_Security::toInteger($lang)."' AND b.idcat = a.idcat AND c.idcat = a.idcat ".Contenido_Security::escapeDB($addString)."
+	    	   AND b.idlang = '".Contenido_Security::toInteger($lang)."' AND b.idcat = a.idcat AND c.idcat = a.idcat ".Contenido_Security::escapeDB($addString, $db)."
 	           ORDER BY c.idtree";
 
 	$db->query($sql);
