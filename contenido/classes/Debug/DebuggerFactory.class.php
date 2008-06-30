@@ -1,21 +1,37 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Static Debugger Factory
-*
-* @version 1.2.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2007-03-27
-* modified 2008-05-07 Added Debug_DevNull, extended Exception message.
-* modified 2008-05-21 Added Debug_VisibleAdv
-* }}
-*
-* $Id$:
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Static Debugger Factory
+ *  
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version 1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2007-03-27
+ *   modified 2008-05-07 Added Debug_DevNull, extended Exception message.
+ *   modified 2008-05-21 Added Debug_VisibleAdv
+ *   
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 class DebuggerFactory {
     public static function getDebugger($sType) {
