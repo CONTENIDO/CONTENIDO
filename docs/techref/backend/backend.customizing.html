@@ -300,9 +300,58 @@ don't override each other.<br>
         insert a base href tag. Default: true.</td>
       <td style="vertical-align: top;">System, Clients</td>
     </tr>
+	<tr>
+      <td style="vertical-align: top;">edit_area</td>
+      <td style="vertical-align: top;">activated</td>
+      <td style="vertical-align: top;">(true, false): Defines if syntax highlighting editor is used in backend for modul, js, css and html code Default: true.</td>
+      <td style="vertical-align: top;">System, Clients, Groups, Users</td>
+    </tr>
+  	<tr>
+      <td style="vertical-align: top;">maintenance</td>
+      <td style="vertical-align: top;">mode</td>
+      <td style="vertical-align: top;">(disabled, enabled): In maintenance mode, only sysadmins are allowed to login into contenido backend. Default: disabled</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">pw_request</td>
+      <td style="vertical-align: top;">enable</td>
+      <td style="vertical-align: top;">(true, false): Property definies if contanido is allowed to generate new passwords for backenduser and submits them via mail. Default: true</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">system</td>
+      <td style="vertical-align: top;">mail_host</td>
+      <td style="vertical-align: top;">Host which is used for sending system mails (PW-Request). Default: localhost</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">system</td>
+      <td style="vertical-align: top;">mail_sender</td>
+      <td style="vertical-align: top;">Sender mail-adress of Contenido Systemmails. (PW-Request). Default: info@contenido.org</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">system</td>
+      <td style="vertical-align: top;">mail_sender_name</td>
+      <td style="vertical-align: top;">Sender name of Contenido Systemmails. (PW-Request). Default: Contenido Backend</td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">update</td>
+      <td style="vertical-align: top;">check</td>
+      <td style="vertical-align: top;">(true, false): Update checker notifies sysadmins, if there are new updates for contenido on contenido org. Default: false </td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
+	<tr>
+      <td style="vertical-align: top;">update</td>
+      <td style="vertical-align: top;">news_feed</td>
+      <td style="vertical-align: top;">(true, false): Update RSS News notifies sysadmins, about news on contenido org and security issues. Default: false </td>
+      <td style="vertical-align: top;">System</td>
+    </tr>
   </tbody>
 </table>
 <br>
+
 <h2>tinyMCE-related Parameters</h2>
 Starting with Contenido V4.6.16 all tinyMCE settings which may be specified for tinyMCE
 and the plugins may be specified as system, client, group or user setting. Use &quot;tinymce&quot;
