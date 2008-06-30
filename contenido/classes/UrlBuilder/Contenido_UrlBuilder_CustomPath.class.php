@@ -1,23 +1,38 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Implementation of IContenido_Frontend_Navigation_UrlBuilder to build URL in style index-a-1.html
-* 				with category path (/category/subcategory/index-a-1.html).
-*
-* @version 1.0.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-02-19
-* modified 2008-02-28 Changed to using Config for URL style
-* 
-* @todo Somehow get around using prCreateURLNameLocationString()
-* }}
-*
-* $Id$
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Implementation of IContenido_Frontend_Navigation_UrlBuilder to build URL in style index-a-1.html 
+ * with category path (/category/subcategory/index-a-1.html).
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-02-19
+ *   modified 2008-02-28 Changed to using Config for URL style
+ *   @todo Somehow get around using prCreateURLNameLocationString()
+ *   
+ *   $Id: 
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 include_once('Contenido_UrlBuilder.class.php');
 cInclude('includes', 'functions.pathresolver.php');
