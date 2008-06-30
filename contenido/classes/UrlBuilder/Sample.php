@@ -1,19 +1,35 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Sample for using a Contenido_UrlBuilder object
-*
-* @version 1.0.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-02-19
-* }}
-*
-* $Id$
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Sample for using a Contenido_UrlBuilder object
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-02-19
+ *   
+ *   $Id: 
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude('classes', 'UrlBuilder/Contenido_UrlBuilderFactory.class.php');
 
