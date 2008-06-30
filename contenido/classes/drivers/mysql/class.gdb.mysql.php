@@ -20,6 +20,7 @@
  * 
  * {@internal 
  *   created 2006-05-10
+ *   modified 2008-05-23 Added Debug_DevNull and Debug_VisibleAdv
  *   
  *   $Id: class.gdb.mysql.php,v 1.12 2006/10/05 23:44:43 bjoern.behrens Exp $
  * }}
@@ -30,7 +31,9 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+
 cInclude ("classes", 'drivers/class.gdb.driver.php');
+cInclude("classes", "class.security.php");
 
 class gdbMySQL extends gdbDriver
 {
@@ -39,7 +42,7 @@ class gdbMySQL extends gdbDriver
 		/* Build a regular LEFT JOIN */
 		$field  = "$destinationClass.$destinationPrimaryKey";
 		$tables = "";
-		$join   = "LEFT JOIN $destinationTable AS $destinationClass ON $sourceClass.$primaryKey = $destinationClass.$primaryKey";
+		$join   = "LEFT JOIN $destinationTable AS $destinationClass ON " . Contenido_Security::toInteger($sourceClass.$primaryKey) . " = " . Contenido_Security::toInteger($destinationClass.$primaryKey);
 		$where  = "";
 		
 		return array("field" => $field, "table" => $tables, "join" => $join, "where" => $where);
@@ -63,27 +66,27 @@ class gdbMySQL extends gdbDriver
 				break;
 			case "like":
 				$sqlStatement = "%s LIKE '%%%s%%'";
-				$sWhereStatement = sprintf($sqlStatement, $sField, $this->_oItemClassInstance->_inFilter($sRestriction));
+				$sWhereStatement = sprintf($sqlStatement, Contenido_Security::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
 				break;
 			case "likeleft":
 				$sqlStatement = "%s LIKE '%s%%'";
-				$sWhereStatement = sprintf($sqlStatement, $sField, $this->_oItemClassInstance->_inFilter($sRestriction));
+				$sWhereStatement = sprintf($sqlStatement, Contenido_Security::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
 				break;
 			case "likeright":
 				$sqlStatement = "%s LIKE '%%%s'";
-				$sWhereStatement = sprintf($sqlStatement, $sField, $this->_oItemClassInstance->_inFilter($sRestriction));
+				$sWhereStatement = sprintf($sqlStatement, Contenido_Security::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
 				break;
 			case "notlike":
 				$sqlStatement = "%s NOT LIKE '%%%s%%'";
-				$sWhereStatement = sprintf($sqlStatement, $sField, $this->_oItemClassInstance->_inFilter($sRestriction));
+				$sWhereStatement = sprintf($sqlStatement, Contenido_Security::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
 				break;
 			case "notlikeleft":
 				$sqlStatement = "%s NOT LIKE '%s%%'";
-				$sWhereStatement = sprintf($sqlStatement, $sField, $this->_oItemClassInstance->_inFilter($sRestriction));
+				$sWhereStatement = sprintf($sqlStatement, Contenido_Security::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
 				break;
 			case "notlikeright":
 				$sqlStatement = "%s NOT LIKE '%%%s'";
-				$sWhereStatement = sprintf($sqlStatement, $sField, $this->_oItemClassInstance->_inFilter($sRestriction));
+				$sWhereStatement = sprintf($sqlStatement, Contenido_Security::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
 				break;				
 			case "diacritics":
 				cInclude("classes", "class.chartable.php");
