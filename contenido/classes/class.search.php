@@ -1,21 +1,38 @@
 <?php
 /**
- * @file $RCSfile: class.search.php,v $
- * @project Contenido
+ * Project: 
+ * Contenido Content Management System
  * 
+ * Description: 
  * API to index a contenido article
  * API to search in the index structure
  * API to display the searchresults
  * 
- * @author willi.man
+ * Requirements: 
+ * @con_php_req 5.0
  * 
- * @created 2004/01/15 11:00:00
- * @modified $Date: 2007/01/30 20:00:01 $
- * @modifiedby $Author: bjoern.behrens $
- * @modifiedby $Author: timo.trautmann $
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.1
+ * @author     Willi Man
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
  * 
- * © four for business AG, www.4fb.de
+ * {@internal 
+ *   created 2004-01-15
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id: 
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 
 /**
@@ -50,11 +67,6 @@
  * The functions removeSpecialChars, setStopwords, setContentTypes and setCmsOptions should be sourced out into a new helper-class.
  * Keep in mind that class Search and SearchResult uses an instance of object Index.
  * Consider character tables in relation 'con_chartable'.
- * 
- * @version 1.0.1
- *
- * @author Willi Man
- * @copyright four for business AG <www.4fb.de>
  */
 
 cInclude('includes', 'functions.encoding.php');
@@ -210,16 +222,15 @@ class Index
      */   
     function start($idart, $aContent, $place = 'auto', $cms_options = array(), $aStopwords = array())
     {
-	    if (!is_int((int)$idart) OR $idart < 0)
-        {
-        	return NULL;
-        }else
-		{
+
+		if (!is_int((int)$idart) OR $idart < 0) {
+			return NULL;
+		} else {
 		    $this->idart = $idart;
 		}
 
 		$this->place = $place;
-        $this->keycode = $aContent;
+		$this->keycode = $aContent;
 		$this->setStopwords($aStopwords);
 		$this->setCmsOptions($cms_options);
 
@@ -274,8 +285,8 @@ class Index
 	              		$code = strip_tags($code); // remove html tags
 				  		if (function_exists('html_entity_decode'))
 	                    {
-	                    	/* Workaround for a PHP 4.3.0 bug */
-	                    	
+
+				/* Workaround for a PHP 4.3.0 bug */	                    	
 	                    	if (strlen($code) > 0)
 	                    	{
 	                    		$code = html_entity_decode($code);
@@ -340,15 +351,15 @@ class Index
 			
 			$index_string = '&'.$this->idart.'='.$occurrence.'('.$cms_types.')';
 			
-			if (!array_key_exists($keyword, $this->keywords_old)) // if keyword is new, save index information
-			{
-		    	$nextid = $this->db->nextid($this->cfg['tab']['keywords']);
+			if (!array_key_exists($keyword, $this->keywords_old)) {// if keyword is new, save index information
 
-            	$sql = "INSERT INTO ".$this->cfg['tab']['keywords']." 
-                        	(keyword, ".$this->place.", idlang, idkeyword) 
-                    	VALUES 
-							('".$keyword."', '".$index_string."', ".$this->lang.", ".$nextid.")";	
-									 
+				$nextid = $this->db->nextid($this->cfg['tab']['keywords']);
+
+				$sql = "INSERT INTO ".$this->cfg['tab']['keywords']." 
+					(keyword, ".$this->place.", idlang, idkeyword) 
+						VALUES 
+					('".Contenido_Security::escapeDB($keyword, $this->db)."', '".Contenido_Security::escapeDB($index_string, $this->db)."', ".Contenido_Security::toInteger($this->lang).", ".Contenido_Security::toInteger($nextid).")";	
+
 				if ($this->bDebug) {print "<pre>"; print $sql; print "</pre>";}
 				
 				$this->db->query($sql);
@@ -365,7 +376,7 @@ class Index
 
              	$sql = "UPDATE ".$this->cfg['tab']['keywords']." 
                      	SET ".$this->place." = '".$index_string."' 
-                     	WHERE idlang='".$this->lang."' AND keyword='".$keyword."'";
+                     	WHERE idlang='".Contenido_Security::toInteger($this->lang)."' AND keyword='".Contenido_Security::escapeDB($keyword, $this->db)."'";
 									 
 				if ($this->bDebug) {print "<pre>"; print $sql; print "</pre>";}
 				
@@ -389,7 +400,7 @@ class Index
 			if (strlen($index_string) == 0) // keyword is not referenced by any article
 			{
 			  	$sql = "DELETE FROM ".$this->cfg['tab']['keywords']." 
-                      	WHERE idlang='".$this->lang."' AND keyword='".$key_del."'";			 
+                      	WHERE idlang='".Contenido_Security::toInteger($this->lang)."' AND keyword='".Contenido_Security::escapeDB($key_del, $this->db)."'";			 
 									 
 				if ($this->bDebug) {print "<pre>"; print $sql; print "</pre>";}
 					
@@ -399,14 +410,14 @@ class Index
 			{
               	$sql = "UPDATE ".$this->cfg['tab']['keywords']." 
                       	SET ".$this->place." = '".$index_string."' 
-                      	WHERE idlang='".$this->lang."' AND keyword='".$key_del."'";
+                      	WHERE idlang='".Contenido_Security::toInteger($this->lang)."' AND keyword='".Contenido_Security::escapeDB($key_del, $this->db)."'";
 									 
 				if ($this->bDebug) {print "<pre>"; print $sql; print "</pre>";}
 				
               	$this->db->query($sql);
 			}
 		} 
-		 	    	
+
     }
 
     /**
@@ -423,8 +434,8 @@ class Index
 		      	FROM 
                   	".$this->cfg['tab']['keywords']."
 		      	WHERE
-		          	idlang=".$this->lang."  AND
-		          	(keyword IN ('".$keys."')  OR ".$this->place." REGEXP '&".$this->idart."=')";
+		          	idlang=".Contenido_Security::toInteger($this->lang)."  AND
+		          	(keyword IN ('".$keys."')  OR ".$this->place." REGEXP '&".Contenido_Security::toInteger($this->idart)."=')";
 									 
 		if ($this->bDebug) {print "<pre>"; print $sql; print "</pre>";}
 				
@@ -952,30 +963,30 @@ class Search
 		    	  	FROM 
               	 	   	".$this->cfg['tab']['keywords']."
 		      		WHERE
-		       		   	idlang=".$this->lang." AND
+		       		   	idlang=".Contenido_Security::toInteger($this->lang)." AND
 		          		keyword REGEXP 
 							".$search_regexp." ";
 	  	}elseif ($this->search_option == 'like') // like search      	
 	  	{
-	  		$search_like = implode(" OR keyword LIKE ", $tmp_searchwords); 
+	  		$search_like = implode(" OR keyword LIKE ", Contenido_Security::escapeDB($tmp_searchwords, $db)); 
 	
 			$sql = "SELECT 
 		  	      		keyword, auto
 		  	    	FROM 
           	        	".$this->cfg['tab']['keywords']."
 		      		WHERE
-		          		idlang=".$this->lang." AND
+		          		idlang=".Contenido_Security::toInteger($this->lang)." AND
 		          		keyword LIKE ".$search_like." ";
 	  	}elseif ($this->search_option == 'exact') // exact match
 	  	{
-	  		$search_exact = implode(" OR keyword = ", $tmp_searchwords); 
+	  		$search_exact = implode(" OR keyword = ", Contenido_Security::escapeDB($tmp_searchwords, $db)); 
 	
 			$sql = "SELECT 
 		  	      		keyword, auto
 		  	    	FROM 
           	        	".$this->cfg['tab']['keywords']."
 		      		WHERE
-		          		idlang=".$this->lang." AND
+		          		idlang=".Contenido_Security::toInteger($this->lang)." AND
 		          		keyword = ".$search_exact." ";
 	  	}
 		
@@ -1142,8 +1153,8 @@ class Search
             WHERE
                 A.idcat  = B.idcat AND
 				B.idcat  = C.idcat AND
-				C.idlang = '".$this->lang."' AND
-                B.idclient = '".$this->client."'
+				C.idlang = '".Contenido_Security::toInteger($this->lang)."' AND
+                B.idclient = '".Contenido_Security::toInteger($this->client)."'
             ORDER BY
                 idtree";
          
@@ -1151,7 +1162,7 @@ class Search
                
     	$this->db->query($sql);
 
-		$sub_cats = array();
+	$sub_cats = array();
     	$i = false;
 
     	while ( $this->db->next_record() ) 
@@ -1264,8 +1275,8 @@ class Search
             		".$this->cfg["tab"]["cat_lang"]." as C  
        			WHERE
             		".$sSearchRange."
-					B.idlang = '".$this->lang."' AND
-					C.idlang = '".$this->lang."' AND
+					B.idlang = '".Contenido_Security::toInteger($this->lang)."' AND
+					C.idlang = '".Contenido_Security::toInteger($this->lang)."' AND
 					A.idart = B.idart AND
 					A.idcat = C.idcat AND
 					".$sArtSpecs."
@@ -1295,8 +1306,8 @@ class Search
     			FROM
     				".$this->cfg['tab']['art_spec']."
     			WHERE
-    				client = ".$this->client." AND
-    				lang = ".$this->lang." AND
+    				client = ".Contenido_Security::toInteger($this->client)." AND
+    				lang = ".Contenido_Security::toInteger($this->lang)." AND
     				online = 1 ";
    		
    		if ($this->bDebug) {echo "<pre>$sql</pre>";}
@@ -1336,8 +1347,8 @@ class Search
     			FROM
     				".$this->cfg['tab']['art_spec']."
     			WHERE
-    				client = ".$this->client." AND
-    				artspec = '$sArtSpecName' ";
+    				client = ".Contenido_Security::toInteger($this->client)." AND
+    				artspec = '".Contenido_Security::escapeDB($sArtSpecName, $this->db)."' ";
    		
    		if ($this->bDebug) {echo "<pre>$sql</pre>";}
    		
@@ -1734,7 +1745,7 @@ class SearchResult
     {    
         $sql = "SELECT idcat 
 				FROM ".$this->cfg['tab']['cat_art']." 
-				WHERE idart = ".$artid." ";
+				WHERE idart = ".Contenido_Security::toInteger($artid)." ";
 
         $this->db->query($sql);
         
