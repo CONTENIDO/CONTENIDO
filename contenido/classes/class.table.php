@@ -1,14 +1,37 @@
 <?php
-
 /**
- *  Class Table
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Generic table builder
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- *  Generic table builder
+ * @package    Contenido Backend classes
+ * @version    1.0.2
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Frederic Schneider, add security fix
  *
- *  @author Timo A. Hummel <Timo.Hummel@4fb.de>
- *  @copyright  four for business AG <http:#www.4fb.de>
- *  @version 0.2
+ *   $Id$: 
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 class Table {
 
     /**
@@ -104,10 +127,6 @@ class Table {
         $this->directoutput = $m_directoutput;
 
     } # end function
-
-
-    
-
 
     /**
      * Begins the new table
