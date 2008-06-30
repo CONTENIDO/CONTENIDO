@@ -67,7 +67,7 @@ $form->setVar("frame", $frame);
 
 if ($workflow->virgin)
 {
-	$name = "New Workflow";
+	$name = i18n("New Workflow", "workflow");
 	$header = i18n("Create new workflow", "workflow");
 } else {
 	$header = i18n("Edit workflow", "workflow");

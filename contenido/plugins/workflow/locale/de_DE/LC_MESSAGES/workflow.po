@@ -410,3 +410,6 @@ msgstr "Workflowschritt speichen"
 msgid "Associate workflow with category"
 msgstr "Workflow zu Kategorien zuweisen"
 
+msgid "New Workflow"
+msgstr "Neuer Workflow"
+
