@@ -1,33 +1,49 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Sample for using a Debug object
-* 
-* Debug objects here are made for simple (!) debugging purposes.
-* Instead of writing echo '<pre>'.print_r($mMyVar, true).'</pre>';
-* you can now write $oDbg->show($mMyVar);
-* and get a formatted, readable representation of the passed variable.
-* 
-* There are Objects to display the contents of a variable 
-* to screen, to html comments and to a file.
-* 
-* When using Debug_File, there will be a debug.log created in /contenido/logs/
-* 
-* Using the Factory you can simply change the type of debugger by passing the type to load. 
-* By using "devnull" you can keep your debug code while in production systems and turn it on again by changing to "file" or "hidden" if needed.
-*
-* @version 1.1.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-02-19
-* modified 2008-05-23 Added Debug_DevNull and Debug_VisibleAdv
-* }}
-*
-* $Id$:
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Sample for using a Debug object
+ * Debug objects here are made for simple (!) debugging purposes.
+ * Instead of writing echo '<pre>'.print_r($mMyVar, true).'</pre>';
+ * you can now write $oDbg->show($mMyVar);
+ * and get a formatted, readable representation of the passed variable. 
+ * 
+ * There are Objects to display the contents of a variable 
+ * to screen, to html comments and to a file.
+ * 
+ * When using Debug_File, there will be a debug.log created in /contenido/logs/
+ * 
+ * Using the Factory you can simply change the type of debugger by passing the type to load. 
+ * By using "devnull" you can keep your debug code while in production systems and turn it on again by changing to "file" or "hidden" if needed.
+ *  
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version 1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-02-19
+ *   modified 2008-05-23 Added Debug_DevNull and Debug_VisibleAdv
+ *   
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude('classes', 'Debug/DebuggerFactory.class.php');
 
