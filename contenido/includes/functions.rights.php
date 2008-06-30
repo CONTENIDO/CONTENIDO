@@ -223,10 +223,10 @@ function deleteRightsForElement ($area, $iditem, $idlang=false) {
 
    global $cfg, $perm, $area_tree, $client;
 
-   // get all idarea values for $area
-   $AreaContainer = $area_tree[$perm->showareas(Contenido_Security::toInteger($area))];
-
    $db = new DB_Contenido;
+   
+   // get all idarea values for $area
+   $AreaContainer = $area_tree[$perm->showareas(Contenido_Security::escapeDB($area, $db))];
 
    $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE idcat='".Contenido_Security::toInteger($iditem)."' AND idclient='".Contenido_Security::toInteger($client)."' AND idarea IN (".implode (',', $AreaContainer).")";
    if ($idlang) {
