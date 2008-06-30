@@ -34,7 +34,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
 /**
  * Contenido API - Index Object
  * 

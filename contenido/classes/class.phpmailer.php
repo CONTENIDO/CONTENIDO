@@ -1,22 +1,38 @@
 <?php
-////////////////////////////////////////////////////
-// PHPMailer - PHP email class
-//
-// Version 1.73
-//
-// Class for sending email using either
-// sendmail, PHP mail(), or SMTP.  Methods are
-// based upon the standard AspEmail(tm) classes.
-//
-// Copyright (C) 2001 - 2003  Brent R. Matzelle
-//
-// Changes for Contenido (B. Behrens (HerrB), 30.07.2006):
-// - Change for translations to i18n support
-//   (replace $this->lang(... to i18n(... )
-// - Mentioning system setting about -f option
-//
-// License: LGPL, see LICENSE
-////////////////////////////////////////////////////
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * PHP email class
+ * Class for sending email using either sendmail,
+ * PHP mail() or SMTP. Methods are based upon 
+ * the standard AspEmail(tm) classes.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author    Brent R. Matzelle
+ * @copyright  Brent R. Matzelle
+ * @license    LGPL, see LICENSE
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2001
+ *   modified 2006-07-30, HerrB, changes for contenido
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * PHPMailer - PHP email transport class
