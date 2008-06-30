@@ -1,14 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.frontend.groups.php,v $
-* Project   :   Contenido
-* Descr     :   Frontend groups class
-* Modified  :   $Date: 2005/11/08 17:20:31 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.frontend.groups.php,v 1.6 2005/11/08 17:20:31 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Frontend groups class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.6.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.genericdb.php");
 
 /**

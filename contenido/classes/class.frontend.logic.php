@@ -1,14 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.frontend.logic.php,v $
-* Project   :   Contenido
-* Descr     :   Frontend logic base class
-* Modified  :   $Date: 2005/05/20 12:38:42 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.frontend.logic.php,v 1.2 2005/05/20 12:38:42 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Frontend logic base class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.2.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * FrontendLogic: This is the base class for all frontend related logic.

@@ -1,14 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.frontend.users.php,v $
-* Project   :   Contenido
-* Descr     :   Frontend user class
-* Modified  :   $Date: 2005/11/08 17:20:31 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.frontend.users.php,v 1.16 2005/11/08 17:20:31 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Frontend user class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.1.7
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.genericdb.php");
 cInclude("classes", "class.frontend.groups.php");
 
@@ -72,7 +95,7 @@ class FrontendUserCollection extends ItemCollection {
 		global $client, $auth;
 		
 		/* Check if the username already exists */
-		$this->select("idclient='$client' AND username='".urlencode($username)."'");
+		$this->select("idclient='".Contenido_Security::toInteger($client)."' AND username='".urlencode($username)."'");
 
 		if ($this->next())
 		{
@@ -92,7 +115,7 @@ class FrontendUserCollection extends ItemCollection {
 		
 		/* Put this user into the default groups */
 		$fegroups = new FrontendGroupCollection;
-		$fegroups->select("idclient = '$client' AND defaultgroup='1'");
+		$fegroups->select("idclient = '".Contenido_Security::toInteger($client)."' AND defaultgroup='1'");
 
 		$members = new FrontendGroupMemberCollection;
 			
@@ -100,8 +123,7 @@ class FrontendUserCollection extends ItemCollection {
 			
 		while ($fegroup = $fegroups->next())
 		{
-			$idgroup = $fegroup->get("idfrontendgroup");
-			
+			$idgroup = $fegroup->get("idfrontendgroup");			
 			$members->create($idgroup, $iduser);
 		}
 		
