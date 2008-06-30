@@ -1,14 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.todo.php,v $
-* Project   :   Contenido
-* Descr     :   TODO / Reminder system
-* Modified  :   $Date: 2004/05/19 09:03:43 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.todo.php,v 1.9 2004/05/19 09:03:43 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * TODO / Reminder System
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id: 
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.communications.php");
 cInclude("classes", "class.htmlelements.php");
@@ -126,7 +148,7 @@ class TODOLink extends cHTMLLink
 		$message = urlencode($message);
 		
 		$this->setEvent("click",  'javascript:window.open('."'".$sess->url("main.php?subject=$subject&message=$message&area=todo&frame=1&itemtype=$itemtype&itemid=$itemid")."', 'todo', 'scrollbars=yes, resizable=yes, height=350, width=550');");
-        $this->setEvent("mouseover",  "this.style.cursor='pointer'");
+		$this->setEvent("mouseover",  "this.style.cursor='pointer'");
 		
 		$img = new cHTMLImage("images/but_setreminder.gif");
 		$img->setStyle("padding-left: 2px; padding-right: 2px;");
