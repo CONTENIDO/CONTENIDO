@@ -1442,7 +1442,7 @@ function conGenerateCodeForAllartsUsingLayout($idlay)
     global $cfg;
     $db = new DB_Contenido;
 
-    $sql = "SELECT idtpl FROM ".$cfg["tab"]["tpl"]." WHERE idlay=''".Contenido_Security::toInteger($idlay)."'";
+    $sql = "SELECT idtpl FROM ".$cfg["tab"]["tpl"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
     $db->query($sql);
     while ($db->next_record())
     {
