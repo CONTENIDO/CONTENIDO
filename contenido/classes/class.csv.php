@@ -1,15 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.csv.php,v $
-* Project   :   Contenido
-* Descr     :   CSV Handling class
-* Modified  :   $Date: 2005/09/15 12:24:58 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.csv.php,v 1.4 2005/09/15 12:24:58 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * CSV Handling class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.4
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 class CSV
 {
@@ -35,6 +56,10 @@ class CSV
 	
 	function setCell($row, $cell, $data)
 	{
+		$row 	= Contenido_Security::escapeDB($row);
+		$cell 	= Contenido_Security::escapeDB($cell);
+		$data 	= Contenido_Security::escapeDB($data);
+		
 		$data = str_replace('"', '""', $data);
 		$this->_data[$row][$cell] = '"'.$data.'"';
 	}

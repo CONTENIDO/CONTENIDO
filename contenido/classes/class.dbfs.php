@@ -1,19 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Database based file system
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.8
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-12-21
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.dbfs.php,v $
-* Project   :   Contenido
-* Descr     :   Database based file system
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   21.12.2003
-* Modified  :   $Date: 2006/10/05 23:39:03 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.dbfs.php,v 1.8 2006/10/05 23:39:03 bjoern.behrens Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.genericdb.php");
 
@@ -33,16 +50,18 @@ class DBFSCollection extends ItemCollection
 	{
 		global $client, $auth;
 		
-		$path = $this->strip_path($path);
-		$dir = dirname($path);
-		$file = basename($path);
+		$path 	= Contenido_Security::escapeDB($path, null);
+		$client = Contenido_Security::toInteger($client);
+		$path 	= $this->strip_path($path);
+		$dir 	= dirname($path);
+		$file 	= basename($path);
 		
 		if ($dir == ".")
 		{
 			$dir = "";
 		}
 		
-		$this->select("dirname = '$dir' AND filename = '$file' AND idclient = '$client' LIMIT 1");
+		$this->select("dirname = '".$dir."' AND filename = '".$file."' AND idclient = '".$client."' LIMIT 1");
 		
 		if ($item = $this->next())
 		{
@@ -71,7 +90,7 @@ class DBFSCollection extends ItemCollection
 	function writeFromFile ($localfile, $targetfile)
 	{
 		$targetfile = $this->strip_path($targetfile);
-		$mimetype = mime_content_type($localfile);
+		$mimetype 	= mime_content_type($localfile);
 		
 		$this->write($targetfile, file_get_contents($localfile), $mimetype);
 	}
@@ -98,16 +117,17 @@ class DBFSCollection extends ItemCollection
 	{
 		global $client;
 		
-		$path = $this->strip_path($path);
+		$path 	= $this->strip_path($path);
+		$client = Contenido_Security::toInteger($client);
 		
 		/* Are there any subdirs? */
-		$this->select("dirname LIKE '$path/%' AND idclient = '$client' LIMIT 1");
+		$this->select("dirname LIKE '".$path."/%' AND idclient = '".$client."' LIMIT 1");
 		if ($this->count() > 0)
 		{
 			return true;
 		}
 		
-		$this->select("dirname LIKE '$path%' AND idclient = '$client' LIMIT 2");
+		$this->select("dirname LIKE '".$path."%' AND idclient = '".$client."' LIMIT 2");
 
 		if ($this->count() > 1)
 		{
@@ -126,17 +146,18 @@ class DBFSCollection extends ItemCollection
 	{
 		global $client;
 		
-		$path = $this->strip_path($path);
-		
-		$dir = dirname($path);
-		$file = basename($path);
+		$path 	= $this->strip_path($path);
+		$dir 	= dirname($path);
+		$file 	= basename($path);
 		
 		if ($dir == ".")
 		{
 			$dir = "";	
 		}
 		
-		$this->select("dirname = '$dir' AND filename = '$file' AND idclient = '$client' LIMIT 1");
+		$client = Contenido_Security::toInteger($client);
+		
+		$this->select("dirname = '".$dir."' AND filename = '".$file."' AND idclient = '".$client."' LIMIT 1");
 		if ($this->next())
 		{
 			return true;
@@ -156,7 +177,9 @@ class DBFSCollection extends ItemCollection
 			return true;
 		}		
 		
-		$this->select("dirname = '$path' AND filename = '.' AND idclient = '$client' LIMIT 1");
+		$client = Contenido_Security::toInteger($client);
+		
+		$this->select("dirname = '".$path."' AND filename = '.' AND idclient = '".$client."' LIMIT 1");
 		if ($this->next())
 		{
 			return true;
@@ -175,6 +198,8 @@ class DBFSCollection extends ItemCollection
 	function create ($path, $mimetype = "", $content = "")
 	{
 		global $client, $cfg, $auth;
+		
+		$client = Contenido_Security::toInteger($client);
 
 		if (substr($path,0,1) == "/")
         {
@@ -199,7 +224,7 @@ class DBFSCollection extends ItemCollection
 			if ($dir != "")
 			{
     			/* Check if the directory exists. If not, create it. */
-    			$this->select("dirname = '$dir' AND filename = '.' AND idclient = '$client' LIMIT 1");
+    			$this->select("dirname = '".$dir."' AND filename = '.' AND idclient = '".$client."' LIMIT 1");
     			if (!$this->next())
     			{
     				$this->create($dir."/.");
@@ -253,17 +278,17 @@ class DBFSCollection extends ItemCollection
 	{
 		global $client;
 		
-		$path = $this->strip_path($path);
-		
-		$dirname = dirname($path);
-		$filename = basename($path);
+		$client 	= Contenido_Security::toInteger($client);
+		$path 		= $this->strip_path($path);
+		$dirname 	= dirname($path);
+		$filename 	= basename($path);
 		
 		if ($dirname == ".")
 		{
 			$dirname = "";	
 		}
 				
-		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client' LIMIT 1");
+		$this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = '".$client."' LIMIT 1");
 		if ($item = $this->next())
 		{
 			$item->set("content", $content);
@@ -276,17 +301,17 @@ class DBFSCollection extends ItemCollection
 	{
 		global $client;
 		
-		$path = $this->strip_path($path);
-		
-		$dirname = dirname($path);
-		$filename = basename($path);
+		$client 	= Contenido_Security::toInteger($client);	
+		$path 		= $this->strip_path($path);
+		$dirname 	= dirname($path);
+		$filename 	= basename($path);
 		
 		if ($dirname == ".")
 		{
 			$dirname = "";
 		}
 				
-		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client' LIMIT 1");
+		$this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = '".$client."' LIMIT 1");
 		if ($item = $this->next())
 		{
 			return $item->get("size");
@@ -297,15 +322,16 @@ class DBFSCollection extends ItemCollection
 	{
 		global $client;
 		
-		$dirname = dirname($path);
-		$filename = basename($path);
+		$client 	= Contenido_Security::toInteger($client);
+		$dirname	= dirname($path);
+		$filename 	= basename($path);
 		
 		if ($dirname == ".")
 		{
 			$dirname = "";	
 		}
 				
-		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client' LIMIT 1");
+		$this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = '".$client."' LIMIT 1");
 		if ($item = $this->next())
 		{
 			return ($item->get("content"));	
@@ -316,9 +342,10 @@ class DBFSCollection extends ItemCollection
 	{
 		global $client;
 		
-		$path = $this->strip_path($path);
-		$dirname = dirname($path);
-		$filename = basename($path);
+		$client 	= Contenido_Security::toInteger($client);
+		$path 		= $this->strip_path($path);
+		$dirname 	= dirname($path);
+		$filename 	= basename($path);
 		
 		if ($dirname == ".")
 		{
@@ -326,7 +353,7 @@ class DBFSCollection extends ItemCollection
 		}
 				
 		
-		$this->select("dirname = '$dirname' AND filename = '$filename' AND idclient = '$client' LIMIT 1");
+		$this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = '".$client."' LIMIT 1");
 		if ($item = $this->next())
 		{
 			$this->delete($item->get("iddbfs"));	
@@ -359,10 +386,9 @@ class DBFSCollection extends ItemCollection
 		if ($contenido) {
 			return true;
 		}
-		$sPath = (string)$sPath;
+		$sPath 		= Contenido_Security::toString($sPath);
 		$bAvailable = true;
-
-		$iTimeMng = (int)$oProperties->getValue("upload", $sPath, "file", "timemgmt");
+		$iTimeMng 	= Contenido_Security::toInteger($oProperties->getValue("upload", $sPath, "file", "timemgmt"));
 		if ($iTimeMng == 0) {
 			return true;
 		}
@@ -429,7 +455,4 @@ class DBFSItem extends Item
 	}
 	
 }
-
-
-
 ?>

@@ -1,19 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.communications.php,v $
-* Project   :   Contenido
-* Descr     :   Communication/Messaging system
-* Modified  :   $Date: 2004/05/19 09:02:52 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.communications.php,v 1.5 2004/05/19 09:02:52 timo.hummel Exp $
-******************************************/
-
 /**
- * Communications class
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Communication/Messaging system
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.5
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
- 
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 class CommunicationCollection extends ItemCollection {
 	
 	/**
@@ -36,9 +54,11 @@ class CommunicationCollection extends ItemCollection {
 		global $auth, $client;
 		$item = parent::create();
 		
+		$client = Contenido_Security::toInteger($client);
+		
 		$item->set("idclient", $client);
 		$item->set("author", $auth->auth["uid"]);
-		$item->set("created", date("Y-m-d H:i:s"),false);
+		$item->set("created", date("Y-m-d H:i:s"), false);
 		
 		return $item;
 	}
@@ -65,11 +85,9 @@ class CommunicationItem extends Item {
 	{
 		global $auth;
 		$this->set("modifiedby", $auth->auth["uid"]);
-		$this->set("modified", date("Y-m-d H:i:s"),false);
+		$this->set("modified", date("Y-m-d H:i:s"), false);
 		
 		parent::store();	
 	}
-
-	
 }
 ?>

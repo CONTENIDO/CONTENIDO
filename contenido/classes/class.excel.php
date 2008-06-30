@@ -1,31 +1,54 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.excel.php,v $
-* Project   :   Contenido
-* Descr     :   Excel Handling class
-* Modified  :   $Date: 2005/06/29 11:54:46 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.excel.php,v 1.2 2005/06/29 11:54:46 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Excel handling class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.2
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("pear", "Spreadsheet/Excel/Writer.php");
 
 class ExcelWorksheet
 {
-	
 	var $_data = array();
 	var $_title;
 	var $_filename;
 	
 	function ExcelWorksheet ($title, $filename)
 	{
-		$this->_title = $title;
-		$this->_filename = $filename;
+		$this->_title 		= Contenido_Security::escapeDB($title, null);
+		$this->_filename 	= Contenido_Security::escapeDB($filename, null);
 	}
 	
 	function setRow ($row)
 	{
+		$row = Contenido_Security::escapeDB($row, null);
 		$args = func_num_args();
 		
 		for ($arg=1;$arg<$args;$arg++)
@@ -37,6 +60,9 @@ class ExcelWorksheet
 	
 	function setCell($row, $cell, $data)
 	{
+		$row 	= Contenido_Security::escapeDB($row, null);
+		$cell 	= Contenido_Security::escapeDB($cell, null);
+		$data 	= Contenido_Security::escapeDB($data, null);
 		$this->_data[$row][$cell] = $data;
 	}
 	

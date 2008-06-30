@@ -1,12 +1,37 @@
 <?php
-
 /**
- * Class Form
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Class for creating form pages
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @version 1.0
- * @copyright four for business 2002
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 class Form {
 
     /**
@@ -83,6 +108,7 @@ class Form {
      * @return void
      */
     function Add($name) {
+		$name = Contenido_Security::escapeDB($name, null);
         $this->counter ++;
         $this->fields[$this->counter]['name'] = $name;
     } // end function
@@ -93,6 +119,8 @@ class Form {
      * @return void
      */
     function SetDefault($name, $value) {
+		$name 	= Contenido_Security::escapeDB($name, null);
+		$value 	= Contenido_Security::escapeDB($value, null);
         $this->default[$name] = $value;
     } // end function
 
@@ -104,6 +132,8 @@ class Form {
      * @return void
      */
     function Define($which, $value) {
+		$which = Contenido_Security::escapeDB($name, null);
+		$value = Contenido_Security::escapeDB($value, null);
         if (0 == $this->counter) {
             $this->$which = $value;
         } else {
@@ -126,7 +156,8 @@ class Form {
      * @return void
      */
     function Generate($template) {
-
+		$template = Contenido_Security::escapeDB($template);
+		
         // get form values
         $this->GetFormValues();
 
