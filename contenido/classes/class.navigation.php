@@ -1,15 +1,36 @@
 <?php
-
 /**
- * class Contenido_Navigation
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Class for the dynamic Contenido backend navigation
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * Class for the dynamic Contenido
- * backend navigation.
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
  *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <http://www.4fb.de>
- *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.lang.php");
 cInclude("includes", "functions.api.string.php");
@@ -267,7 +288,7 @@ class Contenido_Navigation {
             }
 
             # generate a sub menu item.
-			      $sub->set('s', 'LEFTPOS', $submenuIndent);
+			$sub->set('s', 'LEFTPOS', $submenuIndent);
             $t_sub .= $sub->generate($cfg['path']['templates'] . $cfg['templates']['submenu'], true);
             $cnt ++;
         }
@@ -326,7 +347,7 @@ class Contenido_Navigation {
                    very soon :) */
 
                $sql = "SELECT idclient FROM ".$cfg["tab"]["clients_lang"]." WHERE
-						idlang = '$key'";
+						idlang = '".Contenido_Security::toInteger($key)."'";
 
 			   $db->query($sql);
 
@@ -390,5 +411,4 @@ class Contenido_Navigation {
     } # end function
 
 } # end class
-
 ?>

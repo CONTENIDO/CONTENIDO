@@ -1,12 +1,37 @@
 <?php
-
 /**
- * Class Layout
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Class for layout information and management
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 1.0
- * @copyright four for business 2003
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 class Layout {
 
     /**
@@ -58,6 +83,7 @@ class Layout {
         global $cfg;
 
         $db = new DB_Contenido;
+		$layout = Contenido_Security::toInteger($layout);
 
         $sql = "SELECT
                     name
@@ -81,6 +107,7 @@ class Layout {
         global $cfg;
 
         $db = new DB_Contenido;
+		$layout = Contenido_Security::toInteger($layout);
 
         $sql = "SELECT
                     idlay
@@ -105,7 +132,6 @@ class Layout {
     function layoutInUse( $layout ) {
         global $cfg;
 
-
         if (!is_numeric($layout))
         {
             $layout = $this->getLayoutID($layout);
@@ -128,11 +154,7 @@ class Layout {
         } else {
             return true;
         }
-
-
     } // end function  
-    
-
 } // end class
 
 ?>

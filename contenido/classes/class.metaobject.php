@@ -1,14 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.metaobject.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Base Object
-* Modified  :   $Date: 2006/06/09 12:46:27 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.metaobject.php,v 1.4 2006/06/09 12:46:27 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Base Object
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.4
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /* Introduction to metaobjects
  *
@@ -43,7 +65,6 @@ class cMetaObject
      * @access private
 	 */
 	var $_iconFilename;
-	
 	
 	var $_objectInvalid;
 	
@@ -85,6 +106,7 @@ class cMetaObject
      */	
 	function setIcon ($icon = false)
 	{
+		$icon = Contenido_Security::escapeDB($icon, null);
 		$this->_iconFilename = $icon;
 	}
 	
@@ -98,7 +120,6 @@ class cMetaObject
 	{
 		return $this->_iconFilename;
 	}
-	
 	
 	function setPayloadObject ($object)
 	{
@@ -364,9 +385,6 @@ class cMetaObject
 		eval($statement);
 		
 		return ($action);	
-	}	
-
-	
+	}
 }
-
 ?>
