@@ -178,7 +178,7 @@ class InUseCollection extends ItemCollection {
      */	
 	function removeSessionMarks ($session)
 	{
-		$session = Contenido_Security::escapeDB($session);
+		$session = Contenido_Security::escapeDB($session, null);
 		$this->select("session = '".$session."'");
 		
 		while ($obj = $this->next())
