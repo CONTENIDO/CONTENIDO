@@ -1,14 +1,36 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.iterator.php,v $
-* Project   :   Contenido
-* Descr     :   Iterator class
-* Modified  :   $Date: 2005/01/06 15:43:03 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.iterator.php,v 1.2 2005/01/06 15:43:03 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Iterator class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.2
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * cIterator: A class which represents the C/C++/JAVA Iterator support.

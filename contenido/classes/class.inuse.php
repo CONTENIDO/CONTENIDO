@@ -1,19 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido In-Use classes
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.8
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-07-18
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.inuse.php,v $
-* Project   :   Contenido
-* Descr     :   In-Use classes
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   18.07.2003
-* Modified  :   $Date: 2006/04/28 09:20:55 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.inuse.php,v 1.8 2006/04/28 09:20:55 timo.hummel Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.genericdb.php");
 
 /**
@@ -55,7 +73,12 @@ class InUseCollection extends ItemCollection {
      */
    	function markInUse ($type, $objectid, $session, $user)
 	{
-		$this->select("type = '$type' AND objectid = '$objectid'");
+		$type 		= Contenido_Security::escapeDB($type, null);
+		$objectid 	= Contenido_Security::escapeDB($objectid, null);
+		$session 	= Contenido_Security::escapeDB($session, null);
+		$user		= Contenido_Security::escapeDB($user, null);
+		
+		$this->select("type = '".$type."' AND objectid = '".$objectid."'");
 		
 		if (!$this->next())
 		{
@@ -66,9 +89,7 @@ class InUseCollection extends ItemCollection {
 			$newitem->set("userid", $user);
 			$newitem->store();
 		}
-			
 	}
-
 
 	/**
      * Removes the "in use" mark from a specific object.
@@ -79,8 +100,11 @@ class InUseCollection extends ItemCollection {
      */	
 	function removeMark ($type, $objectid, $session)
 	{
-				
-		$this->select("type = '$type' AND objectid = '$objectid' AND session = '$session'");
+		$type 		= Contenido_Security::escapeDB($type, null);
+		$objectid 	= Contenido_Security::escapeDB($objectid, null);
+		$session 	= Contenido_Security::escapeDB($session, null);
+		
+		$this->select("type = '".$type."' AND objectid = '".$objectid."' AND session = '".$session."'");
 		
 		if ($obj = $this->next())
 		{
@@ -103,8 +127,10 @@ class InUseCollection extends ItemCollection {
      */	
 	function removeTypeMarks ($type, $session)
 	{
-				
-		$this->select("type = '$type' AND session = '$session'");
+		$type		= Contenido_Security::escapeDB($type, null);
+		$session	= Contenido_Security::escapeDB($session, null);
+		
+		$this->select("type = '".$type."' AND session = '".$session."'");
 		
 		while ($obj = $this->next())
 		{
@@ -127,8 +153,10 @@ class InUseCollection extends ItemCollection {
      */	
 	function removeItemMarks ($type, $itemid)
 	{
-				
-		$this->select("type = '$type' AND objectid = '$itemid'");
+		$type 	= Contenido_Security::escapeDB($type, null);
+		$itemid = Contenido_Security::escapeDB($itemid, null);
+		
+		$this->select("type = '".$type."' AND objectid = '".$itemid."'");
 		
 		while ($obj = $this->next())
 		{
@@ -150,8 +178,8 @@ class InUseCollection extends ItemCollection {
      */	
 	function removeSessionMarks ($session)
 	{
-				
-		$this->select("session = '$session'");
+		$session = Contenido_Security::escapeDB($session);
+		$this->select("session = '".$session."'");
 		
 		while ($obj = $this->next())
 		{
@@ -175,7 +203,10 @@ class InUseCollection extends ItemCollection {
      */	
 	function checkMark ($type, $objectid)
 	{
-		$this->select("type = '$type' AND objectid = '$objectid'");
+		$type 		= Contenido_Security::escapeDB($type, null);
+		$objectid 	= Contenido_Security::escapeDB($objectid, null);
+		
+		$this->select("type = '".$type."' AND objectid = '".$objectid."'");
 		
 		if ($obj = $this->next())
 		{
@@ -228,10 +259,10 @@ class InUseCollection extends ItemCollection {
             	{
             		$alt = i18n("Click here if you want to override the lock");
             	
-            		$link = $sess->url("$location&overridetype=$type&overrideid=$objectid");
+            		$link = $sess->url($location."&overridetype=".$type."&overrideid=".$objectid);
             		
             		$warnmessage = i18n("Do you really want to override the lock?");
-            		$script = "javascript:if (window.confirm('$warnmessage') == true) { window.location.href  = '$link';}";
+            		$script = "javascript:if (window.confirm('".$warnmessage."') == true) { window.location.href  = '".$link."';}";
             		$override = '<br><br><a alt="'.$alt.'" title="'.$alt.'" href="'.$script.'" class="standard">['.i18n("Override lock").']</a> <a href="javascript://" class="standard" onclick="elem = document.getElementById(\'contenido_notification\'); elem.style.display=\'none\'">['.i18n("Hide notification").']</a>';
             	} else {
             		$override = "";
@@ -254,8 +285,6 @@ class InUseCollection extends ItemCollection {
         	return $inUse;
         }
 	}	
-
-
 }
 
 /**
