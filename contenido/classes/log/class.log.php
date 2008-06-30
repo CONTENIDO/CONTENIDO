@@ -1,39 +1,53 @@
 <?php
-/**********************************************************************************
-* File      :   $RCSfile: class.log.php,v $
-* Project   :   Contenido 
-* Descr     :   Log facility
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   28.09.2004
-* Modified  :   $Date: 2006/04/28 09:20:55 $
-*
-* © four for business AG, www.4fb.de
-*
-* This file is part of the Contenido Content Management System. 
-*
-* $Id: class.log.php,v 1.2 2006/04/28 09:20:55 timo.hummel Exp $
-***********************************************************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Log facility
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.2
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2004-09-28
+ *   
+ *   $Id: class.log.php,v 1.2 2006/04/28 09:20:55 timo.hummel Exp $
+ * }}
+ * 
+ */
 
-/** Examples **
+ /** Examples **
 
-Standard logging (file logger, to logs/contenido.log):
+  Standard logging (file logger, to logs/contenido.log):
 
-$log = new cLog;
-$log->("this is a log message");
+  $log = new cLog;
+  $log->("this is a log message");
 
-=> [2004-09-28 14:38:02] [2e8e00efa314c8c2c07ae7316b875529] [   info   ] this is a log message
+  => [2004-09-28 14:38:02] [2e8e00efa314c8c2c07ae7316b875529] [   info   ] this is a log message
 
 
-Standard logging (file logger, custom log format):
-$log = new cLog;
-$log->setLogFormat("%date %message");
-$log->("this log message just contains the date and the message");
+  Standard logging (file logger, custom log format):
+  $log = new cLog;
+  $log->setLogFormat("%date %message");
+  $log->("this log message just contains the date and the message");
 
-=> [2004-09-28 14:38:02] this log message just contains the date and the message
-
+  => [2004-09-28 14:38:02] this log message just contains the date and the message
 */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude("pear", "Log.php");
 cInclude("includes", "functions.general.php");
