@@ -4654,21 +4654,36 @@ msgid "Insert recipients using this format:<br />&lt;data&gt;[Delimiter]&lt;data
 msgstr "Empf&auml;nger im folgenden Format eingeben: <br />&lt;Daten&gt;[Trennzeichen]&lt;Daten&gt;... - jeweils eine Zeile pro Empf&auml;nger."
 
 #: contenido/includes/include.recipients_import.php:258
-msgid "<br /><br />The first line must contain the column names; this specifies the column order, "
-msgstr "<br /><br />Die erste Zeile muss die Spaltennamen enthalten; dies definiert die Spaltenreihenfolge, "
+msgid "Specify colum types:"
+msgstr "Spaltentypen definieren:"
+
+msgid "<br />The first line must contain the column names; this specifies the column order.<br />&lt;column name&gt;[delimiter]&lt;column name&gt;..."
+msgstr "<br />Die erste Zeile muss die Spaltennamen enthalten; dies definiert die Spaltenreihenfolge.<br />&lt;Spaltenname&gt;[Separator]&lt;Spaltenname&gt;..."
+
+msgid "The recipients have to be entered using the following format:<br />&lt;data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line."
+msgstr "Die Empf&auml;nger m&uuml;ssen nach dem folgenden Format eingegeben werden: <br />&lt;data&gt;[Separator]&lt;data&gt;... - Jeder Empf&auml;nger in einer neuen Zeile."
+
+msgid "Data structure:"
+msgstr "Datenstruktur:"
+
+msgid "Example:"
+msgstr "Beispiel:"
+
+msgid "Import information"
+msgstr "Import Hinweise"
 
 #: contenido/includes/include.recipients_import.php:259
 msgid "<br />e.g. name;mail -> first column contains the name, the second the mail address."
 msgstr "<br />z.B. Name;Mail -> erste Spalte enth&auml;lt den Namen, die zweite die E-Mail-Adresse."
 
 #: contenido/includes/include.recipients_import.php:260
-msgid "<br /><br />Example:<br />name;mail<br />Smith;jon.smith@domain.tld"
-msgstr "<br /><br />Beispiel:<br />Name;Mail<br />Smith;jon.smith@example.org"
+msgid "<br />name;mail;confirmed<br />Smith;jon.smith@example.org;1"
+msgstr "<br /><br />name;mail;best&auml;tigt<br />Smith;jon.smith@example.org;1"
 
 #: contenido/includes/include.recipients_import.php:261
 #, php-format
-msgid "<br /><br />The following column names will be recognized:<br />%s"
-msgstr "<br /><br />Die folgenden Spaltennamen k&ouml;nnen verwendet werden:<br />%s"
+msgid "The following column names will be recognized:"
+msgstr "Die folgenden Spaltennamen k&ouml;nnen verwendet werden:"
 
 #: contenido/includes/include.rights_create.php:24
 msgid "Username can't be empty"
