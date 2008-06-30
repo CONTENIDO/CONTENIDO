@@ -1,14 +1,35 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.gdb.mysql.php,v $
-* Project   :   Contenido
-* Descr     :   MySQL Driver for GenericDB 
-* Modified  :   $Date: 2006/10/05 23:44:43 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.gdb.mysql.php,v 1.12 2006/10/05 23:44:43 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * MySQL Driver for GenericDB 
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.12
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2006-05-10
+ *   
+ *   $Id: class.gdb.mysql.php,v 1.12 2006/10/05 23:44:43 bjoern.behrens Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude ("classes", 'drivers/class.gdb.driver.php');
 
 class gdbMySQL extends gdbDriver
