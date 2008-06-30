@@ -1,22 +1,36 @@
 <?php
-/*****************************************
-* $Id: class.article.php,v 1.17 2007/06/28 22:40:30 bjoern.behrens Exp $
-*
-* file $RCSfile: class.article.php,v $
-*
-* project : Contenido
-* 
-* Contenido API
-* Article object
-* Article collection 
-*              
-* @author Jan Lengowski
-* 
-* @modifiedby $Author: bjoern.behrens $
-* @modified $Date: 2007/06/28 22:40:30 $
-*
-* © four for business AG, www.4fb.de
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Article Object and Collection
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido_API
+ * @version    1.1.7
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * Contenido API - Article Object
@@ -95,11 +109,6 @@
  * linkdescr	- Linkdescription
  * swf			- Upload id of the element	
  *
- * @package Contenido_API
- * @version 1.0
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG 2003
  */
 class Article extends Item
 {
@@ -130,7 +139,8 @@ class Article extends Item
         $this->tab = $cfg['tab'];
 
         parent::Item($this->tab['art_lang'], 'idartlang');
-        
+		
+		$idartlang = Contenido_Security::toInteger($idartlang);
         $idartlang = ($idartlang == 0) ? $this->_getIdArtLang($idart, $lang) : $idartlang;
 
         $this->loadByPrimaryKey($idartlang);
@@ -148,6 +158,9 @@ class Article extends Item
      */
     function _getIdArtLang($idart, $lang)
     {
+		$idart 	= Contenido_Security::toInteger($idart);
+		$lang	= Contenido_Security::toInteger($lang);
+		
         $sql = 'SELECT idartlang FROM '.$this->tab['art_lang'].' WHERE idart="'.$idart.'" AND idlang="'.$lang.'"';
 
         $this->db->query($sql);
@@ -489,6 +502,9 @@ class ArticleCollection
     function _setObjectProperties($options)
     {
         global $client, $lang;
+		
+		$lang 	= Contenido_Security::toInteger($lang);
+		$client = Contenido_Security::toInteger($client);
         
         $this->idcat     = $options['idcat'];
         $this->lang      = (array_key_exists('lang',   $options))    ? $options['lang']      : $lang;
@@ -514,6 +530,8 @@ class ArticleCollection
     function _getArticlesByCatId($idcat)
     {
     	global $cfg;
+		
+		$idcat = Contenido_Security::toInteger($idcat);
     	
     	$sArtSpecs = (count($this->artspecs) > 0) ? " a.artspec IN ('".implode("','", $this->artspecs)."') AND " : '';
     	
@@ -564,7 +582,7 @@ class ArticleCollection
 		if ($cfg["is_start_compatible"] == false)
 		{
     		$db2 = new DB_Contenido;
-        	$sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='$idcat' AND idlang='".$this->lang."'";
+        	$sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".$idcat."' AND idlang='".$this->lang."'";
         	$db2->query($sql);
         	$db2->next_record();
         	
@@ -572,7 +590,7 @@ class ArticleCollection
     		
     		if ($startidartlang != 0)
     		{
-        		$sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='$startidartlang'";
+        		$sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".$startidartlang."'";
         		$db2->query($sql);
         		$db2->next_record();
         		$this->startId = $db2->f("idart");
