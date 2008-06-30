@@ -1,21 +1,35 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Implementation of IContenido_Frontend_Navigation_UrlBuilder to build front_content.php URL
-*
-* @version 1.0.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-02-19
-* 
-* @todo: add switch for & vs. &amp;
-* }}
-*
-* $Id$
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Implementation of IContenido_Frontend_Navigation_UrlBuilder to build front_content.php URL
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-02-19
+ *   @todo: add switch for & vs. &amp;
+ * 
+ *   $Id: class.gdb.mysql.php,v 1.12 2006/10/05 23:44:43 bjoern.behrens Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 include_once('Contenido_UrlBuilder.class.php');
 
