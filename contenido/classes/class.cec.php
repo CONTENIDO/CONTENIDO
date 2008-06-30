@@ -102,7 +102,7 @@ class cApiCECRegistry
 	
 	function getIterator ($sChainName)
 	{
-		$sChainName = Contenido_Security::escapeDB($sChainName);
+		$sChainName = Contenido_Security::escapeDB($sChainName, null);
 		cInclude("classes", "class.iterator.php");
 		
 		$oIterator = new cIterator($this->_aChains[$sChainName]["functions"]);
