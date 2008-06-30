@@ -1,15 +1,37 @@
 <?php
-
 /**
- *  Class Contenido_Backend
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Controls all Contenido backend actions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- *  Controls all Contenido Backend
- *  Actions
+ * @package    Contenido Backend classes
+ * @version    0.1.0
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-30, Dominik Ziegler, add security fix
  *
- *  @author Jan Lengowski <Jan.Lengowski@4fb.de>
- *  @copyright  four for business AG <www.4fb.de>
- *  @version 0.1
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 class Contenido_Backend {
 
     /**
@@ -61,6 +83,7 @@ class Contenido_Backend {
      * @return void
      */
     function setFrame($frame_nr = 0) {
+		$frame_nr = Contenido_Security::toInteger($frame_nr);
         $this->frame = $frame_nr;
         
     } # end function
@@ -77,7 +100,6 @@ class Contenido_Backend {
     function select($area) {
         # Required global vars
         global $cfg, $client, $lang, $db, $perm, $action, $idcat;
-
         global $idcat, $idtpl, $idmod, $idlay;
 
         if (isset($idcat)) {
@@ -91,6 +113,9 @@ class Contenido_Backend {
         } else {
             $itemid = 0;
         }
+		
+		$itemid = Contenido_Security::toInteger($itemid);
+		$area	= Contenido_Security::escapeDB($area, $db);
         
         # Store Area
         $this->area = $area;
@@ -187,13 +212,9 @@ class Contenido_Backend {
             # Test if entry is a plug-in.
             # If so don't add the Include path
             if (strstr($db->f('name'), "/")) {
-
                 $filepath = $cfg["path"]["plugins"] . $db->f('name');
-
             } else {
-
                 $filepath = $cfg["path"]["includes"] . $db->f('name');
-                
             }
 
             # If filetype is Main AND
@@ -204,7 +225,6 @@ class Contenido_Backend {
             }
             
             $this->files[$db->f('type')][] = $filepath;
-
         } # end while
 
         if ($this->debug) {
@@ -292,41 +312,47 @@ class Contenido_Backend {
 
         $timestamp = date("Y-m-d H:i:s");
         $idcatart = "0";
+		
+		$idcat 		= Contenido_Security::toInteger($idcat);
+		$idart 		= Contenido_Security::toInteger($idart);
+		$client 	= Contenido_Security::toInteger($client);
+		$lang 		= Contenido_Security::toInteger($lang);
+		$idaction 	= Contenido_Security::toInteger($idaction);
+		$area		= Contenido_Security::escapeDB($area, $db_log);
 
-        if (!is_numeric($client)) { return; }
-        if (!is_numeric($lang)) { return; }
+        if (!Contenido_Security::isInteger($client)) { return; }
+        if (!Contenido_Security::isInteger($lang)) { return; }
 
         if (isset($idcat) && isset($idart) && $idcat != "" && $idart != "")
-        {
+        {		
             $sql = "SELECT idcatart
                         FROM
                        ". $cfg["tab"]["cat_art"] ."
                     WHERE
-                        idcat = $idcat AND
-                        idart = $idart";
+                        idcat = '".$idcat."' AND
+                        idart = '".$idart."'";
     
             $db_log->query($sql);
     
             $db_log->next_record();
             $idcatart = $db_log->f("idcatart");
-    
         }
    
         $oldaction = $idaction;
         $idaction = $perm->getIDForAction($idaction);    
-
-        if ($idaction != "")
+		
+        if ($idaction != "") 
         {
         $sql = "INSERT INTO
                     ". $cfg["tab"]["actionlog"]."
                 SET
-                    idlog = $lastentry,
-                    user_id = '" . $auth->auth["uid"] . "',
-                    idclient = $client,
-                    idlang = $lang,
-                    idaction = $idaction,
-                    idcatart = '$idcatart',
-                    logtimestamp = '$timestamp'";
+                    idlog = '".$lastentry."',
+                    user_id = '".$auth->auth["uid"]."',
+                    idclient = '".$client."',
+                    idlang = '".$lang."',
+                    idaction = '".$idaction."',
+                    idcatart = '".$idcatart."',
+                    logtimestamp = '".$timestamp."'";
 
         } else {
            echo $oldaction. " is not in the actions table!<br><br>";
@@ -342,18 +368,11 @@ class Contenido_Backend {
 
 
            echo "INSERT INTO ". $cfg["tab"]["actions"]."
-
-                      SET idaction = $mynextid, idarea = $myareaid, name = '$oldaction', relevant = 1";
-
-           
+                      SET idaction = '".$mynextid."', idarea = '".$myareaid."', name = '".$oldaction."', relevant = '1'";
            echo "</code>";
             
         }
-
             $db_log->query($sql);
-
     }
-
 } # end class Contenido_Backend
-
 ?>
