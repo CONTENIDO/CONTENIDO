@@ -184,7 +184,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 
 			$code = '<html><body>No code was created for this art in this category.</body><html>';
 
-			$sql = "SELECT * FROM ".$cfg["tab"]["code"]." WHERE idcatart='".Contenido_Security::toInteger($idcatart)."' AND idlang='".Contenido_Security::escapeDB($lang)."'";
+			$sql = "SELECT * FROM ".$cfg["tab"]["code"]." WHERE idcatart='".Contenido_Security::toInteger($idcatart)."' AND idlang='".Contenido_Security::escapeDB($lang, $db)."'";
 
 			$db->query($sql);
 
