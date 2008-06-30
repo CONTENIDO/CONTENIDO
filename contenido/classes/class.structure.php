@@ -1,12 +1,37 @@
 <?php
-
 /**
- * Class Structure
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Class for structure information and management
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 1.0
- * @copyright four for business 2003
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.1
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003
+ *   modified 2008-06-30, Frederic Schneider, add security fix
+ *
+ *   $Id$: 
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 class Structure {
 
     /**
@@ -32,8 +57,8 @@ class Structure {
                 FROM
                 ". $cfg["tab"]["cat_lang"] ."
                 WHERE
-                    idlang = '".$idlang."' AND
-                    idcat = '".$structure."'";
+                    idlang = '".Contenido_Security::toInteger($idlang)."' AND
+                    idcat = '".Contenido_Security::toInteger($structure)."'";
 
         $db->query($sql);
         $db->next_record();
@@ -59,7 +84,7 @@ class Structure {
                 FROM
                 ". $cfg["tab"]["cat_art"] ."
                 WHERE
-                    idcatart = '".$idcatart."'";
+                    idcatart = '".Contenido_Security::toInteger($idcatart)."'";
         $db->query($sql);
         $db->next_record();
 
