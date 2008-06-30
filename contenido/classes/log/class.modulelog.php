@@ -1,20 +1,35 @@
 <?php
-/**********************************************************************************
-* File      :   $RCSfile: class.modulelog.php,v $
-* Project   :   Contenido 
-* Descr     :   Module log facility
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   28.09.2004
-* Modified  :   $Date: 2006/04/28 09:20:55 $
-*
-* © four for business AG, www.4fb.de
-*
-* This file is part of the Contenido Content Management System. 
-*
-* $Id: class.modulelog.php,v 1.3 2006/04/28 09:20:55 timo.hummel Exp $
-***********************************************************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * MySQL Driver for GenericDB 
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.3
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2004-09-28
+ *   
+ *   $Id: class.modulelog.php,v 1.3 2006/04/28 09:20:55 timo.hummel Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude("classes", "contenido/class.module.php");
 cInclude("classes", "log/class.bufferedlog.php");
