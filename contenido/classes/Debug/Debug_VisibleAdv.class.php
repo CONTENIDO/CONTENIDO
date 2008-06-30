@@ -1,26 +1,42 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Debug object to show info on screen in a box / HTML Block at the top of page.
-* Instead of doing the output immediately using method show, values can be collected and printed to screen in one go.
-* Therefore there's a box positioned at the left top of the page that can be toggled and hidden.
-* 
-* Please note: 
-* -> When using method Debug_VisibleAdv::showAll() you'll produce invalid HTML when having an XHTML doctype.
-* -> You cannot simply switch between the different debuggers by using DebuggerFactory::getDebugger('type'); because 
-* 		this object has methods that are not defined in IDebug!
-*
-* @version 1.0.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-05-20
-* }}
-*
-* $Id$:
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Debug object to show info on screen in a box / HTML Block at the top of page.
+ * Instead of doing the output immediately using method show, values can be collected and printed to screen in one go.
+ * Therefore there's a box positioned at the left top of the page that can be toggled and hidden.
+ * 
+ * Please note: 
+ * -> When using method Debug_VisibleAdv::showAll() you'll produce invalid HTML when having an XHTML doctype.
+ * -> You cannot simply switch between the different debuggers by using DebuggerFactory::getDebugger('type'); because 
+ * 		this object has methods that are not defined in IDebug!
+ *  
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version 1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2008-05-20
+ *
+ *   $Id:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 include_once('IDebug.php');
 
 class Debug_VisibleAdv implements IDebug, Countable {
