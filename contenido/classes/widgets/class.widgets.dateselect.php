@@ -1,14 +1,35 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.widgets.dateselect.php,v $
-* Project   :   Contenido
-* Descr     :   Date selector
-* Modified  :   $Date: 2005/09/15 12:15:17 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.widgets.dateselect.php,v 1.6 2005/09/15 12:15:17 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Date selector
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.6
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 205-09-15
+ *   
+ *   $Id: class.widgets.dateselect.php,v 1.6 2005/09/15 12:15:17 timo.hummel Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude("classes", "class.htmlelements.php");
 
