@@ -38,6 +38,8 @@ $tpl->reset();
 cInclude("classes", "class.todo.php");
 cInclude("classes", "contenido/class.client.php");
 cInclude("classes", "class.activeusers.php");
+cInclude("pear", "XML/Parser.php");
+cInclude("pear", "XML/RSS.php");
 cInclude("classes", "class.update.notifier.php");
 
 if ($saveLoginTime == true) {
@@ -241,7 +243,7 @@ else{
 }
 
 // check for new updates
-$oUpdateNotifier = new Contenido_UpdateNotifier($cfg['version'], $cfg['path'], $vuser, $perm, $sess);
+$oUpdateNotifier = new Contenido_UpdateNotifier($cfg, $vuser, $perm, $sess);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 $tpl->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 

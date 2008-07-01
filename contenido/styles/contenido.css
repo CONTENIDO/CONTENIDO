@@ -74,8 +74,12 @@ form, h1, h2, h3, h4{
 hr.sep{
   border: 0;
   height: 1px;
-  background-color: #b4b4b4;
-  color: #b4b4b4;
+  background-color: #b3b3b8;
+  color: #b3b3b8;
+}
+
+span.sep {
+  color: #b3b3b8;
 }
 
 div.login_title {
@@ -165,8 +169,13 @@ h2.content_box{
   background: url(../images/user_online.gif) no-repeat 0 2px;
 }
 #update_notifier{
-  background: url(../images/info.gif) no-repeat 0 2px;
+  background: url(../images/but_news.gif) no-repeat 0 2px;
 }
+#rss_notifier{
+  background: url(../images/but_rss.gif) no-repeat 0 2px;
+  margin-top: 25px;
+}
+
 #messageboard{
   
 }

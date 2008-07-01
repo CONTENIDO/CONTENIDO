@@ -146,6 +146,7 @@ $cfg['templates']['grouprights_menu']   = 'template.grouprights_menu.html';
 $cfg['templates']['grouprights_overview']   = 'template.grouprights_overview.html';
 
 $cfg['templates']['welcome']              = 'template.welcome.html';
+$cfg['templates']['welcome_update']       = 'template.welcome_update.html';
 $cfg['templates']['info']                 = 'template.info.html';
 $cfg['templates']['symbolhelp']           = 'template.symbolhelp.html';
 

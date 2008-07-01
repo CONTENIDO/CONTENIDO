@@ -6018,39 +6018,6 @@ msgstr "Aktuelle Contenido Version"
 #~ msgid "Copy article to the current language"
 #~ msgstr "Artikel in die aktuelle Sprache kopieren"
 
-msgid "Update notification"
-msgstr "Update-Benachrichtigung"
-
-msgid "Unable to check for new updates!"
-msgstr "Update-&Uuml;berpr&uuml;fung kann nicht durchgef&uuml;hrt werden!"
-
-msgid "Connection to contenido.org failed!"
-msgstr "Verbindung zu contenido.org fehlgeschlagen!"
-
-msgid "Could not handle server response!"
-msgstr "Server-Antwort konnte nicht verarbeitet werden!"
-
-msgid "Could not determine vendor version!"
-msgstr "Hersteller-Version konnte nicht gelesen werden!"
-
-msgid "You have an unknown or unsupported version of Contenido!"
-msgstr "Sie haben eine unbekannte oder nicht unterst&uuml;tzte Version von Contenido!"
-
-msgid "Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version!"
-msgstr "Ihre Version von Contenido wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisieren Sie auf eine h&ouml;here Version!"
-
-msgid "A new version of Contenido (<b>%s</b>) is available! - <a href="%s">Download now!</a>"
-msgstr "Eine neue Version von Contenido (<b>%s</b>) ist verf&uuml;gbar! - <a href="%s" target="_blank">Jetzt herunterladen!</a>"
-
-msgid "It seems to be that your version string was manipulated. Contenido %s does not exist!"
-msgstr "Anscheinend wurde Ihre Version manipuliert. Contenido %s existiert nicht!"
-
-msgid "Your version of Contenido is up to date!"
-msgstr "Ihre Version von Contenido ist aktuell!"
-
-msgid "Update notification is disabled! <a href="%s">Enable notifications</a>"
-msgstr "Die Update-Benachrichtigung wurde deaktiviert! <a href="%s">Benachrichtigungen aktivieren</a>" 
-
 msgid "Can't clear error log : Access is denied!"
 msgstr "Fehlerlog konnte nicht geleert werden: Zugriff verweigert!" 
 
@@ -6071,3 +6038,57 @@ msgstr "Historieneintrag anzeigen"
 
 msgid "Translate module '%s'"
 msgstr "Modul &uuml;bersetzen \"%s\""
+
+msgid "Update Information"
+msgstr "Update Nachrichten"
+
+msgid "Disable update notification"
+msgstr "Update Nachrichten deaktivieren"
+
+msgid "Enable update notification (recommended)"
+msgstr "Update Nachrichten aktivieren (empfohlen)"
+
+msgid "Disable RSS notification"
+msgstr "RSS Nachrichten deaktivieren"
+
+msgid "Enable RSS notification (recommended)"
+msgstr "RSS Nachrichten aktivieren (empfohlen)"
+
+msgid "Disable notification"
+msgstr "Benachrichtigung deaktivieren"
+
+msgid "Enable notification"
+msgstr "Benachrichtigung aktivieren"
+
+msgid "Update notification is disabled! For actual update information, please acrivate."
+msgstr "Die Update-Benachrichtigung ist deaktiviert! F&uuml;r aktuelle Updatenachrichten, bitte aktiveren."
+
+msgid "Your version of Contenido is up to date!"
+msgstr "Ihre Version von Contenido ist aktuell!"
+
+msgid "Unable to check for new updates!"
+msgstr "Update-&Uuml;berpr&uuml;fung kann nicht durchgef&uuml;hrt werden!"
+
+msgid "Connection to contenido.org failed!"
+msgstr "Verbindung zu contenido.org fehlgeschlagen!"
+
+msgid "Could not handle server response!"
+msgstr "Server-Antwort konnte nicht verarbeitet werden!"
+
+msgid "Could not determine vendor version!"
+msgstr "Hersteller-Version konnte nicht gelesen werden!"
+
+msgid "You have an unknown or unsupported version of Contenido!"
+msgstr "Sie haben eine unbekannte oder nicht unterst&uuml;tzte Version von Contenido!"
+
+msgid "Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href="%s" class="blue" target="_blank">Download now!</a>"
+msgstr "Ihre Version von Contenido wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisieren Sie auf eine h&ouml;here Version! <br /> <a href="%s" class="blue" target="_blank">Jetzt herunterladen!</a>"
+
+msgid "A new version of Contenido is available! <br /> <a href="%s" class="blue" target="_blank">%s download now!</a>"
+msgstr "Eine neue Version von Contenido ist verf&uuml;gbar! <br /> <a href="%s" class="blue" target="_blank">%s jetzt herunterladen!</a>"
+
+msgid "It seems to be that your version string was manipulated. Contenido %s does not exist!"
+msgstr "Anscheinend wurde Ihre Version manipuliert. Contenido %s existiert nicht!"
+
+msgid "read more"
+msgstr "mehr lesen"
