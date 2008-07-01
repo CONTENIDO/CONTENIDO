@@ -1,14 +1,35 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.widgets.views.php,v $
-* Project   :   Contenido
-* Descr     :   Button Widgets
-* Modified  :   $Date: 2004/08/04 07:15:30 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.widgets.views.php,v 1.1 2004/08/04 07:15:30 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Button Widgets
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.12
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2004-08-04
+ *   
+ *   $Id: class.widgets.views.php,v 1.1 2004/08/04 07:15:30 timo.hummel Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 /**
  * Contenido Table view
