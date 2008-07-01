@@ -1,14 +1,35 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.widgets.pager.php,v $
-* Project   :   Contenido
-* Descr     :   Foldable pager for menus
-* Modified  :   $Date: 2005/05/11 13:28:17 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.widgets.pager.php,v 1.2 2005/05/11 13:28:17 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Foldable pager for menus
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.2
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2005-05-11
+ *   
+ *   $Id: class.widgets.pager.php,v 1.2 2005/05/11 13:28:17 timo.hummel Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude("classes", "widgets/class.widgets.foldingrow.php");
 
