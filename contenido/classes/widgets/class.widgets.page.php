@@ -1,14 +1,35 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.widgets.page.php,v $
-* Project   :   Contenido
-* Descr     :   Page widgets
-* Modified  :   $Date: 2007/01/30 20:00:29 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.widgets.page.php,v 1.24 2007/01/30 20:00:29 bjoern.behrens Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Page widgets
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.24
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2007-01-30
+ *   
+ *   $Id: class.widgets.page.php,v 1.24 2007/01/30 20:00:29 bjoern.behrens Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "widgets/class.widgets.buttons.php");
