@@ -44,10 +44,10 @@ $cfg['path']['phplib']                  = '{CONTENIDO_ROOT}/conlib/';
 $cfg['path']['pear']                    = '{CONTENIDO_ROOT}/pear/';
 
 /* The server path to the desired WYSIWYG-Editor */
-$cfg['path']['wysiwyg']                 = '{CONTENIDO_ROOT}/contenido/external/wysiwyg/tinymce2/';
+$cfg['path']['wysiwyg']                 = '{CONTENIDO_ROOT}/contenido/external/wysiwyg/tinymce3/';
 
 /* The web path to the desired WYSIWYG-Editor */
-$cfg['path']['wysiwyg_html']            = '{CONTENIDO_WEB}/contenido/external/wysiwyg/tinymce2/';
+$cfg['path']['wysiwyg_html']            = '{CONTENIDO_WEB}/contenido/external/wysiwyg/tinymce3/';
 
 /* The server path to all WYSIWYG-Editors */
 $cfg['path']['all_wysiwyg']                 = '{CONTENIDO_ROOT}/contenido/external/wysiwyg/';
