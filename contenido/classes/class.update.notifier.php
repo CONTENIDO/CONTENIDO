@@ -335,7 +335,7 @@ class Contenido_UpdateNotifier {
 	/**
 	 * Connects with vendor host and gets the xml file
 	 * @access protected
-	 * @return string
+	 * @return array
 	 */
 	protected function getVendorHostFile() {
 		$aXMLContent = array();
@@ -491,8 +491,8 @@ class Contenido_UpdateNotifier {
 			$oTpl = new Template();
 		}
 		
-		if (file_exists($this->sCacheDirectory.$this->sRssCacheFile)) {
-			$sFeedContent = substr(file_get_contents($this->sCacheDirectory.$this->sRssCacheFile), 0, 1024);
+		if ($this->sXMLContentRss != '') {
+			$sFeedContent = substr($this->sXMLContentRss, 0, 1024);
 			
 			$regExp = "/<\?xml.*encoding=[\"\'](.*)[\"\']\?>/i";
 					
