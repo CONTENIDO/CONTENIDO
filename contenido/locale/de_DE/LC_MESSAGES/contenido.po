@@ -6040,19 +6040,19 @@ msgid "Translate module '%s'"
 msgstr "Modul &uuml;bersetzen \"%s\""
 
 msgid "Update Information"
-msgstr "Update Nachrichten"
+msgstr "Update-Nachrichten"
 
 msgid "Disable update notification"
-msgstr "Update Nachrichten deaktivieren"
+msgstr "Update-Nachrichten deaktivieren"
 
 msgid "Enable update notification (recommended)"
-msgstr "Update Nachrichten aktivieren (empfohlen)"
+msgstr "Update-Nachrichten aktivieren (empfohlen)"
 
 msgid "Disable RSS notification"
-msgstr "RSS Nachrichten deaktivieren"
+msgstr "RSS-Nachrichten deaktivieren"
 
 msgid "Enable RSS notification (recommended)"
-msgstr "RSS Nachrichten aktivieren (empfohlen)"
+msgstr "RSS-Nachrichten aktivieren (empfohlen)"
 
 msgid "Disable notification"
 msgstr "Benachrichtigung deaktivieren"
@@ -6061,7 +6061,7 @@ msgid "Enable notification"
 msgstr "Benachrichtigung aktivieren"
 
 msgid "Update notification is disabled! For actual update information, please acrivate."
-msgstr "Die Update-Benachrichtigung ist deaktiviert! F&uuml;r aktuelle Updatenachrichten, bitte aktiveren."
+msgstr "Die Update-Benachrichtigung ist deaktiviert! F&uuml;r aktuelle Update-Nachrichten, bitte aktiveren."
 
 msgid "Your version of Contenido is up to date!"
 msgstr "Ihre Version von Contenido ist aktuell!"
