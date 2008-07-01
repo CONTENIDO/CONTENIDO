@@ -1,4 +1,33 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * 
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   
+ *   $Id:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "contenido/class.action.php");
@@ -78,7 +107,7 @@ class cApiClickableAction extends cApiAction
 	 * Sets this class to use a specific action, example "con_makestart".
 	 *
 	 * @param string actionName Name of the action to use. This action must exist in the actions table before
-using it, otherwise, this method will fail.
+	 * using it, otherwise, this method will fail.
 	 * @return void
 	 * @access public
 	 */
