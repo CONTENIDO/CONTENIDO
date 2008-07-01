@@ -1,14 +1,35 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.widgets.buttons.php,v $
-* Project   :   Contenido
-* Descr     :   Button Widgets
-* Modified  :   $Date: 2005/08/22 12:20:23 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.widgets.buttons.php,v 1.6 2005/08/22 12:20:23 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Button Widgets
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.12
+ * @author     Bjoern Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2005-08-22
+ *   
+ *   $Id: class.widgets.buttons.php,v 1.6 2005/08/22 12:20:23 timo.hummel Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 /**
  * Regular push button with hover and push effect
