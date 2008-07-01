@@ -194,20 +194,20 @@ class Contenido_UpdateNotifier {
 		$this->oSession = $oSession;
 		$this->aCfg = $aCfg;
 
-		$sAction = $_GET['do'];
-		if ($sAction == "activate") {
-			setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "true");
-		} else if ($sAction == "deactivate") {
-			setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "false");
-		} else if ($sAction == "activate_rss"){
-			setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "true");
-		} else if ($sAction == "deactivate_rss"){
-			setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "false");
-		}
-
 		if ($oPerm->isSysadmin($oUser) != 1) {
 			$this->bEnableView = false;
-		} else {
+			} else {
+			    $sAction = $_GET['do'];
+			if ($sAction == "activate") {
+				setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "true");
+			} else if ($sAction == "deactivate") {
+				setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "false");
+			} else if ($sAction == "activate_rss"){
+				setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "true");
+			} else if ($sAction == "deactivate_rss"){
+				setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "false");
+			}
+			
 			$this->bEnableView = true;
 			$this->setCachePath();
 
