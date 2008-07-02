@@ -1,20 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Workflow items
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.3
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-07-18
+ *   
+ *   $Id: class.workflowitems.php,v 1.3 2006/01/13 15:54:41 timo.hummel Exp $
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.workflowitems.php,v $
-* Project   :   Contenido Workflow
-* Descr     :   Workflow items
-*
-* Author    :   $Author: timo.hummel $
-*               
-* Created   :   18.07.2003
-* Modified  :   $Date: 2006/01/13 15:54:41 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.workflowitems.php,v 1.3 2006/01/13 15:54:41 timo.hummel Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
+cInclude("classes", "class.security.php");
 
 /**
  * Class WorkflowItems
@@ -51,7 +67,7 @@ class WorkflowItems extends ItemCollection {
 		$idworkflow = $item->get("idworkflow");
 		$oDb = new DB_contenido();
 		
-		$this->select("position > $pos AND idworkflow = '$idworkflow'");
+		$this->select("position > $pos AND idworkflow = '".Contenido_Security::escapeDB($idworkflow)."'");
 		while ($obj = $this->next())
 		{
 			$obj->setPosition($obj->get("position")-1);
@@ -62,10 +78,10 @@ class WorkflowItems extends ItemCollection {
         $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem = '.$id.';';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
-            array_push($aUserSequencesDelete, $oDb->f('idusersequence'));
+            array_push($aUserSequencesDelete, Contenido_Security::escapeDB($oDb->f('idusersequence')));
         }
 
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_actions"].' WHERE idworkflowitem = '.$id.';';
+        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_actions"].' WHERE idworkflowitem = '.Contenido_Security::escapeDB($id).';';
         $oDb->query($sSql);
 
         $this->updateArtAllocation($id, 1);
@@ -81,11 +97,11 @@ class WorkflowItems extends ItemCollection {
         $oDb = new DB_contenido();
         
         $aUserSequences = array();
-        $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem = '.$idworkflowitem.';';
+        $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem = '.Contenido_Security::escapeDB($idworkflowitem).';';
 
         $oDb->query($sSql);
         while ($oDb->next_record()) {
-            array_push($aUserSequences, $oDb->f('idusersequence'));
+            array_push($aUserSequences, Contenido_Security::escapeDB($oDb->f('idusersequence')));
         }
         
         $aIdArtLang = array();
