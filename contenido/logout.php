@@ -1,19 +1,32 @@
 <?php
-
-/*****************************************
-* File      :   $RCSfile: logout.php,v $
-* Project   :   Contenido
-* Descr     :   Contenido Logout function
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   20.05.2003
-* Modified  :   $Date: 2006/04/28 09:20:55 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: logout.php,v 1.11 2006/04/28 09:20:55 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Logout function
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.1.2
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-05-20
+ *   modified 2008-07-02, Frederic Schneider, new code-header
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
 define("CON_FRAMEWORK", true);
 
@@ -31,7 +44,6 @@ cInclude("classes", 'class.notification.php');
 cInclude("classes", 'class.area.php');
 cInclude("classes", 'class.client.php');
 cInclude("classes", 'class.cat.php');
-
 
 page_open(array('sess' => 'Contenido_Session',
                 'auth' => 'Contenido_Challenge_Crypt_Auth',
