@@ -1,14 +1,32 @@
 <?php
 /**
- * Class cApiXml2Array
- *
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Converts XML data to PHP array
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * @author Marco Jahn
- * @version 1.0
- * @copyright four for business 2004
+ * @package    Contenido Backend classes
+ * @version    1.0
+ * @author     Marco Jahn
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 
+ *   
+ *   $Id:
+ * }}
+ * 
  */
- 
+
+
 if (version_compare(PHP_VERSION, '5', '>='))
 {
 	cInclude("includes", "functions.domxml-php4-to-php5.php"); // Enable PHP4 domxml under PHP 5 ff
@@ -168,29 +186,6 @@ class cApiXml2Array
 						// TODO: Check this line, as it should be too late, to specify it here (see above)
 						$prefix = ($child->prefix()) ? $child->prefix().':' : '';
 						
-						// try to check for multisubnodes
-						/*foreach ($childs as $testnode)
-						{
-							if (is_object($testnode))
-							{
-								// This line results in "Nesting level too deep", as PHP compares objects [$child != $testnode?]
-								// comparing all attributes. If an object contains an attribute, that refers to the
-								// the same object, this will go on forever... see http://www.php.net/manual/en/language.oop.object-comparison.php#41377
-								// 
-								// This is especially funny, as the information "subnode" is never used - or?
-								//
-								if ($child->node_name() == $testnode->node_name() && $child != $testnode)
-								{
-									$subnode = true;
-								}
-							}
-						}
-								
-						if (is_array($result[$sTagName]))
-						{
-							$subnode = true;
-						} */
-						
 						$result[$sTagName][] = $this->_recNode2Array($child, $aMergeTags);
 						break;
 					case XML_CDATA_SECTION_NODE:
@@ -203,6 +198,7 @@ class cApiXml2Array
 			}
 	
 			if (!is_array($result)){
+				// TODO
 				// correct encoding from utf-8 to locale
 				// NEEDS to be updated to correct in both ways!
 				#$result['#text'] = html_entity_decode(htmlentities($domnode->get_content(), ENT_COMPAT, 'UTF-8'), ENT_COMPAT,'ISO-8859-1');
@@ -210,14 +206,6 @@ class cApiXml2Array
 				$result = $this->dummy_html_entity_decode(htmlentities($domnode->get_content(), ENT_COMPAT, 'UTF-8'));
 			}
 	
-			/* fetch attributes on last level */
-			/*if ($domnode->has_attributes())
-				foreach ($domnode->attributes() as $attrib)
-				{
-					$prefix = ($attrib->prefix()) ? $attrib->prefix().':' : '';
-					$result["@".$prefix.$attrib->name()] = $attrib->value();
-				}*/
-
 			return $result;
 		}
 	}
@@ -260,12 +248,12 @@ class cApiXml2Array
     
     function setSourceEncoding ($sEncoding)
     {
-        // todo!
+        // TODO
     }
     
     function setTargetEncoding ($sEncoding)
     {
-        // todo!
+        // TODO
     }
 }
 
