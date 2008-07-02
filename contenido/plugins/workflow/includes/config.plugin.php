@@ -1,4 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ *  Workflow allocation class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.5
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-07-18
+ *   
+ *   $Id: class.workflowallocation.php,v 1.5 2006/01/13 15:54:41 timo.hummel Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+cInclude("classes", "class.security.php");
+
 plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
 
@@ -42,7 +75,6 @@ function prepareWorkflowItems ()
 
 	if ($action === 'workflow_inherit_down')
 	{
-		
 		$tmp = strDeeperCategoriesArray($modidcat);
 		$asworkflow = getWorkflowForCat($modidcat);
 		
@@ -50,8 +82,6 @@ function prepareWorkflowItems ()
 		
 		foreach ($tmp as $tmp_cat)
 		{
-	
-			
 			$idcatlang = getCatLang ($tmp_cat, $lang);
 			
 			if ($asworkflow == 0)
@@ -130,7 +160,7 @@ function prepareWorkflowItems ()
 	
 	$workflowSelectBox = new cHTMLSelectElement("foo");
 	$workflowSelectBox->setClass("text_medium");
-	$workflowworkflows->select("idclient = '$client' AND idlang = '$lang'");
+	$workflowworkflows->select("idclient = '$client' AND idlang = '".Contenido_Security::escapeDB($lang)."'");
 	
 	$workflowOption = new cHTMLOptionElement("--- ".i18n("None", "workflow")." ---", 0);
 	$workflowSelectBox->addOptionElement(0,$workflowOption);
@@ -154,7 +184,6 @@ function piworkflowCategoryRenderColumn ($idcat, $type)
 	switch ($type)
 	{
 		case "workflow":
-			//$value = workflowInherit($idcat).workflowSelect($idcat,getWorkflowForCat($idcat), $idcat);
             $value = workflowInherit($idcat).'<script type="text/javascript" id="wf'.$idcat.'">printWorkflowSelect('.$idcat.', '.(int)getWorkflowForCat($idcat).');</script>';
 			break;	
 	}
@@ -209,7 +238,6 @@ function piworkflowRenderAction ($idcat, $idart, $idartlang, $type)
 	if (isCurrentEditor($associatedUserSequence->get("iduser")))
     {
     	/* Query rights for this user */
-    	
     	$wfRights = $workflowItem->getStepRights();
     	$mayEdit = true;
     } else {
@@ -255,12 +283,6 @@ function piworkflowProcessArticleColumns ($array)
 	if ($action == "workflow_do_action")
 	    {
 	    	$selectedAction = "wfselect".$modidartlang;
-	    	
-	    	/* It would be nice to do the following:
-	    	   $art = new ArtLang($idartlang);
-	    	   $art->doWorkflowAction($action);
-	           Hopefully we can get such a thing to work soon. */
-	           
 	      doWorkflowAction($modidartlang, $GLOBALS[$selectedAction]);
 	    
 	    }	
@@ -313,8 +335,6 @@ function piworkflowAllowArticleEdit ($idlang, $idcat, $idart, $user)
 	
 	if (isCurrentEditor($associatedUserSequence->get("iduser")))
     {
-    	/* Query rights for this user */
-    	
     	$wfRights = $workflowItem->getStepRights();
     	$mayEdit = true;
     } else {
@@ -345,8 +365,6 @@ function piworkflowRenderColumn ($idcat, $idart, $idartlang, $column)
 	
 	if (isCurrentEditor($associatedUserSequence->get("iduser")))
     {
-    	/* Query rights for this user */
-    	
     	$wfRights = $workflowItem->getStepRights();
     	$mayEdit = true;
     } else {
