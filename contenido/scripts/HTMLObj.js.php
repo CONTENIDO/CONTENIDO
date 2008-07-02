@@ -283,7 +283,7 @@ function doAction() {
         str += "&action=con_makecatonline";
         str += "&frame=2";
         str += "&idcat=" + cfg.catId;
-        str += "&online=" + cfg.isOnline;
+        str += "&online=" + 0;
         str += "&contenido=" + sid;
 
         if (cfg.catId != 0 && cfg.hasRight['online'] )
@@ -311,7 +311,7 @@ function doAction() {
         str += "&action=con_makecatonline";
         str += "&frame=2";
         str += "&idcat=" + cfg.catId;
-        str += "&online=" + cfg.isOnline;
+        str += "&online=" + 1;
         str += "&contenido=" + sid;
 
         if (cfg.catId != 0  && cfg.hasRight['online'] )
@@ -339,7 +339,7 @@ function doAction() {
         str += "&action=con_makepublic";
         str += "&frame=2";
         str += "&idcat=" + cfg.catId;
-        str += "&public=" + cfg.isPublic;
+        str += "&public=" + 0;
         str += "&contenido=" + sid;
 
         if (cfg.catId != 0 && cfg.hasRight['public'] )
@@ -367,7 +367,7 @@ function doAction() {
         str += "&action=con_makepublic";
         str += "&frame=2";
         str += "&idcat=" + cfg.catId;
-        str += "&public=" + cfg.isPublic;
+        str += "&public=" + 1;
         str += "&contenido=" + sid;
 
         if (cfg.catId != 0 && cfg.hasRight['public'] ) {
