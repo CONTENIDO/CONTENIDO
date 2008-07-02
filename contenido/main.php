@@ -36,12 +36,6 @@ define("CON_FRAMEWORK", true);
 include_once ('./classes/class.security.php');
 Contenido_Security::checkRequests();
 
-if (isset($_REQUEST['belang'])) {
-	$aValid = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
-	if (!in_array(strval($_REQUEST['belang']), $aValid)) {
-		die('Please use a valid language!');
-	}
-}
 if (isset($_REQUEST['changeclient'])) {
 	$_REQUEST['changeclient'] = intval($_REQUEST['changeclient']);
 	$changeclient = intval($_REQUEST['changeclient']);

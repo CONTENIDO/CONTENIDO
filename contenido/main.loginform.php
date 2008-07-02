@@ -33,13 +33,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if (isset($_REQUEST['belang'])) {
-	$aValid = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
-	if (!in_array(strval($_REQUEST['belang']), $aValid)) {
-		die('Please use a valid language!');
-	}
-}
-
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die();
 }

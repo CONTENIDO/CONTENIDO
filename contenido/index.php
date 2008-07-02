@@ -43,12 +43,6 @@ if (isset($_REQUEST['contenido'])) {
 		die ('Invalid call');
 	}
 }
-if (isset($_REQUEST['belang'])) {
-	$aValid = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
-	if (!in_array(strval($_REQUEST['belang']), $aValid)) {
-		die('Please use a valid language!');
-	}
-}
 
 include_once ('./includes/startup.php');
 
