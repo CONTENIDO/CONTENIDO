@@ -54,7 +54,7 @@ if (getSystemProperty("newsletter", "updatekeys")) {
 $sRefreshTop = '';
 $oClient = new cApiClient($client);
 $iTimeframe = $oClient->getProperty("newsletter", "purgetimeframe");
-if (isset($_REQUEST["purgetimeframe"]) && is_numeric($_REQUEST["purgetimeframe"]) && $_REQUEST["purgetimeframe"] > 0 
+if (isset($_REQUEST["purgetimeframe"]) && $_REQUEST["purgetimeframe"] > 0 
     && $_REQUEST["purgetimeframe"] != $iTimeframe && $perm->have_perm_area_action($area, "recipients_delete")) 
 {
     $oClient->setProperty("newsletter", "purgetimeframe", $_REQUEST["purgetimeframe"]);
