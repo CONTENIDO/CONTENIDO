@@ -23,7 +23,8 @@
  *   created 2007-04-20
  *   modified 2008-06-15, Rudi Bieller, Bugfix CON-149
  *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-06-27, Timo.Trautmann Encoding Header added
+ *   modified 2008-06-27, Timo.Trautmann, Encoding Header added
+ *   modified 2008-07-02, Frederic Schneider, querys escaped
  *
  *   $Id$:
  * }}
@@ -43,6 +44,7 @@ define("CON_FRAMEWORK", true);
 if (isset($_REQUEST['cfg'])) {
 	die();
 }
+
 include_once ($cfg['path']['contenido']."includes/config.php");
 include_once ($cfg['path']['contenido']."includes/startup.php");
 
@@ -425,17 +427,17 @@ if (!empty($sSearchStrAuthor_tmp)) {
 
 # liest den gesuchten Artikel aus der Datenbank
 $sql_1 = "SELECT
-			 DISTINCT a.idart, a.idartlang, a.title, a.online, a.locked, a.idartlang, a.created, a.published,
-		      a.artsort, a.lastmodified, b.idcat, b.idcatart, b.idcatart, c.startidartlang,
-		      c.idcatlang, e.name as 'tplname'
+		  DISTINCT a.idart, a.idartlang, a.title, a.online, a.locked, a.idartlang, a.created, a.published,
+		  a.artsort, a.lastmodified, b.idcat, b.idcatart, b.idcatart, c.startidartlang,
+		  c.idcatlang, e.name as 'tplname'
 		FROM ".$cfg['tab']['art_lang']." as a
-		     LEFT JOIN ".$cfg['tab']['cat_art']." as b ON a.idart = b.idart
-		     LEFT JOIN ".$cfg['tab']['cat_lang']." as c ON a.idartlang = c.startidartlang
-		     LEFT JOIN ".$cfg['tab']['tpl_conf']." as d ON a.idtplcfg = d.idtplcfg
-		     LEFT JOIN ".$cfg['tab']['tpl']." as e ON d.idtpl = e.`idtpl`
-		     LEFT JOIN ".$cfg['tab']['content']." as f ON f.idartlang = a.idartlang
+		  LEFT JOIN ".$cfg['tab']['cat_art']." as b ON a.idart = b.idart
+		  LEFT JOIN ".$cfg['tab']['cat_lang']." as c ON a.idartlang = c.startidartlang
+		  LEFT JOIN ".$cfg['tab']['tpl_conf']." as d ON a.idtplcfg = d.idtplcfg
+		  LEFT JOIN ".$cfg['tab']['tpl']." as e ON d.idtpl = e.`idtpl`
+		  LEFT JOIN ".$cfg['tab']['content']." as f ON f.idartlang = a.idartlang
 		WHERE
-			(a.idlang = $iSpeachID)
+		  (a.idlang = ".Contenido_Security::toInteger($iSpeachID).")
 		";
 
 $where = "";
@@ -444,30 +446,30 @@ $bNoCriteria = true;
 
 // Article ID
 if (!is_null($iSearchID)) {
-    $where.= " AND (a.idart = $iSearchID)";
+    $where.= " AND (a.idart = ".Contenido_Security::toInteger($iSearchID).")";
 	$bNoCriteria = false;
 }
 
 // es soll nach Text gesucht werden
 if (!empty($sSearchStr)) {
-    $where.= " AND ((a.title LIKE '%" . mask($sSearchStr) .  "%')";
-    $where.= " OR (f.value LIKE '%" . mask($sSearchStr) .  "%'))";
+    $where.= " AND ((a.title LIKE '%" . mask(Contenido_Security::escapeDB($sSearchStr, $db)) .  "%')";
+    $where.= " OR (f.value LIKE '%" . mask(Contenido_Security::escapeDB($sSearchStr, $db)) .  "%'))";
 	$bNoCriteria = false;
 }
 
 if (!empty($sSearchStrDateFrom) && ($sDateFieldName != '')) {
-    $where.= " AND (a.".$sDateFieldName." >= '".mask($sSearchStrDateFrom)."')";
+    $where.= " AND (a.".Contenido_Security::escapeDB($sDateFieldName, $db)." >= '".mask(Contenido_Security::escapeDB($sSearchStrDateFrom, $db))."')";
 	$bNoCriteria = false;
 }
 
 if (!empty($sSearchStrDateTo) && ($sDateFieldName != '')) {
-    $where.= " AND (a.".$sDateFieldName." <= '".mask($sSearchStrDateTo)."')";
+    $where.= " AND (a.".$sDateFieldName." <= '".mask(Contenido_Security::escapeDB($sSearchStrDateTo, $db))."')";
 	$bNoCriteria = false;
 }
 
 if (!empty($sSearchStrAuthor) && ($sSearchStrAuthor != 'n/a')) {
     // es soll nach Autor gesucht werden
-    $where.= " AND ((a.author = '" . mask($sSearchStrAuthor) .  "') OR (a.modifiedby = '" . mask($sSearchStrAuthor)."'))";
+    $where.= " AND ((a.author = '" . mask(Contenido_Security::escapeDB($sSearchStrAuthor, $db)) .  "') OR (a.modifiedby = '" . mask(Contenido_Security::escapeDB($sSearchStrAuthor, $db))."'))";
 	$bNoCriteria = false;
 }
 
@@ -566,7 +568,7 @@ if ($iAffectedRows <= 0) {
 			#Check if any rights are applied to current user or his groups
 			$sql = "SELECT *
 					FROM ".$cfg["tab"]["rights"]."
-					WHERE user_id IN ('".$auth->auth["uid"]."') AND idclient = '$client' AND idlang = '$lang' AND idcat = '".$idcat."'";
+					WHERE user_id IN ('".$auth->auth["uid"]."') AND idclient = '".Contenido_Security::toInteger($client)."' AND idlang = '".Contenido_Security::toInteger($lang)."' AND idcat = '".Contenido_Security::toInteger($idcat)."'";
 			$db2->query($sql);
 			
 			if ($db2->num_rows() != 0) {
@@ -679,12 +681,11 @@ if ($iAffectedRows <= 0) {
 		    $sDeleteArticleQuestion = i18n("Do you really want to delete following article");
 		    
 		    $sRowId = "$idart-$idartlang-$idcat-0-$idcatart-$iLangID";
-            
+
             if ($i == 0) {
                 $tpl->set('s', 'FIRST_ROWID', $sRowId);
             }
 
-	
 		    if ($online == 1 OR ($i % 2 == 1)) {
 		        $bgColorRow = '#E2E2E2';
 		    } else {
@@ -709,21 +710,6 @@ if ($iAffectedRows <= 0) {
 		    	$delete = "";
 		    }
 
-		    /*
-		    # No longer here, only available via tabs
-		    if ($perm->have_perm_area_action_item("con_editart", "con_edit",$idcat)) {
-				$properties = "<a href=\"main.php?area=con_editart&action=con_edit&frame=4&idart=$idart&idcat=$idcat&contenido=$sSession\" title=\"$sArticleProperty\"><img src=\"images/but_art_conf2.gif\" alt=\"$sArticleProperty\" title=\"$sArticleProperty\" border=\"0\"></a>";
-		    }else {
-		    	$properties = "";
-		    }
-
-		    if ($perm->have_perm_area_action_item("con", "con_changetemplate",$idcat)) {
-				$tplconfig = "<a href=\"main.php?area=con_tplcfg&action=tplcfg_edit&idart=$idart&idcat=$idcat&idtpl=0&frame=4&contenido=$sSession\" title=\"$sConfigureTpl\"><img src=\"images/configure.gif\" width=\"15\" height=\"15\" title=\"$sConfigureTpl\" alt=\"$sConfigureTpl\" border=\"0\"></a>";
-		    }else {
-		    	$tplconfig = "";
-		    }
-				*/
-		    
 			$sRow = '<tr id="' . $sRowId . '" class="text_medium" style="' . $bgColorRow . '" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">' . "\n";
 		    $sRow .= $makeStartarticle . "\n";
 		    $sRow .= 	"<td nowrap=\"nowrap\" class=\"bordercell\">$editart</td>
@@ -790,7 +776,6 @@ if( sizeof($_GET) == 0 && isset($_POST) ) {
     $tpl->set('s', 'STORESEARCHINFO', '');
     $tpl->set('s', 'STORESEARCHFORM', '');
 }
-
 
 $tpl->set('s', 'SUBNAVI', $sLoadSubnavi);
 sendEncodingHeader($db, $cfg, $lang);
