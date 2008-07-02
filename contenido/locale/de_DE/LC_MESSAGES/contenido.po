@@ -4599,6 +4599,9 @@ msgstr "-- Neuer Empfänger --"
 msgid "%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed."
 msgstr "%1backslashdollard Empf&auml;nger, die ihre E-Mail-Adresse seit mehr als %2backslashdollard Tagen nicht best&auml;tigt haben, wurden gel&ouml;scht."
 
+msgid "There are no recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed."
+msgstr "Es gibt keine Empf&auml;nger, die ihre E-Mail-Adresse seit mehr als %2backslashdollard Tagen nicht best&auml;tigt haben."
+
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:423
 #: contenido/includes/include.recipients_edit.php:64
 msgid "Please specify a valid e-mail address"
