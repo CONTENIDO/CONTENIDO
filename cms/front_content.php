@@ -56,7 +56,7 @@
 define("CON_FRAMEWORK", true);
 
 // include security class and check request variables
-include_once ('./classes/class.security.php');
+include_once ('../contenido/classes/class.security.php');
 Contenido_Security::checkRequests();
 
 # include the config file of the frontend to init the Client and Language Id
