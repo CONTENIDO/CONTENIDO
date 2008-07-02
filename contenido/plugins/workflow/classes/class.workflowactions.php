@@ -1,20 +1,34 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Management of per-workflowitem actions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.3
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-07-18
+ *   
+ *   $Id: class.workflowactions.php,v 1.3 2006/01/13 15:54:41 timo.hummel Exp $
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.workflowactions.php,v $
-* Project   :   Contenido Workflow
-* Descr     :   Management of per-workflowitem actions
-*
-* Author    :   $Author: timo.hummel $
-*               
-* Created   :   18.07.2003
-* Modified  :   $Date: 2006/01/13 15:54:41 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.workflowactions.php,v 1.3 2006/01/13 15:54:41 timo.hummel Exp $
-******************************************/
-
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /**
  * Class WorkflowActions
@@ -45,7 +59,7 @@ class WorkflowActions extends ItemCollection {
 	
 	function get ($idworkflowitem, $action)
 	{
-		$this->select("idworkflowitem = '$idworkflowitem' AND action = '$action'");
+		$this->select("idworkflowitem = '".Contenido_Security::escapeDB($idworkflowitem)."' AND action = '".Contenido_Security::escapeDB($action)."'");
 		if ($this->next())
 		{
 			return true;
@@ -70,7 +84,7 @@ class WorkflowActions extends ItemCollection {
 	}
 	function set ($idworkflowitem, $action)
 	{
-		$this->select("idworkflowitem = '$idworkflowitem' AND action = '$action'");
+		$this->select("idworkflowitem = '".Contenido_Security::escapeDB($idworkflowitem)."' AND action = '".Contenido_Security::escapeDB($action)."'");
 		if (!$this->next())
 		{
 			$newitem = parent::create();
