@@ -1,5 +1,10 @@
 <?php
 define("CON_FRAMEWORK", true);
+
+// include security class and check request variables
+include_once ('./classes/class.security.php');
+Contenido_Security::checkRequests();
+
 function checkAndInclude ($filename)
 {
 	if (file_exists($filename) && is_readable($filename))
