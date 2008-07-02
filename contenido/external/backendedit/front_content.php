@@ -46,7 +46,7 @@
  *   created 2003-01-21
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *
- *   $Id$:
+ *   $Id$: 
  * }}
  * 
  */
@@ -54,7 +54,7 @@
 define("CON_FRAMEWORK", true);
 
 // include security class and check request variables
-include_once ('./classes/class.security.php');
+include_once ('../../classes/class.security.php');
 Contenido_Security::checkRequests();
 
 /*

@@ -31,3 +31,4 @@ i18n("Flash Movie");
 i18n("Link");
 i18n("Frame");
 
+?>

@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend scripts
- * @version    1.3
+ * @version    1.3.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created unknown
  *   modified 2008-06-16, H. Librenz, Hotfix: Added check for invalid calls
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-07-02, Frederic Schneider, include security_class
  *
  *   $Id$:
  * }}
@@ -31,9 +32,9 @@
 
 define("CON_FRAMEWORK", true);
 
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
-}
+// include security class and check request variables
+include_once ('../classes/class.security.php');
+Contenido_Security::checkRequests();
 
 include_once ('../includes/startup.php');
 

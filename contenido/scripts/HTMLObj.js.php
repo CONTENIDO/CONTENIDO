@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend sripts
- * @version    1.0.0
+ * @version    1.0.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2004-04-24
  *   modified 2008-06-25, Frederic Schneider, add security fix
+ *   modified 2008-07-02, Frederic Schneider, include security_class
  *
  *   $Id$:
  * }}
@@ -30,9 +31,9 @@
 
 define("CON_FRAMEWORK", true);
 
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
-}
+// include security class and check request variables
+include_once ('../classes/class.security.php');
+Contenido_Security::checkRequests();
 
 include_once ('../includes/startup.php');
 
