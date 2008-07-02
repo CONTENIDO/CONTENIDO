@@ -1,4 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Class for workflow allocation management
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0
+ * @author     Unknwon
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 
+ *   
+ *   $Id: 
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+
 plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
 cInclude("includes", "functions.encoding.php");
@@ -157,7 +189,6 @@ function getWorkflowList() {
 		$moveup->setCustom("idworkflow", $idworkflow);
 		$moveup->setCustom("position", $pos);
 		$moveup->setAlt(i18n("Move step up", "workflow"));
-		#$moveup->setContent('<img border="0" style="padding-left: 2px" src="images/pfeil_hoch.gif">');
 		$moveup->setContent('<img style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/no_verschieben.gif" . '">');
 
 		$movedown= new Link;
@@ -166,7 +197,6 @@ function getWorkflowList() {
 		$movedown->setCustom("idworkflow", $idworkflow);
 		$movedown->setCustom("position", $pos);
 		$movedown->setAlt(i18n("Move step down", "workflow"));
-		#$movedown->setContent('<img style="padding-left: 2px" border="0" src="images/pfeil_runter.gif">');
 		$movedown->setContent('<img style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
 		
 		
@@ -199,8 +229,6 @@ function getWorkflowList() {
 		if ($_GET['idworkflowitem'] == $id) {
 		     $ui->setExtra ($id, 'id="marked" ');
 		}
-
-		#$ui->setImage($id, $cfg["path"]["contenido_fullhtml"].$cfg["path"]["plugins"]."workflow/images/workflow_step.gif");
 	}
 
 
@@ -302,7 +330,6 @@ function getWorkflowUsers($idworkflowitem) {
 		$movedown->setCustom("idworkflow", $idworkflow);
 		$movedown->setCustom("position", $pos);
 		$movedown->setAlt(i18n("Move user down", "workflow"));
-		#$movedown->setContent('<img style="padding-left: 2px" border="0" src="images/pfeil_runter.gif">');
 		$movedown->setContent('<img style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/nu_verschieben.gif" . '">');
 
 
@@ -353,9 +380,7 @@ function getWorkflowUsers($idworkflowitem) {
 	$ui->setLink("spacer", NULL);
 
 	$ui->setTitle("create", '<input class="text_medium" type="submit" name="adduser" value="' . i18n("Add User", "workflow") . '">');
-	//$ui->setImage("create", $cfg["path"]["contenido_fullhtml"].$cfg["path"]["plugins"]."workflow/images/workflow_step_new.gif");
 	$ui->setLink("create", NULL);
-	//$ui->setContent("create", "foo");
 	$content= $ui->render(false);
 
 	return ($content);
