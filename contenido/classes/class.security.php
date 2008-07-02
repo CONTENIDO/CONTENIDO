@@ -55,6 +55,25 @@ class Contenido_Security {
         }
 
     }
+    
+    /**
+     * Check: Is the variable an integer?
+     * @access public
+     * @param string $sVar
+     * @return true or false
+     */
+    public static function isInteger($iVar) {
+ 
+        $iTempVar = $iVar;
+        $iVar = (int) $iVar;
+ 
+        if($iTempVar === $iVar) {
+            return true;
+        } else {
+            return false;
+        }
+ 
+    }
 
     /**
      * Check: Is the variable an string?
