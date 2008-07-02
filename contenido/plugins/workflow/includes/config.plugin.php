@@ -160,7 +160,7 @@ function prepareWorkflowItems ()
 	
 	$workflowSelectBox = new cHTMLSelectElement("foo");
 	$workflowSelectBox->setClass("text_medium");
-	$workflowworkflows->select("idclient = '$client' AND idlang = '".Contenido_Security::escapeDB($lang)."'");
+	$workflowworkflows->select("idclient = '$client' AND idlang = '".Contenido_Security::escapeDB($lang, null)."'");
 	
 	$workflowOption = new cHTMLOptionElement("--- ".i18n("None", "workflow")." ---", 0);
 	$workflowSelectBox->addOptionElement(0,$workflowOption);

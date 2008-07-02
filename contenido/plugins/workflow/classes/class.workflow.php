@@ -186,7 +186,7 @@ function getCatLang ($idcat, $idlang)
 	$sql = "SELECT idcatlang FROM "
 			.$cfg["tab"]["cat_lang"].
 		   " WHERE idlang = '". Contenido_Security::escapeDB($idlang, $db)."' AND
-             idcat = '".Contenido_Security::escapeDB($idcat)."'";
+             idcat = '".Contenido_Security::escapeDB($idcat, $db)."'";
    
    $db->query($sql);
    
