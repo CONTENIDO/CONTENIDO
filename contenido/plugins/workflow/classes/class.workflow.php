@@ -1,19 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Workflow management class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.6
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-07-18
+ *   
+ *   $Id: class.workflow.php,v 1.6 2003/08/18 11:59:22 timo.hummel Exp $
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.workflow.php,v $
-* Project   :   Contenido Workflow
-* Descr     :   Workflow management class
-*
-* Author    :   $Author: timo.hummel $
-*               
-* Created   :   18.07.2003
-* Modified  :   $Date: 2003/08/18 11:59:22 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.workflow.php,v 1.6 2003/08/18 11:59:22 timo.hummel Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+cInclude("classes", "class.security.php");
 
 $cfg["tab"]["workflow"] = $cfg['sql']['sqlprefix']."_piwf_workflow";
 $cfg["tab"]["workflow_allocation"] = $cfg['sql']['sqlprefix']."_piwf_allocation";
@@ -79,17 +96,17 @@ class Workflows extends ItemCollection {
         $oDb = new DB_contenido();
         
         $aItemIdsDelete = array();
-        $sSql = 'SELECT idworkflowitem FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '.$idWorkflow.';';
+        $sSql = 'SELECT idworkflowitem FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '. Contenido_Security::toInteger($idWorkflow) .';';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
-            array_push($aItemIdsDelete, $oDb->f('idworkflowitem'));
+            array_push($aItemIdsDelete, Contenido_Security::escapeDB($oDb->f('idworkflowitem')));
         }
         
         $aUserSequencesDelete = array();
         $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem in ('.implode(',', $aItemIdsDelete).');';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
-            array_push($aUserSequencesDelete, $oDb->f('idusersequence'));
+            array_push($aUserSequencesDelete, Contenido_Security::escapeDB($oDb->f('idusersequence')));
         }
         
         $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem in ('.implode(',', $aItemIdsDelete).');';
@@ -98,10 +115,10 @@ class Workflows extends ItemCollection {
         $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_actions"].' WHERE idworkflowitem in ('.implode(',', $aItemIdsDelete).');';
         $oDb->query($sSql);
         
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '.$idWorkflow.';';
+        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '.Contenido_Security::toInteger($idWorkflow).';';
         $oDb->query($sSql);
         
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_allocation"].' WHERE idworkflow = '.$idWorkflow.';';
+        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_allocation"].' WHERE idworkflow = '.Contenido_Security::toInteger($idWorkflow).';';
         $oDb->query($sSql);
         
         $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence in ('.implode(',', $aUserSequencesDelete).');';
@@ -166,8 +183,8 @@ function getCatLang ($idcat, $idlang)
 	/* Get the idcatlang */
 	$sql = "SELECT idcatlang FROM "
 			.$cfg["tab"]["cat_lang"].
-		   " WHERE idlang = '$idlang' AND
-             idcat = '$idcat'";
+		   " WHERE idlang = '". Contenido_Security::escapeDB($idlang)."' AND
+             idcat = '".Contenido_Security::escapeDB($idcat)."'";
    $db = new DB_Contenido;
    $db->query($sql);
    
