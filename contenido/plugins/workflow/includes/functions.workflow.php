@@ -1,20 +1,38 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Workflow functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.8
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-07-28
+ *   
+ *   $Id: functions.workflow.php,v 1.8 2006/01/13 15:54:41 timo.hummel Exp $
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: functions.workflow.php,v $
-* Project   :   Contenido
-* Descr     :   Workflow functions
-*
-* Author    :   $Author: timo.hummel $
-*               
-* Created   :   28.07.2003
-* Modified  :   $Date: 2006/01/13 15:54:41 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: functions.workflow.php,v 1.8 2006/01/13 15:54:41 timo.hummel Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+cInclude("classes", "class.security.php");
 cInclude("includes", "functions.con.php");
+
 plugin_include('workflow', 'classes/class.workflowitems.php');
 
 function getUsers ($listid, $default)
@@ -102,7 +120,7 @@ function isCurrentEditor ($uid)
     	/* Yes, it's a group. Let's try to load the group members! */
     	$sql = "SELECT user_id FROM "
     			.$cfg["tab"]["groupmembers"]."
-                WHERE group_id = '".$uid."'";
+                WHERE group_id = '".Contenido_Security::escapeDB($uid)."'";
 
         $db2 = new DB_Contenido;
         $db2->query($sql);
@@ -351,7 +369,6 @@ function doWorkflowAction ($idartlang, $action)
 			
 			if ($obj = $artAllocations->next())
 			{
-				/* Get the current user sequence */
 				$usersequence = new WorkflowUserSequence;
 				$usersequence->loadByPrimaryKey($obj->get("idusersequence"));
 				
@@ -366,7 +383,7 @@ function doWorkflowAction ($idartlang, $action)
 				}
 				
 				$workflowitems = new WorkflowItems;
-				$workflowitems->select("idworkflow = '$idworkflow' AND position = '$newpos'");
+				$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($newpos)."'");
 				
 				if ($nextObj = $workflowitems->next())
 				{
@@ -382,7 +399,6 @@ function doWorkflowAction ($idartlang, $action)
 						$obj->store();
 					}
 				}
-					 
 			}
 			break;		
 		case "next":
@@ -391,7 +407,6 @@ function doWorkflowAction ($idartlang, $action)
 			
 			if ($obj = $artAllocations->next())
 			{
-				/* Get the current user sequence */
 				$usersequence = new WorkflowUserSequence;
 				$usersequence->loadByPrimaryKey($obj->get("idusersequence"));
 				
@@ -401,7 +416,7 @@ function doWorkflowAction ($idartlang, $action)
 				$newpos = $workflowitem->get("position") + 1;
 				
 				$workflowitems = new WorkflowItems;
-				$workflowitems->select("idworkflow = '$idworkflow' AND position = '$newpos'");
+				$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($newpos)."'");
 				
 				if ($nextObj = $workflowitems->next())
 				{
@@ -417,7 +432,7 @@ function doWorkflowAction ($idartlang, $action)
 						$obj->store();
 					}
 				} else {
-					$workflowitems->select("idworkflow = '$idworkflow' AND position = '".$workflowitem->get("position")."'");
+					$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($workflowitem->get("position"))."'");
 					if ($nextObj = $workflowitems->next())
     				{
     					$userSequences = new WorkflowUserSequences;
@@ -442,7 +457,6 @@ function doWorkflowAction ($idartlang, $action)
 			
 			if ($obj = $artAllocations->next())
 			{
-				/* Get the current user sequence */
 				$usersequence = new WorkflowUserSequence;
 				$usersequence->loadByPrimaryKey($obj->get("idusersequence"));
 				
@@ -452,7 +466,7 @@ function doWorkflowAction ($idartlang, $action)
 				$newpos = 1;
 				
 				$workflowitems = new WorkflowItems;
-				$workflowitems->select("idworkflow = '$idworkflow' AND position = '$newpos'");
+				$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($newpos)."'");
 				
 				if ($nextObj = $workflowitems->next())
 				{
@@ -468,12 +482,11 @@ function doWorkflowAction ($idartlang, $action)
 						$obj->store();
 					}
 				}
-					 
 			}
 			break;
 						
 		case "revise":
-			$sql = "SELECT idart, idlang FROM ".$cfg["tab"]["art_lang"] ." WHERE idartlang = '$idartlang'";
+			$sql = "SELECT idart, idlang FROM ".$cfg["tab"]["art_lang"] ." WHERE idartlang = '".Contenido_Security::escapeDB($idartlang)."'";
 			$db = new DB_Contenido;
 			$db->query($sql);
 			$db->next_record();
@@ -520,40 +533,17 @@ function workflowSelect ($listid, $default, $idcat)
 	$workflowSelectBox->updateAttributes(array("id" => "wfselect" . $idcat));
 	$workflowSelectBox->updateAttributes(array("name" => "wfselect" . $idcat));
     $workflowSelectBox->setDefault($default);
-    
-	/*$form = new UI_Form("tplsel".$idcat);
-
-	$form->setVar("modidcat", $idcat);
-	$button = '<input type="image" src="'.$cfg["path"]["images"].'submit.gif" style="padding-left:5px;">';
-
-	$gen = $workflowSelectBox->render().$button;
-	
-	$form->add("all",$gen);
-    return $form->render(true);*/
 	
     $sButton ='<a href="javascript:setWorkflow('.$idcat.', \''."wfselect".$idcat.'\')"><img src="'.$cfg["path"]["images"].'submit.gif" class="spaced"></a>';
     
     return $workflowSelectBox->render().$sButton;
-	
-	
 }
 
 function workflowInherit ($idcat)
 {
 	global $idclient, $cfg, $frame, $area, $workflowworkflows, $sess;	
-	/*$form2 = new UI_Form("wfinherit".$idcat);
-	$form2->setVar("area", $area);
-	$form2->setVar("action", "workflow_inherit_down");
-	$form2->setVar("frame", $frame);
-	$form2->setVar("modidcat",$idcat);
-	$alt = i18n("Inherit workflow down", "workflow");
-	$button = '<input alt="'.$alt.'" title="'.$alt.'" type="image" src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'pfeil_runter.gif">';
-	
-	$form2->add("all", $button);*/
-    //$alt = i18n("Inherit workflow down", "workflow");
 	$sUrl = $sess->url("main.php?area=$area&frame=$frame&modidcat=$idcat&action=workflow_inherit_down");
     $sButton ='<a href="'.$sUrl.'"><img src="'.$cfg["path"]["images"].'pfeil_runter.gif" class="spaced"></a>';
-	//return $form2->render(true);
     return $sButton;
 }
 
