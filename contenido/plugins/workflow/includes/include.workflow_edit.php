@@ -1,19 +1,35 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contains workflow editing functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.3
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-05-20
+ *   
+ *   $Id: include.workflow_edit.php,v 1.3 2006/01/13 15:54:41 timo.hummel Exp $
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: include.workflow_edit.php,v $
-* Project   :   Contenido Workflow
-* Descr     :   Contains workflow editing functions
-*
-* Author    :   $Author: timo.hummel $
-*               
-* Created   :   20.05.2003
-* Modified  :   $Date: 2006/01/13 15:54:41 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.workflow_edit.php,v 1.3 2006/01/13 15:54:41 timo.hummel Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 plugin_include('workflow', 'classes/class.workflow.php');
  
