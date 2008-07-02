@@ -26,6 +26,9 @@
  * 
  */
 
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if (version_compare(PHP_VERSION, '5', '>='))
 {
