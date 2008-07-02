@@ -1,19 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Workflow management class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.3
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-07-18
+ *   
+ *   $Id: class.workflowusersequence.php,v 1.3 2006/01/13 15:54:41 timo.hummel Exp $
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.workflowusersequence.php,v $
-* Project   :   Contenido Workflow
-* Descr     :   Workflow management class
-*
-* Author    :   $Author: timo.hummel $
-*               
-* Created   :   18.07.2003
-* Modified  :   $Date: 2006/01/13 15:54:41 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.workflowusersequence.php,v 1.3 2006/01/13 15:54:41 timo.hummel Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+cInclude("classes", "class.security.php");
 
 
 /**
@@ -52,7 +69,7 @@ class WorkflowUserSequences extends ItemCollection {
         
 		$pos = $item->get("position");
 		$idworkflowitem = $item->get("idworkflowitem");
-		$this->select("position > $pos AND idworkflowitem = '$idworkflowitem'");
+		$this->select("position > $pos AND idworkflowitem = '".Contenido_Security::escapeDB($idworkflowitem)."'");
 		while ($obj = $this->next())
 		{
 			$pos = $obj->get("position") -1;
@@ -70,13 +87,13 @@ class WorkflowUserSequences extends ItemCollection {
         $oDb = new DB_contenido();
         
         $aIdArtLang = array();
-		$sSql = 'SELECT idartlang FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence = '.$idusersequence.';';
+		$sSql = 'SELECT idartlang FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence = '.Contenido_Security::escapeDB($idusersequence).';';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
             array_push($aIdArtLang, $oDb->f('idartlang'));
         }
         
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence = '.$idusersequence.';';
+        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence = '.Contenido_Security::escapeDB($idusersequence).';';
         $oDb->query($sSql);
         
         
@@ -98,7 +115,7 @@ class WorkflowUserSequences extends ItemCollection {
 			return false;
 		}
 		
-		$this->select("idworkflowitem = '$idworkflowitem'","","position DESC","1");
+		$this->select("idworkflowitem = '".Contenido_Security::escapeDB($idworkflowitem)."'","","position DESC","1");
 		
 		$item = $this->next();
 		
@@ -118,7 +135,7 @@ class WorkflowUserSequences extends ItemCollection {
 	
 	function swap ($idworkflowitem, $pos1, $pos2)
 	{
-		$this->select("idworkflowitem = '$idworkflowitem' AND position = '$pos1'");
+		$this->select("idworkflowitem = '$idworkflowitem' AND position = '".Contenido_Security::escapeDB($pos1)."'");
 		if (($item = $this->next()) === false)
 		{
 			$this->lasterror = i18n("Swapping items failed: Item doesn't exist", "workflow");
@@ -127,7 +144,7 @@ class WorkflowUserSequences extends ItemCollection {
 		
 		$pos1ID = $item->getField("idusersequence");
 
-		$this->select("idworkflowitem = '$idworkflowitem' AND position = '$pos2'");
+		$this->select("idworkflowitem = '$idworkflowitem' AND position = '".Contenido_Security::escapeDB($pos2)."'");
 		if (($item = $this->next()) === false)
 		{
 			$this->lasterror(i18n("Swapping items failed: Item doesn't exist", "workflow"));
@@ -195,13 +212,13 @@ class WorkflowUserSequence extends Item {
 				{
     				$db = new DB_Contenido;
         			$sql = "SELECT user_id FROM " . $cfg["tab"]["phplib_auth_user_md5"] .
-        			       " WHERE user_id = '$value'";
+        			       " WHERE user_id = '".Contenido_Security::escapeDB($value)."'";
         			$db->query($sql);
         			
         			if (!$db->next_record())
         			{
         				$sql = "SELECT group_id FROM " . $cfg["tab"]["groups"] .
-        				       " WHERE group_id = '$value'";
+        				       " WHERE group_id = '".Contenido_Security::escapeDB($value)."'";
         				       
         				$db->query($sql);
         				if (!$db->next_record())
