@@ -1,13 +1,36 @@
 <?php
 /**
- * Class pApiContentAllocationTreeView
+ * Project: 
+ * Contenido Content Management System
  * 
+ * Description: 
+ * Content Allocation article
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
  * 
  *
- * @author Marco Jahn
- * @version 0.2.0
- * @copyright four for business AG
+ * @package    Contenido Backend plugins
+ * @version    0.2.1
+ * @author     Marco Jahn
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 class pApiContentAllocationArticle extends pApiTree {
 
@@ -39,7 +62,6 @@ class pApiContentAllocationArticle extends pApiTree {
 			$item['ITEMINDENT'] = $item_tmp['level'] * 15 + 3;
 			
 			// set checked!
-			#$item['CHECKBOX'] = '<input id="'.$item_tmp['idpica_alloc'].'" parentid="'.$item_tmp['parentid'].'" onClick="checkParent(this)" type="checkbox" name="allocation[]" />';
 			$checked = '';
 			if (in_array($item_tmp['idpica_alloc'], $this->load)) {
 				$checked = ' checked="checked"';	

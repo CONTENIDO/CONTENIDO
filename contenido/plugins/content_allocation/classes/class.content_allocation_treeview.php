@@ -1,16 +1,37 @@
 <?php
 /**
- * Class pApiContentAllocation
+ * Project: 
+ * Contenido Content Management System
  * 
+ * Description: 
  * Stores and handles content allocation management
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * @author Marco Jahn
- * @version 0.2.2
- * @copyright four for business AG
- * @modified 27.10.2005 by Willi Man
- * @modified 24.01.2008 by Andreas Lindner  
- * @modified 26.06.2008 by Timo Trautmann changed post var from   treeItem to treeItemPost (security issue)
+ * @package    Contenido Backend plugins
+ * @version    0.2.3
+ * @author     Marco Jahn
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-26, Timo Trautmann, changed post var from treeItem to treeItemPost (security issue)
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
  
 /**
  * Todo
@@ -185,10 +206,6 @@ class pApiContentAllocationTreeView extends pApiTree {
 		if ($tree === false) {
 			return false;	
 		}
-		
-		#echo "<pre>";
-		#print_r($tree);
-		#echo "</pre>";
 
 		$tree = $this->_buildRenderTree($tree);
         

@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    Contenido Backend plugins
  * @version    0.7.8
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
