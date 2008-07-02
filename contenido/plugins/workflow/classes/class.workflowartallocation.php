@@ -67,7 +67,7 @@ class WorkflowArtAllocations extends ItemCollection {
 		global $cfg;
 		
 		$sql = "SELECT idartlang FROM " .$cfg["tab"]["art_lang"].
-		       " WHERE idartlang = '".Contenido_Security::escapeDB($idartlang)."'";
+		       " WHERE idartlang = '".Contenido_Security::escapeDB($idartlang, $this->db)."'";
 
 		$this->db->query($sql);
 		if (!$this->db->next_record())
@@ -186,7 +186,7 @@ class WorkflowArtAllocation extends Item {
 				$timelimit = $usersequence->get("timelimit");
 				
 				$db = new DB_Contenido;
-				$sql = "SELECT author, title, idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang = '".Contenido_Security::escapeDB($idartlang)."'";
+				$sql = "SELECT author, title, idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang = '".Contenido_Security::escapeDB($idartlang, $this->db)."'";
 				
 				$db->query($sql);
 				
@@ -198,7 +198,7 @@ class WorkflowArtAllocation extends Item {
 				}
 				
 				/* Extract category */
-				$sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::escapeDB($idart)."'";
+				$sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::escapeDB($idart, $this->db)."'";
 				$db->query($sql);
 				
 				if ($db->next_record())
@@ -206,7 +206,7 @@ class WorkflowArtAllocation extends Item {
 					$idcat = $db->f("idcat");
 				}
 				
-				$sql = "SELECT name FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '".Contenido_Security::escapeDB($idcat)."'";
+				$sql = "SELECT name FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '".Contenido_Security::escapeDB($idcat, $this->db)."'";
 				$db->query($sql);
 				
 				if ($db->next_record())
@@ -272,7 +272,7 @@ class WorkflowArtAllocation extends Item {
                     if (isGroup($usersequence->get("iduser")))
                     {
                     	    $sql = "select idgroupuser, user_id FROM ". $cfg["tab"]["groupmembers"] ." WHERE
-            						group_id = '".Contenido_Security::escapeDB($usersequence->get("iduser"))."'";
+            						group_id = '".Contenido_Security::escapeDB($usersequence->get("iduser"),$this->db)."'";
             				$db->query($sql);
             				
             				while ($db->next_record())
@@ -321,7 +321,7 @@ class WorkflowArtAllocation extends Item {
                     {
                     		
                     	    $sql = "select idgroupuser, user_id FROM ". $cfg["tab"]["groupmembers"] ." WHERE
-            						group_id = '".Contenido_Security::escapeDB($usersequence->get("iduser"))."'";
+            						group_id = '".Contenido_Security::escapeDB($usersequence->get("iduser"), $this->db)."'";
             				$db->query($sql);
             				
             				while ($db->next_record())
