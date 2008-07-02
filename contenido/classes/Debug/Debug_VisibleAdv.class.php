@@ -9,9 +9,7 @@
  * Therefore there's a box positioned at the left top of the page that can be toggled and hidden.
  * 
  * Please note: 
- * -> When using method Debug_VisibleAdv::showAll() you'll produce invalid HTML when having an XHTML doctype.
- * -> You cannot simply switch between the different debuggers by using DebuggerFactory::getDebugger('type'); because 
- * 		this object has methods that are not defined in IDebug!
+ * When using method Debug_VisibleAdv::showAll() you'll produce invalid HTML when having an XHTML doctype.
  *  
  * Requirements: 
  * @con_php_req 5.0
@@ -28,7 +26,7 @@
  * {@internal 
  *   created 2008-05-20
  *
- *   $Id:
+ *   $Id$:
  * }}
  * 
  */
