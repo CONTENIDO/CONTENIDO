@@ -46,6 +46,7 @@
  *   created 2003-01-21
  *   modified 2008-06-16, H. Librenz, Hotfix: checking for potential unsecure call
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-07-02, Frederic Schneider, include security_class
  *
  *   $Id$:
  * }}
@@ -54,9 +55,9 @@
 
 define("CON_FRAMEWORK", true);
 
-if (isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call');
-}
+// include security class and check request variables
+include_once ('./classes/class.security.php');
+Contenido_Security::checkRequests();
 
 # include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
