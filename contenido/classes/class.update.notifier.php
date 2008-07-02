@@ -23,6 +23,7 @@
  * {@internal 
  *   created 2008-06-21
  *   modified 2008-07-01 timo trautmann - added rss update functionality
+ *   modified 2008-07-02, Dominik Ziegler, added language support for rss
  *   $Id$:
  * }}
  * 
@@ -53,14 +54,14 @@ class Contenido_UpdateNotifier {
 	 * @var string
 	 */
 	protected $sVendorXMLFile = "vendor.xml";
-    
+
 	/**
 	 * Path to rss cache file
 	 * @access protected
 	 * @var string
 	 */
-	protected $sRssCacheFile = "rss.xml";
-	
+	protected $sRssCacheFile;
+    
 	/**
 	 * Path to timestamp cache file
 	 * @access protected
@@ -75,7 +76,7 @@ class Contenido_UpdateNotifier {
 	 */
 	protected $sXMLContent;
 
-    /**
+    	/**
 	 * Content of the RSS file
 	 * @access protected
 	 * @var string
@@ -95,6 +96,13 @@ class Contenido_UpdateNotifier {
 	 * @var string
 	 */
 	protected $sVendorURL = "http://www.contenido.org/de/redir";
+
+	/**
+	 * Current backend language
+	 * @access protected
+	 * @var string
+	 */
+	protected $sBackendLanguage;
 
 	/**
 	 * SimpleXML object
@@ -186,6 +194,14 @@ class Contenido_UpdateNotifier {
 	 * @var array
 	 */
 	protected $aCfg = array();
+
+	/**
+	 * RSS feeds based on current backend language
+	 * @access protected
+	 * @var array
+	 */
+	protected $aRSSFiles = array("en_US" => "rss_en.xml", "de_DE" => "rss_de.xml", "default" => "rss_de.xml");
+
 	
 	/**
 	 * Constructor of Contenido_UpdateNotifier
@@ -193,10 +209,11 @@ class Contenido_UpdateNotifier {
 	 * @param  string $sConVersion
 	 * @return void
 	 */
-	public function __construct($aCfg, $oUser, $oPerm, $oSession) {
+	public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
 		$this->oProperties = new PropertyCollection;
 		$this->oSession = $oSession;
 		$this->aCfg = $aCfg;
+		$this->sBackendLanguage = $sBackendLanguage;
 
 		if ($oPerm->isSysadmin($oUser) != 1) {
 			$this->bEnableView = false;
@@ -224,10 +241,25 @@ class Contenido_UpdateNotifier {
 				   $this->bEnableCheckRss = true;
 				}
 				
+				$this->setRSSFile();
+				echo "using ".$this->sRssCacheFile." at belang ".$this->sBackendLanguage;
 				$this->detectMinorRelease();
 				$this->checkUpdateNecessity();
 				$this->readVendorXML();
 			}
+		}
+	}
+
+	/**
+	 * Sets the RSS file based on the current backend language
+	 * @access protected
+	 * @return void
+	 */
+	protected function setRSSFile() {
+		if (isset($this->aRSSFiles[$this->sBackendLanguage])) {
+			$this->sRssCacheFile = $this->aRSSFiles[$this->sBackendLanguage];
+		} else {
+			$this->sRssCacheFile = $this->aRSSFiles['default'];
 		}
 	}
 
@@ -247,12 +279,14 @@ class Contenido_UpdateNotifier {
 	}
 
 	/**
-	 * Checks if the xml file must be loaded from the vendor host or local cache
+	 * Checks if the xml or rss file must be loaded from the vendor host or local cache
 	 * @access protected
 	 * @return boolean
 	 */
 	protected function checkUpdateNecessity() {
 		if (!file_exists($this->sCacheDirectory.$this->sVendorXMLFile)) {
+			$bUpdateNecessity = true;
+		} else if (!file_exists($this->sCacheDirectory.$this->sRssCacheFile)) {
 			$bUpdateNecessity = true;
 		} else	if (file_exists($this->sCacheDirectory.$this->sTimestampCacheFile)) {
 			$iLastUpdate = file_get_contents($this->sCacheDirectory.$this->sTimestampCacheFile);

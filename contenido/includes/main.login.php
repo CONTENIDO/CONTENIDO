@@ -250,7 +250,7 @@ else{
 }
 
 // check for new updates
-$oUpdateNotifier = new Contenido_UpdateNotifier($cfg, $vuser, $perm, $sess);
+$oUpdateNotifier = new Contenido_UpdateNotifier($cfg, $vuser, $perm, $sess, $belang);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 $tpl->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 
