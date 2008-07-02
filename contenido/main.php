@@ -1,25 +1,34 @@
 <?php
-
-/*****************************************
-* File      :   main.php
-* Project   :   Contenido
-* Descr     :   Contenido main file
-*
-* Authors   :   Olaf Niemann
-*               Jan Lengowski
-*
-* Created   :   20.01.2003
-* Modified  :   $Date$
-*
-* @version $Revision$
-* @copyright four for business AG <www.4fb.de>
-*
-* @internal {
-*   modified 2008-06-16, H. Librenz - Hotfix: Added check for invalid calls.
-*   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added.
-* }
-*
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido main file
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.2
+ * @author     Olaf Niemann, Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-01-20
+ *   modified 2008-06-16, Holger Librenz, Hotfix: added check for invalid calls
+ *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
 define("CON_FRAMEWORK", true);
 
@@ -176,7 +185,7 @@ if (!is_numeric($client) ||
 if (!is_numeric($lang) || $lang == "") {
     $sess->register("lang");
     # search for the first language of this client
-    $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE A.idlang=B.idlang AND idclient='$client' ORDER BY A.idlang ASC";
+    $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE A.idlang=B.idlang AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idlang ASC";
     $db->query($sql);
     $db->next_record();
     $lang = $db->f("idlang");
@@ -315,7 +324,6 @@ $oActiveUser->startUsersTracking();
  *
  * End of the test
  */
-
 
 page_close();
 
