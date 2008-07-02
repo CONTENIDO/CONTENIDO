@@ -57,11 +57,11 @@ function getExpandCollapseButton($item)
 		if ($item->collapsed == true)
 		{
 			$expandlink = $sess->url($selflink."?area=$area&frame=$frame&appendparameters=$appendparameters&expand=".$item->id);
-			return ('<a href="'.$expandlink.'" alt="Kategorie öffnen" title="Kategorie öffnen"><img src="'.$item->collapsed_icon.'" border="0" align="middle" width="18"></a>');
+			return ('<a href="'.$expandlink.'" alt="'.i18n('Open category').'" title="'.i18n('Open category').'"><img src="'.$item->collapsed_icon.'" border="0" align="middle" width="18"></a>');
 		} else
 		{
 			$collapselink = $sess->url($selflink."?area=$area&appendparameters=$appendparameters&frame=$frame&collapse=".$item->id);
-			return ('<a href="'.$collapselink.'" alt="Kategorie schließen" title="Kategorie schließen"><img src="'.$item->expanded_icon.'" border="0" align="middle" width="18"></a>');
+			return ('<a href="'.$collapselink.'" alt="'.i18n('Close category').'" title="'.i18n('Close category').'"><img src="'.$item->expanded_icon.'" border="0" align="middle" width="18"></a>');
 		}
 	} else
 	{

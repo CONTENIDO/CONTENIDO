@@ -470,7 +470,7 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 	{
 		$mpath = $path."/";	
 	} else {
-		$mpath = "upload:/".$path;	
+		$mpath = "upload/".$path;	
 	}
     
     $sDisplayPath = generateDisplayFilePath($mpath, 85);
