@@ -99,14 +99,14 @@ class Workflows extends ItemCollection {
         $sSql = 'SELECT idworkflowitem FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '. Contenido_Security::toInteger($idWorkflow) .';';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
-            array_push($aItemIdsDelete, Contenido_Security::escapeDB($oDb->f('idworkflowitem')));
+            array_push($aItemIdsDelete, Contenido_Security::escapeDB($oDb->f('idworkflowitem'), $oDb));
         }
         
         $aUserSequencesDelete = array();
         $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem in ('.implode(',', $aItemIdsDelete).');';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
-            array_push($aUserSequencesDelete, Contenido_Security::escapeDB($oDb->f('idusersequence')));
+            array_push($aUserSequencesDelete, Contenido_Security::escapeDB($oDb->f('idusersequence'), $oDb));
         }
         
         $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem in ('.implode(',', $aItemIdsDelete).');';
@@ -180,12 +180,14 @@ function getWorkflowForCat ($idcat)
 function getCatLang ($idcat, $idlang)
 {
 	global $lang, $cfg;
+	$db = new DB_Contenido;
+	
 	/* Get the idcatlang */
 	$sql = "SELECT idcatlang FROM "
 			.$cfg["tab"]["cat_lang"].
-		   " WHERE idlang = '". Contenido_Security::escapeDB($idlang)."' AND
+		   " WHERE idlang = '". Contenido_Security::escapeDB($idlang, $db)."' AND
              idcat = '".Contenido_Security::escapeDB($idcat)."'";
-   $db = new DB_Contenido;
+   
    $db->query($sql);
    
    if ($db->next_record())
