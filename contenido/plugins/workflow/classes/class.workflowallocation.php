@@ -1,19 +1,35 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ *  Workflow allocation class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.5
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-07-18
+ *   
+ *   $Id: class.workflowallocation.php,v 1.5 2006/01/13 15:54:41 timo.hummel Exp $
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.workflowallocation.php,v $
-* Project   :   Contenido Workflow
-* Descr     :   Workflow allocation class
-*
-* Author    :   $Author: timo.hummel $
-*               
-* Created   :   18.07.2003
-* Modified  :   $Date: 2006/01/13 15:54:41 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.workflowallocation.php,v 1.5 2006/01/13 15:54:41 timo.hummel Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 /**
  * Class WorkflowAllocations
@@ -51,12 +67,12 @@ class WorkflowAllocations extends ItemCollection {
 		$idcatlang = $obj->get("idcatlang");
 
 		$db = new DB_Contenido;
-		$sql = "SELECT idcat FROM ".$cfg["tab"]["cat_lang"]." WHERE idcatlang = '$idcatlang'";
+		$sql = "SELECT idcat FROM ".$cfg["tab"]["cat_lang"]." WHERE idcatlang = '".Contenido_Security::toInteger($idcatlang)."'";
 		$db->query($sql);
 		$db->next_record();
 		$idcat = $db->f("idcat");
 		
-		$sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '$idcat'";
+		$sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".Contenido_Security::toInteger($idcat)."'";
 		$db->query($sql);
 		
 		while ($db->next_record())
@@ -70,7 +86,7 @@ class WorkflowAllocations extends ItemCollection {
 		{
 			foreach ($idarts as $idart)
 			{
-				$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '$idart' and idlang = '$lang'";
+				$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".Contenido_Security::toInteger($idart)."' and idlang = '".Contenido_Security::toInteger($lang)."'";
 				$db->query($sql);
 				if ($db->next_record())
 				{
@@ -204,7 +220,7 @@ class WorkflowAllocation extends Item {
 		}
 		
 		$db = new DB_Contenido;
-		$sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcatlang = '$idcatlang'";
+		$sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcatlang = '".Contenido_Security::toInteger($idcatlang)."'";
 		$db->query($sql);
 		
 		if (!$db->next_record())
