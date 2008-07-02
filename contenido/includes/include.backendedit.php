@@ -1,22 +1,38 @@
 <?php
 /**
- * Backend Edit Include
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Backend edit include
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * @version $Revision$
- * @copyright four for business AG <www.4fb.de>
+ * @package    Contenido Backend classes
+ * @version    1.0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-07-02, Frederic Schneider, add security fix and include security_class
  *
- * @internal {
- *  modified 2008-06-16, H. Librenz - Hotfix: checking for illegal calls
- *  modified 2008-06-27, timo.trautmann - global framework var added, because this file is called by contenido external
- *
- *  $Id$
- * }
+ *   $Id$:
+ * }}
+ * 
  */
+
 define("CON_FRAMEWORK", true);
  
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
-}
+// include security class and check request variables
+include_once ('../classes/class.security.php');
+Contenido_Security::checkRequests();
 
 include_once ('../includes/startup.php');
 cInclude ("includes", 'functions.general.php');
