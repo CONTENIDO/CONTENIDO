@@ -1,4 +1,35 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ *  Workflow allocation class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.5
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-07-18
+ *   
+ *   $Id: class.workflowallocation.php,v 1.5 2006/01/13 15:54:41 timo.hummel Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.ui.php");
 
 $create = new Link;
