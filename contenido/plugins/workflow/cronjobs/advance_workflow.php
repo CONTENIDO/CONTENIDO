@@ -115,7 +115,7 @@ while ($obj = $workflowartallocations->next())
     	if ($maxtime < time())
     	{
     		$pos = $pos + 1;
-    		$workflowusersequences->select("idworkflowitem = '$wfitem' AND position = '".Contenido_Security::escapeDB($pos)."'");
+    		$workflowusersequences->select("idworkflowitem = '$wfitem' AND position = '".Contenido_Security::escapeDB($pos, NULL)."'");
     		
     		if ($wfobj = $workflowusersequences->next())
     		{
