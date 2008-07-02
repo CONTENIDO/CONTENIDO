@@ -22,7 +22,7 @@
  * {@internal 
  *   created 2003-01-20#
  *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
- *   modified 2008-07-02, Frederic Schneider, new code-header
+ *   modified 2008-07-02, Frederic Schneider, new code-header and include security_class
  *
  *   $Id$:
  * }}
@@ -31,9 +31,9 @@
 
 define("CON_FRAMEWORK", true);
 
-if (isset($_REQUEST['cfg'])) {
-    die ('Illegal call!');
-}
+// include security class and check request variables
+include_once ('./classes/class.security.php');
+Contenido_Security::checkRequests();
 
 include_once ('./includes/startup.php');
 include_once ($cfg["path"]["classes"] . 'class.template.php');

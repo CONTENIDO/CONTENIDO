@@ -24,7 +24,7 @@
  *   modified 2008-06-15, Rudi Bieller, Bugfix CON-149
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-06-27, Timo.Trautmann, Encoding Header added
- *   modified 2008-07-02, Frederic Schneider, querys escaped
+ *   modified 2008-07-02, Frederic Schneider, querys escaped and include security class
  *
  *   $Id$:
  * }}
@@ -40,10 +40,9 @@
 
 define("CON_FRAMEWORK", true);
 
-# Include
-if (isset($_REQUEST['cfg'])) {
-	die();
-}
+// include security class and check request variables
+include_once ('./classes/class.security.php');
+Contenido_Security::checkRequests();
 
 include_once ($cfg['path']['contenido']."includes/config.php");
 include_once ($cfg['path']['contenido']."includes/startup.php");

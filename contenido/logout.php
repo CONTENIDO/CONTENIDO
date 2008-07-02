@@ -21,7 +21,7 @@
  * 
  * {@internal 
  *   created 2003-05-20
- *   modified 2008-07-02, Frederic Schneider, new code-header
+ *   modified 2008-07-02, Frederic Schneider, new code-header and include security_class
  *
  *   $Id$:
  * }}
@@ -29,6 +29,10 @@
  */
 
 define("CON_FRAMEWORK", true);
+
+// include security class and check request variables
+include_once ('./classes/class.security.php');
+Contenido_Security::checkRequests();
 
 include_once ('./includes/startup.php');
 

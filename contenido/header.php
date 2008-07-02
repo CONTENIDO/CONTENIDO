@@ -22,7 +22,7 @@
  * {@internal 
  *   created 2003-03-18
  *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
- *   modified 2008-07-02, Frederic Schneider, add security fix
+ *   modified 2008-07-02, Frederic Schneider, add security fix and include_security_class
  *
  *   $Id$:
  * }}
@@ -30,6 +30,10 @@
  */
 
 define("CON_FRAMEWORK", true);
+
+// include security class and check request variables
+include_once ('./classes/class.security.php');
+Contenido_Security::checkRequests();
 
 include_once ('./includes/startup.php');
 
