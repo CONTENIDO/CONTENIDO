@@ -1,25 +1,41 @@
 <?php
 /**
- * HTTP Input Validator Class
+ * Project: 
+ * Contenido Content Management System
  * 
+ * Description: 
  * This class provides validation methods for HTTP parameters (GET and POST).
  * Originally based on work of kummer and started by discussion in contenido forum this class
  * is a little bit "re-writed" for better interaction with contenido.
  * Thanks to Andreas Kummer (aka kummer) for this great idea!
  * 
- * @version	$Revision: 1.1.1 $
- * @author Andreas Kummer <kummer@atelierq.ch>, Holger Librenz <holger.librenz@4fb.de>
- * @copyright atelierQ Kummer, 4fb AG
+ * Requirements: 
+ * @con_php_req 5.0
+ * @con_notice ToDo: Error page re-direction?
+ *
+ *
+ * @package    Contenido Backend classes
+ * @version    1.1.2
+ * @author     Andreas Kummer, Holger Librenz
+ * @copyright  atelierQ Kummer, four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
  * 
- * @internal {
- * 	created 2008-02-06
- * 	modified 2008-06-10, I. van Peeren - initially set $this->bLog as $bLog in config file
+ * {@internal 
+ *   created 2008-02-06
+ *   modified 2008-06-10, I. van Peeren, initially set $this->bLog as $bLog in config file
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
  * 
- * 	$Id: class.httpinputvalidator.php,v 1.1 2008/02/08 18:36:09 holger.librenz Exp $
- * }
- * 
- * @todo Error page re-direction?
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 #### FORMAT CONSTANTS ####
 define('CON_CHECK_INTEGER', '/^[0-9]*$/'); // integer value

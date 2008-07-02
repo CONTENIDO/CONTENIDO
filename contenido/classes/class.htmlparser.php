@@ -1,4 +1,34 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * HTML parser for contenido
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.1
+ * @author     Starnetsys, LLC.
+ * @copyright  Starnetsys, LLC.
+ * @link       http://starnetsys.com
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 /*
  * Copyright (c) 2003 Starnetsys, LLC.  All rights reserved.
@@ -125,7 +155,8 @@ class HtmlParser {
                 $this->iNodeType = NODE_TYPE_ELEMENT;
                 $this->iNodeValue = "";
                 $nameLength = strlen($name);
-                if ($nameLength > 0 && substr($name, $nameLength - 1, 1) == "/") {                 $this->iNodeName = substr($name, 0, $nameLength - 1);
+                if ($nameLength > 0 && substr($name, $nameLength - 1, 1) == "/") { 
+                    $this->iNodeName = substr($name, 0, $nameLength - 1);
                 }
                 else {
                     $this->iNodeName = $name;

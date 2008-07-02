@@ -1,24 +1,40 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Generic database abstraction functions
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.1
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 3003-07-18
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/**********************************************************************************
-* File      :   $RCSfile: class.genericdb.php,v $
-* Project   :   Contenido 
-* Descr     :   Generic database abstraction functions
-*
-* Author    :   Timo A. Hummel
-*               
-* Created   :   18.07.2003
-* Modified  :   $Date: 2007/06/24 17:36:17 $
-*
-* © four for business AG, www.4fb.de
-*
-* This file is part of the Contenido Content Management System. 
-*
-* $Id: class.genericdb.php,v 1.43 2007/06/24 17:36:17 bjoern.behrens Exp $
-***********************************************************************************/
-cInclude("classes", "class.properties.php");
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if ( $_REQUEST['cfg'] ) { exit; }
+
+cInclude("classes", "class.properties.php");
 
 /* Try to load GenericDB database driver */
 $driver_filename = $cfg["path"]["contenido"].$cfg["path"]["classes"]."drivers/".$cfg['sql']['gdb_driver']."/class.gdb.".$cfg['sql']['gdb_driver'].".php";
