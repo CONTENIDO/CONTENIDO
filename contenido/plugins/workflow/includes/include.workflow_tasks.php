@@ -1,18 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.workflow_tasks.php,v $
-* Project   :   Contenido Workflow
-* Descr     :   Workflow task overview mask
-*
-* Author    :   $Author: timo.hummel $
-*               
-* Created   :   30.07.2003
-* Modified  :   $Date: 2003/08/14 13:07:32 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.workflow_tasks.php,v 1.4 2003/08/14 13:07:32 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Workflow task overview mask
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.4
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-07-30
+ *   
+ *   $Id: include.workflow_tasks.php,v 1.4 2003/08/14 13:07:32 timo.hummel Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+cInclude("classes", "class.security.php");
+
 plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');
 cInclude("classes", "class.ui.php");
@@ -83,7 +102,7 @@ foreach ($userids as $key=>$value)
     	$sql = "SELECT user_id FROM "
     			.$cfg["tab"]["groupmembers"]."
                 WHERE group_id = '".$value."'";
-        $db2->query($sql);
+        $db2->query(Contenido_Security::escapeDB($sql, $db2));
    
         while ($db2->next_record())
         {
@@ -166,7 +185,7 @@ foreach ($isCurrent as $key => $value)
 						   A.idart = C.idart AND
 						   A.idlang = '$lang' AND
  						   C.idclient = '$client';";
-    	$db->query($sql);
+    	$db->query(Contenido_Security::escapeDB($sql, $db));
 
     	if ($db->next_record())
     	{
