@@ -1,21 +1,41 @@
 <?php
 /**
- * Class pApiContentAllocation
- *
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Search articles by content allocation
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * @author Marco Jahn
- * @version 0.7.0
- * @copyright four for business AG
- * @modified 27.10.2005 by Willi Man
- *           Debug option
- * @modified 16.11.2005 by Willi Man
- *           new method findMatchingContentByContentAllocationByCategories
- * @modified 21.11.2005 by Willi Man
- *           new method findMatchingContentByContentAllocation_OR_Categories
- * @modified 06.04.2008 by Holger Librenz
- *           direct mysql_* calls removed, using DB_Contenido::* methods instead
+ * @package    Contenido Backend classes
+ * @version    0.7.8
+ * @author     Marco Jahn
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2005
+ *   modified 2005-10-27, Willi Man, debug option
+ *   modified 2005-11-16, Willi Man, new method findMatchingContentByContentAllocationByCategories
+ *   modified 2005-11-21, Willi Man, new method findMarchingCOntentByContentAllocation_OR_Categories
+ *   modified 2008-04-06, Holger Librenz, direct mysql_* calls remoced, using DB_Contenido:: methods instead
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 plugin_include('repository', 'custom/FrontendNavigation.php');
 
 class pApiContentAllocation {
@@ -57,24 +77,24 @@ class pApiContentAllocation {
 
 		if (is_array($allocations)) {
 			foreach ($allocations as $value) {
-				$sql = "INSERT INTO ".$this->table['pica_alloc_con']." (idpica_alloc, idartlang) VALUES (".$value.", ".$idartlang.")";
+				$sql = "INSERT INTO ".$this->table['pica_alloc_con']." (idpica_alloc, idartlang) VALUES (".Contenido_Security::toInteger($value).", ".Contenido_Security::toInteger($idartlang).")";
 				$this->db->query($sql);
 			}
 		}
 	}
 
 	function deleteAllocations ($idpica_alloc) {
-		$sql = "DELETE FROM ".$this->table['pica_alloc_con']." WHERE idpica_alloc = " . $idpica_alloc;
+		$sql = "DELETE FROM ".$this->table['pica_alloc_con']." WHERE idpica_alloc = " . Contenido_Security::toInteger($idpica_alloc);
 		$this->db->query($sql);
 	}
 
 	function deleteAllocationsByIdartlang ($idartlang) {
-		$sql = "DELETE FROM ".$this->table['pica_alloc_con']." WHERE idartlang = " . $idartlang;
+		$sql = "DELETE FROM ".$this->table['pica_alloc_con']." WHERE idartlang = " . Contenido_Security::toInteger($idartlang);
 		$this->db->query($sql);
 	}
 
 	function loadAllocations ($idartlang) {
-		$sql = "SELECT idpica_alloc FROM ".$this->table['pica_alloc_con']." WHERE idartlang = " . $idartlang;
+		$sql = "SELECT idpica_alloc FROM ".$this->table['pica_alloc_con']." WHERE idartlang = " . Contenido_Security::toInteger($idartlang);
 		$this->db->query($sql);
 
 		$items = array();
@@ -92,7 +112,7 @@ class pApiContentAllocation {
 		$sql = "SELECT ".$cfg['tab']['pica_alloc'].".idpica_alloc FROM ".$cfg['tab']['pica_alloc']."
 					INNER JOIN ".$cfg['tab']['pica_alloc_con']." ON
 					".$cfg['tab']['pica_alloc'].".idpica_alloc = ".$cfg['tab']['pica_alloc_con'].".idpica_alloc
-					WHERE (".$cfg['tab']['pica_alloc'].".parentid = $parent) AND (".$cfg['tab']['pica_alloc_con'].".idartlang=$idartlang)
+					WHERE (".$cfg['tab']['pica_alloc'].".parentid = ".Contenido_Security::toInteger($parent).") AND (".$cfg['tab']['pica_alloc_con'].".idartlang=".Contenido_Security::toInteger($idartlang).")
 					ORDER BY ".$cfg['tab']['pica_alloc'].".sortorder";
 
 		$this->db->query($sql);
@@ -222,7 +242,6 @@ class pApiContentAllocation {
 		$this->db->query($sql);
 
 	    $aResult = array();
-		//while($oRow = mysql_fetch_object($this->db->Query_ID))
 		while($oRow = $this->db->getResultObject())
 		{
 			$aResult[] = $oRow;
@@ -290,7 +309,6 @@ class pApiContentAllocation {
 		}
 
 		if ($this->bDebug) {print "<!-- "; print $sql; print " -->";} # @modified 27.10.2005
-		#if (true) {print "<pre>"; print $sql; print "</pre>";}
 
 		return $sql;
 	}
@@ -319,9 +337,8 @@ class pApiContentAllocation {
 
 		$this->db->query($sql);
 
-	    $aResult = array();
+		$aResult = array();
 
-//		while($oRow = mysql_fetch_object($this->db->Query_ID))
 		while($oRow = $this->db->getResultObject())
 		{
 			if ($sResultType == 'article_language_id')
@@ -352,7 +369,7 @@ class pApiContentAllocation {
 		}
 		if (is_integer($iNumOfRows) AND $iNumOfRows > 0)
 		{
-			$sLimit = " LIMIT ". $iOffset .", ".$iNumOfRows;
+			$sLimit = " LIMIT ". Contenido_Security::toInteger($iOffset) .", " . Contenido_Security::toInteger($iNumOfRows);
 		}else
 		{
 			$sLimit = '';
@@ -368,8 +385,8 @@ class pApiContentAllocation {
             '.$this->table['cat_lang'].' AS d
         WHERE
 			'.$sWHERE_Category_IN.'
-            b.idclient = '.$this->client.' AND
-            a.idlang = '.$this->lang.' AND
+            b.idclient = '.Contenido_Security::toInteger($this->client).' AND
+            a.idlang = '.Contenido_Security::toInteger($this->lang).' AND
             a.idartlang != d.startidartlang AND
             a.online = 1 AND
 			c.idcat = d.idcat AND
