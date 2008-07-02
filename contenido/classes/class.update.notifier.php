@@ -46,24 +46,31 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @var string
 	 */
-	protected $sVendorXMLHost = "dodohome.ath.cx"; 
+	protected $sVendorHost = "contenido.org"; 
 
 	/**
-	 * Path to vendor XML file
+	 * Path to files
+	 * @access protected
+	 * @var string
+	 */
+	protected $sVendorHostPath = "con_version_check_feeds/";
+
+	/**
+	 * Vendor XML file
 	 * @access protected
 	 * @var string
 	 */
 	protected $sVendorXMLFile = "vendor.xml";
 
 	/**
-	 * Path to rss cache file
+	 * RSS cache file
 	 * @access protected
 	 * @var string
 	 */
 	protected $sRssCacheFile;
     
 	/**
-	 * Path to timestamp cache file
+	 * Timestamp cache file
 	 * @access protected
 	 * @var string
 	 */
@@ -200,7 +207,7 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @var array
 	 */
-	protected $aRSSFiles = array("en_US" => "rss_en.xml", "de_DE" => "rss_de.xml", "default" => "rss_de.xml");
+	protected $aRSSFiles = array("en_US" => "rss_en.xml", "de_DE" => "rss_de.xml", "default" => "rss_en.xml");
 
 	
 	/**
@@ -210,26 +217,19 @@ class Contenido_UpdateNotifier {
 	 * @return void
 	 */
 	public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage) {
-		$this->oProperties = new PropertyCollection;
-		$this->oSession = $oSession;
-		$this->aCfg = $aCfg;
-		$this->sBackendLanguage = $sBackendLanguage;
+		$this->oProperties 		= new PropertyCollection;
+		$this->oSession 		= $oSession;
+		$this->aCfg 			= $aCfg;
+		$this->sBackendLanguage	= $sBackendLanguage;
 
 		if ($oPerm->isSysadmin($oUser) != 1) {
 			$this->bEnableView = false;
 		} else {
-			$sAction = $_GET['do'];
-			if ($sAction == "activate") {
-				setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "true");
-			} else if ($sAction == "deactivate") {
-				setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "false");
-			} else if ($sAction == "activate_rss"){
-				setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "true");
-			} else if ($sAction == "deactivate_rss"){
-				setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "false");
-			}
-			
 			$this->bEnableView = true;
+			
+			$sAction = $_GET['do'];
+			if($sAction != "") $this->updateSystemProperty($sAction);
+
 			$this->setCachePath();
 
 			if (getSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name']) == "true" ||
@@ -241,11 +241,47 @@ class Contenido_UpdateNotifier {
 				   $this->bEnableCheckRss = true;
 				}
 				
+				echo "this is debugging: ".$this->getSystemProperty("update");
+				
 				$this->setRSSFile();
 				$this->detectMinorRelease();
 				$this->checkUpdateNecessity();
 				$this->readVendorXML();
 			}
+		}
+	}
+	
+	protected function getSystemProperty($sMode) {
+		if($sMode == "update") {
+			$aSysPropConf = $this->aSysPropConf;
+		} else if($sMode == "rss") {
+			$aSysPropConf = $this->aSysPropConfRss;
+		}
+		
+		if (isset($aSysPropConf['type']) && isset($aSysPropConf['name'])) {
+			$sProperty = getSystemProperty($taSysPropConf['type'], $aSysPropConf['name']);
+		} else {
+			$sProperty = "false";
+		}
+		
+		return $sProperty;
+	}
+	
+	/**
+	 * Updates the system property for activation/deactivation requests
+	 * @access protected
+	 * @param $sAction string
+	 * @return void
+	 */
+	protected function updateSystemProperty($sAction) {
+		if ($sAction == "activate") {
+			setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "true");
+		} else if ($sAction == "deactivate") {
+			setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "false");
+		} else if ($sAction == "activate_rss"){
+			setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "true");
+		} else if ($sAction == "deactivate_rss"){
+			setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "false");
 		}
 	}
 
@@ -325,7 +361,7 @@ class Contenido_UpdateNotifier {
 	 */
 	protected function readVendorXML() {
 		if ($this->bUpdateNecessity == true) {
-			$aXmlContent = $this->getVendorHostFile();
+			$aXmlContent = $this->getVendorHostFiles();
 			if ($aXmlContent['update'] != "") {
 				$this->sXMLContent = $aXmlContent['update'];
 				$this->sXMLContentRss = $aXmlContent['rss'];
@@ -342,7 +378,7 @@ class Contenido_UpdateNotifier {
 				$this->sXMLContent = $sXMLContent;
 				$this->sXMLContentRss = $sXMLContentRss;
 			} else {
-				$aXmlContent = $this->getVendorHostFile();
+				$aXmlContent = $this->getVendorHostFiles();
 				if ($aXmlContent['update'] != "") {
 					$this->sXMLContent = $aXmlContent['update'];
 					$this->sXMLContentRss = $aXmlContent['rss'];
@@ -374,31 +410,33 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @return array
 	 */
-	protected function getVendorHostFile() {
+	protected function getVendorHostFiles() {
 		$aXMLContent = array();
 
-		$oSocket = fsockopen($this->sVendorXMLHost, 80, $errno, $errstr, $this->iConnectTimeout); 
+		$oSocket = fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout); 
 		if (!$oSocket) { 
    			$sErrorMessage = i18n('Unable to check for new updates!')." ".i18n('Connection to contenido.org failed!');
 			$this->sErrorOutput = $this->renderOutput($sErrorMessage);
 		} else { 
-		    #get update file
-   			fputs($oSocket, "GET /".$this->sVendorXMLFile." HTTP/1.0\r\n\r\n"); 
+		    // get update file
+   			fputs($oSocket, "GET /".$sVendorHostPath.$this->sVendorXMLFile." HTTP/1.0\r\n\r\n"); 
    			while(!feof($oSocket)) { 
        			$aXMLContent['update'] .= fgets($oSocket, 128); 
    			} 
-			$sSeperator = strpos($aXMLContent['update'], "\r\n\r\n");
-          	$aXMLContent['update'] = substr($aXMLContent['update'], $sSeperator + 4);
+			$sseparator = strpos($aXMLContent['update'], "\r\n\r\n");
+          	$aXMLContent['update'] = substr($aXMLContent['update'], $sseparator + 4);
 			fclose($oSocket); 
 			
-			#get rss file
-			$oSocket = fsockopen($this->sVendorXMLHost, 80, $errno, $errstr, $this->iConnectTimeout); 
-			fputs($oSocket, "GET /".$this->sRssCacheFile." HTTP/1.0\r\n\r\n"); 
+			unset($sseparator);
+			
+			// get rss file
+			$oSocket = fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout); 
+			fputs($oSocket, "GET /".$sVendorHostPath.$this->sRssCacheFile." HTTP/1.0\r\n\r\n"); 
    			while(!feof($oSocket)) { 
        			$aXMLContent['rss'] .= fgets($oSocket, 128); 
    			} 
-			$sSeperator = strpos($aXMLContent['rss'], "\r\n\r\n");
-          	$aXMLContent['rss'] = substr($aXMLContent['rss'], $sSeperator + 4);
+			$sseparator = strpos($aXMLContent['rss'], "\r\n\r\n");
+          	$aXMLContent['rss'] = substr($aXMLContent['rss'], $sseparator + 4);
 
 			fclose($oSocket); 
 		}
@@ -525,36 +563,36 @@ class Contenido_UpdateNotifier {
 		if ($this->sXMLContentRss != '') {
 			$sFeedContent = substr($this->sXMLContentRss, 0, 1024);
 			
-			$regExp = "/<\?xml.*encoding=[\"\'](.*)[\"\']\?>/i";
+			$sRegExp = "/<\?xml.*encoding=[\"\'](.*)[\"\']\?>/i";
 					
-			preg_match($regExp,trim($sFeedContent),$matches);
+			preg_match($sRegExp, trim($sFeedContent), $aMatches);
 
-			if ($matches[1])
+			if ($aMatches[1])
 			{
-			  $rss =new XML_RSS($this->sCacheDirectory.$this->sRssCacheFile, $matches[1]);
+			  $oRss = new XML_RSS($this->sCacheDirectory.$this->sRssCacheFile, $aMatches[1]);
 			} else {
-			  $rss =new XML_RSS($this->sCacheDirectory.$this->sRssCacheFile);
+			  $oRss = new XML_RSS($this->sCacheDirectory.$this->sRssCacheFile);
 			}
 
-			$rss->parse();		
+			$oRss->parse();		
 			
-			$i = 0;
-			foreach ($rss->getItems() as $item)
+			$iCnt = 0;
+			foreach ($oRss->getItems() as $aItem)
 			{
 				$sText = htmlentities($item['description'],ENT_QUOTES);
 				if (strlen($sText) > 150) {
 				    $sText = capiStrTrimAfterWord($sText, 150).'...';
 				}
 				
-				$oTpl->set("d", "NEWS_DATE", $item['pubdate']);
-				$oTpl->set("d", "NEWS_TITLE", $item['title']);
+				$oTpl->set("d", "NEWS_DATE", $aItem['pubdate']);
+				$oTpl->set("d", "NEWS_TITLE", $aItem['title']);
 				$oTpl->set("d", "NEWS_TEXT", $sText);
-				$oTpl->set("d", "NEWS_URL", $item['link']);
+				$oTpl->set("d", "NEWS_URL", $aItem['link']);
 				$oTpl->set("d", "LABEL_MORE", i18n('read more'));
 				$oTpl->next();
-				$i++;
+				$iCnt++;
 				
-				if ($i == 3) {
+				if ($iCnt == 3) {
 					break;
 				}
 			}
