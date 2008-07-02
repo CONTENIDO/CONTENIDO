@@ -6095,3 +6095,6 @@ msgstr "Anscheinend wurde Ihre Version manipuliert. Contenido %s existiert nicht
 
 msgid "read more"
 msgstr "mehr lesen"
+
+msgid "No end date set"
+msgstr "Kein Enddatum definiert"

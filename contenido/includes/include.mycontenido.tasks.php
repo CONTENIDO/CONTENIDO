@@ -308,7 +308,7 @@ while ($todo = $todoitems->next())
     
     	if (trim($reminder) == "")
     	{
-    		$reminder = "No end date set";
+    		$reminder = i18n("No end date set");
     	} else {
     		$reminder = date($dateformat,strtotime($reminder));
     	}
