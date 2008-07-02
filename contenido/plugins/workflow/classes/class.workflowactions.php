@@ -59,7 +59,7 @@ class WorkflowActions extends ItemCollection {
 	
 	function get ($idworkflowitem, $action)
 	{
-		$this->select("idworkflowitem = '".Contenido_Security::escapeDB($idworkflowitem)."' AND action = '".Contenido_Security::escapeDB($action)."'");
+		$this->select("idworkflowitem = '".Contenido_Security::escapeDB($idworkflowitem, NULL)."' AND action = '".Contenido_Security::escapeDB($action, NULL)."'");
 		if ($this->next())
 		{
 			return true;
@@ -84,7 +84,7 @@ class WorkflowActions extends ItemCollection {
 	}
 	function set ($idworkflowitem, $action)
 	{
-		$this->select("idworkflowitem = '".Contenido_Security::escapeDB($idworkflowitem)."' AND action = '".Contenido_Security::escapeDB($action)."'");
+		$this->select("idworkflowitem = '".Contenido_Security::escapeDB($idworkflowitem, NULL)."' AND action = '".Contenido_Security::escapeDB($action, NULL)."'");
 		if (!$this->next())
 		{
 			$newitem = parent::create();
