@@ -22,7 +22,7 @@
  * {@internal 
  *   created 2007-11-02
  *   modified 2007-12-13, 2008-05-09, 2008-05-15, Frederic Schneider
- *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-06-02, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
@@ -47,7 +47,7 @@ $tpl->set('s', 'SID', $sess->id);
 
 /* Whitelist: Delete */
 if(!empty($_GET['url_to_delete'])) {
-	$sql = "DELETE FROM " . $cfg['tab']['whitelist'] . " WHERE url = '" . base64_decode($_GET['url_to_delete']) . "'";
+	$sql = "DELETE FROM " . $cfg['tab']['whitelist'] . " WHERE url = '" . Contenido_Security::escapeDB(base64_decode($_GET['url_to_delete']), $db) . "'";
 	$db->query($sql);
 }
 

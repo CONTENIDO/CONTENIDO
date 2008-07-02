@@ -26,7 +26,7 @@
  *                        PEAR cache module
  *   modified 2008-05-14, Frederic Schneider, new version
  *   modified 2008-06-21, Frederic Schneider, array initalization
- *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-07-02, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
@@ -188,7 +188,7 @@ $sql = "SELECT lastmodified FROM " . $cfg['tab']['content'] . " content
 
 /* Whitelist: Add */
 if(!empty($_GET['whitelist'])) {
-	$sql = "INSERT INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . base64_decode($_GET['whitelist']) . "', '" . time() . "')";
+	$sql = "INSERT INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . Contenido_Security::escapeDB(base64_decode($_GET['whitelist']), $db) . "', '" . time() . "')";
 	$db->query($sql);
 }
 
@@ -222,20 +222,20 @@ if($sCache_errors && $_GET['live'] != 1) {
 			$iCheck = cCatPerm($db->f("idcat"), $db2);
 
 			if($iCheck == true) {
-				$aCats[] = $db->f("idcat");
+				$aCats[] = Contenido_Security::toInteger($db->f("idcat"));
 			}
 
 		} else {
-			$aCats[] = $db->f("idcat");
+			$aCats[] = Contenido_Security::toInteger($db->f("idcat"));
 		}
 
 	}
 
 	// Use SQL-WHERE if lang is not zero
 	if($langart != 0) {
-		$sLang_where = "AND art.idlang = '" . $langart . "' AND catName.idlang = '" . $langart . "'";
+		$sLang_where = "AND art.idlang = '" . Contenido_Security::toInteger($langart) . "' AND catName.idlang = '" . Contenido_Security::toInteger($langart) . "'";
 	} elseif(!isset($langart)) {
-		$sLang_where = "AND art.idlang = '" . $lang . "' AND catName.idlang = '" . $lang . "'";
+		$sLang_where = "AND art.idlang = '" . Contenido_Security::toInteger($lang) . "' AND catName.idlang = '" . Contenido_Security::toInteger($lang) . "'";
 	}
 
 	// How many articles exists? [Text]

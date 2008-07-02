@@ -21,7 +21,8 @@
  * 
  * {@internal 
  *   created 2007-12-05 (based on 2003)
- *   modified 2007-12-06, Frederic Schneider
+ *   modified 2007-12-06, Frederic Schneider, Linkchecker-Edition
+ *   modified 2008-07-02, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
@@ -38,7 +39,7 @@ if($_REQUEST['cfg']) {
 
 $nav = new Contenido_Navigation;
 
-$sql = "SELECT idarea FROM " . $cfg['tab']['area'] . " AS a WHERE a.name = '" . $area . "' OR a.parent_id = '" . $area . "' ORDER BY idarea";
+$sql = "SELECT idarea FROM " . $cfg['tab']['area'] . " AS a WHERE a.name = '" . Contenido_Security::escapeDB($area, $db) . "' OR a.parent_id = '" . Contenido_Security::escapeDB($area, $db) . "' ORDER BY idarea";
 $db->query($sql);
 
 $in_str = "";
@@ -52,7 +53,7 @@ $in_str = substr($in_str, 0, $len);
 $in_str = '(' . $in_str . ')';
 
 $sql = "SELECT b.location AS location, a.name AS name FROM " . $cfg['tab']['area'] . " AS a, " . $cfg['tab']['nav_sub'] . " AS b
-		WHERE b.idarea IN " . $in_str . " AND b.idarea = a.idarea AND b.level = 1 ORDER BY b.idnavs";
+		WHERE b.idarea IN " . Contenido_Security::escapeDB($in_str, $db) . " AND b.idarea = a.idarea AND b.level = 1 ORDER BY b.idnavs";
 
 $db->query($sql);
 
