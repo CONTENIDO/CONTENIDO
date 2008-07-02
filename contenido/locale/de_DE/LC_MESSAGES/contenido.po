@@ -5210,6 +5210,9 @@ msgstr "Mandant wechseln"
 msgid "Reminder list: %d Tasks open"
 msgstr "Wiedervorlage: %d Aufgaben offen"
 
+msgid "Reminder list: %d Task open"
+msgstr "Wiedervorlage: %d Aufgabe offen"
+
 # e:\timo\contenido_head/contenido/includes/main.login.php:120
 #: contenido/includes/main.login.php:169
 msgid "Symbol help"

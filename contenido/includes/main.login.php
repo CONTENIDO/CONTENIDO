@@ -163,9 +163,16 @@ while ($todo= $todoitems->next()) {
 	}
 }
 
+$sTaskTranslation = '';
+if ($todoitems->count() == 1) {
+  $sTaskTranslation = i18n("Reminder list: %d Task open");
+} else {
+  $sTaskTranslation = i18n("Reminder list: %d Tasks open");
+}
+
 $mycontenido_overview= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido&frame=4") . '">' . i18n("Overview") . '</a>';
 $mycontenido_lastarticles= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_recent&frame=4") . '">' . i18n("Recently edited articles") . '</a>';
-$mycontenido_tasks= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_tasks&frame=4") . '">' . sprintf(i18n("Reminder list: %d Tasks open"), $todoitems->count()) . '</a>';
+$mycontenido_tasks= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_tasks&frame=4") . '">' . sprintf($sTaskTranslation, $todoitems->count()) . '</a>';
 $mycontenido_settings= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_settings&frame=4") . '">' . i18n("Settings") . '</a>';
 
 $tpl->set('s', 'MYCONTENIDO_OVERVIEW', $mycontenido_overview);
