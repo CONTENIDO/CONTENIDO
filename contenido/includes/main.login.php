@@ -235,11 +235,6 @@ foreach ($aMemberList as $key) {
 $tpl->set('s', 'USER_ONLINE', $sOutput);
 $tpl->set('s', 'Anzahl', $iNumberOfUsers);
 
-
-require_once 'Log.php';
-$file = &Log::factory('file', 'd:/contenido.log', '');
-$file->log(2);
-
 // rss feed
 if($perm->isSysadmin($vuser) && $cfg["backend"]["newsfeed"] == true){
 	$newsfeed = 'some news';
