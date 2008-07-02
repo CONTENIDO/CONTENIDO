@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2008-07-02, Frederic Schneider, change sql-escapes
  *
  *   $Id$:
  * }}
@@ -79,18 +80,17 @@ class Layout {
      * Returns the name for a given layoutid
      * @return string   String with the name for the layout
      */
-    function getLayoutName( $layout ) {
+    function getLayoutName($layout) {
         global $cfg;
 
         $db = new DB_Contenido;
-		$layout = Contenido_Security::toInteger($layout);
 
         $sql = "SELECT
                     name
                 FROM
                 ". $cfg["tab"]["lay"] ."
                 WHERE
-                    idlay = '".$layout."'";
+                    idlay = '".Contenido_Security::toInteger($layout)."'";
         $db->query($sql);
         $db->next_record();
 
@@ -103,18 +103,17 @@ class Layout {
      * Returns the idlayout for a given layout name
      * @return int     Integer with the ID for the layout
      */
-    function getLayoutID( $layout ) {
+    function getLayoutID($layout) {
         global $cfg;
 
         $db = new DB_Contenido;
-		$layout = Contenido_Security::toInteger($layout);
 
         $sql = "SELECT
                     idlay
                 FROM
                 ". $cfg["tab"]["lay"] ."
                 WHERE
-                    name = '".$layout."'";
+                    name = '".Contenido_Security::toInteger($layout)."'";
 
         $db->query($sql);
         $db->next_record();
@@ -129,7 +128,7 @@ class Layout {
      * Checks if the layout is in use
      * @return bool    Specifies if the layout is in use
      */
-    function layoutInUse( $layout ) {
+    function layoutInUse($layout) {
         global $cfg;
 
         if (!is_numeric($layout))
@@ -144,7 +143,7 @@ class Layout {
                 FROM
                 ". $cfg["tab"]["tpl"] ."
                 WHERE
-                    idlay = '".$layout."'";
+                    idlay = '".Contenido_Security::toInteger($layout)."'";
 
         $db->query($sql);
 
