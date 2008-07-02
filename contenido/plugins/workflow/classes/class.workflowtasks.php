@@ -1,19 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Simple wrapper for workflow tasks
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.2
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-07-18
+ *   
+ *   $Id: class.workflowtasks.php,v 1.2 2003/08/14 07:54:03 timo.hummel Exp $
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: class.workflowtasks.php,v $
-* Project   :   Contenido Workflow
-* Descr     :   Simple wrapper for workflow tasks
-*
-* Author    :   $Author: timo.hummel $
-*               
-* Created   :   18.07.2003
-* Modified  :   $Date: 2003/08/14 07:54:03 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: class.workflowtasks.php,v 1.2 2003/08/14 07:54:03 timo.hummel Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+cInclude("classes", "class.security.php");
 
 
 /**
@@ -55,7 +72,7 @@ class WorkflowTasks extends ItemCollection {
 		
 		if ($where != "")
 		{
-			$where = $where . " AND idclient = '$client'";
+			$where = $where . " AND idclient = '".Contenido_Security::escapeDB($client)."'";
 		}
 		return parent::select($where, $group_by, $order_by, $limit);	
 	}
