@@ -242,7 +242,6 @@ class Contenido_UpdateNotifier {
 				}
 				
 				$this->setRSSFile();
-				echo "using ".$this->sRssCacheFile." at belang ".$this->sBackendLanguage;
 				$this->detectMinorRelease();
 				$this->checkUpdateNecessity();
 				$this->readVendorXML();
