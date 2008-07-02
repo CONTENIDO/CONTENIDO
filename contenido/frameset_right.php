@@ -1,20 +1,33 @@
 <?php
-/*****************************************
-* File      :   main.php
-* Project   :   Contenido
-* Descr     :   Contenido main file
-*
-* Authors   :   Olaf Niemann
-*               Jan Lengowski
-*
-* Created   :   20.01.2003
-* Modified  :   21.03.2003
-*
-* @internal {
-*   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added.
-* }
-* © four for business AG, www.4fb.de
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido main file
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.2.1
+ * @author     Olaf Niemann, Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-01-20#
+ *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
+ *   modified 2008-07-02, Frederic Schneider, new code-header
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
 define("CON_FRAMEWORK", true);
 
@@ -55,8 +68,8 @@ if (isset($_GET["appendparameters"]))
 	$tpl->set('s', 'FRAME[3]', $sess->url("main.php?area=$area&frame=3"));
 	$tpl->set('s', 'FRAME[4]', $sess->url("main.php?area=$area&frame=4"));
 }
-$tpl->set('s', 'VERSION', $cfg['version']);
 
+$tpl->set('s', 'VERSION', $cfg['version']);
 $tpl->set('s', 'CONTENIDOPATH', $cfg["path"]["contenido_fullhtml"]."favicon.ico");
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_right']);
