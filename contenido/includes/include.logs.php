@@ -38,10 +38,10 @@ if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
 }
 
 cInclude("classes", "class.htmlelements.php");
-include_once ($cfg["path"]["contenido"] . $cfg["path"]["classes"] . "class.user.php");
-include_once ($cfg["path"]["contenido"] . $cfg["path"]["classes"] . "class.action.php");
-include_once ($cfg["path"]["contenido"] . $cfg["path"]["classes"] . "class.structure.php");
-include_once ($cfg["path"]["contenido"] . $cfg["path"]["classes"] . "class.art.php");
+cInclude("classes", "class.user.php");
+cInclude("classes", "class.action.php");
+cInclude("classes", "class.structure.php");
+cInclude("classes", "class.art.php");
 
 $clientclass = new Client;
 
