@@ -28,6 +28,10 @@
  * 
  */
  
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+ 
 class Contenido_UpdateNotifier {
 	/**
 	 * Minor release for the simplexml xpath() method
@@ -105,6 +109,13 @@ class Contenido_UpdateNotifier {
 	 * @var object
 	 */
 	protected $oProperties;
+	
+	/**
+	 * Session object
+	 * @access protected
+	 * @var object
+	 */
+	protected $oSession;
 
 	/**
 	 * Timeout for the fsockopen connection
@@ -149,13 +160,6 @@ class Contenido_UpdateNotifier {
 	protected $bUpdateNecessity;
 
 	/**
-	 * Path configuration array
-	 * @access protected
-	 * @var array
-	 */
-	protected $aCfgPath;
-
-	/**
 	 * Property configuration array
 	 * @access protected
 	 * @var array
@@ -196,8 +200,8 @@ class Contenido_UpdateNotifier {
 
 		if ($oPerm->isSysadmin($oUser) != 1) {
 			$this->bEnableView = false;
-			} else {
-			    $sAction = $_GET['do'];
+		} else {
+			$sAction = $_GET['do'];
 			if ($sAction == "activate") {
 				setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "true");
 			} else if ($sAction == "deactivate") {
@@ -221,11 +225,11 @@ class Contenido_UpdateNotifier {
 				}
 				
 				$this->detectMinorRelease();
-				$this->checkUpdateNecissity();
+				$this->checkUpdateNecessity();
 				$this->readVendorXML();
 			}
 		}
-    	}
+	}
 
 	/**
 	 * Sets the cache path
@@ -247,7 +251,7 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @return boolean
 	 */
-	protected function checkUpdateNecissity() {
+	protected function checkUpdateNecessity() {
 		if (!file_exists($this->sCacheDirectory.$this->sVendorXMLFile)) {
 			$bUpdateNecessity = true;
 		} else	if (file_exists($this->sCacheDirectory.$this->sTimestampCacheFile)) {
@@ -282,7 +286,7 @@ class Contenido_UpdateNotifier {
 	}
 
 	/**
-	 * Reads the xml file from vendor host or cache and checks for file manipulations
+	 * Reads the xml and rss file from vendor host or cache and checks for file manipulations
 	 * @access protected
 	 * @return void
 	 */
@@ -333,7 +337,7 @@ class Contenido_UpdateNotifier {
 	}
 
 	/**
-	 * Connects with vendor host and gets the xml file
+	 * Connects with vendor host and gets the xml and rss file
 	 * @access protected
 	 * @return array
 	 */
@@ -397,7 +401,7 @@ class Contenido_UpdateNotifier {
 	/**
 	 * Gets the xml file hash from the property table
 	 * @access protected
-	 * @return void
+	 * @return string
 	 */
 	protected function getHashProperty() {
 		$sProperty = $this->oProperties->getValue($this->aPropConf['itemType'], $this->aPropConf['itemID'], $this->aPropConf['type'], $this->aPropConf['name']);
@@ -411,12 +415,7 @@ class Contenido_UpdateNotifier {
 	 */
 	protected function updateHashProperty() {
 		$sPropValue = md5($this->sXMLContent.$this->sXMLContentRss);
-		$sProperty = $this->getHashProperty();
-		if(!$sProperty) {
-			$this->oProperties->create($this->aPropConf['itemType'], $this->aPropConf['itemID'], $this->aPropConf['type'], $this->aPropConf['name'], $sPropValue);
-		} else {
-			$this->oProperties->setValue($this->aPropConf['itemType'], $this->aPropConf['itemID'], $this->aPropConf['type'], $this->aPropConf['name'], $sPropValue);
-		}
+		$this->oProperties->setValue($this->aPropConf['itemType'], $this->aPropConf['itemID'], $this->aPropConf['type'], $this->aPropConf['name'], $sPropValue);
 	}
 
 	/**
@@ -444,7 +443,6 @@ class Contenido_UpdateNotifier {
 	 * Generates the output for the backend
 	 * @access protected
 	 * @param $sMessage
-	 * @param $sColor
 	 * @return string
 	 */
 	protected function renderOutput($sMessage) {
