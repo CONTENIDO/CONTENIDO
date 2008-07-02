@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Contenido 4.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-07 12:12+0100\n"
-"PO-Revision-Date: 2008-06-25 13:28+0100\n"
+"PO-Revision-Date: 2008-07-02 14:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: Contenido Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -6021,14 +6021,11 @@ msgstr "Ihre Contenido Version"
 msgid "Latest Contenido Version"
 msgstr "Aktuelle Contenido Version"
 
-#~ msgid "Copy article to the current language"
-#~ msgstr "Artikel in die aktuelle Sprache kopieren"
-
 msgid "Can't clear error log : Access is denied!"
-msgstr "Fehlerlog konnte nicht geleert werden: Zugriff verweigert!" 
+msgstr "Fehlerlog konnte nicht geleert werden: Zugriff verweigert!"
 
 msgid "Can't clear install error log : Access is denied!"
-msgstr "Upgrade-Errorlog konnte nicht geleert werden: Zugriff verweigert!" 
+msgstr "Upgrade-Errorlog konnte nicht geleert werden: Zugriff verweigert!"
 
 msgid "Export to file"
 msgstr "In Datei exportieren"
@@ -6088,7 +6085,7 @@ msgid "You have an unknown or unsupported version of Contenido!"
 msgstr "Sie haben eine unbekannte oder nicht unterst&uuml;tzte Version von Contenido!"
 
 msgid "Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Download now!</a>"
-msgstr "Ihre Version von Contenido wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisieren Sie auf eine h&ouml;here Version! <br /> <a href=\"%s\" class="blue" target=\"_blank\">Jetzt herunterladen!</a>"
+msgstr "Ihre Version von Contenido wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisieren Sie auf eine h&ouml;here Version! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Jetzt herunterladen!</a>"
 
 msgid "A new version of Contenido is available! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">%s download now!</a>"
 msgstr "Eine neue Version von Contenido ist verf&uuml;gbar! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">%s jetzt herunterladen!</a>"
@@ -6101,3 +6098,7 @@ msgstr "mehr lesen"
 
 msgid "No end date set"
 msgstr "Kein Enddatum definiert"
+
+#~ msgid "Copy article to the current language"
+#~ msgstr "Artikel in die aktuelle Sprache kopieren"
+
