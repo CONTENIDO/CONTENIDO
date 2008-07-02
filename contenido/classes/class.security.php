@@ -138,6 +138,16 @@ class Contenido_Security {
      */
     public static function checkRequests() {
 
+        if (isset($_REQUEST['belang'])) {
+    
+            $aValid = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
+
+            if (!in_array(strval($_REQUEST['belang']), $aValid)) {
+                die('Please use a valid language!');
+            }
+
+        }
+
         if(isset($_REQUEST['cfg']) || isset($_REQUEST['cfgClient']) || isset($_REQUEST['contenido_path'])) {
             die("Invalid call!");
         } else {
