@@ -1,20 +1,33 @@
 <?php
-
-/******************************************
-* File      :   header.php
-* Project   :   Contenido 
-* Descr     :   Header file
-*
-* Author    :   Jan Lengowski
-* Created   :   18.03.2003
-* Modified  :   18.03.2003
-*
-* (C) four for business AG
-* 
-* @internal {
-* 	modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added.
-* }
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Header File
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.2.1
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-03-18
+ *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
 define("CON_FRAMEWORK", true);
 
@@ -81,7 +94,7 @@ if (!is_numeric($client) ||
     while ($db->next_record())
     {
     	$mclient = $db->f("idclient");
-    	
+
     	if ($perm->have_perm_client("client[".$mclient."]") ||
     		$perm->have_perm_client("admin[".$mclient."]") )
     	{
@@ -96,7 +109,7 @@ if (!is_numeric($client) ||
 
 if (!is_numeric($lang)) { // use first language found
     $sess->register("lang");
-    $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE A.idlang=B.idlang AND idclient='$client' ORDER BY A.idlang ASC";
+    $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE A.idlang=B.idlang AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idlang ASC";
     $db->query($sql);
     $db->next_record();
     $lang = $db->f("idlang");
@@ -120,4 +133,3 @@ $nav->buildHeader($lang);
 page_close();
 
 ?>
-
