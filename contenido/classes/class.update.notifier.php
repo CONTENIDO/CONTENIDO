@@ -571,7 +571,7 @@ class Contenido_UpdateNotifier {
 		if (!$this->bEnableView) {
 			$sOutput = "";
 		} else if (!$this->bEnableCheck) {
-			$sMessage = i18n('Update notification is disabled! For actual update information, please acrivate.');
+			$sMessage = i18n('Update notification is disabled! For actual update information, please activate.');
 			$sOutput = $this->renderOutput($sMessage);
 		} else if ($this->sErrorOutput != "") {
 			$sOutput = $this->sErrorOutput;
