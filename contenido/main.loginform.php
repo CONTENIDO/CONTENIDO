@@ -1,18 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Login form
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0.2
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2003-01-21
+ *   modified 2008-06-17, Rudi Bieller, some ugly fix for possible abuse of belang...
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   main.loginform.php
-* Project   :   Contenido
-* Descr     :   Login form
-*
-*
-* Author    :   Jan Lengowski
-* Created   :   21.01.2003
-* Modified  :   21.01.2003
-* modified 2008-06-17 Rudi Bieller Some ugly fix for possible abuse of belang...
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if (isset($_REQUEST['belang'])) {
 	$aValid = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
@@ -20,6 +39,7 @@ if (isset($_REQUEST['belang'])) {
 		die('Please use a valid language!');
 	}
 }
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die();
 }
@@ -65,11 +85,11 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
     $sDate = date('Y-m-d');
 	$sSQL = "SELECT * FROM ".$cfg["tab"]["phplib_auth_user_md5"]." 
 			 WHERE (username = 'sysadmin' AND password = '48a365b4ce1e322a55ae9017f3daf0c0'
-                    AND (valid_from <= '".$sDate."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND 
-                   (valid_to >= '".$sDate."' OR valid_to = '0000-00-00' OR valid_to is NULL)) 
+                    AND (valid_from <= '".Contenido_Security::escapeDB($sDate, $db)."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND 
+                   (valid_to >= '".Contenido_Security::escapeDB($sDate, $db)."' OR valid_to = '0000-00-00' OR valid_to is NULL)) 
 				 OR (username = 'admin' AND password = '21232f297a57a5a743894a0e4a801fc3'
-                     AND (valid_from <= '".$sDate."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND 
-                    (valid_to >= '".$sDate."' OR valid_to = '0000-00-00' OR valid_to is NULL))
+                     AND (valid_from <= '".Contenido_Security::escapeDB($sDate, $db)."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND 
+                    (valid_to >= '".Contenido_Security::escapeDB($sDate, $db)."' OR valid_to = '0000-00-00' OR valid_to is NULL))
                    ";
 	$db->query($sSQL);
 	
