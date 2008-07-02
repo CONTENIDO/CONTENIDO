@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.0
+ * @version    1.0.2
  * @author     four for Business AG
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-25, Frederic Schneider, add con_framework check and include contenido_secure
+ *   modified 2008-07-02, Frederic Schneider, removed contenido_secure include
  *
  *   $Id$:
  * }}
@@ -84,8 +85,6 @@ while ($locale = readdir($handle))
    }
 }
 
-cInclude("classes", "class.security.php");
-
 cInclude("includes", "cfg_sql.inc.php");
 cInclude("includes", "functions.general.php");
 cInclude("conlib", "prepend.php");
@@ -100,37 +99,6 @@ if (file_exists(dirname(__FILE__) . "/config.local.php"))
 {
 	include_once( dirname(__FILE__) . "/config.local.php");
 }
-
-/**
- * Doing this just now causes problems in i18n-init process!
- * This including is now available via new function includePluginConf(),
- * defined in functions.general.php, and will be executed _after_ session
- * initialization!
- * 
- * @see http://contenido.org/forum/viewtopic.php?t=18291
- * 
- * commented out by H. Librenz (2007-12-07)
- */
-/* Include the plugin configuration */
-//$handle = opendir($cfg['path']['contenido'] . $cfg["path"]['plugins'] );
-//
-//while ($plugin = readdir($handle))
-//{
-//	$configfile = $cfg['path']['contenido'] . $cfg["path"]['plugins'] . $plugin . "/includes/config.plugin.php";
-//	$localedir = $cfg['path']['contenido'] . $cfg["path"]['plugins'] . $plugin . "/locale/";
-//
-//	if (is_dir($cfg['path']['contenido'] . $cfg["path"]['plugins'] . $plugin ))
-//	{
-//    	if (file_exists($localedir) && $plugin != "..")
-//    	{
-//    		i18nRegisterDomain($plugin, $localedir);
-//    	}
-//    	if (file_exists($configfile))
-//    	{
-//    		include_once($configfile);
-//    	}
-//	}	
-//}
 
 checkMySQLConnectivity();
 
