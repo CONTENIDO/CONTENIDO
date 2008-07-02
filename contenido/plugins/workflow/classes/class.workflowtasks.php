@@ -72,7 +72,7 @@ class WorkflowTasks extends ItemCollection {
 		
 		if ($where != "")
 		{
-			$where = $where . " AND idclient = '".Contenido_Security::escapeDB($client)."'";
+			$where = $where . " AND idclient = '".Contenido_Security::escapeDB($client, NULL)."'";
 		}
 		return parent::select($where, $group_by, $order_by, $limit);	
 	}
