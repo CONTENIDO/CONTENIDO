@@ -1,4 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * right_bottom frame for Content Allocation
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend plugins
+ * @version    1.0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 if (isset($_REQUEST['treeItem'])) {
     die ('Illegal call!');
@@ -107,13 +139,7 @@ if ($_GET['step'] == 'createRoot') { // create new root item
 	$oDiv->setContent($form);
 	$sTemp = $oDiv->render();
 } else {
-//	  $oLink = new Link;
-//		$oLink->setCLink($area, 4, '');
-//		$oLink->setCustom('step', 'createRoot');
-//		$oLink->setContent('<img src="images/folder_new.gif" border="0" style="vertical-align: middle;">Create new tree');
-//		$oLink->updateAttributes(array('style' => 'text-decoration: none;'));
-//	  $oDiv->setContent($oLink->render());
-      $newTree = '<a href="main.php?action='.$action.'&step=createRoot&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img  src="images/folder_new.gif" border="0" style="vertical-align: middle; margin-right: 5px;">'.i18n("Create new tree").'</a><div style="height:10px"></div>';
+    $newTree = '<a href="main.php?action='.$action.'&step=createRoot&frame='.$frame.'&area='.$area.'&contenido='.$sess->id.'"><img  src="images/folder_new.gif" border="0" style="vertical-align: middle; margin-right: 5px;">'.i18n("Create new tree").'</a><div style="height:10px"></div>';
 }
 
 $result = $oTree->renderTree(true);

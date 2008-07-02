@@ -125,7 +125,7 @@ class pApiTree {
 					" . $this->table['pica_alloc'] . " as tree";
 		
 		if ($parentId === false) { // fetch from root node
-			$sql .= " WHERE tree.parentid IS NULL";
+			$sql .= " WHERE tree.parentid = '0'";
 		} else { // fetch by given id
 			$sql .= " WHERE tree.parentid = " . Contenido_Security::toInteger($parentId);
 		}
@@ -174,9 +174,6 @@ class pApiTree {
 			return $result;
 		} else
 		{
-			if ($level === 0) {
-				#$this->logger->warn("::fetchTree() - no records found!");
-			}
 			return false;
 		}
 	}
@@ -292,9 +289,9 @@ class pApiTree {
 		}
 
 		$sql .= " ORDER BY sortorder ASC";
-		
+
 		$this->db->query($sql);
-		
+
 		$result_tmp = array(); // tmp result array
 		while ($this->db->next_record()) { // walk resultset
 			$item = $this->_fetchItemNameLang($this->db->f('idpica_alloc'));
@@ -338,19 +335,19 @@ class pApiTree {
 					VALUES
 					(" . Contenido_Security::toInteger($treeItem['idpica_alloc']) . ", " . Contenido_Security::toInteger($treeItem['parentid']) . ", " . Contenido_Security::toInteger($treeItem['sortorder']) . ")";
 			$this->db->query($sql);
-			
+
 			$sql = "INSERT INTO " . $this->table['pica_lang'] . "
 					(idpica_alloc, idlang, name)
 					VALUES
 					(" . Contenido_Security::toInteger($treeItem['idpica_alloc']) . ", " . Contenido_Security::toInteger($this->lang) . ", '" . Contenido_Security::escapeDB($treeItem['name'], $this->db) . "')";
 			$this->db->query($sql);
-			
+
 		} else { // update
 			$treeItem['name'] = $this->_inFilter($treeItem['name']);
 		
 			$sql = "SELECT * FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . Contenido_Security::toInteger($treeItem['idpica_alloc']) . " AND idlang = " . Contenido_Security::toInteger($this->lang);
 			$this->db->query($sql);
-			
+
 			if ($this->db->num_rows() > 0) {
 				#Update existing translation
 				$sql = "UPDATE " . $this->table['pica_lang'] . " SET name = '" . Contenido_Security::escapeDB($treeItem['name'], $this->db) . "' WHERE idpica_alloc = " . Contenido_Security::toInteger($treeItem['idpica_alloc']) . "

@@ -1,8 +1,39 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Content Allocation Articles
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend plugins
+ * @version    1.0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-if (isset($_REQUEST['contenido_path']) || isset($_REQUEST['cfg']) || isset($_REQUEST['cfgClient'])) {
-    die ('Illegal call!');
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
 }
+
+// check requests
+Contenido_Security::checkRequests();
 
 cInclude("includes", "functions.pathresolver.php");
 
@@ -19,22 +50,10 @@ function str_replace_recursive ($array) {
 }
 
 // fetch idartlang for idart
-$sql = "SELECT idartlang FROM ".$cfg['tab']['art_lang']." WHERE idart=".intval($idart)." AND idlang=".intval($lang);
+$sql = "SELECT idartlang FROM ".$cfg['tab']['art_lang']." WHERE idart=".Contenido_Security::toInteger($idart)." AND idlang=".Contenido_Security::toInteger($lang);
 $db->query($sql);
 $db->next_record();
 $this_idartlang = $db->f('idartlang');
-
-if ($_POST) {
-	//$_POST['allocation'] = str_replace_recursive($_POST['allocation']);
-	
-	#echo "<pre>";
-	#print_r($_POST);
-	#echo "</pre>";
-} else {
-	#echo "<pre>";
-	#print_r($_REQUEST);
-	#echo "</pre>";
-}
 
 $oPage = new cPage;
 $oPage->setMargin(10);

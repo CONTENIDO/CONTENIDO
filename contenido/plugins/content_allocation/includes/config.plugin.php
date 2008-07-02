@@ -1,4 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Config file for Content Allocation plugin
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend plugins
+ * @version    1.0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
 
 // includes
 cInclude('classes', 'widgets/class.widgets.page.php');
@@ -12,7 +44,6 @@ plugin_include('content_allocation', 'classes/class.content_allocation_treeview.
 plugin_include('content_allocation', 'classes/class.content_allocation_article.php');
 plugin_include('content_allocation', 'classes/class.content_allocation.php');
 plugin_include('content_allocation', 'classes/class.content_allocation_complexlist.php');
-#plugin_include('repository', 'log/class.logger.php');
 
 // plugin_variables
 $cfg['tab']['pica_alloc'] = $cfg['sql']['sqlprefix'].'_pica_alloc';
@@ -36,6 +67,4 @@ plugin_include('content_allocation', 'includes/functions.chains.php');
 
 $_cecRegistry->addChainFunction("Contenido.Article.RegisterCustomTab", "pica_RegisterCustomTab");
 $_cecRegistry->addChainFunction("Contenido.Article.GetCustomTabProperties", "pica_GetCustomTabProperties");
-#$_cecRegistry->addChainFunction("Contenido.ArticleList.Actions", "pica_ArticleListActions");
-#$_cecRegistry->addChainFunction("Contenido.ArticleList.RenderAction", "pica_RenderArticleAction");
 ?>
