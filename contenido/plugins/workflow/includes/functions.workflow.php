@@ -117,12 +117,13 @@ function isCurrentEditor ($uid)
     $user = new User;
     if ($user->loadUserByUserID($uid) == false)
     {
+    	$db2 = new DB_Contenido;
+    	
     	/* Yes, it's a group. Let's try to load the group members! */
     	$sql = "SELECT user_id FROM "
     			.$cfg["tab"]["groupmembers"]."
-                WHERE group_id = '".Contenido_Security::escapeDB($uid)."'";
-
-        $db2 = new DB_Contenido;
+                WHERE group_id = '".Contenido_Security::escapeDB($uid,$db2)."'";
+        
         $db2->query($sql);
    
         while ($db2->next_record())
@@ -383,7 +384,7 @@ function doWorkflowAction ($idartlang, $action)
 				}
 				
 				$workflowitems = new WorkflowItems;
-				$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($newpos)."'");
+				$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($newpos, NULL)."'");
 				
 				if ($nextObj = $workflowitems->next())
 				{
@@ -416,7 +417,7 @@ function doWorkflowAction ($idartlang, $action)
 				$newpos = $workflowitem->get("position") + 1;
 				
 				$workflowitems = new WorkflowItems;
-				$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($newpos)."'");
+				$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($newpos, NULL)."'");
 				
 				if ($nextObj = $workflowitems->next())
 				{
@@ -432,7 +433,7 @@ function doWorkflowAction ($idartlang, $action)
 						$obj->store();
 					}
 				} else {
-					$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($workflowitem->get("position"))."'");
+					$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($workflowitem->get("position"), NULL)."'");
 					if ($nextObj = $workflowitems->next())
     				{
     					$userSequences = new WorkflowUserSequences;
@@ -466,7 +467,7 @@ function doWorkflowAction ($idartlang, $action)
 				$newpos = 1;
 				
 				$workflowitems = new WorkflowItems;
-				$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($newpos)."'");
+				$workflowitems->select("idworkflow = '$idworkflow' AND position = '".Contenido_Security::escapeDB($newpos, NULL)."'");
 				
 				if ($nextObj = $workflowitems->next())
 				{
@@ -486,8 +487,8 @@ function doWorkflowAction ($idartlang, $action)
 			break;
 						
 		case "revise":
-			$sql = "SELECT idart, idlang FROM ".$cfg["tab"]["art_lang"] ." WHERE idartlang = '".Contenido_Security::escapeDB($idartlang)."'";
 			$db = new DB_Contenido;
+			$sql = "SELECT idart, idlang FROM ".$cfg["tab"]["art_lang"] ." WHERE idartlang = '".Contenido_Security::escapeDB($idartlang, $db)."'";
 			$db->query($sql);
 			$db->next_record();
 			$idart = $db->f("idart");
