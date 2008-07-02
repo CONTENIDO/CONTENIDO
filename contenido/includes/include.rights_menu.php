@@ -133,7 +133,7 @@ while ($cApiUser = $cApiUserCollection->next())
     	if ($iItemCount > ($elemperpage * ($mPage - 1)) && $iItemCount < (($elemperpage * $mPage) + 1))
     	{
 	        if ($perm->have_perm_area_action('user',"user_delete") ) { 
-	        		$message = sprintf(i18n("Do you really want to delete the user %s?"), $username);
+	        		$message = sprintf(i18n("Do you really want to delete the user %s?"), $cApiUser->get("username"));
 	        		
 					$delTitle = i18n("Delete user");
 					$deletebutton = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$message.'\', \'deleteBackenduser(\\\''.$userid.'\\\')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
