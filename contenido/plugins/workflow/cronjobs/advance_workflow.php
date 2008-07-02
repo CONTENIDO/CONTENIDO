@@ -1,21 +1,39 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Advances to the next step if the time limit is "over"
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.5
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2003-05-26
+ *   
+ *   $Id: advance_workflow.php,v 1.5 2004/06/17 15:06:08 timo.hummel Exp $
+ * }}
+ * 
+ */
 
-/*****************************************
-* File      :   $RCSfile: advance_workflow.php,v $
-* Project   :   Contenido Wirkflow
-* Descr     :   Advances to the next step if the time limit is "over"
-*
-* Author    :   $Author: timo.hummel $
-*               
-* Created   :   26.05.2003
-* Modified  :   $Date: 2004/06/17 15:06:08 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: advance_workflow.php,v 1.5 2004/06/17 15:06:08 timo.hummel Exp $
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 include_once ('../../../includes/startup.php');
+
+cInclude("classes", "class.security.php");
 
 cInclude("classes", "class.user.php");
 cInclude("classes", "class.xml.php");
@@ -97,7 +115,7 @@ while ($obj = $workflowartallocations->next())
     	if ($maxtime < time())
     	{
     		$pos = $pos + 1;
-    		$workflowusersequences->select("idworkflowitem = '$wfitem' AND position = '$pos'");
+    		$workflowusersequences->select("idworkflowitem = '$wfitem' AND position = '".Contenido_Security::escapeDB($pos)."'");
     		
     		if ($wfobj = $workflowusersequences->next())
     		{
