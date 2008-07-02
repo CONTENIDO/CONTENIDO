@@ -3,7 +3,7 @@ define("CON_FRAMEWORK", true);
 header("Content-Type: text/html; charset=ISO-8859-1");
 
 // include security class and check request variables
-include_once ('./classes/class.security.php');
+include_once ('../contenido/classes/class.security.php');
 Contenido_Security::checkRequests();
 
 function checkAndInclude ($filename)
