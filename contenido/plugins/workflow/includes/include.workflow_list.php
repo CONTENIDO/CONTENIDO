@@ -1,18 +1,37 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: include.workflow_list.php,v $
-* Project   :   Contenido Workflow
-* Descr     :   Workflow list
-*
-* Author    :   $Author: timo.hummel $
-*               
-* Created   :   18.07.2003
-* Modified  :   $Date: 2006/01/13 15:54:41 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id: include.workflow_list.php,v 1.5 2006/01/13 15:54:41 timo.hummel Exp $
-******************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Workflow list
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.5
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2006-01-13
+ *   
+ *   $Id: include.workflow_list.php,v 1.5 2006/01/13 15:54:41 timo.hummel Exp $
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+cInclude("classes", "class.security.php");
+
 $iIdMarked = (int) $_GET['idworkflow'];
 
 plugin_include('workflow', 'classes/class.workflow.php');
@@ -52,7 +71,7 @@ while ($workflow = $workflows->next())
 	$link->setCustom("idworkflow",$wfid);
 
  	$delTitle = i18n("Delete workflow", "workflow");
-  $delDescr = sprintf(i18n("Do you really want to delete the following workflow:<br><br>%s<br>", "workflow"),$wfname);
+  	$delDescr = sprintf(i18n("Do you really want to delete the following workflow:<br><br>%s<br>", "workflow"),$wfname);
 	$delete = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteWorkflow(\\\''.$wfid.'\\\')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';	
 	
 	$ui->setTitle($wfid, $wfname);
