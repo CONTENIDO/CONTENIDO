@@ -46,7 +46,7 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @var string
 	 */
-	protected $sVendorHost = "contenido.org"; 
+	protected $sVendorHost = "www.contenido.org"; 
 
 	/**
 	 * Path to files
@@ -63,11 +63,11 @@ class Contenido_UpdateNotifier {
 	protected $sVendorXMLFile = "vendor.xml";
 
 	/**
-	 * RSS cache file
+	 * Vendor RSS file
 	 * @access protected
 	 * @var string
 	 */
-	protected $sRssCacheFile;
+	protected $sVendorRssFile;
     
 	/**
 	 * Timestamp cache file
@@ -88,7 +88,7 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @var string
 	 */
-	protected $sXMLContentRss;
+	protected $sRSSContent;
 	
 	/**
 	 * Current available vendor version
@@ -241,30 +241,14 @@ class Contenido_UpdateNotifier {
 				   $this->bEnableCheckRss = true;
 				}
 				
-				echo "this is debugging: ".$this->getSystemProperty("update");
-				
 				$this->setRSSFile();
+				unlink($this->sCacheDirectory."vendor.xml");
 				$this->detectMinorRelease();
 				$this->checkUpdateNecessity();
-				$this->readVendorXML();
+				$this->readVendorContent();
 			}
 		}
-	}
-	
-	protected function getSystemProperty($sMode) {
-		if($sMode == "update") {
-			$aSysPropConf = $this->aSysPropConf;
-		} else if($sMode == "rss") {
-			$aSysPropConf = $this->aSysPropConfRss;
-		}
-		
-		if (isset($aSysPropConf['type']) && isset($aSysPropConf['name'])) {
-			$sProperty = getSystemProperty($taSysPropConf['type'], $aSysPropConf['name']);
-		} else {
-			$sProperty = "false";
-		}
-		
-		return $sProperty;
+
 	}
 	
 	/**
@@ -292,9 +276,9 @@ class Contenido_UpdateNotifier {
 	 */
 	protected function setRSSFile() {
 		if (isset($this->aRSSFiles[$this->sBackendLanguage])) {
-			$this->sRssCacheFile = $this->aRSSFiles[$this->sBackendLanguage];
+			$this->sVendorRssFile = $this->aRSSFiles[$this->sBackendLanguage];
 		} else {
-			$this->sRssCacheFile = $this->aRSSFiles['default'];
+			$this->sVendorRssFile = $this->aRSSFiles['default'];
 		}
 	}
 
@@ -321,7 +305,7 @@ class Contenido_UpdateNotifier {
 	protected function checkUpdateNecessity() {
 		if (!file_exists($this->sCacheDirectory.$this->sVendorXMLFile)) {
 			$bUpdateNecessity = true;
-		} else if (!file_exists($this->sCacheDirectory.$this->sRssCacheFile)) {
+		} else if (!file_exists($this->sCacheDirectory.$this->sVendorRssFile)) {
 			$bUpdateNecessity = true;
 		} else	if (file_exists($this->sCacheDirectory.$this->sTimestampCacheFile)) {
 			$iLastUpdate = file_get_contents($this->sCacheDirectory.$this->sTimestampCacheFile);
@@ -359,29 +343,29 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @return void
 	 */
-	protected function readVendorXML() {
+	protected function readVendorContent() {
 		if ($this->bUpdateNecessity == true) {
 			$aXmlContent = $this->getVendorHostFiles();
 			if ($aXmlContent['update'] != "") {
 				$this->sXMLContent = $aXmlContent['update'];
-				$this->sXMLContentRss = $aXmlContent['rss'];
+				$this->sRSSContent = $aXmlContent['rss'];
 				$this->updateCacheFiles();
 				$this->updateHashProperty();
 			} 
 		} else {
 			$sXMLContent = file_get_contents($this->sCacheDirectory.$this->sVendorXMLFile);
-			$sXMLContentRss = file_get_contents($this->sCacheDirectory.$this->sRssCacheFile);
-			$sXMLHash = md5($sXMLContent.$sXMLContentRss);
+			$sRSSContent = file_get_contents($this->sCacheDirectory.$this->sVendorRssFile);
+			$sXMLHash = md5($sXMLContent.$sRSSContent);
 			$sPropertyHash = $this->getHashProperty();
 
 			if ($sXMLHash == $sPropertyHash) {
 				$this->sXMLContent = $sXMLContent;
-				$this->sXMLContentRss = $sXMLContentRss;
+				$this->sRSSContent = $sRSSContent;
 			} else {
 				$aXmlContent = $this->getVendorHostFiles();
 				if ($aXmlContent['update'] != "") {
 					$this->sXMLContent = $aXmlContent['update'];
-					$this->sXMLContentRss = $aXmlContent['rss'];
+					$this->sRSSContent = $aXmlContent['rss'];
 					$this->updateCacheFiles();
 					$this->updateHashProperty();
 				} 
@@ -418,25 +402,23 @@ class Contenido_UpdateNotifier {
    			$sErrorMessage = i18n('Unable to check for new updates!')." ".i18n('Connection to contenido.org failed!');
 			$this->sErrorOutput = $this->renderOutput($sErrorMessage);
 		} else { 
-		    // get update file
-   			fputs($oSocket, "GET /".$sVendorHostPath.$this->sVendorXMLFile." HTTP/1.0\r\n\r\n"); 
+		    	// get update file
+   			fputs($oSocket, "GET /".$this->sVendorHostPath.$this->sVendorXMLFile." HTTP/1.0\r\n\r\n"); 
    			while(!feof($oSocket)) { 
        			$aXMLContent['update'] .= fgets($oSocket, 128); 
    			} 
-			$sseparator = strpos($aXMLContent['update'], "\r\n\r\n");
-          	$aXMLContent['update'] = substr($aXMLContent['update'], $sseparator + 4);
+			$sSeparator = strpos($aXMLContent['update'], "\r\n\r\n");
+          		$aXMLContent['update'] = substr($aXMLContent['update'], $sSeparator + 4);
 			fclose($oSocket); 
-			
-			unset($sseparator);
 			
 			// get rss file
 			$oSocket = fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout); 
-			fputs($oSocket, "GET /".$sVendorHostPath.$this->sRssCacheFile." HTTP/1.0\r\n\r\n"); 
+			fputs($oSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssFile." HTTP/1.0\r\n\r\n"); 
    			while(!feof($oSocket)) { 
        			$aXMLContent['rss'] .= fgets($oSocket, 128); 
    			} 
-			$sseparator = strpos($aXMLContent['rss'], "\r\n\r\n");
-          	$aXMLContent['rss'] = substr($aXMLContent['rss'], $sseparator + 4);
+			$sSeparator = strpos($aXMLContent['rss'], "\r\n\r\n");
+          		$aXMLContent['rss'] = substr($aXMLContent['rss'], $sSeparator + 4);
 
 			fclose($oSocket); 
 		}
@@ -456,10 +438,10 @@ class Contenido_UpdateNotifier {
 		fwrite($oVendorFile, $this->sXMLContent);
 		fclose($oVendorFile);
 		
-		$sRssCacheFile = $this->sCacheDirectory.$this->sRssCacheFile;
-		$oRssFile = fopen($sRssCacheFile, "w+");
+		$sVendorRssFile = $this->sCacheDirectory.$this->sVendorRssFile;
+		$oRssFile = fopen($sVendorRssFile, "w+");
 		ftruncate($oRssFile, 0);
-		fwrite($oRssFile, $this->sXMLContentRss);
+		fwrite($oRssFile, $this->sRSSContent);
 		fclose($oRssFile);
 
 		$sTimeCacheFile = $this->sCacheDirectory.$this->sTimestampCacheFile;
@@ -485,7 +467,7 @@ class Contenido_UpdateNotifier {
 	 * @return void
 	 */
 	protected function updateHashProperty() {
-		$sPropValue = md5($this->sXMLContent.$this->sXMLContentRss);
+		$sPropValue = md5($this->sXMLContent.$this->sRSSContent);
 		$this->oProperties->setValue($this->aPropConf['itemType'], $this->aPropConf['itemID'], $this->aPropConf['type'], $this->aPropConf['name'], $sPropValue);
 	}
 
@@ -495,6 +477,8 @@ class Contenido_UpdateNotifier {
 	 * @return string
 	 */
 	protected function checkPatchLevel() {
+		$this->sVendorVersion = "4.8.7";
+		$this->aCfg['version'] = "4.8.7pl1";
 		$sVersionCompare = version_compare($this->aCfg['version'], $this->sVendorVersion);
 		return $sVersionCompare;
 	}
@@ -546,10 +530,10 @@ class Contenido_UpdateNotifier {
 			$oTpl->set('s', 'URL_RSS', $this->oSession->url('main.php?frame=4&amp;area=mycontenido&amp;do=activate_rss'));
 		}
 		
-		return $oTpl->generate('templates/standard/'.$this->aCfg['templates']['welcome_update'], 1);;
+		return $oTpl->generate('templates/standard/'.$this->aCfg['templates']['welcome_update'], 1);
 	}
     
-    /**
+    	/**
 	 * Generates the output for the rss informations
 	 * @access protected
 	 * @param $oTpl
@@ -560,18 +544,18 @@ class Contenido_UpdateNotifier {
 			$oTpl = new Template();
 		}
 		
-		if ($this->sXMLContentRss != '') {
-			$sFeedContent = substr($this->sXMLContentRss, 0, 1024);
-			
-			$sRegExp = "/<\?xml.*encoding=[\"\'](.*)[\"\']\?>/i";
-					
-			preg_match($sRegExp, trim($sFeedContent), $aMatches);
+		if ($this->sRSSContent != '') {
+			$sFeedContent = substr($this->sRSSContent, 0, 1024);	
+			$sFeedContent = trim($sFeedContent);		
 
-			if ($aMatches[1])
-			{
-			  $oRss = new XML_RSS($this->sCacheDirectory.$this->sRssCacheFile, $aMatches[1]);
+			$sRegExp = "/<\?xml.*encoding=[\"\'](.*)[\"\']\?>/i";
+			
+			preg_match($sRegExp, $sFeedContent, $aMatches);
+
+			if ($aMatches[1]) {
+			  $oRss = new XML_RSS($this->sCacheDirectory.$this->sVendorRssFile, $aMatches[1]);
 			} else {
-			  $oRss = new XML_RSS($this->sCacheDirectory.$this->sRssCacheFile);
+			  $oRss = new XML_RSS($this->sCacheDirectory.$this->sVendorRssFile);
 			}
 
 			$oRss->parse();		
@@ -579,7 +563,7 @@ class Contenido_UpdateNotifier {
 			$iCnt = 0;
 			foreach ($oRss->getItems() as $aItem)
 			{
-				$sText = htmlentities($item['description'],ENT_QUOTES);
+				$sText = htmlentities($aItem['description'],ENT_QUOTES);
 				if (strlen($sText) > 150) {
 				    $sText = capiStrTrimAfterWord($sText, 150).'...';
 				}
@@ -605,11 +589,11 @@ class Contenido_UpdateNotifier {
 	 * @access public
 	 * @return string
 	 */
-    public function displayOutput() {
+    	public function displayOutput() {
 		if (!$this->bEnableView) {
 			$sOutput = "";
 		} else if (!$this->bEnableCheck) {
-			$sMessage = i18n('Update notification is disabled! For actual update information, please activate.');
+			$sMessage = i18n('Update notification is disabled! For actual update information, please acrivate.');
 			$sOutput = $this->renderOutput($sMessage);
 		} else if ($this->sErrorOutput != "") {
 			$sOutput = $this->sErrorOutput;
@@ -617,11 +601,11 @@ class Contenido_UpdateNotifier {
 			$sMessage = i18n('You have an unknown or unsupported version of Contenido!');
 			$sOutput = $this->renderOutput($sMessage);
 		} else if ($this->sVendorVersion == "deprecated") {
-			$sMessage = sprintf(stripslashes(i18n('Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Download now!</a>')), 'http://www.contenido.org');
+			$sMessage = sprintf(i18n('Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href="%s" class="blue" target="_blank">Download now!</a>'), 'http://www.contenido.org');
 			$sOutput = $this->renderOutput($sMessage);
 		} else if ($this->checkPatchLevel() == "-1") {
 			$sVendorDownloadURL = $this->getDownloadURL();
-			$sMessage = sprintf(stripslashes(i18n('A new version of Contenido is available! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">%s download now!</a>')), $sVendorDownloadURL, $this->sVendorVersion);
+			$sMessage = sprintf(i18n('A new version of Contenido is available! <br /> <a href="%s" class="blue" target="_blank">%s download now!</a>'), $sVendorDownloadURL, $this->sVendorVersion);
 			$sOutput = $this->renderOutput($sMessage);
 		} else if ($this->checkPatchLevel() == "1") {
 			$sMessage = sprintf(i18n('It seems to be that your version string was manipulated. Contenido %s does not exist!'), $this->aCfg['version']);
