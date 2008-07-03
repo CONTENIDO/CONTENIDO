@@ -203,14 +203,6 @@ class Contenido_UpdateNotifier {
 	protected $aCfg = array();
 
 	/**
-	 * RSS feeds based on current backend language
-	 * @access protected
-	 * @var array
-	 */
-	protected $aRSSFiles = array("en_US" => "rss_en.xml", "de_DE" => "rss_de.xml", "default" => "rss_en.xml");
-
-	
-	/**
 	 * Constructor of Contenido_UpdateNotifier
 	 * @access public
 	 * @param  string $sConVersion
@@ -242,7 +234,6 @@ class Contenido_UpdateNotifier {
 				}
 				
 				$this->setRSSFile();
-				unlink($this->sCacheDirectory."vendor.xml");
 				$this->detectMinorRelease();
 				$this->checkUpdateNecessity();
 				$this->readVendorContent();
@@ -275,10 +266,10 @@ class Contenido_UpdateNotifier {
 	 * @return void
 	 */
 	protected function setRSSFile() {
-		if (isset($this->aRSSFiles[$this->sBackendLanguage])) {
-			$this->sVendorRssFile = $this->aRSSFiles[$this->sBackendLanguage];
+		if ($this->sBackendLanguage == "de_DE") {
+			$this->sVendorRssFile = "rss_de.xml";
 		} else {
-			$this->sVendorRssFile = $this->aRSSFiles['default'];
+			$this->sVendorRssFile = "rss_en.xml";
 		}
 	}
 
@@ -477,8 +468,6 @@ class Contenido_UpdateNotifier {
 	 * @return string
 	 */
 	protected function checkPatchLevel() {
-		$this->sVendorVersion = "4.8.7";
-		$this->aCfg['version'] = "4.8.7pl1";
 		$sVersionCompare = version_compare($this->aCfg['version'], $this->sVendorVersion);
 		return $sVersionCompare;
 	}
