@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-30, Frederic Schneider, add security fix
+ *   modified 2008-07-03, Timo.Trautmann, added linebreaks for readable source code
  *
  *   $Id$: 
  * }}
@@ -146,9 +147,9 @@ class Table {
 
         if ($this->directoutput)
         {
-            echo $starttable;
+            echo $starttable."\n";
         } else {
-            return $starttable;
+            return $starttable."\n";
         }
 
      
@@ -167,9 +168,9 @@ class Table {
 
          if ($this->directoutput)
          {
-            echo $headerrow;
+            echo $headerrow."\n";
          } else {
-            return $headerrow;
+            return $headerrow."\n";
          }
     } # end function
 
@@ -194,9 +195,9 @@ class Table {
 
          if ($this->directoutput)
          {
-            echo $row;
+            echo $row."\n";
          } else {
-            return $row;
+            return $row."\n";
          }
 
     } # end function
@@ -224,9 +225,9 @@ class Table {
 
          if ($this->directoutput)
          {
-            echo $header_cell;
+            echo $header_cell."\n";
          } else {
-            return $header_cell;
+            return $header_cell."\n";
          }
          
     } # end function
@@ -272,9 +273,9 @@ class Table {
 
          if ($this->directoutput)
          {
-            echo $cell;
+            echo $cell."\n";
          } else {
-            return $cell;
+            return $cell."\n";
          }
 
     } # end function
@@ -304,9 +305,9 @@ class Table {
 
          if ($this->directoutput)
          {
-            echo $borderless_cell;
+            echo $borderless_cell."\n";
          } else {
-            return $borderless_cell;
+            return $borderless_cell."\n";
          }
 
     } # end function
@@ -328,9 +329,9 @@ class Table {
 
          if ($this->directoutput)
          {
-            echo $sumcell;
+            echo $sumcell."\n";
          } else {
-            return $sumcell;
+            return $sumcell."\n";
          }
 
     } # end function
@@ -350,9 +351,9 @@ class Table {
 
         if ($this->directoutput)
         {
-            echo $end_row;
+            echo $end_row."\n";
         } else {
-            return $end_row;
+            return $end_row."\n";
         }
          
     }
@@ -368,9 +369,9 @@ class Table {
 
         if ($this->directoutput)
         {
-            echo $end_table;
+            echo $end_table."\n";
         } else {
-            return $end_table;
+            return $end_table."\n";
         }
     } # end function
 

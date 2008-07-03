@@ -3426,7 +3426,6 @@ contenido/includes/index.php -text
 contenido/includes/main.login.php -text
 contenido/includes/pseudo-cron.inc.php -text
 contenido/includes/rights.inc.php -text
-contenido/includes/rights.php -text
 contenido/includes/rights_area.inc.php -text
 contenido/includes/rights_con.inc.php -text
 contenido/includes/rights_lay.inc.php -text
@@ -3618,7 +3617,6 @@ contenido/scripts/langref.php -text
 contenido/scripts/md5.js -text
 contenido/scripts/messageBox.js.php -text
 contenido/scripts/parameterCollector.js -text
-contenido/scripts/resizeAreas.js -text
 contenido/scripts/rights.js.php -text
 contenido/scripts/rowMark.js -text
 contenido/scripts/str_overview.js -text

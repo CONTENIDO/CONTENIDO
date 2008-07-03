@@ -36,6 +36,119 @@ if ( $_REQUEST['cfg'] ) {
 	die('Illegal call');
 }
 
+function saverights() {
+   global $rights_list, $rights_list_old, $db;
+   global $cfg, $userid, $rights_client, $rights_lang;
+   global $perm, $sess, $notification;
+
+   //if no checkbox is checked
+   if (!is_array($rights_list)) {
+      $rights_list = array ();
+   }
+
+   //search all checks which are not in the new Rights_list for deleting
+   $arraydel = array_diff(array_keys($rights_list_old), array_keys($rights_list));
+   //search all checks which are not in the Rights_list_old for saving
+   $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
+
+   if (is_array($arraydel)) {
+
+      foreach ($arraydel as $value) {
+
+         $data = explode("|", $value);
+         $data[0] = $perm->getIDForArea($data[0]);
+         $data[1] = $perm->getIDForAction($data[1]);
+
+         $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."' AND idclient='".Contenido_Security::toInteger($rights_client)."' AND idlang='".Contenido_Security::toInteger($rights_lang)."' AND idarea='".Contenido_Security::toInteger($data[0])."' AND idcat='".Contenido_Security::toInteger($data[2])."' AND idaction='".Contenido_Security::toInteger($data[1])."' AND type=0";
+         $db->query($sql);
+      }
+   }
+
+   unset($data);
+
+   //search for all mentioned checkboxes
+   if (is_array($arraysave)) {
+      foreach ($arraysave as $value) {
+         //explodes the key     it consits    areait+actionid+itemid
+         $data = explode("|", $value);
+
+         // Since areas are stored in a numeric form in the rights table, we have
+         // to convert them from strings into numbers
+
+         $data[0] = $perm->getIDForArea($data[0]);
+         $data[1] = $perm->getIDForAction($data[1]);
+
+         if (!isset ($data[1])) {
+            $data[1] = 0;
+         }
+         // Insert new right
+         $sql = "INSERT INTO ".$cfg["tab"]["rights"]."
+                  (idright, user_id,idarea,idaction,idcat,idclient,idlang,type)
+                  VALUES ('".$db->nextid($cfg["tab"]["rights"])."', '".Contenido_Security::escapeDB($userid, $db)."','".Contenido_Security::toInteger($data[0])."','".Contenido_Security::toInteger($data[1])."','".Contenido_Security::toInteger($data[2])."','".Contenido_Security::toInteger($rights_client)."','".Contenido_Security::toInteger($rights_lang)."',0)";
+         $db->query($sql);
+      }
+   }
+
+   $rights_list_old = $rights_list;
+   //$notification->displayNotification("info", i18n("Changes saved"),0);
+}
+
+function saverightsarea()
+{
+         global $db, $cfg,$userid,$rights_client,$rights_lang,$rights_admin,$rights_sysadmin,$rights_perms,$rights_list;
+
+         if(!isset($rights_perms)){
+             //search for the permissions of this user
+             $sql="SELECT perms FROM ".$cfg["tab"]["phplib_auth_user_md5"]." WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."'";
+             $db->query($sql);
+             $db->next_record();
+             $rights_perms=$db->f("perms");
+         }
+
+         //if there are no permissions,   delete permissions for lan and client
+         if(!is_array($rights_list)){
+            $rights_perms=preg_replace("/,+client\[$rights_client\]/","",$rights_perms);
+            $rights_perms=preg_replace("/,+lang\[$rights_lang\]/","",$rights_perms);
+         }else{
+            if(!strstr($rights_perms,"client[$rights_client]"))
+                 $rights_perms.=",client[$rights_client]";
+            if(!strstr($rights_perms,"lang[$rights_lang]"))
+                 $rights_perms.=",lang[$rights_lang]";
+         }
+
+         //if admin is checked
+         if($rights_admin==1){
+             //if admin is not set
+             if(!strstr($rights_perms,"admin[$rights_client]"))
+                 $rights_perms.=",admin[$rights_client]";
+         }else{
+             //cut admin from the string
+             $rights_perms=preg_replace("/,*admin\[$rights_client\]/","",$rights_perms);
+         }
+
+         //if sysadmin is checked
+         if($rights_sysadmin==1){
+             //if sysadmin is not set
+             if(!strstr($rights_perms,"sysadmin"))
+                 $rights_perms.=",sysadmin";
+         }else{
+             //cat sysadmin from string
+             $rights_perms=preg_replace("/,*sysadmin/","",$rights_perms);
+         }
+
+
+         //cut ',' in front of the string
+         $rights_perms=preg_replace("/^,/","",$rights_perms);
+
+         //update table
+         $sql="UPDATE ".$cfg["tab"]["phplib_auth_user_md5"]." SET perms='".Contenido_Security::escapeDB($rights_perms, $db)."' WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."'";
+                
+         $db->query($sql);
+         
+         //save the other rights
+         saverights();
+}
+
 if (!is_object($oTpl)) {
     $oTpl = new Template();
 }
@@ -151,7 +264,7 @@ $oHtmlSelect = new 	cHTMLSelectElement ('rights_clientslang', "", "rights_client
 		}
     }
 
-$oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
+	$oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
       
       if ($area == 'user_content') {
         #filter for displaying rights
@@ -243,127 +356,18 @@ if ($db->next_record())
 if ($bEndScript != true) {
 	$tmp = ob_get_contents();
 	ob_end_clean();
-	$oTpl->set('s', 'OB_CONTENTS', $tmp);
+	$oTpl->set('s', 'OB_CONTENT', $tmp);
 } else {
-    $oTpl->set('s', 'OB_CONTENTS', '<body></html>');
+    $oTpl->set('s', 'OB_CONTENT', '');
 }
-
-$oTpl->generate('templates/standard/'.$cfg['templates']['rights_inc']);
 
 if ($bEndScript == true) {
+    $oTpl->set('s', 'RIGHTS_CONTENT', '');
+	$oTpl->set('s', 'JS_SCRIPT_BEFORE', '');
+	$oTpl->set('s', 'JS_SCRIPT_AFTER', '');
+	$oTpl->set('s', 'RIGHTS_CONTENT', '');
+	$oTpl->set('s', 'EXTERNAL_SCRIPTS', '');
+	$oTpl->generate('templates/standard/'.$cfg['templates']['rights_inc']);
 	die();
-}
-
-function saverightsarea()
-{
-         global $db, $cfg,$userid,$rights_client,$rights_lang,$rights_admin,$rights_sysadmin,$rights_perms,$rights_list;
-
-         if(!isset($rights_perms)){
-             //search for the permissions of this user
-             $sql="SELECT perms FROM ".$cfg["tab"]["phplib_auth_user_md5"]." WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."'";
-             $db->query($sql);
-             $db->next_record();
-             $rights_perms=$db->f("perms");
-         }
-
-         //if there are no permissions,   delete permissions for lan and client
-         if(!is_array($rights_list)){
-            $rights_perms=preg_replace("/,+client\[$rights_client\]/","",$rights_perms);
-            $rights_perms=preg_replace("/,+lang\[$rights_lang\]/","",$rights_perms);
-         }else{
-            if(!strstr($rights_perms,"client[$rights_client]"))
-                 $rights_perms.=",client[$rights_client]";
-            if(!strstr($rights_perms,"lang[$rights_lang]"))
-                 $rights_perms.=",lang[$rights_lang]";
-         }
-
-         //if admin is checked
-         if($rights_admin==1){
-             //if admin is not set
-             if(!strstr($rights_perms,"admin[$rights_client]"))
-                 $rights_perms.=",admin[$rights_client]";
-         }else{
-             //cut admin from the string
-             $rights_perms=preg_replace("/,*admin\[$rights_client\]/","",$rights_perms);
-         }
-
-         //if sysadmin is checked
-         if($rights_sysadmin==1){
-             //if sysadmin is not set
-             if(!strstr($rights_perms,"sysadmin"))
-                 $rights_perms.=",sysadmin";
-         }else{
-             //cat sysadmin from string
-             $rights_perms=preg_replace("/,*sysadmin/","",$rights_perms);
-         }
-
-
-         //cut ',' in front of the string
-         $rights_perms=preg_replace("/^,/","",$rights_perms);
-
-         //update table
-         $sql="UPDATE ".$cfg["tab"]["phplib_auth_user_md5"]." SET perms='".Contenido_Security::escapeDB($rights_perms, $db)."' WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."'";
-                
-         $db->query($sql);
-         
-         //save the other rights
-         saverights();
-}
-
-function saverights() {
-   global $rights_list, $rights_list_old, $db;
-   global $cfg, $userid, $rights_client, $rights_lang;
-   global $perm, $sess, $notification;
-
-   //if no checkbox is checked
-   if (!is_array($rights_list)) {
-      $rights_list = array ();
-   }
-
-   //search all checks which are not in the new Rights_list for deleting
-   $arraydel = array_diff(array_keys($rights_list_old), array_keys($rights_list));
-   //search all checks which are not in the Rights_list_old for saving
-   $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
-
-   if (is_array($arraydel)) {
-
-      foreach ($arraydel as $value) {
-
-         $data = explode("|", $value);
-         $data[0] = $perm->getIDForArea($data[0]);
-         $data[1] = $perm->getIDForAction($data[1]);
-
-         $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."' AND idclient='".Contenido_Security::toInteger($rights_client)."' AND idlang='".Contenido_Security::toInteger($rights_lang)."' AND idarea='".Contenido_Security::toInteger($data[0])."' AND idcat='".Contenido_Security::toInteger($data[2])."' AND idaction='".Contenido_Security::toInteger($data[1])."' AND type=0";
-         $db->query($sql);
-      }
-   }
-
-   unset($data);
-
-   //search for all mentioned checkboxes
-   if (is_array($arraysave)) {
-      foreach ($arraysave as $value) {
-         //explodes the key     it consits    areait+actionid+itemid
-         $data = explode("|", $value);
-
-         // Since areas are stored in a numeric form in the rights table, we have
-         // to convert them from strings into numbers
-
-         $data[0] = $perm->getIDForArea($data[0]);
-         $data[1] = $perm->getIDForAction($data[1]);
-
-         if (!isset ($data[1])) {
-            $data[1] = 0;
-         }
-         // Insert new right
-         $sql = "INSERT INTO ".$cfg["tab"]["rights"]."
-                  (idright, user_id,idarea,idaction,idcat,idclient,idlang,type)
-                  VALUES ('".$db->nextid($cfg["tab"]["rights"])."', '".Contenido_Security::escapeDB($userid, $db)."','".Contenido_Security::toInteger($data[0])."','".Contenido_Security::toInteger($data[1])."','".Contenido_Security::toInteger($data[2])."','".Contenido_Security::toInteger($rights_client)."','".Contenido_Security::toInteger($rights_lang)."',0)";
-         $db->query($sql);
-      }
-   }
-
-   $rights_list_old = $rights_list;
-   //$notification->displayNotification("info", i18n("Changes saved"),0);
 }
 ?>

@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2008-07-03, Timo Trautmann, moved inline html to template
  *
  *   $Id$:
  * }}
@@ -32,6 +33,8 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+//notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
+include_once($cfg['path']['contenido'].'includes/rights.inc.php');
 //set the areas which are in use fore selecting these
 $possible_area = "'".implode("','", $area_tree[$perm->showareas("str")])."'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."'
@@ -52,23 +55,27 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
     $notification->displayNotification("error", i18n("Permission denied"));
     }
 }
-        echo '<script type="text/javascript" src="scripts/addImageTags.js"></script>';
-        echo '<script type="text/javascript" src="scripts/expandCollapse.js"></script>';
+$sJsBefore = '';
+$sJsAfter = '';
+$sJsExternal = '';
+$sTable = '';
+
+        $sJsExternal .= '<script type="text/javascript" src="scripts/addImageTags.js"></script>'."\n";
+        $sJsExternal .= '<script type="text/javascript" src="scripts/expandCollapse.js"></script>'."\n";
  
         // declare new javascript variables;
-        echo"<script type=\"text/javascript\">
-              var itemids=new Array();
-              var actareaids=new Array();
-        </script>";
+        $sJsBefore .= "
+              var itemids=new Array(); \n
+              var actareaids=new Array(); \n";
 
         $colspan=0;
 
-        $table = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"]["table_header"], $cfg["color"]["table_light"], $cfg["color"]["table_dark"]);
+        $table = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"]["table_header"], $cfg["color"]["table_light"], $cfg["color"]["table_dark"], 0, 0);
 
-        $table->start_table();
-        $table->header_row();
-        $table->header_cell(i18n("Category"),"left");
-		$table->header_cell("&nbsp;","left");
+        $sTable .= $table->start_table();
+        $sTable .= $table->header_row();
+        $sTable .= $table->header_cell(i18n("Category"),"left");
+		$sTable .= $table->header_cell("&nbsp;","left");
         $possible_areas=array();
         $aSecondHeaderRow = array();
 
@@ -87,30 +94,28 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
 
                          $colspan++;
                          //set  the possible areas and actions for this areas
-                         echo"<script type=\"text/javascript\">
-                               actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";
-                              </script>";
+                         $sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";\n";
 
-                         $table->header_cell($lngAct[$value2["perm"]][$value3]);
+                         $sTable .= $table->header_cell($lngAct[$value2["perm"]][$value3]);
                          array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
                         }
                  }
         }
 
         //checkbox for all rights
-        $table->header_cell(i18n("Check all"));
+        $sTable .= $table->header_cell(i18n("Check all"));
         array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
-        $table->end_row();
+        $sTable .= $table->end_row();
         $colspan++;
         
-        $table->header_row();
-        $table->header_cell('&nbsp',"center", '', '', 0);
-        $table->header_cell('&nbsp',"center", '', '', 0);
+        $sTable .= $table->header_row();
+        $sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
+        $sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
         
         foreach ($aSecondHeaderRow as $value) {
-            $table->header_cell($value,"center", '', '', 0);
+            $sTable .= $table->header_cell($value,"center", '', '', 0);
         }
-        $table->end_row();
+        $sTable .= $table->end_row();
 
         $sql = "SELECT A.idcat, level, name,parentid FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat
                 AND C.idlang='".Contenido_Security::toInteger($rights_lang)."' AND B.idclient='".Contenido_Security::toInteger($rights_client)."' ORDER BY idtree";
@@ -118,7 +123,6 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
 
         $counter=array();
         $parentid="leer";
-        $sScript = "";
         
         $aRowname = array();
         $iLevel = 0;
@@ -162,15 +166,13 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
 
                         }
                         //set javscript array for itemids
-                        $sScript.="itemids[\"".$db->f("idcat")."\"]=\"x\";\n";
+                        $sJsAfter.="itemids[\"".$db->f("idcat")."\"]=\"x\";\n";
 
 						$spaces='<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a>';
 
-                        $table->row("id=\"".implode('_', $aRowname)."\"");
-                        $table->cell('<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a> '.$db->f("name"),"", "", " class=\"td_rights0\"", false);
-                        $table->cell("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\"></a>    <a href=\"javascript:rightsInheritanceDown('".$db->f("idcat")."')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\"></a>","", "", " class=\"td_rights1\"", false);
-
-
+                        $sTable .= $table->row("id=\"".implode('_', $aRowname)."\"");
+                        $sTable .= $table->cell('<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a> '.$db->f("name"),"", "", " class=\"td_rights0\"", false);
+                        $sTable .= $table->cell("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\"></a>    <a href=\"javascript:rightsInheritanceDown('".$db->f("idcat")."')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\"></a>","", "", " class=\"td_rights1\"", false);
 
                         // look for possible actions in mainarea[]
 
@@ -191,30 +193,34 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
                                             }
 
                                            //set the checkbox    the name consits of      areaid+actionid+itemid        the    id  =  parebntid+couter for these parentid+areaid+actionid
-                                           $table->cell("<input type=\"checkbox\" id=\"str_".$parentid."_".$counter[$parentid]."_".$value2["perm"]."_$value3\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idcat")."]\" value=\"x\" $checked>","", "", " class=\"td_rights2\"", false);
+                                           $sTable .= $table->cell("<input type=\"checkbox\" id=\"str_".$parentid."_".$counter[$parentid]."_".$value2["perm"]."_$value3\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idcat")."]\" value=\"x\" $checked>","", "", " class=\"td_rights2\"", false);
 
                                   }
                                   }
                         }
 
                          //checkbox for checking all actions fore this itemid
-                         $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idcat")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idcat")."')\">","", "", " class=\"td_rights3\"", false);
-                }
+                         $sTable .= $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idcat")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idcat")."')\">","", "", " class=\"td_rights3\"", false);
+						 $sTable .= $table->end_row();
+				}
 }
-$table->end_row();
-$table->row();
-$table->sumcell("<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('user_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>","right");
-$table->end_row();
-$table->end_table();
-echo "<script type=\"text/javascript\">$sScript</script>";
-echo "<script type=\"text/javascript\">
+$sTable .= $table->end_row();
+$sTable .= $table->row();
+$sTable .= $table->sumcell("<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('user_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>","right");
+$sTable .= $table->end_row();
+$sTable .= $table->end_table();
+
+$sJsAfter .= "
     aTranslations = new Object();
     aTranslations['pfeil_links.gif'] = '".i18n("Apply rights for this category to all categories on the same level or above")."';
     aTranslations['pfeil_runter.gif'] = '".i18n("Apply rights for this category to all categories below the current category")."';
     setImageTags(aTranslations);
-    
-    init('".i18n("Open category")."', '".i18n("Close category")."');
-</script>";
-echo "</body></html>";
+        
+    init('".i18n("Open category")."', '".i18n("Close category")."');\n";
 
+$oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
+$oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
+$oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
+$oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
+$oTpl->generate('templates/standard/'.$cfg['templates']['rights_inc']);
 ?>

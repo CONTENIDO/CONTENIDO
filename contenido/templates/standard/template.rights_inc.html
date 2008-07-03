@@ -6,6 +6,10 @@
 		<script type="text/javascript" src="scripts/infoBox.js"></script>
 		<script type="text/javascript" src="scripts/rights.js.php?contenido={SESS_ID}"></script>
 		<link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+		<script type="text/javascript">
+		   {JS_SCRIPT_BEFORE}
+		</script>
+		{EXTERNAL_SCRIPTS}
 	</head>
 	<body style="margin:10px">
 		<form name="rightsform" method="post" action="{ACTION_URL}">
@@ -35,4 +39,11 @@
 			  {NOTIFICATION}
 			</div>
 			<br>
-			{OB_CONTENTS}
+			{OB_CONTENT}
+			{RIGHTS_CONTENT}
+		</form>
+	</body>
+	<script type="text/javascript">
+        {JS_SCRIPT_AFTER}
+	</script>
+</html>

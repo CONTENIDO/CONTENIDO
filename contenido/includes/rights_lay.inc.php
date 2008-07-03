@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2008-07-03, Timo Trautmann, moved inline html to template
  *
  *   $Id$:
  * }}
@@ -32,11 +33,9 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+//notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
+include_once($cfg['path']['contenido'].'includes/rights.inc.php');
 // declare new javascript variables;
-echo"<script type=\"text/javascript\">
-     var itemids=new Array();
-     var actareaids=new Array();
-</script>";
 
 //set the areas which are in use fore selecting these
 $possible_area = "'".implode("','", $area_tree[$perm->showareas("lay")])."'";
@@ -59,51 +58,58 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
     }
 }
 
+$sJsBefore = '';
+$sJsAfter = '';
+$sJsExternal = '';
+$sTable = '';
+
+$sJsBefore .= "var itemids=new Array();
+               var actareaids=new Array();\n";
+
 $colspan=0;
-echo"<input type=\"hidden\" name=\"area\" value=\"user_layout\">";
-echo"<table style=\"border:0px; border-left:1px; border-bottom: 1px;border-color: ". $cfg["color"]["table_border"] . "; border-style: solid;\" cellspacing=\"0\" cellpadding=\"2\" >";
-echo"<tr style=\"background-color: ". $cfg["color"]["table_header"] .";\">";
-echo"<th class=\"textg_medium\" nowrap valign=\"top\" style=\"border: 0px;font-weight:normal; border-top:1px; border-right:1px; border-color: #B3B3B3; border-style: solid;\" align=\"left\">";
-echo i18n("Layout name")."</TH>";
-echo"<th class=\"textg_medium\" valign=\"top\" style=\"font-weight:normal;border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">";
-echo i18n("Description")."</TH>";
+
+$table = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"]["table_header"], $cfg["color"]["table_light"], $cfg["color"]["table_dark"], 0, 0);
+
+$sTable .= $table->start_table();
+$sTable .= $table->header_row();
+$sTable .= $table->header_cell(i18n("Layout name"));
+$sTable .= $table->header_cell(i18n("Description"));
 
 $possible_areas=array();
 $sCheckboxesRow = '';
+$aSecondHeaderRow = array();
 // look for possible actions   in mainarea []
 foreach($right_list["lay"] as $value2)
 {
 	 //if there are some actions
 	 if(is_array($value2["action"]))
 		 foreach($value2["action"] as $key3 => $value3)
-		 {       //set the areas that are in use
-						 $possible_areas[$value2["perm"]]="";
+		 {   //set the areas that are in use
+			 $possible_areas[$value2["perm"]]="";
 
-						 $colspan++;
-						 //set  the possible areas and actions for this areas
-						 echo"<script type=\"text/javascript\">
-									 actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";
-									</script>";
+			 $colspan++;
+			 //set  the possible areas and actions for this areas
+			 $sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";\n";
 
-						 //checkbox for the whole action
-echo"<th class=\"textg_medium\" valign=\"top\" style=\"font-weight:normal;border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-						 echo $lngAct[$value2["perm"]][$value3]."</TH>";
-                          $sCheckboxesRow .= "<td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\" valign=\"bottom\"><input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\"></td>";
-
+			 //checkbox for the whole action
+			 $sTable .= $table->header_cell($lngAct[$value2["perm"]][$value3]);
+			 array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
 		 }
 }
+//checkbox for all rights
+$sTable .= $table->header_cell(i18n('Check all'));
+array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
+$sTable .= $table->end_row();
+$colspan++;
 
-        //checkbox for all rights
-        echo"<th class=\"textg_medium\" valign=\"top\" style=\"font-weight:normal;border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-        echo i18n("Check all")."</TH></TR>";
-        $colspan++;
+$sTable .= $table->header_row();
+$sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
+$sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
 
-        echo "<tr style=\"background-color: ". $cfg["color"]["table_header"] .";\">
-                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">&nbsp;</td>
-                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">&nbsp;</td>
-                    ".$sCheckboxesRow."
-                    <td class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\"><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\"></td>
-              </tr>";
+foreach ($aSecondHeaderRow as $value) {
+    $sTable .= $table->header_cell($value,"center", '', '', 0);
+}
+$sTable .= $table->end_row();
 
 //Select the itemid´s
 $sql = "SELECT * FROM ".$cfg["tab"]["lay"]." WHERE idclient='".Contenido_Security::toInteger($rights_client)."' ORDER BY name";
@@ -114,72 +120,46 @@ while ($db->next_record()) {
         $tplname     = htmlentities($db->f("name"));
         $description = htmlentities($db->f("description"));
 
+		$sTable .= $table->row();
+        $sTable .= $table->cell($tplname,"", "", " class=\"td_rights0\"", false);
+        $sTable .= $table->cell($description,"", "", " class=\"td_rights1\" style=\"white-space:normal; \"", false); 
+		
         $darkrow = !$darkrow;
 
-        if ($darkrow)
-        {
-          $bgcolor =  $cfg["color"]["table_dark"];
-        } else {
-          $bgcolor =  $cfg["color"]["table_light"];
-        }
-        echo"<tr class=\"text_medium\" style=\"background-color: ". $bgcolor .";\">";
-        echo"<td valign=\"top\" style=\"border: 0px; border-bottom:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">";
-        echo "$tplname</TD>";
-echo"<td valign=\"top\" style=\"border: 0px; border-bottom:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">";
-
-        echo"$description&nbsp;</TD>";
-
         //set javscript array for itemids
-        echo"<script type=\"text/javascript\">
-                     itemids[\"".$db->f("idlay")."\"]=\"x\";
-             </script>";
+        $sJsBefore .= "itemids[\"".$db->f("idlay")."\"]=\"x\"\n";
 
         // look for possible actions in mainarea[]
         foreach($right_list["lay"] as $value2)
-              {
+        {
 
                //if there area some
                if(is_array($value2["action"]))
                  foreach($value2["action"] as $key3 => $value3)
                  {
-                          //does the user have the right
-                          if(in_array($value2["perm"]."|$value3|".$db->f("idlay"),array_keys($rights_list_old)))
-                              $checked="checked=\"checked\"";
-                          else
-                              $checked="";
-
-	           echo"<td valign=\"top\" style=\"border: 0px; border-bottom:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-                          //set the checkbox    the name consits of      areait+actionid+itemid
-                          echo "<input type=\"checkbox\"  name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>
-                          </TD>";
-
-
+					  //does the user have the right
+					  if(in_array($value2["perm"]."|$value3|".$db->f("idlay"),array_keys($rights_list_old)))
+						  $checked="checked=\"checked\"";
+					  else
+						  $checked="";
+					  
+					  $sTable .= $table->cell("<input type=\"checkbox\"  name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>","", "", " class=\"td_rights2\"", false);
                  }
         }
         //checkbox for checking all actions fore this itemid
-        echo"<td valign=\"top\" style=\"border: 0px; border-bottom:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-        echo "
-              <input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idlay")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idlay")."')\">
-              </TH>";
-
+        $sTable .= $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idlay")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idlay")."')\">","", "", " class=\"td_rights3\"", false);
+		$sTable .= $table->end_row();
 }
 
-echo"</tr>";
-$darkrow = !$darkrow;
+$sTable .= $table->end_row();
+$sTable .= $table->row();
+$sTable .= $table->sumcell("<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('user_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>","right");
+$sTable .= $table->end_row();
+$sTable .= $table->end_table();
 
-        if ($darkrow)
-        {
-          $bgcolor =  $cfg["color"]["table_dark"];
-        } else {
-          $bgcolor =  $cfg["color"]["table_light"];
-        }
-        echo"<tr class=\"text_medium\" style=\"background-color: ". $bgcolor .";\">";
-echo"<td valign=\"top\" style=\"border: 0px; border-top:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"right\" colspan=\"6\">";
-echo "
-<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('user_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>
-</td>
-</tr>
-
-</table></form>";
-
+$oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
+$oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
+$oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
+$oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
+$oTpl->generate('templates/standard/'.$cfg['templates']['rights_inc']);
 ?>
