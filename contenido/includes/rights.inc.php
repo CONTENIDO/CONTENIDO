@@ -22,12 +22,12 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-27, Dominik Ziegler, add security fix
- *
+ *   modified 2008-07-03, Timo Trautmann, moved inline html to template
  *   $Id$:
  * }}
  * 
  */
-
+ 
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
@@ -35,6 +35,11 @@ if(!defined('CON_FRAMEWORK')) {
 if ( $_REQUEST['cfg'] ) { 
 	die('Illegal call');
 }
+
+if (!is_object($oTpl)) {
+    $oTpl = new Template();
+}
+$oTpl->reset();
 
 if(!is_object($db2))
 $db2 = new DB_Contenido;
@@ -81,27 +86,17 @@ if(!is_array($right_list)){
          }
 }
 
-echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
-echo "<html>";
-echo "<head>";
-echo '<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">';
-echo "<title></title>";
-echo "<script type=\"text/javascript\" src=\"scripts/rowMark.js\"></script>";
-echo "<script type=\"text/javascript\" src=\"scripts/infoBox.js\"></script>";
-echo "<script type=\"text/javascript\" src=\"scripts/rights.js.php?contenido=".$sess->id."\"></script>";
-echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/contenido.css\" />";
-echo "</head>";
-echo "<body style=\"margin:10px\">";
+$oTpl->set('s', 'SESS_ID', $sess->id);
+$oTpl->set('s', 'ACTION_URL', $sess->url("main.php"));
+$oTpl->set('s', 'USER_ID', $userid);
+$oTpl->set('s', 'AREA', $area);
+$oTpl->set('s', 'TABLE_BORDER', $cfg["color"]["table_border"]);
+$oTpl->set('s', 'TABLE_BGCOLOR', $cfg["color"]["table_dark"]);
 
 if(!isset($actionarea)){
     $actionarea="area";
 }
 
-echo"<FORM name=\"rightsform\" method=post action=\"".$sess->url("main.php")."\">";
-echo"<input type=\"hidden\" name=\"action\" value=\"\">";
-echo"<input type=\"hidden\" name=\"userid\" value=\"$userid\">";
-echo"<input type=\"hidden\" name=\"area\" value=\"$area\">";
-echo"<input type=\"hidden\" name=\"frame\" value=\"4\">";
 $muser = new User;
 $muser->loadUserByUserID($userid);
 
@@ -109,20 +104,18 @@ $userperms = $muser->getField("perms");
 
 ob_start();
 
-echo"<table style=\"border:0px; border-left:1px; border-bottom: 1px;border-color: ". $cfg["color"]["table_border"] . "; border-style: solid;\" cellspacing=\"0\" cellpadding=\"2\" >";
-echo"<tr class=\"text_medium\" style=\"background-color: ". $cfg["color"]["table_dark"] .";\">";
-echo"<td valign=\"top\" style=\"border: 0px; border-top:1px; border-right:0px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid; vertical-align:middle;\" align=\"left\">".i18n("Client / Language").":</td>";
-echo"<td valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"right\">";
-echo"<input type=\"hidden\" name=\"rights_perms\" value=\"$rights_perms\">";
+$oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
+
 
 //selectbox for clients
-echo "<SELECT class=\"text_medium\" name=\"rights_clientslang\" SIZE=1>";
+$oHtmlSelect = new 	cHTMLSelectElement ('rights_clientslang', "", "rights_clientslang");
 
 	$clientclass = new Client;
    	$clientList = $clientclass->getAccessibleClients();
 
   	$firstsel = false;
   	
+	$i = 0;
    	foreach ($clientList as $key=>$value) {
    		
    		$sql="SELECT * FROM ".$cfg["tab"]["lang"]." as A, ".$cfg["tab"]["clients_lang"]." as B WHERE B.idclient='".Contenido_Security::toInteger($key)."' AND A.idlang=B.idlang";
@@ -141,33 +134,26 @@ echo "<SELECT class=\"text_medium\" name=\"rights_clientslang\" SIZE=1>";
     		   	}
     		   	
 		       if ($rights_clientslang == $db->f("idclientslang")) {
-                       printf("<option value=\"%s\" selected>%s</option>",
-                         $db->f("idclientslang"),
-                         $value["name"] . " -> ".$db->f("name")
-                       );
-                       
-                   if(!isset($rights_client))
-                   {
-                   	$firstclientslang = $db->f("idclientslang");
-                   }
+			        $oHtmlSelectOption = new cHTMLOptionElement($value["name"] . " -> ".$db->f("name"), $db->f("idclientslang"), true);
+                    $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
+					$i++;
+					
+                    if(!isset($rights_client))
+                    {
+                   	    $firstclientslang = $db->f("idclientslang");
+                    }
                } else {
-                       printf("<option value=\"%s\">%s</option>",
-                         $db->f("idclientslang"),
-                         $value["name"] . " -> ".$db->f("name")
-                       );
+			        $oHtmlSelectOption = new cHTMLOptionElement($value["name"] . " -> ".$db->f("name"), $db->f("idclientslang"), false);
+                    $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
+					$i++;
                }
     		}
 		}
     }
 
-echo $clientselect;
-echo "</SELECT></td>";
+$oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
       
-      if ($area != 'user_content') {
-        echo "<td style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;padding-left:5px;padding-right:10px;\"><input type=\"image\" src=\"images/submit.gif\"></td></tr></table>";
-      } else {
-        echo "<td style=\"border: 0px; border-top:1px; border-right:0px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;padding-left:5px;padding-right:10px;\">".i18n('Rights type').": </td><td style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\">";
-
+      if ($area == 'user_content') {
         #filter for displaying rights
         $oHtmlSelect = new 	cHTMLSelectElement ('filter_rights', '', "filter_rights");  
         $oHtmlSelectOption = new cHTMLOptionElement('--- '.i18n("All").' ---', '', false);
@@ -182,9 +168,6 @@ echo "</SELECT></td>";
         $oHtmlSelect->addOptionElement(4, $oHtmlSelectOption);
         $oHtmlSelect->setEvent('change', "document.rightsform.submit();");
         $oHtmlSelect->setDefault($_POST['filter_rights']);
-
-        echo $oHtmlSelect->render();
-        echo "</td><td style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;padding-left:5px;padding-right:10px;\"><input type=\"image\" src=\"images/submit.gif\"></td></tr></table>";
 
         #set global array which defines rights to display
         $aArticleRights = array('con_syncarticle', 'con_lock', 'con_deleteart', 'con_makeonline', 'con_makestart', 'con_duplicate', 'con_editart', 'con_newart', 'con_edit');
@@ -212,10 +195,14 @@ echo "</SELECT></td>";
                     break;
             }
         }
-    }
+        $oTpl->set('s', 'INPUT_SELECT_RIGHTS', $oHtmlSelect->render());
+		$oTpl->set('s', 'DISPLAY_RIGHTS', 'block');
+	} else {
+	    $oTpl->set('s', 'INPUT_SELECT_RIGHTS', '');
+		$oTpl->set('s', 'DISPLAY_RIGHTS', 'none');
+	}
 //navigation
 
-echo"</table>";
 if(!isset($rights_clientslang))
 {
 	$rights_clientslang = $firstclientslang;
@@ -224,36 +211,48 @@ if(!isset($rights_clientslang))
 $sql = "SELECT idclient, idlang FROM ".$cfg["tab"]["clients_lang"]." WHERE idclientslang = '".Contenido_Security::toInteger($rights_clientslang)."'";
 $db->query($sql);
 
+$bEndScript = false;
+
 if ($db->next_record())
 {
 	$rights_client = $db->f("idclient");
 	$rights_lang = $db->f("idlang");
+	$oTpl->set('s', 'NOTIFICATION', '');
+	$oTpl->set('s', 'DISPLAY_FILTER', 'block');
 } else {
+    $bEndScript = true;
 	ob_end_clean();
 
-	echo '<div style="width:300px">';
 	// Account is sysadmin
 	if (strpos($userperms, "sysadmin") !== false) 
 	{
-		echo $notification->messageBox("warning", i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."),0);
+		$oTpl->set('s', 'NOTIFICATION', $notification->messageBox("warning", i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."),0));
 	} 
 	// Account is only assigned to clients with admin rights
 	else if (strpos($userperms, "admin[") !== false) 
 	{
-		echo $notification->messageBox("warning", i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."),0);
+		$oTpl->set('s', 'NOTIFICATION', $notification->messageBox("warning", i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."),0));
 	} 
 	else 
 	{
-		echo $notification->messageBox("error", i18n("Current user doesn't have any rights to any client/language."),0);
+		$oTpl->set('s', 'NOTIFICATION', $notification->messageBox("error", i18n("Current user doesn't have any rights to any client/language."),0));
 	}
-	echo '</div>';
-	die;
+	$oTpl->set('s', 'DISPLAY_FILTER', 'none');
 }
-echo "<br>";
-$tmp = ob_get_contents();
-ob_end_clean();
-echo $tmp;
 
+if ($bEndScript != true) {
+	$tmp = ob_get_contents();
+	ob_end_clean();
+	$oTpl->set('s', 'OB_CONTENTS', $tmp);
+} else {
+    $oTpl->set('s', 'OB_CONTENTS', '<body></html>');
+}
+
+$oTpl->generate('templates/standard/'.$cfg['templates']['rights_inc']);
+
+if ($bEndScript == true) {
+	die();
+}
 
 function saverightsarea()
 {
@@ -365,7 +364,6 @@ function saverights() {
    }
 
    $rights_list_old = $rights_list;
-
-   $notification->messageBox("info", i18n("Changes saved"),0);
+   //$notification->displayNotification("info", i18n("Changes saved"),0);
 }
 ?>
