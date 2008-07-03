@@ -46,10 +46,6 @@ function createNavigationArray($start_id, $db)
 	$FrontendPermissionCollection = new FrontendPermissionCollection;
 	
 //	SECURITY-FIX
-	$client = Contenido_Security::escapeDB($client, $db);
-	$lang = Contenido_Security::escapeDB($lang, $db);
-	$start_id = Contenido_Security::escapeDB($start_id, $db);
-	
     $sql = "SELECT
                 A.idcat,
                 C.name,
@@ -62,10 +58,10 @@ function createNavigationArray($start_id, $db)
             WHERE
                 A.idcat     = B.idcat   AND
                 B.idcat     = C.idcat   AND
-                B.idclient  = '$client' AND
-                C.idlang    = '$lang'   AND
+                B.idclient  = '".Contenido_Security::escapeDB($client, $db)."' AND
+                C.idlang    = '".Contenido_Security::escapeDB($lang, $db)."' AND
                 C.visible   = '1'       AND
-                B.parentid  = '$start_id'
+                B.parentid  = '".Contenido_Security::escapeDB($start_id, $db)."'
             ORDER BY
                 A.idtree";
     $db->query($sql);
@@ -114,14 +110,10 @@ function createNavigationArray($start_id, $db)
 # deprecated
 function getTarget($cat_id, $db) {
 	
-	//	SECURITY-FIX
-	$cat_id = Contenido_Security::escapeDB($cat_id, $db);
-	$db = Contenido_Security::escapeDB($db, $db);
-	$client = Contenido_Security::escapeDB($client, $db);
-	$lang = Contenido_Security::escapeDB($lang, $db);
-	
+
 	global $cfg, $client, $lang;
 
+//		SECURITY-FIX
     $sql = "SELECT
             	a.external_redirect AS ext
             FROM
@@ -129,11 +121,11 @@ function getTarget($cat_id, $db) {
                 ".$cfg["tab"]["cat_art"]." AS b,
                 ".$cfg["tab"]["cat"]." AS c
             WHERE
-                b.idcat     = '".$cat_id."' AND
-                c.idclient  = '".$client."' AND
+                b.idcat     = '".Contenido_Security::escapeDB($cat_id, $db)."' AND
+                c.idclient  = '".Contenido_Security::escapeDB($client, $db)."' AND
                 c.idcat     = b.idcat AND
                 a.idart     = b.idart AND
-                a.idlang    = '".$lang."'";
+                a.idlang    = '".Contenido_Security::escapeDB($lang, $db)."'";
 
         	$db->query($sql);
         	$db->next_record();
@@ -150,29 +142,24 @@ function getTarget($cat_id, $db) {
 
 function isParent($parentid, $catid, $db) {
 	
-		//	SECURITY-FIX
-	$parentid = Contenido_Security::escapeDB($parentid, $db);
-	$catid = Contenido_Security::escapeDB($catid, $db);
-	$db = Contenido_Security::escapeDB($db, $db);
+
 	global $cfg, $client, $lang;
-	$client = Contenido_Security::escapeDB($client, $db);
-	$lang = Contenido_Security::escapeDB($lang, $db);
-	
+		//	SECURITY-FIX	
 	$sql = "SELECT
 			a.parentid
 			FROM
 				".$cfg["tab"]["cat"]." AS a,
 				".$cfg["tab"]["cat_lang"]." AS b
 			WHERE
-				a.idclient  = '".$client."' AND
-				b.idlang    = '".$lang."' AND
+				a.idclient  = '". Contenido_Security::escapeDB($client, $db)."' AND
+				b.idlang    = '".Contenido_Security::escapeDB($lang, $db)."' AND
 				a.idcat     = b.idcat AND
-				a.idcat   = '".$catid."'";
+				a.idcat   = '".Contenido_Security::escapeDB($catid, $db)."'";
 
 	$db->query($sql);
 	$db->next_record();
 	
-	//echo "<pre>"; echo $sql; echo "</pre>";
+//echo "<pre>"; echo $sql; echo "</pre>";
 
 	$pre = $db->f("parentid");
 	
@@ -187,22 +174,20 @@ function isParent($parentid, $catid, $db) {
 }
 
 function getParent($preid, &$db) {
-		//	SECURITY-FIX
-	$preid = Contenido_Security::escapeDB($preid, $db);
+
 	global $cfg, $client, $lang;
-	$client = Contenido_Security::escapeDB($client, $db);
-	$lang = Contenido_Security::escapeDB($lang, $db);
-	$db = Contenido_Security::escapeDB($db, $db);
+
+//	SECURITY-FIX
 	$sql = "SELECT
 			a.parentid
 			FROM
 				".$cfg["tab"]["cat"]." AS a,
 				".$cfg["tab"]["cat_lang"]." AS b
 			WHERE
-				a.idclient  = '".$client."' AND
-				b.idlang    = '".$lang."' AND
+				a.idclient  = '".Contenido_Security::escapeDB($client, $db)."' AND
+				b.idlang    = '".Contenido_Security::escapeDB($lang, $db)."' AND
 				a.idcat     = b.idcat AND
-				a.idcat   = '".$preid."'";
+				a.idcat   = '".Contenido_Security::escapeDB($preid, $db)."'";
 
 	$db->query($sql);
 	
@@ -218,16 +203,15 @@ function getParent($preid, &$db) {
 
 function getLevel($catid, &$db) 
 {
-	//	SECURITY-FIX
-	$catid = Contenido_Security::escapeDB($catid, $db);
 	global $cfg, $client, $lang;
 
+//	SECURITY-FIX
 	$sql = "SELECT
 				level
 			FROM
 				".$cfg["tab"]["cat_tree"]."
 			WHERE
-				idcat = '".$catid."' ";
+				idcat = '". Contenido_Security::escapeDB($catid, $db)."' ";
 				
 	$db->query($sql);
 
@@ -246,12 +230,6 @@ function getLevel($catid, &$db)
  * Return path of a given category up to a certain level  
  */
 function getCategoryPath($cat_id, $level, $reverse = true, &$db) {
-
-		//	SECURITY-FIX
-	$level = Contenido_Security::escapeDB($level, $db);
-	$cat_id = Contenido_Security::escapeDB($cat_id, $db);
-	$reverse = Contenido_Security::toBoolean($reverse);
-	
 	$root_path = array();
 
 	array_push($root_path, $cat_id);
@@ -341,11 +319,9 @@ function getLocationString($iStartCat, $level, $seperator, $sLinkStyleClass, $sT
  
 function getSubTree($idcat_start, $db)
 {
-    //	SECURITY-FIX
-	$idcat_start = Contenido_Security::escapeDB($idcat_start, $db);
-    $client = Contenido_Security::escapeDB($client, $db);
     global $client, $cfg;
 
+    //	SECURITY-FIX
     $sql = "SELECT
                 B.idcat, A.level
             FROM
@@ -353,7 +329,7 @@ function getSubTree($idcat_start, $db)
                 ".$cfg["tab"]["cat"]." AS B
             WHERE
                 A.idcat  = B.idcat AND
-                idclient = '".$client."'
+                idclient = '". Contenido_Security::escapeDB($client, $db)."'
             ORDER BY
                 idtree";
                 
@@ -391,13 +367,9 @@ function getSubTree($idcat_start, $db)
 
 function getTeaserDeeperCategories($iIdcat, $db)
 {
-	//	SECURITY-FIX
-	$iIdcat = Contenido_Security::escapeDB($iIdcat, $db);
 	global $client, $cfg, $lang;
-    $client = Contenido_Security::escapeDB($client, $db);
-    $lang = Contenido_Security::escapeDB($lang, $db);	
 	
-	
+	//	SECURITY-FIX	
 	$sql = "SELECT
                B.parentid, B.idcat
             FROM
@@ -407,9 +379,9 @@ function getTeaserDeeperCategories($iIdcat, $db)
             WHERE
                 A.idcat  = B.idcat AND
 				B.idcat  = C.idcat AND
-				C.idlang = $lang AND
+				C.idlang = '". Contenido_Security::escapeDB($lang, $db)."' AND
 				C.visible = '1' AND
-                B.idclient = $client
+                B.idclient = '". Contenido_Security::escapeDB($client, $db) ."'
             ORDER BY
                 idtree";
 	$db->query($sql);
@@ -454,11 +426,8 @@ function getTeaserDeeperCategories($iIdcat, $db)
 function getProtectedSubTree($idcat_start, $db)
 {
     global $client, $cfg, $lang;
-	//	SECURITY-FIX
-	$idcat_start = Contenido_Security::escapeDB($idcat_start, $db);
-    $client = Contenido_Security::escapeDB($client, $db);
-    $lang = Contenido_Security::escapeDB($lang, $db);
 	
+	//	SECURITY-FIX
     $sql = "SELECT
                 B.parentid, B.idcat
             FROM
@@ -468,10 +437,10 @@ function getProtectedSubTree($idcat_start, $db)
             WHERE
                 A.idcat  = B.idcat AND
 				B.idcat  = C.idcat AND
-				C.idlang = '".$lang."' AND
+				C.idlang = '".Contenido_Security::escapeDB($lang, $db)."' AND
 				C.visible = '1' AND
 				C.public = '1' AND
-                B.idclient = '".$client."'
+                B.idclient = '".Contenido_Security::escapeDB($client, $db)."'
             ORDER BY
                 idtree";
                 
@@ -517,10 +486,6 @@ function getCategoryName($cat_id, &$db) {
     global $cfg, $client, $lang;
 	
 		//	SECURITY-FIX
-	$cat_id = Contenido_Security::escapeDB($cat_id, $db);
-    $client = Contenido_Security::escapeDB($client, $db);
-    $lang = Contenido_Security::escapeDB($lang, $db);
-	
     $sql = "SELECT
                 *
             FROM
@@ -528,9 +493,9 @@ function getCategoryName($cat_id, &$db) {
                 ".$cfg["tab"]["cat_lang"]." AS B
             WHERE
                 A.idcat     = B.idcat   AND
-                A.idcat     = '$cat_id' AND
-                A.idclient  = '$client' AND
-                B.idlang    = '$lang'   
+                A.idcat     = '". Contenido_Security::escapeDB($cat_id, $db)."' AND
+                A.idclient  = '".Contenido_Security::escapeDB($client, $db)."' AND
+                B.idlang    = '".Contenido_Security::escapeDB($lang, $db)."'   
 			";
 
 	//echo "<pre>$sql</pre>";
@@ -556,11 +521,7 @@ function getSubCategories($parent_id, $db) {
 
     global $cfg, $client, $lang;
     
-		//	SECURITY-FIX
-	$parent_id = Contenido_Security::escapeDB($parent_id, $db);
-    $client = Contenido_Security::escapeDB($client, $db);
-    $lang = Contenido_Security::escapeDB($lang, $db);
-
+//	SECURITY-FIX
     $sql = "SELECT
                 A.idcat
             FROM
@@ -570,11 +531,11 @@ function getSubCategories($parent_id, $db) {
             WHERE
                 A.idcat     = B.idcat   AND
                 B.idcat     = C.idcat   AND
-                B.idclient  = '$client' AND
-                C.idlang    = '$lang'   AND
+                B.idclient  = '". Contenido_Security::escapeDB($client, $db)."' AND
+                C.idlang    = '".Contenido_Security::escapeDB($lang, $db)."'   AND
                 C.visible   = '1'       AND
-		C.public   = '1'       AND
-                B.parentid  = '$parent_id'
+				C.public    = '1'       AND
+                B.parentid  = '".Contenido_Security::escapeDB($parent_id, $db)."'
             ORDER BY
                 A.idtree";
 
@@ -601,13 +562,7 @@ function getProtectedSubCategories($parent_id, $db) {
 
     global $cfg, $client, $lang;
 
-		//	SECURITY-FIX
-	$parent_id = Contenido_Security::escapeDB($parent_id, $db);
-    $client = Contenido_Security::escapeDB($client, $db);
-    $lang = Contenido_Security::escapeDB($lang, $db);
-
-
-
+//	SECURITY-FIX
     $sql = "SELECT
                 A.idcat
             FROM
@@ -617,9 +572,9 @@ function getProtectedSubCategories($parent_id, $db) {
             WHERE
                 A.idcat     = B.idcat   AND
                 B.idcat     = C.idcat   AND
-                B.idclient  = '$client' AND
-                C.idlang    = '$lang'   AND
-                B.parentid  = '$parent_id'
+                B.idclient  = '".Contenido_Security::escapeDB($client, $db)."' AND
+                C.idlang    = '".Contenido_Security::escapeDB($lang, $db)."'   AND
+                B.parentid  = '".Contenido_Security::escapeDB($parent_id, $db)."'
             ORDER BY
                 A.idtree";
 
@@ -648,13 +603,9 @@ function checkCatPermission($idcatlang, $public) {
 	
 	$oDB = new DB_Contenido;
 	
-	//	SECURITY-FIX
-	$idcatlang = Contenido_Security::escapeDB($idcatlang, $oDB);
-    $public = Contenido_Security::escapeDB($public, $oDB);
-	
 	$FrontendPermissionCollection = new FrontendPermissionCollection;
-
 	$visible=false;
+
 	if($public!=0){
 		$visible = true;
 	}elseif(($auth->auth['uid']!='')&&($auth->auth['uid']!='nobody')){
