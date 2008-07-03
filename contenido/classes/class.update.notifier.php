@@ -63,11 +63,25 @@ class Contenido_UpdateNotifier {
 	protected $sVendorXMLFile = "vendor.xml";
 
 	/**
-	 * Vendor RSS file
+	 * German Vendor RSS file
 	 * @access protected
 	 * @var string
 	 */
-	protected $sVendorRssFile;
+	protected $sVendorRssDeFile = "rss_de.xml";
+
+	/**
+	 * English Vendor RSS file
+	 * @access protected
+	 * @var string
+	 */
+	protected $sVendorRssEnFile = "rss_en.xml";
+
+	/**
+	 * Language specific RSS file
+	 * @access protected
+	 * @var string
+	 */
+	protected $sRSSFile;
     
 	/**
 	 * Timestamp cache file
@@ -84,12 +98,12 @@ class Contenido_UpdateNotifier {
 	protected $sXMLContent;
 
     	/**
-	 * Content of the RSS file
+	 * Content of the language specific RSS file
 	 * @access protected
 	 * @var string
 	 */
 	protected $sRSSContent;
-	
+
 	/**
 	 * Current available vendor version
 	 * @access protected
@@ -202,6 +216,7 @@ class Contenido_UpdateNotifier {
 	 */
 	protected $aCfg = array();
 
+
 	/**
 	 * Constructor of Contenido_UpdateNotifier
 	 * @access public
@@ -232,14 +247,26 @@ class Contenido_UpdateNotifier {
 				if (getSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name']) == "true") {
 				   $this->bEnableCheckRss = true;
 				}
-				
+
 				$this->setRSSFile();
 				$this->detectMinorRelease();
 				$this->checkUpdateNecessity();
 				$this->readVendorContent();
 			}
 		}
+	}
 
+	/**
+	 * Sets the actual RSS file for the reader
+	 * @access protected
+	 * @return void
+	 */
+	protected function setRSSFile() {
+		if ($this->sBackendLanguage == "de_DE") {
+			$this->sRSSFile = $this->sVendorRssDeFile;
+		} else {
+			$this->sRSSFile = $this->sVendorRssEnFile;
+		}
 	}
 	
 	/**
@@ -261,19 +288,6 @@ class Contenido_UpdateNotifier {
 	}
 
 	/**
-	 * Sets the RSS file based on the current backend language
-	 * @access protected
-	 * @return void
-	 */
-	protected function setRSSFile() {
-		if ($this->sBackendLanguage == "de_DE") {
-			$this->sVendorRssFile = "rss_de.xml";
-		} else {
-			$this->sVendorRssFile = "rss_en.xml";
-		}
-	}
-
-	/**
 	 * Sets the cache path
 	 * @access protected
 	 * @return void
@@ -289,16 +303,22 @@ class Contenido_UpdateNotifier {
 	}
 
 	/**
-	 * Checks if the xml or rss file must be loaded from the vendor host or local cache
+	 * Checks if the xml files must be loaded from the vendor host or local cache
 	 * @access protected
 	 * @return boolean
 	 */
 	protected function checkUpdateNecessity() {
-		if (!file_exists($this->sCacheDirectory.$this->sVendorXMLFile)) {
-			$bUpdateNecessity = true;
-		} else if (!file_exists($this->sCacheDirectory.$this->sVendorRssFile)) {
-			$bUpdateNecessity = true;
-		} else	if (file_exists($this->sCacheDirectory.$this->sTimestampCacheFile)) {
+		$bUpdateNecessity = false;
+
+		$aCheckFiles = array($this->sVendorXMLFile, $this->sVendorRssDeFile, $this->sVendorRssEnFile, $this->sTimestampCacheFile);
+		foreach ($aCheckFiles as $sFilename) {
+			if (!file_exists($this->sCacheDirectory.$sFilename)) {
+				$bUpdateNecessity = true;
+				break;
+			}
+		}
+
+		if ($bUpdateNecessity == false) {
 			$iLastUpdate = file_get_contents($this->sCacheDirectory.$this->sTimestampCacheFile);
 
 			$iCheckTimestamp = $iLastUpdate + ($this->iCacheDuration * 60);
@@ -309,8 +329,6 @@ class Contenido_UpdateNotifier {
 			} else {
 				$bUpdateNecessity = true;
 			}	
-		} else {
-			$bUpdateNecessity = true;
 		}
 
 		$this->bUpdateNecessity = $bUpdateNecessity;
@@ -330,40 +348,45 @@ class Contenido_UpdateNotifier {
 	}
 
 	/**
-	 * Reads the xml and rss file from vendor host or cache and checks for file manipulations
+	 * Reads the xml files from vendor host or cache and checks for file manipulations
 	 * @access protected
 	 * @return void
 	 */
 	protected function readVendorContent() {
+		$this->sXMLContent = "";
 		if ($this->bUpdateNecessity == true) {
 			$aXmlContent = $this->getVendorHostFiles();
-			if ($aXmlContent['update'] != "") {
-				$this->sXMLContent = $aXmlContent['update'];
-				$this->sRSSContent = $aXmlContent['rss'];
-				$this->updateCacheFiles();
-				$this->updateHashProperty();
-			} 
-		} else {
-			$sXMLContent = file_get_contents($this->sCacheDirectory.$this->sVendorXMLFile);
-			$sRSSContent = file_get_contents($this->sCacheDirectory.$this->sVendorRssFile);
-			$sXMLHash = md5($sXMLContent.$sRSSContent);
-			$sPropertyHash = $this->getHashProperty();
+			if (isset($aXmlContent[$this->sVendorXMLFile]) && isset($aXmlContent[$this->sVendorRssDeFile]) && isset($aXmlContent[$this->sVendorRssEnFile])) {
+				$this->sXMLContent = $aXmlContent[$this->sVendorXMLFile];
+				$this->sRSSContent = $aXmlContent[$this->sRSSFile];
 
+				$this->updateCacheFiles($aXmlContent);
+				$this->updateHashProperty($aXmlContent);
+			}			
+		} else {
+			$sXMLContent 	= file_get_contents($this->sCacheDirectory.$this->sVendorXMLFile);
+			$aRSSContent[$this->sVendorRssDeFile] = file_get_contents($this->sCacheDirectory.$this->sVendorRssDeFile);
+			$aRSSContent[$this->sVendorRssEnFile] = file_get_contents($this->sCacheDirectory.$this->sVendorRssEnFile);
+
+			$sXMLHash = md5($sXMLContent.$aRSSContent[$this->sVendorRssDeFile].$aRSSContent[$this->sVendorRssEnFile]);
+			$sPropertyHash = $this->getHashProperty();
 			if ($sXMLHash == $sPropertyHash) {
 				$this->sXMLContent = $sXMLContent;
-				$this->sRSSContent = $sRSSContent;
+				$this->sRSSContent = $aRSSContent[$this->sRSSFile];
 			} else {
 				$aXmlContent = $this->getVendorHostFiles();
-				if ($aXmlContent['update'] != "") {
-					$this->sXMLContent = $aXmlContent['update'];
-					$this->sRSSContent = $aXmlContent['rss'];
-					$this->updateCacheFiles();
-					$this->updateHashProperty();
+				if (isset($aXmlContent[$this->sVendorXMLFile]) && isset($aXmlContent[$this->sVendorRssDeFile]) && isset($aXmlContent[$this->sVendorRssEnFile])) {
+					$this->sXMLContent = $aXmlContent[$this->sVendorXMLFile];
+					$this->sRSSContent = $aXmlContent[$this->sRSSFile];
+
+					$this->updateCacheFiles($aXmlContent);
+					$this->updateHashProperty($aXmlContent);
 				} 
 			}
 		}
 
-		if ($this->sXMLContent) {
+		/** todo: check if <fourforbusiness> is in the xml content **/
+		if ($this->sXMLContent != "") {
 			$this->oXML = simplexml_load_string($this->sXMLContent);
 			if (!is_object($this->oXML)) {
    				$sErrorMessage = i18n('Unable to check for new updates!')." ".i18n('Could not handle server response!');
@@ -381,7 +404,7 @@ class Contenido_UpdateNotifier {
 	}
 
 	/**
-	 * Connects with vendor host and gets the xml and rss file
+	 * Connects with vendor host and gets the xml files
 	 * @access protected
 	 * @return array
 	 */
@@ -396,22 +419,37 @@ class Contenido_UpdateNotifier {
 		    	// get update file
    			fputs($oSocket, "GET /".$this->sVendorHostPath.$this->sVendorXMLFile." HTTP/1.0\r\n\r\n"); 
    			while(!feof($oSocket)) { 
-       			$aXMLContent['update'] .= fgets($oSocket, 128); 
+       			$sXMLUpdate .= fgets($oSocket, 128); 
    			} 
-			$sSeparator = strpos($aXMLContent['update'], "\r\n\r\n");
-          		$aXMLContent['update'] = substr($aXMLContent['update'], $sSeparator + 4);
+			$sSeparator = strpos($sXMLUpdate, "\r\n\r\n");
+          		$sXMLUpdate = substr($sXMLUpdate, $sSeparator + 4);
 			fclose($oSocket); 
 			
-			// get rss file
+			// get german rss file
 			$oSocket = fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout); 
-			fputs($oSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssFile." HTTP/1.0\r\n\r\n"); 
+			fputs($oSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssDeFile." HTTP/1.0\r\n\r\n"); 
    			while(!feof($oSocket)) { 
-       			$aXMLContent['rss'] .= fgets($oSocket, 128); 
+       			$sDeRSSContent .= fgets($oSocket, 128); 
    			} 
-			$sSeparator = strpos($aXMLContent['rss'], "\r\n\r\n");
-          		$aXMLContent['rss'] = substr($aXMLContent['rss'], $sSeparator + 4);
+			$sSeparator = strpos($sDeRSSContent, "\r\n\r\n");
+          		$sDeRSSContent = substr($sDeRSSContent, $sSeparator + 4);
 
 			fclose($oSocket); 
+
+			// get english rss file
+			$oSocket = fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout); 
+			fputs($oSocket, "GET /".$this->sVendorHostPath.$this->sVendorRssEnFile." HTTP/1.0\r\n\r\n"); 
+   			while(!feof($oSocket)) { 
+       			$sEnRSSContent .= fgets($oSocket, 128); 
+   			} 
+			$sSeparator = strpos($sEnRSSContent, "\r\n\r\n");
+          		$sEnRSSContent = substr($sEnRSSContent, $sSeparator + 4);
+
+			fclose($oSocket); 
+
+			$aXMLContent[$this->sVendorXMLFile] 	= $sXMLUpdate;
+			$aXMLContent[$this->sVendorRssDeFile] 	= $sDeRSSContent;
+			$aXMLContent[$this->sVendorRssEnFile] 	= $sEnRSSContent;
 		}
 
 		return $aXMLContent;
@@ -420,26 +458,23 @@ class Contenido_UpdateNotifier {
 	/**
 	 * Updates the files in cache
 	 * @access protected
+	 * @param $aRSSContent array
 	 * @return void
 	 */
-	protected function updateCacheFiles() {
-		$sVendorCacheFile = $this->sCacheDirectory.$this->sVendorXMLFile;
-		$oVendorFile = fopen($sVendorCacheFile, "w+");
-		ftruncate($oVendorFile, 0);
-		fwrite($oVendorFile, $this->sXMLContent);
-		fclose($oVendorFile);
-		
-		$sVendorRssFile = $this->sCacheDirectory.$this->sVendorRssFile;
-		$oRssFile = fopen($sVendorRssFile, "w+");
-		ftruncate($oRssFile, 0);
-		fwrite($oRssFile, $this->sRSSContent);
-		fclose($oRssFile);
+	protected function updateCacheFiles($aRSSContent) {
+		$aWriteCache = array();
+		$aWriteCache[$this->sVendorXMLFile] 	= $this->sXMLContent;
+		$aWriteCache[$this->sVendorRssDeFile] 	= $aRSSContent[$this->sVendorRssDeFile];
+		$aWriteCache[$this->sVendorRssEnFile] 	= $aRSSContent[$this->sVendorRssEnFile];
+		$aWriteCache[$this->sTimestampCacheFile]	= time();
 
-		$sTimeCacheFile = $this->sCacheDirectory.$this->sTimestampCacheFile;
-		$oTimeFile = fopen($sTimeCacheFile, "w+");
-		ftruncate($oTimeFile, 0);
-		fwrite($oTimeFile, time());
-		fclose($oTimeFile);
+		foreach ($aWriteCache as $sFile=>$sContent) {
+			$sCacheFile = $this->sCacheDirectory.$sFile;
+			$oFile = fopen($sCacheFile, "w+");
+			ftruncate($oFile, 0);
+			fwrite($oFile, $sContent);
+			fclose($oFile);
+		}
 	}
 
 	/**
@@ -455,10 +490,15 @@ class Contenido_UpdateNotifier {
 	/**
 	 * Updates the xml file hash in the property table
 	 * @access protected
+	 * @param $aRSSContent array
 	 * @return void
 	 */
-	protected function updateHashProperty() {
-		$sPropValue = md5($this->sXMLContent.$this->sRSSContent);
+	protected function updateHashProperty($aXMLContent) {
+		$sXML 		= $aXMLContent[$this->sVendorXMLFile];
+		$sDeRSS 	= $aXMLContent[$this->sVendorRssDeFile];
+		$sEnRSS 	= $aXMLContent[$this->sVendorRssEnFile];
+
+		$sPropValue = md5($sXML.$sDeRSS.$sEnRSS);
 		$this->oProperties->setValue($this->aPropConf['itemType'], $this->aPropConf['itemID'], $this->aPropConf['type'], $this->aPropConf['name'], $sPropValue);
 	}
 
@@ -486,7 +526,7 @@ class Contenido_UpdateNotifier {
 	/**
 	 * Generates the output for the backend
 	 * @access protected
-	 * @param $sMessage
+	 * @param $sMessage string
 	 * @return string
 	 */
 	protected function renderOutput($sMessage) {
@@ -542,9 +582,9 @@ class Contenido_UpdateNotifier {
 			preg_match($sRegExp, $sFeedContent, $aMatches);
 
 			if ($aMatches[1]) {
-			  $oRss = new XML_RSS($this->sCacheDirectory.$this->sVendorRssFile, $aMatches[1]);
+			  $oRss = new XML_RSS($this->sCacheDirectory.$this->sRSSFile, $aMatches[1]);
 			} else {
-			  $oRss = new XML_RSS($this->sCacheDirectory.$this->sVendorRssFile);
+			  $oRss = new XML_RSS($this->sCacheDirectory.$this->sRSSFile);
 			}
 
 			$oRss->parse();		
@@ -578,7 +618,7 @@ class Contenido_UpdateNotifier {
 	 * @access public
 	 * @return string
 	 */
-    	public function displayOutput() {
+	public function displayOutput() {
 		if (!$this->bEnableView) {
 			$sOutput = "";
 		} else if (!$this->bEnableCheck) {
