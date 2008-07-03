@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-07-03, Dominik Ziegler, fixed bug CON-143
  *
  *   $Id$:
  * }}
@@ -2225,11 +2226,28 @@ function notifyOnError($errortitle, $errormessage)
 
 	if ((time() - $notifytimestamp) > $cfg["contenido"]["notifyinterval"] * 60)
 	{
-		/* Notify configured email */
-		mail($cfg["contenido"]["notifyonerror"], $errortitle, $errormessage);
+		if ($cfg['contenido']['notifyonerror'] != "") {
+			cInclude("classes", 'class.phpmailer.php');
+			$sMailhost = getSystemProperty('system', 'mail_host');
+			if ($sMailhost == '') {
+				$sMailhost = 'localhost';
+			} 
+		
+			$oMail = new phpmailer;
+			$oMail->Host = $sMailhost;
+			$oMail->IsHTML(0);
+			$oMail->WordWrap = 1000;
+			$oMail->IsMail();
+
+			$oMail->AddAddress($cfg["contenido"]["notifyonerror"], "");
+			$oMail->Subject = $errortitle;
+			$oMail->Body = $errormessage;
+		
+			/* Notify configured email */
+			$oMail->Send();
+		}
 		/* Write last notify log file */
 		file_put_contents($cfg["path"]["contenido"]."logs/notify.txt", time());
-
 	}
 }
 

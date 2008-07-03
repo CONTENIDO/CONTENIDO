@@ -1,22 +1,34 @@
 <?php
 /**
- * File      :   $RCSfile: send_reminder.php,v $
- * Project   :   Contenido
- * Descr     :   Cron Job to send reminder items
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Cronjob to send reminder items
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * Author    :   Timo A. Hummel
+ * @package    Contenido Backend classes
+ * @version    1.0.0
+ * @author     Timo A. Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <= 4.6
+ * 
+ * {@internal 
+ *   created 2004-02-12
+ *   modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call
+ *   modified 2008-06-30, Dominik Ziegler, fixed bug CON-143, added new header
  *
- * Created   :   12.02.2004
- * Modified  :   $Date: 2007/10/12 13:53:00 $
- * @version $Revision$
- * @copyright four for business AG, www.4fb.de
- *
- * @internal  {
- *  modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call
- *
- *  $Id$
- * }
- **/
+ *   $Id$:
+ * }}
+ * 
+ */
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }
@@ -33,6 +45,7 @@ cInclude ("classes", 'class.genericdb.php');
 cInclude ("classes", 'class.properties.php');
 cInclude ("classes", 'class.todo.php');
 cInclude ("classes", 'class.user.php');
+cInclude ("classes", 'class.phpmailer.php');
 
 global $cfg, $client;
 
@@ -67,7 +80,6 @@ if(!isRunningFromWeb() || function_exists("runJob") || $area == "cronjobs")
 
     	$todoitem = new TODOItem;
 
-
     	foreach ($pastreminders as $reminder)
     	{
 
@@ -78,12 +90,24 @@ if(!isRunningFromWeb() || function_exists("runJob") || $area == "cronjobs")
         		/* Check if email noti is active */
         		if ($todoitem->getProperty("todo", "emailnoti") == 1 && $todoitem->getProperty("todo", "emailnoti-sent") == 0)
         		{
+					//modified : 2008-07-03 - use php mailer class instead of mail()
+					$sMailhost = getSystemProperty('system', 'mail_host');
+					if ($sMailhost == '') {
+						$sMailhost = 'localhost';
+					} 
+					
+					$oMail = new phpmailer;
+					$oMail->Host = $sMailhost;
+					$oMail->IsHTML(0);
+					$oMail->WordWrap = 1000;
+					$oMail->IsMail();
+				
         			$user = new User;
         			$user->loadUserByUserID($todoitem->get("recipient"));
 
-        			$recipient = $user->getField("email");
+					$oMail->AddAddress($user->getField("email"), "");
         			$realname = $user->getField("realname");
-        			$subject = $todoitem->get("subject")."\n";
+        			$oMail->Subject = $todoitem->get("subject");
 
         			$client = $todoitem->get("idclient");
         			$clientname = getClientName($client);
@@ -95,9 +119,9 @@ if(!isRunningFromWeb() || function_exists("runJob") || $area == "cronjobs")
 
         			$path = $cfg["path"]["contenido_fullhtml"];
 
-        			$message = sprintf($message,$realname, $clientname, $path, $todoitem->get("message"));
-        			mail($recipient, $subject, $message);
-
+        			$message = sprintf($message, $realname, $clientname, $path, $todoitem->get("message"));
+					$oMail->Body = $message;
+        			$oMail->Send();
         		}
 
         		$todoitem->setProperty("todo", "reminderdate", "0");
