@@ -1,4 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ *  
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 
+ *
+ *   $Id: 
+ * }}
+ * 
+ */
+ 
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
+cInclude('classes', 'class.security.php');
 cInclude("classes", "class.frontend.permissions.php");
 cInclude("classes", "class.frontend.users.php");
 
@@ -20,7 +52,7 @@ function cecFrontendCategoryAccess ($idlang, $idcat, $user)
 
 	$FrontendPermissionCollection = new FrontendPermissionCollection;
 	
-	$sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = $idcat AND idlang = $idlang";
+	$sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = " . Contenido_Security::toInteger($idcat, $db) . " AND idlang = " . Contenido_Security::toInteger($idlang, $db);
 	$db->query($sql);
 	
 	if ($db->next_record())
