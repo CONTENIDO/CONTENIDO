@@ -1,4 +1,39 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * <Description>
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * 
+ *
+ * @package    Contenido Backend <Area>
+ * @version    0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created   unknown
+ *   modified 2008-07-03, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+  die('Illegal call');
+}
+
+
 // create Navigation array for one level
 function createNavigationArray($start_id, $db) 
 {
@@ -9,7 +44,12 @@ function createNavigationArray($start_id, $db)
     
     $navigation = array();
 	$FrontendPermissionCollection = new FrontendPermissionCollection;
-
+	
+//	SECURITY-FIX
+	$client = Contenido_Security::escapeDB($client, $db);
+	$lang = Contenido_Security::escapeDB($lang, $db);
+	$start_id = Contenido_Security::escapeDB($start_id, $db);
+	
     $sql = "SELECT
                 A.idcat,
                 C.name,
@@ -74,6 +114,12 @@ function createNavigationArray($start_id, $db)
 # deprecated
 function getTarget($cat_id, $db) {
 	
+	//	SECURITY-FIX
+	$cat_id = Contenido_Security::escapeDB($cat_id, $db);
+	$db = Contenido_Security::escapeDB($db, $db);
+	$client = Contenido_Security::escapeDB($client, $db);
+	$lang = Contenido_Security::escapeDB($lang, $db);
+	
 	global $cfg, $client, $lang;
 
     $sql = "SELECT
@@ -103,9 +149,15 @@ function getTarget($cat_id, $db) {
  */
 
 function isParent($parentid, $catid, $db) {
-
+	
+		//	SECURITY-FIX
+	$parentid = Contenido_Security::escapeDB($parentid, $db);
+	$catid = Contenido_Security::escapeDB($catid, $db);
+	$db = Contenido_Security::escapeDB($db, $db);
 	global $cfg, $client, $lang;
-
+	$client = Contenido_Security::escapeDB($client, $db);
+	$lang = Contenido_Security::escapeDB($lang, $db);
+	
 	$sql = "SELECT
 			a.parentid
 			FROM
@@ -135,9 +187,12 @@ function isParent($parentid, $catid, $db) {
 }
 
 function getParent($preid, &$db) {
-
+		//	SECURITY-FIX
+	$preid = Contenido_Security::escapeDB($preid, $db);
 	global $cfg, $client, $lang;
-
+	$client = Contenido_Security::escapeDB($client, $db);
+	$lang = Contenido_Security::escapeDB($lang, $db);
+	$db = Contenido_Security::escapeDB($db, $db);
 	$sql = "SELECT
 			a.parentid
 			FROM
@@ -163,7 +218,8 @@ function getParent($preid, &$db) {
 
 function getLevel($catid, &$db) 
 {
-
+	//	SECURITY-FIX
+	$catid = Contenido_Security::escapeDB($catid, $db);
 	global $cfg, $client, $lang;
 
 	$sql = "SELECT
@@ -191,6 +247,11 @@ function getLevel($catid, &$db)
  */
 function getCategoryPath($cat_id, $level, $reverse = true, &$db) {
 
+		//	SECURITY-FIX
+	$level = Contenido_Security::escapeDB($level, $db);
+	$cat_id = Contenido_Security::escapeDB($cat_id, $db);
+	$reverse = Contenido_Security::toBoolean($reverse);
+	
 	$root_path = array();
 
 	array_push($root_path, $cat_id);
@@ -280,6 +341,9 @@ function getLocationString($iStartCat, $level, $seperator, $sLinkStyleClass, $sT
  
 function getSubTree($idcat_start, $db)
 {
+    //	SECURITY-FIX
+	$idcat_start = Contenido_Security::escapeDB($idcat_start, $db);
+    $client = Contenido_Security::escapeDB($client, $db);
     global $client, $cfg;
 
     $sql = "SELECT
@@ -327,7 +391,12 @@ function getSubTree($idcat_start, $db)
 
 function getTeaserDeeperCategories($iIdcat, $db)
 {
+	//	SECURITY-FIX
+	$iIdcat = Contenido_Security::escapeDB($iIdcat, $db);
 	global $client, $cfg, $lang;
+    $client = Contenido_Security::escapeDB($client, $db);
+    $lang = Contenido_Security::escapeDB($lang, $db);	
+	
 	
 	$sql = "SELECT
                B.parentid, B.idcat
@@ -385,7 +454,11 @@ function getTeaserDeeperCategories($iIdcat, $db)
 function getProtectedSubTree($idcat_start, $db)
 {
     global $client, $cfg, $lang;
-
+	//	SECURITY-FIX
+	$idcat_start = Contenido_Security::escapeDB($idcat_start, $db);
+    $client = Contenido_Security::escapeDB($client, $db);
+    $lang = Contenido_Security::escapeDB($lang, $db);
+	
     $sql = "SELECT
                 B.parentid, B.idcat
             FROM
@@ -443,6 +516,11 @@ function getCategoryName($cat_id, &$db) {
     
     global $cfg, $client, $lang;
 	
+		//	SECURITY-FIX
+	$cat_id = Contenido_Security::escapeDB($cat_id, $db);
+    $client = Contenido_Security::escapeDB($client, $db);
+    $lang = Contenido_Security::escapeDB($lang, $db);
+	
     $sql = "SELECT
                 *
             FROM
@@ -477,6 +555,11 @@ function getSubCategories($parent_id, $db) {
     $subcategories = array();
 
     global $cfg, $client, $lang;
+    
+		//	SECURITY-FIX
+	$parent_id = Contenido_Security::escapeDB($parent_id, $db);
+    $client = Contenido_Security::escapeDB($client, $db);
+    $lang = Contenido_Security::escapeDB($lang, $db);
 
     $sql = "SELECT
                 A.idcat
@@ -518,6 +601,13 @@ function getProtectedSubCategories($parent_id, $db) {
 
     global $cfg, $client, $lang;
 
+		//	SECURITY-FIX
+	$parent_id = Contenido_Security::escapeDB($parent_id, $db);
+    $client = Contenido_Security::escapeDB($client, $db);
+    $lang = Contenido_Security::escapeDB($lang, $db);
+
+
+
     $sql = "SELECT
                 A.idcat
             FROM
@@ -547,7 +637,7 @@ function getProtectedSubCategories($parent_id, $db) {
 
 } // end function
 
-function checkCatPermission($idcatlang,$public) {
+function checkCatPermission($idcatlang, $public) {
 	#Check if current user has permissions to access cat
 
 	cInclude("classes","class.frontend.permissions.php");
@@ -555,7 +645,13 @@ function checkCatPermission($idcatlang,$public) {
 	cInclude("classes","class.frontend.users.php");
 	
 	global $auth;
-
+	
+	$oDB = new DB_Contenido;
+	
+	//	SECURITY-FIX
+	$idcatlang = Contenido_Security::escapeDB($idcatlang, $oDB);
+    $public = Contenido_Security::escapeDB($public, $oDB);
+	
 	$FrontendPermissionCollection = new FrontendPermissionCollection;
 
 	$visible=false;

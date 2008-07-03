@@ -1,18 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * 
+ *
+ * @package    Contenido Backend <Area>
+ * @version    0.4
+ * @author     Jan Lengowski
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2003-01-2003
+ *   modified 2005-09-29, Andreas Lindner
+ *   modified 2008-07-03, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-/******************************************
-* File      :   main.loginform.php
-* Project   :   Contenido
-* Descr     :   Login form
-*
-*
-* Author    :   Jan Lengowski
-* Created   :   21.01.2003
-* Modified  :   21.01.2003
-* Modified  :   29.09.2005, Andreas Lindner
-*
-* © four for business AG
-******************************************/
+if(!defined('CON_FRAMEWORK')) {
+  die('Illegal call');
+}
 
 global $cfg, $idcat, $idart, $idcatart, $lang, $client, $username;
 

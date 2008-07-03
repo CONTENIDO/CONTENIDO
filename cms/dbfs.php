@@ -1,24 +1,43 @@
 <?php
 /**
- * Database Filesystem
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * <Description>
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_template <Templatefiles>
+ * @con_notice <Notice>
+ * 
  *
- * @author <unknown>
- * @version $Revision$
- * @copyright four for business AG <www.4fb.de>
+ * @package    Contenido Backend <Area>
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created unknown
+ *   modified 2008-06-16, H. Librenz - Hotfix: checking for potential unsecure calling
+ *   modified 2008-07-03, bilal arslan, added security fix
  *
- * @internal {
- *  modified 2008-06-16, H. Librenz - Hotfix: checking for potential unsecure calling
- *  $Id$
- * }
+ *   $Id$:
+ * }}
+ * 
  */
-if (isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
+
+if(!defined('CON_FRAMEWORK')) {
+  die('Illegal call');
 }
 
 include_once ("config.php");
 include_once ($contenido_path . "includes/startup.php");
 cInclude("includes", "functions.general.php");
-
 cInclude("classes", "class.dbfs.php");
 
 

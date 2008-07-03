@@ -1,23 +1,46 @@
 <?php
-/*******************************************************************
- * Various derived HTML class elements especially useful           *
- * in the input area of modules                                    *
- *                                                                 *
- * Simple table generation class especially useful to generate     *
- * backend configuration table. May be used also in Frontend,      * 
- * but note the globally used variables ($cfg)                     *
- *                                                                 *
- * Usage: Store file in client/includes folder (generate the       *
- *        includes folder, if not available). Include the file     *
- *        in your modules using                                    *
- *        cInclude("frontend", "includes/class.input.helper.php"); * 
- *                                                                 *
- * Author:  Björn Behrens (HerrB), http://www.btech.de             *
- * Project: Contenido                                              *
- * Version: 2.1 (formerly known as functions.input.helper.php)     *
- * Date:    18.06.2007                                             *
- * License: GPL, this header has to stay intact                    *
- *******************************************************************/
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Various derived HTML class elements especially useful          
+ * in the input area of modules                                   
+ * Simple table generation class especially useful to generate     
+ * backend configuration table. May be used also in Frontend,       
+ * but note the globally used variables ($cfg)  
+ * 
+ * Usage: Store file in client/includes folder (generate the       
+ * includes folder, if not available). Include the file     
+ * in your modules using                                    
+ * cInclude("frontend", "includes/class.input.helper.php"); 
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * 
+ *
+ * @package    Contenido Backend <Area>
+ * @version    2.1 (formerly known as functions.input.helper.php)
+ * @author     Björn Behrens (HerrB), http://www.btech.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2007-06-18
+ *   modified 2008-07-03, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+     die('Illegal call');
+}
 
 // Including main HTML class
 cInclude("classes", "class.htmlelements.php");
@@ -66,13 +89,13 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
 			$sSQL .= "tblCatLang.startidartlang as idstartartlang ";
 			$sSQL .= "FROM ".$cfg["tab"]["art_lang"]." AS tblArtLang, ".$cfg["tab"]["cat_art"]." AS tblCatArt, ";
 			$sSQL .= $cfg["tab"]["cat_lang"]." AS tblCatLang ";
-			$sSQL .= "WHERE tblCatArt.idcat = '".$iIDCat."' AND tblCatLang.idcat = tblCatArt.idcat AND tblCatLang.idlang = tblArtLang.idlang AND ";
+			$sSQL .= "WHERE tblCatArt.idcat = '".Contenido_Security::toInteger($iIDCat)."' AND tblCatLang.idcat = tblCatArt.idcat AND tblCatLang.idlang = tblArtLang.idlang AND ";
 
 			if ($bArtOnline) {
 				$sSQL .= "tblArtLang.online = '1' AND ";
 			}
 
-			$sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '".$lang."' ";
+			$sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '".Contenido_Security::escapeDB($lang, $oDB)."' ";
 			if ($cfg["is_start_compatible"] == true) {
 				$sSQL .= "ORDER BY tblCatArt.is_start DESC, tblArtLang.title"; // Getting start article as first article
 			} else {
@@ -153,11 +176,11 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
 		$sSQL .= "tblCatLang.visible AS visible, tblCatLang.public AS public, tblCatTree.level AS level ";
 		$sSQL .= "FROM ".$cfg["tab"]["cat"]." AS tblCat, ".$cfg["tab"]["cat_lang"]." AS tblCatLang, ";
 		$sSQL .= $cfg["tab"]["cat_tree"]." AS tblCatTree ";
-		$sSQL .= "WHERE tblCat.idclient = '".$client."' AND tblCatLang.idlang = '".$lang."' AND ";
+		$sSQL .= "WHERE tblCat.idclient = '".Contenido_Security::escapeDB($client, $oDB)."' AND tblCatLang.idlang = '".Contenido_Security::escapeDB($lang, $oDB)."' AND ";
 		$sSQL .= "tblCatLang.idcat = tblCat.idcat AND tblCatTree.idcat = tblCat.idcat ";
 
 		if ($iMaxLevel > 0) {
-			$sSQL .= "AND tblCatTree.level < '".$iMaxLevel."' ";
+			$sSQL .= "AND tblCatTree.level < '".Contenido_Security::escapeDB($iMaxLevel, $oDB)."' ";
 		}
 		$sSQL .= "ORDER BY tblCatTree.idtree";
 
@@ -232,10 +255,10 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
 			$sSQL .= "FROM ".$cfg["tab"]["content"]." AS tblContent, ".$cfg["tab"]["art_lang"]." AS tblArtLang, ";
 			$sSQL .= $cfg["tab"]["cat_art"]." AS tblCatArt, ".$cfg["tab"]["type"]." AS tblType ";
 			$sSQL .= "WHERE tblContent.idtype = tblType.idtype AND tblContent.idartlang = tblArtLang.idartlang AND ";
-			$sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '".$lang."' AND tblCatArt.idcatart = '".$iIDCatArt."' ";
+			$sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '". Contenido_Security::escapeDB($lang, $oDB)."' AND tblCatArt.idcatart = '". Contenido_Security::toInteger($iIDCatArt)."' ";
 
 			if ($sTypeRange != "") {
-				$sSQL .= "AND tblContent.idtype IN (".$sTypeRange.") ";
+				$sSQL .= "AND tblContent.idtype IN (". Contenido_Security::escapeDB($sTypeRange, $oDB).") ";
 			}
 
 			$sql .= "ORDER BY tblContent.idtype, tblContent.typeid";

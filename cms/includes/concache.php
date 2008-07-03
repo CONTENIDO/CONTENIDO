@@ -1,13 +1,39 @@
 <?php
 /**
-* @brief     File with configuration of concache
-* @file      concache.php
-* @version   0.9
-* @date      07.07.2006
-* @author    Murat Purc <murat@purc.de>
-* @copyright � Murat Purc 2006
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * File with configuration of concache
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ *
+ * @package    Contenido Backend <Area>
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * @class      cConCache
+ * @file       concache.php
+ * @version    0.9
+ * @date       2006-07-07
+ * 
+ * {@internal 
+ *   created  2006-07-07
+ *   modified 2008-07-03, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
+if(!defined('CON_FRAMEWORK')) {
+                die('Illegal call');
+}
 
 // uncomment following line 4 debugging any occured errors and warnings
 #error_reporting(E_ALL);
@@ -116,13 +142,21 @@ $cfgConCache['idoptions'] = array(
 
 // define code 2 update contenido statistics
 // this will be excuted on 'afteroutput' event of cache object
+
+// set Security fix
+$GLOBALS['idcatart'] =  Contenido_Security::toInteger($GLOBALS['idcatart']);
+$GLOBALS['lang'] = Contenido_Security::toInteger($GLOBALS['lang']);
+$GLOBALS['client'] = Contenido_Security::toInteger($GLOBALS['client']);
+$GLOBALS['idcatart'] = Contenido_Security::toInteger($GLOBALS['idcatart']);
+
+
 $sStatCode = '
 	$sql = \'SELECT idcatart FROM \'.$GLOBALS[\'cfg\'][\'tab\'][\'stat\'].\' WHERE idcatart="\'.$GLOBALS[\'idcatart\'].\'" AND idlang="\'.$GLOBALS[\'lang\'].\'"\';
 	$GLOBALS[\'db\']->query($sql);
 	if ($GLOBALS[\'db\']->next_record()) {
 		$sql = \'UPDATE \'.$GLOBALS[\'cfg\'][\'tab\'][\'stat\'].\' SET visited=visited + 1 WHERE idcatart="\'.$GLOBALS[\'idcatart\'].\'" AND idclient="\'.$GLOBALS[\'client\'].\'" AND idlang="\'.$GLOBALS[\'lang\'].\'"\';
 	} else {
-		$next = $GLOBALS[\'db\']->nextid($GLOBALS[\'cfg\'][\'tab\'][\'stat\']);
+		$next = $GLOBALS[\'db\']->nextid($GLOBALS[\'cfg\'][\'tab\'][\'stat\']); $next =  Contenido_Security::escapeDB($next, $db);
 		$sql  = \'INSERT INTO \'.$GLOBALS[\'cfg\'][\'tab\'][\'stat\'].\' (visited, idcatart, idlang, idstat, idclient) VALUES (1, "\'.$GLOBALS[\'idcatart\'].\'", "\'.$GLOBALS[\'lang\'].\'", "\'.$next.\'", "\'.$GLOBALS[\'client\'].\'")\';
 	}
 	$GLOBALS[\'db\']->query($sql);
