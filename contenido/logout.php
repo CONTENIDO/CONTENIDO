@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    Contenido Backend
  * @version    1.1.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
