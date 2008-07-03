@@ -1,19 +1,38 @@
 <?php
-/*****************************************
- * File      :   include.chain.content.createmetatags.php
- * Project   :   Contenido
- * Descr     :   Contenido chain file
- *
- * Authors   :   Andreas Lindner, Unknown
- *
- * Created   :   24.10.2007
- *
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Generate metatags for current article if they are not set in article properties 
  * 
- * (c) four for business AG, www.4fb.de
- ******************************************/
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0
+ * @author     Andreas Lindner, Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2007-10-24
+ *
+ *   $Id: 
+ * }}
+ * 
+ */
+ 
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 
 cInclude("plugins", "repository/keyword_density.php");
+cInclude('classes', 'class.security.php');
 
 function cecCreateMetatags ($metatags) {
 	
@@ -64,7 +83,7 @@ function cecCreateMetatags ($metatags) {
 				(b.idlang = ".(int)$lang.")
 			ORDER BY a.idtree LIMIT 1";
 	
-		$db->query($sql);
+		$db->query(Contenido_Security::escapeDB($sql, $db));
 		
 		if ($db->next_record()) {
 			$idcat_homepage = $db->f('idcat');
@@ -129,16 +148,16 @@ function cecCreateMetatags ($metatags) {
 		//Get metatags for homeapge
 		$arrHomepageMetaTags = array();
         
-		$sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE (idcat=".(int)$idcat_homepage.") AND(idlang=".(int)$lang.")";
-        $db->query($sql);
+		$sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE (idcat=".Contenido_Security::toInteger($idcat_homepage).") AND(idlang=".Contenido_Security::toInteger($lang).")";
+        $db->query(Contenido_Security::escapeDB($sql, $db));
 		
 		if($db->next_record()){
 			$iIdArtLangHomepage = $db->f('startidartlang');
 			
 			#get idart of homepage
-	        $sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang =".(int)$iIdArtLangHomepage;
+	        $sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang =".Contenido_Security::toInteger($iIdArtLangHomepage);
 	
-	        $db->query($sql);
+	        $db->query(Contenido_Security::escapeDB($sql, $db));
 			
 			if ($db->next_record()) {
 				$iIdArtHomepage = $db->f('idart');
@@ -152,7 +171,7 @@ function cecCreateMetatags ($metatags) {
 				$t1.".idartlang =".$iIdArtLangHomepage.
 				" ORDER BY ".$t2.".metatype";
 
-			$db->query($sql);
+			$db->query(Contenido_Security::escapeDB($sql, $db));
 			
 			while ($db->next_record()) {
 				$arrHomepageMetaTags[$db->f("metatype")] = $db->f("metavalue");
