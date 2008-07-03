@@ -90,9 +90,9 @@ $sTable .= $table->header_cell(i18n("Check all"),"left");
 $sTable .= $table->end_row();
 
 $sTable .= $table->header_row();
-$sTable .= $table->header_cell("&nbsp;","left");
-$sTable .= $table->header_cell("&nbsp;","left");
-$sTable .= $table->header_cell("<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAllAreas()\">","left");
+$sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
+$sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
+$sTable .= $table->header_cell("<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAllAreas()\">", "center", '', '', 0);
 $sTable .= $table->end_row();
 
 $nav = new Contenido_Navigation;
@@ -126,7 +126,7 @@ foreach($right_list as $key => $value){
                        }
 					   
                        $sTable .= $table->row();
-					   $sTable .= $table->cell($locationString,"", "", " class=\"td_rights2\"", false);
+					   $sTable .= $table->cell($locationString,"", "", " class=\"td_rights1\"", false);
 					   $sTable .= $table->cell("<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\" value=\"x\" $checked>" ,"", "", " class=\"td_rights2\"", false);
 					   $sTable .= $table->cell("<input type=\"checkbox\" name=\"checkall_$key\" value=\"\" onClick=\"setRightsForArea('$key')\">","", "", " class=\"td_rights2\"", false);
                        $sTable .= $table->end_row();
