@@ -61,17 +61,11 @@ INSERT INTO !PREFIX!_files VALUES('60', '21', 'include.rights_subnav.php', 'main
 INSERT INTO !PREFIX!_files VALUES('61', '40', 'functions.forms.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('62', '25', 'functions.forms.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('63', '25', 'rights_area.inc.php', 'main');
-INSERT INTO !PREFIX!_files VALUES('64', '25', 'rights.inc.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('65', '34', 'rights_lay.inc.php', 'main');
-INSERT INTO !PREFIX!_files VALUES('66', '34', 'rights.inc.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('67', '35', 'rights_con.inc.php', 'main');
-INSERT INTO !PREFIX!_files VALUES('68', '35', 'rights.inc.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('69', '36', 'rights_mod.inc.php', 'main');
-INSERT INTO !PREFIX!_files VALUES('70', '36', 'rights.inc.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('71', '37', 'rights_tpl.inc.php', 'main');
-INSERT INTO !PREFIX!_files VALUES('72', '37', 'rights.inc.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('73', '38', 'rights_str.inc.php', 'main');
-INSERT INTO !PREFIX!_files VALUES('74', '38', 'rights.inc.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('75', '30', 'functions.con.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('76', '30', 'functions.tpl.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('77', '39', 'include.rights_create.php', 'main');
