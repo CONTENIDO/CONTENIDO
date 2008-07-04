@@ -1,14 +1,37 @@
 <?php
-
-/*
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Session Management for PHP3
+ * 
+ * Requirements: 
+ * @con_php_req 5
  *
- * Copyright (c) 1998-2000 NetUSE AG
- *                    Boris Erdmann, Kristian Koehntopp
+ * @package    Contenido Backend <Area>
+ * @version    <version>
+ * @author     Boris Erdmann, Kristian Koehntopp
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2002-08-16
+ *   modified 2008-07-04, bilal arslan, added security fix
  *
- * $Id: perm.inc,v 1.3 2002/08/16 18:16:02 eppner Exp $
- *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
+
 
 class Contenido_Perm
 {
@@ -29,7 +52,7 @@ class Contenido_Perm
 
 		$sql = "SELECT group_id FROM
 		      	  		".$cfg["tab"]["groupmembers"]."
-		    			WHERE user_id = '".$user."'";
+		    			WHERE user_id = '". Contenido_Security::escapeDB($user, $this->db)."'";
 		$this->db->query($sql);
 
 		$groups = array ();
@@ -58,7 +81,7 @@ class Contenido_Perm
 				    	                    FROM
 				    		   ".$cfg["tab"]["area"]."
 				    		     WHERE
-				    		        name = \"".$area."\"";
+				    		        name = \"". Contenido_Security::escapeDB($area, $this->db_perm )."\"";
 				$this->db_perm->query($sql);
 
 				$this->db_perm->next_record();
@@ -93,7 +116,7 @@ class Contenido_Perm
 				    	                    FROM
 				                  ".$cfg["tab"]["actions"]."
 				     		        WHERE
-				    		       name = \"".$action."\"";
+				    		       name = \"".Contenido_Security::escapeDB($action, $this->db_perm )."\"";
 
 				$this->db_perm->query($sql);
 				$this->db_perm->next_record();
@@ -156,7 +179,7 @@ class Contenido_Perm
 		global $area_rights, $item_rights;
 		$sql = "SELECT *
 		                          FROM ".$cfg["tab"]["rights"]."
-		                          WHERE user_id='".$user."' AND idcat='0' AND idclient='$client' AND idlang='$lang'";
+		                          WHERE user_id='".Contenido_Security::escapeDB($user, $db)."' AND idcat='0' AND idclient='".Contenido_Security::toInteger($client)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
 		$db->query($sql);
 
 		if (!is_array($area_rights))
@@ -188,7 +211,7 @@ class Contenido_Perm
 		$sql = "SELECT
 			     	idarea, idaction, idcat
 		                          FROM ".$cfg["tab"]["rights"]."
-		                          WHERE user_id='".$user."' AND idclient='$client' AND idlang='$lang' AND idarea IN ('$tmp_area_string') AND idcat != '0'";
+		                          WHERE user_id='".Contenido_Security::escapeDB($user, $db)."' AND idclient='".Contenido_Security::toInteger($client)."' AND idlang='".Contenido_Security::toInteger($lang)."' AND idarea IN ('$tmp_area_string') AND idcat != '0'";
 		$db->query($sql);
 
 		while ($db->next_record())
@@ -269,7 +292,7 @@ class Contenido_Perm
 
 				$sql = "SELECT *
 				                          FROM ".$cfg["tab"]["rights"]."
-				                          WHERE user_id IN ('".$tmp_userstring."') AND idclient = '$client' AND idlang = '$lang' AND idarea = '$area'  AND idcat != '0'";
+				                          WHERE user_id IN ('".$tmp_userstring."') AND idclient = '".Contenido_Security::toInteger($client)."' AND idlang = '".Contenido_Security::toInteger($lang)."' AND idarea = '$area'  AND idcat != '0'";
 				$this->db->query($sql);
 
 				//if there are no rights for this area set the flag norights
@@ -314,7 +337,7 @@ class Contenido_Perm
 			                    ".$cfg["tab"]["area"]." AS a,
 			                    ".$cfg["tab"]["area"]." AS b
 			                WHERE
-			                    a.idarea = '".$area."' AND
+			                    a.idarea = '". Contenido_Security::toInteger($area)."' AND
 			                    b.name = a.parent_id";
 		} else
 		{
@@ -324,7 +347,7 @@ class Contenido_Perm
 			                    ".$cfg["tab"]["area"]." AS a,
 			                    ".$cfg["tab"]["area"]." AS b
 			                WHERE
-			                    a.name = '".$area."' AND
+			                    a.name = '". Contenido_Security::escapeDB($area, $this->db)."' AND
 			                    b.name = a.parent_id";
 
 		}
@@ -702,8 +725,8 @@ class Contenido_Perm
 					                        ".$cfg["tab"]["rights"]."
 					                     WHERE
 					                        user_id IN ('".implode("','", $groupsForUser)."') AND
-					                        idclient = '$client' AND
-					                        idlang = '$lang' AND
+					                        idclient = '". Contenido_Security::toInteger($client)."' AND
+					                        idlang = '". Contenido_Security::toInteger($lang)."' AND
 					                        idarea = '$value' AND
 					                        idcat != '0'";
 					$this->db->query($sql);

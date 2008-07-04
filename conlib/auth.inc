@@ -1,15 +1,39 @@
 <?php
-/*
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Session Management for PHP3
+ * Internet Images srl
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_template <Templatefiles>
+ * @con_notice <Notice>
+ * 
  *
- * Copyright (c) 1998-2000 NetUSE AG
- *                    Boris Erdmann, Kristian Koehntopp
- * Copyright (c) 1999-2000 Internet Images srl
- *                    Massimiliano Masserelli
+ * @package    Contenido Backend <Area>
+ * @version    <version>
+ * @author     Boris Erdmann, Kristian Koehntopp, Massimiliano Masserelli
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2002-07-21
+ *   modified 2008-07-03, bilal arslan, added security fix
  *
- * $Id: auth.inc,v 1.1.1.1 2002/07/21 08:35:41 root Exp $
- *
- */ 
+ *   $Id$:
+ * }}
+ * 
+ */
+if(!defined('CON_FRAMEWORK')) {
+                die('Illegal call');
+}
 
 class Auth {
   var $classname = "Auth";

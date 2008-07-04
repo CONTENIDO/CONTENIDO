@@ -1,16 +1,41 @@
 <?php
-##
-## Copyright (c) 1999-2000 Internet Images srl
-##                    Massimiliano Masserelli
-##
-## $Id: ct_split_sql.inc,v 1.1 2007/07/11 15:37:35 wirths Exp $
-##
-## PHPLIB Data Storage Container using a SQL database and multiple
-## rows for each element
-##
-## Every session-name pair will end up in one OR MORE table rows, thus
-## allowing serialization of huge quantities of data.
-##
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * PHPLIB Data Storage Container using a SQL database and multiple
+ * rows for each element
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_notice 
+ * Every session-name pair will end up in one OR MORE table rows, thus
+ * allowing serialization of huge quantities of data.
+ *
+ * @package    Contenido Backend <Area>
+ * @version    1.2
+ * @author     Massimiliano Masserelli
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2000-01-01
+ *   modified 2008-07-03, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+ if(!defined('CON_FRAMEWORK')) {
+                die('Illegal call');
+}
+
 
 class CT_Split_Sql {
     ##
@@ -50,16 +75,20 @@ class CT_Split_Sql {
     }
 
     function ac_gc($gc_time, $name) {
+
+//        Security Fix
         $timeout = time();
-        $sqldate = date("YmdHis", $timeout - ($gc_time * 60));
+        $sqldate = date("YmdHis", $timeout - (Contenido_Security::escapeDB($gc_time, $this->db) * 60));
         $this->db->query(sprintf("DELETE FROM %s ".
                     "WHERE ct_changed < '%s' AND ct_name = '%s'",
                     $this->database_table, 
                     $sqldate,
-                    addslashes($name)));
+                    Contenido_Security::escapeDB($name, $this->db)));
     }
 
     function ac_store($id, $name, $str) {
+
+//        Security Fix
         $ret = true;
         $str = base64_encode($str);
         $name = addslashes($name);
@@ -67,8 +96,8 @@ class CT_Split_Sql {
         $this->db->query("BEGIN TRANSACTION");
         $this->db->query(sprintf("DELETE FROM %s WHERE ct_sid='%s' AND ct_name='%s'",
             $this->database_table,
-            $id,
-            $name
+            Contenido_Security::escapeDB($id, $this->db),
+            Contenido_Security::escapeDB($name, $this->db)
         ));
         $count = 0;
         while ($part = substr($str, 0, $this->split_length)) {
@@ -90,20 +119,24 @@ class CT_Split_Sql {
     }
 
     function ac_delete($id, $name) {
+
+//        Security Fix
         $this->db->query(sprintf("DELETE FROM %s ".
                     "WHERE ct_name = '%s' AND ct_sid = '%s'",
                     $this->database_table,
-                    addslashes($name),
-                    $id));
+                    Contenido_Security::escapeDB($name, $this->db),
+                    Contenido_Security::escapeDB($id, $this->db)));
     }
 
     function ac_get_value($id, $name) {
+
+    //        Security Fix
         $this->db->query(sprintf("SELECT ct_val, ct_pos FROM %s ".
                         "WHERE ct_sid  = '%s' AND ct_name = '%s' ".
                         "ORDER BY ct_pos",
                     $this->database_table,
-                    $id,
-                    addslashes($name)));
+                    Contenido_Security::escapeDB($id, $this->db),
+                    Contenido_Security::escapeDB($name, $this->db)));
         $str="";
         while ($this->db->next_record()) {
           $str .= $this->db->f("ct_val");
@@ -120,6 +153,8 @@ class CT_Split_Sql {
     }
 
     function ac_halt($s) {
+    //        Security Fix
+        $s =  Contenido_Security::escapeDB($s, $this->db);
         $this->db->halt($s);
     }
 }

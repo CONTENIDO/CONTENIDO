@@ -20,7 +20,7 @@
  * 
  * {@internal 
  *   created 
- *
+ *   modified 2008-07-04, bilal arslan, added security fix
  *   $Id: 
  * }}
  * 
@@ -52,7 +52,7 @@ function cecFrontendCategoryAccess ($idlang, $idcat, $user)
 
 	$FrontendPermissionCollection = new FrontendPermissionCollection;
 	
-	$sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = " . Contenido_Security::toInteger($idcat, $db) . " AND idlang = " . Contenido_Security::toInteger($idlang, $db);
+	$sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = " . Contenido_Security::toInteger($idcat) . " AND idlang = " . Contenido_Security::toInteger($idlang);
 	$db->query($sql);
 	
 	if ($db->next_record())

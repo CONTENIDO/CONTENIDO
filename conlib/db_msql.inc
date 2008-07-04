@@ -1,4 +1,41 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Session Management for PHP3
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_template <Templatefiles>
+ * @con_notice <Notice>
+ * 
+ *
+ * @package    Contenido Backend <Area>
+ * @version    <version>
+ * @author     Sascha Schumann <sascha@schumann.cx>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created <date>
+ *   modified 2008-07-03, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+ 
+ if(!defined('CON_FRAMEWORK')) {
+                die('Illegal call');
+}
+
+
 /*
  * Session Management for PHP3
  *
@@ -62,7 +99,7 @@ class DB_Sql {
     $this->connect();
 
 #   printf("Debug: query = %s<br>\n", $Query_String);
-
+	$oDB = new DB_Contenido; 
     $this->Query_ID = msql_query($Query_String,$this->Link_ID);
     $this->Row   = 0;
     $this->Error = msql_error();
@@ -99,7 +136,7 @@ class DB_Sql {
     $res   = array();
 
     $this->connect();
-    $id = @msql_list_fields($this->Database, $table);
+    $id = @msql_list_fields($this->Database,  $table);
     if ($id < 0) {
       $this->Error = msql_error();
       $this->halt("Metadata query failed.");

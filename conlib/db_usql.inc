@@ -1,15 +1,39 @@
 <?php
-/*
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * PHP Base Library
- *
  * general utilities for db_sql
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_template <Templatefiles>
+ * @con_notice <Notice>
+ * 
  *
- * (c) 1999-2000 Carmelo Guarneri
+ * @package    Contenido Backend <Area>
+ * @version    1.1.1.1
+ * @author     Carmelo Guarneri
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2002-07-21
+ *   modified 2008-07-04, bilal arslan, added security fix
  *
- * $Id: db_usql.inc,v 1.1.1.1 2002/07/21 08:35:41 root Exp $
- *
- */ 
-
+ *   $Id$:
+ * }}
+ * 
+ */
+ if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
 
 class DB_USql extends DB_Sql {
 

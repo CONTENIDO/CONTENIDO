@@ -19,7 +19,7 @@
  * 
  * {@internal 
  *   created 
- *
+ *   modified 2008-07-04, bilal arslan, added security fix
  *   $Id: 
  * }}
  * 
@@ -39,10 +39,10 @@ function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
 					FROM ".$cfg["tab"]["rights"]." AS A,
 						 ".$cfg["tab"]["actions"]." AS B,
 						 ".$cfg["tab"]["area"]." AS C
-					 WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = '".$user."' AND A.idcat = '$idcat'
-							AND A.idarea = C.idarea AND B.idaction = A.idaction AND A.idlang = $idlang";
+					 WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = '". Contenido_Security::toInteger($user)."' AND A.idcat = '".Contenido_Security::toInteger($idcat)."'
+							AND A.idarea = C.idarea AND B.idaction = A.idaction AND A.idlang = '".Contenido_Security::toInteger($idlang)."'";
 	$db2 = new DB_Contenido;
-	$db2->query(Contenido_Security::escapeDB($sql, $db2));
+	$db2->query($sql);
 
 	if (!$db2->next_record())
 	{

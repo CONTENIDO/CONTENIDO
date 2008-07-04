@@ -1,14 +1,37 @@
 <?php
-
-/*
- * Session Management for PHP3
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Session Management 
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * 
  *
- * Copyright (c) 1998-2000 NetUSE AG
- *                    Boris Erdmann, Kristian Koehntopp
+ * @package    Contenido Backend <Area>
+ * @version    0.1
+ * @author     Boris Erdmann, Kristian Koehntopp
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2000-01-01
+ *   modified 2008-07-04, bilal arslan, added security fix
  *
- * $Id$
- *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
 
 $mysqli_type = array();
 $mysqli_type[0] = "decimal";

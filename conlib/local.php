@@ -1,13 +1,36 @@
 <?php
-/*
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Session Management for PHP3
+ * 
+ * Requirements: 
+ * @con_php_req 5
  *
- * Copyright (c) 1998-2000 NetUSE AG
- *                    Boris Erdmann, Kristian Koehntopp
+ * @package    Contenido Backend <Area>
+ * @version    1.49
+ * @author     Boris Erdmann, Kristian Koehntopp
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2000-01-01
+ *   modified 2008-07-04, bilal arslan, added security fix
  *
- * $Id: local.php,v 1.49 2007/10/11 09:43:49 holger.librenz Exp $
- *
+ *   $Id$:
+ * }}
+ * 
  */
+
+if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
 
 class DB_Contenido extends DB_Sql {
 
@@ -467,12 +490,14 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
 		
         if (isset($idcat) && isset($idart))
         {
+            
+//            SECURITY FIX
             $sql = "SELECT idcatart
                     FROM
                        ". $cfg["tab"]["cat_art"] ."
                     WHERE
-                        idcat = $idcat AND
-                        idart = $idart";
+                        idcat = '".Contenido_Security::toInteger($idcat)."' AND
+                        idart = '".Contenido_Security::toInteger($idart)."'";
     
             $this->db->query($sql);
     
@@ -482,7 +507,7 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
    
         if (!is_numeric($client)) { return; }
         if (!is_numeric($lang)) { return;  }
-
+		
 		$idaction	= $perm->getIDForAction("login");
 		$lastentry	= $this->db->nextid($cfg["tab"]["actionlog"]);
 		
@@ -491,8 +516,8 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
                 SET
                     idlog = $lastentry,
                     user_id = '" . $uid . "',
-                    idclient = $client,
-                    idlang = $lang,
+                    idclient = '".Contenido_Security::toInteger($client)."',
+                    idlang = '".Contenido_Security::toInteger($lang)."',
                     idaction = $idaction,
                     idcatart = $idcatart,
                     logtimestamp = '$timestamp'";
@@ -537,7 +562,7 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
                               (valid_from <= '".$sDate."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND 
                               (valid_to >= '".$sDate."' OR valid_to = '0000-00-00' OR valid_to is NULL)",
 							 $this->database_table,
-							 addslashes($username)));
+							  Contenido_Security::escapeDB($username,  $this->db)));
 
     $sMaintenanceMode = getSystemProperty('maintenance', 'mode');
     while($this->db->next_record()) {
@@ -698,7 +723,7 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
     /* Authentification via frontend users */
     $this->db->query(sprintf("SELECT idfrontenduser, password FROM %s WHERE username = '%s' AND idclient='$client' AND active='1'", 
     						 $this->fe_database_table,
-    						 urlencode($username)));
+    						 Contenido_Security::escapeDB($username, $this->db) ));
     
 	if ($this->db->next_record())
 	{
@@ -712,7 +737,7 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
 		/* Authentification via backend users */
     	$this->db->query(sprintf("select user_id, perms, password from %s where username = '%s'",
                           		 $this->database_table,
-								 addslashes($username)));
+								  Contenido_Security::escapeDB($username, $this->db) ));
 
         while($this->db->next_record())
         {

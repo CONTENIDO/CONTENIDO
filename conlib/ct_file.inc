@@ -1,11 +1,40 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * PHPLIB Data Storage Container using DBM Files
+ * Code inspired by ct_shm.inc v 1.1 
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_template <Templatefiles>
+ * @con_notice <Notice>
+ * 
+ *
+ * @package    Contenido Backend <Area>
+ * @version    1.1
+ * @author     Oliver Teuber <oliver@teuber.com>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2000-01-01
+ *   modified 2008-07-03, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-##
-## Copyright (c) 1999-2000 Oliver Teuber <oliver@teuber.com>
-##
-## PHPLIB Data Storage Container using Files
-##
-## Code inspired by ct_dbm.inc 
+if(!defined('CON_FRAMEWORK')) {
+                die('Illegal call');
+}
 
 class CT_File {
     ##

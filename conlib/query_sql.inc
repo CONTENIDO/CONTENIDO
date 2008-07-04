@@ -1,17 +1,41 @@
 <?php
-/*
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Query generation for PHP3
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_notice 
+ * Credits: Gerard Hickey <Gerard.Hickey@nsc.com>
+ * I took many ideas from his SQL.inc, thanks! :-)
+ * The idea is of this class is based in November 1997,
+ * it was a collection of functions for PHP/FI and mSQL. 
+ * 
  *
- * (C) Copyright 1998 Alex Aulbach
- *     Credits: Gerard Hickey <Gerard.Hickey@nsc.com>
- *              I took many ideas from his SQL.inc, thanks! :-)
- *     The idea is of this class is based in November 1997,
- *     it was a collection of functions for PHP/FI and mSQL.
+ * @package    Contenido Backend <Area>
+ * @version    1.1.1.1
+ * @author     Alex Aulbach
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  1998-01-01
+ *   modified 2008-07-04, bilal arslan, added security fix
  *
- * $Id: query_sql.inc,v 1.1.1.1 2002/07/21 08:35:41 root Exp $
- *
+ *   $Id$:
+ * }}
+ * 
  */
-
+ if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
 
 /*
 The Query-class is an enhancement to the db_*-classes. Currently It supports

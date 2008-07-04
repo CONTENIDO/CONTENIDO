@@ -20,7 +20,7 @@
  * 
  * {@internal 
  *   created 2007-10-24
- *
+ *   modified 2008-07-04, bilal arslan, added security fix
  *   $Id: 
  * }}
  * 
@@ -80,10 +80,10 @@ function cecCreateMetatags ($metatags) {
 			WHERE
 				(a.idcat = b.idcat) AND
 				(b.visible = 1) AND
-				(b.idlang = ".(int)$lang.")
+				(b.idlang = ".Contenido_Security::toInteger($lang).")
 			ORDER BY a.idtree LIMIT 1";
 	
-		$db->query(Contenido_Security::escapeDB($sql, $db));
+		$db->query($sql);
 		
 		if ($db->next_record()) {
 			$idcat_homepage = $db->f('idcat');
@@ -149,7 +149,7 @@ function cecCreateMetatags ($metatags) {
 		$arrHomepageMetaTags = array();
         
 		$sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE (idcat=".Contenido_Security::toInteger($idcat_homepage).") AND(idlang=".Contenido_Security::toInteger($lang).")";
-        $db->query(Contenido_Security::escapeDB($sql, $db));
+        $db->query($sql);
 		
 		if($db->next_record()){
 			$iIdArtLangHomepage = $db->f('startidartlang');
@@ -157,7 +157,7 @@ function cecCreateMetatags ($metatags) {
 			#get idart of homepage
 	        $sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang =".Contenido_Security::toInteger($iIdArtLangHomepage);
 	
-	        $db->query(Contenido_Security::escapeDB($sql, $db));
+	        $db->query($sql);
 			
 			if ($db->next_record()) {
 				$iIdArtHomepage = $db->f('idart');
@@ -171,7 +171,7 @@ function cecCreateMetatags ($metatags) {
 				$t1.".idartlang =".$iIdArtLangHomepage.
 				" ORDER BY ".$t2.".metatype";
 
-			$db->query(Contenido_Security::escapeDB($sql, $db));
+			$db->query($sql);
 			
 			while ($db->next_record()) {
 				$arrHomepageMetaTags[$db->f("metatype")] = $db->f("metavalue");

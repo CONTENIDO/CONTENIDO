@@ -1,14 +1,41 @@
 <?php
-/*
- * Session Management for PHP3
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_notice 
+ * This is using the MSSQL class
+ * 
  *
- * (C) Copyright 1998 Cameron Taggart (cameront@wolfenet.com)
- *        Modified by Guarneri carmelo (carmelo@melting-soft.com)
- *	  Modified by Cameron Just     (C.Just@its.uq.edu.au)	 
+ * @package    Contenido Backend <Area>
+ * @version    1.1
+ * @author     Cameron Taggart
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  1998-01-01
+ *   modified unknown, Guarneri carmelo
+ *   modified unknown, Cameron Just
+ *   modified 2008-07-03, bilal arslan, added security fix
  *
- * $Id: db_mssql.inc,v 1.1.1.1 2002/07/21 08:35:41 root Exp $
- */ 
-# echo "<BR>This is using the MSSQL class<BR>";
+ *   $Id$:
+ * }}
+ * 
+ */
+
+ if(!defined('CON_FRAMEWORK')) {
+                die('Illegal call');
+}
+
 
 class DB_Sql {
   var $Host     = "";

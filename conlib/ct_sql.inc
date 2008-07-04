@@ -1,15 +1,36 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * PHPLIB Data Storage Container using a SQL database
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ *
+ * @package    Contenido Backend <Area>
+ * @version    1.1
+ * @author     Boris Erdmann, Kristian Koehntopp, Sascha Schumann <sascha@schumann.cx>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2002-07-21
+ *   modified 2008-07-03, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
 
-##
-## Copyright (c) 1998-2000 NetUSE AG
-##                    Boris Erdmann, Kristian Koehntopp
-##
-## Copyright (c) 1998-2000 Sascha Schumann <sascha@schumann.cx>
-##
-## $Id: ct_sql.inc,v 1.1.1.1 2002/07/21 08:35:41 root Exp $
-##
-## PHPLIB Data Storage Container using a SQL database
-##
+ if(!defined('CON_FRAMEWORK')) {
+                die('Illegal call');
+}
 
 class CT_Sql {
   ##
@@ -48,15 +69,19 @@ class CT_Sql {
   }
 
   function ac_gc($gc_time, $name) {
+
+//  Security Fix
     $timeout = time();
-    $sqldate = date("YmdHis", $timeout - ($gc_time * 60));
+    $sqldate = date("YmdHis", $timeout - (Contenido_Security::escapeDB($gc_time, $this->db) * 60));
     $this->db->query(sprintf("DELETE FROM %s WHERE changed < '%s' AND name = '%s'",
                     $this->database_table,
                     $sqldate,
-                    addslashes($name)));
+                    Contenido_Security::escapeDB($name, $this->db)));
     }
 
     function ac_store($id, $name, $str) {
+
+//  Security Fix
     $ret = true;
 
     switch ( $this->encoding_mode ) {
@@ -79,18 +104,18 @@ class CT_Sql {
      $this->database_table,
      $str,
      $now,
-     $id,
-     $name);
+     Contenido_Security::escapeDB($id, $this->db),
+     Contenido_Security::escapeDB($name, $this->db));
     $squery = sprintf("select count(*) from %s where val='%s' and changed='%s' and sid='%s' and name='%s'",
      $this->database_table,
      $str,
      $now,
-     $id,
-     $name);
+     Contenido_Security::escapeDB($id, $this->db),
+     Contenido_Security::escapeDB($name, $this->db));
     $iquery = sprintf("insert into %s ( sid, name, val, changed ) values ('%s', '%s', '%s', '%s')",
      $this->database_table,
-     $id,
-     $name,
+     Contenido_Security::escapeDB($id, $this->db),
+     Contenido_Security::escapeDB($name, $this->db),
      $str,
      $now);
 
@@ -122,17 +147,21 @@ class CT_Sql {
   }
 
   function ac_delete($id, $name) {
+//  Security Fix
     $this->db->query(sprintf("delete from %s where name = '%s' and sid = '%s'",
       $this->database_table,
-      addslashes($name),
-      $id));
+       Contenido_Security::escapeDB($name, $this->db),
+      Contenido_Security::escapeDB($id, $this->db)));
   }
 
   function ac_get_value($id, $name) {
+
+//  Security Fix
     $this->db->query(sprintf("select val from %s where sid  = '%s' and name = '%s'",
       $this->database_table,
-      $id,
-      addslashes($name)));
+      Contenido_Security::escapeDB($id, $this->db),
+      Contenido_Security::escapeDB($name, $this->db)));
+     
     if ($this->db->next_record()) {
       $str  = $this->db->f("val");
       $str2 = base64_decode( $str );
