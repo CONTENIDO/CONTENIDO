@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2004-02-24
  *   modified 2008-06-25, Frederic Schneider, add security fix
+ *   modified 2008-07-04, Dominik Ziegler, fixed bug CON-174
  *
  *   $Id$:
  * }}
@@ -93,6 +94,7 @@ $cfg['AvailableCharsets'] = array(
     'iso-8859-13',
     'iso-8859-14',
     'iso-8859-15',
+	'iso-8859-16',
     'windows-1250',
     'windows-1251',
     'windows-1252',
