@@ -21,7 +21,8 @@
  * 
  * {@internal 
  *   created 2008-06-25
- *   modified 2008-07-02, Frederic Schneider, add boolean functions and checkRequests() 
+ *   modified 2008-07-02, Frederic Schneider, added boolean functions and checkRequests() 
+ *   modified 2008-07-04, Frederic Schneider, added test to valid contenido-session-var
  *
  *   $Id$:
  * }}
@@ -149,11 +150,28 @@ class Contenido_Security {
         }
 
         if(isset($_REQUEST['cfg']) || isset($_REQUEST['cfgClient']) || isset($_REQUEST['contenido_path'])) {
-            die("Invalid call!");
+            die('Invalid call!');
         } else {
             return true;
         }
 
+        $this->checkSession();
+
+    }
+
+    /**
+     * Checks contenido-var (session) to ascii
+     * @access public
+     * @return die() or true
+     */
+    public static function checkSession() {
+    
+        if(isset($_REQUEST['contenido']) && !preg_match('/^[0-9a-f]{32}$/', $_REQUEST['contenido'])) {
+            die('Invalid call');
+        } else {
+            return true;
+        }
+    
     }
 
     /**
