@@ -20,6 +20,7 @@
  * 
  * {@internal 
  *   created 2003-07-18
+ *   modified 2008-07-04, Dominik Ziegler, fixed bug CON-169
  *   
  *   $Id: class.workflowallocation.php,v 1.5 2006/01/13 15:54:41 timo.hummel Exp $
  * }}
@@ -38,7 +39,7 @@ plugin_include('workflow', 'includes/functions.workflow.php');
 global $lngAct, $modidartlang;
 
 $lngAct["workflow"]["workflow_delete"] = i18n("Delete workflow", "workflow");
-
+$lngAct["con_workflow"]["workflow_task_user_select"] = i18n("Select workflow task", "workflow");
 $lngAct["workflow_common"]["workflow_show"] = i18n("Show workflow", "workflow");
 $lngAct["workflow_common"]["workflow_create"] = i18n("Create workflow", "workflow");
 $lngAct["workflow_common"]["workflow_save"] = i18n("Edit workflow", "workflow");

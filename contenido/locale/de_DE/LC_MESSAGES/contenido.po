@@ -6104,3 +6104,66 @@ msgstr "Kein Enddatum definiert"
 
 msgid "No RSS content available"
 msgstr "Keine RSS-Inhalte verfügbar"
+
+msgid "Make articlespecifications online"
+msgstr "Artikelspezifikationen online setzen"
+
+msgid "Edit articlespecifications"
+msgstr "Artikelspezifikationen bearbeiten"
+
+msgid "Delete reminder item"
+msgstr "Wiedervorlage löschen"
+
+msgid "Execute recipients import"
+msgstr "Empf&auml;nger-Import ausführen"
+
+msgid "Delete system property"
+msgstr "Systemeinstellung löschen"
+
+msgid "Edit system property"
+msgstr "Systemeinstellung bearbeiten"
+
+msgid "Save system property"
+msgstr "Systemeinstellung speichern"
+
+msgid "Send mail"
+msgstr "E-Mail senden"
+
+msgid "View dispatch job details"
+msgstr "Newsletter Versand-Job-Details ansehen"
+
+msgid "Save frontendgroup permissions"
+msgstr "Frontendbenutzergruppe-Berechtigungen speichern"
+
+msgid "Delete note"
+msgstr "Notiz löschen"
+
+msgid "Save note"
+msgstr "Notiz speichern"
+
+msgid "Save todo item"
+msgstr "Todo-Eintrag speichern"
+
+msgid "Empty log"
+msgstr "Log leeren"
+
+msgid "Import/Export module"
+msgstr "Modul importieren/exportieren"
+
+msgid "Import/Export package"
+msgstr "Package importieren/exportieren"
+
+msgid "Save user area rights"
+msgstr "User-Bereichsrechte speichern"
+
+msgid "Expand boxes"
+msgstr "Boxen ausklappen/einklappen"
+
+msgid "Fake permissions"
+msgstr "Berechtigungen emulieren"
+
+msgid "Edit own MyContenido settings"
+msgstr "Eigene MyContenido-Einstellungen bearbeiten"
+
+msgid "Show log"
+msgstr "Log anzeigen"

@@ -270,7 +270,7 @@ msgstr "Workflow zeigen"
 
 #: workflow/includes/config.plugin.php:11
 msgid "Process workflow step"
-msgstr "Worflow Schritt durchf&uuml;hren"
+msgstr "Workflow Schritt durchf&uuml;hren"
 
 #: workflow/includes/config.plugin.php:12
 msgid "Assign workflow to category"
@@ -413,3 +413,5 @@ msgstr "Workflow zu Kategorien zuweisen"
 msgid "New Workflow"
 msgstr "Neuer Workflow"
 
+msgid "Select workflow task"
+msgstr "Workflow-Aufgabe auswählen"
