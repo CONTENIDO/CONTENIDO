@@ -27,6 +27,7 @@
  *   modified 2008-05-14, Frederic Schneider, new version
  *   modified 2008-06-21, Frederic Schneider, array initalization
  *   modified 2008-07-02, Frederic Schneider, add security fix
+ *   modified 2008-07-07, Frederic Schneider, fixed wrong language var
  *
  *   $Id$:
  * }}
@@ -308,7 +309,7 @@ if(empty($aErrors) && $cronjob != true) {
 	$tpl->set('s', 'ERRORS_HEADLINE_DESCRIPTION', i18n("Description", $plugin_name));
 	$tpl->set('s', 'ERRORS_HEADLINE_LINK', i18n("Linkerror", $plugin_name));
 	$tpl->set('s', 'ERRORS_HEADLINE_LINKS_ARTICLES', i18n("Links to articles", $plugin_name));
-	$tpl->set('s', 'ERRORS_HEADLINE_LINKS_CATEGORYS', i18n("Links to categorys", $plugin_name));
+	$tpl->set('s', 'ERRORS_HEADLINE_LINKS_CATEGORYS', i18n("Links to categories", $plugin_name));
 	$tpl->set('s', 'ERRORS_HEADLINE_LINKS_DOCIMAGES', i18n("Links to documents and images", $plugin_name));
 	$tpl->set('s', 'ERRORS_HEADLINE_OTHERS', i18n("Links to extern sites and not defined links", $plugin_name));
 	$tpl->set('s', 'ERRORS_HEADLINE_WHITELIST', "Whitelist");

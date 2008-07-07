@@ -61,7 +61,7 @@ msgid "Links to articles"
 msgstr "Links auf Artikel"
 
 # H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:40
-msgid "Links to categorys"
+msgid "Links to categories"
 msgstr "Links auf Kategorien"
 
 # H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:51
