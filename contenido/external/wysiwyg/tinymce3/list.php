@@ -1,14 +1,38 @@
 <?php
-// ================================================
-// TINYMCE 1.45rc1 PHP WYSIWYG interface
-// ================================================
-// Generates file/link list for editor
-// ================================================
-//								  www.dayside.net
-// ================================================
-// Author: Martin Horwath, horwath@dayside.net
-// TINYMCE 1.45rc1 Fileversion , 2005-06-10 v0.0.3
-// ================================================
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * TINYMCE 1.45rc1 PHP WYSIWYG interface
+ * Generates file/link list for editor
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_notice 
+ * TINYMCE 1.45rc1 Fileversion
+ *
+ * @package    Contenido Backend <Area>
+ * @version    0.0.3
+ * @author     Martin Horwath, horwath@dayside.net
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2005-06-10
+ *   modified 2008-07-04, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+ if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
 
 // include editor config/combat file
 @include (dirname(__FILE__).DIRECTORY_SEPARATOR."config.php"); // CONTENIDO
@@ -29,8 +53,8 @@ switch($_REQUEST['mode']) {
 				WHERE
 					a.idcat = b.idcat AND
 					c.idcat = a.idcat AND
-					c.idclient = '".$client."' AND
-					b.idlang = '".$lang."'
+					c.idclient = '".Contenido_Security::toInteger($client)."' AND
+					b.idlang = '".Contenido_Security::toInteger($lang)."'
 				ORDER BY
 					a.idtree";
 
@@ -88,8 +112,8 @@ switch($_REQUEST['mode']) {
 							 a.idcat = '".$db->f("idcat")."' AND
 							 b.idart = a.idart AND
 							 c.idart = a.idart AND
-							 c.idlang = '".$lang."' AND
-							 b.idclient = '".$client."'
+							 c.idlang = '".Contenido_Security::toInteger($lang)."' AND
+							 b.idclient = '".Contenido_Security::toInteger($client)."'
 						 ORDER BY
 							 c.title ASC";
 			}
@@ -131,7 +155,7 @@ switch($_REQUEST['mode']) {
 		break;
 
 	case "image":
-		$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='$client' AND filetype IN ('gif', 'jpg', 'jpeg', 'png') ORDER BY dirname, filename ASC";
+		$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('gif', 'jpg', 'jpeg', 'png') ORDER BY dirname, filename ASC";
 		$db->query($sql);
 
 		echo "var tinyMCEImageList = new Array(";
@@ -152,7 +176,7 @@ switch($_REQUEST['mode']) {
 		break;
 
 	case "flash":
-		$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='$client' AND filetype IN ('swf') ORDER BY dirname,filename ASC";
+		$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('swf') ORDER BY dirname,filename ASC";
 		$db->query($sql);
 
 		echo "var tinyMCEFlashList = new Array(";
@@ -173,7 +197,7 @@ switch($_REQUEST['mode']) {
 		break;
 
 	case "media":
-		$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='$client' AND filetype IN ('swf','dcr','mov','qt','mpg','mpg3','mpg4','mpeg','avi','wmv','wm','asf','asx','wmx','wvx','rm','ra','ram') ORDER BY dirname, filename ASC";
+		$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('swf','dcr','mov','qt','mpg','mpg3','mpg4','mpeg','avi','wmv','wm','asf','asx','wmx','wvx','rm','ra','ram') ORDER BY dirname, filename ASC";
 		$db->query($sql);
 
 		echo "var tinyMCEMediaList = new Array(";

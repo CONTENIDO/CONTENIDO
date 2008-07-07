@@ -267,7 +267,7 @@ $errsite = "Location: front_content.php?client=$client&idcat=".$errsite_idcat[$c
 if ($idart && !$idcat && !$idcatart)
 {
 	/* Try to fetch the first idcat */
-	$sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '$idart'";
+	$sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart = ' Contenido_Security::toInteger($idart)'";
 	$db->query($sql);
 
 	if ($db->next_record())

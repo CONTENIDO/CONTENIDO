@@ -1,8 +1,7 @@
 <?php
 /**
- * $RCSfile: editorclass.php,v $
- * 
- * Project: Contenido Content Management System
+ * Project: 
+ * Contenido Content Management System
  * 
  * Description: 
  * The object cTinyMCEEditor is a wrapper class to the TinyMCE WYSIWYG Editor.
@@ -28,21 +27,39 @@
  * contenido_height_head
  * See backend.customizing.html for details
  * 
- * @version	1.2.0
- * @author Timo Hummel
- * @copyright four for business AG <www.4fb.de>
- * @link http://www.contenido.org 
- * @see ./docs/techref/backend/backend.customizing.html
+ * Requirements: 
+ * @con_php_req 5
+ * @con_template ./docs/techref/backend/backend.customizing.html
+ * @con_notice <Notice>
  * 
- * {@internal
- * modified 13.06.2007 Björn Behrens/Stefan??? Using setting by type to use all tinyMCE settings (even, if they are not covered here)
- * modified 24.10.2006 Willi Man, added new tinyMCE attribute 'article_url_suffix'.
- * It will be used in plugin advlink ./contenido/external/wysiwyg/tinymce2/jscripts/tiny_mce/plugins/advlink/jscripts/functions.js
- * to build the anchorlist. 
+ *
+ * @package    Contenido Backend <Area>
+ * @version    1.2.0
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  unknown
+ *   modified 13.06.2007 Björn Behrens/Stefan??? Using setting by type to use all tinyMCE settings (even, if they are not covered here)
+ * 
+ *   modified 24.10.2006 Willi Man, added new tinyMCE attribute 'article_url_suffix'.
+ *   It will be used in plugin advlink ./contenido/external/wysiwyg/tinymce2/jscripts/tiny_mce/plugins/advlink/jscripts/functions.js
+ *   to build the anchorlist.  
+ *  
+ *   modified 2008-07-04, bilal arslan, added security fix
+ *
+ *   $Id$:
  * }}
  * 
- * $Id: editorclass.php,v 1.19 2007/08/10 21:11:54 bjoern.behrens Exp $
  */
+ if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
 
 cInclude("classes",  "class.wysiwyg_editor.php");
 cInclude("includes", "functions.lang.php");

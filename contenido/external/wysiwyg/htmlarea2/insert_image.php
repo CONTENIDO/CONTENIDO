@@ -1,3 +1,39 @@
+<?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * 
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_template <Templatefiles>
+ * @con_notice <Notice>
+ * 
+ *
+ * @package    Contenido Backend <Area>
+ * @version    0.1
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  unknown
+ *   modified 2008-07-04, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+ if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
+?>
 <!-- based on insimage.dlg -->
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD W3 HTML 3.2//EN">
@@ -178,7 +214,7 @@ $db = new DB_Contenido;
 
 echo "<SELECT ID=\"selecttxtName\" SIZE=1 onchange=\"wechsel()\" style=\"left: 8.54em; top: 1.0647em; width: 30.5em;height: 2.1294em;\">";
 echo "<option value=\"http://\" selected>bitte auswählen</option>";
-$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='$client' AND filetype IN ('jpg','gif','png') ORDER BY dirname,filename";
+$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='". Contenido_Security::toInteger($client)."' AND filetype IN ('jpg','gif','png') ORDER BY dirname,filename";
 $db->query($sql);
 
 while ($db->next_record()) {

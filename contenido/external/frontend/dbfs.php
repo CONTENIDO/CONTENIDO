@@ -1,16 +1,37 @@
 <?php
 /**
- * Database Filesystem
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * <Description>
+ * 
+ * Requirements: 
+ * @con_php_req 5
  *
- * @author <unknown>
- * @version $Revision$
- * @copyright four for business AG <www.4fb.de>
+ * @package    Contenido Backend <Area>
+ * @version    <version>
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *  created  unknown
+ *  modified 2008-06-16, H. Librenz - Hotfix: checking for potential unsecure calling 
+ *  modified 2008-07-04, bilal arslan, added security fix
  *
- * @internal {
- *  modified 2008-06-16, H. Librenz - Hotfix: checking for potential unsecure calling
- *  $Id$
- * }
+ *   $Id$:
+ * }}
+ * 
  */
+ if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
+
 if (isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }

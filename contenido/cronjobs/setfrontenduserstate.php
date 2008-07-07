@@ -1,21 +1,38 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Job to set frontendusers active / inactive depending on the date entered in BE
-*
-* @version $Revision$
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2007-07-24
-* modified 2007-10-12
-*  modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call
-* }}
-*
-* $Id$
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Job to set frontendusers active / inactive depending on the date entered in BE
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_template <Templatefiles>
+ * @con_notice <Notice>
+ * 
+ *
+ * @package    Contenido Backend <Area>
+ * @version    <version>
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2007-07-24
+ *   modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call 
+ *   modified 2008-07-04, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+define("CON_FRAMEWORK", true);
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }

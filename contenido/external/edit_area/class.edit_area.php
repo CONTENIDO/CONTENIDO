@@ -1,47 +1,43 @@
 <?php
 /**
- * $RCSfile$: class.edit_area.php
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * This file defines class edit_area. This class allows to add edit_area to any page.
+ * This class renders a javascript code, which includes edit_area. It is possible to 
+ * configure editarea whith a lot of params. For details see: http://www.cdolivet.net/editarea/
+ * editarea/docs/configuration.html Standard properties where set by this class. It is possible
+ * to set further properties in system or client settings in contenido by using type edit_area
+ * This properties where also imported by this class.
+ * 
+ * Requirements: 
+ * @con_php_req 5
  *
- * Project:
- * Contenido Content Management System Backend
- *
- * Description: This file defines class edit_area. This class allows to add edit_area to any page.
- *              This class renders a javascript code, which includes edit_area. It is possible to 
- *              configure editarea whith a lot of params. For details see: http://www.cdolivet.net/editarea/
- *              editarea/docs/configuration.html Standard properties where set by this class. It is possible
- *              to set further properties in system or client settings in contenido by using type edit_area
- *              This properties where also imported by this class.
- *              
- *
- * @package    Contenido Backend
+ * @package    Contenido Backend <Area>
  * @version    1.0.0
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
- * @since      file available since 2008-05-07
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2008-05-07
+ *   modified 2008-07-04, bilal arslan, added security fix
  *
- * {@internal
- *    created 2008-05-07
+ *   $Id$:
  * }}
- *
- * $Id$
+ * 
  */
+ if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
 
 
-/**
- *
- * Description: Class for handling and displaying edit_area
- *
- * @version 1.0.0
- * @author Timo Trautmann
- * @copyright four for business AG <www.4fb.de>
- *
- * {@internal
- *   created 2008-05-07
- * }}
- *
- */
+
 class EditArea {
     /**
       * Properties which were used to init edit_area

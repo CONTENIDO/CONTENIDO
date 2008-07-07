@@ -1,14 +1,39 @@
 <?php
-
 /**
-* @class     cConCache
-* @brief     Class cConCache. Handles the "PEAR Cache Output" functionality.
-* @file      class.concache.php
-* @version   0.9
-* @date      07.07.2006
-* @author    Murat Purc <murat@purc.de>
-* @copyright © Murat Purc 2006
-*/
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ *  Handles the "PEAR Cache Output" functionality.
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_template <Templatefiles>
+ * @con_notice <Notice>
+ * 
+ *
+ * @package    Contenido Backend <Area>
+ * @version    1.0
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2006-07-07
+ *   modified 2008-07-04, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+ if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
+
 class cConCache{
 
     /**

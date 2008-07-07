@@ -1,23 +1,35 @@
 <?php
 /**
- * File      :   $RCSfile$
- * Project   :   Contenido
- * Descr     :   Cron Job to move old statistics into the stat_archive table
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Cron Job to move old statistics into the stat_archive table
+ * 
+ * Requirements: 
+ * @con_php_req 5
  *
- * Author    :   Björn Behrens
+ * @package    Contenido Backend <Area>
+ * @version    0.3
+ * @author     Björn Behrens
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  2003-05-26
+ *   modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call 
+ *   modified 2008-07-04, bilal arslan, added security fix
  *
- * Created   :   26.05.2003
- * Modified  :   $Date: 2007/10/12 13:53:00 $
- *
- * @version $Revision$
- * @copyright four for business AG, www.4fb.de
- *
- * @internal  {
- *  modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call
- *
- *  $Id$
- * }
- **/
+ *   $Id$:
+ * }}
+ * 
+ */
+define("CON_FRAMEWORK", true);
+
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }

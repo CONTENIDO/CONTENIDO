@@ -1,14 +1,37 @@
 <?php
 /**
- * $Id: tiny_mce_gzip.php 315 2007-10-25 14:03:43Z spocke $
- *
- * @author Moxiecode
- * @copyright Copyright © 2005-2006, Moxiecode Systems AB, All rights reserved.
- *
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * This file compresses the TinyMCE JavaScript using GZip and
  * enables the browser to do two requests instead of one for each .js file.
  * Notice: This script defaults the button_tile_map option to true for extra performance.
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ *
+ * @package    Contenido Backend <Area>
+ * @version    <version>
+ * @author     Moxiecode
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  ^2005-06-06
+ *   modified 2008-07-04, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
+ if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
 
 	// Set the error reporting to minimal.
 	@error_reporting(E_ERROR | E_WARNING | E_PARSE);

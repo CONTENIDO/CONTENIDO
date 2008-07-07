@@ -1,3 +1,38 @@
+<?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ *
+ * @package    Contenido Backend <Area>
+ * @version    <version>
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  unknown
+ *   modified 2008-07-04, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+ if(!defined('CON_FRAMEWORK')) {                                                                       
+   die('Illegal call');
+}
+
+
+?>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD W3 HTML 3.2//EN">
 <html id=dlgImage style="width: 40.1em; height: 18em">
     <head>
@@ -91,8 +126,8 @@ $sql = "SELECT a.idcat AS idcat, b.name AS name
 		 ".$cfg["tab"]["cat"]." AS a,
 		 ".$cfg["tab"]["cat_lang"]." AS b,
 		 ".$cfg["tab"]["cat_tree"]." AS c
-		WHERE a.idclient = '".$client."'
-		  AND b.idlang = '".$lang."'
+		WHERE a.idclient = '". Contenido_Security::toInteger($client)."'
+		  AND b.idlang = '". Contenido_Security::toInteger($lang)."'
 		  AND b.idcat = a.idcat
           AND c.idcat = a.idcat ORDER BY c.idtree";
 
@@ -126,7 +161,7 @@ while ($db->next_record())
 			WHERE
 			b.idcat = '".$db->f("idcat")."' AND
 			a.idart = b.idart AND
-			a.idlang = '".$lang."'";
+			a.idlang = '". Contenido_Security::toInteger($lang)."'";
 
    $db2->query($sql2);
    #if ($db2->next_record())
@@ -223,7 +258,7 @@ echo "</SELECT>";
 echo "<SELECT ID=\"selectpdf\" SIZE=1 style=\"left: 8.54em; top: 4.0647em; width: 21.5em;height: 2.1294em;\" onchange=\"wechsel(this)\" onClick=\"wechsel(this)\">";
 echo "<option value=\"\" selected>".i18n("Please choose")."</option>";
 
-$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient = '".$client."' AND filetype = 'pdf' ORDER BY dirname, filename";
+$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient = '". Contenido_Security::toInteger($client)."' AND filetype = 'pdf' ORDER BY dirname, filename";
 $db->query($sql);
 
 while ($db->next_record())
@@ -261,7 +296,7 @@ echo "</SELECT>";
 echo "<SELECT ID=\"selectimg\" SIZE=1 style=\"left: 8.54em; top: 16.2168em; width: 21.5em;height: 2.1294em;\">";
 echo '<option value="0" selected="selected">'.i18n("Please choose").':</option>';
 
-$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='$client' AND filetype IN ('jpg','gif','png') ORDER BY dirname,filename";
+$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='". Contenido_Security::toInteger($client)."' AND filetype IN ('jpg','gif','png') ORDER BY dirname,filename";
 $db->query($sql);
 
 while ($db->next_record())
