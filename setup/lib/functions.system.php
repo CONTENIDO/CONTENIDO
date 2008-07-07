@@ -1,4 +1,37 @@
 <?php
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * 
+ *
+ * @package    Contenido Backend <Area>
+ * @version    0.2
+ * @author     unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  unknown
+ *   modified 2008-07-07, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+ if(!defined('CON_FRAMEWORK')) {
+                die('Illegal call');
+}
+
+
 
 //Fuction checks if a plugin is already installed
 function checkExistingPlugin($db, $sPluginname) {
@@ -6,6 +39,9 @@ function checkExistingPlugin($db, $sPluginname) {
     if ($_SESSION["setuptype"] == "setup") {
         return true;
     }
+    
+    
+    
     
     $sPluginname = (string)$sPluginname;
     $sTable = $_SESSION["dbprefix"]."_nav_sub";
@@ -53,17 +89,17 @@ function updateSystemProperties($db, $table) {
  
     foreach ($aStandardvalues as $aData) {
     	$sql = "SELECT value FROM %s WHERE type='".$aData['type']."' AND name='".$aData['name']."'";
-    	$db->query(sprintf($sql, $table));
+    	$db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db)));
     	if ($db->next_record()) {
 			$sValue = $db->f('value');
 			if ($sValue == '') {
 				$sql = "UPDATE %s SET value = '%s' WHERE type='%s' AND name='%s'";
-            	$db->query(sprintf($sql, $table, $aData['value'], $aData['type'], $aData['name']));
+            	$db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db), $aData['value'], $aData['type'], $aData['name']));
 			}
     	} else {
     		$id = $db->nextid($table);
     		$sql = "INSERT INTO %s SET idsystemprop = '%s', type='%s', name='%s', value='%s'";
-            $db->query(sprintf($sql, $table, $id, $aData['type'], $aData['name'], $aData['value']));
+            $db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db), $id, $aData['type'], $aData['name'], $aData['value']));
     	}
     }
 }
@@ -71,23 +107,23 @@ function updateSystemProperties($db, $table) {
 function updateContenidoVersion ($db, $table, $version)
 {
 	$sql = "SELECT idsystemprop FROM %s WHERE type='system' AND name='version'";
-	$db->query(sprintf($sql, $table));
+	$db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db)));
 	
 	if ($db->next_record())
 	{
 		$sql = "UPDATE %s SET value = '%s' WHERE type='system' AND name='version'";
-		$db->query(sprintf($sql, $table, addslashes($version)));
+		$db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db), Contenido_Security::escapeDB($version, $db)));
 	} else {
 		$id = $db->nextid($table);
 		$sql = "INSERT INTO %s SET idsystemprop = '%s', type='system', name='version', value='%s'";
-		$db->query(sprintf($sql, $table, $id, addslashes($version)));
+		$db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db), $id, Contenido_Security::escapeDB($version, $db)));
 	}
 }
 
 function getContenidoVersion ($db, $table)
 {
 	$sql = "SELECT value FROM %s WHERE type='system' AND name='version'";
-	$db->query(sprintf($sql, $table));
+	$db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db)));
 	
 	if ($db->next_record())
 	{
@@ -100,12 +136,12 @@ function getContenidoVersion ($db, $table)
 function updateSysadminPassword ($db, $table, $password)
 {
 	$sql = "SELECT password FROM %s WHERE username='sysadmin'";
-	$db->query(sprintf($sql, $table));
+	$db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db)));
 
 	if ($db->next_record())
 	{
 		$sql = "UPDATE %s SET password='%s' WHERE username='sysadmin'";
-		$db->query(sprintf($sql, $table, md5($password)));
+		$db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db), md5($password)));
 		return true;	
 	} else {
 		
@@ -117,7 +153,7 @@ function listClients ($db, $table)
 {
 	$sql = "SELECT idclient, name, frontendpath, htmlpath FROM %s";
 	
-	$db->query(sprintf($sql, $table));
+	$db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db)));
 	
 	$clients = array();
 	
@@ -133,7 +169,7 @@ function updateClientPath ($db, $table, $idclient, $frontendpath, $htmlpath)
 {
 	$sql = "UPDATE %s SET frontendpath='%s', htmlpath='%s' WHERE idclient='%s'";
 	
-	$db->query(sprintf($sql, $table, addslashes($frontendpath), addslashes($htmlpath), $idclient));	
+	$db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db), Contenido_Security::escapeDB($frontendpath, $db), Contenido_Security::escapeDB($htmlpath, $db), Contenido_Security::escapeDB($idclient, $db)));	
 }
 
 function stripLastSlash ($sInput)

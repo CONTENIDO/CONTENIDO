@@ -8,9 +8,6 @@
  * 
  * Requirements: 
  * @con_php_req 5
- * @con_template <Templatefiles>
- * @con_notice <Notice>
- * 
  *
  * @package    Contenido Backend <Area>
  * @version    <version>

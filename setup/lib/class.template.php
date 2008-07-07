@@ -1,29 +1,39 @@
 <?php
-
-/*****************************************
-*
-* $Id$
-*
-* File      :   $RCSfile$
-* Project   :   Contenido
-* Descr     :   Contenido Template Engine
-*
-* Author    :   $Author$
-* Modified  :   $Date$
-*
-* © four for business AG, www.4fb.de
-******************************************/
-
 /**
- * class Template
- *
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Contenido Template Engine
+ * 
+ * Requirements: 
+ * @con_php_req 5
+ * @con_notice 
  * Light template mechanism
  *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business <http://www.4fb.de>
- * @author Stefan Jelner (Optimizations)
- * @version 1.0
+ * @package    Contenido Backend <Area>
+ * @version    1.2
+ * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since contenido release <Contenido Version>
+ * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * {@internal 
+ *   created  unknown
+ *   modified unknown, Stefan Jelner (Optimizations)
+ *   modified 2008-07-07, bilal arslan, added security fix
+ *
+ *   $Id$:
+ * }}
+ * 
  */
+ if(!defined('CON_FRAMEWORK')) {
+   die('Illegal call');
+}
+
 class Template
 {
 	/**
