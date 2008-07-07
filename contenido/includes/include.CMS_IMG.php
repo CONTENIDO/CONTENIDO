@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-12-10
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2008-07-07, Dominik Ziegler, fixed language bug
  *
  *   $Id$:
  * }}
@@ -278,12 +279,12 @@ if ($doedit == "1") {
 	$form->add(i18n("Directory / File"), $dirselect->render().$script.$fileselect->render());
 	
 	$textarea = new cHTMLTextarea("CMS_IMGDESCR", $a_content["CMS_IMGDESCR"][$typenr], $descrwidth, $descrheight);
-	$form->add("Description", $textarea->render()); 
+	$form->add(i18n("Description"), $textarea->render()); 
 	
     $preview = '<iframe src="about:blank" name="preview" style="border: 0px; width:'.$previewwidth.'px; height:'.$previewheight.'px;">';
     $preview .= '</iframe>';
 
-	$form->add("Preview", $preview);
+	$form->add(i18n("Preview"), $preview);
 	
 	$form->render(false);
 ?>
