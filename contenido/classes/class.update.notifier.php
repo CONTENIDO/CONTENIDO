@@ -628,6 +628,7 @@ class Contenido_UpdateNotifier {
 			$oTpl->set('s', 'IMG_BUT_RSS', 'but_ok.gif');
 			$oTpl->set('s', 'LABEL_BUT_RSS', i18n('Enable notification'));
 			$oTpl->set('s', 'URL_RSS', $this->oSession->url('main.php?frame=4&amp;area=mycontenido&amp;do=activate_rss'));
+			$oTpl->set('s', 'NEWS_NOCONTENT', i18n('RSS notification is disabled').'<br /><br />');
 		}
 		
 		return $oTpl->generate('templates/standard/'.$this->aCfg['templates']['welcome_update'], 1);

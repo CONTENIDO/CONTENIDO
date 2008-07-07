@@ -6167,3 +6167,6 @@ msgstr "Eigene MyContenido-Einstellungen bearbeiten"
 
 msgid "Show log"
 msgstr "Log anzeigen"
+
+msgid "RSS notification is disabled"
+msgstr "RSS-Nachrichten sind deaktiviert"
