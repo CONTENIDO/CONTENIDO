@@ -23,6 +23,7 @@
  *   created unknown
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-06-27, Timo Trautmann, add check to emptyLogFile if there is a permission to write file
+ *   modified 2008-07-07, Dominik Ziegler, fixed language bugs
  *
  *   $Id$:
  * }}
@@ -305,23 +306,23 @@ function writeSystemValuesOutput($usage)
 	// paths from config.php
 	$sysvalues[$i]['variable'] = i18n('Contenido path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['contenido'];
-	$sysvalues[$i]['variable'] = 'Contenido HTML path';
+	$sysvalues[$i]['variable'] = i18n('Contenido HTML path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['contenido_html'];
-	$sysvalues[$i]['variable'] = 'Contenido full HTML path';
+	$sysvalues[$i]['variable'] = i18n('Contenido full HTML path');
 	$sysvalues[$i ++]['value'] = $contenidoFullHtml;
-	$sysvalues[$i]['variable'] = 'Contenido frontend path';
+	$sysvalues[$i]['variable'] = i18n('Contenido frontend path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['frontend'];
-	$sysvalues[$i]['variable'] = 'Contenido PHPLIB path';
+	$sysvalues[$i]['variable'] = i18n('Contenido PHPLIB path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['phplib'];
-	$sysvalues[$i]['variable'] = 'Contenido wysiwyg path';
+	$sysvalues[$i]['variable'] = i18n('Contenido wysiwyg path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['wysiwyg'];
-	$sysvalues[$i]['variable'] = 'Contenido wysiwyg HTML path';
+	$sysvalues[$i]['variable'] = i18n('Contenido wysiwyg HTML path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['wysiwyg_html'];
 	// host name
 	$sysvalues[$i]['variable'] = i18n('Host name');
 	$sysvalues[$i ++]['value'] = $_SERVER['HTTP_HOST'];
 	// Contenido browser path 
-	$sysvalues[$i]['variable'] = 'Browser path';
+	$sysvalues[$i]['variable'] = i18n('Browser path');
 	/* cut of file information */
 	$sysvalues[$i ++]['value'] = $browserPath;
 	// get number of clients
@@ -430,7 +431,7 @@ function writeSystemValuesOutput($usage)
 	$sysvalues[$i ++]['value'] = $_SERVER['SERVER_SOFTWARE'];
 	// SQL version
 	$sql_server_info = $db->server_info();
-	$sysvalues[$i]['variable'] = 'PHP database extension';
+	$sysvalues[$i]['variable'] = i18n('PHP database extension');
 	$sysvalues[$i ++]['value'] = $cfg["database_extension"];
 	$sysvalues[$i]['variable'] = i18n('Database server version');
 	$sysvalues[$i ++]['value'] = $sql_server_info['description'];
@@ -466,7 +467,7 @@ function writeSystemValuesOutput($usage)
 	$sysvalues[$i ++]['value'] = $disable_functions;
 	// gettext loaded
 	 (extension_loaded('gettext') == true) ? $gettext = "<span style=\"color:green;\">".i18n('loaded')."</span>" : $gettext = "<span stlye=\"color:red;\">".i18n('not loaded')."</span>";
-	$sysvalues[$i]['variable'] = 'Gettext extension';
+	$sysvalues[$i]['variable'] = i18n('Gettext extension');
 	$sysvalues[$i ++]['value'] = $gettext;
 	// sql.safe_mode
 	 (ini_get('sql.safe_mode') == 1) ? $sql_safe_mode = "<span style=\"color:red;\">".i18n('activated')."</span>" : $sql_safe_mode = "<span style=\"color:green;\">".i18n('deactivated')."</span>";
@@ -488,7 +489,7 @@ function writeSystemValuesOutput($usage)
 		        </tr>";
 	}
 	$gdLibFeatures .= '</table>';
-	$sysvalues[$i]['variable'] = 'GD library';
+	$sysvalues[$i]['variable'] = i18n('GD library');
 	$sysvalues[$i ++]['value'] = $gdLibFeatures;
 
 	// include path settings

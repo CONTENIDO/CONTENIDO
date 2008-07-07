@@ -6170,3 +6170,33 @@ msgstr "Log anzeigen"
 
 msgid "RSS notification is disabled"
 msgstr "RSS-Nachrichten sind deaktiviert"
+
+msgid "Contenido HTML path"
+msgstr "Contenido HTML-Pfad"
+
+msgid "Contenido full HTML path"
+msgstr "Contenido Voller HTML-Pfad"
+
+msgid "Contenido frontend path"
+msgstr "Contenido Frontend-Pfad"
+
+msgid "Contenido PHPLIB path"
+msgstr "Contenido PHPLIB-Pfad"
+
+msgid "Contenido wysiwyg path"
+msgstr "Contenido WYSIWYG-Pfad"
+
+msgid "Contenido wysiwyg HTML path"
+msgstr "Contenido WYSIWYG-HTML-Pfad"
+
+msgid "Browser path"
+msgstr "Browser-Pfad"
+
+msgid "PHP database extension"
+msgstr "PHP Datenbankerweiterung"
+
+msgid "Gettext extension"
+msgstr "Gettext Erweiterung"
+
+msgid "GD library"
+msgstr "GD-Bibliothek"
