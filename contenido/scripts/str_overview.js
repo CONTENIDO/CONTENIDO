@@ -133,6 +133,8 @@ function showNewForm() {
     var oEditLayer = document.getElementById('cat_edit');
     var pos = getElementPostion( document.getElementById('cat_navbar') );
     var select = document.getElementById('new_idcat');
+	document.getElementById('new_tree_button').style.color = '#0060B1';
+	
     
     oEditLayer.style.left = pos[0]+10;
     oEditLayer.style.top = parseInt(pos[1])+parseInt(pos[2])-1;
@@ -208,6 +210,7 @@ function hideNewForm() {
 
     var oEditLayer = document.getElementById('cat_edit');
     oEditLayer.style.display = 'none';
+	document.getElementById('new_tree_button').style.color = '#000000';
 }
 
 /**

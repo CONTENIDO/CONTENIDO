@@ -873,7 +873,7 @@ if ( $perm->have_perm_area_action($area) ) {
         $perm->have_perm_area_action($tmp_area,"str_newcat") || 
         $bAreaAddNewCategory)
         && (int) $client > 0 && (int) $lang > 0) {
-        $tpl->set('s', 'NEWCAT', $string . "<a class=\"black\" href=\"javascript:showNewForm();\"><img src=\"images/folder_new.gif\">&nbsp;".i18n('Create new category')."</a>");
+        $tpl->set('s', 'NEWCAT', $string . "<a class=\"black\" id=\"new_tree_button\" href=\"javascript:showNewForm();\"><img src=\"images/folder_new.gif\">&nbsp;".i18n('Create new category')."</a>");
         if ($perm->have_perm_area_action($tmp_area,"str_newtree")) {
             if ($perm->have_perm_area_action($tmp_area,"str_newcat") || $bAreaAddNewCategory) {
                 $tpl->set('s', 'PERMISSION_NEWTREE', '');
