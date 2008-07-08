@@ -4,18 +4,56 @@ $RCSfile: CHANGELOG.txt,v $
 CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
-$Id: CHANGELOG.txt,v 1.112 2008/05/21 12:14:59 timo.trautmann Exp $
+$Id: CHANGELOG.txt,v 1.116 2008/07/08 11:08:12 timo.trautmann Exp $
 
-Release 4.8.7
-----------------------------------------------------------------------
-* Removed SPAW editor
-* Removed Java Applets
-* Some XSS/RFI Bugfixes
-* Added new Debug object Debug_VisibleAdv.class.php
+Release 4.8.7b1
+----------------------------------------------------------------------	
+** Bug
+    * [CON-139] - Link für Handbuch im cfg-array
+    * [CON-144] - plugin createmetatags entfernt akzentuierte Zeichen aus den keywords
+    * [CON-154] - Creating inactive user by using a date in history doesn't work
+    * [CON-156] - Some cronjobs do not use function "isRunningFromWeb()"
+    * [CON-159] - Encoding isn't recognized in backend user and group administration
+    * [CON-160] - New Categories can be created if there ist no active language
+    * [CON-162] - Multiple Meta Tag definition and overwriting of user defined meta tags by system defined metatags
+    * [CON-163] - Php mail() function generates warning if default sender is not set in php.ini
+    * [CON-164] - content->category: Selection of Template on creating new category is not possible when there is no default template
+    * [CON-165] - Modulepackages: Imported Translations are not stored
+    * [CON-166] - Templateduplication: Template preconfiguration was not duplicated
+    * [CON-169] - Missing descriptions for some log actions
+    * [CON-170] - Missing username in backenduser delete-confirm-box
+    * [CON-172] - Setup hangs between step 7 and 8
+    * [CON-173] - Im Firefox 3: Artikelübersicht/Kategorie lässt sich nicht schützen
+    * [CON-174] - Fehlender Eintrag in der config.misc.php
+
+** Improvement
+    * [CON-XXX] - Added new Debug object Debug_VisibleAdv.class.php
+    * [CON-60] - Umlaute im Backend defekt -> Problem gelöst->bitte integrieren!
+    * [CON-70] - feature request: meta tags vordefinition
+    * [CON-99] - Backend Hauptmenü Javascriptsteuerung
+    * [CON-115] - Move con_cache activation to config file
+    * [CON-119] - Caching
+    * [CON-142] - Linkchecker hängt nach Migration eines großen Portals
+    * [CON-143] - php-Funktion mail() vermeiden, class.phpmailer.php verwenden
+	* [CON-176] - Contenido Security Class
+	* [CON-XXX] - Some XSS/RFI Bugfixes
+
+** Task
+    * [CON-6] - Lock/ Unlock (neues Icon finden und umbenennen)
+    * [CON-140] - class.ui.php Funktion setCellExtra
+    * [CON-146] - neue Adresse von 4fb im Impressum ändern
+    * [CON-148] - "docs\techref\backend\backend.customizing.html" auf den aktuellen Stand bringen
+	* [CON-XXX] - Removed Java Applets
+	* [CON-XXX] - Removed SPAW editor
+
+** New Feature
+	* [CON-175] - Contenido Update Notify and RSS-Feed
+
 
 Release 4.8.6
 ----------------------------------------------------------------------
-* Additional hot- and bugfixes added
+* Security
+	* [CON-XXX] - Additional hot- and bugfixes added
 
 Release 4.8.5
 ----------------------------------------------------------------------
