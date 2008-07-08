@@ -22,6 +22,7 @@
  * {@internal 
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
+ *   modified 2008-07-08  Thorsten Granz, added option to disable menu hover effect. clicking is now possible again
  *
  *   $Id$:
  * }}
@@ -84,7 +85,8 @@ function updateSystemProperties($db, $table) {
                                array('type' => 'edit_area', 'name' => 'activated', 'value' => 'true'),
 							   array('type' => 'update', 'name' => 'check', 'value' => 'false'),
                                array('type' => 'update', 'name' => 'news_feed', 'value' => 'false'),
-							   array('type' => 'update', 'name' => 'check_period', 'value' => '60')
+							   array('type' => 'update', 'name' => 'check_period', 'value' => '60'),
+							   array('type' => 'system', 'name' => 'clickmenu', 'value' => 'false')
                               );
  
     foreach ($aStandardvalues as $aData) {
