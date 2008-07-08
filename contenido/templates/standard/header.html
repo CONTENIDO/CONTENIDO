@@ -65,19 +65,33 @@
         	}
         }
         
+        function addHooksClickmenu(){
+          var menuLinksLevel1 = document.getElementById('head_nav1').getElementsByTagName('a');
+          var menuLinksLevel2 = document.getElementById('submenus').getElementsByTagName('a');
+          
+		  // Hooks for menu level 1
+          for(var i = 0; i < menuLinksLevel1.length; i++){
+            addEvent(menuLinksLevel1[i], "click", activateMenu);
+          	}
+		  // Hooks for menu level 2
+          for(var i = 0; i < menuLinksLevel2.length; i++){
+            addEvent(menuLinksLevel2[i], "click", markActive);
+          	}
+       	}
+        	 
         //adding events to menu an submenu items in navigation (events for a tags)
         function addHooks() 
         {
           var menuLinksLevel1 = document.getElementById('head_nav1').getElementsByTagName('a');
           var menuLinksLevel2 = document.getElementById('submenus').getElementsByTagName('a');
           
-					// Hooks for menu level 1
+		  // Hooks for menu level 1
           for(var i = 0; i < menuLinksLevel1.length; i++) 
           {
             addEvent(menuLinksLevel1[i], "mouseover", activateMenuWithDelay);
             addEvent(menuLinksLevel1[i], "mouseout", deactivateMenu);
           }
-					// Hooks for menu level 2
+		  // Hooks for menu level 2
           for(var i = 0; i < menuLinksLevel2.length; i++)
           {
             addEvent(menuLinksLevel2[i], "click", markActive);
@@ -148,6 +162,28 @@
           }
         }
         
+        function activateMenu(){
+          var oThis = this;
+               
+          // IE & Opera
+          if (window.event)
+          { 
+            srcElm = window.event.srcElement;
+            oThis = srcElm;
+            var sIdValue = oThis.id;
+            var sExpression = /^main_(\d+)$/;
+            sExpression.exec(sIdValue);
+            ident = 'sub_'+ RegExp.$1;            
+          } 
+          // W3C DOM (FF, Mozilla, Safari)
+          else 
+          { 
+            ident = this.attributes["ident"].value;
+          }
+
+          show(ident, oThis); 
+        }
+        	
         function activateMenuWithDelay()
         {
         //console.log("activate menu with delay");
@@ -180,7 +216,6 @@
           }
 
           Timer.over = setTimeout(function() { show(ident, oThis); }, 300); 
-           
         }
         
         function deactivateMenu()
@@ -198,13 +233,12 @@
 
     </script>
 </head>
-<body onLoad="addHooks();" style="color:black;border-bottom: 1px solid #666666; background-color: #F1F1F1;" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<body onLoad="{HOOKS}" style="color:black;border-bottom: 1px solid #666666; background-color: #F1F1F1;" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
 <div style="border-top: 1px solid #0060b1;"></div>
 
 <div id="head">
   <a id="head_logo" target="content" href="{MAINLOGINLINK}" onclick="navi_reset()"><img title="Contenido Website." alt="Contenido Website." src="images/conlogo.gif"></a>
-  
   <div id="mhighlight">
       <table cellspacing="0" cellpadding="0" border="0">
           <tr>

@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2008-07-08  Thorsten Granz, added option to disable menu hover effect. clicking is now possible again
  *
  *   $Id$:
  * }}
@@ -381,7 +382,14 @@ class Contenido_Navigation {
 
 
         $select = $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'],true);
-
+        
+        if(getEffectiveSetting('system', 'clickmenu') == 'true'){
+        	$main->set('s', 'HOOKS', 'addHooksClickmenu();');	
+       	 	}
+		else{
+			$main->set('s', 'HOOKS', 'addHooks();');
+			}
+        
         $main->set('s','ACTION', $sess->url("index.php"));
         $main->set('s', 'LANG', $select);
         $main->set('s', 'SIZE', $imgsize);
