@@ -132,7 +132,7 @@ class Form {
      * @return void
      */
     function Define($which, $value) {
-		$which = Contenido_Security::escapeDB($name, null);
+		$which = Contenido_Security::escapeDB($which, null);
 		$value = Contenido_Security::escapeDB($value, null);
         if (0 == $this->counter) {
             $this->$which = $value;
