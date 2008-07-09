@@ -303,7 +303,7 @@ function langDuplicateFromFirstLanguage($client, $idlang) {
                         $valuestring = $valuestring.",$idlang";
                         
                         //********* duplicates entry in DB ****************
-                        $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, ".Contenido_Security::escapeDB($keystring, $db2).") VALUES ('".Contenido_Security::toInteger($nextid)."', ".Contenido_Security::escapeDB($valuestring, $dn2).")";
+                        $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, ".Contenido_Security::escapeDB($keystring, $db2).") VALUES ('".Contenido_Security::toInteger($nextid)."', ".Contenido_Security::escapeDB($valuestring, $db2).")";
                         $db2->query($sql);
 
                         //********* make changes to new entry*************
