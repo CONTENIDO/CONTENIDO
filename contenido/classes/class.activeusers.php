@@ -104,7 +104,6 @@ class ActiveUsers {
 	function insertOnlineUser($sUserId) {
         
 		$userid = (string) $sUserId;
-		$sql= "";
 		$sql= "INSERT INTO `" . $this->oCfg["tab"]["online_user"] . "`(`user_id`,`lastaccessed`) VALUES('".Contenido_Security::escapeDB($userid, $this->oDb)."', NOW())";
 
 		if ($this->oDb->query($sql)) {
@@ -125,7 +124,6 @@ class ActiveUsers {
 
 		$userid = (string) $sUserId;
 		$bReturn = false;
-		$sql= "";
 		$sql= "SELECT user_id FROM `" . $this->oCfg["tab"]["online_user"] . "` WHERE `user_id`='".Contenido_Security::escapeDB($userid, $this->oDb)."'";
 		$this->oDb->query($sql);
 		if ($this->oDb->next_record()) {
@@ -145,7 +143,6 @@ class ActiveUsers {
 
 		$aAllUser= array ();
 		$aUser= array ();
-		$sql= "";
 		$sWebsiteName= "";
 		// get all user_ids
 		$sql= "SELECT `user_id` FROM `" . $this->oCfg["tab"]["online_user"]."`";
@@ -191,11 +188,11 @@ class ActiveUsers {
 								$iClientId= $aResults[1];
 								$bIsAdmin= true;
 								$sWebsiteName = $this->getWebsiteName($iClientId);
-								if ($iCounter == 0 && $sWebsiteName != "")
+								if ($iCounter == 0 && $sWebsiteName != "") {
 									$sWebsiteNames .= $sWebsiteName;
-								else
-									if ($sWebsiteName != "")
-										$sWebsiteNames .= ', ' . $sWebsiteName;
+								} else if ($sWebsiteName != "") {
+									$sWebsiteNames .= ', ' . $sWebsiteName;
+								}
 
 								$aAllUser[$sUserId]['perms']= "Administrator (" . $sWebsiteNames . ")";
 								$iCounter++;
@@ -203,11 +200,11 @@ class ActiveUsers {
 							} else if (preg_match('/^client\[(\d+)\]$/', $sPerm, $aResults) && !$bIsAdmin) {
 									$iClientId= $aResults[1];
 									$sWebsiteName = $this->getWebsiteName($iClientId);
-									if ($iCounter == 0 && $sWebsiteName != "")
+									if ($iCounter == 0 && $sWebsiteName != "") {
 										$sWebsiteNames .= $sWebsiteName;
-									else
-										if ($sWebsiteName != "")
-											$sWebsiteNames .= ', ' . $sWebsiteName;
+									} else if ($sWebsiteName != "") {
+										$sWebsiteNames .= ', ' . $sWebsiteName;
+									}
 
 									$aAllUser[$sUserId]['perms']= '(' . $sWebsiteNames . ')';
 									$iCounter++;
@@ -235,7 +232,6 @@ class ActiveUsers {
 	function updateUser($sUserId) {
 
 		$userid= (string) $sUserId;
-		$sql= "";
 		$sql= "UPDATE `" . $this->oCfg["tab"]["online_user"] . "` SET `lastaccessed`=NOW() WHERE `user_id`='".Contenido_Security::escapeDB($userid, $this->oDb)."'";
 		if ($this->oDb->query($sql)) {
 			return true;
@@ -254,7 +250,6 @@ class ActiveUsers {
 	function deleteInactiveUser() {
 
 		cInclude("includes", "config.misc.php");
-		$iSetTimeOut= 0;
 		$iSetTimeOut= $this->oCfg["backend"]["timeout"];
 		if ($iSetTimeOut == 0)
 			$iSetTimeOut= 10;
@@ -276,7 +271,6 @@ class ActiveUsers {
 	 **/
 	function getNumberOfUsers() {
 
-		$sql= "";
 		$iAnzahl= 0;
 		$sql= "SELECT user_id  FROM `" . $this->oCfg["tab"]["online_user"];
 		if ($this->oDb->query($sql)) {
