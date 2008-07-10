@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Contenido 4.6\n"
+"Project-Id-Version: Contenido 4.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-07 12:12+0100\n"
 "PO-Revision-Date: 2008-07-02 14:50+0100\n"
@@ -3447,7 +3447,7 @@ msgstr "Kein Zugriff"
 # e:\timo\contenido_head/contenido/includes/include.lay_overview.php:73
 #: contenido/includes/include.lay_overview.php:80
 msgid "Layout is in use, cannot delete"
-msgstr "Layout wird benutzt, l&ouml;&schen nicht m&ouml;glich"
+msgstr "Layout wird benutzt, l&ouml;schen nicht m&ouml;glich"
 
 # e:\timo\contenido_head/contenido/includes/include.lay_overview.php:74
 #: contenido/includes/include.lay_overview.php:81
