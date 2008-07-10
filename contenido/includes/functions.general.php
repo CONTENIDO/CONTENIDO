@@ -2347,7 +2347,7 @@ function cInitializeArrayKey (&$aArray, $sKey, $mDefault = "")
 function sendEncodingHeader ($db, $cfg, $lang) {
     if (array_key_exists("use_encoding", $_GET))
     {
-        $use_encoding = trim(stip_tags($_GET["use_encoding"]));  
+        $use_encoding = trim(strip_tags($_GET["use_encoding"]));  
     }
     
     if (array_key_exists("use_encoding", $_POST))
