@@ -91,7 +91,7 @@ cInclude("includes", "functions.database.php");
   </style>
 </head>
 <body>
-<table
+<table>
   <tbody>
     <tr>
       <td>
