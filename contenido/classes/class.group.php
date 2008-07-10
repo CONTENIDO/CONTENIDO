@@ -126,6 +126,8 @@ class Groups {
 
 		$allClients = $clientclass->getAvailableClients();
 
+		$db = new DB_Contenido;
+
 	    foreach ($allClients as $key => $value)
     	{
         	if (in_array("client[".$key."]", $perms) || in_array("admin[".$key."]", $perms))
@@ -138,7 +140,7 @@ class Groups {
         		$limit[] = 'perms LIKE "%admin['.Contenido_Security::escapeDB($key, $db).']%"';
         	}
     	} 
-        $db = new DB_Contenido;
+
 
 		if (count($limit) > 0)
 		{
