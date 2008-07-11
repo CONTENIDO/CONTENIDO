@@ -619,15 +619,17 @@ class Newsletter extends Item
 			$oArticles->query();
 		
 			if ($oArticles->count() > 0) {
-				return true;
+				$bReturn = true;
 			} else {
-				return false;
+				$bReturn = false;
 			}
 		
 			unset ($oArticles);
 		} else {
-			return false;
+			$bReturn = false;
 		}
+		
+		return $bReturn;
 	}
 	
 	/**
