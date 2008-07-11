@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-06-04
  *   modified 2008-06-25, Frederic Schneider, add security fix
+ *   modified 2008-07-11, Dominik Ziegler, removed deprecated functions
  *
  *   $Id$:
  * }}
@@ -52,134 +53,6 @@ function dbGetIndexes ($db, $table)
 	return ($indexes);
 }
 
-function dbDumpArea ($db, $id)
-{
-	if (!is_object($db))
-	{
-		return false;	
-	}
-	
-	$sql = 'SELECT name FROM con_area WHERE idarea = "'.Contenido_Security::toInteger($id).'"';
-	$db->query($sql);
-	if (!$db->next_record()) { return false; }
-	$name = $db->f("name");
-	
-	// First step: Dump
-	$sql = "SELECT * FROM con_area WHERE idarea = '".Contenido_Security::toInteger($id)."' OR parent_id = '".Contenido_Security::escapeDB($name, $db)."'";
-	$db->query($sql);
-	
-	//if (!$db->next_record()) { return; }
-	
-	//echo '$area['.$id.'] = array (';
-	
-	dbDumpAreasAsArray('$area',$db);
-	
-	return true;
-	 
-}
-
-//function dbDump
-
-function dbDumpAreasAsArray ($arrayname, $db)
-{
-  		$values = array();
-  		
-  		$metadata = $db->metadata();
-		
-		if (!is_array($metadata))
-		{
-			return false;
-		}
-		
-		echo '$startidarea = $db->nextid( $cfg["tab"]["area"] );'."\n\n";
-		
-		$nextid = 0;
-		while ($db->next_record())
-		{
-			$nextid += 1;
-    		foreach ($metadata as $entry)
-    		{
-    			
-    			$key = $entry['name'];
-    			$value = $db->f($entry['name']);
-    			
-    			if ($key == "idarea")
-    			{
-    				$value = '$startidarea+'.$nextid;
-    			}
-    			echo $arrayname.'[$startidarea+'.$nextid."]"."['"
-    			     .$key.
-                     "'] = '".
-                     $value."';\n";
-                     
-                $sql = 'SELECT * FROM '.$cfg["tab"]["nav_sub"].' WHERE idarea = "'.Contenido_Security::toInteger($db->f("idarea")).'"';
-                $db2 = new DB_Upgrade;
-                $db2->query($sql);
-                dbDumpNavSub('$navsub', $db2, $nextid);
-    		}
-    		echo 'dbInsertData( $cfg["tab"]["area"], '.$arrayname.'[$startidarea+'.$nextid."]);\n";
-    		echo "\n";
-		}		
-}
-
-function dbDumpNavSub ($arrayname, $db, $nextidarea)
-{
-	$values = array();
-  		
-  		$metadata = $db->metadata();
-		
-		if (!is_array($metadata))
-		{
-			return false;
-		}
-		
-		echo ' $startidnavs = $db->nextid( $cfg["tab"]["nav_sub"] );'."\n\n";
-		
-		$nextid = 0;
-		while ($db->next_record())
-		{
-			$nextid += 1;
-    		foreach ($metadata as $entry)
-    		{
-    			
-    			$key = $entry['name'];
-    			$value = $db->f($entry['name']);
-    			
-    			if ($key == "idarea")
-    			{
-    				$value = '$startidarea+'.$nextidarea;
-    			}
-    			echo " ". $arrayname.'[$startidnavs+'.$nextid."]"."['"
-    			     .$key.
-                     "'] = '".
-                     $value."';\n";
-                     
-                $sql = 'SELECT * FROM '.$cfg["tab"]["nav_sub"].' WHERE idarea = "'.Contenido_Security::toInteger($db->f("idarea")).'"';
-                $db2 = new DB_Upgrade;
-                //dbDumpNavSub('$navsub', $db2);
-    		}
-    		echo 'dbInsertData( $cfg["tab"]["area"], '.$arrayname.'[$startidarea+'.$nextid."]);\n";
-    		echo "\n";
-		}		
-	
-	
-}
- 
-	
-function dbInsertData ( $table, $data )
-{
-	$db = new DB_Upgrade;
-	
-	$sql = "INSERT INTO ".Contenido_Security::escapeDB($table, $db)." SET ";
-	
-	foreach ($data as $key => $value)
-	{
-		$sql .= Contenido_Security::escapeDB($key, $db) . ", '" . Contenido_Security::escapeDB($value, $db) . "' ";
-	}
-
-
-}
-			
 function dbUpgradeTable ($db, $table, $field, $type, $null, $key, $default, $extra, $upgradeStatement, $bRemoveIndexes = false) {
 	global $columnCache;
 	global $tableCache;
@@ -348,7 +221,7 @@ if ($bDebug) {echo 'createField:'.$createField.'<br />';}
 		if ($structure[$field]['Key'] == "PRI") {
 			$alterField = "  ALTER TABLE ".Contenido_Security::escapeDB($table, $db)." ADD PRIMARY KEY ('".Contenido_Security::escapeDB($field, $db)."') ";
 		} else {
-			$alterField = "  ALTER TABLE $table CHANGE COLUMN $field $field $type ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'];	
+			$alterField = "  ALTER TABLE ".Contenido_Security::escapeDB($table, $db)." CHANGE COLUMN $field $field $type ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'];	
 		}
       
 		$db->query($alterField);
@@ -420,6 +293,7 @@ function dbGetColumns ($db, $table)
 
 function dbGetPrimaryKeyName ($db, $table)
 {
+    $sReturn = "";
 	$structure = dbGetColumns($db, $table);
 	
 	if (is_array($structure))
@@ -428,165 +302,17 @@ function dbGetPrimaryKeyName ($db, $table)
 		{
 			if ($value['Key'] == "PRI")
 			{
-				return ($mykey);
-			}
-		}
-	}
-
-}
-
-function dbDumpStructure ($db, $table, $return = false)
-{
-	global $cfg;
-
-	$prefix = $cfg['sql']['sqlprefix'];
-	
-	if ($return === false)
-	{
-		echo "<pre>";
-	}
-	$structure = dbGetColumns($db, $table);
-	
-	$returnArray = array();
-	
-	foreach ($structure as $key => $value)
-	{
-		if (substr($table, 0, strlen($prefix)+1) == $prefix."_")
-		{
-    		$tab = str_replace("con_","",$table);
-
-			if ($value['Key'] == "PRI")
-			{
-				if ($return == false)
-				{
-		    		echo "dbUpgradeTable(\$prefix.\"_$tab\", '$key', '"
-		    		      .addslashes($value['Type']).
-		                  "', '"
-		                  .$value['Null'].
-		                  "', '"
-		                  .$value['Key'].
-		                  "', '"
-		                  .$value['Default'].
-		                  "', '"
-		                  .$value['Extra'].
-		                  "','', true);";
-				} else {
-					 $returnArray[] = array($tab, $key, $value['Type'], $value['Null'], $value['Key'], $value['Default'], $value['Extra'], true);
-				}
-			} else {
-				if ($return == false)
-				{
-		    		echo "dbUpgradeTable(\$prefix.\"_$tab\", '$key', '"
-		    		      .addslashes($value['Type']).
-		                  "', '"
-		                  .$value['Null'].
-		                  "', '"
-		                  .$value['Key'].
-		                  "', '"
-		                  .$value['Default'].
-		                  "', '"
-		                  .$value['Extra'].
-		                  "','');";
-				} else {
-					$returnArray[] = array($tab, $key, $value['Type'], $value['Null'], $value['Key'], $value['Default'], $value['Extra'], false);
-				}				
-			}
-
-			if ($return != true)
-			{			
-	    		echo "\n";
-			}
-	    	
-		} else {
-			$tab = $cfg["tab"][$table];
-			
-			if ($return == false)
-			{
-	    		echo "dbUpgradeTable(\"$table\", '$key', '"
-	    		      .addslashes($value['Type']).
-	                  "', '"
-	                  .$value['Null'].
-	                  "', '"
-	                  .$value['Key'].
-	                  "', '"
-	                  .$value['Default'].
-	                  "', '"
-	                  .$value['Extra'].
-	                  "','');";
-	    		echo "\n";
-			} else {
-				$returnArray[] = array($tab, $key, $value['Type'], $value['Null'], $value['Key'], $value['Default'], $value['Extra'], false);
+				$sReturn = $mykey;
 			}
 		}
 	}
 	
-	if ($return == false)
-	{
-		echo "</pre>";
-	} else {
-		return $returnArray;
-	}
-}
-
-function dbDumpData ($table)
-{
-	global $cfg;
-	$db = new DB_Upgrade;
-	
-	echo "<pre>";
-	$structure = dbGetColumns($cfg["tab"][$table]);
-	
-	$sql = "SELECT * FROM " . $cfg["tab"][$table];
-	//echo $sql;
-	
-	echo '$db = new DB_Upgrade; $db->query("DELETE FROM ".$cfg["tab"]["'.Contenido_Security::escapeDB($table, $db).'"]);'."\n";
-	$db->query($sql);
-	
-	while ($db->next_record())
-	{
-		$count++;
-		
-		echo '$'.$table.$count.' = array(';
-
-		foreach ($structure as $key => $value)
-		{
-			$entry[$key] = "'$key' => '".addslashes($db->f($key))."'";
-			
-		}
-		
-		
-		echo implode(', ',$entry);
-		echo ');'."\n";
-		echo $targetLink ."\n";
-		echo "dbUpgradeData('$table', \$".$table.$count.");";
-		echo "\n\n";	
-	}
-}
-
-function dbUpgradeData ($table, $valuesArray)
-{
-	global $cfg;
-	$db = new DB_Upgrade;
-	
-	$sql = "INSERT INTO ".$cfg["tab"][$table]." SET ";
-	foreach ($valuesArray as $key => $value)
-		{
-			$addValues[] = Contenido_Security::escapeDB($key, $db)." = '".Contenido_Security::escapeDB($value, $db)."'";
-		}
-		
-		$param = implode(', ', $addValues);
-		
-		$sql .= $param;
-	
-		//echo $sql;	
-		$db->query($sql);
-	
+	return $sReturn;
 }
 
 function dbUpdateSequence($sequencetable, $table, $db = false)
 {
-	global $cfg;
-	
+
 	if ($db === false)
 	{
 		$bClose = true;
@@ -622,5 +348,73 @@ function dbUpdateSequence($sequencetable, $table, $db = false)
 	}
 }
 
+/**
+ * @deprecated
+ * @since 2008-07-11
+ */
+function dbDumpStructure ($db, $table, $return = false)
+{
+    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
+    return;
+}
 
+/**
+ * @deprecated
+ * @since 2008-07-11
+ */
+function dbDumpArea ($db, $id)
+{
+    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
+    return;
+}
+
+/**
+ * @deprecated
+ * @since 2008-07-11
+ */
+function dbDumpAreasAsArray ($arrayname, $db)
+{
+    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
+    return;
+}
+
+/**
+ * @deprecated
+ * @since 2008-07-11
+ */
+function dbDumpNavSub ($arrayname, $db, $nextidarea)
+{
+    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
+    return;
+}
+
+/**
+ * @deprecated
+ * @since 2008-07-11
+ */
+function dbInsertData ( $table, $data )
+{
+    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
+    return;
+}
+
+/**
+ * @deprecated
+ * @since 2008-07-11
+ */
+function dbDumpData ($table)
+{
+    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
+    return; 
+}
+
+/**
+ * @deprecated
+ * @since 2008-07-11
+ */
+function dbUpgradeData ($table, $valuesArray)
+{
+    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
+    return; 
+}
 ?>
