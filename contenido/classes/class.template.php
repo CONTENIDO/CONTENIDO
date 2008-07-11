@@ -273,6 +273,7 @@ class Template
 	function replacei18n(& $template, $functionName) { 
 
 		// Be sure that php code stays unchanged 
+		$php_matches = array();
 		if (preg_match_all('/<\?(php)?((.)|(\s))*?\?>/i', $template, $php_matches)) { 
 			$x = 0; 
 			foreach ($php_matches[0] as $php_match) { 
@@ -283,6 +284,7 @@ class Template
 		}
 
 		// If template contains functionName + parameter store all matches 
+		$matches = array();
 		preg_match_all("/".preg_quote($functionName, "/")."\\(([\\\"\\'])(.*?)\\1\\)/s", $template, $matches); 
 
 		$matches = array_values(array_unique($matches[2])); 

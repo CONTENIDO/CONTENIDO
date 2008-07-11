@@ -143,8 +143,6 @@ class Table {
             $starttable = '<table style="border: 1px; border-color: ' . $this->border_color . '; border-style: ' . $this->border_style . '" cellspacing="'. $this->cellspacing . '" cellpadding="'. $this->cellpadding . '">';
         }
 
-        $dark_color = 0;
-
         if ($this->directoutput)
         {
             echo $starttable."\n";

@@ -648,6 +648,8 @@ class Contenido_UpdateNotifier {
 		if ($this->sRSSContent != '') {
 			$sFeedContent = substr($this->sRSSContent, 0, 1024);	
 			$sFeedContent = trim($sFeedContent);		
+			
+			$aMatches = array();
 
 			$sRegExp = "/<\?xml.*encoding=[\"\'](.*)[\"\']\?>/i";
 			

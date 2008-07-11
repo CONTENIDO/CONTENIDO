@@ -183,7 +183,7 @@ class ActiveUsers {
 						$bIsAdmin= false;
 						$iCounter= 0;
 						foreach ($aPerms as $sPerm) {
-
+                            $aResults = array();
 							if (preg_match('/^admin\[(\d+)\]$/', $sPerm, $aResults)) {
 								$iClientId= $aResults[1];
 								$bIsAdmin= true;
