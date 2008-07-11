@@ -967,7 +967,7 @@ class Search
 							".$search_regexp." ";
 	  	}elseif ($this->search_option == 'like') // like search      	
 	  	{
-	  		$search_like = implode(" OR keyword LIKE ", Contenido_Security::escapeDB($tmp_searchwords, $db)); 
+	  		$search_like = implode(" OR keyword LIKE ", Contenido_Security::escapeDB($tmp_searchwords, $this->db)); 
 	
 			$sql = "SELECT 
 		  	      		keyword, auto
@@ -978,7 +978,7 @@ class Search
 		          		keyword LIKE ".$search_like." ";
 	  	}elseif ($this->search_option == 'exact') // exact match
 	  	{
-	  		$search_exact = implode(" OR keyword = ", Contenido_Security::escapeDB($tmp_searchwords, $db)); 
+	  		$search_exact = implode(" OR keyword = ", Contenido_Security::escapeDB($tmp_searchwords, $this->db)); 
 	
 			$sql = "SELECT 
 		  	      		keyword, auto
