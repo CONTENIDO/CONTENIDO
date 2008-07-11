@@ -191,8 +191,6 @@ class Contenido_Perm
 			$area_rights[$db->f("idarea")][$db->f("idaction")] = true;
 		}
 
-		$return = 4;
-
 		// Select Rights for Article and Sructure    Atention    Hard code Areas
 		$sql = "SELECT
 			                 idarea
@@ -205,8 +203,7 @@ class Contenido_Perm
 		{
 			array_push($tmp_area, $db->f("idarea"));
 		}
-		// $tmp_area=array('con','con_editside','con_sidelist','con_edittpl','str');
-
+		
 		$tmp_area_string = implode("','", array_keys($tmp_area));
 		$sql = "SELECT
 			     	idarea, idaction, idcat
@@ -219,18 +216,6 @@ class Contenido_Perm
 			$item_rights[$db->f(0)][$db->f(1)][$db->f(2)] = $db->f(2);
 
 		}
-		//check if there area any rights in each area
-		foreach ($tmp_area as $value)
-		{
-
-			//is there no right
-			/* if(!$item_rights[$value]){
-			     //set this flag
-			     $item_rights[$value]="noright";
-			 }*/
-
-		}
-
 	}
 
 	function have_perm_area_action_anyitem($area, $action = 0)
@@ -671,7 +656,6 @@ class Contenido_Perm
 		return true;
 	}
 
-	//checks if an item have any perms
 	//checks if an item have any perms
 	function have_perm_item($mainarea, $itemid)
 	{
