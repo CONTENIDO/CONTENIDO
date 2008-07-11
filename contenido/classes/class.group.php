@@ -151,9 +151,6 @@ class Groups {
 		{
 			$limitSQL = "1";
 		}
-		
-		 
-        $db = new DB_Contenido;
 
         $sql = "SELECT
                     group_id,
