@@ -529,7 +529,7 @@ function langDeleteLanguage($idlang, $idclient = "") {
 	
         if ($deleteok == 1) {
                 //********* check if this is the clients last language to be deleted, if yes delete from art, cat, and cat_art as well *******
-                $last_language = 0;
+                $lastlanguage = 0;
                 $sql = "SELECT COUNT(*) FROM ".$cfg["tab"]["clients_lang"]." WHERE idclient='".Contenido_Security::toInteger($idclient)."'";
                 $db->query($sql);
                 $db->next_record();
