@@ -95,7 +95,6 @@ function capi_cat_getlevelnode($idcat, $minLevel = 0)
     $db->query($sql);
     $db->next_record();
 
-    $name       = $db->f("name");
     $parentid   = $db->f("parentid");
 	$thislevel = $db->f("level");
 	
