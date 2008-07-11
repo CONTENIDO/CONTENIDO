@@ -265,8 +265,8 @@ function langDuplicateFromFirstLanguage($client, $idlang) {
                             ".$cfg["tab"]["cat"]." AS B
                         WHERE
                             A.idcat=B.idcat AND
-                            B.idclient='".Contenido_Security::escapeDB($client)."' AND
-                            idlang='".Contenido_Security::escapeDB($firstlang)."'";
+                            B.idclient='".Contenido_Security::toInteger($client)."' AND
+                            idlang='".Contenido_Security::toInteger($firstlang)."'";
                             
                 $db->query($sql);
                 
