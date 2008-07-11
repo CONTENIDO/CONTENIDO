@@ -97,7 +97,7 @@ class cCharacterConverter
 	{
 		global $cfg;
 		
-		$cNormalizedChar 	= Contenido_Security::escapeDB($cNormalizedChar, $this->_oDB);
+		$cCharacter        	= Contenido_Security::escapeDB($cCharacter, $this->_oDB);
 		$sEncoding 			= Contenido_Security::escapeDB($sEncoding, $this->_oDB);
 		$sEncoding			= $this->correctEncoding($sEncoding);
 		
