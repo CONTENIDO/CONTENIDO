@@ -265,12 +265,6 @@ function writeSystemValuesOutput($usage)
 
 	$status = checkPathInformation($contenidoFullHtml, $browserPath);
 
-	//echo str_replace('-', '.', substr(gethostbyaddr("81.2.134.240"), 0, strpos(gethostbyaddr("81.2.134.240"), ".")));
-	//echo gethostbyaddr("81.2.134.240");
-	//echo "<br><br>";
-
-	//echo $status."<br><br>";
-
 	if ($status == 1)
 	{ // green
 		$contenidoFullHtml = "<span style=\"color:green;\">".$contenidoFullHtml."</span><br>";
@@ -289,14 +283,6 @@ function writeSystemValuesOutput($usage)
 		$browserPath = "<span style=\"color:orange;\">".$browserPath."</span>";
 
 	}
-
-	/*    
-	    if (strcmp($contenidoFullHtml, $browserPath) != 0)
-	    {
-	    	$contenidoFullHtml = "<span style=\"color:red;\">".$contenidoFullHtml."</span>";
-	    	$browserPath = "<span style=\"color:red;\">".$browserPath."</span>";	
-	    }
-	*/
 
 	/* generate sysvalue output */
 	$i = 0; // array start value

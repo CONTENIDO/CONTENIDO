@@ -106,14 +106,13 @@ function createNavigationArray($start_id, $db)
 
 /**
  * Return target of a given category id  
+ * 
+ * @deprecated
  */
-# deprecated
 function getTarget($cat_id, $db) {
-	
-
 	global $cfg, $client, $lang;
 
-//		SECURITY-FIX
+// SECURITY-FIX
     $sql = "SELECT
             	a.external_redirect AS ext
             FROM
@@ -158,8 +157,6 @@ function isParent($parentid, $catid, $db) {
 
 	$db->query($sql);
 	$db->next_record();
-	
-//echo "<pre>"; echo $sql; echo "</pre>";
 
 	$pre = $db->f("parentid");
 	
@@ -266,8 +263,6 @@ function getLocationString($iStartCat, $level, $seperator, $sLinkStyleClass, $sT
 	
 	$aCatPath = getCategoryPath($iStartCat, $level, $reverse, $db);
 	
-	#print_r($aCatPath);
-	
 	if(is_array($aCatPath) AND count($aCatPath) > 0)
 	{
 		$aLocation = array();
@@ -292,7 +287,6 @@ function getLocationString($iStartCat, $level, $seperator, $sLinkStyleClass, $sT
 					$linkUrl = $sess->url($cfgClient[$client]["path"]["htmlpath"] . "front_content.php?idcat=$value");
 				}
 			}
-			#$linkUrl = $sess->url("index-a-$idcat.html");
 			$name = getCategoryName($value, $db);
 			$aLocation[] = '<a href="'.$linkUrl.'" class="'.$sLinkStyleClass.'"><nobr>'.$name.'</nobr></a>';
 		
@@ -332,8 +326,6 @@ function getSubTree($idcat_start, $db)
                 idclient = '". Contenido_Security::escapeDB($client, $db)."'
             ORDER BY
                 idtree";
-                
-    #echo "<pre>$sql</pre>";
 
     $db->query($sql);
 
@@ -341,14 +333,6 @@ function getSubTree($idcat_start, $db)
 	$curLevel	= 0;
     while ($db->next_record())
     {
-        /*if ($db->f("parentid") < $idcat_start) {	// ending part of tree
-            $i = 0;  //echo "parent<<br>";
-        }
-        
-        if ($db->f("idcat") == $idcat_start) {		// starting part of tree
-            $i = 1; //echo "idcat ==<br>";
-        }*/
-		
 		if ($db->f("idcat") == $idcat_start)
 		{
 			$curLevel = $db->f("level");
@@ -389,14 +373,6 @@ function getTeaserDeeperCategories($iIdcat, $db)
     $subCats	= false;
 	$curLevel	= 0;
 	while ($db->next_record()) {
-        /*if ($db->f("parentid") < $iIdcat) {		// ending part of tree
-            $i = 0;  //echo "parent<<br>";
-        }
-        
-        if ($db->f("idcat") == $iIdcat) {			// starting part of tree
-            $i = 1; //echo "idcat ==<br>";
-        }*/
-		
 		if ($db->f("idcat") == $iIdcat)
 		{
 			$curLevel = $db->f("level");
@@ -406,7 +382,7 @@ function getTeaserDeeperCategories($iIdcat, $db)
 			$subCats = false;
 		}
         
-        if ($subCats == true) { //echo "true"; echo $db->f("idcat"); echo "<br>";
+        if ($subCats == true) {
             $deeper_cats[] = $db->f("idcat");
         }
     }
@@ -444,21 +420,11 @@ function getProtectedSubTree($idcat_start, $db)
             ORDER BY
                 idtree";
                 
-    //echo "<pre>$sql</pre>";
-
     $db->query($sql);
 
     $subCats	= false;
 	$curLevel	= 0;
     while ( $db->next_record() ) {
-       /* if ($db->f("parentid") < $idcat_start) {        // ending part of tree
-            $i = 0;  //echo "parent<<br>";
-        }
-        
-        if ($db->f("idcat") == $idcat_start) {        // starting part of tree
-            $i = 1; //echo "idcat ==<br>";
-        }*/
-		
 		if ($db->f("idcat") == $idcat_start)
 		{
 			$curLevel = $db->f("level");
@@ -497,8 +463,6 @@ function getCategoryName($cat_id, &$db) {
                 A.idclient  = '".Contenido_Security::escapeDB($client, $db)."' AND
                 B.idlang    = '".Contenido_Security::escapeDB($lang, $db)."'   
 			";
-
-	//echo "<pre>$sql</pre>";
 
     $db->query($sql);
        
@@ -541,8 +505,6 @@ function getSubCategories($parent_id, $db) {
 
     $db->query($sql);
 
-	//echo "<pre>$sql</pre>";
-
     while ( $db->next_record() ) {
 
         $subcategories[] = $db->f("idcat");
@@ -579,8 +541,6 @@ function getProtectedSubCategories($parent_id, $db) {
                 A.idtree";
 
     $db->query($sql);
-
-//echo "<pre>$sql</pre>";
 
     while ( $db->next_record() ) {
 

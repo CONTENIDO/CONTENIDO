@@ -146,7 +146,6 @@ function upldelete($path, $files) {
         $ArrayCount = count($files);
         for ($i=0; $i<$ArrayCount; $i++) {
                 if (is_dir($path.urldecode($files[$i]))) {
-//                        uplrecursivermdir($path.urldecode($files[$i]));
                         uplRecursiveRmDirIfEmpty($path.urldecode($files[$i]));
 
                         $sql = "DELETE FROM ".$cfg["tab"]["upl"]." WHERE dirname='".Contenido_Security::escapeDB($files[$i], $db)."/'";
