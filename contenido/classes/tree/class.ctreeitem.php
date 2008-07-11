@@ -118,7 +118,6 @@ class cTreeItem
 	function importTable( $flat_array )
 	{
 		$lastobj[0] = $this->_id;
-		$objcache[0] = &$this;
 		$currentlevel = 1;
 		
 		if (!is_array($flat_array))
