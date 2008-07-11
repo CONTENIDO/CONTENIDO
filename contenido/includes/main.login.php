@@ -107,6 +107,7 @@ if (count($clients) > 1) {
 	$clientselect= $select->render();
 
 	$tpl->set('s', 'CLIENTFORM', $clientform);
+	$tpl->set('s', 'CLIENTFORMCLOSE', "</form>");
 	$tpl->set('s', 'PULL_DOWN_MANDANTEN', $clientselect);
 
 	if ($perm->have_perm() && count($warnings) > 0) {
@@ -118,6 +119,7 @@ if (count($clients) > 1) {
 } else {
 	$tpl->set('s', 'OKBUTTON', '');
 	$tpl->set('s', 'CLIENTFORM', '');
+	$tpl->set('s', 'CLIENTFORMCLOSE', '');
 
 	foreach ($clients as $key => $v_client) {
         if ($perm->hasClientPermission($key)) {
