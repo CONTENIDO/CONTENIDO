@@ -24,6 +24,7 @@
  * {@internal 
  *   created 2004-01-15
  *   modified 2008-06-30, Frederic Schneider, add security fix
+ *   modified 2008-07-11, Dominik Ziegler, marked class search_helper as deprecated
  *
  *   $Id$: 
  * }}
@@ -301,8 +302,6 @@ class Index
 				  		
 						if ($this->bDebug) {print "<pre>"; print_r($tmp_keys); "</pre>";}
 						
-				  		$tmp_type = array();
-	
 				  		foreach($tmp_keys as $value)
 				  		{
 							$value = strtolower($value); // index terms are stored with lower case
@@ -1612,7 +1611,7 @@ class SearchResult
     				{
                         //build consistent escaped string, replace ae ue .. with original html entities (Timo Trautmann) 2008-04-17
                         $word = htmlentities(html_entity_decode($this->index->addSpecialUmlauts($word)));
-
+                        $match = array();
     					preg_match("/$word/i", $cms_content, $match);
     					if (isset($match[0]))
     					{
@@ -1756,6 +1755,11 @@ class SearchResult
 
 } // end class
 
+/**
+ * @deprecated 
+ * @since 2008-07-11
+ *
+ */
 class Search_helper {
     
     var $oDb = NULL;
