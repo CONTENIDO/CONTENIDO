@@ -487,6 +487,7 @@ class cNewsletterJob extends Item
 				$oLogs->setWhere("idnewsjob",	$this->get($this->primaryKey));
 				$oLogs->setWhere("status",		"pending");
 				$oLogs->setLimit(0, $this->get("dispatch_count"));
+				$oLogs->query();
 				
 				If ($oLogs->next()) {
 					// Remaining recipients found, set job back to pending
