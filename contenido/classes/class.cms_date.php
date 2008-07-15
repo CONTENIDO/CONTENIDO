@@ -153,7 +153,7 @@ public function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $
 	$this->sEditAreaId = "";
 	$this->sDivSelectId = "";	
 	// if is empty, fill it with space character. Thats important for contenido input area!
-	($sContent == "") ? $this->sContent = "&nbsp;" : $this->sContent = $sContent;
+	($sContent == "") ? $this->sContent = "&nbsp;" : $this->sContent = urldecode($sContent);
 	$this->sSelectId = "";
 	$this->iTotalCount = $iTotalCount;
 	$this->sJS = "";
@@ -174,7 +174,7 @@ public function getAllWidgetEdit(){
 	
 	// Render all Widgetes
 	$this->sContent =  $this->getEditingField() . $this->getCalendarButton() . $this->getOkButton() .  $this->getSelectBox() . $this->getJsScript();
-	return $this->sContent;
+	return urldecode($this->sContent);
 }
 
 /**
