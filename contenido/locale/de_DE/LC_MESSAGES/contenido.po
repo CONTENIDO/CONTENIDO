@@ -6200,3 +6200,8 @@ msgstr "Gettext Erweiterung"
 
 msgid "GD library"
 msgstr "GD-Bibliothek"
+
+#contenido/classes/class.cms.date.php
+msgid "Choose Format"
+msgstr "Format Ausw&auml;hlen"
+

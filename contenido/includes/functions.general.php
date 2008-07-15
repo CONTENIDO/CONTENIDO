@@ -156,9 +156,45 @@ function getCanonicalMonth($month)
 	}
 }
 
+/**
+ * Get multi-language day
+ * 
+ * @param integer the day number of date(w)
+ * 
+ * @return string  Dayname of current language
+ */
+
+function getCanonicalDay($iDay)
+{
+	switch ($iDay)
+	{
+		case 1 :
+			return (i18n("Monday"));
+			break;
+		case 2 :
+			return (i18n("Tuesday"));
+			break;
+		case 3 :
+			return (i18n("Wednesday"));
+			break;
+		case 4 :
+			return (i18n("Thursday"));
+			break;
+		case 5 :
+			return (i18n("Friday"));
+			break;
+		case 6 :
+			return (i18n("Saterday"));
+			break;
+		case 0 :
+			return (i18n("Sunday"));
+			break;
+		default: break;	
+	}
+}
+
 function getIDForArea($area)
 {
-
 	global $client, $lang, $cfg, $sess;
 
 	$db = new DB_Contenido;

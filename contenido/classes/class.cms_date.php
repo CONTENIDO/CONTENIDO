@@ -123,6 +123,11 @@ class Cms_Date{
     */	
 	private $iTotalCount;
 	
+	/**
+	 * Language of contenido
+     * @access private
+	 */
+	private $sContenidoLang; 
 
 /**
  * The Cms_Date object constructor, initializes class variables
@@ -134,7 +139,7 @@ class Cms_Date{
  * @param {Object} $aCfg
  * @param {Object} $aDB
  */
-public function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $aCfg, $aDB, $iTotalCount){
+public function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $aCfg, $aDB, $iTotalCount, $sContenidoLang){
 	
 	$this->iNumberOfCms = $iNumberOfCms;
 	$this->iIdArtLang = $iIdArtLang;
@@ -147,11 +152,12 @@ public function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $
 	$this->oDB = $aDB;
 	$this->sEditAreaId = "";
 	$this->sDivSelectId = "";	
-	$this->sContent = $sContent;
+	// if is empty, fill it with space character. Thats important for contenido input area!
+	($sContent == "") ? $this->sContent = "&nbsp;" : $this->sContent = $sContent;
 	$this->sSelectId = "";
 	$this->iTotalCount = $iTotalCount;
-		
-	
+	$this->sJS = "";
+	$this->sContenidoLang = $sContenidoLang;	
 }
 
 /**
@@ -190,19 +196,26 @@ public function getAllWidgetView(){
  * @return the format as an array
  */
 private function getDateFormats(){
+
+	$sMonthName = "";
+	$sDayName = "";
 	$sMonthName = getCanonicalMonth(date('m'));
+	$sDayName = getCanonicalDay(date('w'));	
+	$iDay = date('d');
+	$iMonth = date('m');
+	$iYear = date("Y");
+	
 	$this->aFormat = array(
-		  array("0","Format ausw&auml;hlen"),
-		  array("%d.%m.%Y",date('d.m.Y')),
-		  array("%a, %d.%m.%Y",date('D, d.m.Y')), 
-		  array("%Y. %B %Y",date("d. F Y")),
+		  array("0",i18n("To Choose Format")),
+		  array("%d.%m.%Y", date('d.m.Y')),
+		  array("%A, %d.%m.%Y", $sDayName . ', ' . $iDay .'.'. $iMonth .'.'. $iYear ),
+		  array("%d. %B %Y", $iDay.'. ' .$sMonthName. ' '. $iYear),
           array("%Y-%m-%d",date('Y-m-d')),
           array("%y-%m-%d",date('y-m-d')),
-          array("%d/%m/%Y",date('d/F/Y')),
-          array("%d.%b.%Y","14.Jul.2008"),
+          array("%d/%B/%Y",$iDay .'/'. $sMonthName .'/'. $iYear),
           array("%d/%m/%y", date('d/m/y')),
-          array("%m %y","Juli 08"),
-          array("%m-%y","Juli-08"),		  
+          array("%B %y", $sMonthName . " ". $iYear),
+          array("%B-%y", $sMonthName . "-". $iYear),
           array("%d.%m.%Y %H:%M",date('d.m.Y H:i')),
 		  array("%m.%d.%Y %H:%M:%S",date('d.m.Y H:i:s')),
 		  array("%H:%M",date('H:i')),
@@ -224,13 +237,12 @@ private function getDateFormats(){
 public function getJsScript(){
 	
 	// include only one time this js script
-	if(Cms_Date::$iNumOutput == ($this->iTotalCount+1)){
-	
+	if(Cms_Date::$iNumOutput < 2){
 		 $this->sJS .= '  <link href="'.$this->aCfg['path']['contenido_fullhtml'].'scripts/jscalendar/calendar-contenido.css" rel="stylesheet" type="text/css"/>'; 
 		 $this->sJS .= ' 	<script type="text/javascript" src="'.$this->aCfg['path']['contenido_fullhtml'].'scripts/jscalendar/calendar.js"></script>';
-		 $this->sJS .= '	<script type="text/javascript" src="'.$this->aCfg['path']['contenido_fullhtml'].'scripts/jscalendar/lang/calendar-de.js"></script>';
+		 $this->sJS .= '	<script type="text/javascript" src="'.$this->aCfg['path']['contenido_fullhtml'].'scripts/jscalendar/lang/calendar-'.$this->getLanguageContenido().'.js"></script>';
 		 $this->sJS .= '	<script type="text/javascript" src="'.$this->aCfg['path']['contenido_fullhtml'].'scripts/jscalendar/calendar-setup.js"></script>';
-		 $this->sJS .=   '<script type="text/javascript" src="'.$this->aCfg['path']['contenido_fullhtml'].'/scripts/CmsDate.js"></script>';
+		 $this->sJS .=   '<script type="text/javascript" src="'.$this->aCfg['path']['contenido_fullhtml'].'/scripts/cmsDate.js"></script>';
 	}
 	
 	$this->sJS .= '<script type="text/javascript">';
@@ -348,7 +360,27 @@ private function getSelectBox(){
 	$sFinalSelectBox= str_replace("\\\'", "'", $sFinalSelectBox);
 	
 	return $sFinalSelectBox;
-}	
+}
+
+/**
+ * This function gives formatted current language shortcut
+ * 
+ * @return (String)Current Language of Contenidos
+ */
+private function getLanguageContenido(){
+	$sLang = "";
+	switch($this->sContenidoLang){
+		case'de_DE': $sLang = "de";
+		break;
+		case'en_US': $sLang = "en";
+		break;
+		default:
+		break;		
+	}
+	
+	return $sLang;
+}
+	
 	
 }
 
