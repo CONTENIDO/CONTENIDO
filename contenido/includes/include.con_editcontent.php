@@ -154,7 +154,7 @@ function setcontent(idartlang, act) {
             var aIdPrefix = aId.substr(0,4);
 
             // search for the id which containes HTML
-            if (aIdPrefix == 'HTML') {
+            if (aIdPrefix == 'HTML' || aIdPrefix == 'DATE') {
 
                 // check if its an 'contentEditable' Field
                 if (a[i].isContentEditable == true) {

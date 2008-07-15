@@ -56,6 +56,11 @@ Calendar = function (firstDayOfWeek, dateStr, onSelected, onClose) {
 	this.activeYear = null;
 	// Information
 	this.dateClicked = false;
+	
+	/*Contenido Modification Begin*/
+	this.contenido_path = '';
+	this.contenido_call_handler = null;
+	/*Contenido Modification End*/
 
 	// one-time initializations
 	if (typeof Calendar._SDN == "undefined") {
@@ -503,6 +508,13 @@ Calendar.calDragIt = function (ev) {
 	var st = cal.element.style;
 	st.left = (posX - cal.xOffs) + "px";
 	st.top = (posY - cal.yOffs) + "px";
+	
+	/*Contenido Modification Begin (CMS_DATE)*/
+	if (cal.contenido_call_handler != null && cal.contenido_call_handler != undefined) {
+	    cal.contenido_call_handler.see();
+	}
+
+	/*Contenido Modification End*/
 	return Calendar.stopEvent(ev);
 };
 
@@ -568,6 +580,10 @@ Calendar.dayMouseOver = function(ev) {
 			el.ttip = el.caldate.print(el.calendar.ttDateFormat) + el.ttip.substr(1);
 		}
 		el.calendar.tooltips.innerHTML = el.ttip;
+		/*Contenido Modification Begin (CMS_DATE)*/
+		if (el.calendar.contenido_call_handler != null && el.calendar.contenido_call_handler != undefined) {
+		    el.calendar.contenido_call_handler.see();
+		}
 	}
 	if (el.navtype != 300 && el.navtype != 400 && el.navtype != 200) {
 		Calendar.addClass(el, "hilite");
@@ -588,8 +604,13 @@ Calendar.dayMouseOut = function(ev) {
 		if (el.caldate)
              Calendar.resetBackground(el.parentNode);
 			removeClass(el.parentNode, "rowhilite");
-		if (el.calendar)
+		if (el.calendar) {
 			el.calendar.tooltips.innerHTML = _TT["SEL_DATE"];
+			/*Contenido Modification Begin (CMS_DATE)*/
+			if (el.calendar.contenido_call_handler != null && el.calendar.contenido_call_handler != undefined) {
+			    el.calendar.contenido_call_handler.see();
+			}
+		}
 		return stopEvent(ev);
 	}
 };
@@ -783,10 +804,15 @@ Calendar.prototype.create = function (_par) {
 		Calendar._add_evs(cell);
 		cell.calendar = cal;
 		cell.navtype = navtype;
+		/*Contenido Modification Begin*/
         if (text.match(/helpButton/g)) { 
             img = Calendar.createElement("img", cell);
             Calendar._add_evs(img);
-            img.src = './images/but_help.gif';
+			if (cal.contenido_path != '' && cal.contenido_path != undefined) {
+			    img.src = cal.contenido_path+'images/but_help.gif';
+			} else {
+				img.src = './images/but_help.gif';
+			}
             img.calendar = cal;
             img.navtype = navtype;
             cell.style.cursor = 'pointer';
@@ -796,7 +822,11 @@ Calendar.prototype.create = function (_par) {
         } else if (text.match(/cancelButton/g)) {
             img = Calendar.createElement("img", cell);
             Calendar._add_evs(img);
-            img.src = './images/but_cancel.gif';
+			if (cal.contenido_path != '' && cal.contenido_path != undefined) {
+			    img.src = cal.contenido_path+'images/but_cancel.gif';
+			} else {
+				img.src = './images/but_cancel.gif';
+			}
             img.calendar = cal;
             img.navtype = navtype;
             cell.style.cursor = 'pointer';
@@ -805,6 +835,8 @@ Calendar.prototype.create = function (_par) {
         } else {
             cell.innerHTML = "<div unselectable='on'>" + text + "</div>";
         } 
+		/*Contenido Modification End*/
+		//cell.innerHTML = "<div unselectable='on'>" + text + "</div>";
 		return cell;
 	};
 
