@@ -3750,6 +3750,7 @@ contenido/tools/convert_startarticles.php -text
 contenido/tools/dbexport.php -text
 contenido/tools/filelist.php -text
 contenido/tools/modlist.php -text
+contenido/tools/release.php -text
 contenido/tools/remove_tplcfg_inconsistencies.php -text
 contenido/tools/updateseqruntime.php -text
 contenido/tools/upgrade.php -text
