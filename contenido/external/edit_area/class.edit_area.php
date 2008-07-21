@@ -1,43 +1,48 @@
 <?php
 /**
- * Project: 
- * Contenido Content Management System
- * 
- * Description: 
- * This file defines class edit_area. This class allows to add edit_area to any page.
- * This class renders a javascript code, which includes edit_area. It is possible to 
- * configure editarea whith a lot of params. For details see: http://www.cdolivet.net/editarea/
- * editarea/docs/configuration.html Standard properties where set by this class. It is possible
- * to set further properties in system or client settings in contenido by using type edit_area
- * This properties where also imported by this class.
- * 
- * Requirements: 
- * @con_php_req 5
+ * $RCSfile$: class.edit_area.php
  *
- * @package    Contenido Backend <Area>
+ * Project:
+ * Contenido Content Management System Backend
+ *
+ * Description: This file defines class edit_area. This class allows to add edit_area to any page.
+ *              This class renders a javascript code, which includes edit_area. It is possible to 
+ *              configure editarea whith a lot of params. For details see: http://www.cdolivet.net/editarea/
+ *              editarea/docs/configuration.html Standard properties where set by this class. It is possible
+ *              to set further properties in system or client settings in contenido by using type edit_area
+ *              This properties where also imported by this class.
+ *              
+ *
+ * @package    Contenido Backend
  * @version    1.0.0
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since contenido release <Contenido Version>
- * @deprecated file deprecated in contenido release <Contenido Version>
- * 
- * {@internal 
- *   created  2008-05-07
- *   modified 2008-07-04, bilal arslan, added security fix
+ * @since      file available since 2008-05-07
  *
- *   $Id$:
+ * {@internal
+ *    created 2008-05-07
+ *    modified  2008-07-21 timo.trautmann editbutton for full screen mode added
  * }}
- * 
+ *
+ * $Id$
  */
- if(!defined('CON_FRAMEWORK')) {
-   die('Illegal call');
-}
 
 
-
+/**
+ *
+ * Description: Class for handling and displaying edit_area
+ *
+ * @version 1.0.0
+ * @author Timo Trautmann
+ * @copyright four for business AG <www.4fb.de>
+ *
+ * {@internal
+ *   created 2008-05-07
+ * }}
+ *
+ */
 class EditArea {
     /**
       * Properties which were used to init edit_area
@@ -115,6 +120,8 @@ class EditArea {
         $this->setProperty('allow_resize', 'both', false);
         $this->setProperty('allow_toggle', 'false', true);
         $this->setProperty('language', $sLang, false);
+        $this->setProperty('save_callback', 'save_callback', false);
+        $this->setProperty('begin_toolbar', 'save', false);
         $this->setProperty('syntax', $sSyntax, false);
         $this->setProperty('replace_tab_by_spaces', '4', true);
         $this->setProperty('plugins', 'charmap', false);
@@ -204,6 +211,19 @@ class EditArea {
         if ($this->bAddScript) {
             $sPath = $this->aCfg['path']['contenido_fullhtml'];
             $sJs .= '<script type="text/javascript" src="'.$sPath.'external/edit_area/edit_area_compressor.php?plugins"></script>'."\n";
+            
+            $sJs .= '<script type="text/javascript">
+                     function save_callback(id, content) {
+                        var oForm = document.getElementById(id).form;
+                        for (var i = 0; i < oForm.length; ++i) {
+                            var element = oForm.elements[i];
+                            if(element.id && editAreaLoader.getValue(element.id)) {
+                                element.value = editAreaLoader.getValue(element.id);
+                            }
+                        }
+                        oForm.submit();
+                    }
+                    </script>';
         }
         
         //define template for edit_area script
@@ -220,8 +240,7 @@ class EditArea {
                                 %s
                            })
                        }
-                    }
-                    
+                    }                    
                     window.setTimeout("init_editarea_%s()", 50);
                 </script>';
         
