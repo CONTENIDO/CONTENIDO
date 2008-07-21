@@ -27,7 +27,9 @@
  * 
  */
 
-define("CON_FRAMEWORK", true);
+if (!defined("CON_FRAMEWORK")) {
+    define("CON_FRAMEWORK", true);
+}
 header("Content-Type: text/html; charset=ISO-8859-1");
 
 // include security class and check request variables

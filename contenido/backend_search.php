@@ -38,7 +38,9 @@
  * Added showinng values of search in searchform (Timo Trautmann)
  */
 
-define("CON_FRAMEWORK", true);
+if (!defined("CON_FRAMEWORK")) {
+    define("CON_FRAMEWORK", true);
+}
 
 // include security class and check request variables
 include_once ('./classes/class.security.php');
