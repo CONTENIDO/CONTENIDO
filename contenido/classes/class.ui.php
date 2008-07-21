@@ -1235,7 +1235,7 @@ class cScrollList
 		if ($defaultstyle == true)
 		{
 			$this->objHeaderRow->setClass("text_medium");
-			$this->objHeaderRow->setStyle("background-color: #E2E2E2;");
+			$this->objHeaderRow->setStyle("background-color: #E2E2E2;white-space:nowrap;");
 		}
 
 
@@ -1243,7 +1243,7 @@ class cScrollList
 		if ($defaultstyle == true)
 		{
 			$this->objHeaderItem->setClass("textg_medium");
-			$this->objHeaderItem->setStyle('border: 1px; border-style: solid;border-bottom: 0px;border-color: '.$cfg["color"]["table_border"].';');
+			$this->objHeaderItem->setStyle('white-space:nowrap; border: 1px; border-style: solid;border-bottom: 0px;border-color: '.$cfg["color"]["table_border"].';');
 			$this->objHeaderItem->updateAttributes(array("align" => "left"));
 		}
 
@@ -1256,7 +1256,7 @@ class cScrollList
 		$this->objItem = new cHTMLTableData;
 		if ($defaultstyle == true)
 		{
-			$this->objItem->setStyle('border: 1px; border-style: solid;border-top:0px;border-color: '.$cfg["color"]["table_border"].';');
+			$this->objItem->setStyle('white-space:nowrap; border: 1px; border-style: solid;border-top:0px;border-color: '.$cfg["color"]["table_border"].';');
 		}
 
 
@@ -1306,7 +1306,7 @@ class cScrollList
 			$col = $cfg["color"]["table_light"];
 		}
 
-		$this->objRow->setStyle("background-color: $col;");
+		$this->objRow->setStyle("white-space:nowrap; background-color: $col;");
 	}
 
 	/**
