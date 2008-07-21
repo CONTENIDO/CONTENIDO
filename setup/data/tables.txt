@@ -212,7 +212,7 @@
 "groupmembers";"user_id";"varchar(32)";"";"";"";"";""
 "groups";"group_id";"varchar(32)";"";"PRI";"";"";"1"
 "groups";"groupname";"varchar(64)";"";"";"";"";""
-"groups";"perms";"varchar(255)";"YES";"";"";"";""
+"groups";"perms";"mediumtext";"YES";"";"";"";""
 "groups";"description";"varchar(255)";"YES";"";"";"";""
 "inuse";"idinuse";"int(10)";"";"PRI";"0";"";"1"
 "inuse";"type";"varchar(32)";"";"";"";"";""
