@@ -51,6 +51,8 @@
  *   to build the anchorlist.  
  *   
  *   modified 2008-07-04, bilal arslan, added security fix
+ *   
+ *   modified 2008-07-21, Ingo van Peeren, fixed path for property 'content_css' default value  
  *
  *   $Id$:
  * }}
@@ -90,7 +92,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
 		// Default values
 		$this->setSetting("mode", "exact");
-        $this->setSetting("content_css", $cfg['path']['contenido_fullhtml']."contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/themes/advanced/skins/default/content.css");
+        $this->setSetting("content_css", $cfg['path']['all_wysiwyg_html']."tinymce3/jscripts/tiny_mce/themes/advanced/skins/default/content.css"); 
 		$this->setSetting("theme", "advanced");
 		$this->setSetting("theme_advanced_toolbar_location", "top");
 		$this->setSetting("theme_advanced_path_location", "bottom");
