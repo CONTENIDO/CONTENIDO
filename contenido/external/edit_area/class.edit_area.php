@@ -120,11 +120,10 @@ class EditArea {
         $this->setProperty('allow_toggle', 'false', true);
         $this->setProperty('language', $sLang, false);
         $this->setProperty('save_callback', 'save_callback', false);
-        $this->setProperty('begin_toolbar', 'save', false);
         $this->setProperty('syntax', $sSyntax, false);
         $this->setProperty('replace_tab_by_spaces', '4', true);
         $this->setProperty('plugins', 'charmap', false);
-        $this->setProperty('toolbar', 'search, go_to_line, fullscreen, |, undo, redo, |, select_font,|, change_smooth_selection, highlight, reset_highlight, |, charmap, |, help', false);
+        $this->setProperty('toolbar', 'save, search, go_to_line, fullscreen, |, undo, redo, |, select_font,|, change_smooth_selection, highlight, reset_highlight, |, charmap, |, help', false);
         
         //make content not editable if not allowed
         if ($bEditable == false) {
