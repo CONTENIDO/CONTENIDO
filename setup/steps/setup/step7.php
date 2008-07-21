@@ -29,7 +29,10 @@
  
  echo '<!-- Hello begin -->';
  
-define("CON_FRAMEWORK", true);
+if(!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
+
 
 
 checkAndInclude("steps/forms/setupsummary.php");
