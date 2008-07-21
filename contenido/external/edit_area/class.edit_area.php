@@ -23,7 +23,6 @@
  *
  * {@internal
  *    created 2008-05-07
- *    modified  2008-07-21 timo.trautmann editbutton for full screen mode added
  * }}
  *
  * $Id$
@@ -217,7 +216,7 @@ class EditArea {
                         var oForm = document.getElementById(id).form;
                         for (var i = 0; i < oForm.length; ++i) {
                             var element = oForm.elements[i];
-                            if(element.id && editAreaLoader.getValue(element.id)) {
+                            if((element.id && editAreaLoader.getValue(element.id)) || (element.id == id)) {
                                 element.value = editAreaLoader.getValue(element.id);
                             }
                         }
