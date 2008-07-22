@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2002-03-02
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-07-22, Ingo van Peeren, fixed SQL syntax error due to security fix  
  *
  *   $Id$:
  * }}
@@ -811,7 +812,7 @@ function statsOverviewTop($yearmonth, $top)
             AND
                 A.idclient = '".Contenido_Security::toInteger($client)."'
             AND
-                A.idlang = ".Contenido_Security::toInteger($lang)."
+                A.idlang = '".Contenido_Security::toInteger($lang)."'
             ORDER BY
                 A.visited DESC
 
@@ -929,11 +930,11 @@ function statsOverviewTopYear($year, $top)
             AND
                 B.idcatart = A.idcatart
             AND
-                A.idclient = \"".Contenido_Security::toInteger($client)."\"
+                A.idclient = '".Contenido_Security::toInteger($client)."'
             AND
-                A.archived LIKE \"".Contenido_Security::escapeDB($year, $db)."%\"
+                A.archived LIKE '".Contenido_Security::escapeDB($year, $db)."%'
             AND
-                A.idlang = '".Contenido_Security::toInteger($lang)."
+                A.idlang = '".Contenido_Security::toInteger($lang)."'
             GROUP BY A.idcatart
             ORDER BY
                 visited DESC
