@@ -23,6 +23,7 @@
  *   created 2008-06-25
  *   modified 2008-07-02, Frederic Schneider, added boolean functions and checkRequests() 
  *   modified 2008-07-04, Frederic Schneider, added test to valid contenido-session-var
+ *   modified 2008-07-22, Frederic Schneider, fixed stripslashes_deep functionality
  *
  *   $Id$:
  * }}
@@ -183,7 +184,7 @@ class Contenido_Security {
      */
     public static function escapeDB($sString, $oDB) {
 
-        if(CONTENIDO_STRIPSLASHES == true && !get_magic_quotes_gpc()) {
+        if(defined(CONTENIDO_STRIPSLASHES) && !get_magic_quotes_gpc()) {
             $sString = stripslashes_deep($sString);
         }
 
