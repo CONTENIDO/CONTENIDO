@@ -65,7 +65,7 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
      * @return void
      * @author Rudi Bieller
      */
-    public function __construct(DB_Contenido $oDb, $aCfg, $iClient, $iLang, $aCfgClient) {
+    public function __construct(DB_Contenido $oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
         parent::__construct($oDb, $aCfg, $iClient, $iLang, $aCfgClient);
         $this->oCategories = null;
         $this->_bAsArray = false;
