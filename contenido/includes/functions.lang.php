@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-07-23, Timo Trautmann optional db param added for langGetTextDirection (performance tuning)
  *
  *   $Id$:
  * }}
@@ -653,11 +654,13 @@ function langActivateDeactivateLanguage($idlang, $active) {
 
 }
 
-function langGetTextDirection ($idlang)
+function langGetTextDirection ($idlang, $db = null)
 {
 	global $cfg;
 
-	$db = new DB_Contenido;
+    if ($db == null || !is_object($db)) {
+        $db = new DB_Contenido;
+    }
 	
 	$sql = "SELECT direction FROM ".$cfg["tab"]["lang"] ." WHERE idlang='".Contenido_Security::toInteger($idlang)."'";
 	$db->query($sql);

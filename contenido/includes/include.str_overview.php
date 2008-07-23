@@ -71,6 +71,8 @@ if (isset($_POST['newcategoryalias']) && isset($_POST['action']) && $_POST['acti
     }
 }
 
+$oDirectionDb = new DB_contenido();
+
 /**
  * Build a Category select Box containg all categories which user is allowed to create new categories
  *
@@ -777,7 +779,7 @@ if ( $perm->have_perm_area_action($area) ) {
             
             // DIRECTION
 			cInclude('includes', 'functions.lang.php');
-			$tpl->set('d', 'DIRECTION', 'dir="' . langGetTextDirection($lang) . '"');
+			$tpl->set('d', 'DIRECTION', 'dir="' . langGetTextDirection($lang, $oDirectionDb) . '"');
             
             $columns = array();
             
