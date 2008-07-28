@@ -136,7 +136,9 @@ $sTable = '';
 
         while ($db->next_record()) {
                 if ($db->f("level") == 0 && $db->f("preid") != 0) {
-                        echo "<TR><TD colspan=13>&nbsp;</TD></TR>";
+                    $sTable .= $table->row();
+					$sTable .= $table->sumcell("&nbsp;","right");
+					$sTable .= $table->end_row();
                 }else {
                         if ($db->f("level") < $iLevel) {
                             $iDistance = $iLevel-$db->f("level");
