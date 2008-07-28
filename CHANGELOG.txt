@@ -48,6 +48,7 @@ Release 4.8.7b2
 
 ** New Feature
 	* [CON-175] - Contenido Update Notify and RSS-Feed
+    * [CON-184] - CMS_DATE
 
 
 Release 4.8.6
