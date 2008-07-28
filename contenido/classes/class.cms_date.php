@@ -26,6 +26,7 @@
  * 
  * {@internal 
  *   created 2007-07-14 Bilal Arslan, Timo Trautmann
+ *   modified 2008-07-28 Bilal Arslan, added new Date format timestamp
  *   $Id
  * }}
  * 
@@ -221,7 +222,8 @@ private function getDateFormats(){
 		  array("%H:%M",date('H:i')),
 		  array("%H:%M:%S",date('H:i:s')),
 		  array("%l:%M %P",date('h:i A')),
-		  array("%l:%M:%S %P",date('h:i:s A'))
+		  array("%l:%M:%S %P",date('h:i:s A')),
+     	  array("%s", "Timestamp")
 		  );
 	
 	
