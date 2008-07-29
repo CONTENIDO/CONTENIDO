@@ -16,7 +16,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -205,6 +205,7 @@ private function getDateFormats(){
 	$iDay = date('d');
 	$iMonth = date('m');
 	$iYear = date("Y");
+	$iYearShort = date("y");
 	
 	$this->aFormat = array(
 		  array("0",i18n("To Choose Format")),
@@ -215,8 +216,8 @@ private function getDateFormats(){
           array("%y-%m-%d",date('y-m-d')),
           array("%d/%B/%Y",$iDay .'/'. $sMonthName .'/'. $iYear),
           array("%d/%m/%y", date('d/m/y')),
-          array("%B %y", $sMonthName . " ". $iYear),
-          array("%B-%y", $sMonthName . "-". $iYear),
+          array("%B %y", $sMonthName . " ". $iYearShort),
+          array("%B-%y", $sMonthName . "-". $iYearShort),
           array("%d.%m.%Y %H:%M",date('d.m.Y H:i')),
 		  array("%m.%d.%Y %H:%M:%S",date('d.m.Y H:i:s')),
 		  array("%H:%M",date('H:i')),
