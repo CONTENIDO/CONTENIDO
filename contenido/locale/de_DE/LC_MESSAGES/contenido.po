@@ -6202,6 +6202,6 @@ msgid "GD library"
 msgstr "GD-Bibliothek"
 
 #contenido/classes/class.cms.date.php
-msgid "Choose Format"
+msgid "Please Choose Format"
 msgstr "Format Ausw&auml;hlen"
 

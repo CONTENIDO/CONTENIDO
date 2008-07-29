@@ -16,7 +16,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -208,7 +208,7 @@ private function getDateFormats(){
 	$iYearShort = date("y");
 	
 	$this->aFormat = array(
-		  array("0",i18n("To Choose Format")),
+		  array("0",i18n("Please Choose Format")),
 		  array("%d.%m.%Y", date('d.m.Y')),
 		  array("%A, %d.%m.%Y", $sDayName . ', ' . $iDay .'.'. $iMonth .'.'. $iYear ),
 		  array("%d. %B %Y", $iDay.'. ' .$sMonthName. ' '. $iYear),
