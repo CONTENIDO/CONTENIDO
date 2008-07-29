@@ -6,7 +6,7 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id: CHANGELOG.txt,v 1.116 2008/07/08 11:08:12 timo.trautmann Exp $
 
-Release 4.8.7b2
+Release 4.8.7
 ----------------------------------------------------------------------	
 ** Bug
     * [CON-139] - Link für Handbuch im cfg-array
