@@ -239,7 +239,7 @@ while ($cApiModule = $cApiModuleCollection->next())
 				if ($perm->have_perm_area_action_item("mod", "mod_delete", $cApiModule->get("idmod")))
 				{
 				$delTitle = i18n("Delete module");
-				$delDescr = sprintf(i18n("Do you really want to delete the following module:<br><br>%s<br>"), $name);
+				$delDescr = sprintf(i18n("Do you really want to delete the following module:<br><br>%s<br>"), $sName);
 
 				$deletebutton = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteModule('.$idmod.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';				
 				} else {
