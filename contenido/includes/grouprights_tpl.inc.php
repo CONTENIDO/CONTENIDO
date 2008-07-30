@@ -32,6 +32,9 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+//notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
+include_once($cfg['path']['contenido'].'includes/grouprights.inc.php');
+
 //set the areas which are in use fore selecting these
 $possible_area = "'".implode("','", $area_tree[$perm->showareas("tpl")])."'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".Contenido_Security::escapeDB($groupid, $db)."' AND idclient='".Contenido_Security::toInteger($rights_client)."' AND A.type = 1 AND idlang='".Contenido_Security::toInteger($rights_lang)."' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
@@ -50,29 +53,30 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
     $notification->displayNotification("error", i18n("Permission denied"));
     }
 }
-
+// Temp variables
+$sJsBefore = '';
+$sJsAfter = '';
+$sTable = '';
 
 // declare new javascript variables;
-echo"<script type=\"text/javascript\">
-     var itemids=new Array();
-     var actareaids=new Array();
-</script>";
+$sJsBefore .= "  var itemids = new Array();
+				var actareaids = new Array();
+";
 
 $colspan=0;
 
-$table = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"]["table_header"], $cfg["color"]["table_light"], $cfg["color"]["table_dark"]);
+$table = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"]["table_header"], $cfg["color"]["table_light"], $cfg["color"]["table_dark"], 0, 0);
 
-$table->start_table();
-$table->header_row();
-$table->header_cell(i18n("Template name"));
-$table->header_cell(i18n("Description"));
+$sTable .= $table->start_table();
+$sTable .= $table->header_row();
+$sTable .= $table->header_cell(i18n("Template name"));
+$sTable .= $table->header_cell(i18n("Description"));
 
 
 $aSecondHeaderRow = array();
 $possible_areas=array();
 // look for possible actions   in mainarea []
 
-$sScript = "";
 foreach($right_list["tpl"] as $value2)
 {
                //if there are some actions
@@ -83,31 +87,30 @@ foreach($right_list["tpl"] as $value2)
 
                          $colspan++;
                          //set  the possible areas and actions for this areas
-                         echo"<script type=\"text/javascript\">
-                               actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";
-                              </script>";
+							$sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\"; \n";	
 
+						
                          //checkbox for the whole action
-                         $table->header_cell($lngAct[$value2["perm"]][$value3]);
+                        $sTable .= $table->header_cell($lngAct[$value2["perm"]][$value3]);
                          array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
                  }
 }
 
 
 //checkbox for all rights
-$table->header_cell(i18n('Check all'));
+$sTable .= $table->header_cell(i18n('Check all'));
 array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
-$table->end_row();
+$sTable .= $table->end_row();
 $colspan++;
 
-$table->header_row();
-$table->header_cell('&nbsp',"center", '', '', 0);
-$table->header_cell('&nbsp',"center", '', '', 0);
+$sTable .= $table->header_row();
+$sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
+$sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
 
 foreach ($aSecondHeaderRow as $value) {
-    $table->header_cell($value,"center", '', '', 0);
+    $sTable .= $table->header_cell($value,"center", '', '', 0);
 }
-$table->end_row();
+$sTable .= $table->end_row();
 
 
 
@@ -121,12 +124,12 @@ while ($db->next_record()) {
         $tplname     = htmlentities($db->f("name"));
         $description = htmlentities($db->f("description"));
 
-        $table->row();
-        $table->cell($tplname,"", "", " class=\"td_rights0\"", false);
-        $table->cell($description,"", "", " class=\"td_rights1\" style=\"white-space:normal;\"", false); 
+        $sTable .= $table->row();
+        $sTable .= $table->cell($tplname,"", "", " class=\"td_rights0\"", false);
+        $sTable .= $table->cell($description,"", "", " class=\"td_rights1\" style=\"white-space:normal;\"", false); 
 
         //set javscript array for itemids
-        $sScript.="itemids[\"".$db->f("idtpl")."\"]=\"x\";\n";
+        $sJsAfter .= "itemids[\"".$db->f("idtpl")."\"]=\"x\";\n";
 
         // look for possible actions in mainarea[]
         foreach($right_list["tpl"] as $value2)
@@ -143,18 +146,25 @@ while ($db->next_record()) {
                               $checked="";
 
                           //set the checkbox    the name consits of      areait+actionid+itemid
-                          $table->cell("<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idtpl")."]\" value=\"x\" $checked>","", "", " class=\"td_rights2\"", false);
+                          $sTable .= $table->cell("<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idtpl")."]\" value=\"x\" $checked>","", "", " class=\"td_rights2\"", false);
 
 
                  }
         }
         //checkbox for checking all actions fore this itemid
-        $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idtpl")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idtpl")."')\">","", "", " class=\"td_rights3\"", false);
+        $sTable .= $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idtpl")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idtpl")."')\">","", "", " class=\"td_rights3\"", false);
 }
-$table->end_row();
-$table->row();
-$table->sumcell("<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('group_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>","right");
-$table->end_row();
-$table->end_table();
-echo"<script type=\"text/javascript\">$sScript</script>";
+$sTable .=$table->end_row();
+$sTable .=$table->row();
+$sTable .=$table->sumcell("<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('group_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>","right");
+$sTable .=$table->end_row();
+$sTable .=$table->end_table();
+
+
+$oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
+$oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
+$oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
+$oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
+$oTpl->generate('templates/standard/'.$cfg['templates']['rights_inc']);
+
 ?>

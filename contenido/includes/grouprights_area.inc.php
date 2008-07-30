@@ -21,7 +21,8 @@
  * 
  * {@internal 
  *   created unknown
- *   modified 2008-06-26, Dominik Ziegler, add security fix
+ *    modified 2008-06-26, Dominik Ziegler, add security fix
+  *   modified 2008-07-28, Bilal Arslan, moved inline html to template
  *
  *   $Id$:
  * }}
@@ -36,12 +37,17 @@ if ( $_REQUEST['cfg'] ) {
 	die('Illegal call');
 }
 
-// declare new javascript variables;
-echo"<script type=\"text/javascript\">
-     var areatree=new Array();
-</script>";
-
+//notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
+include_once($cfg['path']['contenido'].'includes/grouprights.inc.php');
 $debug = 0;
+// declare new Template variables
+$sJsBefore = '';
+$sJsAfter = '';
+$sJsExternal = '';
+$sTable = '';
+
+// declare new javascript variables;
+$sJsBefore .= "var areatree=new Array();\n";
 
 //set the areas which are in use fore selecting these
 
@@ -72,24 +78,31 @@ if(!isset($rights_perms)||$action==""||!isset($action))
     $rights_perms=$db->f("perms");
 }
 
-echo"<table style=\"border:0px; border-left:1px; border-bottom: 1px;border-color: ". $cfg["color"]["table_border"] . "; border-style: solid;\" cellspacing=\"0\" cellpadding=\"2\" >";
-echo"<tr class=\"text_medium\" style=\"background-color: ". $cfg["color"]["table_header"] .";\">";
-echo"<th valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">";
-echo"<input type=\"hidden\" name=\"area\" value=\"groups_areas\">";
-echo "&nbsp;</TH>";
-echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-bottom:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">&nbsp;</th>";
-echo"<th class=\"textg_medium\" valign=\"top\" style=\"border: 0px; border-top:1px; border-bottom:0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
+$oTable = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"]["table_header"], $cfg["color"]["table_light"], $cfg["color"]["table_dark"], 0, 0);
+
+$sTable .= $oTable->start_table();
+
+$sTable .= $oTable->header_row();
+$sTable .= $oTable->header_cell("&nbsp;","left");
+$sTable .= $oTable->header_cell("&nbsp;","left");
+$sTable .= $oTable->header_cell(i18n("Check all"),"left");
+$sTable .= $oTable->end_row();
+
 //checkbox for all rights
-echo i18n("Check all")."<br><input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAllAreas()\"></TH></TR>";
+$sTable .= $oTable->header_row();
+$sTable .= $oTable->header_cell('&nbsp',"center", '', '', 0);
+$sTable .= $oTable->header_cell('&nbsp',"center", '', '', 0);
+$sTable .= $oTable->header_cell("<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAllAreas()\">", "center", '', '', 0);
+$sTable .= $oTable->end_row();
 
 //Select the itemid´s
-        if ($xml->load($cfg['path']['xml'] . $cfg['lang'][$belang]) == false)
-        {
-        	if ($xml->load($cfg['path']['xml'] . 'lang_en_US.xml') == false)
-        	{
-        		die("Unable to load any XML language file");
-        	}
-        }
+if ($xml->load($cfg['path']['xml'] . $cfg['lang'][$belang]) == false)
+{
+	if ($xml->load($cfg['path']['xml'] . 'lang_en_US.xml') == false)
+	{
+		die("Unable to load any XML language file");
+	}
+}
 
 $nav = new Contenido_Navigation;
 
@@ -107,18 +120,7 @@ foreach($right_list as $key => $value){
                        else
                               $checked="";
 
-                        $darkRow = !$darkRow;
-                        if ($darkRow) {
-                            $bgColor = $cfg["color"]["table_dark"];
-                        } else {
-                            $bgColor = $cfg["color"]["table_light"];
-                        }
-
-                        echo"<tr class=\"text_medium\" style=\"background-color: ". $bgColor .";\">";
-                       
-
-                        
-			          /* Extract names from the XML document. */
+					/* Extract names from the XML document. */
 			          $main = $nav->getName($value2['location']);   
                         
                        if ($debug)
@@ -127,24 +129,18 @@ foreach($right_list as $key => $value){
                        } else {
                           $locationString = $main;
                        }
-                       
-                       echo"<td valign=\"top\" style=\"border: 0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">";
-                       echo $locationString;
-                       echo "</td>";
-                        echo"<td valign=\"top\" style=\"border: 0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-                       echo"<input type=\"checkbox\" id=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\" name=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\" value=\"x\" $checked>";
-                       echo "</td>";
-                        echo"<td valign=\"top\" style=\"border: 0px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-                       echo "<input type=\"checkbox\" name=\"checkall_$key\" value=\"\" onClick=\"setRightsForArea('$key')\">
-                            </TD>";
-                       echo"</TR>";
+					   
+					   $sTable .= $oTable->row();
+					   $sTable .= $oTable->cell($locationString,"", "", " class=\"td_rights1\"", false);
+					   $sTable .= $oTable->cell("<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\" value=\"x\" $checked>" ,"", "", " class=\"td_rights2\"", false);
+					   $sTable .= $oTable->cell("<input type=\"checkbox\" name=\"checkall_$key\" value=\"\" onClick=\"setRightsForArea('$key')\">","", "", " class=\"td_rights2\"", false);
+                       $sTable .= $oTable->end_row();
 
                         //set javscript array for areatree
-                        echo"<script type=\"text/javascript\">
-                              areatree[\"$key\"]=new Array();
-                              areatree[\"$key\"][\"".$value2["perm"]."0\"]=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\";
-                             </script>";
-
+                        $sJsBefore .= "
+								areatree[\"$key\"]=new Array();
+								areatree[\"$key\"][\"".$value2["perm"]."0\"]=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\";\n";
+						
                }
 			   
                //if there area some
@@ -166,65 +162,43 @@ foreach($right_list as $key => $value){
                             }
 
                           //set the checkbox    the name consits of      areait+actionid+itemid
-                          echo"<tr class=\"text_medium\" style=\"background-color: ". $bgColor .";\">";
-                          echo"<td valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"left\">";
-                          
+							$sCellContent = '';
                           if ($debug)
                           {
-                         		echo"&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | ". $value3 . "-->".$lngAct[$value2["perm"]][$value3]."&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                         		$sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | ". $value3 . "-->".$lngAct[$value2["perm"]][$value3]."&nbsp;&nbsp;&nbsp;&nbsp;";
                           } else {
                           		if ($lngAct[$value2["perm"]][$value3] == "")
                           		{
-                          			echo "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . "|" .$value3 ."&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                          			$sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . "|" .$value3 ."&nbsp;&nbsp;&nbsp;&nbsp;";
                           	   		
                           		} else {
-                          			echo "&nbsp;&nbsp;&nbsp;&nbsp; " . $lngAct[$value2["perm"]][$value3]."&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+                          			$sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $lngAct[$value2["perm"]][$value3]."&nbsp;&nbsp;&nbsp;&nbsp;";
                           		}
                           }
-                       
-                            echo"<td valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">";
-                            echo "<input type=\"checkbox\" id=\"rights_list[".$value2["perm"]."|$value3|0]\" name=\"rights_list[".$value2["perm"]."|$value3|0]\" value=\"x\" $checked>
-                          </td>";
-                          echo"<td valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"center\">&nbsp;</td>";
-                          echo"</TR>";
-
+							$sTable .= $oTable->row();
+							$sTable .= $oTable->cell($sCellContent,"left", "", " class=\"td_rights1\"", false);
+							$sTable .= $oTable->cell("<input type=\"checkbox\" id=\"rights_list[".$value2["perm"]."|$value3|0]\" name=\"rights_list[".$value2["perm"]."|$value3|0]\" value=\"x\" $checked>", false);
+							$sTable .= $oTable->cell("&nbsp;", false);
+	                        $sTable .= $oTable->end_row();
+							
                           //set javscript array for areatree
-                          echo"<script type=\"text/javascript\">
-                                areatree[\"$key\"][\"".$value2["perm"]."$value3\"]=\"rights_list[".$value2["perm"]."|$value3|0]\";
-                               </script>";
+                          $sJsBefore .= "areatree[\"$key\"][\"".$value2["perm"]."$value3\"]=\"rights_list[".$value2["perm"]."|$value3|0]\";";
 
                  }
         }
-        //checkbox for checking all actions fore this itemid
 
 }
-echo"</tr>";
 
-$darkRow = !$darkRow;
-if ($darkRow) {
-               $bgColor = $cfg["color"]["table_dark"];
-} else {
-               $bgColor = $cfg["color"]["table_light"];
-}
+//checkbox for checking all actions fore this itemid
+$sTable .= $oTable->row();
+$sTable .= $oTable->sumcell("<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"><a href=javascript:submitrightsform('group_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>","right");
+$sTable .= $oTable->end_row();
+$sTable .= $oTable->end_table();
 
-echo"<tr class=\"text_medium\" style=\"background-color: ". $bgColor .";\">";
+$oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
+$oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);
+$oTpl->set('s', 'RIGHTS_CONTENT', $sTable);
+$oTpl->set('s', 'EXTERNAL_SCRIPTS', $sJsExternal);
+$oTpl->generate('templates/standard/'.$cfg['templates']['rights_inc']);
 
-echo"<td valign=\"top\" style=\"border: 0px; border-top:1px; border-right:1px; border-color: " . $cfg["color"]["table_border"] . "; border-style: solid;\" align=\"right\" colspan=\"3\">";
-echo "
-<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"><a href=javascript:submitrightsform('group_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>
-</td>
-</tr>
-
-</table></form>";
-
-function emptyCell (){
-	global $cfg;
-	
-    echo "<TD><img src=\"".$cfg['path']['images']."space.gif\" width=3 height=1 border=0></TD>";
-}
-function emptyRow (){
-    echo "  <tr>
-          <td colspan=20><table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td bgcolor=#666666 height=1><img src=\"$img_vz/leer.gif\" width=1 height=1></TD></TR></TABLE></td>
-        </tr>";
-}
 ?>
