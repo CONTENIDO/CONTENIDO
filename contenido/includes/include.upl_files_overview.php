@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-12-29
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2008-07-31, Oliver Lohkemper, add CEC
  *
  *   $Id$:
  * }}
@@ -144,12 +145,7 @@ if ($action == "upl_modify_file")
 	$upload->store();
 	
 	$properties = new PropertyCollection;
-	
-	$properties->setValue("upload", $qpath.$file, "file", "keywords", stripslashes($keywords));
-	$properties->setValue("upload", $qpath.$file, "file", "medianame", stripslashes($medianame));
-	$properties->setValue("upload", $qpath.$file, "file", "medianotes", stripslashes($medianotes));
 	$properties->setValue("upload", $qpath.$file, "file", "protected", stripslashes($protected));
-	$properties->setValue("upload", $qpath.$file, "file", "copyright", stripslashes($copyright));
 	
 	$bTimeMng = (isset($_REQUEST['timemgmt']) && strlen($_REQUEST['timemgmt']) > 1);
 	$properties->setValue("upload", $qpath . $file, "file", "timemgmt", ($bTimeMng) ? 1 : 0);
@@ -187,6 +183,15 @@ if ($action == "upl_modify_file")
 					"WHERE id_uplmeta = " . $iIduplmeta;
 		}
 		$db->query($sSql);
+      
+      /*
+      * Call chain
+      */
+      $_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.SaveRows");
+      if ($_cecIterator->count() > 0) {
+         while ($chainEntry = $_cecIterator->next()) {
+            $chainEntry->execute( $iIdupl, $qpath, $file );
+      }   }
 	}
 }
 
@@ -205,7 +210,17 @@ if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action)
     				$dbfs->remove($qpath.$file);
     			} else {
     				unlink(	$cfgClient[$client]['upl']['path'].$qpath.$file);
-    			}		
+    			}
+					
+					/*
+					* Call chain
+					*/
+					$_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.Delete");
+					if ($_cecIterator->count() > 0) {
+						 while ($chainEntry = $_cecIterator->next()) {
+								$chainEntry->execute( $uploads->f('idupl'), $qpath, $file );
+					}   }
+					
     		}
     	}
 	}
@@ -222,7 +237,16 @@ if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action))
 			$dbfs->remove($qpath.$file);
 		} else {
 			unlink(	$cfgClient[$client]['upl']['path'].$qpath.$file);
-		}	
+		}
+					
+		/*
+		* Call chain
+		*/
+		$_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.Delete");
+		if ($_cecIterator->count() > 0) {
+			 while ($chainEntry = $_cecIterator->next()) {
+					$chainEntry->execute( $uploads->f('idupl'), $qpath, $file );
+		}   }
 	}
 }
 
