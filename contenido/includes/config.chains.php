@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-25, Frederic Schneider, add security fix
+ *   modified 2008-07-31, Frederic Schneider, add Upl_edit-CECs
  *
  *   $Id$:
  * }}
