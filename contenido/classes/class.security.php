@@ -26,7 +26,7 @@
  *   modified 2008-07-23, Frederic Schneider, fixed stripslashes_deep functionality
  *   modified 2008-07-31, Frederic Schneider, added escapeString() with fallback at escapeDB()
  *
- *   $Id:
+ *   $Id$:
  * }}
  * 
  */
