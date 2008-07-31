@@ -157,7 +157,7 @@ class Contenido_Security {
             return true;
         }
 
-        $this->checkSession();
+        self::checkSession();
 
     }
 
@@ -186,7 +186,7 @@ class Contenido_Security {
     public static function escapeDB($sString, $oDB) {
 
         if(!is_object($oDB)) {
-            return $this->escapeString($sString);
+            return self::escapeString($sString);
         } else {
 
             if(defined(CONTENIDO_STRIPSLASHES) && functions_exists("stripslashes_deep")) {
