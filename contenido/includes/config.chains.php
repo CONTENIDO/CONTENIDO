@@ -424,4 +424,63 @@ $_cecRegistry->registerChain("Contenido.Article.GetCustomTabProperties", "string
  */
 $_cecRegistry->registerChain("Contenido.Frontend.BaseHrefGeneration", "string");
 
+
+
+
+/* Chain Contenido.Upl_edit.Delete
+ * This chain function is called after a upl-file has been deleted
+ *
+ * Parameters & order:
+ * int      	$iIdupl  Upl-File-ID
+ * string   	$sPath   Directory from File
+ * string   	$sFile   Name from File
+ *
+ * Returns:
+ * - none -
+ */
+$_cecRegistry->registerChain("Contenido.Upl_edit.Delete", "int", "string", "string");
+
+/* Chain Contenido.Upl_edit.Rows
+ * This chain is used to process the rows of the upl-details list.
+ *
+ * Parameters & order:
+ * array   	row-list for upl-details
+ *
+ * Returns:
+ * - none -
+ *
+ * If you want to use own rows, append your own key and title to the
+ * array and use the chain Contenido.Upl_edit.RenderRows
+ */
+$_cecRegistry->registerChain("Contenido.Upl_edit.Rows", "array");
+
+/* Chain Contenido.Upl_edit.RenderRows
+ * This chain is used to render a single column for a specific article
+ *
+ * Parameters & order:
+ * int		  File-Upl-Id
+ * string		File-Directory
+ * string		File-Name
+ * string		Row-Key to render
+ *
+ * Returns:
+ * string	String with the rendered contents
+ * 
+ */
+$_cecRegistry->registerChain("Contenido.Upl_edit.RenderRows", "int", "string", "string", "string");
+
+/* Chain Contenido.Upl_edit.SaveRows
+ * This chain is called everytime when upl-details is saved
+ *
+ * Parameters & order: 
+ * int      	$iIdupl  Upl-File-ID
+ * string   	$sPath   Directory from File
+ * string   	$sFile   Name from File
+ * 
+ * Returns:
+ * - none -
+ * 
+ */
+$_cecRegistry->registerChain("Contenido.Upl_edit.SaveRows", "string");
+
 ?>
