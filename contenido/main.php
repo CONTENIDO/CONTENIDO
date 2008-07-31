@@ -310,7 +310,7 @@ if ($cfg["debug"]["rendering"] == true)
 }
 
 /**
- * Test code from Bilal Arslan
+ * Start User Tracking (who is online)
  *
  **/
 cInclude("classes", "class.activeusers.php");
@@ -319,7 +319,7 @@ $oActiveUser = new ActiveUsers($db, $cfg, $auth);
 $oActiveUser->startUsersTracking();
 /**
  *
- * End of the test
+ * End of the User Tracking
  */
 
 page_close();
