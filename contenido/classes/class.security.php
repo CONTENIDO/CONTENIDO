@@ -24,8 +24,9 @@
  *   modified 2008-07-02, Frederic Schneider, added boolean functions and checkRequests() 
  *   modified 2008-07-04, Frederic Schneider, added test to valid contenido-session-var
  *   modified 2008-07-23, Frederic Schneider, fixed stripslashes_deep functionality
+ *   modified 2008-07-31, Frederic Schneider, added escapeString() with fallback at escapeDB()
  *
- *   $Id$:
+ *   $Id:
  * }}
  * 
  */
@@ -176,7 +177,7 @@ class Contenido_Security {
     }
 
     /**
-     * Convert an query-string to mysql_real_escape_string
+     * Escaped an query-string with mysql_real_escape_string
      * @access public
      * @param string $sString
      * @param object $oDB contenido database object
@@ -184,15 +185,32 @@ class Contenido_Security {
      */
     public static function escapeDB($sString, $oDB) {
 
+        if(!is_object($oDB)) {
+            return $this->escapeString($sString);
+        } else {
+
+            if(defined(CONTENIDO_STRIPSLASHES) && functions_exists("stripslashes_deep")) {
+                $sString = stripslashes_deep($sString);
+            }
+
+            return $oDB->Escape($sString);
+        }
+
+    }
+
+    /**
+     * Escaped an query-string with addslashes
+     * @access public
+     * @param string $sString
+     * @return converted string
+     */
+    public static function escapeString($sString) {
+
         if(defined(CONTENIDO_STRIPSLASHES) && functions_exists("stripslashes_deep")) {
             $sString = stripslashes_deep($sString);
         }
 
-        if(!is_object($oDB)) {
-            return mysql_escape_string($sString);
-        } else {
-            return $oDB->Escape($sString);
-        }
+        return addslashes($sString);
 
     }
 
