@@ -32,6 +32,12 @@ if (!defined("CON_FRAMEWORK")) {
 }
 header("Content-Type: text/html; charset=ISO-8859-1");
 
+// Check version in the "first" line, as class.security.php uses
+// PHP5 object syntax not compatible with PHP < 5
+if (version_compare(PHP_VERSION, '5.0.0', '<')) {
+    die("You need PHP >= 5.0.0 for Contenido. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
+}
+
 // include security class and check request variables
 include_once ('../contenido/classes/class.security.php');
 Contenido_Security::checkRequests();
@@ -97,9 +103,6 @@ if (array_key_exists("language", $_SESSION))
 {
 	i18nInit("locale/", $_SESSION["language"]);
 }
-
-
-
 
 if (phpversion() == "4.0.6")
 {
