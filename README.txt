@@ -137,6 +137,7 @@ die Übertragung via FTP: FileZilla (http://filezilla.sourceforge.net).
 Setzen sie die Zugriffsrechte der nachfolgenden Verzeichnisse: 
 
 contenido/logs/ 
+contenido/cache/ 
 contenido/cronjobs/
 contenido/temp/ 
 
@@ -330,6 +331,7 @@ Change the access rights for the following folders:
 contenido/logs/ 
 contenido/cronjobs/
 contenido/temp/ 
+contenido/cache/
 
 cms/cache/
 cms/css/
