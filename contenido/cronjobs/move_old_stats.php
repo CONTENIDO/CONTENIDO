@@ -31,7 +31,12 @@
  * }}
  * 
  */
-define("CON_FRAMEWORK", true);
+if (!defined("CON_FRAMEWORK")) {
+    define("CON_FRAMEWORK", true);
+}
+
+include_once ('../classes/class.security.php');
+Contenido_Security::checkRequests();
 
 if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');

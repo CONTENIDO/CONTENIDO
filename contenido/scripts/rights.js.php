@@ -29,7 +29,9 @@
  * 
  */
 
-define("CON_FRAMEWORK", true);
+if (!defined("CON_FRAMEWORK")) {
+    define("CON_FRAMEWORK", true);
+}
  
 // include security class and check request variables
 include_once ('../classes/class.security.php');
