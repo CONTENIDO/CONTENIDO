@@ -32,17 +32,17 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude ("classes", 'drivers/class.gdb.driver.php');
+cInclude("classes", 'drivers/class.gdb.driver.php');
 cInclude("classes", "class.security.php");
 
 class gdbMySQL extends gdbDriver
 {
 	function buildJoinQuery ($destinationTable, $destinationClass, $destinationPrimaryKey, $sourceClass, $primaryKey)
 	{
-		/* Build a regular LEFT JOIN */
+		// Build a regular LEFT JOIN
 		$field  = "$destinationClass.$destinationPrimaryKey";
 		$tables = "";
-		$join   = "LEFT JOIN $destinationTable AS $destinationClass ON " . Contenido_Security::toInteger($sourceClass.$primaryKey) . " = " . Contenido_Security::toInteger($destinationClass.$primaryKey);
+		$join   = "LEFT JOIN $destinationTable AS $destinationClass ON " . $sourceClass . Contenido_Security::toInteger($primaryKey) . " = " . $destinationClass . Contenido_Security::toInteger($destinationPrimaryKey);
 		$where  = "";
 		
 		return array("field" => $field, "table" => $tables, "join" => $join, "where" => $where);
