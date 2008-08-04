@@ -42,7 +42,9 @@ class gdbMySQL extends gdbDriver
 		// Build a regular LEFT JOIN
 		$field  = "$destinationClass.$destinationPrimaryKey";
 		$tables = "";
-		$join   = "LEFT JOIN $destinationTable AS $destinationClass ON " . $sourceClass . Contenido_Security::toInteger($primaryKey) . " = " . $destinationClass . Contenido_Security::toInteger($destinationPrimaryKey);
+		$join   = "LEFT JOIN $destinationTable AS $destinationClass ON " . 
+					Contenido_Security::toString($sourceClass . "." . $primaryKey) . " = " .  
+					Contenido_Security::toString($destinationClass . "." . $primaryKey);
 		$where  = "";
 		
 		return array("field" => $field, "table" => $tables, "join" => $join, "where" => $where);
