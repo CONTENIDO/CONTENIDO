@@ -9,6 +9,8 @@ $Id: CHANGELOG.txt,v 1.116 2008/07/08 11:08:12 timo.trautmann Exp $
 Release 4.8.8
 ----------------------------------------------------------------------	
 ** Bug
+    * [CON-189] - basehref chain doesn't take "no settings" into 
+                  account and returns "" as base href 
     * [CON-186] - Joins from genericdb/gdbDriver broken after
                   Contenido_Security class integration
 

@@ -4,14 +4,19 @@
  * Contenido Content Management System
  * 
  * Description: 
- * Generate base href for multiple client domains  
+ * Generate base href for multiple client domains
+ * 
+ * Client setting must look like this:
+ * Type:	client
+ * Name:	frontend_pathX (X any number/character)
+ * Value:	base href URL (e.g. http://www.example.org/example/)
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
  * @package    Contenido Frontend classes
- * @version    1.0
+ * @version    1.1
  * @author     Andreas Lindner, 4fb AG
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,6 +25,7 @@
  * 
  * {@internal 
  *   created 2008-07-31
+ *   modified 2008-08-05, Björn Behrens (HerrB) - added missing parameter and refactored
  *   $Id: 
  * }}
  * 
@@ -29,26 +35,36 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-function cecCreateBaseHref () {
-
+function cecCreateBaseHref ($sCurrentBaseHref)
+{
 	global $cfg, $client;
 	
 	cInclude('classes', 'contenido/class.client.php');
 	
-	$oClient = new cApiClient($client);
-	$arr_settings = $oClient->getProperties();
+	$oClient	= new cApiClient($client);
+	$aSettings	= $oClient->getProperties();
 	
-	foreach ($arr_settings as $arr_client) {
-		if ( $arr_client["type"] == "client" && strstr($arr_client["name"],"frontend_path") !== false ) {
-			$arr_urlsettings = parse_url($arr_client["value"]);
+	foreach ($aSettings as $aClient)
+	{
+		if ($aClient["type"] == "client" && strstr($aClient["name"], "frontend_path") !== false)
+		{
+			$aUrlData = parse_url($aClient["value"]);
 
-			if ($arr_urlsettings["host"] == $_SERVER['HTTP_HOST'] || 
-				("www." . $arr_urlsettings["host"] ) == $_SERVER['HTTP_HOST'] || 
-				$arr_urlsettings["host"]  ==  "www." . $_SERVER['HTTP_HOST'] ) {
-					$str_base_uri = $arr_client["value"];
-					return $str_base_uri;
+			if ($aUrlData["host"] == $_SERVER['HTTP_HOST'] || 
+				("www." . $aUrlData["host"]) == $_SERVER['HTTP_HOST'] || 
+				 $aUrlData["host"] ==  "www." . $_SERVER['HTTP_HOST'] )
+			{
+				// The currently used host has been found as 
+				// part of the base href(s) specified in client settings
+				
+				// Return base href as specified in client settings
+				$sNewBaseHref = $aClient["value"];
+				return $sNewBaseHref;
 			}
 		}
-	} 
+	}
+	
+	// We are still here, so no alternative href was found - return the default one 
+	return $sCurrentBaseHref;
 }
 ?>
