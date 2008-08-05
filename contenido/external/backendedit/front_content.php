@@ -156,6 +156,7 @@ while ($db->next_record())
 	$encoding[$db->f("idlang")] = $db->f("encoding");
 }
 
+// Used by backend edit and HTML newsletter generation
 if (is_numeric($tmpchangelang) && $tmpchangelang > 0)
 {
 	$savedlang = $lang;
