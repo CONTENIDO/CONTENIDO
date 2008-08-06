@@ -10,7 +10,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.1
+ * @version    1.1.1
  * @author     Andreas Lindner, Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -69,7 +69,7 @@ class frontendlogic_category extends FrontendLogic
                    b.idlang = ".$lang." AND
                    b.public = 0
                  ORDER BY c.idtree ASC";
-        echo $sSQL;
+
         $db->query($sSQL);
         while ($db->next_record()) {
             $items[$db->f("idcatlang")] = 
