@@ -10,7 +10,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0
+ * @version    1.1
  * @author     Andreas Lindner, Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -18,7 +18,8 @@
  * @link       http://www.contenido.org
  * 
  * {@internal 
- *   created 
+ *   created
+ *   modified 2008-08-06, Ingo van Peeren - replaced genericdb-code due to performance issues (ticket #)
  *
  *   $Id: 
  * }}
@@ -29,11 +30,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
 cInclude("classes", "class.frontend.logic.php");
-cInclude("classes", "contenido/class.categorylanguage.php");
-cInclude("classes", "contenido/class.categorytree.php");
-cInclude("classes", "contenido/class.category.php");
 
 class frontendlogic_category extends FrontendLogic
 {
@@ -52,28 +49,33 @@ class frontendlogic_category extends FrontendLogic
 	
 	function listItems ()
 	{
-		global $lang;
+		global $lang, $db, $cfg;
 		
-		$cApiCategoryCollection = new cApiCategoryCollection;
-		$cApiCategoryCollection->link("cApiCategoryLanguageCollection");
-		
-		$cApiCategoryCollection->setWhere("cApiCategoryLanguageCollection.idlang", $lang);
-		$cApiCategoryCollection->setWhere("cApiCategoryLanguageCollection.public", 0);
-		$cApiCategoryCollection->link("cApiCategoryTreeCollection");
-		$cApiCategoryCollection->setOrder("cApiCategoryTreeCollection.idtree asc");
-		
-		$cApiCategoryCollection->query();
-		
-		$items = array();
-		
-		while ($cApiCategory = $cApiCategoryCollection->next())
-		{
-			$cApiCategoryLanguage = $cApiCategoryCollection->fetchObject("cApiCategoryLanguageCollection");
-			$cApiCategoryTree = $cApiCategoryCollection->fetchObject("cApiCategoryTreeCollection");
-			$items[$cApiCategoryLanguage->get("idcatlang")] = 
-				'<span style="padding-left: '.($cApiCategoryTree->get("level")*10).'px;">'.htmldecode($cApiCategoryLanguage->get("name")).'</span>';
-				
-		}
+		if (!is_object($db)) {
+            $db = new DB_Contenido;
+        }
+        
+        $sSQL = "SELECT
+                   b.idcatlang,
+                   b.name,
+                   c.level
+                 FROM
+                   ".$cfg['tab']['cat']." AS a,
+                   ".$cfg['tab']['cat_lang']." AS b,
+                   ".$cfg['tab']['cat_tree']." AS c
+                 WHERE
+                   a.idcat = b.idcat AND
+                   a.idcat = c.idcat AND
+                   b.idlang = ".$lang." AND
+                   b.public = 0
+                 ORDER BY c.idtree ASC";
+        echo $sSQL;
+        $db->query($sSQL);
+        while ($db->next_record()) {
+            $items[$db->f("idcatlang")] = 
+				'<span style="padding-left: '.($db->f("level")*10).'px;">'.htmldecode($db->f("name")).'</span>';
+			
+        }
 		
 		return ($items);
 	}
