@@ -396,7 +396,7 @@ else {
 				}
 			} else {
 
-				$note = i18n("Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first.");
+				$tmp_notification = i18n("Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first.");
 				$tpl2->set('s', 'ID',       'catsel');
 				$tpl2->set('s', 'NAME',     'fake[]');
 				$tpl2->set('s', 'CLASS',    'text_medium');
