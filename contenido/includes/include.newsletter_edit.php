@@ -12,7 +12,7 @@
  *
  * @package    Contenido Backend includes
  * @version    1.1.7
- * @author     unknown
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +20,7 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created unknown
+ *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id$:
@@ -55,8 +55,9 @@ if (is_array($cfg['plugins']['newsletters'])) {
 	}
 }
 
-// Exec actions
-if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create")) {
+if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create"))
+{
+	// Create new newsletter
 	$oNewsletter 	= $oNewsletters->create(i18n("-- new newsletter --"));
 	$idnewsletter	= $oNewsletter->get("idnews");
 	$oPage->setSubnav("idnewsletter=$idnewsletter", "news");
@@ -99,13 +100,15 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 	$oNewsletter->set("dispatch_delay", $iValue);
 	$oNewsletter->store();
 } else if ($action == "news_duplicate" && $perm->have_perm_area_action($area, "news_create")) {
+	// Copy newsletter
 	$oNewsletter	= $oNewsletters->duplicate($idnewsletter);
 	
 	// Update subnav with new ID
 	$oPage->setSubnav("idnewsletter=".$oNewsletter->get("idnews"), "news");
 	$oPage->setReload();		
 } else if ($action == "news_delete" && $perm->have_perm_area_action($area, "news_delete")) {
-	// If it is an html newsletter, delete html message article
+	// Delete newsletter
+	// If it is an html newsletter, delete html message article, also
 	$oNewsletter = new Newsletter($idnewsletter);
 		
 	if ($oNewsletter->get("type") == "html" && $oNewsletter->get("idart") > 0) {
@@ -121,6 +124,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 	$oPage->setSubnav("blank", "news");
 	$oPage->setReload();
 } else if ($action == "news_add_job" && $perm->have_perm_area_action($area, "news_add_job")) {
+	// Create job
 	$oJobs = new cNewsletterJobCollection;
 	$oJob = $oJobs->create($idnewsletter, $oClientLang->getProperty("newsletter", "idcatart"));	
 	unset ($oJobs);
@@ -136,34 +140,34 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 		   ($perm->have_perm_area_action($area, "news_create") || 
 		    $perm->have_perm_area_action($area, "news_save") ||
 		    $perm->have_perm_area_action($area, "news_add_job"))) {
+	// Send test newsletter		    	
 	cInclude("classes", "contenido/class.lang.php");
+	$oUser 	= new cApiUser($auth->auth["uid"]);
 	
 	// Subnav gets not updated otherwise (no multilink from newsletter_menu)
-	$oPage->setSubnav("idnewsletter=$idnewsletter", "news");
+	$oPage->setSubnav("idnewsletter=" . $idnewsletter, "news");
 	
-	// Getting recipients information
-	$oUser 				= new cApiUser($auth->auth["uid"]);
-	
-	if ($perm->have_perm_area_action($area, "news_send_test"))
-	{
-		$iTestIDNewsGroup = $oUser->getProperty("newsletter", "test_idnewsgrp");
+	// Get test destination	
+	if ($perm->have_perm_area_action($area, "news_send_test")) {
+		$iTestIDNewsGroup = (int)$oUser->getProperty("newsletter", "test_idnewsgrp_lang" . $lang);
 	} else {
 	 	$iTestIDNewsGroup = 0; // If user doesn't have the news_send_test right, just send to himself
 	}
-	$sName				= $oUser->get("realname");
-	$sEMail				= $oUser->get("email");
-	unset($oUser);
 	
 	// Get encoding
-	$oLang = new cApiLanguage($lang);
-	$sEncoding = $oLang->get("encoding");
+	$oLang 		= new cApiLanguage($lang);
+	$sEncoding	= $oLang->get("encoding");
 	unset ($oLang);
 	
+	// Send test newsletter
 	$oNewsletter = new Newsletter($idnewsletter);
-	
 	$aRecipients = array();
-	if (!is_numeric($iTestIDNewsGroup) || $iTestIDNewsGroup == 0) {
+	if ($iTestIDNewsGroup == 0)
+	{
 		// Send test newsletter to current user email address
+		$sName				= $oUser->get("realname");
+		$sEMail				= $oUser->get("email");
+
 		$bSend = $oNewsletter->sendEMail($oClientLang->getProperty("newsletter", "idcatart"), $sEMail, $sName, $sEncoding);
 		if ($bSend) {
 			$aRecipients[] = $sName . " (" . $sEMail . ")";
@@ -173,6 +177,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 	} else {
 		$bSend = $oNewsletter->sendDirect($oClientLang->getProperty("newsletter", "idcatart"), 0, $iTestIDNewsGroup, $aRecipients, $sEncoding);
 	}
+	unset($oUser);
 	
 	if ($bSend) {
 		$notis = $notification->returnNotification("info", i18n("Test newsletter has been sent to:") . "<br />" . implode("<br />", $aRecipients) . "<br />");
@@ -182,6 +187,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 															  i18n("Error messages:") . "<br />" . $oNewsletter->_sError);
 	}
 } else {
+	// No action, just get selected newsletter
 	$oNewsletter = new Newsletter($idnewsletter);
 }
 
@@ -213,6 +219,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 	
 	if ($action == "news_save" && $perm->have_perm_area_action($area, $action))
 	{
+		// Save changes
 		$aMessages = array();
 
 		// Changing e.g. \' back to ' (magic_quotes)
@@ -287,8 +294,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 					{
 						$varArray = array();
 		  					
-						foreach ($wantVariables as $value)
-						{
+						foreach ($wantVariables as $value) {
 							$varArray[$value] = stripslashes($GLOBALS[$value]);	
 						}	
 					}
@@ -309,16 +315,14 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 		if (getEffectiveSetting("newsletter", "option-cronjob-available", "false") == "true")
 		{
 			// Only store changes, if cronjob option is available
-			if (isset($_REQUEST["ckbCronJob"]))
-			{
+			if (isset($_REQUEST["ckbCronJob"])) {
 				$oNewsletter->set("use_cronjob", 1);
 			} else {
 				$oNewsletter->set("use_cronjob", 0);
 			}
 		}
 		
-		if (isset($_REQUEST["ckbDispatch"]))
-		{
+		if (isset($_REQUEST["ckbDispatch"])) {
 			$oNewsletter->set("dispatch", 1);
 		} else {
 			$oNewsletter->set("dispatch", 0);
@@ -330,7 +334,8 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 		$oNewsletter->store(); // Note, that the properties are stored, anyway
 		
 		// Storing from (e-mail), from (name) and options as default
-		if ($_REQUEST["ckbSetDefault"]) {
+		if ($_REQUEST["ckbSetDefault"])
+		{
 			$oClientLang->setProperty("newsletter", "newsfrom", $sFromEMail);
 			$oClientLang->setProperty("newsletter", "newsfromname", $sFromName);
 			$oClientLang->setProperty("newsletter", "sendto", $_REQUEST["optSendTo"]);
@@ -354,7 +359,8 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 		}
 	} else {
 		$_REQUEST["selGroup"] = unserialize ($oNewsletter->get("send_ids"));
-		if (!is_array($_REQUEST["selGroup"])) {
+		if (!is_array($_REQUEST["selGroup"]))
+		{
 			$_REQUEST["selGroup"] = unserialize($oClientLang->getProperty("newsletter", "sendgroups"));
 			if (!is_array($_REQUEST["selGroup"])) {
 				$_REQUEST["selGroup"] = array();
@@ -383,8 +389,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 	$oSelType = new cHTMLSelectElement("selType");
 	$aItems   = array();
 	$aItems[] = array("text", i18n("Text only"));
-	if ($oClientLang->getProperty("newsletter", "html_newsletter") == "true")
-	{
+	if ($oClientLang->getProperty("newsletter", "html_newsletter") == "true") {
 		$aItems[] = array("html", i18n("HTML and text"));		
 	} else {
 		$oNewsletter->set("type", "text"); // just in case the global setting was switched off
@@ -437,15 +442,14 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 	if (count($aItems) == 0)
 	{
 		$oSendToGroups->setDisabled(true);
-		if ($_REQUEST["optSendTo"] == "selection")
-		{
+		if ($_REQUEST["optSendTo"] == "selection") {
 			$_REQUEST["optSendTo"] == "all";
 		}
 	} else if (is_array($_REQUEST["selGroup"])) { 
 		foreach ($_REQUEST["selGroup"] as $sValue)
 		{ 
-			if (array_key_exists($sValue, $oSelGroup->_options)) // only select, if item still exists
-			{ 
+			if (array_key_exists($sValue, $oSelGroup->_options)) {
+				// only select, if item still exists 
 				$oSelGroup->_options[$sValue]->setSelected(true); 
 			} 
 		} 
@@ -472,8 +476,61 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 			$oSendToGroups->toHTML(false)."&nbsp;".i18n("Send newsletter to the members of the selected group(s):")."<br />".chr(10).
 			$oSelGroup->render());
 	
+	/* TODO: Work in progress
+	// Files
+	$oSelFiles = new cHTMLSelectElement("selFiles[]", "", "fileselect");
+	$oSelFiles->setSize(5);
+	//$oSelGroup->setStyle("width: 350px; margin-top: 5px; margin-bottom: 5px; margin-left: 25px;");
+	$oSelFiles->setMultiSelect();
+	$oSelFiles->setAlt(i18n("Note: Hold <Ctrl> to select multiple items."));
+	//$oSelGroup->autoFill($aItems);
+	$sFileSelScript = '<script type="text/javascript">
+		var fb_handle;
+		var fb_intervalhandle;
+
+		function fncShowImageBrowser()
+		{
+			fb_handle = window.open(\''.$cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser\', \'imagebrowser\', \'dialog=yes,resizable=yes\');
+			fb_intervalhandle = window.setInterval("fncUpdateImageFilebrowser()", 250);
+		}
+
+		function fncUpdateImageFilebrowser()
+		{
+			if (!fb_handle.left)
+			{
+				return;
+			}
+			
+			if (!fb_handle.left.left_top)
+			{
+				return;
+			}
+			
+			if (!fb_handle.left.left_top.document.getElementById("selectedfile"))
+			{
+				return;
+			}	
+			
+			if (fb_handle.left.left_top.document.getElementById("selectedfile").value != "")
+			{
+				var oSelElement = document.forms[0].elements["selFiles[]"];
+				var sValue = fb_handle.left.left_top.document.getElementById("selectedfile").value;
+
+				oSelElement.options[oSelElement.length] = new Option(sValue, sValue, false, false);
+
+				//fb_win.document.forms[0].elements[fb_fieldname].value = fb_handle.left.left_top.document.getElementById("selectedfile").value;
+				
+				fb_handle.close();
+				window.clearInterval(fb_intervalhandle);
+			}
+		}
+		</script>';
+	$oPage->addScript('selFile', $sFileSelScript);
+	$oForm->add(i18n("Attachments"), $oSelFiles->render().'<br /><span onclick="fncShowImageBrowser();">Test</span>');
+	*/
+	
 	// Options
-	$ckbWelcome			= new cHTMLCheckbox("ckbWelcome", "1");
+	$ckbWelcome		= new cHTMLCheckbox("ckbWelcome", "1");
 	$ckbWelcome->setChecked($oNewsletter->get("welcome"));
 
 	// Generate disabled cronjob element
@@ -483,10 +540,9 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 	// list in the cronjobs folder - as it may be used, but not via cronjob simulation
 	$ckbCronJob		= new cHTMLCheckbox("ckbCronJob", "1", "", $oNewsletter->get("use_cronjob"), true);
 	
-	#$ckbCronJob->setChecked($oNewsletter->get("use_cronjob"));
-	if (getEffectiveSetting("newsletter", "option-cronjob-available", "false") == "true")
-	{
-		$ckbCronJob->setDisabled(""); // Enable cronjob checkbox
+	if (getEffectiveSetting("newsletter", "option-cronjob-available", "false") == "true") {
+		// Enable cronjob checkbox
+		$ckbCronJob->setDisabled(""); 
 	} else {
 		// Give the user a hint
 		$ckbCronJob->setAlt(i18n("Option has to be enabled as client setting - see techref for details"));
@@ -510,11 +566,12 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 	$oForm->add(i18n("Author"), $classuser->getUserName($oNewsletter->get("author")) . " (". $oNewsletter->get("created").")" ); 
 	$oForm->add(i18n("Last modified by"), $classuser->getUserName($oNewsletter->get("modifiedby")). " (". $oNewsletter->get("modified").")" );	
 
-	$execScript = '
+	$sExecScript = '
     <script type="text/javascript">
 
-	    /* Enabled/Disable group box */
-        function checkSelection(strValue) {
+	    // Enabled/Disable group box
+        function checkSelection(strValue)
+        {
             if (strValue == "selection") {
                 document.getElementById("groupselect").disabled = false;
             } else {
@@ -522,7 +579,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             }
         }
 		</script>';
-	$oPage->addScript('exec', $execScript);
+	$oPage->addScript('exec', $sExecScript);
 	
 	$oPage->setContent($notis . $oForm->render(true));
 } else {

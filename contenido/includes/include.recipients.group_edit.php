@@ -12,7 +12,7 @@
  *
  * @package    Contenido Backend includes
  * @version    1.1.1
- * @author     Björn Behrens
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +20,7 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2004-08-01
+ *   created 2004-08-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id$:
@@ -53,73 +53,88 @@ $aFields["deactivated"] = array("field" => "deactivated",	"caption" => i18n("Dea
 
 if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $action))
 {
-   $oRGroup = $oRGroups->create(" ".i18n("-- new group --"));
-   $_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
-   $oPage->setReload();
-   $refreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'add\')</script>';
-   $oPage->addScript('refreshlefttop', $refreshLeftTopScript);
-   
-} elseif ($action == "recipientgroup_delete" && $perm->have_perm_area_action($area, $action))
-{
-   $oRGroups->delete($_REQUEST["idrecipientgroup"]);
-   $refreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'remove\')</script>';
-   $oPage->addScript('refreshlefttop', $refreshLeftTopScript);
-   
-   $_REQUEST["idrecipientgroup"] = 0;
-   $oRGroup = new RecipientGroup;
-   $oPage->setReload();
-   
+	$oRGroup = $oRGroups->create(" ".i18n("-- new group --"));
+	$_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
+	$oPage->setReload();
+	$sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'add\')</script>';
+	$oPage->addScript('refreshlefttop', $sRefreshLeftTopScript);
+} elseif ($action == "recipientgroup_delete" && $perm->have_perm_area_action($area, $action)) {
+	$oRGroups->delete($_REQUEST["idrecipientgroup"]);
+	$sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'remove\')</script>';
+	$oPage->addScript('refreshlefttop', $sRefreshLeftTopScript);
+	
+	$_REQUEST["idrecipientgroup"] = 0;
+	$oRGroup = new RecipientGroup;
+	$oPage->setReload();
 } else {
 	$oRGroup->loadByPrimaryKey($_REQUEST["idrecipientgroup"]);
 }
 
-if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGroup->get("idlang") == $lang) {
-	// Saving changes	
-	if ($action == "recipientgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
+if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGroup->get("idlang") == $lang)
+{
+	if ($action == "recipientgroup_save_group" && $perm->have_perm_area_action($area, $action))
+	{
 		// Saving changes
-		$oPage->setReload();
-		$aMessages = array();
+		$aMessages	= array();
+		$bReload 	= false;
 		
 		$sGroupName = stripslashes($_REQUEST["groupname"]);
-
-		if ($oRGroup->get("groupname") != $sGroupName) {
+		if ($oRGroup->get("groupname") != $sGroupName)
+		{
 			$oRGroups->resetQuery();
-			$oRGroups->setWhere("groupname", $sGroupName);
-			$oRGroups->setWhere("idclient", $client);
-			$oRGroups->setWhere("idlang", $lang);
+			$oRGroups->setWhere("groupname",	$sGroupName);
+			$oRGroups->setWhere("idclient",		$client);
+			$oRGroups->setWhere("idlang",		$lang);
 			$oRGroups->setWhere($oRGroup->primaryKey, $oRGroup->get($oRGroup->primaryKey), "!=");
 			$oRGroups->query();
 			
-    		if ($oRGroups->next()) {
-    			$aMessages[] = i18n("Could not set new group name: Group already exists");	
-    		} else {
-    			$oRGroup->set("groupname", $sGroupName);
-    		}
+	 		if ($oRGroups->next()) {
+	 			$aMessages[] = i18n("Could not set new group name: Group already exists");	
+	 		} else {
+	 			$bReload = true;
+	 			
+	 			$oRGroup->set("groupname", $sGroupName);
+	 		}
 		}
 		
-		if (count($_REQUEST["adduser"]) > 0) {
-			foreach ($_REQUEST["adduser"] as $iRcpID) {
+		if (count($_REQUEST["adduser"]) > 0)
+		{
+			foreach ($_REQUEST["adduser"] as $iRcpID)
+			{
 				if (is_numeric($iRcpID)) {
 					$oRGroupMembers->create($_REQUEST["idrecipientgroup"], $iRcpID);
 				}
 			}	
 		}
-    				
-    	$oRGroup->set("defaultgroup", $_REQUEST["defaultgroup"]);
-    	$oRGroup->store();
+	 	
+	 	if ($oRGroup->get("defaultgroup") != (int)$_REQUEST["defaultgroup"])
+	 	{
+	 		$bReload = true;
+	 		$oRGroup->set("defaultgroup", $_REQUEST["defaultgroup"]);
+	 	}
+	 	
+	 	$oRGroup->store();
+	 	
+	 	if ($bReload) {
+	 		$oPage->setReload();
+	 	}
 
 		// Removing users from group (if specified)
-		if ($perm->have_perm_area_action($area, "recipientgroup_recipient_delete") && is_array($_REQUEST["deluser"])) {
-			foreach ($_REQUEST["deluser"] as $iRcpID) {
+		//print_r ($_REQUEST["deluser"]);
+		if ($perm->have_perm_area_action($area, "recipientgroup_recipient_delete") && is_array($_REQUEST["deluser"]))
+		{
+			foreach ($_REQUEST["deluser"] as $iRcpID)
+			{
 				if (is_numeric($iRcpID)) {
+					echo "yo: " . $iRcpID;
 					$oRGroupMembers->remove($_REQUEST["idrecipientgroup"], $iRcpID);
 				}
 			}
 		}
-        
-        $refreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'remove\');
-                                                                top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'add\', \''.$sGroupName.'\');</script>';
-        $oPage->addScript('refreshlefttop', $refreshLeftTopScript);
+		  
+		$sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'remove\');
+									top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'add\', \''.$sGroupName.'\');</script>';
+		$oPage->addScript('refreshlefttop', $sRefreshLeftTopScript);
 	}
 	
 	if (count($aMessages) > 0) {

@@ -12,7 +12,7 @@
  *
  * @package    Contenido Backend includes
  * @version    1.0.0
- * @author     Björn Behrens
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +20,7 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created unknown
+ *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id$:
@@ -39,19 +39,37 @@ cInclude("classes", "class.newsletter.jobs.php");
 cInclude("classes", "contenido/class.user.php");
 cInclude("classes", "class.ui.php");
 
+##################################
+# Initialization
+##################################
 $oPage	= new cPage;
 $oMenu	= new UI_Menu;
 $oJobs	= new cNewsletterJobCollection;
+$oUser 	= new cApiUser($auth->auth["uid"]);
+
+// Specify fields for search, sort and validation. Design makes enhancements 
+// using plugins possible (currently not implemented). If you are changing things here, 
+// remember to update include.newsletter_left_top.php, also.
+// field:	Field name in the db
+// caption:	Shown field name (-> user)
+// base:	Elements from core code (other type may be: "plugin")
+// sort: 	Element can be used to be sorted by
+// search:	Element can be used to search in
+$aFields = array();
+$aFields["name"]	= array("field" => "name", 		"caption" => i18n("Name"),		"type" => "base,sort,search");
+$aFields["created"]	= array("field" => "created",	"caption" => i18n("Created"),	"type" => "base,sort");
+$aFields["status"]	= array("field" => "status",	"caption" => i18n("Status"),	"type" => "base,sort");
+// Not needed, as no sort/search, but keep as memo: $aFields["cronjob"]	= array("field" => "use_cronjob", "caption" => i18n("Use cronjob"), "type" => "base");
 
 ##################################
-# Getting values for sorting, etc.
+# Check external input
 ##################################
-// Items per page
-$oUser = new cApiUser($auth->auth["uid"]);
+// Items per page (value stored per area in user property)
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST["elemperpage"]) || $_REQUEST["elemperpage"] < 0) {
 	$_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
 if (!is_numeric($_REQUEST["elemperpage"])) {
+	// This is the case, if the user property has never been set (first time user)
 	$_REQUEST["elemperpage"] = 25;
 }
 if ($_REQUEST["elemperpage"] > 0) { 
@@ -60,104 +78,57 @@ if ($_REQUEST["elemperpage"] > 0) {
 }
 unset ($oUser);
 
-// Current page
-if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST["page"]) || $_REQUEST["page"] <= 0 || $_REQUEST["elemperpage"] == 0) {
+$_REQUEST["page"] = (int)$_REQUEST["page"];
+if ($_REQUEST["page"] <= 0 || $_REQUEST["elemperpage"] == 0) {
 	$_REQUEST["page"] = 1;
 }
-
 // Sort order
 if ($_REQUEST["sortorder"] != "ASC") {
-	$_REQUEST["sortorder"]  = "DESC";
+	$_REQUEST["sortorder"]  = "DESC"; // Note, default is DESC (as default sortby is "created" date)
 }
 
-// Initialization
-$aFields = array();
-$aFields["name"]	= array("field" => "name", "caption" => i18n("Name"), "type" => "base,sort,search");
-$aFields["created"]	= array("field" => "created", "caption" => i18n("Created"), "type" => "base,sort");
-$aFields["status"]	= array("field" => "status", "caption" => i18n("Status"), "type" => "base,sort");
-$aFields["cronjob"]	= array("field" => "use_cronjob", "caption" => i18n("Use cronjob"), "type" => "base");
-
-$sDelTitle		= i18n("Delete dispatch job");
-$sDelDescr		= i18n("Do you really want to delete the following newsletter dispatch job:<br>");
-
-$sSendTitle		= i18n("Run job");
-$sSendDescr		= i18n("Do you really want to run the following job:<br>");
-
-$sView          = i18n("View");
-
-// Fill authors in dropdown
-$sSQL = "SELECT DISTINCT author, authorname FROM ".$cfg["tab"]["news_jobs"]." ORDER BY authorname";
-$db->query($sSQL);
-
-$aItems = array();
-$bUserInTheList = false;
-while ($db->next_record()) {
-	if ($db->f("author") == $auth->auth["uid"]) {
-		$bUserInTheList = true;
+// Check sort by and search in criteria
+$bSortByFound 	= false;
+$bSearchInFound	= false;
+foreach ($aFields as $sKey => $aData)
+{
+	if ($aData["field"] == $_REQUEST["sortby"] && strpos($aData["type"], "sort") !== false) {
+		$bSortByFound	= true;
 	}
-	$aItems[] = array($db->f("author"), urldecode($db->f("authorname")));
-}
-$oSelAuthor = new cHTMLSelectElement("selAuthor");
-$oSelAuthor->autoFill($aItems);
-if (!$bUserInTheList) {
-	$oOption = new cHTMLOptionElement($auth->auth["uname"], $auth->auth["uid"]);
-	$oSelAuthor->addOptionElement($auth->auth["uid"], $oOption);
-}
-$oSelAuthor->setDefault($_REQUEST["selAuthor"]);
-
-// Items per page
-$oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
-$oSelectItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
-$oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
-
-// sortby
-$oSelectSortBy = new cHTMLSelectElement("sortby");
-foreach ($aFields as $sKey => $aData) {
-	if (strpos($aData["type"], "sort") !== false) {
-		if ($_REQUEST["sortby"] == "") {
-			$_REQUEST["sortby"] = "created"; // Usually $sKey, but I'd like to get it sort by created as default...
-		}
-		$oOption = new cHTMLOptionElement($aData["caption"], $sKey);
-		$oSelectSortBy->addOptionElement($sKey, $oOption);
-	}
-}	
-$oSelectSortBy->setDefault($_REQUEST["sortby"]);
-
-// Sortorder
-$oSelectSortOrder = new cHTMLSelectElement("sortorder");
-$oSelectSortOrder->autoFill(array("ASC" => i18n("Ascending"), "DESC" => i18n("Descending")));
-$oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
-
-// Search for
-$oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 16);
-
-// Search in
-$oSelectSearchIn = new cHTMLSelectElement("searchin");
-$oOption = new cHTMLOptionElement(i18n("-- All fields --"), "--all--");
-$oSelectSearchIn->addOptionElement("all", $oOption);
-
-foreach ($aFields as $sKey => $aData) {
-	if (strpos($aData["type"], "search") !== false) {
-		$oOption = new cHTMLOptionElement($aData["caption"], $sKey);
-		$oSelectSearchIn->addOptionElement($sKey, $oOption);
+	if ($aData["field"] == $_REQUEST["searchin"] && strpos($aData["type"], "search") !== false) {
+		$bSearchInFound	= true;
 	}
 }
-$oSelectSearchIn->setDefault($_REQUEST["searchin"]);
 
-// Submit button
-$oSubmit = new cHTMLButton("submit", i18n("Apply"));
+if (!$bSortByFound) {
+	$_REQUEST["sortby"]		= "created"; // Default sort by field, possible values see above
+}
+if (!$bSearchInFound) {
+	$_REQUEST["searchin"]	= "--all--";
+}
 
-
-// Request data
-$oJobs->setWhere("idclient", $client);
-$oJobs->setWhere("idlang", $lang);
+// Author
 if ($_REQUEST["selAuthor"] == "") {
-    $oJobs->setWhere("author", $_REQUEST["selAuthor"]);
+    $_REQUEST["selAuthor"] = $auth->auth["uid"];
 }
 
-if ($_REQUEST["filter"] != "") {
-	if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
-		foreach ($aFields as $sKey => $aData) {
+// Free memory
+unset($oUser);
+
+##################################
+# Get data
+##################################
+
+$oJobs->setWhere("idclient",	$client);
+$oJobs->setWhere("idlang",		$lang);
+$oJobs->setWhere("author",		$_REQUEST["selAuthor"]);
+
+if ($_REQUEST["filter"] != "")
+{
+	if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "")
+	{
+		foreach ($aFields as $sKey => $aData)
+		{
 			if (strpos($aData["type"], "search") !== false) {
 				$oJobs->setWhereGroup("filter", $aData["field"], $_REQUEST["filter"], "LIKE");
 			}
@@ -168,10 +139,12 @@ if ($_REQUEST["filter"] != "") {
 	}
 }
 
-if ($_REQUEST["elemperpage"] > 0) {
+if ($_REQUEST["elemperpage"] > 0)
+{
 	$oJobs->query();
 
-	$iItemCount = $oJobs->count(); // Getting item count without limit (for page function) - better idea anyone (performance)?
+	// Getting item count without limit (for page function) - better idea anyone (performance)?
+	$iItemCount = $oJobs->count();
     
     if ($_REQUEST["elemperpage"]*($_REQUEST["page"]) >= $iItemCount+$_REQUEST["elemperpage"] && $_REQUEST["page"]  != 1) {
         $_REQUEST["page"]--;
@@ -181,7 +154,7 @@ if ($_REQUEST["elemperpage"] > 0) {
 	$iItemCount = 0;
 }
 
-$oJobs->setOrder($_REQUEST["sortby"]." ".$_REQUEST["sortorder"]);
+$oJobs->setOrder($_REQUEST["sortby"] . " " . $_REQUEST["sortorder"]);
 $oJobs->query();
 
 // Output data
@@ -189,8 +162,16 @@ $oMenu			= new UI_Menu;
 $iMenu			= 0;
 $sDateFormat	= getEffectiveSetting("backend", "timeformat", "d.m.Y H:i");
 
+// Store messages for repeated use (speeds performance, as i18n translation is only needed once)
+$aMsg = array();
+$aMsg["DelTitle"]		= i18n("Delete dispatch job");
+$aMsg["DelDescr"]		= i18n("Do you really want to delete the following newsletter dispatch job:<br>");
+
+$aMsg["SendTitle"]		= i18n("Run job");
+$aMsg["SendDescr"]		= i18n("Do you really want to run the following job:<br>");
+
 // Prepare "send link" template
-$sTplSend = '<a title="'.$sSendTitle.'" href="javascript://" onclick="showSendMsg(\'{ID}\',\'{NAME}\')"><img src="'.$cfg['path']['images'].'newsletter_16.gif" border="0" title="'.$sSendTitle.'" alt="'.$sSendTitle.'"></a>';
+$sTplSend = '<a title="'.$aMsg["SendTitle"].'" href="javascript://" onclick="showSendMsg(\'{ID}\',\'{NAME}\')"><img src="'.$cfg['path']['images'].'newsletter_16.gif" border="0" title="'.$aMsg["SendTitle"].'" alt="'.$aMsg["SendTitle"].'"></a>';
 
 while ($oJob = $oJobs->next())
 {
@@ -202,7 +183,8 @@ while ($oJob = $oJobs->next())
 	$oLnk->setMultiLink($area, "", $area, "");
 	$oLnk->setCustom("idnewsjob", $iID);
 
-// Is at present redundant 
+	// Is at present redundant
+	// HerrB: No, it's just not used/set... 
 	//$oMenu->setImage($iMenu, "images/newsletter_16.gif");
 	$oMenu->setTitle($iMenu, $sName);
 	
@@ -227,7 +209,7 @@ while ($oJob = $oJobs->next())
 			
 			if ($perm->have_perm_area_action($area, "news_job_delete")) {
 				// Job may be deleted, if user has the right to do so
-				$oMenu->setActions($iMenu, 'delete', '<a title="'.$sDelTitle.'" href="javascript://" onclick="showDelMsg('.$iID.',\''.addslashes($sName).'\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$sDelTitle.'" alt="'.$sDelTitle.'"></a>');
+				$oMenu->setActions($iMenu, 'delete', '<a title="'.$aMsg["DelTitle"].'" href="javascript://" onclick="showDelMsg('.$iID.',\''.addslashes($sName).'\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$aMsg["DelTitle"].'" alt="'.$aMsg["DelTitle"].'"></a>');
 			}
 			break;
 		case 2:
@@ -243,7 +225,7 @@ while ($oJob = $oJobs->next())
 			
 			$oLnk->updateAttributes(array("style" => "color:#da8a00"));
 			
-			$sDelete = '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$sDelTitle.'" alt="'.$sDelTitle.'">';
+			$sDelete = '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$aMsg["DelTitle"].'" alt="'.$aMsg["DelTitle"].'">';
 			break;
 		case 9:
 			// Job finished, don't do anything
@@ -251,7 +233,7 @@ while ($oJob = $oJobs->next())
 			
 			if ($perm->have_perm_area_action($area, "news_job_delete")) {
 				// You have the right, but you can't delete the job after sending
-				$oMenu->setActions($iMenu, 'delete', '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$sDelTitle.'" alt="'.$sDelTitle.'">');
+				$oMenu->setActions($iMenu, 'delete', '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$aMsg["DelTitle"].'" alt="'.$aMsg["DelTitle"].'">');
 			}
 			break;
 	}
@@ -259,111 +241,110 @@ while ($oJob = $oJobs->next())
 	$oMenu->setLink($iMenu, $oLnk);
 }
 
-$execScript = '
-    <script type="text/javascript">
-        /* Session-ID */
-        var sid = "'.$sess->id.'";
+$sExecScript = '
+	<script type="text/javascript">
+		// Session-ID
+		var sid = "'.$sess->id.'";
 
-        /* Create messageBox instance */
-        box = new messageBox("", "", "", 0, 0);
+		// Create messageBox instance
+		box = new messageBox("", "", "", 0, 0);
 
-        function showSendMsg(lngId, strElement) {
-            box.confirm("'.$sSendTitle.'", "'.$sSendDescr.'<b>" + strElement + "</b>", "runJob(\'" + lngId + "\')");
-        }
+		function showSendMsg(lngId, strElement) {
+			box.confirm("'.$aMsg["SendTitle"].'", "'.$aMsg["SendDescr"].'<b>" + strElement + "</b>", "runJob(\'" + lngId + "\')");
+		}
 
-        function showDelMsg(lngId, strElement) {
-            box.confirm("'.$sDelTitle.'", "'.$sDelDescr.'<b>" + strElement + "</b>", "deleteJob(\'" + lngId + "\')");
-        }
+		function showDelMsg(lngId, strElement) {
+			box.confirm("'.$aMsg["DelTitle"].'", "'.$aMsg["DelDescr"].'<b>" + strElement + "</b>", "deleteJob(\'" + lngId + "\')");
+		}
 
-        /* Function for running job */
-        function runJob(idnewsjob)
-        {
-            oForm = parent.parent.left.left_top.document.getElementById("dispatch_listoptionsform");
-         
-            url  = "main.php?area=news_jobs";
-            url += "&action=news_job_run";
-            url += "&frame=4";
-            url += "&idnewsjob=" + idnewsjob;
-            url += "&contenido=" + sid;
-            url += get_registered_parameters();
-            url += "&selAuthor=" + oForm.selAuthor.value;
-            url += "&sortby=" + oForm.sortby.value;
-            url += "&sortorder=" + oForm.sortorder.value;
-            url += "&filter=" + oForm.filter.value;
-            url += "&elemperpage=" + oForm.elemperpage.value;
+		// Function for running job
+		function runJob(idnewsjob)
+		{
+			oForm = parent.parent.left.left_top.document.getElementById("dispatch_listoptionsform");
+		 
+			url  = "main.php?area=news_jobs";
+			url += "&action=news_job_run";
+			url += "&frame=4";
+			url += "&idnewsjob=" + idnewsjob;
+			url += "&contenido=" + sid;
+			url += get_registered_parameters();
+			url += "&selAuthor=" + oForm.selAuthor.value;
+			url += "&sortby=" + oForm.sortby.value;
+			url += "&sortorder=" + oForm.sortorder.value;
+			url += "&filter=" + oForm.filter.value;
+			url += "&elemperpage=" + oForm.elemperpage.value;
 
-            parent.parent.right.right_bottom.location.href = url;
-        }
+			parent.parent.right.right_bottom.location.href = url;
+		}
 
-        /* Function for deleting job */
-        function deleteJob(idnewsjob)
-        {
-            oForm = parent.parent.left.left_top.document.getElementById("dispatch_listoptionsform");
-          
-            url  = "main.php?area=news_jobs";
-            url += "&action=news_job_delete";
-            url += "&frame=4";
-            url += "&idnewsjob=" + idnewsjob;
-            url += "&contenido=" + sid;
-            url += get_registered_parameters();
-            url += "&selAuthor=" + oForm.selAuthor.value;
-            url += "&sortby=" + oForm.sortby.value;
-            url += "&sortorder=" + oForm.sortorder.value;
-            url += "&filter=" + oForm.filter.value;
-            url += "&elemperpage=" + oForm.elemperpage.value;
+		// Function for deleting job
+		function deleteJob(idnewsjob)
+		{
+			oForm = parent.parent.left.left_top.document.getElementById("dispatch_listoptionsform");
+		  
+			url  = "main.php?area=news_jobs";
+			url += "&action=news_job_delete";
+			url += "&frame=4";
+			url += "&idnewsjob=" + idnewsjob;
+			url += "&contenido=" + sid;
+			url += get_registered_parameters();
+			url += "&selAuthor=" + oForm.selAuthor.value;
+			url += "&sortby=" + oForm.sortby.value;
+			url += "&sortorder=" + oForm.sortorder.value;
+			url += "&filter=" + oForm.filter.value;
+			url += "&elemperpage=" + oForm.elemperpage.value;
 
-            parent.parent.right.right_bottom.location.href = url;
-        }
+			parent.parent.right.right_bottom.location.href = url;
+		}
 		</script>';
 
 $oPage->setMargin(0);
+// Messagebox JS has to be included before ExecScript!
 $oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
-$oPage->addScript('exec', $execScript);
-$oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
+$oPage->addScript('exec', $sExecScript);
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
 
 //generate current content for Object Pager
+$sPagerId 	= '0ed6d632-6adf-4f09-a0c6-1e38ab60e303';
 $oPagerLink = new cHTMLLink;
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("selAuthor", $_REQUEST["selAuthor"]);
-$oPagerLink->setCustom("elemperpage", $_REQUEST["elemperpage"]);
-$oPagerLink->setCustom("filter", $_REQUEST["filter"]);
-$oPagerLink->setCustom("restrictgroup", $_REQUEST["restrictgroup"]);
-$oPagerLink->setCustom("sortby", $_REQUEST["sortby"]);
-$oPagerLink->setCustom("sortorder", $_REQUEST["sortorder"]);
-$oPagerLink->setCustom("searchin", $_REQUEST["searchin"]);
-$oPagerLink->setCustom("frame", $frame);
-$oPagerLink->setCustom("area", $area);
+$oPagerLink->setCustom("selAuthor",		$_REQUEST["selAuthor"]);
+$oPagerLink->setCustom("elemperpage",	$_REQUEST["elemperpage"]);
+$oPagerLink->setCustom("filter",		$_REQUEST["filter"]);
+$oPagerLink->setCustom("restrictgroup",	$_REQUEST["restrictgroup"]);
+$oPagerLink->setCustom("sortby",		$_REQUEST["sortby"]);
+$oPagerLink->setCustom("sortorder",		$_REQUEST["sortorder"]);
+$oPagerLink->setCustom("searchin",		$_REQUEST["searchin"]);
+$oPagerLink->setCustom("frame",			$frame);
+$oPagerLink->setCustom("area",			$area);
 $oPagerLink->enableAutomaticParameterAppend();
-$oPagerLink->setCustom("contenido", $sess->id);
+$oPagerLink->setCustom("contenido",		$sess->id);
+// Note, that after the "page" parameter no "pagerlink" parameter is specified - 
+// it is not used, as the JS below only uses the INNER html and the "pagerlink" parameter is
+// set by ...left_top.html for the foldingrow itself 
+$oPager = new cObjectPager($sPagerId, $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page");
 
-$oPager = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e303", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerlDisp);
-
-//add slashes, to insert in javascript
+// Add slashes, to insert in javascript
 $sPagerContent = $oPager->render(1);
 $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
-//send new object pager to left_top
+// Send new object pager to left_top
+$oPage->addScript('setpager', '<script type="text/javascript" src="scripts/setPager.js"></script>');
+
 $sRefreshPager = '
-    <script type="text/javascript">
-        var sNavigation = \''.$sPagerContent.'\';
-        var left_top = parent.left_top;
-        if (left_top.document) {
-            var oPager = left_top.document.getElementById(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e303\');
-            if (oPager) {
-                oInsert = oPager.firstChild;
-                oInsert.innerHTML = sNavigation;
-                left_top.dispatch_listoptionsform_curPage = '.$_REQUEST["page"].';
-                left_top.toggle_pager(\'0ed6d632-6adf-4f09-a0c6-1e38ab60e303\');
-            }
-        }
-    </script>';
-    
+	<script type="text/javascript">
+		var sNavigation = \''.$sPagerContent.'\';
+
+		// Activate time to refresh pager folding row in left top
+		var oTimer = window.setInterval("fncSetPager(\'' . $sPagerId . '\',\'' . $_REQUEST["page"] . '\')", 200);
+	</script>';
+
 $oPage->addScript('refreshpager', $sRefreshPager);  
 
-$oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0" width="100%">', $oListOptionRow, '</table>', $oMenu->render(false)));
+//$oPage->setContent(array('<table border="0" cellspacing="0" cellpadding="0" width="100%">', $oListOptionRow, '</table>', $oMenu->render(false)));
+$oPage->setContent($oMenu->render(false));
 $oPage->render();
 
 ?>

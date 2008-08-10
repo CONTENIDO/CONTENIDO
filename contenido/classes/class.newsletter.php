@@ -492,7 +492,7 @@ class Newsletter extends Item
 				}
 				unset ($oArticles);
 				
-		   		$sFile	= "front_content.php?idclient=$client&idlang=$lang&idcat=$iIDCat&idart=$iIDArt&noex=1&send=1";
+		   		$sFile	= "front_content.php?client=$client&lang=$lang&idcat=$iIDCat&idart=$iIDArt&noex=1&send=1";
 				$aURL 	= parse_url($cfgClient[$client]['path']['htmlpath']);
 				
 				// TODO: Other schemes than http should be tested before use!

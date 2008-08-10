@@ -12,7 +12,7 @@
  *
  * @package    Contenido Backend includes
  * @version    1.0.0
- * @author     Björn Behrens
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +20,7 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2004-08-01
+ *   created 2004-08-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id$:

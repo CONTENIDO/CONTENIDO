@@ -9,6 +9,11 @@ $Id: CHANGELOG.txt,v 1.116 2008/07/08 11:08:12 timo.trautmann Exp $
 Release 4.8.8
 ----------------------------------------------------------------------	
 ** Bug
+    * [CON-192] - Newsletter area refactored and bugs fixed
+                  (e.g. test destination lost after first page,
+                   test destination setting has to be lang specific)
+    * [CON-182] - Impossible to send html newsletter from other
+                  language than default language
     * [CON-189] - basehref chain doesn't take "no settings" into 
                   account and returns "" as base href 
     * [CON-186] - Joins from genericdb/gdbDriver broken after

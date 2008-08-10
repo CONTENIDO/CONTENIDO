@@ -12,7 +12,7 @@
  *
  * @package    Contenido Backend includes
  * @version    1.0.0
- * @author     Björn Behrens
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +20,7 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created unknown
+ *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id$:
@@ -237,35 +237,41 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 	$oForm->add(i18n("Text Message"), $oTxtMessage->render()."<br />".$sTagInfoText);
 	
 	$sExecScript = '
-    <script type="text/javascript">
-	    /* Enabled/Disable group box */
-        function fncShowHide(strItemID) {
-            objItem = document.getElementById(strItemID);
+	<script type="text/javascript">
+		// Enabled/Disable group box
+		function fncShowHide(strItemID) {
+			objItem = document.getElementById(strItemID);
 
-            if (objItem.style.display == "none") {
-               objItem.style.display = "inline";
-            } else {
-               objItem.style.display = "none";
-            }
-        }
+			if (objItem.style.display == "none") {
+				objItem.style.display = "inline";
+			} else {
+				objItem.style.display = "none";
+			}
+		}
 
-        /* Create messageBox instance */
-        box = new messageBox("", "", "", 0, 0);
+		// Create messageBox instance
+		box = new messageBox("", "", "", 0, 0);
 
-        /* If html newsletter template selection has changed, ask user
-         * if he/she may like to save this change (e.g. to get an html
-         * newsletter immediately) */
-        function askSubmitOnTplChange(oSelectObject) {
-            iOriginalTplIDArt = '.$iTplIDArt.';
+		// If html newsletter template selection has changed, ask user
+		// if he/she may like to save this change (e.g. to get an html
+		// newsletter immediately)
+		function askSubmitOnTplChange(oSelectObject) {
+			iOriginalTplIDArt = '.$iTplIDArt.';
 
-            if (iOriginalTplIDArt != oSelectObject.options[oSelectObject.selectedIndex].value) {
-                box.confirm("'.i18n("HTML newsletter template changed").'", "'.i18n("HTML template has been changed. Do you like to save now to apply changes?<br /><br /><b>Note, that existing HTML newsletter content will get lost!</b>").'", "submitForm()");
-            }
-        }
+			if (iOriginalTplIDArt != oSelectObject.options[oSelectObject.selectedIndex].value) {
+				if (iOriginalTplIDArt == 0) {
+					// Everything fine: Just selecting a template for the first time
+					submitForm();
+				} else {
+					// You may loose information, warn!
+					box.confirm("'.i18n("HTML newsletter template changed").'", "'.i18n("HTML template has been changed. Do you like to save now to apply changes?<br /><br /><b>Note, that existing HTML newsletter content will get lost!</b>").'", "submitForm()");
+				}
+			}
+		}
 
-        function submitForm() {
-            document.frmNewsletterMsg.submit();
-        }
+		function submitForm() {
+			document.frmNewsletterMsg.submit();
+		}
 		</script>';
 	$oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
 	$oPage->addScript('execscript', $sExecScript);
