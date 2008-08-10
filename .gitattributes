@@ -3622,6 +3622,7 @@ contenido/scripts/messageBox.js.php -text
 contenido/scripts/parameterCollector.js -text
 contenido/scripts/rights.js.php -text
 contenido/scripts/rowMark.js -text
+contenido/scripts/setPager.js -text
 contenido/scripts/str_overview.js -text
 contenido/scripts/subnav.js -text
 contenido/scripts/tip_balloon.js -text
