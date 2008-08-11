@@ -51,9 +51,7 @@
  * 
  */
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
-}
+define("CON_FRAMEWORK", true);
 
 // include security class and check request variables
 include_once ('../../classes/class.security.php');
@@ -156,7 +154,6 @@ while ($db->next_record())
 	$encoding[$db->f("idlang")] = $db->f("encoding");
 }
 
-// Used by backend edit and HTML newsletter generation
 if (is_numeric($tmpchangelang) && $tmpchangelang > 0)
 {
 	$savedlang = $lang;
@@ -259,16 +256,25 @@ if (file_exists("config.local.php"))
  * If the path variable was passed, try to resolve it to a Category Id 
  * e.g. front_content.php?path=/company/products/
  */
-if (isset ($path))
+if (isset($path) && strlen($path) > 1)
 {
 	/* Which resolve method is configured? */
 	if ($cfg["urlpathresolve"] == true)
 	{
-		$idcat = prResolvePathViaURLNames($path);
+		
+		$iLangCheck = 0;	
+		$idcat = prResolvePathViaURLNames($path, &$iLangCheck);
+
 	}
 	else
 	{
-		$idcat = prResolvePathViaCategoryNames($path);
+		$iLangCheck = 0;	
+		
+		$idcat = prResolvePathViaCategoryNames($path, $iLangCheck);
+		if($lang != iLangCheck){
+			$lang = $iLangCheck;
+		}
+		
 	}
 }
 
