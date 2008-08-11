@@ -113,4 +113,8 @@ foreach ($types_to_register as $global_type)
 unset ($types_to_register, $global_type, $arr);
 
 $FORM = $_REQUEST;
+
+// We need still following 2 variables, see usage in phplib dir...
+$PHP_SELF     = $_SERVER['PHP_SELF'];
+$QUERY_STRING = $_SERVER['QUERY_STRING']; 
 ?>
