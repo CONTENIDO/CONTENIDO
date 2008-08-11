@@ -405,7 +405,7 @@ class Contenido_Navigation {
         	$id = $classclient->getClientName($client).' ('.$client.')';
 			$hints = 'alt="'.$id.'" title="'.$id.'"';
             
-            $sThumbnailPath = capiImgScale ($cfgClient[$client]["path"]["frontend"].$clientImage, 25, 25, 0, 1);
+            $sThumbnailPath = capiImgScale ($cfgClient[$client]["path"]["frontend"].$clientImage, 80, 25, 0, 1);
         	$clientImage = '<img src="'.$sThumbnailPath.'" '.$hints.'>';
         	$main->set('s', 'CHOSENCLIENT', "<b>".i18n("Client").":</b>&nbsp;".$clientImage);
         } else {
