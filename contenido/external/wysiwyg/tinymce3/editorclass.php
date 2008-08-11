@@ -363,9 +363,9 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		switch ($sMode)
 		{
 			case "full": // Show all options
-				$this->setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,help", true);
+				$this->setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,help", true);
 				$this->setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,advhr,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,fullscreen,visualaid,charmap,cleanup,|,code", true);
-				$this->setSetting("theme_advanced_buttons3", "tablecontrols,|,styleselect,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak", true);
+				$this->setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak", true);
 				//safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template
 				$this->setSetting("plugins", "safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups", true);
 				break;
