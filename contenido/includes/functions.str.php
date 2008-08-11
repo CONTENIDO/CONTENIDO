@@ -123,7 +123,6 @@ function strNewTree($catname, $catalias = '', $bVisible = 0, $bPublic = 1, $iIdt
             $bPublic = 0;
         }
         
-
         $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='0' AND postid='0' AND idclient='".Contenido_Security::toInteger($client)."'";
         $db->query($sql);
         $db->next_record();
@@ -205,6 +204,12 @@ function strNewTree($catname, $catalias = '', $bVisible = 0, $bPublic = 1, $iIdt
             }
         		
             /* Assign template, if default template exists */
+            $catCollection = new cApiCategoryLanguageCollection("idcat = '".Contenido_Security::toInteger($tmp_newid)."'");
+
+            while ($cat = $catCollection->next())
+            {
+            	$cat->assignTemplate($idtpl);
+            }     
             
         } else {
           //2008-06-25 timo.trautmann also set default template if it is selcted by user and there is no default template
