@@ -23,6 +23,7 @@
  *   created 2003-12-30
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-07-31, Oliver Lohkemper, add CEC
+ *   modified 2008-08-11, Timo Trautmann, added urlencode for meta storage in database
  *
  *   $Id$:
  * }}
@@ -142,28 +143,28 @@ if ($upload = $uploads->next()) {
            break;
             
          case "medianame":
-            if( $db->f('medianame') )   $medianame = stripslashes($db->f('medianame'));
+            if( $db->f('medianame') )   $medianame = stripslashes(urldecode($db->f('medianame')));
             else                  $medianame = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "medianame");
             $mnedit = new cHTMLTextbox("medianame", $medianame, 60 );
             $sCell = $mnedit->render();
            break;
             
          case "description":
-            if( $db->f('description') )   $sDescription = stripslashes($db->f('description'));
+            if( $db->f('description') )   $sDescription = stripslashes(urldecode($db->f('description')));
             else                  $sDescription = $upload->get("description");
             $dsedit = new cHTMLTextarea("description", $sDescription );
             $sCell = $dsedit->render();
            break;
             
          case "keywords":
-            if( $db->f('keywords') )   $keywords = stripslashes($db->f('keywords'));
+            if( $db->f('keywords') )   $keywords = stripslashes(urldecode($db->f('keywords')));
             else                  $keywords = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "keywords");
             $kwedit = new cHTMLTextarea("keywords", $keywords );
             $sCell = $kwedit->render();
            break;
             
          case "medianotes":
-            if( $db->f('internal_notice') )   $medianotes = stripslashes($db->f('internal_notice'));
+            if( $db->f('internal_notice') )   $medianotes = stripslashes(urldecode($db->f('internal_notice')));
             else                     $medianotes = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "medianotes");
             $moedit = new cHTMLTextarea("medianotes", $medianotes );
             $sCell = $moedit->render();

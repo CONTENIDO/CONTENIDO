@@ -23,6 +23,7 @@
  *   created 2003-12-29
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-07-31, Oliver Lohkemper, add CEC
+ *   modified 2008-08-11, Timo Trautmann, added urlencode for meta storage in database
  *
  *   $Id$:
  * }}
@@ -164,10 +165,10 @@ if ($action == "upl_modify_file")
 			$iNextId = $db->nextid($cfg['tab']['upl_meta']);
 			$sSql = "INSERT INTO " . $cfg['tab']['upl_meta'] . " " .
 					"SET id_uplmeta = $iNextId, idupl = $iIdupl, idlang = $lang, " .
-					"medianame = '" . Contenido_Security::escapeDB($medianame, $db) . "', " . 
-					"description = '" . Contenido_Security::escapeDB($description, $db) . "', " . 
-					"keywords = '" . Contenido_Security::escapeDB($keywords, $db) . "', " . 
-					"internal_notice = '" . Contenido_Security::escapeDB($medianotes, $db) . "', " .
+					"medianame = '" . Contenido_Security::escapeDB(urlencode($medianame), $db) . "', " . 
+					"description = '" . Contenido_Security::escapeDB(urlencode($description), $db) . "', " . 
+					"keywords = '" . Contenido_Security::escapeDB(urlencode($keywords), $db) . "', " . 
+					"internal_notice = '" . Contenido_Security::escapeDB(urlencode($medianotes), $db) . "', " .
 					"author = '" . $auth->auth['uid'] . "', " .
 					"created = NOW(), modified = NOW(), modifiedby = '" . $auth->auth['uid'] . "'";
 		} else {	// update entry
@@ -175,10 +176,10 @@ if ($action == "upl_modify_file")
 			$iIduplmeta = $db->f('id_uplmeta');
 			$sSql = "UPDATE " . $cfg['tab']['upl_meta'] . " " . 
 					"SET " . 
-					"medianame = '" . Contenido_Security::escapeDB($medianame, $db) . "', " . 
-					"description = '" . Contenido_Security::escapeDB($description, $db) . "', " . 
-					"keywords = '" . Contenido_Security::escapeDB($keywords, $db) . "', " . 
-					"internal_notice = '" . Contenido_Security::escapeDB($medianotes, $db) . "', " . 
+					"medianame = '" . Contenido_Security::escapeDB(urlencode($medianame), $db) . "', " . 
+					"description = '" . Contenido_Security::escapeDB(urlencode($description), $db) . "', " . 
+					"keywords = '" . Contenido_Security::escapeDB(urlencode($keywords), $db) . "', " . 
+					"internal_notice = '" . Contenido_Security::escapeDB(urlencode($medianotes), $db) . "', " . 
 					"modified = NOW(), modifiedby = '" . $auth->auth['uid'] . "' " . 
 					"WHERE id_uplmeta = " . $iIduplmeta;
 		}
