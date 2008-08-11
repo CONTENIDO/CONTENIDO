@@ -23,6 +23,7 @@
  *   created unknown
  *   modified 2006-12-14, init array $results in fct prResolvePathViaURLNames, prResolvePathViaCategoryNames, return type is now integer
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ * 	 modified 2008-08-11, Bilal Arslan, Change prResolvePathViaCategoryNames function for take current path language id!
  *
  *   $Id$:
  * }}
@@ -114,6 +115,7 @@ function prResolvePathViaURLNames($path)
 	}
 
 	/* Fetch all category names, build path strings */
+//	change the where statement for get all languages
 	$sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".Contenido_Security::toInteger($lang)."'
             AND C.visible = 1 AND B.idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idtree";
 	$db->query($sql);
@@ -186,35 +188,87 @@ function prResolvePathViaURLNames($path)
  * @param $path string Path to resolve
  * @return integer Closest matching category ID (idcat)
  */
-function prResolvePathViaCategoryNames($path)
+function prResolvePathViaCategoryNames($path, &$iLangCheck)
 {
 	$handle = startTiming("prResolvePathViaCategoryNames", array ($path));
-
+	
 	global $cfg, $lang, $client;
+	
 
 	/* Initialize variables */
 	$db = new DB_Contenido;
 	$categories = array ();
 	$results = array();
+	
+	/* Added since 2008-08 from Bilal Arslan */
+//	To take only path body
+	if(preg_match('/^\/(.*)\/$/', $path, $aResults)){
+		$aResult = explode("/", $aResults[1]);
+	}else if(preg_match('/^\/(.*)$/', $path, $aResults)){
+		$aResult = explode("/", $aResults[1]);
+	}else{
+		$aResults[1] = $path;
+	}
 
+	$aResults[1] = strtolower(ereg_replace("-", " ", $aResults[1]));
+	
+//	Init to Compare, save path in array
+	$aPathsToCompare = explode("/", $aResults[1]);
+	$iCountPath = count($aPathsToCompare);
+
+//  init lang id
+	$iLangCheck=0;
+	
 	/* Pre-process path */
 	$path = strtolower(str_replace(" ", "", $path));
 
 	/* Fetch all category names, build path strings */
-	$sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".Contenido_Security::toInteger($lang)."'
+//	change the where statement for get all languages
+	$sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat 
             AND C.visible = 1 AND B.idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idtree";
 	$db->query($sql);
 
 	$catpath = array ();
-	while ($db->next_record())
-	{
+	while ($db->next_record()) {
 		$cat_str = "";
-		conCreateLocationString($db->f("idcat"), "/", $cat_str, $cat_str, false, "", 0, true, true);
-
+		$aTemp = "";
+		$iFor = 0;
+		$bLang = false;
+		
+//		$level is changeless 0!!!
+		conCreateLocationString($db->f("idcat"), "/", $cat_str, false, '', 0, $db->f("idlang"));
 		/* Store path */
-		$catpath[$db->f("idcat")] = $cat_str;
+		$catpath[$db->f("idcat")] =  $cat_str;
 		$catnames[$db->f("idcat")] = $db->f("name");
 		$catlevels[$db->f("idcat")] = $db->f("level");
+
+//		Init variables for take a language id		
+		$aTemp =  strtolower($cat_str);
+		$aDBToCompare =  explode("/", $aTemp);
+		$iCountDB = count($aDBToCompare);
+		$iCountDBFor = $iCountDB - 1;
+//		take min. count of two arrays
+		($iCountDB > $iCountPath) ? $iFor = $iCountPath : $iFor = $iCountDB;
+		$iCountM = $iFor-1;
+		
+		for($i=0; $i<$iFor; $i++) {
+			if($aPathsToCompare[$iCountM] == $aDBToCompare[$iCountDBFor]) {
+				$bLang	= true;
+			}else {
+				$bLang = false;
+			}
+			$iCountM--;
+			$iCountDBFor--;
+//			compare, only if current element is lastone and we are in true path
+			if($i == $iFor-1 && $bLang) {
+				$iLangCheck = $db->f("idlang");
+			}
+		}  
+	
+	}
+
+	if($iLangCheck == 0) {
+		$iLangCheck = $lang;
 	}
 
 	/* Compare strings using the similar_text algorythm */
