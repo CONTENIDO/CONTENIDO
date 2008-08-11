@@ -40,6 +40,12 @@ cInclude("includes", "api/functions.frontend.list.php");
 cInclude("classes", "class.properties.php");
 cInclude("classes", "class.todo.php");
 
+function urlCodeString($sString) {
+    $sString = (string) $sString;
+    
+    return addslashes( htmlspecialchars( urlencode($sString)));
+}
+
 if (!(int) $client > 0) {
   #if there is no client selected, display empty page
   $oPage = new cPage;
@@ -165,10 +171,10 @@ if ($action == "upl_modify_file")
 			$iNextId = $db->nextid($cfg['tab']['upl_meta']);
 			$sSql = "INSERT INTO " . $cfg['tab']['upl_meta'] . " " .
 					"SET id_uplmeta = $iNextId, idupl = $iIdupl, idlang = $lang, " .
-					"medianame = '" . Contenido_Security::escapeDB(urlencode($medianame), $db) . "', " . 
-					"description = '" . Contenido_Security::escapeDB(urlencode($description), $db) . "', " . 
-					"keywords = '" . Contenido_Security::escapeDB(urlencode($keywords), $db) . "', " . 
-					"internal_notice = '" . Contenido_Security::escapeDB(urlencode($medianotes), $db) . "', " .
+					"medianame = '" . Contenido_Security::escapeDB(urlCodeString($medianame), $db) . "', " . 
+					"description = '" . Contenido_Security::escapeDB(urlCodeString($description), $db) . "', " . 
+					"keywords = '" . Contenido_Security::escapeDB(urlCodeString($keywords), $db) . "', " . 
+					"internal_notice = '" . Contenido_Security::escapeDB(urlCodeString($medianotes), $db) . "', " .
 					"author = '" . $auth->auth['uid'] . "', " .
 					"created = NOW(), modified = NOW(), modifiedby = '" . $auth->auth['uid'] . "'";
 		} else {	// update entry
@@ -176,10 +182,10 @@ if ($action == "upl_modify_file")
 			$iIduplmeta = $db->f('id_uplmeta');
 			$sSql = "UPDATE " . $cfg['tab']['upl_meta'] . " " . 
 					"SET " . 
-					"medianame = '" . Contenido_Security::escapeDB(urlencode($medianame), $db) . "', " . 
-					"description = '" . Contenido_Security::escapeDB(urlencode($description), $db) . "', " . 
-					"keywords = '" . Contenido_Security::escapeDB(urlencode($keywords), $db) . "', " . 
-					"internal_notice = '" . Contenido_Security::escapeDB(urlencode($medianotes), $db) . "', " . 
+					"medianame = '" . Contenido_Security::escapeDB(urlCodeString($medianame), $db) . "', " . 
+					"description = '" . Contenido_Security::escapeDB(urlCodeString($description), $db) . "', " . 
+					"keywords = '" . Contenido_Security::escapeDB(urlCodeString($keywords), $db) . "', " . 
+					"internal_notice = '" . Contenido_Security::escapeDB(urlCodeString($medianotes), $db) . "', " . 
 					"modified = NOW(), modifiedby = '" . $auth->auth['uid'] . "' " . 
 					"WHERE id_uplmeta = " . $iIduplmeta;
 		}

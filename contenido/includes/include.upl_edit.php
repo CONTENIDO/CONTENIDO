@@ -39,6 +39,12 @@ cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "class.properties.php");
 cInclude("includes", "functions.upl.php");
 
+function urlDecodeString($sString) {
+    $sString = (string) $sString;
+    
+    return urldecode( htmldecode( stripslashes($sString)));
+}
+
 $page = new UI_Page;
 $page->addScript("cal1", '<style type="text/css">@import url(./scripts/jscalendar/calendar-contenido.css);</style>');
 $page->addScript("cal2", '<script type="text/javascript" src="./scripts/jscalendar/calendar.js"></script>');
@@ -143,28 +149,28 @@ if ($upload = $uploads->next()) {
            break;
             
          case "medianame":
-            if( $db->f('medianame') )   $medianame = stripslashes(urldecode($db->f('medianame')));
+            if( $db->f('medianame') )   $medianame = urlDecodeString(urldecode($db->f('medianame')));
             else                  $medianame = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "medianame");
             $mnedit = new cHTMLTextbox("medianame", $medianame, 60 );
             $sCell = $mnedit->render();
            break;
             
          case "description":
-            if( $db->f('description') )   $sDescription = stripslashes(urldecode($db->f('description')));
+            if( $db->f('description') )   $sDescription = urlDecodeString(urldecode($db->f('description')));
             else                  $sDescription = $upload->get("description");
             $dsedit = new cHTMLTextarea("description", $sDescription );
             $sCell = $dsedit->render();
            break;
             
          case "keywords":
-            if( $db->f('keywords') )   $keywords = stripslashes(urldecode($db->f('keywords')));
+            if( $db->f('keywords') )   $keywords = urlDecodeString(urldecode($db->f('keywords')));
             else                  $keywords = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "keywords");
             $kwedit = new cHTMLTextarea("keywords", $keywords );
             $sCell = $kwedit->render();
            break;
             
          case "medianotes":
-            if( $db->f('internal_notice') )   $medianotes = stripslashes(urldecode($db->f('internal_notice')));
+            if( $db->f('internal_notice') )   $medianotes = urlDecodeString(urldecode($db->f('internal_notice')));
             else                     $medianotes = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "medianotes");
             $moedit = new cHTMLTextarea("medianotes", $medianotes );
             $sCell = $moedit->render();
