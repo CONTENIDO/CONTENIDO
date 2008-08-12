@@ -19,7 +19,7 @@
 //
 // $Id: Output.php,v 1.6 2003/01/04 11:54:45 mj Exp $
 
-cInclude('pear', 'CACHE/Cache.php');
+cInclude('pear', 'Cache/Cache.php');
 
 /**
 * Class to cache the output of a script using the output buffering functions

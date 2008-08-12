@@ -67,7 +67,7 @@ plugin_include('linkchecker', 'includes/include.linkchecker_tests.php');
 
 // Initialization of cache
 cInclude('pear', 'PEAR.php');
-cInclude('pear', 'CACHE/Lite.php');
+cInclude('pear', 'Cache/Lite.php');
 
 // Initialization
 $actionID = 500;
