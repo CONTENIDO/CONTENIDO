@@ -373,7 +373,7 @@ VALID UNTIL: %s
             return;
         }
 
-        cInclude('pear', 'Cache/Output.php');
+        cInclude('pear', 'CACHE/Output.php');
 
         // create a output cache object mode - file storage
         $this->_oPearCache = new Cache_Output('file', $this->_aCacheOptions);

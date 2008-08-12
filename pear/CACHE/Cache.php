@@ -20,7 +20,7 @@
 
 
 cInclude('pear', 'PEAR.php');
-cInclude('pear', 'Cache/Error.php');
+cInclude('pear', 'CACHE/Error.php');
 
 
 /**
@@ -132,7 +132,7 @@ class Cache extends PEAR {
         $this->PEAR();
         $container = strtolower($container);
         $container_class = 'Cache_Container_' . $container;
-        $container_classfile = 'Cache/Container/' . $container . '.php';
+        $container_classfile = 'CACHE/Container/' . $container . '.php';
 
         include_once $container_classfile;
         $this->container = new $container_class($container_options);

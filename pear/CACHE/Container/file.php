@@ -18,7 +18,7 @@
 //
 // $Id: file.php,v 1.13 2003/03/27 10:48:42 chregu Exp $
 
-cInclude('pear', 'Cache/Container.php');
+cInclude('pear', 'CACHE/Container.php');
 
 /**
 * Stores cache contents in a file.
