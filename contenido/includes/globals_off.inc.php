@@ -98,7 +98,7 @@ if (!get_magic_quotes_gpc()) {
    }
 
 // register globals
-$types_to_register = array ('GET', 'POST', 'COOKIE', 'SESSION');
+$types_to_register = array ('GET', 'POST', 'COOKIE', 'SESSION', 'SERVER');
 foreach ($types_to_register as $global_type)
 {
 	$arr = @ ${'_'.$global_type};
@@ -113,13 +113,4 @@ foreach ($types_to_register as $global_type)
 unset ($types_to_register, $global_type, $arr);
 
 $FORM = $_REQUEST;
-
-// We need still following 7 variables, see usage in phplib dir...
-$PHP_SELF     = $_SERVER['PHP_SELF'];
-$QUERY_STRING = $_SERVER['QUERY_STRING']; 
-$HTTP_HOST = $_SERVER['HTTP_HOST'];
-$HTTPS = (isset($_SERVER['HTTPS'])) ? $_SERVER['HTTPS'] : null; 
-$REMOTE_ADDR = $_SERVER['REMOTE_ADDR'];
-$HTTP_REFERER = $_SERVER['HTTP_REFERER'];
-$HTTP_USER_AGENT = $_SERVER['HTTP_USER_AGENT'];
 ?>
