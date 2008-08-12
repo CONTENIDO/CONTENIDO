@@ -28,7 +28,10 @@
  * 
  */
 
-define('CONTENIDO_STRIPSLASHES', true);
+if (!get_magic_quotes_gpc()) 
+    define('CONTENIDO_STRIPSLASHES', true); 
+else 
+    define('CONTENIDO_STRIPSLASHES', false); 
 
 if (phpversion() <= "4.1.0")
 {
