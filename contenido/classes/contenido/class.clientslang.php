@@ -141,6 +141,18 @@ class cApiClientLanguage extends Item
 		
 		$this->properties->delete($idprop);
 	}
+    
+    function getPropertiesByType($mType)
+	{
+		// Runtime on-demand allocation of the properties object
+		if (!is_object($this->properties))
+		{
+			$this->properties = new PropertyCollection;
+			$this->properties->changeClient($this->idclient);
+		}
+		
+		return $this->properties->getValuesByType('idclientslang', $this->idclient, $mType);
+	}
 	
 	function getProperties()
 	{
