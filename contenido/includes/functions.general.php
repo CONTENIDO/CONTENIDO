@@ -985,7 +985,7 @@ function getSystemPropertiesByType($sType)
  */
 function getEffectiveSetting($type, $name, $default = "")
 {
-	global $auth, $client;
+	global $auth, $client, $lang;
 
 	if ($auth->auth["uid"] != "nobody")
 	{
@@ -995,17 +995,28 @@ function getEffectiveSetting($type, $name, $default = "")
 		$user->loadUserByUserID($auth->auth["uid"]);
 	
 		$value = $user->getUserProperty($type, $name, true);
+        unset($user);
 	} else {
 		$value = false;	
 	}
 
+    if ($value == false) {
+        cInclude('classes', 'class.genericdb.php');
+        cInclude('classes', 'contenido/class.clientslang.php');
+        
+        $oClient = new cApiClientLanguage(false, $client, $lang);
+        $value = $oClient->getProperty($type, $name);
+        unset ($oClient);
+    }
+    
 	if ($value == false)
 	{
-		cInclude('classes', 'contenido/class.client.php');
+        cInclude('classes', 'contenido/class.client.php');
 		$oClient = new cApiClient($client);
 		$value = $oClient->getProperty($type, $name);
+        unset ($oClient);
 	}
-
+    
 	if ($value == false)
 	{
 		$value = getSystemProperty($type, $name);
@@ -1033,7 +1044,7 @@ function getEffectiveSetting($type, $name, $default = "")
  */ 
 function getEffectiveSettingsByType($sType) 
 {
-	global $auth, $client, $cfg;
+	global $auth, $client, $cfg, $lang;
 	
 	$aResult = getSystemPropertiesByType($sType);
 	
@@ -1041,6 +1052,14 @@ function getEffectiveSettingsByType($sType)
 	
 	$oClient = new cApiClient($client);
 	$aResult = array_merge($aResult, $oClient->getPropertiesByType($sType));
+    unset ($oClient);
+    
+    cInclude('classes', 'class.genericdb.php');
+    cInclude('classes', 'contenido/class.clientslang.php');
+    
+    $oClient = new cApiClientLanguage(false, $client, $lang);
+    $aResult = array_merge($aResult, $oClient->getPropertiesByType($sType));
+    
 	unset ($oClient);
 	
 	if ($auth->auth["uid"] != "nobody")
