@@ -482,6 +482,6 @@ $_cecRegistry->registerChain("Contenido.Upl_edit.RenderRows", "int", "string", "
  * - none -
  * 
  */
-$_cecRegistry->registerChain("Contenido.Upl_edit.SaveRows", "string");
+$_cecRegistry->registerChain("Contenido.Upl_edit.SaveRows", "int", "string", "string");
 
 ?>
