@@ -443,7 +443,7 @@ if ( $perm->have_perm_area_action($area) ) {
 		foreach ($listColumns as $content)
 		{
 			// Header for additional columns
-			$additionalheaders[] = '<td colspan="3" class="header" nowrap="nowrap">'.$content.'</td>';
+			$additionalheaders[] = '<td class="header" nowrap="nowrap">'.$content.'</td>';
 		}
 		
 		$additionalheader = implode("", $additionalheaders);
@@ -554,7 +554,7 @@ if ( $perm->have_perm_area_action($area) ) {
 				foreach ($listColumns as $content)
 				{
 					// Content rows
-					$additionalColumns[] = '<td colspan="3" style="border: 0px; border-bottom:1px; border-right: 1px; border-color: #B3B3B3; border-style: solid;" nowrap="nowrap">&nbsp;</td>';
+					$additionalColumns[] = '<td style="border: 0px; border-bottom:1px; border-right: 1px; border-color: #B3B3B3; border-style: solid;" nowrap="nowrap">&nbsp;</td>';
 				}	      
 				$tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $additionalColumns));
                 $tpl->next();  					          			                 
