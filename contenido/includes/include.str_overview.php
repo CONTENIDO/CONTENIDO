@@ -435,7 +435,7 @@ if ( $perm->have_perm_area_action($area) ) {
 		    
 		    if (is_array($tmplistColumns))
 		    {
-		    	$listColumns = $tmplistColumns;	
+		    	$listColumns = array_merge($listColumns, $tmplistColumns);
 		    }
 		}
 		
@@ -800,12 +800,7 @@ if ( $perm->have_perm_area_action($area) ) {
 						$columnContents[] = '';	
 					}
 					
-					foreach ($columnContents as $columnContent)
-					{
-						$columnInfo[] = '<td class="str-style-c">'.$columnContent.'</td>';
-					}	                			
-        			
-        			$columns[] = implode("", $columnInfo);
+                    $columns[] = '<td class="str-style-c">'.implode("", $columnContents).'</td>';
 			}
 			
 			$tpl->set('d', 'ADDITIONALCOLUMNS', implode("", $columns));
