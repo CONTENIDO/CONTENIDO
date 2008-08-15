@@ -70,7 +70,7 @@ if (!$perm->have_perm_area_action($area, $action))
                              var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
                              if (left_bottom) {
                                  var href = left_bottom.location.href;
-                                 href = href.replace(/&file.*/, '');
+                                 href = href.replace(/&file[^&]*/, '');
                                  left_bottom.location.href = href+'&file='+'".$sFilename."';
 
                              }

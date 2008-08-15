@@ -486,7 +486,7 @@ window.onload = scrolltheother;
                                          var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
                                          if (left_bottom) {
                                              var href = left_bottom.location.href;
-                                             href = href.replace(/&idmod.*/, '');
+                                             href = href.replace(/&idmod[^&]*/, '');
                                              left_bottom.location.href = href+'&idmod='+'".$idmod."';
 
                                          }

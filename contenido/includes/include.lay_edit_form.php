@@ -248,7 +248,7 @@ if (stripslashes($_REQUEST['idlay'])) {
                              var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
                              if (left_bottom) {
                                  var href = left_bottom.location.href;
-                                 href = href.replace(/&idlay.*/, '');
+                                 href = href.replace(/&idlay[^&]*/, '');
                                  left_bottom.location.href = href+'&idlay='+'".$_REQUEST['idlay']."';
 
                              }
