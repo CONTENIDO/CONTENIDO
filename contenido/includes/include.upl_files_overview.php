@@ -523,8 +523,8 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
                         <td colspan="6"></td>
                     </tr>';
 	/* List wraps */
-	$startwrap = '<table class="hoverbox" cellspacing="0" cellpadding="2" border="0">
-                    <tr class="textg_medium">
+    
+    $pagerwrap = '<tr class="textg_medium">
                         <td colspan="6" style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; vertical-align:middle; border-style: solid; background-color: #E2E2E2; padding-left:5px;" id="cat_navbar">
                             <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLRIGHT-</div>
                             <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-PAGE-</div>
@@ -532,8 +532,10 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
                             <span style="margin-right:10px; line-height:20px; vertical-align:middle;">'.i18n("Files per Page").'</span> -C-FILESPERPAGE-
                             <div style="clear:both;"></div>
                         </td>
-                    </tr>
-                    '.$sSpacedRow.$sToolsRow.$sSpacedRow.'
+                    </tr>';
+    
+	$startwrap = '<table class="hoverbox" cellspacing="0" cellpadding="2" border="0">
+                    '.$pagerwrap.$sSpacedRow.$sToolsRow.$sSpacedRow.'
                    <tr bgcolor="#E2E2E2" style="border-color:#B3B3B3; border-style: solid;border-top: 1px;border-bottom: 0px;">
 						<td align="left" valign="top" class="textg_medium" style="border: 1px; border-color: #B3B3B3; border-bottom: 0px; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.i18n("Mark").'</td>
 						<td align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.i18n("Preview").'</td>
@@ -550,7 +552,7 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 						<td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
 						<td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="75" nowrap="nowrap">%s</td>
 					</tr>';
-	$endwrap = $sSpacedRow.$sToolsRow.'</table>';
+	$endwrap = $sSpacedRow.$sToolsRow.$sSpacedRow.$pagerwrap.'</table>';
 	
 	/* Object initializing */
 	$page = new UI_Page;
