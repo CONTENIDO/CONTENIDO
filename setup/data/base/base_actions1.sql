@@ -131,8 +131,6 @@ INSERT INTO !PREFIX!_actions VALUES('428', '50', '', 'recipients_purge', '', '',
 INSERT INTO !PREFIX!_actions VALUES('429', '82', '', 'fegroups_save_perm', '', '', '0');
 INSERT INTO !PREFIX!_actions VALUES('430', '85', '', 'note_save_item', '', '', '0');
 INSERT INTO !PREFIX!_actions VALUES('431', '85', '', 'note_delete', '', '', '0');
-INSERT INTO !PREFIX!_actions VALUES('432', '70', '', 'mod_history_takeover', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES('433', '70', '', 'mod_history_clear', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('434', '16', '', 'news_add_job', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('435', '16', '', 'news_send_test', '', '', '0');
 INSERT INTO !PREFIX!_actions VALUES('436', '90', '', 'news_job_delete', '', '', '1');
@@ -164,5 +162,10 @@ INSERT INTO !PREFIX!_actions VALUES ('615', '1', '', 'workflow_do_action', '', '
 INSERT INTO !PREFIX!_actions VALUES ('616', '6', '', 'workflow_inherit_down', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('617', '604', '', 'workflow_task_user_select', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('618', '604', '', 'workflow_do_action', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES ('800', '802', '', 'storeallocation', '', '', 1);
+INSERT INTO !PREFIX!_actions VALUES ('800', '802', '', 'storeallocation', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('444', '77', '', 'frontendgroup_user_add', '', '', '1');
+INSERT INTO !PREFIX!_actions VALUES ('200', '400', 'lay_history_manage', 'lay_history_manage', '', '', '1');
+INSERT INTO !PREFIX!_actions VALUES ('201', '401', 'style_history_manage', 'style_history_manage', '', '', '1');
+INSERT INTO !PREFIX!_actions VALUES ('202', '402', 'js_history_manage', 'js_history_manage', '', '', '1');
+INSERT INTO !PREFIX!_actions VALUES ('203', '403', 'htmltpl_history_manage', 'htmltpl_history_manage', '', '', '1');
+INSERT INTO !PREFIX!_actions VALUES ('204', '70', 'mod_history_manage', 'mod_history_manage', '', '', '1');

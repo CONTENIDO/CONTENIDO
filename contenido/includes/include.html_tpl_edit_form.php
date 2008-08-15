@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.5.0
+ * @version    1.5.1
  * @author     Willi Mann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2004-07-14
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2008-08-14, Timo Trautmann, Bilal Arslan - Functions for versionning and storing file meta data added
  *
  *   $Id$:
  * }}
@@ -36,6 +37,7 @@ cInclude("classes", "class.ui.php");
 cInclude("classes", "widgets/class.widgets.page.php");
 cInclude("classes", "class.htmlvalidator.php");
 cInclude("external", "edit_area/class.edit_area.php");
+cInclude("includes", "functions.file.php");
 
 $sFileType = "html";
 
@@ -55,6 +57,7 @@ if (!$perm->have_perm_area_action($area, $action))
 } else {
     $path = $cfgClient[$client]["tpl"]["path"];
 	$sTempFilename = stripslashes($_REQUEST['tmp_file']);
+    $sOrigFileName = $sTempFilename;
 	
 	if (getFileType($_REQUEST['file']) != $sFileType AND strlen(stripslashes(trim($_REQUEST['file']))) > 0)
     {
@@ -76,13 +79,25 @@ if (!$perm->have_perm_area_action($area, $action))
     } else {
         $sReloadScript = "";
     }
-        
+
+    // Content Type is template
+	$sTypeContent = "templates";
+    $aFileInfo = getFileInformation ($client, $sTempFilename, $sTypeContent, $db); 
+    
 	# create new file
     if ( $_REQUEST['action'] == $sActionCreate AND $_REQUEST['status'] == 'send')
     {
     	$sTempFilename = $sFilename;
     	createFile($sFilename, $path);
     	$bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
+        $sReloadScript .= "<script type=\"text/javascript\">
+                 var right_top = top.content.right.right_top;
+                 if (right_top) {
+                     var href = '".$sess->url("main.php?area=$area&frame=3&file=$sTempFilename")."';
+                     right_top.location.href = href;
+                 }
+                 </script>";
+        updateFileInformation($client, $sFilename, 'templates', $auth->auth['uid'], $_REQUEST['description'], $db);
     }
 
 	# edit selected file
@@ -91,12 +106,43 @@ if (!$perm->have_perm_area_action($area, $action))
     	if ($sFilename != $sTempFilename)
     	{	
     		$sTempFilename = renameFile($sTempFilename, $sFilename, $path);
+            $sReloadScript .= "<script type=\"text/javascript\">
+                 var right_top = top.content.right.right_top;
+                 if (right_top) {
+                     var href = '".$sess->url("main.php?area=$area&frame=3&file=$sTempFilename")."';
+                     right_top.location.href = href;
+                 }
+                 </script>";
     	} else
     	{	
     		$sTempFilename = $sFilename;
     	}    	
-    	
+        
+		updateFileInformation($client,  $sOrigFileName, 'templates', $auth->auth['uid'], $_REQUEST['description'], $db, $sFilename);
+       
+	   /**
+		* START TRACK VERSION
+		**/
+		cInclude("classes", "class.version.php");
+		cInclude("classes", "class.versionFile.php");
+			
+		$sTypeContent = "templates";
+			
+        if((count($aFileInfo) == 0) || ($aFileInfo["idsfi"] !="")) {
+            $aFileInfo = getFileInformation ($client, $sTempFilename, $sTypeContent, $db); 
+        }
+			
+		if((count($aFileInfo) > 0) && ($aFileInfo["idsfi"] !="")) {
+			$oVersion = new VersionFile($aFileInfo["idsfi"], $aFileInfo,  $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+			// Create new Layout Version in cms/version/css/ folder
+			$oVersion->createNewVersion();
+		}
+	   /**
+		* END TRACK VERSION
+		**/
+   	
     	$bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
+
 	}
 	
 	# generate edit form 
@@ -150,6 +196,8 @@ if (!$perm->have_perm_area_action($area, $action))
 			}
 		}
 		
+        $aFileInfo = getFileInformation($client, $sTempFilename, $sTypeContent, $db);
+        
         $form = new UI_Table_Form("file_editor");
         $form->addHeader(i18n("Edit file"));
         $form->setWidth("100%");
@@ -160,11 +208,15 @@ if (!$perm->have_perm_area_action($area, $action))
         $form->setVar("tmp_file", $sTempFilename);
         
         $tb_name = new cHTMLTextbox("file", $sFilename, 60);
-        $ta_code = new cHTMLTextarea("code", htmlspecialchars($sCode), 100, 40, "code");
+        $ta_code = new cHTMLTextarea("code", htmlspecialchars($sCode), 100, 35, "code");
+        $descr	 = new cHTMLTextarea("description", htmlspecialchars($aFileInfo["description"]), 100, 5);
+        
         $ta_code->setStyle("font-family: monospace;width: 100%;");
+        $descr->setStyle("font-family: monospace;width: 100%;");
         $ta_code->updateAttributes(array("wrap" => getEffectiveSetting('html_editor', 'wrap', 'off')));
         
         $form->add(i18n("Name"),$tb_name);
+        $form->add(i18n("Description"), $descr->render());
         $form->add(i18n("Code"),$ta_code);
         
         $page->setContent($notis . $form->render());
@@ -175,5 +227,7 @@ if (!$perm->have_perm_area_action($area, $action))
         $page->addScript('reload', $sReloadScript);
     	$page->render();  
     }
+    
+
 }
 ?> 

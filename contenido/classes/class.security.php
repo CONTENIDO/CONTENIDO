@@ -39,6 +39,29 @@ if(!defined('CON_FRAMEWORK')) {
  * Contenido Security class
  */
 class Contenido_Security {
+    /**
+     * Escapes string using contenido urlencoding method and escapes string for inserting
+     * @access public
+     * @param string $sVar
+     * @return string
+     */
+    public static function filter($sString, $oDb) {
+      $sString = (string) $sString;
+      $sString = Contenido_Security::escapeDB( htmlspecialchars( urlencode($sString)), $oDb);
+      return $sString;
+    }
+    
+   /**
+     * Reverses effect of method filter()
+     * @access public
+     * @param string $sVar
+     * @return string
+     */
+    public static function unFilter($sString) {
+      $sString = (string) $sString;
+      $sString = urldecode( htmldecode( Contenido_Security::unEscapeDB($sString)));
+      return $sString;
+    }
 
     /**
      * Check: Has the variable an boolean value?

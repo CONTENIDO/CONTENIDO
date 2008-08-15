@@ -29,6 +29,7 @@
             	<main>Layouts</main>
             	<edit>Editieren</edit>
             	<preview>Vorschau</preview>
+                <history>Historie</history>
             </layouts>
             <modules>
             	<main>Module</main>
@@ -43,9 +44,21 @@
                 <conf>Vorkonfiguration</conf>
                 <visual>Visuelles Editieren</visual>
             </templates>
-            <styleeditor>Styleeditor</styleeditor>
-            <jseditor>Skripteditor</jseditor>
-            <tpleditor>Modul-Templates</tpleditor>
+            <styleeditor>
+                <main>Styleeditor</main>
+                <file>Datei</file>
+                <history>Historie</history>
+            </styleeditor>
+            <jseditor>
+                <main>Skripteditor</main>
+                <file>Datei</file>
+                <history>Historie</history>
+            </jseditor>
+            <tpleditor>
+                <main>Modul-Templates</main>
+                <file>Datei</file>
+                <history>Historie</history>
+            </tpleditor>
         </style>
         <statistic>
             <main>Statistik</main>

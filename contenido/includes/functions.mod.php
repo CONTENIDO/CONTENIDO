@@ -34,12 +34,11 @@ if(!defined('CON_FRAMEWORK')) {
 
 cInclude ("includes", "functions.tpl.php");
 cInclude ("includes", "functions.con.php");
-cInclude ("classes", "contenido/class.module.history.php");
 cInclude ("classes", "contenido/class.module.php");
 
 function modEditModule($idmod, $name, $description, $input, $output, $template, $type = "")
 {
-    global $db, $client, $auth, $cfg, $sess, $area_tree, $perm;
+    global $db, $client, $cfgClient, $auth, $cfg, $sess, $area_tree, $perm, $frame;
 
     $date   = date("Y-m-d H:i:s");
     $author = $auth->auth["uname"];
@@ -74,6 +73,20 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		
 		$cApiModule->store();
     }
+    /**
+	* START TRACK VERSION
+	**/
+	cInclude("classes", "class.version.php");
+	cInclude("classes", "class.versionModule.php");
+	
+	$oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+	
+	// Create new Module Version in cms/version/module/
+	$oVersion->createNewVersion();
+
+	/**
+	* END TRACK VERSION
+	**/
 	
     return $idmod;
 }

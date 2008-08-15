@@ -6205,3 +6205,23 @@ msgstr "GD-Bibliothek"
 msgid "Please Choose Format"
 msgstr "Format Ausw&auml;hlen"
 
+msgid "No layout history available"
+msgstr "Keine Layout-Historie verf&uuml;gbar"
+
+msgid "No style history available"
+msgstr "Keine Style-Historie verf&uuml;gbar"
+
+msgid "No jscript history available"
+msgstr "Keine JavaScript-Historie verf&uuml;gbar"
+
+msgid "No template history available"
+msgstr "Keine Template-Historie verf&uuml;gbar"
+
+msgid "No module history available"
+msgstr "Keine Modul-Historie verf&uuml;gbar"
+
+msgid "Internal History Error"
+msgstr "Interner Historie Fehler"
+
+msgid "Versioning is not activated"
+msgstr "Die Versionierung ist nicht aktiv"

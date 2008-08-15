@@ -32,6 +32,8 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+cInclude("includes", "functions.file.php");
+
 $tpl->reset();
 
 if (!(int) $client > 0) {
@@ -81,6 +83,7 @@ if ($action == $sActionDelete)
         if (file_exists($path.$_REQUEST['delfile']))
         {
             unlink($path.$_REQUEST['delfile']);
+            removeFileInformation($client, $_REQUEST['delfile'], 'css', $db);
         }
     }
 
@@ -114,8 +117,15 @@ if ($handle = opendir($path))
         	          	
             $bgcolor = ( is_int($tpl->dyn_cnt / 2) ) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
             $tpl->set('d', 'BGCOLOR', $bgcolor);
-    
-            $html_filename = "<a class=\"action\" href=\"".$sess->url("main.php?area=$area&frame=4&action=$sActionEdit&file=$filename&tmp_file=$filename")."\" target=\"right_bottom\">".htmlspecialchars($filename)."</a>";
+            
+            $tmp_mstr = '<a class=\"action\" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')" title="%s" alt="%s">%s</a>';
+
+        	$html_filename = sprintf($tmp_mstr, 'right_top',
+                                       $sess->url("main.php?area=$area&frame=3&file=$filename"),
+                                       'right_bottom',
+                                       $sess->url("main.php?area=$area&frame=4&action=$sActionEdit&file=$filename&tmp_file=$filename"),
+                                       $filename, $filename, htmlspecialchars($filename));
+            
             $tpl->set('d', 'FILENAME', $html_filename);
             
             $delTitle = i18n("Delete File");

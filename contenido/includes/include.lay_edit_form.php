@@ -242,6 +242,20 @@ if (!$layout->virgin)
 }
 
 $page->setSubnav("idlay=$idlay", "lay");
-$page->setReload();
+
+if (stripslashes($_REQUEST['idlay'])) {
+    $sReloadScript = "<script type=\"text/javascript\">
+                             var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+                             if (left_bottom) {
+                                 var href = left_bottom.location.href;
+                                 href = href.replace(/&idlay.*/, '');
+                                 left_bottom.location.href = href+'&idlay='+'".$_REQUEST['idlay']."';
+
+                             }
+                    </script>";
+} else {
+    $sReloadScript = "";
+}
+$page->addScript('reload', $sReloadScript);
 $page->render();
 ?>

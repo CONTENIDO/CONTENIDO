@@ -182,6 +182,11 @@ contenido/classes/class.ui.php -text
 contenido/classes/class.update.notifier.php -text
 contenido/classes/class.upload.php -text
 contenido/classes/class.user.php -text
+contenido/classes/class.version.php -text
+contenido/classes/class.versionFile.php -text
+contenido/classes/class.versionImport.php -text
+contenido/classes/class.versionLayout.php -text
+contenido/classes/class.versionModule.php -text
 contenido/classes/class.wysiwyg_editor.php -text
 contenido/classes/class.xml.php -text
 contenido/classes/class.xmlparser.php -text
@@ -203,7 +208,6 @@ contenido/classes/contenido/class.file.php -text
 contenido/classes/contenido/class.framefile.php -text
 contenido/classes/contenido/class.lang.php -text
 contenido/classes/contenido/class.layout.php -text
-contenido/classes/contenido/class.module.history.php -text
 contenido/classes/contenido/class.module.php -text
 contenido/classes/contenido/class.template.php -text
 contenido/classes/contenido/class.templateconfig.php -text
@@ -3323,6 +3327,7 @@ contenido/includes/include.con_left_top.php -text
 contenido/includes/include.con_str_overview.php -text
 contenido/includes/include.con_subnav.php -text
 contenido/includes/include.debug.php -text
+contenido/includes/include.files_subnav.php -text
 contenido/includes/include.frontend.group.subnav.php -text
 contenido/includes/include.frontend.group_edit.php -text
 contenido/includes/include.frontend.group_menu.php -text
@@ -3339,15 +3344,18 @@ contenido/includes/include.grouprights_overview.php -text
 contenido/includes/include.grouprights_subnav.php -text
 contenido/includes/include.html_tpl_edit_form.php -text
 contenido/includes/include.html_tpl_files_overview.php -text
+contenido/includes/include.html_tpl_history.php -text
 contenido/includes/include.html_tpl_left_top.php -text
 contenido/includes/include.info.php -text
 contenido/includes/include.js_edit_form.php -text
 contenido/includes/include.js_files_overview.php -text
+contenido/includes/include.js_history.php -text
 contenido/includes/include.js_left_top.php -text
 contenido/includes/include.lang_edit.php -text
 contenido/includes/include.lang_left_top.php -text
 contenido/includes/include.lang_overview.php -text
 contenido/includes/include.lay_edit_form.php -text
+contenido/includes/include.lay_history.php -text
 contenido/includes/include.lay_new.php -text
 contenido/includes/include.lay_overview.php -text
 contenido/includes/include.lay_preview.php -text
@@ -3400,6 +3408,7 @@ contenido/includes/include.str_overview.php -text
 contenido/includes/include.str_subnav.php -text
 contenido/includes/include.style_edit_form.php -text
 contenido/includes/include.style_files_overview.php -text
+contenido/includes/include.style_history.php -text
 contenido/includes/include.style_left_top.php -text
 contenido/includes/include.subnav.php -text
 contenido/includes/include.subnav_blank.php -text
@@ -3674,6 +3683,7 @@ contenido/templates/standard/template.con_str_overview.html -text
 contenido/templates/standard/template.con_subnav.html -text
 contenido/templates/standard/template.con_subnav_noleft.html -text
 contenido/templates/standard/template.deco.html -text
+contenido/templates/standard/template.file_subnav.html -text
 contenido/templates/standard/template.files_overview.html -text
 contenido/templates/standard/template.generic_form.html -text
 contenido/templates/standard/template.generic_left_top.html -text
@@ -3703,7 +3713,6 @@ contenido/templates/standard/template.log_main.html -text
 contenido/templates/standard/template.log_menu.html -text
 contenido/templates/standard/template.mod_edit_form.html -text
 contenido/templates/standard/template.mod_left_top.html -text
-contenido/templates/standard/template.mod_overview.html -text
 contenido/templates/standard/template.mycontenido_lastarticles.html -text
 contenido/templates/standard/template.mycontenido_settings.html -text
 contenido/templates/standard/template.mycontenido_start.html -text

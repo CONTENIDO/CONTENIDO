@@ -113,7 +113,11 @@ while ($layout = $layouts->next()) {
         
         $tpl->set('d', 'TODO', $todo->render());
         
-        $tpl->set('d', 'ID', 'lay'.$tpl->dyn_cnt);
+        if (stripslashes($_REQUEST['idlay']) == $layout->get("idlay")) {
+            $tpl->set('d', 'ID', 'marked');
+        } else {
+            $tpl->set('d', 'ID', '');
+        }
 
         $tpl->next();
 

@@ -4,26 +4,24 @@
  * Contenido Content Management System
  * 
  * Description: 
- * Module history
+ * Layout history.
+ * We use SimpleXml to read the xml nodes
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend includes
- * @version    1.1.4
- * @author     Timo A. Hummel
+ * @version    1.0.0
+ * @author     Bilal Arslan
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since contenido release >= 5.0
  * 
  * {@internal 
- *   created 2003-12-11
- *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   created 2008-08-12
  *
- *   $Id$:
  * }}
  * 
  */
@@ -32,128 +30,123 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes","contenido/class.module.history.php");
-cInclude("classes","class.ui.php");
-cInclude("classes","class.htmlelements.php");
-cInclude("includes","functions.mod.php");
+// For build select box
+cInclude("classes", "class.ui.php");
+cInclude("classes", "class.htmlelements.php");
 
-if (!$perm->have_perm_area_action_item("mod_edit","mod_edit",$idmod))
+// For get Version Informatian    
+cInclude("classes", "class.version.php");
+cInclude("classes","class.versionModule.php");
+
+
+// For Editor syntax highlighting
+cInclude("external", "edit_area/class.edit_area.php");
+
+// 
+cInclude("includes", "functions.mod.php");
+
+
+if($idmod =="") {
+	$idmod = $_REQUEST['idmod'];	
+}
+
+$oPage = new cPage;
+
+if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
 {
-	$link = new cHTMLLink;
-	$link->setCLink("mod_translate", 4, "");
-	$link->setCustom("idmod", $idmod);
-	
-	header("Location: ".$link->getHREF());
-	
+  $notification->displayNotification("error", i18n("Permission denied"));
+  $oPage->render();
+} else if (!(int) $client > 0) {
+  $oPage->render();
+} else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
+  $notification->displayNotification("warning", i18n("Versioning is not activated"));
+  $oPage->render();
 } else {
 
-	if (!isset($idmodhistory))
-	{
-		$idmodhistory = 0;
-	}
-	
-	if (getEffectiveSetting("modules", "disable-history", "false") !== "true")
-    {
-    
-        if ($action == "mod_history_takeover")
-        {
-        	$mod = new cApiModuleHistory;
-        	$mod->loadByPrimaryKey($idmodhistory);
-        	
-        	$idmod = modEditModule($idmod, $mod->get("name"), addslashes($mod->get("description")), addslashes($mod->get("input")), addslashes($mod->get("output")), addslashes($mod->get("template")), addslashes($mod->get("type")));      
-        }
-        
-        if ($action == "mod_history_clear")
-        {
-        	$modhistory = new cApiModuleHistoryCollection;
-        	$modhistory->select("idmod = '$idmod'");
-        	
-        	while ($mod = $modhistory->next())
-        	{
-        		$modhistory->delete($mod->get("idmodhistory"));	
-        	}
-        }
-        
-        $page = new UI_Page;
-        
-        $form = new UI_Table_Form("mod_history");
-        $form->setVar("area","mod_history");
-        $form->setVar("frame", $frame);
-        $form->setVar("idmod",$idmod);
-        
-        $form2 = new UI_Table_Form("mod_display");
-        $form2->setVar("area","mod_history");
-        $form2->setVar("frame", $frame);
-        $form2->setVar("idmod",$idmod);    
-        
-        $modList = new cApiModuleHistoryCollection;
-        $modList->select("idmod = '$idmod'","","changed DESC");
-        
-        $form->addHeader(i18n("Module history"));
-        
-        $select = new cHTMLSelectElement("idmodhistory");
-        
-        $archiveAvailable = false;
-        
-        while ($mod = $modList->next())
-        {
-        	$archiveAvailable = true;
-        	$option = new cHTMLOptionElement(date("d.m.Y H:i:s",$mod->get("changed")), $mod->get("idmodhistory"));
-        	
-        	if ($idmodhistory == 0)
-        	{
-        		$idmodhistory = $mod->get("idmodhistory");
-        	}
-        	
-        	$select->addOptionElement($mod->get("idmodhistory"),$option);
-        }
-        
-        $form2->setVar("idmodhistory", $idmodhistory);
-        
-        $select->setDefault($idmodhistory);
-        
-        $form->add(i18n("Show History Entry"), $select->render());
-        
-        $mod = new cApiModuleHistory;
-        $mod->loadByPrimaryKey($idmodhistory);
-        
-        $user = new User;
-        $user->loadUserByUserID($mod->get("changedby"));
-        
-        $form2->add(i18n("Changed by"), $user->getField("realname"));
-        $form2->addHeader(i18n("Module data"));
-        $descr  = new cHTMLTextarea("descr", htmlspecialchars($mod->get("description")), 120,5);
-        $input  = new cHTMLTextarea("input", htmlspecialchars($mod->get("input")), 120,15);
-        $output = new cHTMLTextarea("output", htmlspecialchars($mod->get("output")), 120,15);
-        
-        $form2->add(i18n("Name"), $mod->get("name") );
-        $form2->add(i18n("Type"), $mod->get("type") );
-        $form2->add(i18n("Description"), $descr->render() );
-        $form2->add(i18n("Input"), $input->render() );
-        $form2->add(i18n("Output"), $output->render() );
-    
-    	$form->unsetActionButton("submit");
-    	$form2->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c", "mod_history_takeover");
-    	$form2->unsetActionButton("submit");
-    	
-    	$form->setActionButton("clearhistory", "images/but_delete.gif", i18n("Clear module history"), "c", "mod_history_clear");
-    	$form->setConfirm("clearhistory", i18n("Clear module history"), i18n("Do you really want to clear the module history?")."<br><br>".i18n("Note: This only affects the current module."));
-    	$form->setActionButton("submit", "images/but_refresh.gif", i18n("Refresh"), "s");
-    	
-        if ($archiveAvailable)
-        {
-        	$page->setContent($form->render()."<br>".$form2->render());
-        } else {
-       		$page->setContent(i18n("No history available"));
-        }
-        
-        $page->setMessageBox();
-        $page->render();
+    if ($_POST["mod_send"] == true && ($_POST["CodeOut"] !="" || $_POST["CodeIn"] !="") ) { // save button 
+    	$oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+    	$sName = $_POST["modname"];
+    	$sCodeInput = $_POST["CodeIn"];
+    	$sCodeOutput = $_POST["CodeOut"];
+    	$sDescription = $_POST["moddesc"];
+
+    //	save and mak new revision
+        $oPage->addScript('refresh', $oVersion->renderReloadScript('mod', $idmod, $sess));
+    	modEditModule($idmod, $sName, $sDescription, $sCodeInput, $sCodeOutput, $oVersion->sTemplate, $oVersion->sModType);
+    	unset($oVersion);
+    }
+
+
+    $oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+
+    // Init Form variables of SelectBox
+    $sSelectBox = "";
+    $oVersion->setVarForm("area",  $area);
+    $oVersion->setVarForm("frame", $frame);
+    $oVersion->setVarForm("idmod", $idmod);
+
+    // create and output the select box, for params please look class.version.php
+    $sSelectBox = $oVersion->buildSelectBox("mod_history", "Mod History", "Show History Entry", "idmodhistory");
+
+    // Generate Form
+    $oForm = new UI_Table_Form("mod_display");
+    $oForm->addHeader(i18n("Edit Module"));
+    $oForm ->setWidth("100%");
+    $oForm->setVar("area", "mod_history");
+    $oForm->setVar("frame", $frame);
+    $oForm->setVar("idmod", $idmod);
+    $oForm->setVar("mod_send", 1);
+
+
+
+    // if send form refresh
+    if ($_POST["idmodhistory"] != "") {
+        $sRevision = $_POST["idmodhistory"];
     } else {
-    	$page = new UI_Page;
-  		$page->setContent(i18n("Module history disabled by system administrator"));
-  		$page->render();
-   	}
+        $sRevision = $oVersion->getLastRevision();
+    }
+        
+    if ($sRevision != '') {
+    	// File Path	
+        $sPath = $oVersion->getFilePath() . $sRevision;
+    	
+    	// Read XML Nodes  and get an array 
+    	$aNodes = array();
+    	$aNodes = $oVersion->initXmlReader($sPath);
+
+    	if (count($aNodes) > 1) {
+    				
+    			//	if choose xml file read value an set it						
+    			$sName = $oVersion->getTextBox("modname", $aNodes["name"], 60);
+    			$sDescription = $oVersion->getTextarea("moddesc", $aNodes["desc"], 100, 10);
+    			$sCodeInput = $oVersion->getTextarea("CodeIn", $aNodes["code_input"], 100, 30, "IdCodeIn");
+    			$sCodeOutput = $oVersion->getTextarea("CodeOut", $aNodes["code_output"], 100, 30, "IdCodeOut");
+    			
+    		
+    	}
+    } 
+
+    // Add new Elements of Form
+    $oForm->add(i18n("Name"), $sName);
+    $oForm->add(i18n("Description"), $sDescription);
+    $oForm->add(i18n("Code Input"), $sCodeInput);
+    $oForm->add(i18n("Code Output"), $sCodeOutput);
+    $oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c"/*, "mod_history_takeover"*/); //modified it 
+    $oForm->unsetActionButton("submit");
+
+    // Render and handle History Area
+
+    $oEditAreaIn = new EditArea('IdCodeIn', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+    $oEditAreaOutput = new EditArea('IdCodeOut', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+    $oPage->addScript('IdCodeIn', $oEditAreaIn->renderScript());
+    $oPage->addScript('IdCodeOut', $oEditAreaOutput->renderScript());
+
+    if($sSelectBox !="") {
+    	$oPage->setContent($sSelectBox . $oForm->render());
+
+    } else {
+    	$notification->displayNotification("warning", i18n("No module history available"));
+    }	
+    $oPage->render();
 }
-    
 ?>

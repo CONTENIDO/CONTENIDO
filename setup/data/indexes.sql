@@ -69,24 +69,28 @@ ALTER TABLE !PREFIX!_template_conf add INDEX idtpl (idtpl);
 ALTER TABLE !PREFIX!_template_conf add INDEX idtplcfg (idtplcfg);
 
 ALTER TABLE !PREFIX!_upl add INDEX idclient (idclient);
-ALTER TABLE !PREFIX!_properties ADD INDEX (idclient, itemtype , itemid , type, name);
+ALTER TABLE !PREFIX!_properties ADD INDEX index_p(idclient, itemtype , itemid , type, name);
 
 ALTER TABLE !PREFIX!_frontendpermissions ADD INDEX idfrontendgroup (idfrontendgroup,idlang);
 ALTER TABLE !PREFIX!_frontendpermissions ADD INDEX plugin (plugin);
 ALTER TABLE !PREFIX!_frontendpermissions ADD INDEX action(action);
 ALTER TABLE !PREFIX!_frontendpermissions ADD INDEX item (item);
 
-ALTER TABLE !PREFIX!_rights ADD INDEX (user_id);
-ALTER TABLE !PREFIX!_rights ADD INDEX (idarea);
-ALTER TABLE !PREFIX!_rights ADD INDEX (idaction);
-ALTER TABLE !PREFIX!_rights ADD INDEX (idcat);
-ALTER TABLE !PREFIX!_rights ADD INDEX (idclient);
-ALTER TABLE !PREFIX!_rights ADD INDEX (idlang);
-ALTER TABLE !PREFIX!_rights ADD INDEX (type);
+ALTER TABLE !PREFIX!_rights ADD INDEX user_id(user_id);
+ALTER TABLE !PREFIX!_rights ADD INDEX idarea(idarea);
+ALTER TABLE !PREFIX!_rights ADD INDEX idaction(idaction);
+ALTER TABLE !PREFIX!_rights ADD INDEX idcat(idcat);
+ALTER TABLE !PREFIX!_rights ADD INDEX idclient(idclient);
+ALTER TABLE !PREFIX!_rights ADD INDEX idlang(idlang);
+ALTER TABLE !PREFIX!_rights ADD INDEX type(type);
 
-ALTER TABLE !PREFIX!_system_prop ADD INDEX (type, name);
+ALTER TABLE !PREFIX!_file_information ADD INDEX idclient(idclient);
+ALTER TABLE !PREFIX!_file_information ADD INDEX type(type);
+ALTER TABLE !PREFIX!_file_information ADD INDEX filename(filename);
 
-ALTER TABLE !PREFIX!_stat ADD INDEX (idcatart, idlang);
+ALTER TABLE !PREFIX!_system_prop ADD INDEX type_name(type, name);
+
+ALTER TABLE !PREFIX!_stat ADD INDEX idcatart_idlang(idcatart, idlang);
 
 ALTER TABLE !PREFIX!_pica_alloc_con DROP PRIMARY KEY;
 ALTER TABLE !PREFIX!_pica_alloc_con ADD PRIMARY KEY ( `idpica_alloc` , `idartlang` );

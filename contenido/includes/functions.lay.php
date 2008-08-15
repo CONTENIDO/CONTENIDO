@@ -49,7 +49,7 @@ cInclude ("includes", "functions.con.php");
  */
 function layEditLayout($idlay, $name, $description, $code) {
 
-    global $client, $auth, $cfg, $sess, $area_tree, $perm;
+    global $client, $auth, $cfg, $sess, $area_tree, $perm, $cfgClient, $idlay;
 
     $db2= new DB_Contenido;
     $db = new DB_Contenido;
@@ -60,7 +60,23 @@ function layEditLayout($idlay, $name, $description, $code) {
     set_magic_quotes_gpc($name);
     set_magic_quotes_gpc($description);
     set_magic_quotes_gpc($code);
+	
+	/**
+	* START TRACK VERSION
+	**/
+	cInclude("classes", "class.version.php");
+	cInclude("classes", "class.versionLayout.php");
+	
+	$oVersion = new VersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
+	
+	// Create new Layout Version in cms/version/layout/
+	$oVersion->createNewVersion();
 
+	/**
+	* END TRACK VERSION
+	**/
+	
+	
     if (!$idlay) {
 
         $tmp_newid = $db->nextid($cfg["tab"]["lay"]);

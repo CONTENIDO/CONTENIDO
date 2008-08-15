@@ -303,11 +303,6 @@ class cApiModule extends Item
     	{
     		cInclude("includes", "functions.con.php");
     		
-			if (getEffectiveSetting("modules", "disable-history", "false") !== "true")
-			{
-				$modarchives = new cApiModuleHistoryCollection;
-				$modarchives->create($this->get("idmod"));	
-			}
 	    	parent::store();
 	    	
 			conGenerateCodeForAllArtsUsingMod($this->get("idmod"));

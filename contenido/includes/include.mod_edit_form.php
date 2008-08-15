@@ -32,7 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes","contenido/class.module.history.php");
 cInclude("classes","contenido/class.layout.php");
 cInclude("classes","contenido/class.module.php");
 cInclude("classes","class.ui.php");
@@ -482,8 +481,22 @@ window.onload = scrolltheother;
 		$page->setSubnav("idmod=$idmod", "mod");
 		if ($action)
 		{
+            if (stripslashes($idmod > 0)) {
+                $sReloadScript = "<script type=\"text/javascript\">
+                                         var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+                                         if (left_bottom) {
+                                             var href = left_bottom.location.href;
+                                             href = href.replace(/&idmod.*/, '');
+                                             left_bottom.location.href = href+'&idmod='+'".$idmod."';
+
+                                         }
+                                </script>";
+            } else {
+                $sReloadScript = "";
+            }
+
 			// Only reload overview/menu page, if something may have changed
-			$page->setReload();
+			$page->addScript('reload', $sReloadScript);
 		}
 		if (!($action == "mod_importexport_module" && $mode == "export"))
 		{

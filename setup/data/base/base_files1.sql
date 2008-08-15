@@ -200,3 +200,10 @@ INSERT INTO !PREFIX!_files VALUES ('801', '801', 'content_allocation/includes/in
 INSERT INTO !PREFIX!_files VALUES ('802', '801', 'content_allocation/includes/include.right_top.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('803', '801', 'content_allocation/includes/include.right_bottom.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('804', '802', 'content_allocation/includes/include.contentallocation_article.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('400', '400', 'include.lay_history.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('399', '31', 'include.files_subnav.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('401', '401', 'include.style_history.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('397', '71', 'include.files_subnav.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('402', '402', 'include.js_history.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('398', '32', 'include.files_subnav.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('403', '403', 'include.html_tpl_history.php', 'main');

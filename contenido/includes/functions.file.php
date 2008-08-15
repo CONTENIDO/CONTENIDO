@@ -12,7 +12,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Willi Man
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  * {@internal 
  *   created 2004-07-13
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-08-14, Timo.Trautmann added file_information functions for storing file meta indormations
  *
  *   $Id$:
  * }}
@@ -31,6 +32,156 @@
 
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
+}
+
+/**
+ * Function removes file meta information from database (used when a file is deleted)
+ *
+ * @author Timo Trautmann
+ * @param {Integer} $iIdClient - id of client which contains this file
+ * @param {String} $sFilename - name of corresponding file
+ * @param {String} $sType - type of file (css, js or templates)
+ * @param {Object} $oDb - contenido database object
+ *
+ */
+function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
+    global $cfg;
+
+    if (!isset($oDb) || !is_object($oDb)) {
+        $oDb = new DB_Contenido();
+    }
+    
+    $iIdClient = Contenido_Security::toInteger($iIdClient);    
+    $sFilename = Contenido_Security::filter((string) $sFilename, $oDb);
+    $sType = Contenido_Security::filter((string) $sType, $oDb);
+    
+    $sSql = "DELETE FROM `".$cfg["tab"]["file_information"]."` WHERE idclient=$iIdClient AND 
+                                                            filename='$sFilename' AND 
+                                                            type='$sType';"; 
+    $oDb->query($sSql);
+    $oDb->free();
+}
+
+/**
+ * Function returns file meta information from database (used when files were versionned or description is displayed)
+ *
+ * @author Timo Trautmann
+ * @param {Integer} $iIdClient - id of client which contains this file
+ * @param {String} $sFilename - name of corresponding file
+ * @param {String} $sType - type of file (css, js or templates)
+ * @param {Object} $oDb - contenido database object
+ *
+ * @return {Array}   Indexes:
+ *                           idsfi - Primary key of database record
+ *                           created - Datetime when file was created
+ *                           lastmodified - Datetime when file was last modified
+ *                           author - Author of file (Contenido Backend User)
+ *                           modifiedby - Last modifier of file (Contenido Backend User)
+ *                           description - Description which was inserted for this file
+ *                           
+ */
+function getFileInformation ($iIdClient, $sFilename, $sType, $oDb) {
+    global $cfg;
+    
+    if (!isset($oDb) || !is_object($oDb)) {
+        $oDb = new DB_Contenido();
+    }
+    
+    $iIdClient = Contenido_Security::toInteger($iIdClient);
+    $sFilename = Contenido_Security::filter((string) $sFilename, $oDb);
+    $sType = Contenido_Security::filter((string) $sType, $oDb);
+    
+    $aFileInformation = array();
+    $sSql = "SELECT * FROM `".$cfg["tab"]["file_information"]."` WHERE idclient=$iIdClient AND 
+                                                            filename='$sFilename' AND 
+                                                            type='$sType';"; 
+    $oDb->query($sSql);
+    if ($oDb->num_rows() > 0) {
+        $oDb->next_record();
+        $aFileInformation['idsfi'] = $oDb->f('idsfi');
+        $aFileInformation['created'] = $oDb->f('created');
+        $aFileInformation['lastmodified'] = $oDb->f('lastmodified');
+        $aFileInformation['author'] = Contenido_Security::unFilter($oDb->f('author'));
+        $aFileInformation['modifiedby'] = $oDb->f('modifiedby');
+        $aFileInformation['description'] = Contenido_Security::unFilter($oDb->f('description'));
+    }
+    $oDb->free();
+    
+    return $aFileInformation;
+}
+
+/**
+ * Function updates file meta information (used when files were created or edited).
+ * It creates new database record for file meta informations if database record does
+ * not exist. Otherwise, existing record will be updated
+ *
+ * @author Timo Trautmann
+ * @param {Integer} $iIdClient - id of client which contains this file
+ * @param {String} $sFilename - name of corresponding file
+ * @param {String} $sType - type of file (css, js or templates)
+ * @param {String} $sAuthor - author of file
+ * @param {String} $sDescription - description of file
+ * @param {Object} $oDb - contenido database object
+ * @param {string} $sFilenameNew - new filename if filename was changed (optional)
+ *                           
+ */
+function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '') {
+    global $cfg;
+    
+    if (!isset($oDb) || !is_object($oDb)) {
+        $oDb = new DB_Contenido();
+    }
+
+    if ($sFilenameNew == '') {
+        $sFilenameNew = $sFilename;
+    }
+
+    $iIdClient = Contenido_Security::toInteger($iIdClient);
+    $sFilename = Contenido_Security::filter((string) $sFilename, $oDb);
+    $sType = Contenido_Security::filter((string) $sType, $oDb);
+    $sDescription = Contenido_Security::filter((string) $sDescription, $oDb);
+    $sAuthor = Contenido_Security::filter((string) $sAuthor, $oDb);
+    
+    $sSql = "SELECT * from `".$cfg["tab"]["file_information"]."` WHERE idclient=$iIdClient AND 
+                                                            filename='$sFilename' AND 
+                                                            type='$sType';";   
+    $oDb->query($sSql);
+    if ($oDb->num_rows() == 0) {
+        $iNextId = $oDb->nextid('con_style_file_information');
+        $sSql = "INSERT INTO `".$cfg["tab"]["file_information"]."` ( `idsfi` , 
+                                                            `idclient` , 
+                                                            `type` , 
+                                                            `filename` , 
+                                                            `created` ,            
+                                                            `lastmodified` , 
+                                                            `author` , 
+                                                            `modifiedby` , 
+                                                            `description` )
+                                                        VALUES (
+                                                            $iNextId , 
+                                                            $iIdClient, 
+                                                            '$sType', 
+                                                            '$sFilenameNew', 
+                                                            NOW(), 
+                                                            '0000-00-00 00:00:00', 
+                                                            '$sAuthor', 
+                                                            '', 
+                                                            '$sDescription'
+                                                        );";
+    } else {
+        $sSql = "UPDATE `".$cfg["tab"]["file_information"]."` SET `lastmodified` = NOW(),
+                                                         `modifiedby` = '$sAuthor',
+                                                         `description` = '$sDescription',
+                                                         `filename` = '$sFilenameNew' 
+                                                         
+                                                         WHERE idclient=$iIdClient AND 
+                                                               filename='$sFilename' AND 
+                                                               type='$sType';";
+    }
+
+    $oDb->free();
+    $oDb->query($sSql);
+    $oDb->free();
 }
 
 function fileEdit($filename, $sCode, $path) 

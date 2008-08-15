@@ -257,6 +257,10 @@ while ($cApiModule = $cApiModuleCollection->next())
 			
 			$mlist->setActions($iMenu, "todo", $todo->render());
 			$mlist->setActions($iMenu, "delete", $deletebutton);
+            
+            if ($_GET['idmod'] == $idmod) {
+                $mlist->setExtra($iMenu, 'id="marked" ');
+            }     
 			//$mlist->setImage($iMenu, "images/but_module.gif");
 			//$mlist->setImage($iMenu, 'images/spacer.gif', 5);
 		}
@@ -288,13 +292,19 @@ $deleteScript = '    <script type="text/javascript">
         }
 
     </script>';
+
+$sMarkRow = '<script language="javascript">    
+                if (document.getElementById(\'marked\')) {
+                    row.click(document.getElementById(\'marked\'));
+                }
+            </script>';
     
 $oPage->setMargin(0);
 $oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
 $oPage->addScript('delete', $deleteScript);
 $oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
-$oPage->setContent($mlist->render(false));
+$oPage->setContent($mlist->render(false).$sMarkRow);
 
 //generate current content for Object Pager
 $oPagerLink = new cHTMLLink;
@@ -330,6 +340,7 @@ $sRefreshPager = '
             }
         }
     </script>';
+            
 $oPage->addScript('refreshpager', $sRefreshPager); 
 
 $oPage->render();

@@ -33,7 +33,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes",  "contenido/class.module.history.php");
 cInclude("classes",  "contenido/class.module.php");
 cInclude("classes",  "contenido/class.clientslang.php");
 cInclude("classes",  "contenido/class.lang.php");
