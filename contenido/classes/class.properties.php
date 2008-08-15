@@ -413,8 +413,8 @@ class PropertyItem extends Item
 		$this->maximumLength = array();
 		$this->maximumLength["itemtype"] = 64;
 		$this->maximumLength["itemid"] = 255;
-		$this->maximumLength["type"] = 64;
-		$this->maximumLength["name"] = 64;		
+		$this->maximumLength["type"] = 96;
+		$this->maximumLength["name"] = 96;		
 	}
 	
 	function store ()

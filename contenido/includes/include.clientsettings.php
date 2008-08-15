@@ -150,6 +150,23 @@ if ($aItems !== false)
 				$oList->setData($iCounter, $oInputboxType->render(), $oInputboxName->render(), $oInputboxValue->render().$hidden.$sSubmit, $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
     	} else
     	{
+            $sMouseoverTemplate = '<span onmouseover="Tip(\'%s\', BALLOON, true, ABOVE, true);">%s</span>';
+            
+            if (strlen($aValue['type']) > 35) {
+                $sShort = capiStrTrimHard($aValue['type'], 35);
+                $aValue['type'] = sprintf($sMouseoverTemplate, $aValue['type'], $sShort);
+            }
+            
+            if (strlen($aValue['value']) > 35) {
+                $sShort = capiStrTrimHard($aValue['value'], 35);
+                $aValue['value'] = sprintf($sMouseoverTemplate, $aValue['value'], $sShort);
+            }
+            
+            if (strlen($aValue['name']) > 35) {
+                $sShort = capiStrTrimHard($aValue['name'], 35);
+                $aValue['name'] = sprintf($sMouseoverTemplate, $aValue['name'], $sShort);
+            }
+            
         	$oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
     	}
     	$iCounter++;
@@ -195,6 +212,10 @@ if (($_GET['action'] == "clientsettings_edit_item"))
     $sSettingsList = $oList->render();
 }
 
-$oPage->setContent($oFrmRange->render() . '<br>' . $sSettingsList . '<br>' . $oForm->render());
+$sTooltippScript = '<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
+                    <script type="text/javascript" src="scripts/tip_balloon.js"></script>';
+
+$oPage->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
+$oPage->setContent($sTooltippScript."\n".$oFrmRange->render() . '<br>' . $sSettingsList . '<br>' . $oForm->render());
 $oPage->render();
 ?>

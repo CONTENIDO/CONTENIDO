@@ -102,6 +102,23 @@ if (is_array($settings))
     		    $list->setCell($count,2, $oInputboxName->render(true));
                 $list->setCell($count,3, $oInputboxValue->render(true).$hidden.$sSubmit);
     		} else {
+                $sMouseoverTemplate = '<span onmouseover="Tip(\'%s\', BALLOON, true, ABOVE, true);">%s</span>';
+            
+                if (strlen($type) > 35) {
+                    $sShort = capiStrTrimHard($type, 35);
+                    $type = sprintf($sMouseoverTemplate, $type, $sShort);
+                }
+                
+                if (strlen($value['value']) > 35) {
+                    $sShort = capiStrTrimHard($value['value'], 35);
+                    $value['value'] = sprintf($sMouseoverTemplate, $value['value'], $sShort);
+                }
+                
+                if (strlen($key) > 35) {
+                    $sShort = capiStrTrimHard($key, 35);
+                    $key = sprintf($sMouseoverTemplate, $key, $sShort);
+                }
+            
                 $list->setCell($count,1, $key);
     		    $list->setCell($count,2, $type);
     			$list->setCell($count,3, $value['value']);	
@@ -150,9 +167,12 @@ if ($action == "systemsettings_edit_item")
     $sListstring = $list->render();
 }
 
-
 $page = new UI_Page;
-$page->setContent($sListstring."<br>".$form->render());
+$sTooltippScript = '<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
+                    <script type="text/javascript" src="scripts/tip_balloon.js"></script>';
+
+$page->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
+$page->setContent($sTooltippScript."\n".$sListstring."<br>".$form->render());
 $page->render();
 
 ?>
