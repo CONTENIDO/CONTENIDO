@@ -16,7 +16,7 @@
  * 
  *
  * @package    Contenido Frontend classes
- * @version    1.1
+ * @version    1.1.1
  * @author     Andreas Lindner, 4fb AG
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -26,6 +26,7 @@
  * {@internal 
  *   created 2008-07-31
  *   modified 2008-08-05, Björn Behrens (HerrB) - added missing parameter and refactored
+ *   modified 2008-08-15, Oliver Lohkemper (OliverL) - run only Client-Properties return Array
  *   $Id: 
  * }}
  * 
@@ -43,23 +44,24 @@ function cecCreateBaseHref ($sCurrentBaseHref)
 	
 	$oClient	= new cApiClient($client);
 	$aSettings	= $oClient->getProperties();
-	
-	foreach ($aSettings as $aClient)
-	{
-		if ($aClient["type"] == "client" && strstr($aClient["name"], "frontend_path") !== false)
+	if( is_array($aSettings) ) {
+		foreach ($aSettings as $aClient)
 		{
-			$aUrlData = parse_url($aClient["value"]);
-
-			if ($aUrlData["host"] == $_SERVER['HTTP_HOST'] || 
-				("www." . $aUrlData["host"]) == $_SERVER['HTTP_HOST'] || 
-				 $aUrlData["host"] ==  "www." . $_SERVER['HTTP_HOST'] )
+			if ($aClient["type"] == "client" && strstr($aClient["name"], "frontend_path") !== false)
 			{
-				// The currently used host has been found as 
-				// part of the base href(s) specified in client settings
-				
-				// Return base href as specified in client settings
-				$sNewBaseHref = $aClient["value"];
-				return $sNewBaseHref;
+				$aUrlData = parse_url($aClient["value"]);
+	
+				if ($aUrlData["host"] == $_SERVER['HTTP_HOST'] || 
+					("www." . $aUrlData["host"]) == $_SERVER['HTTP_HOST'] || 
+					 $aUrlData["host"] ==  "www." . $_SERVER['HTTP_HOST'] )
+				{
+					// The currently used host has been found as 
+					// part of the base href(s) specified in client settings
+					
+					// Return base href as specified in client settings
+					$sNewBaseHref = $aClient["value"];
+					return $sNewBaseHref;
+				}
 			}
 		}
 	}
