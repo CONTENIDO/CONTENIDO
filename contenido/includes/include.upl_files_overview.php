@@ -204,7 +204,7 @@ if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action)
     	foreach ($fdelete as $file)
     	{
     		$uploads->select("idclient = '$client' AND dirname='$qpath' AND filename='$file'");
-    		if ($uploads->next())
+    		if ($item = $uploads->next())
     		{
     			if (is_dbfs($qpath))
     			{
@@ -219,7 +219,7 @@ if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action)
 					$_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.Delete");
 					if ($_cecIterator->count() > 0) {
 						 while ($chainEntry = $_cecIterator->next()) {
-								$chainEntry->execute( $uploads->f('idupl'), $qpath, $file );
+								$chainEntry->execute( $item->get('idupl'), $qpath, $file );
 					}   }
 					
     		}
