@@ -693,7 +693,9 @@ class Contenido_UpdateNotifier {
 				$oTpl->set("s", "NEWS_NOCONTENT", "");
                 $oTpl->set("s", "DISPLAY_DISABLED", 'none');
 			}
-		}
+		} else {
+            $oTpl->set("s", "NEWS_NOCONTENT", i18n("No RSS content available"));
+        }
 		return $oTpl;
 	}
 	
