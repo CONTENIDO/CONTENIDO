@@ -43,6 +43,21 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     $date   = date("Y-m-d H:i:s");
     $author = $auth->auth["uname"];
 
+    /**
+	* START TRACK VERSION
+	**/
+	cInclude("classes", "class.version.php");
+	cInclude("classes", "class.versionModule.php");
+	
+	$oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+	
+	// Create new Module Version in cms/version/module/
+	$oVersion->createNewVersion();
+
+	/**
+	* END TRACK VERSION
+	**/
+    
 	if (!$idmod)
 	{
 		$cApiModuleCollection = new cApiModuleCollection;
@@ -70,23 +85,10 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		$cApiModule->set("description", $description);
 		$cApiModule->set("input", $input);
 		$cApiModule->set("type", $type);
-		
+        
 		$cApiModule->store();
     }
-    /**
-	* START TRACK VERSION
-	**/
-	cInclude("classes", "class.version.php");
-	cInclude("classes", "class.versionModule.php");
-	
-	$oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
-	
-	// Create new Module Version in cms/version/module/
-	$oVersion->createNewVersion();
 
-	/**
-	* END TRACK VERSION
-	**/
 	
     return $idmod;
 }

@@ -484,7 +484,7 @@ function uplRenameDirectory ($oldpath, $newpath, $parent)
 }
 
 
-function uplRecursiveDirectoryList ($directory, &$rootitem, $level)
+function uplRecursiveDirectoryList ($directory, &$rootitem, $level, $sParent = '', $iRenameLevel = null)
 {
 	$dirhandle = @opendir($directory);
 	
@@ -493,7 +493,8 @@ function uplRecursiveDirectoryList ($directory, &$rootitem, $level)
 	} 
 	else 
 	{
-	
+        $aInvalidDirectories = array();
+        
 		unset($files);
 		
         //list the files in the dir
@@ -503,7 +504,21 @@ function uplRecursiveDirectoryList ($directory, &$rootitem, $level)
         	{
         		if (@chdir($directory.$file."/"))
             	{
-            		$files[] = $file;
+                    if (uplCreateFriendlyName($file) == $file) {
+                        $files[] = $file;
+                    } else {
+                        if ($_GET['force_rename'] == 'true') {
+                            if ($iRenameLevel == 0 || $iRenameLevel == $level) {
+                                uplRenameDirectory($file, uplCreateFriendlyName($file), $sParent);
+                                $iRenameLevel = $level;
+                                $files[] = uplCreateFriendlyName($file);
+                            } else {
+                                array_push($aInvalidDirectories, $file);
+                            }
+                        } else {
+                            array_push($aInvalidDirectories, $file);
+                        }
+                    }
             	}
         	}
         }
@@ -534,8 +549,9 @@ function uplRecursiveDirectoryList ($directory, &$rootitem, $level)
                 		
                 		$rootitem->addItem($item);
                 		$old = $rootitem;
-                		uplRecursiveDirectoryList($directory.$file."/", $item, $level + 1);
-                		$rootitem = $old;
+                		$aArrayTemp = uplRecursiveDirectoryList($directory.$file."/", $item, $level + 1, $sParent.$file.'/', $iRenameLevel);
+                		$aInvalidDirectories = array_merge($aInvalidDirectories, $aArrayTemp);
+                        $rootitem = $old;
                 		chdir($olddir);
                 	}
             	}
@@ -544,6 +560,7 @@ function uplRecursiveDirectoryList ($directory, &$rootitem, $level)
 	}
 	
     @closedir ($dirhandle);
+    return $aInvalidDirectories;
 }
 
 

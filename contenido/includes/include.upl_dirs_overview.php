@@ -174,7 +174,21 @@ $pathstring = '';
 $rootTreeItem = new TreeItem;
 $rootTreeItem->custom["level"] = 0;
 $rootTreeItem->name = i18n("Upload directory");
-uplRecursiveDirectoryList($cfgClient[$client]["upl"]["path"], $rootTreeItem, 2);
+$aInvalidDirectories = uplRecursiveDirectoryList($cfgClient[$client]["upl"]["path"], $rootTreeItem, 2);
+if (count($aInvalidDirectories) > 0) {
+    $sWarningInfo = i18n('The following directories contains invalid characters and were ignored: ');
+    $sSeperator = '<br>';
+    $sFiles = implode(', ', $aInvalidDirectories);
+    $sRenameString = i18n('Please click here in order to rename automatically.');
+    $sRenameHref = $sess->url("main.php?area=$area&frame=$frame&force_rename=true");
+    $sRemameLink = '<a href="'.$sRenameHref.'">'.$sRenameString.'</a>';
+    $sNotificationString = $sWarningInfo.$sSeperator.$sFiles.$sSeperator.$sSeperator.$sRemameLink;
+    
+    $sErrorString = $notification->returnNotification("warning", $sNotificationString, 1);
+    $tpl->set('s', 'WARNING', $sErrorString);
+} else {
+    $tpl->set('s', 'WARNING', '');
+}
 
 /* Mark all items in the expandedList as expanded */
 foreach ($uplexpandedList as $key => $value)

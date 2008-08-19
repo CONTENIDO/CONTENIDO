@@ -6278,3 +6278,9 @@ msgstr "Interner Historie Fehler"
 
 msgid "Versioning is not activated"
 msgstr "Die Versionierung ist nicht aktiv"
+
+msgid "The following directories contains invalid characters and were ignored: "
+msgstr "Die folgenden Verzeichnisnamen beinhalten ung&uuml;ltige Zeichen und wurden daher ignoriert: "
+
+msgid "Please click here in order to rename automatically."
+msgstr "Bitte klicken Sie hier, um die Verzeichnisse automatisch umzubennennen."
