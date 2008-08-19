@@ -497,6 +497,7 @@
 "upl_meta";"modified";"datetime";"";"";"";"";""
 "upl_meta";"modifiedby";"varchar(32)";"";"";"";"";""
 "online_user";"user_id";"varchar(32)";"";"PRI";"";"";""
+"online_user";"lastaccessed";"timestamp(14)";"YES";"";"";"";""
 "file_information";"idsfi";"int(11)";"";"PRI";"";"";""
 "file_information";"idclient";"int(11)";"";"";"";"";""
 "file_information";"type";"varchar(32)";"";"";"";"";""
