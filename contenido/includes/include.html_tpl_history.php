@@ -41,6 +41,7 @@ cInclude("external", "edit_area/class.edit_area.php");
 
 $sFileName = "";    
 $sFileName = $_REQUEST['file'];
+$bDeleteFile = false;
 
 
 if($sFileName == ""){
@@ -51,6 +52,10 @@ $sType = "templates";
 $sTypeContent = "templates";
 
 $oPage = new cPage;
+$oPage->addScript('messageBox', '<script type="text/javascript" src="'.$sess->url('scripts/messageBox.js.php').'"></script>');
+$oPage->addScript('messageBoxInit', '<script type="text/javascript">box = new messageBox("", "", "", 0, 0);</script>');
+
+
 if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
 {
   $notification->displayNotification("error", i18n("Permission denied"));
@@ -62,11 +67,19 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
   $oPage->render();
 } else {
 
-    $sTypeContent = "templates";
 
+    
+    $sTypeContent = "templates";
+	
     // Get File Informataion from DB
     $aFileInfo = getFileInformation ($client, $sFileName , $sTypeContent, $db);
-
+	
+	// [action] => history_truncate delete all current history
+  	if($_POST["action"] == "history_truncate") {
+    	$oVersionHtmlTemp = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+  		 $bDeleteFile = $oVersionHtmlTemp->deleteFile();
+        unset($oVersionHtmlTemp);
+  	}
     if ($_POST["html_tpl_send"] == true && $_POST["html_tpl_code"] !="" && $sFileName != "" && $aFileInfo["idsfi"]!="" ) { // save button 
             $oVersionHtmlTemp = new VersionFile($aFileInfo["idsfi"], $aFileInfo,$sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
             
@@ -100,7 +113,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
          unset($oVersionHtmlTemp);
     }
 
-    if($sFileName != "" && $aFileInfo["idsfi"]!="") {
+    if($sFileName != "" && $aFileInfo["idsfi"]!="" && $_POST["action"] != "history_truncate" ) {
     	$oVersionHtmlTemp= new VersionFile($aFileInfo["idsfi"],$aFileInfo["description"] ,$sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
     	
     	// Init Form variables of SelectBox
@@ -169,8 +182,13 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
     	}	
     	$oPage->render();
     	
-    }else{
-    	$notification->displayNotification("error", i18n("Internal History Error"));
+    } else {
+    	if($bDeleteFile){
+    		$notification->displayNotification("warning", i18n("Version history was cleared"));
+    	} else {
+    		$notification->displayNotification("error", i18n("Internal History Error"));	
+    	}
+    	
     }
 }
 ?>

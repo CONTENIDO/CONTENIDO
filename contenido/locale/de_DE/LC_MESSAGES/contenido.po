@@ -1064,6 +1064,59 @@ msgstr "Modulhistorie übernehmen"
 msgid "Clear module history"
 msgstr "Modulhistorie löschen"
 
+#: contenido/classes/class.version.php:442
+msgid "Clear layout history"
+msgstr "Layouthistorie löschen"
+
+#: contenido/classes/class.version.php:443
+msgid "Do you really want to clear layout history?"
+msgstr "M&ouml;chten Sie wirklich die Layouthistorie löschen?" 
+
+#: contenido/classes/class.version.php:443
+msgid "Note: This only affects the current layout."
+msgstr "Hinweis: Dies betrifft nur das aktuelle Layout."
+################################################
+#: contenido/classes/class.version.php:450
+msgid "Clear style history"
+msgstr "Stylehistorie löschen"
+
+#: contenido/classes/class.version.php:451
+msgid "Do you really want to clear style history?"
+msgstr "M&ouml;chten Sie wirklich die Stylehistorie löschen?" 
+
+#: contenido/classes/class.version.php:451
+msgid "Note: This only affects the current style."
+msgstr "Hinweis: Dies betrifft nur das aktuelle Style."
+################################################
+#: contenido/classes/class.version.php:454
+msgid "Clear Java-Script history"
+msgstr "Java-Script Historie löschen"
+
+#: contenido/classes/class.version.php:455
+msgid "Do you really want to clear Java-Script history?"
+msgstr "M&ouml;chten Sie wirklich die Java-Script Historie löschen?" 
+
+#: contenido/classes/class.version.php:455
+msgid "Note: This only affects the current Java-Script."
+msgstr "Hinweis: Dies betrifft nur das aktuelle Java-Script."
+################################################
+#: contenido/classes/class.version.php:458
+msgid "Clear HTML-Template history"
+msgstr "HTML-Template Historie löschen"
+
+#: contenido/classes/class.version.php:459
+msgid "Do you really want to clear HTML-Template history?"
+msgstr "M&ouml;chten Sie wirklich die HTML-Template Historie löschen?" 
+
+#: contenido/classes/class.version.php:459
+msgid "Note: This only the affects current HTML-Template."
+msgstr "Hinweis: Dies betrifft nur das aktuelle HTML-Template."
+################################################
+#: contenido/classes/class.version.php:459
+msgid "Version history was cleared"
+msgstr "Die Versionhistorie wurde erfolgreich gel&ouml;scht"
+
+
 # e:\timo\contenido_head/contenido/includes/include.mod_new.php:17
 #: contenido/includes/cfg_language_de.inc.php:122
 #: contenido/includes/include.mod_edit_form.php:107
@@ -3606,7 +3659,7 @@ msgstr "In die aktuelle Version kopieren"
 
 # e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
 #: contenido/includes/include.mod_history.php:122
-msgid "Do you really want to clear the module history?"
+msgid "Do you really want to clear module history?"
 msgstr "Möchte Sie wirklich die Modulhistorie löschen?"
 
 #: contenido/includes/include.mod_history.php:122

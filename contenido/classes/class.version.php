@@ -127,6 +127,12 @@ class Version {
 	private $bVersionCreatActive;
     
     protected $dActualTimestamp;
+   
+    /**
+     * Alternative Path for save version files
+	 * @access protected
+     */
+    protected $sAlternativePath;
 	
 	/**
 	 * The Version object constructor, initializes class variables
@@ -157,7 +163,14 @@ class Version {
 
  //		Look if versioning is allowed, default is false		
 		$this->bVersionCreatActive = getEffectiveSetting('versioning', 'activated', 'false'); 
-        
+		
+//		Look if versioning is set alternative path to save
+		$this->sAlternativePath = getEffectiveSetting('versioning', 'path');
+		 if(!is_dir($this->sAlternativePath)){
+//		 Alternative Path is not true or is not exist, we use the frontendpath
+		 	$this->sAlternativePath = "";
+		 }
+
         $this->checkPaths();
 	}
     
@@ -167,7 +180,12 @@ class Version {
 	 */	
     protected function checkPaths() {
         $aPath = array('', '/css', '/js', '/layout', '/module', '/templates');
-        $sFrontEndPath = $this->aCfgClient[$this->iClient]["path"]["frontend"] . "version";
+        $sFrontEndPath = "";
+        if($this->sAlternativePath == ""){
+        	$sFrontEndPath = $this->aCfgClient[$this->iClient]["path"]["frontend"] . "version";
+        }else{
+        	$sFrontEndPath = $this->sAlternativePath . "/" . $this->iClient;
+        }
         
         foreach ($aPath as $sSubPath) {
             if(!is_dir($sFrontEndPath.$sSubPath)){
@@ -285,12 +303,44 @@ class Version {
 	}
 	
 	/**
+	 * This function deletes files and the the folder, for given path.
+	 * 
+	 * @return {bool} return true if successful or false
+	 */		
+	public function deleteFile(){
+		// Open this Filepath and read then the content.
+		$sDir = $this->getFilePath();
+		$bDelet = false;
+		if (is_dir($sDir)) {
+		    if ($dh = opendir($sDir)) {
+		    	  while (($sFile = readdir($dh)) !== false) {
+					if($sFile != "."  && $sFile !=".."){
+						// Delete the files						
+						$bDelete = unlink($sDir.$sFile);
+					}
+		    	  }
+//		    	  if the files be cleared, the delete the folder
+		    	  	$bDelete = rmdir($sDir);
+		    }
+		}
+		if($bDelete){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	 * Get the frontendpath to revision
 	 * 
 	 * @return {String} returns path to revision file
 	 */		
 	public function getFilePath() {
-		$sFrontEndPath = $this->aCfgClient[$this->iClient]["path"]["frontend"] . "version/";
+		if($this->sAlternativePath =="") { 
+        	$sFrontEndPath = $this->aCfgClient[$this->iClient]["path"]["frontend"] . "version/";
+        } else {
+        	$sFrontEndPath = $this->sAlternativePath . "/" . $this->iClient . "/";
+        }
 		return $sFrontEndPath . $this->sType.'/'. $this->iIdentity. '/';
 	}
 
@@ -361,24 +411,60 @@ class Version {
 	 */
     public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox) {
 		$oForm = new UI_Table_Form("lay_history");
-		
+		$aMessage = array();
 		// if exists xml files 
 		if(count($this->dTimestamp) > 0) {
 			
 			foreach($this->aVarForm as $sKey=>$sValue) {
 				$oForm ->setVar($sKey, $sValue);				
 			}
-			
+			$aMessage = $this->getMessages();
 			$oForm ->addHeader(i18n($sAddHeader));	
 			$oForm ->add(i18n($sLabelOfSelectBox),  $this->getSelectBox($this->getFormatTimestamp(), $sIdOfSelectBox));
-			#$oForm ->setActionButton("clearhistory", "images/but_delete.gif", i18n("Clear module history"), "c", "mod_history_clear");
-			#$oForm ->setConfirm("clearhistory", i18n("Clear module history"), i18n("Do you really want to clear the module history?")."<br><br>".i18n("Note: This only affects the current module."));
+			$oForm ->setActionButton("clearhistory", "images/but_delete.gif", $aMessage["alt"], "c", "history_truncate");
+			$oForm ->setConfirm("clearhistory", $aMessage["alt"], $aMessage["popup"]);
 			$oForm ->setActionButton("submit", "images/but_refresh.gif", i18n("Refresh"), "s");
 
 			return $oForm ->render().'<div style="margin-top:20px;"></div>';
 		} else {
 			return '';
 		}
+    }
+    
+    /**
+     * Messagebox for build selectBox. Dynamic allocation for type.
+	 * return {array} the attributes alt and poput returns  
+	 */
+    private function getMessages(){
+    	$aMessage = array();
+    	switch($this->sType){
+    		case 'layout':
+    			$aMessage["alt"] = i18n("Clear layout history");
+    			$aMessage["popup"] = i18n("Do you really want to clear layout history?")."<br><br>".i18n("Note: This only affects the current layout."); 
+    		break;
+    		case 'module':
+    			$aMessage["alt"] = i18n("Clear module history");
+    			$aMessage["popup"] = i18n("Do you really want to clear module history?")."<br><br>".i18n("Note: This only affects the current module.");
+    		break;
+    		case 'css': 
+    			$aMessage["alt"] = i18n("Clear style history");
+    			$aMessage["popup"] = i18n("Do you really want to clear style history?")."<br><br>".i18n("Note: This only affects the current style.");
+    		break;
+    		case 'js':
+    			$aMessage["alt"] = i18n("Clear Java-Script history");
+    			$aMessage["popup"] = i18n("Do you really want to clear Java-Script history?")."<br><br>".i18n("Note: This only affects the current Java-Script.");
+    		break;
+    		case 'templates':
+    			$aMessage["alt"] = i18n("Clear HTML-Template history");
+    			$aMessage["popup"] = i18n("Do you really want to clear HTML-Template history?")."<br><br>".i18n("Note: This only the affects current HTML-Template.");
+    		break; 
+      		default: 
+      			$aMessage["alt"] = i18n("Clear history");
+    			$aMessage["popup"] = i18n("Do you really want to clear history?")."<br><br>".i18n("Note: This only affects the current history.");
+      		break;
+      		
+    	}
+    	return $aMessage;
     }
     
   	/**
@@ -435,12 +521,26 @@ class Version {
 	 * @return {String} HTML Code of Input Textfield
 	 */		
 	public function getTextBox($sName, $sInitValue, $iWidth, $bDisabled = false) {
+		
 		$oHTMLTextbox = new cHTMLTextbox($sName, html_entity_decode($sInitValue), $iWidth, "", "", $bDisabled);
+		#$oHTMLTextbox = new cHTMLTextbox($sName, utf8_encode($this->htmlentities_decode($sInitValue)), $iWidth, "", "", $bDisabled);
 		$oHTMLTextbox->setStyle("font-family: monospace; width: 100%;");
 		$oHTMLTextbox->updateAttributes(array("wrap" => "off"));
 		
 		return $oHTMLTextbox->render();
 	}
+	
+	
+//	private function htmlentities_decode($string) {
+//    	$sFile = "";
+//    	$trans = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
+//   		$trans = array_flip($trans);
+//   		$sFile = strtr($string, $trans);
+//   		#$sFile = strtr($sFile, "Ù", "&Uuml;");
+//   		#$sFile = strtr($sFile, "Ã", "&Auml;");
+//   		#$sFile = strtr($sFile, "œ", "bla");
+//    	return $sFile
+//	}   
 	
 	/**
 	 * Displays your notification

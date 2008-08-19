@@ -40,6 +40,10 @@ cInclude("includes", "functions.lay.php");
 cInclude("external", "edit_area/class.edit_area.php");
 
 $oPage = new cPage;
+$oPage->addScript('messageBox', '<script type="text/javascript" src="'.$sess->url('scripts/messageBox.js.php').'"></script>');
+$oPage->addScript('messageBoxInit', '<script type="text/javascript">box = new messageBox("", "", "", 0, 0);</script>');
+
+$bDeleteFile = false;
 
 if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
   $notification->displayNotification("error", i18n("Permission denied"));
@@ -49,8 +53,7 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
 } else if (getEffectiveSetting('versioning', 'activated', 'false') == 'false') {
   $notification->displayNotification("warning", i18n("Versioning is not activated"));
   $oPage->render();
-} else {
-
+} else {	
     if ($_POST["lay_send"] == true && $_POST["layname"]!="" && $_POST["laycode"] !="" && (int) $idlay > 0) { // save button 
     	$oVersion = new VersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
     	$sLayoutName = $_POST["layname"];
@@ -62,6 +65,13 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
     	layEditLayout($idlay, $sLayoutName, $sLayoutDescription, $sLayoutCode);
     	unset($oVersion);
     }
+    
+    // [action] => history_truncate delete all current modul history
+  	if($_POST["action"] == "history_truncate") {
+        $oVersion = new VersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
+  		$bDeleteFile = $oVersion->deleteFile();
+        unset($oVersion);
+  	}
 
     // Init construct with contenido variables, in class.VersionLayout
     $oVersion = new VersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
@@ -91,7 +101,7 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
         $sRevision = $oVersion->getLastRevision();
     }
         
-    if ($sRevision != '') {
+    if ($sRevision != '' && $_POST["action"] != "history_truncate") {
     	// File Path	
         $sPath = $oVersion->getFilePath() . $sRevision;
     	
@@ -119,14 +129,21 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
     // Render and handle History Area
     $oEditAreaOutput = new EditArea('IdLaycode', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
     $oPage->addScript('IdLaycode', $oEditAreaOutput->renderScript());
-
+    
     if($sSelectBox !="") {
     	$oPage->setContent($sSelectBox . $oForm->render());
 
     } else {
-    	$notification->displayNotification("warning", i18n("No layout history available"));
+    	if($bDeleteFile){
+    		$notification->displayNotification("warning", i18n("Version history was cleared"));
+    	} else {
+    		$notification->displayNotification("warning", i18n("No layout history available"));	
+    	}
+    	
     }	
     $oPage->render();
+	
+	
 }
 
 ?>

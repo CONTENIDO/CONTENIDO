@@ -169,3 +169,4 @@ INSERT INTO !PREFIX!_actions VALUES ('201', '401', 'style_history_manage', 'styl
 INSERT INTO !PREFIX!_actions VALUES ('202', '402', 'js_history_manage', 'js_history_manage', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('203', '403', 'htmltpl_history_manage', 'htmltpl_history_manage', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('204', '70', 'mod_history_manage', 'mod_history_manage', '', '', '1');
+INSERT INTO !PREFIX!_actions VALUES ('801', '400', 'history_truncate', 'history_truncate', '', '', '1');

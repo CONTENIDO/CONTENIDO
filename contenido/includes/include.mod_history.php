@@ -50,7 +50,10 @@ if($idmod =="") {
 	$idmod = $_REQUEST['idmod'];	
 }
 
+$bDeleteFile = false;
 $oPage = new cPage;
+$oPage->addScript('messageBox', '<script type="text/javascript" src="'.$sess->url('scripts/messageBox.js.php').'"></script>');
+$oPage->addScript('messageBoxInit', '<script type="text/javascript">box = new messageBox("", "", "", 0, 0);</script>');
 
 if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
 {
@@ -75,7 +78,13 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
     	modEditModule($idmod, $sName, $sDescription, $sCodeInput, $sCodeOutput, $oVersion->sTemplate, $oVersion->sModType);
     	unset($oVersion);
     }
-
+	
+	// [action] => history_truncate delete all current history
+  	if($_POST["action"] == "history_truncate") {
+        $oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+  		$bDeleteFile = $oVersion->deleteFile();
+        unset($oVersion);
+  	}
 
     $oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
 
@@ -106,7 +115,7 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
         $sRevision = $oVersion->getLastRevision();
     }
         
-    if ($sRevision != '') {
+    if ($sRevision != '' && $_POST["action"] != "history_truncate") {
     	// File Path	
         $sPath = $oVersion->getFilePath() . $sRevision;
     	
@@ -145,7 +154,13 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
     	$oPage->setContent($sSelectBox . $oForm->render());
 
     } else {
-    	$notification->displayNotification("warning", i18n("No module history available"));
+    	if($bDeleteFile){
+    		$notification->displayNotification("warning", i18n("Version history was cleared"));
+    	} else {
+    		$notification->displayNotification("warning", i18n("No module history available"));	
+    	}
+    	
+    
     }	
     $oPage->render();
 }

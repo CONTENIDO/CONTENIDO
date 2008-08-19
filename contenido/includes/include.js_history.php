@@ -49,6 +49,9 @@ if($sFileName == ""){
 }
 
 $oPage = new cPage;
+$oPage->addScript('messageBox', '<script type="text/javascript" src="'.$sess->url('scripts/messageBox.js.php').'"></script>');
+$oPage->addScript('messageBoxInit', '<script type="text/javascript">box = new messageBox("", "", "", 0, 0);</script>');
+
 if (!$perm->have_perm_area_action($area, 'js_history_manage'))
 {
   $notification->displayNotification("error", i18n("Permission denied"));
@@ -64,6 +67,13 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
     $sTypeContent = "js";
 
     $aFileInfo = getFileInformation ($client, $sFileName , $sTypeContent, $db);
+    
+   	// [action] => history_truncate delete all current history
+  	if($_POST["action"] == "history_truncate") {
+    	$oVersionJScript = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+  		 $bDeleteFile = $oVersionJScript->deleteFile();
+        unset($oVersionJScript);
+  	}
 
     if ($_POST["jscript_send"] == true && $_POST["jscriptcode"] !="" && $sFileName != "" && $aFileInfo["idsfi"]!="") { // save button 
             $oVersionJScript = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
@@ -98,7 +108,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
             unset($oVersionJScript);    
     }
 
-    if($sFileName != "" && $aFileInfo["idsfi"]!="") {
+    if($sFileName != "" && $aFileInfo["idsfi"]!=""  && $_POST["action"] != "history_truncate") {
     	$oVersionJScript = new VersionFile($aFileInfo["idsfi"], $aFileInfo,$sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
     	
@@ -164,8 +174,12 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
     	}	
     	$oPage->render();
     	
-    }else{
-    	$notification->displayNotification("error", i18n("Internal History Error"));
+    } else {
+    	if($bDeleteFile) {
+    		$notification->displayNotification("warning", i18n("Version history was cleared"));
+    	} else {
+    		$notification->displayNotification("error", i18n("Internal History Error"));	
+    	}
     }
 }
 ?>

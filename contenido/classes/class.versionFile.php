@@ -88,7 +88,10 @@
 		if($sTypeContent == "templates"){
 			$sTypeContent = "tpl";
 		}
- 		$this->sPath = $this->aCfgClient[$this->iClient][$sTypeContent]["path"];
+ 		
+ 	
+        $this->sPath = $this->aCfgClient[$this->iClient][$sTypeContent]["path"];
+    	
  		
 // 		Identity the Id of Content Type
  		$this->iIdentity = $iIdOfType;
@@ -124,6 +127,9 @@
 	    } while(true);
 	
 	   fclose($handle);
+      }else{
+      	echo "<br>File not exists " . $this->sPath.$this->sFileName;
+      	
       } 
      
      }
