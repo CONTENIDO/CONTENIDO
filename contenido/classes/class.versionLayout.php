@@ -27,6 +27,10 @@
  * 
  */
  
+if(!defined('CON_FRAMEWORK')) {
+ die('Illegal call');
+}
+
  class VersionLayout extends Version {
    /**
 	* The name of Layout

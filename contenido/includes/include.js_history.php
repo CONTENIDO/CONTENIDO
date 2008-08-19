@@ -25,7 +25,12 @@
  * }}
  * 
  */
-// For build select box
+
+if(!defined('CON_FRAMEWORK')) {
+ die('Illegal call');
+}
+ 
+ // For build select box
 cInclude("classes", "class.ui.php");
 cInclude("classes", "class.htmlelements.php");
 

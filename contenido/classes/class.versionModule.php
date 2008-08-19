@@ -26,6 +26,10 @@
  * 
  */
  
+if(!defined('CON_FRAMEWORK')) {
+ die('Illegal call');
+}
+
  class VersionModule extends Version {
 	
 	/**
