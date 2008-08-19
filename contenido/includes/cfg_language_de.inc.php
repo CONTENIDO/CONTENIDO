@@ -147,10 +147,13 @@ $lngAct["upl"]["31"]                    			= i18n("Create directory");
 $lngAct["lay"]["lay_delete"]                    	= i18n("Delete layout");
 $lngAct["lay_edit"]["lay_edit"]             		= i18n("Modify layout");
 $lngAct["lay_edit"]["lay_new"]          			= i18n("Create layout");
+$lngAct["lay_history"]["lay_history_manage"]    	= i18n("Manage History");
+$lngAct["lay_history"]["history_truncate"]    	    = i18n("Truncate History");
+
 
 $lngAct["mod"]["mod_delete"]                   		= i18n("Delete module");
-$lngAct["mod_history"]["mod_history_takeover"] 		= i18n("Take over module history");
-$lngAct["mod_history"]["mod_history_clear"] 		= i18n("Clear module history");
+$lngAct["mod_history"]["mod_history_manage"]    	= i18n("Manage History");
+$lngAct["mod_history"]["history_truncate"]    	    = i18n("Truncate History");
 $lngAct["mod_edit"]["mod_edit"]               		= i18n("Edit module");
 $lngAct["mod_edit"]["mod_new"]          			= i18n("Create module");
 $lngAct["mod_edit"]["mod_importexport_module"]		= i18n("Import/Export module");
@@ -195,14 +198,20 @@ $lngAct["plug"]["10"]                    			= i18n("Install/Remove plugins");
 $lngAct["style"]["style_edit"]          			= i18n("Modify CSS");
 $lngAct["style"]["style_create"]        			= i18n("Create CSS");
 $lngAct["style"]["style_delete"]        			= i18n("Delete CSS");
+$lngAct["style_history"]["style_history_manage"]    	= i18n("Manage History");
+$lngAct["style_history"]["history_truncate"]    	    = i18n("Truncate History");
 
 $lngAct["js"]["js_edit"]                			= i18n("Edit script");
 $lngAct["js"]["js_delete"]             				= i18n("Delete script");
 $lngAct["js"]["js_create"]              			= i18n("Create script");
+$lngAct["js_history"]["js_history_manage"]    	= i18n("Manage History");
+$lngAct["js_history"]["history_truncate"]    	    = i18n("Truncate History");
 
 $lngAct["htmltpl"]["htmltpl_edit"]          		= i18n("Modify HTML-Template");
 $lngAct["htmltpl"]["htmltpl_create"]        		= i18n("Create HTML-Template");
 $lngAct["htmltpl"]["htmltpl_delete"]        		= i18n("Delete HTML-Template");
+$lngAct["htmltpl_history"]["htmltpl_history_manage"]    	= i18n("Manage History");
+$lngAct["htmltpl_history"]["history_truncate"]    	    = i18n("Truncate History");
 
 $lngAct["news"]["news_save"]                   					= i18n("Edit newsletter");
 $lngAct["news"]["news_create"] 									= i18n("Create newsletter");

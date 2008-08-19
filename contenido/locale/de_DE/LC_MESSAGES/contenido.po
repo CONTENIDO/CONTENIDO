@@ -6284,3 +6284,9 @@ msgstr "Die folgenden Verzeichnisnamen beinhalten ung&uuml;ltige Zeichen und wur
 
 msgid "Please click here in order to rename automatically."
 msgstr "Bitte klicken Sie hier, um die Verzeichnisse automatisch umzubennennen."
+
+msgid "Manage History"
+msgstr "Historie verwalten"
+
+msgid "Truncate History"
+msgstr "Historie l&ouml;schen"
