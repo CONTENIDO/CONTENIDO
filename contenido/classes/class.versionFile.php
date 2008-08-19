@@ -11,13 +11,14 @@
  * @con_php_req 5.0
  * 
  *
+ * @package    Contenido Backend classes
  * @version    1.0.0
  * @author     Bilal Arslan, Timo Trautmann
- * @copyright  four for business AG <www.4fb.de>
+ * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release >= 5.0
+ * @since      file available since contenido release >= 4.8.8
  * 
  * {@internal 
  *   created 2008-08-05
@@ -54,17 +55,17 @@
 	*/		
 	public $sFileName;
 	
-  /**
+   /**
 	* The class versionStyle object constructor, initializes class variables
 	* 
-	* @param {String} $iIdOfType The name of style file
-	* @param {Array}  $aFileInfo Get FileInformation from table file_information
-	* @param {Array} $aCfg
-	* @param {Array} $aCfgClient
-	* @param {Object} $oDB
-	* @param {Integer} $iClient
-	* @param {Object} $sArea
-	* @param {Object} $iFrame
+	* @param string  $iIdOfType The name of style file
+	* @param array  $aFileInfo Get FileInformation from table file_information
+	* @param array $aCfg
+	* @param array $aCfgClient
+	* @param object $oDB
+	* @param integer $iClient
+	* @param object $sArea
+	* @param object $iFrame
 	* 
 	* @return void its only initialize class members
 	*/			 		
@@ -88,10 +89,8 @@
 		if($sTypeContent == "templates"){
 			$sTypeContent = "tpl";
 		}
- 		
  	
         $this->sPath = $this->aCfgClient[$this->iClient][$sTypeContent]["path"];
-    	
  		
 // 		Identity the Id of Content Type
  		$this->iIdentity = $iIdOfType;
@@ -109,39 +108,39 @@
  		$this->setData("name", $this->sFileName);
  		$this->setData("code", $this->sCode);
  		$this->setData("description", $this->sDescripion);
- 		
  	}
     
-    
-	 protected function initFileContent() {
-      if (file_exists($this->sPath.$this->sFileName)) {
-      if (!$handle = fopen( $this->sPath.$this->sFileName, "rb")) {
-	      print i18n("Can not open file "). $this->sPath.$this->sFileName;
-	      return;
-	   } do {
-	        $_data = fread($handle, 4096);
-	        if (strlen($_data) == 0) {
-	            break;
-	        }
-	         $this->sCode .=  $_data;
-	    } while(true);
-	
-	   fclose($handle);
-      }else{
-      	echo "<br>File not exists " . $this->sPath.$this->sFileName;
-      	
-      } 
-     
-     }
+   /**
+	* This function init the class member sCode with current file content
+	* 
+	* @return void only init sCode
+	*/	
+    protected function initFileContent() {
+	    if (file_exists($this->sPath.$this->sFileName)) {
+	    if (!$handle = fopen( $this->sPath.$this->sFileName, "rb")) {
+	    print i18n("Can not open file "). $this->sPath.$this->sFileName;
+	        return;
+	    } do {
+	          $_data = fread($handle, 4096);
+	          if (strlen($_data) == 0) {
+	              break;
+	          }
+	           $this->sCode .=  $_data;
+	      } while(true);
+	     fclose($handle);
+    	}else{
+	      	echo "<br>File not exists " . $this->sPath.$this->sFileName;
+	    } 
+    }
      
    
   /**
-	* This function read an xml file nodes
-	* 
-	* @param {String} $sPath Path to file
-	* 
-	* @return {array} returns array width nodes
-	*/	
+   * This function read an xml file nodes
+   * 
+   * @param string  $sPath Path to file
+   * 
+   * @return {array} returns array width nodes
+   */	
     public function initXmlReader($sPath) {
     	$aResult = array();
     	if($sPath !=""){
@@ -163,28 +162,28 @@
     	return $aResult;
     }
     
-  /**
+	/**
 	* This function reads the path of file 
 	*  
-	* @param {String} $sPath Path to file
+	* @param string  $sPath Path to file
 	* 
-	* @return {String} the path of file
+	* @return string  the path of file
 	*/	
     public function getPathFile() {
     	return $this->sPath;
     }
     
-    /**
-      * Function returns javascript which refreshes contenido frames for file list an subnavigation.
-      * This is neccessary, if filenames where changed, when a history entry is restored
-      *
-      * @param {Integer} $iIdClient - id of client which contains this file
-      * @param {String} $sArea - name of contenido area in which this procedure should be done
-      * @param {String} $sFilename - new filename of file which should be updated in other frames
-      * @param {Object} $sess - Contenido session object
-      *
-      * @return {String} - Javascript for refrehing frames
-      */
+	/**
+	 * Function returns javascript which refreshes contenido frames for file list an subnavigation.
+	 * This is neccessary, if filenames where changed, when a history entry is restored
+	 *
+	 * @param integer $iIdClient - id of client which contains this file
+	 * @param string  $sArea - name of contenido area in which this procedure should be done
+	 * @param string  $sFilename - new filename of file which should be updated in other frames
+	 * @param object $sess - Contenido session object
+	 *
+	 * @return string  - Javascript for refrehing frames
+	 */
     public function renderReloadScript($sArea, $sFilename, $sess) {
         $sReloadScript = "<script type=\"text/javascript\">
                  var right_top = top.content.right.right_top;

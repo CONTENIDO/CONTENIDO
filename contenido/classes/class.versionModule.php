@@ -11,13 +11,13 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.0
  * @author     Bilal Arslan, Timo Trautmann
- * @copyright  four for business AG <www.4fb.de>
+ * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since contenido release >= 4.8.8
  * 
  * {@internal 
  *   created 2008-08-12
@@ -97,13 +97,13 @@
    /**
 	* The class versionStyle object constructor, initializes class variables
 	* 
-	* @param {String} $iIdMod The name of style file
-	* @param {Array} $aCfg
-	* @param {Array} $aCfgClient
-	* @param {Object} $oDB
-	* @param {Integer} $iClient
-	* @param {Object} $sArea
-	* @param {Object} $iFrame
+	* @param string $iIdMod The name of style file
+	* @param array  $aCfg
+	* @param array  $aCfgClient
+	* @param object $oDB
+	* @param integer $iClient
+	* @param object $sArea
+	* @param object $iFrame
 	* 
 	* @return void its only initialize class members
 	*/	
@@ -138,16 +138,14 @@
  	/**
  	 * Function reads rows variables from table con_mod and init with the class members.
  	 * 
- 	 * @return {void} 
- 	 * 
+ 	 * @return void  
  	 */
  	private function getModuleTable(){
-
-     	if(!is_object($this->oDB))
+     	
+     	if(!is_object($this->oDB)) {
      	 $this->oDB = new DB_Contenido;	
-     	 
+     	}
 		$sSql = "";
-		
 		$sSql = "SELECT *
                 FROM ". $this->aCfg["tab"]["mod"] ."
                 WHERE  idmod = '".Contenido_Security::toInteger($this->iIdentity)."'";
@@ -173,12 +171,12 @@
 
     } // end of function
 	
-	/**
+   /**
 	* This function read an xml file nodes
 	* 
-	* @param {String} $sPath Path to file
+	* @param string $sPath Path to file
 	* 
-		* @return {array} returns array width this four nodes
+	* @return array returns array width this four nodes
 	*/	
     public function initXmlReader($sPath) {
     	$aResult = array();
@@ -201,17 +199,17 @@
     	return $aResult;
  	} // end of function
     
-    /**
-      * Function returns javascript which refreshes contenido frames for file list an subnavigation.
-      * This is neccessary, if filenames where changed, when a history entry is restored
-      *
-      * @param {Integer} $iIdClient - id of client which contains this file
-      * @param {String} $sArea - name of contenido area in which this procedure should be done
-      * @param {Integer} $iIdLayout - Id of layout to highlight
-      * @param {Object} $sess - Contenido session object
-      *
-      * @return {String} - Javascript for refrehing frames
-      */
+	/**
+	 * Function returns javascript which refreshes contenido frames for file list an subnavigation.
+	 * This is neccessary, if filenames where changed, when a history entry is restored
+	 *
+	 * @param integer $iIdClient id of client which contains this file
+	 * @param string $sArea name of contenido area in which this procedure should be done
+	 * @param integer $iIdLayout Id of layout to highlight
+	 * @param object $sess Contenido session object
+	 *
+	 * @return string  - Javascript for refrehing frames
+	 */
     public function renderReloadScript($sArea, $iIdModule, $sess) {
         $sReloadScript = "<script type=\"text/javascript\">
 				 var left_bottom = top.content.left.left_bottom;

@@ -14,11 +14,11 @@
  * @package    Contenido Backend includes
  * @version    1.0.2
  * @author     Willi Man
- * @copyright  four for business AG <www.4fb.de>
+ * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since contenido release >= 4.6
  * 
  * {@internal 
  *   created 2004-07-13
@@ -38,11 +38,12 @@ if(!defined('CON_FRAMEWORK')) {
  * Function removes file meta information from database (used when a file is deleted)
  *
  * @author Timo Trautmann
- * @param {Integer} $iIdClient - id of client which contains this file
- * @param {String} $sFilename - name of corresponding file
- * @param {String} $sType - type of file (css, js or templates)
- * @param {Object} $oDb - contenido database object
- *
+ * @param integer $iIdClient - id of client which contains this file
+ * @param string  $sFilename - name of corresponding file
+ * @param string  $sType - type of file (css, js or templates)
+ * @param object  $oDb - contenido database object
+ * 
+ * @return void
  */
 function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
     global $cfg;
@@ -66,12 +67,12 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  * Function returns file meta information from database (used when files were versionned or description is displayed)
  *
  * @author Timo Trautmann
- * @param {Integer} $iIdClient - id of client which contains this file
- * @param {String} $sFilename - name of corresponding file
- * @param {String} $sType - type of file (css, js or templates)
- * @param {Object} $oDb - contenido database object
+ * @param integer $iIdClient - id of client which contains this file
+ * @param string  $sFilename - name of corresponding file
+ * @param string  $sType - type of file (css, js or templates)
+ * @param object  $oDb - contenido database object
  *
- * @return {Array}   Indexes:
+ * @return array   Indexes:
  *                           idsfi - Primary key of database record
  *                           created - Datetime when file was created
  *                           lastmodified - Datetime when file was last modified
@@ -116,14 +117,15 @@ function getFileInformation ($iIdClient, $sFilename, $sType, $oDb) {
  * not exist. Otherwise, existing record will be updated
  *
  * @author Timo Trautmann
- * @param {Integer} $iIdClient - id of client which contains this file
- * @param {String} $sFilename - name of corresponding file
- * @param {String} $sType - type of file (css, js or templates)
- * @param {String} $sAuthor - author of file
- * @param {String} $sDescription - description of file
- * @param {Object} $oDb - contenido database object
- * @param {string} $sFilenameNew - new filename if filename was changed (optional)
- *                           
+ * @param integer $iIdClient - id of client which contains this file
+ * @param string  $sFilename - name of corresponding file
+ * @param string  $sType - type of file (css, js or templates)
+ * @param string  $sAuthor - author of file
+ * @param string  $sDescription - description of file
+ * @param object  $oDb - contenido database object
+ * @param string  $sFilenameNew - new filename if filename was changed (optional)
+ * 
+ * @return void                          
  */
 function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescription, $oDb, $sFilenameNew = '') {
     global $cfg;

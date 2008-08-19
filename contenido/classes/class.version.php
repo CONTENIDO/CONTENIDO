@@ -11,13 +11,13 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.0
  * @author     Bilal Arslan, Timo Trautmann
- * @copyright  four for business AG <www.4fb.de>
+ * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since contenido release >= 4.8.8
  * 
  * {@internal 
  *   created 2008-08-12
@@ -28,104 +28,112 @@
 
 class Version {
 
-	/**
+   /**
 	* Id of Type
 	* @access protected
 	*/	
 	protected $sType;
 	
-	/**
+   /**
 	* md5 coded name of author 
 	* @access protected
 	*/
 	protected $sAuthor;
 	
-	/**
+   /**
 	* Time of created
 	* @access protected
 	*/
 	protected $dCreated;
 	
-	/**
+   /**
 	* Time of last modified
 	* @access protected
 	*/
 	protected $dLastModified;
 	
-	/**
+   /**
 	* Body data of xml file
 	* @access protected
 	*/
 	protected $aBodyData;
 	
-	/**
+   /**
 	* For init global variable
 	* @access protected
 	*/
 	protected $aCfg;
 	
-	/**
+   /**
 	* For init global variable $cfgClient
 	* @access protected
 	*/
 	protected $aCfgClient;
 
-	/**
+   /**
 	* Database object
 	* @access protected
 	*/
 	protected $oDB;
 	
-	/**
+   /**
 	* For init global variable $client
 	* @access protected
 	*/
 	protected $iClient;
 	
-	/**
+   /**
 	* Revision files of current file
 	* @access public
 	*/ 
 	public $aRevisionFiles;
 	
-	/**
+   /**
 	* Number of Revision
 	* @access private
 	*/
 	protected $iRevisionNumber;
 	
-	/**
+   /**
 	* Timestamp
 	* @access protected
 	*/
 	protected $dTimestamp;
 	
-	/**
+   /**
 	* For init global variable $area
 	* @access protected
 	*/
 	protected $sArea;
 	
-	/**
+   /**
 	* For init global variable $frame
 	* @access protected
 	*/
 	protected $iFrame;
 	
-	/**
+   /**
 	* For init variables
 	* @access protected
 	*/
 	protected $aVarForm;
 	
-	/**
+   /**
 	* Identity the Id of Content Type
 	* @access protected
 	*/
 	protected $iIdentity;
 	
+   /**
+	* To take control versioning is switched off
+	* @access private
+	*/
 	private $bVersionCreatActive;
     
+   /**
+	* Timestamp
+	* @access protected
+	*/
     protected $dActualTimestamp;
    
     /**
@@ -137,12 +145,14 @@ class Version {
 	/**
 	 * The Version object constructor, initializes class variables
 	 * 
-	 * @param {Array} $aCfg
-	 * @param {Array} $aCfgClient
-	 * @param {Object} $oDB	
-	 * @param {Integer} $iClient
-	 * @param {Object} $sArea
-	 * @param {Object} $iFrame
+	 * @param array $aCfg
+	 * @param array $aCfgClient
+	 * @param object $oDB	
+	 * @param integer $iClient
+	 * @param object $sArea
+	 * @param object $iFrame
+	 * 
+	 * @return void 
 	 */	
 	public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
 		$this->aBodyData = array ();
@@ -173,10 +183,10 @@ class Version {
 
         $this->checkPaths();
 	}
-    
+
     /**
 	 * This function checks if needed version paths exists and were created if neccessary
-	 * 
+	 * @return void 
 	 */	
     protected function checkPaths() {
         $aPath = array('', '/css', '/js', '/layout', '/module', '/templates');
@@ -198,10 +208,10 @@ class Version {
 	/**
 	 * This function initialize the body node of xml file
 	 * 
-	 * @param {String} $sKey
-	 * @param {String} $sValue
+	 * @param string $sKey
+	 * @param string $sValue
 	 * 
-	 * @return {Array} returns an array for body node
+	 * @return array returns an array for body node
 	 */	
 	public function setData($sKey, $sValue) {
 		$this->aBodyData[$sKey] = $sValue;
@@ -211,45 +221,45 @@ class Version {
 	/**
 	 * This function creats an xml file. XML Writer helps for create this file.
 	 * 
-	 * @return {String} returns content of xml file
+	 * @return string returns content of xml file
 	 */	
 	public function createNewXml() {
-		$xw = new xmlWriter();
-		$xw->openMemory();
-		$xw->setIndent(true);
-		$xw->startDocument('1.0', 'UTF-8');
+		$oXW = new xmlWriter();
+		$oXW->openMemory();
+		$oXW->setIndent(true);
+		$oXW->startDocument('1.0', 'UTF-8');
 	
-		$xw->startElement('version');
-		$xw->writeAttribute('xmlns', 'http://www.wapforum.org/DTD/xhtml-mobile10.dtd');
-		$xw->writeAttribute('xml:lang', 'de');
+		$oXW->startElement('version');
+		$oXW->writeAttribute('xmlns', 'http://www.wapforum.org/DTD/xhtml-mobile10.dtd');
+		$oXW->writeAttribute('xml:lang', 'de');
 	
-		$xw->startElement('head');
-		$xw->writeElement('version_id', $this->iIdentity.'_'.$this->iVersion);
-		$xw->writeElement('type', $this->sType);
-		$xw->writeElement('date', date("Y-m-d H:i:s"));
-		$xw->writeElement('author', $this->sAuthor);
-		$xw->writeElement('client', $this->iClient);
-		$xw->writeElement('created', $this->dCreated);
-		$xw->writeElement('lastmodified', $this->dLastModified);
-		$xw->endElement();
+		$oXW->startElement('head');
+		$oXW->writeElement('version_id', $this->iIdentity.'_'.$this->iVersion);
+		$oXW->writeElement('type', $this->sType);
+		$oXW->writeElement('date', date("Y-m-d H:i:s"));
+		$oXW->writeElement('author', $this->sAuthor);
+		$oXW->writeElement('client', $this->iClient);
+		$oXW->writeElement('created', $this->dCreated);
+		$oXW->writeElement('lastmodified', $this->dLastModified);
+		$oXW->endElement();
 
-		$xw->startElement('body');
+		$oXW->startElement('body');
 		
 		foreach ($this->aBodyData as $sKey => $sValue) {
-			$xw->writeElement($sKey, htmlentities($sValue));
+			$oXW->writeElement($sKey, htmlentities($sValue));
 		}
 
-		$xw->endElement();
+		$oXW->endElement();
 
-		$xw->endElement();
+		$oXW->endElement();
 				
-		return $xw->outputMemory(true);
+		return $oXW->outputMemory(true);
 	}
 	
 	/**
 	 * This function creats new version in right folder.
 	 * 
-	 * @return {void}
+	 * @return void
 	 */	
 	public function createNewVersion() {
 		if($this->bVersionCreatActive == "true"){
@@ -274,7 +284,7 @@ class Version {
 	/**
 	 * This function inits version files. Its filter also timestamp and version files
 	 * 
-	 * @return {array} returns xml file names
+	 * @return array returns xml file names
 	 */		
 	protected function initRevisions() {		
 		// Open this Filepath and read then the content.
@@ -305,7 +315,7 @@ class Version {
 	/**
 	 * This function deletes files and the the folder, for given path.
 	 * 
-	 * @return {bool} return true if successful or false
+	 * @return bool return true if successful
 	 */		
 	public function deleteFile(){
 		// Open this Filepath and read then the content.
@@ -333,7 +343,7 @@ class Version {
 	/**
 	 * Get the frontendpath to revision
 	 * 
-	 * @return {String} returns path to revision file
+	 * @return string returns path to revision file
 	 */		
 	public function getFilePath() {
 		if($this->sAlternativePath =="") { 
@@ -347,7 +357,7 @@ class Version {
 	/**
 	 * Get the last revision file
 	 *  
-	 * @return {Array} returns Last Revision
+	 * @return array returns Last Revision
 	 */		
     public function getLastRevision() {
         return $this->aRevisionFiles[count($this->aRevisionFiles)];
@@ -356,7 +366,7 @@ class Version {
     /**
 	 * Makes new and init Revision Name
 	 *  
-	 * @return {Integer} returns number of Revison File
+	 * @return integer returns number of Revison File
 	 */	
 	private function getRevision() {
 		
@@ -367,16 +377,16 @@ class Version {
     /**
 	 * Revision Files
 	 *  
-	 * @return {Array} returns all Revison File
+	 * @return array returns all Revison File
 	 */	
 	public function getRevisionFiles() {
 		return $this->aRevisionFiles;
 	}
-	
+	   
 	/**
 	 * This function generate version names for select-box
 	 *  
-	 * @return {Array} returns an array of revision file names
+	 * @return array returns an array of revision file names
 	 */	
 	public function getFormatTimestamp() {
 		$aTimes = array();
@@ -393,7 +403,7 @@ class Version {
 	/**
 	 * This function generate version names for select-box
 	 *  
-	 * @return {Array} returns an array of revision file names
+	 * @return array returns an array of revision file names
 	 */	
 	public function setVarForm($sKey, $sValue) {
 		$this->aVarForm[$sKey] = $sValue;
@@ -402,12 +412,12 @@ class Version {
 	/**
 	 * The general SelectBox function for get Revision. 
 	 * 
-	 * @param {string} $sTableForm The name of Table_Form class
-	 * @param {string} $sAddHeader The Header Label of SelectBox Widget
-	 * @param {string} $sLabelOfSelectBox  The Label of SelectBox Widget
-	 * @param {string} $sIdOfSelectBox  Id of Select Box
+	 * @param string  $sTableForm The name of Table_Form class
+	 * @param string  $sAddHeader The Header Label of SelectBox Widget
+	 * @param string  $sLabelOfSelectBox  The Label of SelectBox Widget
+	 * @param string  $sIdOfSelectBox  Id of Select Box
 	 * 
-	 * return {string} if is exists Revision, then returns HTML Code of full SelectBox else returns empty string
+	 * return string  if is exists Revision, then returns HTML Code of full SelectBox else returns empty string
 	 */
     public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox) {
 		$oForm = new UI_Table_Form("lay_history");
@@ -433,7 +443,7 @@ class Version {
     
     /**
      * Messagebox for build selectBox. Dynamic allocation for type.
-	 * return {array} the attributes alt and poput returns  
+	 * return array the attributes alt and poput returns  
 	 */
     private function getMessages(){
     	$aMessage = array();
@@ -470,10 +480,10 @@ class Version {
   	/**
 	 * A Class Function for fill version files
 	 * 
-	 * @param {string} $sTableForm The name of Table_Form class
-	 * @param {string} $sAddHeader The Header Label of SelectBox Widget
+	 * @param string  $sTableForm The name of Table_Form class
+	 * @param string  $sAddHeader The Header Label of SelectBox Widget
 	 * 
-	 * return {string} returns select-box with filled files
+	 * return string  returns select-box with filled files
 	 */
     private function getSelectBox($aTempVesions, $sIdOfSelectBox) {
 		$sSelected = $_POST[$sIdOfSelectBox];
@@ -490,12 +500,12 @@ class Version {
 	/**
 	 * Build new Textarea with below parameters
 	 * 
-	 * @param {String} $sName The name of Textarea.
-	 * @param {String} $sValue The value of Input Textarea
-	 * @param {Integer} $iWidth width of Textarea
-	 * @param {Integer} $iHeight height of Textarea
+	 * @param string $sName The name of Textarea.
+	 * @param string $sValue The value of Input Textarea
+	 * @param integer $iWidth width of Textarea
+	 * @param integer $iHeight height of Textarea
 	 * 
-	 * @return {String} HTML Code of Textarea
+	 * @return string HTML Code of Textarea
 	 */	
 	public function getTextarea($sName, $sInitValue, $iWidth, $iHeight, $sId = "") {
 		if($sId !="") {
@@ -514,40 +524,26 @@ class Version {
 	/**
 	 * Build new Textfield with below parameters
 	 * 
-	 * @param {String} $sName The name of Input Textfield.
-	 * @param {String} $sValue The value of Input Textfield
-	 * @param {Integer} $iWidth width of Input Textfield
+	 * @param string $sName The name of Input Textfield.
+	 * @param string $sValue The value of Input Textfield
+	 * @param integer $iWidth width of Input Textfield
 	 * 
-	 * @return {String} HTML Code of Input Textfield
+	 * @return string HTML Code of Input Textfield
 	 */		
 	public function getTextBox($sName, $sInitValue, $iWidth, $bDisabled = false) {
-		
 		$oHTMLTextbox = new cHTMLTextbox($sName, html_entity_decode($sInitValue), $iWidth, "", "", $bDisabled);
-		#$oHTMLTextbox = new cHTMLTextbox($sName, utf8_encode($this->htmlentities_decode($sInitValue)), $iWidth, "", "", $bDisabled);
 		$oHTMLTextbox->setStyle("font-family: monospace; width: 100%;");
 		$oHTMLTextbox->updateAttributes(array("wrap" => "off"));
 		
 		return $oHTMLTextbox->render();
 	}
 	
-	
-//	private function htmlentities_decode($string) {
-//    	$sFile = "";
-//    	$trans = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
-//   		$trans = array_flip($trans);
-//   		$sFile = strtr($string, $trans);
-//   		#$sFile = strtr($sFile, "Ù", "&Uuml;");
-//   		#$sFile = strtr($sFile, "Ã", "&Auml;");
-//   		#$sFile = strtr($sFile, "œ", "bla");
-//    	return $sFile
-//	}   
-	
 	/**
 	 * Displays your notification
 	 * 
-	 * @param {string} $sOutPut
+	 * @param string $sOutPut
 	 * 
-	 * @return {void}
+	 * @return void
 	 */	
 	public function displayNotification($sOutPut) {
 		if($sOutPut !="") {
@@ -558,7 +554,7 @@ class Version {
 	 /**
 	  * Set new node for xml file of description
 	  * 
-	  * @param {string} $sDesc Content of node
+	  * @param string $sDesc Content of node
 	  * 
 	  */   
     public function setBodyNodeDescription($sDesc) {
@@ -567,9 +563,6 @@ class Version {
     		$this->setData("description", $this->sDescripion);
     	}	
     }
-    
-    
-    
 
 } // end of class
 

@@ -11,13 +11,13 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.0
  * @author     Bilal Arslan, Timo Trautmann
- * @copyright  four for business AG <www.4fb.de>
+ * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since contenido release >= 4.8.8
  * 
  * {@internal 
  *   created 2008-08-12
@@ -109,13 +109,13 @@
 	/**
 	* The class versionImport object constructor, initializes class variables
 	* 
-	* @param {String} $iIdMod The name of style file
-	* @param {Array} $aCfg
-	* @param {Array} $aCfgClient
-	* @param {Object} $oDB
-	* @param {Integer} $iClient
-	* @param {Object} $sArea
-	* @param {Object} $iFrame
+	* @param string  $iIdMod The name of style file
+	* @param array $aCfg
+	* @param array $aCfgClient
+	* @param object $oDB
+	* @param integer $iClient
+	* @param object $sArea
+	* @param object $iFrame
 	* 
 	* @return void its only initialize class members
 	*/	
@@ -166,21 +166,17 @@
  			}
  		}
  	} // end of constructor
-
  	 	
  	/**
  	 * Function reads rows variables from table con_mod and init with the class members.
  	 * 
- 	 * @return {void} 
- 	 * 
+ 	 * @return void 
  	 */
  	private function getModuleHistoryTable(){
-
      	if(!is_object($this->oDB))
      	 $this->oDB = new DB_Contenido;	
-     	 
+	
 		$sSql = "";
-		
 		$sSql = "SELECT *
                 FROM ". $this->aCfg["tab"]["mod_history"];
         $this->oDB->query($sSql);        
@@ -195,14 +191,12 @@
 					"template"=>$this->oDB->f("template"), "changedby"=>$this->oDB->f("changedby"),
 					"changed"=>$this->oDB->f("changed"));
          }        
-      
     } // end of function
  	
  	/**
  	 * Set with the body nodes of xml file
  	 * 
- 	 * @return {void} 
- 	 * 
+ 	 * @return void 
  	 */
  	private function createBodyXML() {
 // 	 Create Body Node of Xml File
