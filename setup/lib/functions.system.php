@@ -87,7 +87,9 @@ function updateSystemProperties($db, $table) {
                                array('type' => 'update', 'name' => 'news_feed', 'value' => 'false'),
 							   array('type' => 'update', 'name' => 'check_period', 'value' => '60'),
 							   array('type' => 'system', 'name' => 'clickmenu', 'value' => 'false'),
-                               array('type' => 'versioning', 'name' => 'activated', 'value' => 'true')
+                               array('type' => 'versioning', 'name' => 'activated', 'value' => 'true'),
+                               array('type' => 'versioning', 'name' => 'prune_limit', 'value' => '0'),
+                               array('type' => 'versioning', 'name' => 'path', 'value' => '')
                               );
  
     foreach ($aStandardvalues as $aData) {
