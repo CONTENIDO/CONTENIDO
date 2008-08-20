@@ -327,7 +327,7 @@ if( sizeof($_GET) == 0 && isset($_POST['save_search']) )
 	$refreshScript .= 'top.content.left.left_top.location.href = top.content.left.left_top.location.href+"&save_search=true";';
 	
 	// Message for successfull saving
-	$saveSuccessfull = "Thank you for saving this search from extinction !";
+	$saveSuccessfull = i18n("Thank you for saving this search from extinction !");
 }
 // STORED SEARCH HAS BEEN CALLED
 elseif( sizeof($_GET) > 0)

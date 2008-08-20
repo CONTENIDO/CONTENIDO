@@ -6290,3 +6290,7 @@ msgstr "Historie verwalten"
 
 msgid "Truncate History"
 msgstr "Historie l&ouml;schen"
+
+msgid "Thank you for saving this search from extinction !"
+msgstr "Vielen Dank f&uuml;r die Speicherung dieser Suche !"
+
