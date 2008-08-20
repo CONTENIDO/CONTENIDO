@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    0.8.0
+ * @version    0.8.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,6 +21,8 @@
  * {@internal 
  *   created 2008-02-15
  *   modified 2008-02-22 Contenido_Categories now implements Countable
+ *  modified 2008-08-20 Removed unnecessary/redundant security fixes (typecasting is already done in getter methods) that were made during security fixing phase
+ *             changed method setDebug() in Contenido_Category_Base to allow all debug modes available
  *   $Id$:
  * }}
  * 
@@ -154,7 +156,7 @@ class Contenido_Category extends Contenido_Category_Base {
 				FROM 
 					' . $this->aCfg['tab']['cat'] . ' 
 				WHERE 
-					idcat = ' . Contenido_Security::escapeDB($iIdCat, $this->oDb);
+					idcat = ' . Contenido_Security::toInteger($iIdCat);
 	    if ($this->bDbg === true) {
 	        $this->oDbg->show($sSql, 'Contenido_Category::load($iIdCat, $bIncludeLanguage = false, $iIdlang = -1): $sSql');
 	    }
@@ -250,10 +252,10 @@ class Contenido_Category extends Contenido_Category_Base {
 				WHERE
 					cattree.idcat    = cat.idcat AND
 					cat.idcat    = catlang.idcat AND
-					cat.idclient = ' . Contenido_Security::escapeDB($this->iIdClient, $this->oDb) . ' AND
-					catlang.idlang   = ' . Contenido_Security::escapeDB($this->iIdLang, $this->oDb) . ' AND
+					cat.idclient = ' . $this->getIdClient() . ' AND
+					catlang.idlang   = ' . $this->getIdLang() . ' AND
 					catlang.visible  = 1 AND 
-					cat.parentid = ' . Contenido_Security::escapeDB($iIdcat, $this->oDb) .'
+					cat.parentid = ' . Contenido_Security::toInteger($iIdcat) .'
 				ORDER BY
 					cattree.idtree';
         if ($this->bDbg === true) {
@@ -680,15 +682,15 @@ class Contenido_Category_Language extends Contenido_Category_Base {
 					FROM 
 						' . $this->aCfg["tab"]["cat_lang"] . ' 
 					WHERE 
-						idcat = ' . Contenido_Security::escapeDB($this->getIdCat(), $this->oDb) . ' AND 
-						idlang = ' . Contenido_Security::escapeDB($this->getIdLang(), $this->oDb);
+						idcat = ' . $this->getIdCat() . ' AND 
+						idlang = ' . $this->getIdLang();
         } else {
 	        $sSql = 'SELECT 
 						idcatlang, idtplcfg, name, visible, public, status, author, created, lastmodified, startidartlang, urlname 
 					FROM 
 						' . $this->aCfg["tab"]["cat_lang"] . ' 
 					WHERE 
-						idcatlang = ' . Contenido_Security::escapeDB($iIdCatLang, $this->oDb);
+						idcatlang = ' . Contenido_Security::toInteger($iIdCatLang);
         }
 	    $this->oDb->query($sSql);
 	    if ($this->oDb->Errno != 0) {
@@ -876,14 +878,16 @@ class Contenido_Category_Base {
             $this->oDbg = null;
             $this->sDbgMode = 'hidden';
         } else {
-	        if (!in_array($sDebugMode, array('visible', 'hidden'))) {
-	            $sDebugMode = 'hidden';
+	        if (!in_array($sDebugMode, array('visible', 'visible_adv', 'file', 'devnull', 'hidden'))) {
+	            $sDebugMode = 'devnull';
 	        }
-	        $this->sDbgMode = $sDebugMode;
-	        if ($bDebug === true) {
-	            $this->bDbg = true;
-	            $this->oDbg = DebuggerFactory::getDebugger($sDebugMode);
-	        }
+            try {
+                $this->sDbgMode = $sDebugMode;
+                $this->bDbg = true;
+                $this->oDbg = DebuggerFactory::getDebugger($sDebugMode);
+            } catch (InvalidArgumentException $e) {
+                throw $e;
+            }
         }
     }
 }
