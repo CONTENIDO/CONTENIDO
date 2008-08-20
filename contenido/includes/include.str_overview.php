@@ -181,7 +181,7 @@ function getExpandCollapseButton ($item, $catName)
             return('<a href="'.$collapselink.'">'.$img->render().'</a>&nbsp;'.'<a href="'.$collapselink.'">'.$catName.'</a>');
 		}
 	} else {
-		return '<img src="images/spacer.gif" width="7" height="7">&nbsp;'.$catName;
+		return '<img src="images/spacer.gif" style="padding:4px;" width="7" height="7">&nbsp;'.$catName;
 	}
 }
 
