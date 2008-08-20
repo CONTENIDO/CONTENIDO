@@ -97,7 +97,10 @@ if(!defined('CON_FRAMEWORK')) {
  		
 // 		Identity the Id of Content Type
  		$this->iIdentity = $iIdOfType;
-
+		
+//		This function looks if maximum number of stored versions is achieved		
+        $this->prune();
+		
 //		Take revision files if exists 		
  		$this->initRevisions();
  		

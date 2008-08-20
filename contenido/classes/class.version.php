@@ -184,10 +184,28 @@ class Version {
 //		 Alternative Path is not true or is not exist, we use the frontendpath
 		 	$this->sAlternativePath = "";
 		 }
-
+		
         $this->checkPaths();
 	}
-
+	
+	/**
+	 * This function looks if maximum number of stored versions is achieved. If true, it will be delete the first version.
+	 * 
+	 * @return void 
+	 */
+    protected function prune() {
+        $this->initRevisions();
+        $sVar = getEffectiveSetting('versioning', 'prune_limit', '0');
+ 		$bDelete = true;
+ 		#echo "<br> das ist die erste vesion und die wird gelöscht: ", $this->getFirstRevision();
+        
+		while(count($this->aRevisionFiles) > $sVar AND $bDelete AND (int) $sVar > 0) {
+            $iIndex = end(array_keys($this->aRevisionFiles));
+            $bDelete = $this->deleteFile($this->getFirstRevision());
+            unset($this->aRevisionFiles[$iIndex]);	 		
+		}
+    }
+    
     /**
 	 * This function checks if needed version paths exists and were created if neccessary
 	 * @return void 
@@ -195,9 +213,9 @@ class Version {
     protected function checkPaths() {
         $aPath = array('', '/css', '/js', '/layout', '/module', '/templates');
         $sFrontEndPath = "";
-        if($this->sAlternativePath == ""){
+        if($this->sAlternativePath == "") {
         	$sFrontEndPath = $this->aCfgClient[$this->iClient]["path"]["frontend"] . "version";
-        }else{
+        } else {
         	$sFrontEndPath = $this->sAlternativePath . "/" . $this->iClient;
         }
         
@@ -205,8 +223,8 @@ class Version {
             if(!is_dir($sFrontEndPath.$sSubPath)){
     			mkdir($sFrontEndPath.$sSubPath, 0777);
     			chmod ($sFrontEndPath.$sSubPath, 0777);
-    		}  
-        }        
+    		}
+        }    
     }
 
 	/**
@@ -266,6 +284,7 @@ class Version {
 	 * @return void
 	 */	
 	public function createNewVersion() {
+		$bCreate = true;
 		if($this->bVersionCreatActive == "true"){
 			// Get version Name
 			$sRevisionName = $this->getRevision();
@@ -281,8 +300,9 @@ class Version {
 			
 			$sHandle = fopen($this->getFilePath().$sRevisionName.'.xml', "w");
 			fputs($sHandle, $sXmlFile);
-			fclose($sHandle);
-		}
+			$bCreate = fclose($sHandle);
+		}  
+		return $bCreate;
 	}
 	
 	/**
@@ -290,10 +310,12 @@ class Version {
 	 * 
 	 * @return array returns xml file names
 	 */		
-	protected function initRevisions() {		
+	protected function initRevisions() {	
+        $this->aRevisionFiles = array();
+        $this->dTimestamp = array();
+        
 		// Open this Filepath and read then the content.
 		$sDir = $this->getFilePath();
-		
 		if (is_dir($sDir)) {
 		    if ($dh = opendir($sDir)) {
 		        
@@ -312,7 +334,6 @@ class Version {
 		        closedir($dh);
 		    }
 		}
-		
 		return krsort($this->aRevisionFiles);	
 	}
 	
@@ -321,11 +342,12 @@ class Version {
 	 * 
 	 * @return bool return true if successful
 	 */		
-	public function deleteFile(){
+	public function deleteFile($sFirstFile = ""){
 		// Open this Filepath and read then the content.
 		$sDir = $this->getFilePath();
+
 		$bDelet = false;
-		if (is_dir($sDir)) {
+		if (is_dir($sDir) AND $sFirstFile =="") {
 		    if ($dh = opendir($sDir)) {
 		    	  while (($sFile = readdir($dh)) !== false) {
 					if($sFile != "."  && $sFile !=".."){
@@ -336,6 +358,8 @@ class Version {
 //		    	  if the files be cleared, the delete the folder
 		    	  	$bDelete = rmdir($sDir);
 		    }
+		} else if($sFirstFile !="") {
+				$bDelete = unlink($sDir . $sFirstFile);
 		}
 		if($bDelete){
 			return true;
@@ -364,7 +388,7 @@ class Version {
 	 * @return array returns Last Revision
 	 */		
     public function getLastRevision() {
-        return $this->aRevisionFiles[count($this->aRevisionFiles)];
+        return end($this->aRevisionFiles);
     }
     
     /**
@@ -373,9 +397,27 @@ class Version {
 	 * @return integer returns number of Revison File
 	 */	
 	private function getRevision() {
-		
 		$this->iVersion = ($this->iRevisionNumber +1 ).'_'.$this->dActualTimestamp;
 		return $this->iVersion;
+	}
+	
+	/**
+	 * Inits the first element of revision files
+	 *  
+	 * @return string the name of xml files
+	 */	
+	protected function getFirstRevision() {
+		$aKey = array();
+		$this->initRevisions();
+		$aKey = $this->aRevisionFiles;
+		$sFirstRevision = "";
+
+//		to take first element, we use right sort
+		ksort($aKey);
+		foreach($aKey as $value){
+			return $sFirstRevision = $value;
+		}
+		return $sFirstRevision;
 	}
 	
     /**

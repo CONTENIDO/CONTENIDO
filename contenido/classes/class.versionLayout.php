@@ -76,6 +76,10 @@ if(!defined('CON_FRAMEWORK')) {
 // 		folder layout
  		$this->sType = "layout";
  		$this->iIdentity = $iIdLayout;
+
+//		This function looks if maximum number of stored versions is achieved		
+        $this->prune();
+ 		
  		$this->initRevisions();
  		
  		// Set Layout Table Iformation

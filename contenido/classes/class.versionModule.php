@@ -119,6 +119,9 @@ if(!defined('CON_FRAMEWORK')) {
  		$this->sType = "module";
  		
  		$this->iIdentity = $iIdMod;
+        
+        $this->prune();
+        
  		$this->initRevisions();
  		
  		// Get Module Table Iformation
