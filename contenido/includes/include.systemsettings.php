@@ -32,12 +32,22 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+$aManagedValues = array('versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated', 
+                        'update_check_period', 'system_clickmenu', 'system_mail_host', 'system_mail_sender',
+                        'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'edit_area_activated',
+                        'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'imagemagick_available');
+
+
 cInclude("classes","class.ui.php");
 cInclude("classes","class.htmlelements.php");
 
 if ($action == "systemsettings_save_item")
 {
-	setSystemProperty ($systype, $sysname, $sysvalue, $csidsystemprop);
+    if (!in_array($systype.'_'.$sysname, $aManagedValues)) {
+        setSystemProperty ($systype, $sysname, $sysvalue, $csidsystemprop);
+    } else {
+       $sWarning = $notification->returnNotification("warning", i18n('Please set this property in systemsettings directly'), 1).'<br>';
+    }
 }
 
 if ($action == "systemsettings_delete_item")
@@ -58,13 +68,19 @@ $list->setBorder(1);
 
 $count = 2;
 
-$link = new Link;
-$link->setCLink($area, $frame, "systemsettings_edit_item");
-$link->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
+$oLinkEdit = new Link;
+$oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
+$oLinkEdit->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
 
-$dlink = new Link;
-$dlink->setCLink($area, $frame, "systemsettings_delete_item");
-$dlink->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">');
+$oLinkForward = new Link;
+$oLinkForward->setCLink('system_configuration', $frame, "");
+$oLinkForward->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
+
+$oLinkDelete = new Link;
+$oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
+$oLinkDelete->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">');
+
+$oLinkDeleteForward = '<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete_inact.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">';
 
 $spacer = new cHTMLImage;
 $spacer->setWidth(5);
@@ -75,17 +91,18 @@ if (is_array($settings))
     {
     	foreach ($types as $type => $value)
     	{
-    		$link->setCustom("sysname", $type);
-    		$link->setCustom("systype", $key);
+    		$oLinkEdit->setCustom("sysname", $type);
+    		$oLinkEdit->setCustom("systype", $key);
     		
-				$dlink->setCustom("sysname", $type);
-    		$dlink->setCustom("systype", $key);
-				
-    		$list->setCell($count,1, $key);
-    		$list->setCell($count,2, $type);
-    		
-    		if (($action == "systemsettings_edit_item") && ($systype == $key) && ($sysname == $type))
-    		{
+			$oLinkDelete->setCustom("sysname", $type);
+    		$oLinkDelete->setCustom("systype", $key);
+
+            $link = $oLinkEdit;
+            $dlink = $oLinkDelete->render();
+            
+            if (in_array($key.'_'.$type, $aManagedValues)) {
+                #ignore record
+            } else if (($action == "systemsettings_edit_item") && ($systype == $key) && ($sysname == $type)) {
                 $oInputboxValue = new cHTMLTextbox ("sysvalue", $value['value']);
     			$oInputboxValue->setStyle("border:1px;border-style:solid;border-color:black;width:200px;");
                 
@@ -96,11 +113,12 @@ if (is_array($settings))
     			$oInputboxType->setStyle("border:1px;border-style:solid;border-color:black;width:200px;");
                 
                 $hidden = '<input type="hidden" name="csidsystemprop" value="'.$value['idsystemprop'].'">';
-                $sSubmit = ' <input type="image" style="vertical-align:top;" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif">';
-
+                $sSubmit = '<input type="image" style="vertical-align:top;" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif">';
+                
                 $list->setCell($count,1, $oInputboxType->render(true));
     		    $list->setCell($count,2, $oInputboxName->render(true));
                 $list->setCell($count,3, $oInputboxValue->render(true).$hidden.$sSubmit);
+                
     		} else {
                 $sMouseoverTemplate = '<span onmouseover="Tip(\'%s\', BALLOON, true, ABOVE, true);">%s</span>';
             
@@ -118,13 +136,16 @@ if (is_array($settings))
                     $sShort = capiStrTrimHard($key, 35);
                     $key = sprintf($sMouseoverTemplate, $key, $sShort);
                 }
-            
+                
                 $list->setCell($count,1, $key);
-    		    $list->setCell($count,2, $type);
-    			$list->setCell($count,3, $value['value']);	
+                $list->setCell($count,2, $type);
+                $list->setCell($count,3, $value['value']);	
     		}
-            $list->setCell($count,4, $spacer->render().$link->render().$spacer->render().$dlink->render().$spacer->render());
-    		$count++;
+            
+            if (!in_array($key.'_'.$type, $aManagedValues)) {
+                $list->setCell($count,4, $spacer->render().$link->render().$spacer->render().$dlink.$spacer->render());
+                $count++;
+            }
     	}
     }
 }
@@ -172,7 +193,7 @@ $sTooltippScript = '<script type="text/javascript" src="scripts/wz_tooltip.js"><
                     <script type="text/javascript" src="scripts/tip_balloon.js"></script>';
 
 $page->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
-$page->setContent($sTooltippScript."\n".$sListstring."<br>".$form->render());
+$page->setContent($sWarning.$sTooltippScript."\n".$sListstring."<br>".$form->render());
 $page->render();
 
 ?>

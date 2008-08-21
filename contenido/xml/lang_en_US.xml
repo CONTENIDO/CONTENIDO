@@ -99,8 +99,9 @@
             <debug>Debug</debug>
             <system>
             	<main>System</main>
-             	<syssettings>System settings</syssettings>
+             	<syssettings>Expert settings</syssettings>
             	<sysvalues>System variables</sysvalues>
+                <configuration>System settings</configuration>
             	<syserrorreport>Error report</syserrorreport>
             </system>
             <frontend>

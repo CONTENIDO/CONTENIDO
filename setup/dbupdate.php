@@ -56,6 +56,9 @@ checkAndInclude("lib/functions.setup.php");
 checkAndInclude("lib/functions.libraries.php");
 checkAndInclude("../contenido/includes/functions.database.php");
 checkAndInclude("lib/functions.sql.php");
+checkAndInclude("../contenido/classes/class.version.php");
+checkAndInclude("../contenido/classes/class.versionImport.php");
+
 
 if (hasMySQLiExtension() && !hasMySQLExtension())
 {
@@ -240,7 +243,15 @@ if ($currentstep < $totalsteps)
 	$sql = "SHOW TABLES";
 	$db->query($sql);
 
-
+//	For import mod_history rows to versioning
+	if ($_SESSION["setuptype"] == "migration" || $_SESSION["setuptype"] == "upgrade") {
+        $cfgClient = array();
+        rereadClients_Setup();
+        
+		$oVersion = new VersionImport($cfg, $cfgClient, $db, $client, $area, $frame);
+    	$oVersion->CreateHistoryVersion();
+	}
+	
 	$tables = array();
 		
 	while ($db->next_record())

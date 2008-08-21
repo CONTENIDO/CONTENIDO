@@ -268,6 +268,7 @@ $lngAct["system_settings"]["systemsettings_edit_item"]			= i18n("Edit system pro
 $lngAct["system_settings"]["systemsettings_save_item"]			= i18n("Save system property");
 
 $lngAct["system"]["emptyLog"]									= i18n("Empty log");
+$lngAct["system_configuration"]["edit_sysconf"]					= i18n("Edit Systemconfigration");
 
 $lngAct["logs"]["log_show"] 						= i18n("Show log");
 

@@ -88,7 +88,6 @@ $cfg["tab"]["user_prop"]					   = $cfg['sql']['sqlprefix']."_user_prop";
 $cfg["tab"]["inuse"]						   = $cfg['sql']['sqlprefix']."_inuse";
 $cfg["tab"]["system_prop"]					   = $cfg['sql']['sqlprefix']."_system_prop";
 $cfg["tab"]["art_spec"] 					   = $cfg['sql']['sqlprefix']."_art_spec";
-$cfg["tab"]["mod_history"]					   = $cfg['sql']['sqlprefix']."_mod_history";
 $cfg["tab"]["properties"]					   = $cfg['sql']['sqlprefix']."_properties";
 $cfg["tab"]["frontendusers"]				   = $cfg['sql']['sqlprefix']."_frontendusers";
 $cfg["tab"]["frontendgroups"]				   = $cfg['sql']['sqlprefix']."_frontendgroups";

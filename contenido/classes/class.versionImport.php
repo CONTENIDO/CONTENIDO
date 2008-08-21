@@ -110,6 +110,12 @@ if(!defined('CON_FRAMEWORK')) {
 	*/		
 	private $iWert;
 	
+   /**
+	* Table name of mod_history
+	* @access public
+	*/	
+	private $sTableName;
+	
 	/**
 	* The class versionImport object constructor, initializes class variables
 	* 
@@ -123,66 +129,95 @@ if(!defined('CON_FRAMEWORK')) {
 	* 
 	* @return void its only initialize class members
 	*/	
- 	public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame){
-//		Set globals in main class
-		parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
-							
+ 	public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
+//		Set globals in main class		
+        $this->aCfgClient = $aCfgClient;
+        $this->oDB = $oDB;
+        
+		if(!is_object($this->oDB))
+            $this->oDB = new DB_Contenido;	
+           
 // 		folder layout
  		$this->sType = "module";
-
+		
+		
+		if(isset($_SESSION["dbprefix"])){
+			$this->sTableName = $_SESSION["dbprefix"]."_mod_history";
+		} else {
+			$this->sTableName = $this->aCfg['sql']['sqlprefix']."_mod_history";
+		}
 //		init class member 		 		
  		$this->aCreateVesion = array();
  		
 //		Init class members with table con_history
  		$this->getModuleHistoryTable();
-
-//		Sort the version files true
- 		ksort($this->aCreateVersion);
-
-// 		All array read
- 		foreach( $this->aCreateVersion as $sKey=>$sLevelOne) {
- 			foreach($sLevelOne as $sKey2=>$sLevelTwo) {
-	 			parent::__construct($aCfg, $aCfgClient, $oDB, $sKey, $sArea, $iFrame);
- 				foreach($sLevelTwo as $sKey3=>$sLevelThree) {
-                    $this->iIdentity = $sKey2; 
-					$this->sName = Contenido_Security::unFilter($sLevelThree["name"]);
-					$this->sModType = Contenido_Security::unFilter($sLevelThree["type"]);
-					$this->sError = Contenido_Security::unFilter($sLevelThree["error"]);
-					$this->sDescripion = Contenido_Security::unFilter($sLevelThree["description"]);
-					$this->sDeletabel = Contenido_Security::unFilter($sLevelThree ["deletable"]);
-					$this->sCodeInput = Contenido_Security::unFilter($sLevelThree ["input"]);
-					$this->sCodeOutput = Contenido_Security::unFilter($sLevelThree ["output"]);
-					$this->sTemplate = Contenido_Security::unFilter($sLevelThree["template"]);
-					$this->sStatic = Contenido_Security::unFilter($sLevelThree["static"]);
-					$this->sPackageGuid = Contenido_Security::unFilter($sLevelThree["package_guid"]);
-					$this->sPackageData = Contenido_Security::unFilter($sLevelThree["package_data"]);
-					$this->sAuthor = Contenido_Security::unFilter($sLevelThree["changedby"]);
-					$this->dCreated = Contenido_Security::unFilter($sLevelThree["created"]);
-					$this->dLastModified = Contenido_Security::unFilter($sLevelThree["changed"]);
-					$this->dActualTimestamp = Contenido_Security::unFilter($sLevelThree["changed"]);
-					
-					$this->initRevisions();
-					
-					$this->createBodyXML();
-                    
- 					$this->createNewVersion();
- 				}
- 			}
- 		}
+ 			
  	} // end of constructor
+ 	
+ 	/**
+ 	 * Creats xml files from table mod_history if exists any rows. After create a version it will be delete the current row. 
+ 	 * If no rows any available, it will be drop the table mod_history.
+ 	 * 
+ 	 * @return void
+ 	 */
+ 	public function CreateHistoryVersion() {
+ 		if($this->getRows() > 0) {
+		//	Sort the version files true
+		 	ksort($this->aCreateVersion);
+			
+    	// 		All array read
+	 		foreach( $this->aCreateVersion as $sKey=>$sLevelOne) {
+	 			foreach($sLevelOne as $sKey2=>$sLevelTwo) {
+                    if (is_array($this->aCfgClient[$sKey])) {
+    		 			parent::__construct($aCfg, $this->aCfgClient, $this->oDB, $sKey, $sArea, $iFrame);
+
+    	 				foreach($sLevelTwo as $sKey3=>$sLevelThree) {
+    	                    $this->iIdentity = $sKey2; 
+    						$this->sName = Contenido_Security::unFilter($sLevelThree["name"]);
+    						$this->sModType = Contenido_Security::unFilter($sLevelThree["type"]);
+    						$this->sError = Contenido_Security::unFilter($sLevelThree["error"]);
+    						$this->sDescripion = Contenido_Security::unFilter($sLevelThree["description"]);
+    						$this->sDeletabel = Contenido_Security::unFilter($sLevelThree ["deletable"]);
+    						$this->sCodeInput = Contenido_Security::unFilter($sLevelThree ["input"]);
+    						$this->sCodeOutput = Contenido_Security::unFilter($sLevelThree ["output"]);
+    						$this->sTemplate = Contenido_Security::unFilter($sLevelThree["template"]);
+    						$this->sStatic = Contenido_Security::unFilter($sLevelThree["static"]);
+    						$this->sPackageGuid = Contenido_Security::unFilter($sLevelThree["package_guid"]);
+    						$this->sPackageData = Contenido_Security::unFilter($sLevelThree["package_data"]);
+    						$this->sAuthor = Contenido_Security::unFilter($sLevelThree["changedby"]);
+    						$this->dCreated = Contenido_Security::unFilter($sLevelThree["created"]);
+    						$this->dLastModified = Contenido_Security::unFilter($sLevelThree["changed"]);
+    						$this->dActualTimestamp = Contenido_Security::unFilter($sLevelThree["changed"]);
+    						
+    						$this->initRevisions();
+    						
+    						$this->createBodyXML();
+    	                    
+    	 					 if($this->createNewVersion()) {
+    							$this->deleteRows($sLevelThree["idmodhistory"]);	
+    	 					 }
+    	 				}
+                    }
+	 			}
+	 		}// end of foreach
+ 		} 
+        
+      
+ 		if($this->getRows() == 0) {
+ 			$this->dropTable();
+ 		}
+ 	}
+ 	
  	 	
  	/**
  	 * Function reads rows variables from table con_mod and init with the class members.
  	 * 
  	 * @return void 
  	 */
- 	private function getModuleHistoryTable(){
-     	if(!is_object($this->oDB))
-     	 $this->oDB = new DB_Contenido;	
-	
+ 	private function getModuleHistoryTable() {
 		$sSql = "";
 		$sSql = "SELECT *
-                FROM ". $this->aCfg["tab"]["mod_history"];
+                FROM ". $this->sTableName;
         $this->oDB->query($sSql);        
 
 //		save mod_history in three dimension array 
@@ -216,6 +251,44 @@ if(!defined('CON_FRAMEWORK')) {
  		$this->setData("PackageGuid", $this->sPackageGuid);
  		$this->setData("PackageData", $this->sPackageData);
  		
+ 	}
+ 	
+ 	/**
+ 	 * Get all rows in tabel mod_con_history
+ 	 * 
+ 	 * @return integer count of rows 
+ 	 */
+ 	private function getRows() {
+ 		$sSqlCount = "";
+ 		$iAnz = 0;
+ 		$sSqlCount = "SELECT * FROM ". $this->sTableName;
+        $this->oDB->query($sSqlCount);
+        $iAnz = $this->oDB->num_rows();
+        
+        return $iAnz;
+ 	}
+ 	
+ 	/**
+ 	 * Drops table if table exists
+ 	 * 
+ 	 * @return void  
+ 	 */
+ 	public function dropTable() {
+ 		$sSqlDropTable = "";
+ 		$sSqlDropTable = "DROP TABLE IF EXISTS ". $this->sTableName;
+ 		$this->oDB->query($sSqlDropTable);
+	}
+ 	
+ 	/**
+ 	 * Deletes the row wich id of mod_history
+ 	 * 
+ 	 * @return void  
+ 	 */
+ 	public function deleteRows($iModHistory)   {    
+		$iModHistory = Contenido_Security::unFilter($iModHistory);
+		$sSql2 = "DELETE  FROM ". $this->sTableName .
+		 " WHERE idmodhistory = ". $iModHistory;
+		$this->oDB->query($sSql2);  
  	}
  	
 

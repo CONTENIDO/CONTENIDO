@@ -43,7 +43,8 @@ INSERT INTO !PREFIX!_nav_sub VALUES('42', '0', '63', '1', 'navigation/administra
 INSERT INTO !PREFIX!_nav_sub VALUES('50', '5', '64', '0', 'navigation/administration/debug', '0');
 INSERT INTO !PREFIX!_nav_sub VALUES('53', '5', '65', '0', 'navigation/administration/system/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('51', '0', '65', '1', 'navigation/administration/system/sysvalues', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('54', '0', '67', '1', 'navigation/administration/system/syssettings', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('416', '0', '67', '1', 'navigation/administration/system/syssettings', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('415', '67', '415', '1', 'navigation/administration/system/configuration', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('55', '0', '48', '1', 'navigation/administration/clients/clientproperties', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('56', '0', '68', '1', 'navigation/administration/clients/clientartspec', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('57', '0', '9', '1', 'navigation/style/layouts/edit', '1');

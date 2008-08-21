@@ -6294,3 +6294,59 @@ msgstr "Historie l&ouml;schen"
 msgid "Thank you for saving this search from extinction !"
 msgstr "Vielen Dank f&uuml;r die Speicherung dieser Suche !"
 
+msgid "Edit Systemconfigration"
+msgstr "Systemkonfiguration bearbeiten"
+
+msgid "Please set this property in systemsettings directly"
+msgstr "Bitte setzen Sie diese Einstellung direkt in den Systemeinstellungen"
+
+msgid "Versioning"
+msgstr "Versionierung"
+
+msgid "Versioning activated"
+msgstr "Versionierung aktiviert"
+
+msgid "Serverpath to version files"
+msgstr "Serverpfad f&uuml;r Versionierungsdateien"
+
+msgid "Maximum number of stored versions"
+msgstr "Maximale Anzahl gespeicherter Versionen"
+
+msgid "Update notifier"
+msgstr "Update Benachrichtigung"
+
+msgid "Check for updates"
+msgstr "Auf Aktualisierungen pr&uuml;fen"
+
+msgid "Get news from contenido.org"
+msgstr "Neuigkeiten von contenido.org lesen"
+
+msgid "Update check period (minutes)"
+msgstr "Aktualisierungsperiode (Minuten)"
+
+msgid "Mailserver"
+msgstr "Mailserver"
+
+msgid "Mailserver host"
+msgstr "Mailserver Host"
+
+msgid "Mailserver sender name"
+msgstr "Mailserver Sendername"
+
+msgid "Mailserver sender mail"
+msgstr "Mailserver Sendermail"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Default client (ID)"
+msgstr "Standardmandant (ID)"
+
+msgid "Generate basehref"
+msgstr "Basehref erzeugen"
+
+msgid "Use image magic (if available)"
+msgstr "Image magic benutzen (wenn verf&uuml;gbar)"
+
+msgid "System Configuration"
+msgstr "Systemeinstellungen"

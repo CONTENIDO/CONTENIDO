@@ -175,16 +175,21 @@ class Version {
 		
 		$this->aVarForm = array();	
 
- //		Look if versioning is allowed, default is false		
-		$this->bVersionCreatActive = getEffectiveSetting('versioning', 'activated', 'false'); 
+ //		Look if versioning is allowed, default is false	
+        if (function_exists('getEffectiveSetting')) {
+            $this->bVersionCreatActive = getEffectiveSetting('versioning', 'activated', 'true'); 
+            $this->sAlternativePath = getEffectiveSetting('versioning', 'path');
+            if(!is_dir($this->sAlternativePath)){
+                //		 Alternative Path is not true or is not exist, we use the frontendpath
+    		 	$this->sAlternativePath = "";
+            }
+        } else {
+            $this->bVersionCreatActive = true;
+            $this->sAlternativePath = "";
+        }
 		
 //		Look if versioning is set alternative path to save
-		$this->sAlternativePath = getEffectiveSetting('versioning', 'path');
-		 if(!is_dir($this->sAlternativePath)){
-//		 Alternative Path is not true or is not exist, we use the frontendpath
-		 	$this->sAlternativePath = "";
-		 }
-		
+
         $this->checkPaths();
 	}
 	
@@ -195,9 +200,13 @@ class Version {
 	 */
     protected function prune() {
         $this->initRevisions();
-        $sVar = getEffectiveSetting('versioning', 'prune_limit', '0');
+        if (function_exists('getEffectiveSetting')) {
+            $sVar = getEffectiveSetting('versioning', 'prune_limit', '0');
+        } else {
+            $sVar = 0;
+        }   
+        
  		$bDelete = true;
- 		#echo "<br> das ist die erste vesion und die wird gelöscht: ", $this->getFirstRevision();
         
 		while(count($this->aRevisionFiles) > $sVar AND $bDelete AND (int) $sVar > 0) {
             $iIndex = end(array_keys($this->aRevisionFiles));
@@ -284,23 +293,33 @@ class Version {
 	 * @return void
 	 */	
 	public function createNewVersion() {
-		$bCreate = true;
+		$bCreate = false;
 		if($this->bVersionCreatActive == "true"){
-			// Get version Name
-			$sRevisionName = $this->getRevision();
-			
-			// Create xml version file
-			$sXmlFile = $this->createNewXml();
-		
-			if(!is_dir($this->getFilePath())){
+			try { // Get version Name
+				$sRevisionName = $this->getRevision();
 				
-				mkdir($this->getFilePath(), 0777);
-				chmod ($this->getFilePath(), 0777);
-			}
+				// Create xml version file
+				$sXmlFile = $this->createNewXml();
 			
-			$sHandle = fopen($this->getFilePath().$sRevisionName.'.xml', "w");
-			fputs($sHandle, $sXmlFile);
-			$bCreate = fclose($sHandle);
+				if(!is_dir($this->getFilePath())){
+					
+					$bCreate = mkdir($this->getFilePath(), 0777);
+					chmod ($this->getFilePath(), 0777);
+				}
+				
+				$sHandle = fopen($this->getFilePath().$sRevisionName.'.xml', "w");
+				#fputs($sHandle, $sXmlFile);
+								fputs($sHandle, $sXmlFile);
+				$bCreate = fclose($sHandle);
+				
+				if($bCreate == false){
+					throw new Exception('Couldnt Create New Version');
+				} 
+				
+			} catch(Exception $e) {
+				$bCreate = false;
+				 echo '<br>Some error occured: ' . $e->getMessage() . ': ' . $e->getFile() . ' at line '.$e->getLine() . ' ('.$e->getTraceAsString().')';
+			}
 		}  
 		return $bCreate;
 	}
@@ -342,7 +361,7 @@ class Version {
 	 * 
 	 * @return bool return true if successful
 	 */		
-	public function deleteFile($sFirstFile = ""){
+	public function deleteFile($sFirstFile = "") {
 		// Open this Filepath and read then the content.
 		$sDir = $this->getFilePath();
 

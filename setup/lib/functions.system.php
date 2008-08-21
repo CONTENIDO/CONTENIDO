@@ -254,4 +254,59 @@ function findSimilarText ($string1, $string2)
 	
 	return $i - 1;
 }
+
+function htmldecode($string)
+{
+	$trans_tbl = get_html_translation_table(HTML_ENTITIES);
+	$trans_tbl = array_flip($trans_tbl);
+	$ret = strtr($string, $trans_tbl);
+
+	return $ret;
+}
+
+
+function rereadClients_Setup()
+{
+	global $cfgClient;
+	global $errsite_idcat;
+	global $errsite_idart;
+	global $db;
+	global $cfg;
+
+	if (!is_object($db))
+	{
+		$db = new DB_Contenido;
+	}
+
+	$sql = "SELECT
+	                idclient,
+	                frontendpath,
+	                htmlpath,
+	                errsite_cat,
+	                errsite_art
+	            FROM
+	            ".$_SESSION["dbprefix"].'_clients';
+
+	$db->query($sql);
+
+	while ($db->next_record())
+	{
+		$cfgClient["set"] = "set";
+		$cfgClient[$db->f("idclient")]["path"]["frontend"] = $db->f("frontendpath");
+		$cfgClient[$db->f("idclient")]["path"]["htmlpath"] = $db->f("htmlpath");
+		$errsite_idcat[$db->f("idclient")] = $db->f("errsite_cat");
+		$errsite_idart[$db->f("idclient")] = $db->f("errsite_art");
+
+		$cfgClient[$db->f("idclient")]["images"] = $db->f("htmlpath")."images/";
+		$cfgClient[$db->f("idclient")]["upload"] = "upload/";
+
+		$cfgClient[$db->f("idclient")]["htmlpath"]["frontend"] = $cfgClient[$db->f("idclient")]["path"]["htmlpath"];
+		$cfgClient[$db->f("idclient")]["upl"]["path"] = $cfgClient[$db->f("idclient")]["path"]["frontend"]."upload/";
+		$cfgClient[$db->f("idclient")]["upl"]["htmlpath"] = $cfgClient[$db->f("idclient")]["htmlpath"]["frontend"]."upload/";
+		$cfgClient[$db->f("idclient")]["upl"]["frontendpath"] = "upload/";
+		$cfgClient[$db->f("idclient")]["css"]["path"] = $cfgClient[$db->f("idclient")]["path"]["frontend"]."css/";
+		$cfgClient[$db->f("idclient")]["js"]["path"] = $cfgClient[$db->f("idclient")]["path"]["frontend"]."js/";
+		$cfgClient[$db->f("idclient")]["tpl"]["path"] = $cfgClient[$db->f("idclient")]["path"]["frontend"]."templates/";
+	}
+}
 ?>

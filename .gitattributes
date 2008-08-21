@@ -3414,6 +3414,7 @@ contenido/includes/include.style_left_top.php -text
 contenido/includes/include.subnav.php -text
 contenido/includes/include.subnav_blank.php -text
 contenido/includes/include.symbolhelp.php -text
+contenido/includes/include.system_configuration.php -text
 contenido/includes/include.system_subnav.php -text
 contenido/includes/include.system_sysvalues.php -text
 contenido/includes/include.systemsettings.php -text

@@ -1046,6 +1046,7 @@ class UI_List
 			{
 				$thefont='';
 				$unne='';
+                
 				if($colcount == 0)
 				{
 					$thefont='color: #666666;font-weight: normal;';
@@ -1071,6 +1072,7 @@ class UI_List
 
             	foreach ($cells as $key => $value)
             	{
+                    $thefontDispl = $thefont.$this->extra[$row][$key];
             		$count++;
             		$tpl2->reset();
 
@@ -1080,16 +1082,16 @@ class UI_List
 										{
 											if ($colcount < count($this->cells))
 											{
-												$tpl2->set('s', 'EXTRA', $thefont.'border: 0px; border-right: 1px; border-color: #B3B3B3; border-style: solid;');
+												$tpl2->set('s', 'EXTRA', $thefontDispl.'border: 0px; border-right: 1px; border-color: #B3B3B3; border-style: solid;');
 											} else {
-												$tpl2->set('s', 'EXTRA', $thefont.'border: 0px; border-right: 1px; border-color: #B3B3B3; border-style: solid;');
+												$tpl2->set('s', 'EXTRA', $thefontDispl.'border: 0px; border-right: 1px; border-color: #B3B3B3; border-style: solid;');
 											}
 										} else {
 											if ($colcount < count($this->cells))
 											{
-												$tpl2->set('s', 'EXTRA', $thefont.'border: 0px;border-color: #B3B3B3; border-style: solid;');
+												$tpl2->set('s', 'EXTRA', $thefontDispl.'border: 0px;border-color: #B3B3B3; border-style: solid;');
 											} else {
-												$tpl2->set('s', 'EXTRA', $thefont);
+												$tpl2->set('s', 'EXTRA', $thefontDispl);
 											}
 										}
             		}
