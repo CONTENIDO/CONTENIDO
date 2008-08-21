@@ -102,7 +102,10 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
             }	
            
             if(fileEdit($sJScriptName, $sJScriptCode, $sPath)) {
-        //		make new revision File	
+        //		make new revision File
+				echo"<pre>";
+				print_r($aFileInfo);
+				echo"</pre>";
                 $oVersionJScript->createNewVersion();
 		
 		// 		Update File Information 

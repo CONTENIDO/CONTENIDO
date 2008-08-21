@@ -72,7 +72,7 @@ if(!defined('CON_FRAMEWORK')) {
 	* 
 	* @return void its only initialize class members
 	*/			 		
-   	public function __construct($iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
+   	public function __construct($iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = '') {
 //		Set globals in super class constructer
 		parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
 							
@@ -109,9 +109,13 @@ if(!defined('CON_FRAMEWORK')) {
  		
 // 		Set Layout Table Iformation, currently not in use!
  		#$this->setLayoutTable();
-
+        
+        if ($sVersionFileName == '') {
+            $sVersionFileName = $this->sFileName;
+        }
+        
 // 		Create Body Node of Xml File
- 		$this->setData("name", $this->sFileName);
+ 		$this->setData("name", $sVersionFileName);
  		$this->setData("code", $this->sCode);
  		$this->setData("description", $this->sDescripion);
  	}

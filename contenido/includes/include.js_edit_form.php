@@ -124,13 +124,14 @@ if (!$perm->have_perm_area_action($area, $action))
 		**/
         cInclude("classes", "class.version.php");
         cInclude("classes", "class.versionFile.php");
-
-        if((count($aFileInfo) == 0) || ($aFileInfo["idsfi"] !="")) {
+        
+        if((count($aFileInfo) == 0) || ((int)$aFileInfo["idsfi"] == 0)) {
             $aFileInfo = getFileInformation ($client, $sTempFilename, $sTypeContent, $db); 
+            $aFileInfo['description'] = '';
         }
             
         if(count($aFileInfo) > 0 && $aFileInfo["idsfi"] !="") {
-            $oVersion = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sTempFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+            $oVersion = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
             // Create new Jscript Version in cms/version/js/ folder
             $oVersion->createNewVersion();
         }

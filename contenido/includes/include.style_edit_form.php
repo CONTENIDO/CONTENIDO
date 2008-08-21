@@ -143,12 +143,13 @@ if (!$perm->have_perm_area_action($area, $action))
         // For read Fileinformation an get the id of current File
         cInclude("includes", "functions.file.php");
 			
-        if((count($aFileInfo) == 0) || ($aFileInfo["idsfi"] !="")) {
+        if((count($aFileInfo) == 0) || ((int)$aFileInfo["idsfi"] == 0)) {
             $aFileInfo = getFileInformation ($client, $sTempFilename, $sTypeContent, $db); 
+            $aFileInfo['description'] = '';
         }
-            
-        if(count($aFileInfo) > 0 && $aFileInfo["idsfi"] !="") {
-            $oVersion = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);					
+        
+        if((count($aFileInfo) == 0) || ($aFileInfo["idsfi"] !="")) {        
+            $oVersion = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);				
             // Create new version
             $oVersion->createNewVersion();
         }

@@ -65,7 +65,7 @@ function renderTextProperty($sName, $sValue, $sLabel) {
 
 function getPostValue($aProperty) {
     $sName = $aProperty['type'].'{_}'.$aProperty['name'];
-    if (isset($_POST[$sName]) && $_POST[$sName] != '') {
+    if (isset($_POST[$sName])) {
         if (is_array($aProperty['value'])) {
             if (in_array($_POST[$sName], $aProperty['value'])) {
                 return $_POST[$sName];
@@ -114,8 +114,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
    foreach ($aManagedProperties as $aProperty) {
         $sValue = getPostValue($aProperty);
         $sStoredValue = $aSettings[$aProperty['type']][$aProperty['name']]['value'];
-        
-        if ($sStoredValue != $sValue && $sValue != '') {
+
+        if ($sStoredValue != $sValue &&  (is_array($aProperty['value']) && $sValue != '' || !is_array($aProperty['value']))) {
             setSystemProperty($aProperty['type'], $aProperty['name'], $sValue);   
         }        
    }   

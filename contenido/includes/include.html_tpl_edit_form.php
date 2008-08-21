@@ -128,12 +128,13 @@ if (!$perm->have_perm_area_action($area, $action))
 			
 		$sTypeContent = "templates";
 			
-        if((count($aFileInfo) == 0) || ($aFileInfo["idsfi"] !="")) {
+        if((count($aFileInfo) == 0) || ((int)$aFileInfo["idsfi"] == 0)) {
             $aFileInfo = getFileInformation ($client, $sTempFilename, $sTypeContent, $db); 
+            $aFileInfo['description'] = '';
         }
 			
 		if((count($aFileInfo) > 0) && ($aFileInfo["idsfi"] !="")) {
-			$oVersion = new VersionFile($aFileInfo["idsfi"], $aFileInfo,  $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+			$oVersion = new VersionFile($aFileInfo["idsfi"], $aFileInfo,  $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
 			// Create new Layout Version in cms/version/css/ folder
 			$oVersion->createNewVersion();
 		}
