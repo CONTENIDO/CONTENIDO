@@ -407,7 +407,7 @@ class Version {
 	 * @return array returns Last Revision
 	 */		
     public function getLastRevision() {
-        return end($this->aRevisionFiles);
+        return reset($this->aRevisionFiles);
     }
     
     /**
