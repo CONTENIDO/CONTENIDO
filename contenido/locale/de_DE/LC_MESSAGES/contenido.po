@@ -6350,3 +6350,15 @@ msgstr "Image magic benutzen (wenn verf&uuml;gbar)"
 
 msgid "System Configuration"
 msgstr "Systemeinstellungen"
+
+msgid "Clickable menu in backend"
+msgstr "Hauptmen&uuml;wechsel bei Klick"
+
+msgid "Use passwordrequest in Backend"
+msgstr "Passwort vergessen Funktion benutzen"
+
+msgid "Activate maintenance mode"
+msgstr "Wartungsmodus aktiviert"
+
+msgid "Use editarea for code highlighting"
+msgstr "Editarea f&uuml;r Syntaxhighlighting verwenden"
