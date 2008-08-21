@@ -261,7 +261,6 @@ class Version {
 		$oXW->startDocument('1.0', 'UTF-8');
 	
 		$oXW->startElement('version');
-		$oXW->writeAttribute('xmlns', 'http://www.wapforum.org/DTD/xhtml-mobile10.dtd');
 		$oXW->writeAttribute('xml:lang', 'de');
 	
 		$oXW->startElement('head');
