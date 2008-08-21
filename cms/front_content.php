@@ -57,12 +57,21 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// include security class and check request variables
-include_once ('../contenido/classes/class.security.php');
-Contenido_Security::checkRequests();
-
+$contenido_path = '';
 # include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
+
+// include security class and check request variables
+include_once ($contenido_path . 'classes/class.security.php');
+Contenido_Security::checkRequests();
+
+if (isset($_REQUEST['belang'])) {
+	$aValid = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
+	if (!in_array(strval($_REQUEST['belang']), $aValid)) {
+		die('Please use a valid language!');
+	}
+}
+
 # Contenido startup process
 include_once ($contenido_path."includes/startup.php");
 

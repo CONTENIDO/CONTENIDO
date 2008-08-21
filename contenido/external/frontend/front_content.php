@@ -51,10 +51,16 @@
  * 
  */
 
-define("CON_FRAMEWORK", true);
+if (!defined("CON_FRAMEWORK")) {
+    define("CON_FRAMEWORK", true);
+}
+
+$contenido_path = '';
+# include the config file of the frontend to init the Client and Language Id
+include_once ("config.php");
 
 // include security class and check request variables
-include_once ('../../classes/class.security.php');
+include_once ($contenido_path . 'classes/class.security.php');
 Contenido_Security::checkRequests();
 
 if (isset($_REQUEST['belang'])) {
@@ -64,8 +70,6 @@ if (isset($_REQUEST['belang'])) {
 	}
 }
 
-# include the config file of the frontend to init the Client and Language Id
-include_once ("config.php");
 # Contenido startup process
 include_once ($contenido_path."includes/startup.php");
 
