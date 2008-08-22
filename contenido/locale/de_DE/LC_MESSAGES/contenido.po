@@ -6362,3 +6362,6 @@ msgstr "Wartungsmodus aktiviert"
 
 msgid "Use editarea for code highlighting"
 msgstr "Editarea f&uuml;r Syntaxhighlighting verwenden"
+
+msgid "Alternative path %s does not exist. Version was saved in frondendpath."
+msgstr "Der alternative Pfad %s existiert nicht. Die Verison wurde im Frontendpfad gespeichert."

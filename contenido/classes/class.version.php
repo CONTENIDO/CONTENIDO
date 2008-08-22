@@ -145,6 +145,12 @@ class Version {
 	 * @access protected
      */
     protected $sAlternativePath;
+    
+    /**
+     * Displays Notification only onetimes per object
+     * 
+     */
+    public static $iDisplayNotification;
 	
 	/**
 	 * The Version object constructor, initializes class variables
@@ -174,14 +180,22 @@ class Version {
         $this->dActualTimestamp = time();
 		
 		$this->aVarForm = array();	
+		
+		Version::$iDisplayNotification++;
 
  //		Look if versioning is allowed, default is false	
         if (function_exists('getEffectiveSetting')) {
             $this->bVersionCreatActive = getEffectiveSetting('versioning', 'activated', 'true'); 
             $this->sAlternativePath = getEffectiveSetting('versioning', 'path');
-            if(!is_dir($this->sAlternativePath)){
+            if(!is_dir($this->sAlternativePath) ){
                 //		 Alternative Path is not true or is not exist, we use the frontendpath
-    		 	$this->sAlternativePath = "";
+    			if($this->sAlternativePath !="" AND Version::$iDisplayNotification  < 2){
+    				$oNotification = new Contenido_Notification();
+					$sNotification = i18n('Alternative path %s does not exist. Version was saved in frondendpath.');    				
+    				$oNotification->displayNotification("warning",  sprintf($sNotification, $this->sAlternativePath));
+    				
+    			}
+    			$this->sAlternativePath = "";
             }
         } else {
             $this->bVersionCreatActive = true;
