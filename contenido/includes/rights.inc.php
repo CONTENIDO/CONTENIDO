@@ -202,7 +202,7 @@ if(!is_array($right_list)){
 $oTpl->set('s', 'SESS_ID', $sess->id);
 $oTpl->set('s', 'ACTION_URL', $sess->url("main.php"));
 // type id for user
-$oTpl->set('s', 'type_id', 'userid');
+$oTpl->set('s', 'TYPE_ID', 'userid');
 $oTpl->set('s', 'USER_ID', $userid);
 $oTpl->set('s', 'AREA', $area);
 $oTpl->set('s', 'TABLE_BORDER', $cfg["color"]["table_border"]);

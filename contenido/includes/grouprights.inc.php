@@ -87,7 +87,7 @@ if(!isset($actionarea)){
 }
 ##Body Area Begin
 $oTpl->set("s", "ACTION_URL", $sess->url("main.php"));
-$oTpl->set("s", "type_id", "groupid");
+$oTpl->set("s", "TYPE_ID", "groupid");
 $oTpl->set("s", "USER_ID", $groupid);
 $oTpl->set("s", "AREA", $area);
 
