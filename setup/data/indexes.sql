@@ -4,14 +4,10 @@ ALTER TABLE !PREFIX!_actions add INDEX name_2 (name);
 
 ALTER TABLE !PREFIX!_area add INDEX idarea (idarea,name,online);
 ALTER TABLE !PREFIX!_area add FULLTEXT INDEX name (name);
-ALTER TABLE !PREFIX!_area add INDEX idarea_2 (idarea);
 ALTER TABLE !PREFIX!_area add INDEX name_2 (name);
 
-ALTER TABLE !PREFIX!_art add INDEX idart (idart);
 ALTER TABLE !PREFIX!_art add INDEX idclient (idclient);
 
-ALTER TABLE !PREFIX!_art_lang ADD INDEX idart (idart);
-ALTER TABLE !PREFIX!_art_lang ADD INDEX idlang (idlang);
 ALTER TABLE !PREFIX!_art_lang ADD INDEX idtplcfg (idtplcfg, idart);
 ALTER TABLE !PREFIX!_art_lang ADD INDEX idart_2 (idart, idlang);
 
@@ -19,7 +15,6 @@ ALTER TABLE !PREFIX!_art_spec ADD INDEX client (client);
 ALTER TABLE !PREFIX!_art_spec ADD INDEX lang (lang);
 
 ALTER TABLE !PREFIX!_cat ADD INDEX idclient (idclient);
-ALTER TABLE !PREFIX!_cat ADD INDEX idcat (idcat);
 ALTER TABLE !PREFIX!_cat ADD INDEX idclient_2 (idclient, parentid);
 ALTER TABLE !PREFIX!_cat ADD INDEX parentid (parentid, preid);
 ALTER TABLE !PREFIX!_cat ADD INDEX preid (preid);
@@ -27,10 +22,8 @@ ALTER TABLE !PREFIX!_cat ADD INDEX preid (preid);
 ALTER TABLE !PREFIX!_cat_art ADD INDEX is_start_2 (is_start, idcat);
 ALTER TABLE !PREFIX!_cat_art ADD INDEX idart (idart);
 ALTER TABLE !PREFIX!_cat_art ADD INDEX idcat (idcat);
-ALTER TABLE !PREFIX!_cat_art ADD INDEX idcatart (idcatart);
 
 ALTER TABLE !PREFIX!_cat_lang ADD INDEX idcat (idcat);
-ALTER TABLE !PREFIX!_cat_lang ADD INDEX idcatlang (idcatlang);
 ALTER TABLE !PREFIX!_cat_lang ADD INDEX idlang (idlang);
 ALTER TABLE !PREFIX!_cat_lang ADD INDEX idtplcfg (idtplcfg);
 ALTER TABLE !PREFIX!_cat_lang ADD INDEX idlang_2 (idlang, visible);
@@ -54,18 +47,14 @@ ALTER TABLE !PREFIX!_content ADD INDEX typeid (typeid);
 ALTER TABLE !PREFIX!_frame_files add INDEX idarea (idarea,idframe,idfile);
 
 ALTER TABLE !PREFIX!_keywords add INDEX keyword (keyword);
-ALTER TABLE !PREFIX!_keywords add INDEX idlang (idlang);
 ALTER TABLE !PREFIX!_keywords add INDEX idlang2 (idlang, keyword);
 
 ALTER TABLE !PREFIX!_mod add INDEX idclient (idclient);
-ALTER TABLE !PREFIX!_mod add INDEX idclient_2 (idmod, idclient);
 
 ALTER TABLE !PREFIX!_template add INDEX idclient (idclient);
 ALTER TABLE !PREFIX!_template add INDEX idlay (idlay);
-ALTER TABLE !PREFIX!_template add INDEX idtpl (idtpl);
 ALTER TABLE !PREFIX!_template add INDEX idtplcfg (idtplcfg);
 
-ALTER TABLE !PREFIX!_template_conf add INDEX idtpl (idtpl);
 ALTER TABLE !PREFIX!_template_conf add INDEX idtplcfg (idtplcfg);
 
 ALTER TABLE !PREFIX!_upl add INDEX idclient (idclient);
