@@ -183,7 +183,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
     	if($bDeleteFile) {
     		$notification->displayNotification("warning", i18n("Version history was cleared"));
     	} else {
-    		$notification->displayNotification("error", i18n("Internal History Error"));	
+    		$notification->displayNotification("warning", i18n("No style history available"));	
     	}
     }
 }
