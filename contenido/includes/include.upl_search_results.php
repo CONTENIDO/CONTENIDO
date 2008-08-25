@@ -270,9 +270,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
                     <td colspan="6"></td>
                    </tr>';
     
-	$startwrap = 
-	        '<table cellspacing="0" cellpadding="2" border="0" class="hoverbox">
-                <tr class="textg_medium">
+    $pagerwrap = '<tr class="textg_medium">
                     <td colspan="6" style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; vertical-align:middle; border-style: solid; background-color: #E2E2E2; padding-left:5px;" id="cat_navbar">
                         <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLRIGHT-</div>
                         <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-PAGE-</div>
@@ -280,8 +278,12 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
                         <span style="margin-right:10px; line-height:20px; vertical-align:middle;">'.i18n("Files per Page").'</span> -C-FILESPERPAGE-
                         <div style="clear:both;"></div>
                     </td>
-                </tr>
-                '.$sSpacedRow.$sToolsRow.$sSpacedRow.'
+                </tr>';
+                
+	$startwrap = 
+	        '<table cellspacing="0" cellpadding="2" border="0" class="hoverbox">
+             <input type="hidden" name="thumbnailmode" value="-C-THUMBNAILMODE-"> 
+                '.$pagerwrap.$sSpacedRow.$sToolsRow.$sSpacedRow.'
                 <tr bgcolor="#E2E2E2" style="border-color:#B3B3B3; border-style: solid;border-top: 1px;">
                     <td align="left" valign="top" class="textg_medium" style="border: 1px; border-color: #B3B3B3; border-style: solid; border-bottom:0px;white-space:nowrap;" nowrap="nowrap">'.i18n("Preview").'</td>
                     <td align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.$fnsort.'</td>
@@ -299,7 +301,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
               <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
               <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
             </tr>';
-	$endwrap = $sSpacedRow.$sToolsRow.'</table>';
+	$endwrap = $sSpacedRow.$sToolsRow.$sSpacedRow.$pagerwrap.'</table>';
 
 	/* Object initializing */
 	$page = new UI_Page;
@@ -458,13 +460,13 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
     	$num_pages = $list2->getNumPages();
     	
     	$paging_form.="<script type=\"text/javascript\">
-    	    function jumpToPage() {
-    			var pagenumber = document.forms['options'].elements['start_page'].selectedIndex + 1;
+    	    function jumpToPage(select) {
+    			var pagenumber = select.selectedIndex + 1;
     			url = '".$sess->url("main.php?idarea=$area&frame=$frame&appendparameters=$appendparameters&searchfor=$searchfor&thumbnailmode=$thumbnailmode")."';
     			document.location.href = url + '&startpage=' + pagenumber;
     		}
         </script>";
-    	$paging_form.="<select name=\"start_page\" class=\"text_medium\" onChange=\"jumpToPage();\">";
+    	$paging_form.="<select name=\"start_page\" class=\"text_medium\" onChange=\"jumpToPage(this);\">";
     	for ($i=1;$i<=$num_pages;$i++) {
     		if ($i==$startpage) {
     			$selected = " selected";
@@ -488,6 +490,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
 	$output = str_replace("-C-SCROLLLEFT-", $prevpage, $output);
 	$output = str_replace("-C-SCROLLRIGHT-", $nextpage, $output);
 	$output = str_replace("-C-PAGE-", i18n("Page")." ".$curpage, $output);
+    $output = str_replace("-C-THUMBNAILMODE-", $thumbnailmode, $output);   
 
 	$form = new UI_Form("options");
 	$form->setVar("contenido", $sess->id);
@@ -499,7 +502,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
 	$form->setVar("startpage", $startpage);
 	$form->setVar("appendparameters", $appendparameters);
 
-	$select = new cHTMLSelectElement("thumbnailmode");
+	$select = new cHTMLSelectElement("thumbnailmode_input");
 
 	$values = Array(
 					25 	=> "25",
@@ -514,6 +517,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
 	}
 	
 	$select->setDefault($thumbnailmode);	
+    $select->setEvent('change', "document.options.thumbnailmode.value = this.value");
     
     $topbar = $select->render().'<input type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" style="vertical-align:middle; margin-left:5px;">';
     

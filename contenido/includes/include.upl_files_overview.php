@@ -733,13 +733,13 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 	$num_pages = $list2->getNumPages();
 	
 	$paging_form.="<script type=\"text/javascript\">
-	    function jumpToPage() {
-			var pagenumber = document.forms['del'].elements['start_page'].selectedIndex + 1;
+	    function jumpToPage(select) {
+    		var pagenumber = select.selectedIndex + 1;
 			url = '".$sess->url('main.php')."';
 			document.location.href = url + '&area=upl&frame=4&appendparameters=$appendparameters&path=$path&sortmode=$sortmode&sortby=$sortby&thumbnailmode=$thumbnailmode&startpage=' + pagenumber;
 		}
     </script>";
-	$paging_form.="<select name=\"start_page\" class=\"text_medium\" onChange=\"jumpToPage();\">";
+	$paging_form.="<select name=\"start_page\" class=\"text_medium\" onChange=\"jumpToPage(this);\">";
 	for ($i=1;$i<=$num_pages;$i++) {
 		if ($i==$startpage) {
 			$selected = " selected";
@@ -759,9 +759,9 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 	$output = $list2->output(true);
 	$output = str_replace("-C-SCROLLLEFT-", $prevpage, $output);
 	$output = str_replace("-C-SCROLLRIGHT-", $nextpage, $output);
-	$output = str_replace("-C-PAGE-", i18n("Page")." ".$curpage, $output);
+	$output = str_replace("-C-PAGE-", i18n("Page")." ".$curpage, $output);   
 
-	$select = new cHTMLSelectElement("thumbnailmode");
+	$select = new cHTMLSelectElement("thumbnailmode_input");
 
 	$values = Array(
 					25 	=> "25",
@@ -775,7 +775,8 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 		$select->addOptionElement($key, $option);
 	}
 	
-	$select->setDefault($thumbnailmode);	
+	$select->setDefault($thumbnailmode);
+    $select->setEvent('change', "document.del.thumbnailmode.value = this.value;");	
     
     $topbar = $select->render().'<input type="image" onmouseover="this.style.cursor=\'pointer\'" src="images/submit.gif" style="vertical-align:middle; margin-left:5px;">';
     
