@@ -356,7 +356,7 @@ str = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'refreshSelectedBaseCategory(
 /* rowMark instance for the
    Upload area */
 //upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'setPath(oRow)', 'upl');
-upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2');
+upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'refreshPathFrame(oRow)');
 
 /* Create a new rowMark
    Instance for the Content-
@@ -371,6 +371,24 @@ lay = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'saveObj(oRow)', 'lay');
 function saveObj(oRow)
 {
     parent.parent.frames["left"].frames["left_top"].obj = oRow.id;
+}
+
+function refreshPathFrame(oRow) {
+    var newPath = oRow.id;
+    var left_top = top.content.left.left_top;
+    
+    if (left_top) {
+        if (left_top.document.getElementById('caption2')) {
+            left_top.document.getElementById('caption2').innerHTML = newPath;
+        }
+        
+        if (left_top.document.newdir) {
+            left_top.document.newdir.selectedfile.value = newPath;
+            left_top.document.newdir.path.value = newPath;
+        }
+
+        id_path = newPath;
+    }    
 }
 
 /**refreshSelectedBaseCategory

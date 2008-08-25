@@ -72,6 +72,7 @@ if ($appendparameters != 'filebrowser' && (int) $client > 0) {
     $form->add("search", '<table border="0" cellspacing="0" cellpadding="0"><tr><td>'.$sSearch.'</td><td><input style="margin-left: 5px;" type="image" src="images/submit.gif"></td></tr></table>');
     $form->setVar("area", $area);
     $form->setVar("frame", $frame);
+    $form->setVar("contenido", $sess->id);
     $form->setVar("appendparameters", $appendparameters);
     $tpl->set('s', 'SEARCHFORM', $form->render());
     $tpl->set('s', 'SEARCHTITLE', i18n("Search for"));
@@ -103,10 +104,13 @@ if ($perm->have_perm_area_action("upl", "upl_mkdir") && (int) $client > 0)
 	# Form for 'New Directory'
 	###########################
   $inputfield = '<input type="hidden" name="path" value="'.$path.'">
+                 <input type="hidden" name="contenido" value="'.$sess->id.'">
+                 <input type="hidden" name="frame" value="1">
+                 <input type="hidden" name="area" value="'.$area.'">
                  <input class="text_small" style="vertical-align:middle; width:170px;" type="text" name="foldername" onChange="document.newdir.submit();">';
   $tpl->set('s', 'ACTION', $inputfield);
   $sessURL = $sess->url("main.php?area=upl_mkdir&frame=2&appendparameters=$appendparameters");
-  $tpl->set('s', 'TARGET',	'onSubmit="parent.frames[2].location.href=\''.$sess->url("main.php?area=upl&action=upl_mkdir&frame=2&appendparameters=$appendparameters").
+  $tpl->set('s', 'TARGET',	'onsubmit="parent.frames[2].location.href=\''.$sess->url("main.php?area=upl&action=upl_mkdir&frame=2&appendparameters=$appendparameters").
                             '&path=\'+document.newdir.path.value+\'&foldername=\'+document.newdir.foldername.value;"');
   $tpl->set('s', 'SUBMIT',	'<input type="image" src="'.$cfg["path"]["htmlpath"].'images/submit.gif" style="vertical-align:middle;">');
   $tpl->set('s', 'CAPTION', i18n("Create directory in"));
@@ -138,8 +142,8 @@ if ($searchfor != "")
       $sess->url("main.php?area=upl_search_results&frame=4&searchfor=$searchfor&appendparameters=$appendparameters"), 
       'right_top', 
       $sess->url("main.php?area=$area&frame=3&appendparameters=$appendparameters"));
-
-    $tpl->set('s', 'RESULT', $mstr);
+    $refreshMenu = "\n".'if (top.content.left.left_bottom) top.content.left.left_bottom.refreshMenu()';
+    $tpl->set('s', 'RESULT', $mstr.$refreshMenu);
 }
 else
 {

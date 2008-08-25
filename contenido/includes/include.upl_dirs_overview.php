@@ -331,10 +331,9 @@ chdir($cfg['path']['contenido']);
 $tpl->set('s', 'SID', $sess->id);
 
 # create javascript multilink
-$tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\',\'%s\', \'%s\',\'%s\', \'%s\')">%s</a>';
+$tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\',\'%s\', \'%s\')">%s</a>';
 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 
-                           'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"),
-                           'left_top', $sess->url("main.php?area=$area&frame=1&path=$pathstring&appendparameters=$appendparameters"),                           
+                           'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"),                          
                            '<img src="images/ordner_oben.gif" align="middle" alt="" border="0"><img align="middle" src="images/spacer.gif" width="5" border="0">'.$file);
 
 $tpl->set('d', 'PATH', $pathstring);
@@ -371,12 +370,11 @@ if (is_array($objects))
 		}
 
 		# create javascript multilink  # -> better create meaningful comments
-		$tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+		$tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 		$mstr = sprintf(
 		  $tmp_mstr, 
 		  'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), 
-		  'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 
-		  'left_top', $sess->url("main.php?area=$area&frame=1&path=$pathstring&appendparameters=$appendparameters"), 		  
+		  'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 		  
 		  '<img src="images/grid_folder.gif" align="middle" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">'.$file);
     
 		$hasFiles = uplHasFiles($pathstring);
@@ -474,10 +472,9 @@ unset ($objects[0]);
 
 $bgcolor = (is_int($tpl->dyn_cnt / 2)) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
 
-$tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\',\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+$tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 
                            'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), 
-                           'left_top', $sess->url("main.php?area=$area&frame=1&path=$pathstring&appendparameters=$appendparameters"),
                            '<img src="images/ordner_oben.gif" alt="" border="0"><img align="middle" src="images/spacer.gif" width="5" border="0">'.$file);
 
 $tpl->set('d', 'PATH', $pathstring);
@@ -523,10 +520,9 @@ if (is_array($objects))
 		}
 
 		# create javascript multilink
-		$tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+		$tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 		$mstr = sprintf($tmp_mstr, 'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), 
                                    'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 
-                                   'left_top', $sess->url("main.php?area=$area&frame=1&path=$pathstring&appendparameters=$appendparameters"),
                                    '<img src="images/grid_folder.gif" align="middle" border="0" alt=""><img src="images/spacer.gif" align="middle" width="5" border="0">'.$file);
 
 		$hasFiles = $dbfsc->hasFiles($pathstring);

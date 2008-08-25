@@ -66,8 +66,22 @@
     <!-- END:BLOCK -->
 </table>
 <script type="text/javascript">
-     if (document.getElementById('{ID_PATH}')) {
-         upl.click(document.getElementById('{ID_PATH}'));
+     var id_path = '{ID_PATH}';
+     if (document.getElementById(id_path)) {
+         upl.click(document.getElementById(id_path));
+     }
+     
+     function refreshMenu() {
+        var left_top = top.content.left.left_top;
+        
+        if (left_top.document.getElementById('caption2')) {
+            left_top.document.getElementById('caption2').innerHTML = id_path;
+        }
+        
+        if (left_top.document.newdir) {
+            left_top.document.newdir.selectedfile.value = id_path;
+            left_top.document.newdir.path.value = id_path;
+        }
      }
 </script>
 </body>
