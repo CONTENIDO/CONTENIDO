@@ -110,16 +110,24 @@ $aManagedProperties = array(
 
 $aSettings = getSystemProperties(1);
 
+
 if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have_perm_area_action($area, 'edit_sysconf')) {
+   $bStored = false;
    foreach ($aManagedProperties as $aProperty) {
         $sValue = getPostValue($aProperty);
         $sStoredValue = $aSettings[$aProperty['type']][$aProperty['name']]['value'];
 
         if ($sStoredValue != $sValue &&  (is_array($aProperty['value']) && $sValue != '' || !is_array($aProperty['value']))) {
-            setSystemProperty($aProperty['type'], $aProperty['name'], $sValue);   
+            setSystemProperty($aProperty['type'], $aProperty['name'], $sValue); 
+            $bStored = true;
         }        
+   }  
+   if ($bStored) {
+        $sNotification = $notification->displayNotification("info", i18n("Changes saved"));
    }   
 }
+
+
                       
 $aSettings = getSystemProperties(1);
 
@@ -172,7 +180,7 @@ $sJs = '<script type="text/javascript">
 
 $oPage = new cPage;
 if ($perm->have_perm_area_action($area, 'edit_sysconf')) {
-    $oPage->setContent($oForm->render());
+    $oPage->setContent($sNotification.$oForm->render());
 } else {
     $oPage->setContent($notification->returnNotification("error", i18n('Access denied'), 1));
 }
