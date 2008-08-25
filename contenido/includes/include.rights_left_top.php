@@ -105,8 +105,12 @@ $tmp_mstr = '<div style="margin: 0pt 0pt 0pt 17px; height: 2em; padding-bottom: 
               <a class="addfunction" href="javascript:conMultiLink(\'%s\', \'%s\')">%s</a></div>';
 $area = "user";
 $mstr = sprintf($tmp_mstr, 'right_bottom',$sess->url("main.php?area=user_create&frame=4"),i18n("Create user"));
-                                   
-$tpl->set('s', 'NEWUSER', $mstr);
+
+if ($perm->have_perm_area_action('user_create', "user_createuser")) {                                   
+    $tpl->set('s', 'NEWUSER', $mstr);
+} else {
+    $tpl->set('s', 'NEWUSER', '');
+}
 $tpl->set('s', 'CAPTION', '');
 
 #################

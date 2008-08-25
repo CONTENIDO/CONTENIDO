@@ -63,7 +63,7 @@ INSERT INTO !PREFIX!_actions VALUES('322', '31', '', 'style_edit', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('323', '32', '', 'js_edit', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('59', '1', '', 'con_makecatonline', 'conMakeCatOnline($idcat, $lang, $online);', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('60', '1', '', 'con_changetemplate', 'if ($perm->have_perm_area_action("con","con_changetemplate") ||\r\n  $perm->have_perm_area_action_item("con","con_changetemplate",$idcat))\r\n{\r\nconChangeTemplateForCat($idcat, $idtpl);\r\n} else {\r\n$notification->displayNotification("error", i18n("Permission denied"));\r\n}', '', '1');
-INSERT INTO !PREFIX!_actions VALUES('325', '39', '', 'user_createuser', '', '', '0');
+INSERT INTO !PREFIX!_actions VALUES('325', '39', '', 'user_createuser', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('326', '21', '', 'user_delete', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('0', '0', '', 'fake_permission_action', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('329', '45', '', 'mycontenido_editself', '', '', '0');
