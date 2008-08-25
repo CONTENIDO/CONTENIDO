@@ -35,7 +35,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 $users = new Users;
 
-if (($action == "user_delete") && ($perm->have_perm_area_action($area, $action))) {
+if (($action == "user_delete") && ($perm->have_perm_area_action('user', $action))) {
 
    $users->deleteUserByID($userid);
    
@@ -56,7 +56,7 @@ if (($action == "user_delete") && ($perm->have_perm_area_action($area, $action))
 
 $db2 = new DB_Contenido;
 
-if(!$perm->have_perm_area_action($area,$action))
+if( ! ($perm->have_perm_area_action($area,$action) || $perm->have_perm_area_action('user',$action)) )
 {
   $notification->displayNotification("error", i18n("Permission denied"));
 } else {
