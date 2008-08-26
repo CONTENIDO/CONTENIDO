@@ -137,9 +137,9 @@ if (is_array($settings))
                     $key = sprintf($sMouseoverTemplate, $key, $sShort);
                 }
                 
-                $list->setCell($count,1, $key);
-                $list->setCell($count,2, $type);
-                $list->setCell($count,3, $value['value']);	
+                $list->setCell($count,1, htmlspecialchars($key));
+                $list->setCell($count,2, htmlspecialchars($type));
+                $list->setCell($count,3, htmlspecialchars($value['value']));	
     		}
             
             if (!in_array($key.'_'.$type, $aManagedValues)) {

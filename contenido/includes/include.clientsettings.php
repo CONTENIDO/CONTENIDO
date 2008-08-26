@@ -167,7 +167,7 @@ if ($aItems !== false)
                 $aValue['name'] = sprintf($sMouseoverTemplate, $aValue['name'], $sShort);
             }
             
-        	$oList->setData($iCounter, $aValue['type'], $aValue['name'], htmlspecialchars($aValue['value']), $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
+        	$oList->setData($iCounter, htmlspecialchars($aValue['type']), htmlspecialchars($aValue['name']), htmlspecialchars($aValue['value']), $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
     	}
     	$iCounter++;
     }
