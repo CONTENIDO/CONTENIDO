@@ -58,7 +58,10 @@ ALTER TABLE !PREFIX!_template add INDEX idtplcfg (idtplcfg);
 ALTER TABLE !PREFIX!_template_conf add INDEX idtplcfg (idtplcfg);
 
 ALTER TABLE !PREFIX!_upl add INDEX idclient (idclient);
-ALTER TABLE !PREFIX!_properties ADD INDEX index_p(idclient, itemtype , itemid , type, name);
+ALTER TABLE !PREFIX!_properties ADD INDEX index_client(idclient);
+ALTER TABLE !PREFIX!_properties ADD INDEX index_itemtype(itemtype);
+ALTER TABLE !PREFIX!_properties ADD INDEX index_itemid(itemid);
+ALTER TABLE !PREFIX!_properties ADD INDEX index_type(type);
 
 ALTER TABLE !PREFIX!_frontendpermissions ADD INDEX idfrontendgroup (idfrontendgroup,idlang);
 ALTER TABLE !PREFIX!_frontendpermissions ADD INDEX plugin (plugin);
