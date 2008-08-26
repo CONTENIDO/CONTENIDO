@@ -170,6 +170,29 @@ class cApiClient extends Item
 		}
 	}
 	
+	/**
+	 * Static accessor to the singleton instance.
+	 * 
+	 * @return Object Reference to the singleton instance.
+	 */
+	public static function getInstance($iClient = false) {
+		
+		static $oCurrentInstance;
+		
+		if (!$iClient) {
+			/*
+			 * Use global $client
+			 */
+			$iClient = $GLOBALS['client'];
+		}
+		
+		if (!isset($oCurrentInstance[$iClient])) {
+			$oCurrentInstance[$iClient] = new cApiClient($iClient);
+		}
+		
+		return $oCurrentInstance[$iClient];
+	}
+	
 	function loadByPrimaryKey ($value)
 	{
 		if (parent::loadByPrimaryKey($value) == true) 
