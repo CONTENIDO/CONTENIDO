@@ -1,0 +1,57 @@
+$RCSfile$
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+HOWTO INTEGRATE OR UPGRADE THE TinyMCE WYSIWYG EDITOR IN CONTENIDO
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+$Id$
+
+- Download the latest TinyMCE release from http://tinymce.moxiecode.com/download.php
+  The basic structure is
+  tinymce/
+  |-- docs
+  |-- examples
+  `-- jscripts
+
+- Replace directory jscripts/ of the new release with directory /contenido/external/wysiwyg/tinymce3/jscripts/
+- Replace file jscripts/changelog with /contenido/external/wysiwyg/tinymce3/jscripts/changelog
+- Replace file jscripts/readme with /contenido/external/wysiwyg/tinymce3/jscripts/readme
+
+- Because language packs are no longer included with the core distribution download
+  language packs from http://tinymce.moxiecode.com/download.php
+  
+- Copy the language packs into directory /contenido/external/wysiwyg/tinymce3/jscripts/
+
+- Inherit the changes in file ./contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advlink/js/advlink.js (see below)
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+CONTENIDO MODIFICATIONS OF THE TinyMCE WYSIWYG EDITOR 
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+
+- The plugin advlink has been modified.
+  Function getAnchorListHTML in file ./contenido/external/wysiwyg/tinymce3/jscripts/tiny_mce/plugins/advlink/js/advlink.js
+  hase been changed. The anchor value has now the form front_content.php?idart=112#anchor_name instead of #anchor_name.
+  
+  Note, that for V3.x it is in js/advlink.js, instead of jscripts/functions.js! 
+  
+  function getAnchorListHTML(id, target) {
+	var inst = tinyMCEPopup.editor;
+	var nodes = inst.dom.select('a.mceItemAnchor,img.mceItemAnchor'), name, i;
+	var html = "";
+
+	html += '<select id="' + id + '" name="' + id + '" class="mceAnchorList" o2nfocus="tinyMCE.addSelectAccessibility(event, this, window);" onchange="this.form.' + target + '.value=';
+	html += 'this.options[this.selectedIndex].value;">';
+	html += '<option value="">---</option>';
+
+	for (i=0; i<nodes.length; i++) {
+		// CONTENIDO MODIFICATION 24.10.2006 Willi Man
+		if ((name = inst.dom.getAttrib(nodes[i], "name")) != "")
+			html += '<option value="' + tinyMCE.settings['article_url_suffix'] + '#' + name + '">' + name + '</option>';
+	}
+
+	html += '</select>';
+
+	return html;
+  }
