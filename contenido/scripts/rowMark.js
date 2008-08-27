@@ -356,7 +356,7 @@ str = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'refreshSelectedBaseCategory(
 /* rowMark instance for the
    Upload area */
 //upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'setPath(oRow)', 'upl');
-upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'refreshPathFrame(oRow)');
+upl = new rowMark('#f9fbdd', '#ecf1b2', '#a9aec2', 'refreshPathFrame(oRow)', 'upl');
 
 /* Create a new rowMark
    Instance for the Content-
@@ -383,7 +383,6 @@ function refreshPathFrame(oRow) {
         }
         
         if (left_top.document.newdir) {
-            left_top.document.newdir.selectedfile.value = newPath;
             left_top.document.newdir.path.value = newPath;
         }
 
