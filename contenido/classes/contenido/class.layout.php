@@ -7,7 +7,7 @@
 *
 * © four for business AG, www.4fb.de
 *
-* $Id: class.layout.php,v 1.3 2004/08/04 09:00:54 timo.hummel Exp $
+* $Id$
 ******************************************/
 cInclude("classes", "class.genericdb.php");
 

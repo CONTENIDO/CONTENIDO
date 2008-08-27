@@ -7,7 +7,7 @@
 *
 * © four for business AG, www.4fb.de
 *
-* $Id: class.categorylanguage.php,v 1.6 2005/11/08 16:24:39 timo.hummel Exp $
+* $Id$
 ******************************************/
 cInclude("classes", "class.genericdb.php");
 
