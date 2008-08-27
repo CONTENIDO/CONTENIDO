@@ -21,7 +21,7 @@
  *   created
  *   modified 2008-08-06, Ingo van Peeren - replaced genericdb-code due to performance issues (ticket #)
  *
- *   $Id: 
+ *   $Id$: 
  * }}
  * 
  */

@@ -27,7 +27,7 @@
  *   created 2008-07-31
  *   modified 2008-08-05, Björn Behrens (HerrB) - added missing parameter and refactored
  *   modified 2008-08-15, Oliver Lohkemper (OliverL) - run only Client-Properties return Array
- *   $Id: 
+ *   $Id$: 
  * }}
  * 
  */
