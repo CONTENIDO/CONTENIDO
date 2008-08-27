@@ -44,7 +44,7 @@
  *
  * Derived from db_mysql.inc by Sascha Schumann <sascha@schumann.cx>
  *
- * $Id: db_msql.inc,v 1.1.1.1 2002/07/21 08:35:41 root Exp $
+ * $Id$
  *
  */ 
 
