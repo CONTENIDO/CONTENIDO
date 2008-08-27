@@ -7,7 +7,7 @@
  * Class for workflow allocation management
  * 
  * Requirements: 
- * @con_php_req 5.0
+ * @con_php_req 5.0 
  * 
  *
  * @package    Contenido Backend classes
