@@ -22,7 +22,7 @@
  *   created 2008-02-20
  *   modified 2008-02-28 Changed to using Config for URL style
  * 
- *   $Id:
+ *   $Id$:
  * }}
  * 
  */

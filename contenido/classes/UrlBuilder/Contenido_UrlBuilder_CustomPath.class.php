@@ -24,7 +24,7 @@
  *   modified 2008-02-28 Changed to using Config for URL style
  *   @todo Somehow get around using prCreateURLNameLocationString()
  *   
- *   $Id: 
+ *   $Id$: 
  * }}
  * 
  */
