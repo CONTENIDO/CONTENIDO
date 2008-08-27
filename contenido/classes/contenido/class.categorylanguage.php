@@ -1,14 +1,35 @@
 <?php
-/*****************************************
-* File      :   $RCSfile: class.categorylanguage.php,v $
-* Project   :   Contenido
-* Descr     :   Category access class
-* Modified  :   $Date: 2005/11/08 16:24:39 $
-*
-* © four for business AG, www.4fb.de
-*
-* $Id$
-******************************************/
+/**
+ * Project: 
+ * Category access class
+ * 
+ * Description: 
+ * Layout class
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend classes
+ * @version    1.0
+ * @author     Timo Hummel
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created 2005-11-08
+ *
+ *   $Id$:
+ * }}
+ * 
+ */
+
+if(!defined('CON_FRAMEWORK')) {
+	die('Illegal call');
+}
+
 cInclude("classes", "class.genericdb.php");
 
 class cApiCategoryLanguageCollection extends ItemCollection
