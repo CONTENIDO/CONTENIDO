@@ -29,15 +29,20 @@
  * Static CEC Hook class, which provides a public method to process registered chains at 
  * Contenido Extension Chainer (CEC).
  * 
- * Will only work with chain functions, which accept one argument, multiple arguments 
- * could be passed as a array (assoziative or indexed). Each registered chain function should 
- * return the passed argument.
+ * Will work with chain functions, which accept one argument (single variable or assoziative/indexed array), 
+ * or also.
+ * A registered chain function should return the passed single argument or another value, see config.chains.php.
  * 
  * Usage:
  * <code>
  * // example of executing a cec with multiple parameter
- * $param = array('foo' => $bar);
+ * $param = array('foo' => $bar, 'foo2' => $bar2);
  * $param = CEC_Hook::execute('Contenido.Content.Somewhere', $param);
+ * 
+ * // other example of executing a cec with multiple parameter
+ * $foo = 1;
+ * $bar = 2;
+ * $return = CEC_Hook::execute('Contenido.Content.Somewhere', $foo, $bar);
  * 
  * // example of executing a cec with a single parameter
  * $foo = 'bar';
@@ -45,7 +50,8 @@
  *
  * // example of executing a cec with a break condition
  * $cat = 123;
- * $result = CEC_Hook::execute('Contenido.Somewhere.IsValidCat', $cat, CEC_Hook::BREAK_AT_TRUE);
+ * CEC_Hook::setBreakCondition(CEC_Hook::BREAK_AT_TRUE);
+ * $result = CEC_Hook::execute('Contenido.Somewhere.IsValidCat', $cat);
  * if ($result === true) {
  *     // the cec execution has returned true, do something
  * }
