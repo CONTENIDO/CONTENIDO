@@ -23,6 +23,7 @@
  *   created unknown
  *   modified 2008-06-25, Frederic Schneider, add con_framework check and include contenido_secure
  *   modified 2008-07-02, Frederic Schneider, removed contenido_secure include
+ *   modified 2008-08-28, Murat Purc, changed instantiation of $_cecRegistry
  *
  *   $Id$:
  * }}
@@ -91,7 +92,8 @@ cInclude("conlib", "prepend.php");
 cInclude("includes", "functions.i18n.php");
 
 cInclude("classes", "class.cec.php");
-$_cecRegistry = new cApiCECRegistry;
+cInclude("classes", "class.cec_hook.php");
+$_cecRegistry = cApiCECRegistry::getInstance();
 
 cInclude("includes", "config.chains.php");
 

@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2008-08-28, Murat Purc, add singleton pattern feature
  *
  *   $Id$:
  * }}
@@ -34,12 +35,33 @@ if(!defined('CON_FRAMEWORK')) {
 
 class cApiCECRegistry
 {
-	var $_aChains;
+	private $_aChains;
+
+    /**
+     * Self instance
+     * @var  cApiCECRegistry
+     */
+    private static $_instance = null;
+
 	
-	function cApiCECRegistry ()
+    private function __construct ()
 	{
 		$this->_aChains = array();
 	}
+    
+    /**
+     * Returns a instance of cApiCECRegistry
+     *
+     * @return  cApiCECRegistry
+     */
+    public static function getInstance ()
+    {
+        if (self::$_instance == null) {
+            self::$_instance = new cApiCECRegistry();
+        }
+        return self::$_instance;
+    }
+
 	
 	function registerChain ($sChainName)
 	{
@@ -123,8 +145,17 @@ class pApiCECChainItem
 		$this->_sFunctionName 	= Contenido_Security::escapeDB($sFunctionName, null);
 		$this->_aParameters 	= $aParameters;
 	}
+
+    function getFunctionName()
+    {
+        return $this->_sFunctionName;
+    }
 	
-	function execute ()
+    /**
+     * NOTE: Since Contenido >= 4.8.8 the execution of registered chain functions will be done
+     * by CEC_Hook::execute().
+     */
+    function execute ()
 	{
 		$args = func_get_args();
 		return call_user_func_array($this->_sFunctionName, $args);

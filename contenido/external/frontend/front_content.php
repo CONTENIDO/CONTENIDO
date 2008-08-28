@@ -529,24 +529,15 @@ if ($contenido)
 		$inUse = true;
 		$disabled = 'disabled="disabled"';
 	}
-	/* Check if the user
-	   has permission to edit
-	   articles in this category */
-
+    
+	/* Check if the user has permission to edit articles in this category */
 	$allow = true;
-
-	$iterator = $_cecRegistry->getIterator("Contenido.Frontend.AllowEdit");
-
-	while ($chainEntry = $iterator->next())
-	{
-		$value = $chainEntry->execute($lang, $idcat, $idart, $auth->auth["uid"]);
-
-		if ($value === false)
-		{
-			$allow = false;
-			break;
-		}
-	}
+    CEC_Hook::setBreakCondition(CEC_Hook::BREAK_AT_FALSE);
+    $value = CEC_Hook::execute("Contenido.Frontend.AllowEdit", $lang, $idcat, $idart, $auth->auth["uid"]);
+    if ($value === false)
+    {
+        $allow = false;
+    }
 
 	if ($perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat) && $inUse == false && $allow == true)
 	{
@@ -787,18 +778,13 @@ else
 			{
 				$allow = false;
 
-				$iterator = $_cecRegistry->getIterator("Contenido.Frontend.CategoryAccess");
+                CEC_Hook::setBreakCondition(CEC_Hook::BREAK_AT_TRUE);
+                $value = CEC_Hook::execute("Contenido.Frontend.CategoryAccess", $lang, $idcat, $auth->auth["uid"]);
+                if ($value === true)
+                {
+                    $allow = true;
+                }
 
-				while ($chainEntry = $iterator->next())
-				{
-					$value = $chainEntry->execute($lang, $idcat, $auth->auth["uid"]);
-
-					if ($value === true)
-					{
-						$allow = true;
-						break;
-					}
-				}
 				$auth->login_if(!$allow);
 			}
 		}
@@ -806,18 +792,12 @@ else
 		{
 			$allow = false;
 
-			$iterator = $_cecRegistry->getIterator("Contenido.Frontend.CategoryAccess");
-
-			while ($chainEntry = $iterator->next())
-			{
-				$value = $chainEntry->execute($lang, $idcat, $auth->auth["uid"]);
-
-				if ($value === true)
-				{
-					$allow = true;
-					break;
-				}
-			}
+            CEC_Hook::setBreakCondition(CEC_Hook::BREAK_AT_TRUE);
+            $value = CEC_Hook::execute("Contenido.Frontend.CategoryAccess", $lang, $idcat, $auth->auth["uid"]);
+            if ($value === true)
+            {
+                $allow = true;
+            }
 
 			if (!$allow)
 			{
@@ -911,15 +891,7 @@ else
 
 		$str_base_uri = $cfgClient[$client]["path"]["htmlpath"];
 
-		$_cecIterator = $_cecRegistry->getIterator("Contenido.Frontend.BaseHrefGeneration");
-
-		if ($_cecIterator->count() > 0)
-		{
-			while ($chainEntry = $_cecIterator->next())
-			{
-			    $str_base_uri = $chainEntry->execute($str_base_uri);
-			}
-		}
+        $str_base_uri = CEC_Hook::execute("Contenido.Frontend.BaseHrefGeneration", $str_base_uri);
 
 		if ($is_XHTML == "true") {
 			$baseCode = '<base href="'.$str_base_uri.'" />';

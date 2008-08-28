@@ -137,6 +137,7 @@ contenido/classes/class.backend.php -text
 contenido/classes/class.cat.php -text
 contenido/classes/class.category.php -text
 contenido/classes/class.cec.php -text
+contenido/classes/class.cec_hook.php -text
 contenido/classes/class.chartable.php -text
 contenido/classes/class.client.php -text
 contenido/classes/class.cms_date.php -text

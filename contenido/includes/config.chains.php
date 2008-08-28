@@ -33,7 +33,9 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-global $_cecRegistry;
+// get cec registry instance
+$_cecRegistry = cApiCECRegistry::getInstance();
+
 
 /* Chain Contenido.Content.CreateCategoryLink
  * This chain is called when a frontend link to a category should be created.
@@ -484,4 +486,221 @@ $_cecRegistry->registerChain("Contenido.Upl_edit.RenderRows", "int", "string", "
  */
 $_cecRegistry->registerChain("Contenido.Upl_edit.SaveRows", "int", "string", "string");
 
-?>
+##
+
+/**
+ * Chain Contenido.Action.str_newtree.AfterCall
+ * This chain is called while executing code for action "str_newtree", see table con_action
+ *
+ * Parameters & order:
+ * array    Assoziative array with several values as follows
+ *          array(
+ *              'newcategoryid' => $tmp_newid,
+ *              'categoryname'  => $categoryname, 
+ *              'categoryalias' => $categoryalias, 
+ *              'visible'       => $visible, 
+ *              'public'        => $public, 
+ *              'idtplcfg'      => $idtplcfg,
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array, same as parameter above
+ *          
+ */
+$_cecRegistry->registerChain("Contenido.Action.str_newtree.AfterCall", "array");
+
+/**
+ * Chain Contenido.Action.str_newcat.AfterCall
+ * This chain is called while executing code for action "str_newcat", see table con_action
+ *
+ * Parameters & order:
+ * array    Assoziative array with several values as follows
+ *          array(
+ *              'newcategoryid' => $tmp_newid,
+ *              'idcat'         => $idcat, // parent category id
+ *              'categoryname'  => $categoryname, 
+ *              'categoryalias' => $categoryalias, 
+ *              'visible'       => $visible, 
+ *              'public'        => $public, 
+ *              'idtplcfg'      => $idtplcfg,
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array, same as parameter above
+ *          
+ */
+$_cecRegistry->registerChain("Contenido.Action.str_newcat.AfterCall", "array");
+
+/**
+ * Chain Contenido.Action.str_renamecat.AfterCall
+ * This chain is called while executing code for action "str_renamecat", see table con_action
+ *
+ * Parameters & order:
+ * array    Assoziative array with several values as follows
+ *          array(
+ *              'newcategoryid'    => $tmp_newid,
+ *              'idcat'            => $idcat,
+ *              'lang'             => $lang,
+ *              'newcategoryname'  => $newcategoryname, 
+ *              'newcategoryalias' => $newcategoryalias
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array, same as parameter above
+ *          
+ */
+$_cecRegistry->registerChain("Contenido.Action.str_renamecat.AfterCall", "array");
+
+/**
+ * Chain Contenido.Action.str_moveupcat.AfterCall
+ * This chain is called while executing code for action "str_moveupcat", see table con_action
+ *
+ * Parameters & order:
+ * int		$idcat	Category ID
+ *
+ * Returns:
+ * int    Processed category id, same as parameter above
+ *          
+ */
+$_cecRegistry->registerChain("Contenido.Action.str_moveupcat.AfterCall", "int");
+
+/**
+ * Chain Contenido.Action.str_movedowncat.AfterCall
+ * This chain is called while executing code for action "str_movedowncat", see table con_action
+ *
+ * Parameters & order:
+ * int		$idcat	Category ID
+ *
+ * Returns:
+ * int    Processed category id, same as parameter above
+ *          
+ */
+$_cecRegistry->registerChain("Contenido.Action.str_movedowncat.AfterCall", "int");
+
+/**
+ * Chain Contenido.Action.str_movesubtree.AfterCall
+ * This chain is called while executing code for action str_movesubtree, see table con_action
+ *
+ * Parameters & order:
+ * array    Assoziative array with several values as follows
+ *          array(
+ *              'idcat'        => $idcat,
+ *              'parentid_new' => $parentid_new
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array, same as parameter above
+ *          
+ */
+$_cecRegistry->registerChain("Contenido.Action.str_movesubtree.AfterCall", "array");
+
+/**
+ * Chain Contenido.Action.con_saveart.AfterCall
+ * This chain is called while executing code for action con_saveart, see table con_action
+ *
+ * Parameters & order:
+ * array    Assoziative array with several values as follows
+ *          array(
+ *          'idcat'        => $idcat, 
+ *          'idcatnew'     => $idcatnew, 
+ *          'idart'        => $idart, 
+ *          'is_start'     => $is_start, 
+ *          'idtpl'        => $idtpl, 
+ *          'idartlang'    => $idartlang, 
+ *          'lang'         => $lang, 
+ *          'title'        => $title, 
+ *          'summary'      => $summary, 
+ *          'artspec'      => $artspec, 
+ *          'created'      => $created, 
+ *          'lastmodified' => $lastmodified, 
+ *          'author'       => $author, 
+ *          'online'       => $online, 
+ *          'datestart'    => $datestart, 
+ *          'dateend'      => $dateend, 
+ *          'artsort'      => $artsort
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array, same as parameter above
+ *          
+ */
+$_cecRegistry->registerChain("Contenido.Action.con_saveart.AfterCall", "array");
+
+/**
+ * Chain Contenido.Article.conMoveArticles_Loop
+ * This chain is called while looping articles which should be moved for the time 
+ * management function, see conMoveArticles()
+ *
+ * Parameters & order:
+ * array    Assoziative array of actual recordset like
+ *          array(
+ *              'idartlang' => 123, 'idart' => 32, 'time_move_cat' => 0, 
+ *              'time_target_cat' => 1, 'time_online_move' => 1
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array of actual dataset, same as parameter above
+ *          
+ */
+$_cecRegistry->registerChain("Contenido.Article.conMoveArticles_Loop", "array");
+
+/**
+ * Chain Contenido.Article.conCopyArtLang_AfterInsert
+ * This chain is called after execution of the insert statement during duplication 
+ * of an article, see conCopyArtLang()
+ *
+ * Parameters & order:
+ * array    Assoziative array of actual recordset like
+ *          array(
+ *              'idartlang' => $idartlang, 'idart' => $idart, 'idlang' => $idlang,
+ *              'idtplcfg' => $idtplcfg, 'title' => $pagetitle
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array of actual dataset, same as parameter above
+ *          
+ */
+$_cecRegistry->registerChain("Contenido.Article.conCopyArtLang_AfterInsert", "array");
+
+
+/**
+ * Chain Contenido.Article.conSyncArticle_AfterInsert
+ * This chain is called after execution of the insert statement during a article sync, 
+ * see conSyncArticle()
+ *
+ * Parameters & order:
+ * array    Assoziative array as follows:
+ *          array(
+ *              'src_art_lang'  => Recordset of source item from con_art_lang table
+ *              'dest_art_lang' => Recordset of inserted destination item from con_art_lang table
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array of actual dataset, same as parameter above
+ *          
+ */
+$_cecRegistry->registerChain("Contenido.Article.conSyncArticle_AfterInsert", "array");
+
+/**
+ * Chain Contenido.Frontend.HTMLCodeOutput
+ * This chain is called in front_content.php after the output of the page was buffered.
+ * 
+ * Parameters & order:
+ * string   Code of page
+ *
+ * Returns:
+ * string 	New code
+ */
+$_cecRegistry->registerChain("Contenido.Frontend.HTMLCodeOutput", "string");
+
+/**
+ * Chain Contenido.Content.conGenerateCode
+ * This chain is called in function conGenerateCode after code is created.
+ * 
+ * Parameters & order:
+ * string   Code of page
+ *
+ * Returns:
+ * string 	New code
+ */
+$_cecRegistry->registerChain("Contenido.Content.conGenerateCode", "string");
