@@ -92,7 +92,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
 		// Default values
 		$this->setSetting("mode", "exact");
-        $this->setSetting("content_css", $cfg['path']['all_wysiwyg_html']."tinymce3/jscripts/tiny_mce/themes/advanced/skins/default/content.css"); 
+        $this->setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css"); 
 		$this->setSetting("theme", "advanced");
 		$this->setSetting("theme_advanced_toolbar_location", "top");
 		$this->setSetting("theme_advanced_path_location", "bottom");
