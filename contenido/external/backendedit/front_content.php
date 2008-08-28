@@ -265,7 +265,7 @@ if (isset($path) && strlen($path) > 1)
 	{
 		
 		$iLangCheck = 0;	
-		$idcat = prResolvePathViaURLNames($path, &$iLangCheck);
+		$idcat = prResolvePathViaURLNames($path, $iLangCheck);
 
 	}
 	else
