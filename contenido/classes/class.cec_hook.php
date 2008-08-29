@@ -19,7 +19,7 @@
  * @since      file available since contenido release >= 4.8.8
  * 
  * {@internal 
- *   created 2008-08-28, Murat Purc, initial implementation, port from Advance Mod Rewrite Plugin
+ *   created 2008-08-28, Murat Purc, initial implementation, port from Advanced Mod Rewrite Plugin
  * }}
  * 
  */
@@ -30,8 +30,9 @@
  * Contenido Extension Chainer (CEC).
  * 
  * Will work with chain functions, which accept one argument (single variable or assoziative/indexed array), 
- * or also.
- * A registered chain function should return the passed single argument or another value, see config.chains.php.
+ * or also multiple arguments.
+ * A registered chain function should return the passed single argument or another value, see 
+ * config.chains.php.
  * 
  * Usage:
  * <code>
@@ -74,22 +75,29 @@ class CEC_Hook {
 	 * @var  int
 	 */
     const BREAK_AT_FALSE = 2;
-    
+
 	/**
 	 * Value to break the cec execution at a null result
 	 * @var  int
 	 */
     const BREAK_AT_NULL  = 3;
-    
+
 	/**
 	 * Contains temporaly stored break condition.
 	 * @var  int
 	 */
     static private $_breakCondition = null;
-    
+
 
     /**
-     * @param   mixed   $option     One of CEC_Hook constants, with following control mechanism:
+     * Temporaly setting of an break condition.
+     *
+     * This is usefull, if at least on of defined cec functions returns a specific value and the 
+     * execution of further functions is no more needed.
+     *
+     * The defined condition will be reset in execute() method.
+     *
+     * @param   mixed   $condition  One of CEC_Hook constants, with following control mechanism:
      *                              - CEC_Hook::BREAK_AT_TRUE = Breaks the iteration of cec functions 
      *                                and returns the parameter, if the result of an function is true.
      *
@@ -102,7 +110,7 @@ class CEC_Hook {
      * @throws  InvalidArgumentException  If passed type is not one of CEC_Hook constants.
      */
     static public function setBreakCondition($condition) {
-        
+
         switch ($condition) {
             case CEC_Hook::BREAK_AT_TRUE:
                 self::$_breakCondition = CEC_Hook::BREAK_AT_TRUE;
@@ -117,7 +125,7 @@ class CEC_Hook {
                 throw new InvalidArgumentException('Condition "' . $condition . '" is not supported!');
                 break;
         }
-        
+
     }
 
     
@@ -144,23 +152,23 @@ class CEC_Hook {
 
         // get chainname
         $chainName = array_shift($args);
-    
+
         // process CEC
         $cecIterator = cApiCECRegistry::getInstance()->getIterator($chainName);
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
-            
+
             while ($chainEntry = $cecIterator->next()) {
 
                 // get function to call
                 $functionName = $chainEntry->getFunctionName();
-                
+
                 $return = call_user_func_array($functionName, $args);
-            
+
                 // process return value
                 if (isset($return)) {
-                    $param = $return;
-                    
+                    $args = $return;
+
                     // check, if iteration of the loop is to break
                     if (self::$_breakCondition !== null) {
                         if ($option == self::BREAK_AT_TRUE && $return === true) {
@@ -174,11 +182,11 @@ class CEC_Hook {
                 }
             }
         }
-        
+
         // reset break condition
         self::$_breakCondition = null;
-        
-        return $param;
+
+        return $args;
     }
-    
+
 }
