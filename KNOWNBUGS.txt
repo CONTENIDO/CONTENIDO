@@ -1,8 +1,5 @@
 - Backend: Some settings about expanded/collapsed rows may not be 
   stored in the database everytime (more or less optical problem).
-- Example client: Sitemap module is limited to 3 levels.
-- Example client: The main navigation module is limited to 5 levels, 
-  but only for the first 3 levels module templates will be delivered.
 - When using tinyMCE as WYSIWYG Editor, all XHTML formatting is lost if the
   content is saved using the Insite Editing. This is a problem of Microsoft's
   DHTML editing component, which converts the XHTML formatting to their
