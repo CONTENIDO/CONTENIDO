@@ -191,7 +191,7 @@ class RequestPassword {
         if (preg_match("/^.+@.+\.([A-Za-z0-9\-_]{1,20})$/", $sSendermail)) {
             $this->sSendermail = $sSendermail;
         } else {
-            $this->sSendermail = 'info@contenido.org';
+            $this->sSendermail = 'noreply@contenido-passwordservice.de';
         }
 
         //get systemproperty for senders name, if not set use Contenido Backend
