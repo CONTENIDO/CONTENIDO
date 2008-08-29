@@ -8,16 +8,39 @@ $Id: CHANGELOG.txt,v 1.116 2008/07/08 11:08:12 timo.trautmann Exp $
 
 Release 4.8.8
 ----------------------------------------------------------------------	
-** Bug
-    * [CON-192] - Newsletter area refactored and bugs fixed
-                  (e.g. test destination lost after first page,
-                   test destination setting has to be lang specific)
-    * [CON-182] - Impossible to send html newsletter from other
-                  language than default language
-    * [CON-189] - basehref chain doesn't take "no settings" into 
-                  account and returns "" as base href 
-    * [CON-186] - Joins from genericdb/gdbDriver broken after
-                  Contenido_Security class integration
+             
+**Bug
+
+    * [CON-141] - Kein Cursor im FF bei Headline- oder HTML-Feldern im Artikel-Editbereich
+    * [CON-153] - Chain execution allows function-user-call via REQUEST
+    * [CON-182] - Impossible to send html newsletter from other language than default language
+    * [CON-186] - Join queries via genericdb/gdbDriver fehlerhaft
+    * [CON-189] - basehref chain doesn't take "no settings" into account and returns "" as base href
+    * [CON-192] - Newsletter area needs refactoring + some bugs fixed
+    * [CON-194] - Template Assign on creating new trees is not possible
+    * [CON-195] - con_upl_meta; Meta information is not stored urlencoded
+    * [CON-196] - Missing some globals
+    * [CON-198] - Link to security class hard coded in front_content
+    * [CON-199] - Client-Settings can't display special TinyMCE-Settings
+    * [CON-200] - User can access client languages also if he has no permission to this client
+
+** Improvement
+
+    * [CON-15] - Newsletter Empfänger-Icon und Empfänger-Gruppen-Icon ändern
+    * [CON-67] - contenido mandant auf mehreren domains
+    * [CON-193] - class.update.notifier.php tries to generate cache folder in contenido folder and may fail on certain server configurations
+    * [CON-197] - Usability Client Settings
+    * [CON-201] - Enhancement of CEC
+
+** New Feature
+
+    * [CON-202] - Versioning of Sourcecode
+
+** Task
+
+    * [CON-171] - documentation of new security functions for plugin-developer
+    * [CON-185] - New CEC für Upl-Detail
+
 
 Release 4.8.7
 ----------------------------------------------------------------------	
