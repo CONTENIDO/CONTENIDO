@@ -171,11 +171,11 @@ class CEC_Hook {
 
                     // check, if iteration of the loop is to break
                     if (self::$_breakCondition !== null) {
-                        if ($option == self::BREAK_AT_TRUE && $return === true) {
+                        if (self::$_breakCondition == self::BREAK_AT_TRUE && $return === true) {
                             break;
-                        } elseif ($option == self::BREAK_AT_FALSE && $return === false) {
+                        } elseif (self::$_breakCondition == self::BREAK_AT_FALSE && $return === false) {
                             break;
-                        } elseif ($option == self::BREAK_AT_NULL && $return === null) {
+                        } elseif (self::$_breakCondition == self::BREAK_AT_NULL && $return === null) {
                             break;
                         }
                     }
