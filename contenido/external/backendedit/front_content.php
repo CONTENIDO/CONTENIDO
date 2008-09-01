@@ -5,29 +5,29 @@
  * 
  * Description: 
  * This file handles the view of an article in the Backend.
- * 
+ *
  * To handle the page we use the Database Abstraction Layer, the Session, Authentication and Permissions Handler of the
  * PHPLIB application development toolkit.
- * 
+ *
  * The Client Id and the Language Id of an article will be determined depending on file __FRONTEND_PATH__/config.php where
  * $load_lang and $load_client are defined.
  * Depending on http globals via e.g. front_content.php?idcat=41&idart=34
  * the most important Contenido globals $idcat (Category Id), $idart (Article Id), $idcatart, $idartlang will be determined.
- * 
+ *
  * The article can be displayed and edited in the Backend or the Frontend.
  * The attributes of an article will be considered (an article can be online, offline or protected ...).
- * 
+ *
  * It is possible to customize the behavior by including the file __FRONTEND_PATH__/config.local.php or
  * the file __FRONTEND_PATH__/config.after.php
- * 
- * If you use 'Frontend User' for protected areas, the category access permission will by handled via the 
+ *
+ * If you use 'Frontend User' for protected areas, the category access permission will by handled via the
  * Contenido Extension Chainer.
- * 
- * Finally the 'code' of an article will by evaluated and displayed. 
- * 
+ *
+ * Finally the 'code' of an article will by evaluated and displayed.
+ *
  * Requirements: 
  * @con_php_req 5.0
- * @con_note If you edit this file you must synchronise the file
+ * @con_note If you edit this file you must synchronise the files
  * ./contenido/external/frontend/front_content.php
  * and
  * ./contenido/external/backendedit/front_content.php
@@ -45,8 +45,9 @@
  * {@internal 
  *   created 2003-01-21
  *   modified 2008-07-02, Frederic Schneider, add security fix and include class_security
+ *   modified 2008-08-29, Murat Purc, synchronised with /cms/front_content.php
  *
- *   $Id$: 
+ *   $Id$:
  * }}
  * 
  */
@@ -87,7 +88,7 @@ cInclude("includes", "functions.i18n.php");
 // check HTTP parameters, if requested
 if ($cfg['http_params_check']['enabled'] === true) {
 	cInclude('classes', 'class.httpinputvalidator.php');
-	$oHttpInputValidator = 
+	$oHttpInputValidator =
 		new HttpInputValidator($cfg["path"]["contenido"] . $cfg["path"]["includes"] . '/config.http_check.php');
 }
 
@@ -125,13 +126,13 @@ else
 /**
  * Bugfix
  * @see http://contenido.org/forum/viewtopic.php?t=18291
- * 
+ *
  * added by H. Librenz (2007-12-07)
  */
 //includePluginConf();
 /**
  * fixed bugfix - using functions brokes variable scopes!
- * 
+ *
  * added by H. Librenz (2007-12-21) based on an idea of A. Lindner
  */
 require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
@@ -217,7 +218,7 @@ if (!isset($lang)) {
 
         $db->query($sql);
         $db->next_record();
-       
+
         $lang = $db->f("idlang");
     }
 }
@@ -237,7 +238,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
 /*
  * if http global logout is set e.g. front_content.php?logout=true
- * log out the current user. 
+ * log out the current user.
  */
 if (isset ($logout))
 {
@@ -255,7 +256,7 @@ if (file_exists("config.local.php"))
 }
 
 /*
- * If the path variable was passed, try to resolve it to a Category Id 
+ * If the path variable was passed, try to resolve it to a Category Id
  * e.g. front_content.php?path=/company/products/
  */
 if (isset($path) && strlen($path) > 1)
@@ -285,7 +286,7 @@ $errsite = "Location: front_content.php?client=$client&idcat=".$errsite_idcat[$c
 
 /*
  * Try to initialize variables $idcat, $idart, $idcatart, $idartlang
- * Note: These variables can be set via http globals e.g. front_content.php?idcat=41&idart=34&idcatart=35&idartlang=42 
+ * Note: These variables can be set via http globals e.g. front_content.php?idcat=41&idart=34&idcatart=35&idartlang=42
  * If not the values will be computed.
  */
 if ($idart && !$idcat && !$idcatart)
@@ -401,7 +402,7 @@ if (!$idcatart)
 				{
 					if ($db->f("startidartlang") != 0)
 					{
-						$sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".$db->f("startidartlang")."'";
+						$sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".Contenido_Security::toInteger($db->f("startidartlang"))."'";
 						$db->query($sql);
 						$db->next_record();
 						$idart = $db->f("idart");
@@ -461,7 +462,7 @@ $idartlang = getArtLang($idart, $lang);
 
 if ($idartlang === false)
 {
-	header($errsite);	
+	header($errsite);
 }
 
 /*
@@ -484,11 +485,11 @@ if ($cfg["cache"]["disable"] != '1') {
 ##############################################
 
 /**
- * If user has contenido-backend rights. 
+ * If user has contenido-backend rights.
  * $contenido <==> the cotenido backend session as http global
  * In Backend: e.g. contenido/index.php?contenido=dac651142d6a6076247d3afe58c8f8f2
  * Can also be set via front_content.php?contenido=dac651142d6a6076247d3afe58c8f8f2
- * 
+ *
  * Note: In backend the file contenido/external/backendedit/front_content.php is included!
  * The reason is to avoid cross-site scripting errors in the backend, if the backend domain differs from
  * the frontend domain.
@@ -548,7 +549,7 @@ if ($contenido)
     {
         $allow = false;
     }
-    
+
 	if ($perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat) && $inUse == false && $allow == true)
 	{
 		/* Create buttons for editing */
@@ -580,7 +581,7 @@ if ($contenido)
 		/* Display articles */
 		if ($cfg["is_start_compatible"] == true)
 		{
-			$sql = "SELECT idart,is_start FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' ORDER BY idart";
+			$sql = "SELECT idart, is_start FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' ORDER BY idart";
 
 			$db->query($sql);
 		}
@@ -634,11 +635,11 @@ if ($inUse == false && $allow == true && $view == "edit" && ($perm->have_perm_ar
 }
 else
 {
-	
+
 ##############################################
 # FRONTEND VIEW
 ##############################################
-	
+
 	/* Mark submenuitem 'Preview' in the Contenido Backend (Area: Contenido --> Articles --> Preview) */
 	if ($contenido)
 	{
@@ -646,7 +647,7 @@ else
 	}
 
 	unset($edit); // disable editmode
-	
+
 	/* 'mode' is preview (Area: Contenido --> Articles --> Preview) or article displayed in the front-end */
 	$sql = "SELECT
                 createcode
@@ -662,7 +663,7 @@ else
 	##############################################
 	# code generation
 	##############################################
-	
+
 	/* Check if code is expired, create new code if needed */
 	if ($db->f("createcode") == 0 && $force == 0)
 	{
@@ -703,7 +704,7 @@ else
 	}
 	else
 	{
-		$sql = "DELETE FROM ".$cfg["tab"]["code"]." WHERE idcatart = '".$idcatart."'";
+		$sql = "DELETE FROM ".$cfg["tab"]["code"]." WHERE idcatart = '".Contenido_Security::toInteger($idcatart)."'";
 		$db->query($sql);
 
 		cInclude("includes", "functions.con.php");
@@ -722,7 +723,7 @@ else
 
 	/*  Add mark Script to code if user is in the backend */
 	$code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
-    
+
     /* If article is in use, display notification */
     if ($sHtmlInUseCss && $sHtmlInUseMessage) {
         $code = preg_replace("/<\/head>/i", "$sHtmlInUseCss\n</head>", $code, 1);
@@ -767,7 +768,7 @@ else
 
 				if (IP_match($network, $netmask, $_SERVER["REMOTE_ADDR"]))
 				{
-					$sql = "SELECT idright 
+					$sql = "SELECT idright
 							FROM ".$cfg["tab"]["rights"]." AS A,
 								 ".$cfg["tab"]["actions"]." AS B,
 								 ".$cfg["tab"]["area"]." AS C
@@ -889,9 +890,9 @@ else
 	$redirect_url = $db->f("redirect_url");
 
 	@ eval ("\$"."redirect_url = \"$redirect_url\";"); // transform variables
-	
+
 	$insert_base = getEffectiveSetting('generator', 'basehref', "true");
-	
+
 	/*
 	 * generate base url
 	 */
@@ -899,8 +900,8 @@ else
 	{
 		$is_XHTML = getEffectiveSetting('generator', 'xhtml', "false");
 
-		$str_base_uri = $cfgClient[$client]["path"]["htmlpath"]; 
-		
+		$str_base_uri = $cfgClient[$client]["path"]["htmlpath"];
+
         $str_base_uri = CEC_Hook::execute("Contenido.Frontend.BaseHrefGeneration", $str_base_uri);
 
 		if ($is_XHTML == "true") {
@@ -908,10 +909,10 @@ else
 		} else {
 			$baseCode = '<base href="'.$str_base_uri.'">';
 		}
-		
+
 		$code = str_ireplace_once("<head>", "<head>\n".$baseCode, $code);
 	}
-	
+
 	/*
 	 * Handle online (offline) articles
 	 */
@@ -976,7 +977,7 @@ if ($cfg["cache"]["disable"] != '1') {
 // END: concache
 
 /*
- * configuration settings after the site is displayed. 
+ * configuration settings after the site is displayed.
  */
 if (file_exists("config.after.php"))
 {
@@ -992,7 +993,7 @@ page_close();
 
 /**
  * IP_match
- * 
+ *
  * @param string $network
  * @param string $mask
  * @param string $ip

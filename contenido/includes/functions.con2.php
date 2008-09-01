@@ -26,6 +26,7 @@
  *   created 2003-12-15
  *   modified 2008-06-25, Timo Trautmann, user meta tags and system meta tags were merged, not replaced
  *   modified 2008-06-25, Frederic Schneider, add security fix
+ *   modified 2008-08-29, Murat Purc, add new chain execution
  *
  *   $Id$:
  * }}
@@ -564,6 +565,9 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 		$db->query($sql);
 	}
 
+    // execute CEC hook
+    $code = CEC_Hook::execute('Contenido.Content.conGenerateCode', $code);
+	
 	return $code;
 }
 

@@ -4,7 +4,6 @@
  * Contenido Content Management System
  * 
  * Description: 
-*
  * This file handles the view of an article.
  *
  * To handle the page we use the Database Abstraction Layer, the Session, Authentication and Permissions Handler of the
@@ -25,6 +24,7 @@
  * Contenido Extension Chainer.
  *
  * Finally the 'code' of an article will by evaluated and displayed.
+ *
  * Requirements: 
  * @con_php_req 5.0
  * @con_notice If you edit this file you must synchronise the files
@@ -249,7 +249,6 @@ if (file_exists("config.local.php"))
  * If the path variable was passed, try to resolve it to a Category Id
  * e.g. front_content.php?path=/company/products/
  */
-
 if (isset($path) && strlen($path) > 1)
 {
 	/* Which resolve method is configured? */
@@ -513,7 +512,7 @@ if ($contenido)
 
 	list ($inUse, $message) = $col->checkAndMark("article", $idartlang, true, i18n("Article is in use by %s (%s)"), true, "front_content.php?changeview=edit&action=con_editart&idartlang=$idartlang&type=$type&typenr=$typenr&idart=$idart&idcat=$idcat&idcatart=$idcatart&client=$client&lang=$lang");
 
-	$sHtmlInUse = '';
+    $sHtmlInUse = '';
     $sHtmlInUseMessage = '';
 	if ($inUse == true)
 	{
@@ -540,7 +539,7 @@ if ($contenido)
     {
         $allow = false;
     }
-    
+
 	if ($perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat) && $inUse == false && $allow == true)
 	{
 		/* Create buttons for editing */
@@ -572,7 +571,7 @@ if ($contenido)
 		/* Display articles */
 		if ($cfg["is_start_compatible"] == true)
 		{
-			$sql = "SELECT idart,is_start FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' ORDER BY idart";
+			$sql = "SELECT idart, is_start FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' ORDER BY idart";
 
 			$db->query($sql);
 		}
@@ -668,7 +667,7 @@ else
 
 			conGenerateCode($idcat, $idart, $lang, $client);
 
-			$sql = "SELECT code FROM ".$cfg["tab"]["code"]." WHERE idcatart = '".$idcatart."' AND idlang = '".$lang."'";
+			$sql = "SELECT code FROM ".$cfg["tab"]["code"]." WHERE idcatart = '".Contenido_Security::toInteger($idcatart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
 			$db->query($sql);
 		}
 
@@ -713,7 +712,7 @@ else
 	}
 
 	/*  Add mark Script to code if user is in the backend */
-	$code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code);
+	$code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
 
     /* If article is in use, display notification */
     if ($sHtmlInUseCss && $sHtmlInUseMessage) {
@@ -786,7 +785,7 @@ else
                 {
                     $allow = true;
                 }
-                
+
 				$auth->login_if(!$allow);
 			}
 		}
@@ -930,7 +929,24 @@ else
 			 * The code of an article is basically a PHP script which is cached in the database.
 			 * Layout and Modules are merged depending on the Container definitions of the Template.
 			 */
-			eval ("?>\n".$code."\n<?php\n");
+
+            $aExclude = explode(',', getEffectiveSetting('frontend.no_outputbuffer', 'idart', ''));
+            if (in_array(Contenido_Security::toInteger($idart), $aExclude)) {
+    			eval ("?>\n".$code."\n<?php\n");
+            } else {
+    			// write html output into output buffer and assign it to an variable
+    			ob_start();
+            	eval ("?>\n".$code."\n<?php\n");
+    			$htmlCode = ob_get_contents();
+    			ob_end_clean();
+    			
+    			// process CEC Hook to do some preparations before output
+                $htmlCode = CEC_Hook::execute('Contenido.Frontend.HTMLCodeOutput', $htmlCode);
+                
+    			// print output
+    			echo $htmlCode;
+            }
+             
 		}
 	}
 	else

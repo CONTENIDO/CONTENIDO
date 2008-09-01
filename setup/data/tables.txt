@@ -25,6 +25,7 @@
 "art_lang";"idlang";"int(10)";"";"MUL";"0";"";""
 "art_lang";"idtplcfg";"int(10)";"";"MUL";"0";"";""
 "art_lang";"title";"varchar(255)";"";"";"";"";""
+"art_lang";"urlname";"varchar(255)";"";"";"";"";""
 "art_lang";"pagetitle";"varchar(255)";"";"";"";"";""
 "art_lang";"summary";"text";"YES";"";"";"";""
 "art_lang";"artspec";"int(10)";"";"";"0";"";""

@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2002-03-02
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-08-29, Murat Purc, add new chain execution
  *
  *   $Id$:
  * }}
@@ -1133,6 +1134,13 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
             '".Contenido_Security::escapeDB($urlname, $tmpdb)."')";
         $tmpdb->query($sql);
 
+        // execute CEC hook
+        $param = $tmpdb->Record;
+        $param['idlang']   = $idlang;
+        $param['idtplcfg'] = $idtplcfg;
+        $param['visible']  = $visible;
+        $param = CEC_Hook::execute('Contenido.Category.strSyncCategory_Loop', $param);
+
         // set correct rights for element
         cInclude ("includes", "functions.rights.php");
         createRightsForElement("str", $idcat, $targetlang);
@@ -1205,6 +1213,14 @@ function strCopyCategory ($idcat, $destidcat, $remakeTree = true)
    $newcatlang->set("public", $oldcatlang->get("public"));
    $newcatlang->set("visible", 0);
    $newcatlang->store();
+
+    // execute cec hook
+    $result = CEC_Hook::execute('Contenido.Category.strCopyCategory', array(
+        'oldcat'     => $oldcat,
+        'newcat'     => $newcat,
+        'newcatlang' => $newcatlang
+    ));
+
 
    /* Copy template configuration */
    if ($oldcatlang->get("idtplcfg") != 0)

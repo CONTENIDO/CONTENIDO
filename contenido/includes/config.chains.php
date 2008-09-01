@@ -505,7 +505,6 @@ $_cecRegistry->registerChain("Contenido.Upl_edit.SaveRows", "int", "string", "st
  *
  * Returns:
  * array    Processed assoziative array, same as parameter above
- *          
  */
 $_cecRegistry->registerChain("Contenido.Action.str_newtree.AfterCall", "array");
 
@@ -527,7 +526,6 @@ $_cecRegistry->registerChain("Contenido.Action.str_newtree.AfterCall", "array");
  *
  * Returns:
  * array    Processed assoziative array, same as parameter above
- *          
  */
 $_cecRegistry->registerChain("Contenido.Action.str_newcat.AfterCall", "array");
 
@@ -547,7 +545,6 @@ $_cecRegistry->registerChain("Contenido.Action.str_newcat.AfterCall", "array");
  *
  * Returns:
  * array    Processed assoziative array, same as parameter above
- *          
  */
 $_cecRegistry->registerChain("Contenido.Action.str_renamecat.AfterCall", "array");
 
@@ -560,7 +557,6 @@ $_cecRegistry->registerChain("Contenido.Action.str_renamecat.AfterCall", "array"
  *
  * Returns:
  * int    Processed category id, same as parameter above
- *          
  */
 $_cecRegistry->registerChain("Contenido.Action.str_moveupcat.AfterCall", "int");
 
@@ -573,7 +569,6 @@ $_cecRegistry->registerChain("Contenido.Action.str_moveupcat.AfterCall", "int");
  *
  * Returns:
  * int    Processed category id, same as parameter above
- *          
  */
 $_cecRegistry->registerChain("Contenido.Action.str_movedowncat.AfterCall", "int");
 
@@ -590,7 +585,6 @@ $_cecRegistry->registerChain("Contenido.Action.str_movedowncat.AfterCall", "int"
  *
  * Returns:
  * array    Processed assoziative array, same as parameter above
- *          
  */
 $_cecRegistry->registerChain("Contenido.Action.str_movesubtree.AfterCall", "array");
 
@@ -622,7 +616,6 @@ $_cecRegistry->registerChain("Contenido.Action.str_movesubtree.AfterCall", "arra
  *
  * Returns:
  * array    Processed assoziative array, same as parameter above
- *          
  */
 $_cecRegistry->registerChain("Contenido.Action.con_saveart.AfterCall", "array");
 
@@ -640,7 +633,6 @@ $_cecRegistry->registerChain("Contenido.Action.con_saveart.AfterCall", "array");
  *
  * Returns:
  * array    Processed assoziative array of actual dataset, same as parameter above
- *          
  */
 $_cecRegistry->registerChain("Contenido.Article.conMoveArticles_Loop", "array");
 
@@ -658,10 +650,8 @@ $_cecRegistry->registerChain("Contenido.Article.conMoveArticles_Loop", "array");
  *
  * Returns:
  * array    Processed assoziative array of actual dataset, same as parameter above
- *          
  */
 $_cecRegistry->registerChain("Contenido.Article.conCopyArtLang_AfterInsert", "array");
-
 
 /**
  * Chain Contenido.Article.conSyncArticle_AfterInsert
@@ -677,9 +667,51 @@ $_cecRegistry->registerChain("Contenido.Article.conCopyArtLang_AfterInsert", "ar
  *
  * Returns:
  * array    Processed assoziative array of actual dataset, same as parameter above
- *          
  */
 $_cecRegistry->registerChain("Contenido.Article.conSyncArticle_AfterInsert", "array");
+
+/**
+ * Chain Contenido.Category.strSyncCategory_Loop
+ * This chain is called while looping categories which should be synchronized, see strSyncCategory()
+ *
+ * Parameters & order:
+ * array    Assoziative array of actual inserted con_cat_lang recordset like
+ *          array(
+ *              'idcatlang'    => $idartlang, 
+ *              'idcat'        => $idcat,
+ *              'idlang'       => $idlang,
+ *              'idtplcfg'     => $idtplcfg,
+ *              'name'         => $name,
+ *              'visible'      => $visible, 
+ *              'public'       => $public, 
+ *              'status'       => $status, 
+ *              'author'       => $author, 
+ *              'created'      => $created,
+ *              'lastmodified' => $lastmodified, 
+ *              'urlname'      => $urlname
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array of actual dataset, same as parameter above
+ */
+$_cecRegistry->registerChain("Contenido.Category.strSyncCategory_Loop", "array");
+
+/**
+ * Chain Contenido.Category.strCopyCategory
+ * This chain is called after a old category was copied to new category
+ *
+ * Parameters & order:
+ * array    Assoziative array of several objects
+ *          array(
+ *              'oldcat'        => $oOldCat,     // Old category object (cApiCategory instance)
+ *              'newcat'        => $oNewCat,     // New category object (cApiCategory instance)
+ *              'newcatlang'    => $oNewCatLang  // New category language object (cApiCategoryLanguage instance)
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array of objects, same as parameter above
+ */
+$_cecRegistry->registerChain("Contenido.Category.strCopyCategory", "cApiCategory", "cApiCategory", "cApiCategoryLanguage");
 
 /**
  * Chain Contenido.Frontend.HTMLCodeOutput

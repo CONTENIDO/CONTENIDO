@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-01-21
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2008-08-29, Murat Purc, add handling of urlname
  *
  *   $Id$:
  * }}
@@ -83,6 +84,7 @@ else {
 			$tmp_page_title   = stripslashes($db->f("pagetitle"));
 			$tmp_idlang       = $db->f("idlang");
 			$tmp_title        = $db->f("title");
+            $tmp_urlname      = $db->f("urlname");      // plugin Advanced Mod Rewrite - edit by stese            
 			$tmp_artspec	  = $db->f("artspec");
 			$tmp_summary      = $db->f("summary");
 			$tmp_created      = $db->f("created");
@@ -151,6 +153,7 @@ else {
 			$tmp_idlang         = $lang;
 			$tmp_page_title     = stripslashes($db->f("pagetitle"));
 			$tmp_title          = "";
+            $tmp_urlname        = "";   // plugin Advanced Mod Rewrite - edit by stese            
 			$tmp_artspec	 	= "";
 			$tmp_summary        = "";
 			$tmp_created        = date("Y-m-d H:i:s");
@@ -204,6 +207,10 @@ else {
 		/* Title */
 		$tpl->set('s', 'TITEL', i18n("Title"));
 
+        // plugin Advanced Mod Rewrite - edit by stese
+        $tpl->set('s', 'URLNAME', i18n("Alias"));
+        // end plugin Advanced Mod Rewrite
+
 		$arrArtSpecs = getArtSpec();
 
 		$tmp_inputArtSort = "<select $disabled name=\"artspec\" style=\"width:400px;\" class=\"text_medium\">";
@@ -235,6 +242,10 @@ else {
 		$tpl->set('s', 'ARTIKELARTSELECT', $tmp_inputArtSort);
 
 		$tpl->set('s', 'TITEL-FIELD', '<input '.$disabled.' style="width:400px;" type="text" class="text_medium" name="title" value="'.htmlspecialchars($tmp_title).'">');
+
+        // plugin Advanced Mod Rewrite - edit by stese
+        $tpl->set('s', 'URLNAME-FIELD', '<input '.$disabled.' style="width:400px;" type="text" class="text_medium" name="urlname" value="'.htmlspecialchars($tmp_urlname).'">');
+        // end plugin Advanced Mod Rewrite
 
 		$tpl->set('s', 'ARTIKELID', "idart");
 		$tpl->set('s', 'ARTID', $idart);
@@ -396,7 +407,7 @@ else {
 				}
 			} else {
 
-				$tmp_notification = i18n("Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first.");
+				$note = i18n("Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first.");
 				$tpl2->set('s', 'ID',       'catsel');
 				$tpl2->set('s', 'NAME',     'fake[]');
 				$tpl2->set('s', 'CLASS',    'text_medium');
