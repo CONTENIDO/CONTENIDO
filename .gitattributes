@@ -2722,7 +2722,6 @@ contenido/includes/functions.tpl.php -text
 contenido/includes/functions.upl.php -text
 contenido/includes/globals_off.inc.php -text
 contenido/includes/grouprights.inc.php -text
-contenido/includes/grouprights.php -text
 contenido/includes/grouprights_area.inc.php -text
 contenido/includes/grouprights_con.inc.php -text
 contenido/includes/grouprights_lay.inc.php -text
