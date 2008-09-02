@@ -143,7 +143,9 @@ class CEC_Hook {
      * @param   mixed   $param2     Second parameter which will be forwarded to registeded chain functions
      * @param   mixed   $param3     Third parameter which will be forwarded to registeded chain functions
      *                              NOTE: There are no restriction for number of passed parameter.
-     * @return  mixed   Parameter changed/processed by chain functions
+     * @return  mixed   Parameter changed/processed by chain functions.
+     *                  Note: If no chain function is registered, the first parameter $param after 
+     *                        $chainName will be returned
      */
     static public function execute() {
 
@@ -180,6 +182,11 @@ class CEC_Hook {
                         }
                     }
                 }
+            }
+        } else {
+            // no chain functions are to execute, set the first argument if available
+            if (count($args) > 0) {
+                $args = $args[0];
             }
         }
 
