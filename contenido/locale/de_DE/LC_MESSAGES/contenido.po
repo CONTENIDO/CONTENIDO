@@ -6365,3 +6365,9 @@ msgstr "Editarea f&uuml;r Syntaxhighlighting verwenden"
 
 msgid "Alternative path %s does not exist. Version was saved in frondendpath."
 msgstr "Der alternative Pfad %s existiert nicht. Die Verison wurde im Frontendpfad gespeichert."
+
+msgid "Are you sure you want to delete the selected files?"
+msgstr "Sind Sie sich sicher, dass Sie die gew&auml;hlten Dateien wirklich l&ouml;schen wollen?"
+
+msgid "Delete Files"
+msgstr "Dateien l&ouml;schen"

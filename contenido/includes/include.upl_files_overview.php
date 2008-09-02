@@ -485,8 +485,9 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 	
     // Multiple deletes at top of table
 	if ($perm->have_perm_area_action("upl", "upl_multidelete")) 
-	{    
-		$sDelete = '<input type="image" src="images/delete.gif" onmouseover="this.style.cursor=\'pointer\'" style="vertical-align:middle; margin-right:10px;" onclick="document.del.submit();">'.i18n("Delete selected files");
+	{
+        $sConfirmation = "box.confirm('".i18n('Delete Files')."', '".i18n('Are you sure you want to delete the selected files?')."', 'document.del.submit()');";
+		$sDelete = '<a href="javascript:'.$sConfirmation.'"><img src="images/delete.gif" style="vertical-align:middle; margin-right:10px;" title="'.i18n("Delete selected files").'" alt="'.i18n("Delete selected files").'" onmouseover="this.style.cursor=\'pointer\'">'.i18n("Delete selected files").'</a>';
 	} else {
         $sDelete = '';
     }
@@ -503,7 +504,7 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
     $sToolsRow = '<tr class="textg_medium">
                         <td colspan="6" style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; vertical-align:middle; text-align:right; border-style: solid; background-color: #E2E2E2; padding-left:5px;" id="cat_navbar">
                             <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle; width:400px; padding:0px 5px; text-align:left;">
-                                <img onClick="invertSelection();" onmouseover="this.style.cursor = \'pointer\'" style="margin-right:10px; vertical-align:middle;" src="images/but_invert_selection.gif"> '.i18n("Flip Selection").'
+                                <a href="javascript:invertSelection();"><img style="margin-right:10px; vertical-align:middle;" src="images/but_invert_selection.gif" title="'.i18n("Flip Selection").'" alt="'.i18n("Flip Selection").'" onmouseover="this.style.cursor=\'pointer\'"> '.i18n("Flip Selection").'</a>
                                 <span style="padding-left:15px;">&nbsp;</span>
                                 '.$sDelete.'
                             </div>
