@@ -731,6 +731,10 @@ function uplGetFileIcon ($file)
 		case "mpeg":
 		case "wmv": $icon = "movie.gif";
 					break;
+        case "swf": $icon = "swf.gif";
+					break;
+        case "js": $icon = "js.gif";
+					break;
 					
 		default: $icon = "unknown.gif"; 
 	}
