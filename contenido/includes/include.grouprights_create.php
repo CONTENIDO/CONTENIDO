@@ -32,6 +32,8 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+cInclude('includes', 'functions.rights.php');
+
 if(!$perm->have_perm_area_action($area, $action))
 {
     $notification->displayNotification("error", i18n("Permission denied"));
@@ -58,9 +60,17 @@ if(!$perm->have_perm_area_action($area, $action))
                 }
             }
 
+            //Fixed CON-200
+            if (!is_array($mclient)) {
+                $mclient = array();
+            }
+            
             if (is_array($mlang)) {
                 foreach ($mlang as $value) {
-                    array_push($stringy_perms, "lang[$value]");
+                    //Fixed CON-200
+                    if (checkLangInClients($mclient, $value, $cfg, $db)) {
+                        array_push($stringy_perms, "lang[$value]");
+                    }
                 }
             }
 
