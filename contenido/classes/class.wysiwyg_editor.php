@@ -81,6 +81,10 @@ class cWYSIWYGEditor
 		}
 	}
 	
+    function unsetSetting($sKey) {
+        unset($this->_aSettings[$sKey]);
+    }
+    
 	function getEditorPath ()
 	{
 		return ($this->_sPath . $this->_sEditor);

@@ -40,8 +40,9 @@ var cal_is_open = false;
  
 // This function gets called when the end-user clicks on some date.
 function selected(cal, date){
-    //  document.getElementById("DATE_19_1").innerHTML = date;
+    //aEditdata is global variable defines in include.con_editcontent.php for storage
     cal.sel.innerHTML = date; // just update the date in the input field.
+    aEditdata[cal.sel.id] = date;
     if (cal.dateClicked) {
         cal.callCloseHandler();
     }

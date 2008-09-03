@@ -381,7 +381,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				$this->setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link", true);
 				$this->setSetting("theme_advanced_buttons2", "", true);
 				$this->setSetting("theme_advanced_buttons3", "", true);
-				$this->setSetting("plugins", "advlink", true);
+				
 				break;
 				
 			case "custom": // Custom toolbar
@@ -392,6 +392,29 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				$this->setSetting("theme_advanced_buttons2", $this->_aSettings["tinymce-toolbar2"]);
 				$this->setSetting("theme_advanced_buttons3", $this->_aSettings["tinymce-toolbar3"]);
 				$this->setSetting("plugins", $this->_aSettings["tinymce-plugins"]);
+                $this->setSetting("theme_advanced_toolbar_location", "bottom");
+				break;
+                
+            case "inline_edit":
+                $this->setSetting("theme_advanced_buttons1", "bold,italic,underline,strikethrough,separator,undo,cleanup,separator,bullist,numlist,hr,separator,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright,separator,fullscreen", true);
+				$this->setSetting("theme_advanced_buttons2", "", true);
+				$this->setSetting("theme_advanced_buttons3", "", true);
+
+                $this->unsetSetting("width");
+                $this->unsetSetting("cleanup_callback");
+                $this->unsetSetting("file_browser_callback");
+                $this->unsetSetting("url_converter_callback");
+                $this->unsetSetting("urlconverter_callback");                 
+                
+                $this->setSetting("height", "210px", true);
+				$this->setSetting("plugins", "table,inlinepopups,fullscreen", true);
+                $this->setSetting("mode", "extract", true);
+                $this->setSetting("elements", "*", true);
+                #$this->setSetting("auto_resize", "true", true);
+                $this->setSetting("theme_advanced_toolbar_location", "top", true);
+                $this->setSetting("theme_advanced_resizing_use_cookie", "false", true);
+                $this->setSetting("theme_advanced_toolbar_align", "center", true);
+                
 				break;
 				
 		   default: // Default options
@@ -665,5 +688,35 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		
 		return $sReturn;
 	}
+    
+    function getConfig() {
+        $sConfig = '';
+		
+		foreach ($this->_aSettings as $sKey => $sValue)
+		{
+			if (is_bool($sValue))
+			{
+				if ($sValue === true)
+				{
+					$sValue = "true";
+				} else {
+					$sValue = "false";
+				}
+			}
+			
+			if ($sValue == "true" || $sValue == "false" ||
+				$sKey == "oninit" || $sKey == "onpageload")
+			{
+				$sConfig .= "'$sKey': ".$sValue;
+			} else {
+				$sConfig .= "'$sKey': '".$sValue."'";
+			}
+			$sConfig .= ",\n\t";
+		}
+		
+		$sConfig = substr($sConfig, 0, -3);
+        
+        return $sConfig;
+    }
 }
 ?>

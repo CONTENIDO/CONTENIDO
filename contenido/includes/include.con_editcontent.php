@@ -80,101 +80,39 @@ if ( isset($idcat) )
 
 		$markSubItem = markSubMenuItem(3, true);
 
+    include ($cfg["path"]["wysiwyg"] . 'editorclass.php');
+    $oEditor = new cTinyMCEEditor ('', '');
+    $oEditor->setToolbar('inline_edit');
+    $sConfig = $oEditor->getConfig();    
+        
+    $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/jquery.js" type="text/javascript"></script>';
+    $scripts .= "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$cfg["path"]["wysiwyg_html"].'jscripts/tiny_mce/tiny_mce.js"></script>';
+        
 	$scripts .= <<<EOD
 
 <script language="javascript">
 
-// searches the classname in the td above or the tr above
-function getCellClass(element) {
-
-    var el = document.getElementById(element);
-    var cell = el.offsetParent;
-
-    // if there is a classname in the td return the classname
-    if ( cell.className != '' ) {
-        return cell.className;
-    }
-
-    // set a flag in this td
-    if ( cell.id == '' ) {
-       cell.id = 'yes';
-       var flg = 'yes'
-
-    } else {
-       var flg = cell.id;
-
-    }
-
-    //else go to the tagname table above   and search dowen for the tr tags
-    while (el.tagName != 'TABLE') {
-          el = el.offsetParent;
-    }
-
-    var elements = el.getElementsByTagName('TR');
-
-    //go thrue all tr tags
-    for (var row in elements) {
-       if (isNaN(elements[row])) {
-          var cells = elements[row].getElementsByTagName('TD');
-          for (var id in cells) {
-             if (isNaN(cells[id])){
-                // check if the flg(td cell) is in this tr    if true return the calssname
-                if (cells[id].id==flg&&elements[row].className != '') {
-                   return elements[row].className;
-                }
-             }
-          }
-       }
-    }
-
-    return false;
-}
+var active_id = null;
+var active_object = null;
+var aEditdata = new Object();
 
 function setcontent(idartlang, act) {
-    if (document.all) {
-        document.getElementsByTagName = function (str) {
-            if (str=="*")
-                return document.all;
-            else
-                return document.all.tags(str);
-        }
+    //store last tiny changes if tiny is still open
+    if (tinyMCE.getInstanceById(active_object)) {
+        aEditdata[active_id] = tinyMCE.get(active_object).getContent();
     }
-
-    var a = document.getElementsByTagName("*");
+    
     var str = '';
-    var aId = '';
+    for (var sId in aEditdata) {
+        var data = sId.split("_");
 
-    // loop through all elements
-    for (var i=0; i < a.length; i++) {
-
-        aId = a[i].id;
-
-        if (aId != '' && typeof aId == 'string') {
-
-            var aIdPrefix = aId.substr(0,4);
-
-            // search for the id which containes HTML
-            if (aIdPrefix == 'HTML' || aIdPrefix == 'DATE') {
-
-                // check if its an 'contentEditable' Field
-                if (a[i].isContentEditable == true) {
-
-                    // split the idname in data
-                    var data = aId.split("_");
-
-                    // data[0] is the fieldname * needed
-                    // data[1] is the idtype
-                    // data[2] is the typeid * needed
-
-                    // read out the content
-                    var aContent = prepareString(a[i].innerHTML);
-
-                    // build the string which will be send
-                    str += buildDataEntry(idartlang , data[0] , data[2] , aContent);
-                }
-            }
-        }
-    }
+        // data[0] is the fieldname * needed
+        // data[1] is the idtype
+        // data[2] is the typeid * needed
+       
+        // build the string which will be send
+        str += buildDataEntry(idartlang , data[0] , data[2] , aEditdata[sId]);
+    }            
 
     // set the string
     document.forms.editcontent.data.value = str + document.forms.editcontent.data.value;
@@ -182,16 +120,6 @@ function setcontent(idartlang, act) {
     // set the action string
     if ( act != 0 ) {
         document.forms.editcontent.action = act;
-    }
-
-    // if there are 3 arguments, the className has to be seached
-    if (arguments.length > 2){
-       //search the class of the above element
-       var classname = getCellClass(arguments[2]);
-
-       if ( classname ) {
-          document.forms.editcontent.con_class.value = classname;
-       }
     }
 
     // submit the form
@@ -221,16 +149,47 @@ function addDataEntry(idartlang, type, typeid, value) {
     setcontent(idartlang,'0');
 }
 
+var tinymceConfigs = {
+    {TINY_OPTIONS}
+};
+tinyMCE.settings = tinymceConfigs;
+
+//add tiny to elements which contains classname contentEditable
+//tiny toggles on click 
+$(document).ready(function(){
+	$('div.contentEditable').each(
+ 		function(){
+			$(this).bind(
+				"click",
+				function(){
+                    if (tinyMCE.getInstanceById(active_object)) {
+                        aEditdata[active_id] = tinyMCE.get(active_object).getContent();
+                        if (aEditdata[active_id] == '') {
+                            document.getElementById(active_id).style.height = '15px';
+                        }
+                        tinyMCE.execCommand('mceRemoveControl', false, active_object);
+                        active_id = null;
+                        active_object = null;
+                    }
+                    
+                    tinyMCE.settings = tinymceConfigs;
+					tinyMCE.execCommand('mceAddControl', true, this);
+                    active_id = this.id;
+                    active_object = this;
+                    document.getElementById(active_id).style.height = '';
+                }
+            );
+        }
+    );
+});
 </script>
 
 EOD;
-
-        $scripts .= '<script src="'.$cfg["path"]["contenido_fullhtml"].'external/mozile/mozileLoader.js" type="text/javascript"></script>';
+        $scripts = str_replace('{TINY_OPTIONS}', $sConfig, $scripts);
 
         $contentform  = "<form name=\"editcontent\" method=\"post\" action=\"".$sess->url("front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&lang=$lang&action=20")."\">\n";
         $contentform .= "<input type=\"hidden\" name=\"changeview\" value=\"edit\">\n";
         $contentform .= "<input type=\"hidden\" name=\"data\" value=\"\">\n";
-        $contentform .= "<input type=\"hidden\" name=\"con_class\" value=\"\">\n";
         $contentform .= "</form>";
 
         #
