@@ -87,6 +87,7 @@ if ( isset($idcat) )
     $sConfigFullscreen = $oEditor->getConfigFullscreen();        
         
     $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/jquery.js" type="text/javascript"></script>';
+    $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/con_tiny.js" type="text/javascript"></script>';
     $scripts .= "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$cfg["path"]["wysiwyg_html"].'jscripts/tiny_mce/tiny_mce.js"></script>';
         
 	$scripts .= <<<EOD
@@ -96,67 +97,30 @@ if ( isset($idcat) )
 var active_id = null;
 var active_object = null;
 var aEditdata = new Object();
+var aEditdataOrig = new Object();
 
-function setcontent(idartlang, act) {
-    //store last tiny changes if tiny is still open
-    if (tinyMCE.getInstanceById(active_object)) {
-        aEditdata[active_id] = tinyMCE.get(active_object).getContent();
-    }
-    
-    var str = '';
-    for (var sId in aEditdata) {
-        var data = sId.split("_");
-
-        // data[0] is the fieldname * needed
-        // data[1] is the idtype
-        // data[2] is the typeid * needed
-       
-        // build the string which will be send
-        str += buildDataEntry(idartlang , data[0] , data[2] , aEditdata[sId]);
-    }            
-
-    // set the string
-    document.forms.editcontent.data.value = str + document.forms.editcontent.data.value;
-
-    // set the action string
-    if ( act != 0 ) {
-        document.forms.editcontent.action = act;
-    }
-
-    // submit the form
-    document.forms.editcontent.submit();
-}
-
-function prepareString(aContent) {
-    if ( aContent == "&nbsp;" || aContent == "" ) {
-        aContent = "%$%EMPTY%$%";
-    } else {
-        // if there is an | in the text set a replacement chr because we use it later as isolator
-        while( aContent.search(/\|/) != -1 ) {
-            aContent = aContent.replace(/\|/,"%$%SEPERATOR%$%");
-        }
-    }
-
-    return aContent;
-}
-
-function buildDataEntry(idartlang, type, typeid, value) {
-    return idartlang +'|'+ type +'|'+ typeid +'|'+ value +'||';
-}
-
-function addDataEntry(idartlang, type, typeid, value) {
-    document.forms.editcontent.data.value = (buildDataEntry(idartlang, type, typeid, prepareString(value) ) );
-
-    setcontent(idartlang,'0');
-}
+var fb_fieldname;
+var fb_handle;
+var fb_intervalhandle;
+var fb_win;
 
 var tinymceConfigs = {
     {TINY_OPTIONS},
     fullscreen_settings : {
         {TINY_FULLSCREEN}
-    }
+    },
+    'setup' : function(ed) {
+      ed.onSetContent.add(function(ed, o) {
+            updateContent(ed.getContent());
+      })}
 };
 tinyMCE.settings = tinymceConfigs;
+
+function updateContent(sContent) {
+    if (aEditdataOrig[active_id] == undefined) {
+        aEditdataOrig[active_id] = sContent;
+    }
+}
 
 //add tiny to elements which contains classname contentEditable
 //tiny toggles on click 
@@ -166,119 +130,35 @@ $(document).ready(function(){
 			$(this).bind(
 				"click",
 				function(){
-                    if (tinyMCE.getInstanceById(active_object)) {
-                        aEditdata[active_id] = tinyMCE.get(active_object).getContent();
-                        if (aEditdata[active_id] == '') {
-                            document.getElementById(active_id).style.height = '15px';
-                        }
-                        tinyMCE.execCommand('mceRemoveControl', false, active_object);
-                        active_id = null;
-                        active_object = null;
-                    }
-                    
-                    tinyMCE.settings = tinymceConfigs;
-					tinyMCE.execCommand('mceAddControl', true, this);
-                    active_id = this.id;
-                    active_object = this;
-                    document.getElementById(active_id).style.height = '';
+                    swapTiny(this);
                 }
             );
         }
     );
 });
 
-var fb_fieldname;
-var fb_handle;
-var fb_intervalhandle;
-var fb_win;
-
-function myCustomFileBrowser(field_name, url, type, win) {
-    switch (type)
-    {
-        case "image":
-            fb_handle = window.open("{IMAGE}", "filebrowser", "dialog=yes,resizable=yes");
-            fb_fieldname = field_name;
-            fb_win = win;
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);						
-            break;	
-        case "file":
-            fb_handle = window.open("{FILE}", "filebrowser", "dialog=yes,resizable=yes");
-            fb_fieldname = field_name;
-            fb_win = win;
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
-            break;
-        case "flash":
-            fb_handle = window.open("{FLASH}", "filebrowser", "dialog=yes,resizable=yes"); 
-            fb_fieldname = field_name; 
-            fb_win = win; 
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
-            break;
-        case "media":
-            fb_handle = window.open("{MEDIA}", "filebrowser", "dialog=yes,resizable=yes"); 
-            fb_fieldname = field_name; 
-            fb_win = win; 
-            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
-            break;
-        default:
-            alert(type);
-            break;
-    }
-}
-
-function updateImageFilebrowser ()
-{
-    if (!fb_handle.left)
-    {
-        return;
-    }
-    
-    if (!fb_handle.left.left_top)
-    {
-        return;
-    }
-    
-    if (!fb_handle.left.left_top.document.getElementById("selectedfile"))
-    {
-        return;
-    }	
-    
-    if (fb_handle.left.left_top.document.getElementById("selectedfile").value != "")
-    {
-        fb_win.document.forms[0].elements[fb_fieldname].value = fb_handle.left.left_top.document.getElementById("selectedfile").value;
-        
-        fb_handle.close();
-        window.clearInterval(fb_intervalhandle);
-
-        if (fb_win.showPreviewImage)
-        {
-            fb_win.showPreviewImage(fb_win.document.forms[0].elements[fb_fieldname].value);
-        }				
-    }
-}
-
-function CustomfileBrowserCallBack(field_name, url, type) {
-        // This is where you insert your custom filebrowser logic
-        alert("Filebrowser callback: " + field_name + "," + url + "," + type);
-}
-
-function CustomURLConverter(url, node, on_save) {
-        var oEd = new tinymce.Editor('contenido', '');
-        url = oEd.convertURL(url, node, on_save);
-        return url;
-}
-
-function CustomCleanupContent(type, value) {
-        switch (type) {
-                case "get_from_editor":
-                case "insert_to_editor":
-                        // Remove xhtml styled tags
-                        value = value.replace(/[\s]*\/>/g,'>');
-                        break;
+function leave_check() {
+     storeCurrentTinyContent();
+     var bAsk = false;
+     for (var sId in aEditdata) {
+        if (aEditdataOrig[sId] != aEditdata[sId]) {
+            bAsk = true;
         }
-
-        return value;
+     }
+     
+     if (bAsk) {
+        check = confirm("{QUESTION}");
+        if (check == true) {
+            setcontent('{IDARTLANG}', '0');
+        }
+     }
 }
+window.onbeforeunload = leave_check;
 
+var file_url = "{IMAGE}";
+var image_url = "{FILE}";
+var flash_url = "{FLASH}";
+var media_url = "{MEDIA}";
 
 </script>
 
@@ -291,9 +171,10 @@ EOD;
         
         $scripts = str_replace('{TINY_OPTIONS}', $sConfigInlineEdit, $scripts);
         $scripts = str_replace('{TINY_FULLSCREEN}', $sConfigFullscreen, $scripts);
+        $scripts = str_replace('{IDARTLANG}', $idartlang, $scripts);
+        $scripts = str_replace('{QUESTION}', i18n('Do you want to save changes?'), $scripts);
         
-
-        $contentform  = "<form name=\"editcontent\" method=\"post\" action=\"".$sess->url("front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&lang=$lang&action=20")."\">\n";
+        $contentform  = "<form name=\"editcontent\" method=\"post\" action=\"".$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&lang=$lang&action=20&client=$client")."\">\n";
         $contentform .= "<input type=\"hidden\" name=\"changeview\" value=\"edit\">\n";
         $contentform .= "<input type=\"hidden\" name=\"data\" value=\"\">\n";
         $contentform .= "</form>";

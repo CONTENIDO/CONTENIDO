@@ -6371,3 +6371,6 @@ msgstr "Sind Sie sich sicher, dass Sie die gew&auml;hlten Dateien wirklich l&oum
 
 msgid "Delete Files"
 msgstr "Dateien l&ouml;schen"
+
+msgid "Do you want to save changes?"
+msgstr "Möchten Sie die Anderungen speichern?"

@@ -2944,6 +2944,7 @@ contenido/scripts/browserCheck.js -text
 contenido/scripts/cfoldingrow.js -text
 contenido/scripts/cmsDate.js -text
 contenido/scripts/conFrameResize.js -text
+contenido/scripts/con_tiny.js -text
 contenido/scripts/contenidoConfig.js -text
 contenido/scripts/contextMenu.js -text
 contenido/scripts/expandCollapse.js -text
