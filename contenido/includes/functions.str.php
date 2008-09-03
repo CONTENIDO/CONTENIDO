@@ -23,6 +23,7 @@
  *   created 2002-03-02
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-08-29, Murat Purc, add new chain execution
+ *   modified 2008-09-03, Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann (strRemakeTreeTableFindNext)
  *
  *   $Id$:
  * }}
@@ -563,6 +564,75 @@ function strNextBackwards($tmp_idcat) {
 
 }
 
+/**
+    Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann (strRemakeTreeTableFindNext)
+**/
+function strRemakeTreeTableFindNext($tmp_idcat,$tmp_level) {
+    global $db;
+    global $cfg;
+
+    //************* Insert Element in 'cat_tree'-table **************
+    $sql = "INSERT INTO ".$cfg["tab"]["cat_tree"]." (idtree, idcat, level) VALUES ('".$db->nextid($cfg["tab"]["cat_tree"])."', '".Contenido_Security::toInteger($tmp_idcat)."', '".Contenido_Security::toInteger($tmp_level)."')";
+    $db->query($sql);
+
+    //************* dig deeper, if possible ******
+    $tmp = strNextDeeperAll($tmp_idcat, true);
+
+    foreach ($tmp as $iCurIdCat) {
+        if (count(strNextDeeperAll($iCurIdCat, true, true)) > 0 ) {
+            strRemakeTreeTableFindNext($iCurIdCat, ($tmp_level+1));
+        } else {
+            $sql = "INSERT INTO ".$cfg["tab"]["cat_tree"]." (idtree, idcat, level) VALUES ('".$db->nextid($cfg["tab"]["cat_tree"])."', '".Contenido_Security::toInteger($iCurIdCat)."', '".Contenido_Security::toInteger($tmp_level+1)."')";
+            $db->query($sql);
+        }
+    }
+} 
+
+
+
+/**
+    Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann
+**/
+$db_str2 = new DB_Contenido();
+function strNextDeeperAll($tmp_idcat) {
+      global $cfg, $db_str, $db_str2, $lang;
+        $aCats = array();
+        $bLoop = true;
+        $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='".Contenido_Security::toInteger($tmp_idcat)."' and preid = 0";
+       
+        #echo $sql.'<br>';
+        $db_str->query($sql);
+        if ($db_str->next_record()) {
+            while ($bLoop) {
+              $midcat = $db_str->f("idcat");
+               
+              if ($ignore_lang == true)
+              {
+                 array_push($aCats, $midcat);
+              } else {
+                //******deeper element exists
+                /* Check for language dependent part */
+                
+                $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($midcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+                $db_str2->query($sql);
+                
+                if ($db_str2->next_record())
+                {
+                       array_push($aCats, $midcat);
+                }
+                }
+               
+                $sql = "SELECT preid, postid, idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='".Contenido_Security::toInteger($tmp_idcat)."' and preid = ".Contenido_Security::toInteger($midcat)."";
+                $db_str->query($sql);
+                if (!$db_str->next_record()) {
+                    $bLoop = false;
+                }           
+            }
+        }
+        return $aCats;
+} 
+
+/*
 function strRemakeTreeTableFindNext($tmp_idcat,$tmp_level) {
         global $db;
         global $cfg;
@@ -608,6 +678,7 @@ function strRemakeTreeTableFindNext($tmp_idcat,$tmp_level) {
 
         }
 }
+*/
 
 function strShowTreeTable() {
         global $db;
