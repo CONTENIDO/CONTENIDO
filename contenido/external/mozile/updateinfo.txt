@@ -1,8 +1,0 @@
-2008-06-27 Timo Trautmann
-modified mozileLoader.js for compatibility problems with firefox 3
-122: if(!InstallTrigger.getVersion("mozile")) 
-     -> 
-	 if(!InstallTrigger.getVersion || !InstallTrigger.getVersion("mozile"))
-155: if (!MOZILE_CONFIG_DOC.documentElement || MOZILE_CONFIG_DOC.documentElement.tagName == "parsererror") {
-     ->
-	 if (!MOZILE_CONFIG_DOC.documentElement) {
