@@ -41,7 +41,7 @@ if ($doedit == "1") {
 	
 	if ($action == "cancel")
 	{
-		header("location:".$sess->url($cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit"));	
+		header("location:".$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client"));	
 	} else {
     	if (count($_FILES) == 1)
     	{

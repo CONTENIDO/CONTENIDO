@@ -36,7 +36,7 @@ if ($doedit == "1") {
 	conSaveContentEntry ($idartlang, "CMS_TEXT", $typenr, $CMS_TEXT);
 	conMakeArticleIndex ($idartlang, $idart);
 	conGenerateCodeForArtInAllCategories($idart);
-	header("Location:".$sess->url($cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&changeview=edit")."");
+	header("Location:".$sess->url($cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&changeview=edit&client=$client")."");
 }
 header("Content-Type: text/html; charset={$encoding[$lang]}");
 ?>

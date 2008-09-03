@@ -36,7 +36,7 @@ if ($doedit == "1") {
     conSaveContentEntry ($idartlang, "CMS_SWF", $typenr, $CMS_SWF);
     conMakeArticleIndex ($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
-    header("location:".$sess->url($cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit"));
+    header("location:".$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client"));
 }
 
 ?>
