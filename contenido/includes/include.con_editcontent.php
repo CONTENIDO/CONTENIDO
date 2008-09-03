@@ -83,7 +83,8 @@ if ( isset($idcat) )
     include ($cfg["path"]["wysiwyg"] . 'editorclass.php');
     $oEditor = new cTinyMCEEditor ('', '');
     $oEditor->setToolbar('inline_edit');
-    $sConfig = $oEditor->getConfig();    
+    $sConfigInlineEdit = $oEditor->getConfigInlineEdit(); 
+    $sConfigFullscreen = $oEditor->getConfigFullscreen();        
         
     $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/jquery.js" type="text/javascript"></script>';
     $scripts .= "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$cfg["path"]["wysiwyg_html"].'jscripts/tiny_mce/tiny_mce.js"></script>';
@@ -150,7 +151,10 @@ function addDataEntry(idartlang, type, typeid, value) {
 }
 
 var tinymceConfigs = {
-    {TINY_OPTIONS}
+    {TINY_OPTIONS},
+    fullscreen_settings : {
+        {TINY_FULLSCREEN}
+    }
 };
 tinyMCE.settings = tinymceConfigs;
 
@@ -182,10 +186,112 @@ $(document).ready(function(){
         }
     );
 });
+
+var fb_fieldname;
+var fb_handle;
+var fb_intervalhandle;
+var fb_win;
+
+function myCustomFileBrowser(field_name, url, type, win) {
+    switch (type)
+    {
+        case "image":
+            fb_handle = window.open("{IMAGE}", "filebrowser", "dialog=yes,resizable=yes");
+            fb_fieldname = field_name;
+            fb_win = win;
+            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);						
+            break;	
+        case "file":
+            fb_handle = window.open("{FILE}", "filebrowser", "dialog=yes,resizable=yes");
+            fb_fieldname = field_name;
+            fb_win = win;
+            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
+            break;
+        case "flash":
+            fb_handle = window.open("{FLASH}", "filebrowser", "dialog=yes,resizable=yes"); 
+            fb_fieldname = field_name; 
+            fb_win = win; 
+            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
+            break;
+        case "media":
+            fb_handle = window.open("{MEDIA}", "filebrowser", "dialog=yes,resizable=yes"); 
+            fb_fieldname = field_name; 
+            fb_win = win; 
+            fb_intervalhandle = window.setInterval("updateImageFilebrowser()", 250);
+            break;
+        default:
+            alert(type);
+            break;
+    }
+}
+
+function updateImageFilebrowser ()
+{
+    if (!fb_handle.left)
+    {
+        return;
+    }
+    
+    if (!fb_handle.left.left_top)
+    {
+        return;
+    }
+    
+    if (!fb_handle.left.left_top.document.getElementById("selectedfile"))
+    {
+        return;
+    }	
+    
+    if (fb_handle.left.left_top.document.getElementById("selectedfile").value != "")
+    {
+        fb_win.document.forms[0].elements[fb_fieldname].value = fb_handle.left.left_top.document.getElementById("selectedfile").value;
+        
+        fb_handle.close();
+        window.clearInterval(fb_intervalhandle);
+
+        if (fb_win.showPreviewImage)
+        {
+            fb_win.showPreviewImage(fb_win.document.forms[0].elements[fb_fieldname].value);
+        }				
+    }
+}
+
+function CustomfileBrowserCallBack(field_name, url, type) {
+        // This is where you insert your custom filebrowser logic
+        alert("Filebrowser callback: " + field_name + "," + url + "," + type);
+}
+
+function CustomURLConverter(url, node, on_save) {
+        var oEd = new tinymce.Editor('contenido', '');
+        url = oEd.convertURL(url, node, on_save);
+        return url;
+}
+
+function CustomCleanupContent(type, value) {
+        switch (type) {
+                case "get_from_editor":
+                case "insert_to_editor":
+                        // Remove xhtml styled tags
+                        value = value.replace(/[\s]*\/>/g,'>');
+                        break;
+        }
+
+        return value;
+}
+
+
 </script>
 
 EOD;
-        $scripts = str_replace('{TINY_OPTIONS}', $sConfig, $scripts);
+
+        $scripts = str_replace('{IMAGE}', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser', $scripts);
+		$scripts = str_replace('{FILE}', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=filebrowser', $scripts);
+		$scripts = str_replace('{FLASH}', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser', $scripts);
+		$scripts = str_replace('{MEDIA}', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser', $scripts);
+        
+        $scripts = str_replace('{TINY_OPTIONS}', $sConfigInlineEdit, $scripts);
+        $scripts = str_replace('{TINY_FULLSCREEN}', $sConfigFullscreen, $scripts);
+        
 
         $contentform  = "<form name=\"editcontent\" method=\"post\" action=\"".$sess->url("front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&lang=$lang&action=20")."\">\n";
         $contentform .= "<input type=\"hidden\" name=\"changeview\" value=\"edit\">\n";

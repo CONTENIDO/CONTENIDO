@@ -368,7 +368,8 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				$this->setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
 				//safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template
 				$this->setSetting("plugins", "safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups", true);
-				break;
+                $this->setSetting("theme_advanced_toolbar_align", "left", true);
+                break;
 
 			case "simple": // Does not show font and table options
 				$this->setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect", true);
@@ -400,11 +401,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				$this->setSetting("theme_advanced_buttons2", "", true);
 				$this->setSetting("theme_advanced_buttons3", "", true);
 
-                $this->unsetSetting("width");
-                $this->unsetSetting("cleanup_callback");
-                $this->unsetSetting("file_browser_callback");
-                $this->unsetSetting("url_converter_callback");
-                $this->unsetSetting("urlconverter_callback");                 
+                $this->unsetSetting("width");              
                 
                 $this->setSetting("height", "210px", true);
 				$this->setSetting("plugins", "table,inlinepopups,fullscreen", true);
@@ -689,8 +686,9 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		return $sReturn;
 	}
     
-    function getConfig() {
+    function getConfigInlineEdit() {
         $sConfig = '';
+        $this->setToolbar('inline_edit');
 		
 		foreach ($this->_aSettings as $sKey => $sValue)
 		{
@@ -715,6 +713,19 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		}
 		
 		$sConfig = substr($sConfig, 0, -3);
+        
+        return $sConfig;
+    }
+    
+    function getConfigFullscreen() {
+        $sConfig = '';
+        $this->setToolbar('full');
+        
+        $sConfig .= "'theme_advanced_buttons1': '".$this->_aSettings['theme_advanced_buttons1']."',\n";
+        $sConfig .= "'theme_advanced_buttons2': '".$this->_aSettings['theme_advanced_buttons2']."',\n";
+        $sConfig .= "'theme_advanced_buttons3': '".$this->_aSettings['theme_advanced_buttons3']."',\n";
+        $sConfig .= "'theme_advanced_toolbar_align': '".$this->_aSettings['theme_advanced_toolbar_align']."',\n";
+        $sConfig .= "'plugins': '".$this->_aSettings['plugins']."'\n";
         
         return $sConfig;
     }
