@@ -85,9 +85,7 @@ function setcontent(idartlang, act) {
     }
 
     // submit the form
-    if (str != '') {
-        document.forms.editcontent.submit();
-    }
+    document.forms.editcontent.submit();
 }
 
 function prepareString(aContent) {
