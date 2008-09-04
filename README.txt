@@ -46,10 +46,6 @@ Lizenzen von verwendeten Produkten:
   Lizenz:      GNU General Public Licence (GPL) and the PHP License
   Information: http://www.phplot.com/
   
-- Mozile
-  Lizenz:      GNU General Public Licence (GPL)
-  Information: http://mozile.mozdev.org/index.html
-  
 - TinyMCE
   Lizenz:      GNU Library General Public Licence (LGPL)
   Information: http://tinymce.moxiecode.com/
@@ -57,6 +53,10 @@ Lizenzen von verwendeten Produkten:
 - jQuery
   Lizenz:      Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
   Information: http://jquery.com
+  
+- The DHTML / JavaScript Calendar 
+  Lizenz:      GNU Lesser General Public License version 2.1 or above
+  Information: http://www.dynarch.com/projects/calendar/
 
 -------------------------------------------------------------------
 
