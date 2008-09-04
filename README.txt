@@ -52,11 +52,15 @@ Lizenzen von verwendeten Produkten:
   
 - jQuery
   Lizenz:      Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
-  Information: http://jquery.com
+  Information: http://jquery.com/
   
 - The DHTML / JavaScript Calendar 
   Lizenz:      GNU Lesser General Public License version 2.1 or above
   Information: http://www.dynarch.com/projects/calendar/
+  
+- Editarea
+  Lizenz:      GNU LESSER GENERAL PUBLIC LICENSE Version 2.1
+  Information: http://www.cdolivet.net/editarea/
 
 -------------------------------------------------------------------
 
