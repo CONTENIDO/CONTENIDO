@@ -53,6 +53,10 @@ Lizenzen von verwendeten Produkten:
 - TinyMCE
   Lizenz:      GNU Library General Public Licence (LGPL)
   Information: http://tinymce.moxiecode.com/
+  
+- jQuery
+  Lizenz:      Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
+  Information: http://jquery.com
 
 -------------------------------------------------------------------
 

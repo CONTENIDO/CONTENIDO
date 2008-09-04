@@ -1,8 +1,0 @@
-- Backend: Some settings about expanded/collapsed rows may not be 
-  stored in the database everytime (more or less optical problem).
-- When using tinyMCE as WYSIWYG Editor, all XHTML formatting is lost if the
-  content is saved using the Insite Editing. This is a problem of Microsoft's
-  DHTML editing component, which converts the XHTML formatting to their
-  "standards". Workaround: Don't use XHTML or don't use Insite Editing.
-  
-  This doesn't happen using Firefox/Mozilla. 

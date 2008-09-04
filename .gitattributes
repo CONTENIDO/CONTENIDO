@@ -1,7 +1,6 @@
 * text=auto !eol
 /CHANGELOG.txt -text
 /FAQ.txt -text
-/KNOWNBUGS.txt -text
 /LIZENZ.txt -text
 /README.txt -text
 cms/config.php -text
