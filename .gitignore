@@ -1,7 +1,6 @@
 /.project
 /.settings
-cms/cache/*.jpg
-cms/cache/*.tmp
+cms/cache/*
 cms/version/css/*
 cms/version/js/*
 cms/version/layout/*
