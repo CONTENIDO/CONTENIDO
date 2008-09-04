@@ -165,15 +165,18 @@ var media_url = "{MEDIA}";
 
 EOD;
 
-        $scripts = str_replace('{IMAGE}', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser', $scripts);
-		$scripts = str_replace('{FILE}', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=filebrowser', $scripts);
-		$scripts = str_replace('{FLASH}', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser', $scripts);
-		$scripts = str_replace('{MEDIA}', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser', $scripts);
+        $oScriptTpl = new Template();
+        $oScriptTpl->set('s', 'IMAGE', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
+        $oScriptTpl->set('s', 'FILE', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=filebrowser');
+        $oScriptTpl->set('s', 'FLASH', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
+        $oScriptTpl->set('s', 'MEDIA', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
+
+        $oScriptTpl->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
+        $oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
+        $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
+        $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
         
-        $scripts = str_replace('{TINY_OPTIONS}', $sConfigInlineEdit, $scripts);
-        $scripts = str_replace('{TINY_FULLSCREEN}', $sConfigFullscreen, $scripts);
-        $scripts = str_replace('{IDARTLANG}', $idartlang, $scripts);
-        $scripts = str_replace('{QUESTION}', i18n('Do you want to save changes?'), $scripts);
+        $scripts = $oScriptTpl->generate($scripts, 1);
         
         $contentform  = "<form name=\"editcontent\" method=\"post\" action=\"".$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&lang=$lang&action=20&client=$client")."\">\n";
         $contentform .= "<input type=\"hidden\" name=\"changeview\" value=\"edit\">\n";
