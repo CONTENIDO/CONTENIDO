@@ -203,7 +203,9 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
 
 		if (!in_array($idfrontenduser,$addedusers))
 		{
-			$items[$idfrontenduser] = $sUsername;
+            if ((int) $idfrontenduser != 0 && $sUsername != '') {
+                $items[$idfrontenduser] = $sUsername;
+            }
 		}
 	}
 
