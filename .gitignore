@@ -7,3 +7,4 @@ cms/version/js/*
 cms/version/layout/*
 cms/version/module/*
 cms/version/templates/*
+contenido/cache/*
