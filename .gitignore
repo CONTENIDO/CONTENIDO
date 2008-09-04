@@ -1,2 +1,9 @@
 /.project
 /.settings
+cms/cache/*.jpg
+cms/cache/*.tmp
+cms/version/css/*
+cms/version/js/*
+cms/version/layout/*
+cms/version/module/*
+cms/version/templates/*
