@@ -98,6 +98,7 @@ var active_id = null;
 var active_object = null;
 var aEditdata = new Object();
 var aEditdataOrig = new Object();
+var bCheckLeave = true;
 
 var fb_fieldname;
 var fb_handle;
@@ -146,7 +147,7 @@ function leave_check() {
         }
      }
      
-     if (bAsk) {
+     if (bAsk && bCheckLeave) {
         check = confirm("{QUESTION}");
         if (check == true) {
             setcontent('{IDARTLANG}', '0');

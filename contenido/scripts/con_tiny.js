@@ -60,6 +60,7 @@ function storeCurrentTinyContent() {
 }
 
 function setcontent(idartlang, act) {
+    bCheckLeave = false;
     storeCurrentTinyContent();
     
     var str = '';
