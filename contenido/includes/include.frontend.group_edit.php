@@ -175,13 +175,15 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
 	$feusers = new FrontendUserCollection;
 	$feusers->select("idclient='$client'");
 
-	$addedusers = $groupmembers->getUsersInGroup($idfrontendgroup,false, true);
-	$addeduserobjects = $groupmembers->getUsersInGroup($idfrontendgroup,true, true);
+	$addedusers = $groupmembers->getUsersInGroup($idfrontendgroup,false);
+	$addeduserobjects = $groupmembers->getUsersInGroup($idfrontendgroup,true);
 
 	$cells = array();
 	foreach ($addeduserobjects as $addeduserobject)
 	{
-		$cells[$addeduserobject->get("idfrontenduser")] = $addeduserobject->get("username");
+        if ((int)$addeduserobject->get("idfrontenduser") != 0) {
+            $cells[$addeduserobject->get("idfrontenduser")] = $addeduserobject->get("username");
+        }
 	}
 
 	asort($cells);
