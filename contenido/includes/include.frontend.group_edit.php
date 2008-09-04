@@ -181,7 +181,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client)
 	$cells = array();
 	foreach ($addeduserobjects as $addeduserobject)
 	{
-        if ((int)$addeduserobject->get("idfrontenduser") != 0) {
+        if ((int)$addeduserobject->get("idfrontenduser") != 0 && $addeduserobject->get("username") != '') {
             $cells[$addeduserobject->get("idfrontenduser")] = $addeduserobject->get("username");
         }
 	}
