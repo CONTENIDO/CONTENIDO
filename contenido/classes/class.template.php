@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.2.1
+ * @version    1.2.2
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-30, Frederic Schneider, add security fix
+ *   modified 2008-09-03  Timo Trautmann, DB Object is only created if necessary
  *
  *   $Id$: 
  * }}
@@ -105,8 +106,6 @@ class Template
 	 */
 	function Template($tags = false)
 	{
-		$this->db = new DB_Contenido;
-
 		$this->tplcache = Array ();
 		$this->tplnamecache = Array ();
 
@@ -309,6 +308,10 @@ class Template
 	function getTemplateName($tplid)
 	{
 		global $cfg;
+        
+        if (!is_object($this->db)) {
+            $this->db = new DB_Contenido();
+        }
 
 		if (array_key_exists((int) $tplid, $this->tplnamecache))
 		{
@@ -333,6 +336,10 @@ class Template
 	function getTemplateDescription($tplid)
 	{
 		global $cfg;
+        
+        if (!is_object($this->db)) {
+            $this->db = new DB_Contenido();
+        }
 
 		$sql = "SELECT
 		                    idtpl
@@ -368,6 +375,10 @@ class Template
 	function getTemplateNameFromTPLCFG($tplcfg)
 	{
 		global $cfg;
+        
+        if (!is_object($this->db)) {
+            $this->db = new DB_Contenido();
+        }
 
 		if (array_key_exists($tplcfg, $this->tplcache))
 		{
