@@ -154,7 +154,9 @@ if(!$perm->have_perm_area_action($area,$action))
             
             $sOptionLabel = $myUser->getField("realname").' ('.$myUser->getField("username").')';
             $sOptionValue = $db->f("idgroupuser");
-            $sInGroupOptions .= '<option value="'.$sOptionValue.'">'.$sOptionLabel.'</option>'."\n";
+            if ($sOptionValue != '' && $sOptionLabel != '') {
+                $sInGroupOptions .= '<option value="'.$sOptionValue.'">'.$sOptionLabel.'</option>'."\n";
+            }
         }
         
         $tpl3->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
@@ -193,7 +195,9 @@ if(!$perm->have_perm_area_action($area,$action))
                     
                     $sOptionLabel = $value["realname"] . " (".$value["username"].")";
                     $sOptionValue = $key;
-                    $sNonGroupOptions .= '<option value="'.$sOptionValue.'">'.$sOptionLabel.'</option>'."\n";
+                    if ($sOptionValue != '' && $sOptionLabel != '') {
+                        $sNonGroupOptions .= '<option value="'.$sOptionValue.'">'.$sOptionLabel.'</option>'."\n";
+                    }
                 }
             }
             
