@@ -707,6 +707,18 @@ class cSetupSystemtest extends cSetupMask
 										C_SEVERITY_WARNING);	
 			$this->logFilePrediction(   "cms/upload/",
 										C_SEVERITY_WARNING);
+            $this->logFilePrediction(   "cms/version/",
+										C_SEVERITY_WARNING);
+            $this->logFilePrediction(   "cms/version/css/",
+                                        C_SEVERITY_WARNING);
+            $this->logFilePrediction(   "cms/version/js/",
+                                        C_SEVERITY_WARNING);
+            $this->logFilePrediction(   "cms/version/layout/",
+                                        C_SEVERITY_WARNING);
+            $this->logFilePrediction(   "cms/version/module/",
+                                        C_SEVERITY_WARNING);
+            $this->logFilePrediction(   "cms/version/templates/",
+                                        C_SEVERITY_WARNING);
 			$this->logFilePrediction(   "cms/config.php",
 										C_SEVERITY_WARNING);
 		}																																				
