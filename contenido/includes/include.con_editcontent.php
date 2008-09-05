@@ -80,31 +80,39 @@ if ( isset($idcat) )
 
 		$markSubItem = markSubMenuItem(3, true);
 
+    //Include tiny class
     include ($cfg["path"]["wysiwyg"] . 'editorclass.php');
     $oEditor = new cTinyMCEEditor ('', '');
     $oEditor->setToolbar('inline_edit');
+    
+    //Get configuration for popup und inline tiny
     $sConfigInlineEdit = $oEditor->getConfigInlineEdit(); 
     $sConfigFullscreen = $oEditor->getConfigFullscreen();        
-        
+    
+    //Include tiny mce and con_tiny script for insight_editing    
     $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/jquery.js" type="text/javascript"></script>';
     $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/con_tiny.js" type="text/javascript"></script>';
     $scripts .= "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$cfg["path"]["wysiwyg_html"].'jscripts/tiny_mce/tiny_mce.js"></script>';
-        
+    
+    //Script template for insight editing
 	$scripts .= <<<EOD
 
 <script language="javascript">
 
-var active_id = null;
-var active_object = null;
-var aEditdata = new Object();
-var aEditdataOrig = new Object();
-var bCheckLeave = true;
+var active_id = null;  //id of div on which tiny is active
+var active_object = null;  //onject of div on which tiny is active
+var aEditdata = new Object();  //global array which stores edited content
+var aEditdataOrig = new Object();  //global array which stored original content (Importent for decision if content has changed)
+var bCheckLeave = true;  //globak var which defines if user is asked to store changes
 
+//Global vars for contenido popup filebrowser
 var fb_fieldname;
 var fb_handle;
 var fb_intervalhandle;
 var fb_win;
 
+//Configuration of tiny, when tiny is opened set event which stores original 
+//content to global var aEditdataOrig
 var tinymceConfigs = {
     {TINY_OPTIONS},
     fullscreen_settings : {
@@ -116,12 +124,6 @@ var tinymceConfigs = {
       })}
 };
 tinyMCE.settings = tinymceConfigs;
-
-function updateContent(sContent) {
-    if (aEditdataOrig[active_id] == undefined) {
-        aEditdataOrig[active_id] = sContent;
-    }
-}
 
 //add tiny to elements which contains classname contentEditable
 //tiny toggles on click 
@@ -138,39 +140,31 @@ $(document).ready(function(){
     );
 });
 
-function leave_check() {
-     storeCurrentTinyContent();
-     var bAsk = false;
-     for (var sId in aEditdata) {
-        if (aEditdataOrig[sId] != aEditdata[sId]) {
-            bAsk = true;
-        }
-     }
-     
-     if (bAsk && bCheckLeave) {
-        check = confirm("{QUESTION}");
-        if (check == true) {
-            setcontent('{IDARTLANG}', '0');
-        }
-     }
-}
+//activate save confirmation on page leave
 window.onbeforeunload = leave_check;
 
-var file_url = "{IMAGE}";
-var image_url = "{FILE}";
-var flash_url = "{FLASH}";
-var media_url = "{MEDIA}";
+var file_url = "{IMAGE}"; //Global var which contains url to contenido image browser
+var image_url = "{FILE}"; //Global var which contains url to contenido file browser
+var flash_url = "{FLASH}"; //Global var which contains url to contenido flash browser
+var media_url = "{MEDIA}"; //Global var which contains url to contenido media browser
+
+var iIdartlang = '{IDARTLANG}'; //Idartlang which is currently edited
+var sQuestion = '{QUESTION}'; //Translation of save confirmation
 
 </script>
 
 EOD;
 
+        //Replace vars in Script
         $oScriptTpl = new Template();
+        
+        //Set urls to file browsers
         $oScriptTpl->set('s', 'IMAGE', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
         $oScriptTpl->set('s', 'FILE', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=filebrowser');
         $oScriptTpl->set('s', 'FLASH', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
         $oScriptTpl->set('s', 'MEDIA', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
-
+        
+        //Add tiny options and fill function leave_check()
         $oScriptTpl->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
         $oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
         $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
