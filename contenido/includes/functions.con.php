@@ -26,7 +26,8 @@
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-06-26, Timo.Trautmann, add security fix fix setting article online was not possible
  *   modified 2008-08-29, Murat Purc, add new chain execution, and handling og new field con_cat_lang.urlname
- *
+ *   modified 2008-09-07, Murat Purc, bugfix in conCopyArtLang at chain execution
+ *  
  *   $Id$:
  * }}
  * 
@@ -1899,7 +1900,7 @@ function conCopyArtLang ($srcidart, $dstidart, $newtitle)
             'idart'     => Contenido_Security::toInteger($idart), 
             'idlang'    => Contenido_Security::toInteger($idlang),
             'idtplcfg'  => Contenido_Security::toInteger($idtplcfg), 
-            'title'     => Contenido_Security::escapeDB($pagetitle, $db2)
+            'title'     => Contenido_Security::escapeDB($title, $db2)
         ));
 
 		/* Copy meta tags */

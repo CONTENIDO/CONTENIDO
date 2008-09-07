@@ -23,6 +23,8 @@
  *   created unknown
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-07-31, Frederic Schneider, add Upl_edit-CECs
+ *   modified 2008-08-29, Murat Purc, add several chains for category ans article processes
+ *   modified 2008-09-07, Murat Purc, add chain 'Contenido.Frontend.AfterLoadPlugins'
  *
  *   $Id$:
  * }}
@@ -247,7 +249,6 @@ $_cecRegistry->registerChain("Contenido.CategoryList.Columns", "array");
  * string	String with the rendered contents
  * 
  */
- 
 $_cecRegistry->registerChain("Contenido.CategoryList.RenderColumn", "int", "string");
 
 /* Chain Contenido.Content.CopyArticle
@@ -427,9 +428,6 @@ $_cecRegistry->registerChain("Contenido.Article.GetCustomTabProperties", "string
  */
 $_cecRegistry->registerChain("Contenido.Frontend.BaseHrefGeneration", "string");
 
-
-
-
 /* Chain Contenido.Upl_edit.Delete
  * This chain function is called after a upl-file has been deleted
  *
@@ -485,8 +483,6 @@ $_cecRegistry->registerChain("Contenido.Upl_edit.RenderRows", "int", "string", "
  * 
  */
 $_cecRegistry->registerChain("Contenido.Upl_edit.SaveRows", "int", "string", "string");
-
-##
 
 /**
  * Chain Contenido.Action.str_newtree.AfterCall
@@ -712,6 +708,19 @@ $_cecRegistry->registerChain("Contenido.Category.strSyncCategory_Loop", "array")
  * array    Processed assoziative array of objects, same as parameter above
  */
 $_cecRegistry->registerChain("Contenido.Category.strCopyCategory", "cApiCategory", "cApiCategory", "cApiCategoryLanguage");
+
+/**
+ * Chain Contenido.Frontend.AfterLoadPlugins
+ * This chain is called in front_content.php and provides a possibility to execute
+ * userdefined functions after plugins are loaded.
+ *
+ * Parameters & order:
+ * no parameter
+ *
+ * Returns:
+ * bool  Just a boolean return value
+ */
+$_cecRegistry->registerChain("Contenido.Frontend.AfterLoadPlugins");
 
 /**
  * Chain Contenido.Frontend.HTMLCodeOutput

@@ -47,6 +47,8 @@
  *   modified 2008-06-16, H. Librenz, Hotfix: checking for potential unsecure call
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-07-02, Frederic Schneider, add more security fixes and include security_class
+ *   modified 2008-08-29, Murat Purc, new way to execute chains
+ *   modified 2008-09-07, Murat Purc, new chain 'Contenido.Frontend.AfterLoadPlugins'
  *
  *   $Id$:
  * }}
@@ -126,6 +128,9 @@ else
  * added by H. Librenz (2007-12-21) based on an idea of A. Lindner
  */
 require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
+
+// Call hook after plugins are loaded, added by Murat Purc, 2008-09-07
+CEC_Hook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = new DB_Contenido;
 

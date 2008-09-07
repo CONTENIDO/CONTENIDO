@@ -46,6 +46,7 @@
  *   created 2003-01-21
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *   modified 2008-08-29, Murat Purc, synchronised with /cms/front_content.php
+ *   modified 2008-09-07, Murat Purc, new chain 'Contenido.Frontend.AfterLoadPlugins'
  *
  *   $Id$:
  * }}
@@ -125,6 +126,9 @@ else
  * added by H. Librenz (2007-12-21) based on an idea of A. Lindner
  */
 require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
+
+// Call hook after plugins are loaded, added by Murat Purc, 2008-09-07
+CEC_Hook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = new DB_Contenido;
 
