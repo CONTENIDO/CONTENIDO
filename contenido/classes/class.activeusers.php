@@ -25,6 +25,7 @@
  *   modified 2008-02-12, Timo Trautmann, bugfix in getWebsiteName
  *   modified 2008-02-18, Timo Trautmann, special functions for mysql replaced
  *   modified 2008-06-30, Frederic Schneider, add security fix
+ *   modified 2008-09-08, Timo Trautmann, fixed string concat bug at websitenames
  *
  *   $Id$;
  * }}
@@ -168,6 +169,7 @@ class ActiveUsers {
 
 			if ($this->oDb->num_rows() > 0) {
 				while ($this->oDb->next_record()) { // Table Online User
+                    $sWebsiteNames = '';
 					$sUserId= $this->oDb->f("user_id");
 					$aAllUser[$sUserId]['realname']= $this->oDb->f("realname");
 					$aAllUser[$sUserId]['username']= $this->oDb->f("username");
