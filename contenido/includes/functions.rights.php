@@ -82,7 +82,7 @@ function copyRightsForElement ($area, $iditem, $newiditem, $idlang=false) {
    $userIDContainer[] = $auth->auth["uid"]; // add user_id of current user
    
    foreach ($userIDContainer as $key) {
-      $statement_where2[] = "user_id = '".Contenido_Security::toInteger($key)."' ";
+      $statement_where2[] = "user_id = '".Contenido_Security::escapeDB($key, $db)."' ";
    }
 
    $where_users =   "(".implode(" OR ", $statement_where2 ) .")"; // only duplicate on user and where user is member of
@@ -132,7 +132,7 @@ function copyRightsForElement ($area, $iditem, $newiditem, $idlang=false) {
 
    while ($db->next_record()) {
       $sql = "INSERT INTO ".$cfg["tab"]["rights"]." (idright,user_id,idarea,idaction,idcat,idclient,idlang,`type`) VALUES ('".Contenido_Security::toInteger($db2->nextid($cfg["tab"]["rights"]))."', 
-              '".Contenido_Security::toInteger($db->f("user_id"))."', '".Contenido_Security::toInteger($db->f("idarea"))."', '".Contenido_Security::toInteger($db->f("idaction"))."',
+              '".Contenido_Security::escapeDB($db->f("user_id"), $db)."', '".Contenido_Security::toInteger($db->f("idarea"))."', '".Contenido_Security::toInteger($db->f("idaction"))."',
               '".Contenido_Security::toInteger($newiditem)."','".Contenido_Security::toInteger($db->f("idclient"))."', '".Contenido_Security::toInteger($db->f("idlang"))."',
               '".Contenido_Security::toInteger($db->f("type"))."');";
       $db2->query($sql);
