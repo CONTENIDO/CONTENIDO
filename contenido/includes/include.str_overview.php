@@ -882,10 +882,12 @@ if ( $perm->have_perm_area_action($area) ) {
             $tpl->set('s', 'INPUT_ACTION_NEW', $oActionNew->render());
             $tpl->set('s', 'PERMISSION_NEWTREE_DISPLAY', 'block');
             
-        } else {        
+        } else {   
+            $oActionNew = new cHTMLHiddenField ('action', 'str_newcat', 'cat_new_action');
             $tpl->set('s', 'PERMISSION_NEWTREE', 'disabled');
             $tpl->set('s', 'PERMISSION_NEWTREE_DISPLAY', 'none');
             $tpl->set('s', 'NEW_ACTION', 'str_newcat');
+            $tpl->set('s', 'INPUT_ACTION_NEW', $oActionNew->render());
         }
         
         if ($perm->have_perm_area_action($tmp_area,"str_newcat") || $bAreaAddNewCategory) {
