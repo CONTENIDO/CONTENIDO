@@ -803,7 +803,7 @@ $oPagerRow	= new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e304", 0, 1, 1, $
 $sContainerId = 'cont_recipients';
 $sContainer  = '<div id="' . $sContainerId . '">';
 $sContainer .= '<table border="0" cellspacing="0" cellpadding="0" width="100%">';
-if ($perm->have_perm_area_action($area, "recipients_delete")) {
+if ($perm->have_perm_area_action('recipients', "recipients_delete") || $perm->have_perm_area_action("recipients", "recipients_create")) {
 	$sContainer .= $oListActionsRow->render();
 }
 $sContainer .= $oSettingsRow->render();
