@@ -23,7 +23,7 @@
  *   modified 2008-09-09 Fix of parameter checking in method buildUrl()
  *   @todo: add switch for & vs. &amp;
  * 
- *   $Id: class.gdb.mysql.php,v 1.12 2006/10/05 23:44:43 bjoern.behrens Exp $
+ *   $Id$:
  * }}
  * 
  */
