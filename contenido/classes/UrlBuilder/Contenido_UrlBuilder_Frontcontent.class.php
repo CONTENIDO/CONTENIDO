@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,6 +20,7 @@
  * 
  * {@internal 
  *   created 2008-02-19
+ *   modified 2008-09-09 Fix of parameter checking in method buildUrl()
  *   @todo: add switch for & vs. &amp;
  * 
  *   $Id: class.gdb.mysql.php,v 1.12 2006/10/05 23:44:43 bjoern.behrens Exp $
@@ -81,7 +82,7 @@ class Contenido_UrlBuilder_Frontcontent extends Contenido_UrlBuilder {
         $bIdcatSet = isset($aParams['idcat']);
         $bIdartSet = isset($aParams['idart']);
         $bIdcatArtSet = isset($aParams['idcatart']);
-        if ($bIdcatSet === false && $bIdartSet === false && $bIdcatArtSet === false) {
+        if ($bIdcatSet === false || $bIdartSet === false || $bIdcatArtSet === false) {
             throw new InvalidArgumentException('$aParams must have at least one of the following values set: $aParams[idcat], $aParams[idart] or $aParams[idcatart]!');
         }
         $sHttpBasePath = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';
