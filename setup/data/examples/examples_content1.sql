@@ -105,7 +105,7 @@ INSERT INTO !PREFIX!_content VALUES (144, 25, 4, 1, '3', '', 'sysadmin', '2008-0
 INSERT INTO !PREFIX!_content VALUES (145, 25, 5, 1, '', '', 'sysadmin', '2008-04-14 17:33:46', '2008-04-14 17:33:46');
 INSERT INTO !PREFIX!_content VALUES (146, 26, 4, 1, '4', '', 'sysadmin', '2008-04-14 17:33:57', '2008-04-14 17:33:57');
 INSERT INTO !PREFIX!_content VALUES (132, 19, 4, 1, '3', '', 'sysadmin', '2008-04-14 17:32:05', '2008-04-14 17:32:05');
-INSERT INTO !PREFIX!_content VALUES (92, 39, 1, 1, 'Abonnieren%2FAbbestellen', '', 'sysadmin', '2008-04-14 16:55:14', '2008-04-14 16:55:14');
+INSERT INTO !PREFIX!_content VALUES (92, 39, 1, 1, 'Subscribe%2FUnsubscribe', '', 'sysadmin', '2008-04-14 16:55:14', '2008-04-14 16:55:14');
 INSERT INTO !PREFIX!_content VALUES (93, 39, 1, 2, '', '', 'sysadmin', '2008-04-14 16:55:14', '2008-04-14 16:55:14');
 INSERT INTO !PREFIX!_content VALUES (94, 41, 1, 1, 'Datenschutz%0D%0A', '', 'sysadmin', '2008-04-14 16:58:30', '2008-04-14 16:58:39');
 INSERT INTO !PREFIX!_content VALUES (95, 41, 1, 2, '', '', 'sysadmin', '2008-04-14 16:58:30', '2008-04-14 16:58:39');
