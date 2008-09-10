@@ -2962,7 +2962,7 @@ contenido/scripts/help.js.php -text
 contenido/scripts/iZoom.js.php -text
 contenido/scripts/index.php -text
 contenido/scripts/infoBox.js -text
-contenido/scripts/jquery.js -text
+contenido/scripts/jquery/jquery.js -text
 contenido/scripts/jscalendar/calendar-contenido.css -text
 contenido/scripts/jscalendar/calendar-setup.js -text
 contenido/scripts/jscalendar/calendar.js -text

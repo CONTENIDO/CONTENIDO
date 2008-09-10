@@ -90,7 +90,7 @@ if ( isset($idcat) )
     $sConfigFullscreen = $oEditor->getConfigFullscreen();        
     
     //Include tiny mce and con_tiny script for insight_editing    
-    $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/jquery.js" type="text/javascript"></script>';
+    $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/jquery/jquery.js" type="text/javascript"></script>';
     $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/con_tiny.js" type="text/javascript"></script>';
     $scripts .= "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$cfg["path"]["wysiwyg_html"].'jscripts/tiny_mce/tiny_mce.js"></script>';
     
@@ -127,17 +127,13 @@ tinyMCE.settings = tinymceConfigs;
 
 //add tiny to elements which contains classname contentEditable
 //tiny toggles on click 
-$(document).ready(function(){
-	$('div.contentEditable').each(
- 		function(){
-			$(this).bind(
-				"click",
-				function(){
-                    swapTiny(this);
-                }
-            );
-        }
-    );
+$(document).ready( function(){
+   $('div[@contenteditable=true]').each( function(){
+      $(this).bind( "click", function(){
+         $(this).removeAttr('contenteditable'); //remove coneditable tags in order to disable special firefox behaviour
+         swapTiny(this);
+      });
+   });
 });
 
 //activate save confirmation on page leave

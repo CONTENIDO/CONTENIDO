@@ -322,7 +322,7 @@ private function getEditingField(){
 	$oDivBox->setEvent("Blur", "this.style.border='1px dashed #bfbfbf';");
 	$this->sEditAreaId  = "DATE_" . $this->oDB->f("idtype") . "_" . $this->iNumberOfCms;
 	$oDivBox->setId($this->sEditAreaId);
-	#$oDivBox->updateAttributes(array ('class' => 'contentEditable'));
+	$oDivBox->updateAttributes(array ('contentEditable' => 'true'));
 	$oDivBox->setContent("_REPLACEMENT_"); 
 	$sFinalEditingDiv = $oDivBox->render();
 	$sFinalEditingDiv = AddSlashes(AddSlashes($sFinalEditingDiv));
