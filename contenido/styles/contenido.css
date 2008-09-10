@@ -207,6 +207,164 @@ li#kontakt.welcome {
 	float: left;
 	margin: -15px 0 0 -30px;
 }
+ul#con_str_tree {
+	margin: 10px 0 0 0;
+	padding: 0 2px;
+	list-style: none;
+	width: auto;
+	display: block;
+	background: #FFF;
+	float: left;
+	overflow: hidden;
+}
+#con_str_tree li {
+	line-height: 20px;
+	display: block;
+	padding-left: 0px;
+	width: 100%;
+	float: left;
+	overflow: hidden;
+}
+#con_str_tree li a:focus,
+#con_str_tree li a:active,
+#con_str_tree li.active a {
+	background-color: #ECF1B2;
+}
+#con_str_tree li a:hover,
+#con_str_tree li.con_sync a:hover {
+	background-color: #F8FDDC !important;
+}
+#con_str_tree li.con_sync a {
+	background-color: #DDECF9 !important;
+}
+#con_str_tree li.con_sync a:focus,
+#con_str_tree li.con_sync a:active {
+	background-color: #AED2F1 !important;
+}
+#con_str_tree li li li {
+	margin-left: 0;
+}
+#con_str_tree li a,
+#con_str_tree li.active li a {
+	background-color: transparent;
+	padding-left: 40px;
+	margin-left: 2px;
+	width: auto;
+	height: 20px;
+	display: block;
+	/*float: left;
+*/
+}
+#con_str_tree li#root em {
+	padding-left: 20px;
+	width: auto;
+	height: 20px;
+	display: block;
+	float: left;
+}
+#con_str_tree li#root li em {
+	background: #FFF url("../images/dash.gif") repeat-x 10px 8px;
+	margin-right: 0px;
+	padding: 0 0 0 0;
+	width: 20px;
+	height: 20px;
+	/*display: block;
+	float: left;
+*/
+	display: inline;
+}
+#con_str_tree li#root li em a,
+#con_str_tree li#root li em span,
+#con_str_tree li#root li.con_sync em a,
+#con_str_tree li#root li.con_sync em span {
+	background: #FFF url("../images/but_minus.gif") no-repeat 0 0 !important;
+	float: left;
+	width: 16px;
+	height: 20px;
+	padding: 0;
+	margin: 0;
+	display: block;
+}
+#con_str_tree li#root li.collapsed em a,
+#con_str_tree li#root li.collapsed em span,
+#con_str_tree li#root li.con_sync.collapsed em a,
+#con_str_tree li#root li.con_sync.collapsed em span {
+	background: #FFF url("../images/but_plus.gif") no-repeat 0 0 !important;
+}
+#con_str_tree li#root li.last em a,
+#con_str_tree li#root li.last li.last em a,
+#con_str_tree li#root li.last em span,
+#con_str_tree li#root li.last li.last em span {
+	background: #FFF url("../images/but_lastnode.gif") no-repeat 0 0 !important;
+}
+#con_str_tree li#root li.last li em a,
+#con_str_tree li#root li.collapsed li em a,
+#con_str_tree li#root li.last li.collapsed li em a,
+#con_str_tree li#root li.last li em span,
+#con_str_tree li#root li.collapsed li em span,
+#con_str_tree li#root li.last li.collapsed li em span {
+	background: #FFF url("../images/but_minus.gif") no-repeat 0 0 !important;
+}
+#con_str_tree li#root li.last li.collapsed em a,
+#con_str_tree li#root li.last.collapsed em a,
+#con_str_tree li#root li.last li.collapsed em span,
+#con_str_tree li#root li.last.collapsed em span {
+	background: #FFF url("../images/but_plus.gif") no-repeat 0 0 !important;
+}
+#con_str_tree li#root li.last {
+	background-color: #FFF;
+}
+#con_str_tree li#root li.collapsed ul {
+	display: none;
+}
+#con_str_tree li.con_sync a {
+	background-image: url("../images/but_sync_cat_off.gif") !important;
+}
+#con_str_tree li#root {
+	background: transparent url("../images/folder_on.gif") no-repeat 0 0;
+}
+#con_str_tree li a {
+	background: transparent url("../images/folder_on.gif") no-repeat 20px 0px;
+}
+#con_str_tree li a.on {
+	background-image: url("../images/folder_on.gif");
+}
+#con_str_tree li a.on_error {
+	background-image: url("../images/folder_on_error.gif");
+}
+#con_str_tree li a.on_error_locked {
+	background-image: url("../images/folder_on_error_locked.gif");
+}
+#con_str_tree li a.on_locked {
+	background-image: url("../images/folder_on_locked.gif");
+}
+#con_str_tree li a.off {
+	background-image: url("../images/folder_off.gif");
+}
+#con_str_tree li a.off_error {
+	background-image: url("../images/folder_off_error.gif");
+}
+#con_str_tree li a.off_error_locked {
+	background-image: url("../images/folder_off_error_locked.gif");
+}
+#con_str_tree li a.off_locked {
+	background-image: url("../images/folder_off_locked.gif");
+}
+#con_str_tree ul {
+	background: transparent url("../images/vert.gif") repeat-y 0 0;
+	list-style: none;
+	display: block;
+	padding-left: 0px;
+	margin-left: 0px;
+	float: left;
+	clear: left;
+	width: 100%;
+	position: relative;
+}
+#con_str_tree ul ul {
+	margin-left: 20px;
+}
+     
 
 /* Notification */
 .alertbox{

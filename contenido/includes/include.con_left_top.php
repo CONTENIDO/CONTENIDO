@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.1.0
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,9 @@
  * {@internal 
  *   created 2003-03-26
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2008-09-08, Ingo van Peeren, improved navigation tree in left bottom frame, expanding/
+ *                                         collapsing of navigation tree without reloading (AJAX/
+ *                                         javascript solution based on jquery)  
  *
  *   $Id$:
  * }}
@@ -489,6 +492,13 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
     $tpl->set('s', 'SYNCLINK',$sListId);
 	$tpl->set('s', 'SYNC_HREF', '');	
 }
+
+/*
+ * necessary for expanding/collapsing of navigation tree per javascript/AJAX (I. van Peeren)
+ */ 
+$tpl->set('s', 'AREA', $area);
+$tpl->set('s', 'SESSION', $contenido);
+$tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'].'ajaxmain.php');
 
 ##########################################
 # Help

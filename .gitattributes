@@ -104,6 +104,7 @@ conlib/perm.inc -text
 conlib/prepend.php -text
 conlib/query_sql.inc -text
 conlib/session.inc -text
+contenido/ajaxmain.php -text
 contenido/backend_search.php -text
 contenido/classes/Contenido_Category/Contenido_Category.class.php -text
 contenido/classes/Contenido_Category/Sample.php -text
@@ -2642,6 +2643,7 @@ contenido/images/vert.gif -text
 contenido/images/widgets/foldingrow/collapsed.gif -text
 contenido/images/widgets/foldingrow/expanded.gif -text
 contenido/images/workflow_step_delete.gif -text
+contenido/includes/ajax/include.ajax.con.php -text
 contenido/includes/api/functions.api.general.php -text
 contenido/includes/api/functions.frontend.list.php -text
 contenido/includes/cfg_language_de.inc.php -text
@@ -3066,6 +3068,7 @@ contenido/templates/standard/template.con_art_overview.html -text
 contenido/templates/standard/template.con_edit_form.html -text
 contenido/templates/standard/template.con_left_top.html -text
 contenido/templates/standard/template.con_str_overview.html -text
+contenido/templates/standard/template.con_str_overview.list.html -text
 contenido/templates/standard/template.con_subnav.html -text
 contenido/templates/standard/template.con_subnav_noleft.html -text
 contenido/templates/standard/template.deco.html -text

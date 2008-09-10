@@ -5,50 +5,92 @@
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="pragma" content="no-cache">    
     <link rel="stylesheet" type="text/css" href="styles/contenido.css"/>
+    <link rel="stylesheet" type="text/css" href="styles/con_str.css"/>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/browserCheck.js"></script>
     <script language="JavaScript" src="scripts/cfoldingrow.js"></script>
     <script language="JavaScript" src="scripts/parameterCollector.js"></script>
-    <style type="text/css">
-        tr.row, tr.con_sync {
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript">
+
+    var catlist = new Array({WHOLELIST});
+    var scatlist = catlist.join(',');
+
+    $(document).ready(function(){
+    
+    $(function(){
+  //If browser is IE, disable BackgroundImageCache
+  //if (jQuery.browser.msie)
+  //{
+    try
+    {
+      document.execCommand(
+        "BackgroundImageCache",
+        false, 
+        true);
+    } catch(err){}
+  //}
+});
+
+    $("#con_str_tree li:last-child").addClass('last');
+        
+    $("#con_str_tree #root li em a").click(function () {
+      $(this).parent().parent().toggleClass("collapsed");
+      var sRowid = $(this).parents("li").attr('id');
+      var aRowids = sRowid.split("-");
+      var iIdcat = aRowids[0];
+      $.post("{AJAXURL}", { area: "{AREA}", action: "toggle", idcat: iIdcat, wholelist: scatlist, contenido: "{SESSION}" } );
+      return false;
+    });
+    
+    $("#con_str_tree li > a").click(function () {
+      $(this).parent("li").removeClass("collapsed");
+      $("#con_str_tree li.active").removeClass('active');
+      $(this).parent("li").addClass("active");
+      var sRowid = $(this).parent("li").attr('id');
+      var aRowids = sRowid.split("-");
+      var iIdcat = aRowids[0];
+      var iIdtpl = aRowids[1];
+      conInjectData(this.parentNode);
+      conMultiLink('right_top', 'main.php?area={AREA}&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&syncoptions={SYNCOPTIONS}&contenido={SESSION}', 'right_bottom', 'main.php?area={AREA}&frame=4&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&syncoptions={SYNCOPTIONS}&contenido={SESSION}');   
+      $.post("{AJAXURL}", { area: "{AREA}", action: "expand", idcat: iIdcat, wholelist: scatlist, contenido: "{SESSION}" });
+      return false;
+    });
+
+    });  
+    </script>
+    <!--[if lte IE 7]>    
+    <style type="text/css">    
+        #con_str_tree li {
+            width: 400px; /* fixed width in pixels and no float necessary due to javascript performance issues */ 
+            float: none;
+        }
+        #con_str_tree li a,
+        #con_str_tree li.on a {
             padding-left: 20px;
-            text-align: left;
+            background-position: 0px 0px;
         }
-        td.cat {
-            padding:5px 0 0 3px;
-        }
-        td.img {
-            vertical-align:top;
-            white-space:nowrap;
-            padding:4px 0 0px 0px;
+        #con_str_tree ul {
+            float: none;
         }
     </style>
+    <![endif]-->
+    <!--[if lte IE 6]>    
+    <style type="text/css">    
+
+    </style>
+    <![endif]-->
 </head>
 <body>
 
+<!--{SYNCRONIZATION}-->
+<ul id="con_str_tree" {DIRECTION}>
+  <li id="root"><em>Root</em>
+    {CATS}
+  </li>
+</ul>  
 <div style="margin-top:10px"></div>
-
-<table id="mtable" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-left:3px;" {DIRECTION}>
-		<!--{SYNCRONIZATION}-->
-		<tr class="row">
-			<td><img src="images/folder_on.gif" /><span class="text_medium">&nbsp;Root</span></td>
-		</tr>
-
-    <!-- BEGIN:BLOCK -->
-    <tr id="{CFGDATA}" {CSS_CLASS} style="background-color: {BGCOLOR};" {MARK}>		
-        <td>
-            <table cellspacing="0" cellpadding="0" border="0" {DIRECTION}>
-              <tr>
-                  {VERT}
-                  <td style="padding-left:{INDENT}px;">{COLLAPSE}{IMAGE}</td>
-                  <td class="cat">{CAT}</td>
-              </tr>
-          </table>
-      </td>
-    </tr>
-    <!-- END:BLOCK -->
-</table>
 
 <script language="javascript">
     // Ugly frame concept seems to lead to ugly timeout problem -> wait some millis
@@ -59,7 +101,7 @@
     else
     {
         irgendwas();
-    }	
+    }
 
     function reloadRightFrame() {
         var refCfg = getReference();
@@ -86,6 +128,9 @@
 
             if ( oRow )
             {
+                con.overColor = 'transparent';
+                con.markedColor = 'transparent';
+                con.overMarked = 'transparent';
                 con.over( oRow );
                 con.click( oRow );
             } else {
@@ -98,12 +143,12 @@
 		   
     {RELOAD_RIGHT}
     var frameResize = parent.parent.frameResize;
-    var myTable = document.getElementById('mtable');
+    var myTable = document.getElementById('con_str_tree');
 
     frameResize.optimalSize = myTable.offsetWidth;
     
     function markCat(idcat) {
-        var oTableRows = document.getElementsByTagName('tr');
+        var oTableRows = document.getElementsByTagName('li');
         var bFround = false;
         for (var i=0; i < oTableRows.length; i++) {
             if (oTableRows[i].id && oTableRows[i].id != '') {

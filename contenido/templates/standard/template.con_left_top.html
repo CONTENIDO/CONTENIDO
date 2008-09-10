@@ -14,8 +14,27 @@
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript" src="scripts/parameterCollector.js"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
+    <script type="text/javascript" src="scripts/jquery.js"></script>
     
     <script language="javascript">
+
+    $(document).ready(function(){
+        
+        $("a#expander").click(function () {
+          parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree #root ul li.collapsed").removeClass("collapsed");
+          var catlist = parent.parent.frames["left"].frames["left_bottom"].scatlist;
+          $.post("{AJAXURL}", { area: "{AREA}", action: "expandall", wholelist: catlist, contenido: "{SESSION}" } );
+          return false;
+        });
+        
+        $("a#collapser").click(function () {
+          parent.parent.frames["left"].frames["left_bottom"].$("#con_str_tree li#root ul li ul").parent().addClass("collapsed");
+          var catlist = parent.parent.frames["left"].frames["left_bottom"].scatlist;
+          $.post("{AJAXURL}", { area: "{AREA}", action: "collapseall", wholelist: catlist, contenido: "{SESSION}" } );
+          return false;
+        });
+   });
+    
             var box = new messageBox("", "", "", 0, 0);
 			var sid = "{SESSID}";
 			cfg = new contenidoConfig();
@@ -166,7 +185,7 @@
         oForm.bs_search_author.value = "";
         oForm.bs_search_author.selectedIndex = 0;
       }
-
+      
     </script>    
 </head>
 <body bgcolor="#FFFFFF" onLoad="resizeFrame('');">
