@@ -153,21 +153,21 @@ if ($aItems !== false)
             $sMouseoverTemplate = '<span onmouseover="Tip(\'%s\', BALLOON, true, ABOVE, true);">%s</span>';
             
             if (strlen($aValue['type']) > 35) {
-                $sShort = capiStrTrimHard($aValue['type'], 35);
+                $sShort = htmlspecialchars(capiStrTrimHard($aValue['type'], 35));
                 $aValue['type'] = sprintf($sMouseoverTemplate, $aValue['type'], $sShort);
             }
             
             if (strlen($aValue['value']) > 35) {
-                $sShort = capiStrTrimHard($aValue['value'], 35);
+                $sShort = htmlspecialchars(capiStrTrimHard($aValue['value'], 35));
                 $aValue['value'] = sprintf($sMouseoverTemplate, $aValue['value'], $sShort);
             }
             
             if (strlen($aValue['name']) > 35) {
-                $sShort = capiStrTrimHard($aValue['name'], 35);
+                $sShort = htmlspecialchars(capiStrTrimHard($aValue['name'], 35));
                 $aValue['name'] = sprintf($sMouseoverTemplate, $aValue['name'], $sShort);
             }
             
-        	$oList->setData($iCounter, htmlspecialchars($aValue['type']), htmlspecialchars($aValue['name']), htmlspecialchars($aValue['value']), $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
+        	$oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
     	}
     	$iCounter++;
     }
