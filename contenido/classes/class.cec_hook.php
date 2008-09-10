@@ -20,6 +20,7 @@
  * 
  * {@internal 
  *   created 2008-08-28, Murat Purc, initial implementation, port from Advanced Mod Rewrite Plugin
+ *   created 2008-09-10, Murat Purc, Bugfix: add further condition handling to prevent overwriting of arguments
  * }}
  * 
  */
@@ -51,7 +52,7 @@
  *
  * // example of executing a cec with a break condition
  * $cat = 123;
- * CEC_Hook::setBreakCondition(CEC_Hook::BREAK_AT_TRUE);
+ * CEC_Hook::setConditions(CEC_Hook::BREAK_AT_TRUE);
  * $result = CEC_Hook::execute('Contenido.Somewhere.IsValidCat', $cat);
  * if ($result === true) {
  *     // the cec execution has returned true, do something
@@ -88,6 +89,58 @@ class CEC_Hook {
 	 */
     static private $_breakCondition = null;
 
+	/**
+	 * Flag to overwrite arguments.
+	 * @var  bool
+	 */
+    static private $_overwriteArguments = true;
+
+
+    /**
+     * Temporaly setting of an execution conditions.
+     *
+     * This is usefull, if at least on of defined cec functions returns a specific value and the 
+     * execution of further functions is no more needed.
+     *
+     * The defined condition will be reset in execute() method.
+     *
+     * @param   mixed   $condition  One of CEC_Hook constants, with following control mechanism:
+     *                              - CEC_Hook::BREAK_AT_TRUE = Breaks the iteration of cec functions 
+     *                                and returns the parameter, if the result of an function is true.
+     *
+     *                              - CEC_Hook::BREAK_AT_FALSE = Breaks the iteration of cec functions 
+     *                                and returns the parameter, if the result of an function is false.
+     *
+     *                              - CEC_Hook::BREAK_AT_NULL = Breaks the iteration of cec functions 
+     *                                and returns the parameter, if the result of an function is null.
+     *
+     * @param  bool  $overwriteArguments  Flag to pervent overwriting of passed parameter to execute().
+     *                                    Normally the parameter will be overwritten by return value of 
+     *                                    executed functions, but this is sometimes a not wanted side effect.
+     *
+     * @throws  InvalidArgumentException  If passed type is not one of CEC_Hook constants.
+     */
+    static public function setConditions($condition, $overwriteArguments=true) {
+
+        switch ($condition) {
+            case CEC_Hook::BREAK_AT_TRUE:
+                self::$_breakCondition = CEC_Hook::BREAK_AT_TRUE;
+                break;
+            case CEC_Hook::BREAK_AT_FALSE:
+                self::$_breakCondition = CEC_Hook::BREAK_AT_FALSE;
+                break;
+            case CEC_Hook::BREAK_AT_NULL:
+                self::$_breakCondition = CEC_Hook::BREAK_AT_NULL;
+                break;
+            default:
+                throw new InvalidArgumentException('Condition "' . $condition . '" is not supported!');
+                break;
+        }
+        
+        self::$_overwriteArguments = (bool) $overwriteArguments;
+
+    }
+
 
     /**
      * Temporaly setting of an break condition.
@@ -106,6 +159,8 @@ class CEC_Hook {
      *
      *                              - CEC_Hook::BREAK_AT_NULL = Breaks the iteration of cec functions 
      *                                and returns the parameter, if the result of an function is null.
+     *
+     * @deprecated  Method setConditions() does the job
      *
      * @throws  InvalidArgumentException  If passed type is not one of CEC_Hook constants.
      */
@@ -169,7 +224,9 @@ class CEC_Hook {
 
                 // process return value
                 if (isset($return)) {
-                    $args = $return;
+                    if (self::$_overwriteArguments == true) {
+                        $args = $return;
+                    }
 
                     // check, if iteration of the loop is to break
                     if (self::$_breakCondition !== null) {
@@ -190,8 +247,9 @@ class CEC_Hook {
             }
         }
 
-        // reset break condition
+        // reset conditions to defaults
         self::$_breakCondition = null;
+        self::$_overwriteArguments = true;
 
         return $args;
     }
