@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.3.1
+ * @version    1.3.2
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -84,7 +84,7 @@ function layEditLayout($idlay, $name, $description, $code) {
 
         $sql = "INSERT INTO ".$cfg["tab"]["lay"]." (idlay,name, description, deletable, code, idclient, author, created, lastmodified) VALUES ('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::escapeDB($name, $db)."',
                 '".Contenido_Security::escapeDB($description, $db)."', '1', '".$code."', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($author, $db)."',
-                '".Contenido_Security::escapeDB($date, $db)."', '".Contenido_Security::escapeDB($date, $db)."').";
+                '".Contenido_Security::escapeDB($date, $db)."', '".Contenido_Security::escapeDB($date, $db)."')";
         $db->query($sql);
 
         // set correct rights for element
