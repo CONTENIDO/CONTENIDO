@@ -123,23 +123,23 @@ if (is_array($settings))
                 $sMouseoverTemplate = '<span onmouseover="Tip(\'%s\', BALLOON, true, ABOVE, true);">%s</span>';
             
                 if (strlen($type) > 35) {
-                    $sShort = capiStrTrimHard($type, 35);
+                    $sShort = htmlspecialchars(capiStrTrimHard($type, 35));
                     $type = sprintf($sMouseoverTemplate, $type, $sShort);
                 }
                 
                 if (strlen($value['value']) > 35) {
-                    $sShort = capiStrTrimHard($value['value'], 35);
+                    $sShort = htmlspecialchars(capiStrTrimHard($value['value'], 35));
                     $value['value'] = sprintf($sMouseoverTemplate, $value['value'], $sShort);
                 }
                 
                 if (strlen($key) > 35) {
-                    $sShort = capiStrTrimHard($key, 35);
+                    $sShort = htmlspecialchars(capiStrTrimHard($key, 35));
                     $key = sprintf($sMouseoverTemplate, $key, $sShort);
                 }
                 
-                $list->setCell($count,1, htmlspecialchars($key));
-                $list->setCell($count,2, htmlspecialchars($type));
-                $list->setCell($count,3, htmlspecialchars($value['value']));	
+                $list->setCell($count,1, $key);
+                $list->setCell($count,2, $type);
+                $list->setCell($count,3, $value['value']);	
     		}
             
             if (!in_array($key.'_'.$type, $aManagedValues)) {
