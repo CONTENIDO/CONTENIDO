@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Project: 
@@ -23,6 +22,7 @@
  * {@internal 
  *   created 2008-02-08
  *   modified 2008-06-25, Frederic Schneider, add security fix
+ *	 modified 2008-09-09, Dominik Ziegler, removed whitespace at beginning of file
  *
  *   $Id$:
  * }}
