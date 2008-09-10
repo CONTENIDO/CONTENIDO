@@ -122,7 +122,7 @@ function strNewTree($catname, $catalias = '', $bVisible = 0, $bPublic = 1, $iIdt
         
         $bPublic = (int) $bPublic;
         if (! (($bPublic == 0 || $bPublic == 1) && $perm->have_perm_area_action('str', "str_makepublic")) ) {
-            $bPublic = 0;
+            $bPublic = 1;
         }
         
         $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='0' AND postid='0' AND idclient='".Contenido_Security::toInteger($client)."'";
@@ -269,7 +269,7 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
         
         $bPublic = (int) $bPublic;
         if (! (($bPublic == 0 || $bPublic == 1) && $perm->have_perm_area_action('str', "str_makepublic")) ) {
-            $bPublic = 0;
+            $bPublic = 1;
         }
 	
 	    $tmp_newid = $db->nextid($cfg["tab"]["cat"]);
