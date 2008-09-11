@@ -23,6 +23,8 @@
  *   created 2003-01-21
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-08-29, Murat Purc, add handling of urlname
+ *   modified 2008-09-11, Andreas Lindner, added decoding of text and cat names
+ *   					  with unFilter function
  *
  *   $Id$:
  * }}
@@ -36,6 +38,7 @@ if(!defined('CON_FRAMEWORK')) {
 cInclude("includes", "functions.str.php");
 cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "contenido/class.client.php");
+cInclude("classes", "class.security.php");
 cInclude("includes", "functions.pathresolver.php");
 
 $tpl->reset();
@@ -81,12 +84,12 @@ else {
 			//****************** this art was edited before ********************
 			$tmp_firstedit    = 0;
 			$tmp_idartlang    = $db->f("idartlang");
-			$tmp_page_title   = stripslashes($db->f("pagetitle"));
+			$tmp_page_title   = Contenido_Security::unFilter(stripslashes($db->f("pagetitle")));
 			$tmp_idlang       = $db->f("idlang");
-			$tmp_title        = $db->f("title");
-            $tmp_urlname      = $db->f("urlname");      // plugin Advanced Mod Rewrite - edit by stese            
+			$tmp_title        = Contenido_Security::unFilter($db->f("title"));
+            $tmp_urlname      = Contenido_Security::unFilter($db->f("urlname"));      // plugin Advanced Mod Rewrite - edit by stese            
 			$tmp_artspec	  = $db->f("artspec");
-			$tmp_summary      = $db->f("summary");
+			$tmp_summary      = Contenido_Security::unFilter($db->f("summary"));
 			$tmp_created      = $db->f("created");
 			$tmp_lastmodified = $db->f("lastmodified");
 			$tmp_author       = $db->f("author");
@@ -486,14 +489,14 @@ else {
 			if ( !in_array($db->f("idcat"), $tmp_idcat_in_art) ) {
 				$tpl2->set('d', 'VALUE', $db->f("idcat"));
 				$tpl2->set('d', 'SELECTED', '');
-				$tpl2->set('d', 'CAPTION', $spaces.$db->f("name"));
+				$tpl2->set('d', 'CAPTION', $spaces.Contenido_Security::unFilter($db->f("name")));
 
 				$tpl2->next();
 
 			} else {
 				$tpl2->set('d', 'VALUE', $db->f("idcat"));
 				$tpl2->set('d', 'SELECTED', 'selected="selected"');
-				$tpl2->set('d', 'CAPTION', $spaces.$db->f("name"));
+				$tpl2->set('d', 'CAPTION', $spaces.Contenido_Security::unFilter($db->f("name")));
 				$tpl2->next();
 
 				if ($moveOK == false)
@@ -601,14 +604,14 @@ else {
 			if ( $db->f("idcat") != $tmp_targetcat) {
 				$tpl2->set('d', 'VALUE', $db->f("idcat"));
 				$tpl2->set('d', 'SELECTED', '');
-				$tpl2->set('d', 'CAPTION', $spaces.$db->f("name"));
+				$tpl2->set('d', 'CAPTION', $spaces.Contenido_Security::unFilter($db->f("name")));
 
 				$tpl2->next();
 
 			} else {
 				$tpl2->set('d', 'VALUE', $db->f("idcat"));
 				$tpl2->set('d', 'SELECTED', 'selected="selected"');
-				$tpl2->set('d', 'CAPTION', $spaces.$db->f("name"));
+				$tpl2->set('d', 'CAPTION', $spaces.Contenido_Security::unFilter($db->f("name")));
 				$tpl2->next();
 
 			}
