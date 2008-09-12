@@ -154,7 +154,7 @@ while ($oRcpGroup = $oRcpGroups->next())
 	$oLnk->setMultiLink("recipientgroups","","recipientgroups","");
 	$oLnk->setCustom("idrecipientgroup", $iIDGroup);
 
-	$oMenu->setImage($iMenu, $cfg["path"]["images"] . "groups.gif");
+	#$oMenu->setImage($iMenu, $cfg["path"]["images"] . "groups.gif");
 	$oMenu->setTitle($iMenu, $sName);
 	$oMenu->setLink($iMenu, $oLnk);
 	
