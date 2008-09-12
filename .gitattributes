@@ -2886,7 +2886,7 @@ contenido/plugins/frontendlogic/category/locale/de_DE/LC_MESSAGES/frontendlogic_
 contenido/plugins/frontendlogic/includes/config.plugin.php -text
 contenido/plugins/frontendusers/includes/config.plugin.php -text
 contenido/plugins/frontendusers/valid_from/valid_from.php -text
-contenido/plugins/frontendusers/valid_until/valid_to.php -text
+contenido/plugins/frontendusers/valid_to/valid_to.php -text
 contenido/plugins/index.php -text
 contenido/plugins/linkchecker/includes/config.plugin.php -text
 contenido/plugins/linkchecker/includes/include.checkperms.php -text
