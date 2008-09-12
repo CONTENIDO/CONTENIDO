@@ -12,7 +12,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,7 @@
  *   modified 2008-06-26, Timo.Trautmann, add security fix fix setting article online was not possible
  *   modified 2008-08-29, Murat Purc, add new chain execution, and handling og new field con_cat_lang.urlname
  *   modified 2008-09-07, Murat Purc, bugfix in conCopyArtLang at chain execution
+ *   modified 2008-09-12, Oliver Lohkemper, bugfix in function conChangeTemplateForCat, add conGenerateCodeForAllartsInCategory()
  *  
  *   $Id$:
  * }}
@@ -1068,7 +1069,7 @@ function conChangeTemplateForCat($idcat, $idtpl)
         }
         
     }
-    
+    conGenerateCodeForAllartsInCategory($idcat);
 } // end function
 
 
