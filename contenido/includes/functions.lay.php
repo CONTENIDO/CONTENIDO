@@ -56,7 +56,8 @@ function layEditLayout($idlay, $name, $description, $code) {
 
     $date = date("Y-m-d H:i:s");
     $author = "".$auth->auth["uname"]."";
-
+    $description = (string) stripslashes($description);
+    
     set_magic_quotes_gpc($name);
     set_magic_quotes_gpc($description);
     set_magic_quotes_gpc($code);

@@ -141,7 +141,7 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
     $iIdClient = Contenido_Security::toInteger($iIdClient);
     $sFilename = Contenido_Security::filter((string) $sFilename, $oDb);
     $sType = Contenido_Security::filter((string) $sType, $oDb);
-    $sDescription = Contenido_Security::filter((string) $sDescription, $oDb);
+    $sDescription = Contenido_Security::filter((string) stripslashes($sDescription), $oDb);
     $sAuthor = Contenido_Security::filter((string) $sAuthor, $oDb);
     
     $sSql = "SELECT * from `".$cfg["tab"]["file_information"]."` WHERE idclient=$iIdClient AND 
