@@ -50,6 +50,15 @@ if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || is_dbfs($path)) &&
     $form->setVar("appendparameters", $_REQUEST["appendparameters"]);
     
     $form->addHeader(i18n("Upload"));
+	
+    if (is_dbfs($path))
+		$mpath = $path."/";	
+	else 
+		$mpath = "upload/".$path;
+		
+    $sDisplayPath = generateDisplayFilePath($mpath, 85);
+    $form->add(i18n("Path:"), $sDisplayPath);
+	
     $uplelement = new cHTMLUpload("file[]",40);
     $num_upload_files = getEffectiveSetting('backend','num_upload_files',10);
     $form->add(i18n("Upload files"), str_repeat($uplelement->render()."<br>"	,$num_upload_files));
