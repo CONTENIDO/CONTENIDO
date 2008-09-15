@@ -915,7 +915,7 @@ if ( $perm->have_perm_area_action($area) ) {
         if ($perm->have_perm_area_action($tmp_area, "str_makepublic")) {
             $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<a href="javascript:changePublic();"><img src="'.$sImagepath.'folder_delock.gif" id="public_image" title="'.i18n('Protect category').'" alt="'.i18n('Protect category').'"></a>');
         } else {
-            $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<img src="'.$sImagepath.'folder_locked.gif" id="public_image" title="'.i18n('Protect category').'" alt="'.i18n('Protect category').'">');
+            $tpl->set('s', 'MAKEPUBLIC_BUTTON_NEW', '<img src="'.$sImagepath.'folder_delocked.gif" id="public_image" title="'.i18n('Protect category').'" alt="'.i18n('Protect category').'">');
         }
     } else {
         $tpl->set('s', 'NEWCAT', $string);

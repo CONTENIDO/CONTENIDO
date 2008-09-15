@@ -2544,6 +2544,7 @@ contenido/images/filetypes/zip.gif -text
 contenido/images/filler_bg.gif -text
 contenido/images/folder.gif -text
 contenido/images/folder_delock.gif -text
+contenido/images/folder_delocked.gif -text
 contenido/images/folder_duplicate.gif -text
 contenido/images/folder_duplicate_off.gif -text
 contenido/images/folder_lock.gif -text
