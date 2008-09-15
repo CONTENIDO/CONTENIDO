@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-08-08
  *   modified 2008-06-25, Frederic Schneider, add security fix
+ *   modified 2008-09-15, Murat Purc, add replacement of characters with diacritics
  *
  *   $Id$:
  * }}
@@ -256,7 +257,7 @@ function capiStrTrimSentence ($string, $approxlen, $hard = false)
  * to english characters whenever possible.
  *
  * For german umlauts, this function converts the 
- * umlauts to their ASCII equalients (e.g. ï¿½ => ae).
+ * umlauts to their ASCII equalients (e.g. ä => ae).
  *
  * For more information about diacritics, refer to
  * http://en.wikipedia.org/wiki/Diacritic
@@ -279,14 +280,13 @@ function capiStrReplaceDiacritics ($sString, $sourceEncoding = "ISO-8859-1", $ta
 		$targetEncoding = $sourceEncoding;
 	}
 	
-	/* Replace regular german umlauts */
-	$sString = str_replace("ä", "ae", $sString);
-	$sString = str_replace("ö", "oe", $sString);
-	$sString = str_replace("ü", "ue", $sString); 
-	$sString = str_replace("Ä", "Ae", $sString);
-	$sString = str_replace("Ö", "Oe", $sString);
-	$sString = str_replace("Ü", "Ue", $sString); 	
-	$sString = str_replace("ß", "ss", $sString);
+	// replace regular german umlauts and other common characters with diacritics
+    static $aSearch, $aReplace;
+    if (!isset($aSearch)) {
+        $aSearch  = array('Ä',  'Ö',  'Ü',  'ä',  'ö',  'ß',  'Á', 'À', 'Â', 'á', 'à', 'â', 'É', 'È', 'Ê', 'é', 'è', 'ê', 'Í', 'Ì', 'Î', 'í', 'ì', 'î', 'Ó', 'Ò', 'Ô', 'ó', 'ò', 'ô', 'Ú', 'Ù', 'Û', 'ú', 'ù', 'û');
+        $aReplace = array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ss', 'A', 'A', 'A', 'a', 'a', 'a', 'E', 'E', 'E', 'e', 'e', 'e', 'I', 'I', 'I', 'i', 'i', 'i', 'O', 'O', 'O', 'o', 'o', 'o', 'U', 'U', 'U', 'u', 'u', 'u');
+    }
+    $sString = str_replace($aSearch, $aReplace, $sString);
 	
 	/* TODO: Additional converting */
 	
