@@ -92,7 +92,7 @@
             <clients>
             	<main>Mandanten</main>
             	<clientproperties>Eigenschaften</clientproperties>
-            	<clientartspec>Artikel Spezifikationen</clientartspec>
+            	<clientartspec>Artikelspezifikationen</clientartspec>
             	<clientsettings>Mandanteneinstellungen</clientsettings>
             </clients>
             <logs>Logs</logs>
