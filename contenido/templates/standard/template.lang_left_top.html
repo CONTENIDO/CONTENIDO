@@ -22,7 +22,8 @@
             if (iLanguagecount == 0) {
                 langNewLanguage();
             } else {
-                box.confirm('i18n("Create language")', 'i18n("Do you really want to create a new language?")', 'langNewLanguage()')
+			var targetclient = document.getElementById("editclient").innerHTML;
+                box.confirm('i18n("Create language") '+targetclient, 'i18n("Do you really want to create a new language?")', 'langNewLanguage()')
             }
       }
   
