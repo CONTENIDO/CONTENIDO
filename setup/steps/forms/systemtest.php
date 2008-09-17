@@ -735,7 +735,7 @@ class cSetupSystemtest extends cSetupMask
 		$status = canWriteFile("../".$sFile);
 		
 		$sTitle = sprintf(i18n("Can't write %s"), $sFile);
-		$sMessage = sprintf(i18n("Setup or Contenido can't write to the file %s. How to correct the problem:"), $sFile);
+		$sMessage = sprintf(i18n("Setup or Contenido can't write to the file %s. Please change the file permissions to correct this problem."), $sFile);
 		
 		if ($status == false)
 		{
