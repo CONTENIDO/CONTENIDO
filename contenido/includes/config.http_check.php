@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.1.1
+ * @version    1.1.2
  * @author     Holger Librenz
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  *	 modified 2008-09-09, Dominik Ziegler, removed whitespace at beginning of file
  *	 modified 2008-09-10, Ingo van Peeren, added 'changeview', 'action' and 'tmpchangelang' for
  *	                                       backend editing and preview 
+ *	 modified 2008-09-17, Dominik Ziegler, added 'client' for backend editing and preview
  *
  *   $Id$:
  * }}
@@ -74,6 +75,8 @@ $aCheck['GET']['idcat'] = CON_CHECK_INTEGER;
 $aCheck['GET']['idartlang'] = CON_CHECK_INTEGER;
 $aCheck['GET']['lang'] = CON_CHECK_INTEGER;
 $aCheck['GET']['changelang'] = CON_CHECK_INTEGER;
+
+$aCheck['GET']['client'] = CON_CHECK_INTEGER;
 
 $aCheck['GET']['tmpchangelang'] = CON_CHECK_INTEGER;
 $aCheck['GET']['changeview'] = CON_CHECK_PRIMITIVESTRING;
