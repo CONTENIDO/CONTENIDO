@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Database based file system
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend classes
  * @version    1.0.8
@@ -18,14 +18,14 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-12-21
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -45,24 +45,24 @@ class DBFSCollection extends ItemCollection
 		global $cfg;
 		parent::ItemCollection($cfg["tab"]["dbfs"], "iddbfs");
 	}
-	
+
 	function outputFile ($path)
 	{
 		global $client, $auth;
-		
+
 		$path 	= Contenido_Security::escapeDB($path, null);
 		$client = Contenido_Security::toInteger($client);
 		$path 	= $this->strip_path($path);
 		$dir 	= dirname($path);
 		$file 	= basename($path);
-		
+
 		if ($dir == ".")
 		{
 			$dir = "";
 		}
-		
+
 		$this->select("dirname = '".$dir."' AND filename = '".$file."' AND idclient = '".$client."' LIMIT 1");
-		
+
 		if ($item = $this->next())
 		{
 			$properties = new PropertyCollection;
@@ -83,25 +83,25 @@ class DBFSCollection extends ItemCollection
 			header("Etag: ".md5(mt_rand()));
 			header("Content-Disposition: filename=$file");
 			echo $item->get("content");
-		}	
-			
+		}
+
 	}
-	
+
 	function writeFromFile ($localfile, $targetfile)
 	{
 		$targetfile = $this->strip_path($targetfile);
 		$mimetype 	= mime_content_type($localfile);
-		
+
 		$this->write($targetfile, file_get_contents($localfile), $mimetype);
 	}
-	
+
 	function writeToFile ($sourcefile, $localfile)
 	{
 		$sourcefile = $this->strip_path($sourcefile);
-		
+
 		file_put_contents($localfile, $this->read($sourcefile));
-	}	
-	
+	}
+
 	function write ($file, $content = "", $mimetype = "")
 	{
 		$file = $this->strip_path($file);
@@ -112,21 +112,21 @@ class DBFSCollection extends ItemCollection
 		}
 		$this->setContent($file, $content);
 	}
-	
+
 	function hasFiles ($path)
 	{
 		global $client;
-		
+
 		$path 	= $this->strip_path($path);
 		$client = Contenido_Security::toInteger($client);
-		
+
 		/* Are there any subdirs? */
 		$this->select("dirname LIKE '".$path."/%' AND idclient = '".$client."' LIMIT 1");
 		if ($this->count() > 0)
 		{
 			return true;
 		}
-		
+
 		$this->select("dirname LIKE '".$path."%' AND idclient = '".$client."' LIMIT 2");
 
 		if ($this->count() > 1)
@@ -136,49 +136,49 @@ class DBFSCollection extends ItemCollection
 			return false;
 		}
 	}
-	
+
 	function read ($file)
 	{
 		return ($this->getContent($file));
-	}	
-	
+	}
+
 	function file_exists ($path)
 	{
 		global $client;
-		
+
 		$path 	= $this->strip_path($path);
 		$dir 	= dirname($path);
 		$file 	= basename($path);
-		
+
 		if ($dir == ".")
 		{
-			$dir = "";	
+			$dir = "";
 		}
-		
+
 		$client = Contenido_Security::toInteger($client);
-		
+
 		$this->select("dirname = '".$dir."' AND filename = '".$file."' AND idclient = '".$client."' LIMIT 1");
 		if ($this->next())
 		{
 			return true;
 		} else {
 			return false;
-		}		
+		}
 	}
-	
+
 	function dir_exists ($path)
 	{
 		global $client;
-		
+
 		$path = $this->strip_path($path);
-		
+
 		if ($path == "")
 		{
 			return true;
-		}		
-		
+		}
+
 		$client = Contenido_Security::toInteger($client);
-		
+
 		$this->select("dirname = '".$path."' AND filename = '.' AND idclient = '".$client."' LIMIT 1");
 		if ($this->next())
 		{
@@ -187,18 +187,18 @@ class DBFSCollection extends ItemCollection
 			return false;
 		}
 	}
-	
+
 	function parent_dir ($path)
 	{
 		$path = dirname($path);
-		
+
 		return $path;
 	}
-	
+
 	function create ($path, $mimetype = "", $content = "")
 	{
 		global $client, $cfg, $auth;
-		
+
 		$client = Contenido_Security::toInteger($client);
 
 		if (substr($path,0,1) == "/")
@@ -211,16 +211,16 @@ class DBFSCollection extends ItemCollection
 
 		if ($dir == ".")
 		{
-			$dir = "";	
+			$dir = "";
 		}
-		
+
 		if ($file == "")
 		{
 			return;
 		}
-		
+
 		if ($file != ".")
-		{	
+		{
 			if ($dir != "")
 			{
     			/* Check if the directory exists. If not, create it. */
@@ -232,7 +232,7 @@ class DBFSCollection extends ItemCollection
 			}
 		} else {
 			$parent = $this->parent_dir($dir);
-            
+
 			if ($parent != ".")
 			{
     			if (!$this->dir_exists($parent))
@@ -241,76 +241,76 @@ class DBFSCollection extends ItemCollection
     			}
 			}
 		}
-		
+
         if ($dir && !$this->dir_exists($dir) || $file != ".") {
     		$item = parent::create();
     		$item->set("idclient", $client);
     		$item->set("dirname", $dir);
     		$item->set("filename", $file);
     		$item->set("size", strlen($content));
-    		
+
     		if ($mimetype != "")
     		{
     			$item->set("mimetype", $mimetype);
     		}
-    		
+
     		$item->set("content", $content);
-    		$item->set("created", date("Y-m-d H:i:s"));
+    		$item->set("created", date("Y-m-d H:i:s"), false);
     		$item->set("author", $auth->auth["uid"]);
     		$item->store();
         }
-		return ($item);	
+		return ($item);
 	}
-	
+
 	function loadItem ($itemID)
 	{
 		$item = new DBFSItem();
 		$item->loadByPrimaryKey($itemID);
 		return ($item);
 	}
-	
+
 	function delete ($id)
 	{
 		return parent::delete($id);
 	}
-	
+
 	function setContent ($path, $content)
 	{
 		global $client;
-		
+
 		$client 	= Contenido_Security::toInteger($client);
 		$path 		= $this->strip_path($path);
 		$dirname 	= dirname($path);
 		$filename 	= basename($path);
-		
+
 		if ($dirname == ".")
 		{
-			$dirname = "";	
+			$dirname = "";
 		}
-				
+
 		$this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = '".$client."' LIMIT 1");
 		if ($item = $this->next())
 		{
 			$item->set("content", $content);
 			$item->set("size", strlen($content));
-			$item->store();	
+			$item->store();
 		}
 	}
-	
+
 	function getSize ($path)
 	{
 		global $client;
-		
-		$client 	= Contenido_Security::toInteger($client);	
+
+		$client 	= Contenido_Security::toInteger($client);
 		$path 		= $this->strip_path($path);
 		$dirname 	= dirname($path);
 		$filename 	= basename($path);
-		
+
 		if ($dirname == ".")
 		{
 			$dirname = "";
 		}
-				
+
 		$this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = '".$client."' LIMIT 1");
 		if ($item = $this->next())
 		{
@@ -321,43 +321,43 @@ class DBFSCollection extends ItemCollection
 	function getContent ($path)
 	{
 		global $client;
-		
+
 		$client 	= Contenido_Security::toInteger($client);
 		$dirname	= dirname($path);
 		$filename 	= basename($path);
-		
-		if ($dirname == ".")
-		{
-			$dirname = "";	
-		}
-				
-		$this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = '".$client."' LIMIT 1");
-		if ($item = $this->next())
-		{
-			return ($item->get("content"));	
-		}
-	}
-	
-	function remove ($path)
-	{
-		global $client;
-		
-		$client 	= Contenido_Security::toInteger($client);
-		$path 		= $this->strip_path($path);
-		$dirname 	= dirname($path);
-		$filename 	= basename($path);
-		
+
 		if ($dirname == ".")
 		{
 			$dirname = "";
 		}
-				
-		
+
 		$this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = '".$client."' LIMIT 1");
 		if ($item = $this->next())
 		{
-			$this->delete($item->get("iddbfs"));	
-		}	
+			return ($item->get("content"));
+		}
+	}
+
+	function remove ($path)
+	{
+		global $client;
+
+		$client 	= Contenido_Security::toInteger($client);
+		$path 		= $this->strip_path($path);
+		$dirname 	= dirname($path);
+		$filename 	= basename($path);
+
+		if ($dirname == ".")
+		{
+			$dirname = "";
+		}
+
+
+		$this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = '".$client."' LIMIT 1");
+		if ($item = $this->next())
+		{
+			$this->delete($item->get("iddbfs"));
+		}
 	}
 
 	function strip_path ($path)
@@ -366,14 +366,14 @@ class DBFSCollection extends ItemCollection
 		{
 			$path = substr($path,5);
 		}
-		
+
 		if (substr($path,0,1) == "/")
 		{
-			$path = substr($path,1);	
+			$path = substr($path,1);
 		}
-		
+
 		return $path;
-		
+
 	}
 
 	/**
@@ -394,18 +394,18 @@ class DBFSCollection extends ItemCollection
 		}
 		$sStartDate = $oProperties->getValue("upload", $sPath, "file", "datestart");
 		$sEndDate = $oProperties->getValue("upload", $sPath, "file", "dateend");
-		
+
 		$iNow = time();
-		
-		if ($iNow < $this->dateToTimestamp($sStartDate) || 
+
+		if ($iNow < $this->dateToTimestamp($sStartDate) ||
 			($iNow > $this->dateToTimestamp($sEndDate) && (int)$this->dateToTimestamp($sEndDate) > 0)) {
-				
+
 			return false;
 		}
 		return $bAvailable;
 	}
-	
-	
+
+
 	/**
 	 * converts date to timestamp:
 	 * @param string $sDate
@@ -428,31 +428,31 @@ class DBFSItem extends Item
 		global $cfg;
 		parent::Item($cfg["tab"]["dbfs"], "iddbfs");
 	}
-	
+
 	function store ()
 	{
 		global $auth;
-		
-		$this->set("modified", date("Y-m-d H:i:s"));
+
+		$this->set("modified", date("Y-m-d H:i:s"), false);
 		$this->set("modifiedby", $auth->auth["uid"]);
-		
+
 		parent::store();
 	}
-	
+
 	function setField ($field, $value, $safe = true)
 	{
 		if ($field == "dirname" || $field == "filename" || $field == "mimetype")
 		{
 			/* Don't do safe encoding */
 			$safe = false;
-			
+
 			$value = str_replace("'", "", $value);
 			$value = str_replace('"', "", $value);
-			
+
 		}
-		
+
 		parent::setField($field, $value, $safe);
 	}
-	
+
 }
 ?>
