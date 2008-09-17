@@ -1660,13 +1660,13 @@ msgstr "Alle"
 # e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:64
 #: contenido/includes/functions.system.php:21
 msgid "error log successfully cleared"
-msgstr "error log erfolgreich geleert"
+msgstr "Errorlog erfolgreich geleert"
 
 # e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:47
 # e:\timo\contenido_head/contenido/includes/include.mod_edit_form.php:64
 #: contenido/includes/functions.system.php:30
 msgid "install error log successfully cleared"
-msgstr "install error log erfolgreich geleert"
+msgstr "Installation-Errorlog erfolgreich geleert"
 
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
@@ -4922,12 +4922,12 @@ msgstr "Style erstellen"
 #: contenido/includes/include.system_sysvalues.php:50
 #: contenido/includes/include.system_sysvalues.php:86
 msgid "No error log entries found"
-msgstr "Keine Einträge im errorlog gefunden"
+msgstr "Keine Einträge im Errorlog gefunden"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
 #: contenido/includes/include.system_sysvalues.php:57
 msgid "No error log file found"
-msgstr "Keine errorlog-Datei gefunden"
+msgstr "Keine Errorlog-Datei gefunden"
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.system_sysvalues.php:71
 #: contenido/includes/include.system_sysvalues.php:79
@@ -6373,4 +6373,4 @@ msgid "Delete Files"
 msgstr "Dateien l&ouml;schen"
 
 msgid "Do you want to save changes?"
-msgstr "Möchten Sie die Anderungen speichern?"
+msgstr "M&ouml;chten Sie die &Auml;nderungen speichern?"
