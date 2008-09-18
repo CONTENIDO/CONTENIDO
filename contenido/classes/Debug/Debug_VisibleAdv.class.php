@@ -109,25 +109,14 @@ class Debug_VisibleAdv implements IDebug, Countable {
 				}
 			}
 		</script>
+		
 		<style type="text/css">
-			#conDbgBox {
-				position:absolute;z-index:100000;left:0;top:0;background-color:#ccc;margin:0;padding:10px;
-			}
-			#conDbgBox a {
-				text-decoration:none;
-			}
-			#dbg_item_block {
-				margin-left:20px;
-			}
-			#dbg_item_block textarea {
-				font-size:11px;
-			}
-			#dbg_item_block a {
-				display:block;
-			}
-			#conDbgClose {
-				padding-left:10px;
-			}
+			#conDbgBox { position:absolute; z-index:100000; left:5px; top:5px; margin:0; border:1px solid #ccc;padding:5px; background-color:#f6f6f6; text-align: left;color: #000000; }
+			#conDbgBox a { text-decoration:none; color: #000000; margin-top: 6px; }
+			#dbg_item_block { margin: 0px 0px 0px 20px; color: #000000; }
+			#dbg_item_block textarea, #dbg_item_block pre { font-size:11px; margin: 0px; padding: 5px; color: #000000; border: 1px solid #6c6c6c; background-color: #ffffff; }
+			#dbg_item_block a { display:block; color: #000000; }
+			#conDbgClose { padding-left:10px; }
 		</style>';
             $sHtml .= '<div id="conDbgBox">
 			<a href="javascript:void(0);" title="Toggle Debug Output" onclick="con_dbg_toggle(\'dbg_item_block\');">con dbg</a> 
