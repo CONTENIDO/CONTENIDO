@@ -93,15 +93,14 @@ class Debug_Visible implements IDebug {
 				$bPlainText = true;
 			}
 		}
-		
-		echo '<div style="margin:5px 0;padding:5px;border:1px solid #ccc;font-family:Georgia,serif;">'."\n";
-		echo '<p style="font-size:80%;margin:5px 0;padding:5px;background-color:#ccc;color:#000;font-family:Verdana,sans-serif;"><b>DEBUG '.$sVariableDescription.'</b></p>'."\n";
+		echo '<div style="margin:5px 0;padding:5px;background-color: #ffff;border:1px solid #ccc;font-family:Georgia,serif;text-align: left;">'."\n";
+		echo '<p style="font-size:80%;margin: 0px;padding:2px 5px;background-color:#ccc;color:#000;font-family:Verdana,sans-serif;text-align: left;"><b>DEBUG '.$sVariableDescription.'</b></p>'."\n";
 		if ($bTextarea === true) {
 			echo '<textarea rows="10" cols="100">';
 		} elseif ($bPlainText === true) {
-			echo '<pre>';
+			echo '<pre style="font-size:11px;background-color:#ffff;margin:0px;padding:5px;color:#000000;text-align:left;">';
 		} else {
-			echo '<pre>';
+			echo '<pre style="font-size:11px;background-color:#ffff;margin:0px;padding:5px;color:#000000;text-align:left;">';
 		}
 		
 		if (is_array($mVariable)) {
@@ -119,7 +118,7 @@ class Debug_Visible implements IDebug {
 		}
 		echo '</div>';
 		if ($bExit === true) {
-			die('<p style="font-size:80%;margin:5px 0;padding:5px;background-color:#ccc;color:#000;"><b>debugg\'ed</b></p>'."\n");
+			die('<p style="font-size:80%;margin:5px 0;padding:5px;background-color:#ccc;color:#000;text-align:left;"><b>debugg\'ed</b></p>'."\n");
 		}
 	}
 	
