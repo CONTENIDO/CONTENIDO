@@ -135,6 +135,8 @@ $sTable = '';
         $iLevel = 0;
 
         while ($db->next_record()) {
+        		$iCurrentIdCat = $db->f('idcat');
+        		
                 if ($db->f("level") == 0 && $db->f("preid") != 0) {
                     $sTable .= $table->row();
 					$sTable .= $table->sumcell("&nbsp;","right");
@@ -195,7 +197,7 @@ $sTable = '';
                                             (!in_array($value3, $aViewRights) && $bExclusive) ||
                                             (count($aViewRights) == 0)) {
                                            //does the user have the right
-                                           if(in_array($value2["perm"]."|$value3|".$db->f("idcat"),array_keys($rights_list_old)))
+                                           if(isset($rights_list_old[$value2["perm"]."|$value3|".$iCurrentIdCat]))
                                                $checked="checked=\"checked\"";
                                            else
                                                $checked="";
