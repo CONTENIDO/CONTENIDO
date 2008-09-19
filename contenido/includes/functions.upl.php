@@ -628,7 +628,6 @@ function uplGetThumbnail ($file, $maxsize)
 	switch (getFileExtension($file))
 	{
 		case "png":
-		case "psd":
 		case "gif":
 		case "tiff":
 		case "tif":
@@ -673,13 +672,16 @@ function uplGetFileIcon ($file)
 {
 	global $cfg;
 	
-	switch (getFileExtension($file))
-	{
+	switch (getFileExtension($file)) {
 		case "sxi":
 		case "sti":
 		case "pps":
 		case "pot":
 		case "kpr":
+        case "pptx":
+        case "potx":
+        case "pptm":
+        case "potm":
 		case "ppt":	$icon = "ppt.gif";
 					break;
 		case "doc":
@@ -687,6 +689,10 @@ function uplGetFileIcon ($file)
 		case "sxw":
 		case "stw":
 		case "sdw":
+        case "docx":
+        case "dotx":
+        case "docm":
+        case "dotm":
 		case "kwd":	$icon = "word.gif";
 					break;
 		case "xls":
@@ -695,7 +701,12 @@ function uplGetFileIcon ($file)
 		case "xlw":
 		case "xlt":
 		case "csv":
-		case "ksp":		
+		case "ksp":
+        case "xlsx":
+        case "xltx":
+        case "xlsm":
+        case "xlsb":
+        case "xltm":
 		case "sdc":	$icon = "excel.gif";
 					break;
 		case "txt":
@@ -735,9 +746,34 @@ function uplGetFileIcon ($file)
 					break;
         case "js": $icon = "js.gif";
 					break;
+        case "vcf": $icon = "vcf.gif";
+                    break;
+        case "odf": $icon = "odf.gif";
+                    break;
+        case "php": $icon = "php.gif";
+                    break;
+        case "mp3":
+        case "wma":
+        case "ogg":
+        case "mp4": $icon = "sound.gif";
+                    break;
+        case "psd":
+        case "ai":
+        case "eps":
+        case "cdr":
+        case "qxp":
+        case "ps": $icon = "design.gif";
+                   break;
+        case "css": $icon = "css.gif";
 					
-		default: $icon = "unknown.gif"; 
-	}
+		default: 
+            if (!file_exists($cfg['path']['contenido_fullhtml'] . $cfg["path"]["images"]. "filetypes/".getFileExtension($file).".gif")) {
+                $icon = getFileExtension($file).".gif";
+            } else {
+                $icon = "unknown.gif";
+            }
+            break;
+    }
 	
 	return $cfg['path']['contenido_fullhtml'] . $cfg["path"]["images"]. "filetypes/".$icon;
 }
@@ -798,6 +834,7 @@ function uplGetFileTypeDescription ($extension)
 		/* HTML */
 		case "html": return (i18n("Hypertext Markup Language Document"));
 		case "htm": return (i18n("Hypertext Markup Language Document"));
+        case "css": return (i18n("Cascading Style Sheets"));
 
 		/* Archives */
 		case "lha": return (i18n("LHA Archive"));
@@ -830,7 +867,7 @@ function uplGetFileTypeDescription ($extension)
 		case "mpeg": return (i18n("MPEG Movie"));
 		case "wmv": return (i18n("Windows Media Video"));
 		
-		default: return (i18n("Unknown Type")); 
+		default: return ucfirst((i18n($extension."-File")));
 	}
 }
 
