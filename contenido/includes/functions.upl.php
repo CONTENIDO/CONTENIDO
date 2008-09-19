@@ -767,7 +767,7 @@ function uplGetFileIcon ($file)
         case "css": $icon = "css.gif";
 					
 		default: 
-            if (!file_exists($cfg['path']['contenido_fullhtml'] . $cfg["path"]["images"]. "filetypes/".getFileExtension($file).".gif")) {
+            if (file_exists($cfg['path']['contenido_fullhtml'] . $cfg["path"]["images"]. "filetypes/".getFileExtension($file).".gif")) {
                 $icon = getFileExtension($file).".gif";
             } else {
                 $icon = "unknown.gif";
@@ -867,7 +867,7 @@ function uplGetFileTypeDescription ($extension)
 		case "mpeg": return (i18n("MPEG Movie"));
 		case "wmv": return (i18n("Windows Media Video"));
 		
-		default: return ucfirst((i18n($extension."-File")));
+		default: return (i18n($extension."-File"));
 	}
 }
 
