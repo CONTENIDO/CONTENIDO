@@ -369,7 +369,6 @@ class UploadList extends FrontendList
 			switch (getFileExtension($data))
 			{
         		case "png":
-        		case "psd":
         		case "gif":
         		case "tiff":
         		case "bmp":
