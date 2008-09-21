@@ -113,7 +113,7 @@ class UploadCollection extends ItemCollection
 		/*
 		* delete from Filesystem or DBFS
 		*/
-		if( is_dbfs($item->get("dirname").$item->get("filename") ) {
+		if( is_dbfs($item->get("dirname").$item->get("filename")) ) {
 			$dbfs = new DBFSCollection;
 			$dbfs->remove($item->get("dirname").$item->get("filename"));
 		}
