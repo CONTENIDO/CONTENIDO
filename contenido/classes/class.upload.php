@@ -12,7 +12,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.7
+ * @version    1.0.8
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  * {@internal 
  *   created 2003-12-14
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2008-09-21, Oliver Lohkemper, modified UploadCollection::delete()
  *
  *   $Id$:
  * }}
@@ -96,8 +97,35 @@ class UploadCollection extends ItemCollection
 	
 	function delete ($id)
 	{
+		global $_cecRegistry;
+		$item = new UploadItem();
+		$item->loadByPrimaryKey($id);
+	   
+		/*
+		* Call chain
+		*/
+		$_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.Delete");
+		if ($_cecIterator->count() > 0) {
+			while ($chainEntry = $_cecIterator->next()) {
+				$chainEntry->execute( $item->get('idupl'), $item->get("dirname"), $item->get("filename") );
+		}   }
+	   
+		/*
+		* delete from Filesystem or DBFS
+		*/
+		if( is_dbfs($item->get("dirname").$item->get("filename") ) {
+			$dbfs = new DBFSCollection;
+			$dbfs->remove($item->get("dirname").$item->get("filename"));
+		}
+		else {
+			unlink( $cfgClient[$client]["upl"]["path"].$item->get("dirname").$item->get("filename") );
+		}
+	   
+		/*
+		* delete in DB
+		*/
 		return parent::delete($id);
-	}
+	} 
 }
 
 class UploadItem extends Item
