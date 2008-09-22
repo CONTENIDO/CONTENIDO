@@ -1,30 +1,31 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
- * Object to build a Contenido Frontend Navigation 
- * 
- * Requirements: 
+ *
+ * Description:
+ * Object to build a Contenido Frontend Navigation
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend classes
- * @version    0.2.0
+ * @version    0.2.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2008-02-15
  *   modified 2008-04-25 added method getLevel() and property aLevel, modified loadSubCategories() accordingly
- * 
+ *   modified 2008-09-22 Bugfix in loading protected subcategories when logged in as backenduser
+ *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -41,13 +42,13 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
      * @access protected
      */
     protected $oAuth; // for validating against fe-authentication
-    
+
     /**
      * @var array
      * @access protected
      */
     protected $aLevel;
-    
+
     /**
      * Constructor.
      * @access public
@@ -61,7 +62,7 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
     public function __construct(DB_Contenido $oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
         parent::__construct($oDb, $aCfg, $iClient, $iLang, $aCfgClient);
     }
-    
+
     /**
      * Load Subcategories of a given Category-ID.
      * If you need Categories by FrontendPermission, you need to call method setAuth() before (!) calling loadSubCategories().
@@ -76,9 +77,9 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
      */
     protected function loadSubCategories($iIdcat, $bAsObjects = true, $bWithSubCategories = false, $iSubCategoriesLoadDepth = 3) {
         $iIdcat = (int) $iIdcat;
-        $bUseAuth = (is_null($this->oAuth) || 
-                        (get_class($this->oAuth) != 'Auth' && get_class($this->oAuth) != 'Contenido_Frontend_Challenge_Crypt_Auth')) 
-                        ? false 
+        $bUseAuth = (is_null($this->oAuth) ||
+                        (get_class($this->oAuth) != 'Auth' && get_class($this->oAuth) != 'Contenido_Frontend_Challenge_Crypt_Auth') && get_class($this->oAuth) != 'Contenido_Challenge_Crypt_Auth')
+                        ? false
                         : true;
         $sFieldsToSelect = 'cattree.idcat, cattree.level';
         if ($bUseAuth === true) { // adapted from FrontendNavigation by Willi Man
@@ -115,7 +116,7 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 					cat.idcat    = catlang.idcat AND
 					cat.idclient = '.Contenido_Security::escapeDB($this->iClient, $this->oDb).' AND
 					catlang.idlang   = '.Contenido_Security::escapeDB($this->iLang, $this->oDb).' AND
-					catlang.visible  = 1 AND ' . 
+					catlang.visible  = 1 AND ' .
                     $sSqlPublic . '
 					cat.parentid = '.Contenido_Security::escapeDB($iIdcat, $this->oDb).'
 				ORDER BY
@@ -129,16 +130,23 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 	    }
         $this->aCategories = array();
 	    while ($this->oDb->next_record()) {
-	        // check against fe-auth
-	        if ($bUseAuth === true && $this->oDb->f('public') == 0) {
-	            if ($iNumFeGroups > 0) {
-	                for ($i = 0; $i < $iNumFeGroups; $i++) {
-						if($oFrontendPermissionCollection->checkPerm($aFeGroups[$i], 'category', 'access', $this->oDb->f('idcatlang'), true)) {
-							$this->aCategories[] = (int) $this->oDb->f('idcat');
-							$this->aLevel[(int) $this->oDb->f('idcat')] = (int) $this->oDb->f('level');
-							break;
-						}
-					}
+	        // check against fe-auth and against be-access
+	        if ($bUseAuth === true && intval($this->oDb->f('public')) == 0) {
+	            $sPerms = strval($this->oAuth->auth['perm']);
+	            if (strpos($sPerms, 'sysadmin') !== false || strpos($sPerms, 'admin' !== false) ||
+	                   (strpos($sPerms, 'client['.$this->iClient) !== false && strpos($sPerms, 'lang['.$this->iLang) !== false)) {
+	                $this->aCategories[] = (int) $this->oDb->f('idcat');
+                    $this->aLevel[(int) $this->oDb->f('idcat')] = (int) $this->oDb->f('level');
+	            } else {
+    	            if ($iNumFeGroups > 0) {
+    	                for ($i = 0; $i < $iNumFeGroups; $i++) {
+    						if($oFrontendPermissionCollection->checkPerm($aFeGroups[$i], 'category', 'access', $this->oDb->f('idcatlang'), true)) {
+    							$this->aCategories[] = (int) $this->oDb->f('idcat');
+    							$this->aLevel[(int) $this->oDb->f('idcat')] = (int) $this->oDb->f('level');
+    							break;
+    						}
+    					}
+    	            }
 	            }
 	        } else {
 	            $this->aCategories[] = (int) $this->oDb->f('idcat');
@@ -171,7 +179,7 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
         $this->loadSubCategories($iIdcat, $bAsObjects, $bWithSubCategories, $iSubCategoriesLoadDepth);
         return $bAsObjects === true ? $this->oCategories : $this->aCategories;
     }
-    
+
     /**
      * Get Level of a given idcat. If idcat wasn't loaded yet, level will be queried.
      * @access public
@@ -193,7 +201,7 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 	    }
         return -1;
     }
-    
+
     /**
      * Set internal property for Auth object to load only those categories the FE-User has right to see.
      * Use this method if you have protected Categories and need to check agains FrontendUser Rights.
