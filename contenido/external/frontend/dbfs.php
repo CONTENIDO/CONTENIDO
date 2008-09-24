@@ -28,14 +28,18 @@
  * }}
  * 
  */
- if(!defined('CON_FRAMEWORK')) {
-   die('Illegal call');
+ if (!defined("CON_FRAMEWORK")) {
+    define("CON_FRAMEWORK", true);
 }
 
-if (isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
-}
+$contenido_path = '';
+# include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
+
+// include security class and check request variables
+include_once ($contenido_path . 'classes/class.security.php');
+Contenido_Security::checkRequests();
+
 include_once ($contenido_path . "includes/startup.php");
 cInclude("includes", "functions.general.php");
 
