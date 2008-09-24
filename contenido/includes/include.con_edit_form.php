@@ -319,7 +319,7 @@ else {
 			$forceDisable = "disabled";
 		}
 
-		$tpl->set('s', 'URL', '<input type="text" '.$disabled.' '.$forceDisable.' class="txt" name="redirect_url" style="width:380px;" id="redirect_url" value="'.htmlspecialchars($tmp_redirect_url).'">');
+		$tpl->set('s', 'URL', '<input type="text" '.$disabled.' '.$forceDisable.' class="text_medium" name="redirect_url" style="width:380px;" id="redirect_url" value="'.htmlspecialchars($tmp_redirect_url).'">');
 
 		/* Redirect - New window */
 		if (getEffectiveSetting("articles", "show-new-window-checkbox", "false") == "true")
