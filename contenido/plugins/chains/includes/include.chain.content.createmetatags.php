@@ -72,6 +72,15 @@ function cecCreateMetatags ($metatags) {
 		//(Re)build metatags
 		$db = new DB_Contenido(); 
 		
+		#Get encoding
+		$sql = "SELECT * FROM ".$cfg['tab']['lang']." WHERE idlang=".(int)$lang;
+		$db->query($sql);
+		if ($db->next_record()) {
+			$sEncoding = strtoupper($db->f('encoding'));
+		} else {
+			$sEncoding = "ISO-8859-1";
+		}
+
 		#Get idcat of homepage
 		$sql = "SELECT a.idcat
 			FROM 
@@ -216,13 +225,13 @@ function cecCreateMetatags ($metatags) {
 						//Build description metatag from first headline on page
 						$iCheck = CheckIfMetaTagExists($metatags, 'description');
 						$metatags[$iCheck]['name'] = 'description';
-						$metatags[$iCheck]['content'] = htmlspecialchars($sHeadline,ENT_QUOTES);
+						$metatags[$iCheck]['content'] = htmlentities(htmlspecialchars($sHeadline,ENT_QUOTES,$sEncoding));
 						
 						break;
 					case 'keywords':
 						$iCheck = CheckIfMetaTagExists($metatags, 'keywords');
 						$metatags[$iCheck]['name'] = 'keywords';
-						$metatags[$iCheck]['content'] = htmlspecialchars($sText,ENT_QUOTES);
+						$metatags[$iCheck]['content'] = htmlentities(htmlspecialchars($sText,ENT_QUOTES,$sEncoding));
 
 						break;
 					case 'revisit-after':
