@@ -3,7 +3,7 @@
 
 /**
  * Request class
- * @version $Id: request.class.php 2281 2008-09-24 15:40:26Z atelierq $
+ * @version $Id: request.class.php 2289 2008-09-29 13:46:08Z atelierq $
  * @author Andreas Kummer, w3concepts AG
  * @copyright Copyright &copy; 2008, w3concepts AG
  */
@@ -107,7 +107,7 @@ class Request {
 			$mRequest = $_COOKIE;
 		}
 
-		if (!array_key_exists($sName, $mRequest)) {
+		if (!array_key_exists($sName, $mRequest) || strlen($mRequest[$sName]) == 0) {
 			/*
 			 * The specified paramter does not exist.
 			 */
