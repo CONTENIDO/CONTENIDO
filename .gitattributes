@@ -227,7 +227,6 @@ contenido/classes/index.php -text
 contenido/classes/log/class.bufferedlog.php -text
 contenido/classes/log/class.log.php -text
 contenido/classes/log/class.modulelog.php -text
-contenido/classes/request.class.php -text
 contenido/classes/tree/class.ctree.php -text
 contenido/classes/tree/class.ctreeitem.php -text
 contenido/classes/widgets/class.views.advancedmenu.php -text
