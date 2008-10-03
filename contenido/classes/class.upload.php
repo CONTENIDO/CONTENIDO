@@ -12,7 +12,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.8
+ * @version    1.0.9
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,7 +23,7 @@
  * {@internal 
  *   created 2003-12-14
  *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2008-09-21, Oliver Lohkemper, modified UploadCollection::delete()
+ *   modified 2008-10-03, Oliver Lohkemper, modified UploadCollection::delete()
  *
  *   $Id$:
  * }}
@@ -97,7 +97,7 @@ class UploadCollection extends ItemCollection
 	
 	function delete ($id)
 	{
-		global $_cecRegistry;
+		global $_cecRegistry, $cfgClient, $client;
 		$item = new UploadItem();
 		$item->loadByPrimaryKey($id);
 	   
