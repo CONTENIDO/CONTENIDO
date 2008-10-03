@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.5.5
+ * @version    1.5.6
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-07-31, Oliver Lohkemper, add CEC
  *   modified 2008-08-11, Timo Trautmann, added urlencode for meta storage in database
+ *   modified 2008-10-03, Oliver Lohkemper, delete CEC::Contenido.Upl_edit.SaveRows
  *
  *   $Id$:
  * }}
@@ -185,14 +186,6 @@ if ($action == "upl_modify_file")
 		}
 		$db->query($sSql);
       
-      /*
-      * Call chain
-      */
-      $_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.SaveRows");
-      if ($_cecIterator->count() > 0) {
-         while ($chainEntry = $_cecIterator->next()) {
-            $chainEntry->execute( $iIdupl, $qpath, $file );
-      }   }
 	}
 }
 

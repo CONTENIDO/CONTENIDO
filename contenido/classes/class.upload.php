@@ -24,6 +24,7 @@
  *   created 2003-12-14
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2008-10-03, Oliver Lohkemper, modified UploadCollection::delete()
+ *   modified 2008-10-03, Oliver Lohkemper, add CEC in UploadCollection::store()
  *
  *   $Id$:
  * }}
@@ -153,8 +154,8 @@ class UploadItem extends Item
 			$isdbfs = true;
 			$dir = $this->get("dirname");
 		} else {
-			$dir = $cfgClient[$client]["upl"]["path"].$this->get("dirname");
 			$isdbfs = false;
+			$dir = $cfgClient[$client]["upl"]["path"].$this->get("dirname");
 		}
 		
 		$file = $this->get("filename");
@@ -207,7 +208,16 @@ class UploadItem extends Item
 		$this->set("modifiedby", $auth->auth["uid"]);
 		$this->set("lastmodified", date("Y-m-d H:i:s"),false);
 		
-		parent::store();	
+		/*
+		* Call chain
+		*/
+		$_cecIterator = $_cecRegistry->getIterator("Contenido.Upl_edit.SaveRows");
+		if ($_cecIterator->count() > 0) {
+			while ($chainEntry = $_cecIterator->next()) {
+				$chainEntry->execute( $this->get("idupl"), $this->get("dirname"), $this->get("filename") );
+		}   }
+	  
+		parent::store();
 	}
 	
 }
