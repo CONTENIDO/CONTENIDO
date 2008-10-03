@@ -118,7 +118,9 @@ class UploadCollection extends ItemCollection
 			$dbfs->remove($item->get("dirname").$item->get("filename"));
 		}
 		else {
+		  if(file_exists($cfgClient[$client]["upl"]["path"].$item->get("dirname").$item->get("filename"))) {
 			unlink( $cfgClient[$client]["upl"]["path"].$item->get("dirname").$item->get("filename") );
+		  }
 		}
 	   
 		/*
