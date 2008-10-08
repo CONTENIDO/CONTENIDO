@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Holger Librenz, Andreas Lindner
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-06-27, Timo.Trautmann, Encoding Header added
  *   modified 2008-07-02, Frederic Schneider, querys escaped and include security class
+ *   modified 2008-09-08, Oliver Lohkemper, Fixed: "Fatal error: Class 'PropertyCollection' not found"
  *
  *   $Id$:
  * }}
