@@ -49,6 +49,8 @@ Contenido_Security::checkRequests();
 include_once ($cfg['path']['contenido']."includes/config.php");
 include_once ($cfg['path']['contenido']."includes/startup.php");
 
+cInclude("classes", "class.properties.php");
+
 page_open(array('sess' => 'Contenido_Session',
 	'auth' => 'Contenido_Challenge_Crypt_Auth',
 	'perm' => 'Contenido_Perm'));
