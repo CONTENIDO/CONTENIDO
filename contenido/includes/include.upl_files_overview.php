@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.5.6
+ * @version    1.5.7
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  *   modified 2008-07-31, Oliver Lohkemper, add CEC
  *   modified 2008-08-11, Timo Trautmann, added urlencode for meta storage in database
  *   modified 2008-10-03, Oliver Lohkemper, delete CEC::Contenido.Upl_edit.SaveRows
+ *   modified 2008-10-16, Oliver Lohkemper, add copyright in upl_meta - CON-212  
  *
  *   $Id$:
  * }}
@@ -170,6 +171,7 @@ if ($action == "upl_modify_file")
 					"description = '" . Contenido_Security::filter($description, $db) . "', " . 
 					"keywords = '" . Contenido_Security::filter($keywords, $db) . "', " . 
 					"internal_notice = '" . Contenido_Security::filter($medianotes, $db) . "', " .
+          "copyright = '" . Contenido_Security::filter($copyright, $db) . "', " . 
 					"author = '" . $auth->auth['uid'] . "', " .
 					"created = NOW(), modified = NOW(), modifiedby = '" . $auth->auth['uid'] . "'";
 		} else {	// update entry
@@ -181,6 +183,7 @@ if ($action == "upl_modify_file")
 					"description = '" . Contenido_Security::filter($description, $db) . "', " . 
 					"keywords = '" . Contenido_Security::filter($keywords, $db) . "', " . 
 					"internal_notice = '" . Contenido_Security::filter($medianotes, $db) . "', " . 
+          "copyright = '" . Contenido_Security::filter($copyright, $db) . "', " . 
 					"modified = NOW(), modifiedby = '" . $auth->auth['uid'] . "' " . 
 					"WHERE id_uplmeta = " . $iIduplmeta;
 		}

@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.8.0
+ * @version    1.8.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-07-31, Oliver Lohkemper, add CEC
  *   modified 2008-08-11, Timo Trautmann, added urlencode for meta storage in database
+ *   modified 2008-10-16, Oliver Lohkemper, add copyright in upl_meta - CON-212  
  *
  *   $Id$:
  * }}
@@ -169,9 +170,10 @@ if ($upload = $uploads->next()) {
             $moedit = new cHTMLTextarea("medianotes", $medianotes );
             $sCell = $moedit->render();
            break;
-            
+					 
          case "copyright":
-            $copyright = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "copyright");
+            if( $db->f('copyright') )   $copyright = Contenido_Security::unFilter($db->f('copyright'));
+           else                $copyright = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "copyright");
             $copyrightEdit = new cHTMLTextarea("copyright", $copyright);
             $sCell = $copyrightEdit->render();
            break;
