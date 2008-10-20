@@ -203,7 +203,7 @@ class UploadItem extends Item
 	
 	function store ()
 	{
-		global $auth;
+		global $auth, $_cecRegistry;
 		
 		$this->set("modifiedby", $auth->auth["uid"]);
 		$this->set("lastmodified", date("Y-m-d H:i:s"),false);
