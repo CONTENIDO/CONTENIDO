@@ -375,7 +375,7 @@ function saveObj(oRow)
 
 function refreshPathFrame(oRow) {
     var newPath = oRow.id;
-    var left_top = top.content.left.left_top;
+    var left_top = parent.parent.frames["left"].frames["left_top"]; 
     
     if (left_top) {
         if (left_top.document.getElementById('caption2')) {
