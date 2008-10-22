@@ -67,11 +67,11 @@ if (isset($_GET["appendparameters"]))
 {
 	$tpl->set('s', 'LEFT', $sess->url("frameset_left.php?area=$area&appendparameters=".$_GET["appendparameters"]));
 	$tpl->set('s', 'RIGHT', $sess->url("frameset_right.php?area=$area&appendparameters=".$_GET["appendparameters"]));
-	$tpl->set('s', 'WIDTH', getEffectiveSetting("backend", "leftframewidth", 250));
+	$tpl->set('s', 'WIDTH', getEffectiveSetting("backend", "leftframewidth", 245));
 } else {
 	$tpl->set('s', 'LEFT', $sess->url("frameset_left.php?area=$area"));
 	$tpl->set('s', 'RIGHT', $sess->url("frameset_right.php?area=$area"));
-	$tpl->set('s', 'WIDTH', getEffectiveSetting("backend", "leftframewidth", 250));
+	$tpl->set('s', 'WIDTH', getEffectiveSetting("backend", "leftframewidth", 245));
 }
 
 $tpl->set('s', 'VERSION', 	$cfg['version']);
