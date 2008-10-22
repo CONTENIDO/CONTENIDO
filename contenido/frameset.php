@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.2.1
+ * @version    1.2.2
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-16, Holger Librenz, Hotfix: added check for illegal calling
  *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
  *   modified 2008-07-02, Frederic Schneider, add security fix and include security_class
+ *   modified 2008-10-22, Oliver Lohkemper, update default-value for leftframewidth from 250px to 245px
  *
  *   $Id$:
  * }}
