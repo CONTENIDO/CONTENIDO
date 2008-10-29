@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.3.2
+ * @version    1.3.3
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,7 +24,7 @@
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-08-29, Murat Purc, add new chain execution
  *   modified 2008-09-03, Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann (strRemakeTreeTableFindNext)
- *   modified 2008-10-26, delete from cat_tree only for one Cliente OliverL (strRemakeTreeTable)
+ *   modified 2008-10-29, delete from cat_tree only for one Cliente OliverL (strRemakeTreeTable)
  *
  *   $Id$:
  * }}
@@ -424,9 +424,9 @@ function strRemakeTreeTable() {
       $remakeStrTable = true;
 
         $poststring = "";
-
+				$sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idclient = '".$client."'";
         $db->query($sql);
-		$idcats = array();
+        $idcats = array();
         while($db->next_record())
         {
                 $idcats[] = $db->f("idcat");
@@ -441,7 +441,7 @@ function strRemakeTreeTable() {
         $db->query($sql);
 
         $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='0' AND preid='0' AND idcat!='0'";
-
+        $idcats = array();
         $db->query($sql);
         while($db->next_record())
         {
