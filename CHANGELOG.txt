@@ -6,6 +6,14 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id$:
 
+Release 4.8.9
+----------------------------------------------------------------------	
+
+** Task
+
+    * Commented out display_errors as this should be handled as defined in php.ini by default
+
+	
 Release 4.8.8
 ----------------------------------------------------------------------	
              
