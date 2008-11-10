@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.4.7
+ * @version    1.4.8
  * @author     Holger Librenz
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created 2004-02-24
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-07-04, Dominik Ziegler, fixed bug CON-174
+ *   modified 2008-11-10 Rudi Bieller Commented out display_errors as this should be handled as defined in php.ini by default
  *
  *   $Id$:
  * }}
@@ -125,7 +126,7 @@ $cfg['AvailableCharsets'] = array(
  */
 
 /* Don't display errors */
-@ini_set("display_errors",true);
+//@ini_set("display_errors",true);
 
 /* Log errors to a file */
 @ini_set("log_errors",true);
