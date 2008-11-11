@@ -24,6 +24,8 @@
  *   modified 2006-12-14, init array $results in fct prResolvePathViaURLNames, prResolvePathViaCategoryNames, return type is now integer
  *   modified 2008-06-26, Frederic Schneider, add security fix
  * 	 modified 2008-08-11, Bilal Arslan, Change prResolvePathViaCategoryNames function for take current path language id!
+ * 	 modified 2008-11-11, Andreas Lindner, Change prResolvePathViaCategoryNames, suppress change of current language if an url path
+ * 	 						is found in current and at least one more language   	  
  *
  *   $Id$:
  * }}
@@ -199,6 +201,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck)
 	$db = new DB_Contenido;
 	$categories = array ();
 	$results = array();
+	$iLangCheckOrg = $iLangCheck;
 	
 	/* Added since 2008-08 from Bilal Arslan */
 //	To take only path body
@@ -262,13 +265,17 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck)
 //			compare, only if current element is lastone and we are in true path
 			if($i == $iFor-1 && $bLang) {
 				$iLangCheck = $db->f("idlang");
+				$arrLangMatches[] = $iLangCheck; 
 			}
 		}  
 	
 	}
 
-	if($iLangCheck == 0) {
-		$iLangCheck = $lang;
+	#Suppress wrongly language change if url name can be found in current language
+	if($iLangCheckOrg == 0) {
+		if (in_array($lang, $arrLangMatches)) {
+			$iLangCheck = $lang;
+		}
 	}
 
 	/* Compare strings using the similar_text algorythm */

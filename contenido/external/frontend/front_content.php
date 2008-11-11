@@ -47,7 +47,9 @@
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *   modified 2008-08-29, Murat Purc, synchronised with /cms/front_content.php
  *   modified 2008-09-07, Murat Purc, new chain 'Contenido.Frontend.AfterLoadPlugins'
- *   modified 2008-11-10, Andreas Lindner, added additional option to CEC_Hook::setConditions for frontend user acccess     
+ *   modified 2008-11-11, Andreas Lindner, added additional option to CEC_Hook::setConditions for frontend user acccess     
+ *   modified 2008-11-11, Andreas Lindner, Fixed typo in var name $iLangCheck (missing $)
+ *   modified 2008-11-11, Andreas Lindner, Fixed typo in var name $iLangCheck (missing $)             
  *
  *   $Id$:
   * }}
@@ -268,7 +270,7 @@ if (isset($path) && strlen($path) > 1)
         $iLangCheck = 0;
 
         $idcat = prResolvePathViaCategoryNames($path, $iLangCheck);
-        if($lang != iLangCheck){
+        if($lang != $iLangCheck){
             $lang = $iLangCheck;
         }
 
@@ -898,6 +900,11 @@ else
         $str_base_uri = $cfgClient[$client]["path"]["htmlpath"];
 
         $str_base_uri = CEC_Hook::execute("Contenido.Frontend.BaseHrefGeneration", $str_base_uri);
+
+		#If chain execution return value is an array
+		if (is_array($str_base_uri)) {
+			$str_base_uri = $str_base_uri[0];
+		}
 
         if ($is_XHTML == "true") {
             $baseCode = '<base href="'.$str_base_uri.'" />';
