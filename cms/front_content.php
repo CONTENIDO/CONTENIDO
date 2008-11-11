@@ -49,6 +49,7 @@
  *   modified 2008-07-02, Frederic Schneider, add more security fixes and include security_class
  *   modified 2008-08-29, Murat Purc, new way to execute chains
  *   modified 2008-09-07, Murat Purc, new chain 'Contenido.Frontend.AfterLoadPlugins'
+ *   modified 2008-11-11, Andreas Lindner, added additional option to CEC_Hook::setConditions for frontend user acccess     
  *
  *   $Id$:
  * }}
@@ -784,7 +785,7 @@ else
             {
                 $allow = false;
 
-                CEC_Hook::setConditions(CEC_Hook::BREAK_AT_TRUE, false);
+                CEC_Hook::setConditions(CEC_Hook::BREAK_AT_TRUE, false, true);
                 $value = CEC_Hook::execute("Contenido.Frontend.CategoryAccess", $lang, $idcat, $auth->auth["uid"]);
                 if ($value === true)
                 {
@@ -798,7 +799,7 @@ else
         {
             $allow = false;
 
-            CEC_Hook::setConditions(CEC_Hook::BREAK_AT_TRUE, false);
+            CEC_Hook::setConditions(CEC_Hook::BREAK_AT_TRUE, false, true);
             $value = CEC_Hook::execute("Contenido.Frontend.CategoryAccess", $lang, $idcat, $auth->auth["uid"]);
             if ($value === true)
             {

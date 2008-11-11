@@ -47,9 +47,10 @@
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *   modified 2008-08-29, Murat Purc, synchronised with /cms/front_content.php
  *   modified 2008-09-07, Murat Purc, new chain 'Contenido.Frontend.AfterLoadPlugins'
+ *   modified 2008-11-10, Andreas Lindner, added additional option to CEC_Hook::setConditions for frontend user acccess     
  *
  *   $Id$:
- * }}
+  * }}
  *
  */
 
@@ -783,7 +784,7 @@ else
             {
                 $allow = false;
 
-                CEC_Hook::setConditions(CEC_Hook::BREAK_AT_TRUE, false);
+                CEC_Hook::setConditions(CEC_Hook::BREAK_AT_TRUE, false, true);
                 $value = CEC_Hook::execute("Contenido.Frontend.CategoryAccess", $lang, $idcat, $auth->auth["uid"]);
                 if ($value === true)
                 {
@@ -797,7 +798,7 @@ else
         {
             $allow = false;
 
-            CEC_Hook::setConditions(CEC_Hook::BREAK_AT_TRUE, false);
+            CEC_Hook::setConditions(CEC_Hook::BREAK_AT_TRUE, false, true);
             $value = CEC_Hook::execute("Contenido.Frontend.CategoryAccess", $lang, $idcat, $auth->auth["uid"]);
             if ($value === true)
             {

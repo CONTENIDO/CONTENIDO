@@ -20,7 +20,10 @@
  * 
  * {@internal 
  *   created 2008-08-28, Murat Purc, initial implementation, port from Advanced Mod Rewrite Plugin
- *   created 2008-09-10, Murat Purc, Bugfix: add further condition handling to prevent overwriting of arguments
+ *   modified 2008-09-10, Murat Purc, Bugfix: add further condition handling to prevent overwriting of arguments
+ *   modified 2008-11-11, Andreas Lindner,  when overwriting of arguments is prevented and break condition is set
+ *   					added anoption to return break condition value directly, otherwise the args would be returned, which is not
+ *   					desirable under all circumstances
  * }}
  * 
  */
@@ -90,6 +93,12 @@ class CEC_Hook {
     static private $_breakCondition = null;
 
 	/**
+	 * Flag to return the set break condition directly.
+	 * @var  bool
+	 */
+    static private $_returnBreakConditionDirectly = false;
+
+	/**
 	 * Flag to overwrite arguments.
 	 * @var  bool
 	 */
@@ -114,13 +123,21 @@ class CEC_Hook {
      *                              - CEC_Hook::BREAK_AT_NULL = Breaks the iteration of cec functions 
      *                                and returns the parameter, if the result of an function is null.
      *
-     * @param  bool  $overwriteArguments  Flag to pervent overwriting of passed parameter to execute().
-     *                                    Normally the parameter will be overwritten by return value of 
-     *                                    executed functions, but this is sometimes a not wanted side effect.
+     * @param  bool  $overwriteArguments
+     * 	  								Flag to prevent overwriting of passed parameter to execute().
+     *                                  Normally the parameter will be overwritten by return value of 
+     *                                  executed functions, but this is sometimes a not wanted side effect.
+     *
+     * @param  bool  $returnbreakconditiondirectly
+     * 									If a break condition is set and a chain function returns the condition
+     * 									set, setting this option forces the execute method to directly return
+     * 									that condition instead of the args	         
+     *                                     
+     *                                    
      *
      * @throws  InvalidArgumentException  If passed type is not one of CEC_Hook constants.
      */
-    static public function setConditions($condition, $overwriteArguments=true) {
+    static public function setConditions($condition, $overwriteArguments=true, $returnbreakconditiondirectly = false) {
 
         switch ($condition) {
             case CEC_Hook::BREAK_AT_TRUE:
@@ -138,6 +155,8 @@ class CEC_Hook {
         }
         
         self::$_overwriteArguments = (bool) $overwriteArguments;
+        
+		self::$_returnBreakConditionDirectly = (bool) $returnbreakconditiondirectly;
 
     }
 
@@ -231,13 +250,22 @@ class CEC_Hook {
                     // check, if iteration of the loop is to break
                     if (self::$_breakCondition !== null) {
                         if (self::$_breakCondition == self::BREAK_AT_TRUE && $return === true) {
-                            break;
+                            if (self::$_returnBreakConditionDirectly) {
+								return true;
+							}	
+							break;
                         } elseif (self::$_breakCondition == self::BREAK_AT_FALSE && $return === false) {
+                            if (self::$_returnBreakConditionDirectly) {
+	                            return false;
+	                        }
                             break;
                         } elseif (self::$_breakCondition == self::BREAK_AT_NULL && $return === null) {
+                            if (self::$_returnBreakConditionDirectly) {
+                            	return null;
+                            }
                             break;
                         }
-                    }
+					}
                 }
             }
         } else {
