@@ -25,6 +25,7 @@
  *   created 2004-01-15
  *   modified 2008-06-30, Frederic Schneider, add security fix
  *   modified 2008-07-11, Dominik Ziegler, marked class search_helper as deprecated
+ *   modified 2008-11-12, Andreas Lindner, add special treatment for iso-8859-2    
  *
  *   $Id$: 
  * }}
@@ -469,7 +470,14 @@ class Index
 	  	 * modified 2007-10-01, H. Librenz - added as hotfix for encoding problems (doesn't find any words with
 	  	 * 									 umlaut vowels in it since you turn on UTF-8 as language encoding)
 	  	 */
-        $key = htmlentities($key, NULL, getEncodingByLanguage($this->db, $this->lang, $this->cfg));
+		$sEncoding = getEncodingByLanguage($this->db, $this->lang, $this->cfg);
+		
+		if (strtolower($sEncoding) != 'iso-8859-2') {
+			$key = htmlentities($key, NULL, $sEncoding);
+		} else {
+			$key = htmlentities_iso88592($key);
+		}
+
         $aUmlautMap = array (
             '&Uuml;'    => 'ue',
             '&uuml;'    => 'ue',
