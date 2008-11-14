@@ -155,19 +155,19 @@ if ($aItems !== false)
             
             if (strlen($aValue['type']) > 35) {
                 $sShort = htmlspecialchars(capiStrTrimHard($aValue['type'], 35));
-                $aValue['type'] = sprintf($sMouseoverTemplate, $aValue['type'], $sShort);
+                $aValue['type'] = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($aValue['type']), ENT_QUOTES), $sShort);
             }
             
             if (strlen($aValue['value']) > 35) {
                 $sShort = htmlspecialchars(capiStrTrimHard($aValue['value'], 35));
-                $aValue['value'] = sprintf($sMouseoverTemplate, $aValue['value'], $sShort);
+                $aValue['value'] = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($aValue['value']), ENT_QUOTES), $sShort);
             }
             
             if (strlen($aValue['name']) > 35) {
                 $sShort = htmlspecialchars(capiStrTrimHard($aValue['name'], 35));
-                $aValue['name'] = sprintf($sMouseoverTemplate, $aValue['name'], $sShort);
+                $aValue['name'] = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($aValue['name']), ENT_QUOTES), $sShort);
             }
-            
+			
         	$oList->setData($iCounter, $aValue['type'], $aValue['name'], $aValue['value'], $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
     	}
     	$iCounter++;

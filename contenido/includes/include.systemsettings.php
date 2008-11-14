@@ -126,17 +126,17 @@ if (is_array($settings))
             
                 if (strlen($type) > 35) {
                     $sShort = htmlspecialchars(capiStrTrimHard($type, 35));
-                    $type = sprintf($sMouseoverTemplate, $type, $sShort);
+                    $type = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($type), ENT_QUOTES), $sShort);
                 }
                 
                 if (strlen($value['value']) > 35) {
                     $sShort = htmlspecialchars(capiStrTrimHard($value['value'], 35));
-                    $value['value'] = sprintf($sMouseoverTemplate, $value['value'], $sShort);
+                    $value['value'] = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($value['value']), ENT_QUOTES), $sShort);
                 }
                 
                 if (strlen($key) > 35) {
                     $sShort = htmlspecialchars(capiStrTrimHard($key, 35));
-                    $key = sprintf($sMouseoverTemplate, $key, $sShort);
+                    $key = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($key), ENT_QUOTES), $sShort);
                 }
 				
 				!strlen(trim($value['value'])) ? $sValue = '&nbsp;' : $sValue = $value['value'];
