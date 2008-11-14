@@ -170,7 +170,10 @@ foreach ($isCurrent as $key => $value)
 {
 	if ($value == true)
 	{
-		$idartlang = $article[$key];
+		$idartlang 	= Contenido_Security::toInteger($article[$key]);
+		$lang = Contenido_Security::toInteger($lang);
+		$client = Contenido_Security::toInteger($client);
+
     	$sql = "SELECT B.idcat AS idcat, A.title AS title, A.created AS created, A.lastmodified AS changed, 
                        A.idart as idart, E.name as tpl_name, A.idartlang as idartlang, F.idcatlang as idcatlang,
                        B.idcatart as idcatart, A.idlang as art_lang, F.startidartlang as startidartlang
@@ -185,7 +188,8 @@ foreach ($isCurrent as $key => $value)
 						   A.idart = C.idart AND
 						   A.idlang = '$lang' AND
  						   C.idclient = '$client';";
-    	$db->query(Contenido_Security::escapeDB($sql, $db));
+    	
+		$db->query($sql);
 
     	if ($db->next_record())
     	{
