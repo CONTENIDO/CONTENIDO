@@ -549,7 +549,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 		{
 			if ($debug)
 				echo "UPDATED code for lang:$lang, client:$client, idcatart:$idcatart";
-			$sql = "UPDATE ".$cfg["tab"]["code"]." SET code='".Contenido_Security::escapeDB($code, $db)."', idlang='".Contenido_Security::escapeDB($lang, $db)."', idclient='".Contenido_Security::escapeDB($client, $db)."'
+			$sql = "UPDATE ".$cfg["tab"]["code"]." SET code='".Contenido_Security::escapeDB($code, $db, false)."', idlang='".Contenido_Security::escapeDB($lang, $db)."', idclient='".Contenido_Security::escapeDB($client, $db)."'
 					WHERE idcatart='".Contenido_Security::toInteger($idcatart)."' AND idlang='".Contenido_Security::escapeDB($lang, $db)."'";
 			$db->query($sql);
 		} else
@@ -557,7 +557,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 			if ($debug)
 				echo "INSERTED code for lang:$lang, client:$client, idcatart:$idcatart";
 			$sql = "INSERT INTO ".$cfg["tab"]["code"]." (idcode, idcatart, code, idlang, idclient) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["code"]))."', '".Contenido_Security::toInteger($idcatart)."',
-					'".Contenido_Security::escapeDB($code, $db)."', '".Contenido_Security::escapeDB($lang, $db)."', '".Contenido_Security::escapeDB($client, $db)."')";
+					'".Contenido_Security::escapeDB($code, $db, false)."', '".Contenido_Security::escapeDB($lang, $db)."', '".Contenido_Security::escapeDB($client, $db)."')";
 			$db->query($sql);
 		}
 
