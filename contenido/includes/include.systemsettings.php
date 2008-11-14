@@ -138,10 +138,12 @@ if (is_array($settings))
                     $sShort = htmlspecialchars(capiStrTrimHard($key, 35));
                     $key = sprintf($sMouseoverTemplate, $key, $sShort);
                 }
-                
+				
+				!strlen(trim($value['value'])) ? $sValue = '&nbsp;' : $sValue = $value['value'];
+				
                 $list->setCell($count,1, $key);
                 $list->setCell($count,2, $type);
-                $list->setCell($count,3, $value['value']);	
+                $list->setCell($count,3, $sValue);	
     		}
             
             if (!in_array($key.'_'.$type, $aManagedValues)) {
