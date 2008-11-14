@@ -27,7 +27,9 @@
             url += '&groupid=' + idgroup;
             url += '&contenido=' + sid;
             window.location.href = url;
-
+			
+			parent.parent.right.right_top.location.href = 'main.php?area=groups&frame=3&contenido=' + sid;
+			parent.parent.right.right_bottom.location.href = 'main.php?area=groups&frame=4&contenido=' + sid;
         }
     </script>       
 </head>
