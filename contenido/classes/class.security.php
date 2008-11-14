@@ -25,6 +25,7 @@
  *   modified 2008-07-04, Frederic Schneider, added test to valid contenido-session-var
  *   modified 2008-07-23, Frederic Schneider, fixed stripslashes_deep functionality
  *   modified 2008-07-31, Frederic Schneider, added escapeString() with fallback at escapeDB()
+ *   modified 2008-11-13, Timo Trautmann also strip slashes, if they were added autmatically by php
  *
  *   $Id$:
  * }}
@@ -47,7 +48,16 @@ class Contenido_Security {
      */
     public static function filter($sString, $oDb) {
       $sString = (string) $sString;
-      $sString = Contenido_Security::escapeDB( htmlspecialchars( urlencode($sString)), $oDb);
+	  
+	  if(defined('CONTENIDO_STRIPSLASHES')) {
+			if(function_exists("stripslashes_deep")) {
+				$sString = stripslashes_deep($sString);
+			} else {
+				$sString = stripslashes($sString);
+			}
+	  }
+	  
+      $sString = Contenido_Security::escapeDB( htmlspecialchars( urlencode($sString)), $oDb, false);
       return $sString;
     }
     
@@ -199,22 +209,27 @@ class Contenido_Security {
     
     }
 
-    /**
-     * Escaped an query-string with mysql_real_escape_string
-     * @access public
-     * @param string $sString
-     * @param object $oDB contenido database object
-     * @return converted string
-     */
-    public static function escapeDB($sString, $oDB) {
+	/**
+	 * Escaped an query-string with mysql_real_escape_string
+	 * @access public
+	 * @param string $sString
+	 * @param object $oDB contenido database object
+	 * @param boolean $bUndoAddSlashes (optional, true)
+	 * @return converted string
+	 */
+    public static function escapeDB($sString, $oDB, $bUndoAddSlashes = true) {
 
         if(!is_object($oDB)) {
             return self::escapeString($sString);
         } else {
 
-            if(defined(CONTENIDO_STRIPSLASHES) && functions_exists("stripslashes_deep")) {
-                $sString = stripslashes_deep($sString);
-            }
+			if(defined('CONTENIDO_STRIPSLASHES') && $bUndoAddSlashes == true) {
+	            if(function_exists("stripslashes_deep")) {
+	                $sString = stripslashes_deep($sString);
+	            } else {
+					$sString = stripslashes($sString);
+				}
+			}
 
             return $oDB->Escape($sString);
         }
@@ -229,9 +244,13 @@ class Contenido_Security {
      */
     public static function escapeString($sString) {
 
-        if(defined(CONTENIDO_STRIPSLASHES) && functions_exists("stripslashes_deep")) {
-            $sString = stripslashes_deep($sString);
-        }
+        if(defined('CONTENIDO_STRIPSLASHES')) {
+			if(function_exists("stripslashes_deep")) {
+				$sString = stripslashes_deep($sString);
+			} else {
+				$sString = stripslashes($sString);
+			}
+		}
 
         return addslashes($sString);
 

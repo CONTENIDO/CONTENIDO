@@ -823,7 +823,7 @@ function rereadClients()
  * @param int $idsystemprop The sysprop id, use optional. If set it allows to modify type name and value
  */
 function setSystemProperty($type, $name, $value, $idsystemprop = 0)
-{
+{	
 	global $cfg;
 	if ($type == "" || $name == "")
 	{
@@ -833,8 +833,6 @@ function setSystemProperty($type, $name, $value, $idsystemprop = 0)
     $idsystemprop = Contenido_Security::toInteger($idsystemprop);
     
 	$db_systemprop = new DB_Contenido;
-
-	$value = urlencode($value);
     
     if ($idsystemprop == 0) {
         $sql = "SELECT idsystemprop FROM ".$cfg["tab"]["system_prop"]." WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."' AND name='".Contenido_Security::escapeDB($name, $db_systemprop)."'";
@@ -847,16 +845,16 @@ function setSystemProperty($type, $name, $value, $idsystemprop = 0)
 	if ($db_systemprop->num_rows() > 0)
 	{
         if ($idsystemprop == 0) {
-            $sql = "UPDATE ".$cfg["tab"]["system_prop"]." SET value='".Contenido_Security::escapeDB($value, $db_systemprop)."' WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."'
+            $sql = "UPDATE ".$cfg["tab"]["system_prop"]." SET value='".Contenido_Security::filter($value, $db_systemprop)."' WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."'
                     AND name='".Contenido_Security::escapeDB($name, $db_systemprop)."'";
         } else {
-            $sql = "UPDATE ".$cfg["tab"]["system_prop"]." SET value='".Contenido_Security::escapeDB($value, $db_systemprop)."', type='".Contenido_Security::escapeDB($type, $db_systemprop)."',
+            $sql = "UPDATE ".$cfg["tab"]["system_prop"]." SET value='".Contenido_Security::filter($value, $db_systemprop)."', type='".Contenido_Security::escapeDB($type, $db_systemprop)."',
                     name='".Contenido_Security::escapeDB($name, $db_systemprop)."' WHERE idsystemprop='$idsystemprop'";
         }
 	} else
 	{
 		$idsystemprop = $db_systemprop->nextid($cfg["tab"]["system_prop"]);
-		$sql = "INSERT INTO ".$cfg["tab"]["system_prop"]." (idsystemprop, value, type, name) VALUES ('$idsystemprop', '".Contenido_Security::escapeDB($value, $db_systemprop)."',
+		$sql = "INSERT INTO ".$cfg["tab"]["system_prop"]." (idsystemprop, value, type, name) VALUES ('$idsystemprop', '".Contenido_Security::filter($value, $db_systemprop)."',
                 '".Contenido_Security::escapeDB($type, $db_systemprop)."', '".Contenido_Security::escapeDB($name, $db_systemprop)."')";
 	}
 

@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-26, Dominik Ziegler, add security fix
+ *   modified 2008-11-13,  Timo Trautmann - Fixed wron escaping of chars
  *
  *   $Id$:
  * }}

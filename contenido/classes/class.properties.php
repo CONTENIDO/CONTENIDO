@@ -111,19 +111,28 @@ class PropertyCollection extends ItemCollection
  	 * @param type	 	mixed Type of the data to store (arbitary data)
  	 * @param name		mixed Entry name
 	 * @param value		mixed Value
+	 * @param bInternally boolean - optionally default false (on internal call do not escape parameters again
 	 */
-	function create ($itemtype, $itemid, $type, $name, $value)
+	function create ($itemtype, $itemid, $type, $name, $value, $bInternally = false)
 	{
 		global $cfg, $auth;
 		
 		$item = parent::create();
+		
+		if (!$bInternally) {
+			$itemtype 	= Contenido_Security::escapeDB($itemtype, null);
+			$itemid 	= Contenido_Security::escapeDB($itemid, null);
+			$value 		= Contenido_Security::escapeDB($value, null);
+			$type 		= Contenido_Security::escapeDB($type, null);
+			$name 		= Contenido_Security::escapeDB($name, null);
+		}
 
 		$item->set("idclient", $this->client);
-		$item->set("itemtype", Contenido_Security::escapeDB($itemtype, null), false);
-		$item->set("itemid", Contenido_Security::escapeDB($itemid, null), false);
-		$item->set("type", Contenido_Security::escapeDB($type, null), false);
-		$item->set("name", Contenido_Security::escapeDB($name, null), false);
-		$item->set("value", Contenido_Security::escapeDB($value, null));
+		$item->set("itemtype", $itemtype, false);
+		$item->set("itemid", $itemid, false);
+		$item->set("type", $type);
+		$item->set("name", $name);
+		$item->set("value", $value);
 
 		$item->set("created", date("Y-m-d H:i:s"), false);
 		$item->set("author", Contenido_Security::escapeDB($auth->auth["uid"], null));
@@ -242,7 +251,7 @@ class PropertyCollection extends ItemCollection
             $item->set("type", $type);
 			$item->store();
 		} else {
-			$this->create($itemtype, $itemid, $type, $name, $value);	
+			$this->create($itemtype, $itemid, $type, $name, $value, true);	
 		}
 	}
 	

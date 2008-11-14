@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-11-18
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2008-11-13,  Timo Trautmann - Fixed wron escaping of chars
  *
  *   $Id$:
  * }}
@@ -91,18 +92,19 @@ if (is_array($settings))
     {
     	foreach ($types as $type => $value)
     	{
-    		$oLinkEdit->setCustom("sysname", $type);
-    		$oLinkEdit->setCustom("systype", $key);
+    		$oLinkEdit->setCustom("sysname", urlencode($type));
+    		$oLinkEdit->setCustom("systype", urlencode($key));
     		
-			$oLinkDelete->setCustom("sysname", $type);
-    		$oLinkDelete->setCustom("systype", $key);
+			$oLinkDelete->setCustom("sysname", urlencode($type));
+    		$oLinkDelete->setCustom("systype", urlencode($key));
 
             $link = $oLinkEdit;
             $dlink = $oLinkDelete->render();
-            
+
             if (in_array($key.'_'.$type, $aManagedValues)) {
                 #ignore record
-            } else if (($action == "systemsettings_edit_item") && ($systype == $key) && ($sysname == $type)) {
+				
+            } else if (($action == "systemsettings_edit_item") && (stripslashes($systype) == $key) && (stripslashes($sysname) == $type)) {
                 $oInputboxValue = new cHTMLTextbox ("sysvalue", $value['value']);
     			$oInputboxValue->setStyle("border:1px;border-style:solid;border-color:black;width:200px;");
                 
