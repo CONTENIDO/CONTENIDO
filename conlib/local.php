@@ -723,7 +723,7 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth {
     /* Authentification via frontend users */
     $this->db->query(sprintf("SELECT idfrontenduser, password FROM %s WHERE username = '%s' AND idclient='$client' AND active='1'", 
     						 $this->fe_database_table,
-    						 urlencode(Contenido_Security::escapeDB(urlencode($username), $this->db) )));
+    						 Contenido_Security::escapeDB(urlencode($username), $this->db )));
     
 	if ($this->db->next_record())
 	{
