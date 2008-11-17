@@ -238,7 +238,7 @@ $sExecScript = '
 
         // Function for deleting recipients
         function deleteRecipient(idrecipient) {
-            oForm = top.content.left.left_top.document.getElementById("htmlnewsletter");
+            oForm = top.content.left.left_top.document.getElementById("options");
 
             url  = "main.php?area=recipients";
             url += "&action=recipients_delete";
