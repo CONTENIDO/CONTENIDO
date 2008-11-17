@@ -63,6 +63,7 @@ form, h1, h2, h3, h4{
 	width: 700px;
 	margin-left: 250px;
 	background-color: #FFF;
+	white-space: nowrap;
 }
 .head_nav_login{
   background-color: #FFF;
