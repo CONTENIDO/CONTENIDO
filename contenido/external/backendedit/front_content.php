@@ -46,6 +46,7 @@
  *   created 2003-01-21
  *   modified 2008-07-02, Frederic Schneider, add security fix and include class_security
  *   modified 2008-08-29, Murat Purc, synchronised with /cms/front_content.php
+ *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page
  *
  *   $Id$:
  * }}
@@ -809,6 +810,14 @@ else
             {
                 $allow = true;
             }
+			
+			/*
+				added 2008-11-18 Timo Trautmann
+				in backendeditmode also check if logged in backenduser has permission to view preview of page
+			*/
+			if ($allow == false && $contenido && $perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat)) {
+				$allow = true;
+			}
 
             if (!$allow)
             {

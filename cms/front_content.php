@@ -51,7 +51,8 @@
  *   modified 2008-09-07, Murat Purc, new chain 'Contenido.Frontend.AfterLoadPlugins'
  *   modified 2008-11-11, Andreas Lindner, added additional option to CEC_Hook::setConditions for frontend user acccess
  *   modified 2008-11-11, Andreas Lindner, Fixed typo in var name $iLangCheck (missing $)
- *   modified 2008-11-11, Andreas Lindner,              
+ *   modified 2008-11-11, Andreas Lindner,        
+ *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page 
  *
  *   $Id$:
  * }}
@@ -808,6 +809,14 @@ else
                 $allow = true;
             }
 
+			/*
+				added 2008-11-18 Timo Trautmann
+				in backendeditmode also check if logged in backenduser has permission to view preview of page
+			*/
+			if ($allow == false && $contenido && $perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat)) {
+				$allow = true;
+			}
+			
             if (!$allow)
             {
                 header($errsite);
