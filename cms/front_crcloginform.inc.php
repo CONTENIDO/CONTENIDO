@@ -19,10 +19,11 @@
  * @since      file available since contenido release <Contenido Version>
  * @deprecated file deprecated in contenido release <Contenido Version>
  * 
- * {@internal 
+ * {@internal
  *   created  2003-01-2003
  *   modified 2005-09-29, Andreas Lindner
  *   modified 2008-07-03, bilal arslan, added security fix
+ *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages and redesign of HTML markup
  *
  *   $Id$:
  * }}
@@ -33,122 +34,123 @@ if(!defined('CON_FRAMEWORK')) {
   die('Illegal call');
 }
 
-global $cfg, $idcat, $idart, $idcatart, $lang, $client, $username;
+global $cfg, $idcat, $idart, $idcatart, $lang, $client, $username, $encoding;
 
-$err_catart	= trim(getEffectiveSetting("login_error_page", "idcatart", ""));
-$err_cat	= trim(getEffectiveSetting("login_error_page", "idcat", ""));
-$err_art	= trim(getEffectiveSetting("login_error_page", "idart", ""));
+#$err_catart = trim(getEffectiveSetting("login_error_page", "idcatart", ""));
+#$err_cat    = trim(getEffectiveSetting("login_error_page", "idcat", ""));
+#$err_art    = trim(getEffectiveSetting("login_error_page", "idart", ""));
 
-$sUrl = $cfgClient[$client]["path"]["htmlpath"]."front_content.php";
+$oUrl = Contenido_Url::getInstance();
 
-if ($err_catart!='') {
-	header("Location: ".$sUrl."?idcatart=".$err_catart);
+$sContenidoPath  = '/contenido';
+$sClientHtmlPath = $cfgClient[$client]["path"]["htmlpath"];
+
+$sUrl = $sClientHtmlPath . 'front_content.php';
+
+$sErrorUrl = $sUrl;
+$bRedirect = false;
+
+if ($err_catart != '') {
+    $sErrorUrl .= '?idcatart=' . $err_catart . '&lang=' . $lang;
+    $bRedirect  = true;
+} elseif ($err_art != '' && $err_cat != '') {
+    $sErrorUrl .= '?idcat=' . $err_cat . '&idart=' . $err_art . '&lang=' . $lang;
+    $bRedirect  = true;
+} elseif ($err_cat != '') {
+    $sErrorUrl .= '?idcat=' . $err_cat . '&lang=' . $lang;
+    $bRedirect  = true;
+} elseif ($err_art != '') {
+    $sErrorUrl .= '?idart=' . $err_art . '&lang=' . $lang;
+    $bRedirect  = true;
 }
-if ($err_art!='' && $err_cat!='') {
-	header("Location: ".$sUrl."?idcat=".$err_cat."&idart=".$err_art);
-}
-if ($err_cat!='') {
-	header("Location: ".$sUrl."?idcat=".$err_cat);
-}
-if ($err_art!='') {
-	header("Location: ".$sUrl."?idart=".$err_art);
+
+if ($bRedirect) {
+    $aUrl = $oUrl->parse($sess->url($sErrorUrl));
+    $sErrorUrl = $oUrl->build($aUrl['params']);
+    header('Location: ' . $sClientHtmlPath . $sErrorUrl);
+    exit();
 }
 
-if (isset($_GET["return"]) || isset($_POST["return"])){
-	$aLocator = Array();
+if (isset($_GET['return']) || isset($_POST['return'])){
+    $aLocator = array('lang=' . (int) $lang);
 
-	if ($idcat > 0) {
-		$aLocator[] = "idcat=".intval($idcat);
-	}
-	if ($idart > 0) {
-		$aLocator[] = "idart=".intval($idart);
-	}
+    if ($idcat > 0) {
+        $aLocator[] = 'idcat=' . intval($idcat);
+    }
+    if ($idart > 0) {
+        $aLocator[] = 'idart=' . intval($idart);
+    }
+    if (isset($_POST['username']) || isset($_GET['username'])){
+        $aLocator[] = 'wrongpass=1';
+    }
 
-	if (isset($_POST["username"]) || isset($_GET["username"])){
-		$aLocator[]= "wrongpass=1";
-	}
-
-	header ("Location: " . $sUrl . "?" . implode("&", $aLocator));
+    $sErrorUrl = $sUrl . '?' . implode('&', $aLocator);
+    $aUrl = $oUrl->parse($sess->url($sErrorUrl));
+    $sErrorUrl = $oUrl->build($aUrl['params']);
+    header ('Location: ' . $sClientHtmlPath . $sErrorUrl);
+    exit();
 }
+
+// set form action
+$sFormAction = $sess->url($sUrl . '?idcat=' . intval($idcat) . '&lang=' . $lang);
+$aUrl = $oUrl->parse($sFormAction);
+$sFormAction = $oUrl->build($aUrl['params']);
+
+
 ?>
-<!doctype html public "-//W3C//DTD HTML 4.0 //EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>" /> 
     <title>:: :: :: :: Contenido Login</title>
-    <link rel="stylesheet" type="text/css" href="../contenido/styles/contenido.css" />
-
-    <script language="javascript">
-	if (top != self)
-	{
-		top.location.href = self.location.href;
-	}
-	</script>
+    <script type="text/javascript"><!--
+    if (top != self) {
+        top.location.href = self.location.href;
+    }
+    // --></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo $sContenidoPath; ?>/styles/contenido.css" />
+    <style type="text/css"><!--
+    html, body {height: 100%;}
+    #loginPageWrap {
+        width:230px; height:120px; text-align:center; border:1px solid <?php echo $cfg['color']['table_border'] ?>; background-color:<?php echo $cfg['color']['table_light'] ?>;
+        color: #fff; position:absolute; left:50%; top:50%; margin-left:-115px; margin-top:-60px; 
+    }
+    #login {text-align:left;}
+    #login label {display:block; float:left; width:70px; }
+    #login input.text {float:right; width:130px; margin:0; }
+    #login .formHeader {font-weight:bold; background-color:<?php echo $cfg['color']['table_header'] ?>; border-bottom:1px solid <?php echo $cfg['color']['table_border'] ?>; padding:3px; margin-bottom:10px;}
+    #login .formRow {padding:0 10px; height:31px;}
+    #login .clear {clear:both;}
+    // --></style>
 </head>
 <body>
 
-<table width="100%" cellspacing="0" cellpadding="0" border="0">
-    <!--
-    <tr height="70" style="height: 70px">
-        <td style="background-image:url(images/background.jpg); border-bottom: 1px solid #000000">
-            <img src="images/conlogo.gif">
-        </td>
-    </tr>-->
-    <tr height="400">
-        <td align="center" valign="middle">
-            <form name="login" method="post" action="front_content.php">
-                <table cellspacing="0" cellpadding="3" border="0" style="background-color: <?php echo $cfg['color']['table_light'] ?>; border: 1px solid <?php echo $cfg['color']['table_border'] ?>">
-                    <tr>
-                        <td colspan="2" class="textw_medium" style="background-color: <?php echo $cfg["color"]["table_header"] ?>; border-bottom: 1px solid <?php echo $cfg["color"]["table_border"] ?>">Login</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"></td>
-                    </tr>
+<div id="loginPageWrap">
+    <form id="login" name="login" method="post" action="<?php echo $sFormAction; ?>">
+        <input type="hidden" name="vaction" value="login" />
+        <input type="hidden" name="formtimestamp" value="<?php echo time(); ?>" />
+        <input type="hidden" name="idcat" value="<?php echo intval($idcat); ?>" />
+        <div class="formHeader">Login</div>
+        <div class="formRow">
+            <label for="username" class="text_medium">Username:</label><input type="text" class="text text_medium" name="username" id="username" size="20" maxlength="32" value="<?php echo ( isset($this->auth['uname']) ) ? $this->auth['uname'] : ''  ?>" /><br class="clear" />
+        </div>
+        <div class="formRow">
+            <label class="text_medium" for="password">Password:</label><input type="password" class="text text_medium" name="password" id="password" size="20" maxlength="32" /><br class="clear" />
+        </div>
+        <div class="formRow" style="text-align:right">
+            <input type="image" title="Login" alt="Login" src="<?php echo $sContenidoPath; ?>/images/but_ok.gif" />
+        </div>
+    </form>
+</div>
 
-                    <?php if ( isset($username) ) { ?>
-                    <tr>
-                        <td colspan="2" class="text_error">Invalid Username or Password!</td>
-                    </tr>
-                    <?php } else { ?>
-                    <tr>
-                        <td colspan="2" class="text_error">&nbsp;</td>
-                    </tr>
-                    <?php } ?>
-
-                    <tr>
-                        <td colspan="2"></td>
-                    </tr>
-                    <tr>
-                        <td class="text_medium">Username:</td>
-                        <td><input type="text" class="text_medium" name="username" size="20" maxlength="32" value="<?php echo ( isset($this->auth["uname"]) ) ? $this->auth["uname"] : ""  ?>"></td>
-                    </tr>
-                    <tr>
-                        <td class="text_medium">Password:</td>
-                        <td><input type="password" class="text_medium" name="password" size="20" maxlength="32">
-                            <input type="hidden" name="vaction" value="login">
-                            <input type="hidden" name="formtimestamp" value="<?php echo time(); ?>">
-							<input type="hidden" name="idcat" value="<?php echo intval($idcat); ?>">
-                            </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="right">
-                            <input type="image" title="Login" alt="Login" src="../contenido/images/but_ok.gif">
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </td>
-    </tr>
-</table>
-
-<script type="text/javascript">
-    if (document.login.username.value == '') {
-        document.login.username.focus();
-
-    } else {
-        document.login.password.focus();
-
-    }
-</script>
+<script type="text/javascript"><!--
+if (document.login.username.value == '') {
+    document.login.username.focus();
+} else {
+    document.login.password.focus();
+}
+// --></script>
 
 </body>
 </html>

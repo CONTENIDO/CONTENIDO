@@ -53,6 +53,7 @@
  *   modified 2008-11-11, Andreas Lindner, Fixed typo in var name $iLangCheck (missing $)
  *   modified 2008-11-11, Andreas Lindner,        
  *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page 
+ *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages
  *
  *   $Id$:
  * }}
@@ -281,7 +282,11 @@ if (isset($path) && strlen($path) > 1)
 }
 
 // error page
-$errsite = "Location: front_content.php?client=$client&idcat=".$errsite_idcat[$client]."&idart=".$errsite_idart[$client]."&lang=$lang&error=1";
+$aParams = array (
+    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client], 
+    'lang' => $lang, 'error'=> '1'
+);
+$errsite = 'Location: ' . Contenido_Url::getInstance()->build($aParams);
 
 /*
  * Try to initialize variables $idcat, $idart, $idcatart, $idartlang
@@ -816,7 +821,7 @@ else
 			if ($allow == false && $contenido && $perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat)) {
 				$allow = true;
 			}
-			
+
             if (!$allow)
             {
                 header($errsite);
@@ -936,6 +941,12 @@ else
             /*
              * Redirect to the URL defined in article properties
              */
+            $oUrl = Contenido_Url::getInstance();
+            $aUrl = $oUrl->parse($redirect_url);
+            if (!isset($aUrl['params']['lang'])) {
+                $aUrl['params']['lang'] = $lang;
+            }
+            $redirect_url = $oUrl->build($aUrl['params']);
             header("Location: $redirect_url");
             exit;
         }

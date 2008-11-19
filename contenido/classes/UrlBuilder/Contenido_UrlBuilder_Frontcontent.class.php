@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,6 +21,7 @@
  * {@internal 
  *   created 2008-02-19
  *   modified 2008-09-09 Fix of parameter checking in method buildUrl()
+ *   modified 2008-09-29, Murat Purc, fix parameter check and third argument for buildUrl()
  *   @todo: add switch for & vs. &amp;
  * 
  *   $Id$:
@@ -73,16 +74,17 @@ class Contenido_UrlBuilder_Frontcontent extends Contenido_UrlBuilder {
      *
      * @param array $aParams
      * @param boolean $bUseAbsolutePath
+     * @param array  $aConfig Is not used at the moment 
      * @return void
      * @throws InvalidArgumentException
      * @throws Exception
      * @author Rudi Bieller
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false) {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
         $bIdcatSet = isset($aParams['idcat']);
         $bIdartSet = isset($aParams['idart']);
         $bIdcatArtSet = isset($aParams['idcatart']);
-        if ($bIdcatSet === false || $bIdartSet === false || $bIdcatArtSet === false) {
+        if ($bIdcatSet === false && $bIdartSet === false && $bIdcatArtSet === false) {
             throw new InvalidArgumentException('$aParams must have at least one of the following values set: $aParams[idcat], $aParams[idart] or $aParams[idcatart]!');
         }
         $sHttpBasePath = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';

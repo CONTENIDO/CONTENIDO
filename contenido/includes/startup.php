@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     four for Business AG
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-25, Frederic Schneider, add con_framework check and include contenido_secure
  *   modified 2008-07-02, Frederic Schneider, removed contenido_secure include
  *   modified 2008-08-28, Murat Purc, changed instantiation of $_cecRegistry
+ *   modified 2008-11-18, Murat Purc, add initialization of UrlBuilder configuration
  *
  *   $Id$:
  * }}
@@ -103,5 +104,11 @@ if (file_exists(dirname(__FILE__) . "/config.local.php"))
 }
 
 checkMySQLConnectivity();
+
+// Initialize UrlBuilder, configuration is set in /contenido/includes/config.misc.php
+cInclude('classes', 'Url/Contenido_Url.class.php');
+cInclude('classes', 'UrlBuilder/Contenido_UrlBuilderConfig.class.php');
+Contenido_UrlBuilderConfig::setConfig($cfg['url_builder']);
+
 
 ?>

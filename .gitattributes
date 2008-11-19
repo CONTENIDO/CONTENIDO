@@ -121,6 +121,7 @@ contenido/classes/Debug/Debug_VisibleAdv.class.php -text
 contenido/classes/Debug/DebuggerFactory.class.php -text
 contenido/classes/Debug/IDebug.php -text
 contenido/classes/Debug/Sample.php -text
+contenido/classes/Url/Contenido_Url.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilder.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilderConfig.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php -text

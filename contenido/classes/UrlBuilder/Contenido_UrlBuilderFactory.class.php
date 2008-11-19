@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.1.0
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -19,7 +19,8 @@
  * @link       http://www.contenido.org
  * 
  * {@internal 
- *   created 2008-02-18
+ *   created  2008-02-18
+ *   modified 2008-09-29, Murat Purc, add instantiation of userdefined UrlBuilder
  *   
  *   $Id$: 
  * }}
@@ -35,9 +36,13 @@ class Contenido_UrlBuilderFactory {
     /**
      * Returns desired UrlBuilder object.
      *
-     * @param string $sBuilder For now, those are valid: front_content, custom, custom_path
-     * @return obj
-     * @throws InvalidArgumentException In case unknown type of builder is requested you'll get an Exception
+     * @param   string  $sBuilder For now, those are valid: front_content, custom, custom_path or a 
+     *                            Userdefined UrlBuilder name. The name must be a subpart of the 
+     *                            UrlBuilder class, e. g. 'MyUrlBuilder' for Contenido_UrlBuilder_MyUrlBuilder.
+     *                            The classfile must be named like Contenido_UrlBuilder_MyUrlBuilder.class.php
+     *                            and it must be reside in /contenido/classes/UrlBuilder/ folder.
+     * @return  Contenido_UrlBuilder
+     * @throws  InvalidArgumentException In case unknown type of builder is requested you'll get an Exception
      */
     public static function getUrlBuilder($sBuilder) {
         switch($sBuilder) {
@@ -54,7 +59,20 @@ class Contenido_UrlBuilderFactory {
                 return Contenido_UrlBuilder_CustomPath::getInstance();
                 break;
             default:
-                throw new InvalidArgumentException('This type of Contenido_UrlBuilder is unknown to Contenido_UrlBuilderFactory: '.$sBuilder.'!');
+                if ((string) $sBuilder !== '') {
+                    $sClassName = 'Contenido_UrlBuilder_' . $sBuilder;
+                    $sFileName  = 'Contenido_UrlBuilder_' . $sBuilder . '.class.php';
+                    if (!file_exists($sFilename)) { 
+                        throw new InvalidArgumentException('The classfile of Contenido_UrlBuilder couldn\'t included by Contenido_UrlBuilderFactory: '.$sBuilder.'!'); 
+                    }
+                    cInclude('classes', 'UrlBuilder/' . $sFilename);
+                    if (!class_exists($sClassName)) {
+                        throw new InvalidArgumentException('The classfile of Contenido_UrlBuilder couldn\'t included by Contenido_UrlBuilderFactory: '.$sBuilder.'!');
+                    }
+                    return call_user_func($sClassName . '::getInstance');
+                }
+
+                throw new InvalidArgumentException('Invalid/Empty Contenido_UrlBuilder passed to Contenido_UrlBuilderFactory: '.$sBuilder.'!');
                 break;
         }
     }

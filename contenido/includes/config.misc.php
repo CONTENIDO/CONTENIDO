@@ -24,6 +24,7 @@
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-07-04, Dominik Ziegler, fixed bug CON-174
  *   modified 2008-11-10 Rudi Bieller Commented out display_errors as this should be handled as defined in php.ini by default
+ *   modified 2008-11-18, Murat Purc, add UrlBuilder configuration
  *
  *   $Id$:
  * }}
@@ -198,5 +199,22 @@ $cfg["contenido"]["notifyonerror"] = "";
 
 /* Configure how often the notification email is sent, in minutes */
 $cfg["contenido"]["notifyinterval"] = 20;
+
+
+/**
+ * UrlBuilder settings
+ * -------------------
+ * 'name'   =  The name of UrlBuilder to use. 
+ * 'config' = Default UrlBuilder configuration, depends on used UrlBuilder
+ *
+ * Defined name is used by /contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php
+ */
+$cfg['url_builder']['name']   = 'front_content';
+$cfg['url_builder']['config'] = array();
+/*
+// Example setting for UrlBuilder 'custom_path':
+$cfg['url_builder']['name']   = 'custom_path';
+$cfg['url_builder']['config'] = array('prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ',');
+*/
 
 ?>
