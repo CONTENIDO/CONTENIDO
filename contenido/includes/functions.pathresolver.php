@@ -232,6 +232,8 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck)
 	$db->query($sql);
 
 	$catpath = array ();
+	$arrLangMatches = array();
+
 	while ($db->next_record()) {
 		$cat_str = "";
 		$aTemp = "";
