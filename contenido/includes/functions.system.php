@@ -24,6 +24,7 @@
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-06-27, Timo Trautmann, add check to emptyLogFile if there is a permission to write file
  *   modified 2008-07-07, Dominik Ziegler, fixed language bugs
+ *   modified 2008-11-21, Andreas Lindner, enhance formatting of client information 
  *
  *   $Id$:
  * }}
@@ -344,7 +345,7 @@ function writeSystemValuesOutput($usage)
 			// get client name
 			$clientName = urldecode($db->f("clientname"));
 			$clientInformation .= "<tr class=\"text_medium\" style=\"background-color: {BGCOLOR};\" >
-			                	<td colspan=\"2\" class=\"text_medium\" style=\"border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid\" nowrap=\"nowrap\" align=\"left\" valign=\"top\">$clientName</td>
+			                	<td colspan=\"2\" class=\"text_medium\" style=\"border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid\" nowrap=\"nowrap\" align=\"left\" valign=\"top\"><i>$clientName</i></td>
 			                </tr>";
 			$clientlang = "";
 			// select languages belong to a client
