@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Display rights
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.0.2
@@ -18,42 +18,52 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-04-30
  *   modified 2008-06-24, Timo Trautmann, storage for valid from valid to added
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-08-26, Timo Trautmann - fixed CON-200 - User can only get lang rights, if he has client access
+ *   modified 2008-10-??, Bilal Arslan - direct DB user modifications are now encapsulated in new ConUser class
+ *   modified 2008-11-17, Holger Librenz - method calls for new user object modified, comments updated
  *
  *   $Id$:
  * }}
- * 
+ *
+ * TODO error handling!!!
+ * TODO export functions to new ConUser object!
  */
 
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+// load "new" user class
+cInclude('classes', 'class.conuser.php');
+
 cInclude('includes', 'functions.rights.php');
 $users = new Users;
+
+// New Class User, update password and other values
+$oUser = new ConUser($cfg, $db);
 
 if (($action == "user_delete") && ($perm->have_perm_area_action('user', $action))) {
 
    $users->deleteUserByID($userid);
-   
+
    $sql = "DELETE FROM "
 			.$cfg["tab"]["groupmembers"]."
 				WHERE user_id = '".Contenido_Security::escapeDB($userid, $db)."'";
 	$db->query($sql);
-	
+
 	$sql = "DELETE FROM ".
    			$cfg["tab"]["rights"].
    			" WHERE user_id = \"".Contenido_Security::escapeDB($userid, $db)."\"";
-   			
+
    $db->query($sql);
-   
+
   $userid = "";
-          
+
 }
 
 $db2 = new DB_Contenido;
@@ -68,6 +78,7 @@ if ( !isset($userid) )
 
 } else {
 
+    $oUser->setUserId ($userid);
 
     if (($action == "user_edit") && ($perm->have_perm_area_action($area, $action)))
     {
@@ -93,7 +104,7 @@ if ( !isset($userid) )
             if (!is_array($mclient)) {
                 $mclient = array();
             }
-            
+
             if (is_array($mlang)) {
                 foreach ($mlang as $value) {
                     //Fixed CON-200
@@ -103,68 +114,56 @@ if ( !isset($userid) )
                 }
             }
 
-            if (strlen($password) > 0)
-            {
-                if (strcmp($password, $passwordagain) == 0)
-                {
-                    $sql = 'UPDATE
-                             '.$cfg["tab"]["phplib_auth_user_md5"].'
-                            SET
-                                password="'.md5($password).'"
-                            WHERE
-                                user_id = "'.Contenido_Security::escapeDB($userid, $db).'"';
+            // update user values
+  			$oUser->setRealName($realname);
+			$oUser->setMail($email);
+			$oUser->setTelNumber($telephone);
+			$oUser->setAddressData($address_street, $address_city, $address_zip, $address_country);
+			$oUser->setUseTiny($wysi);
+			$oUser->setValidDateFrom($valid_from);
+			$oUser->setValidDateTo($valid_to);
 
-                    $db->query($sql);
+			$oUser->setPerms($stringy_perms);
 
+			// is a password set?
+			$bPassOk = false;
+            if (strlen($password) > 0) {
+                // yes --> check it...
+                if (strcmp($password, $passwordagain) == 0) {
+					// set password....
+                    $iPasswordSaveResult = $oUser->setPassword($password);
 
-                    $sql = 'UPDATE
-                             '.$cfg["tab"]["phplib_auth_user_md5"].'
-                            SET
-                              realname="'.Contenido_Security::escapeDB($realname, $db).'",
-                              email="'.Contenido_Security::escapeDB($email, $db).'",
-                              telephone="'.Contenido_Security::escapeDB($telephone, $db).'",
-                              address_street="'.Contenido_Security::escapeDB($address_street, $db).'",
-                              address_city="'.Contenido_Security::escapeDB($address_city, $db).'",
-                              address_country="'.Contenido_Security::escapeDB($address_country, $db).'",
-                              address_zip="'.Contenido_Security::escapeDB($address_zip, $db).'",
-                              wysi="'.Contenido_Security::toInteger($wysi).'",
-							  valid_from="'.Contenido_Security::escapeDB($valid_from, $db).'",
-							  valid_to="'.Contenido_Security::escapeDB($valid_to, $db).'",
-                              perms="'.implode(",",$stringy_perms).'" 
-                            WHERE
-                              user_id = "'.Contenido_Security::escapeDB($userid, $db).'"';
- 
-                    $db->query($sql);
-
-                    $notification->displayNotification("info", i18n("Changes saved"));
-                    
+                    // fine, passwords are the same, but is the password valid?
+                    if ($iPasswordSaveResult != iConUser::PASS_OK) {
+                        // oh oh, password is NOT valid. check it...
+                        $sPassError = ConUser::getErrorString($iPasswordSaveResult);
+                        $notification->displayNotification("error", $sPassError);
+                    } else {
+                        $bPassOk = true;
+                    }
                 } else {
                     $notification->displayNotification("error", i18n("Passwords don't match"));
                 }
-        } else {
-                $sql = 'UPDATE
-                         '.$cfg["tab"]["phplib_auth_user_md5"].'
-                        SET
-                          realname="'.Contenido_Security::escapeDB($realname, $db).'",
-                          email="'.Contenido_Security::escapeDB($email, $db).'",
-                          telephone="'.Contenido_Security::escapeDB($telephone, $db).'",
-                          address_street="'.Contenido_Security::escapeDB($address_street, $db).'",
-                          address_city="'.Contenido_Security::escapeDB($address_city, $db).'",
-                          address_country="'.Contenido_Security::escapeDB($address_country, $db).'",
-                          address_zip="'.Contenido_Security::escapeDB($address_zip, $db).'",
-                          wysi="'.Contenido_Security::toInteger($wysi).'",
-                          valid_from="'.Contenido_Security::escapeDB($valid_from, $db).'",
-                          valid_to="'.Contenido_Security::escapeDB($valid_to, $db).'",
-                          perms="'.implode(",",$stringy_perms).'" 
-                        WHERE
-                          user_id = "'.Contenido_Security::escapeDB($userid, $db).'"';
-
-                $db->query($sql);
-
-                $notification->displayNotification("info", i18n("Changes saved"));
         }
- }    
-        
+
+        if (strlen($password) == 0 || $bPassOk == true) {
+            try {
+                // save, if no error occured..
+                if ($oUser->save()) {
+                    $notification->displayNotification("info", i18n("Changes saved"));
+                } else {
+            	   $notification->displayNotification("error", i18n("An error occured while saving user info."));
+            	}
+
+            } catch (ConUserException $cue) {
+                // TODO make check and info ouput better!
+                $notification->displayNotification("error", i18n("An error occured while saving user info."));
+            }
+
+        }
+    }
+
+    // TODO port this to new ConUser class!
     $tpl->reset();
     $tpl->set('s','SID', $sess->id);
     $sql = "SELECT
@@ -182,16 +181,16 @@ if ( !isset($userid) )
         $db3 = new DB_Contenido;
         //search for the permissions of this user
         $sql="SELECT perms FROM ".$cfg["tab"]["phplib_auth_user_md5"]." WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."'";
-    
+
         $db3->query($sql);
         $db3->next_record();
         $rights_perms=$db3->f("perms");
-    
+
     }
 
     $user_perms = array();
     $user_perms = explode(",", $rights_perms);
-    
+
     $form = '<form name="user_properties" method="post" action="'.$sess->url("main.php?").'">
                  '.$sess->hidden_session().'
                  <input type="hidden" name="area" value="'.$area.'">
@@ -199,9 +198,9 @@ if ( !isset($userid) )
                  <input type="hidden" name="frame" value="'.$frame.'">
                  <input type="hidden" name="userid" value="'.$userid.'">
                  <input type="hidden" name="idlang" value="'.$lang.'">';
-                 
+
     $db->next_record();
-    
+
     $tpl->set('s', 'JAVASCRIPT', $javascript);
     $tpl->set('s', 'FORM', $form);
     $tpl->set('s', 'GET_USERID', $userid);
@@ -224,7 +223,7 @@ if ( !isset($userid) )
 		$tpl->set('d', 'BRDT', 1);
 		$tpl->set('d', 'BRDB', 0);
     $tpl->next();
-   
+
     $tpl->set('d', 'CLASS', 'text_medium');
     $tpl->set('d', 'CATNAME', i18n("Username"));
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
@@ -233,7 +232,7 @@ if ( !isset($userid) )
 	$tpl->set('d', 'BRDT', 0);
 	$tpl->set('d', 'BRDB', 1);
     $tpl->next();
-       
+
     $tpl->set('d', 'CLASS', 'text_medium');
     $tpl->set('d', 'CATNAME', i18n("Name"));
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
@@ -242,7 +241,7 @@ if ( !isset($userid) )
 		$tpl->set('d', 'BRDT', 0);
 		$tpl->set('d', 'BRDB', 1);
     $tpl->next();
-    
+
     // @since 2006-07-04 Display password fields only if not authenticated via LDAP/AD
     if ($msysadmin || $db->f("password") != 'active_directory_auth') {
 	    $tpl->set('d', 'CLASS', 'text_medium');
@@ -253,7 +252,7 @@ if ( !isset($userid) )
 		$tpl->set('d', 'BRDT', 0);
 		$tpl->set('d', 'BRDB', 1);
 	    $tpl->next();
-	    
+
 	    $tpl->set('d', 'CLASS', 'text_medium');
 	    $tpl->set('d', 'CATNAME', i18n("Confirm new password"));
 	    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
@@ -263,7 +262,7 @@ if ( !isset($userid) )
 		$tpl->set('d', 'BRDB', 1);
 	    $tpl->next();
     }
-    
+
     $tpl->set('d', 'CLASS', 'text_medium');
     $tpl->set('d', 'CATNAME', i18n("E-Mail"));
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
@@ -272,7 +271,7 @@ if ( !isset($userid) )
 		$tpl->set('d', 'BRDT', 0);
 		$tpl->set('d', 'BRDB', 1);
     $tpl->next();
-    
+
     $tpl->set('d', 'CLASS', 'text_medium');
     $tpl->set('d', 'CATNAME', i18n("Phone number"));
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
@@ -281,7 +280,7 @@ if ( !isset($userid) )
 		$tpl->set('d', 'BRDT', 0);
 		$tpl->set('d', 'BRDB', 1);
     $tpl->next();
-    
+
     $tpl->set('d', 'CLASS', 'text_medium');
     $tpl->set('d', 'CATNAME', i18n("Street"));
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
@@ -298,8 +297,8 @@ if ( !isset($userid) )
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "address_zip", $db->f("address_zip"), 10, 10));
 		$tpl->set('d', 'BRDT', 0);
 		$tpl->set('d', 'BRDB', 1);
-    $tpl->next();    
-    
+    $tpl->next();
+
     $tpl->set('d', 'CLASS', 'text_medium');
     $tpl->set('d', 'CATNAME', i18n("City"));
     $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
@@ -308,7 +307,7 @@ if ( !isset($userid) )
 		$tpl->set('d', 'BRDT', 0);
 		$tpl->set('d', 'BRDB', 1);
     $tpl->next();
-    
+
     $tpl->set('d', 'CLASS', 'text_medium');
     $tpl->set('d', 'CATNAME', i18n("Country"));
     $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
@@ -353,20 +352,20 @@ if ( !isset($userid) )
             $tpl->set('d', "CATFIELD", $client_list);
 						$tpl->set('d', 'BRDT', 0);
 						$tpl->set('d', 'BRDB', 1);
-            $tpl->next(); 
+            $tpl->next();
         }
 
     $sql = "SELECT * FROM " .$cfg["tab"]["clients"];
     $db2->query($sql);
     $client_list = "";
-    
+
     while ($db2->next_record())
     {
             if((in_array("client[".$db2->f("idclient")."]",$userperm) || in_array("sysadmin",$userperm) || in_array("admin[".$db2->f("idclient")."]",$userperm)) && !in_array("admin[".$db2->f("idclient")."]",$user_perms)) {
                 $client_list .= formGenerateCheckbox("mclient[".$db2->f("idclient")."]",$db2->f("idclient"),in_array("client[".$db2->f("idclient")."]",$user_perms), $db2->f("name")." (". $db2->f("idclient") . ")")."<br>";
             }
     }
-    
+
     if ($client_list != "" && !in_array("sysadmin",$user_perms))
     {
         $tpl->set('d', 'CLASS', 'text_medium');
@@ -378,7 +377,7 @@ if ( !isset($userid) )
 		$tpl->set('d', 'BRDB', 1);
         $tpl->next();
     }
-    
+
     $sql = "SELECT
                 a.idlang as idlang,
                 a.name as name,
@@ -393,7 +392,7 @@ if ( !isset($userid) )
 
     $db2->query($sql);
     $client_list = "";
-    
+
     while ($db2->next_record())
     {
             if(($perm->have_perm_client("lang[".$db2->f("idlang")."]") || $perm->have_perm_client("admin[".$db2->f("idclient")."]" )) && !in_array("admin[".$db2->f("idclient")."]",$user_perms))
@@ -402,7 +401,7 @@ if ( !isset($userid) )
             }
 
     }
-    
+
     if ($client_list != "" && !in_array("sysadmin",$user_perms))
     {
         $tpl->set('d', 'CLASS', 'text_medium');
@@ -412,32 +411,32 @@ if ( !isset($userid) )
         $tpl->set('d', "CATFIELD", $client_list);
 				$tpl->set('d', 'BRDT', 0);
 				$tpl->set('d', 'BRDB', 1);
-        $tpl->next(); 
+        $tpl->next();
     }
-	
+
 	/* Generate user property table */
     $tempUser = new User();
-    
+
     $tempUser->loadUserByUserID($userid);
-    
+
     if (is_string($del_userprop_type) && is_string($del_userprop_name))
     {
     	$tempUser->deleteUserProperty($del_userprop_type, $del_userprop_name);
     }
-    
+
     if (is_string($userprop_type) && is_string($userprop_name) && is_string($userprop_value)
         && !empty($userprop_type) && !empty($userprop_name))
     {
     	$tempUser->setUserProperty($userprop_type, $userprop_name, $userprop_value);
     }
     $properties = $tempUser->getUserProperties();
-    
+
     if (is_array($properties))
     {
     	foreach ($properties as $entry)
     	{
     		$type = $entry["type"];
-    		
+
     		if ($type != "system")
     		{
         		$name = $entry["name"];
@@ -446,15 +445,15 @@ if ( !isset($userid) )
         		$propLines .= "<tr class=\"text_medium\"><td>$type</td><td>$name</td><td>$value</td><td>$deleteButton</tr>";
     		}
     	}
-    }	
+    }
 	$table = '<table width="100%" cellspacing="0" cellpadding="2" style="border: 1px; border-color:'.$cfg["color"]["table_border"].'; border-style: solid;">
-                 <tr style="background-color:'.$cfg["color"]["table_header"].'" class="text_medium"><td>'.i18n("Area/Type").'</td><td>'.i18n("Property").'</td><td>'.i18n("Value").'</td><td>&nbsp;</td></tr>'. $propLines. 
+                 <tr style="background-color:'.$cfg["color"]["table_header"].'" class="text_medium"><td>'.i18n("Area/Type").'</td><td>'.i18n("Property").'</td><td>'.i18n("Value").'</td><td>&nbsp;</td></tr>'. $propLines.
 			 '<tr class="text_medium"><td><input class="text_medium"  type="text" size="16" maxlen="32" name="userprop_type"></td>
               <td><input class="text_medium" type="text" size="16" maxlen="32" name="userprop_name"></td>
 			  <td><input class="text_medium" type="text" size="32" name="userprop_value"></td><td>&nbsp;</td></tr></table>';
-	
+
 	$userProps = $table;
-	
+
     $tpl->set('d', 'CLASS', 'text_medium');
     $tpl->set('d', 'CATNAME', i18n("User-defined properties"));
     $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
@@ -462,7 +461,7 @@ if ( !isset($userid) )
     $tpl->set('d', "CATFIELD", $userProps);
 	$tpl->set('d', 'BRDT', 0);
 	$tpl->set('d', 'BRDB', 1);
-    $tpl->next(); 
+    $tpl->next();
 
     $tpl->set('d', 'CLASS', 'text_medium');
     $tpl->set('d', 'CATNAME', i18n("Use WYSIWYG-Editor"));
@@ -472,10 +471,10 @@ if ( !isset($userid) )
 	$tpl->set('d', 'BRDT', 0);
 	$tpl->set('d', 'BRDB', 1);
     $tpl->next();
-    
+
 	$sCurrentValueFrom = str_replace('00:00:00', '', $db->f("valid_from"));
 	$sCurrentValueFrom = trim(str_replace('0000-00-00', '', $sCurrentValueFrom));
-	
+
 	$sInputValidFrom = '<style type="text/css">@import url(./scripts/jscalendar/calendar-contenido.css);</style>
 					<script type="text/javascript" src="./scripts/jscalendar/calendar.js"></script>
 					<script type="text/javascript" src="./scripts/jscalendar/lang/calendar-'.substr(strtolower($belang),0,2).'.js"></script>
@@ -500,7 +499,7 @@ if ( !isset($userid) )
     $tpl->set('d', "CATFIELD", $sInputValidFrom);
 	$tpl->set('d', 'BRDT', 0);
 	$tpl->set('d', 'BRDB', 1);
-    $tpl->next(); 
+    $tpl->next();
 
 	$sCurrentValueTo = str_replace('00:00:00', '', $db->f("valid_to"));
 	$sCurrentValueTo = trim(str_replace('0000-00-00', '', $sCurrentValueTo));
@@ -525,7 +524,7 @@ if ( !isset($userid) )
     $tpl->set('d', "CATFIELD", $sInputValidTo);
 	$tpl->set('d', 'BRDT', 0);
 	$tpl->set('d', 'BRDB', 1);
-    $tpl->next(); 
+    $tpl->next();
 
 	if ($sCurrentValueFrom == '') {
 		$sCurrentValueFrom = '0000-00-00';
@@ -534,10 +533,10 @@ if ( !isset($userid) )
 	if (($sCurrentValueTo == '') || ($sCurrentValueTo == '0000-00-00')) {
 		$sCurrentValueTo = '9999-99-99';
 	}
-	
+
 	$sCurrentDate = date('Y-m-d');
 	$bAccountActive = true;
-	
+
 	if (($sCurrentValueFrom > $sCurrentDate) || ($sCurrentValueTo < $sCurrentDate)) {
 		$bAccountActive = false;
 	}
@@ -557,18 +556,18 @@ if ( !isset($userid) )
     $tpl->set('d', "CATFIELD", '<span style="color:'.$sAccountColor.';">'.$sAccountState.'</span>');
 	$tpl->set('d', 'BRDT', 0);
 	$tpl->set('d', 'BRDB', 1);
-    $tpl->next(); 
+    $tpl->next();
 
 	#Show backend user's group memberships
 	$arrGroups = $tempUser->getGroupsByUserID ($userid);
-	
+
 	if (count($arrGroups) > 0) {
 		asort($arrGroups);
 		$sGroups = implode("<br/>", $arrGroups);
 	} else {
 		$sGroups = i18n("none");
 	}
-	
+
     $tpl->set('d', 'CLASS', 'text_medium');
     $tpl->set('d', 'CATNAME', i18n("Group membership"));
     $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
@@ -576,7 +575,7 @@ if ( !isset($userid) )
     $tpl->set('d', "CATFIELD", $sGroups);
 	$tpl->set('d', 'BRDT', 0);
 	$tpl->set('d', 'BRDB', 1);
-    $tpl->next(); 
+    $tpl->next();
 
 
     # Generate template

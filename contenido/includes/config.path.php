@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Contenido Path Configurations
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.9.0
@@ -18,14 +18,15 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2004-02-24
  *   modified 2008-06-25, Frederic Schneider, add security fix
+ *   modified 2008-11-16, H. Librenz - added interfaces and exception path
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -40,7 +41,7 @@ global $cfg;
 
 /* IMPORTANT! Put your modifications into the file "config.local.php"
    to prevent that your changes are overwritten during a system update. */
-   
+
 $cfg['path']['contenido_html']          = '../contenido/';
 
 $cfg['path']['statfile']                = 'statfile/';
@@ -66,4 +67,6 @@ $cfg['path']['xml']                     = 'xml/';
 $cfg['path']['repository']				= $cfg["path"]['plugins'] . 'repository/';
 $cfg['path']['modules']					= 'modules/';
 
+$cfg['path']['interfaces']              = $cfg['path']['classes'] . 'interfaces/';
+$cfg['path']['exceptions']              = $cfg['path']['classes'] . 'exceptions/';
 ?>
