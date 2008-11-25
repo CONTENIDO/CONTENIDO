@@ -56,6 +56,7 @@
  *  created 04.11.2008
  *  modified 2008-11-16,  H. Librenz - added structure, comments fixed, code debugged
  *  modified 2008-11-21,  H. Librenz - some documentation stuff added
+ *  modified 2008-11-25, Timo Trautman - removed not existing include
  *
  *  @Id
  * }}
@@ -67,7 +68,6 @@ if (! defined ( 'CON_FRAMEWORK' )) {
 }
 
 // Exception classes
-cInclude ( "exceptions", "exception.db_contenido.php" );
 cInclude ( "exceptions", "exception.conuser.php" );
 
 // load base classe
