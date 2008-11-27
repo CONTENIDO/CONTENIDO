@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-12-28
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2008-11-27, Andreas Lindner, add possibility to define additional chars as allowed in file / dir names    
  *
  *   $Id$:
  * }}
@@ -873,21 +874,38 @@ function uplGetFileTypeDescription ($extension)
 
 function uplCreateFriendlyName ($filename)
 {
+	global $cfg;
+	
 	$newfilename = "";
 	
-	$filename = str_replace(" ", "_", $filename);
+	if (!is_array($cfg['upl']['allow_additional_chars'])) {
+		$filename = str_replace(" ", "_", $filename);
+	} elseif (in_array(' ', $cfg['upl']['allow_additional_chars']) === FALSE) {
+		$filename = str_replace(" ", "_", $filename);
+	}
 	
 	for ($i=0;$i<strlen($filename);$i++)
 	{
 		$atom = substr($filename, $i,1);
+		$bFound = false;
+		
 		if (eregi("[[:alnum:]]", $atom ))
 		{
-			$newfilename .= $atom;		
+			$newfilename .= $atom;
+			$bFound = true;		
 		}
 		
-		if ($atom == "-" || $atom == "_" || $atom == ".")
+		if (($atom == "-" || $atom == "_" || $atom == ".") && !$bFound)
 		{
 			$newfilename .= $atom;
+			$bFound = true;
+		}
+		
+		#Check for additionally allowed charcaters in $cfg['upl']['allow_additional_chars'] (must be array of chars allowed) 
+		if (is_array($cfg['upl']['allow_additional_chars']) && !$bFound) {
+			if (in_array($atom, $cfg['upl']['allow_additional_chars'])) {
+				$newfilename .= $atom;
+			}
 		}
 	}
 	
