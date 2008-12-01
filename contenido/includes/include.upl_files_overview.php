@@ -481,7 +481,7 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
     // Multiple deletes at top of table
 	if ($perm->have_perm_area_action("upl", "upl_multidelete")) 
 	{
-        $sConfirmation = "box.confirm('".i18n('Delete Files')."', '".i18n('Are you sure you want to delete the selected files?')."', 'document.del.submit()');";
+        $sConfirmation = "box.confirm('".i18n('Delete Files')."', '".i18n('Are you sure you want to delete the selected files?')."', 'document.del.action.value = \\\\'upl_multidelete\\\\'; document.del.submit()');";
 		$sDelete = '<a href="javascript:'.$sConfirmation.'"><img src="images/delete.gif" style="vertical-align:middle; margin-right:10px;" title="'.i18n("Delete selected files").'" alt="'.i18n("Delete selected files").'" onmouseover="this.style.cursor=\'pointer\'">'.i18n("Delete selected files").'</a>';
 	} else {
         $sDelete = '';
@@ -921,7 +921,7 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 	
 	$delform = new UI_Form("del");
 	$delform->setVar("area", $area);
-	$delform->setVar("action", "upl_multidelete");
+	$delform->setVar("action", "");
 	$delform->setVar("startpage", $startpage);
 	$delform->setVar("thumbnailmode", $thumbnailmode);
 	$delform->setVar("sortmode" , $sortmode);
