@@ -407,10 +407,17 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				$this->setSetting("plugins", "table,inlinepopups,fullscreen", true);
                 $this->setSetting("mode", "extract", true);
                 $this->setSetting("elements", "*", true);
-                #$this->setSetting("auto_resize", "true", true);
-                $this->setSetting("theme_advanced_toolbar_location", "top", true);
-                $this->setSetting("theme_advanced_resizing_use_cookie", "false", true);
-                $this->setSetting("theme_advanced_toolbar_align", "center", true);
+                
+				#$this->setSetting("auto_resize", "true", true);
+				
+				if (!array_key_exists("theme_advanced_toolbar_location", $this->_aSettings)) 
+					$this->setSetting("theme_advanced_toolbar_location", "top", true);
+				
+				if (!array_key_exists("theme_advanced_resizing_use_cookie", $this->_aSettings)) 
+					$this->setSetting("theme_advanced_resizing_use_cookie", "false", true);
+					
+				if (!array_key_exists("theme_advanced_toolbar_align", $this->_aSettings))
+					$this->setSetting("theme_advanced_toolbar_align", "center", true);
                 
 				break;
 				
