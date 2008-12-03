@@ -228,11 +228,25 @@ function swapTiny(obj) {
 	//set clicked object as active object
     active_id = obj.id;
     active_object = obj;
-	//show thiny
+	
+	//show thiny and focus it
     tinyMCE.execCommand('mceAddControl', true, obj);
+	setFocus();
 	
     //remove height information of clicked div
     document.getElementById(active_id).style.height = '';
+}
+
+/**
+   * Function sets focus on toggled editor if its loading proccess was completed
+   *
+   */
+function setFocus() {
+	if (!tinyMCE.getInstanceById(active_object)) {
+		window.setTimeout('setFocus()', 50);
+	} else {
+		tinyMCE.execInstanceCommand(active_object, 'mceFocus', true);
+	}
 }
 
 /**
