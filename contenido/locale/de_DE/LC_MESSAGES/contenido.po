@@ -6373,4 +6373,4 @@ msgid "Delete Files"
 msgstr "Dateien l&ouml;schen"
 
 msgid "Do you want to save changes?"
-msgstr "M&ouml;chten Sie die &Auml;nderungen speichern?"
+msgstr "Möchten Sie die Änderungen speichern?"
