@@ -245,7 +245,7 @@ function setFocus() {
 	if (!tinyMCE.getInstanceById(active_object)) {
 		window.setTimeout('setFocus()', 50);
 	} else {
-		tinyMCE.execInstanceCommand(active_object, 'mceFocus', true);
+		tinyMCE.execInstanceCommand(active_object, 'mceFocus', false);
 	}
 }
 

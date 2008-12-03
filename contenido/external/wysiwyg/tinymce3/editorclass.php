@@ -408,7 +408,8 @@ class cTinyMCEEditor extends cWYSIWYGEditor
                 $this->setSetting("mode", "extract", true);
                 $this->setSetting("elements", "*", true);
                 
-				#$this->setSetting("auto_resize", "true", true);
+				if (!array_key_exists("auto_resize", $this->_aSettings)) 
+					$this->setSetting("auto_resize", "false", true);
 				
 				if (!array_key_exists("theme_advanced_toolbar_location", $this->_aSettings)) 
 					$this->setSetting("theme_advanced_toolbar_location", "top", true);
