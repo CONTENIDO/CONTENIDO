@@ -6374,3 +6374,22 @@ msgstr "Dateien l&ouml;schen"
 
 msgid "Do you want to save changes?"
 msgstr "Möchten Sie die Änderungen speichern?"
+
+##  Password Übersetzungen ##
+msgid "Please use at least %d lower and upper case characters in your password!"
+msgstr "Bitte benutzen Sie mindestens %d Klein- und Groß-Buchstaben in Ihrem Passwort!"
+
+msgid "Please use at least %d numbers in your password!"
+msgstr "Bitte benutzen Sie mindestens %d Zahlen in Ihrem Passwort!"
+
+msgid "Please use at least %d symbols in your password!"
+msgstr "Bitte benutzen Sie mindestens %d Sonderzeichen in Ihrem Passwort!"
+
+msgid "Password is too short! Please use at least %d signs."
+msgstr "Ihr Passwort ist zu kurz! Bitte benutzen Sie mindestens %d Zeichen."
+
+msgid "Password does not contain enough different characters."
+msgstr "Ihr Passwort beinhaltet nicht genug unterschiedliche Zeichen."
+
+msgid "Please choose a more secure password!"
+msgstr "Ihr Passwort ist nicht sicher genug. Bitte w&auml;hlen Sie eind sicheres Passwort!"
