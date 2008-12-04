@@ -12,26 +12,26 @@
  * via following configuration values:
  *
  * - En- or disabling checks:
- *  cfg['password']['check_password_mask'] = [true|false]
+ *  $cfg['password']['check_password_mask'] = [true|false]
  *  Use this flag to enable (true) or disable (false) the mask checks.
  *
- *  cfg['password']['use_cracklib'] = [true|false]
+ *  $cfg['password']['use_cracklib'] = [true|false]
  *  Use this to enable (true) or disable (false) the strength check, currently done with cracklib.
  *
  * - Mask checks:
  *  Password mask checks are checks belonging to the "format" of the needed password string.
  *
- *  cfg['password']['min_length'], int
+ *  $cfg['password']['min_length'], int
  *     Minimum length a password has to have. If not set, 8 chars are set as default
- *  cfg['password']['numbers_mandatory'], int
- *     If set to a value greater than 0, at least cfg['password']['numbers_mandatory'] numbers
+ *  $cfg['password']['numbers_mandatory'], int
+ *     If set to a value greater than 0, at least $cfg['password']['numbers_mandatory'] numbers
  *     must be in password
- *  cfg['password']['symbols_mandatory'], int && cfg['password']['symbols_regex'], String
+ *  $cfg['password']['symbols_mandatory'], int && $cfg['password']['symbols_regex'], String
  *      If 'symbols_mandatory' set to a value greater than 0, at least so many symbols has to appear in
  *      given password. What symbols are regcognized can be administrated via 'symbols_regex'. This has
  *      to be a regular expression which is used to "find" the symbols in $sNewPassword. If not set, following
  *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
- *  cfg['password']['mixed_case_mandatory'], int
+ *  $cfg['password']['mixed_case_mandatory'], int
  *      If set to a value greater than 0 so many lower and upper case character must appear in the password.
  *      (e.g.: if set to 2, 2 upper and 2 lower case characters must appear)
  *
@@ -57,6 +57,7 @@
  *  modified 2008-11-16,  H. Librenz - added structure, comments fixed, code debugged
  *  modified 2008-11-21,  H. Librenz - some documentation stuff added
  *  modified 2008-11-25, Timo Trautman - removed not existing include
+ *  modified 2008-12-04, Bilal Arslan, Bugfixed for set passwort length, comments "how to use" fixed.
  *
  *  @Id
  * }}
@@ -697,7 +698,7 @@ class ConUser extends ConUser_Abstract {
             // any min length in config set?
             $iMinLength = iConUser::MIN_PASS_LENGTH_DEFAULT;
             if (isset( $this->aCfg ['password'] ['min_length'] )) {
-                $iMinLength = ( int ) $iMinLength;
+                $iMinLength = ( int ) $this->aCfg ['password'] ['min_length'];
             }
 
             // check length...
@@ -790,7 +791,7 @@ class ConUser extends ConUser_Abstract {
                         if ($bCrackResult != true) {
                             // check last message and map it to PASS_* constant
                             $sLastMessage = crack_getlastmessage();
-
+							echo '<br>LastMessage: '.$sLastMessage;
                             switch (strtolower($sLastMessage)) {
                                 case "strong password": {
                                     // hmm, seems as it is strong enough?!
