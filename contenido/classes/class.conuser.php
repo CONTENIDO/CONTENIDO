@@ -58,6 +58,7 @@
  *  modified 2008-11-21,  H. Librenz - some documentation stuff added
  *  modified 2008-11-25, Timo Trautman - removed not existing include
  *  modified 2008-12-04, Bilal Arslan, Bugfixed for set passwort length, comments "how to use" fixed.
+ *  modified 2008-12-04, Bilal Arslan, Bugfixed for lower Case Upper case count.
  *
  *  @Id
  * }}
@@ -666,7 +667,7 @@ class ConUser extends ConUser_Abstract {
     }
 
     /**
-	 * Checks complexity of password $sNewPassword.
+ 
 	 *
 	 * Following configuration values are recognized:
 	 * $this->aCfg['password']['check_password_mask'], bool
@@ -747,8 +748,8 @@ class ConUser extends ConUser_Abstract {
                 preg_match_all("/[a-z]/", $sNewPassword, $aLowerCaseChars);
                 preg_match_all("/[A-Z]/", $sNewPassword, $aUpperCaseChars);
 
-                if ((count($aLowerCaseChars) < (int) $this->aCfg['password']['mixed_case_mandatory']) ||
-                (count($aUpperCaseChars) < (int) $this->aCfg['password']['mixed_case_mandatory'])) {
+                if ((count($aLowerCaseChars[0]) < (int) $this->aCfg['password']['mixed_case_mandatory']) ||
+                (count($aUpperCaseChars[0]) < (int) $this->aCfg['password']['mixed_case_mandatory'])) {
                     $iResult = iConUser::PASS_NOT_ENOUGH_MIXED_CHARS;
                 }
             }
