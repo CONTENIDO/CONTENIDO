@@ -58,7 +58,7 @@
  *  modified 2008-11-21,  H. Librenz - some documentation stuff added
  *  modified 2008-11-25, Timo Trautman - removed not existing include
  *  modified 2008-12-04, Bilal Arslan, Bugfixed for set passwort length, comments "how to use" fixed.
- *  modified 2008-12-04, Bilal Arslan, Bugfixed for lower Case Upper case count.
+ *	Bugfixed for password, lower Case Upper case count, for symbols count and numbers count.
  *
  *  @Id
  * }}
@@ -716,7 +716,7 @@ class ConUser extends ConUser_Abstract {
                 $aNumbersInPassword = array();
                 preg_match_all("/[0-9]/", $sNewPassword, $aNumbersInPassword) ;
 
-                if (count($aNumbersInPassword) < (int) $this->aCfg['password']['numbers_mandatory']) {
+                if (count($aNumbersInPassword[0]) < (int) $this->aCfg['password']['numbers_mandatory']) {
                     $iResult = iConUser::PASS_NOT_ENOUGH_NUMBERS;
                 }
             }
@@ -732,8 +732,8 @@ class ConUser extends ConUser_Abstract {
                 }
 
                 preg_match_all($sSymbolsDefault, $sNewPassword, $aSymbols);
-
-                if (count($aSymbols) < (int) $this->aCfg['password']['symbols_mandatory']) {
+				
+                if (count($aSymbols[0]) < (int) $this->aCfg['password']['symbols_mandatory']) {
                     $iResult = iConUser::PASS_NOT_ENOUGH_SYMBOLS;
                 }
             }
@@ -847,7 +847,7 @@ class ConUser extends ConUser_Abstract {
      */
     public static function getErrorString ($iErrorCode) {
         $sError = "";
-
+   
         switch ($iErrorCode) {
             case iConUser::PASS_NOT_ENOUGH_MIXED_CHARS: {
                 $sError = sprintf(i18n("Please use at least %d lower and upper case characters in your password!"),
