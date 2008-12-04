@@ -25,6 +25,7 @@
  *   modified 2008-07-04, Dominik Ziegler, fixed bug CON-174
  *   modified 2008-11-10 Rudi Bieller Commented out display_errors as this should be handled as defined in php.ini by default
  *   modified 2008-11-18, Murat Purc, add UrlBuilder configuration
+ *   modified 2008-12-04, Bilal Arslan, added for config-password examples.
  *
  *   $Id$:
  * }}
@@ -216,5 +217,26 @@ $cfg['url_builder']['config'] = array();
 $cfg['url_builder']['name']   = 'custom_path';
 $cfg['url_builder']['config'] = array('prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ',');
 */
+
+/**
+ * Password Settings
+ * For more comments please look in class.conuser.php file
+ */
+// Enable or disable checking password (true or false)
+$cfg['password']['check_password_mask'] = false;
+
+// Minimum length of password (num characters). Default is 8.
+$cfg['password']['min_length'] = 6;
+
+// If set to a value greater than 0 so many lower and upper case character must appear in the password.
+// (e.g.: if set to 2, 2 upper and 2 lower case characters must appear)
+$cfg['password']['mixed_case_mandatory'] = 3;
+
+// If 'symbols_mandatory' set to a value greater than 0, at least so many symbols has to appear in given password.
+$cfg['password']['symbols_mandatory'] = 3;
+
+// If set to a value greater than 0, at least $cfg['password']['numbers_mandatory'] numbers must be in password
+$cfg['password']['numbers_mandatory'] = 3;
+
 
 ?>
