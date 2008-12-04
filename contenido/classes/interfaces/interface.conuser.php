@@ -14,6 +14,7 @@
  *
  * {@internal
  *  created 2008-11-16, H. Librenz
+ *  modified 2008-12-04, Timo Trautman, Added Contenido $cfg as param for getErrorString()
  *
  *  $Id$
  * }}
@@ -177,9 +178,10 @@ interface iConUser {
 	 * Simple error messages, depending on error code $iErrorCode.
 	 *
 	 * @param int $iErrorCode
+	 * @param array $aCfg Contenido configuration array
 	 * @return string
 	 */
-	public static function getErrorString ($iErrorCode);
+	public static function getErrorString ($iErrorCode, $aCfg);
 
 	/**
 	 * Encodes the password $sPassword. You should use one-way

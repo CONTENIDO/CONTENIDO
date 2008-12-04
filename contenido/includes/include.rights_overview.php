@@ -136,7 +136,7 @@ if ( !isset($userid) )
                     // fine, passwords are the same, but is the password valid?
                     if ($iPasswordSaveResult != iConUser::PASS_OK) {
                         // oh oh, password is NOT valid. check it...
-                        $sPassError = ConUser::getErrorString($iPasswordSaveResult);
+                        $sPassError = ConUser::getErrorString($iPasswordSaveResult, $cfg);
                         $notification->displayNotification("error", $sPassError);
                     } else {
                         $bPassOk = true;

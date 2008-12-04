@@ -84,7 +84,7 @@ if ($action == "mycontenido_editself")
             if ( $iResult == iConUser::PASS_OK ) {
                 $noti = $notification->returnNotification("info", i18n("Password changed"))."<br>";
             } else {
-                $noti = $notification->returnNotification("error", ConUser::getErrorString($iResult));
+                $noti = $notification->returnNotification("error", ConUser::getErrorString($iResult, $cfg));
             }
 
     	}

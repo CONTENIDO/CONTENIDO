@@ -58,7 +58,8 @@
  *  modified 2008-11-21,  H. Librenz - some documentation stuff added
  *  modified 2008-11-25, Timo Trautman - removed not existing include
  *  modified 2008-12-04, Bilal Arslan, Bugfixed for set passwort length, comments "how to use" fixed.
- *	Bugfixed for password, lower Case Upper case count, for symbols count and numbers count.
+ *  Bugfixed for password, lower Case Upper case count, for symbols count and numbers count.
+ *  modified 2008-12-04, Timo Trautman, Added Contenido $cfg as param for getErrorString()
  *
  *  @Id
  * }}
@@ -843,30 +844,31 @@ class ConUser extends ConUser_Abstract {
      * on error code $iErrorCode, which is returned by checkPassword* methods.
      *
      * @param int $iErrorCode
+	* @param array $aCfg Contenido configuration array
      * @return string
      */
-    public static function getErrorString ($iErrorCode) {
+    public static function getErrorString ($iErrorCode, $aCfg) {
         $sError = "";
    
         switch ($iErrorCode) {
             case iConUser::PASS_NOT_ENOUGH_MIXED_CHARS: {
                 $sError = sprintf(i18n("Please use at least %d lower and upper case characters in your password!"),
-                    $cfg['password']['mixed_case_mandatory']);
+                    $aCfg['password']['mixed_case_mandatory']);
                 break;
             }
             case iConUser::PASS_NOT_ENOUGH_NUMBERS: {
                 $sError = sprintf(i18n("Please use at least %d numbers in your password!"),
-                    $cfg['password']['numbers_mandatory']);
+                    $aCfg['password']['numbers_mandatory']);
                 break;
             }
             case iConUser::PASS_NOT_ENOUGH_SYMBOLS : {
                 $sError = sprintf(i18n("Please use at least %d symbols in your password!"),
-                    $cfg['password']['symbols_mandatory']);
+                    $aCfg['password']['symbols_mandatory']);
                 break;
             }
             case iConUser::PASS_TO_SHORT: {
                 $sError = sprintf(i18n("Password is too short! Please use at least %d signs."),
-                    ($cfg['password']['min_length'] >  0 ? $cfg['password']['min_length'] :
+                    ($aCfg['password']['min_length'] >  0 ? $aCfg['password']['min_length'] :
                     iConUser::MIN_PASS_LENGTH_DEFAULT));
                 break;
             }
@@ -876,7 +878,7 @@ class ConUser extends ConUser_Abstract {
             }
             case iConUser::PASS_NOT_ENOUGH_MIXED_CHARS: {
                 $sError = sprintf(i18n("Please use at least %d lower and upper case characters in your password!"),
-                    $cfg['password']['mixed_case_mandatory']);
+                    $aCfg['password']['mixed_case_mandatory']);
                 break;
            }
             case iConUser::PASS_NOT_STRONG: {

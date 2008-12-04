@@ -178,7 +178,7 @@ if (! $perm->have_perm_area_action ( $area, $action )) {
     					}
                     } else {
                         // oh oh, password is NOT valid. check it...
-                        $error = ConUser::getErrorString($iPassCheck);
+                        $error = ConUser::getErrorString($iPassCheck, $cfg);
                     }
 
 
