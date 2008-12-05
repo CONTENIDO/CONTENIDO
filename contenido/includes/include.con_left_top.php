@@ -20,11 +20,12 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2003-03-26
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-09-08, Ingo van Peeren, improved navigation tree in left bottom frame, expanding/
+ *  @created 2003-03-26
+ *  @modified 2008-06-27, Frederic Schneider, add security fix
+ *  @modified 2008-09-08, Ingo van Peeren, improved navigation tree in left bottom frame, expanding/
  *                                         collapsing of navigation tree without reloading (AJAX/
- *                                         javascript solution based on jquery)  
+ *                                         javascript solution based on jquery)
+ *  @modified 2008-09-18, Ingo van Peeren, moved template-changing to jquery                                        
  *
  *   $Id$:
  * }}
@@ -392,7 +393,7 @@ $editCat  = '<div style="height:110px;padding-top:5px; padding-left: 17px; margi
 $editCat	.= i18n("Template:") . "<br />";
 $editCat	.= '<div style="">';
 $editCat	.= $tpl->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
-$editCat	.='<a href="javascript:cfg.changeTemplate()"><img style="vertical-align: middle;" src="images/submit.gif" border="0"></a><br />';
+$editCat	.='<a id="changetpl" href="#"><img style="vertical-align: middle;" src="images/submit.gif" border="0"></a><br />';
 $editCat	.= '</div>';
 // Category
 $editCat	.= '<div style="margin: 5px 0 5px 0;">';

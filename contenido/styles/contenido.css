@@ -216,7 +216,7 @@ ul#con_str_tree {
 	display: block;
 	background: #FFF;
 	float: left;
-	overflow: hidden;
+	/*overflow: visible;*/
 }
 #con_str_tree li {
 	line-height: 20px;
@@ -224,37 +224,127 @@ ul#con_str_tree {
 	padding-left: 0px;
 	width: 100%;
 	float: left;
-	overflow: hidden;
+	/*overflow: visible;*/
+	white-space: nowrap;
 }
-#con_str_tree li a:focus,
-#con_str_tree li a:active,
-#con_str_tree li.active a {
-	background-color: #ECF1B2;
+#con_str_tree li div {
+    float: left;
+    width: 100%;
+    display: block;
+    background: #FFF url("test-Dateien/dash.gif") no-repeat 16px 8px;
+    white-space: nowrap;
+}    
+#con_str_tree li li li div {
+    background-position: 36px 8px;
 }
-#con_str_tree li a:hover,
-#con_str_tree li.con_sync a:hover {
+#con_str_tree li li li li div {
+    background-position: 56px 8px;
+}
+#con_str_tree li li li li li div {
+    background-position: 76px 8px;
+}
+#con_str_tree li li li li li li div {
+    background-position: 96px 8px;
+}
+#con_str_tree li li li li li li li div {
+    background-position: 116px 8px;
+}
+#con_str_tree li li li li li li li li div {
+    background-position: 136px 8px;
+}
+#con_str_tree li li li li li li li li li div {
+    background-position: 156px 8px;
+}
+#con_str_tree li li li li li li li li li li div {
+    background-position: 176px 8px;
+}
+#con_str_tree li li li li li li li li li li li div {
+    background-position: 196px 8px;
+}         
+#con_str_tree li li li div {
+    background-color: #FFF;
+}
+#con_str_tree li#root li li em {
+    width: 40px;
+}
+#con_str_tree li#root li li li em {
+    width: 60px;
+}
+#con_str_tree li#root li li li li em {
+    width: 80px;
+}
+#con_str_tree li#root li li li li li em {
+    width: 100px;
+}
+#con_str_tree li#root li li li li li li em {
+    width: 120px;
+}
+#con_str_tree li#root li li li li li li li em {
+    width: 140px;
+}
+#con_str_tree li#root li li li li li li li li em {
+    width: 160px;
+}
+#con_str_tree li#root li li li li li li li li li em {
+    width: 180px;
+}
+#con_str_tree li#root li li li li li li li li li li em {
+    width: 200px;
+}
+#con_str_tree div.active,
+#con_str_tree li#root li div.active a, 
+#con_str_tree li#root li div.active em a, 
+#con_str_tree li#root li div.active em span {
+	background-color: #ECF1B2 !important;
+}
+#con_str_tree div:focus ul, 
+#con_str_tree div:active ul {
+	background-color: #FFF;
+}
+#con_str_tree div:hover {
+	cursor: pointer;
+}
+#con_str_tree div:hover, 
+#con_str_tree div:hover a, 
+#con_str_tree li#root li div:hover a, 
+#con_str_tree li#root li div:hover em a, 
+#con_str_tree li#root li div:hover em span, 
+#con_str_tree div.hover, #con_str_tree div.hover a, 
+#con_str_tree li#root li div.hover a, 
+#con_str_tree li#root li div.hover em a, 
+#con_str_tree li#root li div.hover em span {
 	background-color: #F8FDDC !important;
 }
-#con_str_tree li.con_sync a {
+#con_str_tree div:hover ul {
+	background-color: #FFF;
+}
+
+#con_str_tree li a:hover,
+#con_str_tree li.con_sync div.hover {
+	background-color: #F8FDDC !important;
+}
+#con_str_tree li.con_sync div,
+#con_str_tree li.con_sync div a,
+#con_str_tree li.con_sync div em a,
+#con_str_tree li.con_sync div em span {
 	background-color: #DDECF9 !important;
 }
-#con_str_tree li.con_sync a:focus,
-#con_str_tree li.con_sync a:active {
+#con_str_tree li#root li.con_sync div.active,
+#con_str_tree li#root li.con_sync div.active a,
+#con_str_tree li#root li.con_sync div.active em a,
+#con_str_tree li#root li.con_sync div.active em span {
 	background-color: #AED2F1 !important;
 }
 #con_str_tree li li li {
 	margin-left: 0;
 }
-#con_str_tree li a,
-#con_str_tree li.active li a {
-	background-color: transparent;
-	padding-left: 40px;
-	margin-left: 2px;
-	width: auto;
-	height: 20px;
-	display: block;
-	/*float: left;
-*/
+#con_str_tree li a {
+	padding: 4px 5px 4px 20px;
+    width: auto;
+    height: 20px;
+    display: inline;
+    /*float: left;*/
+    background: #FFF;
 }
 #con_str_tree li#root em {
 	padding-left: 20px;
@@ -264,39 +354,67 @@ ul#con_str_tree {
 	float: left;
 }
 #con_str_tree li#root li em {
-	background: #FFF url("../images/dash.gif") repeat-x 10px 8px;
+	background: transparent url("../images/vert-neu.gif") no-repeat right top;
 	margin-right: 0px;
 	padding: 0 0 0 0;
 	width: 20px;
 	height: 20px;
-	/*display: block;
+	display: block;
 	float: left;
-*/
-	display: inline;
+}
+#con_str_tree li#root li.last ul em {
+    background-position: -1000px 0px;
+}
+#con_str_tree li#root li li.last ul em {
+    background-position: -980px 0px;
+}
+#con_str_tree li#root li li li.last ul em {
+    background-position: -960px 0px;
+}
+#con_str_tree li#root li li li li.last ul em {
+    background-position: -940px 0px;
+}
+#con_str_tree li#root li li li li li.last ul em {
+    background-position: -920px 0px;
+}
+#con_str_tree li#root li li li li li li.last ul em {
+    background-position: -900px 0px;
+}
+#con_str_tree li#root li li li li li li li.last ul em {
+    background-position: -880px 0px;
+}
+#con_str_tree li#root li li li li li li li li.last ul em {
+    background-position: -860px 0px;
+}
+#con_str_tree li#root li li li li li li li li li.last ul em {
+    background-position: -840px 0px;
+}
+#con_str_tree li#root li li li li li li li li li li.last ul em {
+    background-position: -820px 0px;
 }
 #con_str_tree li#root li em a,
 #con_str_tree li#root li em span,
 #con_str_tree li#root li.con_sync em a,
 #con_str_tree li#root li.con_sync em span {
-	background: #FFF url("../images/but_minus.gif") no-repeat 0 0 !important;
-	float: left;
+	background: #FFF url("../images/but_minus.gif") no-repeat 0 0;
+	float: right;
 	width: 16px;
 	height: 20px;
 	padding: 0;
-	margin: 0;
+	margin: 0 4px 0 0;
 	display: block;
 }
 #con_str_tree li#root li.collapsed em a,
 #con_str_tree li#root li.collapsed em span,
 #con_str_tree li#root li.con_sync.collapsed em a,
 #con_str_tree li#root li.con_sync.collapsed em span {
-	background: #FFF url("../images/but_plus.gif") no-repeat 0 0 !important;
+	background: #FFF url("../images/but_plus.gif") no-repeat 0 0;
 }
 #con_str_tree li#root li.last em a,
 #con_str_tree li#root li.last li.last em a,
 #con_str_tree li#root li.last em span,
 #con_str_tree li#root li.last li.last em span {
-	background: #FFF url("../images/but_lastnode.gif") no-repeat 0 0 !important;
+	background: #FFF url("../images/but_lastnode.gif") no-repeat 0 0;
 }
 #con_str_tree li#root li.last li em a,
 #con_str_tree li#root li.collapsed li em a,
@@ -304,28 +422,35 @@ ul#con_str_tree {
 #con_str_tree li#root li.last li em span,
 #con_str_tree li#root li.collapsed li em span,
 #con_str_tree li#root li.last li.collapsed li em span {
-	background: #FFF url("../images/but_minus.gif") no-repeat 0 0 !important;
+	background: #FFF url("../images/but_minus.gif") no-repeat 0 0;
 }
 #con_str_tree li#root li.last li.collapsed em a,
 #con_str_tree li#root li.last.collapsed em a,
 #con_str_tree li#root li.last li.collapsed em span,
 #con_str_tree li#root li.last.collapsed em span {
-	background: #FFF url("../images/but_plus.gif") no-repeat 0 0 !important;
+	background: #FFF url("../images/but_plus.gif") no-repeat 0 0;
 }
 #con_str_tree li#root li.last {
-	background-color: #FFF;
+
 }
 #con_str_tree li#root li.collapsed ul {
 	display: none;
 }
-#con_str_tree li.con_sync a {
+#con_str_tree li.con_sync a.on,
+#con_str_tree li.con_sync a.on_error,
+#con_str_tree li.con_sync a.on_error_locked,
+#con_str_tree li.con_sync a.on_locked,
+#con_str_tree li.con_sync a.off,
+#con_str_tree li.con_sync a.off_error,
+#con_str_tree li.con_sync a.off_error_locked,
+#con_str_tree li.con_sync a.off_locked {
 	background-image: url("../images/but_sync_cat_off.gif") !important;
 }
 #con_str_tree li#root {
-	background: transparent url("../images/folder_on.gif") no-repeat 0 0;
+	background: transparent url("../images/folder_on.gif") no-repeat 0px 2px;
 }
 #con_str_tree li a {
-	background: transparent url("../images/folder_on.gif") no-repeat 20px 0px;
+	background: #FFF url("../images/folder_on.gif") no-repeat 0px 2px;
 }
 #con_str_tree li a.on {
 	background-image: url("../images/folder_on.gif");
@@ -352,7 +477,6 @@ ul#con_str_tree {
 	background-image: url("../images/folder_off_locked.gif");
 }
 #con_str_tree ul {
-	background: transparent url("../images/vert.gif") repeat-y 0 0;
 	list-style: none;
 	display: block;
 	padding-left: 0px;
@@ -363,7 +487,7 @@ ul#con_str_tree {
 	position: relative;
 }
 #con_str_tree ul ul {
-	margin-left: 20px;
+	margin-left: 0px;
 }
      
 
