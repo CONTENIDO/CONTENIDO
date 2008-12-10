@@ -312,6 +312,45 @@ class User {
 	}
 	
 	/**
+	  * Function returns effective perms for user including group rights as perm string
+	  *
+	  * @author Timo Trautmann
+	  * @return string - current users permissions
+	  */
+	function getEffectiveUserPerms() {
+		global $cfg, $perm;
+		
+	    //first get users own permissions and filter them into result array $aUserPerms
+		$aUserPerms = array();
+		$aUserPermsSelf = explode(",", $this->values['perms']);
+		foreach ($aUserPermsSelf as $sPerm) {
+			if (trim($sPerm) != '') {
+				array_push($aUserPerms, $sPerm);
+			}
+		}
+		
+		//get all corresponding groups for this user
+		$groups = $perm->getGroupsForUser($this->values['user_id']);
+		
+		foreach ($groups as $value)
+		{
+			//get global group permissions
+			$oGroup = new Group;
+			$oGroup->loadGroupByGroupID ($value);
+			$sGroupPerm = $oGroup->getField('perms');
+			
+			//add group permissions to $aUserPerms if they were not alredy defined before
+			$aGroupPerms = explode(",", $sGroupPerm);
+			foreach ($aGroupPerms as $sPerm) {
+				if (!in_array($sPerm, $aUserPerms) && trim($sPerm) != '') {
+					array_push($aUserPerms, $sPerm);
+				}
+			}			
+		}
+		return implode(',', $aUserPerms);
+	}
+	
+	/**
      * getField($field)
      * Gets the value of a specific field
 	 * @param string $field Specifies the field to retrieve

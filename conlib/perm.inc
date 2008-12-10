@@ -450,6 +450,10 @@ class Contenido_Perm
 		{
 			return true;	
 		} else {
+			return false;
+		}
+		/* Commented out Timo Trautmann, because here only client access is checked, possibility for admin or sysadmin access was ignored 
+		   functions isSysadmin isClientAdmin isClientUser also handles permission for groups
 			#Check clients' rights of users' group(s)
 			$aGroups = $this->getGroupsForUser($auth->auth["uid"]);
 			if (is_array($aGroups))
@@ -467,7 +471,7 @@ class Contenido_Perm
 			}
 			
 			return false;	
-		}
+		}*/
 	}
 	
 
@@ -482,7 +486,7 @@ class Contenido_Perm
 	{
 		$oUser = $this->_checkUserObject($oUser);
 		
-		$aPermissions = explode(",", $oUser->getField("perms"));
+		$aPermissions = explode(",", $oUser->getEffectiveUserPerms());
 		
 		if (in_array("client[$iClient]", $aPermissions))
 		{
@@ -522,7 +526,7 @@ class Contenido_Perm
 	{
 		$oUser = $this->_checkUserObject($oUser);
 		
-		$aPermissions = explode(",", $oUser->getField("perms"));
+		$aPermissions = explode(",", $oUser->getEffectiveUserPerms());
 		
 		if (in_array("admin[$iClient]", $aPermissions))
 		{
@@ -542,7 +546,7 @@ class Contenido_Perm
 	{
 		$oUser = $this->_checkUserObject($oUser);
 		
-		$aPermissions = explode(",", $oUser->getField("perms"));
+		$aPermissions = explode(",", $oUser->getEffectiveUserPerms());
 		
 		if (in_array("sysadmin", $aPermissions))
 		{
