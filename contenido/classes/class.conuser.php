@@ -793,7 +793,7 @@ class ConUser extends ConUser_Abstract {
                         if ($bCrackResult != true) {
                             // check last message and map it to PASS_* constant
                             $sLastMessage = crack_getlastmessage();
-							echo '<br>LastMessage: '.$sLastMessage;
+							#echo '<br>LastMessage: '.$sLastMessage;
                             switch (strtolower($sLastMessage)) {
                                 case "strong password": {
                                     // hmm, seems as it is strong enough?!
