@@ -18,6 +18,7 @@ Bug
     * [CON-211] - Backend group management is still possible after group deletion!
     * [CON-212] - Can't read and save Copyright-Infos in File-Details
     * [CON-213] - Layoutproblem Firefox / Mac
+	* [CON-219] - Zusammenhang Artikelsuche/Rechtevergabe
 
 ** Improvement
 

@@ -512,7 +512,6 @@ $tpl->set('s', 'SEARCHSTOREDMESSAGE', $saveSuccessfull);
 
 $iAffectedRows = $db->affected_rows();
 
-
 if ($iAffectedRows <= 0) {
     $sNoArticle = i18n("Missing search value.");
     $sNothingFound = i18n("No article found.");
@@ -530,6 +529,7 @@ if ($iAffectedRows <= 0) {
 	$bHit = false;
 	
     for ($i = 0; $i < $iAffectedRows; $i++) {
+		
         // reinitialisiere Hilfs-String
         $sRow = '';
 
@@ -569,13 +569,19 @@ if ($iAffectedRows <= 0) {
 		
 		#Check rights per cat
 		if (!$check_rights) {
+			//hotfix timo trautmann 2008-12-10 also check rights in associated groups
+			$aGroupsForUser = $perm->getGroupsForUser($auth->auth[uid]);
+			$aGroupsForUser[] = $auth->auth[uid];
+			$sTmpUserString = implode("','", $aGroupsForUser);
+			
 			#Check if any rights are applied to current user or his groups
 			$sql = "SELECT *
 					FROM ".$cfg["tab"]["rights"]."
-					WHERE user_id IN ('".$auth->auth["uid"]."') AND idclient = '".Contenido_Security::toInteger($client)."' AND idlang = '".Contenido_Security::toInteger($lang)."' AND idcat = '".Contenido_Security::toInteger($idcat)."'";
+					WHERE user_id IN ('".$sTmpUserString."') AND idclient = '".Contenido_Security::toInteger($client)."' AND idlang = '".Contenido_Security::toInteger($lang)."' AND idcat = '".Contenido_Security::toInteger($idcat)."'";
 			$db2->query($sql);
-			
+
 			if ($db2->num_rows() != 0) {
+				
 				if (!$check_rights) {
 					$check_rights = $perm->have_perm_area_action_item("con", "con_makestart",$idcat);
 				}
