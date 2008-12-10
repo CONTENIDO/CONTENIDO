@@ -8,6 +8,22 @@ $Id$:
 
 Release 4.8.9
 ----------------------------------------------------------------------	
+Bug
+
+    * [CON-102] - XHTML Bug im Backend <cx /> / werden bei der Speicherung gelöscht
+    * [CON-204] - Can't insert Layouts from Modul-Package
+    * [CON-205] - Articel-left-top does not change the Cache on Category-Template change
+    * [CON-206] - Preview at protected areas don't work
+    * [CON-208] - incomplete message in setup-systemcheck
+    * [CON-211] - Backend group management is still possible after group deletion!
+    * [CON-212] - Can't read and save Copyright-Infos in File-Details
+    * [CON-213] - Layoutproblem Firefox / Mac
+
+** Improvement
+
+    * [CON-216] - Mozile replaced with insight tiny
+    * [CON-217] - Added new Class conuser for central handling of contenido users
+    * [CON-218] - Performanceproblem in category tree in content->article
 
 ** Task
 

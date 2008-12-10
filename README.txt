@@ -155,6 +155,7 @@ cms/js/
 cms/logs/
 cms/templates/
 cms/upload/
+cms/version/
 
 auf rwxrwxrwx. (z.B.: chmod 777 cms/upload/) 
 
@@ -347,6 +348,7 @@ cms/js/
 cms/logs/
 cms/templates/
 cms/upload/
+cms/version/
 
 to rwxrwxrwx. (e.g. chmod 777 cms/upload/) 
 
