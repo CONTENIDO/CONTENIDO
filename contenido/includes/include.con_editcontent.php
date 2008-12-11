@@ -137,7 +137,11 @@ $(document).ready( function(){
 });
 
 //activate save confirmation on page leave
-window.onbeforeunload = leave_check;
+if (document.all) {
+	window.onunload = leave_check;
+} else {
+	window.onbeforeunload = leave_check;
+}
 
 var file_url = "{IMAGE}"; //Global var which contains url to contenido image browser
 var image_url = "{FILE}"; //Global var which contains url to contenido file browser
