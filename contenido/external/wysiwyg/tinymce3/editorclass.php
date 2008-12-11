@@ -92,7 +92,9 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 
 		// Default values
 		$this->setSetting("mode", "exact");
-        $this->setSetting("content_css", $cfg["path"]["contenido_fullhtml"]."external/backendedit/css/style_tiny.css"); 
+		$aPathFragments = split('/', $cfgClient[$client]["path"]["htmlpath"]);
+		$this->setSetting("content_css", $cfg["path"]["contenido_fullhtml"].$aPathFragments[count($aPathFragments)-2]."/css/style_tiny.css"); 
+
 		$this->setSetting("theme", "advanced");
 		$this->setSetting("theme_advanced_toolbar_location", "top");
 		$this->setSetting("theme_advanced_path_location", "bottom");
@@ -359,7 +361,9 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 	 * For compatibility also accepts "tinymce-toolbar-mode", "tinymce-toolbar1-3" and "tinymce-plugins"
 	 */
 	function setToolbar($sMode = "")
-	{		
+	{
+		global $cfg;
+		
 		switch ($sMode)
 		{
 			case "full": // Show all options
@@ -407,6 +411,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				$this->setSetting("plugins", "table,inlinepopups,fullscreen", true);
                 $this->setSetting("mode", "extract", true);
                 $this->setSetting("elements", "*", true);
+				$this->setSetting("content_css", $cfg["path"]["contenido_fullhtml"]."external/backendedit/css/style_tiny.css", true); 
                 
 				if (!array_key_exists("auto_resize", $this->_aSettings)) 
 					$this->setSetting("auto_resize", "false", true);
