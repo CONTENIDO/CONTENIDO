@@ -204,7 +204,7 @@ contenidoConfig.prototype.updateScreen = function() {
  */
 contenidoConfig.prototype.setAction = function(action) {
 
-    this.actionFrame.location.href = action;
+    //this.actionFrame.location.href = action;
 
 } // end function
 
