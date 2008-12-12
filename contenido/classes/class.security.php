@@ -198,13 +198,11 @@ class Contenido_Security {
      * @return die() or true
      */
     public static function checkSession() {
-    
         if(isset($_REQUEST['contenido']) && !preg_match('/^[0-9a-f]{32}$/', $_REQUEST['contenido'])) {
-            die('Invalid call');
-        } else {
-            return true;
-        }
-    
+            if ($_REQUEST['contenido'] != '') {
+				die('Invalid call');
+			}
+		return true;
     }
 
 	/**
