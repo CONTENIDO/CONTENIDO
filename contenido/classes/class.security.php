@@ -187,11 +187,9 @@ class Contenido_Security {
         if(isset($_REQUEST['cfg']) || isset($_REQUEST['cfgClient']) || isset($_REQUEST['contenido_path'])) {
             die('Invalid call!');
         } else {
+			self::checkSession();
             return true;
         }
-
-        self::checkSession();
-
     }
 
     /**
