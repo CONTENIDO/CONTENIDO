@@ -202,6 +202,7 @@ class Contenido_Security {
             if ($_REQUEST['contenido'] != '') {
 				die('Invalid call');
 			}
+		}
 		return true;
     }
 
