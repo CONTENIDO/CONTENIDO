@@ -640,54 +640,6 @@ function strNextDeeperAll($tmp_idcat, $ignore_lang = false) {
         return $aCats;
 } 
 
-/*
-function strRemakeTreeTableFindNext($tmp_idcat,$tmp_level) {
-        global $db;
-        global $cfg;
-
-        //************* Insert Element in 'cat_tree'-table **************
-        $sql = "INSERT INTO ".$cfg["tab"]["cat_tree"]." (idtree, idcat, level) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_tree"]))."', '".Contenido_Security::toInteger($tmp_idcat)."',
-                '".Contenido_Security::toInteger($tmp_level)."')";
-        $db->query($sql);
-
-        //************* dig deeper, if possible ******
-        $tmp = strNextDeeper($tmp_idcat, true);
-        if ($tmp != 0) {
-                $tmp_idcat = $tmp;
-                $tmp_level++;
-
-                strRemakeTreeTableFindNext($tmp_idcat,$tmp_level);
-
-        } else {
-                $tmp = strNextPost($tmp_idcat);
-        //************ if not get post element ********
-                if ($tmp != 0) {
-                        $tmp_idcat = $tmp;
-
-                        strRemakeTreeTableFindNext($tmp_idcat,$tmp_level);
-
-        //************ if that's not possible either go backwards *********
-                } else {
-                        $tmp = strNextBackwards($tmp_idcat);
-                        if ($tmp != 0) {
-                                $tmp_idcat = $tmp;
-                                $sql = "SELECT A.level FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B WHERE A.idcat=B.idcat AND B.postid='".Contenido_Security::toInteger($tmp_idcat)."'";
-                                $db->query($sql);
-                                if ($db->next_record()) {
-                                        $tmp_level = $db->f("level");
-                                } else {
-                                        $level = 0;
-                                }
-                                if ($tmp_level != 0) {
-                                        strRemakeTreeTableFindNext($tmp_idcat,$tmp_level);
-                                }
-                        }
-                }
-
-        }
-}
-*/
-
 function strShowTreeTable() {
         global $db;
         global $sess;
