@@ -105,8 +105,16 @@ class XML_doc {
             }
 
             unset($this->xml);
-            $this->xml = fread ($fp, filesize ($filename));
-            fclose ($fp);
+            $iFilesize = filesize ($filename);
+            // check for 0 filesize
+            if($iFilesize > 0) {
+              $this->xml = fread ($fp, $iFilesize);
+              fclose ($fp);
+            } else {
+              fclose ($fp);
+              return (false);
+            }
+           
 
             // useful if entities are found in xml file
             $this->xml = $this->_translateLiteral2NumericEntities($this->xml);
