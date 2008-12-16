@@ -587,7 +587,7 @@ function strRemakeTreeTableFindNext($tmp_idcat,$tmp_level) {
     $tmp = strNextDeeperAll($tmp_idcat, true);
 
     foreach ($tmp as $iCurIdCat) {
-        if (count(strNextDeeperAll($iCurIdCat, true, true)) > 0 ) {
+        if (count(strNextDeeperAll($iCurIdCat, true)) > 0 ) {
             strRemakeTreeTableFindNext($iCurIdCat, ($tmp_level+1));
         } else {
             $sql = "INSERT INTO ".$cfg["tab"]["cat_tree"]." (idtree, idcat, level) VALUES ('".$db->nextid($cfg["tab"]["cat_tree"])."', '".Contenido_Security::toInteger($iCurIdCat)."', '".Contenido_Security::toInteger($tmp_level+1)."')";
@@ -602,7 +602,7 @@ function strRemakeTreeTableFindNext($tmp_idcat,$tmp_level) {
     Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann
 **/
 $db_str2 = new DB_Contenido();
-function strNextDeeperAll($tmp_idcat) {
+function strNextDeeperAll($tmp_idcat, $ignore_lang = false) {
       global $cfg, $db_str, $db_str2, $lang;
         $aCats = array();
         $bLoop = true;
