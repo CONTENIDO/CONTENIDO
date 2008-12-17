@@ -18,6 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * 
+ * @modified	2008-12-05	Andreas Lindner, make select box values for time unit selection language independent
+
  * {@internal 
  *   created 
  *   
@@ -136,22 +138,26 @@ if ($action == "workflow_save_step" || $action == "workflow_create_user") {
 function getTimeUnitSelector($listid, $default) {
 	global $idclient, $cfg, $auth;
 
-	$timeunits= array (
-		i18n("Seconds",
-		"workflow"
-	), i18n("Minutes", "workflow"), i18n("Hours", "workflow"), i18n("Days", "workflow"), i18n("Weeks", "workflow"), i18n("Months", "workflow"), i18n("Years", "workflow"));
+	$timeunits = array ();
+	$timeunits['Seconds'] = i18n("Seconds", "workflow");
+	$timeunits['Minutes'] = i18n("Minutes", "workflow");
+	$timeunits['Hours'] = i18n("Hours", "workflow");
+	$timeunits['Days'] = i18n("Days", "workflow");
+	$timeunits['Weeks'] = i18n("Weeks", "workflow");
+	$timeunits['Months'] = i18n("Months", "workflow");
+	$timeunits['Years'] = i18n("Years", "workflow");
 
 	$tpl2= new Template;
 	$tpl2->set('s', 'NAME', 'time' . $listid);
 	$tpl2->set('s', 'CLASS', 'text_small');
 	$tpl2->set('s', 'OPTIONS', 'size=1');
 
-	foreach ($timeunits as $units) {
+	foreach ($timeunits as $key => $value) {
 
-		$tpl2->set('d', 'VALUE', $units);
-		$tpl2->set('d', 'CAPTION', $units);
+		$tpl2->set('d', 'VALUE', $key);
+		$tpl2->set('d', 'CAPTION', $value);
 
-		if ($default == $units) {
+		if ($default == $key) {
 			$tpl2->set('d', 'SELECTED', 'SELECTED');
 		} else {
 			$tpl2->set('d', 'SELECTED', '');
