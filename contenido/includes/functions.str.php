@@ -66,10 +66,12 @@ cInclude("classes", "contenido/class.container.php");
 cInclude("includes", "functions.con.php");
 
 global $db_str;
+global $db_str2;
 
 if (class_exists("DB_Contenido"))
 {
-	$db_str = new DB_Contenido;
+	$db_str = new DB_Contenido();
+	$db_str2 = new DB_Contenido();
 }
 
 function strNewTree($catname, $catalias = '', $bVisible = 0, $bPublic = 1, $iIdtplcfg = 0) {
@@ -601,7 +603,7 @@ function strRemakeTreeTableFindNext($tmp_idcat,$tmp_level) {
 /**
     Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann
 **/
-$db_str2 = new DB_Contenido();
+
 function strNextDeeperAll($tmp_idcat, $ignore_lang = false) {
       global $cfg, $db_str, $db_str2, $lang;
         $aCats = array();
