@@ -104,6 +104,12 @@ final class Contenido_Url {
             $arr   = $this->parse($param);
             $param = $arr['params'];
         }
+        
+        // fallback for urls to homepage (/ or front_content.php)
+        if (count($param) == 0 || (!isset($param['idart']) && !isset($param['idartlang']) && 
+            !isset($param['idcat']) && !isset($param['idcatlang']) && !isset($param['idcatart']))) {
+            $param['idcat'] = getEffectiveSetting('navigation', 'idcat-home', 1);
+        }
 
         // execute preprocess hook
         $aHookParams = array(
