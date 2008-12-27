@@ -13,6 +13,7 @@ cms/favicon.ico -text
 cms/front_content.php -text
 cms/front_crcloginform.inc.php -text
 cms/images/bg.gif -text
+cms/images/but_ok.gif -text
 cms/images/header_bild_beispiel.gif -text
 cms/images/header_bsplmandant_01.gif -text
 cms/images/header_bsplmandant_02.gif -text

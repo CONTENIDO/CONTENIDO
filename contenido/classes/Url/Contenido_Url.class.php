@@ -19,8 +19,12 @@
  * @link       http://www.contenido.org
  * 
  * {@internal
- *   created 2009-09-29
- *   
+ *   created  2009-09-29
+ *   modified 2008-12-23, Murat Purc, added functions buildRedirect(), composeByComponents() and
+ *                                    isExternalUrl() and exended flexibility of build()
+ *   modified 2008-12-26, Murat Purc, added execution of chains 'Contenido.Frontend.PreprocessUrlBuilding'
+ *                                    and 'Contenido.Frontend.PostprocessUrlBuilding' to build()
+ *
  *   $Id$:
  * }}
  * 
@@ -81,34 +85,81 @@ final class Contenido_Url {
         }
         return self::$_instance;
     }
-    
-    
+
+
     /**
      * Creates a URL to frontend page.
      *
-     * @param  array    $aParams  Required keys depend on used UrlBuilder, but a must have is 'lang'.
-     * @param  boolean  $bUseAbsolutePath  Flag to create absolute Urls
-     * @param  array    $aConfig  If not set, UrlBuilderConfig::getConfig() will be used by the URLBuilder 
+     * @param   mixed    $param   Either url or assoziative array containing parameter:
+     *                            - url: front_content.php?idcat=12&lang=1
+     *                            - params: array('idcat' => 12, 'lang' => 1)
+     *                            Required values depend on used UrlBuilder, but a must have is 'lang'.
+     * @param   boolean  $bUseAbsolutePath  Flag to create absolute Urls
+     * @param   array    $aConfig  If not set, UrlBuilderConfig::getConfig() will be used by the URLBuilder
+     * @return  string   The Url build by UrlBuilder
      */
-    public function build(array $aParams, $bUseAbsolutePath=false, array $aConfig=array()) {
+    public function build($param, $bUseAbsolutePath=false, array $aConfig=array()) {
 
-        if (!isset($aParams['level'])) {
+        if (!is_array($param)) {
+            $arr   = $this->parse($param);
+            $param = $arr['params'];
+        }
+
+        // execute preprocess hook
+        $aHookParams = array(
+            'param' => $param, 'bUseAbsolutePath' => $bUseAbsolutePath, 'aConfig' => $aConfig
+        );
+        if ($aResult = CEC_Hook::execute('Contenido.Frontend.PreprocessUrlBuilding', $aHookParams)) {
+            $param = (isset($aResult['param'])) ? $aResult['param'] : '';
+            if (isset($aResult['bUseAbsolutePath'])) {
+                $bUseAbsolutePath = (bool) $aResult['bUseAbsolutePath'];
+            }
+            if (isset($aResult['aConfig']) && is_array($aResult['aConfig'])) {
+                $aConfig = $aResult['aConfig'];
+            }
+        }
+
+        if ($this->_sUrlBuilderName == 'custom_path' && !isset($aParams['level'])) {
             // downwards compatibility to Contenido_UrlBuilder_CustomPath
             $aParams['level'] = '1';
         }
 
-        if (!isset($aParams['lang'])) {
+        if (!isset($param['lang'])) {
             // another downwards compatibility to Contenido_UrlBuilder_CustomPath
-            throw new InvalidArgumentException('$aParams[lang] must be set!');
-        }
-        
-        if ($this->_sUrlBuilderName == 'custom_path' && count($aParams) <= 3) {
-            // third downwards compatibility
-            $aParams['_c_p_'] = '1';
+            throw new InvalidArgumentException('$param[lang] must be set!');
         }
 
-        $this->_oUrlBuilder->buildUrl($aParams, $bUseAbsolutePath, $aConfig);
-        return $this->_oUrlBuilder->getUrl();
+        if ($this->_sUrlBuilderName == 'custom_path' && count($param) <= 3) {
+            // third downwards compatibility
+            $param['_c_p_'] = '1';
+        }
+
+        $this->_oUrlBuilder->buildUrl($param, $bUseAbsolutePath, $aConfig);
+
+        $url = $this->_oUrlBuilder->getUrl();
+
+        // execute postprocess hook
+        if ($result = CEC_Hook::execute('Contenido.Frontend.PostprocessUrlBuilding', $url)) {
+            $url = (string) $result;
+        }
+
+        return $url;
+    }
+
+
+    /**
+     * Creates a URL used to redirect to frontend page.
+     *
+     * @param   mixed    $param   Either url or assoziative array containing parameter:
+     *                            - url: front_content.php?idcat=12&lang=1
+     *                            - params: array('idcat' => 12, 'lang' => 1)
+     *                            Required values depend on used UrlBuilder, but a must have is 'lang'.
+     * @param   array    $aConfig  If not set, UrlBuilderConfig::getConfig() will be used by the URLBuilder
+     * @return  string   The redirect Url build by UrlBuilder
+     */
+    public function buildRedirect($param, array $aConfig=array()) {
+        $url = $this->build($param, true, $aConfig);
+        return str_replace('&amp;', '&', $url);
     }
 
 
@@ -129,6 +180,49 @@ final class Contenido_Url {
             $aUrl['params'] = array();
         }
         return $aUrl;
+    }
+
+
+    /**
+     * Composes a url using passed components array
+     *
+     * @param   array   Assoziative array created by parse_url()
+     * @return  string  $sUrl  The composed Url
+     */
+    public function composeByComponents(array $aComponents) {
+        $sUrl = (isset($aComponents['scheme']) ? $aComponents['scheme'] . '://' : '') .
+                (isset($aComponents['user']) ? $aComponents['user'] . ':' : '') .
+                (isset($aComponents['pass']) ? $aComponents['pass'] . '@' : '') .
+                (isset($aComponents['host']) ? $aComponents['host'] : '') .
+                (isset($aComponents['port']) ? ':' . $aComponents['port'] : '') .
+                (isset($aComponents['path']) ? $aComponents['path'] : '') .
+                (isset($aComponents['query']) ? '?' . $aComponents['query'] : '') .
+                (isset($aComponents['fragment']) ? '#' . $aComponents['fragment'] : '');
+        return $sUrl;
+    }
+
+    
+    /**
+     * Checks, if passed url is an external url while performing hostname check
+     *
+     * @param   string  $sUrl  Url to check
+     * @return  bool  True if uel is a external url, otherwhise false
+     */
+    public function isExternalUrl($sUrl) {
+        $aComponents = @parse_url($sUrl);
+        if (!isset($aComponents['host'])) {
+            return false;
+        }
+        if (!$path = $this->_oUrlBuilder->getHttpBasePath()) {
+            return false;
+        }
+        
+        $aComponents2 = @parse_url($path);
+        if (!isset($aComponents2['host'])) {
+            return false;
+        }
+
+        return (strtolower($aComponents['host']) !== strtolower($aComponents2['host']));
     }
 
 

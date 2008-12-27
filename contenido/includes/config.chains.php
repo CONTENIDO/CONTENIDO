@@ -23,8 +23,10 @@
  *   created unknown
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-07-31, Frederic Schneider, add Upl_edit-CECs
- *   modified 2008-08-29, Murat Purc, add several chains for category ans article processes
- *   modified 2008-09-07, Murat Purc, add chain 'Contenido.Frontend.AfterLoadPlugins'
+ *   modified 2008-08-29, Murat Purc, added several chains for category ans article processes
+ *   modified 2008-09-07, Murat Purc, added chain 'Contenido.Frontend.AfterLoadPlugins'
+ *   modified 2008-12-26, Murat Purc, added chain 'Contenido.Frontend.PreprocessUrlBuilding' and
+ *                                    'Contenido.Frontend.PostprocessUrlBuilding'
  *
  *   $Id$:
  * }}
@@ -733,6 +735,37 @@ $_cecRegistry->registerChain("Contenido.Frontend.AfterLoadPlugins");
  * string 	New code
  */
 $_cecRegistry->registerChain("Contenido.Frontend.HTMLCodeOutput", "string");
+
+/**
+ * Chain Contenido.Frontend.PreprocessUrlBuilding
+ * This chain is called by Contenido_Url->build() method an provides a way to modifiy the parameter
+ * which will be passed to the configured Url Builder
+ *
+ * Parameters & order:
+ * array    Assoziative array of parameter beeing achieved as arguments to Contenido_Url->build()
+ *          array(
+ *              'param'            => Assoziative array containing the parameter, 
+ *              'bUseAbsolutePath' => Flag to greate absolute path (incl. scheme and host),
+ *              'aConfig'          => Additional Url Builder configuration array,
+ *          );
+ *
+ * Returns:
+ * array    Processed assoziative array, same as parameter above
+ */
+$_cecRegistry->registerChain("Contenido.Frontend.PreprocessUrlBuilding", "array");
+
+/**
+ * Chain Contenido.Frontend.PostprocessUrlBuilding
+ * This chain is called by Contenido_Url->build() method an provides a opportunity to modifiy a url
+ * created by configured Url Builder.
+ *
+ * Parameters & order:
+ * string   Created url by Url Builder
+ *
+ * Returns:
+ * string    Processed url
+ */
+$_cecRegistry->registerChain("Contenido.Frontend.PostprocessUrlBuilding", "string");
 
 /**
  * Chain Contenido.Content.conGenerateCode

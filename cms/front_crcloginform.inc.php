@@ -24,6 +24,7 @@
  *   modified 2005-09-29, Andreas Lindner
  *   modified 2008-07-03, bilal arslan, added security fix
  *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages and redesign of HTML markup
+ *   modified 2008-12-26, Murat Purc, fixed problems with Contenido_Url and removed usage of asserts (css and image) from backend 
  *
  *   $Id$:
  * }}
@@ -36,14 +37,13 @@ if(!defined('CON_FRAMEWORK')) {
 
 global $cfg, $idcat, $idart, $idcatart, $lang, $client, $username, $encoding;
 
-#$err_catart = trim(getEffectiveSetting("login_error_page", "idcatart", ""));
-#$err_cat    = trim(getEffectiveSetting("login_error_page", "idcat", ""));
-#$err_art    = trim(getEffectiveSetting("login_error_page", "idart", ""));
+$err_catart = trim(getEffectiveSetting("login_error_page", "idcatart", ""));
+$err_cat    = trim(getEffectiveSetting("login_error_page", "idcat", ""));
+$err_art    = trim(getEffectiveSetting("login_error_page", "idart", ""));
 
 $oUrl = Contenido_Url::getInstance();
 
-$sContenidoPath  = '/contenido';
-$sClientHtmlPath = $cfgClient[$client]["path"]["htmlpath"];
+$sClientHtmlPath = $cfgClient[$client]['path']['htmlpath'];
 
 $sUrl = $sClientHtmlPath . 'front_content.php';
 
@@ -66,8 +66,8 @@ if ($err_catart != '') {
 
 if ($bRedirect) {
     $aUrl = $oUrl->parse($sess->url($sErrorUrl));
-    $sErrorUrl = $oUrl->build($aUrl['params']);
-    header('Location: ' . $sClientHtmlPath . $sErrorUrl);
+    $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
+    header('Location: ' . $sErrorUrl);
     exit();
 }
 
@@ -86,8 +86,8 @@ if (isset($_GET['return']) || isset($_POST['return'])){
 
     $sErrorUrl = $sUrl . '?' . implode('&', $aLocator);
     $aUrl = $oUrl->parse($sess->url($sErrorUrl));
-    $sErrorUrl = $oUrl->build($aUrl['params']);
-    header ('Location: ' . $sClientHtmlPath . $sErrorUrl);
+    $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
+    header ('Location: ' . $sErrorUrl);
     exit();
 }
 
@@ -96,6 +96,12 @@ $sFormAction = $sess->url($sUrl . '?idcat=' . intval($idcat) . '&lang=' . $lang)
 $aUrl = $oUrl->parse($sFormAction);
 $sFormAction = $oUrl->build($aUrl['params']);
 
+// set login input image, use button as fallback
+if (!is_file($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) {
+    $sLoginButton = '<input type="image" title="Login" alt="Login" src="' . $sClientHtmlPath . 'images/but_ok.gif" />' . "\n";
+} else {
+    $sLoginButton = '<input type="button" title="Login" value="Login" style="font-size:90%;font-weight:bold;background-color:' . $cfg['color']['table_header'] . ';border:1px solid ' . $cfg['color']['table_border'] . ';" />' . "\n";
+}
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -109,12 +115,14 @@ $sFormAction = $oUrl->build($aUrl['params']);
         top.location.href = self.location.href;
     }
     // --></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo $sContenidoPath; ?>/styles/contenido.css" />
     <style type="text/css"><!--
+    * {margin:0; padding:0;}
     html, body {height: 100%;}
+    body {background-color:#fff; font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color:#000;}
+    a img {border:none;}
     #loginPageWrap {
         width:230px; height:120px; text-align:center; border:1px solid <?php echo $cfg['color']['table_border'] ?>; background-color:<?php echo $cfg['color']['table_light'] ?>;
-        color: #fff; position:absolute; left:50%; top:50%; margin-left:-115px; margin-top:-60px; 
+        position:absolute; left:50%; top:50%; margin-left:-115px; margin-top:-60px; 
     }
     #login {text-align:left;}
     #login label {display:block; float:left; width:70px; }
@@ -133,13 +141,13 @@ $sFormAction = $oUrl->build($aUrl['params']);
         <input type="hidden" name="idcat" value="<?php echo intval($idcat); ?>" />
         <div class="formHeader">Login</div>
         <div class="formRow">
-            <label for="username" class="text_medium">Username:</label><input type="text" class="text text_medium" name="username" id="username" size="20" maxlength="32" value="<?php echo ( isset($this->auth['uname']) ) ? $this->auth['uname'] : ''  ?>" /><br class="clear" />
+            <label for="username">Username:</label><input type="text" class="text" name="username" id="username" size="20" maxlength="32" value="<?php echo ( isset($this->auth['uname']) ) ? $this->auth['uname'] : ''  ?>" /><br class="clear" />
         </div>
         <div class="formRow">
-            <label class="text_medium" for="password">Password:</label><input type="password" class="text text_medium" name="password" id="password" size="20" maxlength="32" /><br class="clear" />
+            <label for="password">Password:</label><input type="password" class="text" name="password" id="password" size="20" maxlength="32" /><br class="clear" />
         </div>
         <div class="formRow" style="text-align:right">
-            <input type="image" title="Login" alt="Login" src="<?php echo $sContenidoPath; ?>/images/but_ok.gif" />
+            <?php echo $sLoginButton ?>
         </div>
     </form>
 </div>

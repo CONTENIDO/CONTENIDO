@@ -21,6 +21,7 @@
  * {@internal 
  *   created  2008-02-18
  *   modified 2008-09-29, Murat Purc, add instantiation of userdefined UrlBuilder
+ *   modified 2008-12-22, Murat Purc, fixed file exists check of userdefined UrlBuilder
  *   
  *   $Id$: 
  * }}
@@ -62,10 +63,11 @@ class Contenido_UrlBuilderFactory {
                 if ((string) $sBuilder !== '') {
                     $sClassName = 'Contenido_UrlBuilder_' . $sBuilder;
                     $sFileName  = 'Contenido_UrlBuilder_' . $sBuilder . '.class.php';
-                    if (!file_exists($sFilename)) { 
+                    $sPath      = str_replace('\\', '/', dirname(__FILE__)) . '/';
+                    if (!file_exists($sPath . $sFileName)) { 
                         throw new InvalidArgumentException('The classfile of Contenido_UrlBuilder couldn\'t included by Contenido_UrlBuilderFactory: '.$sBuilder.'!'); 
                     }
-                    cInclude('classes', 'UrlBuilder/' . $sFilename);
+                    cInclude('classes', 'UrlBuilder/' . $sFileName);
                     if (!class_exists($sClassName)) {
                         throw new InvalidArgumentException('The classfile of Contenido_UrlBuilder couldn\'t included by Contenido_UrlBuilderFactory: '.$sBuilder.'!');
                     }

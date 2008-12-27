@@ -24,6 +24,8 @@
  *   modified 2008-11-11, Andreas Lindner,  when overwriting of arguments is prevented and break condition is set
  *   					added anoption to return break condition value directly, otherwise the args would be returned, which is not
  *   					desirable under all circumstances
+ *   modified 2008-12-26, Murat Purc, Bugfix: Not each registered chain function will get the same parameter
+ *
  * }}
  * 
  */
@@ -234,6 +236,7 @@ class CEC_Hook {
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
 
+            $bFirstIteration = true;
             while ($chainEntry = $cecIterator->next()) {
 
                 // get function to call
@@ -245,6 +248,11 @@ class CEC_Hook {
                 if (isset($return)) {
                     if (self::$_overwriteArguments == true) {
                         $args = $return;
+                        if ($bFirstIteration == false) {
+                            // make an indexed array, otherwhise next call of call_user_func_array
+                            // will pass a wrong parameter.
+                            $args = array($args);
+                        }
                     }
 
                     // check, if iteration of the loop is to break
@@ -267,6 +275,8 @@ class CEC_Hook {
                         }
 					}
                 }
+                $bFirstIteration = false;
+
             }
         } else {
             // no chain functions are to execute, set the first argument if available

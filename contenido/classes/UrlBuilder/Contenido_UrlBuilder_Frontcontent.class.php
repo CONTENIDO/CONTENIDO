@@ -22,6 +22,7 @@
  *   created 2008-02-19
  *   modified 2008-09-09 Fix of parameter checking in method buildUrl()
  *   modified 2008-09-29, Murat Purc, fix parameter check and third argument for buildUrl()
+ *   modified 2008-12-26, Murat Purc, added handling of additional parameter to buildUrl()
  *   @todo: add switch for & vs. &amp;
  * 
  *   $Id$:
@@ -36,7 +37,17 @@ if(!defined('CON_FRAMEWORK')) {
 include_once('Contenido_UrlBuilder.class.php');
 
 class Contenido_UrlBuilder_Frontcontent extends Contenido_UrlBuilder {
-    static private $_instance; // object instance
+
+    /**
+     * Self instance
+     * @var  Contenido_UrlBuilder_Frontcontent
+     */
+    static private $_instance;
+
+    /**
+     * XHTML compliant parameter composition delemiter
+     * @var  string
+     */
     private $_sAmp = '&amp;';
     
     /**
@@ -66,6 +77,7 @@ class Contenido_UrlBuilder_Frontcontent extends Contenido_UrlBuilder {
      * Builds a URL in front_content.php style.
      * Depending on which array keys of $aParams are set, the URL is built differently.
      * Valid array keys are: idcat, idart and idcatart.
+     * Additional array keys will also be added to the generated url.
      * Internally, the method first tries to create URLs in this order:
      * front_content.php?idcat=1&idart=1
      * front_content.php?idcat=1
@@ -105,6 +117,15 @@ class Contenido_UrlBuilder_Frontcontent extends Contenido_UrlBuilder {
                 }
             }
         }
+
+        // now add additional params
+        foreach ($aParams as $param => $value) {
+            if ($param == 'idcat' || $param == 'idart' || $param == 'idcatart') {
+                continue;
+            }
+            $this->sUrl .= $this->_sAmp . $param .'=' . urlencode(urldecode((string) $value));
+        }
+
     }
 }
 ?>

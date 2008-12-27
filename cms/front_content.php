@@ -54,6 +54,7 @@
  *   modified 2008-11-11, Andreas Lindner,        
  *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page 
  *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages
+ *   modified 2008-12-23, Murat Purc, fixed problems with Contenido_Url
  *
  *   $Id$:
  * }}
@@ -196,6 +197,9 @@ if (!isset($client)) {
     $client = $load_client;
 }
 
+// update urlbuilder set http base path 
+Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
+
 // Initialize language
 if (!isset($lang)) {
 
@@ -286,7 +290,8 @@ $aParams = array (
     'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client], 
     'lang' => $lang, 'error'=> '1'
 );
-$errsite = 'Location: ' . Contenido_Url::getInstance()->build($aParams);
+$errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
+
 
 /*
  * Try to initialize variables $idcat, $idart, $idcatart, $idartlang
@@ -942,11 +947,14 @@ else
              * Redirect to the URL defined in article properties
              */
             $oUrl = Contenido_Url::getInstance();
-            $aUrl = $oUrl->parse($redirect_url);
-            if (!isset($aUrl['params']['lang'])) {
-                $aUrl['params']['lang'] = $lang;
+            if (!$oUrl->isExternalUrl($redirect_url)) {
+                // perform urlbuilding only at internal urls
+                $aUrl = $oUrl->parse($redirect_url);
+                if (!isset($aUrl['params']['lang'])) {
+                    $aUrl['params']['lang'] = $lang;
+                }
+                $redirect_url = $oUrl->buildRedirect($aUrl['params']);
             }
-            $redirect_url = $oUrl->build($aUrl['params']);
             header("Location: $redirect_url");
             exit;
         }

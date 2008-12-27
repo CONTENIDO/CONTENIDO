@@ -19,7 +19,8 @@
  * @link       http://www.contenido.org
  * 
  * {@internal 
- *   created 2008-02-21
+ *   created  2008-02-21
+ *   modified 2008-09-29, Murat Purc, added getHttpBasePath() method
  *   
  *   $Id$:
  * }}
@@ -61,6 +62,14 @@ abstract class Contenido_UrlBuilder {
      */
     public function setHttpBasePath($sBasePath) {
         $this->sHttpBasePath = (string) $sBasePath;
+    }
+    
+    /**
+     * Return http base path, e.g. http://contenido.org/
+     * @return  string
+     */
+    public function getHttpBasePath() {
+        return $this->sHttpBasePath;
     }
     
     /**
