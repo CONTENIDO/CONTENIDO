@@ -22,6 +22,7 @@
  *   created  2008-02-18
  *   modified 2008-09-29, Murat Purc, add instantiation of userdefined UrlBuilder
  *   modified 2008-12-22, Murat Purc, fixed file exists check of userdefined UrlBuilder
+ *   modified 2009-01-01, Murat Purc, changed call of call_user_func to support php previous to 5.2.3
  *   
  *   $Id$: 
  * }}
@@ -71,7 +72,7 @@ class Contenido_UrlBuilderFactory {
                     if (!class_exists($sClassName)) {
                         throw new InvalidArgumentException('The classfile of Contenido_UrlBuilder couldn\'t included by Contenido_UrlBuilderFactory: '.$sBuilder.'!');
                     }
-                    return call_user_func($sClassName . '::getInstance');
+                    return call_user_func(array($sClassName, 'getInstance'));
                 }
 
                 throw new InvalidArgumentException('Invalid/Empty Contenido_UrlBuilder passed to Contenido_UrlBuilderFactory: '.$sBuilder.'!');
