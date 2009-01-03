@@ -34,7 +34,7 @@
  *
  *
  * @package    Contenido Backend external
- * @version    1.8.6
+ * @version    1.8.7
  * @author     Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -52,6 +52,7 @@
  *   modified 2008-11-11, Andreas Lindner, Fixed typo in var name $iLangCheck (missing $)    
  *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page 
  *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages
+ *   modified 2009-01-03, Murat Purc, synchronized with cms/front_content.php
  *
  *   $Id$:
   * }}
@@ -194,6 +195,9 @@ if (!isset($client)) {
     $client = $load_client;
 }
 
+// update urlbuilder set http base path 
+Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
+
 // Initialize language
 if (!isset($lang)) {
 
@@ -285,7 +289,8 @@ $aParams = array (
     'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client], 
     'lang' => $lang, 'error'=> '1'
 );
-$errsite = 'Location: ' . Contenido_Url::getInstance()->build($aParams);
+$errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
+
 
 /*
  * Try to initialize variables $idcat, $idart, $idcatart, $idartlang
@@ -941,11 +946,14 @@ else
              * Redirect to the URL defined in article properties
              */
             $oUrl = Contenido_Url::getInstance();
-            $aUrl = $oUrl->parse($redirect_url);
-            if (!isset($aUrl['params']['lang'])) {
-                $aUrl['params']['lang'] = $lang;
+            if (!$oUrl->isExternalUrl($redirect_url)) {
+                // perform urlbuilding only at internal urls
+                $aUrl = $oUrl->parse($redirect_url);
+                if (!isset($aUrl['params']['lang'])) {
+                    $aUrl['params']['lang'] = $lang;
+                }
+                $redirect_url = $oUrl->buildRedirect($aUrl['params']);
             }
-            $redirect_url = $oUrl->build($aUrl['params']);
             header("Location: $redirect_url");
             exit;
         }
