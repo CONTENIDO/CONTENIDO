@@ -21,8 +21,9 @@
  * {@internal 
  *   created 2008-02-15
  *   modified 2008-02-22 Contenido_Categories now implements Countable
- *  modified 2008-08-20 Removed unnecessary/redundant security fixes (typecasting is already done in getter methods) that were made during security fixing phase
+ *   modified 2008-08-20 Removed unnecessary/redundant security fixes (typecasting is already done in getter methods) that were made during security fixing phase
  *             changed method setDebug() in Contenido_Category_Base to allow all debug modes available
+ *   modified 2009-01-05 Bugfix in Contenido_Categories::load() Subcategories will be loaded only if set so.
  *   $Id$:
  * }}
  * 
@@ -447,7 +448,9 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
                 $iIdLang = $this->getIdLang();
                 $oCategory = new Contenido_Category($this->oDb, $this->aCfg);
                 $oCategory->setDebug($this->bDbg, $this->sDbgMode);
-                $oCategory->setloadSubCategories($this->bLoadSubCategories, $this->iSubCategoriesLoadDepth);
+				if ($this->iSubCategoriesLoadDepth > 0) {
+					$oCategory->setloadSubCategories($this->bLoadSubCategories, $this->iSubCategoriesLoadDepth);
+				}
                 $oCategory->load($iId, $bIncludeLanguage, $iIdLang);
                 $this->add($oCategory);
             }
