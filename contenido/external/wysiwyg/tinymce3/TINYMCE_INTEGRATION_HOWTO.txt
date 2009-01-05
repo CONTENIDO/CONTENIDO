@@ -55,3 +55,15 @@ CONTENIDO MODIFICATIONS OF THE TinyMCE WYSIWYG EDITOR
 
 	return html;
   }
+
+----------------------------------------------------------------------
+
+contenido\external\wysiwyg\tinymce3\jscripts\tiny_mce\themes\advanced\skins\default\ui.css
+
+Line: 19
+.defaultSkin table.mceLayout {border:0; border-left:1px solid #CCC; border-right:1px solid #CCC}
+
+replace with:
+
+.defaultSkin table.mceLayout {border:0; border-left:1px solid #CCC; border-right:1px solid #CCC; position: absolute; z-index: 10000}
+.defaultSkin #mce_fullscreen_tbl {z-index: 20000} 
