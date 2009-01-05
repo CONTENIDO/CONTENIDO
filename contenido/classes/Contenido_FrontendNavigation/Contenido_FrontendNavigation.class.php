@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    0.2.2
+ * @version    0.2.3
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   modified 2008-04-25 added method getLevel() and property aLevel, modified loadSubCategories() accordingly
  *   modified 2008-09-22 Bugfix in loading protected subcategories when logged in as backenduser
  *   modified 2009-01-05 Timo Trautmann L:138 commented out not neccessary condidion which makes categories visible which shouldn't be displayed
+ *   modified 2009-01-05 Rudi Bieller Fixed bug in permission check at strpos() call line 138ff
  *
  *   $Id$:
  * }}
@@ -134,8 +135,8 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 	        // check against fe-auth and against be-access
 	        if ($bUseAuth === true && intval($this->oDb->f('public')) == 0) {
 	            $sPerms = strval($this->oAuth->auth['perm']);
-	            if (strpos($sPerms, 'sysadmin') !== false || strpos($sPerms, 'admin' !== false) /*||
-	                   (strpos($sPerms, 'client['.strval($this->iClient)).']' !== false && strpos($sPerms, 'lang['.strval($this->iLang)).']' !== false)*/) {
+	            if (strpos($sPerms, 'sysadmin') !== false || strpos($sPerms, 'admin' !== false) ||
+	                   (strpos($sPerms, 'client['.strval($this->iClient).']') !== false && strpos($sPerms, 'lang['.strval($this->iLang).']') !== false)) {
 	                $this->aCategories[] = (int) $this->oDb->f('idcat');
                     $this->aLevel[(int) $this->oDb->f('idcat')] = (int) $this->oDb->f('level');
 	            } else {
