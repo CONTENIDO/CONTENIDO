@@ -231,7 +231,7 @@ ul#con_str_tree {
     float: left;
     width: 100%;
     display: block;
-    background: #FFF url("test-Dateien/dash.gif") no-repeat 16px 8px;
+    background: #FFF url("../images/dash.gif") no-repeat 16px 8px;
     white-space: nowrap;
 }    
 #con_str_tree li li li div {
