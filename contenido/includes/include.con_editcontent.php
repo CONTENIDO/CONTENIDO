@@ -99,6 +99,30 @@ if ( isset($idcat) )
 
 <script language="javascript">
 
+tinymce.create('tinymce.plugins.ClosePlugin', {
+	createControl: function(n, cm) {
+		switch (n) {
+			case 'close':
+				var c = cm.createMenuButton('close', {
+					title : '{CLOSE}',
+					image : '{CON_PATH}images/back.gif',
+					icons : false,
+					onclick : function(ed) {
+			           closeTiny();
+			        }
+				});
+
+				// Return the new menu button instance
+				return c;
+		}
+
+		return null;
+	}
+});
+
+// Register plugin with a short name
+tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
+
 var active_id = null;  //id of div on which tiny is active
 var active_object = null;  //onject of div on which tiny is active
 var aEditdata = new Object();  //global array which stores edited content
@@ -168,6 +192,8 @@ EOD;
         $oScriptTpl->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
         $oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
         $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
+		$oScriptTpl->set('s', 'CON_PATH', $cfg["path"]["contenido_fullhtml"]);
+		$oScriptTpl->set('s', 'CLOSE', i18n('Close Editor'));
         $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
         
         $scripts = $oScriptTpl->generate($scripts, 1);

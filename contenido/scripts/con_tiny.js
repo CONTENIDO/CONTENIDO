@@ -201,16 +201,12 @@ function addDataEntry(idartlang, type, typeid, value) {
 }
 
 /**
- * Function swaps tiny to a content editable div. If tiny is already open on 
- * another div, this tiny was swapped to current div by closing it first
- * tiny swaps on click
- * Notice: Global js vars were defined in include.con_editcontent.php
- * 
- * @param object obj - div object which was clicked
- */
-function swapTiny(obj) {
+  * Function closses currently opened tiny
+  *
+  */
+function closeTiny() {
 	//check if tiny is currently open
-    if (tinyMCE.getInstanceById(active_object)) {
+	if (tinyMCE.getInstanceById(active_object)) {
 		//save current tiny content to js var
         aEditdata[active_id] = tinyMCE.get(active_object).getContent();
 		//if content was empty set div height. Empty divs were ignored by most browsers
@@ -222,6 +218,19 @@ function swapTiny(obj) {
         active_id = null;
         active_object = null;
     }
+}
+
+/**
+ * Function swaps tiny to a content editable div. If tiny is already open on 
+ * another div, this tiny was swapped to current div by closing it first
+ * tiny swaps on click
+ * Notice: Global js vars were defined in include.con_editcontent.php
+ * 
+ * @param object obj - div object which was clicked
+ */
+function swapTiny(obj) {
+	//check if tiny is currently open
+    closeTiny();
     
 	//rest tinymce configs defined in include.con_editcontent.php
     tinyMCE.settings = tinymceConfigs;

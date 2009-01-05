@@ -401,14 +401,14 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				break;
                 
             case "inline_edit":
-                $this->setSetting("theme_advanced_buttons1", "bold,italic,underline,strikethrough,separator,undo,cleanup,separator,bullist,numlist,hr,separator,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright,separator,fullscreen", true);
+                $this->setSetting("theme_advanced_buttons1", "bold,italic,underline,strikethrough,separator,undo,separator,bullist,numlist,hr,separator,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright,separator,fullscreen,close", true);
 				$this->setSetting("theme_advanced_buttons2", "", true);
 				$this->setSetting("theme_advanced_buttons3", "", true);
 
                 $this->unsetSetting("width");              
                 
                 $this->setSetting("height", "210px", true);
-				$this->setSetting("plugins", "table,inlinepopups,fullscreen", true);
+				$this->setSetting("plugins", "table,inlinepopups,fullscreen,-close", true);
                 $this->setSetting("mode", "extract", true);
                 $this->setSetting("elements", "*", true);
 				$this->setSetting("content_css", $cfg["path"]["contenido_fullhtml"]."external/backendedit/css/style_tiny.css", true); 
