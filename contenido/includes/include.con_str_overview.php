@@ -696,7 +696,9 @@ $db->query($sql);
 $sExpandList = $currentuser->getUserProperty("system","con_cat_expandstate");
 if ($sExpandList != '') {
     $conexpandedList = unserialize($currentuser->getUserProperty("system","con_cat_expandstate")); 
-} else {
+}
+
+if (!is_array($conexpandedList)) {
     $conexpandedList = array();
 }
 
