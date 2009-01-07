@@ -114,6 +114,19 @@ tinymce.create('tinymce.plugins.ClosePlugin', {
 
 				// Return the new menu button instance
 				return c;
+				
+			case 'save':
+				var c = cm.createMenuButton('save', {
+					title : '{SAVE}',
+					image : '{CON_PATH}images/save.gif',
+					icons : false,
+					onclick : function(ed) {
+			           setcontent(iIdartlang, '0');
+			        }
+				});
+
+				// Return the new menu button instance
+				return c;
 		}
 
 		return null;
@@ -193,7 +206,8 @@ EOD;
         $oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
         $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
 		$oScriptTpl->set('s', 'CON_PATH', $cfg["path"]["contenido_fullhtml"]);
-		$oScriptTpl->set('s', 'CLOSE', i18n('Close Editor'));
+		$oScriptTpl->set('s', 'CLOSE', i18n('Close editor'));
+		$oScriptTpl->set('s', 'SAVE', i18n('Close editor and save changes'));
         $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
         
         $scripts = $oScriptTpl->generate($scripts, 1);

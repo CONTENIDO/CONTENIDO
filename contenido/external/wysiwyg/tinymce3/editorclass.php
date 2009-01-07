@@ -401,7 +401,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				break;
                 
             case "inline_edit":
-                $this->setSetting("theme_advanced_buttons1", "bold,italic,underline,strikethrough,separator,undo,separator,bullist,numlist,hr,separator,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright,separator,fullscreen,close", true);
+                $this->setSetting("theme_advanced_buttons1", "bold,italic,underline,strikethrough,separator,undo,separator,bullist,numlist,separator,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright,separator,fullscreen,separator,save,close", true);
 				$this->setSetting("theme_advanced_buttons2", "", true);
 				$this->setSetting("theme_advanced_buttons3", "", true);
 
