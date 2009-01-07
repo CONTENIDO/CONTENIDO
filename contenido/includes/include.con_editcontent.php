@@ -81,7 +81,7 @@ if ( isset($idcat) )
 		$markSubItem = markSubMenuItem(3, true);
 
     //Include tiny class
-    include ($cfg["path"]["wysiwyg"] . 'editorclass.php');
+    include ($cfg["path"]["contenido"] . 'external/wysiwyg/tinymce3/editorclass.php');
     $oEditor = new cTinyMCEEditor ('', '');
     $oEditor->setToolbar('inline_edit');
     
@@ -92,7 +92,7 @@ if ( isset($idcat) )
     //Include tiny mce and con_tiny script for insight_editing    
     $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/jquery/jquery.js" type="text/javascript"></script>';
     $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/con_tiny.js" type="text/javascript"></script>';
-    $scripts .= "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$cfg["path"]["wysiwyg_html"].'jscripts/tiny_mce/tiny_mce.js"></script>';
+    $scripts .= "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$cfg["path"]["contenido_fullhtml"].'external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js"></script>';
     
     //Script template for insight editing
 	$scripts .= <<<EOD
