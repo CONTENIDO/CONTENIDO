@@ -6393,3 +6393,9 @@ msgstr "Ihr Passwort beinhaltet nicht genug unterschiedliche Zeichen."
 
 msgid "Please choose a more secure password!"
 msgstr "Ihr Passwort ist nicht sicher genug. Bitte w&auml;hlen Sie eind sicheres Passwort!"
+
+msgid "Close editor"
+msgstr "Editor schließen"
+
+msgid "Close editor and save changes"
+msgstr "Editor schließen und Änderungen speichern"
