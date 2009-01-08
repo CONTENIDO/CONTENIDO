@@ -6,9 +6,26 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id$:
 
+Release 4.8.10
+----------------------------------------------------------------------	
+** Bug
+
+    * [CON-222] - missing images for category tree in content->article
+    * [CON-223] - Frontend category class does list categories in menu, also if user has no permission on it
+    * [CON-224] - URL and Encoding Bugs in new URL Generation features which were implemented in 4.8.9
+    * [CON-225] - Missing global definition for redrawing categorytree in content->category
+    * [CON-226] - class.xml.php : Warning: ...Length parameter must be greater than 0 in /w...
+    * [CON-228] - Empty array intialization causes warnings in content->article
+
+** Improvement
+
+    * [CON-221] - More usability for insight tiny in live editing of articles
+    * [CON-227] - Consistent encoding for CMS_HEAD and CMS_TEXT in editmode of Contenttypes
+
+
 Release 4.8.9
 ----------------------------------------------------------------------	
-Bug
+** Bug
 
     * [CON-102] - XHTML Bug im Backend <cx /> / werden bei der Speicherung gelöscht
     * [CON-204] - Can't insert Layouts from Modul-Package
@@ -34,7 +51,7 @@ Bug
 Release 4.8.8
 ----------------------------------------------------------------------	
              
-**Bug
+** Bug
 
     * [CON-141] - Kein Cursor im FF bei Headline- oder HTML-Feldern im Artikel-Editbereich
     * [CON-153] - Chain execution allows function-user-call via REQUEST
