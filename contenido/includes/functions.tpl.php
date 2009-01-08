@@ -204,7 +204,6 @@ function tplBrowseLayoutForContainers($idlay) {
         global $db;
         global $cfg;
 		global $containerinf;
-		global $idlay;
 		
         $sql = "SELECT code FROM ".$cfg["tab"]["lay"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
         $db->query($sql);
