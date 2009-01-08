@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-12-15
  *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *   modified 2009-01-08, Timo Trautmann fixed bug: Changes in Head Containers in visualedit were not stored
  *
  *   $Id$:
  * }}
@@ -109,6 +110,7 @@ if (!$db->next_record())
 	$containers = tplBrowseLayoutForContainers($idlay);
 	
 	$a_container = explode("&",$containers);
+	$sContainerInHead = '';
 	
 	foreach ($a_container as $key=>$value)
 	{
@@ -207,10 +209,16 @@ if (!$db->next_record())
     			}
 			}
             
-			$code = str_replace("CMS_CONTAINER[$value]","<div style=\"position:relative; height:26px;white-space:nowrap;font-size:12px;\" onmouseover=\"this.style.zIndex = '20'\" onmouseout=\"this.style.zIndex = '10'\"> $value:".$modselect->render() .'</div>', $code);	
-			
-			/* Try to find a container */
-			$code = preg_replace("/<container(.*)id=\"$value\"(.*)>/i", "<div style=\"position:relative; height:26px;white-space:nowrap;font-size:12px;\" onmouseover=\"this.style.zIndex = '20'\" onmouseout=\"this.style.zIndex = '10'\"> $value:".$modselect->render()  .'</div>', $code);
+			//collect containers in head for displaying them in body after editform
+			if (is_array($containerinf) && isset($containerinf[$idlay]) && isset($containerinf[$idlay][$value]) && isset($containerinf[$idlay][$value]["is_body"]) && $containerinf[$idlay][$value]["is_body"] == false) {
+				$code = str_replace("CMS_CONTAINER[$value]",'', $code);	
+				$code = preg_replace("/<container(.*)id=\"$value\"(.*)>/i", '', $code);
+				$sContainerInHead .= "<div style=\"position:relative; height:26px;white-space:nowrap;font-size:12px;\" onmouseover=\"this.style.zIndex = '20'\" onmouseout=\"this.style.zIndex = '10'\"> $value:".$modselect->render() .'</div>'."\n";
+			} else {
+				$code = str_replace("CMS_CONTAINER[$value]","<div style=\"position:relative; height:26px;white-space:nowrap;font-size:12px;\" onmouseover=\"this.style.zIndex = '20'\" onmouseout=\"this.style.zIndex = '10'\"> $value:".$modselect->render() .'</div>', $code);	
+				/* Try to find a container */
+				$code = preg_replace("/<container(.*)id=\"$value\"(.*)>/i", "<div style=\"position:relative; height:26px;white-space:nowrap;font-size:12px;\" onmouseover=\"this.style.zIndex = '20'\" onmouseout=\"this.style.zIndex = '10'\"> $value:".$modselect->render()  .'</div>', $code);
+			}
 		}
 	}
 	
@@ -228,6 +236,7 @@ if (!$db->next_record())
 	$form .= '<input type="hidden" name="idlay" value="'.$idlay.'">';
 	$form .= '<input type="hidden" name="tplisdefault" value="'.$bIsDefault.'">';
 	$form .= '<input type="hidden" name="action" value="tpl_visedit">';
+	$form .= $sContainerInHead;
 	
 	
 	$button = '<table border="0" width="100%"><tr><td align="right"><input type="image" src="'.$cfg['path']['contenido_fullhtml']. $cfg["path"]["images"]."but_ok.gif".'"></td></tr></table>';

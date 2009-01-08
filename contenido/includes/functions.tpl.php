@@ -23,6 +23,7 @@
  *   created 2003-01-21
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-06-30 timo.trautmann added fix module settings were also copied in function tplDuplicateTemplate
+ *   modified 2009-01-08, Timo Trautmann fixed bug: Changes in Head Containers in visualedit were not stored
  *
  *   $Id$:
  * }}
@@ -203,6 +204,7 @@ function tplBrowseLayoutForContainers($idlay) {
         global $db;
         global $cfg;
 		global $containerinf;
+		global $idlay;
 		
         $sql = "SELECT code FROM ".$cfg["tab"]["lay"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
         $db->query($sql);
@@ -210,7 +212,16 @@ function tplBrowseLayoutForContainers($idlay) {
         $code = $db->f("code");
 
         preg_match_all ("/CMS_CONTAINER\[([0-9]*)\]/", $code, $a_container);
-
+		$iPosBody = stripos($code, '<body>');
+		$sCodeBeforeHeader = substr($code, 0, $iPosBody);
+		
+		foreach ($a_container[1] as $value) {
+			if (preg_match("/CMS_CONTAINER\[$value\]/", $sCodeBeforeHeader)) {
+				$containerinf[$idlay][$value]["is_body"] = false;
+			} else {
+				$containerinf[$idlay][$value]["is_body"] = true;
+			}
+		}
 		
 		if (is_array($containerinf[$idlay]))
 		{
@@ -360,9 +371,13 @@ function tplPreparseLayout ($idlay)
     cInclude ("classes", "class.htmlparser.php");
     
     $parser = new HtmlParser($code);
-    
+    $bIsBody = false;
 	while ($parser->parse())
 	{
+		if (strtolower($parser->iNodeName) == 'body') {
+			$bIsBody = true;
+		}
+
 		if ($parser->iNodeName == "container" && $parser->iNodeType == NODE_TYPE_ELEMENT)
 		{
 			$idcontainer = $parser->iNodeAttributes["id"];
@@ -378,6 +393,7 @@ function tplPreparseLayout ($idlay)
 			$containerinf[$idlay][$idcontainer]["mode"] = $mode;
 			$containerinf[$idlay][$idcontainer]["default"] = $parser->iNodeAttributes["default"];
 			$containerinf[$idlay][$idcontainer]["types"] = $parser->iNodeAttributes["types"];
+			$containerinf[$idlay][$idcontainer]["is_body"] = $bIsBody;
 		}
 	}
 }
