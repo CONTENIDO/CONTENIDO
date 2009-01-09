@@ -96,7 +96,13 @@ if ( isset($idcat) )
     
     //Script template for insight editing
 	$scripts .= <<<EOD
-
+<style type="text/css">
+	.defaultSkin table.mceLayout {position: absolute; z-index: 10000;}
+	.defaultSkin #mce_fullscreen_tbl {z-index: 20000;}
+	.defaultSkin .mcePlaceHolder {position: absolute; z-index: 10000;}
+</style>
+	
+	
 <script language="javascript">
 
 tinymce.create('tinymce.plugins.ClosePlugin', {
