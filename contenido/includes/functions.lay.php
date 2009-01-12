@@ -50,10 +50,6 @@ cInclude ("includes", "functions.con.php");
 function layEditLayout($idlay, $name, $description, $code) {
 
     global $client, $auth, $cfg, $sess, $area_tree, $perm, $cfgClient;
-	
-	if ((int) $idlay == 0) {
-		global $idlay;
-	}
 
     $db2= new DB_Contenido;
     $db = new DB_Contenido;
