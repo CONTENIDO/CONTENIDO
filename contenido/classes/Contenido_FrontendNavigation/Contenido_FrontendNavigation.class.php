@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    0.2.3
+ * @version    0.3.0
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-09-22 Bugfix in loading protected subcategories when logged in as backenduser
  *   modified 2009-01-05 Timo Trautmann L:138 commented out not neccessary condidion which makes categories visible which shouldn't be displayed
  *   modified 2009-01-05 Rudi Bieller Fixed bug in permission check at strpos() call line 138ff
+ *   modified 2009-01-13 Rudi Bieller Added methods isActiveChild() and isActiveParent()
  *
  *   $Id$:
  * }}
@@ -203,6 +204,50 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 	    }
         return -1;
     }
+    
+    /**
+	 * Check if current idcat is an active parent category of a given idcat
+	 * @access public
+	 * @param Contenido_Category $oCategory
+	 * @param int $iCurrentIdcat
+	 * @return boolean
+     * @author Rudi Bieller
+	 */
+	public function isActiveParent(Contenido_Category $oCategory, $iCurrentIdcat) {
+		if ($oCategory->getIdParent() > 0) {
+			$iCurrentIdcat = (int) $iCurrentIdcat;
+			if ($oCategory->getIdParent() == $iCurrentIdcat) {
+				return true;
+			}
+			cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Breadcrumb.class.php');
+			$oBreadcrumb = new Contenido_FrontendNavigation_Breadcrumb($this->oDb, $this->aCfg, $this->iClient, $this->iLang, $this->aCfgClient);
+			$aBreadcrumb = $oBreadcrumb->getAsArray($oCategory->getIdParent());
+			return in_array($iCurrentIdcat, $aBreadcrumb);
+		}
+		return false;
+	}
+	/**
+	 * Check if current idcat is an active child category of a given idcat
+	 * @access public
+	 * @param Contenido_Category $oCategory
+	 * @param int $iCurrentIdcat
+	 * @return boolean
+     * @author Rudi Bieller
+	 */
+	public function isActiveChild(Contenido_Category $oCategory, $iCurrentIdcat) {
+		if ($oCategory->getSubCategories()->count() > 0) {
+			$iCurrentIdcat = (int) $iCurrentIdcat;
+			$oChildCategories = $oCategory->getSubCategories();
+			foreach ($oChildCategories as $oChildCat) {
+				if ($oChildCat->getIdCat() == $iCurrentIdcat) {
+					return true;
+				}
+				$this->isActiveChild($oChildCat, $iCurrentIdcat);
+			}
+			return false;
+		}
+		return false;
+	}
 
     /**
      * Set internal property for Auth object to load only those categories the FE-User has right to see.
