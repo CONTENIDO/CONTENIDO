@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
+ *
  * Description:
  * Frontend URL creation. Works as a wrapper of an UrlBuilder instance.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend classes
  * @version    1.0.0
@@ -17,17 +17,19 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
+ *
  * {@internal
  *   created  2009-09-29
  *   modified 2008-12-23, Murat Purc, added functions buildRedirect(), composeByComponents() and
  *                                    isExternalUrl() and exended flexibility of build()
  *   modified 2008-12-26, Murat Purc, added execution of chains 'Contenido.Frontend.PreprocessUrlBuilding'
  *                                    and 'Contenido.Frontend.PostprocessUrlBuilding' to build()
+ *   modified 2009-01-13, Murat Purc, added new function isIdentifiableFrontContentUrl() for better 
+ *                                    identification of internal urls
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -104,9 +106,9 @@ final class Contenido_Url {
             $arr   = $this->parse($param);
             $param = $arr['params'];
         }
-        
+
         // fallback for urls to homepage (/ or front_content.php)
-        if (count($param) == 0 || (!isset($param['idart']) && !isset($param['idartlang']) && 
+        if (count($param) == 0 || (!isset($param['idart']) && !isset($param['idartlang']) &&
             !isset($param['idcat']) && !isset($param['idcatlang']) && !isset($param['idcatart']))) {
             $param['idcat'] = getEffectiveSetting('navigation', 'idcat-home', 1);
         }
@@ -207,28 +209,74 @@ final class Contenido_Url {
         return $sUrl;
     }
 
-    
+
     /**
      * Checks, if passed url is an external url while performing hostname check
      *
      * @param   string  $sUrl  Url to check
-     * @return  bool  True if uel is a external url, otherwhise false
+     * @return  bool  True if url is a external url, otherwhise false
      */
     public function isExternalUrl($sUrl) {
-        $aComponents = @parse_url($sUrl);
+        $aComponents = $this->parse($sUrl);
         if (!isset($aComponents['host'])) {
             return false;
         }
         if (!$path = $this->_oUrlBuilder->getHttpBasePath()) {
             return false;
         }
-        
-        $aComponents2 = @parse_url($path);
+
+        $aComponents2 = $this->parse($path);
         if (!isset($aComponents2['host'])) {
             return false;
         }
 
         return (strtolower($aComponents['host']) !== strtolower($aComponents2['host']));
+    }
+
+
+    /**
+     * Checks, if passed url is an identifiable internal url.
+     *
+     * Following urls will be identified as a internal url:
+     * - "/", "/?idart=123", "/?idcat=123", ...
+     * - "front_content.php", "front_content.php?idart=123", "front_content.php?idcat=123", ...
+     * - The path component of an client HTML base path: e. g. "/cms/", "/cms/?idart=123", "/cms/?idcat=123"
+     * - Also possible: "/cms/front_content.php", "/cms/front_content.php?idart=123", "/cms/front_content.php?idcat=123"
+     * All of them prefixed with protocol and client host (e. g. http://host/) will also be identified 
+     * as a internal Url.
+     *
+     * Other Urls, even internal Urls like /unknown/path/to/some/page.html will not be identified as 
+     * internal url event if they are real working clean URLs.
+     *
+     * @param   string  $sUrl  Url to check
+     * @return  bool  True if url is identifiable internal url, otherwhise false
+     */
+    public function isIdentifiableFrontContentUrl($sUrl){
+        if ($this->isExternalUrl($sUrl)) {
+            // detect a external url, return false
+            return false;
+        }
+
+        $aComponents = $this->parse($sUrl);
+        if (!isset($aComponents['path']) || $aComponents['path'] == '') {
+            return false;
+        }
+
+        $clientPath = '';
+        if ($httpBasePath = $this->_oUrlBuilder->getHttpBasePath()) {
+            $aComponents2 = $this->parse($httpBasePath);
+            if (isset($aComponents2['path'])) {
+                $clientPath = $aComponents2['path'];
+            }
+        }
+
+        $path = $aComponents['path'];
+        if ($path == '/' || strpos($path, 'front_content.php') === 0 || 
+            strpos($path, '/front_content.php') > 0 || ($clientPath !== '' && $clientPath == $path)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

@@ -53,6 +53,7 @@
  *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page 
  *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages
  *   modified 2009-01-03, Murat Purc, synchronized with cms/front_content.php
+ *   modified 2009-01-13, Murat Purc, synchronized with cms/front_content.php
  *
  *   $Id$:
   * }}
@@ -946,8 +947,8 @@ else
              * Redirect to the URL defined in article properties
              */
             $oUrl = Contenido_Url::getInstance();
-            if (!$oUrl->isExternalUrl($redirect_url)) {
-                // perform urlbuilding only at internal urls
+            if ($oUrl->isIdentifiableFrontContentUrl($redirect_url)) {
+                // perform urlbuilding only for identified internal urls
                 $aUrl = $oUrl->parse($redirect_url);
                 if (!isset($aUrl['params']['lang'])) {
                     $aUrl['params']['lang'] = $lang;
