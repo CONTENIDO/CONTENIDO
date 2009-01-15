@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    0.3.0
+ * @version    0.3.2
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,8 @@
  *   modified 2009-01-05 Timo Trautmann L:138 commented out not neccessary condidion which makes categories visible which shouldn't be displayed
  *   modified 2009-01-05 Rudi Bieller Fixed bug in permission check at strpos() call line 138ff
  *   modified 2009-01-13 Rudi Bieller Added methods isActiveChild() and isActiveParent()
+ *   modified 2009-01-14 Rudi Bieller Changed contenido_security escaping to intval
+ *                                      Added method isActiveChildOfRootOfCategory()
  *
  *   $Id$:
  * }}
@@ -51,6 +53,12 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
      * @access protected
      */
     protected $aLevel;
+    
+    /**
+     * @var int
+     * @access protected
+     */
+    protected $iRootCat;
 
     /**
      * Constructor.
@@ -64,6 +72,7 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
      */
     public function __construct(DB_Contenido $oDb, array $aCfg, $iClient, $iLang, array $aCfgClient) {
         parent::__construct($oDb, $aCfg, $iClient, $iLang, $aCfgClient);
+        $this->iRootCat = -1;
     }
 
     /**
@@ -117,11 +126,11 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 				WHERE
 					cattree.idcat    = cat.idcat AND
 					cat.idcat    = catlang.idcat AND
-					cat.idclient = '.Contenido_Security::escapeDB($this->iClient, $this->oDb).' AND
-					catlang.idlang   = '.Contenido_Security::escapeDB($this->iLang, $this->oDb).' AND
+					cat.idclient = '.intval($this->iClient).' AND
+					catlang.idlang   = '.intval($this->iLang).' AND
 					catlang.visible  = 1 AND ' .
                     $sSqlPublic . '
-					cat.parentid = '.Contenido_Security::escapeDB($iIdcat, $this->oDb).'
+					cat.parentid = '.intval($iIdcat).'
 				ORDER BY
 					cattree.idtree';
 	    if ($this->bDbg === true) {
@@ -206,7 +215,7 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
     }
     
     /**
-	 * Check if current idcat is an active parent category of a given idcat
+	 * Check if current idcat is an active parent category of a given Contenido_Category
 	 * @access public
 	 * @param Contenido_Category $oCategory
 	 * @param int $iCurrentIdcat
@@ -227,7 +236,7 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 		return false;
 	}
 	/**
-	 * Check if current idcat is an active child category of a given idcat
+	 * Check if current idcat is an active child category of a given Contenido_Category
 	 * @access public
 	 * @param Contenido_Category $oCategory
 	 * @param int $iCurrentIdcat
@@ -248,7 +257,21 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * Checks if needle cat is in breadcrumb of haystack up to top level.
+	 * @access public
+	 * @param int $iNeedleCat
+	 * @param int $iTreeHaystackCat
+	 * @return boolean
+	 */
+	public function isInPathToRoot($iNeedleCat, $iTreeHaystackCat) {
+	    cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Breadcrumb.class.php');
+		$oBreadcrumb = new Contenido_FrontendNavigation_Breadcrumb($this->oDb, $this->aCfg, $this->iClient, $this->iLang, $this->aCfgClient);
+		$aBreadCats = $oBreadcrumb->getAsArray($iTreeHaystackCat, ($this->getLevel($this->getRootCat())+1));
+		return in_array($iNeedleCat, $aBreadCats);
+	}
+	
     /**
      * Set internal property for Auth object to load only those categories the FE-User has right to see.
      * Use this method if you have protected Categories and need to check agains FrontendUser Rights.
@@ -259,6 +282,14 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
      */
     public function setAuth(Auth $oAuth) {
         $this->oAuth = $oAuth;
+    }
+    
+    public function setRootCat($iIdcat) {
+        $this->iRootCat = (int) $iIdcat;
+    }
+    
+    public function getRootCat() {
+        return (int) $this->iRootCat;
     }
 }
 ?>
