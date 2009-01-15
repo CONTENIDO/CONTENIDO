@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    0.8.1
+ * @version    0.8.2
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-08-20 Removed unnecessary/redundant security fixes (typecasting is already done in getter methods) that were made during security fixing phase
  *             changed method setDebug() in Contenido_Category_Base to allow all debug modes available
  *   modified 2009-01-05 Bugfix in Contenido_Categories::load() Subcategories will be loaded only if set so.
+ *   modified 2009-01-14 Removed duplicate row in sql select at method load()
  *   $Id$:
  * }}
  * 
@@ -153,7 +154,7 @@ class Contenido_Category extends Contenido_Category_Base {
             throw new InvalidArgumentException('When setting $bIncludeLanguage to true you must provide an $iIdlang!');
         }
         $sSql = 'SELECT 
-					idclient, parentid, parentid, preid, postid, status, author, created, lastmodified 
+					idclient, parentid, preid, postid, status, author, created, lastmodified 
 				FROM 
 					' . $this->aCfg['tab']['cat'] . ' 
 				WHERE 
