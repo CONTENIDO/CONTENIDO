@@ -55,8 +55,8 @@ class Contenido_Sitemap_Util {
     	}
     	$oTpl->next();
     	// check if current item has sub-items
-    	if ($oCategory->getSubCategories()->count() > 0) {
-    		$oSubCategories = $oCategory->getSubCategories();
+		$oSubCategories = $oFrontendNavigation->getSubCategories();
+    	if ($oSubCategories->count() > 0) {
     		foreach ($oSubCategories as $oSubCategory) {
     			self::loopCats($oSubCategory, $oFrontendNavigation, $oTpl, $sUrlStyle, $aCfg, $iLang);
     		}
