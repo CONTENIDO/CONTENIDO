@@ -36,14 +36,23 @@ class Contenido_Sitemap_Util {
     public static function loopCats(Contenido_Category $oCategory, Contenido_FrontendNavigation $oFrontendNavigation, Template $oTpl, $sUrlStyle, array $aCfg, $iLang) {
     	// display current item
     	$iItemLevel = $oFrontendNavigation->getLevel($oCategory->getIdCat());
-    	$aParams = array('a' => $oCategory->getIdCat(), 
-    					'idcat' => $oCategory->getIdCat(), // needed to build category path
-    					'lang' => $iLang, // needed to build category path
-    					'level' => 0); // needed to build category path
+    	// this is just for sample client - modify to your needs!
+    	if ($aCfg['url_builder']['name'] == 'front_content') {
+    	    $aParams = array('lang' => $iLang);
+    	} else {
+        	$aParams = array('a' => $oCategory->getIdCat(), 
+        					'idcat' => $oCategory->getIdCat(), // needed to build category path
+        					'lang' => $iLang, // needed to build category path
+        					'level' => 0); // needed to build category path
+    	}
     	// fill template with values
     	$oTpl->set('d', 'name', $oCategory->getCategoryLanguage()->getName());
     	$oTpl->set('d', 'css_level', $iItemLevel);
-    	$oTpl->set('d', 'url', $oFrontendNavigation->getUrl($aParams, $sUrlStyle, $aCfg));
+    	try {
+    	   $oTpl->set('d', 'url', Contenido_Url::getInstance()->build($aParams));
+    	} catch (InvalidArgumentException $e) {
+    	    $oTpl->set('d', 'url', '#');
+    	}
     	$oTpl->next();
     	// check if current item has sub-items
     	if ($oCategory->getSubCategories()->count() > 0) {

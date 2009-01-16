@@ -49,17 +49,26 @@ class Contenido_NavMain_Util {
     		$aLevelInfo[$oCategory->getIdCat()]['first_child_item'] = $oCurrentSubcategories[0]->getIdCat();
     		$aLevelInfo[$oCategory->getIdCat()]['last_child_item'] = $oCurrentSubcategories[$oCurrentSubcategories->count()-1]->getIdCat();
     	}
-    	$aParams = array('a' => $oCategory->getIdCat(), 
-    					'idcat' => $oCategory->getIdCat(), // needed to build category path
-    					'lang' => $iLang, // needed to build category path
-    					'level' => 0); // needed to build category path
+    	// this is just for sample client - modify to your needs!
+    	if ($aCfg['url_builder']['name'] == 'front_content') {
+    	    $aParams = array('lang' => $iLang);
+    	} else {
+        	$aParams = array('a' => $oCategory->getIdCat(), 
+        					'idcat' => $oCategory->getIdCat(), // needed to build category path
+        					'lang' => $iLang, // needed to build category path
+        					'level' => 0); // needed to build category path
+    	}
     	// fill template with values
     	$oTpl->set('d', 'name', $oCategory->getCategoryLanguage()->getName());
     	$oTpl->set('d', 'css_level', $iItemLevel);
     	$oTpl->set('d', 'css_first_item', ($aLevelInfo[$oCategory->getIdParent()]['first_child_item'] == $oCategory->getIdCat() ? ' first' : ''));
     	$oTpl->set('d', 'css_last_item', ($aLevelInfo[$oCategory->getIdParent()]['last_child_item'] == $oCategory->getIdCat() ? ' last' : ''));
     	$oTpl->set('d', 'css_active_item', ($bMarkActive === true ? ' active' : ''));
-    	$oTpl->set('d', 'url', $oFrontendNavigation->getUrl($aParams, $aCfg['url_builder']['name'], $aCfg));
+    	try {
+    	   $oTpl->set('d', 'url', Contenido_Url::getInstance()->build($aParams));
+    	} catch (InvalidArgumentException $e) {
+    	    $oTpl->set('d', 'url', '#');
+    	}
     	$oTpl->next();
     	// check if current item has sub-items to be displayed
     	$bShowFollowUps = ($oCategory->getIdCat() == $iCurrentPageIdcat || $oFrontendNavigation->isInPathToRoot($oCategory->getIdCat(), $iCurrentPageIdcat))
