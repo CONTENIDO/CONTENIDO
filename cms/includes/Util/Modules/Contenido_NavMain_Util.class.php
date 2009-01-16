@@ -56,7 +56,7 @@ class Contenido_NavMain_Util {
         	$aParams = array('a' => $oCategory->getIdCat(), 
         					'idcat' => $oCategory->getIdCat(), // needed to build category path
         					'lang' => $iLang, // needed to build category path
-        					'level' => 0); // needed to build category path
+        					'level' => 1); // needed to build category path
     	}
     	// fill template with values
     	$oTpl->set('d', 'name', $oCategory->getCategoryLanguage()->getName());
