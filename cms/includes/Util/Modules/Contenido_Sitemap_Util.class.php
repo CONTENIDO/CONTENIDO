@@ -38,7 +38,7 @@ class Contenido_Sitemap_Util {
     	$iItemLevel = $oFrontendNavigation->getLevel($oCategory->getIdCat());
     	// this is just for sample client - modify to your needs!
     	if ($aCfg['url_builder']['name'] == 'front_content') {
-    	    $aParams = array('lang' => $iLang);
+    	    $aParams = array('lang' => $iLang, 'idcat' => $oCategory->getIdCat());
     	} else {
         	$aParams = array('a' => $oCategory->getIdCat(), 
         					'idcat' => $oCategory->getIdCat(), // needed to build category path
