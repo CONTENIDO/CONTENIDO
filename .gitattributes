@@ -70,6 +70,9 @@ cms/templates/newsletter_form.html -text
 cms/templates/newsletter_handler.html -text
 cms/templates/search_input.html -text
 cms/templates/search_output.html -text
+cms/templates/sitemap_standard.html -text
+cms/templates/sitemap_standard_li.html -text
+cms/templates/sitemap_standard_ul.html -text
 cms/templates/subheadline_h2.html -text
 cms/templates/teaser-standard.html -text
 cms/templates/teaser_right.html -text
