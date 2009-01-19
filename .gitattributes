@@ -59,8 +59,6 @@ cms/templates/kontaktformular.html -text
 cms/templates/login_form.html -text
 cms/templates/login_form_loggedin.html -text
 cms/templates/logo_bottom.html -text
-cms/templates/navigation_main_container.html -text
-cms/templates/navigation_main_item.html -text
 cms/templates/navigation_meta_container.html -text
 cms/templates/navigation_meta_item.html -text
 cms/templates/navigation_standard.html -text
