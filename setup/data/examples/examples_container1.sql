@@ -162,7 +162,7 @@ INSERT INTO !PREFIX!_container_conf VALUES (8, 9, 60, '0=http%3A%2F%2Fwww.conten
 INSERT INTO !PREFIX!_container_conf VALUES (5, 59, 52, '1=2&3=sortdate&16=asc&4=%24C52%24C52CMS_VALUE%5B4%5D&14=&15=&');
 INSERT INTO !PREFIX!_container_conf VALUES (9, 43, 60, '0=http%3A%2F%2Fwww.contenido.org%2Frss%2Fde%2Fnews&1=teaser_right.html&2=3&');
 INSERT INTO !PREFIX!_container_conf VALUES (10, 50, 52, '0=1&1=5&');
-INSERT INTO !PREFIX!_container_conf VALUES (11, 34, 52, '0=1&1=5&');
+INSERT INTO !PREFIX!_container_conf VALUES (11, 34, 52, '1=1&2=5&3=0&');
 INSERT INTO !PREFIX!_container_conf VALUES (13, 60, 60, '0=http%3A%2F%2Fwww.contenido.org%2Frss%2Fde%2Fnews&1=teaser_right.html&2=3&');
 INSERT INTO !PREFIX!_container_conf VALUES (15, 16, 52, '0=180&1=180&2=2&3=2&4=&5=bildergalerie%2F&');
 INSERT INTO !PREFIX!_container_conf VALUES (16, 31, 52, '0=&2=&1=&3=&4=sendmail&5=&6=&7=&');
