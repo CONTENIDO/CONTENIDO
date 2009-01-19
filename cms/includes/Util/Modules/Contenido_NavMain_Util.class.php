@@ -33,9 +33,14 @@ class Contenido_NavMain_Util {
      * @param string $sUrlStyle
      * @param array $aCfg
      * @param int $iLang
+     * @param array $aLevelInfo Information for marking active cat per levels
+     * @param array $aDepthInfo Info on level depth / where to stop. Format: array(iCurrentLoopCount, iMaxLoopCount)
+     * @return void
      */
-    public static function loopCats(Contenido_Category $oCategory, Contenido_FrontendNavigation $oFrontendNavigation, Template $oTpl, array $aCfg, $iLang, array $aLevelInfo, $iCurrentPageIdcat) {
-    	// display current item
+    public static function loopCats(Contenido_Category $oCategory, Contenido_FrontendNavigation $oFrontendNavigation, Template $oTpl, array $aCfg, $iLang, array $aLevelInfo, $iCurrentPageIdcat, array $aDepthInfo = array()) {
+    	$aDepthInfo[0] = isset($aDepthInfo[0]) ? $aDepthInfo[0] + 1 : 1;
+    	$aDepthInfo[1] = isset($aDepthInfo[1]) ? $aDepthInfo[1] : 1;
+        // display current item
     	$iItemLevel = $oFrontendNavigation->getLevel($oCategory->getIdCat());
     	if (!isset($aLevelInfo[$oCategory->getIdCat()])) {
     		$aLevelInfo[$oCategory->getIdCat()] = array();
@@ -70,14 +75,17 @@ class Contenido_NavMain_Util {
     	    $oTpl->set('d', 'url', '#');
     	}
     	$oTpl->next();
-    	// check if current item has sub-items to be displayed
-    	$bShowFollowUps = ($oCategory->getIdCat() == $iCurrentPageIdcat || $oFrontendNavigation->isInPathToRoot($oCategory->getIdCat(), $iCurrentPageIdcat))
-    							? true : false;
-    	if ($bShowFollowUps === true && $oCurrentSubcategories->count() > 0) {
-    		$oSubCategories = $oCurrentSubcategories;
-    		foreach ($oSubCategories as $oSubCategory) {
-    			self::loopCats($oSubCategory, $oFrontendNavigation, $oTpl, $aCfg, $iLang, $aLevelInfo, $iCurrentPageIdcat);
-    		}
+    	// continue until max level depth
+    	if ($aDepthInfo[1] > $aDepthInfo[0]) {
+        	// check if current item has sub-items to be displayed
+        	$bShowFollowUps = ($oCategory->getIdCat() == $iCurrentPageIdcat || $oFrontendNavigation->isInPathToRoot($oCategory->getIdCat(), $iCurrentPageIdcat))
+        							? true : false;
+        	if ($bShowFollowUps === true && $oCurrentSubcategories->count() > 0) {
+        		$oSubCategories = $oCurrentSubcategories;
+        		foreach ($oSubCategories as $oSubCategory) {
+        			self::loopCats($oSubCategory, $oFrontendNavigation, $oTpl, $aCfg, $iLang, $aLevelInfo, $iCurrentPageIdcat, $aDepthInfo);
+        		}
+        	}
     	}
     }
 }
