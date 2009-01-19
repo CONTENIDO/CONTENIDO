@@ -63,6 +63,9 @@ cms/templates/navigation_main_container.html -text
 cms/templates/navigation_main_item.html -text
 cms/templates/navigation_meta_container.html -text
 cms/templates/navigation_meta_item.html -text
+cms/templates/navigation_standard.html -text
+cms/templates/navigation_standard_li.html -text
+cms/templates/navigation_standard_ul.html -text
 cms/templates/newsletter_form.html -text
 cms/templates/newsletter_handler.html -text
 cms/templates/search_input.html -text
