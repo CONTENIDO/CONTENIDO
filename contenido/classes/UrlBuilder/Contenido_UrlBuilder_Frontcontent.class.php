@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   modified 2008-09-09 Fix of parameter checking in method buildUrl()
  *   modified 2008-09-29, Murat Purc, fix parameter check and third argument for buildUrl()
  *   modified 2008-12-26, Murat Purc, added handling of additional parameter to buildUrl()
+ *   modified 2009-01-19 Rudi Bieller Bugfix in buildUrl() for idart (had idcat as param name...)
  *   @todo: add switch for & vs. &amp;
  * 
  *   $Id$:
@@ -102,7 +103,7 @@ class Contenido_UrlBuilder_Frontcontent extends Contenido_UrlBuilder {
         $sHttpBasePath = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';
         if ($bIdcatSet === true) {
             if ($bIdartSet === true) {
-                $this->sUrl = $sHttpBasePath . 'front_content.php?idcat='.strval($aParams['idcat']).$this->_sAmp.'idart='.strval($aParams['idcat']);
+                $this->sUrl = $sHttpBasePath . 'front_content.php?idcat='.strval($aParams['idcat']).$this->_sAmp.'idart='.strval($aParams['idart']);
             } else {
                 $this->sUrl = $sHttpBasePath . 'front_content.php?idcat='.strval($aParams['idcat']);
             }
