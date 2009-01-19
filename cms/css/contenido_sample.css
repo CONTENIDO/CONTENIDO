@@ -186,12 +186,10 @@ img {
 }
 
 /* Level 2 */
-#navigation ul.subNavigation {
-	width:210px;
-	margin:0;
-	padding:0;
+#navigation ul li.navmainStandardLevel_2 {
+	margin-left:10px;
 }
-#navigation ul.subNavigation li a {
+#navigation ul li.navmainStandardLevel_2 a {
 	background-image:url(../images/subnavi_pfeil_zu.gif);
 	background-repeat:no-repeat;
 	background-position:199px 8px;
@@ -199,28 +197,24 @@ img {
 	color:#666;
 	width:210px;
 }
-#navigation ul.subNavigation li.active a {
-	color:#fff;
-}
-#navigation ul.subNavigation li a:hover, #navigation ul.subNavigation li.active a {
+#navigation ul li.navmainStandardLevel_2 a:hover, #navigation ul li.navmainStandardLevel_2 a.active {
 	background-image:url(../images/subnavi_over.gif);
 	background-repeat:no-repeat;
 	background-position:0 0;
+	color:#fff;
 }
 
 /* Level 3 */
-#navigation ul.subSubNavigation {
-	width:200px;
-	margin:0;
-	padding:0;
+#navigation ul li.navmainStandardLevel_3 {
+	margin-left:20px;
 }
-#navigation ul.subNavigation li ul.subSubNavigation li a {
+#navigation ul li.navmainStandardLevel_3 a {
 	background-image:none;
 	border-bottom:0;
 	color:#666;
 	width:200px;
 }
-#navigation ul.subNavigation li ul.subSubNavigation li a:hover, #navigation ul.subNavigation li ul.subSubNavigation li.active a {
+#navigation ul li.navmainStandardLevel_3 a:hover, #navigation ul li.navmainStandardLevel_3 a.active {
 	background-image:url(../images/subsubnavi_over.gif);
 	background-repeat:no-repeat;
 	background-position:0 0;
@@ -629,39 +623,34 @@ td.gallery_image .links{
 /**
  * CSS styles for Contenido Sitemap.
  * 
- * @author Frederic Schneider
+ * @author rbi
  * @copyright four for business AG <www.4fb.de>
  * @version 0.1.0
  * 
- * created 2008-04-11
+ * created 2009-01-16
  */
 
-.sitemap, .sitemap ul {
+ul.sitemapStandardMainCat {
         margin-left:0;
         padding-left: 0;
 }
 
-.sitemap li {
+ul.sitemapStandardMainCat li {
 	border-bottom: 1px solid #ffffff;
 	list-style-type: none;
 }
 
-.sitemap .level1 {
+ul.sitemapStandardMainCat li.sitemapStandardLevel_1 {
         background-color: #e6f1fb;
         padding: 3px 3px 3px 10px;
 }
 
-.sitemap .level2 {
+ul.sitemapStandardMainCat li.sitemapStandardLevel_2 {
         background-color: #f4f9fd;
         padding: 3px 3px 3px 30px;
 }
 
-.sitemap .level3 {
+ul.sitemapStandardMainCat li.sitemapStandardLevel_3 {
         background-color: #ffffff;
         padding: 3px 3px 3px 50px;
-}
-
-/* Only for IE */
-*+html .sitemap .list2, * html .sitemap .list2 {
-        margin-top: -14px;
 }
