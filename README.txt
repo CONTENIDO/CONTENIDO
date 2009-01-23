@@ -291,7 +291,7 @@ Ein Upgrade von Contenido 4.2 ist leider derzeit noch nicht möglich.
 -------------------------------------------------------------------
 
 Eine Einführung zu Contenido finden Sie unter
-docs/handbuch/Handbuch_Contenido_Version_43.pdf
+http://www.contenido.org/de/redir/de_Handbuch_Redakteur_Contenido_
 
 
 -------------------------------------------------------------------
@@ -489,7 +489,7 @@ Contenido 4.4.0.
 -------------------------------------------------------------------
 
 A german introduction is provided in:
-docs/handbuch/Handbuch_Contenido_Version_43.pdf
+http://www.contenido.org/de/redir/de_Handbuch_Redakteur_Contenido_
 
 
 -------------------------------------------------------------------
