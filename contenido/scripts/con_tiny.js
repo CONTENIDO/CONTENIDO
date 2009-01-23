@@ -17,6 +17,7 @@
  * 
  * {@internal 
  *   created 2008-09-05
+ *   modified 2009-01-23, Ortwin Pinke, BUG-Fix in setFocus first parameter for execInstanceCommand has to be the Id of Tinyobject, not the object itself 
  *
  *   $Id$:
  * }}
@@ -251,10 +252,11 @@ function swapTiny(obj) {
    *
    */
 function setFocus() {
-	if (!tinyMCE.getInstanceById(active_object)) {
+  var activeTinyId = tinyMCE.getInstanceById(active_object);
+	if (!activeTinyId) {
 		window.setTimeout('setFocus()', 50);
 	} else {
-		tinyMCE.execInstanceCommand(active_object, 'mceFocus', false);
+		tinyMCE.execInstanceCommand(activeTinyId, 'mceFocus', false);
 	}
 }
 
