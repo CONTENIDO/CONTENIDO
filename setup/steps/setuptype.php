@@ -45,7 +45,7 @@ class cSetupTypeChooser extends cSetupMask
 
 		$this->_oStepTemplate->set("s", "TITLE_UPGRADE", i18n("Upgrade existing installation"));
 		$this->_oStepTemplate->set("s", "VERSION_UPGRADE", sprintf(i18n("Upgrade to %s"), C_SETUP_VERSION));		
-		$this->_oStepTemplate->set("s", "DESCRIPTION_UPGRADE", i18n("This setup type will upgrade your existing installation (Contenido 4.4.x or later required).")."<br><br>".i18n("Recommended for existing projects."));		
+		$this->_oStepTemplate->set("s", "DESCRIPTION_UPGRADE", i18n("This setup type will upgrade your existing installation (Contenido 4.6.x or later required).")."<br><br>".i18n("Recommended for existing projects."));		
 		
 		$this->_oStepTemplate->set("s", "TITLE_MIGRATION", i18n("Migrate existing installation"));
 		$this->_oStepTemplate->set("s", "VERSION_MIGRATION", sprintf(i18n("Migrate (Version %s)"), C_SETUP_VERSION));		

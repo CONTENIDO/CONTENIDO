@@ -75,8 +75,8 @@ msgid "Upgrade to %s"
 msgstr "Upgraden auf %s"
 
 #: setup/steps/setuptype.php:16
-msgid "This setup type will upgrade your existing installation (Contenido 4.4.x or later required)."
-msgstr "Diese Setupart wird Ihre bestehende Contenido Installation (Version 4.4.x oder höher) upgraden. "
+msgid "This setup type will upgrade your existing installation (Contenido 4.6.x or later required)."
+msgstr "Diese Setupart wird Ihre bestehende Contenido Installation (Version 4.6.x oder höher) upgraden. "
 
 #: setup/steps/setuptype.php:16
 msgid "Recommended for existing projects."
