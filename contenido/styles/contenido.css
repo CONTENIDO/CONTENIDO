@@ -464,9 +464,16 @@ ul#con_str_tree {
 #con_str_tree li a.on_locked {
 	background-image: url("../images/folder_on_locked.gif");
 }
-#con_str_tree li a.off {
+#con_str_tree li a.off{
 	background-image: url("../images/folder_off.gif");
 }
+
+#con_str_tree a.off_disabled {
+	color: #999999 !important; 
+	font-style: italic;
+	background-image: url("../images/folder_off.gif") !important;
+}
+
 #con_str_tree li a.off_error {
 	background-image: url("../images/folder_off_error.gif");
 }

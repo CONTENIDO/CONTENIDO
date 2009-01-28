@@ -66,12 +66,13 @@ global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client
 
 	    if (!$check_rights) {
             $check_rights = ($aValue['forcedisplay'] == 1) ? true : false;
-	    }    
-        if ($check_rights) {
-		
-        $idcat = (int)$aValue['idcat'];
+	    }  
+
+		$idcat = (int)$aValue['idcat'];
         $level = $aValue['level'] - 1;
         $name  = $aValue['name'];
+		
+        if ($check_rights) {
 
 		$idtpl = ( $aValue['idtpl'] != '' ) ? $aValue['idtpl'] : 0;                            
 
@@ -375,7 +376,20 @@ global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client
         $tpl->next();        
 
     } // end if have_perm    	
-    	
+    else {
+		if (is_array($navigationTree[(int)$aValue['idcat']])) {
+			$sTpl = showTree((int)$aValue['idcat'], $aWholelist);
+			if (!preg_match('/^<ul>\s*<\/ul>$/', $sTpl)) {
+				$tpl->set('d', 'CFGDATA',   '0-0-0-0-0-0-0-0-0');
+				$tpl->set('d', 'SUBCATS', $sTpl);
+				$tpl->set('d', 'COLLAPSE', '<a href="#"></a>');
+				$tpl->set('d', 'CAT',       '<a class="off_disabled" href="#">' . $name . '</a>');
+				$tpl->set('d', 'CSS_CLASS',	' class="active"');
+				$tpl->next();  
+			}
+			$aWholelist[] = $aValue['idcat'];
+		}
+	}	
  
     }
     return $tpl->generate($cfg['path']['templates'] . 'template.con_str_overview.list.html', 1);
