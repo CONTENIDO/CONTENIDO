@@ -6,6 +6,30 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id$:
 
+Release 4.8.11
+----------------------------------------------------------------------	
+** Bug
+
+    * [CON-234] - con_tiny.js: wrong parameter in setFocus throws javascript error in IE
+    * [CON-235] - bug which does not display any categories when root categories does not own the same right in content->article
+	* [CON-236] - Bug allows cross site scripting
+	
+** Improvement
+
+    * [CON-231] - Rewritten Contenido Example Client module Navigation
+    * [CON-232] - Rewritten Contenido Example Client module Sitemap
+
+** New Feature
+
+    * [CON-233] - Modified Contenido Example Client links which contains full name to article
+
+** Task
+
+    * [CON-229] - Location of manual/handbook in "README.txt" is not correct
+    * [CON-230] - Setup: Upgrade message
+
+
+
 Release 4.8.10
 ----------------------------------------------------------------------	
 ** Bug
