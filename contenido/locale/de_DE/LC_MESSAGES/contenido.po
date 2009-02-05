@@ -6399,3 +6399,6 @@ msgstr "Editor schließen"
 
 msgid "Close editor and save changes"
 msgstr "Editor schließen und Änderungen speichern"
+
+msgid "Use TinyMce as insight editor"
+msgstr "TinyMce als Insight Editor verwenden"

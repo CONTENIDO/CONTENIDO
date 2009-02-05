@@ -172,9 +172,9 @@ tinyMCE.settings = tinymceConfigs;
 //tiny toggles on click 
 $(document).ready( function(){
    $('div[@contenteditable=true]').each( function(){
+	  $(this).removeAttr('contenteditable'); //remove coneditable tags in order to disable special firefox behaviour
       $(this).bind( "click", function(){
-         $(this).removeAttr('contenteditable'); //remove coneditable tags in order to disable special firefox behaviour
-         swapTiny(this);
+         {USE_TINY}
       });
    });
 });
@@ -215,6 +215,12 @@ EOD;
 		$oScriptTpl->set('s', 'CLOSE', i18n('Close editor'));
 		$oScriptTpl->set('s', 'SAVE', i18n('Close editor and save changes'));
         $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
+		
+		if (getEffectiveSetting('system', 'insight_editing_activated', 'true') == 'false') {
+			$oScriptTpl->set('s', 'USE_TINY', '');
+		} else {
+			$oScriptTpl->set('s', 'USE_TINY', 'swapTiny(this);');
+		}
         
         $scripts = $oScriptTpl->generate($scripts, 1);
         

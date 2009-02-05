@@ -89,7 +89,8 @@ function updateSystemProperties($db, $table) {
 							   array('type' => 'system', 'name' => 'clickmenu', 'value' => 'false'),
                                array('type' => 'versioning', 'name' => 'activated', 'value' => 'true'),
                                array('type' => 'versioning', 'name' => 'prune_limit', 'value' => '0'),
-                               array('type' => 'versioning', 'name' => 'path', 'value' => '')
+                               array('type' => 'versioning', 'name' => 'path', 'value' => ''),
+							   array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => 'true')
                               );
  
     foreach ($aStandardvalues as $aData) {
