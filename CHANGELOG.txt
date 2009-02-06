@@ -22,6 +22,7 @@ Release 4.8.11
 ** New Feature
 
     * [CON-233] - Modified Contenido Example Client links which contains full name to article
+	* [CON-237] - Added possibility for deactivating insight editing
 
 ** Task
 
