@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.3.1
+ * @version    1.3.2
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created unknown
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-07-03, Dominik Ziegler, fixed bug CON-143
+ *   modified 2009-02-15, Murat Purc, fixed bug CON-238
  *
  *   $Id$:
  * }}
@@ -749,7 +750,7 @@ function isValidMail($sEMail, $bStrict = false)
 		$sDomainRegEx	= $sDomainRegEx  = '((['.$sDomainChar.']|['.$sDomainChar.']['.$sDomainChar.'0-9-]{0,61}['.$sDomainChar.'0-9])\\.)+';
 		$sTLDChar		= 'a-z';
 		$sTLDRegEx		= '['.$sTLDChar.']{2,}'; 
-		return preg_match('/^' . $$sLocalRegEx . '@' . $sDomainRegEx . $sTLDRegEx . '$/i', $sEMail);
+		return preg_match('/^' . $sLocalRegEx . '@' . $sDomainRegEx . $sTLDRegEx . '$/i', $sEMail);
 	} else {
 		return preg_match("/^[0-9a-z]([-_.]*[0-9a-z]*)*@[a-z0-9-]+\.([a-z])/i", $sEMail);
 	}
