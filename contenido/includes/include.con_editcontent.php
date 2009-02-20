@@ -186,8 +186,8 @@ if (document.all) {
 	window.onbeforeunload = leave_check;
 }
 
-var file_url = "{IMAGE}"; //Global var which contains url to contenido image browser
-var image_url = "{FILE}"; //Global var which contains url to contenido file browser
+var file_url = "{FILE}"; //Global var which contains url to contenido image browser
+var image_url = "{IMAGE}"; //Global var which contains url to contenido file browser
 var flash_url = "{FLASH}"; //Global var which contains url to contenido flash browser
 var media_url = "{MEDIA}"; //Global var which contains url to contenido media browser
 
