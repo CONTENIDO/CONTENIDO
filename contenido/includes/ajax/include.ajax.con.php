@@ -11,17 +11,17 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Ingo van Peeren
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since contenido release 4.8.9
  * 
  * {@internal 
  *   created 2008-09-08
- *
+ *   modified 2009-06-25, Ingo van Peeren, added some array checks and initializing
  *   $Id$:
  * }}
  * 
@@ -35,9 +35,17 @@ if (!$idcat) {
 	$idcat = Contenido_Security::toInteger($_REQUEST['idcat']);
 }
 
-$sCatlist        = Contenido_Security::toString($_REQUEST['wholelist']);
-$aCatlist        = explode(',', $sCatlist);
+$sCatlist = Contenido_Security::toString($_REQUEST['wholelist']);
+if ($sCatlist != '') {
+	$aCatlist = explode(',', $sCatlist);
+} else {
+	$aCatlist = array();
+}
+
 $aConexpandedList = unserialize($currentuser->getUserProperty("system", "con_cat_expandstate"));
+if (!is_array($aConexpandedList))  {
+	$aConexpandedList = array();
+}
 
 if ($bDebug) {
 	print_r($aConexpandedList);
