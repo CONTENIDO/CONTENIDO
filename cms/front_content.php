@@ -56,6 +56,7 @@
  *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages
  *   modified 2008-12-23, Murat Purc, fixed problems with Contenido_Url
  *   modified 2009-01-13, Murat Purc, changed handling of internal redirects
+ *   modified 2009-03-02, Andreas Lindner, prevent $lang being wrongly set to 0 
  *
  *   $Id$:
  * }}
@@ -279,7 +280,7 @@ if (isset($path) && strlen($path) > 1)
         $iLangCheck = 0;
 
         $idcat = prResolvePathViaCategoryNames($path, $iLangCheck);
-        if($lang != $iLangCheck){
+        if(($lang != $iLangCheck) && ((int)$iLangCheck != 0)){
             $lang = $iLangCheck;
         }
 
