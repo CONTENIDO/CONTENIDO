@@ -26,17 +26,19 @@
  * 
  */
 
-DEFINE ('CON_FRAMEWORK', true);
+if (!defined("CON_FRAMEWORK")) {
+    define("CON_FRAMEWORK", true);
+}
+
+include_once ('../classes/class.security.php');
+Contenido_Security::checkRequests();
 
 if (isset($_REQUEST['cfg']) || isset ($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }
 
-include_once('../../../classes/class.security.php');
+include_once('../includes/startup.php');
 
-include_once ('../../../includes/startup.php');
-
-cInclude("classes", "class.security.php");
 cInclude("classes", "class.user.php");
 cInclude("classes", "class.xml.php");
 cInclude("classes", "class.navigation.php");

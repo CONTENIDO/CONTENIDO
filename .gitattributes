@@ -260,6 +260,7 @@ contenido/classes/widgets/class.widgets.tableedit.php -text
 contenido/classes/widgets/class.widgets.treeview.php -text
 contenido/classes/widgets/class.widgets.views.php -text
 contenido/classes/xml/class.xml2array.php -text
+contenido/cronjobs/advance_workflow.php -text
 contenido/cronjobs/crontab.txt -text
 contenido/cronjobs/index.php -text
 contenido/cronjobs/linkchecker.php -text
