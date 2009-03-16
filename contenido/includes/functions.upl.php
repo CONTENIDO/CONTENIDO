@@ -452,7 +452,7 @@ function uplRenameDirectory ($oldpath, $newpath, $parent)
 	
 	/* Fetch all directory strings starting with the old path, and replace them
        with the new path */
-	$sql = "SELECT dirname, idupl FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND dirname LIKE '{".Contenido_Security::escapeDB($parent, $db)."}{".Contenido_Security::escapeDB($oldpath, $db)."}%'";
+	$sql = "SELECT dirname, idupl FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND dirname LIKE '".Contenido_Security::escapeDB($parent, $db).Contenido_Security::escapeDB($oldpath, $db)."%'";
 	$db->query($sql);
 
 	while ($db->next_record())
@@ -463,12 +463,12 @@ function uplRenameDirectory ($oldpath, $newpath, $parent)
 		$newpath2 = $parent . $newpath . $junk; 
  
 		$idupl = $db->f("idupl");
-		$sql = "UPDATE ".$cfg["tab"]["upl"]." SET dirname='".Contenido_Security::escapeDB($newpath2)."' WHERE idupl = '".Contenido_Security::toInteger($idupl)."'";
+		$sql = "UPDATE ".$cfg["tab"]["upl"]." SET dirname='".Contenido_Security::escapeDB($newpath2, $db)."' WHERE idupl = '".Contenido_Security::toInteger($idupl)."'";
 		$db2->query($sql);
 		
 	}
 	
-	$sql = "SELECT itemid, idproperty FROM ".$cfg["tab"]["properties"]." WHERE itemid LIKE '{".Contenido_Security::escapeDB($parent, $db)."}{".Contenido_Security::escapeDB($oldpath, $db)."}%'";
+	$sql = "SELECT itemid, idproperty FROM ".$cfg["tab"]["properties"]." WHERE itemid LIKE '".Contenido_Security::escapeDB($parent, $db).Contenido_Security::escapeDB($oldpath, $db)."%'";
 	$db->query($sql);
 	
 	while ($db->next_record())
