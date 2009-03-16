@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.3.0
+ * @version    1.3.1
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,7 +22,8 @@
  * {@internal 
  *   created 2003-12-28
  *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2008-11-27, Andreas Lindner, add possibility to define additional chars as allowed in file / dir names    
+ *   modified 2008-11-27, Andreas Lindner, add possibility to define additional chars as allowed in file / dir names  
+ *   modified 2009-03-16, Ingo van Peeren, fixed some sql-statements and a missing parameter in uplRenameDirectory()
  *
  *   $Id$:
  * }}
