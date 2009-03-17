@@ -339,9 +339,9 @@ class UploadList extends FrontendList
 				{
 					if (is_dbfs($path.'/'.$data))
 					{
-						$mstr = '<a href="javascript://" onclick="javascript:parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \'dbfs.php?file='.$path.'/'.$data.'\'; window.returnValue=\'dbfs.php?file='.$path.'/'.$data.'\'; window.close();"><img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_ok.gif" title="'.i18n("Use file").'">&nbsp;'.$data.'</a>';
+						$mstr = '<a href="javascript://" onclick="javascript:parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \''.$cfgClient[$client]['htmlpath']['frontend'].'dbfs.php?file='.$path.'/'.$data.'\'; window.returnValue=\''.$cfgClient[$client]['htmlpath']['frontend'].'dbfs.php?file='.$path.'/'.$data.'\'; window.close();"><img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_ok.gif" title="'.i18n("Use file").'">&nbsp;'.$data.'</a>';
 					} else {
-						$mstr = '<a href="javascript://" onclick="javascript:parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \''.$cfgClient[$client]["upl"]["frontendpath"].$path.$data.'\'; window.returnValue=\''.$cfgClient[$client]["upl"]["frontendpath"].$path.$data.'\'; window.close();"><img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_ok.gif" title="'.i18n("Use file").'">&nbsp;'.$data.'</a>';
+						$mstr = '<a href="javascript://" onclick="javascript:parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \''.$cfgClient[$client]['htmlpath']['frontend'].$cfgClient[$client]["upl"]["frontendpath"].$path.$data.'\'; window.returnValue=\''.$cfgClient[$client]['htmlpath']['frontend'].$cfgClient[$client]["upl"]["frontendpath"].$path.$data.'\'; window.close();"><img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_ok.gif" title="'.i18n("Use file").'">&nbsp;'.$data.'</a>';
 					}	
 				} else {
 				    $tmp_mstr = '<a onmouseover="this.style.cursor=\'pointer\'" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';

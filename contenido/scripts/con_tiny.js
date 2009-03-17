@@ -24,6 +24,14 @@
  * 
  */
 
+var first = true; 
+ 
+function myCustomSetupContent(editor_id, body, doc) {
+	tinyMCE.get(editor_id).setContent(tinyMCE.get(editor_id).getContent());
+	//body.innerHTML = "my new content" + body.innerHTML;
+}
+
+ 
 /**
  * Callback function for tiny which gets a selected image in Contenido
  * image browser, close browser and set this selected image in tiny
@@ -56,9 +64,9 @@ function updateImageFilebrowser ()
         window.clearInterval(fb_intervalhandle);
 
 		//set this selected image in tiny
-        if (fb_win.showPreviewImage)
+        if (fb_win.ImageDialog.showPreviewImage)
         {
-            fb_win.showPreviewImage(fb_win.document.forms[0].elements[fb_fieldname].value);
+            fb_win.ImageDialog.showPreviewImage(fb_win.document.forms[0].elements[fb_fieldname].value);
         }				
     }
 }
@@ -73,8 +81,16 @@ function updateImageFilebrowser ()
  * @return string - converted url
  */
 function CustomURLConverter(url, node, on_save) {
-        var oEd = new tinymce.Editor('contenido', '');
-        url = oEd.convertURL(url, node, on_save);
+		if (node.nodeName  != 'IMG' && node != 'img') {
+	        var oEd = new tinymce.Editor('contenido', '');
+	        url = oEd.convertURL(url, node, on_save);
+		} else {
+			var src = url;
+			
+			if (!src.match(/^https?:\/\//g)) {
+				url = frontend_path+src;
+			}
+		}
         return url;
 }
 
@@ -106,7 +122,9 @@ function CustomCleanupContent(type, value) {
 function storeCurrentTinyContent() {
     //store last tiny changes if tiny is still open
     if (tinyMCE.getInstanceById(active_object)) {
-        aEditdata[active_id] = tinyMCE.get(active_object).getContent();
+	    var content = tinyMCE.get(active_object).getContent();
+		content = content.replace(frontend_path, '');
+        aEditdata[active_id] = content;
     }
 }
 
@@ -209,7 +227,8 @@ function closeTiny() {
 	//check if tiny is currently open
 	if (tinyMCE.getInstanceById(active_object)) {
 		//save current tiny content to js var
-        aEditdata[active_id] = tinyMCE.get(active_object).getContent();
+        storeCurrentTinyContent();
+		
 		//if content was empty set div height. Empty divs were ignored by most browsers
         if (aEditdata[active_id] == '') {
             document.getElementById(active_id).style.height = '15px';
@@ -313,6 +332,7 @@ function updateContent(sContent) {
 	//if original content was already set do not overwrite
 	//this happens if tiny is reopened on same content
     if (aEditdataOrig[active_id] == undefined) {
+		sContent = sContent.replace(frontend_path, '');
         aEditdataOrig[active_id] = sContent;
     }
 }

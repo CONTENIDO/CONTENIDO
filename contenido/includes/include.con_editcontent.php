@@ -190,6 +190,7 @@ var file_url = "{FILE}"; //Global var which contains url to contenido image brow
 var image_url = "{IMAGE}"; //Global var which contains url to contenido file browser
 var flash_url = "{FLASH}"; //Global var which contains url to contenido flash browser
 var media_url = "{MEDIA}"; //Global var which contains url to contenido media browser
+var frontend_path = "{FRONTEND}";
 
 var iIdartlang = '{IDARTLANG}'; //Idartlang which is currently edited
 var sQuestion = '{QUESTION}'; //Translation of save confirmation
@@ -206,7 +207,8 @@ EOD;
         $oScriptTpl->set('s', 'FILE', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=filebrowser');
         $oScriptTpl->set('s', 'FLASH', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
         $oScriptTpl->set('s', 'MEDIA', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
-        
+        $oScriptTpl->set('s', 'FRONTEND', $cfgClient[$client]["path"]["htmlpath"]);
+		
         //Add tiny options and fill function leave_check()
         $oScriptTpl->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
         $oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);

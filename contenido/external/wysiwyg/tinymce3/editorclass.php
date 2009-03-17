@@ -93,7 +93,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		// Default values
 		$this->setSetting("mode", "exact");
 		$aPathFragments = split('/', $cfgClient[$client]["path"]["htmlpath"]);
-		$this->setSetting("content_css", $cfg["path"]["contenido_fullhtml"].$aPathFragments[count($aPathFragments)-2]."/css/style_tiny.css"); 
+		$this->setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css"); 
 
 		$this->setSetting("theme", "advanced");
 		$this->setSetting("theme_advanced_toolbar_location", "top");
@@ -121,7 +121,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		unset ($aLangs);
 		
 		// Set document base URL
-		$this->setSetting("document_base_url", $cfgClient[$client]["path"]["htmlpath"], true);
+		//$this->setSetting("document_base_url", $cfgClient[$client]["path"]["htmlpath"], true);
 				
 		// The following "base URL" is the URL used to reference JS script files
 		// - it is not the base href value 
@@ -362,7 +362,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 	 */
 	function setToolbar($sMode = "")
 	{
-		global $cfg;
+		global $cfg, $cfgClient, $client;
 		
 		switch ($sMode)
 		{
@@ -405,13 +405,15 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				$this->setSetting("theme_advanced_buttons2", "", true);
 				$this->setSetting("theme_advanced_buttons3", "", true);
 
+				$this->setSetting("setupcontent_callback", "myCustomSetupContent", true);
+				
                 $this->unsetSetting("width");              
                 
                 $this->setSetting("height", "210px", true);
 				$this->setSetting("plugins", "table,inlinepopups,fullscreen,-close", true);
                 $this->setSetting("mode", "extract", true);
                 $this->setSetting("elements", "*", true);
-				$this->setSetting("content_css", $cfg["path"]["contenido_fullhtml"]."external/backendedit/css/style_tiny.css", true); 
+				$this->setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css", true); 
                 
 				if (!array_key_exists("auto_resize", $this->_aSettings)) 
 					$this->setSetting("auto_resize", "false", true);
@@ -624,7 +626,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 	
 	function getEditor ()
 	{
-		global $sess, $cfg, $lang, $client, $idart;
+		global $sess, $cfg, $lang, $client, $idart, $cfgClient;
 		
 		// TODO: Check functionality - doesn't seem to have any effect...
 		$browserparameters = array("restrict_imagebrowser" => array("jpg", "gif", "jpeg", "png"));
@@ -632,6 +634,9 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		
 		// Contenido-specific: Set article_url_suffix setting as it is used in plugins/advlink/jscripts/functions.js on anchor tags
 		$this->setSetting("article_url_suffix", 'front_content.php?idart='.$idart, true); # modified 23.10.2006	
+		$this->setSetting("setupcontent_callback", 'myCustomSetupContent', true);
+		$this->setSetting("save_callback", 'cutFullpath', true);
+		
 
 		// Set browser windows
 		// Difference between file and image browser is with (file) or without categories/articles (image)			
@@ -640,7 +645,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		$oTemplate->set('s', 'FILEBROWSER',	 $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=filebrowser');
 		$oTemplate->set('s', 'FLASHBROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
 		$oTemplate->set('s', 'MEDIABROWSER', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
-
+		$oTemplate->set('s', 'FRONTEND_PATH', $cfgClient[$client]["path"]["htmlpath"]); 
 		// GZIP support options
 		if ($this->_bUseGZIP)
 		{

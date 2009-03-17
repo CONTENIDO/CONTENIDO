@@ -4,6 +4,17 @@
 		var fb_handle;
 		var fb_intervalhandle;
 		var fb_win;
+		var frontend_path = '{FRONTEND_PATH}';
+		
+		function myCustomSetupContent(editor_id, body, doc) {
+			tinyMCE.get(editor_id).setContent(tinyMCE.get(editor_id).getContent());
+			//body.innerHTML = "my new content" + body.innerHTML;
+		}
+		
+		function cutFullpath(element_id, html, body) {
+			html = html.replace(frontend_path, '');
+			return html;
+		}
 		
 		function myCustomFileBrowser(field_name, url, type, win) {
 			switch (type)
@@ -62,10 +73,10 @@
 				fb_handle.close();
 				window.clearInterval(fb_intervalhandle);
 
-				if (fb_win.showPreviewImage)
-				{
-					fb_win.showPreviewImage(fb_win.document.forms[0].elements[fb_fieldname].value);
-				}				
+				if (fb_win.ImageDialog.showPreviewImage)
+		        {
+		            fb_win.ImageDialog.showPreviewImage(fb_win.document.forms[0].elements[fb_fieldname].value);
+		        }			
 			}
 		}
 		
@@ -75,9 +86,17 @@
 		}
 
 		function CustomURLConverter(url, node, on_save) {
-                var oEd = new tinymce.Editor('contenido', '');
-                url = oEd.convertURL(url, node, on_save);
-				return url;
+			if (node.nodeName  != 'IMG' && node != 'img') {
+		        var oEd = new tinymce.Editor('contenido', '');
+		        url = oEd.convertURL(url, node, on_save);
+			} else {
+				var src = url;
+				
+				if (!src.match(/^https?:\/\//g)) {
+					url = frontend_path+src;
+				}
+			}
+	        return url;
 		}
 
 		function CustomCleanupContent(type, value) {
