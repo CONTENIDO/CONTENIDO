@@ -551,7 +551,7 @@ EOD;
                     $output = eregi_replace("(CMS_VALUE\[)([0-9]*)(\])", "", $output);
 
                     /* Long syntax with closing tag */
-                    $code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)>(.*)<\/container>/i", "CMS_CONTAINER[$value]", $code);
+                    $code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$value]", $code);
 
                     /* Short syntax */
                     $code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)\/>/i", "CMS_CONTAINER[$value]", $code);
