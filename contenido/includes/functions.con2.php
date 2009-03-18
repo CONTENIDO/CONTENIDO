@@ -346,7 +346,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 				$output .= addslashes(' <?php $cModuleNames["'.$value.'"] = "'.addslashes($db->f("name")).'"; ?>');
 			}
 			/* Replace new containers */
-			$code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)>(.*)<\/container>/i", "CMS_CONTAINER[$value]", $code);
+			$code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$value]", $code);
 
 			$code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)\/>/i", "CMS_CONTAINER[$value]", $code);
 
