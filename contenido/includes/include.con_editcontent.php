@@ -68,9 +68,9 @@ if ( isset($idcat) )
 			// restore orginal values
 			$data 	= $_REQUEST['data'];
 			$value	= $_REQUEST['value'];
-
-			conGenerateCodeForArtInAllCategories ($idart);
 		}
+		
+		conGenerateCodeForArtInAllCategories ($idart);
 	}
 
 	if ( $action == 10 )

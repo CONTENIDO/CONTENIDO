@@ -1185,9 +1185,10 @@ function setArtspecDefault($idartspec)
  * @param String Name of the SelectBox
  * @param String Value of the SelectBox
  * @param Integer Value of highest level that should be shown
+ * @param String Optional style informations for select
  * @return String HTML
  */
-function buildCategorySelect($sName, $sValue, $sLevel = 0)
+function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = "")
 {
 	global $cfg, $client, $lang, $idcat;
 
@@ -1195,7 +1196,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0)
 	$db2 = new DB_Contenido;
 
 	$html = '';
-	$html .= '<select name="'.$sName.'">';
+	$html .= '<select id="'.$sName.'" style="'.$sStyle.'" name="'.$sName.'">';
 	$html .= '  <option value="">'.i18n("Please choose").'</option>';
 
 	if ($sLevel > 0)

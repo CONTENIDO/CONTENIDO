@@ -578,10 +578,16 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
  * @copyright four for business AG <www.4fb.de>
  *
  */
-function conSaveContentEntry($idartlang, $type, $typeid, $value)
+function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false)
 {
-    global $db, $auth, $cfg, $cfgClient, $client, $lang, $_cecRegistry;
+    global $auth, $cfg, $cfgClient, $client, $lang, $_cecRegistry;
 
+	if ($bForce == true) {
+		$db = new DB_Contenido;
+	} else {
+		global $db;
+	}
+	
 	cInclude("classes", "class.search.php");
 	
     $date   = date("Y-m-d H:i:s");
