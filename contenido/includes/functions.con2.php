@@ -27,6 +27,7 @@
  *   modified 2008-06-25, Timo Trautmann, user meta tags and system meta tags were merged, not replaced
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-08-29, Murat Purc, add new chain execution
+ *   modified 2009-03-27, Andreas Lindner, Add title tag generation via chain    
  *
  *   $Id$:
  * }}
@@ -383,7 +384,12 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	$db->next_record();
 
 	$idartlang = $db->f("idartlang");
+	
 	$pagetitle = stripslashes($db->f("pagetitle"));
+
+	if ($pagetitle == '') {
+		$pagetitle = CEC_Hook::execute("Contenido.Content.CreateTitletag");
+	}
 
 	/* replace all CMS_TAGS[] */
 	$sql = "SELECT type, code FROM ".$cfg["tab"]["type"];

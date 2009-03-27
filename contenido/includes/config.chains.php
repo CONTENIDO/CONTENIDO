@@ -27,6 +27,7 @@
  *   modified 2008-09-07, Murat Purc, added chain 'Contenido.Frontend.AfterLoadPlugins'
  *   modified 2008-12-26, Murat Purc, added chain 'Contenido.Frontend.PreprocessUrlBuilding' and
  *                                    'Contenido.Frontend.PostprocessUrlBuilding'
+ *   modified 2009-03-27, Andreas Lindner, Add title tag generation via chain    
  *
  *   $Id$:
  * }}
@@ -276,6 +277,18 @@ $_cecRegistry->registerChain("Contenido.Content.CopyArticle", "int", "int");
  * 
  */
 $_cecRegistry->registerChain("Contenido.Content.CreateMetatags", "array");
+
+/* Chain Contenido.Content.CreateTitletag
+ * This chain is used to build up a user defined title tag
+ *
+ * Parameters & order:
+ * none 
+ *
+ * Returns:
+ * string	New title tag
+ * 
+ */
+$_cecRegistry->registerChain("Contenido.Content.CreateTitletag");
 
 /* Chain Contenido.Frontend.AllowEdit
  * This chain is used when an article is about to be edited. This chain can be used
