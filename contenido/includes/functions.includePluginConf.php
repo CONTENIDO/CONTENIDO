@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.2
+ * @version    1.1.0
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,7 +23,7 @@
  *   created unknown
  *   modified 2008-06-16, Holger Librenz, Hotfix: checking for dirty calls!
  *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2009-04-02, Oliver Lohkemper, add scan-time and SystemProperty
+ *   modified 2009-04-04, Oliver Lohkemper, add scan-time and SystemProperty
  *
  *   $Id$:
  * }}
