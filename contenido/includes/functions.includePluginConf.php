@@ -23,6 +23,7 @@
  *   created unknown
  *   modified 2008-06-16, Holger Librenz, Hotfix: checking for dirty calls!
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2009-04-02, Oliver Lohkemper, add scan-time and SystemProperty
  *
  *   $Id$:
  * }}
@@ -37,36 +38,80 @@ if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
     die ('Illegal call!');
 }
 
-/**
- * very dirty hack
- */
-$ipc_conpluginpath = $cfg['path']['contenido'].$cfg["path"]['plugins'];
 
-    $ipc_dh = opendir($ipc_conpluginpath);
+$pluginorder = getSystemProperty("system", "plugin-order");
+$lastscantime = getSystemProperty("system", "plugin-lastscantime");
 
-    while (($ipc_plugin = readdir($ipc_dh)) !== false)
-    {
-       if (is_dir($ipc_conpluginpath.$ipc_plugin)  && $ipc_plugin != ".." && $ipc_plugin != ".")
-          {
-            $ipc_configfile = $ipc_conpluginpath.$ipc_plugin. "/includes/config.plugin.php";
-         $ipc_langfile   = $ipc_conpluginpath.$ipc_plugin. "/includes/language.plugin.php";
-         $ipc_localedir  = $ipc_conpluginpath.$ipc_plugin. "/locale/";
+$ipc_conpluginpath = $cfg["path"]["contenido"].$cfg["path"]["plugins"];
+$plugins = array ();
 
-            if (file_exists($ipc_localedir))
-           {
-               i18nRegisterDomain($ipc_plugin, $ipc_localedir);
-           }
+/* Fetch and trim the plugin order */
+if ($pluginorder != "")
+{
+	$plugins = explode(",", $pluginorder);
 
-           if (file_exists($ipc_langfile))
-           {
-               include_once($ipc_langfile);
-           }
-           if (file_exists($ipc_configfile))
-           {
-               include_once($ipc_configfile);
-           }
-       }
-    }
+	foreach ($plugins as $key => $plugin)
+	{
+		$plugins[$key] = trim($plugin);
+	}
+}
 
-closedir($ipc_dh);
+/* Don't scan all the time, but each 60 seconds */
+if ($lastscantime +60 < time())
+{
+	setSystemProperty("system", "plugin-lastscantime", time());
+
+	$dh = opendir($ipc_conpluginpath);
+
+	while (($file = readdir($dh)) !== false)
+	{
+
+		if (is_dir($ipc_conpluginpath.$file."/") && $file != "includes" && $file != "." && $file != ".." && !in_array($file, $plugins) )
+		{
+			$plugins[] = $file;
+		}
+	}
+
+	foreach ($plugins as $key => $value)
+	{
+		if (!is_dir($ipc_conpluginpath.$value."/"))
+		{
+			unset ($plugins[$key]);
+		}
+	}
+	closedir($dh);
+}
+
+foreach ($plugins as $key => $ipc_plugin)
+{
+	if (!is_dir($ipc_conpluginpath.$ipc_plugin."/"))
+	{
+		unset ($plugins[$key]);
+	}
+	else 
+	{
+		$ipc_localedir  = $ipc_conpluginpath.$ipc_plugin. "/locale/";
+		$ipc_langfile   = $ipc_conpluginpath.$ipc_plugin. "/includes/language.plugin.php";
+		$ipc_configfile = $ipc_conpluginpath.$ipc_plugin. "/includes/config.plugin.php";
+
+		if (file_exists($ipc_localedir))
+		{
+			i18nRegisterDomain($ipc_plugin, $ipc_localedir);
+		}
+		if (file_exists($ipc_langfile))
+		{
+			include_once($ipc_langfile);
+		}
+		if (file_exists($ipc_configfile))
+		{
+			include_once($ipc_configfile);
+		}
+	}
+}
+
+$pluginorder = implode(",", $plugins);
+setSystemProperty("system", "plugin-pluginorder", $pluginorder);
+
+unset( $plugins );
+
 ?>
