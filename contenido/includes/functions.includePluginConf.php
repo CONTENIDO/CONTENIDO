@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.1.0
+ * @version    1.1.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -110,7 +110,7 @@ foreach ($plugins as $key => $ipc_plugin)
 }
 
 $pluginorder = implode(",", $plugins);
-setSystemProperty("system", "plugin-pluginorder", $pluginorder);
+setSystemProperty("system", "plugin-order", $pluginorder);
 
 unset( $plugins );
 
