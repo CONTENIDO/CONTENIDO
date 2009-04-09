@@ -1180,6 +1180,44 @@ function setArtspecDefault($idartspec)
 }
 
 /**
+ * Build a Article select Box
+ *
+ * @param String Name of the SelectBox
+ * @param String Value of the SelectBox
+ * @return String HTML
+ */
+function buildArticleSelect($sName, $iIdCat, $sValue) {
+	global $cfg, $client, $lang, $idcat;
+	$db = new DB_Contenido;
+
+	$html = '';
+	$html .= '<select id="'.$sName.'" name="'.$sName.'">';
+	$html .= '  <option value="">'.i18n("Please choose").'</option>';
+	
+	$sql = "SELECT b.title, b.idart FROM
+	    	   ".$cfg["tab"]["art"]." AS a, ".$cfg["tab"]["art_lang"]." AS b, ".$cfg["tab"]["cat_art"]." AS c
+			   WHERE c.idcat = '".Contenido_Security::toInteger($iIdCat)."'
+	    	   AND b.idlang = '".Contenido_Security::toInteger($lang)."' AND b.idart = a.idart and b.idart = c.idart
+	           ORDER BY b.title";
+
+	$db->query($sql);
+	
+	while ($db->next_record())
+	{
+		if ($sValue != $db->f('idart'))
+		{
+			$html .= '<option value="'.$db->f('idart').'" style="background-color:#EFEFEF">'.$db->f('title').'</option>';
+		} else{
+			$html .= '<option value="'.$db->f('idart').'" style="background-color:#EFEFEF" selected="selected">'.$db->f('title').'</option>';
+		}
+	}
+	
+	$html .= '</select>';
+
+	return $html;
+}
+
+/**
  * Build a Category / Article select Box
  *
  * @param String Name of the SelectBox

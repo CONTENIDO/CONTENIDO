@@ -654,3 +654,9 @@ ul.sitemapStandardMainCat li.sitemapStandardLevel_3 {
         background-color: #ffffff;
         padding: 3px 3px 3px 50px;
 }
+
+.teaser_image {
+	float:left; 
+	margin-top:4px; 
+	margin-right:4px;
+}

@@ -69,6 +69,7 @@ cInclude ("classes", 'class.cat.php');
 cInclude ("classes", 'class.client.php');
 cInclude ("classes", 'class.inuse.php');
 cInclude ("classes", 'class.table.php');
+cInclude ("classes", 'class.ajax.php');
 
 page_open(array('sess' => 'Contenido_Session',
                 'auth' => 'Contenido_Challenge_Crypt_Auth',
@@ -227,8 +228,13 @@ if (isset($action)) {
     }
 }
 
-
-include_once($cfg['path']['contenido'].$cfg['path']['includes'] ."ajax/include.ajax." . $area . ".php");
+if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
+	$oAjax = new Ajax();
+	$sReturn = $oAjax->handle($_REQUEST['ajax']);
+	echo $sReturn;
+} else {
+	include_once($cfg['path']['contenido'].$cfg['path']['includes'] ."ajax/include.ajax." . $area . ".php");
+}
 
 $cfg["debug"]["backend_exectime"]["end"] = getmicrotime();
 

@@ -45,6 +45,8 @@ cms/index.php -text
 cms/js/index.php -text
 cms/logs/index.php -text
 cms/robots.txt -text
+cms/templates/cms_teaser_style_block.html -text
+cms/templates/cms_teaser_style_blog.html -text
 cms/templates/contenido_header.html -text
 cms/templates/footnotes_1.html -text
 cms/templates/footnotes_2.html -text
@@ -139,6 +141,7 @@ contenido/classes/UrlBuilder/Sample.php -text
 contenido/classes/abstract_classes/class.conuser.php -text
 contenido/classes/class.action.php -text
 contenido/classes/class.activeusers.php -text
+contenido/classes/class.ajax.php -text
 contenido/classes/class.area.php -text
 contenido/classes/class.art.php -text
 contenido/classes/class.article.php -text
@@ -151,6 +154,7 @@ contenido/classes/class.cec_hook.php -text
 contenido/classes/class.chartable.php -text
 contenido/classes/class.client.php -text
 contenido/classes/class.cms_date.php -text
+contenido/classes/class.cms_teaser.php -text
 contenido/classes/class.communications.php -text
 contenido/classes/class.conuser.php -text
 contenido/classes/class.csv.php -text
@@ -1268,6 +1272,7 @@ contenido/scripts/articleObject.js.php -text
 contenido/scripts/browserCheck.js -text
 contenido/scripts/cfoldingrow.js -text
 contenido/scripts/cmsDate.js -text
+contenido/scripts/cmsTeaser.js -text
 contenido/scripts/conFrameResize.js -text
 contenido/scripts/con_tiny.js -text
 contenido/scripts/contenidoConfig.js -text
@@ -1280,6 +1285,7 @@ contenido/scripts/help.js.php -text
 contenido/scripts/iZoom.js.php -text
 contenido/scripts/index.php -text
 contenido/scripts/infoBox.js -text
+contenido/scripts/jquery/jquery-ui.js -text
 contenido/scripts/jquery/jquery.js -text
 contenido/scripts/jscalendar/calendar-contenido.css -text
 contenido/scripts/jscalendar/calendar-setup.js -text
@@ -1351,6 +1357,7 @@ contenido/scripts/tip_balloon/stemb.gif -text
 contenido/scripts/tip_balloon/stemt.gif -text
 contenido/scripts/tip_balloon/t.gif -text
 contenido/scripts/wz_tooltip.js -text
+contenido/styles/cms_teaser.css -text
 contenido/styles/contenido.css -text
 contenido/styles/header_ie.css -text
 contenido/styles/header_ie_small.css -text
@@ -1380,6 +1387,7 @@ contenido/templates/standard/template.client_edit.html -text
 contenido/templates/standard/template.client_left_top.html -text
 contenido/templates/standard/template.client_menu.html -text
 contenido/templates/standard/template.client_subnav.html -text
+contenido/templates/standard/template.cms_teaser_edit.html -text
 contenido/templates/standard/template.con_art_overview.html -text
 contenido/templates/standard/template.con_edit_form.html -text
 contenido/templates/standard/template.con_left_top.html -text

@@ -26,6 +26,7 @@
  *
  * {@internal
  *  created 2008-08-21
+ *  modified 2009-04-09: Timo Trautmann fixed inconsistence bug in getNonStartArticlesInCategory()
  *  $Id$:
  * }}
  *
@@ -80,13 +81,15 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
      * @throws Exception In case of a sql query that crashes
      */
     public function getArticlesInCategory($iCategoryId, $sOrderBy = "creationdate", $sOrder = "ASC", $bArticleIdAsKey = false, $iOnlineStatus = 2) {
-        $aReturn = array();
+		$aReturn = array();
         $sSql = $this->_buildQuery('idcat = '.Contenido_Security::toInteger($iCategoryId), $sOrderBy, $sOrder, $iOnlineStatus);
         if ($this->bDbg === true) {
             $this->oDbg->show($sSql, 'Contenido_Category_Articles::getArticlesInCategory() $sSql');
         }
+
         $this->oDb->query($sSql);
-        $bHasErrors = $this->oDb->Errno == 0 ? false : true;
+
+        $bHasErrors = $this->oDb->Errno == 0 ? $bHasErrors = false : $bHasErrors = true;
         if ($bHasErrors === false && $this->oDb->num_rows() > 0) {
             while($this->oDb->next_record()) {
                 if ($bArticleIdAsKey === false) {
@@ -252,6 +255,11 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
         if (!in_array(strtolower($sOrderDirection), array('asc', 'desc'))) {
             $sOrderDirection = 'DESC';
         }
+		
+		$sOrderBy == 'sortsequence' ? $sOrderBy = 'artsort' : null;
+		$sOrderBy == 'modificationdate' ? $sOrderBy = 'lastmodified' : null;
+		$sOrderBy == 'creationdate' ? $sOrderBy = 'created': null;
+				
         $aReturn = array();
         $aOptions = array(
                             'idcat' => Contenido_Security::toInteger($iCategoryId),
@@ -261,6 +269,7 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
                             'order' => Contenido_Security::escapeDB($sOrderBy, $this->oDb),
                             'direction' => $sOrderDirection
                         );
+	
         $this->oArticleCollection = new ArticleCollection($aOptions);
         while ($oArticle = $this->oArticleCollection->nextArticle()) {
             if ($bArticleIdAsKey === false) {
@@ -422,7 +431,8 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
                         art.idart = catart.idart AND
                         artlang.idart = art.idart
                         '.$sOrderCondition.' ';
-        return $sSql;
+
+		return $sSql;
     }
 }
 ?>

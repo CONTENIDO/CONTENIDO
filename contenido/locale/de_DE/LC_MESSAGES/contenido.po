@@ -6402,3 +6402,99 @@ msgstr "Editor schließen und Änderungen speichern"
 
 msgid "Use TinyMce as insight editor"
 msgstr "TinyMce als Insight Editor verwenden"
+
+msgid "Teasersettings"
+msgstr "Teasereinstellungen"
+
+msgid "General Settings"
+msgstr "Allgemeine Einstellungen"
+
+msgid "Teasertitle"
+msgstr "Teaser&uuml;berschrift"
+
+msgid "Targetcategory"
+msgstr "Zielkategorie"
+
+msgid "Number of Articles"
+msgstr "Anzahl der Artikel"
+
+msgid "Teaser Style"
+msgstr "Teaser Darstellung"
+
+msgid "Teaser Startarticle"
+msgstr "Teaser Startartikel"
+
+msgid "Source Settings"
+msgstr "Quelleinstellungen"
+
+msgid "Source Headline"
+msgstr "Quelle &Uuml;berschrift"
+
+msgid "Source Text"
+msgstr "Quelle Text"
+
+msgid "Source Image"
+msgstr "Quelle Bild"
+
+msgid "Advanced Teaser Settings"
+msgstr "Erweiterte Teaser Einstellungen"
+
+msgid "Teaser Filter"
+msgstr "Teaser Filter"
+
+msgid "Teaser Sort"
+msgstr "Teaser Sortierung"
+
+msgid "Block Style"
+msgstr "Blockdarstellung"
+
+msgid "Blog Style"
+msgstr "Listendarstellung"
+
+msgid "Imageheight"
+msgstr "Bildhöhe"
+
+msgid "Size Settings"
+msgstr "Gr&ouml;&szlig;eneinstellungen"
+
+msgid "Characterlength"
+msgstr "Zeichenanzahl"
+
+msgid "Imagewidth"
+msgstr "Bildbreite"
+
+msgid "more"
+msgstr "mehr"
+
+msgid "General"
+msgstr "Allgemein"
+
+msgid "Advanced"
+msgstr "Erweitert"
+
+msgid "Manual"
+msgstr "Manuell"
+
+msgid "Manual Teaser Settings"
+msgstr "Manuelle Teaser Einstellungen"
+
+msgid "Included Articles"
+msgstr "Eingebundene Artikel"
+
+msgid "Add Article"
+msgstr "Artikel hinzuf&uuml;gen"
+
+msgid "Manual Teaser"
+msgstr "Manueller Teaser"
+
+msgid "Add"
+msgstr "Hinzuf&uuml;gen"
+
+msgid "Sort Sequence"
+msgstr "Sortierungsreihenfolge"
+
+msgid "Creationdate"
+msgstr "Erstellungsdatum"
+
+msgid "Modificationdate"
+msgstr "Änderungsdatum"

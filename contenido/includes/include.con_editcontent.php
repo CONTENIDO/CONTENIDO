@@ -171,8 +171,8 @@ tinyMCE.settings = tinymceConfigs;
 //add tiny to elements which contains classname contentEditable
 //tiny toggles on click 
 $(document).ready( function(){
-   $('div[@contenteditable=true]').each( function(){
-	  $(this).removeAttr('contenteditable'); //remove coneditable tags in order to disable special firefox behaviour
+   $('div[contenteditable=true]').each( function(){
+	  $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
       $(this).bind( "click", function(){
          {USE_TINY}
       });

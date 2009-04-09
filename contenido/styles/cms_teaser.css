@@ -1,0 +1,126 @@
+.cms_teaser_img {
+	margin-right: 2px; 
+	margin-top: 2px;
+}
+
+.cms_teaser {
+	padding: 3px;
+	position:absolute; 
+	width:322px; 
+	height:320px; 
+	background-color:#F1F1F1; 
+	border:1px solid #B3B3B3; 
+	display:none;
+	top: 40px;
+	left: 40px;
+}
+
+.cms_teaser .close {
+	margin:0; 
+	float:right;
+}
+
+.cms_teaser .head {
+	font-weight:bold; 
+	margin:0; 
+	padding: 0;
+	margin-bottom: 5px;
+}
+
+.cms_teaser .head_sub {
+	clear:both;
+	font-style:italic; 
+	margin:0; 
+	margin-bottom: 3px;
+	padding-top: 7px;
+}
+
+.cms_teaser .head_sep {
+	width: 322px;
+	margin-top: 7px; 
+	clear:both;
+}
+
+.cms_teaser .manual {
+	width:320px; 
+}
+
+.cms_teaser label {
+	display:block; 
+	float:left; 
+	width:120px; 
+	margin-bottom:3px;
+}
+
+.cms_teaser input, .cms_teaser select {
+	display:block; 
+	float:left; 
+	width:194px; 
+	margin-bottom:3px;
+}
+
+.cms_teaser select {
+	width:200px; 
+}
+
+.cms_teaser .no_width {
+	width: 20px; 
+}
+
+.cms_teaser .toolbar {
+	float:right; 
+	text-align: right;
+	width:65px; 
+	font-style:italic; 
+	margin:0; 
+	margin-bottom: 3px;  
+	margin-top: 7px; 
+	clear:both;
+}
+
+.cms_teaser .toolbar #advanced_settings, .cms_teaser .toolbar #general_settings {
+	margin-left:80px;
+}
+
+.cms_teaser .italic {
+	font-style:italic;
+}
+
+.cms_teaser .menu {
+	margin-top:5px; 
+	list-style:inside;
+	list-style-type:none;
+	margin-left: -40px;
+	margin-right: -6px;
+	clear:both;
+}
+
+.cms_teaser .menu li {
+	margin:0; 
+	padding: 0;
+	float: left;
+	width: 102px;
+	margin-right: 6px;
+	height: 20px;
+	line-height:20px;
+	text-align:center;
+	border-bottom: 1px solid #B3B3B3;
+	border-right: 1px solid #B3B3B3; 
+	vertical-align: bottom;
+}
+
+.cms_teaser .menu .general {
+	font-weight: bold;
+}
+
+.cms_teaser #general, .cms_teaser #advanced, .cms_teaser #manual {
+	display:none;
+}
+
+.cms_teaser #tabs {
+	height: 256px;
+}
+
+.cms_teaser #general {
+	display: block;
+}
