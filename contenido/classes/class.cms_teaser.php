@@ -597,7 +597,7 @@ class Cms_Teaser {
 		
 		//cms type text default
 		if (strlen($this->aSettings['teaser_source_text']) == 0) {
-			$this->aSettings['teaser_source_text'] = 'CMS_HTMLTEXT';
+			$this->aSettings['teaser_source_text'] = 'CMS_HTML';
 		}
 		
 		//cms type image default
