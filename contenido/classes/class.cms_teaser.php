@@ -577,7 +577,7 @@ class Cms_Teaser {
 		
 		//teaser style is liststyle by default
 		if (strlen($this->aSettings['teaser_style']) == 0) {
-			$this->aSettings['teaser_style'] = 'template.cms_teaser_style_blog.html';
+			$this->aSettings['teaser_style'] = 'cms_teaser_style_blog.html';
 		}
 		
 		//teaser image width default
@@ -588,6 +588,21 @@ class Cms_Teaser {
 		//teaser image height default
 		if ((int)$this->aSettings['teaser_image_height'] == 0) {
 			$this->aSettings['teaser_image_height'] = 75;
+		}
+		
+		//cms type head default
+		if (strlen($this->aSettings['teaser_source_head']) == 0) {
+			$this->aSettings['teaser_source_head'] = 'CMS_HTMLHEAD';
+		}
+		
+		//cms type text default
+		if (strlen($this->aSettings['teaser_source_text']) == 0) {
+			$this->aSettings['teaser_source_text'] = 'CMS_HTMLTEXT';
+		}
+		
+		//cms type image default
+		if (strlen($this->aSettings['teaser_source_image']) == 0) {
+			$this->aSettings['teaser_source_image'] = 'CMS_IMG';
 		}
 	}
 	

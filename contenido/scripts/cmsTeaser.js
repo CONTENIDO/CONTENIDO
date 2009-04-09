@@ -101,6 +101,7 @@ function addTabbingEvents(sFrameId) {
  * @param integer iId
  */
 function addSaveEvent(sFrameId, iIdArtLang, iId) {
+	addManualTeaserEntry(sFrameId);
 	$(sFrameId+' .save_settings').css('cursor', 'pointer');
 	$(sFrameId+' .save_settings').click(function() {
 		var sValue = '';
@@ -200,33 +201,44 @@ function loadExternalScripts(sFrameId, sPath) {
 function addManualTeaserEvent(sFrameId) {
 	$(sFrameId+' #add_art').css('cursor', 'pointer');
 		$(sFrameId+' #add_art').click(function() {
-			var oArt = $(sFrameId+' #teaser_art');
-			var iIdArt = oArt.attr('value');
-			var sName = '';
-			var bExists = 0;
-			
-			//if an article was selected
-			if (iIdArt > 0) {
-				//check if article already exists in view list
-				$(sFrameId+' #teaser_manual_art option').each(function() {
-					if (iIdArt == $(this).attr('value')) {
-						bExists = 1;
-					}
-				});
-				
-				//get name of selected article
-				$(sFrameId+' #teaser_art option').each(function() {
-					if (iIdArt == $(this).attr('value')) {
-						sName = $(this).html();
-					}
-				});
-				
-				//if it is not in list, add article to list
-				if (bExists == 0) {
-					$(sFrameId+' #teaser_manual_art').append('<option value="'+iIdArt+'">'+sName+'</option>');
-				}
+			//call internal add function
+			addManualTeaserEntry(sFrameId);
+		});
+}
+
+/**
+ * Function adds new article to multiple select box for articles
+ * Function also checks if article is already in that list
+ *
+ * @param string sFrameId
+ */
+function addManualTeaserEntry(sFrameId) {
+	var oArt = $(sFrameId+' #teaser_art');
+	var iIdArt = oArt.attr('value');
+	var sName = '';
+	var bExists = 0;
+	
+	//if an article was selected
+	if (iIdArt > 0) {
+		//check if article already exists in view list
+		$(sFrameId+' #teaser_manual_art option').each(function() {
+			if (iIdArt == $(this).attr('value')) {
+				bExists = 1;
 			}
 		});
+		
+		//get name of selected article
+		$(sFrameId+' #teaser_art option').each(function() {
+			if (iIdArt == $(this).attr('value')) {
+				sName = $(this).html();
+			}
+		});
+		
+		//if it is not in list, add article to list
+		if (bExists == 0) {
+			$(sFrameId+' #teaser_manual_art').append('<option value="'+iIdArt+'">'+sName+'</option>');
+		}
+	}
 }
 
 /**
