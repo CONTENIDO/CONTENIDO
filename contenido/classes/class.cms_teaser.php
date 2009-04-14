@@ -24,6 +24,7 @@
  * 
  * {@internal 
  *   created 2009-04-08
+ *   modified 2009-04-14 - added possibility to expand template select by client or system setting using type 'cms_teaser'
  *
  *   $Id$:
  * }}
@@ -336,6 +337,14 @@ class Cms_Teaser {
 		
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Blog Style"), 'cms_teaser_style_blog.html', false);
 		$oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
+		
+		$aAdditionalOptions = getEffectiveSettingsByType('cms_teaser');
+		$i = 3;
+		foreach ($aAdditionalOptions as $sLabel => $sTemplate) {
+			$oHtmlSelectOption = new cHTMLOptionElement($sLabel, $sTemplate, false);
+			$oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
+			$i++;
+		}	
 		
 		//set default value
 		$oHtmlSelect->setDefault($sSelected);
