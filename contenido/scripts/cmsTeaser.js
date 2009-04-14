@@ -101,9 +101,9 @@ function addTabbingEvents(sFrameId) {
  * @param integer iId
  */
 function addSaveEvent(sFrameId, iIdArtLang, iId) {
-	addManualTeaserEntry(sFrameId);
 	$(sFrameId+' .save_settings').css('cursor', 'pointer');
 	$(sFrameId+' .save_settings').click(function() {
+		addManualTeaserEntry(sFrameId);
 		var sValue = '';
 		//iterate over all teaser properties
 		for (var i = 0; i < aData.length; i++) {

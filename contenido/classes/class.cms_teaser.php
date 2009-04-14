@@ -36,6 +36,7 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 cInclude('includes', 'functions.con.php');
+cInclude('includes', 'functions.api.images.php');
 cInclude('classes', 'Contenido_Category/Contenido_Category_Articles.class.php');
 
 /**
@@ -630,7 +631,7 @@ class Cms_Teaser {
 		
 			$this->oDb->query($sSQL);
 			if ($this->oDb->next_record()) {
-				$sTeaserImage = './upload/'.$this->oDb->f("dirname").$this->oDb->f("filename");
+				$sTeaserImage = $this->aCfgClient[$this->iClient]['path']['frontend'].'upload/'.$this->oDb->f("dirname").$this->oDb->f("filename");
 			}
 		} else {
 			$sTeaserImage = $iImage;
