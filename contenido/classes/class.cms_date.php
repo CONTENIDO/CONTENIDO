@@ -16,7 +16,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,7 @@
  * {@internal 
  *   created 2007-07-14 Bilal Arslan, Timo Trautmann
  *   modified 2008-07-28 Bilal Arslan, added new Date format timestamp
+ *   modified 2009-04-14 OliverL, added class in Edit- & Save-Link
  *   $Id
  * }}
  * 
@@ -269,12 +270,14 @@ private function getCalendarButton(){
 	
 	// html link for save 
 	$oEditAnchor = new cHTMLLink;
+    $oEditAnchor->setClass('CMS_DATE_'.($this->iNumberOfCms).'_EDIT CMS_LINK_EDIT');
 	$oEditAnchor->setLink("javascript:setcontent('$this->iIdArtLang','" . $this->sEditLink . "');");
 		// Calendar Button
 	$oEditButton = new cHTMLImage; 
 	$oEditButton->setSrc($this->aCfg["path"]["contenido_fullhtml"] . $this->aCfg["path"]["images"] . "calendar.gif");
 	$oEditButton->setBorder(0);
 	$oEditButton->setStyleDefinition("margin-right", "2px");
+    $oEditButton->setClass('CMS_DATE_'.($this->iNumberOfCms).'_EDIT CMS_LINK_EDIT');
 	$oEditButton->setID("trigger_start" . $this->iNumberOfCms);
 	$oEditButton->setEvent("Click", "$this->sCalName.showCalendar()");
 	$oEditAnchor->setContent($oEditButton);
@@ -295,6 +298,7 @@ private function getOkButton(){
 
 		// Ok Image	
     $oSaveAnchor = new cHTMLLink; 
+    $oSaveAnchor->setClass('CMS_DATE_'.($this->iNumberOfCms).'_SAVE CMS_LINK_SAVE');
     $oSaveAnchor->setLink("javascript:setcontent('".$this->iIdArtLang."','0')"); 
     $oSaveButton = new cHTMLImage; 
     $oSaveButton->setSrc($this->aCfg["path"]["contenido_fullhtml"].$this->aCfg["path"]["images"]."but_ok.gif"); 
