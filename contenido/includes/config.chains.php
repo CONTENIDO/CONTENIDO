@@ -791,3 +791,5 @@ $_cecRegistry->registerChain("Contenido.Frontend.PostprocessUrlBuilding", "strin
  * string 	New code
  */
 $_cecRegistry->registerChain("Contenido.Content.conGenerateCode", "string");
+
+?>
