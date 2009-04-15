@@ -6412,8 +6412,8 @@ msgstr "Allgemeine Einstellungen"
 msgid "Teasertitle"
 msgstr "Teaser&uuml;berschrift"
 
-msgid "Targetcategory"
-msgstr "Zielkategorie"
+msgid "Sourcecategory"
+msgstr "Quellkategorie"
 
 msgid "Number of Articles"
 msgstr "Anzahl der Artikel"

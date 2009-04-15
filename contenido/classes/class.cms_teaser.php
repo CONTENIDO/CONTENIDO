@@ -467,7 +467,7 @@ class Cms_Teaser {
 		$oTpl->set('s', 'LABEL_TEASERSETTINGS', i18n("Teasersettings"));
 		$oTpl->set('s', 'LABEL_TEASERTITLE', i18n("Teasertitle"));
 		$oTpl->set('s', 'LABEL_START', i18n("Teaser Startarticle"));
-		$oTpl->set('s', 'LABEL_TARGET', i18n("Targetcategory"));
+		$oTpl->set('s', 'LABEL_TARGET', i18n("Sourcecategory"));
 		$oTpl->set('s', 'LABEL_COUNT', i18n("Number of Articles"));
 		$oTpl->set('s', 'LABEL_GENERAL', i18n("General Settings"));
 		$oTpl->set('s', 'LABEL_STYLE', i18n("Teaser Style"));
