@@ -47,6 +47,7 @@
  *   modified 2008-07-02, Frederic Schneider, add security fix and include class_security
  *   modified 2008-08-29, Murat Purc, synchronised with /cms/front_content.php
  *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page
+ *   modified 2009-04-16, OliverL, check return from Contenido.Frontend.HTMLCodeOutput
  *
  *   $Id$:
  * }}
@@ -948,7 +949,28 @@ else
              * The code of an article is basically a PHP script which is cached in the database.
              * Layout and Modules are merged depending on the Container definitions of the Template.
              */
-            eval ("?>\n".$code."\n<?php\n");
+
+            $aExclude = explode(',', getEffectiveSetting('frontend.no_outputbuffer', 'idart', ''));
+            if (in_array(Contenido_Security::toInteger($idart), $aExclude)) {
+                eval ("?>\n".$code."\n<?php\n");
+            } else {
+                // write html output into output buffer and assign it to an variable
+                ob_start();
+                eval ("?>\n".$code."\n<?php\n");
+                $htmlCode = ob_get_contents();
+                ob_end_clean();
+
+                // process CEC Hook to do some preparations before output
+                $htmlCode = CEC_Hook::execute('Contenido.Frontend.HTMLCodeOutput', $htmlCode);
+
+				#If chain execution return value is an array
+				if (is_array($htmlCode)) {
+					$htmlCode = $htmlCode[0];
+				}
+
+                // print output
+                echo $htmlCode;
+            }
         }
     }
     else

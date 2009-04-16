@@ -55,6 +55,7 @@
  *   modified 2009-01-03, Murat Purc, synchronized with cms/front_content.php
  *   modified 2009-01-13, Murat Purc, synchronized with cms/front_content.php
  *   modified 2009-03-02, Andreas Lindner, prevent $lang being wrongly set to 0 
+ *   modified 2009-04-16, OliverL, check return from Contenido.Frontend.HTMLCodeOutput
  *
  *   $Id$:
   * }}
@@ -984,6 +985,11 @@ else
 
                 // process CEC Hook to do some preparations before output
                 $htmlCode = CEC_Hook::execute('Contenido.Frontend.HTMLCodeOutput', $htmlCode);
+
+				#If chain execution return value is an array
+				if (is_array($htmlCode)) {
+					$htmlCode = $htmlCode[0];
+				}
 
                 // print output
                 echo $htmlCode;
