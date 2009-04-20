@@ -131,6 +131,14 @@ class Cms_Teaser {
 	private $iLang;
 	
 	/**
+	 * Contenido Session object
+	 *
+	 * @var object
+	 * @access private
+	 */
+	private $oSess;
+	
+	/**
 	 * Contenido configuration array for currently active client
 	 *
 	 * @var array
@@ -156,7 +164,7 @@ class Cms_Teaser {
 	 *
 	 * @access public
 	 */
-	function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $aCfg, $oDB, $sContenidoLang, $iClient, $iLang, $aCfgClient) {
+	function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $aCfg, $oDB, $sContenidoLang, $iClient, $iLang, $aCfgClient, $oSess) {
 		//set arguments to class variables directly
 		$this->aCfg = $aCfg;
 		$this->iId = $iNumberOfCms;
@@ -165,6 +173,7 @@ class Cms_Teaser {
 		$this->iClient = $iClient;
 		$this->iLang = $iLang;
 		$this->aCfgClient = $aCfgClient;
+		$this->oSess = $oSess;
 		
 		//init other variables with default values
 		$this->aCMSTypes = null;
@@ -800,6 +809,7 @@ class Cms_Teaser {
 		$oTpl->set('d', 'TEXT', $sText);
 		
 		$oTpl->set('d', 'IDART', $iIdArt);
+		$oTpl->set('d', 'ART_URL', $this->oSess->url('front_content.php?idart='.$iIdArt));
 		$oTpl->set('d', 'MORE', i18n('more'));
 		$oTpl->set('d', 'PUBLISHED', $iPublished);
 		$oTpl->next();
