@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -116,15 +116,15 @@ foreach($right_list as $key => $value){
 						
                        
 			          /* Extract names from the XML document. */
-			          $main = $nav->getName($value2['location']);
-                        
+			           $main = $nav->getName(str_replace('/overview', '/main', $value2['location']));
+
                        if ($debug)
                        {
                        	  $locationString = $value2["location"] . " " . $value2["perm"].  "-->".$main;
                        } else {
                           $locationString = $main;
                        }
-					   
+
                        $sTable .= $table->row();
 					   $sTable .= $table->cell($locationString,"", "", " class=\"td_rights1\"", false);
 					   $sTable .= $table->cell("<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\" value=\"x\" $checked>" ,"", "", " class=\"td_rights2\"", false);
