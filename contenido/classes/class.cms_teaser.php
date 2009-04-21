@@ -145,6 +145,14 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $aCfgClient;
+	
+	/**
+	 * print XHTML
+	 *
+	 * @var string
+	 * @access private
+	 */
+	private $sUseXHTML
 
 	/**
 	 * Constructor of class inits some important class variables and
@@ -174,6 +182,12 @@ class Cms_Teaser {
 		$this->iLang = $iLang;
 		$this->aCfgClient = $aCfgClient;
 		$this->oSess = $oSess;
+		
+		if (!array_key_exists("generate_xhtml", $aCfg)) {
+			$this->sUseXHTML = getEffectiveSetting("generator", "xhtml", 'false');
+		} else {
+			$this->sUseXHTML = $aCfg['generate_xhtml'];
+		}
 		
 		//init other variables with default values
 		$this->aCMSTypes = null;
@@ -660,8 +674,14 @@ class Cms_Teaser {
 		     //Scale Image using capiImgScale
 			$sImgSrc = capiImgScale ($sTeaserImage, $iMaxX, $iMaxY);
             
+			if ($this->sUseXHTML != 'false') {
+				$sLetter = ' /';
+			} else {
+				$sLetter = '';
+			}
+
 			//Put Image into the teasertext
-            $sContent = '<img src="'.$sImgSrc.'" class="teaser_image">'.$sContent;
+            $sContent = '<img src="'.$sImgSrc.'" class="teaser_image"'.$sLetter.'>'.$sContent;
         }
 		
 		return $sContent;
