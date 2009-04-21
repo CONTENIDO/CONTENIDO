@@ -14,7 +14,7 @@
  * 
  *
  * @package    Contenido Content Types
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  * {@internal 
  *   created 2009-04-08
  *   modified 2009-04-14 - added possibility to expand template select by client or system setting using type 'cms_teaser'
+ *   modofied 2009-04-21 - added seperate handling for xhtml
  *
  *   $Id$:
  * }}
@@ -673,8 +674,8 @@ class Cms_Teaser {
 		if (file_exists($sTeaserImage)) {
 		     //Scale Image using capiImgScale
 			$sImgSrc = capiImgScale ($sTeaserImage, $iMaxX, $iMaxY);
-            
-			if ($this->sUseXHTML != 'false') {
+
+			if ($this->sUseXHTML == 'true' ) {
 				$sLetter = ' /';
 			} else {
 				$sLetter = '';
