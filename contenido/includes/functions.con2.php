@@ -389,6 +389,9 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 
 	if ($pagetitle == '') {
 		$pagetitle = CEC_Hook::execute("Contenido.Content.CreateTitletag");
+		if (is_array($pagetitle)) {
+			$pagetitle = '';
+		}
 	}
 
 	/* replace all CMS_TAGS[] */
