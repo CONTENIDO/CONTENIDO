@@ -682,7 +682,7 @@ class Cms_Teaser {
 			}
 
 			//Put Image into the teasertext
-            $sContent = '<img src="'.$sImgSrc.'" class="teaser_image"'.$sLetter.'>'.$sContent;
+            $sContent = '<img alt="" src="'.$sImgSrc.'" class="teaser_image"'.$sLetter.'>'.$sContent;
         }
 		
 		return $sContent;
