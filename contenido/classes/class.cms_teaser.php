@@ -152,7 +152,7 @@ class Cms_Teaser {
 	 * @var string
 	 * @access private
 	 */
-	private $sUseXHTML
+	private $sUseXHTML;
 
 	/**
 	 * Constructor of class inits some important class variables and
