@@ -341,7 +341,7 @@ ul#con_str_tree {
 #con_str_tree li a {
 	padding: 4px 5px 4px 20px;
     width: auto;
-    height: 20px;
+    line-height: 20px;
     display: inline;
     /*float: left;*/
     background: #FFF;
