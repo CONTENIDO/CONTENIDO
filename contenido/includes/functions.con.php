@@ -28,6 +28,7 @@
  *   modified 2008-08-29, Murat Purc, add new chain execution, and handling og new field con_cat_lang.urlname
  *   modified 2008-09-07, Murat Purc, bugfix in conCopyArtLang at chain execution
  *   modified 2008-09-12, Oliver Lohkemper, bugfix in function conChangeTemplateForCat, add conGenerateCodeForAllartsInCategory()
+ *   modified 2009-04-23, Andreas Lindner, also copy alias of article when syncing article to another language
  *  
  *   $Id$:
  * }}
@@ -2052,7 +2053,7 @@ function conSyncArticle ($idart, $srclang, $dstlang)
 	$sql = "SELECT * FROM ".$cfg['tab']['art_lang']." WHERE (idart = ".Contenido_Security::toInteger($idart).") AND (idlang= ".Contenido_Security::toInteger($dstlang).")";
 	$db2->query($sql);
 
-	$sql = "SELECT idartlang, idart, idlang, idtplcfg, title, pagetitle,
+	$sql = "SELECT idartlang, idart, idlang, idtplcfg, title, urlname, pagetitle,
 				   summary, created, lastmodified, redirect, redirect_url,
 				   artsort, status, external_redirect
 			FROM
@@ -2076,6 +2077,7 @@ function conSyncArticle ($idart, $srclang, $dstlang)
 		$idart = $db->f("idart");
 		$idlang = $db->f("idlang");
 		$title = addslashes($db->f("title"));
+		$urlname = addslashes($db->f("urlname"));
 		$pagetitle = addslashes($db->f("pagetitle"));
 		$summary = addslashes($db->f("summary"));
 		$created = $db->f("created");
@@ -2088,7 +2090,7 @@ function conSyncArticle ($idart, $srclang, $dstlang)
 		
 		$sql = "INSERT INTO
 					".$cfg["tab"]["art_lang"]."
-				(idartlang, idart, idlang, idtplcfg, title,
+				(idartlang, idart, idlang, idtplcfg, title,urlname,
 				 pagetitle, summary, created, lastmodified,
 				 author, modifiedby, online, redirect, redirect_url,
 				 artsort, status, external_redirect)
@@ -2096,6 +2098,7 @@ function conSyncArticle ($idart, $srclang, $dstlang)
 				('".Contenido_Security::toInteger($newidartlang)."', '".Contenido_Security::toInteger($idart)."',
 				'".Contenido_Security::toInteger($dstlang)."', '".Contenido_Security::toInteger($newidtplcfg)."',
 				'".Contenido_Security::escapeDB($title, $db2)."',
+				'".Contenido_Security::escapeDB($urlname, $db2)."',
 				'".Contenido_Security::escapeDB($pagetitle, $db2)."',
 				'".Contenido_Security::escapeDB($summary, $db2)."',
 				'".Contenido_Security::escapeDB($created, $db2)."',
