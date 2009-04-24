@@ -8,6 +8,25 @@ $Id$:
 
 Release 4.8.12
 ----------------------------------------------------------------------	
+** Bug
+
+    * [CON-240] - Rightsmanagement: Dateiverwaltung is called Übersicht instead of Dateiverwaltung
+    * [CON-245] - Height of categories in "Content -> Articles" in Internet Explorer 8
+    * [CON-247] - parse error bug in demomodule gallery
+
+** Improvement
+
+    * [CON-241] - Improved performance and control by scanning-interval for the plugins-folder (60sec.)
+    * [CON-242] - Layout supports multiline container-tags
+    * [CON-243] - Unique class for Edit- & Save-Button under the Editor
+    * [CON-246] - Also Copy Artice alias on article synchronisation
+
+** New Feature
+
+    * [CON-244] - Added CMS_Type Teaser to Contenido
+
+** Task
+	* [CON-248] - Removed TinyMce2 out of standard installation
 
 Release 4.8.11
 ----------------------------------------------------------------------	
