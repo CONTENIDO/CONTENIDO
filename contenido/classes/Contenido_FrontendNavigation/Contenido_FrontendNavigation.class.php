@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    0.3.2
+ * @version    0.3.3
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,7 @@
  *   modified 2009-01-13 Rudi Bieller Added methods isActiveChild() and isActiveParent()
  *   modified 2009-01-14 Rudi Bieller Changed contenido_security escaping to intval
  *                                      Added method isActiveChildOfRootOfCategory()
+ *   modified 2009-04-29 Rudi Bieller Bugfix in isActiveChild()
  *
  *   $Id$:
  * }}
@@ -248,10 +249,9 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 			$iCurrentIdcat = (int) $iCurrentIdcat;
 			$oChildCategories = $oCategory->getSubCategories();
 			foreach ($oChildCategories as $oChildCat) {
-				if ($oChildCat->getIdCat() == $iCurrentIdcat) {
+				if ($oChildCat->getIdCat() == $iCurrentIdcat || $this->isActiveChild($oChildCat, $iCurrentIdcat) === true) {
 					return true;
 				}
-				$this->isActiveChild($oChildCat, $iCurrentIdcat);
 			}
 			return false;
 		}
