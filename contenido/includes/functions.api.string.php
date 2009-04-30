@@ -23,6 +23,7 @@
  *   created 2003-08-08
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-09-15, Murat Purc, add replacement of characters with diacritics
+ *   modified 2009-04-30, Ortwin Pinke, CON-252 
  *
  *   $Id$:
  * }}
@@ -283,8 +284,8 @@ function capiStrReplaceDiacritics ($sString, $sourceEncoding = "ISO-8859-1", $ta
 	// replace regular german umlauts and other common characters with diacritics
     static $aSearch, $aReplace;
     if (!isset($aSearch)) {
-        $aSearch  = array('Ä',  'Ö',  'Ü',  'ä',  'ö',  'ß',  'Á', 'À', 'Â', 'á', 'à', 'â', 'É', 'È', 'Ê', 'é', 'è', 'ê', 'Í', 'Ì', 'Î', 'í', 'ì', 'î', 'Ó', 'Ò', 'Ô', 'ó', 'ò', 'ô', 'Ú', 'Ù', 'Û', 'ú', 'ù', 'û');
-        $aReplace = array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ss', 'A', 'A', 'A', 'a', 'a', 'a', 'E', 'E', 'E', 'e', 'e', 'e', 'I', 'I', 'I', 'i', 'i', 'i', 'O', 'O', 'O', 'o', 'o', 'o', 'U', 'U', 'U', 'u', 'u', 'u');
+        $aSearch  = array('Ä',  'Ö',  'Ü',  'ä',  'ö', 'ü',  'ß',  'Á', 'À', 'Â', 'á', 'à', 'â', 'É', 'È', 'Ê', 'é', 'è', 'ê', 'Í', 'Ì', 'Î', 'í', 'ì', 'î', 'Ó', 'Ò', 'Ô', 'ó', 'ò', 'ô', 'Ú', 'Ù', 'Û', 'ú', 'ù', 'û');
+        $aReplace = array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ue', 'ss', 'A', 'A', 'A', 'a', 'a', 'a', 'E', 'E', 'E', 'e', 'e', 'e', 'I', 'I', 'I', 'i', 'i', 'i', 'O', 'O', 'O', 'o', 'o', 'o', 'U', 'U', 'U', 'u', 'u', 'u');
     }
     $sString = str_replace($aSearch, $aReplace, $sString);
 	
