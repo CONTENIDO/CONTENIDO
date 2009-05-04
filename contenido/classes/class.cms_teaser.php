@@ -26,6 +26,7 @@
  *   created 2009-04-08
  *   modified 2009-04-14 - added possibility to expand template select by client or system setting using type 'cms_teaser'
  *   modofied 2009-04-21 - added seperate handling for xhtml
+ *   modified 2009-05-04 - added sort order sequence
  *
  *   $Id$:
  * }}
@@ -200,8 +201,8 @@ class Cms_Teaser {
 		$this->aTeaserData = array('teaser_title', 'teaser_category', 'teaser_count', 'teaser_style', 'teaser_manual',
 		                           'teaser_start', 'teaser_source_head', 'teaser_source_head_count', 'teaser_source_text', 
 								   'teaser_source_text_count', 'teaser_source_image', 'teaser_source_image_count', 'teaser_filter', 
-								   'teaser_sort', 'teaser_character_limit', 'teaser_image_width', 'teaser_image_height',
-								   'teaser_manual_art');
+								   'teaser_sort', 'teaser_sort_order', 'teaser_character_limit', 'teaser_image_width', 
+								   'teaser_image_height', 'teaser_manual_art');
 		
 		//if form is submitted there is a need to store current teaser settings
 		//notice: there is also a need, that teaser_id is the same (case: more than ohne cms teaser is used on the same page
@@ -378,6 +379,35 @@ class Cms_Teaser {
 	
 	/**
 	 * Function which generated a select box for setting teaser 
+	 * sort order argument
+	 *
+	 * @param string $sSelected - value of select box which is selected
+	 * @return html string of select box
+	 *
+	 * @access private
+	 */
+	private function getSortOrderSelect($sSelected) {
+		$oHtmlSelect = new 	cHTMLSelectElement ('teaser_sort_order', "", 'teaser_sort_order');
+		
+		//set please chose option element
+		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
+		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
+		
+		//set other avariable options manually
+		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Ascending"), 'asc', false);
+		$oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
+		
+		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Descending"), 'desc', false);
+		$oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
+		
+		//set default value
+		$oHtmlSelect->setDefault($sSelected);
+		
+		return $oHtmlSelect->render();
+	}
+	
+	/**
+	 * Function which generated a select box for setting teaser 
 	 * sort argument
 	 *
 	 * @param string $sSelected - value of select box which is selected
@@ -498,6 +528,7 @@ class Cms_Teaser {
 		$oTpl->set('s', 'LABEL_ADVANCED', i18n("Advanced Teaser Settings"));
 		$oTpl->set('s', 'LABEL_FILTER', i18n("Teaser Filter"));
 		$oTpl->set('s', 'LABEL_SORT', i18n("Teaser Sort"));
+		$oTpl->set('s', 'LABEL_SORT_ORDER', i18n("Sort order"));
 		$oTpl->set('s', 'LABEL_SOURCEHEAD', i18n("Source Headline"));
 		$oTpl->set('s', 'LABEL_SOURCE', i18n("Source Settings"));
 		$oTpl->set('s', 'LABEL_SOURCETEXT', i18n("Source Text"));
@@ -549,6 +580,7 @@ class Cms_Teaser {
 		$oTpl->set('s', 'TEASER_TITLE', $this->aSettings['teaser_title']);
 		$oTpl->set('s', 'FILTER_VALUE', $this->aSettings['teaser_filter']);
 		$oTpl->set('s', 'SORT_SELECT', $this->getSortSelect($this->aSettings['teaser_sort']));
+		$oTpl->set('s', 'SORT_ORDER_SELECT', $this->getSortOrderSelect($this->aSettings['teaser_sort_order']));
 		$oTpl->set('s', 'CHARACTER_LIMIT', $this->aSettings['teaser_character_limit']);
 		$oTpl->set('s', 'IMAGE_WIDTH', $this->aSettings['teaser_image_width']);
 		$oTpl->set('s', 'IMAGE_HEIGHT', $this->aSettings['teaser_image_height']);
@@ -638,6 +670,12 @@ class Cms_Teaser {
 		if (strlen($this->aSettings['teaser_source_image']) == 0) {
 			$this->aSettings['teaser_source_image'] = 'CMS_IMG';
 		}
+		
+		//sort order of teaser articles
+		if (strlen($this->aSettings['teaser_sort_order']) == 0) {
+			$this->aSettings['teaser_sort_order'] = 'asc';
+		}
+		
 	}
 	
 	/**
@@ -872,9 +910,9 @@ class Cms_Teaser {
 			$oConCatArt = new Contenido_Category_Articles($this->oDb, $this->aCfg, $this->iClient, $this->iLang);
 			//decide to teaser articles or not
 			if ($this->aSettings['teaser_start'] == 'true') {
-				$aArticles = $oConCatArt->getArticlesInCategory($this->aSettings['teaser_category'], $this->aSettings['teaser_sort'], 'asc');
+				$aArticles = $oConCatArt->getArticlesInCategory($this->aSettings['teaser_category'], $this->aSettings['teaser_sort'], $this->aSettings['teaser_sort_order']);
 			} else {
-				$aArticles = $oConCatArt->getNonStartArticlesInCategory($this->aSettings['teaser_category'], $this->aSettings['teaser_sort'], 'asc');
+				$aArticles = $oConCatArt->getNonStartArticlesInCategory($this->aSettings['teaser_category'], $this->aSettings['teaser_sort'], $this->aSettings['teaser_sort_order']);
 			}
 			
 			$i = 0;
