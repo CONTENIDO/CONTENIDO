@@ -90,6 +90,8 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		// For compatibility, read settings in previous syntax also (< V4.7, type "wysiwyg" vs. "tinymce")
 		$this->_aSettings = array_merge(getEffectiveSettingsByType("wysiwyg"), $this->_aSettings);
 
+		$this->setSetting("article_url_suffix", 'front_content.php?idart='.$idart, true); # modified 23.10.2006	
+		
 		// Default values
 		$this->setSetting("mode", "exact");
 		$aPathFragments = split('/', $cfgClient[$client]["path"]["htmlpath"]);
@@ -633,7 +635,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		$sess->register("browserparameters");
 		
 		// Contenido-specific: Set article_url_suffix setting as it is used in plugins/advlink/jscripts/functions.js on anchor tags
-		$this->setSetting("article_url_suffix", 'front_content.php?idart='.$idart, true); # modified 23.10.2006	
 		$this->setSetting("setupcontent_callback", 'myCustomSetupContent', true);
 		$this->setSetting("save_callback", 'cutFullpath', true);
 		

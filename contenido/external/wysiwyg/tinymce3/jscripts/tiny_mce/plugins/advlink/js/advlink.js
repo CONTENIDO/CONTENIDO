@@ -116,7 +116,7 @@ function checkPrefix(n) {
 	if (n.value && Validator.isEmail(n) && !/^\s*mailto:/i.test(n.value) && confirm(tinyMCEPopup.getLang('advlink_dlg.is_email')))
 		n.value = 'mailto:' + n.value;
 
-	if (/^\s*www./i.test(n.value) && confirm(tinyMCEPopup.getLang('advlink_dlg.is_external')))
+	if (/^\s*www\./i.test(n.value) && confirm(tinyMCEPopup.getLang('advlink_dlg.is_external')))
 		n.value = 'http://' + n.value;
 }
 
@@ -368,11 +368,10 @@ function getAnchorListHTML(id, target) {
 	html += 'this.options[this.selectedIndex].value;">';
 	html += '<option value="">---</option>';
 
-	for (i=0; i<nodes.length; i++) {
+	for (i=0; i<nodes.length; i++) {	
 		// CONTENIDO MODIFICATION 24.10.2006 Willi Man
-		if ((name = tinyMCE.getAttrib(nodes[i], "name")) != "") {
+		if ((name = inst.dom.getAttrib(nodes[i], "name")) != "")
 			html += '<option value="' + tinyMCE.settings['article_url_suffix'] + '#' + name + '">' + name + '</option>';
-		}
 	}
 
 	html += '</select>';
@@ -404,6 +403,7 @@ function insertAction() {
 
 	// Create new anchor elements
 	if (elm == null) {
+		inst.getDoc().execCommand("unlink", false, null);
 		tinyMCEPopup.execCommand("CreateLink", false, "#mce_temp_url#", {skip_undo : 1});
 
 		elementArray = tinymce.grep(inst.dom.select("a"), function(n) {return inst.dom.getAttrib(n, 'href') == '#mce_temp_url#';});
