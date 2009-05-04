@@ -13,6 +13,7 @@
 	display:none;
 	top: 40px;
 	left: 40px;
+	z-index: 1000;
 }
 
 .cms_teaser .close {
