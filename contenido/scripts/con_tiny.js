@@ -154,7 +154,7 @@ function setcontent(idartlang, act) {
             // data[2] is the typeid * needed
            
             // build the string which will be send
-            str += buildDataEntry(idartlang , data[0] , data[2] , aEditdata[sId]);
+            str += buildDataEntry(idartlang , data[0] , data[2] , prepareString(aEditdata[sId]));
         }
     }            
 
