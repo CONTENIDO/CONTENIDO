@@ -147,7 +147,7 @@ class Contenido_CT_File extends CT_File {
 	 * 
 	 * @var int
 	 */
-	var $iLineLength = 99999;
+	var $iLineLength = 999999;
 	
 	/**
 	 * Overrides standard constructor
