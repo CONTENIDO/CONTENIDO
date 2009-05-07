@@ -191,7 +191,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
     	if($bDeleteFile){
     		$notification->displayNotification("warning", i18n("Version history was cleared"));
     	} else {
-    		$notification->displayNotification("warning", i18n("No style history available"));	
+    		$notification->displayNotification("warning", i18n("No template history available"));	
     	}
     	
     }
