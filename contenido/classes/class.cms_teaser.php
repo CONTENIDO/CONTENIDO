@@ -258,9 +258,9 @@ class Cms_Teaser {
 			  case XMLReader::TEXT:
 				if ($bPutInArtArray == true) {
 					$bPutInArtArray = false;
-					array_push($this->aSettings['teaser_manual_art'], $oXmlReader->value);
+					array_push($this->aSettings['teaser_manual_art'], Contenido_Security::unfilter($oXmlReader->value));
 				} else {
-					$this->aSettings[$sLastNode] = $oXmlReader->value;
+					$this->aSettings[$sLastNode] = Contenido_Security::unfilter($oXmlReader->value);
 				}
 				break;
 		  }
@@ -298,7 +298,7 @@ class Cms_Teaser {
 				}
 			} else {
 				//generate xml node for current property and store its value
-				$oParam = $oXmlDom->createElement(str_replace('teaser_', '', $sParam), Contenido_Security::toString($_POST[$sParam]));
+				$oParam = $oXmlDom->createElement(str_replace('teaser_', '', $sParam), Contenido_Security::filter($_POST[$sParam], $this->oDb));
 			}
 
 			$oXmlDom->firstChild->appendChild($oParam);
