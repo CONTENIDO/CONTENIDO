@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2009-05-18, Andreas Lindner, add method getGroupIDsByUserID to class User    
  *
  *   $Id$:
  * }}
@@ -788,7 +789,7 @@ class User {
     /**
      * getGroupsByUserID()
      * Returns the groups a user is in
-     * @return array Real names og groups
+     * @return array Real names of groups
      */
 	function getGroupsByUserID ($userid) {
 
@@ -830,6 +831,39 @@ class User {
 		
 		
 	
+	}
+
+    /**
+     * getGroupIDsByUserID()
+     * Returns the groups a user is in
+     * @return array ids of groups
+     */
+	function getGroupIDsByUserID ($userid) {
+
+        global $cfg;
+
+        $db = new DB_Contenido;
+
+        $sql = "SELECT
+                    a.group_id
+                FROM
+                	".$cfg["tab"]["groups"]." AS a,
+                	".$cfg["tab"]["groupmembers"]." AS b
+				WHERE
+					(a.group_id  = b.group_id)
+					AND 
+					(b.user_id = '".Contenido_Security::escapeDB($userid, $db)."')
+				";
+
+        $db->query($sql);
+        
+		$arrGroups = array();
+		
+		while ($db->next_record()) {
+			
+			$arrGroups[] = $db->f('group_id');
+		}
+        return $arrGroups;
 	}
 } // end class
 
