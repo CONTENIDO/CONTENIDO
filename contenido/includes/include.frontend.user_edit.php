@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2009-06-02, Andreas Lindner, fix check for duplicate user name when it contains a special character    
  *
  *   $Id$:
  * }}
@@ -103,7 +104,6 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
 	$page->addScript('reload', $sReloadScript);
 }
 
-
 if ($feuser->virgin == false && $feuser->get("idclient") == $client)
 {
 	if ($action == "frontend_save_user")
@@ -113,7 +113,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client)
 		
 		if ($feuser->get("username") != stripslashes($username))
 		{
-    		$feusers->select("username = '$username' and idclient='$client'");
+    		$feusers->select("username = '".urlencode($username)."' and idclient='$client'");
     		if ($feusers->next())
     		{
     			$messages[] = i18n("Could not set new username: Username already exists");	
