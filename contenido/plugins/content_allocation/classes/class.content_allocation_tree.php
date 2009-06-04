@@ -494,7 +494,7 @@ class pApiTree {
 		
 		$sql = "SELECT MAX(sortorder) as max FROM " . $this->table['pica_alloc'];
 		if ($parentId === false) {
-			$sql .= " WHERE parentid IS NULL";	
+			$sql .= " WHERE parentid = 0";
 		} else {
 			$sql .= " WHERE parentid = " . Contenido_Security::toInteger($parentId);
 		}
@@ -502,7 +502,7 @@ class pApiTree {
 		if ($this->db->next_record()) {
 			return $this->db->f('max');
 		} else {
-			return 0;	
+			return 0;
 		}
 	}
 	
