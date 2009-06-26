@@ -64,7 +64,7 @@ function updateImageFilebrowser ()
         window.clearInterval(fb_intervalhandle);
 
 		//set this selected image in tiny
-        if (fb_win.ImageDialog.showPreviewImage)
+        if (fb_win.ImageDialog != null && fb_win.ImageDialog.showPreviewImage)
         {
             fb_win.ImageDialog.showPreviewImage(fb_win.document.forms[0].elements[fb_fieldname].value);
         }				
@@ -81,7 +81,7 @@ function updateImageFilebrowser ()
  * @return string - converted url
  */
 function CustomURLConverter(url, node, on_save) {
-		if (node.nodeName  != 'IMG' && node != 'img' && url.indexOf(frontend_path) == -1) {
+		if (node != null && node.nodeName  != 'IMG' && node != 'img' && url.indexOf(frontend_path) == -1) {
 	        var oEd = new tinymce.Editor('contenido', '');
 	        url = oEd.convertURL(url, node, on_save);
 		} else {
