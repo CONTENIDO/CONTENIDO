@@ -45,31 +45,28 @@ if ($action == "str_duplicate" &&
 }
 
 //Everybody is allowed to update aliases, if there is no Permission to update category names, this block updates category alias only
-if (isset($_POST['newcategoryalias']) && isset($_POST['action']) && $_POST['action'] == 'str_renamecat') {
-    global $lang;
-    global $tmp_area;
-    global $cfg;
-    $iIdCat = (int) $_POST['idcat'];
-    
-    if(! ($perm->have_perm_area_action($tmp_area, "str_renamecat") || $perm->have_perm_area_action_item($tmp_area, "str_renamecat", $iIdCat)) ) {
-        if (trim($_POST['newcategoryalias']) != '') {
-            $sUrlName = capiStrCleanURLCharacters($_POST['newcategoryalias']);
-            $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '". Contenido_Security::escapeDB($sUrlName, $db) ."' WHERE idcat = '".Contenido_Security::toInteger($iIdCat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
-        } else {
-            //Use categoryname as default -> get it escape it save it as urlname
-            $sql = "SELECT name from {$cfg['tab']['cat_lang']} WHERE idcat = '".Contenido_Security::toInteger($iIdCat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
-            
-            if ($db->next_record()) {
-                $sUrlName = capiStrCleanURLCharacters($db->f('name'));
-                $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '". $sUrlName ."' WHERE idcat = '".Contenido_Security::toInteger($iIdCat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
-                $db->query($sql);
-				$lang = Contenido_Security::escapeDB($lang, null);
-                @unlink($cfgClient[$client]["path"]["frontend"]."cache/locationstring-url-cache-$lang.txt");
-            }
-        }
+if(isset($_POST['newcategoryalias']) && isset($_POST['action']) && $_POST['action'] == 'str_renamecat') {   
+  $iIdCat = (int) $_POST['idcat'];   
+  if(!($perm->have_perm_area_action($tmp_area, "str_renamecat") || $perm->have_perm_area_action_item($tmp_area, "str_renamecat", $iIdCat)) ) {
+    if (trim($_POST['newcategoryalias']) != '') {
+      $sUrlName = capiStrCleanURLCharacters($_POST['newcategoryalias']);
+      $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '". Contenido_Security::escapeDB($sUrlName, $db) ."' WHERE idcat = '".Contenido_Security::toInteger($iIdCat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
+      $db->query($sql);
+    } else {
+      //Use categoryname as default -> get it escape it save it as urlname
+      $sql = "SELECT name from {$cfg['tab']['cat_lang']} WHERE idcat = '".Contenido_Security::toInteger($iIdCat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
+      $db->query($sql);
+      if ($db->next_record()) {
+        $sUrlName = capiStrCleanURLCharacters($db->f('name'));
+        $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '". $sUrlName ."' WHERE idcat = '".Contenido_Security::toInteger($iIdCat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
         $db->query($sql);
+        $lang = Contenido_Security::escapeDB($lang, null);
+        @unlink($cfgClient[$client]["path"]["frontend"]."cache/locationstring-url-cache-$lang.txt");
+      }
     }
+  }
 }
+
 
 $oDirectionDb = new DB_contenido();
 
