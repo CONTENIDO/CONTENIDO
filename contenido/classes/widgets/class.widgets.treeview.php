@@ -91,7 +91,7 @@ class cWidgetTreeView extends cTree
 	
 	function processParameters ()
 	{
-		if (($items = $this->_user->getProperty("expandstate", $this->_uuid)) !== false)
+		if (($items = $this->_user->getUserProperty("expandstate", $this->_uuid)) !== false)
 		{
 			$list = unserialize($items);
 			
@@ -120,7 +120,7 @@ class cWidgetTreeView extends cTree
 		$this->getCollapsedList($xlist);
 		$slist = serialize($xlist);
 		
-		$this->_user->setProperty("expandstate", $this->_uuid, $slist);
+		$this->_user->setUserProperty("expandstate", $this->_uuid, $slist);
 	}
 	
 	/**
@@ -496,6 +496,9 @@ entries are connected with "AND".
 		{
 			$treename = $this->_name."_";	
 		}
+		
+		unset($link->_custom[$treename."expand"]);
+		unset($link->_custom[$treename."collapse"]);
 		
 		if ($object->_collapsed == true)
 		{
