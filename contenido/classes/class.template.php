@@ -100,6 +100,12 @@ class Template
 	 */
 	var $tags = array ('static' => '{%s}', 'start' => '<!-- BEGIN:BLOCK -->', 'end' => '<!-- END:BLOCK -->');
 
+    /**
+     * gettext domain (default: contenido)
+     * @var string
+     */
+    var $_sDomain = "contenido";
+
 	/**
 	 * Constructor function
 	 * @return void
@@ -115,7 +121,6 @@ class Template
 		}
 		
 		$this->setEncoding("");
-        $this->setDomain("contenido");		
 	} // end function
 
     /**
@@ -288,7 +293,7 @@ class Template
 
 		$matches = array_values(array_unique($matches[2])); 
 		for ($a = 0; $a < count($matches); $a ++) { 
-			$template = preg_replace("/".preg_quote($functionName, "/")."\\([\\\"\\']".preg_quote($matches[$a], "/")."[\\\"\\']\\)/s", i18n($matches[$a]), $template); 
+			$template = preg_replace("/".preg_quote($functionName, "/")."\\([\\\"\\']".preg_quote($matches[$a], "/")."[\\\"\\']\\)/s", i18n($matches[$a], $this->_sDomain), $template);
 		} 
 
 		// Change back php placeholder 
