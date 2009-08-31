@@ -202,7 +202,7 @@ class Cms_Teaser {
 		                           'teaser_start', 'teaser_source_head', 'teaser_source_head_count', 'teaser_source_text', 
 								   'teaser_source_text_count', 'teaser_source_image', 'teaser_source_image_count', 'teaser_filter', 
 								   'teaser_sort', 'teaser_sort_order', 'teaser_character_limit', 'teaser_image_width', 
-								   'teaser_image_height', 'teaser_manual_art');
+								   'teaser_image_height', 'teaser_manual_art', 'teaser_image_crop');
 		
 		//if form is submitted there is a need to store current teaser settings
 		//notice: there is also a need, that teaser_id is the same (case: more than ohne cms teaser is used on the same page
@@ -405,6 +405,34 @@ class Cms_Teaser {
 		
 		return $oHtmlSelect->render();
 	}
+    
+    /**
+	 * Function which provides select option for cropping teaser images
+	 *
+	 * @param string $sSelected - value of select box which is selected
+	 * @return html string of select box
+	 *
+	 * @access private
+	 */
+	private function getCropSelect($sSelected) {
+		$oHtmlSelect = new 	cHTMLSelectElement ('teaser_image_crop', "", 'teaser_image_crop');
+		
+		//set please chose option element
+		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
+		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
+		
+		//set other avariable options manually
+		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Scaled"), 'false', false);
+		$oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
+		
+		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Cropped"), 'true', false);
+		$oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
+		
+		//set default value
+		$oHtmlSelect->setDefault($sSelected);
+		
+		return $oHtmlSelect->render();
+	}
 	
 	/**
 	 * Function which generated a select box for setting teaser 
@@ -550,6 +578,7 @@ class Cms_Teaser {
 		$oTpl->set('s', 'LABEL_CHARACTER_LIMIT', i18n("Characterlength"));
 		$oTpl->set('s', 'LABEL_IMAGE_WIDTH', i18n("Imagewidth"));
 		$oTpl->set('s', 'LABEL_IMAGE_HEIGHT', i18n("Imageheight"));
+        $oTpl->set('s', 'LABEL_IMAGE_CROP', i18n("Image Scale"));
 		/*End set a lot of translations*/
 		
 		/*Start set values into configuration array and generate select boxes used previous defined values CASE CHECKBOXES*/
@@ -581,6 +610,7 @@ class Cms_Teaser {
 		$oTpl->set('s', 'FILTER_VALUE', $this->aSettings['teaser_filter']);
 		$oTpl->set('s', 'SORT_SELECT', $this->getSortSelect($this->aSettings['teaser_sort']));
 		$oTpl->set('s', 'SORT_ORDER_SELECT', $this->getSortOrderSelect($this->aSettings['teaser_sort_order']));
+        $oTpl->set('s', 'IMAGE_CROP_SELECT', $this->getCropSelect($this->aSettings['teaser_image_crop']));
 		$oTpl->set('s', 'CHARACTER_LIMIT', $this->aSettings['teaser_character_limit']);
 		$oTpl->set('s', 'IMAGE_WIDTH', $this->aSettings['teaser_image_width']);
 		$oTpl->set('s', 'IMAGE_HEIGHT', $this->aSettings['teaser_image_height']);
@@ -675,7 +705,11 @@ class Cms_Teaser {
 		if (strlen($this->aSettings['teaser_sort_order']) == 0) {
 			$this->aSettings['teaser_sort_order'] = 'asc';
 		}
-		
+        
+        //teaser image crop option
+        if (strlen($this->aSettings['teaser_image_crop']) == 0 || $this->aSettings['teaser_image_crop'] == 'false') {
+            $this->aSettings['teaser_image_crop'] = 'false';
+        }
 	}
 	
 	/**
@@ -692,8 +726,14 @@ class Cms_Teaser {
 	 *
 	 * @access private
 	 */
-	private function getImage($iImage, $iMaxX, $iMaxY, $bIsFile = false) {
+	private function getImage($iImage, $iMaxX, $iMaxY, $bCropped, $bIsFile = false) {
 		$sContent = '';
+
+        if ($bCropped == 'true') {
+            $bCropped = true;
+        } else {
+            $bCropped = false;
+        }
 		
 		//check if there is a need to get image path
 		if ($bIsFile == false) {
@@ -711,7 +751,7 @@ class Cms_Teaser {
 		//scale image if exists and return it
 		if (file_exists($sTeaserImage)) {
 		     //Scale Image using capiImgScale
-			$sImgSrc = capiImgScale ($sTeaserImage, $iMaxX, $iMaxY);
+			$sImgSrc = capiImgScale ($sTeaserImage, $iMaxX, $iMaxY, $bCropped);
 
 			if ($this->sUseXHTML == 'true' ) {
 				$sLetter = ' /';
@@ -802,7 +842,7 @@ class Cms_Teaser {
 		if (!is_bool($iPos)) {
 			//if it is generate full internal path to image and scale it for display using class internal function getImage()
 			$sFile = $this->aCfgClient[$this->iClient]['path']['frontend'].$aImg[4];
-			$sImage = $this->getImage($sFile, $this->aSettings['teaser_image_width'], $this->aSettings['teaser_image_height'], true);
+			$sImage = $this->getImage($sFile, $this->aSettings['teaser_image_width'], $this->aSettings['teaser_image_height'], $this->aSettings['teaser_image_crop'], true);
 		}
 		
 		return $sImage;
@@ -850,7 +890,7 @@ class Cms_Teaser {
 		
 		//try to get a teaser image directly from cms_img or try to extract if a content type is given, wich contains html
 		if ((int) $iImage > 0) {
-			$sImage = $this->getImage($iImage, $this->aSettings['teaser_image_width'], $this->aSettings['teaser_image_height']);
+			$sImage = $this->getImage($iImage, $this->aSettings['teaser_image_width'], $this->aSettings['teaser_image_height'], $this->aSettings['teaser_image_crop']);
 			$oTpl->set('d', 'IMAGE', $sImage);
 		} else if (strip_tags($iImage) != $iImage && strlen($iImage) > 0) {
 			$sImage = $this->extractImage($iImage);
