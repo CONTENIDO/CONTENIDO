@@ -6498,3 +6498,12 @@ msgstr "Erstellungsdatum"
 
 msgid "Modificationdate"
 msgstr "Änderungsdatum"
+
+msgid "Image Scale"
+msgstr "Bildskalierung"
+
+msgid "Scaled"
+msgstr "Skaliert"
+
+msgid "Cropped"
+msgstr "Zugeschnitten"
