@@ -2115,7 +2115,7 @@ function conSyncArticle ($idart, $srclang, $dstlang)
 
         // execute CEC hook
         $param['src_art_lang']  = $db->Record;
-        $param['dest_art_lang'] = $db->Record;
+        $param['dest_art_lang'] = $db2->Record;
         $param['dest_art_lang']['idartlang'] = Contenido_Security::toInteger($newidartlang);
         $param['dest_art_lang']['idlang']    = Contenido_Security::toInteger($dstlang);
         $param['dest_art_lang']['idtplcfg']  = Contenido_Security::toInteger($newidtplcfg);
