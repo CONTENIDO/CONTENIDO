@@ -209,11 +209,7 @@ class Template
 	 */
 	function generate($template, $return = 0, $note = 0)
 	{
-		global $cfg, $client, $cfgClient;
-	
-		if ( @is_file( $cfgClient[$client]['path']['frontend'] . $template ) ) {
-			$template = $cfgClient[$client]['path']['frontend'] . $template;
-		}
+		global $cfg;
 
 		//check if the template is a file or a string
 		if (!@ is_file($template))
