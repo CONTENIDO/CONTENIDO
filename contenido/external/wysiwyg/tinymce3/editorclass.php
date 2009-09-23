@@ -375,6 +375,27 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				//safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template
 				$this->setSetting("plugins", "safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups", true);
                 $this->setSetting("theme_advanced_toolbar_align", "left", true);
+                
+                $aCustSettings = getEffectiveSettingsByType("tinymce");
+                foreach ($aCustSettings as $sKey => $sValue) {
+                    $this->setSetting($sKey, $sValue, true);
+                }
+                
+                break;
+                
+            case "fullscreen": // Show all options
+				$this->setSetting("theme_advanced_buttons1", "cut,copy,paste,pastetext,pasteword,|,search,replace,|,undo,redo,|,bold,italic,underline,strikethrough,sub,sup,|,insertdate,inserttime,preview,|,styleselect,|,visualchars,nonbreaking,template,pagebreak,|,help,|,fullscreen", true);
+				$this->setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,media,advhr,|,bullist,numlist,|,outdent,indent,blockquote,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
+				$this->setSetting("theme_advanced_buttons3", "tablecontrols,|,formatselect,fontselect,fontsizeselect,|,styleprops,|,cite,abbr,acronym,del,ins,attribs", true);
+				//safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template
+				$this->setSetting("plugins", "safari,table,save,advhr,advimage,advlink,pagebreak,style,layer,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups", true);
+                $this->setSetting("theme_advanced_toolbar_align", "left", true);
+                
+                $aCustSettings = getEffectiveSettingsByType("tinymce_fullscreen");
+                foreach ($aCustSettings as $sKey => $sValue) {
+                    $this->setSetting($sKey, $sValue, true);
+                }
+                
                 break;
 
 			case "simple": // Does not show font and table options
@@ -382,13 +403,24 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				$this->setSetting("theme_advanced_buttons2", "link,unlink,anchor,image,flash,advhr,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,ltr,rtl,|,visualaid,charmap,cleanup,|,code", true);
 				$this->setSetting("theme_advanced_buttons3", "", true);
 				$this->setSetting("plugins", "advhr,advimage,advlink,insertdatetime,preview,flash,searchreplace,print,contextmenu,paste,directionality", true);
-				break;
+				
+                $aCustSettings = getEffectiveSettingsByType("tinymce_simple");
+                foreach ($aCustSettings as $sKey => $sValue) {
+                    $this->setSetting($sKey, $sValue, true);
+                }
+                
+                break;
 
 			case "mini": // Minimal toolbar
 				$this->setSetting("theme_advanced_buttons1", "undo,redo,|,bold,italic,underline,strikethrough,|,link", true);
 				$this->setSetting("theme_advanced_buttons2", "", true);
 				$this->setSetting("theme_advanced_buttons3", "", true);
 				
+                $aCustSettings = getEffectiveSettingsByType("tinymce_mini");
+                foreach ($aCustSettings as $sKey => $sValue) {
+                    $this->setSetting($sKey, $sValue, true);
+                }
+                
 				break;
 				
 			case "custom": // Custom toolbar
@@ -400,6 +432,12 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				$this->setSetting("theme_advanced_buttons3", $this->_aSettings["tinymce-toolbar3"]);
 				$this->setSetting("plugins", $this->_aSettings["tinymce-plugins"]);
                 $this->setSetting("theme_advanced_toolbar_location", "bottom");
+                
+                $aCustSettings = getEffectiveSettingsByType("tinymce_custom");
+                foreach ($aCustSettings as $sKey => $sValue) {
+                    $this->setSetting($sKey, $sValue, true);
+                }
+                
 				break;
                 
             case "inline_edit":
@@ -429,6 +467,11 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				if (!array_key_exists("theme_advanced_toolbar_align", $this->_aSettings))
 					$this->setSetting("theme_advanced_toolbar_align", "center", true);
                 
+                $aCustSettings = getEffectiveSettingsByType("tinymce_inline");
+                foreach ($aCustSettings as $sKey => $sValue) {
+                    $this->setSetting($sKey, $sValue, true);
+                }
+                
 				break;
 				
 		   default: // Default options
@@ -436,6 +479,11 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		      $this->setSetting("theme_advanced_buttons2", "styleselect,|,bullist,numlist,|,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,removeformat,|,forecolor,backcolor,|,sub,sup,|,code", true);
 		      $this->setSetting("theme_advanced_buttons3", "", true);
 		      $this->setSetting("plugins", "table,advhr,advimage,advlink,flash,searchreplace,contextmenu,paste", true);
+              
+              $aCustSettings = getEffectiveSettingsByType("tinymce_default");
+              foreach ($aCustSettings as $sKey => $sValue) {
+                $this->setSetting($sKey, $sValue, true);
+              }
 		}
 	}
 	
@@ -738,7 +786,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
     
     function getConfigFullscreen() {
         $sConfig = '';
-        $this->setToolbar('full');
+        $this->setToolbar('fullscreen');
         
         $sConfig .= "'theme_advanced_buttons1': '".$this->_aSettings['theme_advanced_buttons1']."',\n";
         $sConfig .= "'theme_advanced_buttons2': '".$this->_aSettings['theme_advanced_buttons2']."',\n";
