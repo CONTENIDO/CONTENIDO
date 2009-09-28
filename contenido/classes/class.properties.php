@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-12-21
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2009-09-27, Dominik Ziegler, fixed wrong (un)escaping
  *
  *   $Id$:
  * }}
@@ -175,7 +176,7 @@ class PropertyCollection extends ItemCollection
 		
 		if ($item = $this->next())
 		{
-			return ($item->get("value"));
+			return (Contenido_Security::unescapeDB($item->get("value")));
 		}
 		
 		return $default;
@@ -209,7 +210,7 @@ class PropertyCollection extends ItemCollection
 		
 		while ($item = $this->next())
 		{
-			$aResult[$item->get("name")] = urldecode($item->get("value"));
+			$aResult[$item->get("name")] = Contenido_Security::unescapeDB($item->get("value"));
 		}
 		
 		return $aResult;
