@@ -14,7 +14,7 @@
  * 
  *
  * @package    Contenido Content Types
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,7 @@
  *   modified 2009-04-14 - added possibility to expand template select by client or system setting using type 'cms_teaser'
  *   modofied 2009-04-21 - added seperate handling for xhtml
  *   modified 2009-05-04 - added sort order sequence
+ *   modified 2009-10-01 - Dominik Ziegler, fixed session bug in link
  *
  *   $Id$:
  * }}
@@ -908,7 +909,7 @@ class Cms_Teaser {
 		$oTpl->set('d', 'TEXT', $sText);
 		
 		$oTpl->set('d', 'IDART', $iIdArt);
-		$oTpl->set('d', 'ART_URL', $this->oSess->url('front_content.php?idart='.$iIdArt));
+		$oTpl->set('d', 'ART_URL', 'front_content.php?idart='.$iIdArt);
 		$oTpl->set('d', 'MORE', i18n('more'));
 		$oTpl->set('d', 'PUBLISHED', $iPublished);
 		$oTpl->next();
