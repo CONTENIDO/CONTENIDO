@@ -12,7 +12,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   created 2008-06-21
  *   modified 2008-07-01 timo trautmann - added rss update functionality
  *   modified 2008-07-02, Dominik Ziegler, added language support for rss
+ *   modified 2009-10-01, Dominik Ziegler, added some checks for directory write permissions
  *   $Id$:
  * }}
  * 
@@ -39,7 +40,7 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @var string
 	 */
-	protected $sMinorRelease;
+	protected $sMinorRelease = "";
 
 	/**
 	 * Host for vendor XML
@@ -81,7 +82,7 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @var string
 	 */
-	protected $sRSSFile;
+	protected $sRSSFile = "";
     
 	/**
 	 * Timestamp cache file
@@ -95,21 +96,21 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @var string
 	 */
-	protected $sXMLContent;
+	protected $sXMLContent = "";
 
     	/**
 	 * Content of the language specific RSS file
 	 * @access protected
 	 * @var string
 	 */
-	protected $sRSSContent;
+	protected $sRSSContent = "";
 
 	/**
 	 * Current available vendor version
 	 * @access protected
 	 * @var string
 	 */
-	protected $sVendorVersion;
+	protected $sVendorVersion = "";
 
 	/**
 	 * Download URL
@@ -123,28 +124,36 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @var string
 	 */
-	protected $sBackendLanguage;
+	protected $sBackendLanguage = "";
+	
+		
+	/**
+	 * Contains the cache path.
+	 * @access protected
+	 * @var string
+	 */
+	protected $sCacheDirectory = "";
 
 	/**
 	 * SimpleXML object
 	 * @access protected
 	 * @var object
 	 */
-	protected $oXML;
+	protected $oXML = null;
 
 	/**
 	 * Properties object
 	 * @access protected
 	 * @var object
 	 */
-	protected $oProperties;
+	protected $oProperties = null;
 	
 	/**
 	 * Session object
 	 * @access protected
 	 * @var object
 	 */
-	protected $oSession;
+	protected $oSession = null;
 
 	/**
 	 * Timeout for the fsockopen connection
@@ -158,7 +167,7 @@ class Contenido_UpdateNotifier {
 	 * @access protected
 	 * @var integer
 	 */
-	protected $iCacheDuration;
+	protected $iCacheDuration = 60;
 
 	/**
 	 * Check for system setting
@@ -173,20 +182,27 @@ class Contenido_UpdateNotifier {
 	 * @var boolean
 	 */
 	protected $bEnableCheckRss = false;
+	
+	/**
+	 * If true contenido displays a special error message due to missing write permissions.
+	 * @access protected
+	 * @var boolean
+	 */
+	protected $bNoWritePermissions = false;
 
 	/**
 	 * Display update notification based on user rights (sysadmin only)
 	 * @access protected
 	 * @var boolean
 	 */
-	protected $bEnableView;
+	protected $bEnableView = false;
 
 	/**
 	 * Update necessity
 	 * @access protected
 	 * @var boolean
 	 */
-	protected $bUpdateNecessity;
+	protected $bUpdateNecessity = false;
 
 	/**
 	 * Property configuration array
@@ -242,9 +258,9 @@ class Contenido_UpdateNotifier {
 			$this->bEnableView = true;
 			
 			$sAction = $_GET['do'];
-			if($sAction != "") $this->updateSystemProperty($sAction);
-
-			$this->setCachePath();
+			if($sAction != "") {
+				$this->updateSystemProperty($sAction);
+			}
 			
 			$sPropUpdate 	= getSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name']);
 			$sPropRSS		= getSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name']);
@@ -267,11 +283,14 @@ class Contenido_UpdateNotifier {
 				} else {
 					$this->iCacheDuration = 60;
 				}
-
-				$this->setRSSFile();
-				$this->detectMinorRelease();
-				$this->checkUpdateNecessity();
-				$this->readVendorContent();
+				
+				$this->setCachePath();
+				if ( $this->sCacheDirectory != "" ) {
+					$this->setRSSFile();
+					$this->detectMinorRelease();
+					$this->checkUpdateNecessity();
+					$this->readVendorContent();
+				}
 			}
 		}
 	}
@@ -317,12 +336,17 @@ class Contenido_UpdateNotifier {
 		$sCachePath = $sConPath."cache".DIRECTORY_SEPARATOR;
 		if (!is_dir($sCachePath)) {
 			mkdir($sCachePath, 0777);
-			chmod($sCachePath, 0777);
 		}
-		$this->sCacheDirectory = $sCachePath;
+		
+		if (!is_writable($sCachePath)) {
+			// setting special flag for error message
+			$this->bNoWritePermissions 	= true;
+		} else {
+			$this->sCacheDirectory = $sCachePath;
+		}
 	}
 
-	/**
+	/** 
 	 * Checks if the xml files must be loaded from the vendor host or local cache
 	 * @access protected
 	 * @return void
@@ -538,13 +562,15 @@ class Contenido_UpdateNotifier {
 		$aWriteCache[$this->sVendorRssDeFile] 		= $aRSSContent[$this->sVendorRssDeFile];
 		$aWriteCache[$this->sVendorRssEnFile] 		= $aRSSContent[$this->sVendorRssEnFile];
 		$aWriteCache[$this->sTimestampCacheFile] 	= time();
-
-		foreach ($aWriteCache as $sFile=>$sContent) {
-			$sCacheFile = $this->sCacheDirectory.$sFile;
-			$oFile = fopen($sCacheFile, "w+");
-			ftruncate($oFile, 0);
-			fwrite($oFile, $sContent);
-			fclose($oFile);
+		
+		if ( is_writable ( $this->sCacheDirectory ) ) {
+			foreach ($aWriteCache as $sFile=>$sContent) {
+				$sCacheFile = $this->sCacheDirectory.$sFile;
+				$oFile = fopen($sCacheFile, "w+");
+				ftruncate($oFile, 0);
+				fwrite($oFile, $sContent);
+				fclose($oFile);
+			}
 		}
 	}
 
@@ -617,19 +643,19 @@ class Contenido_UpdateNotifier {
 		}
 		
 		if ($this->bEnableCheckRss == true) {
-		    $oTpl->set('s', 'RSS_ACTIVATION', i18n('Disable RSS notification'));
+			$oTpl->set('s', 'RSS_ACTIVATION', i18n('Disable RSS notification'));
 			$oTpl->set('s', 'IMG_BUT_RSS', 'but_cancel.gif');
 			$oTpl->set('s', 'LABEL_BUT_RSS', i18n('Disable notification'));
 			$oTpl->set('s', 'URL_RSS', $this->oSession->url('main.php?frame=4&amp;area=mycontenido&amp;do=deactivate_rss'));
 			
 			$oTpl = $this->renderRss($oTpl);
 		} else {
-		    $oTpl->set('s', 'RSS_ACTIVATION', i18n('Enable RSS notification (recommended)'));
+			$oTpl->set('s', 'RSS_ACTIVATION', i18n('Enable RSS notification (recommended)'));
 			$oTpl->set('s', 'IMG_BUT_RSS', 'but_ok.gif');
 			$oTpl->set('s', 'LABEL_BUT_RSS', i18n('Enable notification'));
 			$oTpl->set('s', 'URL_RSS', $this->oSession->url('main.php?frame=4&amp;area=mycontenido&amp;do=activate_rss'));
 			$oTpl->set('s', 'NEWS_NOCONTENT', i18n('RSS notification is disabled'));
-            $oTpl->set("s", "DISPLAY_DISABLED", 'block');
+			$oTpl->set("s", "DISPLAY_DISABLED", 'block');
 		}
 		
 		return $oTpl->generate('templates/standard/'.$this->aCfg['templates']['welcome_update'], 1);
@@ -687,15 +713,17 @@ class Contenido_UpdateNotifier {
 			
 			if ($iCnt == 0) {
 				$oTpl->set("s", "NEWS_NOCONTENT", i18n("No RSS content available"));
-                $oTpl->set("s", "DISPLAY_DISABLED", 'block');
-                
+                $oTpl->set("s", "DISPLAY_DISABLED", 'block');     
 			} else {
 				$oTpl->set("s", "NEWS_NOCONTENT", "");
                 $oTpl->set("s", "DISPLAY_DISABLED", 'none');
 			}
+		} else if ( $this->bNoWritePermissions == true ) {
+			$oTpl->set("s", "NEWS_NOCONTENT", i18n('Your webserver does not have write permissions for the directory /contenido/cache/!'));
 		} else {
             $oTpl->set("s", "NEWS_NOCONTENT", i18n("No RSS content available"));
         }
+
 		return $oTpl;
 	}
 	
@@ -704,9 +732,12 @@ class Contenido_UpdateNotifier {
 	 * @access public
 	 * @return string
 	 */
-    	public function displayOutput() {
+    public function displayOutput() {
 		if (!$this->bEnableView) {
 			$sOutput = "";
+		} else if ($this->bNoWritePermissions == true ) {
+			$sMessage = i18n('Your webserver does not have write permissions for the directory /contenido/cache/!');
+			$sOutput = $this->renderOutput($sMessage);
 		} else if (!$this->bEnableCheck) {
 			$sMessage = i18n('Update notification is disabled! For actual update information, please activate.');
 			$sOutput = $this->renderOutput($sMessage);
@@ -731,6 +762,6 @@ class Contenido_UpdateNotifier {
 		}
 
        	return $sOutput;
-    	}
+    }
 }
 ?>

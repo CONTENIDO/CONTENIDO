@@ -691,7 +691,10 @@ class cSetupSystemtest extends cSetupMask
 									C_SEVERITY_WARNING);
 									
 		$this->logFilePrediction(   "contenido/cronjobs/move_articles.php.job",
-									C_SEVERITY_WARNING);	
+									C_SEVERITY_WARNING);
+									
+		$this->logFilePrediction(	"contenido/cache/",
+									C_SEVERITY_WARNING);
 									
 		if ($_SESSION["setuptype"] == "setup")
 		{
