@@ -29,6 +29,7 @@
  *   modified 2008-09-07, Murat Purc, bugfix in conCopyArtLang at chain execution
  *   modified 2008-09-12, Oliver Lohkemper, bugfix in function conChangeTemplateForCat, add conGenerateCodeForAllartsInCategory()
  *   modified 2009-04-23, Andreas Lindner, also copy alias of article when syncing article to another language
+ *   modified 2009-10-07, Murat Purc, bugfix in conMoveArticles (missing apostrophe)
  *  
  *   $Id$:
  * }}
@@ -1690,7 +1691,7 @@ function conMoveArticles()
             {
                 $sql = "UPDATE ".$cfg["tab"]["art_lang"] ." SET online = 1 WHERE idart = '".Contenido_Security::toInteger($db->f("idart"))."'";
             } else {
-                $sql = "UPDATE ".$cfg["tab"]["art_lang"] ." SET online = 0 WHERE idart = ".Contenido_Security::toInteger($db->f("idart"))."'";
+                $sql = "UPDATE ".$cfg["tab"]["art_lang"] ." SET online = 0 WHERE idart = '".Contenido_Security::toInteger($db->f("idart"))."'";
             }
             $db2->query($sql);
 
