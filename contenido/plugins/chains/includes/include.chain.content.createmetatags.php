@@ -21,6 +21,7 @@
  * {@internal 
  *   created 2007-10-24
  *   modified 2008-07-04, bilal arslan, added security fix
+ *   modified 2009-10-08, Murat Purc, bugfix in function CheckIfMetaTagExists(), see [#CON-271]
  *   $Id$: 
  * }}
  * 
@@ -260,27 +261,32 @@ function cecCreateMetatags ($metatags) {
 	return $metatags;
 }
 
+
+/**
+ * Checks if the metatag allready exists inside the metatag list.
+ *
+ * @param   array|mixed  $arrMetatags       List of metatags or not a list
+ * @param   string       $sCheckForMetaTag  The metatag to check
+ * @return  int                             Position of metatag inside the metatag list or the next 
+ *                                          available position
+ */
 function CheckIfMetaTagExists($arrMetatags, $sCheckForMetaTag) {
+    if (!is_array($arrMetatags) || count($arrMetatags) == 0) {
+        // metatag list ist not set or empty, return initial position
+        return 0;
+    }
 
-	if (is_array($arrMetatags)) {
-		$iNextIndex = count($arrMetatags);
-		
-		$i = 0;
-	
-		foreach ($arrMetatags as $key => $value) {
-			if (array_key_exists($sCheckForMetaTag, $value)) {
-				$iNextIndex = $i;	
-			}
-			
-			$i++;
-		}
-	} else {
-		$iNextIndex = 0;
-	}
-	 
+    // loop thru existing metatags and check against the listitem name
+    foreach ($arrMetatags as $pos => $item) {
+        if ($item['name'] == $sCheckForMetaTag) {
+            // metatag found -> return the position
+            return $pos;
+        }
+    }
 
-	return $iNextIndex;
-
+	// metatag doesn't exists, return next position
+    return count($arrMetatags);
 }
+
 
 ?>
