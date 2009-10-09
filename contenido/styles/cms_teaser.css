@@ -13,7 +13,13 @@
 	display:none;
 	top: 40px;
 	left: 40px;
-	z-index: 1000;
+    margin: 0;
+}
+
+.cms_teaser  * {
+    margin: 0;
+    padding: 0;
+    line-height: 100%;
 }
 
 .cms_teaser .close {
@@ -26,6 +32,7 @@
 	margin:0; 
 	padding: 0;
 	margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .cms_teaser .head_sub {
@@ -60,6 +67,10 @@
 	margin-bottom:3px;
 }
 
+.cms_teaser input {
+    width:198px; 
+}
+
 .cms_teaser select {
 	width:200px; 
 }
@@ -88,19 +99,19 @@
 }
 
 .cms_teaser .menu {
-	margin-top:5px; 
+	margin-top:10px; 
+    margin-bottom: 5px;
 	list-style:inside;
 	list-style-type:none;
-	margin-left: -40px;
 	margin-right: -6px;
 	clear:both;
 }
 
 .cms_teaser .menu li {
-	margin:0; 
-	padding: 0;
+	margin:0 !important; 
+	padding:0 !important; 
 	float: left;
-	width: 102px;
+	width: 106px;
 	margin-right: 6px;
 	height: 20px;
 	line-height:20px;
@@ -108,6 +119,7 @@
 	border-bottom: 1px solid #B3B3B3;
 	border-right: 1px solid #B3B3B3; 
 	vertical-align: bottom;
+    background: transparent !important;
 }
 
 .cms_teaser .menu .general {
