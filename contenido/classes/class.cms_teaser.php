@@ -517,7 +517,7 @@ class Cms_Teaser {
 			$oHtmlSelect->addOptionElement($sKey, $oHtmlSelectOption);
 		}
 
-		$oHtmlSelect->setStyle("width:143px;");
+		$oHtmlSelect->setStyle("width:147px;");
 		
 		//set default value
 		$oHtmlSelect->setDefault($sSelected);
