@@ -238,5 +238,9 @@ $cfg['password']['symbols_mandatory'] = 3;
 // If set to a value greater than 0, at least $cfg['password']['numbers_mandatory'] numbers must be in password
 $cfg['password']['numbers_mandatory'] = 3;
 
-
+/**
+ * Content Type Settings
+ */
+// Define here all content types which includes special module translations (dont forget the prefix "CMS_"!)
+$cfg['translatable_content_types'] = array('CMS_TEASER', 'CMS_FILELIST');
 ?>

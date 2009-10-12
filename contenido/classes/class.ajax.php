@@ -57,6 +57,36 @@ class Ajax {
 				$iIdCat = (int) $_REQUEST['idcat'];
 				$sString = buildArticleSelect($sName, $iIdCat, $iValue);
 				break;
+				
+			case 'dirlist':	
+				global $cfg, $client, $lang, $cfgClient;
+				cInclude("classes", "class.cms_filelist.php");
+			
+				$sDirName 		= (string) $_REQUEST['dir'];
+				$iFileListId 	= (int) $_REQUEST['id'];
+				$iIdArtLang 	= (int) $_REQUEST['idartlang'];
+				
+				$oArt 			= new Article(null, null, null, $iIdArtLang);
+				$sArtReturn 	= $oArt->getContent('CMS_FILELIST', $iFileListId);
+				$oFileList 		= new Cms_FileList($sArtReturn, $iFileListId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+				
+				$sString 		= $oFileList->getDirectoryList( $oFileList->buildDirectoryList ( $cfgClient[$client]['upl']['path'] . $sDirName ) );
+				break;
+				
+			case 'filelist':
+				global $cfg, $client, $lang, $cfgClient;
+				cInclude("classes", "class.cms_filelist.php");
+				
+				$sDirName 		= (string) $_REQUEST['dir'];
+				$iFileListId 	= (int) $_REQUEST['id'];
+				$iIdArtLang 	= (int) $_REQUEST['idartlang'];
+				
+				$oArt 			= new Article(null, null, null, $iIdArtLang);
+				$sArtReturn 	= $oArt->getContent('CMS_FILELIST', $iFileListId);
+				$oFileList 		= new Cms_FileList($sArtReturn, $iFileListId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+				
+				$sString 		= $oFileList->getFileSelect( $sDirName );
+				break;
 			//if action is unknown generate error message
 			default:
 				$sString = "Unknown Ajax Action";

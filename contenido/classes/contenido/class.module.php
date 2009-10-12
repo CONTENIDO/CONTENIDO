@@ -215,6 +215,29 @@ class cApiModule extends Item
 	        	unset($results);
 	        }
     	}
+		
+		// adding dynamically new module translations by content types
+		// this function was introduced with contenido 4.8.13
+		
+		// checking if array is set to prevent crashing the module translation page
+		if ( is_array( $cfg['translatable_content_types'] ) && count ( $cfg['translatable_content_types'] ) > 0 ) {
+			// iterate over all defines cms content types
+			foreach ( $cfg['translatable_content_types'] as $sContentType ) {
+				// check if the content type exists and include his class file
+				if ( file_exists ( $cfg['contenido']['path'] . "classes/class." . strtolower ( $sContentType ) . ".php" ) ) {
+					cInclude("classes", "class." . strtolower ( $sContentType ) . ".php" );
+					// if the class exists, has the method "addModuleTranslations" 
+					// and the current module contains this cms content type we 
+					// add the additional translations for the module
+					if ( class_exists ( $sContentType ) && 
+						method_exists( $sContentType, 'addModuleTranslations' ) && 
+						preg_match('/' . strtoupper ( $sContentType ) . '\[\d+\]/', $code) ) {
+						
+						$strings = call_user_func(array($sContentType, 'addModuleTranslations'), $strings);
+					}
+				}
+			}
+		}
         
         /* Make the strings unique */
         return array_unique($strings);

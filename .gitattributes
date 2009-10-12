@@ -46,6 +46,7 @@ cms/index.php -text
 cms/js/index.php -text
 cms/logs/index.php -text
 cms/robots.txt -text
+cms/templates/cms_filelist_style_default.html -text
 cms/templates/cms_teaser_style_block.html -text
 cms/templates/cms_teaser_style_blog.html -text
 cms/templates/contenido_header.html -text
@@ -155,6 +156,7 @@ contenido/classes/class.cec_hook.php -text
 contenido/classes/class.chartable.php -text
 contenido/classes/class.client.php -text
 contenido/classes/class.cms_date.php -text
+contenido/classes/class.cms_filelist.php -text
 contenido/classes/class.cms_teaser.php -text
 contenido/classes/class.communications.php -text
 contenido/classes/class.conuser.php -text
@@ -752,6 +754,7 @@ contenido/images/but_cat_conf.gif -text
 contenido/images/but_cat_conf2.gif -text
 contenido/images/but_copy.gif -text
 contenido/images/but_delete.gif -text
+contenido/images/but_downloadlist.gif -text
 contenido/images/but_edit.gif -text
 contenido/images/but_edithead.gif -text
 contenido/images/but_edithtml.gif -text
@@ -1240,6 +1243,7 @@ contenido/scripts/articleObject.js.php -text
 contenido/scripts/browserCheck.js -text
 contenido/scripts/cfoldingrow.js -text
 contenido/scripts/cmsDate.js -text
+contenido/scripts/cmsFileList.js -text
 contenido/scripts/cmsTeaser.js -text
 contenido/scripts/conFrameResize.js -text
 contenido/scripts/con_tiny.js -text
@@ -1325,6 +1329,7 @@ contenido/scripts/tip_balloon/stemb.gif -text
 contenido/scripts/tip_balloon/stemt.gif -text
 contenido/scripts/tip_balloon/t.gif -text
 contenido/scripts/wz_tooltip.js -text
+contenido/styles/cms_filelist.css -text
 contenido/styles/cms_teaser.css -text
 contenido/styles/contenido.css -text
 contenido/styles/header_ie.css -text
@@ -1355,6 +1360,9 @@ contenido/templates/standard/template.client_edit.html -text
 contenido/templates/standard/template.client_left_top.html -text
 contenido/templates/standard/template.client_menu.html -text
 contenido/templates/standard/template.client_subnav.html -text
+contenido/templates/standard/template.cms_filelist_dirlistitem.html -text
+contenido/templates/standard/template.cms_filelist_edit.html -text
+contenido/templates/standard/template.cms_filelist_metadata_limititem.html -text
 contenido/templates/standard/template.cms_teaser_edit.html -text
 contenido/templates/standard/template.con_art_overview.html -text
 contenido/templates/standard/template.con_edit_form.html -text

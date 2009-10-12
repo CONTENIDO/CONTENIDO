@@ -14,7 +14,7 @@
  * 
  *
  * @package    Contenido Content Types
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -28,6 +28,7 @@
  *   modofied 2009-04-21 - added seperate handling for xhtml
  *   modified 2009-05-04 - added sort order sequence
  *   modified 2009-10-01 - Dominik Ziegler, fixed session bug in link
+ *   modified 2009-10-12 - Dominik Ziegler, fixed online/offline articles, dynamic teaser generation and translation implemented
  *
  *   $Id$:
  * }}
@@ -156,6 +157,14 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private $sUseXHTML;
+	
+	/**
+	 * Placeholders for labels in frontend.
+	 * Important: This must be a static array!
+	 * @var		array
+	 * @access	private
+	 */
+	private static $aTranslations = array("MORE" => "mehr");
 
 	/**
 	 * Constructor of class inits some important class variables and
@@ -221,6 +230,20 @@ class Cms_Teaser {
 		$this->setDefaultValues();
 	}
 
+	/**
+	 * Returns all translation strings for mi18n.
+	 *
+	 * @param	array	$aTranslationStrings	Array with translation strings
+	 * @return	array	Translation strings
+	 */
+	static public function addModuleTranslations($aTranslationStrings) {
+		foreach(self::$aTranslations as $sValue) {
+			$aTranslationStrings[] = $sValue;
+		}
+		
+		return $aTranslationStrings;
+	}
+	
 	/**
 	 * Functen parses XML Document which contains teaser settings
 	 * and store properties as array into $aSettings
@@ -626,9 +649,11 @@ class Cms_Teaser {
 		$oTpl->set('s', 'MANUAL_OPTIONS', $sOptions);
 		/*End set values into configuration array and generate select boxes used previous defined values*/
 		
-		$sCode = $this->getAllWidgetView(true).$oTpl->generate($this->aCfg['path']['contenido'].'templates/standard/template.cms_teaser_edit.html', 1);
+		$sCode = $oTpl->generate($this->aCfg['path']['contenido'].'templates/standard/template.cms_teaser_edit.html', 1);
 		
-		return $this->encodeForOutput($sCode);
+		//return $this->encodeForOutput($sCode);
+		
+		return $this->getAllWidgetView( true ) . $this->encodeForOutput($sCode);
 	}
 	
 	/**
@@ -860,59 +885,68 @@ class Cms_Teaser {
 	 * @access private
 	 */
 	private function fillTeaserTemplateEntry($oArticle, &$oTpl) {
+		global $cCurrentModule;
+		
 		//get necessary informations for teaser from articles use properties in a Settings for retirval
 		$sTitle = $this->getArtContent($oArticle, $this->aSettings['teaser_source_head'], $this->aSettings['teaser_source_head_count']);
 		$sText = $this->getArtContent($oArticle, $this->aSettings['teaser_source_text'], $this->aSettings['teaser_source_text_count']);
 		$iImage = $this->getArtContent($oArticle, $this->aSettings['teaser_source_image'], $this->aSettings['teaser_source_image_count']);
 		$iIdArt = $oArticle->getField('idart');
 		$iPublished = $oArticle->getField('published');
-
-		//teaserfilter defines strings which must be contained in text for display. 
-		//if string is defined check if article contains this string and abort, if article does not contain this string
-		if ($this->aSettings['teaser_filter'] != '') {
-			$iPosText = strrpos(html_entity_decode($sText), $this->aSettings['teaser_filter']);
-			$iPosHead = strrpos(html_entity_decode($sTitle), $this->aSettings['teaser_filter']);
-			if (is_bool($iPosText) && !$iPosText && is_bool($iPosHead) && !$iPosHead) {
-				return false;
+		$iOnline = $oArticle->getField('online');
+		
+		if ( $iOnline == 1 ) {
+			//teaserfilter defines strings which must be contained in text for display. 
+			//if string is defined check if article contains this string and abort, if article does not contain this string
+			if ($this->aSettings['teaser_filter'] != '') {
+				$iPosText = strrpos(html_entity_decode($sText), $this->aSettings['teaser_filter']);
+				$iPosHead = strrpos(html_entity_decode($sTitle), $this->aSettings['teaser_filter']);
+				if (is_bool($iPosText) && !$iPosText && is_bool($iPosHead) && !$iPosHead) {
+					return false;
+				}
 			}
-		}
-		
-		//convert date to readable format
-		if (preg_match('/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/', $iPublished, $aResults)) {
-			$iPublished = $aResults[3].'.'.$aResults[2].'.'.$aResults[1];
-		}
-		
-		//strip tags in teaser text and cut it if it is to long
-		$sTitle = trim(strip_tags($sTitle));
-		$sText = trim(strip_tags($sText));
-		if (strlen($sText) >  $this->aSettings['teaser_character_limit']) {
-			$sText = capiStrTrimAfterWord($sText, $this->aSettings['teaser_character_limit']).'...';
-		}
-		
-		//try to get a teaser image directly from cms_img or try to extract if a content type is given, wich contains html
-		if ((int) $iImage > 0) {
-			$sImage = $this->getImage($iImage, $this->aSettings['teaser_image_width'], $this->aSettings['teaser_image_height'], $this->aSettings['teaser_image_crop']);
-			$oTpl->set('d', 'IMAGE', $sImage);
-		} else if (strip_tags($iImage) != $iImage && strlen($iImage) > 0) {
-			$sImage = $this->extractImage($iImage);
-			if (strlen($sImage) > 0) {
+			
+			//convert date to readable format
+			if (preg_match('/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/', $iPublished, $aResults)) {
+				$iPublished = $aResults[3].'.'.$aResults[2].'.'.$aResults[1];
+			}
+			
+			//strip tags in teaser text and cut it if it is to long
+			$sTitle = trim(strip_tags($sTitle));
+			$sText = trim(strip_tags($sText));
+			if (strlen($sText) >  $this->aSettings['teaser_character_limit']) {
+				$sText = capiStrTrimAfterWord($sText, $this->aSettings['teaser_character_limit']).'...';
+			}
+			
+			//try to get a teaser image directly from cms_img or try to extract if a content type is given, wich contains html
+			if ((int) $iImage > 0) {
+				$sImage = $this->getImage($iImage, $this->aSettings['teaser_image_width'], $this->aSettings['teaser_image_height'], $this->aSettings['teaser_image_crop']);
 				$oTpl->set('d', 'IMAGE', $sImage);
-			} else {
+			} else if (strip_tags($iImage) != $iImage && strlen($iImage) > 0) {
+				$sImage = $this->extractImage($iImage);
+				if (strlen($sImage) > 0) {
+					$oTpl->set('d', 'IMAGE', $sImage);
+				} else {
+					$oTpl->set('d', 'IMAGE', '');
+				}
+			}else{
 				$oTpl->set('d', 'IMAGE', '');
 			}
-		}else{
-			$oTpl->set('d', 'IMAGE', '');
+			
+			//set generated values to teaser template
+			$oTpl->set('d', 'TITLE', $sTitle);
+			$oTpl->set('d', 'TEXT', $sText);
+			
+			$oTpl->set('d', 'IDART', $iIdArt);
+			$oTpl->set('d', 'ART_URL', 'front_content.php?idart='.$iIdArt);
+			$oTpl->set('d', 'PUBLISHED', $iPublished);
+			
+			foreach( self::$aTranslations as $sKey => $sValue ) {
+				$oTpl->set('d', $sKey, mi18n( $sValue ));
+			}
+			
+			$oTpl->next();
 		}
-		
-		//set generated values to teaser template
-		$oTpl->set('d', 'TITLE', $sTitle);
-		$oTpl->set('d', 'TEXT', $sText);
-		
-		$oTpl->set('d', 'IDART', $iIdArt);
-		$oTpl->set('d', 'ART_URL', 'front_content.php?idart='.$iIdArt);
-		$oTpl->set('d', 'MORE', i18n('more'));
-		$oTpl->set('d', 'PUBLISHED', $iPublished);
-		$oTpl->next();
 		
 		return true;
 	}
@@ -925,7 +959,7 @@ class Cms_Teaser {
 	 *
 	 * @access public
 	 */
-	public function getAllWidgetView($bEditmode = false) {
+	public function getAllWidgetOutput($bEditmode = false) { 
 		$oTpl = new Template();
 		//set title of teaser
 		$oTpl->set('s', 'TITLE', $this->aSettings['teaser_title']);
@@ -971,12 +1005,28 @@ class Cms_Teaser {
 		
 		//generate teasertemplate
 		$sCode = $oTpl->generate($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/'.$this->aSettings['teaser_style'], 1);
-		if ($bEditmode == false) {
-			$sCode = $this->encodeForOutput($sCode);
-		}
+
 		return $sCode;
 		//use this to show xml document which contains teaser settings
 		#return '<pre>'.htmlentities($this->sContent).'</pre>';
+	}
+	
+	/**
+	 * Dynamic filelist generator. 
+	 * This method is executed every time the filelist is displayed.
+	 * 
+	 * @return	string	output of the filelist
+	 */
+	public function getAllWidgetView() {
+		$sCode = '\";?><?php 	 
+					cInclude("classes", "class.cms_teaser.php");
+					$oTeaser = new Cms_Teaser(\'%s\', %s, 0, "", $cfg, null, "", $client, $lang, $cfgClient, null);
+					
+					echo $oTeaser->getAllWidgetOutput();
+				 ?><?php echo \"';
+		
+		$sCode = sprintf($sCode, $this->sContent, $this->iId);
+		return $sCode;
 	}
 }
 
