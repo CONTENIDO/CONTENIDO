@@ -311,7 +311,7 @@ class Cms_Teaser {
 		    if ($sParam == 'teaser_manual_art') {
 				$oParam = $oXmlDom->createElement(str_replace('teaser_', '', $sParam));
 				//split all arts to array
-				$aArts = split(';', Contenido_Security::toString($_POST[$sParam]));
+				$aArts = explode(';', Contenido_Security::toString($_POST[$sParam]));
 				//for each artid generate subnote in xml document and store its value
 				foreach ($aArts as $iArt) {
 					$iArt = (int) $iArt;
@@ -828,7 +828,7 @@ class Cms_Teaser {
 		$sReturn = '';
 		
 		//split ids, if there is only one id, array has only one place filled, that is also ok
-		$aIds = split(',', $iIdType);
+		$aIds = explode(',', $iIdType);
 		foreach ($aIds as $iCurIdType) {
 			$sTmp = $oArticle->getContent($sIdType, $iCurIdType);
 			//check for largest result and replace when new value is larger

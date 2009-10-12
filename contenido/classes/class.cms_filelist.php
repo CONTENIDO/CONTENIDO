@@ -337,7 +337,7 @@ class Cms_FileList {
 		    if ($sParam == 'filelist_extensions') {
 				$oParam = $oXmlDom->createElement(str_replace('filelist_', '', $sParam));
 				//split all arts to array
-				$aExts = split(';', Contenido_Security::toString($_POST[$sParam]));
+				$aExts = explode(';', Contenido_Security::toString($_POST[$sParam]));
 				
 				//for each artid generate subnote in xml document and store its value
 				foreach ($aExts as $sExt) {
@@ -350,7 +350,7 @@ class Cms_FileList {
 			} else if ($sParam == 'filelist_directories') {
 				$oParam = $oXmlDom->createElement(str_replace('filelist_', '', $sParam));
 				//split all arts to array
-				$aDirs = split(';', Contenido_Security::toString($_POST[$sParam]));
+				$aDirs = explode(';', Contenido_Security::toString($_POST[$sParam]));
 				
 				//for each artid generate subnote in xml document and store its value
 				foreach ($aDirs as $sDir) {
@@ -363,7 +363,7 @@ class Cms_FileList {
 			} else if ($sParam == 'filelist_manual_files') {
 				$oParam = $oXmlDom->createElement(str_replace('filelist_', '', $sParam));
 				//split all arts to array
-				$aFiles = split(';', Contenido_Security::toString($_POST[$sParam]));
+				$aFiles = explode(';', Contenido_Security::toString($_POST[$sParam]));
 				
 				//for each artid generate subnote in xml document and store its value
 				foreach ($aFiles as $sFile) {
