@@ -35,7 +35,7 @@
  * @param integer iFileListIdArtLang
  * @param integer iFileListId
  */
-function addFileListEvents(sFrameId, sImageId, sPath, sSession, iFileListIdArtLang, iFileListId, aFileListData) {
+function addFileListEvents(sFrameId, sImageId, sPath, sSession, iFileListIdArtLang, iFileListId, aFileListData, bIgnoreState) {
 	loadExternalScripts(sFrameId, sPath, iFileListId);
 	addTabbingEvents(sFrameId);
 	addFrameShowEvent(sFrameId, sImageId);
@@ -43,6 +43,7 @@ function addFileListEvents(sFrameId, sImageId, sPath, sSession, iFileListIdArtLa
 	addFrameCloseEvents(sFrameId);
 	addManualFileListEvent(sFrameId);
 	addClickEvent(sFrameId, iFileListId);
+	setIgnoreExtensions(sFrameId, bIgnoreState);
 }
 
 /**
@@ -342,14 +343,14 @@ function addNaviActions(sFrameId, iFileListId) {
  */
 function addClickEvent(sFrameId, iFileListId) {	
 	addNaviActions(sFrameId, iFileListId);
+	addExtensionActions(sFrameId, iFileListId);
 	
 	if ( $(sFrameId+' #filelist_manual').attr('checked') == true ) {
 		$(sFrameId+' #manual_filelist_setting').css("display", "block");
 	} else {
 		$(sFrameId+' #manual_filelist_setting').css("display", "none");
 	}
-	
-	
+
 	$(sFrameId+' #filelist_manual').click(function () {
 		$(sFrameId+' #manual_filelist_setting').slideToggle();
 	});
@@ -364,8 +365,28 @@ function addClickEvent(sFrameId, iFileListId) {
 		$(sFrameId+' #metaDataList').slideToggle();
 	});
 	
+	$(sFrameId+' #filelist_manual_files').dblclick(function() {
+		$(sFrameId+' #filelist_manual_files option').each(function() {
+			if($(this).attr('selected')) {
+				$(this).remove();
+			};
+		});
+	});
+}
+
+function addExtensionActions(sFrameId, iFileListId) {
 	$(sFrameId+' #filelist_all_extensions').css('cursor', 'pointer');
 	$(sFrameId+' #filelist_ignore_extensions').css('cursor', 'pointer');
+
+	$(sFrameId+' #filelist_ignore_extensions').click(function () {
+		if ( $(sFrameId+' #filelist_extensions').attr("disabled") == true ) {
+			setIgnoreExtensions( sFrameId, 'false' );
+		} else {
+			setIgnoreExtensions( sFrameId, 'true' );
+		}
+		
+		return false;
+	});
 	
 	$(sFrameId+' #filelist_all_extensions').click(function () {
 		if ( $(sFrameId+' #filelist_extensions').attr("disabled") == false ) {
@@ -374,25 +395,14 @@ function addClickEvent(sFrameId, iFileListId) {
 			});
 		}
 	});
-	
-	$(sFrameId+' #filelist_ignore_extensions').click(function () {
-		if ( $(sFrameId+' #filelist_extensions').attr("disabled") == true ) {
-			$(sFrameId+' #filelist_extensions').removeAttr("disabled");
-			$(this).css("font-weight", "normal").html(sLabelIgnoreExtensionsOff);
-			
-		} else {
-			$(sFrameId+' #filelist_extensions').attr("disabled", "disabled");
-			$(this).css("font-weight", "bold").html(sLabelIgnoreExtensionsOn);
-		}
-		
-		return false;
-	});
-	
-	$(sFrameId+' #filelist_manual_files').dblclick(function() {
-		$(sFrameId+' #filelist_manual_files option').each(function() {
-			if($(this).attr('selected')) {
-				$(this).remove();
-			};
-		});
-	});
+}
+
+function setIgnoreExtensions(sFrameId, bIgnoreState) {
+	if ( bIgnoreState == 'false' ) {
+		$(sFrameId+' #filelist_extensions').removeAttr("disabled");
+		$(sFrameId+' #filelist_ignore_extensions').css("font-weight", "normal").html(sLabelIgnoreExtensionsOff);
+	} else {
+		$(sFrameId+' #filelist_extensions').attr("disabled", "disabled");
+		$(sFrameId+' #filelist_ignore_extensions').css("font-weight", "bold").html(sLabelIgnoreExtensionsOn);
+	}
 }

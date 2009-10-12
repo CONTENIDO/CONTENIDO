@@ -377,7 +377,9 @@ class Cms_FileList {
 						$sParam == 'filelist_modifydatefilter_from' || $sParam == 'filelist_modifydatefilter_to' ) {
 
 				$sValue = Contenido_Security::toString($_POST[$sParam]);
-				if ($sValue != "" ) {
+				// check if value is set and if its length equals ten characters 
+				// (two for day, two for month, four for year and two for the points)
+				if ( $sValue != "" && $sValue != "DD.MM.YYYY" && strlen( $sValue ) == 10 ) {
 					$aDateSplits = explode(".", $sValue);
 					$iTimestamp = mktime(0, 0, 0, (int) $aDateSplits[1], (int) $aDateSplits[0], (int) $aDateSplits[2]);	
 				} else {
@@ -585,9 +587,14 @@ class Cms_FileList {
 		$i = 1;		
 		foreach ( $this->aMetaDataIdents as $sIdentName => $sTranslation ) {
 			
+			$iMetaDataLimit = $this->aSettings['filelist_md_' . $sIdentName . '_limit'];
+			if ( !isset ( $iMetaDataLimit ) || $iMetaDataLimit == "" ) {
+				$iMetaDataLimit = 0;
+			}
+			
 			$oTpl->set('d', 'METADATA_NAME', 		$sIdentName);
 			$oTpl->set('d', 'METADATA_DISPLAYNAME',	i18n($sTranslation));
-			$oTpl->set('d', 'METADATA_LIMIT', 		$this->aSettings['filelist_md_' . $sIdentName . '_limit']);
+			$oTpl->set('d', 'METADATA_LIMIT', 		$iMetaDataLimit);
 
 			$i++;
 			$oTpl->next();			
@@ -638,7 +645,6 @@ class Cms_FileList {
 			} else {
 				$oTpl->set('d', 'SUBDIRLIST', '');
 			}
-
 			
 			if ($i == count($aDirs)) {
 				$sLiClasses .= " last";
@@ -695,12 +701,19 @@ class Cms_FileList {
 	 */
 	public function getAllWidgetEdit() {	
 		$oTpl = new Template();
+	
 		/*Set some values into javascript for a better handling*/
 		$oTpl->set('s', 'CON_PATH', 							$this->aCfg['path']['contenido_fullhtml']);
 		$oTpl->set('s', 'ID', 									$this->iId);
 		$oTpl->set('s', 'IDARTLANG',							$this->iIdArtLang);
 		$oTpl->set('s', 'CONTENIDO', 							$_REQUEST['contenido']);
 		$oTpl->set('s', 'FIELDS', 								"'".implode("','",$this->aFileListData)."'");
+		
+		if ( $this->aSettings['filelist_ignore_extensions'] == 'on' ) {
+			$oTpl->set('s', 'IGNOREEXTENSIONS', 				'true');
+		} else {
+			$oTpl->set('s', 'IGNOREEXTENSIONS', 				'false');
+		}
 		
 		/*Start set a lot of translations*/
 		$oTpl->set('s', 'DIRECTORIES', 							i18n("Directories"));
@@ -762,18 +775,28 @@ class Cms_FileList {
 			if ( $this->aSettings['filelist_' . $sDateField . 'filter_from'] != 0 ) {
 				$oTpl->set('s', 'FILELIST_' . strtoupper( $sDateField ) . 'FILTER_FROM', date("d.m.Y", $this->aSettings['filelist_' . $sDateField . 'filter_from']));
 			} else {
-				$oTpl->set('s', 'FILELIST_' . strtoupper( $sDateField ) . 'FILTER_FROM', '');
+				$oTpl->set('s', 'FILELIST_' . strtoupper( $sDateField ) . 'FILTER_FROM', 'DD.MM.YYYY');
 			}
 			
 			if ( $this->aSettings['filelist_' . $sDateField . 'filter_to'] != 0 ) {
 				$oTpl->set('s', 'FILELIST_' . strtoupper( $sDateField ) . 'FILTER_TO', date("d.m.Y", $this->aSettings['filelist_' . $sDateField . 'filter_to']));
 			} else {
-				$oTpl->set('s', 'FILELIST_' . strtoupper( $sDateField ) . 'FILTER_TO', '');
+				$oTpl->set('s', 'FILELIST_' . strtoupper( $sDateField ) . 'FILTER_TO', 'DD.MM.YYYY');
 			}
 		}
 		
-		$oTpl->set('s', 'FILELIST_FILESIZEFILTER_FROM', 		$this->aSettings['filelist_filesizefilter_from']);
-		$oTpl->set('s', 'FILELIST_FILESIZEFILTER_TO', 			$this->aSettings['filelist_filesizefilter_to']);
+		$iFilesizeLimitFrom = $this->aSettings['filelist_filesizefilter_from'];
+		if ( $iFilesizeLimitFrom == "" ) {
+			$iFilesizeLimitFrom = 0;
+		}
+		
+		$iFilesizeLimitTo = $this->aSettings['filelist_filesizefilter_to'];
+		if ( $iFilesizeLimitTo == "" ) {
+			$iFilesizeLimitTo = 0;
+		}
+		
+		$oTpl->set('s', 'FILELIST_FILESIZEFILTER_FROM', 		$iFilesizeLimitFrom);
+		$oTpl->set('s', 'FILELIST_FILESIZEFILTER_TO', 			$iFilesizeLimitTo);
 		$oTpl->set('s', 'SORT_SELECT', 							$this->getSortSelect($this->aSettings['filelist_sort']));
 		$oTpl->set('s', 'FILE_SELECT', 							$this->getFileSelect());
 		$oTpl->set('s', 'SORTORDER_SELECT', 					$this->getSortOrderSelect($this->aSettings['filelist_sortorder']));
