@@ -1053,7 +1053,6 @@ class Cms_FileList {
 		//set title of teaser
 		if ( $this->aSettings['filelist_style'] != "" ) {
 			$oTpl->set('s', 'TITLE', $this->aSettings['filelist_title']);
-			$oTpl->set('s', 'ERROR', '-', 1);
 			
 			if ( $this->aSettings['filelist_manual'] == 'true' && count( $this->aSettings['filelist_manual_files'] ) > 0 ) {
 				$aFileList = $this->aSettings['filelist_manual_files'];
@@ -1085,9 +1084,7 @@ class Cms_FileList {
 			$aFiles = $this->applyFileFilters( $aFileList );
 			unset( $aFileList );
 			
-			if ( count ( $aFiles ) == 0 ) {
-				$oTpl->set('s', 'ERROR', i18n('No files found'), 1);
-			} else {
+			if ( count ( $aFiles ) > 0 ) {
 				// check for descending sort order...
 				if ( $this->aSettings['filelist_sortorder'] == 'desc' ) {
 					krsort( $aFiles ) ;
@@ -1116,10 +1113,10 @@ class Cms_FileList {
 					}
 					$this->fillFileListTemplateEntry( $aFilenameData, $oTpl );
 				}
-			}
-		
-			//generate template
-			$sCode = $oTpl->generate($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/' . $this->aSettings['filelist_style'], 1);
+				
+				//generate template
+				$sCode = $oTpl->generate($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/' . $this->aSettings['filelist_style'], 1);
+			}			
 		} else {
 			$sCode = "CMS_FILELIST[" . $this->iId . "] Error: No template defined<br />";
 		}
