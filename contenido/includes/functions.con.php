@@ -29,6 +29,7 @@
  *   modified 2008-09-07, Murat Purc, bugfix in conCopyArtLang at chain execution
  *   modified 2008-09-12, Oliver Lohkemper, bugfix in function conChangeTemplateForCat, add conGenerateCodeForAllartsInCategory()
  *   modified 2009-04-23, Andreas Lindner, also copy alias of article when syncing article to another language
+ *   modified 2009-05-05, Timo Trautmann - optional use for copy label on copy proccess
  *   modified 2009-10-07, Murat Purc, bugfix in conMoveArticles (missing apostrophe)
  *  
  *   $Id$:
@@ -1807,7 +1808,7 @@ function conCopyContent ($srcidartlang, $dstidartlang)
 	}
 }
 
-function conCopyArtLang ($srcidart, $dstidart, $newtitle)
+function conCopyArtLang ($srcidart, $dstidart, $newtitle, $bUseCopyLabel = true)
 {
 	global $cfg, $lang;
 	
@@ -1844,7 +1845,11 @@ function conCopyArtLang ($srcidart, $dstidart, $newtitle)
 		{
 			$title = sprintf($newtitle, addslashes($db->f("title")));
 		} else {
-			$title = sprintf(i18n("%s (Copy)"), addslashes($db->f("title"))); 
+			if ($bUseCopyLabel == true) {
+				$title = sprintf(i18n("%s (Copy)"), addslashes($db->f("title"))); 
+			} else {
+				$title = addslashes($db->f("title")); 
+			}
 		}
 		$pagetitle = addslashes($db->f("pagetitle"));
 		$summary = addslashes($db->f("summary"));
@@ -1933,7 +1938,7 @@ function conCopyArtLang ($srcidart, $dstidart, $newtitle)
 	}			
 }
 
-function conCopyArticle ($srcidart, $targetcat = 0, $newtitle = "")
+function conCopyArticle ($srcidart, $targetcat = 0, $newtitle = "", $bUseCopyLabel = true)
 {
 	global $cfg, $_cecRegistry;
 	
@@ -1955,7 +1960,7 @@ function conCopyArticle ($srcidart, $targetcat = 0, $newtitle = "")
 	$sql = "INSERT INTO ".$cfg["tab"]["art"]." (idart, idclient) VALUES ('".Contenido_Security::toInteger($dstidart)."', '".Contenido_Security::toInteger($idclient)."')";
 	$db->query($sql);
 	
-	conCopyArtLang($srcidart, $dstidart, $newtitle);
+	conCopyArtLang($srcidart, $dstidart, $newtitle, $newtitle);
 	
 	// Update category relationship
 	$sql = "SELECT idcat, status FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($srcidart)."'";

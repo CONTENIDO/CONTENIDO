@@ -26,6 +26,7 @@
  *   modified 2008-09-03, Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann (strRemakeTreeTableFindNext)
  *   modified 2008-10-29, delete from cat_tree only for one Cliente OliverL (strRemakeTreeTable)
  *   modified 2008-11-03, Add cat_tree only for one Cliente OliverL (strRemakeTreeTable)
+ *   modified 2009-05-05, Timo Trautmann - optional use for copy label on copy proccess
  *
  *   $Id$:
  * }}
@@ -1210,7 +1211,7 @@ function strHasStartArticle ($idcat, $idlang)
 	return false;
 }
 
-function strCopyCategory ($idcat, $destidcat, $remakeTree = true)
+function strCopyCategory ($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel = true)
 {
    global $cfg, $client, $lang;
 
@@ -1242,7 +1243,12 @@ function strCopyCategory ($idcat, $destidcat, $remakeTree = true)
    $oldcat = new cApiCategory($idcat);
 
    /* Copy properties */
-   $newcatlang->set("name", sprintf(i18n("%s (Copy)"), $oldcatlang->get("name")));
+   if ($bUseCopyLabel == true) {
+		$newcatlang->set("name", sprintf(i18n("%s (Copy)"), $oldcatlang->get("name")));
+   } else {
+		$newcatlang->set("name", $oldcatlang->get("name"));
+   }
+   
    $newcatlang->set("public", $oldcatlang->get("public"));
    $newcatlang->set("visible", 0);
    $newcatlang->store();
@@ -1281,7 +1287,7 @@ function strCopyCategory ($idcat, $destidcat, $remakeTree = true)
 
    while ($db->next_record())
    {
-      $newidart = conCopyArticle($db->f("idart"), $newidcat);
+      $newidart = conCopyArticle($db->f("idart"), $newidcat, "", false);
       if ($db->f("idartlang") == $oldcatlang->get("startidartlang"))
       {
          $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".Contenido_Security::toInteger($newidcat)."' AND idart = '".Contenido_Security::toInteger($newidart)."'";
@@ -1297,18 +1303,18 @@ function strCopyCategory ($idcat, $destidcat, $remakeTree = true)
    return ($newidcat);
 }
 
-function strCopyTree ($idcat, $destcat, $remakeTree = true)
+function strCopyTree ($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true)
 {
 	global $cfg;
 
-	$newidcat = strCopyCategory($idcat, $destcat, false);
+	$newidcat = strCopyCategory($idcat, $destcat, false, $bUseCopyLabel);
 	
 	$db = new DB_Contenido;
 	$db->query("SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid = '".Contenido_Security::toInteger($idcat)."'");
 	
 	while ($db->next_record())
 	{
-		strCopyTree($db->f("idcat"), $newidcat, false);	
+		strCopyTree($db->f("idcat"), $newidcat, false, false);	
 	}
 	
 	if ($remakeTree == true)
