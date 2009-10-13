@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    1.0.8
+ * @version    1.0.9
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal
  *   created 2003-12-21
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2009-10-13, Dominik Ziegler, added "attachment" to Content-Disposition to force browsers downloading the file
  *
  *   $Id$:
  * }}
@@ -81,7 +82,10 @@ class DBFSCollection extends ItemCollection
 			header("Pragma: ");// leave blank to avoid IE errors
 			header("Content-Type: $mimetype");
 			header("Etag: ".md5(mt_rand()));
-			header("Content-Disposition: filename=$file");
+					
+			// header("Content-Disposition: filename=$file");
+			header("Content-Disposition: attachment; filename=$file");
+			
 			echo $item->get("content");
 		}
 
