@@ -297,7 +297,7 @@ class XML_doc {
     function characterData($parser, $data) {
         // Collect the data onto the end of the current chars it dont collect whitespaces.
 
-        $data = eregi_replace ( "[[:space:]]+", " ", $data );
+        $data = preg_replace ( "/[[:space:]]+/i", " ", $data );
 
         if(trim($data)){
            //search for the element path
