@@ -31,6 +31,20 @@
 
             window.location.href = url;
         }
+		
+		/* Function for cancel moving a tree */
+		function cancelMoveTree( idcat ) {
+			if ( idcat > 0 ) {
+				url  = 'main.php?area='+area+'';
+				url += '&action=str_movesubtree';
+				url += '&frame='+frame;
+				url += '&idcat=' + idcat;
+				url += '&parentid_new=0';
+				url += '&contenido=' + sid;
+
+				window.location.href = url;
+			}
+		}
         
         /* Inserts Worflow Select Box into Category row */
         function printWorkflowSelect (idcat, selected) {
@@ -197,6 +211,9 @@
             {COLLAPSE_ALL}
             <span style="padding-left:15px;">&nbsp;</span>
             {EXPAND_ALL}
+			<span style="padding-left:15px;">&nbsp;</span>
+            {CANCEL_MOVE_TREE}
+			<span style="padding-left:5px;">&nbsp;</span>
         </td>
      </tr>
      <tr>

@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-03-28
  *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *   modified 2009-10-14, Dominik Ziegler - added some functionality for "cancel moving tree"
  *
  *   $Id$:
  * }}
@@ -348,24 +349,39 @@ if ( $perm->have_perm_area_action($area) ) {
     }
 
     $db->query($sql);
+	
+	$bIgnore = false;
+	$iIgnoreLevel = 0;
 
 	$items = array();
 	while ($db->next_record())
 	{
-		$entry = array();
-		$entry['idtree'] = $db->f("idtree");
-		$entry['idcat'] = $db->f("idcat");
-		$entry['level'] = $db->f("level");
-		$entry['name'] = htmldecode($db->f("name"));
-        $entry['alias'] = htmldecode($db->f("alias"));
-		$entry['parentid'] = $db->f("parentid");
-		$entry['preid'] = $db->f("preid");
-		$entry['postid'] = $db->f("postid");
-		$entry['visible'] = $db->f("visible");
-		$entry['public'] = $db->f("public");
-		$entry['idtplcfg'] = $db->f("idtplcfg");
+		if ($bIgnore == true && $iIgnoreLevel >= $db->f("level")) {
+			$bIgnore = false;
+		}	
+		
+		if ($db->f("idcat") == $movesubtreeidcat) {
+			$bIgnore = true;
+			$iIgnoreLevel = $db->f("level");
+			$sMoveSubtreeCatName = $db->f("name");
+		}
 
-		array_push($items, $entry);
+		if ($bIgnore == false) {
+			$entry = array();
+			$entry['idtree'] = $db->f("idtree");
+			$entry['idcat'] = $db->f("idcat");
+			$entry['level'] = $db->f("level");
+			$entry['name'] = htmldecode($db->f("name"));
+			$entry['alias'] = htmldecode($db->f("alias"));
+			$entry['parentid'] = $db->f("parentid");
+			$entry['preid'] = $db->f("preid");
+			$entry['postid'] = $db->f("postid");
+			$entry['visible'] = $db->f("visible");
+			$entry['public'] = $db->f("public");
+			$entry['idtplcfg'] = $db->f("idtplcfg");
+			
+			array_push($items, $entry);
+		}
 	}
 
 	$rootStrItem = new TreeItem("root",-1);
@@ -934,6 +950,18 @@ if ( $perm->have_perm_area_action($area) ) {
     # Generate template
 	$clang = new Language;
 	$clang->loadByPrimaryKey($lang);
+	
+	if ( $movesubtreeidcat != 0 ) {
+		if ( strlen ( $sMoveSubtreeCatName ) > 30 ) {
+			$sLimiter = "...";
+		} else {
+			$sLimiter = "";
+		}
+		$sButtonDesc = sprintf( i18n( 'Cancel moving %s' ), '"' . substr( $sMoveSubtreeCatName, 0, 30) . $sLimiter . '"' );
+		$tpl->set('s', 'CANCEL_MOVE_TREE', '<a class="black" id="cancel_move_tree_button" href="javascript:cancelMoveTree(\'' . $movesubtreeidcat . '\');"><img src="images/but_cancel.gif" alt="'.$sButtonDesc.'" />&nbsp;'.$sButtonDesc.'</a>');
+	} else {
+		$tpl->set('s', 'CANCEL_MOVE_TREE', '');
+	}
 	
 	$tpl->setEncoding($clang->get("encoding"));
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['str_overview']);

@@ -27,6 +27,7 @@
  *   modified 2008-10-29, delete from cat_tree only for one Cliente OliverL (strRemakeTreeTable)
  *   modified 2008-11-03, Add cat_tree only for one Cliente OliverL (strRemakeTreeTable)
  *   modified 2009-05-05, Timo Trautmann - optional use for copy label on copy proccess
+ *   modified 2009-10-14, Dominik Ziegler - changed functionality of strMoveSubtree and strMoveCatTargetallowed to prevent crashing tree on moving
  *
  *   $Id$:
  * }}
@@ -1007,80 +1008,85 @@ function strMoveDownCategory ($idcat) {
 }
 
 function strMoveSubtree ($idcat, $parentid_new) {
-        global $db;
-        global $cfg;
-		// Flag to rebuild the category table
-		global $remakeCatTable;
-		global $remakeStrTable;
-		$remakeCatTable = true;
-		$remakeStrTable = true;
+	global $db, $cfg, $remakeCatTable, $remakeStrTable, $movesubtreeidcat, $sess;
+	$remakeCatTable = true;
+	$remakeStrTable = true;
 
-        $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-        $db->query($sql);
-        $db->next_record();
-        $tmp_idcat  = $db->f("idcat");
-        $tmp_preid  = $db->f("preid");
-        $tmp_postid = $db->f("postid");
+	$idcat 			= Contenido_Security::toInteger( $idcat );
+	$iNewParentId 	= Contenido_Security::toInteger( $parentid_new );
+	
+	// Check if iNewParentId is 0 and the unescaped value is not null
+	if ( $iNewParentId == 0 && !is_null( $parentid_new ) ) {
+		$movesubtreeidcat = 0;
+	} else if ( $iNewParentId != 0 ) {
+		$sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='" . $idcat . "'";
+		$db->query($sql);
+		$db->next_record();
+		$tmp_idcat  = $db->f("idcat");
+		$tmp_preid  = $db->f("preid");
+		$tmp_postid = $db->f("postid");
 
-        //****************** update predecessor (pre)**********************
-        if ($tmp_preid != 0) {
-                $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
-                $db->query($sql);
-        }
+		//****************** update predecessor (pre)**********************
+		if ($tmp_preid != 0) {
+			$sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='" . $tmp_postid . "' WHERE idcat='" . $tmp_preid . "'";
+			$db->query($sql);
+		}
 
-        //****************** update follower (post)**********************
-        if ($tmp_postid != 0) {
-                $sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
-                $db->query($sql);
-        }
+		//****************** update follower (post)**********************
+		if ($tmp_postid != 0) {
+			$sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='" . $tmp_preid . "' WHERE idcat='" . $tmp_postid . "'";
+			$db->query($sql);
+		}
 
-        //****************** find new pre ********************
-        $sql = "SELECT idcat, preid FROM ".$cfg["tab"]["cat"]." WHERE parentid='".Contenido_Security::toInteger($parentid_new)."' AND postid='0'";
-        $db->query($sql);
-        if ($db->next_record()) {
-                $tmp_new_preid = $db->f("idcat");
-                $tmp_preid_2   = $db->f("preid");
-                if ($tmp_new_preid != $idcat) {
-                        //******************** update new pre: set post **********************
-                        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='".Contenido_Security::toInteger($idcat)."' WHERE idcat='".Contenido_Security::toInteger($tmp_new_preid)."'";
-                        $db->query($sql);
-                } else {
-                        $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_preid_2)."'";
-                        $db->query($sql);
-                        if ($db->next_record()) {
-                                $tmp_new_preid = $db->f("idcat");
-                                //******************** update new pre: set post **********************
-                                $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='".Contenido_Security::toInteger($idcat)."' WHERE idcat='".Contenido_Security::toInteger($tmp_new_preid)."'";
-                                $db->query($sql);
-                        } else {
-                                $tmp_new_preid = 0;
-                        }
-                }
-        } else {
-                $tmp_new_preid = 0;
-        }
+		//****************** find new pre ********************
+		$sql = "SELECT idcat, preid FROM ".$cfg["tab"]["cat"]." WHERE parentid='" . $iNewParentId . "' AND postid='0'";
+		$db->query($sql);
+		if ($db->next_record()) {
+			$tmp_new_preid = $db->f("idcat");
+			$tmp_preid_2   = $db->f("preid");
+			if ($tmp_new_preid != $idcat) {
+				//******************** update new pre: set post **********************
+				$sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='" . $idcat . "' WHERE idcat='" . $tmp_new_preid . "'";
+				$db->query($sql);
+			} else {
+				$sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idcat='" . $tmp_preid_2 . "'";
+				$db->query($sql);
+				if ($db->next_record()) {
+					$tmp_new_preid = $db->f("idcat");
+					//******************** update new pre: set post **********************
+					$sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='" . $idcat . "' WHERE idcat='" . $tmp_new_preid . "'";
+					$db->query($sql);
+				} else {
+					$tmp_new_preid = 0;
+				}
+			}
+		} else {
+			$tmp_new_preid = 0;
+		}
 
-        //*************** update idcat ********************
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET parentid='".Contenido_Security::toInteger($parentid_new)."', preid='".Contenido_Security::toInteger($tmp_new_preid)."', postid='0' WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-        $db->query($sql);
+		//*************** update idcat ********************
+		$sql = "UPDATE ".$cfg["tab"]["cat"]." SET parentid='" . $iNewParentId . "', preid='" . $tmp_new_preid . "', postid='0' WHERE idcat='" . $idcat . "'";
+		$db->query($sql);
+		
+		$movesubtreeidcat = 0;
+	} else {
+		// We recoded this function to prevent crashing the cat tree
+		// when a user copies a tree and forget to set the target category
+		
+		// Copy transaction now is only performed by setting the target		
+		$movesubtreeidcat = $idcat;
+	}
+	
+	$sess->register('movesubtreeidcat');
+	$sess->freeze();
 }
 
 function strMoveCatTargetallowed($idcat, $source) {
-        global $cfg;
-
-        $tmpdb = new DB_Contenido;
-        $sql = "SELECT parentid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-        $tmpdb->query($sql);
-        $tmpdb->next_record();
-        $p = $tmpdb->f("parentid");
-
-        if ($p == $source) {
-                return 0;
-        } elseif ($p == 0) {
-                return 1;
-        } else {
-                return strMoveCatTargetallowed($p, $source);
-        }
+	if ( $idcat == $source ) {
+		return 0;
+	} else {
+		return 1;
+	}
 }
 
 function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = false)
