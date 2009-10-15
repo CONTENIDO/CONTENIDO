@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.0
+ * @version    1.0.2
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created 2003-03-28
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2009-10-14, Dominik Ziegler - added some functionality for "cancel moving tree"
+ *   modified 2009-10-15, Dominik Ziegler - removed unnecessary database query for selecting the level (level is already available)
  *
  *   $Id$:
  * }}
@@ -80,7 +81,6 @@ function buildCategorySelectRights() {
 	global $cfg, $client, $lang, $idcat, $perm, $tmp_area;
 
 	$db = new DB_Contenido;
-	$db2 = new DB_Contenido;
     
     $oHtmlSelect = new 	cHTMLSelectElement ('idcat', "", "new_idcat");
     
@@ -108,14 +108,8 @@ function buildCategorySelectRights() {
         } else {
             $categories[$db->f("idcat")]["perm"] = 0;
         }
-
-		$sql2 = "SELECT level FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat = '".Contenido_Security::toInteger($db->f("idcat"))."'";
-		$db2->query($sql2);
-
-		if ($db2->next_record())
-		{
-			$categories[$db->f("idcat")]["level"] = $db2->f("level");
-		}
+		
+		$categories[$db->f("idcat")]["level"] = $db->f("level");
 	}
     
     $aCategoriesReversed = array_reverse($categories);
