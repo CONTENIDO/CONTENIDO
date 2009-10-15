@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003
  *   modified 2008-06-30, Frederic Schneider, add security fix
+ *   modified 2009-10-15, Dominik Ziegler, getAvailableActions() now also returns the areaname
  *
  *   $Id$;
  * }}
@@ -53,10 +54,17 @@ class Action {
         $db = new DB_Contenido;
 
         $sql = "SELECT
-                    idaction,
-                    name
+                    action.idaction,
+                    action.name,
+					area.name AS areaname
                 FROM
-                ". $cfg["tab"]["actions"]." ORDER BY name;";
+                ". $cfg["tab"]["actions"]." AS action
+				LEFT JOIN
+				". $cfg["tab"]["area"]." AS area
+				ON 
+					area.idarea = action.idarea
+				ORDER BY 
+					action.name;";
 
         $db->query($sql);
 
@@ -66,6 +74,7 @@ class Action {
         {
             
             $newentry["name"] = $db->f("name");
+			$newentry["areaname"] = $db->f("areaname");
 
             $actions[$db->f("idaction")] = $newentry;
 

@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created 2003-05-09
  *   modified 2008-06-16, Holger Librenz, Hotfix: added check for invalid calls
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2009-10-15, Dominik Ziegler, fetching areaname from actions array to save a lot of database queries
  *
  *   $Id$:
  * }}
@@ -102,16 +103,17 @@ if(!$perm->have_perm_area_action($area))
 
         $userselect .= "<option value=\"".$key."\" ".$selected.">".$value["username"]." (".$value["realname"].")</option>";
     }
-
-    foreach ($actions as $key=>$value) {
+	
+	foreach ($actions as $key=>$value) {
         if (strcmp($idqaction,$key) == 0) {
             $selected = "SELECTED";
         } else {
             $selected = "";
         }
-
-        $areaname = $classarea->getAreaName($actionclass->getAreaForAction($value["name"]));
-        $actionDescription =  $lngAct[$areaname][$value["name"]];
+		
+        // $areaname = $classarea->getAreaName($actionclass->getAreaForAction($value["name"]));
+        $areaname = $value["areaname"];
+		$actionDescription = $lngAct[$areaname][$value["name"]];
 
         if ($actionDescription == "")
         {
