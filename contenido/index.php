@@ -24,7 +24,8 @@
  *   modified 2008-06-16, Holger Librenz, Hotifx: added check for invalid calls
  *   modified 2008-06-16, Rudi Bieller, Hotifx: added check for XSS at "contenido" and "belang"
  *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
- *   modified 2008-07-02, Frederic Schneider, add security fix and include security class 
+ *   modified 2008-07-02, Frederic Schneider, add security fix and include security class
+ *   modified 2009-10-16, Ortwin Pinke, added rewrite of ampersand in frameset url
  *
  *   $Id$:
  * }}
@@ -148,8 +149,8 @@ if (isset($area))
 
 $tpl->reset();
 
-$tpl->set('s', 'HEADER',    $sess->url('header.php?changelang='.$lang.'&changeclient='.$client));
-$tpl->set('s', 'CONTENT',   $sess->url('frameset.php?area=mycontenido&frame=1&menuless=1&changelang='.$changelang.'&lang='.$lang.'&client='.$client));
+$tpl->set('s', 'HEADER',    str_replace("&", "&amp;", $sess->url('header.php?changelang='.$lang.'&changeclient='.$client)));
+$tpl->set('s', 'CONTENT',   str_replace("&", "&amp;", $sess->url('frameset.php?area=mycontenido&frame=1&menuless=1&changelang='.$changelang.'&lang='.$lang.'&client='.$client)));
 $tpl->set('s', 'VERSION',	$cfg["version"]);
 $tpl->set('s', 'LOCATION',	$cfg['path']['contenido_fullhtml']);
 $tpl->set('s', 'CONTENIDOPATH', $cfg["path"]["contenido_fullhtml"]."favicon.ico");

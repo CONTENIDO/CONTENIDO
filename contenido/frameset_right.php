@@ -23,6 +23,7 @@
  *   created 2003-01-20#
  *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
  *   modified 2008-07-02, Frederic Schneider, new code-header and include security_class
+ *   modified 2009-10-16, Ortwin Pinke, added rewrite of ampersand in frameset url
  *
  *   $Id$:
  * }}
@@ -64,11 +65,11 @@ $tpl->reset();
 
 if (isset($_GET["appendparameters"]))
 {
-	$tpl->set('s', 'FRAME[3]', $sess->url("main.php?area=$area&frame=3&appendparameters=".$_GET["appendparameters"]));
-	$tpl->set('s', 'FRAME[4]', $sess->url("main.php?area=$area&frame=4&appendparameters=".$_GET["appendparameters"]));
+	$tpl->set('s', 'FRAME[3]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=3&appendparameters=".$_GET["appendparameters"])));
+	$tpl->set('s', 'FRAME[4]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=4&appendparameters=".$_GET["appendparameters"])));
 } else {
-	$tpl->set('s', 'FRAME[3]', $sess->url("main.php?area=$area&frame=3"));
-	$tpl->set('s', 'FRAME[4]', $sess->url("main.php?area=$area&frame=4"));
+	$tpl->set('s', 'FRAME[3]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=3")));
+	$tpl->set('s', 'FRAME[4]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=4")));
 }
 
 $tpl->set('s', 'VERSION', $cfg['version']);

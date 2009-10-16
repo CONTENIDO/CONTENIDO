@@ -25,6 +25,7 @@
  *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
  *   modified 2008-07-02, Frederic Schneider, add security fix and include security_class
  *   modified 2008-10-22, Oliver Lohkemper, update default-value for leftframewidth from 250px to 245px
+ *   modified 2009-10-16, Ortwin Pinke, added rewrite of ampersand in frameset url
  *
  *   $Id$:
  * }}
@@ -66,12 +67,12 @@ $tpl->reset();
 
 if (isset($_GET["appendparameters"]))
 {
-	$tpl->set('s', 'LEFT', $sess->url("frameset_left.php?area=$area&appendparameters=".$_GET["appendparameters"]));
-	$tpl->set('s', 'RIGHT', $sess->url("frameset_right.php?area=$area&appendparameters=".$_GET["appendparameters"]));
+	$tpl->set('s', 'LEFT', str_replace("&", "&amp;", $sess->url("frameset_left.php?area=$area&appendparameters=".$_GET["appendparameters"])));
+	$tpl->set('s', 'RIGHT', str_replace("&", "&amp;", $sess->url("frameset_right.php?area=$area&appendparameters=".$_GET["appendparameters"])));
 	$tpl->set('s', 'WIDTH', getEffectiveSetting("backend", "leftframewidth", 245));
 } else {
-	$tpl->set('s', 'LEFT', $sess->url("frameset_left.php?area=$area"));
-	$tpl->set('s', 'RIGHT', $sess->url("frameset_right.php?area=$area"));
+	$tpl->set('s', 'LEFT', str_replace("&", "&amp;", $sess->url("frameset_left.php?area=$area")));
+	$tpl->set('s', 'RIGHT', str_replace("&", "&amp;", $sess->url("frameset_right.php?area=$area")));
 	$tpl->set('s', 'WIDTH', getEffectiveSetting("backend", "leftframewidth", 245));
 }
 
@@ -114,15 +115,15 @@ if ( in_array($area, $menuless_areas) || (isset($menuless) && $menuless == 1)) {
     $menuless = true;
     if (isset($_GET["appendparameters"]))
 	{
-		$tpl->set('s', 'FRAME[1]', $sess->url("main.php?area=$area&frame=1&appendparameters=".$_GET["appendparameters"]));
-		$tpl->set('s', 'FRAME[2]', $sess->url("main.php?area=$area&frame=2&appendparameters=".$_GET["appendparameters"]));
-		$tpl->set('s', 'FRAME[3]', $sess->url("main.php?area=$area&frame=3&appendparameters=".$_GET["appendparameters"]));
-		$tpl->set('s', 'FRAME[4]', $sess->url("main.php?area=$area&frame=4&appendparameters=".$_GET["appendparameters"]));
+		$tpl->set('s', 'FRAME[1]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=1&appendparameters=".$_GET["appendparameters"])));
+		$tpl->set('s', 'FRAME[2]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=2&appendparameters=".$_GET["appendparameters"])));
+		$tpl->set('s', 'FRAME[3]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=3&appendparameters=".$_GET["appendparameters"])));
+		$tpl->set('s', 'FRAME[4]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=4&appendparameters=".$_GET["appendparameters"])));
 	} else {
-		$tpl->set('s', 'FRAME[1]', $sess->url("main.php?area=$area&frame=1"));
-		$tpl->set('s', 'FRAME[2]', $sess->url("main.php?area=$area&frame=2"));
-		$tpl->set('s', 'FRAME[3]', $sess->url("main.php?area=$area&frame=3"));
-		$tpl->set('s', 'FRAME[4]', $sess->url("main.php?area=$area&frame=4"));
+		$tpl->set('s', 'FRAME[1]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=1")));
+		$tpl->set('s', 'FRAME[2]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=2")));
+		$tpl->set('s', 'FRAME[3]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=3")));
+		$tpl->set('s', 'FRAME[4]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=4")));
 	}
 }
 $tpl->set('s', 'CONTENIDOPATH', $cfg["path"]["contenido_fullhtml"]."favicon.ico");

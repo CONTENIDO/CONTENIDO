@@ -24,6 +24,7 @@
  *   modified 2008-06-16, Holger Librenz, Hotfix: added check for illegal calling
  *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
  *   modified 2008-07-02, Frederic Schneider, new code-header and include security_class
+ *   modified 2009-10-16, Ortwin Pinke, added rewrite of ampersand in frameset url
  *
  *   $Id$:
  * }}
@@ -65,12 +66,12 @@ $tpl->reset();
 
 if (isset($_GET["appendparameters"]))
 {
-	$tpl->set('s', 'FRAME[1]', $sess->url("main.php?area=$area&frame=1&appendparameters=".$_GET["appendparameters"]));
-	$tpl->set('s', 'FRAME[2]', $sess->url("main.php?area=$area&frame=2&appendparameters=".$_GET["appendparameters"]));
+	$tpl->set('s', 'FRAME[1]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=1&appendparameters=".$_GET["appendparameters"])));
+	$tpl->set('s', 'FRAME[2]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=2&appendparameters=".$_GET["appendparameters"])));
 	$tpl->set('s', 'FRAME[3]', "templates/standard/template.deco.html");
 } else {
-	$tpl->set('s', 'FRAME[1]', $sess->url("main.php?area=$area&frame=1"));
-	$tpl->set('s', 'FRAME[2]', $sess->url("main.php?area=$area&frame=2"));
+	$tpl->set('s', 'FRAME[1]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=1")));
+	$tpl->set('s', 'FRAME[2]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=2")));
 	$tpl->set('s', 'FRAME[3]', "templates/standard/template.deco.html");
 }
 

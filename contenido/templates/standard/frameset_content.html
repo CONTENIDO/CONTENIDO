@@ -6,11 +6,11 @@
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="pragma" content="no-cache">    
     <link REL="SHORTCUT ICON" HREF="{CONTENIDOPATH}"> 
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <script type="text/javascript" src="scripts/browserCheck.js"></script>
     <script type="text/javascript" src="scripts/conFrameResize.js"></script>
 
-    <script language="javascript">
+    <script type="text/javascript">
 
         frameResize = new conFrameResize();
 
@@ -40,7 +40,7 @@ Contains four frames:
 -->
 
 <!-- Default for FF -->
-<script language="javascript">
+<script type="text/javascript">
 var ua = navigator.userAgent;
 var m = false;
 
@@ -50,18 +50,16 @@ if (m && m[1]) {
 	document.writeln("<frameset id=\"contentFrame\" cols=\"{WIDTH},*\" bordercolor=\"white\" border=\"5\" frameborder=\"0\" framespacing=\"5\">");
 	document.writeln("<frame name=\"left\" id=\"left\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{LEFT}\" bordercolor=\"white\" frameborder=\"0\">");
 	document.writeln("<frame name=\"right\" id=\"right\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{RIGHT}\" bordercolor=\"white\" frameborder=\"0\">");		
-	document.writeln("</frameset>")
 } else if (s) {
 	document.writeln("<frameset id=\"contentFrame\" cols=\"{WIDTH},*\" bordercolor=\"white\" border=\"5\" frameborder=\"1\" framespacing=\"5\">");
 	document.writeln("<frame name=\"left\" id=\"left\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{LEFT}\" bordercolor=\"white\" frameborder=\"1\">");
-	document.writeln("<frame name=\"right\" id=\"right\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{RIGHT}\" bordercolor=\"white\" frameborder=\"0\">");		
-	document.writeln("</frameset>")
+	document.writeln("<frame name=\"right\" id=\"right\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{RIGHT}\" bordercolor=\"white\" frameborder=\"0\">");
 } else {
 	document.writeln("<frameset id=\"contentFrame\" cols=\"{WIDTH},*\" bordercolor=\"white\" border=\"5\" frameborder=\"1\" framespacing=\"5\">");
 	document.writeln("<frame name=\"left\" id=\"left\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{LEFT}\" bordercolor=\"white\" frameborder=\"0\">");
 	document.writeln("<frame name=\"right\" id=\"right\" bordercolor=\"#FFF\" scrolling=\"no\" src=\"{RIGHT}\" bordercolor=\"white\" frameborder=\"0\">");		
-	document.writeln("</frameset>")
 }
+document.writeln("<\/frameset>");
      
 function initFrame() {
     if (!top.content.left || !top.content.left.left_top || !top.content.left.left_top.document || !top.content.left.left_top.document.body || top.content.left.left_top.document.getElementsByTagName('body')[0].offsetHeight == 0) {
@@ -76,7 +74,7 @@ function initFrame() {
 initFrame();
     
 </script>
-
 <body bgcolor="#FFFFFF">
+
 </body>
 </html>
