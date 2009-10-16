@@ -14,7 +14,7 @@
  * 
  *
  * @package    Contenido Content Types
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -29,6 +29,7 @@
  *   modified 2009-05-04 - added sort order sequence
  *   modified 2009-10-01 - Dominik Ziegler, fixed session bug in link
  *   modified 2009-10-12 - Dominik Ziegler, fixed online/offline articles, dynamic teaser generation and translation implemented
+ *   modified 2009-10-16 - Dominik Ziegler, added manual date support
  *
  *   $Id$:
  * }}
@@ -212,7 +213,8 @@ class Cms_Teaser {
 		                           'teaser_start', 'teaser_source_head', 'teaser_source_head_count', 'teaser_source_text', 
 								   'teaser_source_text_count', 'teaser_source_image', 'teaser_source_image_count', 'teaser_filter', 
 								   'teaser_sort', 'teaser_sort_order', 'teaser_character_limit', 'teaser_image_width', 
-								   'teaser_image_height', 'teaser_manual_art', 'teaser_image_crop');
+								   'teaser_image_height', 'teaser_manual_art', 'teaser_image_crop', 'teaser_source_date', 
+								   'teaser_source_date_count');
 		
 		//if form is submitted there is a need to store current teaser settings
 		//notice: there is also a need, that teaser_id is the same (case: more than ohne cms teaser is used on the same page
@@ -585,6 +587,7 @@ class Cms_Teaser {
 		$oTpl->set('s', 'LABEL_SOURCE', i18n("Source Settings"));
 		$oTpl->set('s', 'LABEL_SOURCETEXT', i18n("Source Text"));
 		$oTpl->set('s', 'LABEL_SOURCEIMAGE', i18n("Source Image"));
+		$oTpl->set('s', 'LABEL_SOURCEDATE', i18n("Source Date"));
 		
 		$oTpl->set('s', 'LABEL_CAT', i18n("Category"));
 		$oTpl->set('s', 'LABEL_ART', i18n("Article"));
@@ -630,6 +633,7 @@ class Cms_Teaser {
 		$oTpl->set('s', 'SOURCEHEAD_SELECT', $this->getTypeSelect('teaser_source_head', $this->aSettings['teaser_source_head'], $this->aSettings['teaser_source_head_count']));
 		$oTpl->set('s', 'SOURCETEXT_SELECT', $this->getTypeSelect('teaser_source_text', $this->aSettings['teaser_source_text'], $this->aSettings['teaser_source_text_count']));
 		$oTpl->set('s', 'SOURCEIAMGE_SELECT', $this->getTypeSelect('teaser_source_image', $this->aSettings['teaser_source_image'], $this->aSettings['teaser_source_image_count']));
+		$oTpl->set('s', 'SOURCEDATE_SELECT', $this->getTypeSelect('teaser_source_date', $this->aSettings['teaser_source_date'], $this->aSettings['teaser_source_date_count']));
 		$oTpl->set('s', 'TEASER_TITLE', $this->aSettings['teaser_title']);
 		$oTpl->set('s', 'FILTER_VALUE', $this->aSettings['teaser_filter']);
 		$oTpl->set('s', 'SORT_SELECT', $this->getSortSelect($this->aSettings['teaser_sort']));
@@ -725,6 +729,11 @@ class Cms_Teaser {
 		//cms type image default
 		if (strlen($this->aSettings['teaser_source_image']) == 0) {
 			$this->aSettings['teaser_source_image'] = 'CMS_IMG';
+		}
+		
+		//cms type date default
+		if (strlen($this->aSettings['teaser_source_date']) == 0) {
+			$this->aSettings['teaser_source_date'] = 'CMS_DATE';
 		}
 		
 		//sort order of teaser articles
@@ -891,6 +900,7 @@ class Cms_Teaser {
 		$sTitle = $this->getArtContent($oArticle, $this->aSettings['teaser_source_head'], $this->aSettings['teaser_source_head_count']);
 		$sText = $this->getArtContent($oArticle, $this->aSettings['teaser_source_text'], $this->aSettings['teaser_source_text_count']);
 		$iImage = $this->getArtContent($oArticle, $this->aSettings['teaser_source_image'], $this->aSettings['teaser_source_image_count']);
+		$sDate = $this->getArtContent($oArticle, $this->aSettings['teaser_source_date'], $this->aSettings['teaser_source_date_count']);
 		$iIdArt = $oArticle->getField('idart');
 		$iPublished = $oArticle->getField('published');
 		$iOnline = $oArticle->getField('online');
@@ -940,6 +950,13 @@ class Cms_Teaser {
 			$oTpl->set('d', 'IDART', $iIdArt);
 			$oTpl->set('d', 'ART_URL', 'front_content.php?idart='.$iIdArt);
 			$oTpl->set('d', 'PUBLISHED', $iPublished);
+			$oTpl->set('d', 'PUBLISHED_MANUAL', $sDate);
+			
+			if ( $sDate != "" ) {
+				$oTpl->set('d', 'PUBLISHED_COMBINED', $sDate);
+			} else {
+				$oTpl->set('d', 'PUBLISHED_COMBINED', $iPublished);
+			}
 			
 			foreach( self::$aTranslations as $sKey => $sValue ) {
 				$oTpl->set('d', $sKey, mi18n( $sValue ));

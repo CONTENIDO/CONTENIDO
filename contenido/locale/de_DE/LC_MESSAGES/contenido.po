@@ -3693,6 +3693,9 @@ msgstr "Quelle Text"
 msgid "Source Image"
 msgstr "Quelle Bild"
 
+msgid "Source Date"
+msgstr "Quelle Datum"
+
 msgid "Advanced Teaser Settings"
 msgstr "Erweiterte Teaser Einstellungen"
 
