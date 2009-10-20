@@ -1078,22 +1078,13 @@ class Cms_FileList {
 					// strip duplicate directories to save performance
 					$aDirectories = array_unique( $aDirectories );
 					
-					$i = 1;
 					foreach ( $aDirectories as $sDirectoryName ) {
 						$oHandle = opendir( $this->sUploadPath . $sDirectoryName );
 						
 						while( $sEntry = readdir( $oHandle ) ) {
 							// checking if entry is file and is not a directory
-							// if filecount is not 0 we must check if the existing filecount is lower than the value set
-							// if filecount is 0 we can display all files
-							if ( $sEntry != "." && $sEntry != ".." && 
-								!is_dir( $this->sUploadPath . $sDirectoryName . "/" . $sEntry ) &&
-								( ( $this->aSettings['filelist_filecount'] != 0 && $i <= $this->aSettings['filelist_filecount'] ) || 
-									$this->aSettings['filelist_filecount'] == 0 ) 
-								) {
-							
+							if ( $sEntry != "." && $sEntry != ".." && !is_dir( $this->sUploadPath . $sDirectoryName . "/" . $sEntry ) ) {
 								$aFileList[] = $sDirectoryName . "/" . $sEntry;
-								$i++;
 							}
 						}
 						closedir( $oHandle );
@@ -1111,27 +1102,32 @@ class Cms_FileList {
 				} else {
 					ksort ( $aFiles );
 				}
-			
+				
+				$i = 1;
 				foreach ( $aFiles as $aFilenameData ) {
-					if ( $this->aSettings['filelist_incl_metadata'] == 'true' ) {
-						$aMetaData = array();
-						$this->oDb->query('SELECT upl.idupl, uplmeta.* FROM ' . $this->aCfg['tab']['upl'] . ' AS upl, ' . $this->aCfg['tab']['upl_meta'] . ' AS uplmeta WHERE upl.idupl = uplmeta.idupl AND upl.filename=\''.$aFilenameData['filename'].'\' AND upl.dirname=\''.$aFilenameData['path'].'/\' AND upl.idclient=\''.$this->iClient.'\' AND uplmeta.idlang=\''.$this->iLang.'\'');
-						$this->oDb->next_record();
-						
-						foreach ( $this->aMetaDataIdents as $sIdentName => $sTranslation ) {
-							if ( $this->aSettings['filelist_md_' . $sIdentName . '_limit'] > 0 ) {
-								$aMetaData[$sIdentName] = capiStrTrimAfterWord(	Contenido_Security::unFilter( $this->oDb->f($sIdentName) ), 
-																				$this->aSettings['filelist_md_' . $sIdentName . '_limit'] ) . '...';
-							} else {
-								$aMetaData[$sIdentName] = Contenido_Security::unFilter( $this->oDb->f($sIdentName) );
+					if ( ( $this->aSettings['filelist_filecount'] != 0 && $i <= $this->aSettings['filelist_filecount'] ) || 
+						$this->aSettings['filelist_filecount'] == 0 ) {
+						if ( $this->aSettings['filelist_incl_metadata'] == 'true' ) {
+							$aMetaData = array();
+							$this->oDb->query('SELECT upl.idupl, uplmeta.* FROM ' . $this->aCfg['tab']['upl'] . ' AS upl, ' . $this->aCfg['tab']['upl_meta'] . ' AS uplmeta WHERE upl.idupl = uplmeta.idupl AND upl.filename=\''.$aFilenameData['filename'].'\' AND upl.dirname=\''.$aFilenameData['path'].'/\' AND upl.idclient=\''.$this->iClient.'\' AND uplmeta.idlang=\''.$this->iLang.'\'');
+							$this->oDb->next_record();
+							
+							foreach ( $this->aMetaDataIdents as $sIdentName => $sTranslation ) {
+								if ( $this->aSettings['filelist_md_' . $sIdentName . '_limit'] > 0 ) {
+									$aMetaData[$sIdentName] = capiStrTrimAfterWord(	Contenido_Security::unFilter( $this->oDb->f($sIdentName) ), 
+																					$this->aSettings['filelist_md_' . $sIdentName . '_limit'] ) . '...';
+								} else {
+									$aMetaData[$sIdentName] = Contenido_Security::unFilter( $this->oDb->f($sIdentName) );
+								}
 							}
-						}
 
-						$aFilenameData['metadata'] = $aMetaData;
-					} else {
-						$aFilenameData['metadata'] = array();
+							$aFilenameData['metadata'] = $aMetaData;
+						} else {
+							$aFilenameData['metadata'] = array();
+						}
+						$this->fillFileListTemplateEntry( $aFilenameData, $oTpl );
+						$i++;
 					}
-					$this->fillFileListTemplateEntry( $aFilenameData, $oTpl );
 				}
 				
 				//generate template
