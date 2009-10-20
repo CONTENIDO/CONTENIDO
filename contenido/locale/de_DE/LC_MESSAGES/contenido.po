@@ -3836,3 +3836,6 @@ msgstr "Datei hinzuf&uuml;gen"
 
 msgid "Cancel moving %s"
 msgstr "Verschieben von %s abbrechen"
+
+msgid "File count"
+msgstr "Anzahl der Dateien"
