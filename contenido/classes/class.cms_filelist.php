@@ -196,7 +196,7 @@ class Cms_FileList {
 		$this->aFileListData 	= array(	'filelist_title', 'filelist_style', 'filelist_directories', 'filelist_incl_subdirectories', 
 											'filelist_manual', 'filelist_sort', 'filelist_incl_metadata', 'filelist_extensions',
 											'filelist_sortorder', 'filelist_filesizefilter_from', 'filelist_filesizefilter_to',
-											'filelist_ignore_extensions', 'filelist_manual_files');
+											'filelist_ignore_extensions', 'filelist_manual_files', 'filelist_filecount');
 		
 		// defines the default extensions displayed in the filelist
 		// additional extensions can be added via client settings
@@ -743,8 +743,10 @@ class Cms_FileList {
 		$oTpl->set('s', 'LABEL_MANUAL_FILELIST', 				i18n("Use manual file list?"));
 		$oTpl->set('s', 'LABEL_DIRECTORY',						i18n("Directory"));
 		$oTpl->set('s', 'LABEL_FILE', 							i18n("File"));
+		$oTpl->set('s', 'LABEL_FILES', 							i18n("Files"));
 		$oTpl->set('s', 'LABEL_EXISTING_FILES',					i18n("Existing files"));
 		$oTpl->set('s', 'LABEL_ADD_FILE',						i18n("Add file"));
+		$oTpl->set('s', 'LABEL_FILECOUNT',						i18n("File count"));
 		/*End set a lot of translations*/
 		
 		/*Start set values into configuration array and generate select boxes used previous defined values*/
@@ -795,8 +797,14 @@ class Cms_FileList {
 			$iFilesizeLimitTo = 0;
 		}
 		
+		$iFileCount = $this->aSettings['filelist_filecount'];
+		if ( $iFileCount == "" ) {
+			$iFileCount = 0;
+		}
+		
 		$oTpl->set('s', 'FILELIST_FILESIZEFILTER_FROM', 		$iFilesizeLimitFrom);
 		$oTpl->set('s', 'FILELIST_FILESIZEFILTER_TO', 			$iFilesizeLimitTo);
+		$oTpl->set('s', 'FILELIST_FILECOUNT',					$iFileCount);
 		$oTpl->set('s', 'SORT_SELECT', 							$this->getSortSelect($this->aSettings['filelist_sort']));
 		$oTpl->set('s', 'FILE_SELECT', 							$this->getFileSelect());
 		$oTpl->set('s', 'SORTORDER_SELECT', 					$this->getSortOrderSelect($this->aSettings['filelist_sortorder']));
@@ -1053,6 +1061,7 @@ class Cms_FileList {
 		//set title of teaser
 		if ( $this->aSettings['filelist_style'] != "" ) {
 			$oTpl->set('s', 'TITLE', $this->aSettings['filelist_title']);
+			$oTpl->set('s', 'ERROR', '-', 1);
 			
 			if ( $this->aSettings['filelist_manual'] == 'true' && count( $this->aSettings['filelist_manual_files'] ) > 0 ) {
 				$aFileList = $this->aSettings['filelist_manual_files'];
@@ -1068,12 +1077,23 @@ class Cms_FileList {
 					
 					// strip duplicate directories to save performance
 					$aDirectories = array_unique( $aDirectories );
-
+					
+					$i = 1;
 					foreach ( $aDirectories as $sDirectoryName ) {
 						$oHandle = opendir( $this->sUploadPath . $sDirectoryName );
+						
 						while( $sEntry = readdir( $oHandle ) ) {
-							if ( $sEntry != "." && $sEntry != ".." && !is_dir( $this->sUploadPath . $sDirectoryName . "/" . $sEntry ) ) {
+							// checking if entry is file and is not a directory
+							// if filecount is not 0 we must check if the existing filecount is lower than the value set
+							// if filecount is 0 we can display all files
+							if ( $sEntry != "." && $sEntry != ".." && 
+								!is_dir( $this->sUploadPath . $sDirectoryName . "/" . $sEntry ) &&
+								( ( $this->aSettings['filelist_filecount'] != 0 && $i <= $this->aSettings['filelist_filecount'] ) || 
+									$this->aSettings['filelist_filecount'] == 0 ) 
+								) {
+							
 								$aFileList[] = $sDirectoryName . "/" . $sEntry;
+								$i++;
 							}
 						}
 						closedir( $oHandle );
@@ -1117,8 +1137,6 @@ class Cms_FileList {
 				//generate template
 				$sCode = $oTpl->generate($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/' . $this->aSettings['filelist_style'], 1);
 			}			
-		} else {
-			$sCode = "CMS_FILELIST[" . $this->iId . "] Error: No template defined<br />";
 		}
 		
 		return $sCode;
