@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.3.1
+ * @version    1.3.2
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-11-27, Andreas Lindner, add possibility to define additional chars as allowed in file / dir names  
  *   modified 2009-03-16, Ingo van Peeren, fixed some sql-statements and a missing parameter in uplRenameDirectory()
+ *   modified 2009-10-22, OliverL, fixed uplHasFiles is only one file in directory you can delete Directory
  *
  *   $Id$:
  * }}
@@ -219,15 +220,10 @@ function uplHasFiles($dir)
 
     $directory = @opendir($cfgClient[$client]["upl"]["path"].$dir);
 
-    if (!$directory)
-    {
+    if (!$directory) {
     	return true;	
     }
-        
-    readdir($directory);
-
-    $ret = false;
-
+	
     while(false !== ($dir_entry = readdir($directory))) {
             if($dir_entry != "." && $dir_entry != "..") {
             				closedir($directory);
@@ -237,7 +233,7 @@ function uplHasFiles($dir)
     closedir($directory);
     unset($directory);
 
-    return ($ret);
+    return false;
 }
 
 function uplHasSubdirs($dir)
