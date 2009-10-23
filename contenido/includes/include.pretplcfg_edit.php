@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2002
  *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *   modified 2009-10-23, Ortwin Pinke, deleted not needed idcat/idart part for better performance
  *
  *   $Id$:
  * }}
@@ -102,40 +103,6 @@ if (isset($idtplcfg)) {
                         "VALUES ('".$db->nextid($cfg["tab"]["container_conf"])."', '".Contenido_Security::toInteger($idtplcfg)."', '".Contenido_Security::toInteger($col)."', '".Contenido_Security::escapeDB($val, $db)."') ";
                 $db->query($sql);
             }
-        }
-        
-
-        if (!isset($idart)) {
-            $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET idtplcfg='".Contenido_Security::toInteger($idtplcfg)."' WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-            $db->query($sql);
-        } else {
-            $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET idtplcfg='".Contenido_Security::toInteger($idtplcfg)."' WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-            $db->query($sql);
-        }
-
-
-        if ($changetemplate == 1) {
-            // set new template
-            $sql = "UPDATE ".$cfg["tab"]["tpl_conf"]." SET idtpl='".Contenido_Security::toInteger($idtpl)."' WHERE idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'";
-            $db->query($sql);
-
-            // delete old configured containers
-            $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'";
-            $db->query($sql);
-            $changetemplate == 0;
-        }
-
-
-        if ($changetemplate != 1) {
-                if (isset($idart)) {
-                        conGenerateCode($idcat,$idart,$lang,$client);
-                } else {
-                        conGenerateCodeForAllartsInCategory($idcat);
-                }
-                
-                $sql = "SELECT name FROM ".$cfg["tab"]["tpl"]." WHERE idtpl='".Contenido_Security::toInteger($idtpl)."' ORDER BY name";
-                $db->query($sql);
-                $db->next_record();
         }
 }
 ?>
