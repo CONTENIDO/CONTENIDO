@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -653,7 +654,7 @@ class FormCheck {
      */
     function isNumeric($value) {
         if ('' != $value) {
-            return (!ereg('[^0-9]', $value)) ? true : false;
+            return (!preg_match('/[^0-9]/', $value)) ? true : false;
         } else {
             return false;
         }
@@ -665,7 +666,7 @@ class FormCheck {
      * @param $value mixed Value to check
      */
     function isAlphabetic($value) {
-        return (!ereg('[^a-zA-Z]', $value)) ? true : false;
+        return (!preg_match('/[^a-zA-Z]/', $value)) ? true : false;
     } // end function
 
     /**
@@ -674,7 +675,7 @@ class FormCheck {
      * @param $value string eMail string to check
      */
     function isEmail($value) {
-        return (eregi('^[a-z0-9\.]+@[a-z0-9\.]+\.[a-z]+$', $value)) ? true : false;
+        return (preg_match('/^[a-z0-9\.]+@[a-z0-9\.]+\.[a-z]+$/i', $value)) ? true : false;
     } // end function
 
 } // end class

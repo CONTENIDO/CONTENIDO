@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Starnetsys, LLC.
  * @copyright  Starnetsys, LLC.
  * @link       http://starnetsys.com
@@ -20,6 +20,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-07-02, Frederic Schneider, add security fix
+ *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -183,7 +184,7 @@ class HtmlParser {
     }
 
     function isValidTagIdentifier ($name) {
-        return ereg ("[A-Za-z0-9]+", $name);
+        return preg_match('/[A-Za-z0-9]+/', $name);
     }
     
     function skipBlanksInTag() {

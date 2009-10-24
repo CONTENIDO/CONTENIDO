@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0
+ * @version    1.0.1
  * @author     
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -19,6 +19,7 @@
  * @link       http://www.contenido.org
  * 
  * {@internal 
+ *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -245,20 +246,20 @@ class cDatatypeDateTime extends cDatatype
 				$this->_iSecond = date("s", $sTemporaryTimestamp);								
 				break;
             case cDateTime_MySQL:
-                $sTimeformat = "YmdHis";
+                $sTimeformat = 'YmdHis';
 				
 				$targetFormat = str_replace('.', '\.', $sTimeformat);
-				$targetFormat = str_replace("d", "([0-9]{2,2})", $targetFormat);
-				$targetFormat = str_replace("m", "([0-9]{2,2})", $targetFormat);
-				$targetFormat = str_replace("Y", "([0-9]{4,4})", $targetFormat);
-				$targetFormat = str_replace("H", "([0-9]{2,2})", $targetFormat);
-				$targetFormat = str_replace("i", "([0-9]{2,2})", $targetFormat);
-				$targetFormat = str_replace("s", "([0-9]{2,2})", $targetFormat);				
+				$targetFormat = str_replace('d', '([0-9]{2,2})', $targetFormat);
+				$targetFormat = str_replace('m', '([0-9]{2,2})', $targetFormat);
+				$targetFormat = str_replace('Y', '([0-9]{4,4})', $targetFormat);
+				$targetFormat = str_replace('H', '([0-9]{2,2})', $targetFormat);
+				$targetFormat = str_replace('i', '([0-9]{2,2})', $targetFormat);
+				$targetFormat = str_replace('s', '([0-9]{2,2})', $targetFormat);				
 				/* Match the placeholders */
-				preg_match_all("/([a-zA-Z])/", $sTimeformat, $placeholderRegs);
+				preg_match_all('/([a-zA-Z])/', $sTimeformat, $placeholderRegs);
 
 				/* Match the date values */
-				ereg($targetFormat, $value, $dateRegs);
+				preg_match('/' . $targetFormat . '/', $value, $dateRegs);
 				
 				$finalDate = array();
 				
@@ -305,16 +306,16 @@ class cDatatypeDateTime extends cDatatype
 				/* Build a regular expression */
 				
 				$sourceFormat = str_replace('.', '\.', $this->_sCustomSourceFormat);
-				$sourceFormat = str_replace("%d", "([0-9]{2,2})", $sourceFormat);
-				$sourceFormat = str_replace("%m", "([0-9]{2,2})", $sourceFormat);
-				$sourceFormat = str_replace("%Y", "([0-9]{4,4})", $sourceFormat);
+				$sourceFormat = str_replace('%d', '([0-9]{2,2})', $sourceFormat);
+				$sourceFormat = str_replace('%m', '([0-9]{2,2})', $sourceFormat);
+				$sourceFormat = str_replace('%Y', '([0-9]{4,4})', $sourceFormat);
 				
 				/* Match the placeholders */
-				preg_match_all("/(%[a-zA-Z])/", $this->_sCustomSourceFormat, $placeholderRegs);
+				preg_match_all('/(%[a-zA-Z])/', $this->_sCustomSourceFormat, $placeholderRegs);
 
 				
 				/* Match the date values */
-				ereg($sourceFormat, $value, $dateRegs);
+				preg_match('/' . $sourceFormat . '/', $value, $dateRegs);
 				
 				$finalDate = array();
 				
@@ -433,18 +434,18 @@ class cDatatypeDateTime extends cDatatype
 				$this->_iSecond = date("s", $sTemporaryTimestamp);								
 				break;
 			case cDateTime_Locale_DateOnly:
-				$sTimeformat = getEffectiveSetting("backend", "timeformat_date", "Y-m-d");
+				$sTimeformat = getEffectiveSetting('backend', 'timeformat_date', 'Y-m-d');
 				
 				$targetFormat = str_replace('.', '\.', $sTimeformat);
-				$targetFormat = str_replace("d", "([0-9]{2,2})", $targetFormat);
-				$targetFormat = str_replace("m", "([0-9]{2,2})", $targetFormat);
-				$targetFormat = str_replace("Y", "([0-9]{4,4})", $targetFormat);
+				$targetFormat = str_replace('d', '([0-9]{2,2})', $targetFormat);
+				$targetFormat = str_replace('m', '([0-9]{2,2})', $targetFormat);
+				$targetFormat = str_replace('Y', '([0-9]{4,4})', $targetFormat);
 				
 				/* Match the placeholders */
-				preg_match_all("/([a-zA-Z])/", $sTimeformat, $placeholderRegs);
+				preg_match_all('/([a-zA-Z])/', $sTimeformat, $placeholderRegs);
 
 				/* Match the date values */
-				ereg($targetFormat, $value, $dateRegs);
+				preg_match('/' . $targetFormat . '/', $value, $dateRegs);
 				
 				$finalDate = array();
 				
@@ -479,18 +480,18 @@ class cDatatypeDateTime extends cDatatype
 				
 				break;
 			case cDateTime_Locale:
-				$sTimeformat = getEffectiveSetting("backend", "timeformat", "Y-m-d H:i:s");
+				$sTimeformat = getEffectiveSetting('backend', 'timeformat', 'Y-m-d H:i:s');
 				
 				$targetFormat = str_replace('.', '\.', $sTimeformat);
-				$targetFormat = str_replace("d", "([0-9]{2,2})", $targetFormat);
-				$targetFormat = str_replace("m", "([0-9]{2,2})", $targetFormat);
-				$targetFormat = str_replace("Y", "([0-9]{4,4})", $targetFormat);
+				$targetFormat = str_replace('d', '([0-9]{2,2})', $targetFormat);
+				$targetFormat = str_replace('m', '([0-9]{2,2})', $targetFormat);
+				$targetFormat = str_replace('Y', '([0-9]{4,4})', $targetFormat);
 				
 				/* Match the placeholders */
-				preg_match_all("/(%[a-zA-Z])/", $this->_sCustomTargetFormat, $placeholderRegs);
+				preg_match_all('/(%[a-zA-Z])/', $this->_sCustomTargetFormat, $placeholderRegs);
 
 				/* Match the date values */
-				ereg($targetFormat, $value, $dateRegs);
+				preg_match('/' . $targetFormat . '/', $value, $dateRegs);
 				
 				$finalDate = array();
 				
@@ -528,15 +529,15 @@ class cDatatypeDateTime extends cDatatype
 				/* Build a regular expression */
 				
 				$targetFormat = str_replace('.', '\.', $this->_sCustomTargetFormat);
-				$targetFormat = str_replace("%d", "([0-9]{2,2})", $targetFormat);
-				$targetFormat = str_replace("%m", "([0-9]{2,2})", $targetFormat);
-				$targetFormat = str_replace("%Y", "([0-9]{4,4})", $targetFormat);
+				$targetFormat = str_replace('%d', '([0-9]{2,2})', $targetFormat);
+				$targetFormat = str_replace('%m', '([0-9]{2,2})', $targetFormat);
+				$targetFormat = str_replace('%Y', '([0-9]{4,4})', $targetFormat);
 				
 				/* Match the placeholders */
-				preg_match_all("/(%[a-zA-Z])/", $this->_sCustomTargetFormat, $placeholderRegs);
+				preg_match_all('/(%[a-zA-Z])/', $this->_sCustomTargetFormat, $placeholderRegs);
 
 				/* Match the date values */
-				ereg($targetFormat, $value, $dateRegs);
+				preg_match('/' . $targetFormat . '/', $value, $dateRegs);
 				
 				$finalDate = array();
 				

@@ -34,7 +34,7 @@
  *
  *
  * @package    Contenido Backend external
- * @version    1.8.7
+ * @version    1.8.8
  * @author     Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -56,9 +56,10 @@
  *   modified 2009-01-13, Murat Purc, synchronized with cms/front_content.php
  *   modified 2009-03-02, Andreas Lindner, prevent $lang being wrongly set to 0 
  *   modified 2009-04-16, OliverL, check return from Contenido.Frontend.HTMLCodeOutput
+ *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
  *
  *   $Id$:
-  * }}
+ * }}
  *
  */
 
@@ -1064,7 +1065,7 @@ function IP_match($network, $mask, $ip)
     #
     # Convert mask to divider
     #
-    if (ereg("^[0-9]+$", $mask))
+    if (preg_match('/^[0-9]+$/', $mask))
     {
         /// 212.50.13.0/27 style mask (Cisco style)
         $divider = bcpow(2, (32 - $mask));
