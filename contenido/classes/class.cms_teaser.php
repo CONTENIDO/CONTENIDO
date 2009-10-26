@@ -1020,9 +1020,12 @@ class Cms_Teaser {
 			}
 		}
 		
+        $sCode = '';
 		//generate teasertemplate
-		$sCode = $oTpl->generate($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/'.$this->aSettings['teaser_style'], 1);
-
+        if (file_exists($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/'.$this->aSettings['teaser_style'])) {
+            $sCode = $oTpl->generate($this->aCfgClient[$this->iClient]['path']['frontend'].'templates/'.$this->aSettings['teaser_style'], 1);
+        }
+        
 		return $sCode;
 		//use this to show xml document which contains teaser settings
 		#return '<pre>'.htmlentities($this->sContent).'</pre>';
