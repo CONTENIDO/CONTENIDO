@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-09-01
  *   modified 2008-06-25, Frederic Schneider, add security fix
+ *   modified 2009-10-27, Murat Purc, initialization of variable $error to prevent PHP strict messages
  *
  *   $Id$:
  * }}
@@ -87,6 +88,7 @@ function contenido_include ($where, $what, $force = false, $returnpath = false)
    /* Sanity check for $what */
    $what = trim($what);
    $where = strtolower($where);
+   $error = false;
 
    switch ($where)
 
