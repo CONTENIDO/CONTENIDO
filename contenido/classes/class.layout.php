@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2008-07-02, Frederic Schneider, change sql-escapes
+ *   modified 2009-10-27, OliverL, replace toInteger() to escapeString() in function getLayoutID()
  *
  *   $Id$:
  * }}
@@ -113,7 +114,7 @@ class Layout {
                 FROM
                 ". $cfg["tab"]["lay"] ."
                 WHERE
-                    name = '".Contenido_Security::toInteger($layout)."'";
+                    name = '".Contenido_Security::escapeString($layout)."'";
 
         $db->query($sql);
         $db->next_record();
