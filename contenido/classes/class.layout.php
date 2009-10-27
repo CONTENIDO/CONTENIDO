@@ -102,6 +102,7 @@ class Layout {
     /**
      * getLayoutID()
      * Returns the idlayout for a given layout name
+	 * @param $layout String with the Layoutname
      * @return int     Integer with the ID for the layout
      */
     function getLayoutID($layout) {
