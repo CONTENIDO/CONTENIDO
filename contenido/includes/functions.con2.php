@@ -527,11 +527,6 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	
 	foreach ($metatags as $value)
 	{
-        // decode entities and htmlspecialchars, content will be converted later using htmlspecialchars()
-        // by render() function 
-       $value['content'] = html_entity_decode($value['content'], ENT_QUOTES, strtoupper($encoding[$lang]));
-       $value['content'] = htmlspecialchars_decode($value['content'], ENT_QUOTES);
-
 		// build up metatag string
 		$oMetaTagGen = new cHTML;
 		$oMetaTagGen->_tag = 'meta';
