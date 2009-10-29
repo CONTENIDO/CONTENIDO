@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    1.1.1.1
+ * @version    1.1.1.2
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created  2000-01-01
  *   modified 2008-07-04, bilal arslan, added security fix
+ *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -156,15 +157,15 @@ class Session {
 
         // Remove session ID info from QUERY String - it is in cookie
         if ( isset($QUERY_STRING) && ("" != $QUERY_STRING) ) {
-          $QUERY_STRING = ereg_replace(
-            "(^|&)".quotemeta(urlencode($this->name))."=".$id."(&|$)",
+          $QUERY_STRING = preg_replace(
+            "/(^|&)".quotemeta(urlencode($this->name))."=".$id."(&|$)/",
             "\\1", $QUERY_STRING);
         }
       break;
       case "get":
         if ( isset($QUERY_STRING) && ("" != $QUERY_STRING) ) {
-          $QUERY_STRING = ereg_replace(
-            "(^|&)".quotemeta(urlencode($this->name))."=".$id."(&|$)",
+          $QUERY_STRING = preg_replace(
+            "/(^|&)".quotemeta(urlencode($this->name))."=".$id."(&|$)/",
             "\\1", $QUERY_STRING);
         }
       break;
@@ -211,12 +212,12 @@ class Session {
 
   function url($url) {
     // Remove existing session info from url
-    $url = ereg_replace(
-      "([&?])".quotemeta(urlencode($this->name))."=".$this->id."(&|$)",
+    $url = preg_replace(
+      "/([&?])".quotemeta(urlencode($this->name))."=".$this->id."(&|$)/",
       "\\1", $url);
 
     // Remove trailing ?/& if needed
-    $url=ereg_replace("[&?]+$", "", $url);
+    $url = preg_replace("/[&?]+$/", "", $url);
 
     switch ($this->mode) {
       case "get":
@@ -306,7 +307,7 @@ class Session {
         $str .= "\$$var = array(); ";
         while ( "array" == $l ) {
           ## Structural recursion
-          $this->serialize($var."['".ereg_replace("([\\'])", "\\\\1", $k)."']", $str);
+          $this->serialize($var."['".preg_replace("/([\\'])/", "\\\\1", $k)."']", $str);
           eval("\$l = gettype(list(\$k)=each(\$$var));");
         }
 
@@ -325,7 +326,7 @@ class Session {
       default:
         ## $$var is an atom. Extract it to $l, then generate code.
         eval("\$l = \$$var;");
-        $str.="\$$var = '".ereg_replace("([\\'])", "\\\\1", $l)."'; ";
+        $str.="\$$var = '".preg_replace("/([\\'])/", "\\\\1", $l)."'; ";
       break;
     }
   }
@@ -543,4 +544,3 @@ class Session {
   }
 
 }
-?>

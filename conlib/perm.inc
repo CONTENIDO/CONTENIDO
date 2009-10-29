@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    <version>
+ * @version    0.1
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,14 +22,15 @@
  * {@internal 
  *   created  2002-08-16
  *   modified 2008-07-04, bilal arslan, added security fix
+ *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready) and some formatting
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
-   die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 
@@ -398,28 +399,23 @@ class Contenido_Perm
 		
 		global $auth;
 
-		if (!isset($auth->auth["perm"]))
+		if (!isset($auth->auth['perm']))
 		{
-			$auth->auth["perm"] = "";
+			$auth->auth['perm'] = '';
 		}
 
 		// Split the permissions of the user
-		$userperm = split(",", $auth->auth["perm"]);
+		$userperm = explode(',', $auth->auth['perm']);
 
-		if (in_array("sysadmin", $userperm))
-		{
+		if (in_array('sysadmin', $userperm)) {
 			return true; // User is sysadmin
-		} elseif (in_array("admin[$client]", $userperm))
-		{
+		} elseif (in_array("admin[$client]", $userperm)) {
 			return true; // User is admin
-		} else
-		{
+		} else {
 			// Check rights for the client and the language
-			$pageperm = split(",", "client[$client],lang[$lang]");
-			foreach ($pageperm as $value)
-			{
-				if (!in_array($value, $userperm))
-				{
+			$pageperm = explode(',', "client[$client],lang[$lang]");
+			foreach ($pageperm as $value) {
+				if (!in_array($value, $userperm)) {
 					return false;
 				}
 			}
@@ -592,30 +588,26 @@ class Contenido_Perm
 	/**
 	 * @deprecated
 	 */
-	function have_perm_client($p = "x")
+	function have_perm_client($p = 'x')
 	{
 		global $auth, $client;
 
-		if (!isset ($auth->auth["perm"]))
-		{
-			$auth->auth["perm"] = "";
+		if (!isset ($auth->auth['perm'])) {
+			$auth->auth['perm'] = '';
 		}
 
-		//split   the permissions of the user
-		$userperm = split(",", $auth->auth["perm"]);
+		//split the permissions of the user
+		$userperm = explode(',', $auth->auth['perm']);
 
 		//if User is sysadmin or admin at this client return true
-		if (in_array("sysadmin", $userperm))
-		{
+		if (in_array('sysadmin', $userperm)) {
 			return true;
 		}
 
 		//if there are more permissions to ask split them
-		$pageperm = split(",", $p);
-		foreach ($pageperm as $value)
-		{
-			if (!in_array($value, $userperm))
-			{
+		$pageperm = explode(',', $p);
+		foreach ($pageperm as $value) {
+			if (!in_array($value, $userperm)) {
 				return false;
 			}
 		}
@@ -623,36 +615,28 @@ class Contenido_Perm
 
 	}
 
-	function have_perm($p = "x")
+	function have_perm($p = 'x')
 	{
 		global $auth, $client;
 
-		if (!isset ($auth->auth["perm"]))
-		{
-			$auth->auth["perm"] = "";
+		if (!isset ($auth->auth['perm'])) {
+			$auth->auth['perm'] = '';
 		}
 
-		//split   the permissions of the user
-		$userperm = split(",", $auth->auth["perm"]);
+		//split the permissions of the user
+		$userperm = explode(',', $auth->auth['perm']);
 
 		//if User is sysadmin or admin at this client return true
-		if (in_array("sysadmin", $userperm))
-		{
+		if (in_array('sysadmin', $userperm)) {
 			return true;
-		}
-		elseif (in_array("admin[$client]", $userperm))
-		{
+		} elseif (in_array("admin[$client]", $userperm)) {
 			return true;
-
 			//else check rights for the client and the language
-		} else
-		{
+		} else {
 			//if there are more permissions to ask split them
-			$pageperm = split(",", $p);
-			foreach ($pageperm as $value)
-			{
-				if (!in_array($value, $userperm))
-				{
+			$pageperm = explode(',', $p);
+			foreach ($pageperm as $value) {
+				if (!in_array($value, $userperm)) {
 					return false;
 				}
 			}
@@ -793,4 +777,3 @@ class Contenido_Perm
 	}
 
 }
-?>
