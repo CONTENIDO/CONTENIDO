@@ -28,6 +28,7 @@
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-08-29, Murat Purc, add new chain execution
  *   modified 2009-03-27, Andreas Lindner, Add title tag generation via chain    
+ *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -319,7 +320,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 			$output = str_replace("CMS_VALUE", $CiCMS_Var, $output);
 			$output = str_replace("\$".$CiCMS_Var, $CiCMS_Var, $output);
 
-			$output = eregi_replace("(CMS_VALUE\[)([0-9]*)(\])", "", $output);
+			$output = preg_replace("/(CMS_VALUE\[)([0-9]*)(\])/i", "", $output);
 
 			if ($frontend_debug["container_display"] == true)
 			{
@@ -526,6 +527,11 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	
 	foreach ($metatags as $value)
 	{
+        // decode entities and htmlspecialchars, content will be converted later using htmlspecialchars()
+        // by render() function 
+       $value['content'] = html_entity_decode($value['content'], ENT_QUOTES, strtoupper($encoding[$lang]));
+       $value['content'] = htmlspecialchars_decode($value['content'], ENT_QUOTES);
+
 		// build up metatag string
 		$oMetaTagGen = new cHTML;
 		$oMetaTagGen->_tag = 'meta';
