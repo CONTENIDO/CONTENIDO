@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend plugins
- * @version    2.0.1
+ * @version    2.0.2
  * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created 2008-02-28
  *   modified 2008-06-05, Frederic Schneider
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -305,7 +306,7 @@ function searchLinks($sValue, $iArt, $sArt, $iCat, $sCat, $iLang, $sFromtype = "
 	// Redirect
 	if($sFromtype == "Redirect" && (preg_match('!(' . preg_quote($aUrl['cms']) . '[^\s]*)!i', $sValue, $aMatches)
 	|| (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $sValue, $aMatches) && $_GET['mode'] != 1))
-	&& !eregi("front_content.php", $sValue)
+	&& (stripos($sValue, 'front_content.php') === false)
 	&& !in_array($aMatches[0], $aWhitelist)) {
 		$aSearchIDInfosNonID[] = array("url" => $aMatches[0], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "lang" => $iLang, "urltype" => "unknown");
 	}

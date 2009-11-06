@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    1.1
+ * @version    1.1.1
  * @author     Boris Erdmann, Kristian Koehntopp, Sascha Schumann <sascha@schumann.cx>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created  2002-07-21
  *   modified 2008-07-03, bilal arslan, added security fix
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -166,14 +167,14 @@ class CT_Sql {
       $str  = $this->db->f("val");
       $str2 = base64_decode( $str );
 
-      if ( ereg("^".$name.":.*", $str2) ) {
-         $str = ereg_replace("^".$name.":", "", $str2 );
+      if (preg_match('/^' . $name . ':.*/', $str2)) {
+         $str = preg_replace('/^' . $name . ':/', '', $str2);
       } else {
 
         $str3 = stripslashes( $str );
 
-        if ( ereg("^".$name.":.*", $str3) ) {
-          $str = ereg_replace("^".$name.":", "", $str3 );
+        if (preg_match('/^' . $name . ':.*/', $str3)) {
+          $str = preg_replace('/^' . $name . ':/', '', $str3);
         } else {
 
           switch ( $this->encoding_mode ) {

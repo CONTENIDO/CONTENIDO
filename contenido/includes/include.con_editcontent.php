@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created 2003
  *   modified 2008-06-16, Holger Librenz, Hotfix: check for illegal calls added
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready) and some formatting
  *
  *   $Id$:
  * }}
@@ -548,7 +549,7 @@ EOD;
                     $output = str_replace("CMS_VALUE", $CiCMS_Var, $output);
                     $output = str_replace("\$".$CiCMS_Var, $CiCMS_Var, $output);
 
-                    $output = eregi_replace("(CMS_VALUE\[)([0-9]*)(\])", "", $output);
+                    $output = preg_replace('/(CMS_VALUE\[)([0-9]*)(\])/i', '', $output);
 
                     /* Long syntax with closing tag */
                     $code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$value]", $code);
@@ -557,8 +558,6 @@ EOD;
                     $code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)\/>/i", "CMS_CONTAINER[$value]", $code);
 
                     $code = str_ireplace("CMS_CONTAINER[$value]", "<?php $CiCMS_VALUE ?>\r\n".$output, $code);
-
-
 
                 }
         }

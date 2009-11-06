@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -26,6 +26,7 @@
  *   modified 2008-08-26, Timo Trautmann - fixed CON-200 - User can only get lang rights, if he has client access
  *   modified 2008-10-??, Bilal Arslan - direct DB user modifications are now encapsulated in new ConUser class
  *   modified 2008-11-17, Holger Librenz - method calls for new user object modified, comments updated
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -220,8 +221,8 @@ if ( !isset($userid) )
     $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
     $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('d', 'CATFIELD', i18n("Value"));
-		$tpl->set('d', 'BRDT', 1);
-		$tpl->set('d', 'BRDB', 0);
+    $tpl->set('d', 'BRDT', 1);
+    $tpl->set('d', 'BRDB', 0);
     $tpl->next();
 
     $tpl->set('d', 'CLASS', 'text_medium');
@@ -238,8 +239,8 @@ if ( !isset($userid) )
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "realname", $db->f("realname"), 40, 255));
-		$tpl->set('d', 'BRDT', 0);
-		$tpl->set('d', 'BRDB', 1);
+    $tpl->set('d', 'BRDT', 0);
+    $tpl->set('d', 'BRDB', 1);
     $tpl->next();
 
     // @since 2006-07-04 Display password fields only if not authenticated via LDAP/AD
@@ -268,8 +269,8 @@ if ( !isset($userid) )
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "email", $db->f("email"), 40, 255));
-		$tpl->set('d', 'BRDT', 0);
-		$tpl->set('d', 'BRDB', 1);
+    $tpl->set('d', 'BRDT', 0);
+    $tpl->set('d', 'BRDB', 1);
     $tpl->next();
 
     $tpl->set('d', 'CLASS', 'text_medium');
@@ -277,8 +278,8 @@ if ( !isset($userid) )
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "telephone", $db->f("telephone"), 40, 255));
-		$tpl->set('d', 'BRDT', 0);
-		$tpl->set('d', 'BRDB', 1);
+    $tpl->set('d', 'BRDT', 0);
+    $tpl->set('d', 'BRDB', 1);
     $tpl->next();
 
     $tpl->set('d', 'CLASS', 'text_medium');
@@ -286,8 +287,8 @@ if ( !isset($userid) )
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "address_street", $db->f("address_street"), 40, 255));
-		$tpl->set('d', 'BRDT', 0);
-		$tpl->set('d', 'BRDB', 1);
+    $tpl->set('d', 'BRDT', 0);
+    $tpl->set('d', 'BRDB', 1);
     $tpl->next();
 
     $tpl->set('d', 'CLASS', 'text_medium');
@@ -295,8 +296,8 @@ if ( !isset($userid) )
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "address_zip", $db->f("address_zip"), 10, 10));
-		$tpl->set('d', 'BRDT', 0);
-		$tpl->set('d', 'BRDB', 1);
+    $tpl->set('d', 'BRDT', 0);
+    $tpl->set('d', 'BRDB', 1);
     $tpl->next();
 
     $tpl->set('d', 'CLASS', 'text_medium');
@@ -304,8 +305,8 @@ if ( !isset($userid) )
     $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "address_city", $db->f("address_city"), 40, 255));
-		$tpl->set('d', 'BRDT', 0);
-		$tpl->set('d', 'BRDB', 1);
+    $tpl->set('d', 'BRDT', 0);
+    $tpl->set('d', 'BRDB', 1);
     $tpl->next();
 
     $tpl->set('d', 'CLASS', 'text_medium');
@@ -313,11 +314,11 @@ if ( !isset($userid) )
     $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "address_country", $db->f("address_country"), 40, 255));
-		$tpl->set('d', 'BRDT', 0);
-		$tpl->set('d', 'BRDB', 1);
+    $tpl->set('d', 'BRDT', 0);
+    $tpl->set('d', 'BRDB', 1);
     $tpl->next();
 
-    $userperm = split(",", $auth->auth["perm"]);
+    $userperm = explode(',', $auth->auth['perm']);
 
     if(in_array("sysadmin",$userperm)){
         $tpl->set('d', 'CLASS', 'text_medium');
@@ -331,29 +332,29 @@ if ( !isset($userid) )
     }
 
 
-        $sql="SELECT * FROM ".$cfg["tab"]["clients"];
-        $db2->query($sql);
-        $client_list = "";
-        $gen = 0;
-        while($db2->next_record())
-        {
-            if(in_array("admin[".$db2->f("idclient")."]",$userperm) || in_array("sysadmin",$userperm)){
-                $client_list .= formGenerateCheckbox("madmin[".$db2->f("idclient")."]",$db2->f("idclient"),in_array("admin[".$db2->f("idclient")."]",$user_perms), $db2->f("name")." (".$db2->f("idclient").")")."<br>";
-                $gen = 1;
-            }
-       }
-
-        if ($gen == 1 && !in_array("sysadmin",$user_perms))
-        {
-            $tpl->set('d', 'CLASS', 'text_medium');
-            $tpl->set('d', 'CATNAME', i18n("Administrator"));
-            $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
-            $tpl->set('d', "BGCOLOR", $cfg["color"]["table_dark"]);
-            $tpl->set('d', "CATFIELD", $client_list);
-						$tpl->set('d', 'BRDT', 0);
-						$tpl->set('d', 'BRDB', 1);
-            $tpl->next();
+    $sql="SELECT * FROM ".$cfg["tab"]["clients"];
+    $db2->query($sql);
+    $client_list = "";
+    $gen = 0;
+    while($db2->next_record())
+    {
+        if(in_array("admin[".$db2->f("idclient")."]",$userperm) || in_array("sysadmin",$userperm)){
+            $client_list .= formGenerateCheckbox("madmin[".$db2->f("idclient")."]",$db2->f("idclient"),in_array("admin[".$db2->f("idclient")."]",$user_perms), $db2->f("name")." (".$db2->f("idclient").")")."<br>";
+            $gen = 1;
         }
+    }
+
+    if ($gen == 1 && !in_array("sysadmin",$user_perms))
+    {
+        $tpl->set('d', 'CLASS', 'text_medium');
+        $tpl->set('d', 'CATNAME', i18n("Administrator"));
+        $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
+        $tpl->set('d', "BGCOLOR", $cfg["color"]["table_dark"]);
+        $tpl->set('d', "CATFIELD", $client_list);
+        $tpl->set('d', 'BRDT', 0);
+        $tpl->set('d', 'BRDB', 1);
+        $tpl->next();
+    }
 
     $sql = "SELECT * FROM " .$cfg["tab"]["clients"];
     $db2->query($sql);
@@ -361,9 +362,9 @@ if ( !isset($userid) )
 
     while ($db2->next_record())
     {
-            if((in_array("client[".$db2->f("idclient")."]",$userperm) || in_array("sysadmin",$userperm) || in_array("admin[".$db2->f("idclient")."]",$userperm)) && !in_array("admin[".$db2->f("idclient")."]",$user_perms)) {
-                $client_list .= formGenerateCheckbox("mclient[".$db2->f("idclient")."]",$db2->f("idclient"),in_array("client[".$db2->f("idclient")."]",$user_perms), $db2->f("name")." (". $db2->f("idclient") . ")")."<br>";
-            }
+        if((in_array("client[".$db2->f("idclient")."]",$userperm) || in_array("sysadmin",$userperm) || in_array("admin[".$db2->f("idclient")."]",$userperm)) && !in_array("admin[".$db2->f("idclient")."]",$user_perms)) {
+            $client_list .= formGenerateCheckbox("mclient[".$db2->f("idclient")."]",$db2->f("idclient"),in_array("client[".$db2->f("idclient")."]",$user_perms), $db2->f("name")." (". $db2->f("idclient") . ")")."<br>";
+        }
     }
 
     if ($client_list != "" && !in_array("sysadmin",$user_perms))
@@ -395,11 +396,10 @@ if ( !isset($userid) )
 
     while ($db2->next_record())
     {
-            if(($perm->have_perm_client("lang[".$db2->f("idlang")."]") || $perm->have_perm_client("admin[".$db2->f("idclient")."]" )) && !in_array("admin[".$db2->f("idclient")."]",$user_perms))
-            {
-                $client_list .= formGenerateCheckbox("mlang[".$db2->f("idlang")."]",$db2->f("idlang"),in_array("lang[".$db2->f("idlang")."]",$user_perms), $db2->f("name")." (". $db2->f("clientname") .")") ."<br>";
-            }
-
+        if(($perm->have_perm_client("lang[".$db2->f("idlang")."]") || $perm->have_perm_client("admin[".$db2->f("idclient")."]" )) && !in_array("admin[".$db2->f("idclient")."]",$user_perms))
+        {
+            $client_list .= formGenerateCheckbox("mlang[".$db2->f("idlang")."]",$db2->f("idlang"),in_array("lang[".$db2->f("idlang")."]",$user_perms), $db2->f("name")." (". $db2->f("clientname") .")") ."<br>";
+        }
     }
 
     if ($client_list != "" && !in_array("sysadmin",$user_perms))
@@ -409,8 +409,8 @@ if ( !isset($userid) )
         $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
         $tpl->set('d', "BGCOLOR", $cfg["color"]["table_dark"]);
         $tpl->set('d', "CATFIELD", $client_list);
-				$tpl->set('d', 'BRDT', 0);
-				$tpl->set('d', 'BRDB', 1);
+        $tpl->set('d', 'BRDT', 0);
+        $tpl->set('d', 'BRDB', 1);
         $tpl->next();
     }
 

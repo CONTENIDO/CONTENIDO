@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,13 +21,14 @@
  * 
  * {@internal 
  *   created 2008-08-12
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  * }}
  * 
  */
  
 if(!defined('CON_FRAMEWORK')) {
- die('Illegal call');
+    die('Illegal call');
 }
 
 class Version {
@@ -352,9 +353,9 @@ class Version {
 		    if ($dh = opendir($sDir)) {
 		        
 		        while (($file = readdir($dh)) !== false) {
-		        	if($file != "."  && $file !=".."){
-		           			 $aData = split('\.', $file);
-		           			 $aValues = split ('_', $aData[0]);
+		        	if ($file != '.' && $file != '..'){
+		           			 $aData = explode('.', $file);
+		           			 $aValues = explode('_', $aData[0]);
 		           			if ($aValues[0] > $this->iRevisionNumber) {
 		           				$this->iRevisionNumber = $aValues[0];
 		           			}

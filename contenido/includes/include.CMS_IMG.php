@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.3.1
+ * @version    1.3.2
  * @author     Ing. Christian Schuller (www.maurer-it.com)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created 2003-12-10
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-07-07, Dominik Ziegler, fixed language bug
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -134,7 +135,7 @@ if ($doedit == "1") {
         
         // collect data for dir selection
 		$dirname = $db->f("dirname");
-        $tmp = split("/",$dirname);
+        $tmp = explode('/', $dirname);
         
         $mypath = array();
         $mylvl = 0;

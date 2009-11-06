@@ -14,7 +14,7 @@
  * 
  *
  * @package    Contenido Backend <Area>
- * @version    1.1.1.1
+ * @version    1.1.1.2
  * @author     Carmelo Guarneri
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -26,6 +26,7 @@
  * {@internal 
  *   created  2002-07-21
  *   modified 2008-07-04, bilal arslan, added security fix
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -44,7 +45,7 @@ class DB_USql extends DB_Sql {
 //--------------------------------------------------------------
   function import_record_vars() {
     while (list($key, $val) = each($this->Record))
-    if (ereg("[A-Za-z][A-Za-z0-9_]*", $key)) {
+    if (preg_match("/[A-Za-z][A-Za-z0-9_]*/", $key)) {
       $field_name = strtoupper($key); 
 	  global $$field_name;
 	  $$field_name=$val;
@@ -79,13 +80,13 @@ class DB_USql extends DB_Sql {
     $fields="";
 	$values="";
     while (list($key, $val) = each($this->Record))
-    if (ereg("[A-Za-z][A-Za-z0-9_]*", $key)) {
+    if (preg_match("/[A-Za-z][A-Za-z0-9_]*/", $key)) {
       $field_name = strtoupper($key);
 	  if (!empty($val)) 
 	  if (strstr( $filter, $field_name )=="") {
 	    $fields.="$field_name ,";
-		$val=ereg_replace("'","''",$val);
-		$val=ereg_replace("\"","\\\"",$val);
+		$val = preg_replace("/'/", "''", $val);
+		$val = preg_replace("/\"/", "\\\"", $val);
 		//addslashes($val);
 	    $values.="'$val' ,";
 	  };

@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.8
+ * @version    1.8.1
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,6 +20,7 @@
  * 
  * {@internal 
  *   created 2003-07-28
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *   
  *   $Id: functions.workflow.php,v 1.8 2006/01/13 15:54:41 timo.hummel Exp $
  * }}
@@ -40,9 +41,9 @@ function getUsers ($listid, $default)
 	global $idclient, $cfg, $auth;
 	
 	$userlist = new Users;
-	$users = $userlist->getAccessibleUsers(split(',',$auth->auth["perm"]));
+	$users = $userlist->getAccessibleUsers(explode(',', $auth->auth['perm']));
 	$grouplist = new Groups;
-	$groups = $grouplist->getAccessibleGroups(split(',',$auth->auth["perm"]));
+	$groups = $grouplist->getAccessibleGroups(explode(',', $auth->auth['perm']));
 	
 	$tpl2 = new Template;    
 	$tpl2->set('s', 'NAME', 'user'.$listid);

@@ -23,30 +23,16 @@
  *   created unkown
  *   modified 2008-06-25, Frederic Schneider, add stripslashes_deep and contenido_stripslashes constant
  *   modified 2008-06-26 Removed $_SERVER and $_ENV because this global vars are read only
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready) and removed code for PHP older than 4.1.0
  *   $Id$:
  * }}
  * 
  */
 
-if (!get_magic_quotes_gpc()) 
-    define('CONTENIDO_STRIPSLASHES', true); 
-else 
-    define('CONTENIDO_STRIPSLASHES', false); 
 
-if (phpversion() <= "4.1.0")
-{
-	$_GET = & $HTTP_GET_VARS;
-	$_POST = & $HTTP_POST_VARS;
-	$_COOKIE = & $HTTP_COOKIE_VARS;
-	$_FILES = & $HTTP_POST_FILES;
+// set constant value depending on get_magic_quotes_gpc status
+define('CONTENIDO_STRIPSLASHES', (get_magic_quotes_gpc() == 0));
 
-	// _SESSION is the only superglobal which is conditionally set
-	if (isset ($HTTP_SESSION_VARS))
-	{
-		$_SESSION = & $HTTP_SESSION_VARS;
-	}
-
-}
 
 // PHP5 with register_long_arrays off?
 if (!isset ($HTTP_POST_VARS) && isset ($_POST))
@@ -64,7 +50,7 @@ if (!isset ($HTTP_POST_VARS) && isset ($_POST))
 }
 
 // simulate get_magic_quotes_gpc on if turned off 
-if (!get_magic_quotes_gpc()) { 
+if (CONTENIDO_STRIPSLASHES) { 
 
 	function addslashes_deep($value) 
 	{ 
@@ -90,15 +76,15 @@ if (!get_magic_quotes_gpc()) {
 	$cfg['simulate_magic_quotes'] = false;
 }
 
-   if (!isset($_REQUEST) || $cfg['simulate_magic_quotes']) { 
-      /* Register post,get and cookie variables into $_REQUEST */ 
-      $_REQUEST = array_merge($_GET, $_POST, $_COOKIE); 
-   } 
+if (!isset($_REQUEST) || $cfg['simulate_magic_quotes']) { 
+    /* Register post,get and cookie variables into $_REQUEST */ 
+    $_REQUEST = array_merge($_GET, $_POST, $_COOKIE); 
+} 
 
-   // this should be the default setting 
-   if (get_magic_quotes_runtime()) { 
-      @set_magic_quotes_runtime(0); 
-   }
+// this should be the default setting, but only for PHP older than 5.3.0
+if (!CONTENIDO_STRIPSLASHES && (version_compare(PHP_VERSION, '5.3.0', '<'))) { 
+    @set_magic_quotes_runtime(0); 
+}
 
 // register globals
 $types_to_register = array ('GET', 'POST', 'COOKIE', 'SESSION', 'SERVER');

@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -111,11 +112,11 @@ if ($action == "todo_save_item")
     $userselect = new cHTMLSelectElement("userassignment[]");
     
     
-	$UsersClass = new Users; 
-    foreach ($UsersClass->getAccessibleUsers(split(',',$auth->auth["perm"]), true) as $key => $value) 
-    { 
-       $acusers[$key] = $value["username"]." (".$value["realname"].")"; 
-    } 
+	$UsersClass = new Users;
+    foreach ($UsersClass->getAccessibleUsers(explode(',', $auth->auth['perm']), true) as $key => $value)
+    {
+       $acusers[$key] = $value["username"]." (".$value["realname"].")";
+    }
     
     asort($acusers);
     

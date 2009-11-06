@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.3.2
+ * @version    1.3.3
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,13 +25,14 @@
  *   modified 2008-11-27, Andreas Lindner, add possibility to define additional chars as allowed in file / dir names  
  *   modified 2009-03-16, Ingo van Peeren, fixed some sql-statements and a missing parameter in uplRenameDirectory()
  *   modified 2009-10-22, OliverL, fixed uplHasFiles is only one file in directory you can delete Directory
+ *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready) and usage of is_dbfs()
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
@@ -59,7 +60,7 @@ function generateDisplayFilePath ($sDisplayPath, $iLimit) {
         $sTooltippString = '';
         $iCharcount = 0;
         
-        $aPathFragments = split('/', $sDisplayPath);
+        $aPathFragments = explode('/', $sDisplayPath);
             
         foreach ($aPathFragments as $sFragment) {
             if ($sFragment != '') {
@@ -276,7 +277,7 @@ function uplSyncDirectory ($path)
 {
 	global $cfgClient, $client, $cfg, $db;
 
-	if (substr($path,0,5) == "dbfs:")
+	if (is_dbfs($path))
 	{
 		return uplSyncDirectoryDBFS($path);	
 	}
@@ -334,7 +335,7 @@ function uplSyncDirectory ($path)
     }
     
     $uploads->select("dirname = '$path' AND idclient = '$client'");
-    
+
     while ($upload = $uploads->next())
     {
     	if (!file_exists($cfgClient[$client]["upl"]["path"].$upload->get("dirname").$upload->get("filename")))
@@ -399,7 +400,6 @@ function uplSyncDirectoryDBFS ($path)
     
     $properties->select("idclient = '$client' AND itemtype='upload' AND type='file' AND itemid LIKE '".$path."%'");
     
-    
    	while ($property = $properties->next())
    	{
    		if (!$dbfs->file_exists($property->get("itemid")))
@@ -416,7 +416,7 @@ function uplmkdir($path,$name) {
 	
         global $cfgClient, $client, $action;
        
-        if (substr($path,0,5) == "dbfs:")
+        if (is_dbfs($path))
         {
         	$path = str_replace("dbfs:","", $path);
         	
@@ -886,7 +886,7 @@ function uplCreateFriendlyName ($filename)
 		$atom = substr($filename, $i,1);
 		$bFound = false;
 		
-		if (eregi("[[:alnum:]]", $atom ))
+		if (preg_match("/[[:alnum:]]/i", $atom ))
 		{
 			$newfilename .= $atom;
 			$bFound = true;		

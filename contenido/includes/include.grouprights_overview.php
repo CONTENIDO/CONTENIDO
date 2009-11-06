@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.1.0
+ * @version    1.1.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-05-30
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -162,7 +163,7 @@ if ( !isset($groupid) )
 	$tpl->set('d', 'BRDT', 0);
     $tpl->next();
   
-    $groupperm = split(",", $auth->auth["perm"]);
+    $groupperm = explode(',', $auth->auth['perm']);
 
     if(in_array("sysadmin",$groupperm)){
         $tpl->set('d', 'CLASS', 'text_medium');

@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend <Area>
- * @version    1.1.1.1
+ * @version    1.1.1.2
  * @author     Luis Francisco Gonzalez Hernandez
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  * {@internal 
  *   created  2002-07-21
  *   modified 2008-07-04, bilal arslan, added security fix
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -337,7 +338,7 @@ class DB_Sql {
     $curs=ora_open($this->Link_ID);
 
     ## this is the important part and it is also the HACK!
-    if (eregi("^[[:space:]]*SELECT[[:space:]]",$this->lastQuery) ) {
+    if (preg_match('/^\s*SELECT\s/i', $this->lastQuery)) {
       $from_pos = strpos(strtoupper($this->lastQuery),"FROM");
       $q = "SELECT count(*) ". substr($this->lastQuery, $from_pos);
       

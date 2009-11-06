@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-04-23
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -65,7 +66,7 @@ if (isset($_REQUEST["filter"]) && $_REQUEST["filter"] != "")
 }
 $cApiUserCollection->query();
 
-$aCurrentUserPermissions = split(",", $auth->auth["perm"]);
+$aCurrentUserPermissions = explode(',', $auth->auth['perm']);
 $aCurrentUserAccessibleClients = $classclient->getAccessibleClients();
 
 $iMenu = 0;
@@ -97,7 +98,7 @@ while ($cApiUser = $cApiUserCollection->next())
 {
 	$userid = $cApiUser->get("user_id");
 	
-	$aUserPermissions = split(",", $cApiUser->get("perms"));
+	$aUserPermissions = explode(',', $cApiUser->get('perms'));
 	
 	$bDisplayUser = false;
 

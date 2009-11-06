@@ -14,8 +14,8 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
- * @author    Brent R. Matzelle
+ * @version    1.0.1
+ * @author     Brent R. Matzelle
  * @copyright  Brent R. Matzelle
  * @license    LGPL, see LICENSE
  * @since      file available since contenido release <= 4.6
@@ -24,6 +24,7 @@
  *   created 2001
  *   modified 2006-07-30, HerrB, changes for contenido
  *   modified 2008-06-30, Frederic Schneider, add security fix
+ *   modified 2009-11-06, Murat Purc, Workaround for invoking deprecated function in PHP 5.3
  *
  *   $Id$:
  * }}
@@ -1121,12 +1122,18 @@ class PHPMailer
             $this->SetError(i18n("File open") . $path);
             return "";
         }
-        $magic_quotes = get_magic_quotes_runtime();
-        set_magic_quotes_runtime(0);
+        
+        $olderThan53 = version_compare(PHP_VERSION, '5.3.0', '<');
+        if ($olderThan53) {
+            $magic_quotes = get_magic_quotes_runtime();
+            set_magic_quotes_runtime(0);
+        }
         $file_buffer = fread($fd, filesize($path));
         $file_buffer = $this->EncodeString($file_buffer, $encoding);
         fclose($fd);
-        set_magic_quotes_runtime($magic_quotes);
+        if ($olderThan53) {
+            set_magic_quotes_runtime($magic_quotes);
+        }
 
         return $file_buffer;
     }

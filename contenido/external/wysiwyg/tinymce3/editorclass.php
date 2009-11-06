@@ -33,7 +33,7 @@
  * See backend.customizing.html for details 
  *
  * @package    Contenido Backend <Area>
- * @version    1.2.0
+ * @version    1.2.1
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -53,6 +53,7 @@
  *   modified 2008-07-04, bilal arslan, added security fix
  *   
  *   modified 2008-07-21, Ingo van Peeren, fixed path for property 'content_css' default value  
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id: editorclass.php 739 2008-08-27 10:37:54Z timo.trautmann $:
  * }}
@@ -94,7 +95,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		
 		// Default values
 		$this->setSetting("mode", "exact");
-		$aPathFragments = split('/', $cfgClient[$client]["path"]["htmlpath"]);
+		$aPathFragments = explode('/', $cfgClient[$client]["path"]["htmlpath"]);
 		$this->setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css"); 
 
 		$this->setSetting("theme", "advanced");

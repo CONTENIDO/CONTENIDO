@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -55,7 +56,7 @@ $ui->setVar("idcommunication", $idcommunication);
 $userselect = new cHTMLSelectElement("userassignment");
 
 $userclass = new User;
-foreach ($userclass->getAvailableUsers(split(',',$auth->auth["perm"])) as $key => $value)
+foreach ($userclass->getAvailableUsers(explode(',', $auth->auth['perm'])) as $key => $value)
 {
 	$acusers[$key] = $value["username"]." (".$value["realname"].")";
 }

@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.1.1
+ * @version    1.1.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-05-30
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -107,14 +108,14 @@ $db->query($sql);
 // Empty Row
 $bgcolor = '#FFFFFF';
 $tpl->set('s', 'PADDING_LEFT', '10');
-$thisperm = split(",", $auth->auth["perm"]);
+$thisperm = explode(',', $auth->auth['perm']);
 
 $accessibleClients = $classclient->getAccessibleClients();
 
 while ($db->next_record())
 {
 
-    $groupperm = split(",", $db->f("perms"));
+    $groupperm = explode(',', $db->f('perms'));
 
     $allow = false; 
     

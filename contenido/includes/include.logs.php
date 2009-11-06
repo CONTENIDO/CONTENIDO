@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-16, Holger Librenz, Hotfix: added check for invalid calls
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2009-10-15, Dominik Ziegler, fetching areaname from actions array to save a lot of database queries
+ *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
@@ -78,7 +79,7 @@ if(!$perm->have_perm_area_action($area))
     $actionclass = new Action();
 
     $clients = $clientclass->getAccessibleClients();
-    $users = $userclass->getAccessibleUsers(split(',',$auth->auth["perm"]));
+    $users = $userclass->getAccessibleUsers(explode(',', $auth->auth['perm']));
     $userselect = "<option value=\"%\">".i18n("All users")."</option>";
     $actions = $actionclass->getAvailableActions();
     $actionselect = "<option value=\"%\">".i18n("All actions")."</option>";
@@ -243,7 +244,7 @@ if(!$perm->have_perm_area_action($area))
 
 	if ($idquser == "%")
 	{
-		$users = $userclass->getAccessibleUsers(split(',',$auth->auth["perm"]));
+		$users = $userclass->getAccessibleUsers(explode(',', $auth->auth['perm']));
 
 		foreach ($users as $key=>$value) {
 			$userarray[] = $key;
