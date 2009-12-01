@@ -12,7 +12,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -31,6 +31,7 @@
  *   modified 2009-04-23, Andreas Lindner, also copy alias of article when syncing article to another language
  *   modified 2009-05-05, Timo Trautmann - optional use for copy label on copy proccess
  *   modified 2009-10-07, Murat Purc, bugfix in conMoveArticles (missing apostrophe)
+ *   modified 2009-12-01, Dominik Ziegler, bugfix in conFlagOnOffline (article is still offline if enddate in time management is missing)
  *  
  *   $Id$:
  * }}
@@ -1636,7 +1637,7 @@ function conFlagOnOffline() {
     }
 
     /* Set all articles which are in between of our start/endtime to online */
-    $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE NOW() > datestart AND NOW() < dateend AND " .
+    $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE NOW() > datestart AND (NOW() < dateend OR dateend = '0000-00-00 00:00:00') AND " .
     		"online = 0 AND timemgmt = 1";
 
     $db->query($sql);
