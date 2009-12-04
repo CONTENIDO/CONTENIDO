@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.5.7
+ * @version    1.5.8
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -26,6 +26,7 @@
  *   modified 2008-08-11, Timo Trautmann, added urlencode for meta storage in database
  *   modified 2008-10-03, Oliver Lohkemper, delete CEC::Contenido.Upl_edit.SaveRows
  *   modified 2008-10-16, Oliver Lohkemper, add copyright in upl_meta - CON-212  
+ *   modified 2009-12-04, Dominik Ziegler, added initial set of file variable
  *
  *   $Id$:
  * }}
@@ -50,6 +51,8 @@ if (!(int) $client > 0) {
 }
 
 $appendparameters = $_REQUEST["appendparameters"];
+$file = $_REQUEST['file'];
+
 if (!is_array($browserparameters) && ($appendparameters != "imagebrowser" || $appendparameters != "filebrowser"))
 {
 	$browserparameters = array();	

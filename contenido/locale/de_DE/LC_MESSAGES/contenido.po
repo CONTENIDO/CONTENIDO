@@ -3839,3 +3839,6 @@ msgstr "Verschieben von %s abbrechen"
 
 msgid "File count"
 msgstr "Anzahl der Dateien"
+
+msgid "No layout description available"
+msgstr "Keine Layout-Beschreibung vorhanden"
