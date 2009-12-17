@@ -27,8 +27,9 @@
  *   modified 2008-06-25, Timo Trautmann, user meta tags and system meta tags were merged, not replaced
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-08-29, Murat Purc, add new chain execution
- *   modified 2009-03-27, Andreas Lindner, Add title tag generation via chain    
+ *   modified 2009-03-27, Andreas Lindner, Add title tag generation via chain
  *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready)
+ *   modified 2009-12-18, Murat Purc, fixed meta tag generation, see [#CON-272]
  *
  *   $Id$:
  * }}
@@ -527,8 +528,13 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	
 	foreach ($metatags as $value)
 	{
+        // decode entities and htmlspecialchars, content will be converted later using htmlspecialchars()
+        // by render() function 
+        $value['content'] = html_entity_decode($value['content'], ENT_QUOTES, strtoupper($encoding[$lang]));
+        $value['content'] = htmlspecialchars_decode($value['content'], ENT_QUOTES);
+
 		// build up metatag string
-		$oMetaTagGen = new cHTML;
+		$oMetaTagGen = new cHTML();
 		$oMetaTagGen->_tag = 'meta';
 		$oMetaTagGen->updateAttributes($value);
 
