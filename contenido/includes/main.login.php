@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created 2003-01-21
  *   modified 2008-06-26, Dominik Ziegler, update notifier class added
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2009-12-14, Dominik Ziegler, use User::getRealname() for user name output and provide username fallback
  *
  *   $Id$:
  * }}
@@ -65,16 +66,9 @@ if ($lastlogin == "") {
 	$lastlogin= i18n("No Login Information available.");
 }
 
-$userid= $auth->auth["uid"];
+$userid = $auth->auth["uid"];
 
-$sql= "SELECT realname FROM " . $cfg["tab"]["phplib_auth_user_md5"] . " WHERE user_id = '" . Contenido_Security::escapeDB($userid, $db) . "'";
-
-$db->query($sql);
-$db->next_record();
-
-$str= "<b>" . i18n("Welcome") . " </b>" . $db->f("realname") . ".";
-$str_test= $db->f("realname");
-$tpl->set('s', 'WELCOME', $str);
+$tpl->set('s', 'WELCOME', "<b>" . i18n("Welcome") . " </b>" . $vuser->getRealname($userid, true) . ".");
 $tpl->set('s', 'LASTLOGIN', i18n("Last login") . ": " . $lastlogin);
 
 $clients= $classclient->getAccessibleClients();

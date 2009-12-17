@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.0.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2009-05-18, Andreas Lindner, add method getGroupIDsByUserID to class User    
+ *   modified 2009-12-17, Dominik Ziegler, added support for username fallback
  *
  *   $Id$:
  * }}
@@ -741,7 +742,7 @@ class User {
      * Returns the realname of the given userid
      * @return string  Realname if found, or emptry string if not.
      */
-    function getRealname ($userid)
+    function getRealname ($userid, $bAllowFallbackOnUsername = false)
     {
         global $cfg;
 
@@ -756,8 +757,12 @@ class User {
 
         $db->query($sql);
         $db->next_record();
-
-        return ($db->f("realname"));
+		
+		if ( $db->f('realname') == '' && $bAllowFallbackOnUsername == true ) {
+			return ($this->getUsername($userid));
+		} else {
+		    return ($db->f("realname"));
+		}
 
     } // end function 
 

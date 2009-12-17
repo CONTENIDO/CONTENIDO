@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.0.2
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2008-07-08  Thorsten Granz, added option to disable menu hover effect. clicking is now possible again
+ *   modified 2009-12-17, Dominik Ziegler, added support for username fallback and fixed double quote
  *
  *   $Id$:
  * }}
@@ -257,7 +258,7 @@ class Contenido_Navigation {
                     {
                         $sub->set('d', 'CAPTION', '<a id="sub_'.$value[1].'" class="sub" target="content" href="'.
                         $sess->url("frameset.php?area=$value[1]").
-                        '"">'.$value[0].'</a>');                    	
+                        '">'.$value[0].'</a>');                    	
                     }
                     $sub->next();
                     $genSubMenu = true;
@@ -411,7 +412,7 @@ class Contenido_Navigation {
         } else {
         	$main->set('s', 'CHOSENCLIENT', "<b>".i18n("Client").":</b> ".$sClientName." (".$client.")");
         }
-        $main->set('s', 'CHOSENUSER', "<b>".i18n("User").":</b> ".$classuser->getRealname($auth->auth["uid"]));
+        $main->set('s', 'CHOSENUSER', "<b>".i18n("User").":</b> ".$classuser->getRealname($auth->auth["uid"], true));
         $main->set('s', 'SID', $sess->id);
         $main->set('s', 'MAINLOGINLINK', $sess->url("frameset.php?area=mycontenido&frame=4"));
         $main->generate($cfg['path']['templates'] . $cfg['templates']['header']);
