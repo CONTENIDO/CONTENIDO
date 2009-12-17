@@ -9,7 +9,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    0.2
+ * @version    0.3
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,6 +21,7 @@
  * {@internal 
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
+ *   modified 2009-12-17, Dominik Ziegler, added check for write permission on missing cronjob files
  *
  *   $Id$:
  * }}
@@ -691,6 +692,15 @@ class cSetupSystemtest extends cSetupMask
 									C_SEVERITY_WARNING);
 									
 		$this->logFilePrediction(   "contenido/cronjobs/move_articles.php.job",
+									C_SEVERITY_WARNING);
+									
+		$this->logFilePrediction(   "contenido/cronjobs/linkchecker.php.job",
+									C_SEVERITY_WARNING);
+									
+		$this->logFilePrediction(   "contenido/cronjobs/run_newsletter_job.php.job",
+									C_SEVERITY_WARNING);
+									
+		$this->logFilePrediction(   "contenido/cronjobs/setfrontenduserstate.php.job",
 									C_SEVERITY_WARNING);
 									
 		$this->logFilePrediction(	"contenido/cache/",
