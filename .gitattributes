@@ -1332,10 +1332,6 @@ contenido/scripts/wz_tooltip.js -text
 contenido/styles/cms_filelist.css -text
 contenido/styles/cms_teaser.css -text
 contenido/styles/contenido.css -text
-contenido/styles/header_ie.css -text
-contenido/styles/header_ie_small.css -text
-contenido/styles/header_ns.css -text
-contenido/styles/header_ns_small.css -text
 contenido/styles/index.php -text
 contenido/styles/inuse.css -text
 contenido/styles/str_overview.css -text
