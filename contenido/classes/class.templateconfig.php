@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-30, Frederic Schneider, add security fix
+ *   modified 2009-12-16, Dominik Ziegler, fixed sql table name
  *
  *   $Id$: 
  * }}
@@ -178,11 +179,11 @@ class TemplateConfig
 
 		if ($idtplcfg) {
 			#Article or cat is assigned to a template
-			$sql = "SELECT * FROM ".$cfg["tab"]["template_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
+			$sql = "SELECT * FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
 			$this->db->query($sql);
 			if ($this->db->next_record()) {
 				$idtpl = $this->db->f("idtpl");
-				$sql = "SELECT * FROM ".$cfg["tab"]["template"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
+				$sql = "SELECT * FROM ".$cfg["tab"]["tpl"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
 				$this->db->query($sql);
 				if ($this->db->next_record()) {
 					$idtplcfg = $this->db->f("idtplcfg");
