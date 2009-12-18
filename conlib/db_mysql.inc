@@ -10,7 +10,7 @@
  * 
  *
  * @package    Contenido Backend <Area>
- * @version    0.1
+ * @version    0.1.1
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created  2002-07-21
  *   modified 2008-07-04, bilal arslan, added security fix
+ *   modified 2009-12-18, Murat Purc, Replaced mysql_list_fields() against a SQL statement, see [#CON-262]
  *
  *   $Id$:
  * }}
@@ -362,9 +363,9 @@ class DB_Sql {
 
     // if no $table specified, assume that we are working with a query
     // result
-    if ($table) {
+    if (!empty($table)) {
       $this->connect();
-      $id = @mysql_list_fields($this->Database, $table);
+      $id = mysql_query(sprintf("SELECT * FROM %s LIMIT 1", $table), $this->Link_ID); // PHP 5.3 fix 07.2009 O.Pinke, PHP 5.3 crashes with deprecated mysql_list_fields()
       if (!$id) {
         $this->halt("Metadata query failed.");
         return false;
