@@ -26,7 +26,8 @@
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-09-08, Ingo van Peeren, optimized HTML, added AJAX an javascript to prevent 
  *                                         reloading of navigation tree, small sql performance
- *                                         improvement 
+ *                                         improvement
+ *   modified 2009-12-18, Murat Purc, fixed usage of wrong db instance, see [#CON-282]
  *
  *   $Id$:
  * }}
@@ -223,24 +224,19 @@ global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client
         $no_start   = true;
         $no_online  = true;
 
-        while ( $db2->next_record() ) {
-
-			if ($cfg["is_start_compatible"] == true)
-			{
-                if ( $db2->f("is_start") == 1 )
-                {
-                    $no_start = false;
-                }
+        while ($db2->next_record()) {
+			// start article check
+            if ($cfg['is_start_compatible'] == true) {
+                $no_start = ($db2->f('is_start') != 1);
 			} else {
-				$no_start = isStartArticle($db->f("idartlang"), $idcat, $lang, $db3);
+				$no_start = !isStartArticle($db2->f('idartlang'), $idcat, $lang, $db3);
 			}
 
-            if ( $db2->f("online") == 1 ) {
-                $no_online = false;
-            }
+			// online check
+            $no_online = ($db2->f('online') != 1);
 
-			if (!$no_start&&!$no_online) {
-				#Exit loop if both vars are already false
+			if (!$no_start && !$no_online) {
+				// Exit loop if both vars are already false
 				break;
 			}
         }
