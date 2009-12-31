@@ -49,6 +49,7 @@
  *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page
  *   modified 2009-04-16, OliverL, check return from Contenido.Frontend.HTMLCodeOutput
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
+ *   modified 2009-12-31, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *
  *   $Id$:
  * }}
@@ -140,6 +141,9 @@ else
  */
 require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
 
+// Call hook after plugins are loaded, added by Murat Purc, 2008-09-07
+CEC_Hook::execute('Contenido.Frontend.AfterLoadPlugins');
+
 $db = new DB_Contenido;
 
 $sess->register("cfgClient");
@@ -198,6 +202,9 @@ if (!isset($client)) {
     //load_client defined in frontend/config.php
     $client = $load_client;
 }
+
+// update urlbuilder set http base path 
+Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
 
 // Initialize language
 if (!isset($lang)) {
@@ -277,7 +284,7 @@ if (isset($path) && strlen($path) > 1)
         $iLangCheck = 0;
 
         $idcat = prResolvePathViaCategoryNames($path, $iLangCheck);
-        if($lang != iLangCheck){
+        if(($lang != $iLangCheck) && ((int)$iLangCheck != 0)){
             $lang = $iLangCheck;
         }
 
@@ -285,7 +292,12 @@ if (isset($path) && strlen($path) > 1)
 }
 
 // error page
-$errsite = "Location: front_content.php?client=$client&idcat=".$errsite_idcat[$client]."&idart=".$errsite_idart[$client]."&lang=$lang&error=1";
+$aParams = array (
+    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client], 
+    'lang' => $lang, 'error'=> '1'
+);
+$errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
+
 
 /*
  * Try to initialize variables $idcat, $idart, $idcatart, $idartlang
@@ -544,14 +556,11 @@ if ($contenido)
         $disabled = 'disabled="disabled"';
     }
 
-    /* Check if the user has permission to edit articles in this category */
-    $allow = true;
-    CEC_Hook::setConditions(CEC_Hook::BREAK_AT_FALSE, false);
-    $value = CEC_Hook::execute("Contenido.Frontend.AllowEdit", $lang, $idcat, $idart, $auth->auth["uid"]);
-    if ($value === false)
-    {
-        $allow = false;
-    }
+    // CEC to check if the user has permission to edit articles in this category
+    CEC_Hook::setBreakCondition(false, true); // break at "false", default value "true"
+    $allow = CEC_Hook::executeWhileBreakCondition(
+        'Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']
+    );
 
     if ($perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat) && $inUse == false && $allow == true)
     {
@@ -790,29 +799,22 @@ else
             }
             if ($validated != 1)
             {
-                $allow = false;
-
-                CEC_Hook::setConditions(CEC_Hook::BREAK_AT_TRUE, false);
-                $value = CEC_Hook::execute("Contenido.Frontend.CategoryAccess", $lang, $idcat, $auth->auth["uid"]);
-                if ($value === true)
-                {
-                    $allow = true;
-                }
-
+                // CEC to check category access
+                CEC_Hook::setBreakCondition(true, false); // break at "true", default value "false"
+                $allow = CEC_Hook::executeWhileBreakCondition(
+                    'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
+                );
                 $auth->login_if(!$allow);
             }
         }
         else
         {
-            $allow = false;
+            // CEC to check category access
+            CEC_Hook::setBreakCondition(true, false); // break at "true", default value "false"
+            $allow = CEC_Hook::executeWhileBreakCondition(
+                'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
+            );
 
-            CEC_Hook::setConditions(CEC_Hook::BREAK_AT_TRUE, false);
-            $value = CEC_Hook::execute("Contenido.Frontend.CategoryAccess", $lang, $idcat, $auth->auth["uid"]);
-            if ($value === true)
-            {
-                $allow = true;
-            }
-			
 			/*
 				added 2008-11-18 Timo Trautmann
 				in backendeditmode also check if logged in backenduser has permission to view preview of page
@@ -913,7 +915,8 @@ else
 
         $str_base_uri = $cfgClient[$client]["path"]["htmlpath"];
 
-        $str_base_uri = CEC_Hook::execute("Contenido.Frontend.BaseHrefGeneration", $str_base_uri);
+		// CEC for base href generation
+        $str_base_uri = CEC_Hook::executeAndReturn('Contenido.Frontend.BaseHrefGeneration', $str_base_uri);
 
         if ($is_XHTML == "true") {
             $baseCode = '<base href="'.$str_base_uri.'" />';
@@ -935,6 +938,15 @@ else
             /*
              * Redirect to the URL defined in article properties
              */
+            $oUrl = Contenido_Url::getInstance();
+            if ($oUrl->isIdentifiableFrontContentUrl($redirect_url)) {
+                // perform urlbuilding only for identified internal urls
+                $aUrl = $oUrl->parse($redirect_url);
+                if (!isset($aUrl['params']['lang'])) {
+                    $aUrl['params']['lang'] = $lang;
+                }
+                $redirect_url = $oUrl->buildRedirect($aUrl['params']);
+            }
             header("Location: $redirect_url");
             exit;
         }
@@ -961,17 +973,13 @@ else
                 $htmlCode = ob_get_contents();
                 ob_end_clean();
 
-                // process CEC Hook to do some preparations before output
-                $htmlCode = CEC_Hook::execute('Contenido.Frontend.HTMLCodeOutput', $htmlCode);
-
-				#If chain execution return value is an array
-				if (is_array($htmlCode)) {
-					$htmlCode = $htmlCode[0];
-				}
+                // process CEC to do some preparations before output
+                $htmlCode = CEC_Hook::executeAndReturn('Contenido.Frontend.HTMLCodeOutput', $htmlCode);
 
                 // print output
                 echo $htmlCode;
             }
+
         }
     }
     else

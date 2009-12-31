@@ -14,7 +14,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.3.5
+ * @version    1.3.6
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -30,6 +30,7 @@
  *   modified 2009-03-27, Andreas Lindner, Add title tag generation via chain
  *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready)
  *   modified 2009-12-18, Murat Purc, fixed meta tag generation, see [#CON-272]
+ *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *
  *   $Id$:
  * }}
@@ -390,10 +391,8 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	$pagetitle = stripslashes($db->f("pagetitle"));
 
 	if ($pagetitle == '') {
-		$pagetitle = CEC_Hook::execute("Contenido.Content.CreateTitletag");
-		if (is_array($pagetitle)) {
-			$pagetitle = '';
-		}
+        CEC_Hook::setDefaultReturnValue($pagetitle);
+        $pagetitle = CEC_Hook::executeAndReturn('Contenido.Content.CreateTitletag');
 	}
 
 	/* replace all CMS_TAGS[] */
@@ -582,7 +581,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	}
 
     // execute CEC hook
-    $code = CEC_Hook::execute('Contenido.Content.conGenerateCode', $code);
+    $code = CEC_Hook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
 	
 	return $code;
 }

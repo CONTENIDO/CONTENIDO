@@ -26,6 +26,7 @@
  *                                    and 'Contenido.Frontend.PostprocessUrlBuilding' to build()
  *   modified 2009-01-13, Murat Purc, added new function isIdentifiableFrontContentUrl() for better 
  *                                    identification of internal urls
+ *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *
  *   $Id$:
  * }}
@@ -117,7 +118,7 @@ final class Contenido_Url {
         $aHookParams = array(
             'param' => $param, 'bUseAbsolutePath' => $bUseAbsolutePath, 'aConfig' => $aConfig
         );
-        if ($aResult = CEC_Hook::execute('Contenido.Frontend.PreprocessUrlBuilding', $aHookParams)) {
+        if ($aResult = CEC_Hook::executeAndReturn('Contenido.Frontend.PreprocessUrlBuilding', $aHookParams)) {
             $param = (isset($aResult['param'])) ? $aResult['param'] : '';
             if (isset($aResult['bUseAbsolutePath'])) {
                 $bUseAbsolutePath = (bool) $aResult['bUseAbsolutePath'];
@@ -147,7 +148,7 @@ final class Contenido_Url {
         $url = $this->_oUrlBuilder->getUrl();
 
         // execute postprocess hook
-        if ($result = CEC_Hook::execute('Contenido.Frontend.PostprocessUrlBuilding', $url)) {
+        if ($result = CEC_Hook::executeAndReturn('Contenido.Frontend.PostprocessUrlBuilding', $url)) {
             $url = (string) $result;
         }
 

@@ -12,7 +12,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -32,6 +32,7 @@
  *   modified 2009-05-05, Timo Trautmann - optional use for copy label on copy proccess
  *   modified 2009-10-07, Murat Purc, bugfix in conMoveArticles (missing apostrophe)
  *   modified 2009-12-01, Dominik Ziegler, bugfix in conFlagOnOffline (article is still offline if enddate in time management is missing)
+ *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *  
  *   $Id$:
  * }}
@@ -1698,8 +1699,7 @@ function conMoveArticles()
             $db2->query($sql);
 
             // execute CEC hook
-            $record = CEC_Hook::execute('Contenido.Article.conMoveArticles_Loop', $db->Record);
-            
+            CEC_Hook::execute('Contenido.Article.conMoveArticles_Loop', $db->Record);
         }
     }
 
@@ -1910,7 +1910,7 @@ function conCopyArtLang ($srcidart, $dstidart, $newtitle, $bUseCopyLabel = true)
 		$db2->query($sql);
 		
         // execute CEC hook
-        $param = CEC_Hook::execute('Contenido.Article.conCopyArtLang_AfterInsert', array(
+        CEC_Hook::execute('Contenido.Article.conCopyArtLang_AfterInsert', array(
             'idartlang' => Contenido_Security::toInteger($idartlang), 
             'idart'     => Contenido_Security::toInteger($idart), 
             'idlang'    => Contenido_Security::toInteger($idlang),
@@ -2126,7 +2126,7 @@ function conSyncArticle ($idart, $srclang, $dstlang)
         $param['dest_art_lang']['idartlang'] = Contenido_Security::toInteger($newidartlang);
         $param['dest_art_lang']['idlang']    = Contenido_Security::toInteger($dstlang);
         $param['dest_art_lang']['idtplcfg']  = Contenido_Security::toInteger($newidtplcfg);
-        $param = CEC_Hook::execute('Contenido.Article.conSyncArticle_AfterInsert', $param);
+        CEC_Hook::execute('Contenido.Article.conSyncArticle_AfterInsert', $param);
 
 		/* Copy content */
 		$sql = "SELECT 

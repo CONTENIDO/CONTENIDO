@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.3.5
+ * @version    1.3.6
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -29,6 +29,7 @@
  *   modified 2009-05-05, Timo Trautmann - optional use for copy label on copy proccess
  *   modified 2009-10-14, Dominik Ziegler - changed functionality of strMoveSubtree and strMoveCatTargetallowed to prevent crashing tree on moving
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready), commenting code and some formatting
+ *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *
  *   $Id$:
  * }}
@@ -1256,7 +1257,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
             $param['idlang']   = $idlang;
             $param['idtplcfg'] = $idtplcfg;
             $param['visible']  = $visible;
-            $param = CEC_Hook::execute('Contenido.Category.strSyncCategory_Loop', $param);
+            CEC_Hook::execute('Contenido.Category.strSyncCategory_Loop', $param);
 
             // set correct rights for element
             cInclude ("includes", "functions.rights.php");
@@ -1338,7 +1339,7 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
     $newcatlang->store();
 
     // execute cec hook
-    $result = CEC_Hook::execute('Contenido.Category.strCopyCategory', array(
+    CEC_Hook::execute('Contenido.Category.strCopyCategory', array(
         'oldcat'     => $oldcat,
         'newcat'     => $newcat,
         'newcatlang' => $newcatlang
