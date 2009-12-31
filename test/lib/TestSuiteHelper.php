@@ -35,9 +35,8 @@ class TestSuiteHelper
     {
         $dir = new DirectoryIterator($path);
         foreach ($dir as $file) {
-            $filename = $file->getFilename();
-            if ($filename !== '.' && $filename !== '..') {
-                require_once($path . $filename);
+            if ($file->isFile()) {
+                require_once($path . $file->getFilename());
             }
         }
     }
