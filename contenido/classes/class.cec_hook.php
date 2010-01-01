@@ -268,7 +268,7 @@ class CEC_Hook {
             $bFirstIteration = true;
             while ($chainEntry = $cecIterator->next()) {
                 // invoke CEC function
-                $chainEntry->setParameters($args);
+                $chainEntry->setTemporaryArguments($args);
                 $chainEntry->execute();
             }
         }
@@ -314,7 +314,7 @@ class CEC_Hook {
 
             while ($chainEntry = $cecIterator->next()) {
                 // invoke CEC function
-                $chainEntry->setParameters($args);
+                $chainEntry->setTemporaryArguments($args);
                 $return = $chainEntry->execute();
                 if (isset($args[$pos])) {
                     $args[$pos] = $return;
@@ -367,7 +367,7 @@ class CEC_Hook {
             $bFirstIteration = true;
             while ($chainEntry = $cecIterator->next()) {
                 // invoke CEC function
-                $chainEntry->setParameters($args);
+                $chainEntry->setTemporaryArguments($args);
                 $return = $chainEntry->execute();
                 // process return value
                 if (isset($return) && $return === $breakCondition) {

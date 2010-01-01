@@ -363,7 +363,7 @@ class pApiCECChainItem
     protected $_sFunctionName;
 
     /**
-     * Callback name. Contains either the function name to invoke, or a array containing a class/object
+     * Callback name. Contains either the function name to invoke, or a indexed array (class/object and method)
      * and it's method to execute.
      * @var  array|string
      */
@@ -374,6 +374,13 @@ class pApiCECChainItem
      * @var  array
      */
     protected $_aParameters;
+
+
+    /**
+     * Temporary arguments holder
+     * @var  array|null
+     */
+    protected $_mTemporaryArguments;
 
 
     /**
@@ -489,13 +496,45 @@ class pApiCECChainItem
 
 
     /**
+     * Another way to set the arguments before invoking execute() method.
+     *
+     * @param   array  $args
+     * @return  void
+     */
+    public function setTemporaryArguments(array $args=array())
+    {
+        $this->_mTemporaryArguments = $args;
+    }
+
+    /**
+     * Will be invoked by execute() method. If temporary arguments where set before,
+     * it returns them and resets the property.
+     *
+     * @param   array  $args
+     * @return  void
+     */
+    public function getTemporaryArguments()
+    {
+        $args = $this->_mTemporaryArguments;
+        $this->_mTemporaryArguments = null;
+        return $args;
+
+    }
+
+
+    /**
      * Invokes the CEC function/callback.
      *
      * @return  mixed  If available, the result of the CEC function/callback
      */
     public function execute()
     {
-        return call_user_func_array($this->getCallback(), $this->getParameters());
+        // get temporary arguments, if the where set before
+        if (!$args = $this->getTemporaryArguments()) {
+            // no temporary arguments available, get them by func_get_args()
+            $args = func_get_args();
+        }
+        return call_user_func_array($this->getCallback(), $args);
     }
 
 }

@@ -39,6 +39,9 @@ class ContenidoChainsAllTest
         $suite->addTestSuite('ContenidoCategoryStrCopyCategoryTest');
         $suite->addTestSuite('ExampleContenidoChainExecuteObjectTest');
         $suite->addTestSuite('ExampleContenidoChainExecuteStaticMethodTest');
+        $suite->addTestSuite('ContenidoContentSaveContentEntryTest');
+        $suite->addTestSuite('ContenidoContentDeleteArticleTest');
+        $suite->addTestSuite('ContenidoContentCopyArticleTest');
         return $suite;
     }
 
