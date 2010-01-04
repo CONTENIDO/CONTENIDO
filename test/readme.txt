@@ -45,4 +45,14 @@ Organize the tests
 Misc
 ----
 
-PHPUnit page: http://www.phpunit.de/
+PHPUnit page:
+http://www.phpunit.de/
+
+PHPUnit documentation:
+http://www.phpunit.de/wiki/Documentation
+
+PHPUnit german manual:
+http://www.phpunit.de/manual/2.3/de/
+
+A short tutorial about PHPUnit:
+http://pear.php.net/manual/en/package.php.phpunit.intro.php
