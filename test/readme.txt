@@ -16,9 +16,9 @@ This folder (test) contains Contenido CMS related tests, created with PHPUnit.
 Usage
 -----
 
-Install PHPUnit2 with pear installer. Type following command:
+Install PHPUnit with pear installer. Type following command:
 
-$ pear install PHPUnit2
+$ pear install PHPUnit
 
 
 Open command line and go into folder {contenido_installation_path}/test/frontend/
