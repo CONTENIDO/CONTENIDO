@@ -24,6 +24,7 @@
  *   modified 2008-06-05, Frederic Schneider
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
+ *   modified 2010-01-07, Murat Purc, fixed usage of wrong variable, see [#CON-292]
  *
  *   $Id$:
  * }}
@@ -230,60 +231,41 @@ function checkLinks() {
 function searchFrontContentLinks($sValue, $iArt, $sArt, $iCat, $sCat) {
 	global $aSearchIDInfosArt, $aSearchIDInfosCat, $aSearchIDInfosCatArt, $aWhitelist;
 
-	if(preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idart=([0-9]*)/i', $sValue, $matches)) { // idart
-
-		if(count($matches[0]) > 1) {
-
-			for($i = 0; $i < count($matches[0]); $i++) {
-
-				if(!in_array($aMatches[0][$i], $aWhitelist)) {
-					$aSearchIDInfosArt[] = array("id" => $matches[1][$i], "url" => $matches[0][$i], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
-				}
-
-			}
-
-		} elseif(!in_array($matches[0][0], $aWhitelist)) {
-			$aSearchIDInfosArt[] = array("id" => $matches[1][0], "url" => $matches[0][0], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
-		}
-
+    // detect urls with parameter idart
+    $matches = array();
+	if (preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idart=([0-9]*)/i', $sValue, $matches)) {
+        for ($i = 0; $i < count($matches[0]); $i++) {
+            if (!in_array($matches[0][$i], $aWhitelist)) {
+                $aSearchIDInfosArt[] = array(
+                    "id" => $matches[1][$i], "url" => $matches[0][$i], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern"
+                );
+            }
+        }
 	}
 
-	if(preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idcat=([0-9]*)/i', $sValue, $aMatches)) { // idcat
-
-		if(count($aMatches[0]) > 1) {
-
-			for($i = 0; $i < count($aMatches[0]); $i++) {
-
-				if(!in_array($aMatches[0][$i], $aWhitelist)) {
-					$aSearchIDInfosCat[] = array("id" => $aMatches[1][$i], "url" => $matches[0][$i], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
-				}
-
-			}
-
-		} elseif(!in_array($aMatches[0][0], $aWhitelist)) {
-			$aSearchIDInfosCat[] = array("id" => $aMatches[1][0], "url" => $aMatches[0][0], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
-		}
-
+    // detect urls with parameter idcat
+    $matches = array();
+	if (preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idcat=([0-9]*)/i', $sValue, $matches)) {
+        for ($i = 0; $i < count($matches[0]); $i++) {
+            if (!in_array($matches[0][$i], $aWhitelist)) {
+                $aSearchIDInfosCat[] = array(
+                    "id" => $matches[1][$i], "url" => $matches[0][$i], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern"
+                );
+            }
+        }
 	}
 
-	if(preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idcatart=([0-9]*)/i', $sValue, $aMatches)) { // idcatart
-
-		if(count($aMatches[0]) > 1) {
-
-			for($i = 0; $i < count($aMatches[0]); $i++) {
-
-				if(!in_array($aMatches[0][$i], $aWhitelist)) {
-					$aSearchIDInfosCatArt[] = array("id" => $aMatches[1][$i], "url" => $aMatches[0][$i], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
-				}
-
-			}
-
-		} elseif(!in_array($aMatches[0][0], $aWhitelist)) {
-			$aSearchIDInfosCatArt[] = array("id" => $aMatches[1][0], "url" => $aMatches[0][0], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern");
-		}
-
+    // detect urls with parameter idcatart
+    $matches = array();
+	if (preg_match_all('/(?!file|ftp|http|ww)front_content.php\?idcatart=([0-9]*)/i', $sValue, $matches)) { // idcatart
+        for ($i = 0; $i < count($matches[0]); $i++) {
+            if (!in_array($matches[0][$i], $aWhitelist)) {
+                $aSearchIDInfosCatArt[] = array(
+                    "id" => $matches[1][$i], "url" => $matches[0][$i], "idart" => $iArt, "nameart" => $sArt, "idcat" => $iCat, "namecat" => $sCat, "urltype" => "intern"
+                );
+            }
+        }
 	}
-
 }
 
 // Searchs extern and intern links
