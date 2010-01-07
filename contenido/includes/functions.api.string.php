@@ -23,7 +23,8 @@
  *   created 2003-08-08
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-09-15, Murat Purc, add replacement of characters with diacritics
- *   modified 2009-04-30, Ortwin Pinke, CON-252 
+ *   modified 2009-04-30, Ortwin Pinke, CON-252
+ *   modified 2010-01-07, Ingo van Peren, CON-293   
  *
  *   $Id$:
  * }}
@@ -119,8 +120,6 @@ function capiStrTrimAfterWord ($string, $maxlen)
  */
 function capiStrTrimHard ($string, $maxlen, $fillup = "...")
 {
-	/* Our fillup string */
-	$fillup = "...";
 
 	/* If the string is smaller than the maximum
        lenght, it makes no sense to process it any
