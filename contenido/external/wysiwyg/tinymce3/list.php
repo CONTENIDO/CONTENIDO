@@ -25,14 +25,22 @@
  * {@internal 
  *   created  2005-06-10
  *   modified 2008-07-04, bilal arslan, added security fix
+ *   @modified 2010-01-13, Ingo van Peeren, CON-295
  *
  *   $Id: list.php 739 2008-08-27 10:37:54Z timo.trautmann $:
  * }}
  * 
  */
- if(!defined('CON_FRAMEWORK')) {
-   die('Illegal call');
+ 
+if (!defined("CON_FRAMEWORK")) {
+    define("CON_FRAMEWORK", true);
 }
+
+// include security class and check request variables
+include_once ('../../../classes/class.security.php');
+Contenido_Security::checkRequests();
+
+include_once ('../../../includes/startup.php');
 
 // include editor config/combat file
 @include (dirname(__FILE__).DIRECTORY_SEPARATOR."config.php"); // CONTENIDO
