@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  *   modified 2008-07-08  Thorsten Granz, added option to disable menu hover effect. clicking is now possible again
  *   modified 2009-12-17, Dominik Ziegler, added support for username fallback and fixed double quote
  *   modified 2009-12-16  Corrected rendering of multiple apostrophes in anchors
+ *   modified 2010-01-15, Dominik Ziegler, added frontend url to client name
  *
  *   $Id$:
  * }}
@@ -355,6 +356,8 @@ class Contenido_Navigation {
         } else {
             $main->set('s', 'CHOSENCLIENT', "<b>".i18n("Client").":</b> ".$sClientName." (".$client.")");
         }
+		
+		$main->set('s', 'CLIENT_URL', $cfgClient[$client]["path"]["htmlpath"]);
         $main->set('s', 'CHOSENUSER', "<b>".i18n("User").":</b> ".$classuser->getRealname($auth->auth["uid"], true));
         $main->set('s', 'SID', $sess->id);
         $main->set('s', 'MAINLOGINLINK', $sess->url("frameset.php?area=mycontenido&frame=4"));
