@@ -14,7 +14,7 @@
  * 
  *
  * @package    Contenido Content Types
- * @version    1.0.4
+ * @version    1.0.5
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -30,6 +30,7 @@
  *   modified 2009-10-01 - Dominik Ziegler, fixed session bug in link
  *   modified 2009-10-12 - Dominik Ziegler, fixed online/offline articles, dynamic teaser generation and translation implemented
  *   modified 2009-10-16 - Dominik Ziegler, added manual date support
+ *   modified 2010-01-21 - Dominik Ziegler, strip tags from manual teaser date
  *
  *   $Id$:
  * }}
@@ -942,6 +943,9 @@ class Cms_Teaser {
 			}else{
 				$oTpl->set('d', 'IMAGE', '');
 			}
+			
+			// strip all tags from manual teaser date
+			$sDate = strip_tags($sDate);
 			
 			//set generated values to teaser template
 			$oTpl->set('d', 'TITLE', $sTitle);
