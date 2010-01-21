@@ -350,6 +350,8 @@ if ( $perm->have_perm_area_action($area) ) {
 	$items = array();
 	while ($db->next_record())
 	{
+        $bSkip = false;
+    
 		if ($bIgnore == true && $iIgnoreLevel >= $db->f("level")) {
 			$bIgnore = false;
 		}	
@@ -359,8 +361,17 @@ if ( $perm->have_perm_area_action($area) ) {
 			$iIgnoreLevel = $db->f("level");
 			$sMoveSubtreeCatName = $db->f("name");
 		}
+        
+        if ($iCurLevel == $db->f("level")) {
+            if ($iCurParent != $db->f("parentid")) {
+                $bSkip = true;
+            }
+        } else {
+            $iCurLevel = $db->f("level");
+            $iCurParent = $db->f("parentid");
+        }
 
-		if ($bIgnore == false) {
+		if ($bIgnore == false && $bSkip == false) {
 			$entry = array();
 			$entry['idtree'] = $db->f("idtree");
 			$entry['idcat'] = $db->f("idcat");
