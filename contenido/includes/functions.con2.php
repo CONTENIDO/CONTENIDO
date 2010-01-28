@@ -475,50 +475,54 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 
 	if ($_cecIterator->count() > 0)
 	{
-		$tmpMetatags = array ();
+		$tmpMetatags = $metatags;
+        if (!is_array($tmpMetatags)) {
+            $tmpMetatags = array();
+        }
+        
 		while ($chainEntry = $_cecIterator->next())
 		{
-			$tmpMetatags = $chainEntry->execute($metatags);
-
-			//added 2008-06-25 Timo Trautmann -- system metatags were merged to user meta tags and user meta tags were not longer replaced by system meta tags
-			if (is_array($tmpMetatags))
-			{
-				//check for all system meta tags if there is already a user meta tag
-				foreach ($tmpMetatags as $aAutValue) {
-					$bExists = false;
-    
-					//get name of meta tag for search
-					$sSearch = '';
-					if (array_key_exists('name', $aAutValue)) {
-						$sSearch = $aAutValue['name'];
-					} else if (array_key_exists('http-equiv', $aAutValue)) {
-						$sSearch = $aAutValue['http-equiv'];
-					}
-    
-					//check if meta tag is already in list of user meta tags
-					if (strlen($sSearch) > 0) {
-						foreach ($metatags as $aValue) {
-							if (array_key_exists('name', $aValue)) {
-								if ($sSearch == $aValue['name']) {
-									$bExists = true;
-									break;
-								}
-							} else if (array_key_exists('http-equiv', $aAutValue)) {
-								if ($sSearch == $aValue['http-equiv']) {
-									$bExists = true;
-									break;
-								}
-							}
-						}
-					}
-    
-					//add system meta tag if there is no user meta tag
-					if ($bExists == false && strlen($aAutValue['content']) > 0) {
-						array_push($metatags, $aAutValue);
-					}
-				}
-			} 
+			$tmpMetatags = $chainEntry->execute($tmpMetatags);
 		}
+        
+        //added 2008-06-25 Timo Trautmann -- system metatags were merged to user meta tags and user meta tags were not longer replaced by system meta tags
+        if (is_array($tmpMetatags))
+        {
+            //check for all system meta tags if there is already a user meta tag
+            foreach ($tmpMetatags as $aAutValue) {
+                $bExists = false;
+
+                //get name of meta tag for search
+                $sSearch = '';
+                if (array_key_exists('name', $aAutValue)) {
+                    $sSearch = $aAutValue['name'];
+                } else if (array_key_exists('http-equiv', $aAutValue)) {
+                    $sSearch = $aAutValue['http-equiv'];
+                }
+
+                //check if meta tag is already in list of user meta tags
+                if (strlen($sSearch) > 0) {
+                    foreach ($metatags as $aValue) {
+                        if (array_key_exists('name', $aValue)) {
+                            if ($sSearch == $aValue['name']) {
+                                $bExists = true;
+                                break;
+                            }
+                        } else if (array_key_exists('http-equiv', $aAutValue)) {
+                            if ($sSearch == $aValue['http-equiv']) {
+                                $bExists = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                //add system meta tag if there is no user meta tag
+                if ($bExists == false && strlen($aAutValue['content']) > 0) {
+                    array_push($metatags, $aAutValue);
+                }
+            }
+        }
 	}
 
 	$sMetatags = '';
