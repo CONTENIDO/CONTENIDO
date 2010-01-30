@@ -440,12 +440,13 @@ function strRemakeTreeTable() {
     $remakeStrTable = true;
 
     $poststring = "";
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idclient = '".$client."'";
+	$sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idclient = '".$client."'";
     $db->query($sql);
     $idcats = array();
     while ($db->next_record()) {
         $idcats[] = $db->f("idcat");
     }
+    
     $sql = "DELETE FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat IN ('".implode("', '",$idcats)."')"; // empty 'cat_tree'-table
     $db->query($sql);
 
@@ -455,25 +456,56 @@ function strRemakeTreeTable() {
     $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='0'";
     $db->query($sql);
 
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='0' AND preid='0' AND idcat!='0' AND idclient = '".$client."'";
-    $idcats = array();
+    $sql = "SELECT idcat, parentid, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idclient = '".$client."' ORDER BY parentid ASC, preid ASC, postid ASC";
+    
     $db->query($sql);
-    while ($db->next_record()) {
-        $idcats[] = $db->f("idcat");
+        
+    $iNextTreeId = $db->nextid($cfg["tab"]["cat_tree"]);
+    
+	// build cat_tree
+    $aCategories = array();
+    $aLevels = array();
+    while($db->next_record()) {
+        
+        if ($db->f('parentid') == 0) {
+			$aCategories[0][$db->f('idcat')] = array(
+				'idcat' => $db->f('idcat'),
+		    	'parentid' => $db->f('parentid'),
+				'level' => 0
+			);
+            $aLevels[$db->f('idcat')] = 0;											     
+	    } else {
+			$iLevel = $aLevels[$db->f('parentid')] + 1;
+			$aLevels[$db->f('idcat')] = $iLevel;
+			$aCategories[$db->f('parentid')][$db->f('idcat')] = array(
+				'idcat' => $db->f('idcat'),
+			    'parentid' => $db->f('parentid'),
+				'level' => $iLevel
+			);
+		}			                                      
     }
+    
+    // build INSERT statement
+    $sInsertQuery = "INSERT INTO ".$cfg["tab"]["cat_tree"]." (idtree, idcat, level) VALUES ";        
+    $sInsertQuery = recCats($aCategories[0], $sInsertQuery, $iNextTreeId, $aCategories);
+    $sInsertQuery = rtrim($sInsertQuery, " ,");
+    
+	// lock db table and execute INSERT query    
+    $db->lock($cfg["tab"]["cat_tree"]);
+    $db->query($sInsertQuery);
+    $db->unlock($cfg["tab"]["cat_tree"]);
+        
+}
 
-    if (is_array($idcats)) {
-        foreach ($idcats as $value) {
-            $poststring = $poststring.$value.strOrderedPostTreeList ($value, "").",";
-        }
-    }
-    $poststring = preg_replace('/,$/', '', $poststring);
-    $a_maincats = explode(",", $poststring);
-    if (is_array($a_maincats)) {
-        foreach ($a_maincats as $tmp_idcat) {
-            strRemakeTreeTableFindNext($tmp_idcat,0);
-        }
-    }
+function recCats ($aCats, $sInsertQuery, &$iNextTreeId, &$aAllCats) {
+	foreach ($aCats as $iCat => $aCat) {
+		$sInsertQuery .= "(" . (int) $iNextTreeId . ", ".(int) $iCat.", ". (int) $aCat['level']."), ";
+		$iNextTreeId++;
+		if (is_array($aAllCats[$iCat])) {
+			$sInsertQuery = recCats($aAllCats[$iCat], $sInsertQuery, $iNextTreeId, $aAllCats);
+		}
+	}
+	return $sInsertQuery;
 }
 
 
