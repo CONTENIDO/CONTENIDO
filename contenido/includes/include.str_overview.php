@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2009-10-14, Dominik Ziegler - added some functionality for "cancel moving tree"
  *   modified 2009-10-15, Dominik Ziegler - removed unnecessary database query for selecting the level (level is already available)
+ *   modified 2010-01-30, Ingo van Peeren, some optimization of the amount of db queries for template names and descriptions  
  *
  *   $Id$:
  * }}
@@ -512,6 +513,31 @@ if ( $perm->have_perm_area_action($area) ) {
     $bAreaAddNewCategory = false;
     
     $aInlineEditData = array();
+
+    $sql = "SELECT
+		    	idtplcfg, idtpl
+		    FROM
+		        ".$cfg["tab"]["tpl_conf"];
+	$db->query($sql);
+	$aTplconfigs = array();
+	while ($db->next_record()) {
+        $aTplconfigs[$db->f('idtplcfg')] = $db->f('idtpl');
+    }
+    
+    $sql = "SELECT
+		    	name, description, idtpl
+		    FROM
+		    	".$cfg["tab"]["tpl"];
+		                
+    $db->query($sql);
+	$aTemplates = array();
+	while ($db->next_record()) {
+        $aTemplates[$db->f('idtpl')] = array(
+          'name' => $db->f('name'),
+          'description' => $db->f('description')
+        );
+    }
+
     foreach ($objects as $key=>$value) {
         // check if there area any permission for this $idcat   in the mainarea 6 (=str) and there subareas
         $bCheck = false;
@@ -618,8 +644,9 @@ if ( $perm->have_perm_area_action($area) ) {
                      $tpl->set('d', 'ALIAS', '&nbsp;');
             }
 
-            $template = $tpl->getTemplateNameFromTPLCFG($value->custom['idtplcfg']);
-						$templateDescription = $tpl->getTemplateDescription($value->custom['idtplcfg']);
+			$template = $aTemplates[$aTplconfigs[$value['idtplcfg']]]['name'];
+			$templateDescription = $aTemplates[$aTplconfigs[$value['idtplcfg']]]['description'];
+			      
             $descString = '';
 
 						if ($template == "")
