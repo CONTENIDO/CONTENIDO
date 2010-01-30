@@ -28,6 +28,7 @@
  *                                         reloading of navigation tree, small sql performance
  *                                         improvement
  *   modified 2009-12-18, Murat Purc, fixed usage of wrong db instance, see [#CON-282]
+ *   modified 2010-01-30, Ingo van Peeren, optimized amount of db queries, removed unused variables 
  *
  *   $Id$:
  * }}
@@ -69,9 +70,9 @@ global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client
             $check_rights = ($aValue['forcedisplay'] == 1) ? true : false;
 	    }  
 
-		$idcat = (int)$aValue['idcat'];
-        $level = $aValue['level'] - 1;
-        $name  = $aValue['name'];
+		  $idcat = (int)$aValue['idcat'];
+      $level = $aValue['level'] - 1;
+      $name  = $aValue['name'];
 		
         if ($check_rights) {
 
@@ -151,152 +152,62 @@ global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client
         # image depending on the structure
         # properties
        
-		if ($syncoptions == -1)
-		{
-			if ($cfg["is_start_compatible"] == true)
-			{
-                $sql2 = "SELECT
-                            c.is_start AS is_start,
-                            a.online AS online,
-    						a.idlang AS idlang
-                        FROM
-                            ".$cfg["tab"]["art_lang"]." AS a,
-                            ".$cfg["tab"]["art"]." AS b,
-                            ".$cfg["tab"]["cat_art"]." AS c
-                        WHERE
-                            a.idlang = ".Contenido_Security::toInteger($lang)." AND
-                            a.idart = b.idart AND
-                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
-                            b.idart = c.idart AND
-                            c.idcat = '".Contenido_Security::toInteger($idcat)."'";
-			} else {
-                $sql2 = "SELECT
-                            a.online AS online,
-    						a.idlang AS idlang,
-							a.idartlang AS idartlang
-                        FROM
-                            ".$cfg["tab"]["art_lang"]." AS a,
-                            ".$cfg["tab"]["art"]." AS b,
-                            ".$cfg["tab"]["cat_art"]." AS c
-                        WHERE
-                            a.idlang = ".Contenido_Security::toInteger($lang)." AND
-                            a.idart = b.idart AND
-                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
-                            b.idart = c.idart AND
-                            c.idcat = '".Contenido_Security::toInteger($idcat)."'";
-
-			}
-		} else {
-			if ($cfg["is_start_compatible"] == true)
-			{
-                $sql2 = "SELECT
-                            c.is_start AS is_start,
-                            a.online AS online,
-    						a.idlang AS idlang
-                        FROM
-                            ".$cfg["tab"]["art_lang"]." AS a,
-                            ".$cfg["tab"]["art"]." AS b,
-                            ".$cfg["tab"]["cat_art"]." AS c
-                        WHERE
-                            a.idart = b.idart AND
-                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
-                            b.idart = c.idart AND
-                            c.idcat = '".Contenido_Security::toInteger($idcat)."'";
-			} else {
-                $sql2 = "SELECT
-							a.idartlang AS idartlang,
-                            a.online AS online,
-    						a.idlang AS idlang
-                        FROM
-                            ".$cfg["tab"]["art_lang"]." AS a,
-                            ".$cfg["tab"]["art"]." AS b,
-                            ".$cfg["tab"]["cat_art"]." AS c
-                        WHERE
-                            a.idart = b.idart AND
-                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
-                            b.idart = c.idart AND
-                            c.idcat = '".Contenido_Security::toInteger($idcat)."'";				
-			}
-		}
-
-        $db2->query($sql2);
-
-        $no_start   = true;
-        $no_online  = true;
-
-        while ($db2->next_record()) {
-			// start article check
-            if ($cfg['is_start_compatible'] == true) {
-                $no_start = ($db2->f('is_start') != 1);
-			} else {
-				$no_start = !isStartArticle($db2->f('idartlang'), $idcat, $lang, $db3);
-			}
-
-			// online check
-            $no_online = ($db2->f('online') != 1);
-
-			if (!$no_start && !$no_online) {
-				// Exit loop if both vars are already false
-				break;
-			}
-        }
-
         if ( $aValue['online'] == 1 ) {
-            # Category is online                        
-                        
-            if ( $aValue['public'] == 0 ) {
-                # Category is locked
-                if ( $no_start || $no_online ) {
-                    # Error found
-                    $aAnchorClass = 'on_error_locked';                    
+                # Category is online
+
+                if ( $aValue['public'] == 0 ) {
+                    # Category is locked
+                    if ( $aValue['no_start'] || $aValue['no_online'] ) {
+                        # Error found
+                        $aAnchorClass = 'on_error_locked';
+
+                    } else {
+                        # No error found
+                        $aAnchorClass = 'on_locked';
+
+                    }
 
                 } else {
-                    # No error found
-                    $aAnchorClass = 'on_locked';                  
+                    # Category is public
+                    if ( $aValue['no_start'] || $aValue['no_online'] ) {
+                        # Error found
+                        $aAnchorClass = 'on_error';
 
+                    } else {
+                        # No error found
+                        $aAnchorClass = 'on';
+
+                    }
                 }
 
             } else {
-                # Category is public
-                if ( $no_start || $no_online ) {
-                    # Error found
-                    $aAnchorClass = 'on_error';
+                # Category is offline
+
+                if ( $aValue['public'] == 0 ) {
+                    # Category is locked
+                    if ( $aValue['no_start'] || $aValue['no_online'] ) {
+                        # Error found
+                        $aAnchorClass = 'off_error_locked';
+
+                    } else {
+                        # No error found
+                        $aAnchorClass = 'off_locked';
+
+                    }
 
                 } else {
-                    # No error found
-                    $aAnchorClass = 'on';
+                    # Category is public
+                    if ( $aValue['no_start'] || $aValue['no_online'] ) {
+                        # Error found
+                        $aAnchorClass = 'off_error';
 
+                    } else {
+                        # No error found
+                        $aAnchorClass = 'off';
+
+                    }
                 }
             }
-
-        } else {
-            # Category is offline
-
-            if ( $aValue['public'] == 0 ) {
-                # Category is locked
-                if ( $no_start || $no_online ) {
-                    # Error found
-                    $aAnchorClass = 'off_error_locked';
-
-                } else {
-                    # No error found
-                    $aAnchorClass = 'off_locked';
-
-                }
-
-            } else {
-                # Category is public
-                if ( $no_start || $no_online ) {
-                    # Error found
-                    $aAnchorClass = 'off_error';
-
-                } else {
-                    # No error found
-                    $aAnchorClass = 'off';
-
-                }
-            }
-        }
         
         if ( $aValue['islast'] == 1 ) {
             $aCssClasses[] = 'last';
@@ -548,10 +459,6 @@ if (isset($force))
 	$remakeCatTable = true;
 }
 
-$items = array();
-$addedcats = array();
-$count = 0;
-
 $arrIn = array();
 while ($db->next_record()) {
 	$arrIn[] = $db->f('idcat');
@@ -602,6 +509,100 @@ while ($db->next_record()) {
       		}
       	}
 	} 
+}
+
+if ($syncoptions == -1) {
+    if ($cfg["is_start_compatible"] == true) {
+        $sql2 = "SELECT
+                            c.idcat AS idcat,
+                            SUM(c.is_start) AS is_start,
+                            SUM(a.online) AS online
+                        FROM
+                            ".$cfg["tab"]["art_lang"]." AS a,
+                            ".$cfg["tab"]["art"]." AS b,
+                            ".$cfg["tab"]["cat_art"]." AS c
+                        WHERE
+                            a.idlang = ".Contenido_Security::toInteger($lang)." AND
+                            a.idart = b.idart AND
+                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
+                            b.idart = c.idart
+                        GROUP BY c.idcat   
+                            ";
+    } else {
+        $sql2 = "SELECT
+                            c.idcat AS idcat,
+                            SUM(a.online) AS online,
+							              d.startidartlang
+                        FROM
+                            ".$cfg["tab"]["art_lang"]." AS a,
+                            ".$cfg["tab"]["art"]." AS b,
+                            ".$cfg["tab"]["cat_art"]." AS c,
+                            ".$cfg["tab"]["cat_lang"]." AS d
+                        WHERE
+                            a.idlang = ".Contenido_Security::toInteger($lang)." AND
+                            a.idart = b.idart AND
+                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
+                            b.idart = c.idart AND
+                            c.idcat = d.idcat
+                        GROUP BY c.idcat
+                        ";
+
+    }
+} else {
+    if ($cfg["is_start_compatible"] == true) {
+        $sql2 = "SELECT
+                            c.idcat AS idcat,
+                            SUM(c.is_start) AS is_start,
+                            SUM(a.online) AS online
+                        FROM
+                            ".$cfg["tab"]["art_lang"]." AS a,
+                            ".$cfg["tab"]["art"]." AS b,
+                            ".$cfg["tab"]["cat_art"]." AS c
+                        WHERE
+                            a.idart = b.idart AND
+                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
+                            b.idart = c.idart
+                        GROUP BY c.idcat";
+    } else {
+        $sql2 = "SELECT
+                            c.idcat AS idcat,
+                            SUM(a.online) AS online,
+							              d.startidartlang
+                        FROM
+                            ".$cfg["tab"]["art_lang"]." AS a,
+                            ".$cfg["tab"]["art"]." AS b,
+                            ".$cfg["tab"]["cat_art"]." AS c,
+                            ".$cfg["tab"]["cat_lang"]." AS d
+                        WHERE
+                            a.idart = b.idart AND
+                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
+                            b.idart = c.idart AND 
+                            c.idcat = d.idcat
+                        GROUP BY c.idcat";				
+    }
+}
+
+$db->query($sql2);
+$aStartOnlineArticles = array();
+while ($db->next_record()) {
+    if ($cfg["is_start_compatible"] == true) {
+        if ($db->f('is_start') > 0) {
+            $aStartOnlineArticles[$db->f('idcat')]['is_start'] = true;
+        } else {
+            $aStartOnlineArticles[$db->f('idcat')]['is_start'] = false;
+        }
+    } else {
+        if ($db->f('startidartlang') > 0) {
+            $aStartOnlineArticles[$db->f('idcat')]['is_start'] = true;
+        } else {
+            $aStartOnlineArticles[$db->f('idcat')]['is_start'] = false;
+        }
+    }
+    if ($db->f('online') > 0) {
+        $aStartOnlineArticles[$db->f('idcat')]['is_online'] = true;
+    } else {
+        $aStartOnlineArticles[$db->f('idcat')]['is_online'] = false;
+    }
 }
 
 $_cecIterator = $_cecRegistry->getIterator("Contenido.ArticleCategoryList.ListItems");
@@ -747,14 +748,25 @@ while ($db->next_record()) {
            'active' => $active,
            'islast' => false,
            'articles' => $aIsArticles[$db->f("idcat")],
-           'level' => $db->f('level'));
+           'level' => $db->f('level')
+        );
+        if ($aStartOnlineArticles[$db->f('idcat')]['is_start']) {
+            $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_start'] = false;
+        } else {
+            $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_start'] = true;
+        }
+        if ($aStartOnlineArticles[$db->f('idcat')]['is_online']) {
+            $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_online'] = false;
+        } else {
+            $navigationTree[$db->f('parentid')][$db->f('idcat')]['no_online'] = true;
+        }        
         
     }
 }
 
 if ($bDebug) {
     echo '<pre>';
-    print_r($navigationTree); 
+    var_dump($navigationTree); 
     echo '</pre>';
 }
 if (count($navigationTree[0])) {
