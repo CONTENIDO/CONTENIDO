@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.2.2
+ * @version    1.2.3
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created unknown
  *   modified 2008-06-30, Frederic Schneider, add security fix
  *   modified 2008-09-03  Timo Trautmann, DB Object is only created if necessary
+ *   modified 2010-02-01  Ingo van Peeren, Removed deprecated functions and arrays because they are not used anymore 
  *
  *   $Id$: 
  * }}
@@ -75,18 +76,6 @@ class Template
 	 * @var object
 	 */
 	var $db;
-
-	/**
-	 * Template cache
-	 * @var array
-	 */
-	var $tplcache;
-
-	/**
-	 * Template name cache
-	 * @var array
-	 */
-	var $tplnamecache;
 	
 	/**
 	 * Dynamic counter
@@ -112,8 +101,6 @@ class Template
 	 */
 	function Template($tags = false)
 	{
-		$this->tplcache = Array ();
-		$this->tplnamecache = Array ();
 
 		if (is_array($tags))
 		{
@@ -303,107 +290,6 @@ class Template
 			} 
 		}
 	}
-
-	/**
-	 * getTemplateName()
-	 * Returns the name for the given template
-	 * @deprecated This function is in the wrong place
-	 * @return string  Returns the name of the given template
-	 */
-	function getTemplateName($tplid)
-	{
-		global $cfg;
-        
-        if (!is_object($this->db)) {
-            $this->db = new DB_Contenido();
-        }
-
-		if (array_key_exists((int) $tplid, $this->tplnamecache))
-		{
-			return $this->tplnamecache[$tplid];
-		}
-
-		$sql = "SELECT
-		                    name
-		                FROM
-		                ".$cfg["tab"]["tpl"]."
-		                WHERE
-		                    idtpl = '".$tplid."'";
-
-		$this->db->query($sql);
-		$this->db->next_record();
-
-		$this->tplnamecache[$tplid] = $this->db->f("name");
-		return ($this->db->f("name"));
-
-	} // end function
-	
-	function getTemplateDescription($tplid)
-	{
-		global $cfg;
-        
-        if (!is_object($this->db)) {
-            $this->db = new DB_Contenido();
-        }
-
-		$sql = "SELECT
-		                    idtpl
-		                FROM
-		                ".$cfg["tab"]["tpl_conf"]."
-		                WHERE
-		                    idtplcfg = '".Contenido_Security::toInteger($tplid)."'";
-
-		$this->db->query($sql);
-		$this->db->next_record();
-		$idTpl = $this->db->f("idtpl");
-		
-		$sql = "SELECT
-		                	description
-		                FROM
-		                ".$cfg["tab"]["tpl"]."
-		                WHERE
-		                    idtpl = '".Contenido_Security::toInteger($idTpl)."'";
-		
-		$this->db->query($sql);
-		$this->db->next_record();
-
-		return ($this->db->f("description"));
-	}
-
-	/**
-	 * getTemplateNameFromTPLCFG()
-	 * Returns the name for the given template using the template configuration ID
-	 * 
-	 * @deprecated this function is in the wrong place
-	 * @return string  Returns the name of the given template
-	 */
-	function getTemplateNameFromTPLCFG($tplcfg)
-	{
-		global $cfg;
-        
-        if (!is_object($this->db)) {
-            $this->db = new DB_Contenido();
-        }
-
-		if (array_key_exists($tplcfg, $this->tplcache))
-		{
-			return $this->tplcache[$tplcfg];
-		}
-
-		$sql = "SELECT
-		                    idtpl
-		                FROM
-		                ".$cfg["tab"]["tpl_conf"]."
-		                WHERE
-		                    idtplcfg = '".Contenido_Security::toInteger($tplcfg)."'";
-		$this->db->query($sql);
-		$this->db->next_record();
-
-		$this->tplcache[$tplcfg] = $this->getTemplateName($this->db->f("idtpl"));
-		return ($this->tplcache[$tplcfg]);
-
-	} // end function
-
 	
 } # end class
 ?>
