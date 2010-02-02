@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    1.49
+ * @version    1.50
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,8 @@
  * {@internal 
  *   created  2000-01-01
  *   modified 2008-07-04, bilal arslan, added security fix
+ *   modified 2010-02-02, Ingo van Peeren, added local method connect() in order 
+ *                                         to allow only one database connection 
  *
  *   $Id$:
  * }}
@@ -84,6 +86,19 @@ class DB_Contenido extends DB_Sql {
       
       // try to use the new connection and get the needed encryption
       //$this->query("SET NAMES 'utf8'");
+  }
+  
+  // Wrapper for parent connect methods in order to allow only 1 database connection
+  function connect($Database = "", $Host = "", $User = "", $Password = "") {
+      global $db_link;
+         
+      if ( 0 == $db_link|| !is_resource($db_link)) {
+          $db_link = parent::connect($Database, $Host, $User, $Password);
+      }
+         
+      $this->Link_ID = $db_link;
+         
+	    return $this->Link_ID;
   }
 
   function haltmsg($msg) {
