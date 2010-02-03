@@ -23,7 +23,7 @@
  *   created  2000-01-01
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2010-02-02, Ingo van Peeren, added local method connect() in order 
- *                                         to allow only one database connection 
+ *                                         to allow only one database connection, see [CON-300] 
  *
  *   $Id$:
  * }}
