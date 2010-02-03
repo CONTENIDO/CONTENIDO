@@ -24,7 +24,7 @@
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2009-10-14, Dominik Ziegler - added some functionality for "cancel moving tree"
  *   modified 2009-10-15, Dominik Ziegler - removed unnecessary database query for selecting the level (level is already available)
- *   modified 2010-01-30, Ingo van Peeren, some optimization of the amount of db queries for template names and descriptions  
+ *   modified 2010-01-30, Ingo van Peeren, some optimization of the amount of db queries for template names and descriptions, see [CON-301]  
  *
  *   $Id$:
  * }}
