@@ -30,6 +30,7 @@
  *   modified 2009-10-14, Dominik Ziegler - changed functionality of strMoveSubtree and strMoveCatTargetallowed to prevent crashing tree on moving
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready), commenting code and some formatting
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
+ *   modified 2010-01-30, Ingo van Peeren, modified strRemakeTreeTable() to pass only one INSERT statement to the database, see [#CON-299] 
  *
  *   $Id$:
  * }}
@@ -490,7 +491,7 @@ function strRemakeTreeTable() {
     $sInsertQuery = recCats($aCategories[0], $sInsertQuery, $iNextTreeId, $aCategories);
     $sInsertQuery = rtrim($sInsertQuery, " ,");
     
-	// lock db table and execute INSERT query    
+	  // lock db table and execute INSERT query    
     $db->lock($cfg["tab"]["cat_tree"]);
     $db->query($sInsertQuery);
     $db->unlock($cfg["tab"]["cat_tree"]);
@@ -625,8 +626,9 @@ function strNextBackwards($tmp_idcat) {
 }
 
 /**
-    Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann (strRemakeTreeTableFindNext)
-**/
+ *    Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann (strRemakeTreeTableFindNext)
+ *    @deprecated 
+ **/
 function strRemakeTreeTableFindNext($tmp_idcat,$tmp_level) {
     global $db;
     global $cfg;
