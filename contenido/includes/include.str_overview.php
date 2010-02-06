@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -26,7 +26,7 @@
  *   modified 2009-10-15, Dominik Ziegler - removed unnecessary database query for selecting the level (level is already available)
  *   modified 2010-01-30, Ingo van Peeren, some optimization of the amount of db queries for template names and descriptions, see [CON-301]
  *                                         removed use of deprecated methods of class.template.php, see [CON-302]
- *   modified 2010-02-05, Ingo van Peeren, fixed small bug added by last modification
+ *   modified 2010-02-06, Ingo van Peeren, fixed small bug added by last modification
  *
  *   $Id$:
  * }}
