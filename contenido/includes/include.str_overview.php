@@ -25,7 +25,8 @@
  *   modified 2009-10-14, Dominik Ziegler - added some functionality for "cancel moving tree"
  *   modified 2009-10-15, Dominik Ziegler - removed unnecessary database query for selecting the level (level is already available)
  *   modified 2010-01-30, Ingo van Peeren, some optimization of the amount of db queries for template names and descriptions, see [CON-301]
- *                                         removed use of deprecated methods of class.template.php, see [CON-302]    
+ *                                         removed use of deprecated methods of class.template.php, see [CON-302]
+ *   modified 2010-02-05, Ingo van Peeren, fixed small bug added by last modification
  *
  *   $Id$:
  * }}
@@ -645,8 +646,8 @@ if ( $perm->have_perm_area_action($area) ) {
                      $tpl->set('d', 'ALIAS', '&nbsp;');
             }
 
-			$template = $aTemplates[$aTplconfigs[$value['idtplcfg']]]['name'];
-			$templateDescription = $aTemplates[$aTplconfigs[$value['idtplcfg']]]['description'];
+			$template = $aTemplates[$aTplconfigs[$value->custom['idtplcfg']]]['name'];
+			$templateDescription = $aTemplates[$aTplconfigs[$value->custom['idtplcfg']]]['description'];
 			      
             $descString = '';
 
