@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.3.7
+ * @version    1.3.8
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -30,7 +30,8 @@
  *   modified 2009-10-14, Dominik Ziegler - changed functionality of strMoveSubtree and strMoveCatTargetallowed to prevent crashing tree on moving
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready), commenting code and some formatting
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
- *   modified 2010-01-30, Ingo van Peeren, modified strRemakeTreeTable() to pass only one INSERT statement to the database, see [#CON-299] 
+ *   modified 2010-01-30, Ingo van Peeren, modified strRemakeTreeTable() to pass only one INSERT statement to the database, see [#CON-299]
+ *   modified 2010-03-12, Ingo van Peeren, fixed a bug with last change if more than one client exist [#CON-299]
  *
  *   $Id$:
  * }}
@@ -69,6 +70,7 @@ cInclude("classes", "contenido/class.templateconfig.php");
 cInclude("classes", "contenido/class.containerconfig.php");
 cInclude("classes", "contenido/class.container.php");
 cInclude("includes", "functions.con.php");
+cInclude("includes", "functions.database.php");
 
 global $db_str;
 global $db_str2;
@@ -491,20 +493,24 @@ function strRemakeTreeTable() {
     $sInsertQuery = recCats($aCategories[0], $sInsertQuery, $iNextTreeId, $aCategories);
     $sInsertQuery = rtrim($sInsertQuery, " ,");
     
-	  // lock db table and execute INSERT query    
+	// lock db table and execute INSERT query    
     $db->lock($cfg["tab"]["cat_tree"]);
     $db->query($sInsertQuery);
+    $db->nextid('cat_tree');
+    dbUpdateSequence($cfg["tab"]["sequence"], $cfg["tab"]["cat_tree"], $db);
     $db->unlock($cfg["tab"]["cat_tree"]);
         
 }
 
 function recCats ($aCats, $sInsertQuery, &$iNextTreeId, &$aAllCats) {
-	foreach ($aCats as $iCat => $aCat) {
-		$sInsertQuery .= "(" . (int) $iNextTreeId . ", ".(int) $iCat.", ". (int) $aCat['level']."), ";
-		$iNextTreeId++;
-		if (is_array($aAllCats[$iCat])) {
-			$sInsertQuery = recCats($aAllCats[$iCat], $sInsertQuery, $iNextTreeId, $aAllCats);
-		}
+	if (is_array($aCats)) {
+    foreach ($aCats as $iCat => $aCat) {
+		  $sInsertQuery .= "(" . (int) $iNextTreeId . ", ".(int) $iCat.", ". (int) $aCat['level']."), ";
+		  $iNextTreeId++;
+		  if (is_array($aAllCats[$iCat])) {
+			 $sInsertQuery = recCats($aAllCats[$iCat], $sInsertQuery, $iNextTreeId, $aAllCats);
+		  }
+	 }
 	}
 	return $sInsertQuery;
 }
