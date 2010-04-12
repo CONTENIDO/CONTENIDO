@@ -473,7 +473,7 @@
 "upl";"filename";"varchar(255)";"";"";"";"";""
 "upl";"dirname";"varchar(255)";"";"";"";"";""
 "upl";"filetype";"varchar(255)";"";"";"";"";""
-"upl";"size";"varchar(255)";"";"";"";"";""
+"upl";"size";"int(10)";"";"";"";"";""
 "upl";"description";"text";"";"";"";"";""
 "upl";"status";"int(11)";"";"";"0";"";""
 "upl";"author";"varchar(32)";"";"";"";"";""
