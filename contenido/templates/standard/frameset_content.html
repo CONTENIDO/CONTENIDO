@@ -65,7 +65,7 @@ document.writeln("<\/frameset>");
 function initFrame() {    
     try {
       var iHeight = window.frames['left'].left_top.document.getElementsByTagName('body')[0].offsetHeight;
-      frameResize.resizeTopLeftFrame(iHeight+1);alert('foo');
+      frameResize.resizeTopLeftFrame(iHeight+1);
     } catch(e) {
       if(e) window.setTimeout("initFrame()", 250);
     }
