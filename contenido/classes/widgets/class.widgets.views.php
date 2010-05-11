@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.12
+ * @version    1.13
  * @author     Bjoern Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,6 +20,7 @@
  * 
  * {@internal 
  *   created 2004-08-04
+ *   modified 2010-05-11, Dominik Ziegler, removed output of "foo"
  *   
  *   $Id: class.widgets.views.php,v 1.1 2004/08/04 07:15:30 timo.hummel Exp $
  * }}
@@ -274,7 +275,6 @@ class cTableView
 			
 			if ($value["event"] != "")
 			{
-				echo "foo";
 				$onclick .= $value["event"];
 			}
 			
