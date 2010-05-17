@@ -159,5 +159,6 @@ $cfg['templates']['systam_variables_mailattach']	= 'template.system_sysval_maila
 $cfg['templates']['request_password']      = 'template.request_password.html';
 $cfg['templates']['file_subnav']         = 'template.file_subnav.html';
 $cfg['templates']['blank']                = 'template.blank.html';
+$cfg['templates']['system_purge']	= 'template.system_purge.html';
 
 ?>
