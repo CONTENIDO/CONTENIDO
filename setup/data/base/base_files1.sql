@@ -208,3 +208,4 @@ INSERT INTO !PREFIX!_files VALUES ('402', '402', 'include.js_history.php', 'main
 INSERT INTO !PREFIX!_files VALUES ('398', '32', 'include.files_subnav.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('403', '403', 'include.html_tpl_history.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('415', '415', 'include.system_configuration.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('813', '811', 'include.system_purge.php', 'main');

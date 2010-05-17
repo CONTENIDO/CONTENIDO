@@ -31,3 +31,4 @@ INSERT INTO !PREFIX!_frame_files VALUES ('1001', '1000', '2', '1001');
 INSERT INTO !PREFIX!_frame_files VALUES ('1002', '1000', '3', '1002');
 INSERT INTO !PREFIX!_frame_files VALUES ('1003', '1000', '4', '1003');
 INSERT INTO !PREFIX!_frame_files VALUES ('415', '415', '4', '415');
+INSERT INTO !PREFIX!_frame_files VALUES ('1007', '811', '4', '813'); 	

@@ -102,6 +102,7 @@
              	<syssettings>Expert settings</syssettings>
             	<sysvalues>System variables</sysvalues>
                 <configuration>System settings</configuration>
+                <purge>Purge</purge>
             	<syserrorreport>Error report</syserrorreport>
             </system>
             <frontend>

@@ -189,6 +189,7 @@ contenido/classes/class.note.php -text
 contenido/classes/class.notification.php -text
 contenido/classes/class.phpmailer.php -text
 contenido/classes/class.properties.php -text
+contenido/classes/class.purge.php -text
 contenido/classes/class.request.password.php -text
 contenido/classes/class.request.php -text
 contenido/classes/class.search.php -text
@@ -1167,6 +1168,7 @@ contenido/includes/include.subnav.php -text
 contenido/includes/include.subnav_blank.php -text
 contenido/includes/include.symbolhelp.php -text
 contenido/includes/include.system_configuration.php -text
+contenido/includes/include.system_purge.php -text
 contenido/includes/include.system_subnav.php -text
 contenido/includes/include.system_sysvalues.php -text
 contenido/includes/include.systemsettings.php -text
@@ -1504,6 +1506,7 @@ contenido/templates/standard/template.subnav.html -text
 contenido/templates/standard/template.subnav_blank.html -text
 contenido/templates/standard/template.subnav_noleft.html -text
 contenido/templates/standard/template.symbolhelp.html -text
+contenido/templates/standard/template.system_purge.html -text
 contenido/templates/standard/template.system_subnav.html -text
 contenido/templates/standard/template.system_variables.html -text
 contenido/templates/standard/template.tpl_edit_form.html -text
