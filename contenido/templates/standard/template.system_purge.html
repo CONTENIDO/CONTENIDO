@@ -11,7 +11,7 @@
 	<style type="text/css">
 	  .system_clear {
 		border: 1px solid #B3B3B3; 
-		width: 550px;
+		width: 570px;
 		margin-top: 10px;
 		
 	  }
@@ -74,6 +74,7 @@
 		float:left;
 		border-left: 1px solid #B3B3B3;
 		padding-bottom: 5px;
+		white-space: nowrap;
 	  }
 	  
 	  .system_clear_group .bottom{
@@ -205,7 +206,7 @@
 				}
 				
 				if (iActionSel == 0) {
-					sErrMsg += 'Keine Aktion ausgewählt!';
+					sErrMsg += '{ERR_MSG_NO_ACTION}';
 					bErr = true;
 				}	
 
@@ -244,7 +245,7 @@
 		</div>
 		<div class="rightCol clearfix">
 			<fieldset style="margin-left: 10px;">
-			    <legend>Select client</legend>
+			    <legend>{CLIENT_CHOOSE}</legend>
 				<div class="system_clear_form_row clearfix">
 					<input id="select_all_clients" class="input" name="selectClient" type="radio" value="all"/>
 					<label class="labelrightCol">{CLIENT_SELECT_ALL}</label>
@@ -285,7 +286,7 @@
 			
 			<div class="system_clear_form_row clearfix">
 				<input class="input" name="keepHistory" type="checkbox" value="1"/>
-				<label class="label_middle">{NUMBER_OF_HISTORY} </label>
+				<label class="label_middle">{NUMBER_OF_HISTORY}: </label>
 				<input class="input" name="keepHistoryNumber" type="text" value="10" style="width: 25px;" maxlength="5"/>
 			</div>
 			

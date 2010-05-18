@@ -3842,3 +3842,87 @@ msgstr "Anzahl der Dateien"
 
 msgid "No layout description available"
 msgstr "Keine Layout-Beschreibung vorhanden"
+
+msgid "Select clients"
+msgstr "Mandanten Auswahl"
+
+msgid "all clients"
+msgstr "alle Mandanten"
+
+msgid "from list"
+msgstr "aus Liste"
+
+msgid "Reset the table %s"
+msgstr "Tabelle %s leeren"
+
+msgid "Activate the code generation in %s"
+msgstr "Code-Generierung in der Tabelle %s"
+
+msgid "Clear client cache"
+msgstr "Cache-Dateien l&ouml;schen"
+
+msgid "Clear client log file"
+msgstr "Log-Datei leeren"
+
+msgid "Clear client history"
+msgstr "Versionierung l&ouml;schen"
+
+msgid "Keep last histories"
+msgstr "Letzten Versionierungen beibehalten"
+
+msgid "Reset the table %s"
+msgstr "Tabelle %s leeren"
+
+msgid "Clear contenido log file"
+msgstr "Contenido Log-Datei leeren"
+
+msgid "Clear contenido cache"
+msgstr "Contenido Cache l&ouml;schen"
+
+msgid "Reset cronjobs"
+msgstr "job-Dateien von Cronjob leeren"
+
+msgid "System purge"
+msgstr "System Bereinigen"
+
+msgid "No action selected!"
+msgstr "Keine Aktion ausgew&auml;hlt!"
+
+msgid "These changes can not be cancelled."
+msgstr "Die &Auml;nderungen k&ouml;nnen Sie nicht wiederherstellen."
+
+msgid "Do you really want to complete it?"
+msgstr "Wollen Sie diese Aktion wirklich ausf&uuml;hren!"
+
+msgid "The changes were successfully executed."
+msgstr "Die &Auml;nderungen wurden erfolgreich ausgef&uuml;hrt."
+
+msgid "The changes were not all successfully completed."
+msgstr "Die &Auml;nderungen wurden teilweise nicht erfolgreich ausgef&uuml;hrt."
+
+msgid "Client %s"
+msgstr "Mandant %s"
+
+msgid "The entries of %s table are not deleted!"
+msgstr "Einträge von der Tabelle %s wurden nicht gelöscht!"
+
+msgid "The %s is not updated!"
+msgstr "Tabelle %s ist nicht akutalisiert!"
+
+msgid "The cache is not deleted!"
+msgstr "Cache wurde nicht gel&ouml;scht"
+
+msgid "The log is not deleted!"
+msgstr "Log-Datei wurde nicht geleert"
+
+msgid "The history is not deleted!"
+msgstr "Versionierung wurde nicht gel&ouml;scht!"
+
+msgid "The contenido log is not cleaned!"
+msgstr "Contenido Log-Datei wurde nicht geleert"
+
+msgid "The contenido cache is not deleted!"
+msgstr "Contenido Cache wurde nicht gel&ouml;scht!"
+
+msgid "The contenido cronjobs are not cleaned!"
+msgstr "Contenido Cronjob-Dateien wurden nicht geleert!"

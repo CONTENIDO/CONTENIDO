@@ -1,7 +1,7 @@
 <?php
 /**
  * Description: 
- * Contenido Purge class to reset some datas(con_code, con_cat_art) and files (log, cache, history)
+ * Contenido Purge class to reset some datas and files.
  *
  * @package    Contenido Backend classes
  * @version    1.0.0
@@ -18,6 +18,11 @@
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
+
+/**
+ * class Purge
+ *
+ */
 
 class Purge {
 

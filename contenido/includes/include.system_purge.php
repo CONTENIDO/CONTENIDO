@@ -59,14 +59,14 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
 			if (isset($_POST['conCode']) && $_POST['conCode'] == 1) {
 				if (!$oPurge->resetClientConCode($iClientId)) {
 					$bError = true;
-					$sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . i18n("The concode entries are not deleted!") . "<br />";
+					$sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['code']) . "<br />";
 				}
 			} 
 			
 			if (isset($_POST['conCatArt']) && $_POST['conCatArt'] == 1) {
 				if (!$oPurge->resetClientConCatArt($iClientId)) {
 					$bError = true;
-					$sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . i18n("The con_cat_art entries are not deleted!") . "<br />";
+					$sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . sprintf(i18n("The %s is not updated!"), $cfg['tab']['cat_art']) . "<br />";
 				}
 			}
 			
@@ -105,21 +105,21 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
 	if (isset($_POST['conInuse']) && $_POST['conInuse'] == 1) {
 		if (!$oPurge->resetConInuse()) {
 			$bError = true;
-			$sErrorMsg .= i18n("The entries of con_inuse table are not deleted!") . "<br />";
+			$sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['inuse']) . "<br />";
 		}
 	}
 	
 	if (isset($_POST['conPHPLibActiveSession']) && $_POST['conPHPLibActiveSession'] == 1) {
 		if (!$oPurge->resetPHPLibActiveSession()) {
 			$bError = true;
-			$sErrorMsg .= i18n("The entries of con_phplib_active_sessions table are not deleted!") . "<br />";
+			$sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['phplib_active_sessions']) . "<br />";
 		}
 	}
 	
 	if (isset($_POST['conLog']) && $_POST['conLog'] == 1) {
 		if (!$oPurge->clearConLog()) {
 			$bError = true;
-			$sErrorMsg .= i18n("The contenido log is not deleted!") . "<br />";
+			$sErrorMsg .= i18n("The contenido log is not cleaned!") . "<br />";
 		}
 	}
 	
@@ -138,9 +138,9 @@ if (isset($_POST['send']) && $_POST['send'] == 'store') {
 	}
 	
 	if ($bError === false) {
-		$sInfoMsg = $notification->returnNotification("info", mi18n("The changes were successfully executed."));
+		$sInfoMsg = $notification->returnNotification("info", i18n("The changes were successfully executed."));
 	} else {
-		$sErrorComplete = mi18n("The changes were not all successfully completed.") . "<br /><br />" . $sErrorMsg;
+		$sErrorComplete = i18n("The changes were not all successfully completed.") . "<br /><br />" . $sErrorMsg;
 		$sInfoMsg = $notification->returnNotification("error", $sErrorComplete);
 	} 
 		
@@ -163,34 +163,36 @@ $oHtmlSelectHour->setSize($iClientSelectSize);
 $sSelectClient = $oHtmlSelectHour->toHtml();
 $tpl->set('s', 'SELECT_CLIENT', $sSelectClient);	
 
-$tpl->set('s', 'TITLE', i18n("System clean"));
-$tpl->set('s', 'ERR_MSG_SELECT_CLIENT', i18n("It is not selected a client!"));	
+$tpl->set('s', 'TITLE', i18n("System purge"));
+$tpl->set('s', 'ERR_MSG_SELECT_CLIENT', i18n("No Client selected!"));	
 
 $tpl->set('s', 'CONTENIDO', $contenido);	
 
 $tpl->set('s', 'GROUP_CLIENT', i18n("Client"));	 
-$tpl->set('s', 'CLIENT_SELECT_ALL', i18n("Select all clients"));	
-$tpl->set('s', 'CLIENT_SELECT', i18n("Select clients from list"));	
+$tpl->set('s', 'CLIENT_SELECT_ALL', i18n("all clients"));	
+$tpl->set('s', 'CLIENT_SELECT', i18n("from list"));	
 $tpl->set('s', 'CLIENT_CHOOSE', i18n("Select clients"));	
-$tpl->set('s', 'CON_CODE', i18n("Reset the table con_code"));	
-$tpl->set('s', 'CON_CAT_ART', i18n("Reset the table con_cat_art"));	
-$tpl->set('s', 'CON_INUSE', i18n("Reset the table con_inuse"));
+$tpl->set('s', 'CON_CODE', sprintf(i18n("Reset the table %s"), $cfg['tab']['code']));	
+$tpl->set('s', 'CON_CAT_ART', sprintf(i18n("Activate the code generation in %s"), $cfg['tab']['code'], $cfg['tab']['cat_art']));	
+$tpl->set('s', 'CON_INUSE', sprintf(i18n("Reset the table %s"), $cfg['tab']['inuse']));
 $tpl->set('s', 'CLIENT_CACHE', i18n("Clear client cache"));	
 $tpl->set('s', 'CLIENT_LOG', i18n("Clear client log file"));	
 $tpl->set('s', 'CLIENT_HISTORY', i18n("Clear client history"));	
-$tpl->set('s', 'NUMBER_OF_HISTORY', i18n("Keep last histories:"));	
+$tpl->set('s', 'NUMBER_OF_HISTORY', i18n("Keep last histories"));	
 
 $tpl->set('s', 'GROUP_CONTENIDO', i18n("Contenido"));	
 $tpl->set('s', 'CON_LOG', i18n("Clear contenido log file"));	
-$tpl->set('s', 'CON_ACTIVE_SESSION', i18n("Reset the table con_phplib_active_sessions"));	
+$tpl->set('s', 'CON_ACTIVE_SESSION', sprintf(i18n("Reset the table %s"), $cfg['tab']['phplib_active_sessions']));	
 $tpl->set('s', 'CON_CACHE', i18n("Clear contenido cache"));	
 $tpl->set('s', 'CON_CRONJOB', i18n("Reset cronjobs"));	
 
-$tpl->set('s', 'BOX_TITLE', i18n("System clear"));	
-$tpl->set('s', 'BOX_MESSAGE', i18n("These changes can not be canceled. <br /> <br /> Do you really want to complete it?"));	
+$tpl->set('s', 'BOX_TITLE', i18n("System purge"));	
+$tpl->set('s', 'BOX_MESSAGE', i18n("These changes can not be cancelled.") . '<br /> <br />' . i18n("Do you really want to complete it?"));	
 	
 $tpl->set('s', 'INFO_MSG_BOX', $sInfoMsg);
 $tpl->set('s', 'ERR_MSG_BOX', $notification->returnNotification("error", ''));
+
+$tpl->set('s', 'ERR_MSG_NO_ACTION', i18n("No action selected!"));
 
 $tpl->set('s', 'SUBMIT_TEXT', i18n("Send"));
 
