@@ -66,7 +66,10 @@ class Contenido_Security {
      * Request paramaters, which must be numeric
      * @var  array
      */
-    protected static $_mustbeNumericParameters = array('client', 'changeclient', 'lang', 'changelang');
+    protected static $_mustbeNumericParameters = array(
+        'client', 'changeclient', 'lang', 'changelang', 'idcat', 'idcatlang', 'idart', 'idartlang',
+        'idcatart'
+    );
 
     /**
      * Request paramaters, which are strictly forbitten
