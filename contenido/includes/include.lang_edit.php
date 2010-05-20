@@ -22,7 +22,7 @@
  * {@internal 
  *   created 2003-04-30
  *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-05-25, Oliver Lohkemper, add iso-639-2- & $iso-3166-selecter
+ *   modified 2009-05-25, Oliver Lohkemper, add iso-639-2- & iso-3166-selecter
  *
  *   $Id$:
  * }}
