@@ -175,7 +175,7 @@ $tpl->set('s', 'MYCONTENIDO_OVERVIEW', $mycontenido_overview);
 $tpl->set('s', 'MYCONTENIDO_LASTARTICLES', $mycontenido_lastarticles);
 $tpl->set('s', 'MYCONTENIDO_TASKS', $mycontenido_tasks);
 $tpl->set('s', 'MYCONTENIDO_SETTINGS', $mycontenido_settings);
-$admins= $classuser->getSystemAdmins();
+$admins= $classuser->getSystemAdmins(true);
 
 $sAdminTemplate = '<li class="welcome">%s, %s</li>';
 

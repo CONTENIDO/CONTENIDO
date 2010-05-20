@@ -635,9 +635,10 @@ class User {
     /**
      * getSystemAdmins()
      * Returns all system admins available in the system
+     * @param boolean forceActiv Is forceActiv true return only activ Sysadmins
      * @return array   Array with id and name entries
      */
-    function getSystemAdmins() {
+    function getSystemAdmins( $forceActive=false ) {
         global $cfg;
 
         $db = new DB_Contenido;
@@ -651,15 +652,20 @@ class User {
                 ". $cfg["tab"]["phplib_auth_user_md5"] ."
                 WHERE
                     perms LIKE \"%sysadmin%\"";
-
+      
+      if($forceActive===true)
+      {
+         $sql.= " AND ( valid_from <= NOW() OR valid_from = '0000-00-00')
+                AND ( valid_to >= NOW() OR valid_to = '0000-00-00' ) ";
+      }
 
         $db->query($sql);
 
         $users = array();
-        
+       
         while ($db->next_record())
         {
-            
+           
             $newentry["username"] = $db->f("username");
             $newentry["realname"] = $db->f("realname");
             $newentry["email"]    = $db->f("email");
