@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.4.8
+ * @version    1.4.9
  * @author     Holger Librenz
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,19 +20,20 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2004-02-24
+ *   created  2004-02-24
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-07-04, Dominik Ziegler, fixed bug CON-174
  *   modified 2008-11-10 Rudi Bieller Commented out display_errors as this should be handled as defined in php.ini by default
  *   modified 2008-11-18, Murat Purc, add UrlBuilder configuration
  *   modified 2008-12-04, Bilal Arslan, added for config-password examples.
+ *   modified 2010-05-20, Murat Purc, documented settings for UrlBuilder and caching.
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
@@ -174,12 +175,34 @@ $cfg['http_params_check']['config'] = $cfg["path"]["contenido"] . $cfg["path"]["
 /* max file size for one session file */
 $cfg['session_line_length'] = 99999;
 
-/* Cache settings
+
+/**
+ * Cache settings
  * ----------------------------------
+ *
+ * Following cache settings don't affect the caching behaviour at frontend.
+ * 
+ * Only enabling the caching ($cfg["cache"]["disable"] = false) will activate processing of
+ * caching at frontend.
+ * Everything else has to be configured in a client caching specific file which is available 
+ * in clients frontend path, see cms/includes/concache.php.
+ *
+ * So, if you want do enable frontend caching, set $cfg["cache"]["disable"] to false and configure 
+ * the rest in cms/includes/concache.php!
+ *
+ * @TODO: Need a caching solution with better integration in Contenido core
  */
-$cfg["cache"]["disable"] = true;
-$cfg["cache"]["dir"]	 = "cache/";
-$cfg["cache"]["lifetime"]= 3600;
+// (bool)  Enable/Disable caching
+$cfg['cache']['disable'] = true;
+
+// (string)  Directory, where to store cache files.
+//           NOTE: This setting doesn't affects frontend caching
+$cfg['cache']['dir']	 = 'cache/';
+
+// (int)  Lifetime of cached files in seconds.
+//        NOTE: This setting doesn't affects frontend caching
+$cfg['cache']['lifetime'] = 3600;
+
 
 /* GenericDB driver */
 $cfg['sql']['gdb_driver'] = 'mysql';
@@ -204,19 +227,32 @@ $cfg["contenido"]["notifyinterval"] = 20;
 
 /**
  * UrlBuilder settings
- * -------------------
- * 'name'   =  The name of UrlBuilder to use. 
- * 'config' = Default UrlBuilder configuration, depends on used UrlBuilder
+ * ----------------------------------
+ * 
+ * Configuration of UrlBuilder to use.
  *
- * Defined name is used by /contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php
+ * Example setting for UrlBuilder 'front_content' (generates URLs like '/cms/front_content.php?idcat=2&lang=1'):
+ * $cfg['url_builder']['name']   = 'front_content';
+ * $cfg['url_builder']['config'] = array();
+ *
+ * Example setting for UrlBuilder 'custom_path' (generates URLs like '/cms/Was-ist-Contenido/rocknroll,a,2.4fb'):
+ * $cfg['url_builder']['name']   = 'custom_path';
+ * $cfg['url_builder']['config'] = array('prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ',');
+ *
+ * See also http://forum.contenido.org/viewtopic.php?f=64&t=23280
  */
+// (string)  Name of UrlBuilder to use.
+//           Feasible values are 'front_content', 'custom', 'custom_path' or a user defined name. 
+//           Check out Contenido_UrlBuilderFactory::getUrlBuilder() in
+//           contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php for more details 
+//           about this setting.
 $cfg['url_builder']['name']   = 'front_content';
+
+// (array)  Default UrlBuilder configuration.
+//          An associative configuration array which will be passed to the UrlBuilder instance.
+//          Values depend on used UrlBuilder.
 $cfg['url_builder']['config'] = array();
-/*
-// Example setting for UrlBuilder 'custom_path':
-$cfg['url_builder']['name']   = 'custom_path';
-$cfg['url_builder']['config'] = array('prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ',');
-*/
+
 
 /**
  * Password Settings
