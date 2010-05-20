@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Ing. Christian Schuller (www.maurer-it.com)
  * @copyright  four for business AG <www.4fb.de>
  * @link       http://www.4fb.de
@@ -19,21 +19,19 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2003-12-10
+ *   created  2003-12-10
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
-}
 
 if ($doedit == "1") {
 	cInclude("includes","functions.upl.php");

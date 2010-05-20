@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.2.1
+ * @version    1.2.2
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,12 +20,13 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2003-01-20
+ *   created  2003-01-20
  *   modified 2008-06-16, Holger Librenz, Hotifx: added check for invalid calls
  *   modified 2008-06-16, Rudi Bieller, Hotifx: added check for XSS at "contenido" and "belang"
  *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
  *   modified 2008-07-02, Frederic Schneider, add security fix and include security class
  *   modified 2009-10-16, Ortwin Pinke, added rewrite of ampersand in frameset url
+ *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -36,27 +37,13 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// include security class and check request variables
-include_once ('./classes/class.security.php');
-Contenido_Security::checkRequests();
-
-if (isset($_REQUEST['contenido'])) {
-	$sPattern = '/^[a-zA-Z0-9]+$/i';
-	if (!preg_match($sPattern, $_REQUEST['contenido'])) {
-		die ('Invalid call');
-	}
-}
-
+// Contenido startup process
 include_once ('./includes/startup.php');
-
-cInclude ("includes", 'functions.i18n.php');
 
 cInclude ("classes", 'class.xml.php');
 cInclude ("classes", 'class.navigation.php');
 cInclude ("classes", 'class.template.php');
 cInclude ("classes", 'class.backend.php');
-
-cInclude ("includes", 'cfg_sql.inc.php');
 
 
 page_open(array('sess' => 'Contenido_Session',
@@ -74,7 +61,6 @@ i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
 //includePluginConf();
 require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
 cInclude ("includes", 'cfg_language_de.inc.php');
-cInclude ("includes", 'functions.general.php');
 cInclude ("includes", 'functions.forms.php');
 
 $sess->register("belang");

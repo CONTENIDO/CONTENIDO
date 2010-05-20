@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.0.4
+ * @version    1.0.5
  * @author     Holger Librenz, Andreas Lindner
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,12 +20,13 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2007-04-20
+ *   created  2007-04-20
  *   modified 2008-06-15, Rudi Bieller, Bugfix CON-149
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-06-27, Timo.Trautmann, Encoding Header added
  *   modified 2008-07-02, Frederic Schneider, querys escaped and include security class
  *   modified 2008-09-08, Oliver Lohkemper, Fixed: "Fatal error: Class 'PropertyCollection' not found"
+ *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -43,12 +44,8 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// include security class and check request variables
-include_once ('./classes/class.security.php');
-Contenido_Security::checkRequests();
-
-include_once ($cfg['path']['contenido']."includes/config.php");
-include_once ($cfg['path']['contenido']."includes/startup.php");
+// Contenido startup process
+include_once (dirname(__FILE__) . '/includes/startup.php');
 
 cInclude("classes", "class.properties.php");
 

@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend scripts
- * @version    1.3.2
+ * @version    1.3.3
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,10 +20,11 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created unknown
+ *   created  unknown
  *   modified 2008-06-16, H. Librenz, Hotfix: Added check for invalid calls
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-07-02, Frederic Schneider, include security_class
+ *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -34,13 +35,8 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// include security class and check request variables
-include_once ('../classes/class.security.php');
-Contenido_Security::checkRequests();
-
+// Contenido startup process
 include_once ('../includes/startup.php');
-
-include_once ($cfg["path"]["contenido"].$cfg["path"]["includes"] . 'functions.i18n.php');
 
 header("Content-Type: text/javascript");
 

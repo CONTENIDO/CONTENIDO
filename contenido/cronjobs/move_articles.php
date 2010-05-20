@@ -13,7 +13,7 @@
  * 
  *
  * @package    Contenido Backend <Area>
- * @version    <version>
+ * @version    1.0.0
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -26,23 +26,20 @@
  *   created  2003-05-26
  *   modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious calls
  *   modified 2008-07-04, bilal arslan, added security fix
+ *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
  * 
  */
+
 if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-include_once ('../classes/class.security.php');
-Contenido_Security::checkRequests();
-
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
-    die ('Invalid call');
-}
+// Contenido startup process
 if (isset($cfg['path']['contenido'])) {
-	include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'startup.php');
+	include_once ($cfg['path']['contenido'] . $cfg['path']['includes'] . 'startup.php');
 } else {
 	include_once ('../includes/startup.php');
 }
@@ -59,9 +56,7 @@ include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.layout.
 include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.client.php');
 include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.cat.php');
 include_once ($cfg['path']['contenido'].$cfg["path"]["classes"] . 'class.treeitem.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'cfg_sql.inc.php');
 include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'cfg_language_de.inc.php');
-include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'functions.general.php');
 include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'functions.con.php');
 
 if(!isRunningFromWeb() || function_exists("runJob") || $area == "cronjobs") {

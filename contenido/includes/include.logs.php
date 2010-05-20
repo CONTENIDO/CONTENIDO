@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.4
+ * @version    1.0.5
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,24 +20,22 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2003-05-09
+ *   created  2003-05-09
  *   modified 2008-06-16, Holger Librenz, Hotfix: added check for invalid calls
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2009-10-15, Dominik Ziegler, fetching areaname from actions array to save a lot of database queries
  *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
+ *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
-}
 
 cInclude("classes", "class.htmlelements.php");
 cInclude("classes", "class.user.php");

@@ -19,6 +19,9 @@
  * @link       http://www.contenido.org
  * @since      file available since contenido release 4.8.7
  *
+ * @TODO: Some features are the same as in HttpInputValidator (see contenido/classes/class.httpinputvalidator.php),
+ *        merge them...
+ *
  * {@internal
  *   created 2008-06-25
  *   modified 2008-07-02, Frederic Schneider, added boolean functions and checkRequests()

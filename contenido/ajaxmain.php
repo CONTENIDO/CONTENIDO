@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Olaf Niemann, Jan Lengowski, Ingo van Peeren
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,7 +20,8 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2008-09-08, Ingo van Peeren
+ *   created  2008-09-08, Ingo van Peeren
+ *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *
  *   $Id:$:
  * }}
@@ -31,27 +32,12 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// include security class and check request variables
-include_once ('./classes/class.security.php');
-Contenido_Security::checkRequests();
-
-if (isset($_REQUEST['changeclient'])) {
-	$_REQUEST['changeclient'] = intval($_REQUEST['changeclient']);
-	$changeclient = intval($_REQUEST['changeclient']);
-}
-if (isset($_REQUEST['changelang'])) {
-	$_REQUEST['changelang'] = intval($_REQUEST['changelang']);
-	$changelang = intval($_REQUEST['changelang']);
-}
-
+// Contenido startup process
 include_once ('./includes/startup.php');
-cInclude ("includes", 'functions.general.php');
 
 $cfg["debug"]["backend_exectime"]["fullstart"] = getmicrotime();
 
-cInclude ("includes", 'functions.i18n.php');
 cInclude ("includes", 'functions.api.php');
-cInclude ("includes", 'functions.general.php');
 cInclude ("includes", 'functions.forms.php');
 
 cInclude ("classes", 'class.xml.php');

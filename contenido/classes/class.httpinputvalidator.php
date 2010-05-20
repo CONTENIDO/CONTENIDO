@@ -22,7 +22,10 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
+ *
+ * @TODO: Some features are the same as in Contenido_Security (see contenido/classes/class.security.php),
+ *        merge them...
+ *
  * {@internal 
  *   created 2008-02-06
  *   modified 2008-06-10, I. van Peeren, initially set $this->bLog as $bLog in config file

@@ -60,6 +60,7 @@
  *   modified 2009-04-16, OliverL, check return from Contenido.Frontend.HTMLCodeOutput
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
+ *   modified 2010-05-20, Murat Purc, moved security checks into startup process, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -74,26 +75,8 @@ $contenido_path = '';
 # include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
 
-// include security class and check request variables
-include_once ($contenido_path . 'classes/class.security.php');
-Contenido_Security::checkRequests();
-
-if (isset($_REQUEST['belang'])) {
-    $aValid = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
-    if (!in_array(strval($_REQUEST['belang']), $aValid)) {
-        die('Please use a valid language!');
-    }
-}
-
 # Contenido startup process
-include_once ($contenido_path."includes/startup.php");
-
-// check HTTP parameters, if requested
-if ($cfg['http_params_check']['enabled'] === true) {
-    cInclude('classes', 'class.httpinputvalidator.php');
-    $oHttpInputValidator =
-        new HttpInputValidator($cfg["path"]["contenido"] . $cfg["path"]["includes"] . '/config.http_check.php');
-}
+include_once ($contenido_path . 'includes/startup.php');
 
 cInclude("includes", "functions.con.php");
 cInclude("includes", "functions.con2.php");
@@ -163,47 +146,15 @@ while ($db->next_record())
     $encoding[$db->f("idlang")] = $db->f("encoding");
 }
 
-if (is_numeric($tmpchangelang) && $tmpchangelang > 0)
-{
-    $savedlang = $lang;
-    $lang = $tmpchangelang;
-}
 
-// Checking basic data input
-if (isset($changeclient) && !is_numeric($changeclient)) {
-    unset ($changeclient);
-}
+// Check frontend globals
+// @TODO: Should be outsourced into startup process but requires a better detection (frontend or backend)
+Contenido_Security::checkFrontendGlobals();
 
-if (isset($client) && !is_numeric($client)) {
-    unset ($client);
-}
-
-if (isset($changelang) && !is_numeric($changelang)) {
-    unset ($changelang);
-}
-
-if (isset($lang) && !is_numeric($lang)) {
-    unset ($lang);
-}
-
-// Change client
-if (isset($changeclient)){
-    $client = $changeclient;
-    unset($lang);
-    unset($load_lang);
-}
-
-// Change language
-if (isset($changelang)) $lang = $changelang;
-
-// Initialize client
-if (!isset($client)) {
-    //load_client defined in frontend/config.php
-    $client = $load_client;
-}
 
 // update urlbuilder set http base path 
 Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
+
 
 // Initialize language
 if (!isset($lang)) {

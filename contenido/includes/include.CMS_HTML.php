@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,22 +20,20 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2003-05-07
+ *   created  2003-05-07
  *   modified 2008-06-16, H. Librenz, Hotfix: check for illegal calls added
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
-}
 
 if ( $doedit == "1" || $doedit == "2" )
 {

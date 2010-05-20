@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.1.2
+ * @version    1.1.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,8 +20,9 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2003-05-20
+ *   created  2003-05-20
  *   modified 2008-07-02, Frederic Schneider, new code-header and include security_class
+ *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -32,13 +33,8 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// include security class and check request variables
-include_once ('./classes/class.security.php');
-Contenido_Security::checkRequests();
-
+// Contenido startup process
 include_once ('./includes/startup.php');
-
-cInclude ("includes", 'functions.i18n.php');
 
 cInclude("classes", 'class.user.php');
 cInclude("classes", 'class.xml.php');
@@ -57,10 +53,7 @@ page_open(array('sess' => 'Contenido_Session',
 
 i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
 
-cInclude("includes",  'cfg_sql.inc.php');
 cInclude("includes",   'cfg_language_de.inc.php');
-cInclude("includes",   'functions.general.php');
-cInclude("includes",   'functions.i18n.php');
 cInclude("includes",   'functions.forms.php');
 cInclude("classes", "class.activeusers.php");
 

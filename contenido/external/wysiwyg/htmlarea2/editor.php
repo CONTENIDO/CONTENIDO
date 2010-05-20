@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    0.1
+ * @version    0.1.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,22 +21,19 @@
  * 
  * {@internal 
  *   created  2002-01-01
- *   modified File is an php file  
+ *   modified File is an php file
  *   modified 2008-07-04, bilal arslan, added security fix
+ *   modified 2010-05-20, Murat Purc, Remove check of $_REQUEST['cfg'] during processing ticket [#CON-307]
  *
  *   $Id$:
  * }}
  * 
  */
- if(!defined('CON_FRAMEWORK')) {
+
+if (!defined('CON_FRAMEWORK')) {
    die('Illegal call');
 }
  
-
-
-if (isset($_REQUEST['cfg'])) {
-    die ('Illegal call!');
-}
 ?>
 
 <script language="javascript">

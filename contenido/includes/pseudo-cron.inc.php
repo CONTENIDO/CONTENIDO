@@ -110,9 +110,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if ( $_REQUEST['cfg'] ) { 
-	die('Illegal call');
-}
 
 /****************************************/
 /*      config section               */

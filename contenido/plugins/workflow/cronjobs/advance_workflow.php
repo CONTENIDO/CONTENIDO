@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.5
+ * @version    1.5.1
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -19,21 +19,18 @@
  * @link       http://www.contenido.org
  * 
  * {@internal 
- *   created 2003-05-26
+ *   created  2003-05-26
+ *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *   
  *   $Id: advance_workflow.php,v 1.5 2004/06/17 15:06:08 timo.hummel Exp $
  * }}
  * 
  */
 
-DEFINE ('CON_FRAMEWORK', true);
+define('CON_FRAMEWORK', true);
 
-if (isset($_REQUEST['cfg']) || isset ($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
-}
 
-include_once('../../../classes/class.security.php');
-
+// Contenido startup process
 include_once ('../../../includes/startup.php');
 
 cInclude("classes", "class.security.php");
@@ -50,9 +47,7 @@ cInclude("classes", "class.layout.php");
 cInclude("classes", "class.client.php");
 cInclude("classes", "class.cat.php");
 cInclude("classes", "class.treeitem.php");
-cInclude("includes", "cfg_sql.inc.php");
 cInclude("includes", "cfg_language_de.inc.php");
-cInclude("includes", "functions.general.php");
 cInclude("includes", "functions.con.php");
 
 plugin_include('workflow', 'classes/class.workflow.php');

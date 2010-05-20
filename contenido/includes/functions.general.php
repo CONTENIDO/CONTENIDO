@@ -2261,6 +2261,7 @@ function endAndLogTiming($uuid)
 	trigger_error("calling function ".$_timings[$uuid]["function"]."(".$parameterString.") took ".$timeSpent." seconds", E_USER_NOTICE);
 }
 
+// @TODO: it's better to create a instance of DB_Contenido class, the class constructor connects also to the database. 
 function checkMySQLConnectivity()
 {
 	global $contenido_host, $contenido_database, $contenido_user, $contenido_password, $cfg;

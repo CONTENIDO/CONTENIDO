@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,9 +20,10 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2004-02-12
+ *   created  2004-02-12
  *   modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call
  *   modified 2008-06-30, Dominik Ziegler, fixed bug CON-143, added new header
+ *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -33,22 +34,13 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-include_once ('../classes/class.security.php');
-Contenido_Security::checkRequests();
-
-
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
-}
-
+// Contenido startup process
 if (isset($cfg['path']['contenido'])) {
-	include_once ($cfg['path']['contenido'].$cfg["path"]["includes"] . 'startup.php');
+	include_once ($cfg['path']['contenido'] . $cfg['path']['includes'] . 'startup.php');
 } else {
 	include_once ('../includes/startup.php');
 }
 
-cInclude ("includes", "functions.general.php");
-cInclude ("includes", "functions.i18n.php");
 cInclude ("classes", 'class.genericdb.php');
 cInclude ("classes", 'class.properties.php');
 cInclude ("classes", 'class.todo.php');

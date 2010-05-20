@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,22 +20,20 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created unknown
+ *   created  unknown
  *   modified 2008-06-26, Dominik Ziegler, add security fix
  *   modified 2008-07-29, Bilal Arslan, moved inline html to template
+ *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  * 
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if ( $_REQUEST['cfg'] ) { 
-	die('Illegal call');
-}
 
 //notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
 include_once($cfg['path']['contenido'].'includes/grouprights.inc.php');

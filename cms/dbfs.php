@@ -22,9 +22,10 @@
  * @deprecated file deprecated in contenido release <Contenido Version>
  * 
  * {@internal 
- *   created unknown
+ *   created  unknown
  *   modified 2008-06-16, H. Librenz - Hotfix: checking for potential unsecure calling
  *   modified 2008-07-03, bilal arslan, added security fix
+ *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -39,12 +40,9 @@ $contenido_path = '';
 # include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
 
-// include security class and check request variables
-include_once ($contenido_path . 'classes/class.security.php');
-Contenido_Security::checkRequests();
+// Contenido startup process
+include_once ($contenido_path . 'includes/startup.php');
 
-include_once ($contenido_path . "includes/startup.php");
-cInclude("includes", "functions.general.php");
 cInclude("classes", "class.dbfs.php");
 
 if ($contenido)

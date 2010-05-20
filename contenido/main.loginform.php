@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,26 +20,23 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2003-01-21
+ *   created  2003-01-21
  *   modified 2008-06-17, Rudi Bieller, some ugly fix for possible abuse of belang...
  *   modified 2008-07-02, Frederic Schneider, add security fix
+ *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
-    die();
-}
 
 global $cfg, $username;
 
-cInclude ("includes", 'functions.i18n.php');
 cInclude ("classes", "class.notification.php");
 cInclude ("classes", "class.request.password.php");
 

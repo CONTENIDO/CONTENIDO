@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,20 +20,22 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created unknown
+ *   created  unknown
  *   modified 2008-06-16, Holger Librenz, Hotifc: added check for invalid calls
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path']) || isset($_REQUEST['sAreaFilename'])) {
+// @TODO: check the code beneath is necessary
+if (isset($_REQUEST['sAreaFilename'])) {
     die ('Invalid call!');
 }
 
@@ -41,7 +43,7 @@ $_cecIterator = $_cecRegistry->getIterator("Contenido.Permissions.Group.GetAreaE
 
 while ($chainEntry = $_cecIterator->next())
 {
-    // @todo This has to be refactored because this could cause SQL-Injection, Remote-File-Inclusion ....
+    // @TODO: This has to be refactored because this could cause SQL-Injection, Remote-File-Inclusion ....
     $aInfo = $chainEntry->execute($_REQUEST["external_area"]);
     if ($aInfo !== false)
     {

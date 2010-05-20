@@ -13,7 +13,7 @@
  * TINYMCE 1.45rc1 Fileversion
  *
  * @package    Contenido Backend <Area>
- * @version    0.0.3
+ * @version    0.0.4
  * @author     Martin Horwath, horwath@dayside.net
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,7 +25,8 @@
  * {@internal 
  *   created  2005-06-10
  *   modified 2008-07-04, bilal arslan, added security fix
- *   @modified 2010-01-13, Ingo van Peeren, CON-295
+ *   modified 2010-01-13, Ingo van Peeren, CON-295
+ *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *
  *   $Id: list.php 739 2008-08-27 10:37:54Z timo.trautmann $:
  * }}
@@ -36,10 +37,7 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// include security class and check request variables
-include_once ('../../../classes/class.security.php');
-Contenido_Security::checkRequests();
-
+// Contenido startup process
 include_once ('../../../includes/startup.php');
 
 // include editor config/combat file

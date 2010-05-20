@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 3003-07-18
  *   modified 2008-07-02, Frederic Schneider, add security fix
+ *   modified 2010-05-20, Murat Purc, Removed check of $_REQUEST['cfg'] during processing ticket [#CON-307]
  *
  *   $Id$:
  * }}
@@ -31,8 +32,6 @@
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
-
-if ( $_REQUEST['cfg'] ) { exit; }
 
 cInclude("classes", "class.properties.php");
 

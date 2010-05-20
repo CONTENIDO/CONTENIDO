@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    0.2
+ * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,17 +22,20 @@
  * {@internal 
  *   created  2005-10-06
  *   modified 2008-07-07, bilal arslan, added security fix
+ *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
  * 
  */
- if(!defined('CON_FRAMEWORK')) {
-                die('Illegal call');
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
-
+// Contenido startup process
 include_once ('../../contenido/includes/startup.php');
+
 cInclude("classes", "xml/class.xml2array.php");
 cInclude("classes", "class.csv.php");
 cInclude("includes", "functions.database.php");

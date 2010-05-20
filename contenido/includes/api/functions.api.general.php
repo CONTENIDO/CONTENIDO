@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,29 +20,27 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2003-09-01
+ *   created  2003-09-01
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2009-10-27, Murat Purc, initialization of variable $error to prevent PHP strict messages
+ *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
+// @TODO: PATH_SEPARATOR/DIRECTORY_SEPARATOR exists since PHP 4.3.4, Contenido requires PHP 5...
+if (!defined('PATH_SEPARATOR')) {
+    define('PATH_SEPARATOR', (substr(PHP_OS, 0, 3) == 'WIN') ? ';' : ':');
 }
 
-if ( !defined('PATH_SEPARATOR') ) {
-    define('PATH_SEPARATOR', ( substr(PHP_OS, 0, 3) == 'WIN' ) ? ';' : ':');
-}
-
-if ( !defined('DIRECTORY_SEPARATOR') ) {
-    define('DIRECTORY_SEPARATOR', ( substr(PHP_OS, 0, 3) == 'WIN' ) ? '\\' : '/');
+if (!defined('DIRECTORY_SEPARATOR')) {
+    define('DIRECTORY_SEPARATOR', (substr(PHP_OS, 0, 3) == 'WIN') ? '\\' : '/');
 }
 
 /* Info:

@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.3.2
+ * @version    1.3.3
  * @author     Ing. Christian Schuller (www.maurer-it.com)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,23 +20,21 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2003-12-10
+ *   created  2003-12-10
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-07-07, Dominik Ziegler, fixed language bug
  *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
+ *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if (isset($_REQUEST['cfg']) || isset($_REQUEST['contenido_path'])) {
-    die ('Illegal call!');
-}
 
 if ($doedit == "1") {
     conSaveContentEntry ($idartlang, "CMS_IMG", $typenr, $CMS_IMG);

@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend plugins
- * @version    2.0.1
+ * @version    2.0.2
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,22 +20,20 @@
  * @since      file available since contenido release 4.8.7
  * 
  * {@internal 
- *   created 2007-12-05 (based on 2003)
+ *   created  2007-12-05 (based on 2003)
  *   modified 2007-12-06, Frederic Schneider, Linkchecker-Edition
  *   modified 2008-07-02, Frederic Schneider, add security fix
+ *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if($_REQUEST['cfg']) {
-	exit;
-}
 
 $nav = new Contenido_Navigation;
 

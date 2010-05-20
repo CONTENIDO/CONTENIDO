@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.1
+ * @version    1.1.1
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -19,22 +19,18 @@
  * @link       http://www.contenido.org
  * 
  * {@internal 
- *   created 2003-05-20
+ *   created  2003-05-20
+ *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *   
  *   $Id: include.workflow_subnav.php,v 1.1 2003/07/31 13:44:03 timo.hummel Exp $
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if (isset($_REQUEST['cfg'])) {
-    die ('Illegal call!');
-}
-
-cInclude("classes", "class.security.php");
 
 	$nav = new Contenido_Navigation;
 
