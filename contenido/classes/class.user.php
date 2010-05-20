@@ -24,6 +24,7 @@
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2009-05-18, Andreas Lindner, add method getGroupIDsByUserID to class User    
  *   modified 2009-12-17, Dominik Ziegler, added support for username fallback
+ *   modified 2010-05-20, Oliver Lohkemper, add param forceActive in User::getSystemAdmins()
  *
  *   $Id$:
  * }}
@@ -635,7 +636,7 @@ class User {
     /**
      * getSystemAdmins()
      * Returns all system admins available in the system
-     * @param boolean forceActiv Is forceActiv true return only activ Sysadmins
+     * @param boolean forceActive Is forceActive true return only activ Sysadmins
      * @return array   Array with id and name entries
      */
     function getSystemAdmins( $forceActive=false ) {

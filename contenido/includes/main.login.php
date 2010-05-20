@@ -24,6 +24,7 @@
  *   modified 2008-06-26, Dominik Ziegler, update notifier class added
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2009-12-14, Dominik Ziegler, use User::getRealname() for user name output and provide username fallback
+ *   modified 2010-05-20, Oliver Lohkemper, add param true for get active admins
  *
  *   $Id$:
  * }}
