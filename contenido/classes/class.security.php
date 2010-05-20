@@ -239,7 +239,7 @@ class Contenido_Security {
      * Checks some Contenido core related request parameters against XSS
      *
      * @access  public
-     * @return  true
+     * @return  bool|void  True on success otherwhise nothing.
      * @throws  Contenido_Security_Exception if one of the checks fails
      */
     public static function checkRequests() {
@@ -263,7 +263,7 @@ class Contenido_Security {
     /**
      * Checks backend language parameter in request.
      *
-     * @return  true
+     * @return  bool|void  True on success otherwhise nothing.
      * @throws  Contenido_Security_Exception if existing backend language parameter is not valid
      */
     public static function checkRequestBelang() {
@@ -280,8 +280,8 @@ class Contenido_Security {
     /**
      * Checks for forbitten parameters in request.
      *
-     * @return  true
-     * @throws  Contenido_Security_Exception if existing backend language parameter is not valid
+     * @return  bool|void  True on success otherwhise nothing.
+     * @throws  Contenido_Security_Exception if the request contains one of forbitten parameters.
      */
     public static function checkRequestForbittenParameter() {
         foreach (self::$_forbittenParameters as $param) {
@@ -299,7 +299,7 @@ class Contenido_Security {
      * Contrary to other request checks, this method don't throws a exception. It just insures that
      * incomming values are really numeric, by type casting them to an integer.
      *
-     * @return  true
+     * @return  bool  Just true
      */
     public static function checkRequestMustbeNumericParameter() {
         foreach (self::$_mustbeNumericParameters as $param) {
@@ -314,7 +314,7 @@ class Contenido_Security {
     /**
      * Checks/Validates existing contenido session request parameter.
      *
-     * @return  true
+     * @return  bool|void  True on success otherwhise nothing.
      * @throws  Contenido_Security_Exception if contenido parameter in request don't matches the required format
      */
     public static function checkRequestSession() {
