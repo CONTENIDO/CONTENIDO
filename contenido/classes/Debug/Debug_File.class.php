@@ -13,7 +13,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.1.0
+ * @version    1.1.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,15 +21,16 @@
  * @link       http://www.contenido.org
  * 
  * {@internal 
- *   created 2007-01-01
+ *   created  2007-01-01
  *   modified 2008-05-21 Added methods add(), reset(), showAll()
+ *   modified 2010-05-20 Murat Purc, Hey, last change was nearly 2 years ago ;-)... Fixed generated warnings, see [#CON-309]
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
@@ -66,7 +67,7 @@ class Debug_File implements IDebug {
 	 * @return void
 	 */
 	public function __destruct() {
-	    if (!is_null(self::$_hFileHandle) && self::$_hFileHandle !== false) {
+        if (is_resource(self::$_hFileHandle)) {
 	        fclose(self::$_hFileHandle);
 	    }
 	}
@@ -94,7 +95,7 @@ class Debug_File implements IDebug {
 	 */
 	public function show($mVariable, $sVariableDescription='', $bExit = false)
 	{
-        if (self::$_hFileHandle !== false && is_writeable($this->_sPathToFile)) {
+        if (is_resource(self::$_hFileHandle) && is_writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
             fwrite(self::$_hFileHandle, '#################### '.$sDate.' ####################'."\n");
             fwrite(self::$_hFileHandle, $sVariableDescription."\n");
