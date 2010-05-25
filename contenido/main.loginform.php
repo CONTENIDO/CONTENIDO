@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-17, Rudi Bieller, some ugly fix for possible abuse of belang...
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
+ *   modified 2010-05-25, Dominik Ziegler, Remove password and username maxlength definitions at backend login [#CON-314]
  *
  *   $Id$:
  * }}
@@ -195,7 +196,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
                       <div class="text_medium_bold login_title"><?php echo i18n('Contenido Backend'); ?></div>
                       
     				    <label id="lblusername" for="username" style="width:75px; display:block; float:left;"><?php echo i18n('Login'); ?>:</label>
-    				    <input id="username" tabindex="1" type="text" class="text_medium" name="username" size="25" maxlength="32" value="<?php echo ( isset($this->auth["uname"]) ) ? htmlentities(strip_tags($this->auth["uname"])) : ""  ?>" />
+    				    <input id="username" tabindex="1" type="text" class="text_medium" name="username" size="25" value="<?php echo ( isset($this->auth["uname"]) ) ? htmlentities(strip_tags($this->auth["uname"])) : ""  ?>" />
     			</div>
     			<div id="head_nav2" class="head_nav_login left_dist">
                     <input id="okbutton" tabindex="4" type="image" title="Login" alt="Login" src="images/but_ok.gif" />
@@ -209,7 +210,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
                     <div class="text_medium_bold login_title">&nbsp;</div>
                  
                     <label id="lblpasswd" for="passwd" style="width:75px; display:block; float:left;"><?php echo i18n('Password'); ?>:</label>
-                    <input id="passwd" tabindex="2" type="password" class="text_medium" name="password" size="25" maxlength="32" />
+                    <input id="passwd" tabindex="2" type="password" class="text_medium" name="password" size="25" />
                     
                     <input type="hidden" name="vaction" value="login" />
                     <input type="hidden" name="formtimestamp" value="<?php echo time(); ?>" />
