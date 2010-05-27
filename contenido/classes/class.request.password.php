@@ -25,6 +25,7 @@
  * {@internal 
  *   created 2008-03-20
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2010-05-27, Oliver Lohkemper, check if user activ in handleNewPassword() 
  *
  *   $Id$:
  * }}
