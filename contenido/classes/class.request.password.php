@@ -273,7 +273,9 @@ class RequestPassword {
 
         //check if requested username exists, also get email and  timestamp when user last requests a new password (last_pw_request)
         $sSql = "SELECT username, last_pw_request, email FROM ".$this->aCfg["tab"]["phplib_auth_user_md5"]."
-			             WHERE username = '".$this->oDb->escape($this->sUsername)."'";
+			     WHERE username = '".$this->oDb->escape($this->sUsername)."'
+				 AND ( valid_from <= NOW() OR valid_from = '0000-00-00')
+                 AND ( valid_to >= NOW() OR valid_to = '0000-00-00' )";
 
     	$this->oDb->query($sSql);
     	if ($this->oDb->next_record() && md5($this->sUsername) == md5($this->oDb->f('username'))) {
