@@ -25,6 +25,7 @@
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-11-17, H. Librenz - new ConUser class are used for user creation now, comments fixed, code formatted
  *   modified 2008-11-18, H. Librenz - values given during a submittion try are now resubmitted
+ *   modified 2010-05-31, Ortwin Pinke, PHP >= 5.3, replace deprecated split-function with explode()
  *
  *   $Id$:
  * }}
@@ -69,7 +70,7 @@ if (! $perm->have_perm_area_action ( $area, $action )) {
 				// isn't sysadmin and no client has been specified.
 				// This avoids new accounts which are not accessible by the
 				// current user (client admin) anymore
-				$aUserPerm = split ( ",", $auth->auth ["perm"] );
+				$aUserPerm = explode( ",", $auth->auth ["perm"] );
 
 				if (! in_array ( "sysadmin", $aUserPerm )) {
 					array_push ( $stringy_perms, "client[$client]" );
@@ -289,7 +290,7 @@ if (! $perm->have_perm_area_action ( $area, $action )) {
 	$tpl->set ( 'd', 'CATFIELD', formGenerateField ( "text", "address_country", $address_country, 40, 255 ) );
 	$tpl->next ();
 
-	$userperm = split ( ",", $auth->auth ["perm"] );
+	$userperm = explode( ",", $auth->auth ["perm"] );
 
 	if (in_array ( "sysadmin", $userperm )) {
 		$tpl->set ( 'd', 'CLASS', 'text_medium' );
