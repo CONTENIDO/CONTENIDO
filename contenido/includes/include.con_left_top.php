@@ -25,7 +25,8 @@
  *  @modified 2008-09-08, Ingo van Peeren, improved navigation tree in left bottom frame, expanding/
  *                                         collapsing of navigation tree without reloading (AJAX/
  *                                         javascript solution based on jquery)
- *  @modified 2008-09-18, Ingo van Peeren, moved template-changing to jquery                                        
+ *  @modified 2008-09-18, Ingo van Peeren, moved template-changing to jquery      
+ *  @modified 2010-06-16, Fixed a bug wit the Syncselection (there was no right userright check)  
  *
  *   $Id$:
  * }}
@@ -449,7 +450,7 @@ if (count($languages) > 1 && $perm->have_perm_area_action($area, "con_synccat"))
     
     foreach ($languages as $languageid => $languagename)
     {
-    	if ($lang != $languageid)
+    	if ($lang != $languageid && $perm->have_perm_client_lang($client, $languageid))
     	{
     		$option = new cHTMLOptionElement($languagename . " (".$languageid.")",$languageid);
     		$selectbox->addOptionElement($languageid, $option);
