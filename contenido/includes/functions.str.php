@@ -32,6 +32,7 @@
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *   modified 2010-01-30, Ingo van Peeren, modified strRemakeTreeTable() to pass only one INSERT statement to the database, see [#CON-299]
  *   modified 2010-03-12, Ingo van Peeren, fixed a bug with last change if more than one client exist [#CON-299]
+ *   modified 2010-06-18, Ingo van Peeren, fixed some issues with next id and order of con_cat_tree entries 
  *
  *   $Id$:
  * }}
@@ -443,7 +444,7 @@ function strRemakeTreeTable() {
     $remakeStrTable = true;
 
     $poststring = "";
-	$sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idclient = '".$client."'";
+	  $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idclient = '".$client."'";
     $db->query($sql);
     $idcats = array();
     while ($db->next_record()) {
@@ -461,39 +462,44 @@ function strRemakeTreeTable() {
 
     $sql = "SELECT idcat, parentid, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idclient = '".$client."' ORDER BY parentid ASC, preid ASC, postid ASC";
     
-    $db->query($sql);
-        
-    $iNextTreeId = $db->nextid($cfg["tab"]["cat_tree"]);
+    $db->query($sql);      
     
 	// build cat_tree
     $aCategories = array();
     $aLevels = array();
     while($db->next_record()) {
-        
+         
         if ($db->f('parentid') == 0) {
-			$aCategories[0][$db->f('idcat')] = array(
-				'idcat' => $db->f('idcat'),
-		    	'parentid' => $db->f('parentid'),
-				'level' => 0
-			);
+            $aCategories[0][$db->f('idcat')] = array(
+				        'idcat' => $db->f('idcat'),
+		    	      'parentid' => $db->f('parentid'),
+		    	      'preid' => $db->f('preid'),
+		    	      'postid' => $db->f('postid'),
+				        'level' => 0
+			      );
             $aLevels[$db->f('idcat')] = 0;											     
-	    } else {
-			$iLevel = $aLevels[$db->f('parentid')] + 1;
-			$aLevels[$db->f('idcat')] = $iLevel;
-			$aCategories[$db->f('parentid')][$db->f('idcat')] = array(
-				'idcat' => $db->f('idcat'),
-			    'parentid' => $db->f('parentid'),
-				'level' => $iLevel
-			);
-		}			                                      
+	      } else {
+			      $iLevel = $aLevels[$db->f('parentid')] + 1;
+			      $aLevels[$db->f('idcat')] = $iLevel;
+			      $aCategories[$db->f('parentid')][$db->f('idcat')] = array(
+				        'idcat' => $db->f('idcat'),
+			          'parentid' => $db->f('parentid'),
+			          'preid' => $db->f('preid'),
+		    	      'postid' => $db->f('postid'),
+				        'level' => $iLevel
+			      );
+		    }	
+        		                                      
     }
+    
+    $iNextTreeId = $db->nextid($cfg["tab"]["cat_tree"]);
     
     // build INSERT statement
     $sInsertQuery = "INSERT INTO ".$cfg["tab"]["cat_tree"]." (idtree, idcat, level) VALUES ";        
     $sInsertQuery = recCats($aCategories[0], $sInsertQuery, $iNextTreeId, $aCategories);
-    $sInsertQuery = rtrim($sInsertQuery, " ,");
+    $sInsertQuery = rtrim($sInsertQuery, " ,");    
     
-	// lock db table and execute INSERT query    
+	  // lock db table and execute INSERT query    
     $db->lock($cfg["tab"]["cat_tree"]);
     $db->query($sInsertQuery);
     $db->nextid('cat_tree');
@@ -502,12 +508,30 @@ function strRemakeTreeTable() {
         
 }
 
+function sort_pre_post($arr) {
+    $firstElement = null;
+    foreach ($arr as $row) {
+        if ($row['preid'] == 0) $firstElement = $row['idcat'];
+    }
+
+    $curId = $firstElement;
+    $array = array();
+    while ($curId != 0) {
+        $array[] = $arr[$curId];
+        $curId = $arr[$curId]['postid'];
+    }
+
+    return $array;
+}
+
+
 function recCats ($aCats, $sInsertQuery, &$iNextTreeId, &$aAllCats) {
 	if (is_array($aCats)) {
-    foreach ($aCats as $iCat => $aCat) {
-		  $sInsertQuery .= "(" . (int) $iNextTreeId . ", ".(int) $iCat.", ". (int) $aCat['level']."), ";
+	  $aCats = sort_pre_post($aCats);	  
+    foreach ($aCats as $aCat) {
+		  $sInsertQuery .= "(" . (int) $iNextTreeId . ", ".(int) $aCat['idcat'].", ". (int) $aCat['level']."), ";
 		  $iNextTreeId++;
-		  if (is_array($aAllCats[$iCat])) {
+		  if (is_array($aAllCats[$aCat['idcat']])) {
 			 $sInsertQuery = recCats($aAllCats[$iCat], $sInsertQuery, $iNextTreeId, $aAllCats);
 		  }
 	 }
