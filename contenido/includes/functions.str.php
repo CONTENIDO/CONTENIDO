@@ -532,7 +532,7 @@ function recCats ($aCats, $sInsertQuery, &$iNextTreeId, &$aAllCats) {
 		  $sInsertQuery .= "(" . (int) $iNextTreeId . ", ".(int) $aCat['idcat'].", ". (int) $aCat['level']."), ";
 		  $iNextTreeId++;
 		  if (is_array($aAllCats[$aCat['idcat']])) {
-			 $sInsertQuery = recCats($aAllCats[$iCat], $sInsertQuery, $iNextTreeId, $aAllCats);
+			 $sInsertQuery = recCats($aAllCats[$aCat['idcat']], $sInsertQuery, $iNextTreeId, $aAllCats);
 		  }
 	 }
 	}
