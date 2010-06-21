@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.1.0
+ * @version    1.1.1
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -26,7 +26,7 @@
  *                                         collapsing of navigation tree without reloading (AJAX/
  *                                         javascript solution based on jquery)
  *  @modified 2008-09-18, Ingo van Peeren, moved template-changing to jquery      
- *  @modified 2010-06-16, Fixed a bug wit the Syncselection (there was no right userright check)  
+ *  @modified 2010-06-16, Timo Trautmann, Fixed a bug wit the Syncselection (there was no right userright check)  
  *
  *   $Id$:
  * }}
