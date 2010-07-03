@@ -23,6 +23,8 @@
  *   created 2003
  *   modified 2008-06-30, Frederic Schneider, add security fix
  *   modified 2009-10-15, Dominik Ziegler, getAvailableActions() now also returns the areaname
+ *   modified 2010-07-03, Ortwin Pinke, CON-318, only return actions marked as relevant in getAvailableActions()
+ *                        also fixed doc-comment for getActionName()
  *
  *   $Id$;
  * }}
@@ -63,6 +65,7 @@ class Action {
 				". $cfg["tab"]["area"]." AS area
 				ON 
 					area.idarea = action.idarea
+    WHERE action.relevant = '1'
 				ORDER BY 
 					action.name;";
 
@@ -85,8 +88,8 @@ class Action {
 
     /**
      * getActionName()
-     * Returns all users available in the system
-     * @return array   Array with id and name entries
+     *
+     * @return string name of given action
      */
     function getActionName( $action ) {
         global $cfg;
