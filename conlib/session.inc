@@ -23,6 +23,7 @@
  *   created  2000-01-01
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
+ *   modified 2010-07-03, Ortwin Pinke, fixed function self_url(), CON-324 (http://forum.contenido.org/viewtopic.php?f=63&t=30364)
  *
  *   $Id$:
  * }}
@@ -239,11 +240,15 @@ class Session {
     print $this->url($url);
   }
 
+  /**
+   * builds and returns self url
+   *
+   * @return string
+   */
   function self_url() {
-    global $PHP_SELF, $QUERY_STRING;
-
-    return $this->url($PHP_SELF.
-           ((isset($QUERY_STRING) && ("" != $QUERY_STRING)) ? "?".$QUERY_STRING : ""));
+    return $this->url($_SERVER["PHP_SELF"].
+            ((isset($_SERVER["QUERY_STRING"]) && ("" != $_SERVER["QUERY_STRING"]))
+            ? "?" . $_SERVER["QUERY_STRING"] : ""));
   }
 
   function pself_url() {
