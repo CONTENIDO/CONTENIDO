@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2010-07-03, Ortwin Pinke, removed '=&', causes deprecated runtime error with PHP >= 5.3
  *
  *   $Id$:
  * }}
@@ -39,6 +40,9 @@ if(!defined('CON_FRAMEWORK')) {
 * scratch without the need for a XML DOM
 *
 * Example:
+ *
+ * !! Attention, using '=&' is deprecated in PHP >= 5.3 and causes a deprecated runtime error
+ * don't use it any more (Ortwin Pinke, 2010-07-03
 *
 * $tree  = new XmlTree('1.0', 'ISO-8859-1');
 * $root =& $tree->addRoot('rootname', 'some content', array('foo'=>'bar')); 
@@ -340,7 +344,7 @@ class XmlNode
 	*/					
 	function setNodeParent(&$objParent)
 	{
-		$this->parentNode =& $objParent; 
+		$this->parentNode = $objParent; 
 	}	
 	
 	/**
@@ -384,7 +388,7 @@ class XmlNode
 		
 		$pos = $this->_intChildCount ++;
 		
-		$this->childNodes[$pos] =& new XmlNode($strNodeName, $strNodeContent, $arrNodeAttribs, $cdata);
+		$this->childNodes[$pos] = new XmlNode($strNodeName, $strNodeContent, $arrNodeAttribs, $cdata);
 		$this->childNodes[$pos]->setNodeParent($this);
 		
 		return $this->childNodes[$pos];						
