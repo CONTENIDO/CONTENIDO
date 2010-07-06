@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-01-24
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2010-07-06, Ingo van Peeren, CON-325 
  *
  *   $Id$:
  * }}
@@ -56,6 +57,16 @@ if ($action == "lay_new")
 	} else {
 		$layouts = new cApiLayoutCollection;	
 		$layout = $layouts->create(i18n("-- New Layout --"));
+	}
+} elseif ($action == "lay_delete")
+{
+	if (!$perm->have_perm_area_action_anyitem($area, $action))
+	{
+		$notification->displayNotification("error", i18n("Permission denied"));	
+	} else {
+		$errno = layDeleteLayout($idlay);
+		$layout->virgin = true;
+		$notification->displayNotification("info", i18n("Layout deleted"));	
 	}
 }
 
@@ -238,7 +249,7 @@ if (!$layout->virgin)
 
 
 } else {
-	$page->setContent("foo");	
+	$page->setContent("");	
 }
 
 $page->setSubnav("idlay=$idlay", "lay");

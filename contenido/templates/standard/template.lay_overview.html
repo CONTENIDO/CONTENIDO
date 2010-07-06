@@ -22,13 +22,13 @@
 
         function deleteLayout(idlay) {
 
-            url  = 'main.php?area=lay';
+            url  = 'main.php?area=lay_edit';
             url += '&action=lay_delete';
-            url += '&frame=2';
+            url += '&frame=4';
             url += '&idlay=' + idlay;
             url += '&contenido=' + sid;
             
-            window.location.href = url;
+            parent.parent.frames["right"].frames["right_bottom"].window.location.href = url;
 
         }
 
