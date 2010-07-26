@@ -22,6 +22,7 @@
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
  *   modified 2009-12-17, Dominik Ziegler, added check for write permission on missing cronjob files
+ *   modified 2010-07-26, Ortwin Pinke, [CON-329] added check for write permission of temp-folder
  *
  *   $Id$:
  * }}
@@ -704,6 +705,9 @@ class cSetupSystemtest extends cSetupMask
 									C_SEVERITY_WARNING);
 									
 		$this->logFilePrediction(	"contenido/cache/",
+									C_SEVERITY_WARNING);
+
+  $this->logFilePrediction(	"contenido/temp/",
 									C_SEVERITY_WARNING);
 									
 		if ($_SESSION["setuptype"] == "setup")
