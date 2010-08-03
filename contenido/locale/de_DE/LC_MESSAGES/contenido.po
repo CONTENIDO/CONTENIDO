@@ -3926,3 +3926,6 @@ msgstr "Contenido Cache wurde nicht gel&ouml;scht!"
 
 msgid "The contenido cronjobs are not cleaned!"
 msgstr "Contenido Cronjob-Dateien wurden nicht geleert!"
+
+msgid "Do system purge"
+msgstr "Systembereinigung ausführen"
