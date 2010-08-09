@@ -1,7 +1,7 @@
 <?php
 function frontendusers_valid_from_getTitle ()
 {
-	return i18n("G&uuml;ltig von", "frontendusers_valid_from");	
+	return i18n("Valid from");	
 }
 
 function frontendusers_valid_from_display ()

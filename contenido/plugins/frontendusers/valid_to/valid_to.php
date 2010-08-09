@@ -1,7 +1,7 @@
 <?php
 function frontendusers_valid_to_getTitle ()
 {
-	return i18n("G&uuml;ltig bis", "frontendusers_valid_to");	
+	return i18n("Valid to");	
 }
 
 function frontendusers_valid_to_display ()
