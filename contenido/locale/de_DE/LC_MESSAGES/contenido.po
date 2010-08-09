@@ -3933,5 +3933,8 @@ msgstr "Systembereinigung ausführen"
 msgid "-- Unnamed Layout --"
 msgstr "-- Unbenanntes Layout --"
 
+msgid "-- Unnamed Template --"
+msgstr "-- Unbenanntes Template --"
+
 msgid "Layout deleted"
 msgstr "Layout gel&ouml;scht"

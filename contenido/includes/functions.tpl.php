@@ -62,6 +62,10 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         //******** entry in 'tpl'-table ***************
         set_magic_quotes_gpc($name);
         set_magic_quotes_gpc($description);
+        
+        if (strlen(trim($name)) == 0) {
+            $name = i18n('-- Unnamed Template --');
+        }
 
         if (!$idtpl) {
 
