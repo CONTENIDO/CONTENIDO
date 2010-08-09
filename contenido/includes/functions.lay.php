@@ -61,6 +61,10 @@ function layEditLayout($idlay, $name, $description, $code) {
     set_magic_quotes_gpc($name);
     set_magic_quotes_gpc($description);
     set_magic_quotes_gpc($code);
+    
+    if (strlen(trim($name)) == 0) {
+        $name = i18n('-- Unnamed Layout --');
+    }
 	
 	/**
 	* START TRACK VERSION

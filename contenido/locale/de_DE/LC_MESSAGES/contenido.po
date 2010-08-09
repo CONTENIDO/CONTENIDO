@@ -3929,3 +3929,6 @@ msgstr "Contenido Cronjob-Dateien wurden nicht geleert!"
 
 msgid "Do system purge"
 msgstr "Systembereinigung ausführen"
+
+msgid "-- Unnamed Layout --"
+msgstr "-- Unbenanntes Layout --"
