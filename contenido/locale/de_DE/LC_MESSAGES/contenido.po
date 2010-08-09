@@ -3932,3 +3932,6 @@ msgstr "Systembereinigung ausführen"
 
 msgid "-- Unnamed Layout --"
 msgstr "-- Unbenanntes Layout --"
+
+msgid "Layout deleted"
+msgstr "Layout gel&ouml;scht"
