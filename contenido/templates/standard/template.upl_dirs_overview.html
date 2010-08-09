@@ -17,11 +17,11 @@
       function deleteDirectory(path) 
         {
           url  = 'main.php?area=upl';
-          url += '&action=upl_delete';
           url += '&frame=2';
-          url += '&path=' + path;
           url += '&contenido=' + sid;
           {APPENDPARAMETERS}
+          url += '&path=' + path;
+          url += '&action=upl_delete';
           window.location.href = url;
         }
         
