@@ -464,18 +464,20 @@ while ($db->next_record()) {
 	$arrIn[] = $db->f('idcat');
 }
 
-$sIn = implode(',',$arrIn);
-
-$sql2 = "SELECT b.idcat, a.idart, idlang FROM ".$cfg["tab"]["art_lang"]." AS a,
-							  ".$cfg["tab"]["cat_art"]." AS b
-		WHERE b.idcat IN (".Contenido_Security::escapeDB($sIn, $db).") AND (a.idlang = '".Contenido_Security::toInteger($syncoptions)."' OR a.idlang = '".Contenido_Security::toInteger($lang)."') 
-        AND b.idart = a.idart";
-$db->query($sql2);
-
 $arrArtCache = array();
 
-while ($db->next_record()) {
-	$arrArtCache[$db->f('idcat')][$db->f('idart')][$db->f('idlang')] = 'x';
+if (count($arrIn) > 0) {
+    $sIn = implode(',',$arrIn);
+
+    $sql2 = "SELECT b.idcat, a.idart, idlang FROM ".$cfg["tab"]["art_lang"]." AS a,
+                                  ".$cfg["tab"]["cat_art"]." AS b
+            WHERE b.idcat IN (".Contenido_Security::escapeDB($sIn, $db).") AND (a.idlang = '".Contenido_Security::toInteger($syncoptions)."' OR a.idlang = '".Contenido_Security::toInteger($lang)."') 
+            AND b.idart = a.idart";
+    $db->query($sql2);
+
+    while ($db->next_record()) {
+        $arrArtCache[$db->f('idcat')][$db->f('idart')][$db->f('idlang')] = 'x';
+    }
 }
 
 $db->query($sql);
@@ -683,6 +685,7 @@ if ($lang > $syncoptions) {
     $sOrder = 'ASC';
 }
 
+$client = (int) $client;
 $sql = "SELECT DISTINCT " .
       "a.idcat, " .
       "a.parentid, " .
@@ -703,6 +706,10 @@ $sql = "SELECT DISTINCT " .
       "   a.idclient = {$client} " . 
       "ORDER BY b.idlang {$sOrder}, c.idtree ASC ";
 $db->query($sql);
+if ($client == 0) {
+    $client = '';
+}
+
 
 $sExpandList = $currentuser->getUserProperty("system","con_cat_expandstate");
 if ($sExpandList != '') {
