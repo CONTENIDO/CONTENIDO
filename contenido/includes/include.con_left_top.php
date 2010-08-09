@@ -369,7 +369,7 @@ $tpl->set('d', 'CAPTION',   i18n("Choose template"));
 $tpl->set('d', 'SELECTED',  '');
 $tpl->next();
 
-$tpl->set('d', 'VALUE',     '1');
+$tpl->set('d', 'VALUE',     '0');
 $tpl->set('d', 'CAPTION',   '--- '. i18n("none"). ' ---');
 $tpl->set('d', 'SELECTED',  '');
 $tpl->next();
