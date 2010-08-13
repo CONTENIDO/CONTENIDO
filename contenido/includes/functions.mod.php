@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2010-08-13, Dominik Ziegler, fixed CON-337 - added update of lastmodified
  *
  *   $Id$:
  * }}
@@ -85,6 +86,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		$cApiModule->set("description", $description);
 		$cApiModule->set("input", $input);
 		$cApiModule->set("type", $type);
+		$cApiModule->set("lastmodified", $date);
         
 		$cApiModule->store();
     }
