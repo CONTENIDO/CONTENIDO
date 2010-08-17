@@ -6,6 +6,79 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id$:
 
+Release 4.8.13
+----------------------------------------------------------------------	
+** Bug
+    * [CON-249] - Bug in Contenido_FrontendNavigation::isActiveChild
+    * [CON-250] - Changing template to none not working right under Artikel->Kategorie bearbeiten
+    * [CON-252] - Missing german umlaut ü in function capiStrReplaceDiacritics
+    * [CON-254] - Tinymce does not support ancor links
+    * [CON-255] - Tiny does not store content, which cointains plain "|" character
+    * [CON-256] - The usage of CEC_Hook::execute brings more problems as advantages
+    * [CON-257] - Tiny MCE generates wrong links for internal file ressources
+    * [CON-259] - Content Allocation: can't order root-tree
+    * [CON-261] - wrong db-handling updating categoriealias
+    * [CON-262] - PHP 5.3: Backend not working (conlib), apache/php stop working caused by mysql_list_fields function
+    * [CON-263] - javascript error in filemanager (IE 8)
+    * [CON-264] - Problem with collapsing/expanding categories in WYSIWYG-filebrowser
+    * [CON-267] - CEC conSyncArticle_AfterInsert has wrong recordset for dest_art_lang
+    * [CON-268] - Modul RSS_Reader: PHP Deprecated:  Assigning the return value of new by reference is deprecated
+    * [CON-269] - Missing Doctype in frameset files switching FF in quirks mode
+    * [CON-272] - Issue at metatag creation from description/keywords containing sing/double quotes
+    * [CON-274] - PHP >= 5.3: Replacement of deprecated functions (ereg*, split, ?)
+    * [CON-276] - needless mysql queries in preconfiguration of templates
+    * [CON-277] - convert Layoutname to integer in Layout::getLayoutID()
+    * [CON-281] - Header navigation renders anchors with apostrophes
+    * [CON-282] - Usage of invalid database instance at include.con_str_overview.php
+    * [CON-286] - TemplateConfig::getPreConfigurationValues() does not work
+    * [CON-288] - Offline articles are shown in CMS_TEASER
+    * [CON-289] - Article time management does not work properly when end date is missing
+    * [CON-292] - Usage of wrong variable in linkchecker plugin (file: include.linkchecker_tests.php, line: 258)
+    * [CON-293] - Argument in capiStrTrimHard() set hard in function
+    * [CON-294] - Cache_Lite produces PHP deprecated error
+    * [CON-295] - TinyMCE lists don't work cause of security fixes
+    * [CON-303] - SQL-Error with fresh democlient without content
+    * [CON-304] - Change con_upl.size from varchar(255) in to int(10)
+    * [CON-307] - Incostistent usage of Contenido_Security and HttpInputValidator
+    * [CON-309] - Usage of Debug_File generates a PHP warning
+    * [CON-314] - Remove password maxlength definition at backend login
+    * [CON-315] - The BE-User must be active to request a password
+    * [CON-316] - (PHP 5.3) Create new be-user, php-function split is deprecated
+    * [CON-320] - Typo in module "Contact_Form"
+    * [CON-323] - No modulexport with PHP >= 5.3
+    * [CON-324] - function self_url returns wrong self url under xampp
+    * [CON-325] - After delete of a layout next click of another layout will delete this too
+    * [CON-329] - No check for writepermissions of temp-folder during setup
+    * [CON-330] - Layouts and templates can be saved with empty name
+    * [CON-333] - Session ID gets lost when deleting folders or files
+    * [CON-337] - Column "lastmodified" in con_mod is not updated
+
+** Improvement
+    * [CON-284] - Check of write permissions for contenido/cache/
+    * [CON-287] - Changed behavior of moving a category
+    * [CON-291] - Extend Contenido Extension Chainer (CEC)
+    * [CON-296] - Added frontend url to client name
+    * [CON-297] - Don't list inactive sysadmin in dashboard
+    * [CON-298] - Reduction of database queries for category tree in "Content -> articles"
+    * [CON-299] - Generation of con_cat_tree should only use 1 INSERT statemant
+    * [CON-300] - Modify conlib/local.php to allow only one database connection through class DB_Contenido
+    * [CON-302] - Remove deprecated variables/methods from "contenido/classes/class.template.php"
+    * [CON-311] - Update of external Components
+    * [CON-312] - Update of Content Type CMS_TEASER
+    * [CON-317] - Add rightsmanagement to purgetool
+    * [CON-318] - nonrelevant actions can be choosed in administration-logs
+    * [CON-326] - Translation for new "layout deleted" notification
+    * [CON-328] - FE:Plugin: Add english translation and headerdata in "valid_from" and "valid_to"
+
+** New Feature
+    * [CON-258] - languagecode & countrycode for Language
+    * [CON-285] - Added new content type "CMS_FILELIST"
+    * [CON-308] - Add iso-639-1- & iso-3166-selecter for languages
+    * [CON-313] - Added Prune Tools
+
+** Task
+    * [CON-253] - Checking for write permissions of cronjob jobfiles
+    
 Release 4.8.12
 ----------------------------------------------------------------------	
 ** Bug
