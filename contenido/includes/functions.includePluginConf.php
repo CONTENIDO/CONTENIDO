@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.1.2
+ * @version    1.1.3
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2009-04-04, Oliver Lohkemper, add scan-time and SystemProperty
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
+ *   modified 2010-06-22, Oliver Lohkemper, scan and save only in BE for FE performance & security [#CON-322]
  *
  *   $Id$:
  * }}
@@ -35,50 +36,75 @@ if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
 $pluginorder = getSystemProperty("system", "plugin-order");
-$lastscantime = getSystemProperty("system", "plugin-lastscantime");
 
-$ipc_conpluginpath = $cfg["path"]["contenido"].$cfg["path"]["plugins"];
-$plugins = array ();
+$plugins = explode(",", $pluginorder);
 
-/* Fetch and trim the plugin order */
-if ($pluginorder != "")
+
+
+/*
+ * Scan and save only by the BE 
+ */
+if ($contenido)
 {
-	$plugins = explode(",", $pluginorder);
+	$lastscantime = getSystemProperty("system", "plugin-lastscantime");
 
-	foreach ($plugins as $key => $plugin)
+	$ipc_conpluginpath = $cfg["path"]["contenido"].$cfg["path"]["plugins"];
+
+	/* Clean up: Fetch and trim the plugin order */
+	$plugins = array ();
+	
+	if ($pluginorder != "")
 	{
-		$plugins[$key] = trim($plugin);
-	}
-}
-
-/* Don't scan all the time, but each 60 seconds */
-if ($lastscantime +60 < time())
-{
-	setSystemProperty("system", "plugin-lastscantime", time());
-
-	$dh = opendir($ipc_conpluginpath);
-
-	while (($file = readdir($dh)) !== false)
-	{
-
-		if (is_dir($ipc_conpluginpath.$file."/") && $file != "includes" && $file != "." && $file != ".." && !in_array($file, $plugins) )
+		$plugins = explode(",", $pluginorder);
+	
+		foreach ($plugins as $key => $plugin)
 		{
-			$plugins[] = $file;
+			$plugins[$key] = trim($plugin);
 		}
 	}
 
-	foreach ($plugins as $key => $value)
+	/* Don't scan all the time, but each 60 seconds */
+	if ($lastscantime +60 < time())
 	{
-		if (!is_dir($ipc_conpluginpath.$value."/"))
+	
+		/* scan for new Plugins */
+		$dh = opendir($ipc_conpluginpath);
+	
+		while (($file = readdir($dh)) !== false)
 		{
-			unset ($plugins[$key]);
+			if ( is_dir($ipc_conpluginpath.$file."/") && $file != "includes" && $file != "." && $file != ".." && !in_array($file, $plugins) )
+			{
+				$plugins[] = $file;
+			}
 		}
+		
+		setSystemProperty("system", "plugin-lastscantime", time());
+		
+		closedir($dh);
+	
+		
+		/* Remove plugins do not exist */
+		foreach ($plugins as $key => $ipc_plugin)
+		{
+			if (!is_dir($ipc_conpluginpath.$ipc_plugin."/"))
+			{
+				unset ($plugins[$key]);
+			}
+		}
+		
+		/* Save Scanresult */
+		$pluginorder = implode(",", $plugins);
+		setSystemProperty("system", "plugin-order", $pluginorder);
+		
 	}
-	closedir($dh);
 }
 
+
+
+/*
+ * Load Plugin-Config and Plugin-Translation
+ */
 foreach ($plugins as $key => $ipc_plugin)
 {
 	if (!is_dir($ipc_conpluginpath.$ipc_plugin."/"))
@@ -105,9 +131,6 @@ foreach ($plugins as $key => $ipc_plugin)
 		}
 	}
 }
-
-$pluginorder = implode(",", $plugins);
-setSystemProperty("system", "plugin-order", $pluginorder);
 
 unset( $plugins );
 
