@@ -29,35 +29,45 @@
 
 if(!defined('CON_FRAMEWORK'))
 	die('Illegal call');
+	
+/*
+ * Url-Params 
+ * with key like 'id%' or '%id' and value are integer
+ */
+$sUrlParams = '';
+foreach( $_GET as $sTempKey => $sTempValue ) {
+	if( (substr($sTempKey, 0, 2)=='id' || substr($sTempKey, -2, 2)=='id')
+	 && (int)$sTempValue!=0 ) {
+		$sUrlParams.= '&'.$sTempKey.'='.$sTempValue;
+	}
+}
 
-if( isset($_GET['idclient']) && (int)$_GET['idclient'] != 0 )
-{
 
+
+if( isset($area) ) {
 	$nav = new Contenido_Navigation;
 	
     $sql = "SELECT
-                b.location AS location,
-                a.name     AS name
+                navsub.location AS location,
+                area.name     AS name
             FROM
-                ".$cfg["tab"]["area"]."    AS a,
-                ".$cfg["tab"]["nav_sub"]." AS b
+                ".$cfg["tab"]["area"]."    AS area,
+                ".$cfg["tab"]["nav_sub"]." AS navsub
             WHERE
-				a.idarea = b.idarea
-			  AND (
-					a.idarea = '".$area."'
-				  OR
-					a.parent_id = '".$area."'
-				)
+				area.idarea = navsub.idarea
 			  AND
-				b.level = 1
+				navsub.level = 1
+			  AND ( 
+					area.idarea = '".$area."'
+				OR
+					area.parent_id = '".$area."' 
+				)
             ORDER BY
-                b.idnavs";
+                navsub.idnavs";
 
     $db->query($sql);
 
-    while( $db->next_record() )
-	{
-
+    while( $db->next_record() ) {
 		/* Set translation path */
 		$caption = $nav->getName( $db->f("location") );
 
@@ -65,7 +75,7 @@ if( isset($_GET['idclient']) && (int)$_GET['idclient'] != 0 )
 
         /* fill template */
         $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
-        $tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=".$tmp_area."&frame=4&idclient=".$idclient."&contenido=".$sess->id."").'">'.$caption.'</a>');
+        $tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=".$tmp_area."&frame=4&contenido=".$sess->id.$sUrlParams).'">'.$caption.'</a>');
         $tpl->next();
     }
 	
