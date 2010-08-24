@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-03-21
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2010-08-18, Munkh-Ulzii Balidar, add a functionality to show the used info
  *
  *   $Id$:
  * }}
@@ -231,7 +232,7 @@ while ($cApiModule = $cApiModuleCollection->next())
 			if ($inUse)
 			{
 				$inUseString = i18n("In use");
-				$mlist->setActions($iMenu, 'inuse', '<img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseString.'" alt="'.$inUseString.'">');
+				$mlist->setActions($iMenu, 'inuse', '<a href="javascript:;" rel="' . $idmod . '" class="in_used_mod"><img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseString.'" alt="'.$inUseString.'"></a>');
 				$delDescription = i18n("Module in use, cannot delete");
 				
 			} else {
@@ -249,8 +250,8 @@ while ($cApiModule = $cApiModuleCollection->next())
 			
 			if ($deletebutton == "")
 			{
-                $deletebutton = '<img src="images/spacer.gif" width="16" height="16">';
-				//$deletebutton = '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescription.'" alt="'.$delDescription.'">';	
+                //$deletebutton = '<img src="images/spacer.gif" width="16" height="16">';
+				$deletebutton = '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescription.'" alt="'.$delDescription.'">';	
 			}
 			
 			$todo = new TODOLink("idmod", $db->f("idmod"), "Module: $sName", "");
@@ -293,6 +294,26 @@ $deleteScript = '    <script type="text/javascript">
 
     </script>';
 
+$sShowUsedInfo = ' 
+		<script type="text/javascript">       
+			$(document).ready(function() {
+				
+	        	$(".in_used_mod").live("click", function() {
+	            	var iId = $(this).attr("rel");
+	            	if (iId) {
+	            		$.post(
+	            		   "' . $cfg['path']['contenido_fullhtml'] . 'ajaxmain.php' . '", 
+	      				   { area: "' . $area . '", ajax: "inused_module", id: iId, contenido: sid }, 
+	      				   function(data) {
+	      					  box.notify("' . i18n("Benutzte Templates") . '", data);
+	      				   } 
+	      				);
+	            	}	
+	        	});
+	        });
+        </script>
+        ';
+
 $sMarkRow = '<script language="javascript">    
                 if (document.getElementById(\'marked\')) {
                     row.click(document.getElementById(\'marked\'));
@@ -301,7 +322,9 @@ $sMarkRow = '<script language="javascript">
     
 $oPage->setMargin(0);
 $oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
+$oPage->addScript('jquery', '<script type="text/javascript" src="scripts/jquery/jquery.js"></script>');
 $oPage->addScript('delete', $deleteScript);
+$oPage->addScript('showUsedInfo', $sShowUsedInfo);
 $oPage->addScript('cfoldingrow.js', '<script language="JavaScript" src="scripts/cfoldingrow.js"></script>');
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
 $oPage->setContent($mlist->render(false).$sMarkRow);

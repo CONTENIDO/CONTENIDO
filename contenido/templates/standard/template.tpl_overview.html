@@ -8,6 +8,7 @@
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript">
 
         /* Session-ID */
@@ -28,8 +29,27 @@
             url += '&contenido=' + sid;
 
             window.location.href = url;
-
         }
+
+		/*
+		  
+		*/
+        $(document).ready(function() {
+            // select a frame with jquery
+            //$(parent.parent.frames["right"].frames["right_bottom"].document).find('body').html();
+        	$('.in_used_tpl').live('click', function() {
+            	var iId = $(this).attr('rel');
+            	if (iId) {
+            		$.post(
+            		   "{AJAXURL}", 
+      				   { area: "{AREA}", ajax: "inused_template", id: iId, contenido: sid }, 
+      				   function(data) {
+      					  box.notify("{BOX_TITLE}", data);
+      				   } 
+      				);
+            	}	
+        	});
+        });
 
     </script>
 </head>
@@ -40,7 +60,7 @@
     <tr id="{ID}" bgcolor="{BGCOLOR}" onmouseover="lay.over(this)" onmouseout="lay.out(this)" onclick="lay.click(this)">
 		 <td><img alt="" width="5" height="1" src="images/spacer.gif"></td>
         <td class="textw_small">{NAME}</td>
-        <td align="right">{COPY}&nbsp;{DELETE}&nbsp;</td>
+        <td align="right">{INUSE}&nbsp;{COPY}&nbsp;{DELETE}&nbsp;</td>
     </tr>
     <!-- END:BLOCK -->
 </table>

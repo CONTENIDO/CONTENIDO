@@ -23,6 +23,7 @@
  *   created  2003-03-27
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
+ *   modified 2010-08-18, Munkh-Ulzii Balidar, added functionality to show the used information
  *
  *   $Id$:
  * }}
@@ -91,15 +92,19 @@ while ( $db->next_record() ) {
 
              /* Check if template is in use */
             $inUse = tplIsTemplateInUse($idtpl);
-
+			
+            $inUseString = i18n("In use");
+			
             if (!$inUse && ($perm->have_perm_area_action_item("tpl","tpl_delete",$db->f("idtpl")))) {
             	$delTitle = i18n("Delete template");
         		$delDescr = sprintf(i18n("Do you really want to delete the following template:<br><br>%s<br>"),htmlspecialchars($name));
             
                 $tpl->set('d', 'DELETE', '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteTemplate('.$idtpl.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>');
-                
+                $tpl->set('d', 'INUSE', '<img src="images/spacer.gif" width="16">');
             } else {
-                $tpl->set('d', 'DELETE', '<img src="images/spacer.gif" width="16">');
+            	$delDescription = i18n("Template in use, cannot delete");
+                $tpl->set('d', 'DELETE','<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescription.'" alt="'.$delDescription.'">');
+                $tpl->set('d', 'INUSE', '<a href="javascript:;" rel="' . (int)$db->f("idtpl") . '" class="in_used_tpl"><img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseString.'" alt="'.$inUseString.'"></a>');
             }
 
            if ($perm->have_perm_area_action_item("tpl","tpl_dup", $db->f("idtpl"))) {
@@ -116,6 +121,11 @@ while ( $db->next_record() ) {
     }
 }
 
+//datas for show of used info per ajax
+$tpl->set('s', 'AREA', $area);
+$tpl->set('s', 'SESSION', $contenido);
+$tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'].'ajaxmain.php');
+$tpl->set('s', 'BOX_TITLE', i18n("Template benutzt in: "));
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tpl_overview']);
 
 ?>

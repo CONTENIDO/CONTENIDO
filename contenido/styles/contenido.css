@@ -1078,3 +1078,32 @@ div.memberselect_button input {width:50px;}
 div.clear {clear:both;}
 p.column_header {padding: 0; font-weight: bold;}
 
+/** in use **/
+.inuse_info {
+	height: 200px;
+	overflow: auto;
+}
+.inuse_info td, .inuse_info th{
+	border-top: 1px solid #CCC;
+	border-left: 1px solid #CCC;
+	text-align: left;
+}
+.inuse_info table {
+	border: 1px solid #CCC;
+	border-left: 0;
+	border-top: 0;
+}
+.inuse_info th{
+	background-color: #E2E2E2;
+	font-weight: normal;
+}
+.inuse_info .inuse_id {
+	width: 40px;
+}
+.inuse_info .inuse_lang {
+	width: 40px;
+}
+.inuse_info .inuse_name {
+	width: 245px;
+	
+}

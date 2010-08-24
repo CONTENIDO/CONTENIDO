@@ -20,6 +20,11 @@
  * 
  * {@internal 
  *   created 2003-02-26
+ *   
+ *	 modified 2010-08-17, Munkh-Ulzii Balidar,
+ *		- changed SQL query in method moduleInUse
+ *		- added new property aUsedTemplates and saved the information of used templates 
+ *		- added new method getUsedTemplates
  *
  *   $Id$:
  * }}
@@ -72,6 +77,11 @@ class cApiModule extends Item
 	var $_error;
 	
 	var $_packageStructure;
+	
+	/**
+	 * @var array
+	 */
+	private $aUsedTemplates = array();
 		
     /**
      * Constructor Function
@@ -248,28 +258,50 @@ class cApiModule extends Item
      * Checks if the module is in use
      * @return bool    Specifies if the module is in use
      */
-    function moduleInUse( $module )
+    function moduleInUse( $module, $bSetData = false)
     {
         global $cfg;
 
         $db = new DB_Contenido;
 
         $sql = "SELECT
-                    idmod
+                    c.idmod, c.idtpl, t.name 
                 FROM
-                ". $cfg["tab"]["container"] ."
+                ". $cfg["tab"]["container"] . " as c, 
+                ". $cfg["tab"]["tpl"] . " as t 
                 WHERE
-                    idmod = '".$module."'";
-
+                    c.idmod = '" . Contenido_Security::toInteger($module) . "' AND 
+                    t.idtpl=c.idtpl  
+                GROUP BY c.idtpl 
+                ORDER BY t.name";
         $db->query($sql);
 
         if ($db->nf() == 0)
         {
             return false;
         } else {
+	        $i = 0;
+        	// save the datas of used templates in array
+        	if ($bSetData === true) {
+	        	while ($db->next_record()) {
+	        		$this->aUsedTemplates[$i]['tpl_name'] = $db->f('name');
+	        		$this->aUsedTemplates[$i]['tpl_id'] = (int)$db->f('idmod');
+	        		$i++;
+	        	}        		
+        	}
+        	
             return true;
         }
     } // end function  
+    
+    /**
+     * Get the informations of used templates
+     * @return array template data
+     */
+    public function getUsedTemplates()
+    {
+    	return $this->aUsedTemplates;
+    }
 
     /**
      * isOldModule()

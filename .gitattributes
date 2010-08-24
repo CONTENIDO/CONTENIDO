@@ -1466,6 +1466,8 @@ contenido/templates/standard/template.grouprights_menu.html -text
 contenido/templates/standard/template.grouprights_overview.html -text
 contenido/templates/standard/template.html_tpl_left_top.html -text
 contenido/templates/standard/template.info.html -text
+contenido/templates/standard/template.inuse_lay_mod.html -text
+contenido/templates/standard/template.inuse_tpl.html -text
 contenido/templates/standard/template.js_left_top.html -text
 contenido/templates/standard/template.lang_edit.html -text
 contenido/templates/standard/template.lang_left_top.html -text

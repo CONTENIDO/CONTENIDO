@@ -62,10 +62,6 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         //******** entry in 'tpl'-table ***************
         set_magic_quotes_gpc($name);
         set_magic_quotes_gpc($description);
-        
-        if (strlen(trim($name)) == 0) {
-            $name = i18n('-- Unnamed Template --');
-        }
 
         if (!$idtpl) {
 
@@ -526,57 +522,117 @@ function tplDuplicateTemplate($idtpl) {
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
+ * 
+ * modified Munkh-Ulzii Balidar, improved the sql query without while loop
  */
 function tplIsTemplateInUse($idtpl) {
 
     global $cfg, $client, $lang;
 
     $db = new DB_Contenido;
-    $db2 = new DB_Contenido;
-
-    $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."'";
+    // Check categorys 
+    $sql = "SELECT
+               	b.idcatlang, b.name, b.idlang, b.idcat   
+            FROM
+                ".$cfg["tab"]["cat"]." AS a,
+            	".$cfg["tab"]["cat_lang"]." AS b
+            WHERE
+                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
+                a.idcat     = b.idcat AND
+                b.idtplcfg  IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')  
+            ORDER BY b.idlang ASC, b.name ASC ";
     $db->query($sql);
-
-    while ($db->next_record()) {
-
-        /* Check categorys */
-        $sql = "SELECT
-                    b.idcatlang
-                FROM
-                    ".$cfg["tab"]["cat"]." AS a,
-                    ".$cfg["tab"]["cat_lang"]." AS b
-                WHERE
-                    a.idclient  = '".Contenido_Security::toInteger($client)."' AND
-                    a.idcat     = b.idcat AND
-                    b.idtplcfg  = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
-
-
-        $db2->query($sql);
-
-        if ( $db2->next_record() ) {
-            return true;
-        }
-
-        /* Check articles */
-        $sql = "SELECT
-                    b.idartlang
-                FROM
-                    ".$cfg["tab"]["art"]." AS a,
-                    ".$cfg["tab"]["art_lang"]." AS b
-                WHERE
-                    a.idclient  = '".Contenido_Security::toInteger($client)."' AND
-                    a.idart     = b.idart AND
-                    b.idtplcfg  = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
-
-
-        $db2->query($sql);
-
-        if ( $db2->next_record() ) {
-            return true;
-        }
+    if ($db->Errno == '' && $db->num_rows() > 0) {
+    	return true;
     }
 
+    // Check articles 
+    $sql = "SELECT
+           		b.idartlang, b.title, b.idlang, b.idart   
+            FROM
+                ".$cfg["tab"]["art"]." AS a,
+                ".$cfg["tab"]["art_lang"]." AS b
+            WHERE
+                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
+                a.idart     = b.idart AND
+                b.idtplcfg IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')  
+            ORDER BY b.idlang ASC, b.title ASC ";
+
+    $db->query($sql);
+
+    if ($db->Errno == '' && $db->num_rows() > 0) {
+    	return true;
+    }
+    
     return false;
+
+}
+
+/**
+ * Get used datas if a template is in use
+ *
+ * @param int $idtpl Template ID
+ *
+ * @return array - category name, article name
+ *
+ * @author Munkh-Ulzii Balidar <munkh-ulzii.balidar@4fb.de>
+ * @copyright four for business AG <www.4fb.de>
+ */
+function tplGetInUsedData($idtpl) {
+
+    global $cfg, $client, $lang;
+
+    $db = new DB_Contenido;
+    
+    $aUsedData = array();
+
+    // Check categorys 
+    $sql = "SELECT
+               	b.idcatlang, b.name, b.idlang, b.idcat   
+            FROM
+                ".$cfg["tab"]["cat"]." AS a,
+            	".$cfg["tab"]["cat_lang"]." AS b
+            WHERE
+                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
+                a.idcat     = b.idcat AND
+                b.idtplcfg  IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')  
+            ORDER BY b.idlang ASC, b.name ASC ";
+    $db->query($sql);
+    if ($db->Errno == 0 && $db->num_rows() > 0) {
+    	while ($db->next_record()) {
+	    	$aUsedData['cat'][] = array(
+	        'name' => $db->f('name'),
+	        'lang' => $db->f('idlang'),
+	        'idcat' => $db->f('idcat'),
+	        );
+    	}
+    }
+
+    // Check articles
+    $sql = "SELECT
+           		b.idartlang, b.title, b.idlang, b.idart   
+            FROM
+                ".$cfg["tab"]["art"]." AS a,
+                ".$cfg["tab"]["art_lang"]." AS b
+            WHERE
+                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
+                a.idart     = b.idart AND
+                b.idtplcfg IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')  
+            ORDER BY b.idlang ASC, b.title ASC ";
+
+    $db->query($sql);
+
+    if ($db->Errno == '' && $db->num_rows() > 0) {
+    	while ($db->next_record()) {
+	        $aUsedData['art'][] = array(
+	        'title' => $db->f('title'), 
+	        'lang' => $db->f('idlang'),
+	        'idart' => $db->f('idart'),
+	        );
+    	}
+    }
+
+    return $aUsedData;
 
 }
 

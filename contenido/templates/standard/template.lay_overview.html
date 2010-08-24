@@ -8,6 +8,7 @@
     <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript">
 
         /* Session-ID */
@@ -31,7 +32,26 @@
             parent.parent.frames["right"].frames["right_bottom"].window.location.href = url;
 
         }
+		
+        $(document).ready(function() {
+            // select a frame with jquery
+            //$(parent.parent.frames["right"].frames["right_bottom"].document).find('body').html();
+			
+        	$('.in_used_lay').live('click', function() {
+            	var iId = $(this).attr('rel');
+            	if (iId) {
+            		$.post(
+            		   "{AJAXURL}", 
+      				   { area: "{AREA}", ajax: "inused_layout", id: iId, contenido: sid }, 
+      				   function(data) {
+      					  box.notify("{BOX_TITLE}", data);
+      				   } 
+      				);
+            	}	
+        	});
+        });
 
+		
     </script>
 </head>
 <body bgcolor="#FFFFFF">

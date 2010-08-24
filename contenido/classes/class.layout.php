@@ -25,6 +25,11 @@
  *   modified 2008-07-02, Frederic Schneider, change sql-escapes
  *   modified 2009-10-27, OliverL, replace toInteger() to escapeString() in function getLayoutID()
  *
+ *	 modified 2010-08-17, Munkh-Ulzii Balidar,
+ *		- changed the code compatible to php5 
+ *		- added new property aUsedTemplates and saved the information of used templates 
+ *		- added new method getUsedTemplates
+ *									
  *   $Id$:
  * }}
  * 
@@ -36,12 +41,15 @@ if(!defined('CON_FRAMEWORK')) {
 
 class Layout {
 
+	private $aUsedTemplates = array();
+	
     /**
      * Constructor Function
      * @param
      */
-    function Layout() {
-        // empty
+    public function __construct() 
+    {
+        ;// empty
     } // end function
 
     /**
@@ -49,7 +57,8 @@ class Layout {
      * Returns all layouts available in the system
      * @return array   Array with id and name entries
      */
-    function getAvailableLayouts() {
+    public function getAvailableLayouts() 
+    {
         global $cfg;
 
         $db = new DB_Contenido;
@@ -81,7 +90,8 @@ class Layout {
      * Returns the name for a given layoutid
      * @return string   String with the name for the layout
      */
-    function getLayoutName($layout) {
+    public function getLayoutName($layout) 
+    {
         global $cfg;
 
         $db = new DB_Contenido;
@@ -105,7 +115,8 @@ class Layout {
 	 * @param $layout String with the Layoutname
      * @return int     Integer with the ID for the layout
      */
-    function getLayoutID($layout) {
+    public function getLayoutID($layout) 
+    {
         global $cfg;
 
         $db = new DB_Contenido;
@@ -130,10 +141,11 @@ class Layout {
      * Checks if the layout is in use
      * @return bool    Specifies if the layout is in use
      */
-    function layoutInUse($layout) {
+    public function layoutInUse($layout, $bSetData = false) 
+    {
         global $cfg;
 
-        if (!is_numeric($layout))
+        if (!is_numeric($layout)) 
         {
             $layout = $this->getLayoutID($layout);
         }
@@ -141,7 +153,7 @@ class Layout {
         $db = new DB_Contenido;
 
         $sql = "SELECT
-                    idtpl
+                    idtpl, name 
                 FROM
                 ". $cfg["tab"]["tpl"] ."
                 WHERE
@@ -149,13 +161,32 @@ class Layout {
 
         $db->query($sql);
 
-        if ($db->nf() == 0)
-        {
+        if ($db->nf() == 0) {
             return false;
         } else {
+        	$i = 0;
+        	// save the datas of used templates in array
+        	if ($bSetData === true) {
+	        	while ($db->next_record()) {
+	        		$this->aUsedTemplates[$i]['tpl_name'] = $db->f('name');
+	        		$this->aUsedTemplates[$i]['tpl_id'] = (int)$db->f('idtpl');
+	        		$i++;
+	        	}
+        	}
+        	
             return true;
         }
     } // end function  
+    
+    /**
+     * Get the informations of used templates
+     * @return array template data
+     */
+    public function getUsedTemplates()
+    {
+    	return $this->aUsedTemplates;
+    }
+    
 } // end class
 
 ?>

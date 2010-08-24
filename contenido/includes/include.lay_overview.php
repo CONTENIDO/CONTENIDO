@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-03-27
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2010-08-18, Munkh-Ulzii Balidar, add a functionality to show the used info
  *
  *   $Id$:
  * }}
@@ -92,7 +93,7 @@ while ($layout = $layouts->next()) {
         {
         	$delDescription = i18n("Layout is in use, cannot delete");
         	$inUseDescription = i18n("Layout is in use");
-            $tpl->set('d', 'INUSE','<img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseDescription.'" alt="'.$inUseDescription.'">');
+            $tpl->set('d', 'INUSE','<a href="javascript:;" rel="' . $layout->get("idlay") . '" class="in_used_lay"><img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseDescription.'" alt="'.$inUseDescription.'"></a>');
         } else {
             $tpl->set('d', 'INUSE','');    
         }
@@ -123,6 +124,12 @@ while ($layout = $layouts->next()) {
 
     }
 }
+
+//datas for show of used info per ajax
+$tpl->set('s', 'AREA', $area);
+$tpl->set('s', 'SESSION', $contenido);
+$tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'].'ajaxmain.php');
+$tpl->set('s', 'BOX_TITLE', i18n("Benutzte Templates"));
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lay_overview']);
 ?>

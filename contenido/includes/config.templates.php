@@ -160,6 +160,8 @@ $cfg['templates']['request_password']      = 'template.request_password.html';
 $cfg['templates']['file_subnav']         = 'template.file_subnav.html';
 $cfg['templates']['blank']                = 'template.blank.html';
 $cfg['templates']['system_purge']	= 'template.system_purge.html';
-$cfg['templates']['default_subnav']	= 'template.default_subnav.html';
+
+$cfg['templates']['inuse_tpl']	= 'template.inuse_tpl.html';
+$cfg['templates']['inuse_lay_mod']	= 'template.inuse_lay_mod.html';
 
 ?>

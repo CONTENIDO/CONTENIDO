@@ -87,6 +87,112 @@ class Ajax {
 				
 				$sString 		= $oFileList->getFileSelect( $sDirName );
 				break;
+				
+			case 'inused_layout': 
+				//list of used templates for a layout
+				global $cfg; 
+				cInclude('classes', 'class.layout.php');
+				$oLayout = new Layout();
+				if ((int) $_REQUEST['id'] > 0 && $oLayout->layoutInUse((int) $_REQUEST['id'] , true)) {
+					$oTpl = new Template();
+					$aUsedTpl = $oLayout->getUsedTemplates();
+					if (count($aUsedTpl) > 0) {
+						$sResponse = '<br />';
+						foreach ($aUsedTpl as $i => $aTpl) {
+							$oTpl->set('d', 'NAME', $aTpl['tpl_name'] );
+							$oTpl->next();						
+						}
+						
+						$oTpl->set('s', 'HEAD_NAME', i18n('Template name'));
+						$sString = '<div class="inuse_info" >' . 
+									$oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . 
+													$cfg['templates']['inuse_lay_mod'], true) . 
+									'</div>';
+					} else {
+						$sString = i18n("No data found!");
+					}
+				}
+				break;
+				
+			case 'inused_module':
+				//list of used templates for a module 
+				global $cfg;
+				cInclude("classes", "contenido/class.module.php");
+				$oModule = new cApiModule();
+				if ((int) $_REQUEST['id'] > 0 && $oModule->moduleInUse((int) $_REQUEST['id'], true)) {
+					$oTpl = new Template();
+					$aUsedTpl = $oModule->getUsedTemplates();
+					if (count($aUsedTpl) > 0) {
+						foreach ($aUsedTpl as $i => $aTpl) {
+							$oTpl->set('d', 'NAME', $aTpl['tpl_name'] );
+							$oTpl->next();
+						}
+						
+						$oTpl->set('s', 'HEAD_NAME', i18n('Template name'));
+						$sString = '<div class="inuse_info" >' . 
+									$oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . 
+													$cfg['templates']['inuse_lay_mod'], true) . 
+									'</div>';
+						
+									
+						
+					} else {
+						$sString = i18n("No data found!");
+					}
+				}
+				
+				break;
+				
+			case 'inused_template':
+				// list of used category and art
+				
+				global $cfg;
+				cInclude('backend', 'includes/functions.tpl.php');
+				
+				if ((int) $_REQUEST['id'] > 0) {
+					$oTpl = new Template();
+					$oTpl->reset();
+					$aUsedData = tplGetInUsedData((int) $_REQUEST['id']);
+					
+					if (isset($aUsedData['cat'])) {
+						$oTpl->set('s', 'HEAD_TYPE', i18n('Category'));
+						foreach ($aUsedData['cat'] as $i => $aCat) {
+							$oTpl->set('d', 'ID', $aCat['idcat']);
+							$oTpl->set('d', 'LANG', $aCat['lang']);
+							$oTpl->set('d', 'NAME', $aCat['name']);
+							$oTpl->next();
+						}
+						$oTpl->set('s', 'HEAD_ID', i18n('idcat'));
+						$oTpl->set('s', 'HEAD_LANG', i18n('idlang'));
+						$oTpl->set('s', 'HEAD_NAME', i18n('Name'));
+						$sResponse = $oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
+					}
+					
+					
+					$oTpl->reset();
+					
+					if (isset($aUsedData['art'])) {
+						$oTpl->set('s', 'HEAD_TYPE', i18n('Article'));
+						foreach ($aUsedData['art'] as $i => $aArt) {
+							$oTpl->set('d', 'ID', $aArt['idart']);
+							$oTpl->set('d', 'LANG', $aArt['lang']);
+							$oTpl->set('d', 'NAME', $aArt['title']);
+							$oTpl->next();						
+						}
+						$oTpl->set('s', 'HEAD_ID', i18n('idart'));
+						$oTpl->set('s', 'HEAD_LANG', i18n('idlang'));
+						$oTpl->set('s', 'HEAD_NAME', i18n('Name'));
+						$sResponse .= $oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['inuse_tpl'], true);
+					}
+					
+					$sString = '<div class="inuse_info" >' . $sResponse . '</div>';
+					
+				} else {
+					$sString = i18n("No data found!");
+				}
+				 
+				break;
+				
 			//if action is unknown generate error message
 			default:
 				$sString = "Unknown Ajax Action";
