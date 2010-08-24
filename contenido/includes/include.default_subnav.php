@@ -62,6 +62,8 @@ if( isset($area) ) {
 				OR
 					area.parent_id = '".$area."' 
 				)
+			  AND 
+			  	navsub.online = 1
             ORDER BY
                 navsub.idnavs";
 
