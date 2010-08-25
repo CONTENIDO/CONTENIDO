@@ -26,6 +26,7 @@
  *   modified 2009-04-04, Oliver Lohkemper, add scan-time and SystemProperty
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *   modified 2010-06-22, Oliver Lohkemper, scan and save only in BE for FE performance & security [#CON-322]
+ *   modified 2010-08-25, Munkh-Ulzii Balidar, defined the plugin path independent of BE und FE 
  *
  *   $Id$:
  * }}
@@ -40,7 +41,7 @@ $pluginorder = getSystemProperty("system", "plugin-order");
 
 $plugins = explode(",", $pluginorder);
 
-
+$ipc_conpluginpath = $cfg["path"]["contenido"].$cfg["path"]["plugins"];
 
 /*
  * Scan and save only by the BE 
@@ -48,8 +49,6 @@ $plugins = explode(",", $pluginorder);
 if ($contenido)
 {
 	$lastscantime = getSystemProperty("system", "plugin-lastscantime");
-
-	$ipc_conpluginpath = $cfg["path"]["contenido"].$cfg["path"]["plugins"];
 
 	/* Clean up: Fetch and trim the plugin order */
 	$plugins = array ();
