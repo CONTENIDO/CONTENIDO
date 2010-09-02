@@ -54,6 +54,7 @@
  *   
  *   modified 2008-07-21, Ingo van Peeren, fixed path for property 'content_css' default value  
  *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
+ *   modified 2010-09-03, Murat Purc, fixed invalid inline editor option, see [#CON-345]
  *
  *   $Id: editorclass.php 739 2008-08-27 10:37:54Z timo.trautmann $:
  * }}
@@ -452,7 +453,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
                 
                 $this->setSetting("height", "210px", true);
 				$this->setSetting("plugins", "table,inlinepopups,fullscreen,-close", true);
-                $this->setSetting("mode", "extract", true);
+                $this->setSetting("mode", "exact", true);
                 $this->setSetting("elements", "*", true);
 				$this->setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css", true); 
                 
