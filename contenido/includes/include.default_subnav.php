@@ -29,65 +29,173 @@
 
 if(!defined('CON_FRAMEWORK'))
 	die('Illegal call');
+
+
+$aExectime = array();
+$aExectime["fullstart"] = getmicrotime();
+
+/*
+ * Debug-Modus: on / off
+ * and Message as String
+ */
+$bDebug = true;
+$sDebugMsg = '';
+
+/*
+ * Benötigt alle möglichen vom Frame übergenene GET-Parameter-Names
+ */
+$aBasicParams = array( 'area', 'frame', 'contenido', 'appendparameters' );
+
+/*
+ * Flag to check is file is loading from Main-Frame
+ */
+$bVirgin = false;
+	
+
+
+/*
+ * Basic-Url-Params with
+ * Key: like 'id%' or '%id'
+ * and
+ * Value: are integer or strlen=32 (for md5)
+ */
+	$sUrlParams = ''; # URL-Parameter as string "&..." + "&..."
+	$iCountBasicVal = 0; # Count of basic Parameter in URL
+	
+	foreach( $_GET as $sTempKey => $sTempValue )
+	{
+		if( in_array($sTempKey, $aBasicParams) )
+		{
+			/* Basic parameters attached */
+			$iCountBasicVal++;
+		}
+		else if( ( substr($sTempKey,0,2)=='id' || substr($sTempKey, -2, 2)=='id' )
+			  && ( (int)$sTempValue==$sTempValue 					 // check integer
+					|| preg_match("/^[0-9a-f]{32}$/", $sTempValue) ) // check md5
+			  	 ) 
+		{
+			/* complement the selected data */
+			$sUrlParams.= '&'.$sTempKey.'='.$sTempValue;
+		}
+	}
 	
 /*
- * Url-Params 
- * with key like 'id%' or '%id' and value are integer
+ * is loading from main.php
+ * dann ist die Anzahl aller gültigen Variablen mit den in GET identisch
  */
-$sUrlParams = '';
-foreach( $_GET as $sTempKey => $sTempValue ) {
-	if( (substr($sTempKey, 0, 2)=='id' || substr($sTempKey, -2, 2)=='id')
-	 && (int)$sTempValue!=0 ) {
-		$sUrlParams.= '&'.$sTempKey.'='.$sTempValue;
+	if( $iCountBasicVal == count($_GET) )
+	{
+		$bVirgin = true;
 	}
-}
 
+/*
+ * Area-Url-Params 
+ *
+ * for special params
+ *
+	switch( $area ) {
+		case 'style': case 'js': case 'htmltpl':
+			if(array_key_exists('file', $_GET)) {
+				$sUrlParams.= '&file='.$_GET['file'];
+			}
+			break;
+		default: echo "";
+	}
+*/
 
+/* Debug */
+	$sDebugMsg.= 'Url-Params: '.$sUrlParams."\n";
+	
 
-if( isset($area) ) {
+/*
+ * Select NavSubItems from DB
+ */
 	$nav = new Contenido_Navigation;
 	
-    $sql = "SELECT
-                navsub.location AS location,
-                area.name     AS name
-            FROM
-                ".$cfg["tab"]["area"]."    AS area,
-                ".$cfg["tab"]["nav_sub"]." AS navsub
-            WHERE
+	$sql = "SELECT
+				navsub.location AS location,
+				area.name       AS name,
+				area.menuless   AS menuless
+			FROM
+				".$cfg["tab"]["area"]."    AS area,
+				".$cfg["tab"]["nav_sub"]." AS navsub
+			WHERE
 				area.idarea = navsub.idarea
 			  AND
 				navsub.level = 1
-			  AND ( 
-					area.idarea = '".$area."'
-				OR
-					area.parent_id = '".$area."' 
-				)
 			  AND 
-			  	navsub.online = 1
-            ORDER BY
-                navsub.idnavs";
+				navsub.online = 1
+			  AND ( 
+					area.parent_id = '".$area."' 
+				OR
+					area.name = '".$area."'
+				)
+			ORDER BY
+				area.parent_id ASC,
+				navsub.idnavs ASC";
 
-    $db->query($sql);
-
-    while( $db->next_record() ) {
+/* Debug */
+	$sDebugMsg.= '<!-- SQL-Select: '."\n".$sql."\n".' -->'."\n";
+	
+	
+	$db->query($sql);
+	
+	while( $db->next_record() )
+	{
+		/* Name */
+		$sArea = $db->f("name");
+		
 		/* Set translation path */
-		$caption = $nav->getName( $db->f("location") );
+		$sCaption = $nav->getName( $db->f("location") );
+		
+		/* for Main-Area*/
+		if( $sArea == $area )
+		{
+			/* Menueless */
+			$bMenuless = $db->f("menuless") ? true : false;
+			
+			if( $bVirgin && !$bMenuless )
+			{
+				// ist loading fron Main and no Menuless -> stop this "while"
+				break;
+			}	
+		}
+		
+		/* Link */
+		$sLink = $sess->url("main.php?area=".$sArea."&frame=4".($appendparameters?'&appendparameters='.$appendparameters:'')."&contenido=".$sess->id.$sUrlParams);
+		
+		/* fill template */
+		$tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt );
+		$tpl->set("d", "CLASS",     'item '.$sArea );
+		$tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sLink.'">'.$sCaption.'</a>');
+		$tpl->next();
+	}
 
-        $tmp_area = $db->f("name");
+	if( !$bVirgin || $bMenuless )
+	{
+		$tpl->set('s', 'CLASS', $bMenuless ? 'menuless' : '');
+		$tpl->set('s', 'SESSID', $sess->id);
+		
+		$sTpl = $tpl->generate( $cfg["path"]["templates"] . $cfg['templates']['default_subnav'], true );
+		
+		if($bDebug === true) {
+			
+			$aExectime["fullend"] = getmicrotime();
+			$sExectime = ($aExectime["fullend"] - $aExectime["fullstart"]);
+			$sDebugMsg.= 'sExectime: '.substr($sExectime,0,7)." sec"."\n";
+			
+			$sTpl = str_replace( '</body>', '<div style="position:absolute; right:15px; width: 200px; top:0px; height: 32px; overflow: scroll; background:#fff; color:#000; border:1px dotted #f00; padding:2px;">'.nl2br( $sDebugMsg ).'</div>'.'</body>', $sTpl );
+		}
+		
+		echo $sTpl;
+	}
+	else
+	{
+		/*
+		 * Is loading from main.php
+		 */
+		$tpl->reset();
+		$tpl->generate( $cfg["path"]["templates"] . $cfg['templates']['right_top_blank'] );
+	}
 
-        /* fill template */
-        $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
-        $tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=".$tmp_area."&frame=4&contenido=".$sess->id.$sUrlParams).'">'.$caption.'</a>');
-        $tpl->next();
-    }
-	
-    $tpl->set('s', 'SESSID', $sess->id);
-	
-    $tpl->generate($cfg["path"]["templates"] . $cfg['templates']['default_subnav']);
-
-} else {
-    $tpl->reset();
-    $tpl->set('s', 'ACTION', '');
-    $tpl->generate($cfg["path"]["templates"] . $cfg['templates']['right_top_blank']);
-}
 ?>
