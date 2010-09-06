@@ -38,7 +38,7 @@ $aExectime["fullstart"] = getmicrotime();
  * Debug-Modus: on / off
  * and Message as String
  */
-$bDebug = true;
+$bDebug = false;
 $sDebugMsg = '';
 
 /*
@@ -154,9 +154,9 @@ $bVirgin = false;
 			/* Menueless */
 			$bMenuless = $db->f("menuless") ? true : false;
 			
-			if( $bVirgin && !$bMenuless )
+			if( $bVirgin && !$bMenuless && $db->f("name") == $area )
 			{
-				// ist loading fron Main and no Menuless -> stop this "while"
+				// ist loading fron Main, Main-Area and Menuless -> stop this "while"
 				break;
 			}	
 		}
