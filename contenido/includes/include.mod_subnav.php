@@ -18,11 +18,13 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
+ * @deprecated Was replaced by include.default_subnav.php
  * 
  * {@internal 
  *   created  2003-01-25
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
+ *   modified 2010-09-07, Oliver Lohkemper, deprecated
  *
  *   $Id$:
  * }}

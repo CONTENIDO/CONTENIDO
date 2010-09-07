@@ -276,6 +276,10 @@ if (is_array($backend->getFile('main')))
   }
 
 }
+elseif( $frame == 3 )
+{
+    include_once($cfg['path']['contenido'].$cfg['path']['includes'] ."include.default_subnav.php" );
+}
 else
 {
 	include_once($cfg['path']['contenido'].$cfg['path']['includes'] ."include.blank.php");
