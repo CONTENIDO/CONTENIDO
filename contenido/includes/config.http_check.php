@@ -73,6 +73,7 @@ $aCheck = array();
 $aCheck['GET']['idart'] = CON_CHECK_INTEGER;
 $aCheck['GET']['idcat'] = CON_CHECK_INTEGER;
 $aCheck['GET']['idartlang'] = CON_CHECK_INTEGER;
+$aCheck['GET']['idcatart'] = CON_CHECK_INTEGER;
 $aCheck['GET']['lang'] = CON_CHECK_INTEGER;
 $aCheck['GET']['changelang'] = CON_CHECK_INTEGER;
 

@@ -57,13 +57,6 @@ include_once ("config.php");
 # Contenido startup process
 include_once ($contenido_path."includes/startup.php");
 
-// check HTTP parameters, if requested
-if ($cfg['http_params_check']['enabled'] === true) {
-    cInclude('classes', 'class.httpinputvalidator.php');
-    $oHttpInputValidator =
-        new HttpInputValidator($cfg["path"]["contenido"] . $cfg["path"]["includes"] . '/config.http_check.php');
-}
-
 cInclude("includes", "functions.con.php");
 cInclude("includes", "functions.con2.php");
 cInclude("includes", "functions.api.php");
