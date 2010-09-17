@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.3.9
+ * @version    1.3.10
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -33,6 +33,7 @@
  *   modified 2010-01-30, Ingo van Peeren, modified strRemakeTreeTable() to pass only one INSERT statement to the database, see [#CON-299]
  *   modified 2010-03-12, Ingo van Peeren, fixed a bug with last change if more than one client exist [#CON-299]
  *   modified 2010-06-18, Ingo van Peeren, fixed some issues with next id and order of con_cat_tree entries 
+ *   modified 2010-09-17, Ingo van Peeren, fixed some issues wrong level information causing garbled tree [#CON-348]
  *
  *   $Id$:
  * }}
@@ -466,29 +467,23 @@ function strRemakeTreeTable() {
     
 	// build cat_tree
     $aCategories = array();
-    $aLevels = array();
     while($db->next_record()) {
          
-        if ($db->f('parentid') == 0) {
+		if ($db->f('parentid') == 0) {
             $aCategories[0][$db->f('idcat')] = array(
-				        'idcat' => $db->f('idcat'),
-		    	      'parentid' => $db->f('parentid'),
-		    	      'preid' => $db->f('preid'),
-		    	      'postid' => $db->f('postid'),
-				        'level' => 0
-			      );
-            $aLevels[$db->f('idcat')] = 0;											     
-	      } else {
-			      $iLevel = $aLevels[$db->f('parentid')] + 1;
-			      $aLevels[$db->f('idcat')] = $iLevel;
-			      $aCategories[$db->f('parentid')][$db->f('idcat')] = array(
-				        'idcat' => $db->f('idcat'),
-			          'parentid' => $db->f('parentid'),
-			          'preid' => $db->f('preid'),
-		    	      'postid' => $db->f('postid'),
-				        'level' => $iLevel
-			      );
-		    }	
+				'idcat' => $db->f('idcat'),
+		    	'parentid' => $db->f('parentid'),
+		    	'preid' => $db->f('preid'),
+		    	'postid' => $db->f('postid')
+			);
+		} else {
+			$aCategories[$db->f('parentid')][$db->f('idcat')] = array(
+			    'idcat' => $db->f('idcat'),
+			    'parentid' => $db->f('parentid'),
+			    'preid' => $db->f('preid'),
+		        'postid' => $db->f('postid')
+			);
+		}	
         		                                      
     }
     
@@ -525,16 +520,17 @@ function sort_pre_post($arr) {
 }
 
 
-function recCats ($aCats, $sInsertQuery, &$iNextTreeId, &$aAllCats) {
+function recCats ($aCats, $sInsertQuery, &$iNextTreeId, &$aAllCats, $iLevel = 0) {
 	if (is_array($aCats)) {
-	  $aCats = sort_pre_post($aCats);	  
-    foreach ($aCats as $aCat) {
-		  $sInsertQuery .= "(" . (int) $iNextTreeId . ", ".(int) $aCat['idcat'].", ". (int) $aCat['level']."), ";
-		  $iNextTreeId++;
-		  if (is_array($aAllCats[$aCat['idcat']])) {
-			 $sInsertQuery = recCats($aAllCats[$aCat['idcat']], $sInsertQuery, $iNextTreeId, $aAllCats);
-		  }
-	 }
+		$aCats = sort_pre_post($aCats);	  
+		foreach ($aCats as $aCat) {
+			$sInsertQuery .= "(" . (int) $iNextTreeId . ", ".(int) $aCat['idcat'].", ". (int) $iLevel ."), ";
+			$iNextTreeId++;
+			if (is_array($aAllCats[$aCat['idcat']])) {
+				$iSubLevel = $iLevel + 1;
+				$sInsertQuery = recCats($aAllCats[$aCat['idcat']], $sInsertQuery, $iNextTreeId, $aAllCats, $iSubLevel);
+			}
+		}
 	}
 	return $sInsertQuery;
 }
