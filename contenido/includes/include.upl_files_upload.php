@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.7.0
+ * @version    1.7.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-12-30
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2010-09-20, Dominik Ziegler, added path to error message when directory is not writable - CON-319
  *
  *   $Id$:
  * }}
@@ -65,7 +66,7 @@ if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || is_dbfs($path)) &&
     
     $page->setContent($form->render());
 } else {
-	$page->setContent($notification->returnNotification("error", i18n("Directory not writable")));
+	$page->setContent($notification->returnNotification("error", i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')'));
 }	
 $page->render();
 ?>

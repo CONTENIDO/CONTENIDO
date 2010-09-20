@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.5.8
+ * @version    1.5.9
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,7 @@
  *   modified 2008-10-03, Oliver Lohkemper, delete CEC::Contenido.Upl_edit.SaveRows
  *   modified 2008-10-16, Oliver Lohkemper, add copyright in upl_meta - CON-212  
  *   modified 2009-12-04, Dominik Ziegler, added initial set of file variable
+ *   modified 2010-09-20, Dominik Ziegler, implemented check of write permissions - CON-319
  *
  *   $Id$:
  * }}
@@ -42,6 +43,7 @@ cInclude("classes", "class.htmlelements.php");
 cInclude("includes", "api/functions.frontend.list.php");
 cInclude("classes", "class.properties.php");
 cInclude("classes", "class.todo.php");
+
 
 if (!(int) $client > 0) {
   #if there is no client selected, display empty page
@@ -92,10 +94,16 @@ if ($path && $action != '') {
     $sReloadScript = "";
 }
 
+if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || is_dbfs($path)) && (int) $client > 0) {
+	$bDirectoryIsWritable = true;
+} else {
+	$bDirectoryIsWritable = false;
+}
+
 if ($action == "upl_modify_file")
 {
 	/* Did the user upload a new file? */
-	if (count($_FILES) == 1 && ($_FILES["file"]["size"] > 0) && ($_FILES["file"]["name"] != ""))
+	if ($bDirectoryIsWritable == true && count($_FILES) == 1 && ($_FILES["file"]["size"] > 0) && ($_FILES["file"]["name"] != ""))
 	{
 		if ($_FILES['file']['tmp_name'] != "")
 		{
@@ -195,7 +203,7 @@ if ($action == "upl_modify_file")
 	}
 }
 
-if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action))
+if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable == true)
 {
 	if (is_array($fdelete))
 	{
@@ -227,7 +235,7 @@ if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action)
 	
 }
 
-if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action))
+if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable == true)
 {
 	$uploads->select("idclient = '$client' AND dirname='$qpath' AND filename='$file'");
 	if ($uploads->next())
@@ -250,7 +258,7 @@ if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action))
 	}
 }
 
-if ($action == "upl_upload")
+if ($action == "upl_upload" && $bDirectoryIsWritable == true)
 {
 	if (count($_FILES) == 1)
 	{
@@ -316,7 +324,7 @@ if ($action == "upl_upload")
 	}
 }
 
-if ($action == "upl_renamefile")
+if ($action == "upl_renamefile" && $bDirectoryIsWritable == true)
 {
 	$newname = str_replace("/", "", $newname);
 	rename($cfgClient[$client]['upl']['path'].$path.$oldname, $cfgClient[$client]['upl']['path'].$path.$newname);	
@@ -429,7 +437,7 @@ class UploadList extends FrontendList
 
 function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 {
-	global $cfg, $client, $cfgClient, $area, $frame, $sess, $browserparameters, $appendparameters, $perm, $auth, $sReloadScript;
+	global $cfg, $client, $cfgClient, $area, $frame, $sess, $browserparameters, $appendparameters, $perm, $auth, $sReloadScript, $notification, $bDirectoryIsWritable;
 
 	if ($sortby == "")
 	{
@@ -482,7 +490,7 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 	}		
 	
     // Multiple deletes at top of table
-	if ($perm->have_perm_area_action("upl", "upl_multidelete")) 
+	if ($perm->have_perm_area_action("upl", "upl_multidelete") && $bDirectoryIsWritable == true) 
 	{
         $sConfirmation = "box.confirm('".i18n('Delete Files')."', '".i18n('Are you sure you want to delete the selected files?')."', 'document.del.action.value = \\\\'upl_multidelete\\\\'; document.del.submit()');";
 		$sDelete = '<a href="javascript:'.$sConfirmation.'"><img src="images/delete.gif" style="vertical-align:middle; margin-right:10px;" title="'.i18n("Delete selected files").'" alt="'.i18n("Delete selected files").'" onmouseover="this.style.cursor=\'pointer\'">'.i18n("Delete selected files").'</a>';
@@ -957,8 +965,15 @@ function uplRender ($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
     $sScriptinBody = '<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
                       <script type="text/javascript" src="scripts/tip_balloon.js"></script>';
 	$page->addScript('style', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
-    
-    $page->setContent($sScriptinBody.$delform->render());
+	
+	if ( $bDirectoryIsWritable == false ) {
+		$sErrorMessage = $notification->returnNotification("error", i18n("Directory not writable")  . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')');
+		$sErrorMessage .= '<br />';
+	} else {
+		$sErrorMessage = '';
+	}
+	
+    $page->setContent($sScriptinBody . $sErrorMessage . $delform->render());
     
 	$page->render();
 }

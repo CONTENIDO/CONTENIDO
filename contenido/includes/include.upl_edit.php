@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.8.1
+ * @version    1.8.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  *   modified 2008-07-31, Oliver Lohkemper, add CEC
  *   modified 2008-08-11, Timo Trautmann, added urlencode for meta storage in database
  *   modified 2008-10-16, Oliver Lohkemper, add copyright in upl_meta - CON-212  
+ *   modified 2010-09-20, Dominik Ziegler, implemented check for write permissions - CON-319
  *
  *   $Id$:
  * }}
@@ -65,6 +66,12 @@ if (is_dbfs($_REQUEST["path"])) {
    $qpath = $_REQUEST["path"] . "/";    
 } else {
    $qpath = $_REQUEST["path"];   
+}
+
+if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || is_dbfs($path)) && (int) $client > 0) {
+	$bDirectoryIsWritable = true;
+} else {
+	$bDirectoryIsWritable = false;
 }
 
 $uploads->select("idclient = '".$client."' AND dirname = '".$qpath."' AND filename='".$_REQUEST["file"]."'");
@@ -140,7 +147,9 @@ if ($upload = $uploads->next()) {
             
          case "replacefile":
             $uplelement = new cHTMLUpload("file",40);
+			$uplelement->setDisabled(!$bDirectoryIsWritable);
             $sCell = $uplelement->render();
+			
            break;
             
          case "medianame":
@@ -283,9 +292,16 @@ if ($upload = $uploads->next()) {
    */
     $sScriptinBody = '<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
                       <script type="text/javascript" src="scripts/tip_balloon.js"></script>';
-   $page->addScript('style', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
+	$page->addScript('style', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
    
-   $page->setContent( $sScriptinBody . $form->render() . $sScript );
+	if ( $bDirectoryIsWritable == false ) {
+		$sErrorMessage = $notification->returnNotification("error", i18n("Directory not writable")  . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')');
+		$sErrorMessage .= '<br />';
+	} else {
+		$sErrorMessage = '';
+	}
+   
+   $page->setContent( $sScriptinBody . $sErrorMessage . $form->render() . $sScript );
 }
 else {
    $page->setContent(sprintf(i18n("Could not load file %s"),$_REQUEST["file"]));
