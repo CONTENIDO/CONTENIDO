@@ -22,13 +22,14 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2010-09-22, Murat Purc, Fixed setting of wrong initial translation id [#CON-347]
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
@@ -53,27 +54,27 @@ if ($action == "mod_translation_save")
 	$strans->loadByPrimaryKey($idmodtranslation);
 
 	if ($strans->get("idmod") == $idmod)
-	{	
+	{
 		$module->setTranslatedName($translatedname);
 
 		$strans->set("translation", stripslashes($t_trans));
 		$strans->store();
-		
+
 		/* Increase idmodtranslation */
 		$moduletranslations->select("idmod = '$idmod' AND idlang = '$lang'");
-		
+
 		while ($mitem = $moduletranslations->next())
 		{
 			if ($mitem->get("idmodtranslation") == $idmodtranslation)
 			{
 				$mitem2 = $moduletranslations->next();
-				
+
 				if (is_object($mitem2))
 				{
 					$idmodtranslation = $mitem2->get("idmodtranslation");
-					break;	
-				}	
-			}	
+					break;
+				}
+			}
 		}
 	}
 }
@@ -83,7 +84,7 @@ if ($action == "mod_importexport_translation")
 	if ($mode == "export")
 	{
 		$sFileName = uplCreateFriendlyName(strtolower($module->get("name") . "_" . $langobj->get("name")));
-		
+
 		if ($sFileName != "")
 		{
 			$moduletranslations->export($idmod, $lang,  $sFileName . ".xml");
@@ -101,7 +102,7 @@ if ($action == "mod_importexport_translation")
 
 if (!isset($idmodtranslation))
 {
-	$idmodtranslation = 0;	
+	$idmodtranslation = 0;
 }
 
 $mtrans = new cApiModuleTranslation;
@@ -109,8 +110,7 @@ $mtrans->loadByPrimaryKey($idmodtranslation);
 
 if ($mtrans->get("idmod") != $idmod)
 {
-	$moduletranslations->select("idmod = '$idmod' AND idlang = '$lang'");
-	
+	$moduletranslations->select("idmod = '$idmod' AND idlang = '$lang'", '', 'idmodtranslation DESC', '1');
 	$mtrans = $moduletranslations->next();
 	
 	if (is_object($mtrans))
@@ -135,14 +135,14 @@ while ($d_modtrans = $moduletranslations->next())
 {
 	if (!in_array($d_modtrans->get("original"), $strings))
 	{
-		$moduletranslations->delete($d_modtrans->get("idmodtranslation")); 	
-	}	
+		$moduletranslations->delete($d_modtrans->get("idmodtranslation"));
+	}
 }
 
 $page = new cPage;
 
 $form = new UI_Table_Form("translation");
-$form->addHeader(sprintf(i18n("Translate module '%s'"), $module->get("name"))); 
+$form->addHeader(sprintf(i18n("Translate module '%s'"), $module->get("name")));
 $form->setVar("area", $area);
 $form->setVar("frame", $frame);
 $form->setVar("idmod", $idmod);
