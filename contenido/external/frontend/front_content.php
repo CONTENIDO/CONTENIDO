@@ -27,14 +27,14 @@
  *
  * Requirements:
  * @con_php_req 5.0
- * @con_note If you edit this file you must synchronise the files
- * ./contenido/external/frontend/front_content.php
- * and
- * ./contenido/external/backendedit/front_content.php
+ * @con_notice If you edit this file you must synchronise the files
+ * - ./cms/front_content.php
+ * - ./contenido/external/backendedit/front_content.php
+ * - ./contenido/external/frontend/front_content.php
  *
  *
- * @package    Contenido Backend external
- * @version    1.8.9
+ * @package    Contenido Frontend
+ * @version    4.8
  * @author     Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -59,6 +59,7 @@
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
  *   modified 2009-12-31, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *   modified 2010-05-20, Murat Purc, moved security checks into startup process, see [#CON-307]
+ *   modified 2010-09-23, Murat Purc, fixed $encoding handling, see [#CON-305]
  *
  *   $Id$:
  * }}
@@ -74,7 +75,7 @@ $contenido_path = '';
 include_once ("config.php");
 
 # Contenido startup process
-include_once ($contenido_path . "includes/startup.php");
+include_once ($contenido_path . 'includes/startup.php');
 
 cInclude("includes", "functions.con.php");
 cInclude("includes", "functions.con2.php");
@@ -136,12 +137,15 @@ if ($cfgClient["set"] != "set")
     rereadClients();
 }
 
-$sql = "SELECT idlang, encoding FROM ".$cfg["tab"]["lang"];
-$db->query($sql);
-// get encodings of all languages
-while ($db->next_record())
+if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0)
 {
-    $encoding[$db->f("idlang")] = $db->f("encoding");
+    // get encodings of all languages
+    $encoding = array();
+    $sql = "SELECT idlang, encoding FROM " . $cfg["tab"]["lang"];
+    $db->query($sql);
+    while ($db->next_record()) {
+        $encoding[$db->f('idlang')] = $db->f('encoding');
+    }
 }
 
 
@@ -763,13 +767,13 @@ else
                 'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
             );
 
-			/*
-				added 2008-11-18 Timo Trautmann
-				in backendeditmode also check if logged in backenduser has permission to view preview of page
-			*/
-			if ($allow == false && $contenido && $perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat)) {
-				$allow = true;
-			}
+            /*
+                added 2008-11-18 Timo Trautmann
+                in backendeditmode also check if logged in backenduser has permission to view preview of page
+            */
+            if ($allow == false && $contenido && $perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat)) {
+                $allow = true;
+            }
 
             if (!$allow)
             {
@@ -863,7 +867,7 @@ else
 
         $str_base_uri = $cfgClient[$client]["path"]["htmlpath"];
 
-		// CEC for base href generation
+        // CEC for base href generation
         $str_base_uri = CEC_Hook::executeAndReturn('Contenido.Frontend.BaseHrefGeneration', $str_base_uri);
 
         if ($is_XHTML == "true") {
