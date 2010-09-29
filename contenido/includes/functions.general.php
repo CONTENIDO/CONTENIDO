@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.3.2
+ * @version    1.3.3
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-07-03, Dominik Ziegler, fixed bug CON-143
  *   modified 2009-02-15, Murat Purc, fixed bug CON-238
+ *   modified 2010-09-29, Ortwin Pinke, fixed bug CON-349
  *
  *   $Id$:
  * }}
@@ -281,8 +282,8 @@ function markSubMenuItem($menuitem, $return = false)
 			if ( parent.parent.frames[0].name == "header")
 			{
 	    		if ( parent.frames["right_top"].document.getElementById("c_'.$menuitem.'") ) {
-	                menuItem = parent.frames["right_top"].document.getElementById("c_'.$menuitem.'");
-	                parent.frames["right_top"].sub.click(menuItem);
+	                menuItem = parent.frames["right_top"].document.getElementById("c_'.$menuitem.'").getElementsByTagName(\'a\')[0];
+	                parent.frames["right_top"].sub.clicked(menuItem);
 	            } 	
 			} else {
 	        /* Check if submenuItem is existing
