@@ -476,16 +476,19 @@ class Cms_Teaser {
 		//set please chose option element
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Please choose"), '', true);
 		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
-		
+
 		//set other avariable options manually
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Sort Sequence"), 'sortsequence', false);
 		$oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
-		
+
 		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Creationdate"), 'creationdate', false);
 		$oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
 		
-		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Modificationdate"), 'modificationdate', false);
+		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Publisheddate"), 'publisheddate', false);
 		$oHtmlSelect->addOptionElement(3, $oHtmlSelectOption);
+
+		$oHtmlSelectOption = new cHTMLOptionElement(i18n("Modificationdate"), 'modificationdate', false);
+		$oHtmlSelect->addOptionElement(4, $oHtmlSelectOption);
 		
 		//set default value
 		$oHtmlSelect->setDefault($sSelected);
