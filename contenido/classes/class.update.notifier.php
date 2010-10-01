@@ -12,7 +12,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,8 @@
  *   modified 2008-07-01 timo trautmann - added rss update functionality
  *   modified 2008-07-02, Dominik Ziegler, added language support for rss
  *   modified 2009-10-01, Dominik Ziegler, added some checks for directory write permissions
+ *   modified 2010-10-01, Dominik Ziegler, added resource check of fsockopen stream
+ *
  *   $Id$:
  * }}
  * 
@@ -507,7 +509,7 @@ class Contenido_UpdateNotifier {
 		$aXMLContent = array();
 
 		$oSocket = @fsockopen($this->sVendorHost, 80, $errno, $errstr, $this->iConnectTimeout); 
-		if (!$oSocket) { 
+		if ( !is_resource($oSocket) ) { 
    			$sErrorMessage = i18n('Unable to check for new updates!')." ".i18n('Connection to contenido.org failed!');
 			$this->sErrorOutput = $this->renderOutput($sErrorMessage);
 		} else { 
