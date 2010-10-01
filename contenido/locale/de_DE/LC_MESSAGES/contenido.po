@@ -3938,3 +3938,6 @@ msgstr "-- Unbenanntes Template --"
 
 msgid "Layout deleted"
 msgstr "Layout gel&ouml;scht"
+
+msgid "Publisheddate"
+msgstr "Ver&ouml;ffentlichungsdatum"
