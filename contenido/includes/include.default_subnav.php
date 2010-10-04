@@ -164,10 +164,16 @@ $bVirgin = false;
 		/* Link */
 		$sLink = $sess->url("main.php?area=".$sArea."&frame=4".($appendparameters?'&appendparameters='.$appendparameters:'')."&contenido=".$sess->id.$sUrlParams);
 		
+		/* Class */
+		if($sArea == $area)
+			$sClass = ' current';
+		else
+			$sClass = '';
+		
 		/* fill template */
 		$tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt );
 		$tpl->set("d", "CLASS",     'item '.$sArea );
-		$tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sLink.'">'.$sCaption.'</a>');
+		$tpl->set("d", "CAPTION",   '<a class="white'.$sClass.'" onclick="sub.clicked(this)" target="right_bottom" href="'.$sLink.'">'.$sCaption.'</a>');
 		$tpl->next();
 	}
 
