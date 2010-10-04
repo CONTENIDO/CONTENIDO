@@ -628,6 +628,8 @@ class Contenido_Category_Language extends Contenido_Category_Base {
      * @access protected
      */
     protected $sName;
+    protected $sAlias;
+    
     /**#@+
      * @var int
      * @access protected
@@ -706,6 +708,7 @@ class Contenido_Category_Language extends Contenido_Category_Base {
 	    $this->setIdLang($this->getIdLang());
 	    $this->setIdTemplateConfig($this->oDb->f('idtplcfg'));
 	    $this->setName($this->oDb->f('name'));
+        $this->setAlias($this->oDb->f('urlname'));
 	    $this->setVisible($this->oDb->f('visible'));
 	    $this->setPublic($this->oDb->f('public'));
 	    $this->setStatus($this->oDb->f('status'));
@@ -733,6 +736,9 @@ class Contenido_Category_Language extends Contenido_Category_Base {
     }
     public function setName($sName) {
         $this->sName = (string) $sName;
+    }
+    public function setAlias($sAlias) {
+        $this->sAlias = (string) $sAlias;
     }
     public function setVisible($iVisible) {
         $iVisible = (int) $iVisible;
@@ -790,6 +796,9 @@ class Contenido_Category_Language extends Contenido_Category_Base {
     }
     public function getName() {
         return !is_null($this->sName) ? (string) $this->sName : '';
+    }
+    public function getAlias() {
+        return !is_null($this->sAlias) ? (string) $this->sAlias : '';
     }
     public function getVisible() {
         return !is_null($this->iVisible) ? (int) $this->iVisible : -1;
