@@ -63,8 +63,8 @@ class Contenido_Security_Exception extends Exception {
 		
 		// check if logging is enabled
 		if ( self::$_logging == true ) {
-			$sLogFile = realpath( dirname(__FILE__) . '/../logs/security.txt' );
-		
+			$sLogFile = realpath( dirname(__FILE__) . '../../logs/') . '/security.txt';
+
 			$sFileContent = '---------' . PHP_EOL;
 			$sFileContent .= "Invalid call caused by parameter '" . $sParamName . "' at " . date("c") . PHP_EOL;
 			$sFileContent .= "Original value was '" . $_REQUEST[$sParamName] . "'" . PHP_EOL;
