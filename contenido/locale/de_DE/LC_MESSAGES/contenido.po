@@ -3941,3 +3941,6 @@ msgstr "Layout gel&ouml;scht"
 
 msgid "Publisheddate"
 msgstr "Ver&ouml;ffentlichungsdatum"
+
+msgid "Is used in"
+msgstr "Wird benutzt in"
