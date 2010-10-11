@@ -31,6 +31,7 @@
  *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready)
  *   modified 2009-12-18, Murat Purc, fixed meta tag generation, see [#CON-272]
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
+ *   modified 2010-10-11, Dominik Ziegler, display only major and minor version of version number
  *
  *   $Id$:
  * }}
@@ -463,7 +464,9 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	}
 
 	/* contenido */
-	$metatags[] = array ('name' => 'generator', 'content' => 'CMS Contenido '.$cfg['version']);
+	$aVersion = explode('.', $cfg['version']);
+	$sContenidoVersion = $aVersion[0] . '.' . $aVersion[1];
+	$metatags[] = array ('name' => 'generator', 'content' => 'CMS Contenido ' . $sContenidoVersion);
 	if (getEffectiveSetting('generator', 'xhtml', "false") == "true")
 	{
 		$metatags[] = array ('http-equiv' => 'Content-Type', 'content' => 'application/xhtml+xml; charset='.$encoding[$lang]);
