@@ -305,7 +305,7 @@ $sShowUsedInfo = '
 	            		   "' . $cfg['path']['contenido_fullhtml'] . 'ajaxmain.php' . '", 
 	      				   { area: "' . $area . '", ajax: "inused_module", id: iId, contenido: sid }, 
 	      				   function(data) {
-	      					  box.notify("' . i18n("Benutzte Templates") . '", data);
+	      					  box.notify("' . i18n("Is used in") . ':", data);
 	      				   } 
 	      				);
 	            	}	

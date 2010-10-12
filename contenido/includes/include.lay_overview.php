@@ -129,7 +129,7 @@ while ($layout = $layouts->next()) {
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'].'ajaxmain.php');
-$tpl->set('s', 'BOX_TITLE', i18n("Benutzte Templates"));
+$tpl->set('s', 'BOX_TITLE', i18n("Is used in") . ":");
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lay_overview']);
 ?>

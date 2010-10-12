@@ -125,7 +125,7 @@ while ( $db->next_record() ) {
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'].'ajaxmain.php');
-$tpl->set('s', 'BOX_TITLE', i18n("Template benutzt in: "));
+$tpl->set('s', 'BOX_TITLE', i18n("Is used in") . ":");
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tpl_overview']);
 
 ?>
