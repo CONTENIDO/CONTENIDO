@@ -53,7 +53,7 @@ class Contenido_Security_Exception extends Exception {
 	 * @static
 	 * @var		boolean
 	 */
-	protected static $_logging = true;
+	protected static $_logging = false;
 	
 	/**
 	 * @see Exception::__construct()
@@ -63,7 +63,7 @@ class Contenido_Security_Exception extends Exception {
 		
 		// check if logging is enabled
 		if ( self::$_logging == true ) {
-			$sLogFile = realpath( dirname(__FILE__) . '../../logs/') . '/security.txt';
+			$sLogFile = realpath( dirname(__FILE__) . '/../logs/') . '/security.txt';
 
 			$sFileContent = '---------' . PHP_EOL;
 			$sFileContent .= "Invalid call caused by parameter '" . $sParamName . "' at " . date("c") . PHP_EOL;
