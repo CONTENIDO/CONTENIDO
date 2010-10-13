@@ -12,7 +12,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -33,6 +33,7 @@
  *   modified 2009-10-07, Murat Purc, bugfix in conMoveArticles (missing apostrophe)
  *   modified 2009-12-01, Dominik Ziegler, bugfix in conFlagOnOffline (article is still offline if enddate in time management is missing)
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
+ *   modified 2010-10-13, Dominik Ziegler, No copy label per default when copying articles or categories (CON-352)
  *  
  *   $Id$:
  * }}
@@ -1961,7 +1962,7 @@ function conCopyArticle ($srcidart, $targetcat = 0, $newtitle = "", $bUseCopyLab
 	$sql = "INSERT INTO ".$cfg["tab"]["art"]." (idart, idclient) VALUES ('".Contenido_Security::toInteger($dstidart)."', '".Contenido_Security::toInteger($idclient)."')";
 	$db->query($sql);
 	
-	conCopyArtLang($srcidart, $dstidart, $newtitle, $newtitle);
+	conCopyArtLang($srcidart, $dstidart, $newtitle, $bUseCopyLabel);
 	
 	// Update category relationship
 	$sql = "SELECT idcat, status FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($srcidart)."'";

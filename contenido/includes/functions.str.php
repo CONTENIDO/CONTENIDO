@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.3.10
+ * @version    1.3.11
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -34,6 +34,7 @@
  *   modified 2010-03-12, Ingo van Peeren, fixed a bug with last change if more than one client exist [#CON-299]
  *   modified 2010-06-18, Ingo van Peeren, fixed some issues with next id and order of con_cat_tree entries 
  *   modified 2010-09-17, Ingo van Peeren, fixed some issues wrong level information causing garbled tree [#CON-348]
+ *   modified 2010-10-13, Dominik Ziegler, No copy label per default when copying articles or categories (CON-352)
  *
  *   $Id$:
  * }}
@@ -1428,7 +1429,7 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
     $db->query($sql);
 
     while ($db->next_record()) {
-        $newidart = conCopyArticle($db->f("idart"), $newidcat, "", false);
+        $newidart = conCopyArticle($db->f("idart"), $newidcat, "", $bUseCopyLabel);
         if ($db->f("idartlang") == $oldcatlang->get("startidartlang")) {
             $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".Contenido_Security::toInteger($newidcat)."' AND idart = '".Contenido_Security::toInteger($newidart)."'";
             $db2->query($sql);
@@ -1459,7 +1460,7 @@ function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true
     $db = new DB_Contenido;
     $db->query("SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid = '".Contenido_Security::toInteger($idcat)."'");
     while ($db->next_record()) {
-        strCopyTree($db->f("idcat"), $newidcat, false, false);
+        strCopyTree($db->f("idcat"), $newidcat, false, $bUseCopyLabel);
     }
 
     if ($remakeTree == true) {
