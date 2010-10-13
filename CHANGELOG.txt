@@ -6,6 +6,31 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id$:
 
+Release 4.8.14
+----------------------------------------------------------------------	
+** Bug
+
+    * [CON-305] - Initialization of global $encodinmg could fail
+    * [CON-319] - Info for can't write a upload in directory
+    * [CON-340] - TinyMCE wraps table in a p-tag
+    * [CON-343] - Teaser Right Modul has no content
+    * [CON-345] - Invalid TinyMCE option for inline editor
+    * [CON-346] - Plugin inclusion causes a PHP warning
+    * [CON-349] - markSubMenuItem not working in dualframe
+    * [CON-350] - Missing resource check for fsockopen stream in update notifier
+    * [CON-351] - Fixed XSS Security Issue
+    * [CON-352] - No copy label per default when copying articles or categories
+
+** Improvement
+
+    * [CON-322] - scan and save only in BE (for FE performance & security)
+
+** New Feature
+
+    * [CON-342] - New defalut File for SubNavi for Frame 3 (right-top)
+    * [CON-353] - Added Inuse Information for Layouts, Modules and Templates
+
+
 Release 4.8.13
 ----------------------------------------------------------------------	
 ** Bug
