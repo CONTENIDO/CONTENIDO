@@ -71,7 +71,8 @@ if ( isset($_GET['file']) ) {
             WHERE
                 b.idarea IN ".$in_str." AND
                 b.idarea = a.idarea AND
-                b.level = 1 AND b.online = 1
+                b.level = 1 AND 
+				b.online = 1
             ORDER BY
                 b.idnavs";
 

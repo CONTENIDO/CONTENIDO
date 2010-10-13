@@ -50,7 +50,9 @@ $aBasicParams = array( 'area', 'frame', 'contenido', 'appendparameters' );
  * Flag to check is file is loading from Main-Frame
  */
 $bVirgin = false;
-	
+
+
+$area = Contenido_Security::escapeDB($area, $db);
 
 
 /*

@@ -47,7 +47,8 @@ if ( isset($_GET['idcat']) ) {
                 ".$cfg["tab"]["nav_sub"]." AS b
             WHERE
                 b.level = 1 AND
-                b.idarea = a.idarea
+                b.idarea = a.idarea AND 
+				b.online = 1
             ORDER BY
                 b.idnavs";
 

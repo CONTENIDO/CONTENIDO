@@ -81,7 +81,8 @@ if ( isset($_GET['idcat']) && $_GET['idcat'] != 0 ) {
             WHERE
                 b.idarea IN ".Contenido_Security::escapeDB($in_str, $db)." AND
                 b.idarea = a.idarea AND
-                b.level = 1
+                b.level = 1 AND 
+				b.online = 1
             ORDER BY
                 b.idnavs";
 
