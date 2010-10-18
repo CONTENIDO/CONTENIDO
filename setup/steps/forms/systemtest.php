@@ -9,7 +9,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    0.3
+ * @version    0.3.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   modified 2008-07-07, bilal arslan, added security fix
  *   modified 2009-12-17, Dominik Ziegler, added check for write permission on missing cronjob files
  *   modified 2010-07-26, Ortwin Pinke, [CON-329] added check for write permission of temp-folder
+ *   modified 2010-10-18, Ingo van Peeren, added check for write permission of advance_workflow.php.job
  *
  *   $Id$:
  * }}
@@ -702,6 +703,9 @@ class cSetupSystemtest extends cSetupMask
 									C_SEVERITY_WARNING);
 									
 		$this->logFilePrediction(   "contenido/cronjobs/setfrontenduserstate.php.job",
+									C_SEVERITY_WARNING);
+
+        $this->logFilePrediction(   "contenido/cronjobs/advance_workflow.php.job",
 									C_SEVERITY_WARNING);
 									
 		$this->logFilePrediction(	"contenido/cache/",
