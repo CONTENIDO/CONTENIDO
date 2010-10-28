@@ -16,7 +16,7 @@
  *
  *
  * @package    Contenido
- * @version    0.1.0
+ * @version    0.2.0
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,9 @@
  * {@internal
  *  created 2008-08-21
  *  modified 2009-04-09: Timo Trautmann fixed inconsistence bug in getNonStartArticlesInCategory()
+ *  modified 2010-10-28 Ortwin Pinke, changed behaviour for $sOrderBy in getNonStartArticlesInCategory()
+ *
+ * 
  *  $Id$:
  * }}
  *
@@ -255,10 +258,27 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
         if (!in_array(strtolower($sOrderDirection), array('asc', 'desc'))) {
             $sOrderDirection = 'DESC';
         }
-		
-		$sOrderBy == 'sortsequence' ? $sOrderBy = 'artsort' : null;
-		$sOrderBy == 'modificationdate' ? $sOrderBy = 'lastmodified' : null;
-		$sOrderBy == 'creationdate' ? $sOrderBy = 'created': null;
+
+        if($sOrderBy != 'created') {
+
+            switch ($sOrderBy) {
+                case 'sortsequence':
+                    $sOrderBy = 'artsort';
+                    break;
+                case 'modificationdate':
+                    $sOrderBy = 'lastmodified';
+                    break;
+                case 'creationdate':
+                    $sOrderBy = 'created';
+                    break;
+                case 'publisheddate':
+                    $sOrderBy = 'published';
+                    break;
+
+                default:
+                    $sOrderBy = 'created';
+            }
+        }
 				
         $aReturn = array();
         $aOptions = array(
