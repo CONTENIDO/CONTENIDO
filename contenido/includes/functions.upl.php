@@ -886,7 +886,7 @@ function uplCreateFriendlyName ($filename)
 		$atom = substr($filename, $i,1);
 		$bFound = false;
 		
-		if (preg_match("/[[:alnum:]]/i", $atom ))
+		if (preg_match("/[0-9a-zA-Z]/i", $atom ))
 		{
 			$newfilename .= $atom;
 			$bFound = true;		
