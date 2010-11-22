@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.2.0
+ * @version    1.2.1
  * @author     HerrB
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-06-27, OliverL fix import module translation bug, checkin timo.trautmann (http://forum.contenido.org/viewtopic.php?t=19064)
+ *   modified 2010-11-22, Dominik Ziegler, fixed check of directory existance [CON-354]
  *
  *   $Id$:
  * }}
@@ -99,8 +100,9 @@ function getFiles ($sPath, $sFileType, &$sNoti)
 			break;
 		default:
 			// Real file
-			if ($iHandle = opendir($sPath))
+			if (is_dir($sPath))
 			{
+				$iHandle = opendir($sPath);
 				$aFiles = array();
 				
 				while ($sFile = readdir($iHandle))
