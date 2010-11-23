@@ -11,7 +11,7 @@
 </td>
 <td width="30%" valign="top">{CHOOSENEXTSTEP}
 </td>
-<td style="padding-left: 20px;" width="30%" valign="top">{BACKEND}{FRONTEND}{WEBSITE}{FORUM}
+<td style="padding-left: 20px;" width="30%" valign="top">{BACKEND}{FRONTEND}{WEBSITE}{FORUM}{FAQ}
 </tr>
 </table>
 <input type="hidden" name="language" value="">
