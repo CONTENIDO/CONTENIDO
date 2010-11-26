@@ -25,6 +25,7 @@
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *   modified 2010-01-07, Murat Purc, fixed usage of wrong variable, see [#CON-292]
+ *   modified 2010-11-26, Dominik Ziegler, resetten array with redefinition of empty array instead of unsetting the variable [#CON-369]
  *
  *   $Id$:
  * }}
@@ -84,7 +85,7 @@ function checkLinks() {
 
 		}
 
-		unset($aFind);
+		$aFind = array();
 
 		// Check categorys
 		$sql = "SELECT idcat, startidartlang, visible FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat IN (" . $sSearch . ") AND idlang = '" . Contenido_Security::toInteger($lang) . "'";
@@ -131,7 +132,7 @@ function checkLinks() {
 
 		}
 
-		unset($aFind);
+		$aFind = array();
 
 		// Check articles
 		$sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'] . " WHERE idcatart IN (" . $sSearch . ")";
