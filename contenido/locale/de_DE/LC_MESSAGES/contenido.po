@@ -3408,6 +3408,9 @@ msgstr "Anscheinend wurde Ihre Version manipuliert. Contenido %s existiert nicht
 msgid "Your webserver does not have write permissions for the directory /contenido/cache/!"
 msgstr "Ihr Webserver hat keine Schreibberechtigungen f&uuml;r das Verzeichnis /contenido/cache/!"
 
+msgid "Update check period must be at least 60 minutes."
+msgstr "Die Aktualisierungsperiode muss mindestens 60 Minuten betragen."
+
 msgid "read more"
 msgstr "mehr lesen"
 

@@ -11,7 +11,7 @@
  * @con_php_req 5.0
  * 
  *
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,6 +21,7 @@
  * 
  * {@internal 
  *   created 2008-08-19
+ *   modified 2010-11-30, Dominik Ziegler, added check of minimum period time at update notifier check period [CON-372]
  *
  * }}
  * 
@@ -116,10 +117,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have
    foreach ($aManagedProperties as $aProperty) {
         $sValue = getPostValue($aProperty);
         $sStoredValue = $aSettings[$aProperty['type']][$aProperty['name']]['value'];
-
+		
         if ($sStoredValue != $sValue &&  (is_array($aProperty['value']) && $sValue != '' || !is_array($aProperty['value']))) {
-            setSystemProperty($aProperty['type'], $aProperty['name'], $sValue); 
-            $bStored = true;
+			if ( $aProperty['type'] == 'update' && $aProperty['name'] == 'check_period' && (int) $sValue < 60 ) {
+				$sNotification = $notification->displayNotification("error", i18n("Update check period must be at least 60 minutes."));
+				$bStored = false;
+				break;
+			} else {
+				setSystemProperty($aProperty['type'], $aProperty['name'], $sValue); 
+				$bStored = true;
+			}
         }        
    }  
    if ($bStored) {
