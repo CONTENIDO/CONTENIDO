@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.5.2
+ * @version    1.5.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,8 +20,9 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created 2003-05-20
- *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *  created 2003-05-20
+ *  modified 2008-06-30, Dominik Ziegler, add security fix
+ *  modified 2010-12-13, Ortwin Pinke, count up object id's in cScrollList while rendering
  *
  *   $Id$:
  * }}
@@ -1527,6 +1528,7 @@ class cScrollList
 				$this->objHeaderItem->setContent($value);
 				$headeroutput .= $this->objHeaderItem->render();
 			}
+   $this->objHeaderItem->advanceID();
 		}
 
 		$this->objHeaderRow->setContent($headeroutput);
@@ -1562,13 +1564,14 @@ class cScrollList
 					$this->objItem->setContent($this->convert($key, $value, $hiddendata));
 					$items .= $this->objItem->render();
 				}
+    $this->objItem->advanceID();
 			}
 
 			$this->objRow->setContent($items);
 			$items = "";
 
 			$output .= $this->objRow->render();
-
+   $this->objRow->advanceID();
 		}
 
 		$this->objTable->setContent($headeroutput.$output);
