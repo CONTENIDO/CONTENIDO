@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
+ *   modified 2010-12-14, Dominik Ziegler, newsletter encoding is ignored due to wrong parameter values [#CON-374]
  *
  *   $Id$:
  * }}
@@ -168,7 +169,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
 		$sName				= $oUser->get("realname");
 		$sEMail				= $oUser->get("email");
 
-		$bSend = $oNewsletter->sendEMail($oClientLang->getProperty("newsletter", "idcatart"), $sEMail, $sName, $sEncoding);
+		$bSend = $oNewsletter->sendEMail($oClientLang->getProperty("newsletter", "idcatart"), $sEMail, $sName, true, $sEncoding);
 		if ($bSend) {
 			$aRecipients[] = $sName . " (" . $sEMail . ")";
 		} else {
