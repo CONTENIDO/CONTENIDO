@@ -64,8 +64,6 @@ if (!defined("CON_FRAMEWORK")) {
 
 # Contenido startup process
 include_once ('../../includes/startup.php');
-var_dump(Contenido_Autoload::getLoadedClasses());
-var_dump(Contenido_Autoload::getErrors());
 
 rereadClients();
 
