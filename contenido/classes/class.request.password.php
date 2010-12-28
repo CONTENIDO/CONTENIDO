@@ -36,9 +36,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude ("classes", "class.ui.php");
-cInclude ("classes", "class.phpmailer.php");
-
 
 /**
  *

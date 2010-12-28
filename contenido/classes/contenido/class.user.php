@@ -31,9 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "class.genericdb.php");
-cInclude("classes", "class.security.php");
-
 class cApiUserCollection extends ItemCollection
 {
 	function cApiUserCollection ($select = false)

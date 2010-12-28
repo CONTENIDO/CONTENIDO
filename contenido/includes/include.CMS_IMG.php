@@ -79,9 +79,6 @@ if ($doedit == "1") {
 
 <?php
 
-	cInclude("classes","class.ui.php");
-	cInclude("classes","class.htmlelements.php");
-	cInclude("classes","class.template.php");
 	cInclude("includes","functions.forms.php");
 	
     getAvailableContentTypes($idartlang);

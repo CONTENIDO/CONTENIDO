@@ -32,11 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-// includes
-cInclude('classes', 'widgets/class.widgets.page.php');
-cInclude('classes', 'class.htmlelements.php');
-cInclude('classes', 'class.ui.php');
-cInclude('classes', 'class.notification.php');
 
 // plugin includes
 plugin_include('content_allocation', 'classes/class.content_allocation_tree.php');

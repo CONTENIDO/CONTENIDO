@@ -66,12 +66,6 @@ strMoveSubtree ($idcat, $parentid_new)
 strMoveCatTargetallowed($idcat, $source)
 ********************************************************************************/
 
-cInclude("classes", "contenido/class.category.php");
-cInclude("classes", "contenido/class.categorylanguage.php");
-cInclude("classes", "contenido/class.template.php");
-cInclude("classes", "contenido/class.templateconfig.php");
-cInclude("classes", "contenido/class.containerconfig.php");
-cInclude("classes", "contenido/class.container.php");
 cInclude("includes", "functions.con.php");
 cInclude("includes", "functions.database.php");
 

@@ -320,7 +320,7 @@ private function getOkButton(){
 private function getEditingField(){
 	
 	    // Inline Editing Field
-	$oDivBox = new cHTMLDIV();
+	$oDivBox = new cHTMLDiv();
 	$oDivBox->setStyleDefinition("border", "1px dashed #bfbfbf");
 	$oDivBox->setEvent("Focus", "this.style.border='1px solid #bb5577';");
 	$oDivBox->setEvent("Blur", "this.style.border='1px dashed #bfbfbf';");
@@ -347,7 +347,7 @@ private function getEditingField(){
 private function getSelectBox(){
 		
 	//  Div Format SelectBox
-	$oMenueDiv = new cHTMLDIV();
+	$oMenueDiv = new cHTMLDiv();
 	$this->sDivSelectId = "menue-$this->iNumberOfCms";
 	$oMenueDiv->setId($this->sDivSelectId);
 	$oMenueDiv->setStyleDefinition("padding", "4px");

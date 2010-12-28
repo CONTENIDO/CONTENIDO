@@ -32,11 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.properties.php");
-cInclude("classes", "class.newsletter.recipients.php");
-cInclude("classes", "class.newsletter.groups.php");
-cInclude("classes", "class.phpmailer.php");
-cInclude("classes", "class.lang.php");
 
 /**
  * Newsletter management class
@@ -113,7 +108,6 @@ class NewsletterCollection extends ItemCollection
 		$client = Contenido_Security::toInteger($client); 
 		$lang 	= Contenido_Security::toInteger($lang);
 		
-		cInclude("classes",	 "contenido/class.clientslang.php");
 		cInclude("includes", "functions.con.php");
 		
 		$oBaseItem = new Newsletter();
@@ -452,10 +446,7 @@ class Newsletter extends Item
 		global $lang, $client, $cfgClient, $contenido;
 			
 		if ($this->get("type") == "html" && $this->get("idart") > 0 && $this->htmlArticleExists()) {
-			cInclude("classes", "contenido/class.client.php");
-			cInclude("classes", "contenido/class.clientslang.php");
-			cInclude("classes", "contenido/class.articlelanguage.php");
-			
+
 			// Article ID
 			$iIDArt = $this->get("idart");
 				
@@ -609,8 +600,6 @@ class Newsletter extends Item
 	 */
 	function htmlArticleExists()
 	{
-		cInclude("classes", "contenido/class.articlelanguage.php");
-		
 		if ($this->get("idart") > 0)
 		{
 			$oArticles = new cApiArticleLanguageCollection;

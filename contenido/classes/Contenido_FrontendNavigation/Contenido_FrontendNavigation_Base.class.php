@@ -31,9 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude('classes', 'Debug/DebuggerFactory.class.php');
-cInclude('classes', 'Contenido_Category/Contenido_Category.class.php');
-
 class Contenido_FrontendNavigation_Base {
     /**#@+
      * @var int
@@ -123,7 +120,6 @@ class Contenido_FrontendNavigation_Base {
      * @todo Apply other styles as soon as they are available
      */
     public function getUrl(array $aParams, $sStyle = 'custom_path', array $aConfig = array(), $bUseAbsolutePath = false) {
-        cInclude('classes', 'UrlBuilder/Contenido_UrlBuilderFactory.class.php');
         try {
             $oUrlBuilder = Contenido_UrlBuilderFactory::getUrlBuilder($sStyle);
             if ($bUseAbsolutePath === true) {

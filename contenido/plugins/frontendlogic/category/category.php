@@ -30,7 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.frontend.logic.php");
 
 class frontendlogic_category extends FrontendLogic
 {

@@ -32,11 +32,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "class.properties.php");
-cInclude("classes", "class.upload.php");
-cInclude("classes", "widgets/class.widgets.treeview.php");
+
 cInclude("includes", "functions.con.php");
 cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.upl.php");

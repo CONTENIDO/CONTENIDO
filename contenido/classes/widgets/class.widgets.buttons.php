@@ -36,7 +36,7 @@ if(!defined('CON_FRAMEWORK')) {
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cWidgetButton extends cHTMLSPAN
+class cWidgetButton extends cHTMLSpan
 {
 	
 	/**
@@ -62,7 +62,7 @@ class cWidgetButton extends cHTMLSPAN
      */		
 	function cWidgetButton ($img, $alt, $link)
 	{
-		cHTMLSPAN::cHTMLSPAN();
+		cHTMLSpan::cHTMLSpan();
 		
 		$this->_img = new cHTMLImage($img);
 		$this->_link = new cHTMLLink($link);
@@ -124,7 +124,7 @@ class cWidgetButton extends cHTMLSPAN
 		
 		$this->setContent($this->_link->render());
 		
-		return cHTMLSPAN::render();	
+		return cHTMLSpan::render();	
 	}
 	
 	/**
@@ -169,7 +169,7 @@ class cWidgetToggleButton extends cWidgetButton
      */		
 	function cWidgetToggleButton ($img, $alt, $uplink, $downlink)
 	{
-		cHTMLSPAN::cHTMLSPAN();
+		cHTMLSpan::cHTMLSpan();
 		
 		$this->_img = new cHTMLImage($img);
 		$this->_link = new cHTMLLink("#");
@@ -224,7 +224,7 @@ class cWidgetToggleButton extends cWidgetButton
 		
 		$this->setContent($this->_link->render());
 		
-		return cHTMLSPAN::render();	
+		return cHTMLSpan::render();	
 	}	
 	
 }
@@ -245,7 +245,7 @@ class cWidgetMultiToggleButton extends cWidgetButton
      */	
 	function cWidgetMultiToggleButton ($img, $alt, $link)
 	{
-		cHTMLSPAN::cHTMLSPAN();
+		cHTMLSpan::cHTMLSpan();
 		
 		$this->_img = new cHTMLImage($img);
 		$this->_link = new cHTMLLink($link);
@@ -385,7 +385,7 @@ class cWidgetMultiToggleButton extends cWidgetButton
 		
 		$this->setContent($this->_link->render());
 		
-		return cHTMLSPAN::render() . $defaultscript;	
+		return cHTMLSpan::render() . $defaultscript;	
 	}
 	
 }

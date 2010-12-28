@@ -36,9 +36,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 cInclude("includes", "functions.str.php");
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "contenido/class.client.php");
-cInclude("classes", "class.security.php");
 cInclude("includes", "functions.pathresolver.php");
 
 $tpl->reset();

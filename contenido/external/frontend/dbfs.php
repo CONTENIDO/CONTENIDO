@@ -43,9 +43,6 @@ Contenido_Security::checkRequests();
 include_once ($contenido_path . "includes/startup.php");
 cInclude("includes", "functions.general.php");
 
-cInclude("classes", "class.dbfs.php");
-
-
 if ($contenido)
 {
     page_open(array('sess' => 'Contenido_Session',

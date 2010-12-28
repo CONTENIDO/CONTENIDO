@@ -41,8 +41,6 @@ if(!defined('CON_FRAMEWORK')) {
 
 // SAMPLE Contenido_Category ###
 
-cInclude('classes', 'Contenido_Category/Contenido_Category.class.php');
-
 try {
 	// load a single category
 	$oConCat = new Contenido_Category($db, $cfg);
@@ -70,8 +68,6 @@ try {
 }
 
 // SAMPLE Contenido_CategoryArticle ###
-
-cInclude('classes', 'Contenido_Category/Contenido_Category_Articles.class.php');
 
 try {
     $oConCatArt = new Contenido_Category_Articles($db, $cfg, $client, $lang);

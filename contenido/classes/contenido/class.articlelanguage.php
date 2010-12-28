@@ -31,9 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "class.genericdb.php");
-cInclude("classes", "contenido/class.article.php");
-
 class cApiArticleLanguageCollection extends ItemCollection
 {
 	function cApiArticleLanguageCollection ($select = false)

@@ -69,7 +69,6 @@ final class Contenido_Url {
      * Gets the UrlBuilder configuration and creates an UrlBuilder instance.
      */
     private function __construct() {
-        cInclude('classes', 'UrlBuilder/Contenido_UrlBuilderFactory.class.php');
         $this->_sUrlBuilderName = Contenido_UrlBuilderConfig::getUrlBuilderName();
         $this->_oUrlBuilder     = Contenido_UrlBuilderFactory::getUrlBuilder(
             $this->_sUrlBuilderName

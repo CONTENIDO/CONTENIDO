@@ -31,8 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "widgets/class.widgets.foldingrow.php");
-
 class cObjectPager extends cFoldingRow
 {
 	var $_pagerLink;

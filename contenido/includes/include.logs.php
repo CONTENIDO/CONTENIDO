@@ -37,12 +37,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "class.user.php");
-cInclude("classes", "class.action.php");
-cInclude("classes", "class.structure.php");
-cInclude("classes", "class.art.php");
-
 $clientclass = new Client;
 
 $db2 = new DB_Contenido;

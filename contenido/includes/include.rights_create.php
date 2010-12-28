@@ -36,9 +36,6 @@ if (! defined ( 'CON_FRAMEWORK' )) {
 	die ( 'Illegal call' );
 }
 
-// added 2008-11-17, H. Librenz
-cInclude ( 'classes', 'class.conuser.php' );
-
 cInclude ( 'includes', 'functions.rights.php' );
 
 if (! $perm->have_perm_area_action ( $area, $action )) {

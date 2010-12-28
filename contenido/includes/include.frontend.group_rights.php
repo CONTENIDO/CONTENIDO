@@ -39,9 +39,6 @@ if ($_REQUEST['useplugin'] != "category") {
     die ('Illegal call!');
 }
 
-cInclude("classes", "widgets/class.widgets.page.php");
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.frontend.permissions.php");
 
 $page = new cPage;
 

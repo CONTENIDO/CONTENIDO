@@ -31,9 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude('classes', 'class.genericdb.php');
-cInclude('classes', 'contenido/class.area.php');
-
 class cApiFrameFileCollection extends ItemCollection
 {
 	/**

@@ -40,23 +40,6 @@ $cfg["debug"]["backend_exectime"]["fullstart"] = getmicrotime();
 cInclude ("includes", 'functions.api.php');
 cInclude ("includes", 'functions.forms.php');
 
-cInclude ("classes", 'class.xml.php');
-cInclude ("classes", 'class.navigation.php');
-cInclude ("classes", 'class.template.php');
-cInclude ("classes", 'class.backend.php');
-cInclude ("classes", 'class.notification.php');
-cInclude ("classes", 'class.area.php');
-cInclude ("classes", 'class.action.php');
-cInclude ("classes", 'class.layout.php');
-cInclude ("classes", 'class.treeitem.php');
-cInclude ("classes", 'class.user.php');
-cInclude ("classes", 'class.group.php');
-cInclude ("classes", 'class.cat.php');
-cInclude ("classes", 'class.client.php');
-cInclude ("classes", 'class.inuse.php');
-cInclude ("classes", 'class.table.php');
-cInclude ("classes", 'class.ajax.php');
-
 page_open(array('sess' => 'Contenido_Session',
                 'auth' => 'Contenido_Challenge_Crypt_Auth',
                 'perm' => 'Contenido_Perm'));
@@ -240,8 +223,6 @@ if ($cfg["debug"]["rendering"] == true)
  * Start User Tracking (who is online)
  *
  **/
-cInclude("classes", "class.activeusers.php");
-
 $oActiveUser = new ActiveUsers($db, $cfg, $auth);
 $oActiveUser->startUsersTracking();
 /**

@@ -40,12 +40,6 @@ if (!defined("CON_FRAMEWORK")) {
 // Contenido startup process
 include_once ('./includes/startup.php');
 
-cInclude ("classes", 'class.xml.php');
-cInclude ("classes", 'class.navigation.php');
-cInclude ("classes", 'class.template.php');
-cInclude ("classes", 'class.backend.php');
-
-
 page_open(array('sess' => 'Contenido_Session',
 				'auth' => 'Contenido_Challenge_Crypt_Auth',
 				'perm' => 'Contenido_Perm'));

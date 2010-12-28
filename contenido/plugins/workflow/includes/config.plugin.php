@@ -31,7 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.security.php");
 
 plugin_include('workflow', 'classes/class.workflow.php');
 plugin_include('workflow', 'includes/functions.workflow.php');

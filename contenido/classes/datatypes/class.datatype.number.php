@@ -30,7 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "datatype/class.datatype.php");
 
 class cDatatypeNumber extends cDatatype
 {

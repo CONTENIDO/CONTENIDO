@@ -33,8 +33,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.todo.php");
-cInclude("classes", "contenido/class.layout.php");
 
 $layouts = new cApiLayoutCollection;
 $layouts->select("idclient = '$client'","","name ASC");

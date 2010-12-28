@@ -32,8 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.genericdb.php");
-
 /**
  * Class InUse
  * Class for In-Use management

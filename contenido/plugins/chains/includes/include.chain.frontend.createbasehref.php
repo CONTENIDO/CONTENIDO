@@ -40,8 +40,6 @@ function cecCreateBaseHref ($sCurrentBaseHref)
 {
 	global $cfg, $client;
 	
-	cInclude('classes', 'contenido/class.client.php');
-	
 	$oClient	= new cApiClient($client);
 	$aSettings	= $oClient->getProperties();
 	if( is_array($aSettings) ) {

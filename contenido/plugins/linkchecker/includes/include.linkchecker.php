@@ -65,9 +65,6 @@ plugin_include('linkchecker', 'includes/config.plugin.php');
 plugin_include('linkchecker', 'includes/include.checkperms.php');
 plugin_include('linkchecker', 'includes/include.linkchecker_tests.php');
 
-// Initialization of cache
-cInclude('pear', 'PEAR.php');
-cInclude('pear', 'Cache/Lite.php');
 
 // Initialization
 $actionID = 500;

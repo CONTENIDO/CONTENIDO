@@ -31,8 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.genericdb.php");
-cInclude("classes", "class.security.php");
 
 class cApiTemplateCollection extends ItemCollection
 {

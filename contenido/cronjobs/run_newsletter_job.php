@@ -41,10 +41,6 @@ if (isset($cfg['path']['contenido'])) {
 	include_once ('../includes/startup.php');
 }
 
-cInclude ("classes", 'class.genericdb.php');
-cInclude ("classes", 'class.properties.php');
-cInclude ("classes", 'class.newsletter.jobs.php');
-
 global $cfg;
 
 if(!isRunningFromWeb || function_exists("runJob") || $area == "cronjobs")

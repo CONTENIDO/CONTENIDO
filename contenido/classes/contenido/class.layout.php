@@ -30,7 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.genericdb.php");
 
 class cApiLayoutCollection extends ItemCollection
 {

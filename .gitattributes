@@ -148,6 +148,7 @@ contenido/classes/class.area.php -text
 contenido/classes/class.art.php -text
 contenido/classes/class.article.php -text
 contenido/classes/class.artspec.php -text
+contenido/classes/class.autoload.php -text
 contenido/classes/class.backend.php -text
 contenido/classes/class.cat.php -text
 contenido/classes/class.category.php -text
@@ -1017,6 +1018,7 @@ contenido/includes/api/functions.api.general.php -text
 contenido/includes/api/functions.frontend.list.php -text
 contenido/includes/cfg_language_de.inc.php -text
 contenido/includes/cfg_sql.inc.php -text
+contenido/includes/config.autoloader.php -text
 contenido/includes/config.chains.php -text
 contenido/includes/config.colors.php -text
 contenido/includes/config.http_check.php -text
@@ -1527,9 +1529,13 @@ contenido/templates/standard/widgets/template.widgets.left_top.html -text
 contenido/tools/contenidocheck.php -text
 contenido/tools/convert_recipient_keys.php -text
 contenido/tools/convert_startarticles.php -text
+contenido/tools/create_autoloader_cfg.php -text
 contenido/tools/dbexport.php -text
 contenido/tools/filelist.php -text
 contenido/tools/modlist.php -text
+contenido/tools/mpAutoloaderClassMap/mpClassMapFileCreator.php -text
+contenido/tools/mpAutoloaderClassMap/mpClassMapFileCreatorContenido.php -text
+contenido/tools/mpAutoloaderClassMap/mpClassTypeFinder.php -text
 contenido/tools/release.php -text
 contenido/tools/remove_tplcfg_inconsistencies.php -text
 contenido/tools/updateseqruntime.php -text
@@ -1543,6 +1549,7 @@ contenido/xml/lang_he_SS.xml -text
 contenido/xml/lang_it_IT.xml -text
 contenido/xml/lang_nl_NL.xml -text
 docs/api/doxy-api.conf -text
+docs/techref/backend/backend.autoloader.html -text
 docs/techref/backend/backend.customizing.1.gif -text
 docs/techref/backend/backend.customizing.html -text
 docs/techref/backend/backend.localconfig.html -text

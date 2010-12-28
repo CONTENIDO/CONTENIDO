@@ -17,7 +17,6 @@
 //
 // $Id: Error.php,v 1.3 2003/01/04 11:54:45 mj Exp $
 
-cInclude('pear', 'PEAR.php');
 
 /**
 * Cache Error class

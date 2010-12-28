@@ -60,7 +60,6 @@ class Ajax {
 				
 			case 'dirlist':	
 				global $cfg, $client, $lang, $cfgClient;
-				cInclude("classes", "class.cms_filelist.php");
 			
 				$sDirName 		= (string) $_REQUEST['dir'];
 				$iFileListId 	= (int) $_REQUEST['id'];
@@ -75,7 +74,6 @@ class Ajax {
 				
 			case 'filelist':
 				global $cfg, $client, $lang, $cfgClient;
-				cInclude("classes", "class.cms_filelist.php");
 				
 				$sDirName 		= (string) $_REQUEST['dir'];
 				$iFileListId 	= (int) $_REQUEST['id'];
@@ -91,7 +89,6 @@ class Ajax {
 			case 'inused_layout': 
 				//list of used templates for a layout
 				global $cfg; 
-				cInclude('classes', 'class.layout.php');
 				$oLayout = new Layout();
 				if ((int) $_REQUEST['id'] > 0 && $oLayout->layoutInUse((int) $_REQUEST['id'] , true)) {
 					$oTpl = new Template();
@@ -117,7 +114,6 @@ class Ajax {
 			case 'inused_module':
 				//list of used templates for a module 
 				global $cfg;
-				cInclude("classes", "contenido/class.module.php");
 				$oModule = new cApiModule();
 				if ((int) $_REQUEST['id'] > 0 && $oModule->moduleInUse((int) $_REQUEST['id'], true)) {
 					$oTpl = new Template();

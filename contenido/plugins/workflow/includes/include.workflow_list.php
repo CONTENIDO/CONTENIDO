@@ -30,12 +30,10 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.security.php");
 
 $iIdMarked = (int) $_GET['idworkflow'];
 
 plugin_include('workflow', 'classes/class.workflow.php');
-cInclude("classes", "class.ui.php");
 
 $workflows = new Workflows;
 $sScript = '';

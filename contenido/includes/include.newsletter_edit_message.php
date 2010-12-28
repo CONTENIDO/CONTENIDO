@@ -32,15 +32,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes",  "class.newsletter.php");
-cInclude("classes",  "contenido/class.clientslang.php");
-cInclude("classes",  "contenido/class.articlelanguage.php");
-cInclude("classes",  "class.article.php");	// To get a list of articles in a category
 cInclude("includes", "functions.con.php");	// For conDeleteArt and conCopyArt
-cInclude("classes",  "widgets/class.widgets.page.php");
-cInclude("classes",  "class.ui.php");
-cInclude("classes",  "class.htmlelements.php");
-cInclude("classes",  "contenido/class.user.php");
 
 // Initialization
 $oPage			= new cPage;

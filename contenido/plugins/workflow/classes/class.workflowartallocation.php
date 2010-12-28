@@ -32,9 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude('classes', 'class.phpmailer.php');
-cInclude("classes", "class.security.php");
-
 /**
  * Class WorkflowArtAllocations
  * Class for workflow art allocation management

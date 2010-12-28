@@ -31,10 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "widgets/class.widgets.buttons.php");
-cInclude("classes", "contenido/class.user.php");
-
 /**
  * Regular page
  *
@@ -431,7 +427,7 @@ class cPageLeftTopMultiPane extends cPageLeftTop
 	{
 		global $cfg;
 
-		$infodiv = new cHTMLDIV;
+		$infodiv = new cHTMLDiv;
 
 		if (count($this->_items) > 0)
 		{
@@ -467,7 +463,7 @@ class cPageLeftTopMultiPane extends cPageLeftTop
     		
     		$content .= $infodiv->render();
     		
-    		$wrapdiv = new cHTMLDIV;
+    		$wrapdiv = new cHTMLDiv;
     		$wrapdiv->setStyle("padding: 10px;");
     		$wrapdiv->setContent($content);
     		$this->setContent($wrapdiv);
@@ -494,7 +490,7 @@ class cNewPageLeftTopMultiPane extends cPageLeftTopMultiPane
 	{
 		global $cfg;
 
-		$infodiv = new cHTMLDIV;
+		$infodiv = new cHTMLDiv;
 
 		if (count($this->_items) > 0)
 		{
@@ -530,7 +526,7 @@ class cNewPageLeftTopMultiPane extends cPageLeftTopMultiPane
     		
     		$content .= $infodiv->render();
     		
-    		$wrapdiv = new cHTMLDIV;
+    		$wrapdiv = new cHTMLDiv;
     		$wrapdiv->setStyle("padding: 10px;");
     		$wrapdiv->setContent($content);
     		$this->setContent($wrapdiv);

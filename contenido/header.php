@@ -37,13 +37,6 @@ if (!defined("CON_FRAMEWORK")) {
 // Contenido startup process
 include_once ('./includes/startup.php');
 
-cInclude ("classes", 'class.xml.php');
-cInclude ("classes", 'class.navigation.php');
-cInclude ("classes", 'class.template.php');
-cInclude ("classes", 'class.backend.php');
-cInclude ("classes", 'class.user.php');
-cInclude ("classes", 'class.client.php');
-
 $db = new DB_Contenido;
 
 

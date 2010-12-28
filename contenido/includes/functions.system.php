@@ -36,7 +36,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.phpmailer.php");
 
 /**
  * emptyLogFile - clears errorlog.txt

@@ -32,8 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.newsletter.recipients.php");
-
 /**
  * Recipient group management class
  */

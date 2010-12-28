@@ -32,11 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.newsletter.jobs.php");
-cInclude("classes", "class.newsletter.logs.php");
-cInclude("classes", "widgets/class.widgets.page.php");
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.htmlelements.php");
 
 // Initialization
 $oPage	= new cPage;

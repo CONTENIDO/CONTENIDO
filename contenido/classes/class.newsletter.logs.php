@@ -32,7 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.newsletter.jobs.php"); // This loads class.newsletter.php and class.newsletter.recipients.php also
 
 /**
  * Collection management class

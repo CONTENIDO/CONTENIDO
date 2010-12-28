@@ -30,9 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude('classes', 'class.security.php');
-cInclude("classes", "class.frontend.permissions.php");
-cInclude("classes", "class.frontend.users.php");
 
 function cecFrontendCategoryAccess ($idlang, $idcat, $user)
 {

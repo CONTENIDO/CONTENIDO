@@ -912,8 +912,7 @@ class Cms_FileList {
 	 * @return	string	output of the filelist
 	 */
 	public function getAllWidgetView() {
-		$sCode = '\";?><?php 	 
-					cInclude("classes", "class.cms_filelist.php");
+		$sCode = '\";?><?php
 					$oFileList = new Cms_FileList(\'%s\', %s, 0, "", $cfg, null, "", $client, $lang, $cfgClient, null);
 					
 					echo $oFileList->getAllWidgetOutput();

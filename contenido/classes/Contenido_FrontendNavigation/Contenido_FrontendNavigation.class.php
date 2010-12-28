@@ -39,9 +39,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Base.class.php');
-cInclude("classes", "class.security.php");
-
 class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
     /**
      * @var obj
@@ -97,10 +94,6 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
         $sFieldsToSelect = 'cattree.idcat, cattree.level';
         if ($bUseAuth === true) { // adapted from FrontendNavigation by Willi Man
             $sFieldsToSelect = 'cattree.idcat, cattree.level, catlang.public, catlang.idcatlang';
-       		// load needed classes
-            cInclude("classes","class.frontend.permissions.php");
-			cInclude("classes","class.frontend.groups.php");
-			cInclude("classes","class.frontend.users.php");
 			// load user's frontendgroups if any
         	if((strlen($this->oAuth->auth['uid']) > 0) && ($this->oAuth->auth['uid'] != 'nobody')) {
 				$oFrontendGroupMemberCollection = new FrontendGroupMemberCollection();
@@ -229,7 +222,6 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 			if ($oCategory->getIdParent() == $iCurrentIdcat) {
 				return true;
 			}
-			cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Breadcrumb.class.php');
 			$oBreadcrumb = new Contenido_FrontendNavigation_Breadcrumb($this->oDb, $this->aCfg, $this->iClient, $this->iLang, $this->aCfgClient);
 			$aBreadcrumb = $oBreadcrumb->getAsArray($oCategory->getIdParent());
 			return in_array($iCurrentIdcat, $aBreadcrumb);
@@ -266,7 +258,6 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
 	 * @return boolean
 	 */
 	public function isInPathToRoot($iNeedleCat, $iTreeHaystackCat) {
-	    cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation_Breadcrumb.class.php');
 		$oBreadcrumb = new Contenido_FrontendNavigation_Breadcrumb($this->oDb, $this->aCfg, $this->iClient, $this->iLang, $this->aCfgClient);
 		$aBreadCats = $oBreadcrumb->getAsArray($iTreeHaystackCat, ($this->getLevel($this->getRootCat())+1));
 		return in_array($iNeedleCat, $aBreadCats);

@@ -32,8 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.communications.php");
-cInclude("classes", "class.htmlelements.php");
 
 class TODOCollection extends CommunicationCollection
 {

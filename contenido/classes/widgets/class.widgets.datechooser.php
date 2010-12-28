@@ -31,9 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "widgets/class.widgets.datefield.php");
-cInclude("classes", "widgets/class.widgets.calendar.php");
-
 class cDateChooser extends cDatefield
 {
 	var $_oCalendar;

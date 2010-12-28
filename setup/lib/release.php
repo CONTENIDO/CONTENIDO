@@ -36,8 +36,6 @@ if (!defined('CON_FRAMEWORK')) {
 // Contenido startup process
 include_once ('../../contenido/includes/startup.php');
 
-cInclude("classes", "xml/class.xml2array.php");
-cInclude("classes", "class.csv.php");
 cInclude("includes", "functions.database.php");
 
 ?>

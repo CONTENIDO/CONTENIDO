@@ -32,9 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", 'drivers/class.gdb.driver.php');
-cInclude("classes", "class.security.php");
-
 class gdbMySQL extends gdbDriver
 {
 	function buildJoinQuery ($destinationTable, $destinationClass, $destinationPrimaryKey, $sourceClass, $primaryKey)
@@ -91,7 +88,6 @@ class gdbMySQL extends gdbDriver
 				$sWhereStatement = sprintf($sqlStatement, Contenido_Security::toString($sField), $this->_oItemClassInstance->_inFilter($sRestriction));
 				break;				
 			case "diacritics":
-				cInclude("classes", "class.chartable.php");
 				if (!is_object($GLOBALS["_cCharTable"]))
 				{
 					$GLOBALS["_cCharTable"] = new cCharacterConverter;

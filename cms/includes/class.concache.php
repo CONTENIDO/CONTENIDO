@@ -374,8 +374,6 @@ VALID UNTIL: %s
             return;
         }
 
-        cInclude('pear', 'Cache/Output.php');
-
         // create a output cache object mode - file storage
         $this->_oPearCache = new Cache_Output('file', $this->_aCacheOptions);
 
@@ -527,9 +525,6 @@ class cConCacheHandler extends cConCache {
 
 		if (is_null($iCreateCode)) {
             // check if code is expired
-
-			cInclude('classes', 'contenido/class.article.php');
-			cInclude('classes', 'contenido/class.categoryarticle.php');
 
 			$oApiCatArtColl = new cApiCategoryArticleCollection('idart="'.$GLOBALS['idart'].'" AND idcat="'.$GLOBALS['idcat'].'"');
 			if ($oApiCatArt = $oApiCatArtColl->next()) {

@@ -41,12 +41,6 @@ if (isset($cfg['path']['contenido'])) {
 	include_once ('../includes/startup.php');
 }
 
-cInclude ("classes", 'class.genericdb.php');
-cInclude ("classes", 'class.properties.php');
-cInclude ("classes", 'class.todo.php');
-cInclude ("classes", 'class.user.php');
-cInclude ("classes", 'class.phpmailer.php');
-
 global $cfg, $client;
 
 $oldclient = $client;

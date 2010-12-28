@@ -35,11 +35,5 @@ if(!defined('CON_FRAMEWORK')) {
 cInclude('includes', 'functions.api.category.php');
 cInclude('includes', 'functions.api.string.php');
 cInclude('includes', 'functions.api.images.php');
-cInclude('classes',  'class.genericdb.php');
-cInclude('classes',  'class.templateconfig.php');
-cInclude('classes',  'class.template.php');
-cInclude('classes',  'class.article.php');
-cInclude('classes',  'class.search.php');
-cInclude('classes',  'contenido/class.client.php');
 
 ?>

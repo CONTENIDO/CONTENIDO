@@ -380,8 +380,6 @@ function i18nGetAvailableLanguages ()
 
 function mi18n ($string)
 {
-	cInclude("classes", "contenido/class.module.php");
-	
 	global $cCurrentModule, $lang, $mi18nTranslator;
 	
 	if (!is_object($mi18nTranslator))

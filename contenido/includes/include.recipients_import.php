@@ -32,10 +32,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "widgets/class.widgets.page.php");
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "class.newsletter.recipients.php");
 
 $oPage       = new cPage;
 $oRecipients = new RecipientCollection;

@@ -42,9 +42,6 @@ if(!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }
 
-// Including main HTML class
-cInclude("classes", "class.htmlelements.php");
-
 // Select box with additional functions for category and article selection
 class cHTMLInputSelectElement extends cHTMLSelectElement
 {

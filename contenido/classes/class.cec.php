@@ -320,7 +320,6 @@ class cApiCECRegistry
      */
     public function getIterator($sChainName)
     {
-        cInclude('classes', 'class.iterator.php');
         return new cIterator($this->_aChains[$sChainName]['functions']);
     }
 

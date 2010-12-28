@@ -36,8 +36,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "class.genericdb.php");
-
 class cApiModuleCollection extends ItemCollection
 {	
 	/**
@@ -432,8 +430,6 @@ class cApiModule extends Item
     {
 		global $_mImport;
 		
-		cInclude("classes", "class.xmlparser.php");
-				
 		$oParser = new XmlParser($sEncoding);
 		
 		if ($sType == "module")
@@ -533,7 +529,6 @@ class cApiModule extends Item
      */    
     function export ($filename, $return = false)
     {
-    	cInclude("classes", "class.xmltree.php");
     	$tree  = new XmlTree('1.0', 'ISO-8859-1');
     	$root =& $tree->addRoot('module');
 
@@ -617,9 +612,6 @@ class cApiModule extends Item
 	{
 		global $_mImport, $client;
 		
-		cInclude("classes",  "contenido/class.clientslang.php");
-		cInclude("classes",  "contenido/class.lang.php");
-		cInclude("classes",  "contenido/class.layout.php");
 		cInclude("includes", "functions.file.php");
 		cInclude("includes", "functions.lay.php"); // You won't believe the code in there (or what is missing in class.layout.php...)
 		
@@ -760,10 +752,6 @@ class cApiModule extends Item
 	{
 		global $cfgClient, $client;
 		
-		cInclude("classes",  "class.xmltree.php");
-		cInclude("classes",  "contenido/class.clientslang.php");
-		cInclude("classes",  "contenido/class.lang.php");
-		cInclude("classes",  "contenido/class.layout.php");
 		cInclude("includes", "functions.file.php");
 				
 		$oTree = new XmlTree('1.0', 'ISO-8859-1');
@@ -973,8 +961,6 @@ class cApiModuleTranslationCollection extends ItemCollection
 	{
 		global $_mImport;
 		
-		cInclude("classes", "class.xmlparser.php");
-		
 		$parser = new XmlParser("ISO-8859-1");
 			
 		$parser->setEventHandlers(array("/module/translation/string/original"=> "cHandler_ItemName",
@@ -1014,8 +1000,6 @@ class cApiModuleTranslationCollection extends ItemCollection
 		
 		$translations = new cApiModuleTranslationCollection;
 		$translations->select("idmod = '$idmod' AND idlang='$idlang'");
-		
-		cInclude("classes", "class.xmltree.php");
 		
 		$tree  = new XmlTree('1.0', 'ISO-8859-1');
 		$root =& $tree->addRoot('module');

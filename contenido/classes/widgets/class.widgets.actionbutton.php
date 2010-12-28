@@ -29,8 +29,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "contenido/class.action.php");
 
 define("QUESTIONACTION_PROMPT", "prompt");
 define("QUESTIONACTION_YESNO" , "yesno");

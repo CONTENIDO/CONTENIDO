@@ -49,15 +49,12 @@ class Contenido_UrlBuilderFactory {
     public static function getUrlBuilder($sBuilder) {
         switch($sBuilder) {
             case 'front_content':
-                cInclude('classes', 'UrlBuilder/Contenido_UrlBuilder_Frontcontent.class.php');
                 return Contenido_UrlBuilder_Frontcontent::getInstance();
                 break;
             case 'custom':
-                cInclude('classes', 'UrlBuilder/Contenido_UrlBuilder_Custom.class.php');
                 return Contenido_UrlBuilder_Custom::getInstance();
                 break;
             case 'custom_path':
-                cInclude('classes', 'UrlBuilder/Contenido_UrlBuilder_CustomPath.class.php');
                 return Contenido_UrlBuilder_CustomPath::getInstance();
                 break;
             default:

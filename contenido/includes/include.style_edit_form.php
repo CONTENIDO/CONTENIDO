@@ -33,8 +33,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.ui.php");
-cInclude("classes", "widgets/class.widgets.page.php");
+
 cInclude("external", "edit_area/class.edit_area.php");
 
 $sFileType = "css";
@@ -138,8 +137,6 @@ if (!$perm->have_perm_area_action($area, $action))
 		/**
 		* START TRACK VERSION
 		**/
-        cInclude("classes", "class.version.php");
-        cInclude("classes", "class.versionFile.php");
         // For read Fileinformation an get the id of current File
         cInclude("includes", "functions.file.php");
 			

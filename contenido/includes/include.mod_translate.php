@@ -33,12 +33,6 @@ if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "widgets/class.widgets.page.php");
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "contenido/class.module.php");
-cInclude("classes", "class.xmltree.php");
-cInclude("includes","functions.upl.php");
 
 $langobj = new Language;
 $langobj->loadByPrimaryKey($lang);

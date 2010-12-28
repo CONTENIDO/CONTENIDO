@@ -34,8 +34,7 @@ if(!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude('classes', 'class.ui.php');
-cInclude('classes', 'class.htmlelements.php');
+
 cInclude('includes', 'functions.tpl.php');
 
 $idtpl  = Contenido_Security::toInteger($idtpl);

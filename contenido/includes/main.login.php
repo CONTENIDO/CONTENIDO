@@ -35,14 +35,8 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-$tpl->reset();
 
-cInclude("classes", "class.todo.php");
-cInclude("classes", "contenido/class.client.php");
-cInclude("classes", "class.activeusers.php");
-cInclude("pear", "XML/Parser.php");
-cInclude("pear", "XML/RSS.php");
-cInclude("classes", "class.update.notifier.php");
+$tpl->reset();
 
 if ($saveLoginTime == true) {
 	$sess->register("saveLoginTime");

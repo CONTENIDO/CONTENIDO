@@ -37,6 +37,8 @@
  *   modified 2008-11-18, Murat Purc, add initialization of UrlBuilder configuration
  *   modified 2010-05-20, Murat Purc, taken over security checks (Contenido_Security and HttpInputValidator)
  *                        from various files and some modifications, see [#CON-307]
+ *   modified 2010-12-28, Murat Purc, changed order of some includes to provide more user defined 
+ *                                    settings in config.local.php
  *
  *   $Id$:
  * }}
@@ -67,8 +69,7 @@ if (!file_exists(dirname(__FILE__) . '/config.php')) {
     $msg  = "<h1>Fatal Error</h1><br>";
     $msg .= "Could not open the configuration file <b>config.php</b>.<br><br>";
     $msg .= "Please make sure that you saved the file in the setup program. If you had to place the file manually on your webserver, make sure that it is placed in your contenido/includes directory.";
-
-    die ($msg);
+    die($msg);
 }
 
 
@@ -81,14 +82,24 @@ include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.pat
 include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.templates.php');
 include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/cfg_sql.inc.php');
 
+// Include userdefined configuration (if available), where you are able to
+// extend/overwrite core settings from included configuration files above
+if (file_exists($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.local.php')) {
+    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.local.php');
+}
 
 // Various base API functions
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/api/functions.api.general.php');
 
 
+// Initialization of autoloader
+include_once($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
+Contenido_Autoload::initialize($cfg);
+spl_autoload_register(array('Contenido_Autoload', 'autoload'));
+
+
 // 2. security check: Check HTTP parameters, if requested
 if ($cfg['http_params_check']['enabled'] === true) {
-    cInclude('classes', 'class.httpinputvalidator.php');
     $oHttpInputValidator =
         new HttpInputValidator($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.http_check.php');
 }
@@ -123,25 +134,14 @@ cInclude('includes', 'functions.i18n.php');
 
 
 // Initialization of CEC
-cInclude('classes', 'class.cec.php');
-cInclude('classes', 'class.cec_hook.php');
 $_cecRegistry = cApiCECRegistry::getInstance();
 cInclude('includes', 'config.chains.php');
-
-
-// Include userdefined configuration (if available), where you are able to
-// extend/overwrite core settings
-if (file_exists($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.local.php')) {
-    include_once( $cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.local.php');
-}
 
 // @TODO: This should be done by instantiating a DB_Contenido class, creation of DB_Contenido object
 checkMySQLConnectivity();
 
 
 // Initialize UrlBuilder, configuration is set in /contenido/includes/config.misc.php
-cInclude('classes', 'Url/Contenido_Url.class.php');
-cInclude('classes', 'UrlBuilder/Contenido_UrlBuilderConfig.class.php');
 Contenido_UrlBuilderConfig::setConfig($cfg['url_builder']);
 
 

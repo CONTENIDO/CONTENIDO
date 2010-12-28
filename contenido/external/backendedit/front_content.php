@@ -64,6 +64,8 @@ if (!defined("CON_FRAMEWORK")) {
 
 # Contenido startup process
 include_once ('../../includes/startup.php');
+var_dump(Contenido_Autoload::getLoadedClasses());
+var_dump(Contenido_Autoload::getErrors());
 
 rereadClients();
 
@@ -457,11 +459,6 @@ if ($cfg["cache"]["disable"] != '1') {
  */
 if ($contenido)
 {
-    cInclude("classes", 'class.inuse.php');
-    cInclude("classes", 'class.user.php');
-    cInclude("classes", 'class.table.php');
-    cInclude("classes", 'class.notification.php');
-
     $perm->load_permissions();
 
     /* Change mode edit / view */

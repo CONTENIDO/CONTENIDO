@@ -31,7 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "class.genericdb.php");
 cInclude("includes", "functions.str.php");
 
 class cApiArticleCollection extends ItemCollection

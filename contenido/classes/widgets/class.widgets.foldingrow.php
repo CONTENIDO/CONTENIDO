@@ -31,8 +31,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "contenido/class.user.php");
-
 class cFoldingRow extends cHTML
 {
 	/**

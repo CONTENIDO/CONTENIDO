@@ -35,11 +35,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("classes", "widgets/class.widgets.page.php");
-cInclude("classes", "class.ui.php");
-cInclude("classes", "class.htmlelements.php");
-cInclude("classes", "class.frontend.users.php");
-cInclude("classes", "class.frontend.groups.php");
 $page = new cPage;
 $fegroups 		= new FrontendGroupCollection;
 

@@ -252,7 +252,6 @@ class Contenido_Session extends Session {
   
   function delete ()
   {
-  	cInclude("classes", "class.inuse.php");
   	$col = new InUseCollection;
 	$col->removeSessionMarks($this->id);	
 	

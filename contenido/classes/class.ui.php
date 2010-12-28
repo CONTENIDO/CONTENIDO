@@ -33,7 +33,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "class.htmlelements.php");
 
 class UI_Left_Top
 {

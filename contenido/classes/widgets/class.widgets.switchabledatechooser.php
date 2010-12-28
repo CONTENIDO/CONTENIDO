@@ -30,7 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("classes", "widgets/class.widgets.datechooser.php");
 
 class cSwitchableDateChooser extends cDateChooser
 {

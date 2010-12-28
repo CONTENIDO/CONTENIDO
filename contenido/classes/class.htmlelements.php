@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-08-21
  *   modified 2008-07-02, Frederic Schneider, add security fix
+ *   modified 2010-12-28, Murat Purc, replaced cHTMLDIV/cHTMLSPAN against cHTMLDiv/cHTMLSpan
  *
  *   $Id$:
  * }}
@@ -30,11 +31,6 @@
 
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
-}
-
-if (!class_exists("HTML_Common"))
-{
-	cInclude("pear", "HTML/Common.php");
 }
 
 /* Global ID counter */
@@ -1981,15 +1977,14 @@ class cHTMLLink extends cHTML
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLDIV extends cHTML
+class cHTMLDiv extends cHTML
 {
 	/**
-	 * Constructor. Creates an HTML DIV element.
+	 * Constructor. Creates an HTML Div element.
 	 *
 	 * @param $content mixed String or object with the contents
-	 *
 	 */
-	function cHTMLDIV($content = "")
+	function cHTMLDiv($content = "")
 	{
 		cHTML :: cHTML();
 		$this->setContent($content);
@@ -2001,7 +1996,6 @@ class cHTMLDIV extends cHTML
 	 * setContent: Sets the div's content
 	 *
 	 * @param $content string/object String with the content or an object to render.
-	 *
 	 */
 	function setContent($content)
 	{
@@ -2010,7 +2004,7 @@ class cHTMLDIV extends cHTML
 
 	/**
 	 * Renders the DIV element
-		 *
+	 *
 	 * @param none
 	 * @return string Rendered HTML
 	 */
@@ -2025,15 +2019,14 @@ class cHTMLDIV extends cHTML
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTMLSPAN extends cHTML
+class cHTMLSpan extends cHTML
 {
 	/**
-	 * Constructor. Creates an HTML DIV element.
+	 * Constructor. Creates an HTML Span element.
 	 *
 	 * @param $content mixed String or object with the contents
-	 *
 	 */
-	function cHTMLSPAN($content = "")
+	function cHTMLSpan($content = "")
 	{
 		cHTML :: cHTML();
 		$this->setContent($content);
@@ -2045,7 +2038,6 @@ class cHTMLSPAN extends cHTML
 	 * setContent: Sets the div's content
 	 *
 	 * @param $content string/object String with the content or an object to render.
-	 *
 	 */
 	function setContent($content)
 	{
@@ -2054,7 +2046,7 @@ class cHTMLSPAN extends cHTML
 
 	/**
 	 * Renders the SPAN element
-		 *
+	 *
 	 * @param none
 	 * @return string Rendered HTML
 	 */

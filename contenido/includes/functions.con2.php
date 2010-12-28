@@ -269,7 +269,6 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	/* Create code for all containers */
 	if ($idlay)
 	{
-		cInclude("includes", "functions.tpl.php");
 		tplPreparseLayout($idlay);
 		$tmp_returnstring = tplBrowseLayoutForContainers($idlay);
 		$a_container = explode("&", $tmp_returnstring);
@@ -531,8 +530,6 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 
 	$sMetatags = '';
 	
-	cInclude("classes", "class.htmlelements.php");
-	
 	foreach ($metatags as $value)
 	{
         // decode entities and htmlspecialchars, content will be converted later using htmlspecialchars()
@@ -761,8 +758,6 @@ function conGenerateKeywords($client, $lang)
 
 	if (count($articles) > 0)
 	{
-		cInclude('classes', 'class.search.php');
-
 		foreach ($articles as $artid => $article_lang)
 		{
 			$article_content = array ();

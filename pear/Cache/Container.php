@@ -19,7 +19,6 @@
 //
 // $Id: Container.php,v 1.4 2003/01/04 11:54:45 mj Exp $
 
-cInclude('pear', 'Cache/Error.php');
 
 /**
 * Common base class of all cache storage container.

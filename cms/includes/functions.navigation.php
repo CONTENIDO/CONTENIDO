@@ -37,9 +37,6 @@ if(!defined('CON_FRAMEWORK')) {
 // create Navigation array for one level
 function createNavigationArray($start_id, $db) 
 {
-	cInclude("classes","class.frontend.permissions.php");
-	cInclude("classes","class.frontend.groups.php");
-	cInclude("classes","class.frontend.users.php");
     global $user, $cfg, $client, $lang, $auth;
     
     $navigation = array();
@@ -555,10 +552,6 @@ function getProtectedSubCategories($parent_id, $db) {
 function checkCatPermission($idcatlang, $public) {
 	#Check if current user has permissions to access cat
 
-	cInclude("classes","class.frontend.permissions.php");
-	cInclude("classes","class.frontend.groups.php");
-	cInclude("classes","class.frontend.users.php");
-	
 	global $auth;
 	
 	$oDB = new DB_Contenido;

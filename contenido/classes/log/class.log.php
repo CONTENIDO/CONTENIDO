@@ -49,7 +49,6 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("pear", "Log.php");
 cInclude("includes", "functions.general.php");
 
 class cLog
