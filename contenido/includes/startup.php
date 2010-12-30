@@ -95,7 +95,6 @@ require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/api/functi
 // Initialization of autoloader
 include_once($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
 Contenido_Autoload::initialize($cfg);
-spl_autoload_register(array('Contenido_Autoload', 'autoload'));
 
 
 // 2. security check: Check HTTP parameters, if requested

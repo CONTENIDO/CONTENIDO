@@ -79,7 +79,6 @@ $oArt = new Article();
 <p>At the moment all available classes/interfaces inside following directories 
 of a Contenido installation:</p>
 <pre>
-pear/
 contenido/classes/
 </pre>
 <p><strong>NOTE:</strong><br />
@@ -191,16 +190,16 @@ Do following steps to achieve this:</p>
 <ul>
     <li>Create a user defined folder (if required) which should contain your own Template class file</li>
     <li>Create a class file (e. g. class.mytemplate.php), which should contain the 
-	    implementation of new class Template</li>
+        implementation of new class Template</li>
     <li>Implement your own Template class. Ensure that the interface of your Template class 
-	    is identical to the Contenido Template class. This means, each public accessible 
-		property, method should have the same interface as in the original Contenido 
-		Template class (Same names, properties, parameters, etc.).</li>
+        is identical to the Contenido Template class. This means, each public accessible 
+        property, method should have the same interface as in the original Contenido 
+        Template class (Same names, properties, parameters, etc.).</li>
     <li>Modify the functions to your requirements</li>
     <li>Add the class map configuration of your new Template class to the user defined 
-	    file config.autoloader.local.php or regenerate the user defined class map file 
-		(see <a href="#extending_classmap">extending class map</a> and 
-		<a href="#autogen_classmap">auto generation of class map</a>)</li>
+        file config.autoloader.local.php or regenerate the user defined class map file 
+        (see <a href="#extending_classmap">extending class map</a> and 
+        <a href="#autogen_classmap">auto generation of class map</a>)</li>
 </ul>
 <p>
 <strong>NOTE:</strong><br />
@@ -209,6 +208,22 @@ Each time after an update of your Contenido installation it's strongly recommend
 to check your user defined implementations against changes in original Contenido 
 core files and, if applicable, to adapt your files to those changes.</p>
 </div>
+
+
+<div class="section">
+<h2><a name="autoloading_pear">Autoloading of classes within bundled PEAR packages</a></h2>
+<p>The Contenido autoloader is able to load required PEAR classes within bundled 
+PEAR package, or configured PEAR-Path, see</p>
+<pre>File:    contenido/includes/config.php
+Setting: $cfg['path']['pear']</pre>
+<p>The autoloading will achieved by mapping the class name, due to PEAR naming 
+conventions, to the related class file.</p>
+<p><strong>Example:</strong><br />
+Usage of the class <span class="pre">XML_RSS</span> will be automatically mapped 
+to <span class="pre">$cfg['path']['pear'] . 'XML/RSS.php'</span> to load the 
+related class file.</p>
+</div>
+
 
 </body>
 </html>

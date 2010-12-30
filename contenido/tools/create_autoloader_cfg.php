@@ -6,8 +6,7 @@
  * Description:
  * Contenido autoloader class map file generator.
  *
- * Parses PEAR directory provided by Contenido package and Contenido classes folder
- * and creates a class map file.
+ * Parses Contenido classes folder and creates a class map file.
  *
  * Usage:
  * ------
@@ -29,7 +28,8 @@
  * @since      file available since contenido release 4.8.15
  *
  * {@internal
- *   created 2010-12-27
+ *   created  2010-12-27
+ *   modified 2010-12-29, Murat Purc, removed parsing of pear folder
  *   $Id$:
  * }}
  *
@@ -53,8 +53,7 @@ $context->destinationFile = $context->contenidoInstallPath . '/contenido/include
 
 // list of paths from where all class/interface names should be found
 $context->pathsToParse = array(
-    $context->contenidoInstallPath . '/pear/',
-    $context->contenidoInstallPath . '/contenido/classes/',
+    $context->contenidoInstallPath . 'contenido/classes/',
 );
 
 // class type finder options
