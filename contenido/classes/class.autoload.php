@@ -98,10 +98,10 @@ class Contenido_Autoload
 
 
     /**
-     * Initialization of Contenido autoloader autoloader, is to call at least once.
+     * Initialization of Contenido autoloader, is to call at least once.
      *
      * Registers itself as a __autoload implementation, includes the classmap file, 
-     * if exists the user defined class map file, containing the includes.
+     * and if exists, the user defined class map file, containing the includes.
      *
      * @param   array  $cfg  The Contenido cfg array
      * @return  void

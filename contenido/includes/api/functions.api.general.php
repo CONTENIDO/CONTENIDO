@@ -85,9 +85,6 @@ if (!defined('DIRECTORY_SEPARATOR')) {
  */
 function contenido_include ($where, $what, $force = false, $returnpath = false)
 {
-if ($where == 'classes' || $where == 'pear') {
-	return;
-}
    global $client, $cfg, $cfgClient;
 
    /* Sanity check for $what */
