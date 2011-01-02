@@ -36,6 +36,10 @@
  */
 
 
+// allow execution only thru cli mode
+(substr(PHP_SAPI, 0, 3) == 'cli') or die('Illegal call');
+
+
 ################################################################################
 ##### Initialization/Settings
 
