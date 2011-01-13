@@ -33,6 +33,9 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+
+cInclude('pear', 'HTML/Common.php');
+
 /* Global ID counter */
 $cHTMLIDCount = 0;
 

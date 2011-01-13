@@ -64,6 +64,8 @@ if(empty($_GET['action'])) {
 plugin_include('linkchecker', 'includes/config.plugin.php');
 plugin_include('linkchecker', 'includes/include.checkperms.php');
 plugin_include('linkchecker', 'includes/include.linkchecker_tests.php');
+cInclude('pear', 'PEAR.php');
+cInclude('pear', 'Cache/Lite.php');
 
 
 // Initialization

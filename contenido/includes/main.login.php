@@ -35,6 +35,8 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+cInclude('pear', 'XML/Parser.php');
+cInclude('pear', 'XML/RSS.php');
 
 $tpl->reset();
 

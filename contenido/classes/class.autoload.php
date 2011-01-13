@@ -23,7 +23,7 @@
  * @con_php_req 5.0
  *
  * @package    Contenido Autoloader
- * @version    0.0.1
+ * @version    0.0.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -33,8 +33,8 @@
  *
  * {@internal
  *   created  2010-12-27
- *   modified 2010-12-29, Murat Purc, separated autoloading of PEAR classes by 
- *                                    mapping classnames to folders.
+ *   modified 2011-01-13, Murat Purc, removed autoloading of PEAR classes.
+ *  
  *   $Id$:
  * }}
  *
@@ -58,13 +58,6 @@ class Contenido_Autoload
      * @var string
      */
      private static $_conRootPath = null;
-
-    /**
-     * Path to bundled PEAR package (see $cfg['path']['pear']).
-     *
-     * @var string
-     */
-     private static $_pearPath = null;
 
     /**
      * Array of interface/class names with related files to include
@@ -114,7 +107,6 @@ class Contenido_Autoload
 
         self::$_initialized = true;
         self::$_conRootPath = str_replace('\\', '/', realpath($cfg['path']['contenido'] . '/../')) . '/';
-        self::$_pearPath    = $cfg['path']['pear'];
 
         spl_autoload_register(array(__CLASS__, 'autoload'));
 
@@ -136,10 +128,7 @@ class Contenido_Autoload
 
     /**
      * The main __autoload() implementation.
-     *
-     * Tries to include the passed classname by following order:
-     * 1. From within Contenido class map configuration
-     * 2. From within PEAR folder
+     * Tries to include the file of passed classname.
      *
      * @param   string  $className  The classname
      * @return  void
@@ -160,9 +149,6 @@ class Contenido_Autoload
         if ($file = self::_getContenidoClassFile($className)) {
             // load class file from class map
             self::_loadFile($file);
-        } elseif ($file = self::_getPearClassFile($className)) {
-            // load class file from PEAR package, but be as quiet as a mouse!
-            self::_loadFile($file, true);
         }
 
         self::$_loadedClasses[$className] = str_replace(self::$_conRootPath, '', $file);
@@ -201,20 +187,6 @@ class Contenido_Autoload
     {
         $file = isset(self::$_includeFiles[$className]) ? self::$_conRootPath . self::$_includeFiles[$className] : null;
         return self::_validateClassAndFile($className, $file);
-    }
-
-
-    /**
-     * Returns the path to a PEAR class file from bundled and/or configured PEAR 
-     * packages by processing the given classname
-     *
-     * @param    string  $className
-     * @return  (string|null)  Path and filename or null
-     */
-    private static function _getPearClassFile($className)
-    {
-        $pathName = self::$_pearPath . str_replace('_', '/', $className) . '.php';
-        return self::_validateClassAndFile($className, $pathName);
     }
 
 

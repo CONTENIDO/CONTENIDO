@@ -64,7 +64,7 @@ if (!defined('DIRECTORY_SEPARATOR')) {
  *
  * frontend    Path to the *current* frontend
  * conlib      Path to conlib
- * pear        Path to the bundled pear copy (see NOTE below)
+ * pear        Path to the bundled pear copy
  * classes     Path to the contenido classes (see NOTE below)
  * cronjobs    Path to the cronjobs
  * external    Path to the external tools
@@ -72,7 +72,7 @@ if (!defined('DIRECTORY_SEPARATOR')) {
  * scripts     Path to the contenido scripts
  *
  * NOTE: Since Contenido (since v 4.8.15) provides autoloading of required
- *       class files, there is no need to load class/PEAR files by using
+ *       class files, there is no need to load class files by using
  *       contenido_include() or cInclude().
  *
  * @param $where string The area which should be included

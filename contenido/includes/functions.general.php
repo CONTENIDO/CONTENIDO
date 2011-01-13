@@ -2341,7 +2341,9 @@ function cIDNAEncode($sourceEncoding, $string)
 {
 	if (extension_loaded("iconv"))
 	{
-		$idn = Net_IDNA :: getInstance();
+        cInclude('pear', 'Net/IDNA.php');
+
+        $idn = Net_IDNA :: getInstance();
 
 		$string = iconv("UTF-8", $sourceEncoding, $string);
 		$string = $idn->encode($string);
@@ -2351,6 +2353,8 @@ function cIDNAEncode($sourceEncoding, $string)
 
 	if (extension_loaded("recode"))
 	{
+        cInclude('pear', 'Net/IDNA.php');
+
 		$idn = Net_IDNA :: getInstance();
 
 		$string = $idn->decode($string);
@@ -2366,6 +2370,8 @@ function cIDNADecode($targetEncoding, $string)
 {
 	if (extension_loaded("iconv"))
 	{
+        cInclude('pear', 'Net/IDNA.php');
+
 		$idn = Net_IDNA :: getInstance();
 
 		$string = $idn->decode($string);
@@ -2376,6 +2382,8 @@ function cIDNADecode($targetEncoding, $string)
 
 	if (extension_loaded("recode"))
 	{
+        cInclude('pear', 'Net/IDNA.php');
+
 		$idn = Net_IDNA :: getInstance();
 
 		$string = recode_string($targetEncoding."..UTF-8", $string);

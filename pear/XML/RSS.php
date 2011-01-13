@@ -20,6 +20,7 @@
 // $Id$
 //
 
+cInclude('pear', 'XML/Parser.php');
 
 
 /**

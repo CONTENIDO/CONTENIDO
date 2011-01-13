@@ -31,7 +31,7 @@
  * @since      file available since Contenido release >= 4.8.15
  *
  * {@internal
- *     created  2010-12-30
+ *     created  2011-01-13
  * }}
  */
 
@@ -117,7 +117,6 @@ return array(
     'HttpInputValidator' => 'contenido/classes/class.httpinputvalidator.php',
     'InUseCollection' => 'contenido/classes/class.inuse.php',
     'InUseItem' => 'contenido/classes/class.inuse.php',
-    'ItemCollectionPager' => 'contenido/classes/class.itemcollection.pager.php',
     'cIterator' => 'contenido/classes/class.iterator.php',
     'Languages' => 'contenido/classes/class.lang.php',
     'Language' => 'contenido/classes/class.lang.php',

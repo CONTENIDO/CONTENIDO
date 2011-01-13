@@ -19,7 +19,8 @@
 // $Id: Cache.php,v 1.5 2003/01/04 11:54:45 mj Exp $
 
 
-
+cInclude('pear', 'PEAR.php');
+cInclude('pear', 'Cache/Error.php');
 
 /**
 * Cache is a base class for cache implementations.

@@ -71,10 +71,6 @@ $oArt = new Article();
 <pre>
 $oArt = new Article();
 </pre>
-<p><strong>NOTE:</strong><br />
-Autoloading of PEAR classes in bundled PEAR packages works by a different way, 
-see section <a href="#autoloading_pear">Autoloading PEAR</a> for more details.
-</p>
 </div>
 
 
@@ -83,7 +79,6 @@ see section <a href="#autoloading_pear">Autoloading PEAR</a> for more details.
 <p>At the moment all available classes/interfaces inside following directories 
 of a Contenido installation:</p>
 <pre>
-pear/
 contenido/classes/
 </pre>
 <p><strong>NOTE:</strong><br />
@@ -213,23 +208,6 @@ Each time after an update of your Contenido installation it's strongly recommend
 to check your user defined implementations against changes in original Contenido 
 core files and, if applicable, to adapt your files to those changes.</p>
 </div>
-
-
-<div class="section">
-<h2><a name="autoloading_pear">Autoloading of classes within bundled/configured PEAR packages</a></h2>
-<p>The Contenido autoloader is able to load required PEAR classes within bundled 
-PEAR package or configured PEAR path, see</p>
-<pre>File:    contenido/includes/config.php
-Setting: $cfg['path']['pear']</pre>
-<p>The autoloading of PEAR class files will achieved by mapping the class name, 
-due to PEAR naming conventions, to the related class file. It works other than 
-the Contenido class map configuration.</p>
-<p><strong>Example:</strong><br />
-Initial usage of the class <span class="pre">XML_RSS</span> will be automatically mapped 
-to <span class="pre">$cfg['path']['pear'] . 'XML/RSS.php'</span> to load the 
-related class file.</p>
-</div>
-
 
 </body>
 </html>

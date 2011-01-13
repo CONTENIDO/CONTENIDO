@@ -18,6 +18,7 @@
 //
 // $Id: Parser.php,v 1.2 2005/09/30 09:33:32 timo.hummel Exp $
 
+cInclude('pear', 'PEAR.php');
 
 /**
  * XML Parser class.  This is an XML parser based on PHP's "xml" extension,

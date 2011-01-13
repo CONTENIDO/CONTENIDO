@@ -32,6 +32,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+cInclude('pear', 'Spreadsheet/Excel/Writer.php');
 
 class ExcelWorksheet
 {

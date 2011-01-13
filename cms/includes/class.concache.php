@@ -375,6 +375,7 @@ VALID UNTIL: %s
         }
 
         // create a output cache object mode - file storage
+        cInclude('pear', 'Cache/Output.php');
         $this->_oPearCache = new Cache_Output('file', $this->_aCacheOptions);
 
         // generate an ID from whatever might influence the script behavoiur
