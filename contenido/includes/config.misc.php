@@ -54,7 +54,7 @@ global $cfg;
 $cfg['version'] = '4.8.14';
 
 /* CVS Date tag */
-$cfg['datetag'] = '$Date: 2007/07/20 22:18:31 $';
+$cfg['datetag'] = '$Date$';
 
 /* Backend timeout */
 $cfg["backend"]["timeout"] = 60;
