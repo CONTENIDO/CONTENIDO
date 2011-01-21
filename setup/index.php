@@ -9,7 +9,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    0.2
+ * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,6 +21,7 @@
  * {@internal 
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
+ *   modified 2011-01-21, Ortwin Pinke, added php-errorhandling function calls, uncomment if needed
  *
  *   $Id$:
  * }}
@@ -30,6 +31,11 @@
 if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
+
+// uncomment this lines during development if needed
+# @ini_set("display_errors",true);
+# error_reporting (E_ALL);
+
 header("Content-Type: text/html; charset=ISO-8859-1");
 
 // Check version in the "first" line, as class.security.php uses
