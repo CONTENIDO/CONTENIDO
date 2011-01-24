@@ -140,6 +140,7 @@
 
 .cms_filelist #directories, .cms_filelist #general, .cms_filelist #filter, .cms_filelist #manual {
 	display:none;
+	width: 430px;
 }
 
 .cms_filelist #tabs {
