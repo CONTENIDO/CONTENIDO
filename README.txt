@@ -26,16 +26,6 @@ Lizenzen von verwendeten Produkten:
 - phplib
   Lizenz:      GNU General Public Licence (GPL)
   Information: http://phplib.sourceforge.net
-
-- SPAW (WYSIWYG-Editor)
-  Lizenz:      GNU General Public Licence (GPL)
-  Copyright:   (c) 2003, Solmetra
-  Information: http://www.solmetra.com/spaw
-    
-- htmlArea (WYSIWYG-Editor)
-  Lizenz:      htmlArea License (based on BSD license)
-  Copyright:   (c) 2002, interactivetools.com, inc.
-  Information: http://www.interactivetools.com
   
 - Pseudo-Cron (Cron-Emulator)
   Lizenz: 	   GNU General Public Licence (GPL)
