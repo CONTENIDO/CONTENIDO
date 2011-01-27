@@ -7,7 +7,7 @@
  * Contenido Purge include file to reset some datas(con_code, con_cat_art) and files (log, cache, history)
  *
  * @package    Contenido Backend includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Munkh-Ulzii Balidar
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -17,8 +17,9 @@
  *
  * {@internal 
  *   created 2010-01-11
- *   modified 2010-08-03 - added checkg for the permission
- *
+ *   modified 2010-08-03, added check for the permission
+ *	 modified 2010-12-14, Munkh-Ulzii Balidar, changed the select box name 
+ *							to 'purge_clients' for security, see [CON-375]
  *   $Id$:
  * }
  */
@@ -27,10 +28,13 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+cInclude('classes', 'class.purge.php');
 
 $tpl->reset();
 
 $iClientSelectSize = 4;
+$oClient = new Client();
+$aAvailableClient = $oClient->getAvailableClients();
 
 $sInfoMsg = '';
 
@@ -42,130 +46,134 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
         $aClientToClear = array();
         $aClientName = array();
         
-        // all or selected clients
         if (isset($_POST['selectClient']) && $_POST['selectClient'] == 'all') {
-            $oClient = new Client();
-            $aAvailableClient = $oClient->getAvailableClients();
+        	// selected all clients
+            
             foreach ($aAvailableClient as $iClientId => $aClient) {
                 $aClientToClear[] = $iClientId;
-                $aClientName[$iClientId] = $aClient['name'];
             }
-        } else if (is_array($_POST['client']) && count($_POST['client']) > 0){
-            $aClientToClear = $_POST['client'];
-            $oClient = new Client();
-            $aAvailableClient = $oClient->getAvailableClients();
+            
+        } else if (isset($_POST['purge_clients']) && is_array($_POST['purge_clients']) && count($_POST['purge_clients']) > 0) {
+        	// selected multiple clients
+        	foreach ($_POST['purge_clients'] as $iClientId) {
+        		$aClientToClear[] = (int)$iClientId;
+        	}
+        	 
+        } else if (isset($_POST['purge_clients']) && (int)$_POST['purge_clients'] > 0) {
+        	// selected single client
+        	$aClientToClear[] = (int)$_POST['purge_clients'];
+        }
+        
+        if (count($aClientToClear) > 0) {
+        	// execute the selected actions
+        	
             foreach ($aAvailableClient as $iClientId => $aClient) {
                 $aClientName[$iClientId] = $aClient['name'];
             }
-        }
+        	
+	        $bError = false;
+	        $sErrorMsg = '';
+	        $oPurge = new Purge($db, $cfg, $cfgClient);
+	        
+	        foreach ($aClientToClear as $iClientId) {
+	            $iClientId = (int) $iClientId;
+	            if ($iClientId > 0) { 
+	                if (isset($_POST['conCode']) && $_POST['conCode'] == 1) {
+	                    if (!$oPurge->resetClientConCode($iClientId)) {
+	                        $bError = true;
+	                        $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . 
+	                               sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['code']) . "<br />";
+	                    }
+	                } 
+	                
+	                if (isset($_POST['conCatArt']) && $_POST['conCatArt'] == 1) {
+	                    if (!$oPurge->resetClientConCatArt($iClientId)) {
+	                        $bError = true;
+	                        $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . 
+	                               sprintf(i18n("The %s is not updated!"), $cfg['tab']['cat_art']) . "<br />";
+	                    }
+	                }
+	                
+	                if (isset($_POST['clientCache']) && $_POST['clientCache'] == 1) {
+	                    if (!$oPurge->clearClientCache($iClientId)) {
+	                        $bError = true;
+	                        $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . 
+	                               i18n("The cache is not deleted!") . "<br />";
+	                    }
+	                }
+	                
+	                if (isset($_POST['clientLog']) && $_POST['clientLog'] == 1) {
+	                    if (!$oPurge->clearClientLog($iClientId)) {
+	                        $bError = true;
+	                        $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . 
+	                               i18n("The log is not deleted!") . "<br />";
+	                    }
+	                }
+	                
+	                if (isset($_POST['clientHistory']) && $_POST['clientHistory'] == 1) {
+	                    $bKeep = ($_POST['keepHistory'] == 1 && (int) $_POST['keepHistoryNumber'] > 0) ? true : false;
+	                    if (!$oPurge->clearClientHistory($iClientId, $bKeep, (int) $_POST['keepHistoryNumber'])) {
+	                        $bError = true;
+	                        $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . 
+	                               i18n("The history is not deleted!") . "<br />";
+	                    }
+	                }
+	                
+	                if ($sErrorMsg != '') {
+	                    $sErrorMsg .= "<br />";
+	                }
+	                
+	            }
+	        }
+
+	        $sContenido = i18n("Contenido: ");
         
-        $bError = false;
-        $sErrorMsg = '';
-        $oPurge = new Purge($db, $cfg, $cfgClient);
-        
-        foreach ($aClientToClear as $iClientId) {
-            $iClientId = (int) $iClientId;
-            if ($iClientId > 0) { 
-                if (isset($_POST['conCode']) && $_POST['conCode'] == 1) {
-                    if (!$oPurge->resetClientConCode($iClientId)) {
-                        $bError = true;
-                        $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . 
-                               sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['code']) . "<br />";
-                    }
-                } 
-                
-                if (isset($_POST['conCatArt']) && $_POST['conCatArt'] == 1) {
-                    if (!$oPurge->resetClientConCatArt($iClientId)) {
-                        $bError = true;
-                        $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . 
-                               sprintf(i18n("The %s is not updated!"), $cfg['tab']['cat_art']) . "<br />";
-                    }
-                }
-                
-                if (isset($_POST['clientCache']) && $_POST['clientCache'] == 1) {
-                    if (!$oPurge->clearClientCache($iClientId)) {
-                        $bError = true;
-                        $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . 
-                               i18n("The cache is not deleted!") . "<br />";
-                    }
-                }
-                
-                if (isset($_POST['clientLog']) && $_POST['clientLog'] == 1) {
-                    if (!$oPurge->clearClientLog($iClientId)) {
-                        $bError = true;
-                        $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . 
-                               i18n("The log is not deleted!") . "<br />";
-                    }
-                }
-                
-                if (isset($_POST['clientHistory']) && $_POST['clientHistory'] == 1) {
-                    $bKeep = ($_POST['keepHistory'] == 1 && (int) $_POST['keepHistoryNumber'] > 0) ? true : false;
-                    if (!$oPurge->clearClientHistory($iClientId, $bKeep, (int) $_POST['keepHistoryNumber'])) {
-                        $bError = true;
-                        $sErrorMsg .= i18n("Client ") . $aClientName[$iClientId] . ': ' . 
-                               i18n("The history is not deleted!") . "<br />";
-                    }
-                }
-                
-                if ($sErrorMsg != '') {
-                    $sErrorMsg .= "<br />";
-                }
-                
-            }
-            
-        } 
-        
-        $sContenido = i18n("Contenido: ");
-        
-        if (isset($_POST['conInuse']) && $_POST['conInuse'] == 1) {
-            if (!$oPurge->resetConInuse()) {
-                $bError = true;
-                $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['inuse']) . "<br />";
-            }
-        }
-        
-        if (isset($_POST['conPHPLibActiveSession']) && $_POST['conPHPLibActiveSession'] == 1) {
-            if (!$oPurge->resetPHPLibActiveSession()) {
-                $bError = true;
-                $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['phplib_active_sessions']) . 
-                     "<br />";
-            }
-        }
-        
-        if (isset($_POST['conLog']) && $_POST['conLog'] == 1) {
-            if (!$oPurge->clearConLog()) {
-                $bError = true;
-                $sErrorMsg .= i18n("The contenido log is not cleaned!") . "<br />";
-            }
-        }
-        
-        if (isset($_POST['conCache']) && $_POST['conCache'] == 1) {
-            if (!$oPurge->clearConCache()) {
-                $bError = true;
-                $sErrorMsg .= i18n("The contenido cache is not deleted!") . "<br />";
-            }
-        }
-        
-        if (isset($_POST['conCronjobs']) && $_POST['conCronjobs'] == 1) {
-            if (!$oPurge->clearConCronjob()) {
-                $bError = true;
-                $sErrorMsg .= i18n("The contenido cronjobs are not cleaned!") . "<br />";
-            }
-        }
-        
-        if ($bError === false) {
-            $sInfoMsg = $notification->returnNotification("info", i18n("The changes were successfully executed."));
-        } else {
-            $sErrorComplete = i18n("The changes were not all successfully completed.") . "<br /><br />" . $sErrorMsg;
-            $sInfoMsg = $notification->returnNotification("error", $sErrorComplete);
-        } 
-                
-    } 
+	        if (isset($_POST['conInuse']) && $_POST['conInuse'] == 1) {
+	            if (!$oPurge->resetConInuse()) {
+	                $bError = true;
+	                $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['inuse']) . "<br />";
+	            }
+	        }
+	        
+	        if (isset($_POST['conPHPLibActiveSession']) && $_POST['conPHPLibActiveSession'] == 1) {
+	            if (!$oPurge->resetPHPLibActiveSession()) {
+	                $bError = true;
+	                $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['phplib_active_sessions']) . 
+	                     "<br />";
+	            }
+	        }
+	        
+	        if (isset($_POST['conLog']) && $_POST['conLog'] == 1) {
+	            if (!$oPurge->clearConLog()) {
+	                $bError = true;
+	                $sErrorMsg .= i18n("The contenido log is not cleaned!") . "<br />";
+	            }
+	        }
+	        
+	        if (isset($_POST['conCache']) && $_POST['conCache'] == 1) {
+	            if (!$oPurge->clearConCache()) {
+	                $bError = true;
+	                $sErrorMsg .= i18n("The contenido cache is not deleted!") . "<br />";
+	            }
+	        }
+	        
+	        if (isset($_POST['conCronjobs']) && $_POST['conCronjobs'] == 1) {
+	            if (!$oPurge->clearConCronjob()) {
+	                $bError = true;
+	                $sErrorMsg .= i18n("The contenido cronjobs are not cleaned!") . "<br />";
+	            }
+	        }
+	        
+	        if ($bError === false) {
+	            $sInfoMsg = $notification->returnNotification("info", i18n("The changes were successfully executed."));
+	        } else {
+	            $sErrorComplete = i18n("The changes were not all successfully completed.") . "<br /><br />" . $sErrorMsg;
+	            $sInfoMsg = $notification->returnNotification("error", $sErrorComplete);
+	        } 
+    	}
+    }
     
-    $oClient = new Client();
-    $aAvailableClient = $oClient->getAvailableClients();
-    
-    $oHtmlSelectHour = new  cHTMLSelectElement ('client[]', '', 'client_select');
+    $oHtmlSelectHour = new  cHTMLSelectElement ('purge_clients[]', '', 'client_select');
     
     $i = 0;
     foreach ($aAvailableClient as $iClientId => $aClient) {
