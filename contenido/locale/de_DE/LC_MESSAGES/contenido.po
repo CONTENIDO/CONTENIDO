@@ -3101,13 +3101,13 @@ msgid "Contenido Error Log"
 msgstr "Contenido Fehlerlog"
 
 msgid "clear error log"
-msgstr "Errorlog leeren"
+msgstr "Fehlerlog leeren"
 
 msgid "Contenido Upgrade Error Log"
-msgstr "Contenido Upgrade-Errorlog"
+msgstr "Contenido Upgrade-Fehlerlog"
 
 msgid "clear upgrade error log"
-msgstr "Upgrade-Errorlog leeren"
+msgstr "Upgrade-Fehlerlog leeren"
 
 msgid "Sort files"
 msgstr "Dateisortierung"
@@ -3140,7 +3140,7 @@ msgid "Notification"
 msgstr "Hinweis"
 
 msgid "with click select line for further treatment"
-msgstr "mit klick Zeile zur weiteren Bearbeitung ausw&auml;hlen"
+msgstr "mit Klick Zeile zur weiteren Bearbeitung ausw&auml;hlen"
 
 msgid "Group membership"
 msgstr "Gruppenzugeh&ouml;rigkeit"
@@ -3286,7 +3286,7 @@ msgid "Invalid Login or Password!"
 msgstr "Login fehlgeschlagen!"
 
 msgid "No matching data found. Please contact your systemadministrator."
-msgstr "Keine passenden Daten gefunden. Bitte wenden Sie sich an Ihren System- administrator."
+msgstr "Keine passenden Daten gefunden. Bitte wenden Sie sich an Ihren System-Administrator."
 
 msgid "Set category online"
 msgstr "Kategorie online setzen"
@@ -3304,7 +3304,7 @@ msgid "-- No Language available --"
 msgstr "-- Keine Sprache verf&uuml;gbar --"
 
 msgid "There is no Content Allocation tree."
-msgstr "Es exisitiert kein Content Allocation Baum."
+msgstr "Es existiert kein Content Allocation Baum."
 
 msgid "Form error"
 msgstr "Formularfehler"
@@ -3337,7 +3337,7 @@ msgid "Can't clear error log : Access is denied!"
 msgstr "Fehlerlog konnte nicht geleert werden: Zugriff verweigert!"
 
 msgid "Can't clear install error log : Access is denied!"
-msgstr "Upgrade-Errorlog konnte nicht geleert werden: Zugriff verweigert!"
+msgstr "Upgrade-Fehlerlog konnte nicht geleert werden: Zugriff verweigert!"
 
 msgid "Export to file"
 msgstr "In Datei exportieren"
