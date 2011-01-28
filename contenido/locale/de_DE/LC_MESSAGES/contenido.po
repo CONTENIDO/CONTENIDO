@@ -3947,3 +3947,6 @@ msgstr "Ver&ouml;ffentlichungsdatum"
 
 msgid "Is used in"
 msgstr "Wird benutzt in"
+
+msgid "No clients available!"
+msgstr "Keine Mandanten verf&uuml;gbar!"

@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2009-12-14, Dominik Ziegler, use User::getRealname() for user name output and provide username fallback
  *   modified 2010-05-20, Oliver Lohkemper, add param true for get active admins
+ *   modified 2011-01-28, Dominik Ziegler, added missing notice in backend home when no clients are available [#CON-379]
  *
  *   $Id$:
  * }}
@@ -109,7 +110,7 @@ if (count($clients) > 1) {
 	$tpl->set('s', 'OKBUTTON', '<input type="image" src="images/but_ok.gif" alt="' . i18n("Change client") . '" title="' . i18n("Change client") . '" border="0">');
 } else {
 	$tpl->set('s', 'OKBUTTON', '');
-	$tpl->set('s', 'CLIENTFORM', '');
+	$tpl->set('s', 'CLIENTFORM', i18n('No clients available!'));
 	$tpl->set('s', 'CLIENTFORMCLOSE', '');
 
 	foreach ($clients as $key => $v_client) {
