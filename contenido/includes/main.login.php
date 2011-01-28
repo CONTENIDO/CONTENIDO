@@ -110,7 +110,11 @@ if (count($clients) > 1) {
 	$tpl->set('s', 'OKBUTTON', '<input type="image" src="images/but_ok.gif" alt="' . i18n("Change client") . '" title="' . i18n("Change client") . '" border="0">');
 } else {
 	$tpl->set('s', 'OKBUTTON', '');
-	$tpl->set('s', 'CLIENTFORM', i18n('No clients available!'));
+	$sClientForm = '';
+	if ( count($clients) == 0 ) {
+		$sClientForm = i18n('No clients available!');
+	}
+	$tpl->set('s', 'CLIENTFORM', $sClientForm);
 	$tpl->set('s', 'CLIENTFORMCLOSE', '');
 
 	foreach ($clients as $key => $v_client) {
