@@ -26,6 +26,7 @@
  *   modified 2009-12-17, Dominik Ziegler, added support for username fallback and fixed double quote
  *   modified 2009-12-16  Corrected rendering of multiple apostrophes in anchors
  *   modified 2010-01-15, Dominik Ziegler, added frontend url to client name
+ *   modified 2011-01-28, Dominik Ziegler, added check for client existance for link to frontend [#CON-378]
  *
  *   $Id$:
  * }}
@@ -338,20 +339,30 @@ class Contenido_Navigation {
         if (strlen($sClientName) > 25) {
             $sClientName = capiStrTrimHard($sClientName, 25);
         }
-
-        if ($clientImage !== false && $clientImage != "" && file_exists($cfgClient[$client]['path']['frontend'].$clientImage)) {
-            $id = $classclient->getClientName($client).' ('.$client.')';
-            $hints = 'alt="'.$id.'" title="'.$id.'"';
-
-            $sThumbnailPath = capiImgScale($cfgClient[$client]['path']['frontend'].$clientImage, 80, 25, 0, 1);
-            $clientImage = '<img src="'.$sThumbnailPath.'" '.$hints.'>';
-            $main->set('s', 'CHOSENCLIENT', "<b>".i18n("Client").":</b>&nbsp;".$clientImage);
-        } else {
-            $main->set('s', 'CHOSENCLIENT', "<b>".i18n("Client").":</b> ".$sClientName." (".$client.")");
-        }
 		
-		$main->set('s', 'CLIENT_URL', $cfgClient[$client]["path"]["htmlpath"]);
-        $main->set('s', 'CHOSENUSER', "<b>".i18n("User").":</b> ".$classuser->getRealname($auth->auth["uid"], true));
+		$client = Contenido_Security::toInteger($client);
+		if ( $client == 0 ) {
+			$sClientNameTemplate = '<b>' . i18n("Client") . ':</b> %s';
+			$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientName));
+		} else {
+			$sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
+			
+			$sClientName 	= $classclient->getClientName($client).' ('.$client.')';
+			$sClientUrl 	= $cfgClient[$client]["path"]["htmlpath"];
+
+			if ($clientImage !== false && $clientImage != "" && file_exists($cfgClient[$client]['path']['frontend'].$clientImage)) {
+				$sClientImageTemplate = '<img src="%s" alt="%s" title="%s" />';
+				
+				$sThumbnailPath 	= capiImgScale($cfgClient[$client]['path']['frontend'].$clientImage, 80, 25, 0, 1);
+				$sClientImageTag 	= sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
+				
+				$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientImageTag));
+			} else {
+				$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientName));
+			}
+		}
+		
+		$main->set('s', 'CHOSENUSER', "<b>".i18n("User").":</b> ".$classuser->getRealname($auth->auth["uid"], true));
         $main->set('s', 'SID', $sess->id);
         $main->set('s', 'MAINLOGINLINK', $sess->url("frameset.php?area=mycontenido&frame=4"));
 
