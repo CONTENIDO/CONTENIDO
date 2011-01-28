@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
