@@ -26,6 +26,7 @@
  *   modified 2009-02-15, Murat Purc, fixed bug CON-238
  *   modified 2010-09-29, Ortwin Pinke, fixed bug CON-349
  *   modified 2010-12-16, Dominik Ziegler, display error message on database connection failure [#CON-376]
+ *   modified 2011-02-05, Murat Purc, getAllClientsAndLanguages() and some cleanup
  *
  *   $Id$:
  * }}
@@ -476,6 +477,45 @@ function set_magic_quotes_gpc(&$code) {
       }
 }
 
+
+/**
+ * Returns a list with all clients and languages.
+ *
+ * @return  array  Indexed array where the value is an assoziative array as follows:
+ *                 - $arr[0]['idlang']
+ *                 - $arr[0]['langname']
+ *                 - $arr[0]['idclient']
+ *                 - $arr[0]['clientname']
+ */
+function getAllClientsAndLanguages()
+{
+    global $db, $cfg;
+
+    $sql = "SELECT
+                a.idlang as idlang,
+                a.name as langname,
+                b.name as clientname,
+                b.idclient as idclient
+             FROM
+                " .$cfg["tab"]["lang"]." as a,
+                " .$cfg["tab"]["clients_lang"]." as c,
+                " .$cfg["tab"]["clients"]." as b
+             WHERE
+                a.idlang = c.idlang AND
+                c.idclient = b.idclient";
+    $db->query($sql);
+
+    $aRs = array();
+    while ($db->next_record()) {
+        $aRs[] = array(
+            'idlang'     => $db->f('idlang'),
+            'langname'   => $db->f('langname'),
+            'idclient'   => $db->f('idclient'),
+            'clientname' => $db->f('clientname'),
+        );
+    }
+    return $aRs;
+}
 /**
  * @deprecated since 22.08.2005
  * This function is called everytime when the code of an article is generated.
