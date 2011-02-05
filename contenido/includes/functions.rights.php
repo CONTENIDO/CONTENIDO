@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Defines the "rights" related functions
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.0.0
@@ -16,23 +16,24 @@
  * @copyright  dayside.net
  * @link       http://www.dayside.net
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
- *   created 2004-11-25
+ *
+ * {@internal
+ *   created  2004-11-25
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modified 2011-02-05, Murat Purc, Added function buildUserOrGroupPermsFromRequest()
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 /**
   * Function checks if a language is associated with a given list of clients Fixed CON-200
-  * 
+  *
   * @param array $aClients - array of clients to check
   * @param integer $iLang - language id which should be checked
   * @param array $aCfg - Contenido configruation array
@@ -40,16 +41,17 @@ if(!defined('CON_FRAMEWORK')) {
   *
   * @return boolean - status (if language id corresponds to list of clients true otherwise false)
   */
-function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
+function checkLangInClients($aClients, $iLang, $aCfg, $oDb)
+{
     //Escape values for use in DB
-    $iIdClient = Contenido_Security::toInteger($iLang);  
+    $iIdClient = Contenido_Security::toInteger($iLang);
     foreach ($aClients as $iKey => $iValue) {
-        $aClients[$iKey] = Contenido_Security::toInteger($aClients[$iKey]);  
+        $aClients[$iKey] = Contenido_Security::toInteger($aClients[$iKey]);
     }
-    
+
     //Query to check, if langid is in list of clients associated
     $sSql = "SELECT * FROM ".$aCfg['tab']['clients_lang']. " WHERE idlang=".$iLang." AND idclient IN ('".implode("','",$aClients)."');";
-    
+
     $oDb->query($sSql);
     if ($oDb->next_record()) {
         return true;
@@ -69,78 +71,72 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb) {
  * @author Martin Horwath <horwath@dayside.net>
  * @copyright dayside.net <dayside.net>
  */
-function copyRightsForElement ($area, $iditem, $newiditem, $idlang=false) {
+function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
+{
+    global $cfg, $perm, $auth, $area_tree;
 
-   global $cfg, $perm, $auth, $area_tree;
+    $db = new DB_Contenido();
+    $db2 = new DB_Contenido();
 
-   $db = new DB_Contenido;
-   $db2 = new DB_Contenido;
+    // get all user_id values for con_rights
 
-   // get all user_id values for con_rights
+    $userIDContainer = $perm->getGroupsForUser($auth->auth['uid']); // add groups if available
+    $userIDContainer[] = $auth->auth['uid']; // add user_id of current user
 
-   $userIDContainer = $perm->getGroupsForUser($auth->auth["uid"]); // add groups if available
-   $userIDContainer[] = $auth->auth["uid"]; // add user_id of current user
-   
-   foreach ($userIDContainer as $key) {
-      $statement_where2[] = "user_id = '".Contenido_Security::escapeDB($key, $db)."' ";
-   }
+    foreach ($userIDContainer as $key) {
+        $statement_where2[] = "user_id = '".Contenido_Security::escapeDB($key, $db)."' ";
+    }
 
-   $where_users =   "(".implode(" OR ", $statement_where2 ) .")"; // only duplicate on user and where user is member of
+    $where_users = '('.implode(' OR ', $statement_where2 ) .')'; // only duplicate on user and where user is member of
 
-   // get all idarea values for $area
-   // short way
-   $AreaContainer = $area_tree[$perm->showareas($area)];
+    // get all idarea values for $area
+    // short way
+    $AreaContainer = $area_tree[$perm->showareas($area)];
 
-   // long version start
-   // get all actions for corresponding area
-   $AreaActionContainer = array();
-   $sql = "SELECT
-            idarea, idaction
-         FROM
-            ".$cfg["tab"]["actions"]."
-         WHERE
-            idarea IN (".implode (',', $AreaContainer).")";
-   $db->query($sql);
+    // long version start
+    // get all actions for corresponding area
+    $AreaActionContainer = array();
+    $sql = "SELECT idarea, idaction FROM ".$cfg["tab"]["actions"]." WHERE idarea IN (".implode (',', $AreaContainer).")";
+    $db->query($sql);
 
-   while ($db->next_record()) {
-      $AreaActionContainer[] = Array ("idarea"=>$db->f("idarea"), "idaction"=>$db->f("idaction"));
-   }
+    while ($db->next_record()) {
+      $AreaActionContainer[] = array('idarea'=>$db->f('idarea'), 'idaction'=>$db->f('idaction'));
+    }
 
-   // build sql statement for con_rights
-   foreach ($AreaActionContainer as $key) {
-      $statement_where[] = "( idarea = ".Contenido_Security::toInteger($key["idarea"])." AND idaction = ".Contenido_Security::toInteger($key["idaction"])." )";
-   }
+    // build sql statement for con_rights
+    foreach ($AreaActionContainer as $key) {
+        $statement_where[] = "( idarea = ".Contenido_Security::toInteger($key["idarea"])." AND idaction = ".Contenido_Security::toInteger($key["idaction"])." )";
+    }
 
-   $where_area_actions = "(".implode(" OR ", $statement_where ) .")"; // only correct area action pairs possible
+    $where_area_actions = '('.implode(' OR ', $statement_where ) .')'; // only correct area action pairs possible
 
-   // final sql statement to get all effected elements in con_right
-   $sql = "SELECT
-            *
-         FROM
-            ".$cfg["tab"]["rights"]."
-         WHERE
-            {$where_area_actions} AND
-            {$where_users} AND
-            idcat = {$iditem}";
-   // long version end
+    // final sql statement to get all effected elements in con_right
+    $sql = "SELECT
+                *
+            FROM
+                ".$cfg["tab"]["rights"]."
+            WHERE
+                {$where_area_actions} AND
+                {$where_users} AND
+                idcat = {$iditem}";
 
-   if ($idlang) {
+    // long version end
+    if ($idlang) {
       $sql.= " AND idlang='$idlang'";
-   }
+    }
 
-   $db->query($sql);
+    $db->query($sql);
 
-   while ($db->next_record()) {
-      $sql = "INSERT INTO ".$cfg["tab"]["rights"]." (idright,user_id,idarea,idaction,idcat,idclient,idlang,`type`) VALUES ('".Contenido_Security::toInteger($db2->nextid($cfg["tab"]["rights"]))."', 
-              '".Contenido_Security::escapeDB($db->f("user_id"), $db)."', '".Contenido_Security::toInteger($db->f("idarea"))."', '".Contenido_Security::toInteger($db->f("idaction"))."',
-              '".Contenido_Security::toInteger($newiditem)."','".Contenido_Security::toInteger($db->f("idclient"))."', '".Contenido_Security::toInteger($db->f("idlang"))."',
-              '".Contenido_Security::toInteger($db->f("type"))."');";
-      $db2->query($sql);
-   }
+    while ($db->next_record()) {
+        $sql = "INSERT INTO ".$cfg["tab"]["rights"]." (idright,user_id,idarea,idaction,idcat,idclient,idlang,`type`) VALUES ('".Contenido_Security::toInteger($db2->nextid($cfg["tab"]["rights"]))."',
+               '".Contenido_Security::escapeDB($db->f("user_id"), $db)."', '".Contenido_Security::toInteger($db->f("idarea"))."', '".Contenido_Security::toInteger($db->f("idaction"))."',
+               '".Contenido_Security::toInteger($newiditem)."','".Contenido_Security::toInteger($db->f("idclient"))."', '".Contenido_Security::toInteger($db->f("idlang"))."',
+               '".Contenido_Security::toInteger($db->f("type"))."');";
+        $db2->query($sql);
+    }
 
-   // permissions reloaded...
-   $perm->load_permissions(true);
-
+    // permissions reloaded...
+    $perm->load_permissions(true);
 }
 
 
@@ -154,86 +150,79 @@ function copyRightsForElement ($area, $iditem, $newiditem, $idlang=false) {
  * @author Martin Horwath <horwath@dayside.net>
  * @copyright dayside.net <dayside.net>
  */
-function createRightsForElement ($area, $iditem, $idlang=false) {
+function createRightsForElement($area, $iditem, $idlang = false)
+{
+    global $cfg, $perm, $auth, $area_tree, $client;
 
-   global $cfg, $perm, $auth, $area_tree, $client;
+    if (!is_object($perm)) {
+        return false;
+    }
 
-   if (!is_object($perm))
-   {	
-   		return false;
-   }
-   
-   if (!is_object($auth))
-   {	
-   		return false;
-   }   
-   
-   $db = new DB_Contenido;
-   $db2 = new DB_Contenido;
+    if (!is_object($auth)) {
+        return false;
+    }
 
-   // get all user_id values for con_rights
+    $db = new DB_Contenido();
+    $db2 = new DB_Contenido();
 
-   $userIDContainer = $perm->getGroupsForUser($auth->auth["uid"]); // add groups if available
-   $userIDContainer[] = $auth->auth["uid"]; // add user_id of current user
+    // get all user_id values for con_rights
 
-   foreach ($userIDContainer as $key) {
-      $statement_where2[] = "user_id = '".Contenido_Security::toInteger($key)."' ";
-   }
+    $userIDContainer = $perm->getGroupsForUser($auth->auth['uid']); // add groups if available
+    $userIDContainer[] = $auth->auth['uid']; // add user_id of current user
 
-   $where_users =   "(".implode(" OR ", $statement_where2 ) .")"; // only duplicate on user and where user is member of
+    foreach ($userIDContainer as $key) {
+        $statement_where2[] = "user_id = '".Contenido_Security::toInteger($key)."' ";
+    }
 
-   // get all idarea values for $area
-   // short way
-   $AreaContainer = $area_tree[$perm->showareas($area)];
+    $where_users =   '('.implode(' OR ', $statement_where2 ) .')'; // only duplicate on user and where user is member of
 
-   $sql="SELECT
-           *
-        FROM
-           ".$cfg["tab"]["rights"]."
-        WHERE
-           idclient='".Contenido_Security::toInteger($client)."' AND
-           idarea IN (".implode (',', $AreaContainer).") AND
-           idcat != 0 AND
-           idaction!='0' AND
-           {$where_users}";
+    // get all idarea values for $area
+    // short way
+    $AreaContainer = $area_tree[$perm->showareas($area)];
 
-   if ($idlang) {
-      $sql.= " AND idlang='".Contenido_Security::toInteger($idlang)."'";
-   }
+    $sql = "SELECT
+                *
+            FROM
+                ".$cfg["tab"]["rights"]."
+            WHERE
+                idclient='".Contenido_Security::toInteger($client)."' AND
+                idarea IN (".implode (',', $AreaContainer).") AND
+                idcat != 0 AND
+                idaction!='0' AND
+                {$where_users}";
 
-   $db->query($sql);
+    if ($idlang) {
+        $sql.= " AND idlang='".Contenido_Security::toInteger($idlang)."'";
+    }
 
-   $RightsContainer = array();
+    $db->query($sql);
 
-   while($db->next_record()){
-       $RightsContainer[$db->f("user_id")][$db->f("idlang")][$db->f("type")][$db->f("idaction")] = $db->f("idarea");
-   }
+    $RightsContainer = array();
 
-   // i found no better way to set the rights
-   // double entries should not be possible anymore...
+    while($db->next_record()){
+        $RightsContainer[$db->f('user_id')][$db->f('idlang')][$db->f('type')][$db->f('idaction')] = $db->f('idarea');
+    }
 
-   foreach ($RightsContainer as $userid=>$LangContainer) {
+    // i found no better way to set the rights
+    // double entries should not be possible anymore...
 
-      foreach ($LangContainer as $idlang=>$TypeContainer) {
-
-         foreach ($TypeContainer as $type=>$ActionContainer) {
-
-            foreach ($ActionContainer as $idaction=>$idarea) {
-
-               $sql="INSERT INTO ".$cfg["tab"]["rights"]."
-                    (idright, user_id,idarea,idaction,idcat,idclient,idlang,`type`)
-                    VALUES ('".Contenido_Security::toInteger($db2->nextid($cfg["tab"]["rights"]))."', '".Contenido_Security::toInteger($userid)."', '".Contenido_Security::toInteger($idarea)."',
-                    '".Contenido_Security::toInteger($idaction)."', '".Contenido_Security::toInteger($iditem)."', '".Contenido_Security::toInteger($client)."',
-                    '".Contenido_Security::toInteger($idlang)."', '".Contenido_Security::toInteger($type)."')";
-               $db2->query($sql);
+    foreach ($RightsContainer as $userid=>$LangContainer) {
+        foreach ($LangContainer as $idlang=>$TypeContainer) {
+            foreach ($TypeContainer as $type=>$ActionContainer) {
+                foreach ($ActionContainer as $idaction=>$idarea) {
+                    $sql = "INSERT INTO ".$cfg["tab"]["rights"]."
+                           (idright, user_id,idarea,idaction,idcat,idclient,idlang,`type`)
+                           VALUES ('".Contenido_Security::toInteger($db2->nextid($cfg["tab"]["rights"]))."', '".Contenido_Security::toInteger($userid)."', '".Contenido_Security::toInteger($idarea)."',
+                           '".Contenido_Security::toInteger($idaction)."', '".Contenido_Security::toInteger($iditem)."', '".Contenido_Security::toInteger($client)."',
+                           '".Contenido_Security::toInteger($idlang)."', '".Contenido_Security::toInteger($type)."')";
+                    $db2->query($sql);
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   // permissions reloaded...
-   $perm->load_permissions(true);
-
+    // permissions reloaded...
+    $perm->load_permissions(true);
 }
 
 
@@ -247,24 +236,104 @@ function createRightsForElement ($area, $iditem, $idlang=false) {
  * @author Martin Horwath <horwath@dayside.net>
  * @copyright dayside.net <dayside.net>
  */
-function deleteRightsForElement ($area, $iditem, $idlang=false) {
+function deleteRightsForElement($area, $iditem, $idlang = false)
+{
+    global $cfg, $perm, $area_tree, $client;
 
-   global $cfg, $perm, $area_tree, $client;
+    $db = new DB_Contenido();
 
-   $db = new DB_Contenido;
-   
-   // get all idarea values for $area
-   $AreaContainer = $area_tree[$perm->showareas(Contenido_Security::escapeDB($area, $db))];
+    // get all idarea values for $area
+    $AreaContainer = $area_tree[$perm->showareas(Contenido_Security::escapeDB($area, $db))];
 
-   $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE idcat='".Contenido_Security::toInteger($iditem)."' AND idclient='".Contenido_Security::toInteger($client)."' AND idarea IN (".implode (',', $AreaContainer).")";
-   if ($idlang) {
-      $sql.= " AND idlang='".Contenido_Security::toInteger($idlang)."'";
-   }
-   $db->query($sql);
+    $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE idcat='".Contenido_Security::toInteger($iditem)."' AND idclient='".Contenido_Security::toInteger($client)."' AND idarea IN (".implode (',', $AreaContainer).")";
+    if ($idlang) {
+        $sql.= " AND idlang='".Contenido_Security::toInteger($idlang)."'";
+    }
+    $db->query($sql);
 
-   // permissions reloaded...
-   $perm->load_permissions(true);
-
+    // permissions reloaded...
+    $perm->load_permissions(true);
 }
+
+
+/**
+ * Builds user/group permissions (sysadmin, admin, client and language) by
+ * processing request variables ($msysadmin, $madmin, $mclient, $mlang) and
+ * returns the build permissions array.
+ *
+ * @todo  Do we really need to add other perms, if the user/group gets the
+ *        'sysadmin' permission?
+ * @param  bool  $bAddUserToClient  Flag to add current user to current client,
+ *                                  if no client is specified.
+ * @return array
+ */
+function buildUserOrGroupPermsFromRequest($bAddUserToClient = false)
+{
+    global $cfg, $msysadmin, $madmin, $mclient, $mlang, $auth, $client;
+
+    $aPerms = array();
+
+    // check and prevalidation
+
+    $bSysadmin = (isset($msysadmin) && $msysadmin);
+
+    $aAdmin = (isset($madmin) && is_array($madmin)) ? $madmin : array();
+    foreach ($aAdmin as $p => $value) {
+        if (!is_numeric($value)) {
+            unset($aAdmin[$p]);
+        }
+    }
+
+    $aClient = (isset($mclient) && is_array($mclient)) ? $mclient : array();
+    foreach ($aClient as $p => $value) {
+        if (!is_numeric($value)) {
+            unset($aClient[$p]);
+        }
+    }
+
+    $aLang = (isset($mlang) && is_array($mlang)) ? $mlang : array();
+    foreach ($aLang as $p => $value) {
+        if (!is_numeric($value)) {
+            unset($aLang[$p]);
+        }
+    }
+
+    // build permissions array
+
+    if ($bSysadmin) {
+        $aPerms[] = 'sysadmin';
+    }
+
+    foreach ($aAdmin as $value) {
+        $aPerms[] = sprintf('admin[%s]', $value);
+    }
+
+    foreach ($aClient as $value) {
+        $aPerms[] = sprintf('client[%s]', $value);
+    }
+
+    if (count($aClient) == 0 && $bAddUserToClient) {
+        // Add user to the current client, if the current user isn't sysadmin and
+        // no client has been specified. This avoids new accounts which are not
+        // accessible by the current user (client admin) anymore.
+        $aUserPerm = explode(',', $auth->auth['perm']);
+        if (!in_array('sysadmin', $aUserPerm)) {
+            $aPerms[] = sprintf('client[%s]', $client);
+        }
+    }
+
+    if (count($aLang) > 0 && count($aClient) > 0) {
+        // adding language perms makes sense if we have also at least one selected client
+        $db = new DB_Contenido();
+        foreach ($aLang as $value) {
+            if (checkLangInClients($aClient, $value, $cfg, $db)) {
+                $aPerms[] = sprintf('lang[%s]', $value);
+            }
+        }
+    }
+
+    return $aPerms;
+}
+
 
 ?>
