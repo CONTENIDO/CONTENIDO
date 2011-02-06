@@ -403,8 +403,7 @@ class User
     {
         global $cfg, $perm;
 
-        if (!is_object($perm))
-        {
+        if (!is_object($perm)) {
             $perm = new Contenido_Perm();
         }
 
@@ -504,23 +503,25 @@ class User
     {
         global $cfg;
 
+        $aProps = array();
+
         $sql = "SELECT iduserprop, type, name, value FROM " .$cfg['tab']['user_prop']."
                 WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."'";
         $this->db->query($sql);
 
         if ($this->db->num_rows() == 0) {
-            return false;
+            return $aProps;
         }
 
         while ($this->db->next_record()) {
-            $props[$this->db->f('iduserprop')] = array(
+            $aProps[$this->db->f('iduserprop')] = array(
                 'name'  => $this->db->f('name'),
                 'type'  => $this->db->f('type'),
                 'value' => $this->db->f('value'),
             );
         }
 
-        return $props;
+        return $aProps;
     }
 
 
