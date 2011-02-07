@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2008-08-12
  *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
+ *   modified 2011-02-07, Dominik Ziegler, fixed max number of revisions check and prevent displaying error and creating folders if versioning is not activated
  *
  * }}
  * 
@@ -182,30 +183,33 @@ class Version {
 		
 		$this->aVarForm = array();	
 		
-		Version::$iDisplayNotification++;
+		self::$iDisplayNotification++;
 
- //		Look if versioning is allowed, default is false	
+		// Look if versioning is allowed, default is false	
         if (function_exists('getEffectiveSetting')) {
             $this->bVersionCreatActive = getEffectiveSetting('versioning', 'activated', 'true'); 
             $this->sAlternativePath = getEffectiveSetting('versioning', 'path');
-            if(!is_dir($this->sAlternativePath) ){
-                //		 Alternative Path is not true or is not exist, we use the frontendpath
-    			if($this->sAlternativePath !="" AND Version::$iDisplayNotification  < 2){
+        } else {
+            $this->bVersionCreatActive = true;
+            $this->sAlternativePath = "";
+        }
+
+		if($this->bVersionCreatActive == "true"){
+			if(!is_dir($this->sAlternativePath) ){
+				// Alternative Path is not true or is not exist, we use the frontendpath
+    			if($this->sAlternativePath !="" AND self::$iDisplayNotification  < 2){
     				$oNotification = new Contenido_Notification();
 					$sNotification = i18n('Alternative path %s does not exist. Version was saved in frondendpath.');    				
     				$oNotification->displayNotification("warning",  sprintf($sNotification, $this->sAlternativePath));
     				
     			}
+				
     			$this->sAlternativePath = "";
             }
-        } else {
-            $this->bVersionCreatActive = true;
-            $this->sAlternativePath = "";
-        }
-		
-//		Look if versioning is set alternative path to save
-
-        $this->checkPaths();
+			
+			// Look if versioning is set alternative path to save
+			$this->checkPaths();
+		}
 	}
 	
 	/**
@@ -223,7 +227,7 @@ class Version {
         
  		$bDelete = true;
         
-		while(count($this->aRevisionFiles) > $sVar AND $bDelete AND (int) $sVar > 0) {
+		while(count($this->aRevisionFiles) >= $sVar AND $bDelete AND (int) $sVar > 0) {
             $iIndex = end(array_keys($this->aRevisionFiles));
             $bDelete = $this->deleteFile($this->getFirstRevision());
             unset($this->aRevisionFiles[$iIndex]);	 		
@@ -314,7 +318,7 @@ class Version {
 				
 				// Create xml version file
 				$sXmlFile = $this->createNewXml();
-			
+				
 				if(!is_dir($this->getFilePath())){
 					
 					$bCreate = mkdir($this->getFilePath(), 0777);
@@ -322,8 +326,7 @@ class Version {
 				}
 				
 				$sHandle = fopen($this->getFilePath().$sRevisionName.'.xml', "w");
-				#fputs($sHandle, $sXmlFile);
-								fputs($sHandle, $sXmlFile);
+				fputs($sHandle, $sXmlFile);
 				$bCreate = fclose($sHandle);
 				
 				if($bCreate == false){
