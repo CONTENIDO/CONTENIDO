@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-01-21
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2011-02-07, Dominik Ziegler, removed integration of not supported java module editor
  *
  *   $Id$:
  * }}
@@ -36,7 +37,6 @@ cInclude("includes","functions.upl.php");
 cInclude("external", "edit_area/class.edit_area.php");
 
 $noti				= "";
-$bOptionUseJava		= getEffectiveSetting("modules", "java-edit", false);
 $sOptionDebugRows	= getEffectiveSetting("modules", "show-debug-rows", "never");
 
 if (!isset($idmod)) $idmod = 0;
@@ -130,7 +130,7 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
     	$sInputData		= htmlspecialchars($module->get("input"));
     	$sOutputData	= htmlspecialchars($module->get("output"));
     	
-    	if ($sOptionDebugRows !== "never" && $bOptionUseJava == false)
+    	if ($sOptionDebugRows !== "never")
     	{
     		$iInputNewLines		= substr_count($sInputData,  "\n") + 2; // +2: Just sanity, to have at least two more lines than the code
     		$iOutputNewLines	= substr_count($sOutputData, "\n") + 2; // +2: Just sanity, to have at least two more lines than the code
@@ -371,51 +371,33 @@ function insertTab(event, obj) {
 		$form->add(i18n("Name"), $name->render());
 		$form->add(i18n("Type"), $typeselect->render().$custom->render());	
 		$form->add(i18n("Description"), $descr->render());
-        	
-		if ($bOptionUseJava == false)
+        		
+		if ($sOptionDebugRows == "always" || ($sOptionDebugRows == "onerror" && (!$inputok || !$outputok)))
 		{
-			if ($sOptionDebugRows == "always" || ($sOptionDebugRows == "onerror" && (!$inputok || !$outputok)))
-			{
-				$sSyncScript = '<script type="text/javascript"><!--
+			$sSyncScript = '<script type="text/javascript"><!--
 function scrolltheother() {
-	var oICArea = document.mod_edit.input;
-    var oOCArea = document.mod_edit.output;
-	var oIRArea = document.mod_edit.txtInputRows;
-	var oORArea = document.mod_edit.txtOutputRows;
+var oICArea = document.mod_edit.input;
+var oOCArea = document.mod_edit.output;
+var oIRArea = document.mod_edit.txtInputRows;
+var oORArea = document.mod_edit.txtOutputRows;
 
-	oIRArea.scrollTop = oICArea.scrollTop;
-	oORArea.scrollTop = oOCArea.scrollTop;
+oIRArea.scrollTop = oICArea.scrollTop;
+oORArea.scrollTop = oOCArea.scrollTop;
 
-	setTimeout("scrolltheother()", 10);
+setTimeout("scrolltheother()", 10);
 }
 window.onload = scrolltheother;
-				//--></script>
-                ';
-				$page->addScript("syncScript", $sSyncScript);
-				
-				$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oInputRows->render().'</td></tr></table>', $input->render());
-                $form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oOutputRows->render().'</td></tr></table>', $output->render());
-			} else {
-				$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td></tr></table>', $input->render());
-                $form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td></tr></table>', $output->render());
-			}
+			//--></script>
+			';
+			$page->addScript("syncScript", $sSyncScript);
+			
+			$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oInputRows->render().'</td></tr></table>', $input->render());
+			$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td><td style="padding-left: 5px; vertical-align: top;">'.$oOutputRows->render().'</td></tr></table>', $output->render());
 		} else {
-			$inputApplet  = '<applet id="einput" codebase="'.$cfg["path"]["contenido_fullhtml"].'applets/" code="Test.class" width="100%" height="400"></applet>';
-			$inputField = '<input type="hidden" name="input" id="input" value="">';
-        		
-			$outputApplet = '<applet id="eoutput" codebase="'.$cfg["path"]["contenido_fullhtml"].'applets/" code="Test.class" width="100%" height="400"></applet>';
-			$outputField = '<input type="hidden" name="output" id="output" value="">';
-        		
-			$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td>'.i18n("Input").'</td><td align="right">'.$inled.'</td></tr></table>', $inputApplet.$inputField);
-			$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td>'.i18n("Output").'</td><td align="right">'.$outled.'</td></tr></table>',  $outputApplet.$outputField);
-        		
-			$applet = '<script language="JavaScript">document.applets[\'einput\'].setText(\''.str_replace(array("\n","\r"), array('\n', '\r'), addslashes($module->get("input"))).'\');</script>';
-			$applet .= '<script language="JavaScript">document.applets[\'eoutput\'].setText(\''.str_replace(array("\n","\r"), array('\n', '\r'), addslashes($module->get("output"))).'\');</script>';
-        		
-			$form->setSubmitJS("window.document.mod_edit.input.value = window.document.applets['einput'].getText();".
-							   "window.document.mod_edit.output.value = window.document.applets['eoutput'].getText();");	
+			$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Input").'</td><td style="vertical-align: top;">'.$inled.'</td></tr></table>', $input->render());
+			$form->add('<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="vertical-align: top;">'.i18n("Output").'</td><td style="vertical-align: top;">'.$outled.'</td></tr></table>', $output->render());
 		}
-        	
+		       	
 		$noti = "";
         	
 		if ($module->isOldModule())
@@ -470,7 +452,6 @@ window.onload = scrolltheother;
                         </script>';
             
 			$page->setContent($noti.$message.$form->render().$applet."<br>".$form2->render().$sScript);
-		} else {
 		}
     		
 		$page->setSubnav("idmod=$idmod", "mod");
