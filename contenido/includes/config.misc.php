@@ -51,7 +51,7 @@ global $cfg;
 
 /* Current Contenido Version. You shouldn't change this
    value unless you know what you are doing. */
-$cfg['version'] = '4.8.14';
+$cfg['version'] = '4.8.15-RC1';
 
 /* CVS Date tag */
 $cfg['datetag'] = '$Date$';
