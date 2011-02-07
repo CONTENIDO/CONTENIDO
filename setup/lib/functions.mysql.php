@@ -9,7 +9,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    0.2
+ * @version    0.3
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,6 +21,7 @@
  * {@internal 
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
+ *   modified 2011-02-07, Dominik Ziegler, changed "TYPE" attribute to "ENGINE" for MySQL 5.5+ support
  *
  *   $Id$:
  * }}
@@ -172,7 +173,7 @@ function checkMySQLTableCreation ($db, $database, $table)
 		return false;
 	}
 	
-	$db->query("CREATE TABLE $table (test INT( 1 ) NOT NULL) TYPE = MYISAM ;");
+	$db->query("CREATE TABLE $table (test INT( 1 ) NOT NULL) ENGINE = MYISAM ;");
 	
 	if ($db->Errno == 0)
 	{
