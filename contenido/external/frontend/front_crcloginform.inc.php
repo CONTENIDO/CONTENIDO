@@ -28,11 +28,13 @@
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages and redesign of HTML markup
  *   modified 2009-01-03, Murat Purc, synchronized with cms/front_crcloginform.inc.php
+ *   modified 2011-02-07, Dominik Ziegler, fixed check of but_ok.gif and changed input type button to submit
  *
  *   $Id$:
  * }}
  * 
  */
+
 if(!defined('CON_FRAMEWORK')) {
   die('Illegal call');
 }
@@ -99,10 +101,10 @@ $aUrl = $oUrl->parse($sFormAction);
 $sFormAction = $oUrl->build($aUrl['params']);
 
 // set login input image, use button as fallback
-if (!is_file($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) {
+if ( file_exists($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif') ) {
     $sLoginButton = '<input type="image" title="Login" alt="Login" src="' . $sClientHtmlPath . 'images/but_ok.gif" />' . "\n";
 } else {
-    $sLoginButton = '<input type="button" title="Login" value="Login" style="font-size:90%;font-weight:bold;background-color:' . $cfg['color']['table_header'] . ';border:1px solid ' . $cfg['color']['table_border'] . ';" />' . "\n";
+    $sLoginButton = '<input type="submit" title="Login" value="Login" style="font-size:90%;font-weight:bold;background-color:' . $cfg['color']['table_header'] . ';border:1px solid ' . $cfg['color']['table_border'] . ';" />' . "\n";
 }
 
 ?>
