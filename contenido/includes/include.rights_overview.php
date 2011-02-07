@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,7 @@
  *   modified 2008-10-??, Bilal Arslan - direct DB user modifications are now encapsulated in new ConUser class
  *   modified 2008-11-17, Holger Librenz - method calls for new user object modified, comments updated
  *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
+ *   modified 2011-02-07, Dominik Ziegler, added translation for "remove property"
  *
  *   $Id$:
  * }}
@@ -438,7 +439,7 @@ if ( !isset($userid) )
     		if ($type != "system")
     		{
         		$name = $entry["name"];
-        		$deleteButton = '<a href="'.$sess->url("main.php?area=$area&frame=4&userid=$userid&del_userprop_type=$type&del_userprop_name=$name").'"><img src="images/delete.gif" border="0" alt="Eigenschaft löschen" title="Eigenschaft löschen"></a>';
+        		$deleteButton = '<a href="'.$sess->url("main.php?area=$area&frame=4&userid=$userid&del_userprop_type=$type&del_userprop_name=$name").'"><img src="images/delete.gif" border="0" alt="' . i18n("Remove property") . '" title="' . i18n("Remove property") . '"></a>';
         		$value = $tempUser->getUserProperty($type,$name);
         		$propLines .= "<tr class=\"text_medium\"><td>$type</td><td>$name</td><td>$value</td><td>$deleteButton</tr>";
     		}

@@ -3950,3 +3950,6 @@ msgstr "Wird benutzt in"
 
 msgid "No clients available!"
 msgstr "Keine Mandanten verf&uuml;gbar!"
+
+msgid "Remove property"
+msgstr "Eigenschaft löschen"
