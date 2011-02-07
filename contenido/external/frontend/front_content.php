@@ -60,6 +60,7 @@
  *   modified 2009-12-31, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *   modified 2010-05-20, Murat Purc, moved security checks into startup process, see [#CON-307]
  *   modified 2010-09-23, Murat Purc, fixed $encoding handling, see [#CON-305]
+ *   modified 2011-02-07, Dominik Ziegler, added exit after redirections to force their execution
  *
  *   $Id$:
  * }}
@@ -343,6 +344,7 @@ if (!$idcatart)
                     else
                     {
                         header($errsite);
+						exit;
                     }
                 }
             }
@@ -397,6 +399,7 @@ if (!$idcatart)
                     else
                     {
                         header($errsite);
+						exit;
                     }
                 }
             }
@@ -430,6 +433,7 @@ $idartlang = getArtLang($idart, $lang);
 if ($idartlang === false)
 {
     header($errsite);
+	exit;
 }
 
 /*
@@ -657,6 +661,7 @@ else
                 else
                 {
                     header($errsite);
+					exit;
                 }
             }
         }
@@ -773,6 +778,7 @@ else
             if (!$allow)
             {
                 header($errsite);
+				exit;
             }
         }
     }
@@ -945,6 +951,7 @@ else
             else
             {
                 header($errsite);
+				exit;
             }
         }
     }
