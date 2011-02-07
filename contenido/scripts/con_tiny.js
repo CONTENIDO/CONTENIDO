@@ -81,16 +81,12 @@ function updateImageFilebrowser ()
  * @return string - converted url
  */
 function CustomURLConverter(url, node, on_save) {
-		if (node != null && node.nodeName  != 'IMG' && node != 'img' && url.indexOf(frontend_path) == -1) {
-	        var oEd = new tinymce.Editor('contenido', '');
-	        url = oEd.convertURL(url, node, on_save);
-		} else {
-			var src = url;
-			
-			if (!src.match(/^https?:\/\//g)) {
-				url = frontend_path+src;
-			}
-		}
+        var src = url;
+        
+        if (!src.match(/^https?:\/\//g)) {
+            url = frontend_path+src;
+        }
+		
         return url;
 }
 
