@@ -23,7 +23,7 @@
  *        merge them...
  *
  * {@internal
- *   created 2008-06-25
+ *   created  2008-06-25
  *   modified 2008-07-02, Frederic Schneider, added boolean functions and checkRequests()
  *   modified 2008-07-04, Frederic Schneider, added test to valid contenido-session-var
  *   modified 2008-07-23, Frederic Schneider, fixed stripslashes_deep functionality
@@ -33,6 +33,7 @@
  *                        by Contenido startup process. Changed script terminations by die() to Exceptions.
  *   modified 2010-09-30, Dominik Ziegler, added optional logging
  *   modified 2010-11-22, Dominik Ziegler, fixed behaviour of isInteger [CON-365]
+ *   modified 2011-02-08, Murat Purc, removed not required logic, cleanup and formatting
  *
  *   $Id$:
  * }}
@@ -47,44 +48,47 @@ if (!defined('CON_FRAMEWORK')) {
 /**
  * Contenido Security exception class
  */
-class Contenido_Security_Exception extends Exception {
-	/**
-	 * Logging flag. Set to true for logging invalid calls.
-	 * @access	protected
-	 * @static
-	 * @var		boolean
-	 */
-	protected static $_logging = false;
-	
-	/**
-	 * @see Exception::__construct()
-	 */
-	public function __construct($sMessage, $sParamName) {
-		parent::__construct($sMessage);
-		
-		// check if logging is enabled
-		if ( self::$_logging == true ) {
-			$sLogFile = realpath( dirname(__FILE__) . '/../logs/') . '/security.txt';
+class Contenido_Security_Exception extends Exception
+{
+    /**
+     * Logging flag. Set to true for logging invalid calls.
+     * @access   protected
+     * @static
+     * @var      boolean
+     */
+    protected static $_logging = false;
 
-			$sFileContent = '---------' . PHP_EOL;
-			$sFileContent .= "Invalid call caused by parameter '" . $sParamName . "' at " . date("c") . PHP_EOL;
-			$sFileContent .= "Original value was '" . $_REQUEST[$sParamName] . "'" . PHP_EOL;
-			$sFileContent .= "URL: " . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] . " (Protocol: " . $_SERVER['SERVER_PROTOCOL'] . ")" . PHP_EOL;
-			
-			file_put_contents($sLogFile, $sFileContent, FILE_APPEND);
-		}
-		
-		// strictly die here
-		die( $sMessage );
-		exit;
-	}
+    /**
+     * @see Exception::__construct()
+     */
+    public function __construct($sMessage, $sParamName)
+    {
+        parent::__construct($sMessage);
+
+        // check if logging is enabled
+        if ( self::$_logging == true ) {
+            $sLogFile = realpath( dirname(__FILE__) . '/../logs/') . '/security.txt';
+
+            $sFileContent = '---------' . PHP_EOL;
+            $sFileContent .= "Invalid call caused by parameter '" . $sParamName . "' at " . date("c") . PHP_EOL;
+            $sFileContent .= "Original value was '" . $_REQUEST[$sParamName] . "'" . PHP_EOL;
+            $sFileContent .= "URL: " . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] . " (Protocol: " . $_SERVER['SERVER_PROTOCOL'] . ")" . PHP_EOL;
+
+            file_put_contents($sLogFile, $sFileContent, FILE_APPEND);
+        }
+
+        // strictly die here
+        die( $sMessage );
+        exit;
+    }
 }
 
 
 /**
  * Contenido Security class
  */
-class Contenido_Security {
+class Contenido_Security
+{
     /**
      * Accepted backend languages
      * @var  array
@@ -139,124 +143,113 @@ class Contenido_Security {
         return self::$_forbiddenParameters;
     }
 
-
     /**
      * Escapes string using contenido urlencoding method and escapes string for inserting
-	 * @static
-	 *
-     * @param	string			$sString	input string
-	 * @param	DB_Contenido	$oDb		contenido database object
-	 *
-     * @return 	string	filtered string
+     * @static
+     *
+     * @param   string        $sString  Input string
+     * @param   DB_Contenido  $oDb      Contenido database object
+     * @return  string   Filtered string
      */
-    public static function filter($sString, $oDb) {
-		$sString = self::toString( $sString );
-	  
-		if ( defined('CONTENIDO_STRIPSLASHES') ) {
-			if ( function_exists("stripslashes_deep") ) {
-				$sString = stripslashes_deep($sString);
-			} else {
-				$sString = stripslashes($sString);
-			}
-		}
-	  
-		return self::escapeDB( htmlspecialchars( urlencode($sString)), $oDb, false);
+    public static function filter($sString, $oDb)
+    {
+        $sString = self::toString($sString);
+        if (defined('CONTENIDO_STRIPSLASHES')) {
+            $sString = stripslashes($sString);
+        }
+        return self::escapeDB(htmlspecialchars(urlencode($sString)), $oDb, false);
     }
 
     /**
      * Reverts effect of method filter()
      * @static
-	 *
-     * @param 	string 	$sString	input string
-	 *
-     * @return 	string	unfiltered string
+     *
+     * @param   string  $sString  Input string
+     * @return  string  Unfiltered string
      */
-    public static function unFilter($sString) {
-		$sString = self::toString( $sString );
-		return urldecode( htmldecode( self::unEscapeDB($sString)));
+    public static function unFilter($sString)
+    {
+        $sString = self::toString($sString);
+        return urldecode(htmldecode(self::unEscapeDB($sString)));
     }
 
     /**
      * Check: Has the variable an boolean value?
      * @static
-	 *
-     * @param 	string 	$sVar	input string
-	 *
-     * @return 	boolean	check state
+     *
+     * @param   string   $sVar  Input string
+     * @return  boolean  Check state
      */
-    public static function isBoolean($sVar) {
-        $sTempVar 	= $sVar;
-        $sTemp2Var 	= self::toBoolean( $sVar );
-		
-		return ( $sTempVar === $sTemp2Var );
+    public static function isBoolean($sVar)
+    {
+        $sTempVar  = $sVar;
+        $sTemp2Var = self::toBoolean($sVar);
+        return ($sTempVar === $sTemp2Var);
     }
-    
+
     /**
      * Check: Is the variable an integer?
      * @static
-	 *
-     * @param 	string 	$sVar	input string
-	 *
-     * @return 	boolean	check state
+     *
+     * @param   string   $sVar  Input string
+     * @return  boolean  Check state
      */
-    public static function isInteger($sVar) { 
-	
-        return ( preg_match('/^[0-9]+$/', $sVar) );
+    public static function isInteger($sVar)
+    {
+        return (preg_match('/^[0-9]+$/', $sVar));
     }
 
     /**
      * Check: Is the variable an string?
      * @static
-	 *
-     * @param 	string 	$sVar	input string
-	 *
-     * @return 	boolean	check state
+     *
+     * @param   string   $sVar  Input string
+     * @return  boolean  Check state
      */
-    public static function isString($sVar) {
-		return ( is_string($sVar) );
+    public static function isString($sVar)
+    {
+        return (is_string($sVar));
     }
 
     /**
      * Convert an string to an boolean
      * @static
-	 *
-     * @param 	string 	$sString	input string
-	 *
-     * @return 	boolean	type casted input string
+     *
+     * @param   string   $sString   Input string
+     * @return  boolean  Type casted input string
      */
-    public static function toBoolean($sString) {    
-        return (bool) $sString;    
+    public static function toBoolean($sString)
+    {
+        return (bool) $sString;
     }
 
     /**
      * Convert an string to an integer
      * @static
-	 *
-     * @param 	string 	$sString	input string
-	 *
-     * @return 	integer	type casted input string
+     *
+     * @param   string   $sString   Input string
+     * @return  integer  Type casted input string
      */
-    public static function toInteger($sString) {    
-        return (int) $sString;    
+    public static function toInteger($sString)
+    {
+        return (int) $sString;
     }
 
     /**
      * Convert an string
      * @static
-	 *
-     * @param 	string 	$sString			input string
-     * @param 	boolean	$bHTML 				if true check with strip_tags and stripslashes
-     * @param 	string 	$sAllowableTags 	allowable tags if $bHTML is true
-	 *
-     * @return 	string	converted string
+     *
+     * @param   string   $sString         Input string
+     * @param   boolean  $bHTML           If true check with strip_tags and stripslashes
+     * @param   string   $sAllowableTags  Allowable tags if $bHTML is true
+     * @return  string  Converted string
      */
-    public static function toString($sString, $bHTML = false, $sAllowableTags = '') {
+    public static function toString($sString, $bHTML = false, $sAllowableTags = '')
+    {
         $sString = (string) $sString;
-
-        if ( $bHTML == true ) {
+        if ($bHTML == true) {
             $sString = strip_tags(stripslashes($sString), $sAllowableTags);
         }
-
         return $sString;
     }
 
@@ -267,7 +260,8 @@ class Contenido_Security {
      * @return  bool|void  True on success otherwhise nothing.
      * @throws  Contenido_Security_Exception if one of the checks fails
      */
-    public static function checkRequests() {
+    public static function checkRequests()
+    {
         // Check backend language
         self::checkRequestBelang();
 
@@ -283,14 +277,14 @@ class Contenido_Security {
         return true;
     }
 
-
     /**
      * Checks backend language parameter in request.
      *
      * @return  bool|void  True on success otherwhise nothing.
      * @throws  Contenido_Security_Exception if existing backend language parameter is not valid
      */
-    public static function checkRequestBelang() {
+    public static function checkRequestBelang()
+    {
         if (isset($_REQUEST['belang'])) {
             $_REQUEST['belang'] = strval($_REQUEST['belang']);
             if (!in_array($_REQUEST['belang'], self::$_acceptedBelangValues)) {
@@ -300,14 +294,14 @@ class Contenido_Security {
         return true;
     }
 
-
     /**
      * Checks for forbidden parameters in request.
      *
      * @return  bool|void  True on success otherwhise nothing.
      * @throws  Contenido_Security_Exception if the request contains one of forbidden parameters.
      */
-    public static function checkRequestForbiddenParameter() {
+    public static function checkRequestForbiddenParameter()
+    {
         foreach (self::$_forbiddenParameters as $param) {
             if (isset($_REQUEST[$param])) {
                 throw new Contenido_Security_Exception('Invalid call!', $param);
@@ -315,7 +309,6 @@ class Contenido_Security {
         }
         return true;
     }
-
 
     /**
      * Checks for parameters in request who must be numeric.
@@ -325,18 +318,18 @@ class Contenido_Security {
      *
      * @return  bool  Just true
      */
-    public static function checkRequestMustbeNumericParameter() {
+    public static function checkRequestMustbeNumericParameter()
+    {
         foreach (self::$_mustbeNumericParameters as $sParamName) {
-			if ( isset($_REQUEST[$sParamName]) ) {
-				$sValue = $_REQUEST[$sParamName];
-				if ( strlen($sValue) > 0 && self::isInteger($sValue) == false ) {
-					throw new Contenido_Security_Exception('Invalid call', $sParamName);
-				}
-			}
+            if ( isset($_REQUEST[$sParamName]) ) {
+                $sValue = $_REQUEST[$sParamName];
+                if ( strlen($sValue) > 0 && self::isInteger($sValue) == false ) {
+                    throw new Contenido_Security_Exception('Invalid call', $sParamName);
+                }
+            }
         }
         return true;
     }
-
 
     /**
      * Checks/Validates existing contenido session request parameter.
@@ -344,7 +337,8 @@ class Contenido_Security {
      * @return  bool|void  True on success otherwhise nothing.
      * @throws  Contenido_Security_Exception if contenido parameter in request don't matches the required format
      */
-    public static function checkRequestSession() {
+    public static function checkRequestSession()
+    {
         if (isset($_REQUEST['contenido']) && !preg_match('/^[0-9a-f]{32}$/', $_REQUEST['contenido'])) {
             if ($_REQUEST['contenido'] != '') {
                 throw new Contenido_Security_Exception('Invalid call', 'contenido');
@@ -352,7 +346,6 @@ class Contenido_Security {
         }
         return true;
     }
-
 
     /**
      * Checks also contenido-var (session) to ascii, but works as a wrapper to checkRequestSession().
@@ -363,10 +356,10 @@ class Contenido_Security {
      * @deprecated  Use checkRequestSession() instead due to better naming conventions
      * @TODO:  Should be removed, but later in few years...
      */
-    public static function checkSession() {
+    public static function checkSession()
+    {
         return self::checkRequestSession();
     }
-
 
     /**
      * Checks some global variables at frontend like $lang, $client, $changelang, $changeclient,
@@ -381,7 +374,8 @@ class Contenido_Security {
      *
      * @return  void
      */
-    public static function checkFrontendGlobals() {
+    public static function checkFrontendGlobals()
+    {
         global $tmpchangelang, $savedlang, $lang, $changelang, $load_lang, $changeclient, $client, $load_client;
 
         if (isset($tmpchangelang) && is_numeric($tmpchangelang) && $tmpchangelang > 0) {
@@ -424,28 +418,23 @@ class Contenido_Security {
         }
     }
 
-	/**
-	 * Escaped an query-string with mysql_real_escape_string
-	 * @static
-	 *
-	 * @param	string			$sString			input string
-	 * @param 	DB_Contenido 	$oDB 				contenido database object
-	 * @param 	boolean 		$bUndoAddSlashes 	flag for undo addslashes (optional, default: true)
-	 *
-	 * @return 	string	converted string
-	 */
-    public static function escapeDB($sString, $oDB, $bUndoAddSlashes = true) {
-        if ( !is_object($oDB) ) {
+    /**
+     * Escaped an query-string with mysql_real_escape_string
+     * @static
+     *
+     * @param   string        $sString          Input string
+     * @param   DB_Contenido  $oDB              Contenido database object
+     * @param   boolean       $bUndoAddSlashes  Flag for undo addslashes (optional, default: true)
+     * @return  string  Converted string
+     */
+    public static function escapeDB($sString, $oDB, $bUndoAddSlashes = true)
+    {
+        if (!is_object($oDB)) {
             return self::escapeString($sString);
         } else {
-			if ( defined('CONTENIDO_STRIPSLASHES') && $bUndoAddSlashes == true ) {
-	            if ( function_exists("stripslashes_deep") ) {
-	                $sString = stripslashes_deep($sString);
-	            } else {
-					$sString = stripslashes($sString);
-				}
-			}
-
+            if (defined('CONTENIDO_STRIPSLASHES') && $bUndoAddSlashes == true) {
+                $sString = stripslashes($sString);
+            }
             return $oDB->Escape($sString);
         }
     }
@@ -453,34 +442,31 @@ class Contenido_Security {
     /**
      * Escaped an query-string with addslashes
      * @static
-	 *
-     * @param 	string	$sString	input string
-	 *
-     * @return 	string	converted string
+     *
+     * @param   string  $sString  Input string
+     * @return  string  Converted string
      */
-    public static function escapeString($sString) {
-        if ( defined('CONTENIDO_STRIPSLASHES') ) {
-			if ( function_exists("stripslashes_deep") ) {
-				$sString = stripslashes_deep($sString);
-			} else {
-				$sString = stripslashes($sString);
-			}
-		}
-
+    public static function escapeString($sString)
+    {
+        $sString = (string) $sString;
+        if (defined('CONTENIDO_STRIPSLASHES')) {
+            $sString = stripslashes($sString);
+        }
         return addslashes($sString);
     }
 
     /**
      * Un-quote string quoted with escapeDB()
      * @static
-	 *
-     * @param 	string 	$sString	input string
-	 *
-     * @return 	string	converted string
+     *
+     * @param   string  $sString  Input string
+     * @return  string  Converted string
      */
-    public static function unescapeDB($sString) {
+    public static function unescapeDB($sString)
+    {
         return stripslashes($sString);
     }
 
 }
+
 ?>
