@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.3.4
+ * @version    1.3.5
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,7 @@
  *   modified 2010-09-29, Ortwin Pinke, fixed bug CON-349
  *   modified 2010-12-16, Dominik Ziegler, display error message on database connection failure [#CON-376]
  *   modified 2011-02-05, Murat Purc, getAllClientsAndLanguages() and some cleanup
+ *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as contenido now requires at least PHP 5
  *
  *   $Id$:
  * }}
@@ -1372,15 +1373,6 @@ function human_readable_size($number)
 	return $retval;
 }
 
-/* Define "is_a" if it doesn't exist */
-if (!function_exists('is_a'))
-{
-	function is_a($object, $className)
-	{
-		return ((strtolower($className) == get_class($object)) or (is_subclass_of($object, $className)));
-	}
-}
-
 /**
  * Trims an array
  *
@@ -1427,31 +1419,6 @@ function array_csort()
 	$msortline .= "\$marray));";
 	@ eval ($msortline);
 	return $marray;
-}
-
-if (!function_exists("str_ireplace"))
-{
-
-	function str_ireplace($find, $replace, $string)
-	{
-		if (!is_array($find))
-			$find = array ($find);
-		if (!is_array($replace))
-			$replace = array ($replace);
-		foreach ($find as $fKey => $fItem)
-		{
-			$between = explode(strtolower($fItem), strtolower($string));
-			$pos = 0;
-			foreach ($between as $bKey => $bItem)
-			{
-				$between[$bKey] = substr($string, $pos, strlen($bItem));
-				$pos += strlen($bItem) + strlen($fItem);
-			}
-			$string = implode($replace[$fKey], $between);
-		}
-		return ($string);
-	}
-
 }
 
 /**
@@ -1625,48 +1592,6 @@ function getClientName($idclient)
 	} else
 	{
 		return false;
-	}
-}
-
-/* Compatibility with PHP < 4.3.0 */
-if (!function_exists('file_get_contents'))
-{
-	function file_get_contents($filename, $use_include_path = 0)
-	{
-		$data = '';
-		$file = @ fopen($filename, "rb", $use_include_path);
-		if ($file)
-		{
-			while (!feof($file))
-				$data .= fread($file, 1024);
-			fclose($file);
-		} else
-		{
-			/* There was a problem opening the file. */
-			return FALSE;
-		}
-		return $data;
-	}
-}
-
-if (!function_exists("file_put_contents"))
-{
-	function file_put_contents($filename, $content)
-	{
-		if (!$file = fopen($filename, "wb+"))
-		{
-			return false;
-		}
-		if ($file)
-		{
-			if (!fwrite($file, $content))
-			{
-				return false;
-			}
-
-			fclose($file);
-		}
-		return true;
 	}
 }
 
@@ -1965,44 +1890,6 @@ function sendPostRequest($host, $path, $data, $referer = "", $port = 80)
 	return $res;
 }
 
-/**
- * mime_content_type: Define if it doesn't exist
- *
- * @param $file	File to check
- * @return string mime-type	
- */
-if (!function_exists("mime_content_type"))
-{
-	function mime_content_type($file)
-	{
-		return exec("file -bi ".escapeshellcmd($file));
-	}
-}
-
-if (!function_exists('set_include_path'))
-{
-	function set_include_path($path)
-	{
-		ini_set('include_path', $path);
-	}
-}
-
-if (!function_exists('get_include_path'))
-{
-	function get_include_path()
-	{
-		return (ini_get('include_path'));
-	}
-}
-
-if (!function_exists('restore_include_path'))
-{
-	function restore_include_path()
-	{
-		return (ini_restore('include_path'));
-	}
-}
-
 function is_dbfs($file)
 {
 	if (substr($file, 0, 5) == "dbfs:")
@@ -2103,35 +1990,6 @@ function array_search_recursive($search, $array, $partial = false, $strict = fal
 	}
 
 	return false;
-}
-
-if (!function_exists('stripos'))
-{
-	function stripos($haystack, $needle, $offset = 0)
-	{
-		return (strpos(strtolower($haystack), strtolower($needle), $offset));
-	}
-}
-
-if (!function_exists('array_combine'))
-{
-
-	function & array_combine($keys, $values)
-	{
-		if (count($keys) != count($values))
-			return false;
-
-		$keys = array_values($keys);
-		$values = array_values($values);
-
-		$newarray = array ();
-
-		foreach ($keys as $index => $key)
-			$newarray[$key] = $values[$index];
-
-		return $newarray;
-	}
-
 }
 
 /**

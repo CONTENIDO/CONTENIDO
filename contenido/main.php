@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
  *   modified 2008-07-02, Frederic Schneider, add security fix and include security_class
  *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as contenido now requires at least PHP 5
  *
  *   $Id$:
  * }}
@@ -195,10 +196,7 @@ if ($cfgClient["set"] != "set")
 # granted.
 if ($cfg["debug"]["rendering"] == true)
 {
-	if (function_exists("memory_get_usage"))
-	{
-		$oldmemusage = memory_get_usage();
-	}
+	$oldmemusage = memory_get_usage();
 }
 # Select frameset
 $backend->setFrame($frame);
@@ -276,11 +274,8 @@ if ($cfg["debug"]["rendering"] == true)
 	echo "Building this page (excluding contenido includes) took: " . ($cfg["debug"]["backend_exectime"]["end"] - $cfg["debug"]["backend_exectime"]["start"])." seconds<br>";
 	echo "Building the complete page took: " . ($cfg["debug"]["backend_exectime"]["end"] - $cfg["debug"]["backend_exectime"]["fullstart"])." seconds<br>";
 
-	if (function_exists("memory_get_usage"))
-	{
-		echo "Include memory usage: ".human_readable_size(memory_get_usage()-$oldmemusage)."<br>";
-		echo "Complete memory usage: ".human_readable_size(memory_get_usage())."<br>";
-	}
+	echo "Include memory usage: ".human_readable_size(memory_get_usage()-$oldmemusage)."<br>";
+	echo "Complete memory usage: ".human_readable_size(memory_get_usage())."<br>";
 }
 
 /**

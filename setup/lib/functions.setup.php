@@ -10,7 +10,7 @@
  * 
  *
  * @package    Contenido Backend <Area>
- * @version    0.2
+ * @version    0.3
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
+ *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as contenido now requires at least PHP 5
  *
  *   $Id$:
  * }}
@@ -29,23 +30,6 @@
  */
  if(!defined('CON_FRAMEWORK')) {
                 die('Illegal call');
-}
-
-
-
-if (!function_exists('file_get_contents')) {
-  function file_get_contents($filename, $use_include_path = 0) {
-   $data = '';
-   $file = @fopen($filename, "rb", $use_include_path);
-   if ($file) {
-     while (!feof($file)) $data .= fread($file, 1024);
-     fclose($file);
-   } else {
-     /* There was a problem opening the file. */
-     return FALSE;
-   }
-   return $data;
-  }
 }
 
 /**
