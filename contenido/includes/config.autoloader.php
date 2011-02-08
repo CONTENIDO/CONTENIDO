@@ -31,7 +31,7 @@
  * @since      file available since Contenido release >= 4.8.15
  *
  * {@internal
- *     created  2011-01-13
+ *     created  2011-02-08
  * }}
  */
 
@@ -149,6 +149,7 @@ return array(
     'RequestPassword' => 'contenido/classes/class.request.password.php',
     'Request' => 'contenido/classes/class.request.php',
     'ValidationError' => 'contenido/classes/class.request.php',
+    'SearchBaseAbstract' => 'contenido/classes/class.search.php',
     'Index' => 'contenido/classes/class.search.php',
     'Search' => 'contenido/classes/class.search.php',
     'SearchResult' => 'contenido/classes/class.search.php',
