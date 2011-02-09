@@ -6,7 +6,8 @@
 }
 
 .cms_teaser {
-	padding: 3px;
+	font-size: 12px;
+    padding: 3px;
 	position:absolute; 
 	width:322px; 
 	height:320px; 

@@ -36,6 +36,7 @@
  * @param integer iId
  */
 function addTeaserEvents(sFrameId, sImageId, sPath, sSession, iIdArtLang, iId) {
+    initializeTeaser(sFrameId);
 	loadExternalScripts(sFrameId, sPath);
 	addTabbingEvents(sFrameId);
 	addFrameShowEvent(sFrameId, sImageId);
@@ -44,6 +45,18 @@ function addTeaserEvents(sFrameId, sImageId, sPath, sSession, iIdArtLang, iId) {
 	addAjaxGetArticleListEvent(sFrameId, sPath, sSession);
 	addManualTeaserEvent(sFrameId);
 	addClickEvent(sFrameId);
+}
+
+/**
+ * Appends the passed node to the end of body tag. This is necessary to have more 
+ * control during positioninig.
+ *
+ * @param string sFrameId
+ */
+function initializeTeaser(sFrameId) {
+    $(document).ready(function(){
+        $(sFrameId).appendTo($('body'));
+    });
 }
 
 /**
