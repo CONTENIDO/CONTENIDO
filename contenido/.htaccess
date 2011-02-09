@@ -13,9 +13,18 @@
 ################################################################################
 
 
+# Some rules to configure ETags
+FileETag MTime Size
+<IfModule mod_expires.c>
+  <FilesMatch "\.(js|css|jpg|gif|png)$">
+       ExpiresActive on
+       ExpiresDefault "access plus 1 year"
+   </FilesMatch>
+</IfModule>
+
 # Some rules to compress files
 <IfModule mod_deflate.c>
-    <FilesMatch "\\.(js|css|html|htm|php|xml)$">
+    <FilesMatch "\.(js|css|html|htm|php|xml)$">
     SetOutputFilter DEFLATE
     </FilesMatch>
 </IfModule>
