@@ -16,6 +16,6 @@
 # Some rules to compress files
 <IfModule mod_deflate.c>
     <FilesMatch "\\.(js|css|html|htm|php|xml)$">
-#    SetOutputFilter DEFLATE
+    SetOutputFilter DEFLATE
     </FilesMatch>
 </IfModule>
