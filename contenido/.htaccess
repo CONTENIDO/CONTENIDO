@@ -1,0 +1,21 @@
+################################################################################
+# Apache settings for Contenido backend
+#
+# @version    0.0.1
+# @author     Murat Purc <murat@purc.de>
+# @copyright  four for business AG <www.4fb.de>
+# @license    http://www.contenido.org/license/LIZENZ.txt
+# @link       http://www.4fb.de
+# @link       http://www.contenido.org
+# @since      file available since contenido release 4.8.15
+#
+# $Id: $
+################################################################################
+
+
+# Some rules to compress files
+<IfModule mod_deflate.c>
+    <FilesMatch "\\.(js|css|html|htm|php|xml)$">
+#    SetOutputFilter DEFLATE
+    </FilesMatch>
+</IfModule>
