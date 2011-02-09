@@ -3948,8 +3948,17 @@ msgstr "Ver&ouml;ffentlichungsdatum"
 msgid "Is used in"
 msgstr "Wird benutzt in"
 
+msgid "The template '%s' is used for following categories and articles"
+msgstr "Das Template '%s' wird bei folgenden Kategorien und Artikeln benutzt"
+
+msgid "The module '%s' is used for following templates"
+msgstr "Das Modul '%s' wird bei folgenden Templates benutzt"
+
 msgid "No clients available!"
 msgstr "Keine Mandanten verf&uuml;gbar!"
 
-msgid "Remove property"
-msgstr "Eigenschaft löschen"
+msgid "Click for more information about usage"
+msgstr "Klicken Sie für mehr Information über Verwendung"
+
+msgid "The layout '%s' is used for following templates"
+msgstr "Das Layout '%s' wird bei folgenden Templates benutzt"

@@ -40,11 +40,15 @@
         	$('.in_used_lay').live('click', function() {
             	var iId = $(this).attr('rel');
             	if (iId) {
+
+            		var sTemplateName = $(this).parents().filter('td:first').prev().text();
             		$.post(
             		   "{AJAXURL}", 
       				   { area: "{AREA}", ajax: "inused_layout", id: iId, contenido: sid }, 
       				   function(data) {
-      					  box.notify("{BOX_TITLE}", data);
+          				  var sInUseTitle = "{BOX_TITLE}";
+          				  sInUseTitle = sInUseTitle.replace('%s', sTemplateName); 
+      					  box.notify(sInUseTitle, data);
       				   } 
       				);
             	}	

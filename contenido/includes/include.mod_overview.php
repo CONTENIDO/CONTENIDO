@@ -45,8 +45,8 @@ if (!(int) $client > 0) {
 # Now build bottom with list
 ############################
 $cApiModuleCollection	= new cApiModuleCollection;
-$classmodule			    = new cApiModule;
-$oPage					      = new cPage;
+$classmodule			= new cApiModule;
+$oPage					= new cPage;
 
 // no value found in request for items per page -> get form db or set default
 $oUser = new cApiUser($auth->auth["uid"]);
@@ -223,7 +223,7 @@ while ($cApiModule = $cApiModuleCollection->next())
 			
 			if ($inUse)
 			{
-				$inUseString = i18n("In use");
+				$inUseString = i18n("Click for more information about usage");
 				$mlist->setActions($iMenu, 'inuse', '<a href="javascript:;" rel="' . $idmod . '" class="in_used_mod"><img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseString.'" alt="'.$inUseString.'"></a>');
 				$delDescription = i18n("Module in use, cannot delete");
 				
@@ -292,12 +292,16 @@ $sShowUsedInfo = '
 				
 	        	$(".in_used_mod").live("click", function() {
 	            	var iId = $(this).attr("rel");
+	            	
+	            	var modName = $(this).parents().filter(\'table:first\').parent().prev().text();
 	            	if (iId) {
 	            		$.post(
 	            		   "' . $cfg['path']['contenido_fullhtml'] . 'ajaxmain.php' . '", 
 	      				   { area: "' . $area . '", ajax: "inused_module", id: iId, contenido: sid }, 
 	      				   function(data) {
-	      					  box.notify("' . i18n("Is used in") . ':", data);
+	      				   	  var inUseTitle = "' . i18n("The module '%s' is used for following templates") . '";
+          				  	  inUseTitle = inUseTitle.replace(\'%s\', modName);	
+	      					  box.notify(inUseTitle, data);
 	      				   } 
 	      				);
 	            	}	

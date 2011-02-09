@@ -93,7 +93,7 @@ while ( $db->next_record() ) {
              /* Check if template is in use */
             $inUse = tplIsTemplateInUse($idtpl);
 			
-            $inUseString = i18n("In use");
+            $inUseString = i18n("Click for more information about usage");
 			
             if (!$inUse && ($perm->have_perm_area_action_item("tpl","tpl_delete",$db->f("idtpl")))) {
             	$delTitle = i18n("Delete template");
@@ -125,7 +125,7 @@ while ( $db->next_record() ) {
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'].'ajaxmain.php');
-$tpl->set('s', 'BOX_TITLE', i18n("Is used in") . ":");
+$tpl->set('s', 'BOX_TITLE', i18n("The template '%s' is used for following categories and articles") . ":");
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tpl_overview']);
 
 ?>

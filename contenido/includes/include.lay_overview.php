@@ -90,7 +90,7 @@ while ($layout = $layouts->next()) {
         if ($inUse)
         {
         	$delDescription = i18n("Layout is in use, cannot delete");
-        	$inUseDescription = i18n("Layout is in use");
+        	$inUseDescription = i18n("Click for more information about usage");
             $tpl->set('d', 'INUSE','<a href="javascript:;" rel="' . $layout->get("idlay") . '" class="in_used_lay"><img src="'.$cfg['path']['images'].'exclamation.gif" border="0" title="'.$inUseDescription.'" alt="'.$inUseDescription.'"></a>');
         } else {
             $tpl->set('d', 'INUSE','');    
@@ -101,7 +101,6 @@ while ($layout = $layouts->next()) {
             {
             	$delTitle = i18n("Delete layout");
             	$delDescr = sprintf(i18n("Do you really want to delete the following layout:<br><br>%s<br>"),htmlspecialchars($name));
-            	
             	
                 $tpl->set('d', 'DELETE', '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteLayout('.$idlay.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>');
         } else {
@@ -127,7 +126,7 @@ while ($layout = $layouts->next()) {
 $tpl->set('s', 'AREA', $area);
 $tpl->set('s', 'SESSION', $contenido);
 $tpl->set('s', 'AJAXURL', $cfg['path']['contenido_fullhtml'].'ajaxmain.php');
-$tpl->set('s', 'BOX_TITLE', i18n("Is used in") . ":");
+$tpl->set('s', 'BOX_TITLE', i18n("The layout '%s' is used for following templates") . ":");
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lay_overview']);
 ?>
