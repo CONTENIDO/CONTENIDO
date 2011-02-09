@@ -36,15 +36,27 @@
  * @param integer iFileListId
  */
 function addFileListEvents(sFrameId, sImageId, sPath, sSession, iFileListIdArtLang, iFileListId, aFileListData, bIgnoreState) {
-	loadExternalScripts(sFrameId, sPath, iFileListId);
-	addTabbingEvents(sFrameId);
-	addFrameShowEvent(sFrameId, sImageId);
-	addSaveEvent(sFrameId, iFileListIdArtLang, iFileListId, aFileListData);
-	addFrameCloseEvents(sFrameId);
-	addManualFileListEvent(sFrameId);
-	addClickEvent(sFrameId, iFileListId);
-	setIgnoreExtensions(sFrameId, bIgnoreState);
+	cmsFileList_initialize(sFrameId);
+    cmsFileList_loadExternalScripts(sFrameId, sPath, iFileListId);
+	cmsFileList_addTabbingEvents(sFrameId);
+	cmsFileList_addFrameShowEvent(sFrameId, sImageId);
+	cmsFileList_addSaveEvent(sFrameId, iFileListIdArtLang, iFileListId, aFileListData);
+	cmsFileList_addFrameCloseEvents(sFrameId);
+	cmsFileList_addManualFileListEvent(sFrameId);
+	cmsFileList_addClickEvent(sFrameId, iFileListId);
+	cmsFileList_setIgnoreExtensions(sFrameId, bIgnoreState);
 }
+
+/**
+ * Appends the passed node to the end of body tag. This is necessary to have more 
+ * control during positioning.
+ *
+ * @param string sFrameId
+ */
+function cmsFileList_initialize(sFrameId) {
+    $(sFrameId).appendTo($('body'));
+}
+
 
 /**
  * Function extracts an value from FileList form an adds it as hidden to editform for submitting to Contenido
@@ -53,7 +65,7 @@ function addFileListEvents(sFrameId, sImageId, sPath, sSession, iFileListIdArtLa
  * @param string sName
  * @param string sValue
  */
-function appendFileListValue(sName, sValue) {
+function cmsFileList_appendFileListValue(sName, sValue) {
 	$("form[name='editcontent']").append('<input type="hidden" value="'+sValue+'" name="'+sName+'"/>');
 }
 
@@ -63,7 +75,7 @@ function appendFileListValue(sName, sValue) {
  * @param string sFrameId
  * @param string sImageId
  */
-function addFrameShowEvent(sFrameId, sImageId) {
+function cmsFileList_addFrameShowEvent(sFrameId, sImageId) {
 	$(sImageId).css('cursor', 'pointer');
 	$(sImageId).click(function () {
 		$(sFrameId).fadeIn("normal");
@@ -78,7 +90,7 @@ function addFrameShowEvent(sFrameId, sImageId) {
  *
  * @param string sFrameId
  */
-function addTabbingEvents(sFrameId) {
+function cmsFileList_addTabbingEvents(sFrameId) {
 	$(sFrameId+" .menu li").css('cursor', 'pointer');
 	//add layer click events
 	$(sFrameId+" .menu li").click(function(){
@@ -118,10 +130,10 @@ function addTabbingEvents(sFrameId) {
  * @param integer iFileListIdArtLang
  * @param integer iFileListId
  */
-function addSaveEvent(sFrameId, iFileListIdArtLang, iFileListId, aFileListData) {
+function cmsFileList_addSaveEvent(sFrameId, iFileListIdArtLang, iFileListId, aFileListData) {
 	$(sFrameId+' .save_settings').css('cursor', 'pointer');
 	$(sFrameId+' .save_settings').click(function() {
-		addManualFileListEntry(sFrameId);
+		cmsFileList_addManualFileListEntry(sFrameId);
 
 		var sValue = '';
 		//iterate over all FileList properties
@@ -154,23 +166,23 @@ function addSaveEvent(sFrameId, iFileListIdArtLang, iFileListId, aFileListData) 
 		    //default value for select boxes and text boxes
 			sValue = $(sFrameId + ' #'+aFileListData[i]).attr('value');
 		  }
-		  appendFileListValue(aFileListData[i], sValue);
+		  cmsFileList_appendFileListValue(aFileListData[i], sValue);
 		}
 		
 		sValue = '';
 		$(sFrameId + ' #directories #directoryList div[class="active"]').each(function () {
 			sValue = sValue+';'+$(this).find('a[class="on"]').attr('title');
 		});
-		appendFileListValue('filelist_directories', sValue);
+		cmsFileList_appendFileListValue('filelist_directories', sValue);
 		
 		if ( $(sFrameId + ' #filelist_extensions').attr("disabled") == true ) {
-			appendFileListValue('filelist_ignore_extensions', 'on');			
+			cmsFileList_appendFileListValue('filelist_ignore_extensions', 'on');			
 		} else {
-			appendFileListValue('filelist_ignore_extensions', 'off');
+			cmsFileList_appendFileListValue('filelist_ignore_extensions', 'off');
 		}
 
-		appendFileListValue('filelist_action', 'store');
-		appendFileListValue('filelist_id', iFileListId);
+		cmsFileList_appendFileListValue('filelist_action', 'store');
+		cmsFileList_appendFileListValue('filelist_id', iFileListId);
 		setcontent(iFileListIdArtLang,'0');
 	});
 }
@@ -180,7 +192,7 @@ function addSaveEvent(sFrameId, iFileListIdArtLang, iFileListId, aFileListData) 
  *
  * @param string sFrameId
  */
-function addFrameCloseEvents(sFrameId) {
+function cmsFileList_addFrameCloseEvents(sFrameId) {
 	//add cancel image event
 	$(sFrameId+' .close').css('cursor', 'pointer');
 	$(sFrameId+' .close').click(function () {
@@ -201,7 +213,7 @@ function addFrameCloseEvents(sFrameId) {
  * @param string sFrameId
  * @param string sPath
  */
-function loadExternalScripts(sFrameId, sPath, iFileListId) {
+function cmsFileList_loadExternalScripts(sFrameId, sPath, iFileListId) {
 	$('head').append('<link rel="stylesheet" href="'+sPath+'styles/cms_filelist.css" type="text/css" media="all" />');
 	/*
 	$('head').append('<link rel="stylesheet" href="'+sPath+'scripts/jscalendar/calendar-contenido.css" media="all" />');
@@ -224,14 +236,12 @@ function loadExternalScripts(sFrameId, sPath, iFileListId) {
 	});
 	*/
 	
-	$.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
-		$.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
-			$(sFrameId).draggable({
-				handle: '.head'
-			});
-			$(sFrameId+' .head').css('cursor', 'move');
-		});
-	});
+    $.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
+        $(sFrameId).draggable({
+            handle: '.head'
+        });
+        $(sFrameId+' .head').css('cursor', 'move');
+    });
 }
 
 /**
@@ -240,9 +250,9 @@ function loadExternalScripts(sFrameId, sPath, iFileListId) {
  *
  * @param string sFrameId
  */
-function addManualFileListEvent(sFrameId) {
+function cmsFileList_addManualFileListEvent(sFrameId) {
 	$(sFrameId+' #add_file').css('cursor', 'pointer').click(function() {
-		addManualFileListEntry(sFrameId);
+		cmsFileList_addManualFileListEntry(sFrameId);
 	});
 }
 
@@ -252,7 +262,7 @@ function addManualFileListEvent(sFrameId) {
  *
  * @param string sFrameId
  */
-function addManualFileListEntry(sFrameId) {
+function cmsFileList_addManualFileListEntry(sFrameId) {
 	var oArt = $(sFrameId+' #filelist_filename');
 	var sFilename = oArt.attr('value');
 	var sName = '';
@@ -277,7 +287,7 @@ function addManualFileListEntry(sFrameId) {
 	}
 }
 
-function addNaviActions(sFrameId, iFileListId) {
+function cmsFileList_addNaviActions(sFrameId, iFileListId) {
 	$(sFrameId+' #manual #directoryList a[class="on"]').parent('div').unbind('click');
 	$(sFrameId+' #manual #directoryList a[class="on"]').parent('div').click(function () {
 		var dirname = $(this).children('a[class="on"]').attr('title');
@@ -326,7 +336,7 @@ function addNaviActions(sFrameId, iFileListId) {
 			  success: function(msg){
 				divContainer.after(msg);
 				divContainer.parent('li').removeClass('collapsed');
-				addNaviActions(sFrameId, iFileListId);
+				cmsFileList_addNaviActions(sFrameId, iFileListId);
 			  }
 			});
 		}
@@ -341,9 +351,9 @@ function addNaviActions(sFrameId, iFileListId) {
  *
  * @param string sFrameId
  */
-function addClickEvent(sFrameId, iFileListId) {	
-	addNaviActions(sFrameId, iFileListId);
-	addExtensionActions(sFrameId, iFileListId);
+function cmsFileList_addClickEvent(sFrameId, iFileListId) {	
+	cmsFileList_addNaviActions(sFrameId, iFileListId);
+	cmsFileList_addExtensionActions(sFrameId, iFileListId);
 	
 	if ( $(sFrameId+' #filelist_manual').attr('checked') == true ) {
 		$(sFrameId+' #manual_filelist_setting').css("display", "block");
@@ -374,15 +384,15 @@ function addClickEvent(sFrameId, iFileListId) {
 	});
 }
 
-function addExtensionActions(sFrameId, iFileListId) {
+function cmsFileList_addExtensionActions(sFrameId, iFileListId) {
 	$(sFrameId+' #filelist_all_extensions').css('cursor', 'pointer');
 	$(sFrameId+' #filelist_ignore_extensions').css('cursor', 'pointer');
 
 	$(sFrameId+' #filelist_ignore_extensions').click(function () {
 		if ( $(sFrameId+' #filelist_extensions').attr("disabled") == true ) {
-			setIgnoreExtensions( sFrameId, 'false' );
+			cmsFileList_setIgnoreExtensions( sFrameId, 'false' );
 		} else {
-			setIgnoreExtensions( sFrameId, 'true' );
+			cmsFileList_setIgnoreExtensions( sFrameId, 'true' );
 		}
 		
 		return false;
@@ -397,7 +407,7 @@ function addExtensionActions(sFrameId, iFileListId) {
 	});
 }
 
-function setIgnoreExtensions(sFrameId, bIgnoreState) {
+function cmsFileList_setIgnoreExtensions(sFrameId, bIgnoreState) {
 	if ( bIgnoreState == 'false' ) {
 		$(sFrameId+' #filelist_extensions').removeAttr("disabled");
 		$(sFrameId+' #filelist_ignore_extensions').css("font-weight", "normal").html(sLabelIgnoreExtensionsOff);
