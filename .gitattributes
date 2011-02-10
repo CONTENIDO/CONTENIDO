@@ -115,7 +115,7 @@ conlib/perm.inc -text
 conlib/prepend.php -text
 conlib/query_sql.inc -text
 conlib/session.inc -text
-contenido/.htaccess -text
+contenido/.htaccess_recommended -text
 contenido/ajaxmain.php -text
 contenido/backend_search.php -text
 contenido/classes/Contenido_Category/Contenido_Category.class.php -text

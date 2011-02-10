@@ -174,6 +174,11 @@ Passwort: admin
 Ändern Sie nach der Installation sofort die Passwörter für
 die vorhanden Accounts (sysadmin und ggf. admin)!
 
+4.
+Benennen Sie "contenido/.htaccess_recommended" um in 
+"contenido/.htaccess" oder übernehmen Sie dessen Inhalte in eine 
+vorhandene .htaccess Datei (gilt für Apache HTTP-Server)
+
 -------------------------------------------------------------------
 3) Voraussetzungen für Upgrades
 -------------------------------------------------------------------
@@ -367,6 +372,10 @@ Passwort: admin
 Change the passwords immediately after succesful installation 
 (sysadmin and admin, if example client has been installed)!
 
+5.
+Rename "contenido/.htaccess_recommended" to "contenido/.htaccess" 
+ore takeover it's content into a existing .htaccess file
+(significant only for Apache HTTP-Server)
 
 -------------------------------------------------------------------
 3) Upgrade requirements 
