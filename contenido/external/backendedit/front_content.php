@@ -34,7 +34,7 @@
  *
  *
  * @package    Contenido Backend external
- * @version    1.8.10
+ * @version    1.8.11
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -53,6 +53,7 @@
  *   modified 2010-05-20, Murat Purc, moved security checks into startup process, see [#CON-307]
  *   modified 2010-09-23, Murat Purc, fixed $encoding handling, see [#CON-305]
  *   modified 2011-02-07, Dominik Ziegler, added exit after redirections to force their execution
+ *   modified 2011-02-10, Dominik Ziegler, moved function declaration of IP_match out of front_content.php
  *
  *   $Id$:
  * }}
@@ -978,51 +979,4 @@ if (isset ($savedlang))
 }
 
 page_close();
-
-/**
- * IP_match
- *
- * @param string $network
- * @param string $mask
- * @param string $ip
- * @return boolean
- */
-function IP_match($network, $mask, $ip)
-{
-
-    bcscale(3);
-    $ip_long = ip2long($ip);
-    $mask_long = ip2long($network);
-
-    #
-    # Convert mask to divider
-    #
-    if (preg_match('/^[0-9]+$/', $mask))
-    {
-        /// 212.50.13.0/27 style mask (Cisco style)
-        $divider = bcpow(2, (32 - $mask));
-    }
-    else
-    {
-        /// 212.50.13.0/255.255.255.0 style mask
-        $xmask = ip2long($mask);
-        if ($xmask < 0)
-            $xmask = bcadd(bcpow(2, 32), $xmask);
-        $divider = bcsub(bcpow(2, 32), $xmask);
-    }
-    #
-    # Test is IP within specified mask
-    #
-    if (floor(bcdiv($ip_long, $divider)) == floor(bcdiv($mask_long, $divider)))
-    {
-        # match - this IP is within specified mask
-        return true;
-    }
-    else
-    {
-        # fail - this IP is NOT within specified mask
-        return false;
-    }
-}
-
 ?>

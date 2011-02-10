@@ -28,6 +28,7 @@
  *   modified 2010-12-16, Dominik Ziegler, display error message on database connection failure [#CON-376]
  *   modified 2011-02-05, Murat Purc, getAllClientsAndLanguages() and some cleanup
  *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as contenido now requires at least PHP 5
+ *   modified 2011-02-10, Dominik Ziegler, moved function declaration of IP_match out of front_content.php
  *
  *   $Id$:
  * }}
@@ -2378,6 +2379,52 @@ function sendEncodingHeader ($db, $cfg, $lang) {
             header("Content-Type: text/html; charset=ISO-8859-1");          
         }
     
+    }
+}
+
+/**
+ * IP_match
+ *
+ * @param string $network
+ * @param string $mask
+ * @param string $ip
+ * @return boolean
+ */
+function IP_match($network, $mask, $ip)
+{
+
+    bcscale(3);
+    $ip_long = ip2long($ip);
+    $mask_long = ip2long($network);
+
+    #
+    # Convert mask to divider
+    #
+    if (preg_match('/^[0-9]+$/', $mask))
+    {
+        /// 212.50.13.0/27 style mask (Cisco style)
+        $divider = bcpow(2, (32 - $mask));
+    }
+    else
+    {
+        /// 212.50.13.0/255.255.255.0 style mask
+        $xmask = ip2long($mask);
+        if ($xmask < 0)
+            $xmask = bcadd(bcpow(2, 32), $xmask);
+        $divider = bcsub(bcpow(2, 32), $xmask);
+    }
+    #
+    # Test is IP within specified mask
+    #
+    if (floor(bcdiv($ip_long, $divider)) == floor(bcdiv($mask_long, $divider)))
+    {
+        # match - this IP is within specified mask
+        return true;
+    }
+    else
+    {
+        # fail - this IP is NOT within specified mask
+        return false;
     }
 }
 ?>
