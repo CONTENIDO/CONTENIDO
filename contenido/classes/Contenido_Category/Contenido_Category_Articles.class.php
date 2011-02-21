@@ -430,6 +430,9 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
             case "modificationdate":
                 $sOrderCondition = 'ORDER BY artlang.lastmodified '.$sOrder;
                 break;
+            case "publisheddate":
+                $sOrderCondition = 'ORDER BY artlang.published '.$sOrder;
+                break;  
             default:
                 $sOrderCondition = 'ORDER BY artlang.artsort '.$sOrder;
                 break;
