@@ -95,14 +95,26 @@ checkAndInclude("lib/class.setupmask.php");
 
 if (getPHPIniSetting("session.use_cookies") == 0)
 {
-	die("You need to set the PHP configuration directive 'session.use_cookies' to 1 and enable cookies in your browser. This setup won't work without that.");	
+    $sNotInstallableReason = 'session_use_cookies';
+	checkAndInclude("steps/notinstallable.php");
 }
 
 if (hasMySQLiExtension() && !hasMySQLExtension())
 {
-	/* Use MySQLi-Extension by default if available */
+	// use MySQLi extension by default if available
 	$cfg["database_extension"] = "mysqli";	
 }
+elseif (hasMySQLExtension())
+{
+	// use MySQL extension if available
+	$cfg["database_extension"] = "mysql";	
+}
+else
+{
+    $sNotInstallableReason = 'database_extension';
+	checkAndInclude("steps/notinstallable.php");
+}
+
 checkAndInclude("../conlib/prepend.php");
 
 if (array_key_exists("language", $_SESSION))
@@ -110,10 +122,10 @@ if (array_key_exists("language", $_SESSION))
 	i18nInit("locale/", $_SESSION["language"]);
 }
 
-if (phpversion() == "4.0.6")
+if (phpversion() < C_SETUP_MIN_PHP_VERSION)
 {
+    $sNotInstallableReason = 'php_version';
 	checkAndInclude("steps/notinstallable.php");
-	die;		
 }
 
 if (array_key_exists("step", $_REQUEST))

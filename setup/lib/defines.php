@@ -22,13 +22,15 @@
  * {@internal 
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
+ *   modified 2011-02-23, Murat Purc, added constant for minimum required PHP version
  *
  *   $Id$:
  * }}
  * 
  */
-if(!defined('CON_FRAMEWORK')) {
-                die('Illegal call');
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 if (array_key_exists("setuptype", $_SESSION))
@@ -51,5 +53,6 @@ define("C_SETUP_STEPFILE", "images/steps/s%d.png");
 define("C_SETUP_STEPFILE_ACTIVE", "images/steps/s%da.png");
 define("C_SETUP_STEPWIDTH", 28);
 define("C_SETUP_STEPHEIGHT", 28);
+define("C_SETUP_MIN_PHP_VERSION", "5.1.2");
 define("C_SETUP_VERSION", "4.8.15-RC1");
 ?>
