@@ -34,6 +34,7 @@
  * {@internal
  *   created  2010-12-27
  *   modified 2011-01-13, Murat Purc, removed autoloading of PEAR classes.
+ *   modified 2011-02-23, Murat Purc, added method isAutoloadable()
  *  
  *   $Id$:
  * }}
@@ -154,6 +155,25 @@ class Contenido_Autoload
         self::$_loadedClasses[$className] = str_replace(self::$_conRootPath, '', $file);
     }
 
+
+    /**
+     * Checks, if passed filename is a file, which will be included by the autoloader.
+     *
+     * @param  string  $file  Filename or Filename with a part of the path, e. g.
+     *                        - class.foobar.php
+     *                        - classes/class.foobar.php
+     *                        - contenido/classes/class.foobar.php
+     * @return  bool
+     */
+    public static function isAutoloadable($file)
+    {
+        foreach (self::$_includeFiles as $className => $includeFile) {
+            if (strpos($includeFile, $file) !== false) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Returns the loaded classes (@see Contenido_Autoload::$_loadedClasses)

@@ -137,6 +137,15 @@ function contenido_include ($where, $what, $force = false, $returnpath = false)
             }
             break;
       default:
+            // FIXME: A workaround to provide inclusion of classes wich are not
+            //        handled by the autoloader
+            if ($where === 'classes') {
+                if (Contenido_Autoload::isAutoloadable($cfg['path'][$where] . $what)) {
+                    // it's a class file and it will be loaded automatically by 
+                    // the autoloader - get out here
+                    return;
+                }
+            }
             $include = $cfg['path']['contenido'] . $cfg['path'][$where] . $what;
             break;
    }
