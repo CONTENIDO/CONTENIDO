@@ -21,6 +21,7 @@
  * {@internal 
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
+ *   modified 2011-02-24, Murat Purc, extended mysql extension detection
  *
  *   $Id$:
  * }}
@@ -62,8 +63,17 @@ checkAndInclude("../contenido/classes/class.versionImport.php");
 
 if (hasMySQLiExtension() && !hasMySQLExtension())
 {
-	/* Use MySQLi-Extension by default if available */
+	// use MySQLi extension by default if available
 	$cfg["database_extension"] = "mysqli";	
+}
+elseif (hasMySQLExtension())
+{
+	// use MySQL extension if available
+	$cfg["database_extension"] = "mysql";	
+}
+else
+{
+    die("Can't detect MySQLi or MySQL extension");
 }
 
 checkAndInclude("../conlib/prepend.php");

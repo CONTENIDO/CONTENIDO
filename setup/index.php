@@ -22,6 +22,7 @@
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
  *   modified 2011-01-21, Ortwin Pinke, added php-errorhandling function calls, uncomment if needed
+ *   modified 2011-02-24, Murat Purc, extended mysql extension detection and some other changes
  *
  *   $Id$:
  * }}
