@@ -398,7 +398,7 @@ $form->add(i18n("Options"), $restrict->render());
 
 if ($lcount == 0)
 {
-	$cpage->setContent($form->render()."<br>".i18n("No tasks found")."<br>".markSubMenuItem(2, true));
+	$cpage->setContent($form->render()."<br>".i18n("No tasks found")."<br>".markSubMenuItem(1, true));
 } else {
 	if (!isset($sortby))
 	{
@@ -419,7 +419,7 @@ if ($lcount == 0)
     $list->setSortable(7,true);
     $list->sort($sortby, $sortmode);
     
-    $cpage->setContent($form->render()."<br>".$list->render(). markSubMenuItem(2, true));
+    $cpage->setContent($form->render()."<br>".$list->render(). markSubMenuItem(1, true));
 }
 $cpage->render();
 
