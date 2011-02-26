@@ -441,7 +441,7 @@ class cNewsletterJob extends Item
 						unset($recipient);
 					}
 				
-					$oMail = new phpmailer();
+					$oMail = new PHPMailer();
 					$oMail->CharSet		= $sEncoding;
 					$oMail->IsHTML($bIsHTML && $bSendHTML);
 					$oMail->From		= $sFrom;

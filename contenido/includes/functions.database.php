@@ -283,7 +283,7 @@ function dbGetColumns ($db, $table)
 	
 	while ($db->next_record())
 	{
-		$structure[$db->f("Field")] = $db->copyResultToArray();
+		$structure[$db->f("Field")] = $db->copyResultToArray($table);
 	}
 	
 	$columnCache[$table] = $structure;

@@ -160,7 +160,7 @@ class WorkflowArtAllocation extends Item {
         } 
 		
 		//modified : 2008-06-25 - use php mailer class instead of mail()
-		$oMail = new phpmailer;
+		$oMail = new PHPMailer();
         $oMail->Host = $sMailhost;
         $oMail->IsHTML(0);
 		$oMail->WordWrap = 1000;

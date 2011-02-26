@@ -352,7 +352,7 @@ class RequestPassword {
         $sMailBody = sprintf(i18n("Dear Contenidouser %s,\n\nYour password to log in Content Management System Contenido is: %s\n\nBest regards\n\nYour Contenido sysadmin"), $this->sUsername, $sPassword);
 
         //use php mailer class for submitting mail
-        $oMail = new phpmailer;
+        $oMail = new PHPMailer();
         //set host of mailserver
         $oMail->Host = $this->sMailhost;
         //it is not a html mail

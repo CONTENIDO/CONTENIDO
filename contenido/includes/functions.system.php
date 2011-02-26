@@ -582,7 +582,7 @@ function sendBugReport()
 		/* send mail */
 
 		/* initialize mail class */
-		$mail = new phpmailer();
+		$mail = new PHPMailer();
 
 		/* set sender information */
 		$mail->From = strip_tags($_POST['sender']);

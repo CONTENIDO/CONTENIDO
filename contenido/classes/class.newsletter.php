@@ -761,7 +761,7 @@ class Newsletter extends Item
 			$this->_sError = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
 			return false;
 		} else {
-			$oMail = new phpmailer();
+			$oMail = new PHPMailer();
 			$oMail->CharSet		= $sEncoding;
 			$oMail->IsHTML($bIsHTML);
 			$oMail->From		= $sFrom;
@@ -982,7 +982,7 @@ class Newsletter extends Item
 					}
 					$aMessages[] = $sName." (".$sEMail."): ".sprintf($sError, $sEMail);
 				} else {
-					$oMail = new phpmailer();
+					$oMail = new PHPMailer();
 					$oMail->CharSet		= $sEncoding;
 					$oMail->IsHTML($bIsHTML && $bSendHTML);
 					$oMail->From		= $sFrom;

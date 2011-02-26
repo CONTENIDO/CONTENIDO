@@ -243,7 +243,7 @@ class Group
             return false;
         }
 
-        $this->values = $this->db->copyResultToArray();
+        $this->values = $this->db->copyResultToArray($this->table);
     }
 
 
@@ -268,7 +268,7 @@ class Group
             return false;
         }
 
-        $this->values = $this->db->copyResultToArray();
+        $this->values = $this->db->copyResultToArray($this->table);
     }
 
 
