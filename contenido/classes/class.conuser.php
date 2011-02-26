@@ -48,7 +48,7 @@
  * @package Contenido Backend classes
  * @subpackage Backend User
  *
- * @version $Revision$
+ * @version 1.4.0
  * @author Bilal Arslan, Holger Librenz
  * @copyright four for business AG
  *
@@ -60,8 +60,9 @@
  *  modified 2008-12-04, Bilal Arslan, Bugfixed for set passwort length, comments "how to use" fixed.
  *  Bugfixed for password, lower Case Upper case count, for symbols count and numbers count.
  *  modified 2008-12-04, Timo Trautman, Added Contenido $cfg as param for getErrorString()
+ *  modified 2011-02-26, Ortwin Pinke, added unset for pw-request-marker, changed header svn-id and version declaration
  *
- *  @Id
+ *  $Id:$
  * }}
  *
  **/
@@ -426,7 +427,8 @@ class ConUser extends ConUser_Abstract {
                   UPDATE
                       `" . $this->aCfg ["tab"] ["phplib_auth_user_md5"] . "`
                   SET
-                      password='" . Contenido_Security::escapeDB ( $sPass, $this->oDb ) . "'
+                      password='" . Contenido_Security::escapeDB ( $sPass, $this->oDb ) . "',
+                      using_pw_request = '0'
                   WHERE
                       user_id = '" . Contenido_Security::escapeDB ( $sUserId, $this->oDB ) . "'";
 

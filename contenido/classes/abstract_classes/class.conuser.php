@@ -8,12 +8,14 @@
  * @package Contenido Backend Classes
  * @subpackages Backend User
  *
- * @version $Revision$
+ * @version 1.0.0
  * @author Holger Librenz
  * @copyright four for business AG
  *
  * {@internal
  *  created 2008-11-16
+ *
+ * $Id:$
  * }}
  */
 

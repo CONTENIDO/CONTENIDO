@@ -64,6 +64,14 @@ if ($lastlogin == "") {
 	$lastlogin= i18n("No Login Information available.");
 }
 
+// notification for requested password
+if($vuser->getField('using_pw_request') == 1) {
+    $sPwNoti = $notification->returnNotification("warning", i18n("You're logged in with a temporary password. Please change your password."));
+} else {
+    $sPwNoti = '';
+}
+$tpl->set('s', 'NOTIFICATION', $sPwNoti);
+
 $userid = $auth->auth["uid"];
 
 $tpl->set('s', 'WELCOME', "<b>" . i18n("Welcome") . " </b>" . $vuser->getRealname($userid, true) . ".");

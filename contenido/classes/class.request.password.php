@@ -14,7 +14,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.1.0
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,7 +25,8 @@
  * {@internal 
  *   created 2008-03-20
  *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2010-05-27, Oliver Lohkemper, check if user activ in handleNewPassword() 
+ *   modified 2010-05-27, Oliver Lohkemper, check if user activ in handleNewPassword()
+ *   modified 2011-02-26, Ortwin Pinke, added temporary pw request behaviour, so user may login with old and/or requested pw
  *
  *   $Id$:
  * }}
@@ -41,13 +42,8 @@ if(!defined('CON_FRAMEWORK')) {
  *
  * Description: Class for handling passwort recovery
  *
- * @version 1.0.0
  * @author Timo Trautmann
  * @copyright four for business AG <www.4fb.de>
- *
- * {@internal
- *   created 2008-03-20
- * }}
  *
  */
 class RequestPassword {
@@ -331,7 +327,7 @@ class RequestPassword {
         //update database entry, set new password and last_pw_request time
         $sSql = "UPDATE ".$this->aCfg["tab"]["phplib_auth_user_md5"]."
                          SET last_pw_request = '".date('Y-m-d H:i:s')."',
-                             password = '".md5($sPassword)."'
+                             tmp_pw_request = '".md5($sPassword)."'
 			             WHERE username = '".$this->sUsername."'";
         $this->oDb->query($sSql);
 
@@ -395,5 +391,4 @@ class RequestPassword {
 		return $sPw;
     }
 }
-
 ?>

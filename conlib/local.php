@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    1.51
+ * @version    1.6.0
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  *   modified 2010-02-02, Ingo van Peeren, added local method connect() in order 
  *                                         to allow only one database connection, see [CON-300]
  *   modified 2010-02-17, Ingo van Peeren, only one connection for mysqli too
+ *   modified 2011-02-26, Ortwin Pinke, added temporary pw request behaviour, so user may login with old and/or requested pw
  *
  *   $Id$:
  * }}
@@ -573,7 +574,7 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
 	
     $sDate = date('Y-m-d');
 
-    $this->db->query(sprintf("select user_id,perms,password from %s where username = '%s' AND
+    $this->db->query(sprintf("select user_id,perms,password,tmp_pw_request from %s where username = '%s' AND
                               (valid_from <= '".$sDate."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND 
                               (valid_to >= '".$sDate."' OR valid_to = '0000-00-00' OR valid_to is NULL)",
 							 $this->database_table,
@@ -584,6 +585,20 @@ class Contenido_Challenge_Crypt_Auth extends Auth {
 		$uid   = $this->db->f("user_id");
 		$perm  = $this->db->f("perms");
 		$pass  = $this->db->f("password");   ## Password is stored as a md5 hash
+
+		// check if requested new password is used, if set equal password
+		$sRequestPassword = $this->db->f("tmp_pw_request");
+  $this->auth['pwr'] = false;
+		if(md5($password) == $sRequestPassword) {
+            $sQuery =   "UPDATE ".$this->database_table." SET password = '".$sRequestPassword."',
+                         tmp_pw_request = NULL,
+                         using_pw_request = 1,
+                         WHERE username = '".Contenido_Security::escapeDB($username,  $this->db)."'";
+            $this->db->query($sQuery);
+            $pass = $sRequestPassword;
+            $this->auth['pwr'] = true;
+        }
+
 
 		$bInMaintenance = false;
         if ($sMaintenanceMode == 'enabled') {

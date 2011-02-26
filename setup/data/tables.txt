@@ -392,6 +392,8 @@
 "phplib_auth_user_md5";"valid_from";"date";"YES";"";"";"";""
 "phplib_auth_user_md5";"valid_to";"date";"YES";"";"";"";""
 "phplib_auth_user_md5";"last_pw_request";"datetime";"";"";"0000-00-00 00:00:00";"";""
+"phplib_auth_user_md5";"tmp_pw_request";"varchar(32)";"YES";"";"";"";""
+"phplib_auth_user_md5";"using_pw_request";"tinyint(1)";"";"";"0";"";""
 "plugins";"idplugin";"int(10)";"";"PRI";"0";"";"1"
 "plugins";"idclient";"int(10)";"YES";"";"";"";""
 "plugins";"name";"varchar(255)";"";"";"";"";""
