@@ -90,7 +90,7 @@ if(!isRunningFromWeb() || function_exists("runJob") || $area == "cronjobs")
 						$sMailhost = 'localhost';
 					} 
 					
-					$oMail = new phpmailer;
+					$oMail = new PHPMailer();
 					$oMail->Host = $sMailhost;
 					$oMail->IsHTML(0);
 					$oMail->WordWrap = 1000;
