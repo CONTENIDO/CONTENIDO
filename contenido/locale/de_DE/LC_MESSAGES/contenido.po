@@ -3,11 +3,11 @@ msgstr ""
 "Project-Id-Version: Contenido 4.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-02-26 14:52+0100\n"
-"PO-Revision-Date: 2011-02-26 15:17+0100\n"
+"PO-Revision-Date: 2011-02-26 21:27+0100\n"
 "Last-Translator: Ortwin Pinke <translation@dceonline.de>\n"
 "Language-Team: Contenido Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
@@ -97,7 +97,7 @@ msgstr "Erinnerung"
 
 #: contenido/backend_search.php:681
 msgid "Set reminder / add to todo list"
-msgstr "Wiedervorlage setzen / zur Todo-Liste hinzufügen"
+msgstr "Wiedervorlage setzen / zur Todo-Liste hinzuf&uuml;gen"
 
 #: contenido/backend_search.php:682
 msgid "Duplicate article"
@@ -218,7 +218,7 @@ msgstr "Dateiname"
 
 #: contenido/classes/class.cms_filelist.php:441
 msgid "File size"
-msgstr "Dateigröße"
+msgstr "Dateigr&ouml;&szlig;e"
 
 #: contenido/classes/class.cms_filelist.php:444
 msgid "Date created"
@@ -226,7 +226,7 @@ msgstr "Erstelldatum"
 
 #: contenido/classes/class.cms_filelist.php:447
 msgid "Date modified"
-msgstr "Änderungsdatum"
+msgstr "&Auml;nderungsdatum"
 
 #: contenido/classes/class.cms_filelist.php:465
 #: contenido/classes/class.cms_teaser.php:423
@@ -398,7 +398,7 @@ msgstr "Ver&ouml;ffentlichungsdatum"
 
 #: contenido/classes/class.cms_teaser.php:489
 msgid "Modificationdate"
-msgstr "Änderungsdatum"
+msgstr "&Auml;nderungsdatum"
 
 #: contenido/classes/class.cms_teaser.php:578
 msgid "Teasersettings"
@@ -490,7 +490,7 @@ msgstr "Bildbreite"
 
 #: contenido/classes/class.cms_teaser.php:610
 msgid "Imageheight"
-msgstr "Bildhöhe"
+msgstr "Bildh&ouml;he"
 
 #: contenido/classes/class.cms_teaser.php:611
 msgid "Image Scale"
@@ -504,7 +504,7 @@ msgstr "Hinzuf&uuml;gen"
 #: contenido/classes/class.conuser.php:879
 #, php-format
 msgid "Please use at least %d lower and upper case characters in your password!"
-msgstr "Bitte benutzen Sie mindestens %d Klein- und Groß-Buchstaben in Ihrem Passwort!"
+msgstr "Bitte benutzen Sie mindestens %d Klein- und Gro&szlig;-Buchstaben in Ihrem Passwort!"
 
 #: contenido/classes/class.conuser.php:859
 #, php-format
@@ -606,7 +606,7 @@ msgstr "Keine Empf&auml;nger mit der angegebenen Empf&auml;nger-/Gruppen-ID %s/%
 #: contenido/classes/class.note.php:331
 #: contenido/classes/class.note.php:334
 msgid "View notes / add note"
-msgstr "Notizen anzeigen / hinzufügen"
+msgstr "Notizen anzeigen / hinzuf&uuml;gen"
 
 #: contenido/classes/class.notification.php:56
 msgid "Error"
@@ -709,15 +709,15 @@ msgid ""
 msgstr ""
 "Lieber Contenidouser %s,\n"
 "\n"
-"Ihr Passwort für das Login in das Content Management System Contenido ist: %s\n"
+"Ihr Passwort f&uuml;r das Login in das Content Management System Contenido ist: %s\n"
 "\n"
-"Viele Grüße\n"
+"Viele Gr&uuml;&szlig;e\n"
 "\n"
 "Ihr Contenido Systemadministrator"
 
 #: contenido/classes/class.request.password.php:364
 msgid "Your new password for Contenido Backend"
-msgstr "Ihr neues Passwort für das Contenido Backend"
+msgstr "Ihr neues Passwort f&uuml;r das Contenido Backend"
 
 #: contenido/classes/class.todo.php:95
 msgid "New"
@@ -814,7 +814,7 @@ msgstr "mehr lesen"
 #: contenido/classes/class.update.notifier.php:717
 #: contenido/classes/class.update.notifier.php:726
 msgid "No RSS content available"
-msgstr "Keine RSS-Inhalte verfügbar"
+msgstr "Keine RSS-Inhalte verf&uuml;gbar"
 
 #: contenido/classes/class.update.notifier.php:724
 #: contenido/classes/class.update.notifier.php:741
@@ -859,11 +859,11 @@ msgstr "Aktualisieren"
 
 #: contenido/classes/class.version.php:534
 msgid "Clear layout history"
-msgstr "Layouthistorie löschen"
+msgstr "Layouthistorie l&ouml;schen"
 
 #: contenido/classes/class.version.php:535
 msgid "Do you really want to clear layout history?"
-msgstr "M&ouml;chten Sie wirklich die Layouthistorie löschen?"
+msgstr "M&ouml;chten Sie wirklich die Layouthistorie l&ouml;schen?"
 
 #: contenido/classes/class.version.php:535
 msgid "Note: This only affects the current layout."
@@ -871,11 +871,11 @@ msgstr "Hinweis: Dies betrifft nur das aktuelle Layout."
 
 #: contenido/classes/class.version.php:538
 msgid "Clear module history"
-msgstr "Modulhistorie löschen"
+msgstr "Modulhistorie l&ouml;schen"
 
 #: contenido/classes/class.version.php:539
 msgid "Do you really want to clear module history?"
-msgstr "Möchte Sie wirklich die Modulhistorie löschen?"
+msgstr "M&ouml;chte Sie wirklich die Modulhistorie l&ouml;schen?"
 
 #: contenido/classes/class.version.php:539
 msgid "Note: This only affects the current module."
@@ -883,11 +883,11 @@ msgstr "Hinweis: Dies betrifft nur das aktuelle Modul."
 
 #: contenido/classes/class.version.php:542
 msgid "Clear style history"
-msgstr "Stylehistorie löschen"
+msgstr "Stylehistorie l&ouml;schen"
 
 #: contenido/classes/class.version.php:543
 msgid "Do you really want to clear style history?"
-msgstr "M&ouml;chten Sie wirklich die Stylehistorie löschen?"
+msgstr "M&ouml;chten Sie wirklich die Stylehistorie l&ouml;schen?"
 
 #: contenido/classes/class.version.php:543
 msgid "Note: This only affects the current style."
@@ -895,11 +895,11 @@ msgstr "Hinweis: Dies betrifft nur das aktuelle Style."
 
 #: contenido/classes/class.version.php:546
 msgid "Clear Java-Script history"
-msgstr "Java-Script Historie löschen"
+msgstr "Java-Script Historie l&ouml;schen"
 
 #: contenido/classes/class.version.php:547
 msgid "Do you really want to clear Java-Script history?"
-msgstr "M&ouml;chten Sie wirklich die Java-Script Historie löschen?"
+msgstr "M&ouml;chten Sie wirklich die Java-Script Historie l&ouml;schen?"
 
 #: contenido/classes/class.version.php:547
 msgid "Note: This only affects the current Java-Script."
@@ -907,25 +907,23 @@ msgstr "Hinweis: Dies betrifft nur das aktuelle Java-Script."
 
 #: contenido/classes/class.version.php:550
 msgid "Clear HTML-Template history"
-msgstr "HTML-Template Historie löschen"
+msgstr "HTML-Template Historie l&ouml;schen"
 
 #: contenido/classes/class.version.php:551
 msgid "Do you really want to clear HTML-Template history?"
-msgstr "M&ouml;chten Sie wirklich die HTML-Template Historie löschen?"
+msgstr "M&ouml;chten Sie wirklich die HTML-Template Historie l&ouml;schen?"
 
 #: contenido/classes/class.version.php:551
 msgid "Note: This only the affects current HTML-Template."
 msgstr "Hinweis: Dies betrifft nur das aktuelle HTML-Template."
 
 #: contenido/classes/class.version.php:554
-#, fuzzy
 msgid "Clear history"
-msgstr "Stylehistorie löschen"
+msgstr "Stylehistorie l&ouml;schen"
 
 #: contenido/classes/class.version.php:555
-#, fuzzy
 msgid "Do you really want to clear history?"
-msgstr "M&ouml;chten Sie wirklich die Stylehistorie löschen?"
+msgstr "M&ouml;chten Sie wirklich die Stylehistorie l&ouml;schen?"
 
 #: contenido/classes/class.version.php:555
 #, fuzzy
@@ -933,9 +931,8 @@ msgid "Note: This only affects the current history."
 msgstr "Hinweis: Dies betrifft nur das aktuelle Style."
 
 #: contenido/classes/class.versionFile.php:131
-#, fuzzy
 msgid "Can not open file "
-msgstr "Konnte Datei %s nicht öffnen"
+msgstr "Konnte Datei %s nicht &Ouml;ffnen"
 
 #: contenido/classes/contenido/class.module.php:340
 msgid "- Unnamed Module -"
@@ -1043,7 +1040,7 @@ msgstr "Seite %s"
 
 #: contenido/classes/widgets/class.widgets.pager.php:120
 msgid "Next page"
-msgstr "Nächste Seite"
+msgstr "N&auml;chste Seite"
 
 #: contenido/classes/widgets/class.widgets.pager.php:130
 msgid "Last page"
@@ -1103,7 +1100,7 @@ msgstr "Artikel synchronisieren"
 #: contenido/includes/cfg_language_de.inc.php:105
 #: contenido/includes/cfg_language_de.inc.php:124
 msgid "Protect category"
-msgstr "Kategorie schützen"
+msgstr "Kategorie sch&uuml;tzen"
 
 #: contenido/includes/cfg_language_de.inc.php:107
 msgid "Edit template configuration"
@@ -1168,7 +1165,7 @@ msgstr "Frontend-Zugriff"
 
 #: contenido/includes/cfg_language_de.inc.php:126
 msgid "Delete category"
-msgstr "Kategorie löschen"
+msgstr "Kategorie l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:127
 msgid "Move category up"
@@ -1214,7 +1211,7 @@ msgstr "Dateien l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:138
 msgid "Remove directory"
-msgstr "Verzeichnis löschen"
+msgstr "Verzeichnis l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:139
 msgid "Rename directory"
@@ -1405,7 +1402,7 @@ msgstr "CSS erstellen"
 
 #: contenido/includes/cfg_language_de.inc.php:200
 msgid "Delete CSS"
-msgstr "CSS löschen"
+msgstr "CSS l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:204
 msgid "Edit script"
@@ -1421,7 +1418,7 @@ msgstr "Script erstellen"
 
 #: contenido/includes/cfg_language_de.inc.php:210
 msgid "Modify HTML-Template"
-msgstr "HTML-Template verändern"
+msgstr "HTML-Template ver&auml;ndern"
 
 #: contenido/includes/cfg_language_de.inc.php:211
 msgid "Create HTML-Template"
@@ -1429,7 +1426,7 @@ msgstr "HTML-Template erstellen"
 
 #: contenido/includes/cfg_language_de.inc.php:212
 msgid "Delete HTML-Template"
-msgstr "HTML-Template löschen"
+msgstr "HTML-Template l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:216
 msgid "Edit newsletter"
@@ -1497,7 +1494,7 @@ msgstr "Empf&auml;nger importieren"
 
 #: contenido/includes/cfg_language_de.inc.php:233
 msgid "Execute recipients import"
-msgstr "Empf&auml;nger-Import ausführen"
+msgstr "Empf&auml;nger-Import ausf&uuml;hren"
 
 #: contenido/includes/cfg_language_de.inc.php:234
 msgid "Delete recipient group"
@@ -1521,7 +1518,7 @@ msgstr "Eigene MyContenido-Einstellungen bearbeiten"
 
 #: contenido/includes/cfg_language_de.inc.php:240
 msgid "Delete reminder item"
-msgstr "Wiedervorlage löschen"
+msgstr "Wiedervorlage l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:241
 msgid "Save todo item"
@@ -1541,7 +1538,7 @@ msgstr "Mandant l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:246
 msgid "Delete clientsetting"
-msgstr "Mandanteneinstellungen löschen"
+msgstr "Mandanteneinstellungen l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:247
 msgid "Edit clientsetting"
@@ -1557,7 +1554,7 @@ msgstr "Artikelspezifikation erstellen/bearbeiten"
 
 #: contenido/includes/cfg_language_de.inc.php:250
 msgid "Delete articlespecifications"
-msgstr "Artikelspezifikation löschen"
+msgstr "Artikelspezifikation l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:251
 msgid "Define default articlespecification"
@@ -1582,11 +1579,11 @@ msgstr "Frontendbenutzer erstellen"
 #: contenido/includes/cfg_language_de.inc.php:257
 #: contenido/includes/cfg_language_de.inc.php:263
 msgid "Delete frontenduser"
-msgstr "Frontendbenutzer löschen"
+msgstr "Frontendbenutzer l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:258
 msgid "Delete frontendgroup"
-msgstr "Frontendbenutzergruppe löschen"
+msgstr "Frontendbenutzergruppe l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:259
 msgid "Save frontendgroup"
@@ -1607,7 +1604,7 @@ msgstr "Frontendbenutzergruppe-Berechtigungen speichern"
 
 #: contenido/includes/cfg_language_de.inc.php:266
 msgid "Delete system property"
-msgstr "Systemeinstellung löschen"
+msgstr "Systemeinstellung l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:267
 msgid "Edit system property"
@@ -1627,7 +1624,7 @@ msgstr "Systemkonfiguration bearbeiten"
 
 #: contenido/includes/cfg_language_de.inc.php:272
 msgid "Do system purge"
-msgstr "Systembereinigung ausführen"
+msgstr "Systembereinigung ausf&uuml;hren"
 
 #: contenido/includes/cfg_language_de.inc.php:274
 msgid "Show log"
@@ -1639,7 +1636,7 @@ msgstr "Passwort vergessen?"
 
 #: contenido/includes/cfg_language_de.inc.php:279
 msgid "Delete note"
-msgstr "Notiz löschen"
+msgstr "Notiz l&ouml;schen"
 
 #: contenido/includes/cfg_language_de.inc.php:280
 msgid "Save note"
@@ -1670,7 +1667,7 @@ msgstr "Bitte Dateinamen angeben."
 #: contenido/includes/functions.file.php:218
 #, php-format
 msgid "Could not open file %s"
-msgstr "Konnte Datei %s nicht öffnen"
+msgstr "Konnte Datei %s nicht &ouml;ffnen"
 
 #: contenido/includes/functions.file.php:223
 #, php-format
@@ -1686,11 +1683,11 @@ msgstr "%s ist nicht schreibbar"
 #: contenido/includes/functions.file.php:255
 #, php-format
 msgid "Can not open file%s "
-msgstr "Konnte Datei %s nicht öffnen"
+msgstr "Konnte Datei %s nicht &ouml;ffnen"
 
 #: contenido/includes/functions.file.php:304
 msgid "Unable to change file access permission."
-msgstr "Konnte die Dateisystem-Berechtigungen nicht ändern."
+msgstr "Konnte die Dateisystem-Berechtigungen nicht &auml;ndern."
 
 #: contenido/includes/functions.file.php:308
 #, php-format
@@ -1714,12 +1711,12 @@ msgstr "Samstag"
 #: contenido/includes/functions.general.php:2177
 #, php-format
 msgid "MySQL Database not reachable for installation %s"
-msgstr "MySQL-Datenbank für die Installation %s ist nicht erreichbar "
+msgstr "MySQL-Datenbank f&uuml;r die Installation %s ist nicht erreichbar "
 
 #: contenido/includes/functions.general.php:2180
 #, php-format
 msgid "The MySQL Database for the installation %s is not reachable. Please check if this is a temporary problem or if it is a real fault."
-msgstr "Die MySQL-Datenbank für die Installation %s ist nicht erreichbar. Bitte prüfen Sie, ob dies ein temporäres Problem oder ein wirklicher Ausfall ist."
+msgstr "Die MySQL-Datenbank f&uuml;r die Installation %s ist nicht erreichbar. Bitte pr&uuml;fen Sie, ob dies ein tempor&auml;res Problem oder ein wirklicher Ausfall ist."
 
 #: contenido/includes/functions.lang.php:119
 msgid "Could not set the language-ID in the file 'config.php'. Please set the language manually."
@@ -1759,7 +1756,7 @@ msgstr "Kategorie ist offline"
 #: contenido/includes/functions.stat.php:653
 #: contenido/includes/grouprights_con.inc.php:241
 msgid "Open category"
-msgstr "Kategorie öffnen"
+msgstr "Kategorie &ouml;ffnen"
 
 #: contenido/includes/functions.stat.php:486
 msgid "Sum"
@@ -1946,7 +1943,7 @@ msgstr "GD-Bibliothek"
 
 #: contenido/includes/functions.system.php:639
 msgid "an error occured while sending your bug report! Please try again"
-msgstr "Ein Fehler ist während des Sendens des Bugreports aufgetreten! Bitte versuchen Sie es noch einmal"
+msgstr "Ein Fehler ist w&auml;hrend des Sendens des Bugreports aufgetreten! Bitte versuchen Sie es noch einmal"
 
 #: contenido/includes/functions.system.php:642
 msgid "bug report forwarded"
@@ -1954,7 +1951,7 @@ msgstr "Bug Report abgeschickt"
 
 #: contenido/includes/functions.system.php:648
 msgid "please fill out all mandatory fields"
-msgstr "Bitte alle Pflichtfelder ausfüllen"
+msgstr "Bitte alle Pflichtfelder ausf&uuml;llen"
 
 #: contenido/includes/functions.system.php:652
 msgid "please enter a valid E-Mail adress"
@@ -1962,24 +1959,24 @@ msgstr "Bitte geben Sie eine g&uuml;ltige E-Mail Adresse an"
 
 #: contenido/includes/functions.system.php:656
 msgid "you must agree the declaration of consent"
-msgstr "Sie müssen der Vereinbarung zustimmen"
+msgstr "Sie m&uuml;ssen der Vereinbarung zustimmen"
 
 #: contenido/includes/functions.upl.php:792
 msgid "OpenOffice.org Presentation"
-msgstr "OpenOffice.org Präsentation"
+msgstr "OpenOffice.org Pr&auml;sentation"
 
 #: contenido/includes/functions.upl.php:793
 msgid "OpenOffice.org Presentation Template"
-msgstr "OpenOffice.org Präsentationsvorlage"
+msgstr "OpenOffice.org Pr&auml;sentationsvorlage"
 
 #: contenido/includes/functions.upl.php:794
 msgid "Microsoft PowerPoint Screen Presentation"
-msgstr "Microsoft PowerPoint Bildschirmpräsentation"
+msgstr "Microsoft PowerPoint Bildschirmpr&auml;sentation"
 
 #: contenido/includes/functions.upl.php:795
 #: contenido/includes/functions.upl.php:797
 msgid "Microsoft PowerPoint Presentation Template"
-msgstr "Microsoft PowerPoint Präsentationsvorlage"
+msgstr "Microsoft PowerPoint Pr&auml;sentationsvorlage"
 
 #: contenido/includes/functions.upl.php:796
 msgid "KDE KPresenter Document"
@@ -1987,7 +1984,7 @@ msgstr "KDE KPresenter-Dokument"
 
 #: contenido/includes/functions.upl.php:800
 msgid "Microsoft Word Document or regular text file"
-msgstr "Microsoft Word-Dokument oder reguläre Textdatei"
+msgstr "Microsoft Word-Dokument oder regul&auml;re Textdatei"
 
 #: contenido/includes/functions.upl.php:801
 msgid "Microsoft Word Template"
@@ -2198,7 +2195,7 @@ msgstr "Alle markieren"
 
 #: contenido/includes/grouprights_con.inc.php:237
 msgid "Apply rights for this category to all categories on the same level or above"
-msgstr "Rechte dieser Kategorie allen Kategorien auf derselben Ebene oder darüber zuweisen"
+msgstr "Rechte dieser Kategorie allen Kategorien auf derselben Ebene oder dar&uuml;ber zuweisen"
 
 #: contenido/includes/grouprights_con.inc.php:238
 msgid "Apply rights for this category to all categories below the current category"
@@ -2264,7 +2261,7 @@ msgstr "Keine definierten Eigenschaften"
 
 #: contenido/includes/include.clientsettings.php:181
 msgid "Add new variable"
-msgstr "Neue Variable hinzufügen"
+msgstr "Neue Variable hinzuf&uuml;gen"
 
 #: contenido/includes/include.client_artspec.php:79
 msgid "Article specification"
@@ -2318,7 +2315,7 @@ msgstr "Konnte die Datei config.php nicht schreiben"
 #: contenido/includes/include.client_edit.php:126
 #, php-format
 msgid "The directory %s already exists. The client was created, but you have to copy the frontend-template yourself"
-msgstr "Das Verzeichnis %s existiert bereits. Der Mandant wurde erstellt, das Frontend-Template muß jedoch noch dorthin kopiert werden"
+msgstr "Das Verzeichnis %s existiert bereits. Der Mandant wurde erstellt, das Frontend-Template mu&szlig; jedoch noch dorthin kopiert werden"
 
 #: contenido/includes/include.client_edit.php:145
 msgid "You changed the client path. You might need to copy the frontend to the new location"
@@ -2413,7 +2410,7 @@ msgstr "Vorschau"
 #: contenido/includes/include.CMS_LINK.php:142
 #, php-format
 msgid "Edit link for container %s"
-msgstr "Link für Container %s bearbeiten"
+msgstr "Link f&uuml;r Container %s bearbeiten"
 
 #: contenido/includes/include.CMS_LINK.php:153
 msgid "External link"
@@ -2503,7 +2500,7 @@ msgstr "Als normalen Artikel markieren"
 #: contenido/includes/include.con_art_overview.php:581
 #, php-format
 msgid "Reminder for Article '%s'"
-msgstr "Wiedervorlage für Artikel '%s'"
+msgstr "Wiedervorlage f&uuml;r Artikel '%s'"
 
 #: contenido/includes/include.con_art_overview.php:584
 #, php-format
@@ -2511,7 +2508,7 @@ msgid ""
 "Reminder for Article '%s'\n"
 "Category: %s"
 msgstr ""
-"Wiedervorlage für Artikel '%s'\n"
+"Wiedervorlage f&uuml;r Artikel '%s'\n"
 "Kategorie: %s"
 
 #: contenido/includes/include.con_art_overview.php:595
@@ -2574,15 +2571,15 @@ msgstr "Neuen Artikel erstellen"
 
 #: contenido/includes/include.con_editcontent.php:216
 msgid "Close editor"
-msgstr "Editor schließen"
+msgstr "Editor schlie&szlig;en"
 
 #: contenido/includes/include.con_editcontent.php:217
 msgid "Close editor and save changes"
-msgstr "Editor schließen und Änderungen speichern"
+msgstr "Editor schlie&szlig;en und Ãnderungen speichern"
 
 #: contenido/includes/include.con_editcontent.php:218
 msgid "Do you want to save changes?"
-msgstr "Möchten Sie die Änderungen speichern?"
+msgstr "M&ouml;chten Sie die Ãnderungen speichern?"
 
 #: contenido/includes/include.con_editcontent.php:380
 msgid "No template assigned to the category<br>and/or the article"
@@ -2602,7 +2599,7 @@ msgstr "Artikellink"
 
 #: contenido/includes/include.con_edit_form.php:260
 msgid "Select an entry to display link"
-msgstr "Eintrag wählen, um einen Link anzuzeigen"
+msgstr "Eintrag w&auml;hlen, um einen Link anzuzeigen"
 
 #: contenido/includes/include.con_edit_form.php:261
 msgid "Article only"
@@ -2630,19 +2627,19 @@ msgstr "Erstelldatum"
 
 #: contenido/includes/include.con_edit_form.php:288
 msgid "Author (Modifier)"
-msgstr "verändert von"
+msgstr "ver&auml;ndert von"
 
 #: contenido/includes/include.con_edit_form.php:289
 msgid "Last modified"
-msgstr "Änderungsdatum"
+msgstr "Ãnderungsdatum"
 
 #: contenido/includes/include.con_edit_form.php:293
 msgid "Publishing date"
-msgstr "Veröffentlichungsdatum"
+msgstr "Ver&ouml;ffentlichungsdatum"
 
 #: contenido/includes/include.con_edit_form.php:300
 msgid "Publisher"
-msgstr "veröffentlicht von"
+msgstr "ver&ouml;ffentlicht von"
 
 #: contenido/includes/include.con_edit_form.php:308
 msgid "Redirect"
@@ -2658,23 +2655,23 @@ msgstr "Mehrfachzuordnung entfernen"
 
 #: contenido/includes/include.con_edit_form.php:394
 msgid "Do you really want to remove the assignments to all categories except the current one?"
-msgstr "Möchten Sie wirklich alle Zuweisungen zu allen Kategorien außer der aktuellen entfernen?"
+msgstr "M&ouml;chten Sie wirklich alle Zuweisungen zu allen Kategorien au&szlig;er der aktuellen entfernen?"
 
 #: contenido/includes/include.con_edit_form.php:410
 msgid "Language parts of the articles are existing in other languages and are online. To change the category assignment, please set the other articles offline first."
-msgstr "Sprachabhängige Teile dieses Artikels existieren in anderen Sprachen und sind online. Um die Kategoriezuweisung zu verändern, setzen Sie die anderen sprachabhängigen Teile zuerst offline."
+msgstr "Sprachabh&auml;ngige Teile dieses Artikels existieren in anderen Sprachen und sind online. Um die Kategoriezuweisung zu ver&auml;ndern, setzen Sie die anderen sprachabh&auml;ngigen Teile zuerst offline."
 
 #: contenido/includes/include.con_edit_form.php:549
-msgid "Endzeitpunkt wählen"
-msgstr "Endzeitpunkt wählen"
+msgid "Endzeitpunkt w&auml;hlen"
+msgstr "Endzeitpunkt w&auml;hlen"
 
 #: contenido/includes/include.con_edit_form.php:550
-msgid "Startzeitpunkt wählen"
-msgstr "Startzeitpunkt wählen"
+msgid "Startzeitpunkt w&auml;hlen"
+msgstr "Startzeitpunkt w&auml;hlen"
 
 #: contenido/includes/include.con_edit_form.php:648
 msgid "Select date"
-msgstr "Datum auswählen"
+msgstr "Datum ausw&auml;hlen"
 
 #: contenido/includes/include.con_edit_form.php:685
 msgid "Summary"
@@ -2686,7 +2683,7 @@ msgstr "Ignorieren"
 
 #: contenido/includes/include.con_left_top.php:134
 msgid "Date published"
-msgstr "Veröffentlichungsdatum"
+msgstr "Ver&ouml;ffentlichungsdatum"
 
 #: contenido/includes/include.con_left_top.php:137
 msgid "Article Search"
@@ -2765,7 +2762,7 @@ msgstr "Online / Offline"
 #: contenido/includes/include.con_left_top.php:406
 #: contenido/includes/include.con_left_top.php:407
 msgid "Lock / Unlock"
-msgstr "Schützen / Freigeben"
+msgstr "Sch&uuml;tzen / Freigeben"
 
 #: contenido/includes/include.con_left_top.php:424
 msgid "close all"
@@ -2821,7 +2818,7 @@ msgstr "Standardgruppe"
 
 #: contenido/includes/include.frontend.group_menu.php:51
 msgid "Delete frontend group"
-msgstr "Frontend-Gruppe löschen"
+msgstr "Frontend-Gruppe l&ouml;schen"
 
 #: contenido/includes/include.frontend.group_menu.php:52
 #, php-format
@@ -2830,12 +2827,12 @@ msgstr "M&ouml;chten Sie die folgende Frontend-Gruppe wirklich l&ouml;schen:<br>
 
 #: contenido/includes/include.frontend.group_rights.php:47
 msgid "Invalid plugin"
-msgstr "Ungültiges Plugin"
+msgstr "Ung&uuml;ltiges Plugin"
 
 #: contenido/includes/include.frontend.group_rights.php:96
 #, php-format
 msgid "Permissions for plugin '%s'"
-msgstr "Rechte für Plugin '%s'"
+msgstr "Rechte f&uuml;r Plugin '%s'"
 
 #: contenido/includes/include.frontend.group_rights.php:101
 msgid "(All)"
@@ -2925,7 +2922,7 @@ msgstr "Konnte neuen Benutzernamen nicht setzen: Benutzername existiert bereits"
 
 #: contenido/includes/include.frontend.user_edit.php:121
 msgid "Could not set new password: Passwords don't match"
-msgstr "Konnte neues Passwort nicht setzen: Passwort und Bestätigung stimmen nicht überein"
+msgstr "Konnte neues Passwort nicht setzen: Passwort und Best&auml;tigung stimmen nicht &uuml;berein"
 
 #: contenido/includes/include.frontend.user_edit.php:191
 msgid "User name"
@@ -2958,7 +2955,7 @@ msgstr "Gruppenzugeh&ouml;rigkeit"
 
 #: contenido/includes/include.frontend.user_edit.php:261
 msgid "Last modified by"
-msgstr "Zuletzt geändert von"
+msgstr "Zuletzt ge&auml;ndert von"
 
 #: contenido/includes/include.grouprights_create.php:57
 msgid "New Group"
@@ -3050,12 +3047,12 @@ msgstr "Datei ist nicht lesbar"
 
 #: contenido/includes/include.html_tpl_files_overview.php:132
 msgid "Delete File"
-msgstr "Datei löschen"
+msgstr "Datei l&ouml;schen"
 
 #: contenido/includes/include.html_tpl_files_overview.php:133
 #, php-format
 msgid "Do you really want to delete the following file:<br><br>%s<br>"
-msgstr "Möchten Sie die folgende Datei wirklich löschen:<br><br><b>%s</b>"
+msgstr "M&ouml;chten Sie die folgende Datei wirklich l&ouml;schen:<br><br><b>%s</b>"
 
 #: contenido/includes/include.html_tpl_files_overview.php:156
 msgid "Directory is not existing or readable!"
@@ -3162,11 +3159,11 @@ msgstr "Container %s wurde %sx definiert"
 
 #: contenido/includes/include.lay_edit_form.php:151
 msgid "The body tag does not exist in the layout. This is a requirement for the in-site editing."
-msgstr "Der body-Tag existiert nicht in diesem Layout. Dies ist eine Voraussetzung für das In-Site-Editing."
+msgstr "Der body-Tag existiert nicht in diesem Layout. Dies ist eine Voraussetzung f&uuml;r das In-Site-Editing."
 
 #: contenido/includes/include.lay_edit_form.php:157
 msgid "The head tag does not exist in the layout. This is a requirement for the in-site editing."
-msgstr "Der head-Tag existiert nicht in diesem Layout. Dies ist eine Voraussetzung für das In-Site-Editing."
+msgstr "Der head-Tag existiert nicht in diesem Layout. Dies ist eine Voraussetzung f&uuml;r das In-Site-Editing."
 
 #: contenido/includes/include.lay_edit_form.php:196
 #: contenido/includes/include.lay_history.php:87
@@ -3196,7 +3193,7 @@ msgstr "Layout wird benutzt, l&ouml;schen nicht m&ouml;glich"
 
 #: contenido/includes/include.lay_overview.php:93
 msgid "Click for more information about usage"
-msgstr "Klicken Sie für mehr Information über Verwendung"
+msgstr "Klicken Sie f&uuml;r mehr Information &uuml;ber Verwendung"
 
 #: contenido/includes/include.lay_overview.php:103
 #, php-format
@@ -3296,7 +3293,7 @@ msgstr "Ausgabe"
 
 #: contenido/includes/include.mod_edit_form.php:405
 msgid "This module uses variables and/or functions which are probably not available in this Contenido version. Please make sure that you use up-to-date modules."
-msgstr "Dieses Modul verwendet Variablen und/oder Funktionen, die in dieser Contenido-Version nicht mehr vorhanden sind. Bitte stellen Sie sicher, daß sie aktuelle Module verwenden."
+msgstr "Dieses Modul verwendet Variablen und/oder Funktionen, die in dieser Contenido-Version nicht mehr vorhanden sind. Bitte stellen Sie sicher, da&szlig; sie aktuelle Module verwenden."
 
 #: contenido/includes/include.mod_edit_form.php:414
 msgid "Import from file"
@@ -3479,11 +3476,11 @@ msgstr "Modul &uuml;bersetzen \"%s\""
 
 #: contenido/includes/include.mod_translate.php:148
 msgid "Translated Name"
-msgstr "Übersetzter Name"
+msgstr "Ãbersetzter Name"
 
 #: contenido/includes/include.mod_translate.php:158
 msgid "Original module string"
-msgstr "Ursprünglicher Modulstring"
+msgstr "Urspr&uuml;nglicher Modulstring"
 
 #: contenido/includes/include.mod_translate.php:158
 #, php-format
@@ -3492,7 +3489,7 @@ msgstr "&Uuml;bersetzung f&uuml;r %s"
 
 #: contenido/includes/include.mod_translate.php:166
 msgid "Hint: Hit ALT+SHIFT+S to save the translated entry and advance to the next string."
-msgstr "Hinweis: Drücken Sie ALT+SHIFT+S, um den aktuellen Eintrag zu speichern und zur nächsten Zeichenkette zu springen."
+msgstr "Hinweis: Dr&uuml;cken Sie ALT+SHIFT+S, um den aktuellen Eintrag zu speichern und zur n&auml;chsten Zeichenkette zu springen."
 
 #: contenido/includes/include.mod_translate.php:167
 msgid "String list"
@@ -3568,7 +3565,7 @@ msgstr "%% fertig"
 
 #: contenido/includes/include.mycontenido.tasks.php:276
 msgid "Due in"
-msgstr "Fällig in"
+msgstr "F&auml;llig in"
 
 #: contenido/includes/include.mycontenido.tasks.php:302
 msgid "Unnamed item"
@@ -3585,7 +3582,7 @@ msgstr "Kein Status gesetzt"
 #: contenido/includes/include.mycontenido.tasks.php:338
 #: contenido/includes/include.newsletter_jobs_details.php:225
 msgid "Delete item"
-msgstr "Element löschen"
+msgstr "Element l&ouml;schen"
 
 #: contenido/includes/include.mycontenido.tasks.php:345
 msgid "Edit item"
@@ -3593,7 +3590,7 @@ msgstr "Element bearbeiten"
 
 #: contenido/includes/include.mycontenido.tasks.php:376
 msgid "Restrict display"
-msgstr "Anzeige einschränken"
+msgstr "Anzeige einschr&auml;nken"
 
 #: contenido/includes/include.mycontenido.tasks.php:386
 msgid "Hide done tasks"
@@ -3617,7 +3614,7 @@ msgstr "Passw&ouml;rter stimmen nicht &uuml;berein"
 
 #: contenido/includes/include.mycontenido_settings.php:77
 msgid "Password changed"
-msgstr "Passwort geändert"
+msgstr "Passwort ge&auml;ndert"
 
 #: contenido/includes/include.mycontenido_settings.php:97
 #, php-format
@@ -3644,11 +3641,11 @@ msgstr "WYSIWYG-Editor benutzen"
 
 #: contenido/includes/include.mycontenido_settings.php:128
 msgid "The format is equal to PHP's date() function."
-msgstr "Das Format stimmt mit dem der PHP date()-Funktion überein"
+msgstr "Das Format stimmt mit dem der PHP date()-Funktion &uuml;berein"
 
 #: contenido/includes/include.mycontenido_settings.php:130
 msgid "Common date formattings"
-msgstr "Gebräuchliche Datumsformatierungen"
+msgstr "Gebr&auml;uchliche Datumsformatierungen"
 
 #: contenido/includes/include.newsletter_edit.php:53
 msgid "-- new newsletter --"
@@ -3656,11 +3653,11 @@ msgstr "-- Neuer Newsletter --"
 
 #: contenido/includes/include.newsletter_edit.php:125
 msgid "Newsletter dispatch job has been added for this newsletter"
-msgstr "Versand-Job für diesen Newsletter wurde erzeugt"
+msgstr "Versand-Job f&uuml;r diesen Newsletter wurde erzeugt"
 
 #: contenido/includes/include.newsletter_edit.php:127
 msgid "Newsletter dispatch job has been not been added! Please check newsletter details"
-msgstr "Versand-Job für diesen Newsletter wurde nicht erzeugt! Bitte die Angaben &uuml;berpr&uuml;fen"
+msgstr "Versand-Job f&uuml;r diesen Newsletter wurde nicht erzeugt! Bitte die Angaben &uuml;berpr&uuml;fen"
 
 #: contenido/includes/include.newsletter_edit.php:174
 msgid "Test newsletter has been sent to:"
@@ -3717,7 +3714,7 @@ msgstr "Hinweis: Dr&uuml;cken und halten Sie die Taste <Strg>, um mehrere Eintr&
 #: contenido/includes/include.newsletter_jobs_details.php:371
 #: contenido/includes/include.newsletter_left_top.php:77
 msgid "Recipients"
-msgstr "Empfänger"
+msgstr "Empf&auml;nger"
 
 #: contenido/includes/include.newsletter_edit.php:465
 #: contenido/includes/include.newsletter_jobs_details.php:349
@@ -3740,7 +3737,7 @@ msgstr "Option muss &uuml;ber eine Systemeinstellung aktiviert werden - siehe te
 
 #: contenido/includes/include.newsletter_edit.php:546
 msgid "Note: Set to 0 to send chunks manually."
-msgstr "Hinweis: 0 auswählen um Blöcke manuell zu versenden"
+msgstr "Hinweis: 0 ausw&auml;hlen um Bl&ouml;cke manuell zu versenden"
 
 #: contenido/includes/include.newsletter_edit.php:550
 msgid "Welcome-Newsletter"
@@ -3907,7 +3904,7 @@ msgstr "Senden abbrechen"
 
 #: contenido/includes/include.newsletter_jobs_details.php:70
 msgid "Send next chunk"
-msgstr "Nächster Block senden"
+msgstr "N&auml;chster Block senden"
 
 #: contenido/includes/include.newsletter_jobs_details.php:90
 #, php-format
@@ -3921,7 +3918,7 @@ msgstr "Alle"
 
 #: contenido/includes/include.newsletter_jobs_details.php:177
 msgid "Recipient"
-msgstr "Empfänger"
+msgstr "Empf&auml;nger"
 
 #: contenido/includes/include.newsletter_jobs_details.php:177
 msgid "Sent"
@@ -4026,7 +4023,7 @@ msgstr "Versand"
 
 #: contenido/includes/include.newsletter_left_top.php:86
 msgid "Recipient groups"
-msgstr "Empfänger-Gruppen"
+msgstr "Empf&auml;nger-Gruppen"
 
 #: contenido/includes/include.newsletter_left_top.php:135
 #: contenido/includes/include.newsletter_left_top.php:137
@@ -4110,7 +4107,7 @@ msgstr "Nachricht bearbeiten"
 
 #: contenido/includes/include.note.popup.php:63
 msgid "Add note"
-msgstr "Notiz hinzufügen"
+msgstr "Notiz hinzuf&uuml;gen"
 
 #: contenido/includes/include.note.popup.php:75
 msgid "No category"
@@ -4163,7 +4160,7 @@ msgstr "Empf&auml;nger hinzuf&uuml;gen"
 
 #: contenido/includes/include.recipients.group_edit.php:554
 msgid "Note: Hold &lt;Ctrl&gt; to<br>select multiple items."
-msgstr "Hinweis: Halten Sie &lt;Ctrl&gt; gedr&uuml;ckt, um<br>mehrere Elemente auszuwählen."
+msgstr "Hinweis: Halten Sie &lt;Ctrl&gt; gedr&uuml;ckt, um<br>mehrere Elemente auszuw&auml;hlen."
 
 #: contenido/includes/include.recipients.group_menu.php:134
 msgid "Do you really want to delete the following newsletter recipient group:<br>"
@@ -4171,7 +4168,7 @@ msgstr "Sind Sie sicher, dass Sie die folgende Gruppe l&ouml;schen m&ouml;chten:
 
 #: contenido/includes/include.recipients_edit.php:47
 msgid "-- new recipient --"
-msgstr "-- Neuer Empfänger --"
+msgstr "-- Neuer Empf&auml;nger --"
 
 #: contenido/includes/include.recipients_edit.php:62
 #, php-format
@@ -4250,7 +4247,7 @@ msgstr "ja"
 #: contenido/includes/include.recipients_import.php:321
 #, php-format
 msgid "%d recipients added, %d recipients skipped (email already exists) and %d invalid recipients/e-mail adresses ignored. Invalid recipients are shown (if any)."
-msgstr "%d Empf&auml;nger erg&auml;nzt, %d Empf&auml;nger übergangen (Empf&auml;nger-E-Mail-Adresse wird bereits verwendet) und %d ung&uuml;tige Emf&auml;nger/E-Mail-Adressen ignoriert. Ggf. ung&uuml;ltige Empf&auml;nger werden angezeigt."
+msgstr "%d Empf&auml;nger erg&auml;nzt, %d Empf&auml;nger &uuml;bergangen (Empf&auml;nger-E-Mail-Adresse wird bereits verwendet) und %d ung&uuml;tige Emf&auml;nger/E-Mail-Adressen ignoriert. Ggf. ung&uuml;ltige Empf&auml;nger werden angezeigt."
 
 #: contenido/includes/include.recipients_import.php:337
 msgid "Tab"
@@ -4351,12 +4348,12 @@ msgstr "WYSIWYG-Editor benutzen"
 #: contenido/includes/include.rights_create.php:290
 #: contenido/includes/include.rights_overview.php:398
 msgid "Valid from"
-msgstr "Gültig von"
+msgstr "G&uuml;ltig von"
 
 #: contenido/includes/include.rights_create.php:307
 #: contenido/includes/include.rights_overview.php:418
 msgid "Valid to"
-msgstr "Gültig bis"
+msgstr "G&uuml;ltig bis"
 
 #: contenido/includes/include.rights_overview.php:75
 #, fuzzy
@@ -4365,9 +4362,8 @@ msgstr "Sprache gel&ouml;scht"
 
 #: contenido/includes/include.rights_overview.php:144
 #: contenido/includes/include.rights_overview.php:149
-#, fuzzy
 msgid "An error occured while saving user info."
-msgstr "Ein Fehler ist während des Sendens des Bugreports aufgetreten! Bitte versuchen Sie es noch einmal"
+msgstr "Ein Fehler ist w&auml;hrend des Sendens des Bugreports aufgetreten! Bitte versuchen Sie es noch einmal"
 
 #: contenido/includes/include.rights_overview.php:436
 msgid "This account is currently inactive."
@@ -4413,7 +4409,7 @@ msgstr "Hits in dieser Sprache"
 #: contenido/includes/include.str_overview.php:511
 #, php-format
 msgid "Do you really want to duplicate the following category:<br><br><b>%s</b><br><br>Notice: The duplicate process can take up to several minutes, depending on how many subitems and articles you've got."
-msgstr "Soll die folgende Kategorie wirklich dupliziert werden:<br><br><b>%s</b><br><br>Hinweis: Der Duplizierungsprozess kann mehrere Minuten dauern, Abhängig von der Anzahl der Artikel und Unterkategorien."
+msgstr "Soll die folgende Kategorie wirklich dupliziert werden:<br><br><b>%s</b><br><br>Hinweis: Der Duplizierungsprozess kann mehrere Minuten dauern, Abh&auml;ngig von der Anzahl der Artikel und Unterkategorien."
 
 #: contenido/includes/include.str_overview.php:513
 #, php-format
@@ -4570,7 +4566,7 @@ msgstr "Mandant"
 #: contenido/includes/include.system_purge.php:141
 #, php-format
 msgid "The entries of %s table are not deleted!"
-msgstr "Einträge von der Tabelle %s wurden nicht gelöscht!"
+msgstr "Eintr&auml;ge von der Tabelle %s wurden nicht gel&ouml;scht!"
 
 #: contenido/includes/include.system_purge.php:93
 #, php-format
@@ -4701,7 +4697,7 @@ msgstr "Gesendet"
 #: contenido/includes/include.system_sysvalues.php:68
 #: contenido/includes/include.system_sysvalues.php:104
 msgid "No error log entries found"
-msgstr "Keine Einträge im Errorlog gefunden"
+msgstr "Keine Eintr&auml;ge im Errorlog gefunden"
 
 #: contenido/includes/include.system_sysvalues.php:75
 msgid "No error log file found"
@@ -4709,11 +4705,11 @@ msgstr "Keine Errorlog-Datei gefunden"
 
 #: contenido/includes/include.system_sysvalues.php:97
 msgid "No install error log entries found"
-msgstr "Keine Einträge im install error log gefunden."
+msgstr "Keine Eintr&auml;ge im install error log gefunden."
 
 #: contenido/includes/include.todo.popup.php:58
 msgid "Add TODO item"
-msgstr "Todo Eintrag hinzufügen"
+msgstr "Todo Eintrag hinzuf&uuml;gen"
 
 #: contenido/includes/include.todo.popup.php:80
 msgid "eMail notification"
@@ -4789,7 +4785,7 @@ msgstr "Online"
 
 #: contenido/includes/include.upl_dirs_overview.php:153
 msgid "Failed to delete the following files:"
-msgstr "Die folgenden Dateien konnten nicht gelöscht werden:"
+msgstr "Die folgenden Dateien konnten nicht gel&ouml;scht werden:"
 
 #: contenido/includes/include.upl_dirs_overview.php:159
 #, php-format
@@ -4815,7 +4811,7 @@ msgstr "Kategorien"
 #: contenido/includes/include.upl_dirs_overview.php:381
 #: contenido/includes/include.upl_dirs_overview.php:528
 msgid "Delete directory"
-msgstr "Verzeichnis löschen"
+msgstr "Verzeichnis l&ouml;schen"
 
 #: contenido/includes/include.upl_dirs_overview.php:381
 #: contenido/includes/include.upl_dirs_overview.php:528
@@ -4852,7 +4848,7 @@ msgstr "Medienname"
 
 #: contenido/includes/include.upl_edit.php:88
 msgid "Keywords"
-msgstr "Schlüsselwörter"
+msgstr "Schl&uuml;sselw&ouml;rter"
 
 #: contenido/includes/include.upl_edit.php:89
 msgid "Internal notes"
@@ -4872,7 +4868,7 @@ msgstr "Zeitsteuerung"
 
 #: contenido/includes/include.upl_edit.php:192
 msgid "Protected for non-logged in users"
-msgstr "Geschützt für nichteingeloggte Benutzer"
+msgstr "Gesch&uuml;tzt f&uuml;r nichteingeloggte Benutzer"
 
 #: contenido/includes/include.upl_edit.php:201
 msgid "Use time control"
@@ -4914,7 +4910,7 @@ msgstr "Dateiname / Beschreibung"
 #: contenido/includes/include.upl_search_results.php:223
 #: contenido/includes/include.upl_search_results.php:226
 msgid "Size"
-msgstr "Größe"
+msgstr "Gr&ouml;&szlig;e"
 
 #: contenido/includes/include.upl_files_overview.php:491
 msgid "Delete Files"
@@ -4926,7 +4922,7 @@ msgstr "Sind Sie sich sicher, dass Sie die gew&auml;hlten Dateien wirklich l&oum
 
 #: contenido/includes/include.upl_files_overview.php:492
 msgid "Delete selected files"
-msgstr "Markierte Dateien löschen"
+msgstr "Markierte Dateien l&ouml;schen"
 
 #: contenido/includes/include.upl_files_overview.php:509
 msgid "Flip Selection"
@@ -4958,7 +4954,7 @@ msgstr "Vorherige Seite"
 #: contenido/includes/include.upl_files_overview.php:725
 #: contenido/includes/include.upl_search_results.php:452
 msgid "Next Page"
-msgstr "Nächste Seite"
+msgstr "N&auml;chste Seite"
 
 #: contenido/includes/include.upl_files_overview.php:765
 #: contenido/includes/include.upl_search_results.php:490
@@ -5067,9 +5063,8 @@ msgid "Set category online"
 msgstr "Kategorie online setzen"
 
 #: contenido/plugins/content_allocation/classes/class.content_allocation_treeview.php:138
-#, fuzzy
 msgid "One or more subcategories exist, unable to delete"
-msgstr "Mindestens eine Unterkategorie existiert, löschen nicht möglich"
+msgstr "Mindestens eine Unterkategorie existiert, l&ouml;schen nicht m&ouml;glich"
 
 #: contenido/plugins/content_allocation/classes/class.content_allocation_treeview.php:140
 msgid "Are you sure to delete the following category"
@@ -5140,9 +5135,8 @@ msgid "%Y-%m-%d"
 msgstr "%d.%m.%Y"
 
 #: contenido/plugins/linkchecker/includes/include.linkchecker.php:299
-#, fuzzy
 msgid "<strong>No errors</strong> were found."
-msgstr "Keine Einträge im Errorlog gefunden"
+msgstr "Keine Eintr&auml;ge im Errorlog gefunden"
 
 #: contenido/plugins/linkchecker/includes/include.linkchecker.php:303
 msgid "Total checked links"
@@ -5192,9 +5186,8 @@ msgid "dbfs: no matches found in the dbfs database."
 msgstr ""
 
 #: contenido/plugins/linkchecker/includes/include.linkchecker.php:383
-#, fuzzy
 msgid "No errors for this type."
-msgstr "Keine Einträge im Errorlog gefunden"
+msgstr "Keine Eintr&auml;ge im Errorlog gefunden"
 
 #: contenido/plugins/linkchecker/includes/include.linkchecker_whitelist.php:68
 msgid "%Y-%m-%d, %I:%M%S %p"
@@ -5394,9 +5387,8 @@ msgid "Create Workflowstepuser"
 msgstr "Frontendbenutzer erstellen"
 
 #: contenido/plugins/workflow/includes/config.plugin.php:57
-#, fuzzy
 msgid "Delete Workflowstepuser"
-msgstr "Frontendbenutzer löschen"
+msgstr "Frontendbenutzer l&ouml;schen"
 
 #: contenido/plugins/workflow/includes/config.plugin.php:58
 #, fuzzy
@@ -5465,15 +5457,14 @@ msgid "Workflow name"
 msgstr "Gruppenname"
 
 #: contenido/plugins/workflow/includes/include.workflow_list.php:72
-#, fuzzy, php-format
+#, php-format
 msgid "Do you really want to delete the following workflow:<br><br>%s<br>"
-msgstr "Möchten Sie die folgende Datei wirklich löschen:<br><br><b>%s</b>"
+msgstr "M&ouml;chten Sie die folgende Datei wirklich l&ouml;schen:<br><br><b>%s</b>"
 
 #: contenido/plugins/workflow/includes/include.workflow_steps.php:46
 #: contenido/plugins/workflow/includes/include.workflow_steps.php:388
-#, fuzzy
 msgid "Add User"
-msgstr "Benutzer hinzufügen"
+msgstr "Benutzer hinzuf&uuml;gen"
 
 #: contenido/plugins/workflow/includes/include.workflow_steps.php:78
 #, fuzzy
@@ -5697,7 +5688,7 @@ msgstr "Frame"
 #~ msgstr "Farbauswahl"
 
 #~ msgid "Insert Link"
-#~ msgstr "Link einfügen"
+#~ msgstr "Link einf&uuml;gen"
 
 #~ msgid "PDF"
 #~ msgstr "PDF"
@@ -5715,13 +5706,13 @@ msgstr "Frame"
 #~ msgstr "URL-Namen bearbeiten"
 
 #~ msgid "Take over module history"
-#~ msgstr "Modulhistorie übernehmen"
+#~ msgstr "Modulhistorie &uuml;bernehmen"
 
 #~ msgid "Filter users"
 #~ msgstr "Benutzer filtern"
 
 #~ msgid "Delete frontenduser in frontendgroup"
-#~ msgstr "Frontendbenutzer in Gruppe löschen"
+#~ msgstr "Frontendbenutzer in Gruppe l&ouml;schen"
 
 #~ msgid "Client / Language"
 #~ msgstr "Mandant / Sprache"
@@ -5786,7 +5777,7 @@ msgstr "Frame"
 #~ msgstr "Wird benutzt"
 
 #~ msgid "Translate module \"%s\""
-#~ msgstr "Modul \"%s\" übersetzen"
+#~ msgstr "Modul \"%s\" &uuml;bersetzen"
 
 #~ msgid "Use JAVA Module Editor (experimental)"
 #~ msgstr "JAVA-Moduleditor verwenden (experimentell)"
@@ -5812,14 +5803,14 @@ msgstr "Frame"
 #~ msgstr "Kategorie freigeben"
 
 #~ msgid "One or more articles are existing, unable to delete"
-#~ msgstr "Ein oder mehrere Artikel existieren, löschen nicht möglich"
+#~ msgstr "Ein oder mehrere Artikel existieren, l&ouml;schen nicht m&ouml;glich"
 
 #~ msgid ""
 #~ "One or more subtrees and one or more articles are existing, unable to "
 #~ "delete."
 #~ msgstr ""
 #~ "Mindestens eine Unterkategorie sowie mindestens ein Artikel existieren, "
-#~ "löschen nicht möglich"
+#~ "l&ouml;schen nicht m&ouml;glich"
 
 #~ msgid "Move tree"
 #~ msgstr "Baum verschieben"
@@ -5864,10 +5855,10 @@ msgstr "Frame"
 #~ msgstr "Vorheriger Monat"
 
 #~ msgid "Next month"
-#~ msgstr "Nächster Monat"
+#~ msgstr "N&auml;chster Monat"
 
 #~ msgid "Next year"
-#~ msgstr "Nächstes Jahr"
+#~ msgstr "N&auml;chstes Jahr"
 
 #~ msgid "Time"
 #~ msgstr "Zeit"
@@ -5894,13 +5885,13 @@ msgstr "Frame"
 #~ msgstr "Telefon"
 
 #~ msgid "Conceptual Project Management / Testing"
-#~ msgstr "Konzeptionelles Projektmanagement / Qualitätssicherung"
+#~ msgstr "Konzeptionelles Projektmanagement / Qualit&auml;tssicherung"
 
 #~ msgid "Technical Project Management / Testing"
-#~ msgstr "Technisches Projektmanagement / Qualitätssicherung"
+#~ msgstr "Technisches Projektmanagement / Qualit&auml;tssicherung"
 
 #~ msgid "Limit"
-#~ msgstr "Beschränkung"
+#~ msgstr "Beschr&auml;nkung"
 
 #~ msgid "Date"
 #~ msgstr "Datum"
@@ -5960,7 +5951,7 @@ msgstr "Frame"
 #~ msgstr "Anfrage senden / Speichern"
 
 #~ msgid "Change to MyContenido (Personal Settings)"
-#~ msgstr "Zu MyContenido wechseln (Persönliche Einstellungen)"
+#~ msgstr "Zu MyContenido wechseln (Pers&ouml;nliche Einstellungen)"
 
 #~ msgid "Information (Impressum)"
 #~ msgstr "Information (Impressum)"
@@ -5972,22 +5963,22 @@ msgstr "Frame"
 #~ msgstr "Artikel ist Startartikel / kein Startartikel"
 
 #~ msgid "Set template / Add to To-Do list"
-#~ msgstr "Template setzen / zur Todo-Liste hinzufügen"
+#~ msgstr "Template setzen / zur Todo-Liste hinzuf&uuml;gen"
 
 #~ msgid "Configure article properties"
 #~ msgstr "Artikeleigenschaften bearbeiten"
 
 #~ msgid "Element is online / offline (change through click)"
-#~ msgstr "Element ist online / offline (Durch Klick ändern)"
+#~ msgstr "Element ist online / offline (Durch Klick &auml;ndern)"
 
 #~ msgid "Element is protected / accessible (change through click)"
-#~ msgstr "Element ist geschützt / erreichbar (Ändern durch Klick)"
+#~ msgstr "Element ist gesch&uuml;tzt / erreichbar (Ãndern durch Klick)"
 
 #~ msgid "Lock / unlock folder (change through click)"
-#~ msgstr "Kategorie sperren / entsperren (Ändern durch Klick)"
+#~ msgstr "Kategorie sperren / entsperren (Ãndern durch Klick)"
 
 #~ msgid "Set folder offline / online (change through click)"
-#~ msgstr "Ordner offline / online setzen (Ändern durch Klick)"
+#~ msgstr "Ordner offline / online setzen (Ãndern durch Klick)"
 
 #~ msgid "Create category"
 #~ msgstr "Kategorie erzeugen"
@@ -5996,28 +5987,28 @@ msgstr "Frame"
 #~ msgstr "Kategorie online / offline setzen"
 
 #~ msgid "Category is online and unprotected / protected"
-#~ msgstr "Kategorie ist online und ungeschützt / geschützt"
+#~ msgstr "Kategorie ist online und ungesch&uuml;tzt / gesch&uuml;tzt"
 
 #~ msgid "Category is offline and unprotected / protected"
-#~ msgstr "Kategorie ist offline und ungeschützt / geschützt"
+#~ msgstr "Kategorie ist offline und ungesch&uuml;tzt / gesch&uuml;tzt"
 
 #~ msgid "Category is online, contains an error and is unprotected / protected"
 #~ msgstr ""
-#~ "Kategorie ist online, enthält einen Fehler und ist ungeschützt / geschützt"
+#~ "Kategorie ist online, enth&auml;lt einen Fehler und ist ungesch&uuml;tzt / gesch&uuml;tzt"
 
 #~ msgid ""
 #~ "Category is offline, contains an error and is unprotected / protected"
 #~ msgstr ""
-#~ "Kategorie ist offline, ist fehlerhaft und ist ungeschützt / geschützt"
+#~ "Kategorie ist offline, ist fehlerhaft und ist ungesch&uuml;tzt / gesch&uuml;tzt"
 
 #~ msgid "Move up one category"
 #~ msgstr "Eine Kategorie nach oben verschieben"
 
 #~ msgid "Select move target"
-#~ msgstr "Verschiebeziel auswählen"
+#~ msgstr "Verschiebeziel ausw&auml;hlen"
 
 #~ msgid "Delete / Delete not available"
-#~ msgstr "Löschen / Löschen nicht verfügbar"
+#~ msgstr "L&ouml;schen / L&ouml;schen nicht verf&uuml;gbar"
 
 #~ msgid "Root upload folder"
 #~ msgstr "Basis-Uploadverzeichnis"
@@ -6035,10 +6026,10 @@ msgstr "Frame"
 #~ msgstr "Newsletter kopieren"
 
 #~ msgid "Remove recipient"
-#~ msgstr "Empfänger entfernen"
+#~ msgstr "Empf&auml;nger entfernen"
 
 #~ msgid "Recipient group"
-#~ msgstr "Empfängergruppe"
+#~ msgstr "Empf&auml;ngergruppe"
 
 #~ msgid "Article is online / offline"
 #~ msgstr "Artikel ist online / offline"
@@ -6077,10 +6068,10 @@ msgstr "Frame"
 #~ msgstr "Dateisortierung"
 
 #~ msgid "Image size"
-#~ msgstr "Bildgröße"
+#~ msgstr "Bildgr&ouml;&szlig;e"
 
 #~ msgid "Available clients"
-#~ msgstr "Verfügbare Mandanten"
+#~ msgstr "Verf&uuml;gbare Mandanten"
 
 #~ msgid "Contact System Administrators"
 #~ msgstr "Kontakt Systemadministrator(en)"
