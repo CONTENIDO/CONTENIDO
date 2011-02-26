@@ -108,7 +108,7 @@ if (count($clients) > 1) {
 
 	$tpl->set('s', 'CLIENTFORM', $clientform);
 	$tpl->set('s', 'CLIENTFORMCLOSE', "</form>");
-	$tpl->set('s', 'PULL_DOWN_MANDANTEN', $clientselect);
+	$tpl->set('s', 'CLIENTSDROPDOWN', $clientselect);
 
 	if ($perm->have_perm() && count($warnings) > 0) {
 		$tpl->set('s', 'WARNINGS', "<br>" . $notification->messageBox("warning", implode("<br>", $warnings), 0));
@@ -142,7 +142,7 @@ if (count($clients) > 1) {
 		$tpl->set('s', 'WARNINGS', '');
 	}
     
-	$tpl->set('s', 'PULL_DOWN_MANDANTEN', $name);
+	$tpl->set('s', 'CLIENTSDROPDOWN', $name);
 }
 
 $props= new PropertyCollection;
