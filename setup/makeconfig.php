@@ -1,105 +1,84 @@
 <?php
  /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
- * 
- * Requirements: 
+ *
+ * Description:
+ * Generates the configuration file and saves it into contenido folder or
+ * outputs the for download (depending on selected option during setup)
+ *
+ * Requirements:
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
- * @version    0.2
+ * @package    Contenido setup
+ * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <Contenido Version>
- * @deprecated file deprecated in contenido release <Contenido Version>
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
+ *   modified 2011-02-28, Murat Purc, normalized setup startup process and some cleanup/formatting
  *
  *   $Id$:
  * }}
- * 
+ *
  */
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
-}	
 
-// include security class and check request variables
-include_once ('../contenido/classes/class.security.php');
-Contenido_Security::checkRequests();
-
-function checkAndInclude ($filename)
-{
-	if (file_exists($filename) && is_readable($filename))
-	{
-		include_once($filename);
-	} else {
-		echo "ERROR: Can't include $filename. Our directory is ".getcwd()."\n";	
-	}
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
+define('C_CONTENIDO_PATH', '../contenido/');
 
-checkAndInclude("lib/class.template.php");
-checkAndInclude("lib/functions.system.php");
-checkAndInclude("lib/functions.phpinfo.php");
-checkAndInclude("lib/functions.mysql.php");
+include_once('lib/startup.php');
 
-session_start();
+
 list($root_path, $root_http_path) = getSystemDirectories();
 
-$tpl = new Template;
-$tpl->set("s", "CONTENIDO_ROOT", $root_path);
-$tpl->set("s", "CONTENIDO_WEB", $root_http_path);
-$tpl->set("s", "MYSQL_HOST", $_SESSION["dbhost"]);
-$tpl->set("s", "MYSQL_DB", $_SESSION["dbname"]);
-$tpl->set("s", "MYSQL_USER", $_SESSION["dbuser"]);
-$tpl->set("s", "MYSQL_PASS", $_SESSION["dbpass"]);
-$tpl->set("s", "MYSQL_PREFIX", $_SESSION["dbprefix"]);
+$tpl = new Template();
+$tpl->set('s', 'CONTENIDO_ROOT', $root_path);
+$tpl->set('s', 'CONTENIDO_WEB', $root_http_path);
+$tpl->set('s', 'MYSQL_HOST', $_SESSION['dbhost']);
+$tpl->set('s', 'MYSQL_DB', $_SESSION['dbname']);
+$tpl->set('s', 'MYSQL_USER', $_SESSION['dbuser']);
+$tpl->set('s', 'MYSQL_PASS', $_SESSION['dbpass']);
+$tpl->set('s', 'MYSQL_PREFIX', $_SESSION['dbprefix']);
 
-if (hasMySQLiExtension() && !hasMySQLExtension())
-{
-	$tpl->set("s", "DB_EXTENSION", "mysqli");	
+if (hasMySQLiExtension() && !hasMySQLExtension()) {
+    $tpl->set('s', 'DB_EXTENSION', 'mysqli');
 } else {
-	$tpl->set("s", "DB_EXTENSION", "mysql");	
+    $tpl->set('s', 'DB_EXTENSION', 'mysql');
 }
 
-if ($_SESSION["start_compatible"] == true)
-{
-	$tpl->set("s", "START_COMPATIBLE", "true");	
+if ($_SESSION['start_compatible'] == true) {
+    $tpl->set('s', 'START_COMPATIBLE', 'true');
 } else {
-	$tpl->set("s", "START_COMPATIBLE", "false");
+    $tpl->set('s', 'START_COMPATIBLE', 'false');
 }
 
-$tpl->set("s", "NOLOCK", $_SESSION["nolock"]);	
+$tpl->set('s', 'NOLOCK', $_SESSION['nolock']);
 
-if ($_SESSION["configmode"] == "save")
-{
-	@unlink($root_path."/contenido/includes/config.php");
-	
-	@$handle = fopen($root_path."/contenido/includes/config.php", "wb");
-	
-	@fwrite($handle, $tpl->generate("templates/config.php.tpl", true, false));
-	@fclose($handle);
-	
-	if (!file_exists($root_path."/contenido/includes/config.php"))
-	{
-		$_SESSION["configsavefailed"] = true;
-	} else {
-		unset($_SESSION["configsavefailed"]);	
-	}
-	
-	
-	
+if ($_SESSION['configmode'] == 'save') {
+    @unlink($root_path . '/contenido/includes/config.php');
+
+    @$handle = fopen($root_path . '/contenido/includes/config.php', 'wb');
+    @fwrite($handle, $tpl->generate('templates/config.php.tpl', true, false));
+    @fclose($handle);
+
+    if (!file_exists($root_path . '/contenido/includes/config.php')) {
+        $_SESSION['configsavefailed'] = true;
+    } else {
+        unset($_SESSION['configsavefailed']);
+    }
 } else {
-	header("Content-Type: application/octet-stream");
-	header("Etag: ".md5(mt_rand()));
-	header("Content-Disposition: attachment;filename=config.php");
-	$tpl->generate("templates/config.php.tpl", false, false);
+    header('Content-Type: application/octet-stream');
+    header('Etag: ' . md5(mt_rand()));
+    header('Content-Disposition: attachment;filename=config.php');
+    $tpl->generate('templates/config.php.tpl', false, false);
 }
 
 ?>
