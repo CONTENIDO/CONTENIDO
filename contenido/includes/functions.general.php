@@ -40,15 +40,14 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * Extracts the available content-
- * types from the database
+ * Extracts the available content-types from the database
  *
  * Creates an array $a_content[type][number] = content string
  * f.e. $a_content['CMS_HTML'][1] = content string
  * Same for array $a_description
  *
- * @param int $idartlang Language specific ID of the arcticle
- * @return void
+ * @param   int  $idartlang  Language specific ID of the arcticle
+ * @return  void
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG
@@ -58,15 +57,15 @@ function getAvailableContentTypes($idartlang)
 	global $db, $cfg, $a_content, $a_description;
 
 	$sql = "SELECT
-	                *
-	            FROM
-	                ".$cfg["tab"]["content"]." AS a,
-	                ".$cfg["tab"]["art_lang"]." AS b,
-	                ".$cfg["tab"]["type"]." AS c
-	            WHERE
-	                a.idtype    = c.idtype AND
-	                a.idartlang = b.idartlang AND
-	                b.idartlang = '".Contenido_Security::toInteger($idartlang)."'";
+                *
+            FROM
+                ".$cfg["tab"]["content"]." AS a,
+                ".$cfg["tab"]["art_lang"]." AS b,
+                ".$cfg["tab"]["type"]." AS c
+            WHERE
+                a.idtype    = c.idtype AND
+                a.idartlang = b.idartlang AND
+                b.idartlang = '".Contenido_Security::toInteger($idartlang)."'";
 
 	$db->query($sql);
 
@@ -75,17 +74,13 @@ function getAvailableContentTypes($idartlang)
 		$a_content[$db->f("type")][$db->f("typeid")] = urldecode($db->f("value"));
 		$a_description[$db->f("type")][$db->f("typeid")] = i18n($db->f("description"));
 	}
-
 }
 
 /**
- * Checks if an article is assigned
- * to multiple categories
+ * Checks if an article is assigned to multiple categories
  *
- * @param Int Article-Id ($idart)
- * @param Int Client-Id
- * @return Bool Article assigned to multiple categories
- * @access Public
+ * @param   int  $idart  Article-Id
+ * @return  bool  Article assigned to multiple categories
  */
 function isArtInMultipleUse($idart)
 {
@@ -101,9 +96,9 @@ function isArtInMultipleUse($idart)
 /**
  * Checks if a value is alphanumeric
  *
- * @param Mixed Value to test
- * @param Bool [Use german Umlaute] Optional
- * @return Bool Value is alphanumeric
+ * @param   mixed  $test     Value to test
+ * @param   bool   $umlauts  [Use german Umlaute] Optional
+ * @return  bool   Value is alphanumeric
  */
 function is_alphanumeric($test, $umlauts = true)
 {
@@ -119,6 +114,12 @@ function is_alphanumeric($test, $umlauts = true)
 	return (preg_match($match, $test));
 }
 
+/**
+ * Returns multi-language month name (canonical) by its numeric value
+ *
+ * @param   int  $month
+ * @return  string
+ */
 function getCanonicalMonth($month)
 {
 	switch ($month)
@@ -165,11 +166,9 @@ function getCanonicalMonth($month)
 /**
  * Get multi-language day
  * 
- * @param integer the day number of date(w)
- * 
- * @return string  Dayname of current language
+ * @param   int     $iDay  The day number of date(w)
+ * @return  string  Dayname of current language
  */
-
 function getCanonicalDay($iDay)
 {
 	switch ($iDay)
@@ -199,6 +198,13 @@ function getCanonicalDay($iDay)
 	}
 }
 
+
+/**
+ * Returns the id of passed area
+ *
+ * @param   mixed  $area  Area name
+ * @return  int
+ */
 function getIDForArea($area)
 {
 	global $client, $lang, $cfg, $sess;
@@ -222,12 +228,16 @@ function getIDForArea($area)
 	}
 
 	return $area;
-
 }
 
+/**
+ * Returns the parent id of passed area
+ *
+ * @param   mixed  $area
+ * @return  int
+ */
 function getParentAreaId($area)
 {
-
 	global $client, $lang, $cfg, $sess;
 
 	$db = new DB_Contenido;
@@ -264,7 +274,6 @@ function getParentAreaId($area)
 		return $area;
 
 	}
-
 }
 
 /**
@@ -278,7 +287,6 @@ function getParentAreaId($area)
  */
 function markSubMenuItem($menuitem, $return = false)
 {
-
 	$str = '<script type="text/javascript">
 	
 			try {
@@ -312,7 +320,6 @@ function markSubMenuItem($menuitem, $return = false)
 	} else
 	{
 		echo $str;
-
 	}
 }
 
@@ -326,10 +333,8 @@ function markSubMenuItem($menuitem, $return = false)
  */
 function backToMainArea($send)
 {
-
 	if ($send)
 	{
-
 		/* Global vars */
 		global $area, $cfg, $db, $sess, $idart, $idcat, $idartlang, $idcatart, $frame;
 
@@ -355,9 +360,7 @@ function backToMainArea($send)
 
 		/* Redirect */
 		header("location: $url");
-
 	}
-
 }
 
 function showLocation($area)
@@ -407,7 +410,6 @@ function showLocation($area)
 		echo "<b>".$xml->valueOf($db->f("location")).$lngArea[$area]."</b>";
 
 	}
-
 }
 
 function showTable($tablename)
@@ -424,7 +426,6 @@ function showTable($tablename)
 		}
 		print ("<br>");
 	}
-
 }
 
 function getLanguagesByClient($client)
@@ -442,6 +443,12 @@ function getLanguagesByClient($client)
 	return $list;
 }
 
+/**
+ * Returns all languages (language ids and names) of an client
+ *
+ * @param   int  $client
+ * @return  array  List of languages where the key is the language id and value the language name
+ */
 function getLanguageNamesByClient($client)
 {
 	global $db;
@@ -468,15 +475,15 @@ function getLanguageNamesByClient($client)
 	return $list;
 }
 
-function set_magic_quotes_gpc(&$code) { 
-      global $cfg;
-       
-      if (!$cfg['simulate_magic_quotes']) { 
-            if (get_magic_quotes_gpc() == 0)
-            {
-            	$code = addslashes($code);
-            } 
-      }
+function set_magic_quotes_gpc(&$code) {
+    global $cfg;
+
+    if (!$cfg['simulate_magic_quotes']) { 
+        if (get_magic_quotes_gpc() == 0)
+        {
+            $code = addslashes($code);
+        } 
+    }
 }
 
 
@@ -518,6 +525,7 @@ function getAllClientsAndLanguages()
     }
     return $aRs;
 }
+
 /**
  * @deprecated since 22.08.2005
  * This function is called everytime when the code of an article is generated.
@@ -854,7 +862,6 @@ function rereadClients()
 		$cfgClient[$db->f("idclient")]["tpl"]["path"] = $cfgClient[$db->f("idclient")]["path"]["frontend"]."templates/";
 
 	}
-
 }
 
 /**
@@ -1105,10 +1112,10 @@ function getEffectiveSettingsByType($sType)
 }
 
 /**
-* retrieve list of article specifications for current client and language
-*
-* @return array list of article specifications
-*/
+ * retrieve list of article specifications for current client and language
+ *
+ * @return array list of article specifications
+ */
 function getArtspec()
 {
 	global $db, $cfg, $lang, $client;
@@ -1128,12 +1135,12 @@ function getArtspec()
 }
 
 /**
-* add new article specification
-*
-* @param string article specification text
-*
-* @return void
-*/
+ * add new article specification
+ *
+ * @param string article specification text
+ *
+ * @return void
+ */
 function addArtspec($artspectext, $online)
 {
 	global $db, $cfg, $lang, $client;
@@ -1157,12 +1164,12 @@ function addArtspec($artspectext, $online)
 }
 
 /**
-* delete specified article specification
-*
-* @param integer article specification id
-*
-* @return void
-*/
+ * delete specified article specification
+ *
+ * @param integer article specification id
+ *
+ * @return void
+ */
 function deleteArtspec($idartspec)
 {
 	global $db, $cfg;
@@ -1174,15 +1181,15 @@ function deleteArtspec($idartspec)
 }
 
 /**
-* set article specifications online
-*
-* flag to switch if an article specification should be shown the frontend or not
-*
-* @param integer article specification id
-* @param integer 0/1 switch the status between on an offline
-*
-* @return void
-*/
+ * set article specifications online
+ *
+ * flag to switch if an article specification should be shown the frontend or not
+ *
+ * @param integer article specification id
+ * @param integer 0/1 switch the status between on an offline
+ *
+ * @return void
+ */
 function setArtspecOnline($idartspec, $online)
 {
 	global $db, $cfg;
@@ -1191,14 +1198,14 @@ function setArtspecOnline($idartspec, $online)
 }
 
 /**
-* set a default article specification
-*
-* while creating a new article this defined article specification will be default setting
-*
-* @param integer article specification id
-*
-* @return void
-*/
+ * set a default article specification
+ *
+ * while creating a new article this defined article specification will be default setting
+ *
+ * @param integer article specification id
+ *
+ * @return void
+ */
 function setArtspecDefault($idartspec)
 {
 	global $db, $cfg, $lang, $client;
@@ -1727,7 +1734,6 @@ function scanPlugins($entity)
 	}
 
 	$cfg['plugins'][$entity] = $plugins;
-
 }
 
 /**
@@ -2262,7 +2268,6 @@ function cIDNAEncode($sourceEncoding, $string)
 	}
 
 	return $string;
-
 }
 
 function cIDNADecode($targetEncoding, $string)
@@ -2292,7 +2297,6 @@ function cIDNADecode($targetEncoding, $string)
 	}
 
 	return $string;
-
 }
 
 function cInitializeArrayKey (&$aArray, $sKey, $mDefault = "")
@@ -2392,7 +2396,6 @@ function sendEncodingHeader ($db, $cfg, $lang) {
  */
 function IP_match($network, $mask, $ip)
 {
-
     bcscale(3);
     $ip_long = ip2long($ip);
     $mask_long = ip2long($network);

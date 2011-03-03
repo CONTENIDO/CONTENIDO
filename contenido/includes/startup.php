@@ -11,7 +11,7 @@
  * - Loads available login languages
  * - Initializes CEC
  * - Includes userdefined configuration
- * - Checks DB connection
+ * - Sets/Checks DB connection
  * - Initializes UrlBuilder
  *
  * @TODO: Collect all startup (bootstrap) related jobs into this file...
@@ -39,6 +39,7 @@
  *                        from various files and some modifications, see [#CON-307]
  *   modified 2010-12-28, Murat Purc, changed order of some includes to provide more user defined 
  *                                    settings in config.local.php
+ *   modified 2011-03-03, Murat Purc, Initialize database with settings
  *
  *   $Id$:
  * }}
@@ -135,6 +136,10 @@ cInclude('includes', 'functions.i18n.php');
 // Initialization of CEC
 $_cecRegistry = cApiCECRegistry::getInstance();
 cInclude('includes', 'config.chains.php');
+
+// Set default database connection parameter
+$cfg['db']['sequenceTable'] = $cfg['tab']['sequence'];
+DB_Contenido::setDefaultConfiguration($cfg['db']);
 
 // @TODO: This should be done by instantiating a DB_Contenido class, creation of DB_Contenido object
 checkMySQLConnectivity();
