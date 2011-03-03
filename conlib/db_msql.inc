@@ -1,200 +1,217 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
- * Session Management for PHP3
- * 
- * Requirements: 
- * @con_php_req 5
- * @con_template <Templatefiles>
- * @con_notice <Notice>
- * 
  *
- * @package    Contenido Backend <Area>
- * @version    <version>
+ * Description:
+ * mSQL database driver
+ *
+ * Requirements:
+ * @con_php_req 5
+ *
+ *
+ * @package    Contenido database
+ * @version    0.2
  * @author     Sascha Schumann <sascha@schumann.cx>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <Contenido Version>
- * @deprecated file deprecated in contenido release <Contenido Version>
- * 
- * {@internal 
- *   created <date>
+ * @since      file available since contenido release unknown
+ *
+ * {@internal
+ *   created  unknown
  *   modified 2008-07-03, bilal arslan, added security fix
+ *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready) extended DB_Sql_Abstract, added/optimized some functioms and some formatting
+ *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
  *
  *   $Id$:
  * }}
- * 
+ *
  */
- 
- if(!defined('CON_FRAMEWORK')) {
-                die('Illegal call');
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 
 /*
- * Session Management for PHP3
+ * mSQL database driver
  *
  * Copyright (c) 1998-2000 NetUSE AG
  *                    Boris Erdmann, Kristian Koehntopp
  *
  * Derived from db_mysql.inc by Sascha Schumann <sascha@schumann.cx>
- *
- * $Id$
- *
- */ 
+ */
+class DB_Sql extends DB_Sql_Abstract
+{
 
-class DB_Sql {
-  var $Host     = "";
-  var $Database = "";
-
-  var $Link_ID  = 0;
-  var $Query_ID = 0;
-  var $Record   = array();
-  var $Row;
-
-  var $Error    = "";
-  
-  var $Auto_Free = 0;     ## Set this to 1 for automatic msql_free_result()
-
-  /* public: constructor */
-  function DB_Sql($query = "") {
-      $this->query($query);
-  }
-
-  function connect() {
-    // Not connected? Then connect?
-    if ( 0 == $this->Link_ID ) {
-      // Check for local connect
-      $this->Link_ID = empty($this->Host)? 
-                         $this->Link_ID=msql_pconnect():
-                         $this->Link_ID=msql_pconnect($this->Host);
-    }
-    
-    // Still not connected? Raise error.
-    if ( 0 == $this->Link_ID ) {
-      $this->halt("Link-ID == false, pconnect failed");
+    /**
+     * Constructor.
+     *
+     * @param  array  $options  Optional assoziative options
+     */
+    public function __construct(array $options = array())
+    {
+        $options = array_merge($options, array(
+            'type' => 'msql'
+        ));
+        parent::__construct($options);
     }
 
-    // Select current database
-	  if (!msql_select_db($this->Database, $this->Link_ID)) {
-      $this->halt("cannot use database ".$this->Database);
+
+    /**
+     * Establishes a connection to the database.
+     *
+     * @return  resource|bool  Returns a connection id on success, or false on error.f     */
+    protected function _connect()
+    {
+        extract($this->_aDbCfg['connection']);
+
+        // Check for local connect
+        $dbh = empty($host) ? msql_pconnect() : msql_pconnect($host);
+
+        // Still not connected? Raise error.
+        if (!$dbh) {
+            $this->halt('dbh == false, pconnect failed');
+            return false;
+        }
+
+        // Select current database
+        if (!msql_select_db($database, $dbh)) {
+            $this->halt('cannot use database ' . $database);
+            return false;
+        }
+
+        return $dbh;
     }
-  }
-  
-  function query($Query_String) {
-    
-    /* No empty queries, please, since PHP4 chokes on them. */
-    if ($Query_String == "")
-      /* The empty query string is passed on from the constructor,
-       * when calling the class without a query, e.g. in situations
-       * like these: '$db = new DB_Sql_Subclass;'
-       */
-      return 0;
 
-    $this->connect();
 
-#   printf("Debug: query = %s<br>\n", $Query_String);
-	$oDB = new DB_Contenido; 
-    $this->Query_ID = msql_query($Query_String,$this->Link_ID);
-    $this->Row   = 0;
-    $this->Error = msql_error();
-    if (!$this->Query_ID) {
-      $this->halt("Invalid SQL: ".$Query_String);
+    /**
+     * Performs a query.
+     *
+     * @param   string  $sQuery
+     */
+    protected function _query($sQuery)
+    {
+        $this->Query_ID = msql_query($sQuery,$this->Link_ID);
+        $this->Row      = 0;
+        $this->Error    = msql_error();
+        $this->Errno    = ($this->Error !== '') ? '1' : '0';
+        if (!$this->Query_ID) {
+            $this->halt("mSQL error " . $this->Errno . ": " . $this->Error . "\n" . $sQuery);
+        }
     }
 
-    return $this->Query_ID;
-  }
 
-  function next_record() {
-    $this->Record = msql_fetch_array($this->Query_ID);
-    $this->Row   += 1;
-    $this->Error = msql_error();
+    /**
+     * Fetches the next recordset from result set
+     *
+     * @param  bool
+     */
+    public function next_record()
+    {
+        $this->Record = msql_fetch_array($this->Query_ID);
+        $this->Row   += 1;
+        $this->Error  = msql_error();
 
-    $stat = is_array($this->Record);
-    if (!$stat && $this->Auto_Free) {
-      msql_free_result($this->Query_ID);
-      $this->Query_ID = 0;
+        $stat = is_array($this->Record);
+        if (!$stat && $this->Auto_Free) {
+            msql_free_result($this->Query_ID);
+            $this->Query_ID = 0;
+        }
+        return $stat;
     }
-    return $stat;
-  }
 
-  function seek($pos) {
-    $status = msql_data_seek($this->Query_ID, $pos);
-    if ($status)
-      $this->Row = $pos;
-    return;
-  }
 
-  function metadata($table) {
-    $count = 0;
-    $id    = 0;
-    $res   = array();
-
-    $this->connect();
-    $id = @msql_list_fields($this->Database,  $table);
-    if ($id < 0) {
-      $this->Error = msql_error();
-      $this->halt("Metadata query failed.");
+    public function seek($pos)
+    {
+        $status = msql_data_seek($this->Query_ID, $pos);
+        if ($status) {
+            $this->Row = $pos;
+        }
+        return;
     }
-    $count = msql_num_fields($id);
-    
-    for ($i=0; $i<$count; $i++) {
-      $res[$i]["table"] = msql_fieldtable ($id, $i);
-      $res[$i]["name"]  = msql_fieldname  ($id, $i);
-      $res[$i]["type"]  = msql_fieldtype  ($id, $i);
-      $res[$i]["len"]   = msql_fieldlen   ($id, $i);
-      $res[$i]["flags"] = msql_fieldflags ($id, $i);
-      $res["meta"][$res[$i]["name"]] = $i;
-      $res["num_fields"]= $count;
+
+
+
+    /**
+     * Closes the connection and frees the query id.
+     *
+     * @return  void
+     */
+    public function disconnect()
+    {
+        if (is_resource($this->Link_ID)) {
+            msql_close($this->Link_ID);
+            $this->_removeConnection($this->Link_ID);
+        }
+        $this->Link_ID  = 0;
+        $this->Query_ID = 0;
     }
-    
-    msql_free_result($id);
-    return $res;
-  }
 
-  function affected_rows() {
-	  return msql_affected_rows($this->Query_ID);
-  }
 
-  function num_rows() {
-    return msql_num_rows($this->Query_ID);
-  }
+    protected function _metadata($table, $full = false)
+    {
+        $count = 0;
+        $id    = 0;
+        $res   = array();
 
-  function num_fields() {
-    return msql_num_fields($this->Query_ID);
-  }
+        $this->connect();
+        $id = @msql_list_fields($this->Database,  $table);
+        if ($id < 0) {
+            $this->Error = msql_error();
+            $this->halt('Metadata query failed.');
+        }
+        $count = msql_num_fields($id);
 
-  function nf() {
-    return $this->num_rows();
-  }
+        for ($i=0; $i<$count; $i++) {
+            $res[$i]['table'] = msql_fieldtable($id, $i);
+            $res[$i]['name']  = msql_fieldname($id, $i);
+            $res[$i]['type']  = msql_fieldtype($id, $i);
+            $res[$i]['len']   = msql_fieldlen($id, $i);
+            $res[$i]['flags'] = msql_fieldflags($id, $i);
+            $res['meta'][$res[$i]['name']] = $i;
+            $res['num_fields']= $count;
+        }
 
-  function np() {
-    print $this->num_rows();
-  }
+        msql_free_result($id);
+        return $res;
+    }
 
-  function f($Name) {
-    return $this->Record[$Name];
-  }
 
-  function p($Name) {
-    print $this->Record[$Name];
-  }
-  
-  function halt($msg) {
-    printf("</td></tr></table><b>Database error:</b> %s<br>\n", $msg);
-    printf("<b>MSQL Error</b>: %s<br>\n", $this->Error);
-    die("Session halted.");
-  }
-  
-  /* public: Escape string for using in SQL-Statement */
-  function escape ($sString) {
-      //ToDo implement specific database behaviour
-      return addslashes ($sString);
-  } 
+    public function affected_rows()
+    {
+        return msql_affected_rows($this->Query_ID);
+    }
+
+
+    /**
+     * Returns the number of rows
+     *
+     * @return  int
+     */
+    public function num_rows()
+    {
+        return msql_num_rows($this->Query_ID);
+    }
+
+
+    public function num_fields()
+    {
+        return msql_num_fields($this->Query_ID);
+    }
+
+
+    /**
+     * Escape string for using in SQL-Statement
+     *
+     * @param   string  $sString
+     * @return  string
+     */
+    public function escape($sString)
+    {
+        //ToDo implement specific database behaviour
+        return addslashes($sString);
+    }
 }
-?>

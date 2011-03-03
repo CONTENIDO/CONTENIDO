@@ -185,12 +185,12 @@ class Auth {
         switch ($this->mode) {
           case "yes":
           case "log":
-			#if ( $uid = $this->auth_preauth() ) {
-	        #  $this->auth["uid"] = $uid;
-	        #  $this->auth["exp"] = time() + (60 * $this->lifetime);
-	        #  $this->auth["refresh"] = time() + (60 * $this->refresh);
-	        #  return true;
-	        #}
+            #if ( $uid = $this->auth_preauth() ) {
+            #  $this->auth["uid"] = $uid;
+            #  $this->auth["exp"] = time() + (60 * $this->lifetime);
+            #  $this->auth["refresh"] = time() + (60 * $this->refresh);
+            #  return true;
+            #}
 
             if ( $uid = $this->auth_validatelogin() ) {
               $this->auth["uid"] = $uid;

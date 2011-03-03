@@ -70,7 +70,7 @@ class Session {
 
   var $pt = array();                  ## This Array contains the registered things
   var $in = 0;                        ## Marker: Did we already include the autoinit file?
-  var $expires;						  ## Expire date
+  var $expires;                          ## Expire date
   var $_expires;
 
   ## register($things):
@@ -90,7 +90,7 @@ class Session {
   
   function setExpires ($time)
   {
-  	$this->_expires = $time;	
+      $this->_expires = $time;    
   }
 
   function is_registered($name) {
@@ -500,14 +500,14 @@ class Session {
       break;
 
       default:
-      	$rand = md5(mt_rand());
-      	$mod_gmt = gmdate("D, d M Y H:i:s", time()-3600) . " GMT";
+          $rand = md5(mt_rand());
+          $mod_gmt = gmdate("D, d M Y H:i:s", time()-3600) . " GMT";
         
         if ($this->_expires > 0)
         {
-        	header("Expires: ". gmdate("D, d M Y H:i:s", $this->_expires) . " GMT");
+            header("Expires: ". gmdate("D, d M Y H:i:s", $this->_expires) . " GMT");
         } else {
-        	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");	
+            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    
         }
         
         header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");

@@ -105,7 +105,9 @@ conlib/db_mysqli.inc -text
 conlib/db_oci8.inc -text
 conlib/db_odbc.inc -text
 conlib/db_oracle.inc -text
+conlib/db_pdo_mysql.inc -text
 conlib/db_pgsql.inc -text
+conlib/db_sql_abstract.inc -text
 conlib/db_sybase.inc -text
 conlib/db_usql.inc -text
 conlib/index.php -text

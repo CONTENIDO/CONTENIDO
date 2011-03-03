@@ -4,39 +4,60 @@
  * Contenido Content Management System
  *
  * Description:
- * MySQL database driver
+ * PDO MySQL database driver
+ *
+ * NOTE: Is still in development state, don't use it!
  *
  * Requirements:
  * @con_php_req 5
  *
  *
  * @package    Contenido database
- * @version    0.2
- * @author     Boris Erdmann, Kristian Koehntopp
+ * @version    0.1
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <Contenido Version>
+ * @since      file available since contenido release 4.8.15
  *
  * {@internal
- *   created  2002-07-21
- *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready) extended DB_Sql_Abstract, added/optimized some functioms and some formatting
- *   modified 2009-12-18, Murat Purc, Replaced mysql_list_fields() against a SQL statement, see [#CON-262]
- *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
+ *   created  2011-02-28
  *
- *   $Id$:
+ *   $Id: $:
  * }}
  *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-   die('Illegal call');
+    die('Illegal call');
 }
+
 
 class DB_Sql extends DB_Sql_Abstract
 {
+
+    /**
+     * PDO connection
+     * @var PDO
+     */
+    protected $_con;
+
+    /**
+     * PDO statement
+     * @var PDOStatement
+     */
+    protected $_stmt;
+
+    protected $_aDataTypes = array(
+        PDO::PARAM_BOOL     => 'bool',
+        PDO::PARAM_NULL     => 'null',
+        PDO::PARAM_INT      => 'int',
+        PDO::PARAM_STR      => 'string',
+        PDO::PARAM_LOB      => 'blob',
+        PDO::PARAM_STMT     => 'statement'
+    );
+
 
     /**
      * Constructor.
@@ -46,7 +67,7 @@ class DB_Sql extends DB_Sql_Abstract
     public function __construct(array $options = array())
     {
         $options = array_merge($options, array(
-            'type' => 'mysql'
+            'type' => 'pdo_mysql',
         ));
         parent::__construct($options);
     }
@@ -55,27 +76,31 @@ class DB_Sql extends DB_Sql_Abstract
     /**
      * Establishes a connection to the database server.
      *
-     * @return  resource|bool  The resource on success or false
+     * @return  object  Connection object
      */
     protected function _connect()
     {
         extract($this->_aDbCfg['connection']);
 
-        // establish connection, select database
-        $dbh = @mysql_connect($host, $user, $password);
-        if (!$dbh || !is_resource($dbh)) {
-            $this->halt("connect($host, $user, \$password) failed.");
+        $dsn = 'mysql:dbname=' . $database . ';host=' . $host;
+
+        if (!$driver_options) && !is_array($driver_options)) {
+            $driver_options = array();
+        }
+
+        try {
+            // Create a new PDO connection
+            $this->_con = new PDO($dsn, $user, $password, $driver_options);
+        } catch (PDOException $e) {
+            // donut
+        }
+
+        if (!$this->_con) {
+            $this->halt("connect() failed: " . $e->getCode() . ': ' . $e->getMessage());
             return false;
         }
 
-        if ($database != '') {
-            if (!@mysql_select_db($database, $dbh)) {
-                $this->halt('Cannot use database ' . $database);
-                return false;
-            }
-        }
-
-        return $dbh;
+        return $this->_con;
     }
 
 
@@ -84,8 +109,10 @@ class DB_Sql extends DB_Sql_Abstract
      */
     public function free()
     {
-        @mysql_free_result($this->Query_ID);
-        $this->Query_ID = 0;
+        if ($this->_stmt) {
+            $this->_stmt->closeCursor();
+            unset($this->_stmt);
+        }
     }
 
 
@@ -96,12 +123,16 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _query($sQuery)
     {
-        $this->Query_ID = @mysql_query($sQuery, $this->Link_ID);
+        $this->_stmt = $this->_con->prepare($sQuery);
+        $this->_stmt->execute();
+
+        $this->Query_ID = $this->_stmt;
         $this->Row      = 0;
-        $this->Error    = mysql_error();
-        $this->Errno    = mysql_errno();
+        $this->Errno    = $this->_con->errorCode();
+        $this->Error    = $this->_con->errorInfo();
+
         if (!$this->Query_ID) {
-            $this->halt("MySQL error " . $this->Errno . ": " . $this->Error . "\n" . $sQuery);
+            $this->halt('MySQLi error ' . $this->Errno . ': ' . $this->Error . "\n" . $sQuery);
         }
     }
 
@@ -126,10 +157,10 @@ class DB_Sql extends DB_Sql_Abstract
             return false;
         }
 
-        $this->Record = @mysql_fetch_array($this->Query_ID);
-        $this->Row   += 1;
-        $this->Errno  = mysql_errno();
-        $this->Error  = mysql_error();
+        $this->Record = $this->_stmt->fetch(PDO::FETCH_BOTH);
+        $this->Row += 1;
+        $this->Errno    = $this->_con->errorCode();
+        $this->Error    = $this->_con->errorInfo();
 
         $stat = is_array($this->Record);
         if (!$stat && $this->Auto_Free) {
@@ -142,19 +173,7 @@ class DB_Sql extends DB_Sql_Abstract
     /* public: position in result set */
     public function seek($pos = 0)
     {
-        $status = @mysql_data_seek($this->Query_ID, $pos);
-        if ($status) {
-            $this->Row = $pos;
-        } else {
-            $this->halt("seek($pos) failed: result has ".$this->num_rows()." rows.");
-            // half assed attempt to save the day, but do not consider this
-            // documented or even desireable behaviour.
-            @mysql_data_seek($this->Query_ID, $this->num_rows());
-            $this->Row = $this->num_rows();
-            return 0;
-        }
-
-        return 1;
+        throw new Exception('seek not supported');
     }
 
 
@@ -166,7 +185,7 @@ class DB_Sql extends DB_Sql_Abstract
         }
         $query = 'LOCK TABLES ';
         if (is_array($table)) {
-            while (list($key,$value) = each($table)) {
+            while (list ($key, $value) = each($table)) {
                 if (!is_int($key)) {
                     // texts key are "read", "read local", "write", "low priority write"
                     $query .= "$value $key, ";
@@ -204,7 +223,7 @@ class DB_Sql extends DB_Sql_Abstract
     /* public: evaluate the result (size, width) */
     public function affected_rows()
     {
-        return ($this->Link_ID) ? mysql_affected_rows($this->Link_ID) : 0;
+        return $this->_stmt->rowCount();
     }
 
 
@@ -215,13 +234,19 @@ class DB_Sql extends DB_Sql_Abstract
      */
     public function num_rows()
     {
-        return ($this->Query_ID) ? mysql_num_rows($this->Query_ID) : 0;
+        if ($this->_stmt) {
+            // clone statement and get count by using fetchAll
+            $stmt = clone $this->_stmt;
+            return (count($stmt->fetchAll()));
+        } else {
+            return 0;
+        }
     }
 
 
     public function num_fields()
     {
-        return ($this->Query_ID) ? mysql_num_fields($this->Query_ID) : 0;
+        return count($this->Record / 2);
     }
 
 
@@ -232,21 +257,24 @@ class DB_Sql extends DB_Sql_Abstract
 
         if ($this->lock($this->Seq_Table)) {
             /* get sequence number (locked) and increment */
-            $q  = sprintf("SELECT nextid FROM `%s` WHERE seq_name = '%s'", $this->Seq_Table, $seq_name);
-            $id  = @mysql_query($q, $this->Link_ID);
-            $res = @mysql_fetch_array($id);
+            $q = sprintf("SELECT nextid FROM `%s` WHERE seq_name = '%s'", $this->Seq_Table, $seq_name);
+            $stmt = $this->_con->prepare($g);
+            $stmt->execute();
+            $res = $stmt->fetch(PDO::FETCH_BOTH);
 
             /* No current value, make one */
             if (!is_array($res)) {
                 $currentid = 0;
-                $q = sprintf("INSERT INTO `%s` VALUES('%s', %s)", $this->Seq_Table, $seq_name, $currentid);
-                $id = @mysql_query($q, $this->Link_ID);
+                $q = sprintf("INSERT INTO `%s` values('%s', %s)", $this->Seq_Table, $seq_name, $currentid);
+                $stmt = $this->_con->prepare($q);
+                $stmt->execute();
             } else {
                 $currentid = $res['nextid'];
             }
-            $nextid = $currentid + 1;
-            $q  = sprintf("UPDATE `%s` SET nextid = '%s' WHERE seq_name = '%s'", $this->Seq_Table, $nextid, $seq_name);
-            $id = @mysql_query($q, $this->Link_ID);
+            $nextid = $currentid +1;
+            $q = sprintf("UPDATE `%s` set nextid = '%s' WHERE seq_name = '%s'", $this->Seq_Table, $nextid, $seq_name);
+            $stmt = $this->_con->prepare($q);
+            $stmt->execute();
             $this->unlock();
         } else {
             $this->halt('Cannot lock ' . $this->Seq_Table . ' - has it been created?');
@@ -257,19 +285,19 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Closes the connection and frees the query id.
+     * Closes the connection.
      *
      * @return  void
      */
     public function disconnect()
     {
         $this->_debug("Debug: Disconnecting $this->Link_ID...");
-        if (is_resource($this->Link_ID)) {
-            mysql_close($this->Link_ID);
-            $this->_removeConnection($this->Link_ID);
-        }
-        $this->Link_ID  = 0;
-        $this->Query_ID = 0;
+        // Destroy the PDO and PDOStatement object
+        $this->_removeConnection($this->_con);
+        $this->_con = null;
+        $this->_stmt = null;
+        $this->Link_ID  = null;
+        $this->Query_ID = null;
     }
 
 
@@ -308,63 +336,45 @@ class DB_Sql extends DB_Sql_Abstract
 
         // if no $table specified, assume that we are working with a query
         // result
-        if (!empty($table)) {
+        if ($table) {
             $this->connect();
-            $id = mysql_query(sprintf('SELECT * FROM `%s` LIMIT 1', $table), $this->Link_ID); // PHP 5.3 fix 07.2009 O.Pinke, PHP 5.3 crashes with deprecated mysql_list_fields()
-            if (!$id) {
+            $stmt = $this->_con->prepare(sprintf("DESCRIBE `%s`", $table));
+            $stmt->execute();
+            if (!$stmt) {
                 $this->halt('Metadata query failed.');
                 return false;
             }
         } else {
-            $id = $this->Query_ID;
-            if (!$id) {
+            $stmt = $this->_stmt;
+            if (!$stmt) {
                 $this->halt('No query specified.');
                 return false;
             }
         }
 
-        $count = @mysql_num_fields($id);
-
-        // made this IF due to performance (one if is faster than $count if's)
-        for ($i=0; $i<$count; $i++) {
-            $res[$i]['table'] = @mysql_field_table($id, $i);
-            $res[$i]['name']  = @mysql_field_name($id, $i);
-            $res[$i]['type']  = @mysql_field_type($id, $i);
-            $res[$i]['len']   = @mysql_field_len($id, $i);
-            $res[$i]['flags'] = @mysql_field_flags($id, $i);
+        // loop thru the result and collect meta data
+        $res = array();
+        while ($rs = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $field = $this->_getFieldTypeDetails($rs['Type']);
+            $item = array();
+            $item['table'] = $table;
+            $item['name']  = $rs['Field'];
+            $item['type']  = $field['type'];
+            $item['len']   = $field['size'];
+            $item['flags'] = null; // @todo  detect field flags
+            $res[$count] = $item;
             if ($full) {
-                $res['meta'][$res[$i]['name']] = $i;
+                $res['meta'][$item['name']] = $count;
             }
+            $count++;
         }
         if ($full) {
             $res['num_fields'] = $count;
         }
 
-        // free the result only if we were called on a table
-        if ($table) {
-            @mysql_free_result($id);
-        }
+        unset($stmt);
+
         return $res;
-    }
-
-
-    /* public: find available table names */
-    public function table_names()
-    {
-        $return = array();
-        $this->connect();
-        $h = @mysql_query('SHOW TABLES', $this->Link_ID);
-        $i = 0;
-        if (isset($h) && @mysql_num_rows($h) > 0) {
-            while ($info = @mysql_fetch_row($h)) {
-                $return[$i]['table_name']      = $info[0];
-                $return[$i]['tablespace_name'] = $this->Database;
-                $return[$i]['database']        = $this->Database;
-                $i++;
-            }
-            @mysql_free_result($h);
-        }
-        return $return;
     }
 
 
@@ -372,10 +382,34 @@ class DB_Sql extends DB_Sql_Abstract
     public function escape($sString)
     {
         $sResult = '';
-        if (is_resource($this->Link_ID) || $this->connect()) {
-            $sResult = mysql_real_escape_string($sString, $this->Link_ID);
+        if ($this->connect()) {
+            $sResult = $this->_con->quote($sString);
         }
         return $sResult;
+    }
+
+
+    /* public: find available table names */
+    public function table_names()
+    {
+        $return = array();
+        if (!$this->connect()) {
+            return $return;
+        }
+
+        $stmt = $this->_con->prepare('SHOW TABLES');
+        $stmt->execute();
+        $i = 0;
+        while ($rs = $stmt->fetch(PDO::FETCH_NUM)) {
+            $return[$i]['table_name']      = $rs[0];
+            $return[$i]['tablespace_name'] = $this->Database;
+            $return[$i]['database']        = $this->Database;
+            $i ++;
+        }
+
+        unset($stmt);
+
+        return $return;
     }
 
 
@@ -387,46 +421,72 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _halt($msg)
     {
-        if ($this->Link_ID) {
-            $this->Error = mysql_error($this->Link_ID);
-            $this->Errno = mysql_errno($this->Link_ID);
+        if ($this->_con) {
+            $this->Error = $this->_con->errorInfo();
+            $this->Errno = $this->_con->errorCode();
         }
         return $msg;
     }
 
-
     // FIXME we have disconnect() for this
     public function close()
     {
+       if ($this->Link_ID) {
+           $this->disconnect();
+           return true;
+       } else {
+           return false;
+       }
     }
 
 
     public function server_info()
     {
-        $arr['description'] = mysql_get_server_info();
+        if (!$this->connect()) {
+            return null;
+        }
+        $arr['description'] = $this->_con->getAttribute(PDO::ATTR_SERVER_INFO);
+        $arr['version'] = $this->_con->getAttribute(PDO::ATTR_SERVER_VERSION);
         return $arr;
     }
 
+
+    protected function _getFieldTypeDetails($field)
+    {
+        $ret = array('type' => null, 'size' => null);
+        if (!$field) {
+            return $ret;
+        }
+        if (preg_match('/^([a-z].*)\(([0-9].*)\)/', $field, $matches)) {
+            $ret = array('type' => $matches[1], 'size' => (int) $matches[2]);
+        } else {
+            $ret['type'] = $field; 
+        }
+        return $ret;
+    }
+
     /**
-     * This method equates to mysql_fetch_object(). It returns the current
-     * result set as object or null if no result set is left. If optional
-     * param $sClassName is set, the result object is an instance of class
-     * $sClassName.
+     * This method festches the current result set and returns the it as object or 
+     * null if no result set is left. If optional param $sClassName is set, the 
+     * result object is an instance of class $sClassName.
      *
-     * @return object
-     *
-     * @author Holger Librenz <holger.librenz@4fb.de>
-     * @version 1.0
+     * @param   string  sClassName  Optional the classname to instantiate.
+     * @return  object|null
      */
     public function getResultObject($sClassName = null)
     {
         $oResult = null;
 
-        if (is_resource($this->Link_ID) && is_resource($this->Query_ID)) {
-            if ($sClassName == null) {
-                $oResult = mysql_fetch_object($this->Query_ID);
-            } else {
-                $oResult = mysql_fetch_object($this->Query_ID, $sClassName);
+        if ($this->_con && $this->_stmt) {
+            if ($rs = $this->_stmt->fetch(PDO::FETCH_ASSOC)) {
+                if ($sClassName == null) {
+                    $oResult = (object) $rs;
+                } else {
+                    $oResult = new $sClassName();
+                    foreach ($rs as $key => $value) {
+                        $oResult->{$key} = $value;
+                    }
+                }
             }
         }
 

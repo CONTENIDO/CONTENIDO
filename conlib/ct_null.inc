@@ -37,36 +37,36 @@
 }
 
 class CT_Null {
-	function ac_start() {
-	}
+    function ac_start() {
+    }
 
-	function ac_get_lock() {
-	}
+    function ac_get_lock() {
+    }
 
-	function ac_release_lock() {
-	}
+    function ac_release_lock() {
+    }
 
-	function ac_newid($str, $name) {
-		return $str;
-	}
+    function ac_newid($str, $name) {
+        return $str;
+    }
 
-	function ac_store($id, $name, $str) {
-		return true;
-	}
+    function ac_store($id, $name, $str) {
+        return true;
+    }
 
-	function ac_delete($id, $name) {
-	}
+    function ac_delete($id, $name) {
+    }
 
-	function ac_gc($gc_time, $name) {
-	}
+    function ac_gc($gc_time, $name) {
+    }
 
-	function ac_halt($s) {
-		echo "<b>$s</b>";
-		exit;
-	}
+    function ac_halt($s) {
+        echo "<b>$s</b>";
+        exit;
+    }
 
-	function ac_get_value($id, $name) {
-		return "";
-	}
+    function ac_get_value($id, $name) {
+        return "";
+    }
 }
 ?>
