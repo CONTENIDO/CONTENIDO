@@ -145,10 +145,10 @@ abstract class DB_Sql_Abstract
     public $Halt_On_Error = 'no';
 
     /**
-     * Contenido configuration array
-     * @var  array
+     * Text to prepend to the halt message
+     * @var  string
      */
-    protected $_cfg;
+     protected $_sHaltMsgPrefix = '';
 
     /**
      * Default database connection for all instances
@@ -178,8 +178,10 @@ abstract class DB_Sql_Abstract
      * Profile data array
      * @var  array
      */
-    protected $_aProfileData = array();
+    protected static $_aProfileData = array();
 
+    // @todo intended to map new protected properties against old public
+    // properties by using magic __call method
     protected $_oldProperties = array(
         'Seq_Table' => '_sSeqTable',
         'Debug' => '_bDebug',
@@ -194,6 +196,7 @@ abstract class DB_Sql_Abstract
         'Halt_On_Error' => '_sHaltOnError',
     );
 
+
     /**
      * Constructor, sets passed options and connects to the DBMS, if not done before.
      *
@@ -203,6 +206,8 @@ abstract class DB_Sql_Abstract
      * @param  array  $options  Assoziative options as follows:
      *                          - $options['sequenceTable']  (string)  Optional, the sequence table name
      *                          - $options['nolock']  (bool)  Optional, not lock table
+     *                          - $options['haltBehavior']  (string)  Optional, halt behavior on occured errors
+     *                          - $options['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
      *                          - $options['type']  (string)  Database driver name
      *                          - $options['enableProfiling']  (bool)  Optional, flag to enable profiling
      *                          - $options['connection']  (array)  Optional, assoziative connection settings
@@ -229,6 +234,10 @@ abstract class DB_Sql_Abstract
                     $this->Halt_On_Error = self::HALT_REPORT;
                     break;
             }
+        }
+
+        if (isset($this->_aDbCfg['haltMsgPrefix']) && is_string($this->_aDbCfg['haltMsgPrefix'])) {
+            $this->_sHaltMsgPrefix = $this->_aDbCfg['haltMsgPrefix'];
         }
 
         if (isset($this->_aDbCfg['type']) && is_string($this->_aDbCfg['type'])) {
@@ -262,11 +271,11 @@ abstract class DB_Sql_Abstract
      */
     public function connect()
     {
-        if ($this->Link_ID = $this->_getConnection($this->_aDbCfg)) {
+        if ($this->Link_ID = $this->_getConnection($this->_aDbCfg['connection'])) {
             return $this->Link_ID;
         } else {
             if ($this->Link_ID = $this->_connect()) {
-                $this->_setConnection($this->_aDbCfg, $this->Link_ID);
+                $this->_setConnection($this->_aDbCfg['connection'], $this->Link_ID);
                 return $this->Link_ID;
             }
         }
@@ -351,7 +360,7 @@ abstract class DB_Sql_Abstract
      * Executes the query.
      *
      * @param   string    $sQuery  The query to execute
-     * @return  resource|int|object|bool  Depends on used database driver, false on error 
+     * @return  resource|int|object|bool  Depends on used database driver, false on error
      */
     public function query($sQuery)
     {
@@ -382,7 +391,7 @@ abstract class DB_Sql_Abstract
         if ($this->_bProfile) {
             $fStart = microtime(true);
         }
-        
+
         $this->_query($sQuery);
 
         if ($this->_bProfile) {
@@ -623,8 +632,7 @@ abstract class DB_Sql_Abstract
     public function halt($sMsg)
     {
         if ($this->Halt_On_Error == self::HALT_REPORT) {
-            $sMsg = $this->_halt($sMsg);
-            $this->haltmsg($_SERVER['REQUEST_URI'] . ' ' . $sMsg);
+            $this->haltmsg($this->_sHaltMsgPrefix . $sMsg);
         }
 
         if ($this->Halt_On_Error == self::HALT_YES) {
@@ -641,9 +649,14 @@ abstract class DB_Sql_Abstract
      */
     public function haltmsg($sMsg)
     {
-        $sName = ($this->type == '') ? 'Unknown Database' : $this->type;
-        $sMsg  = sprintf("Database error: %s\n", $sMsg);
-        $sMsg  = sprintf("%s Error: %s (%s)\n", $sName, $this->Errno, $this->Error);
+        if (!$this->Error) {
+            $this->Error = $this->_getErrorMessage();
+        }
+        if (!$this->Errno) {
+            $this->Errno = $this->_getErrorNumber();
+        }
+
+        $sMsg  = sprintf("%s error: %s (%s) - info: %s\n", $sName, $this->Errno, $this->Error, $sMsg);
         error_log($sMsg);
     }
 
@@ -659,12 +672,50 @@ abstract class DB_Sql_Abstract
 
 
     /**
-     * public: Escape string for using in SQL-Statement.
+     * Escape string for using in SQL-Statement.
      *
      * @param   string  $sString  The string to escape
      * @return  string  Escaped string
      */
     abstract public function escape($sString);
+
+
+    /**
+     * Returns error message of last occured error
+     *
+     * @return  string
+     */
+    public function getErrorMessage()
+    {
+        return $this->Error;
+    }
+
+
+    /**
+     * Returns error message of last occured error by using databases interface
+     *
+     * @return  string
+     */
+    abstract protected function _getErrorMessage();
+
+
+    /**
+     * Returns error code of last occured error by using databases interface
+     *
+     * @return  int
+     */
+    public function getErrorNumber()
+    {
+        return $this->Errno;
+    }
+
+
+    /**
+     * Returns error code of last occured error by using databases interface
+     *
+     * @return  int
+     */
+    abstract protected function _getErrorNumber();
 
 
     /**
@@ -682,6 +733,7 @@ abstract class DB_Sql_Abstract
         );
     }
 
+
     /**
      * Returns collected profile data
      * @return  array  Profile data array like:
@@ -692,6 +744,7 @@ abstract class DB_Sql_Abstract
     {
         return self::$_aProfileData;
     }
+
 
     /**
      * Displays the passed message, if debug is enabled (see $this->Debug)

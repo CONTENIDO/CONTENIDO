@@ -77,15 +77,12 @@ class DB_Sql extends DB_Sql_Abstract
     {
         extract($this->_aDbCfg['connection']);
 
-        $this->_debug("Connecting to $this->Database...");
         $dbh = OCIplogon($user, $password, $database);
 
         if (!$dbh) {
-            $this->halt("Link-ID == false " . "($dbh), OCILogon failed");
+            $this->halt('OCI8 _connect() Failed');
             return false;
         }
-
-        $this->_debug("Obtained the Link_ID: $dbh");
 
         return $dbh;
     }
@@ -111,7 +108,7 @@ class DB_Sql extends DB_Sql_Abstract
         if ($this->_Error['code'] != 1403 && $this->_Error['code'] != 0 && $this->sqoe) {
             $this->Errno = $this->_Error['code'];
             $this->Error = $this->_Error['message'];
-            $this->halt("OCI8 error " . $this->Errno . ": " . $this->Error . "\n" . $sQuery);
+            $this->halt($sQuery);
         } else {
             $this->Errno = 0;
             $this->Error = '';
@@ -322,20 +319,6 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /**
-     * Error handling
-     *
-     * @param   string  $msg  The message to use for error handling
-     * @return  void
-     */
-    protected function _halt($msg)
-    {
-        $this->Error = $this->_Error['message'];
-        $this->Errno = $this->_Error['code'];
-        return $msg;
-    }
-
-
     public function lock($table, $mode = 'write')
     {
         $this->connect();
@@ -386,6 +369,24 @@ class DB_Sql extends DB_Sql_Abstract
     public function split_specialcharacters($sQuery)
     {
         return str_replace("''", "'", $sQuery);
+    }
+
+
+    /**
+     * Returns error message of last occured error by using databases interface
+     */
+    protected function _getErrorMessage()
+    {
+        // @todo implement me
+    }
+
+
+    /**
+     * Returns error code of last occured error by using databases interface
+     */
+    protected function _getErrorNumber()
+    {
+        // @todo implement me
     }
 
 }

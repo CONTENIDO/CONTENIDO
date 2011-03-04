@@ -97,28 +97,23 @@ class DB_Sql extends DB_Sql_Abstract
 
         $this->_debug("Connect()ing to $database...");
         if ($this->Remote) {
-            $this->_debug("connect() $user/******@$database.world");
             $dbh = ora_plogon("$user/$password@$database","");
             /************** (comment by SSilk)
             this dosn't work on my system:
-            $dbh=ora_plogon("$user@$tdatabase.world","$password");
+            $dbh = ora_plogon("$user@$tdatabase.world","$password");
             ***************/
         } else {
-            $this->_debug("connect() $user, $password");
             $dbh = ora_plogon("$user","$password");
             /* (comment by SSilk: don't know how this could work, but I leave this untouched!) */
         }
         $this->_debug("connect() Link_ID: $dbh");
 
         if (!$dbh) {
-            $this->halt("connect() Link-ID == false " . "($dbh), ora_plogon failed");
+            $this->halt('ORACLE _connect() Failed');
             return false;
         }
 
-        //echo "commit on<p>";
         ora_commiton($dbh);
-
-        $this->_debug("connect() Obtained the Link_ID: $dbh");
 
         return $dbh;
     }
@@ -488,6 +483,24 @@ class DB_Sql extends DB_Sql_Abstract
     {
         //@ToDo: implement specific database behaviour
         return addslashes($sString);
+    }
+
+
+    /**
+     * Returns error message of last occured error by using databases interface
+     */
+    protected function _getErrorMessage()
+    {
+        // @todo implement me
+    }
+
+
+    /**
+     * Returns error code of last occured error by using databases interface
+     */
+    protected function _getErrorNumber()
+    {
+        // @todo implement me
     }
 
 }

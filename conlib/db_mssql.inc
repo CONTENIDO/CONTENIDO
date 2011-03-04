@@ -206,7 +206,8 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /**f     * Escape string for using in SQL-Statement
+    /**
+     * Escape string for using in SQL-Statement
      *
      * @param   string  $sString
      * @return  string
@@ -215,6 +216,23 @@ class DB_Sql extends DB_Sql_Abstract
     {
         //ToDo implement specific database behaviour
         return addslashes($sString);
+    }
+
+    /**
+     * Returns error message of last occured error by using databases interface
+     */
+    protected function _getErrorMessage()
+    {
+        // @todo implement me
+    }
+
+
+    /**
+     * Returns error code of last occured error by using databases interface
+     */
+    protected function _getErrorNumber()
+    {
+        // @todo implement me
     }
 
 }

@@ -64,13 +64,13 @@ class DB_Sql extends DB_Sql_Abstract
         // establish connection, select database
         $dbh = @mysql_connect($host, $user, $password);
         if (!$dbh || !is_resource($dbh)) {
-            $this->halt("connect($host, $user, \$password) failed.");
+            $this->halt('MySQL _connect() Failed');
             return false;
         }
 
         if ($database != '') {
             if (!@mysql_select_db($database, $dbh)) {
-                $this->halt('Cannot use database ' . $database);
+                $this->halt('MySQL _connect() Cannot use database ' . $database);
                 return false;
             }
         }
@@ -98,10 +98,10 @@ class DB_Sql extends DB_Sql_Abstract
     {
         $this->Query_ID = @mysql_query($sQuery, $this->Link_ID);
         $this->Row      = 0;
-        $this->Error    = mysql_error();
-        $this->Errno    = mysql_errno();
+        $this->Error    = $this->_getErrorMessage();
+        $this->Errno    = $this->_getErrorNumber();
         if (!$this->Query_ID) {
-            $this->halt("MySQL error " . $this->Errno . ": " . $this->Error . "\n" . $sQuery);
+            $this->halt($sQuery);
         }
     }
 
@@ -113,23 +113,10 @@ class DB_Sql extends DB_Sql_Abstract
      */
     public function next_record()
     {
-        global $cCurrentModule;
-        // FIXME  For what reason is NoRecord used???
-        $this->NoRecord = false;
-        if (!$this->Query_ID) {
-            $this->NoRecord = true;
-            if ($cCurrentModule > 0) {
-                $this->halt("next_record called with no query pending in Module ID $cCurrentModule.");
-            } else {
-                $this->halt("next_record called with no query pending.");
-            }
-            return false;
-        }
-
         $this->Record = @mysql_fetch_array($this->Query_ID);
         $this->Row   += 1;
-        $this->Errno  = mysql_errno();
-        $this->Error  = mysql_error();
+        $this->Error    = $this->_getErrorMessage();
+        $this->Errno    = $this->_getErrorNumber();
 
         $stat = is_array($this->Record);
         if (!$stat && $this->Auto_Free) {
@@ -379,25 +366,10 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /**
-     * Error handling
-     *
-     * @param   string  $msg  The message to use for error handling
-     * @return  void
-     */
-    protected function _halt($msg)
-    {
-        if ($this->Link_ID) {
-            $this->Error = mysql_error($this->Link_ID);
-            $this->Errno = mysql_errno($this->Link_ID);
-        }
-        return $msg;
-    }
-
-
     // FIXME we have disconnect() for this
     public function close()
     {
+        $this->disconnect();
     }
 
 
@@ -406,6 +378,33 @@ class DB_Sql extends DB_Sql_Abstract
         $arr['description'] = mysql_get_server_info();
         return $arr;
     }
+
+
+    /**
+     * Returns error message of last occured error by using databases interface
+     */
+    protected function _getErrorMessage()
+    {
+        if ($this->Link_ID) {
+            return mysql_error($this->Link_ID);
+        } else {
+            return mysql_error();
+        }
+    }
+
+
+    /**
+     * Returns error code of last occured error by using databases interface
+     */
+    protected function _getErrorNumber()
+    {
+        if ($this->Link_ID) {
+            return mysql_errno($this->Link_ID);
+        } else {
+            return mysql_errno();
+        }
+    }
+
 
     /**
      * This method equates to mysql_fetch_object(). It returns the current

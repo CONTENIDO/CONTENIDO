@@ -84,23 +84,25 @@ class DB_Sql extends DB_Sql_Abstract
 
         $dsn = 'mysql:dbname=' . $database . ';host=' . $host;
 
-        if (!$driver_options) && !is_array($driver_options)) {
+        if (!isset($driver_options) || !is_array($driver_options)) {
             $driver_options = array();
         }
 
         try {
             // Create a new PDO connection
-            $this->_con = new PDO($dsn, $user, $password, $driver_options);
+            $dbh = new PDO($dsn, $user, $password, $driver_options);
         } catch (PDOException $e) {
-            // donut
+            $this->Errno = $e->getCode();
+            $this->Error = $e->getMessage();
         }
 
-        if (!$this->_con) {
-            $this->halt("connect() failed: " . $e->getCode() . ': ' . $e->getMessage());
+        if (!$dbh) {
+            $this->halt('PDO_MySQL _connect() Failed');
             return false;
         }
 
-        return $this->_con;
+        $this->_con = $dbh;
+        return $dbh;
     }
 
 
@@ -128,11 +130,11 @@ class DB_Sql extends DB_Sql_Abstract
 
         $this->Query_ID = $this->_stmt;
         $this->Row      = 0;
-        $this->Errno    = $this->_con->errorCode();
-        $this->Error    = $this->_con->errorInfo();
+        $this->Errno    = $this->_getErrorNumber();
+        $this->Error    = $this->_getErrorMessage();
 
         if (!$this->Query_ID) {
-            $this->halt('MySQLi error ' . $this->Errno . ': ' . $this->Error . "\n" . $sQuery);
+            $this->halt($sQuery);
         }
     }
 
@@ -144,23 +146,10 @@ class DB_Sql extends DB_Sql_Abstract
      */
     public function next_record()
     {
-        global $cCurrentModule;
-        // FIXME  For what reason is NoRecord used???
-        $this->NoRecord = false;
-        if (!$this->Query_ID) {
-            $this->NoRecord = true;
-            if ($cCurrentModule > 0) {
-                $this->halt("next_record called with no query pending in Module ID $cCurrentModule.");
-            } else {
-                $this->halt("next_record called with no query pending.");
-            }
-            return false;
-        }
-
         $this->Record = $this->_stmt->fetch(PDO::FETCH_BOTH);
-        $this->Row += 1;
-        $this->Errno    = $this->_con->errorCode();
-        $this->Error    = $this->_con->errorInfo();
+        $this->Row   += 1;
+        $this->Errno  = $this->_getErrorNumber();
+        $this->Error  = $this->_getErrorMessage();
 
         $stat = is_array($this->Record);
         if (!$stat && $this->Auto_Free) {
@@ -413,30 +402,10 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /**
-     * Error handling
-     *
-     * @param   string  $msg  The message to use for error handling
-     * @return  void
-     */
-    protected function _halt($msg)
-    {
-        if ($this->_con) {
-            $this->Error = $this->_con->errorInfo();
-            $this->Errno = $this->_con->errorCode();
-        }
-        return $msg;
-    }
-
     // FIXME we have disconnect() for this
     public function close()
     {
-       if ($this->Link_ID) {
-           $this->disconnect();
-           return true;
-       } else {
-           return false;
-       }
+        $this->disconnect();
     }
 
 
@@ -451,6 +420,36 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * Returns error message of last occured error by using databases interface
+     */
+    protected function _getErrorMessage()
+    {
+        if ($this->_stmt) {
+            return $this->_stmt->errorInfo();
+        } elseif ($this->_con) {
+            return $this->_con->errorInfo();
+        } else {
+            return '';
+        }
+    }
+
+
+    /**
+     * Returns error code of last occured error by using databases interface
+     */
+    protected function _getErrorNumber()
+    {
+        if ($this->_stmt) {
+            return $this->_stmt->errorCode();
+        } elseif ($this->_con) {
+            return $this->_con->errorCode();
+        } else {
+            return 0;
+        }
+    }
+
+
     protected function _getFieldTypeDetails($field)
     {
         $ret = array('type' => null, 'size' => null);
@@ -460,14 +459,14 @@ class DB_Sql extends DB_Sql_Abstract
         if (preg_match('/^([a-z].*)\(([0-9].*)\)/', $field, $matches)) {
             $ret = array('type' => $matches[1], 'size' => (int) $matches[2]);
         } else {
-            $ret['type'] = $field; 
+            $ret['type'] = $field;
         }
         return $ret;
     }
 
     /**
-     * This method festches the current result set and returns the it as object or 
-     * null if no result set is left. If optional param $sClassName is set, the 
+     * This method festches the current result set and returns the it as object or
+     * null if no result set is left. If optional param $sClassName is set, the
      * result object is an instance of class $sClassName.
      *
      * @param   string  sClassName  Optional the classname to instantiate.

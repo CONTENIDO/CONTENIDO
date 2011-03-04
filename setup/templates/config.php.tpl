@@ -127,6 +127,7 @@ $cfg['db'] = array(
     'nolock'          => {NOLOCK}, // (bool) Flag to not lock tables
     'sequenceTable'   => '',       // (string) will be set later in startup!
     'haltBehavior'    => 'report', // (string) Feasible values are 'yes', 'no' or 'report'
+    'haltMsgPrefix'   => (isset($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] . ' ' : '',
     'enableProfiling' => false,    // (bool) Flag to enable profiling
 );
 

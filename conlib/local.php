@@ -41,7 +41,7 @@ class DB_Contenido extends DB_Sql
     /**
      * Constructor of database class.
      *
-     * @param  array  $options  Optional assoziative options. The value depends 
+     * @param  array  $options  Optional assoziative options. The value depends
      *                          on used DBMS, but is generally as follows:
      *                          - $options['connection']['host']  (string) Hostname  or ip
      *                          - $options['connection']['database']  (string) Database name
@@ -50,6 +50,7 @@ class DB_Contenido extends DB_Sql
      *                          - $options['nolock']  (bool)  Optional, not lock table
      *                          - $options['sequenceTable']  (string)  Optional, sequesnce table
      *                          - $options['haltBehavior']  (string)  Optional, halt behavior on occured errors
+     *                          - $options['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
      *                          - $options['enableProfiling']  (bool)  Optional, flag to enable profiling
      * @return  void
      */
@@ -72,10 +73,34 @@ class DB_Contenido extends DB_Sql
 
 
     /**
+     * Fetches the next recordset from result set
+     *
+     * @param  bool
+     */
+    public function next_record()
+    {
+        global $cCurrentModule;
+        // FIXME  For what reason is NoRecord used???
+        $this->NoRecord = false;
+        if (!$this->Query_ID) {
+            $this->NoRecord = true;
+            if ($cCurrentModule > 0) {
+                $this->halt("next_record called with no query pending in Module ID $cCurrentModule.");
+            } else {
+                $this->halt("next_record called with no query pending.");
+            }
+            return false;
+        }
+
+        return parent::next_record();
+    }
+
+
+    /**
      * Returns the metada of passed table
      *
      * @param   string  $sTable  The tablename of empty string to retrieve metadata of all tables!
-     * @return  array|bool   Assoziative metadata array (result depends on used db driver) 
+     * @return  array|bool   Assoziative metadata array (result depends on used db driver)
      *                       or false in case of an error
      * @deprecated  Use db drivers toArray() method instead
      */
@@ -132,7 +157,7 @@ class Contenido_CT_Sql extends CT_Sql
 
 
 /**
- * Implements the interface class for storing session data to disk using file 
+ * Implements the interface class for storing session data to disk using file
  * session container of phplib.
  */
 class Contenido_CT_File extends CT_File
@@ -144,7 +169,7 @@ class Contenido_CT_File extends CT_File
     public $iLineLength = 999999;
 
     /**
-     * Overrides standard constructor for setting up file path to the one which is 
+     * Overrides standard constructor for setting up file path to the one which is
      * configured in php.ini
      *
      * @return Contenido_CT_File

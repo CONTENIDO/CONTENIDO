@@ -77,7 +77,7 @@ class DB_Sql extends DB_Sql_Abstract
 
         $dbh = pg_pconnect($cstr);
         if (!$dbh) {
-            $this->halt("Link-ID == false, pconnect failed");
+            $this->halt('PostgreSQL _connect() Failed');
             return false;
         }
 
@@ -97,7 +97,7 @@ class DB_Sql extends DB_Sql_Abstract
         $this->Error    = pg_last_error($this->Link_ID);
         $this->Errno    = ($this->Error == '') ? 0 : 1;
         if (!$this->Query_ID) {
-            $this->halt("PostgreSQL error " . $this->Errno . ": " . $this->Error . "\n" . $sQuery);
+            $this->halt($sQuery);
         }
     }
 
@@ -258,6 +258,24 @@ class DB_Sql extends DB_Sql_Abstract
     {
         //ToDo implement specific database behaviour
         return addslashes($sString);
+    }
+
+
+    /**
+     * Returns error message of last occured error by using databases interface
+     */
+    protected function _getErrorMessage()
+    {
+        // @todo implement me
+    }
+
+
+    /**
+     * Returns error code of last occured error by using databases interface
+     */
+    protected function _getErrorNumber()
+    {
+        // @todo implement me
     }
 
 }

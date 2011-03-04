@@ -69,7 +69,7 @@ class DB_Sql extends DB_Sql_Abstract
 
         $dbh = odbc_pconnect($database, $user, $password, $this->UseODBCCursor);
         if (!$dbh) {
-            $this->halt("Link-ID == false, odbc_pconnect failed");
+            $this->halt('ODBC _connect() Failed');
             return false;
         }
 
@@ -97,7 +97,7 @@ class DB_Sql extends DB_Sql_Abstract
         if (!$this->Query_ID) {
             $this->Errno = 1;
             $this->Error = 'General Error (The ODBC interface cannot return detailed error messages).';
-            $this->halt("ODBC error " . $this->Errno . ": " . $this->Error . "\n" . $sQuery);
+            $this->halt($sQuery);
         } else {
             $this->Errno = 0;
             $this->Error = '';
@@ -236,6 +236,24 @@ class DB_Sql extends DB_Sql_Abstract
     {
         //ToDo implement specific database behaviour
         return addslashes($sString);
+    }
+
+
+    /**
+     * Returns error message of last occured error by using databases interface
+     */
+    protected function _getErrorMessage()
+    {
+        // @todo implement me
+    }
+
+
+    /**
+     * Returns error code of last occured error by using databases interface
+     */
+    protected function _getErrorNumber()
+    {
+        // @todo implement me
     }
 
 }

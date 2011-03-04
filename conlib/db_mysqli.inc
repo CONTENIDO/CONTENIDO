@@ -79,28 +79,57 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _connect()
     {
+        // feasible connection values are:
+        // - $options['connection']['host']  (string) Hostname or ip
+        // - $options['connection']['database']  (string) Database name
+        // - $options['connection']['user']  (string) User name
+        // - $options['connection']['password']  (string)  User password
+        // - $options['connection']['options']  (array)  Optional, MySQLi options array
+        // - $options['connection']['socket']  (int)  Optional, socket
+        // - $options['connection']['port']  (int)  Optional, port
+        // - $options['connection']['flags']  (int)  Optional, flags
+        // see http://www.php.net/manual/en/mysqli.real-connect.php
+
         extract($this->_aDbCfg['connection']);
 
-        if (($iPos = strpos($host, ':')) !== false) {
-            list($host, $port) = explode(':', $host);
-        }
-
-        // establish connection, select database
-        if (($iPos = strpos($host, ':')) !== false) {
-            list($host, $port) = explode(':', $host);
-            $dbh = @mysqli_connect($host, $user, $password, '', $port);
-        } else {
-            $dbh = @mysqli_connect($host, $user, $password);
-        }
-
-        if (!$dbh) {
-            $this->halt("connect($host, $user, \$password) failed: " . mysqli_connect_error());
+        if (!extension_loaded('mysqli')) {
+            $this->halt('MySQLi _connect() extension not loaded!');
             return false;
         }
 
-        if ($database != '') {
-            if (!mysqli_select_db($dbh, $database)) {
-                $this->halt('Cannot use database ' . $database);
+        $dbh = @mysqli_init();
+        if (!$dbh) {
+            $this->halt('MySQLi _connect() Init failed');
+            return false;
+        }
+
+        // set existing option flags
+        if (isset($options) && is_array($options)) {
+            foreach ($options as $optKey => $optVal) {
+                mysqli_options($dbh, $optKey, $optVal);
+            }
+        }
+
+        if (($iPos = strpos($host, ':')) !== false) {
+            list($host, $port) = explode(':', $host);
+        } else {
+            $port = null;
+        }
+
+        if (!isset($socket)) {
+            $socket = null;
+        }
+        if (!isset($flags)) {
+            $flags = null;
+        }
+
+        $res = mysqli_real_connect(
+            $dbh, $host, $user, $password, $database, $port, $socket, $flags
+        );
+
+        if ($res && $dbh) {
+            if (!@mysqli_select_db($dbh, $database)) {
+                $this->halt('MySQLi _connect() Cannot use database ' . $database);
                 return false;
             }
         }
@@ -130,10 +159,10 @@ class DB_Sql extends DB_Sql_Abstract
     {
         $this->Query_ID = mysqli_query($this->Link_ID, $sQuery);
         $this->Row      = 0;
-        $this->Errno    = mysqli_errno($this->Link_ID);
-        $this->Error    = mysqli_error($this->Link_ID);
+        $this->Errno    = $this->_getErrorNumber();
+        $this->Error    = $this->_getErrorMessage();
         if (!$this->Query_ID) {
-            $this->halt('MySQLi error ' . $this->Errno . ': ' . $this->Error . "\n" . $sQuery);
+            $this->halt($sQuery);
         }
     }
 
@@ -145,23 +174,10 @@ class DB_Sql extends DB_Sql_Abstract
      */
     public function next_record()
     {
-        global $cCurrentModule;
-        // FIXME  For what reason is NoRecord used???
-        $this->NoRecord = false;
-        if (!$this->Query_ID) {
-            $this->NoRecord = true;
-            if ($cCurrentModule > 0) {
-                $this->halt("next_record called with no query pending in Module ID $cCurrentModule.");
-            } else {
-                $this->halt("next_record called with no query pending.");
-            }
-            return false;
-        }
-
         $this->Record = mysqli_fetch_array($this->Query_ID, MYSQLI_BOTH);
-        $this->Row += 1;
-        $this->Errno = mysqli_errno($this->Link_ID);
-        $this->Error = mysqli_error($this->Link_ID);
+        $this->Row   += 1;
+        $this->Errno  = $this->_getErrorNumber();
+        $this->Error  = $this->_getErrorMessage();
 
         $stat = is_array($this->Record);
         if (!$stat && $this->Auto_Free) {
@@ -413,29 +429,10 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /**
-     * Error handling
-     *
-     * @param   string  $msg  The message to use for error handling
-     * @return  void
-     */
-    protected function _halt($msg)
-    {
-        if ($this->Link_ID) {
-            $this->Error = mysqli_error($this->Link_ID);
-            $this->Errno = mysqli_errno($this->Link_ID);
-        }
-        return $msg;
-    }
-
     // FIXME we have disconnect() for this
     public function close()
     {
-       if ($this->Link_ID) {
-           return mysqli_close($this->Link_ID);
-       } else {
-           return false;
-       }
+        $this->disconnect();
     }
 
 
@@ -443,6 +440,32 @@ class DB_Sql extends DB_Sql_Abstract
     {
         $arr['description'] = mysqli_get_server_info($this->Link_ID);
         return $arr;
+    }
+
+
+    /**
+     * Returns error message of last occured error by using databases interface
+     */
+    protected function _getErrorMessage()
+    {
+        if ($this->Link_ID) {
+            return @mysqli_error($this->Link_ID);
+        } else {
+            return @mysqli_connect_error();
+        }
+    }
+
+
+    /**
+     * Returns error code of last occured error by using databases interface
+     */
+    protected function _getErrorNumber()
+    {
+        if ($this->Link_ID) {
+            return @mysqli_errno($this->Link_ID);
+        } else {
+            return @mysqli_connect_errno();
+        }
     }
 
 

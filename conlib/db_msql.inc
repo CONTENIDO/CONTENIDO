@@ -73,13 +73,13 @@ class DB_Sql extends DB_Sql_Abstract
 
         // Still not connected? Raise error.
         if (!$dbh) {
-            $this->halt('dbh == false, pconnect failed');
+            $this->halt('mSQL _connect() Failed');
             return false;
         }
 
         // Select current database
         if (!msql_select_db($database, $dbh)) {
-            $this->halt('cannot use database ' . $database);
+            $this->halt('mSQL _connect() Cannot use database ' . $database);
             return false;
         }
 
@@ -99,7 +99,7 @@ class DB_Sql extends DB_Sql_Abstract
         $this->Error    = msql_error();
         $this->Errno    = ($this->Error !== '') ? '1' : '0';
         if (!$this->Query_ID) {
-            $this->halt("mSQL error " . $this->Errno . ": " . $this->Error . "\n" . $sQuery);
+            $this->halt($sQuery);
         }
     }
 
@@ -214,4 +214,23 @@ class DB_Sql extends DB_Sql_Abstract
         //ToDo implement specific database behaviour
         return addslashes($sString);
     }
+
+
+    /**
+     * Returns error message of last occured error by using databases interface
+     */
+    protected function _getErrorMessage()
+    {
+        // @todo implement me
+    }
+
+
+    /**
+     * Returns error code of last occured error by using databases interface
+     */
+    protected function _getErrorNumber()
+    {
+        // @todo implement me
+    }
+
 }
