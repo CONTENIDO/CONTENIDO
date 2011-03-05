@@ -41,13 +41,13 @@ class DB_Sql extends DB_Sql_Abstract
      * PDO connection
      * @var PDO
      */
-    protected $_con;
+    public $Query_ID;
 
     /**
      * PDO statement
      * @var PDOStatement
      */
-    protected $_stmt;
+    public $Link_ID;
 
     protected $_aDataTypes = array(
         PDO::PARAM_BOOL     => 'bool',
@@ -101,7 +101,6 @@ class DB_Sql extends DB_Sql_Abstract
             return false;
         }
 
-        $this->_con = $dbh;
         return $dbh;
     }
 
@@ -111,9 +110,9 @@ class DB_Sql extends DB_Sql_Abstract
      */
     public function free()
     {
-        if ($this->_stmt) {
-            $this->_stmt->closeCursor();
-            unset($this->_stmt);
+        if ($this->Query_ID) {
+            $this->Query_ID->closeCursor();
+            unset($this->Query_ID);
         }
     }
 
@@ -125,14 +124,13 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _query($sQuery)
     {
-        $this->_stmt = $this->_con->prepare($sQuery);
-        $this->_stmt->execute();
-
-        $this->Query_ID = $this->_stmt;
+        $this->Query_ID = $this->Link_ID->query($sQuery);
         $this->Row      = 0;
         $this->Errno    = $this->_getErrorNumber();
         $this->Error    = $this->_getErrorMessage();
-
+#if ($this->Error) {
+error_log($sQuery);
+#}
         if (!$this->Query_ID) {
             $this->halt($sQuery);
         }
@@ -146,11 +144,10 @@ class DB_Sql extends DB_Sql_Abstract
      */
     public function next_record()
     {
-        $this->Record = $this->_stmt->fetch(PDO::FETCH_BOTH);
+        $this->Record = $this->Query_ID->fetch(PDO::FETCH_BOTH);
         $this->Row   += 1;
         $this->Errno  = $this->_getErrorNumber();
         $this->Error  = $this->_getErrorMessage();
-
         $stat = is_array($this->Record);
         if (!$stat && $this->Auto_Free) {
             $this->free();
@@ -212,7 +209,7 @@ class DB_Sql extends DB_Sql_Abstract
     /* public: evaluate the result (size, width) */
     public function affected_rows()
     {
-        return $this->_stmt->rowCount();
+        return ($this->Query_ID) ? $this->Query_ID : 0;
     }
 
 
@@ -223,9 +220,9 @@ class DB_Sql extends DB_Sql_Abstract
      */
     public function num_rows()
     {
-        if ($this->_stmt) {
+        if ($this->Query_ID) {
             // clone statement and get count by using fetchAll
-            $stmt = clone $this->_stmt;
+            $stmt = clone $this->Query_ID;
             return (count($stmt->fetchAll()));
         } else {
             return 0;
@@ -247,23 +244,20 @@ class DB_Sql extends DB_Sql_Abstract
         if ($this->lock($this->Seq_Table)) {
             /* get sequence number (locked) and increment */
             $q = sprintf("SELECT nextid FROM `%s` WHERE seq_name = '%s'", $this->Seq_Table, $seq_name);
-            $stmt = $this->_con->prepare($g);
-            $stmt->execute();
-            $res = $stmt->fetch(PDO::FETCH_BOTH);
+            $stmt = $this->Link_ID->query($g);
+            $res = ($stmt) ? $stmt->fetch(PDO::FETCH_BOTH) : null;
 
             /* No current value, make one */
             if (!is_array($res)) {
                 $currentid = 0;
                 $q = sprintf("INSERT INTO `%s` values('%s', %s)", $this->Seq_Table, $seq_name, $currentid);
-                $stmt = $this->_con->prepare($q);
-                $stmt->execute();
+                $stmt = $this->Link_ID->query($q);
             } else {
                 $currentid = $res['nextid'];
             }
-            $nextid = $currentid +1;
+            $nextid = $currentid + 1;
             $q = sprintf("UPDATE `%s` set nextid = '%s' WHERE seq_name = '%s'", $this->Seq_Table, $nextid, $seq_name);
-            $stmt = $this->_con->prepare($q);
-            $stmt->execute();
+            $stmt = $this->Link_ID->query($q);
             $this->unlock();
         } else {
             $this->halt('Cannot lock ' . $this->Seq_Table . ' - has it been created?');
@@ -282,9 +276,7 @@ class DB_Sql extends DB_Sql_Abstract
     {
         $this->_debug("Debug: Disconnecting $this->Link_ID...");
         // Destroy the PDO and PDOStatement object
-        $this->_removeConnection($this->_con);
-        $this->_con = null;
-        $this->_stmt = null;
+        $this->_removeConnection($this->Link_ID);
         $this->Link_ID  = null;
         $this->Query_ID = null;
     }
@@ -327,14 +319,13 @@ class DB_Sql extends DB_Sql_Abstract
         // result
         if ($table) {
             $this->connect();
-            $stmt = $this->_con->prepare(sprintf("DESCRIBE `%s`", $table));
-            $stmt->execute();
+            $stmt = $this->Link_ID->query(sprintf("DESCRIBE `%s`", $table));
             if (!$stmt) {
                 $this->halt('Metadata query failed.');
                 return false;
             }
         } else {
-            $stmt = $this->_stmt;
+            $stmt = $this->Query_ID;
             if (!$stmt) {
                 $this->halt('No query specified.');
                 return false;
@@ -371,9 +362,10 @@ class DB_Sql extends DB_Sql_Abstract
     public function escape($sString)
     {
         $sResult = '';
-        if ($this->connect()) {
-            $sResult = $this->_con->quote($sString);
-        }
+        $sResult = str_replace("'", "''", $sString);
+#        if ($this->connect()) {
+#            $sResult = $this->Link_ID->quote($sString);
+#        }
         return $sResult;
     }
 
@@ -386,8 +378,7 @@ class DB_Sql extends DB_Sql_Abstract
             return $return;
         }
 
-        $stmt = $this->_con->prepare('SHOW TABLES');
-        $stmt->execute();
+        $stmt = $this->Link_ID->query('SHOW TABLES');
         $i = 0;
         while ($rs = $stmt->fetch(PDO::FETCH_NUM)) {
             $return[$i]['table_name']      = $rs[0];
@@ -414,8 +405,8 @@ class DB_Sql extends DB_Sql_Abstract
         if (!$this->connect()) {
             return null;
         }
-        $arr['description'] = $this->_con->getAttribute(PDO::ATTR_SERVER_INFO);
-        $arr['version'] = $this->_con->getAttribute(PDO::ATTR_SERVER_VERSION);
+        $arr['description'] = $this->Link_ID->getAttribute(PDO::ATTR_SERVER_INFO);
+        $arr['version'] = $this->Link_ID->getAttribute(PDO::ATTR_SERVER_VERSION);
         return $arr;
     }
 
@@ -425,12 +416,14 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _getErrorMessage()
     {
-        if ($this->_stmt) {
-            return $this->_stmt->errorInfo();
-        } elseif ($this->_con) {
-            return $this->_con->errorInfo();
-        } else {
-            return '';
+        $err = null;
+        if ($this->Query_ID) {
+            $err = $this->Query_ID->errorInfo();
+        } elseif ($this->Link_ID) {
+            $err = $this->Link_ID->errorInfo();
+        }
+        if (null !== $err && (int) $err[0] > 0) {
+            return $err[2];
         }
     }
 
@@ -440,12 +433,14 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _getErrorNumber()
     {
-        if ($this->_stmt) {
-            return $this->_stmt->errorCode();
-        } elseif ($this->_con) {
-            return $this->_con->errorCode();
-        } else {
-            return 0;
+        $err = null;
+        if ($this->Query_ID) {
+            $err = $this->Query_ID->errorCode();
+        } elseif ($this->Link_ID) {
+            $err = $this->Link_ID->errorCode();
+        }
+        if (null !== $err && (int) $err[0] > 0) {
+            return $err[0];
         }
     }
 
@@ -476,8 +471,8 @@ class DB_Sql extends DB_Sql_Abstract
     {
         $oResult = null;
 
-        if ($this->_con && $this->_stmt) {
-            if ($rs = $this->_stmt->fetch(PDO::FETCH_ASSOC)) {
+        if ($this->Link_ID && $this->Query_ID) {
+            if ($rs = $this->Query_ID->fetch(PDO::FETCH_ASSOC)) {
                 if ($sClassName == null) {
                     $oResult = (object) $rs;
                 } else {
