@@ -128,9 +128,6 @@ class DB_Sql extends DB_Sql_Abstract
         $this->Row      = 0;
         $this->Errno    = $this->_getErrorNumber();
         $this->Error    = $this->_getErrorMessage();
-#if ($this->Error) {
-error_log($sQuery);
-#}
         if (!$this->Query_ID) {
             $this->halt($sQuery);
         }
@@ -209,7 +206,7 @@ error_log($sQuery);
     /* public: evaluate the result (size, width) */
     public function affected_rows()
     {
-        return ($this->Query_ID) ? $this->Query_ID : 0;
+        return ($this->Query_ID) ? $this->Query_ID->rowCount() : 0;
     }
 
 
