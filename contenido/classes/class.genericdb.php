@@ -1,1795 +1,1731 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
- * Generic database abstraction functions
- * 
- * Requirements: 
+ *
+ * Description:
+ * Generic database abstraction functions.
+ *
+ * NOTE:
+ * Because of required downwards compatibilitiy all protected/private member 
+ * variables or methods don't have an leading underscore.
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend classes
- * @version    1.0.2
+ * @version    1.2
  * @author     Timo A. Hummel
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
- *   created 3003-07-18
- *   modified 2008-07-02, Frederic Schneider, add security fix
- *   modified 2010-05-20, Murat Purc, Removed check of $_REQUEST['cfg'] during processing ticket [#CON-307]
+ *
+ * {@internal
+ *   created   2003-07-18
+ *   modified  2008-07-02, Frederic Schneider, add security fix
+ *   modified  2010-05-20, Murat Purc, Removed check of $_REQUEST['cfg'] during processing ticket [#CON-307]
+ *   modified  2011-03-10, Murat Purc, Refactoring of Item and ItemCollection, partly port to PHP 5,
+ *                         new ItemException and ItemBaseAbstract, documentation and formatting.
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
-/* Try to load GenericDB database driver */
-$driver_filename = $cfg["path"]["contenido"].$cfg["path"]["classes"]."drivers/".$cfg['sql']['gdb_driver']."/class.gdb.".$cfg['sql']['gdb_driver'].".php";
+// Try to load GenericDB database driver
+$driver_filename = $cfg['path']['contenido'].$cfg['path']['classes'].'drivers/'.$cfg['sql']['gdb_driver'].'/class.gdb.'.$cfg['sql']['gdb_driver'].'.php';
 
-if (file_exists($driver_filename))
+if (file_exists($driver_filename)) {
+    include_once($driver_filename);
+}
+
+
+/**
+ * Class ItemException.
+ * @author     Murat Purc <murat@purc.de>
+ * @version    0.1
+ * @copyright  four for business AG <www.4fb.de>
+ */
+class ItemException extends Exception {}
+
+
+/**
+ * Class ItemBaseAbstract.
+ * Base class with common features for database based items and item collections.
+ *
+ * @author     Murat Purc <murat@purc.de>
+ * @version    0.1
+ * @copyright  four for business AG <www.4fb.de>
+ */
+abstract class ItemBaseAbstract
 {
-	include_once ($driver_filename);
+    /**
+     * Database instance, contains the database object
+     * @var  DB_Contenido
+     */
+    protected $db;
+
+    /**
+     * Second DB instance, is required for some additional queries without
+     * losing an current existing query result.
+     * @var  DB_Contenido
+     */
+    protected $secondDb;
+
+    /**
+     * Property collection instance
+     * @var  PropertyCollection
+     */
+    protected $properties;
+
+    /**
+     * Storage of the source table to use for the information
+     * @var  string
+     */
+    protected $table;
+
+    /**
+     * Storage of the primary key
+     * @var  string
+     * @todo remove access from public
+     */
+    public $primaryKey;
+
+    /**
+     * Checks for the virginity of created objects. If true, the object
+     * is virgin and no operations on it except load-Functions are allowed.
+     * @todo remove access from public
+     * @var  bool
+     */
+    public $virgin;
+
+    /**
+     * Lifetime of results/created objects?
+     * FIXME  Not used at the moment!
+     * @var  int
+     */
+    protected $lifetime;
+
+    /**
+     * Storage of the last occured error
+     * @var  string
+     */
+    protected $lasterror = '';
+
+    /**
+     * Cache the result items
+     * @todo  Check, if this is used somewhere
+     * @var  array
+     */
+    protected $cache;
+
+    /**
+     * Classname of current instance
+     * @var  string
+     */
+    protected $_className;
+
+
+    /**
+     * Sets some common properties
+     *
+     * @param  string  $sTable       Name of table
+     * @param  string  $sPrimaryKey  Primary key of table
+     * @param  int     $iLifetime    Lifetime of the object in seconds (NOT USED!)
+     * @param  string  $sClassName   Name of parent class
+     * @throws  ItemException  If table name or primary key is not set
+     */
+    protected function __construct($sTable, $sPrimaryKey, $iLifetime = 10, $sClassName)
+    {
+        $this->db = new DB_Contenido();
+
+        if ($sTable == '') {
+            $sMsg = "$sClassName: No table specified. Inherited classes *need* to set a table";
+            throw new ItemException($sMsg);
+        } elseif ($sPrimaryKey == '') {
+            $sMsg = "No primary key specified. Inherited classes *need* to set a primary key";
+            throw new ItemException($sMsg);
+        }
+
+        $this->table      = $sTable;
+        $this->primaryKey = $sPrimaryKey;
+        $this->virgin     = true;
+        $this->lifetime   = $iLifetime;
+        $this->_className = $sClassName;
+    }
+
+    /**
+     * Returns the second database instance, usable to run additional statements
+     * without losing current query results.
+     *
+     * @return  DB_Contenido
+     */
+    protected function _getSecondDBInstance()
+    {
+        if (!isset($this->secondDb) || !($this->secondDb instanceof DB_Contenido)) {
+            $this->secondDb = new DB_Contenido();
+        }
+        return $this->secondDb;
+    }
+
+    /**
+     * Returns properties instance, instantiates it if not done before.
+     *
+     * @return  PropertyCollection
+     */
+    protected function _getPropertiesCollectionInstance()
+    {
+        // Runtime on-demand allocation of the properties object
+        if (!isset($this->properties) || !($this->properties instanceof PropertyCollection)) {
+            $this->properties = new PropertyCollection();
+        }
+        return $this->properties;
+    }
 }
+
 
 /**
  * Class ItemCollection
- * Class for database based item collections
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.1
- * @copyright four for business 2003
+ * Abstract class for database based item collections.
+ *
+ * @author     Timo A. Hummel <Timo.Hummel@4fb.de>
+ * @author     Murat Purc <murat@purc.de>
+ * @version    0.2
+ * @copyright  four for business 2003
  */
-class ItemCollection
+abstract class ItemCollection extends ItemBaseAbstract
 {
-	/**
-	 * Storage of the source table to use for the information
-	 * @var string Contains the source table
-	 * @access private
-	 */
-	var $table;
-
-	/**
-	 * Storage of the primary key
-	 * @var string Contains the primary key of the source table
-	 * @access private
-	 */
-	var $primaryKey;
-
-	/**
-	 * DB_Contenido instance
-	 * @var object Contains the database object
-	 * @access private
-	 */
-	var $db;
-
-	/**
-	 * Storage of the last error
-	 * @var string Contains the error string of the last error occured
-	 * @access private
-	 */
-	var $lasterror;
-
-	/**
-	 * Storage of all result items
-	 * @var string Contains all result items
-	 * @access private
-	 */
-	var $objects;
-
-	/**
-	 * Cache the result items
-	 * @var array Contains all cache items
-	 * @access private
-	 */
-	var $cache;
-
-	/**
-	 * @var int Lifetime in seconds
-	 * @access private
-	 */
-	var $lifetime;
-
-	/**
-	 * @var string Single item class
-	 * @access private
-	 */
-	var $_itemClass;
-
-	/**
-	 * @var object Iterator object for the next() method
-	 * @access private
-	 */
-	var $_iteratorItem;
-
-	/**
-	 * @var array Reverse join partners for this data object
-	 * @access private
-	 */
-	var $_JoinPartners;
-
-	/**
-	 * @var array Forward join partners for this data object
-	 * @access private
-	 */
-	var $_forwardJoinPartners;
-
-	/**
-	 * @var array Where restrictions for the query
-	 * @access private
-	 */
-	var $_whereRestriction;
-
-	/**
-	 * @var array Inner group conditions
-	 * @access private
-	 */
-	var $_innerGroupConditions = array ();
-
-	/**
-	 * @var array Group conditions
-	 * @access private
-	 */
-	var $_groupConditions;
-
-	/**
-	 * @var array Result fields for the query
-	 * @access private
-	 */
-	var $_resultFields = array ();
-
-	/**
-	 * @var array Property collection
-	 * @access private
-	 */
-	var $properties;
-
-	/**
-	 * @var array Is entry virgin?
-	 * @access private
-	 */
-	var $virgin;
-	
-	/**
-	 * @var string Encoding
-	 * @access private
-	 */
-	var $_encoding;	
-
-	/**
-	 * @var _aOperators
-	 * @access private
-	 * 
-	 * Stores all operators which are supported by GenericDB
-	 * Unsupported operators are passed trough as-is.
-	 */
-	var $_aOperators;
-	
-	
-	/**
-	 * Constructor Function
-	 * Note: Default lifetime is 10 seconds.
-	 * @param string $table The table to use as information source
-	 */
-	function ItemCollection($table, $primaryKey, $lifetime = 10)
-	{
-		global $cfg, $contenido;
-
-		$this->db = new DB_Contenido;
-
-		if ($table == "")
-		{
-			$classname = get_parent_class($this);
-			die("Class $classname: No table specified. Inherited classes *need* to set a table");
-
-		}
-
-		if ($primaryKey == "")
-		{
-			die("No primary key specified. Inherited classes *need* to set a primary key");
-		}
-
-		$this->table = $table;
-		$this->primaryKey = $primaryKey;
-		$this->virgin = true;
-		$this->lifetime = $lifetime;
-
-		$this->resetQuery();
-
-		/* Try to load driver */
-
-		$this->_initializeDriver();
-		
-		/* Try to find out the current encoding */
-		if (isset($GLOBALS["lang"]) && isset($GLOBALS["aLanguageEncodings"]))
-		{
-			$this->setEncoding($GLOBALS["aLanguageEncodings"][$GLOBALS["lang"]]);
-		}
-		
-		$this->_aOperators = array(	"=",
-									"!=",
-									"<>",
-									"<",
-									">",
-									"<=",
-									">=",
-									"LIKE",
-									"DIACRITICS");
-	}
-
-	/**
-	 * _setJoinPartner: Defines the reverse links for this table.
-	 * 
-	 * Important: The class specified by $foreignCollectionClass needs to be a collection class and has to exist
-	 *            Define all links in the constructor of your object
-	 *
-	 * @param string $foreignCollectionClass Specifies the foreign class to use
-	 * @return none
-	 */
-	function _setJoinPartner($foreignCollectionClass)
-	{
-		if (class_exists($foreignCollectionClass))
-		{
-			/* Add class */
-			$this->_JoinPartners[] = strtolower($foreignCollectionClass);
-
-			/* Remove duplicates */
-			$this->_JoinPartners = array_unique($this->_JoinPartners);
-		} else
-		{
-			cWarning(__FILE__, __LINE__, "Could not instanciate class [$foreignCollectionClass] for use with _setJoinPartner in class ".get_class($this));
-		}
-	}
-
-	/**
-	 * _setItemClass: private method to set the accompanying item object.
-	 * 
-	 * @param string $classname specifies the classname
-	 * @return none
-	 */
-	function _setItemClass($classname)
-	{
-		if (class_exists($classname))
-		{
-			$this->_itemClass = $classname;
-			$this->_itemClassInstance = new $classname;
-			
-			/* Initialize driver in case the developer does a setItemClass-Call before calling the parent constructor */
-			$this->_initializeDriver();
-			$this->_driver->setItemClassInstance($this->_itemClassInstance);
-		} else
-		{
-			cWarning(__FILE__, __LINE__, "Could not instanciate class [$classname] for use with _setItemClass in class ".get_class($this));
-		}
-	}
-	
-	/**
-	 * _initializeDriver: Initializes the driver to use with GenericDB.
-	 * 
-	 * @param $bForceInit boolean If true, forces the driver to initialize, even if it already exists.
-	 */
-	function _initializeDriver ($bForceInit = false)
-	{
-		if (!is_object($this->_driver) || $bForceInit == true)
-		{
-			$this->_driver = new gdbMySQL();	
-		}
-	}
-
-	function setEncoding ($sEncoding)
-	{
-		$this->_encoding = $sEncoding;
-		$this->_driver->setEncoding($sEncoding);	
-	}
-	
-	/**
-	 * sets the query to use foreign tables in the resultset
-	 * 
-	 */
-	function link($foreignClass)
-	{
-		if (class_exists($foreignClass))
-		{
-			$this->_links[$foreignClass] = new $foreignClass;
-		} else
-		{
-			cWarning(__FILE__, __LINE__, "Could not find class [$foreignClass] for use with link in class ".get_class($this));
-		}
-	}
-
-	function setLimit($iRowStart, $iRowCount)
-	{
-		$this->_limitStart = $iRowStart;
-		$this->_limitCount = $iRowCount;
-	}
-
-	/**
-	 * setWhere ($field, $restriction, $operator)
-	 *
-	 * Restricts a query with a where clause 
-	 */
-	function setWhere($field, $restriction, $operator = "=")
-	{
-		$field = strtolower($field);
-
-		$this->_where["global"][$field]["operator"] = $operator;
-		$this->_where["global"][$field]["restriction"] = $restriction;
-	}
-
-	/**
-	 * deleteWhere ($field, $restriction, $operator)
-	 *
-	 * Restricts a query with a where clause 
-	 */
-	function deleteWhere($field, $restriction, $operator = "=")
-	{
-		$field = strtolower($field);
-
-		if (is_array($this->_where["global"]) && array_key_exists($field, $this->_where["global"]) && is_array($this->_where["global"][$field]))
-		{
-			if ($this->_where["global"][$field]["operator"] == $operator && $this->_where["global"][$field]["restriction"] == $restriction)
-			{
-				unset ($this->_where["global"][$field]);
-			}
-		}
-	}
-
-	/**
-	 * setWhereGroup ($group, $field, $restriction, $operator)
-	 *
-	 * Restricts a query with a where clause, groupable
-	 */
-	function setWhereGroup($group, $field, $restriction, $operator = "=")
-	{
-		$field = strtolower($field);
-
-		$this->_where["groups"][$group][$field]["operator"] = $operator;
-		$this->_where["groups"][$group][$field]["restriction"] = $restriction;
-	}
-
-	/**
-	 * deleteWhereGroup ($group, $field, $restriction, $operator)
-	 *
-	 * Restricts a query with a where clause, groupable
-	 */
-	function deleteWhereGroup($group, $field, $restriction, $operator = "=")
-	{
-		$field = strtolower($field);
-
-		if (is_array($this->_where["groups"][$group]) && array_key_exists($field, $this->_where["groups"][$group]) && is_array($this->_where["groups"][$group][$field]))
-		{
-			if ($this->_where["groups"][$group][$field]["operator"] == $operator && $this->_where["groups"][$group][$field]["restriction"] == $restriction)
-			{
-				unset ($this->_where["groups"][$group][$field]);
-			}
-		}
-	}
-
-	/**
-	 * setInnerGroupCondition ($group, $condition)
-	 *
-	 * Defines how relations in one group are linked each together
-	 */
-	function setInnerGroupCondition($group, $condition = "AND")
-	{
-		$this->_innerGroupConditions[$group] = $condition;
-	}
-
-	/**
-	 * setGroupCondition ($group1, $group2, $condition)
-	 *
-	 * Defines how groups are linked to each other
-	 */
-	function setGroupCondition($group1, $group2, $condition = "AND")
-	{
-		$this->_groupConditions[$group1][$group2] = $condition;
-	}
-
-	/**
-	 * _buildGroupWhereStatements ()
-	 *
-	 * Builds a where statement out of the setGroupWhere calls
-	 *
-	 * @param none
-	 * @return array with all where statements
-	 */
-	function _buildGroupWhereStatements()
-	{
-		$wheres = array ();
-		$groupwhere = array ();
-
-		$lastgroup = false;
-		$groupwherestatement = "";
-
-		/* Find out if there are any defined groups */
-		if (count($this->_where["groups"]) > 0)
-		{
-			/* Step trough all groups */
-			foreach ($this->_where["groups"] as $groupname => $group)
-			{
-				$wheres = array ();
-
-				/* Fetch restriction, fields and operators and build single group where statements */
-				foreach ($group as $field => $item)
-				{
-					$wheres[] = $this->_driver->buildOperator($field, $item["operator"], $item["restriction"]);
-				}
-
-				/* Add completed substatements */
-				$operator = 'AND';
-				if (array_key_exists($groupname, $this->_innerGroupConditions))
-				{
-					$operator = $this->_innerGroupConditions[$groupname];
-				}
-
-				$groupwhere[$groupname] = implode(" ".$operator." ", $wheres);
-			}
-
-		}
-
-		/* Combine groups */
-		foreach ($groupwhere as $groupname => $group)
-		{
-			if ($lastgroup != false)
-			{
-				$operator = "AND";
-				/* Check if there's a group condition */
-				if (array_key_exists($groupname, $this->_groupConditions))
-				{
-					if (array_key_exists($lastgroup, $this->_groupConditions[$groupname]))
-					{
-						$operator = $this->_groupConditions[$groupname][$lastgroup];
-					}
-				}
-
-				/* Reverse check */
-				if (array_key_exists($lastgroup, $this->_groupConditions))
-				{
-					if (array_key_exists($groupname, $this->_groupConditions[$lastgroup]))
-					{
-						$operator = $this->_groupConditions[$lastgroup][$groupname];
-					}
-				}
-
-				$groupwherestatement .= " ".$operator." (".$group.")";
-			} else
-			{
-				$groupwherestatement .= "(".$group.")";
-			}
-
-			$lastgroup = $groupname;
-		}
-
-		return ($groupwherestatement);
-
-	}
-
-	/**
-	 * _buildWhereStatements ()
-	 *
-	 * Builds a where statement out of the setWhere calls
-	 *
-	 * @param none
-	 * @return array with all where statements
-	 */
-	function _buildWhereStatements()
-	{
-		$wheres = array ();
-
-		/* Build global where condition */
-		foreach ($this->_where["global"] as $field => $item)
-		{
-			$wheres[] = $this->_driver->buildOperator($field, $item["operator"], $item["restriction"]);
-		}
-
-		return (implode(" AND ", $wheres));
-	}
-
-	/**
-	 * _fetchJoinTables ()
-	 *
-	 * Fetches all tables which will be joined later on.
-	 *
-	 * The returned array has the following format:
-	 * 
-	 * array(
-	 *       array(fields),
-	 *       array(tables),
-	 *		 array(joins),
-	 *       array(wheres)
-	 *      );
-	 *
-	 * Notes:
-	 * The table is the table name which needs to be added to the FROM clause
-	 * The join statement which is inserted after the master table
-	 * The where statement is combined with all other where statements
-	 * The fields to select from
-	 *
-	 * @param none
-	 * @return array see above
-	 */
-	function _fetchJoinTables($ignore_root)
-	{
-		$parameters = array ();
-		$fields = array ();
-		$tables = array ();
-		$joins = array ();
-		$wheres = array ();
-
-		/* Fetch linked tables */
-		foreach ($this->_links as $link => $object)
-		{
-			$matches = $this->_findReverseJoinPartner(strtolower(get_class($this)), $link);
-
-			if ($matches !== false)
-			{
-				if (array_key_exists("desttable", $matches))
-				{
-					/* Driver function: Build query parts */
-					$parameters[] = $this->_driver->buildJoinQuery($matches["desttable"], strtolower($matches["destclass"]), $matches["key"], strtolower($matches["sourceclass"]), $matches["key"]);
-
-				} else
-				{
-					foreach ($matches as $match)
-					{
-						$parameters[] = $this->_driver->buildJoinQuery($match["desttable"], strtolower($match["destclass"]), $match["key"], strtolower($match["sourceclass"]), $match["key"]);
-					}
-				}
-			} else
-			{
-				/* Try forward search */
-				$mobject = new $link;
-                
-				$matches = $mobject->_findReverseJoinPartner($link, strtolower(get_class($this)));
-
-				if ($matches !== false)
-				{
-					if (array_key_exists("desttable", $matches))
-					{
-						$i = $this->_driver->buildJoinQuery($mobject->table, strtolower($link), $mobject->primaryKey, strtolower($matches["destclass"]), $matches["key"]);
-
-						if ($i["field"] == ($link.".".$mobject->primaryKey) && $link == $ignore_root)
-						{
-							unset ($i["join"]);
-						}
-						$parameters[] = $i;
-					} else
-					{
-						foreach ($matches as $match)
-						{
-
-							$xobject = new $match["sourceclass"];
-
-							$i = $this->_driver->buildJoinQuery($xobject->table, strtolower($match["sourceclass"]), $xobject->primaryKey, strtolower($match["destclass"]), $match["key"]);
-
-							if ($i["field"] == ($match["sourceclass"].".".$xobject->primaryKey) && $match["sourceclass"] == $ignore_root)
-							{
-								unset ($i["join"]);
-							}
-							array_unshift($parameters, $i);
-						}
-					}
-
-				} else
-				{
+    /**
+     * Storage of all result items
+     * @var string Contains all result items
+     */
+    protected $objects;
+
+    /**
+     * GenericDB driver object
+     * @var  gdbDriver
+     */
+    protected $_driver;
+
+
+    /**
+     * List of instances of ItemCollection implementations
+     * @var  array
+     */
+    protected $_collectionCache = array();
+
+    /**
+     * @var string Single item class
+     */
+    protected $_itemClass;
+
+    /**
+     * @var object Iterator object for the next() method
+     */
+    protected $_iteratorItem;
+
+    /**
+     * @var array Reverse join partners for this data object
+     */
+    protected $_JoinPartners;
+
+    /**
+     * @var array Forward join partners for this data object
+     */
+    protected $_forwardJoinPartners;
+
+    /**
+     * @var array Where restrictions for the query
+     */
+    protected $_whereRestriction;
+
+    /**
+     * @var array Inner group conditions
+     */
+    protected $_innerGroupConditions = array();
+
+    /**
+     * @var array Group conditions
+     */
+    protected $_groupConditions;
+
+    /**
+     * @var array Result fields for the query
+     */
+    protected $_resultFields = array();
+
+    /**
+     * @var string Encoding
+     */
+    protected $_encoding;
+
+    /**
+     * @var _aOperators
+     *
+     * Stores all operators which are supported by GenericDB
+     * Unsupported operators are passed trough as-is.
+     */
+    protected $_aOperators;
+
+
+    /**
+     * Constructor Function
+     *
+     * @param  string  $sTable       The table to use as information source
+     * @param  string  $sPrimaryKey  The primary key to use
+     * @param  int     $iLifetime
+     */
+    public function __construct($sTable, $sPrimaryKey, $iLifetime = 10)
+    {
+        parent::__construct($sTable, $sPrimaryKey, $iLifetime, get_parent_class($this));
+
+        $this->resetQuery();
+
+        // Try to load driver
+        $this->_initializeDriver();
+
+        // Try to find out the current encoding
+        if (isset($GLOBALS['lang']) && isset($GLOBALS['aLanguageEncodings'])) {
+            $this->setEncoding($GLOBALS['aLanguageEncodings'][$GLOBALS['lang']]);
+        }
+
+        $this->_aOperators = array(
+            '=', '!=', '<>', '<', '>', '<=', '>=', 'LIKE', 'DIACRITICS'
+        );
+    }
+
+    /**
+     * Constructor function for downwards compatibility
+     */
+    public function ItemCollection($sTable, $sPrimaryKey, $iLifetime = 10)
+    {
+        $this->__construct($sTable, $sPrimaryKey, $iLifetime);
+    }
+
+
+    /**
+     * Defines the reverse links for this table.
+     *
+     * Important: The class specified by $sForeignCollectionClass needs to be a
+     *            collection class and has to exist.
+     *            Define all links in the constructor of your object.
+     *
+     * @param   string  $sForeignCollectionClass  Specifies the foreign class to use
+     * @return  void
+     */
+    protected function _setJoinPartner($sForeignCollectionClass)
+    {
+        if (class_exists($sForeignCollectionClass)) {
+            // Add class
+            if (!in_array($sForeignCollectionClass, $this->_JoinPartners)) {
+                $this->_JoinPartners[] = strtolower($sForeignCollectionClass);
+            }
+        } else {
+            $sMsg = "Could not instanciate class [$sForeignCollectionClass] for use "
+                  . "with _setJoinPartner in class " . get_class($this);
+            cWarning(__FILE__, __LINE__, $sMsg);
+        }
+    }
+
+    /**
+     * Method to set the accompanying item object.
+     *
+     * @param   string  $sClassName  Specifies the classname of item
+     * @return  void
+     */
+    protected function _setItemClass($sClassName)
+    {
+        if (class_exists($sClassName)) {
+            $this->_itemClass = $sClassName;
+            $this->_itemClassInstance = new $sClassName;
+
+            // Initialize driver in case the developer does a setItemClass-Call
+            // before calling the parent constructor
+            $this->_initializeDriver();
+            $this->_driver->setItemClassInstance($this->_itemClassInstance);
+        } else {
+            $sMsg = "Could not instanciate class [$sClassName] for use with "
+                  . "_setItemClass in class " . get_class($this);
+            cWarning(__FILE__, __LINE__, $sMsg);
+        }
+    }
+
+    /**
+     * Initializes the driver to use with GenericDB.
+     *
+     * @param $bForceInit boolean If true, forces the driver to initialize, even if it already exists.
+     */
+    protected function _initializeDriver($bForceInit = false)
+    {
+        if (!is_object($this->_driver) || $bForceInit == true) {
+            $this->_driver = new gdbMySQL();
+        }
+    }
+
+    /**
+     * Sets the encoding.
+     * @param  string  $sEncoding
+     */
+    public function setEncoding($sEncoding)
+    {
+        $this->_encoding = $sEncoding;
+        $this->_driver->setEncoding($sEncoding);
+    }
+
+    /**
+     * Sets the query to use foreign tables in the resultset
+     * @param  string  $sForeignClass  The class of foreign table to use
+     */
+    public function link($sForeignClass)
+    {
+        if (class_exists($sForeignClass)) {
+            $this->_links[$sForeignClass] = new $sForeignClass;
+        } else {
+            $sMsg = "Could not find class [$sForeignClass] for use with link in class "
+                  . get_class($this);
+            cWarning(__FILE__, __LINE__, $sMsg);
+        }
+    }
+
+    /**
+     * Sets the limit for results
+     * @param  int  $iRowStart
+     * @param  int  $iRowCount
+     */
+    public function setLimit($iRowStart, $iRowCount)
+    {
+        $this->_limitStart = $iRowStart;
+        $this->_limitCount = $iRowCount;
+    }
+
+    /**
+     * Restricts a query with a where clause
+     * @param  string  $sField
+     * @param  mixed   $mRestriction
+     * @param  string  $sOperator
+     */
+    public function setWhere($sField, $mRestriction, $sOperator = '=')
+    {
+        $sField = strtolower($sField);
+        $this->_where['global'][$sField]['operator']    = $sOperator;
+        $this->_where['global'][$sField]['restriction'] = $mRestriction;
+    }
+
+    /**
+     * Removes a previous set where clause (@see ItemCollection::setWhere).
+     * @param  string  $sField
+     * @param  mixed   $mRestriction
+     * @param  string  $sOperator
+     */
+    public function deleteWhere($sField, $mRestriction, $sOperator = '=')
+    {
+        $sField = strtolower($sField);
+        if (isset($this->_where['global'][$sField]) && is_array($this->_where['global'][$sField])) {
+            if ($this->_where['global'][$sField]['operator'] == $sOperator &&
+                $this->_where['global'][$sField]['restriction'] == $mRestriction) {
+                unset($this->_where['global'][$sField]);
+            }
+        }
+    }
+
+    /**
+     * Restricts a query with a where clause, groupable
+     * @param  string  $sGroup
+     * @param  string  $sField
+     * @param  mixed   $mRestriction
+     * @param  string  $sOperator
+     */
+    public function setWhereGroup($sGroup, $sField, $mRestriction, $sOperator = '=')
+    {
+        $sField = strtolower($sField);
+        $this->_where['groups'][$sGroup][$sField]['operator'] = $sOperator;
+        $this->_where['groups'][$sGroup][$sField]['restriction'] = $mRestriction;
+    }
+
+    /**
+     * Removes a previous set groupable where clause (@see ItemCollection::setWhereGroup).
+     * @param  string  $sGroup
+     * @param  string  $sField
+     * @param  mixed   $mRestriction
+     * @param  string  $sOperator
+     */
+    public function deleteWhereGroup($sGroup, $sField, $mRestriction, $sOperator = '=')
+    {
+        $sField = strtolower($sField);
+        if (is_array($this->_where['groups'][$sGroup]) &&
+            isset($this->_where['groups'][$sGroup][$sField]) &&
+            is_array($this->_where['groups'][$sGroup][$sField])) {
+            if ($this->_where['groups'][$sGroup][$sField]['operator'] == $sOperator &&
+                $this->_where['groups'][$sGroup][$sField]['restriction'] == $mRestriction) {
+                unset($this->_where['groups'][$sGroup][$sField]);
+            }
+        }
+    }
+
+    /**
+     * Defines how relations in one group are linked each together
+     * @param  string  $sGroup
+     * @param  string  $sCondition
+     */
+    public function setInnerGroupCondition($sGroup, $sCondition = 'AND')
+    {
+        $this->_innerGroupConditions[$sGroup] = $sCondition;
+    }
+
+    /**
+     * Defines how groups are linked to each other
+     * @param  string  $sGroup1
+     * @param  string  $sGroup2
+     * @param  string  $sCondition
+     */
+    public function setGroupCondition($sGroup1, $sGroup2, $sCondition = 'AND')
+    {
+        $this->_groupConditions[$sGroup1][$sGroup2] = $sCondition;
+    }
+
+    /**
+     * Builds a where statement out of the setGroupWhere calls
+     *
+     * @return  array  With all where statements
+     */
+    protected function _buildGroupWhereStatements()
+    {
+        $aWheres = array();
+        $aGroupWhere = array();
+
+        $mLastGroup = false;
+        $sGroupWhereStatement = '';
+
+        // Find out if there are any defined groups
+        if (count($this->_where['groups']) > 0) {
+            // Step trough all groups
+            foreach ($this->_where['groups'] as $groupname => $group) {
+                $aWheres = array();
+
+                // Fetch restriction, fields and operators and build single group
+                // where statements
+                foreach ($group as $field => $item) {
+                    $aWheres[] = $this->_driver->buildOperator($field, $item['operator'], $item['restriction']);
+                }
+
+                // Add completed substatements
+                $sOperator = 'AND';
+                if (isset($this->_innerGroupConditions[$groupname])) {
+                    $sOperator = $this->_innerGroupConditions[$groupname];
+                }
+
+                $aGroupWhere[$groupname] = implode(' '.$sOperator.' ', $aWheres);
+            }
+        }
+
+        // Combine groups
+        foreach ($aGroupWhere as $groupname => $group) {
+            if ($mLastGroup != false) {
+                $sOperator = 'AND';
+                // Check if there's a group condition
+                if (isset($this->_groupConditions[$groupname])) {
+                    if (isset($this->_groupConditions[$groupname][$mLastGroup])) {
+                        $sOperator = $this->_groupConditions[$groupname][$mLastGroup];
+                    }
+                }
+
+                // Reverse check
+                if (isset($this->_groupConditions[$mLastGroup])) {
+                    if (isset($this->_groupConditions[$mLastGroup][$groupname])) {
+                        $sOperator = $this->_groupConditions[$mLastGroup][$groupname];
+                    }
+                }
+
+                $sGroupWhereStatement .= ' '.$sOperator.' ('.$group.')';
+            } else {
+                $sGroupWhereStatement .= '('.$group.')';
+            }
+
+            $mLastGroup = $groupname;
+        }
+
+        return $sGroupWhereStatement;
+    }
+
+    /**
+     * Builds a where statement out of the setWhere calls
+     *
+     * @return  array  With all where statements
+     */
+    protected function _buildWhereStatements()
+    {
+        $aWheres = array();
+
+        // Build global where condition
+        foreach ($this->_where['global'] as $field => $item) {
+            $aWheres[] = $this->_driver->buildOperator($field, $item['operator'], $item['restriction']);
+        }
+
+        return (implode(' AND ', $aWheres));
+    }
+
+    /**
+     * Fetches all tables which will be joined later on.
+     *
+     * The returned array has the following format:
+     * <pre>
+     * array(
+     *     array(fields),
+     *     array(tables),
+     *     array(joins),
+     *     array(wheres)
+     * );
+     * </pre>
+     *
+     * Notes:
+     * The table is the table name which needs to be added to the FROM clause
+     * The join statement which is inserted after the master table
+     * The where statement is combined with all other where statements
+     * The fields to select from
+     *
+     * @todo  Reduce complexity of this function, to much code...
+     *
+     * @param   ???    $ignoreRoot
+     * @return  array  Array structure, see above
+     */
+    protected function _fetchJoinTables($ignoreRoot)
+    {
+        $aParameters = array();
+        $aFields = array();
+        $aTables = array();
+        $aJoins = array();
+        $aWheres = array();
+
+        // Fetch linked tables
+        foreach ($this->_links as $link => $object) {
+            $matches = $this->_findReverseJoinPartner(strtolower(get_class($this)), $link);
+
+            if ($matches !== false) {
+                if (isset($matches['desttable'])) {
+                    // Driver function: Build query parts
+                    $aParameters[] = $this->_driver->buildJoinQuery(
+                        $matches['desttable'],
+                        strtolower($matches['destclass']),
+                        $matches['key'],
+                        strtolower($matches['sourceclass']),
+                        $matches['key']
+                    );
+                } else {
+                    foreach ($matches as $match) {
+                        $aParameters[] = $this->_driver->buildJoinQuery(
+                            $match['desttable'],
+                            strtolower($match['destclass']),
+                            $match['key'],
+                            strtolower($match['sourceclass']),
+                            $match['key']
+                        );
+                    }
+                }
+            } else {
+                // Try forward search
+                $mobject = new $link;
+
+                $matches = $mobject->_findReverseJoinPartner($link, strtolower(get_class($this)));
+
+                if ($matches !== false) {
+                    if (isset($matches['desttable'])) {
+                        $i = $this->_driver->buildJoinQuery(
+                            $mobject->table,
+                            strtolower($link),
+                            $mobject->primaryKey,
+                            strtolower($matches['destclass']),
+                            $matches['key']
+                        );
+
+                        if ($i['field'] == ($link.'.'.$mobject->primaryKey) && $link == $ignoreRoot) {
+                            unset($i['join']);
+                        }
+                        $aParameters[] = $i;
+                    } else {
+                        foreach ($matches as $match) {
+                            $xobject = new $match['sourceclass'];
+
+                            $i = $this->_driver->buildJoinQuery(
+                                $xobject->table,
+                                strtolower($match['sourceclass']),
+                                $xobject->primaryKey,
+                                strtolower($match['destclass']),
+                                $match['key']
+                            );
+
+                            if ($i['field'] == ($match['sourceclass'] . '.' . $xobject->primaryKey) &&
+                                $match['sourceclass'] == $ignoreRoot) {
+                                unset($i['join']);
+                            }
+                            array_unshift($aParameters, $i);
+                        }
+                    }
+                } else {
                     $bDualSearch = true;
-                    /* Check first if we are a instance of another class */
-                    foreach ($mobject->_JoinPartners as $sJoinPartner)
-                    {
-                        if (class_exists($sJoinPartner))
-                        {
-                            if (is_subclass_of($this, $sJoinPartner))
-                            {
+                    // Check first if we are a instance of another class
+                    foreach ($mobject->_JoinPartners as $sJoinPartner) {
+                        if (class_exists($sJoinPartner)) {
+                            if (is_subclass_of($this, $sJoinPartner)) {
                                 $matches = $mobject->_findReverseJoinPartner($link, strtolower($sJoinPartner));
-                                
 
-                                if ($matches !== false)
-                                {
-                                    if ($matches["destclass"] == strtolower($sJoinPartner))
-                                    {
-                                        $matches["destclass"] = get_class($this);
-                                
-                                        if (array_key_exists("desttable", $matches))
-                                        {
-                                            $i = $this->_driver->buildJoinQuery($mobject->table, strtolower($link), $mobject->primaryKey, strtolower($matches["destclass"]), $matches["key"]);
-                    
-                                            if ($i["field"] == ($link.".".$mobject->primaryKey) && $link == $ignore_root)
-                                            {
-                                                unset ($i["join"]);
+                                if ($matches !== false) {
+                                    if ($matches['destclass'] == strtolower($sJoinPartner)) {
+                                        $matches['destclass'] = get_class($this);
+
+                                        if (isset($matches['desttable'])) {
+                                            $i = $this->_driver->buildJoinQuery(
+                                                $mobject->table,
+                                                strtolower($link),
+                                                $mobject->primaryKey,
+                                                strtolower($matches['destclass']),
+                                                $matches['key']
+                                            );
+
+                                            if ($i['field'] == ($link . '.' . $mobject->primaryKey) &&
+                                                $link == $ignoreRoot) {
+                                                unset($i['join']);
                                             }
-                                            $parameters[] = $i;
-                                        } else
-                                        {
-                                            foreach ($matches as $match)
-                                            {
-                    
-                                                $xobject = new $match["sourceclass"];
-                    
-                                                $i = $this->_driver->buildJoinQuery($xobject->table, strtolower($match["sourceclass"]), $xobject->primaryKey, strtolower($match["destclass"]), $match["key"]);
-                    
-                                                if ($i["field"] == ($match["sourceclass"].".".$xobject->primaryKey) && $match["sourceclass"] == $ignore_root)
-                                                {
-                                                    unset ($i["join"]);
+                                            $aParameters[] = $i;
+                                        } else {
+                                            foreach ($matches as $match) {
+                                                $xobject = new $match['sourceclass'];
+
+                                                $i = $this->_driver->buildJoinQuery(
+                                                    $xobject->table,
+                                                    strtolower($match['sourceclass']),
+                                                    $xobject->primaryKey,
+                                                    strtolower($match['destclass']),
+                                                    $match['key']
+                                                );
+
+                                                if ($i['field'] == ($match['sourceclass'] . '.' . $xobject->primaryKey) &&
+                                                    $match['sourceclass'] == $ignoreRoot) {
+                                                    unset($i['join']);
                                                 }
-                                                array_unshift($parameters, $i);
+                                                array_unshift($aParameters, $i);
                                             }
                                         }
                                         $bDualSearch = false;
                                     }
                                 }
-                                
-                                
                             }
                         }
                     }
-                    
-                    if ($bDualSearch)
-                    {
-                        /* Try dual-side search */
+
+                    if ($bDualSearch) {
+                        // Try dual-side search
                         $forward = $this->_resolveLinks();
                         $reverse = $mobject->_resolveLinks();
-    
+
                         $result = array_intersect($forward, $reverse);
-    
-                        if (count($result) > 0)
-                        {
-                            /* Found an intersection, build references to it */
-                            foreach ($result as $value)
-                            {
-    
-                                $intersect_class = new $value;
-                                $intersect_class->link(strtolower(get_class($this)));
-                                $intersect_class->link(strtolower(get_class($mobject)));
-    
-                                $intersect_parameters = $intersect_class->_fetchJoinTables($ignore_root);
-    
-                                $fields = array_merge($intersect_parameters["fields"], $fields);
-                                $tables = array_merge($intersect_parameters["tables"], $tables);
-                                $joins = array_merge($intersect_parameters["joins"], $joins);
-                                $wheres = array_merge($intersect_parameters["wheres"], $wheres);
-    
+
+                        if (count($result) > 0) {
+                            // Found an intersection, build references to it
+                            foreach ($result as $value) {
+                                $oIntersect = new $value;
+                                $oIntersect->link(strtolower(get_class($this)));
+                                $oIntersect->link(strtolower(get_class($mobject)));
+
+                                $aIntersectParameters = $oIntersect->_fetchJoinTables($ignoreRoot);
+
+                                $aFields = array_merge($aIntersectParameters['fields'], $aFields);
+                                $aTables = array_merge($aIntersectParameters['tables'], $aTables);
+                                $aJoins = array_merge($aIntersectParameters['joins'], $aJoins);
+                                $aWheres = array_merge($aIntersectParameters['wheres'], $aWheres);
                             }
-                        } else
-                        {
-                            cWarning(__FILE__, __LINE__, "Could not find join partner for class [$link] in class ".get_class($this)." in neither forward nor reverse direction.");
+                        } else {
+                            $sMsg = "Could not find join partner for class [$link] in class "
+                                  . get_class($this)." in neither forward nor reverse direction.";
+                            cWarning(__FILE__, __LINE__, $sMsg);
                         }
                     }
-				}
-			}
-		}
-
-		/* Add this class */
-		$fields[] = strtolower(strtolower(get_class($this))).".".$this->primaryKey;
-
-		/* Make the parameters unique */
-		foreach ($parameters as $parameter)
-		{
-			array_unshift($fields, $parameter["field"]);
-			array_unshift($tables, $parameter["table"]);
-			array_unshift($joins, $parameter["join"]);
-			array_unshift($wheres, $parameter["where"]);
-		}
-
-		$fields = array_filter(array_unique($fields));
-		$tables = array_filter(array_unique($tables));
-		$joins = array_filter(array_unique($joins));
-		$wheres = array_filter(array_unique($wheres));
-
-		return (array ("fields" => $fields, "tables" => $tables, "joins" => $joins, "wheres" => $wheres));
-
-	}
-
-	function _resolveLinks()
-	{
-		$resolvedLinks[] = strtolower(get_class($this));
-
-		foreach ($this->_JoinPartners as $link)
-		{
-			$class = new $link;
-			$resolvedLinks = array_merge($class->_resolveLinks(), $resolvedLinks);
-		}
-		return ($resolvedLinks);
-	}
-
-	function resetQuery()
-	{
-		$this->setLimit(0, 0);
-
-		$this->_JoinPartners = array ();
-		$this->_forwardJoinPartners = array ();
-
-		$this->_links = array ();
-		$this->_where["global"] = array ();
-		$this->_where["groups"] = array ();
-		$this->_groupConditions = array ();
-
-	}
-
-	function query()
-	{
-		if (!isset ($this->_itemClassInstance))
-		{
-			cWarning(__FILE__, __LINE__, "GenericDB can't use query() if no item class is set via setItemClass");
-		}
-
-		$groupWhereStatements = $this->_buildGroupWhereStatements();
-		$whereStatements = $this->_buildWhereStatements();
-		$parameters = $this->_fetchJoinTables(strtolower(get_class($this)));
-
-		$statement = array ("SELECT", implode(", ", (array_merge($parameters["fields"], $this->_resultFields))), "FROM", $this->table." AS ".strtolower(get_class($this)));
-
-		if (count($parameters["tables"]) > 0)
-		{
-			$statement[] = implode(", ", $parameters["tables"]);
-		}
-
-		if (count($parameters["joins"]) > 0)
-		{
-			$statement[] = implode(" ", $parameters["joins"]);
-		}
-
-		$wheres = array ();
-
-		if (count($parameters["wheres"]) > 0)
-		{
-			$wheres[] = implode(", ", $parameters["wheres"]);
-		}
-
-		if ($groupWhereStatements != "")
-		{
-			$wheres[] = $groupWhereStatements;
-		}
-
-		if ($whereStatements != "")
-		{
-			$wheres[] = $whereStatements;
-		}
-
-		if (count($wheres) > 0)
-		{
-			$statement[] = "WHERE ".implode(" AND ", $wheres);
-		}
-
-		if ($this->_order != "")
-		{
-			$statement[] = "ORDER BY ".$this->_order;
-		}
-
-		if ($this->_limitStart > 0 || $this->_limitCount > 0)
-		{
-			$iRowStart = intval($this->_limitStart);
-			$iRowCount = intval($this->_limitCount);
-			$statement[] = "LIMIT $iRowStart, $iRowCount";
-
-		}
-
-		$sql = implode(" ", $statement);
-
-		$this->db->query($sql);
-		$this->_lastSQL = $sql;
-		$this->_mode = "automatic";
-
-	}
-
-	function setOrder($order)
-	{
-		$this->_order = strtolower($order);
-	}
-
-	function addResultField($field)
-	{
-		$this->_resultFields[] = strtolower($field);
-		$this->_resultFields = array_unique($this->_resultFields);
-	}
-
-	function removeResultField($field)
-	{
-		$key = array_search($this->_resultFields);
-
-		if ($key !== false)
-		{
-			unset ($this->_resultFields[$key]);
-		}
-	}
-
-	function _findReverseJoinPartner($parentclass, $classname)
-	{
-		/* Make the parameters lowercase, as get_class is buggy */
-		$classname = strtolower($classname);
-		$parentclass = strtolower($parentclass);
-
-		/* Check if we found a direct link */
-		if (in_array($classname, $this->_JoinPartners))
-		{
-			$object = new $classname;
-			return array ("desttable" => $object->table, "destclass" => $classname, "sourceclass" => $parentclass, "key" => $object->primaryKey);
-
-		} else
-		{
-			/* Recurse all items */
-
-			foreach ($this->_JoinPartners as $join => $tmp_classname)
-			{
-				$object = new $tmp_classname;
-				$status = $object->_findReverseJoinPartner($tmp_classname, $classname);
-
-				if (is_array($status))
-				{
-					$returns = array ();
-
-					if (!array_key_exists("desttable", $status))
-					{
-						foreach ($status as $subitem)
-						{
-							$returns[] = $subitem;
-						}
-					} else
-					{
-
-						$returns[] = $status;
-					}
-
-					$object = new $tmp_classname;
-
-					$returns[] = array ("desttable" => $object->table, "destclass" => $tmp_classname, "sourceclass" => $parentclass, "key" => $object->primaryKey);
-					return ($returns);
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * select ($where = "", $group_by = "", $order_by = "", $limit = "")
-	 * Selects all entries from the database and returns them as DBObject-objects
-	 * to the user. Objects are loaded using their primary key.
-	 * @param string $where Specifies the where clause.
-	 * @param string $group_by Specifies the group by clause.
-	 * @param string $order_by Specifies the order by clause.
-	 * @param string $limit Specifies the limit by clause.
-	 * @return array Array of DBObject-Objects
-	 */
-	function select($where = "", $group_by = "", $order_by = "", $limit = "")
-	{
-		unset ($this->objects);
-
-		if ($where == "")
-		{
-			$where = "";
-		} else
-		{
-			$where = " WHERE ".$where;
-		}
-
-		if ($group_by != "")
-		{
-			$group_by = " GROUP BY ".$group_by;
-		}
-
-		if ($order_by != "")
-		{
-			$order_by = " ORDER BY ".$order_by;
-		}
-
-		if ($limit != "")
-		{
-			$limit = " LIMIT ".$limit;
-		}
-
-		$sql = "SELECT ".$this->primaryKey." FROM ".$this->table.$where.$group_by.$order_by.$limit;
-		$this->db->query($sql);
-		$this->_lastSQL = $sql;
-		$this->_mode = "manual";
-
-		if ($this->db->num_rows() == 0)
-		{
-			return false;
-		} else
-		{
-
-			/* Everything ok, do nothing for now */
-		}
-	}
-
-	/**
-		 *  flexSelect ($distinct = "", $from = "", $where = "", $group_by = "", $order_by = "", $limit = "")
-	 *  Selects all entries from the database and returns them as DBObject-objects
-	 * to the user. Objects are loaded using their primary key.
-	 * @param string $distinct Specifies if distinct will be added to the SQL statement ($distinct !== "" -> DISTINCT)
-	 * @param string $from     Specifies the additional from clause (e.g. "con_news_groups AS groups, con_news_groupmembers AS groupmembers").
-	 * @param string $where    Specifies the where clause.
-	 * @param string $group_by Specifies the group by clause.
-	 * @param string $order_by Specifies the order by clause.
-	 * @param string $limit    Specifies the limit by clause.
-	 * @return array Array of DBObject-Objects
-	 *
-	 * @author HerrB
-	 */
-	function flexSelect($distinct = "", $from = "", $where = "", $group_by = "", $order_by = "", $limit = "")
-	{
-		unset ($this->objects);
-
-		if ($distinct != "")
-		{
-			$distinct = "DISTINCT ";
-		}
-
-		if ($from != "")
-		{
-			$from = ", ".$from;
-		}
-
-		if ($where != "")
-		{
-			$where = " WHERE ".$where;
-		}
-
-		if ($group_by != "")
-		{
-			$group_by = " GROUP BY ".$group_by;
-		}
-
-		if ($order_by != "")
-		{
-			$order_by = " ORDER BY ".$order_by;
-		}
-
-		if ($limit != "")
-		{
-			$limit = " LIMIT ".$limit;
-		}
-
-		$sql = "SELECT ".$distinct.strtolower(get_class($this)).".".$this->primaryKey." AS ".$this->primaryKey." FROM ".$this->table." AS ".strtolower(get_class($this)).$from.$where.$group_by.$order_by.$limit;
-
-		$this->db->query($sql);
-		$this->_lastSQL = $sql;
-		$this->_mode = "manual";
-
-		if ($this->db->num_rows() == 0)
-		{
-			return false;
-		} else
-		{
-			/* Everything ok, do nothing for now */
-		}
-	}
-
-	/**
-	 * exists ($id)
-	 * Checks if a specific entry exists 
-	 * @param integer $id The id to check for
-	 * @return boolean true if object exists, false if not
-	 */
-	function exists($id)
-	{
-		$db = new DB_Contenido;
-
-		$sql = "SELECT ".$this->primaryKey." FROM ".$this->table." WHERE ".$this->primaryKey." ='".$id."'";
-
-		$db->query($sql);
-
-		if ($db->next_record())
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * next ()
-	 * Advances to the next item in the database. 
-	 * @param none
-	 * @return object The next object, or false if no more objects
-	 */
-	function next()
-	{
-		if ($this->_mode == "manual")
-		{
-			if ($this->db->next_record())
-			{
-				return $this->loadItem($this->db->f($this->primaryKey));
-			} else
-			{
-				return false;
-			}
-		} else
-		{
-			if ($this->db->next_record())
-			{
-				return $this->loadItem($this->db->f($this->primaryKey));
-			} else
-			{
-				return false;
-			}
-		}
-	}
-
-	function fetchObject($class)
-	{
-		$class = strtolower($class);
-
-		if (is_object($this->_collectionCache[$class]))
-		{
-			if (strtolower(get_class($this->_collectionCache[$class])) == $class)
-			{
-				return ($this->_collectionCache[$class]->loadItem($this->db->f($this->_collectionCache[$class]->primaryKey)));
-			}
-		} else
-		{
-			$this->_collectionCache[$class] = new $class;
-
-			return ($this->_collectionCache[$class]->loadItem($this->db->f($this->_collectionCache[$class]->primaryKey)));
-		}
-	}
-
-	/* Prelimary documentation
-	
-	   $fields = array with the fields to fetch. Notes:
-	   If the array contains keys, the key will be used as alias for the field. Example:
-	   array("id" => "idcat") will put "idcat" into field "id"  
-	
-	   $objects = array with the objects to fetch. Notes:
-	   If the array contains keys, the key will be used as alias for the object. If you specify
-	   more than one object with the same key, the array will be multi-dimensional.
-	*/
-
-	function fetchTable($fields = array (), $objects = array ())
-	{
-		$row = 1;
-		$table = array ();
-
-		$this->db->seek(0);
-
-		while ($this->db->next_record())
-		{
-			foreach ($fields as $alias => $field)
-			{
-				if ($alias != "")
-				{
-					$table[$row][$alias] = $this->db->f($field);
-				} else
-				{
-					$table[$row][$field] = $this->db->f($field);
-				}
-			}
-
-			/* Fetch objects */
-			foreach ($objects as $alias => $object)
-			{
-				if ($alias != "")
-				{
-					if (isset ($table[$row][$alias]))
-					{
-						/* Is set, check for array. If no array, create one */
-						if (is_array($table[$row][$alias]))
-						{
-							$table[$row][$alias][] = $this->fetchObject($object);
-						} else
-						{
-							$tmp_obj = $table[$row][$alias];
-							$table[$row][$alias] = array ();
-							$table[$row][$alias][] = $this->fetchObject($object);
-						}
-					} else
-					{
-						$table[$row][$alias] = $this->fetchObject($object);
-					}
-				} else
-				{
-					$table[$row][$object] = $this->fetchObject($object);
-				}
-
-			}
-			$row ++;
-		}
-
-		$this->db->seek(0);
-
-		return ($table);
-	}
-
-	/**
-	 * fetchStructured
-	 * Returns an array of arrays
-	 * @param objects array with the correct order of the objects
-	 * @return array result
-	 */
-	function queryAndFetchStructured($objects)
-	{
-		$order = array ();
-
-		foreach ($objects as $object)
-		{
-			$x = new $object;
-
-			$object = strtolower($object);
-			$order[] = $object.".".$x->primaryKey." ASC";
-			$fetchobjects[] = $x;
-		}
-
-		$this->setOrder(implode(", ", $order));
-		$this->query();
-
-		$this->db->seek(0);
-
-		while ($this->db->next_record())
-		{
-			$array = $this->_recursiveStructuredFetch($fetchobjects, $array);
-		}
-
-		return ($array);
-	}
-
-	function _recursiveStructuredFetch($objects, $array)
-	{
-		$i = array_shift($objects);
-
-		$value = $this->db->f($i->primaryKey);
-
-		if (!is_null($value))
-		{
-			$array[$value]["class"] = strtolower(get_class($i));
-			$array[$value]["object"] = $i->loadItem($value);
-
-			if (count($objects) > 0)
-			{
-				$array[$value]["items"] = $this->_recursiveStructuredFetch($objects, $array[$value]["items"]);
-			}
-		}
-
-		return $array;
-	}
-
-	/**
-	 * count ()
-	 * Returns the amount of returned items
-	 * @param none
-	 * @return integer Number of rows
-	 */
-	function count()
-	{
-		return ($this->db->num_rows());
-	}
-
-	/**
-	 * loadItem ($item)
-	 * Loads a single object from the database.
-	 * Needs to be overridden by the extension class.
-	 * @param variant $item Specifies the primary key of the item to load
-	 * @return object The newly created object
-	 */
-	function loadItem($vitem)
-	{
-		if (empty ($this->_itemClass))
-		{
-			die("loadItem MUST be overridden by the extension class (in class ".get_class($this).")");
-		}
-
-		if (!is_object($this->_iteratorItem))
-		{
-			$this->_iteratorItem = new $this->_itemClass();
-		}
-
-		$this->_iteratorItem->loadByPrimaryKey($vitem);
-
-		return ($this->_iteratorItem);
-	}
-
-	/**
-	 * create()
-	 * Creates a new item in the table and loads it afterwards.
-	 */
-	function create()
-	{
-		/* Local new db instance since we don't want to kill our
-		   probably existing result set */
-		$db = new DB_Contenido;
-
-		$nextid = $db->nextid($this->table);
-		$sql = "INSERT INTO ".$this->table." (";
-		$sql .= $this->primaryKey.") VALUES (".$nextid.")";
-
-		$db->query($sql);
-		return $this->loaditem($nextid);
-	}
-
-	/**
-	 * delete()
-	 * Deletes an item in the table.
-	 */
-	function delete($id)
-	{
-		/* Local new db instance since we don't want to kill our
-		   probably existing result set */
-		$db = new DB_Contenido;
-
-		$sql = "DELETE FROM ".$this->table." WHERE ";
-		$sql .= $this->primaryKey." = '".$id."'";
-
-		$db->query($sql);
-
-		/* Runtime on-demand allocation of the properties object */
-		if (!is_object($this->properties))
-		{
-			$this->properties = new PropertyCollection;
-		}
-
-		/* delete the property values */ 
-		$this->properties->deleteProperties($this->primaryKey, $id);
-
-		/* If this object wasn't loaded before, return false */
-		if ($this->virgin == true)
-		{
-			$this->lasterror = "No item loaded";
-			return false;
-		}
-
-		if ($db->affected_rows() == 0)
-		{
-			return false;
-		} else
-		{
-			return true;
-		}
-	}
-
-	/**
-	 * fetchArray()
-	 * Fetches an array of fields from the database.
-	 *
-	 * Example:
-	 * $i = $object->fetchArray("idartlang", array("idlang", "name"));
-	 *
-	 * could result in:
-	 * $i[5] = array("idlang" => 5, "name" => "My Article");
-	 *
-	 * Important: If you don't pass an array for fields, the function
-	 *            doesn't create an array.
-	 * @param $key    string Name of the field to use for the key
-	 * @param $fields mixed  String or array
-	 * @return array Resulting array
-	 */
-	function fetchArray($key, $fields)
-	{
-		$result = array ();
-
-		while ($item = $this->next())
-		{
-			if (is_array($fields))
-			{
-				foreach ($fields as $value)
-				{
-					$result[$item->get($key)][$value] = $item->get($value);
-				}
-			} else
-			{
-				$result[$item->get($key)] = $item->get($fields);
-			}
-		}
-
-		return ($result);
-	}
+                }
+            }
+        }
+
+        // Add this class
+        $aFields[] = strtolower(strtolower(get_class($this))).'.'.$this->primaryKey;
+
+        // Make the parameters unique
+        foreach ($aParameters as $parameter) {
+            array_unshift($aFields, $parameter['field']);
+            array_unshift($aTables, $parameter['table']);
+            array_unshift($aJoins, $parameter['join']);
+            array_unshift($aWheres, $parameter['where']);
+        }
+
+        $aFields = array_filter(array_unique($aFields));
+        $aTables = array_filter(array_unique($aTables));
+        $aJoins = array_filter(array_unique($aJoins));
+        $aWheres = array_filter(array_unique($aWheres));
+
+        return array(
+            'fields' => $aFields, 'tables' => $aTables, 'joins' => $aJoins, 'wheres' => $aWheres
+        );
+    }
+
+    /**
+     * Resolves links (class names of joined partners)
+     *
+     * @return  array
+     */
+    protected function _resolveLinks()
+    {
+        $aResolvedLinks = array();
+        $aResolvedLinks[] = strtolower(get_class($this));
+
+        foreach ($this->_JoinPartners as $link) {
+            $class = new $link;
+            $aResolvedLinks = array_merge($class->_resolveLinks(), $aResolvedLinks);
+        }
+        return $aResolvedLinks;
+    }
+
+    /**
+     * Resets the properties
+     */
+    public function resetQuery()
+    {
+        $this->setLimit(0, 0);
+        $this->_JoinPartners = array();
+        $this->_forwardJoinPartners = array();
+        $this->_links = array();
+        $this->_where['global'] = array();
+        $this->_where['groups'] = array();
+        $this->_groupConditions = array();
+        $this->_resultFields = array();
+    }
+
+    /**
+     * Builds and runs the query
+     *
+     * @return  bool
+     */
+    public function query()
+    {
+        if (!isset($this->_itemClassInstance)) {
+            $sMsg = "GenericDB can't use query() if no item class is set via setItemClass";
+            cWarning(__FILE__, __LINE__, $sMsg);
+            return false;
+        }
+
+        $aGroupWhereStatements = $this->_buildGroupWhereStatements();
+        $sWhereStatements = $this->_buildWhereStatements();
+        $aParameters = $this->_fetchJoinTables(strtolower(get_class($this)));
+
+        $aStatement = array(
+            'SELECT',
+            implode(', ', (array_merge($aParameters['fields'], $this->_resultFields))),
+            'FROM',
+            '`' . $this->table . '` AS ' . strtolower(get_class($this))
+        );
+
+        if (count($aParameters['tables']) > 0) {
+            $aStatement[] = implode(', ', $aParameters['tables']);
+        }
+
+        if (count($aParameters['joins']) > 0) {
+            $aStatement[] = implode(' ', $aParameters['joins']);
+        }
+
+        $aWheres = array();
+
+        if (count($aParameters['wheres']) > 0) {
+            $aWheres[] = implode(', ', $aParameters['wheres']);
+        }
+
+        if ($aGroupWhereStatements != '') {
+            $aWheres[] = $aGroupWhereStatements;
+        }
+
+        if ($sWhereStatements != '') {
+            $aWheres[] = $sWhereStatements;
+        }
+
+        if (count($aWheres) > 0) {
+            $aStatement[] = 'WHERE '.implode(' AND ', $aWheres);
+        }
+
+        if ($this->_order != '') {
+            $aStatement[] = 'ORDER BY '.$this->_order;
+        }
+
+        if ($this->_limitStart > 0 || $this->_limitCount > 0) {
+            $iRowStart = intval($this->_limitStart);
+            $iRowCount = intval($this->_limitCount);
+            $aStatement[] = "LIMIT $iRowStart, $iRowCount";
+        }
+
+        $sql = implode(' ', $aStatement);
+
+        $result = $this->db->query($sql);
+        $this->_lastSQL = $sql;
+        $this->_mode = 'automatic';
+        return ($result) ? true : false;
+    }
+
+    public function setOrder($order)
+    {
+        $this->_order = strtolower($order);
+    }
+
+    /**
+     * Adds a result field
+     * @param  string  $sField
+     */
+    public function addResultField($sField)
+    {
+        $sField = strtolower($sField);
+        if (!in_array($sField, $this->_resultFields)) {
+            $this->_resultFields[] = $sField;
+        }
+    }
+
+    /**
+     * Removes existing result field
+     * @param  string  $sField
+     */
+    public function removeResultField($sField)
+    {
+        $sField = strtolower($sField);
+        $key = array_search($sField, $this->_resultFields);
+        if ($key !== false) {
+            unset($this->_resultFields[$key]);
+        }
+    }
+
+    /**
+     * Returns reverse join partner.
+     *
+     * @param  string   $sParentClass
+     * @param  string   $sClassName
+     * @param  array|bool
+     */
+    protected function _findReverseJoinPartner($sParentClass, $sClassName)
+    {
+        // Make the parameters lowercase, as get_class is buggy
+        $sClassName   = strtolower($sClassName);
+        $sParentClass = strtolower($sParentClass);
+
+        // Check if we found a direct link
+        if (in_array($sClassName, $this->_JoinPartners)) {
+            $obj = new $sClassName;
+            return array(
+                'desttable' => $obj->table, 'destclass' => $sClassName,
+                'sourceclass' => $sParentClass, 'key' => $obj->primaryKey
+            );
+        } else {
+            // Recurse all items
+            foreach ($this->_JoinPartners as $join => $tmpClassname) {
+                $obj = new $tmpClassname;
+                $status = $obj->_findReverseJoinPartner($tmpClassname, $sClassName);
+
+                if (is_array($status)) {
+                    $returns = array();
+
+                    if (!isset($status['desttable'])) {
+                        foreach ($status as $subitem) {
+                            $returns[] = $subitem;
+                        }
+                    } else {
+                        $returns[] = $status;
+                    }
+
+                    $obj = new $tmpClassname;
+
+                    $returns[] = array(
+                        'desttable' => $obj->table, 'destclass' => $tmpClassname,
+                        'sourceclass' => $sParentClass, 'key' => $obj->primaryKey
+                    );
+                    return ($returns);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Selects all entries from the database. Objects are loaded using their primary key.
+     *
+     * @param   string  $sWhere    Specifies the where clause.
+     * @param   string  $sGroupBy  Specifies the group by clause.
+     * @param   string  $sOrderBy  Specifies the order by clause.
+     * @param   string  $sLimit    Specifies the limit by clause.
+     * @return  bool   True on success, otherwhise false
+     */
+    public function select($sWhere = '', $sGroupBy = '', $sOrderBy = '', $sLimit = '')
+    {
+        unset($this->objects);
+
+        if ($sWhere == '') {
+            $sWhere = '';
+        } else {
+            $sWhere = ' WHERE '.$sWhere;
+        }
+
+        if ($sGroupBy != '') {
+            $sGroupBy = ' GROUP BY '.$sGroupBy;
+        }
+
+        if ($sOrderBy != '') {
+            $sOrderBy = ' ORDER BY '.$sOrderBy;
+        }
+
+        if ($sLimit != '') {
+            $sLimit = ' LIMIT '.$sLimit;
+        }
+
+        $sql = 'SELECT ' . $this->primaryKey . ' FROM `' . $this->table . '`' . $sWhere
+             . $sGroupBy . $sOrderBy . $sLimit;
+        $this->db->query($sql);
+        $this->_lastSQL = $sql;
+        $this->_mode = 'manual';
+
+        if ($this->db->num_rows() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Selects all entries from the database. Objects are loaded using their primary key.
+     *
+     * @param   string  $sDistinct  Specifies if distinct will be added to the SQL
+     *                              statement ($sDistinct !== '' -> DISTINCT)
+     * @param   string  $sFrom      Specifies the additional from clause (e.g.
+     *                              'con_news_groups AS groups, con_news_groupmembers AS groupmembers').
+     * @param   string  $sWhere     Specifies the where clause.
+     * @param   string  $sGroupBy   Specifies the group by clause.
+     * @param   string  $sOrderBy   Specifies the order by clause.
+     * @param   string  $sLimit     Specifies the limit by clause.
+     * @return  bool   True on success, otherwhise false
+     * @author HerrB
+     */
+    public function flexSelect($sDistinct = '', $sFrom = '', $sWhere = '', $sGroupBy = '', $sOrderBy = '', $sLimit = '')
+    {
+        unset($this->objects);
+
+        if ($sDistinct != '') {
+            $sDistinct = 'DISTINCT ';
+        }
+
+        if ($sFrom != '') {
+            $sFrom = ', '.$sFrom;
+        }
+
+        if ($sWhere != '') {
+            $sWhere = ' WHERE '.$sWhere;
+        }
+
+        if ($sGroupBy != '') {
+            $sGroupBy = ' GROUP BY '.$sGroupBy;
+        }
+
+        if ($sOrderBy != '') {
+            $sOrderBy = ' ORDER BY '.$sOrderBy;
+        }
+
+        if ($sLimit != '') {
+            $sLimit = ' LIMIT '.$sLimit;
+        }
+
+        $sql = 'SELECT ' . $sDistinct . strtolower(get_class($this)) . '.' . $this->primaryKey
+             . ' AS ' . $this->primaryKey . ' FROM `' . $this->table . '` AS ' . strtolower(get_class($this))
+             . $sFrom . $sWhere . $sGroupBy . $sOrderBy . $sLimit;
+
+        $this->db->query($sql);
+        $this->_lastSQL = $sql;
+        $this->_mode = 'manual';
+
+        if ($this->db->num_rows() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Checks if a specific entry exists.
+     *
+     * @param   mixed  $mId  The id to check for (could be numeric or string)
+     * @return  bool  True if object exists, false if not
+     */
+    public function exists($mId)
+    {
+        $oDb = $this->_getSecondDBInstance();
+        $sql = "SELECT `%s` FROM %s WHERE %s='%s'";
+        $oDb->query($sql, $this->primaryKey, $this->table, $this->primaryKey, $mId);
+        return ($oDb->next_record()) ? true : false;
+    }
+
+    /**
+     * Advances to the next item in the database.
+     *
+     * @return object The next object, or false if no more objects
+     */
+    public function next()
+    {
+        if ($this->_mode == 'manual') {
+            if ($this->db->next_record()) {
+                return $this->loadItem($this->db->f($this->primaryKey));
+            } else {
+                return false;
+            }
+        } else {
+            if ($this->db->next_record()) {
+                return $this->loadItem($this->db->f($this->primaryKey));
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Fetches the resultset related to current loaded primary key as a object
+     *
+     * @param  Item
+     */
+    public function fetchObject($sClassName)
+    {
+        $sKey = strtolower($sClassName);
+
+        if (is_object($this->_collectionCache[$sKey])) {
+            $this->_collectionCache[$sKey] = new $sClassName;
+        }
+        $obj = $this->_collectionCache[$sKey];
+        return $obj->loadItem($this->db->f($obj[$sKey]->primaryKey));
+    }
+
+    /* Prelimary documentation
+
+       $aFields = array with the fields to fetch. Notes:
+       If the array contains keys, the key will be used as alias for the field. Example:
+       array('id' => 'idcat') will put 'idcat' into field 'id'
+
+       $aObjects = array with the objects to fetch. Notes:
+       If the array contains keys, the key will be used as alias for the object. If you specify
+       more than one object with the same key, the array will be multi-dimensional.
+    */
+    public function fetchTable(array $aFields = array(), array $aObjects = array())
+    {
+        $row = 1;
+        $aTable = array();
+
+        $this->db->seek(0);
+
+        while ($this->db->next_record()) {
+            foreach ($aFields as $alias => $field) {
+                if ($alias != '') {
+                    $aTable[$row][$alias] = $this->db->f($field);
+                } else {
+                    $aTable[$row][$field] = $this->db->f($field);
+                }
+            }
+
+            // Fetch objects
+            foreach ($aObjects as $alias => $object) {
+                if ($alias != '') {
+                    if (isset($aTable[$row][$alias])) {
+                        // Is set, check for array. If no array, create one
+                        if (is_array($aTable[$row][$alias])) {
+                            $aTable[$row][$alias][] = $this->fetchObject($object);
+                        } else {
+                            $tmpObj = $aTable[$row][$alias];
+                            $aTable[$row][$alias] = array();
+                            $aTable[$row][$alias][] = $this->fetchObject($object);
+                        }
+                    } else {
+                        $aTable[$row][$alias] = $this->fetchObject($object);
+                    }
+                } else {
+                    $aTable[$row][$object] = $this->fetchObject($object);
+                }
+            }
+            $row ++;
+        }
+
+        $this->db->seek(0);
+
+        return $aTable;
+    }
+
+    /**
+     * Returns an array of arrays
+     * @param   array   $aObjects  With the correct order of the objects
+     * @return  array   Result
+     */
+    public function queryAndFetchStructured(array $aObjects)
+    {
+        $aOrder = array();
+        $aFetchObjects = array();
+        $aResult = array();
+
+        foreach ($aObjects as $object) {
+            $x = new $object;
+            $object = strtolower($object);
+            $aOrder[] = $object.'.'.$x->primaryKey.' ASC';
+            $aFetchObjects[] = $x;
+        }
+
+        $this->setOrder(implode(', ', $aOrder));
+        $this->query();
+
+        $this->db->seek(0);
+
+        while ($this->db->next_record()) {
+            $aResult = $this->_recursiveStructuredFetch($aFetchObjects, $aResult);
+        }
+
+        return $aResult;
+    }
+
+    protected function _recursiveStructuredFetch(array $aObjects, array $aResult)
+    {
+        $i = array_shift($aObjects);
+
+        $value = $this->db->f($i->primaryKey);
+
+        if (!is_null($value)) {
+            $aResult[$value]['class'] = strtolower(get_class($i));
+            $aResult[$value]['object'] = $i->loadItem($value);
+
+            if (count($aObjects) > 0) {
+                $aResult[$value]['items'] = $this->_recursiveStructuredFetch($aObjects, $aResult[$value]['items']);
+            }
+        }
+
+        return $aResult;
+    }
+
+    /**
+     * Returns the amount of returned items
+     * @return  int  Number of rows
+     */
+    public function count()
+    {
+        return ($this->db->num_rows());
+    }
+
+    /**
+     * Loads a single object from the database.
+     * Needs to be overridden by the extension class.
+     * @param   mixed   $mItem  Specifies the primary key of the item to load
+     * @return  Item  The newly created object
+     * @throws  ItemException  If item class is not set
+     */
+    public function loadItem($mItem)
+    {
+        if (empty($this->_itemClass)) {
+            $sMsg = "loadItem MUST be overridden by the extension class (in class "
+                   . get_class($this) . ")";
+            throw new ItemException($sMsg);
+        }
+
+        if (!is_object($this->_iteratorItem)) {
+            $this->_iteratorItem = new $this->_itemClass();
+        }
+
+        $this->_iteratorItem->loadByPrimaryKey($mItem);
+
+        return $this->_iteratorItem;
+    }
+
+    /**
+     * Creates a new item in the table and loads it afterwards.
+     * @return  Item  The newly created object
+     */
+    public function create()
+    {
+        $oDb     = $this->_getSecondDBInstance();
+        $iNextId = $oDb->nextid($this->table);
+        $sql     = 'INSERT INTO `%s` (%s) VALUES (%d)';
+        $oDb->query($sql, $this->table, $this->primaryKey, $iNextId);
+        return $this->loadItem($iNextId);
+    }
+
+    /**
+     * Deletes an item in the table.
+     *
+     * @param  mixed  $mId  Id of entry to delete
+     */
+    public function delete($mId)
+    {
+        $oDb = $this->_getSecondDBInstance();
+        $sql = "DELETE FROM `%s` WHERE %s = '%s'";
+        $oDb->query($sql, $this->table, $this->primaryKey, $mId);
+
+        // delete the property values
+        $oProperties = $this->_getPropertiesCollectionInstance();
+        $oProperties->deleteProperties($this->primaryKey, $mId);
+
+        // If this object wasn't loaded before, return false
+        if ($this->virgin === true) {
+            $this->lasterror = 'No item loaded';
+            return false;
+        }
+
+        return ($oDb->affected_rows() == 0) ? false : true;
+    }
+
+    /**
+     * Fetches an array of fields from the database.
+     *
+     * Example:
+     * $i = $object->fetchArray('idartlang', array('idlang', 'name'));
+     *
+     * could result in:
+     * $i[5] = array('idlang' => 5, 'name' => 'My Article');
+     *
+     * Important: If you don't pass an array for fields, the function
+     *            doesn't create an array.
+     * @param   string  $sKey     Name of the field to use for the key
+     * @param   mixed   $mFields  String or array
+     * @return  array   Resulting array
+     */
+    public function fetchArray($sKey, $mFields)
+    {
+        $aResult = array();
+
+        while ($item = $this->next()) {
+            if (is_array($mFields)) {
+                foreach ($mFields as $value) {
+                    $aResult[$item->get($sKey)][$value] = $item->get($value);
+                }
+            } else {
+                $aResult[$item->get($sKey)] = $item->get($mFields);
+            }
+        }
+
+        return $aResult;
+    }
 
 }
 
 /**
  * Class Item
- * Class for database based items
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.1
- * @copyright four for business 2003
+ * Abstract class for database based items.
+ *
+ * @author     Timo A. Hummel <Timo.Hummel@4fb.de>
+ * @author     Murat Purc <murat@purc.de>
+ * @version    0.2
+ * @copyright  four for business 2003
  */
-class Item
+abstract class Item extends ItemBaseAbstract
 {
-	/**
-	 * Storage of the source table to use for the user informations
-	 * @var string Contains the source table
-	 * @access private
-	 */
-	var $table;
-
-	/**
-	 * DB_Contenido instance
-	 * @var object Contains the database object
-	 * @access private
-	 */
-	var $db;
-
-	/**
-	 * Primary key of the table
-	 * @var object Contains the database object
-	 * @access private
-	 */
-	var $primaryKey;
-
-	/**
-	 * Storage of the source table to use for the user informations
-	 * @var array Contains the source table
-	 * @access private
-	 */
-	var $values;
-
-	/**
-	 * Storage of the fields which were modified
-	 * @var array Contains the field names which where modified
-	 * @access private
-	 */
-	var $modifiedValues;
-
-	/**
-	 * Storage of the last error
-	 * @var string Contains the error string of the last error occured
-	 * @access private
-	 */
-	var $lasterror;
-
-	/**
-	 * Checks for the virginity of this object. If true, the object
-	 * is virgin and no operations on it except load-Functions are allowed.
-	 * @var boolean Contains the virginity of this object.
-	 * @access private
-	 */
-	var $virgin;
-
-	/**
-	 * Cache the result items
-	 * @var array Contains all cache items
-	 * @access private
-	 */
-	var $cache;
-
-	/**
-	 * @var int Lifetime in seconds
-	 * @access private
-	 */
-	var $lifetime;
-
-	/**
-	 * @var object PropertyCollection object
-	 * @access private
-	 */
-	var $properties;
-
-	/**
-	 * stores the old primary key, just in case somebody wants to change it
-	 * @var string oldPrimaryKey
-	 * @access private
-	 */
-	var $oldPrimaryKey;
-
-	/**
-	 * Array storing the funcion names of the filters
-	 * used when data is stored to the db
-	 * @var array 
-	 * @access private
-	 */
-	var $_arrInFilters = array ('urlencode', 'htmlspecialchars', 'addslashes');
-
-	/**
-	 * Array storing the funcion names of the filters
-	 * used when data is retrieved from the db
-	 * @var array 
-	 * @access private
-	 */
-	var $_arrOutFilters = array ('stripslashes', 'htmldecode', 'urldecode');
-
-	var $_metaObject;
-
-	/**
-	 * Constructor Function
-	 * @param string $table The table to use as information source
-	 * @param string $primaryKey The primary key to use
-	 */
-	function Item($table = "", $primaryKey = "", $lifetime = 10)
-	{
-		$this->db = new DB_Contenido;
-
-		if ($table == "")
-		{
-			$classname = get_parent_class($this);
-			die("$classname: No table specified. Inherited classes *need* to set a table");
-		}
-
-		if ($primaryKey == "")
-		{
-			die("No primary key specified. Inherited classes *need* to set a primary key");
-		}
-
-		$this->table = $table;
-		$this->primaryKey = $primaryKey;
-		$this->virgin = true;
-		$this->lifetime = $lifetime;
-
-	} // end function
-
-	/**
-	 * loadBy ($field, $value)
-	 * Loads an item by ID from the database
-	 * @param string $field Specifies the field
-	 * @param string $value Specifies the value
-	 * @return bool True if the load was successful
-	 */
-	function loadBy($field, $value)
-	{
-
-		/* SQL-Statement to select by field */
-		$sql = "SELECT * FROM ".$this->table." WHERE ".$field." = '".$value."'";
-
-		/* Query the database */
-		$this->db->query($sql);
-
-		$this->_lastSQL = $sql;
-
-		if ($this->db->num_rows() > 1)
-		{
-			cWarning(__FILE__, __LINE__, "Tried to load a single line with field $field and value $value from ".$this->table." but found more than one row");
-		}
-
-		/* Advance to the next record, return false if nothing found */
-		if (!$this->db->next_record())
-		{
-			return false;
-		}
-
-		$this->values = $this->db->copyResultToArray($this->table);
-		$this->oldPrimaryKey = $this->values[$this->primaryKey];
-		$this->virgin = false;
-		return true;
-	}
-
-	/**
-	 * loadByPrimaryKey ($value)
-	 * Loads an item by ID from the database
-	 * @param string $value Specifies the primary key value
-	 * @return bool True if the load was successful
-	 */
-	function loadByPrimaryKey($value)
-	{
-		$success = $this->loadBy($this->primaryKey, $value);
-
-		if (($success == true) && method_exists($this, "_onLoad"))
-		{
-			$this->_onLoad();
-		}
-
-		return ($success);
-	}
-
-	/**
-	 * _onLoad ()
-	 *
-	 * Function which is called whenever an item is loaded.
-	 * Inherited classes should override this function if desired.
-	 *
-	 * @param none
-	 * @return none
-	 */
-	function _onLoad()
-	{
-	}
-
-	/**
-	 * getField($field)
-	 * Gets the value of a specific field
-	 * @param string $field Specifies the field to retrieve
-	 * @return mixed Value of the field
-	 */
-	function getField($field)
-	{
-		if ($this->virgin == true)
-		{
-			$this->lasterror = "No item loaded";
-			return false;
-		}
-
-		return $this->_outFilter($this->values[$field]);
-	}
-
-	/**
-	 * get($field)
-	 * Wrapper for getField (less to type)
-	 * @param string $field Specifies the field to retrieve
-	 * @return mixed Value of the field
-	 */
-	function get($field)
-	{
-		return $this->getField($field);
-	}
-
-	/**
-	 * setField($field, $value)
-	 * Sets the value of a specific field
-	 * @param string $field Specifies the field to set
-	 * @param string $value Specifies the value to set
-	 * @param boolean $safe Speficies if we should translate characters
-	 */
-	function setField($field, $value, $safe = true)
-	{
-		if ($this->virgin == true)
-		{
-			$this->lasterror = "No item loaded";
-			return false;
-		}
-
-		$this->modifiedValues[$field] = true;
-
-		if ($field == $this->primaryKey)
-		{
-			$this->oldPrimaryKey = $this->values[$field];
-		}
-
-		if ($safe == true)
-		{
-			$this->values[$field] = $this->_inFilter($value);
-
-		} else
-		{
-			$this->values[$field] = $value;
-		}
-	}
-
-	/**
-	 * set($field, $value)
-	 * Shortcut to setField
-	 * @param string $field Specifies the field to set
-	 * @param string $value Specifies the value to set
-	 */
-	function set($field, $value, $safe = true)
-	{
-		return ($this->setField($field, $value, $safe));
-	}
-
-	/**
-	 * store()
-	 * Stores the modified user object to the database
-	 */
-	function store()
-	{
-
-		if ($this->virgin == true)
-		{
-			$this->lasterror = "No item loaded";
-			return false;
-		}
-
-		$sql = "UPDATE ".$this->table." SET ";
-		$first = true;
-
-		if (!is_array($this->modifiedValues))
-		{
-			return true;
-		}
-
-		foreach ($this->modifiedValues as $key => $value)
-		{
-			if ($first == true)
-			{
-				$sql .= "`$key` = '".$this->values[$key]."'";
-				$first = false;
-			} else
-			{
-				$sql .= ", `$key` = '".$this->values[$key]."'";
-			}
-		}
-
-		$sql .= " WHERE ".$this->primaryKey." = '".$this->oldPrimaryKey."'";
-
-		$this->db->query($sql);
-
-		$this->_lastSQL = $sql;
-
-		if ($this->db->affected_rows() < 1)
-		{
-			return false;
-		} else
-		{
-			return true;
-		}
-	}
-
-	/**
-	 * setProperty ($type, $name, $value)
-	 * Sets a custom property
-	 * @param string $type  Specifies the type
-	 * @param string $name  Specifies the name
-	 * @param string $value Specifies the value
-	 */
-	function setProperty($type, $name, $value)
-	{
-		/* Runtime on-demand allocation of the properties object */
-		if (!is_object($this->properties))
-		{
-			$this->properties = new PropertyCollection;
-		}
-
-		/* If this object wasn't loaded before, return false */
-		if ($this->virgin == true)
-		{
-			$this->lasterror = "No item loaded";
-			return false;
-		}
-
-		/* Set the value */
-		return ($this->properties->setValue($this->primaryKey, $this->get($this->primaryKey), $type, $name, $value));
-	}
-
-	/**
-	 * getProperty ($type, $name)
-	 * Sets a custom property
-	 * @param string $type  Specifies the type
-	 * @param string $name  Specifies the name
-	 * @return boolean Value of the given property
-	 */
-	function getProperty($type, $name)
-	{
-		/* Runtime on-demand allocation of the properties object */
-		if (!is_object($this->properties))
-		{
-			$this->properties = new PropertyCollection;
-		}
-
-		/* If this object wasn't loaded before, return false */
-		if ($this->virgin == true)
-		{
-			$this->lasterror = "No item loaded";
-			return false;
-		}
-
-		/* Return the value */
-		return ($this->properties->getValue($this->primaryKey, $this->get($this->primaryKey), $type, $name));
-	}
-	
-	   /** 
-    * deleteProperty ($type, $name) 
-    * Deletes a custom property 
-    * @param string $type   Specifies the type 
-    * @param string $name   Specifies the name 
-    */ 
-	function deleteProperty($type, $name) 
-	{ 
-		/* Runtime on-demand allocation of the properties object */ 
-		if (!is_object($this->properties)) 
-		{ 
-			$this->properties = new PropertyCollection; 
-		} 
-
-		/* If this object wasn't loaded before, return false */ 
-		if ($this->virgin == true) 
-		{ 
-			$this->lasterror = "No item loaded"; 
-			return false; 
-		} 
-
-		/* Delete the value */ 
-		return ($this->properties->deleteValue($this->primaryKey, $this->get($this->primaryKey), $type, $name)); 
-	}
-
-	/**
-	 * Deletes the current item
-	 * 
-	 * @return void
-	 */
-	// Method doesn't work, remove in future versions
-	// function delete()
-	// {
-	//	$this->_collectionInstance->delete($item->get($this->primaryKey));
-	//}
-
-	/**
-	 * Define the filter functions used when 
-		 * data is being stored or retrieved from 
-	 * the database.
-	 *
-	 * Examples: 
-	 *
-	 * $obj->setFilters(array('addslashes'), array('stripslashes'));
-	 * $obj->setFilters(array('htmlencode', 'addslashes'), array('stripslashes', 'htmlencode'));
-	 * 
-	 * @param array inFilters array with function names
-	 * @param array outFilters array with function names
-	 * 
-	 * @return void
-	 */
-	function setFilters($arrInFilters = array (), $arrOutFilters = array ())
-	{
-		$this->_arrInFilters = $arrInFilters;
-		$this->_arrOutFilters = $arrOutFilters;
-	}
-
-	/**
-	 * Filters the passed data using the functions  
-		 * defines in the _arrInFilters array.
-	 * 
-	 * @see setFilters
-	 * 
-	 * @param mixed Data to filter	 
-	 * 
-	 * @access private
-	 * @return mixed Filtered data
-	 */
-	function _inFilter($data)
-	{
-		foreach ($this->_arrInFilters as $_function)
-		{
-			if (function_exists($_function))
-			{
-				$data = $_function ($data);
-			}
-		}
-
-		return $data;
-	}
-
-	/**
-	 * Filters the passed data using the functions  
-		 * defines in the _arrOutFilters array.
-	 * 
-	 * @see setFilters
-	 * 
-	 * @param mixed Data to filter	 
-	 * 
-	 * @access private
-	 * @return mixed Filtered data
-	 */
-	function _outFilter($data)
-	{
-		foreach ($this->_arrOutFilters as $_function)
-		{
-			if (function_exists($_function))
-			{
-				$data = $_function ($data);
-			}
-		}
-
-		return $data;
-	}
-
-	function _setMetaObject($objectname)
-	{
-		$this->_metaObject = $objectname;
-	}
-
-	function & getMetaObject()
-	{
-		global $_metaObjectCache;
-
-		if (!is_array($_metaObjectCache))
-		{
-			$_metaObjectCache = array ();
-		}
-
-		$classname = $this->_metaObject;
-		$qclassname = strtolower($classname);
-
-		if (array_key_exists($qclassname, $_metaObjectCache))
-		{
-			if (is_object($_metaObjectCache[$qclassname]))
-			{
-				if (strtolower(get_class($_metaObjectCache[$qclassname])) == $qclassname)
-				{
-					$_metaObjectCache[$qclassname]->setPayloadObject($this);
-					return $_metaObjectCache[$qclassname];
-				}
-			}
-		}
-
-		if (class_exists($classname))
-		{
-			$_metaObjectCache[$qclassname] = new $classname ($this);
-			return $_metaObjectCache[$qclassname];
-		}
-
-	}
-} // end class
+    /**
+     * Storage of the source table to use for the user informations
+     * @var  array
+     */
+    public $values;
+
+    /**
+     * Storage of the fields which were modified, where the keys are the 
+     * fieldnames and the values just simple booleans.
+     * @var  array
+     */
+    protected $modifiedValues;
+
+    /**
+     * Stores the old primary key, just in case somebody wants to change it
+     * @var  string
+     */
+    protected $oldPrimaryKey;
+
+    /**
+     * List of funcion names of the filters used when data is stored to the db.
+     * @var  array
+     */
+    protected $_arrInFilters = array('urlencode', 'htmlspecialchars', 'addslashes');
+
+    /**
+     * List of funcion names of the filtersused when data is retrieved from the db
+     * @var  array
+     */
+    protected $_arrOutFilters = array('stripslashes', 'htmldecode', 'urldecode');
+
+    /**
+     * Class name of meta object
+     * @var  string
+     */
+    protected $_metaObject;
+
+    /**
+     * Constructor function
+     *
+     * @param  string  $sTable       The table to use as information source
+     * @param  string  $sPrimaryKey  The primary key to use
+     * @param  int     $iLifetime
+     */
+    public function __construct($sTable = '', $sPrimaryKey = '', $iLifetime = 10)
+    {
+        parent::__construct($sTable, $sPrimaryKey, $iLifetime, get_parent_class($this));
+    }
+
+    /**
+     * Constructor function for downwards compatibility
+     */
+    public function Item($sTable, $sPrimaryKey, $iLifetime = 10)
+    {
+        $this->__construct($sTable, $sPrimaryKey, $iLifetime);
+    }
+
+    /**
+     * Loads an item by ID from the database.
+     *
+     * @param   string  $sField  Specifies the field
+     * @param   mixed   $mValue  Specifies the value
+     * @return  bool    True if the load was successful
+     */
+    public function loadBy($sField, $mValue)
+    {
+        // SQL-Statement to select by field
+        $sql = "SELECT * FROM %s WHERE %s = '%s'";
+
+        // Query the database
+        $this->db->query($sql, $this->table, $sField, $mValue);
+
+        $this->_lastSQL = $sql;
+
+        if ($this->db->num_rows() > 1) {
+            $sMsg = "Tried to load a single line with field $sField and value $mValue from "
+                  . $this->table . " but found more than one row";
+            cWarning(__FILE__, __LINE__, $sMsg);
+        }
+
+        // Advance to the next record, return false if nothing found
+        if (!$this->db->next_record()) {
+            return false;
+        }
+
+        $this->values = $this->db->copyResultToArray($this->table);
+        $this->oldPrimaryKey = $this->values[$this->primaryKey];
+        $this->virgin = false;
+        return true;
+    }
+
+    /**
+     * Loads an item by ID from the database.
+     *
+     * @param   string  $mValue  Specifies the primary key value
+     * @return  bool    True if the load was successful
+     */
+    public function loadByPrimaryKey($mValue)
+    {
+        $bSuccess = $this->loadBy($this->primaryKey, $mValue);
+
+        if (($bSuccess == true) && method_exists($this, '_onLoad')) {
+            $this->_onLoad();
+        }
+        return $bSuccess;
+    }
+
+    /**
+     * Function which is called whenever an item is loaded.
+     * Inherited classes should override this function if desired.
+     *
+     * @return  void
+     */
+    protected function _onLoad()
+    {
+    }
+
+    /**
+     * Gets the value of a specific field.
+     *
+     * @param   string  $sField  Specifies the field to retrieve
+     * @return  mixed   Value of the field
+     */
+    public function getField($sField)
+    {
+        if ($this->virgin == true) {
+            $this->lasterror = 'No item loaded';
+            return false;
+        }
+        return $this->_outFilter($this->values[$sField]);
+    }
+
+    /**
+     * Wrapper for getField (less to type).
+     *
+     * @param   string  $sField  Specifies the field to retrieve
+     * @return  mixed   Value of the field
+     */
+    public function get($sField)
+    {
+        return $this->getField($sField);
+    }
+
+    /**
+     * Sets the value of a specific field.
+     *
+     * @param  string  $sField  Field name
+     * @param  string  $mValue  Value to set
+     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     */
+    public function setField($sField, $mValue, $bSafe = true)
+    {
+        if ($this->virgin == true) {
+            $this->lasterror = 'No item loaded';
+            return false;
+        }
+
+        $this->modifiedValues[$sField] = true;
+
+        if ($sField == $this->primaryKey) {
+            $this->oldPrimaryKey = $this->values[$sField];
+        }
+
+        if ($bSafe == true) {
+            $this->values[$sField] = $this->_inFilter($mValue);
+        } else {
+            $this->values[$sField] = $mValue;
+        }
+        return true;
+    }
+
+    /**
+     * Shortcut to setField.
+     *
+     * @param  string  $sField  Field name
+     * @param  string  $mValue  Value to set
+     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     */
+    public function set($sField, $mValue, $bSafe = true)
+    {
+        return $this->setField($sField, $mValue, $bSafe);
+    }
+
+    /**
+     * Stores the loaded and modified item to the database.
+     *
+     * @return  bool
+     */
+    public function store()
+    {
+        if ($this->virgin == true) {
+            $this->lasterror = 'No item loaded';
+            return false;
+        }
+
+        $sql = 'UPDATE `' . $this->table . '` SET ';
+        $first = true;
+
+        if (!is_array($this->modifiedValues)) {
+            return true;
+        }
+
+        foreach ($this->modifiedValues as $key => $bValue) {
+            if ($first == true) {
+                $sql .= "`$key` = '" . $this->values[$key] . "'";
+                $first = false;
+            } else {
+                $sql .= ", `$key` = '" . $this->values[$key] . "'";
+            }
+        }
+
+        $sql .= " WHERE " . $this->primaryKey . " = '" . $this->oldPrimaryKey . "'";
+
+        $this->db->query($sql);
+
+        $this->_lastSQL = $sql;
+
+        return ($this->db->affected_rows() < 1) ? false : true;
+    }
+
+
+    /**
+     * Sets a custom property.
+     *
+     * @param   string  $sType   Specifies the type
+     * @param   string  $sName   Specifies the name
+     * @param   mixed   $mValue  Specifies the value
+     * @return  bool
+     */
+    public function setProperty($sType, $sName, $mValue)
+    {
+        // If this object wasn't loaded before, return false
+        if ($this->virgin == true) {
+            $this->lasterror = 'No item loaded';
+            return false;
+        }
+
+        // Set the value
+        $oProperties = $this->_getPropertiesCollectionInstance();
+        $bResult = $oProperties->setValue(
+            $this->primaryKey, $this->get($this->primaryKey), $sType, $sName, $mValue
+        );
+        return $bResult;
+    }
+
+    /**
+     * Returns a custom property.
+     *
+     * @param   string  $sType  Specifies the type
+     * @param   string  $sName  Specifies the name
+     * @return  mixed   Value of the given property or false
+     */
+    public function getProperty($sType, $sName)
+    {
+        // If this object wasn't loaded before, return false
+        if ($this->virgin == true) {
+            $this->lasterror = 'No item loaded';
+            return false;
+        }
+
+        // Return the value
+        $oProperties = $this->_getPropertiesCollectionInstance();
+        $mValue = $oProperties->getValue(
+            $this->primaryKey, $this->get($this->primaryKey), $sType, $sName
+        );
+        return $mValue;
+    }
+
+   /**
+    * Deletes a custom property.
+    *
+    * @param   string  $sType   Specifies the type
+    * @param   string  $sName   Specifies the name
+    * @return  bool
+    */
+    public function deleteProperty($sType, $sName)
+    {
+        // If this object wasn't loaded before, return false
+        if ($this->virgin == true) {
+            $this->lasterror = 'No item loaded';
+            return false;
+        }
+
+        // Delete the value
+        $oProperties = $this->_getPropertiesCollectionInstance();
+        $bResult = $oProperties->deleteValue(
+            $this->primaryKey, $this->get($this->primaryKey), $sType, $sName
+        );
+        return $bResult;
+    }
+
+   /**
+    * Deletes a custom property by its id.
+    *
+    * @param   int  $idprop   Id of property
+    * @return  bool
+    */
+    public function deletePropertyById($idrop)
+    {
+        $oProperties = $this->_getPropertiesCollectionInstance();
+        return $oProperties->delete($idprop);
+    }
+
+    /**
+     * Deletes the current item
+     *
+     * @return void
+     */
+    // Method doesn't work, remove in future versions
+    // function delete()
+    // {
+    //    $this->_collectionInstance->delete($item->get($this->primaryKey));
+    //}
+
+    /**
+     * Define the filter functions used when data is being stored or retrieved 
+     * from the database.
+     *
+     * Examples:
+     * <pre>
+     * $obj->setFilters(array('addslashes'), array('stripslashes'));
+     * $obj->setFilters(array('htmlencode', 'addslashes'), array('stripslashes', 'htmlencode'));
+     * </pre>
+     *
+     * @param array  $aInFilters   Array with function names
+     * @param array  $aOutFilters  Array with function names
+     *
+     * @return void
+     */
+    public function setFilters($aInFilters = array(), $aOutFilters = array())
+    {
+        $this->_arrInFilters  = $aInFilters;
+        $this->_arrOutFilters = $aOutFilters;
+    }
+
+    /**
+     * Filters the passed data using the functions defines in the _arrInFilters array.
+     *
+     * @see setFilters
+     *
+     * @todo  This method is used from public scope, but it should be protected
+     *
+     * @param   mixed  $mData  Data to filter
+     * @return  mixed  Filtered data
+     */
+    public function _inFilter($mData)
+    {
+        foreach ($this->_arrInFilters as $_function) {
+            if (function_exists($_function)) {
+                $mData = $_function($mData);
+            }
+        }
+        return $mData;
+    }
+
+    /**
+     * Filters the passed data using the functions defines in the _arrOutFilters array.
+     *
+     * @see setFilters
+     *
+     * @param   mixed  $mData  Data to filter
+     * @return  mixed  Filtered data
+     */
+    protected function _outFilter($mData)
+    {
+        foreach ($this->_arrOutFilters as $_function) {
+            if (function_exists($_function)) {
+                $mData = $_function($mData);
+            }
+        }
+        return $mData;
+    }
+
+    protected function _setMetaObject($sObjectName)
+    {
+        $this->_metaObject = $sObjectName;
+    }
+
+    public function getMetaObject()
+    {
+        global $_metaObjectCache;
+
+        if (!is_array($_metaObjectCache)) {
+            $_metaObjectCache = array();
+        }
+
+        $sClassName = $this->_metaObject;
+        $qclassname = strtolower($sClassName);
+
+        if (array_key_exists($qclassname, $_metaObjectCache)) {
+            if (is_object($_metaObjectCache[$qclassname])) {
+                if (strtolower(get_class($_metaObjectCache[$qclassname])) == $qclassname) {
+                    $_metaObjectCache[$qclassname]->setPayloadObject($this);
+                    return $_metaObjectCache[$qclassname];
+                }
+            }
+        }
+
+        if (class_exists($sClassName)) {
+            $_metaObjectCache[$qclassname] = new $sClassName ($this);
+            return $_metaObjectCache[$qclassname];
+        }
+    }
+
+}
+
 ?>

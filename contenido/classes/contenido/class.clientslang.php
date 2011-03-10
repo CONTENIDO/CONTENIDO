@@ -109,6 +109,8 @@ class cApiClientLanguage extends Item
     /**
      * Set client property
      *
+     * @todo  Use parents method @see Item::setProperty()
+     *
      * @param  mixed  $mType   Type of the data to store (arbitary data)
      * @param  mixed  $mName   Entry name
      * @param  mixed  $mValue  Value
@@ -122,6 +124,8 @@ class cApiClientLanguage extends Item
     /**
      * Get client property
      *
+     * @todo  Use parents method @see Item::getProperty()
+     *
      * @param   mixed  $mType   Type of the data to get
      * @param   mixed  $mName   Entry name
      * @return  mixed  Value
@@ -134,6 +138,8 @@ class cApiClientLanguage extends Item
 
     /**
      * Delete client property
+     *
+     * @todo  Use parents method @see Item::deleteProperty(), but be carefull, different parameter!
      *
      * @param   int  $idprop   Id of property
      * @return  void
