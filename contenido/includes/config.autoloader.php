@@ -31,7 +31,7 @@
  * @since      file available since Contenido release >= 4.8.15
  *
  * {@internal
- *     created  2011-02-08
+ *     created  2011-03-10
  * }}
  */
 
@@ -81,6 +81,8 @@ return array(
     'FrontendPermission' => 'contenido/classes/class.frontend.permissions.php',
     'FrontendUserCollection' => 'contenido/classes/class.frontend.users.php',
     'FrontendUser' => 'contenido/classes/class.frontend.users.php',
+    'ItemException' => 'contenido/classes/class.genericdb.php',
+    'ItemBaseAbstract' => 'contenido/classes/class.genericdb.php',
     'ItemCollection' => 'contenido/classes/class.genericdb.php',
     'Item' => 'contenido/classes/class.genericdb.php',
     'Groups' => 'contenido/classes/class.group.php',
