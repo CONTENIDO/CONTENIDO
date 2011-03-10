@@ -139,11 +139,11 @@ abstract class ItemBaseAbstract
      *
      * @param  string  $sTable       Name of table
      * @param  string  $sPrimaryKey  Primary key of table
-     * @param  int     $iLifetime    Lifetime of the object in seconds (NOT USED!)
      * @param  string  $sClassName   Name of parent class
+     * @param  int     $iLifetime    Lifetime of the object in seconds (NOT USED!)
      * @throws  ItemException  If table name or primary key is not set
      */
-    protected function __construct($sTable, $sPrimaryKey, $iLifetime = 10, $sClassName)
+    protected function __construct($sTable, $sPrimaryKey, $sClassName, $iLifetime = 10)
     {
         $this->db = new DB_Contenido();
 
@@ -285,7 +285,7 @@ abstract class ItemCollection extends ItemBaseAbstract
      */
     public function __construct($sTable, $sPrimaryKey, $iLifetime = 10)
     {
-        parent::__construct($sTable, $sPrimaryKey, $iLifetime, get_parent_class($this));
+        parent::__construct($sTable, $sPrimaryKey, get_parent_class($this), $iLifetime);
 
         $this->resetQuery();
 
@@ -1140,7 +1140,7 @@ abstract class ItemCollection extends ItemBaseAbstract
                         if (is_array($aTable[$row][$alias])) {
                             $aTable[$row][$alias][] = $this->fetchObject($object);
                         } else {
-                            $tmpObj = $aTable[$row][$alias];
+                            // $tmpObj = $aTable[$row][$alias];
                             $aTable[$row][$alias] = array();
                             $aTable[$row][$alias][] = $this->fetchObject($object);
                         }
@@ -1368,7 +1368,7 @@ abstract class Item extends ItemBaseAbstract
      */
     public function __construct($sTable = '', $sPrimaryKey = '', $iLifetime = 10)
     {
-        parent::__construct($sTable, $sPrimaryKey, $iLifetime, get_parent_class($this));
+        parent::__construct($sTable, $sPrimaryKey, get_parent_class($this), $iLifetime);
     }
 
     /**
