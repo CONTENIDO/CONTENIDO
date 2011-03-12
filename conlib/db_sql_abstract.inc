@@ -416,11 +416,13 @@ abstract class DB_Sql_Abstract
      * Prepares a query with parameter for execution.
      *
      * @param   string  $sQuery
-     * @param   array  $aArgs  Arguments array containing the query with formatting
-     *                         signs and the entries.
-     *                         Examples:
-     *                         $obj->_prepareQueryf('SELECT * FROM `%s` WHERE id = %i', 'tablename', 123);
-     *                         $obj->_prepareQueryf('SELECT * FROM `%s` WHERE id = %i AND user = %i', 'tablename', 123, 3);
+     * @param   array   $aArgs  Arguments array containing the query with formatting
+     *                          signs and the entries.
+     *                          Examples:
+     *                          <pre>
+     *                          $obj->_prepareQueryf('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
+     *                          $obj->_prepareQueryf('SELECT * FROM `%s` WHERE id = %d AND user = %d', 'tablename', 123, 3);
+     *                          </pre>
      * @return  string
      */
     protected function _prepareQueryf($sQuery, array $aArgs)

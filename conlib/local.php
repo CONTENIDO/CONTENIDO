@@ -553,11 +553,11 @@ class Contenido_Challenge_Crypt_Auth extends Auth
 
         $sDate = date('Y-m-d');
 
-        $this->db->query(sprintf("select user_id,perms,password from %s where username = '%s' AND
+        $this->db->query(sprintf("SELECT user_id, perms, password FROM %s WHERE username = '%s' AND
             (valid_from <= '".$sDate."' OR valid_from = '0000-00-00' OR valid_from is NULL) AND
             (valid_to >= '".$sDate."' OR valid_to = '0000-00-00' OR valid_to is NULL)",
             $this->database_table,
-            Contenido_Security::escapeDB($username,  $this->db)
+            Contenido_Security::escapeDB($username, $this->db)
         ));
 
         $sMaintenanceMode = getSystemProperty('maintenance', 'mode');
@@ -597,8 +597,8 @@ class Contenido_Challenge_Crypt_Auth extends Auth
             sleep(5);
             return false;
         } else {
-            $this->db->query(sprintf("select A.group_id as group_id, A.perms as perms ".
-                "from %s AS A, %s AS B where A.group_id = B.group_id AND B.user_id = '%s'",
+            $this->db->query(sprintf("SELECT a.group_id AS group_id, a.perms AS perms ".
+                "FROM %s AS a, %s AS b WHERE a.group_id = b.group_id AND b.user_id = '%s'",
                 $this->group_table,
                 $this->member_table,
                 $uid
@@ -714,7 +714,7 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth
 
         if ($uid == false) {
             /* Authentification via backend users */
-            $this->db->query(sprintf("select user_id, perms, password from %s where username = '%s'",
+            $this->db->query(sprintf("SELECT user_id, perms, password FROM %s WHERE username = '%s'",
             $this->database_table,
             Contenido_Security::escapeDB($username, $this->db) ));
 
@@ -735,9 +735,9 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Auth
             }
 
             if ($uid !== false) {
-                $this->db->query(sprintf("select A.group_id as group_id, A.perms as perms ".
-                    "from %s AS A, %s AS B where A.group_id = B.group_id AND ".
-                    "B.user_id = '%s'",
+                $this->db->query(sprintf("SELECT a.group_id AS group_id, a.perms AS perms ".
+                    "FROM %s AS a, %s AS b WHERE a.group_id = b.group_id AND ".
+                    "b.user_id = '%s'",
                     $this->group_table,
                     $this->member_table,
                     $uid
