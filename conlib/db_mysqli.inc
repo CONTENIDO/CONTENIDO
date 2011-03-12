@@ -287,7 +287,7 @@ class DB_Sql extends DB_Sql_Abstract
             /* No current value, make one */
             if (!is_array($res)) {
                 $currentid = 0;
-                $q = sprintf("INSERT INTO `%s` values('%s', %s)", $this->Seq_Table, $seq_name, $currentid);
+                $q = sprintf("INSERT INTO `%s` VALUES('%s', %s)", $this->Seq_Table, $seq_name, $currentid);
                 $id = mysqli_query($this->Link_ID, $q);
             } else {
                 $currentid = $res["nextid"];

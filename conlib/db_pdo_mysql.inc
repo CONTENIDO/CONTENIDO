@@ -220,7 +220,8 @@ class DB_Sql extends DB_Sql_Abstract
         if ($this->Query_ID) {
             // clone statement and get count by using fetchAll
             $stmt = clone $this->Query_ID;
-            return (count($stmt->fetchAll()));
+            $res  = $stmt->fetchAll();
+            return (is_array($res)) ? count($stmt->fetchAll()) : 0;
         } else {
             return 0;
         }
@@ -241,13 +242,13 @@ class DB_Sql extends DB_Sql_Abstract
         if ($this->lock($this->Seq_Table)) {
             /* get sequence number (locked) and increment */
             $q = sprintf("SELECT nextid FROM `%s` WHERE seq_name = '%s'", $this->Seq_Table, $seq_name);
-            $stmt = $this->Link_ID->query($g);
+            $stmt = $this->Link_ID->query($q);
             $res = ($stmt) ? $stmt->fetch(PDO::FETCH_BOTH) : null;
 
             /* No current value, make one */
             if (!is_array($res)) {
                 $currentid = 0;
-                $q = sprintf("INSERT INTO `%s` values('%s', %s)", $this->Seq_Table, $seq_name, $currentid);
+                $q = sprintf("INSERT INTO `%s` VALUES('%s', %s)", $this->Seq_Table, $seq_name, $currentid);
                 $stmt = $this->Link_ID->query($q);
             } else {
                 $currentid = $res['nextid'];
