@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  * @package    Contenido database
- * @version    1.3
+ * @version    1.3.1
  * @author     Stefan Sels phplib@sels.com
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready) extended DB_Sql_Abstract, added/optimized some functioms and some formatting
  *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
+ *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
  *
  *   $Id$:
  * }}
@@ -59,9 +60,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Establishes a connection to the database server
-     *
-     * @return  resource|bool  Returns a connection id or false on error.
+     * @see DB_Sql_Abstract::_connect()
      */
     protected function _connect()
     {
@@ -70,7 +69,7 @@ class DB_Sql extends DB_Sql_Abstract
         $dbh = odbc_pconnect($database, $user, $password, $this->UseODBCCursor);
         if (!$dbh) {
             $this->halt('ODBC _connect() Failed');
-            return false;
+            return null;
         }
 
         return $dbh;
@@ -78,9 +77,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Performs a query.
-     *
-     * @param   string  $sQuery
+     * @see DB_Sql_Abstract::_query()
      */
     protected function _query($sQuery)
     {
@@ -106,9 +103,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Fetches the next recordset from result set
-     *
-     * @param  bool
+     * @see DB_Sql_Abstract::next_record()
      */
     public function next_record()
     {
@@ -130,6 +125,9 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::seek()
+     */
     public function seek($pos)
     {
         $this->Row = $pos;
@@ -137,9 +135,25 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Closes the connection.
-     *
-     * @return  void
+     * @see DB_Sql_Abstract::lock()
+     */
+    public function lock($table, $mode = 'write')
+    {
+        // @todo
+    }
+
+
+    /**
+     * @see DB_Sql_Abstract::unlock()
+     */
+    public function unlock()
+    {
+        // @todo
+    }
+
+
+    /**
+     * @see DB_Sql_Abstract::disconnect()
      */
     public function disconnect()
     {
@@ -153,7 +167,10 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    protected function _metadata($table, $full = false)
+    /**
+     * @see DB_Sql_Abstract::_metaData()
+     */
+    protected function _metaData($table, $full = false)
     {
         $count = 0;
         $id    = 0;
@@ -182,12 +199,18 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::affected_rows()
+     */
     public function affected_rows()
     {
         return odbc_num_rows($this->Query_ID);
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::num_rows()
+     */
     public function num_rows()
     {
         # Many ODBC drivers don't support odbc_num_rows() on SELECT statements.
@@ -225,13 +248,18 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::num_fields()
+     */
     public function num_fields()
     {
         return count($this->Record) / 2;
     }
 
 
-    /* public: Escape string for using in SQL-Statement */
+    /**
+     * @see DB_Sql_Abstract::escape()
+     */
     public function escape($sString)
     {
         //ToDo implement specific database behaviour
@@ -240,7 +268,26 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns error message of last occured error by using databases interface
+     * @see DB_Sql_Abstract::_tableNames()
+     */
+    protected function _tableNames()
+        // @todo implement me
+        return null;
+    }
+
+
+    /**
+     * @see DB_Sql_Abstract::_serverInfo()
+     */
+    protected function _serverInfo()
+    {
+        // @todo implement me
+        return null;
+    }
+
+
+    /**
+     * @see DB_Sql_Abstract::_getErrorMessage()
      */
     protected function _getErrorMessage()
     {
@@ -249,7 +296,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns error code of last occured error by using databases interface
+     * @see DB_Sql_Abstract::_getErrorNumber()
      */
     protected function _getErrorNumber()
     {

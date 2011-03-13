@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido database
- * @version    1.3
+ * @version    1.3.1
  * @author     Luis Francisco Gonzalez Hernandez
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2009-10-29, Murat Purc, removed deprecated function (PHP 5.3 ready), some comments and formatting
  *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
+ *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
  *
  *   $Id$:
  * }}
@@ -81,9 +82,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Connects to the database
-     *
-     * @return  void
+     * @see DB_Sql_Abstract::_connect()
      */
     protected function _connect()
     {
@@ -110,7 +109,7 @@ class DB_Sql extends DB_Sql_Abstract
 
         if (!$dbh) {
             $this->halt('ORACLE _connect() Failed');
-            return false;
+            return null;
         }
 
         ora_commiton($dbh);
@@ -120,6 +119,8 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
+     * @see DB_Sql_Abstract::_query()
+     *
      * In order to increase the # of cursors per system/user go edit the
      * init.ora file and increase the max_open_cursors parameter. Yours is on
      * the default value, 100 per user.
@@ -153,9 +154,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Fetches the next recordset from result set
-     *
-     * @param  bool
+     * @see DB_Sql_Abstract::next_record()
      */
     public function next_record()
     {
@@ -191,6 +190,8 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
+     * @see DB_Sql_Abstract::seek()
+     *
      * Works only for $pos - 1 and $pos
      * Perhaps I make a own implementation, but my
      * opinion is, that this should be done by PHP3
@@ -214,11 +215,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Locks the desired table.
-     *
-     * @param   string  $table  The table to lock
-     * @param   string  $mode   The lock mode. Only mode 'write' is supported!
-     * @return  int     Status of lock success (1 or 0)
+     * @see DB_Sql_Abstract::lock()
      */
     public function lock($table, $mode = 'write')
     {
@@ -232,9 +229,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Frees a previous locked result.
-     *
-     * @return  int  Status of lock success (1 or 0)
+     * @see DB_Sql_Abstract::unlock()
      */
     public function unlock()
     {
@@ -243,6 +238,8 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
+     * @see DB_Sql_Abstract::_metaData()
+     *
      * Parses te table structure and generates a metadata from it.
      *
      * Due to compatibility problems with Table we changed the behavior
@@ -277,7 +274,7 @@ class DB_Sql extends DB_Sql_Abstract
      *     The last one is used, if you have a field name, but no index.
      *     Test:  if (isset($result['meta']['myfield'])) {} ...
      */
-    protected function _metadata($table, $full = false)
+    protected function _metaData($table, $full = false)
     {
         $count = 0;
         $id    = 0;
@@ -335,10 +332,8 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns number of affected rows from last executed query (update, delete)
+     * @see DB_Sql_Abstract::affected_rows()
      * @FIXME: THIS FUNCTION IS UNSTESTED!
-     *
-     * @return  int  Number of affected rows
      */
     public function affected_rows()
     {
@@ -348,17 +343,16 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Known bugs: It will not work for SELECT DISTINCT and any
-     * other constructs which are depending on the resulting rows.
-     * So you *really need* to check every query you make, if it
-     * will work with it.
+     * @see DB_Sql_Abstract::num_rows()
      *
-     * Also, for a qualified replacement you need to parse the
-     * selection, cause this will fail: "SELECT id, from FROM ...").
-     * "FROM" is - as far as I know a keyword in Oracle, so it can
-     * only be used in this way. But you have been warned.
+     * Known bugs: It will not work for SELECT DISTINCT and any other constructs 
+     * which are depending on the resulting rows. So you *really need* to check 
+     * every query you make, if it will work with it.
      *
-     * @return  int  The number of rows from last select query result
+     * Also, for a qualified replacement you need to parse the selection, cause 
+     * this will fail: "SELECT id, from FROM ..."). "FROM" is - as far as I know 
+     * a keyword in Oracle, so it can only be used in this way. But you have been 
+     * warned.
      */
     public function num_rows()
     {
@@ -380,9 +374,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns the number of fields (colums) from current record set
-     *
-     * @return  int  Number of fields
+     * @see DB_Sql_Abstract::num_fields()
      */
     public function num_fields()
     {
@@ -392,12 +384,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns the next id (sequence number).
-     *
-     * Tries to create a sequence, if it doesn't exists.
-     *
-     * @param   string  $seq_name  The sequence name to get the next id from
-     * @return  int  The next id or 0 on error
+     * @see DB_Sql_Abstract::nextid()
      */
     public function nextid($seq_name)
     {
@@ -431,9 +418,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Closes the connection and frees the query id.
-     *
-     * @return  void
+     * @see DB_Sql_Abstract::disconnect()
      */
     public function disconnect()
     {
@@ -453,31 +438,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns names of existing tables.
-     *
-     * @return  array  Indexed array containing assoziative table data like:
-     *                 - $info[$i]['table_name']
-     *                 - $info[$i]['tablespace_name']
-     */
-    public function table_names()
-    {
-        $this->connect();
-        $this->query('SELECT table_name, tablespace_name FROM user_tables');
-        $i = 0;
-        while ($this->next_record()) {
-            $info[$i]['table_name']      = $this->Record['table_name'];
-            $info[$i]['tablespace_name'] = $this->Record['tablespace_name'];
-            $i++;
-        }
-        return $info;
-    }
-
-
-    /**
-     * public: Escape string for using in SQL-Statement.
-     *
-     * @param   string  $sString  The string to escape
-     * @return  string  Escaped string
+     * @see DB_Sql_Abstract::escape()
      */
     public function escape($sString)
     {
@@ -487,7 +448,35 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns error message of last occured error by using databases interface
+     * @see DB_Sql_Abstract::_tableNames()
+     */
+    protected function _tableNames()
+    {
+        $return = array();
+        $this->query('SELECT table_name, tablespace_name FROM user_tables');
+        $i = 0;
+        while ($this->next_record()) {
+            $return[$i]['table_name']      = $this->Record['table_name'];
+            $return[$i]['tablespace_name'] = $this->Record['tablespace_name'];
+            $return[$i]['database']        = $this->Record['tablespace_name'];
+            $i++;
+        }
+        return $return;
+    }
+
+
+    /**
+     * @see DB_Sql_Abstract::_serverInfo()
+     */
+    protected function _serverInfo()
+    {
+        // @todo implement me
+        return null;
+    }
+
+
+    /**
+     * @see DB_Sql_Abstract::_getErrorMessage()
      */
     protected function _getErrorMessage()
     {
@@ -496,7 +485,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns error code of last occured error by using databases interface
+     * @see DB_Sql_Abstract::_getErrorNumber()
      */
     protected function _getErrorNumber()
     {

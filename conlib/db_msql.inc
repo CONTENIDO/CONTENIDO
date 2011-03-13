@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido database
- * @version    0.2
+ * @version    0.2.1
  * @author     Sascha Schumann <sascha@schumann.cx>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-07-03, bilal arslan, added security fix
  *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready) extended DB_Sql_Abstract, added/optimized some functioms and some formatting
  *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
+ *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
  *
  *   $Id$:
  * }}
@@ -61,9 +62,8 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Establishes a connection to the database.
-     *
-     * @return  resource|bool  Returns a connection id on success, or false on error.f     */
+     * @see DB_Sql_Abstract::_connect()
+     */
     protected function _connect()
     {
         extract($this->_aDbCfg['connection']);
@@ -74,13 +74,13 @@ class DB_Sql extends DB_Sql_Abstract
         // Still not connected? Raise error.
         if (!$dbh) {
             $this->halt('mSQL _connect() Failed');
-            return false;
+            return null;
         }
 
         // Select current database
         if (!msql_select_db($database, $dbh)) {
             $this->halt('mSQL _connect() Cannot use database ' . $database);
-            return false;
+            return null;
         }
 
         return $dbh;
@@ -88,16 +88,14 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Performs a query.
-     *
-     * @param   string  $sQuery
+     * @see DB_Sql_Abstract::_query()
      */
     protected function _query($sQuery)
     {
         $this->Query_ID = msql_query($sQuery,$this->Link_ID);
         $this->Row      = 0;
-        $this->Error    = msql_error();
-        $this->Errno    = ($this->Error !== '') ? '1' : '0';
+        $this->Error    = $this->_getErrorMessage();
+        $this->Errno    = $this->_getErrorNumber();
         if (!$this->Query_ID) {
             $this->halt($sQuery);
         }
@@ -105,15 +103,14 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Fetches the next recordset from result set
-     *
-     * @param  bool
+     * @see DB_Sql_Abstract::next_record()
      */
     public function next_record()
     {
         $this->Record = msql_fetch_array($this->Query_ID);
         $this->Row   += 1;
-        $this->Error  = msql_error();
+        $this->Error  = $this->_getErrorMessage();
+        $this->Errno  = $this->_getErrorNumber();
 
         $stat = is_array($this->Record);
         if (!$stat && $this->Auto_Free) {
@@ -124,6 +121,9 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::seek()
+     */
     public function seek($pos)
     {
         $status = msql_data_seek($this->Query_ID, $pos);
@@ -134,11 +134,26 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::lock()
+     */
+    public function lock($table, $mode = 'write')
+    {
+        // @todo
+    }
+
 
     /**
-     * Closes the connection and frees the query id.
-     *
-     * @return  void
+     * @see DB_Sql_Abstract::unlock()
+     */
+    public function unlock()
+    {
+        // @todo
+    }
+
+
+    /**
+     * @see DB_Sql_Abstract::disconnect()
      */
     public function disconnect()
     {
@@ -151,7 +166,10 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    protected function _metadata($table, $full = false)
+    /**
+     * @see DB_Sql_Abstract::_metaData()
+     */
+    protected function _metaData($table, $full = false)
     {
         $count = 0;
         $id    = 0;
@@ -160,7 +178,8 @@ class DB_Sql extends DB_Sql_Abstract
         $this->connect();
         $id = @msql_list_fields($this->Database,  $table);
         if ($id < 0) {
-            $this->Error = msql_error();
+            $this->Error = $this->_getErrorMessage();
+            $this->Errno = $this->_getErrorNumber();
             $this->halt('Metadata query failed.');
         }
         $count = msql_num_fields($id);
@@ -180,6 +199,9 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::affected_rows()
+     */
     public function affected_rows()
     {
         return msql_affected_rows($this->Query_ID);
@@ -187,9 +209,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns the number of rows
-     *
-     * @return  int
+     * @see DB_Sql_Abstract::num_rows()
      */
     public function num_rows()
     {
@@ -197,6 +217,9 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::num_fields()
+     */
     public function num_fields()
     {
         return msql_num_fields($this->Query_ID);
@@ -204,33 +227,49 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Escape string for using in SQL-Statement
-     *
-     * @param   string  $sString
-     * @return  string
+     * @see DB_Sql_Abstract::escape()
      */
     public function escape($sString)
     {
-        //ToDo implement specific database behaviour
+        //@todo implement specific database behaviour
         return addslashes($sString);
     }
 
 
     /**
-     * Returns error message of last occured error by using databases interface
+     * @see DB_Sql_Abstract::_tableNames()
      */
-    protected function _getErrorMessage()
-    {
+    protected function _tableNames()
         // @todo implement me
+        return null;
     }
 
 
     /**
-     * Returns error code of last occured error by using databases interface
+     * @see DB_Sql_Abstract::_serverInfo()
+     */
+    protected function _serverInfo()
+    {
+        // @todo implement me
+        return null;
+    }
+
+
+    /**
+     * @see DB_Sql_Abstract::_getErrorMessage()
+     */
+    protected function _getErrorMessage()
+    {
+        return msql_error();
+    }
+
+
+    /**
+     * @see DB_Sql_Abstract::_getErrorNumber()
      */
     protected function _getErrorNumber()
     {
-        // @todo implement me
+        return (msql_error() !== '') ? '1' : '0';
     }
 
 }

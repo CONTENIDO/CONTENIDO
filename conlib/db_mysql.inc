@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido database
- * @version    0.2
+ * @version    0.2.1
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready) extended DB_Sql_Abstract, added/optimized some functioms and some formatting
  *   modified 2009-12-18, Murat Purc, Replaced mysql_list_fields() against a SQL statement, see [#CON-262]
  *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
+ *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
  *
  *   $Id$:
  * }}
@@ -53,9 +54,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Establishes a connection to the database server.
-     *
-     * @return  resource|bool  The resource on success or false
+     * @see DB_Sql_Abstract::_connect()
      */
     protected function _connect()
     {
@@ -65,13 +64,13 @@ class DB_Sql extends DB_Sql_Abstract
         $dbh = @mysql_connect($host, $user, $password);
         if (!$dbh || !is_resource($dbh)) {
             $this->halt('MySQL _connect() Failed');
-            return false;
+            return null;
         }
 
         if ($database != '') {
             if (!@mysql_select_db($database, $dbh)) {
                 $this->halt('MySQL _connect() Cannot use database ' . $database);
-                return false;
+                return null;
             }
         }
 
@@ -90,9 +89,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Performs a query.
-     *
-     * @param   string  $sQuery
+     * @see DB_Sql_Abstract::_query()
      */
     protected function _query($sQuery)
     {
@@ -107,9 +104,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Fetches the next recordset from result set
-     *
-     * @param  bool
+     * @see DB_Sql_Abstract::next_record()
      */
     public function next_record()
     {
@@ -126,7 +121,9 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /* public: position in result set */
+    /**
+     * @see DB_Sql_Abstract::seek()
+     */
     public function seek($pos = 0)
     {
         $status = @mysql_data_seek($this->Query_ID, $pos);
@@ -145,7 +142,9 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /* public: table locking */
+    /**
+     * @see DB_Sql_Abstract::lock()
+     */
     public function lock($table, $mode = 'write')
     {
         if ($this->_bNolock == true) {
@@ -174,6 +173,9 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::unlock()
+     */
     public function unlock()
     {
         if ($this->_bNolock == true) {
@@ -188,7 +190,9 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /* public: evaluate the result (size, width) */
+    /**
+     * @see DB_Sql_Abstract::affected_rows()
+     */
     public function affected_rows()
     {
         return ($this->Link_ID) ? mysql_affected_rows($this->Link_ID) : 0;
@@ -196,9 +200,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns the number of rows
-     *
-     * @return  int
+     * @see DB_Sql_Abstract::num_rows()
      */
     public function num_rows()
     {
@@ -206,14 +208,19 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::num_fields()
+     */
     public function num_fields()
     {
         return ($this->Query_ID) ? mysql_num_fields($this->Query_ID) : 0;
     }
 
 
-    /* public: sequence numbers */
-    public function nextid($seq_name)
+    /**
+     * @see DB_Sql_Abstract::num_fields()
+     */
+    public function nextid($nextid)
     {
         $this->connect();
 
@@ -244,9 +251,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Closes the connection and frees the query id.
-     *
-     * @return  void
+     * @see DB_Sql_Abstract::disconnect()
      */
     public function disconnect()
     {
@@ -260,8 +265,10 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /* public: return table metadata */
-    protected function _metadata($table = '', $full = false)
+    /**
+     * @see DB_Sql_Abstract::_metaData()
+     */
+    protected function _metaData($table = '', $full = false)
     {
         $count = 0;
         $id    = 0;
@@ -335,8 +342,10 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /* public: find available table names */
-    public function table_names()
+    /**
+     * @see DB_Sql_Abstract::_tableNames()
+     */
+    protected function _tableNames()
     {
         $return = array();
         $this->connect();
@@ -355,7 +364,9 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /* public: Escape string for using in SQL-Statement */
+    /**
+     * @see DB_Sql_Abstract::escape()
+     */
     public function escape($sString)
     {
         $sResult = '';
@@ -366,14 +377,10 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    // FIXME we have disconnect() for this
-    public function close()
-    {
-        $this->disconnect();
-    }
-
-
-    public function server_info()
+    /**
+     * @see DB_Sql_Abstract::_serverInfo()
+     */
+    protected function _serverInfo()
     {
         $arr['description'] = mysql_get_server_info();
         return $arr;
@@ -381,7 +388,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns error message of last occured error by using databases interface
+     * @see DB_Sql_Abstract::_getErrorMessage()
      */
     protected function _getErrorMessage()
     {
@@ -394,7 +401,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns error code of last occured error by using databases interface
+     * @see DB_Sql_Abstract::_getErrorNumber()
      */
     protected function _getErrorNumber()
     {

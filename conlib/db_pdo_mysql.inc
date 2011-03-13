@@ -13,7 +13,7 @@
  *
  *
  * @package    Contenido database
- * @version    0.1
+ * @version    0.1.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *
  * {@internal
  *   created  2011-02-28
+ *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
  *
  *   $Id: $:
  * }}
@@ -74,9 +75,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Establishes a connection to the database server.
-     *
-     * @return  object  Connection object
+     * @see DB_Sql_Abstract::_connect()
      */
     protected function _connect()
     {
@@ -98,7 +97,7 @@ class DB_Sql extends DB_Sql_Abstract
 
         if (!$dbh) {
             $this->halt('PDO_MySQL _connect() Failed');
-            return false;
+            return null;
         }
 
         return $dbh;
@@ -118,9 +117,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Performs a query.
-     *
-     * @param   string  $sQuery
+     * @see DB_Sql_Abstract::_query()
      */
     protected function _query($sQuery)
     {
@@ -135,9 +132,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Fetches the next recordset from result set
-     *
-     * @param  bool
+     * @see DB_Sql_Abstract::next_record()
      */
     public function next_record()
     {
@@ -153,14 +148,18 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /* public: position in result set */
+    /**
+     * @see DB_Sql_Abstract::seek()
+     */
     public function seek($pos = 0)
     {
         throw new Exception('seek not supported');
     }
 
 
-    /* public: table locking */
+    /**
+     * @see DB_Sql_Abstract::lock()
+     */
     public function lock($table, $mode = 'write')
     {
         if ($this->_bNolock == true) {
@@ -189,6 +188,9 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::unlock()
+     */
     public function unlock()
     {
         if ($this->_bNolock == true) {
@@ -203,7 +205,9 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /* public: evaluate the result (size, width) */
+    /**
+     * @see DB_Sql_Abstract::affected_rows()
+     */
     public function affected_rows()
     {
         return ($this->Query_ID) ? $this->Query_ID->rowCount() : 0;
@@ -211,9 +215,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns the number of rows
-     *
-     * @return  int
+     * @see DB_Sql_Abstract::num_rows()
      */
     public function num_rows()
     {
@@ -228,13 +230,18 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
+    /**
+     * @see DB_Sql_Abstract::num_fields()
+     */
     public function num_fields()
     {
         return count($this->Record / 2);
     }
 
 
-    /* public: sequence numbers */
+    /**
+     * @see DB_Sql_Abstract::nextid()
+     */
     public function nextid($seq_name)
     {
         $this->connect();
@@ -266,9 +273,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Closes the connection.
-     *
-     * @return  void
+     * @see DB_Sql_Abstract::disconnect()
      */
     public function disconnect()
     {
@@ -280,8 +285,10 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /* public: return table metadata */
-    protected function _metadata($table = '', $full = false)
+    /**
+     * @see DB_Sql_Abstract::_metaData()
+     */
+    protected function _metaData($table = '', $full = false)
     {
         $count = 0;
         $id    = 0;
@@ -356,11 +363,14 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /* public: Escape string for using in SQL-Statement */
+    /**
+     * @see DB_Sql_Abstract::escape()
+     */
     public function escape($sString)
     {
         $sResult = '';
         $sResult = str_replace("'", "''", $sString);
+        // @todo adapt pdo quote method to own requirements
 #        if ($this->connect()) {
 #            $sResult = $this->Link_ID->quote($sString);
 #        }
@@ -368,13 +378,11 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    /* public: find available table names */
-    public function table_names()
-    {
+    /**
+     * @see DB_Sql_Abstract::_tableNames()
+     */
+    protected function _tableNames()
         $return = array();
-        if (!$this->connect()) {
-            return $return;
-        }
 
         $stmt = $this->Link_ID->query('SHOW TABLES');
         $i = 0;
@@ -391,18 +399,11 @@ class DB_Sql extends DB_Sql_Abstract
     }
 
 
-    // FIXME we have disconnect() for this
-    public function close()
+    /**
+     * @see DB_Sql_Abstract::_serverInfo()
+     */
+    protected function _serverInfo()
     {
-        $this->disconnect();
-    }
-
-
-    public function server_info()
-    {
-        if (!$this->connect()) {
-            return null;
-        }
         $arr['description'] = $this->Link_ID->getAttribute(PDO::ATTR_SERVER_INFO);
         $arr['version'] = $this->Link_ID->getAttribute(PDO::ATTR_SERVER_VERSION);
         return $arr;
@@ -410,7 +411,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns error message of last occured error by using databases interface
+     * @see DB_Sql_Abstract::_getErrorMessage()
      */
     protected function _getErrorMessage()
     {
@@ -427,7 +428,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * Returns error code of last occured error by using databases interface
+     * @see DB_Sql_Abstract::_getErrorNumber()
      */
     protected function _getErrorNumber()
     {

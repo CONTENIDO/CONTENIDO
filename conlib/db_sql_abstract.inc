@@ -5,13 +5,14 @@
  *
  * Description:
  * Base (abstract) database class. Each database driver file should extend this!
+ * @todo  Better error handling, use exceptions!
  *
  * Requirements:
  * @con_php_req 5
  *
  *
  * @package    Contenido Database
- * @version    0.1
+ * @version    0.1.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,6 +22,9 @@
  *
  * {@internal
  *   created  2011-03-03
+ *   modified 2011-03-13, Murat Purc, Added FETCH_* constants, extended toArray(),
+ *                                    moved close(), table_names() and server_info() 
+ *                                    from child implementations.
  *
  *   $Id:$:
  * }}
@@ -38,6 +42,10 @@ abstract class DB_Sql_Abstract
     const HALT_YES = 'yes';
     const HALT_NO  = 'no';
     const HALT_REPORT  = 'report';
+
+    const FETCH_NUMERIC = 'numeric';
+    const FETCH_ASSOC   = 'assoc';
+    const FETCH_BOTH    = 'both';
 
     /**
      * Assoziative list of database connections
@@ -137,8 +145,8 @@ abstract class DB_Sql_Abstract
 
     /**
      * Halt status during occured errors. Feasible values are
-     * - "yes" (halt with message)
-     * - "no" (ignore errors quietly)
+     * - "yes"    (halt with message)
+     * - "no"     (ignore errors quietly)
      * - "report" (ignore errror, but spit a warning)
      * @var  string
      */
@@ -254,6 +262,7 @@ abstract class DB_Sql_Abstract
         $this->connect();
     }
 
+
     /**
      * Setter for default database configuration, the connection values.
      *
@@ -264,10 +273,12 @@ abstract class DB_Sql_Abstract
         self::$_aDefaultDbCfg = $defaultDbCfg;
     }
 
+
     /**
      * Establishes a connection to the database server.
      *
-     * @return  object  Connection object
+     * @return  object|resource|int|null  Connection handler. Return value depends on 
+     *                                    used driver and is null in case of an error.
      */
     public function connect()
     {
@@ -281,6 +292,7 @@ abstract class DB_Sql_Abstract
         }
         return null;
     }
+
 
     /**
      * Resource id/object of current connection
@@ -351,7 +363,8 @@ abstract class DB_Sql_Abstract
     /**
      * Connects to the database.
      *
-     * @return  void
+     * @return  object|resource|int|null  Connection handler. Return value depends on 
+     *                                    used driver and is null in case of an error.
      */
     abstract protected function _connect();
 
@@ -359,7 +372,9 @@ abstract class DB_Sql_Abstract
     /**
      * Executes the query.
      *
-     * @param   string    $sQuery  The query to execute
+     * @param   string    $sQuery  The query to execute.
+     * @param   mixed     Accepts additional unlimited parameter, where the parameter 
+     *                    will be replaced against format definitions in query.
      * @return  resource|int|object|bool  Depends on used database driver, false on error
      */
     public function query($sQuery)
@@ -403,11 +418,12 @@ abstract class DB_Sql_Abstract
         return $this->Query_ID;
     }
 
+
     /**
      * Executes the query.
      *
      * @param   string    $sQuery  The query to execute
-     * @return  resource|int  The query result id (ressource id) or 0 on error
+     * @return  void
      */
     abstract protected function _query($sQuery);
 
@@ -485,7 +501,7 @@ abstract class DB_Sql_Abstract
 
         if (!isset(self::$_metaCache[$key])) {
             // get meta data
-            self::$_metaCache[$key] = $this->_metadata($table, $full);
+            self::$_metaCache[$key] = $this->_metaData($table, $full);
         }
 
         return self::$_metaCache[$key];
@@ -499,7 +515,7 @@ abstract class DB_Sql_Abstract
      * @param   bool    $full   Flag to load full metada
      * @return  array   Depends on used database and on parameter $full
      */
-    abstract protected function _metadata($table = '', $full = false);
+    abstract protected function _metaData($table = '', $full = false);
 
 
     /**
@@ -576,16 +592,32 @@ abstract class DB_Sql_Abstract
     }
 
     /**
-     * Returns current recordset as a assoziative array
+     * Returns current recordset as a assoziative and/or indexed array.
      *
+     * @param   string  $fetchMode  One of DB_SQL_Abstract::FETCH_* constants
      * @return  array
      */
-    public function toArray()
+    public function toArray($fetchMode = DB_SQL_Abstract::FETCH_ASSOC)
     {
+        switch ($fetchMode) {
+            case self::FETCH_NUMERIC:
+            case self::FETCH_ASSOC:
+            case self::FETCH_BOTH:
+                // donut
+                break;
+            default:
+                $fetchMode = DB_SQL_Abstract::FETCH_ASSOC;
+                break;
+        }
+
         $aResult = array();
         if (is_array($this->Record)) {
             foreach ($this->Record as $key => $value) {
-                if (!is_numeric($key)) {
+                if ($fetchMode == self::FETCH_ASSOC && !is_numeric($key)) {
+                    $aResult[$key] = $value;
+                } elseif ($fetchMode == self::FETCH_NUMERIC && is_numeric($key)) {
+                    $aResult[$key] = $value;
+                } else {
                     $aResult[$key] = $value;
                 }
             }
@@ -593,15 +625,17 @@ abstract class DB_Sql_Abstract
         return $aResult;
     }
 
+
     /**
-     * Returns current recordset as object
+     * Returns current recordset as a object
      *
      * @return  stdClass
      */
     public function toObject()
     {
-        return (object) $this->toArray();
+        return (object) $this->toArray(self::FETCH_ASSOC);
     }
+
 
     /**
      * Returns the next id (sequence number).
@@ -610,6 +644,16 @@ abstract class DB_Sql_Abstract
      * @return  int  The next id or 0 on error
      */
     abstract public function nextid($seq_name);
+
+
+    /**
+     * Wrapper method for disconnect()
+     * @see DB_Sql_Abstract::disconnect()
+     */
+    public function close()
+    {
+        $this->disconnect();
+    }
 
 
     /**
@@ -645,6 +689,7 @@ abstract class DB_Sql_Abstract
 
     /**
      * Logs passed message, basically the last db error to the error log.
+     * Concatenates a detailed error message and invokey PHP's error_log() method.
      *
      * @param   string  $sMsg
      * @return  void
@@ -666,11 +711,28 @@ abstract class DB_Sql_Abstract
     /**
      * Returns names of existing tables.
      *
-     * @return  array  Indexed array containing assoziative table data like:
-     *                 - $info[$i]['table_name']
-     *                 - $info[$i]['tablespace_name']
+     * @return  array|null  Indexed array containing assoziative table data as 
+     *                      follows or null:
+     *                      - $info[$i]['table_name']
+     *                      - $info[$i]['tablespace_name']
+     *                      - $info[$i]['database']
      */
-    abstract public function table_names();
+    public function table_names()
+    {
+        if (!$this->connect()) {
+            return null;
+        }
+        if (method_exists($this, '_tableNames')) {
+            return $this->_tableNames();
+        }
+        return null;
+    }
+
+    /**
+     * Implemetation for table_names() in child classes
+     * @see DB_Sql_Abstract::table_names()
+     */
+    abstract protected function _tableNames();
 
 
     /**
@@ -683,7 +745,33 @@ abstract class DB_Sql_Abstract
 
 
     /**
-     * Returns error message of last occured error
+     * Returns information about DB server. The return value depends allways on
+     * used DBMS.
+     *
+     * @return  array|null  Assoziative array as follows or null:
+     *                      - $arr['description']  (string)  Optional, server description
+     *                      - $arr['version']      (string)  Optional, server version
+     */
+    public function server_info()
+    {
+        if (!$this->connect()) {
+            return null;
+        }
+        if (method_exists($this, '_serverInfo')) {
+            return $this->_serverInfo();
+        }
+        return null;
+    }
+
+    /**
+     * Implemetation for server_info() in child classes.
+     * @see DB_Sql_Abstract::server_info()
+     */
+    abstract protected function _serverInfo();
+
+
+    /**
+     * Returns error message of last occured error.
      *
      * @return  string
      */
@@ -694,7 +782,7 @@ abstract class DB_Sql_Abstract
 
 
     /**
-     * Returns error message of last occured error by using databases interface
+     * Returns error message of last occured error by using databases interface.
      *
      * @return  string
      */
@@ -702,7 +790,7 @@ abstract class DB_Sql_Abstract
 
 
     /**
-     * Returns error code of last occured error by using databases interface
+     * Returns error code of last occured error by using databases interface.
      *
      * @return  int
      */
@@ -713,7 +801,7 @@ abstract class DB_Sql_Abstract
 
 
     /**
-     * Returns error code of last occured error by using databases interface
+     * Returns error code of last occured error by using databases interface.
      *
      * @return  int
      */
@@ -721,7 +809,8 @@ abstract class DB_Sql_Abstract
 
 
     /**
-     * Adds a entry to the profile data
+     * Adds a entry to the profile data.
+     *
      * @param   float   $fStartTime
      * @param   float   $fEndTime
      * @param   string  $sQuery
@@ -737,10 +826,11 @@ abstract class DB_Sql_Abstract
 
 
     /**
-     * Returns collected profile data
+     * Returns collected profile data.
+     *
      * @return  array  Profile data array like:
-     *                 - $arr[$i]['time']  (float)
-     *                 - $arr[$i]['query']  (string)
+     *                 - $arr[$i]['time']   (float)   Elapsed time to execute the query
+     *                 - $arr[$i]['query']  (string)  The query itself
      */
     public static function getProfileData()
     {
