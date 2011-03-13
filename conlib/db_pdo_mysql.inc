@@ -382,6 +382,7 @@ class DB_Sql extends DB_Sql_Abstract
      * @see DB_Sql_Abstract::_tableNames()
      */
     protected function _tableNames()
+    {
         $return = array();
 
         $stmt = $this->Link_ID->query('SHOW TABLES');

@@ -243,6 +243,7 @@ class DB_Sql extends DB_Sql_Abstract
      * @see DB_Sql_Abstract::_tableNames()
      */
     protected function _tableNames()
+    {
         // @todo implement me
         return null;
     }

@@ -268,7 +268,7 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _tableNames()
     {
-        $return array();
+        $return = array();
         $this->query("SELECT relname FROM pg_class WHERE relkind = 'r' AND NOT relname LIKE 'pg_%'");
         $i = 0;
         while ($this->next_record()) {
