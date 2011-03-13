@@ -15,7 +15,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    1.2
+ * @version    1.2.1
  * @author     Timo A. Hummel
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -25,11 +25,12 @@
  * @since      file available since contenido release <= 4.6
  *
  * {@internal
- *   created   2003-07-18
- *   modified  2008-07-02, Frederic Schneider, add security fix
- *   modified  2010-05-20, Murat Purc, Removed check of $_REQUEST['cfg'] during processing ticket [#CON-307]
- *   modified  2011-03-10, Murat Purc, Refactoring of Item and ItemCollection, partly port to PHP 5,
- *                         new ItemException and ItemBaseAbstract, documentation and formatting.
+ *   created  2003-07-18
+ *   modified 2008-07-02, Frederic Schneider, add security fix
+ *   modified 2010-05-20, Murat Purc, Removed check of $_REQUEST['cfg'] during processing ticket [#CON-307]
+ *   modified 2011-03-10, Murat Purc, Refactoring of Item and ItemCollection, partly port to PHP 5,
+ *                        new Contenido_ItemException and Contenido_ItemBaseAbstract, documentation and formatting.
+ *   modified 2011-03-13  Murat Purc, added Contenido_ItemCache() to enable caching of result sets.
  *
  *   $Id$:
  * }}
@@ -49,23 +50,175 @@ if (file_exists($driver_filename)) {
 
 
 /**
- * Class ItemException.
+ * Class Contenido_ItemException.
  * @author     Murat Purc <murat@purc.de>
  * @version    0.1
  * @copyright  four for business AG <www.4fb.de>
  */
-class ItemException extends Exception {}
+class Contenido_ItemException extends Exception {}
 
 
 /**
- * Class ItemBaseAbstract.
- * Base class with common features for database based items and item collections.
+ * Class Contenido_ItemCache.
+ *
+ * Implements features to cache entries, usually result sets of Item classes.
  *
  * @author     Murat Purc <murat@purc.de>
  * @version    0.1
  * @copyright  four for business AG <www.4fb.de>
  */
-abstract class ItemBaseAbstract
+class Contenido_ItemCache
+{
+    /**
+     * Self instance
+     * @var  Contenido_ItemCache
+     */
+    protected static $_oInstance = null;
+
+    /**
+     * Assoziative cache array, 
+     * @var  array
+     */
+    protected static $_aItemsCache = array();
+
+    /**
+     * Table name for current instance
+     * @var  string
+     */
+    protected $_sTable = '';
+
+    /**
+     * Max number of items to cache
+     * @var  int
+     */
+    protected $_iMaxItemsToCache = 10;
+
+    /**
+     * Enable caching
+     * @var  bool
+     */
+    protected $_bEnable = false;
+
+
+    protected function __construct()
+    {
+    }
+
+
+    protected function __clone()
+    {
+    }
+
+    public function getInstance($sTable, array $aOptions = array())
+    {
+        if (self::$_oInstance === null) {
+            self::$_oInstance = new self();
+            if (!isset(self::$_aItemsCache[$sTable])) {
+                self::$_aItemsCache[$sTable] = array();
+            }
+        }
+        self::$_oInstance->_sTable = $sTable;
+        if (isset($aOptions['max_items_to_cache']) && (int) $aOptions['max_items_to_cache'] > 0) {
+            self::$_oInstance->_iMaxItemsToCache = (int) $aOptions['max_items_to_cache'];
+        }
+        if (isset($aOptions['enable']) && is_bool($aOptions['enable'])) {
+            self::$_oInstance->_bEnable = (bool) $aOptions['enable'];
+        }
+        return self::$_oInstance;
+    }
+
+    /**
+     * Returns existing entry from cache by it's id.
+     *
+     * @param   mixed  $mId
+     * @return  array|null
+     */
+    public function getItem($mId)
+    {
+        if (!$this->_bEnable) {
+            return null;
+        }
+        if (isset(self::$_aItemsCache[$this->_sTable][$mId])) {
+            return self::$_aItemsCache[$this->_sTable][$mId];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns existing entry from cache by matching propery value.
+     *
+     * @param   mixed  $mProperty
+     * @param   mixed  $mValue
+     * @return  array|null
+     */
+    public function getItemByProperty($mProperty, $mValue)
+    {
+        if (!$this->_bEnable) {
+            return null;
+        }
+
+        // loop thru all cahed entries and try to find a entry by it's property
+        foreach (self::$_aItemsCache[$this->_sTable] as $id => $aEntry) {
+            if (isset($aEntry[$mProperty]) && $aEntry[$mProperty] == $mValue) {
+                return $aEntry[$mProperty];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Adds passed item data to internal cache
+     *
+     * @param   mixed  $mId
+     * @param   array  $aData  Usually the recordset
+     * @return  void
+     */
+    public function addItem($mId, array $aData)
+    {
+        if (!$this->_bEnable) {
+            return null;
+        }
+
+        if ($this->_iMaxItemsToCache == count(self::$_aItemsCache[$this->_sTable])) {
+            // we have reached the maximum number of cached items, remove
+            $firstEntry = array_shift(self::$_aItemsCache[$this->_sTable]);
+            unset($firstEntry);
+        }
+
+        // add entry
+        self::$_aItemsCache[$this->_sTable][$mId] = $aData;
+    }
+
+    /**
+     * Removes existing cache entry by it's key
+     *
+     * @param   mixed  $mId
+     * @return  void
+     */
+    public function removeItem($mId)
+    {
+        if (!$this->_bEnable) {
+            return null;
+        }
+
+        // remove entry
+        if (!isset(self::$_aItemsCache[$this->_sTable][$mId])){
+            unset(self::$_aItemsCache[$this->_sTable][$mId]);
+        }
+    }
+}
+
+
+/**
+ * Class Contenido_ItemBaseAbstract.
+ * Base class with common features for database based items and item collections.
+ *
+ * @author     Murat Purc <murat@purc.de>
+ * @version    0.2
+ * @copyright  four for business AG <www.4fb.de>
+ */
+abstract class Contenido_ItemBaseAbstract
 {
     /**
      * Database instance, contains the database object
@@ -85,6 +238,18 @@ abstract class ItemBaseAbstract
      * @var  PropertyCollection
      */
     protected $properties;
+
+    /**
+     * Item cache instance
+     * @var  Contenido_ItemCache
+     */
+    protected static $_oCache;
+
+    /**
+     * GenericDB settings, see $cfg['sql']
+     * @var  array
+     */
+    protected $_settings;
 
     /**
      * Storage of the source table to use for the information
@@ -122,7 +287,7 @@ abstract class ItemBaseAbstract
 
     /**
      * Cache the result items
-     * @todo  Check, if this is used somewhere
+     * FIXME  seems to not used, remove it!
      * @var  array
      */
     protected $cache;
@@ -141,19 +306,27 @@ abstract class ItemBaseAbstract
      * @param  string  $sPrimaryKey  Primary key of table
      * @param  string  $sClassName   Name of parent class
      * @param  int     $iLifetime    Lifetime of the object in seconds (NOT USED!)
-     * @throws  ItemException  If table name or primary key is not set
+     * @throws  Contenido_ItemException  If table name or primary key is not set
      */
     protected function __construct($sTable, $sPrimaryKey, $sClassName, $iLifetime = 10)
     {
+        global $cfg;
+
         $this->db = new DB_Contenido();
 
         if ($sTable == '') {
             $sMsg = "$sClassName: No table specified. Inherited classes *need* to set a table";
-            throw new ItemException($sMsg);
+            throw new Contenido_ItemException($sMsg);
         } elseif ($sPrimaryKey == '') {
             $sMsg = "No primary key specified. Inherited classes *need* to set a primary key";
-            throw new ItemException($sMsg);
+            throw new Contenido_ItemException($sMsg);
         }
+
+        $this->_settings = $cfg['sql'];
+
+        // instanciate caching
+        $aCacheOpt = (isset($this->_settings['cache'])) ? $this->_settings['cache'] : array();
+        $this->_oCache = Contenido_ItemCache::getInstance($sTable, $aCacheOpt);
 
         $this->table      = $sTable;
         $this->primaryKey = $sPrimaryKey;
@@ -201,7 +374,7 @@ abstract class ItemBaseAbstract
  * @version    0.2
  * @copyright  four for business 2003
  */
-abstract class ItemCollection extends ItemBaseAbstract
+abstract class ItemCollection extends Contenido_ItemBaseAbstract
 {
     /**
      * Storage of all result items
@@ -1221,14 +1394,14 @@ abstract class ItemCollection extends ItemBaseAbstract
      * Needs to be overridden by the extension class.
      * @param   mixed   $mItem  Specifies the primary key of the item to load
      * @return  Item  The newly created object
-     * @throws  ItemException  If item class is not set
+     * @throws  Contenido_ItemException  If item class is not set
      */
     public function loadItem($mItem)
     {
         if (empty($this->_itemClass)) {
             $sMsg = "loadItem MUST be overridden by the extension class (in class "
                    . get_class($this) . ")";
-            throw new ItemException($sMsg);
+            throw new Contenido_ItemException($sMsg);
         }
 
         if (!is_object($this->_iteratorItem)) {
@@ -1263,6 +1436,7 @@ abstract class ItemCollection extends ItemBaseAbstract
         $oDb = $this->_getSecondDBInstance();
         $sql = "DELETE FROM `%s` WHERE %s = '%s'";
         $oDb->query($sql, $this->table, $this->primaryKey, $mId);
+        $this->_oCache->removeItem($mId);
 
         // delete the property values
         $oProperties = $this->_getPropertiesCollectionInstance();
@@ -1317,10 +1491,10 @@ abstract class ItemCollection extends ItemBaseAbstract
  *
  * @author     Timo A. Hummel <Timo.Hummel@4fb.de>
  * @author     Murat Purc <murat@purc.de>
- * @version    0.2
+ * @version    0.3
  * @copyright  four for business 2003
  */
-abstract class Item extends ItemBaseAbstract
+abstract class Item extends Contenido_ItemBaseAbstract
 {
     /**
      * Storage of the source table to use for the user informations
@@ -1388,6 +1562,22 @@ abstract class Item extends ItemBaseAbstract
      */
     public function loadBy($sField, $mValue)
     {
+        // check, if cache contains a matching entry
+        $aRecordSet = null;
+        if ($sField === $this->primaryKey) {
+            $aRecordSet = $this->_oCache->getItem($mValue);
+        } else {
+            $aRecordSet = $this->_oCache->getItemByProperty($sField, $mValue);
+        }
+
+        if ($aRecordSet) {
+            // entry in cache found, return it
+            $this->values = $aRecordSet;
+            $this->oldPrimaryKey = $this->values[$this->primaryKey];
+            $this->virgin = false;
+            return true;
+        }
+    
         // SQL-Statement to select by field
         $sql = "SELECT * FROM %s WHERE %s = '%s'";
 
@@ -1410,6 +1600,7 @@ abstract class Item extends ItemBaseAbstract
         $this->values = $this->db->copyResultToArray($this->table);
         $this->oldPrimaryKey = $this->values[$this->primaryKey];
         $this->virgin = false;
+        $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
         return true;
     }
 
@@ -1538,10 +1729,13 @@ abstract class Item extends ItemBaseAbstract
         $this->db->query($sql);
 
         $this->_lastSQL = $sql;
+        
+        if ($this->db->affected_rows() > 0) {
+            $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
+        }
 
         return ($this->db->affected_rows() < 1) ? false : true;
     }
-
 
     /**
      * Sets a custom property.

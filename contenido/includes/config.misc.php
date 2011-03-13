@@ -27,6 +27,7 @@
  *   modified 2008-11-18, Murat Purc, add UrlBuilder configuration
  *   modified 2008-12-04, Bilal Arslan, added for config-password examples.
  *   modified 2010-05-20, Murat Purc, documented settings for UrlBuilder and caching.
+ *   modified 2011-03-13  Murat Purc, added configuration for GenericDB caching.
  *
  *   $Id$:
  * }}
@@ -204,8 +205,20 @@ $cfg['cache']['dir']	 = 'cache/';
 $cfg['cache']['lifetime'] = 3600;
 
 
-/* GenericDB driver */
+/**
+ * GenericDB settings
+ * ----------------------------------
+ */
+// (string) The GenericDB driver to use, at the moment only "mysql" is supported
 $cfg['sql']['gdb_driver'] = 'mysql';
+
+// (int) Number of GenericDB items per table to cache
+$cfg['sql']['cache']['max_items_to_cache'] = 10;
+
+// (bool) Enable GenericDB item cache
+$cfg['sql']['cache']['enable'] = true;
+
+
 
 /* Help system, currently not used */
 $cfg['help'] = false;
