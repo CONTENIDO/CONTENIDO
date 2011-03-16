@@ -1,97 +1,85 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Article specification class
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend classes
- * @version    1.0.0
+ * @version    1.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
- *   created unknown
+ *
+ * {@internal
+ *   created  unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
-class ArtSpecCollection extends ItemCollection {
-	/**
+class ArtSpecCollection extends ItemCollection
+{
+    /**
      * Constructor Function
      * @param none
      */
-	function ArtSpecCollection()
-	{
-		global $cfg;
-		parent::ItemCollection($cfg['tab']['art_spec'], "idartspec");
-	}
+    public function __construct()
+    {
+        global $cfg;
+        parent::__construct($cfg['tab']['art_spec'], "idartspec");
+        $this->_setItemClass("ArtSpecItem");
+    }
 
-	/**
-     * Loads an item by its ID (primary key)
-     * @param $itemID integer Specifies the item ID to load
-     */	
-	function loadItem ($itemID)
-	{
-		$item = new ArtSpecItem();
-		$item->loadByPrimaryKey($itemID);
-		return ($item);
-	}
-	
-	function delete($id)
-	{
-		/* Local new db instance since we don't want to kill our
-           probably existing result set */
-		$db = new DB_Contenido;
-		
-		if (!$this->exists($id))
-		{
-			return false;
-		} else
-		{
-			$obj = $this->loadItem($id);
-		}
-
-		$sql  = "DELETE FROM " .$this->table ." WHERE ";
-		$sql .= $this->primaryKey . " = '". $id ."'";
-		
-		$db->query($sql);
-		
-		return $obj;
-	}
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function ArtSpecCollection()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 }
+
 
 /**
  * Article specification Item
  */
-class ArtSpecItem extends Item {
-	
-	/**
+class ArtSpecItem extends Item
+{
+    /**
      * Constructor Function
-     * @param string $table The table to use as information source
+     * @param  mixed  $mId  Specifies the ID of item to load
      */
-	function ArtSpecItem()
-	{
-		global $cfg;
-		
-		parent::Item($cfg['tab']['art_spec'], "idartspec");
-	}
+    public function __construct($mId = false)
+    {
+        global $cfg;
+        parent::__construct($cfg['tab']['art_spec'], "idartspec");
+        if ($mId !== false) {
+            $this->loadByPrimaryKey($mId);
+        }
+    }
 
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function ArtSpecItem($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct($mId);
+    }
 }
+
 ?>

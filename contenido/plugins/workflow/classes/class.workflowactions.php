@@ -43,20 +43,20 @@ class WorkflowActions extends ItemCollection {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowActions()
+	function __construct()
 	{
 		global $cfg;
-		
-		parent::ItemCollection($cfg["tab"]["workflow_actions"], "idworkflowaction");
+		parent::__construct($cfg["tab"]["workflow_actions"], "idworkflowaction");
+        $this->_setItemClass("WorkflowAction");
 	}
 	
-	function loadItem ($itemID)
-	{
-		$item = new WorkflowAction();
-		$item->loadByPrimaryKey($itemID);
-		return ($item);
-	}
-	
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowActions()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
+
 	function get ($idworkflowitem, $action)
 	{
 		$this->select("idworkflowitem = '".Contenido_Security::escapeDB($idworkflowitem, NULL)."' AND action = '".Contenido_Security::escapeDB($action, NULL)."'");
@@ -82,6 +82,7 @@ class WorkflowActions extends ItemCollection {
 		
 		return($availableWorkflowActions);
 	}
+
 	function set ($idworkflowitem, $action)
 	{
 		$this->select("idworkflowitem = '".Contenido_Security::escapeDB($idworkflowitem, NULL)."' AND action = '".Contenido_Security::escapeDB($action, NULL)."'");
@@ -124,12 +125,19 @@ class WorkflowAction extends Item {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowAction()
+	function __construct()
 	{
 		global $cfg;
 		
-		parent::Item($cfg["tab"]["workflow_actions"], "idworkflowaction");
+		parent::__construct($cfg["tab"]["workflow_actions"], "idworkflowaction");
 	}
-	
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowAction()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 }
+
 ?>

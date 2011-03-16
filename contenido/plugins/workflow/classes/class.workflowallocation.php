@@ -44,19 +44,20 @@ class WorkflowAllocations extends ItemCollection {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowAllocations()
+	function __construct()
 	{
 		global $cfg;
-		parent::ItemCollection($cfg["tab"]["workflow_allocation"], "idallocation");
+		parent::__construct($cfg["tab"]["workflow_allocation"], "idallocation");
+        $this->_setItemClass("WorkflowAllocation");
 	}
 	
-	function loadItem ($itemID)
-	{
-		$item = new WorkflowAllocation();
-		$item->loadByPrimaryKey($itemID);
-		return ($item);
-	}
-	
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowAllocations()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
+
 	function delete ($idallocation)
 	{
 		global $cfg, $lang;
@@ -159,12 +160,19 @@ class WorkflowAllocation extends Item {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowAllocation()
+	function __construct()
 	{
 		global $cfg;
 		
-		parent::Item($cfg["tab"]["workflow_allocation"], "idallocation");
+		parent::__construct($cfg["tab"]["workflow_allocation"], "idallocation");
 	}
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowAllocation()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 
 	/**
      * Overridden setField function. Users should only use setWorkflow.
@@ -182,9 +190,6 @@ class WorkflowAllocation extends Item {
      */	
 	function setWorkflow ($idworkflow)
 	{
-		
-		
-		
 		$workflows = new Workflows;
 
 		$workflows->select("idworkflow = '$idworkflow'");

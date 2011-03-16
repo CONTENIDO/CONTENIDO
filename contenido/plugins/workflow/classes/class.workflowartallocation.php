@@ -45,20 +45,20 @@ class WorkflowArtAllocations extends ItemCollection {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowArtAllocations()
+	function __construct()
 	{
 		global $cfg;
-		
-		parent::ItemCollection($cfg["tab"]["workflow_art_allocation"], "idartallocation");
+		parent::__construct($cfg["tab"]["workflow_art_allocation"], "idartallocation");
+        $this->_setItemClass("WorkflowArtAllocation");
 	}
 	
-	function loadItem ($itemID)
-	{
-		$item = new WorkflowArtAllocation();
-		$item->loadByPrimaryKey($itemID);
-		return ($item);
-	}
-	
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowArtAllocations()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
+
 	function create ($idartlang)
 	{
 		global $cfg;
@@ -102,13 +102,19 @@ class WorkflowArtAllocation extends Item {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowArtAllocation()
+	function __construct()
 	{
 		global $cfg;
 		
-		parent::Item($cfg["tab"]["workflow_art_allocation"], "idartallocation");
+		parent::__construct($cfg["tab"]["workflow_art_allocation"], "idartallocation");
 	}
 
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowArtAllocation()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 
 	function getWorkflowItem ()
 	{

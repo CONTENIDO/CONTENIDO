@@ -44,20 +44,20 @@ class WorkflowUserSequences extends ItemCollection {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowUserSequences()
+	function __construct()
 	{
 		global $cfg;
-		
-		parent::ItemCollection($cfg["tab"]["workflow_user_sequences"], "idusersequence");
+		parent::__construct($cfg["tab"]["workflow_user_sequences"], "idusersequence");
+        $this->_setItemClass("WorkflowUserSequence");
 	}
 	
-	function loadItem ($itemID)
-	{
-		$item = new WorkflowUserSequence();
-		$item->loadByPrimaryKey($itemID);
-		return ($item);
-	}
-	
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowUserSequences()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
+
 	function delete ($id)
 	{
         global $cfg, $idworkflow;
@@ -179,13 +179,18 @@ class WorkflowUserSequence extends Item {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowUserSequence()
+	function __construct()
 	{
 		global $cfg;
-		
-		parent::Item($cfg["tab"]["workflow_user_sequences"], "idusersequence");
+		parent::__construct($cfg["tab"]["workflow_user_sequences"], "idusersequence");
 	}
 	
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowUserSequence()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 
 	/**
      * Override setField Function to prevent that somebody modifies

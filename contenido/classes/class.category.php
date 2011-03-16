@@ -1,110 +1,138 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Category management class
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
  * @con_notice Status: Test. Not for production use
- * 
+ *
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
- *   created unknown
+ *
+ * {@internal
+ *   created  unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
-###############################################
-# Using generic DB - use at your own risk !!
-################################################
 
 class CategoryCollection extends ItemCollection
 {
-	function CategoryCollection ()
-	{
-		global $cfg;
-		parent::ItemCollection($cfg["tab"]["cat"], "idcat");
-		
-		$this->_setItemClass("CategoryItem");
-	}
+    public function __construct()
+    {
+        global $cfg;
+        parent::__construct($cfg["tab"]["cat"], "idcat");
+        $this->_setItemClass("CategoryItem");
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function CategoryCollection()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 }
+
 
 class CategoryItem extends Item
 {
-	/**
+    /**
      * Constructor Function
-     * @param $id int Specifies the ID to load
+     * @param  mixed  $mId  Specifies the ID of item to load
      */
-	function CategoryItem ($id = false)
-	{
-		global $cfg;
-		parent::Item($cfg["tab"]["cat"], "idcat");
-		
-		$this->setFilters(array(), array());
-		
-		if ($id !== false)
-		{
-			$this->loadByPrimaryKey($id);
-		}
-	}
-	
-	
-	function loadByPrimaryKey ($key)
-	{
-		if (parent::loadByPrimaryKey($key)) {
-    		/* Load all child language items */
-    		$catlangs = new CategoryLanguageCollection;
-    		$catlangs->select("idcat = '$key'");
-    		
-    		while ($item = $catlangs->next())
-    		{
-    			$this->lang[$item->get("idlang")] = $item;	
-    		}
+    public function __construct($mId = false)
+    {
+        global $cfg;
+        parent::__construct($cfg["tab"]["cat"], "idcat");
+        $this->setFilters(array(), array());
+        if ($mId !== false) {
+            $this->loadByPrimaryKey($mId);
+        }
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function CategoryItem($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
+
+    public function loadByPrimaryKey($key)
+    {
+        if (parent::loadByPrimaryKey($key)) {
+            // Load all child language items
+            $catlangs = new CategoryLanguageCollection();
+            $catlangs->select("idcat = '$key'");
+
+            while ($item = $catlangs->next()) {
+                $this->lang[$item->get("idlang")] = $item;
+            }
             return true;
         }
         return false;
-	}	
+    }
 }
+
 
 class CategoryLanguageCollection extends ItemCollection
 {
-	function CategoryLanguageCollection ()
-	{
-		global $cfg;
-		parent::ItemCollection($cfg["tab"]["cat_lang"], "idcatlang");
-		
-		$this->_setItemClass("CategoryLanguageItem");
-	}
-	
+    public function __construct()
+    {
+        global $cfg;
+        parent::__construct($cfg["tab"]["cat_lang"], "idcatlang");
+        $this->_setItemClass("CategoryLanguageItem");
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function CategoryLanguageCollection()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 }
+
 
 class CategoryLanguageItem extends Item
 {
-	function CategoryLanguageItem ()
-	{
-		global $cfg;
-		parent::Item($cfg["tab"]["cat_lang"], "idcatlang");
-		
-		$this->setFilters(array(), array());
-	}
+    /**
+     * Constructor Function
+     * @param  mixed  $mId  Specifies the ID of item to load
+     */
+    public function __construct($mId = false)
+    {
+        global $cfg;
+        parent::__construct($cfg["tab"]["cat_lang"], "idcatlang");
+        $this->setFilters(array(), array());
+        if ($mId !== false) {
+            $this->loadByPrimaryKey($mId);
+        }
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function CategoryLanguageItem($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct($mId);
+    }
 }
+
 ?>

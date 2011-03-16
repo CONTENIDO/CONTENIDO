@@ -44,20 +44,20 @@ class WorkflowTasks extends ItemCollection {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowTasks()
+	function __construct()
 	{
 		global $cfg;
-		
-		parent::ItemCollection($cfg["tab"]["tasks"], "idtask");
+		parent::__construct($cfg["tab"]["tasks"], "idtask");
+        $this->_setItemClass("WorkflowTask");
 	}
 	
-	function loadItem ($itemID)
-	{
-		$item = new WorkflowTask();
-		$item->loadByPrimaryKey($itemID);
-		return ($item);
-	}
-	
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowTasks()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
+
 	function create ()
 	{
 		$newitem = parent::create();
@@ -89,12 +89,18 @@ class WorkflowTask extends Item {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowTask()
+	function __construct()
 	{
 		global $cfg;
-		
-		parent::Item($cfg["tab"]["tasks"], "idtask");
+		parent::__construct($cfg["tab"]["tasks"], "idtask");
 	}
-	
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowTask()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 }
+
 ?>

@@ -44,18 +44,19 @@ class WorkflowItems extends ItemCollection {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowItems()
+	function __construct()
 	{
 		global $cfg;
-		parent::ItemCollection($cfg["tab"]["workflow_items"], "idworkflowitem");
+		parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
+        $this->_setItemClass("WorkflowItem");
 	}
 	
-	function loadItem ($itemID)
-	{
-		$item = new WorkflowItem();
-		$item->loadByPrimaryKey($itemID);
-		return ($item);
-	}
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowItems()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 
 	function delete ($id)
 	{
@@ -209,12 +210,19 @@ class WorkflowItem extends Item {
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function WorkflowItem()
+	function __construct()
 	{
 		global $cfg;
 		
-		parent::Item($cfg["tab"]["workflow_items"], "idworkflowitem");
+		parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
 	}
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    function WorkflowItem()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 
 	function getStepRights ()
 	{

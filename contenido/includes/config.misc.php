@@ -218,6 +218,9 @@ $cfg['sql']['cache']['max_items_to_cache'] = 10;
 // (bool) Enable GenericDB item cache
 $cfg['sql']['cache']['enable'] = true;
 
+// (bool) Enable mode to select all fields in GenericDB item collections.
+$cfg['sql']['select_all_mode'] = true;
+
 
 
 /* Help system, currently not used */

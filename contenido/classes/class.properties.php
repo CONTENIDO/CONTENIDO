@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.1.6
+ * @version    1.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,13 +24,14 @@
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2009-09-27, Dominik Ziegler, fixed wrong (un)escaping
  *   modified 2011-02-05, Murat Purc, cleanup, formatting and documentation.
+ *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *
  *   $Id$:
  * }}
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
@@ -81,23 +82,26 @@ if(!defined('CON_FRAMEWORK')) {
 
 class PropertyCollection extends ItemCollection
 {
-    var $client;
+    public $client;
 
     /**
      * Constructor Function
      * @param none
      */
-    function PropertyCollection()
+    public function __construct()
     {
         global $cfg, $client;
-
         $this->client = Contenido_Security::toInteger($client);
-
-        parent::ItemCollection($cfg['tab']['properties'], 'idproperty');
-
+        parent::__construct($cfg['tab']['properties'], 'idproperty');
         $this->_setItemClass('PropertyItem');
     }
 
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function PropertyCollection()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 
     /**
      * Creates a new property item.
@@ -114,7 +118,7 @@ class PropertyCollection extends ItemCollection
      * @param   bool   $bInternally  Optionally default false (on internal call do not escape parameters again
      * @return  PropertyItem
      */
-    function create($itemtype, $itemid, $type, $name, $value, $bInternally = false)
+    public function create($itemtype, $itemid, $type, $name, $value, $bInternally = false)
     {
         global $cfg, $auth;
 
@@ -144,18 +148,6 @@ class PropertyCollection extends ItemCollection
 
 
     /**
-     * Deletes a record by its id
-     *
-     * @param   int  $id
-     * @return  bool
-     */
-    function delete($id)
-    {
-        return parent::delete($id);
-    }
-
-
-    /**
      * Returns the value for a given item.
      *
      * Example:
@@ -168,7 +160,7 @@ class PropertyCollection extends ItemCollection
      * @param   mixed  $name      Entry name
      * @return  mixed  Value
      */
-    function getValue($itemtype, $itemid, $type, $name, $default = false)
+    public function getValue($itemtype, $itemid, $type, $name, $default = false)
     {
         $itemtype = Contenido_Security::escapeDB($itemtype, null);
         $itemid   = Contenido_Security::escapeDB($itemid, null);
@@ -201,7 +193,7 @@ class PropertyCollection extends ItemCollection
      * @param   mixed  $type      Type of the data to store (arbitary data)
      * @return  array  Value
      **/
-    function getValuesByType($itemtype, $itemid, $type)
+    public function getValuesByType($itemtype, $itemid, $type)
     {
         $aResult  = array();
         $itemtype = Contenido_Security::escapeDB($itemtype, null);
@@ -236,7 +228,7 @@ class PropertyCollection extends ItemCollection
      * @param   mixed  $value     Value
      * @param   int    $idProp    Id of database record (if set, update on this basis (possiblity to update name value and type))
      */
-    function setValue($itemtype, $itemid, $type, $name, $value, $idProp = 0)
+    public function setValue($itemtype, $itemid, $type, $name, $value, $idProp = 0)
     {
         $itemtype = Contenido_Security::escapeDB($itemtype, null);
         $itemid   = Contenido_Security::escapeDB($itemid, null);
@@ -274,7 +266,7 @@ class PropertyCollection extends ItemCollection
      * @param  mixed  $type      Type of the data to store (arbitary data)
      * @param  mixed  $name      Entry name
      */
-    function deleteValue($itemtype, $itemid, $type, $name)
+    public function deleteValue($itemtype, $itemid, $type, $name)
     {
         $itemtype = Contenido_Security::escapeDB($itemtype, null);
         $itemid   = Contenido_Security::escapeDB($itemid, null);
@@ -300,7 +292,7 @@ class PropertyCollection extends ItemCollection
      * @param   mixed  $itemid    ID of the item (example: 31)
      * @return  array  For each given item
      */
-    function getProperties($itemtype, $itemid)
+    public function getProperties($itemtype, $itemid)
     {
         $itemtype = Contenido_Security::escapeDB($itemtype, null);
         $itemid   = Contenido_Security::escapeDB($itemid, null);
@@ -333,7 +325,7 @@ class PropertyCollection extends ItemCollection
      * @param   Contenido_Auth  $auth  Narrow result down to user in auth objext
      * @return  array  For each given item
      */
-    function getAllValues($field, $fieldValue, $auth=NULL)
+    public function getAllValues($field, $fieldValue, $auth=NULL)
     {
         $authString = '';
         if (!is_null($auth) && sizeof($auth) > 0) {
@@ -373,7 +365,7 @@ class PropertyCollection extends ItemCollection
      * @param  mixed  $itemtype  Type of the item (example: idcat)
      * @param  mixed  $itemid    ID of the item (example: 31)
      */
-    function deleteProperties($itemtype, $itemid)
+    public function deleteProperties($itemtype, $itemid)
     { 
         $itemtype = Contenido_Security::escapeDB($itemtype, null);
         $itemid   = Contenido_Security::escapeDB($itemid, null);
@@ -396,7 +388,7 @@ class PropertyCollection extends ItemCollection
     }
 
 
-    function changeClient($idclient)
+    public function changeClient($idclient)
     {
         $this->client = $idclient;
     }
@@ -408,30 +400,40 @@ class PropertyItem extends Item
     /**
      * maximumLength: Array which stores the maximum string length of each field
      */
-    var $maximumLength;
+    public $maximumLength;
 
     /**
      * Constructor Function
-     * @param  int  $id  Specifies the ID to load
+     * @param  mixed  $mId  Specifies the ID of item to load
      */
-    function PropertyItem()
+    public function __construct($mId = false)
     {
         global $cfg;
-        parent::Item($cfg['tab']['properties'], 'idproperty');
+        parent::__construct($cfg['tab']['properties'], 'idproperty');
 
-        /* Initialize maximum lengths for each column */
+        // Initialize maximum lengths for each column
         $this->maximumLength = array();
         $this->maximumLength['itemtype'] = 64;
         $this->maximumLength['itemid'] = 255;
         $this->maximumLength['type'] = 96;
         $this->maximumLength['name'] = 96;
+
+        if ($mId !== false) {
+            $this->loadByPrimaryKey($mId);
+        }
     }
 
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function PropertyItem($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct($mId);
+    }
 
     /**
      * Stores changed PropertyItem
      */
-    function store()
+    public function store()
     {
         global $auth;
 
@@ -448,7 +450,7 @@ class PropertyItem extends Item
 	 * @param  string  $value
 	 * @param  bool    $safe  Flag to run filter on passed value
      */
-    function setField($field, $value, $safe)
+    public function setField($field, $value, $safe)
     {
         if (array_key_exists($field, $this->maximumLength)) {
             if (strlen($value) > $this->maximumLength[$field]) {
@@ -458,7 +460,6 @@ class PropertyItem extends Item
 
         parent::setField($field, $value, $safe);
     }
-
 }
 
 ?>

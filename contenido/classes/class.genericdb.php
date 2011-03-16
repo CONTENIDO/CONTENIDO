@@ -441,12 +441,18 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
     protected $_encoding;
 
     /**
-     * @var _aOperators
-     *
      * Stores all operators which are supported by GenericDB
      * Unsupported operators are passed trough as-is.
+     * @var  array
      */
     protected $_aOperators;
+
+    /**
+     * Flag to select all fields in a query. Reduces the number of queries send 
+     * to the database.
+     * @var  bool
+     */
+    protected $_bAllMode = false;
 
 
     /**
@@ -1041,7 +1047,9 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
 
         $result = $this->db->query($sql);
         $this->_lastSQL = $sql;
-        $this->_mode = 'automatic';
+        // @todo  disable all mode in this method for the moment. It has to be verified, 
+        //        if enabling will result in negative side effects.
+        $this->_bAllMode = false;
         return ($result) ? true : false;
     }
 
@@ -1157,11 +1165,12 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
             $sLimit = ' LIMIT '.$sLimit;
         }
 
-        $sql = 'SELECT ' . $this->primaryKey . ' FROM `' . $this->table . '`' . $sWhere
+        $sFields = ($this->_settings['select_all_mode']) ? '*' : $this->primaryKey;
+        $sql = 'SELECT ' . $sFields . ' FROM `' . $this->table . '`' . $sWhere
              . $sGroupBy . $sOrderBy . $sLimit;
         $this->db->query($sql);
         $this->_lastSQL = $sql;
-        $this->_mode = 'manual';
+        $this->_bAllMode = $this->_settings['select_all_mode'];
 
         if ($this->db->num_rows() == 0) {
             return false;
@@ -1218,7 +1227,8 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
 
         $this->db->query($sql);
         $this->_lastSQL = $sql;
-        $this->_mode = 'manual';
+        // @todo  disable all mode in this method
+        $this->_bAllMode = false;
 
         if ($this->db->num_rows() == 0) {
             return false;
@@ -1248,18 +1258,15 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
      */
     public function next()
     {
-        if ($this->_mode == 'manual') {
-            if ($this->db->next_record()) {
-                return $this->loadItem($this->db->f($this->primaryKey));
+        if ($this->db->next_record()) {
+            if ($this->_bAllMode) {
+                $aRs = $this->db->toArray(DB_Contenido::FETCH_BOTH);
+                return $this->loadItem($aRs);
             } else {
-                return false;
+                return $this->loadItem($this->db->f($this->primaryKey));
             }
         } else {
-            if ($this->db->next_record()) {
-                return $this->loadItem($this->db->f($this->primaryKey));
-            } else {
-                return false;
-            }
+            return false;
         }
     }
 
@@ -1391,15 +1398,16 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
 
     /**
      * Loads a single object from the database.
-     * Needs to be overridden by the extension class.
-     * @param   mixed   $mItem  Specifies the primary key of the item to load
+     * 
+     * @param   mixed   $mItem  The primary key of the item to load or a recordset
+     *                          with itemdata (array) to inject to the item object.
      * @return  Item  The newly created object
      * @throws  Contenido_ItemException  If item class is not set
      */
     public function loadItem($mItem)
     {
         if (empty($this->_itemClass)) {
-            $sMsg = "loadItem MUST be overridden by the extension class (in class "
+            $sMsg = "ItemClass has to be set in the constructor of class "
                    . get_class($this) . ")";
             throw new Contenido_ItemException($sMsg);
         }
@@ -1408,7 +1416,11 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
             $this->_iteratorItem = new $this->_itemClass();
         }
 
-        $this->_iteratorItem->loadByPrimaryKey($mItem);
+        if (is_array($mItem)) {
+            $this->_iteratorItem->loadByRecordSet($mItem);
+        } else {
+            $this->_iteratorItem->loadByPrimaryKey($mItem);
+        }
 
         return $this->_iteratorItem;
     }
@@ -1571,10 +1583,8 @@ abstract class Item extends Contenido_ItemBaseAbstract
         }
 
         if ($aRecordSet) {
-            // entry in cache found, return it
-            $this->values = $aRecordSet;
-            $this->oldPrimaryKey = $this->values[$this->primaryKey];
-            $this->virgin = false;
+            // entry in cache found, load entry from cache
+            $this->loadByRecordSet($aRecordSet);
             return true;
         }
     
@@ -1597,10 +1607,7 @@ abstract class Item extends Contenido_ItemBaseAbstract
             return false;
         }
 
-        $this->values = $this->db->copyResultToArray($this->table);
-        $this->oldPrimaryKey = $this->values[$this->primaryKey];
-        $this->virgin = false;
-        $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
+        $this->loadByRecordSet($this->db->copyResultToArray($this->table));
         return true;
     }
 
@@ -1618,6 +1625,19 @@ abstract class Item extends Contenido_ItemBaseAbstract
             $this->_onLoad();
         }
         return $bSuccess;
+    }
+
+    /**
+     * Loads an item by it's recordset.
+     *
+     * @param   array  $aRecordSet  The recordset of the item
+     */
+    public function loadByRecordSet(array $aRecordSet)
+    {
+        $this->values        = $aRecordSet;
+        $this->oldPrimaryKey = $this->values[$this->primaryKey];
+        $this->virgin        = false;
+        $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
     }
 
     /**
