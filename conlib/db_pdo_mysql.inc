@@ -100,6 +100,9 @@ class DB_Sql extends DB_Sql_Abstract
             return null;
         }
 
+        $this->Database = $database;
+        $this->User     = $user;
+
         return $dbh;
     }
 

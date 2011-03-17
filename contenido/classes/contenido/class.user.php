@@ -196,7 +196,8 @@ class cApiUser extends Item
 
     /**
      * Retrieves all available properties of the user
-     * @param none
+     *
+     * @return array|bool
      */
     public function getUserProperties()
     {
@@ -210,6 +211,7 @@ class cApiUser extends Item
             return false;
         }
 
+        $props = array();
         while ($this->db->next_record()) {
             $props[] = array("name" => $this->db->f("name"),
                              "type" => $this->db->f("type"));

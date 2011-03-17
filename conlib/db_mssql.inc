@@ -73,6 +73,9 @@ class DB_Sql extends DB_Sql_Abstract
         }
         mssql_select_db($database, $dbh);
 
+        $this->Database = $database;
+        $this->User     = $user;
+
         return $dbh;
     }
 

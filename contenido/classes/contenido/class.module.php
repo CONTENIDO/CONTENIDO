@@ -908,7 +908,7 @@ class cApiModuleTranslationCollection extends ItemCollection
         $langobj = new Language();
         $langobj->loadByPrimaryKey($idlang);
 
-        $langstring = $langobj->get("name") . ' ('.$idlang.')';
+        #$langstring = $langobj->get("name") . ' ('.$idlang.')';
 
         $translations = new cApiModuleTranslationCollection;
         $translations->select("idmod = '$idmod' AND idlang='$idlang'");

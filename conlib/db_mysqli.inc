@@ -133,6 +133,9 @@ class DB_Sql extends DB_Sql_Abstract
             }
         }
 
+        $this->Database = $database;
+        $this->User     = $user;
+
         return $dbh;
     }
 

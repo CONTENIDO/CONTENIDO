@@ -276,14 +276,13 @@ function dbGetColumns ($db, $table)
 	}
 	
 	$sql = "SHOW COLUMNS FROM ".Contenido_Security::escapeDB($table, $db);
-	
 	$db->query($sql);
 	
 	$structure = array();
 	
 	while ($db->next_record())
 	{
-		$structure[$db->f("Field")] = $db->copyResultToArray($table);
+		$structure[$db->f("Field")] = $db->toArray();
 	}
 	
 	$columnCache[$table] = $structure;

@@ -72,6 +72,7 @@ class FrontendPermissionCollection extends ItemCollection
     {
         global $lang;
 
+        $item = null;
         if (!$this->checkPerm($group, $plugin, $action, $mitem)) {
             $item = parent::create();
             $item->set("idlang", $lang);
@@ -95,11 +96,7 @@ class FrontendPermissionCollection extends ItemCollection
     {
         global $lang;
 
-        if ($uselang !== false) {
-            $checklang = $uselang;
-        } else {
-            $checklang = $lang;
-        }
+        #$checklang = ($uselang !== false) ? $uselang : $lang;
 
         $group  = $this->_FrontendPermission->_inFilter($group);
         $plugin = $this->_FrontendPermission->_inFilter($plugin);
@@ -127,11 +124,7 @@ class FrontendPermissionCollection extends ItemCollection
     {
         global $lang;
 
-        if ($uselang !== false) {
-            $checklang = $uselang;
-        } else {
-            $checklang = $lang;
-        }
+        #$checklang = ($uselang !== false) ? $uselang : $lang;
 
         $group  = $this->_FrontendPermission->_inFilter($group);
         $plugin = $this->_FrontendPermission->_inFilter($plugin);

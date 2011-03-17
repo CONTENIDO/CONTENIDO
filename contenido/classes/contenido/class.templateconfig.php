@@ -53,8 +53,8 @@ class cApiTemplateConfigurationCollection extends ItemCollection
 
     public function delete($idtplcfg)
     {
-        $item = parent::delete($idtplcfg);
-        $oContainerConfCollection = new cApiContainerConfigurationCollection ("idtplcfg = '$idTplcfgStandard'");
+        $result = parent::delete($idtplcfg);
+        $oContainerConfCollection = new cApiContainerConfigurationCollection ("idtplcfg = '$idtplcfg'");
         $aDelContainerConfIds = array();
         while ($oContainerConf = $oContainerConfCollection->next()) {
             array_push($aDelContainerConfIds, $oContainerConf->get('idcontainerc'));

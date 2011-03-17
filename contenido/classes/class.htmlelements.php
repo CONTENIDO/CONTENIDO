@@ -2665,7 +2665,8 @@ class cHTMLForm extends cHTML
 	 */
 	function toHTML()
 	{
-		foreach ($this->_vars as $var => $value)
+		$out = '';
+                foreach ($this->_vars as $var => $value)
 		{
 			$f = new cHTMLHiddenField($var, $value);
 			$out .= $f->render();

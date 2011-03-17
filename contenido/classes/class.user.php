@@ -265,7 +265,7 @@ class User
             return false;
         }
 
-        $this->values = $this->db->copyResultToArray($this->table);
+        $this->values = $this->db->toArray();
 
         return true;
     }
@@ -291,7 +291,7 @@ class User
             return false;
         }
 
-        $this->values = $this->db->copyResultToArray($this->table);
+        $this->values = $this->db->toArray();
 
         return true;
     }

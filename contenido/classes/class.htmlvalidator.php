@@ -77,8 +77,6 @@ class cHTMLValidator
 
 		$htmlParser = new HtmlParser($this->html);
 
-		$nesting = 0;
-
 		while ($htmlParser->parse())
 		{
 			$this->_existingTags[] = $htmlParser->iNodeName;

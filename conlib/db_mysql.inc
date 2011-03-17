@@ -74,6 +74,9 @@ class DB_Sql extends DB_Sql_Abstract
             }
         }
 
+        $this->Database = $database;
+        $this->User     = $user;
+
         return $dbh;
     }
 
@@ -392,7 +395,7 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _getErrorMessage()
     {
-        if ($this->Link_ID) {
+        if (is_resource($this->Link_ID)) {
             return mysql_error($this->Link_ID);
         } else {
             return mysql_error();
@@ -405,7 +408,7 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _getErrorNumber()
     {
-        if ($this->Link_ID) {
+        if (is_resource($this->Link_ID)) {
             return mysql_errno($this->Link_ID);
         } else {
             return mysql_errno();

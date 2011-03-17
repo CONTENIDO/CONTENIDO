@@ -94,7 +94,7 @@ class DB_Sql extends DB_Sql_Abstract
             PutEnv("ORACLE_HOME=$home");
         }
 
-        $this->_debug("Connect()ing to $database...");
+        $this->_debug("Connecting to $database...");
         if ($this->Remote) {
             $dbh = ora_plogon("$user/$password@$database","");
             /************** (comment by SSilk)
@@ -113,6 +113,9 @@ class DB_Sql extends DB_Sql_Abstract
         }
 
         ora_commiton($dbh);
+
+        $this->Database = $database;
+        $this->User     = $user;
 
         return $dbh;
     }

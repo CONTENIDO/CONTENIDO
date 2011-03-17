@@ -265,7 +265,6 @@ class CEC_Hook {
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
 
-            $bFirstIteration = true;
             while ($chainEntry = $cecIterator->next()) {
                 // invoke CEC function
                 $chainEntry->setTemporaryArguments($args);
@@ -364,7 +363,6 @@ class CEC_Hook {
         if ($cecIterator->count() > 0) {
             $cecIterator->reset();
 
-            $bFirstIteration = true;
             while ($chainEntry = $cecIterator->next()) {
                 // invoke CEC function
                 $chainEntry->setTemporaryArguments($args);

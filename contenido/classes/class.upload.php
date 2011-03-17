@@ -156,9 +156,10 @@ class UploadItem extends Item
         $dbfs = new DBFSCollection();
 
         $fullfile = $dir.$file;
+
         // Strip the file extension
         $dotposition = strrpos($file, ".");
-
+        $extension   = '';
         if ($dotposition !== false) {
             $extension = substr($file, $dotposition + 1);
         }

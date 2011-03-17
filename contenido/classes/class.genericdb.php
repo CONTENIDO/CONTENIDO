@@ -1607,7 +1607,7 @@ abstract class Item extends Contenido_ItemBaseAbstract
             return false;
         }
 
-        $this->loadByRecordSet($this->db->copyResultToArray($this->table));
+        $this->loadByRecordSet($this->db->toArray());
         return true;
     }
 
@@ -1833,7 +1833,7 @@ abstract class Item extends Contenido_ItemBaseAbstract
     * @param   int  $idprop   Id of property
     * @return  bool
     */
-    public function deletePropertyById($idrop)
+    public function deletePropertyById($idprop)
     {
         $oProperties = $this->_getPropertiesCollectionInstance();
         return $oProperties->delete($idprop);

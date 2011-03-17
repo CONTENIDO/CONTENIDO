@@ -64,8 +64,7 @@ class cApiClientCollection extends ItemCollection
         $this->select();
 
         while ($oItem = $this->next()) {
-            $aNewEntry['name'] = $oItem->get('name');
-            $aClients[$oItem->get('idclient')] = $aNewEntry;
+            $aClients[$oItem->get('idclient')] = array('name' => $oItem->get('name'));
         }
 
         return ($aClients);
@@ -85,8 +84,7 @@ class cApiClientCollection extends ItemCollection
             if ($perm->have_perm_client("client[".$oItem->get('idclient')."]") ||
                 $perm->have_perm_client("admin[".$oItem->get('idclient')."]") ||
                 $perm->have_perm_client()) {
-                $aNewEntry['name'] = $oItem->get('name');
-                $aClients[$oItem->get('idclient')] = $aNewEntry;
+                $aClients[$oItem->get('idclient')] = array('name' => $oItem->get('name'));
             }
         }
         return ($aClients);
@@ -174,7 +172,7 @@ class cApiClient extends Item
      */
     public static function getInstance($iClient = false)
     {
-        static $oCurrentInstance;
+        static $oCurrentInstance = array();
 
         if (!$iClient) {
             // Use global $client
