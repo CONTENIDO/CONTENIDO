@@ -25,6 +25,7 @@
  *                                         to allow only one database connection, see [CON-300]
  *   modified 2010-02-17, Ingo van Peeren, only one connection for mysqli too
  *   modified 2011-03-03, Murat Purc, Some redesign/improvements (partial adaption to PHP 5)
+ *   modified 2011-03-18, Murat Purc, Fixed occuring "Duplicated entry" errors by using CT_Sql, see [CON-370]
  *
  *   $Id$:
  * }}
@@ -152,6 +153,42 @@ class Contenido_CT_Sql extends CT_Sql
     {
         global $cfg;
         $this->database_table = $cfg['tab']['phplib_active_sessions'];
+    }
+
+    /**
+     * Stores the session data in database table.
+     *
+     * Overwrites parents and uses MySQLs REPLACE statement, to prevent race 
+     * conditions while executing INSERT statements by multiple frames in backend.
+     *
+     * - Existing entry will be overwritten
+     * - Non existing entry will be added
+     *
+     * @param   string  $id    The session id (hash)
+     * @param   string  $name  Name of the session
+     * @param   string  $str   The value to store
+     * @return  bool
+     */
+    public function ac_store($id, $name, $str)
+    {
+        switch ($this->encoding_mode) {
+            case 'slashes':
+                $str = addslashes($name . ':' . $str);
+            break;
+            case 'base64':
+            default:
+                $str = base64_encode($name . ':' . $str);
+        }
+
+        $name = addslashes($name);
+        $now  = date('YmdHis', time());
+
+        $iquery = sprintf(
+            "REPLACE INTO %s (sid, name, val, changed) VALUES ('%s', '%s', '%s', '%s')",
+            $this->database_table, $id, $name, $str, $now
+        );
+
+        return ($this->db->query($iquery)) ? true : false;
     }
 }
 
