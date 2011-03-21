@@ -21,6 +21,7 @@
  * {@internal 
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
+ *   modified 2011-03-21, Murat Purc, usage of new db connection
  *
  *   $Id$:
  * }}
@@ -43,7 +44,7 @@ class cSetupClientAdjust extends cSetupMask
 		$this->_oStepTemplate->set("s", "TITLE", i18n("Client Settings"));
 		$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box."));
 		
-		$db = new DB_Contenido($_SESSION["dbhost"], $_SESSION["dbname"], $_SESSION["dbuser"], $_SESSION["dbpass"]);
+        $db = getSetupMySQLDBConnection();
 		
 		$aClients = listClients($db, $_SESSION["dbprefix"]."_clients");
 		

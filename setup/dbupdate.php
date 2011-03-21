@@ -24,6 +24,7 @@
  *   modified 2008-07-07, bilal arslan, added security fix
  *   modified 2011-02-24, Murat Purc, extended mysql extension detection
  *   modified 2011-02-28, Murat Purc, normalized setup startup process and some cleanup/formatting
+ *   modified 2011-03-21, Murat Purc, usage of new db connection
  *
  *   $Id$:
  * }}
@@ -58,10 +59,10 @@ checkAndInclude('../conlib/prepend.php');
 // Workaround for the 'bad' conlib functions
 $cfg['tab']['sequence'] = $_SESSION['dbprefix'].'_sequence';
 
-$db = new DB_Contenido($_SESSION['dbhost'], '', $_SESSION['dbuser'], $_SESSION['dbpass']);
+$db = getSetupMySQLDBConnection(false);
 
 if (checkMySQLDatabaseCreation($db, $_SESSION['dbname'])) {
-    $db = new DB_Contenido($_SESSION['dbhost'], $_SESSION['dbname'], $_SESSION['dbuser'], $_SESSION['dbpass']);
+    $db = getSetupMySQLDBConnection();
 }
 
 $currentstep = $_GET['step'];

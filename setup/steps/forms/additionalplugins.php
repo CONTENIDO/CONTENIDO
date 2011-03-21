@@ -35,6 +35,7 @@
  *   created  2008-03-14
  *   modified 2008-03-25, Timo Trautmann, integrated function checkExistingPlugin() which checks if a plugin is already installed
  *   modified 2008-07-07, bilal arslan, added security fix
+ *   modified 2011-03-21, Murat Purc, usage of new db connection
  *
  *   $Id$:
  * }}
@@ -48,7 +49,7 @@ class cSetupAdditionalPlugins extends cSetupMask
 {
 	function cSetupAdditionalPlugins ($step, $previous, $next)
 	{
-        $db = new DB_Contenido($_SESSION["dbhost"], $_SESSION["dbname"], $_SESSION["dbuser"], $_SESSION["dbpass"]);
+        $db = getSetupMySQLDBConnection();
         
 		cSetupMask::cSetupMask("templates/setup/forms/additionalplugins.tpl", $step);
 		$this->setHeader(i18n("Additional Plugins"));

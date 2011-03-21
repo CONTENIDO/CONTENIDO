@@ -22,6 +22,7 @@
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
  *   modified 2011-02-07, Dominik Ziegler, changed "TYPE" attribute to "ENGINE" for MySQL 5.5+ support
+ *   modified 2011-03-21, Murat Purc, new method getSetupMySQLDBConnection() and usage of new db connection
  *
  *   $Id$:
  * }}
@@ -54,7 +55,14 @@ function hasMySQLiExtension ()
 
 function doMySQLConnect ($host, $username, $password)
 {
-	$db = new DB_Contenido($host, "", $username, $password);
+    $aOptions = array(
+        'connection' => array(
+            'host'     => $host,
+            'user'     => $username,
+            'password' => $password,
+        ),
+    );
+	$db = new DB_Contenido($aOptions);
 	
 	if ($db->connect() == 0)
 	{
@@ -62,6 +70,33 @@ function doMySQLConnect ($host, $username, $password)
 	} else {
 		return array($db, true);	
 	}
+}
+
+
+function getSetupMySQLDBConnection($full = true)
+{
+    if ($type === false) {
+        // host, user and password
+        $aOptions = array(
+            'connection' => array(
+                'host'     => $_SESSION["dbhost"],
+                'user'     => $_SESSION["dbuser"],
+                'password' => $_SESSION["dbpass"],
+            ),
+        );
+    } else {
+        // host, database, user and password
+        $aOptions = array(
+            'connection' => array(
+                'host'     => $_SESSION["dbhost"],
+                'database' => $_SESSION["dbname"],
+                'user'     => $_SESSION["dbuser"],
+                'password' => $_SESSION["dbpass"],
+            ),
+        );
+    }
+    $db = new DB_Contenido($aOptions);
+    return $db;
 }
 
 function fetchMySQLVersion ($db)

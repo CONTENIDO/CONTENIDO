@@ -24,6 +24,7 @@
  *   modified 2009-12-17, Dominik Ziegler, added check for write permission on missing cronjob files
  *   modified 2010-07-26, Ortwin Pinke, [CON-329] added check for write permission of temp-folder
  *   modified 2010-10-18, Ingo van Peeren, added check for write permission of advance_workflow.php.job
+ *   modified 2011-03-21, Murat Purc, usage of new db connection
  *
  *   $Id$:
  * }}
@@ -124,7 +125,7 @@ class cSetupSystemtest extends cSetupMask
 	}
 	
     function doExistingOldPluginTests() {
-        $db = new DB_Contenido($_SESSION["dbhost"], "", $_SESSION["dbuser"], $_SESSION["dbpass"]);
+        $db = getSetupMySQLDBConnection(false);
         $sMessage = '';
         
         //get all tables in database and list it into array
@@ -415,7 +416,7 @@ class cSetupSystemtest extends cSetupMask
 						sprintf(i18n("Setup was unable to connect to the MySQL Server (Server %s, Username %s). Please correct the MySQL data and try again.<br><br>The error message given was: %s"),
 						$_SESSION["dbhost"], $_SESSION["dbuser"], $sErrorMessage));
 		
-		$db = new DB_Contenido($_SESSION["dbhost"], "", $_SESSION["dbuser"], $_SESSION["dbpass"]);
+        $db = getSetupMySQLDBConnection(false);
 		
 		$version = fetchMySQLVersion($db);
 		
@@ -432,7 +433,7 @@ class cSetupSystemtest extends cSetupMask
 		{
 			case "setup":
 			
-				$db = new DB_Contenido($_SESSION["dbhost"], "", $_SESSION["dbuser"], $_SESSION["dbpass"]);
+                $db = getSetupMySQLDBConnection(false);
 				
 				/* Check if the database exists */
 				$status = checkMySQLDatabaseExists($db, $_SESSION["dbname"]);
@@ -440,7 +441,7 @@ class cSetupSystemtest extends cSetupMask
 				if ($status)
 				{
 					/* Yes, database exists */
-					$db = new DB_Contenido($_SESSION["dbhost"], $_SESSION["dbname"], $_SESSION["dbuser"], $_SESSION["dbpass"]);
+                    $db = getSetupMySQLDBConnection();
 					$db->connect();
 					
 					/* Check if data already exists */
@@ -569,7 +570,7 @@ class cSetupSystemtest extends cSetupMask
 				}				
 				break;
 			case "migration":
-				$db = new DB_Contenido($_SESSION["dbhost"], "", $_SESSION["dbuser"], $_SESSION["dbpass"]);
+                $db = getSetupMySQLDBConnection(false);
 				
 				/* Check if the database exists */
 				$status = checkMySQLDatabaseExists($db, $_SESSION["dbname"]);
@@ -584,7 +585,7 @@ class cSetupSystemtest extends cSetupMask
 						return;				
 				}
 				
-				$db = new DB_Contenido($_SESSION["dbhost"], $_SESSION["dbname"], $_SESSION["dbuser"], $_SESSION["dbpass"]);
+                $db = getSetupMySQLDBConnection();
 				
 				/* Check if data already exists */
 				$sql = 'SHOW TABLES LIKE "%s_actions"';
@@ -617,7 +618,7 @@ class cSetupSystemtest extends cSetupMask
 				}				
 				break;
 			case "upgrade":
-				$db = new DB_Contenido($_SESSION["dbhost"], "", $_SESSION["dbuser"], $_SESSION["dbpass"]);
+                $db = getSetupMySQLDBConnection(false);
 				
 				/* Check if the database exists */
 				$status = checkMySQLDatabaseExists($db, $_SESSION["dbname"]);
@@ -632,7 +633,7 @@ class cSetupSystemtest extends cSetupMask
 						return;				
 				}
 				
-				$db = new DB_Contenido($_SESSION["dbhost"], $_SESSION["dbname"], $_SESSION["dbuser"], $_SESSION["dbpass"]);
+                $db = getSetupMySQLDBConnection();
 				
 				/* Check if data already exists */
 				$sql = 'SHOW TABLES LIKE "%s_actions"';
