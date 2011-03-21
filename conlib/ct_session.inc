@@ -58,7 +58,7 @@ class CT_Session
 
         // configure session
         foreach ($aOptions as $k => $v) {
-            if (strpos($v, 'session.') === 0) {
+            if (strpos($k, 'session.') === 0) {
                 @ini_set($k, $v);
             }
         }
