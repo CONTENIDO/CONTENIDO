@@ -91,7 +91,7 @@ class Workflows extends ItemCollection {
      */
     function delete($idWorkflow) {
         global $cfg;
-        $oDb = new DB_contenido();
+        $oDb = new DB_Contenido();
         
         $aItemIdsDelete = array();
         $sSql = 'SELECT idworkflowitem FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '. Contenido_Security::toInteger($idWorkflow) .';';

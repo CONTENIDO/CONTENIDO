@@ -339,7 +339,8 @@ class Contenido_Security
      */
     public static function checkRequestSession()
     {
-        if (isset($_REQUEST['contenido']) && !preg_match('/^[0-9a-f]{32}$/', $_REQUEST['contenido'])) {
+#        if (isset($_REQUEST['contenido']) && !preg_match('/^[0-9a-f]{32}$/', $_REQUEST['contenido'])) {
+        if (isset($_REQUEST['contenido']) && !preg_match('/^[0-9a-z]{32}$/', $_REQUEST['contenido'])) {
             if ($_REQUEST['contenido'] != '') {
                 throw new Contenido_Security_Exception('Invalid call', 'contenido');
             }

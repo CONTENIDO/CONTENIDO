@@ -312,7 +312,7 @@ class ActiveUsers {
 	 * @return  Returns the name if successful
 	 **/
 	function getWebsiteName($iIdClient) {
-        $oDbLocal = new DB_contenido();
+        $oDbLocal = new DB_Contenido();
 		$iClientId= (int) $iIdClient;
 		$sql= "";
 		$sName= "";

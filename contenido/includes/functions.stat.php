@@ -298,7 +298,7 @@ function statsOverviewAll($yearmonth) {
         //************check if there are subcategories ******************
         $iSumSubCategories = 0;
         $sSql = "SELECT count(*) as cat_count from ".$cfg["tab"]["cat"]." WHERE parentid = '".Contenido_Security::toInteger($idcat)."';";
-        $db3 = new DB_contenido();
+        $db3 = new DB_Contenido();
         $db3->query($sSql);
         if ($db3->next_record()) {
             $iSumSubCategories = $db3->f('cat_count');
@@ -360,7 +360,7 @@ function statsOverviewAll($yearmonth) {
             $online = $db2->f("online");
 
             //************** number of arts **************
-            $db3 = new DB_contenido;
+            $db3 = new DB_Contenido();
 
             //************** hits of art total **************
             if (strcmp($yearmonth,"current") == 0) {
@@ -626,7 +626,7 @@ function statsOverviewYear($year) {
         //************check if there are subcategories ******************
         $iSumSubCategories = 0;
         $sSql = "SELECT count(*) as cat_count from ".$cfg["tab"]["cat"]." WHERE parentid = '".Contenido_Security::toInteger($idcat)."';";
-        $db3 = new DB_contenido();
+        $db3 = new DB_Contenido();
         $db3->query($sSql);
         if ($db3->next_record()) {
             $iSumSubCategories = $db3->f('cat_count');
@@ -690,7 +690,7 @@ function statsOverviewYear($year) {
             $online = $db2->f("online");
 
             //************** number of arts **************
-            $db3 = new DB_contenido;
+            $db3 = new DB_Contenido();
 
                //************** hits of art total **************
             $sql = "SELECT SUM(visited) FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["stat_archive"]." AS B WHERE A.idcatart=B.idcatart AND A.idcat='".Contenido_Security::toInteger($idcat)."'

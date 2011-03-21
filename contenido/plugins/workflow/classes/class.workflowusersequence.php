@@ -82,7 +82,7 @@ class WorkflowUserSequences extends ItemCollection {
 	
     function updateArtAllocation ($idusersequence) {
         global $idworkflow, $cfg;
-        $oDb = new DB_contenido();
+        $oDb = new DB_Contenido();
         
         $aIdArtLang = array();
 		$sSql = 'SELECT idartlang FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence = '.Contenido_Security::escapeDB($idusersequence, $oDb).';';

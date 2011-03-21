@@ -155,7 +155,7 @@ class RequestPassword {
     function RequestPassword ($oDb, $aCfg) {
         //generate new dbobject, if it does not exist
         if (!is_object($oDb)) {
-            $this->oDb = new DB_contenido();
+            $this->oDb = new DB_Contenido();
         } else {
             $this->oDb = $oDb;
         }
