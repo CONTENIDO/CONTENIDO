@@ -24,8 +24,9 @@
  *   modified 2010-02-02, Ingo van Peeren, added local method connect() in order
  *                                         to allow only one database connection, see [CON-300]
  *   modified 2010-02-17, Ingo van Peeren, only one connection for mysqli too
- *   modified 2011-03-03, Murat Purc, Some redesign/improvements (partial adaption to PHP 5)
+ *   modified 2011-03-03, Murat Purc, some redesign/improvements (partial adaption to PHP 5)
  *   modified 2011-03-18, Murat Purc, Fixed occuring "Duplicated entry" errors by using CT_Sql, see [CON-370]
+ *   modified 2011-03-21, Murat Purc, added Contenido_CT_Session to uses PHP's session implementation
  *
  *   $Id$:
  * }}
@@ -259,6 +260,33 @@ class Contenido_CT_Shm extends CT_Shm
     }
 }
 
+
+/**
+ * Contenido session container, uses PHP's session implementation.
+ *
+ * NOTE: Is experimental, so don't use this in a production environment.
+ *
+ * To use this, set session container in contenido/includes/config.misc.php to
+ * $cfg["session_container"] = 'session';
+ *
+ * @todo  Make session container configurable
+ *
+ * @author  Murat Purc <murat@purc.de>
+ */
+class Contenido_CT_Session extends CT_Session
+{
+    public function __construct()
+    {
+        $this->ac_start(array(
+            'namespace'                        => 'contenido_ct_session_ns',
+            'session.hash_function'            => '1', // use sha-1 function
+            'session.hash_bits_per_character'  => '5', // and set 5 character to achieve 32 chars
+#            'session.save_path'                => 'your path',
+#            'session.name'                     => 'your session name',
+#            'session.gc_maxlifetime'           => 'your lifetime in seconds',
+        ));
+    }
+}
 
 class Contenido_Session extends Session
 {

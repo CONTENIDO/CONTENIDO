@@ -95,6 +95,7 @@ conlib/ct_dbm.inc -text
 conlib/ct_file.inc -text
 conlib/ct_ldap.inc -text
 conlib/ct_null.inc -text
+conlib/ct_session.inc -text
 conlib/ct_shm.inc -text
 conlib/ct_split_sql.inc -text
 conlib/ct_sql.inc -text

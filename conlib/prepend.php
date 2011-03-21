@@ -23,6 +23,7 @@
  *   created  2000-01-01
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2009-10-29, Murat Purc, automatic loading of configured database driver
+ *   modified 2011-03-21, Murat Purc, inclusion of ct_session.inc
  *
  *   $Id$:
  * }}
@@ -53,6 +54,7 @@ unset($dbDriverFileName);
 require_once($_PHPLIB['libdir'] . 'ct_sql.inc');    // Data storage container: database
 require_once($_PHPLIB['libdir'] . 'ct_file.inc');   // Data storage container: file
 require_once($_PHPLIB['libdir'] . 'ct_shm.inc');    // Data storage container: memory
+require_once($_PHPLIB['libdir'] . 'ct_session.inc');// Data storage container: memory
 require_once($_PHPLIB['libdir'] . 'ct_null.inc');   // Data storage container: null -
                                                     // no session container - Contenido does not work
 
