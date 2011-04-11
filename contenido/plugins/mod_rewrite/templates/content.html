@@ -1,0 +1,447 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>mod_rewrite_content</title>
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <script type="text/javascript" src="plugins/mod_rewrite/external/aToolTip/js/atooltip.jquery.js"></script>
+    <script type="text/javascript" src="plugins/mod_rewrite/scripts/mod_rewrite.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <link rel="stylesheet" type="text/css" href="plugins/mod_rewrite/styles/styles.css" />
+    <link rel="stylesheet" type="text/css" href="plugins/mod_rewrite/external/aToolTip/css/atooltip.css" />
+    <script type="text/javascript"><!--
+    // session-id
+    var sid = "{SESSID}";
+
+    // initialize page
+    mrPlugin.initializeSettingsPage();
+    // --></script>
+</head>
+
+<body class="mrPlugin">
+
+<div class="headerBox">
+    <div class="pluginInfo">
+        <div><span class="blockLeft">Plugin Advanced Mod Rewrite</span>
+            <a href="#" id="pluginInfoDetails-link" class="main i-link infoButton" title=""></a><div class="clear"></div></div>
+        <div id="pluginInfoDetails" style="display:none;">
+            <ul class="list">
+                <li class="first"><strong>Version:</strong> {%PLUGIN_VERSION%}</li>
+                <li><strong>Autor:</strong> Murat Purc, <a href="mailto:murat@purc.de" title="E-Mail an Autor">murat@purc.de</a></li>
+                <li><strong>Pluginseite:</strong> <a href="http://www.purc.de/playground-coding-contenido_plugin_-_advanced_mod_rewrite-a.109.html" onclick="window.open(this.href); return false;" title="Zur Pluginseite (&ouml;ffnet Seite in einem neuen Fenster)">Pluginseite besuchen</a></li>
+                <li><strong>Contenido Forum:</strong> <a href="http://forum.contenido.org/viewtopic.php?t=21578" onclick="window.open(this.href); return false;" title="Zum Plugin Beitrag im Contenido Forum (&ouml;ffnet Seite in einem neuen Fenster)">Pluginbeitrag im Contenido Forum</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{CONTENT_BEFORE}
+
+<form name="mr_configuration" id="mr_configuration" method="post" action="main.php">
+
+    <input type="hidden" name="contenido" value="{SESSID}" />
+    <input type="hidden" name="area" value="{AREA}" />
+    <input type="hidden" name="mr_action" value="save" />
+    <input type="hidden" name="frame" value="4" />
+    <input type="hidden" name="idclient" value="{IDCLIENT}" />
+
+<table id="contenttable" cellspacing="0" cellpadding="3" border="0">
+<colgroup>
+    <col width="30%" />
+    <col width="70%" />
+</colgroup>
+<tr style="background-color:#e2e2e2;">
+    <th colspan="2" class="text_medium col-I" style="border-top:1px;">Plugin Einstellungen</th>
+</tr>
+
+<!-- htaccess info -->
+<tr style="{HTACCESS_INFO_CSS}" class="marked">
+    <td colspan="2" class="text_medium col-I">
+            <br />
+            <strong>Hinweis</strong><br />
+            Es wurde weder im Contenido Installationsverzeichnis noch im Mandantenverzeichnis eine .htaccess Datei gefunden.<br />
+            Die .htaccess Datei sollte gegebenenfalls im Bereich 
+            <a href="main.php?area=mod_rewrite_expert&frame=4&contenido={SESSID}&idclient={IDCLIENT}" onclick="parent.right_top.sub.clicked(parent.right_top.document.getElementById('c_1').firstChild);">Funktionen</a> eingerichtet werden.<br />
+            <br />
+    </td>
+</tr>
+
+<!-- enable/disable mod rewrite -->
+<tr>
+    <td colspan="2" class="text_medium col-I">
+        <div class="blockLeft">
+            <input type="checkbox" id="mr_use" name="use" value="1"{USE_CHK} /> <label for="mr_use">Advanced Mod Rewrite aktivieren</label>
+        </div>
+        <a href="#" id="enableInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
+        <div id="enableInfo1" style="display:none">
+            <strong>Hinweis</strong><br />
+            Beim Deaktivieren des Plugins wird das mod rewrite Modul des Webservers nicht mit deaktiviert - Das bedeutet, <br />
+            dass alle in der .htaccess definerten Regeln weiterhin aktiv sind und einen unerw&uuml;nschten Nebeneffekt haben k&ouml;nnen.<br />
+            <br />
+            Apache mod rewrite l&auml;sst sich in der .htaccess durch das Setzen der RewriteEngine-Direktive aktivieren/deaktivieren.<br />
+            Wird das mod rewrite Modul deaktiviert, k&ouml;nnen die in der .htaccess definierten Regeln weiterhin bleiben, sie werden <br />
+            dann nicht verarbeitet.<br />
+            <br />
+
+            <strong>Beispiele:</strong>
+            <pre class="example"># aktivieren des apache mod rewrite moduls
+RewriteEngine on
+
+# deaktivieren des apache mod rewrite moduls
+RewriteEngine off</pre>
+        </div>
+    </td>
+</tr>
+
+<!-- root dir -->
+<tr>
+    <td class="text_medium col-I">Pfad zur .htaccess Datei aus Sicht des Web-Browsers</td>
+    <td class="text_medium col-II" align="left">
+        {ROOTDIR_ERROR}
+        <input class="text_medium blockLeft" type="text" name="rootdir" size="50" maxlength="64" value="{ROOTDIR}" />
+        <a href="#" id="rootdirInfo1-link" title="" class="main i-link infoButton"></a><div class="clear"></div>
+        <div id="rootdirInfo1" style="display:none">
+            Liegt die .htaccess im wwwroot (DocumentRoot), ist '/' anzugeben, ist Contenido in einem <br />
+            Unterverzeichnis von wwwroot installiert, ist der Pfad vom wwwroot aus anzugeben <br />
+            (z. B. http://domain/mycontenido -&gt; Pfad = '/mycontenido/').
+        </div>
+        <br />
+
+        <div class="blockLeft">
+            <input type="checkbox" id="mr_checkrootdir" name="checkrootdir" value="1"{CHECKROOTDIR_CHK} /> <label for="mr_checkrootdir">Pfad zur .htaccess Datei &uuml;berpr&uuml;fen</label>
+        </div>
+        <a href="#" id="rootdirInfo2-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
+        <div id="rootdirInfo2" style="display:none">
+            Ist diese Option aktiv, wird der eingegebene Pfad &uuml;berpr&uuml;ft. Das kann unter <br />
+            Umst&auml;nden einen Fehler verursachen, obwohl der Pfad zwar richtig ist, aber der Mandant <br />
+            einen anderen DocumentRoot als das Contenido Backend hat.
+        </div>
+    </td>
+</tr>
+
+<!-- start from root -->
+<tr>
+    <td class="text_medium col-I">Soll der Name des Hauptbaumes mit in der URL erscheinen?</td>
+    <td class="text_medium col-II" align="left">
+        <div class="blockLeft">
+            <input type="checkbox" id="mr_startfromroot" name="startfromroot" value="1"{STARTFROMROOT_CHK} /> <label for="mr_startfromroot">Start vom Hauptbaum aus</label>
+        </div>
+        <a href="#" id="startFromRootInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
+        <div id="startFromRootInfo1" style="display:none">
+            Ist diese Option gew&auml;hlt, wird der Name des Hauptbaumes (Kategoriebaum, <br />
+            z. B. "Hauptnavigation" bei Contenido Standardinstallation) der URL vorangestellt.
+        </div>
+    </td>
+</tr>
+
+<!-- use client/use client name -->
+<tr>
+    <td class="text_medium col-I">Werden mehrere Mandanten in einem Verzeichnis gepflegt?</td>
+    <td class="text_medium col-II" align="left">
+        <input type="checkbox" id="mr_use_client" name="use_client" value="1"{USE_CLIENT_CHK} />
+        <label for="mr_use_client">Mandant an die URL voranstellen</label><br />
+        <br />
+        <input type="checkbox" id="mr_use_client_name" name="use_client_name" value="1"{USE_CLIENT_NAME_CHK}{USE_CLIENT_NAME_DISABLED} />
+        <label for="mr_use_client_name">Name des Mandanten anstatt die Id verwenden</label><br />
+    </td>
+</tr>
+
+<!-- use language/use language name -->
+<tr>
+    <td class="text_medium col-I">Soll die Sprache mit in der URL erscheinen (f&uuml;r Mehrsprachsysteme unabdingbar)?</td>
+    <td class="text_medium col-II" align="left">
+        <input type="checkbox" id="mr_use_language" name="use_language" value="1"{USE_LANGUAGE_CHK} />
+        <label for="mr_use_language">Sprache an die URL voranstellen</label><br />
+        <br />
+        <input type="checkbox" id="mr_use_language_name" name="use_language_name" value="1"{USE_LANGUAGE_NAME_CHK}{USE_LANGUAGE_NAME_DISABLED} />
+        <label for="mr_use_language_name">Name der Sprache anstatt die Id verwenden</label><br />
+    </td>
+</tr>
+
+<!-- activate userdefined separator settings -->
+<tr>
+    <td colspan="2" class="text_medium col-I altBg">
+        <strong class="blockLeft">Mit den n&auml;chsten 4 Einstellungen k&ouml;nnen die Trennzeichen in den<br /> 
+                                  generierten URLs nach den eigenen W&uuml;nschen gesetzt werden.</strong>
+        <a href="#" id="userdefSeparatorInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
+        <div id="userdefSeparatorInfo1" style="display:none">
+            <strong>Beispiele:</strong>
+            <pre class="example">www.domain.de/kategorie1-kategorie2.artikelname.html
+www.domain.de/kategorie1/kategorie2-artikelname.html
+www.domain.de/kategorie.name1~kategorie2~artikelname.html
+www.domain.de/kategorie_name1-kategorie2-artikelname.foo
+</pre>
+
+            <strong>Hinweise:</strong>
+            <ul>
+                <li>Kategorie-Separator und Kategoriewort-Separator m&uuml;ssen unterschiedlich sein
+                <pre class="example"># Beispiel: Kategorie-Separator (<span class="note">/</span>) und Kategoriewort-Separator (<span class="note">_</span>)
+kategorie<span class="note">_</span>eins<span class="note">/</span>kategorie<span class="note">_</span>zwei/artikelname.html</pre></li>
+                <li>Kategorie-Separator und Artikelwort-Separator m&uuml;ssen unterschiedlich sein
+                <pre class="example"># Beispiel: Kategorie-Separator (<span class="note">/</span>) und Artikelwort-Separator (<span class="note">-</span>)
+kategorie_eins<span class="note">/</span>kategorie_zwei/artikel<span class="note">-</span>bezeichnung.html</pre>
+                </li>
+                <li>Kategorie-Artikel-Separator und Artikelwort-Separator m&uuml;ssen unterschiedlich sein
+                <pre class="example"># Beispiel: Kategorie-Artikel-Separator (<span class="note">/</span>) und Artikelwort-Separator (<span class="note">-</span>)
+kategorie_eins/kategorie_zwei<span class="note">/</span>artikel<span class="note">-</span>bezeichnung.html</pre>
+                </li>
+            </ul>
+        </div>
+    </td>
+</tr>
+
+<tr>
+    <td class="text_medium col-I altBg">Kategorie-Separator (Trenner zwischen einzelnen Kategorien)</td>
+    <td class="text_medium col-II" align="left">
+        {CATEGORY_SEPARATOR_ERROR}
+        <input class="text_medium" type="text" id="mr_category_seperator" name="category_seperator" size="5" maxlength="1" value="{CATEGORY_SEPARATOR}"{CATEGORY_SEPARATOR_ATTRIB} />
+        <small>{CAT_ART_SEP_MSG}</small>
+    </td>
+</tr>
+
+<tr>
+    <td class="text_medium col-I altBg">Kategoriewort-Separator (Trenner zwischen einzelnen Kategoriew&ouml;rtern)</td>
+    <td class="text_medium col-II" align="left">
+        {CATEGORY_WORD_SEPARATOR_ERROR}
+        <input class="text_medium" type="text" id="mr_category_word_seperator" name="category_word_seperator" size="5" maxlength="1" value="{CATEGORY_WORD_SEPARATOR}"{CATEGORY_WORD_SEPARATOR_ATTRIB} />
+        <small>{WORD_SEPARATOR_MSG}</small>
+    </td>
+</tr>
+
+<tr>
+    <td class="text_medium col-I altBg">Kategorie-Artikel-Separator (Trenner zwischen Kategorieabschnitt und Artikelname)</td>
+    <td class="text_medium col-II" align="left">
+        {ARTICLE_SEPARATOR_ERROR}
+        <input class="text_medium" type="text" id="mr_article_seperator" name="article_seperator" size="5" maxlength="1" value="{ARTICLE_SEPARATOR}"{ARTICLE_SEPARATOR_ATTRIB} />
+        <small>{CAT_ART_SEP_MSG}</small>
+    </td>
+</tr>
+<tr>
+    <td class="text_medium col-I altBg">Artikelwort-Separator (Trenner zwischen einzelnen Artikelw&ouml;rtern)</td>
+    <td class="text_medium col-II" align="left">
+        {ARTICLE_WORD_SEPARATOR_ERROR}
+        <input class="text_medium" type="text" id="mr_article_word_seperator" name="article_word_seperator" size="5" maxlength="1" value="{ARTICLE_WORD_SEPARATOR}"{ARTICLE_WORD_SEPARATOR_ATTRIB} />
+        <small>{WORD_SEPARATOR_MSG}</small>
+    </td>
+</tr>
+
+<!-- add start article name to url -->
+<tr>
+    <td class="text_medium col-I">Artikelname an URLs anh&auml;ngen</td>
+    <td class="text_medium col-II" align="left">
+        {ADD_STARTART_NAME_TO_URL_ERROR}
+        <input type="checkbox" id="mr_add_startart_name_to_url" name="add_startart_name_to_url" value="1"{ADD_STARTART_NAME_TO_URL_CHK} /> <label for="mr_add_startart_name_to_url">Artikelname immer an die URLs anh&auml;ngen (auch bei URLs zu Kategorien)</label><br />
+        <br />
+        <div class="blockLeft">
+            <label for="mr_default_startart_name">Standard-Artikelname ohne Dateiendung</label><br />
+            <input class="text_medium" type="text" id="mr_default_startart_name" name="default_startart_name" size="50" maxlength="64" value="{DEFAULT_STARTART_NAME}" />
+        </div>
+        <a href="#" id="defaultStartArtNameInfo1-link" title="" class="main i-link infoButton v2" style="margin-top:1.2em;"></a><div class="clear"></div>
+        <div id="defaultStartArtNameInfo1" style="display:none">
+            z. B. "index" f&uuml;r index.ext.<br />
+            Wenn die Option "Artikelname immer an die URLs anhängen" aktiviert und das Feld leer ist,<br />
+            wird der Name des Startartikels verwendet.
+        </div>
+    </td>
+</tr>
+
+<!-- file extension -->
+<tr>
+    <td class="text_medium col-I">Dateiendung am Ende der URL</td>
+    <td class="text_medium col-II" align="left">
+        {FILE_EXTENSION_ERROR}
+        <div class="blockLeft">
+            <input class="text_medium" type="text" name="file_extension" size="10" maxlength="10" value="{FILE_EXTENSION}" /><br />
+        </div>
+        <a href="#" id="fileExtensionInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
+        <div id="fileExtensionInfo1" style="display:none">
+            Angabe der Dateiendung mit einem vorangestellten Punkt,<br />
+            z. B. ".html" f&uuml;r http://host/foo/bar.html<br />
+            <br />
+            <strong>Hinweis:</strong><br />
+            Falls die Option "Artikelname immer an die URLs anhängen" nicht gew&auml;hlt wurde, <br />
+            ist es zwingend notwending, dass hier eine Dateiendung angegeben wird.<br />
+            <br />
+            Sonst haben URLs zu Kategorien und zu Seiten das gleiche Format, und die korrekte<br />
+            Aufl&ouml;sung der Kategorie und/oder des Artikels kann nicht gew&auml;hrleistet werden.
+        </div>
+        <p style="color:red">Aufgrund diverser Probleme, die noch nicht in dieser Version gel&ouml;st wurden konnten, sollte unbedingt eine Endung angegeben werden. Ohne eine angegebene Endung kann es zur fehlerhaften Erkennung der Artikel kommen.</p>
+    </td>
+</tr>
+
+<!-- use lowercase url -->
+<tr>
+    <td class="text_medium col-I">Sollen die URLs klein geschrieben werden?</td>
+    <td class="text_medium col-II" align="left">
+        <input type="checkbox" id="mr_use_lowercase_uri" name="use_lowercase_uri" value="1"{USE_LOWERCASE_URI_CHK} />
+        <label for="mr_use_lowercase_uri">URLs in Kleinbuchstaben</label>
+    </td>
+</tr>
+
+<!-- prevent duplicated content -->
+<tr>
+    <td class="text_medium col-I">Duplicated Content</td>
+    <td class="text_medium col-II" align="left">
+        <div class="blockLeft">
+            <input type="checkbox" id="mr_prevent_duplicated_content" name="prevent_duplicated_content" value="1"{PREVENT_DUPLICATED_CONTENT_CHK} /> <label for="mr_prevent_duplicated_content">Duplicated Content verhindern</label><br />
+        </div>
+        <a href="#" id="preventDuplicatedContentInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
+        <div id="preventDuplicatedContentInfo1" style="display:none">
+            Seiten werden je nach Konfiguration unter verschiedenen URLs gefunden, z. B.:<br />
+            <ul>
+                <li>Name des Hauptbaumes in der URL: M&ouml;glich /hauptkategorie/unterkategorie/ und /unterkategorie/</li>
+                <li>Sprache in der URL: M&ouml;glich /deutsch/kategorie/ und /1/kategorie/</li>
+                <li>Mandant in der URL: M&ouml;glich /mandant/kategorie/ und /1/kategorie/</li>
+            </ul>
+            Das Aktivieren dieser Option unterbindet dies.
+        </div>
+    </td>
+</tr>
+
+<!-- category resolve min percentage -->
+<tr>
+    <td class="text_medium col-I">Prozentsatz f&uuml;r &Auml;hnliche Kategorie-Pfade in URLs</td>
+    <td class="text_medium col-II" align="left">
+        {CATEGORY_RESOLVE_MIN_PERCENTAGE_ERROR}
+        <div class="blockLeft">
+            <input class="text_medium" type="text" name="category_resolve_min_percentage" size="5" maxlength="3" value="{CATEGORY_RESOLVE_MIN_PERCENTAGE}" /> (0 - 100)
+        </div>
+        <a href="#" id="categoryResolveMinPercentageInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
+        <div id="categoryResolveMinPercentageInfo1" style="display:none">
+            <p>Diese Einstellung bezieht sich nur auf den Kategorieteil einer URL. Ist AMR so konfiguriert, dass z. B. die<br />
+            Hauptnavigation und/oder Sprache sowie der Name des Mandanten an die URL vorangestellt wird, so wird der hier <br />
+            definierte Prozentsatz nicht auf diese Werte der URL angewendet.<br />
+            Eine ankommende URL wird von solchen Pr&auml;fixen entfernt, der &uuml;brig gebliebene Pfad (Urlpfad der Kategorie)<br />
+            wird auf die &Auml;hnlichkleit hin gepr&uuml;ft.</p>
+            <strong>Beispiele:</strong>
+            <pre class="example">100 = nur exakt geschriebene URLs finden zum Ziel, bereits ein falsch geschriebener
+Buchstabe f&uuml;hrt zu einem Fehler
+85  = URLs mit leichten Fehlern werden dennoch zur einer Kategorie geleitet
+0   = Fehlerseite wird nie angezeigt, es wird bei Fehlern auch zu Kategorien mit sehr
+      niedriger &Uuml;bereinstimmung geleitet</pre>
+      </div>
+    </td>
+</tr>
+
+<!-- redirect invalid article to errorsite -->
+<tr>
+    <td class="text_medium col-I">Weiterleitung bei ung&uuml;ltigen Artikeln</td>
+    <td class="text_medium col-II" align="left">
+        <div class="blockLeft">
+            <input type="checkbox" id="mr_redirect_invalid_article_to_errorsite" name="redirect_invalid_article_to_errorsite" value="1"{REDIRECT_INVALID_ARTICLE_TO_ERRORSITE_CHK} /> <label for="mr_redirect_invalid_article_to_errorsite">Bei ung&uuml;ltigen Artikeln zur Fehlerseite weiterleiten</label><br />
+        </div>
+        <a href="#" id="redirectInvalidArticleToErrorsiteInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
+        <div id="redirectInvalidArticleToErrorsiteInfo1" style="display:none">
+            Ist die Option nicht aktiv, wird die Startseite angezeigt
+        </div>
+    </td>
+</tr>
+
+<!-- rewrite urls at -->
+<tr>
+    <td class="text_medium col-I">Zeitpunkt zum Generieren der URLs</td>
+    <td class="text_medium col-II" align="left">
+        <div class="blockLeft">
+            <input type="radio" id="rewrite_urls_at_front_content_output" name="rewrite_urls_at" value="front_content_output"{REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_CHK} />
+            <label for="rewrite_urls_at_front_content_output">a.) Bei der Ausgabe des HTML Codes der Seite</label>
+        </div>
+        <a href="#" id="rewriteUrlsAtInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
+        <div id="rewriteUrlsAtInfo1" style="display:none;">
+            Die URLs werden bei der Ausgabe der Seite umschrieben. Module/Plugins k&ouml;nnen URLs zum Frontend, <br />
+            wie in fr&uuml;heren Versionen von Contenido &uuml;blich, nach dem Muster "front_content.php?idcat=1&amp;idart=2" <br />
+            ausgeben. Die URLs werden vom Plugin nach der Ausgabe des HTML-Outputs ersetzt.<br />
+            <br />
+            <strong>Unterschiede zur Variante b.):</strong>
+            <ul>
+                <li>Weiterhin Kompatibel zu &auml;lteren Modulen/Plugins, da keine &Auml;nderungen am Code n&ouml;tig sind</li>
+                <li>S&auml;mtliche im HTML-Code vorkommende URLs, auch &uuml;ber wysiwyg gesetzte URLs, <br />
+                    werden auf Clean-URLs umgestellt</li>
+                <li>Alle umzuschreibenden URLs werden in der Regel "gesammelt" und auf eimmal umgeschreiben, <br />
+                    dadurch wird die Anzahl der DB-Abfragen sehr stark minimiert</li>
+            </ul>
+        </div>
+        <br />
+
+        <div class="blockLeft">
+            <input type="radio" id="rewrite_urls_at_congeneratecode" name="rewrite_urls_at" value="congeneratecode"{REWRITE_URLS_AT_CONGENERATECODE_CHK} />
+            <label for="rewrite_urls_at_congeneratecode">b.) In Modulen oder Plugins</label><br />
+        </div>
+        <a href="#" id="rewriteUrlsAtInfo2-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
+        <div id="rewriteUrlsAtInfo2" style="display:none;">
+            Bei dieser Option werden die URLs direkt in Modulen/Plugins des Codes der Seite umschrieben. Das bedeutet, <br />
+            dass alle internen URLs auf Kategorien/Artikel in den Modulausgaben ggf. manuell angepasst werden m&uuml;ssen. <br />
+            Die URLs sind dann in den Modulausgaben (seit Contenido 4.8.9) stets mit folgender Funktion auszugeben:<br />
+<pre class="example">// Aufbau einer normalen url
+$url = 'front_content.php?idart=123&amp;lang=2&amp;client=1';
+
+// Erstellen der neuen Url &uuml;ber die Url-Builder Funktionalit&auml;t von Contenido (seit 4.8.9),
+// die die Parameter als assoziatives array erwartet
+$params = array('idart'=>123, 'lang'=>2, 'client'=>1);
+$newUrl = Contenido_Url::getInstance()->build($params);</pre>
+
+            <strong>Unterschiede zur Variante a.):</strong>
+            <ul>
+                <li>Der Standardweg um URLs zu Frontendseiten zu generieren</li>
+                <li>Jede URL in Modulen/Plugins ist vom UrlBuilder zu erstellen</li>
+                <li>F&uuml;r jede umzuschreibende URL ist eine Datenbankabfrage n&ouml;tig</li>
+            </ul>
+        </div>
+    </td>
+</tr>
+
+<!-- routing -->
+<tr>
+    <td class="text_medium col-I">Routing</td>
+    <td class="text_medium col-II" align="left">
+        <div class="blockLeft">
+            Routing Definitionen f&uuml;r eingehende URLs.
+        </div>
+        <a href="#" id="routingInfo1-link" title="" class="main i-link infoButton"></a><div class="clear"></div>
+        <div id="routingInfo1" style="display:none">
+Pro Zeile eine Routing Definition wie folgt eingeben:
+<pre class="example"># {eingehende_url}>>>{neue_url}
+/eingehende_url/name.html>>>neue_url/neuer_name.html
+
+# bestimmte eingehende url zur einer seite weiterleiten
+/aktionen/20_prozent_auf_alles_ausser_tiernahrung.html>>>front_content.php?idcat=23
+
+# request zum wwwroot auf eine bestimmte seite routen
+/>>>front_content.php?idart=16</pre>
+<br />
+            <ul>
+                <li>Das Routing schickt keinen HTTP Header mit einer Weiterleitung zur einen anderen Seite, die Umleitung findet intern <br />
+                    durch das Ersetzen der erkannten Eingangsseite gegen die neue Zielseite statt (Ersetzen der Artikel-/Kategorieid)</li>
+                <li>Eingehende URLs k&ouml;nnen auch nicht vorhandene Ressourcen (Kategorie, Artikel) sein, hinter der Ziel URL muss eine <br />
+                    g&uuml;ltige Contenido-Seite (Kategorie/Artikel) liegen</li>
+                <li>Als Ziel URL sollte eine reale URL zur Kategorie/Seite angegeben werden, <br />
+                    z. B. front_content.php?idcat=23 oder front_content.php?idart=34.</li>
+                <li>Bei mehrsprachigen Auftritten sollte die Id der Sprache angeh&auml;ngt werden, <br />
+                    z. B. front_content.php?idcat=23&amp;lang=1</li>
+                <li>Bei mehreren Mandanten im gleichen Verzeichnis sollte die Id des Mandanten angeh&auml;ngt werden,<br />
+                    z. B. front_content.php?idcat=23&amp;client=2</li>
+                <li>Die Zielurl sollte nicht mit '/' oder './' beginnen (falsch: /front_content.php, richtig: front_content.php)</li>
+            </ul>
+        </div>
+        <textarea class="txt" id="rewrite_routing" name="rewrite_routing" rows="5" cols="80" style="width:100%;height:100px;">{REWRITE_ROUTING}</textarea>
+    </td>
+</tr>
+
+<tr>
+    <td colspan="2" class="text_medium col-I" style="text-align:right">
+        <a accesskey="c" href="main.php?area={AREA}&amp;frame=4&amp;idclient={IDCLIENT}&amp;contenido={SESSID}">
+            <img src="images/but_cancel.gif" alt="&Auml;nderungen verwerfen" title="&Auml;nderungen verwerfen" /></a>
+        <input style="margin-left:20px;" accesskey="s" type="image" src="images/but_ok.gif" alt="&Auml;nderungen speichern" title="&Auml;nderungen speichern" />
+    </td>
+</tr>
+</table>
+
+</form>
+
+{CONTENT_AFTER}
+
+</body>
+</html>

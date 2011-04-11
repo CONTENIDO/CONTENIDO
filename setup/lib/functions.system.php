@@ -60,7 +60,11 @@ function checkExistingPlugin($db, $sPluginname) {
         case 'plugin_newsletter':
            $sSql = "SELECT * FROM %s WHERE idnavs='610'";
            break;
-        
+
+        case 'mod_rewrite':
+           $sSql = "SELECT * FROM %s WHERE idnavs='700' OR location='mod_rewrite/xml/;navigation/content/mod_rewrite'";
+           break;
+
         default:
             $sSql = "";
             break;

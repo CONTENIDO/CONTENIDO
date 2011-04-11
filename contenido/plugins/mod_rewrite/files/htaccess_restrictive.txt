@@ -1,0 +1,60 @@
+###############################################################################
+# Contenido AMR plugin restrictive rewrite rules set
+#
+# Contains strict rules, each rewrite exclusion must be set manually.
+#
+# - Exclude requests to directories usage/, contenido/, setup/, cms/upload/
+# - Exclude requests to cms/front_content.php
+# - Pass thru requests to common ressources (pics, js, css, pdf)
+#
+###############################################################################
+
+
+# Enable following lines to run PHP5 on 1und1.de (1and1.com)
+# ----------------------------------------------------------
+#AddType x-mapp-php5 .php
+#AddHandler x-mapp-php5 .php
+
+<IfModule mod_rewrite.c>
+
+# Enable rewrite engine
+# ---------------------
+RewriteEngine on
+
+
+# Specify a base URL-path for the rules
+# -------------------------------------
+RewriteBase /cms
+
+
+# Catch some common exploits in query string to get rid of them
+# NOTE: Conditions to prevent protocolls (ftp, http[s]) in query string could be a
+#       disadvantage in some cases
+# --------------------------------------------------------------------------------
+RewriteCond %{QUERY_STRING} contenido_path=.*$  [NC,OR]
+RewriteCond %{QUERY_STRING} cfg\[path\]=.*$  [NC,OR]
+RewriteCond %{QUERY_STRING} _PHPLIB\[libdir\]=.*$  [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} ftp://.*$  [NC,OR] 
+RewriteCond %{QUERY_STRING} http[s]*://.*$ [NC] 
+RewriteRule ^.* - [F,L]  # all matching conditions from above will end in nirvana
+
+
+# Exclude some files and directories from rewriting
+# -------------------------------------------------
+RewriteRule ^usage/.*$ - [L]
+RewriteRule ^contenido/.*$ - [L]
+RewriteRule ^setup/.*$ - [L]
+RewriteRule ^cms/upload/.*$ - [L]
+RewriteRule ^cms/test/.*$ - [L]
+RewriteRule ^cms/front_content.php.*$ - [L]
+# enable following line if you want to run the plugin test
+#RewriteRule ^cms/mr_test.php.*$ - [L]
+
+
+# One RewriteRule to rule them all
+# --------------------------------
+RewriteRule !\.(js|ico|gif|jpg|jpeg|png|css|pdf)$ front_content.php [NC,QSA,L]
+
+
+</IfModule>

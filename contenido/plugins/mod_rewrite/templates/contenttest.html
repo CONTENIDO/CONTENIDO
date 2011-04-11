@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>mod_rewrite_content_test</title>
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <script type="text/javascript" src="plugins/mod_rewrite/scripts/mod_rewrite.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <link rel="stylesheet" type="text/css" href="plugins/mod_rewrite/styles/styles.css" />
+    <script type="text/javascript"><!--
+    // session-id
+    var sid = "{SESSID}";
+    // --></script>
+</head>
+
+<body class="mrPlugin mrPluginTest">
+
+<div class="headerBox">
+    <p>Optionen zum Generieren der URLs im folgenden Formular setzen und den Test starten.<p>
+    <form name="mr_test" id="mr_test" action="main.php">
+        <input type="hidden" name="area" value="{AREA}" />
+        <input type="hidden" name="frame" value="{FRAME}" />
+        <input type="hidden" name="contenido" value="{CONTENIDO}" />
+        <fieldset>
+            <legend>Zu verwendende Parameter</legend>
+            <p></p>
+            <div class="chk">
+                <input type="checkbox" id="idart" name="idart" value="1"{FORM_IDART_CHK} /><label for="idart">idart</label>
+            </div>
+            <div class="chk">
+                <input type="checkbox" id="idcat" name="idcat" value="1"{FORM_IDCAT_CHK} /><label for="idcat">idcat</label>
+            </div>
+            <div class="chk">
+                <input type="checkbox" id="idcatart" name="idcatart" value="1"{FORM_IDCATART_CHK} /><label for="idcatart">idcatart</label>
+            </div>
+            <div class="chk">
+                <input type="checkbox" id="idartlang" name="idartlang" value="1"{FORM_IDARTLANG_CHK} /><label for="idartlang">idartlang</label>
+            </div>
+            <br class="clear" />
+        </fieldset>
+        <div style="margin:0.3em 0;">
+            <div class="blockLeft">
+                <label for="maxitems">Anzahl der zu generierenden URLs: </label><input type="text" id="maxitems" maxlength="4" name="maxitems" value="{FORM_MAXITEMS}" />
+            </div>
+            <div class="blockRight" style="padding-right:5px;">
+                <input type="submit" name="test" value="Test starten" />
+            </div>
+            <br class="clear" />
+        </div>
+    </form>
+    <br class="clear" />
+</div>
+
+{CONTENT}
+
+</body>
+</html>

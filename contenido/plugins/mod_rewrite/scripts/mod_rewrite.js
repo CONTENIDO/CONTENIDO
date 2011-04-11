@@ -1,0 +1,56 @@
+
+
+var mrPlugin = {
+    toggle: function(id) {
+        // do some animation ;-)
+        $('#' + id).slideToggle("slow");
+    },
+
+    showReadme: function() {
+    },
+
+    initializeSettingsPage: function() {
+        $(document).ready(function() {
+            $("#mr_use_language").click(function() {
+                $("#mr_use_language_name").attr("disabled", ($(this).attr("checked") ? "" : "disabled"));
+            });
+
+            $("#mr_use_client").click(function() {
+                $("#mr_use_client_name").attr("disabled", ($(this).attr("checked") ? "" : "disabled"));
+            });
+
+            $("#mr_add_startart_name_to_url").click(function() {
+                $("#mr_default_startart_name").attr("disabled", ($(this).attr("checked") ? "" : "disabled"));
+                if ($(this).attr("checked")) {
+                    $("#mr_default_startart_name").removeClass("disabled");
+                } else {
+                    $("#mr_default_startart_name").addClass("disabled");
+                }
+            });
+
+            mrPlugin._initializeTooltip();
+        });
+    },
+
+    initializeExterpPage: function() {
+        $(document).ready(function() {
+            mrPlugin._initializeTooltip();
+        });
+    },
+
+    _initializeTooltip: function() {
+        $(".mrPlugin a.i-link").each(function () {
+            $(this).attr("href", "javascript:void(0);");
+            $(this).attr("title", "weitere Informationen zum Thema anzeigen");
+            var id = $(this).attr("id").substring(0, $(this).attr("id").indexOf("-link"));
+            $(this).aToolTip({
+                clickIt:    true,
+                xOffset:    -20,
+                yOffset:    4,
+                outSpeed:   250,
+                tipContent: $("#" + id).html()
+            });
+        });
+    }
+};
+

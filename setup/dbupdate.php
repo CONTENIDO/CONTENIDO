@@ -145,6 +145,11 @@ if ($_SESSION['plugin_content_allocation'] == 'true') {
     $pluginChunks = array_merge($pluginChunks, $content_allocation);
 }
 
+if ($_SESSION['plugin_mod_rewrite'] == 'true') {
+    $mod_rewrite = explode("\n", file_get_contents('data/plugin_mod_rewrite.txt'));
+    $pluginChunks = array_merge($pluginChunks, $mod_rewrite);
+}
+
 if ($_SESSION['setuptype'] == 'setup') {
     switch ($_SESSION['clientmode']) {
         case 'CLIENT':

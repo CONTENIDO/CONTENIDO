@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>mod_rewrite_content_expert</title>
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    <script type="text/javascript" src="plugins/mod_rewrite/scripts/mod_rewrite.js"></script>
+    <script type="text/javascript" src="plugins/mod_rewrite/external/aToolTip/js/atooltip.jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <link rel="stylesheet" type="text/css" href="plugins/mod_rewrite/styles/styles.css" />
+    <link rel="stylesheet" type="text/css" href="plugins/mod_rewrite/external/aToolTip/css/atooltip.css" />
+    <script type="text/javascript"><!--
+    // session-id
+    var sid = "{SESSID}";
+
+    // initialize page
+    mrPlugin.initializeSettingsPage();
+    
+    function mrPlugin_sendForm(action, params)
+    {
+        $('#mr_expert_action').val(action);
+        var frm = $('#mr_expert');
+        frm.attr('action', frm.attr('action') + '?' + params).submit();
+    }
+    // --></script>
+</head>
+
+<body class="mrPlugin">
+
+<div class="headerBox">
+Expert
+</div>
+
+{CONTENT_BEFORE}
+
+<form name="mr_expert" id="mr_expert" method="post" action="main.php">
+
+    <input type="hidden" name="contenido" value="{SESSID}" />
+    <input type="hidden" name="area" value="{AREA}" />
+    <input type="hidden" name="mr_action" id="mr_expert_action" value="" />
+    <input type="hidden" name="frame" value="4" />
+    <input type="hidden" name="idclient" value="{IDCLIENT}" />
+
+<table id="contenttable" cellspacing="0" cellpadding="3" border="0">
+<colgroup>
+    <col width="30%" />
+    <col width="70%" />
+</colgroup>
+<tr style="background-color:#e2e2e2;">
+    <th colspan="2" class="text_medium col-I" style="border-top:1px;">Plugin Experten</th>
+</tr>
+
+
+<!-- copy .htaccess -->
+<tr style="{COPY_HTACCESS_CSS}">
+    <td class="text_medium col-I">.htaccess Vorlage</td>
+    <td class="text_medium col-II" align="left">
+        {COPY_HTACCESS_ERROR}
+
+        <label for="mr_copy_htaccess_type">.htaccess Vorlage ausw&auml;hlen</label><br />
+        <select class="blockLeft" name="htaccesstype" id="mr_copy_htaccess_type">
+            <option value="restrictive">Restriktive .htaccess</option>
+            <option value="simple">Einfache .htaccess</option>
+        </select>
+        <a href="#" id="copyHtaccessInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
+        <div id="copyHtaccessInfo1" style="display:none">
+<strong>Restriktive .htaccess:</strong><br />
+Enthält Regeln mit restriktiveren Einstellungen.<br />
+Alle Anfragen, die auf die Dateienendung js, ico, gif, jpg, jpeg, png, css, pdf gehen, werden vom<br /> 
+Umschreiben ausgeschlossen. Alle anderen Anfragen, werden an front_content.php umschrieben.<br />
+Ausgeschlossen davon sind 'contenido/', 'setup/', 'cms/upload', 'cms/front_content.php', usw.<br />
+Jede neue Ressource, die vom Umschreiben ausgeschlossen werden soll, muss explizit definiert werden.<br />
+<br />
+<strong>Einfache .htaccess:</strong><br />
+Enthält eine einfachere Sammlung an Regeln. Alle Anfragen, die auf gültige symlinks, Verzeichnisse oder<br /> 
+Dateien gehen, werden vom Umschreiben ausgeschlossen. Restliche Anfragen werden an front_content.php<br />
+umschrieben.<br />
+        </div>
+        
+        <div class="clear"></div>
+        <br />
+
+        und kopieren in<br />
+        <br />
+        <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('copyhtaccess', 'copy=contenido');">
+            <img src="images/collapsed.gif" width="10" height="9" alt="In das Contenido Installationsverzeichnis kopieren" /> das Contenido Installationsverzeichnis</a>
+        <a href="#" id="copyHtaccessInfo2-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
+        <div id="copyHtaccessInfo2" style="display:none">
+            Die gew&auml;hlte .htaccess Vorlage in das Contenido Installationsverzeichnis<br />
+            <br />
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;{CONTENIDO_FULL_PATH}</strong><br />
+            <br />
+            kopieren.<br />
+            Das ist die empfohlene Option für eine Contenido-Installation mit einem Mandanten oder<br />
+            mehreren Mandanten, die alle unter der gleichen Domain laufen.
+        </div>
+        <br />
+
+        <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('copyhtaccess', 'copy=cms');">
+            <img src="images/collapsed.gif" width="10" height="9" alt="In das Mandantenverzeichnis kopieren" /> das Mandantenverzeichnis</a>
+        <a href="#" id="copyHtaccessInfo3-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
+        <div id="copyHtaccessInfo3" style="display:none">
+            Die gew&auml;hlte .htaccess Vorlage in das Mandantenerzeichnis<br />
+            <br />
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;{CLIENT_FULL_PATH}</strong><br />
+            <br />
+            kopieren.<br />
+            Diese Option ist z. B. bei einem Mehrmandantensystem empfohlen,<br /> 
+            wenn jeder Mandant unter einer eigenen Domain/Subdomain l&auml;uft.
+        </div>
+        <br />
+
+        oder<br />
+        <br />
+        <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('downloadhtaccess', '');">
+            <img src="images/collapsed.gif" width="10" height="9" alt="Downloaden" /> Downloaden</a>
+        <a href="#" id="showHtaccessInfo-link1" title="" class="main i-link infoButton"></a><div class="clear"></div>
+        <div id="showHtaccessInfo" style="display:none">
+            Die gew&auml;hlte .htaccess Vorlage downloaden um z. B. die Datei manuell<br />
+            in das Verzeichnis zu kopieren oder Einstellungen zu übernehmen<br />
+        </div>
+        <br />
+
+        <div class="clear"></div>
+    </td>
+</tr>
+
+<!-- reset -->
+<tr>
+    <td class="text_medium col-I">
+    Aliase zurücksetzen
+    </td>
+    <td class="text_medium col-II">
+        <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('resetempty', '');">
+            <img src="images/collapsed.gif" width="10" height="9" alt="Nur leere Aliase zur&uuml;cksetzen" /> Nur leere Aliase zur&uuml;cksetzen</a>
+        <a href="#" id="resetAliasesInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
+        <div id="resetAliasesInfo1" style="display:none">
+            Nur leere Kategorie-/Artikelaliase initial setzen<br />
+            Vorhandene Aliase, z.B. vorher manuell gesetze Aliase werden nicht ge&auml;ndert.
+        </div>
+        <br />
+
+        <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('reset', '');">
+            <img src="images/collapsed.gif" width="10" height="9" alt="Alle Aliase zur&uuml;cksetzen" /> Alle Aliase zur&uuml;cksetzen</a>
+        <a href="#" id="resetAliasesInfo2-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
+        <div id="resetAliasesInfo2" style="display:none">
+            Alle Kategorie-/Artikelaliase neu setzen.<br />
+            Vorhandene Aliase werden &uuml;berschrieben.
+        </div>
+        <br />
+        <strong>Hinweis:</strong><br />
+        Dieser Prozess kann je nach Anzahl der Kategorien/Artikel etwas Zeit in Anspruch nehmen.<br />
+        Die Aliase erhalten nicht die oben konfigurierten Separatoren, sondern die Contenido-Standardseparatoren '/' und '-', z. B. '/category-word/article-word'.<br />
+        Das Ausf&uuml;hren dieser Funktion kann Hilfreich sein, um s&auml;mtliche oder nur leere Aliase nachtr&auml;glich auf die Verwendung mit dem Plugin anzupassen.
+    </td>
+</tr>
+
+
+<tr>
+    <td colspan="2" class="text_medium col-I" style="text-align:right">
+        <a accesskey="c" href="main.php?area={AREA}&amp;frame=4&amp;idclient={IDCLIENT}&amp;contenido={SESSID}">
+            <img src="images/but_cancel.gif" alt="&Auml;nderungen verwerfen" title="&Auml;nderungen verwerfen" /></a>
+        <input style="margin-left:20px;" accesskey="s" type="image" src="images/but_ok.gif" alt="&Auml;nderungen speichern" title="&Auml;nderungen speichern" />
+    </td>
+</tr>
+</table>
+
+</form>
+
+{CONTENT_AFTER}
+
+</body>
+</html>
