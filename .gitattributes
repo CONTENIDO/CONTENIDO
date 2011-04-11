@@ -1232,7 +1232,6 @@ contenido/plugins/mod_rewrite/classes/class.modrewrite.php -text
 contenido/plugins/mod_rewrite/classes/class.modrewritebase.php -text
 contenido/plugins/mod_rewrite/classes/class.modrewritecontroller.php -text
 contenido/plugins/mod_rewrite/classes/class.modrewritedebugger.php -text
-contenido/plugins/mod_rewrite/classes/class.modrewriteinstaller.php -text
 contenido/plugins/mod_rewrite/classes/class.modrewritetest.php -text
 contenido/plugins/mod_rewrite/classes/class.modrewriteurlstack.php -text
 contenido/plugins/mod_rewrite/classes/class.modrewriteurlutil.php -text

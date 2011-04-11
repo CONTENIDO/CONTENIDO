@@ -1,26 +1,33 @@
 <?php
 /**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Includes class to create websafe names
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * @author      Stefan Seifarth / stese
- * @copyright   © www.polycoder.de
- * @author      Murat Purc <murat@purc.de>
- * @date        04.12.2004
- * @date        28.12.2005
- * @package     Contenido
- * @subpackage  ModRewrite
- */
-
-/******************************************
- * File      :   class.modrewrite.php
- * Project   :   Contenido
- * Descr     :   class to create websafe names
+ * @package    Contenido Backend plugins
+ * @version    0.1
+ * @author     Stefan Seifarth / stese
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  © www.polycoder.de
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since Contenido release 4.8.15
+ * 
+ * {@internal 
+ *   created   2004.12.04
+ *   modified  2005.12.28
  *
- * Author    :   Stefan Seifarth / stese
- * Created   :   04.12.2004
- * Modified  :   28.12.2005
- *
- * © www.polycoder.de
+ *   $Id: $:
+ * }}
+ * 
  */
 
 
@@ -32,7 +39,7 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  *
  * @author      Stefan Seifarth / stese
  * @author      Murat Purc <murat@purc.de>
- * @package     Contenido
+ * @package     Contenido Backend plugins
  * @subpackage  ModRewrite
  */
 class ModRewrite extends ModRewriteBase

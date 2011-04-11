@@ -1,3 +1,30 @@
+/**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
+ * Plugin Advanced Mod Rewrite JavaScript functions.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    Contenido Backend plugins
+ * @version    0.1
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since Contenido release 4.8.15
+ * 
+ * {@internal 
+ *   created  2011-04-11
+ *
+ *   $Id: $:
+ * }}
+ * 
+ */
 
 
 var mrPlugin = {

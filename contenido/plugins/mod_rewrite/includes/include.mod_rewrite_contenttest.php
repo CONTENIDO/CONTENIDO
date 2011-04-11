@@ -1,5 +1,9 @@
 <?php
 /**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Testscript for Advanced Mod Rewrite Plugin.
  *
  * The goal of this testscript is to provide an easy way for a variance comparison
@@ -8,24 +12,30 @@
  * This testscript fetches the full category and article structure of actual
  * Contenido installation, creates the SEO URLs for each existing category/article
  * and resolves the generated URLs.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * Usage:
- * ------
- * 1. Install the Advanced Mod Rewrite Plugin
- * 2. Set your desired plugin settings by using the Advanced Mod Rewrite area
- *    in the Backend
- * 3. Copy this file to your client directory, it is normally named '/cms/'
- * 4. Exclude this file from rewriting, add following line in your .htaccess
- *    RewriteRule ^cms/mr_test.php.*$ - [L]
- * 5. Browse to http://host/cms/mr_test.php
- * 6. Disable the script after finished testing, see line 31
+ * @package    Contenido Backend plugins
+ * @version    0.1
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since Contenido release 4.8.15
+ * 
+ * {@internal 
+ *   created  2011-04-11
  *
- * @author      Murat Purc <murat@purc.de>
- * @copyright   © Murat Purc 2008
- * @package     Contenido
- * @subpackage  ModRewrite
+ *   $Id: $:
+ * }}
+ * 
  */
 
+
+defined('CON_FRAMEWORK') or die('Illegal call');
 
 
 ################################################################################

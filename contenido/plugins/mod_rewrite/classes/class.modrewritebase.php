@@ -1,11 +1,30 @@
 <?php
 /**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Includes base mod rewrite class.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * @author      Murat Purc <murat@purc.de>
- * @date        24.09.2008
- * @package     Contenido
- * @subpackage  ModRewrite
+ * @package    Contenido Backend plugins
+ * @version    0.1
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since Contenido release 4.8.15
+ * 
+ * {@internal 
+ *   created  2008-09-24
+ *
+ *   $Id: $:
+ * }}
+ * 
  */
 
 
@@ -19,8 +38,7 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  * access for childs.
  *
  * @author      Murat Purc <murat@purc.de>
- * @date        24.09.2008
- * @package     Contenido
+ * @package     Contenido Backend plugins
  * @subpackage  ModRewrite
  */
 abstract class ModRewriteBase

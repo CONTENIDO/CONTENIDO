@@ -1,6 +1,6 @@
-Advanced Mod Rewrite Plugin 0.5.5 für Contenido 4.8.1x
+Advanced Mod Rewrite Plugin für Contenido >= 4.8.15
 
-####################################################################################################
+################################################################################
 TOC (Table of contents)
 
 - BESCHREIBUNG
@@ -9,19 +9,13 @@ TOC (Table of contents)
 - FEATURES
 - VORAUSSETZUNGEN
 - INSTALLATION
-  * ALLGEMEIN
-  * UPDATE AUF VERSION >= 0.5.0
-  * ANPASSEN DER MODULE DES BEISPIELMANDANTEN
-- WICHTIGES ZUM INHALT
-  * ALLGEMEIN
-  * VERSION >= 0.5.0
 - FAQ
 - ADVANCED MOD REWRITE THEMEN IM CONTENIDO FORUM
 - SCHLUSSBEMERKUNG
 
 
 
-####################################################################################################
+################################################################################
 BESCHREIBUNG
 
 Das Plugin Advanced Mod Rewrite ist eine Erweiterung für das Contenido-CMS zur Generierung von 
@@ -56,148 +50,14 @@ neuesten Stand sein können.
 
 
 
-####################################################################################################
+################################################################################
 CHANGELOG
 
-xxxx-xx-xx 
-    * Initial setting of empty category and article aliases
-
-
-2010-02-23  Advanced Mod Rewrite Plugin 0.5.5 for Contenido >=4.8.10
-    * bugfix: Fixed some potential security vulnerabilities
-    * bugfix: Replaced german umlauts which may result in broken characters depending on configured encoding
-    * bugfix: Category synchronization sets now urlpath of synchronized categories
-    * bugfix: Renaming of categories updates also urlpaths of subcategories
-    * bugfix: Removed old plugin related entries from related tables
-    * bugfix: Takeover query parameter of routed URLs into superglobal $_GET
-
-2009-05-10  Advanced Mod Rewrite Plugin 0.5.4 for Contenido >=4.8.10
-    * bugfix: Wrong URL generation to articles having same alias in different languages
-    * bugfix: Added missing preclean of previous percieved URLs to URL stack handler
-    * bugfix: Deactivated plugin related header output in mr_header()
-    * bugfix: Some comments in htaccess_simple.txt caused an server error
-    * change: Removed plugins CEC 'Contenido.Frontend.CreateURL' from Contenido chain configuration 
-              to plugins configuration
-    * new:    Added handling of ports in URLs and also URL query items being an array (e. g. foo[bar]=1)
-              to UrlBuilder
-
-2009-02-08  Advanced Mod Rewrite Plugin 0.5.3 for Contenido >=4.8.10
-    * bugfix: Occurance of invalid frontend URLs result in invalid rewritten URLs to root
-    * bugfix: Defined separator modified client path, which is not desired
-
-2009-01-18  Advanced Mod Rewrite Plugin 0.5.2 for Contenido >=4.8.10
-    * change: Adapted to Contenido 4.8.10
-    * change: Additional .htaccess with easy to handle rewrite rules
-    * bugfix: Calling the method getmicrotime() ends in PHP error during Contenido installation
-              (thanks to josh, see http://forum.contenido.org/viewtopic.php?p=126526#126526)
-    * bugfix: Corrected missing language switch detection
-              (thanks to lunsen_de, see http://forum.contenido.org/viewtopic.php?p=126873#126873)
-
-2008-12-24  Advanced Mod Rewrite Plugin 0.5.1 for Contenido 4.8.9
-    * change: Adapted to Contenido 4.8.9
-    * change: Includes the fixes for redirection issues
-              (see http://forum.contenido.org/viewtopic.php?t=22976)
-
-2008-12-21  Advanced Mod Rewrite Plugin 0.5.0 for Contenido 4.8.8
-    * bugfix: Fixed invalid creation of URLs
-              (thanks to Polardrache, see http://forum.contenido.org/viewtopic.php?p=125714#125714)
-    * bugfix: Added case sensitive handling of paths to plugins path resolver
-    * change: Some cleanup
-
-2008-11-25 Advanced Mod Rewrite Plugin 0.5.0rc for Contenido 4.8.8
-    * bugfix: Corrected wrong handling of similar categories/articles in different languages 
-              (thanks to Tbird, see http://forum.contenido.org/viewtopic.php?p=123523#123523)
-    * change: Adaption of sources to PHP5 coding standards
-    * change: Redesigned handling of userdefined category-/article separators
-    * change: Modified plugin installer (source and template)
-    * new:    Feature to reduce database queries during URL creation
-
-2008-09-08 Advanced Mod Rewrite Plugin 0.4.5 for Contenido 4.8.8
-    * change: Adapted to Contenido 4.8.8
-    * change: Moved index_controller.php into plugin include dir, .htaccess substitutes now to 
-              front_content.php
-    * change: Enhanced resolving process of incomming urls
-    * bugfix: Wrong resolving of paths if option "Create categories and articles as HTML ressource" 
-              is selected
-              (thanks to speedmaster, see http://forum.contenido.org/viewtopic.php?p=122821#122821)
-    * new:    Added new Chain to process resolving at front_content.php
-
-2008-09-03 Advanced Mod Rewrite Plugin 0.4.4 for Contenido 4.8.7
-    * bugfix: Wrong URL creation in front_content.php
-              (thanks to mojo, see http://forum.contenido.org/viewtopic.php?p=121749#121749)
-    * bugfix: Corrected invalid replacement for base href interpretation
-              (thanks to Tbird, see http://forum.contenido.org/viewtopic.php?p=122710#122710)
-    * bugfix: Fixed URL creation, now Urls starting with '/front_...' or './front_...' will also
-              be identified, affects also defined redirect urls in article properties
-    * change: Replaced adding of PHP4 handler against PHP5 handler in .htaccess
-              (thanks to Supporter, see http://forum.contenido.org/viewtopic.php?p=122821#122821)
-    * new:    New client setting for articles, which are to exclude from output processing, example
-              Type                      Name              Value
-              frontend.no_outputbuffer  idart             11,12,34
-
-2008-08-12 Advanced Mod Rewrite Plugin 0.4.3 for Contenido 4.8.7
-    * bugfix: Added missing framework initialization to plugin installer
-    * bugfix: Workaround for non set variables in globals_off.inc.php
-    * bugfix: Corrected wrong handling of configuration parameter 'startfromroot'
-    * bugfix: Article word separator was not used correct
-    * change: New rule to catch another exploit in .htaccess
-    * change: Improved performance of class ModRewrite
-    * change: Extended ConfigBase and ConfigSerializer, added lifetime control for cached data
-    * new:    Testscript (/cms/mr_test.php) to validate functionality of the plugin
-
-2008-08-03 Advanced Mod Rewrite Plugin 0.4.0 for Contenido 4.8.7
-    * change: Adapted to Contenido 4.8.7
-    * bugfix: Error at validation of defined .htaccess file, if client docroot differs from Contenido 
-              backend docroot
-              (thanks to tono, see http://forum.contenido.org/viewtopic.php?p=120731#120731)
-    * bugfix: Prevention of duplicated content, which occurs, if  prepending of root category to the 
-              url is activated
-              (thanks to philla, see http://forum.contenido.org/viewtopic.php?p=120618#120618)
-    * change: Enabling routing definition from root
-    * change: Removed execution of CEC_Hook to build URLs from $sess->url() and $sess->self_url()
-    * new:    New Contenido_UrlBuilder_MR class based on Contenido UrlBuilder specifications.
-              NOTE: Plugin is no more PHP4 compatible!
-
-2008-07-20 Advanced Mod Rewrite Plugin 0.3.3 for Contenido 4.8.6
-    * new:    Some new rules in htaccess to precatch common exploits
-    * change: Removal of nonused function mr_get_setting_override()
-    * bugfix: Calling of parse_url results in a PHP warning, if the URL is invalid
-    * bugfix: Instantiating of cApiArticleLanguage throws an error in some cases
-              (thanks to TripleM, see http://forum.contenido.org/viewtopic.php?p=120552#120552)
-    * bugfix: Usage of $auth->url()/$auth->purl() returns Scriptname which isn't front_content.php
-              (thanks to stefkey, see http://forum.contenido.org/viewtopic.php?p=120262#120262)
-
-2008-06-22 Advanced Mod Rewrite Plugin 0.3.2 for Contenido 4.8.6
-    * bugfix: Corrected wrong handling of category aliases
-              (thanks to Supporter, see http://forum.contenido.org/viewtopic.php?p=119352#119352)
-
-2008-06-18 Advanced Mod Rewrite Plugin 0.3.1 for Contenido 4.8.6
-    * new:    Added SQL-Statements for pluginupdate
-    * change: Adapted to Contenido 4.8.6
-    * bugfix: Later setting of article urlname won't work
-              (see http://forum.contenido.org/viewtopic.php?p=118754#118754)
-
-2008-05-26 Advanced Mod Rewrite Plugin 0.3.0 for Contenido 4.8.4
-    * change: Adapted to Contenido 4.8.4
-    * bugfix: Usage of new configuration in ModRewriteController::_setIdart() instead of 
-              clientsetting
-    * new:    Feature to add default articlenames (userdefined name or name of startarticle) to 
-              created category URLs
-    * change: Some cleanup and improvement of query execution
-
-2008-05-20: Advanced Mod Rewrite Plugin 0.2.1rc for Contenido 4.8.x
-    * bugfix: Hard coded path in include.mod_rewrite_content.php (thanks to tono)
-    * bugfix: Added file_put_contents() function in file class.confighandler.php to support PHP4
-              (thanks to tono)
-    * bugfix: Added missed handling of defined rootdir for .htaccess file in 
-              class.modrewritecontroller.php (thanks to tono)
-
-2008-05-19: Advanced Mod Rewrite Plugin 0.2rc
-    * first release
+2011-04-11  Advanced Mod Rewrite Plugin integration into the Contenido core
 
 
 
-####################################################################################################
+################################################################################
 BEKANNTE BUGS
 
 Urls sollten unbedingt eine Endung wie z. B. '.html' bekommen, da ansonsten die Erkennungsroutine den
@@ -209,7 +69,7 @@ Plugin eingestellt wurde.
 
 
 
-####################################################################################################
+################################################################################
 FEATURES
 
 - Erstellung Suchmaschinenoptimierter URLs, Contenido interne URLs wie 
@@ -222,7 +82,7 @@ FEATURES
 
 
 
-####################################################################################################
+################################################################################
 VORAUSSETZUNGEN
 
 - Alle Voraussetzungen von Contenido 4.8.x gelten auch für das Plugin
@@ -231,56 +91,12 @@ VORAUSSETZUNGEN
 
 
 
-####################################################################################################
+################################################################################
 INSTALLATION
 
-ALLGEMEIN
-=========
+Das Plugin kann im Contenido Setupprocess installiert werden.
 
-- Backup der Contenido Installation also der Sourcen und der Datenbank (Damit es ein Weg zurück gibt) 
-- Kopieren aller Dateien in die entsprechenden Verzeichnisse. 
-- Schreibrechte für PHP in das Verzeichnis /contenido/plugins/mod_rewrite/includes/ setzen. Das 
-  Plugin speichert die Advanced Mod Rewrite Konfiguration der Mandanten in das Verzeichnis.
-  (Der einfachste Weg ist das Setzen der Rechte auf 777, empfohlen ist eine restriktivere Vergabe) 
-- In die Adresszeile des Browsers http://localhost/contenido/plugins/mod_rewrite/install.php 
-  eingeben, dann sollte das Anmeldefenster des Backends erscheinen.
-  ("http://localhost/" ist eventuell gegen anderen virtual Host oder Domainnamen ersetzen) 
-- Im Backend anmelden
-  TIP: Sollte der Plugininstaller nach der Anmeldung nicht erscheinen, kann die URL zum Installer 
-  manuell aufgerufen werden. Der URL muss die aktuell gültige Contenido Session-ID angehängt werden.
-  Beispiel: http://localhost/contenido/plugins/mod_rewrite/install.php?contenido={my_session_id}
-- Advanced Mod Rewrite Plugin installieren 
-  HINWEIS: Der Plugininstaller erstellt eine Kopie der Tabelle "{prefix}_plugins_{YYYYMMDD}", falls 
-  die Tabelle die Voraussetzungen des Plugins nicht erfüllt. Wenn vorher Plugins installiert wurden, 
-  müssen die Einträge von der Kopie der Tabelle manuell in die neue Tabelle übernommen werden. 
-- Advanced Mod Rewrite konfigurieren (Im Backend unter Menü "Content" -> "Advanced Mod Rewrite") 
-- Die .htaccess Datei (kommt in der Regel in das wwwroot) bei Bedarf anpassen
-
-Weitere Hinweise zur Installation/zu Upgrades:
-Sollte ein Ugrade oder eine Neuinstallation des Plugins nötig sein, weil z. B. die Contenido-
-Version einem Upgrade unterzogen wurde, ist auch ein Upgrade für das Plugin nachzuziehen. Eine 
-ausführliche Beschreibung dazu gibt es unter
-http://forum.contenido.org/viewtopic.php?p=119362#119362
-
-
-UPDATE AUF VERSION >= 0.5.0
-===========================
-Die Behandlung der benutzerdefinierten Seperatoren wurde in der Version 0.5.0 (rc) grundlegend 
-geändert. Daher sollte bei einem Update des Plugins von Version <= 0.4.5 auf Version >= 0.5.0 die 
-Konfiguration gegebenenfalls angepasst werden - es kann sein, dass die vorher gesetzten Seperatoren 
-bei einem Update nicht korrekt erkannt und übernommen werden.
-
-
-ANPASSEN DER MODULE DES BEISPIELMANDANTEN
-=========================================
-Die Contenido Module des Beispielmandanten verwenden seit der Contenido-Version 4.8.11, die neue 
-UrlBuilder-Funktionalität.
-In den Modulcodes werden URLs generiert, die nicht Kompatibel mit dem AMR-Plugin sind - Daher sind
-an den Modulen noch kleinere Anpassungen nötig. Diese sind beschrieben unter
-http://forum.contenido.org/viewtopic.php?f=66&t=23501
-
-
-####################################################################################################
+################################################################################
 WICHTIGES ZUM INHALT
 
 ALLGEMEIN
@@ -292,8 +108,10 @@ Die Konfiguration des Apache, in der das mod_rewrite-Modul aktiviert und mit div
 konfiguriert wird. Die Einstellungen bewirken, dass ankommende Anfragen wie z. B. 
 /kategorie/artikel.html an die front_content.php im Mandantenverzeichnis weitergeleitet werden.
 
-Seit der Version 0.5.2 gibt es 2 Vorlagen der Datei, die htaccess_restrictive.txt und die 
-htaccess_simple.txt.
+Die .htaccess liegt nicht im Contenido Installationsverzeichnis vor, es muss entweder dorthin 
+kopiert oder eine vorhanene .htaccess Datei angepasst werden.
+
+Als Vorlage existieren folgende 2 Versionen der .htaccess:
 
 htaccess_restrictive.txt:
 Enthält Regeln mit restriktiveren Einstellungen.
@@ -307,18 +125,10 @@ Enthält eine einfachere Sammlung an Regeln. Alle Anfragen, die auf gültige symli
 Dateien gehen, werden vom Umschreiben ausgeschlossen. Restliche Anfragen werden an front_content.php
 umschrieben.
 
-Der Inhalt der .htaccess ist enthält die Regeln aus htaccess_restrictive.txt. Auf Wunsch kann es auch 
-mit dem Inhalt der htaccess_simple.txt ersetzt werden.
-
 
 contenido/plugins/mod_rewrite/*:
 --------------------------------
 Die Sourcen des Plugins.
-
-contenido/classes/mp/*:
------------------------
-Zusätzliche Klassen für Konfiguration, Debugging, Zugriff auf $GLOBALS, die vom Plugin verwendet werden 
-aber nicht explizit für das Plugin implementiert wurden.
 
 contenido/classes/UrlBuilder/Contenido_UrlBuilder_MR.class.php:
 ---------------------------------------------------------------
@@ -327,41 +137,7 @@ Verwendet die in den Contenido Core implementierte UrlBuilder-Funktionalität und
 pluginspezifischen Features.
 
 
-VERSION >= 0.5.0
-================
-
-Handhabung von Seperatoren:
-Die Aliase für Kategorie-/ und Artikelnamen werden im Gegensatz zu früheren Versionen nicht mit den
-in der Pluginkonfiguration definierten Trennzeichen gespeichert, sondern mit den in Contenido per 
-default gesetzten Trennzeichen "-". Die Entscheidung zur dieser Vorgehensweise wurde gefällt, um der 
-Contenidoinstallation nicht die Pluginkonfiguration "aufzuzwingen", sondern die pluginspezifischen 
-Einstellungen "on the fly" während der Ausgabe zu setzen.
-
-Die Flexibilität, die das Plugin über das Setzen der benutzerdefinierten Seperatoren bietet, bedarf 
-einer einheitlichen, maschinell verarbeitbaren Struktur der Aliase, daher sind Aliase, die aus 
-mehreren Wörtern oder mit Leerzeichen zusammengesetzten Zeichen bestehen, mit einem Bindestrich 
-"-" anzugeben.
-
-Bei der Ausgabe der URLs, werden dann die Bindestriche gegen die in der Pluginkonfiguration gesetzten 
-Seperatoren ersetzt - Beispiel:
-[code]
-Artikelname:           Contenido Highlights
-Artikelalias:          Contenido-Highlights
-Artikelwort-Separator: _
-Ausgabe in der URL:    Contenido_Highlights
-
-Kategoriename:           Was ist Contenido
-Kategoriealias:          Was-ist-Contenido
-Kategoriewort-Separator: ~
-Ausgabe in der URL:      Was~ist~Contenido
-[/code]
-
-Der Nachteil dabei ist natürlich, dass man bei der Vergabe der Aliase nicht mehr flexibel ist, und 
-sich an die Vorgaben des Plugins richten muss.
-
-
-
-####################################################################################################
+################################################################################
 FAQ
 
 Der Plugininstaller lässt sich nicht aufrufen, wie kann ich dennoch das Plugin installieren?
@@ -493,7 +269,7 @@ Backend in den vorhandenen Kategorien erneut die Startartikel zu setzen.
 
 
 
-####################################################################################################
+################################################################################
 ADVANCED MOD REWRITE THEMEN IM CONTENIDO FORUM
 
 Plugin Advanced Mod Rewrite für Contenido 4.8.x:
@@ -510,7 +286,7 @@ http://www.contenido.de/forum/viewtopic.php?t=6713
 
 
 
-####################################################################################################
+################################################################################
 SCHLUSSBEMERKUNG
 
 Benutzung des Plugins auf eigene Gefahr!

@@ -1,13 +1,36 @@
 <?php
-
 /**
+ * Project: 
+ * Contenido Content Management System
+ * 
+ * Description: 
  * Advanced Mod Rewrite test class.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
  *
- * @author      Murat Purc <murat@purc.de>
- * @copyright   © Murat Purc 2008
- * @package     Contenido
- * @subpackage  ModRewriteTest
+ * @package    Contenido Backend plugins
+ * @version    0.1
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since Contenido release 4.8.15
+ * 
+ * {@internal 
+ *   created  2008-05-xx
+ *
+ *   $Id: $:
+ * }}
+ * 
  */
+
+
+defined('CON_FRAMEWORK') or die('Illegal call');
+
+
 class ModRewriteTest
 {
 
