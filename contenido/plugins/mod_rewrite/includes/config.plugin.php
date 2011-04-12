@@ -79,7 +79,11 @@ plugin_include('mod_rewrite', 'includes/functions.mod_rewrite.php');
 
 
 // set debug configuration
-ModRewriteDebugger::setEnabled(true);
+if (isset($contenido)) {
+    ModRewriteDebugger::setEnabled(true);
+} else {
+    ModRewriteDebugger::setEnabled(false);
+}
 
 // initialize mr plugin
 ModRewrite::initialize($clientId);
