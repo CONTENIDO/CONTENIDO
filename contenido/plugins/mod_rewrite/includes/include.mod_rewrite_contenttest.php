@@ -1,9 +1,9 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Testscript for Advanced Mod Rewrite Plugin.
  *
  * The goal of this testscript is to provide an easy way for a variance comparison
@@ -12,10 +12,10 @@
  * This testscript fetches the full category and article structure of actual
  * Contenido installation, creates the SEO URLs for each existing category/article
  * and resolves the generated URLs.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend plugins
  * @version    0.1
@@ -25,13 +25,13 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since Contenido release 4.8.15
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2011-04-11
  *
  *   $Id: $:
  * }}
- * 
+ *
  */
 
 

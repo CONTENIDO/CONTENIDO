@@ -9,14 +9,22 @@
  * Requirements:
  * @con_php_req 5.0
  *
- * @package     Contenido
- * @subpackage  ModRewrite
- * @version     0.4
- * @author      Murat Purc
- * @copyright   © Murat Purc 2008
- * @license     http://www.contenido.org/license/LIZENZ.txt
- * @link        http://www.4fb.de
- * @link        http://www.contenido.org
+ *
+ * @package    Contenido Backend plugins
+ * @version    0.1
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since Contenido release 4.8.15
+ *
+ * {@internal
+ *   created  2008-05-xx
+ *
+ *   $Id: $:
+ * }}
+ *
  */
 
 
@@ -44,8 +52,7 @@ cInclude('classes', 'UrlBuilder/Contenido_UrlBuilderFactory.class.php');
  *
  *
  * @author      Murat Purc <murat@purc.de>
- * @copyright   © Murat Purc 2008
- * @package     Contenido
+ * @package     Contenido Backend plugins
  * @subpackage  ModRewrite
  */
 class Contenido_UrlBuilder_MR extends Contenido_UrlBuilder
@@ -161,9 +168,9 @@ class Contenido_UrlBuilder_MR extends Contenido_UrlBuilder
     private function _buildUrl(array $aParams)
     {
         // language should changed, set lang parameter
-        if (isset($aParams['changelang'])) { 
-            $aParams['lang'] = $aParams['changelang']; 
-        } 
+        if (isset($aParams['changelang'])) {
+            $aParams['lang'] = $aParams['changelang'];
+        }
 
         // build the query
         $sQuery = http_build_query($aParams);

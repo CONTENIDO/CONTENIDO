@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Defines the 'modrewrite' related helper functions
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend plugins
  * @version    0.1
@@ -20,14 +20,14 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since Contenido release 4.8.15
- * 
- * {@internal 
+ *
+ * {@internal
  *   created   2004-12-04
  *   modified  2005-12-18
  *
  *   $Id: $:
  * }}
- * 
+ *
  */
 
 
@@ -85,7 +85,7 @@ function mr_strNewCategory(array $data)
 
 
 /**
- * Processes mod_rewrite related job for renamed category 
+ * Processes mod_rewrite related job for renamed category
  * 2010-02-01: and now all existing subcategories and modify their paths too...
  * 2010-02-01: max 50 recursion level
  *
@@ -98,12 +98,12 @@ function mr_strRenameCategory(array $data)
 {
     ModRewriteDebugger::log($data, 'mr_strRenameCategory $data');
 
-	// hes 20100102
+    // hes 20100102
     // maximal 50 recursion level
     $recursion = (is_int($data['recursion'])) ? $data['recursion'] : 1;
-	if ($recursion > 50) {
-		exit("#20100201-1503: sorry - maximum function nesting level of ".$recursion." reached");
-	}
+    if ($recursion > 50) {
+        exit("#20100201-1503: sorry - maximum function nesting level of ".$recursion." reached");
+    }
 
     $mrCatAlias = (trim($data['newcategoryalias']) !== '') ? trim($data['newcategoryalias']) : trim($data['newcategoryname']);
     if ($mrCatAlias != '') {
@@ -112,26 +112,26 @@ function mr_strRenameCategory(array $data)
         ModRewrite::setCatUrlPath($data['idcat'], $data['lang']);
     }
 
-	// hes 20100102
+    // hes 20100102
     // now dive into all existing subcategories and modify their paths too...
     $str = 'parentid=' . $data['idcat'];
     $oCatColl = new cApiCategoryCollection($str);
-    
+
     while ($oCat = $oCatColl->next()) {
-		// hes 20100102
-	    $str = 'idcat=' . $oCat->get('idcat') . ' AND idlang=' . (int) $data['lang'];
-	    $oCatLanColl = new cApiCategoryLanguageCollection($str);
-	    $oCatLan = $oCatLanColl->next();
-    	
-		// hes 20100102
+        // hes 20100102
+        $str = 'idcat=' . $oCat->get('idcat') . ' AND idlang=' . (int) $data['lang'];
+        $oCatLanColl = new cApiCategoryLanguageCollection($str);
+        $oCatLan = $oCatLanColl->next();
+
+        // hes 20100102
         $childData = array(
             'idcat'            => $oCat->get('idcat'),
             'lang'             => (int) $data['lang'],
-            'newcategoryname'  => $oCatLan->get('name'), 
+            'newcategoryname'  => $oCatLan->get('name'),
             'newcategoryalias' => $oCatLan->get('urlname'),
             'recursion'        => $recursion + 1
         );
-        
+
         $resData = mr_strRenameCategory($childData);
     }
 
@@ -323,7 +323,7 @@ function mr_conSaveArticle(array $data)
         $data['urlname'] = $data['title'];
     }
 
-    if (1 == $tmp_firstedit)	{
+    if (1 == $tmp_firstedit)    {
         // new article
         $aLanguages = getLanguagesByClient($client);
 
@@ -940,7 +940,7 @@ function mr_header($header)
 function mr_debugOutput($print = true)
 {
     global $DB_Contenido_QueryCache;
-    if (isset($DB_Contenido_QueryCache) && is_array($DB_Contenido_QueryCache) && 
+    if (isset($DB_Contenido_QueryCache) && is_array($DB_Contenido_QueryCache) &&
         count($DB_Contenido_QueryCache) > 0) {
         ModRewriteDebugger::add($DB_Contenido_QueryCache, 'sql statements');
 

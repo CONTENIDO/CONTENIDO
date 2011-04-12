@@ -1,17 +1,17 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Plugin Advanced Mod Rewrite initialization file.
  *
  * This file will be included by Contenido plugin loader routine, and the content
  * of this file ensures that the AMR Plugin will be initialized correctly.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend plugins
  * @version    0.1
@@ -21,13 +21,13 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since Contenido release 4.8.15
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2008-05-xx
  *
  *   $Id: $:
  * }}
- * 
+ *
  */
 
 
@@ -47,7 +47,7 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  * string   URL including parameter value pairs
  *
  * Returns:
- * string 	Returns modified URL
+ * string     Returns modified URL
  */
 $_cecRegistry->registerChain("Contenido.Frontend.CreateURL", "string");
 ####################################################################################################
@@ -69,7 +69,6 @@ if (isset($client) && (int) $client > 0) {
 
 
 // include necessary sources
-cInclude('classes', 'Debug/DebuggerFactory.class.php');
 plugin_include('mod_rewrite', 'classes/class.modrewritedebugger.php');
 plugin_include('mod_rewrite', 'classes/class.modrewritebase.php');
 plugin_include('mod_rewrite', 'classes/class.modrewrite.php');

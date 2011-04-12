@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Includes class to create websafe names
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend plugins
  * @version    0.1
@@ -20,14 +20,14 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since Contenido release 4.8.15
- * 
- * {@internal 
+ *
+ * {@internal
  *   created   2004.12.04
  *   modified  2005.12.28
  *
  *   $Id: $:
  * }}
- * 
+ *
  */
 
 
@@ -76,7 +76,7 @@ class ModRewrite extends ModRewriteBase
      * @param   string  $sName    Websafe name to check
      * @param   int     $iCatId   Current category id
      * @param   int     $iLangId  Current language id
-     * @return 	bool    True if websafename already exists, false if not
+     * @return     bool    True if websafename already exists, false if not
      */
     public static function isInCategories($sName = '', $iCatId = 0, $iLangId = 0)
     {
@@ -113,11 +113,11 @@ class ModRewrite extends ModRewriteBase
      *
      * Check all articles in the current category on existing same websafe name.
      *
-     * @param	string  $sName    Websafe name to check
-     * @param	int     $iArtId   Current article id
-     * @param	int     $iLangId  Current language id
+     * @param    string  $sName    Websafe name to check
+     * @param    int     $iArtId   Current article id
+     * @param    int     $iLangId  Current language id
      * @param   int     $iCatId   Category id
-     * @return 	bool    True if websafename already exists, false if not
+     * @return     bool    True if websafename already exists, false if not
      */
     public static function isInCatArticles($sName = '', $iArtId = 0, $iLangId = 0, $iCatId = 0)
     {
@@ -159,7 +159,7 @@ class ModRewrite extends ModRewriteBase
      * @param   int     $iArtId   Current article id
      * @param   int     $iLangId  Current language id
      * @param   int     $iCatId   Category id
-     * @return 	bool    True if insert was successfully
+     * @return     bool    True if insert was successfully
      */
     public static function setArtWebsafeName($sName = '', $iArtId = 0, $iLangId = 0, $iCatId = 0)
     {
@@ -409,8 +409,8 @@ class ModRewrite extends ModRewriteBase
         }
 
         if (count($aPathsCache) == 0) {
-            $sql = "SELECT cl.idcat, cl.urlpath FROM " . $cfg['tab']['cat_lang'] 
-                 . " AS cl, " . $cfg['tab']['cat'] . " AS c WHERE c.idclient = " . $client 
+            $sql = "SELECT cl.idcat, cl.urlpath FROM " . $cfg['tab']['cat_lang']
+                 . " AS cl, " . $cfg['tab']['cat'] . " AS c WHERE c.idclient = " . $client
                  . " AND c.idcat = cl.idcat AND cl.idlang = " . $lang;
             self::$_db->query($sql);
             while (self::$_db->next_record()) {
@@ -536,7 +536,7 @@ class ModRewrite extends ModRewriteBase
      * @param   int     $iCatId   Latest category id
      * @param   int     $iLangId  Language id
      * @param   int     $iLastId  Last category id
-     * @return 	string	linkpath with correct uri
+     * @return     string    linkpath with correct uri
      */
     public static function buildRecursivPath($iCatId = 0, $iLangId = 0, $iLastId = 0)
     {
@@ -639,9 +639,9 @@ class ModRewrite extends ModRewriteBase
     /**
      * Get article websafe name from article id and language id.
      *
-     * @param	int     $iArtId   Article id
-     * @param	int     $iLangId  Language id
-     * @return 	string	Article websafe name
+     * @param    int     $iArtId   Article id
+     * @param    int     $iLangId  Language id
+     * @return     string    Article websafe name
      */
     public static function getArtWebsafeName($iArtId = 0, $iLangId = 0)
     {
@@ -661,8 +661,8 @@ class ModRewrite extends ModRewriteBase
     /**
      * Get article websafe name from idartlang.
      *
-     * @param	int     $iArtLangId  idartlang
-     * @return 	string	Article websafe name
+     * @param    int     $iArtLangId  idartlang
+     * @return     string    Article websafe name
      */
     public static function getArtLangWebsafeName($iArtLangId = 0)
     {
@@ -1008,7 +1008,7 @@ class ModRewrite extends ModRewriteBase
     public static function getHtaccessInfo()
     {
         global $cfg, $client, $cfgClient;
-        
+
         $arr = array(
             'contenido_full_path' => str_replace('\\', '/', realpath($cfg['path']['contenido'] . '../') . '/'),
             'client_full_path'    => $cfgClient[$client]['path']['frontend'],
@@ -1016,7 +1016,7 @@ class ModRewrite extends ModRewriteBase
         $arr['in_contenido_path'] = is_file($arr['contenido_full_path'] . '.htaccess');
         $arr['in_client_path']    = is_file($arr['client_full_path'] . '.htaccess');
         $arr['has_htaccess']      = ($arr['in_contenido_path'] || $arr['has_htaccess']);
-        
+
         return $arr;
     }
 }

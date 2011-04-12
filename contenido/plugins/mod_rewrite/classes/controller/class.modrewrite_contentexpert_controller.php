@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Content expert controller
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend plugins
  * @version    0.1
@@ -18,13 +18,13 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since Contenido release 4.8.15
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2011-04-11
  *
  *   $Id: $:
  * }}
- * 
+ *
  */
 
 
@@ -42,7 +42,7 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
     public function init()
     {
         $this->_oView->content_before = '';
-        
+
         $pluginPath = $this->_cfg['path']['contenido'] . $this->_cfg['path']['plugins'] . 'mod_rewrite/';
         $this->_htaccessRestrictive = $pluginPath . 'files/htaccess_restrictive.txt';
         $this->_htaccessSimple = $pluginPath . 'files/htaccess_simple.txt';

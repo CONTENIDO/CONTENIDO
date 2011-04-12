@@ -1,9 +1,9 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Mod Rewrite front_content.php controller. Does some preprocessing jobs, tries
  * to set following variables, depending on mod rewrite configuration and if
  * request part exists:
@@ -13,10 +13,10 @@
  * - $changelang
  * - $idart
  * - $idcat
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend plugins
  * @version    0.1
@@ -26,13 +26,13 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since Contenido release 4.8.15
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2008-05-xx
  *
  *   $Id: $:
  * }}
- * 
+ *
  */
 
 
@@ -57,7 +57,7 @@ if ($oMRController->errorOccured()) {
     if ($iRedirToErrPage == 1 && (int) $client > 0 && (int) $lang > 0) {
         global $errsite_idcat, $errsite_idart;
 
-        if ($cfgClient['set'] != 'set')	{
+        if ($cfgClient['set'] != 'set')    {
             rereadClients();
         }
 

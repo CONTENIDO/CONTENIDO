@@ -1,24 +1,24 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
- * Plugin Advanced Mod Rewrite default settings. This file will be included if mod rewrite settings
- * of an client couldn't loaded.
  *
- * Containing settings are taken over from contenido-4.6.15mr setup installer template beeing made
- * originally by stese.
+ * Description:
+ * Plugin Advanced Mod Rewrite default settings. This file will be included if
+ * mod rewrite settings of an client couldn't loaded.
+ *
+ * Containing settings are taken over from contenido-4.6.15mr setup installer
+ * template beeing made originally by stese.
  *
  * NOTE:
- * Changes in these Advanced Mod Rewrite settings will affect all clients, as long as they don't have
- * their own configuration.
- * PHP needs write permissions to the folder, where this file resides. Mod Rewrite configuration files
- * will be created in this folder.
- * 
- * Requirements: 
+ * Changes in these Advanced Mod Rewrite settings will affect all clients, as long
+ * as they don't have their own configuration.
+ * PHP needs write permissions to the folder, where this file resides. Mod Rewrite
+ * configuration files will be created in this folder.
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend plugins
  * @version    0.1
@@ -28,13 +28,13 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since Contenido release 4.8.15
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2008-05-xx
  *
  *   $Id: $:
  * }}
- * 
+ *
  */
 
 
