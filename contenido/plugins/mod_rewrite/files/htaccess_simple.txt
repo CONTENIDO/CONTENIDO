@@ -11,7 +11,7 @@
 # @link       http://www.contenido.org
 # @since      file available since Contenido release 4.8.15
 #
-# $Id: $
+# $Id$
 ################################################################################
 
 

@@ -25,7 +25,7 @@
  * {@internal
  *   created  2008-05-xx
  *
- *   $Id: $:
+ *   $Id$:
  * }}
  *
  */
