@@ -278,15 +278,12 @@ class ModRewriteController extends ModRewriteBase
 
         $aUrlComponents = $this->_parseUrl($this->_sIncommingUrl);
         if (isset($aUrlComponents['path'])) {
-##++##
             if (parent::getConfig('rootdir') !== '/' && strpos($aUrlComponents['path'], parent::getConfig('rootdir')) === 0) {
                 $aUrlComponents['path'] = str_replace(parent::getConfig('rootdir'), '/', $aUrlComponents['path']);
             }
-##++##
 
             if ($secondCall == true) {
 
-#        ModRewriteDebugger::add($aUrlComponents, 'ModRewriteController::_extractRequestUri() 2. call $aUrlComponents');
                 // @todo: implement real redirect of old front_content.php style urls
 
                 // check for routing definition

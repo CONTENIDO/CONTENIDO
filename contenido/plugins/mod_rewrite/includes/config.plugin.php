@@ -39,7 +39,7 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  * Chain Contenido.Frontend.CreateURL
  * This chain is called inside some scripts (front_content.php) to create urls.
  *
- * @todo: Iis added to provide downwards compatibility for the amr plugin.
+ * @todo: Is added to provide downwards compatibility for the amr plugin.
  *        There is no need for this chain since Contenido 4.8.9 contains its own Url building feature.
  * @deprecated
  *

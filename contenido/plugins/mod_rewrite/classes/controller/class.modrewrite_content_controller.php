@@ -53,8 +53,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
     public function saveAction()
     {
         $bError = false;
-
-// TODO:  initialize $aMR
+        $aMR    = array();
 
         $request = (count($_POST) > 0) ? $_POST : $_GET;
         mr_requestCleanup($request);

@@ -301,9 +301,9 @@ class ModRewrite extends ModRewriteBase
     /**
      * Get article id by article websafe name
      *
-     * @param   string  Websafe name
-     * @param   int     Category id
-     * @return  int     Recent article id
+     * @param   string    Websafe name
+     * @param   int       Category id
+     * @return  int|null  Recent article id or null
      */
     public static function getArtIdByWebsafeName($sArtName = '', $iCatId = 0, $iLangId = 0)
     {
@@ -312,7 +312,6 @@ class ModRewrite extends ModRewriteBase
         $sArtName = self::$_db->escape($sArtName);
         $iCatId   = (int) $iCatId;
         $iLangId  = (int) $iLangId;
-        $iArtId = false;  // @todo  strict type for variable
 
         $sWhere = '';
         if ($iLangId !== 0) {
@@ -337,10 +336,10 @@ class ModRewrite extends ModRewriteBase
              . "WHERE al.urlname = '$sArtName'" . $sWhere;
 
         if ($aData = mr_queryAndNextRecord($sql)) {
-            $iArtId = $aData['idart'];
+            return $aData['idart'];
+        } else {
+            return null;
         }
-
-        return $iArtId;
     }
 
 
@@ -984,7 +983,6 @@ class ModRewrite extends ModRewriteBase
      * smooth similar effects - 80 to 95 will be best but have to check by user
      *
      * @deprecated Is no more used
-     * @todo remove usage at /contenido/includes/functions.pathresolver.php
      *
      * @param   array  $results  Pathresolver results array
      * @return  mixed  Categoryid or false
