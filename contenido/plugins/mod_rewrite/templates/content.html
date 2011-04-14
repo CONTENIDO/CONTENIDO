@@ -29,10 +29,10 @@
             <a href="#" id="pluginInfoDetails-link" class="main i-link infoButton" title=""></a><div class="clear"></div></div>
         <div id="pluginInfoDetails" style="display:none;">
             <ul class="list">
-                <li class="first"><strong>Version:</strong> {%PLUGIN_VERSION%}</li>
-                <li><strong>Autor:</strong> Murat Purc, <a href="mailto:murat@purc.de" title="E-Mail an Autor">murat@purc.de</a></li>
-                <li><strong>Pluginseite:</strong> <a href="http://www.purc.de/playground-coding-contenido_plugin_-_advanced_mod_rewrite-a.109.html" onclick="window.open(this.href); return false;" title="Zur Pluginseite (&ouml;ffnet Seite in einem neuen Fenster)">Pluginseite besuchen</a></li>
-                <li><strong>Contenido Forum:</strong> <a href="http://forum.contenido.org/viewtopic.php?t=21578" onclick="window.open(this.href); return false;" title="Zum Plugin Beitrag im Contenido Forum (&ouml;ffnet Seite in einem neuen Fenster)">Pluginbeitrag im Contenido Forum</a></li>
+                <li class="first"><strong>{LNG_VERSION}:</strong> {%PLUGIN_VERSION%}</li>
+                <li><strong>{LNG_AUTHOR}:</strong> Murat Purc, <a href="mailto:murat@purc.de" title="{LNG_MAIL_TO_AUTHOR}">murat@purc.de</a></li>
+                <li><strong>{LNG_PLUGINPAGE}:</strong> <a href="http://www.purc.de/playground-coding-contenido_plugin_-_advanced_mod_rewrite-a.109.html" onclick="window.open(this.href); return false;" title="{LNG_VISIT_PLUGINPAGE} ({LNG_OPENS_IN_NEW_WINDOW})">{LNG_VISIT_PLUGINPAGE}</a></li>
+                <li><strong>{LNG_CONTENIDO_FORUM}:</strong> <a href="http://forum.contenido.org/viewtopic.php?t=21578" onclick="window.open(this.href); return false;" title="{LNG_PLUGINTHREAD_IN_CONTENIDO_FORUM} ({LNG_OPENS_IN_NEW_WINDOW})">{LNG_PLUGINTHREAD_IN_CONTENIDO_FORUM}</a></li>
             </ul>
         </div>
     </div>
@@ -54,17 +54,15 @@
     <col width="70%" />
 </colgroup>
 <tr style="background-color:#e2e2e2;">
-    <th colspan="2" class="text_medium col-I" style="border-top:1px;">Plugin Einstellungen</th>
+    <th colspan="2" class="text_medium col-I" style="border-top:1px;">{LNG_PLUGIN_SETTINGS}</th>
 </tr>
 
 <!-- htaccess info -->
 <tr style="{HTACCESS_INFO_CSS}" class="marked">
     <td colspan="2" class="text_medium col-I">
             <br />
-            <strong>Hinweis</strong><br />
-            Es wurde weder im Contenido Installationsverzeichnis noch im Mandantenverzeichnis eine .htaccess Datei gefunden.<br />
-            Die .htaccess Datei sollte gegebenenfalls im Bereich
-            <a href="main.php?area=mod_rewrite_expert&frame=4&contenido={SESSID}&idclient={IDCLIENT}" onclick="parent.right_top.sub.clicked(parent.right_top.document.getElementById('c_1').firstChild);">Funktionen</a> eingerichtet werden.<br />
+            <strong>{LNG_NOTE}</strong><br />
+            {LNG_MSG_NO_HTACCESS_FOUND}<br />
             <br />
     </td>
 </tr>
@@ -73,25 +71,15 @@
 <tr>
     <td colspan="2" class="text_medium col-I">
         <div class="blockLeft">
-            <input type="checkbox" id="mr_use" name="use" value="1"{USE_CHK} /> <label for="mr_use">Advanced Mod Rewrite aktivieren</label>
+            <input type="checkbox" id="mr_use" name="use" value="1"{USE_CHK} /> <label for="mr_use">{LNG_ENABLE_AMR}</label>
         </div>
         <a href="#" id="enableInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
         <div id="enableInfo1" style="display:none">
-            <strong>Hinweis</strong><br />
-            Beim Deaktivieren des Plugins wird das mod rewrite Modul des Webservers nicht mit deaktiviert - Das bedeutet, <br />
-            dass alle in der .htaccess definerten Regeln weiterhin aktiv sind und einen unerw&uuml;nschten Nebeneffekt haben k&ouml;nnen.<br />
+            <strong>{LNG_NOTE}</strong><br />
+            {LNG_MSG_ENABLE_AMR_INFO}<br />
             <br />
-            Apache mod rewrite l&auml;sst sich in der .htaccess durch das Setzen der RewriteEngine-Direktive aktivieren/deaktivieren.<br />
-            Wird das mod rewrite Modul deaktiviert, k&ouml;nnen die in der .htaccess definierten Regeln weiterhin bleiben, sie werden <br />
-            dann nicht verarbeitet.<br />
-            <br />
-
-            <strong>Beispiele:</strong>
-            <pre class="example"># aktivieren des apache mod rewrite moduls
-RewriteEngine on
-
-# deaktivieren des apache mod rewrite moduls
-RewriteEngine off</pre>
+            <strong>{lng_example}:</strong>
+            <pre class="example">{LNG_MSG_ENABLE_AMR_INFO_EXAMPLE}</pre>
         </div>
     </td>
 </tr>
@@ -168,14 +156,14 @@ RewriteEngine off</pre>
                                   generierten URLs nach den eigenen W&uuml;nschen gesetzt werden.</strong>
         <a href="#" id="userdefSeparatorInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="userdefSeparatorInfo1" style="display:none">
-            <strong>Beispiele:</strong>
+            <strong>{LNG_EXAMPLE}:</strong>
             <pre class="example">www.domain.de/kategorie1-kategorie2.artikelname.html
 www.domain.de/kategorie1/kategorie2-artikelname.html
 www.domain.de/kategorie.name1~kategorie2~artikelname.html
 www.domain.de/kategorie_name1-kategorie2-artikelname.foo
 </pre>
 
-            <strong>Hinweise:</strong>
+            <strong>{LNG_NOTE}:</strong>
             <ul>
                 <li>Kategorie-Separator und Kategoriewort-Separator m&uuml;ssen unterschiedlich sein
                 <pre class="example"># Beispiel: Kategorie-Separator (<span class="note">/</span>) und Kategoriewort-Separator (<span class="note">_</span>)
@@ -261,7 +249,7 @@ kategorie_eins/kategorie_zwei<span class="note">/</span>artikel<span class="note
             Angabe der Dateiendung mit einem vorangestellten Punkt,<br />
             z. B. ".html" f&uuml;r http://host/foo/bar.html<br />
             <br />
-            <strong>Hinweis:</strong><br />
+            <strong>{LNG_NOTE}:</strong><br />
             Falls die Option "Artikelname immer an die URLs anhängen" nicht gew&auml;hlt wurde, <br />
             ist es zwingend notwending, dass hier eine Dateiendung angegeben wird.<br />
             <br />
@@ -316,7 +304,7 @@ kategorie_eins/kategorie_zwei<span class="note">/</span>artikel<span class="note
             definierte Prozentsatz nicht auf diese Werte der URL angewendet.<br />
             Eine ankommende URL wird von solchen Pr&auml;fixen entfernt, der &uuml;brig gebliebene Pfad (Urlpfad der Kategorie)<br />
             wird auf die &Auml;hnlichkleit hin gepr&uuml;ft.</p>
-            <strong>Beispiele:</strong>
+            <strong>{LNG_EXAMPLE}:</strong>
             <pre class="example">100 = nur exakt geschriebene URLs finden zum Ziel, bereits ein falsch geschriebener
 Buchstabe f&uuml;hrt zu einem Fehler
 85  = URLs mit leichten Fehlern werden dennoch zur einer Kategorie geleitet

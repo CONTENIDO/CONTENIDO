@@ -110,17 +110,6 @@ abstract class ModRewrite_ControllerAbstract
         return $this->_template;
     }
 
-    public function _getParam($key, $default = null)
-    {
-        if (isset($_GET[$key])) {
-            return $_GET[$key];
-        } elseif (isset($_POST[$key])) {
-            return $_POST[$key];
-        } else {
-            return $default;
-        }
-    }
-
     public function render($template = null)
     {
         if ($template == null) {
@@ -136,6 +125,17 @@ abstract class ModRewrite_ControllerAbstract
             $oTpl->set('s', strtoupper($k), $v);
         }
         $oTpl->generate($template, 0, 0);
+    }
+
+    protected function _getParam($key, $default = null)
+    {
+        if (isset($_GET[$key])) {
+            return $_GET[$key];
+        } elseif (isset($_POST[$key])) {
+            return $_POST[$key];
+        } else {
+            return $default;
+        }
     }
 
     protected function _notifyBox($type, $msg)

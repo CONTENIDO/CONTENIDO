@@ -31,19 +31,13 @@
 defined('CON_FRAMEWORK') or die('Illegal call');
 
 
-plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php');
+plugin_include(
+	'mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php'
+);
 
 
 class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
 {
-
-    public function init()
-    {
-        global $aSeparator, $aWordSeparator, $routingSeparator;
-        $this->_aSeparator = $aSeparator;
-        $this->_aWordSeparator = $aWordSeparator;
-        $this->_routingSeparator = $routingSeparator;
-    }
 
     public function indexAction()
     {
@@ -52,6 +46,11 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
 
     public function saveAction()
     {
+        $bDebug = $this->getProperty('bDebug');
+        $aSeparator = $this->getProperty('aSeparator');
+        $aWordSeparator = $this->getProperty('aWordSeparator');
+        $routingSeparator = $this->getProperty('routingSeparator');
+
         $bError = false;
         $aMR    = array();
 
@@ -70,17 +69,23 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
         // root dir
         if (mr_arrayValue($request, 'rootdir', '') !== '') {
             if (!preg_match('/^[a-zA-Z0-9\-_\/\.]*$/', $request['rootdir'])) {
-                $this->_oView->rootdir_error = $this->_notifyBox('error', 'Das Rootverzeichnis hat ein ung&uuml;ltiges Format, erlaubt sind die Zeichen [a-zA-Z0-9\-_\/\.]');
+                $sMsg = i18n('The root directory has a invalid format, alowed are the chars [a-zA-Z0-9\-_\/\.]', 'mod_rewrite');
+                $this->_oView->rootdir_error = $this->_notifyBox('error', $sMsg);
                 $bError = true;
             } elseif (!is_dir($_SERVER['DOCUMENT_ROOT'] . $request['rootdir'])) {
 
                 if (mr_arrayValue($request, 'checkrootdir') == 1) {
                     // root dir check is enabled, this results in error
-                    $this->_oView->rootdir_error = $this->_notifyBox('error', 'Das angegebene Verzeichnis "' . $_SERVER['DOCUMENT_ROOT'] . $request['rootdir'] . '" existiert nicht');
+                    $sMsg = i18n('The specified directory "%s" does not exists', 'mod_rewrite');
+                    $sMsg = sprintf($sMsg, $_SERVER['DOCUMENT_ROOT'] . $request['rootdir']);
+                    $this->_oView->rootdir_error = $this->_notifyBox('error', $sMsg);
                     $bError = true;
                 } else {
-                    // root dir check ist disabled, take over the setting and output a warning.
-                    $this->_oView->rootdir_error = $this->_notifyBox('warning', 'Das angegebene Verzeichnis "' . $request['rootdir'] . '" existiert nicht im aktuellen DOCUMENT_ROOT "' . $_SERVER['DOCUMENT_ROOT'] . '". Das kann vorkommen, wenn das DOCUMENT_ROOT des Clients vom Contenido Backend DOCUMENT_ROOT abweicht. Die Einstellung wird dennoch &uuml;bernommen, da die &Uuml;berpr&uuml;fung abgeschaltet wurde');
+                    // root dir check ist disabled, take over the setting and 
+                    // output a warning.
+                    $sMsg = i18n('The specified directory "%s" does not exists in DOCUMENT_ROOT "%s". this could happen, if clients DOCUMENT_ROOT differs from Contenido backends DOCUMENT_ROOT. However, the setting will be taken over because of disabled check.', 'mod_rewrite');
+                    $sMsg = sprintf($sMsg, $request['rootdir'], $_SERVER['DOCUMENT_ROOT']);
+                    $this->_oView->rootdir_error = $this->_notifyBox('warning', $sMsg);
                 }
             }
             $this->_oView->rootdir         = htmlentities($request['rootdir']);
@@ -168,11 +173,11 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
         $this->_oView->article_separator_attrib        = '';
         $this->_oView->article_word_separator_attrib   = '';
 
-        $separatorPattern = $this->_aSeparator['pattern'];
-        $separatorInfo    = $this->_aSeparator['info'];
+        $separatorPattern = $aSeparator['pattern'];
+        $separatorInfo    = $aSeparator['info'];
 
-        $wordSeparatorPattern = $this->_aSeparator['pattern'];
-        $wordSeparatorInfo    = $this->_aSeparator['info'];
+        $wordSeparatorPattern = $aSeparator['pattern'];
+        $wordSeparatorInfo    = $aSeparator['info'];
 
         $categorySeperator = mr_arrayValue($request, 'category_seperator', '');
         $categoryWordSeperator = mr_arrayValue($request, 'category_word_seperator', '');
@@ -181,47 +186,66 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
 
         // category seperator
         if ($categorySeperator == '') {
-            $this->_oView->category_separator_error = $this->_notifyBox('error', 'Bitte Trenner (' . $separatorInfo . ') f&uuml;r Kategorie angeben');
+            $sMsg = i18n('Please specify separator (%s) for category', 'mod_rewrite');
+            $sMsg = sprintf($sMsg, $separatorInfo);
+            $this->_oView->category_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
         } elseif (!preg_match($separatorPattern, $categorySeperator)) {
-            $this->_oView->category_separator_error = $this->_notifyBox('error', 'Trenner f&uuml;r Kategorie ist ung&uuml;ltig, erlaubt ist eines der Zeichen: ' . $separatorInfo);
+            $sMsg = i18n('Invalid separator for category, allowed one of following characters: %s', 'mod_rewrite');
+            $sMsg = sprintf($sMsg, $separatorInfo);
+            $this->_oView->category_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
 
         // category word seperator
         } elseif ($categoryWordSeperator == '') {
-            $this->_oView->category_word_separator_error = $this->_notifyBox('error', 'Bitte Trenner (' . $wordSeparatorInfo . ') f&uuml;r Kategoriew&ouml;rter angeben');
+            $sMsg = i18n('Please specify separator (%s) for category words', 'mod_rewrite');
+            $sMsg = sprintf($sMsg, $wordSeparatorInfo);
+            $this->_oView->category_word_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
         } elseif (!preg_match($wordSeparatorPattern, $categoryWordSeperator)) {
-            $this->_oView->category_word_separator_error = $this->_notifyBox('error', 'Trenner f&uuml;r Kategoriew&ouml;rter ist ung&uuml;ltig, erlaubt ist eines der Zeichen: ' . $wordSeparatorInfo);
+            $sMsg = i18n('Invalid separator for category words, allowed one of following characters: %s', 'mod_rewrite');
+            $sMsg = sprintf($sMsg, $wordSeparatorInfo);
+            $this->_oView->category_word_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
 
         // article seperator
         } elseif ($articleSeperator == '') {
-            $this->_oView->article_separator_error = $this->_notifyBox('error', 'Bitte Trenner (' . $separatorInfo . ') f&uuml;r Artikel angeben') . '<br>';
+            $sMsg = i18n('Please specify separator (%s) for article', 'mod_rewrite');
+            $sMsg = sprintf($sMsg, $separatorInfo);
+            $this->_oView->article_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
         } elseif (!preg_match($separatorPattern, $articleSeperator)) {
-            $this->_oView->article_separator_error = $this->_notifyBox('error', 'Trenner f&uuml;r Artikel ist ung&uuml;ltig, erlaubt ist eines der Zeichen: ' . $separatorInfo);
+            $sMsg = i18n('Invalid separator for article, allowed is one of following characters: %s', 'mod_rewrite');
+            $sMsg = sprintf($sMsg, $separatorInfo);
+            $this->_oView->article_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
 
         // article word seperator
         } elseif ($articleWordSeperator == '') {
-            $this->_oView->article_word_separator_error = $this->_notifyBox('error', 'Bitte Trenner (' . $wordSeparatorInfo . ') f&uuml;r Artikelw&ouml;rter angeben');
+            $sMsg = i18n('Please specify separator (%s) for article words', 'mod_rewrite');
+            $sMsg = sprintf($sMsg, $wordSeparatorInfo);
+            $this->_oView->article_word_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
         } elseif (!preg_match($wordSeparatorPattern, $articleWordSeperator)) {
-            $this->_oView->article_word_separator_error = $this->_notifyBox('error', 'Trenner f&uuml;r Artikelw&ouml;rter ist ung&uuml;ltig, erlaubt ist eines der Zeichen: ' . $wordSeparatorInfo);
+            $sMsg = i18n('Invalid separator for article words, allowed is one of following characters: %s', 'mod_rewrite');
+            $sMsg = sprintf($sMsg, $wordSeparatorInfo);
+            $this->_oView->article_word_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
 
         // category_seperator - category_word_seperator
         } elseif ($categorySeperator == $categoryWordSeperator) {
-            $this->_oView->category_separator_error = $this->_notifyBox('error', 'Trenner f&uuml;r Kategorie und Kategoriew&ouml;rter d&uuml;rfen nicht identisch sein');
+            $sMsg = i18n('Separator for category and category words must not be identical', 'mod_rewrite');
+            $this->_oView->category_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
         // category_seperator - article_word_seperator
         } elseif ($categorySeperator == $articleWordSeperator) {
-            $this->_oView->category_separator_error = $this->_notifyBox('error', 'Trenner f&uuml;r Kategorie und Artikelw&ouml;rter d&uuml;rfen nicht identisch sein');
+            $sMsg = i18n('Separator for category and article words must not be identical', 'mod_rewrite');
+            $this->_oView->category_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
         // article_seperator - article_word_seperator
         } elseif ($articleSeperator == $articleWordSeperator) {
-            $this->_oView->article_separator_error = $this->_notifyBox('error', 'Trenner f&uuml;r Kategorie-Artikel und Artikelw&ouml;rter d&uuml;rfen nicht identisch sein');
+            $sMsg = i18n('Separator for category-article and article words must not be identical', 'mod_rewrite');
+            $this->_oView->article_separator_error = $this->_notifyBox('error', $sMsg);
             $bError = true;
         }
 
@@ -237,7 +261,8 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
         // file extension
         if (mr_arrayValue($request, 'file_extension', '') !== '') {
             if (!preg_match('/^\.([a-zA-Z0-9\-_\/])*$/', $request['file_extension'])) {
-                $this->_oView->file_extension_error = $this->_notifyBox('error', 'Die Dateiendung hat ein ung&uuml;ltiges Format, erlaubt sind die Zeichen \.([a-zA-Z0-9\-_\/])');
+                $sMsg = i18n('The file extension has a invalid format, allowed are the chars \.([a-zA-Z0-9\-_\/])', 'mod_rewrite');
+                $this->_oView->file_extension_error = $this->_notifyBox('error', $sMsg);
                 $bError = true;
             }
             $this->_oView->file_extension = htmlentities($request['file_extension']);
@@ -250,10 +275,12 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
         // category resolve min percentage
         if (isset($request['category_resolve_min_percentage'])) {
             if (!is_numeric($request['category_resolve_min_percentage'])) {
-                $this->_oView->category_resolve_min_percentage_error = $this->_notifyBox('error', 'Wert muss numerisch sein.');
+                $sMsg = i18n('Value has to be numeric.', 'mod_rewrite');
+                $this->_oView->category_resolve_min_percentage_error = $this->_notifyBox('error', $sMsg);
                 $bError = true;
             } elseif ($request['category_resolve_min_percentage'] < 0 || $request['category_resolve_min_percentage'] > 100) {
-                $this->_oView->category_resolve_min_percentage_error = $this->_notifyBox('error', 'Wert muss zwischen 0 und 100 sein.');
+                $sMsg = i18n('Value has to be between 0 an 100.', 'mod_rewrite');
+                $this->_oView->category_resolve_min_percentage_error = $this->_notifyBox('error', $sMsg);
                 $bError = true;
             }
             $this->_oView->category_resolve_min_percentage = $request['category_resolve_min_percentage'];
@@ -269,7 +296,8 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
             $aMR['mod_rewrite']['add_startart_name_to_url'] = 1;
             if (mr_arrayValue($request, 'add_startart_name_to_url', '') !== '') {
                 if (!preg_match('/^[a-zA-Z0-9\-_\/\.]*$/', $request['default_startart_name'])) {
-                    $this->_oView->add_startart_name_to_url_error = $this->_notifyBox('error', 'Der Artikelname hat ein ung&uuml;ltiges Format, erlaubt sind die Zeichen /^[a-zA-Z0-9\-_\/\.]*$/');
+                    $sMsg = i18n('The article name has a invalid format, allowed are the chars /^[a-zA-Z0-9\-_\/\.]*$/', 'mod_rewrite');
+                    $this->_oView->add_startart_name_to_url_error = $this->_notifyBox('error', $sMsg);
                     $bError = true;
                 }
                 $this->_oView->default_startart_name         = htmlentities($request['default_startart_name']);
@@ -303,7 +331,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
             $aRouting = array();
             $items = explode("\n", $request['rewrite_routing']);
             foreach ($items as $p => $v) {
-                $routingDef = explode($this->_routingSeparator, $v);
+                $routingDef = explode($routingSeparator, $v);
                 if (count($routingDef) !== 2) {
                     continue;
                 }
@@ -331,27 +359,31 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
         }
 
         if ($bError) {
-            $this->_oView->content_before = $this->_notifyBox('error', 'Bitte &uuml;berpr&uuml;fen Sie ihre Eingaben');
+            $sMsg = i18n('Please check your input', 'mod_rewrite');
+            $this->_oView->content_before = $this->_notifyBox('error', $sMsg);
             return;
         }
 
-        if ($this->_bDebug == true) {
+        if ($bDebug == true) {
             echo $this->_notifyBox('info', 'Debug');
             echo '<pre class="example">';print_r($aMR['mod_rewrite']);echo '</pre>';
-            echo $this->_notifyBox('info', 'Konfiguration wurde <b>nicht</b> gespeichert, weil debugging aktiv ist');
+            $sMsg = i18n('Configuration has <b>not</b> been saved, because of enabled debugging', 'mod_rewrite');
+            echo $this->_notifyBox('info', $sMsg);
             return;
         }
 
         $bSeparatorModified = $this->_separatorModified($aMR['mod_rewrite']);
 
         if (mr_setConfiguration($this->_client, $aMR)) {
-            $sMsg = 'Konfiguration wurde gespeichert';
+            $sMsg = 'Configuration has been saved';
             if ($bSeparatorModified) {
                 mr_loadConfiguration($this->_client, true);
             }
             $this->_oView->content_before = $this->_notifyBox('info', $sMsg);
         } else {
-            $this->_oView->content_before = $this->_notifyBox('error', 'Konfiguration konnte nicht gespeichert werden. &Uuml;berpr&uuml;fen Sie bitte die Schreibrechte f&uuml;r ' . $options['key']);
+            $sMsg = i18n('Configuration could not saved. Please check write permissions for %s ', 'mod_rewrite');
+            $sMsg = sprintf($sMsg, $options['key']);
+            $this->_oView->content_before = $this->_notifyBox('error', $sMsg);
         }
     }
 

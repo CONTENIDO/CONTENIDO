@@ -1256,6 +1256,8 @@ contenido/plugins/mod_rewrite/includes/functions.mod_rewrite.php -text
 contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php -text
 contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php -text
 contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contenttest.php -text
+contenido/plugins/mod_rewrite/locale/de_DE/LC_MESSAGES/mod_rewrite.mo -text
+contenido/plugins/mod_rewrite/locale/de_DE/LC_MESSAGES/mod_rewrite.po -text
 contenido/plugins/mod_rewrite/readme.txt -text
 contenido/plugins/mod_rewrite/scripts/mod_rewrite.js -text
 contenido/plugins/mod_rewrite/styles/styles.css -text
