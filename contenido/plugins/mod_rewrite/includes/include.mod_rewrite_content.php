@@ -139,9 +139,6 @@ $oView->article_word_separator_attrib = '';
 $oView->article_separator_error       = '';
 $oView->article_word_separator_error  = '';
 
-$oView->cat_art_sep_msg    = '(M&ouml;gliche Werte: ' . $aSeparator['info'] . ')';
-$oView->word_separator_msg = '(M&ouml;gliche Werte: ' . $aWordSeparator['info'] . ')';
-
 // mr file extension
 $oView->file_extension       = $aMrCfg['file_extension'];
 $oView->file_extension_error = '';
@@ -185,7 +182,7 @@ $oView->lng_plugin_settings = i18n('Plugin settings', 'mod_rewrite');
 $oView->lng_note = i18n('Note', 'mod_rewrite');
 
 $sMsg = i18n('The .htaccess file could not found either in Contenido installation directory nor in client directory.<br />It should set up in %sFunctions%s area, if needed.', 'mod_rewrite');
-$oView->lng_msg_no_htaccess_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido={SESSID}&idclient={IDCLIENT}" onclick="parent.right_top.sub.clicked(parent.right_top.document.getElementById(\'c_1\').firstChild);">', '</a>');
+$oView->lng_msg_no_htaccess_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido=' . $oView->sessid . '&idclient=' . $client . '" onclick="parent.right_top.sub.clicked(parent.right_top.document.getElementById(\'c_1\').firstChild);">', '</a>');
 
 $oView->lng_enable_amr = i18n('Enable Advanced Mod Rewrite', 'mod_rewrite');
 
@@ -195,7 +192,45 @@ $oView->lng_example = i18n('Example', 'mod_rewrite');
 
 $oView->lng_msg_enable_amr_info_example = i18n("# enable apache mod rewrite module\nRewriteEngine on\n\n# disable apache mod rewrite module\nRewriteEngine off", 'mod_rewrite');
 
-# aktivieren des apache mod rewrite moduls\nRewriteEngine on\n\n# deaktivieren des apache mod rewrite moduls\nRewriteEngine off
+$oView->lng_rootdir = i18n('Path to .htaccess from DocumentRoot', 'mod_rewrite');
+$oView->lng_rootdir_info = i18n("Type '/' if the .htaccess file lies inside the wwwroot (DocumentRoot) folder.<br />Type the path to the subfolder fromm wwwroot, if Contenido is installed in a subfolder within the wwwroot<br />(e. g. http://domain/mycontenido -&gt; path = '/mycontenido/')", 'mod_rewrite');
+
+$oView->lng_checkrootdir = i18n('Check path to .htaccess', 'mod_rewrite');
+$oView->lng_checkrootdir_info = i18n('The path will be checked, if this option is enabled.<br />But this could result in an error in some cases, even if the specified path is valid and<br />clients DocumentRoot differs from Contenido backend DocumentRoot.', 'mod_rewrite');
+
+$oView->lng_startfromroot = i18n('Should the name of root category be displayed in the URL?', 'mod_rewrite');
+$oView->lng_startfromroot_lbl = i18n('Start from root category', 'mod_rewrite');
+$oView->lng_startfromroot_info = i18n('If enabled, the name of the root category (e. g. "Mainnavigation" in a Contenido default installation), will be prepended to the URL.', 'mod_rewrite');
+
+$oView->lng_use_client = i18n('Are several clients maintained in one directory?', 'mod_rewrite');
+$oView->lng_use_client_lbl = i18n('Prepend client to the URL', 'mod_rewrite');
+$oView->lng_use_client_name_lbl = i18n('Use client name instead of the id', 'mod_rewrite');
+
+$oView->lng_use_language = i18n('Should the language appear in the URL (required for multi language websites)?', 'mod_rewrite');
+$oView->lng_use_language_lbl = i18n('Prepend language to the URL', 'mod_rewrite');
+$oView->lng_use_language_name_lbl = i18n('Use language name instead of the id', 'mod_rewrite');
+
+$oView->lng_userdefined_separators_header = i18n('Configure your own separators with following 4 settings<br />to control generated URLs to your own taste', 'mod_rewrite');
+$oView->lng_userdefined_separators_example = i18n("www.domain.com/category1-category2.articlename.html\nwww.domain.com/category1/category2-articlename.html\nwww.domain.com/category.name1~category2~articlename.html\nwww.domain.com/category_name1-category2-articlename.foo", 'mod_rewrite');
+$oView->lng_userdefined_separators_example_a = i18n('Category separator has to be different from category-word separator', 'mod_rewrite');
+$oView->lng_userdefined_separators_example_a_example = i18n("# Example: Category separator (/) and category-word separator (_)\ncategory_one/category_two/articlename.html", 'mod_rewrite');
+$oView->lng_userdefined_separators_example_b = i18n('Category separator has to be different from article-word separator', 'mod_rewrite');
+$oView->lng_userdefined_separators_example_b_example = i18n("# Example: Category separator (/) and article-word separator (-)\ncategory_one/category_two/article-description.html", 'mod_rewrite');
+$oView->lng_userdefined_separators_example_c = i18n('Category-article separator has to be different from article-word separator', 'mod_rewrite');
+$oView->lng_userdefined_separators_example_c_example = i18n("# Example: Category-article separator (/) and article-word separator (-)\ncategory_one/category_two/article-description.html", 'mod_rewrite');
+
+$oView->lng_category_separator = i18n('Category separator (delemiter between single categories)', 'mod_rewrite');
+$oView->lng_catart_separator_info = sprintf(i18n('(possible values: %s)', 'mod_rewrite'), $aSeparator['info']);
+$oView->lng_word_separator_info = sprintf(i18n('(possible values: %s)', 'mod_rewrite'), $aWordSeparator['info']);
+$oView->lng_category_word_separator = i18n('Category-word separator (delemiter between category words)', 'mod_rewrite');
+$oView->lng_article_separator = i18n('Category-article separator (delemiter between category-block and article)', 'mod_rewrite');
+$oView->lng_article_word_separator = i18n('Article-word separator (delemiter between article words)', 'mod_rewrite');
+
+$oView->lng_add_startart_name_to_url = i18n('Append article name to URLs', 'mod_rewrite');
+$oView->lng_add_startart_name_to_url_lbl = i18n('Append article name allways to URLs (even at URLs to categories)', 'mod_rewrite');
+$oView->lng_default_startart_name = i18n('Default article name without extension', 'mod_rewrite');
+$oView->lng_default_startart_name_info = i18n('e. g. "index" for index.ext<br />In case od selected "Append article name allways to URLs" option and a empty field,<br />the name of the start article will be used', 'mod_rewrite');
+
 
 ################################################################################
 ##### Action processing

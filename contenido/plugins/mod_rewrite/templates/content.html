@@ -29,8 +29,7 @@
             <a href="#" id="pluginInfoDetails-link" class="main i-link infoButton" title=""></a><div class="clear"></div></div>
         <div id="pluginInfoDetails" style="display:none;">
             <ul class="list">
-                <li class="first"><strong>{LNG_VERSION}:</strong> {%PLUGIN_VERSION%}</li>
-                <li><strong>{LNG_AUTHOR}:</strong> Murat Purc, <a href="mailto:murat@purc.de" title="{LNG_MAIL_TO_AUTHOR}">murat@purc.de</a></li>
+                <li class="first"><strong>{LNG_AUTHOR}:</strong> Murat Purc, <a href="mailto:murat@purc.de" title="{LNG_MAIL_TO_AUTHOR}">murat@purc.de</a></li>
                 <li><strong>{LNG_PLUGINPAGE}:</strong> <a href="http://www.purc.de/playground-coding-contenido_plugin_-_advanced_mod_rewrite-a.109.html" onclick="window.open(this.href); return false;" title="{LNG_VISIT_PLUGINPAGE} ({LNG_OPENS_IN_NEW_WINDOW})">{LNG_VISIT_PLUGINPAGE}</a></li>
                 <li><strong>{LNG_CONTENIDO_FORUM}:</strong> <a href="http://forum.contenido.org/viewtopic.php?t=21578" onclick="window.open(this.href); return false;" title="{LNG_PLUGINTHREAD_IN_CONTENIDO_FORUM} ({LNG_OPENS_IN_NEW_WINDOW})">{LNG_PLUGINTHREAD_IN_CONTENIDO_FORUM}</a></li>
             </ul>
@@ -71,7 +70,8 @@
 <tr>
     <td colspan="2" class="text_medium col-I">
         <div class="blockLeft">
-            <input type="checkbox" id="mr_use" name="use" value="1"{USE_CHK} /> <label for="mr_use">{LNG_ENABLE_AMR}</label>
+            <input type="checkbox" id="mr_use" name="use" value="1"{USE_CHK} />
+            <label for="mr_use">{LNG_ENABLE_AMR}</label>
         </div>
         <a href="#" id="enableInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
         <div id="enableInfo1" style="display:none">
@@ -86,95 +86,78 @@
 
 <!-- root dir -->
 <tr>
-    <td class="text_medium col-I">Pfad zur .htaccess Datei aus Sicht des Web-Browsers</td>
+    <td class="text_medium col-I">{LNG_ROOTDIR}</td>
     <td class="text_medium col-II" align="left">
         {ROOTDIR_ERROR}
         <input class="text_medium blockLeft" type="text" name="rootdir" size="50" maxlength="64" value="{ROOTDIR}" />
         <a href="#" id="rootdirInfo1-link" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="rootdirInfo1" style="display:none">
-            Liegt die .htaccess im wwwroot (DocumentRoot), ist '/' anzugeben, ist Contenido in einem <br />
-            Unterverzeichnis von wwwroot installiert, ist der Pfad vom wwwroot aus anzugeben <br />
-            (z. B. http://domain/mycontenido -&gt; Pfad = '/mycontenido/').
-        </div>
+        <div id="rootdirInfo1" style="display:none">{LNG_ROOTDIR_INFO}</div>
         <br />
-
         <div class="blockLeft">
-            <input type="checkbox" id="mr_checkrootdir" name="checkrootdir" value="1"{CHECKROOTDIR_CHK} /> <label for="mr_checkrootdir">Pfad zur .htaccess Datei &uuml;berpr&uuml;fen</label>
+            <input type="checkbox" id="mr_checkrootdir" name="checkrootdir" value="1"{CHECKROOTDIR_CHK} />
+            <label for="mr_checkrootdir">{LNG_CHECKROOTDIR}</label>
         </div>
         <a href="#" id="rootdirInfo2-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="rootdirInfo2" style="display:none">
-            Ist diese Option aktiv, wird der eingegebene Pfad &uuml;berpr&uuml;ft. Das kann unter <br />
-            Umst&auml;nden einen Fehler verursachen, obwohl der Pfad zwar richtig ist, aber der Mandant <br />
-            einen anderen DocumentRoot als das Contenido Backend hat.
-        </div>
+        <div id="rootdirInfo2" style="display:none">{LNG_CHECKROOTDIR_INFO}</div>
     </td>
 </tr>
 
 <!-- start from root -->
 <tr>
-    <td class="text_medium col-I">Soll der Name des Hauptbaumes mit in der URL erscheinen?</td>
+    <td class="text_medium col-I">{LNG_STARTFROMROOT}</td>
     <td class="text_medium col-II" align="left">
         <div class="blockLeft">
-            <input type="checkbox" id="mr_startfromroot" name="startfromroot" value="1"{STARTFROMROOT_CHK} /> <label for="mr_startfromroot">Start vom Hauptbaum aus</label>
+            <input type="checkbox" id="mr_startfromroot" name="startfromroot" value="1"{STARTFROMROOT_CHK} />
+            <label for="mr_startfromroot">{LNG_STARTFROMROOT_LBL}</label>
         </div>
         <a href="#" id="startFromRootInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
-        <div id="startFromRootInfo1" style="display:none">
-            Ist diese Option gew&auml;hlt, wird der Name des Hauptbaumes (Kategoriebaum, <br />
-            z. B. "Hauptnavigation" bei Contenido Standardinstallation) der URL vorangestellt.
-        </div>
+        <div id="startFromRootInfo1" style="display:none">{LNG_STARTFROMROOT_INFO}</div>
     </td>
 </tr>
 
 <!-- use client/use client name -->
 <tr>
-    <td class="text_medium col-I">Werden mehrere Mandanten in einem Verzeichnis gepflegt?</td>
+    <td class="text_medium col-I">{LNG_USE_CLIENT}</td>
     <td class="text_medium col-II" align="left">
         <input type="checkbox" id="mr_use_client" name="use_client" value="1"{USE_CLIENT_CHK} />
-        <label for="mr_use_client">Mandant an die URL voranstellen</label><br />
+        <label for="mr_use_client">{LNG_USE_CLIENT_LBL}</label><br />
         <br />
         <input type="checkbox" id="mr_use_client_name" name="use_client_name" value="1"{USE_CLIENT_NAME_CHK}{USE_CLIENT_NAME_DISABLED} />
-        <label for="mr_use_client_name">Name des Mandanten anstatt die Id verwenden</label><br />
+        <label for="mr_use_client_name">{LNG_USE_CLIENT_NAME_LBL}</label><br />
     </td>
 </tr>
 
 <!-- use language/use language name -->
 <tr>
-    <td class="text_medium col-I">Soll die Sprache mit in der URL erscheinen (f&uuml;r Mehrsprachsysteme unabdingbar)?</td>
+    <td class="text_medium col-I">{LNG_USE_LANGUAGE}</td>
     <td class="text_medium col-II" align="left">
         <input type="checkbox" id="mr_use_language" name="use_language" value="1"{USE_LANGUAGE_CHK} />
-        <label for="mr_use_language">Sprache an die URL voranstellen</label><br />
+        <label for="mr_use_language">{LNG_USE_LANGUAGE_LBL}</label><br />
         <br />
         <input type="checkbox" id="mr_use_language_name" name="use_language_name" value="1"{USE_LANGUAGE_NAME_CHK}{USE_LANGUAGE_NAME_DISABLED} />
-        <label for="mr_use_language_name">Name der Sprache anstatt die Id verwenden</label><br />
+        <label for="mr_use_language_name">{LNG_USE_LANGUAGE_NAME_LBL}</label><br />
     </td>
 </tr>
 
 <!-- activate userdefined separator settings -->
 <tr>
     <td colspan="2" class="text_medium col-I altBg">
-        <strong class="blockLeft">Mit den n&auml;chsten 4 Einstellungen k&ouml;nnen die Trennzeichen in den<br />
-                                  generierten URLs nach den eigenen W&uuml;nschen gesetzt werden.</strong>
+        <strong class="blockLeft">{LNG_USERDEFINED_SEPARATORS_HEADER}</strong>
         <a href="#" id="userdefSeparatorInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="userdefSeparatorInfo1" style="display:none">
             <strong>{LNG_EXAMPLE}:</strong>
-            <pre class="example">www.domain.de/kategorie1-kategorie2.artikelname.html
-www.domain.de/kategorie1/kategorie2-artikelname.html
-www.domain.de/kategorie.name1~kategorie2~artikelname.html
-www.domain.de/kategorie_name1-kategorie2-artikelname.foo
-</pre>
+            <pre class="example">{LNG_USERDEFINED_SEPARATORS_EXAMPLE}</pre>
 
             <strong>{LNG_NOTE}:</strong>
             <ul>
-                <li>Kategorie-Separator und Kategoriewort-Separator m&uuml;ssen unterschiedlich sein
-                <pre class="example"># Beispiel: Kategorie-Separator (<span class="note">/</span>) und Kategoriewort-Separator (<span class="note">_</span>)
-kategorie<span class="note">_</span>eins<span class="note">/</span>kategorie<span class="note">_</span>zwei/artikelname.html</pre></li>
-                <li>Kategorie-Separator und Artikelwort-Separator m&uuml;ssen unterschiedlich sein
-                <pre class="example"># Beispiel: Kategorie-Separator (<span class="note">/</span>) und Artikelwort-Separator (<span class="note">-</span>)
-kategorie_eins<span class="note">/</span>kategorie_zwei/artikel<span class="note">-</span>bezeichnung.html</pre>
+                <li>{LNG_USERDEFINED_SEPARATORS_EXAMPLE_A}
+                    <pre class="example">{LNG_USERDEFINED_SEPARATORS_EXAMPLE_A_EXAMPLE}</pre>
                 </li>
-                <li>Kategorie-Artikel-Separator und Artikelwort-Separator m&uuml;ssen unterschiedlich sein
-                <pre class="example"># Beispiel: Kategorie-Artikel-Separator (<span class="note">/</span>) und Artikelwort-Separator (<span class="note">-</span>)
-kategorie_eins/kategorie_zwei<span class="note">/</span>artikel<span class="note">-</span>bezeichnung.html</pre>
+                <li>{LNG_USERDEFINED_SEPARATORS_EXAMPLE_B}
+                    <pre class="example">{LNG_USERDEFINED_SEPARATORS_EXAMPLE_B_EXAMPLE}</pre>
+                </li>
+                <li>{LNG_USERDEFINED_SEPARATORS_EXAMPLE_C}
+                    <pre class="example">{LNG_USERDEFINED_SEPARATORS_EXAMPLE_C_EXAMPLE}</pre>
                 </li>
             </ul>
         </div>
@@ -182,57 +165,54 @@ kategorie_eins/kategorie_zwei<span class="note">/</span>artikel<span class="note
 </tr>
 
 <tr>
-    <td class="text_medium col-I altBg">Kategorie-Separator (Trenner zwischen einzelnen Kategorien)</td>
+    <td class="text_medium col-I altBg">{LNG_CATEGORY_SEPARATOR}</td>
     <td class="text_medium col-II" align="left">
         {CATEGORY_SEPARATOR_ERROR}
         <input class="text_medium" type="text" id="mr_category_seperator" name="category_seperator" size="5" maxlength="1" value="{CATEGORY_SEPARATOR}"{CATEGORY_SEPARATOR_ATTRIB} />
-        <small>{CAT_ART_SEP_MSG}</small>
+        <small>{LNG_CATART_SEPARATOR_INFO}</small>
     </td>
 </tr>
 
 <tr>
-    <td class="text_medium col-I altBg">Kategoriewort-Separator (Trenner zwischen einzelnen Kategoriew&ouml;rtern)</td>
+    <td class="text_medium col-I altBg">{LNG_CATEGORY_WORD_SEPARATOR}</td>
     <td class="text_medium col-II" align="left">
         {CATEGORY_WORD_SEPARATOR_ERROR}
         <input class="text_medium" type="text" id="mr_category_word_seperator" name="category_word_seperator" size="5" maxlength="1" value="{CATEGORY_WORD_SEPARATOR}"{CATEGORY_WORD_SEPARATOR_ATTRIB} />
-        <small>{WORD_SEPARATOR_MSG}</small>
+        <small>{LNG_WORD_SEPARATOR_INFO}</small>
     </td>
 </tr>
 
 <tr>
-    <td class="text_medium col-I altBg">Kategorie-Artikel-Separator (Trenner zwischen Kategorieabschnitt und Artikelname)</td>
+    <td class="text_medium col-I altBg">{LNG_ARTICLE_SEPARATOR}</td>
     <td class="text_medium col-II" align="left">
         {ARTICLE_SEPARATOR_ERROR}
         <input class="text_medium" type="text" id="mr_article_seperator" name="article_seperator" size="5" maxlength="1" value="{ARTICLE_SEPARATOR}"{ARTICLE_SEPARATOR_ATTRIB} />
-        <small>{CAT_ART_SEP_MSG}</small>
+        <small>{LNG_CATART_SEPARATOR_INFO}</small>
     </td>
 </tr>
 <tr>
-    <td class="text_medium col-I altBg">Artikelwort-Separator (Trenner zwischen einzelnen Artikelw&ouml;rtern)</td>
+    <td class="text_medium col-I altBg">{LNG_ARTICLE_WORD_SEPARATOR}</td>
     <td class="text_medium col-II" align="left">
         {ARTICLE_WORD_SEPARATOR_ERROR}
         <input class="text_medium" type="text" id="mr_article_word_seperator" name="article_word_seperator" size="5" maxlength="1" value="{ARTICLE_WORD_SEPARATOR}"{ARTICLE_WORD_SEPARATOR_ATTRIB} />
-        <small>{WORD_SEPARATOR_MSG}</small>
+        <small>{LNG_WORD_SEPARATOR_INFO}</small>
     </td>
 </tr>
 
 <!-- add start article name to url -->
 <tr>
-    <td class="text_medium col-I">Artikelname an URLs anh&auml;ngen</td>
+    <td class="text_medium col-I">{LNG_ADD_STARTART_NAME_TO_URL}</td>
     <td class="text_medium col-II" align="left">
         {ADD_STARTART_NAME_TO_URL_ERROR}
-        <input type="checkbox" id="mr_add_startart_name_to_url" name="add_startart_name_to_url" value="1"{ADD_STARTART_NAME_TO_URL_CHK} /> <label for="mr_add_startart_name_to_url">Artikelname immer an die URLs anh&auml;ngen (auch bei URLs zu Kategorien)</label><br />
+        <input type="checkbox" id="mr_add_startart_name_to_url" name="add_startart_name_to_url" value="1"{ADD_STARTART_NAME_TO_URL_CHK} />
+        <label for="mr_add_startart_name_to_url">{LNG_ADD_STARTART_NAME_TO_URL_LBL}</label><br />
         <br />
         <div class="blockLeft">
-            <label for="mr_default_startart_name">Standard-Artikelname ohne Dateiendung</label><br />
+            <label for="mr_default_startart_name">{LNG_DEFAULT_STARTART_NAME}</label><br />
             <input class="text_medium" type="text" id="mr_default_startart_name" name="default_startart_name" size="50" maxlength="64" value="{DEFAULT_STARTART_NAME}" />
         </div>
         <a href="#" id="defaultStartArtNameInfo1-link" title="" class="main i-link infoButton v2" style="margin-top:1.2em;"></a><div class="clear"></div>
-        <div id="defaultStartArtNameInfo1" style="display:none">
-            z. B. "index" f&uuml;r index.ext.<br />
-            Wenn die Option "Artikelname immer an die URLs anhängen" aktiviert und das Feld leer ist,<br />
-            wird der Name des Startartikels verwendet.
-        </div>
+        <div id="defaultStartArtNameInfo1" style="display:none">{LNG_DEFAULT_STARTART_NAME_INFO}</div>
     </td>
 </tr>
 

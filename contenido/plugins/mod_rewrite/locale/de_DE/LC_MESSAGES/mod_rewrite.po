@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Contenido Plugin Advanced Mod Rewrite\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-14 02:03+0100\n"
-"PO-Revision-Date: 2011-04-14 02:04+0100\n"
+"POT-Creation-Date: 2011-04-15 00:56+0100\n"
+"PO-Revision-Date: 2011-04-15 00:56+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: Murat Purc <murat@purc.de>\n"
 "MIME-Version: 1.0\n"
@@ -111,64 +111,64 @@ msgstr "Konfiguration wurde <b>nicht</b> gespeichert, weil debugging aktiv ist"
 msgid "Configuration could not saved. Please check write permissions for %s "
 msgstr "Konfiguration konnte nicht gespeichert werden. &Uuml;berpr&uuml;fen Sie bitte die Schreibrechte f&uuml;r %s"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:176
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:173
 msgid "Version"
 msgstr "Version"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:177
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:174
 msgid "Author"
 msgstr "Autor"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:178
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:175
 msgid "E-Mail to author"
 msgstr "E-Mail an Autor"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:179
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:176
 msgid "Plugin page"
 msgstr "Pluginseite"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:180
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:177
 msgid "Visit plugin page"
 msgstr "Pluginseite besuchen"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:181
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:178
 msgid "opens page in new window"
 msgstr "&ouml;ffnet Seite in einem neuen Fenster"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:182
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:179
 msgid "Contenido forum"
 msgstr "Contenido Forum"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:183
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:180
 msgid "Plugin thread in Contenido forum"
 msgstr "Pluginbeitrag im Contenido Forum"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:184
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:181
 msgid "Plugin settings"
 msgstr "Plugineinstellungen"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:185
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:182
 msgid "Note"
 msgstr "Hinweis"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:187
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:184
 #, php-format
 msgid "The .htaccess file could not found either in Contenido installation directory nor in client directory.<br />It should set up in %sFunctions%s area, if needed."
 msgstr "Es wurde weder im Contenido Installationsverzeichnis noch im Mandantenverzeichnis eine .htaccess Datei gefunden.<br />Die .htaccess Datei sollte gegebenenfalls im Bereich %sFunktionen%s eingerichtet werden."
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:190
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:187
 msgid "Enable Advanced Mod Rewrite"
 msgstr "Advanced Mod Rewrite aktivieren"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:192
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:189
 msgid "Disabling of plugin does not result in disabling mod rewrite module of the web server - This means,<br /> all defined rules in the .htaccess are still active and could create unwanted side effects.<br /><br />Apache mod rewrite could be enabled/disabled by setting the RewriteEngine directive.<br />Any defined rewrite rules could remain in the .htaccess and they will not processed,<br />if the mod rewrite module is disabled"
 msgstr "Beim Deaktivieren des Plugins wird das mod rewrite Modul des Webservers nicht mit deaktiviert - Das bedeutet, <br />dass alle in der .htaccess definerten Regeln weiterhin aktiv sind und einen unerw&uuml;nschten Nebeneffekt haben k&ouml;nnen.<br /><br />Apache mod rewrite l&auml;sst sich in der .htaccess durch das Setzen der RewriteEngine-Direktive aktivieren/deaktivieren.<br />Wird das mod rewrite Modul deaktiviert, k&ouml;nnen die in der .htaccess definierten Regeln weiterhin bleiben, sie werden <br />dann nicht verarbeitet."
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:194
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:191
 msgid "Example"
 msgstr "Beispiel"
 
-#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:196
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:193
 msgid ""
 "# enable apache mod rewrite module\n"
 "RewriteEngine on\n"
@@ -181,4 +181,146 @@ msgstr ""
 "\n"
 "# deaktivieren des apache mod rewrite moduls\n"
 "RewriteEngine off"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:195
+msgid "Path to .htaccess from DocumentRoot"
+msgstr "Pfad zur .htaccess Datei vom DocumentRoot ausgehend"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:196
+msgid "Type '/' if the .htaccess file lies inside the wwwroot (DocumentRoot) folder.<br />Type the path to the subfolder fromm wwwroot, if Contenido is installed in a subfolder within the wwwroot<br />(e. g. http://domain/mycontenido -&gt; path = '/mycontenido/')"
+msgstr "Liegt die .htaccess im wwwroot (DocumentRoot), ist '/' anzugeben, ist Contenido in einem <br />Unterverzeichnis von wwwroot installiert, ist der Pfad vom wwwroot aus anzugeben <br />(z. B. http://domain/mycontenido -&gt; Pfad = '/mycontenido/')."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:198
+msgid "Check path to .htaccess"
+msgstr "Pfad zur .htaccess Datei &uuml;berpr&uuml;fen"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:199
+msgid "The path will be checked, if this option is enabled.<br />But this could result in an error in some cases, even if the specified path is valid and<br />clients DocumentRoot differs from Contenido backend DocumentRoot."
+msgstr "Ist diese Option aktiv, wird der eingegebene Pfad &uuml;berpr&uuml;ft. Das kann unter <br />Umst&auml;nden einen Fehler verursachen, obwohl der Pfad zwar richtig ist, aber der Mandant <br />einen anderen DocumentRoot als das Contenido Backend hat."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:201
+msgid "Should the name of root category be displayed in the URL?"
+msgstr "Soll der Name des Hauptbaumes mit in der URL erscheinen?"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:202
+msgid "Start from root category"
+msgstr "Start vom Hauptbaum aus"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:203
+msgid "If enabled, the name of the root category (e. g. \"Mainnavigation\" in a Contenido default installation), will be prepended to the URL."
+msgstr "Ist diese Option gew&auml;hlt, wird der Name des Hauptbaumes (Kategoriebaum, <br />z. B. \"Hauptnavigation\" bei Contenido Standardinstallation) der URL vorangestellt."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:205
+msgid "Are several clients maintained in one directory?"
+msgstr "Werden mehrere Mandanten in einem Verzeichnis gepflegt?"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:206
+msgid "Prepend client to the URL"
+msgstr "Mandant an die URL voranstellen"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:207
+msgid "Use client name instead of the id"
+msgstr "Name des Mandanten anstatt die Id verwenden"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:209
+msgid "Should the language appear in the URL (required for multi language websites)?"
+msgstr "Soll die Sprache mit in der URL erscheinen (f&uuml;r Mehrsprachsysteme unabdingbar)?"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:210
+msgid "Prepend language to the URL"
+msgstr "Sprache an die URL voranstellen"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:211
+msgid "Use language name instead of the id"
+msgstr "Name der Sprache anstatt die Id verwenden"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:213
+msgid "Configure your own separators with following 4 settings<br />to control generated URLs to your own taste"
+msgstr "Mit den n&auml;chsten 4 Einstellungen k&ouml;nnen die Trennzeichen in den<br />generierten URLs nach den eigenen W&uuml;nschen gesetzt werden."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:214
+msgid ""
+"www.domain.com/category1-category2.articlename.html\n"
+"www.domain.com/category1/category2-articlename.html\n"
+"www.domain.com/category.name1~category2~articlename.html\n"
+"www.domain.com/category_name1-category2-articlename.foo"
+msgstr ""
+"www.domain.de/kategorie1-kategorie2.artikelname.html\n"
+"www.domain.de/kategorie1/kategorie2-artikelname.html\n"
+"www.domain.de/kategorie.name1~kategorie2~artikelname.html\n"
+"www.domain.de/kategorie_name1-kategorie2-artikelname.foo"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:215
+msgid "Category separator has to be different from category-word separator"
+msgstr "Kategorie-Separator und Kategoriewort-Separator m&uuml;ssen unterschiedlich sein"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:216
+msgid ""
+"# Example: Category separator (/) and category-word separator (_)\n"
+"category_one/category_two/articlename.html"
+msgstr ""
+"# Beispiel: Kategorie-Separator (/) und Kategoriewort-Separator (_)\n"
+"kategorie_eins/kategorie_zwei/artikelname.html"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:217
+msgid "Category separator has to be different from article-word separator"
+msgstr "Kategorie-Separator und Artikelwort-Separator m&uuml;ssen unterschiedlich sein"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:218
+msgid ""
+"# Example: Category separator (/) and article-word separator (-)\n"
+"category_one/category_two/article-description.html"
+msgstr ""
+"# Beispiel: Kategorie-Separator (/) und Artikelwort-Separator (-)\n"
+"kategorie_eins/kategorie_zwei/artikel-bezeichnung.html"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:219
+msgid "Category-article separator has to be different from article-word separator"
+msgstr "Kategorie-Artikel-Separator und Artikelwort-Separator m&uuml;ssen unterschiedlich sein"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:220
+msgid ""
+"# Example: Category-article separator (/) and article-word separator (-)\n"
+"category_one/category_two/article-description.html"
+msgstr ""
+"# Beispiel: Kategorie-Artikel-Separator (/) und Artikelwort-Separator (-)\n"
+"kategorie_eins/kategorie_zwei/artikel-bezeichnung.html"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:222
+msgid "Category separator (delemiter between single categories)"
+msgstr "Kategorie-Separator (Trenner zwischen einzelnen Kategorien)"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:223
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:224
+#, php-format
+msgid "(possible values: %s)"
+msgstr "(m&ouml;gliche Werte: %s)"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:225
+msgid "Category-word separator (delemiter between category words)"
+msgstr "Kategoriewort-Separator (Trenner zwischen einzelnen Kategoriew&ouml;rtern)"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:226
+msgid "Category-article separator (delemiter between category-block and article)"
+msgstr "Kategorie-Artikel-Separator (Trenner zwischen Kategorieabschnitt und Artikelname)"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:227
+msgid "Article-word separator (delemiter between article words)"
+msgstr "Artikelwort-Separator (Trenner zwischen einzelnen Artikelw&ouml;rtern)"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:229
+msgid "Append article name to URLs"
+msgstr "Artikelname an URLs anh&auml;ngen"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:230
+msgid "Append article name allways to URLs (even at URLs to categories)"
+msgstr "Artikelname immer an die URLs anh&auml;ngen (auch bei URLs zu Kategorien)"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:231
+msgid "Default article name without extension"
+msgstr "Standard-Artikelname ohne Dateiendung"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:232
+msgid "e. g. \"index\" for index.ext<br />In case od selected \"Append article name allways to URLs\" option and a empty field,<br />the name of the start article will be used"
+msgstr "z. B. \"index\" f&uuml;r index.ext.<br />Wenn die Option \"Artikelname immer an die URLs anhängen\" aktiviert und das Feld leer ist,<br />wird der Name des Startartikels verwendet."
 
