@@ -200,7 +200,7 @@ $oView->lng_checkrootdir_info = i18n('The path will be checked, if this option i
 
 $oView->lng_startfromroot = i18n('Should the name of root category be displayed in the URL?', 'mod_rewrite');
 $oView->lng_startfromroot_lbl = i18n('Start from root category', 'mod_rewrite');
-$oView->lng_startfromroot_info = i18n('If enabled, the name of the root category (e. g. "Mainnavigation" in a Contenido default installation), will be prepended to the URL.', 'mod_rewrite');
+$oView->lng_startfromroot_info = i18n('If enabled, the name of the root category (e. g. "Mainnavigation" in a Contenido default installation), will be preceded to the URL.', 'mod_rewrite');
 
 $oView->lng_use_client = i18n('Are several clients maintained in one directory?', 'mod_rewrite');
 $oView->lng_use_client_lbl = i18n('Prepend client to the URL', 'mod_rewrite');
@@ -227,9 +227,39 @@ $oView->lng_article_separator = i18n('Category-article separator (delemiter betw
 $oView->lng_article_word_separator = i18n('Article-word separator (delemiter between article words)', 'mod_rewrite');
 
 $oView->lng_add_startart_name_to_url = i18n('Append article name to URLs', 'mod_rewrite');
-$oView->lng_add_startart_name_to_url_lbl = i18n('Append article name allways to URLs (even at URLs to categories)', 'mod_rewrite');
+$oView->lng_add_startart_name_to_url_lbl = i18n('Append article name always to URLs (even at URLs to categories)', 'mod_rewrite');
 $oView->lng_default_startart_name = i18n('Default article name without extension', 'mod_rewrite');
-$oView->lng_default_startart_name_info = i18n('e. g. "index" for index.ext<br />In case od selected "Append article name allways to URLs" option and a empty field,<br />the name of the start article will be used', 'mod_rewrite');
+$oView->lng_default_startart_name_info = i18n('e. g. "index" for index.ext<br />In case of selected "Append article name always to URLs" option and a empty field,<br />the name of the start article will be used', 'mod_rewrite');
+
+$oView->lng_file_extension = i18n('File extension at the end of the URL', 'mod_rewrite');
+$oView->lng_file_extension_info = i18n('Specification of file extension with a preceded dot<br />e.g. ".html" for http://host/foo/bar.html', 'mod_rewrite');
+$oView->lng_file_extension_info2 = i18n('It\'s strongly recommended to specify a extension here,<br />if the option "Append article name always to URLs" was not selected.<br /><br />Otherwise URLs to categories and articles would have the same format<br />which may result in unresolvable categories/articles in some cases.', 'mod_rewrite');
+$oView->lng_file_extension_info3 = i18n('It\'s necessary to specify a file extension at the moment, due do existing issues, which are not solved until yet. An not defined extension may result in invalid article detection in some cases.', 'mod_rewrite');
+
+$oView->lng_use_lowercase_uri = i18n('Should the URLs be written in lower case?', 'mod_rewrite');
+$oView->lng_use_lowercase_uri_lbl = i18n('URLs in lower case', 'mod_rewrite');
+
+$oView->lng_prevent_duplicated_content = i18n('Duplicated content', 'mod_rewrite');
+$oView->lng_prevent_duplicated_content_lbl = i18n('Prevent duplicated content', 'mod_rewrite');
+
+$oView->lng_prevent_duplicated_content_info = i18n('Depending on configuration, pages could be found thru different URLs.<br/>Enabling of this option prevents this. Examples for duplicated content', 'mod_rewrite');
+$oView->lng_prevent_duplicated_content_info2 = i18n("Name of the root category in the URL: Feasible is /maincategory/subcategory/ and /subcategory/\nLanguage in the URL: Feasible is /german/category/ and /1/category/\nClient in the URL: Feasible is /client/category/ und /1/category/", 'mod_rewrite');
+$oView->lng_prevent_duplicated_content_info2 = '<li>' . str_replace("\n", '</li><li>', $oView->lng_prevent_duplicated_content_info2) . '</li>';
+
+$oView->lng_category_resolve_min_percentage = i18n('Percentage for similar category paths in URLs', 'mod_rewrite');
+$oView->lng_category_resolve_min_percentage_info = i18n('This setting refers only to the category path of a URL. If AMR is configured<br />to prepend e. g. the root category, language and/or client to the URL,<br />the specified percentage will not applied to those parts of the URL.<br />A incoming URL will be cleaned from those values and the remaining path (urlpath of the category)<br />will be checked against similarities.', 'mod_rewrite');
+$oView->lng_category_resolve_min_percentage_example = i18n("100 = exact match with no tolerance\n85  = paths with little errors will match to similar ones\n0   = matching will work even for total wrong paths", 'mod_rewrite');
+
+$oView->lng_redirect_invalid_article_to_errorsite = i18n('Redirect in case of invalid articles', 'mod_rewrite');
+$oView->lng_redirect_invalid_article_to_errorsite_lbl = i18n('Redirect to error page in case of invaid articles', 'mod_rewrite');
+$oView->lng_redirect_invalid_article_to_errorsite_info = i18n('The start page will be displayed if this option is not enabled', 'mod_rewrite');
+
+$oView->lng_rewrite_urls_at = i18n('Moment of URL generation', 'mod_rewrite');
+$oView->rewrite_urls_at_front_content_output_lbl = i18n('a.) During the output of HTML code of the page', 'mod_rewrite');
+$oView->rewrite_urls_at_front_content_output_info = i18n('Clean-URLs will be generated during page output. Modules/Plugins are able to generate URLs to frontend<br />as usual as in previous Contenido versions using a format like "front_content.php?idcat=1&amp;idart=2".<br />The URLs will be replaced by the plugin to Clean-URLs before sending the HTML output.', 'mod_rewrite');
+$oView->rewrite_urls_at_front_content_output_info2 = i18n('Differences to variant b.)', 'mod_rewrite');
+$oView->rewrite_urls_at_front_content_output_info3 = i18n("Still compatible to old modules/plugins, since no changes in codes are required\nAll occurring URLs in HTML code, even those set by wysiwyg, will be switched to Clean-URLs\nAll URLs will usually be collected and converted to Clean-URLs at once.<br />Doing it this way reduces the amount of executed database significantly.", 'mod_rewrite');
+$oView->rewrite_urls_at_front_content_output_info3 = '<li>' . str_replace("\n", '</li><li>', $oView->rewrite_urls_at_front_content_output_info3) . '</li>';
 
 
 ################################################################################

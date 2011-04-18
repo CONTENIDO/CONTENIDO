@@ -28,6 +28,10 @@
 
 
 var mrPlugin = {
+    lng: {
+        more_informations: "More informations"
+    },
+
     toggle: function(id) {
         // do some animation ;-)
         $('#' + id).slideToggle("slow");
@@ -68,7 +72,7 @@ var mrPlugin = {
     _initializeTooltip: function() {
         $(".mrPlugin a.i-link").each(function () {
             $(this).attr("href", "javascript:void(0);");
-            $(this).attr("title", "weitere Informationen zum Thema anzeigen");
+            $(this).attr("title", mrPlugin.lng.more_informations);
             var id = $(this).attr("id").substring(0, $(this).attr("id").indexOf("-link"));
             $(this).aToolTip({
                 clickIt:    true,

@@ -16,6 +16,9 @@
     // session-id
     var sid = "{SESSID}";
 
+    // setup translation
+    mrPlugin.lng.more_informations = "{LNG_MORE_INFORMATIONS}";
+
     // initialize page
     mrPlugin.initializeSettingsPage();
     // --></script>
@@ -218,7 +221,7 @@
 
 <!-- file extension -->
 <tr>
-    <td class="text_medium col-I">Dateiendung am Ende der URL</td>
+    <td class="text_medium col-I">{LNG_FILE_EXTENSION}</td>
     <td class="text_medium col-II" align="left">
         {FILE_EXTENSION_ERROR}
         <div class="blockLeft">
@@ -226,52 +229,43 @@
         </div>
         <a href="#" id="fileExtensionInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
         <div id="fileExtensionInfo1" style="display:none">
-            Angabe der Dateiendung mit einem vorangestellten Punkt,<br />
-            z. B. ".html" f&uuml;r http://host/foo/bar.html<br />
-            <br />
+            {LNG_FILE_EXTENSION_INFO}<br /><br />
             <strong>{LNG_NOTE}:</strong><br />
-            Falls die Option "Artikelname immer an die URLs anhängen" nicht gew&auml;hlt wurde, <br />
-            ist es zwingend notwending, dass hier eine Dateiendung angegeben wird.<br />
-            <br />
-            Sonst haben URLs zu Kategorien und zu Seiten das gleiche Format, und die korrekte<br />
-            Aufl&ouml;sung der Kategorie und/oder des Artikels kann nicht gew&auml;hrleistet werden.
+            {LNG_FILE_EXTENSION_INFO2}
         </div>
-        <p style="color:red">Aufgrund diverser Probleme, die noch nicht in dieser Version gel&ouml;st wurden konnten, sollte unbedingt eine Endung angegeben werden. Ohne eine angegebene Endung kann es zur fehlerhaften Erkennung der Artikel kommen.</p>
+        <p style="color:red">{LNG_FILE_EXTENSION_INFO3}</p>
     </td>
 </tr>
 
 <!-- use lowercase url -->
 <tr>
-    <td class="text_medium col-I">Sollen die URLs klein geschrieben werden?</td>
+    <td class="text_medium col-I">{LNG_USE_LOWERCASE_URI}</td>
     <td class="text_medium col-II" align="left">
         <input type="checkbox" id="mr_use_lowercase_uri" name="use_lowercase_uri" value="1"{USE_LOWERCASE_URI_CHK} />
-        <label for="mr_use_lowercase_uri">URLs in Kleinbuchstaben</label>
+        <label for="mr_use_lowercase_uri">{LNG_USE_LOWERCASE_URI_LBL}</label>
     </td>
 </tr>
 
 <!-- prevent duplicated content -->
 <tr>
-    <td class="text_medium col-I">Duplicated Content</td>
+    <td class="text_medium col-I">{LNG_PREVENT_DUPLICATED_CONTENT}</td>
     <td class="text_medium col-II" align="left">
         <div class="blockLeft">
-            <input type="checkbox" id="mr_prevent_duplicated_content" name="prevent_duplicated_content" value="1"{PREVENT_DUPLICATED_CONTENT_CHK} /> <label for="mr_prevent_duplicated_content">Duplicated Content verhindern</label><br />
+            <input type="checkbox" id="mr_prevent_duplicated_content" name="prevent_duplicated_content" value="1"{PREVENT_DUPLICATED_CONTENT_CHK} /> <label for="mr_prevent_duplicated_content">{LNG_PREVENT_DUPLICATED_CONTENT_LBL}</label><br />
         </div>
         <a href="#" id="preventDuplicatedContentInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
         <div id="preventDuplicatedContentInfo1" style="display:none">
-            Seiten werden je nach Konfiguration unter verschiedenen URLs gefunden, z. B.:<br />
+            {LNG_PREVENT_DUPLICATED_CONTENT_INFO}:<br />
             <ul>
-                <li>Name des Hauptbaumes in der URL: M&ouml;glich /hauptkategorie/unterkategorie/ und /unterkategorie/</li>
-                <li>Sprache in der URL: M&ouml;glich /deutsch/kategorie/ und /1/kategorie/</li>
-                <li>Mandant in der URL: M&ouml;glich /mandant/kategorie/ und /1/kategorie/</li>
+            {LNG_PREVENT_DUPLICATED_CONTENT_INFO2}
             </ul>
-            Das Aktivieren dieser Option unterbindet dies.
         </div>
     </td>
 </tr>
 
 <!-- category resolve min percentage -->
 <tr>
-    <td class="text_medium col-I">Prozentsatz f&uuml;r &Auml;hnliche Kategorie-Pfade in URLs</td>
+    <td class="text_medium col-I">{LNG_CATEGORY_RESOLVE_MIN_PERCENTAGE}</td>
     <td class="text_medium col-II" align="left">
         {CATEGORY_RESOLVE_MIN_PERCENTAGE_ERROR}
         <div class="blockLeft">
@@ -279,56 +273,43 @@
         </div>
         <a href="#" id="categoryResolveMinPercentageInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
         <div id="categoryResolveMinPercentageInfo1" style="display:none">
-            <p>Diese Einstellung bezieht sich nur auf den Kategorieteil einer URL. Ist AMR so konfiguriert, dass z. B. die<br />
-            Hauptnavigation und/oder Sprache sowie der Name des Mandanten an die URL vorangestellt wird, so wird der hier <br />
-            definierte Prozentsatz nicht auf diese Werte der URL angewendet.<br />
-            Eine ankommende URL wird von solchen Pr&auml;fixen entfernt, der &uuml;brig gebliebene Pfad (Urlpfad der Kategorie)<br />
-            wird auf die &Auml;hnlichkleit hin gepr&uuml;ft.</p>
+            <p>{LNG_CATEGORY_RESOLVE_MIN_PERCENTAGE_INFO}</p>
             <strong>{LNG_EXAMPLE}:</strong>
-            <pre class="example">100 = nur exakt geschriebene URLs finden zum Ziel, bereits ein falsch geschriebener
-Buchstabe f&uuml;hrt zu einem Fehler
-85  = URLs mit leichten Fehlern werden dennoch zur einer Kategorie geleitet
-0   = Fehlerseite wird nie angezeigt, es wird bei Fehlern auch zu Kategorien mit sehr
-      niedriger &Uuml;bereinstimmung geleitet</pre>
+            <pre class="example">{LNG_CATEGORY_RESOLVE_MIN_PERCENTAGE_EXAMPLE}</pre>
       </div>
     </td>
 </tr>
 
 <!-- redirect invalid article to errorsite -->
 <tr>
-    <td class="text_medium col-I">Weiterleitung bei ung&uuml;ltigen Artikeln</td>
+    <td class="text_medium col-I">{LNG_REDIRECT_INVALID_ARTICLE_TO_ERRORSITE}</td>
     <td class="text_medium col-II" align="left">
         <div class="blockLeft">
-            <input type="checkbox" id="mr_redirect_invalid_article_to_errorsite" name="redirect_invalid_article_to_errorsite" value="1"{REDIRECT_INVALID_ARTICLE_TO_ERRORSITE_CHK} /> <label for="mr_redirect_invalid_article_to_errorsite">Bei ung&uuml;ltigen Artikeln zur Fehlerseite weiterleiten</label><br />
+            <input type="checkbox" id="mr_redirect_invalid_article_to_errorsite" name="redirect_invalid_article_to_errorsite" value="1"{REDIRECT_INVALID_ARTICLE_TO_ERRORSITE_CHK} />
+            <label for="mr_redirect_invalid_article_to_errorsite">{LNG_REDIRECT_INVALID_ARTICLE_TO_ERRORSITE_LBL}</label><br />
         </div>
         <a href="#" id="redirectInvalidArticleToErrorsiteInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
         <div id="redirectInvalidArticleToErrorsiteInfo1" style="display:none">
-            Ist die Option nicht aktiv, wird die Startseite angezeigt
+            {LNG_REDIRECT_INVALID_ARTICLE_TO_ERRORSITE_INFO}
         </div>
     </td>
 </tr>
 
 <!-- rewrite urls at -->
 <tr>
-    <td class="text_medium col-I">Zeitpunkt zum Generieren der URLs</td>
+    <td class="text_medium col-I">{LNG_REWRITE_URLS_AT}</td>
     <td class="text_medium col-II" align="left">
         <div class="blockLeft">
             <input type="radio" id="rewrite_urls_at_front_content_output" name="rewrite_urls_at" value="front_content_output"{REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_CHK} />
-            <label for="rewrite_urls_at_front_content_output">a.) Bei der Ausgabe des HTML Codes der Seite</label>
+            <label for="rewrite_urls_at_front_content_output">{REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_LBL}</label>
         </div>
         <a href="#" id="rewriteUrlsAtInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
         <div id="rewriteUrlsAtInfo1" style="display:none;">
-            Die URLs werden bei der Ausgabe der Seite umschrieben. Module/Plugins k&ouml;nnen URLs zum Frontend, <br />
-            wie in fr&uuml;heren Versionen von Contenido &uuml;blich, nach dem Muster "front_content.php?idcat=1&amp;idart=2" <br />
-            ausgeben. Die URLs werden vom Plugin nach der Ausgabe des HTML-Outputs ersetzt.<br />
+            {REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_INFO}<br />
             <br />
-            <strong>Unterschiede zur Variante b.):</strong>
+            <strong>{REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_INFO2}:</strong>
             <ul>
-                <li>Weiterhin Kompatibel zu &auml;lteren Modulen/Plugins, da keine &Auml;nderungen am Code n&ouml;tig sind</li>
-                <li>S&auml;mtliche im HTML-Code vorkommende URLs, auch &uuml;ber wysiwyg gesetzte URLs, <br />
-                    werden auf Clean-URLs umgestellt</li>
-                <li>Alle umzuschreibenden URLs werden in der Regel "gesammelt" und auf eimmal umgeschreiben, <br />
-                    dadurch wird die Anzahl der DB-Abfragen sehr stark minimiert</li>
+            {REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_INFO3}
             </ul>
         </div>
         <br />

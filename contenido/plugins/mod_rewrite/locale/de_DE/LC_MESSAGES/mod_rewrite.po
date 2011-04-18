@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Contenido Plugin Advanced Mod Rewrite\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-15 00:56+0100\n"
-"PO-Revision-Date: 2011-04-15 00:56+0100\n"
+"POT-Creation-Date: 2011-04-19 00:31+0100\n"
+"PO-Revision-Date: 2011-04-19 00:32+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: Murat Purc <murat@purc.de>\n"
 "MIME-Version: 1.0\n"
@@ -111,6 +111,10 @@ msgstr "Konfiguration wurde <b>nicht</b> gespeichert, weil debugging aktiv ist"
 msgid "Configuration could not saved. Please check write permissions for %s "
 msgstr "Konfiguration konnte nicht gespeichert werden. &Uuml;berpr&uuml;fen Sie bitte die Schreibrechte f&uuml;r %s"
 
+#: contenido/plugins/mod_rewrite/classes/controller/class.modrewrite_controller_abstract.php:73
+msgid "More informations"
+msgstr "Weitere Informationen"
+
 #: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:173
 msgid "Version"
 msgstr "Version"
@@ -207,7 +211,7 @@ msgid "Start from root category"
 msgstr "Start vom Hauptbaum aus"
 
 #: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:203
-msgid "If enabled, the name of the root category (e. g. \"Mainnavigation\" in a Contenido default installation), will be prepended to the URL."
+msgid "If enabled, the name of the root category (e. g. \"Mainnavigation\" in a Contenido default installation), will be preceded to the URL."
 msgstr "Ist diese Option gew&auml;hlt, wird der Name des Hauptbaumes (Kategoriebaum, <br />z. B. \"Hauptnavigation\" bei Contenido Standardinstallation) der URL vorangestellt."
 
 #: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:205
@@ -313,7 +317,7 @@ msgid "Append article name to URLs"
 msgstr "Artikelname an URLs anh&auml;ngen"
 
 #: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:230
-msgid "Append article name allways to URLs (even at URLs to categories)"
+msgid "Append article name always to URLs (even at URLs to categories)"
 msgstr "Artikelname immer an die URLs anh&auml;ngen (auch bei URLs zu Kategorien)"
 
 #: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:231
@@ -321,6 +325,112 @@ msgid "Default article name without extension"
 msgstr "Standard-Artikelname ohne Dateiendung"
 
 #: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:232
-msgid "e. g. \"index\" for index.ext<br />In case od selected \"Append article name allways to URLs\" option and a empty field,<br />the name of the start article will be used"
+msgid "e. g. \"index\" for index.ext<br />In case of selected \"Append article name always to URLs\" option and a empty field,<br />the name of the start article will be used"
 msgstr "z. B. \"index\" f&uuml;r index.ext.<br />Wenn die Option \"Artikelname immer an die URLs anhängen\" aktiviert und das Feld leer ist,<br />wird der Name des Startartikels verwendet."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:234
+msgid "File extension at the end of the URL"
+msgstr "Dateiendung am Ende der URL"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:235
+msgid "Specification of file extension with a preceded dot<br />e.g. \".html\" for http://host/foo/bar.html"
+msgstr "Angabe der Dateiendung mit einem vorangestellten Punkt,<br />z. B. \".html\" f&uuml;r http://host/foo/bar.html"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:236
+msgid "It's strongly recommended to specify a extension here,<br />if the option \"Append article name always to URLs\" was not selected.<br /><br />Otherwise URLs to categories and articles would have the same format<br />which may result in unresolvable categories/articles in some cases."
+msgstr "Falls die Option \"Artikelname immer an die URLs anhängen\" nicht gew&auml;hlt wurde, <br />ist es zwingend notwending, dass hier eine Dateiendung angegeben wird.<br /><br />Sonst haben URLs zu Kategorien und zu Seiten das gleiche Format, und die korrekte<br />Aufl&ouml;sung der Kategorie und/oder des Artikels kann nicht gew&auml;hrleistet werden."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:237
+msgid "It's necessary to specify a file extension at the moment, due do existing issues, which are not solved until yet. An not defined extension may result in invalid article detection in some cases."
+msgstr "Aufgrund diverser Probleme, die noch nicht in dieser Version gel&ouml;st wurden konnten, sollte unbedingt eine Endung angegeben werden. Ohne eine angegebene Endung kann es zur fehlerhaften Erkennung der Artikel kommen."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:239
+msgid "Should the URLs be written in lower case?"
+msgstr "Sollen die URLs klein geschrieben werden?"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:240
+msgid "URLs in lower case"
+msgstr "URLs in Kleinbuchstaben"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:242
+msgid "Duplicated content"
+msgstr "Duplicated Content"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:243
+msgid "Prevent duplicated content"
+msgstr "Duplicated Content verhindern"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:245
+msgid "Depending on configuration, pages could be found thru different URLs.<br/>Enabling of this option prevents this. Examples for duplicated content"
+msgstr "Seiten werden je nach Konfiguration unter verschiedenen URLs gefunden.<br/>Das Aktivieren dieser Option unterbindet dies. Beispiele f&uuml;r duplicated Content"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:246
+msgid ""
+"Name of the root category in the URL: Feasible is /maincategory/subcategory/ and /subcategory/\n"
+"Language in the URL: Feasible is /german/category/ and /1/category/\n"
+"Client in the URL: Feasible is /client/category/ und /1/category/"
+msgstr ""
+"Name des Hauptbaumes in der URL: M&ouml;glich /hauptkategorie/unterkategorie/ und /unterkategorie/\n"
+"Sprache in der URL: M&ouml;glich /deutsch/kategorie/ und /1/kategorie/\n"
+"Mandant in der URL: M&ouml;glich /mandant/kategorie/ und /1/kategorie/"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:249
+msgid "Percentage for similar category paths in URLs"
+msgstr "Prozentsatz f&uuml;r &auml;hnliche Kategorie-Pfade in URLs"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:250
+msgid "This setting refers only to the category path of a URL. If AMR is configured<br />to prepend e. g. the root category, language and/or client to the URL,<br />the specified percentage will not applied to those parts of the URL.<br />A incoming URL will be cleaned from those values and the remaining path (urlpath of the category)<br />will be checked against similarities."
+msgstr "Diese Einstellung bezieht sich nur auf den Kategorieteil einer URL. Ist AMR so konfiguriert, dass z. B. die<br />Hauptnavigation und/oder Sprache sowie der Name des Mandanten an die URL vorangestellt wird, so wird der hier <br />definierte Prozentsatz nicht auf diese Werte der URL angewendet.<br />Eine ankommende URL wird von solchen Pr&auml;fixen entfernt, der &uuml;brig gebliebene Pfad (Urlpfad der Kategorie)<br />wird auf die &Auml;hnlichkleit hin gepr&uuml;ft."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:251
+msgid ""
+"100 = exact match with no tolerance\n"
+"85  = paths with little errors will match to similar ones\n"
+"0   = matching will work even for total wrong paths"
+msgstr ""
+"100 = exakte &uuml;berinstimmung, keine fehlertoleranz\n"
+"85  = pfade mit kleineren fehlern ergeben auch treffern\n"
+"0   = vollst&auml;ndig fehlerhafte pfade ergeben dennoch einen treffer"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:253
+msgid "Redirect in case of invalid articles"
+msgstr "Weiterleitung bei ung&uuml;ltigen Artikeln"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:254
+msgid "Redirect to error page in case of invaid articles"
+msgstr "Bei ung&uuml;ltigen Artikeln zur Fehlerseite weiterleiten"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:255
+msgid "The start page will be displayed if this option is not enabled"
+msgstr "Ist die Option nicht aktiv, wird die Startseite angezeigt"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:257
+msgid "Moment of URL generation"
+msgstr "Zeitpunkt zum Generieren der URLs"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:258
+msgid "a.) During the output of HTML code of the page"
+msgstr "a.) Bei der Ausgabe des HTML Codes der Seite"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:259
+msgid "Clean-URLs will be generated during page output. Modules/Plugins are able to generate URLs to frontend<br />as usual as in previous Contenido versions using a format like \"front_content.php?idcat=1&amp;idart=2\".<br />The URLs will be replaced by the plugin to Clean-URLs before sending the HTML output."
+msgstr "Clean-URLs werden bei der Ausgabe der Seite generiert. Module/Plugins k&ouml;nnen URLs zum Frontend, <br />wie in fr&uuml;heren Versionen von Contenido &uuml;blich, nach dem Muster \"front_content.php?idcat=1&amp;idart=2\" <br />ausgeben. Die URLs werden vom Plugin vor der Ausgabe des HTML-Outputs Clean-URLs ersetzt."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:260
+msgid "Differences to variant b.)"
+msgstr "Unterschiede zur Variante b.)"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:261
+msgid ""
+"Still compatible to old modules/plugins, since no changes in codes are required\n"
+"All occurring URLs in HTML code, even those set by wysiwyg, will be switched to Clean-URLs\n"
+"All URLs will usually be collected and converted to Clean-URLs at once.<br />Doing it this way reduces the amount of executed database significantly."
+msgstr ""
+"Weiterhin Kompatibel zu &auml;lteren Modulen/Plugins, da keine &Auml;nderungen am Code n&ouml;tig sind\n"
+"S&auml;mtliche im HTML-Code vorkommende URLs, auch &uuml;ber wysiwyg gesetzte URLs, <br />werden auf Clean-URLs umgestellt\n"
+"Alle umzuschreibenden URLs werden in der Regel \"gesammelt\" und auf eimmal umgeschreiben, <br />dadurch wird die Anzahl der DB-Abfragen sehr stark minimiert"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:264
+msgid "xxx"
+msgstr ""
 
