@@ -301,41 +301,31 @@
     <td class="text_medium col-II" align="left">
         <div class="blockLeft">
             <input type="radio" id="rewrite_urls_at_front_content_output" name="rewrite_urls_at" value="front_content_output"{REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_CHK} />
-            <label for="rewrite_urls_at_front_content_output">{REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_LBL}</label>
+            <label for="rewrite_urls_at_front_content_output">{LNG_REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_LBL}</label>
         </div>
         <a href="#" id="rewriteUrlsAtInfo1-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
         <div id="rewriteUrlsAtInfo1" style="display:none;">
-            {REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_INFO}<br />
+            {LNG_REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_INFO}<br />
             <br />
-            <strong>{REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_INFO2}:</strong>
+            <strong>{LNG_REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_INFO2}:</strong>
             <ul>
-            {REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_INFO3}
+            {LNG_REWRITE_URLS_AT_FRONT_CONTENT_OUTPUT_INFO3}
             </ul>
         </div>
         <br />
 
         <div class="blockLeft">
             <input type="radio" id="rewrite_urls_at_congeneratecode" name="rewrite_urls_at" value="congeneratecode"{REWRITE_URLS_AT_CONGENERATECODE_CHK} />
-            <label for="rewrite_urls_at_congeneratecode">b.) In Modulen oder Plugins</label><br />
+            <label for="rewrite_urls_at_congeneratecode">{LNG_REWRITE_URLS_AT_CONGENERATECODE_LBL}</label><br />
         </div>
         <a href="#" id="rewriteUrlsAtInfo2-link" title="" class="main i-link infoButton v2"></a><div class="clear"></div>
         <div id="rewriteUrlsAtInfo2" style="display:none;">
-            Bei dieser Option werden die URLs direkt in Modulen/Plugins des Codes der Seite umschrieben. Das bedeutet, <br />
-            dass alle internen URLs auf Kategorien/Artikel in den Modulausgaben ggf. manuell angepasst werden m&uuml;ssen. <br />
-            Die URLs sind dann in den Modulausgaben (seit Contenido 4.8.9) stets mit folgender Funktion auszugeben:<br />
-<pre class="example">// Aufbau einer normalen url
-$url = 'front_content.php?idart=123&amp;lang=2&amp;client=1';
+        {LNG_REWRITE_URLS_AT_CONGENERATECODE_INFO}<br />
+<pre class="example">{LNG_REWRITE_URLS_AT_CONGENERATECODE_EXAMPLE}</pre>
 
-// Erstellen der neuen Url &uuml;ber die Url-Builder Funktionalit&auml;t von Contenido (seit 4.8.9),
-// die die Parameter als assoziatives array erwartet
-$params = array('idart'=>123, 'lang'=>2, 'client'=>1);
-$newUrl = Contenido_Url::getInstance()->build($params);</pre>
-
-            <strong>Unterschiede zur Variante a.):</strong>
+            <strong>{LNG_REWRITE_URLS_AT_CONGENERATECODE_INFO2}:</strong>
             <ul>
-                <li>Der Standardweg um URLs zu Frontendseiten zu generieren</li>
-                <li>Jede URL in Modulen/Plugins ist vom UrlBuilder zu erstellen</li>
-                <li>F&uuml;r jede umzuschreibende URL ist eine Datenbankabfrage n&ouml;tig</li>
+            {LNG_REWRITE_URLS_AT_CONGENERATECODE_INFO3}
             </ul>
         </div>
     </td>
@@ -343,35 +333,16 @@ $newUrl = Contenido_Url::getInstance()->build($params);</pre>
 
 <!-- routing -->
 <tr>
-    <td class="text_medium col-I">Routing</td>
+    <td class="text_medium col-I">{LNG_REWRITE_ROUTING}</td>
     <td class="text_medium col-II" align="left">
-        <div class="blockLeft">
-            Routing Definitionen f&uuml;r eingehende URLs.
-        </div>
+        <div class="blockLeft">{LNG_REWRITE_ROUTING_INFO}</div>
         <a href="#" id="routingInfo1-link" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="routingInfo1" style="display:none">
-Pro Zeile eine Routing Definition wie folgt eingeben:
-<pre class="example"># {eingehende_url}>>>{neue_url}
-/eingehende_url/name.html>>>neue_url/neuer_name.html
-
-# bestimmte eingehende url zur einer seite weiterleiten
-/aktionen/20_prozent_auf_alles_ausser_tiernahrung.html>>>front_content.php?idcat=23
-
-# request zum wwwroot auf eine bestimmte seite routen
-/>>>front_content.php?idart=16</pre>
+{LNG_REWRITE_ROUTING_INFO2}
+<pre class="example">{LNG_REWRITE_ROUTING_EXAMPLE}</pre>
 <br />
             <ul>
-                <li>Das Routing schickt keinen HTTP Header mit einer Weiterleitung zur einen anderen Seite, die Umleitung findet intern <br />
-                    durch das Ersetzen der erkannten Eingangsseite gegen die neue Zielseite statt (Ersetzen der Artikel-/Kategorieid)</li>
-                <li>Eingehende URLs k&ouml;nnen auch nicht vorhandene Ressourcen (Kategorie, Artikel) sein, hinter der Ziel URL muss eine <br />
-                    g&uuml;ltige Contenido-Seite (Kategorie/Artikel) liegen</li>
-                <li>Als Ziel URL sollte eine reale URL zur Kategorie/Seite angegeben werden, <br />
-                    z. B. front_content.php?idcat=23 oder front_content.php?idart=34.</li>
-                <li>Bei mehrsprachigen Auftritten sollte die Id der Sprache angeh&auml;ngt werden, <br />
-                    z. B. front_content.php?idcat=23&amp;lang=1</li>
-                <li>Bei mehreren Mandanten im gleichen Verzeichnis sollte die Id des Mandanten angeh&auml;ngt werden,<br />
-                    z. B. front_content.php?idcat=23&amp;client=2</li>
-                <li>Die Zielurl sollte nicht mit '/' oder './' beginnen (falsch: /front_content.php, richtig: front_content.php)</li>
+            {LNG_REWRITE_ROUTING_INFO3}
             </ul>
         </div>
         <textarea class="txt" id="rewrite_routing" name="rewrite_routing" rows="5" cols="80" style="width:100%;height:100px;">{REWRITE_ROUTING}</textarea>
