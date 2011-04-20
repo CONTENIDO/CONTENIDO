@@ -275,6 +275,9 @@ $oView->lng_rewrite_routing_example = i18n("# {incoming_url}>>>{new_url}\n/incom
 $oView->lng_rewrite_routing_info3 = i18n("The routing does not sends a HTTP header redirection to the destination URL, the redirection will happen internally by<br />replacing the detected incoming URL against the new destination URL (overwriting of article- categoryid)\nIncoming URLs can point to non existing resources (category/article), but the desttination URLs should point<br />to valid Contenido articles/categories\nDestination URLs should point to real URLs to categories/articles,<br />e. g.front_content.php?idcat=23 or front_content.php?idart=34\nThe language id should attached to the URL in multi language sites<br />e. g. front_content.php?idcat=23&amp;lang=1\nThe client id should attached to the URL in multi client sites sharing the same folder<br />e. g. front_content.php?idcat=23&amp;client=2\nThe destination URL should not start with '/' or './' (wrong: /front_content.php, correct: front_content.php)", 'mod_rewrite');
 $oView->lng_rewrite_routing_info3 = '<li>' . str_replace("\n", '</li><li>', $oView->lng_rewrite_routing_info3) . '</li>';
 
+$oView->lng_discard_changes = i18n('Discard changes', 'mod_rewrite');
+$oView->lng_save_changes = i18n('Save changes', 'mod_rewrite');
+
 
 ################################################################################
 ##### Action processing

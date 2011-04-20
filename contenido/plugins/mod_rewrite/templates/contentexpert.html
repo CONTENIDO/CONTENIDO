@@ -34,7 +34,7 @@
 <body class="mrPlugin">
 
 <div class="headerBox">
-Plugin Funktionen
+{LNG_PLUGIN_FUNCTIONS}
 </div>
 
 {CONTENT_BEFORE}
@@ -56,71 +56,52 @@ Plugin Funktionen
 
 <!-- copy .htaccess -->
 <tr style="{COPY_HTACCESS_CSS}">
-    <td class="text_medium col-I">.htaccess Vorlage kopieren/downloaden</td>
+    <td class="text_medium col-I">{LNG_COPY_HTACCESS_TYPE}</td>
     <td class="text_medium col-II" align="left">
         {COPY_HTACCESS_ERROR}
 
-        <label for="mr_copy_htaccess_type">.htaccess Vorlage ausw&auml;hlen</label><br />
+        <label for="mr_copy_htaccess_type">{LNG_COPY_HTACCESS_TYPE_LBL}</label><br />
         <select class="blockLeft" name="htaccesstype" id="mr_copy_htaccess_type">
-            <option value="restrictive">Restriktive .htaccess</option>
-            <option value="simple">Einfache .htaccess</option>
+            <option value="restrictive">{LNG_COPY_HTACCESS_TYPE1}</option>
+            <option value="simple">{LNG_COPY_HTACCESS_TYPE2}</option>
         </select>
         <a href="#" id="copyHtaccessInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="copyHtaccessInfo1" style="display:none">
-<strong>Restriktive .htaccess:</strong><br />
-Enthält Regeln mit restriktiveren Einstellungen.<br />
-Alle Anfragen, die auf die Dateienendung js, ico, gif, jpg, jpeg, png, css, pdf gehen, werden vom<br />
-Umschreiben ausgeschlossen. Alle anderen Anfragen, werden an front_content.php umschrieben.<br />
-Ausgeschlossen davon sind 'contenido/', 'setup/', 'cms/upload', 'cms/front_content.php', usw.<br />
-Jede neue Ressource, die vom Umschreiben ausgeschlossen werden soll, muss explizit definiert werden.<br />
+<strong>{LNG_COPY_HTACCESS_TYPE1}:</strong><br />
+{LNG_COPY_HTACCESS_TYPE_INFO1}<br />
 <br />
-<strong>Einfache .htaccess:</strong><br />
-Enthält eine einfachere Sammlung an Regeln. Alle Anfragen, die auf g&uuml;ltige Symlinks, Verzeichnisse oder<br />
-Dateien gehen, werden vom Umschreiben ausgeschlossen. Restliche Anfragen werden an front_content.php<br />
-umschrieben.<br />
+<strong>{LNG_COPY_HTACCESS_TYPE2}:</strong><br />
+{LNG_COPY_HTACCESS_TYPE_INFO2}<br />
         </div>
 
         <div class="clear"></div>
         <br />
 
-        und kopieren in<br />
+        {LNG_COPY_HTACCESS_TO}<br />
         <br />
         <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('copyhtaccess', 'copy=contenido');">
-            <img src="images/collapsed.gif" width="10" height="9" alt="In das Contenido Installationsverzeichnis kopieren" /> das Contenido Installationsverzeichnis</a>
+            <img src="images/collapsed.gif" width="10" height="9" alt="" /> {LNG_COPY_HTACCESS_TO_CONTENIDO}</a>
         <a href="#" id="copyHtaccessInfo2-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="copyHtaccessInfo2" style="display:none">
-            Die gew&auml;hlte .htaccess Vorlage in das Contenido Installationsverzeichnis<br />
-            <br />
-            <strong>&nbsp;&nbsp;&nbsp;&nbsp;{CONTENIDO_FULL_PATH}</strong><br />
-            <br />
-            kopieren.<br />
-            Das ist die empfohlene Option f&uuml;r eine Contenido-Installation mit einem Mandanten oder<br />
-            mehreren Mandanten, die alle unter der gleichen Domain laufen.
+        {LNG_COPY_HTACCESS_TO_CONTENIDO_INFO}
         </div>
         <br />
 
         <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('copyhtaccess', 'copy=cms');">
-            <img src="images/collapsed.gif" width="10" height="9" alt="In das Mandantenverzeichnis kopieren" /> das Mandantenverzeichnis</a>
+            <img src="images/collapsed.gif" width="10" height="9" alt="" /> {LNG_COPY_HTACCESS_TO_CLIENT}</a>
         <a href="#" id="copyHtaccessInfo3-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="copyHtaccessInfo3" style="display:none">
-            Die gew&auml;hlte .htaccess Vorlage in das Mandantenerzeichnis<br />
-            <br />
-            <strong>&nbsp;&nbsp;&nbsp;&nbsp;{CLIENT_FULL_PATH}</strong><br />
-            <br />
-            kopieren.<br />
-            Diese Option ist z. B. bei einem Mehrmandantensystem empfohlen,<br />
-            wenn jeder Mandant unter einer eigenen Domain/Subdomain l&auml;uft.
+        {LNG_COPY_HTACCESS_TO_CLIENT_INFO}
         </div>
         <br />
 
-        oder<br />
+        {LNG_OR}<br />
         <br />
         <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('downloadhtaccess', '');">
-            <img src="images/collapsed.gif" width="10" height="9" alt="Downloaden" /> Downloaden</a>
+            <img src="images/collapsed.gif" width="10" height="9" alt="" /> {LNG_DOWNLOAD}</a>
         <a href="#" id="showHtaccessInfo-link1" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="showHtaccessInfo" style="display:none">
-            Die gew&auml;hlte .htaccess Vorlage downloaden um z. B. die Datei manuell<br />
-            in das Verzeichnis zu kopieren oder Einstellungen zu &uuml;bernehmen<br />
+        {LNG_DOWNLOAD_INFO}
         </div>
         <br />
 
@@ -131,30 +112,26 @@ umschrieben.<br />
 <!-- reset -->
 <tr>
     <td class="text_medium col-I">
-    Kategorie-/ und Artikel-Aliase zur&uuml;cksetzen
+    {LNG_RESETALIASES}
     </td>
     <td class="text_medium col-II">
         <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('resetempty', '');">
-            <img src="images/collapsed.gif" width="10" height="9" alt="Nur leere Aliase zur&uuml;cksetzen" /> Nur leere Aliase zur&uuml;cksetzen</a>
+            <img src="images/collapsed.gif" width="10" height="9" alt="" /> {LNG_RESETEMPTY_LINK}</a>
         <a href="#" id="resetAliasesInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="resetAliasesInfo1" style="display:none">
-            Nur leere Kategorie-/Artikelaliase initial setzen<br />
-            Vorhandene Aliase, z.B. vorher manuell gesetze Aliase werden nicht ge&auml;ndert.
+        {LNG_RESETEMPTY_INFO}
         </div>
         <br />
 
         <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('reset', '');">
-            <img src="images/collapsed.gif" width="10" height="9" alt="Alle Aliase zur&uuml;cksetzen" /> Alle Aliase zur&uuml;cksetzen</a>
+            <img src="images/collapsed.gif" width="10" height="9" alt="" /> {LNG_RESETALL_LINK}</a>
         <a href="#" id="resetAliasesInfo2-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
         <div id="resetAliasesInfo2" style="display:none">
-            Alle Kategorie-/Artikelaliase neu setzen.<br />
-            Vorhandene Aliase werden &uuml;berschrieben.
+        {LNG_RESETALL_INFO}
         </div>
         <br />
-        <strong>Hinweis:</strong><br />
-        Dieser Prozess kann je nach Anzahl der Kategorien/Artikel etwas Zeit in Anspruch nehmen.<br />
-        Die Aliase erhalten nicht die oben konfigurierten Separatoren, sondern die Contenido-Standardseparatoren '/' und '-', z. B. '/category-word/article-word'.<br />
-        Das Ausf&uuml;hren dieser Funktion kann Hilfreich sein, um s&auml;mtliche oder nur leere Aliase nachtr&auml;glich auf die Verwendung mit dem Plugin anzupassen.
+        <strong>{LNG_NOTE}:</strong><br />
+        {LNG_RESETALIASES_NOTE}
     </td>
 </tr>
 
@@ -162,8 +139,8 @@ umschrieben.<br />
 <tr>
     <td colspan="2" class="text_medium col-I" style="text-align:right">
         <a accesskey="c" href="main.php?area={AREA}&amp;frame=4&amp;idclient={IDCLIENT}&amp;contenido={SESSID}">
-            <img src="images/but_cancel.gif" alt="&Auml;nderungen verwerfen" title="&Auml;nderungen verwerfen" /></a>
-        <input style="margin-left:20px;" accesskey="s" type="image" src="images/but_ok.gif" alt="&Auml;nderungen speichern" title="&Auml;nderungen speichern" />
+            <img src="images/but_cancel.gif" alt="" title="{LNG_DISCARD_CHANGES}" /></a>
+        <input style="margin-left:20px;" accesskey="s" type="image" src="images/but_ok.gif" alt="" title="{LNG_SAVE_CHANGES}" />
     </td>
 </tr>
 </table>

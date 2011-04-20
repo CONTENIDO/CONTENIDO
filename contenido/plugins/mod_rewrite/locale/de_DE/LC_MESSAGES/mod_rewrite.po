@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Contenido Plugin Advanced Mod Rewrite\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-20 00:52+0100\n"
-"PO-Revision-Date: 2011-04-20 00:52+0100\n"
+"POT-Creation-Date: 2011-04-21 00:26+0100\n"
+"PO-Revision-Date: 2011-04-21 00:26+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: Murat Purc <murat@purc.de>\n"
 "MIME-Version: 1.0\n"
@@ -152,6 +152,7 @@ msgid "Plugin settings"
 msgstr "Plugineinstellungen"
 
 #: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:182
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:111
 msgid "Note"
 msgstr "Hinweis"
 
@@ -517,4 +518,184 @@ msgstr ""
 "Bei mehrsprachigen Auftritten sollte die Id der Sprache angeh&auml;ngt werden, <br />z. B. front_content.php?idcat=23&amp;lang=1\n"
 "Bei mehreren Mandanten im gleichen Verzeichnis sollte die Id des Mandanten angeh&auml;ngt werden,<br />z. B. front_content.php?idcat=23&amp;client=2\n"
 "Die Zielurl sollte nicht mit '/' oder './' beginnen (falsch: /front_content.php, richtig: front_content.php)"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:278
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:116
+msgid "Discard changes"
+msgstr "&Auml;nderungen verwerfen"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_content.php:279
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:117
+msgid "Save changes"
+msgstr "&Auml;nderungen speichern"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:68
+msgid "Plugin functions"
+msgstr "Plugin Funktionen"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:70
+msgid "Copy/Download .htaccess template"
+msgstr ".htaccess Vorlage kopieren/downloaden"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:71
+msgid "Select .htaccess template"
+msgstr ".htaccess Vorlage ausw&auml;hlen"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:72
+msgid "Restrictive .htaccess"
+msgstr "Restriktive .htaccess"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:73
+msgid "Simple .htaccess"
+msgstr "Einfache .htaccess"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:74
+msgid ""
+"Contains rules with restrictive settings.<br />\n"
+"All requests pointing to extension avi, css, doc, flv, gif, gzip, ico, jpeg, jpg, js, mov, <br />\n"
+"mp3, pdf, png, ppt, rar, txt, wav, wmv, xml, zip, will be excluded vom rewriting.<br />\n"
+"Remaining requests will be rewritten to front_content.php,<br />\n"
+"except requests to 'contenido/', 'setup/', 'cms/upload', 'cms/front_content.php', etc.<br />\n"
+"Each resource, which has to be excluded from rewriting must be specified explicitly."
+msgstr "Enthält Regeln mit restriktiveren Einstellungen.<br />Alle Anfragen, die auf die Dateienendung avi, css, doc, flv, gif, gzip, ico, jpeg, jpg, js, mov, <br />mp3, pdf, png, ppt, rar, txt, wav, wmv, xml, zip gehen, werden vom Umschreiben ausgeschlossen.<br />Alle anderen Anfragen, werden an front_content.php umschrieben.<br />Ausgeschlossen davon sind 'contenido/', 'setup/', 'cms/upload', 'cms/front_content.php', usw.<br />Jede neue Ressource, die vom Umschreiben ausgeschlossen werden soll, muss explizit definiert werden."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:81
+msgid ""
+"Contains a sipmle collection of rules. Each requests pointing to valid symlinks, folders or<br />\n"
+"files, will be excluded from rewriting. Remaining requests will be rewritten to front_content.php"
+msgstr "Enthält eine einfachere Sammlung an Regeln. Alle Anfragen, die auf g&uuml;ltige Symlinks, Verzeichnisse oder<br />Dateien gehen, werden vom Umschreiben ausgeschlossen. Restliche Anfragen werden an front_content.php<br />umschrieben."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:84
+msgid "and copy to"
+msgstr "und kopieren in"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:85
+msgid "Contenido installation directory"
+msgstr "das Contenido Installationsverzeichnis"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:86
+msgid ""
+"Copy the selected .htaccess template into Contenido installation directory<br />\n"
+"<br />\n"
+"&nbsp;&nbsp;&nbsp;&nbsp;{CONTENIDO_FULL_PATH}.<br />\n"
+"<br />\n"
+"This is the recommended option for a Contenido installation with one or more clients<br />\n"
+"who are running on the same domain."
+msgstr ""
+"Die gew&auml;hlte .htaccess Vorlage in das Contenido Installationsverzeichnis<br />\n"
+"<br />\n"
+"&nbsp;&nbsp;&nbsp;&nbsp;{CONTENIDO_FULL_PATH}<br />\n"
+"<br />\n"
+"kopieren.<br />\n"
+"Das ist die empfohlene Option f&uuml;r eine Contenido-Installation mit einem Mandanten oder<br />\n"
+"mehreren Mandanten, die alle unter der gleichen Domain laufen."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:93
+msgid "client directory"
+msgstr "das Mandantenverzeichnis"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:94
+msgid ""
+"Copy the selected .htaccess template into client's directory<br />\n"
+"<br />\n"
+"&nbsp;&nbsp;&nbsp;&nbsp;{CLIENT_FULL_PATH}.<br />\n"
+"<br />\n"
+"This is the recommended option for a multiple client system<br />\n"
+"where each client has it's own domain/subdomain"
+msgstr ""
+"Die gew&auml;hlte .htaccess Vorlage in das Mandantenerzeichnis<br />\n"
+"<br />\n"
+"&nbsp;&nbsp;&nbsp;&nbsp;{CLIENT_FULL_PATH}<br />\n"
+"<br />\n"
+"kopieren.<br />\n"
+"Diese Option ist z. B. bei einem Mehrmandantensystem empfohlen,<br />\n"
+"wenn jeder Mandant unter einer eigenen Domain/Subdomain l&auml;uft."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:101
+msgid "or"
+msgstr "oder"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:102
+msgid "Download"
+msgstr "Downloaden"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:103
+msgid ""
+"Download selected .htaccess template to copy it to the destination folder<br />\n"
+"or to take over the settings manually."
+msgstr ""
+"Die gew&auml;hlte .htaccess Vorlage downloaden um z. B. die Datei manuell<br />\n"
+"in das Verzeichnis zu kopieren oder Einstellungen zu &uuml;bernehmen."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:106
+msgid "Reset category-/ and article aliases"
+msgstr "Kategorie-/ und Artikel-Aliase zur&uuml;cksetzen"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:107
+msgid "Reset only empty aliases"
+msgstr "Nur leere Aliase zur&uuml;cksetzen"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:108
+msgid "Only empty aliases will be reset, existing aliases, e. g. manually set aliases, will not be changed."
+msgstr "Nur leere Kategorie-/Artikelaliase initial setzen<br />Vorhandene Aliase, z.B. vorher manuell gesetze Aliase werden nicht ge&auml;ndert."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:109
+msgid "Reset all aliases"
+msgstr "Alle Aliase zur&uuml;cksetzen"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:110
+msgid "Reset all category-/article aliases. Existing aliases will be overwritten."
+msgstr "Alle Kategorie-/Artikelaliase neu setzen.<br />Vorhandene Aliase werden &uuml;berschrieben."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php:112
+msgid ""
+"This process could require some time depending on amount of categories/articles.<br />\n"
+"The aliases will not contain the configured plugin separators, but the Contenido default separators '/' und '-', e. g. '/category-word/article-word'.<br />\n"
+"Execution of this function ma be helpful to prepare all or empty aliases for the usage by the plugin."
+msgstr ""
+"Dieser Prozess kann je nach Anzahl der Kategorien/Artikel etwas Zeit in Anspruch nehmen.<br />\n"
+"Die Aliase erhalten nicht die oben konfigurierten Separatoren, sondern die Contenido-Standardseparatoren '/' und '-', z. B. '/category-word/article-word'.<br />\n"
+"Das Ausf&uuml;hren dieser Funktion kann Hilfreich sein, um s&auml;mtliche oder nur leere Aliase nachtr&auml;glich auf die Verwendung mit dem Plugin anzupassen."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contenttest.php:61
+msgid "Define options to genereate the URLs by using the form below and run the test."
+msgstr "Optionen zum Generieren der URLs im folgenden Formular setzen und den Test starten."
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contenttest.php:62
+msgid "Parameter to use"
+msgstr "Zu verwendende Parameter"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contenttest.php:63
+msgid "Number of URLs to generate"
+msgstr "Anzahl der zu generierenden URLs"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contenttest.php:64
+msgid "Run test"
+msgstr "Test starten"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contenttest.php:66
+msgid ""
+"{pref}<strong>{name}</strong>\n"
+"{pref}Builder in:    {url_in}\n"
+"{pref}Builder out:   {url_out}\n"
+"{pref}<span style=\"color:{color}\">Resolved URL:  {url_res}</span>\n"
+"{pref}Resolved data: {data}"
+msgstr ""
+"{pref}<strong>{name}</strong>\n"
+"{pref}Builder Eingang:   {url_in}\n"
+"{pref}Builder Ausgang:   {url_out}\n"
+"{pref}<span style=\"color:{color}\">Aufgel&ouml;ste URL:    {url_res}</span>\n"
+"{pref}Aufgel&ouml;ste Daten:  {data}"
+
+#: contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contenttest.php:72
+msgid ""
+"Duration of test run: {time} seconds.<br />\n"
+"Number of processed URLs: {num_urls}<br />\n"
+"<span style=\"color:green\">Successful resolved: {num_success}</span><br />\n"
+"<span style=\"color:red\">Errors during resolving: {num_fail}</span></strong>"
+msgstr ""
+"Dauer des Testdurchlaufs: {time} Sekunden.<br />\n"
+"Anzahl verarbeiteter URLs: {num_urls}<br />\n"
+"<span style=\"color:green\">Erfolgreich aufgel&ouml;st: {num_success}</span><br />\n"
+"<span style=\"color:red\">Fehler beim Aufl&ouml;sen: {num_fail}</span></strong>"
 

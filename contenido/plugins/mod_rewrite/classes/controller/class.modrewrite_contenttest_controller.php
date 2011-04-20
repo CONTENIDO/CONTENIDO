@@ -131,21 +131,28 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
 
             $pref   = str_repeat('    ', $v['level']);
 
-            $this->_oView->content .= "\n"
-                . $pref . '<strong>' . $v['name'] . '</strong>' . "\n"
-                . $pref . 'Builder Eingang:   ' . $v['url'] . "\n"
-#                . $pref . 'Builder Ausgang:   <a href="' . $url . '" target="_blank">' . $url . '</a>' . "\n"
-                . $pref . 'Builder Ausgang:   ' . $url . "\n"
-                . $pref . '<span style="color:' . $color . '">Aufgel&ouml;ste URL:    ' . $resUrl . "</span>\n"
-                . $pref . 'Aufgel&ouml;ste Daten:  ' . $oMRTest->getReadableResolvedData($arr) . "\n";
+            // render resolve information for current item
+            $itemTpl = $this->_oView->lng_result_item_tpl;
+            $itemTpl = str_replace('{pref}', $pref, $itemTpl);
+            $itemTpl = str_replace('{name}', $v['name'], $itemTpl);
+            $itemTpl = str_replace('{url_in}', $v['url'], $itemTpl);
+            $itemTpl = str_replace('{url_out}', $url, $itemTpl);
+            $itemTpl = str_replace('{color}', $color, $itemTpl);
+            $itemTpl = str_replace('{url_res}', $resUrl, $itemTpl);
+            $itemTpl = str_replace('{data}', $oMRTest->getReadableResolvedData($arr), $itemTpl);
+
+            $this->_oView->content .= "\n" . $itemTpl . "\n";
         }
         $this->_oView->content .= '</pre>';
 
         $totalTime = sprintf('%.4f', (getmicrotime() - $startTime));
-        $msg = '<strong>Dauer des Testdurchlaufs: ' . $totalTime . ' Sekunden.<br />'
-              . 'Anzahl verarbeiteter URLs: ' . ($successCounter + $failCounter) . '<br />'
-              . '<span style="color:green">Erfolgreich aufgel&ouml;st: ' . ($successCounter) . '</span><br />'
-              . '<span style="color:red">Fehler beim Aufl&ouml;sen: ' . ($failCounter) . '</span></strong><br /><br />';
+
+        // render information about current test
+        $msg = $this->_oView->lng_result_message_tpl;
+        $msg = str_replace('{time}', $totalTime, $msg);
+        $msg = str_replace('{num_urls}', ($successCounter + $failCounter), $msg);
+        $msg = str_replace('{num_success}', $successCounter, $msg);
+        $msg = str_replace('{num_fail}', $failCounter, $msg);
 
         $this->_oView->content = $msg . $this->_oView->content;
 
