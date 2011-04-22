@@ -75,7 +75,7 @@ function doMySQLConnect ($host, $username, $password)
 
 function getSetupMySQLDBConnection($full = true)
 {
-    if ($type === false) {
+    if ($full === false) {
         // host, user and password
         $aOptions = array(
             'connection' => array(
