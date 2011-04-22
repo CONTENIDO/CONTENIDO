@@ -26,6 +26,8 @@
  *   modified 2009-12-18, Murat Purc, Replaced mysql_list_fields() against a SQL statement, see [#CON-262]
  *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
  *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
+ *   modified 2011-04-22, Murat Purc, Connect to DB server without database and more 
+ *                                    readable connection settings.
  *
  *   $Id$:
  * }}
@@ -58,24 +60,28 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _connect()
     {
-        extract($this->_aDbCfg['connection']);
+        $aCon = $this->_aDbCfg['connection'];
+        if (!isset($aCon['host']) || !isset($aCon['user']) || !isset($aCon['password'])) {
+            $this->halt('MySQL _connect() Connection settings not complete');
+            return null;
+        }
 
         // establish connection, select database
-        $dbh = @mysql_connect($host, $user, $password);
+        $dbh = @mysql_connect($aCon['host'], $aCon['user'], $aCon['password']);
         if (!$dbh || !is_resource($dbh)) {
             $this->halt('MySQL _connect() Failed');
             return null;
         }
 
-        if ($database != '') {
-            if (!@mysql_select_db($database, $dbh)) {
-                $this->halt('MySQL _connect() Cannot use database ' . $database);
+        if (isset($aCon['database'])) {
+            if (!@mysql_select_db($aCon['database'], $dbh)) {
+                $this->halt('MySQL _connect() Cannot use database ' . $aCon['database']);
                 return null;
             }
+            $this->Database = $aCon['database'];
         }
 
-        $this->Database = $database;
-        $this->User     = $user;
+        $this->User = $aCon['user'];
 
         return $dbh;
     }

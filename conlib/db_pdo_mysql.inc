@@ -24,6 +24,8 @@
  * {@internal
  *   created  2011-02-28
  *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
+ *   modified 2011-04-22, Murat Purc, Connect to DB server without database and more 
+ *                                    readable connection settings.
  *
  *   $Id: $:
  * }}
@@ -79,17 +81,25 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _connect()
     {
-        extract($this->_aDbCfg['connection']);
+        $aCon = $this->_aDbCfg['connection'];
+        if (!isset($aCon['host']) || !isset($aCon['user']) || !isset($aCon['password'])) {
+            $this->halt('MySQL _connect() Connection settings not complete');
+            return null;
+        }
 
-        $dsn = 'mysql:dbname=' . $database . ';host=' . $host;
+        $dsn = 'mysql:';
+        if (isset($aCon['database'])) {
+            $dsn .= 'dbname=' . $aCon['database'] . ';';
+        }
+        $dsn .= 'host=' . $aCon['host'];
 
-        if (!isset($driver_options) || !is_array($driver_options)) {
-            $driver_options = array();
+        if (!isset($aCon['driver_options']) || !is_array($aCon['driver_options'])) {
+            $aCon['driver_options'] = array();
         }
 
         try {
             // Create a new PDO connection
-            $dbh = new PDO($dsn, $user, $password, $driver_options);
+            $dbh = new PDO($dsn, $aCon['user'], $aCon['password'], $aCon['driver_options']);
         } catch (PDOException $e) {
             $this->Errno = $e->getCode();
             $this->Error = $e->getMessage();
@@ -100,8 +110,10 @@ class DB_Sql extends DB_Sql_Abstract
             return null;
         }
 
-        $this->Database = $database;
-        $this->User     = $user;
+        if (isset($aCon['database'])) {
+            $this->Database = $aCon['database'];
+        }
+        $this->User = $aCon['user'];
 
         return $dbh;
     }

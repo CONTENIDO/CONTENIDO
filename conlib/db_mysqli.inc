@@ -26,6 +26,8 @@
  *   modified 2009-12-29, Murat Purc, replaced is_resource() against mysqli compatible check [#CON-290]
  *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
  *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
+ *   modified 2011-04-22, Murat Purc, Connect to DB server without database and more 
+ *                                    readable connection settings.
  *
  *   $Id$:
  * }}
@@ -89,7 +91,7 @@ class DB_Sql extends DB_Sql_Abstract
         // - $options['connection']['flags']  (int)  Optional, flags
         // see http://www.php.net/manual/en/mysqli.real-connect.php
 
-        extract($this->_aDbCfg['connection']);
+//        extract($this->_aDbCfg['connection']);
 
         if (!extension_loaded('mysqli')) {
             $this->halt('MySQLi _connect() extension not loaded!');
@@ -102,39 +104,49 @@ class DB_Sql extends DB_Sql_Abstract
             return null;
         }
 
+        $aCon = $this->_aDbCfg['connection'];
+        if (!isset($aCon['host']) || !isset($aCon['user']) || !isset($aCon['password'])) {
+            $this->halt('MySQLi _connect() Connection settings not complete');
+            return null;
+        }
+
         // set existing option flags
-        if (isset($options) && is_array($options)) {
-            foreach ($options as $optKey => $optVal) {
+        if (isset($aCon['options']) && is_array($aCon['options'])) {
+            foreach ($aCon['options'] as $optKey => $optVal) {
                 mysqli_options($dbh, $optKey, $optVal);
             }
         }
 
-        if (($iPos = strpos($host, ':')) !== false) {
-            list($host, $port) = explode(':', $host);
+        if (($iPos = strpos($aCon['host'], ':')) !== false) {
+            list($aCon['host'], $aCon['port']) = explode(':', $aCon['host']);
         } else {
-            $port = null;
+            $aCon['port'] = null;
         }
 
-        if (!isset($socket)) {
-            $socket = null;
+        if (!isset($aCon['socket'])) {
+            $aCon['socket'] = null;
         }
-        if (!isset($flags)) {
-            $flags = null;
+        if (!isset($aCon['flags'])) {
+            $aCon['flags'] = null;
+        }
+        if (!isset($aCon['database'])) {
+            $aCon['database'] = null;
         }
 
         $res = mysqli_real_connect(
-            $dbh, $host, $user, $password, $database, $port, $socket, $flags
+            $dbh, $aCon['host'], $aCon['user'], $aCon['password'], $aCon['database'], 
+            $aCon['port'], $aCon['socket'], $aCon['flags']
         );
 
-        if ($res && $dbh) {
-            if (!@mysqli_select_db($dbh, $database)) {
-                $this->halt('MySQLi _connect() Cannot use database ' . $database);
+        if ($res && $dbh && $aCon['database']) {
+            if (!@mysqli_select_db($dbh, $aCon['database'])) {
+                $this->halt('MySQLi _connect() Cannot use database ' . $aCon['database']);
                 return null;
             }
+            $this->Database = $aCon['database'];
         }
 
-        $this->Database = $database;
-        $this->User     = $user;
+        $this->User = $aCon['user'];
 
         return $dbh;
     }
