@@ -546,8 +546,8 @@ else {
 		  					);
 							</script>';
 
-			$tpl->set('s', 'CHOOSEEND', '<img src="images/calendar.gif" width="16" height="16" style="vertical-align:top;margin-top:2px;" id="trigger_end" alt="'.i18n("Endzeitpunkt wählen").'">'.$sCalEndInit);
-			$tpl->set('s', 'CHOOSESTART', '<img src="images/calendar.gif" width="16" height="16" style="vertical-align:top;margin-top:2px;" id="trigger_start" alt="'.i18n("Startzeitpunkt wählen").'">'.$sCalStartInit);
+			$tpl->set('s', 'CHOOSEEND', '<img src="images/calendar.gif" width="16" height="16" style="vertical-align:top;margin-top:2px;" id="trigger_end" alt="'.i18n("Choose Startdate").'">'.$sCalEndInit);
+			$tpl->set('s', 'CHOOSESTART', '<img src="images/calendar.gif" width="16" height="16" style="vertical-align:top;margin-top:2px;" id="trigger_start" alt="'.i18n("Choose Enddate").'">'.$sCalStartInit);
 		} else {
 			$allow_usetimemgmt = ' disabled="disabled"';
 			$tpl->set('s', 'CHOOSEEND', '');

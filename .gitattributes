@@ -1153,6 +1153,7 @@ contenido/includes/rights_str.inc.php -text
 contenido/includes/rights_tpl.inc.php -text
 contenido/includes/startup.php -text
 contenido/index.php -text
+contenido/locale/contenido.pot -text
 contenido/locale/de_DE/LC_MESSAGES/contenido.mo -text
 contenido/locale/de_DE/LC_MESSAGES/contenido.po -text
 contenido/locale/en_US/LC_MESSAGES/contenido.mo -text
@@ -1169,6 +1170,7 @@ contenido/locale/it_IT/LC_MESSAGES/contenido.po -text
 contenido/locale/nl_NL/LC_MESSAGES/contenido.mo -text
 contenido/locale/nl_NL/LC_MESSAGES/contenido.po -text
 contenido/locale/nl_NL/LC_MESSAGES/contenido.po.poedit -text
+contenido/locale/potfiles.txt svneol=native#text/plain
 contenido/logout.php -text
 contenido/logs/index.php -text
 contenido/main.loginform.php -text
