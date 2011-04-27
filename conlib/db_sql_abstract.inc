@@ -466,7 +466,7 @@ abstract class DB_Sql_Abstract
      * @param   int  $pos  The positon to move to inside the current result set
      * @return  void
      */
-    abstract public function seek($pos);
+    abstract public function seek($pos = 0);
 
 
     /**
