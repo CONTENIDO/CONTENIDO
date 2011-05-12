@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call
  *   modified 2008-06-30, Dominik Ziegler, fixed bug CON-143, added new header
  *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2011-05-12, Dominik Ziegler, forced include of startup.php [#CON-390]
  *
  *   $Id$:
  * }}
@@ -35,11 +36,7 @@ if (!defined("CON_FRAMEWORK")) {
 }
 
 // Contenido startup process
-if (isset($cfg['path']['contenido'])) {
-	include_once ($cfg['path']['contenido'] . $cfg['path']['includes'] . 'startup.php');
-} else {
-	include_once ('../includes/startup.php');
-}
+include_once ('../includes/startup.php');
 
 global $cfg, $client;
 

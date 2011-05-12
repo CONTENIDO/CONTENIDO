@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.5.1
+ * @version    1.5.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,6 +21,7 @@
  * {@internal 
  *   created  2003-05-26
  *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2011-05-12, Dominik Ziegler, forced include of startup.php [#CON-390]
  *   
  *   $Id: advance_workflow.php,v 1.5 2004/06/17 15:06:08 timo.hummel Exp $
  * }}
@@ -32,11 +33,7 @@ if (!defined("CON_FRAMEWORK")) {
 }
 
 // Contenido startup process
-if (isset($cfg['path']['contenido'])) {
-	include_once ($cfg['path']['contenido'] . $cfg['path']['includes'] . 'startup.php');
-} else {
-	include_once ('../includes/startup.php');
-}
+include_once ('../includes/startup.php');
 
 cInclude("includes", "cfg_language_de.inc.php");
 cInclude("includes", "functions.con.php");
