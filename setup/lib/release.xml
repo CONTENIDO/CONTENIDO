@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <release>
-	<version>4.6.13</version>
+	<version>4.8.16-RC1</version>
 	<sqlfiles sourceprefix="con" targetprefix="!PREFIX!" linesperfile="200">
 		<rules group="sysadmin">
 			<rule file="sysadmin">
