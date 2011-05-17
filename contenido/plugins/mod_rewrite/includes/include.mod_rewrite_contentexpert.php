@@ -35,9 +35,9 @@ defined('CON_FRAMEWORK') or die('Illegal call');
 ################################################################################
 ##### Initialization
 
-if (!isset($client) || (int) $client <= 0) {
-    // no client, get out here...
-    return;
+if ((int) $client == 0) {
+	$notification->displayNotification("error", i18n("No Client selected"));
+	exit;
 }
 
 plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_contentexpert_controller.php');
