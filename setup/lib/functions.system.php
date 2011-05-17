@@ -10,7 +10,7 @@
  * 
  *
  * @package    Contenido Backend <Area>
- * @version    0.2
+ * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
  *   modified 2008-07-08  Thorsten Granz, added option to disable menu hover effect. clicking is now possible again
+ *   modified 2011-05-17, Ortwin Pinke, cleanup and bugfixing
  *
  *   $Id$:
  * }}
@@ -80,37 +81,42 @@ function checkExistingPlugin($db, $sPluginname) {
     return false;
 }
 
+/**
+ *
+ * @param DB_Contenido $db
+ * @param string $table db-table name
+ */
 function updateSystemProperties($db, $table) {
-    $aStandardvalues = array ( array('type' => 'pw_request', 'name' => 'enable', 'value' => 'true'),
-                               array('type' => 'system', 'name' => 'mail_sender_name', 'value' => 'info%40contenido.org'),
-                               array('type' => 'system', 'name' => 'mail_sender', 'value' => 'Contenido+Backend'),
-                               array('type' => 'system', 'name' => 'mail_host', 'value' => 'localhost'),
-                               array('type' => 'maintenance', 'name' => 'mode', 'value' => 'disabled'),
-                               array('type' => 'edit_area', 'name' => 'activated', 'value' => 'true'),
-							   array('type' => 'update', 'name' => 'check', 'value' => 'false'),
-                               array('type' => 'update', 'name' => 'news_feed', 'value' => 'false'),
-							   array('type' => 'update', 'name' => 'check_period', 'value' => '60'),
-							   array('type' => 'system', 'name' => 'clickmenu', 'value' => 'false'),
-                               array('type' => 'versioning', 'name' => 'activated', 'value' => 'true'),
-                               array('type' => 'versioning', 'name' => 'prune_limit', 'value' => '0'),
-                               array('type' => 'versioning', 'name' => 'path', 'value' => ''),
-							   array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => 'true')
+    $aStandardvalues = array (  array('type' => 'pw_request', 'name' => 'enable', 'value' => 'true'),
+                                array('type' => 'system', 'name' => 'mail_sender_name', 'value' => 'info%40contenido.org'),
+                                array('type' => 'system', 'name' => 'mail_sender', 'value' => 'Contenido+Backend'),
+                                array('type' => 'system', 'name' => 'mail_host', 'value' => 'localhost'),
+                                array('type' => 'maintenance', 'name' => 'mode', 'value' => 'disabled'),
+                                array('type' => 'edit_area', 'name' => 'activated', 'value' => 'true'),
+                                array('type' => 'update', 'name' => 'check', 'value' => 'false'),
+                                array('type' => 'update', 'name' => 'news_feed', 'value' => 'false'),
+                                array('type' => 'update', 'name' => 'check_period', 'value' => '60'),
+                                array('type' => 'system', 'name' => 'clickmenu', 'value' => 'false'),
+                                array('type' => 'versioning', 'name' => 'activated', 'value' => 'true'),
+                                array('type' => 'versioning', 'name' => 'prune_limit', 'value' => '0'),
+                                array('type' => 'versioning', 'name' => 'path', 'value' => ''),
+                                array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => 'true')
                               );
  
     foreach ($aStandardvalues as $aData) {
-    	$sql = "SELECT value FROM %s WHERE type='".$aData['type']."' AND name='".$aData['name']."'";
-    	$db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db)));
-    	if ($db->next_record()) {
-			$sValue = $db->f('value');
-			if ($sValue == '') {
-				$sql = "UPDATE %s SET value = '%s' WHERE type='%s' AND name='%s'";
-            	$db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db), $aData['value'], $aData['type'], $aData['name']));
-			}
-    	} else {
-    		$id = $db->nextid($table);
-    		$sql = "INSERT INTO %s SET idsystemprop = '%s', type='%s', name='%s', value='%s'";
+        $sql = "SELECT value FROM %s WHERE type='".$aData['type']."' AND name='".$aData['name']."'";
+        $db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db)));
+        if ($db->next_record()) {
+            $sValue = $db->f('value');
+            if ($sValue == '') {
+                $sql = "UPDATE %s SET value = '%s' WHERE type='%s' AND name='%s'";
+                $db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db), $aData['value'], $aData['type'], $aData['name']));
+            }
+        } else {
+            $id = $db->nextid($table);
+            $sql = "INSERT INTO %s SET idsystemprop = '%s', type='%s', name='%s', value='%s'";
             $db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db), $id, $aData['type'], $aData['name'], $aData['value']));
-    	}
+        }
     }
 }
 

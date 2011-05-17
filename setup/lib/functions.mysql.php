@@ -9,7 +9,7 @@
  * @con_php_req 5
  *
  * @package    Contenido Backend <Area>
- * @version    0.3
+ * @version    0.3.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   modified 2008-07-07, bilal arslan, added security fix
  *   modified 2011-02-07, Dominik Ziegler, changed "TYPE" attribute to "ENGINE" for MySQL 5.5+ support
  *   modified 2011-03-21, Murat Purc, new method getSetupMySQLDBConnection() and usage of new db connection
+ *   modified 2011-05-17, Ortwin Pinke, bug fixed in getSetupMySQLDBConnection(), sequenceTable has to be set in conf-array
  *
  *   $Id$:
  * }}
@@ -81,8 +82,9 @@ function getSetupMySQLDBConnection($full = true)
             'connection' => array(
                 'host'     => $_SESSION["dbhost"],
                 'user'     => $_SESSION["dbuser"],
-                'password' => $_SESSION["dbpass"],
+                'password' => $_SESSION["dbpass"]
             ),
+            'sequenceTable'  => $_SESSION['dbprefix'].'_sequence'
         );
     } else {
         // host, database, user and password
@@ -91,8 +93,9 @@ function getSetupMySQLDBConnection($full = true)
                 'host'     => $_SESSION["dbhost"],
                 'database' => $_SESSION["dbname"],
                 'user'     => $_SESSION["dbuser"],
-                'password' => $_SESSION["dbpass"],
+                'password' => $_SESSION["dbpass"]
             ),
+            'sequenceTable'  => $_SESSION['dbprefix'].'_sequence'
         );
     }
     $db = new DB_Contenido($aOptions);

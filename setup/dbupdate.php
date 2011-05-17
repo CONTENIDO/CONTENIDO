@@ -11,7 +11,7 @@
  * @con_php_req 5
  *
  * @package    Contenido setup
- * @version    0.2.1
+ * @version    0.2.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,6 +25,7 @@
  *   modified 2011-02-24, Murat Purc, extended mysql extension detection
  *   modified 2011-02-28, Murat Purc, normalized setup startup process and some cleanup/formatting
  *   modified 2011-03-21, Murat Purc, usage of new db connection
+ *   modified 2011-05-17, Ortwin Pinke, del sequencetable cfg, has to be set in connect-function
  *
  *   $Id$:
  * }}
@@ -55,9 +56,6 @@ if (hasMySQLiExtension() && !hasMySQLExtension()) {
 }
 
 checkAndInclude('../conlib/prepend.php');
-
-// Workaround for the 'bad' conlib functions
-$cfg['tab']['sequence'] = $_SESSION['dbprefix'].'_sequence';
 
 $db = getSetupMySQLDBConnection(false);
 
