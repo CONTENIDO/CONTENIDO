@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido database
- * @version    0.2.1
+ * @version    0.2.2
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -28,6 +28,7 @@
  *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
  *   modified 2011-04-22, Murat Purc, Connect to DB server without database and more 
  *                                    readable connection settings.
+ *   modified 2011-05-17, Ortwin Pinke, bugfix in methode nextid().
  *
  *   $Id$:
  * }}
@@ -227,9 +228,12 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::num_fields()
+     * get next possible id for requested db-table and update sequence table
+     *
+     * @param string $seq_name name of db-table to get nextid
+     * @return int  nextid for requested table or 0 if an error occured
      */
-    public function nextid($nextid)
+    public function nextid($seq_name)
     {
         $this->connect();
 
