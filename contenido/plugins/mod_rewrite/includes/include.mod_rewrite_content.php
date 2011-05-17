@@ -20,7 +20,8 @@
  * @since      file available since Contenido release 4.8.15
  *
  * {@internal
- *   created  2008-04-22
+ *   created   2008-04-22
+ *   modified  2011-05-17  Murat Purc, added check for available client id
  *
  *   $Id$:
  * }}
@@ -34,12 +35,15 @@ defined('CON_FRAMEWORK') or die('Illegal call');
 ################################################################################
 ##### Initialization
 
+if (!isset($client) || (int) $client <= 0) {
+    // no client, get out here...
+    return;
+}
+
 plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_content_controller.php');
 
 $action = (isset($_REQUEST['mr_action'])) ? $_REQUEST['mr_action'] : 'index';
 $bDebug  = false;
-
-//var_dump($cfg['templates']['mod_rewrite_content']);
 
 
 ################################################################################

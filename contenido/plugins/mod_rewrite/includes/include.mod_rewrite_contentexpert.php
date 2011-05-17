@@ -20,7 +20,8 @@
  * @since      file available since Contenido release 4.8.15
  *
  * {@internal
- *   created  2011-04-11
+ *   created   2011-04-11
+ *   modified  2011-05-17  Murat Purc, added check for available client id
  *
  *   $Id$:
  * }}
@@ -33,6 +34,11 @@ defined('CON_FRAMEWORK') or die('Illegal call');
 
 ################################################################################
 ##### Initialization
+
+if (!isset($client) || (int) $client <= 0) {
+    // no client, get out here...
+    return;
+}
 
 plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_contentexpert_controller.php');
 
