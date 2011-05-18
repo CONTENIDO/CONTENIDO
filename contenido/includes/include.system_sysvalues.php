@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.7.0
+ * @version    1.7.1
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-08-15
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2011-05-18, Ortwin Pinke, clean url due to validate page
  *
  *   $Id$:
  * }}
@@ -112,8 +113,8 @@ $tpl->set('s', 'UPGERRORLOG', $upgErrorLogBuffer);
  * log = 1	clear /contenido/logs/errorlog.txt
  * log = 2	clear /contenido/upgrade_errorlog.txt
 */
-$tpl->set('s', 'LOGEMPTYURL', $sess->url("main.php?area=$area&frame=$frame&action=emptyLog&log=1"));
-$tpl->set('s', 'UPGLOGEMPTYURL', $sess->url("main.php?area=$area&frame=$frame&action=emptyLog&log=2"));
+$tpl->set('s', 'LOGEMPTYURL', htmlentities($sess->url("main.php?area=$area&frame=$frame&action=emptyLog&log=1")));
+$tpl->set('s', 'UPGLOGEMPTYURL', htmlentities($sess->url("main.php?area=$area&frame=$frame&action=emptyLog&log=2")));
 
 // parse out template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['systam_variables']);

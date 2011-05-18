@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.2.0
+ * @version    1.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,7 +25,8 @@
  *   modified 2008-06-27, Timo Trautmann, add check to emptyLogFile if there is a permission to write file
  *   modified 2008-07-07, Dominik Ziegler, fixed language bugs
  *   modified 2008-11-21, Andreas Lindner, enhance formatting of client information
- *   modified 2008-11-21, Andreas Lindner, beautify output for empty configuration values     
+ *   modified 2008-11-21, Andreas Lindner, beautify output for empty configuration values
+ *   modified 2011-05-18, Ortwin Pinke, bugfix fill missing tpl-values for bgcolor and rowid
  *
  *   $Id$:
  * }}
@@ -489,12 +490,22 @@ function writeSystemValuesOutput($usage)
 	// include path settings
 	$sysvalues[$i]['variable'] = "include_path";
 	$sysvalues[$i ++]['value'] = ini_get('include_path');
-	//loop array for every parameter
+
+$iRowId = 1;
+$sRowBgColor2 = $sRowBgColor1 = "#fff";
+//loop array for every parameter
 	foreach ($sysvalues AS $sysvalue)
 	{
 		$tpl->set('d', 'VARIABLE', $sysvalue['variable']);
 		$tpl->set('d', 'LOCALVALUE', $sysvalue['value']);
+  $tpl->set('d', 'ROWID', 'sysrow_'.$iRowId);
+  if($iRowId % 2) {
+      $tpl->set('d', 'BGCOLOR', $sRowBgColor1);
+  } else {
+      $tpl->set('d', 'BGCOLOR', $sRowBgColor2);
+  }
 		$tpl->next();
+  $iRowId++;
 	}
 
 	/* irgendwas sinnvolles :) */
