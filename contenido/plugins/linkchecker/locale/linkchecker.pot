@@ -1,0 +1,135 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-05-18 10:59+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: includes/include.linkchecker.php:49
+msgid "No Client selected"
+msgstr ""
+
+#: includes/include.linkchecker.php:95
+msgid "Interns"
+msgstr ""
+
+#: includes/include.linkchecker.php:97
+msgid "Externs"
+msgstr ""
+
+#: includes/include.linkchecker.php:99
+msgid "Intern/extern Links"
+msgstr ""
+
+#: includes/include.linkchecker.php:294
+msgid "Link analysis from "
+msgstr ""
+
+#: includes/include.linkchecker.php:294
+msgid "%Y-%m-%d"
+msgstr ""
+
+#: includes/include.linkchecker.php:299
+msgid "<strong>No errors</strong> were found."
+msgstr ""
+
+#: includes/include.linkchecker.php:303
+msgid "Total checked links"
+msgstr ""
+
+#: includes/include.linkchecker.php:304
+msgid "idart"
+msgstr ""
+
+#: includes/include.linkchecker.php:305
+msgid "Article"
+msgstr ""
+
+#: includes/include.linkchecker.php:306
+msgid "idcat"
+msgstr ""
+
+#: includes/include.linkchecker.php:307
+msgid "Category"
+msgstr ""
+
+#: includes/include.linkchecker.php:308
+msgid "Description"
+msgstr ""
+
+#: includes/include.linkchecker.php:309
+msgid "Linkerror"
+msgstr ""
+
+#: includes/include.linkchecker.php:310
+msgid "Links to articles"
+msgstr ""
+
+#: includes/include.linkchecker.php:311
+msgid "Links to categories"
+msgstr ""
+
+#: includes/include.linkchecker.php:312
+msgid "Links to documents and images"
+msgstr ""
+
+#: includes/include.linkchecker.php:313
+msgid "Links to extern sites and not defined links"
+msgstr ""
+
+#: includes/include.linkchecker.php:315
+msgid "Wrong links"
+msgstr ""
+
+#: includes/include.linkchecker.php:344
+msgid "Unknown: articles, documents etc. do not exist."
+msgstr ""
+
+#: includes/include.linkchecker.php:346 includes/include.linkchecker.php:348
+msgid "Offline: article or category is offline."
+msgstr ""
+
+#: includes/include.linkchecker.php:350
+msgid "dbfs: no matches found in the dbfs database."
+msgstr ""
+
+#: includes/include.linkchecker.php:383
+msgid "No errors for this type."
+msgstr ""
+
+#: includes/include.linkchecker_whitelist.php:68
+msgid "%Y-%m-%d, %I:%M%S %p"
+msgstr ""
+
+#: includes/include.linkchecker_whitelist.php:75
+msgid "Links at whitelist"
+msgstr ""
+
+#: includes/include.linkchecker_whitelist.php:76
+msgid "Delete"
+msgstr ""
+
+#: includes/include.linkchecker_whitelist.php:77
+msgid "Entry"
+msgstr ""
+
+#: includes/include.linkchecker_whitelist.php:78
+msgid "URLs"
+msgstr ""
+
+#: includes/include.linkchecker_whitelist.php:79
+msgid ""
+"This links are on the whitelist. Whitelist-links won't be check at "
+"linkchecker."
+msgstr ""

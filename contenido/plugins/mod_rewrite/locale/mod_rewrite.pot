@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-27 22:02+0200\n"
+"POT-Creation-Date: 2011-05-18 11:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,117 +16,39 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: classes/controller/class.modrewrite_content_controller.php:72
+#: includes/include.mod_rewrite_contenttest.php:61
 msgid ""
-"The root directory has a invalid format, alowed are the chars [a-zA-Z0-9\\-_"
-"\\/\\.]"
+"Define options to genereate the URLs by using the form below and run the "
+"test."
 msgstr ""
 
-#: classes/controller/class.modrewrite_content_controller.php:79
-#, php-format
-msgid "The specified directory \"%s\" does not exists"
+#: includes/include.mod_rewrite_contenttest.php:62
+msgid "Parameter to use"
 msgstr ""
 
-#: classes/controller/class.modrewrite_content_controller.php:86
-#, php-format
+#: includes/include.mod_rewrite_contenttest.php:63
+msgid "Number of URLs to generate"
+msgstr ""
+
+#: includes/include.mod_rewrite_contenttest.php:64
+msgid "Run test"
+msgstr ""
+
+#: includes/include.mod_rewrite_contenttest.php:66
 msgid ""
-"The specified directory \"%s\" does not exists in DOCUMENT_ROOT \"%s\". this "
-"could happen, if clients DOCUMENT_ROOT differs from Contenido backends "
-"DOCUMENT_ROOT. However, the setting will be taken over because of disabled "
-"check."
+"{pref}<strong>{name}</strong>\n"
+"{pref}Builder in:    {url_in}\n"
+"{pref}Builder out:   {url_out}\n"
+"{pref}<span style=\"color:{color}\">Resolved URL:  {url_res}</span>\n"
+"{pref}Resolved data: {data}"
 msgstr ""
 
-#: classes/controller/class.modrewrite_content_controller.php:189
-#, php-format
-msgid "Please specify separator (%s) for category"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:194
-#, php-format
-msgid "Invalid separator for category, allowed one of following characters: %s"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:201
-#, php-format
-msgid "Please specify separator (%s) for category words"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:206
-#, php-format
+#: includes/include.mod_rewrite_contenttest.php:72
 msgid ""
-"Invalid separator for category words, allowed one of following characters: %s"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:213
-#, php-format
-msgid "Please specify separator (%s) for article"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:218
-#, php-format
-msgid ""
-"Invalid separator for article, allowed is one of following characters: %s"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:225
-#, php-format
-msgid "Please specify separator (%s) for article words"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:230
-#, php-format
-msgid ""
-"Invalid separator for article words, allowed is one of following characters: "
-"%s"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:237
-msgid "Separator for category and category words must not be identical"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:242
-msgid "Separator for category and article words must not be identical"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:247
-msgid "Separator for category-article and article words must not be identical"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:264
-msgid ""
-"The file extension has a invalid format, allowed are the chars \\.([a-zA-Z0-9"
-"\\-_\\/])"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:278
-msgid "Value has to be numeric."
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:282
-msgid "Value has to be between 0 an 100."
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:299
-msgid ""
-"The article name has a invalid format, allowed are the chars /^[a-zA-Z0-9\\-_"
-"\\/\\.]*$/"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:362
-msgid "Please check your input"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:370
-msgid "Configuration has <b>not</b> been saved, because of enabled debugging"
-msgstr ""
-
-#: classes/controller/class.modrewrite_content_controller.php:384
-#, php-format
-msgid "Configuration could not saved. Please check write permissions for %s "
-msgstr ""
-
-#: classes/controller/class.modrewrite_controller_abstract.php:73
-msgid "More informations"
+"Duration of test run: {time} seconds.<br />\n"
+"Number of processed URLs: {num_urls}<br />\n"
+"<span style=\"color:green\">Successful resolved: {num_success}</span><br />\n"
+"<span style=\"color:red\">Errors during resolving: {num_fail}</span></strong>"
 msgstr ""
 
 #: includes/include.mod_rewrite_content.php:173
@@ -685,37 +607,115 @@ msgid ""
 "the usage by the plugin."
 msgstr ""
 
-#: includes/include.mod_rewrite_contenttest.php:61
+#: classes/controller/class.modrewrite_controller_abstract.php:73
+msgid "More informations"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:72
 msgid ""
-"Define options to genereate the URLs by using the form below and run the "
-"test."
+"The root directory has a invalid format, alowed are the chars [a-zA-Z0-9\\-_"
+"\\/\\.]"
 msgstr ""
 
-#: includes/include.mod_rewrite_contenttest.php:62
-msgid "Parameter to use"
+#: classes/controller/class.modrewrite_content_controller.php:79
+#, php-format
+msgid "The specified directory \"%s\" does not exists"
 msgstr ""
 
-#: includes/include.mod_rewrite_contenttest.php:63
-msgid "Number of URLs to generate"
-msgstr ""
-
-#: includes/include.mod_rewrite_contenttest.php:64
-msgid "Run test"
-msgstr ""
-
-#: includes/include.mod_rewrite_contenttest.php:66
+#: classes/controller/class.modrewrite_content_controller.php:86
+#, php-format
 msgid ""
-"{pref}<strong>{name}</strong>\n"
-"{pref}Builder in:    {url_in}\n"
-"{pref}Builder out:   {url_out}\n"
-"{pref}<span style=\"color:{color}\">Resolved URL:  {url_res}</span>\n"
-"{pref}Resolved data: {data}"
+"The specified directory \"%s\" does not exists in DOCUMENT_ROOT \"%s\". this "
+"could happen, if clients DOCUMENT_ROOT differs from Contenido backends "
+"DOCUMENT_ROOT. However, the setting will be taken over because of disabled "
+"check."
 msgstr ""
 
-#: includes/include.mod_rewrite_contenttest.php:72
+#: classes/controller/class.modrewrite_content_controller.php:189
+#, php-format
+msgid "Please specify separator (%s) for category"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:194
+#, php-format
+msgid "Invalid separator for category, allowed one of following characters: %s"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:201
+#, php-format
+msgid "Please specify separator (%s) for category words"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:206
+#, php-format
 msgid ""
-"Duration of test run: {time} seconds.<br />\n"
-"Number of processed URLs: {num_urls}<br />\n"
-"<span style=\"color:green\">Successful resolved: {num_success}</span><br />\n"
-"<span style=\"color:red\">Errors during resolving: {num_fail}</span></strong>"
+"Invalid separator for category words, allowed one of following characters: %s"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:213
+#, php-format
+msgid "Please specify separator (%s) for article"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:218
+#, php-format
+msgid ""
+"Invalid separator for article, allowed is one of following characters: %s"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:225
+#, php-format
+msgid "Please specify separator (%s) for article words"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:230
+#, php-format
+msgid ""
+"Invalid separator for article words, allowed is one of following characters: "
+"%s"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:237
+msgid "Separator for category and category words must not be identical"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:242
+msgid "Separator for category and article words must not be identical"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:247
+msgid "Separator for category-article and article words must not be identical"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:264
+msgid ""
+"The file extension has a invalid format, allowed are the chars \\.([a-zA-Z0-9"
+"\\-_\\/])"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:278
+msgid "Value has to be numeric."
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:282
+msgid "Value has to be between 0 an 100."
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:299
+msgid ""
+"The article name has a invalid format, allowed are the chars /^[a-zA-Z0-9\\-_"
+"\\/\\.]*$/"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:362
+msgid "Please check your input"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:370
+msgid "Configuration has <b>not</b> been saved, because of enabled debugging"
+msgstr ""
+
+#: classes/controller/class.modrewrite_content_controller.php:384
+#, php-format
+msgid "Configuration could not saved. Please check write permissions for %s "
 msgstr ""

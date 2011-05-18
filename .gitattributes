@@ -1195,6 +1195,8 @@ contenido/plugins/content_allocation/includes/include.contentallocation_article.
 contenido/plugins/content_allocation/includes/include.left_bottom.php -text
 contenido/plugins/content_allocation/includes/include.left_top.php -text
 contenido/plugins/content_allocation/includes/include.right_bottom.php -text
+contenido/plugins/content_allocation/locale/content_allocation.pot -text
+contenido/plugins/content_allocation/locale/potfiles.txt svneol=native#text/plain
 contenido/plugins/content_allocation/scripts/complexlist.js -text
 contenido/plugins/content_allocation/style/complexlist.css -text
 contenido/plugins/content_allocation/templates/template.tree_article.html -text
@@ -1218,6 +1220,8 @@ contenido/plugins/linkchecker/includes/include.linkchecker_tests.php -text
 contenido/plugins/linkchecker/includes/include.linkchecker_whitelist.php -text
 contenido/plugins/linkchecker/locale/de_DE/LC_MESSAGES/linkchecker.mo -text
 contenido/plugins/linkchecker/locale/de_DE/LC_MESSAGES/linkchecker.po -text
+contenido/plugins/linkchecker/locale/linkchecker.pot -text
+contenido/plugins/linkchecker/locale/potfiles.txt svneol=native#text/plain
 contenido/plugins/linkchecker/templates/standard/template.linkchecker_noerrors.html -text
 contenido/plugins/linkchecker/templates/standard/template.linkchecker_test.html -text
 contenido/plugins/linkchecker/templates/standard/template.linkchecker_test_errors.html -text
@@ -1260,7 +1264,7 @@ contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contentexpert.php -te
 contenido/plugins/mod_rewrite/includes/include.mod_rewrite_contenttest.php -text
 contenido/plugins/mod_rewrite/locale/de_DE/LC_MESSAGES/mod_rewrite.mo -text
 contenido/plugins/mod_rewrite/locale/de_DE/LC_MESSAGES/mod_rewrite.po -text
-contenido/plugins/mod_rewrite/locale/plugin.pot -text
+contenido/plugins/mod_rewrite/locale/mod_rewrite.pot -text
 contenido/plugins/mod_rewrite/locale/potfiles.txt -text
 contenido/plugins/mod_rewrite/readme.txt -text
 contenido/plugins/mod_rewrite/scripts/mod_rewrite.js -text
@@ -1302,6 +1306,8 @@ contenido/plugins/workflow/includes/include.workflow_subnav.php -text
 contenido/plugins/workflow/includes/include.workflow_tasks.php -text
 contenido/plugins/workflow/locale/de_DE/LC_MESSAGES/workflow.mo -text
 contenido/plugins/workflow/locale/de_DE/LC_MESSAGES/workflow.po -text
+contenido/plugins/workflow/locale/potfiles.txt svneol=native#text/plain
+contenido/plugins/workflow/locale/workflow.pot -text
 contenido/plugins/workflow/plugin_workflow.xml -text
 contenido/plugins/workflow/templates/template.workflow_steps.html -text
 contenido/plugins/workflow/templates/template.workflow_tasks.html -text
