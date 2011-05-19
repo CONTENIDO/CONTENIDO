@@ -22,8 +22,9 @@
  * @since      file available since Contenido release 4.8.15
  *
  * {@internal
- *   created   2004.12.04
- *   modified  2005.12.28
+ *   created   2004-12-04
+ *   modified  2005-12-28
+ *   modified  2011-05-19  Murat Purc, fixed wrong code in function recreateArticlesAliases()
  *
  *   $Id$:
  * }}
@@ -918,7 +919,7 @@ class ModRewrite extends ModRewriteBase
      */
     public static function resetArticlesAliases()
     {
-        ModRewrite::recreateArticlesAliases();
+        self::recreateArticlesAliases();
     }
 
 
@@ -934,10 +935,12 @@ class ModRewrite extends ModRewriteBase
         $db = new DB_Contenido();
 
         // get all or only empty articles
-        $db->query("SELECT title, idart, idlang FROM " . $cfg['tab']['art_lang']);
+        $sql = "SELECT title, idart, idlang FROM " . $cfg['tab']['art_lang'];
         if ($bOnlyEmpty === true) {
             $sql .= " WHERE urlname IS NULL OR urlname = ''";
         }
+        $db->query($sql);
+
         while ($db->next_record()) {
             //set new alias
             self::setArtWebsafeName($db->f('title'), $db->f('idart'), $db->f('idlang'));
