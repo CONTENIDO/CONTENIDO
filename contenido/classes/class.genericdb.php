@@ -15,7 +15,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    1.2.1
+ * @version    1.2.2
  * @author     Timo A. Hummel
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -31,6 +31,7 @@
  *   modified 2011-03-10, Murat Purc, Refactoring of Item and ItemCollection, partly port to PHP 5,
  *                        new Contenido_ItemException and Contenido_ItemBaseAbstract, documentation and formatting.
  *   modified 2011-03-13  Murat Purc, added Contenido_ItemCache() to enable caching of result sets.
+ *   modified 2011-05-20  Murat Purc, fixed wrong caching behavior in Contenido_ItemCache.
  *
  *   $Id$:
  * }}
@@ -62,24 +63,26 @@ class Contenido_ItemException extends Exception {}
  * Class Contenido_ItemCache.
  *
  * Implements features to cache entries, usually result sets of Item classes.
+ * Contains a list of self instances, where each instance contains cached Items
+ * fore one specific table.
  *
  * @author     Murat Purc <murat@purc.de>
- * @version    0.1
+ * @version    0.1.2
  * @copyright  four for business AG <www.4fb.de>
  */
 class Contenido_ItemCache
 {
     /**
-     * Self instance
-     * @var  Contenido_ItemCache
-     */
-    protected static $_oInstance = null;
-
-    /**
-     * Assoziative cache array, 
+     * List of self instances (Contenido_ItemCache)
      * @var  array
      */
-    protected static $_aItemsCache = array();
+    protected static $_oInstances = array();
+
+    /**
+     * Assoziative cache array
+     * @var  array
+     */
+    protected $_aItemsCache = array();
 
     /**
      * Table name for current instance
@@ -99,32 +102,56 @@ class Contenido_ItemCache
      */
     protected $_bEnable = false;
 
-
-    protected function __construct()
+    /**
+     * Contructor of Contenido_ItemCache
+     * @param  string  $sTable   Table name
+     * @param  array   $aOptions Options array as follows:
+     *                 - $aOptions['max_items_to_cache'] = (int) Number of items to cache
+     *                 - $aOptions['enable'] = (bool) Flag to enable caching
+     */
+    protected function __construct($sTable, array $aOptions = array())
     {
+        $this->_sTable = $sTable;
+        if (isset($aOptions['max_items_to_cache']) && (int) $aOptions['max_items_to_cache'] > 0) {
+            $this->_iMaxItemsToCache = (int) $aOptions['max_items_to_cache'];
+        }
+        if (isset($aOptions['enable']) && is_bool($aOptions['enable'])) {
+            $this->_bEnable = (bool) $aOptions['enable'];
+        }
     }
 
-
+    /**
+     * Prevent cloning
+     */
     protected function __clone()
     {
     }
 
-    public function getInstance($sTable, array $aOptions = array())
+    /**
+     * Returns item cache instance, creates it, if not done before.
+     * Works as a singleton for one specific table.
+     *
+     * @param  string  $sTable   Table name
+     * @param  array   $aOptions Options array as follows:
+     *                 - $aOptions['max_items_to_cache'] = (int) Number of items to cache
+     *                 - $aOptions['enable'] = (bool) Flag to enable caching
+     */
+    public static function getInstance($sTable, array $aOptions = array())
     {
-        if (self::$_oInstance === null) {
-            self::$_oInstance = new self();
-            if (!isset(self::$_aItemsCache[$sTable])) {
-                self::$_aItemsCache[$sTable] = array();
-            }
+        if (!isset(self::$_oInstances[$sTable])) {
+            self::$_oInstances[$sTable] = new self($sTable, $aOptions);
         }
-        self::$_oInstance->_sTable = $sTable;
-        if (isset($aOptions['max_items_to_cache']) && (int) $aOptions['max_items_to_cache'] > 0) {
-            self::$_oInstance->_iMaxItemsToCache = (int) $aOptions['max_items_to_cache'];
-        }
-        if (isset($aOptions['enable']) && is_bool($aOptions['enable'])) {
-            self::$_oInstance->_bEnable = (bool) $aOptions['enable'];
-        }
-        return self::$_oInstance;
+        return self::$_oInstances[$sTable];
+    }
+
+    /**
+     * Returns items cache list.
+     *
+     * @return  array
+     */
+    public function getItemsCache()
+    {
+        return $this->_aItemsCache;
     }
 
     /**
@@ -138,8 +165,9 @@ class Contenido_ItemCache
         if (!$this->_bEnable) {
             return null;
         }
-        if (isset(self::$_aItemsCache[$this->_sTable][$mId])) {
-            return self::$_aItemsCache[$this->_sTable][$mId];
+
+        if (isset($this->_aItemsCache[$mId])) {
+            return $this->_aItemsCache[$mId];
         } else {
             return null;
         }
@@ -158,8 +186,8 @@ class Contenido_ItemCache
             return null;
         }
 
-        // loop thru all cahed entries and try to find a entry by it's property
-        foreach (self::$_aItemsCache[$this->_sTable] as $id => $aEntry) {
+        // loop thru all cached entries and try to find a entry by it's property
+        foreach ($this->_aItemsCache as $id => $aEntry) {
             if (isset($aEntry[$mProperty]) && $aEntry[$mProperty] == $mValue) {
                 return $aEntry[$mProperty];
             }
@@ -180,14 +208,14 @@ class Contenido_ItemCache
             return null;
         }
 
-        if ($this->_iMaxItemsToCache == count(self::$_aItemsCache[$this->_sTable])) {
-            // we have reached the maximum number of cached items, remove
-            $firstEntry = array_shift(self::$_aItemsCache[$this->_sTable]);
+        if ($this->_iMaxItemsToCache == count($this->_aItemsCache)) {
+            // we have reached the maximum number of cached items, remove first entry
+            $firstEntry = array_shift($this->_aItemsCache);
             unset($firstEntry);
         }
 
         // add entry
-        self::$_aItemsCache[$this->_sTable][$mId] = $aData;
+        $this->_aItemsCache[$mId] = $aData;
     }
 
     /**
@@ -203,8 +231,8 @@ class Contenido_ItemCache
         }
 
         // remove entry
-        if (!isset(self::$_aItemsCache[$this->_sTable][$mId])){
-            unset(self::$_aItemsCache[$this->_sTable][$mId]);
+        if (!isset($this->_aItemsCache[$mId])){
+            unset($this->_aItemsCache[$mId]);
         }
     }
 }
