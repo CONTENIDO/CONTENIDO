@@ -35,9 +35,15 @@ defined('CON_FRAMEWORK') or die('Illegal call');
 ################################################################################
 ##### Initialization
 
-if ((int) $client == 0) {
-	$notification->displayNotification("error", i18n("No Client selected"));
-	exit;
+if ((int) $client <= 0) {
+    // if there is no client selected, display empty page
+    $oPage = new cPage();
+    $sMsg = $notification->returnNotification(
+        Contenido_Notification::LEVEL_ERROR, i18n("No Client selected")
+    );
+    $oPage->setContent($sMsg);
+    $oPage->render();
+    return;
 }
 
 plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_contentexpert_controller.php');
