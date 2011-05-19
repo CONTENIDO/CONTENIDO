@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    1.5
+ * @version    1.5.1
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,6 +21,7 @@
  * {@internal
  *   created  2007-05-25
  *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
+ *   modified 2011-05-20, Murat Purc, renamed _getPropertyCollection() to _getPropertiesCollectionInstance()
  *
  *   $Id$:
  * }}
@@ -135,7 +136,7 @@ class cApiClientLanguage extends Item
      */
     public function setProperty($mType, $mName, $mValue)
     {
-        $oPropertyColl = $this->_getPropertyCollection();
+        $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->setValue($this->primaryKey, $this->get($this->primaryKey), $mType, $mName, $mValue);
     }
 
@@ -150,7 +151,7 @@ class cApiClientLanguage extends Item
      */
     public function getProperty($mType, $mName)
     {
-        $oPropertyColl = $this->_getPropertyCollection();
+        $oPropertyColl = $this->_getPropertiesCollectionInstance();
         return $oPropertyColl->getValue($this->primaryKey, $this->get($this->primaryKey), $mType, $mName);
     }
 
@@ -164,7 +165,7 @@ class cApiClientLanguage extends Item
      */
     public function deleteProperty($idprop)
     {
-        $oPropertyColl = $this->_getPropertyCollection();
+        $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->delete($idprop);
     }
 
@@ -176,7 +177,7 @@ class cApiClientLanguage extends Item
      */
     public function getPropertiesByType($mType)
     {
-        $oPropertyColl = $this->_getPropertyCollection();
+        $oPropertyColl = $this->_getPropertiesCollectionInstance();
         return $oPropertyColl->getValuesByType($this->primaryKey, $this->idclient, $mType);
     }
 
@@ -191,7 +192,7 @@ class cApiClientLanguage extends Item
     {
         $itemtype = Contenido_Security::escapeDB($this->primaryKey, $this->db);
         $itemid   = Contenido_Security::escapeDB($this->get($this->primaryKey), $this->db);
-        $oPropertyColl = $this->_getPropertyCollection();
+        $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->select("itemtype='".$itemtype."' AND itemid='".$itemid."'", "", "type, value ASC");
 
         if ($oPropertyColl->count() > 0) {
@@ -214,7 +215,7 @@ class cApiClientLanguage extends Item
      *
      * @return PropertyCollection
      */
-    protected function _getPropertyCollection()
+    protected function _getPropertiesCollectionInstance()
     {
         // Runtime on-demand allocation of the properties object
         if (!is_object($this->_oPropertyCollection)) {
