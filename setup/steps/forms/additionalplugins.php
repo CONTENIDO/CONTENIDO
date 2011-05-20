@@ -28,8 +28,8 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <Contenido Version>
- * @deprecated file deprecated in contenido release <Contenido Version>
+ * 
+ * 
  * 
  * {@internal 
  *   created  2008-03-14
