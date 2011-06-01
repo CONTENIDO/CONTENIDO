@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.1.9
+ * @version    1.1.10
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,9 +20,10 @@
  * @since      file available since contenido release <= 4.6
  * 
  * {@internal 
- *   created unknown
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2009-06-02, Andreas Lindner, fix check for duplicate user name when it contains a special character    
+ *  created unknown
+ *  modified 2008-06-27, Frederic Schneider, add security fix
+ *  modified 2009-06-02, Andreas Lindner, fix check for duplicate user name when it contains a special character
+ *  modified 2011-06-01, Ortwin Pinke, fixed CON-402 german umlaute not correct displayed for membergroups
  *
  *   $Id$:
  * }}
@@ -239,20 +240,18 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client)
 		$arrGroups = $feuser->getGroupsForUser();
 		
 		if (count($arrGroups) > 0) {
-			$sql = "SELECT groupname FROM ".$cfg['tab']['frontendgroups']." WHERE idfrontendgroup IN (".implode(',', $arrGroups).")"; 
-				
-			$db->query($sql);
-			$arrGroups = array();
-			
-			while ($db->next_record()) {				
-				$arrGroups[] = $db->f('groupname');
-			}
-			
-			asort($arrGroups);
-			
-			$sTemp = implode('<br/>', $arrGroups);
+      $aMemberGroups = array();
+
+      foreach($arrGroups as $iGroup) {
+          $oMemberGroup = new FrontendGroup($iGroup);
+          $aMemberGroups[] = $oMemberGroup->get("groupname");
+      }
+
+      asort($aMemberGroups);
+
+      $sTemp = implode('<br/>', $aMemberGroups);
 		} else {
-			$sTemp = i18n("none");
+      $sTemp = i18n("none");
 		}
 		
 		$form->add(i18n("Group membership"), $sTemp ); 
