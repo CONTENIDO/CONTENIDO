@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    1.1
+ * @version    1.1.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2009-10-13, Dominik Ziegler, added "attachment" to Content-Disposition to force browsers downloading the file
  *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
+ *   modified 2011-06-02, Murat Purc, Fixed typo in function write()
  *
  *   $Id$:
  * }}
@@ -109,7 +110,7 @@ class DBFSCollection extends ItemCollection
         file_put_contents($localfile, $this->read($sourcefile));
     }
 
-    public function writ ($file, $content = "", $mimetype = "")
+    public function write($file, $content = "", $mimetype = "")
     {
         $file = $this->strip_path($file);
 
