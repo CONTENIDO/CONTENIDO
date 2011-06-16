@@ -23,7 +23,7 @@
  *   created  2002
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *
+ *   modified 2011-01-11, Rusmir Jusufovic, load input of moduls from file
  *   $Id$:
  * }}
  * 
@@ -104,7 +104,15 @@ if (isset($a_d) && is_array($a_d)) {
                 $db->query($sql);
                 $db->next_record();
 
-                $input = $db->f("input")."\n";
+                $input = "\n";
+				#Read the input for the editing in Backend from file
+                $contenidoModuleHandler = new Contenido_Module_Handler($db->f("idmod"));
+
+                if( $contenidoModuleHandler->existModul() == true )
+                {
+                    $input = stripslashes($contenidoModuleHandler->readInput())."\n"; 
+                     	
+                }         
 
 				global $cCurrentModule;
 				$cCurrentModule = $db->f("idmod");

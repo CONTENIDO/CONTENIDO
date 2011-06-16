@@ -185,6 +185,9 @@ INSERT INTO !PREFIX!_files VALUES('203', '90', 'include.newsletter_jobs_subnav.p
 INSERT INTO !PREFIX!_files VALUES('204', '17', 'include.newsletter_edit_message.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('205', '91', 'include.recipients_import.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('206', '92', 'include.mod_package.php', 'main');
+INSERT INTO !PREFIX!_files VALUES('207', '93', 'include.mod_template.php', 'main');
+INSERT INTO !PREFIX!_files VALUES('208', '94', 'include.mod_style.php', 'main');
+INSERT INTO !PREFIX!_files VALUES('209', '95', 'include.mod_script.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('500', '500', 'linkchecker/includes/include.linkchecker.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('501', '501', 'linkchecker/includes/include.linkchecker_whitelist.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('502', '500', 'linkchecker/includes/include.linkchecker_right_top.php', 'main');

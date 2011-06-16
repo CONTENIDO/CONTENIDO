@@ -26,7 +26,7 @@
  *   modified 2008-07-02, Frederic Schneider, add security fix and include security_class
  *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
  *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as contenido now requires at least PHP 5
- *
+ *	 modified 2011-06-15, Rusmir Jusufovic, add Contenido Vars for modul
  *   $Id$:
  * }}
  * 
@@ -161,6 +161,18 @@ if (!is_numeric($lang) || $lang == "") {
 	$sess->register("lang");
 }
 
+/**
+ *  Set Contenido vars
+ */
+
+Contenido_Vars::setVar('db', $db);
+Contenido_Vars::setVar('lang', $lang);
+Contenido_Vars::setVar('cfg', $cfg);
+Contenido_Vars::setEncoding($db,$cfg,$lang);
+Contenido_Vars::setVar('cfgClient', $cfgClient);
+Contenido_Vars::setVar('client', $client);
+Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding','UTF-8'));
+
 // send right encoding http header
 sendEncodingHeader($db, $cfg, $lang);
 
@@ -254,6 +266,7 @@ if (is_array($backend->getFile('main')))
 {
 	foreach ($backend->getFile('main') as $id => $filename)
 	{
+		
   	include_once($cfg['path']['contenido'].$filename);
   }
 

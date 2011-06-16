@@ -23,6 +23,8 @@
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2010-09-22, Murat Purc, Fixed setting of wrong initial translation id [#CON-347]
+ *   modified 2011-01-11, Rusmir Jusufovic, load code for translating from files ( function: parseModuleForStringsLoadFromFile)
+ *   modified 2111-02-03, Rusmir Jusufovic, load and save the translation in/from file 
  *
  *   $Id$:
  * }}
@@ -42,37 +44,23 @@ $langstring = $langobj->get("name") . ' ('.$lang.')';
 $moduletranslations = new cApiModuleTranslationCollection;
 $module = new cApiModule($idmod);
 
+$orginalString = "";
+$uebersetztungString = "";
+$contenidoTranslateFromFile = new Contenido_Translate_From_File($idmod);
 if ($action == "mod_translation_save")
 {
-	$strans = new cApiModuleTranslation;
-	$strans->loadByPrimaryKey($idmodtranslation);
-
-	if ($strans->get("idmod") == $idmod)
-	{
-		$module->setTranslatedName($translatedname);
-
-		$strans->set("translation", stripslashes($t_trans));
-		$strans->store();
-
-		/* Increase idmodtranslation */
-		$moduletranslations->select("idmod = '$idmod' AND idlang = '$lang'");
-
-		while ($mitem = $moduletranslations->next())
-		{
-			if ($mitem->get("idmodtranslation") == $idmodtranslation)
-			{
-				$mitem2 = $moduletranslations->next();
-
-				if (is_object($mitem2))
-				{
-					$idmodtranslation = $mitem2->get("idmodtranslation");
-					break;
-				}
-			}
-		}
-	}
+   
+    
+    $orginalString = $t_orig;
+    $uebersetztungString = $t_trans;
+    
+    $transaltionArray = $contenidoTranslateFromFile->getTranslationArray();
+    
+    $transaltionArray[stripslashes($t_orig)] = stripslashes($t_trans);
+    //print_r($transaltionArray);
+    $contenidoTranslateFromFile->saveTranslationArray($transaltionArray);
+    	
 }
-
 if ($action == "mod_importexport_translation")
 {
 	if ($mode == "export")
@@ -81,14 +69,15 @@ if ($action == "mod_importexport_translation")
 
 		if ($sFileName != "")
 		{
-			$moduletranslations->export($idmod, $lang,  $sFileName . ".xml");
+			$moduletranslations->export($idmod, $lang,  $sFileName . ".xml",$contenidoTranslateFromFile);
 		}
 	}
 	if ($mode == "import")
 	{
 		if (file_exists($_FILES["upload"]["tmp_name"]))
 		{
-			$moduletranslations->import($idmod, $lang, $_FILES["upload"]["tmp_name"]);
+		    
+			$moduletranslations->import($idmod, $lang, $_FILES["upload"]["tmp_name"],$contenidoTranslateFromFile);
 		}
 	}
 } 
@@ -98,41 +87,49 @@ if (!isset($idmodtranslation))
 {
 	$idmodtranslation = 0;
 }
+#get the mi18n strings from modul input/output
+$strings = $module->parseModuleForStringsLoadFromFile($cfg , $client,$lang);
 
-$mtrans = new cApiModuleTranslation;
-$mtrans->loadByPrimaryKey($idmodtranslation);
+#get the strings from translation file
+$transaltionArray = $contenidoTranslateFromFile->getTranslationArray();
 
-if ($mtrans->get("idmod") != $idmod)
-{
-	$moduletranslations->select("idmod = '$idmod' AND idlang = '$lang'", '', 'idmodtranslation DESC', '1');
-	$mtrans = $moduletranslations->next();
-	
-	if (is_object($mtrans))
-	{
-		$idmodtranslation = $mtrans->get("idmodtranslation");
-	} else {
-		$mtrans = new cApiModuleTranslation;
-	}
-}
 
-$strings = $module->parseModuleForStrings();
-
+$myTrans = array();
+$save = false;
 /* Insert new strings */
 foreach ($strings as $string)
 {
-	$moduletranslations->create($idmod, $lang, $string);
+    if( isset($transaltionArray[$string]))
+        $myTrans[$string] = $transaltionArray[$string];
+    else {
+        $myTrans[$string] = '';	
+    	
+    }
 }
 
-$moduletranslations->select("idmod = '$idmod' AND idlang = '$lang'");
+#if changed save in file
+if(count(array_diff_assoc($myTrans, $transaltionArray))>0 || count(array_diff_assoc($transaltionArray,$myTrans))>0 )
+	$contenidoTranslateFromFile->saveTranslationArray($myTrans);	
 
-while ($d_modtrans = $moduletranslations->next())
-{
-	if (!in_array($d_modtrans->get("original"), $strings))
-	{
-		$moduletranslations->delete($d_modtrans->get("idmodtranslation"));
-	}
+if(!isset($row)) {
+    $row = count($strings)-1;//last string
+    
+    $lastString = end($strings);
+    $lastUebersetzung = $myTrans[$lastString];
+
+} else {//get the string
+    $index = 0;
+    foreach( $myTrans as $key =>$value) {
+
+        if($index == $row) {
+                $lastString = $key;
+                $lastUebersetzung = $value;
+                break;
+        }
+        
+        $index++;
+    }  
 }
-
 $page = new cPage;
 
 $form = new UI_Table_Form("translation");
@@ -140,7 +137,8 @@ $form->addHeader(sprintf(i18n("Translate module '%s'"), $module->get("name")));
 $form->setVar("area", $area);
 $form->setVar("frame", $frame);
 $form->setVar("idmod", $idmod);
-$form->setVar("idmodtranslation", $idmodtranslation);
+//$form->setVar("idmodtranslation", $idmodtranslation);
+$form->setVar("row", $row);
 $form->setVar("action", "mod_translation_save");
 
 $transmodname = new cHTMLTextbox("translatedname", $module->getTranslatedName(),60);
@@ -150,16 +148,18 @@ $form->add(i18n("Translated Name"), $transmodname);
 $ilink = new cHTMLLink;
 $ilink->setCLink("mod_translate", 5, "");
 $ilink->setCustom("idmod", $idmod);
-$ilink->setCustom("idmodtranslation", $mtrans->get("idmodtranslation"));
-$ilink->setAnchor($mtrans->get("idmodtranslation"));
+$ilink->setCustom("row", $row);
+//$ilink->setCustom("idmodtranslation", $mtrans->get("idmodtranslation"));
+$ilink->setAnchor($row);//$mtrans->get("idmodtranslation"));
 
 $iframe = '<iframe frameborder="0" style="border: 1px;border-color: black; border-style: solid;" width="620" src="'.$ilink->getHREF().'"></iframe>';
 
 $table = '<table border="0" width="600" border="0"><tr><td width="50%">'.i18n("Original module string").'</td><td width="50%">'.sprintf(i18n("Translation for %s"), $langstring).'</td><td width="20">&nbsp;</td></tr><tr><td colspan="3">'.$iframe.'</td></tr>';
 
-$original = new cHTMLTextarea("t_orig",htmlspecialchars($mtrans->get("original")));
+
+$original = new cHTMLTextarea("t_orig",htmlspecialchars($lastString));////$mtrans->get("original")));
 $original->setStyle("width: 300px;");
-$translated = new cHTMLTextarea("t_trans",htmlspecialchars($mtrans->get("translation")));
+$translated = new cHTMLTextarea("t_trans",htmlspecialchars($lastUebersetzung));//$mtrans->get("translation")));
 $translated->setStyle("width: 300px;");
 
 $table .= '<tr><td>'.$original->render().'</td><td>'.$translated->render().'</td><td width="20">&nbsp;</td></tr></table>';

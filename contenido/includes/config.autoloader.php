@@ -31,7 +31,7 @@
  * @since      file available since Contenido release >= 4.8.15
  *
  * {@internal
- *     created  2011-03-13
+ *     created  2011-06-09
  * }}
  */
 
@@ -261,6 +261,12 @@ return array(
     'cBufferedLog' => 'contenido/classes/log/class.bufferedlog.php',
     'cLog' => 'contenido/classes/log/class.log.php',
     'cModuleLog' => 'contenido/classes/log/class.modulelog.php',
+    'Contenido_Module_Handler' => 'contenido/classes/module/class.contenido.module.handler.php',
+    'Contenido_Moudle_Synchronizer' => 'contenido/classes/module/class.contenido.module.synchronizer.php',
+    'Contenido_Modul_Templates_Handler' => 'contenido/classes/module/class.contenido.modulTemplate.php',
+    'Contenido_Translate_From_File' => 'contenido/classes/module/class.contenido.translate.from.file.php',
+    'Contenido_UpgradeJob' => 'contenido/classes/module/class.contenido.upgrade.job.php',
+    'Contenido_Vars' => 'contenido/classes/module/class.contenido.vars.php',
     'cTree' => 'contenido/classes/tree/class.ctree.php',
     'cTreeItem' => 'contenido/classes/tree/class.ctreeitem.php',
     'Contenido_Url' => 'contenido/classes/Url/Contenido_Url.class.php',
@@ -271,6 +277,7 @@ return array(
     'Contenido_UrlBuilder_Custom' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_Custom.class.php',
     'Contenido_UrlBuilder_CustomPath' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_CustomPath.class.php',
     'Contenido_UrlBuilder_Frontcontent' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_Frontcontent.class.php',
+    'Contenido_UrlBuilder_MR' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_MR.class.php',
     'cViewAdvancedMenu' => 'contenido/classes/widgets/class.views.advancedmenu.php',
     'cViewItems' => 'contenido/classes/widgets/class.views.advancedmenu.php',
     'cApiClickableAction' => 'contenido/classes/widgets/class.widgets.actionbutton.php',

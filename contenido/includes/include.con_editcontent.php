@@ -25,7 +25,7 @@
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready) and some formatting
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *
+ *   modified 2011-01-11, Rusmir Jusufovic, load output of moduls from file
  *   $Id$:
  * }}
  * 
@@ -40,6 +40,8 @@ $edit 		= "true";
 
 $db2 		= new DB_Contenido;
 $scripts	= "";
+$cssData = "";
+$jsData = "";
 
 if ( isset($idcat) )
 {
@@ -74,6 +76,7 @@ if ( isset($idcat) )
 
 	if ( $action == 10 )
 	{
+		
 		header("Location: ".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php?type=$type&typenr=$typenr&client=$client&lang=$lang&idcat=$idcat&idart=$idart&idartlang=$idartlang&contenido=$contenido&lang=$lang");
 	} else {
 
@@ -510,9 +513,18 @@ EOD;
 						$thisContainer = '<?php $cCurrentContainer = '.((int)$value).'; ?>';
 					}
 
-                    $output = $thisModule . $thisContainer . $db->f("output");
+                    $output = $thisModule . $thisContainer ;
                     $output = AddSlashes($output);
-
+					
+					$contenidoModuleHandler = new Contenido_Module_Handler($db->f("idmod"));
+                    #Get the contents of output from file
+                    if( $contenidoModuleHandler->existModul() == true )
+                    {
+                        $cssData .=$contenidoModuleHandler->getFilesContent("css","css"); 
+                		$jsData .= $contenidoModuleHandler->getFilesContent("js","js");
+                        $output = $thisModule . $thisContainer .$contenidoModuleHandler->readOutput();
+                        $output = AddSlashes($output);
+                    }
                     $template = $db->f("template");
 
 					if (array_key_exists($value, $a_c))
@@ -557,8 +569,26 @@ EOD;
                     $code = str_ireplace("CMS_CONTAINER[$value]", "<?php $CiCMS_VALUE ?>\r\n".$output, $code);
 
                 }
+                   //save the collected css/js data and save it undter the template name ([templatename].css , [templatename].js in cache dir
+				$cssDatei = '';
+			    if(($myFileCss = Contenido_Module_Handler::saveContentToFile($cfgClient[$client], $tplName,"css", $cssData))== false) {
+				    
+				 $cssDatei = "error error culd not generate css file";
+				} else {
+				  $cssDatei = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';  
+				}
+				$jsDatei = '';
+			    if( ($myFileJs =Contenido_Module_Handler::saveContentToFile($cfgClient[$client], $tplName,"js", $jsData))== false) {
+				    
+				  $jsDatei = "error error error culd not generate js file";
+				} else {
+				    
+				  $jsDatei = '<script src="'.$myFileJs.'" type="text/javascript"></script>';  
+				}
+				/* Add meta tags */
+				$code = str_ireplace_once("</head>", $cssDatei.$jsDatei."</head>", $code);
         }
-
+	
         #
         # Find out what kind of CMS_... Vars are in use
         #

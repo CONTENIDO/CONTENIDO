@@ -37,6 +37,9 @@
             	<history>Historie</history>
             	<translation>Übersetzung</translation>
             	<package>Package</package>
+            	<template>Template</template>
+            	<style>Css</style>
+            	<script>Script</script>
             </modules>
             <templates>
                 <main>Templates</main>

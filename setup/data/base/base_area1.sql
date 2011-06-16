@@ -82,6 +82,9 @@ INSERT INTO !PREFIX!_area VALUES('89', 'group', 'group_external', '1', '1', '0')
 INSERT INTO !PREFIX!_area VALUES('90', 'news', 'news_jobs', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('91', 'recipients', 'recipients_import', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES('92', 'mod', 'mod_package', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES('93', 'mod', 'mod_template', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES('94', 'mod', 'mod_style', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES('95', 'mod', 'mod_javascript', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('400', 'lay', 'lay_history', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('402', 'js', 'js_history', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('401', 'style', 'style_history', '1', '1', '0');

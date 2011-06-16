@@ -254,6 +254,12 @@ contenido/classes/interfaces/interface.conuser.php -text
 contenido/classes/log/class.bufferedlog.php -text
 contenido/classes/log/class.log.php -text
 contenido/classes/log/class.modulelog.php -text
+contenido/classes/module/class.contenido.modulTemplate.php -text
+contenido/classes/module/class.contenido.module.handler.php -text
+contenido/classes/module/class.contenido.module.synchronizer.php -text
+contenido/classes/module/class.contenido.translate.from.file.php -text
+contenido/classes/module/class.contenido.upgrade.job.php -text
+contenido/classes/module/class.contenido.vars.php -text
 contenido/classes/tree/class.ctree.php -text
 contenido/classes/tree/class.ctreeitem.php -text
 contenido/classes/widgets/class.views.advancedmenu.php -text
@@ -1082,6 +1088,9 @@ contenido/includes/include.mod_history.php -text
 contenido/includes/include.mod_new.php -text
 contenido/includes/include.mod_overview.php -text
 contenido/includes/include.mod_package.php -text
+contenido/includes/include.mod_script.php -text
+contenido/includes/include.mod_style.php -text
+contenido/includes/include.mod_template.php -text
 contenido/includes/include.mod_translate.php -text
 contenido/includes/include.mod_translate_stringlist.php -text
 contenido/includes/include.mycontenido.tasks.edit.php -text

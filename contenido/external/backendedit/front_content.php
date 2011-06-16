@@ -54,7 +54,7 @@
  *   modified 2010-09-23, Murat Purc, fixed $encoding handling, see [#CON-305]
  *   modified 2011-02-07, Dominik Ziegler, added exit after redirections to force their execution
  *   modified 2011-02-10, Dominik Ziegler, moved function declaration of IP_match out of front_content.php
- *
+ *	 modified 2011-06-09, Rusmir Jusufovic, add Contenido_Vars for modul in file concpets
  *   $Id$:
  * }}
  *
@@ -446,6 +446,17 @@ if ($cfg["cache"]["disable"] != '1') {
 // END: concache
 
 
+  /**
+   * set contenido vars 
+   */
+   	Contenido_Vars::setVar('db', $db);
+	Contenido_Vars::setVar('lang', $lang);
+	Contenido_Vars::setVar('cfg', $cfg);
+	Contenido_Vars::setEncoding($db,$cfg,$lang);
+	Contenido_Vars::setVar('cfgClient', $cfgClient);
+	Contenido_Vars::setVar('client', $client);
+	Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding','UTF-8'));
+	
 ##############################################
 # BACKEND / FRONTEND EDITING
 ##############################################
@@ -671,15 +682,15 @@ else
         cInclude("includes", "functions.mod.php");
 
         conGenerateCode($idcat, $idart, $lang, $client);
-
+		
         $sql = "SELECT code FROM ".$cfg["tab"]["code"]." WHERE idcatart = '".Contenido_Security::toInteger($idcatart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
 
         $db->query($sql);
         $db->next_record();
-
+	
         $code = stripslashes($db->f("code"));
     }
-
+	
     /*  Add mark Script to code if user is in the backend */
     $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
 
@@ -886,7 +897,7 @@ else
             /*
              * Redirect to the URL defined in article properties
              */
-            $oUrl = Contenido_Url::getInstance();
+            $oUrl = tenido_Url::getInstance();
             if ($oUrl->isIdentifiableFrontContentUrl($redirect_url)) {
                 // perform urlbuilding only for identified internal urls
                 $aUrl = $oUrl->parse($redirect_url);

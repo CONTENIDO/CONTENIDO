@@ -27,6 +27,10 @@
  *        - added new method getUsedTemplates
  *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *
+ *   modified 2011-01-11, Rusmir Jusufovic
+ *   	- save and load input and output from/in files
+ *   	- add new method parseModuleForStringsLoadFromFile
+ *   
  *   $Id$:
  * }}
  *
@@ -175,6 +179,98 @@ class cApiModule extends Item
         global $lang;
         $this->setProperty("translated-name", $lang, $name);
     }
+	/**
+    *This method get the input and output for translating 
+    *from files and not from db-table.
+    *
+    */		
+    function parseModuleForStringsLoadFromFile ($cfg , $client,$lang)
+    {
+        global $client;
+        
+    	if ($this->virgin == true)
+    	{
+    		return false;
+    	}
+    	
+		/* Fetch the code, append input to output */
+		//$code  = $this->get("output");
+		//$code .= $this->get("input");
+		
+		
+		//Get the code(input,output) from files
+    	 $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));                 
+         $code = $contenidoModuleHandler->readOutput()." ";
+         $code.= $contenidoModuleHandler->readInput();
+    	
+    	
+    	
+		/* Initialize array */
+    	$strings = array();
+    	
+    	/* Split the code into mi18n chunks */
+    	$varr = preg_split('/mi18n([\s]*)\(([\s]*)"/', $code, -1);
+    	
+		if (count($varr) > 1)
+    	{
+        	foreach ($varr as $key => $value)
+        	{
+	        	/* Search first closing */
+	        	$closing = strpos($value,'")');
+	        	
+	        	if ($closing === false)
+	        	{
+	        		$closing = strpos($value,'" )');	
+	        	}
+	        	
+	        	if ($closing !== false)
+	        	{
+	        		$value = substr($value,0, $closing).'")';
+	        	}
+	        	
+	        	/* Append mi18n again */
+	        	$varr[$key] = 'mi18n("'.$value;
+	        
+	        	/* Parse for the mi18n stuff */
+	        	preg_match_all('/mi18n([\s]*)\("(.*)"\)/', $varr[$key], $results);
+	    		
+	    		/* Append to strings array if there are any results */
+	    		if (is_array($results[1]) && count($results[2]) > 0)
+	    		{
+	    			$strings = array_merge($strings, $results[2]);	
+	    		}
+	    		
+	    		/* Unset the results for the next run */
+	        	unset($results);
+	        }
+    	}
+		
+		// adding dynamically new module translations by content types
+		// this function was introduced with contenido 4.8.13
+		
+		// checking if array is set to prevent crashing the module translation page
+		if ( is_array( $cfg['translatable_content_types'] ) && count ( $cfg['translatable_content_types'] ) > 0 ) {
+			// iterate over all defines cms content types
+			foreach ( $cfg['translatable_content_types'] as $sContentType ) {
+				// check if the content type exists and include his class file
+				if ( file_exists ( $cfg['contenido']['path'] . "classes/class." . strtolower ( $sContentType ) . ".php" ) ) {
+					cInclude("classes", "class." . strtolower ( $sContentType ) . ".php" );
+					// if the class exists, has the method "addModuleTranslations" 
+					// and the current module contains this cms content type we 
+					// add the additional translations for the module
+					if ( class_exists ( $sContentType ) && 
+						method_exists( $sContentType, 'addModuleTranslations' ) && 
+						preg_match('/' . strtoupper ( $sContentType ) . '\[\d+\]/', $code) ) {
+						
+						$strings = call_user_func(array($sContentType, 'addModuleTranslations'), $strings);
+					}
+				}
+			}
+		}
+        
+        /* Make the strings unique */
+        return array_unique($strings);
+    }
 
     /**
      * Parses the module for mi18n strings and returns them in an array
@@ -188,8 +284,13 @@ class cApiModule extends Item
         }
 
         // Fetch the code, append input to output
-        $code  = $this->get("output");
-        $code .= $this->get("input");
+        //$code  = $this->get("output");
+        //$code .= $this->get("input");
+		
+		//Get the code(input,output) from files
+    	 $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));                 
+         $code = $contenidoModuleHandler->readOutput()." ";
+         $code.= $contenidoModuleHandler->readInput();
 
         // Initialize array
         $strings = array();
@@ -462,60 +563,116 @@ class cApiModule extends Item
     }
 
     /**
+	 * import
      * Imports the a module from a XML file
      * Uses xmlparser and callbacks
-     *
-     * @param string    $file     Filename of data file (full path)
+	 *
+	 * @param string	$file 	Filename of data file (full path) 
      */
-    public function import($sFile)
+	function import ($sFile)
     {
-        global $_mImport;
+    	global $_mImport, $db, $client, $cfg,$encoding,$lang;
+    
+    	$oldName = $this->get("name");
+    	$idmod = $this->get("idmod");
+    	$inputOutput = array();
+    	
+    	
+    	
+    	
+    	if ($this->_parseImportFile($sFile, "module"))
+    	{
+    		$bStore = false;
+			foreach ($_mImport["module"] as $key => $value)
+			{
+				if ($this->get($key) != $value)
+				{
+					#the columns input/and outputs dont exist in table
+					if($key == "output" || $key == "input")
+						$inputOutput[$key] = $value;
+					else	
+						$this->set($key, addslashes($value));
+						
+					$bStore = true;
+					
+				}
+				
+			}
+			
+			if ($bStore == true)
+			{
+			     
+				$this->store();
+				
+				$contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod")); 
+				
+				if($contenidoModuleHandler->existModul()) {
 
-        if ($this->_parseImportFile($sFile, "module")) {
-            $bStore = false;
-            foreach ($_mImport["module"] as $key => $value) {
-                if ($this->get($key) != $value) {
-                    $this->set($key, addslashes($value));
-                    $bStore = true;
-                }
-            }
-
-            if ($bStore == true) {
-                $this->store();
-            }
-            return true;
-        } else {
-            return false;
-        }
+				    $md5 = md5(time().rand(0,time()));
+		            $this->set("name",$this->get("name").substr($md5,0,4));
+		            $this->store();
+		           
+				}
+				 
+				    $contenidoModuleHandler->renameModul($oldName , $this->get("name"));
+				    $contenidoModuleHandler->setNewModulName($this->get("name"));
+				    $contenidoModuleHandler->saveInput($inputOutput["input"]);
+				    $contenidoModuleHandler->saveOutput($inputOutput["output"]);
+				 
+				
+			}
+			return true;
+    	} else {
+    		return false;	
+    	}
     }
 
-    /**
+	/**
+	 * export
      * Exports the specified module strings to a file
-     *
-     * @param $filename string Filename to return
-     * @param $return    boolean if false, the result is immediately sent to the browser
-     */
-    public function export($filename, $return = false)
+	 *
+	 * @param $filename string Filename to return
+	 * @param $return	boolean if false, the result is immediately sent to the browser 
+     */    
+    function export ($filename, $return = false)
     {
-        $tree  = new XmlTree('1.0', 'ISO-8859-1');
-        $root =& $tree->addRoot('module');
+    	cInclude("classes", "class.xmltree.php");
+    	$tree  = new XmlTree('1.0', 'ISO-8859-1');
+    	$root =& $tree->addRoot('module');
 
-        $root->appendChild("name", htmlspecialchars($this->get("name")));
-        $root->appendChild("description", htmlspecialchars($this->get("description")));
-        $root->appendChild("type", htmlspecialchars($this->get("type")));
-        $root->appendChild("input", htmlspecialchars($this->get("input")));
-        $root->appendChild("output", htmlspecialchars($this->get("output")));
+		$root->appendChild("name", htmlspecialchars($this->get("name")));    		
+		$root->appendChild("description", htmlspecialchars($this->get("description")));
+		$root->appendChild("type", htmlspecialchars($this->get("type")));
+		
+	    global $cfg,$client,$db;
+	   
+	    $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));                 
+        
+	    #if modul exist in filesystem load input and output from file.
+	    if($contenidoModuleHandler->existModul() == true ) {
+	        
+	        $root->appendChild("input", htmlspecialchars($contenidoModuleHandler->readInput()));
+		    $root->appendChild("output",htmlspecialchars($contenidoModuleHandler->readOutput()));
+	        
+	    } else {    #try to load from db-table
 
-        if ($return == false) {
-            header("Content-Type: text/xml");
-            header("Etag: ".md5(mt_rand()));
-            header("Content-Disposition: attachment;filename=\"$filename\"");
-            $tree->dump(false);
-        } else {
-            return stripslashes($tree->dump(true));
-        }
+	        $root->appendChild("input", htmlspecialchars(""));
+		    $root->appendChild("output", htmlspecialchars(""));
+	    }
+         
+         
+		
+		
+    	if ($return == false)
+    	{
+			header("Content-Type: text/xml");
+    		header("Etag: ".md5(mt_rand()));
+    		header("Content-Disposition: attachment;filename=\"$filename\"");
+    		$tree->dump(false);
+    	} else {
+    		return stripslashes($tree->dump(true));	
+    	}	
     }
-
     public function getPackageOverview($sFile)
     {
         global $_mImport;

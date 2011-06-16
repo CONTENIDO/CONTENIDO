@@ -23,7 +23,9 @@
  *   created 2003
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2010-08-13, Dominik Ziegler, fixed CON-337 - added update of lastmodified
- *
+ *   modified 2011-01-11, Rusmir Jusufovic
+ *   	- save and load input and output of moduls from/in files
+ *   	- save the modul infos in to the xml file
  *   $Id$:
  * }}
  * 
@@ -47,7 +49,9 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 	* START TRACK VERSION
 	**/
 	$oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
-	
+	$contenidoModuleHandler="";
+	$notification = new Contenido_Notification();
+	$messageIfError = "";
 	// Create new Module Version in cms/version/module/
 	$oVersion->createNewVersion();
 
@@ -64,27 +68,96 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		
         cInclude ("includes", "functions.rights.php");
         createRightsForElement("mod", $idmod);
+		$contenidoModuleHandler = new Contenido_Module_Handler($idmod);
 	} else {
 		$cApiModule = new cApiModule;
 		$cApiModule->loadByPrimaryKey($idmod);	
+		$contenidoModuleHandler = new Contenido_Module_Handler($idmod);	
 	}
     
+	 $inputSave = "";
+	 $outputSave = "";
+     #save contents of input or output 
+     if( $contenidoModuleHandler->existModul() == true) {
+	     $contenidoModuleHandler->saveInput(stripslashes($input));
+	     $contenidoModuleHandler->saveOutput(stripslashes($output));
+     }
+     else {
+         #if module dont exist save the input and input into the db-table
+           $inputSave=$input;
+           $outputSave=$output;  
+     }
     if (	$cApiModule->get("name") != stripslashes($name) ||
-    		$cApiModule->get("output") != stripslashes($output) ||
     		$cApiModule->get("template") != stripslashes($template) ||
     		$cApiModule->get("description") != stripslashes($description) ||
-    		$cApiModule->get("input") != stripslashes($input) ||
     		$cApiModule->get("type") != stripslashes($type))
     {
-		$cApiModule->set("name", $name);
-		$cApiModule->set("output", $output);
+		#rename the module if the name had changed
+		  $change=false;
+		  $oldName =$cApiModule->get("name");
+		  
+        if($cApiModule->get("name") != $name) {
+            $change=true;
+        }
+           
+        
+		$cApiModule->set("name", capiStrCleanURLCharacters($name));
 		$cApiModule->set("template", $template);
 		$cApiModule->set("description", $description);
-		$cApiModule->set("input", $input);
 		$cApiModule->set("type", $type);
 		$cApiModule->set("lastmodified", $date);
-        
+      
 		$cApiModule->store();
+		
+		
+		if($change == true)
+		{
+		    $contenidoModuleHandler->setNewModulName(capiStrCleanURLCharacters($name));
+		     #if modul dir exist ->double name, name shuld be uneque
+		    if($contenidoModuleHandler->existModul() == true) {
+		        
+		        #set the old name because the new name of Modul exist in modul dir
+		        $cApiModule->set("name",$oldName);
+		        $cApiModule->store();
+		        if($contenidoModuleHandler->saveInfoXML($oldName , $description, $type) == false)
+		       		$notification->displayMessageBox('error',i18n("Can't save xml modul info file!"));
+		        
+		    }
+		    else {
+		       #the new name of modul dont exist im modul dir
+		       if( $contenidoModuleHandler->renameModul($oldName,capiStrCleanURLCharacters($name)) == false)
+		       	$messageIfError = i18n("Can't rename modul, is a modul file open ??? !");
+		       #get the new Modul 
+		       $contenidoModuleHandler->setNewModulName(capiStrCleanURLCharacters($name));
+		       #save input and output in file
+		       if( $contenidoModuleHandler->saveInput(stripslashes($input)) == false)
+		       	$messageIfError .= "<br/>". i18n("Can't save input !");
+		       
+		       	if($contenidoModuleHandler->saveOutput(stripslashes($output)) == false)
+		       	$messageIfError .= "<br/>". i18n("Can't save output !");
+		       	
+		       
+		       if($contenidoModuleHandler->saveInfoXML($oldName , $description, $type) == false)
+		       		$messageIfError .= "<br/>". i18n("Can't save xml modul info file!");
+		       
+		       
+		       	#display error
+		       	if( 	$messageIfError != "") {
+		       		$notification->displayNotification('error',$messageIfError);
+		       		#set the old name because modul could not rename 
+		        	$cApiModule->set("name",$oldName);
+		        	$cApiModule->store();
+		       	}
+		       	
+		    }
+		    
+		    
+		    
+		} else {
+		    
+		     if($contenidoModuleHandler->saveInfoXML($oldName , $description, $type) == false)
+		       		$notification->displayNotification('error',i18n("Can't save xml modul info file!"));
+		}
     }
 
 	

@@ -23,7 +23,10 @@
  *   created 2003-01-21
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2011-02-07, Dominik Ziegler, removed integration of not supported java module editor
- *
+ *   modified 2011-01-11, Rusmir Jusufovic
+ *   	- save and load input/output of moduls from files
+ *   	- mod_sync synchronize moduls from file and moduls from db 
+
  *   $Id$:
  * }}
  * 
@@ -41,10 +44,32 @@ $sOptionDebugRows	= getEffectiveSetting("modules", "show-debug-rows", "never");
 
 if (!isset($idmod)) $idmod = 0;
 
+$contenidoModuleHandler = new Contenido_Module_Handler($idmod );
 if ($action == "mod_delete")
 {
-	$modules = new cApiModuleCollection;
-	$modules->delete($idmod);
+	#if erase had been successfully
+    if($contenidoModuleHandler->eraseModul() == true) { 
+	    
+        $modules = new cApiModuleCollection;
+	    $modules->delete($idmod);
+    }
+}
+if($action == "mod_sync") {
+    $contenidoModuleSynchronizer = new Contenido_Moudle_Synchronizer();
+    $idmod = $contenidoModuleSynchronizer->synchronize();
+   
+    $idmodUpdate = $contenidoModuleSynchronizer->compareFileAndModulTimestamp();
+    
+    #if a modul is deleted in filesystem but not in db
+    #make an update 
+    #$idmodUpdate = $contenidoModuleSynchronizer->updateDirFromModuls();
+    #we need the idmod for refresh all frames
+    if($idmod == 0 &&$idmodUpdate != 0)
+        $idmod = $idmodUpdate;
+     
+    //the actuly Modul is the last Modul from synchronize
+    $contenidoModuleHandler = new Contenido_Module_Handler($idmod);
+    
 }
 if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $action)))
 {
@@ -53,9 +78,29 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 	if ($action == "mod_new")
 	{
 		$modules = new cApiModuleCollection;
-		$module = $modules->create(i18n("- Unnamed Module -"));
+		$module = $modules->create(capiStrCleanURLCharacters(i18n("- Unnamed Module -")));
 		$module->set("description", implode("\n", array(i18n("<your module description>"), "", i18n("Author: "), i18n("Version:"))));
 		$module->store();
+		#save into the file
+		$contenidoModuleHandler = new Contenido_Module_Handler($module->get("idmod"));
+		
+		#if modul exist (in db or in filesystem) , make the name uneque
+		if($contenidoModuleHandler->existModul() == true || $contenidoModuleHandler->countModulNameInDb()>1 )
+		{
+		    $md5 = md5(time().rand(0,time()));
+		    $module->set("name",$module->get("name").substr($md5,0,4));
+		    $module->store();
+		    #reset because name is changed
+		    $contenidoModuleHandler->setNewModulName($module->get("name"));
+		}
+		    
+		if( $contenidoModuleHandler->makeNewModul() == false )
+		{
+		     //logg error
+		     $notification->displayNotification("error", i18n("Cant make a new modul!")); 
+		     die(); 
+		}
+                    
 	} else {
 		$module = new cApiModule;
 		$module->loadByPrimaryKey($idmod);
@@ -82,6 +127,7 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
     			} else {
     				// Load the item again (clearing slashes from import)
     				$module->loadByPrimaryKey($module->get($module->primaryKey));
+    				$contenidoModuleHandler  = new $contenidoModuleHandler ($module->get('idmod'));
     			}
     		}
     	}
@@ -127,8 +173,18 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
     	$descr		= new cHTMLTextarea("descr", htmlspecialchars($module->get("description")), 100, 5);
     	
     	// Get input and output code; if specified, prepare row fields
-    	$sInputData		= htmlspecialchars($module->get("input"));
-    	$sOutputData	= htmlspecialchars($module->get("output"));
+    	$sInputData		= "";
+    	$sOutputData	= "";
+    	
+    	
+    	#Read the input and output for the editing in Backend from file
+    	
+    	if( $contenidoModuleHandler->existModul() == true )
+    	{
+    	    $sInputData = $contenidoModuleHandler->readInput();
+    	    $sOutputData = $contenidoModuleHandler->readOutput();
+    	}
+    	
     	
     	if ($sOptionDebugRows !== "never")
     	{
@@ -324,9 +380,26 @@ function insertTab(event, obj) {
         
         $inputok  = true;
         $outputok = true;
+        
+        $inputModTest = "";
+        $outputModTest = "";
+        
+        #get input/output from file
+	    if( $contenidoModuleHandler->existModul() == true )
+    	{
+    	    $inputModTest = $contenidoModuleHandler->readInput();
+    	    $outputModTest = $contenidoModuleHandler->readOutput();
+    	}
+    	else {
+    	    
+    	   
+    	}
+    	
+    	
+    	
 		if ($modulecheck !== "false")
 		{
-			$outputok = modTestModule($module->get("output"), $module->get("idmod") . "o",true);
+			$outputok = modTestModule($outputModTest, $module->get("idmod") . "o",true);
 			if (!$outputok)
 			{
 				$errorMessage = sprintf(i18n("Error in module. Error location: %s"),$modErrorMessage);
@@ -336,7 +409,7 @@ function insertTab(event, obj) {
 				$outled = '<img align="right" src="images/but_online.gif" alt="'.$okMessage.'" title="'.$okMessage.'">';
 			}
             
-			$inputok = modTestModule($module->get("input"), $module->get("idmod"). "i");
+			$inputok = modTestModule($inputModTest, $module->get("idmod"). "i");
 			if (!$inputok)
 			{
 				$errorMessage = sprintf(i18n("Error in module. Error location: %s"),$modErrorMessage);
@@ -418,8 +491,18 @@ window.onload = scrolltheother;
 			$export->setEvent("click", "document.getElementById('vupload').style.display = 'none';");
 
 			$upload = new cHTMLUpload("upload");
+			
+			$inputChecked = "";
+			$outputChecked = "";
+			    
+			if($contenidoModuleHandler->existModul() == true)
+			{
+			     $inputChecked = $contenidoModuleHandler->readInput();
+			     $outputChecked = $contenidoModuleHandler->readOutput();
+			}
+			
 			                
-			if ($module->get("input") != "" && $module->get("output") != "")
+			if ($inputChecked != "" && $outputChecked != "")
 			{
 				$export->setChecked("checked");
 			} else {
@@ -430,7 +513,9 @@ window.onload = scrolltheother;
 			$form2->setVar("use_encoding", "false");
 			$form2->addHeader("Import/Export");
 			$form2->add(i18n("Mode"), array($export, "<br>", $import));
-			if ($module->get("input") != "" && $module->get("output") != "")
+			
+			
+			if ($inputChecked != "" && $outputChecked != "")
 			{                
 				$form2->add(i18n("File"), $upload, "vupload", "display: none;");
 			} else {

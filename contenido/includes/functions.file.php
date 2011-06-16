@@ -25,7 +25,8 @@
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-08-14, Timo.Trautmann added file_information functions for storing file meta indormations
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready), added new function fileValidateFilename() and commented code
- *
+ *   modified 2011-02.04, Rusmir Jusufovic,  function fileEdit  the Compare strlen(stripslashes(trim($sCode))) > 0 was wrong !!! Add a '=',
+ *   										 now you can save empty files or "remove the contents" of files  
  *   $Id$:
  * }}
  *
@@ -212,7 +213,7 @@ function fileEdit($filename, $sCode, $path) {
      // FIXME: Should be replaced against file_put_contents($path . $filename, FILE_BINARY | LOCK_EX | FILE_APPEND)
 
     if (is_writable($path.$filename)) {
-        if (strlen(stripslashes(trim($sCode))) > 0) {
+        if (strlen(stripslashes(trim($sCode))) >= 0) {
             # open file
             if (!$handle = fopen($path.$filename, "wb+")) {
                 $notification->displayNotification("error", sprintf(i18n("Could not open file %s"), $path.$filename));

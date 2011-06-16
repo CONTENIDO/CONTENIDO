@@ -671,6 +671,28 @@ table, tr, td, th	{
   line-height:2em;
 }
 
+/* link style for synchronization anything */
+.synchronizemoduls{
+  float:left;
+  display: block;
+  background: transparent url(../images/but_refresh.gif) no-repeat scroll 0 2px;
+  padding-left: 20px;
+  height:2em;
+  line-height:2em;
+}
+
+.deletefunction {
+	float:left;
+  display: block;
+  background: transparent url(../images/delete.gif) no-repeat scroll 0 2px;
+  padding-left: 20px;
+  height:2em;
+  line-height:2em;
+
+}
+
+
+
 /* Links Generell */
 a:link      {font-family: Verdana, Arial, Helvetica, Sans-Serif; color: #000000; text-decoration: none; font-size: 11px}
 a:visited   {font-family: Verdana, Arial, Helvetica, Sans-Serif; color: #000000; text-decoration: none; font-size: 11px}

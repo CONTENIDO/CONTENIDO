@@ -22,7 +22,7 @@
  * {@internal 
  *   created 2003-07-03
  *   modified 2008-06-26, Frederic Schneider, add security fix
- *
+ *   mofified 2011-02-03, Rusmir Jusufovic, load the translation from file: mi18n();
  *   $Id$:
  * }}
  * 
@@ -155,14 +155,14 @@ function i18nEmulateGettext ($string, $domain = "contenido")
 			msgstr ""
 			"Hallo %s,\n"
 			"\n"
-			"du hast eine Wiedervorlage erhalten für den Mandanten '%s' at\n"
+			"du hast eine Wiedervorlage erhalten fï¿½r den Mandanten '%s' at\n"
 			"%s:\n"
 			"\n"
 			"%s"
 			
 		   has to be converted to:
 		   	msgid "Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s"
-		   	msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage erhalten für den Mandanten '%s' at\n%s:\n\n%s"
+		   	msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage erhalten fï¿½r den Mandanten '%s' at\n%s:\n\n%s"
         */ 
         $transFile[$domain] = preg_replace('/\\\n"\\s+"/m', '\\\\n', $transFile[$domain]); 
         $transFile[$domain] = preg_replace('/(""\\s+")/m', '"', $transFile[$domain]);
@@ -378,16 +378,41 @@ function i18nGetAvailableLanguages ()
 	return ($aLanguages); 
 }
 
-function mi18n ($string)
+function mi18n($string)
 {
-	global $cCurrentModule, $lang, $mi18nTranslator;
+	#dont workd by setup/upgrade
+	cInclude("classes", "contenido/class.module.php");
+	cInclude("classes", "module/class.contenido.translate.from.file.php");
+
+	global $cCurrentModule,$db,$cfgClient,$encoding, $lang, $mi18nTranslator, $client, $cfg;
 	
+
+	#set vars only if not set
+	if(Contenido_Vars::getVar('client')== null) {
+		#Set contenido vars ... 
+		Contenido_Vars::setVar('db', $db);
+		Contenido_Vars::setVar('lang', $lang);
+		Contenido_Vars::setVar('cfg', $cfg);
+		Contenido_Vars::setEncoding($db,$cfg,$lang);
+		Contenido_Vars::setVar('cfgClient', $cfgClient);
+		Contenido_Vars::setVar('client', $client);
+		Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding','UTF-8'));	
+	}
+	
+	
+	$contenidoTranslateFromFile = new Contenido_Translate_From_File($cCurrentModule, true);
+	$array = $contenidoTranslateFromFile->getLangArray();
+	
+	/*
 	if (!is_object($mi18nTranslator))
 	{
 		$mi18nTranslator = new cApiModuleTranslationCollection;	
-	}
+	}*/
 	
-	return $mi18nTranslator->fetchTranslation($cCurrentModule, $lang, $string);
+	if($array[$string] == "")
+	    return $string;
+	else     
+	    return $array[$string];	
 }
 	
 ?>

@@ -26,7 +26,8 @@
  *   modified 2011-02-28, Murat Purc, normalized setup startup process and some cleanup/formatting
  *   modified 2011-03-21, Murat Purc, usage of new db connection
  *   modified 2011-05-17, Ortwin Pinke, del sequencetable cfg, has to be set in connect-function
- *
+ *   modified 2011-01-11, rusmir jusufovic,
+ *   	- save input and output and translations strings from moduls in files
  *   $Id$:
  * }}
  *
@@ -43,6 +44,7 @@ include_once('lib/startup.php');
 checkAndInclude(C_CONTENIDO_PATH . 'includes/functions.database.php');
 checkAndInclude(C_CONTENIDO_PATH . 'classes/class.version.php');
 checkAndInclude(C_CONTENIDO_PATH . 'classes/class.versionImport.php');
+checkAndInclude(C_CONTENIDO_PATH . 'classes/module/class.contenido.upgrade.job.php');
 
 
 if (hasMySQLiExtension() && !hasMySQLExtension()) {
@@ -262,6 +264,48 @@ if ($currentstep < $totalsteps) {
     $aNothing = array();
 
     injectSQL($db, $_SESSION['dbprefix'], 'data/indexes.sql', array(), $aNothing);
+	
+	 #makes the new concept of moduls (save the moduls to the file)
+    #save the translation
+	if($_SESSION["setuptype"] == "setup"|| $_SESSION["setuptype"] == "upgrade") {
+	     
+		
+		$defaultDbCfg = array(
+            'connection' => array(
+                'host'     => $_SESSION["dbhost"],
+                'database' => $_SESSION["dbname"],
+                'user'     => $_SESSION["dbuser"],
+                'password' => $_SESSION["dbpass"]
+            ),
+            'sequenceTable'  => $_SESSION['dbprefix'].'_sequence'
+        );
+        
+        #default connection... 
+		$db->setDefaultConfiguration($defaultDbCfg);
+	     #make cfg
+	     $myCfg["tab"] ["clients"] = $_SESSION["dbprefix"]."_clients";
+	     $myCfg["tab"] ["mod"] = $_SESSION["dbprefix"]."_mod";
+	     $myCfg["tab"] ["clients_lang"] = $_SESSION['dbprefix']."_clients_lang";
+	     $myCfg["tab"] ["mod_translations"] = $_SESSION['dbprefix']."_mod_translations";
+	     $myCfg["tab"] ["lang"] = $_SESSION['dbprefix']."_lang";
+	     $myCfg["tab"] ["properties"] = $_SESSION['dbprefix']."_properties";
+	     
+	     Contenido_Vars::setVar('cfg', $myCfg);
+	     #default 1 it will be set new in method saveAllModulsToTheFile
+	     Contenido_Vars::setVar('client', 1);
+	     Contenido_Vars::setVar('encoding', 'ISO-8859-1');
+	     Contenido_Vars::setVar('fileEncoding','UTF-8');
+	     
+	     
+	     Contenido_Vars::setVar('db',new DB_Contenido());
+	    
+	     $contenidoUpgradeJob = new Contenido_UpgradeJob();
+	     
+	      #save all moduls from db-table to the filesystem
+	      $contenidoUpgradeJob->saveAllModulsToTheFile($_SESSION["setuptype"],new DB_Contenido());
+	       
+	    
+	}
 
     printf('<script language="JavaScript">parent.document.getElementById("installing").style.visibility="hidden";parent.document.getElementById("installingdone").style.visibility="visible";</script>');
     printf('<script language="JavaScript">parent.document.getElementById("next").style.visibility="visible"; window.setTimeout("nextStep()", 10); function nextStep () { window.location.href=\'makeconfig.php\'; }</script>');

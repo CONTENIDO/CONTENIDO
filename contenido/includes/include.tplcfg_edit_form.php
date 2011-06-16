@@ -22,7 +22,8 @@
  * {@internal 
  *   created 2002
  *   modified 2008-06-27, Dominik Ziegler, add security fix
- *
+ *   mofified 2011-01-11, Rusmir Jusufovic, load input of moduls from files
+
  *   $Id$:
  * }}
  * 
@@ -365,7 +366,13 @@ if (isset($a_d) && is_array($a_d)) {
                 $db->query($sql);
                 $db->next_record();
 
-                $input = $db->f("input")."\n";
+               $input = "\n";
+                $contenidoModuleHandler = new Contenido_Module_Handler($db->f("idmod"));
+ 
+                #load data from file 
+                if($contenidoModuleHandler->existModul() == true)
+                    $input = $contenidoModuleHandler->readInput()."\n";
+                
 				global $cCurrentModule;
 				$cCurrentModule = $db->f("idmod");
                 $modulecaption = i18n("Module in container")." ".$cnumber.": ";

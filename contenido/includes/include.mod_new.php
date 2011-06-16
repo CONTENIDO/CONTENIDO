@@ -22,7 +22,7 @@
  * {@internal 
  *   created 2003-03-21
  *   modified 2008-06-27, Frederic Schneider, add security fix
- *
+ *   modified 2011-01-11, Rusmir Jusufovic, add snyc-button 
  *   $Id$:
  * }}
  * 
@@ -46,7 +46,8 @@ $tpl->reset();
 #################
 $str = '';
 if ((int) $client > 0) {
-    $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="addfunction" target="right_bottom" href="'.$sess->url("main.php?area=mod_edit&frame=4&action=mod_new").'">'.i18n("New module").'</a></div>';
+    $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="addfunction" target="right_bottom" href="'.$sess->url("main.php?area=mod_edit&frame=4&action=mod_new").'">'.i18n("New module").'</a> </div>';
+    $strSync = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;line-height:100px;"><a style="margin-top:5px;" class="synchronizemoduls" target="right_bottom" href="'.$sess->url("main.php?area=mod_edit&frame=4&action=mod_sync").'">'.i18n("Synchronize moduls").'</a></div>';
 } else {
     $str = '<div style="height: 2.5em;line-height: 2.5em;border: 1px solid #B3B3B3;padding-left:15px;">'.i18n('No Client selected').'</div>';
 }
@@ -174,7 +175,8 @@ if ((int) $client > 0) {
     $tpl->set('s', 'PAGINGLINK', $pagerl);
     
 
-    $tpl->set('s', 'ACTION', $str.'<table style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');
+    $tpl->set('s', 'ACTION', $str.$strSync.'<table style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');
+     //$tpl->set('s', 'ACTION2', $str.'<table style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');
 } else {
     $tpl->set('s', 'PAGINGLINK', '');
     $tpl->set('s', 'ACTION', $str);

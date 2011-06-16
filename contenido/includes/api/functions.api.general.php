@@ -24,6 +24,7 @@
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2009-10-27, Murat Purc, initialization of variable $bError to prevent PHP strict messages
  *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2011-06-14, Rusmir Jusufovic, add a new path to cInclude, "modul" path to the php directory in current modul
  *
  *   $Id$:
  * }}
@@ -74,7 +75,7 @@ if (!defined('CON_FRAMEWORK')) {
  */
 function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = false)
 {
-    global $client, $cfg, $cfgClient;
+   global $client, $cfg, $cfgClient,$cCurrentModule;
 
     // Sanity check for $sWhat
     $sWhat  = trim($sWhat);
@@ -82,6 +83,13 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
     $bError = false;
 
     switch ($sWhere) {
+
+		case "modul":
+   			#Contenido_Vars::debugg();
+   			$handler = new Contenido_Module_Handler($cCurrentModule);
+   			$sInclude = $handler->getPhpPath().$sWhat;
+   		break;
+
         case 'frontend':
             $sInclude = $cfgClient[$client]['path']['frontend'] . $sWhat;
             break;

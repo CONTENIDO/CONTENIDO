@@ -33,6 +33,8 @@
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *   modified 2010-10-11, Dominik Ziegler, display only major and minor version of version number
  *   modified 2010-12-09, Dominik Ziegler, fixed multiple replacements of title tags [#CON-373]
+ *   modified 2011-01-11, Rusmir Jusufovic
+ *   	- load input and output of moduls from files
  *
  *   $Id$:
  * }}
@@ -58,7 +60,11 @@ if(!defined('CON_FRAMEWORK')) {
  */
 function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 {
-	global $frontend_debug, $_cecRegistry;
+	global $frontend_debug, $_cecRegistry, $cfgClient;
+	
+	$cssData = '';
+	$jsData = '';
+	$tplName = '';
 
 	$debug = 0;
 
@@ -67,6 +73,15 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 
 	global $db, $db2, $sess, $cfg, $code, $cfgClient, $client, $lang, $encoding;
 
+	#set contenido vars for module concepts
+	Contenido_Vars::setVar('db', $db);
+	Contenido_Vars::setVar('lang', $lang);
+	Contenido_Vars::setVar('cfg', $cfg);
+	Contenido_Vars::setEncoding($db,$cfg,$lang);
+	Contenido_Vars::setVar('cfgClient', $cfgClient);
+	Contenido_Vars::setVar('client', $client);
+	Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding','UTF-8'));
+	
 	if (!is_object($db2))
 		$db2 = new DB_Contenido;
 
@@ -216,7 +231,8 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	/* Get IDLAY and IDMOD array */
 	$sql = "SELECT
 	                    a.idlay AS idlay,
-	                    a.idtpl AS idtpl
+	                    a.idtpl AS idtpl,
+	                    a.name AS name
 	                FROM
 	                    ".$cfg["tab"]["tpl"]." AS a,
 	                    ".$cfg["tab"]["tpl_conf"]." AS b
@@ -235,7 +251,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 	}
 
 	$idtpl = $db->f("idtpl");
-
+	$tplName = $db->f("name");
 	if ($debug)
 		echo "Usging Layout: $idlay and Template: $idtpl for generation of code.<br><br>";
 
@@ -287,7 +303,21 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 				$thisContainer = '<?php $cCurrentContainer = '. ((int) $value).'; ?>';
 			}
 
-			$output = $thisModule.$thisContainer.$db->f("output");
+			$contenidoModuleHandler = new Contenido_Module_Handler($db->f("idmod"));
+            $output = $thisModule.$thisContainer;
+            $input = $thisModule.$thisContainer;
+            
+            #get the contents of input and output from files and not from db-table 
+            if( $contenidoModuleHandler->existModul() == true ) {
+                $output = $thisModule.$thisContainer.$contenidoModuleHandler->readOutput();
+                //load css and js content of the js/css files
+                $cssData .=$contenidoModuleHandler->getFilesContent("css","css"); 
+                $jsData .= $contenidoModuleHandler->getFilesContent("js","js");
+                    
+                $input = $thisModule.$thisContainer.$contenidoModuleHandler->readInput();
+            } else {
+            		
+            }
 			$output = AddSlashes($output)."\n";
 
 			$template = $db->f("template");
@@ -552,9 +582,27 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
             $sMetatags .= $oMetaTagGen->render()."\n";
         }
 	}
-
+	
+	
+	
+	//save the collected css/js data and save it undter the template name ([templatename].css , [templatename].js in cache dir
+	$cssDatei = '';
+    if(($myFileCss = Contenido_Module_Handler::saveContentToFile($cfgClient[$client], $tplName,"css", $cssData))== false) {
+	    
+	 $cssDatei = "error error culd not generate css file";
+	} else {
+	  $cssDatei = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';  
+	}
+	$jsDatei = '';
+    if( ($myFileJs =Contenido_Module_Handler::saveContentToFile($cfgClient[$client], $tplName,"js", $jsData))== false) {
+	    
+	  $jsDatei = "error error error culd not generate js file";
+	} else {
+	    
+	  $jsDatei = '<script src="'.$myFileJs.'" type="text/javascript"></script>';  
+	}
 	/* Add meta tags */
-	$code = str_ireplace_once("</head>", $sMetatags."</head>", $code);
+	$code = str_ireplace_once("</head>", $cssDatei.$jsDatei.$sMetatags."</head>", $code);
 
 	/* write code into the database */
 	$date = date("Y-m-d H:i:s");
