@@ -109,8 +109,7 @@ class Contenido_Module_Handler {
      * Whats the name of modul dir where all moduls are.
      * @var string
      */
-    protected $_modulDirName = "module/";
-    
+    static $MODUL_DIR_NAME = "module/";
     /**
      * 
      * Name of the Info xml file.
@@ -234,6 +233,22 @@ class Contenido_Module_Handler {
     
     /**
      * 
+     * Exist the modulname in directory
+     * 
+     * @param string $name
+     * @param array $cfgClient
+     */
+    static function existModulInDirectory($name , $cfgClient) {
+    	
+    	if(is_dir($cfgClient[Contenido_Vars::getVar('client')]['path']['frontend'].self::$MODUL_DIR_NAME.$name.'/')) {
+    		return true;
+    	} else 
+    		return false;
+    	
+    }
+    
+    /**
+     * 
      * Save a content in the file, use for css/js
      * 
      * @param unknown_type $frontendPath
@@ -267,9 +282,9 @@ class Contenido_Module_Handler {
          
         if(is_object($db)) {
          
-            $this->_modulName = $db->f("name");
-            $this->_modulPath = $db->f("frontendpath").$this->_modulDirName.$this->_modulName."/";
-            $this->_path = $db->f("frontendpath").$this->_modulDirName;
+            $this->_modulName = $db->f("alias");
+            $this->_modulPath = $db->f("frontendpath").self::$MODUL_DIR_NAME.$this->_modulName."/";
+            $this->_path = $db->f("frontendpath").self::$MODUL_DIR_NAME;
             $this->_idmod = $db->f("idmod");
             $this->_client = $db->f("idclient");
             $this->_description = $db->f("description");
@@ -295,15 +310,15 @@ class Contenido_Module_Handler {
         if($idmod == NULL)
             return;
             
-        $sql=sprintf("SELECT moduls.name as name, moduls.description as description, moduls.type as type,clients.idclient as idclient, clients.frontendpath as frontendpath, moduls.idmod as idmod FROM %s AS clients , %s AS moduls  WHERE idmod=%s AND clients.idclient = moduls.idclient ",$this->_cfg["tab"]["clients"],$this->_cfg["tab"]["mod"] ,Contenido_Security::toInteger($idmod));
+        $sql=sprintf("SELECT moduls.alias as alias, moduls.description as description, moduls.type as type,clients.idclient as idclient, clients.frontendpath as frontendpath, moduls.idmod as idmod FROM %s AS clients , %s AS moduls  WHERE idmod=%s AND clients.idclient = moduls.idclient ",$this->_cfg["tab"]["clients"],$this->_cfg["tab"]["mod"] ,Contenido_Security::toInteger($idmod));
         $this->_echoIt("sql :".$sql);
         
         $this->_db->query($sql);
       
         if($this->_db->next_record()) {
-            $this->_modulName = $this->_db->f("name");
-            $this->_modulPath = $this->_db->f("frontendpath").$this->_modulDirName.$this->_modulName."/";
-            $this->_path = $this->_db->f("frontendpath").$this->_modulDirName;
+            $this->_modulName = $this->_db->f("alias");
+            $this->_modulPath = $this->_db->f("frontendpath").self::$MODUL_DIR_NAME.$this->_modulName."/";
+            $this->_path = $this->_db->f("frontendpath").self::$MODUL_DIR_NAME;
             $this->_idmod = $this->_db->f("idmod");
             $this->_client = $this->_db->f("idclient");
             $this->_description =$this->_db->f("description");
@@ -648,13 +663,13 @@ class Contenido_Module_Handler {
         	if(is_dir($db->f("frontendpath")) == false)
         		$this->errorLog('Frontendpath dont exists path: '.$db->f("frontendpath"));
         		
-            if(!is_dir($db->f("frontendpath").$this->_modulDirName)) {
+            if(!is_dir($db->f("frontendpath").self::$MODUL_DIR_NAME)) {
                 
             	#could not make the modul directory in client 
-                if(mkdir($db->f("frontendpath").$this->_modulDirName) == false){
+                if(mkdir($db->f("frontendpath").self::$MODUL_DIR_NAME) == false){
                  	$this->errorLog("Could not make modul directory in frontendpath :".$db->f("frontendpath"));
                 }else
-                    chmod($db->f("frontendpath").$this->_modulDirName,0777);
+                    chmod($db->f("frontendpath").self::$MODUL_DIR_NAME,0777);
                 
                 
             }
@@ -682,12 +697,12 @@ class Contenido_Module_Handler {
         	if(is_dir($myDb->f("frontendpath")) == false)
         		return false;
         		
-            if(!is_dir($myDb->f("frontendpath").$this->_modulDirName)) {
+            if(!is_dir($myDb->f("frontendpath").self::$MODUL_DIR_NAME)) {
                 
-                if(mkdir($myDb->f("frontendpath").$this->_modulDirName) == false){
+                if(mkdir($myDb->f("frontendpath").self::$MODUL_DIR_NAME) == false){
                   return false;
                 }else
-                    chmod($myDb->f("frontendpath").$this->_modulDirName,0777);
+                    chmod($myDb->f("frontendpath").self::$MODUL_DIR_NAME,0777);
                 
                 
             }

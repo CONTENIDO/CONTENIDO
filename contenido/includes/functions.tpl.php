@@ -24,6 +24,7 @@
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-06-30 timo.trautmann added fix module settings were also copied in function tplDuplicateTemplate
  *   modified 2009-01-08, Timo Trautmann fixed bug: Changes in Head Containers in visualedit were not stored
+ *   modified 2011-06-20, Rusmir Jusufovic , load layout code from file and not from db
  *
  *   $Id$:
  * }}
@@ -62,7 +63,9 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         //******** entry in 'tpl'-table ***************
         set_magic_quotes_gpc($name);
         set_magic_quotes_gpc($description);
-
+		
+        $name = capiStrCleanURLCharacters($name);
+        
         if (!$idtpl) {
 
             $idtpl = $db->nextid($cfg["tab"]["tpl"]);
@@ -204,11 +207,11 @@ function tplBrowseLayoutForContainers($idlay) {
         global $db;
         global $cfg;
 		global $containerinf;
+		global $lang;
 		
-        $sql = "SELECT code FROM ".$cfg["tab"]["lay"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
-        $db->query($sql);
-        $db->next_record();
-        $code = $db->f("code");
+		$layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
+		$code = $layoutInFile->getLayoutCode();
+	
 
         preg_match_all ("/CMS_CONTAINER\[([0-9]*)\]/", $code, $a_container);
 		$iPosBody = stripos($code, '<body>');
@@ -361,11 +364,10 @@ function tplPreparseLayout ($idlay)
 	global $containerinf;
 	global $db;
 	global $cfg;
+	global $lang;
 	
-    $sql = "SELECT code FROM ".$cfg["tab"]["lay"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
-    $db->query($sql);
-    $db->next_record();
-    $code = $db->f("code");
+	$layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
+	$code = $layoutInFile->getLayoutCode();
     
     $parser = new HtmlParser($code);
     $bIsBody = false;

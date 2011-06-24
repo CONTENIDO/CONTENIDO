@@ -26,6 +26,7 @@
  *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready) and some formatting
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *   modified 2011-01-11, Rusmir Jusufovic, load output of moduls from file
+ *   modified 2011-06-24, Rusmir Jusufovic, load layout code from file
  *   $Id$:
  * }}
  * 
@@ -478,15 +479,10 @@ EOD;
             $a_d[$db->f("number")] = $db->f("idmod");
         }
 
-        #
-        # Get code from Layout
-        #
-        $sql = "SELECT * FROM ".$cfg["tab"]["lay"]." WHERE idlay = '".Contenido_Security::toInteger($idlay)."'";
-
-        $db->query($sql);
-        $db->next_record();
-
-        $code = $db->f("code");
+       
+		//Get layout from file
+        $layoutInFile = new LayoutInFile($idlay,"", $cfg, $lang);
+        $code = $layoutInFile->getLayoutCode();
         $code = AddSlashes($code);
 
         #

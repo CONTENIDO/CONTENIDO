@@ -28,6 +28,8 @@
  *   modified 2011-05-17, Ortwin Pinke, del sequencetable cfg, has to be set in connect-function
  *   modified 2011-01-11, rusmir jusufovic,
  *   	- save input and output and translations strings from moduls in files
+ *   modified 2011-06-20, Rusmir Jusufovic , save layout in filesystem
+ *   
  *   $Id$:
  * }}
  *
@@ -46,6 +48,7 @@ checkAndInclude(C_CONTENIDO_PATH . 'classes/class.version.php');
 checkAndInclude(C_CONTENIDO_PATH . 'classes/class.versionImport.php');
 checkAndInclude(C_CONTENIDO_PATH . 'classes/module/class.contenido.upgrade.job.php');
 
+checkAndInclude(C_CONTENIDO_PATH . 'classes/class.layoutInFile.php');
 
 if (hasMySQLiExtension() && !hasMySQLExtension()) {
     // use MySQLi extension by default if available
@@ -265,12 +268,8 @@ if ($currentstep < $totalsteps) {
 
     injectSQL($db, $_SESSION['dbprefix'], 'data/indexes.sql', array(), $aNothing);
 	
-	 #makes the new concept of moduls (save the moduls to the file)
-    #save the translation
-	if($_SESSION["setuptype"] == "setup"|| $_SESSION["setuptype"] == "upgrade") {
-	     
-		
-		$defaultDbCfg = array(
+    #set default 
+    $defaultDbCfg = array(
             'connection' => array(
                 'host'     => $_SESSION["dbhost"],
                 'database' => $_SESSION["dbname"],
@@ -282,6 +281,14 @@ if ($currentstep < $totalsteps) {
         
         #default connection... 
 		$db->setDefaultConfiguration($defaultDbCfg);
+		
+    
+	#makes the new concept of moduls (save the moduls to the file)
+    #save the translation
+	if($_SESSION["setuptype"] == "upgrade" || $_SESSION["setuptype"] == "setup") {
+	     
+		
+		
 	     #make cfg
 	     $myCfg["tab"] ["clients"] = $_SESSION["dbprefix"]."_clients";
 	     $myCfg["tab"] ["mod"] = $_SESSION["dbprefix"]."_mod";
@@ -306,6 +313,21 @@ if ($currentstep < $totalsteps) {
 	       
 	    
 	}
+	
+	
+	//START SAVE LAYOUT IN FILE
+	if($_SESSION["setuptype"] == "upgrade"||$_SESSION["setuptype"] == "setup") {
+		
+		 #make cfg
+	     $myCfg["tab"] ["clients"] = $_SESSION["dbprefix"]."_clients";
+	     $myCfg["tab"] ["lang"] = $_SESSION['dbprefix']."_lang";
+	     $myCfg["tab"] ["lay"] = $_SESSION['dbprefix']."_lay";
+	     
+		$layoutInFIle = new LayoutInFile(1,"", $myCfg, 1);
+		$layoutInFIle->upgrade();
+		
+	}
+	//END SAVE LAYOUT IN FILE
 
     printf('<script language="JavaScript">parent.document.getElementById("installing").style.visibility="hidden";parent.document.getElementById("installingdone").style.visibility="visible";</script>');
     printf('<script language="JavaScript">parent.document.getElementById("next").style.visibility="visible"; window.setTimeout("nextStep()", 10); function nextStep () { window.location.href=\'makeconfig.php\'; }</script>');

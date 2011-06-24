@@ -184,6 +184,7 @@ contenido/classes/class.inuse.php -text
 contenido/classes/class.iterator.php -text
 contenido/classes/class.lang.php -text
 contenido/classes/class.layout.php -text
+contenido/classes/class.layoutInFile.php -text
 contenido/classes/class.metaobject.php -text
 contenido/classes/class.navigation.php -text
 contenido/classes/class.newsletter.groups.php -text

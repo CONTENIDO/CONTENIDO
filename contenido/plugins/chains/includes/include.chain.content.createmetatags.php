@@ -23,6 +23,8 @@
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2009-10-08, Murat Purc, bugfix in function CheckIfMetaTagExists(), see [#CON-271]
  *   modified 2009-12-18, Murat Purc, fixed meta tag generation, see [#CON-272]
+ *   modified 2011-06-24, Rusmir Jusufovic remove bug  $oArt->_getIdArtLang is protected
+ *   
  *   $Id$:
  * }}
  *
@@ -104,7 +106,7 @@ function cecCreateMetatags ($metatags) {
 
         #Set idartlang, if not set
         if ($idartlang == '') {
-            $idartlang = $oArt->_getIdArtLang($idart, $lang);
+            $idartlang = $oArt->getField('idartlang');
         }
 
         $arrHead1 = $oArt->getContent("htmlhead");

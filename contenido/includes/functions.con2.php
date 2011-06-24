@@ -35,6 +35,7 @@
  *   modified 2010-12-09, Dominik Ziegler, fixed multiple replacements of title tags [#CON-373]
  *   modified 2011-01-11, Rusmir Jusufovic
  *   	- load input and output of moduls from files
+ *   modified 2011-06-24, Rusmir Jusufovic , load layout code from file
  *
  *   $Id$:
  * }}
@@ -273,13 +274,9 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 		$a_d[$db->f("number")] = $db->f("idmod");
 	}
 
-	/* Get code from Layout */
-	$sql = "SELECT * FROM ".$cfg["tab"]["lay"]." WHERE idlay = '".Contenido_Security::toInteger($idlay)."'";
-
-	$db->query($sql);
-	$db->next_record();
-
-	$code = $db->f("code");
+	//Load layout code from file
+	$layoutInFile = new LayoutInFile($idlay,"", $cfg, $lang);
+	$code = $layoutInFile->getLayoutCode();
 	$code = AddSlashes($code);
 
 	/* Create code for all containers */

@@ -31,7 +31,7 @@
  * @since      file available since Contenido release >= 4.8.15
  *
  * {@internal
- *     created  2011-06-09
+ *     created  2011-06-20
  * }}
  */
 
@@ -124,6 +124,7 @@ return array(
     'Languages' => 'contenido/classes/class.lang.php',
     'Language' => 'contenido/classes/class.lang.php',
     'Layout' => 'contenido/classes/class.layout.php',
+    'LayoutInFile' => 'contenido/classes/class.layoutInFile.php',
     'cMetaObject' => 'contenido/classes/class.metaobject.php',
     'Contenido_Navigation' => 'contenido/classes/class.navigation.php',
     'RecipientGroupCollection' => 'contenido/classes/class.newsletter.groups.php',

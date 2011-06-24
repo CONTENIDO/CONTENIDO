@@ -144,7 +144,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
      */
     public function compareFileAndModulTimestamp() {
         
-    	$sql = sprintf("SELECT UNIX_TIMESTAMP(mod1.lastmodified) AS lastmodified,mod1.idclient,description,type, mod1.name,client1.frontendpath, mod1.idmod FROM %s AS mod1 , %s AS client1 
+    	$sql = sprintf("SELECT UNIX_TIMESTAMP(mod1.lastmodified) AS lastmodified,mod1.idclient,description,type, mod1.name, mod1.alias,client1.frontendpath, mod1.idmod FROM %s AS mod1 , %s AS client1 
     					WHERE mod1.idclient = client1.idclient AND mod1.idclient =%s", 
     					$this->_cfg['tab']['mod'], 
     					$this->_cfg['tab']['clients'],
@@ -157,8 +157,8 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
     	while($db->next_record()) {
     		
     		$lastmodified = $db->f('lastmodified');
-    		$lastmodInput  = filemtime($db->f('frontendpath').$this->_modulDirName.$db->f('name')."/".$this->_directories['php'].$db->f('name')."_input.php");
-            $lastmodOutput = filemtime($db->f('frontendpath').$this->_modulDirName.$db->f('name')."/".$this->_directories['php'].$db->f('name')."_output.php");
+    		$lastmodInput  = filemtime($db->f('frontendpath').self::$MODUL_DIR_NAME.$db->f('alias')."/".$this->_directories['php'].$db->f('alias')."_input.php");
+            $lastmodOutput = filemtime($db->f('frontendpath').self::$MODUL_DIR_NAME.$db->f('alias')."/".$this->_directories['php'].$db->f('alias')."_output.php");
     		
             if($lastmodInput < $lastmodOutput) {
             	#use output
@@ -256,9 +256,9 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
         if( $db->next_record()) {
            
             #get the path to the modul dir from the client
-            $dir = $db->f("frontendpath").$this->_modulDirName; 
+            $dir = $db->f("frontendpath").self::$MODUL_DIR_NAME; 
            
-            if (is_dir($dir)) {                
+            if (is_dir($dir)) {                 
                 if ($dh = opendir($dir)) {
                     while (($file = readdir($dh)) !== false) {     
                        #is file a dir or not
@@ -315,13 +315,13 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
      * @return if a modul with the $name exist in the $cfg["tab"]["mod"] table return true else false
      */
 
-    private  function _isExistInTable( $name , $idclient) {
+    private  function _isExistInTable( $alias , $idclient) {
 
         $db = new DB_Contenido();
         
         
         #Select depending from idclient all moduls wiht the name $name
-        $sql = sprintf("SELECT * FROM %s WHERE name='%s' AND idclient=%s" , $this->_cfg["tab"]["mod"] , $name ,$idclient);
+        $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s" , $this->_cfg["tab"]["mod"] , $alias ,$idclient);
         
         $db->query($sql);
         
@@ -346,14 +346,14 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
     	$db = new DB_Contenido();
     	
     	#Select depending from idclient all moduls wiht the name $name
-        $sql = sprintf("SELECT * FROM %s WHERE name='%s' AND idclient=%s" , $this->_cfg["tab"]["mod"] , $oldName ,$idclient);
+        $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s" , $this->_cfg["tab"]["mod"] , $oldName ,$idclient);
         
         $db->query($sql);
         
         #a record is found
         if( $db->next_record()) {
         	
-        	$sqlUpdateName = sprintf("UPDATE %s SET name='%s' WHERE idmod=%s", $this->_cfg["tab"]["mod"],$newName,$db->f('idmod'));
+        	$sqlUpdateName = sprintf("UPDATE %s SET alias='%s' WHERE idmod=%s", $this->_cfg["tab"]["mod"],$newName,$db->f('idmod'));
         	
         	$db->query($sqlUpdateName);
         	return ;
@@ -376,7 +376,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
         #get next id from $cfg["tab"]["mod"]
         $nextId = $db->nextid($this->_cfg["tab"]["mod"]);
         #insert new modul in con_mod
-        $sql = sprintf(" INSERT INTO %s (name,idclient,idmod) VALUES('%s',%s,%s) ", $this->_cfg["tab"]["mod"], $name, $idclient , $nextId);
+        $sql = sprintf(" INSERT INTO %s (name,alias,idclient,idmod) VALUES('%s','%s',%s,%s) ", $this->_cfg["tab"]["mod"], $name,$name, $idclient , $nextId);
       
         
         $db->query($sql);

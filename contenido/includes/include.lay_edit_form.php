@@ -23,6 +23,7 @@
  *   created 2003-01-24
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2010-07-06, Ingo van Peeren, CON-325 
+ *   modified 2011-06-20, Rusmir Jusufovic , load layout code from file and not from db
  *
  *   $Id$:
  * }}
@@ -52,8 +53,31 @@ if ($action == "lay_new")
 	{
 		$notification->displayNotification("error", i18n("Permission denied"));	
 	} else {
-		$layouts = new cApiLayoutCollection;	
+		
+		
+		
+		$layoutAlias = capiStrCleanURLCharacters(i18n("-- New Layout --"));
+		
+		#check if layout exist
+		if( LayoutInFile::existLayout($layoutAlias, $cfgClient, $client)) {
+			
+			$notification->displayNotification("error", i18n("Layout name exist, rename the layout!"));
+			die();
+		}
+		
+		
+		$layouts = new cApiLayoutCollection;
+		
 		$layout = $layouts->create(i18n("-- New Layout --"));
+		#save alias
+		$layout->set("alias", $layoutAlias);
+		$layout->store();
+		
+		#make new layout in filesystem
+		$layoutInFile = new LayoutInFile($layout->get("idlay"), "", $cfg, $lang);
+		if( $layoutInFile->saveLayout("") == false)
+			$notification->displayNotification("error", i18n("Cant save layout filesystem!"));		
+		
 	}
 } elseif ($action == "lay_delete")
 {
@@ -91,9 +115,11 @@ if (!$layout->virgin)
 	$msg = "";
 	
     $tpl->reset();
-
+	 
 	$idlay = $layout->get("idlay");
-	$code = $layout->get("code");
+	$layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
+	$code = $layoutInFile->getLayoutCode();
+	#$code = $layout->get("code");
 	$name = $layout->get("name");
 	$description = $layout->get("description");
 	

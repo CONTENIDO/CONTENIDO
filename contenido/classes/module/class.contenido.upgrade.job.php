@@ -149,7 +149,7 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
         	$this->_changeNameCleanURL();
         	$result = "";
             #select all frontendpaht of the clients, frontendpaht is in  the table $cfg["tab"]["clients"]
-            $sql = sprintf("SELECT clients.frontendpath as frontendpath ,modul.description as description, modul.type as type, modul.name as name, modul.output as output, modul.input as input, modul.idmod as idmod , clients.idclient as idclient  FROM %s AS clients , %s AS modul WHERE clients.idclient = modul.idclient ORDER BY modul.idmod ", $this->_cfg["tab"]["clients"] , $this->_cfg["tab"]["mod"]); 
+            $sql = sprintf("SELECT clients.frontendpath as frontendpath ,modul.description as description, modul.type as type,modul.alias as alias, modul.name as name, modul.output as output, modul.input as input, modul.idmod as idmod , clients.idclient as idclient  FROM %s AS clients , %s AS modul WHERE clients.idclient = modul.idclient ORDER BY modul.idmod ", $this->_cfg["tab"]["clients"] , $this->_cfg["tab"]["mod"]); 
             $this->_echoIt("sql saveAllModuls....:".$sql);
             $db->query($sql);
          

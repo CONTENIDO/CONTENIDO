@@ -26,7 +26,10 @@
  *   modified 2011-01-11, Rusmir Jusufovic
  *   	- save and load input/output of moduls from files
  *   	- mod_sync synchronize moduls from file and moduls from db 
-
+ *   
+ *   modified 2011-06-22, Rusmir Jusufovic , the name of the moduls come from field alias
+ *   				differnet updates (error display ...)
+ *
  *   $Id$:
  * }}
  * 
@@ -78,21 +81,22 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 	if ($action == "mod_new")
 	{
 		$modules = new cApiModuleCollection;
-		$module = $modules->create(capiStrCleanURLCharacters(i18n("- Unnamed Module -")));
+		
+		
+		$alias = capiStrCleanURLCharacters(i18n("- Unnamed Module -"));
+		if(Contenido_Module_Handler::existModulInDirectory($alias, $cfgClient)) {
+			$notification->displayNotification("error", i18n("Modul name exist in modul directory, rename the modul."));
+			die();
+		}
+		
+		$module = $modules->create(i18n("- Unnamed Module -"));
 		$module->set("description", implode("\n", array(i18n("<your module description>"), "", i18n("Author: "), i18n("Version:"))));
+		
+		$module->set("alias",$alias);
+		
 		$module->store();
 		#save into the file
 		$contenidoModuleHandler = new Contenido_Module_Handler($module->get("idmod"));
-		
-		#if modul exist (in db or in filesystem) , make the name uneque
-		if($contenidoModuleHandler->existModul() == true || $contenidoModuleHandler->countModulNameInDb()>1 )
-		{
-		    $md5 = md5(time().rand(0,time()));
-		    $module->set("name",$module->get("name").substr($md5,0,4));
-		    $module->store();
-		    #reset because name is changed
-		    $contenidoModuleHandler->setNewModulName($module->get("name"));
-		}
 		    
 		if( $contenidoModuleHandler->makeNewModul() == false )
 		{

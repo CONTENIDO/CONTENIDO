@@ -20,6 +20,8 @@
  * @link       http://www.contenido.org
  * @since      file available since contenido release >= 4.8.8
  * 
+ * 
+ * modified 2011-06-20, Rusmir Jusufovic , add method setCode (load code of layout from file).
  * {@internal 
  *   created 2008-08-05
  *
@@ -93,6 +95,18 @@ if(!defined('CON_FRAMEWORK')) {
  
  	}
  	
+ 	
+ 	/**
+ 	 * 
+ 	 * Set code to data ...
+ 	 * 
+ 	 * @param string  $code
+ 	 */
+ 	public function setCode($code) {
+ 		
+ 		$this->setData('code', $code);
+ 		
+ 	}
  	/**
  	 * Function reads rows variables from table con_layout and init with the class members.
  	 * 
@@ -118,8 +132,7 @@ if(!defined('CON_FRAMEWORK')) {
 			$this->iClient = $this->oDB->f("idclient");
 			$this->sName = $this->oDB->f("name");
 			$this->sDescripion = $this->oDB->f("description");
-			$this->sDeletabel = $this->oDB->f("deletable");
-			$this->sCode = $this->oDB->f("code");   	    	 
+			$this->sDeletabel = $this->oDB->f("deletable"); 	    	 
 			$this->sAuthor = $this->oDB->f("author");
 			$this->dCreated = $this->oDB->f("created");
 			$this->dLastModified = $this->oDB->f("lastmodified");

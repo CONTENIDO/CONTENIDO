@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-05-07
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2011-06-24, Rusmir Jusufovic loactioni: external/backendedit/front_content.php and not cms/front_content.php
  *
  *   $Id$:
  * }}
@@ -36,7 +37,7 @@ if ($doedit == "1") {
 	conSaveContentEntry ($idartlang, "CMS_TEXT", $typenr, $CMS_TEXT);
 	conMakeArticleIndex ($idartlang, $idart);
 	conGenerateCodeForArtInAllCategories($idart);
-	header("Location:".$sess->url($cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&changeview=edit&client=$client")."");
+	header( "location:".$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client")."");
 }
 header("Content-Type: text/html; charset={$encoding[$lang]}");
 ?>

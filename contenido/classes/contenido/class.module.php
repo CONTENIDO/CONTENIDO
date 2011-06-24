@@ -30,6 +30,7 @@
  *   modified 2011-01-11, Rusmir Jusufovic
  *   	- save and load input and output from/in files
  *   	- add new method parseModuleForStringsLoadFromFile
+ *   modified 2011-06-21, Rusmir Jusufovic, change method inport (add alias)
  *   
  *   $Id$:
  * }}
@@ -516,7 +517,8 @@ class cApiModule extends Item
                                             "/module/description" => "cHandler_ModuleData",
                                             "/module/type"        => "cHandler_ModuleData",
                                             "/module/input"       => "cHandler_ModuleData",
-                                            "/module/output"      => "cHandler_ModuleData"));
+                                            "/module/output"      => "cHandler_ModuleData",
+            								"/module/alias"		  => "cHandler_ModuleData"));
         } else {
             $aHandler = array("/modulepackage/guid"               => "cHandler_ModuleData",
                               #"/modulepackage/repository_guid"    => "cHandler_ModuleData",
@@ -573,12 +575,9 @@ class cApiModule extends Item
     {
     	global $_mImport, $db, $client, $cfg,$encoding,$lang;
     
-    	$oldName = $this->get("name");
+    	$oldName = $this->get("alias");
     	$idmod = $this->get("idmod");
     	$inputOutput = array();
-    	
-    	
-    	
     	
     	if ($this->_parseImportFile($sFile, "module"))
     	{
@@ -592,34 +591,35 @@ class cApiModule extends Item
 						$inputOutput[$key] = $value;
 					else	
 						$this->set($key, addslashes($value));
-						
 					$bStore = true;
-					
 				}
-				
+			}
+			
+			
+			//fix for old module without alias
+			if($this->get("alias") != capiStrCleanURLCharacters($this->get('name'))) {
+				$this->set("alias",capiStrCleanURLCharacters($this->get('name')));
 			}
 			
 			if ($bStore == true)
 			{
-			     
 				$this->store();
+				
+				
+					
 				
 				$contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod")); 
 				
 				if($contenidoModuleHandler->existModul()) {
-
 				    $md5 = md5(time().rand(0,time()));
-		            $this->set("name",$this->get("name").substr($md5,0,4));
-		            $this->store();
-		           
+		            $this->set("alias",$this->get("alias").substr($md5,0,4));
+		            $this->store();  
 				}
 				 
-				    $contenidoModuleHandler->renameModul($oldName , $this->get("name"));
-				    $contenidoModuleHandler->setNewModulName($this->get("name"));
+				    $contenidoModuleHandler->renameModul($oldName , $this->get("alias"));
+				    $contenidoModuleHandler->setNewModulName($this->get("alias"));
 				    $contenidoModuleHandler->saveInput($inputOutput["input"]);
-				    $contenidoModuleHandler->saveOutput($inputOutput["output"]);
-				 
-				
+				    $contenidoModuleHandler->saveOutput($inputOutput["output"]); 
 			}
 			return true;
     	} else {
@@ -643,7 +643,7 @@ class cApiModule extends Item
 		$root->appendChild("name", htmlspecialchars($this->get("name")));    		
 		$root->appendChild("description", htmlspecialchars($this->get("description")));
 		$root->appendChild("type", htmlspecialchars($this->get("type")));
-		
+		$root->appendChild("alias", htmlspecialchars($this->get("alias")));
 	    global $cfg,$client,$db;
 	   
 	    $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));                 

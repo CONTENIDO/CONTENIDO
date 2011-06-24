@@ -22,25 +22,22 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2011-06-22, Rusmir Jusufovic, load layout from file 
  *
  *   $Id$:
  * }}
  * 
  */
-
+ 
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-$sql = "SELECT code FROM ".$cfg["tab"]["lay"]." WHERE idlay='".Contenido_Security::toInteger($_GET['idlay'])."'";
-$db->query($sql);
 
-if (!$db->next_record()) {
+$layoutInFile = new LayoutInFile(Contenido_Security::toInteger($_GET['idlay']), "", $cfg, $lang);
+if( ($code = $layoutInFile->getLayoutCode()) == false)
 	echo i18n("No such layout");
-} else {
-
-	$code = $db->f("code");
-
+	
 	/* Insert base href */
 	$base = '<base href="'.$cfgClient[$client]["path"]["htmlpath"].'">';
 	$tags = $base;
@@ -48,5 +45,5 @@ if (!$db->next_record()) {
 	$code = str_replace("<head>", "<head>\n".$tags, $code);
 
 	eval("?>\n".Contenido_Security::unescapeDB($code)."\n<?php\n");
-}
+
 ?>

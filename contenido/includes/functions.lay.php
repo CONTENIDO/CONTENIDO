@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003
  *   modified 2008-06-26, Frederic Schneider, add security fix
+ *   modifeid 2011-06-20, Rusmir Jusufovic , save code of the layout in file
  *
  *   $Id$:
  * }}
@@ -34,7 +35,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 cInclude ("includes", "functions.tpl.php");
 cInclude ("includes", "functions.con.php");
-
+cInclude ("classes", "class.layoutInFile.php");
 /**
  * Edit or Create a new layout
  *
@@ -49,7 +50,7 @@ cInclude ("includes", "functions.con.php");
  */
 function layEditLayout($idlay, $name, $description, $code) {
 
-    global $client, $auth, $cfg, $sess, $area_tree, $perm, $cfgClient;
+    global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $cfgClient;
 
     $db2= new DB_Contenido;
     $db = new DB_Contenido;
@@ -57,20 +58,28 @@ function layEditLayout($idlay, $name, $description, $code) {
     $date = date("Y-m-d H:i:s");
     $author = "".$auth->auth["uname"]."";
     $description = (string) stripslashes($description);
-    
+    $notification = new Contenido_Notification();
     set_magic_quotes_gpc($name);
     set_magic_quotes_gpc($description);
+    
     set_magic_quotes_gpc($code);
     
     if (strlen(trim($name)) == 0) {
         $name = i18n('-- Unnamed Layout --');
     }
+    
+    #remove all not allowed characters..
+    $layoutAlias = capiStrCleanURLCharacters($name);
 	
+     #constructor for the layout in filesystem
+     $layoutInFile = new LayoutInFile($idlay, stripslashes($code), $cfg, $lang);
+        
 	/**
 	* START TRACK VERSION
 	**/
 	$oVersion = new VersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
-	
+	#save layout from file and not from db
+	$oVersion->setCode($layoutInFile->getLayoutCode());
 	// Create new Layout Version in cms/version/layout/
 	$oVersion->createNewVersion();
 
@@ -84,11 +93,17 @@ function layEditLayout($idlay, $name, $description, $code) {
         $tmp_newid = $db->nextid($cfg["tab"]["lay"]);
         $idlay = $tmp_newid;
 
-        $sql = "INSERT INTO ".$cfg["tab"]["lay"]." (idlay,name, description, deletable, code, idclient, author, created, lastmodified) VALUES ('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::escapeDB($name, $db)."',
-                '".Contenido_Security::escapeDB($description, $db)."', '1', '".$code."', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($author, $db)."',
+        $sql = "INSERT INTO ".$cfg["tab"]["lay"]." (idlay,name,alias, description, deletable, idclient, author, created, lastmodified) VALUES ('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::escapeDB($name, $db)."',
+                '".Contenido_Security::escapeDB($layoutAlias, $db)."','".Contenido_Security::escapeDB($description, $db)."', '1', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($author, $db)."',
                 '".Contenido_Security::escapeDB($date, $db)."', '".Contenido_Security::escapeDB($date, $db)."')";
         $db->query($sql);
-
+		
+        
+      
+        if( $layoutInFile->saveLayout(stripslashes($code)) == false)
+        	$notification->displayNotification("error", i18n("Cant save layout in file"));
+        	
+        
         // set correct rights for element
         cInclude ("includes", "functions.rights.php");
         createRightsForElement("lay", $idlay);
@@ -97,9 +112,54 @@ function layEditLayout($idlay, $name, $description, $code) {
 
     } else {
 
-        $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".Contenido_Security::escapeDB($name, $db)."', description='".Contenido_Security::escapeDB($description, $db)."', code='".$code."',
-                author='".Contenido_Security::escapeDB($author, $db)."', lastmodified='".Contenido_Security::escapeDB($date, $db)."' WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
-        $db->query($sql);
+    	$sql = "";
+    	 #save the layout in file system
+        $layoutInFile = new LayoutInFile($idlay, stripslashes($code),  $cfg, $lang);
+        #name changed
+        if($layoutAlias != $layoutInFile->getLayoutName() ) {
+        	
+        	#exist layout in directory
+        	if( LayoutInFile::existLayout($layoutAlias, $cfgClient, $client) == true) {
+        		
+        		#save in old directory
+        		if($layoutInFile->saveLayout(stripslashes($code)) == false)
+        			$notification->displayNotification("error", i18n("Can't save layout in file!"));
+				
+        		#display error
+        		$notification->displayNotification("error", i18n("Can't rename the layout!"));
+        		die();
+        	}
+        	
+        	#rename the directory
+        	if($layoutInFile->rename($layoutInFile->getLayoutName(),$layoutAlias)) {
+        		
+        		if($layoutInFile->saveLayout(stripslashes($code)) == false)
+        			$notification->displayNotification("error", i18n("Can't save layout in file!"));
+        		else {
+        			 $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".Contenido_Security::escapeDB($name, $db)."', alias='".Contenido_Security::escapeDB($layoutAlias, $db)."' , description='".Contenido_Security::escapeDB($description, $db)."',
+                			author='".Contenido_Security::escapeDB($author, $db)."', lastmodified='".Contenido_Security::escapeDB($date, $db)."' WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
+        		}
+        	} else {#rename not successfully 
+        		#save layout
+        		if($layoutInFile->saveLayout(stripslashes($code)) == false)
+        			$notification->displayNotification("error", i18n("Can't save layout file!"));
+        		
+        	}    
+        } else {#name dont changed
+        	
+        	if( $layoutInFile->saveLayout(stripslashes($code))== false) {
+        		$notification->displayNotification("error", i18n("Can't save layout in file!"));
+        		
+        	}
+        	else 
+        		 $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".Contenido_Security::escapeDB($name, $db)."', alias='".Contenido_Security::escapeDB($layoutAlias, $db)."' , description='".Contenido_Security::escapeDB($description, $db)."',
+                			author='".Contenido_Security::escapeDB($author, $db)."', lastmodified='".Contenido_Security::escapeDB($date, $db)."' WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
+        }
+        
+    	
+       #update if work on file successfully
+       if($sql != "")
+       	$db->query($sql);
 
         /* Update CODE table*/
         conGenerateCodeForAllartsUsingLayout($idlay);
@@ -115,14 +175,25 @@ function layDeleteLayout($idlay) {
         global $cfg;
         global $area_tree;
         global $perm;
-
+		$notification = new Contenido_Notification();
+		
         $sql = "SELECT * FROM ".$cfg["tab"]["tpl"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
         $db->query($sql);
         if ($db->next_record()) {
                 return "0301"; // layout is still in use, you cannot delete it
         } else {
-                $sql = "DELETE FROM ".$cfg["tab"]["lay"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
-                $db->query($sql);
+                
+                
+                #save the layout in file system
+        		$layoutInFile = new LayoutInFile($idlay,"", $cfg, 1);
+        		if( $layoutInFile->eraseLayout()) {
+        			$sql = "DELETE FROM ".$cfg["tab"]["lay"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
+                	$db->query($sql);
+        		} else {
+        			
+        			$notification->displayNotification("error", i18n("Cant delete layout!"));
+        		}
+               
         }
 
         // delete rights for element

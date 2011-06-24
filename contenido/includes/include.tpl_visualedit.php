@@ -24,7 +24,8 @@
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2009-01-08, Timo Trautmann fixed bug: Changes in Head Containers in visualedit were not stored
  *   modified 2009-10-13, Murat Purc, Fixed bug in visualedit replacements (see [#CON-273]) and othe improvements
- *
+ *   modified 2011-06-20, Rusmir Jusufovic , load layout code from file and not from db
+ *   
  *   $Id$:
  * }}
  *
@@ -76,14 +77,10 @@ while ($db->next_record()) {
 }
 
 
-$sql = "SELECT code FROM " . $cfg['tab']['lay'] . " WHERE idlay='" . $idlay . "'";
-$db->query($sql);
 
-if (!$db->next_record()) {
-    echo i18n("No such layout");
-} else {
-
-    $code = $db->f('code');
+    #$code = $db->f('code');
+    $layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
+	$code = $layoutInFile->getLayoutCode();
 
     // get document version (html or xhtml)
     $is_XHTML = getEffectiveSetting('generator', 'xhtml', 'false');
@@ -226,6 +223,6 @@ if (!$db->next_record()) {
     $code = preg_replace("/<\/body(.*)>/i", '</form></body>', $code);
 
     eval("?>\n".$code."\n<?php\n");
-}
+
 
 ?>
