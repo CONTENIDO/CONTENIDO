@@ -87,7 +87,7 @@ VORAUSSETZUNGEN
 
 - Alle Voraussetzungen von Contenido 4.8.x gelten auch für das Plugin
 - PHP ab Version 5.1 (Das Plugin war bis Version 0.3.3 PHP 4.4.x kompatibel)
-- Apache HTTP Server 2 mit Mod Rewrite 
+- Apache HTTP Server 2 mit Mod Rewrite Modul und .htaccess
 
 
 
