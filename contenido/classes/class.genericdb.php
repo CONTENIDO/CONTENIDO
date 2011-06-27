@@ -32,6 +32,7 @@
  *                        new Contenido_ItemException and Contenido_ItemBaseAbstract, documentation and formatting.
  *   modified 2011-03-13  Murat Purc, added Contenido_ItemCache() to enable caching of result sets.
  *   modified 2011-05-20  Murat Purc, fixed wrong caching behavior in Contenido_ItemCache.
+ *   modified 2011-06-28  Murat Purc, added function escape().
  *
  *   $Id$:
  * }}
@@ -361,6 +362,18 @@ abstract class Contenido_ItemBaseAbstract
         $this->virgin     = true;
         $this->lifetime   = $iLifetime;
         $this->_className = $sClassName;
+    }
+
+
+    /**
+     * Escape string for using in SQL-Statement.
+     *
+     * @param   string  $sString  The string to escape
+     * @return  string  Escaped string
+     */
+    public function escape($sString)
+    {
+        return $this->db->escape($sString);
     }
 
     /**
