@@ -198,17 +198,23 @@ class Template
 	function generate($template, $return = 0, $note = 0)
 	{
 	  
-		global $cfg,$cCurrentModule,$cfg,$lang,$client,$encode;
+		global $cCurrentModule,$cfg,$lang,$client,$encode;
 	
-		$contenidoTranslateFromFile = new Contenido_Translate_From_File($cCurrentModule);
+		Contenido_Vars::setVar('cfg', $cfg);
+		Contenido_Vars::setVar('client', $client);
+		Contenido_Vars::setVar('lang', $lang);
+		Contenido_Vars::setVar('encoding', $encode);
+		Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding','UTF-8'));
+		
+		$contenidoModuleHandler = new Contenido_Module_Handler($cCurrentModule);
        
 		
 		//check if the template is a file or a string
 		if (!@ is_file($template))
 		{
 			#priority have module directory
-		    if(is_file($contenidoTranslateFromFile->getTemplatePath($template))) {
-		    	$content = $contenidoTranslateFromFile->getFilesContent('template','',$template);
+		    if(is_file($contenidoModuleHandler->getTemplatePath($template))) {
+		    	$content = $contenidoModuleHandler->getFilesContent('template','',$template);
 		    }
 		    else
 			    $content = & $template; //template is a string (it is a reference to save memory!!!)
@@ -216,8 +222,8 @@ class Template
 		else
 		{
 		    
-		    if(is_file($contenidoTranslateFromFile->getTemplatePath($template))) #priority have module directory
-		    	$content = $contenidoTranslateFromFile->getFilesContent('template','',$template);    
+		    if(is_file($contenidoModuleHandler->getTemplatePath($template))) #priority have module directory
+		    	$content = $contenidoModuleHandler->getFilesContent('template','',$template);    
 		    else #file is in templates directory
 			   $content = implode("", file($template)); //template is a file
 		}

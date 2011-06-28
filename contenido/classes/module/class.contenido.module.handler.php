@@ -685,8 +685,14 @@ class Contenido_Module_Handler {
      */
     protected function _makeModulDirectory() {
        
+    	
+    	#dont display error ($tpl->generate() on the contenido login site)
+    	if($this->_client == "")
+    		return -1;
+    		
         $myDb = $this->_db;
    		
+        
         $sql = sprintf("SELECT frontendpath FROM %s WHERE idclient =%s", $this->_cfg["tab"]["clients"] , $this->_client);
         $this->_echoIt("makeModulDirectory:" .$sql);
         $myDb->query($sql);
