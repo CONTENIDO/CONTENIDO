@@ -1,0 +1,76 @@
+<br/><img id="cms_image_{ID}" class="cms_image_img cms_image_{ID}_EDIT CMS_LINK_EDIT" src="{CON_PATH}images/but_editimage.gif" /><br/><br/>
+<div style="display:none" id="cms_image_{ID}_settings" class="cms_image">
+	<div class="close" id="image_{ID}_close">
+		<img src="{CON_PATH}images/but_cancel.gif"/>
+	</div>
+	
+	<p class="head">{LABEL_IMAGE_SETTINGS}</p>
+	
+	<div class="clearfix">
+		<ul class="menu">
+			<li class="directories">{DIRECTORIES}</li>
+			<li class="meta">{META}</li>
+			<!--li class="meta">{ATTR}</li-->
+		</ul>
+	</div>
+	
+	<div id="image_{ID}_tabs" class="image_tabs">
+		<div id="image_{ID}_directories" class="image_directories clearfix">			
+			<div id="directoryList_{ID}" class="directoryList">
+				<ul id="con_str_tree" class="con_str_tree" dir="ltr">
+					<li id="root" class="last">
+						<em>Uploads</em>
+						{DIRECTORY_LIST}
+					</li>
+				</ul>
+			</div>
+			<div id="directoryFile_{ID}" class="directoryFile">
+				<ul id="con_datei_tree" class="con_datei_tree" dir="ltr">
+					<li id="root" class="last">
+						<!--em>Datei</em-->
+						{DIRECTORY_FILE}
+					</li>
+				</ul>
+			</div>
+			<div id="directoryShow_{ID}" class="directoryShow">
+				<img src="{DIRECTORY_SRC}" alt=""/>
+			</div>
+		</div>
+		<div id="image_{ID}_meta" class="image_meta clearfix">			
+			<label for="image_medianame_{ID}">{LABEL_IMAGE_TITLE}:</label>
+			<input type="text" name="image_medianame" id="image_medianame_{ID}" value="{IMAGE_TITLE}"/>
+			<label for="image_description_{ID}">{LABEL_IMAGE_DESC}:</label>
+			<textarea type="text" name="image_description" id="image_description_{ID}" value="">{IMAGE_DESC}</textarea>
+			<label for="image_keywords_{ID}">{LABEL_IMAGE_KEYWORDS}:</label>
+			<input type="text" name="image_keywords" id="image_keywords_{ID}" value="{IMAGE_KEYWORDS}"/>
+			<label for="image_internal_notice_{ID}">{LABEL_IMAGE_INTERNAL_NOTICE}:</label>
+			<input type="text" name="image_internal_notice" id="image_internal_notice_{ID}" value="{IMAGE_INTERNAL_NOTICE}"/>
+			<label for="image_copyright_{ID}">{LABEL_IMAGE_COPYRIGHT}:</label>
+			<input type="text" name="image_copyright" id="image_copyright_{ID}" value="{IMAGE_COPYRIGHT}"/>
+		</div>
+	</div>
+	
+	<div class="toolbar">
+		<img class="save_settings" src="{CON_PATH}images/but_ok.gif"/>
+		<img class="filelist_cancel" src="{CON_PATH}images/but_cancel.gif"/>
+	</div>
+</div>
+
+<script type="text/javascript">
+	<!--
+	var Image{ID} = '#cms_image_{ID}';
+	var ImageFrame{ID} = '#cms_image_{ID}_settings';
+	var aImageData{ID} = Array({FIELDS});
+	var sPath = '{CON_PATH}';
+	var sSession = '{CONTENIDO}';
+	var iIdArtLang = '{IDARTLANG}';
+	var sUploadPath = '{sUploadPath}';
+	var sContent{ID} = '{sContent}';
+	
+	$(document).ready(function(){
+		$.getScript(sPath+'scripts/cmsImage.js', function() {
+			addImageEvents(ImageFrame{ID}, Image{ID}, sPath, sSession, iIdArtLang, {ID}, aImageData{ID}, sContent{ID});
+		});
+	});
+	-->
+</script>

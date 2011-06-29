@@ -189,6 +189,54 @@ class Ajax {
 				 
 				break;
 				
+			case 'scaleImage':
+				global $cfg, $client, $lang, $cfgClient;
+				$filename = $_REQUEST['sUrl'];
+				$filename = str_replace($cfgClient[$client]['path']['htmlpath'], $cfgClient[$client]['path']['frontend'], $filename);
+				//$filename muss not url path(http://) sondern globale PC Path(c:/) sein.
+				$filetype = substr($filename, strlen($filename) -4, 4);
+				switch (strtolower($filetype)){
+					case ".gif": $sString = cApiImgScale($filename, 428, 210); break;
+					case ".png": $sString = cApiImgScale($filename, 428, 210); break;
+					case ".jpg": $sString = cApiImgScale($filename, 428, 210); break;
+					case "jpeg": $sString = cApiImgScale($filename, 428, 210); break;
+					default: $sString = $_REQUEST['sUrl']; break;
+				}				
+				break;
+				
+			case 'imagelist':
+				global $cfg, $client, $lang, $cfgClient;
+				cInclude("classes", "class.cms_image.php");
+				
+				$sDirName 		= (string) $_REQUEST['dir'];
+				$iImageId   	= (int) $_REQUEST['id'];
+				$iIdArtLang 	= (int) $_REQUEST['idartlang'];
+				
+				$oArt 			= new Article(null, null, null, $iIdArtLang);
+				$sArtReturn 	= $oArt->getContent('CMS_IMAGE', $iImageId);
+				$oImage 		= new Cms_Image($sArtReturn, $iImageId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+				
+				$sString 		= $oImage->getFileSelect( $sDirName, $iImageId );
+				break;
+				
+			case 'loadImageMeta':
+				global $cfg, $client, $lang, $cfgClient;
+				cInclude("classes", "class.cms_image.php");
+
+				$sDirName 		= (string) $_REQUEST['dir'];
+				$iImageId 		= (int) $_REQUEST['id'];
+				$iIdArtLang 	= (int) $_REQUEST['idartlang'];
+				
+				$oArt 			= new Article(null, null, null, $iIdArtLang);
+				$sArtReturn 	= $oArt->getContent('CMS_IMAGE', $iImageId);
+				$oImage 		= new Cms_Image($sArtReturn, $iImageId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+				
+				$sFilename		= (string) basename($_REQUEST['filename']);
+				$sDirname		= (string) dirname($_REQUEST['filename']);
+				
+				$sString 		= $oImage->getImageMeta( $sFilename, $sDirname, $iImageId );
+				break;	
+				
 			//if action is unknown generate error message
 			default:
 				$sString = "Unknown Ajax Action";
