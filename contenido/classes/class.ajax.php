@@ -201,6 +201,11 @@ class Ajax {
 					case ".jpg": $sString = cApiImgScale($filename, 428, 210); break;
 					case "jpeg": $sString = cApiImgScale($filename, 428, 210); break;
 					default: $sString = $_REQUEST['sUrl']; break;
+				}
+				//if can not scale, so $sString is null, then show the original image.
+				if($sString == ''){
+					$filename = str_replace($cfgClient[$client]['path']['frontend'], $cfgClient[$client]['path']['htmlpath'], $_REQUEST['sUrl']);
+					$sString = $filename;
 				}				
 				break;
 				
