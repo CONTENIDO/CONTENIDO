@@ -90,6 +90,7 @@
 	list-style-type:none;
 	margin-right: -6px;
 	clear:both;
+    font-size:11px;
 }
 
 .cms_image .menu li {
@@ -400,12 +401,14 @@
 	float:left; 
 	width: 120px;
 	margin:10px 0 3px 10px;
+    clear: both;
 }
 .cms_image .image_meta input {
     width:198px; 
 	display:block; 
 	float:left; 
-	width:280px; 
+	width:275px; 
+    margin-left: 5px;
 	margin:10px 0 3px 10px;
     border: 1px solid #ccc;
 	font-size:11px;
@@ -413,8 +416,9 @@
 .cms_image .image_meta textarea {
 	display:block; 
 	float:left; 
-	width:280px; 
+	width:275px; 
 	height:50px;
+    margin-left: 5px;
 	margin:10px 0 3px 10px;
     border: 1px solid #ccc;
 	font-size:11px;
