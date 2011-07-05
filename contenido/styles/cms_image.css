@@ -36,6 +36,7 @@
 	left: 40px;	
 	z-index: 1000;
     margin: 0;
+	font-size:12px;
 }
 
 .cms_image .close {
