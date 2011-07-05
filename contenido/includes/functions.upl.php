@@ -442,11 +442,8 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent)
         $sDirName = $oUpload->get('dirname');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
-        // use query while Item class uses some unwanted filters...
-        #$oUpload->set('dirname', $oUpload->escape($sNewName2));
-        #$oUpload->store();
-        $sql = "UPDATE " . $cfg['tab']['upl'] . " SET dirname='" . $oUpload->escape($sNewName2) . "' WHERE idupl=" . (int) $oUpload->get('idupl');
-        $db->query($sql);
+        $oUpload->set('dirname', $oUpload->escape($sNewName2), false);
+        $oUpload->store();
     }
 
     // update all upload item properties starting with the old path, replace itemid with the new path
@@ -456,11 +453,8 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent)
         $sDirName = $oProperty->get('itemid');
         $sJunk = substr($sDirName, strlen($sParent) + strlen($sOldName));
         $sNewName2 = $sParent . $sNewName . $sJunk;
-        // use query while Item class uses some unwanted filters...
-        #$oProperty->set('itemid', $oProperty->escape($sNewName2));
-        #$oProperty->store();
-        $sql = "UPDATE " . $cfg['tab']['properties'] . " SET itemid='" . $oProperty->escape($sNewName2) . "' WHERE idproperty=" . (int) $oProperty->get('idproperty');
-        $db->query($sql);
+        $oProperty->set('itemid', $oProperty->escape($sNewName2), false);
+        $oProperty->store();
     }
 }
 
