@@ -26,7 +26,8 @@
  *                        moved close(), table_names() and server_info() from child
  *                        implementations.
  *   modified 2011-07-06, Murat Purc, Fixed fetch modes in toArray() and haltmsg(),
- *                        added new methods to build insert/update queries, documented code
+ *                        added new methods to build insert/update queries, added
+ *                        method _getInstanceClone(), documented code
  *   $Id$
  * }}
  *
@@ -47,6 +48,14 @@ abstract class DB_Sql_Abstract
     const FETCH_NUMERIC = 'numeric';
     const FETCH_ASSOC   = 'assoc';
     const FETCH_BOTH    = 'both';
+
+    /**
+     * A clone of self instance, meant for internal use to work with additonal
+     * query results without overwriting an existing query result.
+     *
+     * @DB_Sql_Abstract
+     */
+    protected $_instanceClone = null;
 
     /**
      * Assoziative list of database connections
@@ -977,6 +986,21 @@ abstract class DB_Sql_Abstract
     public static function getProfileData()
     {
         return self::$_aProfileData;
+    }
+
+
+    /**
+     * Returns a cloned version of self. Clones itself only at first call.
+     * Further calls will return the cloned version.
+     *
+     * @return DB_Sql_Abstract
+     */
+    protected function _getInstanceClone()
+    {
+        if (null === $this->_instanceClone) {
+            $this->_instanceClone = clone $this;
+        }
+        return $this->_instanceClone;
     }
 
 
