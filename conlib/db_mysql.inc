@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido database
- * @version    0.2.2
+ * @version    0.2.3
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,8 +27,10 @@
  *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
  *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
  *   modified 2011-04-22, Murat Purc, Connect to DB server without database and more 
- *                                    readable connection settings.
+ *                        readable connection settings.
  *   modified 2011-05-17, Ortwin Pinke, bugfix in methode nextid().
+ *   modified 2011-07-07, Murat Purc, New _update(), _insert() methods, unified
+ *                        execution of multiple queries by using cloned instance.
  *
  *   $Id$:
  * }}
@@ -110,6 +112,58 @@ class DB_Sql extends DB_Sql_Abstract
         if (!$this->Query_ID) {
             $this->halt($sQuery);
         }
+    }
+
+
+    /**
+     * @see DB_Sql_Abstract::_insert()
+     */
+    protected function _insert($sTable, array $aFields)
+    {
+        $sFields = '';
+        $sValues = '';
+        foreach ($aFields as $field => $value) {
+            $sFields .= '`' . $field . '`, ';
+            if (is_int($value)) {
+                $sValues .= $value . ', ';
+            } else {
+                $sValues .= "'" . $this->escape($value) . "', ";
+            }
+        }
+        $sFields = substr($sFields, 0, -2);
+        $sValues = substr($sValues, 0, -2);
+        return sprintf('INSERT INTO `%s` (%s) VALUES (%s)', $sTable, $sFields, $sValues);
+    }
+
+
+    /**
+     * @see DB_Sql_Abstract::_update()
+     */
+    protected function _update($sTable, array $aFields, array $aWhere)
+    {
+        $sUpdate = '';
+        $sWhere = '';
+        foreach ($aFields as $field => $value) {
+            $sUpdate .= '`' . $field . '`=';
+            if (is_int($value)) {
+                $sUpdate .= $value . ', ';
+            } else {
+                $sUpdate .= "'" . $this->escape($value) . "', ";
+            }
+        }
+
+        foreach ($aWhere as $field => $value) {
+            $sWhere .= '`' . $field . '`=';
+            if (is_int($value)) {
+                $sWhere .= $value . ' AND ';
+            } else {
+                $sWhere .= "'" . $this->escape($value) . "' AND ";
+            }
+        }
+
+        $sUpdate = substr($sUpdate, 0, -2);
+        $sWhere = substr($sWhere, 0, -5);
+        return sprintf('UPDATE `%s` SET %s WHERE %s', $sTable, $sUpdate, $sWhere);
     }
 
 
@@ -235,29 +289,27 @@ class DB_Sql extends DB_Sql_Abstract
      */
     public function nextid($seq_name)
     {
-        $this->connect();
+        $nextid = 0;
 
         if ($this->lock($this->Seq_Table)) {
-            /* get sequence number (locked) and increment */
-            $q  = sprintf("SELECT nextid FROM `%s` WHERE seq_name = '%s'", $this->Seq_Table, $seq_name);
-            $id  = @mysql_query($q, $this->Link_ID);
-            $res = @mysql_fetch_array($id);
+            $oDb = $this->_getInstanceClone();
+            // get sequence number (locked) and increment
+            $oDb->query("SELECT nextid FROM `%s` WHERE seq_name='%s'", $this->Seq_Table, $seq_name);
+            $res = ($oDb->next_record()) ? $oDb->toArray() : null;
 
-            /* No current value, make one */
+            // No current value, make one
             if (!is_array($res)) {
                 $currentid = 0;
-                $q = sprintf("INSERT INTO `%s` VALUES('%s', %s)", $this->Seq_Table, $seq_name, $currentid);
-                $id = @mysql_query($q, $this->Link_ID);
+                $oDb->query("INSERT INTO `%s` VALUES('%s', %s)", $this->Seq_Table, $seq_name, $currentid);
             } else {
                 $currentid = $res['nextid'];
             }
             $nextid = $currentid + 1;
-            $q  = sprintf("UPDATE `%s` SET nextid = '%s' WHERE seq_name = '%s'", $this->Seq_Table, $nextid, $seq_name);
-            $id = @mysql_query($q, $this->Link_ID);
+            $oDb->query("UPDATE `%s` SET nextid=%s WHERE seq_name='%s'", $this->Seq_Table, $nextid, $seq_name);
+            $oDb->free();
             $this->unlock();
         } else {
             $this->halt('Cannot lock ' . $this->Seq_Table . ' - has it been created?');
-            return 0;
         }
         return $nextid;
     }
@@ -285,7 +337,7 @@ class DB_Sql extends DB_Sql_Abstract
     {
         $count = 0;
         $id    = 0;
-        $res   = array();
+        $aRes  = array();
 
         /*
          * Due to compatibility problems with Table we changed the behavior
@@ -316,8 +368,9 @@ class DB_Sql extends DB_Sql_Abstract
         // if no $table specified, assume that we are working with a query
         // result
         if (!empty($table)) {
-            $this->connect();
-            $id = mysql_query(sprintf('SELECT * FROM `%s` LIMIT 1', $table), $this->Link_ID); // PHP 5.3 fix 07.2009 O.Pinke, PHP 5.3 crashes with deprecated mysql_list_fields()
+            $oDb = $this->_getInstanceClone();
+            $oDb->query('SELECT * FROM `%s` LIMIT 1', $table);
+            $id = $oDb->Query_ID;
             if (!$id) {
                 $this->halt('Metadata query failed.');
                 return false;
@@ -334,24 +387,24 @@ class DB_Sql extends DB_Sql_Abstract
 
         // made this IF due to performance (one if is faster than $count if's)
         for ($i=0; $i<$count; $i++) {
-            $res[$i]['table'] = @mysql_field_table($id, $i);
-            $res[$i]['name']  = @mysql_field_name($id, $i);
-            $res[$i]['type']  = @mysql_field_type($id, $i);
-            $res[$i]['len']   = @mysql_field_len($id, $i);
-            $res[$i]['flags'] = @mysql_field_flags($id, $i);
+            $aRes[$i]['table'] = @mysql_field_table($id, $i);
+            $aRes[$i]['name']  = @mysql_field_name($id, $i);
+            $aRes[$i]['type']  = @mysql_field_type($id, $i);
+            $aRes[$i]['len']   = @mysql_field_len($id, $i);
+            $aRes[$i]['flags'] = @mysql_field_flags($id, $i);
             if ($full) {
-                $res['meta'][$res[$i]['name']] = $i;
+                $aRes['meta'][$aRes[$i]['name']] = $i;
             }
         }
         if ($full) {
-            $res['num_fields'] = $count;
+            $aRes['num_fields'] = $count;
         }
 
         // free the result only if we were called on a table
-        if ($table) {
-            @mysql_free_result($id);
+        if (!empty($table)) {
+            $oDb->free();
         }
-        return $res;
+        return $aRes;
     }
 
 
@@ -360,20 +413,19 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _tableNames()
     {
-        $return = array();
-        $this->connect();
-        $h = @mysql_query('SHOW TABLES', $this->Link_ID);
-        $i = 0;
-        if (isset($h) && @mysql_num_rows($h) > 0) {
-            while ($info = @mysql_fetch_row($h)) {
-                $return[$i]['table_name']      = $info[0];
-                $return[$i]['tablespace_name'] = $this->Database;
-                $return[$i]['database']        = $this->Database;
-                $i++;
+        $aReturn = array();
+        $oDb = $this->_getInstanceClone();
+        if ($oDb->query('SHOW TABLES')) {
+            while ($oDb->next_record()) {
+                $aReturn[] = array(
+                    'table_name' => $oDb->Record[0],
+                    'tablespace_name' => $this->Database,
+                    'database' => $this->Database,
+                );
             }
-            @mysql_free_result($h);
+            $oDb->free();
         }
-        return $return;
+        return $aReturn;
     }
 
 

@@ -28,7 +28,7 @@
  *   modified 2011-07-06, Murat Purc, Fixed fetch modes in toArray() and haltmsg(),
  *                        added new methods to build insert/update queries, added
  *                        method _getInstanceClone(), documented code
- *   $Id$
+ *   $Id:$:
  * }}
  *
  */
@@ -51,7 +51,7 @@ abstract class DB_Sql_Abstract
 
     /**
      * A clone of self instance, meant for internal use to work with additonal
-     * query results without overwriting an existing query result.
+     * query results without overwriting existing query result.
      *
      * @DB_Sql_Abstract
      */
