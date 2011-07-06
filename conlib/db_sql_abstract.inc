@@ -12,7 +12,7 @@
  *
  *
  * @package    Contenido Database
- * @version    0.1.2
+ * @version    0.1.4
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,10 +23,11 @@
  * {@internal
  *   created  2011-03-03
  *   modified 2011-03-13, Murat Purc, Added FETCH_* constants, extended toArray(),
- *                                    moved close(), table_names() and server_info() 
- *                                    from child implementations.
- *
- *   $Id:$:
+ *                        moved close(), table_names() and server_info() from child
+ *                        implementations.
+ *   modified 2011-07-06, Murat Purc, Fixed fetch modes in toArray() and haltmsg(),
+ *                        added new methods to build insert/update queries, documented code
+ *   $Id$
  * }}
  *
  */
@@ -39,9 +40,9 @@ if (!defined('CON_FRAMEWORK')) {
 abstract class DB_Sql_Abstract
 {
 
-    const HALT_YES = 'yes';
-    const HALT_NO  = 'no';
-    const HALT_REPORT  = 'report';
+    const HALT_YES    = 'yes';
+    const HALT_NO     = 'no';
+    const HALT_REPORT = 'report';
 
     const FETCH_NUMERIC = 'numeric';
     const FETCH_ASSOC   = 'assoc';
@@ -208,23 +209,23 @@ abstract class DB_Sql_Abstract
     /**
      * Constructor, sets passed options and connects to the DBMS, if not done before.
      *
-     * Uses default connection settings, passed $options['db_connection'] settings
+     * Uses default connection settings, passed $aOptions['db_connection'] settings
      * will overwrite connection settings for current instance.
      *
-     * @param  array  $options  Assoziative options as follows:
-     *                          - $options['sequenceTable']  (string)  Optional, the sequence table name
-     *                          - $options['nolock']  (bool)  Optional, not lock table
-     *                          - $options['haltBehavior']  (string)  Optional, halt behavior on occured errors
-     *                          - $options['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
-     *                          - $options['type']  (string)  Database driver name
-     *                          - $options['enableProfiling']  (bool)  Optional, flag to enable profiling
-     *                          - $options['connection']  (array)  Optional, assoziative connection settings
+     * @param  array  $aOptions  Assoziative options as follows:
+     *                          - $aOptions['sequenceTable']  (string)  Optional, the sequence table name
+     *                          - $aOptions['nolock']  (bool)  Optional, not lock table
+     *                          - $aOptions['haltBehavior']  (string)  Optional, halt behavior on occured errors
+     *                          - $aOptions['haltMsgPrefix']  (string)  Optional, Text to prepend to the halt message
+     *                          - $aOptions['type']  (string)  Database driver name
+     *                          - $aOptions['enableProfiling']  (bool)  Optional, flag to enable profiling
+     *                          - $aOptions['connection']  (array)  Optional, assoziative connection settings
      * @return  void
      */
-    protected function __construct(array $options)
+    protected function __construct(array $aOptions)
     {
         // use default connection configuration, but overwrite it by passed options
-        $this->_aDbCfg = array_merge(self::$_aDefaultDbCfg, $options);
+        $this->_aDbCfg = array_merge(self::$_aDefaultDbCfg, $aOptions);
 
         if (isset($this->_aDbCfg['sequenceTable']) && is_string($this->_aDbCfg['sequenceTable'])) {
             $this->Seq_Table = $this->_aDbCfg['sequenceTable'];
@@ -266,11 +267,11 @@ abstract class DB_Sql_Abstract
     /**
      * Setter for default database configuration, the connection values.
      *
-     * @param  array  $defaultDbCfg
+     * @param  array  $aDefaultDbCfg
      */
-    public static function setDefaultConfiguration(array $defaultDbCfg)
+    public static function setDefaultConfiguration(array $aDefaultDbCfg)
     {
-        self::$_aDefaultDbCfg = $defaultDbCfg;
+        self::$_aDefaultDbCfg = $aDefaultDbCfg;
     }
 
 
@@ -308,12 +309,12 @@ abstract class DB_Sql_Abstract
     /**
      * Returns connection from connection cache
      *
-     * @param   mixed  $data  Connection data array
+     * @param   mixed  $mData  Connection data array or variable
      * @return  mixed  Either  The connection (object, resource, integer) or null
      */
-    protected function _getConnection($data)
+    protected function _getConnection($mData)
     {
-        $hash = md5($this->type . '-' . (is_array($data) ? implode('-', $data) : (string) $data));
+        $hash = md5($this->type . '-' . (is_array($mData) ? implode('-', $mData) : (string) $mData));
         return (isset(self::$_connectionCache[$hash])) ? self::$_connectionCache[$hash] : null;
     }
 
@@ -321,14 +322,14 @@ abstract class DB_Sql_Abstract
     /**
      * Stores connection in connection cache
      *
-     * @param   mixed  $data        Connection data array
-     * @param   mixed  $connection  The connection to store in cache
+     * @param   mixed  $mData        Connection data array
+     * @param   mixed  $mConnection  The connection to store in cache
      * @return  void
      */
-    protected function _setConnection($data, $connection)
+    protected function _setConnection($mData, $mConnection)
     {
-        $hash = md5($this->type . '-' . (is_array($data) ? implode('-', $data) : (string) $data));
-        self::$_connectionCache[$hash] = $connection;
+        $hash = md5($this->type . '-' . (is_array($mData) ? implode('-', $mData) : (string) $mData));
+        self::$_connectionCache[$hash] = $mConnection;
     }
 
 
@@ -370,11 +371,22 @@ abstract class DB_Sql_Abstract
 
 
     /**
-     * Executes the query.
+     * Executes the query. Accepts multiple parameter, where the first parameter
+     * should be the query and any additional parameter should be the values to
+     * replace in format definitions.
+     *
+     * Examples:
+     * <pre>
+     * // call with one parameter
+     * $obj->query('SELECT * FROM `tablename` WHERE id = 123');
+     * // call with multple parameter
+     * $obj->query('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
+     * $obj->query('SELECT * FROM `%s` WHERE id = %d AND user = %d', 'tablename', 123, 3);
+     * </pre>
      *
      * @param   string    $sQuery  The query to execute.
      * @param   mixed     Accepts additional unlimited parameter, where the parameter 
-     *                    will be replaced against format definitions in query.
+     *                    will be replaced against formatting sign in query.
      * @return  resource|int|object|bool  Depends on used database driver, false on error
      */
     public function query($sQuery)
@@ -453,6 +465,136 @@ abstract class DB_Sql_Abstract
 
 
     /**
+     * Builds and executes a insert query. String values in passed aFields
+     * parameter will be escaped automatically.
+     *
+     * Example:
+     * <pre>
+     * $oDB = new DB_Contenido();
+     * $aFields = array(
+     *     'idcode' => $oDB->nextid($cfg['tab']['code']),
+     *     'idcatart' => $idcatart,
+     *     'idlang' => $lang,
+     *     'idclient' => $client,
+     *     'code' => "<html>... code n' fun ...</html>",
+     * );
+     * $bResult = $oDB->insert($cfg['tab']['code'], $aFields);
+     * </pre>
+     *
+     * @param   string   $sTable   The table name
+     * @param   array    $aFields  Assoziative array of fields to insert
+     * @return  bool
+     */
+    public function insert($sTable, array $aFields)
+    {
+        $sQuery = $this->_insert($sTable, $aFields);
+        return $this->query($sQuery);
+    }
+
+
+    /**
+     * Builds and returns a insert query. String values in passed aFields
+     * parameter will be escaped automatically.
+     *
+     * Example:
+     * <pre>
+     * $oDB = new DB_Contenido();
+     * $aFields = array(
+     *     'idcode' => $oDB->nextid($cfg['tab']['code']),
+     *     'idcatart' => $idcatart,
+     *     'idlang' => $lang,
+     *     'idclient' => $client,
+     *     'code' => "<html>... code n' fun ...</html>",
+     * );
+     * $sQuery = $oDB->buildInsert($cfg['tab']['code'], $aFields);
+     * $oDB->query($sQuery);
+     * </pre>
+     *
+     * @param   string   $sTable   The table name
+     * @param   array    $aFields  Assoziative array of fields to insert
+     * @return  string
+     */
+    public function buildInsert($sTable, array $aFields)
+    {
+        return $this->_insert($sTable, $aFields);
+    }
+
+
+    /**
+     * Builds and executes a insert query. String values in passed aFields
+     * parameter will be escaped automatically.
+     *
+     * @param   string   $sTable   The table name
+     * @param   array    $aFields  Assoziative array of fields to insert
+     * @return  bool
+     */
+    abstract protected function _insert($sTable, array $aFields);
+
+
+    /**
+     * Builds and executes a update query. String values in passed aFields
+     * and aWhere parameter will be escaped automatically.
+     *
+     * Example:
+     * <pre>
+     * $oDB = new DB_Contenido();
+     * $aFields = array('code' => "<html>... some new code n' fun ...</html>");
+     * $aWhere = array('idcode' => 123);
+     * $bResult = $oDB->update($cfg['tab']['code'], $aFields, $aWhere);
+     * </pre>
+     *
+     * @param   string   $sTable   The table name
+     * @param   array    $aFields  Assoziative array of fields to update
+     * @param   array    $aWhere   Assoziative array of field in where clause.
+     *                             Multiple entries will be concatenated with AND
+     * @return  bool
+     */
+    public function update($sTable, array $aFields, array $aWhere)
+    {
+        $sQuery = $this->_update($sTable, $aFields, $aWhere);
+        return $this->query($sQuery);
+    }
+
+
+    /**
+     * Builds and returns a update query. String values in passed aFields
+     * and aWhere parameter will be escaped automatically.
+     *
+     * Example:
+     * <pre>
+     * $oDB = new DB_Contenido();
+     * $aFields = array('code' => "<html>... some new code n' fun ...</html>");
+     * $aWhere = array('idcode' => 123);
+     * $sQuery = $oDB->buildUpdate($cfg['tab']['code'], $aFields, $aWhere);
+     * $oDB->query($sQuery);
+     * </pre>
+     *
+     * @param   string   $sTable   The table name
+     * @param   array    $aFields  Assoziative array of fields to update
+     * @param   array    $aWhere   Assoziative array of field in where clause.
+     *                             Multiple entries will be concatenated with AND
+     * @return  string
+     */
+    public function buildUpdate($sTable, array $aFields, array $aWhere)
+    {
+        return $this->_update($sTable, $aFields, $aWhere);
+    }
+
+
+    /**
+     * Builds and executes a update query. String values in passed aFields
+     * and aWhere parameter will be escaped automatically.
+     *
+     * @param   string   $sTable   The table name
+     * @param   array    $aFields  Assoziative array of fields to update
+     * @param   array    $aWhere   Assoziative array of field in where clause.
+     *                             Multiple entries will be concatenated with AND
+     * @return  bool
+     */
+    abstract protected function _update($sTable, array $aFields, array $aWhere);
+
+
+    /**
      * Moves the result to the next record, if exists and returns the status of the movement
      *
      * @return  int  Flag about move status 1 on success or 0
@@ -463,20 +605,20 @@ abstract class DB_Sql_Abstract
     /**
      * Moves the cursor (position inside current result sets).
      *
-     * @param   int  $pos  The positon to move to inside the current result set
+     * @param   int  $iPos  The positon to move to inside the current result set
      * @return  void
      */
-    abstract public function seek($pos = 0);
+    abstract public function seek($iPos = 0);
 
 
     /**
      * Locks the desired table.
      *
-     * @param   string  $table  The table to lock
-     * @param   string  $mode   The lock mode. Only mode 'write' is supported!
+     * @param   string  $sTable  The table to lock
+     * @param   string  $sMode   The lock mode. Only mode 'write' is supported!
      * @return  int     Status of lock success (1 or 0)
      */
-    abstract public function lock($table, $mode = 'write');
+    abstract public function lock($sTable, $sMode = 'write');
 
 
     /**
@@ -490,32 +632,32 @@ abstract class DB_Sql_Abstract
     /**
      * Parses te table structure and generates a metadata from it.
      *
-     * @param   string  $table  The table to get metadata or empty string to retrieve
-     *                          metadata of all tables
-     * @param   bool    $full   Flag to load full metada
+     * @param   string  $sTable  The table to get metadata or empty string to retrieve
+     *                           metadata of all tables
+     * @param   bool    $bFull   Flag to load full metada
      * @return  array   Depends on used database and on parameter $full
      */
-    public function metadata($table = '', $full = false)
+    public function metadata($sTable = '', $bFull = false)
     {
-        $key = (string) $this->Database . '_' . $table . '_' . (($full) ? '1' : '0');
+        $sKey = (string) $this->Database . '_' . $sTable . '_' . (($bFull) ? '1' : '0');
 
-        if (!isset(self::$_metaCache[$key])) {
+        if (!isset(self::$_metaCache[$sKey])) {
             // get meta data
-            self::$_metaCache[$key] = $this->_metaData($table, $full);
+            self::$_metaCache[$sKey] = $this->_metaData($sTable, $bFull);
         }
 
-        return self::$_metaCache[$key];
+        return self::$_metaCache[$sKey];
     }
 
     /**
      * Parses te table structure and generates a metadata from it.
      *
-     * @param   string  $table  The table to get metadata or empty string to retrieve
+     * @param   string  $sTable  The table to get metadata or empty string to retrieve
      *                          metadata of all tables
      * @param   bool    $full   Flag to load full metada
      * @return  array   Depends on used database and on parameter $full
      */
-    abstract protected function _metaData($table = '', $full = false);
+    abstract protected function _metaData($sTable = '', $full = false);
 
 
     /**
@@ -568,56 +710,56 @@ abstract class DB_Sql_Abstract
     /**
      * Returns the desired field value from current record set.
      *
-     * @param   mixed  The field name or index position
-     * @param   mixed  The default value to return
+     * @param   mixed  $mName  The field name or index position
+     * @param   mixed  $mDefault  The default value to return
      * @return  mixed  The value of field
      */
-    public function f($Name, $default = null)
+    public function f($mName, $mDefault = null)
     {
-        return (isset($this->Record[$Name])) ? $this->Record[$Name] : $default;
+        return (isset($this->Record[$mName])) ? $this->Record[$mName] : $mDefault;
     }
 
 
     /**
      * Displays the desired field value from current record set using print.
      *
-     * @param   mixed  The field name or index position
+     * @param   mixed  $mName  The field name or index position
      * @return  void
      */
-    public function p($Name)
+    public function p($mName)
     {
-        if (isset($this->Record[$Name])) {
-            print $this->Record[$Name];
+        if (isset($this->Record[$mName])) {
+            print $this->Record[$mName];
         }
     }
 
     /**
      * Returns current recordset as a assoziative and/or indexed array.
      *
-     * @param   string  $fetchMode  One of DB_SQL_Abstract::FETCH_* constants
+     * @param   string  $sFetchMode  One of DB_SQL_Abstract::FETCH_* constants
      * @return  array
      */
-    public function toArray($fetchMode = DB_SQL_Abstract::FETCH_ASSOC)
+    public function toArray($sFetchMode = DB_SQL_Abstract::FETCH_ASSOC)
     {
-        switch ($fetchMode) {
+        switch ($sFetchMode) {
             case self::FETCH_NUMERIC:
             case self::FETCH_ASSOC:
             case self::FETCH_BOTH:
                 // donut
                 break;
             default:
-                $fetchMode = DB_SQL_Abstract::FETCH_ASSOC;
+                $sFetchMode = self::FETCH_ASSOC;
                 break;
         }
 
         $aResult = array();
         if (is_array($this->Record)) {
             foreach ($this->Record as $key => $value) {
-                if ($fetchMode == self::FETCH_ASSOC && !is_numeric($key)) {
+                if ($sFetchMode == self::FETCH_ASSOC && !is_numeric($key)) {
                     $aResult[$key] = $value;
-                } elseif ($fetchMode == self::FETCH_NUMERIC && is_numeric($key)) {
+                } elseif ($sFetchMode == self::FETCH_NUMERIC && is_numeric($key)) {
                     $aResult[$key] = $value;
-                } else {
+                } elseif ($sFetchMode == self::FETCH_BOTH) {
                     $aResult[$key] = $value;
                 }
             }
@@ -640,10 +782,10 @@ abstract class DB_Sql_Abstract
     /**
      * Returns the next id (sequence number).
      *
-     * @param   string  $seq_name  The sequence name to get the next id from
+     * @param   string  $sSeqName  The sequence name to get the next id from
      * @return  int  The next id or 0 on error
      */
-    abstract public function nextid($seq_name);
+    abstract public function nextid($sSeqName);
 
 
     /**
@@ -703,7 +845,7 @@ abstract class DB_Sql_Abstract
             $this->Errno = $this->_getErrorNumber();
         }
 
-        $sMsg  = sprintf("%s error: %s (%s) - info: %s\n", $sName, $this->Errno, $this->Error, $sMsg);
+        $sMsg  = sprintf("%s error: %s (%s) - info: %s\n", $this->type, $this->Errno, $this->Error, $sMsg);
         error_log($sMsg);
     }
 
