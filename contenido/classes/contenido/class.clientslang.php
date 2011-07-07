@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    1.5.1
+ * @version    1.5.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  *   created  2007-05-25
  *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *   modified 2011-05-20, Murat Purc, renamed _getPropertyCollection() to _getPropertiesCollectionInstance()
+ *   modified 2011-07-07, Murat Purc, added function cApiClientLanguageCollection::create()
  *
  *   $Id$:
  * }}
@@ -51,6 +52,22 @@ class cApiClientLanguageCollection extends ItemCollection
         cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
         $this->__construct();
     }
+
+    /**
+     * Creates a client language entry.
+     * @param int $iClient
+     * @param int $iLang
+     * @return cApiClientLanguage
+     */
+    public function create($iClient, $iLang)
+    {
+        $oItem = parent::create();
+        $oItem->set('idclient', (int) $iClient, false);
+        $oItem->set('idlang', (int) $iLang, false);
+        $oItem->store();
+        return $oItem;
+    }
+
 }
 
 

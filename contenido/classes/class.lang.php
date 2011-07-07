@@ -18,6 +18,7 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
+ * @todo       merge logic with contenido/classes/contenido/class.lang.php
  *
  * {@internal
  *   created  2003-05-20
