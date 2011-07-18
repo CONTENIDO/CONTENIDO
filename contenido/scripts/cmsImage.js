@@ -17,7 +17,7 @@
  * 
  * {@internal 
  *   created 2009-10-27
- *
+ *	 modified 2011-07-18
  *   $Id$:
  * }}
  * 
@@ -32,8 +32,10 @@
  * @param string sImageId
  * @param string sPath
  * @param string sSession
- * @param integer iImageIdArtLang
- * @param integer iImageId
+ * @param int	 iImageIdArtLang
+ * @param int	 iImageId
+ * @param array  aImageData
+ * @param string sContent
  */
 function addImageEvents(sImageFrameId, sImageId, sPath, sSession, iImageIdArtLang, iImageId, aImageData, sContent) {
 	loadImageExternalScripts(sImageFrameId, sPath, iImageId);//load css und js Datei
@@ -41,19 +43,23 @@ function addImageEvents(sImageFrameId, sImageId, sPath, sSession, iImageIdArtLan
 	addImageFrameShowEvent(sImageFrameId, sImageId);//show dialog
 	addSaveEvent(sImageFrameId, iImageIdArtLang, iImageId, aImageData);
 	addImageFrameCloseEvents(sImageFrameId);//close dialog
-	addImageClickEvent(sImageFrameId, iImageId);//select tree action
+	addImageNaviActions(sImageFrameId, iImageId);//select tree action
 	if(sContent!=''){
 		$('#directoryShow_'+iImageId).html('<div><img src="'+sContent+'"/></div>');
 	} 
 	addSelectAction(sImageFrameId, iImageId);
+	showImageFolderPath(sImageFrameId, iImageId);
+	createMKDir(sImageFrameId,iImageId);
 }
 
 /**
  * Function extracts an value from Image form an adds it as hidden to editform for submitting to Contenido
  * Function is called in store proccess of Image
  *
+ * @param string sImageFrameId
  * @param string sName
  * @param string sValue
+ * @param int    iImageId
  */
 function appendImageValue(sImageFrameId, sName, sValue, iImageId) {
 	if($('#hidden_'+sName+'_'+iImageId).length>0){
@@ -66,7 +72,7 @@ function appendImageValue(sImageFrameId, sName, sValue, iImageId) {
  *  Function adds event which fades edit form to visible when editbutton is clicked
  *
  * @param string sImageFrameId
- * @param string sImageId
+ * @param int	 sImageId
  */
 function addImageFrameShowEvent(sImageFrameId, sImageId) {
 	$(sImageId).css('cursor', 'pointer');
@@ -82,7 +88,7 @@ function addImageFrameShowEvent(sImageFrameId, sImageId) {
  * which switchs between the tree tabbing views
  *
  * @param string sImageFrameId
- * @param string iImageId
+ * @param int	 sImageId
  */
 function addImageTabbingEvents(sImageFrameId, iImageId) {
 	$(sImageFrameId+" .menu li").css('cursor', 'pointer');
@@ -94,6 +100,7 @@ function addImageTabbingEvents(sImageFrameId, iImageId) {
 		
 		$(sImageFrameId+" #image_"+iImageId+"_directories").css("display", "none");
 		$(sImageFrameId+" #image_"+iImageId+"_meta").css("display", "none");
+		$(sImageFrameId+" #image_"+iImageId+"_upload").css("display", "none");
 		//add smooth animation
 		curAction.css('font-weight', 'bold');
         
@@ -104,15 +111,21 @@ function addImageTabbingEvents(sImageFrameId, iImageId) {
 			$(sImageFrameId+" #image_"+iImageId+'_'+curAction.attr('class')).css('height', 'auto');
 			$(sImageFrameId+" #image_"+iImageId+'_'+curAction.attr('class')).fadeIn("normal");
 		});
+		if(curAction.attr('class')=='upload'){
+			$(sImageFrameId+" #image_"+iImageId+'_directories').css('display', 'block');
+			$(sImageFrameId+" #image_"+iImageId+'_directories').css('height', 'auto');
+			$(sImageFrameId+" #image_"+iImageId+'_directories').fadeIn("normal");
+		}
+		
 	});
 }
 
 /**
- *  Function adds save event to save button of Imageedit form
+ *  Function adds save event to save button of Image edit form
  *
  * @param string sImageFrameId
- * @param integer iImageIdArtLang
- * @param integer iImageId
+ * @param int	 iImageIdArtLang
+ * @param int 	 iImageId
  */
 function addSaveEvent(sImageFrameId, iImageIdArtLang, iImageId, aImageData) {
 	$(sImageFrameId+' .save_settings').css('cursor', 'pointer');
@@ -152,25 +165,35 @@ function addImageFrameCloseEvents(sImageFrameId) {
 
 /**
  * Function loads external styles and jquery ui scripts for Image dynamically so this scripts were only
- * loaded into contenido whren this Image is really used in this article
+ * loaded into contenido when this Image is really used in this article
  *
  * @param string sImageFrameId
  * @param string sPath
+ * @param int 	 iImageId
  */
 function loadImageExternalScripts(sImageFrameId, sPath, iImageId) {
-	$('head').append('<link rel="stylesheet" href="'+sPath+'styles/cms_image.css" type="text/css" media="all" />');
+	//$('head').append('<link rel="stylesheet" href="'+sPath+'styles/cms_image.css" type="text/css" media="all" />');
+	//$('head').append('<script type="text/javascript" src="'+sPath+'scripts/jquery/ajaxupload.js"></script>');
+	initIncludedFiles();
+	include_once(sPath+'scripts/jquery/ajaxupload.js', 'js');	
+	include_once(sPath+'styles/cms_image.css', 'css');	
 	
 	$.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
-		$.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
-			$(sImageFrameId).draggable({
-				handle: '.head'
-			});
-			$(sImageFrameId+' .head').css('cursor', 'move');
+		$(sImageFrameId).draggable({
+			handle: '.head'
 		});
-	});
+		$(sImageFrameId+' .head').css('cursor', 'move');
+	});	
 }
 
+/**
+ * Function adds event which files to visible when a directory is clicked of Image edit form
+ *
+ * @param string sImageFrameId
+ * @param int 	 iImageId
+ */
 function addImageNaviActions(sImageFrameId, iImageId) {	
+	//show actually articles
 	$(sImageFrameId+' #image_'+iImageId+'_directories #directoryList_'+iImageId+' a[class="on"]').parent('div').unbind('click');
 	$(sImageFrameId+' #image_'+iImageId+'_directories #directoryList_'+iImageId+' a[class="on"]').parent('div').click(function () {
 		$.each($(sImageFrameId+' div'), function(){  
@@ -182,18 +205,20 @@ function addImageNaviActions(sImageFrameId, iImageId) {
             $(this).addClass('active');
 		}
 		var dirname = $(this).children('a[class="on"]').attr('title');
+		if(dirname=='upload'){dirname = '/';}
 		$.ajax({
 			type: "POST",
 			url: sPath+"ajaxmain.php",
 			data: "ajax=imagelist&dir=" + dirname + "&id=" + iImageId + "&idartlang=" + iIdArtLang + "&contenido="+sSession,
-			success: function(msg){//show filelist
+			success: function(msg){
 				$(sImageFrameId+' #image_'+iImageId+'_directories #directoryFile_'+iImageId).html(msg);
 				addSelectAction(sImageFrameId, iImageId);
 			}
 		});		
+		showImageFolderPath(sImageFrameId, iImageId);
 		return false;
 	});
-	
+	//downside more directory 
 	$(sImageFrameId+' #directoryList_'+iImageId+' em a').unbind('click');
 	$(sImageFrameId+' #directoryList_'+iImageId+' em a').click(function () {
 		var divContainer 	= $(this).parent().parent();
@@ -211,7 +236,7 @@ function addImageNaviActions(sImageFrameId, iImageId) {
 				type: "POST",
 				url: sPath+"ajaxmain.php",
 				data: "ajax=dirlist&dir=" + dirname + "&id=" + iImageId + "&idartlang=" + iIdArtLang + "&contenido="+sSession,
-				success: function(msg){//show foldername
+				success: function(msg){
 					divContainer.after(msg);
 					divContainer.parent('li').removeClass('collapsed');
 					addImageNaviActions(sImageFrameId, iImageId);
@@ -223,18 +248,42 @@ function addImageNaviActions(sImageFrameId, iImageId) {
 }
 
 /**
- * Function adds double click events to all current listed articles for manual Image
- * in case of a double click this selected article is removed from list
+ * Function adds event what path to visible when one directory is clicked of Image edit form
  *
  * @param string sImageFrameId
+ * @param int 	 iImageId
  */
-function addImageClickEvent(sImageFrameId, iImageId) {
-	addImageNaviActions(sImageFrameId, iImageId);
+function showImageFolderPath(sImageFrameId, iImageId){
+	//upload datei
+	aTitle = Array();
+	$(sImageFrameId+' div[class="active"] a[class="on"]').each(function(){
+		aTitle.push($(this).attr('title'));
+	});
+	if(aTitle.length<1){
+		$(sImageFrameId+' #image_'+iImageId+'_directories li#root>div').addClass('active');
+	}
+	var dirname = $(sImageFrameId+' div[class="active"] a[class="on"]').attr('title');
+	divContainer[iImageId] = $(sImageFrameId+' div[class="active"] em a').parent().parent();
+	createPath[iImageId] = dirname;
+	if(createPath[iImageId] != '' && createPath[iImageId] != 'upload'){dirname = createPath[iImageId]+'/';} else {dirname = '';}
+	
+	$(sImageFrameId+' #caption1').text(dirname);
+	$(sImageFrameId+' #caption2').text(dirname);
+	$(sImageFrameId+' form[name="newdir"] input[name="path"]').val(dirname);		
+	$(sImageFrameId+' form[name="properties"] input[name="path"]').val(dirname);
+	setTimeout("imageFileUpload(\'"+sImageFrameId+"\', \'"+iImageId+"\')",500);
 }
 
+/**
+ * Function adds click events to all current listed articles for manual Image
+ * in case of a click this selected article show in window
+ *
+ * @param string sImageFrameId
+ * @param int 	 iImageId
+ */
 function addSelectAction(sImageFrameId, iImageId){
-	if(document.getElementById('image_filename_'+iImageId)&&document.getElementById('image_filename_'+iImageId).length>0){
-		$('select[class="text_medium"]').change(function () {
+	if(document.getElementById('image_filename_'+iImageId) && document.getElementById('image_filename_'+iImageId).length>0){
+		$(sImageFrameId+' select[class="text_medium"]').change(function () {
 			var str = "";
 			var wert = "";
 			$("select#image_filename_"+iImageId+" option:selected").each(function () {
@@ -269,7 +318,7 @@ function addSelectAction(sImageFrameId, iImageId){
 				$.ajax({
 					type: "POST",
 					url: sPath+"ajaxmain.php",
-					data: "ajax=loadImageMeta&filename="+wert+"&dir=" + dirname + "&id=" + iImageId + "&idartlang=" + iIdArtLang + "&contenido="+sSession,
+					data: "ajax=loadImageMeta&filename="+wert+"&id=" + iImageId + "&idartlang=" + iIdArtLang + "&contenido="+sSession,
 					success: function(msg){//show meta data
 						val = msg.split('+++');
 						$('#image_medianame_'+iImageId).val(val[0]);
@@ -280,15 +329,199 @@ function addSelectAction(sImageFrameId, iImageId){
 					}
 				});
 			}
-		})
-		.change();
+		});
 	}	
+}
+
+/**
+ * Function creates a upload directory, either in filesystem or in dbfs.
+ *
+ * @param string sImageFrameId
+ * @param int 	 iImageId
+ */
+function createMKDir(sImageFrameId, iImageId){
+	$(sImageFrameId+' #image_'+iImageId+'_upload form[name="newdir"] input[type="image"]').unbind('click');
+	$(sImageFrameId+' #image_'+iImageId+'_upload form[name="newdir"] input[type="image"]').click(function () {
+		var folderName = $(sImageFrameId+' input[name="foldername"]').val();
+		var dirname = '';
+		if(createPath[iImageId] != '' && createPath[iImageId] != 'upload'){dirname = createPath[iImageId]+'/';}
+		if(folderName != ''){
+		$.ajax({
+			type: "POST",
+			url: sPath+"main.php",
+			data: "area=upl&action=upl_mkdir&frame=2&appendparameters=&path=" + dirname + "&foldername=" + folderName + "&contenido="+sSession,
+			success: function(msg){//make create folder
+				$('input[name="foldername"]').val('');
+				$.ajax({
+					type: "POST",
+					url: sPath+"ajaxmain.php",
+					data: "ajax=dirlist&idartlang=" + iIdArtLang + "&id=" + iImageId + "&dir=" + dirname + "&contenido="+sSession,
+					success: function(msg){//create directory list
+						if(createPath[iImageId] == 'upload'){
+							var title = folderName;
+						}else{
+							var title = dirname+folderName;
+						}
+						aTitle = Array();
+						$(sImageFrameId+' div a[class="on"]').each(function(){
+							aTitle.push($(this).attr('title'));
+						});
+						
+						if(!in_array(title,aTitle)){
+							//divContainer[iImageId].parent('li').children('ul').remove();
+							//divContainer[iImageId].after(msg);
+							//divContainer[iImageId].parent('li').removeClass('collapsed');
+							//addImageNaviActions(sImageFrameId, iImageId);	
+							$('div.cms_image .con_str_tree li div>a').each(function(index){									
+								if($(this).attr('title') == createPath[iImageId]){
+									$(this).parent().parent('li:has(ul)').children('ul').remove();
+									$(this).parent().after(msg);
+									$(this).parent().parent('li').removeClass('collapsed');
+									var sformName = '#'+$(this).parents('.cms_image').attr('id');
+									addImageNaviActions(sformName, sformName.substr(11,1));
+								}									
+							});					
+						}
+					}
+				}); 
+			}
+		});
+		}
+		return false;
+	});
+}
+
+/**
+ * Function upload image.
+ *
+ * @param string sImageFrameId
+ * @param int 	 iImageId
+ */
+function imageFileUpload(sImageFrameId, iImageId){
+	var folderName = $(sImageFrameId+' input[name="file[]"]').val();
+	var dirname = '';
+	if(createPath[iImageId] != '' && createPath[iImageId] != 'upload'){dirname = createPath[iImageId]+'/';}
+	
+	
+	new AjaxUpload('#cms_image_m'+iImageId, {
+		action: sPath+"main.php?area=upl&action=upl_upload&frame=4&appendparameters=&leftframe=0&rightframe=0&file=&path=" + dirname + "&contenido="+sSession,
+		name: 'file[]',
+		onSubmit:function(){
+			$('img.loading').css('display','block');
+		},
+		onComplete : function(file){
+			var aValue = Array();
+			$(sImageFrameId+' select#image_filename_'+iImageId+' option').each(function(){
+				aValue.push($(this).attr('value'));				
+			});
+			$('img.loading').css('display','none');
+			if(!in_array(dirname+file,aValue)){
+				$(sImageFrameId+' #image_filename_'+iImageId).append('<option id="" value="'+dirname+file+'">'+file+'</option>');
+			}
+		}
+	});
 }
 
 function basename(path) {
 	return path.replace(/\\/g,'/').replace( /.*\//, '' );
 }
-function dirname(path) {
+function dirname(path) {alert(1);
 	return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');;
 }
 
+//Read a page's GET URL variables and return them as an associative array.
+function getUrlVars(){
+  var vars = [], hash;
+  var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+  for(var i = 0; i < hashes.length; i++){
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+  }
+  return vars;
+}
+
+/* function to search in arrays */
+function in_array(needle, haystack) {
+    for (var i = 0; i < haystack.length; i++) {
+        if (haystack[i] == needle) {
+            return true;
+        }
+    }
+    return false;  
+}
+
+/* function to include a script */
+function include(filename, filetype) {
+    var html_head = document.getElementsByTagName('head').item(0);
+    if(filetype=='js'){
+	    var js = document.createElement('script');
+	    js.setAttribute('language', 'javascript');
+	    js.setAttribute('type', 'text/javascript');
+	    js.setAttribute('src', filename);
+	    html_head.appendChild(js);
+	} else if(filetype=='css'){
+	    var css = document.createElement('link');
+	    css.setAttribute('media', 'all');
+	    css.setAttribute('type', 'text/css');
+	    css.setAttribute('rel', 'stylesheet');
+	    css.setAttribute('href', filename);
+	    html_head.appendChild(css);
+    }
+    return true;
+}
+
+/* function checks if file is included already. if not: include() */
+/* needs an array */
+var afiles = new Array();
+var included_files = new Array();
+var included_cssfiles = new Array();
+
+/* function */
+function include_once(script_filename, filetype) {
+	if(filetype=='js'){
+		afiles = included_files;
+	} else if(filetype=='css'){	
+		afiles = included_cssfiles;
+	}
+    if (!in_array(script_filename, afiles)) {
+    	afiles[afiles.length] = script_filename;
+        include(script_filename, filetype);
+    }
+    return true;
+}
+
+/**
+* function scans the document for already included files
+* and puts them into the 'included_files' array
+*/
+function initIncludedFiles () {
+    var scripts = document.getElementsByTagName('script');
+    /* put them into the array if they have a 'src' attribute */
+    for (var i=0; i < scripts.length; i++) {
+        if(scripts[i].src) {
+            if (!in_array(scripts[i].src, included_files)) {
+                included_files[included_files.length] = scripts[i].src;
+            }
+            /**
+             * why the second if?
+             * if you have already double includes in your html-code,
+             * there is no need to list them double in the array ...
+             */
+        }
+    }
+    var scripts = document.getElementsByTagName('link');
+    /* put them into the array if they have a 'src' attribute */
+    for (var i=0; i < scripts.length; i++) {
+        if(scripts[i].href) {
+            if (!in_array(scripts[i].href, included_cssfiles)) {
+                included_cssfiles[included_files.length] = scripts[i].href;
+            }
+            /**
+             * why the second if?
+             * if you have already double includes in your html-code,
+             * there is no need to list them double in the array ...
+             */
+        }
+    }
+}
