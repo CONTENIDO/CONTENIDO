@@ -243,7 +243,7 @@ class Cms_Image {
 		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
 
 		$i = 1;
-		if ($sDirectoryPath != "" ) {
+		if ($sDirectoryPath != "" && $sDirectoryPath!='upload') {
 			$sUploadPath = $this->aCfgClient[$this->iClient]['upl']['path'];
 			$oHandle = opendir($sUploadPath.$sDirectoryPath);
 			while($sEntry = readdir($oHandle)) {
@@ -382,13 +382,17 @@ class Cms_Image {
 		
 		$oTpl->set('s', 'DIRECTORIES', 							i18n("Directories"));
 		$oTpl->set('s', 'META', 								i18n("Meta"));
-		$oTpl->set('s', 'ATTR', 								i18n("Attribute"));
+		$oTpl->set('s', 'UPLOAD', 								i18n("Upload"));
 				
 		$oTpl->set('s', 'LABEL_IMAGE_TITLE', 					i18n("Title"));			
 		$oTpl->set('s', 'LABEL_IMAGE_DESC', 					i18n("Description"));		
 		$oTpl->set('s', 'LABEL_IMAGE_KEYWORDS', 				i18n("Keywords"));
 		$oTpl->set('s', 'LABEL_IMAGE_INTERNAL_NOTICE', 			i18n("Internal notes"));
 		$oTpl->set('s', 'LABEL_IMAGE_COPYRIGHT', 				i18n("Copyright"));
+		
+		$oTpl->set('s', 'INDEX', 								i18n("Erstelle Verzeichnis in"));
+		$oTpl->set('s', 'PFAD', 								i18n("Pfad"));
+		$oTpl->set('s', 'CONTENIDO', 							$contenido);
 		
 		$oTpl->set('s', 'sUploadPath', 							$this->sUploadPath);	           
 		
@@ -518,5 +522,6 @@ class Cms_Image {
 			echo '+++';	
 		}
 	}
+	
 }
 ?>
