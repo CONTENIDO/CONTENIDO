@@ -67,6 +67,7 @@
 	margin-bottom:3px;
     border: 1px solid #ccc;
 }
+
 .cms_image input[type=hidden]{
     border: 0;
 }
@@ -123,8 +124,13 @@
 	width: 430px;
 	padding-top:5px;
 }
-
-.cms_image .image_directories .directoryList {
+.cms_image .image_upload{
+	display: none;
+	width: 430px;
+	padding-top:5px;
+}
+.cms_image .image_directories .directoryList,
+.cms_image .image_upload .directoryList {
 	display: block;
 	width: 210px;
 	height: 210px;
@@ -134,7 +140,8 @@
 	margin-right:5px;
 	float:left;
 }
-.cms_image .image_directories .directoryFile {
+.cms_image .image_directories .directoryFile,
+.cms_image .image_upload .directoryFile, {
 	display: block;
 	width:210px;
 	height:210px;
@@ -280,7 +287,7 @@
 	padding-left: 20px;
 }
 .directoryList ul li#root li em {
-	background: transparent url("../images/vert-neu.gif") no-repeat right top;
+	/*background: transparent url("../images/vert-neu.gif") no-repeat right top;*/
 	margin-right: 0px;
 	padding: 0 0 0 0;
 	width: 20px;
@@ -359,8 +366,18 @@
 .directoryList ul li#root li.collapsed ul {
 	display: none;
 }
-.directoryList ul li#root {
+.directoryList ul li#root>div>a {
 	background: transparent url("../images/ordner_oben.gif") no-repeat 0px 2px;
+}
+.directoryList ul li#root>div>em>a{
+	padding:0;
+	background:none;
+}
+.directoryList ul li#root>div>em{
+	padding:0;
+}
+.directoryList ul li#root>div {
+	background: none;
 }
 .directoryList ul li a {
 	background: #FFF url("../images/folder_on.gif") no-repeat 0px 2px;
@@ -381,7 +398,8 @@
 .directoryList ul li ul ul {
 	margin-left: 0px;
 }
-.cms_image .image_directories .directoryShow{
+.cms_image .image_directories .directoryShow,
+.cms_image .image_upload .directoryShow{
 	background-color:#FFFFFF;
 	border:1px solid #CCCCCC;
 	display:block;
@@ -425,7 +443,6 @@
 	font-size:11px;
 }
 
-
 select.text_medium {
 	color:#000000;
 	font-family:Verdana,Arial,Helvetica,Sans-Serif;
@@ -436,4 +453,21 @@ select.text_medium {
 }
 select.text_medium option {
 	margin-left:2px;
+}
+
+.cms_image .image_upload input.text_medium {
+	width:100%;
+}
+
+input[type="image"]{
+	vertical-align:middle;
+	height:16px;
+	width:16px;
+	border:none;
+}
+
+.loading{
+	left: 22%;
+    position: absolute;
+    top: 17%;
 }
