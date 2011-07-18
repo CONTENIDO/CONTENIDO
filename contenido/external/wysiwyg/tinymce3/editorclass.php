@@ -57,7 +57,7 @@
  *   modified 2010-09-03, Murat Purc, fixed invalid inline editor option, see [#CON-345]
  *   modified 2011-07-18, Ortwin Pinke, fixed missing idart with anchors, see [CON-406] 
  *
- *   $Id: editorclass.php 739 2008-08-27 10:37:54Z timo.trautmann $:
+ *   $Id$:
  * }}
  * 
  */
