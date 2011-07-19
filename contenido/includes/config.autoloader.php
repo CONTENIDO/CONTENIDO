@@ -62,6 +62,7 @@ return array(
     'Cms_Date' => 'contenido/classes/class.cms_date.php',
     'Cms_FileList' => 'contenido/classes/class.cms_filelist.php',
     'Cms_Teaser' => 'contenido/classes/class.cms_teaser.php',
+	'Cms_Dynamic' => 'contenido/classes/class.cms_dynamic.php',
     'CommunicationCollection' => 'contenido/classes/class.communications.php',
     'CommunicationItem' => 'contenido/classes/class.communications.php',
     'ConUser' => 'contenido/classes/class.conuser.php',

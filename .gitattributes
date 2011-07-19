@@ -46,6 +46,11 @@ cms/index.php -text
 cms/js/index.php -text
 cms/logs/index.php -text
 cms/robots.txt -text
+cms/templates/cms_dynamic_standard_head.html -text
+cms/templates/cms_dynamic_standard_html.html -text
+cms/templates/cms_dynamic_standard_htmlhead.html -text
+cms/templates/cms_dynamic_standard_img.html -text
+cms/templates/cms_dynamic_standard_link.html -text
 cms/templates/cms_filelist_style_default.html -text
 cms/templates/cms_teaser_style_block.html -text
 cms/templates/cms_teaser_style_blog.html -text
@@ -162,6 +167,7 @@ contenido/classes/class.cec_hook.php -text
 contenido/classes/class.chartable.php -text
 contenido/classes/class.client.php -text
 contenido/classes/class.cms_date.php -text
+contenido/classes/class.cms_dynamic.php -text
 contenido/classes/class.cms_filelist.php -text
 contenido/classes/class.cms_image.php -text
 contenido/classes/class.cms_teaser.php -text
@@ -176,6 +182,7 @@ contenido/classes/class.frontend.logic.php -text
 contenido/classes/class.frontend.permissions.php -text
 contenido/classes/class.frontend.users.php -text
 contenido/classes/class.genericdb.php -text
+contenido/classes/class.globals.config.php -text
 contenido/classes/class.group.php -text
 contenido/classes/class.htmlelements.php -text
 contenido/classes/class.htmlparser.php -text
@@ -256,6 +263,8 @@ contenido/classes/interfaces/interface.conuser.php -text
 contenido/classes/log/class.bufferedlog.php -text
 contenido/classes/log/class.log.php -text
 contenido/classes/log/class.modulelog.php -text
+contenido/classes/module/AbstractModule.php -text
+contenido/classes/module/ModuleException.php -text
 contenido/classes/module/class.contenido.modulTemplate.php -text
 contenido/classes/module/class.contenido.module.handler.php -text
 contenido/classes/module/class.contenido.module.synchronizer.php -text
@@ -1332,6 +1341,7 @@ contenido/scripts/articleObject.js.php -text
 contenido/scripts/browserCheck.js -text
 contenido/scripts/cfoldingrow.js -text
 contenido/scripts/cmsDate.js -text
+contenido/scripts/cmsDynamic.js -text
 contenido/scripts/cmsFileList.js -text
 contenido/scripts/cmsImage.js -text
 contenido/scripts/cmsTeaser.js -text
@@ -1420,6 +1430,7 @@ contenido/scripts/tip_balloon/stemb.gif -text
 contenido/scripts/tip_balloon/stemt.gif -text
 contenido/scripts/tip_balloon/t.gif -text
 contenido/scripts/wz_tooltip.js -text
+contenido/styles/cms_dynamic.css -text
 contenido/styles/cms_filelist.css -text
 contenido/styles/cms_image.css -text
 contenido/styles/cms_teaser.css -text
@@ -1448,6 +1459,9 @@ contenido/templates/standard/template.client_edit.html -text
 contenido/templates/standard/template.client_left_top.html -text
 contenido/templates/standard/template.client_menu.html -text
 contenido/templates/standard/template.client_subnav.html -text
+contenido/templates/standard/template.cms_dynamic_content.html -text
+contenido/templates/standard/template.cms_dynamic_content_action.html -text
+contenido/templates/standard/template.cms_dynamic_edit.html -text
 contenido/templates/standard/template.cms_filelist_dirlistitem.html -text
 contenido/templates/standard/template.cms_filelist_edit.html -text
 contenido/templates/standard/template.cms_filelist_metadata_limititem.html -text
