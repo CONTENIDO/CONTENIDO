@@ -31,7 +31,7 @@
  * @since      file available since Contenido release >= 4.8.15
  *
  * {@internal
- *     created  2011-06-20
+ *     created  2011-07-20
  * }}
  */
 
@@ -60,9 +60,10 @@ return array(
     'cCharacterConverter' => 'contenido/classes/class.chartable.php',
     'Client' => 'contenido/classes/class.client.php',
     'Cms_Date' => 'contenido/classes/class.cms_date.php',
+    'Cms_Dynamic' => 'contenido/classes/class.cms_dynamic.php',
     'Cms_FileList' => 'contenido/classes/class.cms_filelist.php',
+    'Cms_Image' => 'contenido/classes/class.cms_image.php',
     'Cms_Teaser' => 'contenido/classes/class.cms_teaser.php',
-	'Cms_Dynamic' => 'contenido/classes/class.cms_dynamic.php',
     'CommunicationCollection' => 'contenido/classes/class.communications.php',
     'CommunicationItem' => 'contenido/classes/class.communications.php',
     'ConUser' => 'contenido/classes/class.conuser.php',
@@ -87,6 +88,7 @@ return array(
     'Contenido_ItemBaseAbstract' => 'contenido/classes/class.genericdb.php',
     'ItemCollection' => 'contenido/classes/class.genericdb.php',
     'Item' => 'contenido/classes/class.genericdb.php',
+    'ConfigGlobals' => 'contenido/classes/class.globals.config.php',
     'Groups' => 'contenido/classes/class.group.php',
     'Group' => 'contenido/classes/class.group.php',
     'cHTML' => 'contenido/classes/class.htmlelements.php',
@@ -214,6 +216,8 @@ return array(
     'cApiClient' => 'contenido/classes/contenido/class.client.php',
     'cApiClientLanguageCollection' => 'contenido/classes/contenido/class.clientslang.php',
     'cApiClientLanguage' => 'contenido/classes/contenido/class.clientslang.php',
+    'cApiCodeCollection' => 'contenido/classes/contenido/class.code.php',
+    'cApiCode' => 'contenido/classes/contenido/class.code.php',
     'cApiContainerCollection' => 'contenido/classes/contenido/class.container.php',
     'cApiContainer' => 'contenido/classes/contenido/class.container.php',
     'cApiContainerConfigurationCollection' => 'contenido/classes/contenido/class.containerconfig.php',
@@ -263,12 +267,14 @@ return array(
     'cBufferedLog' => 'contenido/classes/log/class.bufferedlog.php',
     'cLog' => 'contenido/classes/log/class.log.php',
     'cModuleLog' => 'contenido/classes/log/class.modulelog.php',
+    'AbstractModule' => 'contenido/classes/module/AbstractModule.php',
     'Contenido_Module_Handler' => 'contenido/classes/module/class.contenido.module.handler.php',
     'Contenido_Moudle_Synchronizer' => 'contenido/classes/module/class.contenido.module.synchronizer.php',
     'Contenido_Modul_Templates_Handler' => 'contenido/classes/module/class.contenido.modulTemplate.php',
     'Contenido_Translate_From_File' => 'contenido/classes/module/class.contenido.translate.from.file.php',
     'Contenido_UpgradeJob' => 'contenido/classes/module/class.contenido.upgrade.job.php',
     'Contenido_Vars' => 'contenido/classes/module/class.contenido.vars.php',
+    'ModuleException' => 'contenido/classes/module/ModuleException.php',
     'cTree' => 'contenido/classes/tree/class.ctree.php',
     'cTreeItem' => 'contenido/classes/tree/class.ctreeitem.php',
     'Contenido_Url' => 'contenido/classes/Url/Contenido_Url.class.php',
