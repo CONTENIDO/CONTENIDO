@@ -897,7 +897,7 @@ else
             /*
              * Redirect to the URL defined in article properties
              */
-            $oUrl = tenido_Url::getInstance();
+            $oUrl = Contenido_Url::getInstance();
             if ($oUrl->isIdentifiableFrontContentUrl($redirect_url)) {
                 // perform urlbuilding only for identified internal urls
                 $aUrl = $oUrl->parse($redirect_url);
