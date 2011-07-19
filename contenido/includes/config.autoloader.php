@@ -234,6 +234,8 @@ return array(
     'cApiModule' => 'contenido/classes/contenido/class.module.php',
     'cApiModuleTranslationCollection' => 'contenido/classes/contenido/class.module.php',
     'cApiModuleTranslation' => 'contenido/classes/contenido/class.module.php',
+    'cApiStatCollection' => 'contenido/classes/contenido/class.stat.php',
+    'cApiStat' => 'contenido/classes/contenido/class.stat.php',
     'cApiTemplateCollection' => 'contenido/classes/contenido/class.template.php',
     'cApiTemplate' => 'contenido/classes/contenido/class.template.php',
     'cApiTemplateConfigurationCollection' => 'contenido/classes/contenido/class.templateconfig.php',
