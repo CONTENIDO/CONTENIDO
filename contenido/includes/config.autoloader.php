@@ -230,6 +230,8 @@ return array(
     'cApiLanguage' => 'contenido/classes/contenido/class.lang.php',
     'cApiLayoutCollection' => 'contenido/classes/contenido/class.layout.php',
     'cApiLayout' => 'contenido/classes/contenido/class.layout.php',
+    'cApiMetaTagCollection' => 'contenido/classes/contenido/class.metatag.php',
+    'cApiMetaTag' => 'contenido/classes/contenido/class.metatag.php',
     'cApiModuleCollection' => 'contenido/classes/contenido/class.module.php',
     'cApiModule' => 'contenido/classes/contenido/class.module.php',
     'cApiModuleTranslationCollection' => 'contenido/classes/contenido/class.module.php',

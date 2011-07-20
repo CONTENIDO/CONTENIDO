@@ -247,6 +247,7 @@ contenido/classes/contenido/class.file.php -text
 contenido/classes/contenido/class.framefile.php -text
 contenido/classes/contenido/class.lang.php -text
 contenido/classes/contenido/class.layout.php -text
+contenido/classes/contenido/class.metatag.php -text
 contenido/classes/contenido/class.module.php -text
 contenido/classes/contenido/class.stat.php -text
 contenido/classes/contenido/class.template.php -text
