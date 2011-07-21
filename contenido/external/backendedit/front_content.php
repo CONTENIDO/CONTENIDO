@@ -34,7 +34,7 @@
  *
  *
  * @package    Contenido Backend external
- * @version    1.8.11
+ * @version    1.8.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -55,191 +55,81 @@
  *   modified 2011-02-07, Dominik Ziegler, added exit after redirections to force their execution
  *   modified 2011-02-10, Dominik Ziegler, moved function declaration of IP_match out of front_content.php
  *	 modified 2011-06-09, Rusmir Jusufovic, add Contenido_Vars for modul in file concpets
+ *   modified 2011-07-21, Murat Purc, replaced several code snippets against new implemented functions (see revision 1447)
+ *
  *   $Id$:
  * }}
  *
  */
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
-# Contenido startup process
-include_once ('../../includes/startup.php');
+// Contenido startup process
+include_once('../../includes/startup.php');
 
 rereadClients();
 
-# include the config file of the frontend to init the Client and Language Id
-include_once ($cfgClient[$client]["path"]["frontend"]."config.php");
-chdir($cfgClient[$client]["path"]["frontend"]);
+// include the config file of the frontend to init the Client and Language Id
+include_once($cfgClient[$client]['path']['frontend'] . 'config.php');
+chdir($cfgClient[$client]['path']['frontend']);
 
-cInclude("includes", "functions.con.php");
-cInclude("includes", "functions.con2.php");
-cInclude("includes", "functions.api.php");
-cInclude("includes", "functions.pathresolver.php");
+cInclude('includes', 'functions.con.php');
+cInclude('includes', 'functions.api.php');
+cInclude('includes', 'functions.pathresolver.php');
 
-if ($cfg["use_pseudocron"] == true)
-{
-    /* Include cronjob-Emulator */
+if ($cfg['use_pseudocron'] == true) {
+    // Include cronjob-Emulator
     $oldpwd = getcwd();
-    chdir($cfg["path"]["contenido"].$cfg["path"]["cronjobs"]);
-    cInclude("includes", "pseudo-cron.inc.php");
+    chdir($cfg['path']['contenido'] . $cfg['path']['cronjobs']);
+    cInclude('includes', 'pseudo-cron.inc.php');
     chdir($oldpwd);
 }
 
-/*
- * Initialize the Database Abstraction Layer, the Session, Authentication and Permissions Handler of the
- * PHPLIB application development toolkit
- * @see http://sourceforge.net/projects/phplib
- */
-if ($contenido)
-{
-    //Backend
-    page_open(array ('sess' => 'Contenido_Session', 'auth' => 'Contenido_Challenge_Crypt_Auth', 'perm' => 'Contenido_Perm'));
-    i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
-}
-else
-{
-    //Frontend
-    page_open(array ('sess' => 'Contenido_Frontend_Session', 'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth', 'perm' => 'Contenido_Perm'));
-}
+// Initialize session, authentication and permission
+contenidoPageOpen();
 
-/**
- * Bugfix
- * @see http://contenido.org/forum/viewtopic.php?t=18291
- *
- * added by H. Librenz (2007-12-07)
- */
-//includePluginConf();
-/**
- * fixed bugfix - using functions brokes variable scopes!
- *
- * added by H. Librenz (2007-12-21) based on an idea of A. Lindner
- */
-require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
+// Load plugins (in global scope)
+require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
-// Call hook after plugins are loaded, added by Murat Purc, 2008-09-07
+// Call hook after plugins are loaded
 CEC_Hook::execute('Contenido.Frontend.AfterLoadPlugins');
 
-$db = new DB_Contenido;
+// Initialize client
+frontendInitializeClient();
 
-$sess->register("cfgClient");
-$sess->register("errsite_idcat");
-$sess->register("errsite_idart");
-$sess->register("encoding");
+// Initialize clients configuration
+frontendInitializeCfgClient();
 
-if ($cfgClient["set"] != "set")
-{
-    rereadClients();
-}
-
-if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0)
-{
-    // get encodings of all languages
-    $encoding = array();
-    $sql = "SELECT idlang, encoding FROM " . $cfg["tab"]["lang"];
-    $db->query($sql);
-    while ($db->next_record()) {
-        $encoding[$db->f('idlang')] = $db->f('encoding');
-    }
-}
-
+// Initialize encoding
+frontendInitializeEncoding();
 
 // Check frontend globals
 // @TODO: Should be outsourced into startup process but requires a better detection (frontend or backend)
 Contenido_Security::checkFrontendGlobals();
 
-
-// update urlbuilder set http base path 
+// Update urlbuilder set http base path 
 Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
 
-
 // Initialize language
-if (!isset($lang)) {
+frontendInitializeLanguage();
 
-    // if there is an entry load_lang in frontend/config.php use it, else use the first language of this client
-    if(isset($load_lang)){
-        // load_client is set in frontend/config.php
-        $lang = $load_lang;
-    }else{
+// Initialize authentication
+frontendInitializeAuth();
 
-        $sql = "SELECT
-                    B.idlang
-                FROM
-                    ".$cfg["tab"]["clients_lang"]." AS A,
-                    ".$cfg["tab"]["lang"]." AS B
-                WHERE
-                    A.idclient='".Contenido_Security::toInteger($client)."' AND
-                    A.idlang = B.idlang
-                LIMIT
-                    0,1";
-
-        $db->query($sql);
-        $db->next_record();
-
-        $lang = $db->f("idlang");
-    }
-}
-
-if (!$sess->is_registered("lang") ) $sess->register("lang");
-if (!$sess->is_registered("client") ) $sess->register("client");
-
-if (isset ($username))
-{
-    $auth->login_if(true);
-}
-
-/*
- * Send HTTP header with encoding
- */
+// Send HTTP header with encoding
 header("Content-Type: text/html; charset={$encoding[$lang]}");
 
-/*
- * if http global logout is set e.g. front_content.php?logout=true
- * log out the current user.
- */
-if (isset ($logout))
-{
-    $auth->logout(true);
-    $auth->unauth(true);
-    $auth->auth["uname"] = "nobody";
+// Include local configuration
+if (file_exists('config.local.php')) {
+    @include('config.local.php');
 }
 
-/*
- * local configuration
- */
-if (file_exists("config.local.php"))
-{
-    @ include ("config.local.php");
-}
+// Initialize category id if path or article id was send by request
+frontendInitializeCategory();
 
-/*
- * If the path variable was passed, try to resolve it to a Category Id
- * e.g. front_content.php?path=/company/products/
- */
-if (isset($path) && strlen($path) > 1)
-{
-    /* Which resolve method is configured? */
-    if ($cfg["urlpathresolve"] == true)
-    {
-
-        $iLangCheck = 0;
-        $idcat = prResolvePathViaURLNames($path, $iLangCheck);
-
-    }
-    else
-    {
-        $iLangCheck = 0;
-
-        $idcat = prResolvePathViaCategoryNames($path, $iLangCheck);
-        if(($lang != $iLangCheck) && ((int)$iLangCheck != 0)){
-            $lang = $iLangCheck;
-        }
-
-    }
-}
-
-// error page
+// Set error page
 $aParams = array (
     'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client], 
     'lang' => $lang, 'error'=> '1'
@@ -247,25 +137,8 @@ $aParams = array (
 $errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
 
 
-/*
- * Try to initialize variables $idcat, $idart, $idcatart, $idartlang
- * Note: These variables can be set via http globals e.g. front_content.php?idcat=41&idart=34&idcatart=35&idartlang=42
- * If not the values will be computed.
- */
-if ($idart && !$idcat && !$idcatart)
-{
-    /* Try to fetch the first idcat */
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($idart)."'";
-    $db->query($sql);
-
-    if ($db->next_record())
-    {
-        $idcat = $db->f("idcat");
-    }
-}
-
-unset ($code);
-unset ($markscript);
+unset($code);
+unset($markscript);
 
 if (!$idcatart)
 {
@@ -599,7 +472,6 @@ if ($contenido)
 if ($inUse == false && $allow == true && $view == "edit" && ($perm->have_perm_area_action_item("con_editcontent", "con_editart", $idcat)))
 {
     cInclude("includes", "functions.tpl.php");
-    cInclude("includes", "functions.con.php");
     include ($cfg["path"]["contenido"].$cfg["path"]["includes"]."include.con_editcontent.php");
 }
 else
@@ -633,26 +505,25 @@ else
     # code generation
     ##############################################
 
-    /* Check if code is expired, create new code if needed */
+    $oCodeColl = new cApiCodeCollection();
+
+    // Check if code is expired, create new code if needed
     if ($db->f("createcode") == 0 && $force == 0)
     {
-        $sql = "SELECT code FROM ".$cfg["tab"]["code"]." WHERE idcatart = '".Contenido_Security::toInteger($idcatart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
-        $db->query($sql);
-
-        if ($db->num_rows() == 0)
+        $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
+        if (!is_object($oCode))
         {
-            /* Include here for performance reasons */
+            // Include here for performance reasons
             cInclude("includes", "functions.tpl.php");
 
             conGenerateCode($idcat, $idart, $lang, $client);
 
-            $sql = "SELECT code FROM ".$cfg["tab"]["code"]." WHERE idcatart = '".Contenido_Security::toInteger($idcatart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
-            $db->query($sql);
+            $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
         }
 
-        if ($db->next_record())
+        if (is_object($oCode))
         {
-            $code = stripslashes($db->f("code"));
+            $code = $oCode->get('code', false);
         }
         else
         {
@@ -674,23 +545,17 @@ else
     }
     else
     {
-        $sql = "DELETE FROM ".$cfg["tab"]["code"]." WHERE idcatart = '".Contenido_Security::toInteger($idcatart)."'";
-        $db->query($sql);
+        $oCodeColl->deleteByCatArt($idcatart);
 
-        cInclude("includes", "functions.con.php");
         cInclude("includes", "functions.tpl.php");
         cInclude("includes", "functions.mod.php");
 
         conGenerateCode($idcat, $idart, $lang, $client);
-		
-        $sql = "SELECT code FROM ".$cfg["tab"]["code"]." WHERE idcatart = '".Contenido_Security::toInteger($idcatart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
 
-        $db->query($sql);
-        $db->next_record();
-	
-        $code = stripslashes($db->f("code"));
+        $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
+        $code = $oCode->get('code', false);
     }
-	
+
     /*  Add mark Script to code if user is in the backend */
     $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
 
@@ -789,28 +654,9 @@ else
         }
     }
 
-    ##############################################
-    # statistic
-    ##############################################
-    /* Sanity: If the statistic table doesn't contain an entry, create one */
-    $sql = "SELECT idcatart FROM ".$cfg["tab"]["stat"]." WHERE idcatart = '".Contenido_Security::toInteger($idcatart)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-    $db->query($sql);
-
-    if ($db->next_record())
-    {
-        /* Update the statistics. */
-        $sql = "UPDATE ".$cfg["tab"]["stat"]." SET visited = visited + 1 WHERE idcatart = '".Contenido_Security::toInteger($idcatart)."' AND idclient = '".Contenido_Security::toInteger($client)."'
-                AND idlang = '".Contenido_Security::toInteger($lang)."'";
-        $db->query($sql);
-    }
-    else
-    {
-        /* Insert new record */
-        $next = $db->nextid($cfg["tab"]["stat"]);
-        $sql = "INSERT INTO ".$cfg["tab"]["stat"]." (visited, idcatart, idlang, idstat, idclient) VALUES ('1', '".Contenido_Security::toInteger($idcatart)."', '".Contenido_Security::toInteger($lang)."',
-                '".Contenido_Security::toInteger($next)."', '".Contenido_Security::toInteger($client)."')";
-        $db->query($sql);
-    }
+    // statistic
+    $oStatColl = new cApiStatCollection();
+    $oStat = $oStatColl->trackVisit($idcatart, $lang, $client);
 
     /*
      * Check if an article is start article of the category
