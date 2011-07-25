@@ -28,6 +28,7 @@
  *                        readable connection settings.
  *   modified 2011-07-07, Murat Purc, New _update(), _insert() methods, unified
  *                        execution of multiple queries by using cloned instance.
+ *   modified 2011-07-25, Murat Purc, Use mysql_real_escape_string() in quote() function
  *
  *   $Id: $:
  * }}
@@ -438,13 +439,9 @@ class DB_Sql extends DB_Sql_Abstract
      */
     public function escape($sString)
     {
-        $sResult = '';
-        $sResult = str_replace("'", "''", $sString);
-        // @todo adapt pdo quote method to own requirements
-#        if ($this->connect()) {
-#            $sResult = $this->Link_ID->quote($sString);
-#        }
-        return $sResult;
+        // NOTE: Use mysql_real_escape_string, since PDO::quote wraps strings with
+        // a single quote, which is not wanted in this case.
+        return mysql_real_escape_string($sString);
     }
 
 
