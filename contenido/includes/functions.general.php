@@ -2188,10 +2188,11 @@ function IP_match($network, $mask, $ip)
  *
  * @global  string  $belang  Language code used in backend
  * @global  array  $cfg
+ * @global  array  $contenido
  */
 function contenidoPageOpen()
 {
-    global $belang, $cfg;
+    global $belang, $cfg, $contenido;
 
     if ($contenido) {
         // Backend
