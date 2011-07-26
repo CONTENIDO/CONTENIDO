@@ -3,6 +3,7 @@
 /FAQ.txt -text
 /LIZENZ.txt -text
 /README.txt -text
+cms/.htaccess_recommended -text
 cms/config.php -text
 cms/css/contenido_sample.css -text
 cms/css/index.php -text
