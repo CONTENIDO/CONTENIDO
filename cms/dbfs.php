@@ -4,15 +4,14 @@
  * Contenido Content Management System
  * 
  * Description: 
- * <Description>
+ * Database file system output. Expects the request parameter 'file' containing
+ * the file to output.
  * 
  * Requirements: 
  * @con_php_req 5
- * @con_template <Templatefiles>
- * @con_notice <Notice>
- * 
  *
- * @package    Contenido Backend <Area>
+ * @package    Contenido Frontend
+ * @version    0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,45 +19,35 @@
  * @link       http://www.contenido.org
  * 
  * 
- * 
  * {@internal 
  *   created  unknown
- *   modified 2008-06-16, H. Librenz - Hotfix: checking for potential unsecure calling
- *   modified 2008-07-03, bilal arslan, added security fix
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2008-06-16, H. Librenz - Hotfix: checking for potential unsecure calling 
+ *   modified 2008-07-04, bilal arslan, added security fix
+ *   modified 2011-07-26, Murat Purc, cleaned up, optimized code and some documentation
  *
  *   $Id$:
  * }}
  * 
  */
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
 $contenido_path = '';
-# include the config file of the frontend to init the Client and Language Id
-include_once ("config.php");
+// Include the config file of the frontend to init the Client and Language Id
+include_once('config.php');
 
 // Contenido startup process
-include_once ($contenido_path . 'includes/startup.php');
+include_once($contenido_path . 'includes/startup.php');
 
-if ($contenido)
-{
-    page_open(array('sess' => 'Contenido_Session',
-                    'auth' => 'Contenido_Challenge_Crypt_Auth',
-                    'perm' => 'Contenido_Perm'));
+// Initialize db, session, authentication and permission
+contenidoPageOpen();
 
-} else {
-    page_open(array('sess' => 'Contenido_Frontend_Session',
-                    'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
-                    'perm' => 'Contenido_Perm'));
-}
-
-/* Shorten load time */
+// Shorten load time
 $client = $load_client;
 
-$dbfs = new DBFSCollection;
+$dbfs = new DBFSCollection();
 $dbfs->outputFile($file);
 
 page_close();
