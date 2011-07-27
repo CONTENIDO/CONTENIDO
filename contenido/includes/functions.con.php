@@ -723,6 +723,23 @@ function conLock($idart, $lang)
 }
 
 /**
+ * Checks if a article is locked or not
+ *
+ * @param   int  $idart  Article Id
+ * @param   int  $lang   Language Id
+ * @return  bool
+ */
+function conIsLocked($idart, $lang)
+{
+    global $db, $cfg;
+
+    $sql = 'SELECT locked FROM ' . $cfg['tab']['art_lang'] . ' WHERE idart=' . (int) $idart . ' AND idlang=' . (int) $lang;
+    $db->query($sql);
+    $db->next_record();
+    return (1 == $db->f('locked'));
+}
+
+/**
  * Toggle the online status of
  * a category
  *
