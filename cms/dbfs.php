@@ -42,7 +42,7 @@ include_once('config.php');
 include_once($contenido_path . 'includes/startup.php');
 
 // Initialize db, session, authentication and permission
-contenidoPageOpen();
+frontendPageOpen();
 
 // Shorten load time
 $client = $load_client;

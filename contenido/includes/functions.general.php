@@ -2176,6 +2176,23 @@ function IP_match($network, $mask, $ip)
 
 
 /**
+ * Initialized cronjob emulator for frontend. Includes the pseudo cron script,
+ * if usage of pseudo cron is enabled.
+ */
+function frontendInitializeCronjobEmulator()
+{
+    global $cfg;
+
+    if ($cfg['use_pseudocron'] == true) {
+        // Include cronjob-Emulator
+        $oldpwd = getcwd();
+        chdir($cfg['path']['contenido'] . $cfg['path']['cronjobs']);
+        cInclude('includes', 'pseudo-cron.inc.php');
+        chdir($oldpwd);
+    }
+}
+
+/**
  * Initializes the Database Abstraction Layer, the Session, Authentication and 
  * Permissions Handler of the PHPLIB application development toolkit.
  * @see http://sourceforge.net/projects/phplib
@@ -2190,7 +2207,7 @@ function IP_match($network, $mask, $ip)
  * @global  array  $cfg
  * @global  array  $contenido
  */
-function contenidoPageOpen()
+function frontendPageOpen()
 {
     global $belang, $cfg, $contenido;
 
@@ -2296,7 +2313,7 @@ function frontendInitializeEncoding()
  */
 function frontendInitializeLanguage()
 {
-    global $sess, $lang, $load_lang, $cfg, $db;
+    global $sess, $lang, $client, $load_lang, $cfg, $db;
 
     if (!isset($lang)) {
         // if there is an entry load_lang in frontend/config.php use it, else use 
@@ -2392,6 +2409,689 @@ function frontendInitializeCategory()
             $idcat = $db->f('idcat');
         }
     }
+}
+
+/**
+ * Creates and returns url to error page
+ *
+ * @param   int  $client
+ * @param   int  $lang
+ * @return  string
+ */
+function frontendCreateErrorPageUrl($client, $lang)
+{
+    global $errsite_idcat, $errsite_idart;
+
+    // Set error page
+    $aParams = array (
+        'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
+        'lang' => $lang, 'error'=> '1'
+    );
+    return Contenido_Url::getInstance()->buildRedirect($aParams);
+}
+
+/**
+ * Checks if a article is a start article. Ensures backwards compatibility set
+ * in $cfg['is_start_compatible'].
+ *
+ * @param   int  $idcatart  Category article id (for is_start_compatible = true)
+ * @param   int  $idcat  Category id (for is_start_compatible = false)
+ * @param   int  $idart  Article id (for is_start_compatible = false)
+ * @param   int  $lang  Language id (for is_start_compatible = false)
+ * @return  int  1 or 0
+ * @global  array  $cfg
+ * @global  DB_Contenido  $db
+ */
+function frontendIsStartArticle($idcatart, $idcat, $lang, $idartlang)
+{
+    global $cfg, $db;
+
+    if ($cfg['is_start_compatible'] == true) {
+        $sql = 'SELECT is_start FROM ' . $cfg['tab']['cat_art'] . ' WHERE idcatart=' . (int) $idcatart;
+        $db->query($sql);
+        $db->next_record();
+        return (int) $db->f('is_start');
+    } else {
+        $sql = 'SELECT startidartlang FROM ' . $cfg['tab']['cat_lang'] 
+             . ' WHERE idcat=' . (int) $idcat . ' AND idlang=' . (int) $lang;
+        $db->query($sql);
+        $db->next_record();
+        return ($db->f('idartlang') == $idartlang) ? 1 : 0;
+    }
+}
+
+
+/**
+ * Returns some aticle language related data depending on time management setting.
+ *
+ * @param   int  $idart
+ * @param   int  $lang
+ * @param   int  $isstart  Wether is start article or not
+ * @return  array
+ * @global  array  $cfg
+ * @global  DB_Contenido  $db
+ */
+function frontendGetArticleLanguageData($idart, $lang, $isstart)
+{
+    global $cfg, $db;
+
+    $sql = 'SELECT timemgmt FROM ' . $cfg['tab']['art_lang']
+         . ' WHERE idart=' . (int) $idart . ' AND idlang=' . (int) $lang;
+    $db->query($sql);
+    $db->next_record();
+
+    $sql = 'SELECT online, redirect, redirect_url FROM ' . $cfg['tab']['art_lang'] 
+         . ' WHERE idart=' . (int) $idart . ' AND idlang=' . (int) $lang;
+    if (($db->f('timemgmt') == '1') && ($isstart != 1)) {
+        $sql .= ' AND NOW() > datestart AND NOW() < dateend';
+    }
+
+    $db->query($sql);
+    $db->next_record();
+
+    return $db->toArray();
+}
+
+
+/**
+ * Adds the base tag to the output code, if configured.
+ *
+ * @param   string  $code  The output code
+ * @return  string
+ * @global  array  $cfgClient
+ * @global  int  $client
+ */
+function frontendProcessBaseTag($code)
+{
+    global $cfgClient, $client;
+
+    $insertBase = getEffectiveSetting('generator', 'basehref', 'true');
+
+    // generate base url
+    if ($insertBase == 'true') {
+        $isXHTML = getEffectiveSetting('generator', 'xhtml', 'false');
+
+        $baseUri = $cfgClient[$client]['path']['htmlpath'];
+
+        // CEC for base href generation
+        $baseUri = CEC_Hook::executeAndReturn('Contenido.Frontend.BaseHrefGeneration', $baseUri);
+
+        if ($isXHTML == 'true') {
+            $baseCode = '<base href="' . $baseUri . '" />';
+        } else {
+            $baseCode = '<base href="' . $baseUri . '">';
+        }
+
+        $code = str_ireplace_once('<head>', "<head>\n" . $baseCode, $code);
+    }
+
+    return $code;
+}
+
+
+/**
+ * The main function to detect and/or initialize category and article related identifier.
+ *
+ * @param  int  $lang
+ */
+function frontendInitializeArticleAndCategory($lang)
+{
+    global $idcatart, $idart, $idcat, $idartlang, $errsite;
+
+    if (!$idcatart) {
+        if (!$idart) {
+            if (!$idcat) {
+                // Get first category and article
+                if ($arr = frontendGetArtAndStartCat()) {
+                    $idart = $arr['idart'];
+                    $idcat = $arr['idcat'];
+                } else {
+                    frontendNoStartArticleError();
+                }
+            } else {
+                // Get start article of a category
+                $idart = frontendGetStartArtByCat($idcat);
+                if ($idart == 0) {
+                    frontendNoStartArticleError();
+                }
+            }
+        }
+    } else {
+        // Get category and article idcatart
+        $arr = frontendGetArtAndCatByCatArt($idcatart);
+        $idart = $arr['idart'];
+        $idcat = $arr['idcat'];
+    }
+
+    // Get idcatart
+    if (0 != $idart && 0 != $idcat) {
+        $idcatart = frontendGetCatArtByCatAndArt($idcat, $idart);
+    }
+
+    // Get artlang
+    $idartlang = getArtLang($idart, $lang);
+    if (false === $idartlang) {
+        header($errsite);
+        exit;
+    }
+}
+
+
+/**
+ * Returns id of category article (idcatart) by category id and article id.
+ *
+ * @param   int  $idcat
+ * @param   int  $idart
+ * @return  int
+ */
+function frontendGetCatArtByCatAndArt($idcat, $idart)
+{
+    global $cfg, $db;
+
+    $sql = 'SELECT idcatart FROM ' . $cfg['tab']['cat_art'] . ' WHERE idart=' . (int) $idart . ' AND idcat=' . (int) $idcat;
+    $db->query($sql);
+    $db->next_record();
+    return (int) $db->f('idcatart');
+}
+
+
+/**
+ * Returns id of category and it's article by category article (idcatart).
+ *
+ * @param   int  $idcatart
+ * @return  array|null  Assoziative array like array('idart' => 2, 'idcat' => 1) or null
+ */
+function frontendGetArtAndCatByCatArt($idcatart)
+{
+    global $cfg, $db;
+
+    $sql = 'SELECT idcat, idart FROM ' . $cfg['tab']['cat_art'] . ' WHERE idcatart=' . (int) $idcatart;
+    $db->query($sql);
+    return ($db->next_record()) ? $db->toArray() : null;
+}
+
+
+/**
+ * Returns id of first category and it's article. This is required in case of 
+ * requesting the frontend without any article or category id.
+ * Ensures backwards compatibility set in $cfg['is_start_compatible'].
+ *
+ * @return  array|null  Assoziative array like array('idart' => 2, 'idcat' => 1) or null
+ */
+function frontendGetArtAndStartCat()
+{
+    global $cfg, $db, $client, $lang;
+
+    if ($cfg['is_start_compatible'] == true) {
+        // Note: In earlier Contenido versions the information if an article
+        // is startarticle of a category has been stored in relation con_cat_art.
+        $sql = 'SELECT
+                    idart, B.idcat
+                FROM
+                    '.$cfg['tab']['cat_art'].' AS A,
+                    '.$cfg['tab']['cat_tree'].' AS B,
+                    '.$cfg['tab']['cat'].' AS C
+                WHERE
+                    A.idcat=B.idcat AND
+                    B.idcat=C.idcat AND
+                    is_start=1 AND
+                    idclient=' . (int) $client . '
+                ORDER BY
+                    idtree ASC';
+    } else {
+        // Note: Now the information if an article is startarticle of a
+        // category is stored in relation con_cat_lang.
+        $sql = 'SELECT
+                    A.idart, B.idcat
+                FROM
+                    '.$cfg['tab']['cat_art'].' AS A,
+                    '.$cfg['tab']['cat_tree'].' AS B,
+                    '.$cfg['tab']['cat'].' AS C,
+                    '.$cfg['tab']['cat_lang'].' AS D,
+                    '.$cfg['tab']['art_lang'].' AS E
+                WHERE
+                    A.idcat=B.idcat AND
+                    B.idcat=C.idcat AND
+                    D.startidartlang=E.idartlang AND
+                    D.idlang=' . (int) $lang . ' AND
+                    E.idart=A.idart AND
+                    E.idlang=' . (int) $lang . ' AND
+                    idclient=' . (int) $client . '
+                ORDER BY
+                    idtree ASC';
+    }
+
+    $db->query($sql);
+
+    return ($db->next_record()) ? $db->toArray() : null;
+}
+
+
+/**
+ * Returns id of start article by passed category id.
+ * Ensures backwards compatibility set in $cfg['is_start_compatible'].
+ *
+ * @param   int  $idcat
+ * @return  int
+ */
+function frontendGetStartArtByCat($idcat)
+{
+    global $cfg, $db, $lang;
+
+    if ($cfg['is_start_compatible'] == true) {
+        $sql = 'SELECT idart FROM '.$cfg['tab']['cat_art'].' WHERE idcat=' . (int) $idcat . ' AND is_start=1';
+        $db->query($sql);
+        if ($db->next_record()) {
+            return (int) $db->f('idart');
+        }
+    } else {
+        $sql = 'SELECT startidartlang FROM '.$cfg['tab']['cat_lang'].' WHERE idcat=' . (int) $idcat . ' AND idlang=' . (int) $lang;
+        $db->query($sql);
+        if ($db->next_record()) {
+            if ($db->f('startidartlang') != 0) {
+                $sql = 'SELECT idart FROM '.$cfg['tab']['art_lang'].' WHERE idartlang=' . (int) $db->f('startidartlang');
+                $db->query($sql);
+                $db->next_record();
+                return (int) $db->f('idart');
+            }
+        }
+    }
+    return 0;
+}
+
+
+/**
+ * Processes error for not found start article. Behavior in frontend or backend 
+ * depends as follows:
+ * - Backend: Throws Execption
+ * - Frontend: Redirects to configured error page or displays error message if
+ *             the error page itself produces the error (to prevent infinite loop).
+ * @throws  Execption  If page runs in backend
+ */
+function frontendNoStartArticleError()
+{
+    global $contenido, $error, $errsite;
+
+    if ($contenido) {
+        // Throw exception in backend
+        throw new Execption(i18n("No start article for this category"));
+    } else if (1 == $error) {
+        // The error page itself probably ended up in an error
+        echo "Fatal error: Could not display error page. Error to display was: 'No start article in this category'";
+    } else {
+        // Redirect to error page
+        header($errsite);
+        exit;
+    }
+}
+
+
+/**
+ * Processes error for not created code. Behavior in frontend or backend 
+ * depends as follows:
+ * - Backend: Created code with error message
+ * - Frontend: Redirects to configured error page or displays error message if
+ *             the error page itself produces the error (to prevent infinite loop).
+ * @return  string  Created code with error message in case of beeing in backend
+ */
+function frontendNoCodeError()
+{
+    global $contenido, $error, $errsite;
+
+    if ($contenido) {
+        // Error code output in backend
+        $code = 'echo "No code available.";';
+        return $code;
+    } else if ($error == 1) {
+        // The error page itself probably ended up in an error
+        echo "Fatal error: Could not display error page. Error to display was: 'No code available'";
+        return '';
+    } else {
+        // Redirect to error page
+        header($errsite);
+        exit;
+    }
+}
+
+
+/**
+ * Processes error in frontend for offline article.
+ *
+ * Redirects to configured error page or displays error message if the error page
+ * itself produces the error (to prevent infinite loop).
+ */
+function frontendOfflineArticleError()
+{
+    global $error, $errsite;
+
+    if ($error == 1) {
+        // The error page itself probably ended up in an error
+        echo "Fatal error: Could not display error page. Error to display was: 'No contenido session variable set. Probable error cause: Start article in this category is not set on-line.'";
+    } else {
+        // Redirect to error page
+        header($errsite);
+        exit;
+    }
+}
+
+
+/**
+ * Checks access permissions for passed category.
+ *
+ * Permissions will bw checked only for categories (category language) having 
+ * value public = 0.
+ *
+ * @param  int  $idcat
+ * @param  int  $lang
+ */
+function frontendCategoryAccessCheck($idcat, $lang)
+{
+    global $cfg, $db, $auth, $perm, $contenido, $errsite;
+
+    // Check if category is public
+    $sql = 'SELECT public FROM ' . $cfg['tab']['cat_lang']
+         . ' WHERE idcat=' . (int) $idcat . ' AND idlang=' . (int) $lang;
+    $db->query($sql);
+    $db->next_record();
+    if ((int) $db->f('public') == 1) {
+        // Category is public, there is nothing to do...
+        return;
+    }
+
+    if ($auth->auth['uid'] == 'nobody') {
+        $validated = 0;
+
+        // First check for anonymous user
+        $sql = "SELECT user_id, value FROM " . $cfg['tab']['user_prop']
+             . " WHERE type='frontend' and name='allowed_ip'";
+        $db->query($sql);
+
+        while ($db->next_record()) {
+            $user_id = $db->f('user_id');
+
+            $range = urldecode($db->f('value'));
+            $slash = strpos($range, '/');
+
+            if ($slash == false) {
+                $netmask = '255.255.255.255';
+                $network = $range;
+            } else {
+                $network = substr($range, 0, $slash);
+                $netmask = substr($range, $slash + 1, strlen($range) - $slash -1);
+            }
+
+            if (IP_match($network, $netmask, $_SERVER['REMOTE_ADDR'])) {
+                $db2 = new DB_Contenido();
+
+                $sql = "SELECT idright
+                        FROM " . $cfg['tab']['rights'] . " AS A,
+                            " . $cfg['tab']['actions'] . " AS B,
+                            " . $cfg['tab']['area'] . " AS C
+                        WHERE B.name='front_allow' AND C.name='str' AND 
+                            A.user_id='" . $db2->escape($user_id) . "' AND A.idcat=" . (int) $idcat . " 
+                            AND A.idarea=C.idarea AND B.idaction=A.idaction";
+
+                $db2->query($sql);
+
+                if ($db2->num_rows() > 0) {
+                    $auth->auth['uid'] = $user_id;
+                    $validated = 1;
+                }
+            }
+        }
+
+        // Second check for anonymous user, by using chain
+        if ($validated != 1) {
+            // CEC to check category access
+            CEC_Hook::setBreakCondition(true, false); // break at 'true', default value 'false'
+            $allow = CEC_Hook::executeWhileBreakCondition(
+                'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
+            );
+            $auth->login_if(!$allow);
+        }
+    } else {
+        // Check logged in user
+
+        // CEC to check category access
+        CEC_Hook::setBreakCondition(true, false); // break at 'true', default value 'false'
+        $allow = CEC_Hook::executeWhileBreakCondition(
+            'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
+        );
+
+        // added 2008-11-18 Timo Trautmann
+        // in backendeditmode also check if logged in backenduser has permission to view preview of page
+        if ($allow == false && $contenido && $perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat)) {
+            $allow = true;
+        }
+
+        if (!$allow) {
+            header($errsite);
+            exit;
+        }
+    }
+}
+
+
+/**
+ * Returns code for current page. Generates it, if needed.
+ *
+ * @param   int  $idcat
+ * @param   int  $idart
+ * @param   int  $idcatart
+ * @param   int  $client
+ * @param   int  $lang
+ * @param   int  $force
+ * @return  string  $code
+ */
+function frontendGetCode($idcat, $idart, $idcatart, $client, $lang, $force)
+{
+    global $cfg, $db;
+
+    // Get createcode state
+    $sql = 'SELECT createcode FROM ' . $cfg['tab']['cat_art'] . ' WHERE idcat=' . (int) $idcat . ' AND idart=' . (int) $idart;
+    $db->query($sql);
+    $createCode = ($db->next_record()) ? $db->f('createcode') : 1;
+
+    $oCodeColl = new cApiCodeCollection();
+
+    // Check if code is expired, create new code if needed
+    if (0 == $createCode && 0 == $force) {
+        $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
+        if (!is_object($oCode)) {
+            // Include here for performance reasons
+            cInclude('includes', 'functions.tpl.php');
+            conGenerateCode($idcat, $idart, $lang, $client);
+            $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
+        }
+
+        if (is_object($oCode)) {
+            $code = $oCode->get('code', false);
+        } else {
+            $code = frontendNoCodeError();
+        }
+    } else {
+        cInclude('includes', 'functions.tpl.php');
+        cInclude('includes', 'functions.mod.php');
+        $oCodeColl->deleteByCatArt($idcatart);
+        conGenerateCode($idcat, $idart, $lang, $client);
+        $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
+        $code = $oCode->get('code', false);
+    }
+    
+    return $code;
+}
+
+
+/**
+ * Processes the passed redirect url and redirects to the destination page
+ *
+ * @param  string  $redirectUrl
+ * @param  int  $lang
+ */
+function frontendProcessArticleRedirect($redirectUrl, $lang)
+{
+    page_close();
+    // Redirect to the URL defined in article properties
+    $oUrl = Contenido_Url::getInstance();
+    if ($oUrl->isIdentifiableFrontContentUrl($redirectUrl)) {
+        // perform urlbuilding only for identified internal urls
+        $aUrl = $oUrl->parse($redirectUrl);
+        if (!isset($aUrl['params']['lang'])) {
+            $aUrl['params']['lang'] = $lang;
+        }
+        $redirectUrl = $oUrl->buildRedirect($aUrl['params']);
+    }
+    header("Location: $redirectUrl");
+    exit;
+}
+
+
+/**
+ * Processes the editing of frontend from backend.
+ */
+function frontendProcessBackendEditing()
+{
+    global $contenido, $perm, $changeview, $sess, $overrideid, $overridetype, $idartlang, $cfg;
+    global $idartlang, $type, $typenr, $idart, $idcat, $idcatart, $client, $lang;
+
+    $inUse = false;
+    $allow = false;
+    $edit_preview = '';
+    $sHtmlInUseCss = '';
+    $sHtmlInUseMessage = '';
+    
+    /**
+     * If user has contenido-backend rights.
+     * $contenido <==> the cotenido backend session as http global
+     * In Backend: e.g. contenido/index.php?contenido=dac651142d6a6076247d3afe58c8f8f2
+     * Can also be set via front_content.php?contenido=dac651142d6a6076247d3afe58c8f8f2
+     *
+     * Note: In backend the file contenido/external/backendedit/front_content.php is included!
+     * The reason is to avoid cross-site scripting errors in the backend, if the backend domain differs from
+     * the frontend domain.
+     */
+    if ($contenido) {
+        $perm->load_permissions();
+
+        // Change mode edit / view
+        if (isset($changeview)) {
+            $sess->register('view');
+            $view = $changeview;
+        }
+
+        $col = new InUseCollection();
+
+        if ($overrideid != '' && $overridetype != '') {
+            $col->removeItemMarks($overridetype, $overrideid);
+        }
+
+        // Remove all own marks
+        $col->removeSessionMarks($sess->id);
+
+        // If the override flag is set, override a specific InUseItem
+        list($inUse, $message) = $col->checkAndMark('article', $idartlang, true, i18n("Article is in use by %s (%s)"), true, $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?changeview=edit&action=con_editart&idartlang=$idartlang&type=$type&typenr=$typenr&idart=$idart&idcat=$idcat&idcatart=$idcatart&client=$client&lang=$lang");
+
+        $sHtmlInUse = '';
+        $sHtmlInUseMessage = '';
+        if ($inUse == true) {
+            $disabled = 'disabled="disabled"';
+            $sHtmlInUseCss = '<link rel="stylesheet" type="text/css" href="' . $cfg['path']['contenido_fullhtml'] . 'styles/inuse.css" />';
+            $sHtmlInUseMessage = $message;
+        }
+
+        if (conIsLocked($idart, $lang)) {
+            $inUse = true;
+            $disabled = 'disabled="disabled"';
+        }
+
+        // CEC to check if the user has permission to edit articles in this category
+        CEC_Hook::setBreakCondition(false, true); // break at "false", default value "true"
+        $allow = CEC_Hook::executeWhileBreakCondition(
+            'Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']
+        );
+
+        if ($perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat) && $inUse == false && $allow == true) {
+            // Create buttons for editing
+            $edit_preview = '<table cellspacing="0" cellpadding="4" border="0">';
+
+            if ($view == 'edit') {
+                $edit_preview .= '<tr>
+                                    <td width="18">
+                                        <a title="Preview" style="font-family:Verdana;font-size:10px;color:#000000;text-decoration:none" href="'.$sess->url("front_content.php?changeview=prev&idcat=$idcat&idart=$idart").'"><img src="'.$cfg['path']['contenido_fullhtml'].$cfg['path']['images'].'but_preview.gif" alt="Preview" title="Preview" border="0"></a>
+                                    </td>
+                                    <td width="18">
+                                        <a title="Preview" style="font-family:Verdana;font-size:10px;color:#000000;text-decoration:none" href="'.$sess->url("front_content.php?changeview=prev&idcat=$idcat&idart=$idart").'">Preview</a>
+                                    </td>
+                                </tr>';
+            } else {
+                $edit_preview .= '<tr>
+                                    <td width="18">
+                                        <a title="Preview" style="font-family:Verdana;font-size:10px;color:#000000;text-decoration:none" href="'.$sess->url("front_content.php?changeview=edit&idcat=$idcat&idart=$idart").'"><img src="'.$cfg['path']['contenido_fullhtml'].$cfg['path']['images'].'but_edit.gif" alt="Preview" title="Preview" border="0"></a>
+                                    </td>
+                                    <td width="18">
+                                        <a title="Preview" style="font-family:Verdana;font-size:10px;color:#000000;text-decoration:none" href="'.$sess->url("front_content.php?changeview=edit&idcat=$idcat&idart=$idart").'">Edit</a>
+                                    </td>
+                                </tr>';
+            }
+
+            // Display articles
+            if ($cfg['is_start_compatible'] == true) {
+                $sql = 'SELECT idart, is_start FROM ' . $cfg['tab']['cat_art'] . ' WHERE idcat=' . (int) $idcat . ' ORDER BY idart';
+                $db->query($sql);
+            } else {
+                $sql = 'SELECT idart FROM ' . $cfg['tab']['cat_art'] . ' WHERE idcat=' . (int) $idcat . ' ORDER BY idart';
+                $db->query($sql);
+            }
+
+            $a = 1;
+
+            $edit_preview .= '<tr><td colspan="2"><table cellspacing="0" cellpadding="2" border="0"></tr><td style="font-family:verdana;font-size:10;color:#000000;text-decoration:none">Articles in category:<br>';
+
+            while ($db->next_record() && ($db->affected_rows() != 1)) {
+                $class = "font-family:Verdana;font-size:10;color:#000000;text-decoration:underline;font-weight:normal";
+                if (!isset($idart)) {
+                    if (isStartArticle(getArtLang($idart, $lang), $idcat, $lang)) {
+                        $class = "font-family:verdana;font-size:10;color:#000000;text-decoration:underline;font-weight:bold";
+                    }
+                } else {
+                    if ($idart == $db->f('idart')) {
+                        $class = "font-family:verdana;font-size:10;color:#000000;text-decoration:underline;font-weight:bold";
+                    }
+                }
+
+                $edit_preview .= '<a style="' . $class . '" href="' . $sess->url("front_content.php?idart=".$db->f('idart')."&idcat=$idcat") . '">' . $a . '</a>&nbsp;';
+                $a++;
+            }
+
+            $edit_preview .= '</td></tr></table></td></tr></table>';
+        }
+    }
+
+    return array($inUse, $allow, $edit_preview, $sHtmlInUseCss, $sHtmlInUseMessage);
+}
+
+
+function frontendProcessBackendViewCode($code, $sHtmlInUseCss, $sHtmlInUseMessage)
+{
+    global $contenido;
+
+    if ($contenido) {
+        // Mark submenuitem 'Preview' in the Contenido Backend (Area: Contenido --> Articles --> Preview)
+        $markscript = markSubMenuItem(4, true);
+
+        //  Add mark Script to code
+        if ($markscript) {
+            $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
+        }
+
+        // If article is in use, display notification
+        if ($sHtmlInUseCss && $sHtmlInUseMessage) {
+            $code = preg_replace("/<\/head>/i", "$sHtmlInUseCss\n</head>", $code, 1);
+            $code = preg_replace("/(<body[^>]*)>/i", "\${1}> \n $sHtmlInUseMessage", $code, 1);
+        }
+    }
+
+    return $code;
 }
 
 ?>
