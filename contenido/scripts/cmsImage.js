@@ -348,9 +348,12 @@ function createMKDir(sImageFrameId, iImageId){
 		if(folderName != ''){
 		$.ajax({
 			type: "POST",
-			url: sPath+"main.php",
-			data: "area=upl&action=upl_mkdir&frame=2&appendparameters=&path=" + dirname + "&foldername=" + folderName + "&contenido="+sSession,
+			url: sPath+"ajaxmain.php",
+			data: "ajax=upl_mkdir&id=" + iImageId + "&idartlang=" + iIdArtLang + "&path=" + dirname + "&foldername=" + folderName + "&contenido="+sSession,
+			//url: sPath+"main.php",
+			//data: "area=upl&action=upl_mkdir&frame=2&appendparameters=&path=" + dirname + "&foldername=" + folderName + "&contenido="+sSession,
 			success: function(msg){//make create folder
+			if(msg!='0702'){
 				$('input[name="foldername"]').val('');
 				$.ajax({
 					type: "POST",
@@ -385,6 +388,7 @@ function createMKDir(sImageFrameId, iImageId){
 					}
 				}); 
 			}
+			}
 		});
 		}
 		return false;
@@ -401,23 +405,34 @@ function imageFileUpload(sImageFrameId, iImageId){
 	var folderName = $(sImageFrameId+' input[name="file[]"]').val();
 	var dirname = '';
 	if(createPath[iImageId] != '' && createPath[iImageId] != 'upload'){dirname = createPath[iImageId]+'/';}
-	
-	
+
 	new AjaxUpload('#cms_image_m'+iImageId, {
-		action: sPath+"main.php?area=upl&action=upl_upload&frame=4&appendparameters=&leftframe=0&rightframe=0&file=&path=" + dirname + "&contenido="+sSession,
+		//action: sPath+"main.php?area=upl&action=upl_upload&frame=4&appendparameters=&leftframe=0&rightframe=0&file=&path=" + dirname + "&contenido="+sSession,
+		action: sPath+"ajaxmain.php?ajax=upl_upload&id=" + iImageId + "&idartlang=" + iIdArtLang + "&path=" + dirname + "&contenido="+sSession,
 		name: 'file[]',
 		onSubmit:function(){
 			$('img.loading').css('display','block');
 		},
 		onComplete : function(file){
-			var aValue = Array();
+			/*var aValue = Array();
 			$(sImageFrameId+' select#image_filename_'+iImageId+' option').each(function(){
 				aValue.push($(this).attr('value'));				
 			});
 			$('img.loading').css('display','none');
 			if(!in_array(dirname+file,aValue)){
 				$(sImageFrameId+' #image_filename_'+iImageId).append('<option id="" value="'+dirname+file+'">'+file+'</option>');
-			}
+			}*/
+			if(dirname=='upload'||dirname==''){dirname = '/';}
+			$.ajax({
+				type: "POST",
+				url: sPath+"ajaxmain.php",
+				data: "ajax=imagelist&dir=" + dirname + "&id=" + iImageId + "&idartlang=" + iIdArtLang + "&contenido="+sSession,
+				success: function(msg){
+					$('img.loading').css('display','none');
+					$(sImageFrameId+' #image_'+iImageId+'_directories #directoryFile_'+iImageId).html(msg);
+					addSelectAction(sImageFrameId, iImageId);
+				}
+			});	
 		}
 	});
 }

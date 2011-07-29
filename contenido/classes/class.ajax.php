@@ -242,6 +242,37 @@ class Ajax {
 				$sString 		= $oImage->getImageMeta( $sFilename, $sDirname, $iImageId );
 				break;	
 				
+			case 'upl_mkdir':
+				global $cfg, $client, $lang, $cfgClient;
+				cInclude("classes", "class.cms_image.php");
+
+				$iImageId   	= (int) $_REQUEST['id'];
+				$iIdArtLang 	= (int) $_REQUEST['idartlang'];
+				$sPath			= (string) $_REQUEST['path'];
+				$sName 			= (string) $_REQUEST['foldername'];
+				
+				$oArt 			= new Article(null, null, null, $iIdArtLang);
+				$sArtReturn 	= $oArt->getContent('CMS_IMAGE', $iImageId);
+				$oImage 		= new Cms_Image($sArtReturn, $iImageId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+				
+				$sString 		= $oImage->uplmkdir($sPath, $sName);
+				break;	
+				
+			case 'upl_upload':
+				global $cfg, $client, $lang, $cfgClient;
+				cInclude("classes", "class.cms_image.php");
+
+				$iImageId   	= (int) $_REQUEST['id'];
+				$iIdArtLang 	= (int) $_REQUEST['idartlang'];
+				$sPath			= (string) $_REQUEST['path'];
+				
+				$oArt 			= new Article(null, null, null, $iIdArtLang);
+				$sArtReturn 	= $oArt->getContent('CMS_IMAGE', $iImageId);
+				$oImage 		= new Cms_Image($sArtReturn, $iImageId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+				
+				$sString 		= $oImage->uplupload($sPath);
+				break;	
+				
 			//if action is unknown generate error message
 			default:
 				$sString = "Unknown Ajax Action";

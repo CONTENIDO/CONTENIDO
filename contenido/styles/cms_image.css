@@ -1,3 +1,14 @@
+html, body, div, p, td, a, input, textarea, select {
+    color: #606060;
+    font-family: Verdana,Arial,sans-serif;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+}
+a {
+    text-decoration: none;
+}
 .clearfix{
 	display:block;
 }

@@ -4,7 +4,7 @@
  * Contenido Content Management System
  * 
  * Description: 
- * Class for handling CMS Type File List
+ * Class for handling CMS Type Image
  * 
  * Requirements: 
  * @con_php_req 5.0
@@ -243,7 +243,7 @@ class Cms_Image {
 		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
 
 		$i = 1;
-		if ($sDirectoryPath != "" && $sDirectoryPath!='upload') {
+		//if ($sDirectoryPath != "" && $sDirectoryPath!='upload') {
 			$sUploadPath = $this->aCfgClient[$this->iClient]['upl']['path'];
 			$oHandle = opendir($sUploadPath.$sDirectoryPath);
 			while($sEntry = readdir($oHandle)) {
@@ -254,7 +254,7 @@ class Cms_Image {
 				}
 			}		
 			closedir($oHandle);
-		}
+		//}
 		
 		if ( $i == 0 ) {
 			$oHtmlSelectOption = new cHTMLOptionElement( i18n('No files found'), '', false );
@@ -404,7 +404,7 @@ class Cms_Image {
 			$this->dirname = $this->oDb->f('dirname');                
 		}
 		
-		$oTpl->set('s', 'sContent', 							$this->aCfgClient[$this->iClient]['path']['htmlpath'].'upload/'.$this->dirname.$this->filename);
+		$oTpl->set('s', 'sContent', 							$this->aCfgClient[$this->iClient]['upl']['htmlpath'].$this->dirname.$this->filename);
 		$oTpl->set('s', 'DIRECTORY_LIST', 						$this->getDirectoryList( $this->buildDirectoryList() ));
 		/*$medianame = $_REQUEST['image_medianame'];
 		$description = $_REQUEST['image_description'];
@@ -420,7 +420,7 @@ class Cms_Image {
 			$id_uplmeta = $this->oDb->f('id_uplmeta');   	
 			
 			$oTpl->set('s', 'DIRECTORY_FILE', 						$this->getFileSelect($this->activeFilename, $this->iId));
-			$oTpl->set('s', 'DIRECTORY_SRC', 						$this->aCfgClient[$this->iClient]['path']['htmlpath'].'upload/'.$this->dirname.$this->filename);
+			$oTpl->set('s', 'DIRECTORY_SRC', 						$this->aCfgClient[$this->iClient]['upl']['htmlpath'].$this->dirname.$this->filename);
 			$oTpl->set('s', 'IMAGE_TITLE', 							$this->oDb->f('medianame'));	
 			$oTpl->set('s', 'IMAGE_DESC', 							$this->oDb->f('description'));
 			$oTpl->set('s', 'IMAGE_KEYWORDS', 						$this->oDb->f('keywords'));
@@ -476,8 +476,8 @@ class Cms_Image {
 			//set title of teaser
 			$oTpl->set('s', 'TITLE', $this->oDb->f('filename'));
 			if($this->oDb->f('dirname')!='' && $this->oDb->f('filename')!=''){
-				$oTpl->set('s', 'SRC', $this->aCfgClient[$this->iClient]['path']['htmlpath'].'upload/'.$this->oDb->f('dirname').$this->oDb->f('filename'));
-				$sCode = $this->aCfgClient[$this->iClient]['path']['htmlpath'].'upload/'.$this->oDb->f('dirname').$this->oDb->f('filename');
+				$oTpl->set('s', 'SRC', $this->aCfgClient[$this->iClient]['upl']['htmlpath'].$this->oDb->f('dirname').$this->oDb->f('filename'));
+				$sCode = $this->aCfgClient[$this->iClient]['upl']['htmlpath'].$this->oDb->f('dirname').$this->oDb->f('filename');
 			} else {
 				$oTpl->set('s', 'SRC', '');
 				$sCode = "";
@@ -523,5 +523,40 @@ class Cms_Image {
 		}
 	}
 	
+	public function uplmkdir($sPath, $sName){
+		return uplmkdir($sPath, $sName);
+	}
+	
+	public function uplupload($sPath){
+		//print_r($GLOBALS);
+		global $cfgClient;
+		global $client;
+		global $_FILES;
+		
+		$rootpath = $this->aCfgClient[$this->iClient]['upl']['htmlpath'];	
+		if (count($_FILES) == 1)
+		{
+			foreach ($_FILES['file']['name'] as $key => $value)
+			{
+				if (file_exists($_FILES['file']['tmp_name'][$key]))
+				{
+	    			$friendlyName = uplCreateFriendlyName($_FILES['file']['name'][$key]);
+	    			move_uploaded_file($_FILES['file']['tmp_name'][$key], $cfgClient[$client]['upl']['path'].$sPath.$friendlyName);
+	    				    			
+	    			uplSyncDirectory($sPath);
+	        		
+	        		$sql = "SELECT * FROM ".$this->aCfg["tab"]["upl"]." WHERE dirname='".$sPath."' AND filename='".$_FILES['file']['name'][$key]."'";
+	        		$this->oDb->query($sql);
+	        		if($this->oDb->next_record()) {	        		
+	        			$uplfilename = $rootpath . $this->oDb->f('dirname'). $this->oDb->f('filename');
+	        		} else {
+	        			$uplfilename = 'error';
+	        		}
+				}
+	    			
+			}
+		}
+		return $uplfilename;
+	}
 }
 ?>
