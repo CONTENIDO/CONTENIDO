@@ -104,7 +104,7 @@ function createNavigationArray($start_id, $db)
 /**
  * Return target of a given category id  
  * 
- * @deprecated
+ * @deprecated [2008-04-14]
  */
 function getTarget($cat_id, $db) {
 	global $cfg, $client, $lang;
