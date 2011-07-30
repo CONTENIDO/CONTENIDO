@@ -104,7 +104,7 @@ class DB_Contenido extends DB_Sql
      * @param   string  $sTable  The tablename of empty string to retrieve metadata of all tables!
      * @return  array|bool   Assoziative metadata array (result depends on used db driver)
      *                       or false in case of an error
-     * @deprecated  Use db drivers toArray() method instead
+     * @deprecated [2011-03-03] Use db drivers toArray() method instead
      */
     public function copyResultToArray($sTable = '')
     {
