@@ -143,7 +143,7 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
 
 
 /**
- * @deprecated  Is used nowhere and uses a non existing global $con_cfg
+ * @deprecated [2011-06-29] Is used nowhere and uses a non existing global $con_cfg
  */
 function upldelete($path, $files)
 {
@@ -187,7 +187,7 @@ function upldelete($path, $files)
 
 
 /**
- * @deprecated  Should remove empty upload directories, but calls a invalid method
+ * @deprecated [2011-06-29] Should remove empty upload directories, but calls a invalid method
  */
 function uplRecursiveRmDirIfEmpty($dir)
 {
