@@ -516,13 +516,15 @@ function initIncludedFiles () {
     for (var i=0; i < scripts.length; i++) {
         if(scripts[i].src) {
             if (!in_array(scripts[i].src, included_files)) {
-                included_files[included_files.length] = scripts[i].src;
+                included_files[i] = scripts[i].src;
             }
             /**
              * why the second if?
              * if you have already double includes in your html-code,
              * there is no need to list them double in the array ...
              */
+        } else {
+        	included_files[i] = '';
         }
     }
     var scripts = document.getElementsByTagName('link');
@@ -530,7 +532,7 @@ function initIncludedFiles () {
     for (var i=0; i < scripts.length; i++) {
         if(scripts[i].href) {
             if (!in_array(scripts[i].href, included_cssfiles)) {
-                included_cssfiles[included_files.length] = scripts[i].href;
+                included_cssfiles[i] = scripts[i].href;
             }
             /**
              * why the second if?
