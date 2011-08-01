@@ -454,7 +454,7 @@ a {
 	font-size:11px;
 }
 
-select.text_medium {
+.cms_image select.text_medium {
 	color:#000000;
 	font-family:Verdana,Arial,Helvetica,Sans-Serif;
 	font-size:11px;
@@ -462,7 +462,7 @@ select.text_medium {
 	height:210px;
 	border:0;
 }
-select.text_medium option {
+.cms_image select.text_medium option {
 	margin-left:2px;
 }
 
@@ -470,7 +470,7 @@ select.text_medium option {
 	width:100%;
 }
 
-input[type="image"]{
+.cms_image input[type="image"]{
 	vertical-align:middle;
 	height:16px;
 	width:16px;
