@@ -133,15 +133,11 @@ unset($code, $markscript);
 frontendInitializeArticleAndCategory($lang);
 
 // Start page caching if enabled
-if ($cfg['cache']['disable'] != '1') {
-    cInclude('frontend', 'includes/concache.php');
-    $oCacheHandler = new cConCacheHandler($GLOBALS['cfgConCache'], $db);
-    $oCacheHandler->start();
-}
+frontendPageCacheStart();
 
 
   /**
-   * set contenido vars 
+   * Set contenido vars 
    */
    	Contenido_Vars::setVar('db', $db);
 	Contenido_Vars::setVar('lang', $lang);
@@ -230,30 +226,24 @@ if ($inUse == false && $allow == true && $view == 'edit'
                 echo $htmlCode;
             }
         }
-    } else {
+    } else if ($contenido) {
         // If user is in the backend display offline articles
-        if ($contenido) {
-            eval("?>\n" . $code . "\n<?php\n");
-        } else {
-            frontendOfflineArticleError();
-        }
+        eval("?>\n" . $code . "\n<?php\n");
+    } else {
+        // Offline article error
+        frontendOfflineArticleError();
     }
 }
 
 // End page caching if enabled
-if ($cfg['cache']['disable'] != '1') {
-    $oCacheHandler->end();
-    #echo $oCacheHandler->getInfo();
-}
+frontendPageCacheEnd();
 
 // Configuration settings after the site is displayed.
 if (file_exists('config.after.php')) {
     @include('config.after.php');
 }
 
-if (isset($savedlang)) {
-    $lang = $savedlang;
-}
+// Close the page
+frontendPageClose();
 
-page_close();
 ?>

@@ -2178,6 +2178,7 @@ function IP_match($network, $mask, $ip)
 /**
  * Initialized cronjob emulator for frontend. Includes the pseudo cron script,
  * if usage of pseudo cron is enabled.
+ * @global  array  $cfg  Main configuration array
  */
 function frontendInitializeCronjobEmulator()
 {
@@ -2204,8 +2205,8 @@ function frontendInitializeCronjobEmulator()
  * - $perm: Contenido_Perm
  *
  * @global  string  $belang  Language code used in backend
- * @global  array  $cfg
- * @global  array  $contenido
+ * @global  array  $cfg  Main configuration array
+ * @global  array  $contenido  Session id
  */
 function frontendPageOpen()
 {
@@ -2231,11 +2232,30 @@ function frontendPageOpen()
     }
 }
 
+
+/**
+ * Closes the page, by processing shuts down related functions and 
+ * persisting session changes
+ *
+ * @global  int  $lang  Id of current language
+ * @global  int  $savedlang  Id of saved language
+ */
+function frontendPageClose()
+{
+    global $lang, $savedlang;
+
+    if (isset($savedlang) && (int) $savedlang > 0) {
+        $lang = $savedlang;
+    }
+
+    page_close();
+}
+
 /**
  * Frontend method to initialize client (global $client variable which contains client id)
  *
  * @global  Contenido_Frontend_Session  $sess
- * @global  int  $client
+ * @global  int  $client  Id of current client
  * @global  int  $load_client  Is set in config.php located in client frontend folder
  */
 function frontendInitializeClient()
@@ -2259,7 +2279,7 @@ function frontendInitializeClient()
  * variable which contains some settings loaded from clients table).
  *
  * @global  Contenido_Frontend_Session  $sess
- * @global  int  $cfgClient
+ * @global  int  $cfgClient  clients configuration array
  */
 function frontendInitializeCfgClient()
 {
@@ -2306,7 +2326,7 @@ function frontendInitializeEncoding()
  * Frontend method to initialize language (global $lang variable which contains lanuage id)
  *
  * @global  Contenido_Frontend_Session  $sess
- * @global  int  $lang
+ * @global  int  $lang  Id of current language
  * @global  int  $load_lang  Is set in config.php located in client frontend folder
  * @global  array  $cfg
  * @global  DB_Contenido  $db
@@ -3092,6 +3112,39 @@ function frontendProcessBackendViewCode($code, $sHtmlInUseCss, $sHtmlInUseMessag
     }
 
     return $code;
+}
+
+
+/**
+ * Starts/Processes frontend page cache if enabled. At this point all output will be
+ * cached at initial call. Next time the cached static content will be outputted,
+ * which is faster than processing PHP code.
+ */
+function frontendPageCacheStart()
+{
+    global $cfg, $cfgConCache, $db, $oCacheHandler;
+
+    // Start page caching if enabled
+    if ($cfg['cache']['disable'] != '1') {
+        cInclude('frontend', 'includes/concache.php');
+        $oCacheHandler = new cConCacheHandler($cfgConCache, $db);
+        $oCacheHandler->start();
+    }
+}
+
+
+/**
+ * Ends frontend page cache if enabled. Saved output in cache.
+ */
+function frontendPageCacheEnd()
+{
+    global $cfg, $oCacheHandler;
+
+    // End page caching if enabled
+    if ($cfg['cache']['disable'] != '1') {
+        $oCacheHandler->end();
+        #echo $oCacheHandler->getInfo();
+    }
 }
 
 ?>
