@@ -522,6 +522,7 @@ a:hover {
  */
 #contactForm {
     font-size: 11px;
+    margin-bottom: 1.0em;
 }
 #contactForm .contactRow {
     clear: both;
