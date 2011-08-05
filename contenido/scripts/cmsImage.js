@@ -50,6 +50,7 @@ function addImageEvents(sImageFrameId, sImageId, sPath, sSession, iImageIdArtLan
 	addSelectAction(sImageFrameId, iImageId);
 	showImageFolderPath(sImageFrameId, iImageId);
 	createMKDir(sImageFrameId,iImageId);
+	showUrlforMeta(sImageFrameId,iImageId);
 }
 
 /**
@@ -326,6 +327,7 @@ function addSelectAction(sImageFrameId, iImageId){
 						$('#image_keywords_'+iImageId).val(val[2]);
 						$('#image_internal_notice_'+iImageId).val(val[3]);
 						$('#image_copyright_'+iImageId).val(val[4]);
+						showUrlforMeta(sImageFrameId,iImageId);
 					}
 				});
 			}
@@ -541,4 +543,14 @@ function initIncludedFiles () {
              */
         }
     }
+}
+
+function showUrlforMeta(sImageFrameId,iImageId){
+	var str = "";
+	var wert = "";
+	$(sImageFrameId+" select#image_filename_"+iImageId+" option:selected").each(function () {
+		str += $(this).text();
+		wert += $(this).val();
+	});
+	$(sImageFrameId+' #image_meta_url_'+iImageId).html(wert);
 }

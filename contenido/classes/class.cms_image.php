@@ -384,6 +384,7 @@ class Cms_Image {
 		$oTpl->set('s', 'META', 								i18n("Meta"));
 		$oTpl->set('s', 'UPLOAD', 								i18n("Upload"));
 				
+		$oTpl->set('s', 'META_URL_TEXT', 						i18n("Ausgewählte Datei"));	
 		$oTpl->set('s', 'LABEL_IMAGE_TITLE', 					i18n("Title"));			
 		$oTpl->set('s', 'LABEL_IMAGE_DESC', 					i18n("Description"));		
 		$oTpl->set('s', 'LABEL_IMAGE_KEYWORDS', 				i18n("Keywords"));
