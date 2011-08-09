@@ -112,6 +112,16 @@ class cApiCode extends Item
         }
     }
 
+    /**
+     * Updates code of an entry.
+     * @param   string  $sCode
+     * @return  bool
+     */
+    public function updateCode($sCode)
+    {
+        $this->set('code', $this->escape($sCode), false);
+        return $this->store();
+    }
 }
 
 ?>
