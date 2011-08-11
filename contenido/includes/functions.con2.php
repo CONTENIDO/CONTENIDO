@@ -345,7 +345,9 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
 
      $cssDatei = "error error culd not generate css file";
     } else {
-      $cssDatei = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';
+       //generate link for html-head only if data exist
+	  if($cssData != '')	
+	  	$cssDatei = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';
     }
     $jsDatei = '';
     if( ($myFileJs =Contenido_Module_Handler::saveContentToFile($cfgClient[$client], $tplName,"js", $jsData))== false) {
@@ -353,7 +355,9 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
       $jsDatei = "error error error culd not generate js file";
     } else {
 
-      $jsDatei = '<script src="'.$myFileJs.'" type="text/javascript"></script>';
+     	//generate js link for html-head only if data exist
+		if($jsData != '')
+	  		$jsDatei = '<script src="'.$myFileJs.'" type="text/javascript"></script>';
     }
 
     // Add meta tags

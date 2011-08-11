@@ -1,0 +1,48 @@
+
+
+
+<div  class="config_layer" style="display:none" id="{ID_CONFIG_LAYER}"> 
+	<div class="close" id="layer_close" >
+		<img  src="../contenido/images/but_cancel.gif"/>	
+	</div> 
+	
+	<p class="head">{CONFIG_LABEL}:{MODUL_NAME}</p>
+		<form id="editcontent_form" name="editcontent_form" method="post" action="{PATH}external/backendedit/front_content.php?area=con_editcontent&idart={ID_ART}&idcat={ID_CAT}&lang={LANG}&action=20&client={CLIENT}">
+			<input type="hidden" name="changeview" value="edit">
+        	<input type="hidden" name="data" value="" />
+        	<input type="hidden" name="idtpl" value="{ID_TPL}" />
+        	<input type="hidden" name="idtplcfg" value="{ID_TPLCFG}"/>
+         	<input type="hidden" name="idmod" value="{ID_MOD}"/>
+         	<input type="hidden" name="contenido" value="{SESSION}"/>
+			{INPUT_CODE_PLACE_MARKER}
+		</form>
+	<div class="toolbar">
+		<img  id="save_{ID_CONFIG_LAYER}" class="save_config" src="../contenido/images/but_ok.gif"/>
+		<img class="teaser_cancel" src="../contenido/images/but_cancel.gif"/>
+	</div>
+</div>
+	
+<img src="../contenido/images/but_config.png" id="{ID_CONFIG_IMAGE}" alt="config" />
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+      $('#save_{ID_CONFIG_LAYER}').click(function (){
+	  
+      $('#editcontent_form').submit();
+      });
+      });
+    
+	$(document).ready(function(){ $.getScript('{PATH_AND_JSFILE}', function() {
+	 addTeaserEvents('#{ID_CONFIG_LAYER}', '#{ID_CONFIG_IMAGE}','{PATH}' , '{SESSION}', {ID_ART_LANG}, {IDENTIFIER});
+	 /* HOTFIX: We can't upgrade to jQuery UI 1.8.6 (yet)
+	 This hotfix makes older versions of jQuery UI drag-and-drop work in IE9 */
+
+	
+		
+	});
+ }); 
+
+	
+	
+</script>

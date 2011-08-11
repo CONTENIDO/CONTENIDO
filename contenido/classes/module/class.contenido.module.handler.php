@@ -80,7 +80,7 @@ class Contenido_Module_Handler {
      * The name of the modul
      * @var string
      */
-    private $_modulName = NULL; 
+    protected $_modulName = NULL; 
    
     
     /**

@@ -172,6 +172,8 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
                     #save translation
                     $translations = new Contenido_Translate_From_File($db->f("idmod"));
                     $translations->saveTranslations();
+                    $newOutput = $this->saveTemplateContent($db->f("frontendpath"),$db->f("output"));
+                    $this->saveOutput($newOutput);
 					}
                     
                 } elseif($setuptype == "upgrade") {
@@ -184,6 +186,9 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
                         #save translation 
                     	$translations = new Contenido_Translate_From_File($db->f("idmod"));
                     	$translations->saveTranslations();
+                    	
+                    	$newOutput = $this->saveTemplateContent($db->f("frontendpath"),$db->f("output"));
+                    	$this->saveOutput($newOutput);
                        }
                     	
                     }
@@ -220,15 +225,15 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
                 
                    $dbOutput = new DB_Contenido();
                    $sqlOutput = sprintf("UPDATE %s SET output='%s' WHERE idmod=%s AND idclient=%s",$this->_cfg["tab"]["mod"],"", $idmod , $this->_client);
-                   //$dbOutput->query($sqlOutput); 
-                   $this->_echoIt("Lösche input und output in table"); 
-                  return true; 
+                   //$dbOutput->query($sqlOutput);
+                   $this->_echoIt("Lösche input und output in table");
+                   return true;
                } else {
-                  
-               		$this->_echoIt("out:".$output);
-               		$this->_echoIt("inp:".$input);
-               		$this->_echoIt("input:". $this->readInput());
-               		$this->_echoIt("output:". $this->readOutput());
+
+               	$this->_echoIt("out:".$output);
+               	$this->_echoIt("inp:".$input);
+               	$this->_echoIt("input:". $this->readInput());
+               	$this->_echoIt("output:". $this->readOutput());
                		$this->_echoIt("Input und Output des moduls nicht gleich");
                    return false;
                }
@@ -237,7 +242,181 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
             return true;    
     }
             
-                   
+	
+    /**
+     * 
+     * This method save the result from extract/copy of templates in modul directory
+     * in a html document.
+     * 
+     * @param array $result
+     */
+    private function _saveResultInTable($result) {
+	
+	$templateReport = "template_report.html";
+	$pastString = "<!-- PASTE -->";	
+
+	#make file
+	if(!is_file($templateReport)) {
+		$tableAndHeader = "";
+		$tableAndHeader = '<table style="border:1px solid black;">';
+		$tableAndHeader .= "<tr>";
+		$tableAndHeader .= "<th style=\"background-color:gray;\"> Modulname </th>";
+		#add header of table
+		foreach($result as $key=>$value )
+		{
+				$tableAndHeader.= "<th style=\"background-color:gray;\" >" .$key. "</th>"; 		
+		}
+		$tableAndHeader .= "</tr>";
+		#past string for other rows
+		$tableAndHeader .= $pastString;
+		$tableAndHeader .= "</table>";
+		
+		$htmlDocument ='<?xml version="1.0" ?>
+				<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+				<html xmlns="http://www.w3.org/1999/xhtml">
+				<head>
+				<title>Template extract report</title>
+				</head>
+				<body>
+				<h1>Template copy/extract report</h1>
+				'. $tableAndHeader
+		
+						.'	
+				</body>
+				</html>
+				';
+		#save table in html
+		file_put_contents($templateReport, $htmlDocument); 
+	}
+		
+	$fileContent = file_get_contents($templateReport);
+	$rows= "";
+	$styleRed= "style=\"background-color:#FF4B4B;\"";
+	
+	$styleGreen= "style=\"background-color:#A8FF4B;\"";
+	
+		foreach($result['function_generate'] as $key=>$value ) {
+		
+			if($result['file_name'][$key] == "-" || $result['copy'][$key] == 0)
+				$rows.= "<tr $styleRed>";
+			else 
+				$rows.= "<tr $styleGreen>";
+				
+				$rows.= "<td>" . $this->_modulName."</td>";
+				$rows.= "<td>" .$value. "</td>"; 
+				#$rows.= "<td>" .$result['without_function'][$key]. "</td>"; 
+				$rows.= "<td>" .$result['template_acept'][$key]. "</td>"; 
+				$rows.= "<td>" .$result['file_name'][$key]. "</td>";
+				$rows.= "<td >" .$result['copy'][$key]. "</td>";	
+				
+				$rows.= "</tr>";
+		}
+
+		#paste rows
+		$fileContent = str_replace($pastString, $rows.$pastString , $fileContent);
+		
+		#save new rows
+		file_put_contents($templateReport , $fileContent);
+	}
+	
+	
+    
+    /**
+     * 
+     * Save a template from frontendpath/template/filename.html to module path.
+     * 
+     * @param string $frontendpath 
+     * @param string $output 
+     * @return string $output without 'template/' in method generate
+     */
+  public function saveTemplateContent($frontendpath , $output) {
+
+    	#get All template from $output
+    	$allTemplates = $this->_getTemplateFilenameFromOutput($output);
+    	
+    	
+    	if(count($allTemplates['file_name'])>0)	
+    	foreach( $allTemplates['file_name'] as $key=>$value) {
+    		#path and file 
+    		$file = $frontendpath.'templates/'.$value;
+    		#exist the file
+    		if(is_file($file)) {
+				
+    			#get the contents of the file 
+    			$content = file_get_contents($file);
+    			#translate to from encoding to fileencoding(utf-8)
+    			$content = iconv($this->_encoding,$this->_fileEncoding."//IGNORE",$content ); 
+    			#save the content of file in modul/template/ directory
+    			file_put_contents($this->getTemplatePath($value), $content);
+				
+    			#compare the contents of both files
+    			if($content == file_get_contents($this->getTemplatePath($value))) {
+    				#erase the file in old standard template directory
+    				#unlink($file);
+    				$output = str_replace('templates/'.$value,$value,$output);
+    				$allTemplates ['copy'][$key] = 1;
+    			}else {
+    				$allTemplates ['copy'][$key] = 0;
+    			}
+    			
+			}else {
+				
+				$allTemplates ['copy'][$key] = 0;
+			}
+		}
+		if(count($allTemplates['file_name'])> 0) {
+			$this->_saveResultInTable($allTemplates);
+		}
+    		
+		return $output;
+	}
+	
+	
+	/**
+	 * Search in $output for ->generate(...), try to extract the template file name.
+	 * 
+	 * 
+	 * @param string $output
+	 * @return array with the template names
+	 */
+	private function _getTemplateFilenamefromOutput($output) {
+		
+		$result = array();
+		#serach for -> generate( ...);
+		$suchmuster = "/\-\> *generate *\(([^\;]*)\) *;/";
+		$anzahl = preg_match_all($suchmuster , $output , $treffer);
+		
+		#
+		if(count($treffer[0])>0)
+			$result['function_generate']  = $treffer[0];
+		
+		
+		#if(count($treffer[1])>0)
+			#$result['without_function']  = $treffer[1];
+			
+		#serach for /filename.html
+		$suchmuster = "/^ *['|\"]{1}templates\/([_a-zA-Z0-9]{1,}\.html)['|\"]{1}.*$/";
+		if(count($treffer[1])> 0)
+		foreach ($treffer[1] as $key=>$value) {
+			$anzahl = preg_match_all($suchmuster,$value,$myTreffer);
+			
+			//gefunden
+			if($anzahl > 0) {
+				
+				$result['template_acept'] [$key] = 1;
+				$result['file_name'] [$key] = $myTreffer[1][0];
+			}else  {
+				$result['template_acept'] [$key] = 0;
+				$result['file_name'] [$key] = "-";
+			}
+		}
+		
+		return $result;
+	}
+    
+
+
     }
     
 ?>

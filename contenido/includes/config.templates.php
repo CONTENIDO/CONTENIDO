@@ -165,6 +165,6 @@ $cfg['templates']['inuse_tpl']	= 'template.inuse_tpl.html';
 $cfg['templates']['inuse_lay_mod']	= 'template.inuse_lay_mod.html';
 
 $cfg['templates']['default_subnav']	= 'template.default_subnav.html';
-
+$cfg['templates'] ['config_layer'] = 'template_config_layer.html';
 
 ?>

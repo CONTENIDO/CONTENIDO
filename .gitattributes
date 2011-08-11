@@ -196,6 +196,7 @@ contenido/classes/class.lang.php -text
 contenido/classes/class.layout.php -text
 contenido/classes/class.layoutInFile.php -text
 contenido/classes/class.metaobject.php -text
+contenido/classes/class.modul.input.tolayer.php -text
 contenido/classes/class.navigation.php -text
 contenido/classes/class.newsletter.groups.php -text
 contenido/classes/class.newsletter.jobs.php -text
@@ -813,6 +814,7 @@ contenido/images/but_cancel.gif -text
 contenido/images/but_cancel_off.gif -text
 contenido/images/but_cat_conf.gif -text
 contenido/images/but_cat_conf2.gif -text
+contenido/images/but_config.png -text
 contenido/images/but_copy.gif -text
 contenido/images/but_delete.gif -text
 contenido/images/but_downloadlist.gif -text
@@ -1158,6 +1160,7 @@ contenido/includes/include.tpl_new.php -text
 contenido/includes/include.tpl_overview.php -text
 contenido/includes/include.tpl_visualedit.php -text
 contenido/includes/include.tplcfg_edit.php -text
+contenido/includes/include.tplcfg_edit_config.php -text
 contenido/includes/include.tplcfg_edit_form.php -text
 contenido/includes/include.upl_artlist.php -text
 contenido/includes/include.upl_dirs_overview.php -text
@@ -1352,6 +1355,7 @@ contenido/scripts/cmsImage.js -text
 contenido/scripts/cmsTeaser.js -text
 contenido/scripts/conFrameResize.js -text
 contenido/scripts/con_tiny.js -text
+contenido/scripts/configLayer.js -text
 contenido/scripts/contenidoConfig.js -text
 contenido/scripts/contextMenu.js -text
 contenido/scripts/expandCollapse.js -text
@@ -1555,6 +1559,7 @@ contenido/templates/standard/template.upl_files_overview.html -text
 contenido/templates/standard/template.upl_left_top.html -text
 contenido/templates/standard/template.welcome.html -text
 contenido/templates/standard/template.welcome_update.html -text
+contenido/templates/standard/template_config_layer.html -text
 contenido/templates/standard/white.html -text
 contenido/templates/standard/widgets/template.widgets.left_top.html -text
 contenido/tools/contenidocheck.php -text

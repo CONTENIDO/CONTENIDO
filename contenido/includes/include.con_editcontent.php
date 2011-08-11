@@ -27,6 +27,7 @@
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *   modified 2011-01-11, Rusmir Jusufovic, load output of moduls from file
  *   modified 2011-06-24, Rusmir Jusufovic, load layout code from file
+ *   modified 2011-08-10, Rusmir Jusufovic, load modul input(config) on edit site.
  *   $Id$:
  * }}
  * 
@@ -36,6 +37,10 @@ if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+//********************** save configuration 
+include_once 'include.tplcfg_edit_config.php';
+cInclude('classes', 'class.modul.input.tolayer.php');
+//********************** ende save configuration 
 
 $edit 		= "true";
 
@@ -177,7 +182,17 @@ $(document).ready( function(){
    $('div[contenteditable=true]').each( function(){
 	  $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
       $(this).bind( "click", function(){
+      	
+     
+      	var divHeight = $(this).height();
+      	//default height of tiny is 210 px
+      	
+      	if(divHeight > 210)
+          tinymceConfigs.height = 46+ $(this).height()+'px';
+         
          {USE_TINY}
+         
+         
       });
    });
 });
@@ -201,6 +216,8 @@ var sQuestion = '{QUESTION}'; //Translation of save confirmation
 </script>
 
 EOD;
+
+	      
 
         //Replace vars in Script
         $oScriptTpl = new Template();
@@ -229,7 +246,7 @@ EOD;
         
         $scripts = $oScriptTpl->generate($scripts, 1);
         
-        $contentform  = "<form name=\"editcontent\" method=\"post\" action=\"".$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&lang=$lang&action=20&client=$client")."\">\n";
+         $contentform  = "<form name=\"editcontent\" method=\"post\" action=\"".$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&lang=$lang&action=20&client=$client")."\">\n";
         $contentform .= "<input type=\"hidden\" name=\"changeview\" value=\"edit\">\n";
         $contentform .= "<input type=\"hidden\" name=\"data\" value=\"\">\n";
         $contentform .= "</form>";
@@ -491,7 +508,7 @@ EOD;
         if ($idlay) {
 				tplPreparseLayout($idlay);
                 $tmp_returnstring = tplBrowseLayoutForContainers($idlay);
-
+				
                 $a_container = explode("&", $tmp_returnstring);
 
                 foreach ($a_container as $key=>$value) {
@@ -509,8 +526,8 @@ EOD;
 						$thisContainer = '<?php $cCurrentContainer = '.((int)$value).'; ?>';
 					}
 
-                    $output = $thisModule . $thisContainer ;
-                    $output = AddSlashes($output);
+					$output = $thisModule . $thisContainer ;
+					$output = AddSlashes($output);
 					
 					$contenidoModuleHandler = new Contenido_Module_Handler($db->f("idmod"));
                     #Get the contents of output from file
@@ -520,6 +537,43 @@ EOD;
                 		$jsData .= $contenidoModuleHandler->getFilesContent("js","js");
                         $output = $thisModule . $thisContainer .$contenidoModuleHandler->readOutput();
                         $output = AddSlashes($output);
+                        
+                       	$conatinerNumber = ((int)$value);
+                       
+                        //experiment 
+                        $modulInput = $contenidoModuleHandler->readInput();
+                        $modulInputToLayer = new ModulInputToLayer($modulInput,$cfg,$conatinerNumber);
+                        
+                        if( $modulInput != false || $modulInput != "") {
+                        	
+                        	$configLayer = 'config_layer_'.$conatinerNumber.'_'.$db->f("idmod");
+                        	$configImage =  'config_'.$conatinerNumber.'_'.$db->f("idmod");
+                        
+		
+                        	$configData = array(
+                        	'idConfigLayer' => $configLayer,
+                        	'modulName' =>$db->f('name'),
+                        	'idConfigImage' => $configImage ,
+                        	'idTpl' => $idtpl,
+                        	'idTplCfg' => $idtplcfg,
+                        	'idMod' => $db->f("idmod"),
+                        	'identifier' =>rand(0, 23423423424),
+                        	'pathAndJsFile' => $cfg['path']['contenido_fullhtml'].'scripts/configLayer.js',
+                        	'path' => $cfg['path']['contenido_fullhtml'],
+                        	'session' => $sess->id ,
+                        	'idArtLang' =>$idartlang,
+                        	'idCat' => $idcat,
+                        	'idArt' => $idart,
+                        	'lang' => $lang,
+                        	'client' => $client,
+                        	
+                        	);
+                        	
+                        	$output.= $modulInputToLayer->addLayerConfig($configData);	
+                        	
+                        }
+                        
+                    
                     }
                     $template = $db->f("template");
 
@@ -553,7 +607,11 @@ EOD;
 
                     $output = str_replace("CMS_VALUE", $CiCMS_Var, $output);
                     $output = str_replace("\$".$CiCMS_Var, $CiCMS_Var, $output);
-
+					
+                    //
+                    //remove code and add it on the right place
+                    $output = $modulInputToLayer->removeMarker($output);
+                    
                     $output = preg_replace('/(CMS_VALUE\[)([0-9]*)(\])/i', '', $output);
 
                     /* Long syntax with closing tag */
@@ -663,6 +721,8 @@ EOD;
 
     }
 }
+
+
 page_close();
 
 ?>
