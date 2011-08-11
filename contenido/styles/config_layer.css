@@ -1,0 +1,157 @@
+.config_layer {
+	margin-right: 2px; 
+	margin-top: 2px;
+    position: absolute;
+    z-index: 10000;
+}
+
+.config_layer {
+	font-size: 12px;
+    padding: 3px;
+	position:absolute; 
+	/*width:322px; */
+	/*height:320px; */
+	background-color:#F1F1F1; 
+	border:1px solid #B3B3B3; 
+	display:none;
+	top: 40px;
+	left: 40px;
+    margin: 0;
+    z-index: 20000;
+ 
+}
+
+.config_layer .close ,.config_layer #layer_close{
+	margin:0; 
+	float:right;
+	height:16px;
+	width:16px;
+	cursor: pointer;
+}
+.config_layer .save_config {
+cursor: pointer;
+
+}
+
+.config_layer .toolbar {
+	float:right;
+}
+/*
+.config_layer  * {
+    margin: 0;
+    padding: 0;
+    line-height: 100%;
+}
+
+
+
+.config_layer .head {
+	font-weight:bold; 
+	margin:0; 
+	padding: 0;
+	margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.config_layer .head_sub {
+	clear:both;
+	font-style:italic; 
+	margin:0; 
+	margin-bottom: 3px;
+	padding-top: 7px;
+}
+
+.config_layer .head_sep {
+	width: 322px;
+	margin-top: 7px; 
+	clear:both;
+}
+
+.config_layer .manual {
+	width:320px; 
+}
+
+.config_layer label {
+	display:block; 
+	float:left; 
+	width:120px; 
+	margin-bottom:3px;
+}
+
+.config_layer input, .config_layer select {
+	display:block; 
+	float:left; 
+	
+	margin-bottom:3px;
+}
+
+.config_layer input {
+  
+}
+
+.config_layer select {
+	width:200px; 
+}
+
+.config_layer .no_width {
+	width: 20px; 
+}
+
+.config_layer .toolbar {
+	float:right; 
+	text-align: right;
+	width:65px; 
+	font-style:italic; 
+	margin:0; 
+	margin-bottom: 3px;  
+	margin-top: 7px; 
+	clear:both;
+}
+
+.config_layer .toolbar #advanced_settings, .config_layer .toolbar #general_settings {
+	margin-left:80px;
+}
+
+.config_layer .italic {
+	font-style:italic;
+}
+
+.config_layer .menu {
+	margin-top:10px; 
+    margin-bottom: 5px;
+	list-style:inside;
+	list-style-type:none;
+	margin-right: -6px;
+	clear:both;
+}
+
+.config_layer .menu li {
+	margin:0 !important; 
+	padding:0 !important; 
+	float: left;
+	width: 106px;
+	margin-right: 6px;
+	height: 20px;
+	line-height:20px;
+	text-align:center;
+	border-bottom: 1px solid #B3B3B3;
+	border-right: 1px solid #B3B3B3; 
+	vertical-align: bottom;
+    background: transparent !important;
+}
+
+.config_layer .menu .general {
+	font-weight: bold;
+}
+
+.config_layer #general, .config_layer #advanced, .config_layer #manual {
+	display:none;
+}
+
+.config_layer #tabs {
+	height: 256px;
+}*/
+
+.config_layer #general {
+	display: block;
+}
