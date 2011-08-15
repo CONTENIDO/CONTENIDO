@@ -172,6 +172,7 @@ contenido/classes/class.cms_date.php -text
 contenido/classes/class.cms_dynamic.php -text
 contenido/classes/class.cms_filelist.php -text
 contenido/classes/class.cms_image.php -text
+contenido/classes/class.cms_linkeditor.php -text
 contenido/classes/class.cms_teaser.php -text
 contenido/classes/class.communications.php -text
 contenido/classes/class.conuser.php -text
@@ -1349,6 +1350,7 @@ contenido/scripts/cmsDate.js -text
 contenido/scripts/cmsDynamic.js -text
 contenido/scripts/cmsFileList.js -text
 contenido/scripts/cmsImage.js -text
+contenido/scripts/cmsLinkEditor.js -text
 contenido/scripts/cmsTeaser.js -text
 contenido/scripts/conFrameResize.js -text
 contenido/scripts/con_tiny.js -text
@@ -1438,6 +1440,7 @@ contenido/scripts/wz_tooltip.js -text
 contenido/styles/cms_dynamic.css -text
 contenido/styles/cms_filelist.css -text
 contenido/styles/cms_image.css -text
+contenido/styles/cms_linkeditor.css -text
 contenido/styles/cms_teaser.css -text
 contenido/styles/contenido.css -text
 contenido/styles/index.php -text
@@ -1471,6 +1474,7 @@ contenido/templates/standard/template.cms_filelist_dirlistitem.html -text
 contenido/templates/standard/template.cms_filelist_edit.html -text
 contenido/templates/standard/template.cms_filelist_metadata_limititem.html -text
 contenido/templates/standard/template.cms_image_edit.html -text
+contenido/templates/standard/template.cms_linkeditor_edit.html -text
 contenido/templates/standard/template.cms_teaser_edit.html -text
 contenido/templates/standard/template.con_art_overview.html -text
 contenido/templates/standard/template.con_edit_form.html -text

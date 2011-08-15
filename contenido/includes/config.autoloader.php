@@ -63,6 +63,7 @@ return array(
     'Cms_Dynamic' => 'contenido/classes/class.cms_dynamic.php',
     'Cms_FileList' => 'contenido/classes/class.cms_filelist.php',
     'Cms_Image' => 'contenido/classes/class.cms_image.php',
+    'Cms_LinkEditor' => 'contenido/classes/class.cms_linkeditor.php',
     'Cms_Teaser' => 'contenido/classes/class.cms_teaser.php',
     'CommunicationCollection' => 'contenido/classes/class.communications.php',
     'CommunicationItem' => 'contenido/classes/class.communications.php',

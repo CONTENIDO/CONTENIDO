@@ -1,0 +1,154 @@
+.clearfix{
+	display:block;
+}
+.clearfix:after{
+	content:".";
+	display:block;
+	clear: both;
+	height:0px;
+	visibility:hidden;
+	line-height: 0;
+
+}
+/* Button */
+.cms_linkeditor_img {
+	margin-right: 2px; 
+	margin-top: 2px;
+    position: absolute;
+    z-index: 999;
+}
+/* Editor Fenster */
+.cms_linkeditor  * {
+    margin: 0;
+    padding: 0;
+    line-height: 100%;
+}
+
+.cms_linkeditor {
+	padding: 3px;
+	position:absolute; 
+	width: 432px;	
+	height:auto;
+	background-color:#F1F1F1; 
+	border:1px solid #B3B3B3; 
+	display:none;
+	top: 40px;
+	left: 40px;	
+	z-index: 1000;
+    margin: 0;
+	font-size:12px;
+}
+/* Editor close Button */
+.cms_linkeditor .close {
+	margin:0; 
+	float:right;
+}
+
+.cms_linkeditor .toolbar {
+    position: relative;
+	top:3px;
+    right: 0px;	
+	text-align: right;
+	width:100%; 
+	font-style:italic; 
+	margin:0; 	
+	clear:both;
+	height: 20px;
+}
+/* Editor header */
+.cms_linkeditor .head {
+    font-weight:bold; 
+	margin:0; 
+	padding: 0;
+	margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+/* Settings */
+.cms_linkeditor .menu {
+    clear: both;
+    font-size: 11px;
+    list-style: none inside none;
+    margin-bottom: 5px;
+    margin-right: -6px;
+    margin-top: 10px;
+    width: 430px;
+}
+
+.cms_linkeditor .menu li {
+    background: none repeat scroll 0 0 transparent !important;
+    border-bottom: 1px solid #B3B3B3;
+    border-right: 1px solid #B3B3B3;
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    margin: 0 !important;
+    padding: 0 10px !important;
+    text-align: center;
+    vertical-align: bottom;
+    /*width: 150px;*/
+}
+.cms_linkeditor .menu .extern {
+    font-weight: bold;
+}
+.cms_linkeditor .linkeditor_tabs {
+    height: auto;
+    width: 430px;
+}
+.cms_linkeditor .cms_linkeditor_extern,
+.cms_linkeditor .cms_linkeditor_intern{
+    padding-top: 5px;
+    width: 430px;
+}
+.cms_linkeditor .cms_linkeditor_extern label,
+.cms_linkeditor .cms_linkeditor_intern label {
+    display: block;
+    float: left;
+    margin: 10px 0 3px 10px;
+    width: 100px;
+}
+.cms_linkeditor .cms_linkeditor_extern input,
+.cms_linkeditor .cms_linkeditor_intern input{
+    border: 1px solid #CCCCCC;
+    display: block;
+    float: left;
+    font-size: 11px;
+    margin: 10px 0 3px 10px;
+    width: 275px;
+}
+/*.cms_linkeditor .cms_linkeditor_attr input[name="Href"]{
+    width: 15px;
+}*/
+.cms_linkeditor .cms_linkeditor_extern input[name="externlink"]{
+    width: 95%;
+}
+.cms_linkeditor_intern .directoryList,
+.cms_linkeditor_intern .directoryFile,
+.cms_linkeditor_directories .directoryList,
+.cms_linkeditor_directories .directoryFile {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    display: block;
+    float: left;
+    height: 210px;
+    overflow: auto;
+    width: 210px;
+	margin-top:10px;
+}
+.cms_linkeditor_intern .directoryList,
+.cms_linkeditor_directories .directoryList{
+    margin-right: 5px;
+}
+.cms_linkeditor .cms_linkeditor_intern,
+.cms_linkeditor .cms_linkeditor_upload{
+	display:none;
+}
+
+.cms_linkeditor select.text_medium{
+    border: 0 none;
+    color: #000000;
+    font-family: Verdana,Arial,Helvetica,Sans-Serif;
+    font-size: 11px;
+    height: 210px;
+    width: 210px;
+}

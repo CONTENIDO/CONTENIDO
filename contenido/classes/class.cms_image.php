@@ -289,7 +289,7 @@ class Cms_Image {
 		foreach ( $aDirs as $aDirData ) {
 			$sRelativePath = str_replace( $this->sUploadPath, '', $aDirData['path'] ) . $aDirData['name'];
 			$sLiClasses = '';		
-			if ($sRelativePath."/"==$this->dirname) {
+			if ($sRelativePath."/" == $this->dirname) {
 				$this->activeFilename = $sRelativePath; 
 				$oTpl->set('d', 'DIVCLASS', ' class="active"');
 			} else {
@@ -298,10 +298,10 @@ class Cms_Image {
 			$oTpl->set('d', 'TITLE', $sRelativePath);
 			$oTpl->set('d', 'DIRNAME', $aDirData['name']);
 			
-			$bGo = false;
+			$bGo = false; 
             if (isset($this->dirname)) {
 				$this->image_directories = explode('/', $this->dirname);
-				if ( $sRelativePath==dirname($this->dirname) ) {
+				if ( $this->fileIsOrNotInPath($sRelativePath)) {
 					$bGo = true;
 				}
             }
@@ -330,7 +330,17 @@ class Cms_Image {
 
 		return $oTpl->generate($this->aCfg['path']['contenido'] . 'templates/standard/template.cms_filelist_dirlistitem.html', 1);
 	}
-	
+	private function fileIsOrNotInPath($activeFile){
+		$aLevelPath = explode('/',$this->dirname);
+		$error = false;
+		foreach ($aLevelPath as $levelPath){
+			$sLevelPath .= '/'. $levelPath;
+			if($sLevelPath == '/'.$activeFile){
+				$error = true;
+			} 
+		}
+		return $error;	
+	}
 	 /**
 	  * Builds a directory list by a given upload directory path.
 	  *

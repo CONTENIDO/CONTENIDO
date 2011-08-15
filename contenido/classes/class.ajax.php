@@ -273,6 +273,37 @@ class Ajax {
 				$sString 		= $oImage->uplupload($sPath);
 				break;	
 				
+			case 'linkeditorfilelist':
+				global $cfg, $client, $lang, $cfgClient;
+				cInclude("classes", "class.cms_linkeditor.php");
+
+				$iId   			= (int) $_REQUEST['id'];
+				$iIdArtLang 	= (int) $_REQUEST['idartlang'];
+				$iIdCat			= (string) $_REQUEST['idcat'];
+				
+				$oArt 			= new Article(null, null, null, $iIdArtLang);
+				$sArtReturn 	= $oArt->getContent('CMS_LINKEDITOR', $iId);
+				$oLinkEditor	= new Cms_LinkEditor($sArtReturn, $iId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+				
+				$sString 		= $oLinkEditor->getFileSelect($iIdCat, $iId);
+				break;	
+				
+			case 'linkeditordirlist':
+				global $cfg, $client, $lang, $cfgClient;
+				cInclude("classes", "class.cms_linkeditor.php");
+
+				$iId   			= (int) $_REQUEST['id'];
+				$iIdArtLang 	= (int) $_REQUEST['idartlang'];
+				$iIdCat			= (string) $_REQUEST['idcat'];
+				$iLevelId		= (string) $_REQUEST['level'];
+				$iParentidcat	= (string) $_REQUEST['parentidcat'];
+				
+				$oArt 			= new Article(null, null, null, $iIdArtLang);
+				$sArtReturn 	= $oArt->getContent('CMS_LINKEDITOR', $iId);
+				$oLinkEditor 	= new Cms_LinkEditor($sArtReturn, $iId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
+				
+				$sString 		= $oLinkEditor->getDirectoryList( $oLinkEditor->buildDirectoryList( $iLevelId, $iParentidcat ) );
+				break;	
 			//if action is unknown generate error message
 			default:
 				$sString = "Unknown Ajax Action";

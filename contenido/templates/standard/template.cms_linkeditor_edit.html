@@ -1,0 +1,115 @@
+<br/>
+<img id="cms_linkeditor_{ID}" class="cms_linkeditor_img" src="{CON_PATH}images/but_editlink.gif" />
+<br/><br/>
+<div style="display:none" id="cms_linkeditor_{ID}_settings" class="cms_linkeditor">
+    <div class="close" id="linkeditor_{ID}_close">
+        <img src="{CON_PATH}images/but_cancel.gif"/>
+    </div>
+    <p class="head">
+        {LABEL_LINKEDITOR_SETTINGS}
+    </p>
+    <div class="clearfix">
+    	<ul class="menu">
+			<li class="extern" {style_extern_tab}> {TEXTLINKEX} </li>
+			<li class="intern" {style_intern_tab}> {TEXTLINKIN} </li>
+			<li class="upload" {style_upload_tab}> {TEXTLINK2FILE} </li>
+		</ul>
+	</div>
+	<div id="cms_linkeditor_{ID}_tabs" class="linkeditor_tabs">
+		<div class="cms_linkeditor_extern" id="cms_linkeditor_{ID}_extern" {style_extern}>
+            <!--input type="radio" id="Href_extern_{ID}" name="Href" value="extern" checked="checked"></input>
+			<label for="Href_extern_{ID}"> {EXTERN} </label>
+            <input type="radio" id="Href_intern_{ID}" name="Href" value="intern" style="margin-left:10px;"></input>
+			<label for="Href_intern_{ID}"> {INTERN} </label-->
+			<input type="text" id="externlink_{ID}" name="externlink" value="{extern_value}"/>
+			<div class="clearfix">&nbsp;</div>
+		</div>
+		<div class="cms_linkeditor_intern clearfix" id="cms_linkeditor_{ID}_intern" {style_intern}>
+			<div id="directoryList_{ID}" class="directoryList">
+			    <ul id="con_str_tree" class="con_str_tree" dir="ltr">
+			        <li id="root" class="last">
+			            <div><em><a href="#"></a></em><a class="on" title="0" href="#">Root</a></div>
+			            {DIRECTORY_LIST}
+			        </li>
+			    </ul>
+			</div>
+			<div id="directoryFile_{ID}" class="directoryFile">
+			    <ul id="con_datei_tree" class="con_datei_tree" dir="ltr">
+			        <li id="root" class="last">
+			            {DIRECTORY_FILE}
+			        </li>
+			    </ul>
+			</div>
+        </div> 
+		<div class="cms_linkeditor_upload" id="cms_linkeditor_{ID}_upload" {style_upload}>
+			<br>
+            <form name="newdir" class="clearfix" action="{CON_PATH}main.php" method="POST">
+				<div><b>{INDEX}</b>: <span id="caption1"></span></div>
+                <div>
+					<input type="hidden" value="upl" name="area">
+					<input type="hidden" value="upl_mkdir" name="action">
+					<input type="hidden" value="2" name="frame">
+					<input type="hidden" value="" name="appendparameters">
+					<input type="hidden" value="{CONTENIDO}" name="contenido">
+                    <input type="hidden" value="" name="path">
+					<input type="text" name="foldername" style="vertical-align:middle; width:170px;" class="text_small">
+					<span style="margin-left: 5px">
+						<input type="image" src="{CON_PATH}images/submit.gif"></input>
+					</span>
+                </div>
+            </form>
+			<br><span id="showInfo"></span>
+            <form name="properties" id="properties{ID}" class="clearfix" action="{CON_PATH}main.php" method="post" style="margin:0px" enctype="multipart/form-data">
+                <input type="hidden" value="4" name="frame">
+				<input type="hidden" value="upl" name="area">
+				<input type="hidden" value="" name="path">
+				<input type="hidden" value="" name="file">
+				<input type="hidden" value="upl_upload" name="action">
+				<input type="hidden" value="" name="appendparameters">
+				<input type="hidden" value="{CONTENIDO}" name="contenido">
+                <div><b>{PFAD}</b>: <span id="caption2"></span></div>
+				<input type="file" size="40" class="text_medium" name="file[]" id="cms_linkeditor_m{ID}"></input>
+            </form>
+			<img src="{CON_PATH}images/ajax-loader.gif" class="loading" style="display:none;"></img>
+	        <div id="cms_linkeditor_{ID}_directories" class="cms_linkeditor_directories clearfix">
+	            <div id="directoryList_{ID}" class="directoryList">
+	                <ul id="con_str_tree" class="con_str_tree" dir="ltr">
+	                    <li id="root" class="last">
+	                        <div><em><a href="#"></a></em><a class="on" title="upload" href="#">Uploads</a></div>
+	                        {UPLOAD_DIRECTORY_LIST}
+	                    </li>
+	                </ul>
+	            </div>
+	            <div id="directoryFile_{ID}" class="directoryFile">
+	                <ul id="con_datei_tree" class="con_datei_tree" dir="ltr">
+	                    <li id="root" class="last">
+	                        {UPLOAD_DIRECTORY_FILE}
+	                    </li>
+	                </ul>
+	            </div>
+	        </div>
+		</div>    
+		<!--div style="padding: 10px 0 3px 10px;">
+			<label for="checkboxlinktarget_{ID}"> {TARGET} </label>
+			<input type="checkbox" value="1" id="checkboxlinktarget_{ID}" name="checkboxlinktarget" {checked}>
+		</div-->    
+    </div>
+    <div class="toolbar">
+        <img class="save_settings" src="{CON_PATH}images/but_ok.gif"/>
+		<img class="filelist_cancel" src="{CON_PATH}images/but_cancel.gif"/>
+    </div>
+</div>
+<script type="text/javascript">
+    	<!--
+		var sPath = '{CON_PATH}';
+    	createLinkEditorPath = Array();
+    	$(document).ready(function(){
+			$.getScript(sPath+'scripts/cmsLinkEditor.js', function() {
+				addLinkEditorEvents('#cms_linkeditor_{ID}_settings', '#cms_linkeditor_{ID}', {ID});
+			});
+    		
+    	});
+		
+		
+    	-->
+</script>

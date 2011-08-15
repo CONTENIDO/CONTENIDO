@@ -428,7 +428,7 @@ function imageFileUpload(sImageFrameId, iImageId){
 			$.ajax({
 				type: "POST",
 				url: sPath+"ajaxmain.php",
-				data: "ajax=imagelist&dir=" + dirname + "&id=" + iImageId + "&idartlang=" + iIdArtLang + "&contenido="+sSession,
+				data: "ajax=imagelist&dir=" + createPath[iImageId] + "&id=" + iImageId + "&idartlang=" + iIdArtLang + "&contenido="+sSession,
 				success: function(msg){
 					$('img.loading').css('display','none');
 					$(sImageFrameId+' #image_'+iImageId+'_directories #directoryFile_'+iImageId).html(msg);
@@ -442,7 +442,7 @@ function imageFileUpload(sImageFrameId, iImageId){
 function basename(path) {
 	return path.replace(/\\/g,'/').replace( /.*\//, '' );
 }
-function dirname(path) {alert(1);
+function dirname(path) {
 	return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');;
 }
 
