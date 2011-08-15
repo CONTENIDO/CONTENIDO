@@ -45,7 +45,7 @@ function addImageEvents(sImageFrameId, sImageId, sPath, sSession, iImageIdArtLan
 	addImageFrameCloseEvents(sImageFrameId);//close dialog
 	addImageNaviActions(sImageFrameId, iImageId);//select tree action
 	if(sContent!=''){
-		$('#directoryShow_'+iImageId).html('<div><img src="'+sContent+'"/></div>');
+		//$('#directoryShow_'+iImageId).html('<div><img src="'+sContent+'"/></div>');
 	} 
 	addSelectAction(sImageFrameId, iImageId);
 	showImageFolderPath(sImageFrameId, iImageId);

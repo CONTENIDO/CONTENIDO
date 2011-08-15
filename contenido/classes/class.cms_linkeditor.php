@@ -566,6 +566,7 @@ class Cms_LinkEditor {
 		$i = 1;
 		//if ($sDirectoryPath != "" && $sDirectoryPath!='upload') {
 			$sUploadPath = $this->aCfgClient[$this->iClient]['upl']['path'];
+			if(is_dir($sUploadPath.$sDirectoryPath)){
 			$oHandle = opendir($sUploadPath.$sDirectoryPath);
 			while($sEntry = readdir($oHandle)) {
 				if ( $sEntry != "." && $sEntry != ".." && file_exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) && !is_dir( $sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
@@ -575,6 +576,7 @@ class Cms_LinkEditor {
 				}
 			}		
 			closedir($oHandle);
+			}
 		//}
 		
 		if ( $i == 0 ) {
