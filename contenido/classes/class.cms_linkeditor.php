@@ -267,6 +267,8 @@ class Cms_LinkEditor {
 		/*Set some values into javascript for a better handling*/
 		$oTpl->set('s', 'CON_PATH', 							$this->aCfg['path']['contenido_fullhtml']);
 		$oTpl->set('s', 'ID', 									$this->iId);
+		$oTpl->set('s', 'IDARTLANG',							$this->iIdArtLang);
+		$oTpl->set('s', 'CONTENIDO', 							$_REQUEST['contenido']);
 		
 		/*Start set a lot of translations*/
 		$oTpl->set('s', 'LABEL_LINKEDITOR_SETTINGS', 			i18n("Link settings"));

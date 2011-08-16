@@ -37,7 +37,7 @@
  * @param array  aLinkData
  * @param string sContent
  */
-function addLinkEditorEvents(sFrameId, sButtonId, iId) {
+function addLinkEditorEvents(sFrameId, sButtonId, iId ,iIdArtLang) {
 	loadLinkEditorExternalScripts(sFrameId, iId);//load css und js Datei
 	addTabbingEvents(sFrameId, iId);//action for Tabs
 	addLinkEditorFrameShowEvent(sFrameId, sButtonId);//show dialog
@@ -59,7 +59,7 @@ function addLinkEditorEvents(sFrameId, sButtonId, iId) {
 function loadLinkEditorExternalScripts(sFrameId, iId) {	
 	//include_once jascript und css datei
 	initIncludedFiles();
-	include_once(sPath+'scripts/jquery/jquery-ui.js', 'js');
+	include_once(sPath+'scripts/jquery/ajaxupload.js', 'js');	
 	include_once(sPath+'styles/cms_linkeditor.css', 'css');	
 	//frame movebar
 	$.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
@@ -348,7 +348,7 @@ function showFolderPath(sFrameId, iId){
 		$(sFrameId+' #cms_linkeditor_'+iId+'_upload #cms_linkeditor_'+iId+'_directories li#root>div').addClass('active');
 	}
 	var sDirname = $(sFrameId+' #cms_linkeditor_'+iId+'_upload div[class="active"] a[class="on"]').attr('title');
-	divContainer[iId] = $(sFrameId+' #cms_linkeditor_'+iId+'_upload div[class="active"] em a').parent().parent();
+	//divContainer[iId] = $(sFrameId+' #cms_linkeditor_'+iId+'_upload div[class="active"] em a').parent().parent();
 	createLinkEditorPath[iId] = sDirname;
 	if(createLinkEditorPath[iId] != '' && createLinkEditorPath[iId] != 'upload'){sDirname = createLinkEditorPath[iId]+'/';} else {sDirname = '';}
 	

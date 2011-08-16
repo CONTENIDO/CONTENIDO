@@ -102,10 +102,13 @@
 <script type="text/javascript">
     	<!--
 		var sPath = '{CON_PATH}';
+		var iIdArtLang = '{IDARTLANG}';
+    	var sSession = '{CONTENIDO}';
     	createLinkEditorPath = Array();
+		
     	$(document).ready(function(){
 			$.getScript(sPath+'scripts/cmsLinkEditor.js', function() {
-				addLinkEditorEvents('#cms_linkeditor_{ID}_settings', '#cms_linkeditor_{ID}', {ID});
+				addLinkEditorEvents('#cms_linkeditor_{ID}_settings', '#cms_linkeditor_{ID}', {ID}, {IDARTLANG});
 			});
     		
     	});
