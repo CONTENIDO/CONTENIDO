@@ -272,7 +272,7 @@ function showImageFolderPath(sImageFrameId, iImageId){
 	$(sImageFrameId+' #caption2').text(dirname);
 	$(sImageFrameId+' form[name="newdir"] input[name="path"]').val(dirname);		
 	$(sImageFrameId+' form[name="properties"] input[name="path"]').val(dirname);
-	setTimeout("imageFileUpload(\'"+sImageFrameId+"\', \'"+iImageId+"\')",500);
+	setTimeout("imageFileUpload(\'"+sImageFrameId+"\', \'"+iImageId+"\')",1000);
 }
 
 /**

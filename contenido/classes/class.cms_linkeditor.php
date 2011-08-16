@@ -473,10 +473,11 @@ class Cms_LinkEditor {
 	public function getFileSelect($iIdCat = "", $iLinkeditorId = "") {
 		$oHtmlSelect = new cHTMLSelectElement ('linkeditor_filename', "", 'linkeditor_filename_'.$iLinkeditorId);
 		$oHtmlSelect->setSize(16);
-		
+		//print_r($this->aLink);
+		//print_r($_REQUEST);
 		$oHtmlSelectOption = new cHTMLOptionElement('Kein', '', false);
 		$oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
-		if($this->aLink['link_type'] == 'intern'){
+		if($this->aLink['link_type'] == 'intern' && $iIdCat == $this->aLink['link_src']){//exist really a value, search for reload
 			$sqlDb = new DB_Contenido;
 			$sql = "SELECT distinct
 	                    e.*
@@ -507,7 +508,7 @@ class Cms_LinkEditor {
 	        }
 			//set default value
 			$oHtmlSelect->setDefault($this->aLink['link_src']);							
-		} else if($iIdCat != 0){
+		} else if($iIdCat != 0){// first, if not value saved, search from js			
 			$sqlDb = new DB_Contenido;
 			$sql = "SELECT distinct
 	                    e.*

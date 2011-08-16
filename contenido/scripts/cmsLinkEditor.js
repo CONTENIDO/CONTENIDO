@@ -356,7 +356,7 @@ function showFolderPath(sFrameId, iId){
 	$(sFrameId+' #caption2').text(sDirname);
 	$(sFrameId+' form[name="newdir"] input[name="path"]').val(sDirname);		
 	$(sFrameId+' form[name="properties"] input[name="path"]').val(sDirname);
-	setTimeout("linkEditorFileUpload(\'"+sFrameId+"\', \'"+iId+"\')",500);
+	setTimeout("linkEditorFileUpload(\'"+sFrameId+"\', \'"+iId+"\')",1000);
 }
 /**
  * Function creates a upload directory, either in filesystem or in dbfs.
