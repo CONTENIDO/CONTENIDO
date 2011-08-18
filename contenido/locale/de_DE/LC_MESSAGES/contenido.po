@@ -24,8 +24,11 @@ msgid "The sysadmin and/or the admin account still contains a well-known default
 msgstr "Der Sysadmin und/oder Admin Account ist noch auf das Standardpasswort gesetzt. Bitte &auml;ndern Sie gleich nach dem Login diese Passw&ouml;rter."
 
 #: main.loginform.php:92
-msgid "Contenido is in maintenance mode. Only sysadmins are allowed to login. Please try again later."
-msgstr "Contenido befindet sich im Wartungsmodus. Nur Systemadministratoren k&ouml;nnen sich einloggen. Bitte versuchen Sie es zu einem sp&auml;teren Zeitpunkt erneut."
+msgid "Contenido is in maintenance mode. Only sysadmins are allowed to login." 
+msgstr "Contenido befindet sich im Wartungsmodus. Nur Systemadministratoren k&ouml;nnen sich einloggen."
+
+msgid "Please try again later."
+msgstr "Bitte versuchen Sie es zu einem sp&auml;teren Zeitpunkt erneut."
 
 #: main.loginform.php:192
 #: includes/include.lang_edit.php:249

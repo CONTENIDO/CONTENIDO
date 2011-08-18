@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.4
+ * @version    1.0.5
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -26,6 +26,7 @@
  *   modified 2009-12-14, Dominik Ziegler, use User::getRealname() for user name output and provide username fallback
  *   modified 2010-05-20, Oliver Lohkemper, add param true for get active admins
  *   modified 2011-01-28, Dominik Ziegler, added missing notice in backend home when no clients are available [#CON-379]
+ *   modified 2011-08-18, Dominik Ziegler, added notification if maintenance mode is active [#CON-403]
  *
  *   $Id$:
  * }}
@@ -65,12 +66,19 @@ if ($lastlogin == "") {
 }
 
 // notification for requested password
+$sNotificationText = '';
 if($vuser->getField('using_pw_request') == 1) {
-    $sPwNoti = $notification->returnNotification("warning", i18n("You're logged in with a temporary password. Please change your password."));
-} else {
-    $sPwNoti = '';
+    $sNotificationText = $notification->returnNotification("warning", i18n("You're logged in with a temporary password. Please change your password."));
+	$sNotificationText .= '<br />';
 }
-$tpl->set('s', 'NOTIFICATION', $sPwNoti);
+
+// check for active maintenance mode
+if (getSystemProperty('maintenance', 'mode') == 'enabled') {
+	$sNotificationText .= $notification->returnNotification("warning", i18n("Contenido is in maintenance mode. Only sysadmins are allowed to login."));
+	$sNotificationText .= '<br />';
+}
+	
+$tpl->set('s', 'NOTIFICATION', $sNotificationText);
 
 $userid = $auth->auth["uid"];
 
@@ -241,20 +249,10 @@ foreach ($aMemberList as $key) {
 $tpl->set('s', 'USER_ONLINE', $sOutput);
 $tpl->set('s', 'Anzahl', $iNumberOfUsers);
 
-// rss feed
-if($perm->isSysadmin($vuser) && $cfg["backend"]["newsfeed"] == true){
-	$newsfeed = 'some news';
-	$tpl->set('s', 'CONTENIDO_NEWS', $newsfeed);
-}
-else{
-	$tpl->set('s', 'CONTENIDO_NEWS', '');
-}
-
 // check for new updates
 $oUpdateNotifier = new Contenido_UpdateNotifier($cfg, $vuser, $perm, $sess, $belang);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 $tpl->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 
 $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["welcome"]);
-
 ?>
