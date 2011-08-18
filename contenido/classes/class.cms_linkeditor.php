@@ -721,9 +721,16 @@ class Cms_LinkEditor {
 		} else {
 			$sCode = "";
 		}
-		$aCode = explode('; ', urldecode($sCode));
+		$aCode = explode('; ', urldecode($sCode));		
+		
+		if($aCode[0] == 'extern' && $aCode[1] != ''){			
+	        $aCode[1] = $aCode[1];
+		}
 		if($aCode[0] == 'intern' && $aCode[1] != ''){
 	        $aCode[1] = $this->aCfgClient[$this->iClient]['path']['htmlpath'].'front_content.php?idart='.$aCode[1];
+		}
+		if($aCode[0] == 'upload' && $aCode[1] != ''){
+	        $aCode[1] = $this->aCfgClient[$this->iClient]['upl']['htmlpath'].$aCode[1];
 		}
 		return $aCode[1];
 	}
