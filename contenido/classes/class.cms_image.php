@@ -448,7 +448,7 @@ class Cms_Image {
 			$oTpl->set('s', 'DIRECTORY_FILE', 						$this->getFileSelect($this->activeFilename, $this->iId));
 			$oTpl->set('s', 'DIRECTORY_SRC', 						$sString);
 			$oTpl->set('s', 'IMAGE_TITLE', 							$this->oDb->f('medianame'));	
-			$oTpl->set('s', 'IMAGE_DESC', 							$this->oDb->f('description'));
+			$oTpl->set('s', 'IMAGE_DESC',							$this->oDb->f('description'));
 			$oTpl->set('s', 'IMAGE_KEYWORDS', 						$this->oDb->f('keywords'));
 			$oTpl->set('s', 'IMAGE_INTERNAL_NOTICE', 				$this->oDb->f('internal_notice'));
 			$oTpl->set('s', 'IMAGE_COPYRIGHT', 						$this->oDb->f('copyright'));			
