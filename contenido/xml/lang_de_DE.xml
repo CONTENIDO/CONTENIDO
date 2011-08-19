@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- Contenido XML language file -->
+<!-- CONTENIDO XML language file -->
 <language>
     <navigation>
         <content>
@@ -38,11 +38,11 @@
             	<translation>Übersetzung</translation>
             	<package>Package</package>
             	<template>Template</template>
-            	<style>Css</style>
+            	<style>CSS</style>
             	<script>Script</script>
             </modules>
             <templates>
-                <main>Templates</main>
+                <main>Vorlagen</main>
                 <edit>Editieren</edit>
                 <conf>Vorkonfiguration</conf>
                 <visual>Visuelles Editieren</visual>
@@ -76,7 +76,7 @@
                 <layout>Layout</layout>
                 <content>Content</content>
                 <module>Module</module>
-                <template>Template</template>
+                <template>Vorlage</template>
                 <structure>Kategorie</structure>
             </users>
             <groups>
@@ -87,7 +87,7 @@
                 <layout>Layout</layout>
                 <content>Content</content>
                 <module>Module</module>
-                <template>Template</template>
+                <template>Vorlage</template>
                 <structure>Kategorie</structure>
             </groups>
             <languages>Sprachen</languages>
@@ -113,7 +113,7 @@
             </frontend>
         </administration>
         <mycontenido>
-            <main>MyContenido</main>
+            <main>My CONTENIDO</main>
             <overview>Übersicht</overview>
             <recentarticles>Zuletzt bearbeitete Artikel</recentarticles>
             <todolist>Wiedervorlage</todolist>

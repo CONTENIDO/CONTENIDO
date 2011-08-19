@@ -160,7 +160,7 @@ msgstr "Kein Mandant ausgew&auml;hlt"
 #: templates/standard/template.mycontenido_lastarticles.html:66
 #: templates/standard/template.str_overview.html:230
 msgid "Template"
-msgstr "Template"
+msgstr "Vorlage"
 
 #: includes/include.pretplcfg_edit_form.php:112
 #, php-format
@@ -169,7 +169,7 @@ msgstr "Modul in Container %s"
 
 #: includes/include.pretplcfg_edit_form.php:162
 msgid "Template preconfiguration"
-msgstr "Template Vorkonfiguration"
+msgstr "Vorkonfiguration der Vorlage"
 
 #: includes/functions.stat.php:52
 msgid "Info about article"
@@ -433,7 +433,7 @@ msgstr "Datei"
 #: includes/include.tplcfg_edit_form.php:79
 #, php-format
 msgid "Category Template configuration is in use by %s (%s)"
-msgstr "Templatekonfiguration (Kategorie) wird benutzt von %s (%s)"
+msgstr "Vorlagenkonfiguration (Kategorie) wird benutzt von %s (%s)"
 
 #: includes/include.tplcfg_edit_form.php:148
 #: includes/include.js_edit_form.php:50
@@ -499,11 +499,11 @@ msgstr "Modul in Container"
 
 #: includes/include.tplcfg_edit_form.php:501
 msgid "Categorytemplate configuration"
-msgstr "Kategorietemplate konfigurieren"
+msgstr "Kategorievorlage konfigurieren"
 
 #: includes/include.tplcfg_edit_form.php:504
 msgid "Articletemplate configuration"
-msgstr "Artikeltemplate konfigurieren"
+msgstr "Artikelvorlage konfigurieren"
 
 #: includes/include.js_edit_form.php:159
 #: includes/include.html_tpl_edit_form.php:197
@@ -756,7 +756,7 @@ msgstr "Konnte die Datei config.php nicht schreiben"
 #: includes/include.client_edit.php:126
 #, php-format
 msgid "The directory %s already exists. The client was created, but you have to copy the frontend-template yourself"
-msgstr "Das Verzeichnis %s existiert bereits. Der Mandant wurde erstellt, das Frontend-Template mu&szlig; jedoch noch dorthin kopiert werden"
+msgstr "Das Verzeichnis %s existiert bereits. Der Mandant wurde erstellt, das Frontend-Template muss jedoch noch dorthin kopiert werden"
 
 #: includes/include.client_edit.php:145
 msgid "You changed the client path. You might need to copy the frontend to the new location"
@@ -973,7 +973,7 @@ msgstr "Der HTML-Newsletter-Artikel wurde gel&ouml;scht (idart: %s), die HTML-Na
 
 #: includes/include.newsletter_edit_message.php:116
 msgid "The html newsletter template article has been deleted, it has been restored using the html message article of this newsletter"
-msgstr "Der HTML-Newsletter-Template-Artikel wurde gel&ouml;scht; er wurde aus dem aktuellen HTML-Newsletter-Artikel wiederhergestellt"
+msgstr "Der HTML-Newsletter-Vorlagenartikel wurde gel&ouml;scht; er wurde aus dem aktuellen HTML-Newsletter-Artikel wiederhergestellt"
 
 #: includes/include.newsletter_edit_message.php:120
 #, php-format
@@ -1063,7 +1063,7 @@ msgstr "HTML-Template"
 
 #: includes/include.newsletter_edit_message.php:214
 msgid "Note, that changing the template discards the current html message content"
-msgstr "Hinweis: Eine &Auml;nderung des Templates verwirft die aktuelle HTML-Nachricht"
+msgstr "Hinweis: Eine &Auml;nderung der Vorlage verwirft die aktuelle HTML-Nachricht"
 
 #: includes/include.newsletter_edit_message.php:219
 #: includes/include.newsletter_edit_message.php:224
@@ -1086,7 +1086,7 @@ msgstr "Text-Nachricht"
 
 #: includes/include.newsletter_edit_message.php:259
 msgid "HTML newsletter template changed"
-msgstr "&Auml;nderung des HTML-Newsletter-Templates"
+msgstr "&Auml;nderung der HTML-Newsletter-Vorlage"
 
 #: includes/include.newsletter_edit_message.php:259
 msgid "HTML template has been changed. Do you like to save now to apply changes?<br /><br /><b>Note, that existing HTML newsletter content will get lost!</b>"
@@ -1260,7 +1260,7 @@ msgstr "Kategorie online setzen"
 
 #: includes/cfg_language_de.inc.php:100
 msgid "Change template"
-msgstr "Template wechseln"
+msgstr "Vorlage wechseln"
 
 #: includes/cfg_language_de.inc.php:101
 msgid "Set start article"
@@ -1295,7 +1295,7 @@ msgstr "Artikel l&ouml;schen"
 
 #: includes/cfg_language_de.inc.php:107
 msgid "Edit template configuration"
-msgstr "Template-Konfiguration bearbeiten"
+msgstr "Vorlagenkonfiguration bearbeiten"
 
 #: includes/cfg_language_de.inc.php:108
 msgid "Duplicate Article"
@@ -1309,7 +1309,7 @@ msgstr "Boxen ausklappen/einklappen"
 #: backend_search.php:684
 #: templates/standard/template.symbolhelp.html:377
 msgid "Configure template"
-msgstr "Template konfigurieren"
+msgstr "Vorlage konfigurieren"
 
 #: includes/cfg_language_de.inc.php:111
 msgid "Create article"
@@ -1498,23 +1498,23 @@ msgstr "Package importieren/exportieren"
 #: includes/cfg_language_de.inc.php:164
 #: includes/include.tpl_overview.php:99
 msgid "Delete template"
-msgstr "Template l&ouml;schen"
+msgstr "Vorlage l&ouml;schen"
 
 #: includes/cfg_language_de.inc.php:165
 #: includes/include.tpl_edit_form.php:149
 msgid "Edit template"
-msgstr "Template bearbeiten"
+msgstr "Vorlage bearbeiten"
 
 #: includes/cfg_language_de.inc.php:166
 msgid "Create template"
-msgstr "Template erstellen"
+msgstr "Vorlage erstellen"
 
 #: includes/cfg_language_de.inc.php:167
 #: includes/cfg_language_de.inc.php:168
 #: includes/include.tpl_overview.php:111
 #: templates/standard/template.symbolhelp.html:1016
 msgid "Duplicate template"
-msgstr "Template duplizieren"
+msgstr "Vorlage duplizieren"
 
 #: includes/cfg_language_de.inc.php:169
 msgid "Visual edit"
@@ -2114,16 +2114,16 @@ msgstr "Klicken Sie f&uuml;r mehr Information &uuml;ber Verwendung"
 #: includes/include.tpl_overview.php:100
 #, php-format
 msgid "Do you really want to delete the following template:<br><br>%s<br>"
-msgstr "M&ouml;chten Sie das folgende Template wirklich l&ouml;schen:<br><br><b>%s</b>"
+msgstr "M&ouml;chten Sie die folgende Vorlage wirklich l&ouml;schen:<br><br><b>%s</b>"
 
 #: includes/include.tpl_overview.php:105
 msgid "Template in use, cannot delete"
-msgstr "Template wird benutzt, l&ouml;schen nicht m&ouml;glich"
+msgstr "Vorlage wird benutzt, l&ouml;schen nicht m&ouml;glich"
 
 #: includes/include.tpl_overview.php:128
 #, php-format
 msgid "The template '%s' is used for following categories and articles"
-msgstr "Das Template '%s' wird bei folgenden Kategorien und Artikeln benutzt"
+msgstr "Die Vorlage '%s' wird bei folgenden Kategorien und Artikeln benutzt"
 
 #: includes/include.grouprights_overview.php:67
 msgid "Changes couldn't saved"
@@ -2601,7 +2601,7 @@ msgstr "Kategorierechte"
 #: includes/rights.inc.php:279
 #: includes/grouprights.inc.php:163
 msgid "Template rights"
-msgstr "Templaterechte"
+msgstr "Vorlagenrechte"
 
 #: includes/rights.inc.php:281
 #: includes/grouprights.inc.php:165
@@ -3020,11 +3020,11 @@ msgstr "Archivierte Statistiken"
 #: classes/class.ajax.php:103
 #: classes/class.ajax.php:127
 msgid "Template name"
-msgstr "Templatename"
+msgstr "Vorlagenname"
 
 #: includes/include.tpl_new.php:39
 msgid "New template"
-msgstr "Neues Template"
+msgstr "Neue Vorlage"
 
 #: includes/include.con_art_overview.php:78
 #: includes/include.con_art_overview.php:746
@@ -3209,7 +3209,7 @@ msgstr "Layout"
 #: includes/include.lay_overview.php:118
 #, php-format
 msgid "The layout '%s' is used for following templates"
-msgstr "Das Layout '%s' wird bei folgenden Templates benutzt"
+msgstr "Das Layout '%s' wird bei folgenden Vorlagen benutzt"
 
 #: includes/functions.general.php:128
 #: classes/datatypes/class.datatype.datetime.php:140
@@ -3328,7 +3328,7 @@ msgstr "M&ouml;chten Sie die das folgende Modul wirklich l&ouml;schen:<br><br><b
 #: includes/include.mod_overview.php:302
 #, php-format
 msgid "The module '%s' is used for following templates"
-msgstr "Das Modul '%s' wird bei folgenden Templates benutzt"
+msgstr "Das Modul '%s' wird bei folgenden Vorlagen benutzt"
 
 #: includes/include.upl_files_upload.php:51
 msgid "Upload"
@@ -4755,7 +4755,7 @@ msgstr "Workflow"
 #: scripts/HTMLObj.js.php:254
 #: scripts/langref.php:12
 msgid "Choose template"
-msgstr "Template w&auml;hlen"
+msgstr "Vorlage w&auml;hlen"
 
 #: includes/include.con_left_top.php:375
 msgid "Edit Category"
@@ -4763,7 +4763,7 @@ msgstr "Kategorie bearbeiten"
 
 #: includes/include.con_left_top.php:391
 msgid "Template:"
-msgstr "Template:"
+msgstr "Vorlage:"
 
 #: includes/include.con_left_top.php:400
 #: includes/include.con_left_top.php:401
@@ -4868,7 +4868,7 @@ msgstr "Sind Sie sicher, dass Sie die folgende Gruppe l&ouml;schen m&ouml;chten:
 
 #: includes/include.tpl_edit_form.php:44
 msgid "- New Template -"
-msgstr "-- Neues Template --"
+msgstr "-- Neue Vorlage --"
 
 #: includes/include.tpl_edit_form.php:159
 #: includes/include.tpl_edit_form.php:237
@@ -5043,7 +5043,7 @@ msgstr "Module"
 #: templates/standard/template.symbolhelp.html:59
 #: templates/standard/template.symbolhelp.html:985
 msgid "Templates"
-msgstr "Templates"
+msgstr "Vorlagen"
 
 #: templates/standard/template.symbolhelp.html:62
 #: templates/standard/template.symbolhelp.html:1055
@@ -5123,7 +5123,7 @@ msgstr "Artikel ist Startartikel / kein Startartikel"
 #: templates/standard/template.symbolhelp.html:868
 #: templates/standard/template.symbolhelp.html:949
 msgid "Set template / Add to To-Do list"
-msgstr "Template setzen / zur Todo-Liste hinzuf&uuml;gen"
+msgstr "Vorlage setzen / zur Todo-Liste hinzuf&uuml;gen"
 
 #: templates/standard/template.symbolhelp.html:365
 msgid "Configure article properties"
@@ -5131,7 +5131,7 @@ msgstr "Artikeleigenschaften bearbeiten"
 
 #: templates/standard/template.symbolhelp.html:389
 msgid "Element is online / offline (change through click)"
-msgstr "Element ist online / offline (Durch Klick &auml;ndern)"
+msgstr "Element ist online / offline (durch Klick &auml;ndern)"
 
 #: templates/standard/template.symbolhelp.html:401
 msgid "Element is protected / accessible (change through click)"
@@ -6055,7 +6055,7 @@ msgstr "Kein Artikel ausgew&auml;hlt"
 #: scripts/langref.php:17
 #: scripts/articleObject.js.php:305
 msgid "Template configuration can't be displayed"
-msgstr "Template-Konfiguration kann nicht angezeigt werden"
+msgstr "Vorlagenkonfiguration kann nicht angezeigt werden"
 
 #: scripts/langref.php:18
 #: scripts/articleObject.js.php:257
@@ -6137,7 +6137,7 @@ msgstr "Reiter kann nicht angezeigt werden"
 
 #~ msgid "No template assigned to the category<br>and/or the article"
 #~ msgstr ""
-#~ "Kein Template mit einer Kategorie<br>und/oder einem Artikel assoziiert"
+#~ "Keine Vorlage mit einer Kategorie<br>und/oder einem Artikel assoziiert"
 
 #~ msgid "The code for the following article<br>couldnt be generated:"
 #~ msgstr ""
@@ -6731,7 +6731,7 @@ msgstr "Reiter kann nicht angezeigt werden"
 #~ msgstr "Mandant %s"
 
 #~ msgid "-- Unnamed Template --"
-#~ msgstr "-- Unbenanntes Template --"
+#~ msgstr "-- Unbenannte Vorlage --"
 
 #~ msgid "Is used in"
 #~ msgstr "Wird benutzt in"
