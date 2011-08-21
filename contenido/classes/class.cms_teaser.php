@@ -1044,11 +1044,11 @@ class Cms_Teaser {
 	 * @return	string	output of the filelist
 	 */
 	public function getAllWidgetView() {
-		$sCode = '\";?><?php
+		$sCode = '";?><?php
 					$oTeaser = new Cms_Teaser(\'%s\', %s, 0, "", $cfg, null, "", $client, $lang, $cfgClient, null);
 					
 					echo $oTeaser->getAllWidgetOutput();
-				 ?><?php echo \"';
+				 ?><?php echo "';
 		
 		$sCode = sprintf($sCode, $this->sContent, $this->iId);
 		return $sCode;

@@ -912,11 +912,11 @@ class Cms_FileList {
 	 * @return	string	output of the filelist
 	 */
 	public function getAllWidgetView() {
-		$sCode = '\";?><?php
+		$sCode = '";?><?php
 					$oFileList = new Cms_FileList(\'%s\', %s, 0, "", $cfg, null, "", $client, $lang, $cfgClient, null);
 					
 					echo $oFileList->getAllWidgetOutput();
-				 ?><?php echo \"';
+				 ?><?php echo "';
 		
 		$sCode = sprintf($sCode, $this->sContent, $this->iId);
 		return $sCode;
