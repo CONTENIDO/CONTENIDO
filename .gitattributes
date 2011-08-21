@@ -128,6 +128,9 @@ conlib/session.inc -text
 contenido/.htaccess_recommended -text
 contenido/ajaxmain.php -text
 contenido/backend_search.php -text
+contenido/classes/CodeGenerator/Abstract.class.php -text
+contenido/classes/CodeGenerator/Factory.class.php -text
+contenido/classes/CodeGenerator/Standard.class.php -text
 contenido/classes/Contenido_Category/Contenido_Category.class.php -text
 contenido/classes/Contenido_Category/Contenido_Category_Articles.class.php -text
 contenido/classes/Contenido_Category/Sample.php -text
