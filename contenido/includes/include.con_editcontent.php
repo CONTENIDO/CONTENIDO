@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * Contenido Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Include for editing the content in an article
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    Contenido Backend includes
  * @version    1.0.3
@@ -18,8 +18,10 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- * 
- * {@internal 
+ *
+ * @todo replace code generation by Contenido_CodeGenerator (see contenido/classes/CodeGenerator)
+ *
+ * {@internal
  *   created  2003
  *   modified 2008-06-16, Holger Librenz, Hotfix: check for illegal calls added
  *   modified 2008-06-27, Frederic Schneider, add security fix
@@ -29,117 +31,108 @@
  *   modified 2011-06-24, Rusmir Jusufovic, load layout code from file
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
-$edit 		= "true";
-
-$db2 		= new DB_Contenido;
-$scripts	= "";
+$edit = "true";
+$db2 = new DB_Contenido();
+$scripts = "";
 $cssData = "";
 $jsData = "";
 
-if ( isset($idcat) )
-{
-	if( $action == 20 || $action == 10 )
-	{
-		if( $data != "" )
-		{
-			$data = explode("||", substr($data, 0, -2));
+if (isset($idcat)) {
+    if ($action == 20 || $action == 10) {
+        if ($data != "") {
+            $data = explode("||", substr($data, 0, -2));
 
-			foreach($data as $value)
-			{
-				$value = explode("|", $value);
+            foreach ($data as $value) {
+                $value = explode("|", $value);
+                if ($value[3] == "%$%EMPTY%$%") {
+                    $value[3] = "";
+                } else {
+                    $value[3] = str_replace("%$%SEPERATOR%$%", "|", $value[3]);
+                }
 
-				if ( $value[3] == "%$%EMPTY%$%" ) {
-					$value[3] = "";
-				} else {
-					$value[3] = str_replace("%$%SEPERATOR%$%", "|", $value[3]);
-				}
+                conSaveContentEntry($value[0], "CMS_".$value[1], $value[2], $value[3]);
+            }
 
-				conSaveContentEntry($value[0], "CMS_".$value[1], $value[2], $value[3]);
-			}
+            conMakeArticleIndex($idartlang, $idart);
 
-			conMakeArticleIndex ($idartlang, $idart);
+            // restore orginal values
+            $data     = $_REQUEST['data'];
+            $value    = $_REQUEST['value'];
+        }
 
-			// restore orginal values
-			$data 	= $_REQUEST['data'];
-			$value	= $_REQUEST['value'];
-		}
-		
-		conGenerateCodeForArtInAllCategories ($idart);
-	}
+        conGenerateCodeForArtInAllCategories ($idart);
+    }
 
-	if ( $action == 10 )
-	{
-		
-		header("Location: ".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php?type=$type&typenr=$typenr&client=$client&lang=$lang&idcat=$idcat&idart=$idart&idartlang=$idartlang&contenido=$contenido&lang=$lang");
-	} else {
+    if ($action == 10) {
+        header("Location: ".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php?type=$type&typenr=$typenr&client=$client&lang=$lang&idcat=$idcat&idart=$idart&idartlang=$idartlang&contenido=$contenido&lang=$lang");
+    } else {
 
-		$markSubItem = markSubMenuItem(3, true);
+        $markSubItem = markSubMenuItem(3, true);
 
-    //Include tiny class
-    include ($cfg["path"]["contenido"] . 'external/wysiwyg/tinymce3/editorclass.php');
-    $oEditor = new cTinyMCEEditor ('', '');
-    $oEditor->setToolbar('inline_edit');
-    
-    //Get configuration for popup und inline tiny
-    $sConfigInlineEdit = $oEditor->getConfigInlineEdit(); 
-    $sConfigFullscreen = $oEditor->getConfigFullscreen();        
-    
-    //Include tiny mce and con_tiny script for insight_editing    
-    $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/jquery/jquery.js" type="text/javascript"></script>';
-    $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/con_tiny.js" type="text/javascript"></script>';
-    $scripts .= "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$cfg["path"]["contenido_fullhtml"].'external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js"></script>';
-    
-    //Script template for insight editing
-	$scripts .= <<<EOD
+        //Include tiny class
+        include ($cfg["path"]["contenido"] . 'external/wysiwyg/tinymce3/editorclass.php');
+        $oEditor = new cTinyMCEEditor('', '');
+        $oEditor->setToolbar('inline_edit');
+
+        //Get configuration for popup und inline tiny
+        $sConfigInlineEdit = $oEditor->getConfigInlineEdit();
+        $sConfigFullscreen = $oEditor->getConfigFullscreen();
+
+        //Include tiny mce and con_tiny script for insight_editing
+        $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/jquery/jquery.js" type="text/javascript"></script>';
+        $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/con_tiny.js" type="text/javascript"></script>';
+        $scripts .= "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$cfg["path"]["contenido_fullhtml"].'external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js"></script>';
+
+        //Script template for insight editing
+        $scripts .= <<<EOD
 <style type="text/css">
-	.defaultSkin table.mceLayout {position: absolute; z-index: 10000;}
-	.defaultSkin #mce_fullscreen_tbl {z-index: 20000;}
-	.defaultSkin .mcePlaceHolder {position: absolute; z-index: 10000;}
+    .defaultSkin table.mceLayout {position: absolute; z-index: 10000;}
+    .defaultSkin #mce_fullscreen_tbl {z-index: 20000;}
+    .defaultSkin .mcePlaceHolder {position: absolute; z-index: 10000;}
 </style>
-	
-	
+
 <script language="javascript">
 
 tinymce.create('tinymce.plugins.ClosePlugin', {
-	createControl: function(n, cm) {
-		switch (n) {
-			case 'close':
-				var c = cm.createMenuButton('close', {
-					title : '{CLOSE}',
-					image : '{CON_PATH}images/back.gif',
-					icons : false,
-					onclick : function(ed) {
-			           closeTiny();
-			        }
-				});
+    createControl: function(n, cm) {
+        switch (n) {
+            case 'close':
+                var c = cm.createMenuButton('close', {
+                    title : '{CLOSE}',
+                    image : '{CON_PATH}images/back.gif',
+                    icons : false,
+                    onclick : function(ed) {
+                       closeTiny();
+                    }
+                });
 
-				// Return the new menu button instance
-				return c;
-				
-			case 'save':
-				var c = cm.createMenuButton('save', {
-					title : '{SAVE}',
-					image : '{CON_PATH}images/save.gif',
-					icons : false,
-					onclick : function(ed) {
-			           setcontent(iIdartlang, '0');
-			        }
-				});
+                // Return the new menu button instance
+                return c;
 
-				// Return the new menu button instance
-				return c;
-		}
+            case 'save':
+                var c = cm.createMenuButton('save', {
+                    title : '{SAVE}',
+                    image : '{CON_PATH}images/save.gif',
+                    icons : false,
+                    onclick : function(ed) {
+                       setcontent(iIdartlang, '0');
+                    }
+                });
 
-		return null;
-	}
+                // Return the new menu button instance
+                return c;
+        }
+
+        return null;
+    }
 });
 
 // Register plugin with a short name
@@ -157,7 +150,7 @@ var fb_handle;
 var fb_intervalhandle;
 var fb_win;
 
-//Configuration of tiny, when tiny is opened set event which stores original 
+//Configuration of tiny, when tiny is opened set event which stores original
 //content to global var aEditdataOrig
 var tinymceConfigs = {
     {TINY_OPTIONS},
@@ -172,10 +165,10 @@ var tinymceConfigs = {
 tinyMCE.settings = tinymceConfigs;
 
 //add tiny to elements which contains classname contentEditable
-//tiny toggles on click 
+//tiny toggles on click
 $(document).ready( function(){
    $('div[contenteditable=true]').each( function(){
-	  $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
+      $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
       $(this).bind( "click", function(){
          {USE_TINY}
       });
@@ -184,9 +177,9 @@ $(document).ready( function(){
 
 //activate save confirmation on page leave
 if (document.all) {
-	window.onunload = leave_check;
+    window.onunload = leave_check;
 } else {
-	window.onbeforeunload = leave_check;
+    window.onbeforeunload = leave_check;
 }
 
 var file_url = "{FILE}"; //Global var which contains url to contenido image browser
@@ -204,39 +197,37 @@ EOD;
 
         //Replace vars in Script
         $oScriptTpl = new Template();
-        
+
         //Set urls to file browsers
         $oScriptTpl->set('s', 'IMAGE', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
         $oScriptTpl->set('s', 'FILE', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=filebrowser');
         $oScriptTpl->set('s', 'FLASH', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
         $oScriptTpl->set('s', 'MEDIA', $cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser');
         $oScriptTpl->set('s', 'FRONTEND', $cfgClient[$client]["path"]["htmlpath"]);
-		
+
         //Add tiny options and fill function leave_check()
         $oScriptTpl->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
         $oScriptTpl->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
         $oScriptTpl->set('s', 'IDARTLANG', $idartlang);
-		$oScriptTpl->set('s', 'CON_PATH', $cfg["path"]["contenido_fullhtml"]);
-		$oScriptTpl->set('s', 'CLOSE', i18n('Close editor'));
-		$oScriptTpl->set('s', 'SAVE', i18n('Close editor and save changes'));
+        $oScriptTpl->set('s', 'CON_PATH', $cfg["path"]["contenido_fullhtml"]);
+        $oScriptTpl->set('s', 'CLOSE', i18n('Close editor'));
+        $oScriptTpl->set('s', 'SAVE', i18n('Close editor and save changes'));
         $oScriptTpl->set('s', 'QUESTION', i18n('Do you want to save changes?'));
-		
-		if (getEffectiveSetting('system', 'insight_editing_activated', 'true') == 'false') {
-			$oScriptTpl->set('s', 'USE_TINY', '');
-		} else {
-			$oScriptTpl->set('s', 'USE_TINY', 'swapTiny(this);');
-		}
-        
+
+        if (getEffectiveSetting('system', 'insight_editing_activated', 'true') == 'false') {
+            $oScriptTpl->set('s', 'USE_TINY', '');
+        } else {
+            $oScriptTpl->set('s', 'USE_TINY', 'swapTiny(this);');
+        }
+
         $scripts = $oScriptTpl->generate($scripts, 1);
-        
+
         $contentform  = "<form name=\"editcontent\" method=\"post\" action=\"".$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&lang=$lang&action=20&client=$client")."\">\n";
         $contentform .= "<input type=\"hidden\" name=\"changeview\" value=\"edit\">\n";
         $contentform .= "<input type=\"hidden\" name=\"data\" value=\"\">\n";
         $contentform .= "</form>";
 
-        #
-        # extract IDCATART
-        #
+        // extract IDCATART
         $sql = "SELECT
                     idcatart
                 FROM
@@ -250,14 +241,9 @@ EOD;
 
         $idcatart = $db->f("idcatart");
 
-        #
-        # Article is not configured,
-        # if not check if the category
-        # is configured. It neither the
-        # article or the category is
-        # configured, no code will be
-        # created and an error occurs.
-        #
+        // Article is not configured, if not check if the category
+        // is configured. It neither the article or the category is
+        // configured, no code will be created and an error occurs.
 
         $sql = "SELECT
                     a.idtplcfg AS idtplcfg
@@ -273,11 +259,9 @@ EOD;
         $db->query($sql);
         $db->next_record();
 
-        if ( $db->f("idtplcfg") != 0 ) {
+        if ($db->f("idtplcfg") != 0) {
 
-            #
-            # Article is configured
-            #
+            // Article is configured
             $idtplcfg = $db->f("idtplcfg");
 
             $a_c = array();
@@ -300,10 +284,7 @@ EOD;
 
         } else {
 
-            #
-            # Check whether category is
-            # configured.
-            #
+            // Check whether category is configured.
             $sql = "SELECT
                         a.idtplcfg AS idtplcfg
                     FROM
@@ -318,12 +299,9 @@ EOD;
             $db->query($sql);
             $db->next_record();
 
-            if ( $db->f("idtplcfg") != 0 ) {
+            if ($db->f("idtplcfg") != 0) {
 
-                #
-                # Category is configured,
-                # extract varstring
-                #
+                // Category is configured, extract varstring
                 $idtplcfg = $db->f("idtplcfg");
 
                 $a_c = array();
@@ -346,17 +324,11 @@ EOD;
 
             } else {
 
-                #
-                # Article nor Category
-                # is configured. Creation of
-                # Code is not possible. Write
-                # Errormsg to DB.
-                #
-                include_once ($cfg["path"]["contenido"].$cfg["path"]["classes"]."class.notification.php");
-                include_once ($cfg["path"]["contenido"].$cfg["path"]["classes"]."class.table.php");
+                // Article nor Category is configured. Creation of
+                // Code is not possible. Write Errormsg to DB.
 
-                if ( !is_object($notification) ) {
-                    $notification = new Contenido_Notification;
+                if (!is_object($notification)) {
+                    $notification = new Contenido_Notification();
                 }
 
                 $sql = "SELECT title FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang = '".Contenido_Security::toInteger($idartlang)."'";
@@ -436,14 +408,10 @@ EOD;
                 }
 
                 echo $code;
-
             }
-
         }
 
-        #
-        # Get IDLAY and IDMOD array
-        #
+        // Get IDLAY and IDMOD array
         $sql = "SELECT
                     a.idlay AS idlay,
                     a.idtpl AS idtpl
@@ -460,9 +428,7 @@ EOD;
         $idlay = $db->f("idlay");
         $idtpl = $db->f("idtpl");
 
-        #
-        # List of used modules
-        #
+        // List of used modules
         $sql = "SELECT
                     number,
                     idmod
@@ -475,119 +441,111 @@ EOD;
 
         $db->query($sql);
 
-        while ( $db->next_record() ) {
+        while ($db->next_record()) {
             $a_d[$db->f("number")] = $db->f("idmod");
         }
 
-       
-		//Get layout from file
+        //Get layout from file
         $layoutInFile = new LayoutInFile($idlay,"", $cfg, $lang);
         $code = $layoutInFile->getLayoutCode();
         $code = AddSlashes($code);
 
-        #
-        # Create code for all containers
-        #
+        // Create code for all containers
         if ($idlay) {
-				tplPreparseLayout($idlay);
-                $tmp_returnstring = tplBrowseLayoutForContainers($idlay);
+            tplPreparseLayout($idlay);
+            $tmp_returnstring = tplBrowseLayoutForContainers($idlay);
 
-                $a_container = explode("&", $tmp_returnstring);
+            $a_container = explode("&", $tmp_returnstring);
 
-                foreach ($a_container as $key=>$value) {
+            foreach ($a_container as $key => $value) {
 
-					$CiCMS_VALUE = "";
+                $CiCMS_VALUE = "";
 
-                    $sql = "SELECT * FROM ".$cfg["tab"]["mod"]." WHERE idmod='".Contenido_Security::toInteger($a_d[$value])."'";
+                $sql = "SELECT * FROM ".$cfg["tab"]["mod"]." WHERE idmod='".Contenido_Security::toInteger($a_d[$value])."'";
 
-                    $db->query($sql);
-                    $db->next_record();
+                $db->query($sql);
+                $db->next_record();
 
-					if (is_numeric($a_d[$value]))
-					{
-						$thisModule = '<?php $cCurrentModule = '.((int)$a_d[$value]).'; ?>';
-						$thisContainer = '<?php $cCurrentContainer = '.((int)$value).'; ?>';
-					}
-
-                    $output = $thisModule . $thisContainer ;
-                    $output = AddSlashes($output);
-					
-					$contenidoModuleHandler = new Contenido_Module_Handler($db->f("idmod"));
-                    #Get the contents of output from file
-                    if( $contenidoModuleHandler->existModul() == true )
-                    {
-                        $cssData .=$contenidoModuleHandler->getFilesContent("css","css"); 
-                		$jsData .= $contenidoModuleHandler->getFilesContent("js","js");
-                        $output = $thisModule . $thisContainer .$contenidoModuleHandler->readOutput();
-                        $output = AddSlashes($output);
-                    }
-                    $template = $db->f("template");
-
-					if (array_key_exists($value, $a_c))
-					{
-						$a_c[$value] = preg_replace("/(&\$)/","", $a_c[$value]);
-	                    $tmp1 = preg_split("/&/", $a_c[$value]);
-					} else {
-						$tmp1 = array();
-					}
-
-                    $varstring = array();
-
-                    foreach ($tmp1 as $key1=>$value1) {
-                            $tmp2 = explode("=", $value1);
-                            foreach ($tmp2 as $key2 => $value2) {
-                                    $varstring["$tmp2[0]"] = $tmp2[1];
-                            }
-                    }
-
-                   	$CiCMS_Var = '$C'.$value.'CMS_VALUE';
-                    $CiCMS_VALUE = '';
-
-                    foreach ($varstring as $key3=>$value3){
-                      $tmp = urldecode($value3);
-                      $tmp = str_replace("\'", "'", $tmp);
-                      $CiCMS_VALUE .= $CiCMS_Var.'['.$key3.']="'.$tmp.'"; ';
-                      $output = str_replace("\$CMS_VALUE[$key3]", $tmp, $output);
-                      $output = str_replace("CMS_VALUE[$key3]", $tmp, $output);
-                    }
-
-                    $output = str_replace("CMS_VALUE", $CiCMS_Var, $output);
-                    $output = str_replace("\$".$CiCMS_Var, $CiCMS_Var, $output);
-
-                    $output = preg_replace('/(CMS_VALUE\[)([0-9]*)(\])/i', '', $output);
-
-                    /* Long syntax with closing tag */
-                    $code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$value]", $code);
-
-                    /* Short syntax */
-                    $code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)\/>/i", "CMS_CONTAINER[$value]", $code);
-
-                    $code = str_ireplace("CMS_CONTAINER[$value]", "<?php $CiCMS_VALUE ?>\r\n".$output, $code);
-
+                if (is_numeric($a_d[$value]))
+                {
+                    $thisModule = '<?php $cCurrentModule = '.((int)$a_d[$value]).'; ?>';
+                    $thisContainer = '<?php $cCurrentContainer = '.((int)$value).'; ?>';
                 }
-                   //save the collected css/js data and save it undter the template name ([templatename].css , [templatename].js in cache dir
-				$cssDatei = '';
-			    if(($myFileCss = Contenido_Module_Handler::saveContentToFile($cfgClient[$client], $tplName,"css", $cssData))== false) {
-				    
-				 $cssDatei = "error error culd not generate css file";
-				} else {
-				  $cssDatei = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';  
-				}
-				$jsDatei = '';
-			    if( ($myFileJs =Contenido_Module_Handler::saveContentToFile($cfgClient[$client], $tplName,"js", $jsData))== false) {
-				    
-				  $jsDatei = "error error error culd not generate js file";
-				} else {
-				    
-				  $jsDatei = '<script src="'.$myFileJs.'" type="text/javascript"></script>';  
-				}
-				/* Add meta tags */
-				$code = str_ireplace_once("</head>", $cssDatei.$jsDatei."</head>", $code);
+
+                $output = $thisModule . $thisContainer ;
+                $output = AddSlashes($output);
+
+                $contenidoModuleHandler = new Contenido_Module_Handler($db->f("idmod"));
+                #Get the contents of output from file
+                if( $contenidoModuleHandler->existModul() == true )
+                {
+                    $cssData .=$contenidoModuleHandler->getFilesContent("css","css");
+                    $jsData .= $contenidoModuleHandler->getFilesContent("js","js");
+                    $output = $thisModule . $thisContainer .$contenidoModuleHandler->readOutput();
+                    $output = AddSlashes($output);
+                }
+                $template = $db->f("template");
+
+                if (array_key_exists($value, $a_c))
+                {
+                    $a_c[$value] = preg_replace("/(&\$)/","", $a_c[$value]);
+                    $tmp1 = preg_split("/&/", $a_c[$value]);
+                } else {
+                    $tmp1 = array();
+                }
+
+                $varstring = array();
+
+                foreach ($tmp1 as $key1 => $value1) {
+                    $tmp2 = explode("=", $value1);
+                    foreach ($tmp2 as $key2 => $value2) {
+                        $varstring["$tmp2[0]"] = $tmp2[1];
+                    }
+                }
+
+                $CiCMS_Var = '$C'.$value.'CMS_VALUE';
+                $CiCMS_VALUE = '';
+
+                foreach ($varstring as $key3 => $value3){
+                    $tmp = urldecode($value3);
+                    $tmp = str_replace("\'", "'", $tmp);
+                    $CiCMS_VALUE .= $CiCMS_Var.'['.$key3.']="'.$tmp.'"; ';
+                    $output = str_replace("\$CMS_VALUE[$key3]", $tmp, $output);
+                    $output = str_replace("CMS_VALUE[$key3]", $tmp, $output);
+                }
+
+                $output = str_replace("CMS_VALUE", $CiCMS_Var, $output);
+                $output = str_replace("\$".$CiCMS_Var, $CiCMS_Var, $output);
+
+                $output = preg_replace('/(CMS_VALUE\[)([0-9]*)(\])/i', '', $output);
+
+                /* Long syntax with closing tag */
+                $code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$value]", $code);
+
+                /* Short syntax */
+                $code = preg_replace("/<container( +)id=\\\\\"$value\\\\\"(.*)\/>/i", "CMS_CONTAINER[$value]", $code);
+
+                $code = str_ireplace("CMS_CONTAINER[$value]", "<?php $CiCMS_VALUE ?>\r\n".$output, $code);
+
+            }
+               //save the collected css/js data and save it undter the template name ([templatename].css , [templatename].js in cache dir
+            $cssDatei = '';
+            if(($myFileCss = Contenido_Module_Handler::saveContentToFile($cfgClient[$client], $tplName,"css", $cssData))== false) {
+                $cssDatei = "error error culd not generate css file";
+            } else {
+                $cssDatei = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';
+            }
+            $jsDatei = '';
+            if(($myFileJs =Contenido_Module_Handler::saveContentToFile($cfgClient[$client], $tplName,"js", $jsData))== false) {
+                $jsDatei = "error error error culd not generate js file";
+            } else {
+                $jsDatei = '<script src="'.$myFileJs.'" type="text/javascript"></script>';
+            }
+            /* Add meta tags */
+            $code = str_ireplace_once("</head>", $cssDatei.$jsDatei."</head>", $code);
         }
-	
-        #
-        # Find out what kind of CMS_... Vars are in use
-        #
+
+        // Find out what kind of CMS_... Vars are in use
         $sql = "SELECT
                     *
                 FROM
@@ -613,26 +571,21 @@ EOD;
 
         $idartlang = $db->f("idartlang");
 
-        #
-        # Replace all CMS_TAGS[]
-        #
+        // Replace all CMS_TAGS[]
         $sql = "SELECT idtype, type, code FROM ".$cfg["tab"]["type"];
 
         $db->query($sql);
 
-        while ( $db->next_record() )
-        {
-
+        while ($db->next_record()) {
             $tmp = preg_match_all("/(".$db->f("type")."\[+\d+\])/i", $code, $match);
             $a_[strtolower($db->f("type"))] = $match[0];
             $success = array_walk($a_[strtolower($db->f("type"))], 'extractNumber');
 
-    		$search = array();
-    		$replacements = array();
+            $search = array();
+            $replacements = array();
 
 
-            foreach ($a_[strtolower($db->f("type"))] as $val)
-            {
+            foreach ($a_[strtolower($db->f("type"))] as $val) {
                 eval ($db->f("code"));
 
                 $search[$val] = $db->f("type") ."[$val]";
@@ -640,29 +593,26 @@ EOD;
             }
 
             $code  = str_ireplace($search, $replacements, $code);
-		}
+        }
 
-		unset($tmp);
+        unset($tmp);
 
         /* output the code */
         $code = stripslashes($code);
         $code = str_ireplace_once("</head>", "$markSubItem $scripts\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$encoding[$lang]\"></head>", $code);
         $code = str_ireplace_once_reverse("</body>", "$contentform</body>", $code);
 
-		if ($cfg["debug"]["codeoutput"])
-      	{
-			echo "<textarea>".htmlspecialchars($code)."</textarea>";
-      	}
+        if ($cfg["debug"]["codeoutput"]) {
+            echo "<textarea>".htmlspecialchars($code)."</textarea>";
+        }
 
         $code = str_ireplace_once("<head>", "<head>\n".'<base href="'.$cfgClient[$client]["path"]["htmlpath"].'">', $code);
 
         chdir($cfgClient[$client]["path"]["frontend"]);
-      	eval("?>\n".$code."\n<?php\n");
-
-
-
+        eval("?>\n".$code."\n<?php\n");
     }
 }
+
 page_close();
 
 ?>
