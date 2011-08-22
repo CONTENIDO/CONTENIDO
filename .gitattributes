@@ -1011,7 +1011,6 @@ contenido/includes/config.http_check.php -text
 contenido/includes/config.misc.php -text
 contenido/includes/config.path.php -text
 contenido/includes/config.templates.php -text
-contenido/includes/config.xml.php -text
 contenido/includes/functions.api.category.php -text
 contenido/includes/functions.api.images.php -text
 contenido/includes/functions.api.php -text
