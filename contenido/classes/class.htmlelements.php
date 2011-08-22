@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.6.2
+ * @version    1.6.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   created 2003-08-21
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *   modified 2010-12-28, Murat Purc, replaced cHTMLDIV/cHTMLSPAN against cHTMLDiv/cHTMLSpan
+ *   modofied 2011-08-22, Timo Trautmann, removed hard coded css class text_medium with optional parameter   
  *
  *   $Id$:
  * }}
@@ -546,7 +547,7 @@ class cHTMLFormElement extends cHTML
 	 *
 	 * @return none
 	 */
-	function cHTMLFormElement($name = "", $id = "", $disabled = "", $tabindex = "", $accesskey = "")
+	function cHTMLFormElement($name = "", $id = "", $disabled = "", $tabindex = "", $accesskey = "", $class = "text_medium")
 	{
 		cHTML :: cHTML();
 
@@ -557,7 +558,7 @@ class cHTMLFormElement extends cHTML
 			$this->updateAttributes(array ("id" => $id));
 		}
 
-		$this->setClass("text_medium"); // TODO: Remove this...
+		$this->setClass($class);
 		$this->setDisabled($disabled);
 		$this->setTabindex($tabindex);
 		$this->setAccessKey($accesskey);
