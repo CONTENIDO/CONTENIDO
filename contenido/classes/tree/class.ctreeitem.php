@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.12
+ * @version    1.13
  * @author     Bjoern Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -232,6 +232,7 @@ class cTreeItem
 	 *
 	 * @return array
 	 * @access public
+	 * @deprecated 2011-08-22 
 	 */
 	function exportTree( )
 	{
