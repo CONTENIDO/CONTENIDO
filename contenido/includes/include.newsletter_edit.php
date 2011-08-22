@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.1.7
+ * @version    1.1.8
  * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -466,59 +466,6 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 			$oSendToDefault->toHTML(false)."&nbsp;".i18n("Send newsletter to the members of the default group")."<br />".chr(10).
 			$oSendToGroups->toHTML(false)."&nbsp;".i18n("Send newsletter to the members of the selected group(s):")."<br />".chr(10).
 			$oSelGroup->render());
-	
-	/* TODO: Work in progress
-	// Files
-	$oSelFiles = new cHTMLSelectElement("selFiles[]", "", "fileselect");
-	$oSelFiles->setSize(5);
-	//$oSelGroup->setStyle("width: 350px; margin-top: 5px; margin-bottom: 5px; margin-left: 25px;");
-	$oSelFiles->setMultiSelect();
-	$oSelFiles->setAlt(i18n("Note: Hold <Ctrl> to select multiple items."));
-	//$oSelGroup->autoFill($aItems);
-	$sFileSelScript = '<script type="text/javascript">
-		var fb_handle;
-		var fb_intervalhandle;
-
-		function fncShowImageBrowser()
-		{
-			fb_handle = window.open(\''.$cfg["path"]["contenido_fullhtml"] .'frameset.php?area=upl&contenido='.$sess->id.'&appendparameters=imagebrowser\', \'imagebrowser\', \'dialog=yes,resizable=yes\');
-			fb_intervalhandle = window.setInterval("fncUpdateImageFilebrowser()", 250);
-		}
-
-		function fncUpdateImageFilebrowser()
-		{
-			if (!fb_handle.left)
-			{
-				return;
-			}
-			
-			if (!fb_handle.left.left_top)
-			{
-				return;
-			}
-			
-			if (!fb_handle.left.left_top.document.getElementById("selectedfile"))
-			{
-				return;
-			}	
-			
-			if (fb_handle.left.left_top.document.getElementById("selectedfile").value != "")
-			{
-				var oSelElement = document.forms[0].elements["selFiles[]"];
-				var sValue = fb_handle.left.left_top.document.getElementById("selectedfile").value;
-
-				oSelElement.options[oSelElement.length] = new Option(sValue, sValue, false, false);
-
-				//fb_win.document.forms[0].elements[fb_fieldname].value = fb_handle.left.left_top.document.getElementById("selectedfile").value;
-				
-				fb_handle.close();
-				window.clearInterval(fb_intervalhandle);
-			}
-		}
-		</script>';
-	$oPage->addScript('selFile', $sFileSelScript);
-	$oForm->add(i18n("Attachments"), $oSelFiles->render().'<br /><span onclick="fncShowImageBrowser();">Test</span>');
-	*/
 	
 	// Options
 	$ckbWelcome		= new cHTMLCheckbox("ckbWelcome", "1");
