@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    1.0.4
+ * @version    1.0.5
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,7 @@
  *   modified 2009-12-16  Corrected rendering of multiple apostrophes in anchors
  *   modified 2010-01-15, Dominik Ziegler, added frontend url to client name
  *   modified 2011-01-28, Dominik Ziegler, added check for client existance for link to frontend [#CON-378]
+ *   modified 2011-08-22, Timo Trautman, removed commented code
  *
  *   $Id$:
  * }}
@@ -304,17 +305,6 @@ class Contenido_Navigation {
         } else {
             $main->set('s', 'HELP', '');
         }
-
-/*
-@TODO: is nowhere used
-        // kill perms link
-        $link = new cHTMLLink();
-        $link->setClass('main');
-        $link->setTargetFrame('header');
-        $link->setLink($sess->url("header.php?killperms=1"));
-        $link->setContent('<img src="'.$cfg['path']['contenido_fullhtml'].$cfg['path']['images'].'mycon.gif" border="0" alt="Reload Permission" title="Reload Permissions">');
-        $main->set('s', 'KILLPERMS', $link->render());
-*/
 
         $classuser = new User();
         $classclient = new Client();
