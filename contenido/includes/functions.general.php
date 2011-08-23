@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.3.5
+ * @version    1.3.6
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -30,6 +30,7 @@
  *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as contenido now requires at least PHP 5
  *   modified 2011-02-10, Dominik Ziegler, moved function declaration of IP_match out of front_content.php
  *   modified 2011-06-24, Murat Purc, corrected logic in scanDirectory(), cleanup and formatting
+ *   modified 2011-08-23, Dominik Ziegler, deprecated functions sendPostRequest and showTable
  *
  *   $Id$:
  * }}
@@ -382,6 +383,9 @@ function showLocation($area)
     }
 }
 
+/**
+ * @deprecated 2011-08-23
+ */
 function showTable($tablename)
 {
     global $db;
@@ -1697,6 +1701,8 @@ function createRandomName($nameLength)
  *
  * Example:
  * sendPostRequest("hostname", "serverpath/test.php", $data);
+ * 
+ * @deprecated 2011-08-23
  *
  * @param $host     Hostname or domain
  * @param $pathhost Path on the host or domain
