@@ -88,24 +88,31 @@ $cfg['path']['all_wysiwyg_html']        = '{CONTENIDO_WEB}/contenido/external/wy
  */
 
 /* The prefix for all contenido system tables, usually "con" */
+/* @deprecated [2011-08-23] Use new DB settings $cfg['db'] below */
 $cfg['sql']['sqlprefix'] = '{MYSQL_PREFIX}';
 
 /* The host where your database runs on */
+/* @deprecated [2011-08-23] Use new DB settings $cfg['db'] below */
 $contenido_host = '{MYSQL_HOST}';
 
 /* The database name which you use */
+/* @deprecated [2011-08-23] Use new DB settings $cfg['db'] below */
 $contenido_database = '{MYSQL_DB}';
 
 /* The username to access the database */
+/* @deprecated [2011-08-23] Use new DB settings $cfg['db'] below */
 $contenido_user = '{MYSQL_USER}';
 
 /* The password to access the database */
+/* @deprecated [2011-08-23] Use new DB settings $cfg['db'] below */
 $contenido_password = '{MYSQL_PASS}';
 
 $cfg["database_extension"] = '{DB_EXTENSION}';
 
+/* @deprecated [2011-08-23] Use new DB settings $cfg['db'] below */
 $cfg["nolock"] = '{NOLOCK}';
 
+/* @deprecated [2011-08-23] Use new DB settings $cfg['db'] below */
 $cfg["is_start_compatible"] = {START_COMPATIBLE};
 
 
