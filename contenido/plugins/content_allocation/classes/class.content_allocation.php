@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend plugins
- * @version    0.7.8
+ * @version    0.7.9
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -26,6 +26,7 @@
  *   modified 2005-11-21, Willi Man, new method findMarchingCOntentByContentAllocation_OR_Categories
  *   modified 2008-04-06, Holger Librenz, direct mysql_* calls remoced, using DB_Contenido:: methods instead
  *   modified 2008-07-02, Frederic Schneider, add security fix
+ *   modified 2011-08-23, Dominik Ziegler, added check for empty arrays [#CON-423]
  *
  *   $Id$:
  * }}
@@ -219,7 +220,7 @@ class pApiContentAllocation {
 	 */
 	function findMatchingContentByContentAllocationByCategories ($aContentAllocation, $aCategories = array(), $iOffset = 0, $iNumOfRows = 0)
 	{
-		if (!is_array($aContentAllocation)) { return array(); }
+		if (!is_array($aContentAllocation) || count($aContentAllocation) == 0) { return array(); }
 
 		for ($i = 0; $i < count($aContentAllocation); $i++)
 		{
