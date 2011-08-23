@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.2.1
+ * @version    1.2.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,7 @@
  *   modified 2008-11-21, Andreas Lindner, enhance formatting of client information
  *   modified 2008-11-21, Andreas Lindner, beautify output for empty configuration values
  *   modified 2011-05-18, Ortwin Pinke, bugfix fill missing tpl-values for bgcolor and rowid
+ *   modified 2011-08-23, Dominik Ziegler, removed support for old function sendBugReport()
  *
  *   $Id$:
  * }}
@@ -518,154 +519,5 @@ $sRowBgColor2 = $sRowBgColor1 = "#fff";
 		// do nothing
 	}
 
-}
-
-/**
- * sendBugReport - send users bugreport
- *
- * send users bugreport
- * contains 4 attachements
- * (1) errorlog.txt
- * (2) install.log.txt
- * (3) systemvariablen.html (generaten of writeSystemValuesOutput())
- * (4) phpinfo.html (generated of phpInfoToHtml())
- * 
- * to avoid errors when filesize attachement (1) or (2)
- * is 0kb temporarily attachements with a specified message
- * will be created
- *
- * return value:
- * - error code (0-3)
- *   0) mail send successfull (no errors or missing data)
- *   1) not all fields are filled out
- *   2) email adress is not valid
- *   3) user hasn't agreed to the declaration of consent
- * 
- *
- * @return string returns several server and Contenido settings		
- * @author Marco Jahn
- */
-function sendBugReport()
-{
-	global $_POST, $notification, $cfg;
-
-	/* will be set to another value than 0 if an error attempts */
-	$mailSendError = 0;
-
-	/* check if email is filled out */
-	if (strlen($_POST['sender']) == 0)
-	{
-		$mailSendError = 1;
-	}
-
-	/* check if forename is filled out */
-	if (strlen($_POST['forename']) == 0)
-	{
-		$mailSendError = 1;
-	}
-
-	/* check if surname is filled out */
-	if (strlen($_POST['surname']) == 0)
-	{
-		$mailSendError = 1;
-	}
-
-	/* check if bugreport is filled out */
-	if (strlen($_POST['bugreport']) == 0)
-	{
-		$mailSendError = 1;
-	}
-
-	/* check if email adress is valid */
-	if (isValidMail($_POST['sender']) == false)
-	{
-		$mailSendError = 2;
-	}
-
-	/* user has not agreed */
-	if ($_POST['agreement'] != 'on')
-	{
-		$mailSendError = 3;
-	}
-
-	if ($mailSendError == 0)
-	{
-		/* send mail */
-
-		/* initialize mail class */
-		$mail = new PHPMailer();
-
-		/* set sender information */
-		$mail->From = strip_tags($_POST['sender']);
-		$mail->FromName = strip_tags($_POST['forename']." ".$_POST['surname']);
-
-		/* set recipient */
-		$mail->AddAddress($cfg['bugreport']['targetemail'], "Bugreport recipient");
-
-		/* set mail function to use */
-		$mail->Mailer = "mail"; //use php mail function
-
-		/* generate subject & body */
-		$mail->Subject = "Bugreport";
-		$mail->Body = "Fehlerbereich: ".$_POST['selectarea']."<br><br>".nl2br(strip_tags($_POST['bugreport']));
-		$mail->AltBody = "Fehlerbereich: ".$_POST['selectarea']."\n\n".strip_tags($_POST['bugreport']);
-
-		/* add attachements */
-		if ($_POST['errorlog'] == 'on')
-		{
-			if (filesize($cfg['path']['contenido']."logs/errorlog.txt") > 0)
-			{ //filesize > 0 send alternative attachement
-				$mail->AddAttachment($cfg['path']['contenido']."logs/errorlog.txt", "errorlog.txt");
-			} else
-			{
-				$mail->AddStringAttachment("No error log entries found\n", "errorlog.txt");
-			}
-		}
-
-		if ($_POST['upgradeerrorlog'] == 'on')
-		{
-			if (filesize($cfg['path']['contenido']."logs/install.log.txt") > 0)
-			{ //filesize > 0 send alternative attachement
-				$mail->AddAttachment($cfg['path']['contenido']."logs/install.log.txt", "install.log.txt");
-			} else
-			{
-				$mail->AddStringAttachment("No install error log entries found\n", "install.log.txt");
-			}
-		}
-
-		if ($_POST['sysvalues'] == 'on')
-		{
-			//send sysvalue output
-			$mail->AddStringAttachment(writeSystemValuesOutput($usage = 'mail'), "systemvariables.html");
-		}
-
-		if ($_POST['phpinfo'] == 'on')
-		{
-			//send phpinfo output
-			$mail->AddStringAttachment(phpInfoToHtml(), "phpinfo.html");
-		}
-
-		if (!$mail->Send())
-		{
-			$tmp_notification = $notification->returnNotification("error", i18n("an error occured while sending your bug report! Please try again"));
-		} else
-		{
-			$tmp_notification = $notification->returnNotification("info", i18n("bug report forwarded"));
-		}
-	}
-	elseif ($mailSendError == 1)
-	{
-		/* user should fill all fields */
-		$tmp_notification = $notification->returnNotification("warning", i18n("please fill out all mandatory fields"));
-	}
-	elseif ($mailSendError == 2)
-	{ /* email adress is not valid */
-		$tmp_notification = $notification->returnNotification("warning", i18n("please enter a valid E-Mail adress"));
-	}
-	elseif ($mailSendError == 3)
-	{ /* user hasn't agreed to the declaration of consent */
-		$tmp_notification = $notification->returnNotification("warning", i18n("you must agree the declaration of consent"));
-	}
-	return $mailSendError."||".$tmp_notification;
 }
 ?>
