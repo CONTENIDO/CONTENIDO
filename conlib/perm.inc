@@ -585,9 +585,7 @@ class Contenido_Perm
         
         return $oUser;    
     }
-    /**
-     * @deprecated
-     */
+
     function have_perm_client($p = 'x')
     {
         global $auth, $client;
