@@ -242,6 +242,5 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
     	document.login.password.focus();
     }
 </script>
-<!-- <?php echo $cfg['datetag']; ?> -->
 </body>
 </html>

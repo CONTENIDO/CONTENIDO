@@ -28,6 +28,7 @@
  *   modified 2008-12-04, Bilal Arslan, added for config-password examples.
  *   modified 2010-05-20, Murat Purc, documented settings for UrlBuilder and caching.
  *   modified 2011-03-13  Murat Purc, added configuration for GenericDB caching.
+ *   modified 2011-08-24, Dominik Ziegler, removed CVS datetag configuration entry
  *
  *   $Id$:
  * }}
@@ -53,9 +54,6 @@ global $cfg;
 /* Current Contenido Version. You shouldn't change this
    value unless you know what you are doing. */
 $cfg['version'] = '4.8.16-RC1';
-
-/* CVS Date tag */
-$cfg['datetag'] = '$Date$';
 
 /* Backend timeout */
 $cfg["backend"]["timeout"] = 60;
