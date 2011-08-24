@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.3.1
+ * @version    1.3.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,6 +24,7 @@
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-07-11, Dominik Ziegler, removed deprecated functions
  *   modified 2011-05-17, Murat Purc, documented functions and some optimizations
+ *   modified 2011-08-24, Dominik Ziegler, removed deprecated functions
  *
  *   $Id$:
  * }}
@@ -384,76 +385,5 @@ function dbUpdateSequence($sequencetable, $table, $db = false)
     if ($bClose == true) {
         $db->close();
     }
-}
-
-
-/**
- * @deprecated
- * @since 2008-07-11
- */
-function dbDumpStructure($db, $table, $return = false)
-{
-    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
-    return;
-}
-
-/**
- * @deprecated
- * @since 2008-07-11
- */
-function dbDumpArea($db, $id)
-{
-    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
-    return;
-}
-
-/**
- * @deprecated
- * @since 2008-07-11
- */
-function dbDumpAreasAsArray($arrayname, $db)
-{
-    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
-    return;
-}
-
-/**
- * @deprecated
- * @since 2008-07-11
- */
-function dbDumpNavSub($arrayname, $db, $nextidarea)
-{
-    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
-    return;
-}
-
-/**
- * @deprecated
- * @since 2008-07-11
- */
-function dbInsertData($table, $data)
-{
-    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
-    return;
-}
-
-/**
- * @deprecated
- * @since 2008-07-11
- */
-function dbDumpData($table)
-{
-    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
-    return;
-}
-
-/**
- * @deprecated
- * @since 2008-07-11
- */
-function dbUpgradeData($table, $valuesArray)
-{
-    /* this function is deprecated since Contenido 4.8.7 - 2008-07-11 */
-    return;
 }
 ?>
