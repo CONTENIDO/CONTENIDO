@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.3.7
+ * @version    1.3.8
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -32,6 +32,7 @@
  *   modified 2011-06-24, Murat Purc, corrected logic in scanDirectory(), cleanup and formatting
  *   modified 2011-08-23, Dominik Ziegler, deprecated functions sendPostRequest and showTable
  *   modified 2011-08-24, Dominik Ziegler, removed deprecated function SaveKeywordsforart
+ *   modified 2011-08-24, Dominik Ziegler, deprecated function cIDNAEncode and cIDNADecode
  *
  *   $Id$:
  * }}
@@ -2024,6 +2025,9 @@ function notifyOnError($errortitle, $errormessage)
     }
 }
 
+/**
+ * @deprecated 2011-08-24 this function is not supported any longer
+ */
 function cIDNAEncode($sourceEncoding, $string)
 {
     if (extension_loaded("iconv")) {
@@ -2045,6 +2049,9 @@ function cIDNAEncode($sourceEncoding, $string)
     return $string;
 }
 
+/**
+ * @deprecated 2011-08-24 this function is not supported any longer
+ */
 function cIDNADecode($targetEncoding, $string)
 {
     if (extension_loaded("iconv")) {
