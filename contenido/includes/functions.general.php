@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.3.6
+ * @version    1.3.7
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -31,6 +31,7 @@
  *   modified 2011-02-10, Dominik Ziegler, moved function declaration of IP_match out of front_content.php
  *   modified 2011-06-24, Murat Purc, corrected logic in scanDirectory(), cleanup and formatting
  *   modified 2011-08-23, Dominik Ziegler, deprecated functions sendPostRequest and showTable
+ *   modified 2011-08-24, Dominik Ziegler, removed deprecated function SaveKeywordsforart
  *
  *   $Id$:
  * }}
@@ -494,17 +495,6 @@ function getAllClientsAndLanguages()
         );
     }
     return $aRs;
-}
-
-/**
- * @deprecated since 22.08.2005
- * This function is called everytime when the code of an article is generated.
- * In this case indexing can cause performance problems.
- * Indexing an article is treated now in function conSaveContentEntry.
- */
-function SaveKeywordsforart($keycode, $idart, $place, $lang)
-{
-    ; # do nothing
 }
 
 function fakeheader($time)

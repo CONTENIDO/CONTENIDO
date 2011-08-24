@@ -12,7 +12,7 @@
  * 
  *
  * @package    Contenido Backend includes
- * @version    1.0.4
+ * @version    1.0.5
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -34,6 +34,7 @@
  *   modified 2009-12-01, Dominik Ziegler, bugfix in conFlagOnOffline (article is still offline if enddate in time management is missing)
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *   modified 2010-10-13, Dominik Ziegler, No copy label per default when copying articles or categories (CON-352)
+ *   modified 2011-08-24, Dominik Ziegler, removed call of deprecated function SaveKeywordsforart
  *  
  *   $Id$:
  * }}
@@ -100,7 +101,6 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
         # Set self defined Keywords
         if ( $keyart != "" ) {
             $keycode[1][1] = $keyart;
-            SaveKeywordsforart($keycode,$new_idart,"self",$lang);
         }
 
         # Table 'cat_art'
@@ -871,8 +871,6 @@ function conDeleteart($idart)
     ##################################################
     # set keywords
     $keycode[1][1]="";
-    saveKeywordsForArt($keycode,$idart,"auto",$lang);
-    saveKeywordsForArt($keycode,$idart,"self",$lang);
 
     if ( is_array($idcatart) ) {
 

@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  * @package    CONTENIDO Backend classes
- * @version    0.0.1
+ * @version    0.0.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,6 +20,7 @@
  *
  * {@internal
  *   created 2011-08-11
+ *   modified 2011-08-24, Dominik Ziegler, removed deprecated function SaveKeywordsforart
  *   $Id$:
  * }}
  *
@@ -170,10 +171,6 @@ abstract class Contenido_CodeGenerator_Abstract
             }
 
             $this->_code = str_ireplace($search, $replacements, $this->_code);
-        }
-
-        if (true === $saveKeywords && count($keycode) > 0) {
-            saveKeywordsForArt($keycode, $this->_idart, 'auto', $this->_lang);
         }
     }
 
