@@ -389,7 +389,9 @@ function showLocation($area)
 function showTable($tablename)
 {
     global $db;
-
+	
+	cWarning(__FILE__, __LINE__, "Deprecated function call, this function is not longer supported and will be removed in further version!");
+	
     $sql = "SELECT * FROM $tablename";
     $db->query($sql);
     while ($db->next_record()) {
@@ -1712,6 +1714,8 @@ function createRandomName($nameLength)
  */
 function sendPostRequest($host, $path, $data, $referer = "", $port = 80)
 {
+	cWarning(__FILE__, __LINE__, "Deprecated function call, this function is not longer supported and will be removed in further version!");
+	
     $fp = fsockopen($host, $port);
 
     fputs($fp, "POST $path HTTP/1.1\n");
