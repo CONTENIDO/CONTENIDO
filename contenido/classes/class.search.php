@@ -13,7 +13,7 @@
  *
  *
  * @package    Contenido Backend classes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Willi Man
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,7 @@
  *   modified 2008-07-11, Dominik Ziegler, marked class search_helper as deprecated
  *   modified 2008-11-12, Andreas Lindner, add special treatment for iso-8859-2
  *   modified 2011-02-08, Murat Purc, removed PHP 4.3 related code, cleanup and formatting, created SearchBaseAbstract class
+ *   modified 2011-08-24, Dominik Ziegler, removed deprecated class search_helper
  *
  *   $Id$:
  * }}
@@ -1529,18 +1530,4 @@ class SearchResult extends SearchBaseAbstract
     }
 
 }
-
-/**
- * @deprecated
- * @since 2008-07-11
- *
- */
-class Search_helper {
-
-    var $oDb = NULL;
-
-    function search_helper ($oDb, $lang, $client) {
-    }
-}
-
 ?>
