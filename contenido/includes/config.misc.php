@@ -53,7 +53,7 @@ global $cfg;
 
 /* Current Contenido Version. You shouldn't change this
    value unless you know what you are doing. */
-$cfg['version'] = '4.8.16-RC1';
+$cfg['version'] = '4.9.0-alpha1';
 
 /* Backend timeout */
 $cfg["backend"]["timeout"] = 60;
