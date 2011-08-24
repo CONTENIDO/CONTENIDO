@@ -11,7 +11,7 @@
  * 
  *
  * @package    Contenido Backend classes
- * @version    1.0.4
+ * @version    1.0.5
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,6 +22,7 @@
  * {@internal 
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+ *   modified 2011-08-24, Dominik Ziegler, marked class as deprecated
  *
  *   $Id$:
  * }}
@@ -49,6 +50,9 @@ if(!defined('CON_FRAMEWORK')) {
 define("CMETAOBJECT_BASE", 1);
 define("CMETAOBJECT_PLUGIN", 2);
 
+/**
+ * @deprecated 2011-08-24 this class is not supported any longer
+ */
 class cMetaObject
 {
 	
@@ -72,6 +76,8 @@ class cMetaObject
 		
 	function cMetaObject ($payload = false)
 	{
+		cWarning(__FILE__, __LINE__, "Call of deprecated class cMetaObject. This class is not longer supported and will be removed in further version.");
+	
 		$this->_actions = array();
 		$this->_fields = array();
 		$this->_objectInvalid = false;
