@@ -11,7 +11,7 @@
  *
  *
  * @package    Contenido Backend includes
- * @version    1.3.11
+ * @version    1.3.12
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -35,6 +35,7 @@
  *   modified 2010-06-18, Ingo van Peeren, fixed some issues with next id and order of con_cat_tree entries 
  *   modified 2010-09-17, Ingo van Peeren, fixed some issues wrong level information causing garbled tree [#CON-348]
  *   modified 2010-10-13, Dominik Ziegler, No copy label per default when copying articles or categories (CON-352)
+ *   modified 2011-08-24, Dominik Ziegler, removed deprecated function strRemakeTreeTableFindNext
  *
  *   $Id$:
  * }}
@@ -54,7 +55,6 @@ strRemakeTreeTable()
 strNextDeeper($tmp_idcat)
 strNextPost($tmp_idcat)
 strNextBackwards($tmp_idcat)
-strRemakeTreeTableFindNext($tmp_idcat,$tmp_level)
 strShowTreeTable()
 strRenameCategory ($idcat, $lang, $newcategoryname)
 strMakeVisible ($idcat, $lang, $visible)
@@ -645,33 +645,6 @@ function strNextBackwards($tmp_idcat) {
         return 0;
     }
 }
-
-/**
- *    Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann (strRemakeTreeTableFindNext)
- *    @deprecated 
- **/
-function strRemakeTreeTableFindNext($tmp_idcat,$tmp_level) {
-    global $db;
-    global $cfg;
-
-    //************* Insert Element in 'cat_tree'-table **************
-    $sql = "INSERT INTO ".$cfg["tab"]["cat_tree"]." (idtree, idcat, level) VALUES ('".$db->nextid($cfg["tab"]["cat_tree"])."', '".Contenido_Security::toInteger($tmp_idcat)."', '".Contenido_Security::toInteger($tmp_level)."')";
-    $db->query($sql);
-
-    //************* dig deeper, if possible ******
-    $tmp = strNextDeeperAll($tmp_idcat, true);
-
-    foreach ($tmp as $iCurIdCat) {
-        if (count(strNextDeeperAll($iCurIdCat, true)) > 0 ) {
-            strRemakeTreeTableFindNext($iCurIdCat, ($tmp_level+1));
-        } else {
-            $sql = "INSERT INTO ".$cfg["tab"]["cat_tree"]." (idtree, idcat, level) VALUES ('".$db->nextid($cfg["tab"]["cat_tree"])."', '".Contenido_Security::toInteger($iCurIdCat)."', '".Contenido_Security::toInteger($tmp_level+1)."')";
-            $db->query($sql);
-        }
-    }
-}
-
-
 
 /**
     Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann
