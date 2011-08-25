@@ -66,7 +66,9 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
     // @todo make generator configurable and merge with include.con_editcontent.php
     $codeGen = Contenido_CodeGenerator_Factory::getInstance('Standard');
 //    $codeGen->setDebug(true);
-    $codeGen->setFrontendDebugOptions($frontend_debug);
+    if (isset($frontend_debug) && is_array($frontend_debug)) {
+        $codeGen->setFrontendDebugOptions($frontend_debug);
+    }
 
     $code = $codeGen->generate($idcat, $idart, $lang, $client, $layout);
 
