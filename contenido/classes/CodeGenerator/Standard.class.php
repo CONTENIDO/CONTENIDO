@@ -81,6 +81,9 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
             $a_container = explode('&', $tmp_returnstring);
 
             foreach ($a_container as $key => $value) {
+                if (!isset($a_d[$value]) || !is_numeric($a_d[$value])) {
+                    continue;
+                }
 
                 $sql = "SELECT * FROM " . $cfg["tab"]["mod"] . " WHERE idmod=" . $a_d[$value];
                 $db->query($sql);
