@@ -17,7 +17,7 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since Contenido release 4.8.15
+ * @since      file available since Contenido release 4.9.0
  *
  * {@internal
  *   created   2011-04-11

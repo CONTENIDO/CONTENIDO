@@ -63,7 +63,7 @@ if (!defined('CON_FRAMEWORK')) {
  * includes    Path to the contenido includes
  * scripts     Path to the contenido scripts
  *
- * NOTE: Since Contenido (since v 4.8.15) provides autoloading of required
+ * NOTE: Since Contenido (since v 4.9.0) provides autoloading of required
  *       class files, there is no need to load Contenido class files of by using
  *       contenido_include() or cInclude().
  *

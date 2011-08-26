@@ -1,4 +1,4 @@
-Advanced Mod Rewrite Plugin für Contenido >= 4.8.15
+Advanced Mod Rewrite Plugin für Contenido >= 4.9.0
 
 ################################################################################
 TOC (Table of contents)
