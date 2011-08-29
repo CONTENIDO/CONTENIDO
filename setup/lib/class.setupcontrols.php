@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
@@ -9,7 +9,7 @@
  * @con_php_req 5
  * 
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -244,7 +244,7 @@ class cHTMLButtonLink extends cHTMLDiv
 		$linkImage->setHeight(16);
 
 		
-		$this->setStyle("vertical-align: center; height: 40px; width: 150px;");
+		$this->setStyle("vertical-align: center; height: 40px; width: 165px;");
 		$link = new cHTMLLink($href);
 		$link->setAttribute("target", "_blank");
 		$link->setContent($title);

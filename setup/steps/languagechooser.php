@@ -1,14 +1,14 @@
 <?php
  /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -40,7 +40,7 @@ class cSetupLanguageChooser extends cSetupMask
 	{
 		cSetupMask::cSetupMask("templates/languagechooser.tpl");
 		$this->setHeader('Version '.C_SETUP_VERSION);
-		$this->_oStepTemplate->set("s", "DE_HINT", "Diese Anwendung hilft Ihnen bei der Installation von Contenido.");
+		$this->_oStepTemplate->set("s", "DE_HINT", "Diese Anwendung hilft Ihnen bei der Installation von CONTENIDO.");
 		$this->_oStepTemplate->set("s", "EN_HINT", "This application will guide you trough the setup process.");
 		$this->_oStepTemplate->set("s", "DE_HINT_LANG", "W&auml;hlen Sie bitte die gew&uuml;nschte Sprache f&uuml;r das Setup aus.");
 		$this->_oStepTemplate->set("s", "EN_HINT_LANG", "Please choose your language to continue.");

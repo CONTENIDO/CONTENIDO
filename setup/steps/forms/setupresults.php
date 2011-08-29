@@ -1,14 +1,14 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -42,14 +42,14 @@ class cSetupResults extends cSetupMask
 		{
 			cSetupMask::cSetupMask("templates/setup/forms/setupresults.tpl", $step); 
 			$this->_oStepTemplate->set("s", "TITLE", i18n("Results"));
-			$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Contenido was installed and configured successfully on your server."));
+			$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO was installed and configured successfully on your server."));
             if ($_SESSION["setuptype"] == 'setup') {
-                $this->_oStepTemplate->set("s", "LOGIN_INFO", '<p>'.i18n("Please use username <b>sysadmin</b> and password <b>sysadmin</b> to login into Contenido Backend.").'</p>');
+                $this->_oStepTemplate->set("s", "LOGIN_INFO", '<p>'.i18n("Please use username <b>sysadmin</b> and password <b>sysadmin</b> to login into CONTENIDO Backend.").'</p>');
             } else {
                 $this->_oStepTemplate->set("s", "LOGIN_INFO", '');
             }
 			$this->_oStepTemplate->set("s", "CHOOSENEXTSTEP", i18n("Please choose an item to start working:"));
-			$this->_oStepTemplate->set("s", "FINISHTEXT", i18n("You can now start using Contenido. Please delete the folder named 'setup'!"));
+			$this->_oStepTemplate->set("s", "FINISHTEXT", i18n("You can now start using CONTENIDO. Please delete the folder named 'setup'!"));
 			
 			
 			list($root_path, $root_http_path) = getSystemDirectories();
@@ -67,13 +67,13 @@ class cSetupResults extends cSetupMask
 				$this->_oStepTemplate->set("s", "FRONTEND", "");
 			}
 			
-			$cHTMLButtonLink = new cHTMLButtonLink("http://www.contenido.org/", "Contenido Website");
+			$cHTMLButtonLink = new cHTMLButtonLink("http://www.contenido.org/", "CONTENIDO Website");
 			$this->_oStepTemplate->set("s", "WEBSITE", $cHTMLButtonLink->render());			
 			
-			$cHTMLButtonLink = new cHTMLButtonLink("http://forum.contenido.org/", "Contenido Forum");
+			$cHTMLButtonLink = new cHTMLButtonLink("http://forum.contenido.org/", "CONTENIDO Forum");
 			$this->_oStepTemplate->set("s", "FORUM", $cHTMLButtonLink->render());
 
-   $cHTMLButtonLink = new cHTMLButtonLink("http://faq.contenido.org/", "Contenido FAQ");
+   $cHTMLButtonLink = new cHTMLButtonLink("http://faq.contenido.org/", "CONTENIDO FAQ");
 			$this->_oStepTemplate->set("s", "FAQ", $cHTMLButtonLink->render());
 		} else {
 			cSetupMask::cSetupMask("templates/setup/forms/setupresultsfail.tpl", $step); 

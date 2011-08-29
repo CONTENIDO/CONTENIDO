@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Release toolkit
@@ -9,7 +9,7 @@
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -22,7 +22,7 @@
  * {@internal 
  *   created  2005-10-06
  *   modified 2008-07-07, bilal arslan, added security fix
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-// Contenido startup process
+// CONTENIDO startup process
 include_once ('../../contenido/includes/startup.php');
 
 cInclude("includes", "functions.database.php");
@@ -43,7 +43,7 @@ cInclude("includes", "functions.database.php");
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
-  <title>Contenido - Release Toolkit</title>
+  <title>CONTENIDO - Release Toolkit</title>
   <style type="text/css">
      body,tr,td {
                    background-color: #ffffff;
@@ -96,8 +96,8 @@ cInclude("includes", "functions.database.php");
   <tbody>
     <tr>
       <td>
-        <img src="../images/logo.gif" alt="Contenido" width="200" height="30" style="padding-right: 20px;">
-        <h1>Contenido - Release Toolkit</h1>
+        <img src="../images/logo.gif" alt="CONTENIDO" width="200" height="30" style="padding-right: 20px;">
+        <h1>CONTENIDO - Release Toolkit</h1>
       </td>
     </tr>
   </tbody>

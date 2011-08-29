@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Contains setup related functions
@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  *
- * @package    Contenido setup
+ * @package    CONTENIDO setup
  * @version    0.3.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -23,7 +23,7 @@
  * {@internal
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
- *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as contenido now requires at least PHP 5
+ *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as CONTENIDO now requires at least PHP 5
  *   modified 2011-05-19, Murat Purc, check for defined constant C_SETUP_STEPS to prevent thrown warnings
  *
  *   $Id$:

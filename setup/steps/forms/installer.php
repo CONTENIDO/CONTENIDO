@@ -1,14 +1,14 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -39,7 +39,7 @@ class cSetupInstaller extends cSetupMask
 		cSetupMask::cSetupMask("templates/setup/forms/installer.tpl", $step);
 		$this->setHeader(i18n("System Installation"));
 		$this->_oStepTemplate->set("s", "TITLE", i18n("System Installation"));
-		$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Contenido will be installed, please wait ..."));
+		$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("CONTENIDO will be installed, please wait ..."));
 		
 		$this->_oStepTemplate->set("s", "DBUPDATESCRIPT", "dbupdate.php");
 		

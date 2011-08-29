@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Step x of installation: Choose plugins to install
@@ -21,7 +21,7 @@
  * hopefully you're done now...
  * 
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    1.0.0
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
@@ -58,9 +58,9 @@ class cSetupAdditionalPlugins extends cSetupMask
         
 		// add new plugins to this array and you're done.
 		$aPlugins = array();
-		$aPlugins['plugin_newsletter'] = array('label' => i18n('Newsletter'), 'desc' => i18n('Newsletterfunctionality for dispatching text newsletters and HTML-Newsletters, extensible with professional newsletter extensions. Definition of newsletter recipients and groups of recipients. Layout design of the HTML-Newsletters by Contenido articles.'));
+		$aPlugins['plugin_newsletter'] = array('label' => i18n('Newsletter'), 'desc' => i18n('Newsletterfunctionality for dispatching text newsletters and HTML-Newsletters, extensible with professional newsletter extensions. Definition of newsletter recipients and groups of recipients. Layout design of the HTML-Newsletters by CONTENIDO articles.'));
 		$aPlugins['plugin_content_allocation'] = array('label' => i18n('Content Allocation'), 'desc' => i18n('For the representation and administration of content, 4fb developed the Content Allocation and content include technology. This technology dynamically allows on basis of a Template, to put the content in different places and in different formats according to several criteria.'));
-		$aPlugins['plugin_mod_rewrite'] = array('label' => i18n('Mod Rewrite'), 'desc' => i18n('Creates so called Clean URLs for a Contenido installation'));
+		$aPlugins['plugin_mod_rewrite'] = array('label' => i18n('Mod Rewrite'), 'desc' => i18n('Creates so called Clean URLs for a CONTENIDO installation'));
 		
 		$sCheckBoxes = '';
 		if (sizeof($aPlugins) > 0) {

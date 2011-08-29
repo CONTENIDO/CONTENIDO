@@ -1,7 +1,7 @@
 <?php
  /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Step 6 of installation
@@ -9,7 +9,7 @@
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    1.0.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>

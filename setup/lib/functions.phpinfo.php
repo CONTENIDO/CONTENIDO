@@ -1,14 +1,14 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.3
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -21,7 +21,7 @@
  * {@internal 
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
- *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as contenido now requires at least PHP 5
+ *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as CONTENIDO now requires at least PHP 5
  *
  *   $Id$:
  * }}

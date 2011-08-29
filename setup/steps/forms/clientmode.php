@@ -1,14 +1,14 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -39,7 +39,7 @@ class cSetupClientMode extends cSetupMask
 		cSetupMask::cSetupMask("templates/setup/forms/clientmode.tpl", $step);
 		$this->setHeader(i18n("Example Client"));
 		$this->_oStepTemplate->set("s", "TITLE", i18n("Example Client"));
-		$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("If you are new to Contenido, you should create an example client to start working with."));
+		$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("If you are new to CONTENIDO, you should create an example client to start working with."));
 
 		cInitializeArrayKey($_SESSION, "clientmode", "");
 		

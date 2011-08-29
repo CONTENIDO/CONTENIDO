@@ -1,23 +1,23 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Main Contenido setup bootstrap file.
+ * Main CONTENIDO setup bootstrap file.
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
- * @package    Contenido setup bootstrap
+ * @package    CONTENIDO setup bootstrap
  * @version    0.0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.9.0
+ * @since      file available since CONTENIDO release <= 4.9.0
  *
  * {@internal
  *   created  2011-02-28
@@ -44,7 +44,7 @@ header('Content-Type: text/html; charset=ISO-8859-1');
 // Check version in the 'first' line, as class.security.php uses
 // PHP5 object syntax not compatible with PHP < 5
 if (version_compare(PHP_VERSION, '5.0.0', '<')) {
-    die("You need PHP >= 5.0.0 for Contenido. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
+    die("You need PHP >= 5.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
 }
 
 // include security class and check request variables

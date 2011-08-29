@@ -1,15 +1,15 @@
 <?php
  /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Contenido setup script
+ * CONTENIDO setup script
  *
  * Requirements:
  * @con_php_req 5
  *
- * @package    Contenido setup
+ * @package    CONTENIDO setup
  * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>

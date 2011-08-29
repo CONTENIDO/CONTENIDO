@@ -93,7 +93,7 @@
 <!-- 2008-02-26 rbi Replaced ugly table with a div based solution -->
 <div id="setupBox">
 	<div id="setupHead">
-		<img src="images/logo.gif" alt="Contenido Logo" />
+		<img src="images/logo.gif" alt="CONTENIDO Logo" />
 	</div>
 	<div id="setupHeadlinePath">
 		<div style="float:left;">{HEADER}</div><div style="float:right;padding-right:24px;">{STEPS}</div>

@@ -1,14 +1,14 @@
 <?php
  /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -39,13 +39,13 @@ class cSetupTypeChooser extends cSetupMask
 	{
 		cSetupMask::cSetupMask("templates/setuptype.tpl");
 		$this->setHeader(i18n("Please choose your setup type"));
-		$this->_oStepTemplate->set("s", "TITLE_SETUP", i18n("Install new Contenido version"));
+		$this->_oStepTemplate->set("s", "TITLE_SETUP", i18n("Install new CONTENIDO version"));
 		$this->_oStepTemplate->set("s", "VERSION_SETUP", sprintf(i18n("Version %s"), C_SETUP_VERSION));		
-		$this->_oStepTemplate->set("s", "DESCRIPTION_SETUP", sprintf(i18n("This setup type will install Contenido %s."), C_SETUP_VERSION)."<br><br>".i18n("Please choose this type if you want to start with an empty or an example installation.")."<br><br>".i18n("Recommended for new projects."));
+		$this->_oStepTemplate->set("s", "DESCRIPTION_SETUP", sprintf(i18n("This setup type will install CONTENIDO %s."), C_SETUP_VERSION)."<br><br>".i18n("Please choose this type if you want to start with an empty or an example installation.")."<br><br>".i18n("Recommended for new projects."));
 
 		$this->_oStepTemplate->set("s", "TITLE_UPGRADE", i18n("Upgrade existing installation"));
 		$this->_oStepTemplate->set("s", "VERSION_UPGRADE", sprintf(i18n("Upgrade to %s"), C_SETUP_VERSION));		
-		$this->_oStepTemplate->set("s", "DESCRIPTION_UPGRADE", i18n("This setup type will upgrade your existing installation (Contenido 4.6.x or later required).")."<br><br>".i18n("Recommended for existing projects."));		
+		$this->_oStepTemplate->set("s", "DESCRIPTION_UPGRADE", i18n("This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required).")."<br><br>".i18n("Recommended for existing projects."));		
 		
 		$this->_oStepTemplate->set("s", "TITLE_MIGRATION", i18n("Migrate existing installation"));
 		$this->_oStepTemplate->set("s", "VERSION_MIGRATION", sprintf(i18n("Migrate (Version %s)"), C_SETUP_VERSION));		

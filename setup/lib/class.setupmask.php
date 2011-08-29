@@ -1,14 +1,14 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -129,7 +129,7 @@ class cSetupMask
 		}
 		
 		$this->_oTpl->set("s", "HEADER", $this->_sHeader);
-		$this->_oTpl->set("s", "TITLE", "Contenido Setup - " . $this->_sHeader);
+		$this->_oTpl->set("s", "TITLE", "CONTENIDO Setup - " . $this->_sHeader);
 
 		$this->_oTpl->set("s", "CONTENT", $this->_oStepTemplate->generate($this->_sStepTemplate, true, false));
 

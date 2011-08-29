@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  *
@@ -9,7 +9,7 @@
  * @con_php_req 5
  *
  *
- * @package    Contenido Setup
+ * @package    CONTENIDO Setup
  * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>

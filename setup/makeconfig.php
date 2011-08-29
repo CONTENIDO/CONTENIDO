@@ -1,16 +1,16 @@
 <?php
  /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Generates the configuration file and saves it into contenido folder or
+ * Generates the configuration file and saves it into CONTENIDO folder or
  * outputs the for download (depending on selected option during setup)
  *
  * Requirements:
  * @con_php_req 5
  *
- * @package    Contenido setup
+ * @package    CONTENIDO setup
  * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>

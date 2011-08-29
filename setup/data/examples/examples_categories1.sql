@@ -71,7 +71,7 @@ INSERT INTO !PREFIX!_cat_art VALUES (36, 31, 36, 0, 0, '', '0000-00-00 00:00:00'
 INSERT INTO !PREFIX!_cat_art VALUES (37, 32, 37, 0, 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0);
 INSERT INTO !PREFIX!_cat_art VALUES (38, 2, 38, 0, 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0);
 INSERT INTO !PREFIX!_cat_lang VALUES (1, 1, 1, 9, 'Hauptnavigation', 1, 1, 0, 'sysadmin', '2008-04-14 16:12:50', '2008-04-14 16:12:50', 1, 'Hauptnavigation', '');
-INSERT INTO !PREFIX!_cat_lang VALUES (2, 2, 1, 10, 'Was ist Contenido', 1, 1, 0, 'sysadmin', '2008-04-14 16:13:02', '2008-04-14 16:13:02', 3, 'Was-ist-Contenido', '');
+INSERT INTO !PREFIX!_cat_lang VALUES (2, 2, 1, 10, 'Was ist CONTENIDO', 1, 1, 0, 'sysadmin', '2008-04-14 16:13:02', '2008-04-14 16:13:02', 3, 'Was-ist-CONTENIDO', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (3, 3, 1, 11, 'Erste Schritte', 1, 1, 0, 'sysadmin', '2008-04-14 16:13:34', '2008-04-14 16:13:34', 5, 'Erste-Schritte', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (4, 4, 1, 12, 'Features dieser Website', 1, 1, 0, 'sysadmin', '2008-04-14 16:13:46', '2008-04-14 16:13:46', 11, 'Features-dieser-Website', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (5, 5, 1, 13, 'Navigation', 1, 1, 0, 'sysadmin', '2008-04-14 16:14:01', '2008-04-14 16:14:01', 12, 'Navigation', '');
@@ -80,7 +80,7 @@ INSERT INTO !PREFIX!_cat_lang VALUES (7, 7, 1, 15, 'News', 1, 1, 0, 'sysadmin', 
 INSERT INTO !PREFIX!_cat_lang VALUES (8, 8, 1, 16, 'Bildergalerie', 1, 1, 0, 'sysadmin', '2008-04-14 16:14:41', '2008-04-14 16:14:41', 15, 'Bildergalerie', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (9, 9, 1, 17, 'Geschlossener Bereich', 1, 1, 0, 'sysadmin', '2008-04-14 16:14:53', '2008-04-14 16:14:53', 16, 'Geschlossener-Bereich', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (10, 10, 1, 18, 'Vertraulich', 1, 0, 0, 'sysadmin', '2008-04-14 16:15:07', '2008-04-14 16:18:33', 17, 'Vertraulich', '');
-INSERT INTO !PREFIX!_cat_lang VALUES (11, 11, 1, 19, 'Der Contenido Experte', 1, 1, 0, 'sysadmin', '2008-04-14 16:16:40', '2008-04-14 16:16:40', 18, 'Der-Contenido-Experte', '');
+INSERT INTO !PREFIX!_cat_lang VALUES (11, 11, 1, 19, 'Der CONTENIDO Experte', 1, 1, 0, 'sysadmin', '2008-04-14 16:16:40', '2008-04-14 16:16:40', 18, 'Der-CONTENIDO-Experte', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (12, 12, 1, 20, 'Services', 1, 1, 0, 'sysadmin', '2008-04-14 16:16:51', '2008-04-14 16:16:51', 19, 'Services', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (13, 13, 1, 21, 'Hosting', 1, 1, 0, 'sysadmin', '2008-04-14 16:17:04', '2008-04-14 16:17:04', 20, 'Hosting', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (14, 14, 1, 22, 'Dedizierte Server', 1, 1, 0, 'sysadmin', '2008-04-14 16:17:17', '2008-04-14 16:17:17', 21, 'Dedizierte-Server', '');
@@ -105,7 +105,7 @@ INSERT INTO !PREFIX!_cat_lang VALUES (32, 32, 1, 40, 'Suchergebnisse', 1, 1, 0, 
 INSERT INTO !PREFIX!_cat_lang VALUES (33, 33, 1, 41, 'HTML-Newsletter Templates', 1, 1, 0, 'sysadmin', '2008-04-14 16:21:27', '2008-04-14 16:21:27', 0, 'HTML-Newsletter-Templates', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (34, 34, 1, 42, 'HTML-Newsletter', 1, 1, 0, 'sysadmin', '2008-04-14 16:21:37', '2008-04-14 16:21:37', 0, 'HTML-Newsletter', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (35, 1, 2, 43, 'Main Navigation', 1, 1, 0, 'sysadmin', '2008-04-14 16:12:50', '2008-04-14 16:25:22', 38, 'Main-Navigation', '');
-INSERT INTO !PREFIX!_cat_lang VALUES (36, 2, 2, 44, 'The Contenido Principle', 1, 1, 0, 'sysadmin', '2008-04-14 16:13:02', '2008-04-14 16:25:22', 49, 'The-Contenido-Principle', '');
+INSERT INTO !PREFIX!_cat_lang VALUES (36, 2, 2, 44, 'The CONTENIDO Principle', 1, 1, 0, 'sysadmin', '2008-04-14 16:13:02', '2008-04-14 16:25:22', 49, 'The-CONTENIDO-Principle', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (37, 21, 2, 45, 'Newsletter', 1, 1, 0, 'sysadmin', '2008-04-14 16:18:25', '2008-04-14 16:25:22', 39, 'Newsletter', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (38, 22, 2, 46, 'Metanavigation', 1, 1, 0, 'sysadmin', '2008-04-14 16:18:53', '2008-04-14 16:25:24', 0, 'Metanavigation', '');
 INSERT INTO !PREFIX!_cat_lang VALUES (39, 23, 2, 47, 'Contact', 1, 1, 0, 'sysadmin', '2008-04-14 16:19:02', '2008-04-14 16:25:24', 40, 'Contact', '');

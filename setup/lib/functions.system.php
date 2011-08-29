@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
@@ -9,7 +9,7 @@
  * @con_php_req 5
  * 
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -89,7 +89,7 @@ function checkExistingPlugin($db, $sPluginname) {
 function updateSystemProperties($db, $table) {
     $aStandardvalues = array (  array('type' => 'pw_request', 'name' => 'enable', 'value' => 'true'),
                                 array('type' => 'system', 'name' => 'mail_sender_name', 'value' => 'info%40contenido.org'),
-                                array('type' => 'system', 'name' => 'mail_sender', 'value' => 'Contenido+Backend'),
+                                array('type' => 'system', 'name' => 'mail_sender', 'value' => 'CONTENIDO+Backend'),
                                 array('type' => 'system', 'name' => 'mail_host', 'value' => 'localhost'),
                                 array('type' => 'maintenance', 'name' => 'mode', 'value' => 'disabled'),
                                 array('type' => 'edit_area', 'name' => 'activated', 'value' => 'true'),

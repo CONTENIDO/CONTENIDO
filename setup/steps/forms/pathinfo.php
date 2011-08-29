@@ -1,14 +1,14 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -55,9 +55,9 @@ class cSetupPath extends cSetupMask
 		$oWebPath->setWidth(100);
 		$oWebPath->setClass("small");
 		
-		$cHTMLFoldableErrorMessages[0] = new cHTMLFoldableErrorMessage(i18n("Contenido Root Path").":<br>".$root_path, $oRootPath);
+		$cHTMLFoldableErrorMessages[0] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Root Path").":<br>".$root_path, $oRootPath);
 		$cHTMLFoldableErrorMessages[0]->_oContent->setStyle("padding-bottom: 8px;");
-		$cHTMLFoldableErrorMessages[1] = new cHTMLFoldableErrorMessage(i18n("Contenido Web Path").":<br>".$root_http_path, $oWebPath);
+		$cHTMLFoldableErrorMessages[1] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Web Path").":<br>".$root_http_path, $oWebPath);
 		$cHTMLFoldableErrorMessages[1]->_oContent->setStyle("padding-bottom: 8px;");
 		
 		$cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);

@@ -3,7 +3,7 @@
 * $Id: pluginInfo.js,v 1.0 2008/04/03 13:11:21 timo.trautmann Exp $
 *
 * File      :   $RCSfile: pluginInfo.js,v $
-* Project   : Contenido
+* Project   : CONTENIDO
 * Descr     : File contains functions for displaying plugin information layer, hiding and
                     crorrecting its position, when browser window is resized
 *

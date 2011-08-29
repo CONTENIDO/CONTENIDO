@@ -69,9 +69,9 @@ INSERT INTO !PREFIX!_mod_translations VALUES (68, 2, 2, 'SMTP+Host', 'SMTP+Host'
 INSERT INTO !PREFIX!_mod_translations VALUES (69, 2, 2, 'SMTP+User', 'SMTP+User');
 INSERT INTO !PREFIX!_mod_translations VALUES (70, 2, 2, 'SMTP+Passwort', 'SMTP+Password');
 INSERT INTO !PREFIX!_mod_translations VALUES (71, 5, 2, 'Willkommen%21', 'Welcome%21');
-INSERT INTO !PREFIX!_mod_translations VALUES (72, 5, 2, 'Zur+Contenido+Homepage', 'To+Contenido+Homepage');
+INSERT INTO !PREFIX!_mod_translations VALUES (72, 5, 2, 'Zur+CONTENIDO+Homepage', 'To+CONTENIDO+Homepage');
 INSERT INTO !PREFIX!_mod_translations VALUES (73, 5, 1, 'Willkommen%21', '');
-INSERT INTO !PREFIX!_mod_translations VALUES (74, 5, 1, 'Zur+Contenido+Homepage', '');
+INSERT INTO !PREFIX!_mod_translations VALUES (74, 5, 1, 'Zur+CONTENIDO+Homepage', '');
 INSERT INTO !PREFIX!_mod_translations VALUES (75, 7, 2, 'Geschlossener+Bereich+Login', 'Restricted+Area+Login');
 INSERT INTO !PREFIX!_mod_translations VALUES (76, 7, 2, 'name', 'name');
 INSERT INTO !PREFIX!_mod_translations VALUES (77, 7, 2, 'pass', 'pass');

@@ -1,7 +1,7 @@
 <?php
  /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Creates/Updates the database tables and fills them with entries (depending on 
@@ -10,7 +10,7 @@
  * Requirements:
  * @con_php_req 5
  *
- * @package    Contenido setup
+ * @package    CONTENIDO setup
  * @version    0.2.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>

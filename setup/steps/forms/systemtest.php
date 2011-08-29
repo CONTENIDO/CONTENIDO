@@ -1,14 +1,14 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.3.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -50,7 +50,7 @@ class cSetupSystemtest extends cSetupMask
 		
 		$this->setHeader(i18n("System Test"));
 		$this->_oStepTemplate->set("s", "TITLE", i18n("System Test"));
-		$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Your system has been tested for compatibility with Contenido:"));
+		$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Your system has been tested for compatibility with CONTENIDO:"));
 		
 		$cHTMLErrorMessageList = new cHTMLErrorMessageList;
 		
@@ -72,7 +72,7 @@ class cSetupSystemtest extends cSetupMask
             $this->runTest(	false,
 				C_SEVERITY_ERROR,
 				i18n("PHP MySQL Extension missing"),
-				i18n("Contenido requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi."));
+				i18n("CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi."));
         }
 		
 		
@@ -159,7 +159,7 @@ class cSetupSystemtest extends cSetupMask
         }
         
         if ($sMessage) {
-            $sMessage .= '<br>'.i18n('Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of contenido. Also delete the old plugin tables after data transfer.');
+            $sMessage .= '<br>'.i18n('Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of CONTENIDO. Also delete the old plugin tables after data transfer.');
         
             $this->runTest(	false,
                 C_SEVERITY_WARNING,
@@ -187,8 +187,8 @@ class cSetupSystemtest extends cSetupMask
         {
             $this->runTest(	false,
     						C_SEVERITY_WARNING,
-    						i18n('Contenido demo client requires PHP 5 or higher'),
-                            i18n('The Contenido demo client requires PHP 5 or higher. If you want to install the demo client, please update your PHP version.')
+    						i18n('CONTENIDO demo client requires PHP 5 or higher'),
+                            i18n('The CONTENIDO demo client requires PHP 5 or higher. If you want to install the demo client, please update your PHP version.')
                           );
         }
     
@@ -207,12 +207,12 @@ class cSetupSystemtest extends cSetupMask
 		$this->runTest(	isPHPCompatible(),
 				C_SEVERITY_ERROR,
 				i18n("PHP Version lower than 4.1.0"),
-				i18n("Contenido requires PHP 4.1.0 or higher as it uses functions first introduced with PHP 4.1.0. Please update your PHP4 version."));
+				i18n("CONTENIDO requires PHP 4.1.0 or higher as it uses functions first introduced with PHP 4.1.0. Please update your PHP4 version."));
 
 		$this->runTest( !isPHP423(),
 						C_SEVERITY_WARNING,
 						i18n("PHP Version equal to 4.2.3"),
-						sprintf(i18n("The versions 4.2.2/4.2.3 of PHP can contain critical bugs which make it impossible to run Contenido with. You may continue, however, please update your PHP4 version first if any kind of problems occur. For more information, have a look at %s"),
+						sprintf(i18n("The versions 4.2.2/4.2.3 of PHP can contain critical bugs which make it impossible to run CONTENIDO with. You may continue, however, please update your PHP4 version first if any kind of problems occur. For more information, have a look at %s"),
 						'<a target="_blank" href="http://bugs.php.net/bug.php?id=19404">http://bugs.php.net/bug.php?id=19404</a>'));
 						
 		$this->runTest( getSafeModeStatus(),
@@ -246,7 +246,7 @@ class cSetupSystemtest extends cSetupMask
 		$this->runTest( getPHPFileUploadSetting(),
 						C_SEVERITY_WARNING,
 						i18n("File uploads disabled"),
-						sprintf(i18n("Your PHP version is not configured for file uploads. You can't upload files using Contenido's file manager unless you configure PHP for file uploads. See %s for more information"),
+						sprintf(i18n("Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"),
 						'<a target="_blank" href="http://www.php.net/manual/en/ini.core.php#ini.file-uploads">http://www.php.net/manual/en/ini.core.php#ini.file-uploads</a>'));
 						
 		$this->runTest( getPHPGPCOrder(),
@@ -256,12 +256,12 @@ class cSetupSystemtest extends cSetupMask
 		$this->runTest( !getPHPMagicQuotesRuntime(),
 						C_SEVERITY_ERROR,
 						i18n("PHP setting 'magic_quotes_runtime' is turned on"),
-						i18n("The PHP setting 'magic_quotes_runtime' is turned on. Contenido has been developed to comply with magic_quotes_runtime=Off as this is the PHP default setting. You have to change this directive to make Contenido work."));
+						i18n("The PHP setting 'magic_quotes_runtime' is turned on. CONTENIDO has been developed to comply with magic_quotes_runtime=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."));
 						
 		$this->runTest( !getPHPMagicQuotesSybase(),
 						C_SEVERITY_ERROR,
 						i18n("PHP Setting 'magic_quotes_sybase' is turned on"),
-						i18n("The PHP Setting 'magic_quotes_sybase' is turned on. Contenido has been developed to comply with magic_quotes_sybase=Off as this is the PHP default setting. You have to change this directive to make Contenido work."));
+						i18n("The PHP Setting 'magic_quotes_sybase' is turned on. CONTENIDO has been developed to comply with magic_quotes_sybase=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."));
 						
 		$this->runTest(	getPHPMaxExecutionTime(),
 						C_SEVERITY_NONE,
@@ -288,7 +288,7 @@ class cSetupSystemtest extends cSetupMask
 				$this->runTest( false,
 								C_SEVERITY_ERROR,
 								i18n("open_basedir directive set to '.'"),
-								i18n("The directive open_basedir is set to '.' (e.g. current directory). This means that Contenido is unable to access files in a logical upper level in the filesystem. This will cause problems managing the Contenido frontends. Either add the full path of this Contenido installation to the open_basedir directive, or turn it off completely."));
+								i18n("The directive open_basedir is set to '.' (e.g. current directory). This means that CONTENIDO is unable to access files in a logical upper level in the filesystem. This will cause problems managing the CONTENIDO frontends. Either add the full path of this CONTENIDO installation to the open_basedir directive, or turn it off completely."));
 				break; 
 			case E_BASEDIR_RESTRICTIONSUFFICIENT:
 				$this->runTest( false,
@@ -300,7 +300,7 @@ class cSetupSystemtest extends cSetupMask
 				$this->runTest( false,
 								C_SEVERITY_ERROR,
 								i18n("open_basedir directive incompatible"),
-								i18n("Setup has checked your PHP open_basedir directive and reckons that it is not sufficient. Please change the directive to include the Contenido installation or turn it off completely."));
+								i18n("Setup has checked your PHP open_basedir directive and reckons that it is not sufficient. Please change the directive to include the CONTENIDO installation or turn it off completely."));
 				break;	
 		}
 		
@@ -312,13 +312,13 @@ class cSetupSystemtest extends cSetupMask
 			$this->runTest( ($iMemoryLimit > 1024 * 1024 * 4),
 								C_SEVERITY_WARNING,
 								i18n("PHP memory_limit directive too small"),
-								i18n("The memory_limit directive is set to 4 MB or lower. This might be not enough for Contenido to operate correctly. We recommend to disable this setting completely, as this can cause problems with large Contenido projects."));
+								i18n("The memory_limit directive is set to 4 MB or lower. This might be not enough for CONTENIDO to operate correctly. We recommend to disable this setting completely, as this can cause problems with large CONTENIDO projects."));
 		}
 		
 		$this->runTest( ! checkPHPSQLSafeMode(),
 						C_SEVERITY_ERROR,
 						i18n("PHP sql.safe_mode turned on"),
-						i18n("The PHP directive sql.safe_mode is turned on. This causes problems with the SQL queries issued by Contenido. Please turn that directive off."));
+						i18n("The PHP directive sql.safe_mode is turned on. This causes problems with the SQL queries issued by CONTENIDO. Please turn that directive off."));
 		 		
 		$this->runTest( isPHPExtensionLoaded("gd"),
 						C_SEVERITY_WARNING,
@@ -328,17 +328,17 @@ class cSetupSystemtest extends cSetupMask
 		$this->runTest( isPHPExtensionLoaded("pcre"),
 						C_SEVERITY_ERROR,
 						i18n("PHP PCRE Extension is not loaded"),
-						i18n("The PHP PCRE Extension is not loaded. Contenido uses PCRE-functions like preg_repace and preg_match and won't work without the PCRE Extension.")); 
+						i18n("The PHP PCRE Extension is not loaded. CONTENIDO uses PCRE-functions like preg_repace and preg_match and won't work without the PCRE Extension.")); 
 		
 		$this->runTest( isPHPExtensionLoaded("xml"),
 						C_SEVERITY_ERROR,
 						i18n("PHP XML Extension is not loaded"),
-						i18n("The PHP XML Extension is not loaded. Contenido uses XML-functions like xml_parser_create and won't work without the XML Extension.")); 
+						i18n("The PHP XML Extension is not loaded. CONTENIDO uses XML-functions like xml_parser_create and won't work without the XML Extension.")); 
 		
 		$this->runTest( function_exists("xml_parser_create"),
 						C_SEVERITY_ERROR,
 						i18n("PHP XML Extension is not loaded"),
-						i18n("The PHP XML Extension is not loaded. Contenido uses XML-functions like xml_parser_create and won't work without the XML Extension.")); 
+						i18n("The PHP XML Extension is not loaded. CONTENIDO uses XML-functions like xml_parser_create and won't work without the XML Extension.")); 
 			
 		
 		$iResult = checkImageResizer();
@@ -454,7 +454,7 @@ class cSetupSystemtest extends cSetupMask
 						$this->runTest( false,
 										C_SEVERITY_ERROR,
 										i18n("MySQL database already exists and seems to be filled"),
-										sprintf(i18n("Setup checked the database %s and found the table %s. It seems that you already have a Contenido installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type."),
+										sprintf(i18n("Setup checked the database %s and found the table %s. It seems that you already have a CONTENIDO installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type."),
 										$_SESSION["dbname"], sprintf("%s_actions", $_SESSION["dbprefix"])));
 						return;							
 					}
@@ -757,7 +757,7 @@ class cSetupSystemtest extends cSetupMask
 		$status = canWriteFile("../".$sFile);
 		
 		$sTitle = sprintf(i18n("Can't write %s"), $sFile);
-		$sMessage = sprintf(i18n("Setup or Contenido can't write to the file %s. Please change the file permissions to correct this problem."), $sFile);
+		$sMessage = sprintf(i18n("Setup or CONTENIDO can't write to the file %s. Please change the file permissions to correct this problem."), $sFile);
 		
 		if ($status == false)
 		{

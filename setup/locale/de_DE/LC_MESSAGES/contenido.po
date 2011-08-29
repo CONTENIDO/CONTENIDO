@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Contenido Setup\n"
+"Project-Id-Version: CONTENIDO Setup\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-23 00:51+0100\n"
 "PO-Revision-Date: 2011-03-23 00:53+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
-"Language-Team: Contenido Development\n"
+"Language-Team: CONTENIDO Development\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,8 +22,8 @@ msgid "Please choose your setup type"
 msgstr "Bitte wählen Sie die Installationsart"
 
 #: setup/steps/setuptype.php:42
-msgid "Install new Contenido version"
-msgstr "Contenido Neuinstallation"
+msgid "Install new CONTENIDO version"
+msgstr "CONTENIDO Neuinstallation"
 
 #: setup/steps/setuptype.php:43
 #, php-format
@@ -32,8 +32,8 @@ msgstr "Version %s"
 
 #: setup/steps/setuptype.php:44
 #, php-format
-msgid "This setup type will install Contenido %s."
-msgstr "Diese Setupart installiert Contenido %s."
+msgid "This setup type will install CONTENIDO %s."
+msgstr "Diese Setupart installiert CONTENIDO %s."
 
 #: setup/steps/setuptype.php:44
 msgid "Please choose this type if you want to start with an empty or an example installation."
@@ -45,7 +45,7 @@ msgstr "Empfohlen für neue Projekte."
 
 #: setup/steps/setuptype.php:46
 msgid "Upgrade existing installation"
-msgstr "Bestehende Contenido Installation upgraden"
+msgstr "Bestehende CONTENIDO Installation upgraden"
 
 #: setup/steps/setuptype.php:47
 #, php-format
@@ -53,8 +53,8 @@ msgid "Upgrade to %s"
 msgstr "Upgraden auf %s"
 
 #: setup/steps/setuptype.php:48
-msgid "This setup type will upgrade your existing installation (Contenido 4.6.x or later required)."
-msgstr "Diese Setupart wird Ihre bestehende Contenido Installation (Version 4.6.x oder höher) upgraden. "
+msgid "This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required)."
+msgstr "Diese Setupart wird Ihre bestehende CONTENIDO Installation (Version 4.6.x oder höher) upgraden. "
 
 #: setup/steps/setuptype.php:48
 msgid "Recommended for existing projects."
@@ -71,7 +71,7 @@ msgstr "Migration (Version %s)"
 
 #: setup/steps/setuptype.php:52
 msgid "This setup type will help you migrating an existing installation to another server."
-msgstr "Diese Setupart hilft Ihnen, eine bestehende Contenido Installation auf einen anderen Server umzuziehen."
+msgstr "Diese Setupart hilft Ihnen, eine bestehende CONTENIDO Installation auf einen anderen Server umzuziehen."
 
 #: setup/steps/setuptype.php:52
 msgid "Recommended for moving projects across servers."
@@ -91,8 +91,8 @@ msgid "Newsletter"
 msgstr "Newsletter"
 
 #: setup/steps/forms/additionalplugins.php:61
-msgid "Newsletterfunctionality for dispatching text newsletters and HTML-Newsletters, extensible with professional newsletter extensions. Definition of newsletter recipients and groups of recipients. Layout design of the HTML-Newsletters by Contenido articles."
-msgstr "Newsletterfunktionalität zum Versand von Textnewslettern und HTML-Newslettern, erweiterbar mit professionellen Newsletter Erweiterungen. Definition von Newsletterempfängern und Empfängergruppen. Layouterstellung des HTML-Newsletters mit Hilfe von Contenidoartikeln."
+msgid "Newsletterfunctionality for dispatching text newsletters and HTML-Newsletters, extensible with professional newsletter extensions. Definition of newsletter recipients and groups of recipients. Layout design of the HTML-Newsletters by CONTENIDO articles."
+msgstr "Newsletterfunktionalität zum Versand von Textnewslettern und HTML-Newslettern, erweiterbar mit professionellen Newsletter Erweiterungen. Definition von Newsletterempfängern und Empfängergruppen. Layouterstellung des HTML-Newsletters mit Hilfe von CONTENIDOartikeln."
 
 #: setup/steps/forms/additionalplugins.php:62
 msgid "Content Allocation"
@@ -107,8 +107,8 @@ msgid "Mod Rewrite"
 msgstr "Mod Rewrite"
 
 #: setup/steps/forms/additionalplugins.php:63
-msgid "Creates so called Clean URLs for a Contenido installation"
-msgstr "Erstellt sogenannte Clean URLs für eine Contenido-Installation"
+msgid "Creates so called Clean URLs for a CONTENIDO installation"
+msgstr "Erstellt sogenannte Clean URLs für eine CONTENIDO-Installation"
 
 #: setup/steps/forms/additionalplugins.php:73
 #, fuzzy
@@ -154,8 +154,8 @@ msgid "Example Client"
 msgstr "Beispielmandant"
 
 #: setup/steps/forms/clientmode.php:42
-msgid "If you are new to Contenido, you should create an example client to start working with."
-msgstr "Wenn Sie zum ersten Mal mit Contenido arbeiten, empfehlen wir Ihnen den Beispielmandanten."
+msgid "If you are new to CONTENIDO, you should create an example client to start working with."
+msgstr "Wenn Sie zum ersten Mal mit CONTENIDO arbeiten, empfehlen wir Ihnen den Beispielmandanten."
 
 #: setup/steps/forms/clientmode.php:46
 #: setup/steps/forms/setupsummary.php:74
@@ -185,8 +185,8 @@ msgid "Please choose 'save' or 'download'"
 msgstr "Bitte wählen Sie 'Speichern' oder 'Download'"
 
 #: setup/steps/forms/configmode.php:48
-msgid "Contenido requires a configuration file called 'config.php'. This file will be generated by the setup automatically if the filesystem permissions are correct. If 'save' is activated by default, setup can save the file config.php. If not, 'download' is activated by default, and you have to place the file in the directory &quot;contenido/includes/&quot; manually when a download prompt appears. The download prompt appears at the end of the setup process."
-msgstr "Contenido benötigt die Konfigurationsdatei 'config.php'. Diese Datei wird durch das Setup automatisch erzeugt, wenn Ihre Berechtigungen für das Dateisystem korrekt gesetzt sind. Falls die Option &quot;Speichern&quot; aktiviert ist, kann die Datei automatisch gespeichert werden. Falls die Option 'Download' aktiviert ist, müssen Sie die Datei manuell in das Verzeichnis 'contenido/includes/' speichern."
+msgid "CONTENIDO requires a configuration file called 'config.php'. This file will be generated by the setup automatically if the filesystem permissions are correct. If 'save' is activated by default, setup can save the file config.php. If not, 'download' is activated by default, and you have to place the file in the directory &quot;contenido/includes/&quot; manually when a download prompt appears. The download prompt appears at the end of the setup process."
+msgstr "CONTENIDO benötigt die Konfigurationsdatei 'config.php'. Diese Datei wird durch das Setup automatisch erzeugt, wenn Ihre Berechtigungen für das Dateisystem korrekt gesetzt sind. Falls die Option &quot;Speichern&quot; aktiviert ist, kann die Datei automatisch gespeichert werden. Falls die Option 'Download' aktiviert ist, müssen Sie die Datei manuell in das Verzeichnis 'contenido/includes/' speichern."
 
 #: setup/steps/forms/configmode.php:66
 #: setup/steps/forms/setupsummary.php:62
@@ -204,8 +204,8 @@ msgid "System Installation"
 msgstr "Systeminstallation"
 
 #: setup/steps/forms/installer.php:42
-msgid "Contenido will be installed, please wait ..."
-msgstr "Contenido wird installiert, bitte warten"
+msgid "CONTENIDO will be installed, please wait ..."
+msgstr "CONTENIDO wird installiert, bitte warten"
 
 #: setup/steps/forms/installer.php:49
 msgid "Setup completed installing. Click on next to continue."
@@ -241,12 +241,12 @@ msgid "Please check the directories identified by the system. If you need to cha
 msgstr "Bitte prüfen Sie die Verzeichnisse. Wenn Sie einen Pfad ändern müssen, klicken Sie auf den Namen und geben Sie den neuen Pfad in die Eingabebox ein."
 
 #: setup/steps/forms/pathinfo.php:58
-msgid "Contenido Root Path"
-msgstr "Contenido Serverpfad"
+msgid "CONTENIDO Root Path"
+msgstr "CONTENIDO Serverpfad"
 
 #: setup/steps/forms/pathinfo.php:60
-msgid "Contenido Web Path"
-msgstr "Contenido Webpfad"
+msgid "CONTENIDO Web Path"
+msgstr "CONTENIDO Webpfad"
 
 #: setup/steps/forms/setupresults.php:38
 #: setup/steps/forms/setupresults.php:44
@@ -254,20 +254,20 @@ msgid "Results"
 msgstr "Setupergebnisse"
 
 #: setup/steps/forms/setupresults.php:45
-msgid "Contenido was installed and configured successfully on your server."
-msgstr "Contenido wurde erfolgreich auf Ihrem Server installiert und konfiguriert."
+msgid "CONTENIDO was installed and configured successfully on your server."
+msgstr "CONTENIDO wurde erfolgreich auf Ihrem Server installiert und konfiguriert."
 
 #: setup/steps/forms/setupresults.php:47
-msgid "Please use username <b>sysadmin</b> and password <b>sysadmin</b> to login into Contenido Backend."
-msgstr "Bitte benutzen Sie den Benutzernamen <b>sysadmin</b> und das Passwort <b>sysadmin</b>, um sich in das Backend von Contenido einzuloggen."
+msgid "Please use username <b>sysadmin</b> and password <b>sysadmin</b> to login into CONTENIDO Backend."
+msgstr "Bitte benutzen Sie den Benutzernamen <b>sysadmin</b> und das Passwort <b>sysadmin</b>, um sich in das Backend von CONTENIDO einzuloggen."
 
 #: setup/steps/forms/setupresults.php:51
 msgid "Please choose an item to start working:"
 msgstr "Bitte wählen Sie einen Eintrag, um mit der Arbeit zu beginnen:"
 
 #: setup/steps/forms/setupresults.php:52
-msgid "You can now start using Contenido. Please delete the folder named 'setup'!"
-msgstr "Sie können Contenido nun verwenden. Bitte löschen Sie den Setup-Ordner!"
+msgid "You can now start using CONTENIDO. Please delete the folder named 'setup'!"
+msgstr "Sie können CONTENIDO nun verwenden. Bitte löschen Sie den Setup-Ordner!"
 
 #: setup/steps/forms/setupresults.php:80
 msgid "Setup Results"
@@ -403,16 +403,16 @@ msgid "System Test"
 msgstr "Systemüberprüfung"
 
 #: setup/steps/forms/systemtest.php:53
-msgid "Your system has been tested for compatibility with Contenido:"
-msgstr "Ihr System wurde auf Kompatibilität mit Contenido überprüft:"
+msgid "Your system has been tested for compatibility with CONTENIDO:"
+msgstr "Ihr System wurde auf Kompatibilität mit CONTENIDO überprüft:"
 
 #: setup/steps/forms/systemtest.php:74
 msgid "PHP MySQL Extension missing"
 msgstr "PHP MySQL Extension nicht geladen"
 
 #: setup/steps/forms/systemtest.php:75
-msgid "Contenido requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi."
-msgstr "Contenido benötigt die MySQL- oder MySQLi-Extension, um auf MySQL-Datenbanken zuzugreifen. Bitte konfigurieren Sie PHP so, daß PHP entweder MySQL oder MySQLi verwendet."
+msgid "CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi."
+msgstr "CONTENIDO benötigt die MySQL- oder MySQLi-Extension, um auf MySQL-Datenbanken zuzugreifen. Bitte konfigurieren Sie PHP so, daß PHP entweder MySQL oder MySQLi verwendet."
 
 #: setup/steps/forms/systemtest.php:93
 msgid "Information"
@@ -440,28 +440,28 @@ msgid "An old Version of Plugin %s is installed on your system."
 msgstr "Eine alte Version des Plugin %s ist auf Ihrem System installiert."
 
 #: setup/steps/forms/systemtest.php:162
-msgid "Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of contenido. Also delete the old plugin tables after data transfer."
-msgstr "Bitte entfernen Sie alle alten Plugins bevor Sie fortfahren. Um die alten Plugindaten zu &uuml;bertragen, kopieren Sie bitte die alten Daten aus den Plugintabellen nach der Installation in die neuen Plugintabellen. Die neuen Plugintabellen haben die gleiche Bezeichnung, besitzen jedoch zus&auml;tzlich den Contenido Tabellenpr&auml;fix. Bitte entfernen Sie auch nach der Daten&uuml;bertragung die alten Plugintabellen."
+msgid "Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of CONTENIDO. Also delete the old plugin tables after data transfer."
+msgstr "Bitte entfernen Sie alle alten Plugins bevor Sie fortfahren. Um die alten Plugindaten zu &uuml;bertragen, kopieren Sie bitte die alten Daten aus den Plugintabellen nach der Installation in die neuen Plugintabellen. Die neuen Plugintabellen haben die gleiche Bezeichnung, besitzen jedoch zus&auml;tzlich den CONTENIDO Tabellenpr&auml;fix. Bitte entfernen Sie auch nach der Daten&uuml;bertragung die alten Plugintabellen."
 
 #: setup/steps/forms/systemtest.php:166
 msgid "Old Plugins are still installed"
 msgstr "Alte Plugins sind noch installiert"
 
 #: setup/steps/forms/systemtest.php:190
-msgid "Contenido demo client requires PHP 5 or higher"
-msgstr "Contenido Demo Mandant ben&ouml;tigt PHP5 oder h&ouml;her"
+msgid "CONTENIDO demo client requires PHP 5 or higher"
+msgstr "CONTENIDO Demo Mandant ben&ouml;tigt PHP5 oder h&ouml;her"
 
 #: setup/steps/forms/systemtest.php:191
-msgid "The Contenido demo client requires PHP 5 or higher. If you want to install the demo client, please update your PHP version."
-msgstr "Der Contenido Demo Mandant ben&ouml;tigt PHP5 oder h&ouml;her. Wenn Sie den Demo Mandanten installieren m&ouml;chten, aktualisieren Sie bitte zuvor Ihre PHP version."
+msgid "The CONTENIDO demo client requires PHP 5 or higher. If you want to install the demo client, please update your PHP version."
+msgstr "Der CONTENIDO Demo Mandant ben&ouml;tigt PHP5 oder h&ouml;her. Wenn Sie den Demo Mandanten installieren m&ouml;chten, aktualisieren Sie bitte zuvor Ihre PHP version."
 
 #: setup/steps/forms/systemtest.php:209
 msgid "PHP Version lower than 4.1.0"
 msgstr "PHP Version unter 4.1.0"
 
 #: setup/steps/forms/systemtest.php:210
-msgid "Contenido requires PHP 4.1.0 or higher as it uses functions first introduced with PHP 4.1.0. Please update your PHP4 version."
-msgstr "Contenido benötigt PHP 4.1.0 oder höher für einen reibungslosen Betrieb. Bitte updaten Sie Ihre PHP Version, bzw. wenden Sie sich an Ihren Provider."
+msgid "CONTENIDO requires PHP 4.1.0 or higher as it uses functions first introduced with PHP 4.1.0. Please update your PHP4 version."
+msgstr "CONTENIDO benötigt PHP 4.1.0 oder höher für einen reibungslosen Betrieb. Bitte updaten Sie Ihre PHP Version, bzw. wenden Sie sich an Ihren Provider."
 
 #: setup/steps/forms/systemtest.php:214
 msgid "PHP Version equal to 4.2.3"
@@ -469,8 +469,8 @@ msgstr "PHP Version gleich 4.1.0"
 
 #: setup/steps/forms/systemtest.php:215
 #, php-format
-msgid "The versions 4.2.2/4.2.3 of PHP can contain critical bugs which make it impossible to run Contenido with. You may continue, however, please update your PHP4 version first if any kind of problems occur. For more information, have a look at %s"
-msgstr "Die Version 4.2.2/4.2.3 von PHP kann kritische Bugs enthalten, die einen reibungslosen Betrieb von Contenido unmöglich machen. Sie können fortfahren, bei Problemen müssen Sie aber Ihre PHP Version updaten. Weitere Informationen finden Sie unter %s"
+msgid "The versions 4.2.2/4.2.3 of PHP can contain critical bugs which make it impossible to run CONTENIDO with. You may continue, however, please update your PHP4 version first if any kind of problems occur. For more information, have a look at %s"
+msgstr "Die Version 4.2.2/4.2.3 von PHP kann kritische Bugs enthalten, die einen reibungslosen Betrieb von CONTENIDO unmöglich machen. Sie können fortfahren, bei Problemen müssen Sie aber Ihre PHP Version updaten. Weitere Informationen finden Sie unter %s"
 
 #: setup/steps/forms/systemtest.php:248
 msgid "File uploads disabled"
@@ -478,24 +478,24 @@ msgstr "Upload Dateien deaktiviert"
 
 #: setup/steps/forms/systemtest.php:249
 #, php-format
-msgid "Your PHP version is not configured for file uploads. You can't upload files using Contenido's file manager unless you configure PHP for file uploads. See %s for more information"
-msgstr "Ihr PHP ist nicht für den Upload von Dateien konfiguriert. Sie können über Contenido keine Dateien uploaden, wenn Sie nicht Ihr PHP für Datei Uploads konfigurieren. Weitere Informationen finden Sie unter %s"
+msgid "Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"
+msgstr "Ihr PHP ist nicht für den Upload von Dateien konfiguriert. Sie können über CONTENIDO keine Dateien uploaden, wenn Sie nicht Ihr PHP für Datei Uploads konfigurieren. Weitere Informationen finden Sie unter %s"
 
 #: setup/steps/forms/systemtest.php:258
 msgid "PHP setting 'magic_quotes_runtime' is turned on"
 msgstr "PHP Einstellung 'magic_quotes_runtime' ist aktiviert."
 
 #: setup/steps/forms/systemtest.php:259
-msgid "The PHP setting 'magic_quotes_runtime' is turned on. Contenido has been developed to comply with magic_quotes_runtime=Off as this is the PHP default setting. You have to change this directive to make Contenido work."
-msgstr "Die PHP Einstellung 'magic_quotes_runtime' ist aktiviert. Contenido wurde entwickelt mit der deaktivierten Einstellung 'magic_quotes_runtime', da dies die Standardeinstellung von PHP ist. Sie müssen diese Einstellung verändern, damit Contenido läuft."
+msgid "The PHP setting 'magic_quotes_runtime' is turned on. CONTENIDO has been developed to comply with magic_quotes_runtime=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."
+msgstr "Die PHP Einstellung 'magic_quotes_runtime' ist aktiviert. CONTENIDO wurde entwickelt mit der deaktivierten Einstellung 'magic_quotes_runtime', da dies die Standardeinstellung von PHP ist. Sie müssen diese Einstellung verändern, damit CONTENIDO läuft."
 
 #: setup/steps/forms/systemtest.php:263
 msgid "PHP Setting 'magic_quotes_sybase' is turned on"
 msgstr "PHP Einstellung 'magic_quotes_sybase' eingeschalten"
 
 #: setup/steps/forms/systemtest.php:264
-msgid "The PHP Setting 'magic_quotes_sybase' is turned on. Contenido has been developed to comply with magic_quotes_sybase=Off as this is the PHP default setting. You have to change this directive to make Contenido work."
-msgstr "Die PHP Einstellung 'magic_quotes_sybase' ist aktiviert. Contenido wurde entwickelt mit der deaktivierten Einstellung 'magic_quotes_sybase', da dies die Standardeinstellung von PHP ist. Sie müssen diese Einstellung verändern, damit Contenido läuft."
+msgid "The PHP Setting 'magic_quotes_sybase' is turned on. CONTENIDO has been developed to comply with magic_quotes_sybase=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."
+msgstr "Die PHP Einstellung 'magic_quotes_sybase' ist aktiviert. CONTENIDO wurde entwickelt mit der deaktivierten Einstellung 'magic_quotes_sybase', da dies die Standardeinstellung von PHP ist. Sie müssen diese Einstellung verändern, damit CONTENIDO läuft."
 
 #: setup/steps/forms/systemtest.php:272
 msgid "PHP maximum execution time is less than 30 seconds"
@@ -503,15 +503,15 @@ msgstr "Die PHP Ausführungszeit liegt unter 30 Sekunden."
 
 #: setup/steps/forms/systemtest.php:273
 msgid "PHP is configured for a maximum execution time of less than 30 seconds. This could cause problems with slow web servers and/or long operations in the backend. Our recommended execution time is 120 seconds on slow web servers, 60 seconds for medium ones and 30 seconds for fast web servers."
-msgstr "PHP ist konfiguriert für eine maximale Ausführungszeit von weniger als 30 Sekunden. Dies kann Probleme verursachen bei langsamen Webservern und/oder zeitintensiven Aktionen im Contenido Backend. Unsere empfohlene Ausführungszeit liegt bei 120 Sekunden bei langsamen Webservern, 60 Sekunden bei mittleren und 30 Sekunden bei schnellen Webservern."
+msgstr "PHP ist konfiguriert für eine maximale Ausführungszeit von weniger als 30 Sekunden. Dies kann Probleme verursachen bei langsamen Webservern und/oder zeitintensiven Aktionen im CONTENIDO Backend. Unsere empfohlene Ausführungszeit liegt bei 120 Sekunden bei langsamen Webservern, 60 Sekunden bei mittleren und 30 Sekunden bei schnellen Webservern."
 
 #: setup/steps/forms/systemtest.php:290
 msgid "open_basedir directive set to '.'"
 msgstr "Die Direktive open_basedir ist auf '.' gesetzt."
 
 #: setup/steps/forms/systemtest.php:291
-msgid "The directive open_basedir is set to '.' (e.g. current directory). This means that Contenido is unable to access files in a logical upper level in the filesystem. This will cause problems managing the Contenido frontends. Either add the full path of this Contenido installation to the open_basedir directive, or turn it off completely."
-msgstr "Die Direktive open_basedir ist auf '.' (aktuelles Verzeichnis) gesetzt. Dies bedeuetet, daß Contenido keine Dateien oberhalb des aktuellen Pfades öffnen kann. Hieraus ergibt sich ein Problem, wenn Contenido seine Frontends verwalten muß. Bitte fügen Sie den kompletten Pfad der Contenido-Installation zur Direktive open_basedir hinzu, oder deaktivieren Sie open_basedir komplett."
+msgid "The directive open_basedir is set to '.' (e.g. current directory). This means that CONTENIDO is unable to access files in a logical upper level in the filesystem. This will cause problems managing the CONTENIDO frontends. Either add the full path of this CONTENIDO installation to the open_basedir directive, or turn it off completely."
+msgstr "Die Direktive open_basedir ist auf '.' (aktuelles Verzeichnis) gesetzt. Dies bedeuetet, daß CONTENIDO keine Dateien oberhalb des aktuellen Pfades öffnen kann. Hieraus ergibt sich ein Problem, wenn CONTENIDO seine Frontends verwalten muß. Bitte fügen Sie den kompletten Pfad der CONTENIDO-Installation zur Direktive open_basedir hinzu, oder deaktivieren Sie open_basedir komplett."
 
 #: setup/steps/forms/systemtest.php:296
 msgid "open_basedir setting might be insufficient"
@@ -526,23 +526,23 @@ msgid "open_basedir directive incompatible"
 msgstr "open_basedir Directive inkompatibel"
 
 #: setup/steps/forms/systemtest.php:303
-msgid "Setup has checked your PHP open_basedir directive and reckons that it is not sufficient. Please change the directive to include the Contenido installation or turn it off completely."
-msgstr "Setup hat die PHP-Direktive open_basedir geprüft. Diese Direktive ist vermutlich unzureichend konfiguriert. Bitte ändern Sie die Direktive, sodaß sie den kompletten Pfad zur Contenido-Installation enthält, oder deaktivieren Sie die Direktive komplett."
+msgid "Setup has checked your PHP open_basedir directive and reckons that it is not sufficient. Please change the directive to include the CONTENIDO installation or turn it off completely."
+msgstr "Setup hat die PHP-Direktive open_basedir geprüft. Diese Direktive ist vermutlich unzureichend konfiguriert. Bitte ändern Sie die Direktive, sodaß sie den kompletten Pfad zur CONTENIDO-Installation enthält, oder deaktivieren Sie die Direktive komplett."
 
 #: setup/steps/forms/systemtest.php:314
 msgid "PHP memory_limit directive too small"
 msgstr "PHP memory_limit Directive zu klein"
 
 #: setup/steps/forms/systemtest.php:315
-msgid "The memory_limit directive is set to 4 MB or lower. This might be not enough for Contenido to operate correctly. We recommend to disable this setting completely, as this can cause problems with large Contenido projects."
-msgstr "Die memory_limit Directive ist auf 4 MB oder weniger gesetzt. Dies kann für Contenido nicht ausreichen sein. Wir empfehlen diese Einstellung komplett zu deaktivieren, um Probleme bei grösseren Contenido Projekten zu vermeiden."
+msgid "The memory_limit directive is set to 4 MB or lower. This might be not enough for CONTENIDO to operate correctly. We recommend to disable this setting completely, as this can cause problems with large CONTENIDO projects."
+msgstr "Die memory_limit Directive ist auf 4 MB oder weniger gesetzt. Dies kann für CONTENIDO nicht ausreichen sein. Wir empfehlen diese Einstellung komplett zu deaktivieren, um Probleme bei grösseren CONTENIDO Projekten zu vermeiden."
 
 #: setup/steps/forms/systemtest.php:320
 msgid "PHP sql.safe_mode turned on"
 msgstr "PHP Einstellung 'sql.safe_mode' ist aktiviert."
 
 #: setup/steps/forms/systemtest.php:321
-msgid "The PHP directive sql.safe_mode is turned on. This causes problems with the SQL queries issued by Contenido. Please turn that directive off."
+msgid "The PHP directive sql.safe_mode is turned on. This causes problems with the SQL queries issued by CONTENIDO. Please turn that directive off."
 msgstr "Die PHP Directive sql.safe_mode ist aktiviert. Dies kann Probleme mit SQL Abfragen verursachen. Bitte deaktivieren Sie diese Einstellung."
 
 #: setup/steps/forms/systemtest.php:325
@@ -558,8 +558,8 @@ msgid "PHP PCRE Extension is not loaded"
 msgstr "PHP PCRE Extension nicht geladen"
 
 #: setup/steps/forms/systemtest.php:331
-msgid "The PHP PCRE Extension is not loaded. Contenido uses PCRE-functions like preg_repace and preg_match and won't work without the PCRE Extension."
-msgstr "Die PHP PCRE-Extension ist nicht geladen. Contenido benötigt PCRE-Funktionen wie z.b. preg_replace und preg_match und wird ohne die PCRE-Extension nicht funktionieren."
+msgid "The PHP PCRE Extension is not loaded. CONTENIDO uses PCRE-functions like preg_repace and preg_match and won't work without the PCRE Extension."
+msgstr "Die PHP PCRE-Extension ist nicht geladen. CONTENIDO benötigt PCRE-Funktionen wie z.b. preg_replace und preg_match und wird ohne die PCRE-Extension nicht funktionieren."
 
 #: setup/steps/forms/systemtest.php:335
 #: setup/steps/forms/systemtest.php:340
@@ -568,8 +568,8 @@ msgstr "PHP XML Extension nicht geladen"
 
 #: setup/steps/forms/systemtest.php:336
 #: setup/steps/forms/systemtest.php:341
-msgid "The PHP XML Extension is not loaded. Contenido uses XML-functions like xml_parser_create and won't work without the XML Extension."
-msgstr "Die PHP XML-Extension ist nicht geladen. Contenido verwendet XML-Funktionen wie z.b. xml_parser_create und wird ohne die XML-Extension nicht funktionieren."
+msgid "The PHP XML Extension is not loaded. CONTENIDO uses XML-functions like xml_parser_create and won't work without the XML Extension."
+msgstr "Die PHP XML-Extension ist nicht geladen. CONTENIDO verwendet XML-Funktionen wie z.b. xml_parser_create und wird ohne die XML-Extension nicht funktionieren."
 
 #: setup/steps/forms/systemtest.php:351
 msgid "Unable to check for a suitable image resizer"
@@ -650,8 +650,8 @@ msgstr "MySQL-Datenbank existiert bereits und scheint gefüllt zu sein"
 
 #: setup/steps/forms/systemtest.php:457
 #, php-format
-msgid "Setup checked the database %s and found the table %s. It seems that you already have a Contenido installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type."
-msgstr "Setup hat die Datenbank %s geprüft und die Tabelle %s gefunden. Es scheint, als ob eine (ältere) Contenido-Version bereits installiert ist. Wenn Sie trotzdem in dieser Datenbank installieren möchten, wählen Sie einen anderen Präfix. Wenn Sie von einer älteren Contenido-Version upgraden möchten, wählen Sie bitte \"Upgrade\" als Setupart."
+msgid "Setup checked the database %s and found the table %s. It seems that you already have a CONTENIDO installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type."
+msgstr "Setup hat die Datenbank %s geprüft und die Tabelle %s gefunden. Es scheint, als ob eine (ältere) CONTENIDO-Version bereits installiert ist. Wenn Sie trotzdem in dieser Datenbank installieren möchten, wählen Sie einen anderen Präfix. Wenn Sie von einer älteren CONTENIDO-Version upgraden möchten, wählen Sie bitte \"Upgrade\" als Setupart."
 
 #: setup/steps/forms/systemtest.php:471
 msgid "MySQL test table already exists in the database"
@@ -744,8 +744,8 @@ msgstr "Kann %s nicht schreiben"
 
 #: setup/steps/forms/systemtest.php:760
 #, php-format
-msgid "Setup or Contenido can't write to the file %s. Please change the file permissions to correct this problem."
-msgstr "Setup oder Contenido kann nicht die Datei %s schreiben. Bitte ändern Sie die Dateiberechtigungen, um das Problem zu lösen."
+msgid "Setup or CONTENIDO can't write to the file %s. Please change the file permissions to correct this problem."
+msgstr "Setup oder CONTENIDO kann nicht die Datei %s schreiben. Bitte ändern Sie die Dateiberechtigungen, um das Problem zu lösen."
 
 #: setup/steps/forms/systemtest.php:773
 msgid "Your Server runs Windows. Due to that, Setup can't recommend any file permissions."
@@ -795,11 +795,11 @@ msgstr "Die Webservergruppe sowie die Gruppe des Verzeichnisses sind identisch. 
 msgid "Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."
 msgstr "Der Webserver ist ungleich dem Verzeichnisbesitzer, und ist nicht in der Webserver-Gruppe. Es wäre unsicher, dem Verzeichnis \"world\"-Schreibzugriff zu erlauben. Wenn Sie dennoch installieren möchten, aktivieren Sie Schreibzugriff für jedermann, z.b. mit chmod o+rw %s oder durch das Setzen der Rechtemaske %s."
 
-#~ msgid "Contenido Newsletter"
-#~ msgstr "Contenido Newsletter"
+#~ msgid "CONTENIDO Newsletter"
+#~ msgstr "CONTENIDO Newsletter"
 
-#~ msgid "Contenido Content Allocation"
-#~ msgstr "Contenido Content Allocation"
+#~ msgid "CONTENIDO Content Allocation"
+#~ msgstr "CONTENIDO Content Allocation"
 
 #~ msgid "PHP setting 'register_long_arrays' is off"
 #~ msgstr "Die PHP-Einstellung 'register_long_arrays' ist abgeschaltet"
@@ -807,11 +807,11 @@ msgstr "Der Webserver ist ungleich dem Verzeichnisbesitzer, und ist nicht in der
 #~ msgid ""
 #~ "The directive 'register_long_arrays' is turned off and you are running "
 #~ "PHP5. Please turn the directive to 'on' in your php.ini file, otherwise "
-#~ "Contenido won't work properbly."
+#~ "CONTENIDO won't work properbly."
 #~ msgstr ""
 #~ "Die Direktive 'register_long_arrays' ist abgeschalten, und Ihr Webserver "
 #~ "verwendet PHP5. Bitte stellen Sie die Direktive in ihrer php.ini auf "
-#~ "'on' , andernfalls wird Contenido nicht richtig funktionieren."
+#~ "'on' , andernfalls wird CONTENIDO nicht richtig funktionieren."
 
 #~ msgid ""
 #~ "Please enter a password for the user  'sysadmin' and don't forget it! The "
