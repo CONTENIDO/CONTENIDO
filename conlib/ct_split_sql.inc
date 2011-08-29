@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * PHPLIB Data Storage Container using a SQL database and multiple
@@ -13,15 +13,15 @@
  * Every session-name pair will end up in one OR MORE table rows, thus
  * allowing serialization of huge quantities of data.
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    1.2
  * @author     Massimiliano Masserelli
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <Contenido Version>
- * @deprecated file deprecated in contenido release <Contenido Version>
+ * @since      file available since CONTENIDO release <CONTENIDO Version>
+ * @deprecated file deprecated in CONTENIDO release <CONTENIDO Version>
  * 
  * {@internal 
  *   created  2000-01-01

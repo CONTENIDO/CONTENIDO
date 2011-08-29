@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * MySQLi database driver
@@ -10,14 +10,14 @@
  * @con_php_req 5
  *
  *
- * @package    Contenido database
+ * @package    CONTENIDO database
  * @version    0.3.2
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <Contenido Version>
+ * @since      file available since CONTENIDO release <CONTENIDO Version>
  *
  * {@internal
  *   created  2000-01-01

@@ -1,15 +1,15 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Contenido daabase, session and authentication classes
+ * CONTENIDO daabase, session and authentication classes
  *
  * Requirements:
  * @con_php_req 5
  *
- * @package    Contenido core
+ * @package    CONTENIDO core
  * @version    1.7
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
@@ -228,7 +228,7 @@ class Contenido_CT_File extends CT_File
 
     /**
      * Overrides get method, because standard byte count is not really senseful for
-     * contenido!
+     * CONTENIDO!
      *
      * @param   string  $sId
      * @param   string  $sName
@@ -262,7 +262,7 @@ class Contenido_CT_Shm extends CT_Shm
 
 
 /**
- * Contenido session container, uses PHP's session implementation.
+ * CONTENIDO session container, uses PHP's session implementation.
  *
  * NOTE: Is experimental, so don't use this in a production environment.
  *

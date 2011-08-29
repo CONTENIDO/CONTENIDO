@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Base (abstract) database class. Each database driver file should extend this!
@@ -11,14 +11,14 @@
  * @con_php_req 5
  *
  *
- * @package    Contenido Database
+ * @package    CONTENIDO Database
  * @version    0.1.4
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since Contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created  2011-03-03

@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Session Management for PHP3
@@ -9,7 +9,7 @@
  * Requirements:
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    1.4
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
@@ -56,7 +56,7 @@ require_once($_PHPLIB['libdir'] . 'ct_file.inc');   // Data storage container: f
 require_once($_PHPLIB['libdir'] . 'ct_shm.inc');    // Data storage container: memory
 require_once($_PHPLIB['libdir'] . 'ct_session.inc');// Data storage container: memory
 require_once($_PHPLIB['libdir'] . 'ct_null.inc');   // Data storage container: null -
-                                                    // no session container - Contenido does not work
+                                                    // no session container - CONTENIDO does not work
 
 require_once($_PHPLIB['libdir'] . 'session.inc');   // Required for everything below.     
 require_once($_PHPLIB['libdir'] . 'auth.inc');      // Disable this, if you are not using authentication.
