@@ -85,19 +85,19 @@ span.sep {
 
 div.login_title {
     float:left;
-    width: 125px;
+    width: 135px;
 }
 
 /* form on loginpage */
 #lblusername{
-    margin-left: 64px;
+    margin-left: 54px;
 }
 #username{
     margin-left: 13px;
     margin-top:3px;
 }
 #lblpasswd{
-    margin-left: 64px;
+    margin-left: 54px;
 }
 #passwd{
     margin-left: 13px;
