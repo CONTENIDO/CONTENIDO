@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * <Description>
@@ -12,7 +12,7 @@
  * @con_notice <Notice>
  * 
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,7 +25,7 @@
  *   created  unknown
  *   modified 2008-06-16, H. Librenz - Hotfix: checking for potential unsecure calling
  *   modified 2008-07-03, bilal arslan, added security fix
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -40,7 +40,7 @@ $contenido_path = '';
 # include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
 
-// Contenido startup process
+// CONTENIDO startup process
 include_once ($contenido_path . 'includes/startup.php');
 
 if ($contenido)

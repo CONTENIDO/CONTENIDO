@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * This file handles the view of an article.
@@ -12,7 +12,7 @@
  * The Client Id and the Language Id of an article will be determined depending on file __FRONTEND_PATH__/config.php where
  * $load_lang and $load_client are defined.
  * Depending on http globals via e.g. front_content.php?idcat=41&idart=34
- * the most important Contenido globals $idcat (Category Id), $idart (Article Id), $idcatart, $idartlang will be determined.
+ * the most important CONTENIDO globals $idcat (Category Id), $idart (Article Id), $idcatart, $idartlang will be determined.
  *
  * The article can be displayed and edited in the Backend or the Frontend.
  * The attributes of an article will be considered (an article can be online, offline or protected ...).
@@ -21,7 +21,7 @@
  * the file __FRONTEND_PATH__/config.after.php
  *
  * If you use 'Frontend User' for protected areas, the category access permission will by handled via the
- * Contenido Extension Chainer.
+ * CONTENIDO Extension Chainer.
  *
  * Finally the 'code' of an article will by evaluated and displayed.
  *
@@ -33,14 +33,14 @@
  * - ./contenido/external/frontend/front_content.php
  *
  *
- * @package    Contenido Frontend
+ * @package    CONTENIDO Frontend
  * @version    4.8
  * @author     Olaf Niemann, Jan Lengowski, Timo A. Hummel et al.
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
  *   created 2003-01-21
@@ -78,7 +78,7 @@ $contenido_path = '';
 # include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
 
-# Contenido startup process
+# CONTENIDO startup process
 include_once ($contenido_path . 'includes/startup.php');
 
 cInclude("includes", "functions.con.php");
@@ -281,7 +281,7 @@ if (!$idcatart)
     {
         if (!$idcat)
         {
-            # Note: In earlier Contenido versions the information if an article is startarticle of a category has been stored
+            # Note: In earlier CONTENIDO versions the information if an article is startarticle of a category has been stored
             # in relation con_cat_art.
             if ($cfg["is_start_compatible"] == true)
             {
@@ -459,7 +459,7 @@ if ($cfg["cache"]["disable"] != '1') {
 ##############################################
 
 /**
- * If user has contenido-backend rights.
+ * If user has CONTENIDO-backend rights.
  * $contenido <==> the cotenido backend session as http global
  * In Backend: e.g. contenido/index.php?contenido=dac651142d6a6076247d3afe58c8f8f2
  * Can also be set via front_content.php?contenido=dac651142d6a6076247d3afe58c8f8f2
@@ -605,7 +605,7 @@ else
 # FRONTEND VIEW
 ##############################################
 
-    /* Mark submenuitem 'Preview' in the Contenido Backend (Area: Contenido --> Articles --> Preview) */
+    /* Mark submenuitem 'Preview' in the CONTENIDO Backend (Area: Contenido --> Articles --> Preview) */
     if ($contenido)
     {
         $markscript = markSubMenuItem(4, true);
@@ -922,7 +922,7 @@ else
         {
             if ($error == 1)
             {
-                echo "Fatal error: Could not display error page. Error to display was: 'No contenido session variable set. Probable error cause: Start article in this category is not set on-line.'";
+                echo "Fatal error: Could not display error page. Error to display was: 'No CONTENIDO session variable set. Probable error cause: Start article in this category is not set on-line.'";
             }
             else
             {

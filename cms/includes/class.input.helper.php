@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Various derived HTML class elements especially useful          
@@ -19,7 +19,7 @@
  * @con_php_req 5
  * 
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    2.1 (formerly known as functions.input.helper.php)
  * @author     Björn Behrens (HerrB), http://www.btech.de
  * @copyright  four for business AG <www.4fb.de>
@@ -235,7 +235,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
 	 * Function addTypesFromArt. Adds types and type ids which are available for the specified article
 	 *
 	 * @param int		$iIDCatArt	Article id
-	 * @param string	$sTypeRange	Komma separated list of Contenido type ids which may be in the resulting list (e.g. '1','17','28')
+	 * @param string	$sTypeRange	Komma separated list of CONTENIDO type ids which may be in the resulting list (e.g. '1','17','28')
 	 *
 	 * @return int		Number of items added
 	 **/

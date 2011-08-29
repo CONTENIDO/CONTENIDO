@@ -1,14 +1,14 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * 
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -436,7 +436,7 @@ class cConCacheHandler extends cConCache {
     * Does some checks and sets the configuration of cache object.
     *
     * @param   array    $aConf         Configuration of caching as follows:
-    *                                  - $a['excludecontenido'] bool. don't cache output, if we have a contenido variable, 
+    *                                  - $a['excludecontenido'] bool. don't cache output, if we have a CONTENIDO variable, 
     *                                                                 e. g. on calling frontend preview from backend
     *                                  - $a['enable'] bool. activate caching of frontend output
     *                                  - $a['debug'] bool. compose debuginfo (hit/miss and execution time of caching)
@@ -448,15 +448,15 @@ class cConCacheHandler extends cConCache {
     *                                  - $a['cacheprefix'] string. add prefix 2 stored filenames
     *                                  - $a['idoptions'] array. several variables 2 create a unique id, if the output depends 
     *                                                           on them. e. g. array('uri'=>$_SERVER['REQUEST_URI'],'post'=>$_POST,'get'=>$_GET);
-    * @param   obj      $db            Reference 2 Contenido database object
+    * @param   obj      $db            Reference 2 CONTENIDO database object
     * @param   int      $iCreateCode   Flag of createcode state from table con_cat_art
     */
     function cConCacheHandler($aConf, &$db, $iCreateCode=null) {
 
-        // check if caching is allowed on contenido variable
+        // check if caching is allowed on CONTENIDO variable
         if ($aConf['excludecontenido'] == true) {
             if (isset($GLOBALS['contenido'])) {
-                // contenido variable exists, set state and get out here
+                // CONTENIDO variable exists, set state and get out here
                 $this->_bEnableCaching = false;
                 return;
             }

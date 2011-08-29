@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Configuration File
@@ -10,7 +10,7 @@
  * @con_php_req 5
  * 
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -34,7 +34,7 @@ if(!defined('CON_FRAMEWORK')) {
 }
  
  
-// Relative path to contenido directory, for all inclusions, in most cases: "../contenido/"
+// Relative path to CONTENIDO directory, for all inclusions, in most cases: "../contenido/"
 $contenido_path = "../contenido/";
 
 // If language isn't specified, set this client and language (ID)

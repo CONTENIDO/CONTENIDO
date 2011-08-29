@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Recursive loop over given category for building a sitemap navigation
