@@ -106,13 +106,11 @@
     	var sSession = '{CONTENIDO}';
     	createLinkEditorPath = Array();
 		
-    	$(document).ready(function(){
-			$.getScript(sPath+'scripts/cmsLinkEditor.js', function() {
-				addLinkEditorEvents('#cms_linkeditor_{ID}_settings', '#cms_linkeditor_{ID}', {ID}, {IDARTLANG});
-			});
-    		
-    	});
-		
+        conLoadFile(sPath+'scripts/cmsLinkEditor.js', 'addLinkEditorEvents{ID}();');
+    
+        function addLinkEditorEvents{ID} () {
+            addLinkEditorEvents('#cms_linkeditor_{ID}_settings', '#cms_linkeditor_{ID}', {ID}, {IDARTLANG});
+        }
 		
     	-->
 </script>

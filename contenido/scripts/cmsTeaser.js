@@ -193,12 +193,16 @@ function cmsTeaser_addAjaxGetArticleListEvent(sFrameId, sPath, sSession) {
  * @param string sPath
  */
 function cmsTeaser_loadExternalScripts(sFrameId, sPath) {
-    $('head').append('<link rel="stylesheet" href="'+sPath+'styles/cms_teaser.css" type="text/css" media="all" />');
+    if ($('#cms_teaser').length == 0) {
+        $('head').append('<link rel="stylesheet" id="cms_teaser" href="'+sPath+'styles/cms_teaser.css" type="text/css" media="all" />');
+    }
 	
-    $.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
-        $(sFrameId).draggable({handle: '.head'});
-        $(sFrameId+' .head').css('cursor', 'move');
-    });
+    conLoadFile(sPath+'scripts/jquery/jquery-ui.js', 'cmsTeaser_loadExternalScriptsCallback(\''+sFrameId+'\');');
+}
+
+function cmsTeaser_loadExternalScriptsCallback(sFrameId) {
+    $(sFrameId).draggable({handle: '.head'});
+    $(sFrameId+' .head').css('cursor', 'move');
 }
 
 /**

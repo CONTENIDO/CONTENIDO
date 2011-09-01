@@ -113,10 +113,10 @@
 		var divContainer = Array();
 		divContainer[{ID}] = '';
     	
-    	$(document).ready(function(){
-    		$.getScript(sPath+'scripts/cmsImage.js', function() {
-    			addImageEvents(ImageFrame{ID}, Image{ID}, sPath, sSession, iIdArtLang, {ID}, aImageData{ID}, sContent{ID});
-    		});
-    	});
+        conLoadFile(sPath+'scripts/cmsImage.js', 'addImageEvents{ID}();');
+    
+        function addImageEvents{ID} () {
+            addImageEvents(ImageFrame{ID}, Image{ID}, sPath, sSession, iIdArtLang, {ID}, aImageData{ID}, sContent{ID});
+        }
     	-->
 </script>

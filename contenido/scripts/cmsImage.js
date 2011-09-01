@@ -179,12 +179,14 @@ function loadImageExternalScripts(sImageFrameId, sPath, iImageId) {
 	include_once(sPath+'scripts/jquery/ajaxupload.js', 'js');	
 	include_once(sPath+'styles/cms_image.css', 'css');	
 	
-	$.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
-		$(sImageFrameId).draggable({
-			handle: '.head'
-		});
-		$(sImageFrameId+' .head').css('cursor', 'move');
-	});	
+    conLoadFile(sPath+'scripts/jquery/jquery-ui.js', 'loadImageExternalScriptsCallback(\''+sImageFrameId+'\');');
+}
+
+function loadImageExternalScriptsCallback(sImageFrameId) {
+    $(sImageFrameId).draggable({
+        handle: '.head'
+    });
+    $(sImageFrameId+' .head').css('cursor', 'move');
 }
 
 /**

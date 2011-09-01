@@ -62,10 +62,7 @@
 	if (typeof(cmsDynamicTranslations) == 'undefined') {
 		var cmsDynamicTranslations = {TRANSLATIONS};
 		var cmsDynamicConPath = '{CON_PATH}';
-		
-		$.getScript(cmsDynamicConPath + 'scripts/cmsDynamic.js', function() {
-			loadCmsDynamic();
-		});
-		
+        
+        conLoadFile(sPath+'scripts/cmsDynamic.js', 'loadCmsDynamic();');		
 	}
 </script>

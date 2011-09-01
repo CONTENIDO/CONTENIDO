@@ -62,13 +62,17 @@ function loadLinkEditorExternalScripts(sFrameId, iId) {
 	include_once(sPath+'scripts/jquery/ajaxupload.js', 'js');	
 	include_once(sPath+'styles/cms_linkeditor.css', 'css');	
 	//frame movebar
-	$.getScript(sPath+'scripts/jquery/jquery-ui.js', function() {
-		$(sFrameId).draggable({
-			handle: '.head'
-		});
-		$(sFrameId+' .head').css('cursor', 'move');
-	});
+    
+    conLoadFile(sPath+'scripts/jquery/jquery-ui.js', 'loadLinkEditorExternalScriptsCallback(\''+sFrameId+'\');');
 }
+
+function loadLinkEditorExternalScriptsCallback(sFrameId) {
+    $(sFrameId).draggable({
+        handle: '.head'
+    });
+    $(sFrameId+' .head').css('cursor', 'move');
+}
+
 /**
  * Function adds tabbling events to menubar of Linkeditor form
  * which switchs between the tree tabbing views

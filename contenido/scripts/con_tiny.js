@@ -365,3 +365,37 @@ function leave_check() {
         }
      }
 }
+
+/**
+   *
+   * Section for script loader
+   */
+   
+var loaded = new Object();
+var stack = new Object();
+var in_progress = false;
+
+function conLoadFile(sScript, sCallback) {
+     if (!sCallback) {
+        sCallback = '';
+    }
+        
+    if (loaded[sScript] != 'true') {
+        if (stack[sScript] == undefined) {
+            stack[sScript] = '';
+        }
+
+        stack[sScript] += sCallback+"\n";
+        if (loaded[sScript] != 'pending') {
+            loaded[sScript] = 'pending';
+            $.getScript(sScript, function() {
+                loaded[sScript] = 'true';
+                eval(stack[sScript]);
+            });
+        }
+    } else {
+        eval(sCallback);
+    }
+    return true;
+}   
+   

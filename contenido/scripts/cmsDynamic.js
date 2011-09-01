@@ -1,43 +1,46 @@
 
+function loadCmsDynamicCallback() {
+    var movedElementIndex;
+  /**
+         * Sort the form element per drag and drop.
+         * After this action must be saved the form to persistence of data.
+         */
+        $('div.cms_dynamic_content').sortable({
+            items: "div.cms_dynamic_element",
+            handle: ".cms_dynamic_content_action_move",
+            start: function(event, ui) {
+                movedElementIndex = ui.item.index();
+            },
+            stop: function(event, ui) {
+                var index = ui.item.index();
+                var itemClassList = ui.item.find('span.cms_dynamic_element_index_form').html();
+                var parent = ui.item.parents().filter('div.cms_dynamic_content_wrap:first');	
+                var toolbarId = parent.attr('id').replace('cms_dynamic_content_', 'cms_dynamic_toolbar_');	
+                var form = $('div#' + toolbarId + ' form');
+                var tmpItem = form.find('div.' + itemClassList).detach();
+                if (index == 0) {
+                    form.prepend(tmpItem);
+                } else if (index > 0){
+                    form.find('div.cms_dynamic_form_element').eq(index - 1).after(tmpItem);
+                }
+                
+                if (ui.item.index() != movedElementIndex) {
+                    activateLink($('#' + toolbarId), 'save');
+                } ;
+            }
+        });
+}
+
 function loadCmsDynamic() {
 	
-	$('head').append('<link rel="stylesheet" href="' + cmsDynamicConPath + 'styles/cms_dynamic.css" type="text/css" media="all" />');
+    if ($('#cms_dynamic').length == 0) {
+        $('head').append('<link rel="stylesheet" id="cms_dynamic" href="' + cmsDynamicConPath + 'styles/cms_dynamic.css" type="text/css" media="all" />');
+    }
 
 	var cmsDynActiveType = '';
 
 	$(document).ready(function() {
-		$.getScript(cmsDynamicConPath + 'scripts/jquery/jquery-ui.js', function() {
-			
-			var movedElementIndex;
-			/**
-			 * Sort the form element per drag and drop.
-			 * After this action must be saved the form to persistence of data.
-			 */
-			$('div.cms_dynamic_content').sortable({
-				items: "div.cms_dynamic_element",
-				handle: ".cms_dynamic_content_action_move",
-				start: function(event, ui) {
-					movedElementIndex = ui.item.index();
-				},
-				stop: function(event, ui) {
-					var index = ui.item.index();
-					var itemClassList = ui.item.find('span.cms_dynamic_element_index_form').html();
-					var parent = ui.item.parents().filter('div.cms_dynamic_content_wrap:first');	
-					var toolbarId = parent.attr('id').replace('cms_dynamic_content_', 'cms_dynamic_toolbar_');	
-					var form = $('div#' + toolbarId + ' form');
-					var tmpItem = form.find('div.' + itemClassList).detach();
-					if (index == 0) {
-						form.prepend(tmpItem);
-					} else if (index > 0){
-						form.find('div.cms_dynamic_form_element').eq(index - 1).after(tmpItem);
-					}
-					
-					if (ui.item.index() != movedElementIndex) {
-						activateLink($('#' + toolbarId), 'save');
-					} ;
-				}
-			});
-		});
+        conLoadFile(sPath+'scripts/jquery/jquery-ui.js', 'loadCmsDynamicCallback();');
 		
 		/**
 		 * Delete an element from dynamic type.

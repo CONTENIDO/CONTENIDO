@@ -239,19 +239,14 @@ private function getDateFormats(){
  * @return (String) js-script
  */
 public function getJsScript(){
-	
-	// include only one time this js script
-	if(Cms_Date::$iNumOutput < 2){
-		 $this->sJS .= '  <link href="'.$this->aCfg['path']['contenido_fullhtml'].'scripts/jscalendar/calendar-contenido.css" rel="stylesheet" type="text/css"/>'; 
-		 $this->sJS .= ' 	<script type="text/javascript" src="'.$this->aCfg['path']['contenido_fullhtml'].'scripts/jscalendar/calendar.js"></script>';
-		 $this->sJS .= '	<script type="text/javascript" src="'.$this->aCfg['path']['contenido_fullhtml'].'scripts/jscalendar/lang/calendar-'.$this->getLanguageContenido().'.js"></script>';
-		 $this->sJS .= '	<script type="text/javascript" src="'.$this->aCfg['path']['contenido_fullhtml'].'scripts/jscalendar/calendar-setup.js"></script>';
-		 $this->sJS .=   '<script type="text/javascript" src="'.$this->aCfg['path']['contenido_fullhtml'].'/scripts/cmsDate.js"></script>';
-	}
-	
-	$this->sJS .= '<script type="text/javascript">';
-	$this->sJS .= "var $this->sCalName = new CmsDate('".$this->sEditAreaId."', '%d.%m.%Y %H:%M', '24', true, '".$this->sDivSelectId."', '".$this->aCfg['path']['contenido_fullhtml']."','".$this->sSelectId."');";
-	$this->sJS .= '</script>';
+	$this->sJS = "<script type=\"text/javascript\">
+                       var $this->sCalName;
+                       function load_$this->sCalName() {
+                           createCmsDate('".$this->sEditAreaId."', '%d.%m.%Y %H:%M', '24', true, '".$this->sDivSelectId."', '".$this->aCfg['path']['contenido_fullhtml']."','".$this->sSelectId."', '".$this->getLanguageContenido()."', '".$this->sCalName."');
+                       }
+                       
+                       conLoadFile('".$this->aCfg['path']['contenido_fullhtml']."scripts/cmsDate.js', 'load_$this->sCalName();');
+                   </script>";
 	
 	// output 
 	$this->sJS = AddSlashes(AddSlashes($this->sJS));
@@ -321,12 +316,10 @@ private function getEditingField(){
 	
 	    // Inline Editing Field
 	$oDivBox = new cHTMLDiv();
-	$oDivBox->setStyleDefinition("border", "1px dashed #bfbfbf");
-	$oDivBox->setEvent("Focus", "this.style.border='1px solid #bb5577';");
-	$oDivBox->setEvent("Blur", "this.style.border='1px dashed #bfbfbf';");
+	$oDivBox->setStyleDefinition("border", "1px dashed #dddddd");
 	$this->sEditAreaId  = "DATE_" . $this->oDB->f("idtype") . "_" . $this->iNumberOfCms;
 	$oDivBox->setId($this->sEditAreaId);
-	$oDivBox->updateAttributes(array ('contentEditable' => 'true'));
+	#$oDivBox->updateAttributes(array ('contentEditable' => 'true'));
 	$oDivBox->setContent("_REPLACEMENT_"); 
 	$sFinalEditingDiv = $oDivBox->render();
 	$sFinalEditingDiv = AddSlashes(AddSlashes($sFinalEditingDiv));
