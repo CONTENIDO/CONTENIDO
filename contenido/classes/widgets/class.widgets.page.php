@@ -6,26 +6,22 @@
  * Description: 
  * Page widgets
  * 
- * Requirements: 
- * @con_php_req 5.0
- * 
  *
  * @package    Contenido Backend classes
- * @version    1.24
+ * @subpackage cPage widgets
+ * @version    $Id:$
  * @author     Bjoern Behrens
+ * @author     Ortwin Pinke
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * 
- * {@internal 
- *   created 2007-01-30
- *   
- *   $Id: class.widgets.page.php,v 1.24 2007/01/30 20:00:29 bjoern.behrens Exp $
- * }}
- * 
  */
 
+/**
+ * Security define
+ */
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
@@ -36,297 +32,291 @@ if(!defined('CON_FRAMEWORK')) {
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cPage extends cHTML
-{
-	/**
-	 * Storage of scripts to be used on the page
+class cPage extends cHTML {
+    
+    /**
+     * Storage of scripts to be used on the page
      * @var array
-     * @access private
-	 */	
-	var $_scripts;
+     */	
+    protected $_scripts;
 	
-	/**
-	 * Storage of the page's content
-     * @var string
-     * @access private
-	 */		
-	var $_content;
-	
-	/**
-	 * Storage of the margin
+    /**
+     * Storage of the margin
      * @var int
-     * @access private
-	 */		
-	var $_margin;
-
-	/**
-	 * Storage of the desired encoding
-     * @var string
-     * @access private
-	 */			
-	var $_encoding;
-	
-	/**
-	 * Storage of the sub navigation
-     * @var string
-     * @access private
-	 */			
-	var $_subnav;	
-	
-	/**
-	 * Storage of the extra data (see template)
-     * @var string
-     * @access private
-	 */			
-	var $extra;		
-
-	/**
-     * Constructor Function
-	 *
-     * @param none
      */		
-	function cPage ($object = false)
-	{
-		global $auth, $lang;
-		
-		$this->_margin = 10; 
-		$this->_object = $object;
-		
-		/* Check for global register parameters */
-		if (array_key_exists("u_register", $_GET))
-		{
-			$user = new cApiUser($auth->auth["uid"]);
-			
-			if (is_array($_GET["u_register"]))
-			{
-				foreach ($_GET["u_register"] as $type => $values)
-				{
-					foreach ($values as $name => $value)
-					{
-						$user->setProperty($type, $name, $value);
-					}
-				}
-			}
-		}
-		
-		/* Try to extract the current contenido language */
-		$clang = new Language;
-		$clang->loadByPrimaryKey($lang);
-		
-		if (!$clang->virgin)
-		{
-			$this->setEncoding($clang->get("encoding"));
-		}			
-	}
+    protected $_margin;
 
-	/**
-     * set the margin width (pixels)
-	 *
-     * @param $margin int Margin width
-     */		
-	function setMargin ($margin)
-	{
-		$this->_margin = $margin;
-	}
+    /**
+     * Storage of the desired encoding
+     * @var string
+     */			
+    protected $_encoding;
 
-	/**
-     * sets a specific JavaScript for the header
-	 * Important: The passed script needs to define <script></script> tags.
-	 *
-     * @param $name string Script identifier
-     * @param $script string Script code
-     */		
-	function addScript ($name, $script)
-	{
-		$this->_scripts[$name] = $script;
-	}
-	
-	/**
-     * sets the link to the subnavigation. Should be set on the first page only.
-	 *
-     * @param $append URL to append
+    /**
+     * Storage of the sub navigation
+     * @var string
+     */			
+    protected $_subnav;	
+
+    /**
+     * Storage of the extra data (see template)
+     * @var string
+     */			
+    protected $extra;
+    
+    /**
+     *
+     * @global obj $auth
+     * @global string $lang
+     * @param obj $object 
      */
-    function setSubnav ($append, $marea = false)
-    {
-		if ($marea === false)
-		{
-			global $area;
-			$marea = $area;
-		}
-		$this->_subnavArea = $marea;    	
-    	$this->_subnav = $append;
+    public function __construct($object = false) {
+        global $auth, $lang;
+		
+        $this->_margin = 10; 
+        $this->_object = $object;
+
+        /* Check for global register parameters */
+        if (array_key_exists("u_register", $_GET)) {
+            
+            $user = new cApiUser($auth->auth["uid"]);
+            
+            if (is_array($_GET["u_register"])) {
+                foreach ($_GET["u_register"] as $type => $values) {
+                    foreach ($values as $name => $value) {
+                        $user->setProperty($type, $name, $value);
+                    }
+                }
+            }
+        }
+
+        /* Try to extract the current contenido language */
+        $clang = new Language();
+        $clang->loadByPrimaryKey($lang);
+
+        if (!$clang->virgin) {
+            $this->setEncoding($clang->get("encoding"));
+        }			
+    }
+
+
+    /**
+     * @deprecated  [2011-08-31] Old constructor function for downwards compatibility
+     * @uses __construct()
+     */
+    public function cPage($object = false)	{
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct($object);
+    }
+
+    /**
+     * set the margin width (pixels)
+     *
+     * @param type $margin 
+     */
+    public function setMargin($margin)	{
+        $this->_margin = $margin;
+    }
+
+	    /**
+     * sets a specific JavaScript for the header
+     * Important: The passed script needs to define <script></script> tags.
+     *
+     * @param string $name a name for internal usage
+     * @param string $script
+     */
+    public function addScript($name, $script) {
+        $this->_scripts[$name] = $script;
+    }
+	
+    /**
+     * sets the link to the subnavigation. Should be set on the first page only.
+     *
+     * @global string $area
+     * @param string $append
+     * @param string $marea 
+     */
+    public function setSubnav($append, $marea = false) {
+        if ($marea === false) {
+            global $area;
+            $marea = $area;
+        }
+        $this->_subnavArea = $marea;
+        $this->_subnav = $append;
     }			
 
-	/**
+    /**
      * adds the default script to reload the left pane (frame 2)
-	 *
-     * @param none
-     */		
-	function setReload ($location = false)
-	{
-		if ($location != false)
-		{
-    		$this->_scripts["__reload"] =
-    			'<script type="text/javascript">'.
-    			"if (parent.parent.frames['left'].frames['left_bottom'].get_registered_parameters) {".
-    			"parent.parent.frames['left'].frames['left_bottom'].location.href = '$location' + parent.parent.frames['left'].frames['left_bottom'].get_registered_parameters();".
-    			"} else {".
-    			"parent.parent.frames['left'].frames['left_bottom'].location.href = '$location';".
-    			"}"
-    			
-    			."</script>";
-		} else {
-    		$this->_scripts["__reload"] =
-    			'<script type="text/javascript">'.
-    			"if (parent.parent.frames['left'].frames['left_bottom'].get_registered_parameters) {".
-    			"parent.parent.frames['left'].frames['left_bottom'].location.href = parent.parent.frames['left'].frames['left_bottom'].location.href + parent.parent.frames['left'].frames['left_bottom'].get_registered_parameters();".
-    			"} else {".
-    			"parent.parent.frames['left'].frames['left_bottom'].location.href = parent.parent.frames['left'].frames['left_bottom'].location.href;}".
-    			"</script>";			
-		}
-	}
+     *
+     * @param string $location default = false
+     */
+    public function setReload($location = false) {
+        if ($location != false) {
+            $this->_scripts["__reload"] =
+                '<script type="text/javascript">'.
+                "if (parent.parent.frames['left'].frames['left_bottom'].get_registered_parameters) {".
+                "parent.parent.frames['left'].frames['left_bottom'].location.href = '$location' + parent.parent.frames['left'].frames['left_bottom'].get_registered_parameters();".
+                "} else {".
+                "parent.parent.frames['left'].frames['left_bottom'].location.href = '$location';".
+                "}"
+                ."</script>";
+        } else {
+            $this->_scripts["__reload"] =
+                '<script type="text/javascript">'.
+                "if (parent.parent.frames['left'].frames['left_bottom'].get_registered_parameters) {".
+                "parent.parent.frames['left'].frames['left_bottom'].location.href = parent.parent.frames['left'].frames['left_bottom'].location.href + parent.parent.frames['left'].frames['left_bottom'].get_registered_parameters();".
+                "} else {".
+                "parent.parent.frames['left'].frames['left_bottom'].location.href = parent.parent.frames['left'].frames['left_bottom'].location.href;}".
+                "</script>";			
+        }
+    }
 
-	/**
+    /**
      * Sets the content for the page
-	 *
-     * @param $content mixed Object with a render method or a string containing the content
-     */		
-    function setContent ($content)
-    {
-    	/* Is it an array? */
-    	if (is_array($content))
-    	{
-    		foreach ($content as $item)
-    		{
-				if (is_object($item))
-        		{
-        			if (method_exists($item, "render"))
-        			{
-        				$this->_content .= $item->render();
-        			}
-        		} else {
-        			$this->_content .= $item;
-        		}    			
-    		}
-    	} else {
-    		if (is_object($content))
-    		{
-    			if (method_exists($content, "render"))
-    			{
-    				$this->_content = $content->render();
-    				return;
-    			}
-    		} else {
-    			$this->_content = $content;
-    		}
-    	}
-	
-   } 
+     *
+     * @param mixed $content Object with a render method or a string containing the content
+     * @return void 
+     */
+    public function setContent($content) {
+        /* Is it an array? */
+        if(is_array($content)) {
+            foreach($content as $item) {
+                if(is_object($item)) {
+                    if(method_exists($item, "render")) {
+                        $this->_content .= $item->render();
+                    }
+                } else {
+                    $this->_content .= $item;
+                }    			
+            }
+        } else {
+            if(is_object($content)) {
+                if (method_exists($content, "render")) {
+                    $this->_content = $content->render();
+                    return; 
+                }
+            } else {
+                $this->_content = $content;
+            }
+        }
+    } 
 
-	function setExtra ($extra)
-	{
-		$this->extra = $extra;
-	}
-	
-	/**
-     * adds the default script for a messagebox
-	 *
-     * @param none
-     */		
-	function setMessageBox ()
-	{
-		global $sess;
-		$this->_scripts["__msgbox"] = 
-		   '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>'.
-		   '<script type="text/javascript"> 
+    /**
+     *
+     * @param string $extra 
+     */
+    public function setExtra($extra) {
+        $this->extra = $extra;
+    }
+    
+    /**
+     * set default JS for a messagebox
+     *
+     * @global Contenido_Session $sess 
+     */
+    public function setMessageBoxScript() {
+        global $sess;
+        $this->_scripts["__msgbox"] = 
+                '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>'.
+                '<script type="text/javascript">
+                    /* Session-ID */
+                    var sid = "'.$sess->id.'";
+                        
+                    /* Create messageBox
+                    instance */
+                    box = new messageBox("", "", "", 0, 0);
+                    </script>';
+    }
 
-            /* Session-ID */
-            var sid = "'.$sess->id.'";
+    /**
+     * @deprecated [2011-08-31]
+     * @see setMessageBoxScript()
+     */
+    public function setMessageBox()	{
+        $this->setMessageBoxScript();
+    }
+    
+    /**
+     * set JS for markup of a menu item
+     *
+     * @param string $item id of item
+     */
+    public function setMarkScript($item) {
+        $this->_scripts["__markscript"] = markSubMenuItem($item, true);
+    }
 
-            /* Create messageBox
-               instance */
-            box = new messageBox("", "", "", 0, 0);
+    /**
+     * set encoding
+     *
+     * @param string $encoding 
+     */
+    public function setEncoding($encoding) {
+        $this->_encoding = $encoding;
+    }    
 
-           </script>';
-	}
-	
-	function setMarkScript ($item)
-	{
-		$this->_scripts["__markscript"] = markSubMenuItem($item, true);	
-	}
-	
-	function setEncoding ($encoding)
-	{
-		$this->_encoding = $encoding;	
-	}    
-
-	/**
-     * render the page
-	 *
-     * @param none
-     */		
-	function render ($print = true)
-	{
-		global $sess, $cfg;
-		
-		$tpl = new Template;
-		
-		$scripts = "";
-		
-		if (is_array($this->_scripts))
-		{
-			foreach ($this->_scripts as $key => $value)
-			{
-				$scripts .= $value;
-			}
-		}
-		
-		if ($this->_object !== false && method_exists($this->_object, "render") && is_array($this->_requiredScripts))
-		{
-			foreach ($this->_requiredScripts as $key => $value)
-			{
-				$scripts .= '<script type="text/javascript" src="scripts/'.$value.'"></script>';	
-			}
-		}
-		
-		if ($this->_object !== false && method_exists($this->_object, "render"))
-		{
-			$this->_content = $this->_object->render();	
-		}
-		
-		if ($this->_subnav != "")
-		{
-			$scripts .= '<script type="text/javascript">';
-			$scripts .= 'parent.frames["right_top"].location.href = "'.$sess->url("main.php?area=".$this->_subnavArea."&frame=3&".$this->_subnav).'";';
-			$scripts .= '</script>';
-		}
-		
-		if ($this->_encoding != "")
-		{
-			$scripts .= '<meta http-equiv="Content-type" content="text/html;charset='.$this->_encoding.'">'."\n";	
-		}
-		
-		$tpl->set('s', 'SCRIPTS', $scripts);
-		$tpl->set('s', 'CONTENT', $this->_content);
-		$tpl->set('s', 'MARGIN', $this->_margin);
-		$tpl->set('s', 'EXTRA', $this->extra);
-		
-		if ($print == true) {
-			$tplRender = false;
-		} else {
-			$tplRender = true;
-		}
-		$rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_page'],$tplRender, false);
-		
-		if ($print == true)
-		{
-			echo $rendered;
-		} else {
-			return $rendered;
-		}
-	}
-
-		
+    /**
+     * returns or echos rendered HTML-page
+     *
+     * @global Contenido_Session $sess
+     * @global array $cfg
+     * @param bool $print if true echo, if false print (default: true)
+     * @return string or nothing if print
+     */
+    public function render($print = true) {
+        global $sess, $cfg;
+        
+        $tpl = new Template();
+        $scripts = "";
+        
+        if(is_array($this->_scripts)) {
+            foreach($this->_scripts as $key => $value) {
+                $scripts .= $value;
+            }
+        }
+        
+        if($this->_object !== false 
+                && method_exists($this->_object, "render") 
+                && is_array($this->_requiredScripts)) {
+            
+            foreach($this->_requiredScripts as $key => $value) {
+                $scripts .= '<script type="text/javascript" src="scripts/'.$value.'"></script>';
+            }
+        }
+        
+        if ($this->_object !== false && method_exists($this->_object, "render")) {
+            $this->_content = $this->_object->render();
+        }
+        
+        if($this->_subnav != "") {
+            $scripts .= '<script type="text/javascript">';
+            $scripts .= 'parent.frames["right_top"].location.href = "';
+            $scripts .= $sess->url("main.php?area=".$this->_subnavArea."&frame=3&".$this->_subnav).'";';
+            $scripts .= '</script>';
+        }
+        
+        if($this->_encoding != "") {
+            $scripts .= '<meta http-equiv="Content-type" content="text/html;charset='.$this->_encoding.'">'."\n";
+        }
+        
+        $tpl->set('s', 'SCRIPTS', $scripts);
+        $tpl->set('s', 'CONTENT', $this->_content);
+        $tpl->set('s', 'MARGIN', $this->_margin);
+        $tpl->set('s', 'EXTRA', $this->extra);
+        
+        if($print == true) {
+            $tplRender = false;
+        } else {
+            $tplRender = true;
+        }
+        
+        $rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_page'],$tplRender, false);
+        
+        if($print == true) {
+            echo $rendered;
+        } else {
+            return $rendered;
+        }
+    }
 }
 
 /**
@@ -334,42 +324,45 @@ class cPage extends cHTML
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cPageLeftTop extends cPage
-{
-	/**
-     * Constructor Function
-	 *
-     * @param $showCloser boolean True if the closer should be shown (default)
-     */	
-	function cPageLeftTop ($showCloser = true)
-	{
-		$this->showCloser($showCloser);
-	}
-	
-	/**
-     * set wether the closer should be shown. 
-	 *
-     * @param $show boolean True if the closer should be shown (default)
-     */		
-	function showCloser ($show)
-	{
-		$this->_showCloser = $show;	
-	}
+class cPageLeftTop extends cPage {
+    
+    /**
+     * should closer be shown or not
+     * @var bool 
+     */
+    protected $_showCloser;
 
-	/**
-     * render
-	 *
-     */		
-	function render ($print = true)
-	{
-		global $cfg;
-		
-		$tpl = new Template;
-		$tpl->set('s', 'CONTENT', $content);
-		$this->setContent($tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'].$cfg['templates']['widgets']['left_top'],true));
-		
-		cPage::render($print);
-	}
+    /**
+     *
+     * @param bool $showCloser 
+     */
+    public function cPageLeftTop($showCloser = true) {
+        $this->showCloser($showCloser);
+    }
+    
+    /**
+     * 
+     * @param bool $showCloser 
+     */
+    public function showCloser($showCloser) {
+        $this->_showCloser = $showCloser;
+    }
+    
+    /**
+     *
+     * @global type $cfg
+     * @param type $print 
+     */
+    public function render($print = true) {
+        global $cfg;
+        
+        $tpl = new Template();
+        $tpl->set('s', 'CONTENT', $content);
+        $this->setContent($tpl->generate($cfg['path']['contenido']
+                .$cfg['path']['templates'].$cfg['templates']['widgets']['left_top'],true));
+        
+        parent::render($print);
+    }
 }
 
 /**
