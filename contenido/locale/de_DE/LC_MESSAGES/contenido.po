@@ -527,6 +527,9 @@ msgstr "Quelltext"
 msgid "Username can't be empty"
 msgstr "Benutzername darf nicht leer sein"
 
+msgid "Password can't be empty"
+msgstr "Passwort darf nicht leer sein"
+
 #: includes/include.rights_create.php:85
 msgid "User created"
 msgstr "Benutzer erstellt"
