@@ -6,38 +6,20 @@
  * Description:
  * Upload functions
  *
- * Requirements:
- * @con_php_req 5.0
- *
  *
  * @package    Contenido Backend includes
- * @version    1.4.0
+ * @version    1.4.1
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release <= 4.6
- *
- * {@internal
- *   created 2003-12-28
- *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2008-11-27, Andreas Lindner, add possibility to define additional chars as allowed in file / dir names
- *   modified 2009-03-16, Ingo van Peeren, fixed some sql-statements and a missing parameter in uplRenameDirectory()
- *   modified 2009-10-22, OliverL, fixed uplHasFiles is only one file in directory you can delete Directory
- *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready) and usage of is_dbfs()
- *   modified 2011-06-29, Murat Purc, fixed synchronization of deleted/renamed upload files [#CON-401],
- *                        fixed other issues, added uplGetDirectoriesToExclude(), refactored, formatted and commented code
- *
- *   $Id$:
- * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
 
 /**
  * Function reduces long path names and creates a dynamic tooltipp which shows
@@ -140,86 +122,6 @@ function uplDirectoryListRecursive($sCurrentDir, $sStartDir = '', $aFiles = arra
     chdir($sStartDir);
     return $aFiles;
 }
-
-
-/**
- * @deprecated [2011-06-29] Is used nowhere and uses a non existing global $con_cfg
- */
-function upldelete($path, $files)
-{
-    global $cfgClient, $client, $con_cfg, $db, $cfg;
-
-    $path = $cfgClient[$client]['upl']['path'] . $path;
-
-    if (!is_array($files)) {
-        $files = array($files);
-    }
-
-    $ArrayCount = count($files);
-    for ($i=0; $i<$ArrayCount; $i++) {
-        if (is_dir($path.urldecode($files[$i]))) {
-            uplRecursiveRmDirIfEmpty($path.urldecode($files[$i]));
-
-            $sql = "DELETE FROM ".$cfg['tab']['upl']." WHERE dirname='" . $db->escape($files[$i]) . "/'";
-            $db->query($sql);
-        } else {
-            if (file_exists($cfgClient[$client]['path']['frontend'].$con_cfg['PathFrontendTmp'].urldecode($files[$i]))) {
-                unlink($cfgClient[$client]['path']['frontend'].$con_cfg['PathFrontendTmp'].urldecode($files[$i]));
-            }
-
-            $file_name = urldecode($files[$i]);
-            $sql_dirname = str_replace($cfgClient[$client]['upl']['path'], '', $path);
-
-            unlink($path.$file_name);
-
-            $sql = "SELECT idupl FROM ".$cfg['tab']['upl']." WHERE
-            idclient='".Contenido_Security::toInteger($client)."' AND
-            filename='".Contenido_Security::toInteger($file_name)."' AND
-            dirname='".$db->escape($sql_dirname)."'";
-            $db->query($sql);
-            if ($db->next_record()) {
-                $sql = "DELETE FROM ".$cfg['tab']['upl']." WHERE idupl='".Contenido_Security::toInteger($db->f("idupl"))."'";
-                $db->query($sql);
-            }
-        }
-    }
-}
-
-
-/**
- * @deprecated [2011-06-29] Should remove empty upload directories, but calls a invalid method
- */
-function uplRecursiveRmDirIfEmpty($dir)
-{
-    global $notification;
-
-    if (!is_dir($dir)) {
-        return 0;
-    }
-    $directory = @opendir($dir);
-    if (!$directory) {
-        return false;
-    }
-
-    while (false !== ($dir_entry = readdir($directory))) {
-        if ($dir_entry != '.' && $dir_entry != '..') {
-            if (is_dir($dir."/".$dir_entry)) {
-                // FIXME This method doesn't exists
-                uplrecursivermdir($dir."/".$dir_entry);
-            } else {
-                $notification->displayNotification("warning", "Im Verzeichnis $dir sind noch Dateien vorhanden. L&ouml;schen nicht m&ouml;glich.");
-            }
-        }
-    }
-    closedir($directory);
-    unset($directory);
-    if (@rmdir($dir)) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
 
 /**
  * Checks if passed upload directory contains at least one file or directory
