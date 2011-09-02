@@ -1744,8 +1744,6 @@ setup/lib/functions.safe_mode.php -text
 setup/lib/functions.setup.php -text
 setup/lib/functions.sql.php -text
 setup/lib/functions.system.php -text
-setup/lib/release.php -text
-setup/lib/release.xml -text
 setup/lib/startup.php -text
 setup/locale/de_DE/LC_MESSAGES/contenido.mo -text
 setup/locale/de_DE/LC_MESSAGES/contenido.po -text
