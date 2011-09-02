@@ -48,6 +48,7 @@ if(!defined('CON_FRAMEWORK')) {
  *  
  * $html = $xslt->process();
  *
+ * @deprecated 2011-09-02 this class is not supported any longer
  */
 class XsltProcessor
 {
