@@ -350,6 +350,9 @@ function backToMainArea($send)
     }
 }
 
+/**
+ * @deprecated 2011-09-02
+ */
 function showLocation($area)
 {
     global $db, $cfgPath, $lngArea, $cfg, $belang;
