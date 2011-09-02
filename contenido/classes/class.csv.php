@@ -32,6 +32,9 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+/**
+ * @deprecated 2011-09-02 this class is not supported any longer
+ */
 class CSV
 {
 	

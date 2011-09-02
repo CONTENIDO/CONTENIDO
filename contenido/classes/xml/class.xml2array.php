@@ -35,6 +35,9 @@ if (version_compare(PHP_VERSION, '5', '>='))
 	cInclude("includes", "functions.domxml-php4-to-php5.php"); // Enable PHP4 domxml under PHP 5 ff
 }
  
+/**
+ * @deprecated 2011-09-02 this class is not supported any longer
+ */
 class cApiXml2Array
 {
 	/**
