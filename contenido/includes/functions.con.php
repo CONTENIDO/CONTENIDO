@@ -1000,7 +1000,7 @@ function conChangeTemplateForCat($idcat, $idtpl)
         $db->query($sql);
         
         /* DELETE 'container_conf entries' */
-        $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
+        $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
         $db->query($sql);
         
         /* UPDATE 'cat_lang' table */
