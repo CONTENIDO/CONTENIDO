@@ -180,33 +180,19 @@ function isPHPExtensionLoaded ($extension)
 
 function isRegisterLongArraysActive ()
 {	
-	if (version_compare(phpversion(), "5.0.0", ">=") == true)
-	{
-		if (getPHPIniSetting("register_long_arrays") == false)
-		{
-			return false;
-		}
+	if (getPHPIniSetting("register_long_arrays") == false) {
+		return false;
 	}
 	
 	return true;
 }
 function isPHPCompatible ()
 {
-	if (version_compare(phpversion(), "4.1.0", ">=") == true)
+	if (version_compare(phpversion(), C_SETUP_MIN_PHP_VERSION, ">=") == true)
 	{
 		return true;	
 	} else {
 		return false;	
-	}
-}
-
-function isPHP423 ()
-{
-	if (phpversion() == "4.2.2" || phpversion() == "4.2.3")
-	{
-		return true;	
-	} else {
-		return false;
 	}
 }
 ?>

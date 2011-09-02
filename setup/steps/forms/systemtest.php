@@ -182,16 +182,6 @@ class cSetupSystemtest extends cSetupMask
 	
 	function doPHPTests ()
 	{
-        #new demo client requires PHP5
-        if (!version_compare(phpversion(), "5.0.0", ">=") && $_SESSION["setuptype"] == 'setup')
-        {
-            $this->runTest(	false,
-    						C_SEVERITY_WARNING,
-    						i18n('CONTENIDO demo client requires PHP 5 or higher'),
-                            i18n('The CONTENIDO demo client requires PHP 5 or higher. If you want to install the demo client, please update your PHP version.')
-                          );
-        }
-    
 		$this->runTest(	phpversion(),
 						C_SEVERITY_NONE,
 						"PHP Version");
@@ -206,14 +196,8 @@ class cSetupSystemtest extends cSetupMask
 	
 		$this->runTest(	isPHPCompatible(),
 				C_SEVERITY_ERROR,
-				i18n("PHP Version lower than 4.1.0"),
-				i18n("CONTENIDO requires PHP 4.1.0 or higher as it uses functions first introduced with PHP 4.1.0. Please update your PHP4 version."));
-
-		$this->runTest( !isPHP423(),
-						C_SEVERITY_WARNING,
-						i18n("PHP Version equal to 4.2.3"),
-						sprintf(i18n("The versions 4.2.2/4.2.3 of PHP can contain critical bugs which make it impossible to run CONTENIDO with. You may continue, however, please update your PHP4 version first if any kind of problems occur. For more information, have a look at %s"),
-						'<a target="_blank" href="http://bugs.php.net/bug.php?id=19404">http://bugs.php.net/bug.php?id=19404</a>'));
+				sprintf(i18n("PHP Version lower than %s"), C_SETUP_MIN_PHP_VERSION),
+				sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), C_SETUP_MIN_PHP_VERSION));
 						
 		$this->runTest( getSafeModeStatus(),
 						C_SEVERITY_NONE,
