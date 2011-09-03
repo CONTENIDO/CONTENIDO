@@ -314,15 +314,20 @@ class cSetupSystemtest extends cSetupMask
 						i18n("PHP PCRE Extension is not loaded"),
 						i18n("The PHP PCRE Extension is not loaded. CONTENIDO uses PCRE-functions like preg_repace and preg_match and won't work without the PCRE Extension.")); 
 		
+		$this->runTest( class_exists("DOMDocument"),
+						C_SEVERITY_ERROR,
+						i18n("PHP XML Extension is not loaded"),
+						i18n("The PHP XML Extension is not loaded. CONTENIDO won't work without the XML Extension.")); 
+		
 		$this->runTest( isPHPExtensionLoaded("xml"),
 						C_SEVERITY_ERROR,
 						i18n("PHP XML Extension is not loaded"),
-						i18n("The PHP XML Extension is not loaded. CONTENIDO uses XML-functions like xml_parser_create and won't work without the XML Extension.")); 
+						i18n("The PHP XML Extension is not loaded. CONTENIDO won't work without the XML Extension.")); 
 		
 		$this->runTest( function_exists("xml_parser_create"),
 						C_SEVERITY_ERROR,
 						i18n("PHP XML Extension is not loaded"),
-						i18n("The PHP XML Extension is not loaded. CONTENIDO uses XML-functions like xml_parser_create and won't work without the XML Extension.")); 
+						i18n("The PHP XML Extension is not loaded. CONTENIDO won't work without the XML Extension.")); 
 			
 		
 		$iResult = checkImageResizer();

@@ -551,8 +551,8 @@ msgstr "PHP XML Extension nicht geladen"
 
 #: setup/steps/forms/systemtest.php:336
 #: setup/steps/forms/systemtest.php:341
-msgid "The PHP XML Extension is not loaded. CONTENIDO uses XML-functions like xml_parser_create and won't work without the XML Extension."
-msgstr "Die PHP XML-Extension ist nicht geladen. CONTENIDO verwendet XML-Funktionen wie z.b. xml_parser_create und wird ohne die XML-Extension nicht funktionieren."
+msgid "The PHP XML Extension is not loaded. CONTENIDO won't work without the XML Extension."
+msgstr "Die PHP XML-Extension ist nicht geladen. CONTENIDO wird ohne die XML-Extension nicht funktionieren."
 
 #: setup/steps/forms/systemtest.php:351
 msgid "Unable to check for a suitable image resizer"
