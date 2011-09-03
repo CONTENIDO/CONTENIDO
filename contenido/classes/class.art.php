@@ -33,69 +33,59 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 class Art {
-
+	/**
+     * Constructor of class Art.
+     * @return void
+     */
+	public function __construct() {
+		// empty
+	}
+	
     /**
-     * Constructor Function
-     * @param
+     * @deprecated  [2011-09-03] Old constructor function for downwards compatibility
      */
     function Art() {
-        // empty
-    } // end function
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
 
     /**
      * getArtName()
      * Returns a name for the given article
+	 *
+	 * @param integer $iArticleId idart of article
+	 * @param integer $iLangId idlang for article
+	 *
      * @return string  Returns the name of the given article
      */
-    function getArtName($article, $idlang) {
-        global $cfg;
+    public function getArtName($iArticleId, $iLangId) {
+		$oArticle = new Article($iArticleId, null, $iLangId);
+		
+		$sArticleTitle = $oArticle->getField('title');
+		if ($sArticleTitle != '') {
+			return $sArticleTitle;
+		}
 
-        $db = new DB_Contenido;
-		$idlang 	= Contenido_Security::toInteger($idlang);
-		$article 	= Contenido_Security::toInteger($article);
-
-        $sql = "SELECT
-                    title
-                FROM
-                ". $cfg["tab"]["art_lang"] ."
-                WHERE
-                    idlang = '".$idlang."' AND
-                    idart = '".$article."'";
-
-        $db->query($sql);
-        $db->next_record();
-
-        return ($db->f("title"));
-
+		return null;
     } // end function
 
     /**
      * getArtIDForCatArt()
-     * Returns a name for the given article
-     * @return string  Returns the name of the given article
-     *
+     * Returns the idart based on an idcatart.
+	 *
+	 * @param integer $iIdCatArt idcatart to look up
+	 *
+     * @return integer related idart to given idcatart
      */
-    function getArtIDForCatArt ( $idcatart)
-    {
-        global $cfg;
+    public function getArtIDForCatArt($iIdCatArt) {
+        $oCategoryArticle = new cApiCategoryArticle($iIdCatArt);
+		$iIdArt = $art->getField('idart');
 
-        $db = new DB_Contenido;
+		if ($iIdArt != false) {
+			return $iIdArt;
+		}
 		
-		$idcatart = Contenido_Security::toInteger($idcatart);
-
-        $sql = "SELECT
-                    idart
-                FROM
-                ". $cfg["tab"]["cat_art"] ."
-                WHERE
-                    idcatart = '".$idcatart."'";
-        $db->query($sql);
-        $db->next_record();
-
-        return ($db->f("idart"));
-
+        return null;
     } // End function
-
 } // end class
-
 ?>
