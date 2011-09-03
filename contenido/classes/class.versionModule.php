@@ -30,68 +30,7 @@ if(!defined('CON_FRAMEWORK')) {
  die('Illegal call');
 }
 
- class VersionModule extends Version {
-	
-	/**
-	* The name of modul
-	* @access private
-	*/		
-	private $sName;
-	
-	/**
-	* Error Output
-	* @access private
-	*/		
-	private $sError;
-	
-	/**
-	* Description of modul
-	* @access private
-	*/		
-	private $sDescripion;
-	
-	/**
-	* Information of deletable
-	* @access private
-	*/		
-	private $bDeletabel;
-	
-	/**
-	* Code Input
-	* @access private
-	*/		
-	private $sCodeInput;
-	
-	/**
-	* Code Output
-	* @access private
-	*/		
-	private $sCodeOutput; 
-	
-	/**
-	* Template name of modul
-	* @access public
-	*/		
-	public $sTemplate;
-	
-	/**
-	* static
-	* @access private
-	*/		
-	private $sStatic; 
-	
-	/**
-	* Information about package guid
-	* @access private
-	*/		
-	private $sPackageGuid;
-	
-	/**
-	* Information of package data
-	* @access private
-	*/		
-	private $sPackageData;
-	
+ class VersionModule extends Version {	
 	/**
 	* Type of modul
 	* @access public
@@ -124,60 +63,31 @@ if(!defined('CON_FRAMEWORK')) {
         
  		$this->initRevisions();
  		
- 		// Get Module Table Iformation
- 		$this->getModuleTable();
- 		
- 		// Create Body Node of Xml File
- 		$this->setData("Name", $this->sName);
- 		$this->setData("Type", $this->sModType);
- 		$this->setData("Error", $this->sError);
- 		$this->setData("Description", $this->sDescripion);
- 		$this->setData("Deletable", $this->bDeletabel);
- 		$this->setData("CodeInput", $this->sCodeInput);
- 		$this->setData("CodeOutput", $this->sCodeOutput);
- 		$this->setData("Template", $this->sTemplate);
- 		$this->setData("Static", $this->sStatic);
- 		$this->setData("PackageGuid", $this->sPackageGuid);
- 		$this->setData("PackageData", $this->sPackageData);
-		
+		$this->_storeModuleInformation();
  	}
- 	
- 	/**
- 	 * Function reads rows variables from table con_mod and init with the class members.
- 	 * 
- 	 * @return void  
- 	 */
- 	private function getModuleTable(){
-     	
-     	if(!is_object($this->oDB)) {
-     	 $this->oDB = new DB_Contenido;	
-     	}
-		$sSql = "";
-		$sSql = "SELECT *
-                FROM ". $this->aCfg["tab"]["mod"] ."
-                WHERE  idmod = '".Contenido_Security::toInteger($this->iIdentity)."'";
-      
-        if($this->oDB->query($sSql)) {
-	        $this->oDB->next_record();
-			$this->iClient = $this->oDB->f("idclient");
-			$this->sName = $this->oDB->f("name");
-			$this->sModType = $this->oDB->f("type");
-			$this->sError = $this->oDB->f("error");
-			$this->sDescripion = $this->oDB->f("description");
-			$this->sDeletabel = $this->oDB->f("deletable");
-			$this->sCodeInput = $this->oDB->f("input");
-			$this->sCodeOutput = $this->oDB->f("output");
-			$this->sTemplate = $this->oDB->f("template");
-			$this->sStatic = $this->oDB->f("static");
-			$this->sPackageGuid = $this->oDB->f("package_guid");
-			$this->sPackageData = $this->oDB->f("package_data");
-			$this->sAuthor = $this->oDB->f("author");
-			$this->dCreated = $this->oDB->f("created");
-			$this->dLastModified = $this->oDB->f("lastmodified");
-        }
-
-    } // end of function
 	
+	protected function _storeModuleInformation() {
+		$iIdMod = Contenido_Security::toInteger($this->iIdentity);
+		
+		$oModule = new cApiModule($iIdMod);
+		
+		// create body node of XML file
+ 		$this->setData("Name", 			$oModule->getField('name'));
+ 		$this->setData("Type",			$oModule->getField('type'));
+ 		$this->setData("Error", 		$oModule->getField('error'));
+ 		$this->setData("Description", 	$oModule->getField('description'));
+ 		$this->setData("Deletable", 	$oModule->getField('deletable'));
+ 		$this->setData("Template", 		$oModule->getField('template'));
+ 		$this->setData("Static", 		$oModule->getField('static'));
+ 		$this->setData("PackageGuid", 	$oModule->getField('package_guid'));
+ 		$this->setData("PackageData", 	$oModule->getField('package_data'));	
+
+		// retrieve module code from files
+    	$oModuleHandler = new Contenido_Module_Handler($iIdMod);                 
+        $this->setData("CodeOutput", $oModuleHandler->readOutput());
+        $this->setData("CodeInput", $oModuleHandler->readInput());
+	}
+ 	
    /**
 	* This function read an xml file nodes
 	* 

@@ -326,5 +326,6 @@ return array(
     'cWidgetTableEdit' => 'contenido/classes/widgets/class.widgets.tableedit.php',
     'cWidgetTreeView' => 'contenido/classes/widgets/class.widgets.treeview.php',
     'cTableView' => 'contenido/classes/widgets/class.widgets.views.php',
-    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php'
+    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php',
+	'ContenidoXmlWriter' => 'contenido/classes/xml/class.xml.writer.php'
 );

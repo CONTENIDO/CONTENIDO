@@ -134,7 +134,7 @@ class Version {
 	* To take control versioning is switched off
 	* @access private
 	*/
-	private $bVersionCreatActive;
+	private $bVersioningActive;
     
    /**
 	* Timestamp
@@ -187,29 +187,36 @@ class Version {
 
 		// Look if versioning is allowed, default is false	
         if (function_exists('getEffectiveSetting')) {
-            $this->bVersionCreatActive = getEffectiveSetting('versioning', 'activated', 'true'); 
+            $this->bVersioningActive = getEffectiveSetting('versioning', 'activated', 'true'); 
             $this->sAlternativePath = getEffectiveSetting('versioning', 'path');
+			
+			if ($this->bVersioningActive == 'true') {
+				$this->bVersioningActive = true;
+			} else {
+				$this->bVersioningActive = false;
+			}
         } else {
-            $this->bVersionCreatActive = true;
+            $this->bVersioningActive = true;
             $this->sAlternativePath = "";
         }
 
-		if($this->bVersionCreatActive == "true"){
-			if(!is_dir($this->sAlternativePath) ){
-				// Alternative Path is not true or is not exist, we use the frontendpath
-    			if($this->sAlternativePath !="" AND self::$iDisplayNotification  < 2){
-    				$oNotification = new Contenido_Notification();
-					$sNotification = i18n('Alternative path %s does not exist. Version was saved in frondendpath.');    				
-    				$oNotification->displayNotification("warning",  sprintf($sNotification, $this->sAlternativePath));
-    				
-    			}
-				
-    			$this->sAlternativePath = "";
-            }
-			
-			// Look if versioning is set alternative path to save
-			$this->checkPaths();
+		if ($this->bVersioningActive == false){
+			return;
 		}
+		
+		if (is_dir($this->sAlternativePath) == false) {
+			// Alternative Path is not true or is not exist, we use the frontendpath
+			if ($this->sAlternativePath != "" AND self::$iDisplayNotification < 2){
+				$oNotification = new Contenido_Notification();
+				$sNotification = i18n('Alternative path %s does not exist. Version was saved in frondendpath.');    				
+				$oNotification->displayNotification("warning",  sprintf($sNotification, $this->sAlternativePath));
+			}
+			
+			$this->sAlternativePath = "";
+		}
+		
+		// Look if versioning is set alternative path to save
+		$this->checkPaths();
 	}
 	
 	/**
@@ -241,16 +248,16 @@ class Version {
     protected function checkPaths() {
         $aPath = array('', '/css', '/js', '/layout', '/module', '/templates');
         $sFrontEndPath = "";
-        if($this->sAlternativePath == "") {
+        if ($this->sAlternativePath == "") {
         	$sFrontEndPath = $this->aCfgClient[$this->iClient]["path"]["frontend"] . "version";
         } else {
         	$sFrontEndPath = $this->sAlternativePath . "/" . $this->iClient;
         }
         
         foreach ($aPath as $sSubPath) {
-            if(!is_dir($sFrontEndPath.$sSubPath)){
+            if (!is_dir($sFrontEndPath.$sSubPath)) {
     			mkdir($sFrontEndPath.$sSubPath, 0777);
-    			chmod ($sFrontEndPath.$sSubPath, 0777);
+    			chmod($sFrontEndPath.$sSubPath, 0777);
     		}
         }    
     }
@@ -265,44 +272,34 @@ class Version {
 	 */	
 	public function setData($sKey, $sValue) {
 		$this->aBodyData[$sKey] = $sValue;
-
 	}
 
 	/**
 	 * This function creats an xml file. XML Writer helps for create this file.
+	 *
+	 * @param string $sFileName name of xml file to create
 	 * 
-	 * @return string returns content of xml file
+	 * @return boolean true if saving file was successful, otherwise false
 	 */	
-	public function createNewXml() {
-		$oXW = new xmlWriter();
-		$oXW->openMemory();
-		$oXW->setIndent(true);
-		$oXW->startDocument('1.0', 'UTF-8');
-	
-		$oXW->startElement('version');
-		$oXW->writeAttribute('xml:lang', 'de');
-	
-		$oXW->startElement('head');
-		$oXW->writeElement('version_id', $this->iIdentity.'_'.$this->iVersion);
-		$oXW->writeElement('type', $this->sType);
-		$oXW->writeElement('date', date("Y-m-d H:i:s"));
-		$oXW->writeElement('author', $this->sAuthor);
-		$oXW->writeElement('client', $this->iClient);
-		$oXW->writeElement('created', $this->dCreated);
-		$oXW->writeElement('lastmodified', $this->dLastModified);
-		$oXW->endElement();
+	public function createNewXml($sDirectory, $sFileName) {
+		$oWriter = new ContenidoXmlWriter();
+		$oRootElement = $oWriter->addElement('version', '', null, array('xml:lang' => 'de'));
+		$oHeadElement = $oWriter->addElement('head', '', $oRootElement);
 
-		$oXW->startElement('body');
-		
+		$oWriter->addElement('version_id', $this->iIdentity . '_' . $this->iVersion, $oHeadElement);
+		$oWriter->addElement('type', $this->sType, $oHeadElement);
+		$oWriter->addElement('date', date("Y-m-d H:i:s"), $oHeadElement);
+		$oWriter->addElement('author', $this->sAuthor, $oHeadElement);
+		$oWriter->addElement('client', $this->iClient, $oHeadElement);
+		$oWriter->addElement('created', $this->dCreated, $oHeadElement);
+		$oWriter->addElement('lastmodified', $this->dLastModified, $oHeadElement);
+
+		$oBodyElement = $oWriter->addElement('body', '', $oRootElement);
 		foreach ($this->aBodyData as $sKey => $sValue) {
-			$oXW->writeElement($sKey, htmlentities($sValue));
+			$oWriter->addElement($sKey, $sValue, $oBodyElement);
 		}
-
-		$oXW->endElement();
-
-		$oXW->endElement();
-				
-		return $oXW->outputMemory(true);
+		
+		return $oWriter->saveToFile($sDirectory, $sFileName);
 	}
 	
 	/**
@@ -311,33 +308,25 @@ class Version {
 	 * @return void
 	 */	
 	public function createNewVersion() {
-		$bCreate = false;
-		if($this->bVersionCreatActive == "true"){
-			try { // Get version Name
-				$sRevisionName = $this->getRevision();
-				
-				// Create xml version file
-				$sXmlFile = $this->createNewXml();
-				
-				if(!is_dir($this->getFilePath())){
-					
-					$bCreate = mkdir($this->getFilePath(), 0777);
-					chmod ($this->getFilePath(), 0777);
-				}
-				
-				$sHandle = fopen($this->getFilePath().$sRevisionName.'.xml', "w");
-				fputs($sHandle, $sXmlFile);
-				$bCreate = fclose($sHandle);
-				
-				if($bCreate == false){
-					throw new Exception('Couldnt Create New Version');
-				} 
-				
-			} catch(Exception $e) {
-				$bCreate = false;
-				 echo '<br>Some error occured: ' . $e->getMessage() . ': ' . $e->getFile() . ' at line '.$e->getLine() . ' ('.$e->getTraceAsString().')';
-			}
-		}  
+		if ($this->bVersioningActive == false) {
+			return false;
+		}
+	
+		// get version name
+		$sRevisionName = $this->getRevision();
+		
+		if (!is_dir($this->getFilePath())) {
+			$bCreate = mkdir($this->getFilePath(), 0777);
+			chmod($this->getFilePath(), 0777);
+		}
+		
+		// Create xml version file
+		$bCreate = $this->createNewXml($this->getFilePath(), $sRevisionName . '.xml');
+						
+		if ($bCreate == false) {
+			cError(__FILE__, __LINE__, 'Could not create new version.');
+		}
+			
 		return $bCreate;
 	}
 	
