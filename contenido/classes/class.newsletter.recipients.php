@@ -241,21 +241,6 @@ class Recipient extends Item
         $this->__construct($mId);
     }
 
-    /**
-     * Checks if the given md5 matches the md5(email) in the database
-     * @param $md5email string md5 of E-Mail to check
-     * @return boolean True if the hash matches, false otherwise
-     * @deprecated 4.6.15 - 10.08.2006
-     */
-    public function checkMD5Email($md5email)
-    {
-        if ($md5email == md5($this->get("email"))) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public function store()
     {
         global $auth;
