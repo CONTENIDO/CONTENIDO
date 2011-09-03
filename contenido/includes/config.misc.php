@@ -76,9 +76,6 @@ $cfg["debug"]["codeoutput"] = false;
 /* If true, use the field "urlname" for resolving. "name" otherwise */
 $cfg["urlpathresolve"] = false;
 
-/* E-Mail-Address where bug reports will be sent to */
-$cfg['bugreport']['targetemail'] = 'bugreport@contenido.de';
-
 /* The available charsets */
 $cfg['AvailableCharsets'] = array(
     'iso-8859-1',
@@ -176,31 +173,20 @@ $cfg['session_line_length'] = 99999;
 
 
 /**
- * Cache settings
+ * Global cache control flag
  * ----------------------------------
+ * This flag is for globally activating the caching feature in all frontends. 
+ * NOTE: You can control the caching behaviour of each client by confiugring it
+ * separately in its specific configuration file located in cms/includes/concache.php.
  *
- * Following cache settings don't affect the caching behaviour at frontend.
- * 
- * Only enabling the caching ($cfg["cache"]["disable"] = false) will activate processing of
- * caching at frontend.
- * Everything else has to be configured in a client caching specific file which is available 
- * in clients frontend path, see cms/includes/concache.php.
- *
- * So, if you want do enable frontend caching, set $cfg["cache"]["disable"] to false and configure 
+ * So, if you want to enable frontend caching, set $cfg["cache"]["disable"] to false and configure 
  * the rest in cms/includes/concache.php!
  *
  * @TODO: Need a caching solution with better integration in Contenido core
  */
-// (bool)  Enable/Disable caching
+ 
+// (bool) enable/disable caching
 $cfg['cache']['disable'] = true;
-
-// (string)  Directory, where to store cache files.
-//           NOTE: This setting doesn't affects frontend caching
-$cfg['cache']['dir']	 = 'cache/';
-
-// (int)  Lifetime of cached files in seconds.
-//        NOTE: This setting doesn't affects frontend caching
-$cfg['cache']['lifetime'] = 3600;
 
 
 /**
