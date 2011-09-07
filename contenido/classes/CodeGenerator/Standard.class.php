@@ -124,22 +124,14 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         // Find out what kind of CMS_... Vars are in use
         $a_content = $this->_getUsedCmsTypesData();
 
-        $sql = "SELECT idartlang, pagetitle FROM " . $cfg["tab"]["art_lang"] 
-             . " WHERE idart=" . (int) $this->_idart . " AND idlang=" . (int) $this->_lang;
-        $db->query($sql);
-        $db->next_record();
-
-        $idartlang = $db->f("idartlang");
-        $pagetitle = stripslashes($db->f("pagetitle"));
-
         // replace all CMS_TAGS[]
         $this->_processCmsTags($a_content, true);
 
         // add/replace title tag
-        $this->_processCodeTitleTag($pagetitle);
+        $this->_processCodeTitleTag();
 
         // add/replace meta tags
-        $this->_processCodeMetaTags($idartlang);
+        $this->_processCodeMetaTags();
 
         //save the collected css/js data and save it undter the template name ([templatename].css , [templatename].js in cache dir
         $cssDatei = '';
@@ -195,23 +187,21 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
     /**
      * Processes and adds or replaces title tag for an article
-     *
-     * @param   string  $pageTitle  Pagetitle from article language entry
      */
-    protected function _processCodeTitleTag($pageTitle)
+    protected function _processCodeTitleTag()
     {
-        if ($pageTitle == '') {
-            CEC_Hook::setDefaultReturnValue($pageTitle);
-            $pageTitle = CEC_Hook::executeAndReturn('Contenido.Content.CreateTitletag');
+        if ($this->_pagetitle == '') {
+            CEC_Hook::setDefaultReturnValue($this->_pagetitle);
+            $this->_pagetitle = CEC_Hook::executeAndReturn('Contenido.Content.CreateTitletag');
         }
 
         // add or replace title
-        if ($pageTitle != '') {
+        if ($this->_pagetitle != '') {
             $this->_code = preg_replace('/<title>.*?<\/title>/is', '{TITLE}', $this->_code, 1);
             if (strstr($this->_code, '{TITLE}')) {
-                $this->_code = str_ireplace('{TITLE}', '<title>' . $pageTitle . '</title>', $this->_code);
+                $this->_code = str_ireplace('{TITLE}', '<title>' . $this->_pagetitle . '</title>', $this->_code);
             } else {
-                $this->_code = str_ireplace_once('</head>', '<title>' . $pageTitle . "</title>\n</head>", $this->_code);
+                $this->_code = str_ireplace_once('</head>', '<title>' . $this->_pagetitle . "</title>\n</head>", $this->_code);
             }
         } else {
             $this->_code = str_replace('<title></title>', '', $this->_code);
@@ -222,10 +212,8 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
     /**
      * Processes and adds or replaces all meta tags for an article
-     *
-     * @param   int  $idArtLang
      */
-    protected function _processCodeMetaTags($idArtLang)
+    protected function _processCodeMetaTags()
     {
         global $cfg, $encoding, $_cecRegistry;
 
@@ -233,7 +221,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         $aMetaTags = array();
         $aAvailableTags = conGetAvailableMetaTagTypes();
         foreach ($aAvailableTags as $key => $value) {
-            $sMetaValue = conGetMetaValue($idArtLang, $key);
+            $sMetaValue = conGetMetaValue($this->_idartlang, $key);
             if (strlen($sMetaValue) > 0) {
                 //$aMetaTags[$value['name']] = array(array('attribute' => $value['fieldname'], 'value' => $sMetaValue), ...);
                 $aMetaTags[] = array($value['fieldname'] => $value['name'], 'content' => $sMetaValue);

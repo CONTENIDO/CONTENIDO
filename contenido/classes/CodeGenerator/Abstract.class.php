@@ -46,6 +46,8 @@ abstract class Contenido_CodeGenerator_Abstract
     protected $_lang;
     protected $_client;
     protected $_layout;
+    protected $_idartlang;
+    protected $_pagetitle;
 
     protected $_code = '';
     protected $_output = '';
@@ -72,11 +74,21 @@ abstract class Contenido_CodeGenerator_Abstract
 
     public function generate($idcat, $idart, $lang, $client, $layout = false)
     {
+        global $cfg;
+
         $this->_idcat = (int) $idcat;
         $this->_idart = (int) $idart;
         $this->_lang = (int) $lang;
         $this->_client = (int) $client;
         $this->_layout = (bool) $layout;
+
+        $sql = "SELECT idartlang, pagetitle FROM " . $cfg['tab']['art_lang'] 
+             . " WHERE idart=" . (int) $this->_idart . " AND idlang=" . (int) $this->_lang;
+        $this->_db->query($sql);
+        $this->_db->next_record();
+
+        $this->_idartlang = $this->_db->f('idartlang');
+        $this->_pagetitle = stripslashes($this->_db->f('pagetitle'));
 
         return $this->_generate();
     }
@@ -137,7 +149,19 @@ abstract class Contenido_CodeGenerator_Abstract
      */
     protected function _processCmsTags($contentList, $saveKeywords = true)
     {
-        global $cfg, $db;
+        // Variables required in content type codes
+        global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
+
+        $idcat = $this->_idcat;
+        $idart = $this->_idart;
+        $lang = $this->_lang;
+        $client = $this->_client;
+        $idartlang = $this->_idartlang;
+
+        if (!is_object($db2)) {
+            $db2 = new DB_Contenido();
+        }
+        // End: Variables required in content type codes
 
         $match = array();
         $keycode = array();
@@ -153,9 +177,9 @@ abstract class Contenido_CodeGenerator_Abstract
             $type = $db->f('type');
             // try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
 #            $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i', $this->_code, $match);
-            $tmp = preg_match_all('/(' . $type . ')\[+(\d)+\]/i', $this->_code, $match);
-
-            $a_[$key] = $match[2];
+            $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $this->_code, $match);
+            
+            $a_[$key] = $match[0];
 
             $success = array_walk($a_[$key], 'extractNumber');
 
@@ -175,10 +199,10 @@ abstract class Contenido_CodeGenerator_Abstract
     }
 
 
-    abstract protected function _processCodeTitleTag($pageTitle);
+    abstract protected function _processCodeTitleTag();
 
 
-    abstract protected function _processCodeMetaTags($idArtLang);
+    abstract protected function _processCodeMetaTags();
 
 
     protected function _processCmsValueTags($containerCfg, $cId)
