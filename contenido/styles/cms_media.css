@@ -1,0 +1,487 @@
+.cms_filelist_img {
+	margin-right: 2px; 
+	margin-top: 2px;
+    position: absolute;
+    z-index: 10000;
+}
+
+.cms_filelist * {
+    margin: 0;
+    padding: 0;
+    line-height: 100%;
+}
+
+.cms_filelist {
+	font-size: 12px;
+    padding: 3px;
+	position:absolute; 
+	width: 432px;
+	
+	height:320px;
+	background-color:#F1F1F1; 
+	border:1px solid #B3B3B3; 
+	display:none;
+	top: 40px;
+	left: 40px;
+	
+    margin: 0; 
+    z-index: 20000;
+}
+
+.cms_filelist .close {
+	margin:0; 
+	float:right;
+}
+
+.cms_filelist .head {
+    font-weight:bold; 
+	margin:0; 
+	padding: 0;
+	margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.cms_filelist .head_sub {
+	clear:both;
+	font-style:italic; 
+	margin:0; 
+	margin-bottom: 3px;
+	padding-top: 7px;
+}
+
+.cms_filelist .head_sep {
+	width: 322px;
+	margin-top: 7px; 
+	clear:both;
+}
+
+.cms_filelist .manual {
+	width: 420px; 
+}
+
+.cms_filelist label {
+	display:block; 
+	float:left; 
+	width: 220px;
+	margin-bottom:3px;
+}
+
+.cms_filelist label.small {
+	width: 100px;
+}
+
+.cms_filelist input, .cms_filelist select {
+	display:block; 
+	float:left; 
+	width:194px; 
+	margin-bottom:3px;
+    border: 1px solid #ccc;
+}
+
+.cms_filelist input {
+    width:198px; 
+}
+
+.cms_filelist select {
+	width:200px; 
+}
+
+.cms_filelist .no_width {
+	width: 20px; 
+}
+
+.cms_filelist .toolbar {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+	
+	text-align: right;
+	width:65px; 
+	font-style:italic; 
+	margin:0; 
+	
+	clear:both;
+}
+
+.cms_filelist .toolbar #general_settings, .cms_filelist .toolbar #directories_settings {
+	margin-left:80px;
+}
+
+.cms_filelist .italic {
+	font-style:italic;
+}
+
+.cms_filelist .menu {
+	margin-top:10px; 
+    margin-bottom: 5px;
+	list-style:inside;
+	list-style-type:none;
+	margin-right: -6px;
+	clear:both;
+}
+
+.cms_filelist .menu li {
+	margin:0 !important; 
+	padding:0 !important; 
+	float: left;
+	width: 106px;
+	margin-right: 6px;
+	height: 20px;
+	line-height:20px;
+	text-align:center;
+	border-bottom: 1px solid #B3B3B3;
+	border-right: 1px solid #B3B3B3; 
+	vertical-align: bottom;
+    background: transparent !important;
+}
+
+.cms_filelist .menu .directories {
+	font-weight: bold;
+}
+
+.cms_filelist #directories, .cms_filelist #general, .cms_filelist #filter, .cms_filelist #manual {
+	display:none;
+	width: 430px;
+}
+
+.cms_filelist #tabs {
+	height: 256px;
+}
+
+.cms_filelist #directories {
+	display: block;
+}
+
+.cms_filelist input.small {
+	width: 75px;
+}
+
+.cms_filelist input.smalldate {
+	width: 75px;
+	font-size: 10px;
+}
+
+.cms_filelist #manual #filelist_filename {
+	width: 300px !important;
+}
+
+#metaDataList {
+	display: block;
+	width: 410px;
+	background-color: #FFFFFF;
+	clear: both;
+	height: 85px;
+	overflow: auto;
+	padding: 5px;
+	border: 1px solid #ccc;
+}
+
+#metaDataList ul {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+	display: block;
+	background: #FFFFFF;
+}
+
+#metaDataList  ul li {
+	line-height: 20px;
+	display: block;
+	padding-left: 0px;
+	width: 100%;
+	float: left;
+	white-space: nowrap;
+	background-color: #FFFFFF;
+    background: transparent !important;
+}
+
+#metaDataList input {
+	width: 30px;
+}
+
+#metaDataList label {
+	font-weight: bold;
+}
+
+#directoryList {
+	display: block;
+	width: 410px;
+	background-color: #FFFFFF;
+	clear: both;
+	height: 205px;
+	overflow: auto;
+	border: 1px solid #ccc;
+	padding: 5px;
+}
+
+#manual #directoryList {
+	height: 135px;
+}
+
+#directoryList ul {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+	display: block;
+	background: #FFFFFF;
+}
+
+#directoryList  ul li {
+	line-height: 20px;
+	display: block;
+	padding-left: 0px;
+	width: 100%;
+	float: left;
+	white-space: nowrap;
+	background-color: #FFFFFF;
+}
+
+#directoryList ul li div {
+    float: left;
+    width: 100%;
+    display: block;
+    background: #FFF url("../images/dash.gif") no-repeat 16px 8px;
+    white-space: nowrap;
+}    
+#directoryList ul li li li div {
+    background-position: 36px 8px;
+}
+#directoryList ul li li li li div {
+    background-position: 56px 8px;
+}
+#directoryList ul li li li li li div {
+    background-position: 76px 8px;
+}
+#directoryList ul li li li li li li div {
+    background-position: 96px 8px;
+}
+#directoryList ul li li li li li li li div {
+    background-position: 116px 8px;
+}
+#directoryList ul li li li li li li li li div {
+    background-position: 136px 8px;
+}
+#directoryList ul li li li li li li li li li div {
+    background-position: 156px 8px;
+}
+#directoryList ul li li li li li li li li li li div {
+    background-position: 176px 8px;
+}
+#directoryList ul li li li li li li li li li li li div {
+    background-position: 196px 8px;
+}         
+#directoryList ul li li li div {
+    background-color: #FFF;
+}
+#directoryList ul li#root li li em {
+    width: 40px;
+}
+#directoryList ul li#root li li li em {
+    width: 60px;
+}
+#directoryList ul li#root li li li li em {
+    width: 80px;
+}
+#directoryList ul li#root li li li li li em {
+    width: 100px;
+}
+#directoryList ul li#root li li li li li li em {
+    width: 120px;
+}
+#directoryList ul li#root li li li li li li li em {
+    width: 140px;
+}
+#directoryList ul li#root li li li li li li li li em {
+    width: 160px;
+}
+#directoryList ul li#root li li li li li li li li li em {
+    width: 180px;
+}
+#directoryList ul li#root li li li li li li li li li li em {
+    width: 200px;
+}
+#directoryList ul li div.active,
+#directoryList ul li#root li div.active a, 
+#directoryList ul li#root li div.active em a, 
+#directoryList ul li#root li div.active em span {
+	background-color: #ECF1B2 !important;
+}
+#directoryList ul li div:focus ul, 
+#directoryList ul lidiv:active ul {
+	background-color: #FFF;
+}
+#directoryList ul li div:hover {
+	cursor: pointer;
+}
+#directoryList ul li div:hover, 
+#directoryList ul li div:hover a, 
+#directoryList ul li#root li div:hover a, 
+#directoryList ul li#root li div:hover em a, 
+#directoryList ul li#root li div:hover em span, 
+#directoryList div.hover, #directoryList div.hover a, 
+#directoryList ul li#root li div.hover a, 
+#directoryList ul li#root li div.hover em a, 
+#directoryList ul li#root li div.hover em span {
+	background-color: #F8FDDC !important;
+}
+#directoryList ul li div:hover ul {
+	background-color: #FFF;
+}
+
+#directoryList ul li a:hover{
+	background-color: #F8FDDC !important;
+	color: #0060B1 !important;
+	text-decoration: none;
+}
+
+#directoryList ul li li li {
+	margin-left: 0;
+}
+
+#directoryList ul li a {
+	padding: 4px 5px 4px 20px;
+    width: auto;
+    line-height: 20px;
+    display: inline;
+    background: #FFF;
+	color: #000000;
+}
+#directoryList ul li#root em {
+	width: auto;
+	height: 20px;
+	display: block;
+	float: left;
+	padding-left: 20px;
+}
+#directoryList ul li#root li em {
+	background: transparent url("../images/vert-neu.gif") no-repeat right top;
+	margin-right: 0px;
+	padding: 0 0 0 0;
+	width: 20px;
+	height: 20px;
+	display: block;
+	float: left;
+}
+#directoryList ul li#root li.last ul em {
+    background-position: -1000px 0px;
+	
+}
+#directoryList ul li#root li li.last ul em {
+    background-position: -980px 0px;
+}
+#directoryList ul li#root li li li.last ul em {
+    background-position: -960px 0px;
+}
+#directoryList ul li#root li li li li.last ul em {
+    background-position: -940px 0px;
+}
+#directoryList ul li#root li li li li li.last ul em {
+    background-position: -920px 0px;
+}
+#directoryList ul li#root li li li li li li.last ul em {
+    background-position: -900px 0px;
+}
+#directoryList ul li#root li li li li li li li.last ul em {
+    background-position: -880px 0px;
+}
+#directoryList ul li#root li li li li li li li li.last ul em {
+    background-position: -860px 0px;
+}
+#directoryList ul li#root li li li li li li li li li.last ul em {
+    background-position: -840px 0px;
+}
+#directoryList ul li#root li li li li li li li li li li.last ul em {
+    background-position: -820px 0px;
+}
+#directoryList ul li#root li em a,
+#directoryList ul li#root li em span{
+	background: #FFF url("../images/but_minus.gif") no-repeat 0 0;
+	float: right;
+	width: 16px;
+	height: 20px;
+	padding: 0;
+	margin: 0 4px 0 0;
+	display: block;
+}
+#directoryList ul li#root li.collapsed em a,
+#directoryList ul li#root li.collapsed em span {
+	background: #FFF url("../images/but_plus.gif") no-repeat 0 0;
+}
+#directoryList ul li#root li.last em a,
+#directoryList ul li#root li.last li.last em a,
+#directoryList ul li#root li.last em span,
+#directoryList ul li#root li.last li.last em span {
+	background: #FFF url("../images/but_lastnode.gif") no-repeat 0 0;
+}
+#directoryList ul li#root li.last li em a,
+#directoryList ul li#root li.collapsed li em a,
+#directoryList ul li#root li.last li.collapsed li em a,
+#directoryList ul li#root li.last li em span,
+#directoryList ul li#root li.collapsed li em span,
+#directoryList ul li#root li.last li.collapsed li em span {
+	background: #FFF url("../images/but_minus.gif") no-repeat 0 0;
+}
+#directoryList ul li#root li.last li.collapsed em a,
+#directoryList ul li#root li.last.collapsed em a,
+#directoryList ul li#root li.last li.collapsed em span,
+#directoryList ul li#root li.last.collapsed em span {
+	background: #FFF url("../images/but_plus.gif") no-repeat 0 0;
+}
+#directoryList ul li#root li.last {
+
+}
+#directoryList ul li#root li.collapsed ul {
+	display: none;
+}
+
+#directoryList ul li#root {
+	background: transparent url("../images/ordner_oben.gif") no-repeat 0px 2px;
+}
+#directoryList ul li a {
+	background: #FFF url("../images/folder_on.gif") no-repeat 0px 2px;
+}
+#directoryList ul li a.on {
+	background-image: url("../images/folder_on.gif");
+}
+
+#directoryList ul li ul {
+	list-style: none;
+	display: block;
+	padding-left: 0px;
+	margin-left: 0px;
+	float: left;
+	clear: left;
+	width: 100%;
+	position: relative;
+}
+#directoryList ul li ul ul {
+	margin-left: 0px;
+}
+
+#filter span, #metaDataList span, #manual span {
+	padding-top: 3px;
+	float: left;
+}
+
+div.calendar {
+	z-index: 2000 !important;
+} 
+
+#manual #directoryList ul li div.active,
+#manual #directoryList ul li#root li div.active a, 
+#manual #directoryList ul li#root li div.active em a, 
+#manual #directoryList ul li#root li div.active em span {
+	background-color: #fff !important;
+}
+
+#manual #directoryList ul li div:hover, 
+#manual #directoryList ul li div:hover a, 
+#manual #directoryList ul li#root li div:hover a, 
+#manual #directoryList ul li#root li div:hover em a, 
+#manual #directoryList ul li#root li div:hover em span, 
+#manual #directoryList div.hover, #manual #directoryList div.hover a, 
+#manual #directoryList ul li#root li div.hover a, 
+#manual #directoryList ul li#root li div.hover em a, 
+#manual #directoryList ul li#root li div.hover em span {
+	background-color: #F8FDDC !important;
+}

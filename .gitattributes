@@ -168,6 +168,7 @@ contenido/classes/class.cms_dynamic.php -text
 contenido/classes/class.cms_filelist.php -text
 contenido/classes/class.cms_image.php -text
 contenido/classes/class.cms_linkeditor.php -text
+contenido/classes/class.cms_media.php -text
 contenido/classes/class.cms_teaser.php -text
 contenido/classes/class.communications.php -text
 contenido/classes/class.conuser.php -text
@@ -1436,6 +1437,7 @@ contenido/styles/cms_dynamic.css -text
 contenido/styles/cms_filelist.css -text
 contenido/styles/cms_image.css -text
 contenido/styles/cms_linkeditor.css -text
+contenido/styles/cms_media.css -text
 contenido/styles/cms_teaser.css -text
 contenido/styles/contenido.css -text
 contenido/styles/index.php -text
