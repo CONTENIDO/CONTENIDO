@@ -1347,6 +1347,7 @@ contenido/scripts/cmsDynamic.js -text
 contenido/scripts/cmsFileList.js -text
 contenido/scripts/cmsImage.js -text
 contenido/scripts/cmsLinkEditor.js -text
+contenido/scripts/cmsMedia.js -text
 contenido/scripts/cmsTeaser.js -text
 contenido/scripts/conFrameResize.js -text
 contenido/scripts/con_tiny.js -text
