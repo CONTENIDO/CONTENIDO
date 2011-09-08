@@ -65,6 +65,7 @@ return array(
     'Cms_Image' => 'contenido/classes/class.cms_image.php',
     'Cms_LinkEditor' => 'contenido/classes/class.cms_linkeditor.php',
     'Cms_Teaser' => 'contenido/classes/class.cms_teaser.php',
+	'Cms_Media' => 'contenido/classes/class.cms_media.php',
     'CommunicationCollection' => 'contenido/classes/class.communications.php',
     'CommunicationItem' => 'contenido/classes/class.communications.php',
     'ConUser' => 'contenido/classes/class.conuser.php',
