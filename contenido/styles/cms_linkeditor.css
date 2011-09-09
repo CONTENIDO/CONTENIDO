@@ -131,7 +131,8 @@ a {
     width: 15px;
 }*/
 .cms_linkeditor .cms_linkeditor_extern input[name="externlink"]{
-    width: 95%;
+    width: 85%;
+	margin-left: 0;
 }
 .cms_linkeditor_intern .directoryList,
 .cms_linkeditor_intern .directoryFile,
