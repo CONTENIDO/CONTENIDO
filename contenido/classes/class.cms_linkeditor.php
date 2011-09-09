@@ -121,7 +121,7 @@ class Cms_LinkEditor {
 	private $iRootIdcat = '';
 	private $sUploadPath = "";
 	
-
+	private $hostName = '';
 	/**
 	 * Constructor of class inits some important class variables and
 	 * gets some Contenido global vars, so this class has no need to
@@ -175,6 +175,9 @@ class Cms_LinkEditor {
 		
 		$this->getActiveIdcat();
 	    //print_r($this->activeIdcat);
+	    
+	    // Is the user using HTTPS or HTTP?
+		$this->hostName = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) ? 'https://' : 'http://';
 
 	}
 		
@@ -280,6 +283,7 @@ class Cms_LinkEditor {
 		$oTpl->set('s', 'EXTERN', 								i18n("Extern"));
 		$oTpl->set('s', 'INTERN', 								i18n("Intern"));
 		$oTpl->set('s', 'TARGET', 								i18n("Im neuen Fenster öffnen"));
+		$oTpl->set('s', 'HTTP', 								$this->hostName);
 		
 		switch ($this->aLink['link_type']){
 			case 'extern':
@@ -713,7 +717,8 @@ class Cms_LinkEditor {
 	 *
 	 * @return	string	generated code
 	 */
-	public function getAllWidgetView() {
+	public function getAllWidgetView() {		
+		
 		$sCode = '';
 		$this->oDb->query('SELECT * FROM ' . $this->aCfg['tab']['content'] . ' WHERE idartlang='. $this->iIdArtLang .' AND idtype=24 AND typeid='. $this->iId);
 		if ($this->oDb->next_record()) {
@@ -724,7 +729,7 @@ class Cms_LinkEditor {
 		$aCode = explode('; ', urldecode($sCode));		
 		
 		if($aCode[0] == 'extern' && $aCode[1] != ''){			
-	        $aCode[1] = $aCode[1];
+	        $aCode[1] = $this->hostName.$aCode[1];
 		}
 		if($aCode[0] == 'intern' && $aCode[1] != ''){
 	        $aCode[1] = $this->aCfgClient[$this->iClient]['path']['htmlpath'].'front_content.php?idart='.$aCode[1];
