@@ -37,7 +37,7 @@ a {
 
 .cms_image {
 	padding: 3px;
-	position:absolute; 
+	position: absolute!important; 
 	width: 432px;	
 	height:auto;
 	background-color:#F1F1F1; 
