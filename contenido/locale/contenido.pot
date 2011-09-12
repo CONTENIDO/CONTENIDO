@@ -30,7 +30,7 @@ msgstr ""
 
 #: main.loginform.php:92
 msgid ""
-"Contenido is in maintenance mode. Only sysadmins are allowed to login. "
+"CONTENIDO is in maintenance mode. Only sysadmins are allowed to login. "
 "Please try again later."
 msgstr ""
 
@@ -40,7 +40,7 @@ msgid "Language"
 msgstr ""
 
 #: main.loginform.php:194
-msgid "Contenido Backend"
+msgid "CONTENIDO Backend"
 msgstr ""
 
 #: main.loginform.php:196 includes/cfg_language_de.inc.php:276
@@ -131,7 +131,7 @@ msgid "Symbol help"
 msgstr ""
 
 #: includes/main.login.php:210
-msgid "Contenido Manual"
+msgid "CONTENIDO Manual"
 msgstr ""
 
 #: includes/include.js_left_top.php:50 includes/cfg_language_de.inc.php:206
@@ -361,7 +361,7 @@ msgstr ""
 #: includes/include.mod_edit_form.php:405
 msgid ""
 "This module uses variables and/or functions which are probably not available "
-"in this Contenido version. Please make sure that you use up-to-date modules."
+"in this CONTENIDO version. Please make sure that you use up-to-date modules."
 msgstr ""
 
 #: includes/include.mod_edit_form.php:414 includes/include.mod_package.php:454
@@ -2041,35 +2041,35 @@ msgid "Can't clear install error log : Access is denied!"
 msgstr ""
 
 #: includes/functions.system.php:291
-msgid "Contenido version"
+msgid "CONTENIDO version"
 msgstr ""
 
 #: includes/functions.system.php:294
-msgid "Contenido path"
+msgid "CONTENIDO path"
 msgstr ""
 
 #: includes/functions.system.php:296
-msgid "Contenido HTML path"
+msgid "CONTENIDO HTML path"
 msgstr ""
 
 #: includes/functions.system.php:298
-msgid "Contenido full HTML path"
+msgid "CONTENIDO full HTML path"
 msgstr ""
 
 #: includes/functions.system.php:300
-msgid "Contenido frontend path"
+msgid "CONTENIDO frontend path"
 msgstr ""
 
 #: includes/functions.system.php:302
-msgid "Contenido PHPLIB path"
+msgid "CONTENIDO PHPLIB path"
 msgstr ""
 
 #: includes/functions.system.php:304
-msgid "Contenido wysiwyg path"
+msgid "CONTENIDO wysiwyg path"
 msgstr ""
 
 #: includes/functions.system.php:306
-msgid "Contenido wysiwyg HTML path"
+msgid "CONTENIDO wysiwyg HTML path"
 msgstr ""
 
 #: includes/functions.system.php:309
@@ -3770,19 +3770,19 @@ msgid "The history is not deleted!"
 msgstr ""
 
 #: includes/include.system_purge.php:129
-msgid "Contenido: "
+msgid "CONTENIDO: "
 msgstr ""
 
 #: includes/include.system_purge.php:149
-msgid "The contenido log is not cleaned!"
+msgid "The CONTENIDO log is not cleaned!"
 msgstr ""
 
 #: includes/include.system_purge.php:156
-msgid "The contenido cache is not deleted!"
+msgid "The CONTENIDO cache is not deleted!"
 msgstr ""
 
 #: includes/include.system_purge.php:163
-msgid "The contenido cronjobs are not cleaned!"
+msgid "The CONTENIDO cronjobs are not cleaned!"
 msgstr ""
 
 #: includes/include.system_purge.php:168
@@ -3848,15 +3848,15 @@ msgid "Keep last histories"
 msgstr ""
 
 #: includes/include.system_purge.php:207
-msgid "Contenido"
+msgid "CONTENIDO"
 msgstr ""
 
 #: includes/include.system_purge.php:208
-msgid "Clear contenido log file"
+msgid "Clear CONTENIDO log file"
 msgstr ""
 
 #: includes/include.system_purge.php:210
-msgid "Clear contenido cache"
+msgid "Clear CONTENIDO cache"
 msgstr ""
 
 #: includes/include.system_purge.php:211
@@ -4002,7 +4002,7 @@ msgstr ""
 #: includes/include.info.php:38
 msgid ""
 "You can find many information and a community forum on the <a href=\"http://"
-"forum.contenido.org\" target=\"_blank\">Contenido Portal</a>"
+"forum.contenido.org\" target=\"_blank\">CONTENIDO Portal</a>"
 msgstr ""
 
 #: includes/functions.con.php:337 includes/functions.con.php:524
@@ -5111,7 +5111,7 @@ msgid "Local value"
 msgstr ""
 
 #: templates/standard/template.system_variables.html:34
-msgid "Contenido Error Log"
+msgid "CONTENIDO Error Log"
 msgstr ""
 
 #: templates/standard/template.system_variables.html:41
@@ -5119,7 +5119,7 @@ msgid "clear error log"
 msgstr ""
 
 #: templates/standard/template.system_variables.html:48
-msgid "Contenido Upgrade Error Log"
+msgid "CONTENIDO Upgrade Error Log"
 msgstr ""
 
 #: templates/standard/template.system_variables.html:55
@@ -5216,13 +5216,13 @@ msgid ""
 msgstr ""
 
 #: classes/class.update.notifier.php:770
-msgid "You have an unknown or unsupported version of Contenido!"
+msgid "You have an unknown or unsupported version of CONTENIDO!"
 msgstr ""
 
 #: classes/class.update.notifier.php:773
 #, php-format
 msgid ""
-"Your version of Contenido is deprecated and not longer supported for any "
+"Your version of CONTENIDO is deprecated and not longer supported for any "
 "updates. Please update to a higher version! <br /> <a href=\"%s\" class="
 "\"blue\" target=\"_blank\">Download now!</a>"
 msgstr ""
@@ -5230,19 +5230,19 @@ msgstr ""
 #: classes/class.update.notifier.php:777
 #, php-format
 msgid ""
-"A new version of Contenido is available! <br /> <a href=\"%s\" class=\"blue"
+"A new version of CONTENIDO is available! <br /> <a href=\"%s\" class=\"blue"
 "\" target=\"_blank\">Download %s now!</a>"
 msgstr ""
 
 #: classes/class.update.notifier.php:780
 #, php-format
 msgid ""
-"It seems to be that your version string was manipulated. Contenido %s does "
+"It seems to be that your version string was manipulated. CONTENIDO %s does "
 "not exist!"
 msgstr ""
 
 #: classes/class.update.notifier.php:783
-msgid "Your version of Contenido is up to date!"
+msgid "Your version of CONTENIDO is up to date!"
 msgstr ""
 
 #: classes/class.versionFile.php:131
@@ -5722,17 +5722,17 @@ msgstr ""
 #: classes/class.request.password.php:348
 #, php-format
 msgid ""
-"Dear Contenidouser %s,\n"
+"Dear CONTENIDO-User %s,\n"
 "\n"
-"Your password to log in Content Management System Contenido is: %s\n"
+"Your password to log in Content Management System CONTENIDO is: %s\n"
 "\n"
 "Best regards\n"
 "\n"
-"Your Contenido sysadmin"
+"Your CONTENIDO sysadmin"
 msgstr ""
 
 #: classes/class.request.password.php:364
-msgid "Your new password for Contenido Backend"
+msgid "Your new password for CONTENIDO Backend"
 msgstr ""
 
 #: classes/class.todo.php:101

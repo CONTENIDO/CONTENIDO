@@ -1,19 +1,19 @@
 <?php
 
 /**
- * Project: Contenido
+ * Project: CONTENIDO
  * 
  * Description: 
- * Contenido Purge include file to reset some datas(con_code, con_cat_art) and files (log, cache, history)
+ * CONTENIDO Purge include file to reset some datas(con_code, con_cat_art) and files (log, cache, history)
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.0.1
  * @author     Munkh-Ulzii Balidar
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.8.12
+ * @since      file available since CONTENIDO release <= 4.8.12
  *
  * {@internal 
  *   created 2010-01-11
@@ -126,7 +126,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
 	            }
 	        }
 
-	        $sContenido = i18n("Contenido: ");
+	        $sContenido = i18n("CONTENIDO: ");
         
 	        if (isset($_POST['conInuse']) && $_POST['conInuse'] == 1) {
 	            if (!$oPurge->resetConInuse()) {
@@ -146,21 +146,21 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
 	        if (isset($_POST['conLog']) && $_POST['conLog'] == 1) {
 	            if (!$oPurge->clearConLog()) {
 	                $bError = true;
-	                $sErrorMsg .= i18n("The contenido log is not cleaned!") . "<br />";
+	                $sErrorMsg .= i18n("The CONTENIDO log is not cleaned!") . "<br />";
 	            }
 	        }
 	        
 	        if (isset($_POST['conCache']) && $_POST['conCache'] == 1) {
 	            if (!$oPurge->clearConCache()) {
 	                $bError = true;
-	                $sErrorMsg .= i18n("The contenido cache is not deleted!") . "<br />";
+	                $sErrorMsg .= i18n("The CONTENIDO cache is not deleted!") . "<br />";
 	            }
 	        }
 	        
 	        if (isset($_POST['conCronjobs']) && $_POST['conCronjobs'] == 1) {
 	            if (!$oPurge->clearConCronjob()) {
 	                $bError = true;
-	                $sErrorMsg .= i18n("The contenido cronjobs are not cleaned!") . "<br />";
+	                $sErrorMsg .= i18n("The CONTENIDO cronjobs are not cleaned!") . "<br />";
 	            }
 	        }
 	        
@@ -204,10 +204,10 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
     $tpl->set('s', 'CLIENT_HISTORY', i18n("Clear client history")); 
     $tpl->set('s', 'NUMBER_OF_HISTORY', i18n("Keep last histories"));   
     
-    $tpl->set('s', 'GROUP_CONTENIDO', i18n("Contenido"));   
-    $tpl->set('s', 'CON_LOG', i18n("Clear contenido log file"));    
+    $tpl->set('s', 'GROUP_CONTENIDO', i18n("CONTENIDO"));   
+    $tpl->set('s', 'CON_LOG', i18n("Clear CONTENIDO log file"));    
     $tpl->set('s', 'CON_ACTIVE_SESSION', sprintf(i18n("Reset the table %s"), $cfg['tab']['phplib_active_sessions']));   
-    $tpl->set('s', 'CON_CACHE', i18n("Clear contenido cache")); 
+    $tpl->set('s', 'CON_CACHE', i18n("Clear CONTENIDO cache")); 
     $tpl->set('s', 'CON_CRONJOB', i18n("Reset cronjobs"));  
     
     $tpl->set('s', 'BOX_TITLE', i18n("System purge"));  

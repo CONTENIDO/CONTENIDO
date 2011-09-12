@@ -57,10 +57,10 @@ Calendar = function (firstDayOfWeek, dateStr, onSelected, onClose) {
 	// Information
 	this.dateClicked = false;
 	
-	/*Contenido Modification Begin*/
+	/*CONTENIDO Modification Begin*/
 	this.contenido_path = '';
 	this.contenido_call_handler = null;
-	/*Contenido Modification End*/
+	/*CONTENIDO Modification End*/
 
 	// one-time initializations
 	if (typeof Calendar._SDN == "undefined") {
@@ -509,12 +509,12 @@ Calendar.calDragIt = function (ev) {
 	st.left = (posX - cal.xOffs) + "px";
 	st.top = (posY - cal.yOffs) + "px";
 	
-	/*Contenido Modification Begin (CMS_DATE)*/
+	/*CONTENIDO Modification Begin (CMS_DATE)*/
 	if (cal.contenido_call_handler != null && cal.contenido_call_handler != undefined) {
 	    cal.contenido_call_handler.see();
 	}
 
-	/*Contenido Modification End*/
+	/*CONTENIDO Modification End*/
 	return Calendar.stopEvent(ev);
 };
 
@@ -580,7 +580,7 @@ Calendar.dayMouseOver = function(ev) {
 			el.ttip = el.caldate.print(el.calendar.ttDateFormat) + el.ttip.substr(1);
 		}
 		el.calendar.tooltips.innerHTML = el.ttip;
-		/*Contenido Modification Begin (CMS_DATE)*/
+		/*CONTENIDO Modification Begin (CMS_DATE)*/
 		if (el.calendar.contenido_call_handler != null && el.calendar.contenido_call_handler != undefined) {
 		    el.calendar.contenido_call_handler.see();
 		}
@@ -606,7 +606,7 @@ Calendar.dayMouseOut = function(ev) {
 			removeClass(el.parentNode, "rowhilite");
 		if (el.calendar) {
 			el.calendar.tooltips.innerHTML = _TT["SEL_DATE"];
-			/*Contenido Modification Begin (CMS_DATE)*/
+			/*CONTENIDO Modification Begin (CMS_DATE)*/
 			if (el.calendar.contenido_call_handler != null && el.calendar.contenido_call_handler != undefined) {
 			    el.calendar.contenido_call_handler.see();
 			}
@@ -804,7 +804,7 @@ Calendar.prototype.create = function (_par) {
 		Calendar._add_evs(cell);
 		cell.calendar = cal;
 		cell.navtype = navtype;
-		/*Contenido Modification Begin*/
+		/*CONTENIDO Modification Begin*/
         if (text.match(/helpButton/g)) { 
             img = Calendar.createElement("img", cell);
             Calendar._add_evs(img);
@@ -835,7 +835,7 @@ Calendar.prototype.create = function (_par) {
         } else {
             cell.innerHTML = "<div unselectable='on'>" + text + "</div>";
         } 
-		/*Contenido Modification End*/
+		/*CONTENIDO Modification End*/
 		//cell.innerHTML = "<div unselectable='on'>" + text + "</div>";
 		return cell;
 	};

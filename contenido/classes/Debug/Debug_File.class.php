@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Debug object to write info to a file.
@@ -12,7 +12,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.1.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>

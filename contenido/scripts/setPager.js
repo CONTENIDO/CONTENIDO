@@ -1,6 +1,6 @@
 /*****************************************
 * File      :   $RCSfile: setPager.js,v $
-* Project   :   Contenido
+* Project   :   CONTENIDO
 * Descr     :   Pager folding row JavaScript helpers
 * Modified  :   $Date: 2004/03/16 13:41:45 $
 *

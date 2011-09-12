@@ -1,5 +1,5 @@
 ################################################################################
-# Contenido AMR plugin simple rewrite rules set.
+# CONTENIDO AMR plugin simple rewrite rules set.
 #
 # Contains few easy to handle rewrite rules.
 #
@@ -9,7 +9,7 @@
 # @license    http://www.contenido.org/license/LIZENZ.txt
 # @link       http://www.4fb.de
 # @link       http://www.contenido.org
-# @since      file available since Contenido release 4.9.0
+# @since      file available since CONTENIDO release 4.9.0
 #
 # $Id$
 ################################################################################

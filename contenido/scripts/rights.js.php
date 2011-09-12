@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Returns session-dependent rights javascript
@@ -10,20 +10,20 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend sripts
+ * @package    CONTENIDO Backend sripts
  * @version    1.0.3
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.7
+ * @since      file available since CONTENIDO release 4.8.7
  * 
  * {@internal 
  *   created  unknown
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-07-02, Frederic Schneider, include security_class
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -34,7 +34,7 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
  
-// Contenido startup process
+// CONTENIDO startup process
 include_once ('../includes/startup.php');
 
 header("Content-Type: text/javascript");

@@ -39,7 +39,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
         $this->_debug("conGenerateCode($this->_idcat, $this->_idart, $this->_lang, $this->_client, $this->_layout);<br>");
 
-        // Set contenido vars for module concepts
+        // Set CONTENIDO vars for module concepts
         Contenido_Vars::setVar('db', $db);
         Contenido_Vars::setVar('lang', $this->_lang);
         Contenido_Vars::setVar('cfg', $cfg);

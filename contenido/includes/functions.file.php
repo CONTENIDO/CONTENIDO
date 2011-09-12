@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Functions to edit files. Included in Area style,
@@ -11,14 +11,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.0.3
  * @author     Willi Man
  * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release >= 4.6
+ * @since      file available since CONTENIDO release >= 4.6
  *
  * {@internal
  *   created 2004-07-13
@@ -43,7 +43,7 @@ if(!defined('CON_FRAMEWORK')) {
  * @param integer $iIdClient - id of client which contains this file
  * @param string  $sFilename - name of corresponding file
  * @param string  $sType - type of file (css, js or templates)
- * @param object  $oDb - contenido database object
+ * @param object  $oDb - CONTENIDO database object
  *
  * @return void
  */
@@ -72,14 +72,14 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb) {
  * @param integer $iIdClient - id of client which contains this file
  * @param string  $sFilename - name of corresponding file
  * @param string  $sType - type of file (css, js or templates)
- * @param object  $oDb - contenido database object
+ * @param object  $oDb - CONTENIDO database object
  *
  * @return array   Indexes:
  *                           idsfi - Primary key of database record
  *                           created - Datetime when file was created
  *                           lastmodified - Datetime when file was last modified
- *                           author - Author of file (Contenido Backend User)
- *                           modifiedby - Last modifier of file (Contenido Backend User)
+ *                           author - Author of file (CONTENIDO Backend User)
+ *                           modifiedby - Last modifier of file (CONTENIDO Backend User)
  *                           description - Description which was inserted for this file
  *
  */
@@ -124,7 +124,7 @@ function getFileInformation ($iIdClient, $sFilename, $sType, $oDb) {
  * @param string  $sType - type of file (css, js or templates)
  * @param string  $sAuthor - author of file
  * @param string  $sDescription - description of file
- * @param object  $oDb - contenido database object
+ * @param object  $oDb - CONTENIDO database object
  * @param string  $sFilenameNew - new filename if filename was changed (optional)
  *
  * @return void

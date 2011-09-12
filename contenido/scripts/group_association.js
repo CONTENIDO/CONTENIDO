@@ -3,7 +3,7 @@
 * $Id: group_association.js,v 1.0 2008/02/15 13:41:52 timo.trautmann Exp $
 *
 * File      :   $RCSfile: group_association.js,v $
-* Project   : Contenido
+* Project   : CONTENIDO
 * Descr     : File contains java script functions for filtering users in select areas, handling short keys and submitting form
 *                This functions are used in template template.grouprights_memberselect.html
 *
@@ -15,14 +15,14 @@
 
 
 var keycode = 0; //last pressed key
-var addAction = ''; //contenidoaction for adding user to group - (different fpr frontentgroups and backendgroups)
-var deleteAction = ''; //contenidoaction for removing user from group - (different fpr frontentgroups and backendgroups)
+var addAction = ''; //CONTENIDO action for adding user to group - (different fpr frontentgroups and backendgroups)
+var deleteAction = ''; //CONTENIDO action for removing user from group - (different fpr frontentgroups and backendgroups)
 
 /**
  * Initialization of previous defined variables 
  * 
- * @param string add - adding user contenido action
- * @param string del - removing user contenido action
+ * @param string add - adding user CONTENIDO action
+ * @param string del - removing user CONTENIDO action
  * 
  */
 function init(add, del) {
@@ -33,7 +33,7 @@ function init(add, del) {
 /**
  * Function submits form when users were added to group or removed from group
  * 
- * @param string isAdded - contenido action string
+ * @param string isAdded - CONTENIDO action string
  * 
  */
 function setAction(isAdded) {

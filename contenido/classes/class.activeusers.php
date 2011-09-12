@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Display current online user
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.1
  * @author     Bilal Arsland
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created 2008-01-28
@@ -46,7 +46,7 @@ class ActiveUsers {
 	/**
 	 * Constructor 
 	 * 
-	 * @param object $db - Contenido Database Object
+	 * @param object $db - CONTENIDO Database Object
 	 * @param object $cfg 
 	 * @param object $auth 
 	 * 
@@ -98,7 +98,7 @@ class ActiveUsers {
 	/**
 	 * Insert this user in online_user table
 	 * 
-	 * @param object $db - Contenido Database Object
+	 * @param object $db - CONTENIDO Database Object
 	 * 
 	 * @return  Returns true if successful else false
 	 **/

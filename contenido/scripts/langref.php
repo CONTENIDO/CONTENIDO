@@ -3,7 +3,7 @@
 /* Warning: This file contains just definitions
    for the .js files since for any reason poEdit can't
    parse them. This file will never be called from
-   Contenido! */
+   CONTENIDO! */
 
 i18n("Make offline");
 i18n("Make online");

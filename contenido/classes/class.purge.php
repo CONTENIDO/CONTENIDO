@@ -1,16 +1,16 @@
 <?php
 /**
  * Description: 
- * Contenido Purge class to reset some datas and files.
+ * CONTENIDO Purge class to reset some datas and files.
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.0
  * @author     Munkh-Ulzii Balidar
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.8.12
+ * @since      file available since CONTENIDO release <= 4.8.12
  *
  * $Id: 
  */
@@ -235,7 +235,7 @@ class Purge {
 	}
 	
 	/**
-	 * Clear contenido log files
+	 * Clear CONTENIDO log files
 	 * 
 	 * @param string $sLogDir
 	 * @return boolean
@@ -251,7 +251,7 @@ class Purge {
 	}
 	
 	/**
-	 * Clear contenido log files
+	 * Clear CONTENIDO log files
 	 * 
 	 * @param string $sLogDir
 	 * @return boolean

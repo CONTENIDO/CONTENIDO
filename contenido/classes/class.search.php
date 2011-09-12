@@ -1,10 +1,10 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * API to index a contenido article
+ * API to index a CONTENIDO article
  * API to search in the index structure
  * API to display the searchresults
  *
@@ -12,14 +12,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.3
  * @author     Willi Man
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
  *   created  2004-01-15
@@ -48,13 +48,13 @@ if(!defined('CON_FRAMEWORK')) {
 abstract class SearchBaseAbstract
 {
     /**
-     * Contenido database object
+     * CONTENIDO database object
      * @var DB_Contenido
      */
     protected $oDB;
 
     /**
-     * Contenido configuration data
+     * CONTENIDO configuration data
      * @var array
      */
     protected $cfg;
@@ -134,12 +134,12 @@ abstract class SearchBaseAbstract
 
 
 /**
- * Contenido API - Index Object
+ * CONTENIDO API - Index Object
  *
  * This object creates an index of an article
  *
  * Create object with
- * $oIndex = new Index($db); # where $db is the global Contenido database object.
+ * $oIndex = new Index($db); # where $db is the global CONTENIDO database object.
  * Start indexing with
  * $oIndex->start($idart, $aContent);
  * where $aContent is the complete content of an article specified by its content types.
@@ -241,7 +241,7 @@ class Index extends SearchBaseAbstract
 
     /**
      * Constructor, set object properties
-     * @param  DB_Contenido  $oDB  Contenido Database object
+     * @param  DB_Contenido  $oDB  CONTENIDO Database object
      * @return void
      */
     function Index($oDB = null)
@@ -602,7 +602,7 @@ class Index extends SearchBaseAbstract
 
 
 /**
- * Contenido API - Search Object
+ * CONTENIDO API - Search Object
  *
  * This object starts a indexed fulltext search
  *
@@ -1208,7 +1208,7 @@ class Search extends SearchBaseAbstract
 
 
 /**
- * Contenido API - SearchResult Object
+ * CONTENIDO API - SearchResult Object
  *
  * This object ranks and displays the result of the indexed fulltext search.
  * If you are not comfortable with this API feel free to use your own methods to display the search results.

@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Class for handling CMS Type File List
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Content Types
+ * @package    CONTENIDO Content Types
  * @version    1.0.0
  * @author     Dominik Ziegler, Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.13
+ * @since      file available since CONTENIDO release 4.8.13
  * 
  * {@internal 
  *   created 2009-10-01
@@ -41,7 +41,7 @@ cInclude("includes", "functions.upl.php");
  */
 class Cms_FileList {
 	/**
-	 * Contenido configuration array
+	 * CONTENIDO configuration array
 	 * @var 	array
 	 * @access 	private
 	 */
@@ -55,7 +55,7 @@ class Cms_FileList {
 	private $iId = 0;
 	
 	/**
-	 * Contenido database object
+	 * CONTENIDO database object
 	 * @var 	object
 	 * @access 	private
 	 */
@@ -93,28 +93,28 @@ class Cms_FileList {
 	private $aSettings = array();
 	
 	/**
-	 * Current Contenido client id
+	 * Current CONTENIDO client id
 	 * @var 	integer
 	 * @access 	private
 	 */
 	private $iClient = 0;
 	
 	/**
-	 * Current Contenido language id
+	 * Current CONTENIDO language id
 	 * @var 	integer
 	 * @access 	private
 	 */
 	private $iLang = 0;
 	
 	/**
-	 * Contenido session object
+	 * CONTENIDO session object
 	 * @var 	object
 	 * @access 	private
 	 */
 	private $oSess = null;
 	
 	/**
-	 * Contenido configuration array for current active client
+	 * CONTENIDO configuration array for current active client
 	 * @var 	array
 	 * @access 	private
 	 */
@@ -142,7 +142,7 @@ class Cms_FileList {
 	private $aDateFields = array();
 	
 	/**
-	 * Contenido upload path for current client
+	 * CONTENIDO upload path for current client
 	 * @var		string
 	 * @access	private
 	 */
@@ -159,20 +159,20 @@ class Cms_FileList {
 
 	/**
 	 * Constructor of class inits some important class variables and
-	 * gets some Contenido global vars, so this class has no need to
+	 * gets some CONTENIDO global vars, so this class has no need to
 	 * use ugly and buggy global commands
 	 *
 	 * @param string $sContent - xml document from database containing the settings
 	 * @param integer $iNumberOfCms - CMS_FILELIST[4] => 4
 	 * @param integer $iIdArtLang - Idartlang of current article
 	 * @param array $sEditLink - sEditlink for editbuttons, not currently used
-	 * @param array $aCfg - Contenido configuration array
-	 * @param array $oDB - Contenido database object
-	 * @param string $sContenidoLang - Contenido Backend language string
-	 * @param integer $iClient - Contenido client id
-	 * @param integer $iLang - Contenido frontend language id
-	 * @param array $aCfgClient - Contenido Client configuration array
-	 * @param object $oSess - Contenido session object
+	 * @param array $aCfg - CONTENIDO configuration array
+	 * @param array $oDB - CONTENIDO database object
+	 * @param string $sContenidoLang - CONTENIDO Backend language string
+	 * @param integer $iClient - CONTENIDO client id
+	 * @param integer $iLang - CONTENIDO frontend language id
+	 * @param array $aCfgClient - CONTENIDO Client configuration array
+	 * @param object $oSess - CONTENIDO session object
 	 *
 	 * @access public
 	 */
@@ -319,7 +319,7 @@ class Cms_FileList {
 	/**
 	 * Function gets all submitted values for new file list properties from 
 	 * $_POST array, generates new corresponding config XML Document and
-	 * stores it as content, using contenido conSaveContentEntry() function
+	 * stores it as content, using CONTENIDO conSaveContentEntry() function
 	 *
 	 * @access 	private
 	 * @return	void
@@ -695,7 +695,7 @@ class Cms_FileList {
 	}
 	
 	/**
-	 * Function is called in editmode of contenido an returns filelist view and editbutton
+	 * Function is called in editmode of CONTENIDO an returns filelist view and editbutton
 	 *
 	 * @return	string	code for the backend edit view
 	 */
@@ -817,7 +817,7 @@ class Cms_FileList {
 	}
 	
 	/**
-	 * In Contenido content type code is evaled by php. To make this possible,
+	 * In CONTENIDO content type code is evaled by php. To make this possible,
 	 * this function prepares code for evaluation
 	 *
 	 * @access 	private

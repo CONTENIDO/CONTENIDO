@@ -1,7 +1,7 @@
 /**
  * conFrameResize Class $Id: conFrameResize.js,v 1.6 2005/08/22 12:21:18 timo.hummel Exp $
  *
- * Controls the Contenido frame toggling and resizing
+ * Controls the CONTENIDO frame toggling and resizing
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
@@ -33,14 +33,14 @@ function conFrameResize(parentFrameId, frameOne, frameTwo, frameThree, frameFour
     /* Optimal size (Without scrollbars) */
     this.optimalSize = 200;
     
-    /* Id of the frameset, contenido default
+    /* Id of the frameset, CONTENIDO default
        is 'contentFrame' */
     this.frameSetId = parentFrameId || 'contentFrame';
 
     /* Object reference main frameset */
     this.frameSet = '';
 
-   /* References to the 4 Contenido frames */
+   /* References to the 4 CONTENIDO frames */
     this.frames = [];
 
     /* Name of the frames

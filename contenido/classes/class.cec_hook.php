@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Includes CEC hook class
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package     Contenido Backend classes
+ * @package     CONTENIDO Backend classes
  * @subpackage  CEC
  * @version     0.5
  * @author      Murat Purc <murat@purc.de>
@@ -18,7 +18,7 @@
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since contenido release >= 4.8.8
+ * @since       file available since CONTENIDO release >= 4.8.8
  *
  * {@internal
  *   created  2008-08-28, Murat Purc, initial implementation, port from Advanced Mod Rewrite Plugin
@@ -36,7 +36,7 @@
 
 /**
  * Static CEC Hook class, provides some public methods to process registered chains
- * at CEC (Contenido Extension Chainer).
+ * at CEC (CONTENIDO Extension Chainer).
  *
  * Usage:
  * <code>
@@ -79,7 +79,7 @@
  * </code>
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     Contenido Backend classes
+ * @package     CONTENIDO Backend classes
  * @subpackage  CEC
  */
 class CEC_Hook {
@@ -240,7 +240,7 @@ class CEC_Hook {
 
 
     /**
-     * Method to execute registered functions for Contenido Extension Chainer (CEC).
+     * Method to execute registered functions for CONTENIDO Extension Chainer (CEC).
      *
      * Gets the desired CEC iterator and executes each registered chain function by passing the achieved
      * arguments to it. There is
@@ -278,7 +278,7 @@ class CEC_Hook {
 
 
     /**
-     * Method to execute registered functions for Contenido Extension Chainer (CEC).
+     * Method to execute registered functions for CONTENIDO Extension Chainer (CEC).
      *
      * Gets the desired CEC iterator and executes each registered chain function. You can pass as much
      * parameter as you want.

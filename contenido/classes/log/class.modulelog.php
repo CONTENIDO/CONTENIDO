@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * MySQL Driver for GenericDB 
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -36,7 +36,7 @@ class cModuleLog extends cBufferedLog
 	var $_oModule;
 	
     /**
-     * cModuleLog: Creates a new instance of the Contenido ModuleLog mechanism.
+     * cModuleLog: Creates a new instance of the CONTENIDO ModuleLog mechanism.
      *
      * cModuleLog is a logging facility which uses cBufferedLog to do its logging,
      * and features automatic module handling.

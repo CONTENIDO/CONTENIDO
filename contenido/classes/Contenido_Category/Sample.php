@@ -1,13 +1,13 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Sample on how to use Contenido_Category / Contenido_Categories / Contenido_Category_Language.
  * Sample on how to use Contenido_CategoryArticle
  *
- * Contenido_Category represets a Contenido Category (yes, indeed) with tbl. "con_cat".
+ * Contenido_Category represets a CONTENIDO Category (yes, indeed) with tbl. "con_cat".
  * Optionally it can be loaded with values of "con_cat_lang" which is represented by Contenido_Category_Language.
  * If you need a "Collection" of Contenido_Category objects, use Contenido_Categories.
  *
@@ -19,7 +19,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.1.0
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>

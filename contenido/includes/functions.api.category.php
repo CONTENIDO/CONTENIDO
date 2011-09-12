@@ -1,23 +1,23 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * Contenido Category API functions
+ * CONTENIDO Category API functions
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.4.0
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created 2003-08-08
@@ -33,7 +33,7 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 /* Info:
- * This file contains Contenido Category API functions.
+ * This file contains CONTENIDO Category API functions.
  *
  * If you are planning to add a function, please make sure that:
  * 1.) The function is in the correct place

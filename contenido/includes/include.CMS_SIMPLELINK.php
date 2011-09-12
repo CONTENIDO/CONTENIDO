@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Include file for editiing content of type CMS_LINK
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.0.1
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created 2003-05-07
@@ -103,7 +103,7 @@ if ($doedit == "1") {
 
 <html>
 <head>
-<title>contenido</title>
+<title>CONTENIDO</title>
 <link rel="stylesheet" type="text/css" href="<?php print $cfg["path"]["contenido_fullhtml"].$cfg["path"]["styles"] ?>contenido.css">
 </HEAD>
 <BODY MARGINHEIGHT=0 MARGINWIDTH=0 LEFTMARGIN=0 TOPMARGIN=0>

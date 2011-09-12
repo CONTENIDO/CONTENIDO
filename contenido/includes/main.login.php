@@ -1,23 +1,23 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * Contenido Start Screen
+ * CONTENIDO Start Screen
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.0.5
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created 2003-01-21
@@ -74,7 +74,7 @@ if($vuser->getField('using_pw_request') == 1) {
 
 // check for active maintenance mode
 if (getSystemProperty('maintenance', 'mode') == 'enabled') {
-	$sNotificationText .= $notification->returnNotification("warning", i18n("Contenido is in maintenance mode. Only sysadmins are allowed to login."));
+	$sNotificationText .= $notification->returnNotification("warning", i18n("CONTENIDO is in maintenance mode. Only sysadmins are allowed to login."));
 	$sNotificationText .= '<br />';
 }
 	
@@ -215,12 +215,12 @@ $tpl->set('s', 'ADMIN_EMAIL', $sOutputAdmin);
 $tpl->set('s', 'SYMBOLHELP', '<a href="' . $sess->url("frameset.php?area=symbolhelp&frame=4") . '">' . i18n("Symbol help") . '</a>');
 
 if (file_exists($cfg["contenido"]["handbook_path"])) {
-	$tpl->set('s', 'CONTENIDOMANUAL', '<a href="' . $cfg["contenido"]["handbook_url"] . '" target="_blank">' . i18n("Contenido Manual") . '</a>');
+	$tpl->set('s', 'CONTENIDOMANUAL', '<a href="' . $cfg["contenido"]["handbook_url"] . '" target="_blank">' . i18n("CONTENIDO Manual") . '</a>');
 } else {
 	$tpl->set('s', 'CONTENIDOMANUAL', '');
 }
 
-// For display current online user in Contenido-Backend
+// For display current online user in CONTENIDO-Backend
 $aMemberList= array ();
 $oActiveUsers= new ActiveUsers($db, $cfg, $auth);
 $iNumberOfUsers = 0;

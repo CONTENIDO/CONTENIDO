@@ -15,7 +15,7 @@
 /**
  * ContenidoConfig Class
  *
- * Contenido configuration object
+ * CONTENIDO configuration object
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
@@ -104,9 +104,9 @@ contenidoConfig.prototype.init = function( imgOnlineId, imgPublicId, imgSelectId
  * Loads a configuration and calls
  * the updateScreen method
  *
- * @param int Contenido Template Id
- * @param int Contenido Online flag
- * @param int Contenido Public flag
+ * @param int CONTENIDO Template Id
+ * @param int CONTENIDO Online flag
+ * @param int CONTENIDO Public flag
  */
 contenidoConfig.prototype.load = function( Idcat, Idtpl, Online, Public, RightTpl, RightOn, RightPublic, RightTemplateCfg, RightIsSyncable, idString ) {
     this.catId = Idcat;
@@ -226,7 +226,7 @@ contenidoConfig.prototype.changeTemplate = function() {
         str += "&frame=2";                              // frame 2
         str += "&idcat=" + cfg.catId;                   // idcat of marked category
         str += "&idtpl=" + this.objRef[0].getValue();   // id of selected template
-        str += "&contenido=" + sid;                     // contenido session id
+        str += "&contenido=" + sid;                     // CONTENIDO session id
 
         /* execute action */
         this.setAction(str);

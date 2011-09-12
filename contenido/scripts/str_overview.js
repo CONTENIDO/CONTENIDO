@@ -3,7 +3,7 @@
 * $Id: str_overview.js,v 1.0 2008/02/15 13:41:52 timo.trautmann Exp $
 *
 * File      :   $RCSfile: str_overview.js,v $
-* Project   : Contenido
+* Project   : CONTENIDO
 * Descr     : File contains functions for handling Content->Category forms and layers
 *
 * Author    :   $Author: timo.trautmann$
@@ -12,7 +12,7 @@
 * © four for business AG, www.4fb.de
 ******************************************/
 
-//Defining vars for translations and contenido imagepath
+//Defining vars for translations and CONTENIDO imagepath
 var bMsie = (document.all) ? true : false;
 var con_images = '';
 var sMakeOnline = '';
@@ -27,7 +27,7 @@ var oldHrefTplcfg = '';
 /**
  * Initialization of previous defined variables 
  * 
- * @param string sImagePath - HTML Path to contenido images
+ * @param string sImagePath - HTML Path to CONTENIDO images
  * @param string sTransMakeOnline - Translation for setting category online
  * @param string sTransMakeOffline - Translation for setting category offline
  * @param string sTransProtectCategory - Translation for setting category protected
@@ -306,7 +306,7 @@ function refreshStatus(bCaller) {
         }
     }
   
-    //corresponding to checkbox state, set contenido action in form
+    //corresponding to checkbox state, set CONTENIDO action in form
     if (checkbox.checked) {
         conAction.value = 'str_newtree';
     } else {

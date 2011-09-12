@@ -1,21 +1,21 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * HTML parser for contenido
+ * HTML parser for CONTENIDO
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.2
  * @author     Starnetsys, LLC.
  * @copyright  Starnetsys, LLC.
  * @link       http://starnetsys.com
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created unknown

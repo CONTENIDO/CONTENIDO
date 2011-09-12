@@ -4,7 +4,7 @@
 
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * This class  transfers the old modul-system in the
@@ -16,7 +16,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.0
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <info@contenido.org>

@@ -3,17 +3,17 @@
  * $RCSfile$: class.edit_area.php
  *
  * Project:
- * Contenido Content Management System Backend
+ * CONTENIDO Content Management System Backend
  *
  * Description: This file defines class edit_area. This class allows to add edit_area to any page.
  *              This class renders a javascript code, which includes edit_area. It is possible to 
  *              configure editarea whith a lot of params. For details see: http://www.cdolivet.net/editarea/
  *              editarea/docs/configuration.html Standard properties where set by this class. It is possible
- *              to set further properties in system or client settings in contenido by using type edit_area
+ *              to set further properties in system or client settings in CONTENIDO by using type edit_area
  *              This properties where also imported by this class.
  *              
  *
- * @package    Contenido Backend
+ * @package    CONTENIDO Backend
  * @version    1.0.0
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
@@ -76,7 +76,7 @@ class EditArea {
     var $bAddScript;
     
     /**
-      * The contenido configuration array
+      * The CONTENIDO configuration array
       *
       * @var array
       * @access private
@@ -90,12 +90,12 @@ class EditArea {
       *
       * @param  string $sId - The id of textarea which is replaced by editor
       * @param  string $sSyntax - Name of syntax highlighting which is used (html, css, js, php, ...)
-      * @param  string $sLang - lang which is used into editor. Notice NOT Contenido language id
-      *                         ex: de, en ... To get it from contenido language use: 
+      * @param  string $sLang - lang which is used into editor. Notice NOT CONTENIDO language id
+      *                         ex: de, en ... To get it from CONTENIDO language use: 
       *                         substr(strtolower($belang), 0, 2) in backend
       * @param  boolean $bAddScript - defines if edit_area script is included or not
       *                               interesting when there is more than only one editor on page
-      * @param  array $aCfg - The contenido configuration array
+      * @param  array $aCfg - The CONTENIDO configuration array
       * @param  boolean $bEditable - Optional defines if content is editable or not
       *
       * @access public
@@ -138,7 +138,7 @@ class EditArea {
     }
     
     /**
-      * Function gets properties from contenido for edit_area and stores it into
+      * Function gets properties from CONTENIDO for edit_area and stores it into
       * $this->setProperty so user is able to overwride standard settings or append
       * other settings. Function also checks if edit_area is activated or deactivated
       * by user

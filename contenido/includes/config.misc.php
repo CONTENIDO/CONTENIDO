@@ -1,23 +1,23 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * Contenido Misc Configurations
+ * CONTENIDO Misc Configurations
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.4.10
  * @author     Holger Librenz
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created  2004-02-24
@@ -51,7 +51,7 @@ global $cfg;
  * for error handling and logging.
  */
 
-/* Current Contenido Version. You shouldn't change this
+/* Current CONTENIDO Version. You shouldn't change this
    value unless you know what you are doing. */
 $cfg['version'] = '4.9.0-alpha1';
 
@@ -155,7 +155,7 @@ $cfg["statistics_heap_table"] = false;
  *
  * This feature checks GET and POST parameters against a whitelist defined in
  * $cfg['http_params_check']['config']. Depending on mode administrated in the
- * same config as the whitelist contenido will stop processing in case of unknown
+ * same config as the whitelist CONTENIDO will stop processing in case of unknown
  * or invalid GET parameter.
  *
  * For further informations and initial discussion see  http://contenido.org/forum/viewtopic.php?p=113492!
@@ -182,7 +182,7 @@ $cfg['session_line_length'] = 99999;
  * So, if you want to enable frontend caching, set $cfg["cache"]["disable"] to false and configure 
  * the rest in cms/includes/concache.php!
  *
- * @TODO: Need a caching solution with better integration in Contenido core
+ * @TODO: Need a caching solution with better integration in CONTENIDO core
  */
  
 // (bool) enable/disable caching
@@ -210,7 +210,7 @@ $cfg['sql']['select_all_mode'] = true;
 /* Help system, currently not used */
 $cfg['help'] = false;
 
-/* Configure page if Contenido is unable to run (e.g. no database connection)
+/* Configure page if CONTENIDO is unable to run (e.g. no database connection)
  * It is wise to create a maintenance HTML page for redirection, so you won't
  * confuse your customers.
  *
@@ -218,7 +218,7 @@ $cfg['help'] = false;
  */
 $cfg["contenido"]["errorpage"] = "";
 
-/* Configure an email address to alert when Contenido is unable to run. */
+/* Configure an email address to alert when CONTENIDO is unable to run. */
 $cfg["contenido"]["notifyonerror"] = "";
 
 /* Configure how often the notification email is sent, in minutes */

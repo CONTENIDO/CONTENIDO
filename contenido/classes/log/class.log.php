@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Log facility
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -73,7 +73,7 @@ class cLog
 	var $_aShortcutHandlers;
 
 	/**
-     * cLog: Creates a new instance of the Contenido Log mechanism.
+     * cLog: Creates a new instance of the CONTENIDO Log mechanism.
      *
      * cLog is a logging facility which uses PEAR::Log to do its logging,
      * and features log categories.

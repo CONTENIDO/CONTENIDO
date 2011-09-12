@@ -1,7 +1,7 @@
 <?php
 /*****************************************
 * File      :   $RCSfile: config.plugin.php,v $
-* Project   :   Contenido
+* Project   :   CONTENIDO
 * Descr     :   Plugin configurations for frontend users
 * Modified  :   $Date: 2005/05/24 13:19:32 $
 *

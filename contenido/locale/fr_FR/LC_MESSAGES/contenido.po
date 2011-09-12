@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Contenido 4.4\n"
+"Project-Id-Version: CONTENIDO 4.4\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2003-11-11 00:24+0100\n"
 "Last-Translator: Thibaut Dabonneville <thibaut@dabonneville.org>\n"
-"Language-Team: Contenido Translators <translators@contenido.de>\n"
+"Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -121,8 +121,8 @@ msgstr "Contenu"
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
-msgid "Contenido image"
-msgstr "Image Contenido"
+msgid "CONTENIDO image"
+msgstr "Image CONTENIDO"
 
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:252
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:252
@@ -1661,7 +1661,7 @@ msgid "Design Drafts"
 msgstr "Dessins brouillons"
 
 # E:\Projekte_Persoenlich\timo.hummel\timo_con432_workflow\contenido/templates/standard/template.info.html:21
-msgid "Translating Contenido to Dutch"
+msgid "Translating CONTENIDO to Dutch"
 msgstr ""
 
 # e:\timo\contenido_head/contenido/templates/standard/template.info.html:21
@@ -1707,7 +1707,7 @@ msgid "Special thanks to all other contributors of the former releases and bugre
 msgstr "Merci à tout les autres contributeurs des précédentes version et aux personnes ayant envoyé des rapport d'anomalie."
 
 # e:\timo\contenido_head/contenido/templates/standard/template.info.html:36
-msgid "You can find many information and a community forum on the <a href=\"http://www.contenido.de\" target=\"_blank\">Contenido Portal</a>"
+msgid "You can find many information and a community forum on the <a href=\"http://www.contenido.de\" target=\"_blank\">CONTENIDO Portal</a>"
 msgstr "Vous pouvez trouver plus d'information sur le forum commutaire sur le <a href=\"http://www.contenido.de\" target=\"_blank\"Portail Contenido</a>"
 
 # e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:20
@@ -1946,14 +1946,14 @@ msgstr "Si vous voulez savoir si une anomalie a déjà été corrigé, visitez les si
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
-msgid "Contenido Forum"
-msgstr "Forum de Contenido"
+msgid "CONTENIDO Forum"
+msgstr "Forum de CONTENIDO"
 
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
-msgid "Contenido Bug-Tracker"
-msgstr "Bug-Tracker de Contenido"
+msgid "CONTENIDO Bug-Tracker"
+msgstr "Bug-Tracker de CONTENIDO"
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:35
 msgid "Your E-Mail-Address"
@@ -2004,16 +2004,16 @@ msgid "install.log.txt (contains error messages arose during upgrading to a newe
 msgstr "install.log.txt (contient les messages d'erreur remontés lors de la mise à jour vers une nouvelle version)"
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:67
-msgid "systemvariables.html (contains contains several Contenido settings)"
-msgstr "systemvariables.html (contient plusieurs paramètres de Contenido)"
+msgid "systemvariables.html (contains contains several CONTENIDO settings)"
+msgstr "systemvariables.html (contient plusieurs paramètres de CONTENIDO)"
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:68
 msgid "phpinfo.html (contains output generated through the phpinfo() function)"
 msgstr "phpinfo.html (contient les infos générées par la fonction phpinfo())"
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:69
-msgid "By checking this box I agree that four for business AG receives and processes the bug report data.<br>I also agree that the submitted data is used for bug processing and that the bug will be made public using the Contenido Bug-Tracker."
-msgstr "En cochant cette ase, je suis d'accord sur le fait que four fo business AG recoive et procède au traitement du rapport d'anomalie.<br> Je suis aussi d'accord sur le fait que les données envoyées sont utilisées dans le cadre de la recherche d'anomalie et que cette anomalie sera publiquement distribuée au travers de l'outils de suivie d'anomalies de Contenido."
+msgid "By checking this box I agree that four for business AG receives and processes the bug report data.<br>I also agree that the submitted data is used for bug processing and that the bug will be made public using the CONTENIDO Bug-Tracker."
+msgstr "En cochant cette ase, je suis d'accord sur le fait que four fo business AG recoive et procède au traitement du rapport d'anomalie.<br> Je suis aussi d'accord sur le fait que les données envoyées sont utilisées dans le cadre de la recherche d'anomalie et que cette anomalie sera publiquement distribuée au travers de l'outils de suivie d'anomalies de CONTENIDO."
 
 # e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:95
 msgid "User system configuration"
@@ -2035,8 +2035,8 @@ msgstr "Votre configuration système"
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
-msgid "Contenido Error Log"
-msgstr "Fichier des erreurs Contenido"
+msgid "CONTENIDO Error Log"
+msgstr "Fichier des erreurs CONTENIDO"
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:38
 msgid "clear error log"
@@ -2045,8 +2045,8 @@ msgstr "vider le fichier de log d'erreur"
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
-msgid "Contenido Upgrade Error Log"
-msgstr "Fichier d'erreur de mise à jour de Contenido"
+msgid "CONTENIDO Upgrade Error Log"
+msgstr "Fichier d'erreur de mise à jour de CONTENIDO"
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:38
 msgid "clear upgrade error log"
@@ -2073,8 +2073,8 @@ msgid "Available clients"
 msgstr "Clients disponibles"
 
 # e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:50
-msgid "Help about Contenido"
-msgstr "Aide sur Contenido"
+msgid "Help about CONTENIDO"
+msgstr "Aide sur CONTENIDO"
 
 # e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
 msgid "Contact System Administrators"

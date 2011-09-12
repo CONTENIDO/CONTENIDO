@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Configuration file for HTTP parameter check feature.
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.1.2
  * @author     Holger Librenz
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created 2008-02-08
@@ -63,7 +63,7 @@ $sLogPath = 'logs/hacktrials.log';
  * Mode
  * 
  * Currently the modes 'training' and 'arcade' are supported. In training mode violation will be logged only.
- * Enabling arcade mode will force contenido to stop on every violations.
+ * Enabling arcade mode will force CONTENIDO to stop on every violations.
  */
 $sMode = 'training';
 

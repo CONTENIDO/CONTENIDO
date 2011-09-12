@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Class for handling CMS Dynamic Type
@@ -22,14 +22,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Content Types
+ * @package    CONTENIDO Content Types
  * @version    1.0.0
  * @author     Munkh-Ulzii Balidar
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.9.00
+ * @since      file available since CONTENIDO release 4.9.00
  * 
  * {@internal 
  *   created 2011-07-05
@@ -348,7 +348,7 @@ class Cms_Dynamic extends AbstractModule{
 	/**
 	 * Function gets all submitted values for new dynamic properties from 
 	 * $_POST array, generates new corresponding config XML Document and
-	 * stores it as content, using contenido conSaveContentEntry() function
+	 * stores it as content, using CONTENIDO conSaveContentEntry() function
 	 */
 	private function storeSettings() {
 		//create new xml document, its encoding and root node
@@ -471,7 +471,7 @@ class Cms_Dynamic extends AbstractModule{
    } 
    
 	/**
-	 * In Contenido content type code is evaled by php. To make this possible,
+	 * In CONTENIDO content type code is evaled by php. To make this possible,
 	 * this function prepares code for evaluation
 	 *
 	 * @param string $sCode - code to escape

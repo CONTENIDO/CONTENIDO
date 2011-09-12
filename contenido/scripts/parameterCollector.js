@@ -1,6 +1,6 @@
 /*****************************************
 * File      :   $RCSfile: class.article.php,v $
-* Project   :   Contenido
+* Project   :   CONTENIDO
 * Descr     :   JavaScript parameter collector function
 * Modified  :   $Date: 2004/07/02 10:59:20 $
 *

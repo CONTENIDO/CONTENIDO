@@ -1,12 +1,12 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * This class provides validation methods for HTTP parameters (GET and POST).
- * Originally based on work of kummer and started by discussion in contenido forum this class
- * is a little bit "re-writed" for better interaction with contenido.
+ * Originally based on work of kummer and started by discussion in CONTENIDO forum this class
+ * is a little bit "re-writed" for better interaction with CONTENIDO.
  * Thanks to Andreas Kummer (aka kummer) for this great idea!
  * 
  * Requirements: 
@@ -14,14 +14,14 @@
  * @con_notice ToDo: Error page re-direction?
  *
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.1.2
  * @author     Andreas Kummer, Holger Librenz
  * @copyright  atelierQ Kummer, four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * @TODO: Some features are the same as in Contenido_Security (see contenido/classes/class.security.php),
  *        merge them...

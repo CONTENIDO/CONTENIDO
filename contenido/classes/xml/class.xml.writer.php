@@ -8,14 +8,14 @@
  * This class extends DOMDocument to provide its functionality.
  *
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.0
  * @author     Dominik Ziegler
  * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release >= 4.9.0
+ * @since      file available since CONTENIDO release >= 4.9.0
  */
  
 class ContenidoXmlWriter extends DOMDocument {

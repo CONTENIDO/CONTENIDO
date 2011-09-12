@@ -1,23 +1,23 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Contenido Language Functions
+ * CONTENIDO Language Functions
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.2.9
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
  *   created unknown
@@ -146,7 +146,7 @@ function langRenameLanguage($idlang, $name)
  * @param  int  $client  Id of the client
  * @param  int  $idlang  Id of the language
  *
- * @todo  Seems to be not used by Contenido core, remove or keep?
+ * @todo  Seems to be not used by CONTENIDO core, remove or keep?
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @author Olaf Niemann <Olaf.Niemann@4fb.de>

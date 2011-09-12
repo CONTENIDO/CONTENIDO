@@ -1,13 +1,13 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Page widgets
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @subpackage cPage widgets
  * @version    $Id:$
  * @author     Bjoern Behrens
@@ -90,7 +90,7 @@ class cPage extends cHTML {
             }
         }
 
-        /* Try to extract the current contenido language */
+        /* Try to extract the current CONTENIDO language */
         $clang = new Language();
         $clang->loadByPrimaryKey($lang);
 

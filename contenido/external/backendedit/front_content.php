@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * This file handles the view of an article in the Backend.
@@ -12,7 +12,7 @@
  * The Client Id and the Language Id of an article will be determined depending on file __FRONTEND_PATH__/config.php where
  * $load_lang and $load_client are defined.
  * Depending on http globals via e.g. front_content.php?idcat=41&idart=34
- * the most important Contenido globals $idcat (Category Id), $idart (Article Id), $idcatart, $idartlang will be determined.
+ * the most important CONTENIDO globals $idcat (Category Id), $idart (Article Id), $idcatart, $idartlang will be determined.
  *
  * The article can be displayed and edited in the Backend or the Frontend.
  * The attributes of an article will be considered (an article can be online, offline or protected ...).
@@ -21,7 +21,7 @@
  * the file __FRONTEND_PATH__/config.after.php
  *
  * If you use 'Frontend User' for protected areas, the category access permission will by handled via the
- * Contenido Extension Chainer.
+ * CONTENIDO Extension Chainer.
  *
  * Finally the 'code' of an article will by evaluated and displayed.
  *
@@ -33,14 +33,14 @@
  * - ./contenido/external/frontend/front_content.php
  *
  *
- * @package    Contenido Backend external
+ * @package    CONTENIDO Backend external
  * @version    1.8.11
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
  *   created 2003-01-21
@@ -64,7 +64,7 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-# Contenido startup process
+# CONTENIDO startup process
 include_once ('../../includes/startup.php');
 
 rereadClients();

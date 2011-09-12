@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Button Widgets
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.13
  * @author     Bjoern Behrens
  * @copyright  four for business AG <www.4fb.de>
@@ -33,7 +33,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 
 /**
- * Contenido Table view
+ * CONTENIDO Table view
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */

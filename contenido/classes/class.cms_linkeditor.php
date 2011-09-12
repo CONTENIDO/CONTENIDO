@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Class for handling CMS Type Link Editor
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Content Types
+ * @package    CONTENIDO Content Types
  * @version    1.0.0
  * @author     Fulai Zhang
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.13
+ * @since      file available since CONTENIDO release 4.8.13
  * 
  * {@internal 
  *   created 2011-07-18
@@ -41,21 +41,21 @@ cInclude("includes", "functions.upl.php");
  */
 class Cms_LinkEditor {
 	/**
-	 * Contenido configuration array
+	 * CONTENIDO configuration array
 	 * @var 	array
 	 * @access 	private
 	 */
 	private $aCfg = array();
 	
 	/**
-	 * Current id of content type CMS_IMAGE[3] -> 3
+	 * Current id of content type CMS_LINKEDITOR[3] -> 3
 	 * @var 	integer
 	 * @access 	private
 	 */
 	private $iId = 0;
 	
 	/**
-	 * Contenido database object
+	 * CONTENIDO database object
 	 * @var 	object
 	 * @access 	private
 	 */
@@ -85,35 +85,35 @@ class Cms_LinkEditor {
 	private $aSettings = array();
 	
 	/**
-	 * Current Contenido client id
+	 * Current CONTENIDO client id
 	 * @var 	integer
 	 * @access 	private
 	 */
 	private $iClient = 0;
 	
 	/**
-	 * Current Contenido language id
+	 * Current CONTENIDO language id
 	 * @var 	integer
 	 * @access 	private
 	 */
 	private $iLang = 0;
 	
 	/**
-	 * Contenido session object
+	 * CONTENIDO session object
 	 * @var 	object
 	 * @access 	private
 	 */
 	private $oSess = null;
 	
 	/**
-	 * Contenido configuration array for current active client
+	 * CONTENIDO configuration array for current active client
 	 * @var 	array
 	 * @access 	private
 	 */
 	private $aCfgClient = array();	
 	
 	/**
-	 * Contenido Kategorie Root
+	 * CONTENIDO Kategorie Root
 	 * @var		integer
 	 * @access	private
 	 */
@@ -124,20 +124,20 @@ class Cms_LinkEditor {
 	private $hostName = '';
 	/**
 	 * Constructor of class inits some important class variables and
-	 * gets some Contenido global vars, so this class has no need to
+	 * gets some CONTENIDO global vars, so this class has no need to
 	 * use ugly and buggy global commands
 	 *
 	 * @param string $sContent - xml document from database containing the settings
-	 * @param integer $iNumberOfCms - CMS_IMAGE[4] => 4
+	 * @param integer $iNumberOfCms - CMS_LINKEDITOR[4] => 4
 	 * @param integer $iIdArtLang - Idartlang of current article
 	 * @param array $sEditLink - sEditlink for editbuttons, not currently used
-	 * @param array $aCfg - Contenido configuration array
-	 * @param array $oDB - Contenido database object
-	 * @param string $sContenidoLang - Contenido Backend language string
-	 * @param integer $iClient - Contenido client id
-	 * @param integer $iLang - Contenido frontend language id
-	 * @param array $aCfgClient - Contenido Client configuration array
-	 * @param object $oSess - Contenido session object
+	 * @param array $aCfg - CONTENIDO configuration array
+	 * @param array $oDB - CONTENIDO database object
+	 * @param string $sContenidoLang - CONTENIDO Backend language string
+	 * @param integer $iClient - CONTENIDO client id
+	 * @param integer $iLang - CONTENIDO frontend language id
+	 * @param array $aCfgClient - CONTENIDO Client configuration array
+	 * @param object $oSess - CONTENIDO session object
 	 *
 	 * @access public
 	 */	 
@@ -184,9 +184,9 @@ class Cms_LinkEditor {
 
 	
 	/**
-	 * Function gets all submitted values for new file list properties from 
-	 * $_POST array, generates new corresponding config XML Document and
-	 * stores it as content, using contenido conSaveContentEntry() function
+	 * Function gets all submitted values for new linkeditor properties from 
+	 * $_REQUEST array, generates new values and
+	 * stores it as content, using CONTENIDO conSaveContentEntry() function
 	 *
 	 * @access 	private
 	 * @return	void
@@ -261,7 +261,7 @@ class Cms_LinkEditor {
 	}
 	
 	/**
-	 * Function is called in editmode of contenido an returns image view and editbutton
+	 * Function is called in editmode of CONTENIDO an returns linkeditor view and editbutton
 	 *
 	 * @return	string	code for the backend edit view
 	 */
@@ -558,7 +558,7 @@ class Cms_LinkEditor {
 	
 
 	 /**
-	  * Function which generate a select box for the manual files.
+	  * Function which generate a select box for the manual files (in "Upload" Reiter).
 	  *
 	  * @param 	array 	$sDirectoryPath	Path to directory of the files
 	  * @return 	string	rendered cHTMLSelectElement
@@ -652,6 +652,7 @@ class Cms_LinkEditor {
 
 		return $oTpl->generate($this->aCfg['path']['contenido'] . 'templates/standard/template.cms_filelist_dirlistitem.html', 1);
 	}
+	
 	private function fileIsOrNotInPath($activeFile){
 		$aLevelPath = explode('/',$this->aLink['link_src']);
 		$error = false;
@@ -663,6 +664,7 @@ class Cms_LinkEditor {
 		}
 		return $error;	
 	}
+	
 	 /**
 	  * Builds a directory list by a given upload directory path.
 	  *
@@ -693,7 +695,7 @@ class Cms_LinkEditor {
 		return $aDirectories;
 	}
 	/**
-	 * In Contenido content type code is evaled by php. To make this possible,
+	 * In CONTENIDO content type code is evaled by php. To make this possible,
 	 * this function prepares code for evaluation
 	 *
 	 * @access 	private

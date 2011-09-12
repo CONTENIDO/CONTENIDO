@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Area management class
@@ -11,7 +11,7 @@
  *
  * @todo  Switch to SimpleXML
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -247,7 +247,7 @@ class cApiModule extends Item
     	}
 		
 		// adding dynamically new module translations by content types
-		// this function was introduced with contenido 4.8.13
+		// this function was introduced with CONTENIDO 4.8.13
 		
 		// checking if array is set to prevent crashing the module translation page
 		if ( is_array( $cfg['translatable_content_types'] ) && count ( $cfg['translatable_content_types'] ) > 0 ) {
@@ -329,7 +329,7 @@ class cApiModule extends Item
         }
 
         // adding dynamically new module translations by content types
-        // this function was introduced with contenido 4.8.13
+        // this function was introduced with CONTENIDO 4.8.13
 
         // checking if array is set to prevent crashing the module translation page
         if (is_array($cfg['translatable_content_types']) && count($cfg['translatable_content_types']) > 0) {

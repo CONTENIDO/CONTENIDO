@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Class for new modul structere. Saves the Modul-Input in a file (input.php) and
@@ -12,7 +12,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.0
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <info@contenido.org>
@@ -135,7 +135,7 @@ class Contenido_Module_Handler {
     
     /**
      * 
-     * Contenido cfg
+     * CONTENIDO cfg
      * 
      * @var array
      */
@@ -686,7 +686,7 @@ class Contenido_Module_Handler {
     protected function _makeModulDirectory() {
        
     	
-    	#dont display error ($tpl->generate() on the contenido login site)
+    	#dont display error ($tpl->generate() on the CONTENIDO login site)
     	if($this->_client == "")
     		return -1;
     		

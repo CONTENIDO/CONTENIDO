@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Some system functions
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.2.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created unknown
@@ -42,7 +42,7 @@ if(!defined('CON_FRAMEWORK')) {
 /**
  * emptyLogFile - clears errorlog.txt
  *
- * clears Contenido standard errorlog.txt
+ * clears CONTENIDO standard errorlog.txt
  * 
  * @return string returns message if clearing was successfull or not		
  * @author Marco Jahn
@@ -153,7 +153,7 @@ function isIPv4($strHostAdress)
 *
 * must be done
 *
-* @param string contenido fullhtmlPath
+* @param string CONTENIDO fullhtmlPath
 * @param string current browser string
 *
 * @return string status of path comparement
@@ -247,11 +247,11 @@ function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false)
 }
 
 /**
- * writeSystemValuesOutput - get several server and Contenido settings
+ * writeSystemValuesOutput - get several server and CONTENIDO settings
  *
- * parse system and Contenido output into a string
+ * parse system and CONTENIDO output into a string
  * 
- * @return string returns a string containing several server and Contenido settings		
+ * @return string returns a string containing several server and CONTENIDO settings		
  * @author Marco Jahn
  */
 function writeSystemValuesOutput($usage)
@@ -290,27 +290,27 @@ function writeSystemValuesOutput($usage)
 	/* generate sysvalue output */
 	$i = 0; // array start value
 	// current Contenido version
-	$sysvalues[$i]['variable'] = i18n('Contenido version');
+	$sysvalues[$i]['variable'] = i18n('CONTENIDO version');
 	$sysvalues[$i ++]['value'] = $cfg['version'];
 	// paths from config.php
-	$sysvalues[$i]['variable'] = i18n('Contenido path');
+	$sysvalues[$i]['variable'] = i18n('CONTENIDO path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['contenido'];
-	$sysvalues[$i]['variable'] = i18n('Contenido HTML path');
+	$sysvalues[$i]['variable'] = i18n('CONTENIDO HTML path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['contenido_html'];
-	$sysvalues[$i]['variable'] = i18n('Contenido full HTML path');
+	$sysvalues[$i]['variable'] = i18n('CONTENIDO full HTML path');
 	$sysvalues[$i ++]['value'] = $contenidoFullHtml;
-	$sysvalues[$i]['variable'] = i18n('Contenido frontend path');
+	$sysvalues[$i]['variable'] = i18n('CONTENIDO frontend path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['frontend'];
-	$sysvalues[$i]['variable'] = i18n('Contenido PHPLIB path');
+	$sysvalues[$i]['variable'] = i18n('CONTENIDO PHPLIB path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['phplib'];
-	$sysvalues[$i]['variable'] = i18n('Contenido wysiwyg path');
+	$sysvalues[$i]['variable'] = i18n('CONTENIDO wysiwyg path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['wysiwyg'];
-	$sysvalues[$i]['variable'] = i18n('Contenido wysiwyg HTML path');
+	$sysvalues[$i]['variable'] = i18n('CONTENIDO wysiwyg HTML path');
 	$sysvalues[$i ++]['value'] = $cfg['path']['wysiwyg_html'];
 	// host name
 	$sysvalues[$i]['variable'] = i18n('Host name');
 	$sysvalues[$i ++]['value'] = $_SERVER['HTTP_HOST'];
-	// Contenido browser path 
+	// CONTENIDO browser path 
 	$sysvalues[$i]['variable'] = i18n('Browser path');
 	/* cut of file information */
 	$sysvalues[$i ++]['value'] = $browserPath;

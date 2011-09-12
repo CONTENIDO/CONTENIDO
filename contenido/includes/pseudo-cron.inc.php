@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************
 
-pseudo-cron v1.2.1.con // modified version for contenido
+pseudo-cron v1.2.1.con // modified version for CONTENIDO
 (c) 2003 Kai Blankenhorn
 www.bitfolge.de/en
 kaib@bitfolge.de

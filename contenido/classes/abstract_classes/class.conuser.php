@@ -5,7 +5,7 @@
  * This class is a basic implementation of iConUser interface. It
  * should be used as base class for specific user class.
  *
- * @package Contenido Backend Classes
+ * @package  CONTENIDO Backend Classes
  * @subpackages Backend User
  *
  * @version 1.0.0
@@ -29,7 +29,7 @@ cInclude('exceptions', 'exception.conuser.php');
  * This abstract class implements interface iConUser and should
  * be user as base class for backend user classes.
  *
- * @package Contenido Backend Classes
+ * @package  CONTENIDO Backend Classes
  * @subpackage Backend User
  *
  * @version 0.0.1
@@ -46,7 +46,7 @@ abstract class ConUser_Abstract implements iConUser {
 	protected $oDb = null;
 
 	/**
-	 * Contenido configuration array
+	 *  CONTENIDO configuration array
 	 *
 	 * @var array
 	 */
@@ -90,7 +90,7 @@ abstract class ConUser_Abstract implements iConUser {
         if (is_null($oDb)) {
         	$this->oDb = new DB_Contenido();
         } else {
-        	// is it a contenido DB instance?
+        	// is it a  CONTENIDO DB instance?
         	if ($oDb instanceof DB_Contenido) {
         	   $this->oDb = $oDb;
         	} else {

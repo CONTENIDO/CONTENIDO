@@ -1,19 +1,19 @@
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * File contains functions for tinymce to handle it as an insight-editor
  * 
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.0
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.9
+ * @since      file available since CONTENIDO release 4.8.9
  * 
  * {@internal 
  *   created 2008-09-05
@@ -33,7 +33,7 @@ function myCustomSetupContent(editor_id, body, doc) {
 
  
 /**
- * Callback function for tiny which gets a selected image in Contenido
+ * Callback function for tiny which gets a selected image in CONTENIDO
  * image browser, close browser and set this selected image in tiny
  */
 function updateImageFilebrowser ()
@@ -72,7 +72,7 @@ function updateImageFilebrowser ()
 }
 
 /**
- * Function converts a givenn url for use in contenido (callback of tiny)
+ * Function converts a givenn url for use in CONTENIDO (callback of tiny)
  * 
  * @param string url - url which should be converted
  * @param object node - corresponding node object
@@ -276,7 +276,7 @@ function setFocus() {
 }
 
 /**
- * Callback function of Tiny which opens contenido file browser in popup
+ * Callback function of Tiny which opens CONTENIDO file browser in popup
  * Notice: Global js vars were defined in include.con_editcontent.php
  * (image_url, file_url, flash_url, media_url)
  * 

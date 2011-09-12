@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * HTML object
@@ -10,20 +10,20 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend sripts
+ * @package    CONTENIDO Backend sripts
  * @version    1.0.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.7
+ * @since      file available since CONTENIDO release 4.8.7
  * 
  * {@internal 
  *   created  2004-04-24
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-07-02, Frederic Schneider, include security_class
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -34,7 +34,7 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// Contenido startup process
+// CONTENIDO startup process
 include_once ('../includes/startup.php');
 
 header("Content-Type: text/javascript");
@@ -227,7 +227,7 @@ HTMLObj.prototype.setMethods = function(type) {
  * @copyright four for business AG <www.4fb.de>
  */
 function showAction() {
-		//alert("this is the JS function showAction() located in the file HTMLObj.js.php. This should not have been called as it is old style Contenido")
+		//alert("this is the JS function showAction() located in the file HTMLObj.js.php. This should not have been called as it is old style CONTENIDO")
 		/*
     var str = this.src;
     //if Label is clicked, get src from previous image
@@ -397,5 +397,5 @@ function doAction() {
  */
 function hideAction() {
     //box.show();
-    //alert("this is the JS function hideAction() located in the file HTMLObj.js.php. This should not have been called as it is old style Contenido")
+    //alert("this is the JS function hideAction() located in the file HTMLObj.js.php. This should not have been called as it is old style CONTENIDO")
 }

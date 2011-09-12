@@ -1,28 +1,28 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * Contenido main ajax file
+ * CONTENIDO main ajax file
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend
+ * @package    CONTENIDO Backend
  * @version    1.0.2
  * @author     Olaf Niemann, Jan Lengowski, Ingo van Peeren
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created  2008-09-08, Ingo van Peeren
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
- *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as contenido now requires at least PHP 5
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
+ *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as CONTENIDO now requires at least PHP 5
  *
  *   $Id:$:
  * }}
@@ -33,7 +33,7 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// Contenido startup process
+// CONTENIDO startup process
 include_once ('./includes/startup.php');
 
 $cfg["debug"]["backend_exectime"]["fullstart"] = getmicrotime();
@@ -58,7 +58,7 @@ require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.i
 
 cInclude ("includes", 'cfg_language_de.inc.php');
 
-# Create Contenido classes
+# Create CONTENIDO classes
 $db = new DB_Contenido;
 $notification = new Contenido_Notification;
 $classarea = new Area();
@@ -125,7 +125,7 @@ sendEncodingHeader($db, $cfg, $lang);
 
 $perm->load_permissions();
 
-# Create Contenido classes
+# Create CONTENIDO classes
 $xml        = new XML_doc;
 $tpl        = new Template;
 $backend    = new Contenido_Backend;
@@ -149,7 +149,7 @@ if ($cfgClient["set"] != "set")
  	rereadClients ();
 }
 
-# Initialize Contenido_Backend.
+# Initialize CONTENIDO_Backend.
 # Load all actions from the DB
 # and check if permission is
 # granted.

@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Defines the 'modrewrite' related helper functions
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend plugins
+ * @package    CONTENIDO Backend plugins
  * @version    0.1
  * @author     Stefan Seifarth / stese
  * @author     Murat Purc <murat@purc.de>
@@ -19,7 +19,7 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since Contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created   2004-12-04

@@ -6,7 +6,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 /**
  * 
- * A structure with method for contenido vars.
+ * A structure with method for CONTENIDO vars.
  * 
  * @author rusmir.jusufovic
  *
@@ -14,7 +14,7 @@ if(!defined('CON_FRAMEWORK')) {
 	class Contenido_Vars {
 		/**
 		 * 
-		 * Array with contenido vars
+		 * Array with CONTENIDO vars
 		 * @var array
 		 */
 		static $contenidoVar = array();
@@ -29,7 +29,7 @@ if(!defined('CON_FRAMEWORK')) {
 		
 		/**
 		 * 
-		 * Set a contenido var with contents/value
+		 * Set a CONTENIDO var with contents/value
 		 * @param string $name
 		 * @param string $value
 		 */
@@ -41,9 +41,9 @@ if(!defined('CON_FRAMEWORK')) {
 		
 		/**
 		 * 
-		 * Name of the contenido var db, encoding, lang, cfg, cfgClient ...
+		 * Name of the CONTENIDO var db, encoding, lang, cfg, cfgClient ...
 		 * @param string $name
-		 * @return content of fond contenido var or null
+		 * @return content of fond CONTENIDO var or null
 		 */
 		public static function getVar($name) {
 			

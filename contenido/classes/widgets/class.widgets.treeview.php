@@ -1,7 +1,7 @@
 <?php
 /*****************************************
 * File      :   $RCSfile: class.widgets.treeview.php,v $
-* Project   :   Contenido
+* Project   :   CONTENIDO
 * Descr     :   Visual representation of a cTree
 * Modified  :   $Date: 2006/10/05 23:47:21 $
 *

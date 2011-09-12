@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Some little function to retrieving current encoding.
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.3.1
  * @author     Holger Librenz
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created unknown
@@ -34,9 +34,9 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * Returns encoding for language with ID $iLang (global $lang in contenido style).
+ * Returns encoding for language with ID $iLang (global $lang in CONTENIDO style).
  * The parameter $oDb has to be an instance of DB_Contenido (global $db in con) and
- * $cfg is the equivalent to global $cfg array in contenido.
+ * $cfg is the equivalent to global $cfg array in CONTENIDO.
  * If no encoding is found or any parameter is not valid, the function will return
  * false, otherwise the encoding as string like it is stored in database.
  * modified 18.03.2008 - Removed special mySQl behaviour (using db object instead) Timo Trautmann

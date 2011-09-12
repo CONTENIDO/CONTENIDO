@@ -1,19 +1,19 @@
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * JavaScript CMS Type Teaser
  * 
  *
- * @package    Contenido Content Types
+ * @package    CONTENIDO Content Types
  * @version    1.0.0
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.12
+ * @since      file available since CONTENIDO release 4.8.12
  * 
  * {@internal 
  *   created 2009-04-08
@@ -58,7 +58,7 @@ function cmsTeaser_initialize(sFrameId) {
 }
 
 /**
- * Function extracts an value from teaser form an adds it as hidden to editform for submitting to Contenido
+ * Function extracts an value from teaser form an adds it as hidden to editform for submitting to CONTENIDO
  * Function is called in store proccess of teaser
  *
  * @param string sName
@@ -163,7 +163,7 @@ function cmsTeaser_addFrameCloseEvents(sFrameId) {
 }
 
 /**
- * Function gets new list of articles from contenido via ajax
+ * Function gets new list of articles from CONTENIDO via ajax
  * is used in manual teaser when base category for article select
  * is changed
  *
@@ -187,7 +187,7 @@ function cmsTeaser_addAjaxGetArticleListEvent(sFrameId, sPath, sSession) {
 
 /**
  * Function loads external styles and jquery ui scripts for teaser dynamically so this scripts were only
- * loaded into contenido whren this teaser is really used in this article
+ * loaded into CONTENIDO when this teaser is really used in this article
  *
  * @param string sFrameId
  * @param string sPath

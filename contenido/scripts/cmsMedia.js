@@ -1,19 +1,19 @@
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * JavaScript CMS Type File List
  * 
  *
- * @package    Contenido Content Types
+ * @package    CONTENIDO Content Types
  * @version    1.0.0
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.13
+ * @since      file available since CONTENIDO release 4.8.13
  * 
  * {@internal 
  *   created 2009-10-01
@@ -58,7 +58,7 @@ function cmsFileList_initialize(sFrameId) {
 
 
 /**
- * Function extracts an value from FileList form an adds it as hidden to editform for submitting to Contenido
+ * Function extracts an value from FileList form an adds it as hidden to editform for submitting to CONTENIDO
  * Function is called in store proccess of FileList
  *
  * @param string sName
@@ -207,7 +207,7 @@ function cmsFileList_addFrameCloseEvents(sFrameId) {
 
 /**
  * Function loads external styles and jquery ui scripts for FileList dynamically so this scripts were only
- * loaded into contenido whren this FileList is really used in this article
+ * loaded into CONTENIDO whren this FileList is really used in this article
  *
  * @param string sFrameId
  * @param string sPath

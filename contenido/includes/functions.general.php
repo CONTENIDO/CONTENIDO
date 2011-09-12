@@ -1,23 +1,23 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Defines the general contenido functions
+ * Defines the general CONTENIDO functions
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.3.8
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
  *   created unknown
@@ -27,7 +27,7 @@
  *   modified 2010-09-29, Ortwin Pinke, fixed bug CON-349
  *   modified 2010-12-16, Dominik Ziegler, display error message on database connection failure [#CON-376]
  *   modified 2011-02-05, Murat Purc, getAllClientsAndLanguages() and some cleanup
- *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as contenido now requires at least PHP 5
+ *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as CONTENIDO now requires at least PHP 5
  *   modified 2011-02-10, Dominik Ziegler, moved function declaration of IP_match out of front_content.php
  *   modified 2011-06-24, Murat Purc, corrected logic in scanDirectory(), cleanup and formatting
  *   modified 2011-08-23, Dominik Ziegler, deprecated functions sendPostRequest and showTable
@@ -1802,7 +1802,7 @@ function array_search_recursive($search, $array, $partial = false, $strict = fal
 }
 
 /**
- * cDie: Contenido die-alternative
+ * cDie: CONTENIDO die-alternative
  *
  * @param $file       File name   (use __FILE__)
  * @param $line    Line number (use __LINE__)
@@ -1815,7 +1815,7 @@ function cDie($file, $line, $message)
 }
 
 /**
- * cWarning: Contenido warning
+ * cWarning: CONTENIDO warning
  *
  * @param $file       File name   (use __FILE__)
  * @param $line    Line number (use __LINE__)
@@ -1827,7 +1827,7 @@ function cWarning($file, $line, $message)
 }
 
 /**
- * cError: Contenido error
+ * cError: CONTENIDO error
  *
  * @param $file       File name   (use __FILE__)
  * @param $line    Line number (use __LINE__)

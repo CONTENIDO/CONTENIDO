@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * TINYMCE 1.45rc1 PHP WYSIWYG editor control
@@ -13,7 +13,7 @@
  * TINYMCE 1.45rc1 Fileversion
  * 
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.0.3
  * @author     Martin Horwath, horwath@dayside.net
  * @copyright  four for business AG <www.4fb.de>
@@ -42,7 +42,7 @@ cInclude("external", "wysiwyg/tinymce3/editorclass.php");
 
 // name of textarea element
 if (isset($type)) {
-	$editor_name = "CMS_HTML"; // this should be $type (might be a contenido bug)
+	$editor_name = "CMS_HTML"; // this should be $type (might be a CONTENIDO bug)
 } else {
 	$editor_name = "content";
 }

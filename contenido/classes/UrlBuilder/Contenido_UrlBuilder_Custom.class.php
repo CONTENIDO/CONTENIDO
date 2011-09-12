@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Implementation of IContenido_Frontend_Navigation_UrlBuilder to build URL in style index-a-1.html without category path.
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.0
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>

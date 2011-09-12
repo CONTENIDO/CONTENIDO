@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * CMS_IMG editor
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.3.5
  * @author     Ing. Christian Schuller (www.maurer-it.com)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
  *   created  2003-12-10
@@ -48,7 +48,7 @@ if ($doedit == '1') {
 ?>
 <html>
 <head>
-    <title>contenido</title>
+    <title>CONTENIDO</title>
     <link rel="stylesheet" type="text/css" href="<?php print $cfg['path']['contenido_fullhtml'] . $cfg['path']['styles'] ?>contenido.css">
     <script type="text/javascript" src="<?php print $cfg['path']['contenido_fullhtml'] . $cfg['path']['scripts'] ?>jquery/jquery.js"></script>
 </head>

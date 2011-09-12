@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Cron Job to move old statistics into the stat_archive table
@@ -9,7 +9,7 @@
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    0.3.2
  * @author     Björn Behrens
  * @copyright  four for business AG <www.4fb.de>
@@ -23,7 +23,7 @@
  *   created  2003-05-26
  *   modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call 
  *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *   modified 2011-05-12, Dominik Ziegler, forced include of startup.php [#CON-390]
  *
  *   $Id$:
@@ -35,7 +35,7 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// Contenido startup process
+// CONTENIDO startup process
 include_once ('../includes/startup.php');
 
 global $cfg;

@@ -1,6 +1,6 @@
 /******************************************
 * File      :   general.js
-* Project   :   Contenido
+* Project   :   CONTENIDO
 * Descr     :   Defines general required
 *               javascript functions
 *
@@ -28,7 +28,7 @@
  *	)
  * </code>
  *
- * @param [arguments*] optional amount of arguments used pairwise for assigning URLs to frame names in Contenido.
+ * @param [arguments*] optional amount of arguments used pairwise for assigning URLs to frame names in CONTENIDO.
  *                     The last argument is optional but must (!) be "simpleFrame" if used to specify that the complete frame structure is not available.
  * @return void
  *

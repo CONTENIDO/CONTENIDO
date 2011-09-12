@@ -1,23 +1,23 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * Contenido Rights Area
+ * CONTENIDO Rights Area
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created  unknown
@@ -36,7 +36,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 //notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
-include_once($cfg['path']['contenido'].'includes/rights.inc.php');
+include_once($cfg['path']['CONTENIDO'].'includes/rights.inc.php');
 $debug = 0;
 
 //set the areas which are in use for selecting these

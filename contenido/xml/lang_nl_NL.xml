@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- Contenido XML language file -->
+<!-- CONTENIDO XML language file -->
 <language>
     <navigation>
         <content>
@@ -98,7 +98,7 @@
             </frontend>
         </administration>
         <mycontenido>
-            <main>Mijn Contenido</main>
+            <main>Mijn CONTENIDO</main>
             <overview>Overzicht</overview>
             <recentarticles>Recently edited articles</recentarticles>
             <todolist>Reminder List</todolist>

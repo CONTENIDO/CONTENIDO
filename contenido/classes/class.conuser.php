@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * This class will be a replacement for all other
@@ -45,7 +45,7 @@
  *
  *  Keep in mind that these type of check only works if crack module is available.
  *
- * @package Contenido Backend classes
+ * @package CONTENIDO Backend classes
  * @subpackage Backend User
  *
  * @version 1.4.0
@@ -59,7 +59,7 @@
  *  modified 2008-11-25, Timo Trautman - removed not existing include
  *  modified 2008-12-04, Bilal Arslan, Bugfixed for set passwort length, comments "how to use" fixed.
  *  Bugfixed for password, lower Case Upper case count, for symbols count and numbers count.
- *  modified 2008-12-04, Timo Trautman, Added Contenido $cfg as param for getErrorString()
+ *  modified 2008-12-04, Timo Trautman, Added CONTENIDO $cfg as param for getErrorString()
  *  modified 2011-02-26, Ortwin Pinke, added unset for pw-request-marker, changed header svn-id and version declaration
  *
  *  $Id:$
@@ -76,7 +76,7 @@ cInclude ( "exceptions", "exception.conuser.php" );
 
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Class User to handle all user related task.
@@ -87,7 +87,7 @@ cInclude ( "exceptions", "exception.conuser.php" );
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @subpackage Backend user
  *
  * @version    0.2.0
@@ -96,7 +96,7 @@ cInclude ( "exceptions", "exception.conuser.php" );
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release => 4.8.8
+ * @since      file available since CONTENIDO release => 4.8.8
  *
  */
 class ConUser extends ConUser_Abstract {
@@ -843,7 +843,7 @@ class ConUser extends ConUser_Abstract {
      * on error code $iErrorCode, which is returned by checkPassword* methods.
      *
      * @param int $iErrorCode
-	* @param array $aCfg Contenido configuration array
+	* @param array $aCfg CONTENIDO configuration array
      * @return string
      */
     public static function getErrorString ($iErrorCode, $aCfg) {

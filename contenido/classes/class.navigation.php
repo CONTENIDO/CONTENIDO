@@ -1,23 +1,23 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Class for the dynamic Contenido backend navigation
+ * Class for the dynamic CONTENIDO backend navigation
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.5
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
  *   created unknown
@@ -45,7 +45,7 @@ cInclude('includes', 'functions.api.images.php');
 /**
  * Backend navigaton class. Renders the header navigation document containing the navigtion structure.
  *
- * @category    Contenido
+ * @category    CONTENIDO
  * @package     Backend
  * @subpackage  Navigation
  */
@@ -89,7 +89,7 @@ class Contenido_Navigation {
      *                            - "{xmlFilePath};{XPath}": Path to XML File and the XPath value
      *                                                       separated by semicolon. This type is used
      *                                                       to extract caption from a plugin XML file.
-     *                            - "{XPath}": XPath value to extract caption from Contenido XML file
+     *                            - "{XPath}": XPath value to extract caption from CONTENIDO XML file
      * @return  string  The found caption
      */
     function getName($location) {
@@ -198,7 +198,7 @@ class Contenido_Navigation {
 
 
     /**
-     * Function to build the Contenido header document for backend
+     * Function to build the CONTENIDO header document for backend
      *
      * @param  int  $lang  The language to use for header doc creation
      */
@@ -275,7 +275,7 @@ class Contenido_Navigation {
 
         $main->set('s', 'SUBMENUS', $t_sub);
 
-        // my contenido link
+        // my CONTENIDO link
         $link = new cHTMLLink();
         $link->setClass('main');
         $link->setTargetFrame('content');

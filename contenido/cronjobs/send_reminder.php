@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Cronjob to send reminder items
@@ -10,20 +10,20 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created  2004-02-12
  *   modified 2008-06-16, H. Librenz - Hotfix: Added check for malicious script call
  *   modified 2008-06-30, Dominik Ziegler, fixed bug CON-143, added new header
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *   modified 2011-05-12, Dominik Ziegler, forced include of startup.php [#CON-390]
  *
  *   $Id$:
@@ -35,7 +35,7 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// Contenido startup process
+// CONTENIDO startup process
 include_once ('../includes/startup.php');
 
 global $cfg, $client;

@@ -1,12 +1,12 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Contenido autoloader class map file generator.
+ * CONTENIDO autoloader class map file generator.
  *
- * Parses Contenido classes folder and creates a class map file.
+ * Parses CONTENIDO classes folder and creates a class map file.
  *
  * Usage:
  * ------
@@ -18,14 +18,14 @@
  * Requirements:
  * @con_php_req 5.0
  *
- * @package    Contenido Autoloader
+ * @package    CONTENIDO Autoloader
  * @version    0.0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created  2010-12-27
@@ -49,7 +49,7 @@ $context = new stdClass();
 // current path
 $context->currentPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/';
 
-// contenido installation path (folder which contains "cms", "conlib", "contenido", "docs", "pear", "setup", etc...)
+// CONTENIDO installation path (folder which contains "cms", "conlib", "contenido", "docs", "pear", "setup", etc...)
 $context->contenidoInstallPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../')) . '/';
 
 // the destination file where the class map configuration should be written in

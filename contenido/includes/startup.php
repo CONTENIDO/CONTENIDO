@@ -1,10 +1,10 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Central Contenido file to initialize the application. Performs following steps:
+ * Central CONTENIDO file to initialize the application. Performs following steps:
  * - Does basic security check
  * - Includes configurations
  * - Runs validation of request variables
@@ -20,14 +20,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.1.0
  * @author     four for Business AG
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
  *   created unknown
@@ -65,7 +65,7 @@ try {
 require_once(dirname(__FILE__) . '/globals_off.inc.php');
 
 
-// Check if configuration file exists, this is a basic indicator to find out, if Contenido is installed
+// Check if configuration file exists, this is a basic indicator to find out, if CONTENIDO is installed
 if (!file_exists(dirname(__FILE__) . '/config.php')) {
     $msg  = "<h1>Fatal Error</h1><br>";
     $msg .= "Could not open the configuration file <b>config.php</b>.<br><br>";

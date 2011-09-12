@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * File provides a user friendly way for setting general system properties instead of using
@@ -17,7 +17,7 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.8
+ * @since      file available since CONTENIDO release 4.8.8
  * 
  * {@internal 
  *   created 2008-08-19

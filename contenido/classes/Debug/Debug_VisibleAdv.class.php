@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Debug object to show info on screen in a box / HTML Block at the top of page.
@@ -15,7 +15,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version 1.0.0
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>

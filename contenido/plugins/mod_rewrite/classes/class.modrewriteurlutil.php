@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Includes Mod Rewrite url utility class.
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend plugins
+ * @package    CONTENIDO Backend plugins
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since Contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created  2008-05-xx
@@ -32,12 +32,12 @@ defined('CON_FRAMEWORK') or die('Illegal call');
 
 
 /**
- * Mod Rewrite url utility class. Handles convertion of Urls from contenido core
+ * Mod Rewrite url utility class. Handles convertion of Urls from CONTENIDO core
  * based url composition pattern to AMR (Advanced Mod Rewrite) url composition
  * pattern and vice versa.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     Contenido Backend plugins
+ * @package     CONTENIDO Backend plugins
  * @subpackage  ModRewrite
  */
 class ModRewriteUrlUtil extends ModRewriteBase
@@ -50,7 +50,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
     private static $_instance;
 
     /**
-     * Contenido category word separator
+     * CONTENIDO category word separator
      * @var  string
      */
     private $_catWordSep = '-';
@@ -62,7 +62,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
     private $_mrCatWordSep;
 
     /**
-     * Contenido category separator
+     * CONTENIDO category separator
      * @var  string
      */
     private $_catSep = '/';
@@ -74,7 +74,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
     private $_mrCatSep;
 
     /**
-     * Contenido article separator
+     * CONTENIDO article separator
      * @var  string
      */
     private $_artSep = '/';
@@ -86,7 +86,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
     private $_mrArtSep;
 
     /**
-     * Contenido article word separator
+     * CONTENIDO article word separator
      * @var  string
      */
     private $_artWordSep = '-';
@@ -135,10 +135,10 @@ class ModRewriteUrlUtil extends ModRewriteBase
 
 
     /**
-     * Converts passed AMR url path to Contenido url path.
+     * Converts passed AMR url path to CONTENIDO url path.
      *
      * @param   string  $urlPath  AMR url path
-     * @return  string  Contenido url path
+     * @return  string  CONTENIDO url path
      */
     public function toContenidoUrlPath($urlPath)
     {
@@ -150,9 +150,9 @@ class ModRewriteUrlUtil extends ModRewriteBase
     }
 
     /**
-     * Converts passed Contenido url path to AMR url path.
+     * Converts passed CONTENIDO url path to AMR url path.
      *
-     * @param   string  $urlPath  Contenido url path
+     * @param   string  $urlPath  CONTENIDO url path
      * @return  string  AMR url path
      */
     public function toModRewriteUrlPath($urlPath)
@@ -166,7 +166,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
 
 
     /**
-     * Converts passed url path to a another url path (Contenido to AMR and vice versa).
+     * Converts passed url path to a another url path (CONTENIDO to AMR and vice versa).
      *
      * @param   string  $urlPath         Source url path
      * @param   string  $fromCatSep      Source category seperator
@@ -203,10 +203,10 @@ class ModRewriteUrlUtil extends ModRewriteBase
 
 
     /**
-     * Converts passed AMR url name to Contenido url name.
+     * Converts passed AMR url name to CONTENIDO url name.
      *
      * @param   string  $urlName  AMR url name
-     * @return  string  Contenido url name
+     * @return  string  CONTENIDO url name
      */
     public function toContenidoUrlName($urlName)
     {
@@ -216,9 +216,9 @@ class ModRewriteUrlUtil extends ModRewriteBase
 
 
     /**
-     * Converts passed Contenido url name to AMR url name.
+     * Converts passed CONTENIDO url name to AMR url name.
      *
-     * @param   string  $urlName  Contenido url name
+     * @param   string  $urlName  CONTENIDO url name
      * @return  string  AMR url name
      */
     public function toModRewriteUrlName($urlName)
@@ -229,7 +229,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
 
 
     /**
-     * Converts passed url name to a another url name (Contenido to AMR and vice versa).
+     * Converts passed url name to a another url name (CONTENIDO to AMR and vice versa).
      *
      * @param   string  $urlName         Source url name
      * @param   string  $fromArtWordSep  Source article word seperator
@@ -254,10 +254,10 @@ class ModRewriteUrlUtil extends ModRewriteBase
 
 
     /**
-     * Converts passed AMR url to Contenido url.
+     * Converts passed AMR url to CONTENIDO url.
      *
      * @param   string  $url  AMR url
-     * @return  string  Contenido url
+     * @return  string  CONTENIDO url
      */
     public function toContenidoUrl($url)
     {
@@ -274,10 +274,10 @@ class ModRewriteUrlUtil extends ModRewriteBase
 
 
     /**
-     * Converts passed AMR url to Contenido url.
+     * Converts passed AMR url to CONTENIDO url.
      *
      * @param   string  $url  AMR url
-     * @return  string  Contenido url
+     * @return  string  CONTENIDO url
      */
     public function toModRewriteUrl($url)
     {
@@ -294,7 +294,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
 
 
     /**
-     * Converts passed url to a another url (Contenido to AMR and vice versa).
+     * Converts passed url to a another url (CONTENIDO to AMR and vice versa).
      *
      * @param   string  $urlPath         Source url path
      * @param   string  $fromCatSep      Source category seperator

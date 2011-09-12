@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * This file compresses the TinyMCE JavaScript using GZip and
@@ -11,7 +11,7 @@
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    <version>
  * @author     Moxiecode
  * @copyright  four for business AG <www.4fb.de>

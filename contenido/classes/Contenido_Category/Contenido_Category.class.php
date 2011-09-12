@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Objects for Category handling.
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    0.8.2
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
@@ -36,7 +36,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 
 /**
- * Implementation of a Contenido Category.
+ * Implementation of a CONTENIDO Category.
  * @version 0.9.0
  * @author Rudi Bieller
  * @copyright four for business AG <www.4fb.de>
@@ -382,7 +382,7 @@ class Contenido_Category extends Contenido_Category_Base {
 }
 
 /**
- * Implementation of a "Collection" of Contenido Categories.
+ * Implementation of a "Collection" of CONTENIDO Categories.
  * @version 0.9.0
  * @author Rudi Bieller
  * @copyright four for business AG <www.4fb.de>
@@ -456,7 +456,7 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
     }
     
     /**
-     * Add a Contenido_Category object into internal array ("Collection")
+     * Add a CONTENIDO_Category object into internal array ("Collection")
      * @access public
      * @param Contenido_Category $oContenidoCategory
      * @param int $iOffset 
@@ -601,7 +601,7 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
 }
 
 /**
- * Implementation of a Contenido Category for a given Contenido Language.
+ * Implementation of a CONTENIDO Category for a given CONTENIDO Language.
  * @version 0.9.0
  * @author Rudi Bieller
  * @copyright four for business AG <www.4fb.de>

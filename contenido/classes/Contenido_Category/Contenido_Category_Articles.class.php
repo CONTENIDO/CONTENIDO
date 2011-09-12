@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Utility to get articles of category/categories as Article objects.
@@ -15,14 +15,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido
+ * @package    CONTENIDO
  * @version    0.2.0
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.9
+ * @since      file available since CONTENIDO release 4.8.9
  *
  * {@internal
  *  created 2008-08-21

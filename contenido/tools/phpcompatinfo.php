@@ -1,15 +1,15 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Detection of PHP dependency in Contenido.
+ * Detection of PHP dependency in CONTENIDO.
  *
  * Uses PEAR package PHP_CompatInfo, see http://pear.php.net/package/PHP_CompatInfo
  * Requires the PEAR package PHP_CompatInfo!
  *
- * PHP_CompatInfo parses the complete contenido project folder recursively and 
+ * PHP_CompatInfo parses the complete CONTENIDO project folder recursively and 
  * collects all dependency informations.
  *
  * Usage:
@@ -24,14 +24,14 @@
  * Requirements:
  * @con_php_req 5.0
  *
- * @package    Contenido Tools
+ * @package    CONTENIDO Tools
  * @version    0.0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created  2011-02-23
@@ -51,7 +51,7 @@
 // create a page context class, better than spamming global scope
 $context = new stdClass();
 
-// contenido installation path (folder which contains "cms", "conlib", "contenido", "docs", "pear", "setup", etc...)
+// CONTENIDO installation path (folder which contains "cms", "conlib", "contenido", "docs", "pear", "setup", etc...)
 $context->contenidoInstallPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../')) . '/';
 
 

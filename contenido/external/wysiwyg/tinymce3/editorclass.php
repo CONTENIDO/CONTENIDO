@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * The object cTinyMCEEditor is a wrapper class to the TinyMCE WYSIWYG Editor.
@@ -25,14 +25,14 @@
  * @con_template 
  * /docs/techref/backend/backend.customizing.html
  * @con_notice 
- * The following settings are only used in Contenido:
+ * The following settings are only used in CONTENIDO:
  * contenido_toolbar_mode: full, simple, mini, custom
  * contenido_lists: link,image,flash
  * contenido_height_html
  * contenido_height_head
  * See backend.customizing.html for details 
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    1.2.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -220,7 +220,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		// Clean all possible URLs
 		$this->cleanURLs();
 
-		// Remove Contenido specific settings
+		// Remove CONTENIDO specific settings
 		// contenido_background_color is used in getEditor
 		unset(
 			$this->_aSettings["contenido_toolbar_mode"],

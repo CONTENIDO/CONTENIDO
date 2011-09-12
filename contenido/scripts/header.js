@@ -1,12 +1,12 @@
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Header frame related JavaScript
  *
  *
- * @package    Contenido Header menu
+ * @package    CONTENIDO Header menu
  * @version    1.1.0
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -17,7 +17,7 @@
  *
  * {@internal
  *   created  2004-03-22
- *   modified 2009-12-17  Murat Purc, Redesign of header menu handling, takeover menu code from template, added ContenidoRegistry, HeaderMenu, HeaderClickMenu, HeaderDelayMenu and Firebug Emulation
+ *   modified 2009-12-17  Murat Purc, Redesign of header menu handling, takeover menu code from template, added CONTENIDORegistry, HeaderMenu, HeaderClickMenu, HeaderDelayMenu and Firebug Emulation
  *
  *   $Id$:
  * }}

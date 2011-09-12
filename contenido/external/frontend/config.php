@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * <Description>
@@ -12,7 +12,7 @@
  * @con_notice <Notice>
  * 
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    <version>
  * @author     <author>
  * @copyright  four for business AG <www.4fb.de>
@@ -34,7 +34,7 @@
    die('Illegal call');
 }
  
-// Relative path to contenido directory, for all inclusions, in most cases: "../contenido/"
+// Relative path to CONTENIDO directory, for all inclusions, in most cases: "../contenido/"
 $contenido_path = "!PATH!";
 
 // If language isn't specified, set this client and language (ID)

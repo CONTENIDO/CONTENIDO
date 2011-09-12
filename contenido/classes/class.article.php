@@ -1,10 +1,10 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Contenido Article Object and Collection
+ * CONTENIDO Article Object and Collection
  *
  * Requirements:
  * @con_php_req 5.0
@@ -17,7 +17,7 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
  *   created  unknown
@@ -34,9 +34,9 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * Contenido API - Article Object
+ * CONTENIDO API - Article Object
  *
- * This object represents a Contenido article
+ * This object represents a CONTENIDO article
  *
  * Create object with
  * $obj = new Article(idart, client, lang [, idartlang]);
@@ -92,7 +92,7 @@ if (!defined('CON_FRAMEWORK')) {
  * $headlines[2] Second headline
  * $headlines[6] Sixth headline
  *
- * Legal content type string are defined in the Contenido
+ * Legal content type string are defined in the CONTENIDO
  * system table 'con_type'. Default content types are:
  *
  * NOTE: This parameter is case insesitive, you can use
@@ -252,7 +252,7 @@ class Article extends Item
      * Returns the specified content element or an array("id"=>"value")
      * if the second parameter is omitted.
      *
-     * Legal content type string are defined in the Contenido
+     * Legal content type string are defined in the CONTENIDO
      * system table 'con_type'. Default content types are:
      *
      * NOTE: Parameter is case insesitive, you can use
@@ -313,9 +313,9 @@ class Article extends Item
 
 
 /**
- * Contenido API - Article Object Collection
+ * CONTENIDO API - Article Object Collection
  *
- * This class is used to manage multiple Contenido
+ * This class is used to manage multiple CONTENIDO
  * article objects in a collection.
  *
  * The constructor awaits an associative array
@@ -327,7 +327,7 @@ class Article extends Item
  *
  * Legal parameter names are:
  *
- *  idcat     - Contenido Category Id
+ *  idcat     - CONTENIDO Category Id
  *  lang      - Language Id, active language if ommited
  *  client    - Client Id, active client if ommited
  *  start     - include start article in the collection, defaults to false
@@ -352,7 +352,7 @@ class Article extends Item
  *     echo '<a href="front_content.php?idcat='.$myList->idcat.'&idart='.$idart.'">'.$headline.'</a><br/>';
  * }
  *
- * @package Contenido API
+ * @package CONTENIDO API
  * @version 1.0
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
@@ -460,7 +460,7 @@ class ArticleCollection
      * Article Collection Constructor
      *
      * @param array Options array with schema array("option"=>"value");
-     *  idcat (required) - Contenido Category Id
+     *  idcat (required) - CONTENIDO Category Id
      *  lang - Language Id, active language if ommited
      *  client - Client Id, active client if ommited
      *  artspecs  - Array of article specifications, which should be considered
@@ -497,7 +497,7 @@ class ArticleCollection
      * Set the Object properties
      *
      * @param array Options array with schema array("option"=>"value");
-     *  idcat (required) - Contenido Category Id
+     *  idcat (required) - CONTENIDO Category Id
      *  lang - Language Id, active language if ommited
      *  client - Client Id, active client if ommited
      *  artspecs  - Array of article specifications, which should be considered
@@ -628,12 +628,12 @@ class ArticleCollection
     }
 
     /**
-     * Iterate to the next article, return object of type Contenido Article Object
+     * Iterate to the next article, return object of type CONTENIDO Article Object
      * if an article is found. False otherwise.
      *
      * @param none
      *
-     * @return object Contenido Article Object
+     * @return object CONTENIDO Article Object
      */
     public function nextArticle()
     {
@@ -657,7 +657,7 @@ class ArticleCollection
      * Return ONLY the Start-Article
      *
      * @param none
-     * @return object Contenido Article Object
+     * @return object CONTENIDO Article Object
      * @access public
      */
     public function startArticle()

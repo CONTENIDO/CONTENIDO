@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Contenido 4.4\n"
+"Project-Id-Version: CONTENIDO 4.4\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2003-10-14 10:23+0100\n"
 "Last-Translator: Timo A. Hummel <timo.hummel@4fb.de>\n"
-"Language-Team: Contenido Translators <translators@contenido.de>\n"
+"Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -119,8 +119,8 @@ msgstr "des wos drin is"
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
-msgid "Contenido image"
-msgstr "Contenido-Bildschar"
+msgid "CONTENIDO image"
+msgstr "CONTENIDO-Bildschar"
 
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:252
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:252
@@ -1726,7 +1726,7 @@ msgid "Design Drafts"
 msgstr ""
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.info.html:20
-msgid "Translating Contenido to Dutch"
+msgid "Translating CONTENIDO to Dutch"
 msgstr ""
 
 # e:\timo\contenido_head/contenido/templates/standard/template.info.html:21
@@ -1772,7 +1772,7 @@ msgid "Special thanks to all other contributors of the former releases and bugre
 msgstr ""
 
 # e:\timo\contenido_head/contenido/templates/standard/template.info.html:36
-msgid "You can find many information and a community forum on the <a href=\"http://www.contenido.de\" target=\"_blank\">Contenido Portal</a>"
+msgid "You can find many information and a community forum on the <a href=\"http://www.contenido.de\" target=\"_blank\">CONTENIDO Portal</a>"
 msgstr ""
 
 # e:\timo\contenido_head/contenido/templates/standard/template.js_new_form.html:20
@@ -2034,15 +2034,15 @@ msgstr ""
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
 #, fuzzy
-msgid "Contenido Forum"
-msgstr "Contenido-Bildschar"
+msgid "CONTENIDO Forum"
+msgstr "CONTENIDO-Bildschar"
 
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
 #, fuzzy
-msgid "Contenido Bug-Tracker"
-msgstr "Contenido-Bildschar"
+msgid "CONTENIDO Bug-Tracker"
+msgstr "CONTENIDO-Bildschar"
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:35
 msgid "Your E-Mail-Address"
@@ -2090,7 +2090,7 @@ msgid "upgrade-errorlog.txt (contains error messages arose during upgrading to a
 msgstr ""
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:67
-msgid "systemvariables.html (contains contains several Contenido settings)"
+msgid "systemvariables.html (contains contains several CONTENIDO settings)"
 msgstr ""
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:68
@@ -2098,7 +2098,7 @@ msgid "phpinfo.html (contains output generated through the phpinfo() function)"
 msgstr ""
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:69
-msgid "By checking this box I agree that four for business AG receives and processes the bug report data.<br>I also agree that the submitted data is used for bug processing and that the bug will be made public using the Contenido Bug-Tracker."
+msgid "By checking this box I agree that four for business AG receives and processes the bug report data.<br>I also agree that the submitted data is used for bug processing and that the bug will be made public using the CONTENIDO Bug-Tracker."
 msgstr ""
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_sysval_mailattach.html:17
@@ -2124,15 +2124,15 @@ msgstr ""
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:232
 # e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:232
 #, fuzzy
-msgid "Contenido Error Log"
-msgstr "Contenido-Bildschar"
+msgid "CONTENIDO Error Log"
+msgstr "CONTENIDO-Bildschar"
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:38
 msgid "clear error log"
 msgstr ""
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:45
-msgid "Contenido Upgrade Error Log"
+msgid "CONTENIDO Upgrade Error Log"
 msgstr ""
 
 # M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_variables.html:52
@@ -2160,7 +2160,7 @@ msgid "Available clients"
 msgstr "Moi Kunne"
 
 # e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:50
-msgid "Help about Contenido"
+msgid "Help about CONTENIDO"
 msgstr "Isch waas nemmer weida!"
 
 # e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55

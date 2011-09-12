@@ -1,29 +1,29 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * Contenido General API functions
+ * CONTENIDO General API functions
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.0.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created  2003-09-01
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2009-10-27, Murat Purc, initialization of variable $bError to prevent PHP strict messages
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *   modified 2011-06-14, Rusmir Jusufovic, add a new path to cInclude, "modul" path to the php directory in current modul
  *
  *   $Id$:
@@ -37,7 +37,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 /* Info:
- * This file contains Contenido General API functions.
+ * This file contains CONTENIDO General API functions.
  *
  * If you are planning to add a function, please make sure that:
  * 1.) The function is in the correct place
@@ -57,14 +57,14 @@ if (!defined('CON_FRAMEWORK')) {
  * frontend    Path to the *current* frontend
  * conlib      Path to conlib
  * pear        Path to the bundled pear copy
- * classes     Path to the contenido classes (see NOTE below)
+ * classes     Path to the CONTENIDO classes (see NOTE below)
  * cronjobs    Path to the cronjobs
  * external    Path to the external tools
- * includes    Path to the contenido includes
- * scripts     Path to the contenido scripts
+ * includes    Path to the CONTENIDO includes
+ * scripts     Path to the CONTENIDO scripts
  *
- * NOTE: Since Contenido (since v 4.9.0) provides autoloading of required
- *       class files, there is no need to load Contenido class files of by using
+ * NOTE: Since CONTENIDO (since v 4.9.0) provides autoloading of required
+ *       class files, there is no need to load CONTENIDO class files of by using
  *       contenido_include() or cInclude().
  *
  * @param   string  $sWhere       The area which should be included
@@ -108,7 +108,7 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
             $sIncludePath = ini_get('include_path');
 
             if (!preg_match('|' . $cfg['path']['pear'] . '|i', $sIncludePath)) {
-                // contenido pear path is not set in include_path
+                // CONTENIDO pear path is not set in include_path
                 // we try to add it via ini_set
                 if (!@ini_set('include_path', $sIncludePath . PATH_SEPARATOR . $cfg['path']['pear'])) {
                     // not able to change include_path

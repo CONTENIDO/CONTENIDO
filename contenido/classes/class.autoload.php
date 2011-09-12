@@ -1,12 +1,12 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Implements autoload feature for a Contenido project.
+ * Implements autoload feature for a CONTENIDO project.
  *
- * Autoloading for Contenido is provided via a generated classmap configuration 
+ * Autoloading for CONTENIDO is provided via a generated classmap configuration 
  * file, which is available inside contenido/includes/ folder.
  * - contenido/includes/config.autoloader.php
  *
@@ -16,20 +16,20 @@
  * - contenido/includes/config.autoloader.local.php
  *
  * Read also docs/techref/backend/backend.autoloader.html to get involved in
- * Contenido autoloader mechanism.
+ * CONTENIDO autoloader mechanism.
  *
  *
  * Requirements:
  * @con_php_req 5.0
  *
- * @package    Contenido Autoloader
+ * @package    CONTENIDO Autoloader
  * @version    0.0.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created  2010-12-27
@@ -54,7 +54,7 @@ class Contenido_Autoload
     const ERROR_CLASS_EXISTS = 'class_exists';
 
     /**
-     * Contenido root path. Path to the folder which contains the Contenido installation.
+     * CONTENIDO root path. Path to the folder which contains the CONTENIDO installation.
      *
      * @var string
      */
@@ -92,12 +92,12 @@ class Contenido_Autoload
 
 
     /**
-     * Initialization of Contenido autoloader, is to call at least once.
+     * Initialization of CONTENIDO autoloader, is to call at least once.
      *
      * Registers itself as a __autoload implementation, includes the classmap file, 
      * and if exists, the user defined class map file, containing the includes.
      *
-     * @param   array  $cfg  The Contenido cfg array
+     * @param   array  $cfg  The CONTENIDO cfg array
      * @return  void
      */
     public static function initialize(array $cfg)
@@ -198,7 +198,7 @@ class Contenido_Autoload
 
 
     /**
-     * Returns the path to a Contenido class file by processing the given classname
+     * Returns the path to a CONTENIDO class file by processing the given classname
      *
      * @param    string  $className
      * @return  (string|null)  Path and filename or null

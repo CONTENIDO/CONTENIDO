@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Generate base href for multiple client domains
@@ -15,7 +15,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Frontend classes
+ * @package    CONTENIDO Frontend classes
  * @version    1.1.1
  * @author     Andreas Lindner, 4fb AG
  * @copyright  four for business AG <www.4fb.de>

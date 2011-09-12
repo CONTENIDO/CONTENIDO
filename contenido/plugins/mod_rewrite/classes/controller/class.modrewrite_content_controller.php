@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Content controller
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend plugins
+ * @package    CONTENIDO Backend plugins
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since Contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created  2011-04-11
@@ -83,7 +83,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
                 } else {
                     // root dir check ist disabled, take over the setting and 
                     // output a warning.
-                    $sMsg = i18n('The specified directory "%s" does not exists in DOCUMENT_ROOT "%s". this could happen, if clients DOCUMENT_ROOT differs from Contenido backends DOCUMENT_ROOT. However, the setting will be taken over because of disabled check.', 'mod_rewrite');
+                    $sMsg = i18n('The specified directory "%s" does not exists in DOCUMENT_ROOT "%s". this could happen, if clients DOCUMENT_ROOT differs from CONTENIDO backends DOCUMENT_ROOT. However, the setting will be taken over because of disabled check.', 'mod_rewrite');
                     $sMsg = sprintf($sMsg, $request['rootdir'], $_SERVER['DOCUMENT_ROOT']);
                     $this->_oView->rootdir_error = $this->_notifyBox('warning', $sMsg);
                 }

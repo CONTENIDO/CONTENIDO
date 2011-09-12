@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Class of Layout Revision
@@ -11,14 +11,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.0
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release >= 4.8.8
+ * @since      file available since CONTENIDO release >= 4.8.8
  * 
  * 
  * modified 2011-06-20, Rusmir Jusufovic , add method setCode (load code of layout from file).
@@ -166,13 +166,13 @@ if(!defined('CON_FRAMEWORK')) {
     }
  	
    /**
-      * Function returns javascript which refreshes contenido frames for file list an subnavigation.
+      * Function returns javascript which refreshes CONTENIDO frames for file list an subnavigation.
       * This is neccessary, if filenames where changed, when a history entry is restored
       *
       * @param integer $iIdClient - id of client which contains this file
-      * @param string  $sArea - name of contenido area in which this procedure should be done
+      * @param string  $sArea - name of CONTENIDO area in which this procedure should be done
       * @param integer $iIdLayout - Id of layout to highlight
-      * @param object $sess - Contenido session object
+      * @param object $sess - CONTENIDO session object
       *
       * @return string  - Javascript for refrehing frames
       */

@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Buffered Log facility
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -59,7 +59,7 @@ class cBufferedLog extends cLog
 	var $_aMessages;
 	
     /**
-     * cBufferedLog: Creates a new instance of the Contenido BufferedLog mechanism.
+     * cBufferedLog: Creates a new instance of the CONTENIDO BufferedLog mechanism.
      *
      * cBufferedLog is a logging facility which uses cLog to do its logging,
      * and features buffered logging

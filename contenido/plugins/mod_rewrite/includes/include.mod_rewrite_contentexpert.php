@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Plugin mod_rewrite backend include file to administer expert (in content frame)
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend plugins
+ * @package    CONTENIDO Backend plugins
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since Contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created   2011-04-11
@@ -94,12 +94,12 @@ $oView->lng_copy_htaccess_type_info2 = i18n('Contains a sipmle collection of rul
 files, will be excluded from rewriting. Remaining requests will be rewritten to front_content.php', 'mod_rewrite');
 
 $oView->lng_copy_htaccess_to = i18n('and copy to', 'mod_rewrite');
-$oView->lng_copy_htaccess_to_contenido = i18n('Contenido installation directory', 'mod_rewrite');
-$oView->lng_copy_htaccess_to_contenido_info = i18n('Copy the selected .htaccess template into Contenido installation directory<br />
+$oView->lng_copy_htaccess_to_contenido = i18n('CONTENIDO installation directory', 'mod_rewrite');
+$oView->lng_copy_htaccess_to_contenido_info = i18n('Copy the selected .htaccess template into CONTENIDO installation directory<br />
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;{CONTENIDO_FULL_PATH}.<br />
 <br />
-This is the recommended option for a Contenido installation with one or more clients<br />
+This is the recommended option for a CONTENIDO installation with one or more clients<br />
 who are running on the same domain.', 'mod_rewrite');
 $oView->lng_copy_htaccess_to_contenido_info = str_replace('{CONTENIDO_FULL_PATH}', $oView->contenido_full_path, $oView->lng_copy_htaccess_to_contenido_info);
 $oView->lng_copy_htaccess_to_client = i18n('client directory', 'mod_rewrite');
@@ -122,7 +122,7 @@ $oView->lng_resetall_link = i18n('Reset all aliases', 'mod_rewrite');
 $oView->lng_resetall_info = i18n('Reset all category-/article aliases. Existing aliases will be overwritten.', 'mod_rewrite');
 $oView->lng_note = i18n('Note', 'mod_rewrite');
 $oView->lng_resetaliases_note = i18n('This process could require some time depending on amount of categories/articles.<br />
-The aliases will not contain the configured plugin separators, but the Contenido default separators \'/\' und \'-\', e. g. \'/category-word/article-word\'.<br />
+The aliases will not contain the configured plugin separators, but the CONTENIDO default separators \'/\' und \'-\', e. g. \'/category-word/article-word\'.<br />
 Execution of this function ma be helpful to prepare all or empty aliases for the usage by the plugin.', 'mod_rewrite');
 
 $oView->lng_discard_changes = i18n('Discard changes', 'mod_rewrite');

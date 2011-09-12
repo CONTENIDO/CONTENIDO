@@ -1,4 +1,4 @@
-Advanced Mod Rewrite Plugin für Contenido >= 4.9.0
+Advanced Mod Rewrite Plugin für CONTENIDO >= 4.9.0
 
 ################################################################################
 TOC (Table of contents)
@@ -18,7 +18,7 @@ TOC (Table of contents)
 ################################################################################
 BESCHREIBUNG
 
-Das Plugin Advanced Mod Rewrite ist eine Erweiterung für das Contenido-CMS zur Generierung von 
+Das Plugin Advanced Mod Rewrite ist eine Erweiterung für das CONTENIDO-CMS zur Generierung von 
 alternativen URLs.
 
 Normalerweise werden die URLs zu Seiten einer auf ein CMS (z. B. Contenido) basierenden 
@@ -32,20 +32,20 @@ definierten Regeln verarbeitet und intern an die Webanwendung weitergeleitet.
 Solche statische URLs können aufgrund der Keyworddichte (die Ressource beschreibende Wörter in der 
 URL) vorteilhaft für Suchmaschinen sein und User können sich die URLs einfacher merken.
 
-Bei einer Contenido-Installation lassen sich solche URLs mit dem Advanced Mod Rewrite Plugin 
+Bei einer CONTENIDO-Installation lassen sich solche URLs mit dem Advanced Mod Rewrite Plugin 
 generieren, URLs zu Frontendseiten, wie z. B. "/cms/front_content.php?idart=12&amp;lang=1" werden 
 vom Plugin als statische URLs wie "/de/page-name.html" ausgegeben. Diverse Einstellungen zum 
-Ausgabeformat der URLs lassen sich im Contenido-Backend konfigurieren.
+Ausgabeformat der URLs lassen sich im CONTENIDO-Backend konfigurieren.
 
 Das Plugin Advanced Mod Rewrite basiert auf die geniale Erweiterung Advanced Mod Rewrite für 
-Contenido, welches als Bundle von stese bis zur Contenido Version 4.6.15 entwickelt und betreut 
+CONTENIDO, welches als Bundle von stese bis zur CONTENIDO Version 4.6.15 entwickelt und betreut 
 wurde.
 
 Wichtiger Aspekt bei der Umsetzung war die Implementierung als Plugin mit so wenig wie möglichen 
-Eingriffen in den Contenido Core (trotzdem ging es nicht ohne einige Anpassungen an bestimmten 
+Eingriffen in den CONTENIDO Core (trotzdem ging es nicht ohne einige Anpassungen an bestimmten 
 Sourcen).
 
-Daher enthält das Archiv einige überarbeitete Contenido Sourcen, die eventuell nicht auf dem 
+Daher enthält das Archiv einige überarbeitete CONTENIDO Sourcen, die eventuell nicht auf dem 
 neuesten Stand sein können.
 
 
@@ -53,7 +53,7 @@ neuesten Stand sein können.
 ################################################################################
 CHANGELOG
 
-2011-04-11  Advanced Mod Rewrite Plugin integration into the Contenido core
+2011-04-11  Advanced Mod Rewrite Plugin integration into the CONTENIDO core
 
 
 
@@ -72,7 +72,7 @@ Plugin eingestellt wurde.
 ################################################################################
 FEATURES
 
-- Erstellung Suchmaschinenoptimierter URLs, Contenido interne URLs wie 
+- Erstellung Suchmaschinenoptimierter URLs, CONTENIDO interne URLs wie 
   /front_content.php?idcat=12&idart=34 werden z. B. als /kategoriename/artikelname.html umschrieben
 - Unterstützung mehrerer Sprachen 
 - Unterstützung mehrerer Mandanten im gleichen Verzeichnis 
@@ -85,7 +85,7 @@ FEATURES
 ################################################################################
 VORAUSSETZUNGEN
 
-- Alle Voraussetzungen von Contenido 4.8.x gelten auch für das Plugin
+- Alle Voraussetzungen von CONTENIDO 4.8.x gelten auch für das Plugin
 - PHP ab Version 5.1 (Das Plugin war bis Version 0.3.3 PHP 4.4.x kompatibel)
 - Apache HTTP Server 2 mit Mod Rewrite Modul und .htaccess
 
@@ -94,7 +94,7 @@ VORAUSSETZUNGEN
 ################################################################################
 INSTALLATION
 
-Das Plugin kann im Contenido Setupprocess installiert werden.
+Das Plugin kann im CONTENIDO Setupprocess installiert werden.
 
 ################################################################################
 WICHTIGES ZUM INHALT
@@ -108,7 +108,7 @@ Die Konfiguration des Apache, in der das mod_rewrite-Modul aktiviert und mit div
 konfiguriert wird. Die Einstellungen bewirken, dass ankommende Anfragen wie z. B. 
 /kategorie/artikel.html an die front_content.php im Mandantenverzeichnis weitergeleitet werden.
 
-Die .htaccess liegt nicht im Contenido Installationsverzeichnis vor, es muss entweder dorthin 
+Die .htaccess liegt nicht im CONTENIDO Installationsverzeichnis vor, es muss entweder dorthin 
 kopiert oder eine vorhanene .htaccess Datei angepasst werden.
 
 Als Vorlage existieren folgende 2 Versionen der .htaccess:
@@ -133,7 +133,7 @@ Die Sourcen des Plugins.
 contenido/classes/UrlBuilder/Contenido_UrlBuilder_MR.class.php:
 ---------------------------------------------------------------
 UrlBuilder Klasse des Plugins (seit Version 0.4.0), zum Generieren der URLs anhand der Pluginkonfiguration. 
-Verwendet die in den Contenido Core implementierte UrlBuilder-Funktionalität und erweitert diesen um die 
+Verwendet die in den CONTENIDO Core implementierte UrlBuilder-Funktionalität und erweitert diesen um die 
 pluginspezifischen Features.
 
 
@@ -151,7 +151,7 @@ erfolgreicher Anmeldung wird man normalerweise zum Plugininstaller weitergeleite
 
 Manchmal kann es vorkommen, dass die Weiterleitung nach der Anmeldung nicht klappt und man nicht den 
 Plugininstaller aufrufen kann.
-Um dennoch den Installer aufzurufen, reicht es aus, der URL die aktuell gültige Contenido Session ID
+Um dennoch den Installer aufzurufen, reicht es aus, der URL die aktuell gültige CONTENIDO Session ID
 anzuhängen, z. B. /contenido/plugins/mod_rewrite/install.php?contenido={my_session_id}.
 
 
@@ -185,10 +185,10 @@ httpd.conf angegeben werden:
 [/code]
 
  
-Wie richte ich Advanced Mod Rewrite für eine Contenidoinstallation in einem Unterverzeichnis ein?
+Wie richte ich Advanced Mod Rewrite für eine CONTENIDO-Installation in einem Unterverzeichnis ein?
 -------------------------------------------------------------------------------------------------
 
-Als Beispiel gehen wir davon aus, dass Contenido im Verzeichnis /mypage/ unterhalb vom Webroot 
+Als Beispiel gehen wir davon aus, dass CONTENIDO im Verzeichnis /mypage/ unterhalb vom Webroot 
 installiert wurde und das Mandantenverzeichnis per default /mypage/cms/ ist.
 
 In der Pluginkonfiguration (Backend) den Pfad zur .htaccess Datei (aus Sicht des Web-Browsers) 
@@ -228,7 +228,7 @@ angepasst werden, kann dieses Verhalten bei manchen Seiten unerwünscht sein. Das
 Ausgabe der Fall sein, dessen Inhalt kein HTML ist (z. B. Dateidownload), dann macht es keinen Sinn, 
 die Ausgabe anzupassen.
 
-Ab Contenido 4.8.8 gibt es eine neue Einstellung, mit der man unterbinden kann, dass die Ausgabe im 
+Ab CONTENIDO 4.8.8 gibt es eine neue Einstellung, mit der man unterbinden kann, dass die Ausgabe im 
 Frontend nicht in den Ausgabepuffer geschrieben wird. Ist dies für eine Seite definiert worden, wird 
 auch die Funktion vom Plugin, die die URLs anpasst, nicht ausgeführt.
 
@@ -259,9 +259,9 @@ auch das Plugin kann dann keine URLs umschreiben.
 
 Alle URLs zu Kategorien werden mit / oder /index.html umschrieben:
 ------------------------------------------------------------------
-Ist Contenido mit der Konfiguration $cfg["is_start_compatible"] = true; 
+Ist CONTENIDO mit der Konfiguration $cfg["is_start_compatible"] = true; 
 (siehe contenidoincludes/config.php) eingestellt, um die Startartikeldefinition in Kategorien 
-kompatibel zu älteren Contenido-Versionen halten, kann das Plugin die URLs zu Kategorien nicht
+kompatibel zu älteren CONTENIDO-Versionen halten, kann das Plugin die URLs zu Kategorien nicht
 generieren, weil es diese Konfiguration nicht unterstützt.
 
 Die einfachste Lösung ist, die Konfiguration $cfg["is_start_compatible"] auf false zu setzen und im 
@@ -272,7 +272,7 @@ Backend in den vorhandenen Kategorien erneut die Startartikel zu setzen.
 ################################################################################
 ADVANCED MOD REWRITE THEMEN IM CONTENIDO FORUM
 
-Plugin Advanced Mod Rewrite für Contenido 4.8.x:
+Plugin Advanced Mod Rewrite für CONTENIDO 4.8.x:
 http://www.contenido.de/forum/viewtopic.php?t=21578
 
 Original Advanced Mod Rewrite 4.6.23:
@@ -281,7 +281,7 @@ http://www.contenido.de/forum/viewtopic.php?t=18454
 Original Advanced Mod Rewrite 4.6.15:
 http://www.contenido.de/forum/viewtopic.php?t=11162
 
-Advanced Mod Rewriting Contenido 4.4.4:
+Advanced Mod Rewriting CONTENIDO 4.4.4:
 http://www.contenido.de/forum/viewtopic.php?t=6713
 
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Implementation of Contenido_UrlBuilder to build AMR (Advanced Mod Rewrite) Frontend-URLs
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend plugins
+ * @package    CONTENIDO Backend plugins
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since Contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created  2008-05-xx
@@ -52,7 +52,7 @@ cInclude('classes', 'UrlBuilder/Contenido_UrlBuilderFactory.class.php');
  *
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     Contenido Backend plugins
+ * @package     CONTENIDO Backend plugins
  * @subpackage  ModRewrite
  */
 class Contenido_UrlBuilder_MR extends Contenido_UrlBuilder
@@ -179,7 +179,7 @@ class Contenido_UrlBuilder_MR extends Contenido_UrlBuilder
         $oMRUrlStack = ModRewriteUrlStack::getInstance();
         $aPretty = $oMRUrlStack->getPrettyUrlParts('front_content.php?' . $sQuery);
 
-        // get all non contenido related query parameter
+        // get all non CONTENIDO related query parameter
         $sQuery = $this->_createUrlQueryPart($aParams);
 
         // some presettings of variables
@@ -226,7 +226,7 @@ class Contenido_UrlBuilder_MR extends Contenido_UrlBuilder
             $sUrl = substr_replace($sUrl, '', -2);
         }
 
-        // now convert Contenido url to an AMR url
+        // now convert CONTENIDO url to an AMR url
         $sUrl = ModRewriteUrlUtil::getInstance()->toModRewriteUrl($sUrl);
 
         return mr_removeMultipleChars('/', $this->_aMrCfg['rootdir'] . $sUrl);
@@ -235,7 +235,7 @@ class Contenido_UrlBuilder_MR extends Contenido_UrlBuilder
 
     /**
      * Loops thru passed parameter array and creates the query part of the URL.
-     * All non Contenido related parameter will be excluded from composition.
+     * All non CONTENIDO related parameter will be excluded from composition.
      *
      * @param   array  $aArgs  Assoziative parameter array
      * @return  string  Composed query part for the URL like '?foo=bar&amp;param=value'
@@ -253,7 +253,7 @@ class Contenido_UrlBuilder_MR extends Contenido_UrlBuilder
             $aIgnoredParams[] = 'changeclient';
         }
 
-        // collect additional non contenido related parameters
+        // collect additional non CONTENIDO related parameters
         $sQuery = '';
         foreach ($aArgs as $p => $v) {
             if (!in_array($p, $aIgnoredParams)) {

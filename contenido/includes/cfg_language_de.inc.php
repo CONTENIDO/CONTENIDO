@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Language string for "Deutsch" (German)
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.0.0
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created 2002-03-02
@@ -42,7 +42,7 @@ $lngLogin["username"]                        		= "Benutzername";
 $lngLogin["password"]                        		= "Paßwort";
 $lngLogin["invalidlogin"]                			= "Entweder ist Ihr Benutzername oder Ihr Paßwort ungültig.<br>Bitte versuchen Sie es nochmal!";
 
-$lngLogout["thanksforusingcontenido"]           	= "Vielen Dank, dass sie Contenido benutzt haben. Bis bald.";
+$lngLogout["thanksforusingcontenido"]           	= "Vielen Dank, dass sie CONTENIDO benutzt haben. Bis bald.";
 $lngLogout["youareloggedout"]                		= "Sie sind jetzt abgemeldet.";
 $lngLogout["backtologin1"]                			= "Hier kommen Sie wieder zur";
 $lngLogout["backtologin2"]                			= "Anmeldung";

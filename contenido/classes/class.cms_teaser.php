@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Class for handling CMS Type Teaser
@@ -13,14 +13,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Content Types
+ * @package    CONTENIDO Content Types
  * @version    1.0.5
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.12
+ * @since      file available since CONTENIDO release 4.8.12
  * 
  * {@internal 
  *   created 2009-04-08
@@ -52,7 +52,7 @@ cInclude('includes', 'functions.api.images.php');
  */
 class Cms_Teaser {
 	/**
-	 * Contenido configuration array
+	 * CONTENIDO configuration array
 	 *
 	 * @var array
 	 * @access private
@@ -68,7 +68,7 @@ class Cms_Teaser {
 	private $iId;
 	
 	/**
-	 * Contenido database object
+	 * CONTENIDO database object
 	 *
 	 * @var object
 	 * @access private
@@ -112,7 +112,7 @@ class Cms_Teaser {
 	
 	/**
 	 * Array which contains all avariable CMS_Types and its ids
-	 * in current Contenido isntallation (described as hash [idtype => cmstypename])
+	 * in current CONTENIDO isntallation (described as hash [idtype => cmstypename])
 	 *
 	 * @var array
 	 * @access private
@@ -120,7 +120,7 @@ class Cms_Teaser {
 	private $aCMSTypes;
 	
 	/**
-	 * current Contenido client id
+	 * current CONTENIDO client id
 	 *
 	 * @var integer
 	 * @access private
@@ -128,7 +128,7 @@ class Cms_Teaser {
 	private $iClient;
 	
 	/**
-	 * current Contenido language id
+	 * current CONTENIDO language id
 	 *
 	 * @var integer
 	 * @access private
@@ -136,7 +136,7 @@ class Cms_Teaser {
 	private $iLang;
 	
 	/**
-	 * Contenido Session object
+	 * CONTENIDO Session object
 	 *
 	 * @var object
 	 * @access private
@@ -144,7 +144,7 @@ class Cms_Teaser {
 	private $oSess;
 	
 	/**
-	 * Contenido configuration array for currently active client
+	 * CONTENIDO configuration array for currently active client
 	 *
 	 * @var array
 	 * @access private
@@ -169,19 +169,19 @@ class Cms_Teaser {
 
 	/**
 	 * Constructor of class inits some important class variables and
-	 * gets some Contenido global vars, so this class has no need to
+	 * gets some CONTENIDO global vars, so this class has no need to
 	 * use ugly and buggy global commands
 	 *
 	 * @param string $sContent - xml document from database containing teaser settings
 	 * @param integer $iNumberOfCms - CMS_TEASER[4] => 4
 	 * @param integer $iIdArtLang - Idartlang of current article
 	 * @param array $sEditLink - sEditlink for editbuttons, not currently used
-	 * @param array $aCfg - Contenido configuration array
-	 * @param array $oDB - Contenido database object (not used because we need own object (else problems by cross query in same object))
-	 * @param string $sContenidoLang - Contenido Backend language string
-	 * @param integer $iClient - Contenido client id
-	 * @param integer $iLang - Contenido frontend language id
-	 * @param array $aCfgClient - Contenido Client configuration array
+	 * @param array $aCfg - CONTENIDO configuration array
+	 * @param array $oDB - CONTENIDO database object (not used because we need own object (else problems by cross query in same object))
+	 * @param string $sContenidoLang - CONTENIDO Backend language string
+	 * @param integer $iClient - CONTENIDO client id
+	 * @param integer $iLang - CONTENIDO frontend language id
+	 * @param array $aCfgClient - CONTENIDO Client configuration array
 	 *
 	 * @access public
 	 */
@@ -296,7 +296,7 @@ class Cms_Teaser {
 	/**
 	 * Function gets all submitted values for new teaser properties from 
 	 * $_POST array, generates new corresponding config XML Document and
-	 * stores it as content, using contenido conSaveContentEntry() function
+	 * stores it as content, using CONTENIDO conSaveContentEntry() function
 	 *
 	 * @access private
 	 */
@@ -556,9 +556,9 @@ class Cms_Teaser {
 	}
 	
 	/**
-	 * Function is called in editmode of contenido an returns teaser view and editbutton
+	 * Function is called in editmode of CONTENIDO an returns teaser view and editbutton
 	 *
-	 * @return string - escaped html code for further use in contenido and sending to browser
+	 * @return string - escaped html code for further use in CONTENIDO and sending to browser
 	 *
 	 * @access public
 	 */
@@ -664,7 +664,7 @@ class Cms_Teaser {
 	}
 	
 	/**
-	 * In Contenido content type code is evaled by php. To make this possible,
+	 * In CONTENIDO content type code is evaled by php. To make this possible,
 	 * this function prepares code for evaluation
 	 *
 	 * @param string $sCode - code to escape
@@ -751,7 +751,7 @@ class Cms_Teaser {
 	}
 	
 	/**
-	 * Function gets path to an image of base of idupload in contenido,
+	 * Function gets path to an image of base of idupload in CONTENIDO,
 	 * scales this image on basis of teaser settings and returns path to
 	 * scaled image. It is also possible to give path to image directly,
 	 * in this case set fourth parameter to true
@@ -807,7 +807,7 @@ class Cms_Teaser {
 	/**
 	 * Function retrives name of an article by its id from database
 	 *
-	 * @param integer $iIdArt - Contenido article id
+	 * @param integer $iIdArt - CONTENIDO article id
 	 * @return string - name of article
 	 *
 	 * @access private
@@ -829,7 +829,7 @@ class Cms_Teaser {
 	 * Teaser allows to get a list of ids in which article content is searched in
 	 * article like 1,2,5,6 the result with largest character count is returned
 	 *
-	 * @param object $oArticle - Contenido article object
+	 * @param object $oArticle - CONTENIDO article object
 	 * @param string $sIdType - Name of Content type to extract informations from
 	 * @param integer $iIdType - list of ids to search in
 	 * @return string - largest result of content
@@ -888,10 +888,10 @@ class Cms_Teaser {
 	
 	/**
 	 * In edit and view mode this function fills teaser template with informations from an 
-	 * Contenido article object
+	 * CONTENIDO article object
 	 *
-	 * @param object $oArticle - Contenido Article object
-	 * @param object $oTpl - Contenido Template object (as reference)
+	 * @param object $oArticle - CONTENIDO Article object
+	 * @param object $oTpl - CONTENIDO Template object (as reference)
 	 * @return boolean - success state of this operation
 	 *
 	 * @access private

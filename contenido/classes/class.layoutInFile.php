@@ -2,23 +2,23 @@
 
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * Contenido Layout in filesystem function
+ * CONTENIDO Layout in filesystem function
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend
+ * @package    CONTENIDO Backend
  * @version    1.0
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release >= 4.9
+ * @since      file available since CONTENIDO release >= 4.9
  * 
  * }}
  * 
@@ -52,7 +52,7 @@ class LayoutInFile {
 	
 	/**
 	 * 
-	 * The contenido cfg
+	 * The CONTENIDO cfg
 	 * 
 	 * @var array
 	 */

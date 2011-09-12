@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Class for handling passwort recovery for backend users. If a user has set his e-mail address, this class
@@ -13,7 +13,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.1.0
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
@@ -48,7 +48,7 @@ if(!defined('CON_FRAMEWORK')) {
  */
 class RequestPassword {
     /**
-      * The contenido database object
+      * The CONTENIDO database object
       *
       * @var object
       * @access private
@@ -56,7 +56,7 @@ class RequestPassword {
     var $oDb;
 
     /**
-      * The contenido configuration array
+      * The CONTENIDO configuration array
       *
       * @var array
       * @access private
@@ -64,7 +64,7 @@ class RequestPassword {
     var $aCfg;
 
     /**
-      * The contenido template object
+      * The CONTENIDO template object
       *
       * @var object
       * @access private
@@ -148,8 +148,8 @@ class RequestPassword {
     /**
       * Constructor of RequestPassword initializes class variables
       *
-      * @param  object $oDb - The contenido database object
-      * @param  array $aCfg - The contenido configuration array
+      * @param  object $oDb - The CONTENIDO database object
+      * @param  array $aCfg - The CONTENIDO configuration array
       * @access public
       */
     function RequestPassword ($oDb, $aCfg) {
@@ -188,12 +188,12 @@ class RequestPassword {
             $this->sSendermail = 'noreply@contenido-passwordservice.de';
         }
 
-        //get systemproperty for senders name, if not set use Contenido Backend
+        //get systemproperty for senders name, if not set use CONTENIDO Backend
         $sSendername = getSystemProperty('system', 'mail_sender_name');
         if ($sSendername != '') {
             $this->sSendername = $sSendername;
         } else {
-            $this->sSendername = 'Contenido Backend';
+            $this->sSendername = 'CONTENIDO Backend';
         }
 
         //get systemproperty for location of mailserver, if not set use localhost
@@ -345,7 +345,7 @@ class RequestPassword {
         $sPassword = (string) $sPassword;
 
         //get translation for mailbody and insert username and new password
-        $sMailBody = sprintf(i18n("Dear Contenidouser %s,\n\nYour password to log in Content Management System Contenido is: %s\n\nBest regards\n\nYour Contenido sysadmin"), $this->sUsername, $sPassword);
+        $sMailBody = sprintf(i18n("Dear CONTENIDO-User %s,\n\nYour password to log in Content Management System CONTENIDO is: %s\n\nBest regards\n\nYour CONTENIDO sysadmin"), $this->sUsername, $sPassword);
 
         //use php mailer class for submitting mail
         $oMail = new PHPMailer();
@@ -361,7 +361,7 @@ class RequestPassword {
         //set users e mail adress as recipient
         $oMail->AddAddress($this->sEmail, "");
         //set mail subject
-        $oMail->Subject = stripslashes (i18n('Your new password for Contenido Backend'));
+        $oMail->Subject = stripslashes (i18n('Your new password for CONTENIDO Backend'));
         //append mail body
         $oMail->Body = $sMailBody;
         //wrap after 1000 chars

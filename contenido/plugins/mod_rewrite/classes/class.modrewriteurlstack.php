@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Includes mod rewrite url stack class.
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend plugins
+ * @package    CONTENIDO Backend plugins
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since Contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created  2008-09-10
@@ -60,7 +60,7 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  * </code>
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     Contenido Backend plugins
+ * @package     CONTENIDO Backend plugins
  * @subpackage  ModRewrite
  */
 class ModRewriteUrlStack
@@ -95,7 +95,7 @@ class ModRewriteUrlStack
     private $_aStack = array();
 
     /**
-     * Contenido related parameter array
+     * CONTENIDO related parameter array
      *
      * @var  array
      */

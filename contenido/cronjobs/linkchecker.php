@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Link Checker
@@ -9,7 +9,7 @@
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    1.0.1
  * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>
@@ -23,7 +23,7 @@
  *   created  2007-11-01
  *   modified 2008-06-16, H. Librenz - Hotfix: checking for malicious calls added
  *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *   modified 2011-05-12, Dominik Ziegler, forced include of startup.php [#CON-390]
  *
  *   $Id$:
@@ -35,7 +35,7 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// Contenido startup process
+// CONTENIDO startup process
 include_once ('../includes/startup.php');
 
 include_once($cfg['path']['contenido'] . 'plugins/linkchecker/includes/config.plugin.php');
@@ -56,7 +56,7 @@ global $cfg;
 
 if (!isRunningFromWeb() || function_exists("runJob") || $area == "cronjobs") {
 
-    // Create Contenido DB_class
+    // Create CONTENIDO DB_class
     $db = new DB_Contenido;
 
     // Start linkchecker

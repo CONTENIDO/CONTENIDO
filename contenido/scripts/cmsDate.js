@@ -1,9 +1,9 @@
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * Contenido js class for handling  DHTML Calendar in class cms_date for corresponding
+ * CONTENIDO js class for handling  DHTML Calendar in class cms_date for corresponding
  * cms type. It extends DHTML Calender. A select box is added, which allows users to select
  * the format in which the selected date is displayed. For this functionality there are some
  * modifications in DHTML Calender (calender.js) which were commented in this file
@@ -12,14 +12,14 @@
  * Requirements: 
  * 
  *
- * @package    Contenido Backend
+ * @package    CONTENIDO Backend
  * @version    1.0.0
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.8.7
+ * @since      file available since CONTENIDO release <= 4.8.7
  * 
  * {@internal 
  *   created 2007-07-14 Bilal Arslan, Timo Trautmann
@@ -84,7 +84,7 @@ function createCmsDate(id, format, showsTime, showsOtherMonths, sDivSelectId, sC
  * @param {integer} showsTime, 12 or 24
  * @param {boolean} showsOtherMonths, true or false
  * @param {string} sDivSelectId, div id from select-box
- * @param {string} sConPath, contenido path
+ * @param {string} sConPath, CONTENIDO path
  * @param {string} sSelectId, select id from select-box
  */
 CmsDate = function(id, format, showsTime, showsOtherMonths, sDivSelectId, sConPath, sSelectId){    

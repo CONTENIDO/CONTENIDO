@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * File with configuration of concache
@@ -9,7 +9,7 @@
  * Requirements: 
  * @con_php_req 5
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    1.0
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -43,7 +43,7 @@ global $cfgConCache;
 global $auth;
 
 /**
-* don't cache output, if we have a contenido variable, e. g. on calling frontend preview from backend
+* don't cache output, if we have a CONTENIDO variable, e. g. on calling frontend preview from backend
 * @var bool  $cfgConCache['excludecontenido']
 */
 $cfgConCache['excludecontenido'] = true;
@@ -136,7 +136,7 @@ $cfgConCache['idoptions'] = array(
 * another example with output
 */
 
-// define code 2 update contenido statistics
+// define code 2 update CONTENIDO statistics
 // this will be excuted on 'afteroutput' event of cache object
 $sStatCode = '
 		$sql = \'SELECT idcatart FROM \'.$GLOBALS[\'cfg\'][\'tab\'][\'stat\'].\' WHERE idcatart="\'.Contenido_Security::toInteger($GLOBALS[\'idcatart\']).\'" AND idlang="\'.Contenido_Security::toInteger($GLOBALS[\'lang\']).\'"\';

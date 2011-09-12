@@ -1,11 +1,11 @@
 <?php
 /**
- * Contenido Content Management System User Interface
+ * CONTENIDO Content Management System User Interface
  *
  * This interface describes the main methods an user class
  * has to implement.
  *
- * @package Contenido Backend Classes
+ * @package CONTENIDO Backend Classes
  * @subpackage Backend User
  *
  * @version $Revision$
@@ -14,7 +14,7 @@
  *
  * {@internal
  *  created 2008-11-16, H. Librenz
- *  modified 2008-12-04, Timo Trautman, Added Contenido $cfg as param for getErrorString()
+ *  modified 2008-12-04, Timo Trautman, Added CONTENIDO $cfg as param for getErrorString()
  *
  *  $Id$
  * }}
@@ -28,7 +28,7 @@
  * class, which will implement main features and should be
  * used if you start implementing your own user class.
  *
- * @package Contenido Backend Classes
+ * @package CONTENIDO Backend Classes
  * @subpackage Backend User
  *
  * @version 0.0.1
@@ -178,7 +178,7 @@ interface iConUser {
 	 * Simple error messages, depending on error code $iErrorCode.
 	 *
 	 * @param int $iErrorCode
-	 * @param array $aCfg Contenido configuration array
+	 * @param array $aCfg CONTENIDO configuration array
 	 * @return string
 	 */
 	public static function getErrorString ($iErrorCode, $aCfg);

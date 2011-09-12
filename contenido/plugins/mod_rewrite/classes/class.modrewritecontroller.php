@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Includes Mod Rewrite controller class.
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend plugins
+ * @package    CONTENIDO Backend plugins
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since Contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created  2008-04-16
@@ -41,7 +41,7 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  * - $changelang
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     Contenido Backend plugins
+ * @package     CONTENIDO Backend plugins
  * @subpackage  ModRewrite
  */
 class ModRewriteController extends ModRewriteBase

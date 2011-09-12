@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Login form
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend
+ * @package    CONTENIDO Backend
  * @version    1.0.4
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created  2003-01-21
@@ -89,7 +89,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
 	unset ($db);
 
 	if (getSystemProperty('maintenance', 'mode') == 'enabled') {
-        $aMessages[] = i18n("Contenido is in maintenance mode. Only sysadmins are allowed to login. Please try again later.");
+        $aMessages[] = i18n("CONTENIDO is in maintenance mode. Only sysadmins are allowed to login. Please try again later.");
     }
 
 	if (count($aMessages) > 0)
@@ -103,7 +103,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
 <html>
 <head>
 		<base href="<?php echo $cfg['path']['contenido_fullhtml'] ?>" />
-    <title>:: :: :: :: Contenido Login</title>
+    <title>:: :: :: :: CONTENIDO Login</title>
     <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
 		<link REL="SHORTCUT ICON" HREF="<?php echo $cfg["path"]["contenido_fullhtml"]."favicon.ico"; ?>" />    
     <script type="text/javascript" src="scripts/md5.js"></script>
@@ -133,7 +133,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
 <div style="border-top: 1px solid #0060b1;"></div>	
 <div style="height:110px;overflow:hidden;">
     <div id="head">
-    	<a id="head_logo" href="http://www.contenido.org"><img title="Contenido Website." alt="Contenido Website." src="images/conlogo.gif" /></a>
+    	<a id="head_logo" href="http://www.contenido.org"><img title="CONTENIDO Website." alt="CONTENIDO Website." src="images/conlogo.gif" /></a>
     	
     	<div id="head_content" class="left_menu_dist">
     		<div id="head_info" class="left_dist">
@@ -191,7 +191,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != "true")
     					</select>
                       <label id="lbllang" for="lang"><?php echo i18n('Language'); ?></label>
                       
-                      <div class="text_medium_bold login_title"><?php echo i18n('Contenido Backend'); ?></div>
+                      <div class="text_medium_bold login_title"><?php echo i18n('CONTENIDO Backend'); ?></div>
                       
     				    <label id="lblusername" for="username" style="width:75px; display:block; float:left;"><?php echo i18n('Login'); ?>:</label>
     				    <input id="username" tabindex="1" type="text" class="text_medium" name="username" size="25" maxlength="32" value="<?php echo ( isset($this->auth["uname"]) ) ? htmlentities(strip_tags($this->auth["uname"])) : ""  ?>" />

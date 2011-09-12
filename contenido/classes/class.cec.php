@@ -1,17 +1,17 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * Contenido Extension Chainer (CEC).
+ * CONTENIDO Extension Chainer (CEC).
  * See "docs/techref/plugins/Contenido Extension Chainer.pdf" for more details about CEC.
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
- * @package     Contenido Backend classes
+ * @package     CONTENIDO Backend classes
  * @subpackage  CEC
  * @version     1.2.0
  * @author      Timo A. Hummel
@@ -20,7 +20,7 @@
  * @license     http://www.contenido.org/license/LIZENZ.txt
  * @link        http://www.4fb.de
  * @link        http://www.contenido.org
- * @since       file available since contenido release <= 4.6
+ * @since       file available since CONTENIDO release <= 4.6
  *
  * {@internal
  *   created unknown
@@ -52,7 +52,7 @@ if(!defined('CON_FRAMEWORK')) {
  *
  * @author      Timo A. Hummel
  * @author      Murat Purc <murat@purc.de>
- * @package     Contenido Backend classes
+ * @package     CONTENIDO Backend classes
  * @subpackage  CEC
  */
 class cApiCECRegistry
@@ -344,7 +344,7 @@ class cApiCECRegistry
  *
  * @author      Timo A. Hummel
  * @author      Murat Purc <murat@purc.de>
- * @package     Contenido Backend classes
+ * @package     CONTENIDO Backend classes
  * @subpackage  CEC
  */
 class pApiCECChainItem

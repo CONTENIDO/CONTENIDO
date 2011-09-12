@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Configure UrlBuilder URL style. Per default, configures for style index-a-1.html.
@@ -10,7 +10,7 @@
  * Requirements:
  * @con_php_req 5.0
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.1.0
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>

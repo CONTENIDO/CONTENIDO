@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Area management class
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.1
  * @author     
  * @copyright  four for business AG <www.4fb.de>
@@ -38,13 +38,13 @@ define("cDateTime_UNIX"  , 1);
 /* The ISO Date format is CCYY-MM-DD HH:mm:SS */
 define("cDateTime_ISO"   , 2);
 
-/* The locale format, as specified in the Contenido backend */
+/* The locale format, as specified in the CONTENIDO backend */
 define("cDateTime_Locale", 3);
 
-/* The locale format, as specified in the Contenido backend */
+/* The locale format, as specified in the CONTENIDO backend */
 define("cDateTime_Locale_TimeOnly", 4);
 
-/* The locale format, as specified in the Contenido backend */
+/* The locale format, as specified in the CONTENIDO backend */
 define("cDateTime_Locale_DateOnly", 5);
 
 /* The MySQL Timestamp is CCYYMMDDHHmmSS */

@@ -1,6 +1,6 @@
 /*****************************************
 * File      :   $RCSfile: class.frontend.groups.php,v $
-* Project   :   Contenido
+* Project   :   CONTENIDO
 * Descr     :   cFoldingRow JavaScript helpers
 * Modified  :   $Date: 2004/03/16 13:41:45 $
 *

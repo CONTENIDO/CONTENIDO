@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Include for editing the content in an article
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.0.3
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * @todo replace code generation by Contenido_CodeGenerator (see contenido/classes/CodeGenerator)
  *
@@ -144,7 +144,7 @@ var aEditdata = new Object();  //global array which stores edited content
 var aEditdataOrig = new Object();  //global array which stored original content (Importent for decision if content has changed)
 var bCheckLeave = true;  //globak var which defines if user is asked to store changes
 
-//Global vars for contenido popup filebrowser
+//Global vars for CONTENIDO popup filebrowser
 var fb_fieldname;
 var fb_handle;
 var fb_intervalhandle;
@@ -182,10 +182,10 @@ if (document.all) {
     window.onbeforeunload = leave_check;
 }
 
-var file_url = "{FILE}"; //Global var which contains url to contenido image browser
-var image_url = "{IMAGE}"; //Global var which contains url to contenido file browser
-var flash_url = "{FLASH}"; //Global var which contains url to contenido flash browser
-var media_url = "{MEDIA}"; //Global var which contains url to contenido media browser
+var file_url = "{FILE}"; //Global var which contains url to CONTENIDO image browser
+var image_url = "{IMAGE}"; //Global var which contains url to CONTENIDO file browser
+var flash_url = "{FLASH}"; //Global var which contains url to CONTENIDO flash browser
+var media_url = "{MEDIA}"; //Global var which contains url to CONTENIDO media browser
 var frontend_path = "{FRONTEND}";
 
 var iIdartlang = '{IDARTLANG}'; //Idartlang which is currently edited

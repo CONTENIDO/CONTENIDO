@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * PHP email class
@@ -13,16 +13,16 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.0.1
  * @author     Brent R. Matzelle
  * @copyright  Brent R. Matzelle
  * @license    LGPL, see LICENSE
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created 2001
- *   modified 2006-07-30, HerrB, changes for contenido
+ *   modified 2006-07-30, HerrB, changes for CONTENIDO
  *   modified 2008-06-30, Frederic Schneider, add security fix
  *   modified 2009-11-06, Murat Purc, Workaround for invoking deprecated function in PHP 5.3
  *
@@ -242,7 +242,7 @@ class PHPMailer
     var $CustomHeader    = array();
     var $message_type    = "";
     var $boundary        = array();
-    // var $language        = array();     // Contenido: Not used
+    // var $language        = array();     // CONTENIDO: Not used
     var $error_count     = 0;
     var $LE              = "\n";
     /**#@-*/
@@ -450,7 +450,7 @@ class PHPMailer
             $to .= $this->to[$i][0];
         }
 
-		// Contenido: If corresponding Contenido system property
+		// CONTENIDO: If corresponding CONTENIDO system property
 		// has been set and no sender has been specified, use specified
 		// from setting as sender (-> for provider always requiring mail() -f option) 
 		if ($this->Sender == "") {
@@ -627,7 +627,7 @@ class PHPMailer
      * @return bool
      */
 
-    /* Contenido: Not used
+    /* CONTENIDO: Not used
     function SetLanguage($lang_type, $lang_path = "language/") {
         if(file_exists($lang_path.'phpmailer.lang-'.$lang_type.'.php'))
             include($lang_path.'phpmailer.lang-'.$lang_type.'.php');
@@ -1498,7 +1498,7 @@ class PHPMailer
      * @access private
      * @return string
      */
-    /* Contenido: Not used
+    /* CONTENIDO: Not used
     function Lang($key) {
         if(count($this->language) < 1)
             $this->SetLanguage("en"); // set the default language

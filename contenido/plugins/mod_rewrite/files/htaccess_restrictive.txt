@@ -1,5 +1,5 @@
 ################################################################################
-# Contenido AMR plugin restrictive rewrite rules set.
+# CONTENIDO AMR plugin restrictive rewrite rules set.
 #
 # Contains strict rules, each rewrite exclusion must be set manually.
 # - Exclude requests to directories usage/, contenido/, setup/, cms/upload/
@@ -12,7 +12,7 @@
 # @license    http://www.contenido.org/license/LIZENZ.txt
 # @link       http://www.4fb.de
 # @link       http://www.contenido.org
-# @since      file available since Contenido release 4.9.0
+# @since      file available since CONTENIDO release 4.9.0
 #
 # $Id$
 ################################################################################

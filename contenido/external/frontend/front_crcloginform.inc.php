@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * <Description>
@@ -12,7 +12,7 @@
  * @con_notice <Notice>
  * 
  *
- * @package    Contenido Backend <Area>
+ * @package    CONTENIDO Backend <Area>
  * @version    <version>
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
@@ -113,7 +113,7 @@ if ( file_exists($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif') 
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>" /> 
-    <title>:: :: :: :: Contenido Login</title>
+    <title>:: :: :: :: CONTENIDO Login</title>
     <script type="text/javascript"><!--
     if (top != self) {
         top.location.href = self.location.href;

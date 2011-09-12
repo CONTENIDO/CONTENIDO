@@ -1,16 +1,16 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * Object to build a Contenido Frontend Navigation 
+ * Object to build a CONTENIDO Frontend Navigation 
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.2
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>

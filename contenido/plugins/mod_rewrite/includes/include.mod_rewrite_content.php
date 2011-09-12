@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Plugin mod_rewrite backend include file to administer settings (in content frame)
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend plugins
+ * @package    CONTENIDO Backend plugins
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since Contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created   2008-04-22
@@ -186,12 +186,12 @@ $oView->lng_mail_to_author = i18n('E-Mail to author', 'mod_rewrite');
 $oView->lng_pluginpage = i18n('Plugin page', 'mod_rewrite');
 $oView->lng_visit_pluginpage = i18n('Visit plugin page', 'mod_rewrite');
 $oView->lng_opens_in_new_window = i18n('opens page in new window', 'mod_rewrite');
-$oView->lng_contenido_forum = i18n('Contenido forum', 'mod_rewrite');
-$oView->lng_pluginthread_in_contenido_forum = i18n('Plugin thread in Contenido forum', 'mod_rewrite');
+$oView->lng_contenido_forum = i18n('CONTENIDO forum', 'mod_rewrite');
+$oView->lng_pluginthread_in_contenido_forum = i18n('Plugin thread in CONTENIDO forum', 'mod_rewrite');
 $oView->lng_plugin_settings = i18n('Plugin settings', 'mod_rewrite');
 $oView->lng_note = i18n('Note', 'mod_rewrite');
 
-$sMsg = i18n('The .htaccess file could not found either in Contenido installation directory nor in client directory.<br />It should set up in %sFunctions%s area, if needed.', 'mod_rewrite');
+$sMsg = i18n('The .htaccess file could not found either in CONTENIDO installation directory nor in client directory.<br />It should set up in %sFunctions%s area, if needed.', 'mod_rewrite');
 $oView->lng_msg_no_htaccess_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido=' . $oView->sessid . '&idclient=' . $client . '" onclick="parent.right_top.sub.clicked(parent.right_top.document.getElementById(\'c_1\').firstChild);">', '</a>');
 
 $oView->lng_enable_amr = i18n('Enable Advanced Mod Rewrite', 'mod_rewrite');
@@ -203,14 +203,14 @@ $oView->lng_example = i18n('Example', 'mod_rewrite');
 $oView->lng_msg_enable_amr_info_example = i18n("# enable apache mod rewrite module\nRewriteEngine on\n\n# disable apache mod rewrite module\nRewriteEngine off", 'mod_rewrite');
 
 $oView->lng_rootdir = i18n('Path to .htaccess from DocumentRoot', 'mod_rewrite');
-$oView->lng_rootdir_info = i18n("Type '/' if the .htaccess file lies inside the wwwroot (DocumentRoot) folder.<br />Type the path to the subfolder fromm wwwroot, if Contenido is installed in a subfolder within the wwwroot<br />(e. g. http://domain/mycontenido -&gt; path = '/mycontenido/')", 'mod_rewrite');
+$oView->lng_rootdir_info = i18n("Type '/' if the .htaccess file lies inside the wwwroot (DocumentRoot) folder.<br />Type the path to the subfolder fromm wwwroot, if CONTENIDO is installed in a subfolder within the wwwroot<br />(e. g. http://domain/mycontenido -&gt; path = '/mycontenido/')", 'mod_rewrite');
 
 $oView->lng_checkrootdir = i18n('Check path to .htaccess', 'mod_rewrite');
-$oView->lng_checkrootdir_info = i18n('The path will be checked, if this option is enabled.<br />But this could result in an error in some cases, even if the specified path is valid and<br />clients DocumentRoot differs from Contenido backend DocumentRoot.', 'mod_rewrite');
+$oView->lng_checkrootdir_info = i18n('The path will be checked, if this option is enabled.<br />But this could result in an error in some cases, even if the specified path is valid and<br />clients DocumentRoot differs from CONTENIDO backend DocumentRoot.', 'mod_rewrite');
 
 $oView->lng_startfromroot = i18n('Should the name of root category be displayed in the URL?', 'mod_rewrite');
 $oView->lng_startfromroot_lbl = i18n('Start from root category', 'mod_rewrite');
-$oView->lng_startfromroot_info = i18n('If enabled, the name of the root category (e. g. "Mainnavigation" in a Contenido default installation), will be preceded to the URL.', 'mod_rewrite');
+$oView->lng_startfromroot_info = i18n('If enabled, the name of the root category (e. g. "Mainnavigation" in a CONTENIDO default installation), will be preceded to the URL.', 'mod_rewrite');
 
 $oView->lng_use_client = i18n('Are several clients maintained in one directory?', 'mod_rewrite');
 $oView->lng_use_client_lbl = i18n('Prepend client to the URL', 'mod_rewrite');
@@ -266,14 +266,14 @@ $oView->lng_redirect_invalid_article_to_errorsite_info = i18n('The start page wi
 
 $oView->lng_rewrite_urls_at = i18n('Moment of URL generation', 'mod_rewrite');
 $oView->lng_rewrite_urls_at_front_content_output_lbl = i18n('a.) During the output of HTML code of the page', 'mod_rewrite');
-$oView->lng_rewrite_urls_at_front_content_output_info = i18n('Clean-URLs will be generated during page output. Modules/Plugins are able to generate URLs to frontend<br />as usual as in previous Contenido versions using a format like "front_content.php?idcat=1&amp;idart=2".<br />The URLs will be replaced by the plugin to Clean-URLs before sending the HTML output.', 'mod_rewrite');
+$oView->lng_rewrite_urls_at_front_content_output_info = i18n('Clean-URLs will be generated during page output. Modules/Plugins are able to generate URLs to frontend<br />as usual as in previous CONTENIDO versions using a format like "front_content.php?idcat=1&amp;idart=2".<br />The URLs will be replaced by the plugin to Clean-URLs before sending the HTML output.', 'mod_rewrite');
 $oView->lng_rewrite_urls_at_front_content_output_info2 = i18n('Differences to variant b.)', 'mod_rewrite');
 $oView->lng_rewrite_urls_at_front_content_output_info3 = i18n("Still compatible to old modules/plugins, since no changes in codes are required\nAll occurring URLs in HTML code, even those set by wysiwyg, will be switched to Clean-URLs\nAll URLs will usually be collected and converted to Clean-URLs at once.<br />Doing it this way reduces the amount of executed database significantly.", 'mod_rewrite');
 $oView->lng_rewrite_urls_at_front_content_output_info3 = '<li>' . str_replace("\n", '</li><li>', $oView->rewrite_urls_at_front_content_output_info3) . '</li>';
 
 $oView->lng_rewrite_urls_at_congeneratecode_lbl = i18n('b.) In modules or plugins', 'mod_rewrite');
 $oView->lng_rewrite_urls_at_congeneratecode_info = i18n('By using this option, all Clean-URLs will be generated directly in module or plugins.<br />This means, all areas in modules/plugins, who generate internal URLs to categories/articles, have to be adapted manually.<br />All Clean-URLs have to be generated by using following function:', 'mod_rewrite');
-$oView->lng_rewrite_urls_at_congeneratecode_example = i18n("# structure of a normal url\n\$url = 'front_content.php?idart=123&amp;lang=2&amp;client=1';\n\n# creation of a url by using the Contenidos Url-Builder (since 4.8.9),\n# wich expects the parameter as a assoziative array\n\$params = array('idart'=>123, 'lang'=>2, 'client'=>1);\n\$newUrl = Contenido_Url::getInstance()->build(\$params);", 'mod_rewrite');
+$oView->lng_rewrite_urls_at_congeneratecode_example = i18n("# structure of a normal url\n\$url = 'front_content.php?idart=123&amp;lang=2&amp;client=1';\n\n# creation of a url by using the CONTENIDOs Url-Builder (since 4.8.9),\n# wich expects the parameter as a assoziative array\n\$params = array('idart'=>123, 'lang'=>2, 'client'=>1);\n\$newUrl = Contenido_Url::getInstance()->build(\$params);", 'mod_rewrite');
 $oView->lng_rewrite_urls_at_congeneratecode_info2 = i18n('Differences to variant a.)', 'mod_rewrite');
 $oView->lng_rewrite_urls_at_congeneratecode_info3 = i18n("The default way to generate URLs to fronend pages\nEach URL in modules/plugins has to be generated by UrlBuilder\nEach generated Clean-Url requires a database query", 'mod_rewrite');
 $oView->lng_rewrite_urls_at_congeneratecode_info3 = '<li>' . str_replace("\n", '</li><li>', $oView->lng_rewrite_urls_at_congeneratecode_info3) . '</li>';
@@ -282,7 +282,7 @@ $oView->lng_rewrite_routing = i18n('Routing', 'mod_rewrite');
 $oView->lng_rewrite_routing_info = i18n('Routing definitions for incoming URLs', 'mod_rewrite');
 $oView->lng_rewrite_routing_info2 = i18n('Type one routing definition per line as follows:', 'mod_rewrite');
 $oView->lng_rewrite_routing_example = i18n("# {incoming_url}>>>{new_url}\n/incoming_url/name.html>>>new_url/new_name.html\n\n# route a specific incoming url to a new page\n/campaign/20_percent_on_everything_except_animal_food.html>>>front_content.php?idcat=23\n\n# route request to wwwroot to a specific page\n/>>>front_content.php?idart=16", 'mod_rewrite');
-$oView->lng_rewrite_routing_info3 = i18n("The routing does not sends a HTTP header redirection to the destination URL, the redirection will happen internally by<br />replacing the detected incoming URL against the new destination URL (overwriting of article- categoryid)\nIncoming URLs can point to non existing resources (category/article), but the desttination URLs should point<br />to valid Contenido articles/categories\nDestination URLs should point to real URLs to categories/articles,<br />e. g.front_content.php?idcat=23 or front_content.php?idart=34\nThe language id should attached to the URL in multi language sites<br />e. g. front_content.php?idcat=23&amp;lang=1\nThe client id should attached to the URL in multi client sites sharing the same folder<br />e. g. front_content.php?idcat=23&amp;client=2\nThe destination URL should not start with '/' or './' (wrong: /front_content.php, correct: front_content.php)", 'mod_rewrite');
+$oView->lng_rewrite_routing_info3 = i18n("The routing does not sends a HTTP header redirection to the destination URL, the redirection will happen internally by<br />replacing the detected incoming URL against the new destination URL (overwriting of article- categoryid)\nIncoming URLs can point to non existing resources (category/article), but the desttination URLs should point<br />to valid CONTENIDO articles/categories\nDestination URLs should point to real URLs to categories/articles,<br />e. g.front_content.php?idcat=23 or front_content.php?idart=34\nThe language id should attached to the URL in multi language sites<br />e. g. front_content.php?idcat=23&amp;lang=1\nThe client id should attached to the URL in multi client sites sharing the same folder<br />e. g. front_content.php?idcat=23&amp;client=2\nThe destination URL should not start with '/' or './' (wrong: /front_content.php, correct: front_content.php)", 'mod_rewrite');
 $oView->lng_rewrite_routing_info3 = '<li>' . str_replace("\n", '</li><li>', $oView->lng_rewrite_routing_info3) . '</li>';
 
 $oView->lng_discard_changes = i18n('Discard changes', 'mod_rewrite');

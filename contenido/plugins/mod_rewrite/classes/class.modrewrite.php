@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Includes class to create websafe names
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend plugins
+ * @package    CONTENIDO Backend plugins
  * @version    0.1
  * @author     Stefan Seifarth / stese
  * @author     Murat Purc <murat@purc.de>
@@ -19,7 +19,7 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since Contenido release 4.9.0
+ * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created   2004-12-04
@@ -40,7 +40,7 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  *
  * @author      Stefan Seifarth / stese
  * @author      Murat Purc <murat@purc.de>
- * @package     Contenido Backend plugins
+ * @package     CONTENIDO Backend plugins
  * @subpackage  ModRewrite
  */
 class ModRewrite extends ModRewriteBase
@@ -572,7 +572,7 @@ class ModRewrite extends ModRewriteBase
 
 
     /**
-     * Return full contenido url from single anchor
+     * Return full CONTENIDO url from single anchor
      *
      * @param   array   $aMatches [0] = complete anchor, [1] = pre arguments, [2] = anchor name, [3] = post arguments
      * @return  string  New anchor
@@ -612,7 +612,7 @@ class ModRewrite extends ModRewriteBase
 
 
     /**
-     * Return full contenido url from single anchor
+     * Return full CONTENIDO url from single anchor
      *
      * @param   array   $aMatches [0] = complete anchor, [1] = pre arguments, [2] = anchor name, [3] = post arguments
      * @return  string  New anchor

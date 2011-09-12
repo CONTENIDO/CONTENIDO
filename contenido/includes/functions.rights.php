@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Defines the "rights" related functions
@@ -10,12 +10,12 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend includes
+ * @package    CONTENIDO Backend includes
  * @version    1.0.0
  * @author     Martin Horwath
  * @copyright  dayside.net
  * @link       http://www.dayside.net
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
  *   created  2004-11-25
@@ -36,8 +36,8 @@ if(!defined('CON_FRAMEWORK')) {
   *
   * @param array $aClients - array of clients to check
   * @param integer $iLang - language id which should be checked
-  * @param array $aCfg - Contenido configruation array
-  * @param object $oDb - Contenido database object
+  * @param array $aCfg - CONTENIDO configruation array
+  * @param object $oDb - CONTENIDO database object
   *
   * @return boolean - status (if language id corresponds to list of clients true otherwise false)
   */

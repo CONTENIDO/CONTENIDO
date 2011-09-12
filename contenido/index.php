@@ -1,32 +1,32 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * Contenido main file
+ * CONTENIDO main file
  * 
  * Requirements: 
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend
+ * @package    CONTENIDO Backend
  * @version    1.2.2
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created  2003-01-20
  *   modified 2008-06-16, Holger Librenz, Hotifx: added check for invalid calls
- *   modified 2008-06-16, Rudi Bieller, Hotifx: added check for XSS at "contenido" and "belang"
- *   modified 2008-06-25, Timo Trautmann, Contenido Framework Constand added
+ *   modified 2008-06-16, Rudi Bieller, Hotifx: added check for XSS at "CONTENIDO" and "belang"
+ *   modified 2008-06-25, Timo Trautmann, CONTENIDO Framework Constand added
  *   modified 2008-07-02, Frederic Schneider, add security fix and include security class
  *   modified 2009-10-16, Ortwin Pinke, added rewrite of ampersand in frameset url
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -37,7 +37,7 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// Contenido startup process
+// CONTENIDO startup process
 include_once ('./includes/startup.php');
 
 page_open(array('sess' => 'Contenido_Session',
@@ -59,7 +59,7 @@ cInclude ("includes", 'functions.forms.php');
 
 $sess->register("belang");
 
-// Create Contenido classes
+// Create CONTENIDO classes
 $db  = new DB_Contenido;
 $tpl = new Template;
 

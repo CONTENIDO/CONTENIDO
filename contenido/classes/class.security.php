@@ -1,23 +1,23 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
- * This object makes contenido more secure
+ * This object makes CONTENIDO more secure
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.1.1
  * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.7
+ * @since      file available since CONTENIDO release 4.8.7
  *
  * @TODO: Some features are the same as in HttpInputValidator (see contenido/classes/class.httpinputvalidator.php),
  *        merge them...
@@ -30,7 +30,7 @@
  *   modified 2008-07-31, Frederic Schneider, added escapeString() with fallback at escapeDB()
  *   modified 2008-11-13, Timo Trautmann also strip slashes, if they were added autmatically by php
  *   modified 2010-05-20, Murat Purc, extended/added request parameter checks which are usable
- *                        by Contenido startup process. Changed script terminations by die() to Exceptions.
+ *                        by CONTENIDO startup process. Changed script terminations by die() to Exceptions.
  *   modified 2010-09-30, Dominik Ziegler, added optional logging
  *   modified 2010-11-22, Dominik Ziegler, fixed behaviour of isInteger [CON-365]
  *   modified 2011-02-08, Murat Purc, removed not required logic, cleanup and formatting
@@ -46,7 +46,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 /**
- * Contenido Security exception class
+ * CONTENIDO Security exception class
  */
 class Contenido_Security_Exception extends Exception
 {
@@ -85,7 +85,7 @@ class Contenido_Security_Exception extends Exception
 
 
 /**
- * Contenido Security class
+ * CONTENIDO Security class
  */
 class Contenido_Security
 {
@@ -144,11 +144,11 @@ class Contenido_Security
     }
 
     /**
-     * Escapes string using contenido urlencoding method and escapes string for inserting
+     * Escapes string using CONTENIDO urlencoding method and escapes string for inserting
      * @static
      *
      * @param   string        $sString  Input string
-     * @param   DB_Contenido  $oDb      Contenido database object
+     * @param   DB_Contenido  $oDb      CONTENIDO database object
      * @return  string   Filtered string
      */
     public static function filter($sString, $oDb)
@@ -254,7 +254,7 @@ class Contenido_Security
     }
 
     /**
-     * Checks some Contenido core related request parameters against XSS
+     * Checks some CONTENIDO core related request parameters against XSS
      *
      * @access  public
      * @return  bool|void  True on success otherwhise nothing.
@@ -332,10 +332,10 @@ class Contenido_Security
     }
 
     /**
-     * Checks/Validates existing contenido session request parameter.
+     * Checks/Validates existing CONTENIDO session request parameter.
      *
      * @return  bool|void  True on success otherwhise nothing.
-     * @throws  Contenido_Security_Exception if contenido parameter in request don't matches the required format
+     * @throws  Contenido_Security_Exception if CONTENIDO parameter in request don't matches the required format
      */
     public static function checkRequestSession()
     {
@@ -352,7 +352,7 @@ class Contenido_Security
      *
      * @access public
      * @return  true
-     * @throws  Contenido_Security_Exception if contenido parameter in request don't matches the required format
+     * @throws  Contenido_Security_Exception if CONTENIDO parameter in request don't matches the required format
      * @deprecated  Use checkRequestSession() instead due to better naming conventions
      * @TODO:  Should be removed, but later in few years...
      */
@@ -423,7 +423,7 @@ class Contenido_Security
      * @static
      *
      * @param   string        $sString          Input string
-     * @param   DB_Contenido  $oDB              Contenido database object
+     * @param   DB_Contenido  $oDB              CONTENIDO database object
      * @param   boolean       $bUndoAddSlashes  Flag for undo addslashes (optional, default: true)
      * @return  string  Converted string
      */

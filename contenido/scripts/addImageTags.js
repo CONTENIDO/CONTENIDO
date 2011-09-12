@@ -3,7 +3,7 @@
 * $Id: addImageTags.js,v 1.0 2008/02/25 13:41:52 timo.trautmann Exp $
 *
 * File      :   $RCSfile: addImageTags.js,v $
-* Project   : Contenido
+* Project   : CONTENIDO
 * Descr     : File contains functions vor adding label tags to images
                   by javascript for smaller html documents
 *

@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * HTML elements
@@ -10,14 +10,14 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.6.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.6
+ * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
  *   created 2003-08-21
@@ -43,7 +43,7 @@ if (!class_exists("HTML_Common"))
 $cHTMLIDCount = 0;
 
 /**
- * Base class for all Contenido HTML classes
+ * Base class for all CONTENIDO HTML classes
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
@@ -1839,7 +1839,7 @@ class cHTMLLink extends cHTML
 	}
 
 	/**
-	 * setLink: Sets a Contenido link (area, frame, action)
+	 * setLink: Sets a CONTENIDO link (area, frame, action)
 	 *
 	 * @param $targetarea 	string	Target backend area
 	 * @param $targetframe 	string	Target frame (1-4)

@@ -1,7 +1,7 @@
 /**
  * browserCheck class
  *
- * Check if Browser is compatible with Contenido.
+ * Check if Browser is compatible with CONTENIDO.
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>

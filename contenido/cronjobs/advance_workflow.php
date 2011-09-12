@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Advances to the next step if the time limit is "over"
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend classes
  * @version    1.5.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -20,7 +20,7 @@
  * 
  * {@internal 
  *   created  2003-05-26
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *   modified 2011-05-12, Dominik Ziegler, forced include of startup.php [#CON-390]
  *   
  *   $Id: advance_workflow.php,v 1.5 2004/06/17 15:06:08 timo.hummel Exp $
@@ -32,7 +32,7 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// Contenido startup process
+// CONTENIDO startup process
 include_once ('../includes/startup.php');
 
 cInclude("includes", "cfg_language_de.inc.php");

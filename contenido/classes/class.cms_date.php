@@ -1,13 +1,13 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
- * Contenido class for handling cms type date. This cms type allows to select date with DHTML Calendar
+ * CONTENIDO class for handling cms type date. This cms type allows to select date with DHTML Calendar
  * it is also possible to select a format in which the date is displayed. It is also possible to display date
- * and time. This class is an example how to handle contenido cms type in a class. In database this class
- * is called in cms type cms_date. JavaScript handling of DHTML Calendar is handled in contenido 
+ * and time. This class is an example how to handle CONTENIDO cms type in a class. In database this class
+ * is called in cms type cms_date. JavaScript handling of DHTML Calendar is handled in CONTENIDO 
  * js calendar class CmsDate.js
  * 
  * Requirements: 
@@ -15,14 +15,14 @@
  * @con_notice  Js class CmsDate.js required
  * 
  *
- * @package    Contenido Backend
+ * @package    CONTENIDO Backend
  * @version    1.0.3
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release <= 4.8.7
+ * @since      file available since CONTENIDO release <= 4.8.7
  * 
  * {@internal 
  *   created 2007-07-14 Bilal Arslan, Timo Trautmann
@@ -70,19 +70,19 @@ class Cms_Date{
 	private static $iNumOutput;
 	
    /**
-    * The contenido global
+    * The CONTENIDO global
     * @access private
     */
 	private $iIdArtLang;
 	
    /**
-    * The contenido Edit link
+    * The CONTENIDO Edit link
     * @access private
     */
 	private $sEditLink;
 	
    /**
-    * The contenido global
+    * The CONTENIDO global
     * @access private
     */
 	private $aCfg;
@@ -94,7 +94,7 @@ class Cms_Date{
 	private $sCalName;
 	
     /**
-     * The contenido database object
+     * The CONTENIDO database object
      * @access private
      */
 	private $oDB;
@@ -126,7 +126,7 @@ class Cms_Date{
 	private $iTotalCount;
 	
 	/**
-	 * Language of contenido
+	 * Language of CONTENIDO
      * @access private
 	 */
 	private $sContenidoLang; 
@@ -154,7 +154,7 @@ public function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $
 	$this->oDB = $aDB;
 	$this->sEditAreaId = "";
 	$this->sDivSelectId = "";	
-	// if is empty, fill it with space character. Thats important for contenido input area!
+	// if is empty, fill it with space character. Thats important for CONTENIDO input area!
 	($sContent == "") ? $this->sContent = "&nbsp;" : $this->sContent = urldecode($sContent);
 	$this->sSelectId = "";
 	$this->iTotalCount = $iTotalCount;
@@ -256,7 +256,7 @@ public function getJsScript(){
 }
 
 /**
- * This function builds a Contenido CMS Widget.
+ * This function builds a CONTENIDO CMS Widget.
  * A Button for Calendar.
  * 
  * @return (String)calendar Button widget
@@ -284,7 +284,7 @@ private function getCalendarButton(){
 }	
 
 /**
- * This function builds a Contenido CMS Widget.
+ * This function builds a CONTENIDO CMS Widget.
  * A Button for Submit (OK-Button).
  * 
  * @return (String)Ok Button widget
@@ -307,7 +307,7 @@ private function getOkButton(){
 }
 
 /**
- * This function builds a Contenido CMS Widget.
+ * This function builds a CONTENIDO CMS Widget.
  * A Editing Field or input field what we use for calendar.
  * 
  * @return (String) Editing Field widget
@@ -330,7 +330,7 @@ private function getEditingField(){
 }
 
 /**
- * This function builds a Contenido CMS Widget.
+ * This function builds a CONTENIDO CMS Widget.
  * A Select-Box what is given date formats. 
  * In auoFill we use the function getDateFormats: 
  * For edit or add formats modified this function.
@@ -365,7 +365,7 @@ private function getSelectBox(){
 /**
  * This function gives formatted current language shortcut
  * 
- * @return (String)Current Language of Contenidos
+ * @return (String)Current Language of CONTENIDOs
  */
 private function getLanguageContenido(){
 	$sLang = "";

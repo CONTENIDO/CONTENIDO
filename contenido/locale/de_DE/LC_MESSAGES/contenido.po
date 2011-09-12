@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Contenido 4.8.15\n"
+"Project-Id-Version: CONTENIDO 4.8.15\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-04-27 13:55+0200\n"
 "PO-Revision-Date: 2011-04-27 15:58+0100\n"
 "Last-Translator: Ortwin Pinke <translation@dceonline.de>\n"
-"Language-Team: Contenido Translators <translators@contenido.de>\n"
+"Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,8 +24,8 @@ msgid "The sysadmin and/or the admin account still contains a well-known default
 msgstr "Der Sysadmin und/oder Admin Account ist noch auf das Standardpasswort gesetzt. Bitte &auml;ndern Sie gleich nach dem Login diese Passw&ouml;rter."
 
 #: main.loginform.php:92
-msgid "Contenido is in maintenance mode. Only sysadmins are allowed to login." 
-msgstr "Contenido befindet sich im Wartungsmodus. Nur Systemadministratoren k&ouml;nnen sich einloggen."
+msgid "CONTENIDO is in maintenance mode. Only sysadmins are allowed to login." 
+msgstr "CONTENIDO befindet sich im Wartungsmodus. Nur Systemadministratoren k&ouml;nnen sich einloggen."
 
 msgid "Please try again later."
 msgstr "Bitte versuchen Sie es zu einem sp&auml;teren Zeitpunkt erneut."
@@ -37,8 +37,8 @@ msgid "Language"
 msgstr "Sprachen"
 
 #: main.loginform.php:194
-msgid "Contenido Backend"
-msgstr "Contenido Backend"
+msgid "CONTENIDO Backend"
+msgstr "CONTENIDO Backend"
 
 #: main.loginform.php:196
 #: includes/cfg_language_de.inc.php:276
@@ -132,8 +132,8 @@ msgid "Symbol help"
 msgstr "Symbolhilfe"
 
 #: includes/main.login.php:210
-msgid "Contenido Manual"
-msgstr "Contenido Redakteurshandbuch"
+msgid "CONTENIDO Manual"
+msgstr "CONTENIDO Redakteurshandbuch"
 
 #: includes/include.js_left_top.php:50
 #: includes/cfg_language_de.inc.php:206
@@ -400,8 +400,8 @@ msgid "Output"
 msgstr "Ausgabe"
 
 #: includes/include.mod_edit_form.php:405
-msgid "This module uses variables and/or functions which are probably not available in this Contenido version. Please make sure that you use up-to-date modules."
-msgstr "Dieses Modul verwendet Variablen und/oder Funktionen, die in dieser Contenido-Version nicht mehr vorhanden sind. Bitte stellen Sie sicher, da&szlig; sie aktuelle Module verwenden."
+msgid "This module uses variables and/or functions which are probably not available in this CONTENIDO version. Please make sure that you use up-to-date modules."
+msgstr "Dieses Modul verwendet Variablen und/oder Funktionen, die in dieser CONTENIDO-Version nicht mehr vorhanden sind. Bitte stellen Sie sicher, da&szlig; sie aktuelle Module verwenden."
 
 #: includes/include.mod_edit_form.php:414
 #: includes/include.mod_package.php:454
@@ -2164,36 +2164,36 @@ msgid "Can't clear install error log : Access is denied!"
 msgstr "Upgrade-Fehlerlog konnte nicht geleert werden: Zugriff verweigert!"
 
 #: includes/functions.system.php:291
-msgid "Contenido version"
-msgstr "Contenido Version"
+msgid "CONTENIDO version"
+msgstr "CONTENIDO Version"
 
 #: includes/functions.system.php:294
-msgid "Contenido path"
-msgstr "Contenido Pfad"
+msgid "CONTENIDO path"
+msgstr "CONTENIDO Pfad"
 
 #: includes/functions.system.php:296
-msgid "Contenido HTML path"
-msgstr "Contenido HTML-Pfad"
+msgid "CONTENIDO HTML path"
+msgstr "CONTENIDO HTML-Pfad"
 
 #: includes/functions.system.php:298
-msgid "Contenido full HTML path"
-msgstr "Contenido Voller HTML-Pfad"
+msgid "CONTENIDO full HTML path"
+msgstr "CONTENIDO Voller HTML-Pfad"
 
 #: includes/functions.system.php:300
-msgid "Contenido frontend path"
-msgstr "Contenido Frontend-Pfad"
+msgid "CONTENIDO frontend path"
+msgstr "CONTENIDO Frontend-Pfad"
 
 #: includes/functions.system.php:302
-msgid "Contenido PHPLIB path"
-msgstr "Contenido PHPLIB-Pfad"
+msgid "CONTENIDO PHPLIB path"
+msgstr "CONTENIDO PHPLIB-Pfad"
 
 #: includes/functions.system.php:304
-msgid "Contenido wysiwyg path"
-msgstr "Contenido WYSIWYG-Pfad"
+msgid "CONTENIDO wysiwyg path"
+msgstr "CONTENIDO WYSIWYG-Pfad"
 
 #: includes/functions.system.php:306
-msgid "Contenido wysiwyg HTML path"
-msgstr "Contenido WYSIWYG-HTML-Pfad"
+msgid "CONTENIDO wysiwyg HTML path"
+msgstr "CONTENIDO WYSIWYG-HTML-Pfad"
 
 #: includes/functions.system.php:309
 msgid "Host name"
@@ -3938,20 +3938,20 @@ msgid "The history is not deleted!"
 msgstr "Versionierung wurde nicht gel&ouml;scht!"
 
 #: includes/include.system_purge.php:129
-msgid "Contenido: "
-msgstr "Contenido: "
+msgid "CONTENIDO: "
+msgstr "CONTENIDO: "
 
 #: includes/include.system_purge.php:149
-msgid "The contenido log is not cleaned!"
-msgstr "Contenido Log-Datei wurde nicht geleert"
+msgid "The CONTENIDO log is not cleaned!"
+msgstr "CONTENIDO Log-Datei wurde nicht geleert"
 
 #: includes/include.system_purge.php:156
-msgid "The contenido cache is not deleted!"
-msgstr "Contenido Cache wurde nicht gel&ouml;scht!"
+msgid "The CONTENIDO cache is not deleted!"
+msgstr "CONTENIDO Cache wurde nicht gel&ouml;scht!"
 
 #: includes/include.system_purge.php:163
-msgid "The contenido cronjobs are not cleaned!"
-msgstr "Contenido Cronjob-Dateien wurden nicht geleert!"
+msgid "The CONTENIDO cronjobs are not cleaned!"
+msgstr "CONTENIDO Cronjob-Dateien wurden nicht geleert!"
 
 #: includes/include.system_purge.php:168
 msgid "The changes were successfully executed."
@@ -4019,16 +4019,16 @@ msgid "Keep last histories"
 msgstr "Letzten Versionierungen beibehalten"
 
 #: includes/include.system_purge.php:207
-msgid "Contenido"
-msgstr "Contenido"
+msgid "CONTENIDO"
+msgstr "CONTENIDO"
 
 #: includes/include.system_purge.php:208
-msgid "Clear contenido log file"
-msgstr "Contenido Log-Datei leeren"
+msgid "Clear CONTENIDO log file"
+msgstr "CONTENIDO Log-Datei leeren"
 
 #: includes/include.system_purge.php:210
-msgid "Clear contenido cache"
-msgstr "Contenido Cache l&ouml;schen"
+msgid "Clear CONTENIDO cache"
+msgstr "CONTENIDO Cache l&ouml;schen"
 
 #: includes/include.system_purge.php:211
 msgid "Reset cronjobs"
@@ -4171,8 +4171,8 @@ msgid "Layout name"
 msgstr "Layoutname"
 
 #: includes/include.info.php:38
-msgid "You can find many information and a community forum on the <a href=\"http://forum.contenido.org\" target=\"_blank\">Contenido Portal</a>"
-msgstr "Alle Informationen zu Contenido und das Contenido Community Forum finden Sie auf dem <a href=\"http://www.contenido.org\" target=\"_blank\">Contenido Portal</a>"
+msgid "You can find many information and a community forum on the <a href=\"http://forum.contenido.org\" target=\"_blank\">CONTENIDO Portal</a>"
+msgstr "Alle Informationen zu CONTENIDO und das CONTENIDO Community Forum finden Sie auf dem <a href=\"http://www.contenido.org\" target=\"_blank\">Contenido Portal</a>"
 
 #: includes/functions.con.php:337
 #: includes/functions.con.php:524
@@ -5279,16 +5279,16 @@ msgid "Local value"
 msgstr "Lokaler Wert"
 
 #: templates/standard/template.system_variables.html:34
-msgid "Contenido Error Log"
-msgstr "Contenido Fehlerlog"
+msgid "CONTENIDO Error Log"
+msgstr "CONTENIDO Fehlerlog"
 
 #: templates/standard/template.system_variables.html:41
 msgid "clear error log"
 msgstr "Fehlerlog leeren"
 
 #: templates/standard/template.system_variables.html:48
-msgid "Contenido Upgrade Error Log"
-msgstr "Contenido Upgrade-Fehlerlog"
+msgid "CONTENIDO Upgrade Error Log"
+msgstr "CONTENIDO Upgrade-Fehlerlog"
 
 #: templates/standard/template.system_variables.html:55
 msgid "clear upgrade error log"
@@ -5385,27 +5385,27 @@ msgid "Update notification is disabled! For actual update information, please ac
 msgstr "Die Update-Benachrichtigung ist deaktiviert! F&uuml;r aktuelle Update-Nachrichten, bitte aktivieren."
 
 #: classes/class.update.notifier.php:770
-msgid "You have an unknown or unsupported version of Contenido!"
-msgstr "Sie haben eine unbekannte oder nicht unterst&uuml;tzte Version von Contenido!"
+msgid "You have an unknown or unsupported version of CONTENIDO!"
+msgstr "Sie haben eine unbekannte oder nicht unterst&uuml;tzte Version von CONTENIDO!"
 
 #: classes/class.update.notifier.php:773
 #, php-format
-msgid "Your version of Contenido is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Download now!</a>"
-msgstr "Ihre Version von Contenido wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisieren Sie auf eine h&ouml;here Version! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Jetzt herunterladen!</a>"
+msgid "Your version of CONTENIDO is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Download now!</a>"
+msgstr "Ihre Version von CONTENIDO wird nicht l&auml;nger mit Updates gepflegt. Bitte aktualisieren Sie auf eine h&ouml;here Version! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Jetzt herunterladen!</a>"
 
 #: classes/class.update.notifier.php:777
 #, php-format
-msgid "A new version of Contenido is available! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Download %s now!</a>"
-msgstr "Eine neue Version von Contenido ist verf&uuml;gbar! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">%s jetzt herunterladen!</a>"
+msgid "A new version of CONTENIDO is available! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">Download %s now!</a>"
+msgstr "Eine neue Version von CONTENIDO ist verf&uuml;gbar! <br /> <a href=\"%s\" class=\"blue\" target=\"_blank\">%s jetzt herunterladen!</a>"
 
 #: classes/class.update.notifier.php:780
 #, php-format
-msgid "It seems to be that your version string was manipulated. Contenido %s does not exist!"
-msgstr "Es scheint so als wenn der Contenido Versionsstring manipuliert wurde. Contenido %s gibt es nicht!"
+msgid "It seems to be that your version string was manipulated. CONTENIDO %s does not exist!"
+msgstr "Es scheint so als wenn der CONTENIDO Versionsstring manipuliert wurde. CONTENIDO %s gibt es nicht!"
 
 #: classes/class.update.notifier.php:783
-msgid "Your version of Contenido is up to date!"
-msgstr "Ihre Version von Contenido ist aktuell!"
+msgid "Your version of CONTENIDO is up to date!"
+msgstr "Ihre Version von CONTENIDO ist aktuell!"
 
 #: classes/class.versionFile.php:131
 msgid "Can not open file "
@@ -5893,25 +5893,25 @@ msgstr "Das neue Passwort wurde Ihnen soeben an Ihre E-Mailadresse gesendet."
 #: classes/class.request.password.php:348
 #, php-format
 msgid ""
-"Dear Contenidouser %s,\n"
+"Dear CONTENIDO-User %s,\n"
 "\n"
-"Your password to log in Content Management System Contenido is: %s\n"
+"Your password to log in Content Management System CONTENIDO is: %s\n"
 "\n"
 "Best regards\n"
 "\n"
-"Your Contenido sysadmin"
+"Your CONTENIDO sysadmin"
 msgstr ""
-"Lieber Contenidouser %s,\n"
+"Lieber CONTENIDO-User %s,\n"
 "\n"
-"Ihr Passwort f&uuml;r das Login in das Content Management System Contenido ist: %s\n"
+"Ihr Passwort f&uuml;r das Login in das Content Management System CONTENIDO ist: %s\n"
 "\n"
 "Viele Gr&uuml;&szlig;e\n"
 "\n"
-"Ihr Contenido Systemadministrator"
+"Ihr CONTENIDO Systemadministrator"
 
 #: classes/class.request.password.php:364
-msgid "Your new password for Contenido Backend"
-msgstr "Ihr neues Passwort f&uuml;r das Contenido Backend"
+msgid "Your new password for CONTENIDO Backend"
+msgstr "Ihr neues Passwort f&uuml;r das CONTENIDO Backend"
 
 #: classes/class.todo.php:101
 msgid "New"
@@ -6706,11 +6706,11 @@ msgstr "Reiter kann nicht angezeigt werden"
 #~ msgid "Field category name is empty"
 #~ msgstr "Das Feld Kateogoriename ist leer"
 
-#~ msgid "Your Contenido Version"
-#~ msgstr "Ihre Contenido Version"
+#~ msgid "Your CONTENIDO Version"
+#~ msgstr "Ihre CONTENIDO Version"
 
-#~ msgid "Latest Contenido Version"
-#~ msgstr "Aktuelle Contenido Version"
+#~ msgid "Latest CONTENIDO Version"
+#~ msgstr "Aktuelle CONTENIDO Version"
 
 #~ msgid "Changed by"
 #~ msgstr "Ge&auml;ndert von"

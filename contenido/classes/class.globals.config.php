@@ -4,98 +4,98 @@ abstract class ConfigGlobals {
 
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var array
      */
     static protected $_encoding = null;
     
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var array
      */
     static protected $_contenido = null;
 
     /**  
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var int
      */
     static protected $_edit = null;
 
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var array
      */
     static protected $_sess = null;
 
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var array
      */
     static protected $_cfg = null;
 
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var int
      */
     static protected $_lang = null;
 
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var array
      */
     static protected $_perm = null;
 
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var array
      */
     static protected $_auth = null;
 
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var int
      */
     static protected $_client = null;
 
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var array
      */
     static protected $_cfgClient = null;
 
     /**
      * 
-     * contenido global database object variable
+     * CONTENIDO global database object variable
      * @var DB_Contenido
      */
     static protected $_db = null;
 
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var int
      */
     static protected $_idart = null;
 
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var int
      */
     static protected $_idcat = null;
     
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var int
      */
     static protected $_idcatArt = null;
@@ -109,7 +109,7 @@ abstract class ConfigGlobals {
     
     /**
      * 
-     * contenido global variable
+     * CONTENIDO global variable
      * @var int
      */
     static protected $_idmod = null;

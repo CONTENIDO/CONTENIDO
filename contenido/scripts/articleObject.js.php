@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Moving article related logic to the front_end
@@ -10,20 +10,20 @@
  * @con_php_req 5.0
  * 
  *
- * @package    Contenido Backend sripts
+ * @package    CONTENIDO Backend sripts
  * @version    1.0.3
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release 4.8.7
+ * @since      file available since CONTENIDO release 4.8.7
  * 
  * {@internal 
  *   created  2003-05-23
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-07-02, Frederic Schneider, include_security class
- *   modified 2010-05-20, Murat Purc, standardized Contenido startup and security check invocations, see [#CON-307]
+ *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *
  *   $Id$:
  * }}
@@ -34,7 +34,7 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
-// Contenido startup process
+// CONTENIDO startup process
 include_once ('../includes/startup.php');
 
 header("Content-Type: text/javascript");
@@ -85,11 +85,11 @@ function articleObject(actionFrameName, frameNumber)
        Defaults to '4' */
     this.frame      = frameNumber || 4;
 
-    /* Filename of the contenido
+    /* Filename of the CONTENIDO
        main file - defaults to 'main.php' */
     this.filename   = "main.php?"
 
-    /* Contenido session name -
+    /* CONTENIDO session name -
        defaults to 'contenido' */
     this.sessionName = "contenido"
 

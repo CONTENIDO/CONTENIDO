@@ -1,7 +1,7 @@
 <?php
 /**
  * Project: 
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  * 
  * Description: 
  * Layout history.
@@ -17,7 +17,7 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since contenido release >= 5.0
+ * @since      file available since CONTENIDO release >= 5.0
  * 
  * {@internal 
  *   created 2008-08-12
