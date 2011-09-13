@@ -753,7 +753,12 @@ class Cms_LinkEditor {
 		if($aCode[0] == 'upload' && $aCode[1] != ''){
 	        $aCode[1] = $this->aCfgClient[$this->iClient]['upl']['htmlpath'].$aCode[1];
 		}
-		return "<a href='". $aCode[1] . "' target='". $aCode[2] . "'>". $aCode[3] . "</a>";
+		
+		if($_REQUEST['changeview'] != 'edit'){
+			return "<a alt='". $aCode[3] . "' href='". $aCode[1] . "' target='". $aCode[2] . "'>". $aCode[3] . "</a>";			
+		} else {
+			return "&lt;a alt='". $aCode[3] . "' href='". $aCode[1] . "' target='". $aCode[2] . "'&gt;". $aCode[3] . "&lt;/a&gt;";	
+		}
 	}
 	
 }
