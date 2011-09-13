@@ -152,7 +152,7 @@ a {
 	float:left;
 }
 .cms_image .image_directories .directoryFile,
-.cms_image .image_upload .directoryFile, {
+.cms_image .image_upload .directoryFile{
 	display: block;
 	width:210px;
 	height:210px;

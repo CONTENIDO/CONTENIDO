@@ -166,11 +166,12 @@ class Cms_LinkEditor {
 		}
 				
 		//get values
-		$aCode = explode('; ', $this->sContent);
+		$aCode = explode(']+[', $this->sContent);
 		$this->aLink = array();
-		$this->aLink['link_type'] = $aCode[0];
+		$this->aLink['link_type'] = substr($aCode[0], 1);
 		$this->aLink['link_src'] = $aCode[1];
 		$this->aLink['link_target'] = $aCode[2];
+		$this->aLink['link_title'] = substr($aCode[3], 0, -1);
 		//print_r($this->aLink);
 		
 		$this->getActiveIdcat();
@@ -178,7 +179,9 @@ class Cms_LinkEditor {
 	    
 	    // Is the user using HTTPS or HTTP?
 		$this->hostName = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) ? 'https://' : 'http://';
-
+		if( substr_count(strtolower($this->aLink['link_src']) , "https")){
+	    	$this->hostName = 'https://';
+		}
 	}
 		
 
@@ -196,19 +199,22 @@ class Cms_LinkEditor {
 		$aLink['link_type'] = $_REQUEST['link_type'];
 		$aLink['link_src'] = $_REQUEST['link_src'];
 		$aLink['link_target'] = $_REQUEST['link_target'];	
-		$sLink = implode("; ", $aLink);
+		$aLink['link_title'] = $_REQUEST['link_title'];
+		$sLink = "[". implode("]+[", $aLink) . "]";
 		conSaveContentEntry($this->iIdArtLang, 'CMS_LINKEDITOR', $this->iId, $sLink, true);
 		
 		//rewrite values
 		$this->sContent = $sLink;
-		$aCode = explode('; ', $this->sContent);
+		$aCode = explode(']+[', $this->sContent);
 		//$this->aLink = array();
-		$this->aLink['link_type'] = $aCode[0];
+		$this->aLink['link_type'] = substr($aCode[0], 1);
 		$this->aLink['link_src'] = $aCode[1];
 		$this->aLink['link_target'] = $aCode[2];
+		$this->aLink['link_title'] = substr($aCode[3], 0, -1);
 		
 		$this->getActiveIdcat();
 	    //print_r($this->activeIdcat);
+	    
 	}
 	
 	private function getActiveIdcat(){
@@ -283,7 +289,9 @@ class Cms_LinkEditor {
 		$oTpl->set('s', 'EXTERN', 								i18n("Extern"));
 		$oTpl->set('s', 'INTERN', 								i18n("Intern"));
 		$oTpl->set('s', 'TARGET', 								i18n("Im neuen Fenster öffnen"));
-		$oTpl->set('s', 'HTTP', 								$this->hostName);
+		$oTpl->set('s', 'TITLE', 								i18n("Titel"));
+		$oTpl->set('s', 'extern_title_value', 					$this->aLink['link_title']);
+		$oTpl->set('s', 'HTTP', 								i18n("Href"));
 		
 		switch ($this->aLink['link_type']){
 			case 'extern':
@@ -300,7 +308,7 @@ class Cms_LinkEditor {
 				$oTpl->set('s', 'style_intern', 				'');	
 				break;
 			case 'intern':
-				$oTpl->set('s', 'extern_value', 				'');
+				$oTpl->set('s', 'extern_value', 				$this->hostName);
 				$oTpl->set('s', 'DIRECTORY_FILE', 				$this->getFileSelect($this->aLink['link_src'], $this->iId));
 				$oTpl->set('s', 'DIRECTORY_LIST', 				$this->getDirectoryList( $this->buildDirectoryList() ));
 				$oTpl->set('s', 'UPLOAD_DIRECTORY_FILE', 		$this->getUploadFileSelect('', $this->iId));
@@ -313,7 +321,7 @@ class Cms_LinkEditor {
 				$oTpl->set('s', 'style_intern', 				'style="display:block;"');	
 				break;
 			case 'upload':
-				$oTpl->set('s', 'extern_value', 				'');
+				$oTpl->set('s', 'extern_value', 				$this->hostName);
 				$oTpl->set('s', 'DIRECTORY_FILE', 				$this->getFileSelect('', $this->iId));
 				$oTpl->set('s', 'DIRECTORY_LIST', 				$this->getDirectoryList( $this->buildDirectoryList() ));
 				$oTpl->set('s', 'UPLOAD_DIRECTORY_FILE', 		$this->getUploadFileSelect(dirname($this->aLink['link_src']), $this->iId));
@@ -326,7 +334,7 @@ class Cms_LinkEditor {
 				$oTpl->set('s', 'style_intern', 				'');
 				break;
 			default:
-				$oTpl->set('s', 'extern_value', 				'');	
+				$oTpl->set('s', 'extern_value', 				$this->hostName);	
 				$oTpl->set('s', 'DIRECTORY_FILE', 				$this->getFileSelect('', $this->iId));	
 				$oTpl->set('s', 'DIRECTORY_LIST', 				$this->getDirectoryList( $this->buildDirectoryList() ));
 				$oTpl->set('s', 'UPLOAD_DIRECTORY_FILE', 		$this->getUploadFileSelect('', $this->iId));
@@ -338,7 +346,8 @@ class Cms_LinkEditor {
 				$oTpl->set('s', 'style_intern_tab', 			'');
 				$oTpl->set('s', 'style_intern', 				'');		
 		};
-		$oTpl->set('s', 'checked', 								$this->aLink['link_target']);
+		
+		$oTpl->set('s', 'checked', 								($this->aLink['link_target'] == '_blank') ? "checked='checked'" : "");
 		//generate template
 		$sCode .= $oTpl->generate($this->aCfg['path']['contenido'].'templates/standard/template.cms_linkeditor_edit.html', 1);
 		
@@ -728,10 +737,15 @@ class Cms_LinkEditor {
 		} else {
 			$sCode = "";
 		}
-		$aCode = explode('; ', urldecode($sCode));		
-		
-		if($aCode[0] == 'extern' && $aCode[1] != ''){			
-	        $aCode[1] = $this->hostName.$aCode[1];
+		$aCode = explode(']+[', urldecode($sCode));	
+		$aCode[0] = substr($aCode[0], 1);
+		$aCode[3] = substr($aCode[3], 0, -1);	
+		//echo $this->hostName;
+		//print_r($aCode);echo "<br>";
+		if($aCode[0] == 'extern' && $aCode[1] != ''){	
+			if(!(substr_count(strtolower($this->aLink['link_src']) , "https") || substr_count(strtolower($this->aLink['link_src']) , "http"))){		
+	        	$aCode[1] = $this->hostName.$aCode[1];
+			}
 		}
 		if($aCode[0] == 'intern' && $aCode[1] != ''){
 	        $aCode[1] = $this->aCfgClient[$this->iClient]['path']['htmlpath'].'front_content.php?idart='.$aCode[1];
@@ -739,7 +753,7 @@ class Cms_LinkEditor {
 		if($aCode[0] == 'upload' && $aCode[1] != ''){
 	        $aCode[1] = $this->aCfgClient[$this->iClient]['upl']['htmlpath'].$aCode[1];
 		}
-		return $aCode[1];
+		return "<a href='". $aCode[1] . "' target='". $aCode[2] . "'>". $aCode[3] . "</a>";
 	}
 	
 }

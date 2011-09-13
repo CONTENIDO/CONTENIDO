@@ -189,6 +189,8 @@ function addSaveEvent(sFrameId, iIdArtLang, iId) {
 			}
 		});
 		
+		var link_title = $(sFrameId+" #cms_linkeditor_"+iId+"_attr #externtitle_"+iId).val();
+		
 		var link_src = "";
 		switch (activeTab){
 			case 'extern': 
@@ -202,6 +204,7 @@ function addSaveEvent(sFrameId, iIdArtLang, iId) {
 		}
 		appendValue(sFrameId, 'link_type', activeTab, iId);
 		appendValue(sFrameId, 'link_src', link_src, iId);
+		appendValue(sFrameId, 'link_title', link_title, iId);
 		//target
 		if($(sFrameId+" #checkboxlinktarget_"+iId+":checked").val()){
 			appendValue(sFrameId, 'link_target', '_blank', iId);

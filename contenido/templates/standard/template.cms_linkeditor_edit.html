@@ -16,11 +16,7 @@
 		</ul>
 	</div>
 	<div id="cms_linkeditor_{ID}_tabs" class="linkeditor_tabs">
-		<div class="cms_linkeditor_extern" id="cms_linkeditor_{ID}_extern" {style_extern}>
-            <!--input type="radio" id="Href_extern_{ID}" name="Href" value="extern" checked="checked"></input>
-			<label for="Href_extern_{ID}"> {EXTERN} </label>
-            <input type="radio" id="Href_intern_{ID}" name="Href" value="intern" style="margin-left:10px;"></input>
-			<label for="Href_intern_{ID}"> {INTERN} </label-->
+		<div class="cms_linkeditor_extern" id="cms_linkeditor_{ID}_extern" {style_extern}>   
 			<label style="width: 11%;" for="externlink_{ID}">{HTTP}</label><input type="text" id="externlink_{ID}" name="externlink" value="{extern_value}"/>
 			<div class="clearfix">&nbsp;</div>
 		</div>
@@ -89,10 +85,11 @@
 	            </div>
 	        </div>
 		</div>    
-		<!--div style="padding: 10px 0 3px 10px;">
-			<label for="checkboxlinktarget_{ID}"> {TARGET} </label>
-			<input type="checkbox" value="1" id="checkboxlinktarget_{ID}" name="checkboxlinktarget" {checked}>
-		</div-->    
+		<div id="cms_linkeditor_{ID}_attr" class="attr clearfix">		         
+			<label style="width: 11%;" for="externtitle_{ID}">{TITLE}</label><input type="text" id="externtitle_{ID}" name="externtitle" value="{extern_title_value}"/>
+			<label style="width: 50%;" for="checkboxlinktarget_{ID}"> {TARGET} </label>
+			<input style="margin: 10px 0 3px 10px;"type="checkbox" value="1" id="checkboxlinktarget_{ID}" name="checkboxlinktarget" {checked}>
+		</div>    
     </div>
     <div class="toolbar">
         <img class="save_settings" src="{CON_PATH}images/but_ok.gif"/>

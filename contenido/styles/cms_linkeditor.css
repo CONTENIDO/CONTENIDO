@@ -106,11 +106,13 @@ a {
     height: auto;
     width: 430px;
 }
+.cms_linkeditor div.attr,
 .cms_linkeditor .cms_linkeditor_extern,
 .cms_linkeditor .cms_linkeditor_intern{
     padding-top: 5px;
     width: 430px;
 }
+.cms_linkeditor div.attr label,
 .cms_linkeditor .cms_linkeditor_extern label,
 .cms_linkeditor .cms_linkeditor_intern label {
     display: block;
@@ -118,6 +120,7 @@ a {
     margin: 10px 0 3px 10px;
     width: 100px;
 }
+.cms_linkeditor div.attr input[type="text"],
 .cms_linkeditor .cms_linkeditor_extern input,
 .cms_linkeditor .cms_linkeditor_intern input{
     border: 1px solid #CCCCCC;
@@ -130,6 +133,7 @@ a {
 /*.cms_linkeditor .cms_linkeditor_attr input[name="Href"]{
     width: 15px;
 }*/
+.cms_linkeditor div.attr input[name="externtitle"],
 .cms_linkeditor .cms_linkeditor_extern input[name="externlink"]{
     width: 85%;
 	margin-left: 0;
