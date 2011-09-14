@@ -34,17 +34,17 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-class ArtSpecCollection extends ItemCollection
+/**
+ * Article specification collection
+ * @deprecated  [2011-09-14] Extender class for downwards compatibility
+ */
+class ArtSpecCollection extends cApiArticleSpecificationCollection
 {
-    /**
-     * Constructor Function
-     * @param none
-     */
+    /** @deprecated  [2011-09-14] */
     public function __construct()
     {
-        global $cfg;
-        parent::__construct($cfg['tab']['art_spec'], "idartspec");
-        $this->_setItemClass("ArtSpecItem");
+        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__);
+        parent::__construct();
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -58,20 +58,15 @@ class ArtSpecCollection extends ItemCollection
 
 /**
  * Article specification Item
+ * @deprecated  [2011-09-14] Extender class for downwards compatibility
  */
-class ArtSpecItem extends Item
+class ArtSpecItem extends cApiArticleSpecification
 {
-    /**
-     * Constructor Function
-     * @param  mixed  $mId  Specifies the ID of item to load
-     */
+    /** @deprecated  [2011-09-14] */
     public function __construct($mId = false)
     {
-        global $cfg;
-        parent::__construct($cfg['tab']['art_spec'], "idartspec");
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
-        }
+        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__);
+        parent::__construct($mId);
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */

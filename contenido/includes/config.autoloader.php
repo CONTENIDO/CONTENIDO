@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2011-08-21
+ *     created  2011-09-15
  * }}
  */
 
@@ -65,7 +65,6 @@ return array(
     'Cms_Image' => 'contenido/classes/class.cms_image.php',
     'Cms_LinkEditor' => 'contenido/classes/class.cms_linkeditor.php',
     'Cms_Teaser' => 'contenido/classes/class.cms_teaser.php',
-	'Cms_Media' => 'contenido/classes/class.cms_media.php',
     'CommunicationCollection' => 'contenido/classes/class.communications.php',
     'CommunicationItem' => 'contenido/classes/class.communications.php',
     'ConUser' => 'contenido/classes/class.conuser.php',
@@ -162,11 +161,11 @@ return array(
     'Index' => 'contenido/classes/class.search.php',
     'Search' => 'contenido/classes/class.search.php',
     'SearchResult' => 'contenido/classes/class.search.php',
-    'Search_helper' => 'contenido/classes/class.search.php',
     'Contenido_Security_Exception' => 'contenido/classes/class.security.php',
     'Contenido_Security' => 'contenido/classes/class.security.php',
     'SMTP' => 'contenido/classes/class.smtp.php',
     'Structure' => 'contenido/classes/class.structure.php',
+    'SynchronizeLayouts' => 'contenido/classes/class.synchronizeLayouts.php',
     'Table' => 'contenido/classes/class.table.php',
     'Template' => 'contenido/classes/class.template.php',
     'TemplateConfig' => 'contenido/classes/class.templateconfig.php',
@@ -209,6 +208,8 @@ return array(
     'cApiArticle' => 'contenido/classes/contenido/class.article.php',
     'cApiArticleLanguageCollection' => 'contenido/classes/contenido/class.articlelanguage.php',
     'cApiArticleLanguage' => 'contenido/classes/contenido/class.articlelanguage.php',
+    'cApiArticleSpecificationCollection' => 'contenido/classes/contenido/class.artspec.php',
+    'cApiArticleSpecification' => 'contenido/classes/contenido/class.artspec.php',
     'cApiCategoryCollection' => 'contenido/classes/contenido/class.category.php',
     'cApiCategory' => 'contenido/classes/contenido/class.category.php',
     'cApiCategoryArticleCollection' => 'contenido/classes/contenido/class.categoryarticle.php',
@@ -327,6 +328,6 @@ return array(
     'cWidgetTableEdit' => 'contenido/classes/widgets/class.widgets.tableedit.php',
     'cWidgetTreeView' => 'contenido/classes/widgets/class.widgets.treeview.php',
     'cTableView' => 'contenido/classes/widgets/class.widgets.views.php',
-    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php',
-	'ContenidoXmlWriter' => 'contenido/classes/xml/class.xml.writer.php'
+    'ContenidoXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
+    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php'
 );
