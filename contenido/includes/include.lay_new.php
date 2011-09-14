@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-03-27
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2011-09-05, add synch button for layout
  *
  *   $Id$:
  * }}
@@ -36,9 +37,13 @@ $tpl->reset();
 
 if ((int) $client > 0) {
     $tpl->set('s', 'ACTION', '<div style="height:2em;"><a class="addfunction" target="right_bottom" href="'.$sess->url("main.php?area=lay_edit&frame=4&action=lay_new").'">'.i18n("New Layout").'</a></div>');
+    //synch button for layout
+    $tpl->set('s', 'ACTION2', '<div style="height:2em;"><a class="syncronizefunction" target="right_bottom" href="'.$sess->url("main.php?area=lay_edit&frame=4&action=lay_sync").'">'.i18n("Synchronize Layouts").'</a></div>');
+    
+    
 } else {
     $tpl->set('s', 'ACTION', i18n('No Client selected'));
 }
 
-$tpl->generate($cfg['path']['templates'] . $cfg['templates']['left_top']);
+$tpl->generate($cfg['path']['templates'] . $cfg['templates']['lay_left_top']);
 ?>

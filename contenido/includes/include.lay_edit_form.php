@@ -24,6 +24,7 @@
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2010-07-06, Ingo van Peeren, CON-325 
  *   modified 2011-06-20, Rusmir Jusufovic , load layout code from file and not from db
+ *   modified 2011-09-05, Rusmir Jusufovic, add sync action to layout
  *
  *   $Id$:
  * }}
@@ -36,7 +37,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 
 cInclude("external", "edit_area/class.edit_area.php");
-
+cInclude('classes', 'class.synchronizeLayouts.php');
 if (!isset($idlay)) $idlay = 0;
 
 $page = new cPage;
@@ -89,6 +90,18 @@ if ($action == "lay_new")
 		$layout->virgin = true;
 		$notification->displayNotification("info", i18n("Layout deleted"));	
 	}
+}else if($action == "lay_sync") { 
+	#Synchronize layout from db and filesystem
+	if (!$perm->have_perm_area_action_anyitem($area, $action))
+	{
+		$notification->displayNotification("error", i18n("Permission denied"));	
+		
+	} else {
+		$layoutSynchronization = new SynchronizeLayouts($cfg, $cfgClient, $lang, $client);
+		$layoutSynchronization->synchronize();
+		
+	}
+	
 }
 
 if ($refreshtemplates != "")

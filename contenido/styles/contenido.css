@@ -672,7 +672,7 @@ table, tr, td, th	{
 }
 
 /* link style for synchronization anything */
-.synchronizemoduls{
+.syncronizefunction{
   float:left;
   display: block;
   background: transparent url(../images/but_refresh.gif) no-repeat scroll 0 2px;

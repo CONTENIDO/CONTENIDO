@@ -33,7 +33,7 @@ class LayoutInFile {
 	 * 
 	 * @var string
 	 */
-	private $_layoutCode = "";
+	protected $_layoutCode = "";
 	
 	/**
 	 * 
@@ -48,15 +48,15 @@ class LayoutInFile {
 	 * Layout name 
 	 * @var string
 	 */
-	private $_layoutName = "";
+	protected $_layoutName = "";
 	
 	/**
 	 * 
-	 * The CONTENIDO cfg
+	 * The contenido cfg
 	 * 
 	 * @var array
 	 */
-	private $_cfg = array();
+	protected $_cfg = array();
 	
 	/**
 	 * 
@@ -64,7 +64,7 @@ class LayoutInFile {
 	 * 
 	 * @var string
 	 */
-	private $_encoding;
+	protected $_encoding;
 	
 	
 	/**
@@ -72,7 +72,7 @@ class LayoutInFile {
 	 * The id of the layout
 	 * @var int
 	 */
-	private $_layoutId = "";
+	protected $_layoutId = "";
 	
 	
 	/**
@@ -81,7 +81,7 @@ class LayoutInFile {
 	 * [frontendpath].layouts/.layoutName/
 	 * @var string
 	 */
-	private $_layoutPath = "";
+	protected $_layoutPath = "";
 	
 	/**
 	 * 
@@ -89,7 +89,7 @@ class LayoutInFile {
 	 * [frontendpath].layouts
 	 * @var string
 	 */
-	private $_layoutMainPath = "";
+	protected $_layoutMainPath = "";
 	
 	/**
 	 * 
@@ -104,11 +104,11 @@ class LayoutInFile {
 	 * File name of the layout ([layoutname].html
 	 * @var string
 	 */
-	private $_fileName = "";
+	protected $_fileName = "";
 	
 	
 
-	private $_frontendPath = "";
+	protected $_frontendPath = "";
 	
 	/**
 	 * 
@@ -163,7 +163,6 @@ class LayoutInFile {
 						WHERE lay.idclient = client.idclient AND lay.idlay = %s ",
 						$this->_cfg["tab"]["lay"], $this->_cfg["tab"]["clients"] , $layoutId);
 		$db = new DB_Contenido();
-		
 		$db->query($sql);
 		$db->next_record();
 		
@@ -176,7 +175,6 @@ class LayoutInFile {
 		$this->_layoutMainPath = $db->f("frontendpath").self::$LAYOUT_DIR_NAME;
 		$this->_layoutPath = $db->f("frontendpath").self::$LAYOUT_DIR_NAME.$this->_layoutName."/";
 		$this->_fileName = $this->_layoutName.".html";
-		
 		#make directoryies for layout
 		$this->_makeDirectories();
 	}

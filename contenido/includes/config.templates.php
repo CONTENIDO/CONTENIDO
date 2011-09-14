@@ -86,7 +86,7 @@ $cfg['templates']['upl_files_overview']   = 'template.upl_files_overview.html';
 
 $cfg['templates']['lay_overview']         = 'template.lay_overview.html';
 $cfg['templates']['lay_edit_form']        = 'template.lay_edit_form.html';
-
+$cfg['templates']['lay_left_top']        = 'template.lay_left_top.html';
 
 $cfg['templates']['mod_overview']         = 'template.mod_overview.html';
 $cfg['templates']['mod_edit_form']        = 'template.mod_edit_form.html';

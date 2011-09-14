@@ -177,3 +177,4 @@ INSERT INTO !PREFIX!_actions VALUES ('805', '70', 'history_truncate', 'history_t
 INSERT INTO !PREFIX!_actions VALUES ('806', '415', 'edit_sysconf', 'edit_sysconf', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES ('811', '811', 'do_purge', 'do_purge', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('812', '11', '', 'mod_sync', '', '', '1');
+INSERT INTO !PREFIX!_actions VALUES('813', '9','','lay_sync','','','1');
