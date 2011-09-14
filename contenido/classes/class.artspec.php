@@ -18,6 +18,7 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
+ * @deprecated [2011-09-14] Use new classes in contenido/classes/contenido/class.artspec.php
  *
  * {@internal
  *   created  unknown
@@ -36,14 +37,12 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Article specification collection
- * @deprecated  [2011-09-14] Extender class for downwards compatibility
  */
 class ArtSpecCollection extends cApiArticleSpecificationCollection
 {
-    /** @deprecated  [2011-09-14] */
     public function __construct()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__);
+        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__ . " use " . get_parent_class($this));
         parent::__construct();
     }
 
@@ -58,14 +57,12 @@ class ArtSpecCollection extends cApiArticleSpecificationCollection
 
 /**
  * Article specification Item
- * @deprecated  [2011-09-14] Extender class for downwards compatibility
  */
 class ArtSpecItem extends cApiArticleSpecification
 {
-    /** @deprecated  [2011-09-14] */
     public function __construct($mId = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__);
+        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__ . " use " . get_parent_class($this));
         parent::__construct($mId);
     }
 
