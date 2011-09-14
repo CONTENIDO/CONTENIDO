@@ -233,7 +233,7 @@ contenido/classes/contenido/class.action.php -text
 contenido/classes/contenido/class.area.php -text
 contenido/classes/contenido/class.article.php -text
 contenido/classes/contenido/class.articlelanguage.php -text
-contenido/classes/contenido/class.artspec.php -text
+contenido/classes/contenido/class.articlespecification.php -text
 contenido/classes/contenido/class.category.php -text
 contenido/classes/contenido/class.categoryarticle.php -text
 contenido/classes/contenido/class.categorylanguage.php -text

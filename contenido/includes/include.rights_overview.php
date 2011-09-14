@@ -329,12 +329,15 @@ if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
 
 // user properties
 $aProperties = $oUser->getUserProperties();
+#var_dump($aProperties);
+$aProperties2 = $oUser->getUserProperties2();
+#var_dump($aProperties2);
 $sPropRows   = '';
-foreach ($aProperties as $entry) {
-    $type = $entry['type'];
+foreach ($aProperties2 as $entry) {
+    $type = $entry->get('type');
     if ($type != 'system') {
-        $name  = $entry['name'];
-        $value = $entry['value'];
+        $name  = $entry->get('name');
+        $value = $entry->get('value');
         $sPropRows .= '
         <tr class="text_medium">
             <td>' . $type . '</td>
