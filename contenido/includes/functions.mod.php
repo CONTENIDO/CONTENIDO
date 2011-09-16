@@ -136,7 +136,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		       	$messageIfError .= "<br/>". i18n("Can't save output !");
 		       	
 		       
-		       if($contenidoModuleHandler->saveInfoXML($oldName , $description, $type) == false)
+		       if($contenidoModuleHandler->saveInfoXML($name , $description, $type, $alias) == false)
 		       		$messageIfError .= "<br/>". i18n("Can't save xml modul info file!");
 		       
 		       
@@ -162,7 +162,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
       			$cApiModule->set("alias", $alias);
 				$cApiModule->store();
 		    
-		     if($contenidoModuleHandler->saveInfoXML($oldName , $description, $type) == false)
+		     if($contenidoModuleHandler->saveInfoXML($name , $description, $type, $alias) == false)
 		       		$notification->displayNotification('error',i18n("Can't save xml modul info file!"));
 		}
     }

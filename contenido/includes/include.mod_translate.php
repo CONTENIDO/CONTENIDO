@@ -169,28 +169,7 @@ $form->add(i18n("String list"), $table);
 $mark = '<script language="JavaScript">document.translation.t_trans.focus();</script>';
 
 
-$import = new cHTMLRadiobutton("mode", "import");
-$export = new cHTMLRadiobutton("mode", "export");
-$export->setLabelText(i18n("Export to file"));
-$import->setLabelText(i18n("Import from file"));
-
-$import->setEvent("click", "document.getElementById('vupload').style.display = '';");
-$export->setEvent("click", "document.getElementById('vupload').style.display = 'none';");
-$upload = new cHTMLUpload("upload");
-
-$import->setChecked("checked");
-$form2 = new UI_Table_Form("export");
-$form2->setVar("action", "mod_importexport_translation");
-$form2->addHeader("Import/Export");
-$form2->add(i18n("Mode"), array($export, "<br>", $import));
-$form2->add(i18n("File"), $upload, "vupload");
-$form2->setVar("area", $area);
-$form2->setVar("frame", $frame);
-$form2->setVar("idmod", $idmod);
-$form2->setVar("idmodtranslation", $idmodtranslation);
-$form2->custom["submit"]["accesskey"] = '';
-
-$page->setContent($form->render(). $mark ."<br>". $form2->render());
+$page->setContent($form->render(). $mark ."<br>");
 $page->setMarkScript(2);
 
 $clang = new Language;

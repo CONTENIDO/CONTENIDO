@@ -97,6 +97,13 @@ class Contenido_Module_Handler {
      */
     protected $_type;
     
+    /**
+     * 
+     * The aliac name of the modul
+     * @var string
+     */
+    protected $_modulAlias; 
+    
      /**
      * 
      * display debug message if debug = true
@@ -109,7 +116,7 @@ class Contenido_Module_Handler {
      * Whats the name of modul dir where all moduls are.
      * @var string
      */
-    static $MODUL_DIR_NAME = "module/";
+    static $MODUL_DIR_NAME = "modules/";
     /**
      * 
      * Name of the Info xml file.
@@ -117,7 +124,8 @@ class Contenido_Module_Handler {
      * @var string
      */
     
-    protected  $_nameOfInfoXML = "info.xml";
+    static $NAME_OF_INFO_XML = "info.xml";
+  
     
     
     /**
@@ -141,6 +149,13 @@ class Contenido_Module_Handler {
      */
     protected $_cfg = NULL;
     
+    
+    /**
+     * 
+     * Contenido cfgClient
+     * @var array
+     */
+    protected  $_cfgClient = NULL;
     /**
      * 
      * id of the Client
@@ -206,12 +221,11 @@ class Contenido_Module_Handler {
       */
    
     public function __construct($idmod = NULL ) {
-
-    	
     	
     	#get vars from Contenido_Vars
     	$this->_cfg = Contenido_Vars::getVar('cfg');
     	$this->_client = Contenido_Vars::getVar('client');
+    	$this->_cfgClient = Contenido_Vars::getVar('cfgClient');
     	$this->_encoding = Contenido_Vars::getVar('encoding');
     	$this->_idlang = Contenido_Vars::getVar('lang');
 
@@ -281,9 +295,9 @@ class Contenido_Module_Handler {
     protected  function _initModulHandlerWithModulRow( $db ) {
          
         if(is_object($db)) {
-         
-            $this->_modulName = $db->f("alias");
-            $this->_modulPath = $db->f("frontendpath").self::$MODUL_DIR_NAME.$this->_modulName."/";
+         	$this->_modulAlias = $db->f("alias");
+            $this->_modulName = $db->f("name");
+            $this->_modulPath = $db->f("frontendpath").self::$MODUL_DIR_NAME.$this->_modulAlias."/";
             $this->_path = $db->f("frontendpath").self::$MODUL_DIR_NAME;
             $this->_idmod = $db->f("idmod");
             $this->_client = $db->f("idclient");
@@ -310,14 +324,15 @@ class Contenido_Module_Handler {
         if($idmod == NULL)
             return;
             
-        $sql=sprintf("SELECT moduls.alias as alias, moduls.description as description, moduls.type as type,clients.idclient as idclient, clients.frontendpath as frontendpath, moduls.idmod as idmod FROM %s AS clients , %s AS moduls  WHERE idmod=%s AND clients.idclient = moduls.idclient ",$this->_cfg["tab"]["clients"],$this->_cfg["tab"]["mod"] ,Contenido_Security::toInteger($idmod));
+        $sql=sprintf("SELECT moduls.alias as alias,moduls.name as name, moduls.description as description, moduls.type as type,clients.idclient as idclient, clients.frontendpath as frontendpath, moduls.idmod as idmod FROM %s AS clients , %s AS moduls  WHERE idmod=%s AND clients.idclient = moduls.idclient ",$this->_cfg["tab"]["clients"],$this->_cfg["tab"]["mod"] ,Contenido_Security::toInteger($idmod));
         $this->_echoIt("sql :".$sql);
         
         $this->_db->query($sql);
       
         if($this->_db->next_record()) {
-            $this->_modulName = $this->_db->f("alias");
-            $this->_modulPath = $this->_db->f("frontendpath").self::$MODUL_DIR_NAME.$this->_modulName."/";
+        	$this->_modulAlias = $this->_db->f('alias');
+            $this->_modulName = $this->_db->f("name");
+            $this->_modulPath = $this->_db->f("frontendpath").self::$MODUL_DIR_NAME.$this->_modulAlias."/";
             $this->_path = $this->_db->f("frontendpath").self::$MODUL_DIR_NAME;
             $this->_idmod = $this->_db->f("idmod");
             $this->_client = $this->_db->f("idclient");
@@ -366,7 +381,7 @@ class Contenido_Module_Handler {
      */
     public function getTemplateMainFile() {
         
-        return $this->_modulPath.$this->_directories['template'].$this->_modulName.".html";
+        return $this->_modulPath.$this->_directories['template'].$this->_modulAlias.".html";
     }
    
     
@@ -376,7 +391,7 @@ class Contenido_Module_Handler {
      */
     public function getCssMainFile() {
         
-       return $this->_modulPath.$this->_directories['css'].$this->_modulName.".css";  
+       return $this->_modulPath.$this->_directories['css'].$this->_modulAlias.".css";  
     }
     
     
@@ -387,7 +402,7 @@ class Contenido_Module_Handler {
      */
  	public function getJsMainFile() {
         
-       return $this->_modulPath.$this->_directories['css'].$this->_modulName.".js";  
+       return $this->_modulPath.$this->_directories['css'].$this->_modulAlias.".js";  
     }
     
     /**
@@ -426,7 +441,7 @@ class Contenido_Module_Handler {
      */
     public function getTemplateFileName() {
         
-            return $this->_modulName.".html";
+            return $this->_modulAlias.".html";
     }
     
     /**
@@ -436,7 +451,7 @@ class Contenido_Module_Handler {
      */
     public function getCssFileName() {
         
-            return $this->_modulName.".css";
+            return $this->_modulAlias.".css";
     }
     
     
@@ -496,7 +511,7 @@ class Contenido_Module_Handler {
       #if not set use default filename
       if( $fileName == NULL || $fileName == '')
       {
-            $fileName = $this->_modulName;
+            $fileName = $this->_modulAlias;
         
          if($type == 'template')
              $fileName = $fileName.'.html';
@@ -566,7 +581,7 @@ class Contenido_Module_Handler {
      */
 	public function getJsFileName() {
         
-            return $this->_modulName.".js";
+            return $this->_modulAlias.".js";
     }
     /**
      * 
@@ -579,7 +594,7 @@ class Contenido_Module_Handler {
       
     	
         if($fileName == NULL)
-            $fileName = $this->_modulName.'.'.$fileTyp;
+            $fileName = $this->_modulAlias.'.'.$fileTyp;
          
         
         if(file_exists($this->_modulPath.$this->_directories[$directory].$fileName)) {
@@ -632,7 +647,7 @@ class Contenido_Module_Handler {
      */
     public function getInputFile() {
         
-        return $this->_modulName.$this->_directories['php'].$this->_modulName."_input.php";
+        return $this->_modulAlias.$this->_directories['php'].$this->_modulAlias."_input.php";
     }
     
     
@@ -643,7 +658,7 @@ class Contenido_Module_Handler {
      */
     public function getInputOutput() {
         
-        return $this->_modulName.$this->_directories['php'].$this->_modulName."_output.php";
+        return $this->_modulAlias.$this->_directories['php'].$this->_modulAlias."_output.php";
     }
     
     
@@ -685,34 +700,34 @@ class Contenido_Module_Handler {
      */
     protected function _makeModulDirectory() {
        
-    	
     	#dont display error ($tpl->generate() on the CONTENIDO login site)
     	if($this->_client == "")
     		return -1;
     		
         $myDb = $this->_db;
-   		
-        
-        $sql = sprintf("SELECT frontendpath FROM %s WHERE idclient =%s", $this->_cfg["tab"]["clients"] , $this->_client);
-        $this->_echoIt("makeModulDirectory:" .$sql);
-        $myDb->query($sql);
-  
-        while($myDb->next_record()) {
-            
-        	#test if frontendpath exists
-        	if(is_dir($myDb->f("frontendpath")) == false)
-        		return false;
-        		
-            if(!is_dir($myDb->f("frontendpath").self::$MODUL_DIR_NAME)) {
+   		$frontendPath = '';
+   		#get the frontendpaht from db
+        if($this->_cfgClient == null) {
+        	$sql = sprintf("SELECT frontendpath FROM %s WHERE idclient =%s", $this->_cfg["tab"]["clients"] , $this->_client);
+        	$this->_echoIt("makeModulDirectory:" .$sql);
+        	$myDb->query($sql);
+  			
+  	   		#get frontendpaht from db
+       		if($myDb->next_record()) {
+            	$frontendPath = $myDb->f("frontendpath");
+        	}
+        }else {
+        	#get path from contenido config ($cfgClient)
+        	$frontendPath = $this->_cfgClient[$this->_client]['path']['frontend'];
+        }
+
+        #make 
+        if(!is_dir($frontendPath.self::$MODUL_DIR_NAME)) {
                 
-                if(mkdir($myDb->f("frontendpath").self::$MODUL_DIR_NAME) == false){
-                  return false;
-                }else
-                    chmod($myDb->f("frontendpath").self::$MODUL_DIR_NAME,0777);
-                
-                
-            }
-            
+        	if(mkdir($frontendPath.self::$MODUL_DIR_NAME) == false){
+            	return false;
+            }else
+            	chmod($frontendPath.self::$MODUL_DIR_NAME,0777); 
         }
         
              
@@ -765,8 +780,8 @@ class Contenido_Module_Handler {
     
     public function setNewModulName ($name ) {
         
-        $this->_modulName = $name;
-        $this->_modulPath = $this->_path.$this->_modulName."/";
+        $this->_modulAlias = $name;
+        $this->_modulPath = $this->_path.$this->_modulAlias."/";
     }
     
     
@@ -782,7 +797,7 @@ class Contenido_Module_Handler {
         $ret = NULL;
         
         #if modulName is a string
-        if(strlen($this->_modulName)>0)
+        if(strlen($this->_modulAlias)>0)
             $ret = $this->_rec_rmdir($this->_modulPath);
         
         $input = $this->readInput();
@@ -815,12 +830,12 @@ class Contenido_Module_Handler {
     */
     public function readInput() {
         
-        $this->_echoIt("readInput".$this->_modulName);
+        $this->_echoIt("readInput".$this->_modulAlias);
      
-        if( file_exists($this->_modulPath .$this->_directories['php']. $this->_modulName . "_input.php") == FALSE)
+        if( file_exists($this->_modulPath .$this->_directories['php']. $this->_modulAlias . "_input.php") == FALSE)
             return false;
 
-        $content =	file_get_contents($this->_modulPath .$this->_directories['php']. $this->_modulName . "_input.php");;
+        $content =	file_get_contents($this->_modulPath .$this->_directories['php']. $this->_modulAlias . "_input.php");;
         $content = iconv($this->_fileEncoding,$this->_encoding."//IGNORE",$content );    
         return $content;
     }
@@ -832,12 +847,12 @@ class Contenido_Module_Handler {
      */
     public function readOutput() {
         
-        $this->_echoIt("readOutput".$this->_modulName);
+        $this->_echoIt("readOutput".$this->_modulAlias);
    
-        if( file_exists($this->_modulPath .$this->_directories['php'].$this->_modulName . "_output.php") == FALSE)
+        if( file_exists($this->_modulPath .$this->_directories['php'].$this->_modulAlias . "_output.php") == FALSE)
             return false;
         
-        $content = file_get_contents($this->_modulPath .$this->_directories['php'].$this->_modulName . "_output.php");
+        $content = file_get_contents($this->_modulPath .$this->_directories['php'].$this->_modulAlias . "_output.php");
         $content = iconv($this->_fileEncoding,$this->_encoding."//IGNORE",$content ); 
         return $content;
     }
@@ -871,17 +886,17 @@ class Contenido_Module_Handler {
      */
     public function saveOutput($output = NULL) {
          
-        $this->_echoIt("saveOutput".$this->_modulName."output: ");  
+        $this->_echoIt("saveOutput".$this->_modulAlias."output: ");  
         
         $this->makeDirectoryIfNotExist('php');
         if($output == NULL)
             $output = $this->_output;
        
         $output = iconv($this->_encoding , $this->_fileEncoding,$output );    
-        if(file_put_contents($this->_modulPath .$this->_directories['php'].$this->_modulName . "_output.php" , $output , LOCK_EX) === FALSE)
+        if(file_put_contents($this->_modulPath .$this->_directories['php'].$this->_modulAlias . "_output.php" , $output , LOCK_EX) === FALSE)
             return false; #return false if file_put_contents dont work
         else {
-            chmod($this->_modulPath .$this->_directories['php'].$this->_modulName . "_output.php" , 0666);
+            chmod($this->_modulPath .$this->_directories['php'].$this->_modulAlias . "_output.php" , 0666);
             return true;#return true if file_put_contents working
         }
             
@@ -897,17 +912,17 @@ class Contenido_Module_Handler {
      */
     public function saveInput($input = NULL) {
          
-        $this->_echoIt("saveInput".$this->_modulName." input: "); 
+        $this->_echoIt("saveInput".$this->_modulAlias." input: "); 
         
         $this->makeDirectoryIfNotExist('php');
         if($input == NULL)
             $input = $this->_input;
         $input = iconv($this->_encoding , $this->_fileEncoding,$input );   
-        if(file_put_contents($this->_modulPath.$this->_directories['php']. $this->_modulName . "_input.php" , $input , LOCK_EX) === FALSE) {         
+        if(file_put_contents($this->_modulPath.$this->_directories['php']. $this->_modulAlias . "_input.php" , $input , LOCK_EX) === FALSE) {         
             return false;
         }
         else {
-            chmod($this->_modulPath .$this->_directories['php'].$this->_modulName . "_input.php",0666);
+            chmod($this->_modulPath .$this->_directories['php'].$this->_modulAlias . "_input.php",0666);
             return true;
         }
     }
@@ -922,7 +937,7 @@ class Contenido_Module_Handler {
      * @param string $description description of the modul
      * @param string $type type of the modul
      */
-    public function saveInfoXML($modulName = NULL, $description= NULL, $type= NULL ) {
+    public function saveInfoXML($modulName = NULL, $description= NULL, $type= NULL , $alias= NULL) {
         
     	$tree  = new XmlTree('1.0', 'ISO-8859-1');
     	$root =& $tree->addRoot('module');
@@ -936,12 +951,16 @@ class Contenido_Module_Handler {
     	if($type == NULL)
     	    $type = $this->_type;
     	    
+    	if($alias == NULL)
+    		$alias = $this->_modulAlias;
+    	    
 		$root->appendChild("name", htmlspecialchars($modulName));    		
 		$root->appendChild("description", htmlspecialchars($description));
 		$root->appendChild("type", htmlspecialchars($type));
+		$root->appendChild("alias", htmlspecialchars($alias));
 		
 	    
-	   if( file_put_contents($this->_modulPath.$this->_nameOfInfoXML,$tree->dump(true))=== FALSE)
+	   if( file_put_contents($this->_modulPath.self::$NAME_OF_INFO_XML,$tree->dump(true))=== FALSE)
 	   	return false;
 	   else
 	   	return true;
@@ -1016,15 +1035,15 @@ class Contenido_Module_Handler {
     public function renameModul($old,$new) {
         
         
-        $this->_echoIt("renameModul ".$this->_modulName." old: $old  new: $new"); 
+        $this->_echoIt("renameModul ".$this->_modulAlias." old: $old  new: $new"); 
      
         #try to rename the dir
         if(rename($this->_path.$old, $this->_path.$new) == FALSE )
             return false;
         else {
            
-            $retInput = false;
-            $retOutput = false;
+            $retInput = true;
+            $retOutput = true;
             
             #if file input exist rename it
             if(file_exists($this->_path.$new."/".$this->_directories['php'].$old."_input.php"))
@@ -1047,7 +1066,7 @@ class Contenido_Module_Handler {
             if($retInput == true && $retOutput == true) 
                 return true;
             else 
-                false;
+               return false;
         }
         
 
@@ -1084,7 +1103,7 @@ class Contenido_Module_Handler {
     */ 
    public function countModulNameInDb() {
         $myDb = new DB_Contenido();
-        $sql = sprintf("SELECT count(*) as count FROM %s WHERE name ='%s' AND idclient =%s ",$this->_cfg["tab"]["mod"],$this->_modulName, $this->_client);
+        $sql = sprintf("SELECT count(*) as count FROM %s WHERE name ='%s' AND idclient =%s ",$this->_cfg["tab"]["mod"],$this->_modulAlias, $this->_client);
         
         $myDb->query($sql);
         $myDb->next_record();
@@ -1102,11 +1121,11 @@ class Contenido_Module_Handler {
         
         if(is_dir($this->_modulPath)) {
             
-            $this->_echoIt("existModul".$this->_modulName." return: true"); 
+            $this->_echoIt("existModul".$this->_modulAlias." return: true"); 
             return true;
         }
         else {
-            $this->_echoIt("existModul".$this->_modulName." return: false");
+            $this->_echoIt("existModul".$this->_modulAlias." return: false");
             return false;
         }
     }

@@ -1100,9 +1100,9 @@ contenido/includes/include.left_top_blank.php -text
 contenido/includes/include.logs.php -text
 contenido/includes/include.mod_edit_form.php -text
 contenido/includes/include.mod_history.php -text
+contenido/includes/include.mod_import_export.php -text
 contenido/includes/include.mod_new.php -text
 contenido/includes/include.mod_overview.php -text
-contenido/includes/include.mod_package.php -text
 contenido/includes/include.mod_script.php -text
 contenido/includes/include.mod_style.php -text
 contenido/includes/include.mod_template.php -text

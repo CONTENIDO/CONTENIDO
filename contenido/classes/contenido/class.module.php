@@ -537,9 +537,9 @@ class cApiModule extends Item
                 // after the node has been successfully parsed, not before.
                 // So, we have a little redundancy here, but maybe we need
                 // this in the future.
-                $aHandler["/modulepackage/" . $sFileType . "/area"]    = "cHandler_ItemArea";
-                $aHandler["/modulepackage/" . $sFileType . "/name"]    = "cHandler_ItemName";
-                $aHandler["/modulepackage/" . $sFileType . "/content"] = "cHandler_ItemData";
+            	$aHandler["/modulepackage/" . $sFileType . "/area"]    = "cHandler_ItemArea";
+            	$aHandler["/modulepackage/" . $sFileType . "/name"]    = "cHandler_ItemName";
+            	$aHandler["/modulepackage/" . $sFileType . "/content"] = "cHandler_ItemData";
             }
 
             // Layouts
@@ -559,29 +559,104 @@ class cApiModule extends Item
         if ($oParser->parseFile($sFile)) {
             return true;
         } else {
-            $this->_error = $oParser->error;
-            return false;
+        	$this->_error = $oParser->error;
+        	return false;
         }
     }
 
+    
+    
     /**
-	 * import
+     * 
+     * Save the modul properties (description,type...)
+     * 
+     * @param string $sFile weher is the modul info.xml file
+     */
+    private function _getModulProperties($sFile ) {
+    	global $_mImport;
+    	$ret = array();
+    	if ($this->_parseImportFile($sFile, "module")){
+			foreach ($_mImport["module"] as $key => $value){
+				#the columns input/and outputs dont exist in table
+				if($key != "output" && $key != "input")
+					$ret[$key] = addslashes($value);
+			}	
+    	}
+    	
+    	return $ret;
+    } 
+    
+    
+    
+    /**
+     * import
+     * Imports the a module from a XML file
+     * Uses xmlparser and callbacks
+     *
+     * @param string	$file 	Filename of data file (full path)
+     */
+    function import($sFile,$tempName)
+    {
+    	global $cfgClient, $db, $client, $cfg,$encoding,$lang;
+    	$zip = new ZipArchive();
+    	$notification = new Contenido_Notification();
+    	$contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
+    	//file name Hello_World.zip => Hello_World
+    	$modulName = substr($sFile,0,-4);
+    	
+    	#exist the modul in directory
+    	if(is_dir($cfgClient[$client]['path']['frontend'].Contenido_Module_Handler::$MODUL_DIR_NAME.$modulName)) {
+    		$notification->displayNotification('error', i18n("Modul exist!"));
+    		return false ;
+    	}
+    	
+    	if($zip->open($tempName) === TRUE) {
+    		
+    		
+    		if( $zip->extractTo($cfgClient[$client]['path']['frontend'].Contenido_Module_Handler::$MODUL_DIR_NAME.$modulName) === TRUE) {
+    			$zip->close();
+    			
+    			#make new module
+    			$modules = new cApiModuleCollection;
+		
+				$module = $modules->create($modulName);
+				$modulProperties = $this->_getModulProperties($cfgClient[$client]['path']['frontend'].Contenido_Module_Handler::$MODUL_DIR_NAME.$modulName.'/'.Contenido_Module_Handler::$NAME_OF_INFO_XML);
+				
+				#set module properties and save it
+				foreach($modulProperties as $key=>$value) {
+					$module->set($key, $value);
+				}
+				$module->store();
+    			
+    		}else {
+    			$notification->displayNotification('error', i18n("Import faild could not extract zipfile!"));
+    			return false;
+    		}
+    		
+    		
+    	}else  {
+    		$notification->displayNotification('error', i18n("Could not open the zip-File!"));
+    		return false;
+    	}
+    	return true;
+    }
+	
+    
+/**
+	 * importModuleFromXML
      * Imports the a module from a XML file
      * Uses xmlparser and callbacks
 	 *
 	 * @param string	$file 	Filename of data file (full path) 
      */
-	function import ($sFile)
+	function importModuleFromXML ($sFile)
     {
-    	global $_mImport, $db, $client, $cfg,$encoding,$lang;
+    	global $_mImport, $db,$cfgClient, $client, $cfg,$encoding,$lang;
     
-    	$oldName = $this->get("alias");
-    	$idmod = $this->get("idmod");
     	$inputOutput = array();
+    	$notification = new Contenido_Notification();
     	
-    	if ($this->_parseImportFile($sFile, "module"))
-    	{
-    		$bStore = false;
+    	if ($this->_parseImportFile($sFile, "module")){
 			foreach ($_mImport["module"] as $key => $value)
 			{
 				if ($this->get($key) != $value)
@@ -591,88 +666,117 @@ class cApiModule extends Item
 						$inputOutput[$key] = $value;
 					else	
 						$this->set($key, addslashes($value));
-					$bStore = true;
 				}
 			}
 			
 			
-			//fix for old module without alias
-			if($this->get("alias") != capiStrCleanURLCharacters($this->get('name'))) {
-				$this->set("alias",capiStrCleanURLCharacters($this->get('name')));
+			$modulAlias = capiStrCleanURLCharacters($this->get('name'));
+			#is alias empty??
+			if($this->get('alias') == '') {
+				$this->set('alias', $modulAlias);
 			}
 			
-			if ($bStore == true)
-			{
-				$this->store();
-				
-				
-					
-				
-				$contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod")); 
-				
-				if($contenidoModuleHandler->existModul()) {
-				    $md5 = md5(time().rand(0,time()));
-		            $this->set("alias",$this->get("alias").substr($md5,0,4));
-		            $this->store();  
+    		if(is_dir($cfgClient[$client]['path']['frontend'].Contenido_Module_Handler::$MODUL_DIR_NAME.$modulAlias)) {
+    			$notification->displayNotification('error', i18n("Modul exist!"));
+    			return false ;
+    		}else {
+    			
+    			#save it in db-table
+    			$this->store();
+    			$contenidoModuleHandler = new Contenido_Module_Handler($this->get('idmod'));
+    			if(!$contenidoModuleHandler->makeNewModul($inputOutput["input"], $inputOutput["output"])) {
+    				$notification->displayNotification('error', i18n("Culd not make a modul!"));
+    				return false;
+				}else {
+					#save the modul data to modul info file
+					$contenidoModuleHandler->saveInfoXML();
 				}
-				 
-				    $contenidoModuleHandler->renameModul($oldName , $this->get("alias"));
-				    $contenidoModuleHandler->setNewModulName($this->get("alias"));
-				    $contenidoModuleHandler->saveInput($inputOutput["input"]);
-				    $contenidoModuleHandler->saveOutput($inputOutput["output"]); 
-			}
-			return true;
-    	} else {
-    		return false;	
+    		}
+    	}else {
+    		$notification->displayNotification('error', i18n("Culd not parse xml file!"));
+    		return false;
     	}
+    	
+    	return true;
     }
+    
+    /**
+     * 
+     * Add recrusive folder to zip archive
+     * @param string $dir direcotry name
+     * @param string $zipArchive name of the archive
+     * @param string $zipdir
+     */
+    
+    private function _addFolderToZip($dir, $zipArchive, $zipdir = ''){
+    if (is_dir($dir)) {
+        if ($dh = opendir($dir)) {
+
+            //Add the directory
+            if(!empty($zipdir)) $zipArchive->addEmptyDir($zipdir);
+          
+            // Loop through all the files
+            while (($file = readdir($dh)) !== false) {
+          
+                //If it's a folder, run the function again!
+                if(!is_file($dir . $file)){
+                    // Skip parent and root directories
+                    if( ($file !== ".") && ($file !== "..")){
+                        $this->_addFolderToZip($dir . $file . "/", $zipArchive, $zipdir . $file . "/");
+                    }
+                  
+                }else{
+                    // Add the files
+                    if( $zipArchive->addFile($dir . $file, $zipdir . $file)=== FALSE)
+                    {
+                    	$notification = new Contenido_Notification();
+                    	$notification->displayNotification('error', i18n("Could not add file to zip: !").$file);
+                    }
+                  
+                }
+            	}
+       	 }
+    	}
+	} 
 
 	/**
 	 * export
-     * Exports the specified module strings to a file
+     * Exports the specified module  to a zip file
 	 *
-	 * @param $filename string Filename to return
-	 * @param $return	boolean if false, the result is immediately sent to the browser 
      */    
-    function export ($filename, $return = false)
+    function export ()
     {
-    	cInclude("classes", "class.xmltree.php");
-    	$tree  = new XmlTree('1.0', 'ISO-8859-1');
-    	$root =& $tree->addRoot('module');
-
-		$root->appendChild("name", htmlspecialchars($this->get("name")));    		
-		$root->appendChild("description", htmlspecialchars($this->get("description")));
-		$root->appendChild("type", htmlspecialchars($this->get("type")));
-		$root->appendChild("alias", htmlspecialchars($this->get("alias")));
-	    global $cfg,$client,$db;
-	   
-	    $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));                 
-        
-	    #if modul exist in filesystem load input and output from file.
-	    if($contenidoModuleHandler->existModul() == true ) {
-	        
-	        $root->appendChild("input", htmlspecialchars($contenidoModuleHandler->readInput()));
-		    $root->appendChild("output",htmlspecialchars($contenidoModuleHandler->readOutput()));
-	        
-	    } else {    #try to load from db-table
-
-	        $root->appendChild("input", htmlspecialchars(""));
-		    $root->appendChild("output", htmlspecialchars(""));
-	    }
-         
-         
-		
-		
-    	if ($return == false)
-    	{
-			header("Content-Type: text/xml");
-    		header("Etag: ".md5(mt_rand()));
-    		header("Content-Disposition: attachment;filename=\"$filename\"");
-    		$tree->dump(false);
-    	} else {
-    		return stripslashes($tree->dump(true));	
-    	}	
+    	$notification = new Contenido_Notification();
+    	$contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
+    	#exist modul 
+    	if($contenidoModuleHandler->existModul() == true ) {
+    		$zip = new ZipArchive();
+    		$zipName = $this->get('alias').'.zip';
+    		if($zip->open($zipName,ZipArchive::CREATE) === TRUE) {
+    			$this->_addFolderToZip($contenidoModuleHandler->getModulPath() , &$zip);
+    			
+    			
+    			$zip->close();
+    			// Stream the file to the client
+				header("Content-Type: application/zip");
+				header("Content-Length: " . filesize($zipName));
+				header("Content-Disposition: attachment; filename=\"$zipName\"");
+				readfile($zipName);
+				#erase the file  
+    			unlink($zipName);
+    		}else {
+    			$notification->displayNotification('error', i18n("Could not open the zip-File!"));
+    		}
+    		
+    	}else  {
+    		
+    		$notification->displayNotification('error', i18n("Module don't exist on filesystem!"));
+    	}
+    	
     }
+    
+    
+    
     public function getPackageOverview($sFile)
     {
         global $_mImport;
@@ -1027,6 +1131,9 @@ class cApiModuleTranslationCollection extends ItemCollection
             return $string;
         }
     }
+    
+    
+    
 
     public function import($idmod, $idlang, $file)
     {

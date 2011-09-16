@@ -36,10 +36,10 @@
             	<edit>Bearbeiten</edit>
             	<history>Historie</history>
             	<translation>Übersetzung</translation>
-            	<package>Package</package>
             	<template>Template</template>
             	<style>CSS</style>
             	<script>Script</script>
+            	<import-export>Import/Export</import-export>
             </modules>
             <templates>
                 <main>Vorlagen</main>

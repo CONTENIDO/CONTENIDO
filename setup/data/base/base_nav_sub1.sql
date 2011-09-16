@@ -66,6 +66,7 @@ INSERT INTO !PREFIX!_nav_sub VALUES('82', '3', '92', '1', 'navigation/style/modu
 INSERT INTO !PREFIX!_nav_sub VALUES('83', '0', '93', '1', 'navigation/style/modules/template', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('84', '0', '94', '1', 'navigation/style/modules/style', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('85', '0', '95', '1', 'navigation/style/modules/script', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES ('86', '0', '96', '1', 'navigation/style/modules/import-export', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('500', '1', '500', '0', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('502', '0', '500', '1', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('503', '0', '501', '1', 'linkchecker/xml/lang_de_DE.xml;navigation/content/linkchecker/whitelist', '1');

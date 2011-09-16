@@ -114,20 +114,15 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
     {
     	if ($mode == "export")
     	{
-    		$name = uplCreateFriendlyName($module->get("name"));
-    		
-    		if ($name != "")
-    		{
-    			$module->export($name.".xml");
-    		}
+    		$module->export();
     	}
     	if ($mode == "import")
     	{
     		if (file_exists($_FILES["upload"]["tmp_name"]))
     		{    		
-    			if (!$module->import($_FILES["upload"]["tmp_name"]))
+    			if (!$module->import($_FILES['upload']['name'] , $_FILES["upload"]["tmp_name"]))
     			{
-    				$noti .= sprintf(i18n("Error while importing XML file: %s"), $module->_error). "<br>";	
+    				$noti .= sprintf(i18n("Culd not import modul:")). "<br>";	
     			} else {
     				// Load the item again (clearing slashes from import)
     				$module->loadByPrimaryKey($module->get($module->primaryKey));
@@ -482,9 +477,11 @@ window.onload = scrolltheother;
 			$noti .= $notification->returnNotification("warning", i18n("This module uses variables and/or functions which are probably not available in this CONTENIDO version. Please make sure that you use up-to-date modules."));
 			$noti .= "<br>";
 		}
-        	
+        
+		
 		if ($idmod != 0)
 		{
+			
 			$import = new cHTMLRadiobutton("mode", "import");
 			$export = new cHTMLRadiobutton("mode", "export");
 
@@ -525,6 +522,8 @@ window.onload = scrolltheother;
 			} else {
 				$form2->add(i18n("File"), $upload, "vupload");
 			}
+			
+		
 			$form2->setVar("area", $area);
 			$form2->setVar("frame", $frame);
 			$form2->setVar("idmod", $idmod);
@@ -539,8 +538,8 @@ window.onload = scrolltheother;
 								
                             }
                         </script>';
-            
-			$page->setContent($noti.$message.$form->render().$applet."<br>".$form2->render().$sScript);
+            #.$form2->render().$sScript
+			$page->setContent($noti.$message.$form->render().$applet."<br>");
 		}
     		
 		$page->setSubnav("idmod=$idmod", "mod");

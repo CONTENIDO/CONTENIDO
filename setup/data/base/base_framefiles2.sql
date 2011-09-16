@@ -6,6 +6,7 @@ INSERT INTO !PREFIX!_frame_files VALUES('214', '92', '4', '206');
 INSERT INTO !PREFIX!_frame_files VALUES('215', '93', '4', '207');
 INSERT INTO !PREFIX!_frame_files VALUES('216', '94', '4', '208');
 INSERT INTO !PREFIX!_frame_files VALUES('217', '95', '4', '209');
+INSERT INTO !PREFIX!_frame_files VALUES ('218', '96', '4', '210');
 INSERT INTO !PREFIX!_frame_files VALUES ('401', '401', '4', '401');
 INSERT INTO !PREFIX!_frame_files VALUES ('402', '402', '4', '402');
 INSERT INTO !PREFIX!_frame_files VALUES ('403', '403', '4', '403');
