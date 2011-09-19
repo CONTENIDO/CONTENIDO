@@ -432,10 +432,11 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
  * @param  TreeItem  $oRootItem
  * @param  int  $level  Not used at te moment!
  */
-function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level)
-{
+function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $client)
+{	
+
     $dbfs = new DBFSCollection();
-    $dbfs->select("filename = '.'", 'dirname', 'dirname ASC');
+    $dbfs->select("filename = '.' AND idclient=".Contenido_Security::toInteger($client), 'dirname', 'dirname ASC');
     $count = 0;
     $lastlevel = 0;
     $item['.'] = $oRootItem;
