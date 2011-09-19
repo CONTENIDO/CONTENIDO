@@ -6,7 +6,7 @@
             <main>Content</main>
             <article>
                 <main>Artikel</main>
-                <overview>‹bersicht</overview>
+                <overview>√úbersicht</overview>
                 <editor>Editor</editor>
                 <properties>Eigenschaften</properties>
                 <configuration>Konfiguration</configuration>
@@ -14,11 +14,11 @@
             </article>
             <structure>
             	<main>Kategorie</main>
-            	<overview>‹bersicht</overview>
+            	<overview>√úbersicht</overview>
             </structure>
             <upload>
             	<main>Dateiverwaltung</main>
-            	<overview>‹bersicht</overview>
+            	<overview>√úbersicht</overview>
             	<edit>Bearbeiten</edit>
             	<fileupload>Upload</fileupload>
             </upload>
@@ -35,7 +35,7 @@
             	<main>Module</main>
             	<edit>Bearbeiten</edit>
             	<history>Historie</history>
-            	<translation>‹bersetzung</translation>
+            	<translation>√úbersetzung</translation>
             	<template>Template</template>
             	<style>CSS</style>
             	<script>Script</script>
@@ -114,7 +114,7 @@
         </administration>
         <mycontenido>
             <main>My CONTENIDO</main>
-            <overview>‹bersicht</overview>
+            <overview>√úbersicht</overview>
             <recentarticles>Zuletzt bearbeitete Artikel</recentarticles>
             <todolist>Wiedervorlage</todolist>
             <settings>Einstellungen</settings>
@@ -123,8 +123,8 @@
             <main>Extras</main>
             <newsletter>Newsletter</newsletter>
             <mailing>Mailing</mailing>
-            <recipients>Empf‰nger</recipients>
-            <recipientgroups>Empf‰nger-Gruppen</recipientgroups>
+            <recipients>Empf√§nger</recipients>
+            <recipientgroups>Empf√§nger-Gruppen</recipientgroups>
         </extra>
         <info>Info</info>
         <login>Login</login>
