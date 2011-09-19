@@ -4282,7 +4282,7 @@ msgstr "ver&auml;ndert von"
 
 #: includes/include.con_edit_form.php:289
 msgid "Last modified"
-msgstr "Ãnderungsdatum"
+msgstr "&Auml;nderungsdatum"
 
 #: includes/include.con_edit_form.php:293
 msgid "Publishing date"
@@ -5138,15 +5138,15 @@ msgstr "Element ist online / offline (durch Klick &auml;ndern)"
 
 #: templates/standard/template.symbolhelp.html:401
 msgid "Element is protected / accessible (change through click)"
-msgstr "Element ist gesch&uuml;tzt / erreichbar (Ãndern durch Klick)"
+msgstr "Element ist gesch&uuml;tzt / erreichbar (&Auml;ndern durch Klick)"
 
 #: templates/standard/template.symbolhelp.html:439
 msgid "Lock / unlock folder (change through click)"
-msgstr "Kategorie sperren / entsperren (Ãndern durch Klick)"
+msgstr "Kategorie sperren / entsperren (&Auml;ndern durch Klick)"
 
 #: templates/standard/template.symbolhelp.html:451
 msgid "Set folder offline / online (change through click)"
-msgstr "Ordner offline / online setzen (Ãndern durch Klick)"
+msgstr "Ordner offline / online setzen (&Auml;ndern durch Klick)"
 
 #: templates/standard/template.symbolhelp.html:542
 msgid "Create category"
@@ -6133,10 +6133,10 @@ msgstr "Reiter kann nicht angezeigt werden"
 #~ msgstr "Editor schlie&szlig;en"
 
 #~ msgid "Close editor and save changes"
-#~ msgstr "Editor schlie&szlig;en und Ãnderungen speichern"
+#~ msgstr "Editor schlie&szlig;en und &Auml;nderungen speichern"
 
 #~ msgid "Do you want to save changes?"
-#~ msgstr "M&ouml;chten Sie die Ãnderungen speichern?"
+#~ msgstr "M&ouml;chten Sie die &Auml;nderungen speichern?"
 
 #~ msgid "No template assigned to the category<br>and/or the article"
 #~ msgstr ""
