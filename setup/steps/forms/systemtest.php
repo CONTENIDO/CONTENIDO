@@ -387,6 +387,7 @@ class cSetupSystemtest extends cSetupMask
 						i18n("Your GD version doesn't support writing PNG files. This might cause problems with some modules."));
 	}
 	
+	
 	function doMySQLTests ()
 	{
 		
@@ -415,7 +416,7 @@ class cSetupSystemtest extends cSetupMask
 		}
 		
 		
-		
+		$this->runTest(!$this->isSqlModeStrict(),C_SEVERITY_ERROR, i18n('MySQL is running in strict mode') , 'MySql is running in strict mode, CONTENIDO will not running. Please change your sql_mode!' );
 		
 		
 		switch ($_SESSION["setuptype"])
@@ -658,6 +659,31 @@ class cSetupSystemtest extends cSetupMask
 		
 	
 		
+	}
+	/**
+	 * Is mysql strict modus active
+	 * @return boolean true if stric modus is detected
+	 */
+	function isSqlModeStrict() {
+		
+		// host, user and password
+        $aOptions = array(
+            'connection' => array(
+                'host'     => $_SESSION["dbhost"],
+                'user'     => $_SESSION["dbuser"],
+                'password' => $_SESSION["dbpass"]
+            ),
+            'sequenceTable'  => $_SESSION['dbprefix'].'_sequence'
+        );
+        
+		$db = new DB_Contenido($aOptions);
+		$db->query('SELECT LOWER(@@GLOBAL.sql_mode) AS sql_mode');
+		if($db->next_record()) {
+			if(strpos($db->f('sql_mode'), 'strict_trans_tables') !== false || strpos($db->f('sql_mode'), 'strict_all_tables') !== false ) {
+				return true;	
+			}
+		}
+		return false;
 	}
 	
 	function doFilesystemTests ()
