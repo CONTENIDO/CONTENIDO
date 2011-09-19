@@ -235,8 +235,20 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
           return $returnIdMod;
     }
     
-    
-    
+   
+    /**
+     * 
+     * If the first char a '.' return false else true
+     * @param string $file
+     * @return boolean true if the first char !='.' else false
+     */
+    private function _isValidFirstChar($file) {
+    	
+    	if(substr($file,0,1) == '.') {
+    		return false;
+    	}else 
+    		return true;
+    }
     /**
      * 
      * Depend from client,  this method
@@ -262,7 +274,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
                 if ($dh = opendir($dir)) {
                     while (($file = readdir($dh)) !== false) {     
                        #is file a dir or not
-                        if($file != ".." && $file != "." && is_dir($dir.$file."/") ) {
+                        if($this->_isValidFirstChar($file) && is_dir($dir.$file."/") ) {
                              
                         $newFile = capiStrCleanURLCharacters($file);
                         #dir is ok

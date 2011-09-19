@@ -287,6 +287,26 @@ class Contenido_Module_Handler {
     
     /**
      * 
+     * Get the cleaned name 
+     * @param string $name, mod name 
+     * @param string $defaultChar, default character
+     */
+    static function getCleanName($name , $defaultChar = '_') {
+    	//the first character of modul/Layut name should be [a-zA-Z0-9]|_|-
+    	$name = capiStrCleanURLCharacters($name);
+    	//get the first charcte
+    	$firstChar = substr($name,0,1);
+    	if(!preg_match('/^[a-zA-Z0-9]|_|-$/', $firstChar)) {
+    		//replace the first character
+    		$name = $defaultChar.substr($name,1);
+    	}
+    	
+    	return $name;
+    }
+    
+    
+    /**
+     * 
      * Init the vars of the class.
      * 
      * @param array $modulData [idmod],[name],[input],[output],[forntedpath],[client]

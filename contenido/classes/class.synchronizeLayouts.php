@@ -268,6 +268,20 @@ class SynchronizeLayouts  {
 			$notification->displayNotification('info',i18n("Synchronization successfully!"));	
     }
     
+	/**
+     * 
+     * If the first char a '.' return false else true
+     * @param string $file
+     * @return boolean true if the first char !='.' else false
+     */
+    private function _isValidFirstChar($file) {
+    	
+    	if(substr($file,0,1) == '.') {
+    		return false;
+    	}else 
+    		return true;
+    }
+    
    /**
     * 
     * Synchronize the Layout directory with the lay-table und the lay-table
@@ -287,7 +301,7 @@ class SynchronizeLayouts  {
 		if ($dh = opendir($dir)) {
 			while (($file = readdir($dh)) !== false) {
 				#is file a dir or not
-				if($file != ".." && $file != "." && is_dir($dir.$file."/") ) {
+				if($this->_isValidFirstChar($file) && is_dir($dir.$file."/") ) {
 					$newFile = capiStrCleanURLCharacters($file);
 					#dir is ok
 					if($newFile == $file) {

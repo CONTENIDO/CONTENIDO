@@ -42,7 +42,7 @@ if (!isset($idlay)) $idlay = 0;
 
 $page = new cPage;
 $layout = new cApiLayout;
-
+$bReloadSyncSrcipt = false;
 if ($idlay != 0)
 {
 	$layout->loadByPrimaryKey($idlay);	
@@ -99,6 +99,8 @@ if ($action == "lay_new")
 	} else {
 		$layoutSynchronization = new SynchronizeLayouts($cfg, $cfgClient, $lang, $client);
 		$layoutSynchronization->synchronize();
+		#reload the overview of Layouts
+		$bReloadSyncSrcipt = true;
 		
 	}
 	
@@ -290,7 +292,7 @@ if (!$layout->virgin)
 
 $page->setSubnav("idlay=$idlay", "lay");
 
-if (stripslashes($_REQUEST['idlay'])) {
+if (stripslashes($_REQUEST['idlay'] || $bReloadSyncSrcipt)) {
     $sReloadScript = "<script type=\"text/javascript\">
                              var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
                              if (left_bottom) {

@@ -68,8 +68,8 @@ function layEditLayout($idlay, $name, $description, $code) {
         $name = i18n('-- Unnamed Layout --');
     }
     
-    #remove all not allowed characters..
-    $layoutAlias = capiStrCleanURLCharacters($name);
+    #replace all not allowed characters..
+    $layoutAlias = Contenido_Module_Handler::getCleanName($name);
 	
      #constructor for the layout in filesystem
      $layoutInFile = new LayoutInFile($idlay, stripslashes($code), $cfg, $lang);
