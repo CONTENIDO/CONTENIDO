@@ -4335,7 +4335,7 @@ msgstr "Modul &uuml;bersetzen \"%s\""
 
 #: includes/include.mod_translate.php:148
 msgid "Translated Name"
-msgstr "Ãbersetzter Name"
+msgstr "&Uuml;bersetzter Name"
 
 #: includes/include.mod_translate.php:158
 msgid "Original module string"
