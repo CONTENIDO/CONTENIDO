@@ -119,7 +119,7 @@ if ($action == "upl_renamedir")
 ###################
 # File System Tree
 ###################
-$dbfs = new DBFSCollection;
+$dbfs = new cApiDbfsCollection();
 
 if ($action == "upl_delete")
 {
@@ -482,7 +482,7 @@ $tpl->set('d', 'DELETEBUTTON', '');
 $tpl->set('d', 'COLLAPSE', '');
 $tpl->next();
 
-$dbfsc = new DBFSCollection;
+$dbfsc = new cApiDbfsCollection();
 
 $dlevels = array ();
 

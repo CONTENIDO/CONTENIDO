@@ -58,7 +58,7 @@ if ($contenido)
 /* Shorten load time */
 $client = $load_client;
 
-$dbfs = new DBFSCollection;
+$dbfs = new cApiDbfsCollection();
 $dbfs->outputFile($file);
 
 page_close();

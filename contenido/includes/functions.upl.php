@@ -252,7 +252,7 @@ function uplSyncDirectoryDBFS($sPath)
 
     $oUploadsColl = new UploadCollection();
     $oPropertiesColl = new PropertyCollection();
-    $oDBFSColl = new DBFSCollection();
+    $oDBFSColl = new cApiDbfsCollection();
 
     if ($oDBFSColl->dir_exists($sPath)) {
         $sStripPath = $oDBFSColl->strip_path($sPath);
@@ -298,7 +298,7 @@ function uplmkdir($sPath, $sName)
         $sPath = str_replace('dbfs:', '', $sPath);
         $sFullPath = $sPath . '/' . $sName . '/.';
 
-        $dbfs = new DBFSCollection();
+        $dbfs = new cApiDbfsCollection();
         $dbfs->create($sFullPath);
         return;
     }
@@ -435,7 +435,7 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
 function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $client)
 {	
 
-    $dbfs = new DBFSCollection();
+    $dbfs = new cApiDbfsCollection();
     $dbfs->select("filename = '.' AND idclient=".Contenido_Security::toInteger($client), 'dirname', 'dirname ASC');
     $count = 0;
     $lastlevel = 0;

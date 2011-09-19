@@ -67,7 +67,7 @@ $upl_last_path = $path;
 
 $uploads = new UploadCollection;
 
-$dbfs = new DBFSCollection;
+$dbfs = new cApiDbfsCollection();
 
 if (is_dbfs($path))
 {

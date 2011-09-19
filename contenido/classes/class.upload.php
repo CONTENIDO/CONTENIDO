@@ -135,7 +135,7 @@ class UploadCollection extends ItemCollection
 
         // delete from dbfs or filesystem
         if (is_dbfs($sDirFileName)) {
-            $oDbfs = new DBFSCollection();
+            $oDbfs = new cApiDbfsCollection();
             $oDbfs->remove($sDirFileName);
         } elseif (file_exists($cfgClient[$client]['upl']['path'] . $sDirFileName)) {
             unlink($cfgClient[$client]['upl']['path'] . $sDirFileName);
@@ -218,7 +218,7 @@ class UploadItem extends Item
 
         $iFileSize = 0;
         if ($bIsDbfs) {
-            $oDbfsCol = new DBFSCollection();
+            $oDbfsCol = new cApiDbfsCollection();
             $iFileSize = $oDbfsCol->getSize($sFilePathName);
         } elseif (file_exists($sFilePathName)) {
             $iFileSize = filesize($sFilePathName);

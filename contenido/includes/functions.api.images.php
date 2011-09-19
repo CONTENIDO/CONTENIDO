@@ -649,7 +649,7 @@ function capiImgScale ($img, $maxX, $maxY, $crop = false, $expand = false,
 	if (is_dbfs($sRelativeImg))
 	{
 		// This check should be faster than a file existance check
-		$dbfs = new DBFSCollection;
+		$dbfs = new cApiDbfsCollection();
     			
 		$file = basename($sRelativeImg);
     			
