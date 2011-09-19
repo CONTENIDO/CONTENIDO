@@ -241,6 +241,7 @@ contenido/classes/contenido/class.categorytree.php -text
 contenido/classes/contenido/class.client.php -text
 contenido/classes/contenido/class.clientslang.php -text
 contenido/classes/contenido/class.code.php -text
+contenido/classes/contenido/class.communication.php -text
 contenido/classes/contenido/class.container.php -text
 contenido/classes/contenido/class.containerconfig.php -text
 contenido/classes/contenido/class.file.php -text

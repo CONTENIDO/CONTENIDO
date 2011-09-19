@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-class TODOCollection extends CommunicationCollection
+class TODOCollection extends cApiCommunicationCollection
 {
     public function __construct()
     {
@@ -120,7 +120,7 @@ class TODOCollection extends CommunicationCollection
 }
 
 
-class TODOItem extends CommunicationItem
+class TODOItem extends cApiCommunication
 {
     public function setProperty ($type, $name, $value)
     {

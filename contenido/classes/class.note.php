@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-class NoteCollection extends CommunicationCollection
+class NoteCollection extends cApiCommunicationCollection
 {
     public function __construct()
     {
@@ -102,7 +102,7 @@ class NoteCollection extends CommunicationCollection
 
 }
 
-class NoteItem extends CommunicationItem
+class NoteItem extends cApiCommunication
 {
 
 }
