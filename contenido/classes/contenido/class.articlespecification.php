@@ -72,4 +72,50 @@ class cApiArticleSpecification extends Item
     }
 }
 
+
+################################################################################
+# Old versions of article item collection and article item classes
+#
+# NOTE: Class implemetations below are deprecated and the will be removed in 
+#       future versions of contenido.
+#       Don't use them, they are still available due to downwards compatibility.
+
+
+/**
+ * Article specification collection
+ * @deprecated  [2011-09-19] Use cApiArticleSpecificationCollection instead of this class.
+ */
+class ArtSpecCollection extends cApiArticleSpecificationCollection
+{
+    public function __construct()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__ . " use " . get_parent_class($this));
+        parent::__construct();
+    }
+    public function ArtSpecCollection()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
+}
+
+
+/**
+ * Article specification Item
+ * @deprecated  [2011-09-19] Use cApiArticleSpecification instead of this class.
+ */
+class ArtSpecItem extends cApiArticleSpecification
+{
+    public function __construct($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__ . " use " . get_parent_class($this));
+        parent::__construct($mId);
+    }
+    public function ArtSpecItem($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct($mId);
+    }
+}
+
 ?>

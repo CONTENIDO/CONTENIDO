@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2011-09-15
+ *     created  2011-09-19
  * }}
  */
 
@@ -45,8 +45,8 @@ return array(
     'Art' => 'contenido/classes/class.art.php',
     'Article' => 'contenido/classes/class.article.php',
     'ArticleCollection' => 'contenido/classes/class.article.php',
-    'ArtSpecCollection' => 'contenido/classes/class.artspec.php',
-    'ArtSpecItem' => 'contenido/classes/class.artspec.php',
+    'ArtSpecCollection' => 'contenido/classes/contenido/class.articlespecification.php',
+    'ArtSpecItem' => 'contenido/classes/contenido/class.articlespecification.php',
     'Contenido_Autoload' => 'contenido/classes/class.autoload.php',
     'Contenido_Backend' => 'contenido/classes/class.backend.php',
     'Cat' => 'contenido/classes/class.cat.php',
