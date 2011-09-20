@@ -18,7 +18,7 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * @deprecated [2011-09-19] Use new classes in contenido/classes/contenido/class.articlespecification.php
+ * @deprecated [2011-09-19] Use new classes in contenido/classes/contenido/class.article.specification.php
  *                          - Use cApiArticleSpecificationCollection instead of ArtSpecCollection
  *                          - Use cApiArticleSpecification instead of ArtSpecItem
  *
