@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Frontend user list
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend includes
  * @version    1.1.9
@@ -18,101 +18,94 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
-$oPage = new cPage;
+$oPage = new cPage();
 //
 ///* Set default values */
 $oUser = new cApiUser($auth->auth["uid"]);
 if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] <= 0) {
-	$_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
+    $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
 if (!is_numeric($_REQUEST['elemperpage'])) {
-	$_REQUEST['elemperpage'] = 25;
+    $_REQUEST['elemperpage'] = 25;
 }
 $oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
 unset ($oUser);
 
 if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['page'] <= 0 || $_REQUEST["elemperpage"] == 0) {
-	$_REQUEST["page"] = 1;
+    $_REQUEST["page"] = 1;
 }
 
 $aFieldsToSearch = array("--all--" => i18n("-- All fields --"), "username" => i18n("Username"));
 $aFieldsToSort = array("username" => i18n("Username"));
 
 $aFieldSources = array();
-$aFieldSources["username"] = "base"; 
+$aFieldSources["username"] = "base";
 
 $bUsePlugins = getEffectiveSetting("frontendusers", "pluginsearch", "true");
 
-if ($bUsePlugins == "false")
-{
-	$bUsePlugins = false;	
+if ($bUsePlugins == "false") {
+    $bUsePlugins = false;
 } else {
-	$bUsePlugins = true;	
+    $bUsePlugins = true;
 }
 
-if (is_array($cfg['plugins']['frontendusers']))
-{
-	foreach ($cfg['plugins']['frontendusers'] as $plugin)
-	{
-		plugin_include("frontendusers", $plugin."/".$plugin.".php");
-	}
+if (is_array($cfg['plugins']['frontendusers'])) {
+    foreach ($cfg['plugins']['frontendusers'] as $plugin) {
+        plugin_include("frontendusers", $plugin."/".$plugin.".php");
+    }
 }
 
-if ($bUsePlugins == true)
-{
-	if (is_array($cfg['plugins']['frontendusers']))
-	{
-		$_sValidPlugins = getEffectiveSetting("frontendusers", "pluginsearch_valid_plugins", '');
-		$_aValidPlugins = array();
-		if (strlen($_sValidPlugins)>0) {
-			$_aValidPlugins = explode(',', $_sValidPlugins);
-		}
-		$_iCountValidPlugins = sizeof($_aValidPlugins);
-		foreach ($cfg['plugins']['frontendusers'] as $plugin)
-		{
-			if ($_iCountValidPlugins == 0 || in_array($plugin, $_aValidPlugins)) {
-				if (function_exists("frontendusers_".$plugin."_wantedVariables") && function_exists("frontendusers_".$plugin."_canonicalVariables"))
-				{
-					$aVariableNames = call_user_func("frontendusers_".$plugin."_canonicalVariables");
-					
-					if (is_array($aVariableNames))
-					{
-						$aTmp = array_merge($aFieldsToSearch, $aVariableNames);
-						$aFieldsToSearch = $aTmp; 
-						
-						$aTmp2 = array_merge($aFieldsToSort, $aVariableNames);
-						$aFieldsToSort = $aTmp2;
-						
-						foreach ($aVariableNames as $sVariableName => $name)
-						{
-							$aFieldSources[$sVariableName] = $plugin;	
-						}
-					}
-				}
-			}
-		}
-	}
+if ($bUsePlugins == true) {
+    if (is_array($cfg['plugins']['frontendusers'])) {
+        $_sValidPlugins = getEffectiveSetting("frontendusers", "pluginsearch_valid_plugins", '');
+        $_aValidPlugins = array();
+        if (strlen($_sValidPlugins)>0) {
+            $_aValidPlugins = explode(',', $_sValidPlugins);
+        }
+        $_iCountValidPlugins = sizeof($_aValidPlugins);
+        foreach ($cfg['plugins']['frontendusers'] as $plugin) {
+            if ($_iCountValidPlugins == 0 || in_array($plugin, $_aValidPlugins)) {
+                if (function_exists("frontendusers_".$plugin."_wantedVariables") && 
+                function_exists("frontendusers_".$plugin."_canonicalVariables"))
+                {
+                    $aVariableNames = call_user_func("frontendusers_".$plugin."_canonicalVariables");
+
+                    if (is_array($aVariableNames)) {
+                        $aTmp = array_merge($aFieldsToSearch, $aVariableNames);
+                        $aFieldsToSearch = $aTmp;
+
+                        $aTmp2 = array_merge($aFieldsToSort, $aVariableNames);
+                        $aFieldsToSort = $aTmp2;
+
+                        foreach ($aVariableNames as $sVariableName => $name) {
+                            $aFieldSources[$sVariableName] = $plugin;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 $aSortOrderOptions = array ("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
 
 $oListOptionRow = new cFoldingRow("f081b6ab-370d-4fd8-984f-6b38590fe48b", i18n("List options"));
-									
+
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelectItemsPerPage->autoFill(array(25 => 25, 50 => 50, 75 => 75, 100 => 100));
 $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
@@ -132,15 +125,14 @@ $oSelectSearchIn = new cHTMLSelectElement("searchin");
 $oSelectSearchIn->autoFill($aFieldsToSearch);
 $oSelectSearchIn->setDefault($_REQUEST["searchin"]);
 
-$fegroups = new FrontendGroupCollection;
+$fegroups = new cApiFrontendGroupCollection();
 $fegroups->setWhere("idclient", $client);
 $fegroups->query();
 
 $aFEGroups = array("--all--" => i18n("-- All Groups --"));
 
-while ($fegroup = $fegroups->next())
-{
-	$aFEGroups[$fegroup->get("idfrontendgroup")] = $fegroup->get("groupname");	
+while ($fegroup = $fegroups->next()) {
+    $aFEGroups[$fegroup->get("idfrontendgroup")] = $fegroup->get("groupname");
 }
 
 $oSelectRestrictGroup = new cHTMLSelectElement("restrictgroup");
@@ -149,32 +141,29 @@ $oSelectRestrictGroup->setDefault($_REQUEST["restrictgroup"]);
 
 $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
 
-$oFEUsers = new FrontendUserCollection;
+$oFEUsers = new FrontendUserCollection();
 $oFEUsers->setWhere("FrontendUserCollection.idclient", $client);
 
-if (strlen($_REQUEST["filter"]) > 0 && $bUsePlugins == false)
-{
-	$oFEUsers->setWhere("FrontendUsercollection.username", $_REQUEST["filter"], "diacritics");
+if (strlen($_REQUEST["filter"]) > 0 && $bUsePlugins == false) {
+    $oFEUsers->setWhere("FrontendUsercollection.username", $_REQUEST["filter"], "diacritics");
 }
 
-if ($_REQUEST["restrictgroup"] != "" && $_REQUEST["restrictgroup"] != "--all--")
-{
-	$oFEUsers->link("FrontendGroupMemberCollection");
-	$oFEUsers->setWhere("FrontendGroupMemberCollection.idfrontendgroup", $_REQUEST["restrictgroup"]);
+if ($_REQUEST["restrictgroup"] != "" && $_REQUEST["restrictgroup"] != "--all--") {
+    $oFEUsers->link("cApiFrontendGroupMemberCollection");
+    $oFEUsers->setWhere("cApiFrontendGroupMemberCollection.idfrontendgroup", $_REQUEST["restrictgroup"]);
 }
 
-$mPage 			= $_REQUEST["page"];
-$elemperpage	= $_REQUEST["elemperpage"];
+$mPage             = $_REQUEST["page"];
+$elemperpage    = $_REQUEST["elemperpage"];
 
 $iFullTableCount = 0;
-if ($bUsePlugins == false)
-{
-	$oFEUsers->query();
-	
-	$iFullTableCount = $oFEUsers->count();
-	
-	$oFEUsers->setOrder(implode(" ", array($oSelectSortBy->getDefault(), $oSelectSortOrder->getDefault())));
-	$oFEUsers->setLimit($elemperpage * ($mPage - 1), $elemperpage);
+if ($bUsePlugins == false) {
+    $oFEUsers->query();
+
+    $iFullTableCount = $oFEUsers->count();
+
+    $oFEUsers->setOrder(implode(" ", array($oSelectSortBy->getDefault(), $oSelectSortOrder->getDefault())));
+    $oFEUsers->setLimit($elemperpage * ($mPage - 1), $elemperpage);
 } else {
     $oFEUsers->query();
     $iFullTableCount = $oFEUsers->count();
@@ -189,115 +178,100 @@ $oFEUsers->query();
 
 $aUserTable = array();
 
-while ($feuser = $oFEUsers->next())
-{
-	foreach ($aFieldSources as $key => $field)
-	{
-		$idfrontenduser = $feuser->get("idfrontenduser");
+while ($feuser = $oFEUsers->next()) {
+    foreach ($aFieldSources as $key => $field) {
+        $idfrontenduser = $feuser->get("idfrontenduser");
 
-		$aUserTable[$idfrontenduser]["idfrontenduser"] = $idfrontenduser;
-		
-		switch ($field)
-		{
-			case "base":
-				$aUserTable[$idfrontenduser][$key] = $feuser->get("username");
-				break;	
-			default:
-				if ($_REQUEST["filter"] != "")
-				{
-					$aUserTable[$idfrontenduser][$key] = call_user_func("frontendusers_".$field."_getvalue", $key);
-				}
-				break;
-		}
-	}
-	
-	if ($_REQUEST["filter"] != "")
-	{
-		if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "")
-		{
-			$found = false;
-			
-			foreach ($aUserTable[$idfrontenduser] as $key => $value)
-			{
-				if (stripos($value, $_REQUEST["filter"]) !== false)
-				{
-					$found = true;
-				}
-			}
-			
-			if ($found == false)
-			{
-				unset($aUserTable[$idfrontenduser]);
-			}			
-			
-		} else {
-			if (stripos($aUserTable[$idfrontenduser][$_REQUEST["searchin"]], $_REQUEST["filter"]) === false)
-			{
-				unset($aUserTable[$idfrontenduser]);
-			}
-		}
-	}
+        $aUserTable[$idfrontenduser]["idfrontenduser"] = $idfrontenduser;
+
+        switch ($field) {
+            case "base":
+                $aUserTable[$idfrontenduser][$key] = $feuser->get("username");
+                break;
+            default:
+                if ($_REQUEST["filter"] != "") {
+                    $aUserTable[$idfrontenduser][$key] = call_user_func("frontendusers_".$field."_getvalue", $key);
+                }
+                break;
+        }
+    }
+
+    if ($_REQUEST["filter"] != "") {
+        if ($_REQUEST["searchin"] == "--all--" || $_REQUEST["searchin"] == "") {
+            $found = false;
+
+            foreach ($aUserTable[$idfrontenduser] as $key => $value) {
+                if (stripos($value, $_REQUEST["filter"]) !== false) {
+                    $found = true;
+                }
+            }
+
+            if ($found == false) {
+                unset($aUserTable[$idfrontenduser]);
+            }
+
+        } else {
+            if (stripos($aUserTable[$idfrontenduser][$_REQUEST["searchin"]], $_REQUEST["filter"]) === false) {
+                unset($aUserTable[$idfrontenduser]);
+            }
+        }
+    }
 }
 
-if ($_REQUEST["sortorder"] == "desc")
-{
-	$sortorder = SORT_DESC;	
+if ($_REQUEST["sortorder"] == "desc") {
+    $sortorder = SORT_DESC;
 } else {
-	$sortorder = SORT_ASC;
+    $sortorder = SORT_ASC;
 }
 
-if ($_REQUEST["sortby"])
-{
-	$aUserTable = array_csort($aUserTable, $_REQUEST["sortby"], $sortorder);
+if ($_REQUEST["sortby"]) {
+    $aUserTable = array_csort($aUserTable, $_REQUEST["sortby"], $sortorder);
 } else {
-	$aUserTable = array_csort($aUserTable, "username", $sortorder);
+    $aUserTable = array_csort($aUserTable, "username", $sortorder);
 }
 
-$mlist = new UI_Menu;
+$mlist = new UI_Menu();
 $iMenu = 0;
 $iItemCount = 0;
 
 foreach ($aUserTable as $mkey => $params)
 {
-	$idfrontenduser = $params["idfrontenduser"];
-	$link = new cHTMLLink;
+    $idfrontenduser = $params["idfrontenduser"];
+    $link = new cHTMLLink();
     $link->setMultiLink($area, "", $area, "");
     $link->setCustom("idfrontenduser", $idfrontenduser);
-    
+
     $iItemCount++;
-    
-	if (($iItemCount > ($elemperpage * ($mPage - 1)) && $iItemCount < (($elemperpage * $mPage) + 1)) || $bUsePlugins == false)
-	{    
-    	$iMenu++;
-    	
-		$message = sprintf(i18n("Do you really want to delete the user %s?"), htmlspecialchars($params["username"]));
-	        		
-		$delTitle = i18n("Delete user");
-		$deletebutton = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$message.'\', \'deleteFrontenduser('.$idfrontenduser.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
-							
-    	$mlist->setTitle($iMenu, $params["username"]);
-    	$mlist->setLink($iMenu, $link);		
-    	$mlist->setActions($iMenu, "delete", $deletebutton); 
-    	$mlist->setImage($iMenu, "");	
+
+    if (($iItemCount > ($elemperpage * ($mPage - 1)) && $iItemCount < (($elemperpage * $mPage) + 1)) || $bUsePlugins == false) {
+        $iMenu++;
+
+        $message = sprintf(i18n("Do you really want to delete the user %s?"), htmlspecialchars($params["username"]));
+
+        $delTitle = i18n("Delete user");
+        $deletebutton = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$message.'\', \'deleteFrontenduser('.$idfrontenduser.')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
+
+        $mlist->setTitle($iMenu, $params["username"]);
+        $mlist->setLink($iMenu, $link);
+        $mlist->setActions($iMenu, "delete", $deletebutton);
+        $mlist->setImage($iMenu, "");
 
         if ($_GET['frontenduser'] == $idfrontenduser) {
             $mlist->setExtra($iMenu, 'id="marked" ');
-        }        
-	}
+        }
+    }
 }
 
-if ($bUsePlugins == false)
-{
-	$iItemCount = $iFullTableCount;
+if ($bUsePlugins == false) {
+    $iItemCount = $iFullTableCount;
 }
 
 $deleteScript = '<script>
-      var sid = "'.$sess->id.'";
-      var box = new messageBox("", "", "", 0, 0);
+    var sid = "'.$sess->id.'";
+    var box = new messageBox("", "", "", 0, 0);
 
-      function deleteFrontenduser(idfrontenduser) 
-        {
-  			form = parent.left_top.document.getElementById("filter");
+    function deleteFrontenduser(idfrontenduser) {
+        form = parent.left_top.document.getElementById("filter");
         url  = \'main.php?area=frontend\';
         url += \'&action=frontend_delete\';
         url += \'&frame=4\';
@@ -305,21 +279,21 @@ $deleteScript = '<script>
         url += \'&contenido=\' + sid;
         url += get_registered_parameters();
         url += \'&sortby=\' +form.sortby.value;
-  			url += \'&sortorder=\' +form.sortorder.value;
-  			url += \'&filter=\' +form.filter.value;
-  			url += \'&searchin=\' +form.searchin.value;
-  			url += \'&elemperpage=\' +form.elemperpage.value;
-  			url += \'&restrictgroup=\' +form.restrictgroup.value;
-  			url += \'&page=\' +\''.$mPage.'\';
-  			parent.parent.right.right_bottom.location.href = url;
-        }
-        </script>';
+        url += \'&sortorder=\' +form.sortorder.value;
+        url += \'&filter=\' +form.filter.value;
+        url += \'&searchin=\' +form.searchin.value;
+        url += \'&elemperpage=\' +form.elemperpage.value;
+        url += \'&restrictgroup=\' +form.restrictgroup.value;
+        url += \'&page=\' +\''.$mPage.'\';
+        parent.parent.right.right_bottom.location.href = url;
+    }
+</script>';
 
 $sInitRowMark = "<script type=\"text/javascript\">
-                 if (document.getElementById('marked')) {
-                     row.markedRow = document.getElementById('marked');
-                 }
-            </script>";
+    if (document.getElementById('marked')) {
+        row.markedRow = document.getElementById('marked');
+    }
+</script>";
 
 $oPage->setMargin(0);
 $oPage->addScript('messagebox', '<script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>');
@@ -328,7 +302,7 @@ $oPage->addScript('delete', $deleteScript);
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
 
 //generate current content for Object Pager
-$oPagerLink = new cHTMLLink;
+$oPagerLink = new cHTMLLink();
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setLink("main.php");
 $oPagerLink->setCustom("elemperpage", $elemperpage);
@@ -365,8 +339,8 @@ $sRefreshPager = '
             }
         }
     </script>';
-    
-$oPage->addScript('refreshpager', $sRefreshPager); 
+
+$oPage->addScript('refreshpager', $sRefreshPager);
 $oPage->setContent($mlist->render(false).$sInitRowMark);
 $oPage->render();
 

@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2011-09-19
+ *     created  2011-09-20
  * }}
  */
 
@@ -69,10 +69,6 @@ return array(
     'Form' => 'contenido/classes/class.form.php',
     'FormField' => 'contenido/classes/class.form.php',
     'FormCheck' => 'contenido/classes/class.form.php',
-    'FrontendGroupCollection' => 'contenido/classes/class.frontend.groups.php',
-    'FrontendGroup' => 'contenido/classes/class.frontend.groups.php',
-    'FrontendGroupMemberCollection' => 'contenido/classes/class.frontend.groups.php',
-    'FrontendGroupMember' => 'contenido/classes/class.frontend.groups.php',
     'FrontendLogic' => 'contenido/classes/class.frontend.logic.php',
     'FrontendPermissionCollection' => 'contenido/classes/class.frontend.permissions.php',
     'FrontendPermission' => 'contenido/classes/class.frontend.permissions.php',
@@ -236,6 +232,14 @@ return array(
     'cApiFile' => 'contenido/classes/contenido/class.file.php',
     'cApiFrameFileCollection' => 'contenido/classes/contenido/class.framefile.php',
     'cApiFrameFile' => 'contenido/classes/contenido/class.framefile.php',
+    'cApiFrontendGroupMemberCollection' => 'contenido/classes/contenido/class.frontend.group.member.php',
+    'cApiFrontendGroupMember' => 'contenido/classes/contenido/class.frontend.group.member.php',
+    'FrontendGroupMemberCollection' => 'contenido/classes/contenido/class.frontend.group.member.php',
+    'FrontendGroupMember' => 'contenido/classes/contenido/class.frontend.group.member.php',
+    'cApiFrontendGroupCollection' => 'contenido/classes/contenido/class.frontend.group.php',
+    'cApiFrontendGroup' => 'contenido/classes/contenido/class.frontend.group.php',
+    'FrontendGroupCollection' => 'contenido/classes/contenido/class.frontend.group.php',
+    'FrontendGroup' => 'contenido/classes/contenido/class.frontend.group.php',
     'cApiLanguageCollection' => 'contenido/classes/contenido/class.lang.php',
     'cApiLanguage' => 'contenido/classes/contenido/class.lang.php',
     'cApiLayoutCollection' => 'contenido/classes/contenido/class.layout.php',

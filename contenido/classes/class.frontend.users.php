@@ -105,10 +105,10 @@ class FrontendUserCollection extends ItemCollection
         $item->store();
 
         // Put this user into the default groups
-        $fegroups = new FrontendGroupCollection();
+        $fegroups = new cApiFrontendGroupCollection();
         $fegroups->select("idclient = '".Contenido_Security::toInteger($client)."' AND defaultgroup='1'");
 
-        $members = new FrontendGroupMemberCollection;
+        $members = new cApiFrontendGroupMemberCollection();
 
         $iduser = $item->get("idfrontenduser");
 
@@ -128,7 +128,7 @@ class FrontendUserCollection extends ItemCollection
      */
     public function delete($itemID)
     {
-        $associations = new FrontendGroupMemberCollection();
+        $associations = new cApiFrontendGroupMemberCollection();
         $associations->select("idfrontenduser = '$itemID'");
 
         while ($item = $associations->next()) {
@@ -216,7 +216,7 @@ class FrontendUser extends Item
 
     public function getGroupsForUser()
     {
-        $FrontendGroupMemberCollection = new FrontendGroupMemberCollection();
+        $FrontendGroupMemberCollection = new cApiFrontendGroupMemberCollection();
         $FrontendGroupMemberCollection->setWhere("idfrontenduser", $this->get("idfrontenduser"));
         $FrontendGroupMemberCollection->query();
 

@@ -22,7 +22,7 @@
  * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
- *   created  2003-12-21
+ *   created  2011-09-19
  *
  *   $Id$:
  * }}

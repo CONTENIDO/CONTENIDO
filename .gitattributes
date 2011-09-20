@@ -247,6 +247,8 @@ contenido/classes/contenido/class.containerconfig.php -text
 contenido/classes/contenido/class.dbfs.php -text
 contenido/classes/contenido/class.file.php -text
 contenido/classes/contenido/class.framefile.php -text
+contenido/classes/contenido/class.frontend.group.member.php -text
+contenido/classes/contenido/class.frontend.group.php -text
 contenido/classes/contenido/class.lang.php -text
 contenido/classes/contenido/class.layout.php -text
 contenido/classes/contenido/class.metatag.php -text
