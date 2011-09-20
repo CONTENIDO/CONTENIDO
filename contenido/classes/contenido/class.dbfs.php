@@ -466,7 +466,7 @@ class DBFSItem extends cApiDbfs
     public function DBFSItem($mId = false)
     {
         cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
-        $this->__construct();
+        $this->__construct($mId);
     }
 }
 
