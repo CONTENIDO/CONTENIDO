@@ -437,7 +437,7 @@ $pathstring = 'dbfs:';
 $rootTreeItem = new TreeItem;
 $rootTreeItem->custom["level"] = 0;
 
-uplRecursiveDBDirectoryList("", $rootTreeItem, 2, $client, $client);
+uplRecursiveDBDirectoryList("", $rootTreeItem, 2, $client);
 
 /* Mark all items in the expandedList as expanded */
 foreach ($upldbfsexpandedList as $key => $value)
