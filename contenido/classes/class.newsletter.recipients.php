@@ -247,8 +247,10 @@ class Recipient extends Item
 
         $this->set("lastmodified", date("Y-m-d H:i:s"), false);
         $this->set("modifiedby", $auth->auth["uid"]);
-        parent::store();
+        $success = parent::store();
 
+        // @todo do update below only if code from abve was successfull
+        
         // Update name, email and newsletter type for recipients in pending newsletter jobs
         $sName  = $this->get("name");
         $sEmail = $this->get("email");
@@ -268,6 +270,8 @@ class Recipient extends Item
             $oLog->set("rcpnewstype", $iNewsType);
             $oLog->store();
         }
+
+        return $success;
     }
 }
 

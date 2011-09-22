@@ -211,7 +211,7 @@ class FrontendUser extends Item
 
         $this->set("modified", date("Y-m-d H:i:s"), false);
         $this->set("modifiedby", $auth->auth["uid"]);
-        parent::store();
+        return parent::store();
     }
 
     public function getGroupsForUser()

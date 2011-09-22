@@ -224,7 +224,7 @@ class Newsletter extends Item
             unset ($oItems);
         }
 
-        parent::store();
+        return parent::store();
     }
 
     /**

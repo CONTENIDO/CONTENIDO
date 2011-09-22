@@ -444,11 +444,11 @@ class cApiModule extends Item
 
         if ($bJustStore) {
             // Just store changes, e.g. if specifying the mod package
-            parent::store();
+            $success = parent::store();
         } else {
             cInclude("includes", "functions.con.php");
 
-            parent::store();
+            $success = parent::store();
 
             conGenerateCodeForAllArtsUsingMod($this->get("idmod"));
 
@@ -459,6 +459,7 @@ class cApiModule extends Item
                 }
             }
         }
+        return $success;
     }
 
     protected function _makeFileDirectoryStructure()

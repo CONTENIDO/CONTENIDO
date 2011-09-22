@@ -384,11 +384,7 @@ class User
 
         $this->db->query($sql);
 
-        if ($this->db->affected_rows() < 1) {
-            return false;
-        } else {
-            return true;
-        }
+        return ($this->db->affected_rows() < 1) ? false : true;
     }
 
 

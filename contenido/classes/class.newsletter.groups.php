@@ -161,7 +161,7 @@ class RecipientGroup extends Item
                 $oItem->store();
             }
         }
-        parent::store();
+        return parent::store();
     }
 }
 

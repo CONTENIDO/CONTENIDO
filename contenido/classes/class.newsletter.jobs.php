@@ -497,7 +497,7 @@ class cNewsletterJob extends Item
             $this->set("finished",    date("Y-m-d H:i:s"), false);
         }
 
-        parent::store();
+        return parent::store();
     }
 }
 

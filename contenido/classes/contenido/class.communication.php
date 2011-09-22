@@ -95,7 +95,7 @@ class cApiCommunication extends Item
         $this->set('modifiedby', $auth->auth['uid']);
         $this->set('modified', date('Y-m-d H:i:s'), false);
 
-        parent::store();
+        return parent::store();
     }
 }
 
