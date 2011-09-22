@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Backend includes
  * @version    1.0.0
- * @author     Björn Behrens (HerrB)
+ * @author     Bjï¿½rn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +20,7 @@
  * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
- *   created 2007-01-01, Björn Behrens (HerrB)
+ *   created 2007-01-01, Bjï¿½rn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id$:
@@ -47,8 +47,11 @@ if ($_REQUEST["selDelimiter"] == "") {
 	$_REQUEST["selDelimiter"] = "tab";
 }
 
+$sFileData = '';
 $aFields 		= array();
 $aFieldDetails	= array();
+$aMessage   	= array();
+
 $aFields["name"]							= strtolower(i18n("Name"));
 $aFieldDetails["name"]["fieldtype"]			= "field"; 	// field, plugin or group
 $aFieldDetails["name"]["mandatory"]			= false;	// true or false
@@ -140,10 +143,24 @@ while ($oRcpGroup = $oRcpGroups->next())
 	$aFieldDetails[$sField]["col"]		= -1;
 }
 
-if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipients", "recipients_create")) {	
-	$_REQUEST["txtData"] = trim(stripslashes($_REQUEST["txtData"]));
 
-	if ($_REQUEST["txtData"]) {
+	
+if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipients", "recipients_create")) {	
+	
+	//get content from uploaded file
+	if (file_exists($_FILES['receptionis_file']['tmp_name'])){
+		if(strtolower(substr($_FILES['receptionis_file']['name'], -3)) == 'csv') {
+			$sFileData = file_get_contents($_FILES['receptionis_file']['tmp_name']);
+			if($sFileData == '')
+				$aMessage[] = i18n("The file is empty!");
+		} 
+		else 
+			$aMessage[] = i18n("Wrong mime-type of file!"); 				
+    }else 
+    	$aMessage[] = i18n("Colud not open the file!");
+    			
+
+	if ($sFileData) {
 		switch ($_REQUEST["selDelimiter"])
 		{
 			case "semicolon":
@@ -153,8 +170,8 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 				$sDelimiter = "\t"; //chr(9);		
 		}
 		
-		//echo "<pre>".nl2br(stripslashes($_REQUEST["txtData"]))."</pre>";
-		$aLines 		= explode("\n", stripslashes($_REQUEST["txtData"]));
+		//echo "<pre>".nl2br(stripslashes($sFileData))."</pre>";
+		$aLines 		= explode("\n", stripslashes($sFileData));
 		$iAdded     	= 0;
 		$iDublettes 	= 0;
 		$iInvalid   	= 0;
@@ -162,25 +179,26 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 		$iCol       	= 0;
 		$bStop      	= false;
 		$sMessage		= "";
-		$aMessage   	= array();
 		$aInvalidLines	= array();
 		$oGroupMembers	= new RecipientGroupMemberCollection;
-
 		foreach($aLines as $sLine) {
 			$iRow++;
 
 			$aParts = explode($sDelimiter, trim($sLine));
 			
+			
 			if ($iRow == 1) {
 				$aInvalidLines[] = $sLine;
 				
 				foreach ($aParts as $sHeader) {
-					$sKey = array_search(strtolower(htmlentities(trim($sHeader))), $aFields);
+					//fix for Con-331
+					$sKey = array_search(strtolower(htmlentities($sHeader, ENT_QUOTES, 'UTF-8')), $aFields);
 					if ($sKey === false) {
-						$aMessage[] = sprintf(i18n("Given column header '%s' unknown, column ignored"), $sHeader);
-                	} else {
+						$aMessage[] = sprintf(i18n("Given column header '%s' unknown, column ignored"), htmlentities(trim($sHeader)));
+					} else {
                 		$aFieldDetails[$sKey]["col"] = $iCol;
 						$iCol++;
+						
 					}
 				}
 				foreach ($aFieldDetails as $sKey => $aDetails) {
@@ -322,6 +340,9 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 		if ($iAdded > 0) {
 			$oPage->setReload();
 		}
+	}else {
+			//
+			$sMessage = $sMessage = $notification->returnNotification("error", implode("<br />", $aMessage))."<br />";
 	}
 }
 		
@@ -340,10 +361,14 @@ $oSelDelimiter->autoFill($aItems);
 $oSelDelimiter->setDefault($_REQUEST["selDelimiter"]);
 $oForm->add(i18n("Delimiter"), $oSelDelimiter->render());
 
+$ofileUpload = new cHTMLUpload('receptionis_file');
+
 $oAreaData = new cHTMLTextarea("txtData", $_REQUEST["txtData"], 80, 20);
 
 $sInfo = '<a href="javascript:fncShowHide(\'idInfoText\');"><strong>'.i18n("Import information").'</strong></a>'.
 		 '<div id="idInfoText" style="display: none">'.
+		 '<br /><br /><strong>'.i18n("Specify file:").'</strong>'.
+		 '<br />'.i18n("The file is of type csv and is saved with UTF-8 encoding.").
 		 '<br /><br /><strong>'.i18n("Specify colum types:").'</strong>'.
 		 i18n("<br />The first line must contain the column names; this specifies the column order.<br />&lt;column name&gt;[delimiter]&lt;column name&gt;...").
 		 '<br /><br /><strong>'.i18n("Data structure:").'</strong><br />'.
@@ -353,7 +378,7 @@ $sInfo = '<a href="javascript:fncShowHide(\'idInfoText\');"><strong>'.i18n("Impo
 		 '<br /><br /><strong>'.i18n("The following column names will be recognized:").'</strong><br />'.
 		 implode("<br />\n", $aFields);
 		 			  
-$oForm->add(i18n("Recipients"), $oAreaData->render()."<br />".$sInfo);
+$oForm->add(i18n("Recipients"), $ofileUpload->render()."<br />".$sInfo);
 unset ($sInfo);
 
 $sExecScript = '
@@ -369,7 +394,6 @@ $sExecScript = '
         }
     }
 	</script>';
-
 $oPage->addScript('execscript', $sExecScript);
 $oPage->setContent($sMessage.$oForm->render(true));
 $oPage->render();
