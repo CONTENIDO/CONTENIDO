@@ -1607,14 +1607,19 @@ abstract class Item extends Contenido_ItemBaseAbstract
     }
 
     /**
-     * Loads an item by ID from the database.
+     * Loads an item by colum/field from the database.
      *
      * @param   string  $sField  Specifies the field
      * @param   mixed   $mValue  Specifies the value
+     * @param   bool    $bSafe   Use inFilter or not
      * @return  bool    True if the load was successful
      */
-    public function loadBy($sField, $mValue)
+    public function loadBy($sField, $mValue, $bSafe = true)
     {
+        if ($bSafe) {
+            $mValue = $this->_inFilter ($mValue);
+        }
+
         // check, if cache contains a matching entry
         $aRecordSet = null;
         if ($sField === $this->primaryKey) {
