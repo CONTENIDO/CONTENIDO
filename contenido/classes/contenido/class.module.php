@@ -754,7 +754,7 @@ class cApiModule extends Item
     		$zip = new ZipArchive();
     		$zipName = $this->get('alias').'.zip';
     		if($zip->open($zipName,ZipArchive::CREATE) === TRUE) {
-    			$this->_addFolderToZip($contenidoModuleHandler->getModulPath() , &$zip);
+    			$this->_addFolderToZip($contenidoModuleHandler->getModulPath() , $zip);
     			
     			
     			$zip->close();
