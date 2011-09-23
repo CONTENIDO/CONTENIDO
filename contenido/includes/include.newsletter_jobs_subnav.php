@@ -1,67 +1,63 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Custom subnavigation for the newsletters
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend includes
- * @version    1.0.1
+ * @version    1.0.3
  * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
-if (isset($_GET['idnewsjob']) && (int)$_GET['idnewsjob'] > 0)
-{
-    $sCaption = i18n("View");
-    $tmp_area = "foo2";
+if (isset($_GET['idnewsjob']) && (int) $_GET['idnewsjob'] > 0) {
+    $anchorTpl = '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="%s">%s</a>';
+    $idnewsjob = (int) $_GET['idnewsjob'];
 
-    # Set template data
-    $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
-    $tpl->set("d", "CLASS",     '');
-    $tpl->set("d", "OPTIONS",   '');
-    $tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=news_jobs&frame=4&idnewsjob=$idnewsjob").'">'.$sCaption.'</a>');
+    // Set template data
+    $tpl->set('d', 'ID',      'c_'.$tpl->dyn_cnt);
+    $tpl->set('d', 'CLASS',   '');
+    $tpl->set('d', 'OPTIONS', '');
+    $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=news_jobs&frame=4&idnewsjob=$idnewsjob"), i18n("View")));
     $tpl->next();
 
-    $sCaption = i18n("Details");
-    $tmp_area = "foo2";
-
-    # Set template data
-    $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
-    $tpl->set("d", "CLASS",     '');
-    $tpl->set("d", "OPTIONS",   '');
-    $tpl->set("d", "CAPTION",   '<a class="white" onclick="sub.clicked(this)" target="right_bottom" href="'.$sess->url("main.php?area=news_jobs&action=news_job_details&frame=4&idnewsjob=$idnewsjob").'">'.$sCaption.'</a>');
+    // Set template data
+    $tpl->set('d', 'ID',      'c_'.$tpl->dyn_cnt);
+    $tpl->set('d', 'CLASS',   '');
+    $tpl->set('d', 'OPTIONS', '');
+    $tpl->set('d', 'CAPTION', sprintf($anchorTpl, $sess->url("main.php?area=news_jobs&action=news_job_details&frame=4&idnewsjob=$idnewsjob"), i18n("Details")));
     $tpl->next();
-        
+
     $tpl->set('s', 'COLSPAN', ($tpl->dyn_cnt * 2) + 2);
 
-    # Generate the third navigation layer
-    $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
+    // Generate the third navigation layer
+    $tpl->generate($cfg['path']['templates'] . $cfg['templates']['subnav']);
 } else {
-    include ($cfg["path"]["contenido"].$cfg["path"]["templates"] . $cfg["templates"]["right_top_blank"]);
+    include($cfg['path']['contenido'].$cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
 }
 
 ?>

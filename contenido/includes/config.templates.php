@@ -11,7 +11,7 @@
  * 
  *
  * @package    CONTENIDO Backend includes
- * @version    1.4.0
+ * @version    1.4.1
  * @author     Bjoern Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -62,13 +62,7 @@ $cfg['templates']['right_top_blank']      = 'template.right_top_blank.html';
 
 $cfg['templates']['admin_frontend']      = 'template.admin_frontend.html';
 
-/* TODO: HerrB: Not needed anymore (including the files!)*/
 $cfg['templates']['newsletter_left_top']  = 'template.newsletter_left_top.html';
-$cfg['templates']['newsletter_menu']      = 'template.newsletter_menu.html';
-$cfg['templates']['newsletter_edit']      = 'template.newsletter_edit.html';
-$cfg['templates']['recipient_left_top']   = 'template.recipient_left_top.html';
-$cfg['templates']['recipient_menu']       = 'template.recipient_menu.html';
-$cfg['templates']['recipient_edit']       = 'template.recipient_edit.html';
 
 $cfg['templates']['con_edit_form']        = 'template.con_edit_form.html';
 $cfg['templates']['con_str_overview']     = 'template.con_str_overview.html';

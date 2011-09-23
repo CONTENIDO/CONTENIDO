@@ -1524,12 +1524,7 @@ contenido/templates/standard/template.mycontenido_lastarticles.html -text
 contenido/templates/standard/template.mycontenido_settings.html -text
 contenido/templates/standard/template.mycontenido_start.html -text
 contenido/templates/standard/template.mycontenido_subnav.html -text
-contenido/templates/standard/template.newsletter_edit.html -text
 contenido/templates/standard/template.newsletter_left_top.html -text
-contenido/templates/standard/template.newsletter_menu.html -text
-contenido/templates/standard/template.recipient_edit.html -text
-contenido/templates/standard/template.recipient_left_top.html -text
-contenido/templates/standard/template.recipient_menu.html -text
 contenido/templates/standard/template.request_password.html -text svneol=unset#text/plain
 contenido/templates/standard/template.right_top_blank.html -text
 contenido/templates/standard/template.rights_create.html -text
