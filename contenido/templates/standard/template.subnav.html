@@ -1,5 +1,5 @@
 <html>
-<!-- subnav template -->
+<!-- template.subnav, @fixme: merge with template.default_subnav, template.subnav_blank, template.file_subnav -->
 <head>
     <title></title>
     <meta http-equiv="expires" content="0">
@@ -8,13 +8,8 @@
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/subnav.js"></script>
-    <style type="text/css">
-    .frame_handle {float:left;}
-    .frame_handle img {border:none; float:left;}
-    .frame_handle img#toggleimage {margin:7px 0 0 7px; float:none;}
-    </style>
 </head>
-<body>
+<body class="page_subnav">
 
 <div id="navcontainer">
     <div class="frame_handle">
@@ -34,7 +29,6 @@ $(document).ready(function() {
         parent.parent.frameResize.init();    
         sub.init();
     }
-
     $("#toggleimage").click(function(){
         parent.parent.frameResize.toggle();
     });

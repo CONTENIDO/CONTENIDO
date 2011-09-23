@@ -1,57 +1,40 @@
 <html>
-
+<!-- template.default_subnav, @fixme: merge with template.subnav, template.subnav_blank, template.file_subnav -->
 <head>
-  <title></title>
-  
-  <meta http-equiv="expires" content="0">
-  <meta http-equiv="cache-control" content="no-cache">
-  <meta http-equiv="pragma" content="no-cache">    
-  
-  <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
-  
-  <script type="text/javascript" src="scripts/subnav.js"></script>
-  <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SESSID}"></script>
-  
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  
-  <style type="text/css">
-  <!--
-    div.menuless {
-		padding-left: 250px;
-	}
-    div.menuless .frame_handle {
-		display: none;
-	}
-  -->
-  </style>
+    <title></title>
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">    
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="scripts/subnav.js"></script>
+    <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SESSID}"></script>
 </head>
-
-<body>
+<body class="page_subnav">
 
 <div id="navcontainer" class="{CLASS}">
-  
-  <div style="float:left;" class="frame_handle">
-    <img src="images/frame_handle_re.gif" style="border:0px;float:left;">
-    <img style="margin:7px 0 0 7px;" id="toggleimage" onClick="parent.parent.frameResize.toggle()" src="images/spacer.gif" border="0">
-  </div>
-  
-  <ul id="navlist">
-    <!-- BEGIN:BLOCK -->
-      <li id="{ID}" class="{CLASS}">{CAPTION}</li>
-    <!-- END:BLOCK -->
-  </ul>
-  
+    <div class="frame_handle">
+        <img src="images/frame_handle_re.gif" alt="">
+        <img id="toggleimage" src="images/spacer.gif" alt="">
+    </div>
+    <ul id="navlist">
+        <!-- BEGIN:BLOCK -->
+        <li id="{ID}">{CAPTION}</li>
+        <!-- END:BLOCK -->
+    </ul>
 </div>
 
-
 <script type="text/javascript">
-  if (parent.parent.frames[0].name != "header")
-  {
-    parent.parent.frameResize.init();  
-  }
-  sub.init();
+$(document).ready(function() {
+    if (parent.parent.frames[0].name != "header") {
+        parent.parent.frameResize.init();    
+        sub.init();
+    }
+    $("#toggleimage").click(function(){
+        parent.parent.frameResize.toggle();
+    });
+});
 </script>
 
 </body>
-
 </html>

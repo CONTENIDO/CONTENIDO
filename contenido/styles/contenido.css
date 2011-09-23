@@ -1151,7 +1151,7 @@ p.column_header {padding: 0; font-weight: bold;}
 
 /**
  * #############################################################################
- * @section INUSE
+ * @section Inuse
  */
 .inuse_info {
     height: 200px;
@@ -1179,4 +1179,27 @@ p.column_header {padding: 0; font-weight: bold;}
 }
 .inuse_info .inuse_name {
     width: 245px;
+}
+
+
+/**
+ * #############################################################################
+ * @section Frame_Sub_Navigation
+ */
+.page_subnav .frame_handle {
+    float: left;
+}
+.page_subnav .frame_handle img {
+    border: none;
+    float: left;
+}
+.page_subnav .frame_handle img#toggleimage {
+    margin: 7px 0 0 7px;
+    float: none;
+}
+.page_subnav div.menuless {
+    padding-left: 250px;
+}
+.page_subnav div.menuless .frame_handle {
+    display: none;
 }
