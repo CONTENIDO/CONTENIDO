@@ -304,42 +304,4 @@ $oActiveUser->startUsersTracking();
 
 page_close();
 
-// [mp]
-$sDebug = '';
-$data = DB_Contenido::getProfileData();
-/*
-foreach ($data as $pos => $item) {
-    if (strpos($item['query'], 'con_upl') === false) {
-        unset($data[$pos]);
-    }
-}
-*/
-$totalTime = 0;
-foreach ($data as $pos => $item) {
-    $totalTime += $item['time'];
-}
-$sDebug .= '<pre>$totalTime: ' . $totalTime . '</pre>';
-$sDebug .= '<pre>$numQueries: ' . count($data) . '</pre>';
-foreach ($data as $pos => $item) {
-    $query = preg_replace('/\s\s+/', ' ', $item['query']);
-    $sDebug .= '<pre>' . $query . '</pre>';
-}
-
-echo '
-<script>
-function mpToggle(){
-    var el = document.getElementById("mpToggle");
-    if (el) {
-        el.style.display = (el.style.display === "block") ? "none" : "block";
-    }
-}
-</script>
-<div>
-    <a href="javascript:mpToggle();" style="color:white;background-color:darkgreen;padding:5px;">toggle</a><br />
-    <div id="mpToggle" style="display:none;">
-    ' . $sDebug . '
-    </div>
-</div>
-';
-
 ?>
