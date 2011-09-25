@@ -1094,6 +1094,11 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
         return ($result) ? true : false;
     }
 
+    /**
+     * Sets the result order part of the query
+     * (e. g. "fieldname", "fieldname DESC", "fieldname DESC, field2name ASC")
+     * @param string $order
+     */
     public function setOrder($order)
     {
         $this->_order = strtolower($order);
@@ -1617,7 +1622,7 @@ abstract class Item extends Contenido_ItemBaseAbstract
     public function loadBy($sField, $mValue, $bSafe = true)
     {
         if ($bSafe) {
-            $mValue = $this->_inFilter ($mValue);
+            $mValue = $this->_inFilter($mValue);
         }
 
         // check, if cache contains a matching entry
@@ -1801,6 +1806,36 @@ abstract class Item extends Contenido_ItemBaseAbstract
         }
 
         return ($this->db->affected_rows() < 1) ? false : true;
+    }
+
+    /**
+     * Returns current item data as an assoziative array.
+     *
+     * @return array|false
+     */
+    public function toArray()
+    {
+        if ($this->virgin == true) {
+            $this->lasterror = 'No item loaded';
+            return false;
+        }
+
+        $aReturn = array();
+        foreach ($this->values as $field => $value) {
+            $aReturn[$field] = $this->getField($field);
+        }
+        return $aReturn;
+    }
+
+    /**
+     * Returns current item data as an object.
+     *
+     * @return stdClass|false
+     */
+    public function toObject()
+    {
+        $return = $this->toArray();
+        return (false !== $return) ? (object) $return : $return;
     }
 
     /**
