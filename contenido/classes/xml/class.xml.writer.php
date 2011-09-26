@@ -53,7 +53,7 @@ class ContenidoXmlWriter extends DOMDocument {
 	public function addElement($sName, $sValue = '', $oRootElement = null, $aAttributes = array()) {
 		$oElement = $this->createElement($sName, $sValue);
 		
-		$this->_addElementAttributes($oElement, $aAttributes);
+		$this->_addElementAttributes(&$oElement, $aAttributes);
 		
 		if ($oRootElement === null) {
 			$this->appendChild($oElement);
