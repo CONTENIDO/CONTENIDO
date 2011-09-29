@@ -234,6 +234,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         $aMetaTags[] = array('name' => 'generator', 'content' => 'CMS CONTENIDO ' . $sContenidoVersion);
 
         // Add content type meta tag
+        // @todo html5 requires something like <meta charset="{encoding}">
         if (getEffectiveSetting('generator', 'xhtml', 'false') == 'true') {
             $aMetaTags[] = array('http-equiv' => 'Content-Type', 'content' => 'application/xhtml+xml; charset='.$encoding[$this->_lang]);
         } else {
@@ -295,8 +296,10 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         foreach ($aMetaTags as $value) {
             // decode entities and htmlspecialchars, content will be converted later using htmlspecialchars()
             // by render() function
-            $value['content'] = html_entity_decode($value['content'], ENT_QUOTES, strtoupper($encoding[$this->_lang]));
-            $value['content'] = htmlspecialchars_decode($value['content'], ENT_QUOTES);
+            if (isset($value['content'])) {
+                $value['content'] = html_entity_decode($value['content'], ENT_QUOTES, strtoupper($encoding[$this->_lang]));
+                $value['content'] = htmlspecialchars_decode($value['content'], ENT_QUOTES);
+            }
 
             // build up metatag string
             $oMetaTagGen = new cHTML();
