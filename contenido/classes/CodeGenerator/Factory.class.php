@@ -30,10 +30,10 @@ class Contenido_CodeGenerator_Factory
     /**
      * Returns code generator instance by it's name.
      *
-     * @param  string  $name  The generator name, e. g. 'Standard' to retrieve instance of 
+     * @param  string  $name  The generator name, e. g. 'Standard' to retrieve instance of
      *                        Contenido_CodeGenerator_Standard
      * @return Contenido_CodeGenerator_Abstract
-     * @throws InvalidArgumentException  If name is invalid, class file is missing or 
+     * @throws InvalidArgumentException  If name is invalid, class file is missing or
      *                                   class isn't available
      */
     public static function getInstance($name = '')
@@ -52,8 +52,8 @@ class Contenido_CodeGenerator_Factory
         if (!class_exists($className)) {
             $fileName = $name . '.class.php';
             $path     = str_replace('\\', '/', dirname(__FILE__)) . '/';
-            if (!file_exists($path . $fileName)) { 
-                throw new InvalidArgumentException('The classfile couldn\'t included by Contenido_CodeGenerator_Factory: '.$name.'!'); 
+            if (!file_exists($path . $fileName)) {
+                throw new InvalidArgumentException('The classfile couldn\'t included by Contenido_CodeGenerator_Factory: '.$name.'!');
             }
 
             include_once($path . $fileName);

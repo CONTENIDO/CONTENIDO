@@ -32,25 +32,107 @@ if (!defined('CON_FRAMEWORK')) {
 
 abstract class Contenido_CodeGenerator_Abstract
 {
+    /**
+     * CONTENIDO database instance
+     * @var DB_Contenido
+     */
     protected $_db;
 
+    /**
+     * Frontend debug options, see $frontend_debug in cms/config.php
+     * @var array
+     */
     protected $_feDebugOptions = array();
+
+    /**
+     * Debug flag, prints some status messages if enabled.
+     * @var bool
+     */
     protected $_debug = false;
 
+    /**
+     * Collected CSS data for current template
+     * @var string
+     */
     protected $_cssData = '';
+
+    /**
+     * Collected JS data for current template
+     * @var string
+     */
     protected $_jsData = '';
+
+    /**
+     * Template name
+     * @var string
+     */
     protected $_tplName = '';
 
+    /**
+     * Category id
+     * @var int
+     */
     protected $_idcat;
-    protected $_idart;
-    protected $_lang;
-    protected $_client;
-    protected $_layout;
-    protected $_idartlang;
-    protected $_pagetitle;
 
-    protected $_code = '';
-    protected $_output = '';
+    /**
+     * Article id
+     * @var int
+     */
+    protected $_idart;
+
+    /**
+     * Language id
+     * @var int
+     */
+    protected $_lang;
+
+    /**
+     * Client id
+     * @var int
+     */
+    protected $_client;
+
+    /**
+     * Flag to process layout
+     * @var bool
+     */
+    protected $_layout;
+
+    /**
+     * Article language id
+     * @var int
+     */
+    protected $_idartlang;
+
+    /**
+     * Page title (generally from article language table)
+     * @var string
+     */
+    protected $_pageTitle;
+
+    /**
+     * Layout code. Initially with container tags which will be replaced against module outputs.
+     * @var string
+     */
+    protected $_layoutCode = '';
+
+    /**
+     * Module output code prefix
+     * @var array
+     */
+    protected $_modulePrefix = array();
+
+    /**
+     * Module output code
+     * @var string
+     */
+    protected $_moduleCode = '';
+
+    /**
+     * Module output code suffix
+     * @var array
+     */
+    protected $_moduleSuffix = array();
 
 
     public function __construct()
@@ -60,18 +142,41 @@ abstract class Contenido_CodeGenerator_Abstract
     }
 
 
+    /**
+     * Setter for debug property
+     *
+     * @param  bool  $debug
+     */
     public function setDebug($debug)
     {
         $this->_debug = $debug;
     }
 
 
+    /**
+     * Setter for frontend debug options (see $frontend_debug in config.php
+     * located in clients frontend directory)
+     *
+     * @param  bool  $debug
+     */
     public function setFrontendDebugOptions(array $debugOptions)
     {
         $this->_feDebugOptions = $debugOptions;
     }
 
 
+    /**
+     * Generates the code for a specific article (article for a client in a language).
+     *
+     * @param  int   $idcat
+     * @param  int   $idart
+     * @param  int   $lang
+     * @param  int   $client
+     * @param  int   $client
+     * @param  bool  $layout
+     * @return  string  Generated code or error code '0601' if no template
+     *                  configuration was found for category or article.
+     */
     public function generate($idcat, $idart, $lang, $client, $layout = false)
     {
         global $cfg;
@@ -82,21 +187,31 @@ abstract class Contenido_CodeGenerator_Abstract
         $this->_client = (int) $client;
         $this->_layout = (bool) $layout;
 
-        $sql = "SELECT idartlang, pagetitle FROM " . $cfg['tab']['art_lang'] 
+        $sql = "SELECT idartlang, pagetitle FROM " . $cfg['tab']['art_lang']
              . " WHERE idart=" . (int) $this->_idart . " AND idlang=" . (int) $this->_lang;
         $this->_db->query($sql);
         $this->_db->next_record();
 
         $this->_idartlang = $this->_db->f('idartlang');
-        $this->_pagetitle = stripslashes($this->_db->f('pagetitle'));
+        $this->_pageTitle = stripslashes($this->_db->f('pagetitle'));
 
         return $this->_generate();
     }
 
 
+    /**
+     * Generates the code for a specific article (article for a client in a language).
+     * @return  string  The generated code
+     */
     abstract function _generate();
 
 
+    /**
+     * Returns the template configuration id, either by configured article or by
+     * configured category.
+     *
+     * @return int|null
+     */
     protected function _getTemplateConfigurationId()
     {
         // Get configuration for article
@@ -112,7 +227,7 @@ abstract class Contenido_CodeGenerator_Abstract
                 $this->_debug("configuration for category found: $idtplcfg<br><br>");
             }
         }
-        
+
         return (is_numeric($idtplcfg)) ? $idtplcfg : null;
     }
 
@@ -122,15 +237,15 @@ abstract class Contenido_CodeGenerator_Abstract
 
     protected function _getTemplateData()
     {
-        global $db, $cfg;
+        global $cfg;
 
         // Get IDLAY and IDMOD array
         $sql = "SELECT a.idlay AS idlay, a.idtpl AS idtpl, a.name AS name
-                FROM " . $cfg["tab"]["tpl"] . " AS a, " . $cfg["tab"]["tpl_conf"] . " AS b
+                FROM " . $cfg['tab']['tpl'] . " AS a, " . $cfg['tab']['tpl_conf'] . " AS b
                 WHERE b.idtplcfg = " . $this->_idtplcfg . " AND b.idtpl = a.idtpl";
-        $db->query($sql);
-        $db->next_record();
-        $data = $db->toArray();
+        $this->_db->query($sql);
+        $this->_db->next_record();
+        $data = $this->_db->toArray();
 
         if ($this->_layout !== false) {
             $data['idlay'] = $this->_layout;
@@ -142,14 +257,15 @@ abstract class Contenido_CodeGenerator_Abstract
 
 
     /**
-     * Processes replacements of all existing CMS_TAGS within passed code
+     * Processes replacements of all existing CMS_... tags within passed code
      *
      * @param  array   $contentList  Assoziative list of CMS variables
      * @param  bool    $saveKeywords  Flag to save collected keywords during replacement process.
      */
     protected function _processCmsTags($contentList, $saveKeywords = true)
     {
-        // Variables required in content type codes
+        // #####################################################################
+        // NOTE: Variables below are required in evaluated content type codes!
         global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
 
         $idcat = $this->_idcat;
@@ -162,6 +278,7 @@ abstract class Contenido_CodeGenerator_Abstract
             $db2 = new DB_Contenido();
         }
         // End: Variables required in content type codes
+        // #####################################################################
 
         $match = array();
         $keycode = array();
@@ -169,23 +286,23 @@ abstract class Contenido_CodeGenerator_Abstract
         // $a_content is used by code from database evaluated below
         $a_content = $contentList;
 
-        // replace all CMS_TAGS[]
+        // Replace all CMS_TAGS[]
         $sql = 'SELECT type, code FROM ' . $cfg['tab']['type'];
         $db->query($sql);
         while ($db->next_record()) {
             $key = strtolower($db->f('type'));
             $type = $db->f('type');
-            // try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
-#            $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i', $this->_code, $match);
-            $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $this->_code, $match);
-            
+            // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
+#            $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i', $this->_layoutCode, $match);
+            $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $this->_layoutCode, $match);
+
             $a_[$key] = $match[0];
 
             $success = array_walk($a_[$key], 'extractNumber');
 
             $search = array();
             $replacements = array();
-            
+
             foreach ($a_[$key] as $val) {
                 eval($db->f('code'));
 
@@ -194,18 +311,33 @@ abstract class Contenido_CodeGenerator_Abstract
                 $keycode[$type][$val] = $tmp;
             }
 
-            $this->_code = str_ireplace($search, $replacements, $this->_code);
+            $this->_layoutCode = str_ireplace($search, $replacements, $this->_layoutCode);
         }
     }
 
 
+    /**
+     * Processes title tag in page code (layout)
+     */
     abstract protected function _processCodeTitleTag();
 
 
+    /**
+     * Processes all meta tags in page code (layout)
+     */
     abstract protected function _processCodeMetaTags();
 
 
-    protected function _processCmsValueTags($containerCfg, $cId)
+    /**
+     * Replaces all container/module configuration tags (CMS_VALUE[n] values)
+     * against their settings.
+     *
+     * @param int  $containerId  Container id
+     * @param string $containerCfg  A string being formatted like concatenated query
+     *                              parameter, e. g. param1=value1&param2=value2...
+     * @return  string  Concatenated PHP code containing CMS_VALUE variables and their values
+     */
+    protected function _processCmsValueTags($containerId, $containerCfg)
     {
         $containerCfgList = array();
 
@@ -219,26 +351,33 @@ abstract class Contenido_CodeGenerator_Abstract
             }
         }*/
 
-        $CiCMS_Var = '$C' . $cId . 'CMS_VALUE';
-        $CiCMS_VALUE = '';
+        $CiCMS_Var = '$C' . $containerId . 'CMS_VALUE';
+        $CiCMS_Values = array();
 
         foreach ($containerCfgList as $key3 => $value3) {
             $tmp = urldecode($value3);
             $tmp = str_replace("\'", "'", $tmp);
-            $CiCMS_VALUE .= $CiCMS_Var . '[' . $key3 . ']="' . $tmp . '"; ';
-            $this->_output = str_replace("\$CMS_VALUE[$key3]", $tmp, $this->_output);
-            $this->_output = str_replace("CMS_VALUE[$key3]", $tmp, $this->_output);
+            $CiCMS_Values[] = $CiCMS_Var . '[' . $key3 . '] = "' . $tmp . '"; ';
+            $this->_moduleCode = str_replace("\$CMS_VALUE[$key3]", $tmp, $this->_moduleCode);
+            $this->_moduleCode = str_replace("CMS_VALUE[$key3]", $tmp, $this->_moduleCode);
         }
 
-        $this->_output = str_replace("CMS_VALUE", $CiCMS_Var, $this->_output);
-        $this->_output = str_replace("\$" . $CiCMS_Var, $CiCMS_Var, $this->_output);
-        $this->_output = preg_replace("/(CMS_VALUE\[)([0-9]*)(\])/i", '', $this->_output);
+        $this->_moduleCode = str_replace("CMS_VALUE", $CiCMS_Var, $this->_moduleCode);
+        $this->_moduleCode = str_replace("\$" . $CiCMS_Var, $CiCMS_Var, $this->_moduleCode);
+        $this->_moduleCode = preg_replace("/(CMS_VALUE\[)([0-9]*)(\])/i", '', $this->_moduleCode);
 
-        return $CiCMS_VALUE;
+        return implode("\n", $CiCMS_Values);
     }
 
 
-    protected function _processFrontendDebug(array $module, $cId)
+    /**
+     * Extends container code by adding several debug features, if enabled and
+     * configured.
+     *
+     * @param int  $containerId  Container id
+     * @param array $module Recordset as assoziative array of related module (container code)
+     */
+    protected function _processFrontendDebug($containerId, array $module)
     {
         global $cfg;
 
@@ -248,58 +387,85 @@ abstract class Contenido_CodeGenerator_Abstract
 
         $sFeDebug = '';
         if ($this->_feDebugOptions['container_display'] == true) {
-            $sFeDebug .= "Container: CMS_CONTAINER[$cId]\\n";
+            $sFeDebug .= "Container: CMS_CONTAINER[$containerId]\\n";
         }
         if ($this->_feDebugOptions['module_display'] == true) {
-            $sFeDebug .= "Modul: " . $module['name'] . "\\n";
+            $sFeDebug .= "Module: " . $module['name'] . "\\n";
         }
+
         if ($this->_feDebugOptions['module_timing_summary'] == true || $this->_feDebugOptions['module_timing'] == true) {
-            $sFeDebug .= 'Eval-Time: $modtime' . $cId . "\\n";
-            $this->_output = '<?php $modstart' . $cId . '=getmicrotime();?>' . $this->_output . '<?php $modend' . $cId . '=getmicrotime()+0.001; $modtime' . $cId . '=$modend' . $cId . ' - $modstart' . $cId . ';?>';
+            $sFeDebug .= 'Eval-Time: $modTime' . $containerId . "\\n";
+            $this->_modulePrefix[] = '$modStart' . $containerId . ' = getmicrotime(true);';
+            $this->_moduleSuffix[] = '$modEnd' . $containerId . ' = getmicrotime(true);';
+            $this->_moduleSuffix[] = '$modTime' . $containerId . ' = $modEnd' . $containerId . ' - $modStart' . $containerId . ';';
         }
 
         if ($sFeDebug != '') {
-            $this->_output = '<?php echo \'<img onclick="javascript:showmod' . $cId . '();" src="' . $cfg['path']['contenido_fullhtml'] . 'images/but_preview.gif">\'; ?>' . '<br>' . $this->_output;
-            $this->_output = $this->_output . '<?php echo \'<script language="javascript">function showmod' . $cId . '(){window.alert(\\\'\'. "' . addslashes($sFeDebug) . '".\'\\\');} </script>\';?>';
+            $this->_modulePrefix[] = 'echo \'<img onclick="javascript:showmod' . $containerId . '();" src="' . $cfg['path']['contenido_fullhtml'] . 'images/but_preview.gif"><br>\';';
         }
 
         if ($this->_feDebugOptions['module_timing_summary'] == true) {
-            $this->_output .= '<?php $cModuleTimes["' . $cId . '"] = $modtime' . $cId . ';?>';
-            $this->_output .= '<?php $cModuleNames["' . $cId . '"] = "' . addslashes($module['name']) . '";?>';
+            $this->_moduleSuffix[] = 'echo \'<script type="text/javascript">function showmod' . $containerId . '(){window.alert(\\\'\'. "' . addslashes($sFeDebug) . '".\'\\\');} </script>\';';
+            $this->_moduleSuffix[] = '$cModuleTimes["' . $containerId . '"] = $modTime' . $containerId . ';';
+            $this->_moduleSuffix[] = '$cModuleNames["' . $containerId . '"] = "' . addslashes($module['name']) . '";';
         }
     }
 
 
-    protected function _processCmsContainer($cId, $ciCmsValue)
+    /**
+     * Replaces container tag in layout against the parsed container code (module code).
+     *
+     * @param  int  $containerId  Container id
+     */
+    protected function _processCmsContainer($containerId)
     {
-        // Replace new containers
-        $this->_code = preg_replace("/<container( +)id=\\\"$cId\\\"(.*)>(.*)<\/container>/Uis", "CMS_CONTAINER[$cId]", $this->_code);
-        $this->_code = preg_replace("/<container( +)id=\\\"$cId\\\"(.*)\/>/i", "CMS_CONTAINER[$cId]", $this->_code);
-        $this->_code = str_ireplace("CMS_CONTAINER[$cId]", "<?php $ciCmsValue ?>\n" . $this->_output, $this->_code);
-//        $this->_code = addslashes($this->_code);
+        $cmsContainer = "CMS_CONTAINER[$containerId]";
+
+        // Replace new container (<container id="n"..>) against old one (CMS_CONTAINER[n])
+        $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerId\\\"(.*)>(.*)<\/container>/Uis", $cmsContainer, $this->_layoutCode);
+        $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerId\\\"(.*)\/>/i", $cmsContainer, $this->_layoutCode);
+
+        // Concatenate final container/module output code
+        $modulePrefix = "<?php\n" . implode("\n", $this->_modulePrefix) . "\n?>";
+        $moduleSuffix = "<?php\n" . implode("\n", $this->_moduleSuffix) . "\n?>";
+        $moduleOutput = $modulePrefix . $this->_moduleCode . $moduleSuffix;
+
+        // Replace container (CMS_CONTAINER[n]) against the container code
+        $this->_layoutCode = str_ireplace($cmsContainer, $moduleOutput, $this->_layoutCode);
+//        $this->_layoutCode = addslashes($this->_layoutCode);
     }
 
 
+    /**
+     * Returns array of all CMS_... vars being used by current article and language
+     *
+     * @return array like $arr[type][typeid] = value;
+     */
     protected function _getUsedCmsTypesData()
     {
-        global $db, $cfg;
+        global $cfg;
 
         $return = array();
 
         // Find out what kind of CMS_... Vars are in use
-        $sql = "SELECT * FROM " . $cfg['tab']['content'] . " AS A, 
+        $sql = "SELECT * FROM " . $cfg['tab']['content'] . " AS A,
                     " . $cfg['tab']['art_lang'] . " AS B, " . $cfg['tab']['type'] . " AS C
                 WHERE A.idtype = C.idtype AND A.idartlang = B.idartlang AND
                     B.idart = " . $this->_idart . " AND B.idlang = " . $this->_lang;
-        $db->query($sql);
-        while ($db->next_record()) {
-            $return[$db->f('type')][$db->f('typeid')] = $db->f('value');
+        $this->_db->query($sql);
+        while ($this->_db->next_record()) {
+            $return[$this->_db->f('type')][$this->_db->f('typeid')] = $this->_db->f('value');
         }
 
         return $return;
     }
 
 
+    /**
+     * Outputs passed message, if debug is enabled
+     *
+     * @param  string  $msg
+     */
     protected function _debug($msg)
     {
         if ($this->_debug) {

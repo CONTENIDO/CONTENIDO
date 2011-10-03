@@ -28,6 +28,9 @@
 class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 {
 
+    /**
+     * {@inheritdoc}
+     */
     public function _generate()
     {
         global $cfgClient;
@@ -48,10 +51,10 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         Contenido_Vars::setVar('client', $this->_client);
         Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding','UTF-8'));
 
-        // Get category article id
+        // Set category article id
         $idcatart = conGetCategoryArticleId($this->_idcat, $this->_idart);
 
-        // Get configuration for article
+        // Set configuration for article
         $this->_idtplcfg = $this->_getTemplateConfigurationId();
         if (null === $this->_idtplcfg) {
             $this->_processNoConfigurationError();
@@ -60,19 +63,19 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
         $a_c = conGetContainerConfiguration($this->_idtplcfg);
 
-        // Get IDLAY and IDMOD array
+        // Set idlay and idmod array
         $data = $this->_getTemplateData();
         $idlay = $data['idlay'];
         $idtpl = $data['idtpl'];
         $this->_tplName = $data['name'];
-        
+
         // List of used modules
         $a_d = conGetUsedModules($idtpl);
 
-        //Load layout code from file
+        // Load layout code from file
         $layoutInFile = new LayoutInFile($idlay, '', $cfg, $this->_lang);
-        $this->_code = $layoutInFile->getLayoutCode();
-        $this->_code = capiStrNormalizeLineEndings($this->_code, "\n");
+        $this->_layoutCode = $layoutInFile->getLayoutCode();
+        $this->_layoutCode = capiStrNormalizeLineEndings($this->_layoutCode, "\n");
 
         // Create code for all containers
         if ($idlay) {
@@ -85,55 +88,65 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
                     continue;
                 }
 
-                $sql = "SELECT * FROM " . $cfg["tab"]["mod"] . " WHERE idmod=" . $a_d[$value];
-                $db->query($sql);
-                $db->next_record();
-                $module = $db->toArray();
+                $oModule = new cApiModule($a_d[$value]);
+                $module = $oModule->toArray();
+                if (false === $module) {
+#                    continue;
+                    $module = array();
+                }
 
-                $thisModule = '<?php $cCurrentModule = ' . $a_d[$value] . '; ?>';
-                $thisContainer = '<?php $cCurrentContainer = ' . $value . '; ?>';
+                $this->_modulePrefix = '';
+                $this->_moduleCode = '';
+                $this->_moduleSuffix = '';
 
-                $contenidoModuleHandler = new Contenido_Module_Handler($db->f("idmod"));
-                $this->_output = $thisModule.$thisContainer;
-                $input = $thisModule.$thisContainer;
+                $this->_modulePrefix[] = '$cCurrentModule = ' . $a_d[$value] . ';';
+                $this->_modulePrefix[] = '$cCurrentContainer = ' . $value . ';';
 
-                // get the contents of input and output from files and not from db-table
+                $contenidoModuleHandler = new Contenido_Module_Handler($a_d[$value]);
+                $input = '';
+
+                // Get the contents of input and output from files and not from db-table
                 if ($contenidoModuleHandler->existModul() == true) {
-                    $this->_output = $thisModule . $thisContainer . $contenidoModuleHandler->readOutput();
-                    //load css and js content of the js/css files
+                    $this->_moduleCode = $contenidoModuleHandler->readOutput();
+                    // Load css and js content of the js/css files
                     $this->_cssData .= $contenidoModuleHandler->getFilesContent("css", "css");
                     $this->_jsData .= $contenidoModuleHandler->getFilesContent("js", "js");
 
-                    $input = $thisModule.$thisContainer.$contenidoModuleHandler->readInput();
+                    $input = $contenidoModuleHandler->readInput();
                 } else {
 
                 }
-                $this->_output = $this->_output . "\n";
+                $this->_moduleCode = $this->_moduleCode . "\n";
 
                 // Process CMS value tags
-                $CiCMS_VALUE = $this->_processCmsValueTags($a_c[$value], $value);
+                $containerCmsValues = $this->_processCmsValueTags($value, $a_c[$value]);
+
+                // Add CMS value code to module prefix code
+                if ($containerCmsValues) {
+                    $this->_modulePrefix[] = $containerCmsValues;
+                }
 
                 // Process frontend debug
-                $this->_processFrontendDebug($module, $value);
+                $this->_processFrontendDebug($value, $module);
 
                 // Replace new containers
-                $this->_processCmsContainer($value, $CiCMS_VALUE);
+                $this->_processCmsContainer($value);
             }
         }
 
         // Find out what kind of CMS_... Vars are in use
         $a_content = $this->_getUsedCmsTypesData();
 
-        // replace all CMS_TAGS[]
+        // Replace all CMS_TAGS[]
         $this->_processCmsTags($a_content, true);
 
-        // add/replace title tag
+        // Add/replace title tag
         $this->_processCodeTitleTag();
 
-        // add/replace meta tags
+        // Add/replace meta tags
         $this->_processCodeMetaTags();
 
-        //save the collected css/js data and save it undter the template name ([templatename].css , [templatename].js in cache dir
+        // Save the collected css/js data and save it undter the template name ([templatename].css , [templatename].js in cache dir
         $cssDatei = '';
         if (($myFileCss = Contenido_Module_Handler::saveContentToFile($cfgClient[$this->_client], $this->_tplName, "css", $this->_cssData)) == false) {
             $cssDatei = "error error culd not generate css file";
@@ -148,26 +161,30 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         }
 
         // Add meta tags
-        $this->_code = str_ireplace_once("</head>", $cssDatei . $jsDatei . "</head>", $this->_code);
+        $this->_layoutCode = str_ireplace_once("</head>", $cssDatei . $jsDatei . "</head>", $this->_layoutCode);
 
-        // write code into the database
+        // Write code into the database
         if ($this->_layout == false) {
             $oCodeColl = new cApiCodeCollection();
             $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $this->_lang);
             if (!is_object($oCode)) {
-                $oCode = $oCodeColl->create($idcatart, $this->_lang, $this->_client, $this->_code);
+                $oCode = $oCodeColl->create($idcatart, $this->_lang, $this->_client, $this->_layoutCode);
             } else {
-                $oCode->updateCode($this->_code);
+                $oCode->updateCode($this->_layoutCode);
             }
 
             $db->update($cfg['tab']['cat_art'], array('createcode' => 0), array('idcatart' => (int) $idcatart));
         }
 
-        // execute CEC hook
-        $this->_code = CEC_Hook::executeAndReturn('Contenido.Content.conGenerateCode', $this->_code);
+        return $this->_layoutCode;
     }
 
-
+    /**
+     * Will be invoked, if code generation wasn't able to find a configured article
+     * or category.
+     *
+     * Creates a error message as and writes this into the code cache table.
+     */
     protected function _processNoConfigurationError()
     {
         // fixme
@@ -186,32 +203,38 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
 
     /**
-     * Processes and adds or replaces title tag for an article
+     * Processes and adds or replaces title tag for an article.
+     *
+     * Calls also the CEC 'Contenido.Content.CreateTitletag' for user defined title
+     * creation.
      */
     protected function _processCodeTitleTag()
     {
-        if ($this->_pagetitle == '') {
-            CEC_Hook::setDefaultReturnValue($this->_pagetitle);
-            $this->_pagetitle = CEC_Hook::executeAndReturn('Contenido.Content.CreateTitletag');
+        if ($this->_pageTitle == '') {
+            CEC_Hook::setDefaultReturnValue($this->_pageTitle);
+            $this->_pageTitle = CEC_Hook::executeAndReturn('Contenido.Content.CreateTitletag');
         }
 
-        // add or replace title
-        if ($this->_pagetitle != '') {
-            $this->_code = preg_replace('/<title>.*?<\/title>/is', '{TITLE}', $this->_code, 1);
-            if (strstr($this->_code, '{TITLE}')) {
-                $this->_code = str_ireplace('{TITLE}', '<title>' . $this->_pagetitle . '</title>', $this->_code);
+        // Add or replace title
+        if ($this->_pageTitle != '') {
+            $this->_layoutCode = preg_replace('/<title>.*?<\/title>/is', '{TITLE}', $this->_layoutCode, 1);
+            if (strstr($this->_layoutCode, '{TITLE}')) {
+                $this->_layoutCode = str_ireplace('{TITLE}', '<title>' . $this->_pageTitle . '</title>', $this->_layoutCode);
             } else {
-                $this->_code = str_ireplace_once('</head>', '<title>' . $this->_pagetitle . "</title>\n</head>", $this->_code);
+                $this->_layoutCode = str_ireplace_once('</head>', '<title>' . $this->_pageTitle . "</title>\n</head>", $this->_layoutCode);
             }
         } else {
-            $this->_code = str_replace('<title></title>', '', $this->_code);
+            $this->_layoutCode = str_replace('<title></title>', '', $this->_layoutCode);
         }
-        return $this->_code;
+        return $this->_layoutCode;
     }
 
 
     /**
-     * Processes and adds or replaces all meta tags for an article
+     * Processes and adds or replaces all meta tags for an article.
+     *
+     * Calls also the CEC 'Contenido.Content.CreateMetatags' for user defined meta
+     * tags creation.
      */
     protected function _processCodeMetaTags()
     {
@@ -251,14 +274,14 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
                 $aTmpMetaTags = $chainEntry->execute($aTmpMetaTags);
             }
 
-            // added 2008-06-25 Timo Trautmann -- system metatags were merged to user meta 
+            // Added 2008-06-25 Timo Trautmann -- system metatags were merged to user meta
             // tags and user meta tags were not longer replaced by system meta tags
             if (is_array($aTmpMetaTags)) {
-                //check for all system meta tags if there is already a user meta tag
+                // Check for all system meta tags if there is already a user meta tag
                 foreach ($aTmpMetaTags as $aAutValue) {
                     $bExists = false;
 
-                    //get name of meta tag for search
+                    // Get name of meta tag for search
                     $sSearch = '';
                     if (array_key_exists('name', $aAutValue)) {
                         $sSearch = $aAutValue['name'];
@@ -266,7 +289,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
                         $sSearch = $aAutValue['http-equiv'];
                     }
 
-                    //check if meta tag is already in list of user meta tags
+                    // Check if meta tag is already in list of user meta tags
                     if (strlen($sSearch) > 0) {
                         foreach ($aMetaTags as $aValue) {
                             if (array_key_exists('name', $aValue)) {
@@ -283,7 +306,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
                         }
                     }
 
-                    //add system meta tag if there is no user meta tag
+                    // Add system meta tag if there is no user meta tag
                     if ($bExists == false && strlen($aAutValue['content']) > 0) {
                         array_push($aMetaTags, $aAutValue);
                     }
@@ -294,14 +317,14 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         $sMetatags = '';
 
         foreach ($aMetaTags as $value) {
-            // decode entities and htmlspecialchars, content will be converted later using htmlspecialchars()
-            // by render() function
+            // Decode entities and htmlspecialchars, content will be converted later
+            // using htmlspecialchars() by render() function
             if (isset($value['content'])) {
                 $value['content'] = html_entity_decode($value['content'], ENT_QUOTES, strtoupper($encoding[$this->_lang]));
                 $value['content'] = htmlspecialchars_decode($value['content'], ENT_QUOTES);
             }
 
-            // build up metatag string
+            // Build up metatag string
             $oMetaTagGen = new cHTML();
             $oMetaTagGen->_tag = 'meta';
             $oMetaTagGen->updateAttributes($value);
@@ -311,15 +334,15 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
             // Check if metatag already exists
             $sPattern = '/(<meta(?:\s+)name(?:\s*)=(?:\s*)(?:\\"|\\\')(?:\s*)' . $value['name'] . '(?:\s*)(?:\\"|\\\')(?:[^>]+)>\n?)/i';
-            if (preg_match($sPattern, $this->_code, $aMatch)) {
-                $this->_code = str_replace($aMatch[1], $oMetaTagGen->render() . "\n", $this->_code);
+            if (preg_match($sPattern, $this->_layoutCode, $aMatch)) {
+                $this->_layoutCode = str_replace($aMatch[1], $oMetaTagGen->render() . "\n", $this->_layoutCode);
             } else {
                 $sMetatags .= $oMetaTagGen->render() . "\n";
             }
         }
 
         // Add meta tags
-        $this->_code = str_ireplace_once('</head>', $sMetatags . '</head>', $this->_code);
+        $this->_layoutCode = str_ireplace_once('</head>', $sMetatags . '</head>', $this->_layoutCode);
     }
 
 }
