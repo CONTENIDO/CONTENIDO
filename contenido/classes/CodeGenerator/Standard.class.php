@@ -95,9 +95,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
                     $module = array();
                 }
 
-                $this->_modulePrefix = '';
-                $this->_moduleCode = '';
-                $this->_moduleSuffix = '';
+                $this->_resetModule();
 
                 $this->_modulePrefix[] = '$cCurrentModule = ' . $a_d[$value] . ';';
                 $this->_modulePrefix[] = '$cCurrentContainer = ' . $value . ';';

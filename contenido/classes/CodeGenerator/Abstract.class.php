@@ -462,6 +462,16 @@ abstract class Contenido_CodeGenerator_Abstract
 
 
     /**
+     * Resets module related variables
+     */
+    protected function _resetModule()
+    {
+        $this->_modulePrefix = array();
+        $this->_moduleCode = '';
+        $this->_moduleSuffix = array();
+    }
+
+    /**
      * Outputs passed message, if debug is enabled
      *
      * @param  string  $msg
