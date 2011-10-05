@@ -40,7 +40,7 @@ function createNavigationArray($start_id, $db)
     global $user, $cfg, $client, $lang, $auth;
 
     $navigation = array();
-    $FrontendPermissionCollection = new FrontendPermissionCollection;
+    $frontendPermissionCollection = new cApiFrontendPermissionCollection();
 
 //    SECURITY-FIX
     $sql = "SELECT
@@ -81,7 +81,7 @@ function createNavigationArray($start_id, $db)
         }
         if (count($groups)>0) {
             for ($i=0;$i<count($groups);$i++) {
-                if ($FrontendPermissionCollection->checkPerm($groups[$i],'category','access',$cat_idlang, true)) {
+                if ($frontendPermissionCollection->checkPerm($groups[$i],'category','access',$cat_idlang, true)) {
                     $visible=true;
                 }
             }
@@ -512,9 +512,9 @@ function checkCatPermission($idcatlang, $public)
 
     global $auth;
 
-    $oDB = new DB_Contenido;
+    $oDB = new DB_Contenido();
 
-    $FrontendPermissionCollection = new FrontendPermissionCollection;
+    $frontendPermissionCollection = new cApiFrontendPermissionCollection();
     $visible=false;
 
     if ($public!=0) {
@@ -530,7 +530,7 @@ function checkCatPermission($idcatlang, $public)
     }
     if (count($groups)>0) {
         for($i=0;$i<count($groups);$i++) {
-            if ($FrontendPermissionCollection->checkPerm($groups[$i],'category','access',$idcatlang, true)) {
+            if ($frontendPermissionCollection->checkPerm($groups[$i],'category','access',$idcatlang, true)) {
                 $visible=true;
             }
         }

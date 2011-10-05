@@ -107,9 +107,9 @@ config.local.php, so your changes are preserved during updates.</p>
   In the list, you should see all actions you defined, and all items you return.
   Your administrators can now start to apply permissions to the items.</p>
 <p>Checking permissions:</p>
-<p>This is actually pretty easy. Create a new FrontendPermissionCollection-Item
+<p>This is actually pretty easy. Create a new cApiFrontendPermissionCollection-Item
   and use the method checkPerm() to query if a specific permission is set:</p>
-<p>$myPermissionCheck = new FrontendPermissionCollection;<br>
+<p>$myPermissionCheck = new cApiFrontendPermissionCollection();<br>
   var_dump(
 $myPermissionCheck-&gt;checkPerm(2, &quot;object&quot;, &quot;permissionname&quot;, &quot;itemid&quot;));</p>
 <p>If you want to check for a global right, replace &quot;itemid&quot; with &quot;__GLOBAL__&quot;.</p>

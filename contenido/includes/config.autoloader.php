@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2011-09-20
+ *     created  2011-10-06
  * }}
  */
 
@@ -46,7 +46,6 @@ return array(
     'Article' => 'contenido/classes/class.article.php',
     'ArticleCollection' => 'contenido/classes/class.article.php',
     'Contenido_Autoload' => 'contenido/classes/class.autoload.php',
-    'Contenido_Backend' => 'contenido/classes/class.backend.php',
     'Cat' => 'contenido/classes/class.cat.php',
     'CategoryCollection' => 'contenido/classes/class.category.php',
     'CategoryItem' => 'contenido/classes/class.category.php',
@@ -70,8 +69,6 @@ return array(
     'FormField' => 'contenido/classes/class.form.php',
     'FormCheck' => 'contenido/classes/class.form.php',
     'FrontendLogic' => 'contenido/classes/class.frontend.logic.php',
-    'FrontendPermissionCollection' => 'contenido/classes/class.frontend.permissions.php',
-    'FrontendPermission' => 'contenido/classes/class.frontend.permissions.php',
     'FrontendUserCollection' => 'contenido/classes/class.frontend.users.php',
     'FrontendUser' => 'contenido/classes/class.frontend.users.php',
     'Contenido_ItemException' => 'contenido/classes/class.genericdb.php',
@@ -196,12 +193,12 @@ return array(
     'cApiArea' => 'contenido/classes/contenido/class.area.php',
     'cApiArticleCollection' => 'contenido/classes/contenido/class.article.php',
     'cApiArticle' => 'contenido/classes/contenido/class.article.php',
-    'cApiArticleLanguageCollection' => 'contenido/classes/contenido/class.articlelanguage.php',
-    'cApiArticleLanguage' => 'contenido/classes/contenido/class.articlelanguage.php',
     'cApiArticleSpecificationCollection' => 'contenido/classes/contenido/class.article.specification.php',
     'cApiArticleSpecification' => 'contenido/classes/contenido/class.article.specification.php',
     'ArtSpecCollection' => 'contenido/classes/contenido/class.article.specification.php',
     'ArtSpecItem' => 'contenido/classes/contenido/class.article.specification.php',
+    'cApiArticleLanguageCollection' => 'contenido/classes/contenido/class.articlelanguage.php',
+    'cApiArticleLanguage' => 'contenido/classes/contenido/class.articlelanguage.php',
     'cApiCategoryCollection' => 'contenido/classes/contenido/class.category.php',
     'cApiCategory' => 'contenido/classes/contenido/class.category.php',
     'cApiCategoryArticleCollection' => 'contenido/classes/contenido/class.categoryarticle.php',
@@ -240,6 +237,10 @@ return array(
     'cApiFrontendGroup' => 'contenido/classes/contenido/class.frontend.group.php',
     'FrontendGroupCollection' => 'contenido/classes/contenido/class.frontend.group.php',
     'FrontendGroup' => 'contenido/classes/contenido/class.frontend.group.php',
+    'cApiFrontendPermissionCollection' => 'contenido/classes/contenido/class.frontend.permission.php',
+    'cApiFrontendPermission' => 'contenido/classes/contenido/class.frontend.permission.php',
+    'FrontendPermissionCollection' => 'contenido/classes/contenido/class.frontend.permission.php',
+    'FrontendPermission' => 'contenido/classes/contenido/class.frontend.permission.php',
     'cApiLanguageCollection' => 'contenido/classes/contenido/class.lang.php',
     'cApiLanguage' => 'contenido/classes/contenido/class.lang.php',
     'cApiLayoutCollection' => 'contenido/classes/contenido/class.layout.php',
@@ -258,6 +259,8 @@ return array(
     'cApiTemplateConfiguration' => 'contenido/classes/contenido/class.templateconfig.php',
     'cApiUserCollection' => 'contenido/classes/contenido/class.user.php',
     'cApiUser' => 'contenido/classes/contenido/class.user.php',
+    'cApiUserPropertyCollection' => 'contenido/classes/contenido/class.userproperties.php',
+    'cApiUserProperty' => 'contenido/classes/contenido/class.userproperties.php',
     'Contenido_Category' => 'contenido/classes/Contenido_Category/Contenido_Category.class.php',
     'Contenido_Categories' => 'contenido/classes/Contenido_Category/Contenido_Category.class.php',
     'Contenido_Category_Language' => 'contenido/classes/Contenido_Category/Contenido_Category.class.php',
@@ -292,7 +295,9 @@ return array(
     'Contenido_Translate_From_File' => 'contenido/classes/module/class.contenido.translate.from.file.php',
     'Contenido_UpgradeJob' => 'contenido/classes/module/class.contenido.upgrade.job.php',
     'Contenido_Vars' => 'contenido/classes/module/class.contenido.vars.php',
+    'ModelConConfig' => 'contenido/classes/module/ModelConConfig.php',
     'ModuleException' => 'contenido/classes/module/ModuleException.php',
+    'ModuleInterface' => 'contenido/classes/module/ModuleInterface.php',
     'cTree' => 'contenido/classes/tree/class.ctree.php',
     'cTreeItem' => 'contenido/classes/tree/class.ctreeitem.php',
     'Contenido_Url' => 'contenido/classes/Url/Contenido_Url.class.php',

@@ -108,7 +108,7 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
                 $iNumFeGroups = count($aFeGroups);
             }
             // initialize fe-permission object
-            $oFrontendPermissionCollection = new FrontendPermissionCollection();
+            $oFrontendPermissionCollection = new cApiFrontendPermissionCollection();
         }
         $sSqlPublic = $bUseAuth === true ? '' : 'catlang.public   = 1 AND';
         $sSql = 'SELECT

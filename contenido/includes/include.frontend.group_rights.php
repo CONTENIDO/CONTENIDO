@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Frontend group rights editor
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend includes
  * @version    1.5.1
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2002-03-02
  *   modified 2008-06-16, Holger Librenz, Hotfic: checking for illegal calls
  *   modified 2008-06-27, Frederic Schneider, add security fix
@@ -27,113 +27,96 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 // @TODO: check the code beneath is necessary
-if ($_REQUEST['useplugin'] != "category") {
-    die ('Illegal call!');
+if ($_REQUEST['useplugin'] != 'category') {
+    die('Illegal call!');
 }
 
 
-$page = new cPage;
+$page = new cPage();
 
-if (!in_array($useplugin, $cfg['plugins']['frontendlogic']))
-{
-	$page->setContent(i18n("Invalid plugin"));
+if (!in_array($useplugin, $cfg['plugins']['frontendlogic'])) {
+    $page->setContent(i18n("Invalid plugin"));
+    $page->render();
+    return;
+}
 
-} else {
+cInclude('plugins', 'frontendlogic/' . $useplugin . '/' . $useplugin . '.php');
 
-	cInclude("plugins", "frontendlogic/$useplugin/".$useplugin.".php");
+$className = 'frontendlogic_' . $useplugin;
+$class = new $className;
+$perms = new cApiFrontendPermissionCollection();
 
-    $className = "frontendlogic_".$useplugin;
-	$class = new $className;
-	$perms = new FrontendPermissionCollection;
+$rights = new UI_Table_Form('rights');
+$rights->setVar('area', $area);
+$rights->setVar('frame', $frame);
+$rights->setVar('useplugin', $useplugin);
+$rights->setVar('idfrontendgroup', $idfrontendgroup);
+$rights->setVar('action', 'fegroups_save_perm');
 
+$actions = $class->listActions();
+$items = $class->listItems();
 
-	$rights = new UI_Table_Form("rights");
-	$rights->setVar("area", $area);
-	$rights->setVar("frame", $frame);
-	$rights->setVar("useplugin", $useplugin);
-	$rights->setVar("idfrontendgroup", $idfrontendgroup);
-	$rights->setVar("action", "fegroups_save_perm");
+if ($action == 'fegroups_save_perm') {
+    $myitems = $items;
+    $myitems['__GLOBAL__'] = '__GLOBAL__';
 
-	$actions = $class->listActions();
-	$items = $class->listItems();
+       foreach ($actions as $action => $text) {
+           foreach ($myitems as $item => $text) {
+            if ($item === '__GLOBAL__') {
+                $varname = 'action_' . $action;
+            } else {
+                $varname = 'item_' . $item . '_' . $action;
+            }
 
-	if ($action == "fegroups_save_perm")
-	{
-		$myitems = $items;
-		$myitems["__GLOBAL__"] = "__GLOBAL__";
-
-   		foreach ($actions as $action => $text)
-   		{
-   			foreach ($myitems as $item => $text)
-			{
-
-    			if ($item === "__GLOBAL__")
-    			{
-    				$varname = "action_$action";
-    			} else {
-    				$varname = "item_".$item."_$action";
-    			}
-
-    			if ($_POST[$varname] == 1)
-    			{
-    				$perms->setPerm($idfrontendgroup, $useplugin, $action, $item);
-    			} else {
-    				$perms->removePerm($idfrontendgroup, $useplugin, $action, $item);
-    			}
-    		}
-		}
-
-	}
-
-	$rights->addHeader(sprintf(i18n("Permissions for plugin '%s'"), $class->getFriendlyName()));
-
-	foreach ($actions as $key => $action)
-	{
-		$check[$key] = new cHTMLCheckbox("action_$key", 1);
-		$check[$key]->setLabelText($action." ".i18n("(All)"));
-
-		if ($perms->checkPerm($idfrontendgroup, $useplugin, $key, "__GLOBAL__"))
-		{
-			$check[$key]->setChecked(true);
-		}
-	}
-
-	$rights->add(i18n("Global rights"), $check);
-
-    foreach ($actions as $key => $action)
-    {
-    	unset($check);
-
-    	if (count($items) > 0)
-    	{
-	    	foreach ($items as $item => $value)
-	    	{
-		    	$check[$item] = new cHTMLCheckbox("item_".$item."_".$key, 1);
-	    		$check[$item]->setLabelText($value);
-
-	    		if ($perms->checkPerm($idfrontendgroup, $useplugin, $key, $item))
-	    		{
-	    			$check[$item]->setChecked(true);
-	    		}
-
-	    	}
-
-	    	$rights->add($action, $check);
-    	} else {
-    		$rights->add($action, i18n("No items found"));
-    	}
+            if ($_POST[$varname] == 1) {
+                $perms->setPerm($idfrontendgroup, $useplugin, $action, $item);
+            } else {
+                $perms->removePerm($idfrontendgroup, $useplugin, $action, $item);
+            }
+        }
     }
-
-	$page->setContent($rights->render());
 }
+
+$rights->addHeader(sprintf(i18n("Permissions for plugin '%s'"), $class->getFriendlyName()));
+
+foreach ($actions as $key => $action) {
+    $check[$key] = new cHTMLCheckbox('action_' . $key, 1);
+    $check[$key]->setLabelText($action." ".i18n("(All)"));
+
+    if ($perms->checkPerm($idfrontendgroup, $useplugin, $key, '__GLOBAL__')) {
+        $check[$key]->setChecked(true);
+    }
+}
+
+$rights->add(i18n("Global rights"), $check);
+
+foreach ($actions as $key => $action) {
+    unset($check);
+
+    if (count($items) > 0) {
+        foreach ($items as $item => $value) {
+            $check[$item] = new cHTMLCheckbox('item_'.$item.'_'.$key, 1);
+            $check[$item]->setLabelText($value);
+            if ($perms->checkPerm($idfrontendgroup, $useplugin, $key, $item)) {
+                $check[$item]->setChecked(true);
+            }
+        }
+        $rights->add($action, $check);
+    } else {
+        $rights->add($action, i18n("No items found"));
+    }
+}
+
+$page->setContent($rights->render());
 
 $page->render();
+
 ?>
