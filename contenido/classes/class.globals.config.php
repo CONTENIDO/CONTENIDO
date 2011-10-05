@@ -1,119 +1,142 @@
 <?php
-
+/**
+ * 
+ * Abstract config class to initialise global variables.
+ * 
+ * 
+ *
+ */
 abstract class ConfigGlobals {
 
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var array
      */
     static protected $_encoding = null;
     
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var array
      */
     static protected $_contenido = null;
 
     /**  
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var int
      */
     static protected $_edit = null;
 
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var array
      */
     static protected $_sess = null;
 
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var array
      */
     static protected $_cfg = null;
 
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var int
      */
     static protected $_lang = null;
 
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var array
      */
     static protected $_perm = null;
 
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var array
      */
     static protected $_auth = null;
 
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var int
      */
     static protected $_client = null;
 
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var array
      */
     static protected $_cfgClient = null;
 
     /**
      * 
-     * CONTENIDO global database object variable
+     * contenido global database object variable
      * @var DB_Contenido
      */
     static protected $_db = null;
 
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var int
      */
     static protected $_idart = null;
 
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var int
      */
     static protected $_idcat = null;
     
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var int
      */
     static protected $_idcatArt = null;
+    
+    /**
+     * 
+     * contenido global variable
+     * @var int
+     */
+    static protected $_idcatLang = null;
 
     /**
      * 
      * Contenido__smartyWrapper plugin singleton object
-     * @var Contenido__smartyWrapper object
+     * @var Contenido_SmartyWrapper 
      */
     static protected $_smarty = null;
     
     /**
      * 
-     * CONTENIDO global variable
+     * contenido global variable
      * @var int
      */
     static protected $_idmod = null;
+    
+    /**
+     * 
+     * contenido global variable
+     * @var int
+     */
+    static protected $_idartLang = null;
 	
+
+
+
 	/**
      * @return the $_idcatArt
      */
@@ -126,6 +149,34 @@ abstract class ConfigGlobals {
      */
     public static function setIdcatArt($_idcatArt) {
         ConfigGlobals::$_idcatArt = $_idcatArt;
+    }
+
+	/**
+     * @return the $_idcatLang
+     */
+    public static function getIdcatLang() {
+        return ConfigGlobals::$_idcatLang;
+    }
+
+	/**
+     * @return the $_idartLang
+     */
+    public static function getIdartLang() {
+        return ConfigGlobals::$_idartLang;
+    }
+
+	/**
+     * @param int $_idcatLang
+     */
+    public static function setIdcatLang($_idcatLang) {
+        ConfigGlobals::$_idcatLang = $_idcatLang;
+    }
+
+	/**
+     * @param int $_idartLang
+     */
+    public static function setIdartLang($_idartLang) {
+        ConfigGlobals::$_idartLang = $_idartLang;
     }
 
 	/**
@@ -155,7 +206,12 @@ abstract class ConfigGlobals {
     public static function setEncoding($_encoding) {
         ConfigGlobals::$_encoding = $_encoding;
     }
-
+    
+    /**
+     * 
+     * Constructor of class: Sets all given globals
+     * @param array $globals
+     */
 	public static function setConfig(array $globals) {
 	    
 	    if(count($globals) > 0) {
@@ -169,6 +225,7 @@ abstract class ConfigGlobals {
             }
 	    }
 	}
+	
 	/**
      * @return the $_contenido
      */
