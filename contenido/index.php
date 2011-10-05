@@ -37,6 +37,8 @@ if (!defined("CON_FRAMEWORK")) {
     define("CON_FRAMEWORK", true);
 }
 
+
+
 // CONTENIDO startup process
 include_once ('./includes/startup.php');
 
@@ -44,7 +46,9 @@ page_open(array('sess' => 'Contenido_Session',
 				'auth' => 'Contenido_Challenge_Crypt_Auth',
 				'perm' => 'Contenido_Perm'));
 
+
 i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
+
 
 /**
  * Bugfix
@@ -52,6 +56,7 @@ i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
  *
  * added by H. Librenz (2007-12-07)
  */
+
 //includePluginConf();
 require_once $cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php';
 cInclude ("includes", 'cfg_language_de.inc.php');
