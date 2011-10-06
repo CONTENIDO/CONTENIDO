@@ -28,7 +28,7 @@
  *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
@@ -141,11 +141,11 @@ $oSelectRestrictGroup->setDefault($_REQUEST["restrictgroup"]);
 
 $oTextboxFilter = new cHTMLTextbox("filter", $_REQUEST["filter"], 20);
 
-$oFEUsers = new FrontendUserCollection();
-$oFEUsers->setWhere("FrontendUserCollection.idclient", $client);
+$oFEUsers = new cApiFrontendUserCollection();
+$oFEUsers->setWhere("cApiFrontendUserCollection.idclient", $client);
 
 if (strlen($_REQUEST["filter"]) > 0 && $bUsePlugins == false) {
-    $oFEUsers->setWhere("FrontendUsercollection.username", $_REQUEST["filter"], "diacritics");
+    $oFEUsers->setWhere("cApiFrontendUserCollection.username", $_REQUEST["filter"], "diacritics");
 }
 
 if ($_REQUEST["restrictgroup"] != "" && $_REQUEST["restrictgroup"] != "--all--") {

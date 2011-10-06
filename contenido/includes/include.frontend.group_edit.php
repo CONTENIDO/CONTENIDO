@@ -150,7 +150,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
 
     $tpl->reset();
 
-    $feusers = new FrontendUserCollection();
+    $feusers = new cApiFrontendUserCollection();
     $feusers->select("idclient='$client'");
 
     $addedusers = $groupmembers->getUsersInGroup($idfrontendgroup,false);

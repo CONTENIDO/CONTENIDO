@@ -37,7 +37,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 $page = new cPage();
 
-$feusers = new FrontendUserCollection();
+$feusers = new cApiFrontendUserCollection();
 
 if (is_array($cfg['plugins']['frontendusers'])) {
     foreach ($cfg['plugins']['frontendusers'] as $plugin) {
@@ -45,7 +45,7 @@ if (is_array($cfg['plugins']['frontendusers'])) {
     }
 }
 
-$feuser = new FrontendUser();
+$feuser = new cApiFrontendUser();
 $feuser->loadByPrimaryKey($idfrontenduser);
 
 $oFEGroupMemberCollection = new cApiFrontendGroupMemberCollection();
@@ -89,7 +89,7 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
     }
 
     $idfrontenduser = 0;
-    $feuser = new FrontendUser();
+    $feuser = new cApiFrontendUser();
     $page->addScript('reload', $sReloadScript);
 }
 

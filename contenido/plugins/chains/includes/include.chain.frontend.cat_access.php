@@ -37,7 +37,7 @@ function cecFrontendCategoryAccess($idlang, $idcat, $user)
 
     $db = new DB_Contenido();
 
-    $frontendUser = new FrontendUser();
+    $frontendUser = new cApiFrontendUser();
     $frontendUser->loadByPrimaryKey($user);
 
     if ($frontendUser->virgin) {

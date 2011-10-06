@@ -265,14 +265,14 @@ $content .= '</table>';
 $content .= '</form>';
 $content .= '</div>';
 $oListOptionRow->setContentData($content);
-$oFEUsers = new FrontendUserCollection();
-$oFEUsers->setWhere("FrontendUserCollection.idclient", $client);
+$oFEUsers = new cApiFrontendUserCollection();
+$oFEUsers->setWhere("cApiFrontendUserCollection.idclient", $client);
 
 ##############################
 # Process request parameters
 ##############################
 if (strlen($_REQUEST["filter"]) > 0 && $bUsePlugins == false) {
-    $oFEUsers->setWhere("FrontendUsercollection.username", $_REQUEST["filter"], "diacritics");
+    $oFEUsers->setWhere("cApiFrontendUserCollection.username", $_REQUEST["filter"], "diacritics");
 }
 
 if ($_REQUEST["restrictgroup"] != "" && $_REQUEST["restrictgroup"] != "--all--") {

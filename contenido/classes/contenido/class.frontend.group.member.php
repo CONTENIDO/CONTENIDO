@@ -47,8 +47,8 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
     {
         global $cfg;
         parent::__construct($cfg['tab']['frontendgroupmembers'], 'idfrontendgroupmember');
-        $this->_setJoinPartner ('cApiFrontendGroupCollection');
-        $this->_setJoinPartner ('FrontendUserCollection');
+        $this->_setJoinPartner('cApiFrontendGroupCollection');
+        $this->_setJoinPartner('cApiFrontendUserCollection');
         $this->_setItemClass('cApiFrontendGroupMember');
     }
 
@@ -56,6 +56,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
      * Creates a new association
      * @param $idfrontendgroup int specifies the frontend group
      * @param $idfrontenduser  int specifies the frontend user
+     * @return  cApiFrontendGroupMember|bool
      */
     public function create($idfrontendgroup, $idfrontenduser)
     {
@@ -76,8 +77,8 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
 
     /**
      * Removes an association
-     * @param $idfrontendgroup int specifies the frontend group
-     * @param $idfrontenduser  int specifies the frontend user
+     * @param  int  $idfrontendgroup  Specifies the frontend group
+     * @param  int  $idfrontenduser  Specifies the frontend user
      */
     public function remove($idfrontendgroup, $idfrontenduser)
     {
@@ -90,9 +91,9 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
 
     /**
      * Returns all users in a single group
-     * @param $idfrontendgroup int specifies the frontend group
-     * @param $asObjects boolean specifies if the function should return objects
-     * @return array FrontendUser items 
+     * @param  int  $idfrontendgroup  specifies the frontend group
+     * @param  bool  $asObjects  Specifies if the function should return objects
+     * @return array List of frontend user ids or cApiFrontendUser items 
      */
     public function getUsersInGroup($idfrontendgroup, $asObjects = true)
     {
@@ -102,7 +103,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
 
         while ($item = $this->next()) {
             if ($asObjects) {
-                $user = new FrontendUser();
+                $user = new cApiFrontendUser();
                 $user->loadByPrimaryKey($item->get('idfrontenduser'));
                 $objects[] = $user;
             } else {
