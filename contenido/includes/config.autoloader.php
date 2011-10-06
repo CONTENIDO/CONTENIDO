@@ -73,6 +73,7 @@ return array(
     'FrontendUser' => 'contenido/classes/class.frontend.users.php',
     'Contenido_ItemException' => 'contenido/classes/class.genericdb.php',
     'Contenido_ItemCache' => 'contenido/classes/class.genericdb.php',
+	'Contenido_Backend' => 'contenido/classes/class.backend.php',
     'Contenido_ItemBaseAbstract' => 'contenido/classes/class.genericdb.php',
     'ItemCollection' => 'contenido/classes/class.genericdb.php',
     'Item' => 'contenido/classes/class.genericdb.php',
