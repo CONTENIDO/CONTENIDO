@@ -1487,7 +1487,8 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
     /**
      * Deletes an item in the table.
      *
-     * @param  mixed  $mId  Id of entry to delete
+     * @param   mixed  $mId  Id of entry to delete
+     * @return  bool
      */
     public function delete($mId)
     {
