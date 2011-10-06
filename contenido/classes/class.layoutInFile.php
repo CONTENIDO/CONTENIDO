@@ -169,12 +169,26 @@ class LayoutInFile {
 		#set encoding
 		$this->_setEncoding($lang);
 		
-	
+		// temporary bad fix, better to intagrate this globals in consutructor!
+		global $cfgClient, $client;
+		$this->_cfgClient = $cfgClient;
+		$this->_client = $client;
+		
+		if (isset($this->_cfgClient[$this->_client]['path']['frontend'])&&
+         strlen($this->_cfgClient[$this->_client]['path']['frontend'])> 0) {
+            $frontendPath = $this->_cfgClient[$this->_client]['path']['frontend'];
+        } else {
+             $frontendPath = $db->f("frontendpath");
+        }
+        
+      
+        
 		$this->_layoutName = $db->f('alias');
-		$this->_frontendPath = $db->f("frontendpath");
-		$this->_layoutMainPath = $db->f("frontendpath").self::$LAYOUT_DIR_NAME;
-		$this->_layoutPath = $db->f("frontendpath").self::$LAYOUT_DIR_NAME.$this->_layoutName."/";
+		$this->_frontendPath = $frontendPath;
+		$this->_layoutMainPath = $frontendPath.self::$LAYOUT_DIR_NAME;
+		$this->_layoutPath = $frontendPath.self::$LAYOUT_DIR_NAME.$this->_layoutName."/";
 		$this->_fileName = $this->_layoutName.".html";
+		
 		#make directoryies for layout
 		$this->_makeDirectories();
 	}
