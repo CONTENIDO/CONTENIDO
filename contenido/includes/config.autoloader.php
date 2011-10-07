@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2011-10-06
+ *     created  2011-10-07
  * }}
  */
 
@@ -108,8 +108,6 @@ return array(
     'HtmlParser' => 'contenido/classes/class.htmlparser.php',
     'cHTMLValidator' => 'contenido/classes/class.htmlvalidator.php',
     'HttpInputValidator' => 'contenido/classes/class.httpinputvalidator.php',
-    'InUseCollection' => 'contenido/classes/class.inuse.php',
-    'InUseItem' => 'contenido/classes/class.inuse.php',
     'cIterator' => 'contenido/classes/class.iterator.php',
     'Languages' => 'contenido/classes/class.lang.php',
     'Language' => 'contenido/classes/class.lang.php',
@@ -244,6 +242,10 @@ return array(
     'cApiFrontendUser' => 'contenido/classes/contenido/class.frontend.user.php',
     'FrontendUserCollection' => 'contenido/classes/contenido/class.frontend.user.php',
     'FrontendUser' => 'contenido/classes/contenido/class.frontend.user.php',
+    'cApiInUseCollection' => 'contenido/classes/contenido/class.inuse.php',
+    'cApiInUse' => 'contenido/classes/contenido/class.inuse.php',
+    'InUseCollection' => 'contenido/classes/contenido/class.inuse.php',
+    'InUseItem' => 'contenido/classes/contenido/class.inuse.php',
     'cApiLanguageCollection' => 'contenido/classes/contenido/class.lang.php',
     'cApiLanguage' => 'contenido/classes/contenido/class.lang.php',
     'cApiLayoutCollection' => 'contenido/classes/contenido/class.layout.php',
@@ -262,8 +264,6 @@ return array(
     'cApiTemplateConfiguration' => 'contenido/classes/contenido/class.templateconfig.php',
     'cApiUserCollection' => 'contenido/classes/contenido/class.user.php',
     'cApiUser' => 'contenido/classes/contenido/class.user.php',
-    'cApiUserPropertyCollection' => 'contenido/classes/contenido/class.userproperties.php',
-    'cApiUserProperty' => 'contenido/classes/contenido/class.userproperties.php',
     'Contenido_Category' => 'contenido/classes/Contenido_Category/Contenido_Category.class.php',
     'Contenido_Categories' => 'contenido/classes/Contenido_Category/Contenido_Category.class.php',
     'Contenido_Category_Language' => 'contenido/classes/Contenido_Category/Contenido_Category.class.php',

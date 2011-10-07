@@ -226,7 +226,7 @@ class cApiFrontendUser extends Item
 
 
 ################################################################################
-# Old versions of dbfs item collection and dbfs item classes
+# Old versions of frontend user item collection and frontend user item classes
 #
 # NOTE: Class implemetations below are deprecated and the will be removed in
 #       future versions of contenido.

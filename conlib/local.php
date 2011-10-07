@@ -319,7 +319,7 @@ class Contenido_Session extends Session
 
     public function delete()
     {
-        $oCol = new InUseCollection();
+        $oCol = new cApiInUseCollection();
         $oCol->removeSessionMarks($this->id);
         parent::delete();
     }

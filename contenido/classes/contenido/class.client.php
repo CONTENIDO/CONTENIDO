@@ -49,7 +49,7 @@ class cApiClientCollection extends ItemCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiClientCollection()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct();
     }
 
@@ -160,7 +160,7 @@ class cApiClient extends Item
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiClient($mId = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct($mId);
     }
 

@@ -557,7 +557,7 @@ function cleanupSessions()
 
     $db = new DB_Contenido();
     $db2 = new DB_Contenido();
-    $col = new InUseCollection();
+    $col = new cApiInUseCollection();
     $auth = new Contenido_Challenge_Crypt_Auth();
 
     $maxdate = date("YmdHis", time() - ($auth->lifetime * 60));

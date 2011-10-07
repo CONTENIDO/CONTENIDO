@@ -345,7 +345,7 @@ if (!$idcatart)
                     else
                     {
                         header($errsite);
-						exit;
+                        exit;
                     }
                 }
             }
@@ -400,7 +400,7 @@ if (!$idcatart)
                     else
                     {
                         header($errsite);
-						exit;
+                        exit;
                     }
                 }
             }
@@ -434,7 +434,7 @@ $idartlang = getArtLang($idart, $lang);
 if ($idartlang === false)
 {
     header($errsite);
-	exit;
+    exit;
 }
 
 /*
@@ -477,7 +477,7 @@ if ($contenido)
         $view = $changeview;
     }
 
-    $col = new InUseCollection;
+    $col = new cApiInUseCollection();
 
     if ($overrideid != "" && $overridetype != "")
     {
@@ -485,7 +485,7 @@ if ($contenido)
     }
     /* Remove all own marks */
     $col->removeSessionMarks($sess->id);
-    /* If the override flag is set, override a specific InUseItem */
+    /* If the override flag is set, override a specific cApiInUse */
 
     list ($inUse, $message) = $col->checkAndMark("article", $idartlang, true, i18n("Article is in use by %s (%s)"), true, $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?changeview=edit&action=con_editart&idartlang=$idartlang&type=$type&typenr=$typenr&idart=$idart&idcat=$idcat&idcatart=$idcatart&client=$client&lang=$lang");
 
@@ -660,7 +660,7 @@ else
                 else
                 {
                     header($errsite);
-					exit;
+                    exit;
                 }
             }
         }
@@ -771,7 +771,7 @@ else
             if (!$allow)
             {
                 header($errsite);
-				exit;
+                exit;
             }
         }
     }
@@ -925,7 +925,7 @@ else
             else
             {
                 header($errsite);
-				exit;
+                exit;
             }
         }
     }

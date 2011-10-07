@@ -49,7 +49,7 @@ class cApiClientLanguageCollection extends ItemCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiClientLanguageCollection()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct();
     }
 
@@ -123,7 +123,7 @@ class cApiClientLanguage extends Item
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiClientLanguage($iIdClientsLang = false, $iIdClient = false, $iIdLang = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct($iIdClientsLang, $iIdClient, $iIdLang);
     }
 

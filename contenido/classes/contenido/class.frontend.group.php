@@ -118,7 +118,7 @@ class cApiFrontendGroup extends Item
 
 
 ################################################################################
-# Old versions of dbfs item collection and dbfs item classes
+# Old versions of frontend group item collection and frontend group item classes
 #
 # NOTE: Class implemetations below are deprecated and the will be removed in 
 #       future versions of contenido.
@@ -133,12 +133,12 @@ class FrontendGroupCollection extends cApiFrontendGroupCollection
 {
     public function __construct()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__ . " use " . get_parent_class($this));
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
         parent::__construct();
     }
     public function FrontendGroupCollection()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct();
     }
 }
@@ -152,12 +152,12 @@ class FrontendGroup extends cApiFrontendGroup
 {
     public function __construct($mId = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__ . " use " . get_parent_class($this));
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
         parent::__construct($mId);
     }
     public function FrontendGroup($mId = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct($mId);
     }
 }

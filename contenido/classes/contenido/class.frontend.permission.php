@@ -182,7 +182,8 @@ class cApiFrontendPermission extends Item
 }
 
 ################################################################################
-# Old versions of dbfs item collection and dbfs item classes
+# Old versions of frontend permission item collection and frontend permission 
+# item classes
 #
 # NOTE: Class implemetations below are deprecated and the will be removed in
 #       future versions of contenido.
@@ -197,12 +198,12 @@ class FrontendPermissionCollection extends cApiFrontendPermissionCollection
 {
     public function __construct()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__ . " use " . get_parent_class($this));
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
         parent::__construct();
     }
     public function FrontendPermissionCollection()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct();
     }
 }
@@ -216,12 +217,12 @@ class FrontendPermission extends cApiFrontendPermission
 {
     public function __construct($mId = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated class " . __CLASS__ . " use " . get_parent_class($this));
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
         parent::__construct($mId);
     }
     public function FrontendPermission($mId = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct($mId);
     }
 }

@@ -47,7 +47,7 @@ class cApiCategoryTreeCollection extends ItemCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiCategoryTreeCollection($select = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct($select);
     }
 }
@@ -72,7 +72,7 @@ class cApiTree extends Item
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiTree($mId = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct($mId);
     }
 }

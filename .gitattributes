@@ -251,6 +251,7 @@ contenido/classes/contenido/class.frontend.group.member.php -text
 contenido/classes/contenido/class.frontend.group.php -text
 contenido/classes/contenido/class.frontend.permission.php -text
 contenido/classes/contenido/class.frontend.user.php -text
+contenido/classes/contenido/class.inuse.php -text
 contenido/classes/contenido/class.lang.php -text
 contenido/classes/contenido/class.layout.php -text
 contenido/classes/contenido/class.meta.tag.php -text
