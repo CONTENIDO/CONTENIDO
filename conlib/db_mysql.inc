@@ -26,7 +26,7 @@
  *   modified 2009-12-18, Murat Purc, Replaced mysql_list_fields() against a SQL statement, see [#CON-262]
  *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
  *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
- *   modified 2011-04-22, Murat Purc, Connect to DB server without database and more 
+ *   modified 2011-04-22, Murat Purc, Connect to DB server without database and more
  *                        readable connection settings.
  *   modified 2011-05-17, Ortwin Pinke, bugfix in methode nextid().
  *   modified 2011-07-07, Murat Purc, New _update(), _insert() methods, unified
@@ -38,7 +38,7 @@
  */
 
 if (!defined('CON_FRAMEWORK')) {
-   die('Illegal call');
+    die('Illegal call');
 }
 
 class DB_Sql extends DB_Sql_Abstract
@@ -59,7 +59,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::_connect()
+     * {@inheritdoc}
      */
     protected function _connect()
     {
@@ -101,7 +101,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::_query()
+     * {@inheritdoc}
      */
     protected function _query($sQuery)
     {
@@ -116,7 +116,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::_insert()
+     * {@inheritdoc}
      */
     protected function _insert($sTable, array $aFields)
     {
@@ -137,7 +137,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::_update()
+     * {@inheritdoc}
      */
     protected function _update($sTable, array $aFields, array $aWhere)
     {
@@ -168,7 +168,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::next_record()
+     * {@inheritdoc}
      */
     public function next_record()
     {
@@ -186,7 +186,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::seek()
+     * {@inheritdoc}
      */
     public function seek($pos = 0)
     {
@@ -207,7 +207,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::lock()
+     * {@inheritdoc}
      */
     public function lock($table, $mode = 'write')
     {
@@ -238,7 +238,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::unlock()
+     * {@inheritdoc}
      */
     public function unlock()
     {
@@ -255,7 +255,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::affected_rows()
+     * {@inheritdoc}
      */
     public function affected_rows()
     {
@@ -264,7 +264,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::num_rows()
+     * {@inheritdoc}
      */
     public function num_rows()
     {
@@ -273,7 +273,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::num_fields()
+     * {@inheritdoc}
      */
     public function num_fields()
     {
@@ -316,7 +316,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::disconnect()
+     * {@inheritdoc}
      */
     public function disconnect()
     {
@@ -331,7 +331,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::_metaData()
+     * {@inheritdoc}
      */
     protected function _metaData($table = '', $full = false)
     {
@@ -409,7 +409,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::_tableNames()
+     * {@inheritdoc}
      */
     protected function _tableNames()
     {
@@ -430,7 +430,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::escape()
+     * {@inheritdoc}
      */
     public function escape($sString)
     {
@@ -443,17 +443,21 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::_serverInfo()
+     * {@inheritdoc}
      */
     protected function _serverInfo()
     {
-        $arr['description'] = mysql_get_server_info();
-        return $arr;
+        if (is_resource($this->Link_ID)) {
+            $arr = array();
+            $arr['description'] = mysql_get_server_info($this->Link_ID);
+            return $arr;
+        }
+        return null;
     }
 
 
     /**
-     * @see DB_Sql_Abstract::_getErrorMessage()
+     * {@inheritdoc}
      */
     protected function _getErrorMessage()
     {
@@ -466,7 +470,7 @@ class DB_Sql extends DB_Sql_Abstract
 
 
     /**
-     * @see DB_Sql_Abstract::_getErrorNumber()
+     * {@inheritdoc}
      */
     protected function _getErrorNumber()
     {

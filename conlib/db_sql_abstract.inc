@@ -287,7 +287,7 @@ abstract class DB_Sql_Abstract
     /**
      * Establishes a connection to the database server.
      *
-     * @return  object|resource|int|null  Connection handler. Return value depends on 
+     * @return  object|resource|int|null  Connection handler. Return value depends on
      *                                    used driver and is null in case of an error.
      */
     public function connect()
@@ -373,7 +373,7 @@ abstract class DB_Sql_Abstract
     /**
      * Connects to the database.
      *
-     * @return  object|resource|int|null  Connection handler. Return value depends on 
+     * @return  object|resource|int|null  Connection handler. Return value depends on
      *                                    used driver and is null in case of an error.
      */
     abstract protected function _connect();
@@ -394,7 +394,7 @@ abstract class DB_Sql_Abstract
      * </pre>
      *
      * @param   string    $sQuery  The query to execute.
-     * @param   mixed     Accepts additional unlimited parameter, where the parameter 
+     * @param   mixed     Accepts additional unlimited parameter, where the parameter
      *                    will be replaced against formatting sign in query.
      * @return  resource|int|object|bool  Depends on used database driver, false on error
      */
@@ -862,7 +862,7 @@ abstract class DB_Sql_Abstract
     /**
      * Returns names of existing tables.
      *
-     * @return  array|null  Indexed array containing assoziative table data as 
+     * @return  array|null  Indexed array containing assoziative table data as
      *                      follows or null:
      *                      - $info[$i]['table_name']
      *                      - $info[$i]['tablespace_name']
