@@ -5,7 +5,7 @@
  *
  * Description:
  * PHPLIB Data storage container using PHPs session feature.
- * Session data will persist in superglobal $_SESSION. 
+ * Session data will persist in superglobal $_SESSION.
  *
  * Requirements:
  * @con_php_req 5
@@ -66,7 +66,7 @@ class CT_Session
         if (!isset($_SESSION)) {
             session_start();
         }
-        
+
         if (!isset($_SESSION[$this->_sNameSpace])) {
             $_SESSION[$this->_sNameSpace] = array();
         }

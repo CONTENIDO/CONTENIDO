@@ -1,107 +1,114 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * PHPLIB Data Storage Container using DBM Files
- * Code inspired by ct_shm.inc v 1.1 
- * 
- * Requirements: 
- * @con_php_req 5
- * @con_template <Templatefiles>
- * @con_notice <Notice>
- * 
  *
- * @package    CONTENIDO Backend <Area>
- * @version    1.1
+ * Description:
+ * PHPLIB Data Storage Container using DBM Files
+ * Code inspired by ct_shm.inc v 1.1
+ *
+ * Requirements:
+ * @con_php_req 5
+ *
+ *
+ * @package    CONTENIDO Backend Session
+ * @version    1.2
  * @author     Oliver Teuber <oliver@teuber.com>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <CONTENIDO Version>
- * @deprecated file deprecated in CONTENIDO release <CONTENIDO Version>
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2000-01-01
  *   modified 2008-07-03, bilal arslan, added security fix
+ *   modified 2011-10-09, Murat Purc, Partly ported to PHP 5 and formatted/documented code
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-                die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
-class CT_File {
-    ##
-    ## Define these parameters by overwriting or by
-    ## deriving your own class from it (recommened)
-    ##
+class CT_File
+{
+    /**
+     * Path where to store the session files writable by the web server UID
+     * @vsr string
+     */
+    public $file_path = '';
 
-    var $file_path = "";  ## Path where to store the session files
-                          ## writable by the web server UID
 
-    ## end of configuration
-    
-    function ac_start() {
-        # Not needed in this instance
+    public function ac_start()
+    {
+        // Not needed in this instance
     }
 
-    function ac_get_lock() {
-        # Not needed in this instance
+    public function ac_get_lock()
+    {
+        // Not needed in this instance
     }
 
-    function ac_release_lock() {
-        # Not needed in this instance
+    public function ac_release_lock()
+    {
+        // Not needed in this instance
     }
 
-    function ac_newid($str, $name) {
+    public function ac_newid($str, $name)
+    {
         return $str;
     }
 
-    function ac_store($id, $name, $str) {
+    public function ac_store($id, $name, $str)
+    {
+        $flags = defined(LOCK_EX) ? FILE_APPEND | LOCK_EX : FILE_APPEND;
+        return (bool) file_put_contents($this->file_path . "$id$name", $flags);
+    }
 
-        $f=fopen($this->file_path . "$id$name",'w+');
-        if($f<0)
-        {
-            return false;
+    public function ac_delete($id, $name)
+    {
+        unlink($this->file_path . "$id$name");
+    }
+
+    public function ac_gc($gc_time, $name)
+    {
+        if (!$hDir = opendir($this->file_path)) {
+            return;
         }
-        fputs($f,urlencode($str));
-        fclose($f);
 
-        return true;
+        $time = time() - $gc_time;
+        while (false !== ($sDirEntry = readdir($hDir))) {
+            if ($sDirEntry != '.' && $sDirEntry != '..') {
+                $pathName = $this->file_path . '/' . $sDirEntry;
+                if (is_file($pathName) && strpos($sDirEntry, $name) !== false
+                    && fileatime($pathName) < $time)
+                {
+                    unlink($pathName);
+                }
+            }
+        }
+        closedir($hDir);
     }
 
-    function ac_delete($id, $name) {
-        unlink($this->file_path."$id$name");
-    }
-
-    function ac_gc($gc_time, $name) {
-    }
-
-    function ac_halt($s) {
+    public function ac_halt($s)
+    {
         echo "<b>$s</b>";
         exit;
     }
 
-    function ac_get_value($id, $name) {
-        if(file_exists($this->file_path."$id$name"))
-        {
-
-            $f=fopen($this->file_path."$id$name",'r');
-            if($f<0)
-                return '';
-
-            $s=fgets($f,10240);
-            fclose($f);
-            return urldecode($s);
-        }
-        else
+    public function ac_get_value($id, $name)
+    {
+        if (file_exists($this->file_path . "$id$name")) {
+            $content = file_get_contents($this->file_path . "$id$name");
+            return urldecode($content);
+        } else {
             return '';
+        }
     }
 }
+
 ?>

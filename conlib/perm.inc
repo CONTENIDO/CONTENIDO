@@ -1,32 +1,32 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * Session Management for PHP3
- * 
- * Requirements: 
+ *
+ * Description:
+ * Permission management
+ *
+ * Requirements:
  * @con_php_req 5
  *
- * @package    CONTENIDO Backend <Area>
- * @version    0.1
+ * @package    CONTENIDO Backend Permission
+ * @version    0.2
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <CONTENIDO Version>
- * @deprecated file deprecated in CONTENIDO release <CONTENIDO Version>
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2002-08-16
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready) and some formatting
+ *   modified 2011-10-09, Murat Purc, Partly ported to PHP 5 and formatted/documented code
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -37,215 +37,217 @@ if (!defined('CON_FRAMEWORK')) {
 class Contenido_Perm
 {
 
-    var $classname = "Contenido_Perm";
-    var $areacache = array ();
-    var $actioncache = array ();
-    var $db;
-    var $db_perm;
+    /**
+     * Permission class name
+     * @var string
+     */
+    public $classname = 'Contenido_Perm';
 
-    function getGroupsForUser($user)
+    /**
+     * Area cache
+     * @var array
+     */
+    public $areacache = array();
+
+    /**
+     * Actions cache
+     * @var array
+     */
+    public $actioncache = array();
+
+    /**
+     * Database instance
+     * @var DB_Contenido
+     */
+    public $db;
+
+    /**
+     * Database instance
+     * @var DB_Contenido
+     */
+    public $db_perm;
+
+    /**
+     * Returns all groups of a user
+     * @param   string  $userId
+     * @return  array   List of group ids
+     */
+    public function getGroupsForUser($userId)
     {
         global $cfg;
-        
+
         if (!is_object($this->db)) {
-            $this->db = new DB_Contenido;
+            $this->db = new DB_Contenido();
         }
 
-        $sql = "SELECT group_id FROM
-                            ".$cfg["tab"]["groupmembers"]."
-                        WHERE user_id = '". Contenido_Security::escapeDB($user, $this->db)."'";
+        $sql = "SELECT group_id FROM " . $cfg['tab']['groupmembers'] . " WHERE user_id='" . $this->db->escape($userId) . "'";
         $this->db->query($sql);
-
-        $groups = array ();
-
-        while ($this->db->next_record())
-        {
-            $groups[] = $this->db->f("group_id");
+        $groups = array();
+        while ($this->db->next_record()) {
+            $groups[] = $this->db->f('group_id');
         }
-
         return $groups;
     }
 
-    function getIDForArea($area)
+    /**
+     * Returns the id of an area. If passed area is numeric, it will returned directly.
+     * @param   string|int $area
+     * @return  int
+     */
+    public function getIDForArea($area)
     {
         global $cfg;
 
+        if (is_numeric($area)) {
+            return $area;
+        } elseif (isset($this->areacache[$area])) {
+            return $this->areacache[$area];
+        }
+
         if (!is_object($this->db_perm)) {
-            $this->db_perm = new DB_Contenido;
+            $this->db_perm = new DB_Contenido();
         }
 
-        if (!is_numeric($area))
-        {
-            if (!@ array_key_exists($area, $this->areacache))
-            {
-                $sql = "SELECT idarea
-                                            FROM
-                               ".$cfg["tab"]["area"]."
-                                 WHERE
-                                    name = \"". Contenido_Security::escapeDB($area, $this->db_perm )."\"";
-                $this->db_perm->query($sql);
-
-                $this->db_perm->next_record();
-                $this->areacache[$area] = $this->db_perm->f("idarea");
-                $area = $this->db_perm->f(0);
-            } else
-            {
-                $area = $this->areacache[$area];
-            }
-
-            return ($area);
-        }
+        $sql = "SELECT idarea FROM " . $cfg['tab']['area'] . " WHERE name='" . $this->db_perm->escape($area) . "'";
+        $this->db_perm->query($sql);
+        $this->db_perm->next_record();
+        $this->areacache[$area] = $this->db_perm->f('idarea');
+        $area = $this->db_perm->f('idarea');
 
         return $area;
-
     }
 
-    function getIDForAction($action)
+    /**
+     * Returns the id of an action. If passed action is numeric, it will returned directly.
+     * @param   string|int $action
+     * @return  int
+     */
+    public function getIDForAction($action)
     {
-
         global $cfg;
+
+        if (is_numeric($action)) {
+            return $action;
+        } elseif (isset($this->actioncache[$action])) {
+            return $this->actioncache[$action];
+        }
 
         if (!is_object($this->db_perm)) {
             $this->db_perm = new DB_Contenido;
         }
 
-        if (!is_numeric($action))
-        {
-            if (!@ array_key_exists($action, $this->actioncache))
-            {
-                $sql = "SELECT idaction
-                                            FROM
-                                  ".$cfg["tab"]["actions"]."
-                                     WHERE
-                                   name = \"".Contenido_Security::escapeDB($action, $this->db_perm )."\"";
-
-                $this->db_perm->query($sql);
-                $this->db_perm->next_record();
-
-                $this->actioncache[$action] = $this->db_perm->f("idaction");
-                $action = $this->db_perm->f(0);
-            } else
-            {
-                $action = $this->actioncache[$action];
-            }
-            return ($action);
-
-        }
+        $sql = "SELECT idaction FROM " . $cfg['tab']['actions'] . " WHERE name='" . $this->db_perm->escape($action) . "'";
+        $this->db_perm->query($sql);
+        $this->db_perm->next_record();
+        $this->actioncache[$action] = $this->db_perm->f('idaction');
+        $action = $this->db_perm->f('idaction');
 
         return $action;
-
     }
 
-    function load_permissions($force = false)
+
+    /**
+     * Loads all permissions of groups where current logged in user is a member
+     * and saves them in session.
+     *
+     * @param   bool  $force  Flag to force loading, event if they were ccached before
+     * @return  string  Returns diffrent values, depending on state:
+     *                  '1' (string) if permissions couldn't loaded
+     *                  '3' (string) if permissions were successfull loaded
+     */
+    public function load_permissions($force = false)
     {
+        global $sess, $area_rights, $item_rights, $auth, $changelang, $changeclient;
 
-        global $sess, $area_rights, $item_rights, $db, $client, $lang, $auth, $cfg, $changelang, $changeclient;
+        $return = '1';
 
-        $return = "1";
-        //if not admin or sysadmin
-        if (!$this->have_perm())
-        {
-            $return = isset ($area_rights);
+        // if not admin or sysadmin
+        if (!$this->have_perm()) {
+            $return = isset($area_rights);
 
-            if (!isset ($area_rights) || !isset ($item_rights) || isset ($changeclient) || isset ($changelang) || $force)
-            {
-                $return = "3";
+            if (!isset($area_rights) || !isset($item_rights) || isset($changeclient) || isset($changelang) || $force) {
+                $return = '3';
                 //register variables
-                $sess->register("area_rights");
-                $sess->register("item_rights");
-                $item_rights = array ();
+                $sess->register('area_rights');
+                $sess->register('item_rights');
+                $item_rights = array();
+                $groups = $this->getGroupsForUser($auth->auth['uid']);
 
-                $groups = $this->getGroupsForUser($auth->auth["uid"]);
-
-                if (is_array($groups))
-                {
-                    foreach ($groups as $group)
-                    {
+                if (is_array($groups)) {
+                    foreach ($groups as $group) {
                         $this->load_permissions_for_user($group);
                     }
                 }
 
-                $this->load_permissions_for_user($auth->auth["uid"]);
-
+                $this->load_permissions_for_user($auth->auth['uid']);
             }
-
         }
 
         return $return;
     }
 
-    function load_permissions_for_user($user)
+
+    /**
+     * Loads all permissions foe a specific user or group.
+     * Stores area rights in global variable $area_rights.
+     * Stores item rights in global variable $item_rights.
+     *
+     * @param  string  $user  User Id hash
+     */
+    public function load_permissions_for_user($user)
     {
         global $db, $client, $lang, $cfg;
         global $area_rights, $item_rights;
-        $sql = "SELECT *
-                                  FROM ".$cfg["tab"]["rights"]."
-                                  WHERE user_id='".Contenido_Security::escapeDB($user, $db)."' AND idcat='0' AND idclient='".Contenido_Security::toInteger($client)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+
+        $sql = "SELECT * FROM " . $cfg['tab']['rights'] . " WHERE user_id='".$db->escape($user)."' "
+             . "AND idcat=0 AND idclient=".Contenido_Security::toInteger($client)." AND idlang=".Contenido_Security::toInteger($lang);
         $db->query($sql);
 
-        if (!is_array($area_rights))
-        {
-            $area_rights = array ();
+        if (!is_array($area_rights)) {
+            $area_rights = array();
         }
-        while ($db->next_record())
-        {
-            $area_rights[$db->f("idarea")][$db->f("idaction")] = true;
+        while ($db->next_record()) {
+            $area_rights[$db->f('idarea')][$db->f('idaction')] = true;
         }
-
-        // Select Rights for Article and Sructure    Atention    Hard code Areas
-        $sql = "SELECT
-                             idarea
-                         FROM
-                           ".$cfg["tab"]["area"];
+        // Select Rights for Article and Sructure (Attention Hard code Areas)
+        $sql = 'SELECT idarea FROM ' . $cfg['tab']['area'];
         $db->query($sql);
-
-        $tmp_area = array ();
-        while ($db->next_record())
-        {
-            array_push($tmp_area, $db->f("idarea"));
+        $tmp_area = array();
+        while ($db->next_record()) {
+            $tmp_area[] = $db->f('idarea');
         }
-        
-        $tmp_area_string = implode("','", array_keys($tmp_area));
-        $sql = "SELECT
-                     idarea, idaction, idcat
-                                  FROM ".$cfg["tab"]["rights"]."
-                                  WHERE user_id='".Contenido_Security::escapeDB($user, $db)."' AND idclient='".Contenido_Security::toInteger($client)."' AND idlang='".Contenido_Security::toInteger($lang)."' AND idarea IN ('$tmp_area_string') AND idcat != '0'";
-        $db->query($sql);
 
-        while ($db->next_record())
-        {
+        $tmp_area_string = implode("','", array_values($tmp_area));
+        $sql = "SELECT idarea, idaction, idcat FROM " . $cfg['tab']['rights'] . " WHERE user_id='".$db->escape($user)."' "
+             . "AND idclient=".Contenido_Security::toInteger($client)." AND idlang=".Contenido_Security::toInteger($lang)." AND idarea IN ('$tmp_area_string') AND idcat != 0";
+        $db->query($sql);
+        while ($db->next_record()) {
             $item_rights[$db->f(0)][$db->f(1)][$db->f(2)] = $db->f(2);
-
         }
     }
 
-    function have_perm_area_action_anyitem($area, $action = 0)
+    public function have_perm_area_action_anyitem($area, $action = 0)
     {
+        global $item_rights;
 
-        if ($this->have_perm_area_action($area, $action))
-        {
+        if ($this->have_perm_area_action($area, $action)) {
             return true;
         }
 
         $area = $this->getIDForArea($area);
         $action = $this->getIDForAction($action);
 
-        global $item_rights;
-
-        if (isset ($item_rights[$area][$action]))
-        {
-            return true;
-        } else
-        {
-            return false;
-        }
-
+        return (isset($item_rights[$area][$action]));
     }
 
-    function have_perm_area_action_item($area, $action, $itemid)
+    public function have_perm_area_action_item($area, $action, $itemid)
     {
         global $item_rights, $auth, $client, $lang, $cfg;
-        
+
+        if ($this->have_perm()) {
+            return true;
+        }
+
         if (!is_object($this->db)) {
             $this->db = new DB_Contenido;
         }
@@ -253,154 +255,128 @@ class Contenido_Perm
         $area = $this->getIDForArea($area);
         $action = $this->getIDForAction($action);
 
-        if ($this->have_perm())
-        {
+        // If the user has a right on this action in this area check for the items
+        if ($this->have_perm_area_action($area, $action)) {
             return true;
-        } else
-        {
-            //if the user has a right on this action in this area   check for the items
-            if ($this->have_perm_area_action($area, $action))
-            {
-                return true;
-            }
-            //check rights for the action in this area at this item
-            if (isset ($item_rights[$area][$action][$itemid]))
-            {
-                //if have action for area + action +item  check right for client and lang
-                return true;
-            } elseif ($item_rights[$area] != "noright")
-            {
-
-                $groupsForUser = $this->getGroupsForUser($auth->auth[uid]);
-                $groupsForUser[] = $auth->auth[uid];
-
-                $tmp_userstring = implode("','", $groupsForUser);
-
-                $sql = "SELECT *
-                                          FROM ".$cfg["tab"]["rights"]."
-                                          WHERE user_id IN ('".$tmp_userstring."') AND idclient = '".Contenido_Security::toInteger($client)."' AND idlang = '".Contenido_Security::toInteger($lang)."' AND idarea = '$area'  AND idcat != '0'";
-                $this->db->query($sql);
-
-                //if there are no rights for this area set the flag norights
-                if ($this->db->nf() == 0)
-                {
-                    $item_rights[$area] = "noright";
-                    return false;
-                }
-
-                while ($this->db->next_record())
-                {
-                    $item_rights[$this->db->f("idarea")][$this->db->f("idaction")][$this->db->f("idcat")] = $this->db->f("idcat");
-                }
-
-                //check
-                if (isset ($item_rights[$area][$action][$itemid]))
-                {
-                    //if have action for area + action +item  check right for client and lang
-                    return true;
-
-                }
-
-            }
-            return false;
         }
+
+        // Check rights for the action in this area at this item
+        if (isset($item_rights[$area][$action][$itemid])) {
+            // If have action for area + action +item  check right for client and lang
+            return true;
+        }
+
+        if ($item_rights[$area] != 'noright') {
+            $groupsForUser = $this->getGroupsForUser($auth->auth['uid']);
+            $groupsForUser[] = $auth->auth['uid'];
+
+            $tmp_userstring = implode("','", $groupsForUser);
+
+            $sql = "SELECT * FROM " . $cfg['tab']['rights'] . " WHERE user_id IN ('" . $tmp_userstring . "') "
+                 . "AND idclient=" . Contenido_Security::toInteger($client) . " AND idlang=" . Contenido_Security::toInteger($lang) . " AND idarea=$area AND idcat != 0";
+            $this->db->query($sql);
+
+            // If there are no rights for this area set the flag norights
+            if ($this->db->nf() == 0) {
+                $item_rights[$area] = 'noright';
+                return false;
+            }
+
+            while ($this->db->next_record()) {
+                $item_rights[$this->db->f('idarea')][$this->db->f('idaction')][$this->db->f('idcat')] = $this->db->f('idcat');
+            }
+
+            // Check
+            if (isset($item_rights[$area][$action][$itemid])) {
+                // If have action for area + action +item  check right for client and lang
+                return true;
+            }
+        }
+        return false;
     }
 
-    function getParentAreaId($area)
+    public function getParentAreaId($area)
     {
-
         global $client, $lang, $cfg, $sess;
 
         if (!is_object($this->db)) {
             $this->db = new DB_Contenido;
         }
 
-        if (is_numeric($area))
-        {
+        if (is_numeric($area)) {
             $sql = "SELECT
-                                b.name
-                            FROM
-                                ".$cfg["tab"]["area"]." AS a,
-                                ".$cfg["tab"]["area"]." AS b
-                            WHERE
-                                a.idarea = '". Contenido_Security::toInteger($area)."' AND
-                                b.name = a.parent_id";
-        } else
-        {
+                        b.name
+                    FROM
+                        ".$cfg['tab']['area']." AS a,
+                        ".$cfg['tab']['area']." AS b
+                    WHERE
+                        a.idarea = ". Contenido_Security::toInteger($area)." AND
+                        b.name = a.parent_id";
+        } else {
             $sql = "SELECT
-                                b.name
-                            FROM
-                                ".$cfg["tab"]["area"]." AS a,
-                                ".$cfg["tab"]["area"]." AS b
-                            WHERE
-                                a.name = '". Contenido_Security::escapeDB($area, $this->db)."' AND
-                                b.name = a.parent_id";
+                        b.name
+                    FROM
+                        ".$cfg['tab']['area']." AS a,
+                        ".$cfg['tab']['area']." AS b
+                    WHERE
+                        a.name = '". $this->db($area)."' AND
+                        b.name = a.parent_id";
 
         }
         $this->db->query($sql);
 
-        if ($this->db->next_record())
-        {
+        if ($this->db->next_record()) {
             return $this->db->f(0);
-        } else
-        {
+        } else {
             return $area;
-
         }
-
     }
 
-    function have_perm_area_action($area, $action = 0)
+    public function have_perm_area_action($area, $action = 0)
     {
         global $area_rights, $client, $lang, $cfg;
-        //if not admin or sysadmin
+
+        // if not admin or sysadmin
         if (!is_object($this->db_perm)) {
-            $this->db_perm = new DB_Contenido;
+            $this->db_perm = new DB_Contenido();
         }
 
         $area = $this->getIDForArea($area);
         $action = $this->getIDForAction($action);
 
-        if ($action == 0)
-        {
+        if ($action == 0) {
             $area = $this->getParentAreaId($area);
         }
 
         $area = $this->getIDForArea($area);
 
-        if (!$this->have_perm())
-        {
-
-            if ($action == 0 && $area_rights[$area])
-            {
-                //if have action for area + action   check right for client and lang
+        if (!$this->have_perm()) {
+            if ($action == 0 && $area_rights[$area]) {
+                // If have action for area + action check right for client and lang
                 return ($this->have_perm_client_lang($client, $lang));
             }
 
-            //check rights for the action in this area
-            if ($area_rights[$area][$action])
-            {
-                //if have action for area + action   check right for client and lang
+            // check rights for the action in this area
+            if ($area_rights[$area][$action]) {
+                // If have action for area + action check right for client and lang
                 return $this->have_perm_client_lang($client, $lang);
             }
 
             return false;
         }
         return true;
-
     }
 
-    function have_perm_client_lang($client, $lang)
+    public function have_perm_client_lang($client, $lang)
     {
+        global $auth;
+
         // Changed back to a full featured function, as have_perm
         // needs $client as global variable - not provided by this
         // function
         //return ($this->have_perm("client[$client],lang[$lang]"));
-        
-        global $auth;
 
-        if (!isset($auth->auth['perm']))
-        {
+        if (!isset($auth->auth['perm'])) {
             $auth->auth['perm'] = '';
         }
 
@@ -424,31 +400,28 @@ class Contenido_Perm
     }
 
     /**
-     * hasClientPermission
      * Checks if a user has access rights for a specific client.
-     * 
-     * @param integer $iClient    idclient to check, or false for the current client
-     * @param object  $oUser    User object to check against, or false for the current user    
+     *
+     * @param   int     $iClient   idclient to check, or false for the current client
+     * @param   object  $oUser     User object to check against, or false for the current user
+     * @return  bool
      */
-    function hasClientPermission ($iClient = false, $oUser = false)
+    public function hasClientPermission($iClient = false, $oUser = false)
     {
-        global $auth;
+        global $auth, $client;
 
-        if ($iClient === false)
-        {
-            global $client;
-            $iClient = $client;    
+        if ($iClient === false) {
+            $iClient = $client;
         }
-        
+
         $oUser = $this->_checkUserObject($oUser);
-        
-        if ($this->isSysadmin($oUser) || $this->isClientAdmin($iClient, $oUser) || $this->isClientUser($iClient, $oUser))
-        {
-            return true;    
+
+        if ($this->isSysadmin($oUser) || $this->isClientAdmin($iClient, $oUser) || $this->isClientUser($iClient, $oUser)) {
+            return true;
         } else {
             return false;
         }
-        /* Commented out Timo Trautmann, because here only client access is checked, possibility for admin or sysadmin access was ignored 
+        /* Commented out Timo Trautmann, because here only client access is checked, possibility for admin or sysadmin access was ignored
            functions isSysadmin isClientAdmin isClientUser also handles permission for groups
             #Check clients' rights of users' group(s)
             $aGroups = $this->getGroupsForUser($auth->auth["uid"]);
@@ -458,135 +431,125 @@ class Contenido_Perm
                 {
                     $oGroup = new Group;
                     $oGroup->loadGroupByGroupID ($group);
-                    
+
                     if ($this->isClientGroup($iClient, $oGroup))
                     {
                         return true;
-                    }    
+                    }
                 }
             }
-            
-            return false;    
+
+            return false;
         }*/
     }
-    
+
 
     /**
-     * isClientUser
      * Checks if the given user has access permission for a client
-     * 
-     * @param integer    $iClient    idclient to check
-     * @param object     $oUser        User object to check against
+     *
+     * @param   int     $iClient  idclient to check
+     * @param   object  $oUser    User object to check against
+     * @return  bool
      */
-    function isClientUser ($iClient, $oUser)
+    public function isClientUser($iClient, $oUser)
     {
         $oUser = $this->_checkUserObject($oUser);
-        
-        $aPermissions = explode(",", $oUser->getEffectiveUserPerms());
-        
-        if (in_array("client[$iClient]", $aPermissions))
-        {
-            return true;    
+
+        $aPermissions = explode(',', $oUser->getEffectiveUserPerms());
+
+        if (in_array("client[$iClient]", $aPermissions)) {
+            return true;
         }
-        
-        return false;
-    }
-    
-    /**
-     * isClientGroup
-     * Checks if the given group has access permission for a client
-     * 
-     * @param integer    $iClient    idclient to check
-     * @param object     $oGroup        Group object to check against
-     */
-    function isClientGroup ($iClient, $oGroup)
-    {
-        $aPermissions = explode(",", $oGroup->getField("perms"));
-        
-        if (in_array("client[$iClient]", $aPermissions))
-        {
-            return true;    
-        }
-        
+
         return false;
     }
 
     /**
-     * isClientAdmin
-     * Checks if the given user has an admin permission
-     * 
-     * @param integer    $iClient    idclient to check
-     * @param object     $oUser        User object to check against
+     * Checks if the given group has access permission for a client
+     *
+     * @param   int     $iClient  idclient to check
+     * @param   object  $oGroup   Group object to check against
+     * @return  bool
      */
-    function isClientAdmin ($iClient, $oUser)
+    public function isClientGroup($iClient, $oGroup)
     {
-        $oUser = $this->_checkUserObject($oUser);
-        
-        $aPermissions = explode(",", $oUser->getEffectiveUserPerms());
-        
-        if (in_array("admin[$iClient]", $aPermissions))
-        {
-            return true;    
+        $aPermissions = explode(',', $oGroup->getField('perms'));
+
+        if (in_array("client[$iClient]", $aPermissions)) {
+            return true;
         }
-        
+
         return false;
     }
-    
+
     /**
-     * isSysadmin
+     * Checks if the given user has an admin permission
+     *
+     * @param   integer  $iClient  idclient to check
+     * @param   object   $oUser    User object to check against
+     * @return  bool
+     */
+    public function isClientAdmin($iClient, $oUser)
+    {
+        $oUser = $this->_checkUserObject($oUser);
+
+        $aPermissions = explode(',', $oUser->getEffectiveUserPerms());
+
+        if (in_array("admin[$iClient]", $aPermissions)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Checks if the given user has sysadmin permission
-     * 
+     *
      * @param object $oUser    User object to check against
      */
-    function isSysadmin ($oUser)
+    public function isSysadmin($oUser)
     {
         $oUser = $this->_checkUserObject($oUser);
-        
-        $aPermissions = explode(",", $oUser->getEffectiveUserPerms());
-        
-        if (in_array("sysadmin", $aPermissions))
-        {
-            return true;    
+
+        $aPermissions = explode(',', $oUser->getEffectiveUserPerms());
+
+        if (in_array('sysadmin', $aPermissions)) {
+            return true;
         }
-        
+
         return false;
     }
-    
+
     /**
-     * _checkUserObject
-     * 
-     * Checks if the given object is a user object. 
-     * 
+     * Checks if the given object is a user object.
+     *
      * If oUser is false, initialize the object from the currently logged in user. If oUser is not
      * a object of the class User, issue a warning.
-     * 
-     * @parameter object oUser User object
-     * @access private
+     *
+     * @param   object  $oUser  User object
+     * @return  object
      */
-    function _checkUserObject ($oUser)
+    private function _checkUserObject($oUser)
     {
-        if ($oUser === false)
-        {
+        if ($oUser === false) {
             global $currentuser;
-            $oUser = $currentuser;    
+            $oUser = $currentuser;
         }
-        
-        if (!is_object($oUser))
-        {
+
+        if (!is_object($oUser)) {
             global $auth;
-            $oUser = new User;
-            $oUser->loadUserByUserID($auth->auth["uid"]);
+            $oUser = new User();
+            $oUser->loadUserByUserID($auth->auth['uid']);
         }
-        
-        if (strtolower(get_class($oUser)) != "user")
-        {
-            cWarning(__FILE__, __LINE__, "oUser parameter is not of type User");    
+
+        if (strtolower(get_class($oUser)) != 'user') {
+            cWarning(__FILE__, __LINE__, 'oUser parameter is not of type User');
         }
-        
-        return $oUser;    
+
+        return $oUser;
     }
 
-    function have_perm_client($p = 'x')
+    public function have_perm_client($p = 'x')
     {
         global $auth, $client;
 
@@ -594,15 +557,15 @@ class Contenido_Perm
             $auth->auth['perm'] = '';
         }
 
-        //split the permissions of the user
+        // Split the permissions of the user
         $userperm = explode(',', $auth->auth['perm']);
 
-        //if User is sysadmin or admin at this client return true
+        // If User is sysadmin or admin at this client return true
         if (in_array('sysadmin', $userperm)) {
             return true;
         }
 
-        //if there are more permissions to ask split them
+        // If there are more permissions to ask split them
         $pageperm = explode(',', $p);
         foreach ($pageperm as $value) {
             if (!in_array($value, $userperm)) {
@@ -610,28 +573,35 @@ class Contenido_Perm
             }
         }
         return true;
-
     }
 
-    function have_perm($p = 'x')
+    /**
+     * Checks if user has permissions tp passed perm.
+     * - Sysadmin has allways permission
+     * - Client admin has allways permission
+     *
+     * @param   string  $p  Permissions (comma separated list of perms) to check
+     * @return  bool
+     */
+    public function have_perm($p = 'x')
     {
         global $auth, $client;
 
-        if (!isset ($auth->auth['perm'])) {
+        if (!isset($auth->auth['perm'])) {
             $auth->auth['perm'] = '';
         }
 
-        //split the permissions of the user
+        // Split the permissions of the user
         $userperm = explode(',', $auth->auth['perm']);
 
-        //if User is sysadmin or admin at this client return true
+        // If User is sysadmin or admin at this client return true
         if (in_array('sysadmin', $userperm)) {
             return true;
         } elseif (in_array("admin[$client]", $userperm)) {
             return true;
-            //else check rights for the client and the language
+            // Else check rights for the client and the language
         } else {
-            //if there are more permissions to ask split them
+            // If there are more permissions to ask split them
             $pageperm = explode(',', $p);
             foreach ($pageperm as $value) {
                 if (!in_array($value, $userperm)) {
@@ -642,93 +612,81 @@ class Contenido_Perm
         return true;
     }
 
-    //checks if an item have any perms
-    function have_perm_item($mainarea, $itemid)
+    /**
+     * Checks if an item have any perms
+     *
+     * @param   string|int  $mainarea
+     * @param   int  $itemid
+     * @return  bool
+     */
+    public function have_perm_item($mainarea, $itemid)
     {
-
         global $cfg, $item_rights, $cfg, $client, $lang, $auth, $area_tree, $sess;
 
         $mainarea = $this->getIDForArea($mainarea);
 
-        //if is not admin or sysadmin
-        if (!$this->have_perm())
-        {
+        // If is admin or sysadmin
+        if ($this->have_perm()) {
+            return true;
+        }
 
-            if (!is_object($this->db)) {
-                $this->db = new DB_Contenido;
+        // If is not admin or sysadmin
+
+        if (!is_object($this->db)) {
+            $this->db = new DB_Contenido();
+        }
+
+        $this->showareas($mainarea);
+
+        $flg = false;
+        // Check if there are any rights for this areas
+        foreach ($area_tree[$mainarea] as $value) {
+            // If the flag noright is set there are no rights in this area
+            if ($item_rights[$value] == 'noright') {
+                continue;
+            } elseif (is_array($item_rights[$value])) {
+                // If there are any rights
+                foreach ($item_rights[$value] as $value2) {
+                    if (in_array($itemid, $value2)) {
+                        return true;
+                    }
+                }
+            } elseif ($item_rights[$value] != 'noright') {
+                $groupsForUser = $this->getGroupsForUser($auth->auth[uid]);
+                $groupsForUser[] = $auth->auth[uid];
+
+                //else search for rights for this user in this area
+                $sql = "SELECT
+                            *
+                         FROM
+                            ".$cfg['tab']['rights']."
+                         WHERE
+                            user_id IN ('".implode("','", $groupsForUser)."') AND
+                            idclient = ". Contenido_Security::toInteger($client)." AND
+                            idlang = ". Contenido_Security::toInteger($lang)." AND
+                            idarea = '$value' AND
+                            idcat != 0";
+                $this->db->query($sql);
+
+                // If there are no rights for this area set the flag norights
+                if ($this->db->affected_rows() == 0) {
+                    $item_rights[$value] = 'noright';
+                }
+
+                // Set the rights
+                while ($this->db->next_record()) {
+                    if ($this->db->f('idcat') == $itemid) {
+                        $flg = true;
+                    }
+                    $item_rights[$this->db->f('idarea')][$this->db->f('idaction')][$this->db->f('idcat')] = $this->db->f('idcat');
+                }
             }
-
-            $this->showareas($mainarea);
-
-            $flg = false;
-            //check if there are any rights for this areas
-            foreach ($area_tree[$mainarea] as $value)
-            {
-                // if the flag noright is set there are no rights in this area
-                if ($item_rights[$value] == "noright")
-                {
-                    continue;
-
-                }
-                elseif (is_array($item_rights[$value]))
-                {
-                    //if there are any rights
-                    foreach ($item_rights[$value] as $value2)
-                    {
-                        if (in_array($itemid, $value2))
-                        {
-                            return true;
-                        }
-                    }
-
-                }
-                elseif ($item_rights[$value] != "noright")
-                {
-
-                    $groupsForUser = $this->getGroupsForUser($auth->auth[uid]);
-                    $groupsForUser[] = $auth->auth[uid];
-
-                    //else search for rights for this user in this area
-                    $sql = "SELECT
-                                            *
-                                         FROM
-                                            ".$cfg["tab"]["rights"]."
-                                         WHERE
-                                            user_id IN ('".implode("','", $groupsForUser)."') AND
-                                            idclient = '". Contenido_Security::toInteger($client)."' AND
-                                            idlang = '". Contenido_Security::toInteger($lang)."' AND
-                                            idarea = '$value' AND
-                                            idcat != '0'";
-                    $this->db->query($sql);
-
-                    //if there are no rights for this area set the flag norights
-                    if ($this->db->affected_rows() == 0)
-                    {
-                        $item_rights[$value] = "noright";
-                    }
-
-                    //set the rights
-                    while ($this->db->next_record())
-                    {
-                        if ($this->db->f("idcat") == $itemid)
-                        {
-                            $flg = true;
-                        }
-                        $item_rights[$this->db->f("idarea")][$this->db->f("idaction")][$this->db->f("idcat")] = $this->db->f("idcat");
-                    }
-
-                } //end if
-
-            } //end for
-            return $flg;
-        } //end if
-        return true;
-
+        }
+        return $flg;
     }
 
-    function showareas($mainarea)
+    public function showareas($mainarea)
     {
-
         global $area_tree, $sess, $perm, $cfg;
 
         if (!is_object($this->db)) {
@@ -737,41 +695,26 @@ class Contenido_Perm
 
         $mainarea = $this->getIDForArea($mainarea);
 
-        //if $area_tree for this area is not register
-        if (!isset ($area_tree[$mainarea]))
-        {
-            $sess->register("area_tree");
+        // If $area_tree for this area is not register
+        if (!isset($area_tree[$mainarea])) {
+            $sess->register('area_tree');
 
             // parent_id uses the name not the idarea
-            $sql = "SELECT
-                              name
-                           FROM
-                              ".$cfg["tab"]["area"]."
-                           WHERE
-                              idarea='$mainarea'";
-
+            $sql = "SELECT name FROM " . $cfg['tab']['area'] . " WHERE idarea=$mainarea";
             $this->db->query($sql);
             $this->db->next_record();
-            $name = $this->db->f("name");
+            $name = $this->db->f('name');
 
-            //check which subareas are there and write them in the array
-            $sql = "SELECT
-                              idarea
-                           FROM
-                              ".$cfg["tab"]["area"]."
-                           WHERE
-                              parent_id='$name' OR
-                              idarea='$mainarea'";
-
+            // Check which subareas are there and write them in the array
+            $sql = "SELECT idarea FROM " . $cfg['tab']['area'] . " WHERE parent_id='$name' OR idarea=$mainarea";
             $this->db->query($sql);
-            $area_tree[$mainarea] = array ();
-            while ($this->db->next_record())
-            {
-                $area_tree[$mainarea][] = $this->db->f("idarea");
+            $area_tree[$mainarea] = array();
+            while ($this->db->next_record()) {
+                $area_tree[$mainarea][] = $this->db->f('idarea');
             }
-
         }
         return $mainarea;
     }
-
 }
+
+?>
