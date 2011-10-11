@@ -171,7 +171,7 @@ class UploadItem extends Item
 {
     /**
      * Property collection instance
-     * @var PropertyCollection
+     * @var cApiPropertyCollection
      */
     protected $_oPropertyCollection;
 
@@ -281,7 +281,7 @@ class UploadItem extends Item
     /**
      * Lazy instantiation and return of properties object
      * @global int $client
-     * @return PropertyCollection
+     * @return cApiPropertyCollection
      */
     protected function _getPropertiesCollectionInstanceX()
     {
@@ -289,7 +289,7 @@ class UploadItem extends Item
 
         // Runtime on-demand allocation of the properties object
         if (!is_object($this->_oPropertyCollection)) {
-            $this->_oPropertyCollection = new PropertyCollection();
+            $this->_oPropertyCollection = new cApiPropertyCollection();
             $this->_oPropertyCollection->changeClient($client);
         }
         return $this->_oPropertyCollection;

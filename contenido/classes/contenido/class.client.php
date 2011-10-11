@@ -140,7 +140,7 @@ class cApiClient extends Item
 
     /**
      * Property collection instance
-     * @var PropertyCollection
+     * @var cApiPropertyCollection
      */
     protected $_oPropertyCollection;
 
@@ -301,13 +301,13 @@ class cApiClient extends Item
     /**
      * Lazy instantiation and return of properties object
      *
-     * @return PropertyCollection
+     * @return cApiPropertyCollection
      */
     protected function _getPropertiesCollectionInstance()
     {
         // Runtime on-demand allocation of the properties object
         if (!is_object($this->_oPropertyCollection)) {
-            $this->_oPropertyCollection = new PropertyCollection();
+            $this->_oPropertyCollection = new cApiPropertyCollection();
             $this->_oPropertyCollection->changeClient($this->idclient);
         }
         return $this->_oPropertyCollection;

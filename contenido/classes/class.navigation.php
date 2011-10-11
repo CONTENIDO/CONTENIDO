@@ -28,13 +28,14 @@
  *   modified 2010-01-15, Dominik Ziegler, added frontend url to client name
  *   modified 2011-01-28, Dominik Ziegler, added check for client existance for link to frontend [#CON-378]
  *   modified 2011-08-22, Timo Trautman, removed commented code
+ *   modified 2011-10-11, Murat Purc, Partly ported to PHP5
  *
  *   $Id$:
  * }}
  *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
@@ -49,25 +50,27 @@ cInclude('includes', 'functions.api.images.php');
  * @package     Backend
  * @subpackage  Navigation
  */
-class Contenido_Navigation {
+class Contenido_Navigation
+{
 
     /**
      * Flag to debug this vlass
      * @var  bool
      */
-    var $debug = 0;
+    public $debug = 0;
 
     /**
      * Array storing all data
      * @var  array
      */
-    var $data = array();
+    public $data = array();
 
 
     /**
      * Constructor. Loads the XML language file using XML_Doc.
      */
-    function Contenido_Navigation() {
+    public function __construct()
+    {
         global $cfg, $belang;
 
         $this->xml = new XML_Doc();
@@ -92,11 +95,12 @@ class Contenido_Navigation {
      *                            - "{XPath}": XPath value to extract caption from CONTENIDO XML file
      * @return  string  The found caption
      */
-    function getName($location) {
+    public function getName($location)
+    {
         global $cfg, $belang;
 
-        # If a ";" is found entry is from a plugin -> explode location, first is xml file path,
-        # second is xpath location in xml file
+        // If a ";" is found entry is from a plugin -> explode location, first is xml file path,
+        // second is xpath location in xml file
         if (strstr($location, ';')) {
 
             $locs  = explode(';', $location);
@@ -144,36 +148,37 @@ class Contenido_Navigation {
     *
     * @return  void
     */
-    function _buildHeaderData() {
+    public function _buildHeaderData()
+    {
         global $cfg, $perm, $belang;
 
         $db  = new DB_Contenido();
         $db2 = new DB_Contenido();
 
-        # Load main items
-        $sql = "SELECT idnavm, location FROM ".$cfg['tab']['nav_main']." ORDER BY idnavm";
+        // Load main items
+        $sql = "SELECT idnavm, location FROM " . $cfg['tab']['nav_main'] . " ORDER BY idnavm";
 
         $db->query($sql);
 
-        # Loop result and build array
+        // Loop result and build array
         while ($db->next_record()) {
 
-            # Extract names from the XML document.
+            // Extract names from the XML document.
             $main = $this->getName($db->f('location'));
 
-            # Build data array
+            // Build data array
             $this->data[$db->f('idnavm')] = array($main);
 
             $sql = "SELECT
                         a.location AS location, b.name AS area, b.relevant
                     FROM
-                        ".$cfg['tab']['nav_sub']." AS a, ".$cfg['tab']['area']." AS b
+                        " . $cfg['tab']['nav_sub'] . " AS a, " . $cfg['tab']['area'] . " AS b
                     WHERE
-                        a.idnavm = '".$db->f('idnavm')."' AND
-                        a.level  = '0' AND
+                        a.idnavm = ".$db->f('idnavm')." AND
+                        a.level  = 0 AND
                         b.idarea = a.idarea AND
-                        a.online = '1' AND
-                        b.online = '1'
+                        a.online = 1 AND
+                        b.online = 1
                     ORDER BY
                         a.idnavs";
 
@@ -182,15 +187,14 @@ class Contenido_Navigation {
             while ($db2->next_record()) {
                 $area = $db2->f('area');
                 if ($perm->have_perm_area_action($area) || $db2->f('relevant') == 0){
-                    # Extract names from the XML document.
+                    // Extract names from the XML document.
                     $name = $this->getName($db2->f('location'));
                     $this->data[$db->f('idnavm')][] = array($name, $area);
                 }
             }
-
         }
 
-        # debugging information
+        // debugging information
         if ($this->debug) {
             echo '<pre>' . print_r($this->data, true) . '</pre>';
         }
@@ -202,8 +206,8 @@ class Contenido_Navigation {
      *
      * @param  int  $lang  The language to use for header doc creation
      */
-    function buildHeader($lang) {
-
+    public function buildHeader($lang)
+    {
         global $cfg, $sess, $client, $changelang, $auth, $cfgClient;
 
         $this->_buildHeaderData();
@@ -215,7 +219,7 @@ class Contenido_Navigation {
         $t_sub = '';
         $numSubMenus = 0;
 
-        $properties = new PropertyCollection();
+        $properties = new cApiPropertyCollection();
         $clientImage = $properties->getValue('idclient', $client, 'backend', 'clientimage', false);
 
         $sJsEvents = '';
@@ -258,12 +262,11 @@ class Contenido_Navigation {
                 $main->next();
 
                 $numSubMenus++;
-
             } else {
-                # first entry in array is a main menu item
+                // first entry in array is a main menu item
             }
 
-            # generate a sub menu item.
+            // generate a sub menu item.
             $t_sub .= $sub->generate($cfg['path']['templates'] . $cfg['templates']['submenu'], true);
             $cnt ++;
         }
@@ -329,30 +332,30 @@ class Contenido_Navigation {
         if (strlen($sClientName) > 25) {
             $sClientName = capiStrTrimHard($sClientName, 25);
         }
-		
-		$client = Contenido_Security::toInteger($client);
-		if ( $client == 0 ) {
-			$sClientNameTemplate = '<b>' . i18n("Client") . ':</b> %s';
-			$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientName));
-		} else {
-			$sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
-			
-			$sClientName 	= $classclient->getClientName($client).' ('.$client.')';
-			$sClientUrl 	= $cfgClient[$client]["path"]["htmlpath"];
 
-			if ($clientImage !== false && $clientImage != "" && file_exists($cfgClient[$client]['path']['frontend'].$clientImage)) {
-				$sClientImageTemplate = '<img src="%s" alt="%s" title="%s" />';
-				
-				$sThumbnailPath 	= capiImgScale($cfgClient[$client]['path']['frontend'].$clientImage, 80, 25, 0, 1);
-				$sClientImageTag 	= sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
-				
-				$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientImageTag));
-			} else {
-				$main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientName));
-			}
-		}
-		
-		$main->set('s', 'CHOSENUSER', "<b>".i18n("User").":</b> ".$classuser->getRealname($auth->auth["uid"], true));
+        $client = Contenido_Security::toInteger($client);
+        if ( $client == 0 ) {
+            $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> %s';
+            $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientName));
+        } else {
+            $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> <a href="%s" target="_blank">%s</a>';
+
+            $sClientName = $classclient->getClientName($client).' ('.$client.')';
+            $sClientUrl  = $cfgClient[$client]["path"]["htmlpath"];
+
+            if ($clientImage !== false && $clientImage != "" && file_exists($cfgClient[$client]['path']['frontend'].$clientImage)) {
+                $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" />';
+
+                $sThumbnailPath  = capiImgScale($cfgClient[$client]['path']['frontend'].$clientImage, 80, 25, 0, 1);
+                $sClientImageTag = sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
+
+                $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientImageTag));
+            } else {
+                $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientName));
+            }
+        }
+
+        $main->set('s', 'CHOSENUSER', "<b>".i18n("User").":</b> ".$classuser->getRealname($auth->auth["uid"], true));
         $main->set('s', 'SID', $sess->id);
         $main->set('s', 'MAINLOGINLINK', $sess->url("frameset.php?area=mycontenido&frame=4"));
 
@@ -372,7 +375,7 @@ class Contenido_Navigation {
      *
      * @return  string
      */
-    function _renderLanguageSelect()
+    public function _renderLanguageSelect()
     {
         global $cfg, $client, $lang;
 

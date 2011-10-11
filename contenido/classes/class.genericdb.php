@@ -264,7 +264,7 @@ abstract class Contenido_ItemBaseAbstract
 
     /**
      * Property collection instance
-     * @var  PropertyCollection
+     * @var  cApiPropertyCollection
      */
     protected $properties;
 
@@ -393,13 +393,13 @@ abstract class Contenido_ItemBaseAbstract
     /**
      * Returns properties instance, instantiates it if not done before.
      *
-     * @return  PropertyCollection
+     * @return  cApiPropertyCollection
      */
     protected function _getPropertiesCollectionInstance()
     {
         // Runtime on-demand allocation of the properties object
-        if (!isset($this->properties) || !($this->properties instanceof PropertyCollection)) {
-            $this->properties = new PropertyCollection();
+        if (!isset($this->properties) || !($this->properties instanceof cApiPropertyCollection)) {
+            $this->properties = new cApiPropertyCollection();
         }
         return $this->properties;
     }

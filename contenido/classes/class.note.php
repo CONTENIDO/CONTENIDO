@@ -147,7 +147,7 @@ class NoteList extends cHTMLDiv
 
         $this->setStyleDefinition("background", $cfg['color']['table_light']);
 
-        $oPropertyCollection = new PropertyCollection;
+        $oPropertyCollection = new cApiPropertyCollection();
         $oPropertyCollection->select("itemtype = 'idcommunication' AND type = 'note' AND name = 'idlang' AND value = '$lang'");
 
         $items = array();

@@ -252,7 +252,7 @@ class Contenido_UpdateNotifier
      */
     public function __construct($aCfg, $oUser, $oPerm, $oSession, $sBackendLanguage)
     {
-        $this->oProperties      = new PropertyCollection;
+        $this->oProperties      = new cApiPropertyCollection();
         $this->oSession         = $oSession;
         $this->aCfg             = $aCfg;
         $this->sBackendLanguage = $sBackendLanguage;
@@ -274,7 +274,7 @@ class Contenido_UpdateNotifier
 
             if ($sPropUpdate == "true" || $sPropRSS == "true") {
 
-                if($sPropUpdate == "true") {
+                if ($sPropUpdate == "true") {
                     $this->bEnableCheck = true;
                 }
 
@@ -290,7 +290,7 @@ class Contenido_UpdateNotifier
                 }
 
                 $this->setCachePath();
-                if ( $this->sCacheDirectory != "" ) {
+                if ($this->sCacheDirectory != "") {
                     $this->setRSSFile();
                     $this->detectMinorRelease();
                     $this->checkUpdateNecessity();
@@ -740,7 +740,7 @@ class Contenido_UpdateNotifier
                 $oTpl->set("s", "NEWS_NOCONTENT", "");
                 $oTpl->set("s", "DISPLAY_DISABLED", 'none');
             }
-        } else if ( $this->bNoWritePermissions == true ) {
+        } else if ($this->bNoWritePermissions == true) {
             $oTpl->set("s", "NEWS_NOCONTENT", i18n('Your webserver does not have write permissions for the directory /contenido/cache/!'));
         } else {
             $oTpl->set("s", "NEWS_NOCONTENT", i18n("No RSS content available"));
@@ -758,7 +758,7 @@ class Contenido_UpdateNotifier
     {
         if (!$this->bEnableView) {
             $sOutput = "";
-        } else if ($this->bNoWritePermissions == true ) {
+        } else if ($this->bNoWritePermissions == true) {
             $sMessage = i18n('Your webserver does not have write permissions for the directory /contenido/cache/!');
             $sOutput = $this->renderOutput($sMessage);
         } else if (!$this->bEnableCheck) {

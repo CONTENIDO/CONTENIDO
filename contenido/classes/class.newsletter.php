@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Newsletter recipient class
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend classes
  * @version    1.1
@@ -18,15 +18,15 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2004-08-01
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -64,9 +64,9 @@ class NewsletterCollection extends ItemCollection
     public function create($sName)
     {
         global $client, $lang, $auth;
-        
+
         $sName  = Contenido_Security::escapeDB($sName, null);
-        $client = Contenido_Security::toInteger($client); 
+        $client = Contenido_Security::toInteger($client);
         $lang   = Contenido_Security::toInteger($lang);
 
         // Check if the newsletter name already exists
@@ -99,8 +99,8 @@ class NewsletterCollection extends ItemCollection
     public function duplicate($iItemID)
     {
         global $client, $lang, $auth;
-        
-        $client = Contenido_Security::toInteger($client); 
+
+        $client = Contenido_Security::toInteger($client);
         $lang   = Contenido_Security::toInteger($lang);
 
         cInclude("includes", "functions.con.php");
@@ -145,7 +145,7 @@ class NewsletterCollection extends ItemCollection
 
         // Copy properties, runtime on-demand allocation of the properties object
         if (!is_object($this->properties)) {
-            $this->properties = new PropertyCollection;
+            $this->properties = new cApiPropertyCollection();
         }
         $this->properties->setWhere("idclient", $client);
         $this->properties->setWhere("itemtype", $this->primaryKey);
@@ -201,8 +201,8 @@ class Newsletter extends Item
     public function store()
     {
         global $client, $lang, $auth;
-        
-        $client = Contenido_Security::toInteger($client); 
+
+        $client = Contenido_Security::toInteger($client);
         $lang     = Contenido_Security::toInteger($lang);
 
         $this->set("modified", date("Y-m-d H:i:s"), false);
@@ -590,7 +590,7 @@ class Newsletter extends Item
         } else {
             $bReturn = false;
         }
-        
+
         return $bReturn;
     }
 

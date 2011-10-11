@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2011-10-07
+ *     created  2011-10-11
  * }}
  */
 
@@ -135,8 +135,6 @@ return array(
     'NoteLink' => 'contenido/classes/class.note.php',
     'Contenido_Notification' => 'contenido/classes/class.notification.php',
     'PHPMailer' => 'contenido/classes/class.phpmailer.php',
-    'PropertyCollection' => 'contenido/classes/class.properties.php',
-    'PropertyItem' => 'contenido/classes/class.properties.php',
     'Purge' => 'contenido/classes/class.purge.php',
     'RequestPassword' => 'contenido/classes/class.request.password.php',
     'Request' => 'contenido/classes/class.request.php',
@@ -256,6 +254,10 @@ return array(
     'cApiModule' => 'contenido/classes/contenido/class.module.php',
     'cApiModuleTranslationCollection' => 'contenido/classes/contenido/class.module.php',
     'cApiModuleTranslation' => 'contenido/classes/contenido/class.module.php',
+    'cApiPropertyCollection' => 'contenido/classes/contenido/class.property.php',
+    'cApiProperty' => 'contenido/classes/contenido/class.property.php',
+    'PropertyCollection' => 'contenido/classes/contenido/class.property.php',
+    'PropertyItem' => 'contenido/classes/contenido/class.property.php',
     'cApiStatCollection' => 'contenido/classes/contenido/class.stat.php',
     'cApiStat' => 'contenido/classes/contenido/class.stat.php',
     'cApiTemplateCollection' => 'contenido/classes/contenido/class.template.php',

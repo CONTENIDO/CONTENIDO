@@ -251,7 +251,7 @@ function uplSyncDirectoryDBFS($sPath)
     global $cfgClient, $client, $cfg, $db;
 
     $oUploadsColl = new UploadCollection();
-    $oPropertiesColl = new PropertyCollection();
+    $oPropertiesColl = new cApiPropertyCollection();
     $oDBFSColl = new cApiDbfsCollection();
 
     if ($oDBFSColl->dir_exists($sPath)) {
@@ -349,7 +349,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent)
     }
 
     // update all upload item properties starting with the old path, replace itemid with the new path
-    $oPropertyColl = new PropertyCollection();
+    $oPropertyColl = new cApiPropertyCollection();
     $oPropertyColl->select("idclient=" . (int) $client . " AND itemtype='upload' AND type='file' AND itemid LIKE '". $oPropertyColl->escape($sParent . $sOldName) . "%'");
     while ($oProperty = $oPropertyColl->next()) {
         $sDirName = $oProperty->get('itemid');
@@ -433,7 +433,7 @@ function uplRecursiveDirectoryList($sDirectory, TreeItem $oRootItem, $iLevel, $s
  * @param  int  $level  Not used at te moment!
  */
 function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $client)
-{	
+{
 
     $dbfs = new cApiDbfsCollection();
     $dbfs->select("filename = '.' AND idclient=".Contenido_Security::toInteger($client), 'dirname', 'dirname ASC');
@@ -800,7 +800,7 @@ function uplSearch($searchfor)
 {
     global $client;
 
-    $oPropertiesCol = new PropertyCollection();
+    $oPropertiesCol = new cApiPropertyCollection();
     $oUploadsCol = new UploadCollection();
 
     $clientdb = Contenido_Security::toInteger($client);

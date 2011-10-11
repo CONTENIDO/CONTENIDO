@@ -71,7 +71,7 @@ class cApiDbfsCollection extends ItemCollection
         $this->select("dirname = '" . $dir . "' AND filename = '" . $file . "' AND idclient = " . $client . " LIMIT 1");
 
         if ($item = $this->next()) {
-            $properties = new PropertyCollection();
+            $properties = new cApiPropertyCollection();
             // Check if we're allowed to access it
             if ($properties->getValue('upload', 'dbfs:/' . $dir . '/' . $file, 'file', 'protected') == '1') {
                 if ($auth->auth['uid'] == 'nobody') {
