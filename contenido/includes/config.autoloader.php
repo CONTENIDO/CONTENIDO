@@ -199,6 +199,7 @@ return array(
     'cApiCategoryLanguageCollection' => 'contenido/classes/contenido/class.categorylanguage.php',
     'cApiCategoryLanguage' => 'contenido/classes/contenido/class.categorylanguage.php',
     'cApiCategoryTreeCollection' => 'contenido/classes/contenido/class.categorytree.php',
+    'cApiCategoryTree' => 'contenido/classes/contenido/class.categorytree.php',
     'cApiTree' => 'contenido/classes/contenido/class.categorytree.php',
     'cApiClientCollection' => 'contenido/classes/contenido/class.client.php',
     'cApiClient' => 'contenido/classes/contenido/class.client.php',

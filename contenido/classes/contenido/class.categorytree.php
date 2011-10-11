@@ -4,13 +4,14 @@
  * CONTENIDO Content Management System
  *
  * Description:
+ * Category tree
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
  * @package    CONTENIDO Backend classes
- * @version    1.4
+ * @version    1.5
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -36,9 +37,9 @@ class cApiCategoryTreeCollection extends ItemCollection
     public function __construct($select = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["cat_tree"], "idtree");
-        $this->_setJoinPartner("cApiCategoryCollection");
-        $this->_setItemClass("cApiTree");
+        parent::__construct($cfg['tab']['cat_tree'], 'idtree');
+        $this->_setJoinPartner('cApiCategoryCollection');
+        $this->_setItemClass('cApiTree');
         if ($select !== false) {
             $this->select($select);
         }
@@ -53,7 +54,7 @@ class cApiCategoryTreeCollection extends ItemCollection
 }
 
 
-class cApiTree extends Item
+class cApiCategoryTree extends Item
 {
     /**
      * Constructor Function
@@ -62,11 +63,33 @@ class cApiTree extends Item
     public function __construct($mId = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["cat_tree"], "idtree");
+        parent::__construct($cfg['tab']['cat_tree'], 'idtree');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
+    }
+}
+
+
+################################################################################
+# Old version of category tree class
+#
+# NOTE: Class implemetation below is deprecated and the will be removed in 
+#       future versions of contenido.
+#       Don't use it, it's still available due to downwards compatibility.
+
+
+/**
+ * Single category tree item
+ * @deprecated  [2011-10-11] Use cApiCategoryTree instead of this class.
+ */
+class cApiTree extends cApiCategoryTree
+{
+    public function __construct($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        parent::__construct($mId);
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
