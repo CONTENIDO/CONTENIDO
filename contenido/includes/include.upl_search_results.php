@@ -267,7 +267,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
     $page = new UI_Page();
     $list2 = new UploadList($startwrap, $endwrap, $itemwrap);
 
-    $uploads = new UploadCollection();
+    $uploads = new cApiUploadCollection();
 
     // Fetch data
     $files = uplSearch($searchfor);

@@ -63,7 +63,7 @@ if (!$sess->is_registered("upl_last_path")) {
 }
 $upl_last_path = $path;
 
-$uploads = new UploadCollection();
+$uploads = new cApiUploadCollection();
 
 $dbfs = new cApiDbfsCollection();
 
@@ -497,7 +497,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
     $page->addScript('reloadscript', $sReloadScript);
     $list2 = new UploadList($startwrap, $endwrap, $itemwrap);
 
-    $uploads = new UploadCollection();
+    $uploads = new cApiUploadCollection();
 
     // Fetch data
     if (substr($path,strlen($path)-1,1) != "/") {

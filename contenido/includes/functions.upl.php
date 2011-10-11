@@ -196,7 +196,7 @@ function uplSyncDirectory($sPath)
         return uplSyncDirectoryDBFS($sPath);
     }
 
-    $oUploadsColl = new UploadCollection();
+    $oUploadsColl = new cApiUploadCollection();
 
     // get current upload directory, it's subdirectories and remove all database
     // entries pointing to a non existing upload directory on the file system
@@ -250,7 +250,7 @@ function uplSyncDirectoryDBFS($sPath)
 {
     global $cfgClient, $client, $cfg, $db;
 
-    $oUploadsColl = new UploadCollection();
+    $oUploadsColl = new cApiUploadCollection();
     $oPropertiesColl = new cApiPropertyCollection();
     $oDBFSColl = new cApiDbfsCollection();
 
@@ -338,7 +338,7 @@ function uplRenameDirectory($sOldName, $sNewName, $sParent)
     }
 
     // fetch all directory strings starting with the old path, and replace them with the new path
-    $oUploadColl = new UploadCollection();
+    $oUploadColl = new cApiUploadCollection();
     $oUploadColl->select("idclient=" . (int) $client . " AND dirname LIKE '" . $oUploadColl->escape($sParent . $sOldName) . "%'");
     while ($oUpload = $oUploadColl->next()) {
         $sDirName = $oUpload->get('dirname');
@@ -801,7 +801,7 @@ function uplSearch($searchfor)
     global $client;
 
     $oPropertiesCol = new cApiPropertyCollection();
-    $oUploadsCol = new UploadCollection();
+    $oUploadsCol = new cApiUploadCollection();
 
     $clientdb = Contenido_Security::toInteger($client);
     $searchfordb = $oPropertiesCol->escape(urlencode($searchfor));

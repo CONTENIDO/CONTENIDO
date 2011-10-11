@@ -58,7 +58,7 @@ $form->setVar("thumbnailmode", $_REQUEST["thumbnailmode"]);
 $form->addHeader(i18n("Edit"));
 
 $properties = new cApiPropertyCollection();
-$uploads    = new UploadCollection();
+$uploads    = new cApiUploadCollection();
 
 if (is_dbfs($_REQUEST["path"])) {
     $qpath = $_REQUEST["path"] . "/";

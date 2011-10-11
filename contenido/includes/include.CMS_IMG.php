@@ -80,7 +80,7 @@ $filetypes = "'jpeg', 'jpg', 'gif', 'png'";
 
 // selected or previous selected image directory
 if (!isset($img_dir)) {
-    $oUploadItem = new UploadItem($a_content['CMS_IMG'][$typenr]);
+    $oUploadItem = new cApiUpload($a_content['CMS_IMG'][$typenr]);
     $img_dir = $oUploadItem->get('dirname');
 }
 
@@ -102,7 +102,7 @@ while ($db->next_record()) {
 
 // all images in current directory
 $aImages = array();
-$oUploadColl = new UploadCollection();
+$oUploadColl = new cApiUploadCollection();
 $sWhere = "idclient='".$client."' AND dirname='" . $db->escape($img_dir) . "' AND filetype IN (" . $filetypes . ")";
 $oUploadColl->select($sWhere, '', 'filename ASC');
 while ($oItem = $oUploadColl->next()) {
