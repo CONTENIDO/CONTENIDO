@@ -269,6 +269,14 @@ function setUserSequence ($idartlang, $defaultidworkflow) {
    }
 }
 
+/**
+ * Returns current user sequence, either from workflow article allocations or
+ * from workflow user sequnces.
+ *
+ * @param   int  $idartlang  Article language id
+ * @param   int  $defaultidworkflow  Default workflow id
+ * @return  int|false  Id of found user sequence or false
+ */
 function getCurrentUserSequence ($idartlang, $defaultidworkflow)
 {
         $wfaa = new WorkflowArtAllocations;
