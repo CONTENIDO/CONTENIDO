@@ -291,11 +291,11 @@ if (class_exists('AbstractModule')=== false) {
     }
 }
 
-global $idart, $idcat, $sess, $lang, $perm, $auth, $cfg, $contenido, $client, $cfgClient, $encoding, $cCurrentModule, $idtplcfg, $idcatart, $idartlang, $idcatlang;
+global $idart, $idcat, $sess, $lang, $perm, $auth, $cfg, $contenido,$edit, $client, $cfgClient, $encoding, $cCurrentModule, $idtplcfg, $idcatart, $idartlang, $idcatlang;
 
 $configGlobals = array(
     
-'contenido' => $contenido, 'sess' => $sess, 'idart' => $idart, 'idcat' => $idcat, 'cfg' => $cfg, 'lang' => $lang, 
+'contenido' => $contenido,'edit'=>$edit, 'sess' => $sess, 'idart' => $idart, 'idcat' => $idcat, 'cfg' => $cfg, 'lang' => $lang, 
     'perm' => $perm, 'auth' => $auth, 'client' => $client, 'cfgClient' => $cfgClient, 'db' => new DB_Contenido(), 
     'smarty' => Contenido_SmartyWrapper::getInstance(), 'idmod' => $cCurrentModule, 'idcatArt' => $idcatart, 
     'idartLang' => $idartlang, 'idcatLang' => $idcatlang
