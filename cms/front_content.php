@@ -810,26 +810,26 @@ else
     ##############################################
     # time management
     ##############################################
-    $sql = "SELECT timemgmt FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
+    $sql = "SELECT timemgmt, online, redirect, redirect_url, datestart, dateend FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
     $db->next_record();
-
-    if (($db->f("timemgmt") == "1") && ($isstart != 1))
-    {
-        $sql = "SELECT online, redirect, redirect_url FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'
-                AND NOW() > datestart AND NOW() < dateend";
-    }
-    else
-    {
-        $sql = "SELECT online, redirect, redirect_url FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
-    }
-
-    $db->query($sql);
-    $db->next_record();
-
+	
     $online = $db->f("online");
-    $redirect = $db->f("redirect");
+	$redirect = $db->f("redirect");
     $redirect_url = $db->f("redirect_url");
+	
+	if ($db->f("timemgmt") == "1" && $isstart != 1) {
+		$dateStart = $db->f("datestart");
+		$dateEnd = $db->f("dateend");
+
+		if ($dateStart != '0000-00-00 00:00:00' && strtotime($dateStart) > time()) {
+            $online = 0;
+        }
+
+        if ($dateEnd != '0000-00-00 00:00:00' && strtotime($dateEnd) < time()) {
+            $online = 0;
+        }
+	}
 
     @ eval ("\$"."redirect_url = \"$redirect_url\";"); // transform variables
 
