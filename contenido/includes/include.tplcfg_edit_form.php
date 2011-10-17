@@ -317,6 +317,12 @@ if (isset($a_d) && is_array($a_d)) {
             $db->query($sql);
             $db->next_record();
 
+            global $cCurrentModule;
+            $cCurrentModule = $db->f("idmod");
+            $modulecaption = i18n("Module in container")." ".$cnumber.": ";
+            $modulename    = $db->f("name");
+
+
             $input = "\n";
             $contenidoModuleHandler = new Contenido_Module_Handler($db->f("idmod"));
 
@@ -324,12 +330,6 @@ if (isset($a_d) && is_array($a_d)) {
             if ($contenidoModuleHandler->existModul() == true) {
                 $input = $contenidoModuleHandler->readInput()."\n";
             }
-
-            global $cCurrentModule;
-            $cCurrentModule = $db->f("idmod");
-            $modulecaption = i18n("Module in container")." ".$cnumber.": ";
-            $modulename    = $db->f("name");
-
             $varstring = array();
 
             if (isset($a_c[$cnumber])) {
