@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend classes
- * @version    1.0
+ * @version    1.1
  * @author     Andreas Lindner, Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,26 +24,26 @@
  *   modified 2009-10-08, Murat Purc, bugfix in function CheckIfMetaTagExists(), see [#CON-271]
  *   modified 2009-12-18, Murat Purc, fixed meta tag generation, see [#CON-272]
  *   modified 2011-06-24, Rusmir Jusufovic remove bug  $oArt->_getIdArtLang is protected
- *   
+ *
  *   $Id$:
  * }}
  *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
 
-cInclude("plugins", "repository/keyword_density.php");
+cInclude('plugins', 'repository/keyword_density.php');
 
-function cecCreateMetatags ($metatags) {
+function cecCreateMetatags($metatags) {
 
     global $cfg, $lang, $idart, $client, $cfgClient, $idcat, $idartlang;
 
-    //Basic settings
+    // Basic settings
     $cachetime = 3600; // measured in seconds
-    $cachedir = $cfgClient[$client]['path']['frontend'] . "cache/";
+    $cachedir = $cfgClient[$client]['path']['frontend'] . 'cache/';
 
     if (!is_array($metatags)) {
         $metatags = array();
@@ -52,7 +52,7 @@ function cecCreateMetatags ($metatags) {
     $hash = 'metatag_'.md5($idart.'/'.$lang);
     $cachefilename = $cachedir.$hash.'.tmp';
 
-    #Check if rebuilding of metatags is necessary
+    // Check if rebuilding of metatags is necessary
     $reload = true;
 
     $fileexists = false;
@@ -73,16 +73,15 @@ function cecCreateMetatags ($metatags) {
         //(Re)build metatags
         $db = new DB_Contenido();
 
-        #Get encoding
-        $sql = "SELECT * FROM ".$cfg['tab']['lang']." WHERE idlang=".(int)$lang;
-        $db->query($sql);
-        if ($db->next_record()) {
-            $sEncoding = strtoupper($db->f('encoding'));
+        // Get encoding
+        $oLang = new cApiLanguage((int) $lang);
+        if ($oLang->get('encoding')) {
+            $sEncoding = strtoupper($oLang->get('encoding'));
         } else {
-            $sEncoding = "ISO-8859-1";
+            $sEncoding = 'ISO-8859-1';
         }
 
-        #Get idcat of homepage
+        // Get idcat of homepage
         $sql = "SELECT a.idcat
             FROM
                 ".$cfg['tab']['cat_tree']." AS a,
@@ -90,7 +89,7 @@ function cecCreateMetatags ($metatags) {
             WHERE
                 (a.idcat = b.idcat) AND
                 (b.visible = 1) AND
-                (b.idlang = ".Contenido_Security::toInteger($lang).")
+                (b.idlang = ". (int) $lang .")
             ORDER BY a.idtree LIMIT 1";
 
         $db->query($sql);
@@ -101,16 +100,18 @@ function cecCreateMetatags ($metatags) {
 
         $availableTags = conGetAvailableMetaTagTypes();
 
-        #Get first headline and first text for current article
-        $oArt = new Article ($idart, $client, $lang);
+        // Get first headline and first text for current article
+        // @todo use this cApiArticleLanguage instance in code below, instead of creating it again and again!
+        $oArt = new cApiArticleLanguage();
+        $oArt->loadByArticleAndLanguageId($idart, $lang);
 
-        #Set idartlang, if not set
+        // Set idartlang, if not set
         if ($idartlang == '') {
             $idartlang = $oArt->getField('idartlang');
         }
 
-        $arrHead1 = $oArt->getContent("htmlhead");
-        $arrHead2 = $oArt->getContent("head");
+        $arrHead1 = $oArt->getContent('htmlhead');
+        $arrHead2 = $oArt->getContent('head');
 
         if (!is_array($arrHead1)) {
             $arrHead1 = array();
@@ -132,8 +133,8 @@ function cecCreateMetatags ($metatags) {
         $sHeadline = strip_tags($sHeadline);
         $sHeadline = substr(str_replace(chr(13).chr(10),' ',$sHeadline),0,100);
 
-        $arrText1 = $oArt->getContent("html");
-        $arrText2 = $oArt->getContent("text");
+        $arrText1 = $oArt->getContent('html');
+        $arrText2 = $oArt->getContent('text');
 
         if (!is_array($arrText1)) {
             $arrText1 = array();
@@ -155,26 +156,24 @@ function cecCreateMetatags ($metatags) {
         $sText = strip_tags(urldecode($sText));
         $sText = keywordDensity ('', $sText);
 
-        //Get metatags for homeapge
+        // Get metatags for homeapge
         $arrHomepageMetaTags = array();
 
-        $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE (idcat=".Contenido_Security::toInteger($idcat_homepage).") AND(idlang=".Contenido_Security::toInteger($lang).")";
+        $sql = "SELECT startidartlang FROM ".$cfg['tab']['cat_lang']." WHERE (idcat=". (int) $idcat_homepage .") AND(idlang=". (int) $lang .")";
         $db->query($sql);
 
         if($db->next_record()){
             $iIdArtLangHomepage = $db->f('startidartlang');
 
-            #get idart of homepage
-            $sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang =".Contenido_Security::toInteger($iIdArtLangHomepage);
-
+            // Get idart of homepage
+            $sql = "SELECT idart FROM ".$cfg['tab']['art_lang']." WHERE idartlang=". (int) $iIdArtLangHomepage;
             $db->query($sql);
-
             if ($db->next_record()) {
                 $iIdArtHomepage = $db->f('idart');
             }
 
-            $t1 = $cfg["tab"]["meta_tag"];
-            $t2 = $cfg["tab"]["meta_type"];
+            $t1 = $cfg['tab']['meta_tag'];
+            $t2 = $cfg['tab']['meta_type'];
 
             $sql = "SELECT ".$t1.".metavalue,".$t2.".metatype FROM ".$t1.
                 " INNER JOIN ".$t2." ON ".$t1.".idmetatype = ".$t2.".idmetatype WHERE ".
@@ -184,25 +183,28 @@ function cecCreateMetatags ($metatags) {
             $db->query($sql);
 
             while ($db->next_record()) {
-                $arrHomepageMetaTags[$db->f("metatype")] = $db->f("metavalue");
+                $arrHomepageMetaTags[$db->f('metatype')] = $db->f('metavalue');
             }
 
-            $oArt = new Article ($iIdArtHomepage, $client, $lang);
+            $oArt = new cApiArticleLanguage();
+            $oArt->loadByArticleAndLanguageId($iIdArtHomepage, $lang);
 
             $arrHomepageMetaTags['pagetitle'] = $oArt->getField('title');
         }
 
-        //Cycle through all metatags
+        // Cycle through all metatags
         foreach ($availableTags as $key => $value) {
             $metavalue = conGetMetaValue($idartlang, $key);
 
             if (strlen($metavalue) == 0){
-                //Add values for metatags that don't have a value in the current article
-                switch(strtolower($value["name"])){
+                // Add values for metatags that don't have a value in the current article
+                switch(strtolower($value['name'])){
                     case 'author':
-                        //Build author metatag from name of last modifier
-                        $oArt = new Article ($idart, $client, $lang);
-                        $lastmodifier = $oArt->getField("modifiedby");
+                        // Build author metatag from name of last modifier
+                        $oArt = new cApiArticleLanguage();
+                        $oArt->loadByArticleAndLanguageId($idart, $lang);
+
+                        $lastmodifier = $oArt->getField('modifiedby');
                         $oUser = new User();
                         $oUser->loadUserByUserID(md5($lastmodifier));
                         $lastmodifier_real = $oUser->getRealname(md5($lastmodifier));
@@ -213,9 +215,10 @@ function cecCreateMetatags ($metatags) {
 
                         break;
                     case 'date':
-                        //Build date metatag from date of last modification
-                        $oArt = new Article ($idart, $client, $lang);
-                        $lastmodified = $oArt->getField("lastmodified");
+                        // Build date metatag from date of last modification
+                        $oArt = new cApiArticleLanguage();
+                        $oArt->loadByArticleAndLanguageId($idart, $lang);
+                        $lastmodified = $oArt->getField('lastmodified');
 
                         $iCheck = CheckIfMetaTagExists($metatags, 'date');
                         $metatags[$iCheck]['name'] = 'date';
@@ -223,7 +226,7 @@ function cecCreateMetatags ($metatags) {
 
                         break;
                     case 'description':
-                        //Build description metatag from first headline on page
+                        // Build description metatag from first headline on page
                         $iCheck = CheckIfMetaTagExists($metatags, 'description');
                         $metatags[$iCheck]['name'] = 'description';
                         $metatags[$iCheck]['content'] = $sHeadline;
@@ -238,8 +241,8 @@ function cecCreateMetatags ($metatags) {
                     case 'revisit-after':
                     case 'robots':
                     case 'expires':
-                        //Build these 3 metatags from entries in homepage
-                        $sCurrentTag = strtolower($value["name"]);
+                        // Build these 3 metatags from entries in homepage
+                        $sCurrentTag = strtolower($value['name']);
                         $iCheck = CheckIfMetaTagExists($metatags, $sCurrentTag);
                         $metatags[$iCheck]['name'] = $sCurrentTag;
                         $metatags[$iCheck]['content'] = $arrHomepageMetaTags[$sCurrentTag];

@@ -13,7 +13,7 @@
  *
  *
  * @package    CONTENIDO Backend classes
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Willi Man
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -34,13 +34,13 @@
  *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
 
 /**
- * Abstract base search class. Provides general properties and functions 
+ * Abstract base search class. Provides general properties and functions
  * for child implementations.
  *
  * @author  Murat Purc <murat@purc.de>
@@ -462,7 +462,7 @@ class Index extends SearchBaseAbstract
     function removeSpecialChars($key)
     {
         $aSpecialChars = array(
-            "-", "_", "'", ".", "!", "\"", "#", "$", "%", "&", "(", ")", "*", "+", ",", "/", 
+            "-", "_", "'", ".", "!", "\"", "#", "$", "%", "&", "(", ")", "*", "+", ",", "/",
             ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "`", "{", "|", "}", "~"
         );
 
@@ -883,7 +883,7 @@ class Search extends SearchBaseAbstract
             $kwSql = "keyword LIKE '" . $search_exact;
         }
 
-        $sql = "SELECT keyword, auto FROM " . $this->cfg['tab']['keywords'] 
+        $sql = "SELECT keyword, auto FROM " . $this->cfg['tab']['keywords']
              . " WHERE idlang=" . Contenido_Security::toInteger($this->lang) . " AND " . $kwSql . " ";
         $this->_debug('sql', $sql);
         $this->db->query($sql);
@@ -932,7 +932,7 @@ class Search extends SearchBaseAbstract
                         if (!$this->index->checkCmsType($type[0])) {
                             // search for specified cms-types
                             if ($similarity >= $this->intMinimumSimilarity) {
-                                // include article into searchresult set only if 
+                                // include article into searchresult set only if
                                 // similarity between searchword and keyword is big enough
                                 $this->search_result[$artid][$type[0]][] = $type[1];
                                 $this->search_result[$artid]['keyword'][] = $this->db->f('keyword');
@@ -1359,7 +1359,8 @@ class SearchResult extends SearchBaseAbstract
      */
     function getContent($art_id, $cms_type, $id = 0)
     {
-        $article = new Article($art_id, $this->client, $this->lang);
+        $article = new cApiArticleLanguage();
+        $article->loadByArticleAndLanguageId($art_id, $this->lang, true);
         return $article->getContent($cms_type, $id);
     }
 
@@ -1383,7 +1384,8 @@ class SearchResult extends SearchBaseAbstract
             }
         }
 
-        $article = new Article($art_id, $this->client, $this->lang);
+        $article = new cApiArticleLanguage();
+        $article->loadByArticleAndLanguageId($art_id, $this->lang, true);
         $content = array();
         if (isset($this->search_result[$art_id][$cms_type])) {
             // if searchword occurs in cms_type

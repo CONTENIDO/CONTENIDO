@@ -23,6 +23,7 @@
  *   created  unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
+ *   modified 2011-10-19, Murat Purc, moved Article implementation to cApiArticleLanguage in favor of normalizing the API
  *
  *   $Id$:
  * }}
@@ -34,292 +35,58 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * CONTENIDO API - Article Object
+ * @deprecated  [2011-10-19] Use cApiArticleLanguage class in classes/contenido/class.articlelanguage.php as follows:
+ * <pre>
+ * // create with article language id
+ * $obj = new cApiArticleLanguage($idartlang);
  *
- * This object represents a CONTENIDO article
- *
- * Create object with
- * $obj = new Article(idart, client, lang [, idartlang]);
- *
- * You can now read the article properties with
- * $obj->getField(property);
- *
- * List of article properties:
- *
- * idartlang         - Language dependant article id
- * idart             - Language indepenant article id
- * idclient          - Id of the client
- * idtplcfg          - Template configuration id
- * title             - Internal Title
- * pagetitle         - HTML Title
- * summary           - Article summary
- * created           - Date created
- * lastmodified      - Date lastmodiefied
- * author            - Article author (username)
- * online            - On-/offline
- * redirect          - Redirect
- * redirect_url      - Redirect URL
- * artsort           - Article sort key
- * timemgmt          - Time management
- * datestart         - Time management start date
- * dateend           - Time management end date
- * status            - Article status
- * free_use_01       - Free to use
- * free_use_02       - Free to use
- * free_use_03       - Free to use
- * time_move_cat     - Move category after time management
- * time_target_cat   - Move category to this cat after time management
- * time_online_move  - Set article online after move
- * external_redirect - Open article in new window
- * locked            - Article is locked for editing
- *
- * You can extract article content with the
- * $obj->getContent(contype [, number]) method.
- *
- * To extract the first headline you can use:
- *
- * $headline = $obj->getContent("htmlhead", 1);
- *
- * If the second parameter is ommitted the method
- * returns an array with all available content of
- * this type. The array has the following schema:
- *
- * array( number => content );
- *
- * $headlines = $obj->getContent("htmlhead");
- *
- * $headlines[1] First headline
- * $headlines[2] Second headline
- * $headlines[6] Sixth headline
- *
- * Legal content type string are defined in the CONTENIDO
- * system table 'con_type'. Default content types are:
- *
- * NOTE: This parameter is case insesitive, you can use
- * html or cms_HTML or CmS_HtMl. Your don't need start with
- * cms, but it won't crash if you do so.
- *
- * htmlhead     - HTML Headline
- * html         - HTML Text
- * headline     - Headline (no HTML)
- * text         - Text (no HTML)
- * img          - Upload id of the element
- * imgdescr     - Image description
- * link         - Link (URL)
- * linktarget   - Linktarget (_self, _blank, _top ...)
- * linkdescr    - Linkdescription
- * swf          - Upload id of the element
- *
+ * // create with article id and language id
+ * $obj = new cApiArticleLanguage();
+ * $obj->loadByArticleAndLanguageId($idart, $lang);
+ * </pre>
  */
-class Article extends Item
+class Article extends cApiArticleLanguage
 {
     /**
-     * Config array
-     * @var array
-     */
-    public $tab;
-
-    /**
-     * Article content
-     * @var array
-     */
-    public $content;
-
-    /**
-     * Constructor
+     * Constructor. Wrapper for parent class, provides thee downwards compatible
+     * interface for creation of the article object.
      *
-     * @param int $idart Article Id
-     * @param int $lang Language Id
+     * @param int $idart Article id
+     * @param int $client Client id (not used)
+     * @param int $lang Language id
+     * @param int $idartlang Article language id
      *
      * @return void
      */
     public function __construct($idart, $client, $lang, $idartlang = 0)
     {
-        global $cfg;
+        $idart = (int) $idart;
+        $client = (int) $client;
+        $idartlang = (int) $idartlang;
 
-        $this->tab = $cfg['tab'];
-
-        parent::__construct($this->tab['art_lang'], 'idartlang');
-
-        $idartlang = Contenido_Security::toInteger($idartlang);
-        $idartlang = ($idartlang == 0) ? $this->_getIdArtLang($idart, $lang) : $idartlang;
-
-        $this->loadByPrimaryKey($idartlang);
+        if ($idartlang > 1) {
+            parent::__construct($idartlang);
+        } else {
+            parent::__construct();
+            $this->loadByArticleAndLanguageId($idart, $lang);
+        }
         $this->_getArticleContent();
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     function Article($idart, $client, $lang, $idartlang = 0)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct($idart, $client, $lang, $idartlang);
-    }
-
-    /**
-     * Extract 'idartlang' for a specified 'idart' and 'lang'
-     *
-     * @param int Article id
-     * @param int Language id
-     *
-     * @access private
-     * @return int Language dependant article id
-     */
-    protected function _getIdArtLang($idart, $lang)
-    {
-        $idart = Contenido_Security::toInteger($idart);
-        $lang  = Contenido_Security::toInteger($lang);
-
-        $sql = 'SELECT idartlang FROM '.$this->tab['art_lang'].' WHERE idart="'.$idart.'" AND idlang="'.$lang.'"';
-
-        $this->db->query($sql);
-        $this->db->next_record();
-
-        return $this->db->f('idartlang');
-    }
-
-    /**
-     * Load the articles content and stores it in the 'content' property of the
-     * article object
-     *
-     * $article->content[type][number] = value;
-     *
-     * @param none
-     * @return void
-     */
-    protected function _getArticleContent()
-    {
-        $sql = 'SELECT
-                    b.type, a.typeid, a.value
-                FROM
-                    '.$this->tab['content'].' AS a,
-                    '.$this->tab['type'].' AS b
-                WHERE
-                    a.idartlang = "'.$this->get('idartlang').'" AND
-                    b.idtype = a.idtype
-                ORDER BY
-                    a.idtype, a.typeid';
-
-        $this->db->query($sql);
-
-        while ($this->db->next_record()) {
-            $this->content[strtolower($this->db->f('type'))][$this->db->f('typeid')] = urldecode($this->db->f('value'));
-        }
-    }
-
-    /**
-     * Get the value of an article property
-     *
-     * List of article properties:
-     *
-     * idartlang         - Language dependant article id
-     * idart             - Language indepenant article id
-     * idclient          - Id of the client
-     * idtplcfg          - Template configuration id
-     * title             - Internal Title
-     * pagetitle         - HTML Title
-     * summary           - Article summary
-     * created           - Date created
-     * lastmodified      - Date lastmodiefied
-     * author            - Article author (username)
-     * online            - On-/offline
-     * redirect          - Redirect
-     * redirect_url      - Redirect URL
-     * artsort           - Article sort key
-     * timemgmt          - Time management
-     * datestart         - Time management start date
-     * dateend           - Time management end date
-     * status            - Article status
-     * free_use_01       - Free to use
-     * free_use_02       - Free to use
-     * free_use_03       - Free to use
-     * time_move_cat     - Move category after time management
-     * time_target_cat   - Move category to this cat after time management
-     * time_online_move  - Set article online after move
-     * external_redirect - Open article in new window
-     * locked            - Article is locked for editing
-     *
-     * @param string Property name
-     * @return mixed Property value
-     */
-    public function getField($name)
-    {
-        return urldecode($this->values[$name]);
-    }
-
-    /**
-     * Get content(s) from an article
-     *
-     * Returns the specified content element or an array("id"=>"value")
-     * if the second parameter is omitted.
-     *
-     * Legal content type string are defined in the CONTENIDO
-     * system table 'con_type'. Default content types are:
-     *
-     * NOTE: Parameter is case insesitive, you can use
-     * html or cms_HTML or CmS_HtMl. Your don't need start with
-     * cms, but it won't crash if you do so.
-     *
-     * htmlhead     - HTML Headline
-     * html         - HTML Text
-     * headline     - Headline (no HTML)
-     * text         - Text (no HTML)
-     * img          - Upload id of the element
-     * imgdescr     - Image description
-     * link         - Link (URL)
-     * linktarget   - Linktarget (_self, _blank, _top ...)
-     * linkdescr    - Linkdescription
-     * swf          - Upload id of the element
-     *
-     * @param string CMS_TYPE - Legal cms type string
-     * @param int Id of the content
-     *
-     * @return mixed String/Array Content Data
-     */
-    public function getContent($type, $id = NULL)
-    {
-        if ($type == '') {
-            return 'Class ' . get_class($this) . ': content-type must be specified!';
-        }
-
-        $type = strtolower($type);
-
-        if (!strstr($type, 'cms_')) {
-            $type = 'cms_' . $type;
-        }
-
-        if (is_null($id)) {
-            // return Array
-            return $this->content[$type];
-        }
-
-        // return String
-        return $this->content[$type][$id];
-    }
-
-    /**
-     * Store -DISABLED-
-     *
-     * This Article Object is READ ONLY
-     *
-     * @param none
-     * @access private
-     * @return none
-     */
-    public function store()
-    {
-        return false;
     }
 }
 
 
 /**
- * CONTENIDO API - Article Object Collection
+ * CONTENIDO API - Article Object Collection.
  *
- * This class is used to manage multiple CONTENIDO
- * article objects in a collection.
+ * This class is used to manage multiple CONTENIDO article objects in a collection.
  *
- * The constructor awaits an associative array
- * as parameter with the following schema:
+ * The constructor awaits an associative array as parameter with the following schema:
  *
  * array( string paramname => mixed value );
  *
@@ -459,7 +226,7 @@ class ArticleCollection
     /**
      * Article Collection Constructor
      *
-     * @param array Options array with schema array("option"=>"value");
+     * @param array Options array with schema array('option'=>'value');
      *  idcat (required) - CONTENIDO Category Id
      *  lang - Language Id, active language if ommited
      *  client - Client Id, active client if ommited
@@ -478,7 +245,7 @@ class ArticleCollection
         $this->tab = $cfg['tab'];
         $this->db = new DB_Contenido();
 
-        if (!is_numeric($options["idcat"])) {
+        if (!is_numeric($options['idcat'])) {
             return 'idcat has to be defined';
         }
 
@@ -489,14 +256,14 @@ class ArticleCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     function ArticleCollection($options)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct($options);
     }
 
     /**
      * Set the Object properties
      *
-     * @param array Options array with schema array("option"=>"value");
+     * @param array Options array with schema array('option'=>'value');
      *  idcat (required) - CONTENIDO Category Id
      *  lang - Language Id, active language if ommited
      *  client - Client Id, active client if ommited
@@ -506,14 +273,13 @@ class ArticleCollection
      *  direction - Order direcion, 'ASC' or 'DESC' for ascending/descending
      *  limit - Limit numbers of articles in collection
      *
-     * @access private
      * @return void
      */
     private function _setObjectProperties($options)
     {
         global $client, $lang;
 
-        $lang     = Contenido_Security::toInteger($lang);
+        $lang   = Contenido_Security::toInteger($lang);
         $client = Contenido_Security::toInteger($client);
 
         $this->idcat     = $options['idcat'];
@@ -532,9 +298,6 @@ class ArticleCollection
      * internal article array
      *
      * @param int Category Id
-     *
-     * @access private
-     * @return void
      */
     private function _getArticlesByCatId($idcat)
     {
@@ -544,7 +307,7 @@ class ArticleCollection
 
         $sArtSpecs = (count($this->artspecs) > 0) ? " a.artspec IN ('".implode("','", $this->artspecs)."') AND " : '';
 
-        if ($cfg["is_start_compatible"] == true) {
+        if ($cfg['is_start_compatible'] == true) {
             $sql = 'SELECT
                         a.idart,
                         c.is_start
@@ -560,7 +323,6 @@ class ArticleCollection
                         '.$sArtSpecs.'
                         a.idlang = '.$this->lang.'';
         } else {
-
             $sql = 'SELECT
                     a.idart,
                     a.idartlang,
@@ -586,27 +348,26 @@ class ArticleCollection
 
         $this->db->query($sql);
 
-        if ($cfg["is_start_compatible"] == false) {
+        if ($cfg['is_start_compatible'] == false) {
             $db2 = new DB_Contenido();
-            $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".$idcat."' AND idlang='".$this->lang."'";
+            $sql = "SELECT startidartlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat=".$idcat." AND idlang=".$this->lang;
             $db2->query($sql);
             $db2->next_record();
 
-            $startidartlang = $db2->f("startidartlang");
+            $startidartlang = $db2->f('startidartlang');
 
             if ($startidartlang != 0) {
-                $sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".$startidartlang."'";
+                $sql = "SELECT idart FROM ".$cfg['tab']['art_lang']." WHERE idartlang=".$startidartlang;
                 $db2->query($sql);
                 $db2->next_record();
-                $this->startId = $db2->f("idart");
+                $this->startId = $db2->f('idart');
             }
         }
 
         while ($this->db->next_record()) {
-            if ($cfg["is_start_compatible"] == true) {
+            if ($cfg['is_start_compatible'] == true) {
                 if ($this->db->f('is_start') == 1) {
                     $this->startId = $this->db->f('idart');
-
                     if ($this->start) {
                         $this->articles[] = $this->db->f('idart');
                     }
@@ -614,7 +375,7 @@ class ArticleCollection
                     $this->articles[] = $this->db->f('idart');
                 }
             } else {
-                if ($this->db->f("idart") == $this->startId) {
+                if ($this->db->f('idart') == $this->startId) {
                     if ($this->start) {
                         $this->articles[] = $this->db->f('idart');
                     }
@@ -631,9 +392,7 @@ class ArticleCollection
      * Iterate to the next article, return object of type CONTENIDO Article Object
      * if an article is found. False otherwise.
      *
-     * @param none
-     *
-     * @return object CONTENIDO Article Object
+     * @return Article|false  CONTENIDO Article object or false
      */
     public function nextArticle()
     {
@@ -642,12 +401,14 @@ class ArticleCollection
             if ($this->cnt >= $this->limit)
             $limit = false;
         }
-        if ($this->cnt < count($this->articles) AND $limit) {
+        if ($this->cnt < count($this->articles) && $limit) {
             $idart = $this->articles[$this->cnt];
 
             if (is_numeric($idart)) {
-                $this->cnt ++;
-                return new Article($idart, $this->client, $this->lang);
+                $this->cnt++;
+                $oArticle = new cApiArticleLanguage();
+                $oArticle->loadByArticleAndLanguageId($idart, $this->lang);
+                return $oArticle;
             }
         }
         return false;
@@ -656,13 +417,13 @@ class ArticleCollection
     /**
      * Return ONLY the Start-Article
      *
-     * @param none
-     * @return object CONTENIDO Article Object
-     * @access public
+     * @return  Article  CONTENIDO Article Object
      */
     public function startArticle()
     {
-        return new Article($this->startId, $this->client, $this->lang);
+        $oArticle = new cApiArticleLanguage();
+        $oArticle->loadByArticleAndLanguageId($this->startId, $this->lang);
+        return $oArticle;
     }
 
     /**
@@ -692,8 +453,6 @@ class ArticleCollection
      * $collection->setPage(int page)
      *
      * @param int $resPerPage
-     * @return void
-     * @access public
      */
     public function setResultPerPage($resPerPage)
     {
@@ -721,8 +480,6 @@ class ArticleCollection
      * { ... }
      *
      * @param int $iPage The page of the article collection
-     * @return void
-     * @access public
      */
     public function setPage($iPage)
     {

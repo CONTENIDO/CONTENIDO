@@ -1951,20 +1951,20 @@ function checkMySQLConnectivity()
     if ($cfg["database_extension"] == "mysqli") {
         if (($iPos = strpos($contenido_host, ":")) !== false) {
             list($sHost, $sPort) = explode(":", $contenido_host);
-            $res = @ mysqli_connect($sHost, $contenido_user, $contenido_password, "", $sPort);
+            $res = mysqli_connect($sHost, $contenido_user, $contenido_password, "", $sPort);
         } else {
-            $res = @ mysqli_connect($contenido_host, $contenido_user, $contenido_password);
+            $res = mysqli_connect($contenido_host, $contenido_user, $contenido_password);
         }
     } else {
-        $res = @ mysql_connect($contenido_host, $contenido_user, $contenido_password);
+        $res = mysql_connect($contenido_host, $contenido_user, $contenido_password);
     }
 
     $selectDb = false;
     if ($res) {
         if ($cfg["database_extension"] == "mysqli") {
-            $selectDb = @ mysqli_select_db($contenido_database);
+            $selectDb = mysqli_select_db($contenido_database);
         } else {
-            $selectDb = @ mysql_select_db($contenido_database);
+            $selectDb = mysql_select_db($contenido_database);
         }
     }
 

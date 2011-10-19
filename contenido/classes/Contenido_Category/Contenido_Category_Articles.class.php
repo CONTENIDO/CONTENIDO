@@ -4,19 +4,20 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Utility to get articles of category/categories as Article objects.
- * For now, this object will use objects "Article" and "ArticleCollection".
+ * Utility to get articles of category/categories as cApiArticleLanguage objects.
+ * For now, this object will use objects 'cApiArticleLanguage' and 'ArticleCollection'.
  * TODO: Method getNonStartArticlesInCategoryRange() must be fixed so order by condition is working correctly (works now just by category, not overall)
  * TODO: Somehow avoid ArticleCollection because it is too expensive.
  * TODO: Also take article specifications into account
  * TODO: Extend _buildQuery() to accept more order conditions
+ * TODO: Merge with
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
  * @package    CONTENIDO
- * @version    0.2.0
+ * @version    0.2.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -29,18 +30,19 @@
  *  modified 2009-04-09: Timo Trautmann fixed inconsistence bug in getNonStartArticlesInCategory()
  *  modified 2010-10-28 Ortwin Pinke, changed behaviour for $sOrderBy in getNonStartArticlesInCategory()
  *
- * 
+ *
  *  $Id$:
  * }}
  *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
 
-class Contenido_Category_Articles extends Contenido_Category_Base {
+class Contenido_Category_Articles extends Contenido_Category_Base
+{
     /**#@+
      * @var int
      * @access protected
@@ -56,14 +58,14 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
 
     /**
      * Constructor
-     * @access public
      * @param DB_Contenido $oDb
      * @param array $aCfg
      * @param int $iClient
      * @param int $iLang
      * @return void
      */
-    public function __construct(DB_Contenido $oDb, array $aCfg, $iClient, $iLang) {
+    public function __construct(DB_Contenido $oDb, array $aCfg, $iClient, $iLang)
+    {
         parent::__construct($oDb, $aCfg);
         $this->setClient($iClient);
         $this->setLang($iLang);
@@ -71,7 +73,6 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
 
     /**
      * Return array with article-objects of a category.
-     * @access public
      * @param int $iCategoryId
      * @param string $sOrderBy
      * @param string $sOrder
@@ -80,9 +81,10 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
      * @return array An array with Article objects
      * @throws Exception In case of a sql query that crashes
      */
-    public function getArticlesInCategory($iCategoryId, $sOrderBy = "creationdate", $sOrder = "ASC", $bArticleIdAsKey = false, $iOnlineStatus = 2) {
-		$aReturn = array();
-        $sSql = $this->_buildQuery('idcat = '.Contenido_Security::toInteger($iCategoryId), $sOrderBy, $sOrder, $iOnlineStatus);
+    public function getArticlesInCategory($iCategoryId, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false, $iOnlineStatus = 2)
+    {
+        $aReturn = array();
+        $sSql = $this->_buildQuery('idcat = '.(int)$iCategoryId, $sOrderBy, $sOrder, $iOnlineStatus);
         if ($this->bDbg === true) {
             $this->oDbg->show($sSql, 'Contenido_Category_Articles::getArticlesInCategory() $sSql');
         }
@@ -92,10 +94,12 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
         $bHasErrors = $this->oDb->Errno == 0 ? $bHasErrors = false : $bHasErrors = true;
         if ($bHasErrors === false && $this->oDb->num_rows() > 0) {
             while($this->oDb->next_record()) {
+                $oArticle = new cApiArticleLanguage();
+                $oArticle->loadByArticleAndLanguageId($this->oDb->f('idart'), $this->getLang());
                 if ($bArticleIdAsKey === false) {
-                    $aReturn[] = new Article($this->oDb->f('idart'), $this->getClient(), $this->getLang());
+                    $aReturn[] = clone $oArticle;
                 } else {
-                    $aReturn[intval($this->oDb->f('idart'))] = new Article($this->oDb->f('idart'), $this->getClient(), $this->getLang());
+                    $aReturn[(int) $this->oDb->f('idart')] = clone $oArticle;
                 }
             }
         }
@@ -107,7 +111,6 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
 
     /**
      * Return array with article-objects of a category that are online.
-     * @access public
      * @param int $iCategoryId
      * @param string $sOrderBy
      * @param string $sOrder
@@ -116,7 +119,8 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
      * @return array An array with Article objects
      * @throws Exception In case of a sql query that crashes
      */
-    public function getOnlineArticlesInCategory($iCategoryId, $sOrderBy = "creationdate", $sOrder = "ASC", $bArticleIdAsKey = false) {
+    public function getOnlineArticlesInCategory($iCategoryId, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false)
+    {
         try {
             return $this->getArticlesInCategory($iCategoryId, $sOrderBy, $sOrder, $bArticleIdAsKey, 1);
         } catch (Exception $e) {
@@ -126,7 +130,6 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
 
     /**
      * Return array with article-objects of a category that are offline.
-     * @access public
      * @param int $iCategoryId
      * @param string $sOrderBy
      * @param string $sOrder
@@ -135,7 +138,8 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
      * @return array An array with Article objects
      * @throws Exception In case of a sql query that crashes
      */
-    public function getOfflineArticlesInCategory($iCategoryId, $sOrderBy = "creationdate", $sOrder = "ASC", $bArticleIdAsKey = false) {
+    public function getOfflineArticlesInCategory($iCategoryId, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false)
+    {
         try {
             return $this->getArticlesInCategory($iCategoryId, $sOrderBy, $sOrder, $bArticleIdAsKey, 0);
         } catch (Exception $e) {
@@ -145,7 +149,6 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
 
     /**
      * Return array with article-objects of a category range.
-     * @access public
      * @param array $aCategoryIds
      * @param string $sOrderBy
      * @param string $sOrder
@@ -154,12 +157,13 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
      * @return array An array with Article objects
      * @throws Exception In case of a sql query that crashes or wrong parameters
      */
-    public function getArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = "creationdate", $sOrder = "ASC", $bArticleIdAsKey = false, $iOnlineStatus = 2) {
+    public function getArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false, $iOnlineStatus = 2)
+    {
         $aReturn = array();
         $aSqlIn = array();
         if (sizeof($aCategoryIds) > 0) {
             foreach ($aCategoryIds as $iId) {
-                $aSqlIn[] = Contenido_Security::toInteger($iId);
+                $aSqlIn[] = (int) $iId;
             }
         } else {
             throw new Exception('$aCategoryIds must contain at least one item!');
@@ -172,10 +176,12 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
         $bHasErrors = $this->oDb->Errno == 0 ? false : true;
         if ($bHasErrors === false && $this->oDb->num_rows() > 0) {
             while($this->oDb->next_record()) {
+                $oArticle = new cApiArticleLanguage();
+                $oArticle->loadByArticleAndLanguageId($this->oDb->f('idart'), $this->getLang());
                 if ($bArticleIdAsKey === false) {
-                    $aReturn[] = new Article($this->oDb->f('idart'), $this->getClient(), $this->getLang());
+                    $aReturn[] = clone $oArticle;
                 } else {
-                    $aReturn[intval($this->oDb->f('idart'))] = new Article($this->oDb->f('idart'), $this->getClient(), $this->getLang());
+                    $aReturn[(int) $this->oDb->f('idart')] = clone $oArticle;
                 }
             }
         }
@@ -187,7 +193,6 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
 
     /**
      * Return array with online article-objects of a category range.
-     * @access public
      * @param array $aCategoryIds
      * @param string $sOrderBy
      * @param string $sOrder
@@ -196,7 +201,8 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
      * @return array An array with Article objects
      * @throws Exception In case of a sql query that crashes
      */
-    public function getOnlineArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = "creationdate", $sOrder = "ASC", $bArticleIdAsKey = false) {
+    public function getOnlineArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false)
+    {
         try {
             return $this->getArticlesInCategoryRange($aCategoryIds, $sOrderBy, $sOrder, $bArticleIdAsKey, 1);
         } catch (Exception $e) {
@@ -206,7 +212,6 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
 
     /**
      * Return array with offline article-objects of a category range.
-     * @access public
      * @param array $aCategoryIds
      * @param string $sOrderBy
      * @param string $sOrder
@@ -215,7 +220,8 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
      * @return array An array with Article objects
      * @throws Exception In case of a sql query that crashes
      */
-    public function getOfflineArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = "creationdate", $sOrder = "ASC", $bArticleIdAsKey = false) {
+    public function getOfflineArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = 'creationdate', $sOrder = 'ASC', $bArticleIdAsKey = false)
+    {
         try {
             return $this->getArticlesInCategoryRange($aCategoryIds, $sOrderBy, $sOrder, $bArticleIdAsKey, 0);
         } catch (Exception $e) {
@@ -226,17 +232,17 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
     /**
      * Return start article of a given category.
      * Remember to check for idart: if intval(idart) == 0, given idcat has no start article!
-     * @access public
      * @param int $iCategoryId
-     * @return obj Article
+     * @return cApiArticleLanguage Article
      */
-    public function getStartArticleInCategory($iCategoryId) {
+    public function getStartArticleInCategory($iCategoryId)
+    {
         $aOptions = array(
-                            'idcat' => Contenido_Security::toInteger($iCategoryId),
-                            'lang' => $this->getLang(),
-                            'client' => $this->getClient(),
-                            'start' => true
-                        );
+            'idcat' => (int) $iCategoryId,
+            'lang' => $this->getLang(),
+            'client' => $this->getClient(),
+            'start' => true
+        );
         $this->oArticleCollection = new ArticleCollection($aOptions);
         return $this->oArticleCollection->startArticle();
     }
@@ -244,20 +250,19 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
     /**
      * Return non start articles of a given category.
      * Remember to check for idart: if intval(idart) == 0, given idcat has no start article!
-     * @access public
      * @param int $iCategoryId
      * @param string $sOrderBy Valid are fields of tbl. con_art_lang
      * @param string $sOrderDirection
      * @param boolean $bArticleIdAsKey
      * @return array An array with Article objects if any were found
      */
-    public function getNonStartArticlesInCategory($iCategoryId, $sOrderBy = 'created', $sOrderDirection = 'DESC', $bArticleIdAsKey = false) {
+    public function getNonStartArticlesInCategory($iCategoryId, $sOrderBy = 'created', $sOrderDirection = 'DESC', $bArticleIdAsKey = false)
+    {
         if (!in_array(strtolower($sOrderDirection), array('asc', 'desc'))) {
             $sOrderDirection = 'DESC';
         }
 
-        if($sOrderBy != 'created') {
-
+        if ($sOrderBy != 'created') {
             switch ($sOrderBy) {
                 case 'sortsequence':
                     $sOrderBy = 'artsort';
@@ -271,22 +276,21 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
                 case 'publisheddate':
                     $sOrderBy = 'published';
                     break;
-
                 default:
                     $sOrderBy = 'created';
             }
         }
-				
+
         $aReturn = array();
         $aOptions = array(
-                            'idcat' => Contenido_Security::toInteger($iCategoryId),
-                            'lang' => $this->getLang(),
-                            'client' => $this->getClient(),
-                            'start' => false,
-                            'order' => Contenido_Security::escapeDB($sOrderBy, $this->oDb),
-                            'direction' => $sOrderDirection
-                        );
-	
+            'idcat' => (int) $iCategoryId,
+            'lang' => $this->getLang(),
+            'client' => $this->getClient(),
+            'start' => false,
+            'order' => $this->oDb->escape($sOrderBy),
+            'direction' => $sOrderDirection
+        );
+
         $this->oArticleCollection = new ArticleCollection($aOptions);
         while ($oArticle = $this->oArticleCollection->nextArticle()) {
             if ($bArticleIdAsKey === false) {
@@ -301,21 +305,21 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
     /**
      * Return start articles of a given category range.
      * Remember to check for idart: if intval(idart) == 0, given idcat has no start article!
-     * @access public
      * @param array $aCategoryIds
      * @param boolean $bArticleIdAsKey
      * @return array An array with Article objects if any were found
      */
-    public function getStartArticlesInCategoryRange(array $aCategoryIds, $bArticleIdAsKey = false) {
+    public function getStartArticlesInCategoryRange(array $aCategoryIds, $bArticleIdAsKey = false)
+    {
         $aReturn = array();
         if (sizeof($aCategoryIds) > 0) {
             foreach ($aCategoryIds as $iIdcat) {
                 $aOptions = array(
-                                    'idcat' => Contenido_Security::toInteger($iIdcat),
-                                    'lang' => $this->getLang(),
-                                    'client' => $this->getClient(),
-                                    'start' => true
-                                );
+                    'idcat' => (int) $iIdcat,
+                    'lang' => $this->getLang(),
+                    'client' => $this->getClient(),
+                    'start' => true
+                );
                 $this->oArticleCollection = new ArticleCollection($aOptions);
                 if ($bArticleIdAsKey === false) {
                     $aReturn[] = $this->oArticleCollection->startArticle();
@@ -332,7 +336,6 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
      * Return non start articles of a given category range.
      * Remember to check for idart: if intval(idart) == 0, given idcat has no start article!
      * Sortorder is applied to each category and not overall!
-     * @access public
      * @param array $aCategoryIds
      * @param string $sOrderBy Valid are fields of tbl. con_art_lang
      * @param string $sOrderDirection
@@ -340,7 +343,8 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
      * @return array An array with Article objects if any were found
      * TODO: must be fixed so order by condition is working correctly (works now just by category, not overall)
      */
-    public function getNonStartArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = 'created', $sOrderDirection = 'DESC', $bArticleIdAsKey = false) {
+    public function getNonStartArticlesInCategoryRange(array $aCategoryIds, $sOrderBy = 'created', $sOrderDirection = 'DESC', $bArticleIdAsKey = false)
+    {
         throw new Exception('Method not implemented yet!');
         if (!in_array(strtolower($sOrderDirection), array('asc', 'desc'))) {
             $sOrderDirection = 'DESC';
@@ -349,13 +353,13 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
         if (sizeof($aCategoryIds) > 0) {
             foreach ($aCategoryIds as $iIdcat) {
                 $aOptions = array(
-                                    'idcat' => Contenido_Security::toInteger($iIdcat),
-                                    'lang' => $this->getLang(),
-                                    'client' => $this->getClient(),
-                                    'start' => false,
-                                    'order' => Contenido_Security::escapeDB($sOrderBy, $this->oDb),
-                                    'direction' => $sOrderDirection
-                                );
+                    'idcat' => (int) $iIdcat,
+                    'lang' => $this->getLang(),
+                    'client' => $this->getClient(),
+                    'start' => false,
+                    'order' => $this->oDb->escape($sOrderBy),
+                    'direction' => $sOrderDirection
+                );
                 $this->oArticleCollection = new ArticleCollection($aOptions);
                 if ($bArticleIdAsKey === false) {
                     $aReturn[] = $this->oArticleCollection->startArticle();
@@ -368,39 +372,45 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
         return $aReturn;
     }
 
-    public function getCategoryByArticleId($iArticleId) {
+    public function getCategoryByArticleId($iArticleId)
+    {
         throw new Exception('Method not implemented yet!');
     }
 
     // Getter/Setter
 
-    public function setLang($iLang) {
+    public function setLang($iLang)
+    {
         $this->iLang = (int) $iLang;
     }
 
-    public function setClient($iClient) {
+    public function setClient($iClient)
+    {
         $this->iClient = (int) $iClient;
     }
 
 
-    public function getLang() {
+    public function getLang()
+    {
         return (int) $this->iLang;
     }
 
-    public function getClient() {
+    public function getClient()
+    {
         return (int) $this->iClient;
     }
 
     /**
      * Builds SQL query to be used to fetch articles of one/more category/categories
      *
-     * @param string $sCategorySelect Must bei either "idcat = 1" or "idcat IN(1,2,3)". Not very beautiful...
+     * @param string $sCategorySelect Must bei either 'idcat = 1' or 'idcat IN(1,2,3)'. Not very beautiful...
      * @param string $sOrderBy
      * @param string $sOrder
      * @param int $iOnlineStatus
-     * @return unknown
+     * @return string
      */
-    private function _buildQuery($sCategorySelect, $sOrderBy = "creationdate", $sOrder = "ASC", $iOnlineStatus = 2) {
+    private function _buildQuery($sCategorySelect, $sOrderBy = 'creationdate', $sOrder = 'ASC', $iOnlineStatus = 2)
+    {
         $sReturn = '';
         $sCategorySelect = str_replace(';', '', $sCategorySelect);
         // determine online state
@@ -421,38 +431,38 @@ class Contenido_Category_Articles extends Contenido_Category_Base {
             $sOrder = 'ASC';
         }
         switch ($sOrderBy) { // TODO: extend to more valid items
-            case "sortsequence":
+            case 'sortsequence':
                 $sOrderCondition = 'ORDER BY artlang.artsort '.$sOrder;
                 break;
-            case "creationdate":
+            case 'creationdate':
                 $sOrderCondition = 'ORDER BY artlang.created '.$sOrder;
                 break;
-            case "modificationdate":
+            case 'modificationdate':
                 $sOrderCondition = 'ORDER BY artlang.lastmodified '.$sOrder;
                 break;
-            case "publisheddate":
+            case 'publisheddate':
                 $sOrderCondition = 'ORDER BY artlang.published '.$sOrder;
-                break;  
+                break;
             default:
                 $sOrderCondition = 'ORDER BY artlang.artsort '.$sOrder;
                 break;
         }
         $sSql = 'SELECT
-                        artlang.idart, artlang.online
-                    FROM
-                        '.$this->aCfg['tab']['art_lang'].' AS artlang,
-                        '.$this->aCfg['tab']['art'].' AS art,
-                        '.$this->aCfg['tab']['cat_art'].' AS catart
-                    WHERE
-                        catart.'.$sCategorySelect.' AND
-                        art.idclient = '.$this->getClient().' AND
-                        artlang.idlang = '.$this->getLang().' AND
-                        '.$sOnline.' AND
-                        art.idart = catart.idart AND
-                        artlang.idart = art.idart
-                        '.$sOrderCondition.' ';
+                    artlang.idart, artlang.online
+                FROM
+                    '.$this->aCfg['tab']['art_lang'].' AS artlang,
+                    '.$this->aCfg['tab']['art'].' AS art,
+                    '.$this->aCfg['tab']['cat_art'].' AS catart
+                WHERE
+                    catart.'.$sCategorySelect.' AND
+                    art.idclient = '.$this->getClient().' AND
+                    artlang.idlang = '.$this->getLang().' AND
+                    '.$sOnline.' AND
+                    art.idart = catart.idart AND
+                    artlang.idart = art.idart
+                    '.$sOrderCondition.' ';
 
-		return $sSql;
+        return $sSql;
     }
 }
 ?>

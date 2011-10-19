@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude("includes", "functions.pathresolver.php");
+cInclude('includes', 'functions.pathresolver.php');
 
 if (isset($idart)) {
     if ($idart > 0) {
@@ -43,18 +43,18 @@ if (isset($idart)) {
         $col = new cApiInUseCollection();
         $col->removeSessionMarks($sess->id);
 
-        if (($obj = $col->checkMark("article", $idartlang)) === false) {
-            $col->markInUse("article", $idartlang, $sess->id, $auth->auth["uid"]);
+        if (($obj = $col->checkMark('article', $idartlang)) === false) {
+            $col->markInUse('article', $idartlang, $sess->id, $auth->auth['uid']);
             $inUse = false;
-            $disabled = "";
+            $disabled = '';
         } else {
             $vuser = new User();
-            $vuser->loadUserByUserID($obj->get("userid"));
-            $inUseUser = $vuser->getField("username");
-            $inUseUserRealName = $vuser->getField("realname");
+            $vuser->loadUserByUserID($obj->get('userid'));
+            $inUseUser = $vuser->getField('username');
+            $inUseUserRealName = $vuser->getField('realname');
 
             $message = sprintf(i18n("Article is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
-            $notification->displayNotification("warning", $message);
+            $notification->displayNotification('warning', $message);
             $inUse = true;
             $disabled = 'disabled="disabled"';
         }
@@ -62,18 +62,18 @@ if (isset($idart)) {
         // Remove all own marks
         $col = new cApiInUseCollection();
         $col->removeSessionMarks($sess->id);
-        if (($obj = $col->checkMark("categorytpl", $idcat)) === false) {
-            $col->markInUse("categorytpl", $idcat, $sess->id, $auth->auth["uid"]);
+        if (($obj = $col->checkMark('categorytpl', $idcat)) === false) {
+            $col->markInUse('categorytpl', $idcat, $sess->id, $auth->auth['uid']);
             $inUse = false;
-            $disabled = "";
+            $disabled = '';
         } else {
             $vuser = new User();
-            $vuser->loadUserByUserID($obj->get("userid"));
-            $inUseUser = $vuser->getField("username");
-            $inUseUserRealName = $vuser->getField("realname");
+            $vuser->loadUserByUserID($obj->get('userid'));
+            $inUseUser = $vuser->getField('username');
+            $inUseUserRealName = $vuser->getField('realname');
 
             $message = sprintf(i18n("Category Template configuration is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
-            $notification->displayNotification("warning", $message);
+            $notification->displayNotification('warning', $message);
             $inUse = true;
             $disabled = 'disabled="disabled"';
         }
@@ -96,8 +96,8 @@ if (!isset($db3) || !is_object($db3)) {
 $tpl->reset();
 
 if ($idart) {
-    if ($perm->have_perm_area_action("con", "con_tplcfg_edit") ||
-        $perm->have_perm_area_action_item("con", "con_tplcfg_edit", $idcat))
+    if ($perm->have_perm_area_action('con', 'con_tplcfg_edit') ||
+        $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat))
     {
 
         // Article is configured
@@ -106,12 +106,12 @@ if ($idart) {
                     b.idtplcfg AS idtplcfg,
                     b.locked AS locked
                 FROM
-                    ".$cfg["tab"]["tpl_conf"]." AS a,
-                    ".$cfg["tab"]["art_lang"]." AS b,
-                    ".$cfg["tab"]["tpl"]." AS c
+                    ".$cfg['tab']['tpl_conf']." AS a,
+                    ".$cfg['tab']['art_lang']." AS b,
+                    ".$cfg['tab']['tpl']." AS c
                 WHERE
-                    b.idart     = ".Contenido_Security::toInteger($idart)." AND
-                    b.idlang    = ".Contenido_Security::toInteger($lang)." AND
+                    b.idart     = ".(int) $idart." AND
+                    b.idlang    = ".(int) $lang." AND
                     b.idtplcfg  = a.idtplcfg AND
                     c.idtpl     = a.idtpl";
 
@@ -119,22 +119,22 @@ if ($idart) {
 
         if ($db->next_record()) {
             // template configuration found
-            $idtplcfg = $db->f("idtplcfg");
-            $idtpl    = $db->f("idtpl");
-            if ($db->f("locked") == 1) {
+            $idtplcfg = $db->f('idtplcfg');
+            $idtpl    = $db->f('idtpl');
+            if ($db->f('locked') == 1) {
                 $inUse = true;
                 $disabled = 'disabled="disabled"';
             }
         } else {
             if ($idtpl) {
                 // create new configuration entry
-                $nextid = $db3->nextid($cfg["tab"]["tpl_conf"]);
+                $nextid = $db3->nextid($cfg['tab']['tpl_conf']);
 
-                $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]." (idtplcfg, idtpl) VALUES (".Contenido_Security::toInteger($nextid).", ".Contenido_Security::toInteger($idtpl).")";
+                $sql = "INSERT INTO ".$cfg['tab']['tpl_conf']." (idtplcfg, idtpl) VALUES (".(int) $nextid.", ".(int) $idtpl.")";
                 $db->query($sql);
 
                 // update art_lang
-                $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET idtplcfg=".Contenido_Security::toInteger($nextid)." WHERE idart=".Contenido_Security::toInteger($idart)." AND idlang=".Contenido_Security::toInteger($lang);
+                $sql = "UPDATE ".$cfg['tab']['art_lang']." SET idtplcfg=".(int) $nextid." WHERE idart=".(int) $idart." AND idlang=".(int) $lang;
                 $db->query($sql);
 
                 $idtplcfg = $nextid;
@@ -142,7 +142,7 @@ if ($idart) {
         }
 
     } else {
-        $notification->displayNotification("error", i18n("Permission denied"));
+        $notification->displayNotification('error', i18n("Permission denied"));
         exit;
     }
 
@@ -153,31 +153,31 @@ if ($idart) {
                 c.idtpl AS idtpl,
                 b.idtplcfg AS idtplcfg
             FROM
-                ".$cfg["tab"]["tpl_conf"]." AS a,
-                ".$cfg["tab"]["cat_lang"]." AS b,
-                ".$cfg["tab"]["tpl"]." AS c
+                ".$cfg['tab']['tpl_conf']." AS a,
+                ".$cfg['tab']['cat_lang']." AS b,
+                ".$cfg['tab']['tpl']." AS c
             WHERE
-                b.idcat     = ".Contenido_Security::toInteger($idcat)." AND
-                b.idlang    = ".Contenido_Security::toInteger($lang)." AND
+                b.idcat     = ".(int) $idcat." AND
+                b.idlang    = ".(int) $lang." AND
                 b.idtplcfg  = a.idtplcfg AND
                 c.idtpl     = a.idtpl AND
-                c.idclient  = ".Contenido_Security::toInteger($client);
+                c.idclient  = ".(int) $client;
     $db->query($sql);
 
     if ($db->next_record()) {
         // template configuration found
-        $idtplcfg = $db->f("idtplcfg");
-        $idtpl    = $db->f("idtpl");
+        $idtplcfg = $db->f('idtplcfg');
+        $idtpl    = $db->f('idtpl');
     } else {
         if ($idtpl) {
             // create new configuration entry
-            $nextid = $db3->nextid($cfg["tab"]["tpl_conf"]);
+            $nextid = $db3->nextid($cfg['tab']['tpl_conf']);
 
-            $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]." (idtplcfg, idtpl) VALUES (".Contenido_Security::toInteger($nextid).", ".Contenido_Security::toInteger($idtpl).")";
+            $sql = "INSERT INTO ".$cfg['tab']['tpl_conf']." (idtplcfg, idtpl) VALUES (".(int) $nextid.", ".(int) $idtpl.")";
             $db->query($sql);
 
             // update cat_lang
-            $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET idtplcfg=".Contenido_Security::toInteger($nextid)." WHERE idcat=".Contenido_Security::toInteger($idcat)." AND idlang=".Contenido_Security::toInteger($lang);
+            $sql = "UPDATE ".$cfg['tab']['cat_lang']." SET idtplcfg=".(int) $nextid." WHERE idcat=".(int) $idcat." AND idlang=".(int) $lang;
             $db->query($sql);
 
             $idtplcfg = $nextid;
@@ -191,34 +191,34 @@ if ($idtpl == 0) {
 }
 
 // Check if a configuration for this $idtplcfg exists
-$sql = "SELECT idcontainerc FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg=".Contenido_Security::toInteger($idtplcfg);
+$sql = "SELECT idcontainerc FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg=".(int) $idtplcfg;
 $db->query($sql);
 
 if (!$db->next_record()) {
     // There is no configuration for this $idtplcfg, check if template has a pre-configuration
-    $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["tpl"]." WHERE idtpl=".Contenido_Security::toInteger($idtpl);
+    $sql = "SELECT idtplcfg FROM ".$cfg['tab']['tpl']." WHERE idtpl=".(int) $idtpl;
 
     $db->query($sql);
     $db->next_record();
 
-    if (0 != $db->f("idtplcfg")) {
+    if (0 != $db->f('idtplcfg')) {
         // Template has a pre-configuration, copy pre-configuration data to
         // category configuration with the $idtplcfg from the category
-        $sql = "SELECT * FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg=".Contenido_Security::toInteger($db->f("idtplcfg"))." ORDER BY number DESC";
+        $sql = "SELECT * FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg=".(int) $db->f('idtplcfg')." ORDER BY number DESC";
         $db->query($sql);
 
         while ($db->next_record()) {
             // get data
-            $nextid    = $db3->nextid($cfg["tab"]["container_conf"]);
-            $number    = $db->f("number");
-            $container = $db->f("container");
+            $nextid    = $db3->nextid($cfg['tab']['container_conf']);
+            $number    = $db->f('number');
+            $container = $db->f('container');
 
             // write new entry
             $sql = "INSERT INTO
-                        ".$cfg["tab"]["container_conf"]."
+                        ".$cfg['tab']['container_conf']."
                         (idcontainerc, idtplcfg, number, container)
                     VALUES
-                        (".Contenido_Security::toInteger($nextid).", ".Contenido_Security::toInteger($idtplcfg).", ".Contenido_Security::toInteger($number).", '".Contenido_Security::escapeDB($container, $db2)."')";
+                        (".(int) $nextid.", ".(int) $idtplcfg.", ".(int) $number.", '".$db2->escape($container)."')";
 
             $db2->query($sql);
         }
@@ -226,20 +226,20 @@ if (!$db->next_record()) {
 }
 
 // Get template configuration from 'con_container_conf' and create configuration data array
-$sql = "SELECT * FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg=".Contenido_Security::toInteger($idtplcfg)." ORDER BY number";
+$sql = "SELECT * FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg=".(int) $idtplcfg." ORDER BY number";
 $db->query($sql);
 
 $a_c = array();
 
 while ($db->next_record()) {
     // varstring is stored in array $a_c
-    $a_c[$db->f("number")] = $db->f("container");
+    $a_c[$db->f('number')] = $db->f('container');
 }
 
-$tmp_area = "tplcfg";
+$tmp_area = 'tplcfg';
 
 //Form
-$formaction = $sess->url("main.php");
+$formaction = $sess->url('main.php');
 $hidden     = '<input type="hidden" name="area" value="'.$area.'">
                <input type="hidden" name="frame" value="'.$frame.'">
                <input type="hidden" name="idcat" value="'.$idcat.'">
@@ -254,7 +254,9 @@ $tpl->set('s', 'FORMACTION', $formaction);
 $tpl->set('s', 'HIDDEN', $hidden);
 
 // Category Path for user
-$oArticle = new Article($idart, $client, $lang);
+$oArticle = new cApiArticleLanguage();
+$oArticle->loadByArticleAndLanguageId($idart, $lang);
+
 $sArticleTitle = $oArticle->getField('title');
 $catString = '';
 prCreateURLNameLocationString($idcat, '/', $catString);
@@ -268,13 +270,13 @@ $tpl2 = new Template();
 $tpl2->set('s', 'NAME', 'idtpl');
 $tpl2->set('s', 'CLASS', 'text_medium');
 
-if (!$perm->have_perm_area_action_item("con", "con_changetemplate", $idcat)) {
+if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat)) {
     $disabled2 = 'disabled="disabled"';
 }
 
 $tpl2->set('s', 'OPTIONS', $disabled.' '.$disabled2.' onchange="tplcfgform.changetemplate.value=1;tplcfgform.send.value=0;tplcfgform.submit();"');
 
-$sql = "SELECT idtpl, name FROM ".$cfg['tab']['tpl']." WHERE idclient=".Contenido_Security::toInteger($client)." ORDER BY name";
+$sql = "SELECT idtpl, name FROM ".$cfg['tab']['tpl']." WHERE idclient=".(int) $client." ORDER BY name";
 $db->query($sql);
 
 $tpl2->set('d', 'VALUE', 0);
@@ -283,48 +285,48 @@ $tpl2->set('d', 'SELECTED', '');
 $tpl2->next();
 
 while ($db->next_record()) {
-    if ($db->f("idtpl") != "$idtpl") {
-        $tpl2->set('d', 'VALUE',    $db->f("idtpl"));
-        $tpl2->set('d', 'CAPTION',  $db->f("name"));
+    if ($db->f('idtpl') != "$idtpl") {
+        $tpl2->set('d', 'VALUE',    $db->f('idtpl'));
+        $tpl2->set('d', 'CAPTION',  $db->f('name'));
         $tpl2->set('d', 'SELECTED', '');
         $tpl2->next();
     } else {
-        $tpl2->set('d', 'VALUE',    $db->f("idtpl"));
-        $tpl2->set('d', 'CAPTION',  $db->f("name"));
+        $tpl2->set('d', 'VALUE',    $db->f('idtpl'));
+        $tpl2->set('d', 'CAPTION',  $db->f('name'));
         $tpl2->set('d', 'SELECTED', 'selected="selected"');
         $tpl2->next();
     }
 }
 
-$select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic_select'], true);
+$select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 $tpl->set('s', 'TEMPLATESELECTBOX', $select);
 // modul input bereich von allen container anzeigen
-$sql = "SELECT * FROM ".$cfg["tab"]["container"]." WHERE idtpl=".Contenido_Security::toInteger($idtpl)." ORDER BY number ASC";
+$sql = "SELECT * FROM ".$cfg['tab']['container']." WHERE idtpl=".(int) $idtpl." ORDER BY number ASC";
 $db->query($sql);
 
 $a_d = array();
 
 while ($db->next_record()) {
     // liste der benutzten module generieren
-    $a_d[$db->f("number")] = $db->f("idmod");
+    $a_d[$db->f('number')] = $db->f('idmod');
 }
 
 if (isset($a_d) && is_array($a_d)) {
     foreach ($a_d as $cnumber => $value) {
         // show only the containers which contain a module
         if (0 != $value) {
-            $sql = "SELECT * FROM ".$cfg["tab"]["mod"]." WHERE idmod=".Contenido_Security::toInteger($a_d[$cnumber]);
+            $sql = "SELECT * FROM ".$cfg['tab']['mod']." WHERE idmod=".(int) $a_d[$cnumber];
             $db->query($sql);
             $db->next_record();
 
             global $cCurrentModule;
-            $cCurrentModule = $db->f("idmod");
-            $modulecaption = i18n("Module in container")." ".$cnumber.": ";
-            $modulename    = $db->f("name");
+            $cCurrentModule = $db->f('idmod');
+            $modulecaption = i18n("Module in container").' '.$cnumber.': ';
+            $modulename    = $db->f('name');
 
 
             $input = "\n";
-            $contenidoModuleHandler = new Contenido_Module_Handler($db->f("idmod"));
+            $contenidoModuleHandler = new Contenido_Module_Handler($db->f('idmod'));
 
             // load data from file
             if ($contenidoModuleHandler->existModul() == true) {
