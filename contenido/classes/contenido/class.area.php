@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend classes
- * @version    1.3
+ * @version    1.3.1
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,6 +21,7 @@
  * {@internal
  *   created  2004-08-04
  *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
+ *   modified 2011-10-25, Murat Purc, Fixed creation of a cApiItem entry
  *
  *   $Id$:
  * }}
@@ -41,7 +42,7 @@ class cApiAreaCollection extends ItemCollection
     {
         global $cfg;
         parent::__construct($cfg['tab']['area'], 'idarea');
-        $this->_setItemClass("cApiArea");
+        $this->_setItemClass('cApiArea');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -50,6 +51,32 @@ class cApiAreaCollection extends ItemCollection
         cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct();
     }
+
+    /**
+     * Creates a area item entry
+     *
+     * @param  string  $name Name
+     * @param  string|int  $parentid  Parent id as astring or number
+     * @param  int  $relevant  0 or 1
+     * @param  int  $online  0 or 1
+     * @param  int  $menuless  0 or 1
+     * @return cApiArea
+     */
+    public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0)
+    {
+        $item = parent::create();
+
+        $item->set('parent_id', (is_string($parentid) ? $this->escape($parentid) : (int) $parentid);
+        $item->set('name', $this->escape($name));
+        $item->set('relevant', (1== $relevant) ? 1 : 0);
+        $item->set('online', (1== $online) ? 1 : 0);
+        $item->set('menuless', (1== $menuless) ? 1 : 0);
+
+        $item->store();
+
+        return $item;
+    }
+
 }
 
 
@@ -63,7 +90,7 @@ class cApiArea extends Item
     {
         global $cfg;
         parent::__construct($cfg['tab']['area'], 'idarea');
-        $this->setFilters(array("addslashes"), array("stripslashes"));
+        $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -76,20 +103,14 @@ class cApiArea extends Item
         $this->__construct($mId);
     }
 
-    public function create($name, $parentid = 0, $relevant = 1, $online = 1)
+    /** @deprecated  [2011-10-25] Use cApiAreaCollection->create() */
+    public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0)
     {
-        $item = parent::create();
-
-        $item->set("name", $name);
-        $item->set("relevant", $relevant);
-        $item->set("online", $online);
-        $item->set("parent_id", $parentid);
-
-        $item->store();
-
-        return ($item);
+        $oAreaColl = new cApiAreaCollection();
+        return $oAreaColl->create($name, $parentid, $relevant, $online, $menuless);
     }
 
+    /** @todo  Why is area item responsible to create a action item ? */
     public function createAction($area, $name, $code, $location, $relevant)
     {
         $ac = new cApiActionCollection();
