@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend classes
- * @version    1.5.2
+ * @version    1.5.3
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,6 +23,7 @@
  *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *   modified 2011-05-20, Murat Purc, renamed _getPropertyCollection() to _getPropertiesCollectionInstance()
  *   modified 2011-07-07, Murat Purc, added function cApiClientLanguageCollection::create()
+ *   modified 2011-10-25, Murat Purc, added function cApiClientLanguageCollection::hasLanguageInClients()
  *
  *   $Id$:
  * }}
@@ -42,8 +43,8 @@ class cApiClientLanguageCollection extends ItemCollection
     public function __construct()
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["clients_lang"], "idclientslang");
-        $this->_setItemClass("cApiClientLanguage");
+        parent::__construct($cfg['tab']['clients_lang'], 'idclientslang');
+        $this->_setItemClass('cApiClientLanguage');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -68,6 +69,20 @@ class cApiClientLanguageCollection extends ItemCollection
         return $oItem;
     }
 
+    /**
+     * Checks if a language is associated with a given list of clients.
+     *
+     * @param  int  $iLang  Language id which should be checked
+     * @param  array  $aClients  List of clients to check
+     * @return bool
+     */
+    public function hasLanguageInClients($iLang, array $aClientIds)
+    {
+        $iLang = (int) $iLang;
+        $aClientIds = array_map('intval', $aClientIds);
+        $sWhere = 'idlang=' . $iLang . ' AND idclient IN (' . implode(',', $aClientIds) . ')';
+        return $this->flexSelect('', '', $sWhere);
+    }
 }
 
 
@@ -95,7 +110,7 @@ class cApiClientLanguage extends Item
     public function __construct($iIdClientsLang = false, $iIdClient = false, $iIdLang = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["clients_lang"], "idclientslang");
+        parent::__construct($cfg['tab']['clients_lang'], 'idclientslang');
 
         if ($iIdClientsLang !== false) {
             $this->loadByPrimaryKey($iIdClientsLang);
@@ -103,8 +118,8 @@ class cApiClientLanguage extends Item
             /*
             One way, but the other should be faster
             $oCollection = new cApiClientLanguageCollection;
-            $oCollection->setWhere("idclient", $iIdClient);
-            $oCollection->setWhere("idlang", $iIdLang);
+            $oCollection->setWhere('idclient', $iIdClient);
+            $oCollection->setWhere('idlang', $iIdLang);
             $oCollection->query();
             if ($oItem = $oCollection->next()) {
                 $this->loadByPrimaryKey($oItem->get($oItem->primaryKey));
@@ -136,7 +151,7 @@ class cApiClientLanguage extends Item
     public function loadByPrimaryKey($iIdClientsLang)
     {
         if (parent::loadByPrimaryKey($iIdClientsLang) == true) {
-            $this->idclient = $this->get("idclient");
+            $this->idclient = $this->get('idclient');
             return true;
         }
         return false;
@@ -210,7 +225,7 @@ class cApiClientLanguage extends Item
         $itemtype = Contenido_Security::escapeDB($this->primaryKey, $this->db);
         $itemid   = Contenido_Security::escapeDB($this->get($this->primaryKey), $this->db);
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
-        $oPropertyColl->select("itemtype='".$itemtype."' AND itemid='".$itemid."'", "", "type, value ASC");
+        $oPropertyColl->select("itemtype='".$itemtype."' AND itemid='".$itemid."'", '', 'type, value ASC');
 
         if ($oPropertyColl->count() > 0) {
             $aArray = array();

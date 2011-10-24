@@ -36,28 +36,15 @@ if(!defined('CON_FRAMEWORK')) {
   *
   * @param array $aClients - array of clients to check
   * @param integer $iLang - language id which should be checked
-  * @param array $aCfg - CONTENIDO configruation array
-  * @param object $oDb - CONTENIDO database object
+  * @param array $aCfg - CONTENIDO configruation array (no more needed)
+  * @param object $oDb - CONTENIDO database object (no more needed)
   *
   * @return boolean - status (if language id corresponds to list of clients true otherwise false)
   */
 function checkLangInClients($aClients, $iLang, $aCfg, $oDb)
 {
-    //Escape values for use in DB
-    $iIdClient = Contenido_Security::toInteger($iLang);
-    foreach ($aClients as $iKey => $iValue) {
-        $aClients[$iKey] = Contenido_Security::toInteger($aClients[$iKey]);
-    }
-
-    //Query to check, if langid is in list of clients associated
-    $sSql = "SELECT * FROM ".$aCfg['tab']['clients_lang']. " WHERE idlang=".$iLang." AND idclient IN ('".implode("','",$aClients)."');";
-
-    $oDb->query($sSql);
-    if ($oDb->next_record()) {
-        return true;
-    } else {
-        return false;
-    }
+    $oClientLanguageCollection = new cApiClientLanguageCollection();
+    return $oClientLanguageCollection->hasLanguageInClients($iLang, $aClients);
 }
 
 /**
