@@ -37,8 +37,8 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     public function __construct($select = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["tpl_conf"], "idtplcfg");
-        $this->_setItemClass("cApiTemplateConfiguration");
+        parent::__construct($cfg['tab']['tpl_conf'], 'idtplcfg');
+        $this->_setItemClass('cApiTemplateConfiguration');
         if ($select !== false) {
             $this->select($select);
         }
@@ -54,7 +54,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     public function delete($idtplcfg)
     {
         $result = parent::delete($idtplcfg);
-        $oContainerConfCollection = new cApiContainerConfigurationCollection ("idtplcfg = '$idtplcfg'");
+        $oContainerConfCollection = new cApiContainerConfigurationCollection('idtplcfg=' . (int) $idtplcfg);
         $aDelContainerConfIds = array();
         while ($oContainerConf = $oContainerConfCollection->next()) {
             array_push($aDelContainerConfIds, $oContainerConf->get('idcontainerc'));
@@ -63,6 +63,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
         foreach($aDelContainerConfIds as $iDelContainerConfId) {
             $oContainerConfCollection->delete($iDelContainerConfId);
         }
+        return $result;
     }
 
     public function create($idtpl)
@@ -70,22 +71,22 @@ class cApiTemplateConfigurationCollection extends ItemCollection
         global $auth;
 
         $item = parent::create();
-        $item->set("idtpl", $idtpl);
-        $item->set("author", $auth->auth['uname']);
-        $item->set("status", 0);
-        $item->set("created", date('YmdHis'));
-        $item->set("lastmodified", '0000-00-00 00:00:00');
+        $item->set('idtpl', $idtpl);
+        $item->set('author', $auth->auth['uname']);
+        $item->set('status', 0);
+        $item->set('created', date('YmdHis'));
+        $item->set('lastmodified', '0000-00-00 00:00:00');
         $item->store();
 
-        $iNewTplCfgId = $item->get("idtplcfg");
+        $iNewTplCfgId = $item->get('idtplcfg');
 
         #if there is a preconfiguration of template, copy its settings into templateconfiguration
-        $templateCollection = new cApiTemplateCollection("idtpl = '$idtpl'");
+        $templateCollection = new cApiTemplateCollection('idtpl=' . (int) $idtpl);
 
         if ($template = $templateCollection->next()) {
-            $idTplcfgStandard = $template->get("idtplcfg");
+            $idTplcfgStandard = $template->get('idtplcfg');
             if ($idTplcfgStandard > 0) {
-                $oContainerConfCollection = new cApiContainerConfigurationCollection ("idtplcfg = '$idTplcfgStandard'");
+                $oContainerConfCollection = new cApiContainerConfigurationCollection('idtplcfg=' . $idTplcfgStandard);
                 $aStandardconfig = array();
                 while ($oContainerConf = $oContainerConfCollection->next()) {
                     $aStandardconfig[$oContainerConf->get('number')] = $oContainerConf->get('container');
@@ -97,7 +98,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
             }
         }
 
-        return ($item);
+        return $item;
     }
 }
 
@@ -111,7 +112,7 @@ class cApiTemplateConfiguration extends Item
     public function __construct($mId = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["tpl_conf"], "idtplcfg");
+        parent::__construct($cfg['tab']['tpl_conf'], 'idtplcfg');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
