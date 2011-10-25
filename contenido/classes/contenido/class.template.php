@@ -22,6 +22,7 @@
  *   created  2004-08-04
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
+ *   modified 2011-10-26, Murat Purc, added function cApiTemplateCollection->selectDefaultTemplate
  *
  *   $Id$:
  * }}
@@ -38,8 +39,8 @@ class cApiTemplateCollection extends ItemCollection
     public function __construct($select = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["tpl"], "idtpl");
-        $this->_setItemClass("cApiTemplate");
+        parent::__construct($cfg['tab']['tpl'], 'idtpl');
+        $this->_setItemClass('cApiTemplate');
         if ($select !== false) {
             $this->select($select);
         }
@@ -52,17 +53,31 @@ class cApiTemplateCollection extends ItemCollection
         $this->__construct($select);
     }
 
+    // @todo check this, seems to be wrong!
     public function setDefaultTemplate($idtpl)
     {
         global $cfg, $client;
 
         $db = new DB_Contenido();
-        $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = 0 WHERE idclient = '" . Contenido_Security::toInteger($client) . "'";
+        $sql = 'UPDATE '.$cfg['tab']['tpl'].' SET defaulttemplate=0 WHERE idclient=' . (int) $client;
         $db->query($sql);
 
-        $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = 1 WHERE idtpl = '" . Contenido_Security::toInteger($idtpl) . "'";
+        $sql = 'UPDATE '.$cfg['tab']['tpl'].' SET defaulttemplate=1 WHERE idtpl=' . (int) $idtpl;
         $db->query($sql);
     }
+
+    /**
+     * Returns the default template configuration item
+     *
+     * @param  int  $idclient
+     * return cApiTemplateConfiguration|null
+     */
+    public function selectDefaultTemplate($idclient)
+    {
+        $this->select('defaulttemplate = 1 AND idclient = ' . $idclient);
+        return $this->next();
+    }
+
 }
 
 
@@ -75,7 +90,7 @@ class cApiTemplate extends Item
     public function __construct($mId = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["tpl"], "idtpl");
+        parent::__construct($cfg['tab']['tpl'], 'idtpl');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
