@@ -53,7 +53,7 @@ class cApiTemplateCollection extends ItemCollection
         $this->__construct($select);
     }
 
-    // @todo check this, seems to be wrong!
+    // @todo check this, seems to be wrong and furthermore not used!
     public function setDefaultTemplate($idtpl)
     {
         global $cfg, $client;
