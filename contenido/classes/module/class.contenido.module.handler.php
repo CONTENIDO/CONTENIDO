@@ -32,20 +32,6 @@ if (! defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-if (file_exists(dirname(__FILE__). "/../class.security.php"))
-    include_once (dirname(__FILE__). "/../class.security.php");
-
-if (file_exists(dirname(__FILE__). "/../../includes/api/functions.api.general.php"))
-    include_once (dirname(__FILE__). "/../../includes/api/functions.api.general.php");
-
-if (file_exists(dirname(__FILE__). "/../../includes/functions.api.string.php"))
-    include_once (dirname(__FILE__). "/../../includes/functions.api.string.php");
-
-if (file_exists(dirname(__FILE__). "/class.contenido.vars.php"))
-    include_once (dirname(__FILE__). "/class.contenido.vars.php");
-
-if (file_exists(dirname(__FILE__). "/../class.xmltree.php"))
-    include_once (dirname(__FILE__). "/../class.xmltree.php");
 
 class Contenido_Module_Handler {
 
