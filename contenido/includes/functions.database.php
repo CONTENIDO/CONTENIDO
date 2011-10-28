@@ -114,6 +114,8 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
         $bDebug = true;
     }
 
+    $parameter = array();
+
     // Parameter checking for $null. If parameter is "" or "NULL" or "YES", we 
     // know that we want the colum to forbid null entries.
     if ($null == "NULL" || $null == "YES") {
@@ -139,6 +141,8 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
         } else {
             $parameter['DEFAULT'] = "DEFAULT '".Contenido_Security::escapeDB($default, $db)."'";
         }
+    } else {
+        $parameter['DEFAULT'] = '';
     }
 
     if (!dbTableExists($db, $table)) {
@@ -150,8 +154,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     // Remove auto_increment
     $structure = dbGetColumns($db, $table);
-
-    if ($structure[$field]["Extra"] == "auto_increment") {
+    if (isset($structure[$field]) && $structure[$field]["Extra"] == "auto_increment") {
         if ($structure[$field]['NULL'] == "") {
             $structure[$field]['NULL'] = "NOT NULL";
         }
@@ -167,7 +170,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
         foreach ($indexes as $index) {
             if ($index == "PRIMARY") {
-                if ($structure[$field]['Key'] == "PRI") {
+                if (isset($structure[$field]) && $structure[$field]['Key'] == "PRI") {
                     $sql = "   ALTER TABLE ".Contenido_Security::escapeDB($table, $db)." DROP PRIMARY KEY";
                 } else {
                     $sql = "";
