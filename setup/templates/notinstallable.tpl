@@ -1,13 +1,12 @@
-
-<table style="margin:0;padding:0;border-collapse:collapse;" class="setupBodyOuterTable">
+<table class="setupBodyOuterTable setupBodyOuterTableNotInstallable">
 	<tr>
 		<td style="vertical-align:top;">
 
-            <p style="margin-bottom:2.0em"><strong>{TITLE}</strong></p>
+            <p><strong>{TITLE}</strong></p>
         
-            <p style="margin-bottom:2.0em;color:red;"><strong>{ERRORTEXT}</strong></p>
+            <p class="errorMsg"><strong>{ERRORTEXT}</strong></p>
 
-            <p>{REASONTEXT}</p>
+            <p class="last">{REASONTEXT}</p>
 
         </td>
 	</tr>

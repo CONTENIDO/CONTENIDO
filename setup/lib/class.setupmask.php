@@ -52,7 +52,7 @@ class cSetupMask
 	
 	function setHeader ($sHeader)
 	{
-		if (array_key_exists("setuptype", $_SESSION))
+		if (isset($_SESSION['setuptype']))
 		{
 			$sSetupType = $_SESSION["setuptype"];
 		} else {

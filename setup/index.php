@@ -33,164 +33,98 @@
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
-define('C_CONTENIDO_PATH', '../contenido/');
+define('C_FRONTEND_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/');
 
 include_once('lib/startup.php');
 
 
-if (is_array($_REQUEST)) {
-    foreach ($_REQUEST as $key => $value) {
-        if (($value != '' && $key != 'dbpass') || ($key == 'dbpass' && $_REQUEST['dbpass_changed'] == 'true')) {
-            $_SESSION[$key] = $value;
-        }
-    }
-/*
-################################################################################
-// FIXME  Following lines of code would enshure that previous selected optional 
-//        settings will be removed from session, if they are unselected afterwards.
-//        But, how should we handle not selected plugins, whose files will be included
-//        even if the are not installed?
+$currentStep = (isset($_REQUEST['step'])) ? $_REQUEST['step'] : '';
 
-    // check for not selected options (radio button or checkbox)
-    $aSetupOptionalSettingsList = array(
-        'setup7' => array(
-            'plugin_newsletter',
-            'plugin_content_allocation',
-            'plugin_mod_rewrite',
-        )
-    );
-
-    if (isset($_REQUEST['step']) && isset($aSetupOptionalSettingsList[$_REQUEST['step']])) {
-        $aList = $aSetupOptionalSettingsList[$_REQUEST['step']];
-        foreach ($aList as $key) {
-            if (isset($_SESSION[$key]) && !isset($_REQUEST[$key])) {
-                unset($_SESSION[$key]);
-            }
-        }
-    }
-################################################################################
-*/
-}
-
-
-if (getPHPIniSetting('session.use_cookies') == 0) {
-    $sNotInstallableReason = 'session_use_cookies';
-    checkAndInclude('steps/notinstallable.php');
-}
-
-if (hasMySQLiExtension() && !hasMySQLExtension()) {
-    // use MySQLi extension by default if available
-    $cfg['database_extension'] = 'mysqli';
-} elseif (hasMySQLExtension()) {
-    // use MySQL extension if available
-    $cfg['database_extension'] = 'mysql';
-} else {
-    $sNotInstallableReason = 'database_extension';
-    checkAndInclude('steps/notinstallable.php');
-}
-
-checkAndInclude('../conlib/prepend.php');
-
-if (array_key_exists('language', $_SESSION)) {
-    i18nInit('locale/', $_SESSION['language']);
-}
-
-if (phpversion() < C_SETUP_MIN_PHP_VERSION) {
-    $sNotInstallableReason = 'php_version';
-    checkAndInclude('steps/notinstallable.php');
-}
-
-if (array_key_exists('step', $_REQUEST)) {
-    $iStep = $_REQUEST['step'];
-} else {
-    $iStep = '';
-}
-
-switch ($iStep) {
+switch ($currentStep) {
     case 'setuptype':
-        checkAndInclude('steps/setuptype.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/setuptype.php');
         break;
     case 'setup1':
-        checkAndInclude('steps/setup/step1.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/setup/step1.php');
         break;
     case 'setup2':
-        checkAndInclude('steps/setup/step2.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/setup/step2.php');
         break;
     case 'setup3':
-        checkAndInclude('steps/setup/step3.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/setup/step3.php');
         break;
     case 'setup4':
-        checkAndInclude('steps/setup/step4.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/setup/step4.php');
         break;
     case 'setup5':
-        checkAndInclude('steps/setup/step5.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/setup/step5.php');
         break;
     case 'setup6':
-        checkAndInclude('steps/setup/step6.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/setup/step6.php');
         break;
     case 'setup7':
-        checkAndInclude('steps/setup/step7.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/setup/step7.php');
         break;
     case 'setup8':
-        checkAndInclude('steps/setup/step8.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/setup/step8.php');
         break;
     case 'migration1':
-        checkAndInclude('steps/migration/step1.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/migration/step1.php');
         break;
     case 'migration2':
-        checkAndInclude('steps/migration/step2.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/migration/step2.php');
         break;
     case 'migration3':
-        checkAndInclude('steps/migration/step3.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/migration/step3.php');
         break;
     case 'migration4':
-        checkAndInclude('steps/migration/step4.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/migration/step4.php');
         break;
     case 'migration5':
-        checkAndInclude('steps/migration/step5.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/migration/step5.php');
         break;
     case 'migration6':
-        checkAndInclude('steps/migration/step6.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/migration/step6.php');
         break;
     case 'migration7':
-        checkAndInclude('steps/migration/step7.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/migration/step7.php');
         break;
     case 'migration8':
-        checkAndInclude('steps/migration/step8.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/migration/step8.php');
         break;
     case 'upgrade1':
-        checkAndInclude('steps/upgrade/step1.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/upgrade/step1.php');
         break;
     case 'upgrade2':
-        checkAndInclude('steps/upgrade/step2.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/upgrade/step2.php');
         break;
     case 'upgrade3':
-        checkAndInclude('steps/upgrade/step3.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/upgrade/step3.php');
         break;
     case 'upgrade4':
-        checkAndInclude('steps/upgrade/step4.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/upgrade/step4.php');
         break;
     case 'upgrade5':
-        checkAndInclude('steps/upgrade/step5.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/upgrade/step5.php');
         break;
     case 'upgrade6':
-        checkAndInclude('steps/upgrade/step6.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/upgrade/step6.php');
         break;
     case 'upgrade7':
-        checkAndInclude('steps/upgrade/step7.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/upgrade/step7.php');
         break;
     case 'domigration':
-        checkAndInclude('steps/migration/domigration.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/migration/domigration.php');
         break;
     case 'doupgrade':
-        checkAndInclude('steps/upgrade/doupgrade.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/upgrade/doupgrade.php');
         break;
     case 'doinstall':
-        checkAndInclude('steps/setup/doinstall.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/setup/doinstall.php');
         break;
     case 'languagechooser':
     default:
-        checkAndInclude('steps/languagechooser.php');
+        checkAndInclude($cfg['path']['setup'] . 'steps/languagechooser.php');
         break;
 }
 

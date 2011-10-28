@@ -38,29 +38,12 @@
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
-define('C_CONTENIDO_PATH', '../contenido/');
+define('C_FRONTEND_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/');
 
 include_once('lib/startup.php');
 
 
-checkAndInclude(C_CONTENIDO_PATH . 'includes/functions.database.php');
-checkAndInclude(C_CONTENIDO_PATH . 'classes/class.version.php');
-checkAndInclude(C_CONTENIDO_PATH . 'classes/class.versionImport.php');
-checkAndInclude(C_CONTENIDO_PATH . 'classes/module/class.contenido.upgrade.job.php');
-
-checkAndInclude(C_CONTENIDO_PATH . 'classes/class.layoutInFile.php');
-
-if (hasMySQLiExtension() && !hasMySQLExtension()) {
-    // use MySQLi extension by default if available
-    $cfg['database_extension'] = 'mysqli';
-} elseif (hasMySQLExtension()) {
-    // use MySQL extension if available
-    $cfg['database_extension'] = 'mysql';
-} else {
-    die("Can't detect MySQLi or MySQL extension");
-}
-
-checkAndInclude('../conlib/prepend.php');
+checkAndInclude($cfg['path']['contenido'] . 'includes/functions.database.php');
 
 $db = getSetupMySQLDBConnection(false);
 
@@ -68,62 +51,65 @@ if (checkMySQLDatabaseCreation($db, $_SESSION['dbname'])) {
     $db = getSetupMySQLDBConnection();
 }
 
-$currentstep = $_GET['step'];
+$currentStep = (isset($_GET['step']) && (int) $_GET['step'] > 0) ? (int) $_GET['step'] : 0;
 
-if ($currentstep == 0) {
-    $currentstep = 1;
+if ($currentStep == 0) {
+    $currentStep = 1;
 }
+
+$count = 0;
+$fullCount = 0;
 
 // Count DB Chunks
 $file = fopen('data/tables.txt', 'r');
 $step = 1;
 while (($data = fgetcsv($file, 4000, ';')) !== false) {
-    if ($count == 50) {
+    if ($count == C_SETUP_MAX_CHUNKS_PER_STEP) {
         $count = 1;
         $step++;
     }
 
-    if ($currentstep == $step) {
+    if ($currentStep == $step) {
         if ($data[7] == '1') {
             $drop = true;
         } else {
             $drop = false;
         }
-        dbUpgradeTable($db, $_SESSION['dbprefix'].'_'.$data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], '', $drop);
+        dbUpgradeTable($db, $cfg['sql']['sqlprefix'].'_'.$data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], '', $drop);
 
-        if ($db->errno != 0) {
+        if ($db->Errno != 0) {
             $_SESSION['install_failedupgradetable'] = true;
         }
     }
 
     $count++;
-    $fullcount++;
+    $fullCount++;
 }
 
 // Count DB Chunks (plugins)
 $file = fopen('data/tables_pi.txt', 'r');
 $step = 1;
 while (($data = fgetcsv($file, 4000, ';')) !== false) {
-    if ($count == 50) {
+    if ($count == C_SETUP_MAX_CHUNKS_PER_STEP) {
         $count = 1;
         $step++;
     }
 
-    if ($currentstep == $step) {
+    if ($currentStep == $step) {
         if ($data[7] == '1') {
             $drop = true;
         } else {
             $drop = false;
         }
-        dbUpgradeTable($db, $_SESSION['dbprefix'].'_'.$data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], '', $drop);
+        dbUpgradeTable($db, $cfg['sql']['sqlprefix'].'_'.$data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], '', $drop);
 
-        if ($db->errno != 0) {
+        if ($db->Errno != 0) {
             $_SESSION['install_failedupgradetable'] = true;
         }
     }
 
     $count++;
-    $fullcount++;
+    $fullCount++;
 }
 
 $pluginChunks = array();
@@ -175,20 +161,20 @@ if ($_SESSION['setuptype'] == 'setup') {
 $fullChunks = array_merge($fullChunks, $pluginChunks);
 
 
-list($root_path, $root_http_path) = getSystemDirectories();
+list($rootPath, $rootHttpPath) = getSystemDirectories();
 
-$totalsteps = ceil($fullcount/50) + count($fullChunks) + 1;
+$totalSteps = ceil($fullCount/C_SETUP_MAX_CHUNKS_PER_STEP) + count($fullChunks) + 1;
 foreach ($fullChunks as $fullChunk) {
     $step++;
-    if ($step == $currentstep) {
+    if ($step == $currentStep) {
         $failedChunks = array();
 
         $replacements = array(
-            '<!--{contenido_root}-->' => addslashes($root_path),
-            '<!--{contenido_web}-->' => addslashes($root_http_path)
+            '<!--{contenido_root}-->' => addslashes($rootPath),
+            '<!--{contenido_web}-->' => addslashes($rootHttpPath)
         );
 
-        injectSQL($db, $_SESSION['dbprefix'], 'data/' . $fullChunk, $replacements, $failedChunks);
+        injectSQL($db, $cfg['sql']['sqlprefix'], 'data/' . $fullChunk, $replacements, $failedChunks);
 
         if (count($failedChunks) > 0) {
             @$fp = fopen('../contenido/logs/setuplog.txt', 'w');
@@ -202,11 +188,19 @@ foreach ($fullChunks as $fullChunk) {
     }
 }
 
-$percent = intval((100 / $totalsteps) * ($currentstep));
+$percent = intval((100 / $totalSteps) * ($currentStep));
 
-echo '<script language="JavaScript">parent.updateProgressbar('.$percent.');</script>';
-if ($currentstep < $totalsteps) {
-    printf('<script language="JavaScript">window.setTimeout("nextStep()", 10); function nextStep () { window.location.href=\'dbupdate.php?step=%s\'; }</script>', $currentstep + 1);
+echo '<script type="text/javascript">parent.updateProgressbar('.$percent.');</script>';
+
+if ($currentStep < $totalSteps) {
+
+    printf('<script type="text/javascript">function nextStep() { window.location.href="dbupdate.php?step=%s"; };</script>', $currentStep + 1);
+    if (!C_SETUP_DEBUG) {
+        echo '<script type="text/javascript">window.setTimeout(nextStep, 10);</script>';
+    } else {
+        echo '<a href="javascript:nextStep();">Next step</a>';
+    }
+
 } else {
     $sql = 'SHOW TABLES';
     $db->query($sql);
@@ -214,7 +208,7 @@ if ($currentstep < $totalsteps) {
     // For import mod_history rows to versioning
     if ($_SESSION['setuptype'] == 'migration' || $_SESSION['setuptype'] == 'upgrade') {
         $cfgClient = array();
-        rereadClients_Setup();
+        rereadClients();
 
         $oVersion = new VersionImport($cfg, $cfgClient, $db, $client, $area, $frame);
         $oVersion->CreateHistoryVersion();
@@ -227,37 +221,32 @@ if ($currentstep < $totalsteps) {
     }
 
     foreach ($tables as $table) {
-        dbUpdateSequence($_SESSION['dbprefix'].'_sequence', $table, $db);
+        dbUpdateSequence($cfg['sql']['sqlprefix'].'_sequence', $table, $db);
     }
 
-    updateContenidoVersion($db, $_SESSION['dbprefix'].'_system_prop', C_SETUP_VERSION);
-    updateSystemProperties($db, $_SESSION['dbprefix'].'_system_prop');
+    updateContenidoVersion($db, $cfg['tab']['system_prop'], C_SETUP_VERSION);
+    updateSystemProperties($db, $cfg['tab']['system_prop']);
 
     if (isset($_SESSION['sysadminpass']) && $_SESSION['sysadminpass'] != '') {
-        updateSysadminPassword($db, $_SESSION['dbprefix'].'_phplib_auth_user_md5', 'sysadmin');
+        updateSysadminPassword($db, $cfg['tab']['phplib_auth_user_md5'], 'sysadmin');
     }
 
-    $sql = 'DELETE FROM %s';
-    $db->query(sprintf($sql, $_SESSION['dbprefix'].'_code'));
+    $db->query('DELETE FROM %s', $cfg['tab']['code']);
 
     // As con_code has been emptied, force code creation (on update)
-    $sql = "UPDATE %s SET createcode = '1'";
-    $db->query(sprintf($sql, $_SESSION['dbprefix'].'_cat_art'));
+    $db->query('UPDATE %s SET createcode=1', $cfg['tab']['cat_art']);
 
     if ($_SESSION['setuptype'] == 'migration') {
-        $aClients = listClients($db, $_SESSION['dbprefix'].'_clients');
-
+        $aClients = listClients($db, $cfg['tab']['clients']);
         foreach ($aClients as $iIdClient => $aInfo) {
-            updateClientPath($db, $_SESSION['dbprefix'].'_clients', $iIdClient, $_SESSION['frontendpath'][$iIdClient], $_SESSION['htmlpath'][$iIdClient]);
+            updateClientPath($db, $cfg['tab']['clients'], $iIdClient, $_SESSION['frontendpath'][$iIdClient], $_SESSION['htmlpath'][$iIdClient]);
         }
     }
 
+    // Set start compatible flag
     $_SESSION['start_compatible'] = false;
-
     if ($_SESSION['setuptype'] == 'upgrade') {
-        $sql = "SELECT is_start FROM %s WHERE is_start = 1";
-        $db->query(sprintf($sql, $_SESSION['dbprefix'].'_cat_art'));
-
+        $db->query('SELECT is_start FROM %s WHERE is_start=1', $cfg['tab']['cat_art']);
         if ($db->next_record()) {
             $_SESSION['start_compatible'] = true;
         }
@@ -266,71 +255,43 @@ if ($currentstep < $totalsteps) {
     // Update Keys
     $aNothing = array();
 
-    injectSQL($db, $_SESSION['dbprefix'], 'data/indexes.sql', array(), $aNothing);
-	
-    #set default 
-    $defaultDbCfg = array(
-            'connection' => array(
-                'host'     => $_SESSION["dbhost"],
-                'database' => $_SESSION["dbname"],
-                'user'     => $_SESSION["dbuser"],
-                'password' => $_SESSION["dbpass"]
-            ),
-            'sequenceTable'  => $_SESSION['dbprefix'].'_sequence'
-        );
-        
-        #default connection... 
-		$db->setDefaultConfiguration($defaultDbCfg);
-		
-    
-	#makes the new concept of moduls (save the moduls to the file)
-    #save the translation
-	if($_SESSION["setuptype"] == "upgrade" || $_SESSION["setuptype"] == "setup") {
-	     
-		
-		
-	     #make cfg
-	     $myCfg["tab"] ["clients"] = $_SESSION["dbprefix"]."_clients";
-	     $myCfg["tab"] ["mod"] = $_SESSION["dbprefix"]."_mod";
-	     $myCfg["tab"] ["clients_lang"] = $_SESSION['dbprefix']."_clients_lang";
-	     $myCfg["tab"] ["mod_translations"] = $_SESSION['dbprefix']."_mod_translations";
-	     $myCfg["tab"] ["lang"] = $_SESSION['dbprefix']."_lang";
-	     $myCfg["tab"] ["properties"] = $_SESSION['dbprefix']."_properties";
-	     
-	     Contenido_Vars::setVar('cfg', $myCfg);
-	     #default 1 it will be set new in method saveAllModulsToTheFile
-	     Contenido_Vars::setVar('client', 1);
-	     Contenido_Vars::setVar('encoding', 'ISO-8859-1');
-	     Contenido_Vars::setVar('fileEncoding','UTF-8');
-	     
-	     
-	     Contenido_Vars::setVar('db',new DB_Contenido());
-	    
-	     $contenidoUpgradeJob = new Contenido_UpgradeJob();
-	     
-	      #save all moduls from db-table to the filesystem
-	      $contenidoUpgradeJob->saveAllModulsToTheFile($_SESSION["setuptype"],new DB_Contenido());
-	       
-	    
-	}
-	
-	
-	//START SAVE LAYOUT IN FILE
-	if($_SESSION["setuptype"] == "upgrade"||$_SESSION["setuptype"] == "setup") {
-		
-		 #make cfg
-	     $myCfg["tab"] ["clients"] = $_SESSION["dbprefix"]."_clients";
-	     $myCfg["tab"] ["lang"] = $_SESSION['dbprefix']."_lang";
-	     $myCfg["tab"] ["lay"] = $_SESSION['dbprefix']."_lay";
-	     
-		$layoutInFIle = new LayoutInFile(1,"", $myCfg, 1);
-		$layoutInFIle->upgrade();
-		
-	}
-	//END SAVE LAYOUT IN FILE
+    injectSQL($db, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array(), $aNothing);
 
-    printf('<script language="JavaScript">parent.document.getElementById("installing").style.visibility="hidden";parent.document.getElementById("installingdone").style.visibility="visible";</script>');
-    printf('<script language="JavaScript">parent.document.getElementById("next").style.visibility="visible"; window.setTimeout("nextStep()", 10); function nextStep () { window.location.href=\'makeconfig.php\'; }</script>');
+	// Makes the new concept of moduls (save the moduls to the file) save the translation
+	if ($_SESSION['setuptype'] == 'upgrade' || $_SESSION['setuptype'] == 'setup') {
+        Contenido_Vars::setVar('cfg', $cfg);
+        // Default 1 it will be set new in method saveAllModulsToTheFile
+        Contenido_Vars::setVar('client', 1);
+        Contenido_Vars::setVar('encoding', 'ISO-8859-1');
+        Contenido_Vars::setVar('fileEncoding', 'UTF-8');
+        Contenido_Vars::setVar('db', new DB_Contenido());
+
+        // Save all modules from db-table to the filesystem
+        $contenidoUpgradeJob = new Contenido_UpgradeJob();
+        $contenidoUpgradeJob->saveAllModulsToTheFile($_SESSION['setuptype'], new DB_Contenido());
+
+		// Save layout from db-table to the file system
+        $layoutInFIle = new LayoutInFile(1, '', $cfg, 1);
+		$layoutInFIle->upgrade();
+	}
+
+    echo '
+        <script type="text/javascript">
+        parent.document.getElementById("installing").style.visibility="hidden";
+        parent.document.getElementById("installingdone").style.visibility="visible";
+        parent.document.getElementById("next").style.visibility="visible";
+        function nextStep() {
+            window.location.href="makeconfig.php";
+        };
+        </script>
+    ';
+
+    if (!C_SETUP_DEBUG) {
+        echo '<script type="text/javascript">window.setTimeout(nextStep, 10);</script>';
+    } else {
+        echo '<a href="javascript:nextStep();">Last step</a>';
+    }
+
 }
 
 ?>

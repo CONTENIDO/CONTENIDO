@@ -27,8 +27,9 @@
  * }}
  * 
  */
- if(!defined('CON_FRAMEWORK')) {
-                die('Illegal call');
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 class cSetupClientAdjust extends cSetupMask
@@ -36,9 +37,7 @@ class cSetupClientAdjust extends cSetupMask
 	function cSetupClientAdjust ($step, $previous, $next)
 	{
 		global $cfg;
-		
-		$cfg["tab"]["sequence"] = $_SESSION["dbprefix"]."_sequence";
-		
+
 		cSetupMask::cSetupMask("templates/setup/forms/pathinfo.tpl", $step);
 		$this->setHeader(i18n("Client Settings"));
 		$this->_oStepTemplate->set("s", "TITLE", i18n("Client Settings"));
@@ -46,7 +45,7 @@ class cSetupClientAdjust extends cSetupMask
 		
         $db = getSetupMySQLDBConnection();
 		
-		$aClients = listClients($db, $_SESSION["dbprefix"]."_clients");
+		$aClients = listClients($db, $cfg['tab']['clients']);
 		
 		$cHTMLErrorMessageList = new cHTMLErrorMessageList;
 		$cHTMLErrorMessageList->setStyle("width: 580px; height: 200px; overflow: auto; border: 1px solid black;");

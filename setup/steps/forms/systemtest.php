@@ -435,9 +435,7 @@ class cSetupSystemtest extends cSetupMask
 					$db->connect();
 					
 					/* Check if data already exists */
-					$sql = 'SHOW TABLES LIKE "%s_actions"';
-					
-					$db->query(sprintf($sql, $_SESSION["dbprefix"]));
+					$db->query('SHOW TABLES LIKE "%s_actions"', $_SESSION["dbprefix"]);
 					
 					if ($db->next_record())
 					{
@@ -450,9 +448,7 @@ class cSetupSystemtest extends cSetupMask
 					}
 					
 					/* Check if data already exists */
-					$sql = 'SHOW TABLES LIKE "%s_test"';
-					
-					$db->query(sprintf($sql, $_SESSION["dbprefix"]));
+					$db->query('SHOW TABLES LIKE "%s_test"', $_SESSION["dbprefix"]);
 					
 					if ($db->next_record())
 					{
@@ -665,21 +661,16 @@ class cSetupSystemtest extends cSetupMask
 	 * @return boolean true if stric modus is detected
 	 */
 	function isSqlModeStrict() {
-		
-		// host, user and password
-        $aOptions = array(
-            'connection' => array(
-                'host'     => $_SESSION["dbhost"],
-                'user'     => $_SESSION["dbuser"],
-                'password' => $_SESSION["dbpass"]
-            ),
-            'sequenceTable'  => $_SESSION['dbprefix'].'_sequence'
-        );
+        global $cfg;
         
-		$db = new DB_Contenido($aOptions);
+        // host, user and password
+        $aDbCfg = $cfg['db'];
+        unset($aDbCfg['connection']['database']);
+        
+		$db = new DB_Contenido($aDbCfg);
 		$db->query('SELECT LOWER(@@GLOBAL.sql_mode) AS sql_mode');
-		if($db->next_record()) {
-			if(strpos($db->f('sql_mode'), 'strict_trans_tables') !== false || strpos($db->f('sql_mode'), 'strict_all_tables') !== false ) {
+		if ($db->next_record()) {
+			if (strpos($db->f('sql_mode'), 'strict_trans_tables') !== false || strpos($db->f('sql_mode'), 'strict_all_tables') !== false) {
 				return true;	
 			}
 		}

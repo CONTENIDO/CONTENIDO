@@ -26,8 +26,9 @@
  * }}
  * 
  */
- if(!defined('CON_FRAMEWORK')) {
-                die('Illegal call');
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 
@@ -55,14 +56,19 @@ class cSetupSystemData extends cSetupMask
 			$contenido_database = "";
 			$contenido_password = "";
 			
-			@include($a_root_path."/contenido/includes/config.php");
+			$cfgBackup = $cfg;
+
+            @include($a_root_path."/contenido/includes/config.php");
 			
 			$aVars = array(	"dbhost" => $contenido_host,
 							"dbuser" => $contenido_user,
 							"dbname" => $contenido_database,
 							"dbpass" => $contenido_password,
 							"dbprefix" => $cfg["sql"]["sqlprefix"]);
-							
+
+			$cfg = $cfgBackup;
+            unset($cfgBackup);
+
 			foreach ($aVars as $aVar => $sValue)
 			{
 				if ($_SESSION[$aVar] == "")
@@ -180,10 +186,7 @@ class cSetupSystemData extends cSetupMask
 		$backSetup->setStyle("margin-right: 10px");
 		$backlink->setContent($backSetup);		
 		$this->_oStepTemplate->set("s", "BACK", $backlink->render());
-		
-				
 	}			
-
-		
 }
+
 ?>

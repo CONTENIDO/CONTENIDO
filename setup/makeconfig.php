@@ -32,21 +32,21 @@
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
-define('C_CONTENIDO_PATH', '../contenido/');
+define('C_FRONTEND_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/');
 
 include_once('lib/startup.php');
 
 
-list($root_path, $root_http_path) = getSystemDirectories();
+list($rootPath, $rootHttpPath) = getSystemDirectories();
 
 $tpl = new Template();
-$tpl->set('s', 'CONTENIDO_ROOT', $root_path);
-$tpl->set('s', 'CONTENIDO_WEB', $root_http_path);
-$tpl->set('s', 'MYSQL_HOST', $_SESSION['dbhost']);
-$tpl->set('s', 'MYSQL_DB', $_SESSION['dbname']);
-$tpl->set('s', 'MYSQL_USER', $_SESSION['dbuser']);
-$tpl->set('s', 'MYSQL_PASS', $_SESSION['dbpass']);
-$tpl->set('s', 'MYSQL_PREFIX', $_SESSION['dbprefix']);
+$tpl->set('s', 'CONTENIDO_ROOT', $rootPath);
+$tpl->set('s', 'CONTENIDO_WEB', $rootHttpPath);
+$tpl->set('s', 'MYSQL_HOST', $cfg['db']['connection']['host']);
+$tpl->set('s', 'MYSQL_DB', $cfg['db']['connection']['database']);
+$tpl->set('s', 'MYSQL_USER', $cfg['db']['connection']['user']);
+$tpl->set('s', 'MYSQL_PASS', $cfg['db']['connection']['password']);
+$tpl->set('s', 'MYSQL_PREFIX', $cfg['sql']['sqlprefix']);
 
 if (hasMySQLiExtension() && !hasMySQLExtension()) {
     $tpl->set('s', 'DB_EXTENSION', 'mysqli');
@@ -63,13 +63,13 @@ if ($_SESSION['start_compatible'] == true) {
 $tpl->set('s', 'NOLOCK', $_SESSION['nolock']);
 
 if ($_SESSION['configmode'] == 'save') {
-    @unlink($root_path . '/contenido/includes/config.php');
+    @unlink($rootPath . '/contenido/includes/config.php');
 
-    @$handle = fopen($root_path . '/contenido/includes/config.php', 'wb');
+    @$handle = fopen($rootPath . '/contenido/includes/config.php', 'wb');
     @fwrite($handle, $tpl->generate('templates/config.php.tpl', true, false));
     @fclose($handle);
 
-    if (!file_exists($root_path . '/contenido/includes/config.php')) {
+    if (!file_exists($rootPath . '/contenido/includes/config.php')) {
         $_SESSION['configsavefailed'] = true;
     } else {
         unset($_SESSION['configsavefailed']);

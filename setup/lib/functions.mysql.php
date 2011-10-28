@@ -76,33 +76,20 @@ function doMySQLConnect ($host, $username, $password)
 
 function getSetupMySQLDBConnection($full = true)
 {
+    global $cfg;
+
+    $cfgDb = $cfg['db'];
+
     if ($full === false) {
-        // host, user and password
-        $aOptions = array(
-            'connection' => array(
-                'host'     => $_SESSION["dbhost"],
-                'user'     => $_SESSION["dbuser"],
-                'password' => $_SESSION["dbpass"]
-            ),
-            'sequenceTable'  => $_SESSION['dbprefix'].'_sequence'
-        );
-    } else {
-        // host, database, user and password
-        $aOptions = array(
-            'connection' => array(
-                'host'     => $_SESSION["dbhost"],
-                'database' => $_SESSION["dbname"],
-                'user'     => $_SESSION["dbuser"],
-                'password' => $_SESSION["dbpass"]
-            ),
-            'sequenceTable'  => $_SESSION['dbprefix'].'_sequence'
-        );
+        // Connection parameter without database
+        unset($cfgDb['connection']['database']);
     }
-    $db = new DB_Contenido($aOptions);
+
+    $db = new DB_Contenido($cfgDb);
     return $db;
 }
 
-function fetchMySQLVersion ($db)
+function fetchMySQLVersion($db)
 {
 	$db->query("SELECT VERSION()");
 	
