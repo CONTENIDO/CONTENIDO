@@ -140,12 +140,8 @@ if(!defined('CON_FRAMEWORK')) {
 // 		folder layout
  		$this->sType = "module";
 		
-		
-		if(isset($_SESSION["dbprefix"])){
-			$this->sTableName = $_SESSION["dbprefix"]."_mod_history";
-		} else {
-			$this->sTableName = $this->aCfg['sql']['sqlprefix']."_mod_history";
-		}
+		$this->sTableName = $this->aCfg['sql']['sqlprefix']."_mod_history";
+
 //		init class member 		 		
  		$this->aCreateVesion = array();
  		
