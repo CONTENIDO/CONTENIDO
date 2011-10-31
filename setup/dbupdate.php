@@ -177,7 +177,7 @@ foreach ($fullChunks as $fullChunk) {
         injectSQL($db, $cfg['sql']['sqlprefix'], 'data/' . $fullChunk, $replacements, $failedChunks);
 
         if (count($failedChunks) > 0) {
-            @$fp = fopen('../contenido/logs/setuplog.txt', 'w');
+            @$fp = fopen(C_FRONTEND_PATH . 'contenido/logs/setuplog.txt', 'w');
             foreach ($failedChunks as $failedChunk) {
                 @fwrite($fp, sprintf("Setup was unable to execute SQL. MySQL-Error: %s, MySQL-Message: %s, SQL-Statements:\n%s", $failedChunk['errno'], $failedChunk['error'], $failedChunk['sql']));
             }

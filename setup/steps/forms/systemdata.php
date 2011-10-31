@@ -167,8 +167,8 @@ class cSetupSystemData extends cSetupMask
 		}
 		
 		$nextSetup = new cHTMLAlphaImage;
-		$nextSetup->setSrc("../contenido/images/submit.gif");
-		$nextSetup->setMouseOver("../contenido/images/submit_hover.gif");
+		$nextSetup->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
+		$nextSetup->setMouseOver(C_SETUP_CONTENIDO_HTML_PATH . "images/submit_hover.gif");
 		$nextSetup->setClass("button");
 		
 		$link->setContent($nextSetup);
