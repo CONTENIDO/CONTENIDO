@@ -1,11 +1,11 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * 
- * Requirements: 
+ *
+ * Description:
+ *
+ * Requirements:
  * @con_php_req 5
  *
  * @package    CONTENIDO setup
@@ -15,57 +15,55 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * 
- * 
- * {@internal 
+ *
+ *
+ * {@internal
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
+
 if (!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }
 
 
-
 class cSetupPath extends cSetupMask
 {
-	function cSetupPath ($step, $previous, $next)
-	{
-		cSetupMask::cSetupMask("templates/setup/forms/pathinfo.tpl", $step);
-		$this->setHeader(i18n("System Directories"));
-		$this->_oStepTemplate->set("s", "TITLE", i18n("System Directories"));
-		$this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box."));
-		
-		list($root_path, $root_http_path) = getSystemDirectories(true);
-		
-		$cHTMLErrorMessageList = new cHTMLErrorMessageList;
-		$cHTMLErrorMessageList->setStyle("width: 580px; height: 200px; overflow: auto; border: 1px solid black;");
-		$cHTMLFoldableErrorMessages = array();
-		
-		list($a_root_path, $a_root_http_path) = getSystemDirectories();
-		$oRootPath = new cHTMLTextbox("override_root_path", $a_root_path);
-		$oRootPath->setWidth(100);
-		$oRootPath->setClass("small");
-		$oWebPath = new cHTMLTextbox("override_root_http_path", $a_root_http_path);
-		$oWebPath->setWidth(100);
-		$oWebPath->setClass("small");
-		
-		$cHTMLFoldableErrorMessages[0] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Root Path").":<br>".$root_path, $oRootPath);
-		$cHTMLFoldableErrorMessages[0]->_oContent->setStyle("padding-bottom: 8px;");
-		$cHTMLFoldableErrorMessages[1] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Web Path").":<br>".$root_http_path, $oWebPath);
-		$cHTMLFoldableErrorMessages[1]->_oContent->setStyle("padding-bottom: 8px;");
-		
-		$cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);
-		
-		
-		$this->_oStepTemplate->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
+    function cSetupPath($step, $previous, $next)
+    {
+        cSetupMask::cSetupMask("templates/setup/forms/pathinfo.tpl", $step);
+        $this->setHeader(i18n("System Directories"));
+        $this->_oStepTemplate->set("s", "TITLE", i18n("System Directories"));
+        $this->_oStepTemplate->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box."));
 
-		$this->setNavigation($previous, $next);		
-	}
+        list($rootPath, $rootHttpPath) = getSystemDirectories(true);
+
+        $cHTMLErrorMessageList = new cHTMLErrorMessageList();
+        $cHTMLErrorMessageList->setStyle("width: 580px; height: 200px; overflow: auto; border: 1px solid black;");
+        $cHTMLFoldableErrorMessages = array();
+
+        list($rootPath2, $rootHttpPath2) = getSystemDirectories();
+        $oRootPath = new cHTMLTextbox("override_root_path", $rootPath2);
+        $oRootPath->setWidth(100);
+        $oRootPath->setClass("small");
+        $oWebPath = new cHTMLTextbox("override_root_http_path", $rootHttpPath2);
+        $oWebPath->setWidth(100);
+        $oWebPath->setClass("small");
+
+        $cHTMLFoldableErrorMessages[0] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Root Path").":<br>".$rootPath, $oRootPath);
+        $cHTMLFoldableErrorMessages[0]->_oContent->setStyle("padding-bottom: 8px;");
+        $cHTMLFoldableErrorMessages[1] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Web Path").":<br>".$rootHttpPath, $oWebPath);
+        $cHTMLFoldableErrorMessages[1]->_oContent->setStyle("padding-bottom: 8px;");
+
+        $cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);
+
+        $this->_oStepTemplate->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
+
+        $this->setNavigation($previous, $next);
+    }
 }
 ?>

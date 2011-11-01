@@ -70,8 +70,8 @@ class cHTMLAlphaImage extends cHTMLImage
                 $this->attachEventDefinition("mouseover", "onMouseOut", "mouseoutHandler(this);");
             } else {
                 $sMouseScript = 'if (isMSIE) { this.style.filter = \'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\\\'%1$s\\\');\'; } else { this.src=\'%1$s\'; }';
-                $this->attachEventDefinition("mouseover",     "onMouseOver", sprintf($sMouseScript, $this->_sMouseoverSrc) );
-                $this->attachEventDefinition("mouseover",     "onMouseOut", sprintf($sMouseScript, $this->_src) );
+                $this->attachEventDefinition("mouseover", "onmouseover", sprintf($sMouseScript, $this->_sMouseoverSrc) );
+                $this->attachEventDefinition("mouseover", "onmouseout", sprintf($sMouseScript, $this->_src) );
             }
         }
 
@@ -83,11 +83,11 @@ class cHTMLErrorMessageList extends cHTMLDiv
 {
     function cHTMLErrorMessageList()
     {
-        $this->_oTable = new cHTMLTable;
+        $this->_oTable = new cHTMLTable();
         $this->_oTable->setWidth("100%");
         cHTMLDiv::cHTMLDiv();
         $this->setClass("errorlist");
-        $this->setStyle("width: 450px; height: 218px; overflow: auto; border: 1px solid black;");
+        $this->setStyle("width: 450px;height:218px;overflow:auto;border:1px solid black;");
     }
 
     function setContent($content)
@@ -122,7 +122,7 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
         $alphaImage->attachEventDefinition("showhide", "onClick", "aldiv = document.getElementById('".$this->_oMessage->getId()."');  showHideMessage(this, aldiv);");
 
         $this->_oTitle->setContent($sTitle);
-        $this->_oTitle->setStyle("cursor: pointer;");
+        $this->_oTitle->setStyle("cursor:pointer;");
         $this->_oTitle->attachEventDefinition("showhide", "onClick", "alimg = document.getElementById('".$alphaImage->getId()."'); aldiv = document.getElementById('".$this->_oMessage->getId()."'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
 
         $this->_oMessage->setContent($sMessage);
@@ -198,7 +198,7 @@ class cHTMLLanguageLink extends cHTMLDiv
         $linkImage->setHeight(16);
 
 
-        $this->setStyle("vertical-align: center; height: 40px; width: 150px;");
+        $this->setStyle("vertical-align:center;height:40px;width:150px;");
         $link = new cHTMLLink("#");
         $link->setContent($langname);
         $link->attachEventDefinition("stepAttach", "onclick", "document.setupform.step.value = '$stepnumber';");
@@ -211,8 +211,8 @@ class cHTMLLanguageLink extends cHTMLDiv
         $link2->attachEventDefinition("languageAttach", "onclick", "document.setupform.elements.language.value = '$langcode';");
         $link2->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
 
-        $link->attachEventDefinition("mouseover", "onMouseOver", sprintf("mouseoverHandler(document.getElementById('%s'));", $linkImage->getId()));
-        $link->attachEventDefinition("mouseout", "onMouseOut", sprintf("mouseoutHandler(document.getElementById('%s'));", $linkImage->getId()));
+        $link->attachEventDefinition("mouseover", "onmouseover", sprintf("mouseoverHandler(document.getElementById('%s'));", $linkImage->getId()));
+        $link->attachEventDefinition("mouseout", "onmouseout", sprintf("mouseoutHandler(document.getElementById('%s'));", $linkImage->getId()));
         $link2->setContent($linkImage);
 
         $alignment = '<table border="0" width="100%%" cellspacing="0" cellpadding="0"><tr><td valign="middle">%s</td><td valign="middle" align="right">%s</td></tr></table>';
@@ -241,8 +241,8 @@ class cHTMLButtonLink extends cHTMLDiv
         $link2->setAttribute("target", "_blank");
         $link2->setContent($title);
 
-        $link->attachEventDefinition("mouseover", "onMouseOver", sprintf("mouseoverHandler(document.getElementById('%s'));", $linkImage->getId()));
-        $link->attachEventDefinition("mouseout", "onMouseOut", sprintf("mouseoutHandler(document.getElementById('%s'));", $linkImage->getId()));
+        $link->attachEventDefinition("mouseover", "onmouseover", sprintf("mouseoverHandler(document.getElementById('%s'));", $linkImage->getId()));
+        $link->attachEventDefinition("mouseout", "onmouseout", sprintf("mouseoutHandler(document.getElementById('%s'));", $linkImage->getId()));
         $link2->setContent($linkImage);
 
         $alignment = '<table border="0" width="100%%" cellspacing="0" cellpadding="0"><tr><td valign="middle">%s</td><td valign="middle" align="right">%s</td></tr></table>';

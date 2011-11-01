@@ -27,7 +27,6 @@
  *
  */
 
-
 if (!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }
@@ -85,7 +84,7 @@ if (is_array($_REQUEST)) {
     }
     /*
     ############################################################################
-    // FIXME  Following lines of code would enshure that previous selected optional 
+    // FIXME  Following lines of code would enshure that previous selected optional
     //        settings will be removed from session, if they are unselected afterwards.
     //        But, how should we handle not selected plugins, whose files will be included
     //        even if the are not installed?
@@ -119,7 +118,7 @@ $cfg['path']['frontend']  = C_FRONTEND_PATH;
 $cfg['path']['contenido'] = $cfg['path']['frontend'] . 'contenido/';
 $cfg['path']['phplib']    = $cfg['path']['frontend'] . 'conlib/';
 $cfg['path']['pear']      = $cfg['path']['frontend'] . 'pear/';
-$cfg['generate_xhtml']    = true;
+$cfg['generate_xhtml']    = false;
 
 // DB related settings
 $cfg['sql']['sqlprefix']  = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';

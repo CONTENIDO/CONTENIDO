@@ -1,11 +1,12 @@
 <?php
- /**
- * Project: 
+/**
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * 
- * Requirements: 
+ *
+ * Description:
+ * Step 7 of migration
+ *
+ * Requirements:
  * @con_php_req 5
  *
  * @package    CONTENIDO setup
@@ -15,24 +16,24 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * 
- * 
- * {@internal 
+ *
+ *
+ * {@internal
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
+
 if (!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }
-
 
 checkAndInclude("steps/forms/setupsummary.php");
 
 $cSetupSetupSummary = new cSetupSetupSummary(7, "migration6", "domigration");
 $cSetupSetupSummary->render();
+
 ?>

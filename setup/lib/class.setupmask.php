@@ -102,7 +102,7 @@ class cSetupMask
         $backSetup->setSrc("images/controls/back.gif");
         $backSetup->setMouseOver("images/controls/back.gif");
         $backSetup->setClass("button");
-        $backSetup->setStyle("margin-right: 10px");
+        $backSetup->setStyle("margin-right:10px");
         $backlink->setContent($backSetup);
         $this->_oStepTemplate->set("s", "BACK", $backlink->render());
     }

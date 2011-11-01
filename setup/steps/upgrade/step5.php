@@ -1,12 +1,12 @@
 <?php
- /**
- * Project: 
+/**
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Step 6 of installation
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5
  *
  * @package    CONTENIDO setup
@@ -16,17 +16,18 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * 
- * 
- * {@internal 
+ *
+ *
+ * {@internal
  *   created  2008-03-14
  *   modified 2008-07-07, bilal arslan, added security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
+
+
 if (!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }

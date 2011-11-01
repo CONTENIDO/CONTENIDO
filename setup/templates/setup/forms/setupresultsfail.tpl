@@ -1,9 +1,9 @@
 <table cellspacing="0" cellpadding="0" border="0" class="setupBodyOuterTable">
 <tr>
-	<td valign="top" colspan="2">
-		<h1>{TITLE}</h1>
-		{DESCRIPTION}
-	</td>
+    <td valign="top" colspan="2">
+        <h1>{TITLE}</h1>
+        {DESCRIPTION}
+    </td>
 </tr>
 <tr>
 <td>&nbsp;</td>

@@ -18,7 +18,6 @@
  * @link       http://www.contenido.org
  *
  *
- *
  * {@internal
  *   created  unknown
  *   modified 2008-07-07, bilal arslan, added security fix

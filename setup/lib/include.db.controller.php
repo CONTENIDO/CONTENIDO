@@ -4,7 +4,7 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Creates/Updates the database tables and fills them with entries (depending on 
+ * Creates/Updates the database tables and fills them with entries (depending on
  * selected options during setup process)
  *
  * Requirements:
@@ -17,7 +17,7 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
+ *
  *
  * {@internal
  *   created  unknown
@@ -27,9 +27,9 @@
  *   modified 2011-03-21, Murat Purc, usage of new db connection
  *   modified 2011-05-17, Ortwin Pinke, del sequencetable cfg, has to be set in connect-function
  *   modified 2011-01-11, rusmir jusufovic,
- *   	- save input and output and translations strings from moduls in files
+ *       - save input and output and translations strings from moduls in files
  *   modified 2011-06-20, Rusmir Jusufovic , save layout in filesystem
- *   
+ *
  *   $Id: dbupdate.php 1656 2011-10-31 23:36:53Z xmurrix $:
  * }}
  *
@@ -254,8 +254,8 @@ if ($currentStep < $totalSteps) {
 
     injectSQL($db, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array(), $aNothing);
 
-	// Makes the new concept of moduls (save the moduls to the file) save the translation
-	if ($_SESSION['setuptype'] == 'upgrade' || $_SESSION['setuptype'] == 'setup') {
+    // Makes the new concept of moduls (save the moduls to the file) save the translation
+    if ($_SESSION['setuptype'] == 'upgrade' || $_SESSION['setuptype'] == 'setup') {
         Contenido_Vars::setVar('cfg', $cfg);
         // Default 1 it will be set new in method saveAllModulsToTheFile
         Contenido_Vars::setVar('client', 1);
@@ -267,10 +267,10 @@ if ($currentStep < $totalSteps) {
         $contenidoUpgradeJob = new Contenido_UpgradeJob();
         $contenidoUpgradeJob->saveAllModulsToTheFile($_SESSION['setuptype'], new DB_Contenido());
 
-		// Save layout from db-table to the file system
+        // Save layout from db-table to the file system
         $layoutInFIle = new LayoutInFile(1, '', $cfg, 1);
-		$layoutInFIle->upgrade();
-	}
+        $layoutInFIle->upgrade();
+    }
 
     echo '
         <script type="text/javascript">

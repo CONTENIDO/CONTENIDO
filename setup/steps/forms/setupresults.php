@@ -50,13 +50,13 @@ class cSetupResults extends cSetupMask
             $this->_oStepTemplate->set("s", "CHOOSENEXTSTEP", i18n("Please choose an item to start working:"));
             $this->_oStepTemplate->set("s", "FINISHTEXT", i18n("You can now start using CONTENIDO. Please delete the folder named 'setup'!"));
 
-            list($root_path, $root_http_path) = getSystemDirectories();
+            list($rootPath, $rootHttpPath) = getSystemDirectories();
 
-            $cHTMLButtonLink = new cHTMLButtonLink($root_http_path."/contenido/", "Backend - CMS");
+            $cHTMLButtonLink = new cHTMLButtonLink($rootHttpPath . "/contenido/", "Backend - CMS");
             $this->_oStepTemplate->set("s", "BACKEND", $cHTMLButtonLink->render());
 
             if ($_SESSION["setuptype"] == "setup" && $_SESSION["clientmode"] == "CLIENTEXAMPLES") {
-                $cHTMLButtonLink = new cHTMLButtonLink($root_http_path."/cms/", "Frontend - Web");
+                $cHTMLButtonLink = new cHTMLButtonLink($rootHttpPath . "/cms/", "Frontend - Web");
                 $this->_oStepTemplate->set("s", "FRONTEND", $cHTMLButtonLink->render());
             } else {
                 $this->_oStepTemplate->set("s", "FRONTEND", "");
@@ -74,9 +74,9 @@ class cSetupResults extends cSetupMask
             cSetupMask::cSetupMask("templates/setup/forms/setupresultsfail.tpl", $step);
             $this->_oStepTemplate->set("s", "TITLE", i18n("Setup Results"));
 
-            list($sRootPath, $rootWebPath) = getSystemDirectories();
+            list($rootPath, $rootHttpPath) = getSystemDirectories();
 
-            if (file_exists($sRootPath . "/contenido/logs/setuplog.txt")) {
+            if (file_exists($rootPath . "/contenido/logs/setuplog.txt")) {
                 $sErrorLink = '<a target="_blank" href="' . C_SETUP_CONTENIDO_HTML_PATH . 'logs/setuplog.txt">setuplog.txt</a>';
             } else {
                 $sErrorLink = 'setuplog.txt';
