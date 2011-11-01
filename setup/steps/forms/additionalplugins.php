@@ -21,7 +21,7 @@
  * hopefully you're done now...
  *
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO setup
  * @version    1.0.0
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>

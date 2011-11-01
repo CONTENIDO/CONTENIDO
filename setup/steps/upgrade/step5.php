@@ -9,7 +9,7 @@
  * Requirements: 
  * @con_php_req 5
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO setup
  * @version    1.0.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>

@@ -11,7 +11,7 @@
  * @con_notice 
  * Light template mechanism
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO setup
  * @version    1.2
  * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright  four for business AG <www.4fb.de>
