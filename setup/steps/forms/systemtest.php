@@ -254,7 +254,7 @@ class cSetupSystemtest extends cSetupMask
         }
 
 
-        $iMemoryLimit = return_bytes(getPHPIniSetting("memory_limit"));
+        $iMemoryLimit = getAsBytes(getPHPIniSetting("memory_limit"));
         if ($iMemoryLimit > 0) {
             $this->runTest(
                 ($iMemoryLimit > 1024 * 1024 * 4), C_SEVERITY_WARNING, i18n("PHP memory_limit directive too small"),
