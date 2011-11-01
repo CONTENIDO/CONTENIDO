@@ -30,7 +30,7 @@
  */
 
 if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
+     die('Illegal call');
 }
 
 define('E_IMAGERESIZE_GD',               1);

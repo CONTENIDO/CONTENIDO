@@ -29,7 +29,7 @@
 
 
 if (!defined('CON_FRAMEWORK')) {
-    die('Illegal call');
+     die('Illegal call');
 }
 
 // uncomment this lines during development if needed
