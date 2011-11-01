@@ -41,6 +41,7 @@ class cHTMLAlphaImage extends cHTMLImage
     function cHTMLAlphaImage()
     {
         cHTMLImage::cHTMLImage();
+        $this->setAlt("");
     }
 
     function setMouseover($sMouseoverSrc)
@@ -60,14 +61,14 @@ class cHTMLAlphaImage extends cHTMLImage
         $imageLocations = "this.imgnormal = '%s'; this.imgover = '%s'; this.clickimgnormal = '%s'; this.clickimgover = '%s';";
 
         $this->attachStyleDefinition("filter", sprintf($alphaLoader, $this->_src));
-        $this->attachEventDefinition("imagelocs", "onLoad", sprintf($imageLocations, $this->_src, $this->_sMouseoverSrc, $this->_sClickImage, $this->_sMouseoverClickImage));
-        $this->attachEventDefinition("swapper", "onLoad", 'if (!this.init) {IEAlphaInit(this); IEAlphaApply(this, this.imgnormal); this.init = true;}');
+        $this->attachEventDefinition("imagelocs", "onload", sprintf($imageLocations, $this->_src, $this->_sMouseoverSrc, $this->_sClickImage, $this->_sMouseoverClickImage));
+        $this->attachEventDefinition("swapper", "onload", 'if (!this.init) {IEAlphaInit(this); IEAlphaApply(this, this.imgnormal); this.init = true;}');
 
         if ($this->_sMouseoverSrc != "") {
             if ($this->_sClickImage != "") {
-                $this->attachEventDefinition("click", "onClick", "clickHandler(this);");
-                $this->attachEventDefinition("mouseover", "onMouseOver", "mouseoverHandler(this);");
-                $this->attachEventDefinition("mouseover", "onMouseOut", "mouseoutHandler(this);");
+                $this->attachEventDefinition("click", "onclick", "clickHandler(this);");
+                $this->attachEventDefinition("mouseover", "onmouseover", "mouseoverHandler(this);");
+                $this->attachEventDefinition("mouseover", "onmouseout", "mouseoutHandler(this);");
             } else {
                 $sMouseScript = 'if (isMSIE) { this.style.filter = \'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\\\'%1$s\\\');\'; } else { this.src=\'%1$s\'; }';
                 $this->attachEventDefinition("mouseover", "onmouseover", sprintf($sMouseScript, $this->_sMouseoverSrc) );
@@ -119,11 +120,11 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
         $alphaImage->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/open_all.gif");
         $alphaImage->setMouseover(C_SETUP_CONTENIDO_HTML_PATH . "images/open_all.gif");
         $alphaImage->setSwapOnClick(C_SETUP_CONTENIDO_HTML_PATH . "images/close_all.gif", C_SETUP_CONTENIDO_HTML_PATH . "images/close_all.gif");
-        $alphaImage->attachEventDefinition("showhide", "onClick", "aldiv = document.getElementById('".$this->_oMessage->getId()."');  showHideMessage(this, aldiv);");
+        $alphaImage->attachEventDefinition("showhide", "onclick", "aldiv = document.getElementById('".$this->_oMessage->getId()."');  showHideMessage(this, aldiv);");
 
         $this->_oTitle->setContent($sTitle);
         $this->_oTitle->setStyle("cursor:pointer;");
-        $this->_oTitle->attachEventDefinition("showhide", "onClick", "alimg = document.getElementById('".$alphaImage->getId()."'); aldiv = document.getElementById('".$this->_oMessage->getId()."'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
+        $this->_oTitle->attachEventDefinition("showhide", "onclick", "alimg = document.getElementById('".$alphaImage->getId()."'); aldiv = document.getElementById('".$this->_oMessage->getId()."'); showHideMessage(alimg, aldiv); clickHandler(alimg);");
 
         $this->_oMessage->setContent($sMessage);
         $this->_oMessage->setClass("entry_closed");

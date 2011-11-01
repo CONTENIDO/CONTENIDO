@@ -10,11 +10,11 @@
             <div class="description">{LABEL_DESCRIPTION}</div><br>
             <table border="0">
                 <tr>
-                <tr><td>{CONTROL_SAVE}</td><td style="padding-right: 30px;">{CONTROL_SAVELABEL}</td>
-                <td>{CONTROL_DOWNLOAD}</td><td>{CONTROL_DOWNLOADLABEL}</td>
+                    <td>{CONTROL_SAVE}</td><td style="padding-right: 30px;">{CONTROL_SAVELABEL}</td>
+                    <td>{CONTROL_DOWNLOAD}</td><td>{CONTROL_DOWNLOADLABEL}</td>
                 </tr>
             </table>
         </td>
-        <td align="right" valign="bottom" style="white-space: nowrap;">{BACK}{NEXT}</td>
+        <td align="right" valign="bottom" style="white-space:nowrap;">{BACK}{NEXT}</td>
     </tr>
 </table>

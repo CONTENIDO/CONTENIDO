@@ -9,7 +9,7 @@
         <td class="list">
             <table border="0">
                 <tr>
-                    <td class="first"><div class="description">{LABEL_DBHOST}</td>
+                    <td class="first"><div class="description">{LABEL_DBHOST}</div></td>
                     <td class="last">{INPUT_DBHOST}</td>
                 </tr>
                 <tr>
