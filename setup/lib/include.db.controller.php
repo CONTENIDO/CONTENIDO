@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * Project:
  * CONTENIDO Content Management System
  *
@@ -11,7 +11,7 @@
  * @con_php_req 5
  *
  * @package    CONTENIDO setup
- * @version    0.2.2
+ * @version    0.2.5
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -30,17 +30,14 @@
  *   	- save input and output and translations strings from moduls in files
  *   modified 2011-06-20, Rusmir Jusufovic , save layout in filesystem
  *   
- *   $Id$:
+ *   $Id: dbupdate.php 1656 2011-10-31 23:36:53Z xmurrix $:
  * }}
  *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-    define('CON_FRAMEWORK', true);
+    die('Illegal call');
 }
-define('C_FRONTEND_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/');
-
-include_once('lib/startup.php');
 
 
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.database.php');
@@ -194,7 +191,7 @@ echo '<script type="text/javascript">parent.updateProgressbar('.$percent.');</sc
 
 if ($currentStep < $totalSteps) {
 
-    printf('<script type="text/javascript">function nextStep() { window.location.href="dbupdate.php?step=%s"; };</script>', $currentStep + 1);
+    printf('<script type="text/javascript">function nextStep() { window.location.href="index.php?c=db&step=%s"; };</script>', $currentStep + 1);
     if (!C_SETUP_DEBUG) {
         echo '<script type="text/javascript">window.setTimeout(nextStep, 10);</script>';
     } else {
@@ -281,7 +278,7 @@ if ($currentStep < $totalSteps) {
         parent.document.getElementById("installingdone").style.visibility="visible";
         parent.document.getElementById("next").style.visibility="visible";
         function nextStep() {
-            window.location.href="makeconfig.php";
+            window.location.href="index.php?c=config";
         };
         </script>
     ';

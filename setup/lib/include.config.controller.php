@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * Project:
  * CONTENIDO Content Management System
  *
@@ -11,7 +11,7 @@
  * @con_php_req 5
  *
  * @package    CONTENIDO setup
- * @version    0.2.1
+ * @version    0.2.5
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,17 +24,14 @@
  *   modified 2008-07-07, bilal arslan, added security fix
  *   modified 2011-02-28, Murat Purc, normalized setup startup process and some cleanup/formatting
  *
- *   $Id$:
+ *   $Id: makeconfig.php 1649 2011-10-28 00:07:59Z xmurrix $:
  * }}
  *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-    define('CON_FRAMEWORK', true);
+    die('Illegal call');
 }
-define('C_FRONTEND_PATH', str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/');
-
-include_once('lib/startup.php');
 
 
 list($rootPath, $rootHttpPath) = getSystemDirectories();

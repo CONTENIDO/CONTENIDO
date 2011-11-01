@@ -142,8 +142,8 @@ class cSetupSystemtest extends cSetupMask
         //list of plugin tables to copy into new plugin tables
         $aOldPluginTables = array(
             'Workflow'            => array('piwf_actions', 'piwf_allocation', 'piwf_art_allocation', 'piwf_items', 'piwf_user_sequences', 'piwf_workflow'),
-            'Content Allocation'  => array ('pica_alloc', 'pica_alloc_con', 'pica_lang'),
-            'Linkchecker'         => array ('pi_externlinks', 'pi_linkwhitelist')
+            'Content Allocation'  => array('pica_alloc', 'pica_alloc_con', 'pica_lang'),
+            'Linkchecker'         => array('pi_externlinks', 'pi_linkwhitelist')
         );
 
         foreach ($aOldPluginTables as $sPlugin => $aTables) {

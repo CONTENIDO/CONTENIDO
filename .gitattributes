@@ -1732,7 +1732,6 @@ setup/data/sysadmin.txt -text
 setup/data/sysadmin/sysadmin1.sql -text
 setup/data/tables.txt -text
 setup/data/tables_pi.txt -text
-setup/dbupdate.php -text
 setup/images/controls/arrow_closed.png -text
 setup/images/controls/arrow_open.png -text
 setup/images/controls/back.gif -text
@@ -1757,10 +1756,12 @@ setup/lib/functions.safe_mode.php -text
 setup/lib/functions.setup.php -text
 setup/lib/functions.sql.php -text
 setup/lib/functions.system.php -text
+setup/lib/include.config.controller.php -text
+setup/lib/include.db.controller.php -text
+setup/lib/include.index.controller.php -text
 setup/lib/startup.php -text
 setup/locale/de_DE/LC_MESSAGES/contenido.mo -text
 setup/locale/de_DE/LC_MESSAGES/contenido.po -text
-setup/makeconfig.php -text
 setup/script/pluginInfo.js -text
 setup/steps/forms/additionalplugins.php -text
 setup/steps/forms/clientadjust.php -text

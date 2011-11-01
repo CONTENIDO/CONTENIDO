@@ -75,6 +75,10 @@ session_start();
 
 if (is_array($_REQUEST)) {
     foreach ($_REQUEST as $key => $value) {
+        if ($key == 'c') {
+            // c = setup controller to process
+            continue;
+        }
         if (($value != '' && $key != 'dbpass') || ($key == 'dbpass' && $_REQUEST['dbpass_changed'] == 'true')) {
             $_SESSION[$key] = $value;
         }
@@ -112,7 +116,6 @@ if (is_array($_REQUEST)) {
 global $cfg;
 
 $cfg['path']['frontend']  = C_FRONTEND_PATH;
-$cfg['path']['setup']     = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
 $cfg['path']['contenido'] = $cfg['path']['frontend'] . 'contenido/';
 $cfg['path']['phplib']    = $cfg['path']['frontend'] . 'conlib/';
 $cfg['path']['pear']      = $cfg['path']['frontend'] . 'pear/';
@@ -147,33 +150,33 @@ Contenido_Autoload::initialize($cfg);
 
 
 // Common includes
-checkAndInclude($cfg['path']['setup'] . 'lib/defines.php');
+checkAndInclude(C_SETUP_PATH . 'lib/defines.php');
 checkAndInclude($cfg['path']['pear'] . 'HTML/Common.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.i18n.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/class.setupcontrols.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/functions.filesystem.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/functions.environment.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/functions.safe_mode.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/functions.mysql.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/functions.phpinfo.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/functions.libraries.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/functions.system.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/functions.sql.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/functions.setup.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/class.template.php');
-checkAndInclude($cfg['path']['setup'] . 'lib/class.setupmask.php');
+checkAndInclude(C_SETUP_PATH . 'lib/class.setupcontrols.php');
+checkAndInclude(C_SETUP_PATH . 'lib/functions.filesystem.php');
+checkAndInclude(C_SETUP_PATH . 'lib/functions.environment.php');
+checkAndInclude(C_SETUP_PATH . 'lib/functions.safe_mode.php');
+checkAndInclude(C_SETUP_PATH . 'lib/functions.mysql.php');
+checkAndInclude(C_SETUP_PATH . 'lib/functions.phpinfo.php');
+checkAndInclude(C_SETUP_PATH . 'lib/functions.libraries.php');
+checkAndInclude(C_SETUP_PATH . 'lib/functions.system.php');
+checkAndInclude(C_SETUP_PATH . 'lib/functions.sql.php');
+checkAndInclude(C_SETUP_PATH . 'lib/functions.setup.php');
+checkAndInclude(C_SETUP_PATH . 'lib/class.template.php');
+checkAndInclude(C_SETUP_PATH . 'lib/class.setupmask.php');
 
 // PHP verion check
 if (phpversion() < C_SETUP_MIN_PHP_VERSION) {
     $sNotInstallableReason = 'php_version';
-    checkAndInclude($cfg['path']['setup'] . 'steps/notinstallable.php');
+    checkAndInclude(C_SETUP_PATH . 'steps/notinstallable.php');
 }
 
 // PHP ini session check
 if (getPHPIniSetting('session.use_cookies') == 0) {
     $sNotInstallableReason = 'session_use_cookies';
-    checkAndInclude($cfg['path']['setup'] . 'steps/notinstallable.php');
+    checkAndInclude(C_SETUP_PATH . 'steps/notinstallable.php');
 }
 
 // PHP database extension check
@@ -185,7 +188,7 @@ if (hasMySQLiExtension() && !hasMySQLExtension()) {
     $cfg['database_extension'] = 'mysql';
 } else {
     $sNotInstallableReason = 'database_extension';
-    checkAndInclude($cfg['path']['setup'] . 'steps/notinstallable.php');
+    checkAndInclude(C_SETUP_PATH . 'steps/notinstallable.php');
 }
 
 checkAndInclude($cfg['path']['phplib'] . 'prepend.php');
