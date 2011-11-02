@@ -39,6 +39,7 @@ if (!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }
 
+global $db;
 
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.database.php');
 
@@ -256,9 +257,22 @@ if ($currentStep < $totalSteps) {
 
     // Makes the new concept of moduls (save the moduls to the file) save the translation
     if ($_SESSION['setuptype'] == 'upgrade' || $_SESSION['setuptype'] == 'setup') {
+
+        // @fixme  Get rid of hacks below
+        // @fixme  Logic below works only for setup, not for upgrade because of different clients and languages
+
+        global $client, $lang, $cfgClient;  // is used in LayoutInFile below!!!
+        $clientBackup = $client;
+        $langBackup = $lang;
+        $client = 1;
+        $lang = 1;
+
+        rereadClients();
+
         Contenido_Vars::setVar('cfg', $cfg);
-        // Default 1 it will be set new in method saveAllModulsToTheFile
-        Contenido_Vars::setVar('client', 1);
+        Contenido_Vars::setVar('cfgClient', $cfgClient);
+        Contenido_Vars::setVar('client', $client);
+        Contenido_Vars::setVar('lang', $lang);
         Contenido_Vars::setVar('encoding', 'ISO-8859-1');
         Contenido_Vars::setVar('fileEncoding', 'UTF-8');
         Contenido_Vars::setVar('db', new DB_Contenido());
@@ -270,6 +284,10 @@ if ($currentStep < $totalSteps) {
         // Save layout from db-table to the file system
         $layoutInFIle = new LayoutInFile(1, '', $cfg, 1);
         $layoutInFIle->upgrade();
+
+        $client = $clientBackup;
+        $lang = $langBackup;
+        unset($clientBackup, $langBackup);
     }
 
     echo '
