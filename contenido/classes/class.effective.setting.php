@@ -165,6 +165,43 @@ class Contenido_Effective_Setting
 
 
     /**
+     * Sets a effective setting.
+     *
+     * Note:
+     * The setting will be set only in cache, not in persistency layer.
+     *
+     * @param   string  $type The type of the item
+     * @param   string  $name The name of the item
+     * @param   string  $value The value of the setting
+     */
+    public static function set($type, $name, $value)
+    {
+        global $auth;
+        $key = $auth->auth['uid'] . '_' . $type . '_' . $name;
+        self::_set($key, $value);
+    }
+
+    /**
+     * Deletes a effective setting.
+     *
+     * Note:
+     * The setting will be deleted only from cache, not from persistency layer.
+     *
+     * @param   string  $type The type of the item
+     * @param   string  $name The name of the item
+     */
+    public static function delete($type, $name)
+    {
+        $keySuffix = '_' . $type . '_' . $name;
+        foreach (self::$_settings as $key => $value) {
+            if (strpos($key, $keySuffix) !== false) {
+                unset(self::$_settings[$key]);
+            }
+        }
+    }
+
+
+    /**
      * Resets all properties of the effective settings class.
      * Usable to start getting settings from scratch.
      */
