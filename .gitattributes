@@ -173,6 +173,7 @@ contenido/classes/class.communications.php -text
 contenido/classes/class.conuser.php -text
 contenido/classes/class.csv.php -text
 contenido/classes/class.dbfs.php -text
+contenido/classes/class.effective.setting.php -text
 contenido/classes/class.excel.php -text
 contenido/classes/class.form.php -text
 contenido/classes/class.frontend.groups.php -text

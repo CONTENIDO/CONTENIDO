@@ -350,5 +350,6 @@ return array(
     'cWidgetTreeView' => 'contenido/classes/widgets/class.widgets.treeview.php',
     'cTableView' => 'contenido/classes/widgets/class.widgets.views.php',
     'ContenidoXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
-    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php'
+    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php',
+    'Contenido_Effective_Setting' => 'contenido/classes/class.effective.setting.php'
 );

@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend includes
- * @version    1.3.8
+ * @version    1.3.9
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -33,6 +33,7 @@
  *   modified 2011-08-23, Dominik Ziegler, deprecated functions sendPostRequest and showTable
  *   modified 2011-08-24, Dominik Ziegler, removed deprecated function SaveKeywordsforart
  *   modified 2011-08-24, Dominik Ziegler, deprecated function cIDNAEncode and cIDNADecode
+ *   modified 2011-11-03, Murat Purc, usage of Contenido_Effective_Setting to retrieve settings
  *
  *   $Id$:
  * }}
@@ -938,38 +939,7 @@ function getSystemPropertiesByType($sType)
  */
 function getEffectiveSetting($type, $name, $default = "")
 {
-    global $auth, $client, $lang;
-
-    if ($auth->auth["uid"] != "nobody") {
-        $user = new User;
-        $user->loadUserByUserID($auth->auth["uid"]);
-        $value = $user->getUserProperty($type, $name, true);
-        unset($user);
-    } else {
-        $value = false;
-    }
-
-    if ($value == false) {
-        $oClient = new cApiClientLanguage(false, $client, $lang);
-        $value = $oClient->getProperty($type, $name);
-        unset($oClient);
-    }
-
-    if ($value == false) {
-        $oClient = new cApiClient($client);
-        $value = $oClient->getProperty($type, $name);
-        unset($oClient);
-    }
-
-    if ($value == false) {
-        $value = getSystemProperty($type, $name);
-    }
-
-    if ($value === false) {
-        return $default;
-    } else {
-        return $value;
-    }
+    return Contenido_Effective_Setting::get($type, $name, $default);
 }
 
 /**
@@ -984,28 +954,9 @@ function getEffectiveSetting($type, $name, $default = "")
  * @param string $type The type of the item
  * @return array Value
  */
-function getEffectiveSettingsByType($sType)
+function getEffectiveSettingsByType($type)
 {
-    global $auth, $client, $cfg, $lang;
-
-    $aResult = getSystemPropertiesByType($sType);
-
-    $oClient = new cApiClient($client);
-    $aResult = array_merge($aResult, $oClient->getPropertiesByType($sType));
-    unset($oClient);
-
-    $oClient = new cApiClientLanguage(false, $client, $lang);
-    $aResult = array_merge($aResult, $oClient->getPropertiesByType($sType));
-
-    unset($oClient);
-
-    if ($auth->auth["uid"] != "nobody") {
-        $oUser = new User();
-        $oUser->loadUserByUserID($auth->auth["uid"]);
-        $aResult = array_merge($aResult, $oUser->getUserPropertiesByType($sType, true));
-    }
-
-    return $aResult;
+    return Contenido_Effective_Setting::getByType($type);
 }
 
 /**
