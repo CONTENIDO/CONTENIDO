@@ -94,7 +94,7 @@ class cApiAction extends Item
         $this->_objectInvalid = false;
 
         parent::__construct($cfg['tab']['actions'], 'idaction');
-        $this->setFilters(array("addslashes"), array("stripslashes"));
+        $this->setFilters(array('addslashes'), array('stripslashes'));
 
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

@@ -91,8 +91,7 @@ class cApiMetaTag extends Item
     {
         global $cfg;
         parent::__construct($cfg['tab']['meta_tag'], 'idmetatag');
-        $this->_arrInFilters = array();
-        $this->_arrOutFilters = array();
+        $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
