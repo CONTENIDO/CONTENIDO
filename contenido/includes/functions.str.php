@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend includes
- * @version    1.3.2
+ * @version    1.3.15
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,7 +27,7 @@
  *   modified 2008-10-29, delete from cat_tree only for one Cliente OliverL (strRemakeTreeTable)
  *   modified 2008-11-03, Add cat_tree only for one Cliente OliverL (strRemakeTreeTable)
  *   modified 2009-05-05, Timo Trautmann - optional use for copy label on copy proccess
- *   modified 2009-10-14, Dominik Ziegler - changed functionality of strMoveSubtree and strMoveCatTargetAllowed to prevent crashing tree on moving
+ *   modified 2009-10-14, Dominik Ziegler - changed functionality of strMoveSubtree and strMoveCatTargetallowed to prevent crashing tree on moving
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready), commenting code and some formatting
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
  *   modified 2010-01-30, Ingo van Peeren, modified strRemakeTreeTable() to pass only one INSERT statement to the database, see [#CON-299]
@@ -36,7 +36,7 @@
  *   modified 2010-09-17, Ingo van Peeren, fixed some issues wrong level information causing garbled tree [#CON-348]
  *   modified 2010-10-13, Dominik Ziegler, No copy label per default when copying articles or categories (CON-352)
  *   modified 2011-08-24, Dominik Ziegler, removed deprecated function strRemakeTreeTableFindNext
- *   modified 2011-10-26, Murat Purc, reworked strNewTree and strNewCategory, new strSetCategoryRebuildFlag and strAssignTemplate
+ *   modified 2011-10-25, Murat Purc, reworked strNewTree
  *
  *   $Id$:
  * }}
@@ -64,7 +64,7 @@ strDeleteCategory ($idcat)
 strMoveUpCategory ($idcat)
 strMoveDownCategory ($idcat)
 strMoveSubtree ($idcat, $parentid_new)
-strMoveCatTargetAllowed($idcat, $source)
+strMoveCatTargetallowed($idcat, $source)
 ********************************************************************************/
 
 cInclude("includes", "functions.con.php");
@@ -84,13 +84,21 @@ if (class_exists("DB_Contenido")) {
  *
  * @param   string  $catname     The category name
  * @param   string  $catalias    Alias of category
- * @param   bool    $visible     Flag about visible status
- * @param   bool    $visible     Flag about public status
- * @param   int     $idtplcfg   Id of template configuration
+ * @param   bool    $bVisible    Flag about visible status
+ * @param   bool    $bPublic     Flag about public status
+ * @param   int     $iIdtplcfg   Id of template configuration
  * @return  (int|void)  Id of new generated category or nothing on failure
  */
-function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $idtplcfg = 0) {
-    global $client, $lang, $perm;
+function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0) {
+    global $db, $client, $lang, $cfg, $perm, $auth;
+
+    // Flag to rebuild the category table
+    global $remakeCatTable, $remakeStrTable;
+
+    $remakeCatTable = true;
+    $remakeStrTable = true;
+
+    $db2 = new DB_Contenido();
 
     if (trim($catname) == '') {
         return;
@@ -101,8 +109,19 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $idtplc
         $catalias = trim($catname);
     }
 
+    $newIdCat = $db->nextid($cfg['tab']['cat']);
+    if ($newIdCat == 0) {
+        return;
+    }
+
     $client = (int) $client;
     $lang = (int) $lang;
+
+    if ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) {
+        $iIdtplcfg = (int) $iIdtplcfg;
+    } else  {
+        $iIdtplcfg = 0;
+    }
 
     $visible = (int) $visible;
     if (!(($visible == 0 || $visible == 1) && $perm->have_perm_area_action('str', 'str_makevisible'))) {
@@ -114,44 +133,72 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $idtplc
         $public = 1;
     }
 
-    // Create category
-    $categoryColl = new cApiCategoryCollection();
-    $newCategory = $categoryColl->create($client);
-    if (!$newCategory) {
-        return;
-    }
-
-    // Flag to rebuild the category table
-    strSetCategoryRebuildFlag(true);
-
-    // Get last category tree and update it's postid
-    $oLastCat = $categoryColl->selectLastParentCategory(0, $client);
-    if ($oLastCat) {
-        $oLastCat->set('postid', $newCategory->get('idcat'));
-        $oLastCat->store();
-    }
-
-    // Set languages to update, at the moment the current language
     $aLanguages = array($lang);
 
-    // Add entries in 'cat_lang'-table
-    $categoryLanguageColl = new cApiCategoryLanguageCollection();
-    foreach ($aLanguages as $idlang) {
-        $urlpath = ''; // @todo  set urlpath, see amr plugin
-        $categoryLanguageColl->create($newCategory->get('idcat'), $idlang, $catname, $catalias, $urlpath, 0, $visible, $public);
+    // Get id of first category tree
+    $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid=0 AND postid=0 AND idclient=" . $client;
+    $db->query($sql);
+    $db->next_record();
+    $rootIdCat = $db->f('idcat');
+    if ($rootIdCat) {
+        // Update 'cat'-table
+        $sql = 'UPDATE ' . $cfg['tab']['cat'] . ' SET postid=' . $newIdCat . ' WHERE idcat=' . $rootIdCat;
+        $db->query($sql);
+    }
+    
+    $created = date('Y-m-d H:i:s');
+
+    // Entry in 'cat_lang'-table
+    $sql = "INSERT INTO ".$cfg['tab']['cat']." (idcat, preid, postid, idclient, author, created, lastmodified) VALUES(".$newIdCat.", 0, 0,
+            ".$client.", '".$db->escape($auth->auth['uname'])."', '".$created."', '".$created."')";
+    $db->query($sql);
+
+    // Entry in 'cat_lang'-table
+    foreach ($aLanguages as $tmpIdLang) {
+        $sql = "INSERT INTO ".$cfg['tab']['cat_lang']." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
+                VALUES(".$db->nextid($cfg['tab']['cat_lang']).", ".$newIdCat.", ".$tmpIdLang.",
+                '".htmlspecialchars($catname, ENT_QUOTES)."', ".$visible.", ".$public.", 0,
+                '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".$db->escape($auth->auth['uname'])."', '".$created."', '".$created."')";
+        $db->query($sql);
     }
 
-    // Set correct rights for element
+    // set correct rights for element
     cInclude('includes', 'functions.rights.php');
-    foreach ($aLanguages as $idlang) {
-        createRightsForElement('str', $newCategory->get('idcat'), $idlang);
-        createRightsForElement('con', $newCategory->get('idcat'), $idlang);
+    foreach ($aLanguages as $tmpIdLang) {
+        createRightsForElement('str', $newIdCat, $tmpIdLang);
+        createRightsForElement('con', $newIdCat, $tmpIdLang);
     }
 
-    // Assign template configuration
-    strAssignTemplate($newCategory->get('idcat'), $idtplcfg);
+    // Search for default template
+    $templateCollection = new cApiTemplateCollection('defaulttemplate = 1 AND idclient = ' . $client);
 
-    return $newCategory->get('idcat');
+    if ($template = $templateCollection->next()) {
+        $idtpl = $template->get('idtpl');
+        if ($iIdtplcfg > 0) {
+            $idtpl = $iIdtplcfg;
+        }
+
+        // Assign template, if default template exists
+        $catCollection = new cApiCategoryLanguageCollection('idcat = ' . $newIdCat);
+
+        while ($cat = $catCollection->next()) {
+            $cat->assignTemplate($idtpl);
+        }
+
+    } else {
+      // 2008-06-25 timo.trautmann also set default template if it is selcted by user and there is no default template
+      if ($iIdtplcfg > 0) {
+          $idtpl = $iIdtplcfg;
+
+          $catCollection = new cApiCategoryLanguageCollection('idcat = ' . $newIdCat);
+
+          while ($cat = $catCollection->next()) {
+              $cat->assignTemplate($idtpl);
+          }
+      }
+    }
+
+    return $newIdCat;
 }
 
 
@@ -162,87 +209,160 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $idtplc
  * @param   string  $catname       The category name
  * @param   bool    $remakeTree    Flag to rebuild category tree structure
  * @param   string  $catalias      Alias of category
- * @param   bool    $visible       Flag about visible status
- * @param   bool    $public        Flag about public status
- * @param   int     $idtplcfg     Id of template configuration
+ * @param   bool    $bVisible      Flag about visible status
+ * @param   bool    $bPublic       Flag about public status
+ * @param   int     $iIdtplcfg     Id of template configuration
  * @return  (int|void)  Id of new generated category or nothing on failure
  */
-function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias = '', $visible = 0, $public = 1, $idtplcfg = 0) {
-    global $client, $lang, $perm;
+function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias = '', $bVisible = 0, $bPublic = 1, $iIdtplcfg = 0) {
+    global $db;
+    global $client;
+    global $lang;
+    global $cfg;
+    global $area_tree;
+    global $perm;
+    // Flag to rebuild the category table
+    global $remakeCatTable;
+    global $remakeStrTable;
+    global $auth;
+    global $tmp_area;
 
-    $db2= new DB_Contenido();
+    $db2= new DB_Contenido;
 
-    if (trim($catname) == '') {
+    if (trim($catname) == "") {
         return;
     }
 
     $catalias = trim($catalias);
-    if ($catalias == '') {
+    if ($catalias == "") {
         $catalias = trim($catname);
     }
 
-    $visible = (int) $visible;
-    if (!(($visible == 0 || $visible == 1) && $perm->have_perm_area_action('str', 'str_makevisible'))) {
-        $visible = 0;
+    if ($perm->have_perm_area_action("str_tplcfg", "str_tplcfg")) {
+        $iIdtplcfg = (int) $iIdtplcfg;
+    } else  {
+        $iIdtplcfg = 0;
     }
 
-    $public = (int) $public;
-    if (!(($public == 0 || $public == 1) && $perm->have_perm_area_action('str', 'str_makepublic'))) {
-        $public = 1;
+    $bVisible = (int) $bVisible;
+    if (! (($bVisible == 0 || $bVisible == 1) && $perm->have_perm_area_action('str', "str_makevisible")) ) {
+        $bVisible = 0;
     }
 
-    // Create category
-    $categoryColl = new cApiCategoryCollection();
-    $newCategory = $categoryColl->create($client);
-    if (!$newCategory) {
+    $bPublic = (int) $bPublic;
+    if (! (($bPublic == 0 || $bPublic == 1) && $perm->have_perm_area_action('str', "str_makepublic")) ) {
+        $bPublic = 1;
+    }
+
+    $tmp_newid = $db->nextid($cfg["tab"]["cat"]);
+    if ($tmp_newid == 0) {
         return;
     }
 
-    // Flag to rebuild the category table
-    strSetCategoryRebuildFlag(true);
+    $remakeCatTable = true;
+    $remakeStrTable = true;
 
-    // Get parent category and update it's postid
-    $oLastCat = $categoryColl->selectLastParentCategory($tmp_parentid, $client);
-    if ($oLastCat) {
-        $oLastCat->set('postid', $newCategory->get('idcat'));
-        $oLastCat->store();
+    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='".Contenido_Security::toInteger($tmp_parentid)."' AND postid=0";
+    $db->query($sql);
+    $db->next_record();
+    $tmp_id = $db->f("idcat");
 
-        // Set new categories parent and pre id
-        $newCategory->set('parentid', $tmp_parentid);
-        $newCategory->set('preid', $oLastCat->get('idcat'));
+    if (!$tmp_id) {
+        //********** Entry in 'cat'-table ************
+        $sql = "INSERT INTO ".$cfg["tab"]["cat"]." (idcat, parentid, preid, postid, idclient, author, created, lastmodified) VALUES('".Contenido_Security::toInteger($tmp_newid)."',
+                '".Contenido_Security::toInteger($tmp_parentid)."', '0', '0', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."',
+                '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+        $db->query($sql);
+
+        //********* enter name of cat in 'cat_lang'-table ******
+        $a_languages[] = $lang;
+
+        foreach ($a_languages as $tmp_lang) {
+            if ($tmp_lang == $lang) {
+                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
+                        VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
+                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                $db->query($sql);
+            } else {
+                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
+                        VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
+                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                $db->query($sql);
+            }
+        }
     } else {
-        // No parent category, set new categories parent id
-        $newCategory->set('parentid', $tmp_parentid);
+        //********** Entry in 'cat'-table ************
+        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='$tmp_newid', lastmodified = '".date("Y-m-d H:i:s")."' WHERE idcat='".Contenido_Security::toInteger($tmp_id)."'";
+        $db->query($sql);
+
+        //********** Entry in 'cat'-table ************
+        $sql = "INSERT INTO ".$cfg["tab"]["cat"]." (idcat, parentid, preid, postid, idclient, author, created, lastmodified) VALUES('".Contenido_Security::toInteger($tmp_newid)."',
+                '".Contenido_Security::toInteger($tmp_parentid)."', '".Contenido_Security::toInteger($tmp_id)."', '0', '".Contenido_Security::toInteger($client)."',
+                '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+        $db->query($sql);
+
+        //********* enter name of cat in 'cat_lang'-table ******
+        $a_languages[] = $lang;
+        foreach ($a_languages as $tmp_lang) {
+            if ($tmp_lang == $lang) {
+                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
+                        VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
+                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                $db->query($sql);
+            } else {
+                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
+                        VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
+                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
+                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+                $db->query($sql);
+            }
+        }
+
     }
-    
-    $newCategory->store();
 
-
-    // Set languages to update, at the moment the current language
-    $aLanguages = array($lang);
-
-    // Add entries in 'cat_lang'-table
-    $categoryLanguageColl = new cApiCategoryLanguageCollection();
-    foreach ($aLanguages as $idlang) {
-        $urlpath = ''; // @todo  set urlpath, see amr plugin
-        $categoryLanguageColl->create($newCategory->get('idcat'), $idlang, $catname, $catalias, $urlpath, 0, $visible, $public);
-    }
-
-    // Set correct rights for element
-    cInclude('includes', 'functions.rights.php');
-    foreach ($aLanguages as $idlang) {
-        createRightsForElement('str', $newCategory->get('idcat'), $idlang);
-        createRightsForElement('con', $newCategory->get('idcat'), $idlang);
+    // set correct rights for element
+    cInclude ("includes", "functions.rights.php");
+    foreach ($a_languages as $tmp_lang) {
+        copyRightsForElement("str", $tmp_parentid, $tmp_newid, $tmp_lang);
+        copyRightsForElement("con", $tmp_parentid, $tmp_newid, $tmp_lang);
     }
 
     if ($remakeTree == true) {
         strRemakeTreeTable();
     }
 
-    // Assign template configuration
-    strAssignTemplate($newCategory->get('idcat'), $idtplcfg);
+    /* Search for default template */
+    $templateCollection = new cApiTemplateCollection("defaulttemplate = '1' AND idclient = '$client'");
 
-    return $newCategory->get('idcat');
+    if ($template = $templateCollection->next()) {
+        $idtpl = $template->get("idtpl");
+        if ($iIdtplcfg > 0) {
+            $idtpl = $iIdtplcfg;
+        }
+
+        /* Assign template, if default template exists */
+        $catCollection = new cApiCategoryLanguageCollection("idcat = '".Contenido_Security::toInteger($tmp_newid)."'");
+
+        while ($cat = $catCollection->next()) {
+            $cat->assignTemplate($idtpl);
+        }
+    } else {
+      //2008-06-25 timo.trautmann also set default template if it is selcted by user and there is no default template
+      if ($iIdtplcfg > 0) {
+          $idtpl = $iIdtplcfg;
+
+          $catCollection = new cApiCategoryLanguageCollection("idcat = '".Contenido_Security::toInteger($tmp_newid)."'");
+
+          while ($cat = $catCollection->next()) {
+                $cat->assignTemplate($idtpl);
+          }
+      }
+    }
+
+    return($tmp_newid);
 }
 
 
@@ -275,12 +395,14 @@ function strRemakeTreeTable() {
     global $client;
     global $lang;
     global $cfg;
-
     // Flag to rebuild the category table
-    strSetCategoryRebuildFlag(true);
+    global $remakeCatTable;
+    global $remakeStrTable;
+    $remakeCatTable = true;
+    $remakeStrTable = true;
 
     $poststring = "";
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idclient = '".$client."'";
+      $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idclient = '".$client."'";
     $db->query($sql);
     $idcats = array();
     while ($db->next_record()) {
@@ -297,6 +419,7 @@ function strRemakeTreeTable() {
     $db->query($sql);
 
     $sql = "SELECT idcat, parentid, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idclient = '".$client."' ORDER BY parentid ASC, preid ASC, postid ASC";
+
     $db->query($sql);
 
     // build cat_tree
@@ -345,13 +468,9 @@ function sort_pre_post($arr) {
 
     $curId = $firstElement;
     $array = array();
-$counter = 1;
-    while ((int) $curId != 0) {
+    while ($curId != 0) {
         $array[] = $arr[$curId];
         $curId = $arr[$curId]['postid'];
-//        var_dump($curId);
-//echo "$curId<br>";
-//if ($counter++ > 50) break;
     }
 
     return $array;
@@ -385,7 +504,9 @@ function strNextDeeper($tmp_idcat, $ignore_lang = false) {
             return $midcat;
         }
 
-        // Deeper element exists: Check for language dependent part
+        //******deeper element exists
+        /* Check for language dependent part */
+
         $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($midcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
         $db_str->query($sql);
         if ($db_str->next_record()) {
@@ -394,7 +515,7 @@ function strNextDeeper($tmp_idcat, $ignore_lang = false) {
             return 0;
         }
     } else {
-        // Deeper element does not exist
+        //******deeper element does not exist
         return 0;
     }
 }
@@ -418,9 +539,9 @@ function strHasArticles($tmp_idcat) {
 
     $db_str->query($sql);
 
-    if ($db_str->next_record()) { // post element exists
+    if ($db_str->next_record()) { //******post element exists
         return true;
-    } else { // post element does not exist
+    } else { //******post element does not exist
         return false;
     }
 }
@@ -432,11 +553,11 @@ function strNextPost($tmp_idcat) {
 
     $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE preid='".Contenido_Security::toInteger($tmp_idcat)."'";
     $db->query($sql);
-    if ($db->next_record()) { // Post element exists
+    if ($db->next_record()) { //******post element exists
         $tmp_idcat = $db->f("idcat");
         $sql = "SELECT parentid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_idcat)."'";
         $db->query($sql);
-        if ($db->next_record()) { // Parent from post must not be 0
+        if ($db->next_record()) { //******parent from post must not be 0
             $tmp_parentid = $db->f("parentid");
             if ($tmp_parentid != 0) {
                 return $tmp_idcat;
@@ -446,7 +567,7 @@ function strNextPost($tmp_idcat) {
         } else {
             return 99;
         }
-    } else { // Post element does not exist
+    } else { //******post element does not exist
         return 0;
     }
 }
@@ -457,16 +578,16 @@ function strNextBackwards($tmp_idcat) {
 
     $sql = "SELECT parentid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_idcat)."'";
     $db->query($sql);
-    if ($db->next_record()) { // Parent exists
+    if ($db->next_record()) { //******parent exists
         $tmp_idcat = $db->f("parentid");
         if ($tmp_idcat != 0) {
             $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE preid='".Contenido_Security::toInteger($tmp_idcat)."'";
             $db->query($sql);
-            if ($db->next_record()) { // Parent has post
+            if ($db->next_record()) { //******parent has post
                 $tmp_idcat = $db->f("idcat");
                 $sql = "SELECT parentid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_idcat)."'";
                 $db->query($sql);
-                if ($db->next_record()) { // Parent from post must not be 0
+                if ($db->next_record()) { //******parent from post must not be 0
                     $tmp_parentid = $db->f("parentid");
                     if ($tmp_parentid != 0) {
                         return $tmp_idcat;
@@ -476,13 +597,13 @@ function strNextBackwards($tmp_idcat) {
                 } else {
                     return 99;
                 }
-            } else { // Parent has no post
+            } else { //******parent has no post
                 return strNextBackwards($tmp_idcat);
             }
         } else {
             return 0;
         }
-    } else { // No parent
+    } else { //******no parent
         return 0;
     }
 }
@@ -505,7 +626,8 @@ function strNextDeeperAll($tmp_idcat, $ignore_lang = false) {
             if ($ignore_lang == true) {
                 array_push($aCats, $midcat);
             } else {
-                // Deeper element exists: Check for language dependent part
+                //******deeper element exists
+                /* Check for language dependent part */
                 $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($midcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
                 $db_str2->query($sql);
 
@@ -531,26 +653,29 @@ function strNextDeeperAll($tmp_idcat, $ignore_lang = false) {
  * @return  void
  */
 function strShowTreeTable() {
-    global $db, $sess, $client, $lang, $cfg, $lngStr;
+    global $db;
+    global $sess;
+    global $client;
+    global $lang;
+    global $idcat;
+    global $cfg;
+    global $lngStr;
 
-    $html = '<br><table cellpadding="2" cellspacing="0" border="0">';
-    $sql = 'SELECT * FROM '.$cfg['tab']['cat_tree'].' AS A, '.$cfg['tab']['cat'].' AS B, '.$cfg['tab']['cat_lang'].' AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='.(int)$lang.'
-            AND B.idclient='.(int)$client.' ORDER BY A.idtree';
+    echo "<br><table cellpadding=$cellpadding cellspacing=$cellspacing border=$border >";
+    $sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".Contenido_Security::toInteger($lang)."'
+            AND B.idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idtree";
     $db->query($sql);
     while ($db->next_record()) {
-        $tmp_id    = $db->f('idcat');
-        $tmp_name  = $db->f('name');
-        $tmp_level = $db->f('level');
+        $tmp_id    = $db->f("idcat");
+        $tmp_name  = $db->f("name");
+        $tmp_level = $db->f("level");
 
-        $html .= '<tr>
-        <td>'.$tmp_id.' | '.$tmp_name.' | '.$tmp_level.'</td>
-        <td><a class="action" href="' . $sess->url('main.php?action=20&idcat=' . $tmp_id) . '">' . $lngStr['actions']['20'] . '</a></td>
-        <td><a class="action" href="' . $sess->url('main.php?action=30&idcat=' . $tmp_id) . '">' . $lngStr['actions']['30'] . '</a></td>
-        </td>
-        </tr>';
+        echo "<tr><td>".$tmp_id." | ".$tmp_name." | ".$tmp_level."</td>";
+        echo "<td><a class=action href=\"".$sess->url("main.php?action=20&idcat=$tmp_id")."\">".$lngStr["actions"]["20"]."</a></td>";
+        echo "<td><a class=action href=\"".$sess->url("main.php?action=30&idcat=$tmp_id")."\">".$lngStr["actions"]["30"]."</a></td>";
+        echo "</td></tr>";
     }
-    $html .= '</table>';
-    echo $html;
+    echo "</table>";
 }
 
 
@@ -570,7 +695,10 @@ function strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias) {
     global $client;
 
     // Flag to rebuild the category table
-    strSetCategoryRebuildFlag(true);
+    global $remakeCatTable;
+    global $remakeStrTable;
+    $remakeCatTable = true;
+    $remakeStrTable = true;
 
     if (trim($newcategoryname) != "") {
         $sUrlname = htmlspecialchars(capiStrCleanURLCharacters($newcategoryname), ENT_QUOTES);
@@ -609,9 +737,11 @@ function strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias) {
 function strMakeVisible ($idcat, $lang, $visible) {
     global $db;
     global $cfg;
-
     // Flag to rebuild the category table
-    strSetCategoryRebuildFlag(true);
+    global $remakeCatTable;
+    global $remakeStrTable;
+    $remakeCatTable = true;
+    $remakeStrTable = true;
 
     $a_catstring = strDeeperCategoriesArray($idcat);
     foreach ($a_catstring as $value) {
@@ -639,9 +769,11 @@ function strMakeVisible ($idcat, $lang, $visible) {
 function strMakePublic($idcat, $lang, $public) {
     global $db;
     global $cfg;
-
     // Flag to rebuild the category table
-    strSetCategoryRebuildFlag(true);
+    global $remakeCatTable;
+    global $remakeStrTable;
+    $remakeCatTable = true;
+    $remakeStrTable = true;
 
     $a_catstring = strDeeperCategoriesArray($idcat);
     foreach ($a_catstring as $value) {
@@ -692,22 +824,25 @@ function strDeleteCategory($idcat) {
     global $cfg;
 
     // Flag to rebuild the category table
-    strSetCategoryRebuildFlag(true);
+    global $remakeCatTable;
+    global $remakeStrTable;
+    $remakeCatTable = true;
+    $remakeStrTable = true;
 
-    $db2 = new DB_Contenido();
+    $db2 = new DB_Contenido;
 
     if (strNextDeeper($idcat)) {
-        return "0201";        // Category has subcategories
+        return "0201";        // category has subcategories
     } else {
 
         if (strHasArticles($idcat)) {
-            return "0202";        // Category has arts
+            return "0202";        // category has arts
         } else {
             $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
             $db->query($sql);
 
             while ($db->next_record()) {
-                // Delete entry in 'tpl_conf'-table
+                ////// delete entry in 'tpl_conf'-table
                 $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
                 $db2->query($sql);
 
@@ -715,17 +850,18 @@ function strDeleteCategory($idcat) {
                 $db2->query($sql);
             }
 
-            // Delete language dependend part
+            /* Delete language dependend part */
             $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
             $db->query($sql);
 
-            // Are there any additional languages?
+            /* Are there any additional languages? */
             $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
             $db->query($sql);
 
             if ($db->num_rows() > 0) {
-                // more languages found... delete rights for element
-                cInclude("includes", "functions.rights.php");
+                // more languages found...
+                // delete rights for element
+                cInclude ("includes", "functions.rights.php");
                 deleteRightsForElement("str", $idcat, $lang);
                 deleteRightsForElement("con", $idcat, $lang);
 
@@ -738,26 +874,26 @@ function strDeleteCategory($idcat) {
             $tmp_preid  = $db->f("preid");
             $tmp_postid = $db->f("postid");
 
-            // Update pre cat set new postid
+            ////// update pre cat set new postid
             if ($tmp_preid != 0) {
                 $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
                 $db->query($sql);
             }
 
-            // Update post cat set new preid
+            ////// update post cat set new preid
             if ($tmp_postid != 0) {
                 $sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
                 $db->query($sql);
             }
 
-            // Delete entry in 'cat'-table
+            ////// delete entry in 'cat'-table
             $sql = "DELETE FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
             $db->query($sql);
 
             $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
             $db->query($sql);
             while ($db->next_record()) {
-                // Delete entry in 'tpl_conf'-table
+                ////// delete entry in 'tpl_conf'-table
                 $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
                 $db2->query($sql);
 
@@ -766,17 +902,17 @@ function strDeleteCategory($idcat) {
                 $db2->query($sql);
             }
 
-            // Delete entry in 'cat_lang'-table
+            ////// delete entry in 'cat_lang'-table
             $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
             $db->query($sql);
 
-            // Delete entry in 'cat_tree'-table
+            ////// delete entry in 'cat_tree'-table
             $sql = "DELETE FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
             $db->query($sql);
         }
 
-        // Delete rights for element
-        cInclude("includes", "functions.rights.php");
+        // delete rights for element
+        cInclude ("includes", "functions.rights.php");
         deleteRightsForElement("str", $idcat);
         deleteRightsForElement("con", $idcat);
     }
@@ -795,7 +931,10 @@ function strMoveUpCategory($idcat) {
     global $cfg;
 
     // Flag to rebuild the category table
-    strSetCategoryRebuildFlag(true);
+    global $remakeCatTable;
+    global $remakeStrTable;
+    $remakeCatTable = true;
+    $remakeStrTable = true;
 
     $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
     $db->query($sql);
@@ -853,7 +992,10 @@ function strMoveDownCategory($idcat) {
     global $cfg;
 
     // Flag to rebuild the category table
-    strSetCategoryRebuildFlag(true);
+    global $remakeCatTable;
+    global $remakeStrTable;
+    $remakeCatTable = true;
+    $remakeStrTable = true;
 
     $arrLinks = array();
 
@@ -921,18 +1063,17 @@ function strMoveDownCategory($idcat) {
  * @return  void
  */
 function strMoveSubtree($idcat, $parentid_new) {
-    global $db, $cfg, $movesubtreeidcat, $sess;
+    global $db, $cfg, $remakeCatTable, $remakeStrTable, $movesubtreeidcat, $sess;
+    $remakeCatTable = true;
+    $remakeStrTable = true;
 
-    // Flag to rebuild the category table
-    strSetCategoryRebuildFlag(true);
-
-    $idcat        = Contenido_Security::toInteger($idcat);
-    $iNewParentId = Contenido_Security::toInteger($parentid_new);
+    $idcat             = Contenido_Security::toInteger( $idcat );
+    $iNewParentId     = Contenido_Security::toInteger( $parentid_new );
 
     // Check if iNewParentId is 0 and the unescaped value is not null
-    if ($iNewParentId == 0 && !is_null($parentid_new)) {
+    if ( $iNewParentId == 0 && !is_null( $parentid_new ) ) {
         $movesubtreeidcat = 0;
-    } else if ($iNewParentId != 0) {
+    } else if ( $iNewParentId != 0 ) {
         $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='" . $idcat . "'";
         $db->query($sql);
         $db->next_record();
@@ -940,26 +1081,26 @@ function strMoveSubtree($idcat, $parentid_new) {
         $tmp_preid  = $db->f("preid");
         $tmp_postid = $db->f("postid");
 
-        // Update predecessor (pre)
+        //****************** update predecessor (pre)**********************
         if ($tmp_preid != 0) {
             $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='" . $tmp_postid . "' WHERE idcat='" . $tmp_preid . "'";
             $db->query($sql);
         }
 
-        // Update follower (post)
+        //****************** update follower (post)**********************
         if ($tmp_postid != 0) {
             $sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='" . $tmp_preid . "' WHERE idcat='" . $tmp_postid . "'";
             $db->query($sql);
         }
 
-        // Find new pre
+        //****************** find new pre ********************
         $sql = "SELECT idcat, preid FROM ".$cfg["tab"]["cat"]." WHERE parentid='" . $iNewParentId . "' AND postid='0'";
         $db->query($sql);
         if ($db->next_record()) {
             $tmp_new_preid = $db->f("idcat");
             $tmp_preid_2   = $db->f("preid");
             if ($tmp_new_preid != $idcat) {
-                // Update new pre: set post
+                //******************** update new pre: set post **********************
                 $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='" . $idcat . "' WHERE idcat='" . $tmp_new_preid . "'";
                 $db->query($sql);
             } else {
@@ -967,7 +1108,7 @@ function strMoveSubtree($idcat, $parentid_new) {
                 $db->query($sql);
                 if ($db->next_record()) {
                     $tmp_new_preid = $db->f("idcat");
-                    // Update new pre: set post
+                    //******************** update new pre: set post **********************
                     $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='" . $idcat . "' WHERE idcat='" . $tmp_new_preid . "'";
                     $db->query($sql);
                 } else {
@@ -978,7 +1119,7 @@ function strMoveSubtree($idcat, $parentid_new) {
             $tmp_new_preid = 0;
         }
 
-        // Update idcat
+        //*************** update idcat ********************
         $sql = "UPDATE ".$cfg["tab"]["cat"]." SET parentid='" . $iNewParentId . "', preid='" . $tmp_new_preid . "', postid='0' WHERE idcat='" . $idcat . "'";
         $db->query($sql);
 
@@ -1003,7 +1144,7 @@ function strMoveSubtree($idcat, $parentid_new) {
  * @param   int  $source  Id of source category
  * @return  bool
  */
-function strMoveCatTargetAllowed($idcat, $source) {
+function strMoveCatTargetallowed($idcat, $source) {
     if ($idcat == $source) {
         return 0;
     } else {
@@ -1024,7 +1165,7 @@ function strMoveCatTargetAllowed($idcat, $source) {
 function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = false) {
     global $cfg;
 
-    $tmpdb = new DB_Contenido();
+    $tmpdb = new DB_Contenido;
     $bMultiple = (bool) $bMultiple;
 
     $aCatArray = array();
@@ -1035,7 +1176,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
     }
 
     foreach ($aCatArray as $idcat) {
-        // Check if category already exists
+        /* Check if category already exists */
         $sql = "SELECT  idcat, idlang, idtplcfg, name,
                 visible, public, status, author,
                 created, lastmodified
@@ -1062,7 +1203,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
 
         if ($tmpdb->next_record()) {
             if ($tmpdb->f("idtplcfg") != 0) {
-                // Copy the template configuration
+                /* Copy the template configuration */
                 $newidtplcfg = tplcfgDuplicate($tmpdb->f("idtplcfg"));
             } else {
                 $newidtplcfg = 0;
@@ -1101,15 +1242,15 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
                 '".Contenido_Security::escapeDB($urlname, $tmpdb)."')";
             $tmpdb->query($sql);
 
-            // Execute CEC hook
+            // execute CEC hook
             $param = $tmpdb->Record;
             $param['idlang']   = $idlang;
             $param['idtplcfg'] = $idtplcfg;
             $param['visible']  = $visible;
             CEC_Hook::execute('Contenido.Category.strSyncCategory_Loop', $param);
 
-            // Set correct rights for element
-            cInclude("includes", "functions.rights.php");
+            // set correct rights for element
+            cInclude ("includes", "functions.rights.php");
             createRightsForElement("str", $idcat, $targetlang);
             createRightsForElement("con", $idcat, $targetlang);
         }
@@ -1154,9 +1295,9 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
 
     $newidcat = strNewCategory($destidcat, "a", $remakeTree);
 
-    // Selectors
-    $_oldcatlang = new cApiCategoryLanguageCollection();
-    $_newcatlang = new cApiCategoryLanguageCollection();
+    /* Selectors */
+    $_oldcatlang = new cApiCategoryLanguageCollection;
+    $_newcatlang = new cApiCategoryLanguageCollection;
 
     $_oldcatlang->select("idcat = '$idcat' AND idlang = '$lang'");
     $oldcatlang = $_oldcatlang->next();
@@ -1172,11 +1313,11 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
         return;
     }
 
-    // Worker objects
+    /* Worker objects */
     $newcat = new cApiCategory($newidcat);
     $oldcat = new cApiCategory($idcat);
 
-    // Copy properties
+    /* Copy properties */
     if ($bUseCopyLabel == true) {
         $newcatlang->set("name", sprintf(i18n("%s (Copy)"), $oldcatlang->get("name")));
     } else {
@@ -1187,21 +1328,21 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
     $newcatlang->set("visible", 0);
     $newcatlang->store();
 
-    // Execute cec hook
+    // execute cec hook
     CEC_Hook::execute('Contenido.Category.strCopyCategory', array(
         'oldcat'     => $oldcat,
         'newcat'     => $newcat,
         'newcatlang' => $newcatlang
     ));
 
-    // Copy template configuration
+    /* Copy template configuration */
     if ($oldcatlang->get("idtplcfg") != 0) {
-        // Create new template configuration
+        /* Create new template configuration */
         $newcatlang->assignTemplate($oldcatlang->getTemplate());
 
-        // Copy the container configuration
-        $c_cconf = new cApiContainerConfigurationCollection();
-        $m_cconf = new cApiContainerConfigurationCollection();
+        /* Copy the container configuration */
+        $c_cconf = new cApiContainerConfigurationCollection;
+        $m_cconf = new cApiContainerConfigurationCollection;
         $c_cconf->select("idtplcfg = '".$oldcatlang->get("idtplcfg")."'");
 
         while ($i_cconf = $c_cconf->next()) {
@@ -1209,10 +1350,10 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
         }
     }
 
-    $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $db = new DB_Contenido;
+    $db2 = new DB_Contenido;
 
-    // Copy all articles
+    /* Copy all articles */
     $sql = "SELECT A.idart, B.idartlang FROM ".$cfg["tab"]["cat_art"]." AS A, ".$cfg["tab"]["art_lang"]." AS B WHERE A.idcat = '".Contenido_Security::toInteger($idcat)."' AND B.idart = A.idart AND B.idlang = '".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
 
@@ -1245,7 +1386,7 @@ function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true
 
     $newidcat = strCopyCategory($idcat, $destcat, false, $bUseCopyLabel);
 
-    $db = new DB_Contenido();
+    $db = new DB_Contenido;
     $db->query("SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid = '".Contenido_Security::toInteger($idcat)."'");
     while ($db->next_record()) {
         strCopyTree($db->f("idcat"), $newidcat, false, $bUseCopyLabel);
@@ -1253,58 +1394,6 @@ function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true
 
     if ($remakeTree == true) {
         strRemakeTreeTable();
-    }
-}
-
-
-/**
- * Sets the flag to rebuild category table by setting global variables
- * - $remakeCatTable
- * - $remakeStrTable
- *
- * @param  bool  $rebuild
- */
-function strSetCategoryRebuildFlag($rebuild)
-{
-    // Flag to rebuild the category table
-    global $remakeCatTable, $remakeStrTable;
-    $remakeCatTable = (bool) $rebuild;
-    $remakeStrTable = (bool) $rebuild;
-}
-
-
-/**
- * Assigns a template to a category
- *
- * @param   int  $idcat
- * @param   int  $idtplcfg  Id of template configuration. Use 0 to assign default template.
- */
-function strAssignTemplate($idcat, $idtplcfg = 0)
-{
-    global $perm;
-
-    $idtplcfg = (int) $idtplcfg;
-
-    // Permission check
-    if ($idtplcfg > 0 && !$perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) {
-        $idtplcfg = 0;
-    }
-
-    if ($idtplcfg <= 0) {
-        // No template configuration was selected by user, try to get default template
-        $templateColl = new cApiTemplateCollection();
-        if ($template = $templateColl->selectDefaultTemplate($client)) {
-            // Takeover id of default template id
-            $idtplcfg = $template->get('idtpl');
-        }
-    }
-
-    if ($idtplcfg > 0) {
-          // Assign template to all category language items (one per language)
-          $categoryLanguageColl = new cApiCategoryLanguageCollection('idcat = ' . $idcat);
-          while ($cat = $categoryLanguageColl->next()) {
-              $cat->assignTemplate($idtplcfg);
-          }
     }
 }
 
