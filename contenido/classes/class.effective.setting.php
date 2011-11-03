@@ -54,7 +54,7 @@ class Contenido_Effective_Setting
     protected static $_settings = array();
 
     /**
-     * @var User
+     * @var cApiUser
      */
     protected static $_user;
 
@@ -215,15 +215,14 @@ class Contenido_Effective_Setting
     /**
      * Returns the user object instance.
      *
-     * @return  User
+     * @return  cApiUser
      */
     protected function _getUserInstance()
     {
         global $auth;
 
         if (!isset(self::$_user)) {
-            self::$_user = new User();
-            self::$_user->loadUserByUserID($auth->auth['uid']);
+            self::$_user = new cApiUser($auth->auth['uid']);
         }
         return self::$_user;
     }

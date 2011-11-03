@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend classes
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -27,6 +27,7 @@
  *   modified 2010-05-20, Oliver Lohkemper, add param forceActive in User::getSystemAdmins()
  *   modified 2011-02-05, Murat Purc, Cleanup/formatting, documentation, standardize
  *                                    getUserProperties()
+ *   modified 2011-02-05, Murat Purc, Manage properties related code thru cApiUser
  *
  *   $Id$:
  * }}
@@ -79,6 +80,7 @@ class Users
      */
     function create($username)
     {
+
         $newuserid = md5($username);
         $sql = "SELECT user_id FROM ".$this->table
              . " WHERE user_id = '".Contenido_Security::escapeDB($newuserid, $this->db)."'";
@@ -389,190 +391,6 @@ class User
 
 
     /**
-     * Stores the modified user object to the database
-     * @param string type Specifies the type (class, category etc) for the property to retrieve
-     * @param string name Specifies the name of the property to retrieve
-     * @param boolean group Specifies if this function should recursively search in groups
-     * @return string The value of the retrieved property
-     */
-    function getUserProperty($type, $name, $group = false)
-    {
-        global $cfg, $perm;
-
-        if (!is_object($perm)) {
-            $perm = new Contenido_Perm();
-        }
-
-        $result = false;
-
-        if ($group == true) {
-            $groups = $perm->getGroupsForUser($this->values['user_id']);
-
-            if (is_array($groups)) {
-                foreach ($groups as $value) {
-                    $sql = "SELECT value FROM " .$cfg['tab']['group_prop']."
-                    WHERE group_id = '".Contenido_Security::escapeDB($value, $this->db)."'
-                      AND type = '".Contenido_Security::escapeDB($type, $this->db)."'
-                      AND name = '".Contenido_Security::escapeDB($name, $this->db)."'";
-                    $this->db->query($sql);
-
-                    if ($this->db->next_record()) {
-                        $result = $this->db->f('value');
-                    }
-                }
-            }
-        }
-
-        $sql = "SELECT value FROM " .$cfg['tab']['user_prop']."
-                WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."'
-                  AND type = '".Contenido_Security::escapeDB($type, $this->db)."'
-                  AND name = '".Contenido_Security::escapeDB($name, $this->db)."'";
-        $this->db->query($sql);
-
-        if ($this->db->next_record()) {
-            $result = $this->db->f('value');
-        }
-
-        if ($result !== false) {
-            return urldecode($result);
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * Stores the modified user object to the database
-     *
-     * @param   string    sType   Specifies the type (class, category etc) for the property to retrieve
-     * @param   boolean   bGroup  Specifies if this function should recursively search in groups
-     * @return  array             The value of the retrieved property
-     **/
-     function getUserPropertiesByType($sType, $bGroup = false)
-     {
-         global $cfg, $perm;
-
-         if (!is_object($perm)) {
-             $perm = new Contenido_Perm();
-         }
-
-         $aResult = array();
-
-         if ($bGroup == true) {
-             $aGroups = $perm->getGroupsForUser($this->values['user_id']);
-
-             if (is_array($aGroups)) {
-                 foreach ($aGroups as $iID) {
-                     $sSQL = "SELECT name, value FROM " .$cfg['tab']['group_prop']."
-                             WHERE group_id = '".Contenido_Security::escapeDB($iID, $this->db)."'
-                                AND type = '".Contenido_Security::escapeDB($sType, $this->db)."'";
-                    $this->db->query($sSQL);
-
-                    while ($this->db->next_record()) {
-                        $aResult[$this->db->f('name')] = urldecode($this->db->f('value'));
-                    }
-                }
-             }
-         }
-
-         $sSQL = "SELECT name, value FROM " .$cfg['tab']['user_prop']."
-                 WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."'
-                 AND type = '".Contenido_Security::escapeDB($sType, $this->db)."'";
-        $this->db->query($sSQL);
-
-        while ($this->db->next_record()) {
-            $aResult[$this->db->f('name')] = urldecode($this->db->f('value'));
-        }
-
-        return $aResult;
-    }
-
-
-    /**
-     * Retrieves all available properties of the user
-     * @return  array  Assoziative properties list as follows:
-     *                 - $arr[iduserprop][name]
-     *                 - $arr[iduserprop][type]
-     *                 - $arr[iduserprop][value]
-     */
-    function getUserProperties()
-    {
-        global $cfg;
-
-        $aProps = array();
-
-        $sql = "SELECT iduserprop, type, name, value FROM " .$cfg['tab']['user_prop']."
-                WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."'";
-        $this->db->query($sql);
-
-        if ($this->db->num_rows() == 0) {
-            return $aProps;
-        }
-
-        while ($this->db->next_record()) {
-            $aProps[$this->db->f('iduserprop')] = array(
-                'name'  => $this->db->f('name'),
-                'type'  => $this->db->f('type'),
-                'value' => $this->db->f('value'),
-            );
-        }
-
-        return $aProps;
-    }
-
-
-    /**
-     * Stores a property to the database
-     * @param string type Specifies the type (class, category etc) for the property to retrieve
-     * @param string name Specifies the name of the property to retrieve
-     * @param string value Specifies the value to insert
-     */
-    function setUserProperty($type, $name, $value)
-    {
-        global $cfg;
-
-        $value = urlencode($value);
-
-        // Check if such an entry already exists
-        if ($this->getUserProperty($type, $name) !== false)
-        {
-            $sql = "UPDATE ".$cfg['tab']['user_prop']."
-                    SET value = '".Contenido_Security::escapeDB($value, $this->db)."'
-                    WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."'
-                      AND type = '".Contenido_Security::escapeDB($type, $this->db)."'
-                      AND name = '".Contenido_Security::escapeDB($name, $this->db)."'";
-            $this->db->query($sql);
-        } else {
-            $sql = "INSERT INTO  ".$cfg['tab']['user_prop']."
-                    SET value = '".Contenido_Security::escapeDB($value, $this->db)."',
-                        user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."',
-                          type = '".Contenido_Security::escapeDB($type, $this->db)."',
-                          name = '".Contenido_Security::escapeDB($name, $this->db)."',
-                        iduserprop = '".Contenido_Security::toInteger($this->db->nextid($cfg['tab']['user_prop']))."'";
-            $this->db->query($sql);
-        }
-    }
-
-
-    /**
-     * Deletes a user property from the table
-     * @param string type Specifies the type (class, category etc) for the property to retrieve
-     * @param string name Specifies the name of the property to retrieve
-     */
-    function deleteUserProperty($type, $name)
-    {
-        global $cfg;
-
-        // Delete record from table
-        $sql = "DELETE FROM  ".$cfg['tab']['user_prop']."
-                    WHERE user_id = '".Contenido_Security::escapeDB($this->values['user_id'], $this->db)."' AND
-                          type = '".Contenido_Security::escapeDB($type, $this->db)."' AND
-                          name = '".Contenido_Security::escapeDB($name, $this->db)."'";
-        $this->db->query($sql);
-    }
-
-
-    /**
      * Returns all users available in the system
      * @param   string  $sort  SQL sort part
      * @return  array          Array with id and name entries
@@ -831,6 +649,52 @@ class User
             $arrGroups[] = $db->f('group_id');
         }
         return $arrGroups;
+    }
+
+    /**
+     * @deprecated [2011-11-03]  Use cApiUser->getUserProperty()
+     */
+    function getUserProperty($type, $name, $group = false)
+    {
+        $user = new cApiUser();
+        $user->values = $this->values;
+        return $user->getUserProperty($type, $name, $group);
+    }
+    /**
+     * @deprecated [2011-11-03]  Use cApiUser->getUserPropertiesByType()
+     */
+    function getUserPropertiesByType($type, $group = false)
+    {
+        $user = new cApiUser();
+        $user->values = $this->values;
+        return $user->getUserPropertiesByType($type, $group);
+    }
+    /**
+     * @deprecated [2011-11-03]  Use cApiUser->getUserProperties()
+     */
+    function getUserProperties()
+    {
+        $user = new cApiUser();
+        $user->values = $this->values;
+        return $user->getUserProperties(false);
+    }
+    /**
+     * @deprecated [2011-11-03]  Use cApiUser->setUserProperty()
+     */
+    function setUserProperty($type, $name, $value)
+    {
+        $user = new cApiUser();
+        $user->values = $this->values;
+        return $user->setUserProperty($type, $name, $value);
+    }
+    /**
+     * @deprecated [2011-11-03]  Use cApiUser->deleteUserProperty()
+     */
+    function deleteUserProperty($type, $name)
+    {
+        $user = new cApiUser();
+        $user->values = $this->values;
+        return $user->deleteUserProperty($type, $name);
     }
 
 }
