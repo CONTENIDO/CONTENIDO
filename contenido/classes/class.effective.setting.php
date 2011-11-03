@@ -14,9 +14,9 @@
  * System => Client => Client (language) => Group => User
  *
  * - System properties can be overridden by the client
- * - Client properties can be overwridden by client language
- * - Client language properties can be overwridden by group
- * - Group properties can be overwridden by user
+ * - Client properties can be overridden by client language
+ * - Client language properties can be overridden by group
+ * - Group properties can be overridden by user
  *
  *
  * Requirements:
@@ -82,7 +82,7 @@ class Contenido_Effective_Setting
      * @param   string  $type The type of the item
      * @param   string  $name The name of the item
      * @param   string  $default Optional default value
-     * @return  string|bool  The setting value or false 
+     * @return  string|bool  The setting value or false
      */
     public static function get($type, $name, $default = '')
     {
@@ -125,7 +125,7 @@ class Contenido_Effective_Setting
 
 
     /**
-     * Returns effective setting for a type of properties. Caches also the 
+     * Returns effective setting for a type of properties. Caches also the
      * collected settings, but contrary to get() it returns never cached entries.
      *
      * The order is:
@@ -265,7 +265,7 @@ class Contenido_Effective_Setting
      * Setting getter.
      *
      * @param   string  $key  The setting key
-     * @return  string|bool  The setting value or false 
+     * @return  string|bool  The setting value or false
      */
     protected static function _get($key)
     {
@@ -278,7 +278,7 @@ class Contenido_Effective_Setting
      *
      * @param   string  $key  The setting key
      * @param   string  $value  Value to store
-     * @return  string|bool  The setting value or false 
+     * @return  string|bool  The setting value or false
      */
     protected static function _set($key, $value)
     {
