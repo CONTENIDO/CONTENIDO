@@ -118,7 +118,6 @@ $cfg['path']['frontend']  = C_FRONTEND_PATH;
 $cfg['path']['contenido'] = $cfg['path']['frontend'] . 'contenido/';
 $cfg['path']['phplib']    = $cfg['path']['frontend'] . 'conlib/';
 $cfg['path']['pear']      = $cfg['path']['frontend'] . 'pear/';
-$cfg['generate_xhtml']    = false;
 
 // DB related settings
 $cfg['sql']['sqlprefix']  = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';

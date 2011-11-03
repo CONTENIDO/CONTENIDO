@@ -39,8 +39,11 @@ if (!class_exists("HTML_Common"))
 	cInclude("pear", "HTML/Common.php");
 }
 
-/* Global ID counter */
+// Global ID counter
 $cHTMLIDCount = 0;
+
+// Global generate xhtml setting
+$cHTMLGenerateXHTML = null;
 
 /**
  * Base class for all CONTENIDO HTML classes
@@ -122,42 +125,27 @@ class cHTML extends HTML_Common
 	{
 		global $cfg;
 
-		HTML_Common :: HTML_Common();
+		HTML_Common::HTML_Common();
 		$this->_skeleton_open = '<%s%s>';
 		$this->_skeleton_close = '</%s>';
 
-		
-		/* Cache the XHTML setting for performance reasons */
-		if (!is_array($cfg) || !array_key_exists("generate_xhtml", $cfg))
-		{
-			if (function_exists("getEffectiveSetting"))
-			{
-				$cfg["generate_xhtml"] = getEffectiveSetting("generator", "xhtml", false);
-			} else {
-				$cfg["generate_xhtml"] = false;	
-			}
-		}
+        if (null === $cHTMLGenerateXHTML) {
+            $cHTMLGenerateXHTML = getEffectiveSetting('generator', 'xhtml', 'false');
+        }
 
-		if ($cfg["generate_xhtml"] === "false")
-		{
-			$cfg["generate_xhtml"] = false;
-		}
-		
-		if ($cfg["generate_xhtml"] == true)
-		{
+		if ($cHTMLGenerateXHTML == 'true') {
 			$this->_skeleton_single = '<%s%s />';
-		} else
-		{
+		} else {
 			$this->_skeleton_single = '<%s%s>';
 		}
 
-		$this->_styledefs = array ();
+		$this->_styledefs = array();
 		$this->_aStyleDefinitions = array();
 		$this->setContentlessTag();
 
 		$this->advanceID();
-		$this->_requiredScripts = array ();
-		$this->_aEventDefinitions = array ();
+		$this->_requiredScripts = array();
+		$this->_aEventDefinitions = array();
 	}
 
 	function setContentlessTag($contentlessTag = true)

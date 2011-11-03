@@ -196,11 +196,7 @@ class Cms_Teaser {
         $this->aCfgClient = $aCfgClient;
         $this->oSess = $oSess;
 
-        if (!array_key_exists("generate_xhtml", $aCfg)) {
-            $this->sUseXHTML = getEffectiveSetting("generator", "xhtml", 'false');
-        } else {
-            $this->sUseXHTML = $aCfg['generate_xhtml'];
-        }
+        $this->sUseXHTML = getEffectiveSetting('generator', 'xhtml', 'false');
 
         //init other variables with default values
         $this->aCMSTypes = null;
