@@ -74,7 +74,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $name
      * @return cApiSystemProperty[]
      */
-    public function selectBySystemIdTypeName($type, $name) {
+    public function selectByTypeName($type, $name) {
         $this->select("type'=" . $this->escape($type) . "' AND name'=" . $this->escape($name) . "'");
         $props = array();
         while ($property = $his->next()) {
@@ -88,7 +88,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return cApiSystemProperty[]
      */
-    public function selectBySystemIdType($type) {
+    public function selectByType($type) {
         $this->select("type'=" . $this->escape($type) . "'");
         $props = array();
         while ($property = $his->next()) {
@@ -103,7 +103,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $name
      * @return cApiSystemProperty[]
      */
-    public function deleteBySystemIdTypeName($type, $name)
+    public function deleteByTypeName($type, $name)
     {
         $this->select("type'=" . $this->escape($type) . "' AND name'=" . $this->escape($name) . "'");
         while ($system = $this->next()) {
