@@ -252,6 +252,7 @@ contenido/classes/contenido/class.frontend.group.member.php -text
 contenido/classes/contenido/class.frontend.group.php -text
 contenido/classes/contenido/class.frontend.permission.php -text
 contenido/classes/contenido/class.frontend.user.php -text
+contenido/classes/contenido/class.group.property.php -text
 contenido/classes/contenido/class.inuse.php -text
 contenido/classes/contenido/class.lang.php -text
 contenido/classes/contenido/class.layout.php -text
@@ -260,10 +261,12 @@ contenido/classes/contenido/class.module.php -text
 contenido/classes/contenido/class.property.php -text
 contenido/classes/contenido/class.right.php -text
 contenido/classes/contenido/class.stat.php -text
+contenido/classes/contenido/class.system.property.php -text
 contenido/classes/contenido/class.template.php -text
 contenido/classes/contenido/class.templateconfig.php -text
 contenido/classes/contenido/class.upload.php -text
 contenido/classes/contenido/class.user.php -text
+contenido/classes/contenido/class.user.property.php -text
 contenido/classes/datatypes/class.datatype.currency.php -text
 contenido/classes/datatypes/class.datatype.datetime.php -text
 contenido/classes/datatypes/class.datatype.number.php -text
