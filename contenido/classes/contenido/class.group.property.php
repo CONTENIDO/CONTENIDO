@@ -140,6 +140,21 @@ class cApiGroupPropertyCollection extends ItemCollection
     }
 
     /**
+     * Returns all group properties by groupid.
+     * @param  string  $type
+     * @return cApiGroupProperty[]
+     */
+    public function fetchByGroupId()
+    {
+        $this->select("group_id='" . $this->escape($this->_groupId) . "'");
+        $props = array();
+        while ($property = $this->next()) {
+            $props[] = clone $property;
+        }
+        return $props;
+    }
+
+    /**
      * Deletes group property by groupid, type and name.
      * @param  string  $type
      * @param  string  $name

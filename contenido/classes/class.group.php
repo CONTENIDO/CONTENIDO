@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend classes
- * @version    1.6.2
+ * @version    1.6.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,13 +24,14 @@
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *   modified 2011-02-05, Murat Purc, Cleanup/formatting, documentation, standardize
  *                                    getGroupProperties() and new function insert()
+ *   modified 2011-11-08, Murat Purc, Usage of cApiGroupProperty classes
  *
  *   $Id$:
  * }}
  *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
@@ -349,25 +350,15 @@ class Group
     /**
      * Returns the group property
      *
-     * @param   string  $type  Specifies the type (class, category etc) for the property to retrieve
-     * @param   string  $name  Specifies the name of the property to retrieve
-     * @return  string  The value of the retrieved property
+     * @param   string  $type  Type (class, category etc) for the property to retrieve
+     * @param   string  $name  Name of the property to retrieve
+     * @return  string|bool  Value of the retrieved property or false
      */
     function getGroupProperty($type, $name)
     {
-        global $cfg;
-
-        $sql = "SELECT value FROM " .$cfg['tab']['group_prop']."
-                WHERE group_id = '".Contenido_Security::escapeDB($this->values['group_id'], $this->db)."'
-                AND type = '".Contenido_Security::escapeDB($type, $this->db)."'
-                AND name = '".Contenido_Security::escapeDB($name, $this->db)."'";
-        $this->db->query($sql);
-
-        if ($this->db->next_record()) {
-            return $this->db->f('value');
-        } else {
-            return false;
-        }
+        $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
+        $groupProp = $groupPropColl->fetchByGroupIdTypeName($type, $name);
+        return ($groupProp) ? $groupProp->get('value') : false;
     }
 
 
@@ -381,77 +372,47 @@ class Group
      */
     function getGroupProperties()
     {
-        global $cfg;
+        $props = array();
 
-        $aProps = array();
-
-        $sql = "SELECT idgroupprop, type, name, value FROM " .$cfg['tab']['group_prop']."
-                WHERE group_id = '".Contenido_Security::escapeDB($this->values['group_id'], $this->db)."'";
-        $this->db->query($sql);
-
-        if ($this->db->num_rows() == 0) {
-            return $aProps;
-        }
-
-        while ($this->db->next_record()) {
-            $aProps[$this->db->f('idgroupprop')] = array(
-                'name'  => $this->db->f('name'),
-                'type'  => $this->db->f('type'),
-                'value' => $this->db->f('value'),
+        $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
+        $groupProps = $groupPropColl->fetchByGroupId();
+        foreach($groupProps as $groupProp) {
+            $props[$groupProp->get('idgroupprop')] = array(
+                'name'  => $groupProp->get('name'),
+                'type'  => $groupProp->get('type'),
+                'value' => $groupProp->get('value'),
             );
         }
 
-        return $aProps;
+        return $props;
     }
 
 
     /**
      * Stores a property to the database.
      *
-     * @param  string  $type   Specifies the type (class, category etc) for the property to retrieve
-     * @param  string  $name   Specifies the name of the property to retrieve
-     * @param  string  $value  Specifies the value to insert
+     * @param  string  $type   Type (class, category etc) for the property to retrieve
+     * @param  string  $name   Name of the property to retrieve
+     * @param  string  $value  Value to insert
+     * @return cApiGroupProperty
      */
     function setGroupProperty($type, $name, $value)
     {
-        global $cfg;
-
-        // Check if such an entry already exists
-        if ($this->getGroupProperty($type, $name) !== false) {
-            $sql = "UPDATE ".$cfg['tab']['group_prop']."
-                    SET value = '".Contenido_Security::escapeDB($value, $this->db)."'
-                    WHERE group_id = '".Contenido_Security::escapeDB($this->values['group_id'], $this->db)."'
-                      AND type = '".Contenido_Security::escapeDB($type, $this->db)."'
-                      AND name = '".Contenido_Security::escapeDB($name, $this->db)."'";
-            $this->db->query($sql);
-        } else {
-            $sql = "INSERT INTO  ".$cfg['tab']['group_prop']."
-                    SET value = '".Contenido_Security::escapeDB($value, $this->db)."',
-                    group_id = '".Contenido_Security::escapeDB($this->values['group_id'], $this->db)."',
-                      type = '".Contenido_Security::escapeDB($type, $this->db)."',
-                      name = '".Contenido_Security::escapeDB($name, $this->db)."',
-                    idgroupprop = '".Contenido_Security::toInteger($this->db->nextid($cfg['tab']['group_prop']))."'";
-            $this->db->query($sql);
-        }
+        $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
+        return $groupPropColl->set($type, $name, $value);
     }
 
 
     /**
      * Deletes a group property from the table.
      *
-     * @param  string  $type  Specifies the type (class, category etc) for the property to retrieve
-     * @param  string  $name  Specifies the name of the property to retrieve
+     * @param  string  $type  Type (class, category etc) for the property to delete
+     * @param  string  $name  Name of the property to delete
      */
     function deleteGroupProperty($type, $name)
     {
-        global $cfg;
-
-        // Check if such an entry already exists
-        $sql = "DELETE FROM  ".$cfg['tab']['group_prop']."
-                WHERE group_id = '".Contenido_Security::escapeDB($this->values['group_id'], $this->db)."' AND
-                type = '".Contenido_Security::escapeDB($type, $this->db)."' AND
-                name = '".Contenido_Security::escapeDB($name, $this->db)."'";
-        $this->db->query($sql);
+        $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
+        return $groupPropColl->deleteByGroupIdTypeName($type, $name);
     }
 
 }
