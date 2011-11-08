@@ -29,7 +29,7 @@
  * {@internal
  *   created  2011-11-03
  *
- *   $Id: $:
+ *   $Id$:
  * }}
  *
  */
@@ -67,6 +67,27 @@ class cApiGroupPropertyCollection extends ItemCollection
     }
 
     /**
+     * Updatess a existing group property entry or creates it.
+     * @param  string  $type
+     * @param  string  $name
+     * @param  string  $value
+     * @param  int     $idcatlang
+     * @return cApiGroupProperty
+     */
+    public function set($type, $name, $value, $idcatlang = 0)
+    {
+        $item = $this->fetchByGroupIdTypeName($type, $name);
+        if ($item) {
+            $item->set('value', $this->escape($value));
+            $item->store();
+        } else {
+            $item = $this->create($type, $name, $value, $idcatlang);
+        }
+
+        return $item;
+    }
+
+    /**
      * Creates a group property entry.
      * @param  string  $type
      * @param  string  $name
@@ -92,15 +113,15 @@ class cApiGroupPropertyCollection extends ItemCollection
      * Returns all group properties by groupid, type and name.
      * @param  string  $type
      * @param  string  $name
-     * @return cApiGroupProperty[]
+     * @return cApiGroupProperty|null
      */
-    public function selectByGroupIdTypeName($type, $name) {
-        $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type'=" . $this->escape($type) . "' AND name'=" . $this->escape($name) . "'");
-        $props = array();
-        while ($property = $his->next()) {
-            $props[] = clone $property;
+    public function fetchByGroupIdTypeName($type, $name)
+    {
+        $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        if ($property = $this->next()) {
+            return $property;
         }
-        return $props;
+        return null;
     }
 
     /**
@@ -108,27 +129,60 @@ class cApiGroupPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return cApiGroupProperty[]
      */
-    public function selectByGroupIdType($type) {
-        $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type'=" . $this->escape($type) . "'");
+    public function fetchByGroupIdType($type)
+    {
+        $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type='" . $this->escape($type) . "'");
         $props = array();
-        while ($property = $his->next()) {
+        while ($property = $this->next()) {
             $props[] = clone $property;
         }
         return $props;
     }
 
     /**
-     * Deletes all group properties by groupid, type and name.
+     * Deletes group property by groupid, type and name.
      * @param  string  $type
      * @param  string  $name
-     * @return cApiGroupProperty[]
+     * @return bool
      */
     public function deleteByGroupIdTypeName($type, $name)
     {
-        $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type'=" . $this->escape($type) . "' AND name'=" . $this->escape($name) . "'");
-        while ($group = $this->next()) {
-            $this->delete($group->get('idgroupprop'));
+        $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        return $this->_deleteSelected();
+    }
+
+    /**
+     * Deletes group properties by groupid and type.
+     * @param  string  $type
+     * @return bool
+     */
+    public function deleteByGroupIdType($type)
+    {
+        $this->select("group_id='" . $this->escape($this->_groupId) . "' AND type='" . $this->escape($type) . "'");
+        return $this->_deleteSelected();
+    }
+
+    /**
+     * Deletes all group properties by groupid.
+     * @return bool
+     */
+    public function deleteByGroupId()
+    {
+        $this->select("group_id='" . $this->escape($this->_groupId) . "'");
+        return $this->_deleteSelected();
+    }
+
+    /**
+     * Deletes selected group properties.
+     * @return bool
+     */
+    protected function _deleteSelected()
+    {
+        $result = false;
+        while ($system = $this->next()) {
+            $result = $this->delete($system->get('idsystemprop'));
         }
+        return $result;
     }
 }
 

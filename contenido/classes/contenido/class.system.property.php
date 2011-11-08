@@ -27,7 +27,7 @@
  * {@internal
  *   created  2011-11-03
  *
- *   $Id: $:
+ *   $Id$:
  * }}
  *
  */
@@ -47,6 +47,26 @@ class cApiSystemPropertyCollection extends ItemCollection
         global $cfg;
         parent::__construct($cfg['tab']['system_prop'], 'idsystemprop');
         $this->_setItemClass('cApiSystemProperty');
+    }
+
+    /**
+     * Updatess a existing system property entry or creates it.
+     * @param  string  $type
+     * @param  string  $name
+     * @param  string  $value
+     * @return cApiSystemProperty
+     */
+    public function set($type, $name, $value)
+    {
+        $item = $this->fetchByTypeName($type, $name);
+        if ($item) {
+            $item->set('value', $this->escape($value));
+            $item->store();
+        } else {
+            $item = $this->create($type, $name, $value, $idcatlang);
+        }
+
+        return $item;
     }
 
     /**
@@ -72,15 +92,15 @@ class cApiSystemPropertyCollection extends ItemCollection
      * Returns all system properties by type and name.
      * @param  string  $type
      * @param  string  $name
-     * @return cApiSystemProperty[]
+     * @return cApiSystemProperty|null
      */
-    public function selectByTypeName($type, $name) {
-        $this->select("type'=" . $this->escape($type) . "' AND name'=" . $this->escape($name) . "'");
-        $props = array();
-        while ($property = $his->next()) {
-            $props[] = clone $property;
+    public function fetchByTypeName($type, $name)
+    {
+        $this->select("type'=" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        if ($property = $this->next()) {
+            return $property;
         }
-        return $props;
+        return null;
     }
 
     /**
@@ -88,27 +108,50 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return cApiSystemProperty[]
      */
-    public function selectByType($type) {
+    public function fetchByType($type)
+    {
         $this->select("type'=" . $this->escape($type) . "'");
         $props = array();
-        while ($property = $his->next()) {
+        while ($property = $this->next()) {
             $props[] = clone $property;
         }
         return $props;
     }
 
     /**
-     * Deletes all system properties by type and name.
+     * Deletes system property by type and name.
      * @param  string  $type
      * @param  string  $name
-     * @return cApiSystemProperty[]
+     * @return bool
      */
     public function deleteByTypeName($type, $name)
     {
-        $this->select("type'=" . $this->escape($type) . "' AND name'=" . $this->escape($name) . "'");
+        $this->select("type'=" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        return $this->_deleteSelected();
+    }
+
+    /**
+     * Deletes system properties by type.
+     * @param  string  $type
+     * @return bool
+     */
+    public function deleteByType($type)
+    {
+        $this->select("type'=" . $this->escape($type) . "'");
+        return $this->_deleteSelected();
+    }
+
+    /**
+     * Deletes selected system properties.
+     * @return bool
+     */
+    protected function _deleteSelected()
+    {
+        $result = false;
         while ($system = $this->next()) {
-            $this->delete($system->get('idsystemprop'));
+            $result = $this->delete($system->get('idsystemprop'));
         }
+        return $result;
     }
 }
 

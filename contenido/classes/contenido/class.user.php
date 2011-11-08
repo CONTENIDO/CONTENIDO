@@ -104,15 +104,15 @@ class cApiUser extends Item
     }
 
     /**
-     * Stores the modified user object to the database
-     * @param string type Specifies the type (class, category etc) for the property to retrieve
-     * @param string name Specifies the name of the property to retrieve
-     * @param boolean group Specifies if this function should recursively search in groups
-     * @return string The value of the retrieved property
+     * Retrieves the effective user property.
+     * @param  string  $type   Type (class, category etc) for the property to retrieve
+     * @param  string  $name   Name of the property to retrieve
+     * @param  bool    $group  Flag to search in groups
+     * @return string|bool  The value of the retrieved property or false
      */
     public function getUserProperty($type, $name, $group = false)
     {
-        global $cfg, $perm;
+        global $perm;
 
         if (!is_object($perm)) {
             $perm = new Contenido_Perm();
@@ -121,38 +121,25 @@ class cApiUser extends Item
         $result = false;
 
         if ($group == true) {
+            // first get property by existing groups, if desired
             $groups = $perm->getGroupsForUser($this->values['user_id']);
-
-            if (is_array($groups)) {
-                foreach ($groups as $groupid) {
-                    $sql = "SELECT value FROM " . $cfg['tab']['group_prop'] . "
-                            WHERE group_id = '" . $this->db->escape($groupid) . "'
-                              AND type = '" . $this->db->escape($type) . "'
-                              AND name = '" . $this->db->escape($name) . "'";
-                    $this->db->query($sql);
-
-                    if ($this->db->next_record()) {
-                        $result = $this->db->f('value');
-                    }
+            foreach ($groups as $groupid) {
+                $groupPropColl = new cApiGroupPropertyCollection($groupid);
+                $groupProp = $groupPropColl->fetchByGroupIdTypeName($type, $name);
+                if ($groupProp) {
+                    $result = $groupProp->get('value');
                 }
             }
         }
 
-        $sql = "SELECT value FROM " .$cfg['tab']['user_prop']."
-                WHERE user_id = '" . $this->db->escape($this->values['user_id']) . "'
-                  AND type = '" . $this->db->escape($type) . "'
-                  AND name = '" . $this->db->escape($name) . "'";
-        $this->db->query($sql);
-
-        if ($this->db->next_record()) {
-            $result = $this->db->f('value');
+        // get property of user
+        $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
+        $userProp = $userPropColl->fetchByUserIdTypeName($type, $name);
+        if ($userProp) {
+            $result = $userProp->get('value');
         }
 
-        if ($result !== false) {
-            return urldecode($result);
-        } else {
-            return false;
-        }
+        return ($result !== false) ? urldecode($result) : false;
     }
 
     /**
@@ -165,11 +152,11 @@ class cApiUser extends Item
      *                           will be merged with user properties where the user poperties will
      *                           overwrite group properties
      * @return  array   Assoziative properties array as follows:
-     *                  - $arr[name][value]
+     *                  - $arr[name] = value
      */
     public function getUserPropertiesByType($type, $group = false)
     {
-        global $cfg, $perm;
+        global $perm;
 
         if (!is_object($perm)) {
             $perm = new Contenido_Perm();
@@ -178,28 +165,22 @@ class cApiUser extends Item
         $props = array();
 
         if ($group == true) {
+            // first get properties by existing groups, if desired
             $groups = $perm->getGroupsForUser($this->values['user_id']);
-            if (is_array($groups)) {
-                foreach ($groups as $groupid) {
-                    $sql = "SELECT name, value FROM " . $cfg['tab']['group_prop'] . "
-                            WHERE group_id = '" . $this->db->escape($groupid) . "'
-                            AND type = '".$this->db->escape($type) . "'";
-                    $this->db->query($sql);
-
-                    while ($this->db->next_record()) {
-                        $props[$this->db->f('name')] = urldecode($this->db->f('value'));
-                    }
+            foreach ($groups as $groupid) {
+                $groupPropColl = new cApiGroupPropertyCollection($groupid);
+                $groupProps = $groupPropColl->fetchByGroupIdType($type);
+                foreach ($groupProps as $groupProp) {
+                    $props[$groupProp->get('name')] = urldecode($groupProp->get('value'));
                 }
             }
         }
 
-        $sql = "SELECT name, value FROM " . $cfg['tab']['user_prop'] . "
-                WHERE user_id = '" . $this->db->escape($this->values['user_id']) . "'
-                AND type = '" . $this->db->escape($type) . "'";
-        $this->db->query($sql);
-
-        while ($this->db->next_record()) {
-            $props[$this->db->f('name')] = urldecode($this->db->f('value'));
+        // get properties of user
+        $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
+        $userProps = $userPropColl->fetchByUserIdType($type);
+        foreach ($userProps as $userProp) {
+            $props[$userProp->get('name')] = urldecode($userProp->get('value'));
         }
 
         return $props;
@@ -223,72 +204,47 @@ class cApiUser extends Item
      */
     public function getUserProperties($beDownwardsCompatible = true)
     {
-        global $cfg;
-
-        $sql = "SELECT iduserprop, type, name, value FROM " . $cfg['tab']['user_prop'] . "
-                WHERE user_id = '" . $this->db->escape($this->values['user_id']) . "'";
-        $this->db->query($sql);
+        $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
+        $userProps = $userPropColl->fetchByUserId();
 
         $props = array();
 
         if (true === $beDownwardsCompatible) {
             // @deprecated  [2011-11-03]
-            if ($this->db->num_rows() == 0) {
+            if (count($userProps) == 0) {
                 return false;
             }
 
-            while ($this->db->next_record()) {
-                $props[] = array('name' => $this->db->f('name'),
-                                 'type' => $this->db->f('type'));
-            }
-
-            return $props;
-        } else {
-            if ($this->db->num_rows() == 0) {
-                return $props;
-            }
-
-            while ($this->db->next_record()) {
-                $props[$this->db->f('iduserprop')] = array(
-                    'name'  => $this->db->f('name'),
-                    'type'  => $this->db->f('type'),
-                    'value' => $this->db->f('value'),
+            foreach ($userProps as $userProp) {
+                $props[] = array(
+                    'name' => $userProp->get('name'),
+                    'type' => $userProp->get('type')
                 );
             }
-
-            return $props;
+        } else {
+            foreach ($userProps as $userProp) {
+                $props[$userProp->get('iduserprop')] = array(
+                    'name'  => $userProp->get('name'),
+                    'type'  => $userProp->get('type'),
+                    'value' => $userProp->get('value'),
+                );
+            }
         }
+
+        return $props;
     }
 
     /**
      * Stores a property to the database
-     * @param string type Specifies the type (class, category etc) for the property to retrieve
-     * @param string name Specifies the name of the property to retrieve
-     * @param string value Specifies the value to insert
+     * @param  string  $type  Type (class, category etc) for the property to retrieve
+     * @param  string  $name  Name of the property to retrieve
+     * @param  string  $value Value to insert
+     * @return cApiUserProperty
      */
     public function setUserProperty($type, $name, $value)
     {
-        global $cfg;
-
-        $value = urlencode($value);
-
-        // Check if such an entry already exists
-        if ($this->getUserProperty($type, $name) !== false) {
-            $sql = "UPDATE " . $cfg['tab']['user_prop'] . "
-                    SET value = '" . $this->db->escape($value) . "'
-                    WHERE user_id = '" . $this->db->escape($this->values['user_id']) . "'
-                      AND type = '" . $this->db->escape($type) . "'
-                      AND name = '" . $this->db->escape($name) . "'";
-            $this->db->query($sql);
-        } else {
-            $sql = "INSERT INTO  " . $cfg['tab']['user_prop'] . "
-                    SET value = '" . $this->db->escape($value) . "',
-                        user_id = '" . $this->db->escape($this->values['user_id']) . "',
-                        type = '" . $this->db->escape($type) . "',
-                        name = '" . $this->db->escape($name) . "',
-                        iduserprop = " .$this->db->nextid($cfg['tab']['user_prop']);
-            $this->db->query($sql);
-        }
+        $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
+        $userProps = $userPropColl->set($type, $name, $value);
     }
 
     /**
@@ -299,15 +255,8 @@ class cApiUser extends Item
      */
     public function deleteUserProperty($type, $name)
     {
-        global $cfg;
-
-        // Check if such an entry already exists
-        $sql = "DELETE FROM  " . $cfg['tab']['user_prop'] . "
-                    WHERE user_id = '" . $this->db->escape($this->values['user_id']) . "' AND
-                          type = '" . $this->db->escape($type) . "' AND
-                          name = '" . $this->db->escape($name) . "'";
-        $this->db->query($sql);
-        return ($this->db->affected_rows() === 0) ? false : true;
+        $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
+        return $userPropColl->deleteByUserIdTypeName($type, $name);
     }
 }
 

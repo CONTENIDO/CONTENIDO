@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2011-10-11
+ *     created  2011-11-07
  * }}
  */
 
@@ -65,6 +65,7 @@ return array(
     'Cms_Teaser' => 'contenido/classes/class.cms_teaser.php',
     'ConUser' => 'contenido/classes/class.conuser.php',
     'CSV' => 'contenido/classes/class.csv.php',
+    'Contenido_Effective_Setting' => 'contenido/classes/class.effective.setting.php',
     'ExcelWorksheet' => 'contenido/classes/class.excel.php',
     'Form' => 'contenido/classes/class.form.php',
     'FormField' => 'contenido/classes/class.form.php',
@@ -239,6 +240,8 @@ return array(
     'cApiFrontendUser' => 'contenido/classes/contenido/class.frontend.user.php',
     'FrontendUserCollection' => 'contenido/classes/contenido/class.frontend.user.php',
     'FrontendUser' => 'contenido/classes/contenido/class.frontend.user.php',
+    'cApiGroupPropertyCollection' => 'contenido/classes/contenido/class.group.property.php',
+    'cApiGroupProperty' => 'contenido/classes/contenido/class.group.property.php',
     'cApiInUseCollection' => 'contenido/classes/contenido/class.inuse.php',
     'cApiInUse' => 'contenido/classes/contenido/class.inuse.php',
     'InUseCollection' => 'contenido/classes/contenido/class.inuse.php',
@@ -257,8 +260,12 @@ return array(
     'cApiProperty' => 'contenido/classes/contenido/class.property.php',
     'PropertyCollection' => 'contenido/classes/contenido/class.property.php',
     'PropertyItem' => 'contenido/classes/contenido/class.property.php',
+    'cApiRightCollection' => 'contenido/classes/contenido/class.right.php',
+    'cApiRight' => 'contenido/classes/contenido/class.right.php',
     'cApiStatCollection' => 'contenido/classes/contenido/class.stat.php',
     'cApiStat' => 'contenido/classes/contenido/class.stat.php',
+    'cApiSystemPropertyCollection' => 'contenido/classes/contenido/class.system.property.php',
+    'cApiSystemProperty' => 'contenido/classes/contenido/class.system.property.php',
     'cApiTemplateCollection' => 'contenido/classes/contenido/class.template.php',
     'cApiTemplate' => 'contenido/classes/contenido/class.template.php',
     'cApiTemplateConfigurationCollection' => 'contenido/classes/contenido/class.templateconfig.php',
@@ -269,6 +276,8 @@ return array(
     'UploadItem' => 'contenido/classes/contenido/class.upload.php',
     'cApiUserCollection' => 'contenido/classes/contenido/class.user.php',
     'cApiUser' => 'contenido/classes/contenido/class.user.php',
+    'cApiUserPropertyCollection' => 'contenido/classes/contenido/class.user.property.php',
+    'cApiUserProperty' => 'contenido/classes/contenido/class.user.property.php',
     'Contenido_Category' => 'contenido/classes/Contenido_Category/Contenido_Category.class.php',
     'Contenido_Categories' => 'contenido/classes/Contenido_Category/Contenido_Category.class.php',
     'Contenido_Category_Language' => 'contenido/classes/Contenido_Category/Contenido_Category.class.php',
@@ -350,6 +359,5 @@ return array(
     'cWidgetTreeView' => 'contenido/classes/widgets/class.widgets.treeview.php',
     'cTableView' => 'contenido/classes/widgets/class.widgets.views.php',
     'ContenidoXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
-    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php',
-    'Contenido_Effective_Setting' => 'contenido/classes/class.effective.setting.php'
+    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php'
 );

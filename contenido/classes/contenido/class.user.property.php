@@ -67,6 +67,27 @@ class cApiUserPropertyCollection extends ItemCollection
     }
 
     /**
+     * Updatess a existing user property entry or creates it.
+     * @param  string  $type
+     * @param  string  $name
+     * @param  string  $value
+     * @param  int     $idcatlang
+     * @return cApiUserProperty
+     */
+    public function set($type, $name, $value, $idcatlang = 0)
+    {
+        $item = $this->fetchByUserIdTypeName($type, $name);
+        if ($item) {
+            $item->set('value', $this->escape($value));
+            $item->store();
+        } else {
+            $item = $this->create($type, $name, $value, $idcatlang);
+        }
+
+        return $item;
+    }
+
+    /**
      * Creates a user property entry.
      * @param  string  $type
      * @param  string  $name
@@ -89,18 +110,32 @@ class cApiUserPropertyCollection extends ItemCollection
     }
 
     /**
-     * Returns all user properties by userid, type and name.
-     * @param  string  $type
-     * @param  string  $name
+     * Returns all user properties by userid.
      * @return cApiUserProperty[]
      */
-    public function selectByUserIdTypeName($type, $name) {
-        $this->select("user_id='" . $this->escape($this->_userId) . "' AND type'=" . $this->escape($type) . "' AND name'=" . $this->escape($name) . "'");
+    public function fetchByUserId()
+    {
+        $this->select("user_id='" . $this->escape($this->_userId) . "'");
         $props = array();
-        while ($property = $his->next()) {
+        while ($property = $this->next()) {
             $props[] = clone $property;
         }
         return $props;
+    }
+
+    /**
+     * Returns all user properties by userid, type and name.
+     * @param  string  $type
+     * @param  string  $name
+     * @return cApiUserProperty|null
+     */
+    public function fetchByUserIdTypeName($type, $name)
+    {
+        $this->select("user_id='" . $this->escape($this->_userId) . "' AND type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        if ($property = $this->next()) {
+            return $property;
+        }
+        return null;
     }
 
     /**
@@ -108,27 +143,60 @@ class cApiUserPropertyCollection extends ItemCollection
      * @param  string  $type
      * @return cApiUserProperty[]
      */
-    public function selectByUserIdType($type) {
-        $this->select("user_id='" . $this->escape($this->_userId) . "' AND type'=" . $this->escape($type) . "'");
+    public function fetchByUserIdType($type)
+    {
+        $this->select("user_id='" . $this->escape($this->_userId) . "' AND type='" . $this->escape($type) . "'");
         $props = array();
-        while ($property = $his->next()) {
+        while ($property = $this->next()) {
             $props[] = clone $property;
         }
         return $props;
     }
 
     /**
-     * Deletes all user properties by userid, type and name.
+     * Deletes user property by userid, type and name.
      * @param  string  $type
      * @param  string  $name
-     * @return cApiUserProperty[]
+     * @return bool
      */
     public function deleteByUserIdTypeName($type, $name)
     {
-        $this->select("user_id='" . $this->escape($this->_userId) . "' AND type'=" . $this->escape($type) . "' AND name'=" . $this->escape($name) . "'");
-        while ($user = $this->next()) {
-            $this->delete($user->get('iduserprop'));
+        $this->select("user_id='" . $this->escape($this->_userId) . "' AND type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        return $this->_deleteSelected();
+    }
+
+    /**
+     * Deletes user properties by userid and type.
+     * @param  string  $type
+     * @return bool
+     */
+    public function deleteByUserIdType($type)
+    {
+        $this->select("user_id='" . $this->escape($this->_userId) . "' AND type='" . $this->escape($type) . "'");
+        return $this->_deleteSelected();
+    }
+
+    /**
+     * Deletes all user properties by userid.
+     * @return bool
+     */
+    public function deleteByUserId()
+    {
+        $this->select("user_id='" . $this->escape($this->_userId) . "'");
+        return $this->_deleteSelected();
+    }
+
+    /**
+     * Deletes selected user properties.
+     * @return bool
+     */
+    protected function _deleteSelected()
+    {
+        $result = false;
+        while ($system = $this->next()) {
+            $result = $this->delete($system->get('idsystemprop'));
         }
+        return $result;
     }
 }
 
