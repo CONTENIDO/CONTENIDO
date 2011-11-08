@@ -34,6 +34,7 @@
  *   modified 2011-08-24, Dominik Ziegler, removed deprecated function SaveKeywordsforart
  *   modified 2011-08-24, Dominik Ziegler, deprecated function cIDNAEncode and cIDNADecode
  *   modified 2011-11-03, Murat Purc, usage of Contenido_Effective_Setting to retrieve settings
+ *   modified 2011-11-08, Murat Purc, usage of cApiSystemProperty classes
  *
  *   $Id$:
  * }}
@@ -780,61 +781,46 @@ function rereadClients()
  *
  * @modified Timo Trautmann 22.02.2008 Support for editing name and type
  *
- * @param string $type The type of the item
- * @param string $name The name of the item
- * @param string $value The value of the item
- * @param int $idsystemprop The sysprop id, use optional. If set it allows to modify type name and value
+ * @param  string  $type  The type of the item
+ * @param  string  $name  The name of the item
+ * @param  string  $value  The value of the item
+ * @param  int  $idsystemprop  The sysprop id, use optional. If set it allows to modify type name and value
  */
 function setSystemProperty($type, $name, $value, $idsystemprop = 0)
 {
-    global $cfg;
-    if ($type == "" || $name == "") {
+    if ($type == '' || $name == '') {
         return false;
     }
 
-    $idsystemprop = Contenido_Security::toInteger($idsystemprop);
+    $idsystemprop = (int) $idsystemprop;
 
-    $db_systemprop = new DB_Contenido();
+    $systemPropColl = new cApiSystemPropertyCollection();
 
     if ($idsystemprop == 0) {
-        $sql = "SELECT idsystemprop FROM ".$cfg["tab"]["system_prop"]." WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."' AND name='".Contenido_Security::escapeDB($name, $db_systemprop)."'";
+        $prop = $systemPropColl->fetchByTypeName($type, $name);
     } else {
-        $sql = "SELECT idsystemprop FROM ".$cfg["tab"]["system_prop"]." WHERE idsystemprop='$idsystemprop'";
+        $prop = $systemPropColl->fetchById($idsystemprop);
     }
 
-    $db_systemprop->query($sql);
-
-    if ($db_systemprop->num_rows() > 0) {
-        if ($idsystemprop == 0) {
-            $sql = "UPDATE ".$cfg["tab"]["system_prop"]." SET value='".Contenido_Security::filter($value, $db_systemprop)."' WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."'
-                    AND name='".Contenido_Security::escapeDB($name, $db_systemprop)."'";
-        } else {
-            $sql = "UPDATE ".$cfg["tab"]["system_prop"]." SET value='".Contenido_Security::filter($value, $db_systemprop)."', type='".Contenido_Security::escapeDB($type, $db_systemprop)."',
-                    name='".Contenido_Security::escapeDB($name, $db_systemprop)."' WHERE idsystemprop='$idsystemprop'";
-        }
+    if ($prop) {
+        $prop->set('value', $prop->escape($value));
+        $prop->store();
     } else {
-        $idsystemprop = $db_systemprop->nextid($cfg["tab"]["system_prop"]);
-        $sql = "INSERT INTO ".$cfg["tab"]["system_prop"]." (idsystemprop, value, type, name) VALUES ('$idsystemprop', '".Contenido_Security::filter($value, $db_systemprop)."',
-                '".Contenido_Security::escapeDB($type, $db_systemprop)."', '".Contenido_Security::escapeDB($name, $db_systemprop)."')";
+        $prop = $systemPropColl->create($type, $name, $value);
     }
-
-    $db_systemprop->query($sql);
 }
 
 /**
  * Remove a system property entry
  *
- * @param string $type The type of the item
- * @param string $name The name of the item
+ * @param   string  $type  The type of the item
+ * @param   string  $name  The name of the item
+ * @return  bool
  */
 function deleteSystemProperty($type, $name)
 {
-    global $cfg;
-
-    $db_systemprop = new DB_Contenido();
-
-    $sql = "DELETE FROM ".$cfg["tab"]["system_prop"]." WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."' AND name='".Contenido_Security::escapeDB($name, $db_systemprop)."'";
-    $db_systemprop->query($sql);
+    $systemPropColl = new cApiSystemPropertyCollection();
+    $systemPropColl->deleteByTypeName($type, $name);
 }
 
 /**
@@ -848,79 +834,64 @@ function deleteSystemProperty($type, $name)
  * $array[$type][$name][value] = $value;
  * $array[$type][$name][idsystemprop] = $idsystemprop;
  *
- * @param boolean $bGetPropId  If true special mode is activated which generates for 
- *                             each property a third array, which also contains idsystemprop value
+ * @param  bool  $bGetPropId  If true special mode is activated which generates for 
+ *                            each property a third array, which also contains idsystemprop value
  * @return array
  */
-function getSystemProperties($bGetPropId = 0)
+function getSystemProperties($bGetPropId = false)
 {
-    global $cfg;
+    $return = array();
 
-    $db_systemprop = new DB_Contenido();
+    $systemPropColl = new cApiSystemPropertyCollection();
+    $props = $systemPropColl->fetchAll('type ASC, name ASC, value ASC');
+    foreach ($props as $prop) {
+        $item = $prop->toArray();
 
-    $sql = "SELECT idsystemprop, type, name, value FROM ".$cfg["tab"]["system_prop"]." ORDER BY type ASC, name ASC, value ASC";
-    $db_systemprop->query($sql);
-    $results = array();
-
-    if ($bGetPropId) {
-        while ($db_systemprop->next_record()) {
-            $results[$db_systemprop->f("type")][$db_systemprop->f("name")]['value'] = urldecode($db_systemprop->f("value"));
-            $results[$db_systemprop->f("type")][$db_systemprop->f("name")]['idsystemprop'] = urldecode($db_systemprop->f("idsystemprop"));
+        if ($bGetPropId) {
+            $return[$item['type']][$item['name']]['value'] = urldecode($item['value']);
+            $return[$item['type']][$item['name']]['idsystemprop'] = urldecode($item['idsystemprop']);
+        } else {
+            $return[$item['type']][$item['name']] = urldecode($item['value']);
         }
-    } else {
-        while ($db_systemprop->next_record()) {
-            $results[$db_systemprop->f("type")][$db_systemprop->f("name")] = urldecode($db_systemprop->f("value"));
-        }
+
     }
 
-    return ($results);
+    return $return;
 }
 
 /**
  * Gets a system property entry
  *
- * @param string $type The type of the item
- * @param string $name The name of the item
- * @return mixed boolean false if nothing was found, or
+ * @param   string  $type  The type of the item
+ * @param   string  $name  The name of the item
+ * @return  string|bool  The property value or false if nothing was found
  */
 function getSystemProperty($type, $name)
 {
-    global $cfg;
-
-    $db_systemprop = new DB_Contenido();
-
-    $sql = "SELECT value FROM ".$cfg["tab"]["system_prop"]." WHERE type='".Contenido_Security::escapeDB($type, $db_systemprop)."' AND name='".Contenido_Security::escapeDB($name, $db_systemprop)."'";
-    $db_systemprop->query($sql);
-
-    if ($db_systemprop->next_record()) {
-        return urldecode($db_systemprop->f("value"));
-    } else {
-        return false;
-    }
+    $systemPropColl = new cApiSystemPropertyCollection();
+    $prop = $systemPropColl->fetchByTypeName($type, $name);
+    return ($prop) ? urldecode($prop->get('value')) : false;
 }
 
 /**
  * Gets system property entries
  *
- * @param string $type The type of the item
- * @return array Value
+ * @param  string  $type  The type of the properties
+ * @return array  Assoziative array like $arr[name] = value
  */
-function getSystemPropertiesByType($sType)
+function getSystemPropertiesByType($type)
 {
-    global $cfg;
+    $return = array();
 
-    $aResult = array();
-
-    $db_systemprop = new DB_Contenido();
-
-    $sSQL = "SELECT name, value FROM ".$cfg["tab"]["system_prop"]." WHERE type='".Contenido_Security::escapeDB($sType, $db_systemprop)."' ORDER BY name";
-    $db_systemprop->query($sSQL);
-
-    while ($db_systemprop->next_record()) {
-        $aResult[$db_systemprop->f("name")] = urldecode($db_systemprop->f("value"));
+    $systemPropColl = new cApiSystemPropertyCollection();
+    $props = $systemPropColl->fetchByType($type);
+    foreach ($props as $prop) {
+        $return[$prop->get('name')] = urldecode($prop->get('value'));
     }
-
-    return $aResult;
+    if (count($return) > 1) {
+        ksort($return);
+    }
+    return $return;
 }
 
 /**
@@ -937,7 +908,7 @@ function getSystemPropertiesByType($sType)
  * @param string $default Optional default value
  * @return mixed boolean false if nothing was found
  */
-function getEffectiveSetting($type, $name, $default = "")
+function getEffectiveSetting($type, $name, $default = '')
 {
     return Contenido_Effective_Setting::get($type, $name, $default);
 }

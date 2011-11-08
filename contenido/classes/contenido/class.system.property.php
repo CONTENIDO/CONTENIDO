@@ -89,6 +89,21 @@ class cApiSystemPropertyCollection extends ItemCollection
     }
 
     /**
+     * Returns all system properties.
+     * @param  string  $orderBy  Order by clause like "value ASC"
+     * @return cApiSystemProperty[]
+     */
+    public function fetchAll($orderBy = '')
+    {
+        $this->select('', '', $this->escape($orderBy));
+        $props = array();
+        while ($property = $this->next()) {
+            $props[] = clone $property;
+        }
+        return $props;
+    }
+
+    /**
      * Returns all system properties by type and name.
      * @param  string  $type
      * @param  string  $name
@@ -96,7 +111,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      */
     public function fetchByTypeName($type, $name)
     {
-        $this->select("type'=" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        $this->select("type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
         if ($property = $this->next()) {
             return $property;
         }
@@ -110,7 +125,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      */
     public function fetchByType($type)
     {
-        $this->select("type'=" . $this->escape($type) . "'");
+        $this->select("type='" . $this->escape($type) . "'");
         $props = array();
         while ($property = $this->next()) {
             $props[] = clone $property;
@@ -126,7 +141,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      */
     public function deleteByTypeName($type, $name)
     {
-        $this->select("type'=" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        $this->select("type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
         return $this->_deleteSelected();
     }
 
@@ -137,7 +152,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      */
     public function deleteByType($type)
     {
-        $this->select("type'=" . $this->escape($type) . "'");
+        $this->select("type='" . $this->escape($type) . "'");
         return $this->_deleteSelected();
     }
 
