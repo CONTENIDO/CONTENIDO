@@ -1445,6 +1445,17 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
     }
 
     /**
+     * Loads a single entry by it's id.
+     *
+     * @param   mixed   $id   The primary key of the item to load.
+     * @return  Item  The loaded item
+     */
+    public function fetchById($id)
+    {
+        return $this->loadItem($id);
+    }
+
+    /**
      * Loads a single object from the database.
      * 
      * @param   mixed   $mItem  The primary key of the item to load or a recordset
