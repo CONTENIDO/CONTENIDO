@@ -1447,11 +1447,16 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
     /**
      * Loads a single entry by it's id.
      *
-     * @param   mixed   $id   The primary key of the item to load.
+     * @param   string|int   $id   The primary key of the item to load.
      * @return  Item  The loaded item
      */
     public function fetchById($id)
     {
+        if (is_numeric($id)) {
+            $id = (int) $id;
+        } elseif (is_string($id)) {
+            $id = $this->escape($id);
+        }
         return $this->loadItem($id);
     }
 
