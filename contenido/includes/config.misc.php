@@ -1,25 +1,25 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO Misc Configurations
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend includes
- * @version    1.4.10
+ * @version    1.4.12
  * @author     Holger Librenz
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2004-02-24
  *   modified 2008-06-25, Frederic Schneider, add security fix
  *   modified 2008-07-04, Dominik Ziegler, fixed bug CON-174
@@ -29,52 +29,49 @@
  *   modified 2010-05-20, Murat Purc, documented settings for UrlBuilder and caching.
  *   modified 2011-03-13  Murat Purc, added configuration for GenericDB caching.
  *   modified 2011-08-24, Dominik Ziegler, removed CVS datetag configuration entry
+ *   modified 2011-11-10  Murat Purc, added configuration for properties (user, group, system) caching.
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 global $cfg;
 
-/* IMPORTANT! Put your modifications into the file "config.local.php"
+/* IMPORTANT! Put your modifications into the file 'config.local.php'
    to prevent that your changes are overwritten during a system update. */
 
+
 /* Misc settings
- * ----------------------------------
- *
- * Actually no variables, but important settings
- * for error handling and logging.
+ * -----------------------------------------------------------------------------
+ * Actually no variables, but important settings for error handling and logging.
  */
 
-/* Current CONTENIDO Version. You shouldn't change this
-   value unless you know what you are doing. */
+/* Current CONTENIDO Version. You shouldn't change this value unless you know what 
+   you are doing. */
 $cfg['version'] = '4.9.0-alpha1';
 
 /* Backend timeout */
-$cfg["backend"]["timeout"] = 60;
+$cfg['backend']['timeout'] = 60;
 
 /* Use Pseudo-Cron? */
-$cfg["use_pseudocron"] = true;
+$cfg['use_pseudocron'] = true;
 
 /* If you want to measure function timing set this to true */
-$cfg["debug"]["functiontiming"] = false;
+$cfg['debug']['functiontiming'] = false;
 
-/* If you want to measure backend page rendering times, set this
-   to true */
+/* If you want to measure backend page rendering times, set this to true */
+$cfg['debug']['rendering'] = false;
 
-$cfg["debug"]["rendering"] = false;
+/* To output the code when editing and browsing the frontend, set this to true */
+$cfg['debug']['codeoutput'] = false;
 
-/* To output the code when editing and browsing the frontend, set
-   this to true */
-$cfg["debug"]["codeoutput"] = false;
-
-/* If true, use the field "urlname" for resolving. "name" otherwise */
-$cfg["urlpathresolve"] = false;
+/* If true, use the field 'urlname' for resolving. 'name' otherwise */
+$cfg['urlpathresolve'] = false;
 
 /* The available charsets */
 $cfg['AvailableCharsets'] = array(
@@ -94,7 +91,7 @@ $cfg['AvailableCharsets'] = array(
     'iso-8859-13',
     'iso-8859-14',
     'iso-8859-15',
-	'iso-8859-16',
+    'iso-8859-16',
     'windows-1250',
     'windows-1251',
     'windows-1252',
@@ -118,41 +115,39 @@ $cfg['AvailableCharsets'] = array(
 
 
 /* Error handling settings
- * ----------------------------------
- *
- * Actually no variables, but important settings
- * for error handling and logging.
+ * -----------------------------------------------------------------------------
+ * Actually no variables, but important settings for error handling and logging.
  */
 
 /* Don't display errors */
-//@ini_set("display_errors",true);
+//@ini_set('display_errors', true);
 
 /* Log errors to a file */
-@ini_set("log_errors",true);
+@ini_set('log_errors', true);
 
 /* The file in which we write the error log */
-@ini_set("error_log",$cfg["path"]["contenido"]."logs/errorlog.txt");
+@ini_set('error_log', $cfg['path']['contenido'] . 'logs/errorlog.txt');
 
 /* Report all errors except warnings */
-error_reporting (E_ALL ^E_NOTICE);
+error_reporting(E_ALL ^E_NOTICE);
 
 
 /* Session data storage container (PHPLIB)
- * ----------------------------------
- *
+ * -----------------------------------------------------------------------------
  * Different session data storage containers are available.
- * file	= session data will be stored in a file on the file system
- * sql	= session data will be stored in a database table - as it is
+ * file = session data will be stored in a file on the file system
+ * sql  = session data will be stored in a database table - as it is
  */
 
 /* default container is sql */
-$cfg["session_container"] = 'sql';
+$cfg['session_container'] = 'sql';
 
 /* Use heap table to accelerate statitics (off by default) */
-$cfg["statistics_heap_table"] = false;
+$cfg['statistics_heap_table'] = false;
+
 
 /* HTTP parameter check
- *
+ * -----------------------------------------------------------------------------
  * This feature checks GET and POST parameters against a whitelist defined in
  * $cfg['http_params_check']['config']. Depending on mode administrated in the
  * same config as the whitelist CONTENIDO will stop processing in case of unknown
@@ -166,34 +161,32 @@ $cfg["statistics_heap_table"] = false;
 $cfg['http_params_check']['enabled'] = false;
 
 // configuration file (whitelist and mode)
-$cfg['http_params_check']['config'] = $cfg["path"]["contenido"] . $cfg["path"]["includes"] . '/config.http_check.php';
+$cfg['http_params_check']['config'] = $cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.http_check.php';
 
 /* max file size for one session file */
 $cfg['session_line_length'] = 99999;
 
 
-/**
- * Global cache control flag
- * ----------------------------------
- * This flag is for globally activating the caching feature in all frontends. 
+/* Global cache control flag
+ * -----------------------------------------------------------------------------
+ * This flag is for globally activating the caching feature in all frontends.
  * NOTE: You can control the caching behaviour of each client by confiugring it
  * separately in its specific configuration file located in cms/includes/concache.php.
  *
- * So, if you want to enable frontend caching, set $cfg["cache"]["disable"] to false and configure 
+ * So, if you want to enable frontend caching, set $cfg['cache']['disable'] to false and configure
  * the rest in cms/includes/concache.php!
  *
  * @TODO: Need a caching solution with better integration in CONTENIDO core
  */
- 
+
 // (bool) enable/disable caching
 $cfg['cache']['disable'] = true;
 
 
-/**
- * GenericDB settings
- * ----------------------------------
+/* GenericDB settings
+ * -----------------------------------------------------------------------------
  */
-// (string) The GenericDB driver to use, at the moment only "mysql" is supported
+// (string) The GenericDB driver to use, at the moment only 'mysql' is supported
 $cfg['sql']['gdb_driver'] = 'mysql';
 
 // (int) Number of GenericDB items per table to cache
@@ -216,19 +209,17 @@ $cfg['help'] = false;
  *
  * Note: The URL should be absolute with http:// in front of it.
  */
-$cfg["contenido"]["errorpage"] = "";
+$cfg['contenido']['errorpage'] = '';
 
 /* Configure an email address to alert when CONTENIDO is unable to run. */
-$cfg["contenido"]["notifyonerror"] = "";
+$cfg['contenido']['notifyonerror'] = '';
 
 /* Configure how often the notification email is sent, in minutes */
-$cfg["contenido"]["notifyinterval"] = 20;
+$cfg['contenido']['notifyinterval'] = 20;
 
 
-/**
- * UrlBuilder settings
- * ----------------------------------
- * 
+/* UrlBuilder settings
+ * -----------------------------------------------------------------------------
  * Configuration of UrlBuilder to use.
  *
  * Example setting for UrlBuilder 'front_content' (generates URLs like '/cms/front_content.php?idcat=2&lang=1'):
@@ -242,9 +233,9 @@ $cfg["contenido"]["notifyinterval"] = 20;
  * See also http://forum.contenido.org/viewtopic.php?f=64&t=23280
  */
 // (string)  Name of UrlBuilder to use.
-//           Feasible values are 'front_content', 'custom', 'custom_path' or a user defined name. 
+//           Feasible values are 'front_content', 'custom', 'custom_path' or a user defined name.
 //           Check out Contenido_UrlBuilderFactory::getUrlBuilder() in
-//           contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php for more details 
+//           contenido/classes/UrlBuilder/Contenido_UrlBuilderFactory.class.php for more details
 //           about this setting.
 $cfg['url_builder']['name']   = 'front_content';
 
@@ -254,8 +245,8 @@ $cfg['url_builder']['name']   = 'front_content';
 $cfg['url_builder']['config'] = array();
 
 
-/**
- * Password Settings
+/* Password Settings
+ * -----------------------------------------------------------------------------
  * For more comments please look in class.conuser.php file
  */
 // Enable or disable checking password (true or false)
@@ -274,9 +265,27 @@ $cfg['password']['symbols_mandatory'] = 3;
 // If set to a value greater than 0, at least $cfg['password']['numbers_mandatory'] numbers must be in password
 $cfg['password']['numbers_mandatory'] = 3;
 
-/**
- * Content Type Settings
+
+/* Content Type Settings
+ * -----------------------------------------------------------------------------
  */
-// Define here all content types which includes special module translations (dont forget the prefix "CMS_"!)
+// Define here all content types which includes special module translations (dont forget the prefix 'CMS_'!)
 $cfg['translatable_content_types'] = array('CMS_TEASER', 'CMS_FILELIST');
+
+
+/* Properties settings
+ * -----------------------------------------------------------------------------
+ * Here you can configure the behavior of properties (user, group and system).
+ * Enabling caching for a specific properties will preload all related entries at
+ * frontend pages and this enhances the performance during application lifecycle.
+ */
+// (bool) Enable caching of user properties at frontend
+$cfg['properties']['user_prop']['enable_cache'] = true;
+
+// (bool) Enable caching of group properties at frontend
+$cfg['properties']['group_prop']['enable_cache'] = true;
+
+// (bool) Enable caching of system properties at frontend
+$cfg['properties']['system_prop']['enable_cache'] = true;
+
 ?>
