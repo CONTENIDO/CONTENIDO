@@ -54,7 +54,9 @@
  *   modified 2010-09-23, Murat Purc, fixed $encoding handling, see [#CON-305]
  *   modified 2011-02-07, Dominik Ziegler, added exit after redirections to force their execution
  *   modified 2011-02-10, Dominik Ziegler, moved function declaration of IP_match out of front_content.php
- *     modified 2011-06-09, Rusmir Jusufovic, add Contenido_Vars for modul in file concpets
+ *   modified 2011-06-09, Rusmir Jusufovic, add Contenido_Vars for modul in file concpets
+ *   modified 2011-11-09, Murat Purc, replaced user property sql against usage of cApiUserPropertyCollection()
+ *
  *   $Id$:
  * }}
  *
@@ -707,15 +709,13 @@ else
     {
         if ($auth->auth["uid"] == "nobody")
         {
-            $sql = "SELECT user_id, value FROM ".$cfg["tab"]["user_prop"]." WHERE type='frontend' and name='allowed_ip'";
-            $db->query($sql);
-
-            while ($db->next_record())
+            $userPropColl = new cApiUserPropertyCollection();
+            $userProperties = $userPropColl->fetchByTypeName('frontend', 'allowed_ip');
+            foreach ($userProperties as $userProperty)
             {
-                $user_id = $db->f("user_id");
-
-                $range = urldecode($db->f("value"));
-                $slash = strpos($range, "/");
+                $user_id = $userProperty->get('user_id');
+                $range = urldecode($userProperty->f('value'));
+                $slash = strpos($range, '/');
 
                 if ($slash == false)
                 {
@@ -963,4 +963,5 @@ if (isset ($savedlang))
 }
 
 page_close();
+
 ?>

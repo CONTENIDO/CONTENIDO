@@ -110,6 +110,23 @@ class cApiUserPropertyCollection extends ItemCollection
     }
 
     /**
+     * Returns all user properties of all users by type and name.
+     * @param  string  $type
+     * @param  string  $name
+     * @return cApiUserProperty[]
+     */
+    public function fetchByTypeName($type, $name)
+    {
+        $this->select("type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
+        $props = array();
+        while ($property = $this->next()) {
+            $props[] = clone $property;
+        }
+        return $props;
+    }
+
+
+    /**
      * Returns all user properties by userid.
      * @return cApiUserProperty[]
      */
