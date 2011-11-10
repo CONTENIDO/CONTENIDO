@@ -50,7 +50,16 @@ if (!defined('CON_FRAMEWORK')) {
 
 class cApiSystemPropertyCollection extends ItemCollection
 {
+    /**
+     * List of cached entries
+     * @var array
+     */
     protected static $_entries;
+
+    /**
+     * Flag to enable caching.
+     * @var bool
+     */
     protected static $_enableCache;
 
     /**
