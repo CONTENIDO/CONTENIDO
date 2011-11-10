@@ -285,6 +285,10 @@ $cfg['properties']['user_prop']['enable_cache'] = true;
 // (bool) Enable caching of group properties at frontend
 $cfg['properties']['group_prop']['enable_cache'] = true;
 
+// (int) Max groups to cache. Is helpfull if a user is in several groups. It's 
+//       recommended to have a lower number, e. g. 3
+$cfg['properties']['group_prop']['max_groups'] = 3;
+
 // (bool) Enable caching of system properties at frontend
 $cfg['properties']['system_prop']['enable_cache'] = true;
 

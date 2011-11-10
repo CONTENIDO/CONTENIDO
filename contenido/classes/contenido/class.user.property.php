@@ -15,16 +15,13 @@
  * - idcatlang     (int)
  *
  * If caching is enabled, see $cfg['properties']['system_prop']['enable_cache'],
- * all entries will be loaded at first time. Caching is used only at frontend,
- * backend will still work without caching.
+ * all entries will be loaded at first time.
  * If enabled, each call of cApiUserPropertyCollection functions to retrieve properties
  * will return the cached entries without stressing the database.  
  *
  * The cApiUserPropertyCollection class keeps also track of changed and deleted
  * properties and synchronizes them with cached values, as long as you use the 
  * interface of cApiUserPropertyCollection to manage the properties.
- *
- * This class is used for backend users accessing frontend!
  *
  * Requirements:
  * @con_php_req 5.0
@@ -76,16 +73,14 @@ class cApiUserPropertyCollection extends ItemCollection
      * Constructor
      * @param  string  $userId
      */
-    public function __construct($userId = '')
+    public function __construct($userId)
     {
-        global $cfg, $contenido;
+        global $cfg;
         parent::__construct($cfg['tab']['user_prop'], 'iduserprop');
         $this->_setItemClass('cApiUserProperty');
 
         if (!isset(self::$_enableCache)) {
-            if (isset($contenido)) {
-                self::$_enableCache = false;
-            } elseif (isset($cfg['properties']) && isset($cfg['properties']['user_prop']) 
+            if (isset($cfg['properties']) && isset($cfg['properties']['user_prop']) 
                 && isset($cfg['properties']['user_prop']['enable_cache']))
             {
                 self::$_enableCache = (bool) $cfg['properties']['user_prop']['enable_cache'];
@@ -94,9 +89,7 @@ class cApiUserPropertyCollection extends ItemCollection
             }
         }
 
-        if ($userId !== '') {
-            $this->setUserId($userId);
-        }
+        $this->setUserId($userId);
     }
 
     /**
@@ -110,9 +103,13 @@ class cApiUserPropertyCollection extends ItemCollection
     /**
      * User id setter
      * @param  string  $userId
+     * @throws  Exception  If passed user id is empty
      */
     public function setUserId($userId)
     {
+        if (empty($userId)) {
+            throw new Exception("Empty user id");
+        }
         $this->_userId = $userId;
         if (self::$_enableCache && !isset(self::$_entries)) {
             $this->_loadFromCache();

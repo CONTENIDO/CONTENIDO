@@ -13,8 +13,7 @@
  * - value         (string)
  *
  * If caching is enabled, see $cfg['properties']['system_prop']['enable_cache'],
- * all entries will be loaded at first time. Caching is used only at frontend,
- * backend will still work without caching.
+ * all entries will be loaded at first time.
  * If enabled, each call of cApiSystemPropertyCollection functions to retrieve properties
  * will return the cached entries without stressing the database.  
  *
@@ -67,14 +66,12 @@ class cApiSystemPropertyCollection extends ItemCollection
      */
     public function __construct()
     {
-        global $cfg, $contenido;
+        global $cfg;
         parent::__construct($cfg['tab']['system_prop'], 'idsystemprop');
         $this->_setItemClass('cApiSystemProperty');
 
         if (!isset(self::$_enableCache)) {
-            if (isset($contenido)) {
-                self::$_enableCache = false;
-            } elseif (isset($cfg['properties']) && isset($cfg['properties']['system_prop']) 
+            if (isset($cfg['properties']) && isset($cfg['properties']['system_prop']) 
                 && isset($cfg['properties']['system_prop']['enable_cache']))
             {
                 self::$_enableCache = (bool) $cfg['properties']['system_prop']['enable_cache'];
