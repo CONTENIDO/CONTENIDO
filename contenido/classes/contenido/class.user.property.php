@@ -24,6 +24,8 @@
  * properties and synchronizes them with cached values, as long as you use the 
  * interface of cApiUserPropertyCollection to manage the properties.
  *
+ * This class is used for backend users accessing frontend!
+ *
  * Requirements:
  * @con_php_req 5.0
  *

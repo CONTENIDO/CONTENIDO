@@ -86,7 +86,7 @@ class Contenido_Effective_Setting
      */
     public static function get($type, $name, $default = '')
     {
-        global $auth;
+        global $auth, $contenido;
 
         $key = $auth->auth['uid'] . '_' . $type . '_' . $name;
 
@@ -95,7 +95,7 @@ class Contenido_Effective_Setting
             return $value;
         }
 
-        if ($auth->auth['uid'] != 'nobody') {
+        if ($auth->auth['uid'] != 'nobody' && isset($contenido)) {
             $obj = self::_getUserInstance();
             $value = $obj->getUserProperty($type, $name, true);
         }
