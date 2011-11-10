@@ -14,12 +14,22 @@
  * - value         (string)
  * - idcatlang     (int)
  *
+ * If caching is enabled, see $cfg['properties']['system_prop']['enable_cache'],
+ * all entries will be loaded at first time. Caching is used only at frontend,
+ * backend will still work without caching.
+ * If enabled, each call of cApiUserPropertyCollection functions to retrieve properties
+ * will return the cached entries without stressing the database.  
+ *
+ * The cApiUserPropertyCollection class keeps also track of changed and deleted
+ * properties and synchronizes them with cached values, as long as you use the 
+ * interface of cApiUserPropertyCollection to manage the properties.
+ *
  * Requirements:
  * @con_php_req 5.0
  *
  *
  * @package    CONTENIDO Backend classes
- * @version    0.1
+ * @version    0.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -28,6 +38,7 @@
  *
  * {@internal
  *   created  2011-11-03
+ *   created  2011-11-10, Murat Purc, added caching feature
  *
  *   $Id: $:
  * }}
@@ -41,7 +52,23 @@ if (!defined('CON_FRAMEWORK')) {
 
 class cApiUserPropertyCollection extends ItemCollection
 {
+    /**
+     * User id (usually the current logged in user)
+     * @var string
+     */
     protected $_userId = '';
+
+    /**
+     * List of cached entries
+     * @var array
+     */
+    protected static $_entries;
+
+    /**
+     * Flag to enable caching.
+     * @var bool
+     */
+    protected static $_enableCache;
 
     /**
      * Constructor
@@ -49,12 +76,33 @@ class cApiUserPropertyCollection extends ItemCollection
      */
     public function __construct($userId = '')
     {
-        global $cfg;
+        global $cfg, $contenido;
         parent::__construct($cfg['tab']['user_prop'], 'iduserprop');
         $this->_setItemClass('cApiUserProperty');
+
+        if (!isset(self::$_enableCache)) {
+            if (isset($contenido)) {
+                self::$_enableCache = false;
+            } elseif (isset($cfg['properties']) && isset($cfg['properties']['user_prop']) 
+                && isset($cfg['properties']['user_prop']['enable_cache']))
+            {
+                self::$_enableCache = (bool) $cfg['properties']['user_prop']['enable_cache'];
+            } else {
+                self::$_enableCache = false;
+            }
+        }
+
         if ($userId !== '') {
             $this->setUserId($userId);
         }
+    }
+
+    /**
+     * Resets the states of static properties.
+     */
+    public static function reset()
+    {
+        unset(self::$_enableCache, self::$_entries);
     }
 
     /**
@@ -64,6 +112,9 @@ class cApiUserPropertyCollection extends ItemCollection
     public function setUserId($userId)
     {
         $this->_userId = $userId;
+        if (self::$_enableCache && !isset(self::$_entries)) {
+            $this->_loadFromCache();
+        }
     }
 
     /**
@@ -82,6 +133,10 @@ class cApiUserPropertyCollection extends ItemCollection
             $item->store();
         } else {
             $item = $this->create($type, $name, $value, $idcatlang);
+        }
+
+        if (self::$_enableCache) {
+            return $this->_addToCache($item);
         }
 
         return $item;
@@ -106,25 +161,12 @@ class cApiUserPropertyCollection extends ItemCollection
         $item->set('idcatlang', (int) $idcatlang);
         $item->store();
 
+        if (self::$_enableCache) {
+            return $this->_addToCache($item);
+        }
+
         return $item;
     }
-
-    /**
-     * Returns all user properties of all users by type and name.
-     * @param  string  $type
-     * @param  string  $name
-     * @return cApiUserProperty[]
-     */
-    public function fetchByTypeName($type, $name)
-    {
-        $this->select("type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
-        $props = array();
-        while ($property = $this->next()) {
-            $props[] = clone $property;
-        }
-        return $props;
-    }
-
 
     /**
      * Returns all user properties by userid.
@@ -132,7 +174,28 @@ class cApiUserPropertyCollection extends ItemCollection
      */
     public function fetchByUserId()
     {
+        if (self::$_enableCache) {
+            return $this->_fetchByUserIdFromCache();
+        }
+
         $this->select("user_id='" . $this->escape($this->_userId) . "'");
+        $props = array();
+        while ($property = $this->next()) {
+            $props[] = clone $property;
+        }
+        return $props;
+    }
+
+    /**
+     * Returns all user properties of all users by type and name.
+     * NOTE: Enabled caching will be skipped in this case!
+     * @param  string  $type
+     * @param  string  $name
+     * @return cApiUserProperty[]
+     */
+    public function fetchByTypeName($type, $name)
+    {
+        $this->select("type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
         $props = array();
         while ($property = $this->next()) {
             $props[] = clone $property;
@@ -148,6 +211,10 @@ class cApiUserPropertyCollection extends ItemCollection
      */
     public function fetchByUserIdTypeName($type, $name)
     {
+        if (self::$_enableCache) {
+            return $this->_fetchByUserIdTypeNameFromCache($type, $name);
+        }
+
         $this->select("user_id='" . $this->escape($this->_userId) . "' AND type='" . $this->escape($type) . "' AND name='" . $this->escape($name) . "'");
         if ($property = $this->next()) {
             return $property;
@@ -162,6 +229,10 @@ class cApiUserPropertyCollection extends ItemCollection
      */
     public function fetchByUserIdType($type)
     {
+        if (self::$_enableCache) {
+            return $this->_fetchByUserIdTypeFromCache($type);
+        }
+
         $this->select("user_id='" . $this->escape($this->_userId) . "' AND type='" . $this->escape($type) . "'");
         $props = array();
         while ($property = $this->next()) {
@@ -210,11 +281,102 @@ class cApiUserPropertyCollection extends ItemCollection
     protected function _deleteSelected()
     {
         $result = false;
-        while ($system = $this->next()) {
-            $result = $this->delete($system->get('idsystemprop'));
+        while ($prop = $this->next()) {
+            $id = $prop->get('iduserprop');
+            if (self::$_enableCache) {
+                $this->_deleteFromCache($id);
+            }
+            $result = $this->delete($id);
         }
         return $result;
     }
+
+    /**
+     * Loads/Caches all user properties.
+     */
+    protected function _loadFromCache()
+    {
+        self::$_entries = array();
+        $this->select("user_id='" . $this->escape($this->_userId) . "'");
+        while ($property = $this->next()) {
+            $data = $property->toArray();
+            self::$_entries[$data['iduserprop']] = $data;
+        }
+    }
+
+    /**
+     * Adds a entry to the cache.
+     * @param  cApiUserProperty  $entry
+     */
+    protected function _addToCache($entry)
+    {
+        $data = $entry->toArray();
+        self::$_entries[$data['iduserprop']] = $data;
+    }
+
+    /**
+     * Fetches all user properties by userid from cache.
+     * @return cApiUserProperty[]
+     */
+    protected function _fetchByUserIdFromCache()
+    {
+        $props = array();
+        $obj = new cApiUserProperty();
+        foreach (self::$_entries as $entry) {
+            $obj->loadByRecordSet($entry);
+            $props[] = clone $obj;
+        }
+        return $props;
+    }
+
+    /**
+     * Fetches user properties by userid, type and name from cache.
+     * @param  string  $type
+     * @param  string  $name
+     * @return cApiUserProperty|null
+     */
+    public function _fetchByUserIdTypeNameFromCache($type, $name)
+    {
+        $props = array();
+        $obj = new cApiUserProperty();
+        foreach (self::$_entries as $entry) {
+            if ($entry['type'] == $type && $entry['name'] == $name) {
+                $obj->loadByRecordSet($entry);
+                return $obj;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Fetches user properties by userid and type from cache.
+     * @param  string  $type
+     * @return cApiUserProperty[]
+     */
+    public function _fetchByUserIdTypeFromCache($type)
+    {
+        $props = array();
+        $obj = new cApiUserProperty();
+        foreach (self::$_entries as $entry) {
+            if ($entry['type'] == $type) {
+                $obj->loadByRecordSet($entry);
+                $props[] = clone $obj;
+            }
+        }
+        return $props;
+    }
+
+    /**
+     * Removes a entry from cache.
+     * @param   int  $id
+     */
+    protected function _deleteFromCache($id)
+    {
+        if (isset(self::$_entries[$id])) {
+            unset(self::$_entries[$id]);
+        }
+    }
+
 }
 
 
