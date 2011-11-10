@@ -234,7 +234,7 @@ class cApiSystemPropertyCollection extends ItemCollection
         while ($system = $this->next()) {
             $id = $system->get('idsystemprop');
             if (self::$_enableCache) {
-                $this->_deleteFromCache();
+                $this->_deleteFromCache($id);
             }
             $result = $this->delete($id);
         }
