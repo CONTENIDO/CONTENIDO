@@ -166,7 +166,7 @@ class cApiPropertyCollection extends ItemCollection
         $name     = $this->db->escape($name);
 
         if (isset($this->client)) {
-            $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
+            $this->select("idclient = ".(int)$this->client." AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
         } else {
             $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
         }
@@ -199,7 +199,7 @@ class cApiPropertyCollection extends ItemCollection
         $type     = $this->db->escape($type);
 
         if (isset($this->client)) {
-            $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."'");
+            $this->select("idclient = ".(int)$this->client." AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."'");
         } else {
             $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."'");
         }
@@ -260,12 +260,12 @@ class cApiPropertyCollection extends ItemCollection
         $type     = $this->db->escape($type);
         $name     = $this->db->escape($name);
         $value    = $this->db->escape($value);
-        $idProp   = Contenido_Security::toInteger($idProp);
+        $idProp   = (int)$idProp;
 
         if ($idProp == 0) {
-            $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
+            $this->select("idclient = ".(int)$this->client." AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
         } else {
-            $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND idproperty = '".$idProp."'");
+            $this->select("idclient = ".(int)$this->client." AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND idproperty = ".$idProp);
         }
 
         if ($item = $this->next()) {
@@ -299,7 +299,7 @@ class cApiPropertyCollection extends ItemCollection
         $name     = $this->db->escape($name);
 
         if (isset($this->client)) {
-            $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
+            $this->select("idclient = ".(int)$this->client." AND itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
         } else {
             $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."' AND type = '".$type."' AND name = '".$name."'");
         }
@@ -323,7 +323,7 @@ class cApiPropertyCollection extends ItemCollection
         $itemid   = $this->db->escape($itemid);
 
         if (isset($this->client)) {
-            $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."'");
+            $this->select("idclient = ".(int)$this->client." AND itemtype = '".$itemtype."' AND itemid = '".$itemid."'");
         } else {
             $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."'");
         }
@@ -358,7 +358,7 @@ class cApiPropertyCollection extends ItemCollection
         }
 
         if (isset($this->client)) {
-            $this->select("idclient = '" . $this->client . "' AND " . $field . " = '" . $fieldValue . "'" . $authString, '' ,'itemid');
+            $this->select("idclient = " . (int) $this->client . " AND " . $field . " = '" . $fieldValue . "'" . $authString, '' ,'itemid');
         } else {
             $this->select($field . " = '" . $fieldValue . "'" . $authString);
         }
@@ -396,7 +396,7 @@ class cApiPropertyCollection extends ItemCollection
         $itemid   = $this->db->escape($itemid);
 
         if (isset($this->client)) {
-            $this->select("idclient = '".$this->client."' AND itemtype = '".$itemtype."' AND itemid = '".$itemid."'");
+            $this->select("idclient = ".(int)$this->client." AND itemtype = '".$itemtype."' AND itemid = '".$itemid."'");
         } else {
             $this->select("itemtype = '".$itemtype."' AND itemid = '".$itemid."'");
         }
