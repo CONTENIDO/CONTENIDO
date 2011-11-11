@@ -135,7 +135,7 @@ class cApiUserPropertyCollection extends ItemCollection
         }
 
         if (self::$_enableCache) {
-            return $this->_addToCache($item);
+            $this->_addToCache($item);
         }
 
         return $item;
@@ -161,7 +161,7 @@ class cApiUserPropertyCollection extends ItemCollection
         $item->store();
 
         if (self::$_enableCache) {
-            return $this->_addToCache($item);
+            $this->_addToCache($item);
         }
 
         return $item;

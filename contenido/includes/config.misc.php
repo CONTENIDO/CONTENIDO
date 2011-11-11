@@ -275,21 +275,35 @@ $cfg['translatable_content_types'] = array('CMS_TEASER', 'CMS_FILELIST');
 
 /* Properties settings
  * -----------------------------------------------------------------------------
- * Here you can configure the behavior of properties (user, group and system).
- * Enabling caching for a specific properties will preload all related entries at
- * frontend pages and this enhances the performance during application lifecycle.
+ * Here you can configure the behavior of properties (user, group, system and 
+ * general properties).
+ * Enabling caching for a specific properties will preload all related entries 
+ * which enhances the performance during application lifecycle.
  */
-// (bool) Enable caching of user properties at frontend
+// (bool) Enable caching of user properties
 $cfg['properties']['user_prop']['enable_cache'] = true;
 
-// (bool) Enable caching of group properties at frontend
+// (bool) Enable caching of group properties
 $cfg['properties']['group_prop']['enable_cache'] = true;
 
 // (int) Max groups to cache. Is helpfull if a user is in several groups. It's 
 //       recommended to have a lower number, e. g. 3
 $cfg['properties']['group_prop']['max_groups'] = 3;
 
-// (bool) Enable caching of system properties at frontend
+// (bool) Enable caching of system properties
 $cfg['properties']['system_prop']['enable_cache'] = true;
+
+// (bool) Enable caching of general properties (for current client)
+$cfg['properties']['properties']['enable_cache'] = true;
+
+// (array) Configuration of itemtypes and itemids which should be cached.
+//         Itemids are represented with wild-cards and will be replaced as follows:
+//         - %client% against current client id
+//         - %lang% against current language id
+$cfg['properties']['properties']['itemtypes'] = array(
+    'clientsetting' => '%client%',
+    'idclientslang' => '%lang%',
+    'idlang' => '%lang%',
+);
 
 ?>

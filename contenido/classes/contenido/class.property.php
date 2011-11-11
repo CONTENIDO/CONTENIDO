@@ -25,7 +25,7 @@
  *
  * {@internal
  *   created  2011-10-11
- *   created  2011-11-10, Murat Purc, added method getValuesOnlyByTypeName()
+ *   created  2011-11-10, Murat Purc, added caching method getValuesOnlyByTypeName()
  *
  *   $Id: $:
  * }}
@@ -78,6 +78,16 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * idproperty, author, created, modified and modifiedby are automatically handled by
  * the class.
+ *
+ *
+ * If caching is enabled, see $cfg['properties']['properties']['enable_cache'],
+ * configured entries will be loaded at first time.
+ * If enabled, each call of cApiPropertyCollection functions to retrieve cacheable
+ * properties will return the cached entries without stressing the database.
+ *
+ * The cApiPropertyCollection class keeps also track of changed and deleted
+ * properties and synchronizes them with cached values, as long as you use the
+ * interface of cApiPropertyCollection to manage the properties.
  */
 
 
@@ -89,17 +99,74 @@ class cApiPropertyCollection extends ItemCollection
      */
     public $client;
 
+    /**
+     * List of cached entries
+     * @var array
+     */
+    protected static $_entries;
+
+    /**
+     * Flag to enable caching.
+     * @var bool
+     */
+    protected static $_enableCache;
+
+    /**
+     * Itemtypes and itemids array
+     * @var array
+     */
+    protected static $_cacheItemtypes;
+
 
     /**
      * Constructor Function
      */
     public function __construct()
     {
-        global $cfg, $client;
+        global $cfg, $client, $lang;
         $this->client = Contenido_Security::toInteger($client);
         parent::__construct($cfg['tab']['properties'], 'idproperty');
         $this->_setItemClass('cApiProperty');
+
+        if (!isset(self::$_enableCache)) {
+            if (isset($cfg['properties']) && isset($cfg['properties']['properties'])
+                && isset($cfg['properties']['properties']['enable_cache']))
+            {
+                self::$_enableCache = (bool) $cfg['properties']['properties']['enable_cache'];
+
+                if (isset($cfg['properties']['properties']['itemtypes'])
+                    && is_array($cfg['properties']['properties']['itemtypes']))
+                {
+                    self::$_cacheItemtypes = $cfg['properties']['properties']['itemtypes'];
+                    foreach (self::$_cacheItemtypes as $name => $value) {
+                        if ('%client%' == $value) {
+                            self::$_cacheItemtypes[$name] = (int) $client;
+                        } elseif ('%lang%' == $value) {
+                            self::$_cacheItemtypes[$name] = (int) $lang;
+                        } else {
+                            unset(self::$_cacheItemtypes[$name]);
+                        }
+                    }
+                }
+            } else {
+                self::$_enableCache = false;
+            }
+        }
+
+        if (self::$_enableCache && !isset(self::$_entries)) {
+            $this->_loadFromCache();
+        }
     }
+
+
+    /**
+     * Resets the states of static properties.
+     */
+    public static function reset()
+    {
+        unset(self::$_enableCache, self::$_entries, self::$_cacheItemtypes);
+    }
+
 
     /**
      * Creates a new property item.
@@ -141,6 +208,10 @@ class cApiPropertyCollection extends ItemCollection
         $item->set('author', $this->db->escape($auth->auth['uid']));
         $item->store();
 
+        if ($this->_useCache($itemtype, $itemid)) {
+            $this->_addToCache($item);
+        }
+
         return ($item);
     }
 
@@ -160,6 +231,10 @@ class cApiPropertyCollection extends ItemCollection
      */
     public function getValue($itemtype, $itemid, $type, $name, $default = false)
     {
+        if ($this->_useCache($itemtype, $itemid)) {
+            return $this->_getValueFromCache($itemtype, $itemid, $type, $name, $default);
+        }
+
         $itemtype = $this->db->escape($itemtype);
         $itemid   = $this->db->escape($itemid);
         $type     = $this->db->escape($type);
@@ -193,6 +268,10 @@ class cApiPropertyCollection extends ItemCollection
      **/
     public function getValuesByType($itemtype, $itemid, $type)
     {
+        if ($this->_useCache($itemtype, $itemid)) {
+            return $this->_getValuesByTypeFromCache($itemtype, $itemid, $type);
+        }
+
         $aResult  = array();
         $itemtype = $this->db->escape($itemtype);
         $itemid   = $this->db->escape($itemid);
@@ -273,6 +352,10 @@ class cApiPropertyCollection extends ItemCollection
             $item->set('name', $name);
             $item->set('type', $type);
             $item->store();
+
+            if ($this->_useCache($itemtype, $itemid)) {
+                $this->_addToCache($item);
+            }
         } else {
             $this->create($itemtype, $itemid, $type, $name, $value, true);
         }
@@ -306,6 +389,9 @@ class cApiPropertyCollection extends ItemCollection
 
         if ($item = $this->next()) {
             $this->delete($item->get('idproperty'));
+            if ($this->_useCache()) {
+                $this->_deleteFromCache($item->get('idproperty'));
+            }
         }
     }
 
@@ -319,6 +405,10 @@ class cApiPropertyCollection extends ItemCollection
      */
     public function getProperties($itemtype, $itemid)
     {
+        if ($this->_useCache($itemtype, $itemid)) {
+            return $this->_getPropertiesFromCache($itemtype, $itemid, $type);
+        }
+
         $itemtype = $this->db->escape($itemtype);
         $itemid   = $this->db->escape($itemid);
 
@@ -409,6 +499,9 @@ class cApiPropertyCollection extends ItemCollection
 
         foreach($deleteProperties as $idproperty) {
             $this->delete($idproperty);
+            if ($this->_useCache()) {
+                $this->_deleteFromCache($idproperty);
+            }
         }
     }
 
@@ -422,6 +515,153 @@ class cApiPropertyCollection extends ItemCollection
     {
         $this->client = (int) $idclient;
     }
+
+
+    /**
+     * Loads/Caches configured properties.
+     */
+    protected function _loadFromCache()
+    {
+        global $client;
+        if (!isset(self::$_entries)) {
+            self::$_entries = array();
+        }
+
+        $where = array();
+        foreach (self::$_cacheItemtypes as $itemtype => $itemid) {
+            if (is_numeric($itemid)) {
+                $where[] = "(itemtype = '" . $itemtype . "' AND itemid = " . $itemid . ")";
+            } else {
+                $where[] = "(itemtype = '" . $itemtype . "' AND itemid = '" . $itemid . "')";
+            }
+        }
+
+        if (count($where) == 0) {
+            return;
+        }
+
+        $where = "idclient = " . (int) $client . ' AND ' . implode(' OR ', $where);
+        $this->select($where);
+        while ($property = $this->next()) {
+            $this->_addToCache($property);
+        }
+    }
+
+    protected function _useCache($itemtype = null, $itemid = null)
+    {
+        global $client;
+        $ok = (self::$_enableCache && $this->client == $client);
+        if (!$ok) {
+            return $ok;
+        } elseif ($itemtype == null || $itemid == null) {
+            return $ok;
+        }
+
+        foreach (self::$_cacheItemtypes as $name => $value) {
+            if ($itemtype == $itemtype || $itemid == $itemid) {
+                return true;
+            }
+        }
+    }
+
+
+    /**
+     * Adds a entry to the cache.
+     * @param  cApiUserProperty  $entry
+     */
+    protected function _addToCache($entry)
+    {
+        global $client;
+        $data = $entry->toArray();
+        self::$_entries[$data['idproperty']] = $data;
+    }
+
+
+    /**
+     * Removes a entry from cache.
+     * @param   int  $id
+     */
+    protected function _deleteFromCache($id)
+    {
+        if (isset(self::$_entries[$id])) {
+            unset(self::$_entries[$id]);
+        }
+    }
+
+
+    /**
+     * Returns the value for a given item from cache.
+     *
+     * @param   mixed  $itemtype  Type of the item (example: idcat)
+     * @param   mixed  $itemid    ID of the item (example: 31)
+     * @param   mixed  $type      Type of the data to store (arbitary data)
+     * @param   mixed  $name      Entry name
+     * @return  mixed  Value
+     */
+    protected function _getValueFromCache($itemtype, $itemid, $type, $name, $default = false)
+    {
+        foreach (self::$_entries as $id => $entry) {
+            if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid
+                && $entry['type'] == $type && $entry['name'] == $name)
+            {
+                return Contenido_Security::unescapeDB($entry['value']);
+            }
+        }
+
+        return $default;
+    }
+
+
+    /**
+     * Returns the values for a given item by its type from cache.
+     *
+     * @param   mixed  $itemtype  Type of the item (example: idcat)
+     * @param   mixed  $itemid    ID of the item (example: 31)
+     * @param   mixed  $type      Type of the data to store (arbitary data)
+     * @return  array  Value
+     **/
+    protected function _getValuesByTypeFromCache($itemtype, $itemid, $type)
+    {
+        $result = array();
+
+        foreach (self::$_entries as $id => $entry) {
+            if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid
+                && $entry['type'] == $type)
+            {
+                $result[$entry['name']] = Contenido_Security::unescapeDB($entry['value']);
+            }
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * Returns poperties for given item are available.
+     *
+     * @param   mixed  $itemtype  Type of the item (example: idcat)
+     * @param   mixed  $itemid    ID of the item (example: 31)
+     * @return  array  For each given item
+     */
+    public function _getPropertiesFromCache($itemtype, $itemid)
+    {
+        $result = array();
+        $result[$itemid] = false;
+
+        foreach (self::$_entries as $id => $entry) {
+            if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid) {
+                // enable accessing property values per number and field name
+                $result[$entry['itemid']][$entry['idproperty']] = array(
+                    0 => $entry['type'],  'type' =>  $entry['type'],
+                    1 => $entry['name'],  'name' =>  $entry['name'],
+                    2 => $entry['value'], 'value' => $entry['value']
+                );
+            }
+        }
+
+        return $result;
+    }
+
 }
 
 

@@ -149,7 +149,7 @@ class cApiGroupPropertyCollection extends ItemCollection
         }
 
         if (self::$_enableCache) {
-            return $this->_addToCache($item);
+            $this->_addToCache($item);
         }
 
         return $item;
@@ -175,7 +175,7 @@ class cApiGroupPropertyCollection extends ItemCollection
         $item->store();
 
         if (self::$_enableCache) {
-            return $this->_addToCache($item);
+            $this->_addToCache($item);
         }
 
         return $item;
