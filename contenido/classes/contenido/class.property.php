@@ -25,6 +25,7 @@
  *
  * {@internal
  *   created  2011-10-11
+ *   created  2011-11-10, Murat Purc, added method getValuesOnlyByTypeName()
  *
  *   $Id: $:
  * }}
@@ -205,6 +206,33 @@ class cApiPropertyCollection extends ItemCollection
 
         while ($item = $this->next()) {
             $aResult[$item->get('name')] = Contenido_Security::unescapeDB($item->get('value'));
+        }
+
+        return $aResult;
+    }
+
+
+    /**
+     * Returns the values only by type and name.
+     *
+     * Example:
+     *
+     * $file = $properties->getValuesOnlyByTypeName('note', 'category');
+     *
+     * @param   mixed  $itemtype  Type of the item (example: idcat)
+     * @param   mixed  $name      Type of the data to store (arbitary data)
+     * @return  array  Value
+     **/
+    public function getValuesOnlyByTypeName($type, $name)
+    {
+        $aResult = array();
+        $type = $this->db->escape($type);
+        $name = $this->db->escape($name);
+
+        $this->select("type = '" . $type . "' AND name = '" . $name . "");
+
+        while ($item = $this->next()) {
+            $aResult[] = Contenido_Security::unescapeDB($item->get('value'));
         }
 
         return $aResult;
