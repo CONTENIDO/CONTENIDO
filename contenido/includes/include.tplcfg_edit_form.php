@@ -319,8 +319,9 @@ if (isset($a_d) && is_array($a_d)) {
             $db->query($sql);
             $db->next_record();
 
-            global $cCurrentModule;
+            global $cCurrentModule, $cCurrentContainer;
             $cCurrentModule = $db->f('idmod');
+            $cCurrentContainer = $cnumber;
             $modulecaption = i18n("Module in container").' '.$cnumber.': ';
             $modulename    = $db->f('name');
 

@@ -103,18 +103,9 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
      * @return string value 
      */
     private function  _getValueFromProperties($type , $name) {
-		$db = new DB_Contenido();
-    	$sql = sprintf("SELECT value FROM %s WHERE 
-    					idclient=%s AND 
-    					itemtype='idlang' AND 
-    					itemid=%s AND  
-    					type='%s' AND 
-    					name='%s'" ,$this->_cfg["tab"]["properties"],$this->_client, $this->_idlang, $type , $name) ;
-    	
-    	$db->query($sql);
-    	$db->next_record();
-    	return $db->f("value");
-    	
+		$propColl = new cApiPropertyCollection();
+        $propColl->changeClient($this->_client);
+        return $propColl->getValue('idlang', $this->_idlang, $type, $name, '');
     }
     
     /**
