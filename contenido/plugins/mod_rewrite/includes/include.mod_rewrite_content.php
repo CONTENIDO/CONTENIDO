@@ -10,14 +10,15 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend plugins
- * @version    0.1
- * @author     Murat Purc <murat@purc.de>
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.9.0
+ * @package     CONTENIDO Backend plugins
+ * @subpackage  ModRewrite
+ * @version     0.1
+ * @author      Murat Purc <murat@purc.de>
+ * @copyright   four for business AG <www.4fb.de>
+ * @license     http://www.contenido.org/license/LIZENZ.txt
+ * @link        http://www.4fb.de
+ * @link        http://www.contenido.org
+ * @since       file available since CONTENIDO release 4.9.0
  *
  * {@internal
  *   created   2008-04-22
