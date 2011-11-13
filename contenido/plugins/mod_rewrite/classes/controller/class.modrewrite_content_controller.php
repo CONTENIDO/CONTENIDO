@@ -36,14 +36,28 @@ plugin_include(
 );
 
 
+/**
+ * Content controller for general settings.
+ *
+ * @author      Murat Purc <murat@purc.de>
+ * @package     CONTENIDO Backend plugins
+ * @subpackage  ModRewrite
+ */
 class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
 {
 
+    /**
+     * Index action
+     */
     public function indexAction()
     {
         // donut
     }
 
+
+    /**
+     * Save settings action
+     */
     public function saveAction()
     {
         $bDebug = $this->getProperty('bDebug');
@@ -388,6 +402,11 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
     }
 
 
+    /**
+     * Checks, if any sseparators setting is modified or not
+     * @param   array  $aNewCfg  New configuration send by requests.
+     * @return  bool
+     */
     protected function _separatorModified($aNewCfg)
     {
         $aCfg = ModRewrite::getConfig();

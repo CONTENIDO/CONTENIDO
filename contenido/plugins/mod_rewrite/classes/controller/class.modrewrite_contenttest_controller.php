@@ -35,10 +35,25 @@ plugin_include('mod_rewrite', 'classes/class.modrewritetest.php');
 plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php');
 
 
+/**
+ * Content controller to run tests.
+ *
+ * @author      Murat Purc <murat@purc.de>
+ * @package     CONTENIDO Backend plugins
+ * @subpackage  ModRewrite
+ */
 class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
 {
+    /**
+     * Number of max items to process
+     * @var  int
+     */
     protected $_iMaxItems = 0;
 
+
+    /**
+     * Initializer method, sets some view variables
+     */
     public function init()
     {
         $this->_oView->content   = '';
@@ -51,7 +66,7 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
     }
 
     /**
-     * Execute index action
+     * Index action
      */
     public function indexAction()
     {
@@ -60,7 +75,7 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
     }
 
     /**
-     * Execute test action
+     * Test action
      */
     public function testAction()
     {

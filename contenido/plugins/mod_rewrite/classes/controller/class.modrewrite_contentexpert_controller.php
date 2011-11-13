@@ -34,11 +34,31 @@ defined('CON_FRAMEWORK') or die('Illegal call');
 plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php');
 
 
+/**
+ * Content expert controller for expert settings/actions.
+ *
+ * @author      Murat Purc <murat@purc.de>
+ * @package     CONTENIDO Backend plugins
+ * @subpackage  ModRewrite
+ */
 class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
 {
+    /**
+     * Path to restrictive htaccess file
+     * @var string
+     */
     protected $_htaccessRestrictive = '';
+
+    /**
+     * Path to simple htaccess file
+     * @var string
+     */
     protected $_htaccessSimple = '';
 
+
+    /**
+     * Initializer method, sets the paths to htaccess files
+     */
     public function init()
     {
         $this->_oView->content_before = '';
@@ -48,14 +68,18 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
         $this->_htaccessSimple = $pluginPath . 'files/htaccess_simple.txt';
     }
 
+
     /**
-     * Execute index action
+     * Index action
      */
     public function indexAction()
     {
     }
 
 
+    /**
+     * Copy htaccess action
+     */
     public function copyHtaccessAction()
     {
         $type = $this->_getParam('htaccesstype');
@@ -96,6 +120,9 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
     }
 
 
+    /**
+     * Download htaccess action
+     */
     public function downloadHtaccessAction()
     {
         $type = $this->_getParam('htaccesstype');
@@ -119,6 +146,9 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
     }
 
 
+    /**
+     * Reset aliases action
+     */
     public function resetAction()
     {
         // recreate all aliases
@@ -127,6 +157,9 @@ class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract
     }
 
 
+    /**
+     * Reset only empty aliases action
+     */
     public function resetEmptyAction()
     {
         // recreate only empty aliases

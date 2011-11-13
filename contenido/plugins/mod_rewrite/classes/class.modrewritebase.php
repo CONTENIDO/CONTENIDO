@@ -57,7 +57,7 @@ abstract class ModRewriteBase
     /**
      * Sets the enabled state of mod rewrite plugin
      *
-     * @pparam  bool  $bEnabled
+     * @param  bool  $bEnabled
      */
     public static function setEnabled($bEnabled)
     {
@@ -69,6 +69,7 @@ abstract class ModRewriteBase
      * Returns configuration of mod rewrite, content of gobal $cfg['mod_rewrite']
      *
      * @param   string  $key  Name of configuration key
+     * @param   mixed   $default  Default value to return as a fallback
      * @return  mixed   Desired value mr configuration, either the full configuration
      *                  or one of the desired subpart
      */

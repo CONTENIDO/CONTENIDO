@@ -31,16 +31,39 @@
 defined('CON_FRAMEWORK') or die('Illegal call');
 
 
+/**
+ * Mod rewrite debugger class.
+ *
+ * @author      Murat Purc <murat@purc.de>
+ * @package     CONTENIDO Backend plugins
+ * @subpackage  ModRewrite
+ */
 class ModRewriteDebugger
 {
+    /**
+     * Flag to enable debugger
+     *
+     * @var  bool
+     */
     protected static $_bEnabled = false;
 
 
+    /**
+     * Enable debugger setter.
+     * @param  bool  $bEnabled
+     */
     public static function setEnabled($bEnabled)
     {
         self::$_bEnabled = (bool) $bEnabled;
     }
 
+    /**
+     * Adds variable to debugger.
+     * Wrapper for <code>DebuggerFactory::getDebugger('visible_adv')</code>.
+     *
+     * @param  mixed   $mVar  The variable to dump
+     * @param  string  $sLabel  Describtion for passed $mVar
+     */
     public static function add($mVar, $sLabel = '')
     {
         if (!self::$_bEnabled) {
@@ -50,6 +73,10 @@ class ModRewriteDebugger
         $oDebugger->add($mVar, $sLabel);
     }
 
+    /**
+     * Returns output of all added variables to debug.
+     * @return  string
+     */
     public static function getAll()
     {
         if (!self::$_bEnabled) {
@@ -63,6 +90,13 @@ class ModRewriteDebugger
         return $sOutput;
     }
 
+    /**
+     * Logs variable to debugger.
+     * Wrapper for <code>DebuggerFactory::getDebugger('file')</code>.
+     *
+     * @param  mixed   $mVar  The variable to log the contents
+     * @param  string  $sLabel  Describtion for passed $mVar
+     */
     public static function log($mVar, $sLabel = '')
     {
         if (!self::$_bEnabled) {

@@ -117,6 +117,9 @@ class ModRewriteUrlUtil extends ModRewriteBase
         $this->_mrExt        = $aCfg['file_extension'];
     }
 
+    /**
+     * Prevent cloning
+     */
     private function __clone()
     {
     }
@@ -296,7 +299,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
     /**
      * Converts passed url to a another url (CONTENIDO to AMR and vice versa).
      *
-     * @param   string  $urlPath         Source url path
+     * @param   string  $url             Source url
      * @param   string  $fromCatSep      Source category seperator
      * @param   string  $toCatSep        Destination category seperator
      * @param   string  $fromCatWordSep  Source category word seperator

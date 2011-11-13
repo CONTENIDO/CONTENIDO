@@ -31,29 +31,80 @@
 defined('CON_FRAMEWORK') or die('Illegal call');
 
 
+/**
+ * Abstract controller for all concrete mod_rewrite controller implementations.
+ *
+ * @author      Murat Purc <murat@purc.de>
+ * @package     CONTENIDO Backend plugins
+ * @subpackage  ModRewrite
+ */
 abstract class ModRewrite_ControllerAbstract
 {
 
+    /**
+     * View object, holds all view variables
+     * @var  stdClass
+     */
     protected $_oView;
 
+    /**
+     * Global CONTENIDO $cfg variable
+     * @var  array
+     */
     protected $_cfg;
 
+    /**
+     * Global CONTENIDO $client variable (client id)
+     * @var  int
+     */
     protected $_client;
 
+    /**
+     * Global CONTENIDO $area variable (area name/id)
+     * @var  int|string
+     */
     protected $_area;
 
+    /**
+     * Global CONTENIDO $action variable (send by request)
+     * @var  string
+     */
     protected $_action;
 
+    /**
+     * Global CONTENIDO $frame variable (current frame in backend)
+     * @var  int
+     */
     protected $_frame;
 
+    /**
+     * Global CONTENIDO $contenido variable (session id)
+     * @var  string
+     */
     protected $_contenido;
 
+    /**
+     * Template file or template string to render
+     * @var  string
+     */
     protected $_template = null;
 
+    /**
+     * Additional properties list
+     * @var  array
+     */
     protected $_properties = array();
 
+    /**
+     * Debug flag
+     * @var  bool
+     */
     protected $_debug = false;
 
+
+    /**
+     * Constructor, sets some properties by assigning global variables to them.
+     */
     public function __construct()
     {
         global $cfg, $client, $area, $action, $frame, $contenido, $sess;
@@ -75,10 +126,20 @@ abstract class ModRewrite_ControllerAbstract
         $this->init();
     }
 
+
+    /**
+     * Initializer method, could be overwritten by childs.
+     * This method will be invoked in constructor of ModRewrite_ControllerAbstract.
+     */
     public function init()
     {
     }
 
+
+    /**
+     * View property setter.
+     * @param  object  $oView
+     */
     public function setView($oView)
     {
         if (is_object($oView)) {
@@ -86,31 +147,64 @@ abstract class ModRewrite_ControllerAbstract
         }
     }
 
+
+    /**
+     * View property getter.
+     * @return  object
+     */
     public function getView()
     {
         return $this->_oView;
     }
 
+
+    /**
+     * Property setter.
+     * @param  string  $key
+     * @param  mixed   $value
+     */
     public function setProperty($key, $value)
     {
         $this->_properties[$key] = $value;
     }
 
+
+    /**
+     * Property getter.
+     * @param   string  $key
+     * @param   mixed   $default
+     * @return  mixed
+     */
     public function getProperty($key, $default = null)
     {
         return (isset($this->_properties[$key])) ? $this->_properties[$key] : $default;
     }
 
+    /**
+     * Template setter.
+     * @param  string  $sTemplate  Either full path and name of template file or a template string.
+     */
     public function setTemplate($sTemplate)
     {
         $this->_template = $sTemplate;
     }
 
+    /**
+     * Template getter.
+     * @return  string
+     */
     public function getTemplate()
     {
         return $this->_template;
     }
 
+
+    /**
+     * Renders template by replacing all view variables in template.
+     * @param   string  Either full path and name of template file or a template string.
+     *                  If not passed, previous set template will be used.
+     * @return  string
+     */
     public function render($template = null)
     {
         if ($template == null) {
@@ -128,6 +222,16 @@ abstract class ModRewrite_ControllerAbstract
         $oTpl->generate($template, 0, 0);
     }
 
+
+    /**
+     * Returns  parameter from request, the order is:
+     * - Return from $_GET, if found
+     * - Return from $_POST, if found
+     *
+     * @param   string  $key
+     * @param   mixed   $default  The default value
+     * @return  mixed
+     */
     protected function _getParam($key, $default = null)
     {
         if (isset($_GET[$key])) {
@@ -139,6 +243,13 @@ abstract class ModRewrite_ControllerAbstract
         }
     }
 
+
+    /**
+     * Returns rendered notification markup by using global $notification variable.
+     * @param   string  $type  One of Contenido_Notification::LEVEL_* constants
+     * @param   string  $msg   The message to display
+     * @return  string 
+     */
     protected function _notifyBox($type, $msg)
     {
         global $notification;

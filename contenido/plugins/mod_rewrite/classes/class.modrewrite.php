@@ -302,8 +302,9 @@ class ModRewrite extends ModRewriteBase
     /**
      * Get article id by article websafe name
      *
-     * @param   string    Websafe name
-     * @param   int       Category id
+     * @param   string    $sArtName  Websafe name
+     * @param   int       $iCatId    Category id
+     * @param   int       $iLangId   Language id
      * @return  int|null  Recent article id or null
      */
     public static function getArtIdByWebsafeName($sArtName = '', $iCatId = 0, $iLangId = 0)
@@ -615,6 +616,7 @@ class ModRewrite extends ModRewriteBase
      * Return full CONTENIDO url from single anchor
      *
      * @param   array   $aMatches [0] = complete anchor, [1] = pre arguments, [2] = anchor name, [3] = post arguments
+     * @param   bool    $bXHTML  Flag to return XHTML valid url
      * @return  string  New anchor
      */
     public static function contenidoHtmlAnchor(array $aMatches = array(), $bXHTML = true)

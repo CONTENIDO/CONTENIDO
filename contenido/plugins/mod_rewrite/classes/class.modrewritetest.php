@@ -31,39 +31,52 @@
 defined('CON_FRAMEWORK') or die('Illegal call');
 
 
+/**
+ * Mod rewrite test class.
+ *
+ * @author      Murat Purc <murat@purc.de>
+ * @package     CONTENIDO Backend plugins
+ * @subpackage  ModRewrite
+ */
 class ModRewriteTest
 {
 
     /**
-     * @var  array  Global $cfg array
+     * Global $cfg array
+     * @var  array
      */
     protected $_aCfg;
 
     /**
-     * @var  array  Global $cfg['tab'] array
+     * Global $cfg['tab'] array
+     * @var  array
      */
     protected $_aCfgTab;
 
 
     /**
-     * @var  int  Max items to process
+     * Max items to process
+     * @var  int
      */
     protected $_iMaxItems;
 
     /**
-     * @var  string  Actual resolved url
+     * Actual resolved url
+     * @var  string
      */
     protected $_sResolvedUrl;
 
 
     /**
-     * @var  bool  Routing found flag
+     * Routing found flag
+     * @var  bool
      */
     protected $_bRoutingFound = false;
 
 
     /**
      * Constuctor
+     * @param  int  $maxItems  Max items (urls to articles/categories) to process
      */
     public function __construct($maxItems)
     {
