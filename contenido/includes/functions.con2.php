@@ -13,7 +13,7 @@
  *             functions to improve frontend performance:
  *
  *
- * @package    CONTENIDO Backend includes
+ * @package    CONTENIDO Backend Includes
  * @version    1.3.8
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>

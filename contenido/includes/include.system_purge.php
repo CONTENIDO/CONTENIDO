@@ -6,7 +6,7 @@
  * Description: 
  * CONTENIDO Purge include file to reset some datas(con_code, con_cat_art) and files (log, cache, history)
  *
- * @package    CONTENIDO Backend includes
+ * @package    CONTENIDO Backend Includes
  * @version    1.0.1
  * @author     Munkh-Ulzii Balidar
  * @copyright  four for business AG <www.4fb.de>

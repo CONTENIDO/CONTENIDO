@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    CONTENIDO Backend includes
+ * @package    CONTENIDO Backend Includes
  * @version    1.0.4
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
@@ -37,8 +37,9 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+strRemakeTreeTable();
 
-$debug = false;
+$debug = true;
 
 $tmp_area = "str";
 

@@ -7,7 +7,7 @@
  * Upload functions
  *
  *
- * @package    CONTENIDO Backend includes
+ * @package    CONTENIDO Backend Includes
  * @version    1.4.1
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>

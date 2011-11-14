@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    CONTENIDO Backend includes
+ * @package    CONTENIDO Backend Includes
  * @version    1.0.0
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>

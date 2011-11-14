@@ -11,7 +11,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    CONTENIDO Backend includes
+ * @package    CONTENIDO Backend Includes
  * @version    1.0.1
  * @author     Willi Mann
  * @copyright  four for business AG <www.4fb.de>
