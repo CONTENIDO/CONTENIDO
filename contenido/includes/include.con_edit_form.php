@@ -692,6 +692,12 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     $tpl->set('s', 'CAL_LANG', substr(strtolower($belang), 0, 2));
 
+    if ($tmp_usetimemgmt == '1') {
+    	if ($tmp_datestart == "0000-00-00 00:00:00" && $tmp_dateend == "0000-00-00 00:00:00") {
+    		$message = sprintf(i18n("Bitte geben Sie das Startdatum oder/und die Endzeitpunkt ein!"));
+            $notification->displayNotification("warning", $message);
+    	}
+    }
     // Genereate the Template
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_edit_form']);
 

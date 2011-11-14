@@ -817,7 +817,7 @@ else
 	$redirect = $db->f("redirect");
     $redirect_url = $db->f("redirect_url");
 	
-	if ($db->f("timemgmt") == "1" && $isstart != 1) {
+	/*if ($db->f("timemgmt") == "1" && $isstart != 1) {
 		$dateStart = $db->f("datestart");
 		$dateEnd = $db->f("dateend");
 
@@ -828,8 +828,21 @@ else
         if ($dateEnd != '0000-00-00 00:00:00' && strtotime($dateEnd) < time()) {
             $online = 0;
         }
-	}
+	}*/
+	if ($db->f("timemgmt") == "1" && $isstart != 1) {
+		$online = 0;
+		$dateStart = $db->f("datestart");
+		$dateEnd = $db->f("dateend");
 
+		if ($dateStart != '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00' && (strtotime($dateStart) <= time() || strtotime($dateEnd) > time()) && strtotime($dateStart) < strtotime($dateEnd)) {
+        	$online = 1;
+        } else if ($dateStart != '0000-00-00 00:00:00' && $dateEnd == '0000-00-00 00:00:00' && strtotime($dateStart) <= time()) {
+        	$online = 1;
+        } else if ($dateStart == '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00' && strtotime($dateEnd) > time()) {
+        	$online = 1;
+        } 
+	}
+	
     @ eval ("\$"."redirect_url = \"$redirect_url\";"); // transform variables
 
     $insert_base = getEffectiveSetting('generator', 'basehref', "true");
