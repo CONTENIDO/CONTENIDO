@@ -11,7 +11,7 @@
  * @con_php_req 5.0
  *
  *
- * @package     CONTENIDO Backend classes
+ * @package     CONTENIDO Backend Classes
  * @subpackage  CEC
  * @version     1.2.0
  * @author      Timo A. Hummel
@@ -52,7 +52,7 @@ if(!defined('CON_FRAMEWORK')) {
  *
  * @author      Timo A. Hummel
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Backend classes
+ * @package     CONTENIDO Backend Classes
  * @subpackage  CEC
  */
 class cApiCECRegistry
@@ -344,7 +344,7 @@ class cApiCECRegistry
  *
  * @author      Timo A. Hummel
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Backend classes
+ * @package     CONTENIDO Backend Classes
  * @subpackage  CEC
  */
 class pApiCECChainItem

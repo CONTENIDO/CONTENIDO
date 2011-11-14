@@ -14,7 +14,7 @@
  * @con_notice ToDo: Error page re-direction?
  *
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    1.1.2
  * @author     Andreas Kummer, Holger Librenz
  * @copyright  atelierQ Kummer, four for business AG <www.4fb.de>

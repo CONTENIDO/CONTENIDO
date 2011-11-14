@@ -23,7 +23,7 @@
  * @con_php_req 5.0
  *
  *
- * @package     CONTENIDO Backend classes
+ * @package     CONTENIDO Backend Classes
  * @subpackage  Setting
  * @version     0.1
  * @author      Murat Purc <murat@purc.de>

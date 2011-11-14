@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package     CONTENIDO Backend classes
+ * @package     CONTENIDO Backend Classes
  * @subpackage  CEC
  * @version     0.5
  * @author      Murat Purc <murat@purc.de>
@@ -79,7 +79,7 @@
  * </code>
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Backend classes
+ * @package     CONTENIDO Backend Classes
  * @subpackage  CEC
  */
 class CEC_Hook {

@@ -14,7 +14,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    1.2.2
  * @author     Timo A. Hummel
  * @author     Murat Purc <murat@purc.de>

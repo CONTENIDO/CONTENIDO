@@ -16,7 +16,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    1.0.0
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <info@contenido.org>

@@ -11,7 +11,7 @@
  * @con_php_req simplexml
  *
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    1.0.2
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>

@@ -8,7 +8,7 @@
  * This class extends DOMDocument to provide its functionality.
  *
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    1.0.0
  * @author     Dominik Ziegler
  * @copyright  four for business AG <info@contenido.org>

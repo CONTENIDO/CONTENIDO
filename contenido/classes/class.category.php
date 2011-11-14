@@ -11,7 +11,7 @@
  * @con_notice Status: Test. Not for production use
  *
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    1.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>

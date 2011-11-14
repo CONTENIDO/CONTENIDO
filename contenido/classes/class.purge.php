@@ -3,7 +3,7 @@
  * Description: 
  * CONTENIDO Purge class to reset some datas and files.
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    1.0.0
  * @author     Munkh-Ulzii Balidar
  * @copyright  four for business AG <www.4fb.de>

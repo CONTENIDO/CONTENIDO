@@ -45,7 +45,7 @@
  *
  *  Keep in mind that these type of check only works if crack module is available.
  *
- * @package CONTENIDO Backend classes
+ * @package CONTENIDO Backend Classes
  * @subpackage Backend User
  *
  * @version 1.4.0
@@ -87,7 +87,7 @@ cInclude ( "exceptions", "exception.conuser.php" );
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @subpackage Backend user
  *
  * @version    0.2.0

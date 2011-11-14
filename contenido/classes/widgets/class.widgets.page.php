@@ -7,7 +7,7 @@
  * Page widgets
  * 
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @subpackage cPage widgets
  * @version    $Id:$
  * @author     Bjoern Behrens

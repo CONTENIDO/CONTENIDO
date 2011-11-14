@@ -11,7 +11,7 @@
  *
  * @todo  Switch to SimpleXML
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    1.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>

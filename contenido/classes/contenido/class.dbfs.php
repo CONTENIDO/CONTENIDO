@@ -12,7 +12,7 @@
  * Code is taken over from file contenido/classes/class.dbfs.php in favor of
  * normalizing API.
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

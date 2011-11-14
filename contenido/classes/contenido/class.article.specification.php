@@ -12,7 +12,7 @@
  * Code is taken over from file contenido/classes/class.artspec.php in favor of
  * normalizing API.
  *
- * @package    CONTENIDO Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -47,6 +47,23 @@ class cApiArticleSpecificationCollection extends ItemCollection
         global $cfg;
         parent::__construct($cfg['tab']['art_spec'], 'idartspec');
         $this->_setItemClass('cApiArticleSpecification');
+    }
+
+    /**
+     * Returns all article specifications by client and language.
+     * @param  int  $client
+     * @param  int  $lang
+     * @param  string  $orderby  Order statement, like "artspec ASC"
+     * @return cApiGroupProperty[]
+     */
+    public function fetchByClientLang($client, $lang, $orderBy = '')
+    {
+        $this->select("client=" . (int) $client . " AND lang=" . (int) $lang, '', $this->escape($orderBy));
+        $entries = array();
+        while ($entry = $this->next()) {
+            $entries[] = clone $entry;
+        }
+        return $entries;
     }
 }
 
