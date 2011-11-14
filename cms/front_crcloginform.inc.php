@@ -9,7 +9,7 @@
  * @con_php_req 5
  * 
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO Frontend
  * @version    0.5
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>

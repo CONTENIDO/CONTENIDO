@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  *
- * @package    CONTENIDO database
+ * @package    CONTENIDO Backend Database
  * @version    0.2.3
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>

@@ -12,7 +12,7 @@
  * @con_notice <Notice>
  * 
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO Frontend
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt

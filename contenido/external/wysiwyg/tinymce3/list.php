@@ -12,7 +12,7 @@
  * @con_notice 
  * TINYMCE 1.45rc1 Fileversion
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO Backend Editor
  * @version    0.0.4
  * @author     Martin Horwath, horwath@dayside.net
  * @copyright  four for business AG <www.4fb.de>

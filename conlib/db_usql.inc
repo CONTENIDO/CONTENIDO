@@ -13,7 +13,7 @@
  * @con_notice <Notice>
  *
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO Backend Database
  * @version    1.2
  * @author     Carmelo Guarneri
  * @copyright  four for business AG <www.4fb.de>

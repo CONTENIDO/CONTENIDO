@@ -10,7 +10,7 @@
  * Requirements: 
  * @con_php_req 5
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO Backend Editor
  * @version    0.0.3
  * @author     Martin Horwath, horwath@dayside.net
  * @copyright  four for business AG <www.4fb.de>

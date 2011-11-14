@@ -12,7 +12,7 @@
  * @con_notice <Notice>
  * 
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO Frontend Cache
  * @version    1.0
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

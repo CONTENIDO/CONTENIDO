@@ -12,7 +12,7 @@
  * @con_php_req 5
  *
  *
- * @package    CONTENIDO database
+ * @package    CONTENIDO Backend Database
  * @version    0.1.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>

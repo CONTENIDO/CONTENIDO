@@ -19,7 +19,7 @@
  * @con_php_req 5
  * 
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO Frontend
  * @version    2.1 (formerly known as functions.input.helper.php)
  * @author     Björn Behrens (HerrB), http://www.btech.de
  * @copyright  four for business AG <www.4fb.de>

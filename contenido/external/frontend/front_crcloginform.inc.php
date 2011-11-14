@@ -12,7 +12,7 @@
  * @con_notice <Notice>
  * 
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO Frontend
  * @version    <version>
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>

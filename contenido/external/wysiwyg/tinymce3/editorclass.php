@@ -32,7 +32,7 @@
  * contenido_height_head
  * See backend.customizing.html for details 
  *
- * @package    CONTENIDO Backend <Area>
+ * @package    CONTENIDO Backend Editor
  * @version    1.2.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
