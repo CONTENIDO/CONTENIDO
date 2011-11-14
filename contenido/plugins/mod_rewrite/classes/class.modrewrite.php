@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package     CONTENIDO Backend plugins
+ * @package     CONTENIDO Backend Plugins
  * @subpackage  ModRewrite
  * @version     0.1
  * @author      Stefan Seifarth / stese
@@ -41,7 +41,7 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  *
  * @author      Stefan Seifarth / stese
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Backend plugins
+ * @package     CONTENIDO Backend Plugins
  * @subpackage  ModRewrite
  */
 class ModRewrite extends ModRewriteBase

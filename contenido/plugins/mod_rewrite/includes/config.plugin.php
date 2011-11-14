@@ -13,7 +13,7 @@
  * @con_php_req 5.0
  *
  *
- * @package     CONTENIDO Backend plugins
+ * @package     CONTENIDO Backend Plugins
  * @subpackage  ModRewrite
  * @version     0.1
  * @author      Murat Purc <murat@purc.de>

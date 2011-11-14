@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package     CONTENIDO Backend plugins
+ * @package     CONTENIDO Backend Plugins
  * @subpackage  ModRewrite
  * @version     0.1
  * @author      Murat Purc <murat@purc.de>
@@ -61,7 +61,7 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  * </code>
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Backend plugins
+ * @package     CONTENIDO Backend Plugins
  * @subpackage  ModRewrite
  */
 class ModRewriteUrlStack
