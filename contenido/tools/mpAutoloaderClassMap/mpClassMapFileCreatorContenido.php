@@ -82,7 +82,7 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
 
         $this->_data->internal_date = date('Y-m-d');
         $this->_data->requirements  = '@con_php_req 5.0';
-        $this->_data->package       = 'CONTENIDO Backend includes';
+        $this->_data->package       = 'CONTENIDO Backend Includes';
         $this->_data->version       = '0.1';
         $this->_data->author        = 'System';
         $this->_data->copyright     = 'four for business AG <www.4fb.de>';
