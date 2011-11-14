@@ -213,6 +213,7 @@ if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action)
 
 if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action) && $bDirectoryIsWritable == true) {
     $uploads->select("idclient = '$client' AND dirname='$qpath' AND filename='$file'");
+     // FIXME  Code is similar/redundant to cApiUploadCollection->delete(), in previous version from UploadCollection->delete() too
     if ($uploads->next()) {
         if (is_dbfs($qpath)) {
             $dbfs->remove($qpath.$file);

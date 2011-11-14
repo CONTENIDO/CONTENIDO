@@ -110,6 +110,7 @@ class cApiUploadCollection extends ItemCollection
      * @global int $client
      * @param int $id
      * @return bool
+     * FIXME  Code is similar/redundant to include.upl_files_overview.php 216-230
      */
     public function delete($id)
     {
