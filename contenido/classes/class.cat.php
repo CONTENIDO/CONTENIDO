@@ -18,6 +18,7 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
+ * @deprecated [2011-11-15] Class Cat is nowhere used in CONTENIDO core. If Cat is still used in your modules/plugins, please switch to cApiCategory.
  * 
  * {@internal 
  *   created unknown
@@ -34,21 +35,14 @@ if(!defined('CON_FRAMEWORK')) {
 
 class Cat {
 
-    /**
-     * Constructor Function
-     * @param
-     */
     function Cat() {
-        // empty
-    } // end function
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use cApiCategory');
+    }
 
-    /**
-     * getCatName()
-     * Returns a name for the given category
-     * @return string  Returns the name of the given category
-     */
     function getCatName($category, $idlang) {
         global $cfg;
+
+        cWarning(__FILE__, __LINE__, 'Deprecated method of class ' . __CLASS__ . ' use cApiCategory');
 
         $db = new DB_Contenido;
 		$idlang 	= Contenido_Security::toInteger($idlang);
@@ -67,7 +61,6 @@ class Cat {
 
         return ($db->f("name"));
 
-    } // end function
-
-} // end class
+    }
+}
 ?>
