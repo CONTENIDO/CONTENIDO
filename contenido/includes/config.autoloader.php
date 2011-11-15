@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2011-11-07
+ *     created  2011-11-16
  * }}
  */
 
@@ -48,10 +48,6 @@ return array(
     'Contenido_Autoload' => 'contenido/classes/class.autoload.php',
     'Contenido_Backend' => 'contenido/classes/class.backend.php',
     'Cat' => 'contenido/classes/class.cat.php',
-    'CategoryCollection' => 'contenido/classes/class.category.php',
-    'CategoryItem' => 'contenido/classes/class.category.php',
-    'CategoryLanguageCollection' => 'contenido/classes/class.category.php',
-    'CategoryLanguageItem' => 'contenido/classes/class.category.php',
     'cApiCECRegistry' => 'contenido/classes/class.cec.php',
     'pApiCECChainItem' => 'contenido/classes/class.cec.php',
     'CEC_Hook' => 'contenido/classes/class.cec_hook.php',
@@ -195,10 +191,14 @@ return array(
     'cApiArticleLanguage' => 'contenido/classes/contenido/class.articlelanguage.php',
     'cApiCategoryCollection' => 'contenido/classes/contenido/class.category.php',
     'cApiCategory' => 'contenido/classes/contenido/class.category.php',
+    'CategoryCollection' => 'contenido/classes/contenido/class.category.php',
+    'CategoryItem' => 'contenido/classes/contenido/class.category.php',
     'cApiCategoryArticleCollection' => 'contenido/classes/contenido/class.categoryarticle.php',
     'cApiCategoryArticle' => 'contenido/classes/contenido/class.categoryarticle.php',
     'cApiCategoryLanguageCollection' => 'contenido/classes/contenido/class.categorylanguage.php',
     'cApiCategoryLanguage' => 'contenido/classes/contenido/class.categorylanguage.php',
+    'CategoryLanguageCollection' => 'contenido/classes/contenido/class.categorylanguage.php',
+    'CategoryLanguageItem' => 'contenido/classes/contenido/class.categorylanguage.php',
     'cApiCategoryTreeCollection' => 'contenido/classes/contenido/class.categorytree.php',
     'cApiCategoryTree' => 'contenido/classes/contenido/class.categorytree.php',
     'cApiTree' => 'contenido/classes/contenido/class.categorytree.php',

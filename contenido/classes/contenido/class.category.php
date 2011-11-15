@@ -4,14 +4,14 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Area management class
+ * Category management class
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.6
+ * @version    1.7
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -36,6 +36,11 @@ if (!defined('CON_FRAMEWORK')) {
 
 class cApiCategoryCollection extends ItemCollection
 {
+    /**
+     * Constructor function.
+     *
+     * @param  string  $select  Select statement (see ItemCollection::select())
+     */
     public function __construct($select = false)
     {
         global $cfg;
@@ -44,6 +49,13 @@ class cApiCategoryCollection extends ItemCollection
         if ($select !== false) {
             $this->select($select);
         }
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function cApiCategoryCollection($select = false)
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct($select);
     }
 
     /**
@@ -65,7 +77,7 @@ class cApiCategoryCollection extends ItemCollection
             $author = $auth->auth['uname'];
         }
         $created = date('Y-m-d H:i:s');
-        
+
         $oItem = parent::create();
 
         $oItem->set('idclient', (int) $idclient);
@@ -93,13 +105,6 @@ class cApiCategoryCollection extends ItemCollection
         $where = 'parentid=0 AND postid=0 AND idclient=' . (int) $idclient;
         $this->select($where);
         return $this->next();
-    }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiCategoryCollection($select = false)
-    {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
-        $this->__construct($select);
     }
 }
 
@@ -137,6 +142,64 @@ class cApiCategory extends Item
     {
         $this->set('lastmodified', date('Y-m-d H:i:s'));
         return parent::store();
+    }
+}
+
+
+################################################################################
+# Old versions of category item collection and category item classes
+#
+# NOTE: Class implemetations below are deprecated and the will be removed in
+#       future versions of contenido.
+#       Don't use them, they are still available due to downwards compatibility.
+
+/**
+ * Category collection
+ * @deprecated  [2011-11-15] Use cApiCategoryCollection instead of this class.
+ */
+class CategoryCollection extends cApiCategoryCollection
+{
+    public function __construct()
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        parent::__construct();
+    }
+    public function CategoryCollection()
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct();
+    }
+}
+
+
+/**
+ * Single category item
+ * @deprecated  [2011-11-15] Use cApiCategory instead of this class.
+ */
+class CategoryItem extends cApiCategory
+{
+    public function __construct($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        parent::__construct($mId);
+    }
+    public function CategoryItem($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct($mId);
+    }
+    public function loadByPrimaryKey($key)
+    {
+        if (parent::loadByPrimaryKey($key)) {
+            // Load all child language items
+            $catlangs = new cApiCategoryLanguageCollection();
+            $catlangs->select("idcat = " . (int) $key);
+            while ($item = $catlangs->next()) {
+                $this->lang[$item->get("idlang")] = $item;
+            }
+            return true;
+        }
+        return false;
     }
 }
 

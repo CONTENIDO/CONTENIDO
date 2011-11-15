@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.2
+ * @version    1.3
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -35,6 +35,11 @@ if (!defined('CON_FRAMEWORK')) {
 
 class cApiCategoryLanguageCollection extends ItemCollection
 {
+    /**
+     * Constructor function.
+     *
+     * @param  string  $select  Select statement (see ItemCollection::select())
+     */
     public function __construct($select = false)
     {
         global $cfg;
@@ -44,6 +49,13 @@ class cApiCategoryLanguageCollection extends ItemCollection
         if ($select !== false) {
             $this->select($select);
         }
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function cApiCategoryLanguageCollection($select = false)
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct($select);
     }
 
     /**
@@ -62,7 +74,7 @@ class cApiCategoryLanguageCollection extends ItemCollection
      * @param  int  $startidartlang
      * @return cApiCategoryLanguage
      */
-    public function create($idcat, $idlang, $name, $urlname, $urlpath = '', $idtplcfg = 0, 
+    public function create($idcat, $idlang, $name, $urlname, $urlpath = '', $idtplcfg = 0,
         $visible = 0, $public = 0, $status = 0, $author = '', $startidartlang = 0)
     {
         global $auth;
@@ -94,13 +106,6 @@ class cApiCategoryLanguageCollection extends ItemCollection
 
         return $oItem;
     }
-
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cApiCategoryLanguageCollection($select = false)
-    {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
-        $this->__construct($select);
-    }
 }
 
 
@@ -127,6 +132,12 @@ class cApiCategoryLanguage extends Item
         $this->__construct($mId);
     }
 
+    /**
+     * User defined method, overwrites parents setField()
+     *
+     * @param  string  $field
+     * @param  mixed   $value
+     */
     public function setField($field, $value)
     {
         switch ($field) {
@@ -145,7 +156,7 @@ class cApiCategoryLanguage extends Item
      * Assigns the passed template to the category language item.
      *
      * @param int $idtpl
-     * @return cApiTemplateConfigurationCollection 
+     * @return cApiTemplateConfigurationCollection
      */
     public function assignTemplate($idtpl)
     {
@@ -177,6 +188,7 @@ class cApiCategoryLanguage extends Item
 
     /**
      * Checks if category language item has a start article
+     *
      * @return bool
      */
     public function hasStartArticle()
@@ -194,6 +206,52 @@ class cApiCategoryLanguage extends Item
     {
         $this->set('lastmodified', date('Y-m-d H:i:s'));
         return parent::store();
+    }
+}
+
+
+################################################################################
+# Old versions of category language item collection and category language item classes
+#
+# NOTE: Class implemetations below are deprecated and the will be removed in
+#       future versions of contenido.
+#       Don't use them, they are still available due to downwards compatibility.
+
+
+/**
+ * Category language collection
+ * @deprecated  [2011-11-15] Use cApiCategoryLanguageCollection instead of this class.
+ */
+class CategoryLanguageCollection extends cApiCategoryLanguageCollection
+{
+    public function __construct()
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        parent::__construct();
+    }
+    public function CategoryLanguageCollection()
+    {
+        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        $this->__construct();
+    }
+}
+
+
+/**
+ * Single category language item
+ * @deprecated  [2011-11-15] Use cApiCategoryLanguage instead of this class.
+ */
+class CategoryLanguageItem extends cApiCategoryLanguage
+{
+    public function __construct($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        parent::__construct($mId);
+    }
+    public function CategoryLanguageItem($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct($mId);
     }
 }
 
