@@ -1,7 +1,7 @@
 <?php
 /**
  * Project:
- * Contenido Content Management System
+ * CONTENIDO Content Management System
  *
  * Description:
  * Synchronize the layout directory with lay db-table.
@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    Contenido Backend classes
+ * @package    CONTENIDO Backend Classes
  * @version    1.0.0
  * @author     Rusmir Jusufovic
  * @copyright  four for business AG <info@contenido.org>
