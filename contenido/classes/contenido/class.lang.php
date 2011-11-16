@@ -42,9 +42,9 @@ class cApiLanguageCollection extends ItemCollection
     public function __construct()
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["lang"], "idlang");
-        $this->_setItemClass("cApiLanguage");
-        $this->_setJoinPartner("cApiClientLanguageCollection");
+        parent::__construct($cfg['tab']['lang'], 'idlang');
+        $this->_setItemClass('cApiLanguage');
+        $this->_setJoinPartner('cApiClientLanguageCollection');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -56,29 +56,72 @@ class cApiLanguageCollection extends ItemCollection
 
     /**
      * Creates a language entry.
+     *
      * @global object $auth
-     * @param string $sName
-     * @param int $iActive
-     * @param string $sEncoding
-     * @param string $sDirection
+     * @param string $name
+     * @param int $active
+     * @param string $encoding
+     * @param string $direction
      * @return cApiLanguage
      */
-    public function create($sName, $iActive, $sEncoding, $sDirection)
+    public function create($name, $active, $encoding, $direction)
     {
         global $auth;
 
-        $oItem = parent::create();
+        $item = parent::create();
 
-        $oItem->set('name', $this->escape($sName), false);
-        $oItem->set('active', (int) $iActive, false);
-        $oItem->set('encoding', $this->escape($sEncoding), false);
-        $oItem->set('direction', $this->escape($sDirection), false);
-        $oItem->set('author', $this->escape($auth->auth['uid']), false);
-        $oItem->set('created', date('Y-m-d H:i:s'), false);
-        $oItem->set('lastmodified', '0000-00-00 00:00:00', false);
-        $oItem->store();
+        $item->set('name', $this->escape($name), false);
+        $item->set('active', (int) $active, false);
+        $item->set('encoding', $this->escape($encoding), false);
+        $item->set('direction', $this->escape($direction), false);
+        $item->set('author', $this->escape($auth->auth['uid']), false);
+        $item->set('created', date('Y-m-d H:i:s'), false);
+        $item->set('lastmodified', '0000-00-00 00:00:00', false);
+        $item->store();
 
-        return $oItem;
+        return $item;
+    }
+
+    /**
+     * Returns next accessible language for current client and current logged in user.
+     *
+     * @global object $perm
+     * @global array $cfg
+     * @global int $client
+     * @global int $lang
+     *
+     * @return  cApiLanguage|null
+     */
+    public function nextAccessible()
+    {
+        global $perm, $cfg, $client, $lang;
+
+        $item = parent::next();
+
+        $lang = (int) $lang;
+        $client = (int) $client;
+
+        $clientsLanguageColl = new cApiClientLanguageCollection();
+        $clientsLanguageColl->select('idlang = ' . $lang);
+        if ($clientsLang = $clientsLanguageColl->next()) {
+            if ($client != $clientsLang->get('idclient')) {
+                $item = $this->nextAccessible();
+            }
+        }
+
+        if ($item) {
+            if ($perm->have_perm_client('lang[' . $item->get('idlang') . ']') ||
+                $perm->have_perm_client('admin[' . $client . ']') ||
+                $perm->have_perm_client()) {
+                // Do nothing for now
+            } else {
+                $item = $this->nextAccessible();
+            }
+
+            return $item;
+        } else {
+            return false;
+        }
     }
 
 }
@@ -93,7 +136,7 @@ class cApiLanguage extends Item
     public function __construct($mId = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["lang"], "idlang");
+        parent::__construct($cfg['tab']['lang'], 'idlang');
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
@@ -107,7 +150,8 @@ class cApiLanguage extends Item
     }
 
     /**
-     * Stores made changes
+     * Stores made changes.
+     *
      * @return bool
      */
     public function store()
@@ -116,6 +160,52 @@ class cApiLanguage extends Item
         return parent::store();
     }
 
+}
+
+
+################################################################################
+# Old versions of language item collection and language item classes
+#
+# NOTE: Class implemetations below are deprecated and the will be removed in
+#       future versions of contenido.
+#       Don't use them, they are still available due to downwards compatibility.
+
+
+/**
+ * Language collection
+ * @deprecated  [2011-11-15] Use cApiLanguageCollection instead of this class.
+ */
+class Languages extends cApiLanguageCollection
+{
+    public function __construct()
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        parent::__construct();
+    }
+    public function Languages()
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct();
+    }
+}
+
+
+/**
+ * Single language item
+ * @deprecated  [2011-11-15] Use cApiLanguage instead of this class.
+ */
+class Language extends cApiLanguage
+{
+    public function __construct($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        parent::__construct($mId);
+    }
+    public function Language($mId = false)
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct($mId);
+    }
 }
 
 ?>

@@ -1170,8 +1170,7 @@ class cApiModuleTranslationCollection extends ItemCollection
      */
     public function export($idmod, $idlang, $filename, $return = false)
     {
-        $langobj = new Language();
-        $langobj->loadByPrimaryKey($idlang);
+        $langobj = new cApiLanguage($idlang);
 
         #$langstring = $langobj->get("name") . ' ('.$idlang.')';
 

@@ -386,7 +386,7 @@ class Contenido_Navigation
         $tpl->set('s', 'ID', 'cLanguageSelect');
         $tpl->set('s', 'OPTIONS', 'onchange="changeContenidoLanguage(this.value)"');
 
-        $availableLanguages = new Languages();
+        $availableLanguages = new cApiLanguageCollection();
 
         if (getEffectiveSetting('system', 'languageorder', 'name') == 'name') {
             $availableLanguages->select('', '', 'name ASC');

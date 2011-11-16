@@ -89,8 +89,7 @@ $v .= '</table>';
 
 $page->setContent($v);
 
-$clang = new Language;
-$clang->loadByPrimaryKey($lang);
+$clang = new cApiLanguage($lang);
 
 $page->setEncoding($clang->get("encoding"));
 

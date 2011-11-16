@@ -983,8 +983,7 @@ if ( $perm->have_perm_area_action($area) ) {
     }
 
     # Generate template
-	$clang = new Language;
-	$clang->loadByPrimaryKey($lang);
+	$clang = new cApiLanguage($lang);
 	
 	if ( $movesubtreeidcat != 0 ) {
 		if ( strlen ( $sMoveSubtreeCatName ) > 30 ) {

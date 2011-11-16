@@ -36,8 +36,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$langobj = new Language;
-$langobj->loadByPrimaryKey($lang);
+$langobj = new cApiLanguage($lang);
 
 $langstring = $langobj->get("name") . ' ('.$lang.')';
 
@@ -172,8 +171,7 @@ $mark = '<script language="JavaScript">document.translation.t_trans.focus();</sc
 $page->setContent($form->render(). $mark ."<br>");
 $page->setMarkScript(2);
 
-$clang = new Language;
-$clang->loadByPrimaryKey($lang);
+$clang = new cApiLanguage($idlang);
 
 $page->setEncoding($clang->get("encoding"));
 

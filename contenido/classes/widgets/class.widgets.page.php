@@ -91,8 +91,7 @@ class cPage extends cHTML {
         }
 
         /* Try to extract the current CONTENIDO language */
-        $clang = new Language();
-        $clang->loadByPrimaryKey($lang);
+        $clang = new cApiLanguage($lang);
 
         if (!$clang->virgin) {
             $this->setEncoding($clang->get("encoding"));

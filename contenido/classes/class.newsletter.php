@@ -612,8 +612,7 @@ class Newsletter extends Item
             $sName = $sEMail;
         }
 
-        $oLanguage = new Language();
-        $oLanguage->loadByPrimaryKey($lang);
+        $oLanguage = new cApiLanguage($lang);
         $sFormatDate = $oLanguage->getProperty("dateformat", "date");
         $sFormatTime = $oLanguage->getProperty("dateformat", "time");
         unset ($oLanguage);
@@ -770,10 +769,7 @@ class Newsletter extends Item
         // Initialization
         $aMessages  = array();
 
-        $oLanguage = new Language();
-        $oLanguage->loadByPrimaryKey($lang);
-        $sFormatDate = $oLanguage->getProperty("dateformat", "date");
-        $sFormatTime = $oLanguage->getProperty("dateformat", "time");
+        $oLanguage = new cApiLanguage($lang);
         unset ($oLanguage);
 
         if ($sFormatDate == "") {

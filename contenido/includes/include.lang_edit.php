@@ -36,8 +36,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 includePlugins("languages");
 
-$clang = new Language;
-$clang->loadByPrimaryKey($idlang);
+$clang = new cApiLanguage($idlang);
 
 #Script for refreshing Language Box in Header
 $newOption = '';
@@ -100,8 +99,7 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
 	{
 		callPluginStore("languages");
 		
-		$language = new Language;
-    	$language->loadByPrimaryKey($idlang);
+		$language = new cApiLanguage($idlang);
     	
     	$language->setProperty("dateformat", "full", stripslashes($datetimeformat));
     	$language->setProperty("dateformat", "date", stripslashes($dateformat));
