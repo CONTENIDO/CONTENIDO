@@ -6,7 +6,7 @@
  * Description:
  * User property management class.
  *
- * cApiUserProperty instance contains following class properties:
+ * cApiUserProperty instance contains following properties:
  * - iduserprop    (int)
  * - user_id       (string)
  * - type          (string)
@@ -14,7 +14,7 @@
  * - value         (string)
  * - idcatlang     (int)
  *
- * If caching is enabled, see $cfg['properties']['system_prop']['enable_cache'],
+ * If caching is enabled, see $cfg['properties']['user_prop']['enable_cache'],
  * all entries will be loaded at first time.
  * If enabled, each call of cApiUserPropertyCollection functions to retrieve properties
  * will return the cached entries without stressing the database.  
