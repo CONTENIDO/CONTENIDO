@@ -37,8 +37,10 @@ if(!defined('CON_FRAMEWORK')) {
  * Todo
  * - generalize this and papitree !!!!
  * - Comments!
+ *
+ * @package    CONTENIDO Plugins
+ * @subpackage Content Allocation
  */
-
 class pApiContentAllocationTreeView extends pApiTree {
 
 	/**

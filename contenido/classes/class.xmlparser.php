@@ -41,7 +41,7 @@ if(!defined('CON_FRAMEWORK')) {
  * your can define path which will trigger the defined event when encountered (2.)
  *
  * Example:
- *
+ * <pre>
  * 1.) $parser->setEvents(array("startElement"=> "myFunction", 
  *                              "endElement"=> "myFunction", 
  *                              "characterData"=> "myFunction", 
@@ -84,13 +84,14 @@ if(!defined('CON_FRAMEWORK')) {
  * $parser = new XmlParser; // Parser instance
  * $parser->setEventHandlers(array("/foo/bar"=>"myHandler")); // Define our handler
  * $parser->parse($xml); // Parse the XML string
+ * </pre>
  *
  * Report bugs to: jan.lengowski@4fb.de
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
  * @version 1.0
- * @package 4fb_XML
+ * @package    CONTENIDO Backend Classes
  */
 class XmlParser
 {

@@ -32,6 +32,10 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+/**
+ * @package    CONTENIDO Plugins
+ * @subpackage Content Allocation
+ */
 class pApiContentAllocationSelectBox extends pApiTree {
 
 	var $idSetter = true;

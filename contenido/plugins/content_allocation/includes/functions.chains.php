@@ -11,6 +11,7 @@
  * 
  *
  * @package    CONTENIDO Plugins
+ * @subpackage Content Allocation
  * @version    1.0.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>

@@ -258,6 +258,4 @@ $oActiveUser->startUsersTracking();
 
 page_close();
 
-include('../../_mp_include_dump.php');
-
 ?>

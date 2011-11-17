@@ -10,6 +10,7 @@
  * 
  *
  * @package    CONTENIDO Plugins
+ * @subpackage Frontendlogic
  * @version    1.1.1
  * @author     Andreas Lindner, Unknown
  * @copyright  four for business AG <www.4fb.de>
@@ -31,6 +32,10 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * @package    CONTENIDO Plugins
+ * @subpackage Frontendlogic
+ */
 class frontendlogic_category extends FrontendLogic
 {
 	function getFriendlyName ()

@@ -11,6 +11,7 @@
  * 
  *
  * @package    CONTENIDO Plugins
+ * @subpackage Workflow
  * @version    1.3
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -33,6 +34,8 @@ if(!defined('CON_FRAMEWORK')) {
 /**
  * Class WorkflowActions
  * Class for workflow action collections
+ * @package    CONTENIDO Plugins
+ * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.2
  * @copyright four for business 2003
@@ -115,6 +118,8 @@ class WorkflowActions extends ItemCollection {
 /**
  * Class WorkflowAction
  * Class for a single workflow action
+ * @package    CONTENIDO Plugins
+ * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
  * @copyright four for business 2003

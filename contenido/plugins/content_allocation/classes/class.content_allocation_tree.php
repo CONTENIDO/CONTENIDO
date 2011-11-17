@@ -36,6 +36,9 @@ if(!defined('CON_FRAMEWORK')) {
  * Todo
  * addslashes to all string db inserts
  * check if default language exists if new entry is added (otherwise)
+ *
+ * @package    CONTENIDO Plugins
+ * @subpackage Content Allocation
  */
 class pApiTree {
 

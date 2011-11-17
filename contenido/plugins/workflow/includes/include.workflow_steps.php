@@ -11,6 +11,7 @@
  * 
  *
  * @package    CONTENIDO Plugins
+ * @subpackage Workflow
  * @version    1.0
  * @author     Unknwon
  * @copyright  four for business AG <www.4fb.de>

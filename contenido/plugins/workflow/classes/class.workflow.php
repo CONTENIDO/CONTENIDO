@@ -11,6 +11,7 @@
  * 
  *
  * @package    CONTENIDO Plugins
+ * @subpackage Workflow
  * @version    1.6
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -48,6 +49,8 @@ plugin_include('workflow', 'classes/class.workflowusersequence.php');
 /**
  * Class Workflows
  * Class for workflow management
+ * @package    CONTENIDO Plugins
+ * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.2
  * @copyright four for business 2003
@@ -129,6 +132,8 @@ class Workflows extends ItemCollection {
 /**
  * Class Workflow
  * Class for a single workflow item
+ * @package    CONTENIDO Plugins
+ * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
  * @copyright four for business 2003

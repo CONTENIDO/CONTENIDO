@@ -12,7 +12,8 @@
  * @con_notice <Notice>
  * 
  *
- * @package    CONTENIDO Frontend Cache
+ * @package    CONTENIDO Frontend
+ * @subpackage Cache
  * @version    1.0
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -34,6 +35,10 @@
    die('Illegal call');
 }
 
+/**
+ * @package    CONTENIDO Frontend
+ * @subpackage Cache
+ */
 class cConCache{
 
     /**
@@ -420,14 +425,15 @@ VALID UNTIL: %s
 
 
 /**
-* @class     cConCacheHandler
-* @brief     Class cConCacheHandler. This is used to set configuration
-*            and to manage caching output
-* @version   0.9
-* @date      07.07.2006
-* @author    Murat Purc <murat@purc.de>
-* @copyright © Murat Purc 2006
-*/
+ * Class cConCacheHandler. This is used to set configuration and to manage caching output.
+ *
+ * @package    CONTENIDO Frontend
+ * @subpackage Cache
+ * @version    0.9
+ * @date       07.07.2006
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  © Murat Purc 2006
+ */
 class cConCacheHandler extends cConCache {
 
     /**

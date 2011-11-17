@@ -1,4 +1,32 @@
 <?php
+/**
+ * Project: 
+ * CONTENIDO Content Management System
+ * 
+ * Description: 
+ * Plugin valid from for frontend users
+ *
+ * Requirements: 
+ * @con_php_req 5.0
+ *
+ *
+ * @package    CONTENIDO Plugins
+ * @subpackage Frontendusers
+ * @version    0.2
+ * @author     Unknown
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * 
+ * {@internal 
+ *   created  Unknown
+ *
+ *   $Id: config.plugin.php 1709 2011-11-17 00:50:30Z xmurrix $: 
+ * }}
+ * 
+ */
+
 function frontendusers_valid_from_getTitle ()
 {
 	return i18n("Valid from");	

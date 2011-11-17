@@ -46,9 +46,7 @@ cInclude('includes', 'functions.api.images.php');
 /**
  * Backend navigaton class. Renders the header navigation document containing the navigtion structure.
  *
- * @category    CONTENIDO
- * @package     Backend
- * @subpackage  Navigation
+ * @package    CONTENIDO Backend Classes
  */
 class Contenido_Navigation
 {

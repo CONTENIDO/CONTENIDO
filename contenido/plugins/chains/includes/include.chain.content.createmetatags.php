@@ -11,6 +11,7 @@
  *
  *
  * @package    CONTENIDO Plugins
+ * @subpackage Chains
  * @version    1.1
  * @author     Andreas Lindner, Unknown
  * @copyright  four for business AG <www.4fb.de>

@@ -11,6 +11,7 @@
  * 
  *
  * @package    CONTENIDO Plugins
+ * @subpackage Linkchecker
  * @version    2.0.1
  * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>

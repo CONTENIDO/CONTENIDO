@@ -11,6 +11,7 @@
  * 
  *
  * @package    CONTENIDO Plugins
+ * @subpackage Workflow
  * @version    1.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -34,6 +35,8 @@ if(!defined('CON_FRAMEWORK')) {
 /**
  * Class WorkflowTasks
  * Class for workflow task collections
+ * @package    CONTENIDO Plugins
+ * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.2
  * @copyright four for business 2003
@@ -79,6 +82,8 @@ class WorkflowTasks extends ItemCollection {
 /**
  * Class WorkflowTask
  * Class for a single workflow task item
+ * @package    CONTENIDO Plugins
+ * @subpackage Workflow
  * @author Timo A. Hummel <Timo.Hummel@4fb.de>
  * @version 0.1
  * @copyright four for business 2003

@@ -10,7 +10,8 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Plugins
+ * @package    CONTENIDO Plugins
+ * @subpackage ModRewrite
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -40,19 +41,19 @@ cInclude('classes', 'UrlBuilder/Contenido_UrlBuilderFactory.class.php');
  * Extends abstract Contenido_UrlBuilder class and implements singleton pattern.
  *
  * Usage:
- * <code>
+ * <pre>
  * cInclude('classes', 'UrlBuilder/Contenido_UrlBuilder_MR.class.php');
  * $url = 'front_content.php?idart=123';
  * $mrUrlBuilder = Contenido_UrlBuilder_MR::getInstance();
  * $mrUrlBuilder->buildUrl(array($url));
  * $newUrl = $mrUrlBuilder->getUrl();
- * </code>
+ * </pre>
  *
  * @todo  Add handling of absolute paths, standardize handling of fragments
  *
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Backend Plugins
+ * @package     CONTENIDO Plugins
  * @subpackage  ModRewrite
  */
 class Contenido_UrlBuilder_MR extends Contenido_UrlBuilder

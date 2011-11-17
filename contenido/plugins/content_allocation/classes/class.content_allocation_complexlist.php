@@ -11,6 +11,7 @@
  * 
  *
  * @package    CONTENIDO Plugins
+ * @subpackage Content Allocation
  * @version    0.2.1
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
@@ -32,6 +33,10 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+/**
+ * @package    CONTENIDO Plugins
+ * @subpackage Content Allocation
+ */
 class pApiContentAllocationComplexList extends pApiTree {
 
 	var $idSetter = true;

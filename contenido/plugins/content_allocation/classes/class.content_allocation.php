@@ -11,6 +11,7 @@
  * 
  *
  * @package    CONTENIDO Plugins
+ * @subpackage Content Allocation
  * @version    0.7.9
  * @author     Marco Jahn
  * @copyright  four for business AG <www.4fb.de>
@@ -39,6 +40,10 @@ if(!defined('CON_FRAMEWORK')) {
 
 plugin_include('repository', 'custom/FrontendNavigation.php');
 
+/**
+ * @package    CONTENIDO Plugins
+ * @subpackage Content Allocation
+ */
 class pApiContentAllocation {
 
     /**

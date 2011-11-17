@@ -11,6 +11,7 @@
  * 
  *
  * @package    CONTENIDO Plugins
+ * @subpackage Workflow
  * @version    1.4
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
