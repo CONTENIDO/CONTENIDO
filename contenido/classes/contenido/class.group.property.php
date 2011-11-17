@@ -27,7 +27,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    0.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -49,6 +49,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Group property collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiGroupPropertyCollection extends ItemCollection
 {
     /**
@@ -393,7 +398,9 @@ class cApiGroupPropertyCollection extends ItemCollection
 
 
 /**
- * Class cApiGroupProperty
+ * Group property item
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiGroupProperty extends Item
 {

@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.3
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -32,6 +32,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Frame file collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiFrameFileCollection extends ItemCollection
 {
     /**
@@ -41,7 +46,7 @@ class cApiFrameFileCollection extends ItemCollection
     {
         global $cfg;
         parent::__construct($cfg['tab']['framefiles'], 'idframefile');
-        $this->_setItemClass("cApiFrameFile");
+        $this->_setItemClass('cApiFrameFile');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -57,19 +62,19 @@ class cApiFrameFileCollection extends ItemCollection
 
         if (is_string($area)) {
             $c = new cApiArea();
-            $c->loadBy("name", $area);
+            $c->loadBy('name', $area);
 
             if ($c->virgin) {
                 $area = 0;
                 cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
             } else {
-                $area = $c->get("idarea");
+                $area = $c->get('idarea');
             }
         }
 
-        $item->set("idarea", $area);
-        $item->set("idfile", $idfile);
-        $item->set("idframe", $idframe);
+        $item->set('idarea', (int) $area);
+        $item->set('idfile', (int) $idfile);
+        $item->set('idframe', (int) $idframe);
 
         $item->store();
 
@@ -78,6 +83,11 @@ class cApiFrameFileCollection extends ItemCollection
 }
 
 
+/**
+ * Frame file item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiFrameFile extends Item
 {
     /**
@@ -87,8 +97,8 @@ class cApiFrameFile extends Item
     public function __construct($mId = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["framefiles"], "idframefile");
-        $this->setFilters(array("addslashes"), array("stripslashes"));
+        parent::__construct($cfg['tab']['framefiles'], 'idframefile');
+        $this->setFilters(array('addslashes'), array('stripslashes'));
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

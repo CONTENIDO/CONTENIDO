@@ -10,7 +10,8 @@
  * @con_php_req 5
  *
  *
- * @package    CONTENIDO Backend Session
+ * @package    CONTENIDO Core
+ * @subpackage Session
  * @version    1.3
  * @author     Sascha Schumann <sascha@schumann.cx>
  * @copyright  four for business AG <www.4fb.de>
@@ -33,6 +34,10 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Session
+ */
 class CT_Shm
 {
     ##

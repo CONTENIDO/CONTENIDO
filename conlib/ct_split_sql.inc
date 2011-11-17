@@ -13,7 +13,8 @@
  * Every session-name pair will end up in one OR MORE table rows, thus
  * allowing serialization of huge quantities of data.
  *
- * @package    CONTENIDO Backend Session
+ * @package    CONTENIDO Core
+ * @subpackage Session
  * @version    1.3
  * @author     Massimiliano Masserelli
  * @copyright  four for business AG <www.4fb.de>
@@ -36,6 +37,10 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Session
+ */
 class CT_Split_Sql
 {
     ##

@@ -88,7 +88,7 @@ cInclude ( "exceptions", "exception.conuser.php" );
  *
  *
  * @package    CONTENIDO Backend Classes
- * @subpackage Backend user
+ * @subpackage Backend User
  *
  * @version    0.2.0
  * @author     Bilal Arslan, Holger Librenz

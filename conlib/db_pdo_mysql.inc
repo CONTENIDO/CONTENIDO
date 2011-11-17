@@ -40,6 +40,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * PDO MySQL database driver
+ * @package    CONTENIDO Core
+ * @subpackage Database
+ */
 class DB_Sql extends DB_Sql_Abstract
 {
 

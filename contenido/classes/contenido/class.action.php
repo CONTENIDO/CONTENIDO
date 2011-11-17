@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.5
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -32,6 +32,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Action collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiActionCollection extends ItemCollection
 {
     /**
@@ -41,7 +46,7 @@ class cApiActionCollection extends ItemCollection
     {
         global $cfg;
         parent::__construct($cfg['tab']['actions'], 'idaction');
-        $this->_setItemClass("cApiAction");
+        $this->_setItemClass('cApiAction');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -51,37 +56,45 @@ class cApiActionCollection extends ItemCollection
         $this->__construct();
     }
 
-    public function create($area, $name, $code = "", $location = "", $relevant = 1)
+    public function create($area, $name, $code = '', $location = '', $relevant = 1)
     {
         $item = parent::create();
 
         if (is_string($area)) {
             $c = new cApiArea();
-            $c->loadBy("name", $area);
+            $c->loadBy('name', $area);
 
             if ($c->virgin) {
                 $area = 0;
                 cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
             } else {
-                $area = $c->get("idarea");
+                $area = $c->get('idarea');
             }
         }
 
-        $item->set("idarea", $area);
-        $item->set("name", $name);
-        $item->set("code", $code);
-        $item->set("location", $location);
-        $item->set("relevant", $relevant);
+        $item->set('idarea', $area);
+        $item->set('name', $name);
+        $item->set('code', $code);
+        $item->set('location', $location);
+        $item->set('relevant', $relevant);
 
         $item->store();
 
-        return ($item);
+        return $item;
     }
 }
 
 
+/**
+ * Action item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiAction extends Item
 {
+    /**
+     * @var  bool
+     */
     protected $_objectInvalid;
 
     /**

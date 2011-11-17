@@ -9,7 +9,7 @@
  * Requirements:
  * @con_php_req 5
  *
- * @package    CONTENIDO Backend Permission
+ * @package    CONTENIDO Core
  * @version    0.2
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
@@ -34,6 +34,10 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Permission
+ */
 class Contenido_Perm
 {
 

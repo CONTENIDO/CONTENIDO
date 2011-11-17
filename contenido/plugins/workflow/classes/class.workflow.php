@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  * 
  *
- * @package    CONTENIDO Backend Plugins
+ * @package    CONTENIDO Plugins
  * @version    1.6
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>

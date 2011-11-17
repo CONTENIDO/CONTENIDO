@@ -11,7 +11,7 @@
  * @con_php_req 5
  *
  *
- * @package    CONTENIDO Backend Database
+ * @package    CONTENIDO Core
  * @version    0.1.4
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -38,6 +38,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Abstract database driver class.
+ * @package    CONTENIDO Core
+ * @subpackage Database
+ */
 abstract class DB_Sql_Abstract
 {
 

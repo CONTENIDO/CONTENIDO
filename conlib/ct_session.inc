@@ -10,7 +10,8 @@
  * Requirements:
  * @con_php_req 5
  *
- * @package    CONTENIDO Backend Session
+ * @package    CONTENIDO Core
+ * @subpackage Session
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -32,6 +33,10 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Session
+ */
 class CT_Session
 {
     /**

@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package     CONTENIDO Backend Plugins
+ * @package     CONTENIDO Plugins
  * @subpackage  ModRewrite
  * @version     0.1
  * @author      Murat Purc <murat@purc.de>
@@ -38,7 +38,7 @@ defined('CON_FRAMEWORK') or die('Illegal call');
  * pattern and vice versa.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Backend Plugins
+ * @package     CONTENIDO Plugins
  * @subpackage  ModRewrite
  */
 class ModRewriteUrlUtil extends ModRewriteBase

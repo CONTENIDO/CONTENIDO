@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.4
  * @author     Bjoern Behrens
  * @copyright  four for business AG <www.4fb.de>
@@ -33,6 +33,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Article language collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiArticleLanguageCollection extends ItemCollection
 {
     public function __construct($select = false)
@@ -134,6 +139,8 @@ class cApiArticleLanguageCollection extends ItemCollection
  * linkdescr    - Linkdescription
  * swf          - Upload id of the element
  *
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiArticleLanguage extends Item
 {

@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.1
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -32,13 +32,18 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Layout collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiLayoutCollection extends ItemCollection
 {
     public function __construct()
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["lay"], "idlay");
-        $this->_setItemClass("cApiLayout");
+        parent::__construct($cfg['tab']['lay'], 'idlay');
+        $this->_setItemClass('cApiLayout');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -52,14 +57,19 @@ class cApiLayoutCollection extends ItemCollection
     {
         global $client;
         $item = parent::create();
-        $item->set("name", $title);
-        $item->set("idclient", $client);
+        $item->set('name', $title);
+        $item->set('idclient', $client);
         $item->store();
         return ($item);
     }
 }
 
 
+/**
+ * Layout item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiLayout extends Item
 {
     /**
@@ -69,7 +79,7 @@ class cApiLayout extends Item
     public function __construct($mId = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["lay"], "idlay");
+        parent::__construct($cfg['tab']['lay'], 'idlay');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

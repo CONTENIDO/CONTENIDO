@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.8
  * @author     Bjoern Behrens
  * @copyright  four for business AG <www.4fb.de>
@@ -33,6 +33,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * User collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiUserCollection extends ItemCollection
 {
     public function __construct($select = false)
@@ -80,6 +85,11 @@ class cApiUserCollection extends ItemCollection
 }
 
 
+/**
+ * User item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiUser extends Item
 {
     /**

@@ -9,7 +9,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.4
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -31,13 +31,18 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Container configuration collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiContainerConfigurationCollection extends ItemCollection
 {
     public function __construct($select = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["container_conf"], "idcontainerc");
-        $this->_setItemClass("cApiContainerConfiguration");
+        parent::__construct($cfg['tab']['container_conf'], 'idcontainerc');
+        $this->_setItemClass('cApiContainerConfiguration');
         if ($select !== false) {
             $this->select($select);
         }
@@ -53,14 +58,19 @@ class cApiContainerConfigurationCollection extends ItemCollection
     public function create($idtplcfg, $number, $container)
     {
         $item = parent::create();
-        $item->set("idtplcfg", $idtplcfg);
-        $item->set("number", $number);
-        $item->set("container", $container);
+        $item->set('idtplcfg', (int) $idtplcfg);
+        $item->set('number', (int) $number);
+        $item->set('container', $this->escape($container));
         $item->store();
     }
 }
 
 
+/**
+ * Container configuration item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiContainerConfiguration extends Item
 {
     /**
@@ -70,7 +80,7 @@ class cApiContainerConfiguration extends Item
     public function __construct($mId = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["container_conf"], "idcontainerc");
+        parent::__construct($cfg['tab']['container_conf'], 'idcontainerc');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

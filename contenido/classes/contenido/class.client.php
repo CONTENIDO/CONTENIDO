@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.2.1
  * @author     Bjoern Behrens
  * @copyright  four for business AG <www.4fb.de>
@@ -33,6 +33,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Client collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiClientCollection extends ItemCollection
 {
     /**
@@ -129,10 +134,12 @@ class cApiClientCollection extends ItemCollection
 
 
 /**
- * Class cApiClient
- * @author Marco Jahn <Marco.Jahn@4fb.de>
- * @version 1.01
- * @copyright four for business 2004
+ * Class cApiClient, client item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ * @author     Marco Jahn <Marco.Jahn@4fb.de>
+ * @version    1.01
+ * @copyright  four for business 2004
  */
 class cApiClient extends Item
 {

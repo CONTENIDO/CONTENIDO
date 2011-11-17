@@ -38,6 +38,10 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Database
+ */
 class DB_Contenido extends DB_Sql
 {
     /**
@@ -136,6 +140,10 @@ class DB_Contenido extends DB_Sql
 }
 
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Session
+ */
 class Contenido_CT_Sql extends CT_Sql
 {
     /**
@@ -197,6 +205,8 @@ class Contenido_CT_Sql extends CT_Sql
 /**
  * Implements the interface class for storing session data to disk using file
  * session container of phplib.
+ * @package    CONTENIDO Core
+ * @subpackage Session
  */
 class Contenido_CT_File extends CT_File
 {
@@ -252,6 +262,10 @@ class Contenido_CT_File extends CT_File
     }
 }
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Session
+ */
 class Contenido_CT_Shm extends CT_Shm
 {
     public function __construct()
@@ -271,7 +285,9 @@ class Contenido_CT_Shm extends CT_Shm
  *
  * @todo  Make session container configurable
  *
- * @author  Murat Purc <murat@purc.de>
+ * @package    CONTENIDO Core
+ * @subpackage Session
+ * @author     Murat Purc <murat@purc.de>
  */
 class Contenido_CT_Session extends CT_Session
 {
@@ -288,6 +304,10 @@ class Contenido_CT_Session extends CT_Session
     }
 }
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Session
+ */
 class Contenido_Session extends Session
 {
     public $classname          = 'Contenido_Session';
@@ -326,6 +346,10 @@ class Contenido_Session extends Session
 }
 
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Session
+ */
 class Contenido_Frontend_Session extends Session
 {
     public $classname      = 'Contenido_Frontend_Session';
@@ -363,6 +387,10 @@ class Contenido_Frontend_Session extends Session
     }
 }
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Authentication
+ */
 class Contenido_Auth extends Auth
 {
     public $classname      = 'Contenido_Auth';
@@ -406,6 +434,10 @@ class Contenido_Auth extends Auth
 }
 
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Authentication
+ */
 class Contenido_Default_Auth extends Contenido_Auth
 {
     public $classname = 'Contenido_Default_Auth';
@@ -420,6 +452,10 @@ class Contenido_Default_Auth extends Contenido_Auth
 }
 
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Authentication
+ */
 class Contenido_Challenge_Auth extends Auth
 {
     public $classname      = 'Contenido_Challenge_Auth';
@@ -488,11 +524,13 @@ class Contenido_Challenge_Auth extends Auth
     }
 }
 
-##
-## Contenido_Challenge_Crypt_Auth: Keep passwords in md5 hashes rather
-##                           than cleartext in database
-## Author: Jim Zajkowski <jim@jimz.com>
 
+/**
+ * Contenido_Challenge_Crypt_Auth: Keep passwords in md5 hashes rather than cleartext in database
+ * @package    CONTENIDO Core
+ * @subpackage Authentication
+ * @author     Jim Zajkowski <jim@jimz.com>
+ */
 class Contenido_Challenge_Crypt_Auth extends Auth
 {
     public $classname      = 'Contenido_Challenge_Crypt_Auth';
@@ -706,6 +744,10 @@ class Contenido_Challenge_Crypt_Auth extends Auth
     }
 }
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Authentication
+ */
 class Contenido_Frontend_Challenge_Crypt_Auth extends Auth
 {
     public $classname      = 'Contenido_Frontend_Challenge_Crypt_Auth';

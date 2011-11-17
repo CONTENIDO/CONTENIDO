@@ -10,7 +10,8 @@
  * @con_php_req 5
  *
  *
- * @package    CONTENIDO Backend Database
+ * @package    CONTENIDO Core
+ * @subpackage Database
  * @version    0.3.2
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
@@ -41,6 +42,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * MySQLi database driver
+ * @package    CONTENIDO Core
+ * @subpackage Database
+ */
 class DB_Sql extends DB_Sql_Abstract
 {
     protected $_aDataTypes = array(

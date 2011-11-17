@@ -19,17 +19,24 @@
  * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
- *   created 2011-08-11
+ *   created  2011-08-11
  *   modified 2011-08-24, Dominik Ziegler, removed deprecated function SaveKeywordsforart
+ *
  *   $Id$:
  * }}
  *
  */
 
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+
+/**
+ * CONTENIDO abstract code generator class.
+ * @package    CONTENIDO Backend Classes
+ */
 abstract class Contenido_CodeGenerator_Abstract
 {
     /**

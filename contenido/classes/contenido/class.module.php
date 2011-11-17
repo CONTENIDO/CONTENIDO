@@ -11,7 +11,7 @@
  *
  * @todo  Switch to SimpleXML
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -42,6 +42,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Module collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiModuleCollection extends ItemCollection
 {
     /**
@@ -81,7 +86,9 @@ class cApiModuleCollection extends ItemCollection
 
 
 /**
- * Module access class
+ * Module item
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiModule extends Item
 {

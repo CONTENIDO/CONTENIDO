@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  *
- * @package    CONTENIDO Backend Database
+ * @package    CONTENIDO Core
  * @version    0.2.3
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
@@ -41,6 +41,11 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+/**
+ * MySQL database driver
+ * @package    CONTENIDO Core
+ * @subpackage Database
+ */
 class DB_Sql extends DB_Sql_Abstract
 {
 

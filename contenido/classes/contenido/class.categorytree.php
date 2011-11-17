@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.5
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -32,6 +32,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Category tree collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiCategoryTreeCollection extends ItemCollection
 {
     public function __construct($select = false)
@@ -54,6 +59,11 @@ class cApiCategoryTreeCollection extends ItemCollection
 }
 
 
+/**
+ * Category tree item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiCategoryTree extends Item
 {
     /**

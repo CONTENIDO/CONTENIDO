@@ -19,12 +19,23 @@
  * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
- *   created 2011-08-11
+ *   created  2011-08-11
+ *
  *   $Id$:
  * }}
  *
  */
 
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
+
+
+/**
+ * CONTENIDO standard code generator.
+ * @package    CONTENIDO Backend Classes
+ */
 class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 {
 
@@ -49,7 +60,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         Contenido_Vars::setEncoding($db,$cfg,$this->_lang);
         Contenido_Vars::setVar('cfgClient', $cfgClient);
         Contenido_Vars::setVar('client', $this->_client);
-        Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding','UTF-8'));
+        Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding', 'UTF-8'));
 
         // Set category article id
         $idcatart = conGetCategoryArticleId($this->_idcat, $this->_idart);

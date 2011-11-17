@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.4
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -32,15 +32,20 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Category article collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiCategoryArticleCollection extends ItemCollection
 {
     public function __construct($select = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["cat_art"], "idcatart");
-        $this->_setItemClass("cApiCategoryArticle");
-        $this->_setJoinPartner("cApiCategoryCollection");
-        $this->_setJoinPartner("cApiArticleCollection");
+        parent::__construct($cfg['tab']['cat_art'], 'idcatart');
+        $this->_setItemClass('cApiCategoryArticle');
+        $this->_setJoinPartner('cApiCategoryCollection');
+        $this->_setJoinPartner('cApiArticleCollection');
         if ($select !== false) {
             $this->select($select);
         }
@@ -55,6 +60,11 @@ class cApiCategoryArticleCollection extends ItemCollection
 }
 
 
+/**
+ * Category article item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiCategoryArticle extends Item
 {
     /**
@@ -64,7 +74,7 @@ class cApiCategoryArticle extends Item
     public function __construct($mId = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["cat_art"], "idcatart");
+        parent::__construct($cfg['tab']['cat_art'], 'idcatart');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

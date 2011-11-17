@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.3
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -32,15 +32,21 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("includes", "functions.str.php");
+cInclude('includes', 'functions.str.php');
 
+
+/**
+ * Article collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiArticleCollection extends ItemCollection
 {
     public function __construct($select = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["art"], "idart");
-        $this->_setItemClass("cApiArticle");
+        parent::__construct($cfg['tab']['art'], 'idart');
+        $this->_setItemClass('cApiArticle');
 
         if ($select !== false) {
             $this->select($select);
@@ -56,6 +62,11 @@ class cApiArticleCollection extends ItemCollection
 }
 
 
+/**
+ * Article item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiArticle extends Item
 {
     /**
@@ -65,7 +76,7 @@ class cApiArticle extends Item
     public function __construct($mId = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["art"], "idart");
+        parent::__construct($cfg['tab']['art'], 'idart');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

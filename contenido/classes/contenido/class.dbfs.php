@@ -12,7 +12,7 @@
  * Code is taken over from file contenido/classes/class.dbfs.php in favor of
  * normalizing API.
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -36,6 +36,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * DFFS item collection
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiDbfsCollection extends ItemCollection
 {
@@ -384,6 +386,8 @@ class cApiDbfsCollection extends ItemCollection
 
 /**
  * DBFS item
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiDbfs extends Item
 {

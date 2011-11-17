@@ -12,7 +12,7 @@
  * Code is taken over from file contenido/classes/class.communications.php in favor of
  * normalizing API.
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -34,7 +34,9 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 /**
- * Communication item collection
+ * Communication collection
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiCommunicationCollection extends ItemCollection
 {
@@ -70,6 +72,8 @@ class cApiCommunicationCollection extends ItemCollection
 
 /**
  * Communication item
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiCommunication extends Item
 {

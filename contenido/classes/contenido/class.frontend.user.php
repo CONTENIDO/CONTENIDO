@@ -13,7 +13,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -35,7 +35,9 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * Frontend user management class
+ * Frontend user collection
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiFrontendUserCollection extends ItemCollection
 {
@@ -134,7 +136,9 @@ class cApiFrontendUserCollection extends ItemCollection
 
 
 /**
- * Single FrontendUser Item
+ * Frontend user item
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiFrontendUser extends Item
 {

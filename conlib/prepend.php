@@ -9,7 +9,8 @@
  * Requirements:
  * @con_php_req 5
  *
- * @package    CONTENIDO Backend Startup
+ * @package    CONTENIDO Backend
+ * @subpackage Startup
  * @version    1.4
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>

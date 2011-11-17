@@ -11,7 +11,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    0.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -35,6 +35,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Upload collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiUploadCollection extends ItemCollection
 {
     /**
@@ -163,6 +168,11 @@ class cApiUploadCollection extends ItemCollection
 }
 
 
+/**
+ * Upload item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiUpload extends Item
 {
     /**

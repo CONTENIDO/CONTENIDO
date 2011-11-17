@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.3
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -32,6 +32,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * File collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiFileCollection extends ItemCollection
 {
     /**
@@ -41,7 +46,7 @@ class cApiFileCollection extends ItemCollection
     {
         global $cfg;
         parent::__construct($cfg['tab']['files'], 'idfile');
-        $this->_setItemClass("cApiFile");
+        $this->_setItemClass('cApiFile');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
@@ -51,29 +56,29 @@ class cApiFileCollection extends ItemCollection
         $this->__construct();
     }
 
-    public function create($area, $filename, $filetype = "main")
+    public function create($area, $filename, $filetype = 'main')
     {
         $item = parent::create();
 
         if (is_string($area)) {
             $c = new cApiArea();
-            $c->loadBy("name", $area);
+            $c->loadBy('name', $area);
 
             if ($c->virgin) {
                 $area = 0;
                 cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
             } else {
-                $area = $c->get("idarea");
+                $area = $c->get('idarea');
             }
         }
 
-        $item->set("idarea", $area);
-        $item->set("filename", $filename);
+        $item->set('idarea', $area);
+        $item->set('filename', $filename);
 
-        if ($filetype != "main") {
-            $item->set("filetype", "inc");
+        if ($filetype != 'main') {
+            $item->set('filetype', 'inc');
         } else {
-            $item->set("filetype", "main");
+            $item->set('filetype', 'main');
         }
 
         $item->store();
@@ -83,6 +88,11 @@ class cApiFileCollection extends ItemCollection
 }
 
 
+/**
+ * File item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiFile extends Item
 {
     /**
@@ -92,8 +102,8 @@ class cApiFile extends Item
     public function __construct($mId = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["files"], "idfile");
-        $this->setFilters(array("addslashes"), array("stripslashes"));
+        parent::__construct($cfg['tab']['files'], 'idfile');
+        $this->setFilters(array('addslashes'), array('stripslashes'));
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }

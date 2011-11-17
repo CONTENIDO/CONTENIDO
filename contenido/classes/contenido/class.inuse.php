@@ -13,7 +13,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -37,9 +37,11 @@ if (!defined('CON_FRAMEWORK')) {
 /**
  * Class InUse
  * Class for In-Use management
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.1
- * @copyright four for business 2003
+ * @package    CONTENIDO API
+ * @subpackage Model
+ * @author     Timo A. Hummel <Timo.Hummel@4fb.de>
+ * @version    0.1
+ * @copyright  four for business 2003
  */
 class cApiInUseCollection extends ItemCollection
 {
@@ -261,9 +263,11 @@ class cApiInUseCollection extends ItemCollection
 /**
  * Class cApiInUse
  * Class for a single in-use item
- * @author Timo A. Hummel <Timo.Hummel@4fb.de>
- * @version 0.1
- * @copyright four for business 2003
+ * @package    CONTENIDO API
+ * @subpackage Model
+ * @author     Timo A. Hummel <Timo.Hummel@4fb.de>
+ * @version    0.1
+ * @copyright  four for business 2003
  */
 class cApiInUse extends Item
 {

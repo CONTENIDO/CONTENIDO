@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.5.3
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -35,6 +35,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Client language collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiClientLanguageCollection extends ItemCollection
 {
     /**
@@ -86,6 +91,11 @@ class cApiClientLanguageCollection extends ItemCollection
 }
 
 
+/**
+ * Client item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiClientLanguage extends Item
 {
     /**

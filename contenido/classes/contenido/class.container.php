@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    1.4
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
@@ -32,13 +32,18 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Container collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiContainerCollection extends ItemCollection
 {
     public function __construct($select = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["container"], "idcontainer");
-        $this->_setItemClass("cApiContainer");
+        parent::__construct($cfg['tab']['container'], 'idcontainer');
+        $this->_setItemClass('cApiContainer');
         if ($select !== false) {
             $this->select($select);
         }
@@ -53,34 +58,39 @@ class cApiContainerCollection extends ItemCollection
 
     public function clearAssignments($idtpl)
     {
-        $this->select("idtpl = '$idtpl'");
+        $this->select('idtpl = ' . (int) $idtpl);
         while ($item = $this->next()) {
-            $this->delete($item->get("idcontainer"));
+            $this->delete($item->get('idcontainer'));
         }
     }
 
-    public function assignModul($idtpl, $number, $module)
+    public function assignModul($idtpl, $number, $idmod)
     {
-        $this->select("idtpl = '$idtpl' AND number = '$number'");
+        $this->select('idtpl = ' . (int) $idtpl . ' AND number = ' . (int) $number);
         if ($item = $this->next()) {
-            $item->set("module", $module);
+            $item->set('idmod', (int) $idmod);
             $item->store();
         } else {
-            $this->create($idtpl, $number, $module);
+            $this->create($idtpl, $number, $idmod);
         }
     }
 
-    public function create($idtpl, $number, $module)
+    public function create($idtpl, $number, $idmod)
     {
         $item = parent::create();
-        $item->set("idtpl", $idtpl);
-        $item->set("number", $number);
-        $item->set("module", $module);
+        $item->set('idtpl', (int) $idtpl);
+        $item->set('number', (int) $number);
+        $item->set('idmod', (int) $idmod);
         $item->store();
     }
 }
 
 
+/**
+ * Container item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiContainer extends Item
 {
     /**
@@ -90,7 +100,7 @@ class cApiContainer extends Item
     public function __construct($mId = false)
     {
         global $cfg;
-        parent::__construct($cfg["tab"]["container"], "idcontainer");
+        parent::__construct($cfg['tab']['container'], 'idcontainer');
         $this->setFilters(array(), array());
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);

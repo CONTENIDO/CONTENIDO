@@ -9,11 +9,9 @@
  *
  * Requirements:
  * @con_php_req 5
- * @con_template <Templatefiles>
- * @con_notice <Notice>
  *
  *
- * @package    CONTENIDO Backend Database
+ * @package    CONTENIDO Core
  * @version    1.2
  * @author     Carmelo Guarneri
  * @copyright  four for business AG <www.4fb.de>
@@ -38,6 +36,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * General database utilities.
+ * @package    CONTENIDO Core
+ * @subpackage Database
+ */
 class DB_USql extends DB_Sql
 {
 

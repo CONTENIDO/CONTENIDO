@@ -13,7 +13,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    0.1
  * @author     Timo A. Hummel
  * @author     Murat Purc
@@ -90,7 +90,11 @@ if (!defined('CON_FRAMEWORK')) {
  * interface of cApiPropertyCollection to manage the properties.
  */
 
-
+/**
+ * Property collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiPropertyCollection extends ItemCollection
 {
     /**
@@ -665,6 +669,11 @@ class cApiPropertyCollection extends ItemCollection
 }
 
 
+/**
+ * Property item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiProperty extends Item
 {
     /**

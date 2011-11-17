@@ -11,7 +11,7 @@
  * @con_php_req 5
  *
  *
- * @package    CONTENIDO Backend Session
+ * @package    CONTENIDO Core
  * @version    1.2
  * @author     Daniel Lashua <daniel.lashua@gte.com>
  * @copyright  four for business AG <www.4fb.de>
@@ -34,6 +34,10 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+/**
+ * @package    CONTENIDO Core
+ * @subpackage Session
+ */
 class CT_DBM
 {
     /**

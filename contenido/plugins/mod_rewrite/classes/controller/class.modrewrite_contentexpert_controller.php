@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package     CONTENIDO Backend Plugins
+ * @package     CONTENIDO Plugins
  * @subpackage  ModRewrite
  * @version     0.1
  * @author      Murat Purc <murat@purc.de>
@@ -39,7 +39,7 @@ plugin_include('mod_rewrite', 'classes/controller/class.modrewrite_controller_ab
  * Content expert controller for expert settings/actions.
  *
  * @author      Murat Purc <murat@purc.de>
- * @package     CONTENIDO Backend Plugins
+ * @package     CONTENIDO Plugins
  * @subpackage  ModRewrite
  */
 class ModRewrite_ContentExpertController extends ModRewrite_ControllerAbstract

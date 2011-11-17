@@ -12,7 +12,7 @@
  * Code is taken over from file contenido/classes/class.artspec.php in favor of
  * normalizing API.
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -35,6 +35,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * Article specification collection
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiArticleSpecificationCollection extends ItemCollection
 {
@@ -70,6 +72,8 @@ class cApiArticleSpecificationCollection extends ItemCollection
 
 /**
  * Article specification item
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiArticleSpecification extends Item
 {

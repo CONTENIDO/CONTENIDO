@@ -10,7 +10,7 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Classes
+ * @package    CONTENIDO API
  * @version    0.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -31,6 +31,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+/**
+ * Statistic collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiStatCollection extends ItemCollection
 {
     /**
@@ -70,10 +75,10 @@ class cApiStatCollection extends ItemCollection
     {
         $oItem = parent::create();
 
-        $oItem->set('visited', 1, false);
-        $oItem->set('idcatart', (int) $iIdCatArt, false);
-        $oItem->set('idlang', (int) $iIdLang, false);
-        $oItem->set('idclient', (int) $iIdClient, false);
+        $oItem->set('visited', 1);
+        $oItem->set('idcatart', (int) $iIdCatArt);
+        $oItem->set('idlang', (int) $iIdLang);
+        $oItem->set('idclient', (int) $iIdClient);
         $oItem->store();
 
         return $oItem;
@@ -95,7 +100,9 @@ class cApiStatCollection extends ItemCollection
 
 
 /**
- * Class cApiStat
+ * Statistic item
+ * @package    CONTENIDO API
+ * @subpackage Model
  */
 class cApiStat extends Item
 {
