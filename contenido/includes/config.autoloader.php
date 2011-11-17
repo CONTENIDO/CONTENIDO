@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2011-11-16
+ *     created  2011-11-18
  * }}
  */
 
@@ -326,6 +326,10 @@ return array(
     'Contenido_UrlBuilder_CustomPath' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_CustomPath.class.php',
     'Contenido_UrlBuilder_Frontcontent' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_Frontcontent.class.php',
     'Contenido_UrlBuilder_MR' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_MR.class.php',
+    'Contenido_Validator_Abstract' => 'contenido/classes/Validator/Abstract.class.php',
+    'Contenido_Validator_Email' => 'contenido/classes/Validator/Email.class.php',
+    'Contenido_Validator_Factory' => 'contenido/classes/Validator/Factory.class.php',
+    'Contenido_Validator_Regex' => 'contenido/classes/Validator/Regex.class.php',
     'cViewAdvancedMenu' => 'contenido/classes/widgets/class.views.advancedmenu.php',
     'cViewItems' => 'contenido/classes/widgets/class.views.advancedmenu.php',
     'cApiClickableAction' => 'contenido/classes/widgets/class.widgets.actionbutton.php',
