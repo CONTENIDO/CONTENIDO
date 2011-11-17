@@ -147,6 +147,10 @@ contenido/classes/UrlBuilder/Contenido_UrlBuilder_CustomPath.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilder_Frontcontent.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilder_MR.class.php -text
 contenido/classes/UrlBuilder/Sample.php -text
+contenido/classes/Validator/Abstract.class.php -text
+contenido/classes/Validator/Email.class.php -text
+contenido/classes/Validator/Factory.class.php -text
+contenido/classes/Validator/Regex.class.php -text
 contenido/classes/abstract_classes/class.conuser.php -text
 contenido/classes/class.action.php -text
 contenido/classes/class.activeusers.php -text
@@ -1828,3 +1832,5 @@ setup/templates/setup/forms/systemdata.tpl -text
 setup/templates/setup/forms/systemtest.tpl -text
 setup/templates/setuptype.tpl -text
 setup/tests/tfile.txt -text
+test/frontend/Validator/Contenido_Validator_Email.php -text
+test/frontend/ValidatorTestSuite.php -text

@@ -30,6 +30,7 @@
  *   modified 2011-03-13  Murat Purc, added configuration for GenericDB caching.
  *   modified 2011-08-24, Dominik Ziegler, removed CVS datetag configuration entry
  *   modified 2011-11-10  Murat Purc, added configuration for properties (user, group, system) caching.
+ *   modified 2011-11-18  Murat Purc, added configuration for validators.
  *
  *   $Id$:
  * }}
@@ -305,5 +306,24 @@ $cfg['properties']['properties']['itemtypes'] = array(
     'idclientslang' => '%lang%',
     'idlang' => '%lang%',
 );
+
+
+/* Validators settings
+ * -----------------------------------------------------------------------------
+ * Configuration of CONTENIDO validators.
+ * Each validator can be configured thru CONTENIDO $cfg configuration variable.
+ */
+
+// E-Mail validator settings
+// (array) Optional, list of top level domains to disallow
+//         Validation of E-Mail addresses having configured top level domains will fail!
+$cfg['validator']['email']['disallow_tld'] = array('.test', '.example', '.invalid', '.localhost');
+
+// (array) Optional, list of hosts to disallow
+//         Validation of E-Mail addresses having configured hosts will fail!
+$cfg['validator']['email']['disallow_host'] = array('example.com', 'example.org', 'example.net');
+
+// (bool) Optional, flag to check DNS records for MX type
+$cfg['validator']['email']['mx_check'] = false;
 
 ?>
