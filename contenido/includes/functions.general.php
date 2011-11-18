@@ -718,7 +718,7 @@ function getPhpModuleInfo($moduleName)
 function isValidMail($email, $strict = false)
 {
     $validator = Contenido_Validator_Factory::getInstance('email');
-    return $validator->isValid($email));
+    return $validator->isValid($email);
 }
 
 function htmldecode($string)
