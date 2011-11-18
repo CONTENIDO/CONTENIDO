@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.3.9
+ * @version    1.4.0
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -35,6 +35,7 @@
  *   modified 2011-08-24, Dominik Ziegler, deprecated function cIDNAEncode and cIDNADecode
  *   modified 2011-11-03, Murat Purc, usage of Contenido_Effective_Setting to retrieve settings
  *   modified 2011-11-08, Murat Purc, usage of cApiSystemProperty classes
+ *   modified 2011-11-18, Murat Purc, normalize E-Mail validation [#CON-448]
  *
  *   $Id$:
  * }}
@@ -709,31 +710,15 @@ function getPhpModuleInfo($moduleName)
     return $moduleSettings;
 }
 
-function isValidMail($sEMail, $bStrict = false)
+/**
+ * Checks if passed email address is valid or not
+ * @param  string  $email
+ * @param  bool    $strict  No more used!
+ */
+function isValidMail($email, $strict = false)
 {
-    if ($bStrict) {
-        // HerrB (14.02.2008), code posted by Calvini
-        // See http://www.contenido.org/forum/viewtopic.php?p=106612#106612
-        // Note, that IDNs are currently only supported if given as punycode
-
-        // "Strict" just means "95% real-world match",
-        // e.g. a.b@c.de, a-b@c.de, a_b@c.de and some special chars (not \n, ;)
-
-        // See also http://www.php.net/manual/en/function.eregi.php#52458,
-        // but note http://www.php.net/manual/en/function.eregi.php#55215
-        // or just kill yourself, as being dumb to even try to validate an
-        // email address: http://www.php.net/manual/en/function.preg-match.php#76615
-
-        $sLocalChar   = '-a-z0-9_!#\\$&\'\\*\\+\\/=\\?\\^`\\{\\|\\}~';
-        $sLocalRegEx  = '['.$sLocalChar.'](\\.*['.$sLocalChar.'])*';
-        $sDomainChar  = 'a-zäöü';
-        $sDomainRegEx = $sDomainRegEx  = '((['.$sDomainChar.']|['.$sDomainChar.']['.$sDomainChar.'0-9-]{0,61}['.$sDomainChar.'0-9])\\.)+';
-        $sTLDChar     = 'a-z';
-        $sTLDRegEx    = '['.$sTLDChar.']{2,}';
-        return preg_match('/^' . $sLocalRegEx . '@' . $sDomainRegEx . $sTLDRegEx . '$/i', $sEMail);
-    } else {
-        return preg_match("/^[0-9a-z]([-_.]*[0-9a-z]*)*@[a-z0-9-]+\.([a-z])/i", $sEMail);
-    }
+    $validator = Contenido_Validator_Factory::getInstance('email');
+    return $validator->isValid($email));
 }
 
 function htmldecode($string)

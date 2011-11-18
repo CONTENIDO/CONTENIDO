@@ -1,179 +1,190 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Class for creating form pages
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.0.1
+ * @version    1.0.3
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
+ *   modified 2011-11-18, Murat Purc, normalize E-Mail validation [#CON-448] an ported to PHP 5
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
-class Form {
+/**
+ * Form generator class
+ * @package    CONTENIDO Backend Classes
+ */
+class Form
+{
 
     /**
      * counter
      * @var int
      */
-    var $counter = 0;
+    public $counter = 0;
 
     /**
      * passed
      * @var bool
      */
-    var $passed = false;
+    public $passed = false;
 
     /**
      * isSend
      * @var bool
      */
-    var $isSend = false;
+    public $isSend = false;
 
     /**
      * debug
      * @var bool
      */
-    var $debug = false;
+    public $debug = false;
 
     /**
      * fields
      * @var array
      */
-    var $fields = array();
+    public $fields = array();
 
     /**
      * defaults
      * @var array
      */
-    var $default = array();
+    public $default = array();
 
     /**
      * action
      * @var string
      */
-    var $action = '';
+    public $action = '';
 
     /**
      * method
      * @var string
      */
-    var $method = 'post';
+    public $method = 'post';
 
     /**
      * enctype
      * @var string
      */
-    var $enctype = '';
+    public $enctype = '';
 
     /**
      * target
      * @var string
      */
-    var $target = '_self';
+    public $target = '_self';
 
     /**
      * Constructor Function
-     * @param
      */
-    function Form() {
+    public function __construct()
+    {
         // empty
-    } // end function
+    }
+
+    /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
+    public function Form()
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct();
+    }
 
     /**
-     * Add()
      * Add a form element
-     * @return void
+     * @param  string  $name
      */
-    function Add($name) {
-		$name = Contenido_Security::escapeDB($name, null);
+    public function Add($name)
+    {
+        $name = Contenido_Security::escapeDB($name, null);
         $this->counter ++;
         $this->fields[$this->counter]['name'] = $name;
-    } // end function
+    }
 
     /**
-     * SetDefault()
      * Add a default value
-     * @return void
+     * @param  string  $name
+     * @param  string  $value
      */
-    function SetDefault($name, $value) {
-		$name 	= Contenido_Security::escapeDB($name, null);
-		$value 	= Contenido_Security::escapeDB($value, null);
+    public function SetDefault($name, $value)
+    {
+        $name = Contenido_Security::escapeDB($name, null);
+        $value = Contenido_Security::escapeDB($value, null);
         $this->default[$name] = $value;
-    } // end function
+    }
 
     /**
-     * Define()
      * Define properties of the form or the elements
-     * @var string $which Which property to define
-     * @var string $value Values of the property
-     * @return void
+     * @param  string  $which  Which property to define
+     * @param  string  $value  Values of the property
      */
-    function Define($which, $value) {
-		$which = Contenido_Security::escapeDB($which, null);
-		$value = Contenido_Security::escapeDB($value, null);
+    public function Define($which, $value)
+    {
+        $which = Contenido_Security::escapeDB($which, null);
+        $value = Contenido_Security::escapeDB($value, null);
         if (0 == $this->counter) {
             $this->$which = $value;
         } else {
             $this->fields[$this->counter][$which] = $value;
         }
-    } // end function
+    }
 
     /**
-     * Passed()
      * Checks if the form passed
      * @return bool TRUE: Form passed without errors, FALSE: Errors
      */
-    function Passed() {
+    public function Passed()
+    {
         return $this->passed;
-    } // end function
+    }
 
     /**
-     * Form::generate()
-     * @param $template string Path/Filename of the template to use
-     * @return void
+     * Generates the form
+     * @param  string  $template Path/Filename of the template to use
      */
-    function Generate($template) {
-		$template = Contenido_Security::escapeDB($template);
-		
+    public function Generate($template)
+    {
+        $template = Contenido_Security::escapeDB($template);
+
         // get form values
         $this->GetFormValues();
 
-        // if form was submitted before
-        // validate the fields
+        // if form was submitted before validate the fields
         if ($this->isSend == true) {
             $this->checkFormValues();
         }
 
-        // at least one entry is invalid
-        // generate the form
+        // at least one entry is invalid generate the form
         if (!$this->passed) {
 
             // check if the template is a file or a string
-            if(!@file_exists($template)) {
+            if (!@file_exists($template)) {
                 // template is a string
                 $tmp_template['complete'] = explode("\n", $template);
             } else {
@@ -181,8 +192,7 @@ class Form {
                 $tmp_template['complete'] = file($template);
             }
 
-            // line numbers for
-            // the dynamic blocks
+            // line numbers for the dynamic blocks
             $tmp_template['line_nr']['start']   = 0;
             $tmp_template['line_nr']['end']     = 0;
             $tmp_template['line_nr']['max']     = count($tmp_template['complete']);
@@ -192,10 +202,8 @@ class Form {
             $tmp_template['block']  = '';
             $tmp_template['end']    = '';
 
-            // search the template for
-            // dynamic blocks
+            // search the template for dynamic blocks
             foreach ($tmp_template['complete'] as $line => $content) {
-
                 // search for start block tag
                 if (strstr($content, '<!-- BEGIN:BLOCK -->')) {
                     $tmp_template['line_nr']['start'] = $line + 1;
@@ -221,11 +229,6 @@ class Form {
             for ($i=$tmp_template['line_nr']['end']+1; $i<=$tmp_template['line_nr']['max']; $i++) {
                 $tmp_template['end'] .= $tmp_template['complete'][$i];
             }
-
-            /**
-             * Generate the start template
-             * @access private
-             */
 
             $tmp_needles[] = '{ACTION}';
             $tmp_needles[] = '{METHOD}';
@@ -314,18 +317,13 @@ class Form {
 
             // do nothing
         }
-
-    } // end function
-
+    }
 
     /**
-     * GetFormValues()
-     * Extract the Form Data from the $_POST or $_GET
-     * global arrays
-     * @return void
+     * Extract the Form Data from the $_POST or $_GET, stores them in fields property
      */
-    function GetFormValues() {
-
+    public function GetFormValues()
+    {
         if (strtolower($this->method) == 'post') {
             // extract values from the $_POST global array
             foreach ($this->fields as $id => $element) {
@@ -337,7 +335,6 @@ class Form {
                     $this->isSend = false;
                 }
             }
-
         } elseif (strtolower($this->method) == 'get') {
             // extract values from the $_GET global array
             foreach ($this->fields as $id => $element) {
@@ -350,16 +347,13 @@ class Form {
                 }
             }
         }
-
-    } // end function
+    }
 
     /**
-     * CheckFormValues()
-     *
-     * @return void
+     * Runs check on send form values
      */
-    function CheckFormValues() {
-
+    public function CheckFormValues()
+    {
         $tmp_passed = true;
 
         foreach ($this->fields as $id => $element) {
@@ -420,46 +414,53 @@ class Form {
                     }
                     break;
 
-            } // end switch
+            }
 
             if ($this->fields[$id]['passed'] == false) {
                 $tmp_passed = false;
             }
 
-        } // end foreach
+        }
 
         $this->passed = $tmp_passed;
-
     }
 
+}
 
-} // end class
 
 /**
  * Class Formfield
  * Class for creating form elements
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @version 1.0
- * @copyright four for business 2002
+ * @package    CONTENIDO Backend Classes
+ * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
+ * @version    1.0
+ * @copyright  four for business 2002
  */
-class FormField {
-
+class FormField
+{
     /**
      * Constructor Function
      */
-    function FormField() {
+    public function __construct()
+    {
         // do nothing
-    } // end function
+    }
+
+    /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
+    public function FormField()
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct();
+    }
 
     /**
-     * Function GenerateCode()
      * Created HTML Code depending on
      * the type of form field selected.
      * @argument $item array All necessary formfield data
      */
-    function GenerateCode($item) {
-
-        if (!is_array($item)){
+    public function GenerateCode($item)
+    {
+        if (!is_array($item)) {
             // no data
             exit ('Argument is not an array!');
 
@@ -470,26 +471,22 @@ class FormField {
             switch (strtolower($item['type'])) {
 
                 case 'caption':
-                    // Feld ist nur eine Beschriftung,
-                    // HTML ist für das Feld erlaubt.
+                    // Feld ist nur eine Beschriftung, HTML ist für das Feld erlaubt.
                     $tmp_ret_str = '<span class="'.$item['classcaption'].'">'.$item['value'].'</span>';
                     break;
 
                 case 'hidden':
-                    // Feld ist versteckt und dient
-                    // nur zum Übermitteln von Daten.
+                    // Feld ist versteckt und dient nur zum Übermitteln von Daten.
                     $tmp_ret_str = '<input type="hidden" name="'.$item['name'].'" value="'.$item['value'].'">';
                     break;
 
                 case 'text':
-                    // Feld ist ein einzeiliges Text-
-                    // Eingabefeld.
+                    // Feld ist ein einzeiliges Text- Eingabefeld.
                     $tmp_ret_str = '<input type="'.$item['type'].'" name="'.$item['name'].'" value="'.$item['value'].'" class="'.$item['classinput'].'">';
                     break;
 
                 case 'textarea':
-                    // Feld ist ein mehrzeiliges Text-
-                    // Eingabefeld.
+                    // Feld ist ein mehrzeiliges Text-Eingabefeld.
                     $tmp_ret_str = '<textarea name="'.$item['name'].'" class="'.$item['classinput'].'">'.$item['value'].'</textarea>';
                     break;
 
@@ -504,7 +501,6 @@ class FormField {
                     } else {
                         // values array passed
                         foreach ($item['values'] as $key => $value) {
-
                             if ($item['value'] == $key) {
                                 // selected
                                 $tmp_ret_str .= '<option value="'.$key.'" selected="selected">'.$value.'</option>';
@@ -513,10 +509,7 @@ class FormField {
                                 // unselected
                                 $tmp_ret_str .= '<option value="'.$key.'">'.$value.'</option>';
                             }
-
-
-                        } // end foreach
-
+                        }
                     }
 
                     $tmp_ret_str .= '</select>';
@@ -535,7 +528,6 @@ class FormField {
                         $first = true;
 
                         foreach ($item['values'] as $caption => $value) {
-
                             $tmp_ret_str .=     '<tr>';
 
                             if ($item['value'] == $value) {
@@ -546,7 +538,6 @@ class FormField {
                                 } else {
                                     $tmp_ret_str .=     '<td class="'.$item['classcaption'].'">'.$caption.'</td><td><input type="radio" name="'.$item['name'].'" value="'.$value.'"></td>';
                                 }
-
                             }
 
                             $tmp_ret_str .=     '<tr>';
@@ -563,7 +554,6 @@ class FormField {
 
                     } else {
                         $tmp_ret_str .= '<input type="checkbox" name="'.$item['name'].'" value="on">';
-
                     }
                     break;
 
@@ -588,7 +578,7 @@ class FormField {
 
                     break;
 
-                /* TimeJob hardcoded dummy */
+                // TimeJob hardcoded dummy
                 case 'suche':
                     $tmp_ret_str .= '<input type="text" class="'.$item['classinput'].'" value="'.$item['value'].'">&nbsp;<a href="#" onclick="popUp(\''.$item['values'][0].'\')"><img src="images/button_suchen.gif" border="0"></a>';
                     $tmp_ret_str .= '&nbsp;&nbsp;<a href="#" onclick="popUp(\''.$item['values'][1].'\')"><img src="images/but_help.gif" border="0"></a>';
@@ -598,86 +588,100 @@ class FormField {
                     $tmp_ret_str .= '<input type="text" class="'.$item['classinput'].'" name="'.$item['name'].'[from]" value="'.$item['value']['from'].'">';
                     $tmp_ret_str .= '&nbsp;<span class="'.$item['classcaption'].'">bis</a>&nbsp;';
                     $tmp_ret_str .= '<input type="text" class="'.$item['classinput'].'" name="'.$item['name'].'[to]" value="'.$item['value']['to'].'">';
-                    
+
                     break;
 
-            } // end switch
+            }
 
             return $tmp_ret_str;
         }
 
-    } // end function
+    }
 
-
-} // end class
+}
 
 
 /**
  * class FormCheck
  * Class for checking form values
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @version 1.0
- * @copyright four for business 2002
+ * @package    CONTENIDO Backend Classes
+ * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
+ * @version    1.0
+ * @copyright  four for business 2002
  */
-class FormCheck {
+class FormCheck
+{
 
     /**
      * Constructor function
-     * @access private
      */
-    function FormCheck () {
+    public function __construct()
+    {
         // empty
-    } // end function
+    }
+
+    /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
+    public function FormCheck()
+    {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct();
+    }
 
     /**
-     * isNotEmpty()
      * Checks if a value is NOT empty
-     * @param $value mixed Value to check
+     * @param  mixed  $value  Value to check
+     * @return bool
      */
-    function isNotEmpty($value) {
+    public function isNotEmpty($value)
+    {
         return ('' == $value || 0 == $value) ? false : true;
-    } // end function
+    }
 
     /**
-     * isNotNull()
      * Checks if a value is NOT null
-     * @param $value mixed Value to check
+     * @param  mixed  $value  Value to check
+     * @return bool
      */
-    function isNotNull($value) {
+    public function isNotNull($value)
+    {
         return ($value) ? true : false;
-    } // end function
+    }
 
     /**
-     * isNumeric()
      * Checks if a value is numeric
-     * @param $value mixed Value to check
+     * @param  mixed  $value  Value to check
+     * @return bool
      */
-    function isNumeric($value) {
+    public function isNumeric($value)
+    {
         if ('' != $value) {
             return (!preg_match('/[^0-9]/', $value)) ? true : false;
         } else {
             return false;
         }
-    } // end function
+    }
 
     /**
-     * isAlphabetic()
      * Checks if a value is alphabetic
-     * @param $value mixed Value to check
+     * @param  mixed  $value  Value to check
+     * @return bool
      */
-    function isAlphabetic($value) {
+    public function isAlphabetic($value)
+    {
         return (!preg_match('/[^a-zA-Z]/', $value)) ? true : false;
-    } // end function
+    }
 
     /**
-     * isEmail()
      * Checks if a string is a valid email adress
-     * @param $value string eMail string to check
+     * @param  mixed  $value  Value to check
+     * @return bool
      */
-    function isEmail($value) {
-        return (preg_match('/^[a-z0-9\.]+@[a-z0-9\.]+\.[a-z]+$/i', $value)) ? true : false;
-    } // end function
+    public function isEmail($value)
+    {
+        $validator = Contenido_Validator_Factory::getInstance('email');
+        return $validator->isValid($value));
+    }
 
-} // end class
+}
 
 ?>
