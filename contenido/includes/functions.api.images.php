@@ -11,7 +11,7 @@
  * 
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.4.3
+ * @version    1.4.4
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -108,6 +108,10 @@ function capiImgScaleLQ ($img, $maxX, $maxY, $crop = false, $expand = false,
 						 $cacheTime = 10, $quality = 75, $keepType = false)
 {
 	global $cfgClient, $lang, $client;
+	
+	if (!file_exists($img)) {
+		return false;	
+	}
 
 	$filename	= $img;
 	$cacheTime	= (int)$cacheTime;
@@ -284,6 +288,10 @@ function capiImgScaleHQ ($img, $maxX, $maxY, $crop = false, $expand = false,
 						 $cacheTime = 10, $quality = 75, $keepType = false)
 {
 	global $cfgClient, $lang, $client;
+	
+	if (!file_exists($img)) {
+		return false;	
+	}
 
 	$filename = $img;
 	$cacheTime	= (int)$cacheTime;
@@ -462,6 +470,10 @@ function capiImgScaleImageMagick ($img, $maxX, $maxY, $crop = false, $expand = f
 {
 	global $cfgClient, $lang, $client;
 
+	if (!file_exists($img)) {
+		return false;	
+	}
+	
 	$filename = $img;
 	$cacheTime	= (int)$cacheTime;
 	$quality	= (int)$quality;
