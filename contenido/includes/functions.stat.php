@@ -782,7 +782,7 @@ function statsOverviewTop($yearmonth, $top)
     global $cfg, $db, $tpl, $client, $lang;
 
     if (strcmp($yearmonth,"current") == 0) {
-        $sql = "SELECT
+        $sql = "SELECT DISTINCT
                     C.title, A.visited
                 FROM 
                     ".$cfg["tab"]["stat"]." AS A,
@@ -797,7 +797,7 @@ function statsOverviewTop($yearmonth, $top)
                 ORDER BY A.visited DESC
                 LIMIT ".Contenido_Security::escapeDB($top, $db);
     } else {
-        $sql = "SELECT
+        $sql = "SELECT DISTINCT
                     C.title, A.visited, B.idcat
                 FROM 
                     ".$cfg["tab"]["stat_archive"]." AS A,
