@@ -24,6 +24,8 @@
  *
  * {@internal
  *   created  2011-10-11
+ *   modified 2011-12-09, Ingo van Peeren, added return of upload object in
+ *                        method sync()
  *
  *   $Id: $:
  * }}
@@ -59,6 +61,7 @@ class cApiUploadCollection extends ItemCollection
      * @global int $client
      * @param string $sDirname
      * @param string $sFilename
+     * return cApiUpload
      */
     public function sync($sDirname, $sFilename)
     {
@@ -77,8 +80,10 @@ class cApiUploadCollection extends ItemCollection
         if ($oItem = $this->next()) {
             $oItem->update();
         } else {
-            $this->create($sDirname, $sFilename);
+            $oItem = $this->create($sDirname, $sFilename);
         }
+        
+        return $oItem;
     }
 
 
