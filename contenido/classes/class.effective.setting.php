@@ -95,7 +95,7 @@ class Contenido_Effective_Setting
             return $value;
         }
 
-        if ($auth->auth['uid'] != 'nobody' && isset($contenido)) {
+        if ($auth->auth['uid'] != 'nobody' && $auth->auth['uid'] != 'form' && isset($contenido)) {
             $obj = self::_getUserInstance();
             $value = $obj->getUserProperty($type, $name, true);
         }
