@@ -40,7 +40,7 @@ function loadCmsDynamic() {
 	var cmsDynActiveType = '';
 
 	$(document).ready(function() {
-        conLoadFile(sPath+'scripts/jquery/jquery-ui.js', 'loadCmsDynamicCallback();');
+        conLoadFile(cmsDynamicConPath+'scripts/jquery/jquery-ui.js', 'loadCmsDynamicCallback();');
 		
 		/**
 		 * Delete an element from dynamic type.
