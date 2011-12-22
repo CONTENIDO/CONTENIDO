@@ -8,7 +8,8 @@
  * Requirements: 
  * @con_php_req 5
  *
- * @package    CONTENIDO Frontend Cache
+ * @package    CONTENIDO Frontend
+ * @subpackage Cache
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -35,6 +36,10 @@ if(!defined('CON_FRAMEWORK')) {
                 die('Illegal call');
 }
 
+/**
+ * @package    CONTENIDO Frontend
+ * @subpackage Cache
+ */
 class cConCache{
 
     /**
@@ -421,14 +426,15 @@ VALID UNTIL: %s
 
 
 /**
-* @class     cConCacheHandler
-* @brief     Class cConCacheHandler. This is used to set configuration
-*            and to manage caching output
-* @version   0.9
-* @date      07.07.2006
-* @author    Murat Purc <murat@purc.de>
-* @copyright © Murat Purc 2006
-*/
+ * Class cConCacheHandler. This is used to set configuration and to manage caching output.
+ *
+ * @package    CONTENIDO Frontend
+ * @subpackage Cache
+ * @version    0.9
+ * @date       07.07.2006
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  © Murat Purc 2006
+ */
 class cConCacheHandler extends cConCache {
 
     /**

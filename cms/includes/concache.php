@@ -9,7 +9,8 @@
  * Requirements: 
  * @con_php_req 5
  *
- * @package    CONTENIDO Frontend Cache
+ * @package    CONTENIDO Frontend
+ * @subpackage Cache
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt

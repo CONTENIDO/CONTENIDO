@@ -9,7 +9,8 @@
  * @con_php_req 5
  * 
  *
- * @package    CONTENIDO Frontend Functions
+ * @package    CONTENIDO Frontend
+ * @subpackage Functions
  * @version    0.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>

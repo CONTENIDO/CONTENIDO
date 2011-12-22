@@ -42,7 +42,11 @@ if(!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }
 
-// Select box with additional functions for category and article selection
+/** 
+ * Select box with additional functions for category and article selection
+ * @package    CONTENIDO Frontend
+ * @subpackage Input Helper
+ */
 class cHTMLInputSelectElement extends cHTMLSelectElement
 {
 	/**
@@ -309,6 +313,10 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
 	}
 }
 
+/** 
+ * @package    CONTENIDO Frontend
+ * @subpackage Input Helper
+ */
 class UI_Config_Table
 {
 	var $_sTplCellCode;

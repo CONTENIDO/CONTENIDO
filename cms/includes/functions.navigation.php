@@ -10,14 +10,14 @@
  * @con_php_req 5
  *
  *
- * @package    CONTENIDO Frontend Navigation
+ * @package    CONTENIDO Frontend
+ * @subpackage Navigation
  * @version    0.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- *
  *
  *
  * {@internal
