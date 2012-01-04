@@ -244,6 +244,10 @@ function capiStrTrimSentence($string, $approxlen, $hard = false)
  */
 function capiStrReplaceDiacritics($sString, $sourceEncoding = "ISO-8859-1", $targetEncoding = "ISO-8859-1")
 {
+	if ($sourceEncoding == 'UTF-8') {
+		$sString = utf8_decode($sString);
+	}
+
     // replace regular german umlauts and other common characters with diacritics
     static $aSearch, $aReplace;
     if (!isset($aSearch)) {
