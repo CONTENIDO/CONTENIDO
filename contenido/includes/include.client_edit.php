@@ -101,6 +101,8 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                         $buffer = fgets($res, 4096);
                         $buffer = str_replace("!CLIENT!", $idclient, $buffer);
                         $buffer = str_replace("!PATH!", $cfg["path"]["contenido"], $buffer);
+						$buffer = str_replace("!FRONTENDPATH!", Contenido_Security::escapeDB($frontendpath, $db), $buffer);
+						$buffer = str_replace("!HTMLPATH!", Contenido_Security::escapeDB($htmlpath, $db), $buffer);
                         fwrite($res2, $buffer);
                     }
                 } else {
@@ -141,6 +143,24 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                     errsite_art = '".Contenido_Security::toInteger($errsite_art)."'
                 WHERE
                     idclient = '".Contenido_Security::toInteger($idclient)."'";
+					
+		// editing config file
+		if (file_exists($oldpath . '/config.php')) {
+			$aConfigFileContent = file($oldpath . '/config.php');
+			
+			foreach ($aConfigFileContent as $iLine => $sConfigFileLine) {
+				if (preg_match('/\$cfgClient\[\$load_client\]\[\'path\'\]\[\'(frontend|htmlpath)\'\]\s=/', $sConfigFileLine, $aMatch)) {
+					$sPrefix = "\$cfgClient[\$load_client]['path']['" . $aMatch[1] . "'] = ";
+					if ($aMatch[1] == 'frontend') {
+						$aConfigFileContent[$iLine] = $sPrefix . "\"" . Contenido_Security::escapeDB($frontendpath, $db) . "\";" . PHP_EOL;
+					} else {
+						$aConfigFileContent[$iLine] = $sPrefix . "\"" . Contenido_Security::escapeDB($htmlpath, $db) . "\";" . PHP_EOL;
+					}
+				}
+			}
+			
+			file_put_contents($oldpath . '/config.php', implode('', $aConfigFileContent));
+		}
     }
 
     $db->query($sql);

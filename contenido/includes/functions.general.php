@@ -743,8 +743,15 @@ function rereadClients()
     while ($db->next_record()) {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
-        $cfgClient[$iClient]['path']['frontend'] = $db->f('frontendpath');
-        $cfgClient[$iClient]['path']['htmlpath'] = $db->f('htmlpath');
+        
+		if (!isset($cfgClient[$iClient]['path']['frontend'])) {
+			$cfgClient[$iClient]['path']['frontend'] = $db->f('frontendpath');
+		}
+		
+		if (!isset($cfgClient[$iClient]['path']['htmlpath'])) {
+			$cfgClient[$iClient]['path']['htmlpath'] = $db->f('htmlpath');
+		}
+
         $errsite_idcat[$iClient] = $db->f('errsite_cat');
         $errsite_idart[$iClient] = $db->f('errsite_art');
 
