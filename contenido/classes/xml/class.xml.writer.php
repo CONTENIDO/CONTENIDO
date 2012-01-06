@@ -75,7 +75,7 @@ class ContenidoXmlWriter extends DOMDocument {
 	 */
 	protected function _addElementAttributes(DOMElement $oElement, array $aAttributes = array()) {
 		if (count($aAttributes) == 0) {
-			return;
+			return $oElement;
 		}
 		
 		foreach ($aAttributes as $sAttributeName => $sAttributeValue) {
