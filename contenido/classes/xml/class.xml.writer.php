@@ -53,7 +53,7 @@ class ContenidoXmlWriter extends DOMDocument {
 	public function addElement($sName, $sValue = '', $oRootElement = null, $aAttributes = array()) {
 		$oElement = $this->createElement($sName, $sValue);
 		
-		$this->_addElementAttributes(&$oElement, $aAttributes);
+		$oElement = $this->_addElementAttributes($oElement, $aAttributes);
 		
 		if ($oRootElement === null) {
 			$this->appendChild($oElement);
@@ -68,10 +68,10 @@ class ContenidoXmlWriter extends DOMDocument {
 	 * Adds an array of attributes to a specific DOM element.
 	 * @access protected
 	 *
-	 * @param DOMElement $oElement DOM element to add attributes (must be referenced)
+	 * @param DOMElement $oElement DOM element to add attributes
 	 * @param array $aAttributes array of attributes
 	 *
-	 * @return void
+	 * @return DOMElement DOM element with assigned attributes
 	 */
 	protected function _addElementAttributes(DOMElement $oElement, array $aAttributes = array()) {
 		if (count($aAttributes) == 0) {
@@ -81,6 +81,8 @@ class ContenidoXmlWriter extends DOMDocument {
 		foreach ($aAttributes as $sAttributeName => $sAttributeValue) {
 			$oElement->setAttribute($sAttributeName, $sAttributeValue);
 		}
+		
+		return $oElement
 	}
 	
 	/**
