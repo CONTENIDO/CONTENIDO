@@ -82,7 +82,7 @@ class ContenidoXmlWriter extends DOMDocument {
 			$oElement->setAttribute($sAttributeName, $sAttributeValue);
 		}
 		
-		return $oElement
+		return $oElement;
 	}
 	
 	/**
