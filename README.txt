@@ -1,6 +1,6 @@
 Contenido 4.9.0 Alpha 1
 Lizenz:        GNU General Public Licence (GPL)
-Copyright:     (c) 2003-2011, four for business AG
+Copyright:     (c) 2003-2012, four for business AG
 Informationen: http://www.contenido.org
 
 <take care>
