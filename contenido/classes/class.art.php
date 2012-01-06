@@ -80,7 +80,7 @@ class Art
      */
     public function getArtIDForCatArt($iIdCatArt) {
         $oCategoryArticle = new cApiCategoryArticle((int) $iIdCatArt);
-        $iIdArt = $art->getField('idart');
+        $iIdArt = $oCategoryArticle->getField('idart');
 
         if ($iIdArt != false) {
             return $iIdArt;
