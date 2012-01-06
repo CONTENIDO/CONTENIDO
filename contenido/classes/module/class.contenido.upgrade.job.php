@@ -1,5 +1,3 @@
-
-
 <?php 
 
 /**
@@ -39,7 +37,8 @@ if(!defined('CON_FRAMEWORK')) {
 if(file_exists(dirname(__FILE__)."/../class.security.php"))
     include_once(dirname(__FILE__)."/../class.security.php");
  
-        
+if(file_exists(dirname(__FILE__)."/../../includes/functions.api.string.php"))
+    include_once(dirname(__FILE__)."/../../includes/functions.api.string.php");        
 
 if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
     include_once(dirname(__FILE__)."/class.contenido.module.base.php");
@@ -53,9 +52,10 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
          
 
     class Contenido_UpgradeJob extends Contenido_Module_Handler {
-        
+        protected $_db = null;
     	
-        public function __construct() {
+        public function __construct($db) {
+			$this->_db = $db;
            
         	$this->_debug = false;
             try {
@@ -73,10 +73,9 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
      * Clean means all the charecters (�,*+#...) will be replaced.
      * 
      */
-        private  function _changeNameCleanURL() {
-              
-            $myDb = new DB_Contenido();
-            $db = new DB_Contenido();
+        private  function _changeNameCleanURL() {              
+            $myDb = clone $this->_db;
+            $db = clone $this->_db;
             
             #select all moduls 
             $sql = sprintf("SELECT * FROM %s",$this->_cfg["tab"]["mod"]);
@@ -103,10 +102,10 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
         private function _changeIsSameName() {
             
            
-            $myDb = new DB_Contenido();
-            $db = new DB_Contenido();
+            $myDb = clone $this->_db;
+            $db = clone $this->_db;
             
-            $changeDb = new DB_Contenido();
+            $changeDb = clone $this->_db;
             #get all moduls
             $sql = sprintf("SELECT * FROM %s ",$this->_cfg["tab"]["mod"]);
             $db->query($sql);
@@ -143,7 +142,8 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
          * 
          * 
          */
-        public function saveAllModulsToTheFile($setuptype,$db) {
+        public function saveAllModulsToTheFile($setuptype) {
+			$db = clone $this->_db;
         	
         	#clean name oft module (Umlaute, not allowed character ..), prepare for file system
         	$this->_changeNameCleanURL();
@@ -214,11 +214,11 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
                $this->_echoIt("Modul gespeichert ...vergleich");
                #if all right saved in files set input and output in db to "" 
                if( $input == $this->readInput() && $output == $this->readOutput()) {
-                   $dbInput = new DB_Contenido();
+                   $dbInput = clone $this->_db;
                    $sqlInput = sprintf("UPDATE %s SET input='%s' WHERE idmod=%s AND idclient=%s",$this->_cfg["tab"]["mod"],"", $idmod ,$this->_client);
                    //$dbInput->query($sqlInput);
                 
-                   $dbOutput = new DB_Contenido();
+                   $dbOutput = clone $this->_db;
                    $sqlOutput = sprintf("UPDATE %s SET output='%s' WHERE idmod=%s AND idclient=%s",$this->_cfg["tab"]["mod"],"", $idmod , $this->_client);
                    //$dbOutput->query($sqlOutput); 
                    $this->_echoIt("Lösche input und output in table"); 

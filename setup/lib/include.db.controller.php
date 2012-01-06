@@ -278,11 +278,11 @@ if ($currentStep < $totalSteps) {
         Contenido_Vars::setVar('db', new DB_Contenido());
 
         // Save all modules from db-table to the filesystem
-        $contenidoUpgradeJob = new Contenido_UpgradeJob();
-        $contenidoUpgradeJob->saveAllModulsToTheFile($_SESSION['setuptype'], new DB_Contenido());
+        $contenidoUpgradeJob = new Contenido_UpgradeJob($db);
+        $contenidoUpgradeJob->saveAllModulsToTheFile($_SESSION['setuptype']);
 
         // Save layout from db-table to the file system
-        $layoutInFIle = new LayoutInFile(1, '', $cfg, 1);
+        $layoutInFIle = new LayoutInFile(1, '', $cfg, 1, $db);
         $layoutInFIle->upgrade();
 
         $client = $clientBackup;

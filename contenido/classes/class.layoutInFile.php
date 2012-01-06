@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Project: 
  * CONTENIDO Content Management System
@@ -34,6 +33,8 @@ class LayoutInFile {
 	 * @var string
 	 */
 	protected $_layoutCode = "";
+	
+	protected $_db = null;
 	
 	/**
 	 * 
@@ -117,8 +118,12 @@ class LayoutInFile {
 	 * @param array $cfg
 	 * @param string $encoding
 	 */
-	public function __construct($layoutId,$layoutCode, $cfg , $lang ) {
-
+	public function __construct($layoutId, $layoutCode, $cfg, $lang, $db = null ) {
+		if ($db === null) {
+			$db = new DB_Contenido();
+		}
+		
+		$this->_db = $db;
 		$this->init($layoutId, $layoutCode, $cfg, $lang);
 		
 	}
@@ -152,37 +157,24 @@ class LayoutInFile {
 	 * @param string $encoding
 	 */
 	public  function init($layoutId ,$layoutCode, $cfg, $lang) {
+		#set encoding
+		$this->_setEncoding($lang);
 		
 		$this->_layoutId = $layoutId;
 		$this->_layoutCode = $layoutCode;
 		$this->_cfg = $cfg;
 		
-		
 		#get name of layout and frontendpath
-		$sql = sprintf("SELECT lay.alias,client.frontendpath FROM %s AS lay, %s as client 
-						WHERE lay.idclient = client.idclient AND lay.idlay = %s ",
-						$this->_cfg["tab"]["lay"], $this->_cfg["tab"]["clients"] , $layoutId);
-		$db = new DB_Contenido();
+		$sql = sprintf("SELECT alias FROM %s WHERE idlay = %s", $this->_cfg["tab"]["lay"], $layoutId);
+		$db = clone $this->_db;
+
 		$db->query($sql);
 		$db->next_record();
-		
-		#set encoding
-		$this->_setEncoding($lang);
-		
-		// temporary bad fix, better to intagrate this globals in consutructor!
+
 		global $cfgClient, $client;
-		$this->_cfgClient = $cfgClient;
-		$this->_client = $client;
-		
-		if (isset($this->_cfgClient[$this->_client]['path']['frontend'])&&
-         strlen($this->_cfgClient[$this->_client]['path']['frontend'])> 0) {
-            $frontendPath = $this->_cfgClient[$this->_client]['path']['frontend'];
-        } else {
-             $frontendPath = $db->f("frontendpath");
-        }
-        
-      
-        
+			
+        $frontendPath = $cfgClient[$client]['path']['frontend'];
+
 		$this->_layoutName = $db->f('alias');
 		$this->_frontendPath = $frontendPath;
 		$this->_layoutMainPath = $frontendPath.self::$LAYOUT_DIR_NAME;
@@ -211,7 +203,6 @@ class LayoutInFile {
 	 * @param DB_Contenido $dbObject
 	 */
 	public function initWithDbObject($dbObject ) {
-		
 		$this->_layoutCode = $dbObject->f("code");
 		$this->_layoutName = $dbObject->f('alias');
 		$this->_frontendPath = $dbObject->f("frontendpath");
@@ -279,7 +270,7 @@ class LayoutInFile {
 	 */
 	private  function _setEncoding($lang) {
 
-		$db = new DB_Contenido();
+		$db = clone $this->_db;
 		$sql = "SELECT idlang, encoding FROM ".$this->_cfg["tab"]["lang"];
 		$db->query($sql);
 		$aLanguageEncodings = array();
@@ -508,8 +499,6 @@ class LayoutInFile {
 		
 		#exist layout path
 		if( is_dir($this->_layoutPath)) {
-			
-			
 			if ( ($content = file_get_contents($this->_layoutPath.$this->_fileName)) === FALSE )
 				return false;
 			else {
@@ -541,16 +530,15 @@ class LayoutInFile {
 	 * Use it for upgrade.
 	 */
 	public function upgrade() {
-		
 		#get name of layout and frontendpath
 		$sql = sprintf("SELECT lay.alias , lay.idlay , client.frontendpath , lay.code FROM %s AS lay, %s as client 
 						WHERE lay.idclient = client.idclient",
 						$this->_cfg["tab"]["lay"], $this->_cfg["tab"]["clients"]);
-		$db = new DB_Contenido();
+		$db = clone $this->_db;
 		$db->query($sql);
 		$isError = false;
+
 		while($db->next_record()) {
-			
 			#init class var for save
 			$this->initWithDbObject($db);
 			if( $this->saveLayoutByUpgrade($db->f("code")) == false) {
