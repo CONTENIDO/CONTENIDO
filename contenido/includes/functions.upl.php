@@ -760,7 +760,10 @@ function uplGetFileTypeDescription($sExtension)
  */
 function uplCreateFriendlyName ($filename)
 {
-	global $cfg, $oLang;
+	global $cfg, $lang;
+
+	$oLang = new cApiLanguage();
+	$oLang->loadByPrimaryKey($lang);
 	
 	if (!is_array($cfg['upl']['allow_additional_chars'])) {
 		$filename = str_replace(" ", "_", $filename);
