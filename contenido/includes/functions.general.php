@@ -733,11 +733,8 @@ function updateClientCache($idclient = 0, $htmlpath = "", $frontendpath = "") {
 	global $cfg, $cfgClient;
 	
 	if ($idclient != 0 && $htmlpath != "" && $frontendpath != "") {
-		echo "SET!";
 		$cfgClient[$idclient]['path']['frontend'] = Contenido_Security::escapeDB($frontendpath, null);
 		$cfgClient[$idclient]['path']['htmlpath'] = Contenido_Security::escapeDB($htmlpath, null);
-	} else {
-		echo "NO SET!";
 	}
 	
 	$aConfigFileContent = array();
