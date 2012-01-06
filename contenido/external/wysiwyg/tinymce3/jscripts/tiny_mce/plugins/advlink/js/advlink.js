@@ -365,22 +365,21 @@ function setAttrib(elm, attrib, value) {
 }
 
 function getAnchorListHTML(id, target) {
-	var ed = tinyMCEPopup.editor, nodes = ed.dom.select('a'), name, i, len, html = "";
+	var inst = tinyMCEPopup.editor;
+	var nodes = inst.dom.select('a.mceItemAnchor,img.mceItemAnchor'), name, i;
+	var html = "";
 
-	for (i=0, len=nodes.length; i<len; i++) {
-		if ((name = ed.dom.getAttrib(nodes[i], "name")) != "")
-			html += '<option value="#' + name + '">' + name + '</option>';
+	html += '<select id="' + id + '" name="' + id + '" class="mceAnchorList" o2nfocus="tinyMCE.addSelectAccessibility(event, this, window);" onchange="this.form.' + target + '.value=';
+	html += 'this.options[this.selectedIndex].value;">';
+	html += '<option value="">---</option>';
+
+	for (i=0; i<nodes.length; i++) {
+		// CONTENIDO MODIFICATION 24.10.2006 Willi Man
+		if ((name = inst.dom.getAttrib(nodes[i], "name")) != "")
+			html += '<option value="' + tinyMCE.settings['article_url_suffix'] + '#' + name + '">' + name + '</option>';
 	}
 
-	if (html == "")
-		return "";
-
-	html = '<select id="' + id + '" name="' + id + '" class="mceAnchorList"'
-		+ ' onchange="this.form.' + target + '.value=this.options[this.selectedIndex].value"'
-		+ '>'
-		+ '<option value="">---</option>'
-		+ html
-		+ '</select>';
+	html += '</select>';
 
 	return html;
 }

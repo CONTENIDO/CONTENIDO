@@ -44,7 +44,7 @@
  * 
  * {@internal 
  *   created  <date>
- *   modified 2007-06-13 Björn Behrens/Stefan??? Using setting by type to use all tinyMCE settings (even, if they are not covered here)
+ *   modified 2007-06-13 Bjï¿½rn Behrens/Stefan??? Using setting by type to use all tinyMCE settings (even, if they are not covered here)
  *   
  *   modified 2006-10-24 Willi Man, added new tinyMCE attribute 'article_url_suffix'.
  *   It will be used in plugin advlink ./contenido/external/wysiwyg/tinymce2/jscripts/tiny_mce/plugins/advlink/jscripts/functions.js
@@ -100,6 +100,8 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		$this->setSetting("content_css", $cfgClient[$client]["path"]["htmlpath"]."css/style_tiny.css"); 
 
 		$this->setSetting("theme", "advanced");
+		$this->setSetting("skin", "o2k7");
+		$this->setSetting("skin_variant", "black");
 		$this->setSetting("theme_advanced_toolbar_location", "top");
 		$this->setSetting("theme_advanced_path_location", "bottom");
 		$this->setSetting("remove_script_host", false);
@@ -450,7 +452,8 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 				$this->setSetting("setupcontent_callback", "myCustomSetupContent", true);
 				
                 $this->unsetSetting("width");              
-                
+                $this->unsetSetting("theme_advanced_toolbar_location");
+                $this->setSetting("theme_advanced_toolbar_location", "external");
                 $this->setSetting("height", "210px", true);
 				$this->setSetting("plugins", "table,inlinepopups,fullscreen,-close", true);
                 $this->setSetting("mode", "exact", true);
