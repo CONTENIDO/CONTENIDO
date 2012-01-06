@@ -52,8 +52,14 @@ $tpl->set('s', 'PADDING_LEFT', '17');
 
 // Empty Row
 $bgcolor = '#FFFFFF';
-$tpl->set('s', 'ARCHIVEBGCOLOR', $cfg["color"]["table_header"]);
-$tpl->set('s', 'ARCHIVETEXT', '<b>'.i18n("Archived Statistics").'</b>');
+$text = '&nbsp;';
+if (count($availableYears) != 0) {
+	$bgcolor = $cfg["color"]["table_header"];
+	$text = '<b>' . i18n("Archived Statistics") . '</b>';
+}
+
+$tpl->set('s', 'ARCHIVEBGCOLOR', $bgcolor);
+$tpl->set('s', 'ARCHIVETEXT', $text);
 $tpl->set('s', 'PADDING_LEFT', '17');
 
 foreach ($availableYears as $yearIterator)
