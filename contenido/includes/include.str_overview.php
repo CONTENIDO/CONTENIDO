@@ -39,7 +39,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 strRemakeTreeTable();
 
-$debug = true;
+$debug = false;
 
 $tmp_area = "str";
 
