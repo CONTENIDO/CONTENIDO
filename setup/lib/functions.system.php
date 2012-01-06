@@ -166,14 +166,18 @@ function updateSysadminPassword($db, $table, $password)
 
 function listClients($db, $table)
 {
-    $sql = "SELECT idclient, name, frontendpath, htmlpath FROM %s";
+	global $cfgClient;
+
+    $sql = "SELECT idclient, name FROM %s";
 
     $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db)));
 
     $clients = array();
 
     while ($db->next_record()) {
-        $clients[$db->f("idclient")] = array("name" => $db->f("name"), "frontendpath" => $db->f("frontendpath"), "htmlpath" => $db->f("htmlpath"));
+		$frontendPath = $cfgClient[$db->f('idclient')]['path']['frontend'];
+		$htmlPath = $cfgClient[$db->f('idclient')]['path']['htmlpath'];
+        $clients[$db->f("idclient")] = array("name" => $db->f("name"), "frontendpath" => $frontendPath, "htmlpath" => $htmlPath);
     }
 
     return $clients;
@@ -181,9 +185,11 @@ function listClients($db, $table)
 
 function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath)
 {
-    $sql = "UPDATE %s SET frontendpath='%s', htmlpath='%s' WHERE idclient='%s'";
-
-    $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db), Contenido_Security::escapeDB($frontendpath, $db), Contenido_Security::escapeDB($htmlpath, $db), Contenido_Security::escapeDB($idclient, $db)));
+	global $cfg, $cfgClient;
+	checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
+	
+	rereadClients();
+	updateClientCache($idclient, $htmlpath, $frontendpath);
 }
 
 function stripLastSlash($sInput)

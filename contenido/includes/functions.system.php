@@ -257,7 +257,7 @@ function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false)
 function writeSystemValuesOutput($usage)
 {
 
-	global $db, $_SERVER, $cfg, $i18n, $tpl;
+	global $db, $_SERVER, $cfg, $i18n, $tpl, $cfgClient;
 
 	/* variables to proof against each other*/
 
@@ -368,20 +368,20 @@ function writeSystemValuesOutput($usage)
 			                	<td class=\"text_medium\" style=\"border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid; \" nowrap=\"nowrap\" align=\"left\" valign=\"top\">".i18n("language(s)")."</td>
 			                	<td class=\"text_medium\" width=\"60%\" style=\"border:1px; border-left:0px; border-top:0px; border-color: #B3B3B3; border-style: solid; \" nowrap=\"nowrap\">$clientlang&nbsp;</td>
 			           		</tr>";
+							
+			$htmlpath = $cfgClient[$db->f('idclient')]['path']['htmlpath'];
+			$frontendpath = $cfgClient[$db->f('idclient')]['path']['frontend'];
+		
+		
+			$clientInformation .= "<tr class=\"text_medium\" style=\"background-color: {BGCOLOR};\" >
+								<td class=\"text_medium\" style=\"border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid\" nowrap=\"nowrap\" align=\"left\" valign=\"top\">".i18n("htmlpath")."</td>
+								<td class=\"text_medium\" width=\"60%\" style=\"border:1px; border-left:0px; border-top:0px; border-color: #B3B3B3; border-style: solid;\" nowrap=\"nowrap\">".$htmlpath."&nbsp;</td>
+							</tr>";
+			$clientInformation .= "<tr class=\"text_medium\" style=\"background-color: {BGCOLOR};\" >
+								<td class=\"text_medium\" style=\"border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid\" nowrap=\"nowrap\" align=\"left\" valign=\"top\">".i18n("frontendpath")."</td>
+								<td class=\"text_medium\" width=\"60%\" style=\"border:1px; border-left:0px; border-top:0px; border-color: #B3B3B3; border-style: solid;\" nowrap=\"nowrap\">".$frontendpath."&nbsp;</td>
+							</tr>";
 
-			$sql = "SELECT frontendpath, htmlpath FROM ".$cfg["tab"]["clients"]." WHERE idclient='".Contenido_Security::toInteger($db->f("idclient"))."'";
-			$db2->query($sql);
-			while ($db2->next_record())
-			{
-				$clientInformation .= "<tr class=\"text_medium\" style=\"background-color: {BGCOLOR};\" >
-				                	<td class=\"text_medium\" style=\"border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid\" nowrap=\"nowrap\" align=\"left\" valign=\"top\">".i18n("htmlpath")."</td>
-				                	<td class=\"text_medium\" width=\"60%\" style=\"border:1px; border-left:0px; border-top:0px; border-color: #B3B3B3; border-style: solid;\" nowrap=\"nowrap\">".$db2->f("htmlpath")."&nbsp;</td>
-				           		</tr>";
-				$clientInformation .= "<tr class=\"text_medium\" style=\"background-color: {BGCOLOR};\" >
-				                	<td class=\"text_medium\" style=\"border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid\" nowrap=\"nowrap\" align=\"left\" valign=\"top\">".i18n("frontendpath")."</td>
-				                	<td class=\"text_medium\" width=\"60%\" style=\"border:1px; border-left:0px; border-top:0px; border-color: #B3B3B3; border-style: solid;\" nowrap=\"nowrap\">".$db2->f("frontendpath")."&nbsp;</td>
-				           		</tr>";
-			}
 			$clientPermCount ++;
 		}
 

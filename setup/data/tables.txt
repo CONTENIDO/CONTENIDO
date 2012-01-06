@@ -101,8 +101,6 @@
 "clients";"created";"datetime";"";"";"0000-00-00 00:00:00";"";""
 "clients";"lastmodified";"datetime";"";"";"0000-00-00 00:00:00";"";""
 "clients";"path";"varchar(255)";"";"";"";"";""
-"clients";"frontendpath";"varchar(255)";"";"";"";"";""
-"clients";"htmlpath";"varchar(255)";"";"";"";"";""
 "clients";"errsite_cat";"int(10)";"";"";"0";"";""
 "clients";"errsite_art";"int(10)";"";"";"0";"";""
 "clients_lang";"idclientslang";"int(10)";"";"PRI";"0";"";"1"

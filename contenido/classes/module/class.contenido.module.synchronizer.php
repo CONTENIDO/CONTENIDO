@@ -48,18 +48,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
     * @var int 
     */
     private $_lastIdMod = 0;
-    
-    public function __construct() { 
 
-        parent::__construct();   
-       
-    
-    }
-
-  
-    
-
-     
    /**
     * 
     * This method insert a new modul in $cfg["tab"]["mod"] table, if
@@ -144,21 +133,24 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
      */
     public function compareFileAndModulTimestamp() {
         
-    	$sql = sprintf("SELECT UNIX_TIMESTAMP(mod1.lastmodified) AS lastmodified,mod1.idclient,description,type, mod1.name, mod1.alias,client1.frontendpath, mod1.idmod FROM %s AS mod1 , %s AS client1 
-    					WHERE mod1.idclient = client1.idclient AND mod1.idclient =%s", 
+    	$sql = sprintf("SELECT UNIX_TIMESTAMP(mod1.lastmodified) AS lastmodified,mod1.idclient,description,type, mod1.name, mod1.alias, mod1.idmod FROM %s AS mod1 WHERE mod1.idclient = %s", 
     					$this->_cfg['tab']['mod'], 
-    					$this->_cfg['tab']['clients'],
     					$this->_client);
      	$notification = new Contenido_Notification();
               				
     	$db = new DB_Contenido();
     	$db->query($sql);
     	$retIdMod = 0;
+		
+		global $cfgClient;
+		
+		
     	while($db->next_record()) {
-    		
+    		$frontendPath = $cfgClient[$db->f('idclient')]['path']['frontend'];
+			
     		$lastmodified = $db->f('lastmodified');
-    		$lastmodInput  = filemtime($db->f('frontendpath').self::$MODUL_DIR_NAME.$db->f('alias')."/".$this->_directories['php'].$db->f('alias')."_input.php");
-            $lastmodOutput = filemtime($db->f('frontendpath').self::$MODUL_DIR_NAME.$db->f('alias')."/".$this->_directories['php'].$db->f('alias')."_output.php");
+    		$lastmodInput  = filemtime($frontendPath.self::$MODUL_DIR_NAME.$db->f('alias')."/".$this->_directories['php'].$db->f('alias')."_input.php");
+            $lastmodOutput = filemtime($frontendPath.self::$MODUL_DIR_NAME.$db->f('alias')."/".$this->_directories['php'].$db->f('alias')."_output.php");
     		
             if($lastmodInput < $lastmodOutput) {
             	#use output
@@ -258,17 +250,11 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
      * 
      */
     public function synchronize() {
-        
-    	
-        $db = new DB_Contenido();
-        
-        $sql = sprintf("SELECT * FROM %s WHERE idclient= %s " , $this->_cfg["tab"]["clients"] , $this->_client);
-        $db->query($sql);
-      
-        if( $db->next_record()) {
+        global $cfgClient;
+		$frontendPath = $cfgClient[$this->_client]['path']['frontend'];
            
             #get the path to the modul dir from the client
-            $dir = $db->f("frontendpath").self::$MODUL_DIR_NAME; 
+            $dir = $frontendPath.self::$MODUL_DIR_NAME; 
            
             if (is_dir($dir)) {                 
                 if ($dh = opendir($dir)) {
@@ -311,7 +297,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
                     #close dir
                     closedir($dh);
                 }
-            }
+            
            
             #last Modul Id that will refresh the windows /modul overview
             return $this->_lastIdMod;

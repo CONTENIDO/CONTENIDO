@@ -49,7 +49,4 @@ $frontend_debug["module_timing_summary"]	= false;
 
 /* Set to 1 to brute-force module regeneration */
 $force = 0;
-
-$cfgClient[$load_client]['path']['frontend'] = "!FRONTENDPATH!";
-$cfgClient[$load_client]['path']['htmlpath'] = "!HTMLPATH!";
 ?>

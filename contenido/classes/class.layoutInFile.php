@@ -157,12 +157,12 @@ class LayoutInFile {
 	 * @param string $encoding
 	 */
 	public  function init($layoutId ,$layoutCode, $cfg, $lang) {
-		#set encoding
-		$this->_setEncoding($lang);
-		
 		$this->_layoutId = $layoutId;
 		$this->_layoutCode = $layoutCode;
 		$this->_cfg = $cfg;
+		
+		#set encoding
+		$this->_setEncoding($lang);
 		
 		#get name of layout and frontendpath
 		$sql = sprintf("SELECT alias FROM %s WHERE idlay = %s", $this->_cfg["tab"]["lay"], $layoutId);
@@ -177,9 +177,9 @@ class LayoutInFile {
 
 		$this->_layoutName = $db->f('alias');
 		$this->_frontendPath = $frontendPath;
-		$this->_layoutMainPath = $frontendPath.self::$LAYOUT_DIR_NAME;
-		$this->_layoutPath = $frontendPath.self::$LAYOUT_DIR_NAME.$this->_layoutName."/";
-		$this->_fileName = $this->_layoutName.".html";
+		$this->_layoutMainPath = $frontendPath . self::$LAYOUT_DIR_NAME;
+		$this->_layoutPath = $frontendPath . self::$LAYOUT_DIR_NAME . $this->_layoutName."/";
+		$this->_fileName = $this->_layoutName . ".html";
 		
 		#make directoryies for layout
 		$this->_makeDirectories();
@@ -203,11 +203,15 @@ class LayoutInFile {
 	 * @param DB_Contenido $dbObject
 	 */
 	public function initWithDbObject($dbObject ) {
+		global $cfgClient, $client;
+			
+        $frontendPath = $cfgClient[$client]['path']['frontend'];
+		
 		$this->_layoutCode = $dbObject->f("code");
 		$this->_layoutName = $dbObject->f('alias');
-		$this->_frontendPath = $dbObject->f("frontendpath");
-		$this->_layoutMainPath = $dbObject->f("frontendpath").self::$LAYOUT_DIR_NAME;
-		$this->_layoutPath = $dbObject->f("frontendpath").self::$LAYOUT_DIR_NAME.$this->_layoutName."/";
+		$this->_frontendPath = $frontendPath;
+		$this->_layoutMainPath = $this->_frontendPath . self::$LAYOUT_DIR_NAME;
+		$this->_layoutPath = $this->_frontendPath . self::$LAYOUT_DIR_NAME . $this->_layoutName . "/";
 		$this->_fileName = $this->_layoutName.".html";
 		
 		#make directoryies for layout
@@ -310,8 +314,8 @@ class LayoutInFile {
 		#exist layout path
 		if( is_dir($this->_layoutPath)) {
 			#convert
-			$layoutCode = iconv($this->_encoding , self::$FILE_ENCODING , $layoutCode );
-			if ( file_put_contents($this->_layoutPath.$this->_fileName , $layoutCode) === FALSE )
+			$layoutCode = iconv($this->_encoding, self::$FILE_ENCODING, $layoutCode );
+			if ( file_put_contents($this->_layoutPath . $this->_fileName, $layoutCode) === FALSE )
 				return false;
 			else 	
 				return true;
@@ -343,8 +347,8 @@ class LayoutInFile {
 		#exist layout path
 		if( is_dir($this->_layoutPath)) {
 			#convert
-			$layoutCode = iconv($this->_encoding , self::$FILE_ENCODING , $layoutCode );
-			if ( file_put_contents($this->_layoutPath.$this->_fileName , $layoutCode) === FALSE )
+			$layoutCode = iconv($this->_encoding, self::$FILE_ENCODING, $layoutCode );
+			if ( file_put_contents($this->_layoutPath . $this->_fileName, $layoutCode) === FALSE )
 				return false;
 			else 	
 				return true;
@@ -463,22 +467,22 @@ class LayoutInFile {
 	 * @param string $old
 	 * @param string $new
 	 */
-	public function rename ($old , $new ) {
+	public function rename($old, $new ) {
 		
 		#try to rename the dir
-		$newPath = $this->_layoutMainPath.$new."/";
+		$newPath = $this->_layoutMainPath . $new . "/";
 		
-		$newFileName = $new.".html";
+		$newFileName = $new . ".html";
 		
-        if(rename($this->_layoutPath , $newPath ) == FALSE )
+        if(rename($this->_layoutPath, $newPath ) == FALSE )
             return false;
         else {
             #if file input exist rename it
-            if(file_exists($newPath.$this->_fileName))
-               if(rename($newPath.$this->_fileName, $newPath.$newFileName)) {
+            if(file_exists($newPath . $this->_fileName))
+               if(rename($newPath . $this->_fileName, $newPath . $newFileName)) {
                	
             	$this->_layoutName = $new;
-				$this->_layoutPath = $this->_frontendPath.self::$LAYOUT_DIR_NAME.$this->_layoutName."/";
+				$this->_layoutPath = $this->_frontendPath . self::$LAYOUT_DIR_NAME . $this->_layoutName . "/";
 				$this->_fileName = $this->_layoutName.".html";
 		
                	return true;
@@ -499,7 +503,7 @@ class LayoutInFile {
 		
 		#exist layout path
 		if( is_dir($this->_layoutPath)) {
-			if ( ($content = file_get_contents($this->_layoutPath.$this->_fileName)) === FALSE )
+			if ( ($content = file_get_contents($this->_layoutPath . $this->_fileName)) === FALSE )
 				return false;
 			else {
 				#convert 
@@ -531,9 +535,7 @@ class LayoutInFile {
 	 */
 	public function upgrade() {
 		#get name of layout and frontendpath
-		$sql = sprintf("SELECT lay.alias , lay.idlay , client.frontendpath , lay.code FROM %s AS lay, %s as client 
-						WHERE lay.idclient = client.idclient",
-						$this->_cfg["tab"]["lay"], $this->_cfg["tab"]["clients"]);
+		$sql = sprintf("SELECT alias, idlay, code FROM %s", $this->_cfg["tab"]["lay"]);
 		$db = clone $this->_db;
 		$db->query($sql);
 		$isError = false;
@@ -543,7 +545,7 @@ class LayoutInFile {
 			$this->initWithDbObject($db);
 			if( $this->saveLayoutByUpgrade($db->f("code")) == false) {
 				#track error in error.log
-				$this->errorLog("Cant save Layout name: ".$this->_layoutName);
+				$this->errorLog("Cant save Layout name: " . $this->_layoutName);
 				$isError = true;
 			}
 			
@@ -552,7 +554,7 @@ class LayoutInFile {
 		#all layouts are saved
 		if(!$isError) {
 			 #remove the code field from _lay
-             $sql = sprintf("ALTER TABLE %s DROP code ", $this->_cfg["tab"]["lay"]);
+             $sql = sprintf("ALTER TABLE %s DROP code", $this->_cfg["tab"]["lay"]);
              $db->query($sql);
 		}
 			

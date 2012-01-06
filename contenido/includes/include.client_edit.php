@@ -78,8 +78,6 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
             ".$cfg["tab"]["clients"]."
             SET
                 name = '".Contenido_Security::escapeDB($clientname, $db)."',
-                frontendpath = '".Contenido_Security::escapeDB($frontendpath, $db)."',
-                htmlpath = '".Contenido_Security::escapeDB($htmlpath, $db)."',
                 errsite_cat = '".Contenido_Security::toInteger($errsite_cat)."',
                 errsite_art = '".Contenido_Security::toInteger($errsite_art)."',
                 idclient = '".Contenido_Security::toInteger($idclient)."'";
@@ -101,9 +99,7 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                         $buffer = fgets($res, 4096);
                         $buffer = str_replace("!CLIENT!", $idclient, $buffer);
                         $buffer = str_replace("!PATH!", $cfg["path"]["contenido"], $buffer);
-						$buffer = str_replace("!FRONTENDPATH!", Contenido_Security::escapeDB($frontendpath, $db), $buffer);
-						$buffer = str_replace("!HTMLPATH!", Contenido_Security::escapeDB($htmlpath, $db), $buffer);
-                        fwrite($res2, $buffer);
+						fwrite($res2, $buffer);
                     }
                 } else {
                       $notification->displayNotification("error",i18n("Couldn't write the file config.php."));
@@ -137,35 +133,17 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                 ".$cfg["tab"]["clients"]."
                 SET
                     name = '".Contenido_Security::escapeDB($clientname, $db)."',
-                    frontendpath = '".Contenido_Security::escapeDB($frontendpath, $db)."',
-                    htmlpath = '".Contenido_Security::escapeDB($htmlpath, $db)."',
                     errsite_cat = '".Contenido_Security::toInteger($errsite_cat)."',
                     errsite_art = '".Contenido_Security::toInteger($errsite_art)."'
                 WHERE
                     idclient = '".Contenido_Security::toInteger($idclient)."'";
-					
-		// editing config file
-		if (file_exists($oldpath . '/config.php')) {
-			$aConfigFileContent = file($oldpath . '/config.php');
-			
-			foreach ($aConfigFileContent as $iLine => $sConfigFileLine) {
-				if (preg_match('/\$cfgClient\[\$load_client\]\[\'path\'\]\[\'(frontend|htmlpath)\'\]\s=/', $sConfigFileLine, $aMatch)) {
-					$sPrefix = "\$cfgClient[\$load_client]['path']['" . $aMatch[1] . "'] = ";
-					if ($aMatch[1] == 'frontend') {
-						$aConfigFileContent[$iLine] = $sPrefix . "\"" . Contenido_Security::escapeDB($frontendpath, $db) . "\";" . PHP_EOL;
-					} else {
-						$aConfigFileContent[$iLine] = $sPrefix . "\"" . Contenido_Security::escapeDB($htmlpath, $db) . "\";" . PHP_EOL;
-					}
-				}
-			}
-			
-			file_put_contents($oldpath . '/config.php', implode('', $aConfigFileContent));
-		}
     }
 
     $db->query($sql);
     $new = false;
     rereadClients();
+	
+	updateClientCache($idclient, $htmlpath, $frontendpath);
 
     $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
 
@@ -189,7 +167,7 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
 $tpl->reset();
 
 $sql = "SELECT
-            idclient, name, frontendpath, htmlpath, errsite_cat, errsite_art
+            idclient, name, errsite_cat, errsite_art
         FROM
             ".$cfg["tab"]["clients"]."
         WHERE
@@ -199,13 +177,16 @@ $db->query($sql);
 
 $db->next_record();
 
+$htmlpath = $cfgClient[$idclient]['path']['htmlpath'];
+$serverpath = $cfgClient[$idclient]['path']['frontend'];
+
 $form = '<form name="client_properties" method="post" action="'.$sess->url("main.php?").'">
              '.$sess->hidden_session().'
              <input type="hidden" name="area" value="'.$area.'">
              <input type="hidden" name="action" value="client_edit">
              <input type="hidden" name="frame" value="'.$frame.'">
              <input type="hidden" name="new" value="'.$new.'">
-             <input type="hidden" name="oldpath" value="'.$db->f("frontendpath").'">
+             <input type="hidden" name="oldpath" value="'.$serverpath.'">
              <input type="hidden" name="idclient" value="'.$idclient.'">';
 
 $tpl->set('s', 'JAVASCRIPT', $javascript);
@@ -238,7 +219,6 @@ $tpl->set('d', 'BRDRB', 1);
 $tpl->set('d', 'FONT', 'text_medium');
 $tpl->next();
 
-$serverpath = $db->f("frontendpath");
 if ($serverpath == "") {
     $serverpath = $cfg['path']['frontend'];
 }
@@ -252,7 +232,6 @@ $tpl->set('d', 'BRDRB', 1);
 $tpl->set('d', 'FONT', 'text_medium');
 $tpl->next();
 
-$htmlpath = $db->f("htmlpath");
 if ($htmlpath == "") {
     $htmlpath = "http://";
 }

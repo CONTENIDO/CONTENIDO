@@ -290,12 +290,14 @@ class Contenido_Module_Handler {
      */
     
     protected function _initModulHandlerWithModulRow($db) {
-        
         if (is_object($db)) {
+			global $cfgClient;
+			$frontendPath = $cfgClient[$db->f('idclient')]['path']['frontend'];
+		
             $this->_modulAlias = $db->f("alias");
             $this->_modulName = $db->f("name");
-            $this->_modulPath = $db->f("frontendpath"). self::$MODUL_DIR_NAME. $this->_modulAlias. "/";
-            $this->_path = $db->f("frontendpath"). self::$MODUL_DIR_NAME;
+            $this->_modulPath = $frontendPath . self::$MODUL_DIR_NAME. $this->_modulAlias. "/";
+            $this->_path = $frontendPath . self::$MODUL_DIR_NAME;
             $this->_idmod = $db->f("idmod");
             $this->_client = $db->f("idclient");
             $this->_description = $db->f("description");
@@ -303,7 +305,7 @@ class Contenido_Module_Handler {
             $this->_input = "";
             $this->_output = "";
             $this->_echoIt('_initModulHandlerFromDb run idmod '. $this->_idmod);
-            $this->_echoIt('frontendpath: '. $db->f("frontendpath"));
+            $this->_echoIt('frontendpath: '. $frontendPath);
         
         }
     
@@ -322,17 +324,23 @@ class Contenido_Module_Handler {
             return;
         
         $sql = sprintf(
-        "SELECT moduls.alias as alias,moduls.name as name, moduls.description as description, moduls.type as type,clients.idclient as idclient, clients.frontendpath as frontendpath, moduls.idmod as idmod FROM %s AS clients , %s AS moduls  WHERE idmod=%s AND clients.idclient = moduls.idclient ", 
-        $this->_cfg["tab"]["clients"], $this->_cfg["tab"]["mod"], Contenido_Security::toInteger($idmod));
+			"SELECT alias, name, description, type, idclient, idmod FROM %s WHERE idmod=%s", 
+			$this->_cfg["tab"]["mod"], 
+			Contenido_Security::toInteger($idmod)
+		);
         $this->_echoIt("sql :". $sql);
         
         $this->_db->query($sql);
-        
+		
+
         if ($this->_db->next_record()) {
+			global $cfgClient;
+			$frontendPath = $cfgClient[$this->_db->f('idclient')]['path']['frontend'];
+		
             $this->_modulAlias = $this->_db->f('alias');
             $this->_modulName = $this->_db->f("name");
-            $this->_modulPath = $this->_db->f("frontendpath"). self::$MODUL_DIR_NAME. $this->_modulAlias. "/";
-            $this->_path = $this->_db->f("frontendpath"). self::$MODUL_DIR_NAME;
+            $this->_modulPath = $frontendPath . self::$MODUL_DIR_NAME. $this->_modulAlias. "/";
+            $this->_path = $frontendPath . self::$MODUL_DIR_NAME;
             $this->_idmod = $this->_db->f("idmod");
             $this->_client = $this->_db->f("idclient");
             $this->_description = $this->_db->f("description");
@@ -340,7 +348,7 @@ class Contenido_Module_Handler {
             $this->_input = "";
             $this->_output = "";
             $this->_echoIt('_initModulHandlerFromDb run idmod '. $idmod);
-            $this->_echoIt('frontendpath: '. $this->_db->f("frontendpath"));
+            $this->_echoIt('frontendpath: '. $frontendPath);
         
         }
     }
@@ -645,28 +653,26 @@ class Contenido_Module_Handler {
      * Make in all clients the modul directory
      */
     public function makeModulMainDirectories() {
-        
-        $db = new DB_Contenido();
-        $sql = sprintf("SELECT frontendpath FROM %s", $this->_cfg["tab"]["clients"]);
-        $db->query($sql);
-        
-        while ($db->next_record()) {
-            
-            #test if frontendpath exists
-            if (is_dir($db->f("frontendpath"))== false)
-                $this->errorLog('Frontendpath dont exists path: '. $db->f("frontendpath"));
-            
-            if (! is_dir($db->f("frontendpath"). self::$MODUL_DIR_NAME)) {
-                
-                #could not make the modul directory in client 
-                if (mkdir($db->f("frontendpath"). self::$MODUL_DIR_NAME)== false) {
-                    $this->errorLog("Could not make modul directory in frontendpath :". $db->f("frontendpath"));
-                } else
-                    chmod($db->f("frontendpath"). self::$MODUL_DIR_NAME, 0777);
-            
-            }
-        
-        }
+		global $cfgClient;
+		
+		foreach ($cfgClient as $iIdClient => $aClient) {
+			if (isset($aClient['path']['frontend'])) {
+				$frontendPath = $aClient['path']['frontend'];
+				#test if frontendpath exists
+				if (is_dir($frontendPath)== false)
+					$this->errorLog('Frontendpath dont exists path: '. $frontendPath);
+				
+				if (! is_dir($frontendPath. self::$MODUL_DIR_NAME)) {
+					
+					#could not make the modul directory in client 
+					if (mkdir($frontendPath. self::$MODUL_DIR_NAME)== false) {
+						$this->errorLog("Could not make modul directory in frontendpath :". $frontendPath);
+					} else
+						chmod($frontendPath. self::$MODUL_DIR_NAME, 0777);
+				
+				}
+			}
+		}
     }
 
     /**
@@ -680,23 +686,9 @@ class Contenido_Module_Handler {
         if ($this->_client== "")
             return - 1;
         
-        $myDb = $this->_db;
-        $frontendPath = '';
-        #get the frontendpaht from db
-        
+		global $cfgClient;
+        $frontendPath = $cfgClient[$this->_client]['path']['frontend'];
 
-        $sql = sprintf("SELECT frontendpath FROM %s WHERE idclient =%s", $this->_cfg["tab"]["clients"], $this->_client);
-        $this->_echoIt("makeModulDirectory:". $sql);
-        
-        if (isset($this->_cfgClient[$this->_client]['path']['frontend'])&&
-         strlen($this->_cfgClient[$this->_client]['path']['frontend'])> 0) {
-            $frontendPath = $this->_cfgClient[$this->_client]['path']['frontend'];
-        } else {
-            $myDb->query($sql);
-            $myDb->next_record();
-            $frontendPath = $myDb->f("frontendpath");
-        }
-        
         #make 
         if (! is_dir($frontendPath. self::$MODUL_DIR_NAME)) {
             

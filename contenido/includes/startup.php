@@ -83,6 +83,10 @@ include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.pat
 include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.templates.php');
 include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/cfg_sql.inc.php');
 
+if (file_exists($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.clients.php')) {
+	include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.clients.php');
+}
+
 // Include userdefined configuration (if available), where you are able to
 // extend/overwrite core settings from included configuration files above
 if (file_exists($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.local.php')) {

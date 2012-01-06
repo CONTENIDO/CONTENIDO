@@ -148,15 +148,12 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
     	
     	$db = new DB_Contenido();
     	$sql = "SELECT module.idmod,
-    					clients.frontendpath,
     					translation.idlang, 
     					translation.original,
     					translation.translation 
     			FROM 	con_mod_translations AS translation , 
-    					con_clients AS clients, 
     					con_mod AS module 
     			WHERE  	translation.idmod = module.idmod 
-    			AND 	clients.idclient = module.idclient 
     			ORDER BY module.idmod, translation.idlang";
     	
     	$db->query($sql);

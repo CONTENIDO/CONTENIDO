@@ -42,6 +42,7 @@ if (!defined('CON_FRAMEWORK')) {
 global $db;
 
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.database.php');
+checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
 
 $db = getSetupMySQLDBConnection(false);
 
@@ -137,17 +138,19 @@ if ($_SESSION['plugin_mod_rewrite'] == 'true') {
     $pluginChunks = array_merge($pluginChunks, $mod_rewrite);
 }
 
+list($rootPath, $rootHttpPath) = getSystemDirectories();
+
 if ($_SESSION['setuptype'] == 'setup') {
     switch ($_SESSION['clientmode']) {
         case 'CLIENT':
             $fullChunks = array_merge($baseChunks, $sysadminChunk, $clientChunks);
-            break;
+			break;
         case 'CLIENTMODULES':
             $fullChunks = array_merge($baseChunks, $sysadminChunk, $clientChunks, $moduleChunks);
-            break;
+			break;
         case 'CLIENTEXAMPLES':
             $fullChunks = array_merge($baseChunks, $sysadminChunk, $clientChunks, $moduleChunks, $contentChunks);
-            break;
+			break;
         default:
             $fullChunks = array_merge($baseChunks, $sysadminChunk);
             break;
@@ -157,9 +160,6 @@ if ($_SESSION['setuptype'] == 'setup') {
 }
 
 $fullChunks = array_merge($fullChunks, $pluginChunks);
-
-
-list($rootPath, $rootHttpPath) = getSystemDirectories();
 
 $totalSteps = ceil($fullCount/C_SETUP_MAX_CHUNKS_PER_STEP) + count($fullChunks) + 1;
 foreach ($fullChunks as $fullChunk) {
@@ -254,7 +254,22 @@ if ($currentStep < $totalSteps) {
     $aNothing = array();
 
     injectSQL($db, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array(), $aNothing);
-
+	
+	if ($_SESSION['setuptype'] == 'setup') {
+		switch ($_SESSION['clientmode']) {
+			case 'CLIENT':
+			case 'CLIENTMODULES':
+			case 'CLIENTEXAMPLES':
+				global $cfgClient;
+				echo "UPDATE: 1 $rootPath/cms/ $rootHttpPath/cms/";
+				updateClientPath($db, $cfg['tab']['clients'], 1, $rootPath . '/cms/', $rootHttpPath . '/cms/');
+				break;
+			
+			default:
+				break;
+		}
+	}
+	
     // Makes the new concept of moduls (save the moduls to the file) save the translation
     if ($_SESSION['setuptype'] == 'upgrade' || $_SESSION['setuptype'] == 'setup') {
 
@@ -288,6 +303,22 @@ if ($currentStep < $totalSteps) {
         $client = $clientBackup;
         $lang = $langBackup;
         unset($clientBackup, $langBackup);
+		
+		if ($_SESSION['setuptype'] == 'upgrade') {
+			$sql = "SHOW COLUMNS FROM %s LIKE 'frontendpath'";
+			$sql = sprintf($sql, $cfg['tab']['clients']);
+			
+			$db->query($sql);
+			if ($db->num_rows() != 0) {
+				updateClientCache();
+				
+				$sql = sprintf("ALTER TABLE %s DROP htmlpath", $cfg['tab']['clients']);
+				$db->query($sql);
+				
+				$sql = sprintf("ALTER TABLE %s DROP frontendpath", $cfg['tab']['clients']);
+				$db->query($sql);
+			}
+		}
     }
 
     echo '

@@ -729,6 +729,33 @@ function htmldecode($string)
     return $ret;
 }
 
+function updateClientCache($idclient = 0, $htmlpath = "", $frontendpath = "") {
+	global $cfg, $cfgClient;
+	
+	if ($idclient != 0 && $htmlpath != "" && $frontendpath != "") {
+		echo "SET!";
+		$cfgClient[$idclient]['path']['frontend'] = Contenido_Security::escapeDB($frontendpath, null);
+		$cfgClient[$idclient]['path']['htmlpath'] = Contenido_Security::escapeDB($htmlpath, null);
+	} else {
+		echo "NO SET!";
+	}
+	
+	$aConfigFileContent = array();
+	$aConfigFileContent[] = '<?php';
+	
+	foreach ($cfgClient as $iIdClient => $aClient) {
+		if ((int) $iIdClient > 0) {
+			$aConfigFileContent[] = '';
+			$aConfigFileContent[] = '/* ' . $aClient['name'] . ' */';
+			$aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
+			$aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["frontend"] = "' . $aClient['path']['frontend'] . '";';
+		}
+	}
+	
+	$aConfigFileContent[] = '?>';
+	file_put_contents($cfg['path']['contenido'] . $cfg['path']['includes'] . 'config.clients.php', implode(PHP_EOL, $aConfigFileContent));
+}
+
 function rereadClients()
 {
     global $cfgClient, $errsite_idcat, $errsite_idart, $db, $cfg;
@@ -737,25 +764,21 @@ function rereadClients()
         $db = new DB_Contenido();
     }
 
-    $sql = 'SELECT idclient, frontendpath, htmlpath, errsite_cat, errsite_art FROM ' . $cfg['tab']['clients'];
+    $sql = 'SELECT idclient, name, errsite_cat, errsite_art FROM ' . $cfg['tab']['clients'];
     $db->query($sql);
+	
+	
 
     while ($db->next_record()) {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
-        
-		if (!isset($cfgClient[$iClient]['path']['frontend'])) {
-			$cfgClient[$iClient]['path']['frontend'] = $db->f('frontendpath');
-		}
 		
-		if (!isset($cfgClient[$iClient]['path']['htmlpath'])) {
-			$cfgClient[$iClient]['path']['htmlpath'] = $db->f('htmlpath');
-		}
-
-        $errsite_idcat[$iClient] = $db->f('errsite_cat');
+		$cfgClient[$iClient]['name'] = $db->f('name');
+        
+		$errsite_idcat[$iClient] = $db->f('errsite_cat');
         $errsite_idart[$iClient] = $db->f('errsite_art');
 
-        $cfgClient[$iClient]['images'] = $db->f('htmlpath') . 'images/';
+        $cfgClient[$iClient]['images'] = $cfgClient[$iClient]['path']['htmlpath'] . 'images/';
         $cfgClient[$iClient]['upload'] = 'upload/';
 
         $cfgClient[$iClient]['htmlpath']['frontend'] = $cfgClient[$iClient]['path']['htmlpath'];
