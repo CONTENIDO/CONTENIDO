@@ -47,18 +47,6 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- * Specify platform specific newline character; PHP_EOL has been introduced in PHP 5.0.2
- * Note, that Mac seems to use \r, sorry guys
- */
-if (!defined('PHP_EOL')) {
-    if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-        define('PHP_EOL', "\r\n"); // Windows
-    } else {
-        define('PHP_EOL', "\n");   // *nix
-    }
-}
-
-/**
  * Extracts the available content-types from the database
  *
  * Creates an array $a_content[type][number] = content string
