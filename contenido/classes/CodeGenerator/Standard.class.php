@@ -170,8 +170,9 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         }
 
         // Add meta tags
-        $this->_layoutCode = str_ireplace_once("</head>", $cssDatei . $jsDatei . "</head>", $this->_layoutCode);
-
+        $this->_layoutCode = str_ireplace_once("</head>", $cssDatei . "</head>", $this->_layoutCode);
+	 	$this->_layoutCode = str_ireplace_once("</body>",  $jsDatei . "</body>", $this->_layoutCode);
+	 
         // Write code into the database
         if ($this->_layout == false) {
             $oCodeColl = new cApiCodeCollection();
