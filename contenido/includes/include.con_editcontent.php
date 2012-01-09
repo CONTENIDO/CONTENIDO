@@ -87,7 +87,7 @@ if (isset($idcat)) {
         $sConfigFullscreen = $oEditor->getConfigFullscreen();
 
         //Include tiny mce and con_tiny script for insight_editing
-        $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/jquery/jquery.js" type="text/javascript"></script>';
+        //$scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/jquery/jquery.js" type="text/javascript"></script>';
         $scripts .= "\n".'<script src="'.$cfg["path"]["contenido_fullhtml"].'scripts/con_tiny.js" type="text/javascript"></script>';
         $scripts .= "\n<!-- tinyMCE -->\n".'<script language="javascript" type="text/javascript" src="'.$cfg["path"]["contenido_fullhtml"].'external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js"></script>';
 
@@ -542,7 +542,9 @@ EOD;
                 $jsDatei = '<script src="'.$myFileJs.'" type="text/javascript"></script>';
             }
             /* Add meta tags */
-            $code = str_ireplace_once("</head>", $cssDatei.$jsDatei."</head>", $code);
+            $code = str_ireplace_once("</head>", $cssDatei."</head>", $code);
+            $code = str_ireplace_once("</body>", $jsDatei."</body>", $code);
+            
         }
 
         // Find out what kind of CMS_... Vars are in use
