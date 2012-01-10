@@ -587,8 +587,6 @@ class Contenido_Module_Handler {
         if ($fileName== NULL)
             $fileName = $this->_modulAlias. '.'. $fileTyp;
         
-        $fileName = strtolower($fileName);
-
         if (file_exists($this->_modulPath. $this->_directories[$directory]. $fileName)) {
             
             $content = file_get_contents($this->_modulPath. $this->_directories[$directory]. $fileName);
