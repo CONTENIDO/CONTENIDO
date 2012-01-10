@@ -1,9 +1,9 @@
 <html>
 <head>
     <title></title>
-	<meta http-equiv="expires" content="0">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="pragma" content="no-cache">    
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">    
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript">
@@ -30,12 +30,12 @@
 </head>
 <body style="margin:10px">
 
-	<table width="100%" cellspacing="0" cellpadding="2" border="0">
-	    <tr class="text_medium" style="background-color: {BGCOLOR};">
-		<td valign="top">{STATTITLE}</td>
-		<td valign="top" align="right">{DROPDOWN}{YEARMONTH}</td>
-	    </tr>
-	</table>
+    <table width="100%" cellspacing="0" cellpadding="2" border="0">
+        <tr class="text_medium" style="background-color: {BGCOLOR};">
+        <td valign="top">{STATTITLE}</td>
+        <td valign="top" align="right">{DROPDOWN}{YEARMONTH}</td>
+        </tr>
+    </table>
 
 <table style="border:0px; border-left:1px; border-bottom: 1px;border-color: {BORDERCOLOR}; border-style: solid;" width="100%" cellspacing="0" cellpadding="2" border="0">
     <tr class="text_medium" style="background-color: {TITLEBGCOLOR};">
@@ -44,7 +44,8 @@
     </tr>
     <!-- BEGIN:BLOCK -->
     <tr class="text_medium" style="background-color: {BGCOLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
-        <td style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid; padding-left:{PADDING_LEFT}px"><a style="text-decoration: none; cursor: default;" href="#" title="{PATH}">{TEXT}</a></td>
+        <td style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid; padding-left:{PADDING_LEFT}px">
+        <a style="text-decoration: none;" href="{ULR_TO_PAGE}" title="{PATH}" target="_blank">{TEXT}</a></td>
         <td style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right">{TOTAL}</td>
     </tr>
     <!-- END:BLOCK -->
