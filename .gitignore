@@ -9,8 +9,6 @@ cms/version/layout/*
 cms/version/module/*
 cms/version/templates/*
 contenido/cache/*
-contenido/external/edit_area/edit_area_full_with_plugins.gz
-contenido/external/edit_area/edit_area_full_with_plugins.js
 contenido/includes/config.local.php
 contenido/includes/config.php
 contenido/logs/*.txt
