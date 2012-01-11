@@ -337,6 +337,7 @@ contenido/cronjobs/session_cleanup.php.job -text
 contenido/cronjobs/setfrontenduserstate.php -text
 contenido/cronjobs/setfrontenduserstate.php.job -text
 contenido/external/backendedit/front_content.php -text
+contenido/external/codemirror/class.codemirror.php -text
 contenido/external/frontend/cache/index.php -text
 contenido/external/frontend/config.php -text
 contenido/external/frontend/css/index.php -text
