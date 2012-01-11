@@ -337,6 +337,8 @@ contenido/cronjobs/session_cleanup.php.job -text
 contenido/cronjobs/setfrontenduserstate.php -text
 contenido/cronjobs/setfrontenduserstate.php.job -text
 contenido/external/backendedit/front_content.php -text
+contenido/external/codemirror/LICENSE -text
+contenido/external/codemirror/README.md -text
 contenido/external/codemirror/class.codemirror.php -text
 contenido/external/codemirror/demo/activeline.html -text
 contenido/external/codemirror/demo/changemode.html -text
@@ -363,6 +365,7 @@ contenido/external/codemirror/doc/manual.html -text
 contenido/external/codemirror/doc/oldrelease.html -text
 contenido/external/codemirror/doc/reporting.html -text
 contenido/external/codemirror/doc/upgrade_v2.2.html -text
+contenido/external/codemirror/index.html -text
 contenido/external/codemirror/keymap/emacs.js -text
 contenido/external/codemirror/keymap/vim.js -text
 contenido/external/codemirror/lib/codemirror.css -text
