@@ -48,9 +48,9 @@ Lizenzen von verwendeten Produkten:
   Lizenz:      GNU Lesser General Public License version 2.1 or above
   Information: http://www.dynarch.com/projects/calendar/
   
-- Editarea
-  Lizenz:      GNU LESSER GENERAL PUBLIC LICENSE Version 2.1
-  Information: http://www.cdolivet.net/editarea/
+- CodeMirror
+  Lizenz:      CodeMirror license
+  Information: http://codemirror.net/LICENSE
 
 -------------------------------------------------------------------
 
