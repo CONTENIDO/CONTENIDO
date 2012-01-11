@@ -381,6 +381,13 @@ contenido/external/codemirror/lib/util/search.js -text
 contenido/external/codemirror/lib/util/searchcursor.js -text
 contenido/external/codemirror/lib/util/simple-hint.css -text
 contenido/external/codemirror/lib/util/simple-hint.js -text
+contenido/external/codemirror/mode/clike/clike.js -text
+contenido/external/codemirror/mode/clike/index.html -text
+contenido/external/codemirror/mode/clojure/clojure.js -text
+contenido/external/codemirror/mode/clojure/index.html -text
+contenido/external/codemirror/mode/coffeescript/LICENSE -text
+contenido/external/codemirror/mode/coffeescript/coffeescript.js -text
+contenido/external/codemirror/mode/coffeescript/index.html -text
 contenido/external/codemirror/test/index.html -text
 contenido/external/codemirror/test/test.js -text
 contenido/external/codemirror/theme/cobalt.css -text
