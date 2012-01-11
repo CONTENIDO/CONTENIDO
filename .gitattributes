@@ -1338,6 +1338,13 @@ contenido/plugins/mod_rewrite/xml/lang_de_DE.xml -text
 contenido/plugins/mod_rewrite/xml/lang_en_US.xml -text
 contenido/plugins/repository/custom/FrontendNavigation.php -text
 contenido/plugins/repository/keyword_density.php -text
+contenido/plugins/smarty/README.txt -text svneol=unset#text/plain
+contenido/plugins/smarty/classes/class.Contenido_Backend_SmartyWrapper.php -text
+contenido/plugins/smarty/classes/class.Contenido_SmartyWrapper.php -text
+contenido/plugins/smarty/classes/class.smartyWrapper.php -text
+contenido/plugins/smarty/includes/config.plugin.php -text
+contenido/plugins/smarty/smarty_source/Smarty.class.php -text
+contenido/plugins/smarty/smarty_source/debug.tpl -text
 contenido/plugins/workflow/classes/class.workflow.php -text
 contenido/plugins/workflow/classes/class.workflowactions.php -text
 contenido/plugins/workflow/classes/class.workflowallocation.php -text
