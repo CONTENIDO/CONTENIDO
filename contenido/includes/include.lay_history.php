@@ -34,7 +34,7 @@ if(!defined('CON_FRAMEWORK')) {
 cInclude("includes", "functions.lay.php");
 
 // For Editor syntax highlighting
-cInclude("external", "edit_area/class.edit_area.php");
+cInclude("external", "codemirror/class.codemirror.php");
 
 $oPage = new cPage;
 $oPage->addScript('messageBox', '<script type="text/javascript" src="'.$sess->url('scripts/messageBox.js.php').'"></script>');
@@ -124,8 +124,8 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
     $oForm->unsetActionButton("submit");
 
     // Render and handle History Area
-    $oEditAreaOutput = new EditArea('IdLaycode', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-    $oPage->addScript('IdLaycode', $oEditAreaOutput->renderScript());
+	$oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+    $oPage->addScript('IdLaycode', $oCodeMirrorOutput->renderScript());
     
     if($sSelectBox !="") {
     	$oPage->setContent($sSelectBox . $oForm->render());

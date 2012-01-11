@@ -34,7 +34,7 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("external", "edit_area/class.edit_area.php");
+cInclude("external", "codemirror/class.codemirror.php");
 
 $sFileType = "css";
 
@@ -200,8 +200,8 @@ if (!$perm->have_perm_area_action($area, $action))
         
         $page->setContent($form->render());
         
-        $oEditArea = new EditArea('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
-        $page->addScript('editarea', $oEditArea->renderScript());
+        $oCodeMirror = new CodeMirror('code', 'css', substr(strtolower($belang), 0, 2), true, $cfg);
+        $page->addScript('codemirror', $oCodeMirror->renderScript());
         
         $page->addScript('reload', $sReloadScript);
     	$page->render();  

@@ -4516,8 +4516,8 @@ msgid "Activate maintenance mode"
 msgstr "Wartungsmodus aktiviert"
 
 #: includes/include.system_configuration.php:102
-msgid "Use editarea for code highlighting"
-msgstr "Editarea f&uuml;r Syntaxhighlighting verwenden"
+msgid "Use CodeMirror for code highlighting"
+msgstr "CodeMirror f&uuml;r Syntax-Highlighting verwenden"
 
 #: includes/include.system_configuration.php:103
 msgid "Use TinyMce as insight editor"

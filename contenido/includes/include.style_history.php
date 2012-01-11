@@ -37,7 +37,7 @@ cInclude("includes", "functions.lay.php");
 cInclude("includes", "functions.file.php");
 
 // For Editor syntax highlighting
-cInclude("external", "edit_area/class.edit_area.php");
+cInclude("external", "codemirror/class.codemirror.php");
 
 $sFileName = "";    
 $sFileName = $_REQUEST['file'];
@@ -166,8 +166,8 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
     	// Render and handle History Area
     	$oPage->setEncoding("utf-8");
     	
-    	$oEditAreaOutput = new EditArea('IdLaycode', 'css', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-    	$oPage->addScript('IdLaycode', $oEditAreaOutput->renderScript());
+    	$oCodeMirrorOutput = new CodeMirror('IdLaycode', 'css', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+    	$oPage->addScript('IdLaycode', $oCodeMirrorOutput->renderScript());
 
     	if($sSelectBox !="") {
     		$oPage->setContent($sSelectBox . $oForm->render());

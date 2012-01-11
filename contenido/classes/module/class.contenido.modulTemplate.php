@@ -8,7 +8,7 @@ cInclude('classes','module/class.contenido.module.handler.php');
 cInclude("classes", "class.ui.php");
 cInclude("classes", "widgets/class.widgets.page.php");
 cInclude("classes", "class.htmlvalidator.php");
-cInclude("external", "edit_area/class.edit_area.php");
+cInclude("external", "codemirror/class.codemirror.php");
 cInclude("includes", "functions.file.php");
 
 class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
@@ -468,8 +468,8 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
         $form->add(i18n("Code"),$ta_code);
         $this->_page->setContent($notis . $form->render());
         
-        $oEditArea = new EditArea('code', 'html', substr(strtolower($belang), 0, 2), true, $this->_cfg);
-        $this->_page->addScript('editarea', $oEditArea->renderScript());
+        $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $this->_cfg);
+        $this->_page->addScript('codemirror', $oCodeMirror->renderScript());
 
         
         //$this->_reloadScript = "das ist mein script hello world rusmirus";

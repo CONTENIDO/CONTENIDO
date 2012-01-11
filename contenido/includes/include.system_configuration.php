@@ -99,7 +99,7 @@ $aManagedProperties = array(
                           array('type' => 'system', 'name' => 'clickmenu', 'value' => array('false', 'true'), 'label' => i18n('Clickable menu in backend'), 'group' => i18n('Backend')),
                           array('type' => 'pw_request', 'name' => 'enable', 'value' => array('false', 'true'), 'label' => i18n('Use passwordrequest in Backend'), 'group' => i18n('Backend')),
                           array('type' => 'maintenance', 'name' => 'mode', 'value' => array('disabled', 'enabled'), 'label' => i18n('Activate maintenance mode'), 'group' => i18n('Backend')),
-                          array('type' => 'edit_area', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Use editarea for code highlighting'), 'group' => i18n('Backend')),
+                          array('type' => 'codemirror', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Use CodeMirror for code highlighting'), 'group' => i18n('Backend')),
                           array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => array('false', 'true'), 'label' => i18n('Use TinyMce as insight editor'), 'group' => i18n('Backend')), 
 						  array('type' => 'backend', 'name' => 'preferred_idclient', 'value' => 'integer', 'label' => i18n('Default client (ID)'), 'group' => i18n('Backend')),
                           array('type' => 'system', 'name' => 'mail_host', 'value' => '', 'label' => i18n('Mailserver host'), 'group' => i18n('Mailserver')),

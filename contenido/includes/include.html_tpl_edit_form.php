@@ -33,7 +33,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-cInclude("external", "edit_area/class.edit_area.php");
+cInclude("external", "codemirror/class.codemirror.php");
 cInclude("includes", "functions.file.php");
 
 $sFileType = "html";
@@ -216,8 +216,8 @@ if (!$perm->have_perm_area_action($area, $action))
         
         $page->setContent($notis . $form->render());
         
-        $oEditArea = new EditArea('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
-        $page->addScript('editarea', $oEditArea->renderScript());
+        $oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
+        $page->addScript('codemirror', $oCodeMirror->renderScript());
         
         $page->addScript('reload', $sReloadScript);
     	$page->render();  

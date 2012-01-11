@@ -4354,7 +4354,7 @@ msgid "Activate maintenance mode"
 msgstr ""
 
 #: includes/include.system_configuration.php:102
-msgid "Use editarea for code highlighting"
+msgid "Use CodeMirror for code highlighting"
 msgstr ""
 
 #: includes/include.system_configuration.php:103

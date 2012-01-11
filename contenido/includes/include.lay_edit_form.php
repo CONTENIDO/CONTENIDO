@@ -35,8 +35,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
-cInclude("external", "edit_area/class.edit_area.php");
+cInclude("external", "codemirror/class.codemirror.php");
 cInclude('classes', 'class.synchronizeLayouts.php');
 if (!isset($idlay)) $idlay = 0;
 
@@ -271,8 +270,8 @@ if (!$layout->virgin)
     $tpl->set('d', 'NAME',    'code');
     $tpl->next();
     
-    $oEditArea = new EditArea('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
-    $page->addScript('editarea', $oEditArea->renderScript());
+	$oCodeMirror = new CodeMirror('code', 'html', substr(strtolower($belang), 0, 2), true, $cfg);
+    $page->addScript('codemirror', $oCodeMirror->renderScript());
     
     $sScript = '<script type="text/javascript">
                             if (document.getElementById(\'scroll\')) {

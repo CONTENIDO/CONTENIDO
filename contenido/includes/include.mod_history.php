@@ -32,7 +32,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 
 // For Editor syntax highlighting
-cInclude("external", "edit_area/class.edit_area.php");
+cInclude("external", "codemirror/class.codemirror.php");
 
 // 
 cInclude("includes", "functions.mod.php");
@@ -136,11 +136,10 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
     $oForm->unsetActionButton("submit");
 
     // Render and handle History Area
-
-    $oEditAreaIn = new EditArea('IdCodeIn', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-    $oEditAreaOutput = new EditArea('IdCodeOut', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-    $oPage->addScript('IdCodeIn', $oEditAreaIn->renderScript());
-    $oPage->addScript('IdCodeOut', $oEditAreaOutput->renderScript());
+	$oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+    $oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+    $oPage->addScript('IdCodeIn', $oCodeMirrorIn->renderScript());
+    $oPage->addScript('IdCodeOut', $oCodeMirrorOutput->renderScript());
 
     if($sSelectBox !="") {
     	$oPage->setContent($sSelectBox . $oForm->render());

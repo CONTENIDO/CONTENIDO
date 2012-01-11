@@ -40,7 +40,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 cInclude("includes", "functions.upl.php");
-cInclude("external", "edit_area/class.edit_area.php");
+cInclude("external", "codemirror/class.codemirror.php");
 
 $noti             = "";
 $sOptionDebugRows = getEffectiveSetting("modules", "show-debug-rows", "never");
@@ -510,9 +510,10 @@ window.onload = scrolltheother;
         $page->addScript('reload', $sReloadScript);
     }
     if (!($action == "mod_importexport_module" && $mode == "export")) {
-        $oEditAreaInput = new EditArea('input', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-        $oEditAreaOutput = new EditArea('output', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
-        $page->addScript('editarea', $oEditAreaInput->renderScript().$oEditAreaOutput->renderScript());
+        $oCodeMirrorInput = new CodeMirror('input', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+        $oCodeMirrorOutput = new CodeMirror('output', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
+        
+		$page->addScript('codemirror', $oCodeMirrorInput->renderScript().$oCodeMirrorOutput->renderScript());
         $page->render();
     }
 }
