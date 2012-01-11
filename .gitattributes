@@ -354,6 +354,17 @@ contenido/external/codemirror/demo/search.html -text
 contenido/external/codemirror/demo/theme.html -text
 contenido/external/codemirror/demo/vim.html -text
 contenido/external/codemirror/demo/visibletabs.html -text
+contenido/external/codemirror/doc/baboon.png -text
+contenido/external/codemirror/doc/baboon_vector.svg -text
+contenido/external/codemirror/doc/compress.html -text
+contenido/external/codemirror/doc/docs.css -text
+contenido/external/codemirror/doc/internals.html -text
+contenido/external/codemirror/doc/manual.html -text
+contenido/external/codemirror/doc/oldrelease.html -text
+contenido/external/codemirror/doc/reporting.html -text
+contenido/external/codemirror/doc/upgrade_v2.2.html -text
+contenido/external/codemirror/keymap/emacs.js -text
+contenido/external/codemirror/keymap/vim.js -text
 contenido/external/frontend/cache/index.php -text
 contenido/external/frontend/config.php -text
 contenido/external/frontend/css/index.php -text
