@@ -164,7 +164,7 @@ class CodeMirror {
       *
       * @access public
       */
-    public function setProperty($sName, $sValue, $bIsNumeric) {
+    public function setProperty($sName, $sValue, $bIsNumeric = false) {
         //datatype check
         $sName = (string) $sName;
         $sValue = (string) $sValue;
@@ -280,8 +280,8 @@ class CodeMirror {
 					window.setTimeout('initCodeMirror(\"{ID}\", properties_{ID})', 100);
                 </script>";
 				
-		$this->setProperty('mode', $this->_getSyntaxName());
-		$this->setProperty('theme', 'default ' . $this->_sTextareaId);
+		$this->setProperty('mode', $this->_getSyntaxName(), false);
+		$this->setProperty('theme', 'default ' . $this->_sTextareaId, false);
         
         //get all stored properties and convert it in order to insert it into CodeMirror js template
         $sProperties = '';
