@@ -27,11 +27,11 @@
     return isRE ? new RegExp(isRE[1]) : query;
   }
   var queryDialog =
-    'Search: <input type="text" style="width: 10em"> <span style="color: #888">(Use /re/ syntax for regexp search)</span>';
+    codeMirrorTranslation['search'] + ': <input type="text" style="width: 10em"> <span style="color: #888">(' + codeMirrorTranslation['regex_info'] + ')</span>';
   function doSearch(cm, rev) {
     var state = getSearchState(cm);
     if (state.query) return findNext(cm, rev);
-    dialog(cm, queryDialog, "Search for:", function(query) {
+    dialog(cm, queryDialog, codeMirrorTranslation['search_for'] + ':', function(query) {
       cm.operation(function() {
         if (!query || state.query) return;
         state.query = parseQuery(query);
@@ -63,14 +63,14 @@
   })}
 
   var replaceQueryDialog =
-    'Replace: <input type="text" style="width: 10em"> <span style="color: #888">(Use /re/ syntax for regexp search)</span>';
-  var replacementQueryDialog = 'With: <input type="text" style="width: 10em">';
-  var doReplaceConfirm = "Replace? <button>Yes</button> <button>No</button> <button>Stop</button>";
+    codeMirrorTranslation['replace'] + ': <input type="text" style="width: 10em"> <span style="color: #888">(' + codeMirrorTranslation['regex_info'] + ')</span>';
+  var replacementQueryDialog = codeMirrorTranslation['with'] + ': <input type="text" style="width: 10em">';
+  var doReplaceConfirm = codeMirrorTranslation['replace'] + "? <button>" + codeMirrorTranslation['yes'] + "</button> <button>" + codeMirrorTranslation['no'] + "</button> <button>" + codeMirrorTranslation['stop'] + "</button>";
   function replace(cm, all) {
-    dialog(cm, replaceQueryDialog, "Replace:", function(query) {
+    dialog(cm, replaceQueryDialog, codeMirrorTranslation['replace'] + ":", function(query) {
       if (!query) return;
       query = parseQuery(query);
-      dialog(cm, replacementQueryDialog, "Replace with:", function(text) {
+      dialog(cm, replacementQueryDialog, codeMirrorTranslation['replace_with'] + ":", function(text) {
         if (all) {
           cm.operation(function() {
             for (var cursor = cm.getSearchCursor(query); cursor.findNext();) {
@@ -91,7 +91,7 @@
                   (cursor.from().line == start.line && cursor.from().ch == start.ch)) return;
             }
             cm.setSelection(cursor.from(), cursor.to());
-            confirmDialog(cm, doReplaceConfirm, "Replace?",
+            confirmDialog(cm, doReplaceConfirm, codeMirrorTranslation['replace'] + "?",
                           [function() {doReplace(match);}, advance]);
           }
           function doReplace(match) {

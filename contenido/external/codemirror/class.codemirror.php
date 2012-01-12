@@ -252,15 +252,21 @@ class CodeMirror {
         $sJs = '';
         if ($this->_bAddScript) {
 			$sConPath = $this->_aCfg['path']['contenido_fullhtml'];
-            $sPath = $sConPath . '/external/codemirror/';
+            $sPath = $sConPath . 'external/codemirror/';
 			
+			$sLanguage = $this->_sLanguage;
+			if (!file_exists($this->_aCfg['path']['contenido'] . "external/codemirror/lib/lang/" . $sLanguage . ".js")) {
+				$sLanguage = 'en';
+			}
+			
+			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/lang/' . $sLanguage . '.js"></script>'. PHP_EOL;
             $sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/codemirror.js"></script>'. PHP_EOL;
 			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/util/foldcode.js"></script>'. PHP_EOL;
 			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/util/dialog.js"></script>'. PHP_EOL;
 			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/util/searchcursor.js"></script>'. PHP_EOL;
 			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/util/search.js"></script>'. PHP_EOL;
 			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/contenido_integration.js"></script>'. PHP_EOL;
-			$sJs .= '<script type="text/javascript" src="' . $sConPath . '/scripts/jquery/jquery.js"></script>'. PHP_EOL;
+			$sJs .= '<script type="text/javascript" src="' . $sConPath . 'scripts/jquery/jquery.js"></script>'. PHP_EOL;
 			$sJs .= $this->_getSyntaxScripts();
             $sJs .= '<link rel="stylesheet" href="' . $sPath . 'lib/codemirror.css" />'. PHP_EOL;
 			$sJs .= '<link rel="stylesheet" href="' . $sPath . 'lib/util/dialog.css" />'. PHP_EOL;
