@@ -370,6 +370,7 @@ contenido/external/codemirror/keymap/emacs.js -text
 contenido/external/codemirror/keymap/vim.js -text
 contenido/external/codemirror/lib/codemirror.css -text
 contenido/external/codemirror/lib/codemirror.js -text
+contenido/external/codemirror/lib/contenido_integration.js -text
 contenido/external/codemirror/lib/util/dialog.css -text
 contenido/external/codemirror/lib/util/dialog.js -text
 contenido/external/codemirror/lib/util/foldcode.js -text

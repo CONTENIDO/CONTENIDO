@@ -92,7 +92,7 @@ class CodeMirror {
       * @param  string $sLang - lang which is used into editor. Notice NOT CONTENIDO language id
       *                         ex: de, en ... To get it from CONTENIDO language use: 
       *                         substr(strtolower($belang), 0, 2) in backend
-      * @param  boolean $bAddScript - defines if edit_area script is included or not
+      * @param  boolean $bAddScript - defines if CodeMirror script is included or not
       *                               interesting when there is more than only one editor on page
       * @param  array $aCfg - The CONTENIDO configuration array
       * @param  boolean $bEditable - Optional defines if content is editable or not
@@ -127,9 +127,9 @@ class CodeMirror {
     }
     
     /**
-      * Function gets properties from CONTENIDO for edit_area and stores it into
+      * Function gets properties from CONTENIDO for CodeMirror and stores it into
       * $this->setProperty so user is able to overwride standard settings or append
-      * other settings. Function also checks if edit_area is activated or deactivated
+      * other settings. Function also checks if CodeMirror is activated or deactivated
       * by user
       *
       * @access private
@@ -153,11 +153,11 @@ class CodeMirror {
     }
     
     /**
-      * Function for setting a property for edit_area to $this->setProperty
+      * Function for setting a property for CodeMirror to $this->setProperty
       * existing properties were overwritten
       *
-      * @param  string $sName - Name of edit_area property
-      * @param  string $sValue - Value of edit_area property
+      * @param  string $sName - Name of CodeMirror property
+      * @param  string $sValue - Value of CodeMirror property
       * @param  boolean $bIsNumeric - Defines if value is numeric or not
       *                               in case of a numeric value, there is no need to use
       *                               quotes
@@ -239,7 +239,7 @@ class CodeMirror {
     /**
       * Function renders js_script for inclusion into an header of a html file
       *
-      * @return string - js_script for edit_area
+      * @return string - js_script for CodeMirror
       * @access public
       */
     public function renderScript() {
@@ -251,25 +251,39 @@ class CodeMirror {
         //if external js file for editor should be included, do this here
         $sJs = '';
         if ($this->_bAddScript) {
-            $sPath = $this->_aCfg['path']['contenido_fullhtml'] . '/external/codemirror/';
+			$sConPath = $this->_aCfg['path']['contenido_fullhtml'];
+            $sPath = $sConPath . '/external/codemirror/';
+			
             $sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/codemirror.js"></script>'. PHP_EOL;
 			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/util/foldcode.js"></script>'. PHP_EOL;
+			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/util/dialog.js"></script>'. PHP_EOL;
+			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/util/searchcursor.js"></script>'. PHP_EOL;
+			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/util/search.js"></script>'. PHP_EOL;
+			$sJs .= '<script type="text/javascript" src="' . $sPath . 'lib/contenido_integration.js"></script>'. PHP_EOL;
+			$sJs .= '<script type="text/javascript" src="' . $sConPath . '/scripts/jquery/jquery.js"></script>'. PHP_EOL;
 			$sJs .= $this->_getSyntaxScripts();
             $sJs .= '<link rel="stylesheet" href="' . $sPath . 'lib/codemirror.css" />'. PHP_EOL;
+			$sJs .= '<link rel="stylesheet" href="' . $sPath . 'lib/util/dialog.css" />'. PHP_EOL;
         }
         
         //define template for edit_area script
-        $sJs .= '<script type="text/javascript">
-                    function init_editarea_%s() { 
-						var editor = CodeMirror.fromTextArea(document.getElementById("%s"), {
-							mode: "%s"
-							%s
-						  });
-                    }                    
-                    window.setTimeout("init_editarea_%s()", 50);
-                </script>';
+        $sJs .= "<script type=\"text/javascript\">
+					function toggleCodeMirrorFullscreen_{ID}() { 
+						toggleCodeMirrorFullscreenEditor('{ID}');
+                    }  		
+					
+					properties_{ID} = {
+						extraKeys: {\"F11\": toggleCodeMirrorFullscreen_{ID}, \"Esc\": toggleCodeMirrorFullscreen_{ID}}
+						{PROPERTIES}
+					};
+
+					window.setTimeout('initCodeMirror(\"{ID}\", properties_{ID})', 100);
+                </script>";
+				
+		$this->setProperty('mode', $this->_getSyntaxName());
+		$this->setProperty('theme', 'default ' . $this->_sTextareaId);
         
-        //get all stored properties and convert it in order to insert it into edit_area js template
+        //get all stored properties and convert it in order to insert it into CodeMirror js template
         $sProperties = '';
         foreach ($this->_aProperties as $aProperty) {
             if ($aProperty['is_numeric'] == true) {
@@ -279,10 +293,11 @@ class CodeMirror {
             }
         }
         
-        //fill js template, using sprintf
+        //fill js template
         $sTextareaId = $this->_sTextareaId;
-        $sJsResult = sprintf($sJs, $sTextareaId, $sTextareaId, $this->_getSyntaxName(), $sProperties, $sTextareaId);
-        
+		$sJsResult = str_replace('{ID}', $sTextareaId, $sJs);
+		$sJsResult = str_replace('{PROPERTIES}', $sProperties, $sJsResult);
+
         return $sJsResult;
     }
 }
