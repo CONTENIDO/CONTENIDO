@@ -13,7 +13,7 @@
  * @link       http://www.4fb.de
  * @since      file available since CONTENIDO 4.9.0
  *
- * $Id: class.edit_area.php 1563 2011-09-12 09:34:51Z fulai.zhang $
+ * $Id:
  */
 
 
@@ -272,7 +272,7 @@ class CodeMirror {
 			$sJs .= '<link rel="stylesheet" href="' . $sPath . 'lib/util/dialog.css" />'. PHP_EOL;
         }
         
-        //define template for edit_area script
+        //define template for CodeMirror script
         $sJs .= "<script type=\"text/javascript\">
 					function toggleCodeMirrorFullscreen_{ID}() { 
 						toggleCodeMirrorFullscreenEditor('{ID}');
