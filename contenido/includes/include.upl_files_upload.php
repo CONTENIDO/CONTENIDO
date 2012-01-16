@@ -23,6 +23,7 @@
  *   created 2003-12-30
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2010-09-20, Dominik Ziegler, added path to error message when directory is not writable - CON-319
+ *	 modified 2012-01-13, Mischa Holz, added divs and scripts for drag and drop support
  *
  *   $Id$:
  * }}
@@ -58,11 +59,19 @@ if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || is_dbfs($path)) &&
     $sDisplayPath = generateDisplayFilePath($mpath, 85);
     $form->add(i18n("Path:"), $sDisplayPath);
 	
-    $uplelement = new cHTMLUpload("file[]",40);
+    $uplelement = new cHTMLUpload("file[]", 40);
     $num_upload_files = getEffectiveSetting('backend','num_upload_files',10);
     $form->add(i18n("Upload files"), str_repeat($uplelement->render()."<br>"	,$num_upload_files));
     
-    $page->setContent($form->render());
+    $page->addScript("jq", "<script type='text/javascript' src='scripts/jquery/jquery.js'></script>");
+    $page->addScript("dnd1", "<script type='text/javascript'>var contenido_id = '".$_REQUEST['contenido']."'; var upload_path = '".$path."';</script>");
+	$page->addScript("dnd2", "<script type='text/javascript' src='scripts/dragAndDropUpload.js'></script>");
+    
+    $form->setWidth(500);
+    
+    $page->setContent("<div id='dropbox_area'>
+			<div class='dropbox' id='dropbox'>Drop your files here</div>
+			<div class='shelf' id='shelf'></div>".$form->render()."</div>");
 } else {
 	$page->setContent($notification->returnNotification("error", i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')'));
 }	

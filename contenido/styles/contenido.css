@@ -1203,3 +1203,59 @@ p.column_header {padding: 0; font-weight: bold;}
 .page_subnav div.menuless .frame_handle {
     display: none;
 }
+
+/**
+ * #############################################################################
+ * @section File Upload
+ */
+
+#dropbox {
+	
+	width: 500px;
+	height: 100px;
+	line-height: 99px;
+	
+	background-color: #FFFFFF;
+	
+	border: 1px solid #D0D0D0;
+	
+	text-align: center;
+	padding: 0px;
+}
+
+#shelf {
+	width: 480px;
+}
+
+div.shelf_elem {
+	width: 100%;
+	
+	margin-bottom: 10px;
+	padding: 5px;
+}
+
+div.shelf_elem_titlelabel {
+	width: 100%;
+}
+
+div.shelf_elem_progressbar_background {
+	margin-top: 5px;
+	
+	height: 20px;
+	background-color: black;
+}
+
+div.shelf_elem_progressbar_bar {
+	width: 0%;
+	
+	height: 100%;
+	background-color: green;
+}
+
+input.shelf_elem_cancelbutton {
+	float: left;
+}
+
+div.shelf_elem_statuslabel {
+	float: right;
+}
