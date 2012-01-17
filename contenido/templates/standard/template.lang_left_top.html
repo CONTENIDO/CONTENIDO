@@ -22,8 +22,10 @@
             if (iLanguagecount == 0) {
                 langNewLanguage();
             } else {
-			var targetclient = document.getElementById("editclient").innerHTML;
-                box.confirm('i18n("Create language") '+targetclient, 'i18n("Do you really want to create a new language?")', 'langNewLanguage()')
+				var dropList = document.getElementById("editclient");
+				var selectedIndex = dropList.selectedIndex;
+				var targetclient = dropList.options[selectedIndex].innerHTML;
+                box.confirm('i18n("Create language for") ' + targetclient, 'i18n("Do you really want to create a new language?")', 'langNewLanguage()')
             }
       }
   

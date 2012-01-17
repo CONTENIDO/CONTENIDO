@@ -1582,7 +1582,7 @@ msgstr "Sprache umbenennen"
 
 #: includes/cfg_language_de.inc.php:189
 #: includes/include.lang_left_top.php:80
-msgid "Create language"
+msgid "Create language for"
 msgstr "Sprache erstellen f&uuml;r"
 
 #: includes/cfg_language_de.inc.php:190
@@ -6551,8 +6551,8 @@ msgstr "Reiter kann nicht angezeigt werden"
 #~ "Hinweis: Dr&uuml;cken und halten Sie die Taste \"STRG\", um mehrere "
 #~ "Eintr&auml;ge zu selektieren."
 
-#~ msgid "Do you really want to create a new language?"
-#~ msgstr "M&ouml;chten Sie wirklich eine neue Sprache erstellen?"
+msgid "Do you really want to create a new language?"
+msgstr "M&ouml;chten Sie wirklich eine neue Sprache erstellen?"
 
 #~ msgid "Layout is in use"
 #~ msgstr "Layout wird benutzt"

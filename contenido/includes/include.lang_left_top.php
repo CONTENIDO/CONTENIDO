@@ -22,6 +22,7 @@
  * {@internal 
  *   created 2003-05-08
  *   modified 2008-06-27, Frederic Schneider, add security fix
+ *   modified 2012-01-17, Mischa Holz, fixed errors with the translation
  *
  *   $Id$:
  * }}
@@ -31,7 +32,6 @@
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
-
 $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'CAPTION', '');
@@ -77,7 +77,7 @@ $select = $tpl2->generate($cfg["path"]["templates"] . $cfg['templates']['generic
 $tpl->set('s', 'CLIENTSELECT', $select);
 
 if ($perm->have_perm_area_action($area, "lang_newlanguage") && $iClientcount > 0) {
-    $tpl->set('s', 'NEWLANG', '<a class="addfunction" href="javascript:languageNewConfirm()">'.i18n("Create language").'</a>');
+    $tpl->set('s', 'NEWLANG', '<a class="addfunction" href="javascript:languageNewConfirm()">'.i18n("Create language for").'</a>');
 } else if ($iClientcount == 0) {
     $tpl->set('s', 'NEWLANG', i18n('No Client selected'));
 } else {

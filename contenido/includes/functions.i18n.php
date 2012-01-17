@@ -192,7 +192,7 @@ function i18nEmulateGettext ($string, $domain = "contenido")
  *
  * @param $localePath string Path to the locales
  * @param $langCode string Language code to set
- * @return string  Returns the translation
+ *
  */
 function i18nInit ($localePath, $langCode)
 {
