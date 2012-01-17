@@ -504,7 +504,7 @@ $tpl->set('s', 'SEARCHSTOREDMESSAGE', $saveSuccessfull);
 
 $iAffectedRows = $db->affected_rows();
 
-if ($iAffectedRows <= 0) {
+if ($iAffectedRows <= 0 || empty($where)) {
     $sNoArticle = i18n("Missing search value.");
     $sNothingFound = i18n("No article found.");
 
