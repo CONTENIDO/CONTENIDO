@@ -23,6 +23,7 @@
  *   created 2003-08-15
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2011-05-18, Ortwin Pinke, clean url due to validate page
+ *   modified 2012-01-17, Mischa Holz, removed the upgrade error log
  *
  *   $Id$:
  * }}
@@ -79,42 +80,11 @@ else
 $tpl->set('s', 'TXTERRORLOGSIZE', $txtAreaHeight);
 $tpl->set('s', 'ERRORLOG', $errorLogBuffer);
 
-// upgrade error log
-if (file_exists($cfg['path']['contenido']."logs/install.log.txt"))
-{
-    $upgErrorLogHandle = fopen ($cfg['path']['contenido']."logs/install.log.txt", "rb");
-    $txtAreaHeight = "200";
-    
-    /* If the file is larger than 200KB, seek to the file's length - 200KB) */
-    fseek($upgErrorLogHandle, -16384,SEEK_END);
-        
-    while (!feof($upgErrorLogHandle))
-    {
-        $upgErrorLogBuffer.= fgets($upgErrorLogHandle, 16384);
-    }
-    fclose ($upgErrorLogHandle);
-    if (strlen ($upgErrorLogBuffer) == 0)
-    {
-    	$upgErrorLogBuffer = i18n("No install error log entries found");
-    	$txtAreaHeight = "20";	
-    }
-    
-}
-else
-{
-	$upgErrorLogBuffer = i18n("No error log entries found");
-	$txtAreaHeight = "20";	
-}
-$tpl->set('s', 'TXTUPGERRORLOGSIZE', $txtAreaHeight);
-$tpl->set('s', 'UPGERRORLOG', $upgErrorLogBuffer);
-
 /*
  * parameter which log shoult be cleared
  * log = 1	clear /contenido/logs/errorlog.txt
- * log = 2	clear /contenido/upgrade_errorlog.txt
 */
 $tpl->set('s', 'LOGEMPTYURL', htmlentities($sess->url("main.php?area=$area&frame=$frame&action=emptyLog&log=1")));
-$tpl->set('s', 'UPGLOGEMPTYURL', htmlentities($sess->url("main.php?area=$area&frame=$frame&action=emptyLog&log=2")));
 
 // parse out template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['systam_variables']);

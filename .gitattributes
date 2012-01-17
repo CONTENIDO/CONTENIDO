@@ -1232,9 +1232,6 @@ contenido/locale/en_US/LC_MESSAGES/contenido.po.poedit -text
 contenido/locale/fr_FR/LC_MESSAGES/contenido.mo -text
 contenido/locale/fr_FR/LC_MESSAGES/contenido.po -text
 contenido/locale/fr_FR/LC_MESSAGES/contenido.po.poedit -text
-contenido/locale/he_SS/LC_MESSAGES/contenido.mo -text
-contenido/locale/he_SS/LC_MESSAGES/contenido.po -text
-contenido/locale/he_SS/LC_MESSAGES/contenido.po.poedit -text
 contenido/locale/it_IT/LC_MESSAGES/contenido.mo -text
 contenido/locale/it_IT/LC_MESSAGES/contenido.po -text
 contenido/locale/nl_NL/LC_MESSAGES/contenido.mo -text
@@ -1731,7 +1728,6 @@ contenido/xml/index.php -text
 contenido/xml/lang_de_DE.xml -text
 contenido/xml/lang_en_US.xml -text
 contenido/xml/lang_fr_FR.xml -text
-contenido/xml/lang_he_SS.xml -text
 contenido/xml/lang_it_IT.xml -text
 contenido/xml/lang_nl_NL.xml -text
 docs/api/doxy-api.conf -text
