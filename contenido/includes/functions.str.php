@@ -38,6 +38,7 @@
  *   modified 2011-08-24, Dominik Ziegler, removed deprecated function strRemakeTreeTableFindNext
  *   modified 2011-10-25, Murat Purc, reworked strNewTree
  *   modified 2012-01-17, Mischa Holz, reworked strDeeperCategoriesArray to fix [CON-453]
+ *   modified 2012-01-18, Mischa Holz, reworked strDeeperCategoriesArray again to usa a non recursive algorithm
  *
  *   $Id$:
  * }}
@@ -795,23 +796,26 @@ function strDeeperCategoriesArray($idcat_start) {
     global $client;
     global $cfg;
 
-	$adb = new DB_Contenido($cfg);
-	
-    $sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B WHERE A.idcat=B.idcat AND B.parentid='".$idcat_start."' AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY idtree";
-    $adb->query($sql);
-    
     $catstring = Array();
+    $openlist = Array();
     
-    
-    while ($adb->next_record()) {
-    	$id_cat = $adb->f("idcat");
-    	$childs = strDeeperCategoriesArray($id_cat);
-    	foreach($childs as $cc) {
-    		array_push($catstring, $cc);
+    array_push($openlist, $idcat_start);
+	
+	while(($actid = array_pop($openlist)) != null) {
+		if(in_array($actid, $catstring)) {
+			continue;
+		}
+		
+		array_push($catstring, $actid);
+		
+  	  	$sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B WHERE A.idcat=B.idcat AND B.parentid='".$actid."' AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY idtree";
+    	$db->query($sql);
+    	
+		while ($db->next_record()) {
+    		$id_cat = $db->f("idcat");
+    		array_push($openlist, $id_cat);
     	}
     }
-	
-	array_push($catstring, $idcat_start);
 
     return $catstring;
 }

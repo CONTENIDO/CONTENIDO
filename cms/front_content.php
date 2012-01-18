@@ -79,6 +79,14 @@ $contenido_path = '';
 # include the config file of the frontend to init the Client and Language Id
 include_once ("config.php");
 
+/*
+ * local configuration
+ */
+if (file_exists("config.local.php"))
+{
+    @ include ("config.local.php");
+}
+
 # CONTENIDO startup process
 include_once ($contenido_path . 'includes/startup.php');
 
@@ -212,14 +220,6 @@ if (isset ($logout))
     $auth->logout(true);
     $auth->unauth(true);
     $auth->auth["uname"] = "nobody";
-}
-
-/*
- * local configuration
- */
-if (file_exists("config.local.php"))
-{
-    @ include ("config.local.php");
 }
 
 /*

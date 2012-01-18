@@ -75,6 +75,14 @@ rereadClients();
 include_once ($cfgClient[$client]["path"]["frontend"]."config.php");
 chdir($cfgClient[$client]["path"]["frontend"]);
 
+/*
+ * local configuration
+ */
+if (file_exists("config.local.php"))
+{
+    @ include ("config.local.php");
+}
+
 cInclude("includes", "functions.con.php");
 cInclude("includes", "functions.con2.php");
 cInclude("includes", "functions.api.php");
@@ -205,14 +213,6 @@ if (isset ($logout))
     $auth->logout(true);
     $auth->unauth(true);
     $auth->auth["uname"] = "nobody";
-}
-
-/*
- * local configuration
- */
-if (file_exists("config.local.php"))
-{
-    @ include ("config.local.php");
 }
 
 /*
