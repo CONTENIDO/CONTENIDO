@@ -51,12 +51,6 @@ if (hasMySQLiExtension() && !hasMySQLExtension()) {
     $tpl->set('s', 'DB_EXTENSION', 'mysql');
 }
 
-if ($_SESSION['start_compatible'] == true) {
-    $tpl->set('s', 'START_COMPATIBLE', 'true');
-} else {
-    $tpl->set('s', 'START_COMPATIBLE', 'false');
-}
-
 $tpl->set('s', 'NOLOCK', $_SESSION['nolock']);
 
 if ($_SESSION['configmode'] == 'save') {

@@ -168,12 +168,6 @@ class ModRewriteTest
             $aStruct[$idcat] = $db->Record;
             $aStruct[$idcat]['articles'] = array();
 
-            if ($this->_aCfg['is_start_compatible'] == true) {
-                $compStatement = ' a.is_start DESC, ';
-            } else {
-                $compStatement = '';
-            }
-
             $sql2 = "SELECT
                          *
                      FROM
@@ -187,7 +181,6 @@ class ModRewriteTest
                          c.idlang = '".$idlang."' AND
                          b.idclient = '".$idclient."'
                      ORDER BY
-                         " . $compStatement . "
                          c.title ASC";
 
             $db2->query($sql2);

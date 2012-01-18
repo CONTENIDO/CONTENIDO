@@ -1281,11 +1281,8 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
 function strHasStartArticle($idcat, $idlang) {
     global $cfg, $db_str;
 
-    if ($cfg["is_start_compatible"] == false) {
-        $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($idlang)."' AND startidartlang != 0";
-    } else {
-        $sql = "SELECT is_start FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".Contenido_Security::toInteger($idcat)."' AND is_start = 1";
-    }
+    $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($idlang)."' AND startidartlang != 0";
+
     $db_str->query($sql);
     if ($db_str->next_record()) {
         return true;

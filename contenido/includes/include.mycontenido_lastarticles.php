@@ -31,7 +31,6 @@
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
-
 cInclude("includes", "functions.con.php");
 
 $debug = false;
@@ -52,43 +51,10 @@ $debug = false;
         $lastlogin = $db->f("logtimestamp");
 
 		$idaction = $perm->getIDForAction("con_editart");
-		
-		if ($cfg["is_start_compatible"] == true)
-		{
-            $sql = "SELECT
-                    a.idart AS idart,
-                    a.idartlang AS idartlang,
-                    a.title AS title,
-                    c.idcat AS idcat,
-                    a.idlang AS idlang,
-                    c.is_start AS is_start,
-                    c.idcatart AS idcatart,
-                    a.idtplcfg AS idtplcfg,
-                    a.online AS online,
-                    a.created AS created,
-                    a.lastmodified AS lastmodified
-                FROM
-                    ".$cfg["tab"]["art_lang"]." AS a,
-                    ".$cfg["tab"]["art"]." AS b,
-                    ".$cfg["tab"]["cat_art"]." AS c,
-                    ".$cfg["tab"]["actionlog"]." AS d
-                WHERE
-                    a.idlang    = '".Contenido_Security::toInteger($lang)."' AND
-                    a.idart     = b.idart AND
-                    b.idclient  = '".Contenido_Security::toInteger($client)."' AND
-                    b.idart     = c.idart AND
-                    d.idaction  = '".Contenido_Security::toInteger($idaction)."' AND
-                    d.user_id    = '".Contenido_Security::escapeDB($auth->auth["uid"], $db)."' AND 
-                    d.idcatart  = c.idcatart
-                    GROUP BY
-                        c.idcatart
-                    ORDER BY
-                        logtimestamp DESC
-                    LIMIT 5";
-		} else {
-			$sql = "SELECT
-                    a.idart AS idart,
-                    a.idartlang AS idartlang,
+			
+		$sql = "SELECT
+                	a.idart AS idart,
+                	a.idartlang AS idartlang,
                     a.title AS title,
                     c.idcat AS idcat,
                     a.idlang AS idlang,
@@ -110,12 +76,11 @@ $debug = false;
                     d.idaction  = '".Contenido_Security::toInteger($idaction)."' AND
                     d.user_id    = '".Contenido_Security::escapeDB($auth->auth["uid"], $db)."' AND 
                     d.idcatart  = c.idcatart
-                    GROUP BY
+                GROUP BY
                         c.idcatart
-                    ORDER BY
+                ORDER BY
                         logtimestamp DESC
-                    LIMIT 5";
-		}
+                LIMIT 5";
         
         # Debug info
         if ( $debug ) {
@@ -144,12 +109,7 @@ $debug = false;
             $idart      = $db->f("idart");
             $online     = $db->f("online");
             
-            if ($cfg["is_start_compatible"] == true)
-            {
-            	$is_start   = $db->f("is_start");
-            } else {
-            	$is_start = isStartArticle($idartlang, $idcat, $idlang);	
-            }
+            $is_start = isStartArticle($idartlang, $idcat, $idlang);
             
             $idcatart   = $db->f("idcatart");
             $created    = $db->f("created");

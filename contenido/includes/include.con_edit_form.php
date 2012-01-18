@@ -32,6 +32,7 @@
  */
 
 
+
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
@@ -47,6 +48,7 @@ if ($action == "remove_assignments") {
 }
 if ($action == "con_newart" && $newart != true) {
     // nothing to be done here ?!
+
     return;
 }
 
@@ -54,24 +56,19 @@ $disabled = '';
 
 if ($perm->have_perm_area_action($area, "con_edit") ||
     $perm->have_perm_area_action_item($area,"con_edit", $idcat))
+
 {
     $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idcat=".Contenido_Security::toInteger($idcat);
     $db->query($sql);
     $db->next_record();
-
-    if ($cfg["is_start_compatible"] == true) {
-        $tmp_is_start = $db->f("is_start");
-    }
 
     $tmp_cat_art = $db->f("idcatart");
 
     $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idlang=".Contenido_Security::toInteger($lang);
     $db->query($sql);
     $db->next_record();
-
-    if ($cfg["is_start_compatible"] == false) {
-        $tmp_is_start = isStartArticle($db->f("idartlang"), $idcat, $lang);
-    }
+	
+	$tmp_is_start = isStartArticle($db->f("idartlang"), $idcat, $lang);
 
     if ($db->f("created")) {
 
@@ -522,6 +519,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     unset($tpl2);
 
+
     // Move to category
     $tpl2 = new Template();
     $tpl2->set('s', 'ID',       'catsel');
@@ -705,5 +703,6 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     // User hat no permission to see this form
     $notification->displayNotification("error", i18n("Permission denied"));
 }
+
 
 ?>

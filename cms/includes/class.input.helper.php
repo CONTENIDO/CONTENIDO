@@ -96,12 +96,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
 				$sSQL .= "tblArtLang.online = '1' AND ";
 			}
 
-			$sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '".Contenido_Security::escapeDB($lang, $oDB)."' ";
-			if ($cfg["is_start_compatible"] == true) {
-				$sSQL .= "ORDER BY tblCatArt.is_start DESC, tblArtLang.title"; // Getting start article as first article
-			} else {
-				$sSQL .= "ORDER BY tblArtLang.title";
-			}
+			$sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '".Contenido_Security::escapeDB($lang, $oDB)."' ORDER BY tblArtLang.title";
 
 			$oDB->query($sSQL);
 
@@ -117,16 +112,7 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
 
 					if ($bColored)
 					{
-						$bIsStartArticle = false;
-						if ($cfg["is_start_compatible"] == true && $oDB->f("isstart") == 1) {
-							// Compatible mode and "start article" flag is set
-							$bIsStartArticle = true;
-						} else if ($cfg["is_start_compatible"] != true && $oDB->f("idstartartlang") == $oDB->f("idartlang")) {
-							// No compatible mode and current article is start article (idstartartlang is the same for all records within a category)
-							$bIsStartArticle = true;
-						}
-
-						if ($bIsStartArticle)
+						if ($oDB->f("idstartartlang") == $oDB->f("idartlang"))
 						{
 							if ($oDB->f("online") == 0) {
 								// Start article, but offline -> red

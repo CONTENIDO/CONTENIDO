@@ -71,6 +71,7 @@ if ($action == 'con_syncarticle') {
 
 // Which columns to display?
 $listColumns = array(
+
     "start" => i18n("Article"),
     "title" => i18n("Title"),
     "changeddate" => i18n("Changed"),
@@ -78,16 +79,19 @@ $listColumns = array(
     "sortorder" => i18n("Sort order"),
     "template" => i18n("Template"),
     "actions" => i18n("Actions")
+
 );
 
 // Which actions to display?
 $actionList = array(
+
     "online",
     "duplicate",
     "locked",
     "todo",
     "delete",
     "usetime"
+
 );
 
 // Call chains to process the columns and the action list
@@ -157,6 +161,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat) ||
         $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) ||
         $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat)) 
+
     {
 
         $sort = $currentuser->getUserProperty("system", "sortorder-idlang-$lang-idcat-$idcat");
@@ -205,12 +210,8 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     b.idclient  = ".Contenido_Security::toInteger($client)." AND
                     b.idart     = c.idart AND
                     c.idcat     = ".Contenido_Security::toInteger($idcat);
-
-        if ($cfg["is_start_compatible"] == true) {
-            $sql = str_replace("{ISSTART}", "c.is_start AS is_start,", $sql);
-        } else {
-            $sql = str_replace("{ISSTART}", '', $sql);
-        }
+                    
+        $sql = str_replace("{ISSTART}", '', $sql);
 
         if ($syncoptions == -1) {
             $sql       = str_replace("{SYNCOPTIONS}", '', $sql);
@@ -278,12 +279,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $aArticles[$sItem]["idlang"]    = $db->f("idlang");
                 $aArticles[$sItem]["idartlang"] = $db->f("idartlang");
                 $aArticles[$sItem]["title"]     = $db->f("title");
-                if ($cfg["is_start_compatible"] == true) {
-                    $aArticles[$sItem]["is_start"] = $db->f("is_start");
-                } else {
-                    $aArticles[$sItem]["is_start"] = isStartArticle($db->f("idartlang"), $idcat, $lang);
-                }
-
+                $aArticles[$sItem]["is_start"] = isStartArticle($db->f("idartlang"), $idcat, $lang);
                 $aArticles[$sItem]["idcatart"]     = $db->f("idcatart");
                 $aArticles[$sItem]["idtplcfg"]     = $db->f("idtplcfg");
                 $aArticles[$sItem]["published"]    = $db->f("published");
@@ -761,10 +757,12 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // Sort select
         $s_types = array(
+
             1 => i18n("Alphabetical"),
             2 => i18n("Last change"),
             3 => i18n("Published date"),
             4 => i18n("Sort key")
+
         );
 
         $tpl2 = new Template();
@@ -788,11 +786,13 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         // Elements per Page select
         $aElemPerPage = array(
+
             0     => i18n("All"),
             25     => "25",
             50     => "50",
             75     => "75",
             100    => "100"
+
         );
 
         $tpl2 = new Template();
@@ -880,6 +880,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         if (($perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat) ||
             $perm->have_perm_area_action('con', 'con_tplcfg_edit')) && $foreignlang == false)
+
         {
             if (0 != $idcat) {
                 $tpl->set('s', 'CATEGORY', $cat_name);

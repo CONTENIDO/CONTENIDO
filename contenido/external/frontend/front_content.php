@@ -280,48 +280,25 @@ if (!$idcatart)
     {
         if (!$idcat)
         {
-            # Note: In earlier CONTENIDO versions the information if an article is startarticle of a category has been stored
-            # in relation con_cat_art.
-            if ($cfg["is_start_compatible"] == true)
-            {
-                $sql = "SELECT
-                            idart,
-                            B.idcat
-                        FROM
-                            ".$cfg["tab"]["cat_art"]." AS A,
-                            ".$cfg["tab"]["cat_tree"]." AS B,
-                            ".$cfg["tab"]["cat"]." AS C
-                        WHERE
-                            A.idcat=B.idcat AND
-                            B.idcat=C.idcat AND
-                            is_start='1' AND
-                            idclient='".Contenido_Security::toInteger($client)."'
-                        ORDER BY
-                            idtree ASC";
-            }
-            else
-            {
-                # Note: Now the information if an article is startarticle of a category is stored in relation con_cat_lang.
-                $sql = "SELECT
-                            A.idart,
-                            B.idcat
-                        FROM
-                            ".$cfg["tab"]["cat_art"]." AS A,
-                            ".$cfg["tab"]["cat_tree"]." AS B,
-                            ".$cfg["tab"]["cat"]." AS C,
-                            ".$cfg["tab"]["cat_lang"]." AS D,
-                            ".$cfg["tab"]["art_lang"]." AS E
-                        WHERE
-                            A.idcat=B.idcat AND
-                            B.idcat=C.idcat AND
-                            D.startidartlang = E.idartlang AND
-                            D.idlang='".Contenido_Security::toInteger($lang)."' AND
-                            E.idart=A.idart AND
-                            E.idlang='".Contenido_Security::toInteger($lang)."' AND
-                            idclient='".Contenido_Security::toInteger($client)."'
-                        ORDER BY
-                            idtree ASC";
-            }
+        	$sql = "SELECT
+                        A.idart,
+                        B.idcat
+                    FROM
+                        ".$cfg["tab"]["cat_art"]." AS A,
+                        ".$cfg["tab"]["cat_tree"]." AS B,
+                        ".$cfg["tab"]["cat"]." AS C,
+                        ".$cfg["tab"]["cat_lang"]." AS D,
+                        ".$cfg["tab"]["art_lang"]." AS E
+                    WHERE
+                        A.idcat=B.idcat AND
+                        B.idcat=C.idcat AND
+                        D.startidartlang = E.idartlang AND
+                        D.idlang='".Contenido_Security::toInteger($lang)."' AND
+                        E.idart=A.idart AND
+                        E.idlang='".Contenido_Security::toInteger($lang)."' AND
+                        idclient='".Contenido_Security::toInteger($client)."'
+                    ORDER BY
+                        idtree ASC";
 
             $db->query($sql);
 
@@ -354,30 +331,17 @@ if (!$idcatart)
         else
         {
             $idart = -1;
-            if ($cfg["is_start_compatible"] == true)
-            {
-                $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND is_start='1'";
-                $db->query($sql);
+            $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+            $db->query($sql);
 
-                if ($db->next_record())
+            if ($db->next_record())
+            {
+            	if ($db->f("startidartlang") != 0)
                 {
+                	$sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".Contenido_Security::toInteger($db->f("startidartlang"))."'";
+                    $db->query($sql);
+                    $db->next_record();
                     $idart = $db->f("idart");
-                }
-            }
-            else
-            {
-                $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-                $db->query($sql);
-
-                if ($db->next_record())
-                {
-                    if ($db->f("startidartlang") != 0)
-                    {
-                        $sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".Contenido_Security::toInteger($db->f("startidartlang"))."'";
-                        $db->query($sql);
-                        $db->next_record();
-                        $idart = $db->f("idart");
-                    }
                 }
             }
 
@@ -543,19 +507,11 @@ if ($contenido)
                             </tr>';
         }
 
+
         /* Display articles */
-        if ($cfg["is_start_compatible"] == true)
-        {
-            $sql = "SELECT idart, is_start FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' ORDER BY idart";
+        $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' ORDER BY idart";
 
-            $db->query($sql);
-        }
-        else
-        {
-            $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' ORDER BY idart";
-
-            $db->query($sql);
-        }
+        $db->query($sql);
 
         $a = 1;
 
@@ -782,26 +738,16 @@ else
     /*
      * Check if an article is start article of the category
      */
-    if ($cfg["is_start_compatible"] == true)
+    $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
+    $db->query($sql);
+    $db->next_record();
+    if ($db->f("idartlang") == $idartlang)
     {
-        $sql = "SELECT is_start FROM ".$cfg["tab"]["cat_art"]." WHERE idcatart='".Contenido_Security::toInteger($idcatart)."'";
-        $db->query($sql);
-        $db->next_record();
-        $isstart = $db->f("is_start");
+        $isstart = 1;
     }
     else
     {
-        $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
-        $db->query($sql);
-        $db->next_record();
-        if ($db->f("idartlang") == $idartlang)
-        {
-            $isstart = 1;
-        }
-        else
-        {
-            $isstart = 0;
-        }
+        $isstart = 0;
     }
 
     ##############################################

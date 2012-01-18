@@ -112,9 +112,6 @@ $cfg['db'] = array(
     'enableProfiling' => false,    // (bool) Flag to enable profiling
 );
 
-/* Start article compatibility mode */
-$cfg['is_start_compatible'] = {START_COMPATIBLE};
-
 /**
  * Following database settings ($contenido_host, $contenido_database, etc.)
  * are still available because of downwards compatibility.

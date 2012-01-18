@@ -511,91 +511,48 @@ while ($db->next_record()) {
 }
 
 if ($syncoptions == -1) {
-    if ($cfg["is_start_compatible"] == true) {
-        $sql2 = "SELECT
-                            c.idcat AS idcat,
-                            SUM(c.is_start) AS is_start,
-                            SUM(a.online) AS online
-                        FROM
-                            ".$cfg["tab"]["art_lang"]." AS a,
-                            ".$cfg["tab"]["art"]." AS b,
-                            ".$cfg["tab"]["cat_art"]." AS c
-                        WHERE
-                            a.idlang = ".Contenido_Security::toInteger($lang)." AND
-                            a.idart = b.idart AND
-                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
-                            b.idart = c.idart
-                        GROUP BY c.idcat   
-                            ";
-    } else {
-        $sql2 = "SELECT
-                            c.idcat AS idcat,
-                            SUM(a.online) AS online,
-							              d.startidartlang
-                        FROM
-                            ".$cfg["tab"]["art_lang"]." AS a,
-                            ".$cfg["tab"]["art"]." AS b,
-                            ".$cfg["tab"]["cat_art"]." AS c,
-                            ".$cfg["tab"]["cat_lang"]." AS d
-                        WHERE
-                            a.idlang = ".Contenido_Security::toInteger($lang)." AND
-                            a.idart = b.idart AND
-                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
-                            b.idart = c.idart AND
-                            c.idcat = d.idcat
-                        GROUP BY c.idcat
+    $sql2 = "SELECT
+                    c.idcat AS idcat,
+                    SUM(a.online) AS online,
+					d.startidartlang
+                FROM
+                    ".$cfg["tab"]["art_lang"]." AS a,
+                    ".$cfg["tab"]["art"]." AS b,
+                    ".$cfg["tab"]["cat_art"]." AS c,
+                    ".$cfg["tab"]["cat_lang"]." AS d
+                WHERE
+                    a.idlang = ".Contenido_Security::toInteger($lang)." AND
+                    a.idart = b.idart AND
+                    b.idclient = '".Contenido_Security::toInteger($client)."' AND
+                    b.idart = c.idart AND
+                	c.idcat = d.idcat
+                GROUP BY c.idcat
                         ";
-
-    }
 } else {
-    if ($cfg["is_start_compatible"] == true) {
-        $sql2 = "SELECT
-                            c.idcat AS idcat,
-                            SUM(c.is_start) AS is_start,
-                            SUM(a.online) AS online
-                        FROM
-                            ".$cfg["tab"]["art_lang"]." AS a,
-                            ".$cfg["tab"]["art"]." AS b,
-                            ".$cfg["tab"]["cat_art"]." AS c
-                        WHERE
-                            a.idart = b.idart AND
-                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
-                            b.idart = c.idart
-                        GROUP BY c.idcat";
-    } else {
-        $sql2 = "SELECT
-                            c.idcat AS idcat,
-                            SUM(a.online) AS online,
-							              d.startidartlang
-                        FROM
-                            ".$cfg["tab"]["art_lang"]." AS a,
-                            ".$cfg["tab"]["art"]." AS b,
-                            ".$cfg["tab"]["cat_art"]." AS c,
-                            ".$cfg["tab"]["cat_lang"]." AS d
-                        WHERE
-                            a.idart = b.idart AND
-                            b.idclient = '".Contenido_Security::toInteger($client)."' AND
-                            b.idart = c.idart AND 
-                            c.idcat = d.idcat
-                        GROUP BY c.idcat";				
-    }
+    $sql2 = "SELECT
+                    c.idcat AS idcat,
+                    SUM(a.online) AS online,
+					d.startidartlang
+                FROM
+                    ".$cfg["tab"]["art_lang"]." AS a,
+                    ".$cfg["tab"]["art"]." AS b,
+                	".$cfg["tab"]["cat_art"]." AS c,
+                    ".$cfg["tab"]["cat_lang"]." AS d
+                WHERE
+                    a.idart = b.idart AND
+                    b.idclient = '".Contenido_Security::toInteger($client)."' AND
+                    b.idart = c.idart AND 
+                    c.idcat = d.idcat
+                GROUP BY c.idcat";				
 }
 
 $db->query($sql2);
 $aStartOnlineArticles = array();
 while ($db->next_record()) {
-    if ($cfg["is_start_compatible"] == true) {
-        if ($db->f('is_start') > 0) {
-            $aStartOnlineArticles[$db->f('idcat')]['is_start'] = true;
-        } else {
-            $aStartOnlineArticles[$db->f('idcat')]['is_start'] = false;
-        }
+    if ($db->f('startidartlang') > 0) {
+        $aStartOnlineArticles[$db->f('idcat')]['is_start'] = true;
     } else {
-        if ($db->f('startidartlang') > 0) {
-            $aStartOnlineArticles[$db->f('idcat')]['is_start'] = true;
-        } else {
-            $aStartOnlineArticles[$db->f('idcat')]['is_start'] = false;
-        }
+        $aStartOnlineArticles[$db->f('idcat')]['is_start'] = false;
     }
     if ($db->f('online') > 0) {
         $aStartOnlineArticles[$db->f('idcat')]['is_online'] = true;

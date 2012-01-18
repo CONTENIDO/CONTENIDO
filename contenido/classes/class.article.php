@@ -307,27 +307,11 @@ class ArticleCollection
 
         $sArtSpecs = (count($this->artspecs) > 0) ? " a.artspec IN ('".implode("','", $this->artspecs)."') AND " : '';
 
-        if ($cfg['is_start_compatible'] == true) {
-            $sql = 'SELECT
-                        a.idart,
-                        c.is_start
-                    FROM
-                        '.$this->tab['art_lang'].' AS a,
-                        '.$this->tab['art'].' AS b,
-                        '.$this->tab['cat_art'].' AS c
-                    WHERE
-                        c.idcat = '.$idcat.' AND
-                        b.idclient = '.$this->client.' AND
-                        b.idart = c.idart AND
-                        a.idart = b.idart AND
-                        '.$sArtSpecs.'
-                        a.idlang = '.$this->lang.'';
-        } else {
-            $sql = 'SELECT
-                    a.idart,
-                    a.idartlang,
-                    c.is_start
-                FROM
+        $sql = 'SELECT
+        	        a.idart,
+            	    a.idartlang,
+                	c.is_start
+              	FROM
                     '.$this->tab['art_lang'].' AS a,
                     '.$this->tab['art'].' AS b,
                     '.$this->tab['cat_art'].' AS c
@@ -338,7 +322,6 @@ class ArticleCollection
                     a.idart = b.idart AND
                     '.$sArtSpecs.'
                     a.idlang = '.$this->lang.'';
-        }
 
         if (!$this->offline) {
             $sql .= ' AND a.online = 1 ';
@@ -348,40 +331,27 @@ class ArticleCollection
 
         $this->db->query($sql);
 
-        if ($cfg['is_start_compatible'] == false) {
-            $db2 = new DB_Contenido();
-            $sql = "SELECT startidartlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat=".$idcat." AND idlang=".$this->lang;
+        $db2 = new DB_Contenido();
+        $sql = "SELECT startidartlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat=".$idcat." AND idlang=".$this->lang;
+        $db2->query($sql);
+        $db2->next_record();
+
+        $startidartlang = $db2->f('startidartlang');
+
+        if ($startidartlang != 0) {
+            $sql = "SELECT idart FROM ".$cfg['tab']['art_lang']." WHERE idartlang=".$startidartlang;
             $db2->query($sql);
             $db2->next_record();
-
-            $startidartlang = $db2->f('startidartlang');
-
-            if ($startidartlang != 0) {
-                $sql = "SELECT idart FROM ".$cfg['tab']['art_lang']." WHERE idartlang=".$startidartlang;
-                $db2->query($sql);
-                $db2->next_record();
-                $this->startId = $db2->f('idart');
-            }
-        }
+            $this->startId = $db2->f('idart');
+         }
 
         while ($this->db->next_record()) {
-            if ($cfg['is_start_compatible'] == true) {
-                if ($this->db->f('is_start') == 1) {
-                    $this->startId = $this->db->f('idart');
-                    if ($this->start) {
-                        $this->articles[] = $this->db->f('idart');
-                    }
-                } else {
+        	if ($this->db->f('idart') == $this->startId) {
+            	if ($this->start) {
                     $this->articles[] = $this->db->f('idart');
                 }
             } else {
-                if ($this->db->f('idart') == $this->startId) {
-                    if ($this->start) {
-                        $this->articles[] = $this->db->f('idart');
-                    }
-                } else {
-                    $this->articles[] = $this->db->f('idart');
-                }
+                $this->articles[] = $this->db->f('idart');
             }
         }
 

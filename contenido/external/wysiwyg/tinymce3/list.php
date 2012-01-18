@@ -89,40 +89,21 @@ switch($_REQUEST['mode']) {
 			}
 
 			echo "\n\t".'["'.$spaces.$tmp_catname.'", "'."front_content.php?idcat=".$db->f("idcat").'"]';
-
-			if ($cfg["is_start_compatible"] == true)
-			{
-				$sql2 = "SELECT
-							 *
-						 FROM
-							 ".$cfg["tab"]["cat_art"]." AS a,
-							 ".$cfg["tab"]["art"]." AS b,
-							 ".$cfg["tab"]["art_lang"]." AS c
-						 WHERE
-							 a.idcat = '".$db->f("idcat")."' AND
-							 b.idart = a.idart AND
-							 c.idart = a.idart AND
-							 c.idlang = '".$lang."' AND
-							 b.idclient = '".$client."'
-						 ORDER BY
-							 a.is_start DESC,
-							 c.title ASC";
-			} else {
-				$sql2 = "SELECT
-							 *
-						 FROM
-							 ".$cfg["tab"]["cat_art"]." AS a,
-							 ".$cfg["tab"]["art"]." AS b,
-							 ".$cfg["tab"]["art_lang"]." AS c
-						 WHERE
-							 a.idcat = '".$db->f("idcat")."' AND
-							 b.idart = a.idart AND
-							 c.idart = a.idart AND
-							 c.idlang = '".Contenido_Security::toInteger($lang)."' AND
-							 b.idclient = '".Contenido_Security::toInteger($client)."'
-						 ORDER BY
-							 c.title ASC";
-			}
+			
+			$sql2 = "SELECT
+					 	*
+					 FROM
+					 	".$cfg["tab"]["cat_art"]." AS a,
+						".$cfg["tab"]["art"]." AS b,
+						".$cfg["tab"]["art_lang"]." AS c
+					 WHERE
+						a.idcat = '".$db->f("idcat")."' AND
+						b.idart = a.idart AND
+						c.idart = a.idart AND
+						c.idlang = '".Contenido_Security::toInteger($lang)."' AND
+						b.idclient = '".Contenido_Security::toInteger($client)."'
+					 ORDER BY
+						c.title ASC";
 
 			$db2->query($sql2);
 
@@ -134,19 +115,9 @@ switch($_REQUEST['mode']) {
 					$tmp_title = substr($tmp_title, 0, 32);
 				}
 
-				if ($cfg["is_start_compatible"] == true)
-				{
-					$is_start = $db2->f("is_start");
-				} else {
-					$is_start = isStartArticle($db2->f("idartlang"), $db2->f("idcat"), $lang);
-					if ($is_start == true)
-					{
-						$is_start = 1;
-					} else {
-						$is_start = 0;
-					}
-				}
-				if ($is_start == 1) {
+				$is_start = isStartArticle($db2->f("idartlang"), $db2->f("idcat"), $lang);
+				
+				if ($is_start) {
 					$tmp_title .= "*";
 				}
 				if ($db2->f("online") == 0) {

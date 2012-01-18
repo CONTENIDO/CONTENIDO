@@ -241,13 +241,43 @@ if ($currentStep < $totalSteps) {
         }
     }
 
-    // Set start compatible flag
-    $_SESSION['start_compatible'] = false;
     if ($_SESSION['setuptype'] == 'upgrade') {
-        $db->query('SELECT is_start FROM %s WHERE is_start=1', $cfg['tab']['cat_art']);
-        if ($db->next_record()) {
-            $_SESSION['start_compatible'] = true;
-        }
+		$sql = "SELECT * FROM ".$cfg["tab"]["lang"];
+		$db->query($sql);
+
+		while ($db->next_record())
+		{
+			$langs[] = $db->f("idlang");
+		}
+
+		$sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE is_start='1'";
+		$db->query($sql);
+
+		$db2 = getSetupMySQLDBConnection();
+
+		while ($db->next_record())
+		{
+			$startidart = $db->f("idart");
+			$idcat = $db->f("idcat");
+	
+			foreach ($langs as $vlang)
+			{
+				$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart='$startidart' AND idlang='$vlang'";
+				$db2->query($sql);
+				if ($db2->next_record())
+				{
+					$idartlang = $db2->f("idartlang");
+			
+					$sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='$idartlang' WHERE idcat='$idcat' AND idlang='$vlang'";
+					$db2->query($sql);
+				}
+		
+			}
+		
+		}
+
+		$sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET is_start='0'";
+		$db->query($sql);
     }
 
     // Update Keys

@@ -108,27 +108,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
         # If not make it a start article
         $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
         $db->query($sql);
-        
-        if ( $db->next_record() ) {
-        	
-            if ($cfg["is_start_compatible"] == true)
-            {
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_art"]." (idcatart, idcat, idart, is_start) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_art"]))."', '".Contenido_Security::toInteger($idcat)."',
-                        '".Contenido_Security::toInteger($new_idart)."', '0')";
-                $db->query($sql);
-            } else {
-                $autostart = false;
-            }
-        } else {
-            if ($cfg["is_start_compatible"] == true)
-            {
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_art"]." (idcatart, idcat, idart, is_start) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_art"]))."', '".Contenido_Security::toInteger($idcat) ."',
-                        '".Contenido_Security::toInteger($new_idart)."', '1')";
-                $db->query($sql);
-            } else {
-                $autostart = false;
-            }
-        }
+        $db->next_record();
 
         # Table 'con_art'
         $sql = "INSERT INTO ".$cfg["tab"]["art"]." (idart, idclient) VALUES ('".Contenido_Security::toInteger($new_idart)."', '".Contenido_Security::toInteger($client)."')";
@@ -154,17 +134,17 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
             $lastmodified = ( $lang == $tmp_lang ) ? $lastmodified : 0;
 
 			$nextidartlang = $db->nextid($cfg["tab"]["art_lang"]);
-				if(($online==1)){
-					$published_value = date("Y-m-d H:i:s");
-					$publishedby_value = $auth->auth["uname"];
-				}else{
-					$published_value = '';
-					$publishedby_value = '';
-				}
+			if(($online==1)){
+				$published_value = date("Y-m-d H:i:s");
+				$publishedby_value = $auth->auth["uname"];
+			}else{
+				$published_value = '';
+				$publishedby_value = '';
+			}
 			
-                $sql = "INSERT INTO
-                        ".$cfg["tab"]["art_lang"]." (
-                        idartlang,
+			$sql = "INSERT INTO
+						".$cfg["tab"]["art_lang"]." (
+            			idartlang,
                         idart,
                         idlang,
                         title,
@@ -216,18 +196,9 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
                         '".Contenido_Security::escapeDB($time_target_cat, $db)."',
                         '".Contenido_Security::escapeDB($onlineaftermove, $db)."')";
                         
-                $db->query($sql);
+            $db->query($sql);
                 
-                if ($cfg["is_start_compatible"] == false)
-                {
-                	if ($autostart == true)
-                	{
-                		conMakeStart($idcatart, 1);
-                	} else {
-                		conMakeStart($idcatart, 0);
-                	}
-                	
-                }
+            conMakeStart($idcatart, 0);
 
 			$availableTags = conGetAvailableMetaTagTypes();
 	
@@ -1332,58 +1303,26 @@ function conMakeStart($idcatart, $is_start)
 {
     global $db, $cfg, $lang;
 
-	if ($cfg["is_start_compatible"] == true)
+	$sql = "SELECT idcat, idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcatart='".Contenido_Security::toInteger($idcatart)."'";
+	$db->query($sql);
+	$db->next_record();
+		
+	$idart = $db->f("idart");
+	$idcat = $db->f("idcat");
+		
+	$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+	$db->query($sql);
+	$db->next_record();
+		
+	$idartlang = $db->f("idartlang");
+		
+	if ($is_start == 1)
 	{
-        $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idcatart = '".Contenido_Security::toInteger($idcatart)."'";
-
-        $db->query($sql);
-        $db->next_record();
-
-        $tmp_idcat = $db->f("idcat");
-    
-    
-        $sql = "SELECT tblCatArt.idcatart ".
-                       "FROM ".$cfg["tab"]["cat_art"]." tblCatArt, ". $cfg["tab"]["art_lang"]." tblArtLang ".
-                              "WHERE tblCatArt.idart = tblArtLang.idart AND tblCatArt.is_start = '1' AND ".
-                                    "tblArtLang.idlang = '".Contenido_Security::toInteger($lang)."' AND tblCatArt.idcat = '".Contenido_Security::toInteger($tmp_idcat)."'";
-        $db->query($sql);
-       
-        $aIDs = array();
-        while ($db->next_record())
-        {
-            $aIDs[] = Contenido_Security::toInteger($db->f("idcatart"));
-        }
-      
-        if (count($aIDs) > 0)
-        {
-            $sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET is_start = 0 WHERE idcatart IN ('" . implode("','", $aIDs) . "')";
-            $db->query($sql);
-        }
-
-    	$sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET is_start='".Contenido_Security::toInteger($is_start)."' WHERE idcatart = '".Contenido_Security::toInteger($idcatart)."'";
-    	$db->query($sql);
+		$sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='".Contenido_Security::toInteger($idartlang)."' WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+		$db->query($sql);
 	} else {
-		$sql = "SELECT idcat, idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcatart='".Contenido_Security::toInteger($idcatart)."'";
+		$sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='0' WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."' AND startidartlang='".Contenido_Security::toInteger($idartlang)."'";
 		$db->query($sql);
-		$db->next_record();
-		
-		$idart = $db->f("idart");
-		$idcat = $db->f("idcat");
-		
-		$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-		$db->query($sql);
-		$db->next_record();
-		
-		$idartlang = $db->f("idartlang");
-		
-		if ($is_start == 1)
-		{
-			$sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='".Contenido_Security::toInteger($idartlang)."' WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-			$db->query($sql);
-		} else {
-			$sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='0' WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."' AND startidartlang='".Contenido_Security::toInteger($idartlang)."'";
-			$db->query($sql);
-		}
 	}
 	
 	if ( $is_start == 1 )
@@ -2211,39 +2150,17 @@ function isStartArticle ($idartlang, $idcat, $idlang, $db = null)
 		$db = new DB_Contenido;
 	}
 	
-	if ($cfg["is_start_compatible"] == true)
-	{
-		$sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".Contenido_Security::toInteger($idartlang)."'";
-		$db->query($sql);
-		
-		if (!$db->next_record())
-		{
-			return false;
-		} else {
-			$idart = $db->f("idart");
-			$sql = "SELECT is_start FROM ".$cfg["tab"]["cat_art"]." WHERE is_start = '1' AND idcat='".Contenido_Security::toInteger($idcat)."' AND idart='".Contenido_Security::toInteger($idart)."'";
-			$db->query($sql);
-			
-			if ($db->next_record())
-			{
-				return true;	
-			} else {
-				return false;
-			}
-		}
-	} else {
-    	$sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]."
-    			WHERE startidartlang='".Contenido_Security::toInteger($idartlang)."' AND idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($idlang)."'";
+    $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]."
+    		WHERE startidartlang='".Contenido_Security::toInteger($idartlang)."' AND idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($idlang)."'";
     			
-    	$db->query($sql);
+    $db->query($sql);
     	
-    	if ($db->next_record())
-    	{
-    		return true;
-    	} else {
-    		return false;
-    	}
-	}		
+    if ($db->next_record())
+    {
+    	return true;
+    } else {
+    	return false;
+    }		
 }
 
 /**
