@@ -64,8 +64,13 @@ class DB_Contenido extends DB_Sql
     public function __construct(array $options = array())
     {
         global $cachemeta;
+        global $cfg;
 
         parent::__construct($options);
+        
+        if (!is_array($cachemeta)) {
+            $cachemeta = array();
+        }
         
         if($this->Errno == 1) {
         	$errortitle = i18n("MySQL Database not reachable for installation %s");
@@ -79,13 +84,12 @@ class DB_Contenido extends DB_Sql
         	if ($cfg["contenido"]["errorpage"] != "") {
         	    header("Location: ".$cfg["contenido"]["errorpage"]);
         	} else {
-        	    die("Could not connect to the database server with this configuration!");
+        		//The script should not die if we are in the setup process. The setup has to make sure the connection works
+        		if(strrpos(getcwd(), "/setup") != strlen(getcwd()) - strlen("/setup")) {
+        			die("Could not connect to database wtih this configuration");
+        		}
         	}
 		}
-
-        if (!is_array($cachemeta)) {
-            $cachemeta = array();
-        }
 
         // TODO check this out
         // HerrB: Checked and disabled. Kills umlauts, if tables are latin1_general.
