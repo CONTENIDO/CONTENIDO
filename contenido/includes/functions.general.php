@@ -1866,6 +1866,13 @@ function endAndLogTiming($uuid)
     trigger_error("calling function ".$_timings[$uuid]["function"]."(".$parameterString.") took ".$timeSpent." seconds", E_USER_NOTICE);
 }
 
+/**
+* @deprecated [2012-01-18] DB_Contenido performs the check for itself. This method is no longer needed
+*/
+function checkMySQLConnectivity() {
+	cWarning(__FILE__, __LINE__, 'Deprecated method call, DB_Contenido checks the connectivity');
+}
+
 function notifyOnError($errortitle, $errormessage)
 {
     global $cfg;
