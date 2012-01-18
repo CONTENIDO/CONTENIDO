@@ -27,6 +27,7 @@
  *   modified 2011-03-03, Murat Purc, some redesign/improvements (partial adaption to PHP 5)
  *   modified 2011-03-18, Murat Purc, Fixed occuring "Duplicated entry" errors by using CT_Sql, see [CON-370]
  *   modified 2011-03-21, Murat Purc, added Contenido_CT_Session to uses PHP's session implementation
+ *   modified 2012-01-18, Mischa Holz, moved checkMySQLConnectivity() to the DB_Contenido class itself, see [CON-429]
  *
  *   $Id$:
  * }}
@@ -65,6 +66,22 @@ class DB_Contenido extends DB_Sql
         global $cachemeta;
 
         parent::__construct($options);
+        
+        if($this->Errno == 1) {
+        	$errortitle = i18n("MySQL Database not reachable for installation %s");
+        	$errortitle = sprintf($errortitle, $cfg["path"]["contenido_fullhtml"]);
+
+        	$errormessage = i18n("The MySQL Database for the installation %s is not reachable. Please check if this is a temporary problem or if it is a real fault.");
+        	$errormessage = sprintf($errormessage, $cfg["path"]["contenido_fullhtml"]);
+
+        	notifyOnError($errortitle, $errormessage);
+
+        	if ($cfg["contenido"]["errorpage"] != "") {
+        	    header("Location: ".$cfg["contenido"]["errorpage"]);
+        	} else {
+        	    die("Could not connect to the database server with this configuration!");
+        	}
+		}
 
         if (!is_array($cachemeta)) {
             $cachemeta = array();

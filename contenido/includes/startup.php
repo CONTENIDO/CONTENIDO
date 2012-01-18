@@ -40,6 +40,7 @@
  *   modified 2010-12-28, Murat Purc, changed order of some includes to provide more user defined 
  *                                    settings in config.local.php
  *   modified 2011-03-03, Murat Purc, Initialize database with settings
+ *   modified 2012-01-18, Mischa Holz, moved checkMySQLConnectivity() to the DB_Contenido class itself, see [CON-429]
  *
  *   $Id$:
  * }}
@@ -144,10 +145,6 @@ cInclude('includes', 'config.chains.php');
 // Set default database connection parameter
 $cfg['db']['sequenceTable'] = $cfg['tab']['sequence'];
 DB_Contenido::setDefaultConfiguration($cfg['db']);
-
-// @TODO: This should be done by instantiating a DB_Contenido class, creation of DB_Contenido object
-checkMySQLConnectivity();
-
 
 // Initialize UrlBuilder, configuration is set in /contenido/includes/config.misc.php
 Contenido_UrlBuilderConfig::setConfig($cfg['url_builder']);

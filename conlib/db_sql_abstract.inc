@@ -28,6 +28,7 @@
  *   modified 2011-07-06, Murat Purc, Fixed fetch modes in toArray() and haltmsg(),
  *                        added new methods to build insert/update queries, added
  *                        method _getInstanceClone(), documented code
+ *   modified 2012-01-18, Mischa Holz, moved checkMySQLConnectivity() to the DB_Contenido class itself, see [CON-429]
  *   $Id:$:
  * }}
  *
@@ -274,7 +275,10 @@ abstract class DB_Sql_Abstract
             $this->_bProfile = (bool) $this->_aDbCfg['enableProfiling'];
         }
 
-        $this->connect();
+        if($this->connect() == null) {
+        	$this->Errno = 1;
+        	$this->Error = "Could not connect to database";
+        }
     }
 
 

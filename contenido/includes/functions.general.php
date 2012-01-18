@@ -36,6 +36,7 @@
  *   modified 2011-11-03, Murat Purc, usage of Contenido_Effective_Setting to retrieve settings
  *   modified 2011-11-08, Murat Purc, usage of cApiSystemProperty classes
  *   modified 2011-11-18, Murat Purc, normalize E-Mail validation [#CON-448]
+ *   modified 2012-01-18, Mischa Holz, moved checkMySQLConnectivity() to the DB_Contenido class itself, see [CON-429]
  *
  *   $Id$:
  * }}
@@ -1863,56 +1864,6 @@ function endAndLogTiming($uuid)
     $parameterString = implode(", ", $myparams);
 
     trigger_error("calling function ".$_timings[$uuid]["function"]."(".$parameterString.") took ".$timeSpent." seconds", E_USER_NOTICE);
-}
-
-// @TODO: it's better to create a instance of DB_Contenido class, the class constructor connects also to the database.
-function checkMySQLConnectivity()
-{
-    global $contenido_host, $contenido_database, $contenido_user, $contenido_password, $cfg;
-
-    if ($cfg["database_extension"] == "mysqli") {
-        if (($iPos = strpos($contenido_host, ":")) !== false) {
-            list($sHost, $sPort) = explode(":", $contenido_host);
-            $res = mysqli_connect($sHost, $contenido_user, $contenido_password, "", $sPort);
-        } else {
-            $res = mysqli_connect($contenido_host, $contenido_user, $contenido_password);
-        }
-    } else {
-        $res = mysql_connect($contenido_host, $contenido_user, $contenido_password);
-    }
-
-    $selectDb = false;
-    if ($res) {
-        if ($cfg["database_extension"] == "mysqli") {
-            $selectDb = mysqli_select_db($contenido_database);
-        } else {
-            $selectDb = mysql_select_db($contenido_database);
-        }
-    }
-
-    if (!$res || !$selectDb) {
-        $errortitle = i18n("MySQL Database not reachable for installation %s");
-        $errortitle = sprintf($errortitle, $cfg["path"]["contenido_fullhtml"]);
-
-        $errormessage = i18n("The MySQL Database for the installation %s is not reachable. Please check if this is a temporary problem or if it is a real fault.");
-        $errormessage = sprintf($errormessage, $cfg["path"]["contenido_fullhtml"]);
-
-        notifyOnError($errortitle, $errormessage);
-
-        if ($cfg["contenido"]["errorpage"] != "") {
-            header("Location: ".$cfg["contenido"]["errorpage"]);
-        } else {
-            die("Could not connect to the database server with this configuration!");
-        }
-
-        exit;
-    } else {
-        if ($cfg["database_extension"] == "mysqli") {
-            mysqli_close($res);
-        } else {
-            mysql_close($res);
-        }
-    }
 }
 
 function notifyOnError($errortitle, $errormessage)
