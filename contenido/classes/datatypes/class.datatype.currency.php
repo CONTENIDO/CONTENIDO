@@ -1,42 +1,70 @@
 <?php
 /**
+
  * Project: 
+
  * CONTENIDO Content Management System
+
  * 
+
  * Description: 
+
  * 
+
  * Requirements: 
+
  * @con_php_req 5.0
+
  * 
+
  *
+
  * @package    CONTENIDO Backend Classes
+
  * @version    1.0
+
  * @author     
+
  * @copyright  four for business AG <www.4fb.de>
+
  * @license    http://www.contenido.org/license/LIZENZ.txt
+
  * @link       http://www.4fb.de
+
  * @link       http://www.contenido.org
+
  * 
+
  * {@internal 
+
  *
+
  *   $Id$:
+
  * }}
+
  * 
+
  */
 
+
+
 if(!defined('CON_FRAMEWORK')) {
+
 	die('Illegal call');
+
 }
+
 
 define("cDatatypeCurrency_Left", 1);
 define("cDatatypeCurrency_Right", 2);
 
 class cDatatypeCurrency extends cDatatypeNumber
 {
-	var $_cCurrencyLocation;
-	var $_sCurrencySymbol;
+	protected $_cCurrencyLocation;
+	protected $_sCurrencySymbol;
 	
-	function cDatatypeCurrency ()
+	public function __construct()
 	{
 		cDatatypeNumber::cDataTypeNumber();	
 		
@@ -44,17 +72,25 @@ class cDatatypeCurrency extends cDatatypeNumber
 		$this->setCurrencySymbol("€");
 	}
 	
-	function setCurrencySymbol ($sSymbol)
+	/**
+	* @deprecated [2012-01-19] use __construct instead
+	*/
+	public function cDatatypeCurrency() {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct();
+    }
+	
+	public function setCurrencySymbol ($sSymbol)
 	{
 		$this->_sCurrencySymbol = $sSymbol;
 	}
 	
-	function getCurrencySymbol ()
+	public function getCurrencySymbol ()
 	{
 		return ($this->_sCurrencySymbol);	
 	}
 	
-	function setCurrencySymbolLocation ($cLocation)
+	public function setCurrencySymbolLocation ($cLocation)
 	{
 		switch ($cLocation)
 		{
@@ -69,7 +105,7 @@ class cDatatypeCurrency extends cDatatypeNumber
 		}
 	}
 	
-	function render ()
+	public function render ()
 	{
 		$value = parent::render();
 		

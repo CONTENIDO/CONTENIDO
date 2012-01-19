@@ -30,14 +30,13 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
 class cDatatypeNumber extends cDatatype
 {
-	var $_iPrecision;
-	var $_sThousandSeparatorCharacter;
-	var $_sDecimalPointCharacter;
+	protected $_iPrecision;
+	protected $_sThousandSeparatorCharacter;
+	protected $_sDecimalPointCharacter;
 		
-	function cDatatypeNumber ()
+	public function __construct()
 	{
 		global $i18nLanguage;
 		
@@ -47,45 +46,53 @@ class cDatatypeNumber extends cDatatype
 		$this->setDecimalPointCharacter($aLocaleSettings["mon_decimal_point"]);
 		$this->setThousandSeparatorCharacter($aLocaleSettings["mon_thousands_sep"]);		
 		
-		cDatatype::cDatatype();	
+		cDatatype::__construct();	
 	}
 	
-	function set ($value)
+	/**
+	* @deprecated [2012-01-19] use __construct instead
+	*/
+	public function cDatatypeNumber() {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct();
+    }
+	
+	public function set ($value)
 	{
 		$this->_mValue = floatval($value);	
 	}
 	
-	function get ()
+	public function get ()
 	{
 		return $this->_mValue;
 	}
 	
-	function setPrecision ($iPrecision)
+	public function setPrecision ($iPrecision)
 	{
 		$this->_iPrecision = $iPrecision;	
 	}
 	
-	function setDecimalPointCharacter ($sCharacter)
+	public function setDecimalPointCharacter ($sCharacter)
 	{
 		$this->_sDecimalPointCharacter = $sCharacter;
 	}
 	
-	function getDecimalPointCharacter ()
+	public function getDecimalPointCharacter ()
 	{
 		return ($this->_sDecimalPointCharacter);
 	}
 	
-	function setThousandSeparatorCharacter ($sCharacter)
+	public function setThousandSeparatorCharacter ($sCharacter)
 	{
 		$this->_sThousandSeparatorCharacter = $sCharacter;	
 	}
 	
-	function getThousandSeparatorCharacter ()
+	public function getThousandSeparatorCharacter ()
 	{
 		return($this->_sThousandSeparatorCharacter);
 	}	
 	
-	function parse ($value)
+	public function parse ($value)
 	{
 		if ($this->_sDecimalPointCharacter == $this->_sThousandSeparatorCharacter)
 		{
@@ -100,7 +107,7 @@ class cDatatypeNumber extends cDatatype
 		$this->_mValue = floatval($value);
 	}
 	
-	function render ()
+	public function render ()
 	{
 		return number_format($this->_mValue, $this->_iPrecision, $this->_sDecimalPointCharacter, $this->_sThousandSeparatorCharacter);
 	}

@@ -63,11 +63,11 @@ define("cDateTime_Saturday", 6);
 
 class cDatatypeDateTime extends cDatatype
 {
-	var $_iFirstDayOfWeek;
+	protected $_iFirstDayOfWeek;
 	
 	/* This datatype stores its date format in ISO */
 	
-	function cDatatypeDateTime ()
+	public function __construct()
 	{
 		$this->setTargetFormat(cDateTime_Locale);
 		$this->setSourceFormat(cDateTime_UNIX);
@@ -80,60 +80,68 @@ class cDatatypeDateTime extends cDatatype
 		$this->_iSecond = 0;
 		
 		$this->setFirstDayOfWeek(cDateTime_Monday);
-		parent::cDatatype();	
+		parent::__construct();	
 	}
 	
-	function setCustomTargetFormat ($targetFormat)
+	/**
+	* @deprecated [2012-01-19] use __construct instead
+	*/
+	public function cDatatypeDateTime() {
+        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        $this->__construct();
+    }
+	
+	public function setCustomTargetFormat ($targetFormat)
 	{
 		$this->_sCustomTargetFormat = $targetFormat;
 	}
 	
-	function setCustomSourceFormat ($sourceFormat)
+	public function setCustomSourceFormat ($sourceFormat)
 	{
 		$this->_sCustomSourceFormat = $sourceFormat;
 	}	
 	
-	function setSourceFormat ($cSourceFormat)
+	public function setSourceFormat ($cSourceFormat)
 	{
 		$this->_cSourceFormat = $cSourceFormat;	
 	}
 	
-	function setTargetFormat ($cTargetFormat)
+	public function setTargetFormat ($cTargetFormat)
 	{
 		$this->_cTargetFormat = $cTargetFormat;	
 	}	
 	
-	function setYear ($iYear)
+	public function setYear ($iYear)
 	{
 		$this->_iYear = $iYear;
 	}
 	
-	function getYear ()
+	public function getYear ()
 	{
 		return ($this->_iYear);	
 	}
 
-	function setMonth ($iMonth)
+	public function setMonth ($iMonth)
 	{
 		$this->_iMonth = $iMonth;	
 	}
 	
-	function getMonth ()
+	public function getMonth ()
 	{
 		return ($this->_iMonth);
 	}
 	
-	function setDay ($iDay)
+	public function setDay ($iDay)
 	{
 		$this->_iDay = $iDay;
 	}
 	
-	function getDay ()
+	public function getDay ()
 	{
 		return ($this->_iDay);	
 	}
 
-	function getMonthName ($iMonth)
+	public function getMonthName ($iMonth)
 	{
 		switch ($iMonth)
 		{
@@ -152,7 +160,7 @@ class cDatatypeDateTime extends cDatatype
 		}	
 	}
 	
-	function getDayName ($iDayOfWeek)
+	public function getDayName ($iDayOfWeek)
 	{
 		switch ($iDayOfWeek)
 		{
@@ -168,7 +176,7 @@ class cDatatypeDateTime extends cDatatype
 		}
 	}
 	
-	function getDayOrder ()
+	public function getDayOrder ()
 	{
 		$aDays = array(0, 1, 2, 3, 4, 5, 6);
 		$aRemainderDays = array_splice($aDays, 0, $this->_iFirstDayOfWeek);
@@ -178,7 +186,7 @@ class cDatatypeDateTime extends cDatatype
 		return ($aReturnDays);
 	}
 	
-	function getNumberOfMonthDays ($iMonth = false, $iYear = false)
+	public function getNumberOfMonthDays ($iMonth = false, $iYear = false)
 	{
 		if ($iMonth === false)
 		{
@@ -193,22 +201,22 @@ class cDatatypeDateTime extends cDatatype
 		return date("t", mktime(0,0,0,$iMonth, 1, $iYear));
 	}
 	
-	function setFirstDayOfWeek ($iDay)
+	public function setFirstDayOfWeek ($iDay)
 	{
 		$this->_iFirstDayOfWeek = $iDay;
 	}
 	
-	function getFirstDayOfWeek ()
+	public function getFirstDayOfWeek ()
 	{
 		return $this->_iFirstDayOfWeek;
 	}
 	
-	function getLeapDay ()
+	public function getLeapDay ()
 	{
 		return end($this->getDayOrder());	
 	}
 	
-	function set ($value, $iOverrideFormat = false)
+	public function set ($value, $iOverrideFormat = false)
 	{
 		if ($value == "")
 		{
@@ -350,7 +358,7 @@ class cDatatypeDateTime extends cDatatype
 		}	
 	}
 	
-	function get ($iOverrideFormat = false)
+	public function get ($iOverrideFormat = false)
 	{
 		if ($iOverrideFormat !== false)
 		{
@@ -383,7 +391,7 @@ class cDatatypeDateTime extends cDatatype
 		}	
 	}
 	
-	function render ($iOverrideFormat = false)
+	public function render ($iOverrideFormat = false)
 	{
 		if ($iOverrideFormat !== false)
 		{
@@ -415,7 +423,7 @@ class cDatatypeDateTime extends cDatatype
 
 	}
 	
-	function parse ($value)
+	public function parse ($value)
 	{
 		if ($value == "")
 		{	return;
