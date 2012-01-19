@@ -144,7 +144,7 @@ class TODOLink extends cHTMLLink
     public function __construct($itemtype, $itemid, $subject, $message)
     {
         global $sess;
-        parent::cHTMLLink();
+        parent::__construct();
 
         $subject = urlencode($subject);
         $message = urlencode($message);

@@ -336,7 +336,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
             // Build up metatag string
             $oMetaTagGen = new cHTML();
-            $oMetaTagGen->_tag = 'meta';
+            $oMetaTagGen->setTag('meta');
             $oMetaTagGen->updateAttributes($value);
 
             // HTML does not allow ID for meta tags
