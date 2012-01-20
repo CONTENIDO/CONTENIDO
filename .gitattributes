@@ -1516,6 +1516,7 @@ contenido/scripts/help.js.php -text
 contenido/scripts/iZoom.js.php -text
 contenido/scripts/index.php -text
 contenido/scripts/infoBox.js -text
+contenido/scripts/jquery.tipsy.js -text
 contenido/scripts/jquery/ajaxupload.js -text
 contenido/scripts/jquery/jquery-ui.js -text
 contenido/scripts/jquery/jquery.js -text
@@ -1571,6 +1572,7 @@ contenido/scripts/langref.php -text
 contenido/scripts/md5.js -text
 contenido/scripts/messageBox.js.php -text
 contenido/scripts/parameterCollector.js -text
+contenido/scripts/registerTipsy.js -text
 contenido/scripts/rights.js.php -text
 contenido/scripts/rowMark.js -text
 contenido/scripts/setPager.js -text
@@ -1599,6 +1601,7 @@ contenido/styles/index.php -text
 contenido/styles/inuse.css -text
 contenido/styles/str_overview.css -text
 contenido/styles/tip_balloon.css -text
+contenido/styles/tipsy.css -text
 contenido/subnav.php -text
 contenido/temp/.keep -text
 contenido/templates/index.php -text

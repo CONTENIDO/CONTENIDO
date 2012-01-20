@@ -44,6 +44,11 @@ $page->addScript("cal1", '<style type="text/css">@import url(./scripts/jscalenda
 $page->addScript("cal2", '<script type="text/javascript" src="./scripts/jscalendar/calendar.js"></script>');
 $page->addScript("cal3", '<script type="text/javascript" src="./scripts/jscalendar/lang/calendar-'.substr(strtolower($belang),0,2).'.js"></script>');
 $page->addScript("cal4", '<script type="text/javascript" src="./scripts/jscalendar/calendar-setup.js"></script>');
+$page->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tipsy.css" />');
+$sTooltippScript = '<script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    	            <script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
+    	            <script type="text/javascript" src="scripts/registerTipsy.js"></script>';
+$page->addScript("tooltip-js", $sTooltippScript);
 
 $form = new UI_Table_Form("properties");
 $form->setVar("frame", $frame);
@@ -303,13 +308,7 @@ if ($upload = $uploads->next()) {
 
         ';
     }
-
-
-    // Script must add in body-tag
-    $sScriptinBody = '<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
-    <script type="text/javascript" src="scripts/tip_balloon.js"></script>';
-    $page->addScript('style', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
-
+    
     if ($bDirectoryIsWritable == false) {
         $sErrorMessage = $notification->returnNotification("error", i18n("Directory not writable")  . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')');
         $sErrorMessage .= '<br />';
@@ -317,7 +316,7 @@ if ($upload = $uploads->next()) {
         $sErrorMessage = '';
     }
 
-    $page->setContent($sScriptinBody . $sErrorMessage . $form->render() . $sScript);
+    $page->setContent($sErrorMessage . $form->render() . $sScript);
 } else {
    $page->setContent(sprintf(i18n("Could not load file %s"),$_REQUEST["file"]));
 }
