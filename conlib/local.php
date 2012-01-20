@@ -71,7 +71,9 @@ class DB_Contenido extends DB_Sql
         if (!is_array($cachemeta)) {
             $cachemeta = array();
         }
-        
+
+        // @FIXME: Database class should throw a error. Redirecting to the error page is not a good idea.
+        //         What if the db connection within a cli script fails???
         if($this->Errno == 1) {
         	$errortitle = i18n("MySQL Database not reachable for installation %s");
         	$errortitle = sprintf($errortitle, $cfg["path"]["contenido_fullhtml"]);
