@@ -80,12 +80,11 @@ include_once(dirname(__FILE__) . '/config.php');
 include_once(dirname(__FILE__) . '/config.path.php');
 include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.misc.php');
 include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.colors.php');
-include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.path.php');
 include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.templates.php');
 include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/cfg_sql.inc.php');
 
 if (file_exists($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.clients.php')) {
-	include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.clients.php');
+    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.clients.php');
 }
 
 // Include userdefined configuration (if available), where you are able to
