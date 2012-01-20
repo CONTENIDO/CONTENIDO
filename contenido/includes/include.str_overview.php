@@ -614,7 +614,7 @@ if ( $perm->have_perm_area_action($area) ) {
             $tpl->set('d', 'BGCOLOR', $bgcolor);
             $tpl->set('d', 'BGCOLOR_EDIT', '#F1F1F1');
             $tpl->set('d', 'HEIGTH', 'height:25px');
-            $tpl->set('d', 'BORDER_CLASS', 'str-style-c');
+            $tpl->set('d', 'BORDER_CLASS', 'str-style-c tooltip');
 
             $spaces = "";
 
@@ -626,7 +626,7 @@ if ( $perm->have_perm_area_action($area) ) {
             
             //$tpl->set('d', 'CATEGORY', $sCategoryname);
             if (strlen($value->name) > 30) {
-                $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', 'onmouseover="Tip(\''.$value->name.'\', BALLOON, true, ABOVE, true);"');
+                $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', 'title="'.$value->name.'" class="tooltip"');
             } else {
                 $tpl->set('d', 'SHOW_MOUSEOVER_CATEGORY', '');
             }
@@ -639,7 +639,7 @@ if ( $perm->have_perm_area_action($area) ) {
                     }
                     $tpl->set('d', 'ALIAS', $sCategoryalias);
                     if (strlen($value->custom['alias']) > 30) {
-                        $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', 'onmouseover="Tip(\''.$value->custom['alias'].'\', BALLOON, true, ABOVE, true);"');
+                        $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', 'title="'.$value->custom['alias'].'"');
                     } else {
                         $tpl->set('d', 'SHOW_MOUSEOVER_ALIAS', '');
                     }
@@ -702,7 +702,7 @@ if ( $perm->have_perm_area_action($area) ) {
             $tpl->set('d', 'CATID', $value->id);
             
             if (strlen($template) > 20) {
-                $tpl->set('d', 'SHOW_MOUSEOVER', 'onmouseover="Tip(\''.$descString.'\', BALLOON, true, ABOVE, true);"');
+                $tpl->set('d', 'SHOW_MOUSEOVER', 'title="'.$descString.'"');
             } else {
                 $tpl->set('d', 'SHOW_MOUSEOVER', '');
             }

@@ -60,7 +60,7 @@ function generateDisplayFilePath($sDisplayPath, $iLimit)
             }
         }
 
-        $sDisplayPath = '<span onmouseover="Tip(\''.$sTooltippString.'\', BALLOON, true, ABOVE, true);">'.$sDisplayPathShort.'</span>';
+        $sDisplayPath = '<span title="'.$sTooltippString.'" class="tooltip">'.$sDisplayPathShort.'</span>';
     }
     return $sDisplayPath;
 }

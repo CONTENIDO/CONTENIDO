@@ -73,13 +73,11 @@ $oLinkEdit->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['pat
 $oLinkForward = new Link;
 $oLinkForward->setCLink('system_configuration', $frame, "");
 $oLinkForward->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
-
 $oLinkDelete = new Link;
 $oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
 $oLinkDelete->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">');
 
 $oLinkDeleteForward = '<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete_inact.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">';
-
 $spacer = new cHTMLImage;
 $spacer->setWidth(5);
 
@@ -119,7 +117,7 @@ if (is_array($settings))
                 $list->setCell($count,3, $oInputboxValue->render(true).$hidden.$sSubmit);
                 
     		} else {
-                $sMouseoverTemplate = '<span onmouseover="Tip(\'%s\', BALLOON, true, ABOVE, true);">%s</span>';
+                $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
             
                 if (strlen($type) > 35) {
                     $sShort = htmlspecialchars(capiStrTrimHard($type, 35));
@@ -190,11 +188,14 @@ if ($action == "systemsettings_edit_item")
 }
 
 $page = new UI_Page;
-$sTooltippScript = '<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
-                    <script type="text/javascript" src="scripts/tip_balloon.js"></script>';
+$sTooltippScript = '<script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+                    <script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
+                    <script type="text/javascript" src="scripts/registerTipsy.js"></script>';
 
-$page->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
-$page->setContent($sWarning.$sTooltippScript."\n".$sListstring."<br>".$form->render());
+$page->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tipsy.css" />');
+$page->addScript('tooltip-js', $sTooltippScript);
+
+$page->setContent($sWarning."\n".$sListstring."<br>".$form->render());
 $page->render();
 
 ?>

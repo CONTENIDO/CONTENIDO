@@ -729,7 +729,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
                         $sTemplatename = capiStrTrimHard($artitem[$key], 20);
                         if (strlen($artitem[$key]) > 20) {
-                            $cells[] = '<td nowrap="nowrap" class="bordercell" onmouseover="Tip(\''.$descString.'\', BALLOON, true, ABOVE, true);">'.$sTemplatename.'</td>';
+                            $cells[] = '<td nowrap="nowrap" class="bordercell tooltip" title="'.$descString.'">'.$sTemplatename.'</td>';
                         } else {
                             $cells[] = '<td nowrap="nowrap" class="bordercell">'.$artitem[$key].'</td>';
                         }

@@ -205,6 +205,7 @@ if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action)
                     while ($chainEntry = $_cecIterator->next()) {
                         $chainEntry->execute($item->get('idupl'), $qpath, $file);
                     }
+
                 }
             }
         }
@@ -227,6 +228,7 @@ if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action) && $
             while ($chainEntry = $_cecIterator->next()) {
                 $chainEntry->execute($uploads->f('idupl'), $qpath, $file);
             }
+
         }
     }
 }
@@ -460,6 +462,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
     $sSpacedRow = '<tr height="10">
                         <td colspan="6"></td>
                    </tr>';
+
 
     // List wraps
 
@@ -764,6 +767,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 
         function findPreviewImage(smallImg) {
             var prevImages = document.getElementsByName("prevImage"),
+
                 i;
             for (i=0; i<prevImages.length; i++) {
                 if (prevImages[i].src == smallImg.src) {
@@ -788,6 +792,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
         // Invert selection of checkboxes
         function invertSelection() {
             var delcheckboxes = document.getElementsByName("fdelete[]"),
+
                 i;
             for (i=0; i<delcheckboxes.length; i++) {
                 delcheckboxes[i].checked = !(delcheckboxes[i].checked);
@@ -849,10 +854,6 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
                                   color: #000000;
                                }
                                </style>');
-
-    $sScriptinBody = '<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
-                      <script type="text/javascript" src="scripts/tip_balloon.js"></script>';
-    $page->addScript('style', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
 
     if ($bDirectoryIsWritable == false) {
         $sErrorMessage = $notification->returnNotification("error", i18n("Directory not writable")  . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')');

@@ -145,7 +145,7 @@ if ($aItems !== false)
 				$oList->setData($iCounter, $oInputboxType->render(), $oInputboxName->render(), $oInputboxValue->render().$hidden.$sSubmit, $oLnkEdit->render() . '&nbsp;&nbsp;&nbsp;' . $oLnkDelete->render());
     	} else
     	{
-            $sMouseoverTemplate = '<span onmouseover="Tip(\'%s\', BALLOON, true, ABOVE, true);">%s</span>';
+            $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
             
             if (strlen($aValue['type']) > 35) {
                 $sShort = htmlspecialchars(capiStrTrimHard($aValue['type'], 35));
@@ -207,10 +207,12 @@ if (($_GET['action'] == "clientsettings_edit_item"))
     $sSettingsList = $oList->render();
 }
 
-$sTooltippScript = '<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
-                    <script type="text/javascript" src="scripts/tip_balloon.js"></script>';
+$sTooltippScript = '<script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+                    <script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
+                    <script type="text/javascript" src="scripts/registerTipsy.js"></script>';
 
-$oPage->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tip_balloon.css" />');
-$oPage->setContent($sTooltippScript."\n".$oFrmRange->render() . '<br>' . $sSettingsList . '<br>' . $oForm->render());
+$oPage->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tipsy.css" />');
+$oPage->addScript('tooltip-js', $sTooltippScript);
+$oPage->setContent("\n".$oFrmRange->render() . '<br>' . $sSettingsList . '<br>' . $oForm->render());
 $oPage->render();
 ?>

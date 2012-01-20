@@ -141,50 +141,67 @@ if ($upload = $uploads->next()) {
 
             case "medianame":
                 if ($db->f('medianame')) {
+
                     $medianame = Contenido_Security::unFilter($db->f('medianame'));
+
                 } else {
+
                     $medianame = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "medianame");
+
                 }
+
                 $mnedit = new cHTMLTextbox("medianame", $medianame, 60);
                 $sCell = $mnedit->render();
                 break;
 
             case "description":
                 if ($db->f('description')) {
+
                     $sDescription = Contenido_Security::unFilter($db->f('description'));
                 } else {
+
                     $sDescription = $upload->get("description");
                 }
+
                 $dsedit = new cHTMLTextarea("description", $sDescription);
                 $sCell = $dsedit->render();
                 break;
 
             case "keywords":
                 if ($db->f('keywords')) {
+
                     $keywords = Contenido_Security::unFilter($db->f('keywords'));
                 } else {
+
                     $keywords = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "keywords");
                 }
+
                 $kwedit = new cHTMLTextarea("keywords", $keywords);
                 $sCell = $kwedit->render();
                 break;
 
             case "medianotes":
                 if ($db->f('internal_notice')) {
+
                     $medianotes = Contenido_Security::unFilter($db->f('internal_notice'));
                 } else {
+
                     $medianotes = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "medianotes");
                 }
+
                 $moedit = new cHTMLTextarea("medianotes", $medianotes);
                 $sCell = $moedit->render();
                 break;
 
             case "copyright":
                 if ($db->f('copyright')) {
+
                     $copyright = Contenido_Security::unFilter($db->f('copyright'));
                 } else {
+
                     $copyright = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "copyright");
                 }
+
                 $copyrightEdit = new cHTMLTextarea("copyright", $copyright);
                 $sCell = $copyrightEdit->render();
                 break;
@@ -263,6 +280,7 @@ if ($upload = $uploads->next()) {
                     while ($chainEntry = $_cecIterator->next()) {
                         $contents[]  = $chainEntry->execute( $iIdupl, $qpath, $_REQUEST["file"], $sListRow);
                     }
+
                 }
                 $sCell = implode("", $contents);
         }
@@ -272,6 +290,7 @@ if ($upload = $uploads->next()) {
     $sScript = "";
     if (is_dbfs($_REQUEST["path"])) {
         $sScript = '
+
         <script type="text/javascript">
         var startcal = new calendar1(document.properties.elements["datestart"]);
         startcal.year_scroll = true;
@@ -279,9 +298,12 @@ if ($upload = $uploads->next()) {
         var endcal = new calendar1(document.properties.elements["dateend"]);
         endcal.year_scroll = true;
         endcal.time_comp = true;
+
         </script>
+
         ';
     }
+
 
     // Script must add in body-tag
     $sScriptinBody = '<script type="text/javascript" src="scripts/wz_tooltip.js"></script>
