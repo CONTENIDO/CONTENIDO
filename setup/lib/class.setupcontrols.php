@@ -40,7 +40,7 @@ class cHTMLAlphaImage extends cHTMLImage
 
     function cHTMLAlphaImage()
     {
-        cHTMLImage::cHTMLImage();
+        cHTMLImage::__construct();
         $this->setAlt("");
     }
 
@@ -86,7 +86,7 @@ class cHTMLErrorMessageList extends cHTMLDiv
     {
         $this->_oTable = new cHTMLTable();
         $this->_oTable->setWidth("100%");
-        cHTMLDiv::cHTMLDiv();
+        cHTMLDiv::__construct();
         $this->setClass("errorlist");
         $this->setStyle("width: 450px;height:218px;overflow:auto;border:1px solid black;");
     }
@@ -151,7 +151,7 @@ class cHTMLFoldableErrorMessage extends cHTMLTableRow
             $this->_oIcon->setContent("&nbsp;");
         }
 
-        cHTMLTableRow::cHTMLTableRow();
+        cHTMLTableRow::__construct();
     }
 
     function toHTML()
@@ -176,7 +176,7 @@ class cHTMLInfoMessage extends cHTMLTableRow
         $this->_oMessage->setContent($sMessage);
         $this->_oMessage->setClass("entry_nowrap");
 
-        cHTMLTableRow::cHTMLTableRow();
+        cHTMLTableRow::__construct();
     }
 
     function toHTML()
@@ -190,7 +190,7 @@ class cHTMLLanguageLink extends cHTMLDiv
 {
     function cHTMLLanguageLink($langcode, $langname, $stepnumber)
     {
-        cHTMLDiv::cHTMLDiv();
+        cHTMLDiv::__construct();
 
         $linkImage = new cHTMLAlphaImage();
         $linkImage->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
@@ -225,7 +225,7 @@ class cHTMLButtonLink extends cHTMLDiv
 {
     function cHTMLButtonLink($href, $title)
     {
-        cHTMLDiv::cHTMLDiv();
+        cHTMLDiv::__construct();
 
         $linkImage = new cHTMLAlphaImage();
         $linkImage->setSrc(C_SETUP_CONTENIDO_HTML_PATH . "images/submit.gif");
