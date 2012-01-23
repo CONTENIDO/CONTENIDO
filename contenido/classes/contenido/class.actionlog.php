@@ -20,8 +20,8 @@
  * @since      file available since CONTENIDO release 4.9.0
  *
  * {@internal
- *   created  2011-09-14
- *   $Id: $:
+ *   created  2012-01-24
+ *   $Id$:
  * }}
  *
  */
