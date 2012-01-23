@@ -40,6 +40,9 @@ if (!defined('CON_FRAMEWORK')) {
  */
 class Auth
 {
+    const AUTH_UID_NOBODY = 'nobody';
+    const AUTH_UID_FORM = 'form';
+
     /**
      * Authentication handler class name
      * @var string
@@ -140,7 +143,7 @@ class Auth
         if ($this->is_authenticated()) {
             $uid = $this->auth['uid'];
             switch ($uid) {
-                case 'form':
+                case self::AUTH_UID_FORM:
                     // Login in progress
                     if ($$cl) {
                         // If $$cl is set, delete all auth info and set state to 'Not logged in',
@@ -181,15 +184,15 @@ class Auth
                     case 'log':
                         if ($this->nobody) {
                             // Authenticate as nobody
-                            $this->auth['uid'] = 'nobody';
-                            # $this->auth['uname'] = 'nobody';
+                            $this->auth['uid'] = self::AUTH_UID_NOBODY;
+                            # $this->auth['uname'] = self::AUTH_UID_NOBODY;
                             $this->auth['exp'] = 0x7fffffff;
                             $this->auth['refresh'] = 0x7fffffff;
                             return true;
                         } else {
                             // Show the login form
                             $this->auth_loginform();
-                            $this->auth['uid'] = 'form';
+                            $this->auth['uid'] = self::AUTH_UID_FORM;
                             $this->auth['exp'] = 0x7fffffff;
                             $this->auth['refresh'] = 0x7fffffff;
                             $sess->freeze();
@@ -199,15 +202,15 @@ class Auth
                     case 'reg':
                         if ($this->nobody) {
                             // Authenticate as nobody
-                            $this->auth['uid'] = 'nobody';
-                            # $this->auth['uname'] = 'nobody';
+                            $this->auth['uid'] = self::AUTH_UID_NOBODY;
+                            # $this->auth['uname'] = self::AUTH_UID_NOBODY;
                             $this->auth['exp'] = 0x7fffffff;
                             $this->auth['refresh'] = 0x7fffffff;
                             return true;
                         } else {
                             // Show the registration form
                             $this->auth_registerform();
-                            $this->auth['uid'] = 'form';
+                            $this->auth['uid'] = self::AUTH_UID_FORM;
                             $this->auth['exp'] = 0x7fffffff;
                             $this->auth['refresh'] = 0x7fffffff;
                             $sess->freeze();
@@ -225,7 +228,7 @@ class Auth
                 // Valid auth info
                 // Refresh expire info
                 ## DEFAUTH handling: do not update exp for nobody.
-                if ($uid != 'nobody') {
+                if ($uid != self::AUTH_UID_NOBODY) {
                     $this->auth['exp'] = time() + (60 * $this->lifetime);
                 }
                 break;
@@ -248,7 +251,7 @@ class Auth
                             return true;
                         } else {
                             $this->auth_loginform();
-                            $this->auth['uid'] = 'form';
+                            $this->auth['uid'] = self::AUTH_UID_FORM;
                             $this->auth['exp'] = 0x7fffffff;
                             $this->auth['refresh'] = 0x7fffffff;
                             $sess->freeze();
@@ -263,7 +266,7 @@ class Auth
                             return true;
                         } else {
                             $this->auth_registerform();
-                            $this->auth['uid'] = 'form';
+                            $this->auth['uid'] = self::AUTH_UID_FORM;
                             $this->auth['exp'] = 0x7fffffff;
                             $this->auth['refresh'] = 0x7fffffff;
                             $sess->freeze();
@@ -304,7 +307,7 @@ class Auth
 
         // Back compatibility: passing $nobody to this method is deprecated
         if ($nobody) {
-            $this->auth['uid']  = 'nobody';
+            $this->auth['uid']  = self::AUTH_UID_NOBODY;
             $this->auth['perm'] = '';
             $this->auth['exp']  = 0x7fffffff;
         }
