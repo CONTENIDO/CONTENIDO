@@ -57,6 +57,18 @@ class cApiCategoryArticleCollection extends ItemCollection
         cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
         $this->__construct($select);
     }
+
+    /**
+     * Returns a category article entry by category id and article id.
+     * @param int $idcat
+     * @param int $idart
+     * @return cApiCategoryArticle|null
+     */
+    public function selectByCatAndArt($idcat, $idart) {
+        $this->select('idcat=' . (int) $idcat . ' AND idart=' . (int) $idart);
+        return $this->next();
+    }
+
 }
 
 
