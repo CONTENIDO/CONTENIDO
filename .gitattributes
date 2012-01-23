@@ -235,6 +235,7 @@ contenido/classes/class.xmlparser.php -text
 contenido/classes/class.xmltree.php -text
 contenido/classes/class.xsltprocessor.php -text
 contenido/classes/contenido/class.action.php -text
+contenido/classes/contenido/class.actionlog.php -text
 contenido/classes/contenido/class.area.php -text
 contenido/classes/contenido/class.article.php -text
 contenido/classes/contenido/class.article.specification.php -text

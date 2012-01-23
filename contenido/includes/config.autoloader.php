@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2011-11-18
+ *     created  2012-01-24
  * }}
  */
 
@@ -177,6 +177,8 @@ return array(
     'Contenido_CodeGenerator_Standard' => 'contenido/classes/CodeGenerator/Standard.class.php',
     'cApiActionCollection' => 'contenido/classes/contenido/class.action.php',
     'cApiAction' => 'contenido/classes/contenido/class.action.php',
+    'cApiActionlogCollection' => 'contenido/classes/contenido/class.actionlog.php',
+    'cApiActionlog' => 'contenido/classes/contenido/class.actionlog.php',
     'cApiAreaCollection' => 'contenido/classes/contenido/class.area.php',
     'cApiArea' => 'contenido/classes/contenido/class.area.php',
     'cApiArticleCollection' => 'contenido/classes/contenido/class.article.php',
