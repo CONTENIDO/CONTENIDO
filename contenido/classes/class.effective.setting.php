@@ -95,7 +95,7 @@ class Contenido_Effective_Setting
             return $value;
         }
 
-        if ($auth->auth['uid'] != 'nobody' && $auth->auth['uid'] != 'form' && isset($contenido)) {
+        if ($auth->is_authenticated() && !$auth->is_auth_form_uid() && isset($contenido)) {
             $obj = self::_getUserInstance();
             $value = $obj->getUserProperty($type, $name, true);
         }
@@ -139,7 +139,7 @@ class Contenido_Effective_Setting
      */
     public static function getByType($type)
     {
-        global $auth;
+        global $auth, $contenido;
 
         $settings = getSystemPropertiesByType($type);
 
@@ -149,7 +149,7 @@ class Contenido_Effective_Setting
         $obj = self::_getClientLanguageInstance();
         $settings = array_merge($settings, $obj->getPropertiesByType($type));
 
-        if ($auth->auth['uid'] != 'nobody') {
+        if ($auth->is_authenticated() && !$auth->is_auth_form_uid() && isset($contenido)) {
             $obj = self::_getUserInstance();
             $settings = array_merge($settings, $obj->getUserPropertiesByType($type, true));
         }

@@ -346,6 +346,16 @@ class Auth
         }
     }
 
+    public function is_auth_nobody_uid()
+    {
+        return (isset($this->auth['uid']) && $this->auth['uid'] == self::AUTH_UID_NOBODY);
+    }
+
+    public function is_auth_form_uid()
+    {
+        return (isset($this->auth['uid']) && $this->auth['uid'] == self::AUTH_UID_FORM);
+    }
+
     ########################################################################
     ##
     ## Helper functions
