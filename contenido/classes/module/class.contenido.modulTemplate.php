@@ -1,5 +1,29 @@
 <?php
-
+/**
+ * Project: 
+ * CONTENIDO Content Management System
+ * 
+ * Description: 
+ * Class for handeling modul templates.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ *
+ * @package    CONTENIDO Backend Includes
+ * @version    1.5.1
+ * @author     Rusmir Jusufovic
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since CONTENIDO release <= 4.6
+ * 
+ * {@internal 
+ *   created 2011-07-14
+ * }}
+ * 
+ */
 if(!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }  
@@ -11,6 +35,12 @@ cInclude("classes", "class.htmlvalidator.php");
 cInclude("external", "codemirror/class.codemirror.php");
 cInclude("includes", "functions.file.php");
 
+/**
+ * 
+ * Class handels the view, creation, edit, delete of modul templates.
+ * @author rusmir.jusufovic
+ *
+ */
 class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
 
     #Form fields
@@ -39,7 +69,7 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
      * The name of the new file. 
      * @var string
      */
-    private $_newFileName = "NewFileName";
+    private $_newFileName = "newfilename";
     
     private $_actionCreate = 'htmltpl_create';
     private $_actionEdit = 'htmltpl_edit';
@@ -153,10 +183,10 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
 
         if( isset($this->_status)) {
 
-            if(isset($this->_new))
+           if(isset($_POST['new_x']))
             return 'new';
              
-            if(isset($this->_delete))
+           if(isset($_POST['delete_x']))
             return 'delete';
 
             if(isset($this->_file) && isset($this->_tmp_file)) {
@@ -186,8 +216,6 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
             return 'default';
         }
 
-        #default case
-        return 'default';
     }
 
     /**
@@ -492,7 +520,6 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
         
         $myAction = $this->_getAction();
         
-      
         #if the user dont have premissions 
         if( $this->_havePremission($perm, $notificatioin , $myAction) === -1)
             return;
