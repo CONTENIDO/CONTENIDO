@@ -29,10 +29,13 @@
  * 
  */
 
+cInclude('classes', 'module/class.contenido.module.search.php');
+
+
+
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
-
 
 if (!(int) $client > 0) {
   #if there is no client selected, display empty page
@@ -47,6 +50,7 @@ if (!(int) $client > 0) {
 $cApiModuleCollection	= new cApiModuleCollection;
 $classmodule			= new cApiModule;
 $oPage					= new cPage;
+$searchOptions = array();
 
 // no value found in request for items per page -> get form db or set default
 $oUser = new cApiUser($auth->auth["uid"]);
@@ -70,83 +74,7 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 	$_REQUEST["page"] = 1;
 }
 
-// Sort by requested
-if (isset ($_REQUEST["sortby"]) && $_REQUEST["sortby"] != "")
-{
-	$cApiModuleCollection->setOrder($_REQUEST["sortby"]." ".$_REQUEST["sortorder"]);
-} 
-else
-{
-	$cApiModuleCollection->setOrder("name asc");
-}
 
-
-// Search filter requested
-if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == '')
-{
-	$cApiModuleCollection->setWhereGroup("default", "name", "%".$_REQUEST["filter"]."%", "LIKE");
-	$cApiModuleCollection->setWhereGroup("default", "description", "%".$_REQUEST["filter"]."%", "LIKE");
-	$cApiModuleCollection->setWhereGroup("default", "type", "%".$_REQUEST["filter"]."%", "LIKE");
-	$cApiModuleCollection->setWhereGroup("default", "input", "%".$_REQUEST["filter"]."%", "LIKE");
-	$cApiModuleCollection->setWhereGroup("default", "output", "%".$_REQUEST["filter"]."%", "LIKE");
-	$cApiModuleCollection->setInnerGroupCondition("default", "OR");
-} else if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == 'name') {
-    $cApiModuleCollection->setWhereGroup("default", "name", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiModuleCollection->setInnerGroupCondition("default", "OR");
-} else if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == 'description') {
-    $cApiModuleCollection->setWhereGroup("default", "description", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiModuleCollection->setInnerGroupCondition("default", "OR");
-} else if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == 'type') {
-    $cApiModuleCollection->setWhereGroup("default", "type", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiModuleCollection->setInnerGroupCondition("default", "OR");
-} else if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == 'input') {
-    $cApiModuleCollection->setWhereGroup("default", "input", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiModuleCollection->setInnerGroupCondition("default", "OR");
-} else if (isset ($_REQUEST["filter"]) && $_REQUEST["filter"] != ""  && $_REQUEST["searchin"] == 'output') {
-    $cApiModuleCollection->setWhereGroup("default", "output", "%".$_REQUEST["filter"]."%", "LIKE");
-    $cApiModuleCollection->setInnerGroupCondition("default", "OR");
-}
-
-// Type filter requested
-if (isset($_REQUEST["filtertype"]))
-{
-	switch ($_REQUEST["filtertype"])
-	{
-		case "--all--":
-			break;
-		case "--wotype--":
-			$cApiModuleCollection->setWhere("type", "");
-			break;
-		default:
-			$cApiModuleCollection->setWhere("type", $_REQUEST["filtertype"]);
-			break;	
-	}
-}
-
-// Items per page requested
-$cApiModuleCollection->setWhere("idclient", $client);
-
-
-if ($_REQUEST["elemperpage"] > 0) 
-{
-	$cApiModuleCollection->query();
-	$iItemCount = $cApiModuleCollection->count();
-
-	if ($iItemCount < (($_REQUEST["page"] - 1) * $_REQUEST["elemperpage"])) 
-	{
-		$_REQUEST["page"] = 1;
-	}
-    
-    if ($_REQUEST["elemperpage"]*($_REQUEST["page"]) >= $iItemCount+$_REQUEST["elemperpage"] && $_REQUEST["page"]  != 1) {
-        $_REQUEST["page"]--;
-    }
-
-	$cApiModuleCollection->setLimit(($_REQUEST["elemperpage"] * ($_REQUEST["page"] -1)), $_REQUEST["elemperpage"]);
-} 
-else 
-{
-	$iItemCount 		= 0;
-}
 
 
 // Build list for left_bottom considering filter values
@@ -155,27 +83,71 @@ $sOptionModuleCheck	= getSystemProperty("system", "modulecheck");
 $sOptionForceCheck	= getEffectiveSetting("modules", "force-menu-check", "false");
 $iMenu				= 0;
 
-$cApiModuleCollection->query();
-while ($cApiModule = $cApiModuleCollection->next())
+
+
+
+$searchOptions['elementPerPage'] 	= $_REQUEST['elemperpage'];
+
+$searchOptions['orderBy'] = 'name';
+if($_REQUEST['sortby'] == 'type')
+	$searchOptions['orderBy'] = 'type';
+	
+$searchOptions['sortOrder'] = 'asc';
+if($_REQUEST['sortorder'] == "desc")
+	$searchOptions['sortOrder'] = 'desc';
+
+$searchOptions['moduleType'] = '%%';
+
+if($_REQUEST['filtertype'] == '--wotype--')
+	$searchOptions['moduleType'] = '';
+
+if(!empty($_REQUEST['filtertype']) && $_REQUEST['filtertype'] != '--wotype--' &&  $_REQUEST['filtertype'] != '--all--')
+	$searchOptions['moduleType'] = Contenido_Security::escapeDB($_REQUEST['filtertype'], $db);
+
+$searchOptions['filter']			=  Contenido_Security::escapeDB($_REQUEST['filter'], $db);
+			
+//search in
+$searchOptions['searchIn'] = 'all'; 
+if($_REQUEST['searchin']== 'name' || $_REQUEST['searchin'] == 'description' || $_REQUEST['searchin']== 'type' || $_REQUEST['searchin']== 'input' || $_REQUEST['searchin']== 'output')
+	$searchOptions['searchIn'] = $_REQUEST['searchin'];
+
+$searchOptions['selectedPage']		= $_REQUEST['page'];
+
+
+$contenidoModulSearch = new Contenido_Module_Search($searchOptions);
+
+
+$allModules = $contenidoModulSearch->getModules();
+
+
+if($_REQUEST["elemperpage"]>0)
+	$iItemCount = $contenidoModulSearch->getModulCount();
+else
+	$iItemCount = 0;
+
+
+
+
+foreach ($allModules as $idmod => $module)//$cApiModule = $cApiModuleCollection->next())
 {
-	if ($perm->have_perm_item($area, $db->f("idmod")) || $perm->have_perm_area_action("mod_translate", "mod_translation_save") || $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $cApiModule->get("idmod")))
+	if ($perm->have_perm_item($area, $idmod) || $perm->have_perm_area_action("mod_translate", "mod_translation_save") || $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $idmod))
 	{
-			$idmod = $cApiModule->get("idmod");
+			//$idmod = $cApiModule->get("idmod");
 			
 			$link = new cHTMLLink;
 			$link->setMultiLink("mod", "", "mod_edit", "");
-			$link->setCustom("idmod", $cApiModule->get("idmod"));
-			$link->updateAttributes(array ("alt" => $cApiModule->get("description")));
-			$link->updateAttributes(array ("title" => $cApiModule->get("description")));
+			$link->setCustom("idmod", $idmod);
+			$link->updateAttributes(array ("alt" => $module['description']));
+			$link->updateAttributes(array ("title" => $module['description']));
 			$link->updateAttributes(array ("style" => "margin-left:5px"));
 
-			$sName = $cApiModule->get("name");
+			$sName = $module ['name'];//$cApiModule->get("name");
 
 			if ($sOptionModuleCheck !== "false" && $sOptionForceCheck !== "false")
 			{
 				// Check module and force check has been enabled - check module (surprisingly...)
-				$inputok = modTestModule($cApiModule->get("input"), $cApiModule->get("idmod")."i", false);
-				$outputok = modTestModule($cApiModule->get("output"), $cApiModule->get("idmod")."o", true);
+				$inputok = modTestModule($module['input'], $idmod."i", false);
+				$outputok = modTestModule($module['output'], $idmod."o", true);
 
 				if ($inputok && $outputok)		// Everything ok
 				{
@@ -193,7 +165,7 @@ while ($cApiModule = $cApiModuleCollection->next())
 			else
 			{
 				// Do not check modules (or don't force it) - so, let's take a look into the database 
-				$sModuleError = $cApiModule->get("error");
+				$sModuleError = $module['error'];//$cApiModule->get("error");
 				
 				if ($sModuleError == "none")
 				{
@@ -212,7 +184,7 @@ while ($cApiModule = $cApiModuleCollection->next())
 			$iMenu ++;
 
 			$mlist->setTitle($iMenu, $colName);
-			if ($perm->have_perm_area_action_item("mod_edit", "mod_edit", $db->f("idmod")) || $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $cApiModule->get("idmod")))
+			if ($perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod) || $perm->have_perm_area_action_item("mod_translate", "mod_translation_save", $idmod))
 			{
 				$mlist->setLink($iMenu, $link);
 			}
@@ -229,7 +201,7 @@ while ($cApiModule = $cApiModuleCollection->next())
 				
 			} else {
                 $mlist->setActions($iMenu, 'inuse', '<img src="./images/spacer.gif" border="0" width="16">');
-				if ($perm->have_perm_area_action_item("mod", "mod_delete", $cApiModule->get("idmod")))
+				if ($perm->have_perm_area_action_item("mod", "mod_delete", $idmod))
 				{
 				$delTitle = i18n("Delete module");
 				$delDescr = sprintf(i18n("Do you really want to delete the following module:<br><br>%s<br>"), $sName);
@@ -246,7 +218,7 @@ while ($cApiModule = $cApiModuleCollection->next())
 				$deletebutton = '<img src="'.$cfg['path']['images'].'delete_inact.gif" border="0" title="'.$delDescription.'" alt="'.$delDescription.'">';	
 			}
 			
-			$todo = new TODOLink("idmod", $db->f("idmod"), "Module: $sName", "");
+			$todo = new TODOLink("idmod", $idmod, "Module: $sName", "");
 			
 			$mlist->setActions($iMenu, "todo", $todo->render());
 			$mlist->setActions($iMenu, "delete", $deletebutton);
