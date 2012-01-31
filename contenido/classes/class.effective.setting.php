@@ -86,16 +86,16 @@ class Contenido_Effective_Setting
      */
     public static function get($type, $name, $default = '')
     {
-        global $auth, $contenido;
+        global $contenido;
 
-        $key = $auth->auth['uid'] . '_' . $type . '_' . $name;
+        $key = self::_makeKey($type, $name);
 
         $value = self::_get($key);
         if (false !== $value) {
             return $value;
         }
 
-        if ($auth->is_authenticated() && !$auth->is_auth_form_uid() && isset($contenido)) {
+        if (self::_isAuthenticated() && isset($contenido)) {
             $obj = self::_getUserInstance();
             $value = $obj->getUserProperty($type, $name, true);
         }
@@ -139,7 +139,7 @@ class Contenido_Effective_Setting
      */
     public static function getByType($type)
     {
-        global $auth, $contenido;
+        global $contenido;
 
         $settings = getSystemPropertiesByType($type);
 
@@ -149,14 +149,14 @@ class Contenido_Effective_Setting
         $obj = self::_getClientLanguageInstance();
         $settings = array_merge($settings, $obj->getPropertiesByType($type));
 
-        if ($auth->is_authenticated() && !$auth->is_auth_form_uid() && isset($contenido)) {
+        if (self::_isAuthenticated() && isset($contenido)) {
             $obj = self::_getUserInstance();
             $settings = array_merge($settings, $obj->getUserPropertiesByType($type, true));
         }
 
         // cache all settings, to return them from cache in case of calling get()
         foreach ($settings as $setting => $value) {
-            $key = $auth->auth['uid'] . '_' . $type . '_' . $setting;
+            $key = self::_makeKey($type, $setting);
             self::_set($key, $value);
         }
 
@@ -176,10 +176,10 @@ class Contenido_Effective_Setting
      */
     public static function set($type, $name, $value)
     {
-        global $auth;
-        $key = $auth->auth['uid'] . '_' . $type . '_' . $name;
+        $key = self::_makeKey($type, $name);
         self::_set($key, $value);
     }
+
 
     /**
      * Deletes a effective setting.
@@ -282,6 +282,37 @@ class Contenido_Effective_Setting
     protected static function _set($key, $value)
     {
         self::$_settings[$key] = $value;
+    }
+
+
+    /**
+     * Setting key getter.
+     *
+     * @param   string  $type The type of the item
+     * @param   string  $name Name of the item
+     * @return  string  The setting key
+     */
+    protected static function _makeKey($type, $name)
+    {
+        global $auth;
+
+        if ($auth instanceof Contenido_Auth) {
+            $key = $auth->auth['uid'] . '_' . $type . '_' . $name;
+        } else {
+            $key = '_' . $type . '_' . $name;
+        }
+        return $key;
+    }
+
+    /**
+     * Checks global authentication object and if current user is authenticated.
+     *
+     * @return  bool
+     */
+    protected static function _isAuthenticated()
+    {
+        global $auth;
+        return ($auth instanceof Contenido_Auth && $auth->is_authenticated() && !$auth->is_auth_form_uid());
     }
 
 }
