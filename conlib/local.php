@@ -87,7 +87,7 @@ class DB_Contenido extends DB_Sql
                 header("Location: ".$cfg["contenido"]["errorpage"]);
             } else {
                 //The script should not die if we are in the setup process. The setup has to make sure the connection works
-                if(strrpos(getcwd(), "/setup") != strlen(getcwd()) - strlen("/setup")) {
+            	if(strrpos(C_SETUP_PATH, "setup") != (strlen(C_SETUP_PATH) - strlen("/setup"))) {
                     die("Could not connect to database wtih this configuration");
                 }
             }
