@@ -1496,10 +1496,11 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
     public function create()
     {
         $oDb     = $this->_getSecondDBInstance();
-        $iNextId = $oDb->nextid($this->table);
+      //  $iNextId = $oDb->nextid($this->table);
         $sql     = 'INSERT INTO `%s` (%s) VALUES (%d)';
-        $oDb->query($sql, $this->table, $this->primaryKey, $iNextId);
-        return $this->loadItem($iNextId);
+        $oDb->query($sql, $this->table, $this->primaryKey, null);
+        
+        return $this->loadItem($oDb->getLastInsertedId($this->table));
     }
 
     /**

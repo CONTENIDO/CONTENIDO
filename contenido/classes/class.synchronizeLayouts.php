@@ -110,9 +110,9 @@ class SynchronizeLayouts  {
        
         $db = new DB_Contenido();
         #get next id from $cfg["tab"]["mod"]
-        $nextId = $db->nextid($this->_cfg["tab"]["lay"]);
+      //  $nextId = $db->nextid($this->_cfg["tab"]["lay"]);
         #insert new modul in con_mod
-        $sql = sprintf(" INSERT INTO %s (name,alias,idclient,idlay, lastmodified) VALUES('%s','%s',%s,%s,'%s') ", $this->_cfg["tab"]["lay"], $name,$name, $idclient , $nextId, date("Y-m-d H:i:s"));
+        $sql = sprintf(" INSERT INTO %s (name, alias, idclient, lastmodified) VALUES('%s','%s',%s,%s,'%s') ", $this->_cfg["tab"]["lay"], $name,$name, $idclient , date("Y-m-d H:i:s"));
      
         $db->query($sql);
     }

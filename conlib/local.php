@@ -123,7 +123,25 @@ class DB_Contenido extends DB_Sql
 
         return parent::next_record();
     }
+    /**
+     * 
+     * Get last inserted id of given tablename
+     * 
+     * @param string $tableName
+     * @return int|null last id of table
+     */
+    public function getLastInsertedId($tableName='') {
+        $lastId = null;
+        if(strlen($tableName) > 0) {
+            $sqlGetLastInsertedId = 'SELECT LAST_INSERT_ID() as last_id FROM '.$tableName;
+            $this->query($sqlGetLastInsertedId);
+            if($this->next_record()) {
+                $lastId = $this->f('last_id');
+            }
+        }
 
+        return $lastId;
+    }
 
     /**
      * Returns the metada of passed table

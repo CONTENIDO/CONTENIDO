@@ -368,20 +368,11 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
      * @param int $idclient  mandant of the modul
      */
     private  function _addModul($name , $idclient) {
-        
-       
         $db = new DB_Contenido();
-        #get next id from $cfg["tab"]["mod"]
-        $nextId = $db->nextid($this->_cfg["tab"]["mod"]);
-        #insert new modul in con_mod
-        $sql = sprintf(" INSERT INTO %s (name,alias,idclient,idmod) VALUES('%s','%s',%s,%s) ", $this->_cfg["tab"]["mod"], $name,$name, $idclient , $nextId);
-      
-        
+//        $nextId = $db->nextid($this->_cfg["tab"]["mod"]);
+        $sql = sprintf(" INSERT INTO %s (name,alias,idclient) VALUES('%s','%s',%s,%s) ",
+            $this->_cfg["tab"]["mod"], $name,$name, $idclient);
         $db->query($sql);
-        
-        #save the last id from modul
-       $this->_lastIdMod = $nextId;
- 
     }
     
     

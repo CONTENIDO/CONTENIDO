@@ -334,6 +334,7 @@ contenido/cronjobs/run_newsletter_job.php -text
 contenido/cronjobs/run_newsletter_job.php.job -text
 contenido/cronjobs/send_reminder.php -text
 contenido/cronjobs/send_reminder.php.job -text
+contenido/cronjobs/sequence.php -text
 contenido/cronjobs/session_cleanup.php -text
 contenido/cronjobs/session_cleanup.php.job -text
 contenido/cronjobs/setfrontenduserstate.php -text

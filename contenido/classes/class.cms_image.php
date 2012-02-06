@@ -213,9 +213,9 @@ class Cms_Image {
 			$id_uplmeta = $this->oDb->f('id_uplmeta');    
 		}
 		if(!isset($id_uplmeta)){
-			$id = $this->oDb->nextid($this->aCfg['tab']['upl_meta']);
-			$query = "INSERT INTO ".$this->aCfg['tab']['upl_meta']."(id_uplmeta, idupl, idlang, medianame, description, keywords, internal_notice, copyright) VALUES('".
-					$id."', '".$idupl."', '".$idlang."', '".$medianame."', '".$description."', '".$keywords."', '".$internal_notice."', '".$copyright."')";
+			//$id = $this->oDb->nextid($this->aCfg['tab']['upl_meta']);
+			$query = "INSERT INTO ".$this->aCfg['tab']['upl_meta']."( idupl, idlang, medianame, description, keywords, internal_notice, copyright) 
+			VALUES('".$idupl."', '".$idlang."', '".$medianame."', '".$description."', '".$keywords."', '".$internal_notice."', '".$copyright."')";
 			$this->oDb->query($query);
 			//echo '2'.$this->oDb->Error;
 		} else {
@@ -394,7 +394,7 @@ class Cms_Image {
 		$oTpl->set('s', 'META', 								i18n("Meta"));
 		$oTpl->set('s', 'UPLOAD', 								i18n("Upload"));
 				
-		$oTpl->set('s', 'META_URL_TEXT', 						i18n("Ausgewählte Datei"));	
+		$oTpl->set('s', 'META_URL_TEXT', 						i18n("Ausgewï¿½hlte Datei"));	
 		$oTpl->set('s', 'LABEL_IMAGE_TITLE', 					i18n("Title"));			
 		$oTpl->set('s', 'LABEL_IMAGE_DESC', 					i18n("Description"));		
 		$oTpl->set('s', 'LABEL_IMAGE_KEYWORDS', 				i18n("Keywords"));
@@ -417,16 +417,10 @@ class Cms_Image {
 		
 		$oTpl->set('s', 'sContent', 							$this->aCfgClient[$this->iClient]['upl']['htmlpath'].$this->dirname.$this->filename);
 		$oTpl->set('s', 'DIRECTORY_LIST', 						$this->getDirectoryList( $this->buildDirectoryList() ));
-		/*$medianame = $_REQUEST['image_medianame'];
-		$description = $_REQUEST['image_description'];
-		$keywords = $_REQUEST['image_keywords'];
-		$internal_notice = $_REQUEST['image_internal_notice']; 
-		$copyright = $_REQUEST['image_copyright']; 
-		$query = "SELECT id_uplmeta FROM " . $this->aCfg['tab']['upl_meta'] . " WHERE idupl='".$idupl."' AND idlang='".$idlang."' AND medianame='".$medianame.
-				"' AND description='".$description."' AND keywords='".$keywords."' AND internal_notice='".$internal_notice."' AND copyright='".$copyright."'";*/				
+					
 		$query = "SELECT * FROM " . $this->aCfg['tab']['upl_meta'] . " WHERE idupl='".$idupl."' AND idlang='".$idlang."'";
 		$this->oDb->query($query);
-		//echo '4'.$this->oDb->Error;
+
 		if($this->oDb->next_record() && $idupl!='') {
 			$id_uplmeta = $this->oDb->f('id_uplmeta');  
 			 	

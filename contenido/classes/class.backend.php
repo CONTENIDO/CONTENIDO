@@ -308,7 +308,7 @@ class Contenido_Backend {
 
         $db_log = new DB_Contenido;
 
-        $lastentry = $db_log->nextid($cfg["tab"]["actionlog"]);
+        //$lastentry = $db_log->nextid($cfg["tab"]["actionlog"]);
 
         $timestamp = date("Y-m-d H:i:s");
         $idcatart = "0";
@@ -346,7 +346,6 @@ class Contenido_Backend {
         $sql = "INSERT INTO
                     ". $cfg["tab"]["actionlog"]."
                 SET
-                    idlog = '".$lastentry."',
                     user_id = '".$auth->auth["uid"]."',
                     idclient = '".$client."',
                     idlang = '".$lang."',

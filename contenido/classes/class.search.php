@@ -378,12 +378,12 @@ class Index extends SearchBaseAbstract
             if (!array_key_exists($keyword, $this->keywords_old)) {
                 // if keyword is new, save index information
 
-                $nextid = $this->db->nextid($this->cfg['tab']['keywords']);
+                //$nextid = $this->db->nextid($this->cfg['tab']['keywords']);
 
                 $sql = "INSERT INTO ".$this->cfg['tab']['keywords']."
-                            (keyword, ".$this->place.", idlang, idkeyword)
+                            (keyword, ".$this->place.", idlang)
                         VALUES
-                            ('".Contenido_Security::escapeDB($keyword, $this->db)."', '".Contenido_Security::escapeDB($index_string, $this->db)."', ".Contenido_Security::toInteger($this->lang).", ".Contenido_Security::toInteger($nextid).")";
+                            ('".Contenido_Security::escapeDB($keyword, $this->db)."', '".Contenido_Security::escapeDB($index_string, $this->db)."', ".Contenido_Security::toInteger($this->lang).")";
             } else {
                 // if keyword allready exists, create new index_string
                 if (preg_match("/&$this->idart=/", $this->keywords_old[$keyword])) {

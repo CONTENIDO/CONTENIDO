@@ -151,8 +151,10 @@ $sStatCode = '
 	if ($GLOBALS[\'db\']->next_record()) {
 		$sql = \'UPDATE \'.$GLOBALS[\'cfg\'][\'tab\'][\'stat\'].\' SET visited=visited + 1 WHERE idcatart="\'.Contenido_Security::toInteger($GLOBALS[\'idcatart\']).\'" AND idclient="\'.Contenido_Security::toInteger($GLOBALS[\'client\']).\'" AND idlang="\'.Contenido_Security::toInteger($GLOBALS[\'lang\']).\'"\';
 	} else {
-		$next = $GLOBALS[\'db\']->nextid($GLOBALS[\'cfg\'][\'tab\'][\'stat\']); $next =  Contenido_Security::escapeDB($next, $db);
-		$sql  = \'INSERT INTO \'.$GLOBALS[\'cfg\'][\'tab\'][\'stat\'].\' (visited, idcatart, idlang, idstat, idclient) VALUES (1, "\'.Contenido_Security::toInteger($GLOBALS[\'idcatart\']).\'", "\'. Contenido_Security::toInteger($GLOBALS[\'lang\']).\'", "\'.$next.\'", "\'. Contenido_Security::toInteger($GLOBALS[\'client\']).\'")\';
+		//$next = $GLOBALS[\'db\']->nextid($GLOBALS[\'cfg\'][\'tab\'][\'stat\']);
+		// $next =  Contenido_Security::escapeDB($next, $db);
+		$sql  = \'INSERT INTO \'.$GLOBALS[\'cfg\'][\'tab\'][\'stat\'].\' (visited, idcatart, idlang, idclient) 
+		VALUES (1, "\'.Contenido_Security::toInteger($GLOBALS[\'idcatart\']).\'", "\'. Contenido_Security::toInteger($GLOBALS[\'lang\']).\'", "\'. Contenido_Security::toInteger($GLOBALS[\'client\']).\'")\';
 	}
 	$GLOBALS[\'db\']->query($sql);
 ';
