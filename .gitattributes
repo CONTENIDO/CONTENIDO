@@ -46,6 +46,7 @@ cms/includes/functions.include.php -text
 cms/includes/functions.navigation.php -text
 cms/index.php -text
 cms/js/index.php -text
+cms/layouts/Standard/Standard.html -text
 cms/logs/index.php -text
 cms/modules/article_include/info.xml -text
 cms/modules/article_include/php/article_include_input.php -text

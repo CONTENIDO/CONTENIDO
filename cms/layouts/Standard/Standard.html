@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <container id="1" name="ContenidoHeader" types="Content" mode="fixed" default="Contenido_Header">ContenidoHeader</container>
+        <title><container id="10" name="TitleTag" types="Content" mode="fixed" default="Title_Tag">TitleTag</container></title>
+        <link rel="stylesheet" href="css/contenido_sample.css" type="text/css" media="all" />
+        <link rel="shortcut icon" href="favicon.ico" />
+        <!--[if lte IE 6]>
+            <style type="text/css">
+                .clearfix {height:1px;}
+            </style>
+        <![endif]-->
+    </head>
+    <body>
+
+        <div id="outerContainer">
+
+            <div id="head">
+                <container id="20" name="Header" types="Content" mode="fixed" default="Header">Header</container>
+            </div>
+
+            <div id="contentContainer" class="clearfix">
+                <div id="navigation">
+                    <container id="30" name="Navigation_Main" types="Navigation" mode="fixed" default="Navigation_Main">Navigation_Main</container>
+                    <container id="40" name="Search_Input" types="Content" mode="optional" default="Search_Input">Search_Input</container>
+                </div>
+                <div id="whiteBg">
+                    <div id="content">
+                        <container id="50" name="Headline" types="Content" mode="optional" default="Headline">Headline</container>
+                        <container id="51" name="SubHeadline" types="Content" mode="optional" default="Sub_Headline">SubHeadline</container>
+                        <container id="52" name="Text" types="Content" mode="optional" default="">Content 1</container>
+                        <container id="53" name="Text" types="Content" mode="optional" default="">Content 2</container>
+                        <container id="54" name="Text" types="Content" mode="optional" default="">Content 3</container>
+                        <container id="55" name="Text" types="Content" mode="optional" default="">Content 4</container>
+                        <container id="56" name="Text" types="Content" mode="optional" default="">Content 5</container>
+                        <container id="57" name="Text" types="Content" mode="optional" default="">Content 6</container>
+                        <container id="58" name="Text" types="Content" mode="optional" default="">Content 7</container>
+                        <container id="59" name="Text" types="Content" mode="optional" default="">Content 8</container>
+                        <div class="hr2"><hr /></div>
+                    </div>
+                    <div id="teasersRight">
+                        <container id="60" name="Teaser_Right" types="Content" mode="optional" default="Teaser_Right">Teaser_Right</container>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- /outerContainer -->
+
+        <div id="footer">
+            <div id="footerContainer">
+                <container id="70" name="Logo_Bottom" types="Content" mode="fixed" default="Logo_Bottom">Logo_Bottom</container>
+                <div id="footerContentContainer" class="clearfix">
+                    <div id="footerContentLeft">
+                        <container id="75" name="Navigation_Meta" types="Content" mode="fixed" default="Navigation_Meta">Navigation_Meta</container>
+                        <container id="76" name="Footnotes" types="Content" mode="fixed" default="Footnotes">Footnotes</container>
+                    </div>
+                    <div id="footerContentRight">
+                        <container id="80" name="Login_Form" types="Content" mode="fixed" default="Login_Form">Login_Form</container>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>
