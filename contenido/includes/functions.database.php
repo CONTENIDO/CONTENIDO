@@ -378,11 +378,11 @@ function dbUpdateSequence($sequencetable, $table, $db = false)
             $highestval = 0;
         }
 
-        $sql = "DELETE FROM " . Contenido_Security::escapeDB($sequencetable, $db) . " WHERE seq_name = '".Contenido_Security::escapeDB($table, $db)."'";
-        $db->query($sql);
+        #$sql = "DELETE FROM " . Contenido_Security::escapeDB($sequencetable, $db) . " WHERE seq_name = '".Contenido_Security::escapeDB($table, $db)."'";
+        #$db->query($sql);
 
-        $sql = "INSERT INTO " . Contenido_Security::escapeDB($sequencetable, $db) ." SET seq_name = '".Contenido_Security::escapeDB($table, $db)."', nextid = '".Contenido_Security::toInteger($highestval)."'";
-        $db->query($sql);
+        #$sql = "INSERT INTO " . Contenido_Security::escapeDB($sequencetable, $db) ." SET seq_name = '".Contenido_Security::escapeDB($table, $db)."', nextid = '".Contenido_Security::toInteger($highestval)."'";
+        #$db->query($sql);
     }
 
     if ($bClose == true) {

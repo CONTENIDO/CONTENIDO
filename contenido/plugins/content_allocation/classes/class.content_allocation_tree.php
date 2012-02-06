@@ -44,6 +44,8 @@ class pApiTree {
 
 	/**
 	 * 
+	 * Contenido DB
+	 * @var DB_Contenido
 	 */
 	var $db = null;
 
@@ -324,7 +326,7 @@ class pApiTree {
 	function storeItem ($treeItem) {
 		
 		if (!$treeItem['idpica_alloc']) { // insert
-			$treeItem['idpica_alloc'] = $this->db->nextid($this->table['pica_alloc']);
+			//$treeItem['idpica_alloc'] = $this->db->nextid($this->table['pica_alloc']);
 			$treeItem['sortorder'] = $this->_fetchMaxOrder($treeItem['parentid']) + 1;
 			
 			if ($treeItem['parentid'] == 'root') {
@@ -334,11 +336,11 @@ class pApiTree {
 			$treeItem['name'] = $this->_inFilter($treeItem['name']);
 			
 			$sql = "INSERT INTO " . $this->table['pica_alloc'] . "
-					(idpica_alloc, parentid, sortorder)
+					( parentid, sortorder)
 					VALUES
-					(" . Contenido_Security::toInteger($treeItem['idpica_alloc']) . ", " . Contenido_Security::toInteger($treeItem['parentid']) . ", " . Contenido_Security::toInteger($treeItem['sortorder']) . ")";
+					(" . Contenido_Security::toInteger($treeItem['parentid']) . ", " . Contenido_Security::toInteger($treeItem['sortorder']) . ")";
 			$this->db->query($sql);
-
+			$treeItem['idpica_alloc'] = $this->db->getLastInsertedId($this->table['pica_alloc']);
 			$sql = "INSERT INTO " . $this->table['pica_lang'] . "
 					(idpica_alloc, idlang, name)
 					VALUES

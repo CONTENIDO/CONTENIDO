@@ -110,7 +110,7 @@ function isArtInMultipleUse($idart)
 function is_alphanumeric($test, $umlauts = true)
 {
     if ($umlauts == true) {
-        $match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
+        $match = "/^[a-z0-9ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ]+$/i";
     } else {
         $match = "/^[a-z0-9 ]+$/i";
     }
@@ -973,9 +973,9 @@ function addArtspec($artspectext, $online)
         $db->query($sql);
     } else {
         $sql = "INSERT INTO ".$cfg['tab']['art_spec']."
-                (idartspec, client, lang, artspec, online, artspecdefault)
+                (client, lang, artspec, online, artspecdefault)
                 VALUES
-                (".Contenido_Security::toInteger($db->nextid($cfg['tab']['art_spec'])).", '".Contenido_Security::toInteger($client)."', '".Contenido_Security::toInteger($lang)."',
+                ('".Contenido_Security::toInteger($client)."', '".Contenido_Security::toInteger($lang)."',
                 '".Contenido_Security::escapeDB(urldecode($artspectext), $db)."', 0, 0)";
         $db->query($sql);
     }

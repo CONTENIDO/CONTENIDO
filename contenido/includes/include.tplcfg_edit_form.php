@@ -128,16 +128,16 @@ if ($idart) {
         } else {
             if ($idtpl) {
                 // create new configuration entry
-                $nextid = $db3->nextid($cfg['tab']['tpl_conf']);
+                //$nextid = $db3->nextid($cfg['tab']['tpl_conf']);
 
-                $sql = "INSERT INTO ".$cfg['tab']['tpl_conf']." (idtplcfg, idtpl) VALUES (".(int) $nextid.", ".(int) $idtpl.")";
+                $sql = "INSERT INTO ".$cfg['tab']['tpl_conf']." (idtpl) VALUES (".(int) $idtpl.")";
                 $db->query($sql);
-
+                $idtplcfg = $db->getLastInsertedId($cfg['tab']['tpl_conf']);
+                
                 // update art_lang
-                $sql = "UPDATE ".$cfg['tab']['art_lang']." SET idtplcfg=".(int) $nextid." WHERE idart=".(int) $idart." AND idlang=".(int) $lang;
+                $sql = "UPDATE ".$cfg['tab']['art_lang']." SET idtplcfg=".(int) $idtplcfg." WHERE idart=".(int) $idart." AND idlang=".(int) $lang;
                 $db->query($sql);
-
-                $idtplcfg = $nextid;
+               
             }
         }
 
@@ -171,16 +171,15 @@ if ($idart) {
     } else {
         if ($idtpl) {
             // create new configuration entry
-            $nextid = $db3->nextid($cfg['tab']['tpl_conf']);
+            //$nextid = $db3->nextid($cfg['tab']['tpl_conf']);
 
-            $sql = "INSERT INTO ".$cfg['tab']['tpl_conf']." (idtplcfg, idtpl) VALUES (".(int) $nextid.", ".(int) $idtpl.")";
+            $sql = "INSERT INTO ".$cfg['tab']['tpl_conf']." (idtpl) VALUES (".(int) $idtpl.")";
             $db->query($sql);
-
+            $idtplcfg = $db->getLastInsertedId($cfg['tab']['tpl_conf']);
+            
             // update cat_lang
-            $sql = "UPDATE ".$cfg['tab']['cat_lang']." SET idtplcfg=".(int) $nextid." WHERE idcat=".(int) $idcat." AND idlang=".(int) $lang;
+            $sql = "UPDATE ".$cfg['tab']['cat_lang']." SET idtplcfg=".(int) $idtplcfg ." WHERE idcat=".(int) $idcat." AND idlang=".(int) $lang;
             $db->query($sql);
-
-            $idtplcfg = $nextid;
         }
     }
 }
@@ -209,16 +208,16 @@ if (!$db->next_record()) {
 
         while ($db->next_record()) {
             // get data
-            $nextid    = $db3->nextid($cfg['tab']['container_conf']);
+            //$nextid    = $db3->nextid($cfg['tab']['container_conf']);
             $number    = $db->f('number');
             $container = $db->f('container');
 
             // write new entry
             $sql = "INSERT INTO
                         ".$cfg['tab']['container_conf']."
-                        (idcontainerc, idtplcfg, number, container)
+                        (idtplcfg, number, container)
                     VALUES
-                        (".(int) $nextid.", ".(int) $idtplcfg.", ".(int) $number.", '".$db2->escape($container)."')";
+                        (".(int) $idtplcfg.", ".(int) $number.", '".$db2->escape($container)."')";
 
             $db2->query($sql);
         }

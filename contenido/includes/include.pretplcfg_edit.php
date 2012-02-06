@@ -51,19 +51,19 @@ if ( !isset($idtplcfg) ) {
 
     if ( $idtplcfg == 0 ) {
 
-        $nextid = $db->nextid($cfg["tab"]["tpl_conf"]);
+        //$nextid = $db->nextid($cfg["tab"]["tpl_conf"]);
         $timestamp = time();
-        
-        $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET idtplcfg = '".Contenido_Security::toInteger($nextid)."' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
-        $db->query($sql);
-        
         $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]."
-                    (idtplcfg, idtpl, status, author, created, lastmodified)
+                    (idtpl, status, author, created, lastmodified)
                 VALUES
-                    ('".Contenido_Security::toInteger($nextid)."', '".Contenido_Security::toInteger($idtpl)."', '', '', '".$timestamp."', '".$timestamp."')";
+                    ('".Contenido_Security::toInteger($idtpl)."', '', '', '".$timestamp."', '".$timestamp."')";
         
 		$db->query($sql);
-        $idtplcfg = $nextid;
+        $idtplcfg = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
+        
+        $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
+        $db->query($sql);
+        
     }
 
 }
@@ -97,8 +97,8 @@ if (isset($idtplcfg)) {
 
             foreach ($varstring as $col=>$val) {
                 // insert all containers
-                $sql  = "INSERT INTO ".$cfg["tab"]["container_conf"]." (idcontainerc, idtplcfg, number, container) ".
-                        "VALUES ('".$db->nextid($cfg["tab"]["container_conf"])."', '".Contenido_Security::toInteger($idtplcfg)."', '".Contenido_Security::toInteger($col)."', '".Contenido_Security::escapeDB($val, $db)."') ";
+                $sql  = "INSERT INTO ".$cfg["tab"]["container_conf"]." (idtplcfg, number, container) ".
+                        "VALUES ('".Contenido_Security::toInteger($idtplcfg)."', '".Contenido_Security::toInteger($col)."', '".Contenido_Security::escapeDB($val, $db)."') ";
                 $db->query($sql);
             }
         }

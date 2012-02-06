@@ -96,33 +96,29 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
 			$usetimemgmt = "0";
 		}
 				
-        $new_idart = $db->nextid($cfg["tab"]["art"]);
-
+        
+        # Table 'con_art'
+        $db->free();
+        $sql = "INSERT INTO ".$cfg["tab"]["art"]." (idclient) VALUES ('".Contenido_Security::toInteger($client)."')";
+        $db->query($sql);
+       // $new_idart = $db->nextid($cfg["tab"]["art"]);
+        $new_idart = $db->getLastInsertedId($cfg["tab"]["art"]);
+      
         # Set self defined Keywords
         if ( $keyart != "" ) {
             $keycode[1][1] = $keyart;
         }
 
-        # Table 'cat_art'
-        # Check if there are articles in this category.
-        # If not make it a start article
-        $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-        $db->query($sql);
-        $db->next_record();
-
-        # Table 'con_art'
-        $sql = "INSERT INTO ".$cfg["tab"]["art"]." (idart, idclient) VALUES ('".Contenido_Security::toInteger($new_idart)."', '".Contenido_Security::toInteger($client)."')";
-        $db->query($sql);
-
         # Table 'con_stat'
-        $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".Contenido_Security::toInteger($idcat)."' AND idart = '".Contenido_Security::toInteger($new_idart)."'";
+        $db->free();
+        $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE 'idcat' = '".Contenido_Security::toInteger($idcat)."' AND 'idart' = '".Contenido_Security::toInteger($new_idart)."'";
         $db->query($sql);
         $db->next_record();
         $idcatart = $db->f("idcatart");
 
         $a_languages[] = $lang;
         foreach ($a_languages as $tmp_lang) {
-            $sql = "INSERT INTO ".$cfg["tab"]["stat"]." (idstat, idcatart, idlang, idclient, visited) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["stat"]))."',
+            $sql = "INSERT INTO ".$cfg["tab"]["stat"]." (idcatart, idlang, idclient, visited) VALUES (
                     '".Contenido_Security::toInteger($idcatart)."', '".Contenido_Security::toInteger($tmp_lang)."', '".Contenido_Security::toInteger($client)."', '0')";
             $db->query($sql);
         }
@@ -133,7 +129,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
 
             $lastmodified = ( $lang == $tmp_lang ) ? $lastmodified : 0;
 
-			$nextidartlang = $db->nextid($cfg["tab"]["art_lang"]);
+			//$nextidartlang = $db->nextid($cfg["tab"]["art_lang"]);
 			if(($online==1)){
 				$published_value = date("Y-m-d H:i:s");
 				$publishedby_value = $auth->auth["uname"];
@@ -144,7 +140,6 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
 			
 			$sql = "INSERT INTO
 						".$cfg["tab"]["art_lang"]." (
-            			idartlang,
                         idart,
                         idlang,
                         title,
@@ -170,7 +165,6 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
                         time_target_cat,
                         time_online_move
                         ) VALUES (
-                        '".Contenido_Security::toInteger($nextidartlang)."',
                         '".Contenido_Security::toInteger($new_idart)."',
                         '".Contenido_Security::toInteger($tmp_lang)."',
                         '".Contenido_Security::escapeDB($title, $db)."',
@@ -204,7 +198,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
 	
 			foreach ($availableTags as $key => $value)
 			{
-				conSetMetaValue($nextidartlang,
+				conSetMetaValue($db->getLastInsertedId($cfg["tab"]["art_lang"]),
 								$key,
 								$_POST['META'.$value["name"]]);
         	}
@@ -229,7 +223,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
             if ( !in_array($value, $tmp_idcat) ) {
 
                 # INSERT -> Table 'cat_art'
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_art"]." (idcatart, idcat, idart) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_art"]))."', '".Contenido_Security::toInteger($value)."',
+                $sql = "INSERT INTO ".$cfg["tab"]["cat_art"]." (idcat, idart) VALUES ('".Contenido_Security::toInteger($value)."',
                         '".Contenido_Security::toInteger($idart)."')";
                 $db->query($sql);
 
@@ -244,7 +238,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
 
                 foreach ($a_languages as $tmp_lang) {
 
-                    $sql = "INSERT INTO ".$cfg["tab"]["stat"]." (idstat, idcatart, idlang, idclient, visited) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["stat"]))."',
+                    $sql = "INSERT INTO ".$cfg["tab"]["stat"]." (idcatart, idlang, idclient, visited) VALUES (
                             '".Contenido_Security::toInteger($tmp_idcatart)."', '".Contenido_Security::toInteger($tmp_lang)."', '".Contenido_Security::toInteger($client)."', '0')";
                     $db->query($sql);
                 }
@@ -409,7 +403,7 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
             if (!in_array($value, $tmp_idcat) ) {
 
                 # INSERT insert 'cat_art' table
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_art"]." (idcatart, idcat, idart) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_art"]))."', '".Contenido_Security::toInteger($value)."',
+                $sql = "INSERT INTO ".$cfg["tab"]["cat_art"]." (idcat, idart) VALUES ('".Contenido_Security::toInteger($value)."',
                         '".Contenido_Security::toInteger($idart)."')";
                 $db->query($sql);
 
@@ -423,7 +417,7 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
                 $a_languages = getLanguagesByClient($client);
 
                 foreach ($a_languages as $tmp_lang) {
-                    $sql = "INSERT INTO ".$cfg["tab"]["stat"]." (idstat, idcatart, idlang, idclient, visited) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["stat"]))."',
+                    $sql = "INSERT INTO ".$cfg["tab"]["stat"]." (idcatart, idlang, idclient, visited) VALUES (
                             '".Contenido_Security::toInteger($tmp_idcatart)."', '".Contenido_Security::toInteger($tmp_lang)."', '".Contenido_Security::toInteger($client)."', '0')";
                     $db->query($sql);
                 }
@@ -598,7 +592,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
             $db->query($sql);
     } else {
 
-            $sql = "INSERT INTO ".$cfg["tab"]["content"]." (idcontent, idartlang, idtype, typeid, value, author, created, lastmodified) VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["content"]))."',
+            $sql = "INSERT INTO ".$cfg["tab"]["content"]." (idartlang, idtype, typeid, value, author, created, lastmodified) VALUES(
                     '".Contenido_Security::toInteger($idartlang)."', '".Contenido_Security::toInteger($idtype)."', '".Contenido_Security::toInteger($typeid)."', '".Contenido_Security::escapeDB($value, $db)."',
                     '".Contenido_Security::escapeDB($author, $db)."', '".Contenido_Security::escapeDB($date, $db)."', '".Contenido_Security::escapeDB($date, $db)."')";
             $db->query($sql);
@@ -998,13 +992,14 @@ function conChangeTemplateForCat($idcat, $idtpl)
                create new configuration and
                copy data from pre-cfg */
 
-            /* get new id */
-            $new_idtplcfg = $db2->nextid($cfg["tab"]["tpl_conf"]);
 
             /* create new configuration */
-            $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]." (idtplcfg, idtpl) VALUES ('".Contenido_Security::toInteger($new_idtplcfg)."', '".Contenido_Security::toInteger($idtpl)."')";
+            $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]." (idtpl) VALUES ('".Contenido_Security::toInteger($idtpl)."')";
             $db->query($sql);
 
+            /* get new id */
+            $new_idtplcfg = $db2->getLastInsertedId($cfg["tab"]["tpl_conf"]);
+            
             /* extract pre-configuration data */
             $sql = "SELECT * FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
             $db->query($sql);
@@ -1012,16 +1007,17 @@ function conChangeTemplateForCat($idcat, $idtpl)
             while ( $db->next_record() ) {
 
                 /* get data */
-                $nextid     = $db2->nextid($cfg["tab"]["container_conf"]);
+                //$nextid     = $db2->nextid($cfg["tab"]["container_conf"]);
+                
                 $number     = $db->f("number");
                 $container  = $db->f("container");
 
                 /* write new entry */
                 $sql = "INSERT INTO
                             ".$cfg["tab"]["container_conf"]."
-                            (idcontainerc, idtplcfg, number, container)
+                            (idtplcfg, number, container)
                         VALUES
-                            ('".Contenido_Security::toInteger($nextid)."', '".Contenido_Security::toInteger($new_idtplcfg)."', '".Contenido_Security::toInteger($number)."', '".Contenido_Security::escapeDB($container, $db2)."')";
+                            ('".Contenido_Security::toInteger($new_idtplcfg)."', '".Contenido_Security::toInteger($number)."', '".Contenido_Security::escapeDB($container, $db2)."')";
 
                 $db2->query($sql);
 
@@ -1053,13 +1049,13 @@ function conChangeTemplateForCat($idcat, $idtpl)
 
             /* template is not pre-configured,
                create a new configuration.  */
-            $new_idtplcfg = $db->nextid($cfg["tab"]["tpl_conf"]);
 
             $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]."
-                    (idtplcfg, idtpl) VALUES
-                    ('".Contenido_Security::toInteger($new_idtplcfg)."', '".Contenido_Security::toInteger($idtpl)."')";
-
+                    ( idtpl) VALUES
+                    ('".Contenido_Security::toInteger($idtpl)."')";
             $db->query($sql);
+
+            $new_idtplcfg = $db->getLastInsertedId(($cfg["tab"]["tpl_conf"]));
             
             /* update 'cat_lang' table */
             $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET idtplcfg = '".Contenido_Security::toInteger($new_idtplcfg)."' WHERE idcat = '".Contenido_Security::toInteger($idcat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
@@ -1677,13 +1673,12 @@ function conCopyTemplateConfiguration ($srcidtplcfg)
 	
 	$idtpl = $db->f("idtpl");
 	
-	$nextidtplcfg = $db->nextid($cfg["tab"]["tpl_conf"]);
 	$created = date("Y-m-d H:i:s");
 	
-	$sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"] . " (idtplcfg, idtpl, created) VALUES ('".Contenido_Security::toInteger($nextidtplcfg)."', '".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::escapeDB($created, $db)."')";
+	$sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"] . " (idtpl, created) VALUES ('".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::escapeDB($created, $db)."')";
 	$db->query($sql);
 	
-	return $nextidtplcfg;
+	return $db->getLastInsertedId(($cfg["tab"]["tpl_conf"]));
 }
 
 function conCopyContainerConf ($srcidtplcfg, $dstidtplcfg)
@@ -1707,9 +1702,9 @@ function conCopyContainerConf ($srcidtplcfg, $dstidtplcfg)
 	
 	foreach ($val as $key => $value)
 	{
-		$nextidcontainerc = $db->nextid($cfg["tab"]["container_conf"]);
+		//$nextidcontainerc = $db->nextid($cfg["tab"]["container_conf"]);
 		
-		$sql = "INSERT INTO ".$cfg["tab"]["container_conf"]." (idcontainerc, idtplcfg, number, container) VALUES ('".Contenido_Security::toInteger($nextidcontainerc)."', '".Contenido_Security::toInteger($dstidtplcfg)."',
+		$sql = "INSERT INTO ".$cfg["tab"]["container_conf"]." (idtplcfg, number, container) VALUES ('".Contenido_Security::toInteger($dstidtplcfg)."',
                 '".Contenido_Security::toInteger($key)."', '".Contenido_Security::escapeDB($value, $db)."')";
 		$db->query($sql);	
 	}
@@ -1747,7 +1742,7 @@ function conCopyContent ($srcidartlang, $dstidartlang)
 	
 	foreach ($val as $key => $value)
 	{
-		$nextid = $db->nextid($cfg["tab"]["content"]);
+		//$nextid = $db->nextid($cfg["tab"]["content"]);
 		$idtype = $value["idtype"];
 		$typeid = $value["typeid"];
 		$lvalue = $value["value"];
@@ -1756,8 +1751,8 @@ function conCopyContent ($srcidartlang, $dstidartlang)
 		$created = date("Y-m-d H:i:s");
 		
 		$sql = "INSERT INTO ".$cfg["tab"]["content"]
-		      ." (idcontent, idartlang, idtype, typeid, value, version, author, created) ".
-		      "VALUES ('".Contenido_Security::toInteger($nextid)."', '".Contenido_Security::toInteger($dstidartlang)."', '".Contenido_Security::toInteger($idtype)."', '".Contenido_Security::toInteger($typeid)."',
+		      ." ( idartlang, idtype, typeid, value, version, author, created) ".
+		      "VALUES ('".Contenido_Security::toInteger($dstidartlang)."', '".Contenido_Security::toInteger($idtype)."', '".Contenido_Security::toInteger($typeid)."',
               '".Contenido_Security::escapeDB($lvalue, $db)."', '".Contenido_Security::escapeDB($version, $db)."', '".Contenido_Security::escapeDB($author, $db)."', '".Contenido_Security::escapeDB($created, $db)."')";
 		      
 		$db->query($sql);	
@@ -1783,7 +1778,7 @@ function conCopyArtLang ($srcidart, $dstidart, $newtitle, $bUseCopyLabel = true)
 	while ($db->next_record())
 	{
 		
-		$nextid = $db2->nextid($cfg["tab"]["art_lang"]);
+		//$nextid = $db2->nextid($cfg["tab"]["art_lang"]);
 		/* Copy the template configuration */
 		if ($db->f("idtplcfg") != 0)
 		{
@@ -1791,7 +1786,6 @@ function conCopyArtLang ($srcidart, $dstidart, $newtitle, $bUseCopyLabel = true)
 		 	conCopyContainerConf($db->f("idtplcfg"), $newidtplcfg);	
 		}
 		
-		conCopyContent($db->f("idartlang"), $nextid);		
 		
 		$idartlang = $nextid;
 		$idart = $dstidart;
@@ -1830,13 +1824,13 @@ function conCopyArtLang ($srcidart, $dstidart, $newtitle, $bUseCopyLabel = true)
 		$locked = $db->f("locked");
 		
 		$sql = "INSERT INTO ".$cfg["tab"]["art_lang"]."
-				(idartlang, idart, idlang, idtplcfg, title,
+				(idart, idlang, idtplcfg, title,
 				pagetitle, summary, created, lastmodified,
 				author, online, redirect, redirect_url,
 				artsort, timemgmt, datestart, dateend, 
 				status, free_use_01, free_use_02, free_use_03,
 				time_move_cat, time_target_cat, time_online_move,
-				external_redirect, locked) VALUES ('".Contenido_Security::toInteger($idartlang)."',
+				external_redirect, locked) VALUES (
 				'".Contenido_Security::toInteger($idart)."',
 				'".Contenido_Security::toInteger($idlang)."',
 				'".Contenido_Security::toInteger($idtplcfg)."',
@@ -1865,6 +1859,8 @@ function conCopyArtLang ($srcidart, $dstidart, $newtitle, $bUseCopyLabel = true)
 
 		$db2->query($sql);
 		
+		conCopyContent($db->f("idartlang"), $db->getLastInsertedId($cfg["tab"]["art_lang"]));	
+		
         // execute CEC hook
         CEC_Hook::execute('Contenido.Article.conCopyArtLang_AfterInsert', array(
             'idartlang' => Contenido_Security::toInteger($idartlang), 
@@ -1880,13 +1876,13 @@ function conCopyArtLang ($srcidart, $dstidart, $newtitle, $bUseCopyLabel = true)
 		
 		while ($db->next_record())
 		{
-			$nextidmetatag = $db2->nextid($cfg["tab"]["meta_tag"]);
+			//$nextidmetatag = $db2->nextid($cfg["tab"]["meta_tag"]);
 			$metatype = $db->f("idmetatype");
 			$metavalue = $db->f("metavalue");
 			$sql = "INSERT INTO ".$cfg["tab"]["meta_tag"]."
-						(idmetatag, idartlang, idmetatype, metavalue)
+						(idartlang, idmetatype, metavalue)
 						VALUES
-						('".Contenido_Security::toInteger($nextidmetatag)."', '".Contenido_Security::toInteger($idartlang)."', '".Contenido_Security::toInteger($metatype)."', '".Contenido_Security::escapeDB($metavalue, $db2)."')";
+						('".Contenido_Security::toInteger($idartlang)."', '".Contenido_Security::toInteger($metatype)."', '".Contenido_Security::escapeDB($metavalue, $db2)."')";
 			$db2->query($sql);
 		}
 		
@@ -1912,11 +1908,11 @@ function conCopyArticle ($srcidart, $targetcat = 0, $newtitle = "", $bUseCopyLab
 	}
 	
 	$idclient = $db->f("idclient");
-	$dstidart = $db->nextid($cfg["tab"]["art"]);
 	
-	$sql = "INSERT INTO ".$cfg["tab"]["art"]." (idart, idclient) VALUES ('".Contenido_Security::toInteger($dstidart)."', '".Contenido_Security::toInteger($idclient)."')";
+	$sql = "INSERT INTO ".$cfg["tab"]["art"]." (idclient) VALUES ('".Contenido_Security::toInteger($idclient)."')";
 	$db->query($sql);
-	
+	//$dstidart = $db->nextid($cfg["tab"]["art"]);
+	$dstidart = $db->getLastInsertedId($cfg["tab"]["art"]);
 	conCopyArtLang($srcidart, $dstidart, $newtitle, $bUseCopyLabel);
 	
 	// Update category relationship
@@ -1925,10 +1921,10 @@ function conCopyArticle ($srcidart, $targetcat = 0, $newtitle = "", $bUseCopyLab
 	
 	while ($db->next_record())
 	{
-		$nextid = $db2->nextid($cfg["tab"]["cat_art"]);
+		//$nextid = $db2->nextid($cfg["tab"]["cat_art"]);
 		
 		// These are the insert values
-		$aFields = Array("idcatart" => Contenido_Security::toInteger($nextid),
+		$aFields = Array(
 						 "idcat" => ($targetcat != 0) ? Contenido_Security::toInteger($targetcat) : Contenido_Security::toInteger($db->f("idcat")),
 						 "idart" => Contenido_Security::toInteger($dstidart),
 						 "is_start" => 0,
@@ -2026,7 +2022,6 @@ function conSyncArticle ($idart, $srclang, $dstlang)
 	$db->query($sql);
 	
 	if ($db->next_record() && ($db2->num_rows() == 0) ) {
-		$newidartlang = $db2->nextid($cfg["tab"]["art_lang"]);
 		
 		if ($db->f("idtplcfg") != 0)
 		{
@@ -2053,12 +2048,12 @@ function conSyncArticle ($idart, $srclang, $dstlang)
 		
 		$sql = "INSERT INTO
 					".$cfg["tab"]["art_lang"]."
-				(idartlang, idart, idlang, idtplcfg, title,urlname,
+				(idart, idlang, idtplcfg, title,urlname,
 				 pagetitle, summary, created, lastmodified,
 				 author, modifiedby, online, redirect, redirect_url,
 				 artsort, status, external_redirect)
 				VALUES
-				('".Contenido_Security::toInteger($newidartlang)."', '".Contenido_Security::toInteger($idart)."',
+				( '".Contenido_Security::toInteger($idart)."',
 				'".Contenido_Security::toInteger($dstlang)."', '".Contenido_Security::toInteger($newidtplcfg)."',
 				'".Contenido_Security::escapeDB($title, $db2)."',
 				'".Contenido_Security::escapeDB($urlname, $db2)."',
@@ -2075,6 +2070,7 @@ function conSyncArticle ($idart, $srclang, $dstlang)
 				'".Contenido_Security::toInteger($status)."',
 				'".Contenido_Security::escapeDB($external_redirect, $db2)."')";
 		$db2->query($sql);
+	    $newidartlang = $db2->getLastInsertedId($cfg["tab"]["art_lang"]);
 
         // execute CEC hook
         $param['src_art_lang']  = $db->Record;
@@ -2097,7 +2093,7 @@ function conSyncArticle ($idart, $srclang, $dstlang)
 		
 		while ($db->next_record())
 		{
-			$newidcontent = $db2->nextid($cfg["tab"]["content"]);
+			//$newidcontent = $db2->nextid($cfg["tab"]["content"]);
 			$idtype = $db->f("idtype");
 			$typeid = $db->f("typeid");
 			$value = $db->f("value");
@@ -2108,10 +2104,10 @@ function conSyncArticle ($idart, $srclang, $dstlang)
 
 			$sql = "INSERT INTO	
 						".$cfg["tab"]["content"]."
-					(idcontent, idartlang, idtype, typeid,
+					(idartlang, idtype, typeid,
 					 value, version, author, created, lastmodified)
 					VALUES
-					('".Contenido_Security::toInteger($newidcontent)."', '".Contenido_Security::toInteger($newidartlang)."',
+					('".Contenido_Security::toInteger($newidartlang)."',
 					'".Contenido_Security::toInteger($idtype)."', '".Contenido_Security::toInteger($typeid)."',
 					'".Contenido_Security::escapeDB($value, $db2)."',
 					'".Contenido_Security::escapeDB($version, $db2)."',
@@ -2128,13 +2124,13 @@ function conSyncArticle ($idart, $srclang, $dstlang)
 		
 		while ($db->next_record())
 		{
-			$nextidmetatag = $db2->nextid($cfg["tab"]["meta_tag"]);
+			//$nextidmetatag = $db2->nextid($cfg["tab"]["meta_tag"]);
 			$metatype = $db->f("idmetatype");
 			$metavalue = $db->f("metavalue");
 			$sql = "INSERT INTO ".$cfg["tab"]["meta_tag"]."
-						(idmetatag, idartlang, idmetatype, metavalue)
+						(idartlang, idmetatype, metavalue)
 						VALUES
-						('".Contenido_Security::toInteger($nextidmetatag)."', '".Contenido_Security::toInteger($newidartlang)."', '".Contenido_Security::toInteger($metatype)."', '".Contenido_Security::escapeDB($metavalue, $db2)."')";
+						('".Contenido_Security::toInteger($newidartlang)."', '".Contenido_Security::toInteger($metatype)."', '".Contenido_Security::escapeDB($metavalue, $db2)."')";
 			$db2->query($sql);
 		}
 				 

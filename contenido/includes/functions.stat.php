@@ -87,9 +87,9 @@ function statsArchive($yearmonth)
     while ($db->next_record()) {
         $insertSQL = "INSERT INTO
                           ".$cfg["tab"]["stat_archive"]."
-                          ( idstatarch, archived, idcatart, idlang, idclient, visited, visitdate)
+                          ( archived, idcatart, idlang, idclient, visited, visitdate)
                       VALUES
-                          (".Contenido_Security::toInteger($db2->nextid($cfg["tab"]["stat_archive"])).",
+                          (
                            ".$yearmonth.",
                            ".Contenido_Security::toInteger($db->f(0)).",
                            ".Contenido_Security::toInteger($db->f(1)).",
@@ -116,9 +116,8 @@ function statsArchive($yearmonth)
     while ($db->next_record()) {
         $insertSQL = "INSERT INTO
                           ".$cfg["tab"]["stat"]."
-                          ( idstat, idcatart, idlang, idclient, visited )
+                          ( idcatart, idlang, idclient, visited )
                       VALUES (
-                          ".Contenido_Security::toInteger($db2->nextid($cfg["tab"]["stat"])).",
                           ".Contenido_Security::toInteger($db->f(0)).",
                           ".Contenido_Security::toInteger($db->f(2)).",
                           ".Contenido_Security::toInteger($db->f(1)).",

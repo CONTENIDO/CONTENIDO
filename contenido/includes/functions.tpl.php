@@ -68,25 +68,32 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         
         if (!$idtpl) {
 
-            $idtpl = $db->nextid($cfg["tab"]["tpl"]);
-            $idtplcfg = $db->nextid($cfg["tab"]["tpl_conf"]);
-
-            /* Insert new entry in the
-               Template Conf table  */
-            $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]."
-                    (idtplcfg, idtpl, author) VALUES
-                   ('".Contenido_Security::toInteger($idtplcfg)."', '".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::escapeDB($auth->auth["uname"], $db)."')";
-
-            $db->query($sql);
+//            $idtpl = $db->nextid($cfg["tab"]["tpl"]);
+//            $idtplcfg = $db->nextid($cfg["tab"]["tpl_conf"]);
 
             /* Insert new entry in the
                Template table  */
             $sql = "INSERT INTO ".$cfg["tab"]["tpl"]."
-                    (idtpl, idtplcfg, name, description, deletable, idlay, idclient, author, created, lastmodified) VALUES
-                    ('".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::toInteger($idtplcfg)."', '".Contenido_Security::escapeDB($name, $db)."', '".Contenido_Security::escapeDB($description, $db)."',
+                    (idtplcfg, name, description, deletable, idlay, idclient, author, created, lastmodified) VALUES
+                    ('".Contenido_Security::toInteger(0)."', '".Contenido_Security::escapeDB($name, $db)."', '".Contenido_Security::escapeDB($description, $db)."',
                     '1', '".Contenido_Security::toInteger($idlay)."', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($author, $db)."', '".Contenido_Security::escapeDB($date, $db)."',
                     '".Contenido_Security::escapeDB($date, $db)."')";
 
+            $db->query($sql);
+            $idtpl = $db->getLastInsertedId($cfg["tab"]["tpl"]);
+             
+            /* Insert new entry in the
+               Template Conf table  */
+            $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]."
+                    (idtpl, author) VALUES
+                   ('".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::escapeDB($auth->auth["uname"], $db)."')";
+
+            $db->query($sql);
+            $idtplcfg = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
+            
+            /* Update new idtplconf*/
+            $sql = "UPDATE ".$cfg["tab"]["tpl_conf"]." SET idtplcfg='".Contenido_Security::toInteger($idtplcfg)."' 
+            WHERE idtpl='".Contenido_Security::toInteger($idtpl)."'";
             $db->query($sql);
 
             // set correct rights for element
@@ -108,9 +115,8 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
                foreach($c as $idcontainer => $dummyval) {
 
-                  $sql = "INSERT INTO ".$cfg["tab"]["container"]." (idcontainer, idtpl, number, idmod) VALUES ";
+                  $sql = "INSERT INTO ".$cfg["tab"]["container"]." (idtpl, number, idmod) VALUES ";
                   $sql .= "(";
-                  $sql .= "'".Contenido_Security::toInteger($db->nextid($cfg["tab"]["container"]))."', ";
                   $sql .= "'".Contenido_Security::toInteger($idtpl)."', ";
                   $sql .= "'".Contenido_Security::toInteger($idcontainer)."', ";
                   $sql .= "'".Contenido_Security::toInteger($c[$idcontainer])."'";
@@ -425,28 +431,34 @@ function tplDuplicateTemplate($idtpl) {
 
     $idclient   = $db->f("idclient");
     $idlay      = $db->f("idlay");
-    $new_idtpl  = $db->nextid($cfg["tab"]["tpl"]);
-	//modified (added) 2008-06-30 timo.trautmann added fix module settings were also copied
-	$idtpl_conf = $db->f("idtplcfg");
-    if($idtpl_conf) {
-	    $new_idtpl_conf  = $db->nextid($cfg["tab"]["tpl_conf"]);  
-    }
-	//modified (added) 2008-06-30 end
+    //$new_idtpl  = $db->nextid($cfg["tab"]["tpl"]);
+	
     $name       = sprintf(i18n("%s (Copy)"), $db->f("name"));
     $descr      = $db->f("description");
     $author     = $auth->auth["uname"];
     $created    = time();
     $lastmod    = time();
-
-	//modified (added) 2008-06-30 : idtplcfg ->  $new_idtpl 
+    
+    $idtpl_conf = $db->f("idtplcfg");
+    if($idtpl_conf) {
+        // after inserted con_template, we have to update idptl
+        $templateConf = array('idtpl'=>0, 'status'=>0, 'author'=>$author, 'created'=>$created);
+        $db->insert($cfg["tab"]["tpl_conf"], $templateConf);
+        $new_idtpl_conf = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
+    }
+    
     $sql = "INSERT INTO
                 ".$cfg["tab"]["tpl"]."
-                (idclient, idlay, idtpl, ".($idtpl_conf?'idtplcfg,':'')." name, description, deletable,author, created, lastmodified)
+                (idclient, idlay, ".($idtpl_conf?'idtplcfg,':'')." name, description, deletable,author, created, lastmodified)
             VALUES
-                ('".Contenido_Security::toInteger($idclient)."', '".Contenido_Security::toInteger($idlay)."', '".Contenido_Security::toInteger($new_idtpl)."',  ".($idtpl_conf?"'".Contenido_Security::toInteger($new_idtpl_conf)."', ":'')." '".Contenido_Security::escapeDB($name, $db)."',
+                ('".Contenido_Security::toInteger($idclient)."', '".Contenido_Security::toInteger($idlay)."', ".($idtpl_conf?"'".Contenido_Security::toInteger($new_idtpl_conf)."', ":'')." '".Contenido_Security::escapeDB($name, $db)."',
                  '".Contenido_Security::escapeDB($descr, $db)."', '1', '".Contenido_Security::escapeDB($author, $db)."', '".Contenido_Security::escapeDB($created, $db)."', '".Contenido_Security::escapeDB($lastmod, $db)."')";
     $db->query($sql);
+    $new_idtpl = $db->getLastInsertedId($cfg["tab"]["tpl"]);
 
+    // update template_conf, set idtpl width right value.
+    $db->update($cfg["tab"]["tpl_conf"], array('idtpl'=>$new_idtpl), array('idtplcfg'=>$new_idtpl_conf));
+    
     $a_containers = array();
 
     $sql = "SELECT
@@ -466,10 +478,10 @@ function tplDuplicateTemplate($idtpl) {
 
     foreach ($a_containers as $key => $value) {
 
-        $nextid = $db->nextid($cfg["tab"]["container"]);
+        //$nextid = $db->nextid($cfg["tab"]["container"]);
 
         $sql = "INSERT INTO ".$cfg["tab"]["container"]."
-                (idcontainer, idtpl, number, idmod) VALUES ('".Contenido_Security::toInteger($nextid)."', '".Contenido_Security::toInteger($new_idtpl)."', '".Contenido_Security::toInteger($key)."', '".Contenido_Security::toInteger($value)."')";
+                (idtpl, number, idmod) VALUES ('".Contenido_Security::toInteger($new_idtpl)."', '".Contenido_Security::toInteger($key)."', '".Contenido_Security::toInteger($value)."')";
 
         $db->query($sql);
 
@@ -495,10 +507,11 @@ function tplDuplicateTemplate($idtpl) {
    
         foreach ($a_container_cfg as $key => $value) {
    
-		   $nextid = $db->nextid($cfg["tab"]["container_conf"]);
+		  
 
 		   $sql = "INSERT INTO ".$cfg["tab"]["container_conf"]."
-					   (idcontainerc, idtplcfg, number, container) VALUES ('".Contenido_Security::toInteger($nextid)."', '".Contenido_Security::toInteger($new_idtpl_conf)."', '".Contenido_Security::escapeDB($key, $db)."', '".Contenido_Security::escapeDB($value, $db)."')";
+					   (idtplcfg, number, container) VALUES 
+					   ( '".Contenido_Security::toInteger($new_idtpl_conf)."', '".Contenido_Security::escapeDB($key, $db)."', '".Contenido_Security::escapeDB($value, $db)."')";
 
 		   $db->query($sql);
    
@@ -662,7 +675,7 @@ function tplcfgDuplicate ($idtplcfg)
 	
 	if ($db->next_record())
 	{
-		$newidtplcfg = $db2->nextid($cfg["tab"]["tpl_conf"]);
+		//$newidtplcfg = $db2->nextid($cfg["tab"]["tpl_conf"]);
 		$idtpl = $db->f("idtpl");
 		$status = $db->f("status");
 		$author = $db->f("author");
@@ -671,12 +684,13 @@ function tplcfgDuplicate ($idtplcfg)
 		
 		$sql = "INSERT INTO
 				".$cfg["tab"]["tpl_conf"]."
-				(idtplcfg, idtpl, status, author, created, lastmodified)
+				(idtpl, status, author, created, lastmodified)
 				VALUES
-				('".Contenido_Security::toInteger($newidtplcfg)."', '".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::toInteger($status)."', '".Contenido_Security::escapeDB($author, $db2)."',
+				('".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::toInteger($status)."', '".Contenido_Security::escapeDB($author, $db2)."',
 				'".Contenido_Security::escapeDB($created, $db2)."', '".Contenido_Security::escapeDB($lastmodified, $db2)."')";
 				
 		$db2->query($sql);
+		$newidtplcfg = $db2->getLastInsertedId($cfg["tab"]["tpl_conf"]);
 		
 		/* Copy container configuration */
     	$sql = "SELECT 
@@ -689,17 +703,17 @@ function tplcfgDuplicate ($idtplcfg)
     	
     	while ($db->next_record())
     	{
-    		$newidcontainerc = $db2->nextid($cfg["tab"]["container_conf"]);
+    		//$newidcontainerc = $db2->nextid($cfg["tab"]["container_conf"]);
     		$number = $db->f("number");
     		$container = $db->f("container");
     		
     		$sql = "INSERT INTO
     				".$cfg["tab"]["container_conf"]."
-    				(idcontainerc, idtplcfg, number, container)
+    				( idtplcfg, number, container)
     				VALUES
-    				('".Contenido_Security::toInteger($newidcontainerc)."', '".Contenido_Security::toInteger($newidtplcfg)."', '".Contenido_Security::toInteger($number)."', '".Contenido_Security::escapeDB($container, $db2)."')";
+    				('".Contenido_Security::toInteger($newidtplcfg)."', '".Contenido_Security::toInteger($number)."', '".Contenido_Security::escapeDB($container, $db2)."')";
     		$db2->query($sql);	
-    	}	
+    	}
 	}
 	
 	return ($newidtplcfg);
@@ -780,8 +794,8 @@ function tplAutoFillModules ($idtpl)
 						$db_autofill->query($sql);
 					} else {
 						$sql = 	"INSERT INTO ".$cfg["tab"]["container"].
-							  	" (idcontainer, idtpl, number, idmod) ".
-							  	" VALUES ('".$db_autofill->nextid($cfg["tab"]["container"])."', ".
+							  	" (idtpl, number, idmod) ".
+							  	" VALUES ( ".
 							  	" '$idtpl', '$container', '$idmod')";
 						$db_autofill->query($sql);
 					}
@@ -814,8 +828,8 @@ function tplAutoFillModules ($idtpl)
 					
 					} else {
 						$sql = 	"INSERT INTO ".$cfg["tab"]["container"].
-							  	" (idcontainer, idtpl, number, idmod) ".
-							  	" VALUES ('".Contenido_Security::toInteger($db_autofill->nextid($cfg["tab"]["container"]))."', ".
+							  	" (idtpl, number, idmod) ".
+							  	" VALUES ( ".
 							  	" '".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::toInteger($container)."', '".Contenido_Security::toInteger($idmod)."')";
 						$db_autofill->query($sql);
 					}

@@ -75,13 +75,15 @@ function prResolvePathViaURLNames($path) {
              *
              * Important: This is really a hack! Don't use pathresolve_heapcache if you are
              * not sure what it does.
+             * @TODO: pls insert to this create table statetment MAX_ROWS.
              */
             $sql = 'CREATE TABLE `'.Contenido_Security::escapeDB($pathresolve_tablename, $db).'` (
-                            `idpathresolvecache` INT( 10 ) NOT NULL PRIMARY KEY ,
+                            `idpathresolvecache` INT( 10 ) NOT NULL AUTO_INCREMENT,
                             `path` VARCHAR( 255 ) NOT NULL ,
                             `idcat` INT( 10 ) NOT NULL ,
                             `idlang` INT( 10 ) NOT NULL ,
-                            `lastcached` INT(10) NOT NULL
+                            `lastcached` INT(10) NOT NULL,
+                             PRIMARY KEY  (`idpathresolvecache`)
                             ) TYPE = HEAP;';
 
             $db->query($sql);
@@ -154,10 +156,10 @@ function prResolvePathViaURLNames($path) {
     endAndLogTiming($handle);
 
     if ($cfg["pathresolve_heapcache"] == true) {
-        $nid = $db->nextid($pathresolve_tablename);
+        //$nid = $db->nextid($pathresolve_tablename);
 
-        $sql = "INSERT INTO %s SET idpathresolvecache='%s', path='%s', idcat='%s', idlang='%s', lastcached=%s";
-        $db->query(sprintf($sql, Contenido_Security::toInteger($pathresolve_tablename), Contenido_Security::toInteger($nid), Contenido_Security::escapeDB($path, $db), Contenido_Security::toInteger(key($results)), Contenido_Security::toInteger($lang), time()));
+        $sql = "INSERT INTO %s SET  path='%s', idcat='%s', idlang='%s', lastcached=%s";
+        $db->query(sprintf($sql, Contenido_Security::toInteger($pathresolve_tablename), Contenido_Security::escapeDB($path, $db), Contenido_Security::toInteger(key($results)), Contenido_Security::toInteger($lang), time()));
     }
 
     return (int) key($results);

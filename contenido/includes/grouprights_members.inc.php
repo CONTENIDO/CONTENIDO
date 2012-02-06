@@ -90,10 +90,9 @@ if(!$perm->have_perm_area_action($area,$action))
     							$db->query($sql);
     							if (!$db->next_record())
     							{
-                       				$nextid = $db->nextid($cfg["tab"]["groupmembers"]);
                        				$sql = "INSERT INTO
             								 ".$cfg["tab"]["groupmembers"]."
-            								SET idgroupuser = '".Contenido_Security::toInteger($nextid)."',
+            								SET 
             									group_id = '".Contenido_Security::escapeDB($groupid, $db)."',
             									user_id = '".Contenido_Security::escapeDB($myUser->getField("user_id"), $db)."'";
             									

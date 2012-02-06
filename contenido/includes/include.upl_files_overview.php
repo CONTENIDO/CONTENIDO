@@ -160,9 +160,9 @@ if ($action == "upl_modify_file") {
                 "LIMIT 0, 1";
         $db->query($sSql);
         if ($db->num_rows() == 0) {    // new entry
-            $iNextId = $db->nextid($cfg['tab']['upl_meta']);
+            //$iNextId = $db->nextid($cfg['tab']['upl_meta']);
             $sSql = "INSERT INTO " . $cfg['tab']['upl_meta'] . " " .
-                    "SET id_uplmeta = $iNextId, idupl = $iIdupl, idlang = $lang, " .
+                    "SET idupl = $iIdupl, idlang = $lang, " .
                     "medianame = '" . Contenido_Security::filter($medianame, $db) . "', " .
                     "description = '" . Contenido_Security::filter($description, $db) . "', " .
                     "keywords = '" . Contenido_Security::filter($keywords, $db) . "', " .

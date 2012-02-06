@@ -190,10 +190,10 @@ class Log_sql extends Log {
         $message = $this->_extractMessage($message);
 
         /* Build the SQL query for this log entry insertion. */
-        $id = $this->_db->nextId($this->_sequence);
-        $q = sprintf('insert into %s (id, logtime, ident, priority, message)' .
-                     'values(%d, CURRENT_TIMESTAMP, %s, %d, %s)',
-                     $this->_table, $id, $this->_db->quote($this->_ident),
+        //$id = $this->_db->nextId($this->_sequence);
+        $q = sprintf('insert into %s (logtime, ident, priority, message)' .
+                     'values(CURRENT_TIMESTAMP, %s, %d, %s)',
+                     $this->_table,$this->_db->quote($this->_ident),
                      $priority, $this->_db->quote($message));
 
         $result = $this->_db->query($q);

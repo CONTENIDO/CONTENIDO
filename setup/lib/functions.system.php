@@ -115,9 +115,9 @@ function updateSystemProperties($db, $table)
                 $db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db), $aData['value'], $aData['type'], $aData['name']));
             }
         } else {
-            $id = $db->nextid($table);
-            $sql = "INSERT INTO %s SET idsystemprop = '%s', type='%s', name='%s', value='%s'";
-            $db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db), $id, $aData['type'], $aData['name'], $aData['value']));
+            //$id = $db->nextid($table);
+            $sql = "INSERT INTO %s SET type='%s', name='%s', value='%s'";
+            $db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db), $aData['type'], $aData['name'], $aData['value']));
         }
     }
 }
@@ -131,9 +131,9 @@ function updateContenidoVersion($db, $table, $version)
         $sql = "UPDATE %s SET value = '%s' WHERE type='system' AND name='version'";
         $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db), Contenido_Security::escapeDB($version, $db)));
     } else {
-        $id = $db->nextid($table);
-        $sql = "INSERT INTO %s SET idsystemprop = '%s', type='system', name='version', value='%s'";
-        $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db), $id, Contenido_Security::escapeDB($version, $db)));
+        //$id = $db->nextid($table);
+        $sql = "INSERT INTO %s SET type='system', name='version', value='%s'";
+        $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db), Contenido_Security::escapeDB($version, $db)));
     }
 }
 

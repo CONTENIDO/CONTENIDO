@@ -82,8 +82,8 @@ function saverights() {
          }
          // Insert new right
          $sql = "INSERT INTO ".$cfg["tab"]["rights"]."
-                  (idright, user_id,idarea,idaction,idcat,idclient,idlang,type)
-                  VALUES ('".$db->nextid($cfg["tab"]["rights"])."', '".Contenido_Security::escapeDB($userid, $db)."','".Contenido_Security::toInteger($data[0])."','".Contenido_Security::toInteger($data[1])."','".Contenido_Security::toInteger($data[2])."','".Contenido_Security::toInteger($rights_client)."','".Contenido_Security::toInteger($rights_lang)."',0)";
+                  (user_id,idarea,idaction,idcat,idclient,idlang,type)
+                  VALUES ('".Contenido_Security::escapeDB($userid, $db)."','".Contenido_Security::toInteger($data[0])."','".Contenido_Security::toInteger($data[1])."','".Contenido_Security::toInteger($data[2])."','".Contenido_Security::toInteger($rights_client)."','".Contenido_Security::toInteger($rights_lang)."',0)";
          $db->query($sql);
       }
    }

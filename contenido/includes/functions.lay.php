@@ -90,15 +90,13 @@ function layEditLayout($idlay, $name, $description, $code) {
 	
     if (!$idlay) {
 
-        $tmp_newid = $db->nextid($cfg["tab"]["lay"]);
-        $idlay = $tmp_newid;
+        //$tmp_newid = $db->nextid($cfg["tab"]["lay"]);
 
-        $sql = "INSERT INTO ".$cfg["tab"]["lay"]." (idlay,name,alias, description, deletable, idclient, author, created, lastmodified) VALUES ('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::escapeDB($name, $db)."',
+        $sql = "INSERT INTO ".$cfg["tab"]["lay"]." (name,alias, description, deletable, idclient, author, created, lastmodified) VALUES ('".Contenido_Security::escapeDB($name, $db)."',
                 '".Contenido_Security::escapeDB($layoutAlias, $db)."','".Contenido_Security::escapeDB($description, $db)."', '1', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($author, $db)."',
                 '".Contenido_Security::escapeDB($date, $db)."', '".Contenido_Security::escapeDB($date, $db)."')";
         $db->query($sql);
-		
-        
+        $idlay = $db->getLastInsertedId($cfg["tab"]["lay"]);
       
         if( $layoutInFile->saveLayout(stripslashes($code)) == false)
         	$notification->displayNotification("error", i18n("Cant save layout in file"));

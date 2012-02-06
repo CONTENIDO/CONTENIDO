@@ -151,8 +151,8 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
                                                             type='$sType';";
     $oDb->query($sSql);
     if ($oDb->num_rows() == 0) {
-        $iNextId = $oDb->nextid('con_style_file_information');
-        $sSql = "INSERT INTO `".$cfg["tab"]["file_information"]."` ( `idsfi` ,
+       // $iNextId = $oDb->nextid('con_style_file_information');
+        $sSql = "INSERT INTO `".$cfg["tab"]["file_information"]."` ( 
                                                             `idclient` ,
                                                             `type` ,
                                                             `filename` ,
@@ -162,7 +162,6 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
                                                             `modifiedby` ,
                                                             `description` )
                                                         VALUES (
-                                                            $iNextId ,
                                                             $iIdClient,
                                                             '$sType',
                                                             '$sFilenameNew',

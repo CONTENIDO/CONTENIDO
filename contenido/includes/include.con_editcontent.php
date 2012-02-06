@@ -402,7 +402,7 @@ EOD;
                             WHERE idcatart='".Contenido_Security::toInteger($idcatart)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
                     $db->query($sql);
                 } else {
-                    $sql = "INSERT INTO ".$cfg["tab"]["code"]." (idcode, idcatart, code, idlang, idclient) VALUES ('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["code"]))."', '".Contenido_Security::toInteger($idcatart)."',
+                    $sql = "INSERT INTO ".$cfg["tab"]["code"]." (idcatart, code, idlang, idclient) VALUES ('".Contenido_Security::toInteger($idcatart)."',
                             '".Contenido_Security::escapeDB($code, $db)."', '".Contenido_Security::toInteger($lang)."', '".Contenido_Security::toInteger($client)."')";
                     $db->query($sql);
                 }

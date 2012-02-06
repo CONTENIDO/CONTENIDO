@@ -182,10 +182,10 @@ function langDuplicateFromFirstLanguage($client, $idlang)
             // Store the idartlang->idplcfg allocation for later reallocation
             $aCfgArt[] = array('idartlang' => $db->f('idartlang'), 'idtplcfg' => $db->f('idtplcfg'));
 
-            $iIdartLangNew = (int) $db2->nextid($cfg['tab']['art_lang']);
+            //$iIdartLangNew = (int) $db2->nextid($cfg['tab']['art_lang']);
             $aRs = $db->toArray();
             $iIdartLangOld = $aRs['idartlang'];
-            $aRs['idartlang'] = $iIdartLangNew;
+            //$aRs['idartlang'] = $iIdartLangNew;
             $aRs['idlang'] = $idlang;
             $aRs['created'] = date('Y-m-d H:i:s');
             $aRs['lastmodified'] = '0000-00-00 00:00:00';
@@ -193,13 +193,14 @@ function langDuplicateFromFirstLanguage($client, $idlang)
             $aRs['author'] = $auth->auth['uname'];
             unset($aRs['idclient']);
             $db2->insert($cfg['tab']['art_lang'], $aRs);
-
+            $iIdartLangNew = $db2->getLastInsertedId($cfg['tab']['art_lang']);
+            
             // duplicate entries in 'content' table
             $sql = "SELECT * FROM ".$cfg['tab']['content']." WHERE idartlang=" . (int) $iIdartLangOld;
             $db2->query($sql);
             while ($db2->next_record()) {
                 $aRs = $db2->toArray();
-                $aRs['idcontent'] = (int) $db3->nextid($cfg['tab']['content']);
+                //$aRs['idcontent'] = (int) $db3->nextid($cfg['tab']['content']);
                 $aRs['idartlang'] = $iIdartLangNew;
                 $db3->insert($cfg['tab']['content'], $aRs);
             }
@@ -216,16 +217,14 @@ function langDuplicateFromFirstLanguage($client, $idlang)
         $aCfgCat = array();
 
         while ($db->next_record()) {
-            $nextid = (int) $db2->nextid($cfg['tab']['cat_lang']);
-
-            $aCfgCat[] = array('idcatlang' => $nextid, 'idtplcfg' => (int) $db->f('idtplcfg'));
-
+            //$nextid = (int) $db2->nextid($cfg['tab']['cat_lang']);
             $aRs = $db->toArray();
-            $aRs['idcatlang'] = $nextid;
             $aRs['visible'] = 0;
             $aRs['author'] = $auth->auth['uname'];
             unset($aRs['idclient'], $aRs['parentid'], $aRs['preid'], $aRs['postid']);
             $db2->insert($cfg['tab']['cat_lang'], $aRs);
+            
+            $aCfgCat[] = array('idcatlang' => $db2->getLastInsertedId($cfg['tab']['cat_lang']), 'idtplcfg' => (int) $db->f('idtplcfg'));
         }
 
         // duplicate all entries in the 'stat' table
@@ -233,7 +232,7 @@ function langDuplicateFromFirstLanguage($client, $idlang)
         $db->query($sql);
         while ($db->next_record()) {
             $aRs = $db->toArray();
-            $aRs['idstat'] = (int) $db2->nextid($cfg['tab']['stat']);
+            //$aRs['idstat'] = (int) $db2->nextid($cfg['tab']['stat']);
             $aRs['idlang'] = $idlang;
             $aRs['visited'] = 0;
             $db2->insert($cfg['tab']['stat'], $aRs);
@@ -249,13 +248,11 @@ function langDuplicateFromFirstLanguage($client, $idlang)
         $aCfgOldNew = array();
 
         while ($db->next_record()) {
-            $nextid = (int) $db2->nextid($cfg['tab']['tpl_conf']);
-
-            $aCfgOldNew[] = array('oldidtplcfg' => (int) $db->f('idtplcfg'), 'newidtplcfg' => $nextid);
-
+           // $nextid = (int) $db2->nextid($cfg['tab']['tpl_conf']);
             $aRs = $db->toArray();
-            $aRs['idtplcfg'] = $nextid;
             $db2->insert($cfg['tab']['tpl_conf'], $aRs);
+            
+            $aCfgOldNew[] = array('oldidtplcfg' => (int) $db->f('idtplcfg'), 'newidtplcfg' => $db2->getLastInsertedId($cfg['tab']['tpl_conf']));
         }
 
 
@@ -270,7 +267,6 @@ function langDuplicateFromFirstLanguage($client, $idlang)
 
             while ($db->next_record()) {
                 $aRs = array(
-                    'idcontainerc' => $db2->nextid($cfg['tab']['container_conf']),
                     'idtplcfg' => $newidtplcfg,
                     'number' => (int) $db->f('number'),
                     'container' => $db->f('container')

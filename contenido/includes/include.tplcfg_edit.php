@@ -73,8 +73,8 @@ if ( $idtpl != 0 && $idtplcfg != 0 ) {
 
             foreach ($varstring as $col=>$val) {
                 // insert all containers
-                $sql  = "INSERT INTO ".$cfg["tab"]["container_conf"]." (idcontainerc, idtplcfg, number, container) ".
-                        "VALUES ('".$db->nextid($cfg["tab"]["container_conf"])."', '".Contenido_Security::toInteger($idtplcfg)."', '".Contenido_Security::toInteger($col)."', '".Contenido_Security::escapeDB($val, $db)."') ";
+                $sql  = "INSERT INTO ".$cfg["tab"]["container_conf"]." (idtplcfg, number, container) ".
+                        "VALUES ('".Contenido_Security::toInteger($idtplcfg)."', '".Contenido_Security::toInteger($col)."', '".Contenido_Security::escapeDB($val, $db)."') ";
                         
                 $db->query($sql);
             }

@@ -38,10 +38,11 @@ $properties = new cApiPropertyCollection();
 $db2 = new DB_Contenido();
 
 if ($action == "client_new") {
-    $nextid = $db->nextid($cfg["tab"]["clients"]);
-    $idclient = $nextid;
+   // $nextid = $db->nextid($cfg["tab"]["clients"]);
+    // $idclient = $nextid;
     $new = true;
 }
+
 if (!$perm->have_perm_area_action($area)) {
     $notification->displayNotification("error", i18n("Permission denied"));
     return;
@@ -81,7 +82,9 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                 errsite_cat = '".Contenido_Security::toInteger($errsite_cat)."',
                 errsite_art = '".Contenido_Security::toInteger($errsite_art)."',
                 idclient = '".Contenido_Security::toInteger($idclient)."'";
-
+        
+        $db->query($sql);
+        $idclient = $db->getLastInsertedId($cfg["tab"]["clients"]);
         $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
 
         // Copy the client template to the real location
@@ -115,6 +118,7 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                 $notification->displayNotification("warning", $message);
             }
         }
+      
         rereadClients();
     } else {
         $pathwithoutslash = $frontendpath;
@@ -137,9 +141,9 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                     errsite_art = '".Contenido_Security::toInteger($errsite_art)."'
                 WHERE
                     idclient = '".Contenido_Security::toInteger($idclient)."'";
+        $db->query($sql);
     }
 
-    $db->query($sql);
     $new = false;
     rereadClients();
 	

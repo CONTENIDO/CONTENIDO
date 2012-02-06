@@ -111,10 +111,6 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
         $catalias = trim($catname);
     }
 
-    $newIdCat = $db->nextid($cfg['tab']['cat']);
-    if ($newIdCat == 0) {
-        return;
-    }
 
     $client = (int) $client;
     $lang = (int) $lang;
@@ -136,7 +132,16 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     }
 
     $aLanguages = array($lang);
+    
+    $created = date('Y-m-d H:i:s');
 
+    // Entry in 'cat_lang'-table
+    $sql = "INSERT INTO ".$cfg['tab']['cat']." (preid, postid, idclient, author, created, lastmodified) VALUES(0, 0,
+            ".$client.", '".$db->escape($auth->auth['uname'])."', '".$created."', '".$created."')";
+    $db->query($sql);
+    $newIdCat = $db->getLastInsertedId($cfg['tab']['cat']);
+    
+    
     // Get id of first category tree
     $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid=0 AND postid=0 AND idclient=" . $client;
     $db->query($sql);
@@ -147,18 +152,11 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
         $sql = 'UPDATE ' . $cfg['tab']['cat'] . ' SET postid=' . $newIdCat . ' WHERE idcat=' . $rootIdCat;
         $db->query($sql);
     }
-    
-    $created = date('Y-m-d H:i:s');
-
-    // Entry in 'cat_lang'-table
-    $sql = "INSERT INTO ".$cfg['tab']['cat']." (idcat, preid, postid, idclient, author, created, lastmodified) VALUES(".$newIdCat.", 0, 0,
-            ".$client.", '".$db->escape($auth->auth['uname'])."', '".$created."', '".$created."')";
-    $db->query($sql);
 
     // Entry in 'cat_lang'-table
     foreach ($aLanguages as $tmpIdLang) {
-        $sql = "INSERT INTO ".$cfg['tab']['cat_lang']." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
-                VALUES(".$db->nextid($cfg['tab']['cat_lang']).", ".$newIdCat.", ".$tmpIdLang.",
+        $sql = "INSERT INTO ".$cfg['tab']['cat_lang']." (idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
+                VALUES(".$newIdCat.", ".$tmpIdLang.",
                 '".htmlspecialchars($catname, ENT_QUOTES)."', ".$visible.", ".$public.", 0,
                 '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".$db->escape($auth->auth['uname'])."', '".$created."', '".$created."')";
         $db->query($sql);
@@ -256,10 +254,10 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
         $bPublic = 1;
     }
 
-    $tmp_newid = $db->nextid($cfg["tab"]["cat"]);
-    if ($tmp_newid == 0) {
-        return;
-    }
+   // $tmp_newid = $db->nextid($cfg["tab"]["cat"]);
+//    if ($tmp_newid == 0) {
+//        return;
+//    }
 
     $remakeCatTable = true;
     $remakeStrTable = true;
@@ -268,61 +266,62 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
     $db->query($sql);
     $db->next_record();
     $tmp_id = $db->f("idcat");
-
+    
     if (!$tmp_id) {
         //********** Entry in 'cat'-table ************
-        $sql = "INSERT INTO ".$cfg["tab"]["cat"]." (idcat, parentid, preid, postid, idclient, author, created, lastmodified) VALUES('".Contenido_Security::toInteger($tmp_newid)."',
+        $sql = "INSERT INTO ".$cfg["tab"]["cat"]." (parentid, preid, postid, idclient, author, created, lastmodified) VALUES(
                 '".Contenido_Security::toInteger($tmp_parentid)."', '0', '0', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."',
                 '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
         $db->query($sql);
-
+        $tmp_newid = $db->getLastInsertedId($cfg["tab"]["cat"]);
+        
         //********* enter name of cat in 'cat_lang'-table ******
         $a_languages[] = $lang;
 
         foreach ($a_languages as $tmp_lang) {
             if ($tmp_lang == $lang) {
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
-                        VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
+                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
+                        VALUES('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
                         '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
                         '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                 $db->query($sql);
             } else {
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
-                        VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
+                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
+                        VALUES('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
                         '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
                         '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                 $db->query($sql);
             }
         }
     } else {
-        //********** Entry in 'cat'-table ************
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='$tmp_newid', lastmodified = '".date("Y-m-d H:i:s")."' WHERE idcat='".Contenido_Security::toInteger($tmp_id)."'";
-        $db->query($sql);
 
         //********** Entry in 'cat'-table ************
-        $sql = "INSERT INTO ".$cfg["tab"]["cat"]." (idcat, parentid, preid, postid, idclient, author, created, lastmodified) VALUES('".Contenido_Security::toInteger($tmp_newid)."',
+        $sql = "INSERT INTO ".$cfg["tab"]["cat"]." (parentid, preid, postid, idclient, author, created, lastmodified) VALUES(
                 '".Contenido_Security::toInteger($tmp_parentid)."', '".Contenido_Security::toInteger($tmp_id)."', '0', '".Contenido_Security::toInteger($client)."',
                 '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
         $db->query($sql);
-
+        $tmp_newid = $db->getLastInsertedId($cfg["tab"]["cat"]);
+        
+                //********** Entry in 'cat'-table ************
+        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='$tmp_newid', lastmodified = '".date("Y-m-d H:i:s")."' WHERE idcat='".Contenido_Security::toInteger($tmp_id)."'";
+        $db->query($sql);
         //********* enter name of cat in 'cat_lang'-table ******
         $a_languages[] = $lang;
         foreach ($a_languages as $tmp_lang) {
             if ($tmp_lang == $lang) {
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
-                        VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
+                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." ( idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
+                        VALUES('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
                         '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
                         '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                 $db->query($sql);
             } else {
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcatlang, idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
-                        VALUES('".Contenido_Security::toInteger($db->nextid($cfg["tab"]["cat_lang"]))."', '".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
+                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." ( idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
+                        VALUES('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
                         '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($bVisible)."', '".Contenido_Security::toInteger($bPublic)."', '0',
                         '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
                 $db->query($sql);
             }
         }
-
     }
 
     // set correct rights for element
@@ -446,17 +445,17 @@ function strRemakeTreeTable() {
             
     }
 
-    $iNextTreeId = $db->nextid($cfg["tab"]["cat_tree"]);
+   // $iNextTreeId = $db->nextid($cfg["tab"]["cat_tree"]);
 
     // build INSERT statement
-    $sInsertQuery = "INSERT INTO ".$cfg["tab"]["cat_tree"]." (idtree, idcat, level) VALUES ";
-    $sInsertQuery = recCats($aCategories[0], $sInsertQuery, $iNextTreeId, $aCategories);
+    $sInsertQuery = "INSERT INTO ".$cfg["tab"]["cat_tree"]." (idcat, level) VALUES ";
+    $sInsertQuery = recCats($aCategories[0], $sInsertQuery, $aCategories);
     $sInsertQuery = rtrim($sInsertQuery, " ,");
 
       // lock db table and execute INSERT query
     $db->lock($cfg["tab"]["cat_tree"]);
     $db->query($sInsertQuery);
-    $db->nextid('cat_tree');
+    //$db->nextid('cat_tree');
     dbUpdateSequence($cfg["tab"]["sequence"], $cfg["tab"]["cat_tree"], $db);
     $db->unlock($cfg["tab"]["cat_tree"]);
 
@@ -479,15 +478,14 @@ function sort_pre_post($arr) {
 }
 
 
-function recCats ($aCats, $sInsertQuery, &$iNextTreeId, &$aAllCats, $iLevel = 0) {
+function recCats ($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0) {
     if (is_array($aCats)) {
         $aCats = sort_pre_post($aCats);
         foreach ($aCats as $aCat) {
-            $sInsertQuery .= "(" . (int) $iNextTreeId . ", ".(int) $aCat['idcat'].", ". (int) $iLevel ."), ";
-            $iNextTreeId++;
+            $sInsertQuery .= "(" .(int) $aCat['idcat'].", ". (int) $iLevel ."), ";
             if (is_array($aAllCats[$aCat['idcat']])) {
                 $iSubLevel = $iLevel + 1;
-                $sInsertQuery = recCats($aAllCats[$aCat['idcat']], $sInsertQuery, $iNextTreeId, $aAllCats, $iSubLevel);
+                $sInsertQuery = recCats($aAllCats[$aCat['idcat']], $sInsertQuery, $aAllCats, $iSubLevel);
             }
         }
     }
@@ -1221,7 +1219,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
             } else {
                 $newidtplcfg = 0;
             }
-            $newidcatlang = $tmpdb->nextid($cfg["tab"]["cat_lang"]);
+            //$newidcatlang = $tmpdb->nextid($cfg["tab"]["cat_lang"]);
 
             $idcat = $tmpdb->f("idcat");
             $idlang = $targetlang;
@@ -1237,11 +1235,11 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
 
             $sql = "INSERT INTO
                 ".$cfg["tab"]["cat_lang"]."
-                (idcatlang, idcat, idlang, idtplcfg, name,
+                ( idcat, idlang, idtplcfg, name,
                  visible, public, status, author, created,
                  lastmodified, urlname)
                 VALUES
-                ('".Contenido_Security::toInteger($newidcatlang)."',
+                (
                 '".Contenido_Security::toInteger($idcat)."',
                 '".Contenido_Security::toInteger($idlang)."',
                 '".Contenido_Security::toInteger($idtplcfg)."',

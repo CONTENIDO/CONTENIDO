@@ -115,7 +115,7 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
     $db->query($sql);
 
     while ($db->next_record()) {
-        $sql = "INSERT INTO ".$cfg["tab"]["rights"]." (idright,user_id,idarea,idaction,idcat,idclient,idlang,`type`) VALUES ('".Contenido_Security::toInteger($db2->nextid($cfg["tab"]["rights"]))."',
+        $sql = "INSERT INTO ".$cfg["tab"]["rights"]." (user_id,idarea,idaction,idcat,idclient,idlang,`type`) VALUES (
                '".Contenido_Security::escapeDB($db->f("user_id"), $db)."', '".Contenido_Security::toInteger($db->f("idarea"))."', '".Contenido_Security::toInteger($db->f("idaction"))."',
                '".Contenido_Security::toInteger($newiditem)."','".Contenido_Security::toInteger($db->f("idclient"))."', '".Contenido_Security::toInteger($db->f("idlang"))."',
                '".Contenido_Security::toInteger($db->f("type"))."');";
@@ -198,8 +198,8 @@ function createRightsForElement($area, $iditem, $idlang = false)
             foreach ($TypeContainer as $type=>$ActionContainer) {
                 foreach ($ActionContainer as $idaction=>$idarea) {
                     $sql = "INSERT INTO ".$cfg["tab"]["rights"]."
-                           (idright, user_id,idarea,idaction,idcat,idclient,idlang,`type`)
-                           VALUES ('".Contenido_Security::toInteger($db2->nextid($cfg["tab"]["rights"]))."', '".Contenido_Security::toInteger($userid)."', '".Contenido_Security::toInteger($idarea)."',
+                           (user_id,idarea,idaction,idcat,idclient,idlang,`type`)
+                           VALUES ('".Contenido_Security::toInteger($userid)."', '".Contenido_Security::toInteger($idarea)."',
                            '".Contenido_Security::toInteger($idaction)."', '".Contenido_Security::toInteger($iditem)."', '".Contenido_Security::toInteger($client)."',
                            '".Contenido_Security::toInteger($idlang)."', '".Contenido_Security::toInteger($type)."')";
                     $db2->query($sql);
