@@ -12,9 +12,11 @@ include_once($contenidoPath . 'includes/startup.php');
 
 
 $db = new DB_Contenido();
+$db->free();
+
 
 // first all values higher then 0
-$filterTables = array('con_pica_alloc_con', 'con_pica_lang', 'con_sequence');
+$filterTables = array($cfg['sql']['sqlprefix'].'_pica_alloc_con', $cfg['sql']['sqlprefix'].'_pica_lang', $cfg['sql']['sqlprefix'].'_sequence');
 $sql2 = 'SELECT *
 		FROM '.$cfg['db']['connection']['database'].'.con_sequence';
 
@@ -33,11 +35,18 @@ while ($row = mysql_fetch_row($db->Query_ID)) {
        $i++;
     }
 }
-echo '<br/> Result Rows:'.$i;
+echo "\n Result Rows:".$i;
+
+if($i > 70) {
+    $sql = 'drop table if exists '.$cfg['sql']['sqlprefix'].'_sequence';
+    $db->query($sql);
+}
 
 function getNextId($row) {
     $tableName = $row[0];
-    $nextId = $row[1];
+    //$nextId = $row[1];
+    debug($row);
+    
     $db = new DB_Contenido();
     $sql = 'SHOW KEYS FROM '.$tableName.' WHERE Key_name="PRIMARY"';
     $db->query($sql);
@@ -46,7 +55,7 @@ function getNextId($row) {
         $primaryKey = $row[4];
         $dbAlter = new DB_Contenido();
         $sqlAlter = 'ALTER TABLE `'.$tableName.'` CHANGE `'.$primaryKey.'` `'.$primaryKey.'` INT( 10 ) NOT NULL AUTO_INCREMENT';
-        echo '<br/>query:'.$sqlAlter;
+        #echo '<br/>query:'.$sqlAlter;
         $dbAlter->query($sqlAlter);
         if($db->Errno !=0) {
             echo "<pre>" . $sqlAlter . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>";
