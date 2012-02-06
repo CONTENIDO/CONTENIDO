@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<module><name>GooglePlus</name>
+<description>Googleplus module</description>
+<type>Content</type>
+<alias>googleplus</alias>
+</module>

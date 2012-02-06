@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<module><name>Header</name>
+<description>Display Header with CONTENIDO Logo, an image and the current (navigation-) location.</description>
+<type>Content</type>
+<alias>header</alias>
+</module>

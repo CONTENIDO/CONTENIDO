@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<module><name>Contact_Form</name>
+<description>Dispaying contact form and submitting data via mail
+
+Author: Andreas Lindner
+Version: 1.0.1</description>
+<type>Content</type>
+<alias>contact_form</alias>
+</module>

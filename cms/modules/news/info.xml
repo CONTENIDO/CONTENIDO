@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<module><name>News</name>
+<description>teaser article of a category
+Author: Andreas Lindner
+Version:1.0</description>
+<type>Content</type>
+<alias>news</alias>
+</module>

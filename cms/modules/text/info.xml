@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<module><name>Text</name>
+<description>Displays CMS_HTML Element</description>
+<type>Content</type>
+<alias>text</alias>
+</module>
