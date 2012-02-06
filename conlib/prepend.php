@@ -54,17 +54,12 @@ unset($dbDriverFileName);
 
 require_once($_PHPLIB['libdir'] . 'ct_sql.inc');    // Data storage container: database
 require_once($_PHPLIB['libdir'] . 'ct_file.inc');   // Data storage container: file
-require_once($_PHPLIB['libdir'] . 'ct_shm.inc');    // Data storage container: memory
-require_once($_PHPLIB['libdir'] . 'ct_session.inc');// Data storage container: memory
-require_once($_PHPLIB['libdir'] . 'ct_null.inc');   // Data storage container: null -
-                                                    // no session container - CONTENIDO does not work
+require_once($_PHPLIB['libdir'] . 'ct_session.inc');// Data storage container: session
 
-require_once($_PHPLIB['libdir'] . 'session.inc');   // Required for everything below.     
-require_once($_PHPLIB['libdir'] . 'auth.inc');      // Disable this, if you are not using authentication.
-require_once($_PHPLIB['libdir'] . 'perm.inc');      // Disable this, if you are not using permission checks.
+require_once($_PHPLIB['libdir'] . 'session.inc');   // Session management     
+require_once($_PHPLIB['libdir'] . 'auth.inc');      // Authorization management
+require_once($_PHPLIB['libdir'] . 'perm.inc');      // Permission management
 
 // Additional require statements go before this line
-
 require_once($_PHPLIB['libdir'] . 'local.php');     // Required, contains your local configuration.
-
 require_once($_PHPLIB['libdir'] . 'page.inc');      // Required, contains the page management functions.

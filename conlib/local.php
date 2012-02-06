@@ -304,19 +304,6 @@ class Contenido_CT_File extends CT_File
 }
 
 /**
- * @package    CONTENIDO Core
- * @subpackage Session
- */
-class Contenido_CT_Shm extends CT_Shm
-{
-    public function __construct()
-    {
-        $this->ac_start();
-    }
-}
-
-
-/**
  * CONTENIDO session container, uses PHP's session implementation.
  *
  * NOTE: Is experimental, so don't use this in a production environment.
@@ -474,97 +461,6 @@ class Contenido_Auth extends Auth
         return $uid;
     }
 }
-
-
-/**
- * @package    CONTENIDO Core
- * @subpackage Authentication
- */
-class Contenido_Default_Auth extends Contenido_Auth
-{
-    public $classname = 'Contenido_Default_Auth';
-    public $lifetime  =  1;
-    public $nobody    = true;
-
-    public function auth_loginform()
-    {
-        global $sess, $_PHPLIB;
-        include($_PHPLIB['libdir'] . 'defloginform.ihtml');
-    }
-}
-
-
-/**
- * @package    CONTENIDO Core
- * @subpackage Authentication
- */
-class Contenido_Challenge_Auth extends Contenido_Auth
-{
-    public $classname      = 'Contenido_Challenge_Auth';
-    public $lifetime       =  1;
-    public $magic          = 'Simsalabim';  ## Challenge seed
-    public $database_class = 'DB_Contenido';
-    public $database_table = 'con_phplib_auth_user';
-
-    public function auth_loginform()
-    {
-        global $sess, $challenge, $_PHPLIB;
-
-        $challenge = md5(uniqid($this->magic));
-        $sess->register('challenge');
-
-        include($_PHPLIB['libdir'] . 'crloginform.ihtml');
-    }
-
-    public function auth_validatelogin()
-    {
-        global $username, $password, $challenge, $response, $timestamp;
-
-        if ($password == '') {
-            return false;
-        }
-
-        if (isset($username)) {
-            // This provides access for 'loginform.ihtml'
-            $this->auth['uname'] = $username;
-        }
-
-        // Sanity check: If the user presses 'reload', don't allow a login with the data
-        // again. Instead, prompt again.
-        if ($timestamp < (time() - 60 * 15)) {
-            return false;
-        }
-
-        $sql = "SELECT user_id, perms, password FROM %s WHERE username = '%s'";
-        $this->db->query($sql, $this->database_table, $username);
-
-        while ($this->db->next_record()) {
-            $uid   = $this->db->f('user_id');
-            $perm  = $this->db->f('perms');
-            $pass  = $this->db->f('password');
-        }
-        $exspected_response = md5("$username:$pass:$challenge");
-
-        // True when JS is disabled
-        if ($response == '') {
-            if ($password != $pass) {
-                return false;
-            } else {
-                $this->auth['perm'] = $perm;
-                return $uid;
-            }
-        }
-
-        // Response is set, JS is enabled
-        if ($exspected_response != $response) {
-            return false;
-        } else {
-            $this->auth['perm'] = $perm;
-            return $uid;
-        }
-    }
-}
-
 
 /**
  * Contenido_Challenge_Crypt_Auth: Keep passwords in md5 hashes rather than cleartext in database
