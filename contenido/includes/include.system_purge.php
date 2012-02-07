@@ -16,7 +16,7 @@
  * @since      file available since CONTENIDO release <= 4.8.12
  *
  * {@internal 
- *   created 2010-01-11
+ *   created  2010-01-11
  *   modified 2010-08-03, added check for the permission
  *	 modified 2010-12-14, Munkh-Ulzii Balidar, changed the select box name 
  *							to 'purge_clients' for security, see [CON-375]
@@ -64,6 +64,7 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
         	$aClientToClear[] = (int)$_POST['purge_clients'];
         }
         
+        $oPurge = new Purge($db, $cfg, $cfgClient);
         if (count($aClientToClear) > 0) {
         	// execute the selected actions
         	
@@ -73,7 +74,6 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
         	
 	        $bError = false;
 	        $sErrorMsg = '';
-	        $oPurge = new Purge($db, $cfg, $cfgClient);
 	        
 	        foreach ($aClientToClear as $iClientId) {
 	            $iClientId = (int) $iClientId;
@@ -125,52 +125,52 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
 	                
 	            }
 	        }
-
-	        $sContenido = i18n("CONTENIDO: ");
+        }
         
-	        if (isset($_POST['conInuse']) && $_POST['conInuse'] == 1) {
-	            if (!$oPurge->resetConInuse()) {
-	                $bError = true;
-	                $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['inuse']) . "<br />";
-	            }
-	        }
-	        
-	        if (isset($_POST['conPHPLibActiveSession']) && $_POST['conPHPLibActiveSession'] == 1) {
-	            if (!$oPurge->resetPHPLibActiveSession()) {
-	                $bError = true;
-	                $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['phplib_active_sessions']) . 
-	                     "<br />";
-	            }
-	        }
-	        
-	        if (isset($_POST['conLog']) && $_POST['conLog'] == 1) {
-	            if (!$oPurge->clearConLog()) {
-	                $bError = true;
-	                $sErrorMsg .= i18n("The CONTENIDO log is not cleaned!") . "<br />";
-	            }
-	        }
-	        
-	        if (isset($_POST['conCache']) && $_POST['conCache'] == 1) {
-	            if (!$oPurge->clearConCache()) {
-	                $bError = true;
-	                $sErrorMsg .= i18n("The CONTENIDO cache is not deleted!") . "<br />";
-	            }
-	        }
-	        
-	        if (isset($_POST['conCronjobs']) && $_POST['conCronjobs'] == 1) {
-	            if (!$oPurge->clearConCronjob()) {
-	                $bError = true;
-	                $sErrorMsg .= i18n("The CONTENIDO cronjobs are not cleaned!") . "<br />";
-	            }
-	        }
-	        
-	        if ($bError === false) {
-	            $sInfoMsg = $notification->returnNotification("info", i18n("The changes were successfully executed."));
-	        } else {
-	            $sErrorComplete = i18n("The changes were not all successfully completed.") . "<br /><br />" . $sErrorMsg;
-	            $sInfoMsg = $notification->returnNotification("error", $sErrorComplete);
-	        } 
-    	}
+        $sContenido = i18n("CONTENIDO: ");
+    
+        if (isset($_POST['conInuse']) && $_POST['conInuse'] == 1) {
+            if (!$oPurge->resetConInuse()) {
+                $bError = true;
+                $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['inuse']) . "<br />";
+            }
+        }
+        
+        if (isset($_POST['conPHPLibActiveSession']) && $_POST['conPHPLibActiveSession'] == 1) {
+            if (!$oPurge->resetPHPLibActiveSession()) {
+                $bError = true;
+                $sErrorMsg .= sprintf(i18n("The entries of %s table are not deleted!"), $cfg['tab']['phplib_active_sessions']) . 
+                     "<br />";
+            }
+        }
+        
+        if (isset($_POST['conLog']) && $_POST['conLog'] == 1) {
+            if (!$oPurge->clearConLog()) {
+                $bError = true;
+                $sErrorMsg .= i18n("The CONTENIDO log is not cleaned!") . "<br />";
+            }
+        }
+        
+        if (isset($_POST['conCache']) && $_POST['conCache'] == 1) {
+            if (!$oPurge->clearConCache()) {
+                $bError = true;
+                $sErrorMsg .= i18n("The CONTENIDO cache is not deleted!") . "<br />";
+            }
+        }
+        
+        if (isset($_POST['conCronjobs']) && $_POST['conCronjobs'] == 1) {
+            if (!$oPurge->clearConCronjob()) {
+                $bError = true;
+                $sErrorMsg .= i18n("The CONTENIDO cronjobs are not cleaned!") . "<br />";
+            }
+        }
+        
+        if ($bError === false || $sErrorMsg == '') {
+            $sInfoMsg = $notification->returnNotification("info", i18n("The changes were successfully executed."));
+        } else {
+            $sErrorComplete = i18n("The changes were not all successfully completed.") . "<br /><br />" . $sErrorMsg;
+            $sInfoMsg = $notification->returnNotification("error", $sErrorComplete);
+        } 
     }
     
     $oHtmlSelectHour = new  cHTMLSelectElement ('purge_clients[]', '', 'client_select');

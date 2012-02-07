@@ -4,15 +4,19 @@
  * CONTENIDO Purge class to reset some datas and files.
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Munkh-Ulzii Balidar
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.8.12
- *
+ * 
  * $Id: 
+ * {@internal 
+ *   created  2010-01-11
+ *   modified 2012-02-07, Munkh-Ulzii Balidar, fixed client cache directory, added exclude dirs
+ * }}
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -63,6 +67,11 @@ class Purge {
 	private $sDefaultCronjobDir = 'cronjobs/';
 	
 	/**
+	* @var string $aDirsExcludedWithFiles
+	*/
+	private $aDirsExcludedWithFiles = array('.', '..', '.svn', '.cvs');
+	
+	/**
 	 * @var array $aLogFileTypes
 	 */
 	private $aLogFileTypes;
@@ -86,6 +95,9 @@ class Purge {
 		
 		$this->setLogFileTypes(array('txt'));
 		$this->setCronjobFileTypes(array('job'));
+
+		$this->_setSystemDirectory();
+		
 	}
 	
 	/**
@@ -169,7 +181,6 @@ class Purge {
 		$sClientDir = $this->getClientDir($iClientId);
 		
 		$sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->sDefaultCacheDir : $sCacheDir;
-		
 		if (is_dir($sClientDir . $sCacheDir)) {
 			$sCachePath = $sClientDir . $sCacheDir;
 			return ($this->clearDir($sCachePath, $sCachePath) ? true : false);	
@@ -223,6 +234,7 @@ class Purge {
 	 * @return boolean
 	 */
 	public function clearClientLog ($iClientId, $sLogDir = 'logs/') {
+	    
 		$sClientDir = $this->getClientDir($iClientId);
 		
 		$sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->sDefaultLogDir : $sLogDir;
@@ -293,10 +305,11 @@ class Purge {
 	 * @return boolean 
 	 */
 	public function clearDir ($sDirPath, $sTmpDirPath, $bKeep = false, &$aTmpFileList = array()) {
+	    
 		if (is_dir($sDirPath) && ($handle = opendir($sDirPath))) {
 			$sTmp = str_replace(array('/', '..'), '', $sDirPath);
 		    while (false !== ($file = readdir($handle))) {
-		        if ($file != "." && $file != "..") {
+		        if (!in_array($file, $this->aDirsExcludedWithFiles)) {
 					$sFilePath = $sDirPath . '/' . $file;	
 					$sFilePath = str_replace('//', '/', $sFilePath);
 		            if (is_dir($sFilePath)) {
@@ -311,8 +324,18 @@ class Purge {
 		            } 
 		        }
 		    }
-		    if (str_replace(array('/', '..'), '', $sDirPath) !=  str_replace(array('/', '..'), '', $sTmpDirPath) && $bKeep === false) 
+		    
+		    $aDirs = explode('/', $sDirPath);
+		    if (end($aDirs) == '') {
+		        array_pop($aDirs);
+		    }
+		    $sDirName = end($aDirs);
+		    
+		    if (str_replace(array('/', '..'), '', $sDirPath) !=  str_replace(array('/', '..'), '', $sTmpDirPath) 
+		    && $bKeep === false && !in_array($sDirName, $this->aDirsExcludedWithFiles)) {
+		        
 		    	rmdir($sDirPath);
+		    } 
 	        
 	        closedir($handle);
 	        
@@ -362,7 +385,8 @@ class Purge {
 	 * @return string $sClientDir
 	 */
 	public function getClientDir($iClientId) {
-		$sClientDir = str_replace($this->cfg['path']['frontend'], '..', $this->cfgClient[$iClientId]['path']['frontend']);
+		//$sClientDir = str_replace($this->cfg['path']['frontend'], '..', $this->cfgClient[$iClientId]['path']['frontend']);
+		$sClientDir = $this->cfgClient[$iClientId]['path']['frontend'];
 		
 		return $sClientDir;
 	}
@@ -384,6 +408,7 @@ class Purge {
 	 * Set cronjob file types 
 	 * 
 	 * @param array $aTypes
+	 * @return void
 	 */
 	public function setCronjobFileTypes($aTypes) {
 		if (count($aTypes) > 0) {
@@ -391,6 +416,22 @@ class Purge {
 				$this->aCronjobFileTypes[] = $sType;
 			}
 		}
+	}
+	
+	/**
+	 * Check and set the system directories to exclude from purge
+	 * @return void
+	 */
+	private function _setSystemDirectory() {
+        
+	    $sDirsToExcludeWithFiles = getSystemProperty('system', 'purge-dirstoexclude-withfiles');
+	    $aDirsToExcludeWithFiles = array_map('trim', explode(',', $sDirsToExcludeWithFiles));
+        if (count($aDirsToExcludeWithFiles) < 1 || empty($aDirsToExcludeWithFiles[0])) {
+            $aDirsToExcludeWithFiles = $this->aDirsExcludedWithFiles;
+            setSystemProperty('system', 'purge-dirstoexclude-withfiles', implode(',', $aDirsToExcludeWithFiles));
+        }
+        
+        $this->aDirsExcludedWithFiles = $aDirsToExcludeWithFiles;
 	}
 	
 }
