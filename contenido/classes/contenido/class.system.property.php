@@ -97,7 +97,34 @@ class cApiSystemPropertyCollection extends ItemCollection
     {
         unset(self::$_enableCache, self::$_entries);
     }
-    
+
+    /**
+     * Updatess a existing system property entry by it's id.
+     * @param  string  $type
+     * @param  string  $name
+     * @param  string  $value
+     * @param  int  $id
+     * @return cApiSystemProperty|null
+     */
+    public function setTypeNameValueById($type, $name, $value, $id)
+    {
+        $item = $this->fetchById($id);
+        if (!$item) {
+            return null;
+        }
+
+        $item->set('type', $this->escape($type));
+        $item->set('name', $this->escape($name));
+        $item->set('value', $this->escape($value));
+        $item->store();
+
+        if (self::$_enableCache) {
+            $this->_addToCache($item);
+        }
+
+        return $item;
+    }
+
     /**
      * Updatess a existing system property entry or creates it.
      * @param  string  $type
@@ -105,14 +132,14 @@ class cApiSystemPropertyCollection extends ItemCollection
      * @param  string  $value
      * @return cApiSystemProperty
      */
-    public function set($type, $name, $value)
+    public function setValueByTypeName($type, $name, $value)
     {
         $item = $this->fetchByTypeName($type, $name);
         if ($item) {
             $item->set('value', $this->escape($value));
             $item->store();
         } else {
-            $item = $this->create($type, $name, $value, $idcatlang);
+            $item = $this->create($type, $name, $value);
         }
 
         if (self::$_enableCache) {
@@ -163,6 +190,21 @@ class cApiSystemPropertyCollection extends ItemCollection
             $props[] = clone $property;
         }
         return $props;
+    }
+
+    /**
+     * Returns system property by it's id.
+     * @param  int  $id
+     * @return cApiSystemProperty|null
+     */
+    public function fetchById($id)
+    {
+        if (self::$_enableCache) {
+            return $this->_fetchByIdFromCache($id);
+        }
+
+        $item = parent::fetchById($id);
+        return ($item && !$item->virgin) ? $item : null;
     }
 
     /**
@@ -279,6 +321,23 @@ class cApiSystemPropertyCollection extends ItemCollection
             $props[] = clone $obj;
         }
         return $props;
+    }
+
+    /**
+     * Fetches entry by id from cache.
+     * @param   int  $id
+     * @return  cApiSystemProperty|null
+     */
+    protected function _fetchByIdFromCache($id)
+    {
+        $obj = new cApiSystemProperty();
+        foreach (self::$_entries as $_id => $entry) {
+            if ($_id == $id) {
+                $obj->loadByRecordSet($entry);
+                return $obj;
+            }
+        }
+        return null;
     }
 
     /**

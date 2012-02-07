@@ -798,16 +798,9 @@ function setSystemProperty($type, $name, $value, $idsystemprop = 0)
     $systemPropColl = new cApiSystemPropertyCollection();
 
     if ($idsystemprop == 0) {
-        $prop = $systemPropColl->fetchByTypeName($type, $name);
+        $prop = $systemPropColl->setValueByTypeName($type, $name, $value);
     } else {
-        $prop = $systemPropColl->fetchById($idsystemprop);
-    }
-
-    if ($prop) {
-        $prop->set('value', $prop->escape($value));
-        $prop->store();
-    } else {
-        $prop = $systemPropColl->create($type, $name, $value);
+        $prop = $systemPropColl->setTypeNameValueById($type, $name, $value, $idsystemprop);
     }
 }
 
