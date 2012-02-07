@@ -64,6 +64,53 @@ function injectSQL($db, $prefix, $file, $replacements = array(), &$failedChunks)
     return true;
 }
 
+function addAutoIncrementToTables($db, $cfg) {
+    $errorLogHandle = fopen($cfg['path']['contenido']."logs/errorlog.txt", "wb+");
+    $filterTables = array($cfg['sql']['sqlprefix'].'_pica_alloc_con',
+                          $cfg['sql']['sqlprefix'].'_pica_lang',
+                          $cfg['sql']['sqlprefix'].'_sequence');
+    
+    $sql = 'SHOW TABLES FROM  '.$cfg['db']['connection']['database'].'';
+    $db->query($sql);
+    
+    if($db->Error !=0) {
+        fwrite($errorLogHandle, "<pre>" . $sql . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>");
+    }
+    
+    $i = 0;
+    while ($row = mysql_fetch_row($db->Query_ID)) {
+        if(in_array($row[0], $filterTables) === false) {
+           getNextId($row, $errorLogHandle);
+           $i++;
+        }
+    }
+    if($i > 70) {
+        $sql = 'drop table if exists '.$cfg['sql']['sqlprefix'].'_sequence';
+        $db->query($sql);
+    }
+    fclose($errorLogHandle);
+}
+
+function getNextId($row, $errorLogHandle) {
+    $tableName = $row[0];
+    //$nextId = $row[1];
+    //debug($row);
+    
+    $db = getSetupMySQLDBConnection(false);
+    $sql = 'SHOW KEYS FROM '.$tableName.' WHERE Key_name="PRIMARY"';
+    $db->query($sql);
+     while ($row = mysql_fetch_row($db->Query_ID)) {
+        
+        $primaryKey = $row[4];
+        $dbAlter = getSetupMySQLDBConnection(false);
+        $sqlAlter = 'ALTER TABLE `'.$tableName.'` CHANGE `'.$primaryKey.'` `'.$primaryKey.'` INT( 10 ) NOT NULL AUTO_INCREMENT';
+        $dbAlter->query($sqlAlter);
+        if($db->Errno !=0) {
+            fwrite($errorLogHandle, "<pre>" . $sql . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>");
+        }
+    }
+}
+
 //
 // remove_comments will strip the sql comment lines out of an uploaded sql file
 // specifically for mssql and postgres type files in the install....

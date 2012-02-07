@@ -284,6 +284,9 @@ if ($currentStep < $totalSteps) {
     $aNothing = array();
 
     injectSQL($db, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array(), $aNothing);
+    
+    // update to autoincrement
+    addAutoIncrementToTables($db, $cfg);
 	
 	if ($_SESSION['setuptype'] == 'setup') {
 		switch ($_SESSION['clientmode']) {
