@@ -82,7 +82,7 @@ function addAutoIncrementToTables($db, $cfg) {
     $i = 0;
     while ($row = mysql_fetch_row($db->Query_ID)) {
         if(in_array($row[0], $filterTables) === false && strpos($row[0], $cfg['sql']['sqlprefix'].'_') !== false) {
-           getNextId($row, $errorLogHandle);
+           alterTableHandling($row, $errorLogHandle);
            $i++;
         }
     }
@@ -93,7 +93,7 @@ function addAutoIncrementToTables($db, $cfg) {
     fclose($errorLogHandle);
 }
 
-function getNextId($row, $errorLogHandle) {
+function alterTableHandling($row, $errorLogHandle) {
     $tableName = $row[0];
     //$nextId = $row[1];
     //debug($row);
