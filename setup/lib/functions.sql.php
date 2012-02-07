@@ -70,7 +70,8 @@ function addAutoIncrementToTables($db, $cfg) {
                           $cfg['sql']['sqlprefix'].'_pica_lang',
                           $cfg['sql']['sqlprefix'].'_sequence',
                           $cfg['sql']['sqlprefix'].'_phplib_active_sessions',
-                          $cfg['sql']['sqlprefix'].'_online_user',);
+                          $cfg['sql']['sqlprefix'].'_online_user',
+                          $cfg['sql']['sqlprefix'].'_pi_linkwhitelist',);
     
     $sql = 'SHOW TABLES FROM  '.$cfg['db']['connection']['database'].'';
     $db->query($sql);
