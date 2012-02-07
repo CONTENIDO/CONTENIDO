@@ -68,7 +68,9 @@ function addAutoIncrementToTables($db, $cfg) {
     $errorLogHandle = fopen($cfg['path']['contenido']."logs/errorlog.txt", "wb+");
     $filterTables = array($cfg['sql']['sqlprefix'].'_pica_alloc_con',
                           $cfg['sql']['sqlprefix'].'_pica_lang',
-                          $cfg['sql']['sqlprefix'].'_sequence');
+                          $cfg['sql']['sqlprefix'].'_sequence',
+                          $cfg['sql']['sqlprefix'].'_phplib_active_sessions',
+                          $cfg['sql']['sqlprefix'].'_online_user',);
     
     $sql = 'SHOW TABLES FROM  '.$cfg['db']['connection']['database'].'';
     $db->query($sql);
@@ -79,14 +81,14 @@ function addAutoIncrementToTables($db, $cfg) {
     
     $i = 0;
     while ($row = mysql_fetch_row($db->Query_ID)) {
-        if(in_array($row[0], $filterTables) === false) {
+        if(in_array($row[0], $filterTables) === false && strpos($row[0], $cfg['sql']['sqlprefix'].'_') !== false) {
            getNextId($row, $errorLogHandle);
            $i++;
         }
     }
     if($i > 70) {
         $sql = 'drop table if exists '.$cfg['sql']['sqlprefix'].'_sequence';
-        $db->query($sql);
+        $db->query($sql);Tabellen nach Namen filtern
     }
     fclose($errorLogHandle);
 }
