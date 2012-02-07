@@ -88,7 +88,7 @@ function addAutoIncrementToTables($db, $cfg) {
     }
     if($i > 70) {
         $sql = 'drop table if exists '.$cfg['sql']['sqlprefix'].'_sequence';
-        $db->query($sql);Tabellen nach Namen filtern
+        $db->query($sql);
     }
     fclose($errorLogHandle);
 }
