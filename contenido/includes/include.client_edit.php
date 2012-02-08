@@ -43,16 +43,11 @@ if ($action == "client_new") {
     $new = true;
 }
 
+          
 if (!$perm->have_perm_area_action($area)) {
     $notification->displayNotification("error", i18n("Permission denied"));
     return;
 }
-
-if (!isset($idclient)) {
-    $notification->displayNotification("error", i18n("No client ID passed"));
-    return;
-}
-
 
 if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))) {
     $sNewNotification = '';
@@ -80,10 +75,10 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
             SET
                 name = '".Contenido_Security::escapeDB($clientname, $db)."',
                 errsite_cat = '".Contenido_Security::toInteger($errsite_cat)."',
-                errsite_art = '".Contenido_Security::toInteger($errsite_art)."',
-                idclient = '".Contenido_Security::toInteger($idclient)."'";
+                errsite_art = '".Contenido_Security::toInteger($errsite_art)."'";
         
         $db->query($sql);
+      
         $idclient = $db->getLastInsertedId($cfg["tab"]["clients"]);
         $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
 
