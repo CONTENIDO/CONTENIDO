@@ -199,7 +199,7 @@ table.setupBodyOuterTable .progressBarModule .progressBarModuleContent {
 table.setupBodyOuterTable .progressBarModule .progressBarModuleContent #progressbar {
     width: 0;
     padding: 0;
-    background: #bfcf00 url(../../images/controls/pbend.gif) top right no-repeat;
+    background: #bfcf00 url(../images/controls/pbend.gif) top right no-repeat;
     height: 16px;
     line-height: 16px;
 }
