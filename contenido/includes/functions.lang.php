@@ -339,18 +339,16 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
     }
 
     //************ check if there are still arts online
-    // @todo  Why do we delete only online article?
     $sql = "SELECT * FROM ".$cfg['tab']['art_lang']." AS A, ".$cfg['tab']['art']." AS B "
-         . "WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang . " AND A.online=1";
+         . "WHERE A.idart=B.idart AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
     $db->query($sql);
     if ($db->next_record()) {
         conDeleteArt($db->f('idart'));
     }
 
     //************ check if there are visible categories
-    // @todo  Why do we delete only viible categories?
     $sql = "SELECT * FROM ".$cfg['tab']['cat_lang']." AS A, ".$cfg['tab']['cat']." AS B "
-         . "WHERE A.idcat=B.idcat AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang . " AND A.visible=1";
+         . "WHERE A.idcat=B.idcat AND B.idclient=" . $iIdClient . " AND A.idlang=" . $iIdLang;
     $db->query($sql);
     if ($db->next_record()) {
         strDeleteCategory($db->f('idcat'));
