@@ -254,7 +254,7 @@ class cApiUser extends Item
     public function setUserProperty($type, $name, $value)
     {
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
-        $userProps = $userPropColl->set($type, $name, $value);
+        $userProps = $userPropColl->setValueByTypeName($type, $name, $value);
     }
 
     /**

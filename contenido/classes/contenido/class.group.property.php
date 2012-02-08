@@ -143,7 +143,7 @@ class cApiGroupPropertyCollection extends ItemCollection
      * @param  int     $idcatlang
      * @return cApiGroupProperty
      */
-    public function set($type, $name, $value, $idcatlang = 0)
+    public function setValueByTypeName($type, $name, $value, $idcatlang = 0)
     {
         $item = $this->fetchByGroupIdTypeName($type, $name);
         if ($item) {

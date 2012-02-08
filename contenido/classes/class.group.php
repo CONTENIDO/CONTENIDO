@@ -399,7 +399,7 @@ class Group
     function setGroupProperty($type, $name, $value)
     {
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
-        return $groupPropColl->set($type, $name, $value);
+        return $groupPropColl->setValueByTypeName($type, $name, $value);
     }
 
 
