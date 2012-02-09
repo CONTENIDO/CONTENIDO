@@ -81,7 +81,7 @@ foreach ($availableYears as $yearIterator)
         
         foreach ($availableMonths as $monthIterator)
         {
-                $monthCanonical = statReturnCanonicalMonth($monthIterator);
+                $monthCanonical = getCanonicalMonth($monthIterator);
                 $monthLink = '<a target="right_bottom" href="'.$sess->url("main.php?area=stat&frame=4&action=stat_show&displaytype=top10&yearmonth=".$yearIterator . $monthIterator).'">'."$monthCanonical".'</a>';
 
                 $dark = !$dark;

@@ -79,7 +79,7 @@ if ($action == "stat_show")
             {
                 $tpl->set('s', 'STATTITLE', i18n("Current"). ' '.$stattype);
             } else {
-                $tpl->set('s', 'STATTITLE', $stattype." ".statReturnCanonicalMonth(substr($yearmonth, 4,2)).' '.substr($yearmonth,0,4));
+                $tpl->set('s', 'STATTITLE', $stattype." ".getCanonicalMonth(substr($yearmonth, 4,2)).' '.substr($yearmonth,0,4));
             }
         }
 
