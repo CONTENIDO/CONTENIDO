@@ -124,10 +124,7 @@ $cfg['AvailableCharsets'] = array(
 //@ini_set('display_errors', true);
 
 /* Log errors to a file */
-//@ini_set('log_errors', true);
-
-/* The file in which we write the error log */
-//@ini_set('error_log', $cfg['path']['contenido'] . 'logs/errorlog.txt');
+@ini_set('log_errors', true);
 
 /* Report all errors except warnings */
 error_reporting(E_ALL ^E_NOTICE);
