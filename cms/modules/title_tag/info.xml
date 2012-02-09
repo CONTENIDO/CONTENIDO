@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<module><name>Title_Tag</name>
+<description>Outputs html tag &lt;title&gt; with navigation path to article.</description>
+<type>Content</type>
+<alias>title_tag</alias>
+</module>

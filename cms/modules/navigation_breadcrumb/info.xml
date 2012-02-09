@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<module><name>Navigation_Breadcrumb</name>
+<description>Display a breadcrumb navigation.</description>
+<type>Navigation</type>
+<alias>navigation_breadcrumb</alias>
+</module>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<module><name>Headline</name>
+<description>Output standard h1 headline</description>
+<type>Content</type>
+<alias>headline</alias>
+</module>
