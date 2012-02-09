@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<module><name>Article_Include</name>
-<description>This module includes an article into an other
-
-Author: Willi Man, Andreas Lindner, 4fb, B. Behrens
-Version: 1.1</description>
-<type>Content</type>
-<alias>article_include</alias>
-</module>

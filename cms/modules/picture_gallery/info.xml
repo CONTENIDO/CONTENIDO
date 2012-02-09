@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<module><name>Picture_Gallery</name>
-<description>Displays a picture gallery by files in upload directory</description>
-<type>Content</type>
-<alias>picture_gallery</alias>
-</module>

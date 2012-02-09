@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<module><name>Contenido_Header</name>
-<description>Display HTML Comment with Infos about CONTENIDO and the Sample Client.</description>
-<type>Content</type>
-<alias>contenido_header</alias>
-</module>
