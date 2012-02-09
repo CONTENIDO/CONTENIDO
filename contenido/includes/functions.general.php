@@ -1766,6 +1766,8 @@ function buildStackString($startlevel = 3)
  */
 function cWarning($file, $line, $message)
 {
+	global $cfg;
+	
 	$msg = "[".date("Y-m-d H:i:s")."] ";
 	$msg .= "Warning: \"".$message."\" at ";
 	
@@ -1791,6 +1793,8 @@ function cWarning($file, $line, $message)
  */
 function cError($file, $line, $message)
 {
+	global $cfg;
+	
 	$msg = "[".date("Y-m-d H:i:s")."] ";
 	$msg .= "Error: \"".$message."\" at ";
 	
@@ -1815,6 +1819,8 @@ function cError($file, $line, $message)
  */
 function cDeprecated($amsg = "")
 {
+	global $cfg;
+	
 	$e = new Exception();
 	$stack = $e->getTrace();
 	$function_name = $stack[1]['function'];
