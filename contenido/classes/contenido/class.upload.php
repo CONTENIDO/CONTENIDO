@@ -333,12 +333,12 @@ class UploadCollection extends cApiUploadCollection
 {
     public function __construct()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class ". get_parent_class($this)." instead");
         parent::__construct();
     }
     public function UploadCollection()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 }
@@ -352,12 +352,12 @@ class UploadItem extends cApiUpload
 {
     public function __construct($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class ". get_parent_class($this)." instead");
         parent::__construct($mId);
     }
     public function UploadItem($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 }

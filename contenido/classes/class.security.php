@@ -358,6 +358,8 @@ class Contenido_Security
      */
     public static function checkSession()
     {
+        cDeprecated("Use checkRequestSession() instead");
+        
         return self::checkRequestSession();
     }
 

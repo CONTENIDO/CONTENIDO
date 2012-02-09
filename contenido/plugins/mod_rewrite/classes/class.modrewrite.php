@@ -874,6 +874,7 @@ class ModRewrite extends ModRewriteBase
      */
     public static function resetCategoriesAliases()
     {
+		cDeprecated("Please use ModRewrite::recreateCategoriesAliases() instead");
         self::recreateCategoriesAliases();
     }
 
@@ -922,6 +923,7 @@ class ModRewrite extends ModRewriteBase
      */
     public static function resetArticlesAliases()
     {
+		cDeprecated("Please user ModRewrite::recreateArticlesAliases() instead");
         self::recreateArticlesAliases();
     }
 
@@ -995,6 +997,8 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getIdFromPathresolverResult($results)
     {
+		cDeprecated("This function is no longer used");
+		
         $iMinPercentage = (int) parent::getConfig('category_resolve_min_percentage', 0);
         $catId = key($results);
         if ($iMinPercentage > 0 && $results[$catId] < $iMinPercentage) {

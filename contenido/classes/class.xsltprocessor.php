@@ -1,36 +1,69 @@
 <?php
 /**
+
  * Project: 
+
  * CONTENIDO Content Management System
+
  * 
+
  * Description: 
+
  * XSLT_Processor class
+
  * 
+
  * Requirements: 
+
  * @con_php_req 5.0
+
  * 
+
  *
+
  * @package    4fb_XML
+
  * @version    1.0.0
+
  * @author     Jan Lengowski
+
  * @copyright  four for business AG <www.4fb.de>
+
  * @license    http://www.contenido.org/license/LIZENZ.txt
+
  * @link       http://www.4fb.de
+
  * @link       http://www.contenido.org
+
  * @since      file available since CONTENIDO release <= 4.6
+
  * 
+
  * {@internal 
+
  *   created unknown
+
  *   modified 2008-06-30, Dominik Ziegler, add security fix
+
  *
+
  *   $Id$:
+
  * }}
+
  * 
+
  */
 
+
+
 if(!defined('CON_FRAMEWORK')) {
+
 	die('Illegal call');
+
 }
+
+
 
 /**
  * XSLT_Processor 
@@ -121,6 +154,8 @@ class XsltProcessor
      */
     function XsltProcessor()
     {
+        cDeprecated("This class is not supported any longer");
+        
         $this->_init();
     }
     

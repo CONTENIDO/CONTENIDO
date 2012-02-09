@@ -53,7 +53,7 @@ class RecipientCollection extends ItemCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function RecipientCollection()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
@@ -237,7 +237,7 @@ class Recipient extends Item
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function Recipient($mId = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 

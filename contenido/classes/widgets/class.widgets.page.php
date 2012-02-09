@@ -104,7 +104,7 @@ class cPage extends cHTML {
      * @uses __construct()
      */
     public function cPage($object = false)	{
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct($object);
     }
 
@@ -232,6 +232,7 @@ class cPage extends cHTML {
      * @see setMessageBoxScript()
      */
     public function setMessageBox()	{
+        cDeprecated();
         $this->setMessageBoxScript();
     }
     

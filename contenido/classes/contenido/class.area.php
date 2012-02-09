@@ -53,7 +53,7 @@ class cApiAreaCollection extends ItemCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiAreaCollection()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
@@ -111,13 +111,15 @@ class cApiArea extends Item
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiArea($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 
     /** @deprecated  [2011-10-25] Use cApiAreaCollection->create() */
     public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0)
     {
+        cDeprecated("Use cApiAreaCollection->create() instead");
+        
         $oAreaColl = new cApiAreaCollection();
         return $oAreaColl->create($name, $parentid, $relevant, $online, $menuless);
     }

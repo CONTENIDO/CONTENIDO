@@ -103,7 +103,7 @@ class Contenido_Notification
     /** @deprecated  [2011-05-19] Old constructor function for downwards compatibility */
     public function Contenido_Notification()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 

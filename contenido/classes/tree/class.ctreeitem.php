@@ -30,7 +30,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
 /**
  * class cTreeItem
  * 
@@ -236,6 +235,7 @@ class cTreeItem
 	 */
 	function exportTree( )
 	{
+        cDeprecated("This function never worked");
 		/* TODO: Function can't work... work in progress...
 		$myobj->traverse($objlist);
 		*/

@@ -43,6 +43,7 @@ class CSV
 	
 	function CSV ()
 	{
+        cDeprecated("This class is not supported any longer");
 		$this->_delimiter = ";";
 	}
 	

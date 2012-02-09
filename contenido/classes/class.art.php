@@ -48,7 +48,7 @@ class Art
      */
     public function Art()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct()");
         $this->__construct();
     }
 

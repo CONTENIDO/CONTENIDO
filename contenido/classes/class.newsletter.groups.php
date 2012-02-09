@@ -52,7 +52,7 @@ class RecipientGroupCollection extends ItemCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function RecipientGroupCollection()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
@@ -134,7 +134,7 @@ class RecipientGroup extends Item
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function RecipientGroup($mId = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 
@@ -187,7 +187,7 @@ class RecipientGroupMemberCollection extends ItemCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function RecipientGroupMemberCollection()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
@@ -321,7 +321,7 @@ class RecipientGroupMember extends Item
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function RecipientGroupMember($mId = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 }

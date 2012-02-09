@@ -656,6 +656,8 @@ class User
      */
     function getUserProperty($type, $name, $group = false)
     {
+        cDeprecated("Use cApiUser->getUserProperty() instead");
+        
         $user = new cApiUser();
         $user->values = $this->values;
         return $user->getUserProperty($type, $name, $group);
@@ -665,6 +667,8 @@ class User
      */
     function getUserPropertiesByType($type, $group = false)
     {
+        cDeprecated("Use cApiUser->getUserPropertiesByType() instead");
+        
         $user = new cApiUser();
         $user->values = $this->values;
         return $user->getUserPropertiesByType($type, $group);
@@ -674,6 +678,8 @@ class User
      */
     function getUserProperties()
     {
+        cDeprecated("Use cApiUser->getUserProperties() instead");
+        
         $user = new cApiUser();
         $user->values = $this->values;
         return $user->getUserProperties(false);
@@ -683,6 +689,8 @@ class User
      */
     function setUserProperty($type, $name, $value)
     {
+        cDeprecated("Use cApiUser->setUserProperty() instead");
+        
         $user = new cApiUser();
         $user->values = $this->values;
         return $user->setUserProperty($type, $name, $value);
@@ -692,6 +700,8 @@ class User
      */
     function deleteUserProperty($type, $name)
     {
+        cDeprecated("Use cApiUser->deleteUserProperty() instead");
+        
         $user = new cApiUser();
         $user->values = $this->values;
         return $user->deleteUserProperty($type, $name);

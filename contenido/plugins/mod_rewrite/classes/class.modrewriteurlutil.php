@@ -316,6 +316,8 @@ class ModRewriteUrlUtil extends ModRewriteBase
     private function _toUrl($url, $fromCatSep, $toCatSep, $fromCatWordSep, $toCatWordSep,
                             $fromArtSep, $toArtSep, $fromArtWordSep, $toArtWordSep)
     {
+		cDeprecated("This function is no more used");
+		
         if ((string) $url == '') {
             return $url;
         }

@@ -154,7 +154,8 @@ class DB_Contenido extends DB_Sql
     public function copyResultToArray($sTable = '')
     {
         global $cachemeta;
-
+		cDeprecated("Use db drivers toArray() method instead");
+		
         $aValues = array();
 
         if ($sTable != '') {

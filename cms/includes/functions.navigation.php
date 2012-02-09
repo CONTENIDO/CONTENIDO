@@ -108,6 +108,7 @@ function createNavigationArray($start_id, $db)
 function getTarget($cat_id, $db)
 {
     global $cfg, $client, $lang;
+	cDeprecated();
 
 // SECURITY-FIX
     $sql = "SELECT

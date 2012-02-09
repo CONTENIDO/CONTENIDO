@@ -101,6 +101,7 @@ class XML_Tree_Node {
     * @deprecated
     */
     function &add_child($child, $content = '', $attributes = array()) {
+		cDeprecated("This function is not supported any longer");
         return $this->addChild($child, $content, $attributes);
     }
 
@@ -155,6 +156,7 @@ class XML_Tree_Node {
     * @deprecated
     */
     function &insert_child($path,$pos,&$child, $content = '', $attributes = array()) {
+		cDeprecated("This function is not supported any longer");
         return $this->insertChild($path,$pos,$child, $content, $attributes);
     }
 
@@ -174,6 +176,7 @@ class XML_Tree_Node {
     * @deprecated
     */
     function &remove_child($pos) {
+		cDeprecated("This function is not supported any longer");
         return $this->removeChild($pos);
     }
 
@@ -236,6 +239,7 @@ class XML_Tree_Node {
     * @deprecated
     */
     function get_attribute($name) {
+		cDeprecated("This function is not supported any longer");
         return $this->getAttribute($name);
     }
 
@@ -259,6 +263,7 @@ class XML_Tree_Node {
     * @deprecated
     */
     function &get_element($path) {
+		cDeprecated("This function is not supported any longer");
         return $this->getElement($path);
     }
 
@@ -276,6 +281,7 @@ class XML_Tree_Node {
     * @deprecated
     */
     function set_attribute($name, $value = '') {
+		cDeprecated("This function is not supported any longer");
         return $this->setAttribute($name, $value);
     }
 
@@ -292,6 +298,7 @@ class XML_Tree_Node {
     * @deprecated
     */
     function unset_attribute($name) {
+		cDeprecated("This function is not supported any longer");
         return $this->unsetAttribute($name);
     }
 

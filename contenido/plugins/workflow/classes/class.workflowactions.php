@@ -56,7 +56,7 @@ class WorkflowActions extends ItemCollection {
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     function WorkflowActions()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
@@ -140,7 +140,7 @@ class WorkflowAction extends Item {
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     function WorkflowAction()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 }

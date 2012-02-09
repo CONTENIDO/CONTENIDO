@@ -245,12 +245,12 @@ class FrontendUserCollection extends cApiFrontendUserCollection
 {
     public function __construct()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiFrontendUserCollection instead");
         parent::__construct();
     }
     public function FrontendUserCollection()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 }
@@ -264,12 +264,12 @@ class FrontendUser extends cApiFrontendUser
 {
     public function __construct($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiFrontendUser instead");
         parent::__construct($mId);
     }
     public function FrontendUser($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 }

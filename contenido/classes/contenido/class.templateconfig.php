@@ -52,7 +52,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiTemplateConfigurationCollection($select = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($select);
     }
 
@@ -132,7 +132,7 @@ class cApiTemplateConfiguration extends Item
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiTemplateConfiguration($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId = false);
     }
 }

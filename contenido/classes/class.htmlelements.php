@@ -152,7 +152,7 @@ class cHTML extends HTML_Common
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTML() {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
@@ -329,6 +329,7 @@ class cHTML extends HTML_Common
 	 */
 	public function setStyleDefinition($entity, $definition)
 	{
+        cDeprecated("Use attachStyleDefinition instead");
 		$this->_styledefs[$entity] = $definition;
 	}
 	
@@ -573,7 +574,7 @@ class cHTMLFormElement extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLFormElement($name = "", $id = "", $disabled = "", $tabindex = "", $accesskey = "", $class = "text_medium") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
     }
     
@@ -666,7 +667,7 @@ class cHTMLHiddenField extends cHTMLFormElement
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLHiddenField($name, $value = "", $id = "") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($name, $value, $id);
     }
 
@@ -730,7 +731,7 @@ class cHTMLButton extends cHTMLFormElement
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLButton($name, $title = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "", $mode = "submit") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($name, $title, $id, $disabled, $tabindex, $accesskey, $mode);
     }
 
@@ -840,7 +841,7 @@ class cHTMLTextbox extends cHTMLFormElement
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLTextbox($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($name, $initvalue, $width, $maxlength, $id, $disabled, $tabindex, $accesskey);
     }
     
@@ -950,7 +951,7 @@ class cHTMLPasswordbox extends cHTMLFormElement
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLPasswordbox($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($name, $initvalue, $width, $maxlength, $id, $disabled, $tabindex, $accesskey);
     }
 
@@ -1056,7 +1057,7 @@ class cHTMLTextarea extends cHTMLFormElement
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLTextarea($name, $initvalue = "", $width = "", $height = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($name, $initvalue, $width, $height, $id, $disabled, $tabindex, $accesskey);
     }
     
@@ -1166,7 +1167,7 @@ class cHTMLLabel extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLLabel($text, $for) {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($text, $for);
     }
     
@@ -1220,7 +1221,7 @@ class cHTMLSelectElement extends cHTMLFormElement
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLSelectElement($name, $width = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($name, $width, $id, $disabled, $tabindex, $accesskey);
     }
     
@@ -1437,7 +1438,7 @@ class cHTMLOptionElement extends cHTMLFormElement
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLOptionElement($title, $value, $selected = false, $disabled = false) {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($title, $value, $selected, $disabled);
     }
     
@@ -1554,7 +1555,7 @@ class cHTMLRadiobutton extends cHTMLFormElement
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLRadiobutton($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($name, $value, $id, $checked, $disabled, $tabindex, $accesskey);
     }
     
@@ -1671,7 +1672,7 @@ class cHTMLCheckbox extends cHTMLFormElement
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLRadiobutton($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($name, $value, $id, $checked, $disabled, $tabindex, $accesskey);
     }
 	
@@ -1801,7 +1802,7 @@ class cHTMLUpload extends cHTMLFormElement
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLUpload($name, $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($name, $width, $maxlength, $id, $disabled, $tabindex, $accesskey);
     }
 
@@ -1908,8 +1909,7 @@ class cHTMLLink extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLLink($href = "") {
-		$e = new Exception();
-        cWarning(__FILE__, __LINE__, $e->getTraceAsString());
+        cDeprecated("Use __construct() instead");
         $this->__construct($href);
     }
     
@@ -2115,7 +2115,7 @@ class cHTMLDiv extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLDiv($content = "") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($content);
     }
     
@@ -2165,7 +2165,7 @@ class cHTMLSpan extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLSpan($content = "") {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($content);
     }
     
@@ -2241,7 +2241,7 @@ class cHTMLImage extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLImage($src = NULL) {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($src);
     }
     
@@ -2370,7 +2370,7 @@ class cHTMLTable extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLTable() {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
     
@@ -2469,7 +2469,7 @@ class cHTMLTableBody extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLTableBody() {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
     
@@ -2514,7 +2514,7 @@ class cHTMLTableRow extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLTableRow() {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
     
@@ -2559,7 +2559,7 @@ class cHTMLTableData extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLTableData() {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
     
@@ -2642,7 +2642,7 @@ class cHTMLTableHead extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLTableHead() {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
     
@@ -2688,7 +2688,7 @@ class cHTMLTableHeader extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLTableHeader() {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
     
@@ -2734,7 +2734,7 @@ class cHTMLIFrame extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLIFrame() {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
     
@@ -2809,7 +2809,7 @@ class cHTMLAlignmentTable extends cHTMLTable
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLAlignmentTable() {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
     
@@ -2847,7 +2847,7 @@ class cHTMLForm extends cHTML
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cHTMLForm() {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
     

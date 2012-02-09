@@ -302,12 +302,12 @@ class InUseCollection extends cApiInUseCollection
 {
     public function __construct()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiInUseCollection instead");
         parent::__construct();
     }
     public function InUseCollection()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 }
@@ -321,12 +321,12 @@ class InUseItem extends cApiInUse
 {
     public function __construct($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiInUse instead");
         parent::__construct($mId);
     }
     public function InUseItem($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 }

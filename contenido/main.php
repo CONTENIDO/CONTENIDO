@@ -73,7 +73,6 @@ if ($cfg['use_pseudocron'] == true) {
     }
 }
 
-
 // Remove all own marks, only for frame 1 and 4  if $_REQUEST['appendparameters'] == 'filebrowser'
 // filebrowser is used in tiny in this case also do not remove session marks
 if (($frame == 1 || $frame == 4) && $_REQUEST['appendparameters'] != 'filebrowser') {
@@ -185,6 +184,7 @@ if ($cfgClient['set'] != 'set') {
 }
 
 // Initialize CONTENIDO_Backend. Load all actions from the DB and check if 
+
 // permission is granted.
 if ($cfg['debug']['rendering'] == true) {
     $oldmemusage = memory_get_usage();

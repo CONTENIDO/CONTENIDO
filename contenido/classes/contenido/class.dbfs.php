@@ -439,18 +439,18 @@ class cApiDbfs extends Item
 
 /**
  * DBFS item collection
- * @deprecated  [2011-09-19] Use cApiDbfsCollection instead of this class.
+ * @deprecated  [2011-09-19] Use  instead of this class.
  */
 class DBFSCollection extends cApiDbfsCollection
 {
     public function __construct()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiDbfsCollection instead");
         parent::__construct();
     }
     public function DBFSCollection()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 }
@@ -458,18 +458,18 @@ class DBFSCollection extends cApiDbfsCollection
 
 /**
  * Single dbfs item
- * @deprecated  [2011-09-19] Use cApiDbfs instead of this class.
+ * @deprecated  [2011-09-19] Use  instead of this class.
  */
 class DBFSItem extends cApiDbfs
 {
     public function __construct($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiDbfs instead");
         parent::__construct();
     }
     public function DBFSItem($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 }

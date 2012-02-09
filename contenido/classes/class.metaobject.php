@@ -32,7 +32,6 @@
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
-
 /* Introduction to metaobjects
  *
  * A metaobject is an object which combines pure API objects with presentation logic.
@@ -76,7 +75,7 @@ class cMetaObject
 		
 	function cMetaObject ($payload = false)
 	{
-		cWarning(__FILE__, __LINE__, "Call of deprecated class cMetaObject. This class is not longer supported and will be removed in further version.");
+        cDeprecated("This class is not longer supported and will be removed in further version.");
 	
 		$this->_actions = array();
 		$this->_fields = array();

@@ -1,37 +1,69 @@
 <?php
 /**
+
  * Project: 
+
  * CONTENIDO Content Management System
+
  * 
+
  * Description: 
+
  * Compatibility fix, as the domxml extension is not available in
  * PHP 5.x anymore
+
  * 
+
  * Requirements: 
+
  * @con_php_req 5.0
+
  * 
+
  *
+
  * @package    CONTENIDO Backend Includes
+
  * @version    1.1.7
+
  * @author     Alexandre Alapetite
+
  * @copyright  four for business AG <www.4fb.de>
+
  * @license    http://www.contenido.org/license/LIZENZ.txt
+
  * @link       http://www.4fb.de
+
  * @link       http://www.contenido.org
+
  * @since      file available since CONTENIDO release <= 4.6
+
  * 
+
  * {@internal 
+
  *   created 2007-06-05
+
  *   modified 2008-06-26, Frederic Schneider, add security fix
+
  *
+
  *   $Id$:
+
  * }}
+
  * 
+
  */
 
+
+
 if(!defined('CON_FRAMEWORK')) {
+
 	die('Illegal call');
+
 }
+
 
 /**
  * Requires PHP5, uses built-in DOM extension,
@@ -51,28 +83,39 @@ define('DOMXML_LOAD_DONT_KEEP_BLANKS',16);
 /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
-function domxml_new_doc($version) {return new php4DOMDocument();}
+function domxml_new_doc($version) {
+	cDeprecated("This function is not supported any longer");
+	
+	return new php4DOMDocument();
+}
 
 /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
-function domxml_new_xmldoc($version) {return new php4DOMDocument();}
+function domxml_new_xmldoc($version) {
+	cDeprecated("This function is not supported any longer");
+	
+	return new php4DOMDocument();
+}
 
 /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
 function domxml_open_file($filename,$mode=DOMXML_LOAD_PARSING,&$error=null)
 {
- $dom=new php4DOMDocument($mode);
- $errorMode=(func_num_args()>2);
- if ($errorMode) libxml_use_internal_errors(true);
- if (!$dom->myDOMNode->load($filename)) $dom=null;
- if ($errorMode)
- {
-  $error=array_map('_error_report',libxml_get_errors());
-  libxml_clear_errors();
- }
- return $dom;
+	cDeprecated("This function is not supported any longer");
+	
+	$dom=new php4DOMDocument($mode);
+ 	$errorMode=(func_num_args()>2);
+ 	if ($errorMode) libxml_use_internal_errors(true);
+ 	if (!$dom->myDOMNode->load($filename)) $dom=null;
+ 	if ($errorMode)
+ 	{
+ 		$error=array_map('_error_report',libxml_get_errors());
+  		libxml_clear_errors();
+ 	}
+ 	
+ 	return $dom;
 }
 
 /**
@@ -80,16 +123,18 @@ function domxml_open_file($filename,$mode=DOMXML_LOAD_PARSING,&$error=null)
  */
 function domxml_open_mem($str,$mode=DOMXML_LOAD_PARSING,&$error=null)
 {
- $dom=new php4DOMDocument($mode);
- $errorMode=(func_num_args()>2);
- if ($errorMode) libxml_use_internal_errors(true);
- if (!$dom->myDOMNode->loadXML($str)) $dom=null;
- if ($errorMode)
- {
-  $error=array_map('_error_report',libxml_get_errors());
-  libxml_clear_errors();
- }
- return $dom;
+	cDeprecated("This function is not supported any longer");
+	
+ 	$dom=new php4DOMDocument($mode);
+ 	$errorMode=(func_num_args()>2);
+ 	if ($errorMode) libxml_use_internal_errors(true);
+ 	if (!$dom->myDOMNode->loadXML($str)) $dom=null;
+ 	if ($errorMode)
+ 	{
+ 	 	$error=array_map('_error_report',libxml_get_errors());
+  		libxml_clear_errors();
+ 	}
+ 	return $dom;
 }
 
 /**
@@ -97,45 +142,68 @@ function domxml_open_mem($str,$mode=DOMXML_LOAD_PARSING,&$error=null)
  */
 function html_doc($html_doc,$from_file=false)
 {
- $dom=new php4DOMDocument();
- if ($from_file) $result=$dom->myDOMNode->loadHTMLFile($html_doc);
- else $result=$dom->myDOMNode->loadHTML($html_doc);
- return $result ? $dom : null;
+	cDeprecated("This function is not supported any longer");
+	
+ 	$dom=new php4DOMDocument();
+ 	if ($from_file) $result=$dom->myDOMNode->loadHTMLFile($html_doc);
+ 	else $result=$dom->myDOMNode->loadHTML($html_doc);
+ 	return $result ? $dom : null;
 }
 /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
-function html_doc_file($filename) {return html_doc($filename,true);}
+function html_doc_file($filename) {
+	cDeprecated("This function is not supported any longer");
+	return html_doc($filename,true);
+}
 
 /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
-function xmldoc($str) {return domxml_open_mem($str);}
+function xmldoc($str) {
+	cDeprecated("This function is not supported any longer");
+	return domxml_open_mem($str);
+}
 
 /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
-function xmldocfile($filename) {return domxml_open_file($filename);}
+function xmldocfile($filename) {
+	cDeprecated("This function is not supported any longer");
+	return domxml_open_file($filename);
+}
 
 /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
-function xpath_eval($xpath_context,$eval_str,$contextnode=null) {return $xpath_context->xpath_eval($eval_str,$contextnode);}
+function xpath_eval($xpath_context,$eval_str,$contextnode=null) {
+	cDeprecated("This function is not supported any longer");
+	return $xpath_context->xpath_eval($eval_str,$contextnode);
+}
 
 /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
-function xpath_new_context($dom_document) {return new php4DOMXPath($dom_document);}
+function xpath_new_context($dom_document) {
+	cDeprecated("This function is not supported any longer");
+	return new php4DOMXPath($dom_document);
+}
 
 /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
-function xpath_register_ns($xpath_context,$prefix,$namespaceURI) {return $xpath_context->myDOMXPath->registerNamespace($prefix,$namespaceURI);}
+function xpath_register_ns($xpath_context,$prefix,$namespaceURI) {
+	cDeprecated("This function is not supported any longer");
+	return $xpath_context->myDOMXPath->registerNamespace($prefix,$namespaceURI);
+}
 
 /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
-function _error_report($error) {return array('errormessage'=>$error->message,'nodename'=>'','line'=>$error->line,'col'=>$error->column)+($error->file==''?array():array('directory'=>dirname($error->file),'file'=>basename($error->file)));}
+function _error_report($error) {
+	cDeprecated("This function is not supported any longer");
+	return array('errormessage'=>$error->message,'nodename'=>'','line'=>$error->line,'col'=>$error->column)+($error->file==''?array():array('directory'=>dirname($error->file),'file'=>basename($error->file)));
+}
 
 /**
  * @deprecated 2011-09-02 this class is not supported any longer
@@ -155,6 +223,7 @@ class php4DOMDocument extends php4DOMNode
 {
  function php4DOMDocument($mode=DOMXML_LOAD_PARSING)
  {
+	cDeprecated("This class is not supported any longer");
   $this->myDOMNode=new DOMDocument();
   $this->myOwnerDocument=$this;
   if ($mode & DOMXML_LOAD_VALIDATING) $dom->myDOMNode->validateOnParse=true;
@@ -293,6 +362,7 @@ class php4DOMNode
  public $myOwnerDocument;
  function php4DOMNode($aDomNode,$aOwnerDocument)
  {
+	cDeprecated("This class is not supported any longer");
   $this->myDOMNode=$aDomNode;
   $this->myOwnerDocument=$aOwnerDocument;
  }
@@ -452,6 +522,7 @@ class php4DOMNodelist
  public $type;
  function php4DOMNodelist($aDOMNodelist,$aOwnerDocument)
  {
+	cDeprecated("This class is not supported any longer");
   $this->myDOMNodelist=$aDOMNodelist;
   $this->nodeset=array();
   $i=0;
@@ -473,6 +544,7 @@ class php4DOMXPath
  private $myOwnerDocument;
  function php4DOMXPath($dom_document)
  {
+	cDeprecated("This class is not supported any longer");
   $this->myOwnerDocument=$dom_document->myOwnerDocument;
   $this->myDOMXPath=new DOMXPath($this->myOwnerDocument->myDOMNode);
  }
@@ -485,17 +557,26 @@ if (extension_loaded('xsl'))
 /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
- function domxml_xslt_stylesheet($xslstring) {return new php4DomXsltStylesheet(DOMDocument::loadXML($xslstring));}
+ function domxml_xslt_stylesheet($xslstring) {
+	cDeprecated("This function is not supported any longer");
+	return new php4DomXsltStylesheet(DOMDocument::loadXML($xslstring));
+}
  
  /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
- function domxml_xslt_stylesheet_doc($dom_document) {return new php4DomXsltStylesheet($dom_document);}
+ function domxml_xslt_stylesheet_doc($dom_document) {
+	cDeprecated("This function is not supported any longer");
+	return new php4DomXsltStylesheet($dom_document);
+}
  
  /**
  * @deprecated 2011-09-02 this function is not supported any longer
  */
- function domxml_xslt_stylesheet_file($xslfile) {return new php4DomXsltStylesheet(DOMDocument::load($xslfile));}
+ function domxml_xslt_stylesheet_file($xslfile) {
+	cDeprecated("This function is not supported any longer");
+	return new php4DomXsltStylesheet(DOMDocument::load($xslfile));
+}
  
  /**
  * @deprecated 2011-09-02 this class is not supported any longer
@@ -505,6 +586,7 @@ if (extension_loaded('xsl'))
   private $myxsltProcessor;
   function php4DomXsltStylesheet($dom_document)
   {
+	cDeprecated("This class is not supported any longer");
    $this->myxsltProcessor=new xsltProcessor();
    $this->myxsltProcessor->importStyleSheet($dom_document);
   }

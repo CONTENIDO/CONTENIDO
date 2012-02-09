@@ -112,7 +112,7 @@ class Form
     /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
     public function Form()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
@@ -449,7 +449,7 @@ class FormField
     /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
     public function FormField()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
@@ -623,7 +623,7 @@ class FormCheck
     /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
     public function FormCheck()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 

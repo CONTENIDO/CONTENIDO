@@ -59,7 +59,7 @@ class cApiCategoryCollection extends ItemCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiCategoryCollection($select = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($select);
     }
 
@@ -139,7 +139,7 @@ class cApiCategory extends Item
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiCategory($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 
@@ -171,12 +171,12 @@ class CategoryCollection extends cApiCategoryCollection
 {
     public function __construct()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiCategoryCollection instead");
         parent::__construct();
     }
     public function CategoryCollection()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 }
@@ -190,12 +190,12 @@ class CategoryItem extends cApiCategory
 {
     public function __construct($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiCategory instead");
         parent::__construct($mId);
     }
     public function CategoryItem($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
     public function loadByPrimaryKey($key)

@@ -53,7 +53,7 @@ class NewsletterCollection extends ItemCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function NewsletterCollection()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
@@ -190,7 +190,7 @@ class Newsletter extends Item
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function Newsletter($mId = false)
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 
@@ -985,6 +985,8 @@ class Newsletter extends Item
     public function send($idcatart, $destination = "other", $to = "", $iChunkSize = 0, $iChunk = 0, $sEncoding = "iso-8859-1")
     {
         // What should we do with this deprecated method?
+        cDeprecated();
+        
         $aResult = array();
         $aResult[] = 0;
         $aResult[] = "Newsletter->send() not supported anymore (class.newsletter.php)";

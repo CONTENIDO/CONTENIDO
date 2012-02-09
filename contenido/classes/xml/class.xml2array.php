@@ -59,6 +59,7 @@ class cApiXml2Array
 	 */
 	function cApiXml2Array ()
 	{
+    	cDeprecated("This class is not supported any longer");
 	 // empty
 	}
 	

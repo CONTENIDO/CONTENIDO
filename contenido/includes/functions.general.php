@@ -349,6 +349,7 @@ function showLocation($area)
 {
     global $db, $cfgPath, $lngArea, $cfg, $belang;
 
+	cDeprecated("This function is not supported any longer");
     //Create new xml Class and load the file
 
     $xml = new XML_doc();
@@ -387,7 +388,7 @@ function showTable($tablename)
 {
     global $db;
 	
-	cWarning(__FILE__, __LINE__, "Deprecated function call, this function is not longer supported and will be removed in further version!");
+	cDeprecated("This function is not supported any longer");
 	
     $sql = "SELECT * FROM $tablename";
     $db->query($sql);
@@ -1624,7 +1625,7 @@ function createRandomName($nameLength)
  */
 function sendPostRequest($host, $path, $data, $referer = "", $port = 80)
 {
-	cWarning(__FILE__, __LINE__, "Deprecated function call, this function is not longer supported and will be removed in further version!");
+	cDeprecated("This function is not supported any longer");
 	
     $fp = fsockopen($host, $port);
 
@@ -1731,6 +1732,32 @@ function cDie($file, $line, $message)
 }
 
 /**
+ * buildStackString: Returns a formatted string with a stack trace ready for output.
+ *		"\tfunction1() called in file $filename($line)"
+ *		"\tfunction2() called in file $filename($line)"
+ *		...
+ *
+ * @param $startlevel int The startlevel. Note that 0 is always buildStackString and 1 is the function called buildStackString (e.g. cWarning)
+ * @return string
+ */
+function buildStackString($startlevel = 3)
+{
+	$e = new Exception();
+	$stack = $e->getTrace();
+	
+	$msg = "";
+	
+	for($i = $startlevel; $i < count($stack); $i++)
+	{
+		$filename = basename($stack[$i]['file']);
+		
+		$msg .= "\t".$stack[$i]['function']."() called in file ".$filename."(".$stack[$i]['line'].")\n";
+	}
+	
+	return $msg;
+}
+
+/**
  * cWarning: CONTENIDO warning
  *
  * @param $file       File name   (use __FILE__)
@@ -1739,6 +1766,19 @@ function cDie($file, $line, $message)
  */
 function cWarning($file, $line, $message)
 {
+	$msg = "[".date("Y-m-d H:i:s")."] ";
+	$msg .= "Warning: \"".$message."\" at ";
+	
+	$e = new Exception();
+	$stack = $e->getTrace();
+	$function_name = $stack[1]['function'];
+	
+	$msg .= $function_name."() [".basename($stack[0]['file'])."(".$stack[0]['line'].")]\n";
+	$msg .= buildStackString();
+	$msg .= "\n";
+	
+	file_put_contents($cfg['path']['contenido']."logs/errorlog.txt", $msg, FILE_APPEND);
+	
     trigger_error("$file $line: $message", E_USER_WARNING);
 }
 
@@ -1751,7 +1791,47 @@ function cWarning($file, $line, $message)
  */
 function cError($file, $line, $message)
 {
+	$msg = "[".date("Y-m-d H:i:s")."] ";
+	$msg .= "Error: \"".$message."\" at ";
+	
+	$e = new Exception();
+	$stack = $e->getTrace();
+	$function_name = $stack[1]['function'];
+	
+	$msg .= $function_name."() called in ".basename($stack[1]['file'])."(".$stack[1]['line'].")\n";
+	$msg .= buildStackString();
+	$msg .= "\n";
+	
+	file_put_contents($cfg['path']['contenido']."logs/errorlog.txt", $msg, FILE_APPEND);
+	
     trigger_error("$file $line: $message", E_USER_ERROR);
+}
+
+/**
+ * cDeprecated: Writes a note to deprecatedlog.txt
+ * 
+ * @param $amsg Optional message (e.g. "Use function XYZ instead")
+ * @return void
+ */
+function cDeprecated($amsg = "")
+{
+	$e = new Exception();
+	$stack = $e->getTrace();
+	$function_name = $stack[1]['function'];
+	
+	$msg = "Deprecated call: ".$function_name."() [".basename($stack[0]['file'])."(".$stack[0]['line'].")]: ";
+	if($amsg != "")
+	{
+		$msg .= "\"".$amsg."\""."\n";
+	}
+	else
+	{
+		$msg .= "\n";
+	}
+		
+	$msg .= buildStackString(2)."\n";
+	
+	file_put_contents($cfg['path']['contenido']."logs/deprecatedlog.txt", $msg, FILE_APPEND);
 }
 
 /**
@@ -1863,7 +1943,7 @@ function endAndLogTiming($uuid)
 * @deprecated [2012-01-18] DB_Contenido performs the check for itself. This method is no longer needed
 */
 function checkMySQLConnectivity() {
-	cWarning(__FILE__, __LINE__, 'Deprecated method call, DB_Contenido checks the connectivity');
+	cDeprecated("DB_Contenido performs the check for itself. This method is no longer needed");
 }
 
 function notifyOnError($errortitle, $errormessage)
@@ -1906,6 +1986,8 @@ function notifyOnError($errortitle, $errormessage)
  */
 function cIDNAEncode($sourceEncoding, $string)
 {
+	cDeprecated("This function is not supported any longer");
+	
     if (extension_loaded("iconv")) {
         cInclude('pear', 'Net/IDNA.php');
         $idn = Net_IDNA::getInstance();
@@ -1930,6 +2012,8 @@ function cIDNAEncode($sourceEncoding, $string)
  */
 function cIDNADecode($targetEncoding, $string)
 {
+	cDeprecated("This function is not supported any longer");
+	
     if (extension_loaded("iconv")) {
         cInclude('pear', 'Net/IDNA.php');
         $idn = Net_IDNA::getInstance();

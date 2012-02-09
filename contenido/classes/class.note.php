@@ -45,7 +45,7 @@ class NoteCollection extends cApiCommunicationCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     function NoteCollection()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 

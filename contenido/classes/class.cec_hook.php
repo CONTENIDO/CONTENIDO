@@ -175,6 +175,7 @@ class CEC_Hook {
      */
     public static function setConditions($condition, $overwriteArguments=true, $returnbreakconditiondirectly=false, $defaultReturnValue=null)
     {
+        cDeprecated("This function is no longer needed");
         switch ($condition) {
             case CEC_Hook::BREAK_AT_TRUE:
                 self::$_breakCondition = CEC_Hook::BREAK_AT_TRUE;

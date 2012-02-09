@@ -89,7 +89,7 @@ class cApiClickableAction extends cApiAction
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiClickableAction()
     {
-        cWarning(__FILE__, __LINE__, "Deprecated method call, use __construct()");
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
@@ -242,6 +242,7 @@ class cApiClickableQuestionAction extends cApiClickableAction
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiClickableQuestionAction()
     {
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 

@@ -87,7 +87,7 @@ class cDatatypeDateTime extends cDatatype
 	* @deprecated [2012-01-19] use __construct instead
 	*/
 	public function cDatatypeDateTime() {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 	

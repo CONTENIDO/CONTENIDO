@@ -60,6 +60,7 @@ class Article extends cApiArticleLanguage
      */
     public function __construct($idart, $client, $lang, $idartlang = 0)
     {
+        cDeprecated("Use cApiArticleLanguage class instead");
         $idart = (int) $idart;
         $client = (int) $client;
         $idartlang = (int) $idartlang;
@@ -75,7 +76,7 @@ class Article extends cApiArticleLanguage
 
     function Article($idart, $client, $lang, $idartlang = 0)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct()");
         $this->__construct($idart, $client, $lang, $idartlang);
     }
 }
@@ -256,7 +257,7 @@ class ArticleCollection
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     function ArticleCollection($options)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct()");
         $this->__construct($options);
     }
 

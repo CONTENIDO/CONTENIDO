@@ -114,18 +114,18 @@ class cApiCommunication extends Item
 
 /**
  * Communication item collection
- * @deprecated  [2011-09-19] Use cApiCommunicationCollection instead of this class.
+ * @deprecated  [2011-09-19] Use  instead of this class.
  */
 class CommunicationCollection extends cApiCommunicationCollection
 {
     public function __construct()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiCommunicationCollection instead");
         parent::__construct();
     }
     public function CommunicationCollection()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 }
@@ -133,18 +133,18 @@ class CommunicationCollection extends cApiCommunicationCollection
 
 /**
  * Single communication item
- * @deprecated  [2011-09-19] Use cApiCommunication instead of this class.
+ * @deprecated  [2011-09-19] Use  instead of this class.
  */
 class CommunicationItem extends cApiCommunication
 {
     public function __construct($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiCommunication instead");
         parent::__construct($mId);
     }
     public function CommunicationItem($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 }

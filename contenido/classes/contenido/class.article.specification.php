@@ -103,18 +103,18 @@ class cApiArticleSpecification extends Item
 
 /**
  * Article specification collection
- * @deprecated  [2011-09-19] Use cApiArticleSpecificationCollection instead of this class.
+ * @deprecated  [2011-09-19] Use  instead of this class.
  */
 class ArtSpecCollection extends cApiArticleSpecificationCollection
 {
     public function __construct()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiArticleSpecificationCollection instead");
         parent::__construct();
     }
     public function ArtSpecCollection()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 }
@@ -128,12 +128,12 @@ class ArtSpecItem extends cApiArticleSpecification
 {
     public function __construct($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiArticleSpecificationCollection instead");
         parent::__construct($mId);
     }
     public function ArtSpecItem($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 }

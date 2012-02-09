@@ -157,12 +157,12 @@ class FrontendGroupMemberCollection extends cApiFrontendGroupMemberCollection
 {
     public function __construct()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiFrontendGroupMemberCollection instead");
         parent::__construct();
     }
     public function FrontendGroupMemberCollection()
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 }
@@ -176,12 +176,12 @@ class FrontendGroupMember extends cApiFrontendGroupMember
 {
     public function __construct($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated class ' . __CLASS__ . ' use ' . get_parent_class($this));
+        cDeprecated("Use class cApiFrontendGroupMember instead");
         parent::__construct($mId);
     }
     public function FrontendGroupMember($mId = false)
     {
-        cWarning(__FILE__, __LINE__, 'Deprecated method call, use __construct()');
+        cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 }
