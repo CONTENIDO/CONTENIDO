@@ -52,7 +52,7 @@ return array(
     'pApiCECChainItem' => 'contenido/classes/class.cec.php',
     'CEC_Hook' => 'contenido/classes/class.cec_hook.php',
     'cCharacterConverter' => 'contenido/classes/class.chartable.php',
-    'Client' => 'contenido/classes/class.client.php',
+    'Client' => 'contenido/classes/contenido/class.client.php',
     'Cms_Date' => 'contenido/classes/class.cms_date.php',
     'Cms_Dynamic' => 'contenido/classes/class.cms_dynamic.php',
     'Cms_FileList' => 'contenido/classes/class.cms_filelist.php',

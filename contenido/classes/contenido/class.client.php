@@ -120,15 +120,8 @@ class cApiClientCollection extends ItemCollection
      */
     public function hasLanguageAssigned($iIdClient)
     {
-        global $cfg;
-        $db = new DB_Contenido();
-        $sql = 'SELECT idlang FROM ' . $cfg['tab']['clients_lang'] . ' WHERE idclient = "' . (int) $iIdClient . '"';
-        $db->query($sql);
-        if ($db->next_record()) {
-            return true;
-        } else {
-            return false;
-        }
+        $oClient = new cApiClient($iIdClient);
+		return $oClient->hasLanguages();
     }
 }
 
@@ -321,4 +314,29 @@ class cApiClient extends Item
     }
 }
 
+
+################################################################################
+# NOTE: Class implemetations below are deprecated and the will be removed in 
+#       future versions of contenido.
+#       Don't use them, they are still available due to downwards compatibility.
+
+
+/**
+ * Client class
+ * @deprecated  [2012-02-09] Use cApiClientCollection instead of this class.
+ */
+class Client extends cApiClientCollection
+{
+    public function __construct()
+    {
+        cDeprecated("Use class cApiClientCollection instead");
+        parent::__construct();
+    }
+	
+    public function Client()
+    {
+        cDeprecated("Use __construct() instead");
+        $this->__construct();
+    }
+}
 ?>
