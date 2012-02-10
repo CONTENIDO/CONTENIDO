@@ -127,21 +127,21 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
     	}
     } 
 
-    // Add new Elements of Form
-    $oForm->add(i18n("Name"), $sName);
-    $oForm->add(i18n("Description"), $sDescription);
-    $oForm->add(i18n("Code Input"), $sCodeInput);
-    $oForm->add(i18n("Code Output"), $sCodeOutput);
-    $oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c"/*, "mod_history_takeover"*/); //modified it 
-    $oForm->unsetActionButton("submit");
-
-    // Render and handle History Area
-	$oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-    $oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-    $oPage->addScript('IdCodeIn', $oCodeMirrorIn->renderScript());
-    $oPage->addScript('IdCodeOut', $oCodeMirrorOutput->renderScript());
-
-    if($sSelectBox !="") {
+	if($sSelectBox !="") {
+		// Add new Elements of Form
+		$oForm->add(i18n("Name"), $sName);
+		$oForm->add(i18n("Description"), $sDescription);
+		$oForm->add(i18n("Code Input"), $sCodeInput);
+		$oForm->add(i18n("Code Output"), $sCodeOutput);
+		$oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c"/*, "mod_history_takeover"*/); //modified it 
+		$oForm->unsetActionButton("submit");
+	
+		// Render and handle History Area
+		$oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+		$oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
+		$oPage->addScript('IdCodeIn', $oCodeMirrorIn->renderScript());
+		$oPage->addScript('IdCodeOut', $oCodeMirrorOutput->renderScript());
+    
     	$oPage->setContent($sSelectBox . $oForm->render());
 
     } else {
