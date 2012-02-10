@@ -187,7 +187,7 @@ class LayoutInFile {
 	
 
 	/**
-	 * 
+	 * init
 	 * Get the layout name
 	 * @return string layoutname
 	 */
@@ -226,7 +226,7 @@ class LayoutInFile {
 	 *
 	 */
 	private function _makeDirectories() {
-		
+	    
 		if($this->_makeDirectory($this->_layoutMainPath)) {
 			if($this->_makeDirectory($this->_layoutPath)) {
 				return true;
@@ -248,7 +248,9 @@ class LayoutInFile {
 		return true;
 		else
 		if(mkdir($directory)) {
-			return true;
+		    chmod($directory, 0777);
+			
+		    return true;
 		} else
 		return false;
 	}

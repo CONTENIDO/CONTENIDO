@@ -79,6 +79,7 @@ if ($action == "lay_new")
 			$notification->displayNotification("error", i18n("Cant save layout filesystem!"));		
 		
 	}
+	$bReloadSyncSrcipt = true;
 } elseif ($action == "lay_delete")
 {
 	if (!$perm->have_perm_area_action_anyitem($area, $action))
