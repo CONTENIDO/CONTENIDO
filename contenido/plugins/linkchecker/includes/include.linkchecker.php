@@ -189,7 +189,7 @@ $sql = "SELECT lastmodified FROM " . $cfg['tab']['content'] . " content
 
 /* Whitelist: Add */
 if(!empty($_GET['whitelist'])) {
-	$sql = "INSERT INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . Contenido_Security::escapeDB(base64_decode($_GET['whitelist']), $db) . "', '" . time() . "')";
+	$sql = "REPLACE INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . Contenido_Security::escapeDB(base64_decode($_GET['whitelist']), $db) . "', '" . time() . "')";
 	$db->query($sql);
 }
 
