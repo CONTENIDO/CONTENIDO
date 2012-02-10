@@ -319,8 +319,10 @@ class LayoutInFile {
 			$layoutCode = iconv($this->_encoding, self::$FILE_ENCODING, $layoutCode );
 			if ( file_put_contents($this->_layoutPath . $this->_fileName, $layoutCode) === FALSE )
 				return false;
-			else 	
-				return true;
+			else { 	
+				chmod($this->_layoutPath . $this->_fileName, 0777);
+			    return true;
+			}
 		} else 
 			return false;		
 	}
