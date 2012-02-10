@@ -167,39 +167,26 @@ class Contenido_Notification
      */
     public function returnNotification($sLevel, $sMessage)
     {
+
+		$oNotifySpan = new cHTMLSpan($sMessage);
+
         switch ($sLevel) {
             case self::LEVEL_ERROR:
-                $sBgColor = $this->_aColors['notify_error'];
-                $sImgPath = $this->_sPathImages . 'icon_fatalerror.gif';
+				$oNotifySpan->setClass('notify_general notify_error');
                 break;
             case self::LEVEL_WARNING:
-                $sBgColor = $this->_aColors['notify_warning'];
-                $sImgPath = $this->_sPathImages . 'icon_warning.gif';
+                $oNotifySpan->setClass('notify_general notify_warning');
                 break;
             case self::LEVEL_INFO:
-                $sMessage = '<span style="color:#435d06">' . $sMessage . '</span>';
-                $sBgColor = $this->_aColors['notify_info'];
-                $sImgPath = $this->_sPathImages . 'but_ok.gif';
+                $oNotifySpan->setClass('notify_general notify_info');
                 break;
             default:
-                $sMessage = '<span style="color:#435d06">'.$sMessage.'</span>';
-                $sBgColor = $this->_aColors['notify'];
-                $sImgPath = $this->_sPathImages . 'but_ok.gif';
+                $oNotifySpan->setClass('notify_general notify_default');
                 break;
         }
 
-        $oTable = new Table($sBgColor, 'solid', 0, 2, '#FFFFFF', '#FFFFFF', '#FFFFFF', true, false);
-
         $sNoti = '<div id="contenido_notification" style="position:relative;left:0;top:0;z-index:10;">';
-        $sNoti .= $oTable->start_table();
-        $sNoti .= $oTable->header_row();
-        $sNoti .= $oTable->borderless_cell('<img src="' . $sImgPath . '" alt="">');
-        $sNoti .= $oTable->borderless_cell(
-            '<font color="' . $sBgColor . '" style="font-family:Verdana,Arial,Helvetica,'
-          . 'Sans-Serif;font-size:11px;">' . $sMessage . '</font>', 'left', 'middle'
-        );
-        $sNoti .= $oTable->end_row();
-        $sNoti .= $oTable->end_table();
+		$sNoti .= $oNotifySpan->toHTML();
         $sNoti .= '</div>';
 
         return $sNoti;
