@@ -43,7 +43,7 @@ cInclude("includes", "functions.file.php");
  */
 class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
 
-    #Form fields
+    //Form fields
     private $_code;
     private $_file;
     private $_tmp_file;
@@ -71,8 +71,24 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
      */
     private $_newFileName = "newfilename";
     
+    /**
+     * 
+     * Action name for create htmltpl
+     * @var string
+     */
     private $_actionCreate = 'htmltpl_create';
+    /**
+     * 
+     * Action name for edit htmltpl
+     * @var string
+     */
     private $_actionEdit = 'htmltpl_edit';
+    
+    /**
+     * 
+     * Action name for delete htmltpl_edit
+     * @var string
+     */
     private $_actionDelete = 'htmltpl_delete';
     
     
@@ -176,8 +192,9 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
     
     /**
      *
-     * Heir are the method witch decide what action are send from
+     * The method decide what action is send from
      * user (form).
+     * @return string [new, delete,empty,save,rename, default]
      */
     private function _getAction() {
 
@@ -193,8 +210,8 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
                  
                 if($this->_file == $this->_tmp_file) {
                      
-                    #file ist empty also no file in template
-                    #directory
+                    //file ist empty also no file in template
+                    //directory
                     if(empty($this->_file)) {
                          
                         return 'empty';
@@ -207,11 +224,10 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
                 return 'rename';
                  
             } else  {
-                #one of files (file or tmp_file) is not set
+                //one of files (file or tmp_file) is not set
                 throw  new Exception(i18n('Field of the filename is empty!'));
             }
-             
-             
+              
         } else {
             return 'default';
         }
@@ -221,6 +237,7 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
     /**
      *
      * Has the selected file changed.
+     * @return boolean is the filename changed
      */
     private function _hasSelectedFileChanged() {
 
@@ -234,14 +251,14 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
 
     /**
      *
-     * save the code in the file
+     * Save the code in the file
      */
     private function _save() {
         
-        #save the contents of file
+        //save the contents of file
         $this->makeNewModuleFile('template' , $this->_file , $this->_code);
         	  
-        #if user selected other file display it
+        //if user selected other file display it
         if($this->_hasSelectedFileChanged()) {
             $this->_file = $this->_selectedFile;
             $this->_tmp_file = $this->_selectedFile;
@@ -257,7 +274,7 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
 
         if( $this->renameModulFile('template',$this->_tmp_file, $this->_file) == false) {
             throw new Exception(i18n("Rename of the file not successfully!"));
-        } else { #
+        } else { 
             $this->makeNewModuleFile('template', $this->_file,$this->_code);
 
             $this->_tmp_file = $this->_file;
@@ -281,7 +298,7 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
             $this->makeNewModuleFile('template', $this->_newFileName.'.'.$this->_templateFileEnding ,'');
             $fileName = $this->_newFileName.".".$this->_templateFileEnding;
         }
-        #set to new fileName
+        //set to new fileName
         $this->_file = $fileName;
         $this->_tmp_file = $fileName;
     }
@@ -324,15 +341,15 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
 
         $files = $this->getAllFilesFromDirectory('template');
 
-        #one or more templates files are in template direcotry
+        //one or more templates files are in template direcotry
         if(count($files)> 0) {
              
             $this->_tmp_file = $files[0];
             $this->_file = $files[0];
         } else {
-            #template directory is empty
-            $this->_file = '';#$this->getTemplateFileName();
-            $this->_tmp_file = '';#$this->getTemplateFileName();
+            //template directory is empty
+            $this->_file = '';//$this->getTemplateFileName();
+            $this->_tmp_file = '';//$this->getTemplateFileName();
              
         }
 
@@ -347,6 +364,8 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
      * @param Contenido_Perm $perm
      * @param Contenido_Notification $notification
      * @param string $action
+     * 
+     * @return int if user dont have permission return -1
      */
     private function _havePremission($perm , $notification , $action) {
     
@@ -444,17 +463,16 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
         $form->setVar("file", $this->_file);
 
         $selectFile = new cHTMLSelectElement('selectedFile');
-        #array with all files in template directory
+        //array with all files in template directory
         $filesArray =$this->getAllFilesFromDirectory('template');
 
-       
-
-        #make options fields
+      
+        //make options fields
         foreach( $filesArray as $key => $file) {
 
             $optionField = new cHTMLOptionElement($file,$file);
 
-            #select the current file
+            //select the current file
             if($file == $this->_file) {
                 $optionField->setAttributes('selected','selected');
             }
@@ -520,7 +538,7 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
         
         $myAction = $this->_getAction();
         
-        #if the user dont have premissions 
+        //if the user dont have premissions 
         if( $this->_havePremission($perm, $notificatioin , $myAction) === -1)
             return;
        

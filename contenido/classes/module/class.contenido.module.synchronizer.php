@@ -40,6 +40,14 @@ cInclude("includes","functions.api.string.php");
 cInclude("classes","module/class.contenido.module.handler.php");
 cInclude("includes", "functions.con.php");
 
+/**
+ * 
+ * This class synchronized the contents of modul dir with the table
+ * $cfg["tab"]["mod"]. If a module exist in module directory but not in
+ * $cfg["tab"]["mod"] this class will insert the modul in the table.
+ * @author rusmir.jusufovic
+ *
+ */
 class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
 
    /**
@@ -62,16 +70,16 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
      
     private function _addOrUpdateModul($dir , $oldModulName , $newModulName , $idclient) {
          
-        #if modul dont exist in the $cfg["tab"]["mod"] table.
+        //if modul dont exist in the $cfg["tab"]["mod"] table.
         if($this->_isExistInTable($oldModulName, $idclient) == false) {
 			
-             #add new Module in db-tablle     
+             //add new Module in db-tablle     
              $this->_addModul($newModulName,$idclient);
              $notification = new Contenido_Notification();
              $notification->displayNotification('info', i18n("Synchronization successfully modul name: ").$newModulName);                 
           } else {
           	
-          		#update the name of the module
+          		//update the name of the module
           		if($oldModulName != $newModulName) {
           			$this->_updateModulnameInDb($oldModulName, $newModulName, $idclient);
           		}
@@ -108,6 +116,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
      * @param string $dirNameOld old dir name
      * @param string $dirNameNew new dir name
      * @param int $client idclient 
+     * @return boolean true if succes (rename file and directories)
      * @throws Exception if we could not rename the old dir name
      */
     
@@ -116,11 +125,8 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
         if( rename($dir.$dirNameOld, $dir.$dirNameNew) == FALSE ) 
             return false;
     
-         else  {#change names of the files
-              
-                              
-             $this->_renameFiles($dir, $dirNameOld, $dirNameNew);
-             	
+         else  {//change names of the files
+             $this->_renameFiles($dir, $dirNameOld, $dirNameNew);	
           }
         return true;
     } 
@@ -129,6 +135,8 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
     /**
      * Compare file change timestemp and the timestemp in ["tab"]["mod"].
      * If file had changed make new code :conGenerateCodeForAllArtsUsingMod
+     * 
+     * @return int id of last update module
      * 
      */
     public function compareFileAndModulTimestamp() {
@@ -153,23 +161,21 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
             $lastmodOutput = filemtime($frontendPath.self::$MODUL_DIR_NAME.$db->f('alias')."/".$this->_directories['php'].$db->f('alias')."_output.php");
     		
             if($lastmodInput < $lastmodOutput) {
-            	#use output
+            	//use output
             	if($lastmodified < $lastmodOutput) {
-            		#update
+            		//update
             		$this->setLastModified($lastmodOutput,$db->f('idmod'));
                     conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
-                    #echo $db->f('name')." input <br/>";
                     $notification->displayNotification('info', i18n("Synchronization successfully modul name: ").$db->f('name'));
             	}
             		
             } else {
-            	#use input
+            	//use input
             	if($lastmodified < $lastmodInput) {
             		
-            		#update
+            		//update
             		$this->setLastModified($lastmodInput,$db->f('idmod'));
                     conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
-                    #echo $db->f('name')." output <br/>";
                     $notification->displayNotification('info', i18n("Synchronization successfully modul name: ").$db->f('name'));
             	}
             }
@@ -180,7 +186,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
             
     	}
     	
-    	#we need it for the update of moduls on the left site (module/backend)
+    	//we need it for the update of moduls on the left site (module/backend)
     	return $retIdMod;
     }
     
@@ -191,6 +197,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
      * If someone delete a moduldir with ftp/ssh. We have a modul
      * in db but not in directory, if the modul in use make a new modul in fileystem but if not
      * clear it from filesystem. 
+     * @return int id of last update module
      * 
      */
     private function _synchronizeFilesystemAndDb($db) {
@@ -198,14 +205,14 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
     	$returnIdMod = 0;
     	  $this->_initModulHandlerWithModulRow($db);
           $this->_echoIt("Modul wird gelesen....: ".$db->f("name"));
-          #modul dont exist in filesystem
+          //modul dont exist in filesystem
           if($this->existModul() == false) {
              $this->_echoIt("Modul existiert nicht: ".$db->f("name"));
               
              $modul = new cApiModule($db->f("idmod"));
              $returnIdMod = $db->f("idmod");
              if($modul->moduleInUse($db->f("idmod")) == true) {
-                 #modul in use, make new modul in filesystem
+                 //modul in use, make new modul in filesystem
                  if( $this->makenewModul()== false ) { 
                  	$notification = new Contenido_Notification();
              		$notification->displayNotification('info', i18n("Cant make modul: ").$db->f("name"));  
@@ -214,7 +221,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
                  
              } else {
                  
-                 #modul not in use, delete it
+                 //modul not in use, delete it
                  $sql = sprintf("DELETE  FROM %s WHERE idmod = %s AND idclient = %s", $this->_cfg["tab"]["mod"], $db->f("idmod"),$this->_client);
                  $myDb = new DB_Contenido();
                  $myDb->query($sql);
@@ -247,43 +254,44 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
      * will check the modul dir of the client and if found
      * a Modul(Dir) that not exist in Db-table this method will
      * insert the Modul in Db-table ([tab][mod]).
+     * @return int last id of synchronized module
      * 
      */
     public function synchronize() {
         global $cfgClient;
 		$frontendPath = $cfgClient[$this->_client]['path']['frontend'];
            
-            #get the path to the modul dir from the client
+            //get the path to the modul dir from the client
             $dir = $frontendPath.self::$MODUL_DIR_NAME; 
            
             if (is_dir($dir)) {                 
                 if ($dh = opendir($dir)) {
                     while (($file = readdir($dh)) !== false) {     
-                       #is file a dir or not
+                       //is file a dir or not
                         if($this->_isValidFirstChar($file) && is_dir($dir.$file."/") ) {
                              
                         $newFile = capiStrCleanURLCharacters($file);
-                        #dir is ok
+                        //dir is ok
                         if($newFile == $file) {
                             
                             $this->_addOrUpdateModul($dir , $file, $newFile , $this->_client); 
                                   
-                        }else { #dir not ok (with not allowed characters)
+                        }else { //dir not ok (with not allowed characters)
                           
-                            if(is_dir($dir.$newFile)) {# exist the new dir name?
+                            if(is_dir($dir.$newFile)) { //exist the new dir name?
                                
                             	
-                                #make new dirname
+                                //make new dirname
                                 $newDirName =$newFile.substr( md5( time() . rand(0 , time() )) , 0 , 4);
-                                #rename 
+                                //rename 
                                 if( $this->_renameFileAndDir($dir , $file , $newDirName , $this->_client) != false) {
                                     $this->_addOrUpdateModul($dir, $file, $newDirName, $this->_client);
                                 }
                                 
                                    
-                            } else {#$newFile (dir) not exist
+                            } else {//$newFile (dir) not exist
                                
-                                #rename dir old
+                                //rename dir old
                                 if( $this->_renameFileAndDir($dir, $file , $newFile , $this->_client) != false) {
                                 	$this->_addOrUpdateModul($dir, $file, $newFile,$this->_client);
                                 }
@@ -294,12 +302,12 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
                         } 
                        }
                     }
-                    #close dir
+                    //close dir
                     closedir($dh);
                 }
             
            
-            #last Modul Id that will refresh the windows /modul overview
+            //last Modul Id that will refresh the windows /modul overview
             return $this->_lastIdMod;
     }
 
@@ -318,12 +326,12 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
         $db = new DB_Contenido();
         
         
-        #Select depending from idclient all moduls wiht the name $name
+        //Select depending from idclient all moduls wiht the name $name
         $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s" , $this->_cfg["tab"]["mod"] , $alias ,$idclient);
         
         $db->query($sql);
         
-        #a record is found
+        //a record is found
         if( $db->next_record())
             return true;
         else     
@@ -343,23 +351,21 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
     	
     	$db = new DB_Contenido();
     	
-    	#Select depending from idclient all moduls wiht the name $name
+    	//Select depending from idclient all moduls wiht the name $name
         $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s" , $this->_cfg["tab"]["mod"] , $oldName ,$idclient);
         
         $db->query($sql);
         
-        #a record is found
+        //a record is found
         if( $db->next_record()) {
         	
         	$sqlUpdateName = sprintf("UPDATE %s SET alias='%s' WHERE idmod=%s", $this->_cfg["tab"]["mod"],$newName,$db->f('idmod'));
         	
         	$db->query($sqlUpdateName);
         	return ;
-        }
-           
-            
-    	
+        }	
     }
+    
     /**
      * 
      * This method add a new Modul in the table $cfg["tab"]["mod"].
@@ -368,11 +374,16 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
      * @param int $idclient  mandant of the modul
      */
     private  function _addModul($name , $idclient) {
+           
+        //insert new modul in con_mod
         $db = new DB_Contenido();
-//        $nextId = $db->nextid($this->_cfg["tab"]["mod"]);
-        $sql = sprintf(" INSERT INTO %s (name,alias,idclient) VALUES('%s','%s',%s,%s) ",
+        $sql = sprintf(" INSERT INTO %s (name,alias,idclient) VALUES('%s','%s',%s) ",
             $this->_cfg["tab"]["mod"], $name,$name, $idclient);
         $db->query($sql);
+        
+        //save the last id from modul
+       $this->_lastIdMod = $db->getLastInsertedId($this->_cfg["tab"]["mod"]);
+ 
     }
     
     

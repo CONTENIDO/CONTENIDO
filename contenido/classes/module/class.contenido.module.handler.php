@@ -6,7 +6,7 @@
  * Description:
  * Class for new modul structere. Saves the Modul-Input in a file (input.php) and
  * Modul-Output in a file(output.php). 
- * All moduls of a clients are in [frontend]/module/.
+ * All moduls of a clients are in [frontend]/modules/.
  *
  * Requirements:
  * @con_php_req 5.0
@@ -32,7 +32,14 @@ if (! defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
+/**
+ * 
+ * Class for new modul structere. Saves the Modul-Input in a file (input.php) and
+ * Modul-Output in a file(output.php). 
+ * All moduls of a clients are in [frontend]/modules/.
+ * @author rusmir.jusufovic
+ *
+ */
 class Contenido_Module_Handler {
 
     /**
@@ -199,7 +206,7 @@ class Contenido_Module_Handler {
     
     public function __construct($idmod = NULL) {
         rereadClients();
-        #get vars from Contenido_Vars
+        //get vars from Contenido_Vars
         $this->_cfg = Contenido_Vars::getVar('cfg');
         $this->_client = Contenido_Vars::getVar('client');
         $this->_cfgClient = Contenido_Vars::getVar('cfgClient');
@@ -207,9 +214,7 @@ class Contenido_Module_Handler {
         $this->_idlang = Contenido_Vars::getVar('lang');
         
         $this->_fileEncoding = Contenido_Vars::getVar('fileEncoding');
-        #
         
-
         $this->_db = new DB_Contenido();
         
         $this->_idmod = $idmod;
@@ -253,7 +258,7 @@ class Contenido_Module_Handler {
         
         if (is_dir($cfgClientData["path"]["frontend"]. $saveDirectory. '/')) {
             
-            #$fileContent = iconv(Contenido_Vars::getVar('encoding') , Contenido_Vars::getVar('fileEncoding'),$fileContent );
+            //$fileContent = iconv(Contenido_Vars::getVar('encoding') , Contenido_Vars::getVar('fileEncoding'),$fileContent );
             if (file_put_contents(
             $cfgClientData["path"]["frontend"]. $saveDirectory. '/'. $templateName. ".". $fileType, $fileContent)=== false)
                 return false;
@@ -498,10 +503,10 @@ class Contenido_Module_Handler {
      */
     public function makeNewModuleFile($type, $fileName = NULL, $content = '') {
         
-        #make directory if not exist
+        //make directory if not exist
         $this->makeDirectoryIfNotExist($type);
         
-        #if not set use default filename
+        //if not set use default filename
         if ($fileName== NULL|| $fileName== '') {
             $fileName = $this->_modulAlias;
             
@@ -511,14 +516,14 @@ class Contenido_Module_Handler {
                 $fileName = $fileName. ".". $type;
         }
         
-        #make and save file contents
+        //make and save file contents
         if ($type== 'css'|| $type== 'js'|| $type== 'template') {
             
             if (! file_exists($this->_modulPath. $this->_directories[$type]. $fileName)) {
                 
                 $content = iconv($this->_encoding, $this->_fileEncoding, $content);
                 if (file_put_contents($this->_modulPath. $this->_directories[$type]. $fileName, $content)=== false) {
-                    #display error
+                    //display error
                     $notification = new Contenido_Notification();
                     $notification->displayNotification('error', i18n("Can't make file: "). $fileName);
                     return false;
@@ -528,7 +533,7 @@ class Contenido_Module_Handler {
                 $content = iconv($this->_encoding, $this->_fileEncoding, $content);
                 if (file_put_contents($this->_modulPath. $this->_directories[$type]. $fileName, $content)=== false) {
                     
-                    #display error
+                    //display error
                     $notification = new Contenido_Notification();
                     $notification->displayNotification('error', i18n("Can't make file: "). $fileName);
                     return false;
@@ -605,10 +610,10 @@ class Contenido_Module_Handler {
     protected function _echoIt($output) {
         
         if ($this->_debug) {
-            # echo '<pre>';
+            //echo '<pre>';
             file_put_contents("echo_log.txt", $output. "\r\n", FILE_APPEND);
         
-     # echo '</pre>';
+     		//echo '</pre>';
         }
     
      //file_put_contents("ausgabe.txt",$output."\n\r" ,FILE_APPEND);
@@ -650,7 +655,7 @@ class Contenido_Module_Handler {
 
     /**
      * 
-     * Make in all clients the modul directory
+     * Make in all clients the module directory
      */
     public function makeModulMainDirectories() {
 		global $cfgClient;
@@ -658,13 +663,13 @@ class Contenido_Module_Handler {
 		foreach ($cfgClient as $iIdClient => $aClient) {
 			if (isset($aClient['path']['frontend'])) {
 				$frontendPath = $aClient['path']['frontend'];
-				#test if frontendpath exists
+				//test if frontendpath exists
 				if (is_dir($frontendPath)== false)
 					$this->errorLog('Frontendpath dont exists path: '. $frontendPath);
 				
 				if (! is_dir($frontendPath. self::$MODUL_DIR_NAME)) {
 					
-					#could not make the modul directory in client 
+					//could not make the modul directory in client 
 					if (mkdir($frontendPath. self::$MODUL_DIR_NAME)== false) {
 						$this->errorLog("Could not make modul directory in frontendpath :". $frontendPath);
 					} else
@@ -677,19 +682,20 @@ class Contenido_Module_Handler {
 
     /**
      * 
-     * Make main modul directory.
+     * Make main module directory.
+     * @return boolean
      * 
      */
     protected function _makeModulDirectory() {
         
-        #dont display error ($tpl->generate() on the CONTENIDO login site)
+        //dont display error ($tpl->generate() on the CONTENIDO login site)
         if ($this->_client== "")
             return - 1;
         
 		global $cfgClient;
         $frontendPath = $cfgClient[$this->_client]['path']['frontend'];
 
-        #make 
+        //make 
         if (! is_dir($frontendPath. self::$MODUL_DIR_NAME)) {
             
             if (mkdir($frontendPath. self::$MODUL_DIR_NAME)== false) {
@@ -703,7 +709,7 @@ class Contenido_Module_Handler {
 
     /**
      * 
-     * Get all files from a modul directory 
+     * Get all files from a module directory 
      * @param string $modulDirectory template css or js... 
      * @return array
      */
@@ -716,7 +722,7 @@ class Contenido_Module_Handler {
             if ($dh = opendir($dir)) {
                 while (($file = readdir($dh))!== false) {
                     
-                    #is file a dir or not
+                    //is file a dir or not
                     if ($file!= ".."&& $file!= "."&& ! is_dir($dir. $file. "/")) {
                         
                         $retArray[] = $file;
@@ -724,7 +730,6 @@ class Contenido_Module_Handler {
                 }
             }
         }
-        // print_r($retArray);
         return $retArray;
     }
 
@@ -753,13 +758,14 @@ class Contenido_Module_Handler {
     /**
      * Warning dont work if more fils exist in the dir
      * then input.php or output.php
+     * @return boolean
      * 
      */
     public function eraseModul() {
         
         $ret = NULL;
         
-        #if modulName is a string
+        //if modulName is a string
         if (strlen($this->_modulAlias)> 0)
             $ret = $this->_rec_rmdir($this->_modulPath);
         
@@ -853,10 +859,10 @@ class Contenido_Module_Handler {
         $output = iconv($this->_encoding, $this->_fileEncoding, $output);
         if (file_put_contents($this->_modulPath. $this->_directories['php']. $this->_modulAlias. "_output.php", $output, 
         LOCK_EX)=== FALSE)
-            return false; #return false if file_put_contents dont work
+            return false; //return false if file_put_contents dont work
         else {
             chmod($this->_modulPath. $this->_directories['php']. $this->_modulAlias. "_output.php", 0666);
-            return true; #return true if file_put_contents working
+            return true; //return true if file_put_contents working
         }
     
     }
@@ -892,6 +898,7 @@ class Contenido_Module_Handler {
      * @param string $modulName name of the modul
      * @param string $description description of the modul
      * @param string $type type of the modul
+     * @return true if success else false
      */
     public function saveInfoXML($modulName = NULL, $description = NULL, $type = NULL, $alias = NULL) {
         
@@ -944,7 +951,7 @@ class Contenido_Module_Handler {
                 chmod($this->_modulPath, 0777);
             }
             
-            #make others directorys
+            //make others directorys
             foreach ($this->_directories as $directory) {
                 
                 if (! is_dir($this->_modulPath. $directory)) {
@@ -957,11 +964,11 @@ class Contenido_Module_Handler {
             
             }
             
-            #could not save the info xml 
+            //could not save the info xml 
             if ($this->saveInfoXML()== false)
                 return false;
             
-     #Save empty strings into the modul files, if someone trying to read contents bevore save into the files
+     //Save empty strings into the modul files, if someone trying to read contents bevore save into the files
             $retInput = $this->saveInput();
             $retOutput = $this->saveOutput();
             
@@ -979,12 +986,14 @@ class Contenido_Module_Handler {
      * 
      * @param string $old  old name of the modul
      * @param string $new new name of the modul
+     * 
+     * @return booelan true if success 
      */
     public function renameModul($old, $new) {
         
         $this->_echoIt("renameModul ". $this->_modulAlias. " old: $old  new: $new");
         
-        #try to rename the dir
+        //try to rename the dir
         if (rename($this->_path. $old, $this->_path. $new)== FALSE)
             return false;
         else {
@@ -992,27 +1001,27 @@ class Contenido_Module_Handler {
             $retInput = true;
             $retOutput = true;
             
-            #if file input exist rename it
+            //if file input exist rename it
             if (file_exists($this->_path. $new. "/". $this->_directories['php']. $old. "_input.php"))
                 $retInput = rename($this->_path. $new. "/". $this->_directories['php']. $old. "_input.php", 
                 $this->_path. $new. "/". $this->_directories['php']. $new. "_input.php");
             
-     # if file output exist rename it  
+     		//if file output exist rename it  
             if (file_exists($this->_path. $new. "/". $this->_directories['php']. $old. "_output.php"))
                 $retOutput = rename($this->_path. $new. "/". $this->_directories['php']. $old. "_output.php", 
                 $this->_path. $new. "/". $this->_directories['php']. $new. "_output.php");
             
-     #rename the  css file 
+     		//rename the  css file 
             if (file_exists($this->_path. $new. "/". $this->_directories['css']. $old. ".css"))
                 rename($this->_path. $new. "/". $this->_directories['css']. $old. ".css", 
                 $this->_path. $new. "/". $this->_directories['css']. $new. ".css");
             
-     #rename the javascript file
+     		//rename the javascript file
             if (file_exists($this->_path. $new. "/". $this->_directories['js']. $old. ".js"))
                 rename($this->_path. $new. "/". $this->_directories['js']. $old. ".js", 
                 $this->_path. $new. "/". $this->_directories['js']. $new. ".js");
             
-     #rename the template file 
+     		//rename the template file 
             if (file_exists($this->_path. $new. "/". $this->_directories['template']. $old. ".html"))
                 rename($this->_path. $new. "/". $this->_directories['template']. $old. ".html", 
                 $this->_path. $new. "/". $this->_directories['template']. $new. ".html");

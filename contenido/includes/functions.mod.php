@@ -51,7 +51,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 	$messageIfError = "";
 	
 	#alias for modul name for the file system 
-	$alias = Contenido_Module_Handler::getCleanName($name);
+	$alias = strtolower(Contenido_Module_Handler::getCleanName($name));
 	
 	
 	

@@ -76,8 +76,6 @@ if (!$perm->have_perm_area_action($area, $action))
   $page->render();
 } else {
    
-    
-    
     $contenidoModulTemplateHandler = new Contenido_Modul_Templates_Handler($idmod);
     $contenidoModulTemplateHandler->setAction($action);
     $contenidoModulTemplateHandler->setCode($_REQUEST['code']);

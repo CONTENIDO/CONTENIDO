@@ -185,6 +185,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 	 * Search for a sting in input and output of module
 	 * @param string $filter
 	 * @param  (db object with the row) $dbRowModule
+	 * @return boolean if found in files true else false
 	 */
 	private function _findInFiles($filter, $dbRowModule) {
 			

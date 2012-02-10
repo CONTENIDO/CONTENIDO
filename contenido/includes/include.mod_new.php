@@ -63,7 +63,7 @@ if ((int) $client > 0) {
     $oListOptionRow = new cFoldingRow("e9ddf415-4b2d-4a75-8060-c3cd88b6ff98", i18n("List options"), $listoplink);
     $tpl->set('s', 'LISTOPLINK', $listoplink);
     $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
-    $oSelectItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+    $oSelectItemsPerPage->autoFill(array(0 => i18n("-- All --"),5=>5, 25 => 25, 50 => 50, 75 => 75, 100 => 100));
     $oSelectItemsPerPage->setDefault($_REQUEST["elemperpage"]);
     $oSelectSortBy = new cHTMLSelectElement("sortby");
     $oSelectSortBy->autoFill($aSortByOptions);

@@ -43,14 +43,20 @@ if(file_exists(dirname(__FILE__)."/../../includes/functions.api.string.php"))
 if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
     include_once(dirname(__FILE__)."/class.contenido.module.base.php");
      
-        
  if(file_exists(dirname(__FILE__)."/class.contenido.module.handler.php"))
     include_once(dirname(__FILE__)."/class.contenido.module.handler.php");
      
  if(file_exists(dirname(__FILE__)."/class.contenido.translate.from.file.php"))
     include_once(dirname(__FILE__)."/class.contenido.translate.from.file.php");
          
-
+/**
+ * 
+ * This class  transfers the old modul-system in the
+ * new modul-system. Also from Db-table oriented structure
+ * to the file-system orinted structure.
+ * @author rusmir.jusufovic
+ *
+ */
     class Contenido_UpgradeJob extends Contenido_Module_Handler {
         protected $_db = null;
     	
@@ -77,13 +83,13 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
             $myDb = clone $this->_db;
             $db = clone $this->_db;
             
-            #select all moduls 
+            //select all moduls 
             $sql = sprintf("SELECT * FROM %s",$this->_cfg["tab"]["mod"]);
             $db->query($sql);
             
             while($db->next_record()) {
                 
-                #clear name  from not allow charecters
+                //clear name  from not allow charecters
                 $newName = capiStrCleanURLCharacters($db->f("name"));
                 if($newName != $db->f("name") ) {
                     
@@ -106,13 +112,13 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
             $db = clone $this->_db;
             
             $changeDb = clone $this->_db;
-            #get all moduls
+            //get all moduls
             $sql = sprintf("SELECT * FROM %s ",$this->_cfg["tab"]["mod"]);
             $db->query($sql);
             
             while($db->next_record()) {
                 
-                #get all moduls from client
+                //get all moduls from client
                 $mySql = sprintf("SELECT * FROM %s WHERE name='%s' AND idmod != %s AND idclient=%s",$this->_cfg["tab"]["mod"],$db->f("name"),$db->f("idmod"),$db->f("idclient"));
                 $myDb->query($mySql);
                 
@@ -120,9 +126,9 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
                    
                     $microtime = microtime();
                     $zufall = rand(0,time());
-                    #make name uneque
+                    //make name uneque
                     $unique =  substr(md5($microtime.$zufall),0,5);
-                    #update name with the new uneque name
+                    //update name with the new uneque name
                     $changeSql = sprintf("UPDATE %s SET name='%s' WHERE idmod=%s",$this->_cfg["tab"]["mod"],$myDb->f("name")."_".$unique,$myDb->f("idmod"));
                    
                     $changeDb->query($changeSql);  
@@ -145,43 +151,47 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
         public function saveAllModulsToTheFile($setuptype) {
 			$db = clone $this->_db;
         	
-        	#clean name oft module (Umlaute, not allowed character ..), prepare for file system
+        	//clean name oft module (Umlaute, not allowed character ..), prepare for file system
         	$this->_changeNameCleanURL();
         	$result = "";
-            #select all frontendpaht of the clients, frontendpaht is in  the table $cfg["tab"]["clients"]
+            //select all frontendpaht of the clients, frontendpaht is in  the table $cfg["tab"]["clients"]
             $sql = sprintf("SELECT description, type, alias, name, output, input, idmod, idclient FROM %s ORDER BY idmod ", $this->_cfg["tab"]["mod"]); 
             $this->_echoIt("sql saveAllModuls....:".$sql);
             $db->query($sql);
          
-            #make in all clients(frontendspaths) modul directory
+            //make in all clients(frontendspaths) modul directory
             $this->makeModulMainDirectories();
            
             while($db->next_record()) {
   				
             	$this->_echoIt($db->f('idmod'));
-                # init the ModulHandler with all data of the modul
-                # inclusive client
+                // init the ModulHandler with all data of the modul
+                // inclusive client
                 $this->_initModulHandlerWithModulRow($db);
  				
                if($setuptype == "setup") {
+               	
+               	//Modules are in the directory dont make it new
+               	/*
                	$this->_echoIt('setup');
-                #save the modul from db to the filesystem
+                //save the modul from db to the filesystem
                 if( $this->_makeAndSaveModul($db->f("input") , $db->f("output"),$db->f("idmod")) == false )
                     $this->errorLog(sprintf('Cant make a new modul! Modul name :"%s" , idclient: %s ',$db->f('name'),$db->f('idclient')));
 				else {
-                    #save translation
+                    //save translation
                     $translations = new Contenido_Translate_From_File($db->f("idmod"));
                     $translations->saveTranslations();
 					}
+				*/
                     
                 } elseif($setuptype == "upgrade") {
                 	$this->_echoIt("upgrade");
-                    #make new module only if modul not exist in directory
+                    //make new module only if modul not exist in directory
                     if($this->existModul() != true) { 
                        if( $this->_makeAndSaveModul($db->f("input") , $db->f("output"),$db->f("idmod")) == false )
                          $this->errorLog(sprintf('Cant make a new modul! Modul name :"%s" , idclient: %s ',$db->f('name'),$db->f('idclient'))); 
                        else {
-                        #save translation 
+                        //save translation 
                     	$translations = new Contenido_Translate_From_File($db->f("idmod"));
                     	$translations->saveTranslations();
                        }
@@ -191,7 +201,7 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
                 }
                 
                 
-                #remove input and output fields from db
+                //remove input and output fields from db
                 $sql = sprintf("ALTER TABLE %s DROP input, DROP output", $this->_cfg["tab"]["mod"]);
                 $db->query($sql);
             }  
@@ -202,6 +212,8 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
      * save the contents of the fields (input, output) from  $cfg["tab"]["mod"] table 
      * in a file. 
      * In finale version this method will set the fields (input and output) to "";
+     * 
+     * @return boolean if success true else false
      */
     
     private function _makeAndSaveModul($input , $output , $idmod) {
@@ -212,7 +224,7 @@ if(file_exists(dirname(__FILE__)."/class.contenido.module.base.php"))
                 //$this->saveInput($input);
                 //$this->saveOutput($output);
                $this->_echoIt("Modul gespeichert ...vergleich");
-               #if all right saved in files set input and output in db to "" 
+               //if all right saved in files set input and output in db to "" 
                if( $input == $this->readInput() && $output == $this->readOutput()) {
                    $dbInput = clone $this->_db;
                    $sqlInput = sprintf("UPDATE %s SET input='%s' WHERE idmod=%s AND idclient=%s",$this->_cfg["tab"]["mod"],"", $idmod ,$this->_client);

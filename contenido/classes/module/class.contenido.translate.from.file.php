@@ -1,4 +1,31 @@
 <?php
+/**
+ * Project:
+ * CONTENIDO Content Management System
+ *
+ * Description:
+ * This class save the translations from a modul in a file
+ * and get it from file. 
+ *
+ * Requirements:
+ * @con_php_req 5.0
+ *
+ *
+ * @package    CONTENIDO Backend Classes
+ * @version    1.0.0
+ * @author     Rusmir Jusufovic
+ * @copyright  four for business AG <info@contenido.org>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      
+ *
+ * {@internal
+ * created 2010-12-14
+ *
+ * }}
+ *
+ */
 
 if(file_exists(dirname(__FILE__)."/class.contenido.module.handler.php"))
     include_once(dirname(__FILE__)."/class.contenido.module.handler.php");
@@ -69,10 +96,10 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
 	 	if($idmodul != null)
       		$this->_modulPath = $this->getModulPath();
       
-        #dont open the translations file for each mi18n call 
+        //dont open the translations file for each mi18n call 
       	if($static == true) {
           if( Contenido_Translate_From_File::$savedIdMod != $idmodul) {
-          	  #set filename lang_[language]_[Country].txt
+          	  //set filename lang_[language]_[Country].txt
               $language = $this->_getValueFromProperties("language","code");
               $country = $this->_getValueFromProperties("country", "code");
               self::$fileName = "lang_".$language."_".strtoupper($country).".txt";
@@ -84,7 +111,7 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
       	else {
               Contenido_Translate_From_File::$savedIdMod = -1;
               
-             #set filename lang_[language]_[Country].txt
+             //set filename lang_[language]_[Country].txt
               $language = $this->_getValueFromProperties("language","code");
               $country = $this->_getValueFromProperties("country", "code");
               self::$fileName = "lang_".$language."_".strtoupper($country).".txt";
@@ -169,10 +196,10 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
     			
     			if($saveLangId != -1 && $saveModId != -1) {
 					
-    				#save the translation
+    				//save the translation
     				
     				
-    				#reset translations array
+    				//reset translations array
     				$transArray = array();
     				
     			}	
@@ -194,16 +221,16 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
     		$dbLanguage = new DB_Contenido();
     		$sqlLanguage = sprintf("SELECT * FROM %s", $this->_cfg['tab']['lang']);
     		$dbLanguage->query($sqlLanguage);
-    		 #$this->_echoIt('translation sql: '.$sqlLanguage);
+    		 //$this->_echoIt('translation sql: '.$sqlLanguage);
     		while($dbLanguage->next_record()) {
     		
                 $db = new DB_Contenido();
                 $sql = sprintf('SELECT * FROM %s WHERE idlang=%s AND idmod=%s' , $this->_cfg['tab']['mod_translations'] , $dbLanguage->f('idlang') , $this->_idmod);
-                #$this->_echoIt('translation sql: '.$sql);
+                //$this->_echoIt('translation sql: '.$sql);
                 $db->query($sql);
             	
                $this->_idlang = $dbLanguage->f('idlang');
-               #set filename lang_[language]_[Country].txt
+               //set filename lang_[language]_[Country].txt
                $language = $this->_getValueFromProperties("language","code");
                $country = $this->_getValueFromProperties("country", "code");
                self::$fileName = "lang_".$language."_".strtoupper($country).".txt";
@@ -236,7 +263,7 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
         foreach( $wordListArray as $key => $value) {
         	$value = iconv($this->_encoding,$this->_fileEncoding, $value);
         	$key = iconv($this->_encoding,$this->_fileEncoding, $key);
-            #Originall String [Divider] Translation String
+            //Originall String [Divider] Translation String
             $retString .= $key.Contenido_Translate_From_File::$originalTranslationDivider.$value."\r\n";
         }
         
@@ -278,7 +305,7 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
      * 
      * Save the contents of the wordListArray in file.
      * @param array $wordListArray
-     * @return boolean
+     * @return boolean true if success else false
      */
     public function saveTranslationArray($wordListArray) {
     	

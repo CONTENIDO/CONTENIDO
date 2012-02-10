@@ -90,7 +90,7 @@ if ($action == "mod_new") {
     $module = $modules->create(i18n("- Unnamed Module -"));
     $module->set("description", implode("\n", array(i18n("<your module description>"), "", i18n("Author: "), i18n("Version:"))));
 
-    $module->set("alias",$alias);
+    $module->set("alias",strtolower($alias));
 
     $module->store();
     // save into the file
