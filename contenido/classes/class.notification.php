@@ -122,28 +122,20 @@ class Contenido_Notification
             case self::LEVEL_ERROR:
                 $sHead = i18n('Error');
                 $sHeadClass = 'alertbox_error';
-                $frameColor = $this->_aColors['notify_error'];
-                $sImgPath = $this->_sPathImages . 'icon_fatalerror.gif';
                 break;
             case self::LEVEL_WARNING:
                 $sHead = i18n('Warning');
                 $sHeadClass = 'alertbox_warning';
-                $sBgColor = $this->_aColors['notify_warning'];
-                $sImgPath = $this->_sPathImages . 'icon_warning.gif';
                 break;
             case self::LEVEL_INFO:
                 $sHead = i18n('Info');
                 $sHeadClass = 'alertbox_info';
                 $sMessage = '<span style="color:#435d06">' . $sMessage . '</span>';
-                $sBgColor = $this->_aColors['notify_info'];
-                $sImgPath = $this->_sPathImages . 'but_ok.gif';
                 break;
             default:
                 $sHead = i18n('Notification');
                 $sHeadClass = 'alertbox_notification';
                 $sMessage = '<span style="color:#435d06">' . $sMessage . '</span>';
-                $sBgColor = $this->_aColors['notify'];
-                $sImgPath = $this->_sPathImages . 'but_ok.gif';
                 break;
         }
 
