@@ -232,7 +232,7 @@ class cApiCategoryLanguage extends Item
  * Category language collection
  * @deprecated  [2011-11-15] Use cApiCategoryLanguageCollection instead of this class.
  */
-class CategoryLanguageCollection extends 
+class CategoryLanguageCollection extends cApiCategoryLanguageCollection
 {
     public function __construct()
     {
