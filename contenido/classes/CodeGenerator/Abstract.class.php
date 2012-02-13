@@ -275,6 +275,10 @@ abstract class Contenido_CodeGenerator_Abstract
         // NOTE: Variables below are required in evaluated content type codes!
         global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
 
+        // NOTE: Variables below are additionally required in evaluated content
+        //       type codes within backend edit mode!
+        global $edit, $editLink, $belang;
+
         $idcat = $this->_idcat;
         $idart = $this->_idart;
         $lang = $this->_lang;
@@ -293,12 +297,18 @@ abstract class Contenido_CodeGenerator_Abstract
         // $a_content is used by code from database evaluated below
         $a_content = $contentList;
 
-        // Replace all CMS_TAGS[]
+        // Select all cms_type entries
         $sql = 'SELECT type, code FROM ' . $cfg['tab']['type'];
         $db->query($sql);
+        $_typeList = array();
         while ($db->next_record()) {
-            $key = strtolower($db->f('type'));
-            $type = $db->f('type');
+            $_typeList[] = $db->toObject();
+        }
+
+        // Replace all CMS_TAGS[]
+        foreach($_typeList as $_typeItem) {
+            $key = strtolower($_typeItem->type);
+            $type = $_typeItem->type;
             // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
 #            $tmp = preg_match_all('/(' . $type . ')\[+([a-z0-9_]+)+\]/i', $this->_layoutCode, $match);
             $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $this->_layoutCode, $match);
@@ -311,7 +321,7 @@ abstract class Contenido_CodeGenerator_Abstract
             $replacements = array();
 
             foreach ($a_[$key] as $val) {
-                eval($db->f('code'));
+                eval($_typeItem->code);
 
                 $search[$val] = sprintf('%s[%s]', $type, $val);
                 $replacements[$val] = $tmp;
