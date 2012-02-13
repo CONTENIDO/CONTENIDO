@@ -827,11 +827,11 @@ class Cms_FileList {
 	 */
 	private function encodeForOutput($sCode) {
 		$sCode = (string) $sCode;
-		
-		$sCode = AddSlashes(AddSlashes($sCode));
-		$sCode = str_replace("\\\'", "'", $sCode);
-		$sCode = str_replace("\$", '\\\$', $sCode);
-		
+
+		$sCode = addslashes($sCode);
+		$sCode = str_replace("\\'", "'", $sCode);
+		$sCode = str_replace("\$", '\\$', $sCode);
+
 		return $sCode;
 	}
 

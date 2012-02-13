@@ -188,6 +188,7 @@ class Cms_Teaser {
     function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $aCfg, $oDB, $sContenidoLang, $iClient, $iLang, $aCfgClient, $oSess) {
         //set arguments to class variables directly
         $this->aCfg = $aCfg;
+
         $this->iId = $iNumberOfCms;
         $this->iIdArtLang = $iIdArtLang;
         $this->sContent = urldecode($sContent);
@@ -671,10 +672,9 @@ class Cms_Teaser {
     private function encodeForOutput($sCode) {
         $sCode = (string) $sCode;
 
-        $sCode = addslashes(addslashes($sCode));
-        $sCode = str_replace("\\\'", "'", $sCode);
-        $sCode = str_replace("\$", '\\\$', $sCode);
-
+        $sCode = addslashes($sCode);
+        $sCode = str_replace("\\'", "'", $sCode);
+        $sCode = str_replace("\$", '\\$', $sCode);
         return $sCode;
     }
 

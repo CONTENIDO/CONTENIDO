@@ -168,12 +168,12 @@ public function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $
  * @return the all widgets
  */
 public function getAllWidgetEdit(){
-	
+
 	$this->sContent = urldecode($this->sContent);
-	$this->sContent = AddSlashes(AddSlashes($this->sContent));
-	$this->sContent = str_replace("\\\'", "'", $this->sContent);
-	$this->sContent = str_replace("\$", '\\\$', $this->sContent);
-	
+	$this->sContent = addslashes($this->sContent);
+	$this->sContent = str_replace("\\'", "'", $this->sContent);
+	$this->sContent = str_replace("\$", '\\$', $this->sContent);
+
 	// Render all Widgetes
 	$this->sContent =  $this->getEditingField() . $this->getCalendarButton() . $this->getOkButton() .  $this->getSelectBox() . $this->getJsScript();
 	return urldecode($this->sContent);

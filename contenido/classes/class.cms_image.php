@@ -473,11 +473,11 @@ class Cms_Image {
 	 */
 	private function encodeForOutput($sCode) {
 		$sCode = (string) $sCode;
-		
-		$sCode = AddSlashes(AddSlashes($sCode));
-		$sCode = str_replace("\\\'", "'", $sCode);
-		$sCode = str_replace("\$", '\\\$', $sCode);
-		
+
+		$sCode = AddSlashes($sCode);
+		$sCode = str_replace("\\'", "'", $sCode);
+		$sCode = str_replace("\$", '\\$', $sCode);
+
 		return $sCode;
 	}
 	
