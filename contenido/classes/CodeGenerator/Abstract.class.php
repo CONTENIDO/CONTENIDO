@@ -320,8 +320,17 @@ abstract class Contenido_CodeGenerator_Abstract
             $search = array();
             $replacements = array();
 
+            $typeCodeFile = $cfg['path']['contenido'] . 'includes/type/code/include.' . $type . '.code.php';
+            
             foreach ($a_[$key] as $val) {
-                eval($_typeItem->code);
+                if (file_exists($typeCodeFile)) {
+                    // include CMS type code
+                    include($typeCodeFile);
+                } elseif (!empty($_typeItem->code)) {
+                    // old version, evaluate CMS type code
+                    cDeprecated("Move code for $type from table into file system (contenido/includes/cms/code/)");
+                    eval($_typeItem->code);
+                }
 
                 $search[$val] = sprintf('%s[%s]', $type, $val);
                 $replacements[$val] = $tmp;
