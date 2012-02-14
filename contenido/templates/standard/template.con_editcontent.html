@@ -1,0 +1,102 @@
+<style type="text/css">
+    .defaultSkin table.mceLayout {position: absolute; z-index: 10000;}
+    .defaultSkin #mce_fullscreen_tbl {z-index: 20000;}
+    .defaultSkin .mcePlaceHolder {position: absolute; z-index: 10000;}
+</style>
+
+<script src="{CONTENIDO_FULLHTML}scripts/jquery/jquery.js" type="text/javascript"></script>
+<script src="{CONTENIDO_FULLHTML}scripts/con_tiny.js" type="text/javascript"></script>
+<!-- tinyMCE -->
+<script src="{CONTENIDO_FULLHTML}external/wysiwyg/tinymce3/jscripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>
+
+<script language="javascript">
+tinymce.create('tinymce.plugins.ClosePlugin', {
+    createControl: function(n, cm) {
+        switch (n) {
+            case 'close':
+                var c = cm.createMenuButton('close', {
+                    title : '{CLOSE}',
+                    image : '{CON_PATH}images/back.gif',
+                    icons : false,
+                    onclick : function(ed) {
+                       closeTiny();
+                    }
+                });
+
+                // Return the new menu button instance
+                return c;
+
+            case 'save':
+                var c = cm.createMenuButton('save', {
+                    title : '{SAVE}',
+                    image : '{CON_PATH}images/save.gif',
+                    icons : false,
+                    onclick : function(ed) {
+                       setcontent(iIdartlang, '0');
+                    }
+                });
+
+                // Return the new menu button instance
+                return c;
+        }
+
+        return null;
+    }
+});
+
+// Register plugin with a short name
+tinymce.PluginManager.add('close', tinymce.plugins.ClosePlugin);
+
+var active_id = null;  //id of div on which tiny is active
+var active_object = null;  //onject of div on which tiny is active
+var aEditdata = new Object();  //global array which stores edited content
+var aEditdataOrig = new Object();  //global array which stored original content (Importent for decision if content has changed)
+var bCheckLeave = true;  //globak var which defines if user is asked to store changes
+
+//Global vars for CONTENIDO popup filebrowser
+var fb_fieldname;
+var fb_handle;
+var fb_intervalhandle;
+var fb_win;
+
+//Configuration of tiny, when tiny is opened set event which stores original
+//content to global var aEditdataOrig
+var tinymceConfigs = {
+{TINY_OPTIONS},
+    fullscreen_settings: {
+        {TINY_FULLSCREEN}
+    },
+    'setup': function(ed) {
+        ed.onSetContent.add(function(ed, o) {
+            updateContent(ed.getContent());
+        });
+    }
+};
+tinyMCE.settings = tinymceConfigs;
+
+//add tiny to elements which contains classname contentEditable
+//tiny toggles on click
+$(document).ready( function(){
+    $('div[contenteditable=true]').each( function(){
+        $(this).attr('contentEditable', 'false'); //remove coneditable tags in order to disable special firefox behaviour
+        $(this).bind( "click", function(){
+            {USE_TINY}
+        });
+    });
+});
+
+//activate save confirmation on page leave
+$(window).unload(function(){
+    leave_check();
+});
+
+var file_url = "{FILE}"; //Global var which contains url to CONTENIDO image browser
+var image_url = "{IMAGE}"; //Global var which contains url to CONTENIDO file browser
+var flash_url = "{FLASH}"; //Global var which contains url to CONTENIDO flash browser
+var media_url = "{MEDIA}"; //Global var which contains url to CONTENIDO media browser
+var frontend_path = "{FRONTEND}";
+
+var iIdartlang = '{IDARTLANG}'; //Idartlang which is currently edited
+var sQuestion = '{QUESTION}'; //Translation of save confirmation
+
+</script>
