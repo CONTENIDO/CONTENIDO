@@ -247,11 +247,11 @@ public function getJsScript(){
                        
                        conLoadFile('".$this->aCfg['path']['contenido_fullhtml']."scripts/cmsDate.js', 'load_$this->sCalName();');
                    </script>";
-	
+
 	// output 
-	$this->sJS = AddSlashes(AddSlashes($this->sJS));
-	$this->sJS = str_replace("\\\'", "'", $this->sJS);
-		
+	$this->sJS = addslashes($this->sJS);
+	$this->sJS = str_replace("\\'", "'", $this->sJS);
+
 	return $this->sJS;
 }
 
@@ -277,9 +277,9 @@ private function getCalendarButton(){
 	$oEditButton->setEvent("Click", "$this->sCalName.showCalendar()");
 	$oEditAnchor->setContent($oEditButton);
 	$sFinalEditButton = $oEditButton->render();
-	$sFinalEditButton = AddSlashes(AddSlashes($sFinalEditButton));
-	$sFinalEditButton = str_replace("\\\'", "'", $sFinalEditButton);
-	
+	$sFinalEditButton = addslashes($sFinalEditButton);
+	$sFinalEditButton = str_replace("\\'", "'", $sFinalEditButton);
+
 	return $sFinalEditButton;
 }	
 
@@ -300,9 +300,9 @@ private function getOkButton(){
     $oSaveButton->setBorder(0); 
     $oSaveAnchor->setContent($oSaveButton);
 	$sFinalSaveButton = $oSaveAnchor->render();
-	$sFinalSaveButton = AddSlashes(AddSlashes($sFinalSaveButton));
-	$sFinalSaveButton = str_replace("\\\'", "'", $sFinalSaveButton);
-	
+	$sFinalSaveButton = addslashes($sFinalSaveButton);
+	$sFinalSaveButton = str_replace("\\'", "'", $sFinalSaveButton);
+
 	return $sFinalSaveButton;
 }
 
@@ -322,10 +322,10 @@ private function getEditingField(){
 	#$oDivBox->updateAttributes(array ('contentEditable' => 'true'));
 	$oDivBox->setContent("_REPLACEMENT_"); 
 	$sFinalEditingDiv = $oDivBox->render();
-	$sFinalEditingDiv = AddSlashes(AddSlashes($sFinalEditingDiv));
-	$sFinalEditingDiv = str_replace("\\\'", "'", $sFinalEditingDiv);
+	$sFinalEditingDiv = addslashes($sFinalEditingDiv);
+	$sFinalEditingDiv = str_replace("\\'", "'", $sFinalEditingDiv);
 	$sFinalEditingDiv = str_replace("_REPLACEMENT_", $this->sContent, $sFinalEditingDiv);
-	
+
 	return $sFinalEditingDiv;
 }
 
@@ -356,8 +356,8 @@ private function getSelectBox(){
 	$oSelectMenue->setStyle("font-size: 11px; width:239px; font-family: Verdana,Arial,sans-serif");
 	$oMenueDiv->setContent($oSelectMenue);
 	$sFinalSelectBox = $oMenueDiv->render();
-	$sFinalSelectBox= AddSlashes(AddSlashes($sFinalSelectBox ));
-	$sFinalSelectBox= str_replace("\\\'", "'", $sFinalSelectBox);
+	$sFinalSelectBox = addslashes($sFinalSelectBox);
+	$sFinalSelectBox = str_replace("\\'", "'", $sFinalSelectBox);
 	
 	return $sFinalSelectBox;
 }
@@ -384,5 +384,4 @@ private function getLanguageContenido(){
 	
 }
 
-
-?>	
+?>
