@@ -76,8 +76,10 @@ if ($action == "lay_new")
 		#make new layout in filesystem
 		$layoutInFile = new LayoutInFile($layout->get("idlay"), "", $cfg, $lang);
 		if( $layoutInFile->saveLayout("") == false)
-			$notification->displayNotification("error", i18n("Cant save layout filesystem!"));		
-		
+			$notification->displayNotification("error", i18n("Cant save layout in filesystem!"));		
+		else 
+			$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created layout succsessfully!"));
+			
 	}
 	$bReloadSyncSrcipt = true;
 } elseif ($action == "lay_delete")

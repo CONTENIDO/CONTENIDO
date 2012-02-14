@@ -25,7 +25,7 @@
  *   modified 2010-09-22, Murat Purc, Fixed setting of wrong initial translation id [#CON-347]
  *   modified 2011-01-11, Rusmir Jusufovic, load code for translating from files ( function: parseModuleForStringsLoadFromFile)
  *   modified 2111-02-03, Rusmir Jusufovic, load and save the translation in/from file 
- *
+ *	 modified 2012-02-12, Rusmir Jusufovic, show message at edit
  *   $Id$:
  * }}
  * 
@@ -58,6 +58,7 @@ if ($action == "mod_translation_save")
     $transaltionArray[stripslashes($t_orig)] = stripslashes($t_trans);
     //print_r($transaltionArray);
     $contenidoTranslateFromFile->saveTranslationArray($transaltionArray);
+   	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved translation successfully!"));	
     	
 }
 if ($action == "mod_importexport_translation")

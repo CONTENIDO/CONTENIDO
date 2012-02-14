@@ -100,6 +100,9 @@ if ($action == "mod_new") {
          // logg error
          $notification->displayNotification("error", i18n("Cant make a new modul!"));
          die();
+    }else {
+    	
+    	 $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new module successfuly!"));
     }
 } else {
     $module = new cApiModule();

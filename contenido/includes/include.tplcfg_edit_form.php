@@ -22,8 +22,8 @@
  * {@internal
  *   created 2002
  *   modified 2008-06-27, Dominik Ziegler, add security fix
- *   mofified 2011-01-11, Rusmir Jusufovic, load input of moduls from files
-
+ *   modified 2011-01-11, Rusmir Jusufovic, load input of moduls from files
+ *   modified 2012-02-13, Rusmir Jusufovic, show message at success 
  *   $Id$:
  * }}
  *
@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 cInclude('includes', 'functions.pathresolver.php');
-
+$message = '';
 if (isset($idart)) {
     if ($idart > 0) {
         $idartlang = getArtLang($idart, $lang);
@@ -125,6 +125,7 @@ if ($idart) {
                 $inUse = true;
                 $disabled = 'disabled="disabled"';
             }
+            
         } else {
             if ($idtpl) {
                 // create new configuration entry
@@ -137,8 +138,10 @@ if ($idart) {
                 // update art_lang
                 $sql = "UPDATE ".$cfg['tab']['art_lang']." SET idtplcfg=".(int) $idtplcfg." WHERE idart=".(int) $idart." AND idlang=".(int) $lang;
                 $db->query($sql);
-               
+              
             }
+             
+            
         }
 
     } else {
@@ -211,7 +214,6 @@ if (!$db->next_record()) {
             //$nextid    = $db3->nextid($cfg['tab']['container_conf']);
             $number    = $db->f('number');
             $container = $db->f('container');
-
             // write new entry
             $sql = "INSERT INTO
                         ".$cfg['tab']['container_conf']."
@@ -222,6 +224,11 @@ if (!$db->next_record()) {
             $db2->query($sql);
         }
     }
+}
+
+if(count($_POST) > 0 && $message == '') {
+	
+	 $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Save change successfully!"));
 }
 
 // Get template configuration from 'con_container_conf' and create configuration data array

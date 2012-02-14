@@ -491,7 +491,9 @@ class Contenido_Module_Handler {
     public function deleteFile($type, $fileName) {
         
         if (file_exists($this->_modulPath. $this->_directories[$type]. $fileName))
-            unlink($this->_modulPath. $this->_directories[$type]. $fileName);
+           return unlink($this->_modulPath. $this->_directories[$type]. $fileName);
+        else
+        	return false;
     }
 
     /**

@@ -22,7 +22,8 @@
  * {@internal 
  *   created 2003
  *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modifeid 2011-06-20, Rusmir Jusufovic , save code of the layout in file
+ *   modified 2011-06-20, Rusmir Jusufovic , save code of the layout in file
+ *   modified 2012-02-13, add messages for editing
  *
  *   $Id$:
  * }}
@@ -100,7 +101,8 @@ function layEditLayout($idlay, $name, $description, $code) {
       
         if( $layoutInFile->saveLayout(stripslashes($code)) == false)
         	$notification->displayNotification("error", i18n("Cant save layout in file"));
-        	
+        else 
+        	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved layout succsessfully!"));	
         
         // set correct rights for element
         cInclude ("includes", "functions.rights.php");
@@ -134,6 +136,7 @@ function layEditLayout($idlay, $name, $description, $code) {
         		if($layoutInFile->saveLayout(stripslashes($code)) == false)
         			$notification->displayNotification("error", i18n("Can't save layout in file!"));
         		else {
+        			$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
         			 $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".Contenido_Security::escapeDB($name, $db)."', alias='".Contenido_Security::escapeDB($layoutAlias, $db)."' , description='".Contenido_Security::escapeDB($description, $db)."',
                 			author='".Contenido_Security::escapeDB($author, $db)."', lastmodified='".Contenido_Security::escapeDB($date, $db)."' WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
         		}
@@ -149,10 +152,12 @@ function layEditLayout($idlay, $name, $description, $code) {
         		$notification->displayNotification("error", i18n("Can't save layout in file!"));
         		
         	}
-        	else 
-        		 $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".Contenido_Security::escapeDB($name, $db)."', alias='".Contenido_Security::escapeDB($layoutAlias, $db)."' , description='".Contenido_Security::escapeDB($description, $db)."',
+        	else  {
+					$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
+        		$sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".Contenido_Security::escapeDB($name, $db)."', alias='".Contenido_Security::escapeDB($layoutAlias, $db)."' , description='".Contenido_Security::escapeDB($description, $db)."',
                 			author='".Contenido_Security::escapeDB($author, $db)."', lastmodified='".Contenido_Security::escapeDB($date, $db)."' WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
-        }
+        		}
+        	}
         
     	
        #update if work on file successfully

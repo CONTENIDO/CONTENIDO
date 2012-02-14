@@ -594,6 +594,7 @@ ul#con_str_tree {
 	border-color: #fea513;
 	background-image:url(../images/icon_warning.gif);
 	color: #fea513;
+	display:inline-block;
 }
 
 .notify_error {

@@ -28,6 +28,7 @@
  *   	- save the modul infos in to the xml file
  *   
  *   modified 2011-06-22, Rusmir Jusufovic add alias as modul names
+ *   modified 2012-02-13, Rusmir Jusufovic display message for editing
  *   $Id$:
  * }}
  * 
@@ -81,11 +82,11 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		$cApiModule->loadByPrimaryKey($idmod);	
 		$contenidoModuleHandler = new Contenido_Module_Handler($idmod);	
 	}
-    
+   
       #save contents of input or output 
-	    $contenidoModuleHandler->saveInput(stripslashes($input));
-	    $contenidoModuleHandler->saveOutput(stripslashes($output));
-	    
+	  $retInput = $contenidoModuleHandler->saveInput(stripslashes($input));
+	  $retOutput = $contenidoModuleHandler->saveOutput(stripslashes($output));
+	  
     if (	$cApiModule->get("alias") != stripslashes($alias) || $cApiModule->get("template") != stripslashes($template) ||
     		$cApiModule->get("description") != stripslashes($description) ||$cApiModule->get("type") != stripslashes($type))
     {
@@ -109,13 +110,13 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		
 		
 		#name of modul changed
-		if($change == true)
-		{		
+		if($change == true){		
 		       #the new name of modul dont exist im modul dir
 		       if( $contenidoModuleHandler->renameModul($oldName,$alias) == false) {
 		       	$notification->displayNotification('error',i18n("Can't rename modul, is a modul file open ??? !"));
 		       	die();
 		       } else {
+		       		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed module successfully!"));
 		       		$cApiModule->set("name", $name);
 					$cApiModule->set("template", $template);
 					$cApiModule->set("description", $description);
@@ -154,6 +155,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		    
 		} else {
 			
+				
 				$cApiModule->set("name", $name);
 				$cApiModule->set("template", $template);
 				$cApiModule->set("description", $description);
@@ -164,7 +166,18 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		    
 		     if($contenidoModuleHandler->saveInfoXML($name , $description, $type, $alias) == false)
 		       		$notification->displayNotification('error',i18n("Can't save xml modul info file!"));
+		       
+		       		
+		       	if($retInput == true && $retOutput == true) {
+		       		
+		       		 $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved module successfully!"));
+		       	}
 		}
+    }else {
+    	
+    	//no changes for save
+    	if($retInput == true && $retOutput == true)
+    	 	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved module successfully!"));
     }
 
 	
