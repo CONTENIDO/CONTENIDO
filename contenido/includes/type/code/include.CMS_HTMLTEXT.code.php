@@ -85,8 +85,8 @@ if ($edit) {
     $tmp = $content;
 }
 
-$tmp = str_replace('"', '\"', $tmp);
 $tmp = addslashes($tmp);
+$tmp = str_replace("\\'", "'", $tmp);
 $tmp = str_replace('$', '\\$', $tmp);
 
 ?>
