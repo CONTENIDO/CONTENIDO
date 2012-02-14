@@ -106,6 +106,12 @@ abstract class Contenido_CodeGenerator_Abstract
     protected $_layout;
 
     /**
+     * Flag to persist generated code
+     * @var bool
+     */
+    protected $_save;
+
+    /**
      * Article language id
      * @var int
      */
@@ -179,12 +185,12 @@ abstract class Contenido_CodeGenerator_Abstract
      * @param  int   $idart
      * @param  int   $lang
      * @param  int   $client
-     * @param  int   $client
      * @param  bool  $layout
+     * @param  bool  $save  Flag to persist generated code
      * @return  string  Generated code or error code '0601' if no template
      *                  configuration was found for category or article.
      */
-    public function generate($idcat, $idart, $lang, $client, $layout = false)
+    public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true)
     {
         global $cfg;
 
@@ -193,6 +199,7 @@ abstract class Contenido_CodeGenerator_Abstract
         $this->_lang = (int) $lang;
         $this->_client = (int) $client;
         $this->_layout = (bool) $layout;
+        $this->_save = (bool) $save;
 
         $sql = "SELECT idartlang, pagetitle FROM " . $cfg['tab']['art_lang']
              . " WHERE idart=" . (int) $this->_idart . " AND idlang=" . (int) $this->_lang;

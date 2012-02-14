@@ -174,7 +174,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 	 	$this->_layoutCode = str_ireplace_once("</body>",  $jsDatei . "</body>", $this->_layoutCode);
 	 
         // Write code into the database
-        if ($this->_layout == false) {
+        if ($this->_layout == false && $this->_save == true) {
             $oCodeColl = new cApiCodeCollection();
             $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $this->_lang);
             if (!is_object($oCode)) {

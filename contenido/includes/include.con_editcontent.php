@@ -237,23 +237,17 @@ EOD;
 </form>
 ';
 
-    // @todo make generator configurable
-    $codeGen = Contenido_CodeGenerator_Factory::getInstance('Standard');
-//    $codeGen->setDebug(true);
-    if (isset($frontend_debug) && is_array($frontend_debug)) {
-        $codeGen->setFrontendDebugOptions($frontend_debug);
-    }
+    // generate code
+    $code = conGenerateCode($idcat, $idart, $lang, $client, false, false);
 
-    $code = $codeGen->generate($idcat, $idart, $lang, $client, $layout);
-
+    // inject some additional markup
     $code = str_ireplace_once("</head>", "$markSubItem $scripts\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$encoding[$lang]\"></head>", $code);
     $code = str_ireplace_once_reverse("</body>", "$contentform</body>", $code);
+    $code = str_ireplace_once("<head>", "<head>\n".'<base href="'.$cfgClient[$client]["path"]["htmlpath"].'">', $code);
 
     if ($cfg["debug"]["codeoutput"]) {
         echo "<textarea>".htmlspecialchars($code)."</textarea>";
     }
-
-    $code = str_ireplace_once("<head>", "<head>\n".'<base href="'.$cfgClient[$client]["path"]["htmlpath"].'">', $code);
 
     chdir($cfgClient[$client]["path"]["frontend"]);
     eval("?>\n".$code."\n<?php\n");

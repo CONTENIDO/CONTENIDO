@@ -56,10 +56,11 @@ if (!defined('CON_FRAMEWORK')) {
  * @param int $lang Id of language
  * @param int $client Id of client
  * @param int $layout Layout-ID of alternate Layout (if false, use associated layout)
+ * @param bool $save  Flag to persist generated code in database
  * @return string The generated code or "0601" if neither article nor category configuration 
  *                was found
  */
-function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
+function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true)
 {
     global $frontend_debug;
 
@@ -70,7 +71,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false)
         $codeGen->setFrontendDebugOptions($frontend_debug);
     }
 
-    $code = $codeGen->generate($idcat, $idart, $lang, $client, $layout);
+    $code = $codeGen->generate($idcat, $idart, $lang, $client, $layout, $save);
 
     // execute CEC hook
     $code = CEC_Hook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
