@@ -272,11 +272,11 @@ abstract class Contenido_CodeGenerator_Abstract
     protected function _processCmsTags($contentList, $saveKeywords = true)
     {
         // #####################################################################
-        // NOTE: Variables below are required in evaluated content type codes!
+        // NOTE: Variables below are required in included/evaluated content type codes!
         global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
 
-        // NOTE: Variables below are additionally required in evaluated content
-        //       type codes within backend edit mode!
+        // NOTE: Variables below are additionally required in included/evaluated
+        //       content type codes within backend edit mode!
         global $edit, $editLink, $belang;
 
         $idcat = $this->_idcat;
@@ -294,11 +294,11 @@ abstract class Contenido_CodeGenerator_Abstract
         $match = array();
         $keycode = array();
 
-        // $a_content is used by code from database evaluated below
+        // $a_content is used by included/evaluated content type codes below
         $a_content = $contentList;
 
         // Select all cms_type entries
-        $sql = 'SELECT type, code FROM ' . $cfg['tab']['type'];
+        $sql = 'SELECT idtype, type, code FROM ' . $cfg['tab']['type'];
         $db->query($sql);
         $_typeList = array();
         while ($db->next_record()) {

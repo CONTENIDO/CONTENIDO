@@ -6,6 +6,9 @@
  * Description:
  * CMS_HTMLTEXT code
  *
+ * NOTE: This file will be included by the code generator while processing CMS tags in layout.
+ * It runs in a context of a function and requires some predefined variables!
+ *
  * Requirements:
  * @con_php_req 5.0
  *
@@ -31,7 +34,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-// CMS_HTMLTEXT
 
 cInclude('includes', 'functions.lang.php');
 
@@ -51,7 +53,7 @@ $content = nl2br($content);
 
 if ($edit) {
     $div = new cHTMLDiv();
-    $div->setID('HTMLTEXT_' . $db->f('idtype') . '_' . $val);
+    $div->setID('HTMLTEXT_' . $_typeItem->idtype . '_' . $val);
     $div->setEvent('focus', "this.style.border='1px solid #bb5577'");
     $div->setEvent('blur', "this.style.border='1px dashed #bfbfbf'");
     $div->setStyleDefinition('border', '1px dashed #bfbfbf');
@@ -86,6 +88,5 @@ if ($edit) {
 $tmp = str_replace('"', '\"', $tmp);
 $tmp = addslashes($tmp);
 $tmp = str_replace('$', '\\$', $tmp);
-
 
 ?>

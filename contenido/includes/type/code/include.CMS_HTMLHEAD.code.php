@@ -6,6 +6,9 @@
  * Description:
  * CMS_HTMLHEAD code
  *
+ * NOTE: This file will be included by the code generator while processing CMS tags in layout.
+ * It runs in a context of a function and requires some predefined variables!
+ *
  * Requirements:
  * @con_php_req 5.0
  *
@@ -31,7 +34,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-// CMS_HTMLHEAD
 
 $tmp = $a_content['CMS_HTMLHEAD'][$val];
 $tmp = urldecode($tmp);
@@ -44,7 +46,7 @@ if ($edit) {
     }
 
     $insiteEditingDIV = new cHTMLDiv();
-    $insiteEditingDIV->setId('HTMLHEAD_' . $db->f('idtype') . '_' . $val);
+    $insiteEditingDIV->setId('HTMLHEAD_' . $_typeItem->idtype . '_' . $val);
     $insiteEditingDIV->setEvent('Focus', "this.style.border='1px solid #bb5577';");
     $insiteEditingDIV->setEvent('Blur', "this.style.border='1px dashed #bfbfbf';");
     $insiteEditingDIV->setStyleDefinition('border', '1px dashed #bfbfbf');
@@ -85,12 +87,11 @@ if ($edit) {
 
     $finalSaveButton = $saveAnchor->render();
 
-    $tmp =  $finalEditingDiv . $finalEditButton . $finalSaveButton;
+    $tmp = $finalEditingDiv . $finalEditButton . $finalSaveButton;
 }
 
 $tmp = addslashes($tmp);
 $tmp = str_replace("\\'", "'", $tmp);
 $tmp = str_replace("\$", '\\$', $tmp);
-
 
 ?>

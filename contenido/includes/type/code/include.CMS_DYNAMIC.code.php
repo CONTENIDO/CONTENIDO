@@ -6,6 +6,9 @@
  * Description:
  * CMS_DYNAMIC code
  *
+ * NOTE: This file will be included by the code generator while processing CMS tags in layout.
+ * It runs in a context of a function and requires some predefined variables!
+ *
  * Requirements:
  * @con_php_req 5.0
  *
@@ -31,7 +34,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-// CMS_DYNAMIC
 
 cInclude('classes', 'class.globals.config.php');
 cInclude('classes', 'module/AbstractModule.php');
@@ -45,8 +47,7 @@ if ($edit) {
     $tmp = $oCmsDynamic->showToolbar();
     $tmp .= $oCmsDynamic->showContent();
 } else {
-    $tmp = $oCmsDynamic->showContent();   
+    $tmp = $oCmsDynamic->showContent();
 }
-
 
 ?>

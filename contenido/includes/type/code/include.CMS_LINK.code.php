@@ -6,6 +6,9 @@
  * Description:
  * CMS_LINK code
  *
+ * NOTE: This file will be included by the code generator while processing CMS tags in layout.
+ * It runs in a context of a function and requires some predefined variables!
+ *
  * Requirements:
  * @con_php_req 5.0
  *
@@ -31,7 +34,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-// CMS_LINK
 
 $tmp = urldecode($a_content['CMS_LINK'][$val]);
 
@@ -50,6 +52,5 @@ if (is_numeric($tmp)) {
         }
     }
 }
-
 
 ?>

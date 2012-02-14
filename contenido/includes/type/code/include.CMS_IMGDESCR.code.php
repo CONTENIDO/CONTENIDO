@@ -6,6 +6,9 @@
  * Description:
  * CMS_IMGDESCR code
  *
+ * NOTE: This file will be included by the code generator while processing CMS tags in layout.
+ * It runs in a context of a function and requires some predefined variables!
+ *
  * Requirements:
  * @con_php_req 5.0
  *
@@ -31,7 +34,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-// CMS_IMGDESCR
 
 $tmp = $a_content['CMS_IMGDESCR'][$val];
 $tmp = urldecode($tmp);
@@ -58,6 +60,5 @@ if ($edit) {
 
     $tmp = $tmp . $finalEditButton;
 }
-
 
 ?>

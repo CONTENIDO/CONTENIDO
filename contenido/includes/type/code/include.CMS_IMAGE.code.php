@@ -6,6 +6,9 @@
  * Description:
  * CMS_IMAGE code
  *
+ * NOTE: This file will be included by the code generator while processing CMS tags in layout.
+ * It runs in a context of a function and requires some predefined variables!
+ *
  * Requirements:
  * @con_php_req 5.0
  *
@@ -31,9 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-// CMS_IMAGE
 
-cInclude('classes', 'class.cms_image.php');
 $tmp = $a_content['CMS_IMAGE'][$val];
 $oCmsImage = new Cms_Image($tmp, $val, $idartlang, $editLink, $cfg, $db, $belang, $client, $lang, $cfgClient, $sess);
 
@@ -42,6 +43,5 @@ if ($edit) {
 } else {
     $tmp = $oCmsImage->getAllWidgetView();
 }
-
 
 ?>
