@@ -89,7 +89,7 @@ function saverights() {
    }
 
    $rights_list_old = $rights_list;
-   //$notification->displayNotification("info", i18n("Changes saved"),0);
+   $notification->displayNotification("info", i18n("Changes saved"));
 }
 
 function saverightsarea()

@@ -75,7 +75,7 @@ if ($action == 'fegroups_save_perm') {
             } else {
                 $varname = 'item_' . $item . '_' . $action;
             }
-
+			
             if ($_POST[$varname] == 1) {
                 $perms->setPerm($idfrontendgroup, $useplugin, $action, $item);
             } else {
@@ -83,6 +83,7 @@ if ($action == 'fegroups_save_perm') {
             }
         }
     }
+    $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
 }
 
 $rights->addHeader(sprintf(i18n("Permissions for plugin '%s'"), $class->getFriendlyName()));

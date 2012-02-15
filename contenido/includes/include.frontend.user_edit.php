@@ -24,7 +24,7 @@
  *  modified 2008-06-27, Frederic Schneider, add security fix
  *  modified 2009-06-02, Andreas Lindner, fix check for duplicate user name when it contains a special character
  *  modified 2011-06-01, Ortwin Pinke, fixed CON-402 german umlaute not correct displayed for membergroups
- *
+ *  modified 2012-02-15, Rusmir Jusufovic, show message
  *   $Id$:
  * }}
  *
@@ -63,6 +63,8 @@ while($oFEGroup = $oFEGroupMemberCollection->next()) {
 if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "frontend_create")) {
     $feuser = $feusers->create(" ".i18n("-- new user --"));
     $idfrontenduser = $feuser->get("idfrontenduser");
+    //show success message
+    $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new user successfully!"));
 }
 
 if ($idfrontenduser && $action != '') {
@@ -91,6 +93,7 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
     $idfrontenduser = 0;
     $feuser = new cApiFrontendUser();
     $page->addScript('reload', $sReloadScript);
+    $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Delteted user successfully!"));
 }
 
 if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
@@ -148,6 +151,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
         }
 
         $feuser->store();
+        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
     }
 
     if (count($messages) > 0) {

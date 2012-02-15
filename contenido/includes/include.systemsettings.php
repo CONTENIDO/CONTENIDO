@@ -23,7 +23,7 @@
  *   created 2003-11-18
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-11-13,  Timo Trautmann - Fixed wron escaping of chars
- *
+ *	 modified 2012-02-15, Rusmir Jusufovic show messages 
  *   $Id$:
  * }}
  * 
@@ -43,6 +43,10 @@ if ($action == "systemsettings_save_item")
 {
     if (!in_array($systype.'_'.$sysname, $aManagedValues)) {
         setSystemProperty ($systype, $sysname, $sysvalue, $csidsystemprop);
+        if(isset($x))
+        	$sWarning = $notification->returnNotification("info", i18n('Saved changes successfully!'), 1).'<br>';
+        else
+        	$sWarning = $notification->returnNotification("info", i18n('Created new item successfully!'), 1).'<br>';
     } else {
        $sWarning = $notification->returnNotification("warning", i18n('Please set this property in systemsettings directly'), 1).'<br>';
     }
@@ -51,6 +55,7 @@ if ($action == "systemsettings_save_item")
 if ($action == "systemsettings_delete_item")
 {
 	deleteSystemProperty($systype, $sysname);	
+	$sWarning = $notification->returnNotification("info", i18n('Deleted item successfully!'), 1).'<br>';
 }
 
 $settings = getSystemProperties(1);

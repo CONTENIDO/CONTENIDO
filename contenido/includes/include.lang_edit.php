@@ -23,6 +23,7 @@
  *   created 2003-04-30
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2009-05-25, Oliver Lohkemper, add iso-639-2- & iso-3166-selecter
+ *   modified 2012-02-15, Rusmir Jusufovic, show message 
  *
  *   $Id$:
  * }}
@@ -59,6 +60,7 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
         
         if ($action == "lang_deletelanguage")
 		{
+			$notification-> displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted language successfully!"));
             // finally delete from dropdown in header
             $newOption = '<script>
 							var langList = top.header.document.getElementById("cLanguageSelect");
@@ -86,6 +88,7 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
 							langList.options[langList.options.length] = newLang;
 							</script>';
             $idlang = $new_idlang;
+            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new language successfully!"));
         }
         
         if ($targetclient == $client) {

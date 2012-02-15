@@ -85,7 +85,7 @@ if (!$perm->have_perm_area_action($area, $action))
     if ( $_REQUEST['action'] == $sActionCreate AND $_REQUEST['status'] == 'send')
     {
     	$sTempFilename = $sFilename;
-    	createFile($sFilename, $path);
+    	$ret = createFile($sFilename, $path);
     	$bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
         $sReloadScript .= "<script type=\"text/javascript\">
                  var right_top = top.content.right.right_top;
@@ -95,11 +95,13 @@ if (!$perm->have_perm_area_action($area, $action))
                  }
                  </script>";
         updateFileInformation($client, $sFilename, 'templates', $auth->auth['uid'], $_REQUEST['description'], $db);
+    	$notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Created new template file successfully!"));
     }
 
 	# edit selected file
     if ( $_REQUEST['action'] == $sActionEdit AND $_REQUEST['status'] == 'send') 
     {
+    	$sTempTempFilename = $sTempFilename;
     	if ($sFilename != $sTempFilename)
     	{	
     		$sTempFilename = renameFile($sTempFilename, $sFilename, $path);
@@ -115,8 +117,13 @@ if (!$perm->have_perm_area_action($area, $action))
     		$sTempFilename = $sFilename;
     	}    	
         
+    	if($sFilename != $sTempTempFilename) {
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Renamed template file successfully!"));
+    	}else {
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
+    	}
 		updateFileInformation($client,  $sOrigFileName, 'templates', $auth->auth['uid'], $_REQUEST['description'], $db, $sFilename);
-       
+    
 	   /**
 		* START TRACK VERSION
 		**/

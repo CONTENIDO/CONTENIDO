@@ -56,7 +56,7 @@ function emptyLogFile()
 		{
 			$errorLogHandle = fopen($cfg['path']['contenido']."logs/errorlog.txt", "wb+");
 			fclose($errorLogHandle);
-			$tmp_notification = $notification->returnNotification("info", i18n("error log successfully cleared"));
+			$tmp_notification = $notification->returnNotification("info", i18n("Error log successfully cleared"));
 		} else if (file_exists($cfg['path']['contenido']."logs/errorlog.txt") && !is_writeable($cfg['path']['contenido']."logs/errorlog.txt")) {
 		    $tmp_notification = $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
 		}

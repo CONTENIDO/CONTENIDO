@@ -46,7 +46,6 @@ cInclude ("includes", "functions.con.php");
  */
 function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c, $default)
 {
-
         global $db;
         global $sess;
         global $auth;
@@ -65,7 +64,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         set_magic_quotes_gpc($description);
 		
         $name = capiStrCleanURLCharacters($name);
-        
+       
         if (!$idtpl) {
 
 //            $idtpl = $db->nextid($cfg["tab"]["tpl"]);
@@ -99,6 +98,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
             // set correct rights for element
             cInclude ("includes", "functions.rights.php");
             createRightsForElement("tpl", $idtpl);
+           
 
         } else {
 
@@ -128,7 +128,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
             /* Generate code */
             conGenerateCodeForAllartsUsingTemplate($idtpl);
-
+           
         }
 
 		if ($default == 1)

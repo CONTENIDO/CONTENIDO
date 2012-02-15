@@ -92,6 +92,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
          }
 
         $oNewsletter->store();
+        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
     } elseif ($oNewsletter->get("idart") > 0) {
         // Check, if html message article and template article are still available
         $oArticles = new cApiArticleLanguageCollection();

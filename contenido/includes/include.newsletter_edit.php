@@ -95,6 +95,8 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     }
     $oNewsletter->set("dispatch_delay", $iValue);
     $oNewsletter->store();
+    //show message
+    $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Created newsletter successfully!"));
 } elseif ($action == "news_duplicate" && $perm->have_perm_area_action($area, "news_create")) {
     // Copy newsletter
     $oNewsletter = $oNewsletters->duplicate($idnewsletter);
@@ -102,6 +104,8 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     // Update subnav with new ID
     $oPage->setSubnav("idnewsletter=".$oNewsletter->get("idnews"), "news");
     $oPage->setReload();
+    //show message
+    $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Dupplicate newsletter successfully!"));
 } elseif ($action == "news_delete" && $perm->have_perm_area_action($area, "news_delete")) {
     // Delete newsletter
     // If it is an html newsletter, delete html message article, also
@@ -119,6 +123,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     // and must not contain "idnewsletter" as this is checked in the _subnav file.
     $oPage->setSubnav("blank", "news");
     $oPage->setReload();
+    $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Deleted newsletter successfully!"));
 } elseif ($action == "news_add_job" && $perm->have_perm_area_action($area, "news_add_job")) {
     // Create job
     $oJobs = new cNewsletterJobCollection();
@@ -217,7 +222,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
     if ($action == "news_save" && $perm->have_perm_area_action($area, $action)) {
         // Save changes
         $aMessages = array();
-
+		
         // Changing e.g. \' back to ' (magic_quotes)
         $sName      = stripslashes($_REQUEST["txtName"]);
         $sFromEMail = stripslashes($_REQUEST["txtFromEMail"]);
@@ -338,6 +343,10 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 
         if (count($aMessages) > 0) {
             $notis .= $notification->returnNotification("warning", implode("<br>", $aMessages)) . "<br>";
+        }else {
+        	
+        	//show message
+        	$notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
         }
     } else {
         $_REQUEST["selGroup"] = unserialize ($oNewsletter->get("send_ids"));

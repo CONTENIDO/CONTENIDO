@@ -247,11 +247,17 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 	$page->setReload();
 
 	$page->setSubnav("idtpl=$idtpl", "tpl");
-
+     
 	if ($action != "tpl_duplicate") {
 		$page->setContent($form->render());
 	}
 
+	$notification = new Contenido_Notification();
+	
+	
+	if($idtpl> 0)
+		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes sussessfully!"));
+	
 	$page->render();
 } 
 ?>

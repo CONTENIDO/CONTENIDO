@@ -102,5 +102,8 @@ if (isset($idtplcfg)) {
                 $db->query($sql);
             }
         }
+        //is form send
+        if($x>0)
+        	$notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
 }
 ?>

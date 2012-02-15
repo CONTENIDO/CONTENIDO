@@ -63,6 +63,7 @@ if(!$perm->have_perm_area_action($area,$action))
     				WHERE idgroupuser = '". $idgroupuser ."'";
                 $db->query($sql);
             }
+            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Removed member from group successfully!"));
     	}
     	
         if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $action)))
@@ -115,6 +116,7 @@ if(!$perm->have_perm_area_action($area,$action))
     							}
                    			}
                    		}
+                   		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Added user to group successfully!"));
                		}
         }
     	$tab1 = $cfg["tab"]["groupmembers"];

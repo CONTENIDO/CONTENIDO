@@ -23,7 +23,7 @@
  *   created 2004-07-14
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-08-14, Timo Trautmann, Bilal Arslan - Functions for versionning and storing file meta data added
- *
+ *	 modifeid 2012-02-12, Rusmir Jusufovic , Show message for user
  *   $Id: include.js_edit_form.php 713 2008-08-21 14:01:51Z timo.trautmann $:
  * }}
  * 
@@ -111,7 +111,7 @@ if (!$perm->have_perm_area_action('js', $actionRequest) || $premCreate)
     if ( $actionRequest == $sActionCreate AND $_REQUEST['status'] == 'send')
     {
     	$sTempFilename = $sFilename;
-    	createFile($sFilename, $path);
+    	$ret = createFile($sFilename, $path);
     	$tempCode = iconv(Contenido_Vars::getVar('encoding'), Contenido_Vars::getVar('fileEncoding'), $_REQUEST['code']);
     	$bEdit = fileEdit($sFilename,$tempCode , $path);
     	
@@ -123,6 +123,12 @@ if (!$perm->have_perm_area_action('js', $actionRequest) || $premCreate)
                      right_top.location.href = href;
                  }
                  </script>";
+       
+        //show message for user
+        if($ret == true)
+       		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new js file successfully"));
+        else
+        	$notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n("Culd not create a new js file. "));
     }
 
 	# edit selected file
@@ -151,6 +157,12 @@ if (!$perm->have_perm_area_action('js', $actionRequest) || $premCreate)
     	$tempCode = iconv(Contenido_Vars::getVar('encoding'), Contenido_Vars::getVar('fileEncoding'), $_REQUEST['code']);
     	$bEdit = fileEdit($sFilename,$tempCode , $path);
        
+    	//show message for user
+    	if($sFilename != $sTempFilename) {	
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed and saved changes successfully!"));
+    	}else {
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully"));
+    	}
         
 	}
 	

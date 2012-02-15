@@ -23,7 +23,7 @@
  *   created 2003-04-20
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-08-14, Timo Trautmann, Bilal Arslan - Functions for versionning and storing file meta data added
- *
+ *	 modified 2012-02-15, Rusmir Jusufovic , Show message for user 
  *   $Id$:
  * }}
  * 
@@ -111,11 +111,13 @@ if (!$perm->have_perm_area_action($area, $action))
                      right_top.location.href = href;
                  }
                  </script>";
+        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new css file successfully!"));
     }
 
 	# edit selected file
     if ( $_REQUEST['action'] == $sActionEdit AND $_REQUEST['status'] == 'send') 
     {
+    	$tempTemplate = $sTempFilename;
     	if ($sFilename != $sTempFilename)
     	{	
     		$sTempFilename = renameFile($sTempFilename, $sFilename, $path);
@@ -131,7 +133,15 @@ if (!$perm->have_perm_area_action($area, $action))
     		$sTempFilename = $sFilename;
     	}
 		
-				
+		
+    	//show message
+    	if($sFilename != $tempTemplate) {
+    		
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed css file successfully!"));
+    	}else {
+    		
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
+    	}
         updateFileInformation($client, $sOrigFileName, 'css', $auth->auth['uid'], $_REQUEST['description'], $db, $sFilename);
         
 		/**

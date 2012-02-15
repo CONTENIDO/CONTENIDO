@@ -219,7 +219,7 @@ function fileEdit($filename, $sCode, $path) {
                 exit;
             }
             # write file
-            if (!fwrite($handle, stripslashes($sCode))) {
+            if (fwrite($handle, stripslashes($sCode))=== FALSE) {
                 $notification->displayNotification("error", sprintf(i18n("Could not write file %s"), $path.$filename));
                 exit;
             }

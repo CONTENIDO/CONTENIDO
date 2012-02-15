@@ -761,17 +761,17 @@ class cApiModule extends Item
     		$zip = new ZipArchive();
     		$zipName = $this->get('alias').'.zip';
     		if($zip->open($zipName,ZipArchive::CREATE) === TRUE) {
-    			$this->_addFolderToZip($contenidoModuleHandler->getModulPath() , $zip);
+    			$retAddToFolder = $this->_addFolderToZip($contenidoModuleHandler->getModulPath() , $zip);
     			
     			
     			$zip->close();
-    			// Stream the file to the client
+    			//Stream the file to the client
 				header("Content-Type: application/zip");
 				header("Content-Length: " . filesize($zipName));
 				header("Content-Disposition: attachment; filename=\"$zipName\"");
 				readfile($zipName);
-				#erase the file  
-    			unlink($zipName);
+				//erase the file  
+    			$ret = unlink($zipName);
     		}else {
     			$notification->displayNotification('error', i18n("Could not open the zip-File!"));
     		}

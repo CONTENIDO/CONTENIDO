@@ -43,7 +43,7 @@ if (is_array($cfg['plugins']['frontendgroups'])) {
         plugin_include("frontendgroups", $plugin."/".$plugin.".php");
     }
 }
-
+$successMessage = '';
 $fegroup      = new cApiFrontendGroup();
 $groupmembers = new cApiFrontendGroupMemberCollection();
 $fegroup->loadByPrimaryKey($idfrontendgroup);
@@ -55,7 +55,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
    $sRefreshRightTopLink = $sess->url('main.php?frame=3&area='.$area.'&idfrontendgroup='.$idfrontendgroup);
    $sRefreshRightTopLink = "conMultiLink('right_top', '".$sRefreshRightTopLink."')";
    $sRefreshRightTopLinkJs = "<script type=\"text/javascript\">".$sRefreshRightTopLink."</script>";
-
+   $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Created new frontend-group successfully"));
 } else if ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action)) {
     $aDeleteMembers = array();
     if (!is_array($_POST['user_in_group'])) {
@@ -69,6 +69,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
         $groupmembers->remove($idfrontendgroup, $idfrontenduser);
     }
 
+    $successMessage = i18n("Removed user from group successfully!");
     # also save other variables
     $action = "frontendgroup_save_group";
 } else if ($action == "frontendgroup_user_add" && $perm->have_perm_area_action($area, $action)) {
@@ -77,13 +78,15 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
             $groupmembers->create($idfrontendgroup, $add);
         }
     }
-
+	$successMessage = i18n("Added user to group successfully!");
     # also save other variables
     $action = "frontendgroup_save_group";
 } else if ($action == "frontendgroup_delete" && $perm->have_perm_area_action($area, $action)) {
    $fegroups->delete($idfrontendgroup);
    $idfrontendgroup= 0;
    $fegroup = new cApiFrontendGroup();
+   
+  $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted group successfully!"));
 }
 
 if ($action != '') {
@@ -111,6 +114,9 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
                 $messages[] = i18n("Could not set new group name: Group already exists");
             } else {
                 $fegroup->set("groupname", stripslashes($groupname));
+               
+                if(!isset($successMessage))
+               		$successMessage = i18n("Saved changes successfully!");
             }
         }
 
@@ -146,6 +152,11 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
 
     if (count($messages) > 0) {
         $notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
+    }else {
+    	if(strlen($successMessage) > 0)
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO,$successMessage);
+    	elseif(strlen($action) > 0)
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
     }
 
     $tpl->reset();
@@ -271,6 +282,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
     $page = new UI_Page();
     $page->setContent("");
     $page->addScript('reload', $sReloadScript);
+   
     $page->render();
 }
 ?>
