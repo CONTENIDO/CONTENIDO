@@ -53,6 +53,7 @@ if ($action == "mod_delete") {
     if ($contenidoModuleHandler->eraseModul() == true) {
         $modules = new cApiModuleCollection;
         $modules->delete($idmod);
+        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted module successfully!"));
     }
 }
 
