@@ -63,31 +63,21 @@ $sScriptTemplate = '
 
     function deleteFile(file) 
 	{
-        url  = "main.php?area='.$sArea.'";
-        url += "&action='.$sActionDelete.'";
+       
+		parent.parent.frames["right"].frames["right_bottom"].location.href = "main.php?action='.$sActionDelete.'&delfile="+file+"&area='.$sArea.'&frame=4&contenido='.$sSession.'";
+		
+		url  = "main.php?area='.$sArea.'";
+        //url += "&action='.$sActionDelete.'";
         url += "&frame=2";
-        url += "&delfile=" + file;
+        //url += "&delfile=" + file;
         url += "&contenido='.$sSession.'";
         window.location.href = url;
-		parent.parent.frames["right"].frames["right_bottom"].location.href = "main.php?area='.$sArea.'&frame=4&contenido='.$sSession.'";
     }
 </script>';
 
 $tpl->set('s', 'JAVASCRIPT', $sScriptTemplate);
 
-# delete file
-if ($action == $sActionDelete)
-{
-    if (!strrchr($_REQUEST['delfile'], "/"))
-    {
-        if (file_exists($path.$_REQUEST['delfile']))
-        {
-            unlink($path.$_REQUEST['delfile']);
-            removeFileInformation($client, $_REQUEST['delfile'], 'js', $db);
-        }
-    }
 
-}
 
 if ($handle = opendir($path))
 {

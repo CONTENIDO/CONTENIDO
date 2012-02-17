@@ -49,8 +49,9 @@ $sFileType = "css";
 $sSession = $sess->id;
 
 $sArea = 'style';
-$sActionDelete = 'style_delete';
+
 $sActionEdit = 'style_edit';
+$sActionDelete = 'style_delete';
 
 $sScriptTemplate = '
 <script type="text/javascript" src="scripts/rowMark.js"></script>
@@ -69,25 +70,13 @@ $sScriptTemplate = '
         url += "&delfile=" + file;
         url += "&contenido='.$sSession.'";
         window.location.href = url;
-		parent.parent.frames["right"].frames["right_bottom"].location.href = "main.php?area='.$sArea.'&frame=4&contenido='.$sSession.'";
+		parent.parent.frames["right"].frames["right_bottom"].location.href = "main.php?area='.$sArea.'&frame=4&action='.$sActionDelete.'&delfile="+file+"&contenido='.$sSession.'";
     }
 </script>';
 
 $tpl->set('s', 'JAVASCRIPT', $sScriptTemplate);
 
-# delete file
-if ($action == $sActionDelete)
-{
-    if (!strrchr($_REQUEST['delfile'], "/"))
-    {
-        if (file_exists($path.$_REQUEST['delfile']))
-        {
-            unlink($path.$_REQUEST['delfile']);
-            removeFileInformation($client, $_REQUEST['delfile'], 'css', $db);
-        }
-    }
 
-}
 
 if ($handle = opendir($path))
 {

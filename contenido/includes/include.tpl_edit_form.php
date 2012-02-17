@@ -34,7 +34,17 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+
 $tpl2 = new Template();
+
+if($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $action)) {
+	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted Template succcessfully!"));
+	
+	$page = new cPage;
+	$page->render();
+	exit;
+}
+
 
 if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
     $notification->displayNotification("error", i18n("Permission denied"));
@@ -143,6 +153,7 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 	$form->setVar("frame", $frame);
 	$form->setVar("action", "tpl_edit");
 	$form->setVar("idtpl", $idtpl);
+	
 	if (!$idlay) {
 		$form->setVar("createmode", 1);
 	}
@@ -242,10 +253,25 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 			}
 		}
 	}
-
+	
+	
+	
+	
+	$href = $sess->url("main.php?area=tpl&frame=2&idtpl=".$idtpl);
+	
+	$sReloadScript = "<script type=\"text/javascript\">
+	var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+	if (left_bottom) {
+	var href = left_bottom.location.href;
+	href = href.replace(/&file.*/, '');
+	left_bottom.location.href = ".href."
+	
+	}
+	</script>";
+	
 	$page = new cPage;
-	$page->setReload();
-
+	$page->addScript('reload', $sReloadScript);
+	
 	$page->setSubnav("idtpl=$idtpl", "tpl");
      
 	if ($action != "tpl_duplicate") {
@@ -254,9 +280,17 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 
 	$notification = new Contenido_Notification();
 	
+	if($_POST["idtpl"] === "" && $idtpl > 0) {
+		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new Template successfully!"));
+	}elseif(isset($_POST["submit_x"]) || ($_POST["idtpl"] == $idtpl && $action != 'tpl_new' )) {
+		
+		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
+	}
 	
-	if($idtpl> 0)
-		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes sussessfully!"));
+	
+		
+	
+		
 	
 	$page->render();
 } 

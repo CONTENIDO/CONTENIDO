@@ -168,9 +168,9 @@ if (!$perm->have_perm_area_action('style', $actionRequest)|| $premCreate)
         updateFileInformation($client, $sOrigFileName, 'css', $auth->auth['uid'], $_REQUEST['description'], $db, $sFilename);
 		
         if($sFilename != $sTempFilename)
-        	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed and saved changes successfully"));
+        	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed and saved changes successfully!"));
 		else
-			$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes  successfully"));
+			$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
     	
     	
     	$tempCode = iconv(Contenido_Vars::getVar('encoding'), Contenido_Vars::getVar('fileEncoding'), $_REQUEST['code']);

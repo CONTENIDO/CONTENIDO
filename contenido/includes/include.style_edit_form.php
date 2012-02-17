@@ -40,6 +40,7 @@ $sFileType = "css";
 
 $sActionCreate = 'style_create';
 $sActionEdit = 'style_edit';
+$sActionDelete = 'style_delete';
 
 $page = new cPage;
 $page->setEncoding("utf-8");
@@ -52,6 +53,30 @@ if (!$perm->have_perm_area_action($area, $action))
 } else if (!(int) $client > 0) {
   #if there is no client selected, display empty page
   $page->render();
+}elseif( $action == $sActionDelete ){
+
+	$path = $cfgClient[$client]["css"]["path"];
+	# delete file
+	if (!strrchr($_REQUEST['delfile'], "/"))
+	{
+		if (file_exists($path.$_REQUEST['delfile']))
+		{
+			unlink($path.$_REQUEST['delfile']);
+			removeFileInformation($client, $_REQUEST['delfile'], 'css', $db);
+			$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted CSS-File successfully!"));
+		}
+	}
+	$sReloadScript = "<script type=\"text/javascript\">
+		var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+		if (left_bottom) {
+		var href = left_bottom.location.href;
+		href = href.replace(/&file.*/, '');
+		left_bottom.location.href = href+'&file='+'".$_REQUEST['file']."';
+	
+		}
+	</script>";
+	$page->addScript('reload', $sReloadScript);
+	$page->render();
 } else {    
     $path = $cfgClient[$client]["css"]["path"];
     if (stripslashes($_REQUEST['file'])) {
@@ -111,7 +136,7 @@ if (!$perm->have_perm_area_action($area, $action))
                      right_top.location.href = href;
                  }
                  </script>";
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new css file successfully!"));
+        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new CSS file successfully!"));
     }
 
 	# edit selected file
@@ -137,7 +162,7 @@ if (!$perm->have_perm_area_action($area, $action))
     	//show message
     	if($sFilename != $tempTemplate) {
     		
-    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed css file successfully!"));
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed CSS file successfully!"));
     	}else {
     		
     		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));

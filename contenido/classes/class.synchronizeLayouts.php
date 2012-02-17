@@ -60,7 +60,7 @@ class SynchronizeLayouts  {
              	file_put_contents($dir.$newLayoutName.'/'.$newLayoutName.'.html', '');
      		
              //set output message
-             $this->_outputMessage['info'][] = i18n("Synchronization successfully layout name: ").$newLayoutName;                 
+             $this->_outputMessage['info'][] = sprintf(i18n("Synchronization successfully layout name: %s"),$newLayoutName);                 
           } else {
           	
           		#update the name of the module

@@ -6738,3 +6738,131 @@ msgstr "M&ouml;chten Sie wirklich eine neue Sprache erstellen?"
 
 #~ msgid "Is used in"
 #~ msgstr "Wird benutzt in"
+
+#translations for style->layouts
+msgid "Created layout succsessfully!" 
+msgstr "Layout erfolgreich angelegt!"
+
+msgid "Saved layout succsessfully!"
+msgstr "&Auml;nderungen worden erfolgreich gespeichert!" 
+
+msgid "Renamed layout succsessfully!"
+msgstr "Layout worde erfolgreich umbenannt!" 
+
+msgid "Synchronize layouts"
+msgstr "Layouts synchronisieren"
+
+msgid "Synchronization successfully layout name: %s"
+msgstr "Layout worde synchronisiert : %s"
+
+msgid "Synchronization successfully!"
+msgstr "Sychronisierung war erfolgreich!"
+
+#translation for style->module
+
+msgid "Deleted module successfully!"
+msgstr "Modul erfolgreich gel&ouml;scht!"
+
+msgid "Synchronize moduls" 
+msgstr "Module synchronisieren"
+
+msgid "Saved module successfully!"
+msgstr "Modul worde erfolgreich gespeichert!"
+ 
+msgid "Created new module successfuly!"
+msgstr "Neues Modul erfolgreich angelegt!"
+
+msgid "Renamed module successfully!"
+msgstr "Modul worde erfolgreich umbenannt!"
+#translation section
+msgid "Saved translation successfully!"
+msgstr "&Uuml;brsetzung worde gespeichert!" 
+
+#template section
+msgid "Created a new template file successfully!"
+msgstr "Neue Templatedatei worde erfolgreich angelegt!"
+
+msgid "Renamed the template file successfully!"
+msgstr "Template worde erfolgreich umbenannt!"
+
+msgid "Saved changes successfully!"
+msgstr "&Auml;nderungen worden erfolgreich gespeichert!" 
+
+msgid "Deleted the template file successfully!"
+msgstr "Templatedatei worde erfolgreich gel&ouml;scht!";
+
+#css section
+msgid "Saved changes successfully!"
+msgstr "&Auml;nderungen worden erfolgreich gespeichert!"
+
+
+#styleeditor 
+msgid "Created new CSS file successfully!"
+msgstr "Die CSS-Datei worde erfolgreich angelegt!"
+
+msgid "Renamed CSS file successfully!"
+msgstr "CSS-Datei worde erfolgreich umbenannt!"
+
+msgid "Deleted CSS-File successfully!"
+msgstr "CSS-Datei worde erfolgreich gel&ouml;scht!"
+
+#scripteditor
+msgid "Renamed the JS-File successfully!"
+msgstr "Die JS-Datei worde erfolgreich umbenannt!"
+
+msgid "Crated new JS-File successfully!"
+msgstr "Die JS-Datei worde erfolgreich angelegt!"
+
+msgid "Deleted JS-File successfully!"
+msgstr "JS-Datei worde erfolgreich gel&ouml;scht!"
+
+#module templates section
+msgid "Renamed template file successfully!"
+msgstr "Templatedatei worde erfolgreich umbenannt!"
+
+msgid "Deleted template file successfully!"
+msgstr "Teamplatedatei worde erfolgreich gel&ouml;scht!"
+
+msgid "Created new template file successfully!"
+msgstr "Neue Templatedatei worde erfolgreich angelegt!"
+
+msgid "Deleted Template succcessfully!"
+msgstr "Vorlage erfolgreich gel&ouml;scht"
+
+msgid "Created new Template successfully!"
+msgstr "Neue Vorlage erfolgreich angelegt!"
+
+
+#section content Allocation
+msgid "New Category successfully stored!"
+msgstr "Neue Kategorie erfolgreich angelegt!"
+
+
+#section groups members
+msgid "Added user to group successfully!"
+msgstr "Benutzer worde erfolgreich der Gruppe hinzugef&uuml;t!"
+
+msgid "Removed member from group successfully!"
+msgstr "Benutzer worde erfolgreich aus der Gruppe entfernt!"
+
+#sectioin administartion languages 
+msgid "Created new language successfully!"
+msgstr "Neue Sprache worde erfolgreich angelegt!"
+
+
+#section System systemvariables
+msgid "Error log successfully cleared!"
+msgstr "Errorlog worde erfolgreich gel&ouml;scht!"
+
+
+#section adminstration system expert
+msgid "Created new item successfully!"
+msgstr "Neues Element erfolgreich angelegt!"
+
+
+#section administration frontend 
+msgid "Created new user successfully!"
+msgstr "Neuer Frontendbenutzer worde erfolgreich angelegt!"
+
+
+

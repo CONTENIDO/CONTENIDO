@@ -260,7 +260,7 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
        $ret = $this->makeNewModuleFile('template' , $this->_file , $this->_code);
        //show message 
        if($ret) {
-        	  $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved the template file successfully!"));	
+        	  $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));	
         }	  
         //if user selected other file display it
         if($this->_hasSelectedFileChanged()) {

@@ -55,7 +55,6 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         global $perm;
         
         $db2= new DB_Contenido;
-
         $date = date("YmdHis");
         $author = "".$auth->auth["uname"]."";
 
@@ -145,10 +144,10 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 		
 		
         //******** if layout is changed stay at 'tpl_edit' otherwise go to 'tpl'
-        if ($changelayout != 1) {
-            $url = $sess->url("main.php?area=tpl_edit&idtpl=$idtpl&frame=4");
-            header("location: $url");
-        }
+        //if ($changelayout != 1) {
+         //   $url = $sess->url("main.php?area=tpl_edit&idtpl=$idtpl&frame=4&blubi=blubxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+          //  header("location: $url");
+        //}
 
         return $idtpl;
 

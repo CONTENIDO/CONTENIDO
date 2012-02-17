@@ -213,7 +213,7 @@
 				if (bErr == false)				
 					box.confirm('{BOX_TITLE}', '{BOX_MESSAGE}', 'document.frmSystemPurge.submit();')
 				else {
-					$('#system_clear_error_box td:last').html(sErrMsg);
+					$('#system_clear_error_box span').html(sErrMsg);
 					if ($('#system_clear_error_box').css('display') == 'none') {
 						$('#system_clear_error_box').css('display', 'block');
 					} 

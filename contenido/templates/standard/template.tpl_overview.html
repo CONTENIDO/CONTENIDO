@@ -29,6 +29,20 @@
             url += '&contenido=' + sid;
 
             window.location.href = url;
+            
+            var right_bottom = parent.parent.frames['right'].frames['right_bottom'];
+          
+    		if (right_bottom) {
+    		
+    			 url  = 'main.php?area=tpl_edit';
+    	         url += '&action=tpl_delete';
+    	         url += '&frame=4&blubi=blubi';
+    	         url += '&idtpl=' + idtpl;
+    	         url += '&contenido=' + sid;
+    			
+    			right_bottom.location.href = url;
+    	
+    		}
         }
 
 		/*

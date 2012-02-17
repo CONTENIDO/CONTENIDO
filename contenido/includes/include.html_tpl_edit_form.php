@@ -40,6 +40,7 @@ $sFileType = "html";
 
 $sActionCreate = 'htmltpl_create';
 $sActionEdit = 'htmltpl_edit';
+$sActionDelete = 'htmltpl_delete';
 
 $page = new cPage;
 
@@ -51,6 +52,31 @@ if (!$perm->have_perm_area_action($area, $action))
 } else if (!(int) $client > 0) {
   #if there is no client selected, display empty page
   $page->render();
+}elseif($action == $sActionDelete){
+	
+	$path = $cfgClient[$client]["tpl"]["path"];
+	# delete file
+	if (!strrchr($_REQUEST['delfile'], "/"))
+	{
+		if (file_exists($path.$_REQUEST['delfile']))
+		{
+			unlink($path.$_REQUEST['delfile']);
+			removeFileInformation($client, $_REQUEST['delfile'], 'templates', $db);
+			$notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Deleted template file successfully!"));
+		}
+	}
+	$sReloadScript = "<script type=\"text/javascript\">
+	var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+	if (left_bottom) {
+	var href = left_bottom.location.href;
+	href = href.replace(/&file[^&]*/, '');
+	left_bottom.location.href = href+'&file='+'".$sFilename."';
+	}
+	</script>";
+	
+	$page->addScript('reload', $sReloadScript);
+	$page->render();
+	
 } else {
     $path = $cfgClient[$client]["tpl"]["path"];
 	$sTempFilename = stripslashes($_REQUEST['tmp_file']);

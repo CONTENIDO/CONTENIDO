@@ -161,7 +161,7 @@ if (!$perm->have_perm_area_action('js', $actionRequest) || $premCreate)
     	if($sFilename != $sTempFilename) {	
     		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed and saved changes successfully!"));
     	}else {
-    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully"));
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
     	}
         
 	}

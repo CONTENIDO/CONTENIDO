@@ -40,7 +40,7 @@ $sFileType = "js";
 
 $sActionCreate = 'js_create';
 $sActionEdit = 'js_edit';
-
+$sActionDelete = 'js_delete';
 $page = new cPage;
 
 $tpl->reset();
@@ -51,7 +51,30 @@ if (!$perm->have_perm_area_action($area, $action))
 } else if (!(int) $client > 0) {
   #if there is no client selected, display empty page
   $page->render();
-} else {
+} elseif($action == $sActionDelete){
+	$path = $cfgClient[$client]["js"]["path"];
+		if (!strrchr($_REQUEST['delfile'], "/"))
+		{
+			if (file_exists($path.$_REQUEST['delfile']))
+			{
+				unlink($path.$_REQUEST['delfile']);
+				removeFileInformation($client, $_REQUEST['delfile'], 'js', $db);
+				$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted JS-File successfully!"));
+			}
+		}
+		
+		$sReloadScript = "<script type=\"text/javascript\">
+                             var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
+                             if (left_bottom) {
+                                 var href = left_bottom.location.href;
+                                 href = href.replace(/&file[^&]*/, '');
+                                 left_bottom.location.href = href+'&file='+'".$sFilename."';
+
+                             }
+                         </script>";
+		$page->addScript('reload', $sReloadScript);
+	$page->render();
+} else{
     $path = $cfgClient[$client]["js"]["path"];
 	$sTempFilename = stripslashes($_REQUEST['tmp_file']);
     $sOrigFileName = $sTempFilename;
@@ -96,11 +119,14 @@ if (!$perm->have_perm_area_action($area, $action))
                      right_top.location.href = href;
                  }
                  </script>";
+        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Crated new JS-File successfully!"));
     }
 
 	# edit selected file
     if ( $_REQUEST['action'] == $sActionEdit AND $_REQUEST['status'] == 'send') 
     {
+    	$sTempTempFilename = $sTempFilename;
+    	
     	if ($sFilename != $sTempFilename)
     	{	
     		$sTempFilename = renameFile($sTempFilename, $sFilename, $path);
@@ -138,6 +164,11 @@ if (!$perm->have_perm_area_action($area, $action))
     	
     	$bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
         
+    	if($sFilename != $sTempTempFilename) {
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed the JS-File successfully!"));
+    	}else {
+    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
+    	}
 	}
 	
 	# generate edit form 

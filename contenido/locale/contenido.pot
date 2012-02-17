@@ -5933,3 +5933,130 @@ msgstr ""
 #: scripts/articleObject.js.php:379
 msgid "Tab can't be displayed"
 msgstr ""
+
+
+#translations for style->layouts
+msgid "Created layout succsessfully!" 
+msgstr ""
+
+msgid "Saved layout succsessfully!"
+msgstr "" 
+
+msgid "Renamed layout succsessfully!"
+msgstr "" 
+
+msgid "Synchronize layouts"
+msgstr ""
+
+msgid "Synchronization successfully layout name: %s"
+msgstr ""
+
+msgid "Synchronization successfully!"
+msgstr ""
+
+#translation for style->module
+
+msgid "Deleted module successfully!"
+msgstr ""
+
+msgid "Synchronize moduls" 
+msgstr ""
+
+msgid "Saved module successfully!"
+msgstr ""
+ 
+msgid "Created new module successfuly!"
+msgstr ""
+
+msgid "Renamed module successfully!"
+msgstr ""
+
+#translation section
+msgid "Saved translation successfully!"
+msgstr "" 
+
+#template section
+msgid "Created a new template file successfully!"
+msgstr ""
+
+msgid "Renamed the template file successfully!"
+msgstr ""
+
+msgid "Saved changes successfully!"
+msgstr "" 
+
+msgid "Deleted the template file successfully!"
+msgstr "";
+
+#css section
+msgid "Saved changes successfully!"
+msgstr ""
+
+
+#styleeditor 
+msgid "Created new CSS file successfully!"
+msgstr ""
+
+msgid "Renamed CSS file successfully!"
+msgstr ""
+
+msgid "Deleted CSS-File successfully!"
+msgstr ""
+
+#scripteditor
+msgid "Renamed the JS-File successfully!"
+msgstr ""
+
+msgid "Crated new JS-File successfully!"
+msgstr ""
+
+msgid "Deleted JS-File successfully!"
+msgstr ""
+
+#module templates section
+msgid "Renamed template file successfully!"
+msgstr ""
+
+msgid "Deleted template file successfully!"
+msgstr ""
+
+msgid "Created new template file successfully!"
+msgstr ""
+
+msgid "Deleted Template succcessfully!"
+msgstr ""
+
+msgid "Created new Template successfully!"
+msgstr ""
+
+
+#section content Allocation
+msgid "New Category successfully stored!"
+msgstr ""
+
+
+#section groups members
+msgid "Added user to group successfully!"
+msgstr ""
+
+msgid "Removed member from group successfully!"
+msgstr ""
+
+#sectioin administartion languages 
+msgid "Created new language successfully!"
+msgstr ""
+
+
+#section System systemvariables
+msgid "Error log successfully cleared!"
+msgstr ""
+
+
+#section adminstration system expert
+msgid "Created new item successfully!"
+msgstr ""
+
+
+#section administration frontend 
+msgid "Created new user successfully!"
+msgstr ""
