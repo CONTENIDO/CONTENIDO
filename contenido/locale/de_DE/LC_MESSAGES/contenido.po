@@ -6744,10 +6744,10 @@ msgid "Created layout succsessfully!"
 msgstr "Layout erfolgreich angelegt!"
 
 msgid "Saved layout succsessfully!"
-msgstr "&Auml;nderungen worden erfolgreich gespeichert!" 
+msgstr "&Auml;nderungen wurden erfolgreich gespeichert!" 
 
 msgid "Renamed layout succsessfully!"
-msgstr "Layout worde erfolgreich umbenannt!" 
+msgstr "Layout wurde erfolgreich umbenannt!" 
 
 msgid "Synchronize layouts"
 msgstr "Layouts synchronisieren"
@@ -6767,64 +6767,64 @@ msgid "Synchronize moduls"
 msgstr "Module synchronisieren"
 
 msgid "Saved module successfully!"
-msgstr "Modul worde erfolgreich gespeichert!"
+msgstr "Modul wurde erfolgreich gespeichert!"
  
 msgid "Created new module successfuly!"
 msgstr "Neues Modul erfolgreich angelegt!"
 
 msgid "Renamed module successfully!"
-msgstr "Modul worde erfolgreich umbenannt!"
+msgstr "Modul wurde erfolgreich umbenannt!"
 #translation section
 msgid "Saved translation successfully!"
-msgstr "&Uuml;brsetzung worde gespeichert!" 
+msgstr "&Uuml;brsetzung wurde gespeichert!" 
 
 #template section
 msgid "Created a new template file successfully!"
-msgstr "Neue Templatedatei worde erfolgreich angelegt!"
+msgstr "Neue Templatedatei wurde erfolgreich angelegt!"
 
 msgid "Renamed the template file successfully!"
-msgstr "Template worde erfolgreich umbenannt!"
+msgstr "Template wurde erfolgreich umbenannt!"
 
 msgid "Saved changes successfully!"
-msgstr "&Auml;nderungen worden erfolgreich gespeichert!" 
+msgstr "&Auml;nderungen wurde erfolgreich gespeichert!" 
 
 msgid "Deleted the template file successfully!"
-msgstr "Templatedatei worde erfolgreich gel&ouml;scht!";
+msgstr "Templatedatei wurde erfolgreich gel&ouml;scht!";
 
 #css section
 msgid "Saved changes successfully!"
-msgstr "&Auml;nderungen worden erfolgreich gespeichert!"
+msgstr "&Auml;nderungen wurden erfolgreich gespeichert!"
 
 
 #styleeditor 
 msgid "Created new CSS file successfully!"
-msgstr "Die CSS-Datei worde erfolgreich angelegt!"
+msgstr "Die CSS-Datei wurde erfolgreich angelegt!"
 
 msgid "Renamed CSS file successfully!"
-msgstr "CSS-Datei worde erfolgreich umbenannt!"
+msgstr "CSS-Datei wurde erfolgreich umbenannt!"
 
 msgid "Deleted CSS-File successfully!"
-msgstr "CSS-Datei worde erfolgreich gel&ouml;scht!"
+msgstr "CSS-Datei wurde erfolgreich gel&ouml;scht!"
 
 #scripteditor
 msgid "Renamed the JS-File successfully!"
-msgstr "Die JS-Datei worde erfolgreich umbenannt!"
+msgstr "Die JS-Datei wurde erfolgreich umbenannt!"
 
 msgid "Crated new JS-File successfully!"
-msgstr "Die JS-Datei worde erfolgreich angelegt!"
+msgstr "Die JS-Datei wurde erfolgreich angelegt!"
 
 msgid "Deleted JS-File successfully!"
-msgstr "JS-Datei worde erfolgreich gel&ouml;scht!"
+msgstr "JS-Datei wurde erfolgreich gel&ouml;scht!"
 
 #module templates section
 msgid "Renamed template file successfully!"
-msgstr "Templatedatei worde erfolgreich umbenannt!"
+msgstr "Templatedatei wurde erfolgreich umbenannt!"
 
 msgid "Deleted template file successfully!"
-msgstr "Teamplatedatei worde erfolgreich gel&ouml;scht!"
+msgstr "Teamplatedatei wurde erfolgreich gel&ouml;scht!"
 
 msgid "Created new template file successfully!"
-msgstr "Neue Templatedatei worde erfolgreich angelegt!"
+msgstr "Neue Templatedatei wurde erfolgreich angelegt!"
 
 msgid "Deleted Template succcessfully!"
 msgstr "Vorlage erfolgreich gel&ouml;scht"
@@ -6840,19 +6840,19 @@ msgstr "Neue Kategorie erfolgreich angelegt!"
 
 #section groups members
 msgid "Added user to group successfully!"
-msgstr "Benutzer worde erfolgreich der Gruppe hinzugef&uuml;t!"
+msgstr "Benutzer wurde erfolgreich der Gruppe hinzugef&uuml;t!"
 
 msgid "Removed member from group successfully!"
-msgstr "Benutzer worde erfolgreich aus der Gruppe entfernt!"
+msgstr "Benutzer wurde erfolgreich aus der Gruppe entfernt!"
 
 #sectioin administartion languages 
 msgid "Created new language successfully!"
-msgstr "Neue Sprache worde erfolgreich angelegt!"
+msgstr "Neue Sprache wurde erfolgreich angelegt!"
 
 
 #section System systemvariables
 msgid "Error log successfully cleared!"
-msgstr "Errorlog worde erfolgreich gel&ouml;scht!"
+msgstr "Errorlog wurde erfolgreich gel&ouml;scht!"
 
 
 #section adminstration system expert
@@ -6862,7 +6862,7 @@ msgstr "Neues Element erfolgreich angelegt!"
 
 #section administration frontend 
 msgid "Created new user successfully!"
-msgstr "Neuer Frontendbenutzer worde erfolgreich angelegt!"
+msgstr "Neuer Frontendbenutzer wurde erfolgreich angelegt!"
 
 
 
