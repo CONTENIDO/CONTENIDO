@@ -80,7 +80,9 @@ class cApiUploadCollection extends ItemCollection
         if ($oItem = $this->next()) {
             $oItem->update();
         } else {
-            $oItem = $this->create($sDirname, $sFilename);
+            $sFiletype = (string) uplGetFileExtension($sFilename);
+            $iFilesize = cApiUpload::getFileSize($sDirname, $sFilename);
+            $oItem = $this->create($sDirname, $sFilename, $sFiletype, $iFilesize, '');
         }
         
         return $oItem;
@@ -94,9 +96,13 @@ class cApiUploadCollection extends ItemCollection
      * @global object $auth
      * @param string $sDirname
      * @param string $sFilename
+     * @param string $sFiletype
+     * @param int $iFileSize
+     * @param string $sDescription
+     * @param int $iStatus
      * @return cApiUpload
      */
-    public function create($sDirname, $sFilename)
+    public function create($sDirname, $sFilename, $sFiletype = '', $iFileSize = 0, $sDescription = '', $iStatus = 0)
     {
         global $client, $cfg, $auth;
 
@@ -104,12 +110,16 @@ class cApiUploadCollection extends ItemCollection
 
         $oItem->set('idclient', $client);
         $oItem->set('filename', $sFilename, false);
+        $oItem->set('filetype', $sFiletype, false);
+        $oItem->set('size', $iFileSize, false);
         $oItem->set('dirname', $sDirname, false);
+        $oItem->set('description', $sDescription, false);
+        $oItem->set('status', $iStatus, false);
         $oItem->set('author', $auth->auth['uid']);
         $oItem->set('created', date('Y-m-d H:i:s'), false);
         $oItem->store();
 
-        return ($oItem);
+        return $oItem;
     }
 
 
@@ -217,31 +227,13 @@ class cApiUpload extends Item
 
     /**
      * Updates upload recordset
-     * @global int $client
-     * @global array $cfgClient
      */
     public function update()
     {
-        global $client, $cfgClient;
-
-        $bIsDbfs = is_dbfs($this->get('dirname'));
-        if (is_dbfs($this->get('dirname'))) {
-            $sDirname = $this->get('dirname');
-        } else {
-            $sDirname = $cfgClient[$client]['upl']['path'] . $this->get('dirname');
-        }
-
-        $sFile = $this->get('filename');
-        $sFilePathName = $sDirname . $sFile;
-        $sExtension = (string) uplGetFileExtension($sFile);
-
-        $iFileSize = 0;
-        if ($bIsDbfs) {
-            $oDbfsCol = new cApiDbfsCollection();
-            $iFileSize = $oDbfsCol->getSize($sFilePathName);
-        } elseif (file_exists($sFilePathName)) {
-            $iFileSize = filesize($sFilePathName);
-        }
+        $sDirname = $this->get('dirname');
+        $sFilename = $this->get('filename');
+        $sExtension = (string) uplGetFileExtension($sFilename);
+        $iFileSize = self::getFileSize($sDirname, $sFilename);
 
         $bTouched = false;
 
@@ -296,6 +288,37 @@ class cApiUpload extends Item
         $oPropertiesColl->deleteProperties('upload', $sItemid);
     }
 
+
+    /**
+     * Returns the filesize
+     *
+     * @param string $sDirname
+     * @param string $sFilename
+     * @return string
+     */
+    public static function getFileSize($sDirname, $sFilename)
+    {
+        global $client, $cfgClient;
+
+        $bIsDbfs = is_dbfs($sDirname);
+        if (is_dbfs($sDirname)) {
+            $sDirname = $sDirname;
+        } else {
+            $sDirname = $cfgClient[$client]['upl']['path'] . $sDirname;
+        }
+
+        $sFilePathName = $sDirname . $sFilename;
+
+        $iFileSize = 0;
+        if ($bIsDbfs) {
+            $oDbfsCol = new cApiDbfsCollection();
+            $iFileSize = $oDbfsCol->getSize($sFilePathName);
+        } elseif (file_exists($sFilePathName)) {
+            $iFileSize = filesize($sFilePathName);
+        }
+
+        return $iFileSize;
+    }
 
     /**
      * Lazy instantiation and return of properties object
