@@ -19,6 +19,7 @@
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.9.0
  *
+ * mofified 2012-02-20, Rusmir Jusufovic, add condition for max PHP_VERSION (JIRA CON 481)
  * {@internal
  *   created  2011-02-28
  *
@@ -38,13 +39,17 @@ if (!defined('CON_FRAMEWORK')) {
 
 header('Content-Type: text/html; charset=ISO-8859-1');
 
-
 // Check version in the 'first' line, as class.security.php uses
 // PHP5 object syntax not compatible with PHP < 5
 if (version_compare(PHP_VERSION, '5.0.0', '<')) {
     die("You need PHP >= 5.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
 }
 
+// Check version
+//PHP >= 5.0.0 and < 5.4.0 
+if(version_compare(PHP_VERSION, '5.4.0', '>=')) {
+	die("You need PHP >= 5.0.0  < 5.4.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
+}
 
 /**
  * Setup file inclusion
