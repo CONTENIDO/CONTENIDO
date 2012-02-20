@@ -78,6 +78,8 @@ cms/modules/headline/info.xml -text
 cms/modules/headline/php/headline_input.php -text
 cms/modules/headline/php/headline_output.php -text
 cms/modules/login_form/info.xml -text
+cms/modules/login_form/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/modules/login_form/lang/lang_en_GB.txt -text svneol=unset#text/plain
 cms/modules/login_form/php/login_form_input.php -text
 cms/modules/login_form/php/login_form_output.php -text
 cms/modules/logo_bottom/info.xml -text

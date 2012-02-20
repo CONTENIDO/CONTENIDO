@@ -1,0 +1,7 @@
+Geschlossener Bereich Login=
+name=
+pass=
+einloggen=
+Willkommen <strong>[uname]</strong>, schön, dass Sie wieder bei uns vorbeischauen.=
+Geschlossener Bereich Logout=
+ausloggen=
