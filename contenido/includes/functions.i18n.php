@@ -79,20 +79,10 @@ function i18n ($string, $domain = "contenido")
 		
 		i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $GLOBALS['belang']);
 	}
-	
-	cInitializeArrayKey($cfg, "native_i18n", false);
-	
-	if (!$cfg["native_i18n"])
-	{
-		return i18nEmulateGettext($string, $domain);
-	}
-	
-	if (extension_loaded("gettext"))
-	{	
-		if (function_exists("dgettext"))
-		{
-			if ($domain != "contenido")
-			{
+
+	if (extension_loaded("gettext")) {	
+		if (function_exists("dgettext")) {
+			if ($domain != "contenido") {
 				$translation = dgettext($domain, $string);
 				return ($translation);
 			} else {

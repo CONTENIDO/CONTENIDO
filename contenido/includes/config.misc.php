@@ -115,8 +115,6 @@ $cfg['AvailableCharsets'] = array(
 );
 
 
-//native i18n 
-$cfg['native_i18n'] = false;
 /* Error handling settings
  * -----------------------------------------------------------------------------
  * Actually no variables, but important settings for error handling and logging.
