@@ -115,6 +115,8 @@ $cfg['AvailableCharsets'] = array(
 );
 
 
+//native i18n 
+$cfg['native_i18n'] = false;
 /* Error handling settings
  * -----------------------------------------------------------------------------
  * Actually no variables, but important settings for error handling and logging.
@@ -322,5 +324,6 @@ $cfg['validator']['email']['disallow_host'] = array('example.com', 'example.org'
 
 // (bool) Optional, flag to check DNS records for MX type
 $cfg['validator']['email']['mx_check'] = false;
+
 
 ?>
