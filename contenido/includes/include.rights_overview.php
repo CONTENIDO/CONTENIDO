@@ -33,7 +33,7 @@
  * }}
  *
  * TODO error handling!!!
- * TODO export functions to new ConUser object!
+ * TODO export functions to new cApiUser object!
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -100,16 +100,15 @@ if ($action == 'user_edit') {
 
     // update user values
     // New Class User, update password and other values
-    $oConUser = new ConUser($cfg, $db);
-    $oConUser->setUserId($userid);
-    $oConUser->setRealName($realname);
-    $oConUser->setMail($email);
-    $oConUser->setTelNumber($telephone);
-    $oConUser->setAddressData($address_street, $address_city, $address_zip, $address_country);
-    $oConUser->setUseTiny($wysi);
-    $oConUser->setValidDateFrom($valid_from);
-    $oConUser->setValidDateTo($valid_to);
-    $oConUser->setPerms($aPerms);
+    $ocApiUser = new cApiUser($userid);
+    $ocApiUser->setRealName($realname);
+    $ocApiUser->setMail($email);
+    $ocApiUser->setTelNumber($telephone);
+    $ocApiUser->setAddressData($address_street, $address_city, $address_zip, $address_country);
+    $ocApiUser->setUseTiny($wysi);
+    $ocApiUser->setValidDateFrom($valid_from);
+    $ocApiUser->setValidDateTo($valid_to);
+    $ocApiUser->setPerms($aPerms);
 
     // is a password set?
     $bPassOk = false;
@@ -117,12 +116,12 @@ if ($action == 'user_edit') {
         // yes --> check it...
         if (strcmp($password, $passwordagain) == 0) {
             // set password....
-            $iPasswordSaveResult = $oConUser->setPassword($password);
-
+            $iPasswordSaveResult = $ocApiUser->setPassword($password);
+            
             // fine, passwords are the same, but is the password valid?
-            if ($iPasswordSaveResult != iConUser::PASS_OK) {
+            if ($iPasswordSaveResult != cApiUser::PASS_OK) {
                 // oh oh, password is NOT valid. check it...
-                $sPassError = ConUser::getErrorString($iPasswordSaveResult, $cfg);
+                $sPassError = cApiUser::getErrorString($iPasswordSaveResult, $cfg);
                 $sNotification = $notification->returnNotification("error", $sPassError);
                 $bError = true;
             } else {
@@ -135,27 +134,18 @@ if ($action == 'user_edit') {
     }
 
     if (strlen($password) == 0 || $bPassOk == true) {
-        try {
-            // save, if no error occured..
-            if ($oConUser->save()) {
-                $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
-                $bError = true;
-            } else {
-                $sNotification = $notification->returnNotification("error", i18n("An error occured while saving user info."));
-                $bError = true;
-            }
-        } catch (ConUserException $cue) {
-            // TODO make check and info ouput better!
-            $sNotification = $notification->returnNotification("error", i18n("An error occured while saving user info."));
+    	if($ocApiUser->store())
+    	{
+    		$sNotification = $notification->returnNotification("info", i18n("Changes saved"));
+            $bError = true;
+    	} else {
+    		$sNotification = $notification->returnNotification("error", i18n("An error occured while saving user info."));
             $bError = true;
         }
     }
 }
 
-
-// TODO port this to new ConUser class!
-$oUser = new User();
-$oUser->loadUserByUserID(Contenido_Security::escapeDB($userid, $db));
+$oUser = new cApiUser($userid);
 
 // delete user property
 if (is_string($del_userprop_type) && is_string($del_userprop_name)) {
@@ -447,7 +437,9 @@ $tpl->set('d', 'CATFIELD', '<span style="color:'.$sAccountColor.';">'.$sAccountS
 $tpl->next();
 
 // Show backend user's group memberships
-$aGroups = $oUser->getGroupsByUserID($userid);
+//TODO port this to cApiUser
+$oUser2 = new User();
+$aGroups = $oUser2->getGroupsByUserID($userid);
 if (count($aGroups) > 0) {
     asort($aGroups);
     $sGroups = implode("<br/>", $aGroups);

@@ -59,17 +59,16 @@ if ($action == 'user_createuser') {
     } else {
         $aPerms = buildUserOrGroupPermsFromRequest(true);
 
-        $oUser = new ConUser($cfg, $db);
+        $oUserCollection = new cApiUserCollection();
+        $oUser = $oUserCollection->create($username);
 
         if (strcmp($password, $passwordagain) == 0) {
 
             // ok, both passwords given are equal, but is the password valid?
             $iPassCheck = $oUser->setPassword($password);
 
-            if ($iPassCheck == iConUser::PASS_OK) {
+            if ($iPassCheck == cApiUser::PASS_OK) {
                 // yes, it is....
-                try {
-                    $oUser->setUserName($username);
                     $oUser->setRealName($realname);
                     $oUser->setMail($email);
                     $oUser->setTelNumber($telephone);
@@ -81,9 +80,8 @@ if ($action == 'user_createuser') {
                     $oUser->setValidDateFrom($valid_from);
                     $oUser->setValidDateTo($valid_to);
                     $oUser->setPerms($aPerms);
-                    $oUser->setPassword($password);
-
-                    if ($oUser->save()) {
+                    
+                    if ($oUser->store()) {
                         // save user id and clean "old" values...
                         $sNotification = $notification->returnNotification("info", i18n("User created"));
                         $userid = $oUser->getUserId();
@@ -102,22 +100,13 @@ if ($action == 'user_createuser') {
                         $aPerms = array();
                         $password = '';
                     }
-
-                } catch (ConUserException $cue) {
-                    switch ($cue->getCode()) {
-                        case iConUser::EXCEPTION_USERNAME_EXISTS:
-                            $sNotification = $notification->returnNotification("warning", i18n("Username already exists"));
-                            $bError = true;
-                            break;
-                        default:
-                            $sNotification = $notification->returnNotification("warning", i18n("Unknown error") . ": " . $cue->getMessage());
-                            $bError = true;
-                            break;
+                    else {
+                		$sNotification = $notification->returnNotification("error", "Error saving the user to the database.");
+                		$bError = true;
                     }
-                }
             } else {
                 // oh oh, password is NOT valid. check it...
-                $sNotification = $notification->returnNotification("warning", ConUser::getErrorString($iPassCheck, $cfg));
+                $sNotification = $notification->returnNotification("warning", cApiUser::getErrorString($iPassCheck, $cfg));
                 $bError = true;
             }
 

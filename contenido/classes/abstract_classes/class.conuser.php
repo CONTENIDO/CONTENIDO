@@ -35,6 +35,8 @@ cInclude('exceptions', 'exception.conuser.php');
  * @version 0.0.1
  * @author Holger Librenz
  * @copyright four for business AG
+ * 
+ * @deprecated Please use cApiUser instead [2012-02-23]
  */
 abstract class ConUser_Abstract implements iConUser {
 
@@ -81,32 +83,7 @@ abstract class ConUser_Abstract implements iConUser {
 	 * @throws ConUserException
 	 */
 	function __construct($aCfg, $oDb = null, $sUserId = null) {
-        if (!is_array($aCfg) || count($aCfg) <= 0) {
-        	throw new ConUserException ("Illegal configuration array \$aCfg.");
-        } else {
-        	$this->aCfg = $aCfg;
-        }
-
-        if (is_null($oDb)) {
-        	$this->oDb = new DB_Contenido();
-        } else {
-        	// is it a  CONTENIDO DB instance?
-        	if ($oDb instanceof DB_Contenido) {
-        	   $this->oDb = $oDb;
-        	} else {
-        		throw new ConUserException("Given value for \$oDb is not a valid DB_Contenido instance!");
-        	}
-        }
-
-        if (!is_null($sUserId)) {
-        	$bLoaded = $this->load($sUserId);
-
-        	if ($bLoaded == true) {
-        		$this->sUserId = $sUserId;
-        	} else {
-        		throw new ConUserException("No user with given user ID found!");
-        	}
-        }
+    	cDeprecated("Deprecated class. Please use cApiUser instead");
 	}
 
 //	/**
@@ -145,7 +122,7 @@ abstract class ConUser_Abstract implements iConUser {
 	 * @return string
 	 */
 	public function getUserId () {
-		return $this->sUserId;
+    	cDeprecated("Deprecated class. Please use cApiUser instead");
 	}
 
 	/**
@@ -156,7 +133,7 @@ abstract class ConUser_Abstract implements iConUser {
 	 * TODO check this
 	 */
 	public function setUserId ($sUserId) {
-		$this->sUserId = $sUserId;
+    	cDeprecated("Deprecated class. Please use cApiUser instead");
 	}
 
 	/**
@@ -165,19 +142,7 @@ abstract class ConUser_Abstract implements iConUser {
 	 * @return string
 	 */
 	public function generateUserId () {
-		$sResult = "";
-
-		$sCurUserName = $this->getUserName();
-
-		if (!empty($sCurUserName)) {
-			$sResult = md5($sCurUserName);
-		} else {
-			throw new ConUserException("No user name set yet");
-		}
-
-		$this->sUserId = $sResult;
-
-		return $sResult;
+    	cDeprecated("Deprecated class. Please use cApiUser instead");
 	}
 
     /**
@@ -186,7 +151,7 @@ abstract class ConUser_Abstract implements iConUser {
      * @return string
      */
 	public function getUserName () {
-		return $this->sUserName;
+    	cDeprecated("Deprecated class. Please use cApiUser instead");
 	}
 
 	/**
@@ -195,7 +160,7 @@ abstract class ConUser_Abstract implements iConUser {
 	 * @param string $sUserName
 	 */
 	public function setUserName ($sUserName) {
-		$this->sUserName = $sUserName;
+    	cDeprecated("Deprecated class. Please use cApiUser instead");
 	}
 
 	/**
@@ -206,22 +171,7 @@ abstract class ConUser_Abstract implements iConUser {
 	 * @return int
 	 */
 	public function setPassword ($sPassword) {
-	   $iResult = iConUser::PASS_OK;
-
-	   $iMaskResult = $this->checkPasswordMask($sPassword);
-	   if ($iMaskResult != iConUser::PASS_OK) {
-	       $iResult = $iMaskResult;
-	   } else {
-	       $iStrengthResult = $this->checkPasswordStrength($sPassword);
-
-	       if ($iStrengthResult != iConUser::PASS_OK) {
-	           $iResult = $iStrengthResult;
-	       } else {
-	           $this->sPassword = $sPassword;
-	       }
-	   }
-
-	   return $iResult;
+		cDeprecated("Deprecated class. Please use cApiUser instead");
 	}
 
 	/**
@@ -231,7 +181,7 @@ abstract class ConUser_Abstract implements iConUser {
 	 * @return string
 	 */
 	protected function getPassword () {
-	    return $this->sPassword;
+    	cDeprecated("Deprecated class. Please use cApiUser instead");
 	}
 }
 

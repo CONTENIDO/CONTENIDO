@@ -52,7 +52,7 @@ if ($action == "mycontenido_editself")
 
 	if ($newpassword != "")
 	{
-    	if (md5($oldpassword) != $user->get("password"))
+    	if (cApiUser::encodePassword($oldpassword) != $user->get("password"))
     	{
     		$error = i18n("Old password incorrect");
     	}
@@ -68,15 +68,15 @@ if ($action == "mycontenido_editself")
     		$noti = $notification->returnNotification("error", $error)."<br>";
     	} else {
             // New Class User, update password
-            $oUser = new ConUser($cfg, $db, $auth->auth['uid']);
-            $iResult = $oUser->savePassword($newpassword);
+            
+            $iResult = $user->savePassword($newpassword);
 
             #$user->set("password", md5($newpassword));
 
-            if ( $iResult == iConUser::PASS_OK ) {
+            if ( $iResult == cApiUser::PASS_OK ) {
                 $noti = $notification->returnNotification("info", i18n("Password changed"))."<br>";
             } else {
-                $noti = $notification->returnNotification("error", ConUser::getErrorString($iResult, $cfg));
+                $noti = $notification->returnNotification("error", cApiUser::getErrorString($iResult, $cfg));
             }
 
     	}

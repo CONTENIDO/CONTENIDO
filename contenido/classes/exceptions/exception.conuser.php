@@ -23,8 +23,15 @@
  * @version 1.0.0
  * @author Holger Librenz
  * @copyright four for business AG
+ * 
+ * @deprecated Please use cApiUser instead [2012-02-23]
  */
 class ConUserException extends Exception {
+	public function __construct() {
+		parent::__construct();
+		
+		cDeprecated("Deprecated class. Please use cApiUser instead");
+	}
 }
 
 ?>

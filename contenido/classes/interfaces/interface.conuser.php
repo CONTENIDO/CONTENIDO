@@ -35,6 +35,7 @@
  * @author Holger Librenz
  * @copyright four for business AG
  *
+ * @deprecated Please use cApiUser instead [2012-02-23]
  */
 interface iConUser {
 
