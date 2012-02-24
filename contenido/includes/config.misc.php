@@ -245,7 +245,7 @@ $cfg['url_builder']['config'] = array();
 
 /* Password Settings
  * -----------------------------------------------------------------------------
- * For more comments please look in class.conuser.php file
+ * For more comments please look in class.user.php file
  */
 // Enable or disable checking password (true or false)
 $cfg['password']['check_password_mask'] = false;
