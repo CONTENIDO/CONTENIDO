@@ -124,9 +124,11 @@ class cApiArea extends Item
         return $oAreaColl->create($name, $parentid, $relevant, $online, $menuless);
     }
 
-    /** @todo  Why is area item responsible to create a action item ? */
+    /** @deprecated  [2012-02-24] Use cApiAreaCollection->create() */
     public function createAction($area, $name, $code, $location, $relevant)
     {
+		cDeprecated("Use cApiAreaCollection->create() instead");
+		
         $ac = new cApiActionCollection();
         $a = $ac->create($area, $name, $code, $location, $relevant);
     }
