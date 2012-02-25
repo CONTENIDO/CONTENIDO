@@ -365,6 +365,7 @@ contenido/classes/contenido/class.stat.php -text
 contenido/classes/contenido/class.system.property.php -text
 contenido/classes/contenido/class.template.php -text
 contenido/classes/contenido/class.templateconfig.php -text
+contenido/classes/contenido/class.upload.meta.php -text
 contenido/classes/contenido/class.upload.php -text
 contenido/classes/contenido/class.user.php -text
 contenido/classes/contenido/class.user.property.php -text

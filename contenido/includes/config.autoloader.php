@@ -276,6 +276,8 @@ return array(
     'cApiTemplateConfiguration' => 'contenido/classes/contenido/class.templateconfig.php',
     'cApiUploadCollection' => 'contenido/classes/contenido/class.upload.php',
     'cApiUpload' => 'contenido/classes/contenido/class.upload.php',
+	'cApiUploadMetaCollection' => 'contenido/classes/contenido/class.upload.meta.php',
+    'cApiUploadMeta' => 'contenido/classes/contenido/class.upload.meta.php',
     'UploadCollection' => 'contenido/classes/contenido/class.upload.php',
     'UploadItem' => 'contenido/classes/contenido/class.upload.php',
     'cApiUserCollection' => 'contenido/classes/contenido/class.user.php',
