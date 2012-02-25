@@ -50,6 +50,7 @@ return array(
     'Cat' => 'contenido/classes/class.cat.php',
     'cApiCECRegistry' => 'contenido/classes/class.cec.php',
     'pApiCECChainItem' => 'contenido/classes/class.cec.php',
+	'cApiCECChainItem' => 'contenido/classes/class.cec.php',
     'CEC_Hook' => 'contenido/classes/class.cec_hook.php',
     'cCharacterConverter' => 'contenido/classes/class.chartable.php',
     'Client' => 'contenido/classes/contenido/class.client.php',

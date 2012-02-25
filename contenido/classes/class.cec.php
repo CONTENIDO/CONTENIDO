@@ -253,7 +253,7 @@ class cApiCECRegistry
             return false;
         }
 
-        $oChainItem = new pApiCECChainItem($sChainName, $sFunctionName, $this->_aChains[$sChainName]['parameters']);
+        $oChainItem = new cApiCECChainItem($sChainName, $sFunctionName, $this->_aChains[$sChainName]['parameters']);
         $oChainItem->setCallback($call);
         array_push($this->_aChains[$sChainName]['functions'], $oChainItem);
 
@@ -338,6 +338,16 @@ class cApiCECRegistry
 
 }
 
+/**
+  * @deprecated [2012-02-25] Use cApiCECChainItem instead.
+  */
+class pApiCECChainItem extends cApiCECChainItem {
+	public function __construct($sChainName, $sFunctionName, $aParameters) {
+		cDeprecated('Use cApiCECChainItem instead.');
+		$this->__construct($sChainName, $sFunctionName, $aParameters)
+	}
+}
+
 
 /**
  * CEC chain item class.
@@ -347,7 +357,7 @@ class cApiCECRegistry
  * @package     CONTENIDO Backend Classes
  * @subpackage  CEC
  */
-class pApiCECChainItem
+class cApiCECChainItem
 {
     /**
      * Chain name
