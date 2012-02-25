@@ -229,7 +229,7 @@ function conGenerateKeywords($client, $lang)
     foreach ($aArticles as $artid => $artlangid) {
         $aContent = conGetContentFromArticle($artlangid);
         if (count($aContent) > 0) {
-            $oIndex = new Index($oDB);
+            $oIndex = new SearchIndex($oDB);
             $oIndex->lang = $lang;
             $oIndex->start($artid, $aContent, 'auto', $options);
         }

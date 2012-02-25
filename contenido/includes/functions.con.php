@@ -625,7 +625,7 @@ function conMakeArticleIndex ( $idartlang, $idart ) {
 	global $db, $auth, $cfg; 
 
 	# generate index of article content	
-	$oIndex 	= new Index($db); 
+	$oIndex 	= new SearchIndex($db); 
 	$aOptions	= array("img", "link", "linktarget", "swf"); // cms types to be excluded from indexing 
 	# indexing an article depends on the complete content with all content types, i.e it can not by differentiated by specific content types. 
 	# Therefore one must fetch the complete content arrray. 

@@ -134,12 +134,27 @@ abstract class SearchBaseAbstract
 
 
 /**
- * CONTENIDO API - Index Object
+  * @deprecated [2012-02-25] Use SearchIndex instead.
+  */
+class Index extends SearchIndex {
+    public function Index($oDB = null) {
+        $this->__construct($oDB);
+    }
+	
+	public function __construct($oDB = null) {
+		cDeprecated('Use SearchIndex instead.');
+		parent::SearchIndex($oDB);
+	}
+}
+
+
+/**
+ * CONTENIDO API - Search Index Object
  *
  * This object creates an index of an article
  *
  * Create object with
- * $oIndex = new Index($db); # where $db is the global CONTENIDO database object.
+ * $oIndex = new SearchIndex($db); # where $db is the global CONTENIDO database object.
  * Start indexing with
  * $oIndex->start($idart, $aContent);
  * where $aContent is the complete content of an article specified by its content types.
@@ -166,7 +181,7 @@ abstract class SearchBaseAbstract
 
 cInclude('includes', 'functions.encoding.php');
 
-class Index extends SearchBaseAbstract
+class SearchIndex extends SearchBaseAbstract
 {
     /**
      * the content of the cms-types of an article
@@ -244,7 +259,7 @@ class Index extends SearchBaseAbstract
      * @param  DB_Contenido  $oDB  CONTENIDO Database object
      * @return void
      */
-    function Index($oDB = null)
+    function SearchIndex($oDB = null)
     {
         parent::__construct($oDB);
 
@@ -808,7 +823,7 @@ class Search extends SearchBaseAbstract
     {
         parent::__construct($oDB);
 
-        $this->index = new Index($oDB);
+        $this->index = new SearchIndex($oDB);
 
         $this->cms_type = $this->index->cms_type;
         $this->cms_type_suffix = $this->index->cms_type_suffix;
@@ -1313,7 +1328,7 @@ class SearchResult extends SearchBaseAbstract
     {
         parent::__construct($oDB, $bDebug);
 
-        $this->index = new Index($oDB);
+        $this->index = new SearchIndex($oDB);
 
         $this->search_result = $search_result;
         $this->_debug('$this->search_result', $this->search_result);
