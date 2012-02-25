@@ -136,22 +136,6 @@ class cApiModule extends Item
         $this->__construct($mId);
     }
 
-    public function loadByPrimaryKey($id)
-    {
-        if (parent::loadByPrimaryKey($id)) {
-            if ($this->_shouldLoadFromFiles()) {
-                global $cfg;
-                $sRootPath = $cfg['path']['contenido'] . $cfg['path']['modules'] . $this->get("idclient")."/" . $this->get("idmod").".xml";
-
-                if (file_exists($sRootPath)) {
-                    $this->import($sRootPath);
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Returns the translated name of the module if a translation exists.
      *
@@ -458,53 +442,8 @@ class cApiModule extends Item
             $success = parent::store();
 
             conGenerateCodeForAllArtsUsingMod($this->get("idmod"));
-
-            if ($this->_shouldStoreToFile()) {
-                if ($this->_makeFileDirectoryStructure()) {
-                    $sRootPath = $cfg['path']['contenido'] . $cfg['path']['modules'] . $this->get("idclient")."/";
-                    file_put_contents($sRootPath . $this->get("idmod").".xml", $this->export($this->get("idmod").".xml", true));
-                }
-            }
         }
         return $success;
-    }
-
-    protected function _makeFileDirectoryStructure()
-    {
-        global $cfg;
-
-        $sRootPath = $cfg['path']['contenido'] . $cfg['path']['modules'];
-        if (!is_dir($sRootPath)) {
-            @mkdir($sRootPath);
-        }
-
-        $sRootPath = $cfg['path']['contenido'] . $cfg['path']['modules'] . $this->get("idclient")."/";
-        if (!is_dir($sRootPath)) {
-            @mkdir($sRootPath);
-        }
-
-        if (is_dir($sRootPath)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    protected function _shouldStoreToFile()
-    {
-        if (getSystemProperty("modules", "storeasfiles") == "true") {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    protected function _shouldLoadFromFiles() {
-        if (getSystemProperty("modules", "loadfromfiles") == "true") {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
