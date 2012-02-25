@@ -344,7 +344,7 @@ class cApiCECRegistry
 class pApiCECChainItem extends cApiCECChainItem {
 	public function __construct($sChainName, $sFunctionName, $aParameters) {
 		cDeprecated('Use cApiCECChainItem instead.');
-		$this->__construct($sChainName, $sFunctionName, $aParameters)
+		$this->__construct($sChainName, $sFunctionName, $aParameters);
 	}
 }
 
