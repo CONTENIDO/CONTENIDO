@@ -41,7 +41,7 @@ return array(
     'Action' => 'contenido/classes/class.action.php',
     'ActiveUsers' => 'contenido/classes/class.activeusers.php',
     'Ajax' => 'contenido/classes/class.ajax.php',
-    'Area' => 'contenido/classes/class.area.php',
+    'Area' => 'contenido/classes/contenido/class.area.php',
     'Art' => 'contenido/classes/class.art.php',
     'Article' => 'contenido/classes/class.article.php',
     'ArticleCollection' => 'contenido/classes/class.article.php',

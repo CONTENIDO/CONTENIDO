@@ -32,7 +32,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-$areaList = new Area();
+$areaList = new cApiAreaCollection();
 $areas = $areaList = $areaList->getAvailableAreas();
 
 $areaSelectTemplate= new Template;

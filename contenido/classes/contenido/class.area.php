@@ -83,7 +83,43 @@ class cApiAreaCollection extends ItemCollection
 
         return $item;
     }
+	
+	/**
+     * Returns all areas available in the system
+     *
+     * @return  array   Array with id and name entries
+     */
+    public function getAvailableAreas() {
+        $aClients = array();
 
+        $this->select();
+
+        while ($oItem = $this->next()) {
+            $aAreas[$oItem->get('idarea')] = array('name' => $oItem->get('name'));
+        }
+
+        return ($aAreas);
+    }
+	
+	/**
+     * Returns the name for a given areaid
+     * @return string   String with the name for the area
+     */
+    public function getAreaName($area) {
+		$oItem = new cApiArea($area);
+		return $oItem->get('name');
+    }
+	
+	/**
+     * Returns the idarea for a given area name
+     * @return int     Integer with the ID for the area
+     */
+    public function getAreaID($area) {
+		$oItem = new cApiArea();
+		$oItem->loadBy('name', $area);
+		
+		return $oItem->get('idarea');
+    }
 }
 
 
@@ -134,4 +170,18 @@ class cApiArea extends Item
     }
 }
 
+/**
+ * @deprecated  [2012-02-25] Use cApiAreaCollection instead of this class.
+ */
+class Area extends cApiAreaCollection {
+    public function __construct() {
+        cDeprecated("Use class cApiAreaCollection instead");
+        parent::__construct();
+    }
+	
+    public function Area() {
+        cDeprecated("Use __construct() instead");
+        $this->__construct();
+    }
+}
 ?>

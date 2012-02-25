@@ -55,7 +55,7 @@ cInclude ("includes", 'cfg_language_de.inc.php');
 # Create CONTENIDO classes
 $db = new DB_Contenido;
 $notification = new Contenido_Notification;
-$classarea = new Area();
+$classarea = new cApiAreaCollection();
 $classlayout = new Layout();
 $classclient = new Client();
 $classuser = new User();
