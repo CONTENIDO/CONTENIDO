@@ -113,7 +113,7 @@ foreach ($aServerConfiguration as $aConfData) {
 
 $oTpl2->set('s', 'ADDITIONAL', '');
 
-$sServerConfiguration = $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['systam_variables_block'], 1);
+$sServerConfiguration = $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['system_variables_block'], 1);
 $tpl->set('s', 'SERVER_CONFIGURATION', $sServerConfiguration);
 
 // system statistics
@@ -143,7 +143,7 @@ foreach ($aSystemStatistics as $aStatData) {
 
 $oTpl2->set('s', 'ADDITIONAL', '');
 
-$sSystemStatistics = $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['systam_variables_block'], 1);
+$sSystemStatistics = $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['system_variables_block'], 1);
 $tpl->set('s', 'SYSTEM_STATISTICS', $sSystemStatistics);
 
 // installed versions
@@ -167,7 +167,7 @@ foreach ($aInstalledVersions as $aVersionInfo) {
 
 $oTpl2->set('s', 'ADDITIONAL', '');
 
-$sInstalledVersions = $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['systam_variables_block'], 1);
+$sInstalledVersions = $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['system_variables_block'], 1);
 $tpl->set('s', 'INSTALLED_VERSIONS', $sInstalledVersions);
 
 // php configuration
@@ -206,7 +206,7 @@ $extensions = get_loaded_extensions();
 sort($extensions);
 $oTpl2->set('s', 'ADDITIONAL', '<tr><td style="border:1px; border-top:0px; border-color: #B3B3B3; border-style: solid;" colspan="2"><b>' . i18n('Loaded extensions') . ':</b><br />' . implode(', ', $extensions) . '</td></tr>');
 
-$sPhpConfig = $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['systam_variables_block'], 1);
+$sPhpConfig = $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['system_variables_block'], 1);
 $tpl->set('s', 'PHP_CONFIGURATION', $sPhpConfig);
 
 // clients
@@ -256,12 +256,12 @@ while ($oItem = $oClientColl->next()) {
 		$oTpl2->set('d', 'VALUE', $sLanguages);
 		$oTpl2->next();
 
-		$sClients .= $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['systam_variables_block'], 1) . '<br />';
+		$sClients .= $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['system_variables_block'], 1) . '<br />';
 	}
 }
 
 $tpl->set('s', 'CLIENTS', $sClients);
 
 // parse out template
-$tpl->generate($cfg['path']['templates'] . $cfg['templates']['systam_variables']);
+$tpl->generate($cfg['path']['templates'] . $cfg['templates']['system_variables']);
 ?>

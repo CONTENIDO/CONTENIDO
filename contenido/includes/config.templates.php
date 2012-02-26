@@ -145,7 +145,8 @@ $cfg['templates']['welcome_update']       = 'template.welcome_update.html';
 $cfg['templates']['info']                 = 'template.info.html';
 $cfg['templates']['symbolhelp']           = 'template.symbolhelp.html';
 
-$cfg['templates']['systam_variables']     = 'template.system_variables.html';
+$cfg['templates']['system_variables']     = 'template.system_variables.html';
+$cfg['templates']['system_variables_block'] = 'template.system_variables_block.html';
 $cfg['templates']['system_subnav']        = 'template.system_subnav.html'; // @deprecated [2011-09-23]
 $cfg['templates']['system_errorreport']   = 'template.system_errorreport.html';
 $cfg['templates']['systam_variables_mailattach'] = 'template.system_sysval_mailattach.html';
