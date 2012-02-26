@@ -192,7 +192,7 @@ class Contenido_ItemCache
         // loop thru all cached entries and try to find a entry by it's property
         foreach ($this->_aItemsCache as $id => $aEntry) {
             if (isset($aEntry[$mProperty]) && $aEntry[$mProperty] == $mValue) {
-                return $aEntry[$mProperty];
+                return $aEntry;
             }
         }
         return null;
