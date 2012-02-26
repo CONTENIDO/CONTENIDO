@@ -3260,51 +3260,19 @@ msgstr "Kein Mandant ausgew&auml;hlt"
 # section System systemvariables
 #: includes/functions.system.php:59
 msgid "Error log successfully cleared!"
-msgstr "Errorlog wurde erfolgreich gel&ouml;scht!"
+msgstr "Fehlerlog wurde erfolgreich gel&ouml;scht!"
 
 #: includes/functions.system.php:61
 msgid "Can't clear error log : Access is denied!"
 msgstr "Fehlerlog konnte nicht geleert werden: Zugriff verweigert!"
 
-#: includes/functions.system.php:70
-msgid "install error log successfully cleared"
-msgstr "Installation-Errorlog erfolgreich geleert"
-
-#: includes/functions.system.php:72
-msgid "Can't clear install error log : Access is denied!"
-msgstr "Upgrade-Fehlerlog konnte nicht geleert werden: Zugriff verweigert!"
-
 #: includes/functions.system.php:293
 msgid "CONTENIDO version"
 msgstr "CONTENIDO Version"
 
-#: includes/functions.system.php:296
-msgid "CONTENIDO path"
-msgstr "CONTENIDO Pfad"
-
-#: includes/functions.system.php:298
-msgid "CONTENIDO HTML path"
-msgstr "CONTENIDO HTML-Pfad"
-
-#: includes/functions.system.php:300
-msgid "CONTENIDO full HTML path"
-msgstr "CONTENIDO Voller HTML-Pfad"
-
-#: includes/functions.system.php:302
-msgid "CONTENIDO frontend path"
-msgstr "CONTENIDO Frontend-Pfad"
-
 #: includes/functions.system.php:304
 msgid "CONTENIDO PHPLIB path"
 msgstr "CONTENIDO PHPLIB-Pfad"
-
-#: includes/functions.system.php:306
-msgid "CONTENIDO wysiwyg path"
-msgstr "CONTENIDO WYSIWYG-Pfad"
-
-#: includes/functions.system.php:308
-msgid "CONTENIDO wysiwyg HTML path"
-msgstr "CONTENIDO WYSIWYG-HTML-Pfad"
 
 #: includes/functions.system.php:311
 msgid "Host name"
@@ -3338,25 +3306,17 @@ msgstr "Frontend-Pfad"
 msgid "No permissions!"
 msgstr "Kein Zugriff!"
 
-#: includes/functions.system.php:399
-msgid "Number of installed clients: "
-msgstr "Anzahl der installierten Mandanten: "
-
-#: includes/functions.system.php:402
-msgid "Client informations"
-msgstr "Mandanteninformationen"
-
 #: includes/functions.system.php:409
 msgid "Number of users"
-msgstr "Anzahl Benutzer"
+msgstr "Anzahl der Benutzer"
 
 #: includes/functions.system.php:419
 msgid "Server operating system"
-msgstr "Server Betriebssystem"
+msgstr "Webserver-Version"
 
 #: includes/functions.system.php:423
 msgid "PHP database extension"
-msgstr "PHP Datenbankerweiterung"
+msgstr "PHP-Datenbankerweiterung"
 
 #: includes/functions.system.php:425
 msgid "Database server version"
@@ -5147,11 +5107,11 @@ msgstr "Die Vorlage '%s' wird bei folgenden Kategorien und Artikeln benutzt"
 
 #: includes/include.system_sysvalues.php:70
 msgid "No error log entries found"
-msgstr "Keine Eintr&auml;ge im Errorlog gefunden"
+msgstr "Keine Eintr&auml;ge im Fehlerlog gefunden"
 
 #: includes/include.system_sysvalues.php:77
 msgid "No error log file found"
-msgstr "Keine Errorlog-Datei gefunden"
+msgstr "Keine Fehlerlog-Datei gefunden"
 
 # styleeditor
 #: includes/include.mod_script.php:129
@@ -6651,7 +6611,7 @@ msgstr "Ihre Version von CONTENIDO ist aktuell!"
 #~ msgstr "Keine Eintr&auml;ge im install error log gefunden."
 
 #~ msgid "error log successfully cleared"
-#~ msgstr "Errorlog erfolgreich geleert"
+#~ msgstr "Fehlerlog erfolgreich geleert"
 
 #~ msgid "an error occured while sending your bug report! Please try again"
 #~ msgstr ""
@@ -6819,7 +6779,7 @@ msgstr "Ihre Version von CONTENIDO ist aktuell!"
 #~ msgstr "%d.%m.%Y"
 
 #~ msgid "<strong>No errors</strong> were found."
-#~ msgstr "Keine Eintr&auml;ge im Errorlog gefunden"
+#~ msgstr "Keine Eintr&auml;ge im Fehlerlog gefunden"
 
 #, fuzzy
 #~ msgid "Linkerror"
@@ -6846,7 +6806,7 @@ msgstr "Ihre Version von CONTENIDO ist aktuell!"
 #~ msgstr "Kategorie offline setzen"
 
 #~ msgid "No errors for this type."
-#~ msgstr "Keine Eintr&auml;ge im Errorlog gefunden"
+#~ msgstr "Keine Eintr&auml;ge im Fehlerlog gefunden"
 
 #, fuzzy
 #~ msgid "Entry"
@@ -7320,3 +7280,69 @@ msgstr "Ihre Version von CONTENIDO ist aktuell!"
 
 #~ msgid "Is used in"
 #~ msgstr "Wird benutzt in"
+
+msgid "System configuration"
+msgstr "System-Konfiguration"
+
+msgid "System environment"
+msgstr "System-Umgebung"
+
+msgid "CONTENIDO server path"
+msgstr "CONTENIDO Server-Pfad"
+
+msgid "CONTENIDO PEAR path"
+msgstr "CONTENIDO PEAR-Pfad"
+
+msgid "CONTENIDO backend path"
+msgstr "CONTENIDO Backend-Pfad"
+
+msgid "CONTENIDO WYSIWYG repository path"
+msgstr "CONTENIDO WYSIWYG Repository-Pfad"
+
+msgid "CONTENIDO WYSIWYG editor path"
+msgstr "CONTENIDO WYSIWYG Editor-Pfad"
+
+msgid "CONTENIDO backend URL"
+msgstr "CONTENIDO Backend-URL"
+
+msgid "CONTENIDO WYSIWYG repository URL"
+msgstr "CONTENIDO WYSIWYG Repository-URL"
+
+msgid "CONTENIDO WYSIWYG editor URL"
+msgstr "CONTENIDO WYSIWYG Editor-URL"
+
+msgid "System statistics (all clients)"
+msgstr "System-Statistik (alle Mandanten)"
+
+msgid "Number of clients"
+msgstr "Anzahl der Mandanten"
+
+msgid "Number of languages"
+msgstr "Anzahl der Sprachen"
+
+msgid "Number of layouts"
+msgstr "Anzahl der Layouts"
+
+msgid "Number of modules"
+msgstr "Anzahl der Module"
+
+msgid "Number of templates"
+msgstr "Anzahl der Vorlagen"
+
+msgid "Number of categories"
+msgstr "Anzahl der Kategorien"
+
+msgid "Number of groups"
+msgstr "Anzahl der Gruppen"
+
+msgid "Installed versions"
+msgstr "Installierte Versionen"
+
+msgid "PHP configuration"
+msgstr "PHP-Einstellungen"
+
+msgid "Loaded extensions"
+msgstr "Geladene Erweiterungen"
+
+msgid "No languages were found for this client"
+msgstr "Es wurden keine Sprachen zu diesem Mandanten gefunden"

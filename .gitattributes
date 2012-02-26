@@ -1815,6 +1815,7 @@ contenido/templates/standard/template.symbolhelp.html -text
 contenido/templates/standard/template.system_purge.html -text
 contenido/templates/standard/template.system_subnav.html -text
 contenido/templates/standard/template.system_variables.html -text
+contenido/templates/standard/template.system_variables_block.html -text
 contenido/templates/standard/template.tpl_edit_form.html -text
 contenido/templates/standard/template.tpl_overview.html -text
 contenido/templates/standard/template.tplcfg_edit_form.html -text
