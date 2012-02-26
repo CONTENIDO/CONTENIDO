@@ -47,13 +47,30 @@
  *
  */
 
-
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+/*
+ * Do not edit this value!
+ *
+ * If you want to set a different enviroment value please define it in your .htaccess file
+ * or in the server configuration.
+ *
+ * SetEnv CONTENIDO_ENVIRONMENT development
+ */
+if (!defined('CONTENIDO_ENVIRONMENT')) {
+	if (getenv('CONTENIDO_ENVIRONMENT')) {
+		$sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
+	} else {
+		// @TODO: provide a possibility to set the environment value via file
+		$sEnvironment = 'production';
+	}
 
-// 1. security check: Include security class and invoke basic request checks
+	define('CONTENIDO_ENVIRONMENT', $sEnvironment);
+}
+
+// Security check: Include security class and invoke basic request checks
 include_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.security.php');
 try {
     Contenido_Security::checkRequests();
@@ -61,10 +78,8 @@ try {
     die($e->getMessage());
 }
 
-
 // "Workaround" for register_globals=off settings.
 require_once(dirname(__FILE__) . '/globals_off.inc.php');
-
 
 // Check if configuration file exists, this is a basic indicator to find out, if CONTENIDO is installed
 if (!file_exists(dirname(__FILE__) . '/config.php')) {
@@ -73,7 +88,6 @@ if (!file_exists(dirname(__FILE__) . '/config.php')) {
     $msg .= "Please make sure that you saved the file in the setup program. If you had to place the file manually on your webserver, make sure that it is placed in your contenido/includes directory.";
     die($msg);
 }
-
 
 // Include some basic configuration files
 include_once(dirname(__FILE__) . '/config.php');
@@ -96,24 +110,20 @@ if (file_exists($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.
 // Various base API functions
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/api/functions.api.general.php');
 
-
 // Initialization of autoloader
 include_once($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
 Contenido_Autoload::initialize($cfg);
 
-
-// 2. security check: Check HTTP parameters, if requested
+// Security check: Check HTTP parameters, if requested
 if ($cfg['http_params_check']['enabled'] === true) {
     $oHttpInputValidator =
         new HttpInputValidator($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.http_check.php');
 }
 
-
 /* Generate arrays for available login languages
  * ---------------------------------------------
  * Author: Martin Horwath
  */
-
 global $cfg;
 
 $handle = opendir($cfg['path']['contenido'] . $cfg['path']['locale']);
@@ -130,12 +140,10 @@ while ($locale = readdir($handle)) {
    }
 }
 
-
 // Some general includes
 cInclude('includes', 'functions.general.php');
 cInclude('conlib', 'prepend.php');
 cInclude('includes', 'functions.i18n.php');
-
 
 // Initialization of CEC
 $_cecRegistry = cApiCECRegistry::getInstance();
@@ -147,6 +155,4 @@ DB_Contenido::setDefaultConfiguration($cfg['db']);
 
 // Initialize UrlBuilder, configuration is set in /contenido/includes/config.misc.php
 Contenido_UrlBuilderConfig::setConfig($cfg['url_builder']);
-
-
 ?>
