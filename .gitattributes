@@ -1867,7 +1867,6 @@ docs/techref/plugins/Contenido[!!-~]Extension[!!-~]Chainer.pdf -text
 docs/techref/plugins/conlogo.gif -text
 docs/techref/plugins/plugin.config.html -text
 docs/translators/translating.doc -text
-docs/whitepaper/info.txt -text
 pear/Cache/Cache.php -text
 pear/Cache/Container.php -text
 pear/Cache/Container/file.php -text
