@@ -294,7 +294,6 @@ if ($currentStep < $totalSteps) {
 			case 'CLIENTMODULES':
 			case 'CLIENTEXAMPLES':
 				global $cfgClient;
-				echo "UPDATE: 1 $rootPath/cms/ $rootHttpPath/cms/";
 				updateClientPath($db, $cfg['tab']['clients'], 1, $rootPath . '/cms/', $rootHttpPath . '/cms/');
 				break;
 			
