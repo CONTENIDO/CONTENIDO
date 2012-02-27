@@ -324,6 +324,11 @@ if ($currentStep < $totalSteps) {
         Contenido_Vars::setVar('fileEncoding', 'UTF-8');
         Contenido_Vars::setVar('db', new DB_Contenido());
 
+        
+        //set default configuration for connection,
+        //for all db objects in Contenido_UpgradeJob
+        DB_Contenido::setDefaultConfiguration($cfg['db']);
+        
         // Save all modules from db-table to the filesystem
         $contenidoUpgradeJob = new Contenido_UpgradeJob($db);
         $contenidoUpgradeJob->saveAllModulsToTheFile($_SESSION['setuptype']);

@@ -26,6 +26,7 @@
  * {@internal
  *   created  2011-10-11
  *   created  2011-11-10, Murat Purc, added caching method getValuesOnlyByTypeName()
+ *   modified 2012-02-27, restet did'nt work
  *
  *   $Id: $:
  * }}
@@ -168,7 +169,9 @@ class cApiPropertyCollection extends ItemCollection
      */
     public static function reset()
     {
-        unset(self::$_enableCache, self::$_entries, self::$_cacheItemtypes);
+        self::$_enableCache = false;
+        self::$_entries = array();
+       	self::$_cacheItemtypes = array();
     }
 
 

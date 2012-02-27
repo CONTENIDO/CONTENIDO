@@ -22,6 +22,7 @@
  *
  * {@internal
  * created 2010-12-14
+ * mofified, Rusmir Jusufovic, add reset for the class.property.php
  *
  * }}
  *
@@ -130,6 +131,7 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
      * @return string value 
      */
     private function  _getValueFromProperties($type , $name) {
+    	cApiPropertyCollection::reset();
 		$propColl = new cApiPropertyCollection();
         $propColl->changeClient($this->_client);
         return $propColl->getValue('idlang', $this->_idlang, $type, $name, '');
