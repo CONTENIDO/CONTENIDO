@@ -237,11 +237,7 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
 			$dateformat = new cHTMLTextbox("dateformat", $clang->getProperty("dateformat", "date"), 40);
 			
 			$timeformat = new cHTMLTextbox("timeformat", $clang->getProperty("dateformat", "time"), 40);
-			
-			
-			displayPlugin("languages", $form);
-			
-			
+
 			$form->addHeader(i18n("Edit language"));
 			
 			$form->add(i18n("Language name"), formGenerateField ("text", "langname", htmlspecialchars($db->f("name")), 40, 255));

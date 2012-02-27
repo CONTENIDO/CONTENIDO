@@ -1550,35 +1550,12 @@ function callPluginStore($entity)
     }
 }
 
-function displayPlugin($entity, & $form)
-{
-    /* TODO: Function can't work, as $feuser is not defined (see $display =
-     * call_user_func($entity."_".$plugin."_display", $feuser);) and plugins need
-     * - if data has to be shown - global objects ...
-     */
-    $pluginOrder = trim_array(explode(",", getSystemProperty("plugin", $entity."-pluginorder")));
-
-    // Check out if there are any plugins
-    if (is_array($pluginOrder)) {
-        foreach ($pluginOrder as $plugin) {
-            if (function_exists($entity."_".$plugin."_getTitle") && function_exists($entity."_".$plugin."_display")) {
-                $plugTitle = call_user_func($entity."_".$plugin."_getTitle");
-                $display = call_user_func($entity."_".$plugin."_display", $feuser);
-
-                if (is_array($plugTitle) && is_array($display)) {
-                    foreach ($plugTitle as $key => $value) {
-                        $form->add($value, $display[$key]);
-                    }
-                } else {
-                    if (is_array($plugTitle) || is_array($display)) {
-                        $form->add("WARNING", "The plugin $plugin delivered an array for the displayed titles, but did not return an array for the contents.");
-                    } else {
-                        $form->add($plugTitle, $display);
-                    }
-                }
-            }
-        }
-    }
+/**
+ * @deprecated 2012-02-26 Function does not work and is not longer supported
+ * @return void
+ */
+function displayPlugin($entity, & $form) {
+    cDeprecated("This function does not work and is not longer supported");
 }
 
 /**
