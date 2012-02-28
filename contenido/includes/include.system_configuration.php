@@ -34,7 +34,7 @@ if(!defined('CON_FRAMEWORK')) {
 function renderBooleanProperty($sName, $aPossValues, $sValue, $sLabel) {
     $aReturn = array();
     
-    if ($aPossValues[0] == $sValue) {
+    if ($aPossValues[0] == $sValue || $sValue == '') {
         $bChecked = false;
     } else {
         $bChecked = true;
