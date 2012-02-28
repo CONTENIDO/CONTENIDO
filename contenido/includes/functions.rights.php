@@ -63,63 +63,44 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
     global $cfg, $perm, $auth, $area_tree;
 
     $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $whereUsers = array();
+    $whereAreaActions = array();
 
     // get all user_id values for con_rights
-
     $userIDContainer = $perm->getGroupsForUser($auth->auth['uid']); // add groups if available
     $userIDContainer[] = $auth->auth['uid']; // add user_id of current user
-
     foreach ($userIDContainer as $key) {
-        $statement_where2[] = "user_id = '".Contenido_Security::escapeDB($key, $db)."' ";
+        $whereUsers[] = "user_id = '" . $db->escape($key) . "'";
     }
+    $whereUsers = '(' . implode(' OR ', $whereUsers) . ')'; // only duplicate on user and where user is member of
 
-    $where_users = '('.implode(' OR ', $statement_where2 ) .')'; // only duplicate on user and where user is member of
-
-    // get all idarea values for $area
-    // short way
-    $AreaContainer = $area_tree[$perm->showareas($area)];
+    // get all idarea values for $area short way
+    $areaContainer = $area_tree[$perm->showareas($area)];
 
     // long version start
     // get all actions for corresponding area
-    $AreaActionContainer = array();
-    $sql = "SELECT idarea, idaction FROM ".$cfg["tab"]["actions"]." WHERE idarea IN (".implode (',', $AreaContainer).")";
-    $db->query($sql);
-
-    while ($db->next_record()) {
-      $AreaActionContainer[] = array('idarea'=>$db->f('idarea'), 'idaction'=>$db->f('idaction'));
+    $oActionColl = new cApiActionCollection();
+    $oActionColl->select('idarea IN (' . implode (',', $areaContainer) . ')');
+    while ($oItem = $oActionColl->next()) {
+        $whereAreaActions[] = '(idarea = ' . (int) $oItem->get('idarea') . ' AND idaction = ' . (int) $oItem->get('idaction') . ')';
     }
+    $whereAreaActions = '(' . implode(' OR ', $whereAreaActions) . ')'; // only correct area action pairs possible
 
-    // build sql statement for con_rights
-    foreach ($AreaActionContainer as $key) {
-        $statement_where[] = "( idarea = ".Contenido_Security::toInteger($key["idarea"])." AND idaction = ".Contenido_Security::toInteger($key["idaction"])." )";
-    }
-
-    $where_area_actions = '('.implode(' OR ', $statement_where ) .')'; // only correct area action pairs possible
-
-    // final sql statement to get all effected elements in con_right
-    $sql = "SELECT
-                *
-            FROM
-                ".$cfg["tab"]["rights"]."
-            WHERE
-                {$where_area_actions} AND
-                {$where_users} AND
-                idcat = {$iditem}";
+    // final where statement to get all effected elements in con_right
+    $sWhere = "{$whereAreaActions} AND {$whereUsers} AND idcat = {$iditem}";
 
     // long version end
     if ($idlang) {
-      $sql.= " AND idlang='$idlang'";
+        $sWhere .= ' AND idlang=' . (int) $idlang;
     }
 
-    $db->query($sql);
+    $oDestRightCol = new cApiRightCollection();
+    $oSourceRighsColl = new cApiRightCollection();
 
-    while ($db->next_record()) {
-        $sql = "INSERT INTO ".$cfg["tab"]["rights"]." (user_id,idarea,idaction,idcat,idclient,idlang,`type`) VALUES (
-               '".Contenido_Security::escapeDB($db->f("user_id"), $db)."', '".Contenido_Security::toInteger($db->f("idarea"))."', '".Contenido_Security::toInteger($db->f("idaction"))."',
-               '".Contenido_Security::toInteger($newiditem)."','".Contenido_Security::toInteger($db->f("idclient"))."', '".Contenido_Security::toInteger($db->f("idlang"))."',
-               '".Contenido_Security::toInteger($db->f("type"))."');";
-        $db2->query($sql);
+    $oSourceRighsColl->select($sWhere);
+    while ($oItem = $oSourceRighsColl->next()) {
+        $rs = $oItem->toObject();
+        $oDestRightCol->create($rs->user_id, $rs->idarea, $rs->idaction, $newiditem, $rs->idclient, $rs->idlang, $rs->type);
     }
 
     // permissions reloaded...
@@ -153,19 +134,16 @@ function createRightsForElement($area, $iditem, $idlang = false)
     $db2 = new DB_Contenido();
 
     // get all user_id values for con_rights
-
     $userIDContainer = $perm->getGroupsForUser($auth->auth['uid']); // add groups if available
     $userIDContainer[] = $auth->auth['uid']; // add user_id of current user
-
     foreach ($userIDContainer as $key) {
-        $statement_where2[] = "user_id = '".Contenido_Security::toInteger($key)."' ";
+        $whereUsers[] = "user_id = '" . $db->escape($key) . "'";
     }
-
-    $where_users =   '('.implode(' OR ', $statement_where2 ) .')'; // only duplicate on user and where user is member of
+    $whereUsers = '(' . implode(' OR ', $whereUsers) . ')'; // only duplicate on user and where user is member of
 
     // get all idarea values for $area
     // short way
-    $AreaContainer = $area_tree[$perm->showareas($area)];
+    $areaContainer = $area_tree[$perm->showareas($area)];
 
     $sql = "SELECT
                 *
@@ -173,10 +151,10 @@ function createRightsForElement($area, $iditem, $idlang = false)
                 ".$cfg["tab"]["rights"]."
             WHERE
                 idclient='".Contenido_Security::toInteger($client)."' AND
-                idarea IN (".implode (',', $AreaContainer).") AND
+                idarea IN (".implode (',', $areaContainer).") AND
                 idcat != 0 AND
                 idaction!='0' AND
-                {$where_users}";
+                {$whereUsers}";
 
     if ($idlang) {
         $sql.= " AND idlang='".Contenido_Security::toInteger($idlang)."'";
@@ -230,9 +208,9 @@ function deleteRightsForElement($area, $iditem, $idlang = false)
     $db = new DB_Contenido();
 
     // get all idarea values for $area
-    $AreaContainer = $area_tree[$perm->showareas(Contenido_Security::escapeDB($area, $db))];
+    $areaContainer = $area_tree[$perm->showareas(Contenido_Security::escapeDB($area, $db))];
 
-    $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE idcat='".Contenido_Security::toInteger($iditem)."' AND idclient='".Contenido_Security::toInteger($client)."' AND idarea IN (".implode (',', $AreaContainer).")";
+    $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE idcat='".Contenido_Security::toInteger($iditem)."' AND idclient='".Contenido_Security::toInteger($client)."' AND idarea IN (".implode (',', $areaContainer).")";
     if ($idlang) {
         $sql.= " AND idlang='".Contenido_Security::toInteger($idlang)."'";
     }
