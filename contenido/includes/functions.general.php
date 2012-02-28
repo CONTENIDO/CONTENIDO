@@ -1163,7 +1163,7 @@ function getFileExtension($filename)
 function human_readable_size($number)
 {
     $base = 1024;
-    $suffixes = array(" B", " KB", " MB", " GB", " TB", " PB", " EB");
+    $suffixes = array(" Bytes", " KiB", " MiB", " GiB", " TiB", " PiB", " EiB");
 
     $usesuf = 0;
     $n = (float) $number; //Appears to be necessary to avoid rounding
@@ -1398,25 +1398,59 @@ function scanDirectory($sDirectory, $bRecursive = false)
     }
 
     $aFiles = array();
-
-    if ($hDirHandle = opendir($sDirectory)) {
-        while (($sFile = readdir($hDirHandle)) !== false) {
-            if ($sFile != '.' && $sFile != '..') {
-                $sFullpathFile = $sDirectory . '/' . $sFile;
-                if (is_file($sFullpathFile) && is_readable($sFullpathFile)) {
-                    $aFiles[] = $sFullpathFile;
-                } elseif (is_dir($sFullpathFile) && $bRecursive == true) {
-                    $aSubFiles = scanDirectory($sFullpathFile, $bRecursive);
-                    if (is_array($aSubFiles)) {
-                        $aFiles = array_merge($aFiles, $aSubFiles);
-                    }
-                }
-            }
-        }
-        closedir($hDirHandle);
+    $openDirs = array();
+    $closedDirs = array();
+    array_push($openDirs, $sDirectory);
+    
+    while(count(($openDirs)) >= 1)
+    {
+    	$sDirectory = array_pop($openDirs);
+   	 	if ($hDirHandle = opendir($sDirectory)) {
+        	while (($sFile = readdir($hDirHandle)) !== false) {
+            	if ($sFile != '.' && $sFile != '..') {
+                	$sFullpathFile = $sDirectory . '/' . $sFile;
+                	if (is_file($sFullpathFile) && is_readable($sFullpathFile)) {
+	                    array_push($aFiles, $sFullpathFile);
+	                } elseif (is_dir($sFullpathFile) && $bRecursive == true) {
+	                	if(!in_array($sFullpathFile, $closedDirs))
+	                	{
+	                		array_push($openDirs, $sFullpathFile);
+	                	}
+	                }
+	            }
+	        }
+	        closedir($hDirHandle);
+	    }
+	    array_push($closedDirs, $sDirectory);
     }
 
+
     return $aFiles;
+}
+
+/**
+ * Returns the size of a directory. AKA the combined filesizes of all files within it. Note that this function uses filesize(). There could be problems with files that are larger than 2GiB
+ * 
+ * @param string The directory
+ * @param bool true if all the subdirectories should be included in the calculation
+ * 
+ * @return bool|int Returns false in case of an error or the size
+ */
+function getDirectorySize($sDirectory, $bRecursive = false)
+{
+	$ret = 0;
+	$files = scanDirectory($sDirectory, $bRecursive);
+	if($files === false)
+	{
+		return false;
+	}
+	
+	foreach($files as $file)
+	{
+		$ret += filesize($file);
+	}
+	
+	return $ret;
 }
 
 /**
