@@ -176,7 +176,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
                     $sql = "";
                 }
             } else {
-                $sql = "   ALTER TABLE ".Contenido_Security::escapeDB($table, $db)."' DROP INDEX ".Contenido_Security::escapeDB($index, $db);
+                $sql = "   ALTER TABLE ".Contenido_Security::escapeDB($table, $db)." DROP INDEX ".Contenido_Security::escapeDB($index, $db);
             }
 
             $db->query($sql);
