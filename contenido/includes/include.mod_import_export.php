@@ -41,16 +41,16 @@ if($action == "mod_importexport_module") {
 			if($idmod != 0)
 				$module->export();
 			else 
-				$notification->displayNotification('error', i18n("Could not export modul!"));
+				$notification->displayNotification('error', i18n("Could not export module!"));
 			break;
 		case 'import':
 			if (file_exists($_FILES["upload"]["tmp_name"]))
     		{    		
     			if (!$module->import($_FILES['upload']['name'] , $_FILES["upload"]["tmp_name"]))
     			{
-    				$notification-> displayNotification('error',i18n("Culd not import modul!"));	
+    				$notification-> displayNotification('error',i18n("Could not import module!"));	
     			} else {
-    				$notification->displayNotification('info', i18n("Modul inport successfully!"));
+    				$notification->displayNotification('info', i18n("Module import successfully!"));
     				$idmod = $module->get('idmod');
     				 $sScript = "<script type=\"text/javascript\">
                                          var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
@@ -80,9 +80,9 @@ if($action == "mod_importexport_module") {
     			$module = $modules->create($modulName);		
     			if (!$module->importModuleFromXML($_FILES["upload"]["tmp_name"]))
     			{
-    				$notification-> displayNotification('error',i18n("Culd not import modul!"));	
+    				$notification-> displayNotification('error',i18n("Could not import module!"));	
     			} else {
-    				$notification->displayNotification('info', i18n("Modul inport successfully!"));
+    				$notification->displayNotification('info', i18n("Module import successfully!"));
     				$idmod = $module->get('idmod');
     				 $sScript = "<script type=\"text/javascript\">
                                          var left_bottom = parent.parent.frames['left'].frames['left_bottom'];

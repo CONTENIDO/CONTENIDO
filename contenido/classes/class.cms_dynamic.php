@@ -95,13 +95,12 @@ class Cms_Dynamic extends AbstractModule{
 		$this->iStartIndex['link'] = getEffectiveSetting('cms_dynamic_type', 'start_index_link', 500); 	
 	
 		$this->aElements = array(
-				'html' 		=> i18n("Html"), 
-				'htmlhead' 	=> i18n("Htmlhead"), 
-				'head' 		=> i18n("Head"), 
-				'img'		=> i18n("Image"), 
-				'link'		=> i18n("Link")
-			);
-			
+            'html' 		=> i18n("HTML"), 
+            'htmlhead' 	=> i18n("HTML heading"), 
+            'head' 		=> i18n("Heading"), 
+            'img'		=> i18n("Image"), 
+            'link'		=> i18n("Link")
+        );
 	}
 	
 	/**
@@ -110,12 +109,12 @@ class Cms_Dynamic extends AbstractModule{
 	public function start() {
 		
 		$this->aTranslations = array(
-			'title_html'		=> i18n("Html Inhalt bearbeiten"),
-			'title_htmlhead'	=> i18n("Html-Head Inhalt bearbeiten"),
-			'title_link'		=> i18n("Link bearbeiten"),
-			'title_img'			=> i18n("Bild bearbeiten"),
-			'title_head'		=> i18n("Head Inhalt bearbeiten"),
-			'text_no_add'		=> i18n("Bitte wählen Sie erst ein Element aus!"),
+			'title_html'		=> i18n("Edit HTML content"),
+			'title_htmlhead'	=> i18n("Edit HTML headng content"),
+			'title_link'		=> i18n("Edit link"),
+			'title_img'			=> i18n("Edit image"),
+			'title_head'		=> i18n("Edit heading content"),
+			'text_no_add'		=> i18n("Please select a element before!"),
 		);
 		
 		if (isset($_POST['cms_dynamic_action']) && $_POST['cms_dynamic_action'] != ''
@@ -159,7 +158,7 @@ class Cms_Dynamic extends AbstractModule{
 		$oTpl->set('s', 'TEXT_ADD', i18n("Add"));
 		$oTpl->set('s', 'TEXT_SAVE', i18n("Save"));
 		
-		$oTpl->set('s', 'HTML_TEMPLATE', i18n("HTML-Template"));
+		$oTpl->set('s', 'HTML_TEMPLATE', i18n("HTML template"));
 		
 		// generate form elements
 		if (is_array($this->aSettings['elements']) && count($this->aSettings['elements']) > 0) {
@@ -577,7 +576,7 @@ class Cms_Dynamic extends AbstractModule{
 		
 		$sStandardTemplate = 'cms_dynamic_standard_' . $sType . '.html';
 		$sSelected = ($this->aSettings['configs']['template_' . $sType] == $sStandardTemplate) ? $sCheckedPara : '';
-		$sOption = sprintf($sOptionPlaceHolder, $sStandardTemplate, $sSelected, i18n("Standart template")); 
+		$sOption = sprintf($sOptionPlaceHolder, $sStandardTemplate, $sSelected, i18n("Default template")); 
 		
 		$aTemplates = getEffectiveSettingsByType('cms_dynamic_template_' .  strtolower($sType));
 		if (is_array($aTemplates) && count($aTemplates)) {

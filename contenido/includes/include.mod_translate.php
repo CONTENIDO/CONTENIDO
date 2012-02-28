@@ -143,7 +143,7 @@ $form->setVar("action", "mod_translation_save");
 
 $transmodname = new cHTMLTextbox("translatedname", $module->getTranslatedName(),60);
 
-$form->add(i18n("Translated Name"), $transmodname);
+$form->add(i18n("Translated name"), $transmodname);
 
 $ilink = new cHTMLLink;
 $ilink->setCLink("mod_translate", 5, "");

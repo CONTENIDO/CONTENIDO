@@ -191,7 +191,7 @@ function getCanonicalDay($iDay)
             return (i18n("Friday"));
             break;
         case 6 :
-            return (i18n("Saterday"));
+            return (i18n("Saturday"));
             break;
         case 0 :
             return (i18n("Sunday"));

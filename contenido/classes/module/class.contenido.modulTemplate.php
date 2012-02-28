@@ -226,7 +226,7 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
                  
             } else  {
                 //one of files (file or tmp_file) is not set
-                throw  new Exception(i18n('Field of the filename is empty!'));
+                throw  new Exception(i18n('Field of the file name is empty!'));
             }
               
         } else {
@@ -277,7 +277,7 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
     private function _rename() {
 
         if( $this->renameModulFile('template',$this->_tmp_file, $this->_file) == false) {
-            throw new Exception(i18n("Rename of the file not successfully!"));
+            throw new Exception(i18n("Rename of the file failed!"));
         } else { 
             $this->makeNewModuleFile('template', $this->_file,$this->_code);
 			 $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed the template file successfully!"));	
@@ -503,7 +503,7 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
         $aDelete->setClass('deletefunction');
 
         $aAdd =new cHTMLLink('');
-        $aAdd->setContent(i18n("New Template file"));
+        $aAdd->setContent(i18n("New template file"));
         $aAdd->setClass('addfunction');
 
         // $tb_name = new cHTMLLabel($sFilename,'');

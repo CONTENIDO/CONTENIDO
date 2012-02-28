@@ -63,7 +63,7 @@ if ($action == "mod_sync") {
 
     $idmodUpdate = $contenidoModuleSynchronizer->compareFileAndModulTimestamp();
 
-    // if a modul is deleted in filesystem but not in db make an update
+    // if a module is deleted in filesystem but not in db make an update
     #$idmodUpdate = $contenidoModuleSynchronizer->updateDirFromModuls();
     #we need the idmod for refresh all frames
     if ($idmod == 0 &&$idmodUpdate != 0) {
@@ -82,13 +82,13 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 if ($action == "mod_new") {
     $modules = new cApiModuleCollection();
 
-    $alias = capiStrCleanURLCharacters(i18n("- Unnamed Module -"));
+    $alias = capiStrCleanURLCharacters(i18n("- Unnamed module -"));
     if (Contenido_Module_Handler::existModulInDirectory($alias, $cfgClient)) {
-        $notification->displayNotification("error", i18n("Modul name exist in modul directory, rename the modul."));
+        $notification->displayNotification("error", i18n("Modul name exist in module directory, rename the module."));
         die();
     }
 
-    $module = $modules->create(i18n("- Unnamed Module -"));
+    $module = $modules->create(i18n("- Unnamed module -"));
     $module->set("description", implode("\n", array(i18n("<your module description>"), "", i18n("Author: "), i18n("Version:"))));
 
     $module->set("alias",strtolower($alias));

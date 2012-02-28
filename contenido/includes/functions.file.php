@@ -203,7 +203,7 @@ function fileEdit($filename, $sCode, $path) {
 
     // FIXME: fileValidateFilename does also the validation but display another message!
     if (strlen(trim($filename)) == 0) {
-        $notification->displayNotification("error", i18n("Please insert filename."));
+        $notification->displayNotification("error", i18n("Please insert file name."));
         return false;
     }
 
@@ -358,7 +358,7 @@ function fileValidateFilename($filename, $notifyAndExitOnFailure = true) {
         // validation failure...
         if ($notifyAndExitOnFailure == true) {
             // display notification and exit
-            $notification->displayNotification('error', i18n('Wrong filename.'));
+            $notification->displayNotification('error', i18n('Wrong file name.'));
             exit;
         }
         return false;

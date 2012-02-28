@@ -231,7 +231,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'ARTIKELID', "idart");
     $tpl->set('s', 'ARTID', $idart);
 
-    $tpl->set('s', 'DIRECTLINKTEXT', i18n("Articlelink"));
+    $tpl->set('s', 'DIRECTLINKTEXT', i18n("Article link"));
 
     $select = new cHTMLSelectElement("directlink");
     $select->setEvent("change", "document.getElementById('linkhint').value = this.form.directlink.options[this.form.directlink.options.selectedIndex].value;");
@@ -240,9 +240,9 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     $option[0] = new cHTMLOptionElement(i18n("Select an entry to display link"), '');
     $option[1] = new cHTMLOptionElement(i18n("Article only"), $baselink);
-    $option[2] = new cHTMLOptionElement(i18n("Article with Category"), $baselink."&idcat=$idcat");
-    $option[3] = new cHTMLOptionElement(i18n("Article with Category and Language"), $baselink."&idcat=$idcat&lang=$lang");
-    $option[4] = new cHTMLOptionElement(i18n("Article with Language"), $baselink."&lang=$lang");
+    $option[2] = new cHTMLOptionElement(i18n("Article with category"), $baselink."&idcat=$idcat");
+    $option[3] = new cHTMLOptionElement(i18n("Article with category and language"), $baselink."&idcat=$idcat&lang=$lang");
+    $option[4] = new cHTMLOptionElement(i18n("Article with language"), $baselink."&lang=$lang");
 
     $select->addOptionElement(0, $option[0]);
     $select->addOptionElement(1, $option[1]);
@@ -299,7 +299,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     // Redirect - New window
     if (getEffectiveSetting("articles", "show-new-window-checkbox", "false") == "true") {
-        $tpl->set('s', 'CHECKBOX-NEWWINDOW', '<input type="checkbox" '.$disabled.' id="external_redirect" name="external_redirect" value="1" '.$tmp_external_redirect_checked.'></td><td><label for="external_redirect">'.i18n("New Window").'</label>');
+        $tpl->set('s', 'CHECKBOX-NEWWINDOW', '<input type="checkbox" '.$disabled.' id="external_redirect" name="external_redirect" value="1" '.$tmp_external_redirect_checked.'></td><td><label for="external_redirect">'.i18n("New window").'</label>');
     } else {
         $tpl->set('s', 'CHECKBOX-NEWWINDOW', '&nbsp;');
     }
@@ -500,8 +500,8 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
                         });
                         </script>';
 
-        $tpl->set('s', 'CHOOSEEND', '<img src="images/calendar.gif" width="16" height="16" style="vertical-align:top;margin-top:2px;" id="trigger_end" alt="'.i18n("Choose Startdate").'">'.$sCalEndInit);
-        $tpl->set('s', 'CHOOSESTART', '<img src="images/calendar.gif" width="16" height="16" style="vertical-align:top;margin-top:2px;" id="trigger_start" alt="'.i18n("Choose Enddate").'">'.$sCalStartInit);
+        $tpl->set('s', 'CHOOSEEND', '<img src="images/calendar.gif" width="16" height="16" style="vertical-align:top;margin-top:2px;" id="trigger_end" alt="'.i18n("Choose start date").'">'.$sCalEndInit);
+        $tpl->set('s', 'CHOOSESTART', '<img src="images/calendar.gif" width="16" height="16" style="vertical-align:top;margin-top:2px;" id="trigger_start" alt="'.i18n("Choose end date").'">'.$sCalStartInit);
     } else {
         $allow_usetimemgmt = ' disabled="disabled"';
         $tpl->set('s', 'CHOOSEEND', '');
@@ -692,7 +692,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     if ($tmp_usetimemgmt == '1') {
     	if ($tmp_datestart == "0000-00-00 00:00:00" && $tmp_dateend == "0000-00-00 00:00:00") {
-    		$message = sprintf(i18n("Bitte geben Sie das Startdatum oder/und die Endzeitpunkt ein!"));
+    		$message = sprintf(i18n("Please fill in the start date and/or the end date!"));
             $notification->displayNotification("warning", $message);
     	}
     }

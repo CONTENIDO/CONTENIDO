@@ -380,10 +380,10 @@ class Cms_Teaser {
         $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
 
         //set other avariable options manually
-        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Block Style"), 'cms_teaser_style_block.html', false);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Block style"), 'cms_teaser_style_block.html', false);
         $oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
 
-        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Blog Style"), 'cms_teaser_style_blog.html', false);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Blog style"), 'cms_teaser_style_blog.html', false);
         $oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
 
         $aAdditionalOptions = getEffectiveSettingsByType('cms_teaser');
@@ -474,16 +474,16 @@ class Cms_Teaser {
         $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
 
         //set other avariable options manually
-        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Sort Sequence"), 'sortsequence', false);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Sort sequence"), 'sortsequence', false);
         $oHtmlSelect->addOptionElement(1, $oHtmlSelectOption);
 
-        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Creationdate"), 'creationdate', false);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Creation date"), 'creationdate', false);
         $oHtmlSelect->addOptionElement(2, $oHtmlSelectOption);
 
-        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Publisheddate"), 'publisheddate', false);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Published date"), 'publisheddate', false);
         $oHtmlSelect->addOptionElement(3, $oHtmlSelectOption);
 
-        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Modificationdate"), 'modificationdate', false);
+        $oHtmlSelectOption = new cHTMLOptionElement(i18n("Modification date"), 'modificationdate', false);
         $oHtmlSelect->addOptionElement(4, $oHtmlSelectOption);
 
         //set default value
@@ -572,22 +572,22 @@ class Cms_Teaser {
         $oTpl->set('s', 'FIELDS', "'".implode("','",$this->aTeaserData)."'");
 
         /*Start set a lot of translations*/
-        $oTpl->set('s', 'LABEL_TEASERSETTINGS', i18n("Teasersettings"));
-        $oTpl->set('s', 'LABEL_TEASERTITLE', i18n("Teasertitle"));
-        $oTpl->set('s', 'LABEL_START', i18n("Teaser Startarticle"));
-        $oTpl->set('s', 'LABEL_TARGET', i18n("Sourcecategory"));
-        $oTpl->set('s', 'LABEL_COUNT', i18n("Number of Articles"));
-        $oTpl->set('s', 'LABEL_GENERAL', i18n("General Settings"));
-        $oTpl->set('s', 'LABEL_STYLE', i18n("Teaser Style"));
-        $oTpl->set('s', 'LABEL_ADVANCED', i18n("Advanced Teaser Settings"));
-        $oTpl->set('s', 'LABEL_FILTER', i18n("Teaser Filter"));
-        $oTpl->set('s', 'LABEL_SORT', i18n("Teaser Sort"));
+        $oTpl->set('s', 'LABEL_TEASERSETTINGS', i18n("Teaser settings"));
+        $oTpl->set('s', 'LABEL_TEASERTITLE', i18n("Teaser title"));
+        $oTpl->set('s', 'LABEL_START', i18n("Teaser start article"));
+        $oTpl->set('s', 'LABEL_TARGET', i18n("Source category"));
+        $oTpl->set('s', 'LABEL_COUNT', i18n("Number of articles"));
+        $oTpl->set('s', 'LABEL_GENERAL', i18n("General settings"));
+        $oTpl->set('s', 'LABEL_STYLE', i18n("Teaser style"));
+        $oTpl->set('s', 'LABEL_ADVANCED', i18n("Advanced teaser settings"));
+        $oTpl->set('s', 'LABEL_FILTER', i18n("Teaser filter"));
+        $oTpl->set('s', 'LABEL_SORT', i18n("Teaser sort"));
         $oTpl->set('s', 'LABEL_SORT_ORDER', i18n("Sort order"));
-        $oTpl->set('s', 'LABEL_SOURCEHEAD', i18n("Source Headline"));
-        $oTpl->set('s', 'LABEL_SOURCE', i18n("Source Settings"));
-        $oTpl->set('s', 'LABEL_SOURCETEXT', i18n("Source Text"));
-        $oTpl->set('s', 'LABEL_SOURCEIMAGE', i18n("Source Image"));
-        $oTpl->set('s', 'LABEL_SOURCEDATE', i18n("Source Date"));
+        $oTpl->set('s', 'LABEL_SOURCEHEAD', i18n("Source headline"));
+        $oTpl->set('s', 'LABEL_SOURCE', i18n("Source settings"));
+        $oTpl->set('s', 'LABEL_SOURCETEXT', i18n("Source text"));
+        $oTpl->set('s', 'LABEL_SOURCEIMAGE', i18n("Source image"));
+        $oTpl->set('s', 'LABEL_SOURCEDATE', i18n("Source date"));
 
         $oTpl->set('s', 'LABEL_CAT', i18n("Category"));
         $oTpl->set('s', 'LABEL_ART', i18n("Article"));
@@ -595,17 +595,17 @@ class Cms_Teaser {
         $oTpl->set('s', 'GENERAL', i18n("General"));
         $oTpl->set('s', 'ADVANCED', i18n("Advanced"));
         $oTpl->set('s', 'MANUAL', i18n("Manual"));
-        $oTpl->set('s', 'LABEL_EXISTING_ARTICLES', i18n("Included Articles"));
-        $oTpl->set('s', 'LABEL_ADD_ARTICLE', i18n("Add Article"));
-        $oTpl->set('s', 'LABEL_MANUAL', i18n("Manual Teaser Settings"));
-        $oTpl->set('s', 'LABEL_USE_MANUAL', i18n("Manual Teaser"));
+        $oTpl->set('s', 'LABEL_EXISTING_ARTICLES', i18n("Included articles"));
+        $oTpl->set('s', 'LABEL_ADD_ARTICLE', i18n("Add article"));
+        $oTpl->set('s', 'LABEL_MANUAL', i18n("Manual teaser settings"));
+        $oTpl->set('s', 'LABEL_USE_MANUAL', i18n("Manual teaser"));
 
 
-        $oTpl->set('s', 'SIZE_SETTINGS', i18n("Size Settings"));
-        $oTpl->set('s', 'LABEL_CHARACTER_LIMIT', i18n("Characterlength"));
-        $oTpl->set('s', 'LABEL_IMAGE_WIDTH', i18n("Imagewidth"));
-        $oTpl->set('s', 'LABEL_IMAGE_HEIGHT', i18n("Imageheight"));
-        $oTpl->set('s', 'LABEL_IMAGE_CROP', i18n("Image Scale"));
+        $oTpl->set('s', 'SIZE_SETTINGS', i18n("Size settings"));
+        $oTpl->set('s', 'LABEL_CHARACTER_LIMIT', i18n("Character length"));
+        $oTpl->set('s', 'LABEL_IMAGE_WIDTH', i18n("Image width"));
+        $oTpl->set('s', 'LABEL_IMAGE_HEIGHT', i18n("Image height"));
+        $oTpl->set('s', 'LABEL_IMAGE_CROP', i18n("Image scale"));
         /*End set a lot of translations*/
 
         /*Start set values into configuration array and generate select boxes used previous defined values CASE CHECKBOXES*/

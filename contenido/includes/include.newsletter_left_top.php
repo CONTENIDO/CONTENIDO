@@ -198,7 +198,7 @@ if (!$perm->have_perm_area_action($area, "news_html_settings")) {
 // Destination for sending test newsletter
 $oSelTestDestination = new cHTMLSelectElement("selTestDestination");
 
-$oOption = new cHTMLOptionElement(i18n("My mail address"), 0);
+$oOption = new cHTMLOptionElement(i18n("My E-Mail address"), 0);
 $oSelTestDestination->addOptionElement(0, $oOption);
 
 $oRcpGroups = new RecipientGroupCollection();
@@ -250,13 +250,13 @@ $sContent = '
         <input type="hidden" name="action_html" value="save_newsletter_properties">
         <table>
             <tr>
-                <td>'.$oCkbHTMLNewsletter->toHTML(false).' <label for="' . $oCkbHTMLNewsletter->getID() . '">'.i18n("Enable HTML Newsletter").'</label></td>
+                <td>'.$oCkbHTMLNewsletter->toHTML(false).' <label for="' . $oCkbHTMLNewsletter->getID() . '">'.i18n("Enable HTML newsletter").'</label></td>
             </tr>
             <tr>
-                <td><label for="'.$oSelHTMLTemplateIDCat->getID().'">'.i18n("HTML Template Category:").'</label><br /> '.$oSelHTMLTemplateIDCat->render().'</td>
+                <td><label for="'.$oSelHTMLTemplateIDCat->getID().'">'.i18n("HTML template category:").'</label><br /> '.$oSelHTMLTemplateIDCat->render().'</td>
             </tr>
             <tr>
-                <td><label for="'.$oSelHTMLNewsletterIDCat->getID().'">'.i18n("HTML Newsletter Category:").'</label><br /> '.$oSelHTMLNewsletterIDCat->render().'</td>
+                <td><label for="'.$oSelHTMLNewsletterIDCat->getID().'">'.i18n("HTML newsletter category:").'</label><br /> '.$oSelHTMLNewsletterIDCat->render().'</td>
             </tr>
             <tr>
                 <td><label for="'.$oSelTestDestination->getID().'">'.i18n("Send test destination:").'</label><br />'.$oSelTestDestination->render().'</td>

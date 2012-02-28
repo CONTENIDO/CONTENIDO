@@ -58,7 +58,7 @@ $aFieldDetails["name"]["mandatory"]			= false;	// true or false
 $aFieldDetails["name"]["type"]				= "string"; // string, boolean or date
 $aFieldDetails["name"]["link"]				= false;	// plugin name for plugins, recipient group id for groups
 $aFieldDetails["name"]["col"]				= -1;		// Stores column index where this field has been found
-$aFields["email"]							= strtolower(i18n("Mail"));
+$aFields["email"]							= strtolower(i18n("E-mail"));
 $aFieldDetails["email"]["fieldtype"]		= "field";
 $aFieldDetails["email"]["mandatory"]		= true;
 $aFieldDetails["email"]["type"]				= "string";
@@ -76,7 +76,7 @@ $aFieldDetails["confirmed"]["mandatory"]	= false;
 $aFieldDetails["confirmed"]["type"]			= "boolean";
 $aFieldDetails["confirmed"]["link"]			= false;
 $aFieldDetails["confirmed"]["col"]			= -1;
-$aFields["confirmeddate"]					= strtolower(i18n("Confirmed Date"));
+$aFields["confirmeddate"]					= strtolower(i18n("Confirmed date"));
 $aFieldDetails["confirmeddate"]["fieldtype"]= "field";
 $aFieldDetails["confirmeddate"]["mandatory"]= false;
 $aFieldDetails["confirmeddate"]["type"]		= "date";
@@ -157,7 +157,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 		else 
 			$aMessage[] = i18n("Wrong mime-type of file!"); 				
     }else 
-    	$aMessage[] = i18n("Colud not open the file!");
+    	$aMessage[] = i18n("Could not open the file!");
     			
 
 	if ($sFileData) {
@@ -223,15 +223,15 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 					$sName = $sEMail;
 				}
 				if ($sEMail == "") {
-					$aMessage[] = sprintf(i18n("Item with empty mail address found, item ignored (name: %s, row: %s)"), $sName, $iRow);
+					$aMessage[] = sprintf(i18n("Item with empty e-mail address found, item ignored (name: %s, row: %s)"), $sName, $iRow);
 					$aInvalidLines[] = $sLine;
 					$iInvalid++;
 				} else if (!isValidMail($sEMail)) {
-					$aMessage[] = sprintf(i18n("Mail address '%s' is invalid, item ignored (row: %s)"), $sEMail, $iRow);
+					$aMessage[] = sprintf(i18n("E-mail address '%s' is invalid, item ignored (row: %s)"), $sEMail, $iRow);
 					$aInvalidLines[] = $sLine;
 					$iInvalid++;
 				} else if ($oRecipients->emailExists($sEMail)) {
-               		$aMessage[] = sprintf(i18n("Recipient with mail address '%s' already exists, item skipped (row: %s)"), $sEMail, $iRow);
+               		$aMessage[] = sprintf(i18n("Recipient with e-mail address '%s' already exists, item skipped (row: %s)"), $sEMail, $iRow);
                		$aInvalidLines[] = $sLine;
 					$iDublettes++;
 				} else {
@@ -336,7 +336,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
 		if (count($aMessage) > 0) {
 			$sMessage = $notification->returnNotification("warning", implode("<br />", $aMessage))."<br />";
 		}
-		$sMessage .= $notification->returnNotification("info", sprintf(i18n("%d recipients added, %d recipients skipped (email already exists) and %d invalid recipients/e-mail adresses ignored. Invalid recipients are shown (if any)."), $iAdded, $iDublettes, $iInvalid));
+		$sMessage .= $notification->returnNotification("info", sprintf(i18n("%d recipients added, %d recipients skipped (e-mail already exists) and %d invalid recipients/e-mail adresses ignored. Invalid recipients are shown (if any)."), $iAdded, $iDublettes, $iInvalid));
 		if ($iAdded > 0) {
 			$oPage->setReload();
 		}

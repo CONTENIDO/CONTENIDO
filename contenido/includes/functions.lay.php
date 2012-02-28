@@ -66,7 +66,7 @@ function layEditLayout($idlay, $name, $description, $code) {
     set_magic_quotes_gpc($code);
     
     if (strlen(trim($name)) == 0) {
-        $name = i18n('-- Unnamed Layout --');
+        $name = i18n('-- Unnamed layout --');
     }
     
     #replace all not allowed characters..
@@ -100,7 +100,7 @@ function layEditLayout($idlay, $name, $description, $code) {
         $idlay = $db->getLastInsertedId($cfg["tab"]["lay"]);
       
         if( $layoutInFile->saveLayout(stripslashes($code)) == false)
-        	$notification->displayNotification("error", i18n("Cant save layout in file"));
+        	$notification->displayNotification("error", i18n("Can't save layout in file"));
         else 
         	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved layout succsessfully!"));	
         
@@ -194,7 +194,7 @@ function layDeleteLayout($idlay) {
                 	$db->query($sql);
         		} else {
         			
-        			$notification->displayNotification("error", i18n("Cant delete layout!"));
+        			$notification->displayNotification("error", i18n("Can't delete layout!"));
         		}
                
         }

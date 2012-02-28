@@ -99,7 +99,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
             
             #if modul exist show massage 
             if( Contenido_Module_Handler::existModulInDirectory($alias, $cfgClient)) {
-             	$notification->displayNotification('error',i18n("Modul name exist in modul directory, pleas choos an other name."));
+             	$notification->displayNotification('error',i18n("Module name exist in module directory, please choose another name."));
 		        die();
             }
         }
@@ -113,7 +113,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		if($change == true){		
 		       #the new name of modul dont exist im modul dir
 		       if( $contenidoModuleHandler->renameModul($oldName,$alias) == false) {
-		       	$notification->displayNotification('error',i18n("Can't rename modul, is a modul file open ??? !"));
+		       	$notification->displayNotification('error',i18n("Can't rename module, is a module file open ??? !"));
 		       	die();
 		       } else {
 		       		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed module successfully!"));
@@ -138,7 +138,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		       	
 		       
 		       if($contenidoModuleHandler->saveInfoXML($name , $description, $type, $alias) == false)
-		       		$messageIfError .= "<br/>". i18n("Can't save xml modul info file!");
+		       		$messageIfError .= "<br/>". i18n("Can't save xml module info file!");
 		       
 		       
 		       	#display error
@@ -165,7 +165,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 				$cApiModule->store();
 		    
 		     if($contenidoModuleHandler->saveInfoXML($name , $description, $type, $alias) == false)
-		       		$notification->displayNotification('error',i18n("Can't save xml modul info file!"));
+		       		$notification->displayNotification('error',i18n("Can't save xml module info file!"));
 		       
 		       		
 		       	if($retInput == true && $retOutput == true) {
@@ -292,7 +292,7 @@ function modTestModule ($code, $id, $output = false)
     $bHasShortTags = false;
     if (preg_match('/<\?\s+/', $code) && $magicvalue == 941) {
         $bHasShortTags = true;
-        $modErrorMessage = i18n('Please do not use short open Tags. (Use <?php instead of <?).');
+        $modErrorMessage = i18n('Please do not use short open tags. (Use <?php instead of <?).');
     }
     
     

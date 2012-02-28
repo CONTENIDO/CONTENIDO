@@ -71,13 +71,13 @@ if ($action == "todo_save_item")
     
     $reminderdate = new cHTMLTextbox("reminderdate", '', '', '', "reminderdate");
     
-    $datepopup = ' <img src="images/calendar.gif" width="16" height="16" alt="Endzeitpunkt wählen" id="reminder_date" style="vertical-align:middle;">';
+    $datepopup = ' <img src="images/calendar.gif" width="16" height="16" alt="' . i18n("Select reminder date") . '" id="reminder_date" style="vertical-align:middle;">';
     $ui->add(i18n("Reminder date"),$reminderdate->render().$datepopup);
     
 	$reminderdue = new cHTMLTextbox("enddate", '', '', '', "enddate");
-    $duepopup = ' <img src="images/calendar.gif" width="16" height="16" alt="Endzeitpunkt wählen" id="end_date" style="vertical-align:middle;">';
+    $duepopup = ' <img src="images/calendar.gif" width="16" height="16" alt="' . i18n("Select end date") . '" id="end_date" style="vertical-align:middle;">';
     $ui->add(i18n("End date"),$reminderdue->render().$duepopup);    
-    $notiemail = new cHTMLCheckbox("notiemail", i18n("eMail notification"));
+    $notiemail = new cHTMLCheckbox("notiemail", i18n("E-mail notification"));
     
     $ui->add(i18n("Reminder options"), $notiemail->toHTML());
     $calscript = '<script language="JavaScript">'.'

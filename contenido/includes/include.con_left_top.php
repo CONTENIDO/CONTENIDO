@@ -130,7 +130,7 @@ $arrDateTypes['lastmodified'] = i18n('Date modified');
 $arrDateTypes['published'] = i18n('Date published');
 
 $articleLink="editarticle";
-$oListOptionRow = new cFoldingRow("3498dbba-ed4a-4618-8e49-3a3635396e22", i18n("Article Search"), $articleLink, $bShowArticleSearch);
+$oListOptionRow = new cFoldingRow("3498dbba-ed4a-4618-8e49-3a3635396e22", i18n("Article search"), $articleLink, $bShowArticleSearch);
 $tpl->set('s', 'ARTICLELINK', $articleLink);
 
 // Textfeld
@@ -248,7 +248,7 @@ $content .= '<td>'.$oTextboxArtID->render().'</td>';
 $content .= '</tr>';
 
 $content .= '<tr>';
-$content .= '<td style="padding-left: 15px;">'. i18n("Datum").'</td>';
+$content .= '<td style="padding-left: 15px;">'. i18n("Date").'</td>';
 $content .= '<td><nobr>'.$oSelectArtDateType->render().'</nobr></td>';
 $content .= '</tr>';
 
@@ -277,7 +277,7 @@ $content .= '</form>';
 // Saved searches
 $content .= '<div  class="artikel_search">';
 
-$content .= '<div style="font-weight:bold; margin-bottom: 10px;">'.i18n("Saved Searches").':</div>';
+$content .= '<div style="font-weight:bold; margin-bottom: 10px;">'.i18n("Saved searches").':</div>';
 
 $proppy = new cApiPropertyCollection();
 $savedSearchList = $proppy->getAllValues('type', 'savedsearch', $auth);
@@ -362,7 +362,7 @@ $tpl->set('d', 'SELECTED', '');
 $tpl->next();
 
 $categoryLink = "editcat";
-$editCategory = new cFoldingRow("3498dbbb-ed4a-4618-8e49-3a3635396e22", i18n("Edit Category"), $categoryLink);
+$editCategory = new cFoldingRow("3498dbbb-ed4a-4618-8e49-3a3635396e22", i18n("Edit category"), $categoryLink);
 
 while ($db->next_record()) {
     $tplname = $db->f('name');
@@ -386,8 +386,8 @@ $editCat .= '</div>';
 $editCat .= '<div style="margin: 5px 0 5px 0;">';
 $tpl->set('s', 'CAT_HREF', $sess->url("main.php?area=con_tplcfg&action=tplcfg_edit&frame=4&mode=art").'&idcat=');
 $tpl->set('s', 'IDCAT', $idcat);
-$editCat .= '<div id="oTemplatecfg_label"><a href="javascript:configureCategory();"><img style="vertical-align: middle;" id="oTemplatecfg" vspace="3" hspace="2" src="'.$cfg["path"]["images"].'but_cat_conf2.gif" border="0" title="'.i18n("Configure Category").'" alt="'.i18n("Configure Category").'"><a>';
-$editCat .= '<a href="javascript:configureCategory();">'.i18n("Configure Category").'</a></div>';
+$editCat .= '<div id="oTemplatecfg_label"><a href="javascript:configureCategory();"><img style="vertical-align: middle;" id="oTemplatecfg" vspace="3" hspace="2" src="'.$cfg["path"]["images"].'but_cat_conf2.gif" border="0" title="'.i18n("Configure category").'" alt="'.i18n("Configure Category").'"><a>';
+$editCat .= '<a href="javascript:configureCategory();">'.i18n("Configure category").'</a></div>';
 // Online / Offline
 $editCat .= '<div id="oOnline_label"><a href="#"><img style="vertical-align: middle;" id="oOnline" src="images/offline.gif" vspace="2" hspace="2" border="0" title="'.i18n("Online / Offline").'" alt="'.i18n("Online / Offline").'"></a>';
 $editCat .= '<a href="#">'.i18n("Online / Offline").'</a></div>';

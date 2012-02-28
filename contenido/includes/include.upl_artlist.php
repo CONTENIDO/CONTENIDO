@@ -78,7 +78,7 @@ $cApiCategoryArticleCollection->setWhere("cApiArticleLanguageCollection.idlang",
 $cApiCategoryArticleCollection->setWhere("cApiCategoryLanguageCollection.idcat", $idcat);
 $cApiCategoryArticleCollection->query();
 
-$headlines = array(i18n("Start"), i18n("Title"), i18n("Created"), i18n("Modified"), i18n("Sort Order"), i18n("Online"));
+$headlines = array(i18n("Start"), i18n("Title"), i18n("Created"), i18n("Modified"), i18n("Sort order"), i18n("Online"));
 $fields = array("is_start", "title", "created", "lastmodified", "artsort", "online");
 
 $content[] = '<table width="100%" style="margin-top: 10px; border-left: 1px solid '.$cfg['color']['table_border'].'; border-top: 1px solid '.$cfg['color']['table_border'].';" cellspacing="0" cellpadding="0"><tr>';

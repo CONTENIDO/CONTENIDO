@@ -432,7 +432,7 @@ $tpl->next();
 ####################################
 # Database-based filesystem (DBFS) 
 ####################################
-$file = i18n("Database Filesystem");
+$file = i18n("Database file system");
 $pathstring = 'dbfs:';
 $rootTreeItem = new TreeItem;
 $rootTreeItem->custom["level"] = 0;

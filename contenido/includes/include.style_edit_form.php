@@ -63,7 +63,7 @@ if (!$perm->have_perm_area_action($area, $action))
 		{
 			unlink($path.$_REQUEST['delfile']);
 			removeFileInformation($client, $_REQUEST['delfile'], 'css', $db);
-			$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted CSS-File successfully!"));
+			$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted CSS file successfully!"));
 		}
 	}
 	$sReloadScript = "<script type=\"text/javascript\">

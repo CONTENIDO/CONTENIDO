@@ -394,15 +394,15 @@ class Cms_Image {
 		$oTpl->set('s', 'META', 								i18n("Meta"));
 		$oTpl->set('s', 'UPLOAD', 								i18n("Upload"));
 				
-		$oTpl->set('s', 'META_URL_TEXT', 						i18n("Ausgew�hlte Datei"));	
+		$oTpl->set('s', 'META_URL_TEXT', 						i18n("Selected file"));	
 		$oTpl->set('s', 'LABEL_IMAGE_TITLE', 					i18n("Title"));			
 		$oTpl->set('s', 'LABEL_IMAGE_DESC', 					i18n("Description"));		
 		$oTpl->set('s', 'LABEL_IMAGE_KEYWORDS', 				i18n("Keywords"));
 		$oTpl->set('s', 'LABEL_IMAGE_INTERNAL_NOTICE', 			i18n("Internal notes"));
 		$oTpl->set('s', 'LABEL_IMAGE_COPYRIGHT', 				i18n("Copyright"));
 		
-		$oTpl->set('s', 'INDEX', 								i18n("Erstelle Verzeichnis in"));
-		$oTpl->set('s', 'PFAD', 								i18n("Pfad"));
+		$oTpl->set('s', 'INDEX', 								i18n("Create a directory in"));
+		$oTpl->set('s', 'PFAD', 								i18n("Path"));
 		$oTpl->set('s', 'CONTENIDO', 							$contenido);
 		
 		$oTpl->set('s', 'sUploadPath', 							$this->sUploadPath);	           

@@ -44,7 +44,7 @@ if (is_array($cfg['plugins']['recipients'])) {
 
 // Note, that the object name has to be $recipient for plugins
 if ($action == "recipients_create" && $perm->have_perm_area_action($area, $action)) {
-	$recipient = $oRecipients->create("mail@domain.tld"," ".i18n("-- new recipient --"));
+	$recipient = $oRecipients->create("mail@domain.tld"," ".i18n("-- New recipient --"));
 	$oPage->setReload();		
 } elseif ($action == "recipients_delete" && $perm->have_perm_area_action($area, $action)) {
 	$oRecipients->delete($idrecipient);
@@ -235,7 +235,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
 		}
 	}
 			
-	$oForm->add(i18n("Associated Groups"), $oGroupList->render());
+	$oForm->add(i18n("Associated groups"), $oGroupList->render());
 	
 	$oForm->add(i18n("Author"), $classuser->getUserName($recipient->get("author")) . " (". $recipient->get("created").")" ); 
 	$oForm->add(i18n("Last modified by"), $classuser->getUserName($recipient->get("modifiedby")). " (". $recipient->get("lastmodified").")" );

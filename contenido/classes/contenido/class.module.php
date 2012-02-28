@@ -423,7 +423,7 @@ class cApiModule extends Item
         switch ($field) {
             case "name":
                 if ($value == "") {
-                    $value = i18n("- Unnamed Module -");
+                    $value = i18n("- Unnamed module -");
                 }
         }
         return ($value);
@@ -553,7 +553,7 @@ class cApiModule extends Item
     	
     	#exist the modul in directory
     	if(is_dir($cfgClient[$client]['path']['frontend'].Contenido_Module_Handler::$MODUL_DIR_NAME.$modulName)) {
-    		$notification->displayNotification('error', i18n("Modul exist!"));
+    		$notification->displayNotification('error', i18n("Module exist!"));
     		return false ;
     	}
     	
@@ -576,13 +576,13 @@ class cApiModule extends Item
 				$module->store();
     			
     		}else {
-    			$notification->displayNotification('error', i18n("Import faild could not extract zipfile!"));
+    			$notification->displayNotification('error', i18n("Import failed, could not extract zip file!"));
     			return false;
     		}
     		
     		
     	}else  {
-    		$notification->displayNotification('error', i18n("Could not open the zip-File!"));
+    		$notification->displayNotification('error', i18n("Could not open the zip file!"));
     		return false;
     	}
     	return true;
@@ -624,7 +624,7 @@ class cApiModule extends Item
 			}
 			
     		if(is_dir($cfgClient[$client]['path']['frontend'].Contenido_Module_Handler::$MODUL_DIR_NAME.$modulAlias)) {
-    			$notification->displayNotification('error', i18n("Modul exist!"));
+    			$notification->displayNotification('error', i18n("Module exist!"));
     			return false ;
     		}else {
     			
@@ -632,7 +632,7 @@ class cApiModule extends Item
     			$this->store();
     			$contenidoModuleHandler = new Contenido_Module_Handler($this->get('idmod'));
     			if(!$contenidoModuleHandler->makeNewModul($inputOutput["input"], $inputOutput["output"])) {
-    				$notification->displayNotification('error', i18n("Culd not make a modul!"));
+    				$notification->displayNotification('error', i18n("Could not make a module!"));
     				return false;
 				}else {
 					#save the modul data to modul info file
@@ -640,7 +640,7 @@ class cApiModule extends Item
 				}
     		}
     	}else {
-    		$notification->displayNotification('error', i18n("Culd not parse xml file!"));
+    		$notification->displayNotification('error', i18n("Could not parse xml file!"));
     		return false;
     	}
     	
@@ -677,7 +677,7 @@ class cApiModule extends Item
                     if( $zipArchive->addFile($dir . $file, $zipdir . $file)=== FALSE)
                     {
                     	$notification = new Contenido_Notification();
-                    	$notification->displayNotification('error', i18n("Could not add file to zip: !").$file);
+                    	$notification->displayNotification('error', sprintf(i18n("Could not add file %s to zip!"), $file));
                     }
                   
                 }
@@ -712,12 +712,12 @@ class cApiModule extends Item
 				//erase the file  
     			$ret = unlink($zipName);
     		}else {
-    			$notification->displayNotification('error', i18n("Could not open the zip-File!"));
+    			$notification->displayNotification('error', i18n("Could not open the zip file!"));
     		}
     		
     	}else  {
     		
-    		$notification->displayNotification('error', i18n("Module don't exist on filesystem!"));
+    		$notification->displayNotification('error', i18n("Module don't exist on file system!"));
     	}
     	
     }

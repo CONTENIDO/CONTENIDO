@@ -291,7 +291,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oForm->setVar("action",    "");
     $oForm->setVar("idnewsjob", $idnewsjob);
 
-    $oForm->addHeader(i18n("Newsletter Dispatch Job"));
+    $oForm->addHeader(i18n("Newsletter dispatch job"));
 
     $oForm->add(i18n("Name"), $oJob->get("name"));
 

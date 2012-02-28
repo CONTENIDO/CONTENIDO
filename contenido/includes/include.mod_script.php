@@ -128,7 +128,7 @@ if (!$perm->have_perm_area_action('js', $actionRequest) || $premCreate)
         if($ret == true)
        		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new js file successfully"));
         else
-        	$notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n("Culd not create a new js file. "));
+        	$notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n("Could not create a new js file."));
     }
 
 	# edit selected file

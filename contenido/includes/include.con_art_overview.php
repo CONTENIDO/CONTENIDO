@@ -526,10 +526,10 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $duplicatelink = $tmp_link;
             }
 
-            $subject = urlencode(sprintf(i18n("Reminder for Article '%s'"),$title));
+            $subject = urlencode(sprintf(i18n("Reminder for article '%s'"),$title));
             $mycatname = '';
             conCreateLocationString($idcat, "&nbsp;/&nbsp;", $mycatname);
-            $message = urlencode(sprintf(i18n("Reminder for Article '%s'\nCategory: %s"),$title,$mycatname));
+            $message = urlencode(sprintf(i18n("Reminder for article '%s'\nCategory: %s"),$title,$mycatname));
 
             $todolink = new TODOLink("idart", $idart, $subject, $message);
 

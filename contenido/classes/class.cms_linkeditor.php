@@ -281,15 +281,15 @@ class Cms_LinkEditor {
 		
 		/*Start set a lot of translations*/
 		$oTpl->set('s', 'LABEL_LINKEDITOR_SETTINGS', 			i18n("Link settings"));
-		$oTpl->set('s', 'TEXTLINK2FILE', 						i18n("Link zu einer Datei"));
-		$oTpl->set('s', 'TEXTLINKEX', 							i18n("Externer Link"));
-		$oTpl->set('s', 'TEXTLINKIN', 							i18n("Interner Link"));
-		$oTpl->set('s', 'INDEX', 								i18n("Erstelle Verzeichnis in"));
-		$oTpl->set('s', 'PFAD', 								i18n("Pfad"));
-		$oTpl->set('s', 'EXTERN', 								i18n("Extern"));
-		$oTpl->set('s', 'INTERN', 								i18n("Intern"));
-		$oTpl->set('s', 'TARGET', 								i18n("Im neuen Fenster öffnen"));
-		$oTpl->set('s', 'TITLE', 								i18n("Titel"));
+		$oTpl->set('s', 'TEXTLINK2FILE', 						i18n("Link to a file"));
+		$oTpl->set('s', 'TEXTLINKEX', 							i18n("External link"));
+		$oTpl->set('s', 'TEXTLINKIN', 							i18n("Internal link"));
+		$oTpl->set('s', 'INDEX', 								i18n("Create a directory in"));
+		$oTpl->set('s', 'PFAD', 								i18n("Path"));
+		$oTpl->set('s', 'EXTERN', 								i18n("External"));
+		$oTpl->set('s', 'INTERN', 								i18n("Internal"));
+		$oTpl->set('s', 'TARGET', 								i18n("Open in a new window"));
+		$oTpl->set('s', 'TITLE', 								i18n("Title"));
 		$oTpl->set('s', 'extern_title_value', 					$this->aLink['link_title']);
 		$oTpl->set('s', 'HTTP', 								i18n("Href"));
 		

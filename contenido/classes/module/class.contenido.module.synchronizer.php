@@ -76,7 +76,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
              //add new Module in db-tablle     
              $this->_addModul($newModulName,$idclient);
              $notification = new Contenido_Notification();
-             $notification->displayNotification('info', i18n("Synchronization successfully modul name: ").$newModulName);                 
+             $notification->displayNotification('info', sprintf(i18n("Module %s successfull synchronized"), $newModulName));                 
           } else {
           	
           		//update the name of the module
@@ -166,7 +166,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
             		//update
             		$this->setLastModified($lastmodOutput,$db->f('idmod'));
                     conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
-                    $notification->displayNotification('info', i18n("Synchronization successfully modul name: ").$db->f('name'));
+                    $notification->displayNotification('info', sprintf(i18n("Module %s successfull synchronized"), $db->f('name')));
             	}
             		
             } else {
@@ -176,7 +176,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
             		//update
             		$this->setLastModified($lastmodInput,$db->f('idmod'));
                     conGenerateCodeForAllArtsUsingMod($db->f('idmod'));
-                    $notification->displayNotification('info', i18n("Synchronization successfully modul name: ").$db->f('name'));
+                    $notification->displayNotification('info', sprintf(i18n("Module %s successfull synchronized"), $db->f('name')));
             	}
             }
 
@@ -215,7 +215,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
                  //modul in use, make new modul in filesystem
                  if( $this->makenewModul()== false ) { 
                  	$notification = new Contenido_Notification();
-             		$notification->displayNotification('info', i18n("Cant make modul: ").$db->f("name"));  
+             		$notification->displayNotification('info', i18n("Can't make module: ").$db->f("name"));  
                  } else 
                  	$this->_echoIt("Modul angelegt: ".$db->f("name"));
                  

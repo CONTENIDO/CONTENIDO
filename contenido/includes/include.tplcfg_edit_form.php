@@ -72,7 +72,7 @@ if (isset($idart)) {
             $inUseUser = $vuser->getField('username');
             $inUseUserRealName = $vuser->getField('realname');
 
-            $message = sprintf(i18n("Category Template configuration is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
+            $message = sprintf(i18n("Category template configuration is in use by %s (%s)"), $inUseUser, $inUseUserRealName);
             $notification->displayNotification('warning', $message);
             $inUse = true;
             $disabled = 'disabled="disabled"';
@@ -450,10 +450,10 @@ if ($idtpl != 0 && $inUse == false) {
 }
 
 if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
-    $tpl->set('s', 'HEADER', i18n('Categorytemplate configuration'));
+    $tpl->set('s', 'HEADER', i18n('Category template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
 } else if ($area == 'con_tplcfg' && (int) $idart > 0) {
-    $tpl->set('s', 'HEADER', i18n('Articletemplate configuration'));
+    $tpl->set('s', 'HEADER', i18n('Article template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
 } else {
     $tpl->set('s', 'HEADER', '');
