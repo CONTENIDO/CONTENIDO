@@ -102,7 +102,7 @@ $aManagedProperties = array(
                           array('type' => 'codemirror', 'name' => 'activated', 'value' => array('false', 'true'), 'label' => i18n('Use CodeMirror for code highlighting'), 'group' => i18n('Backend')),
                           array('type' => 'system', 'name' => 'insight_editing_activated', 'value' => array('false', 'true'), 'label' => i18n('Use TinyMce as insight editor'), 'group' => i18n('Backend')), 
 						  array('type' => 'backend', 'name' => 'preferred_idclient', 'value' => 'integer', 'label' => i18n('Default client (ID)'), 'group' => i18n('Backend')),
-						  array('type' => 'backend', 'name' => 'max_log_size', 'value' => 'integer', 'label' => i18n('Maximum log size in KiB'), 'group' => i18n('Backend')),
+						  array('type' => 'backend', 'name' => 'max_log_size', 'value' => 'label', 'label' => i18n('Maximum log size in MiB (0 = infnite)'), 'group' => i18n('Backend')),
                           array('type' => 'system', 'name' => 'mail_host', 'value' => '', 'label' => i18n('Mailserver host'), 'group' => i18n('Mailserver')),
                           array('type' => 'system', 'name' => 'mail_sender', 'value' => '', 'label' => i18n('Mailserver sender mail'), 'group' => i18n('Mailserver')),
                           array('type' => 'system', 'name' => 'mail_sender_name', 'value' => '', 'label' => i18n('Mailserver sender name'), 'group' => i18n('Mailserver')),

@@ -76,15 +76,19 @@ if (getSystemProperty('maintenance', 'mode') == 'enabled') {
     $sNotificationText .= '<br />';
 }
 
-if(in_array("sysadmin", explode(",", $vuser->getEffectiveUserPerms())))
+$max_log_size = getSystemProperty("backend", "max_log_size");
+if($max_log_size === false)
+{
+	$max_log_size = 10;
+}
+
+if(in_array("sysadmin", explode(",", $vuser->getEffectiveUserPerms())) && $max_log_size > 0)
 {
 	$log_size = getDirectorySize($cfg['path']['contenido']."logs/");
 	
-	$max_log_size = getSystemProperty("backend", "max_log_size");
-	
-	if($log_size > $max_log_size * 1024)
+	if($log_size > $max_log_size * 1024 * 1024)
 	{
-    	$sNotificationText .= $notification->returnNotification("warning", i18n("The log directory is bigger than ".human_readable_size($max_log_size * 1024).". Current size: ".human_readable_size($log_size)));
+    	$sNotificationText .= $notification->returnNotification("warning", i18n("The log directory is bigger than")." ".human_readable_size($max_log_size * 1024 * 1024).".".i18n("Current size").": ".human_readable_size($log_size));
     	$sNotificationText .= '<br />';
 	}
 }

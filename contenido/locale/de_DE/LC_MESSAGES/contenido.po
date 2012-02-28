@@ -2503,6 +2503,12 @@ msgstr "Willkommen"
 msgid "Last login"
 msgstr "Letzter Login"
 
+#: includes/main.login.php:87
+msgid "The log directory is bigger than"
+msgstr "Das Log-Verzeichnis ist gr&ouml;&szlig;er als"
+msgid "Current size"
+msgstr "Aktuelle Gr&ouml;&szlig;e"
+
 #: includes/main.login.php:102
 #: includes/main.login.php:137
 #, php-format
@@ -3068,6 +3074,10 @@ msgstr "Hauptmen&uuml;wechsel bei Klick"
 #: includes/include.system_configuration.php:104
 msgid "Backend"
 msgstr "Backend"
+
+#: includes/include.system_configuration.php:104
+msgid "Maximum log size in MiB (0 = infnite)"
+msgstr "Maximale Log Gr&ouml;&szlig;e in MiB (0 = unendlich)"
 
 #: includes/include.system_configuration.php:100
 msgid "Use passwordrequest in Backend"
