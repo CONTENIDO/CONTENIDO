@@ -61,27 +61,6 @@ if ($action == "mod_translation_save")
    	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved translation successfully!"));	
     	
 }
-if ($action == "mod_importexport_translation")
-{
-	if ($mode == "export")
-	{
-		$sFileName = uplCreateFriendlyName(strtolower($module->get("name") . "_" . $langobj->get("name")));
-
-		if ($sFileName != "")
-		{
-			$moduletranslations->export($idmod, $lang,  $sFileName . ".xml",$contenidoTranslateFromFile);
-		}
-	}
-	if ($mode == "import")
-	{
-		if (file_exists($_FILES["upload"]["tmp_name"]))
-		{
-		    
-			$moduletranslations->import($idmod, $lang, $_FILES["upload"]["tmp_name"],$contenidoTranslateFromFile);
-		}
-	}
-} 
-
 
 if (!isset($idmodtranslation))
 {
@@ -171,14 +150,6 @@ $mark = '<script language="JavaScript">document.translation.t_trans.focus();</sc
 
 $page->setContent($form->render(). $mark ."<br>");
 $page->setMarkScript(2);
-
-$clang = new cApiLanguage($idlang);
-
-$page->setEncoding($clang->get("encoding"));
-
-if (!($action == "mod_importexport_translation" && $mode == "export"))
-{
-	$page->render();
-}
-
+$page->setEncoding($langobj->get("encoding"));
+$page->render();
 ?>
