@@ -984,6 +984,8 @@ $oTpl->set('s', 'ID_CRECIPIENTGROUP', $sContainerId);
 $oTpl->set('s', 'SESSID', $sess->id);
 $oTpl->set('s', 'SECTION_BG_COLOR', $cfg['color']['table_dark']);
 
-$oTpl->generate($cfg['path']['templates'] . $cfg['templates']['newsletter_left_top']);
+$oTpl->generate(
+    $cfg['path']['contenido'] . $cfg['path']['plugins'] . 'newsletter/templates/standard/template.newsletter_left_top.html'
+);
 
 ?>

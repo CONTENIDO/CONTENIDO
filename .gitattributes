@@ -1443,7 +1443,6 @@ contenido/plugins/mod_rewrite/templates/contentexpert.html -text
 contenido/plugins/mod_rewrite/templates/contenttest.html -text
 contenido/plugins/mod_rewrite/xml/lang_de_DE.xml -text
 contenido/plugins/mod_rewrite/xml/lang_en_US.xml -text
-contenido/plugins/newsletter/includes/functions.forms.php -text
 contenido/plugins/newsletter/includes/include.newsletter_edit.php -text
 contenido/plugins/newsletter/includes/include.newsletter_edit_message.php -text
 contenido/plugins/newsletter/includes/include.newsletter_jobs_details.php -text

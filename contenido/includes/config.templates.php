@@ -62,8 +62,6 @@ $cfg['templates']['right_top_blank']      = 'template.right_top_blank.html';
 
 $cfg['templates']['admin_frontend']       = 'template.admin_frontend.html';
 
-$cfg['templates']['newsletter_left_top']  = 'template.newsletter_left_top.html';
-
 $cfg['templates']['con_edit_form']        = 'template.con_edit_form.html';
 $cfg['templates']['con_editcontent']      = 'template.con_editcontent.html';
 $cfg['templates']['con_str_overview']     = 'template.con_str_overview.html';
