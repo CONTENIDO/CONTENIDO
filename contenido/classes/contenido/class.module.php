@@ -447,61 +447,23 @@ class cApiModule extends Item
     }
 
     /**
-     *  Parse import xml file, stores data in global variable (-> event handler functions)
+     * Parse import xml file, stores data in global variable (-> event handler functions)
      *
      * @param string $sFile Filename including path of import xml file
-     * @param string $sType Import type, "module" or "package"
+	 * @param string $sEncoding Encoding for xml parser
+	 *
      * @return bool Returns true, if file has been parsed
      */
-    private function _parseImportFile($sFile, $sType = "module", $sEncoding = "ISO-8859-1")
-    {
+    private function _parseImportFile($sFile, $sEncoding = "ISO-8859-1") {
         global $_mImport;
 
         $oParser = new XmlParser($sEncoding);
-
-        if ($sType == "module") {
-            $oParser->setEventHandlers(array("/module/name"       => "cHandler_ModuleData",
-                                            "/module/description" => "cHandler_ModuleData",
-                                            "/module/type"        => "cHandler_ModuleData",
-                                            "/module/input"       => "cHandler_ModuleData",
-                                            "/module/output"      => "cHandler_ModuleData",
-            								"/module/alias"		  => "cHandler_ModuleData"));
-        } else {
-            $aHandler = array("/modulepackage/guid"               => "cHandler_ModuleData",
-                              #"/modulepackage/repository_guid"    => "cHandler_ModuleData",
-                              "/modulepackage/module/name"        => "cHandler_ModuleData",
-                              "/modulepackage/module/description" => "cHandler_ModuleData",
-                              "/modulepackage/module/type"        => "cHandler_ModuleData",
-                              "/modulepackage/module/input"       => "cHandler_ModuleData",
-                              "/modulepackage/module/output"      => "cHandler_ModuleData",
-                              "/modulepackage/module/input"       => "cHandler_ModuleData");
-
-            // Add file handler (e.g. js, css, templates)
-            foreach ($this->_packageStructure As $sFileType => $sFilePath) {
-                // Note, that $aHandler["/modulepackage/" . $sFileType] and using
-                // a handler which uses the node name (here: FileType) doesn't work,
-                // as the event handler for the filetype node will be fired
-                // after the node has been successfully parsed, not before.
-                // So, we have a little redundancy here, but maybe we need
-                // this in the future.
-            	$aHandler["/modulepackage/" . $sFileType . "/area"]    = "cHandler_ItemArea";
-            	$aHandler["/modulepackage/" . $sFileType . "/name"]    = "cHandler_ItemName";
-            	$aHandler["/modulepackage/" . $sFileType . "/content"] = "cHandler_ItemData";
-            }
-
-            // Layouts
-            $aHandler["/modulepackage/layouts/area"]        = "cHandler_ItemArea";
-            $aHandler["/modulepackage/layouts/name"]        = "cHandler_ItemName";
-            $aHandler["/modulepackage/layouts/description"] = "cHandler_ItemData";
-            $aHandler["/modulepackage/layouts/content"]     = "cHandler_ItemData";
-
-            // Translations
-            $aHandler["/modulepackage/translations/language"]           = "cHandler_ItemArea";
-            $aHandler["/modulepackage/translations/string/original"]    = "cHandler_ItemName";
-            $aHandler["/modulepackage/translations/string/translation"] = "cHandler_Translation";
-
-            $oParser->setEventHandlers($aHandler);
-        }
+        $oParser->setEventHandlers(array("/module/name"       => "cHandler_ModuleData",
+										"/module/description" => "cHandler_ModuleData",
+										"/module/type"        => "cHandler_ModuleData",
+										"/module/input"       => "cHandler_ModuleData",
+										"/module/output"      => "cHandler_ModuleData",
+										"/module/alias"		  => "cHandler_ModuleData"));
 
         if ($oParser->parseFile($sFile)) {
             return true;
@@ -522,7 +484,7 @@ class cApiModule extends Item
     private function _getModulProperties($sFile ) {
     	global $_mImport;
     	$ret = array();
-    	if ($this->_parseImportFile($sFile, "module")){
+    	if ($this->_parseImportFile($sFile)){
 			foreach ($_mImport["module"] as $key => $value){
 				#the columns input/and outputs dont exist in table
 				if($key != "output" && $key != "input")
@@ -603,7 +565,7 @@ class cApiModule extends Item
     	$inputOutput = array();
     	$notification = new Contenido_Notification();
     	
-    	if ($this->_parseImportFile($sFile, "module")){
+    	if ($this->_parseImportFile($sFile)){
 			foreach ($_mImport["module"] as $key => $value)
 			{
 				if ($this->get($key) != $value)
@@ -711,293 +673,39 @@ class cApiModule extends Item
 				readfile($zipName);
 				//erase the file  
     			$ret = unlink($zipName);
-    		}else {
+    		} else {
     			$notification->displayNotification('error', i18n("Could not open the zip file!"));
     		}
     		
-    	}else  {
+    	} else {
     		
     		$notification->displayNotification('error', i18n("Module don't exist on file system!"));
     	}
     	
     }
     
-    
-    
-    public function getPackageOverview($sFile)
-    {
-        global $_mImport;
-
-        if ($this->_parseImportFile($sFile, "package")) {
-            $aData = array();
-            $aData["guid"]            = $_mImport["module"]["guid"];
-            $aData["repository_guid"] = $_mImport["module"]["repository_guid"];
-            $aData["name"]            = $_mImport["module"]["name"];
-
-            // Files
-            foreach ($this->_packageStructure as $sFileType => $sFilePath) {
-                if (is_array($_mImport["items"][$sFileType])) {
-                    $aData[$sFileType] = array_keys($_mImport["items"][$sFileType]);
-                }
-            }
-
-            // Layouts
-            if (is_array($_mImport["items"]["layouts"])) {
-                $aData["layouts"] = array_keys($_mImport["items"]["layouts"]);
-            }
-
-            // Translation languages
-            if (is_array($_mImport["translations"])) {
-                $aData["translations"] = array_keys($_mImport["translations"]);
-            }
-
-            return $aData;
-        } else {
-            return false;
-        }
+    /**
+     * @deprecated 2012-02-29 This function is not longer supported.
+     */
+    public function getPackageOverview($sFile) {
+        cDeprecated("This function is not longer supported.");
+		return false;
     }
 
     /**
-     * Imports a module package from a XML file Uses xmlparser and callbacks
-     *
-     * @param string    $sFile         Filename of data file (including path)
-     * @param array        $aOptions    Optional. An array of arrays specifying, how the items
-     *                                 of the xml file will be imported. If specified, has to
-     *                                 contain an array of this structure:
-     *
-     * $aOptions["items"][<filetype>][<htmlspecialchars(filename)>]                = "skip", "append" or "overwrite";
-     * $aOptions["translations"][<PackageLanguage>]    = <AssignedIDLang>;
-     *
-     *                                 If a file is not mentioned in the $aOptions["items"][<filetype>]
-     *                                 array, it is new and will be imported.
-     *
-     *                                 If a <PackageLang> is not found in $aOptions["translations"],
-     *                                 then the translations for this language will be ignored
-     *
-     * @return bool Returns true, if import has been successfully finished
+     * @deprecated 2012-02-29 This function is not longer supported.
      */
-    public function importPackage($sFile, $aOptions = array())
-    {
-        global $_mImport, $client;
-
-        cInclude("includes", "functions.file.php");
-        cInclude("includes", "functions.lay.php"); // You won't believe the code in there (or what is missing in class.layout.php...)
-
-        // Ensure correct options structure
-        foreach ($this->_packageStructure as $sFileType => $sFilePath) {
-            if (!is_array($aOptions["items"][$sFileType])) {
-                $aOptions["items"][$sFileType] = array();
-            }
-        }
-
-        // Layouts
-        if (!is_array($aOptions["items"]["layouts"])) {
-            $aOptions["items"]["layouts"] = array();
-        }
-
-        // Translations
-        if (!is_array($aOptions["translations"])) {
-            $aOptions["translations"] = array();
-        }
-
-        // Parse file
-        if ($this->_parseImportFile($sFile, "package")) {
-            // Import data
-            // Module
-            foreach ($_mImport["module"] as $sKey => $sData) {
-                if ($this->get($sKey) != $sData) {
-                    $this->set($sKey, addslashes($sData));
-                    $bStore = true;
-                }
-            }
-
-            if ($bStore == true) {
-                $this->store();
-            }
-
-            // Files
-            foreach ($this->_packageStructure as $sFileType => $sFilePath) {
-                if (is_array($_mImport["items"][$sFileType])) {
-                    foreach ($_mImport["items"][$sFileType] as $sFileName => $aContent) {
-                        if (!array_key_exists(htmlspecialchars($sFileName), $aOptions["items"][$sFileType]) ||
-                            $aOptions["items"][$sFileType][htmlspecialchars($sFileName)] == "overwrite") {
-                            if (!file_exists($sFilePath . $sFileName)) {
-                                createFile($sFileName, $sFilePath);
-                            }
-                            fileEdit($sFileName, $aContent["content"], $sFilePath);
-                        } else if ($aOptions["items"][$sFileType][htmlspecialchars($sFileName)] == "append") {
-                            $sOriginalContent = getFileContent($sFileName, $sFilePath);
-                            fileEdit($sFileName, $sOriginalContent . $aContent["content"], $sFilePath);
-                        }
-                    }
-                }
-            }
-
-            // Layouts
-            if (is_array($_mImport["items"]["layouts"])) {
-                foreach ($_mImport["items"]["layouts"] as $sLayout => $aContent) {
-                    if (!array_key_exists(htmlspecialchars($sLayout), $aOptions["items"]["layouts"]) ||
-                        $aOptions["items"]["layouts"][htmlspecialchars($sLayout)] == "overwrite") {
-                        $oLayouts = new cApiLayoutCollection;
-                        $oLayouts->setWhere("idclient", $client);
-                        $oLayouts->setWhere("name", $sLayout);
-                        $oLayouts->query();
-
-                        if (!$oLayout = $oLayouts->next()) {
-                            layEditLayout(false, addslashes($sLayout), addslashes($aContent["description"]), addslashes($aContent["content"]));
-                        } else {
-                            layEditLayout($oLayout->get($oLayout->primaryKey), addslashes($sLayout), addslashes($aContent["description"]), addslashes($aContent["content"]));
-                        }
-                    } elseif ($aOptions["items"]["layouts"][htmlspecialchars($sLayout)] == "append") {
-                        $oLayouts = new cApiLayoutCollection;
-                        $oLayouts->setWhere("idclient", $client);
-                        $oLayouts->setWhere("name", $sLayout);
-                        $oLayouts->query();
-
-                        if (!$oLayout = $oLayouts->next()) {
-                            layEditLayout(false, addslashes($sLayout), addslashes($aContent["description"]), addslashes($aContent["content"]));
-                        } else {
-                            layEditLayout($oLayout->get($oLayout->primaryKey), addslashes($sLayout), addslashes($oLayout->get("description") . $aContent["description"]), addslashes($oLayout->get("code") . $aContent["content"]));
-                        }
-                    }
-                }
-            }
-
-            // Translations
-            if (is_array($_mImport["translations"])) {
-                $oTranslations = new cApiModuleTranslationCollection();
-                $iID           = $this->get($this->primaryKey);
-
-                foreach ($_mImport["translations"] as $sPackageLang => $aTranslations) {
-                    if (array_key_exists($sPackageLang, $aOptions["translations"])) {
-                        foreach ($_mImport["translations"][$sPackageLang] as $sOriginal => $sTranslation) {
-                            $oTranslations->create($iID, $aOptions["translations"][$sPackageLang],
-                                                   $sOriginal, $sTranslation);
-                        }
-                    }
-                }
-            }
-            return true;
-        } else {
-            return false;
-        }
+    public function importPackage($sFile, $aOptions = array()) {
+        cDeprecated("This function is not longer supported.");
+		return false;
     }
 
-
-    /**
-     * Exports the specified module and attached files to a file
-     *
-     * @param string    $sPackageFileName    Filename to return
-     * @param bool        $bReturn            if false, the result is immediately sent to the browser
+	/**
+     * @deprecated 2012-02-29 This function is not longer supported.
      */
-    public function exportPackage($sPackageFileName, $bReturn = false)
-    {
-        global $cfgClient, $client;
-
-        cInclude("includes", "functions.file.php");
-
-        $oTree = new XmlTree('1.0', 'ISO-8859-1');
-        $oRoot =& $oTree->addRoot('modulepackage');
-
-        $oRoot->appendChild("package_guid", $this->get("package_guid"));
-        $oRoot->appendChild("package_data", $this->get("package_data")); // This is serialized and more or less informal data
-
-        $aData = unserialize($this->get("package_data"));
-        if (!is_array($aData)) {
-            $aData = array();
-            $aData["repository_guid"] = "";
-            $aData["jsfiles"]         = array();
-            $aData["tplfiles"]        = array();
-            $aData["cssfiles"]        = array();
-            $aData["layouts"]         = array();
-            $aData["translations"]    = array();
-        }
-
-        // Export basic module
-        $oNodeModule =& $oRoot->appendChild("module");
-        $oNodeModule->appendChild("name",        htmlspecialchars($this->get("name")));
-        $oNodeModule->appendChild("description", htmlspecialchars($this->get("description")));
-        $oNodeModule->appendChild("type",        htmlspecialchars($this->get("type")));
-        $oNodeModule->appendChild("input",       htmlspecialchars($this->get("input")));
-        $oNodeModule->appendChild("output",      htmlspecialchars($this->get("output")));
-
-        // Export files (e.g. js, css, templates)
-        foreach ($this->_packageStructure As $sFileType => $sFilePath) {
-            $oNodeFiles =& $oRoot->appendChild($sFileType);
-            if (count($aData[$sFileType]) > 0) {
-                foreach ($aData[$sFileType] as $sFileName) {
-                    if (is_readable($sFilePath . $sFileName)) {
-                        $sContent = getFileContent($sFileName, $sFilePath);
-                        $oNodeFiles->appendChild("area",    htmlspecialchars($sFileType));
-                        $oNodeFiles->appendChild("name",    htmlspecialchars($sFileName));
-                        $oNodeFiles->appendChild("content", htmlspecialchars($sContent));
-                    }
-                }
-            }
-        }
-        unset ($sContent);
-
-        // Export layouts
-        $oNodeLayouts =& $oRoot->appendChild("layouts");
-
-        $oLayouts = new cApiLayoutCollection;
-        $oLayouts->setWhere("idclient", $client);
-        $oLayouts->query();
-
-        while ($oLayout = $oLayouts->next()) {
-            if (in_array($oLayout->get($oLayout->primaryKey), $aData["layouts"])) {
-                $oNodeLayouts->appendChild("area",        "layouts");
-                $oNodeLayouts->appendChild("name",        htmlspecialchars($oLayout->get("name")));
-                $oNodeLayouts->appendChild("description", htmlspecialchars($oLayout->get("description")));
-                $oNodeLayouts->appendChild("content",     htmlspecialchars($oLayout->get("code")));
-            }
-        }
-        unset ($oLayout);
-        unset ($oLayouts);
-
-        // Export translations
-        $oLangs = new cApiLanguageCollection();
-        $oLangs->setOrder("idlang");
-        $oLangs->query();
-
-        if ($oLangs->count() > 0) {
-            $iIDMod = $this->get($this->primaryKey);
-            while ($oLang = $oLangs->next()) {
-                $iID = $oLang->get($oLang->primaryKey);
-
-                if (in_array($iID, $aData["translations"])) {
-                    $oNodeTrans =& $oRoot->appendChild("translations");
-                    // This is nice, but it doesn't help so much,
-                    // as this data is available too late on import ...
-                       $oNodeTrans->setNodeAttribs(array("origin-language-id" => $iID,
-                                                            "origin-language-name" => htmlspecialchars($oLang->get("name"))));
-                    // ... so we store the important information with the data
-                    $oNodeTrans->appendChild("language", htmlspecialchars($oLang->get("name")));
-
-                    $oTranslations = new cApiModuleTranslationCollection;
-                    $oTranslations->setWhere("idmod", $iIDMod);
-                    $oTranslations->setWhere("idlang", $iID);
-                    $oTranslations->query();
-                            
-                    while ($oTranslation = $oTranslations->next()) {
-                        $oNodeString =& $oNodeTrans->appendChild("string");
-                        $oNodeString->appendChild("original",        htmlspecialchars($oTranslation->get("original")));
-                        $oNodeString->appendChild("translation",    htmlspecialchars($oTranslation->get("translation")));
-                    }
-                }
-            }
-        }
-        unset ($oLangs);
-        unset ($oLang);
-
-        if ($bReturn == false) {
-            header("Content-Type: text/xml");
-            header("Etag: ".md5(mt_rand()));
-            header("Content-Disposition: attachment;filename=\"$sPackageFileName\"");
-            $oTree->dump(false);
-        } else {
-            return stripslashes($oTree->dump(true));
-        }
+    public function exportPackage($sPackageFileName, $bReturn = false) { 
+        cDeprecated("This function is not longer supported.");
+		return false;
     }
 }
 
@@ -1079,72 +787,21 @@ class cApiModuleTranslationCollection extends ItemCollection
         }
     }
     
-    
-    
-
-    public function import($idmod, $idlang, $file)
-    {
-        global $_mImport;
-
-        $parser = new XmlParser("ISO-8859-1");
-
-        $parser->setEventHandlers(array("/module/translation/string/original"=> "cHandler_ItemName",
-                                        "/module/translation/string/translation"=> "cHandler_Translation"));
-
-        $_mImport["current_item_area"] = "current"; // Pre-specification, as this won't be set from the XML file (here)
-
-        if ($parser->parseFile($file)) {
-            foreach ($_mImport["translations"]["current"] as $sOriginal => $sTranslation) {
-                $this->create ($idmod, $idlang, $sOriginal, $sTranslation);
-            }
-
-            return true;
-
-        } else {
-            $this->_error = $parser->error;
-            return false;
-        }
+	/**
+	 * @deprecated 2012-02-29 This function is not longer supported.
+	 */
+    public function import($idmod, $idlang, $file) {
+		cDeprecated("This function is not longer supported.");
+		$this->_error = "This function is not longer supported.";
+		return false;
     }
 
     /**
-     * Exports the specified module strings to a file
-     *
-     * @param $idmod    int Module ID
-     * @param $idlang   int Language ID
-     * @param $filename string Filename to return
-     * @param $return    boolean if false, the result is immediately sent to the browser
+     * @deprecated 2012-02-29 This function is not longer supported.
      */
-    public function export($idmod, $idlang, $filename, $return = false)
-    {
-        $langobj = new cApiLanguage($idlang);
-
-        #$langstring = $langobj->get("name") . ' ('.$idlang.')';
-
-        $translations = new cApiModuleTranslationCollection;
-        $translations->select("idmod = '$idmod' AND idlang='$idlang'");
-
-        $tree  = new XmlTree('1.0', 'ISO-8859-1');
-        $root =& $tree->addRoot('module');
-
-        $translation =& $root->appendChild('translation');
-           $translation->setNodeAttribs(array("origin-language-id" => $idlang,
-                                              "origin-language-name" => $langobj->get("name")));
-        
-        while ($otranslation = $translations->next()) {
-            $string =&$translation->appendChild("string");
-
-            $string->appendChild("original", htmlspecialchars($otranslation->get("original")));
-            $string->appendChild("translation", htmlspecialchars($otranslation->get("translation")));
-        }    
-
-        if ($return == false) {
-            header("Content-Type: text/xml");
-            header("Etag: ".md5(mt_rand()));
-            header("Content-Disposition: attachment;filename=\"$filename\"");
-            $tree->dump(false);
-        } else {
-            return $tree->dump(true);
-        }
+    public function export($idmod, $idlang, $filename, $return = false) {
+        cDeprecated("This function is not longer supported.");
+		return false;
     }
 }
 
