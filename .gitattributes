@@ -417,7 +417,6 @@ contenido/classes/widgets/class.widgets.treeview.php -text
 contenido/classes/widgets/class.widgets.views.php -text
 contenido/classes/xml/class.xml.writer.php -text
 contenido/classes/xml/class.xml2array.php -text
-contenido/cronjobs/CronjobIndexBuilder.php -text
 contenido/cronjobs/advance_workflow.php -text
 contenido/cronjobs/advance_workflow.php.job -text
 contenido/cronjobs/crontab.txt -text
