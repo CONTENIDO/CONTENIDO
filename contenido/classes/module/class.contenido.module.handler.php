@@ -903,32 +903,31 @@ class Contenido_Module_Handler {
      * @return true if success else false
      */
     public function saveInfoXML($modulName = NULL, $description = NULL, $type = NULL, $alias = NULL) {
+		if ($modulName == NULL) {
+			$modulName = $this->_modulName;
+		}
         
-        $tree = new XmlTree('1.0', 'ISO-8859-1');
-        $root = & $tree->addRoot('module');
-        
-        if ($modulName== NULL)
-            $modulName = $this->_modulName;
-        
-        if ($description== NULL)
+        if ($description == NULL) {
             $description = $this->_description;
+		}
         
-        if ($type== NULL)
+        if ($type == NULL) {
             $type = $this->_type;
+		}
         
-        if ($alias== NULL)
+        if ($alias == NULL) {
             $alias = $this->_modulAlias;
-        
-        $root->appendChild("name", htmlspecialchars($modulName));
-        $root->appendChild("description", htmlspecialchars($description));
-        $root->appendChild("type", htmlspecialchars($type));
-        $root->appendChild("alias", htmlspecialchars($alias));
-        
-        if (file_put_contents($this->_modulPath. self::$NAME_OF_INFO_XML, $tree->dump(true))=== FALSE)
-            return false;
-        else
-            return true;
-    
+		}
+	
+        $oWriter = new ContenidoXmlWriter();
+		$oRootElement = $oWriter->addElement('module', '', null);
+		
+		$oWriter->addElement('name', htmlspecialchars($modulName), $oRootElement);
+		$oWriter->addElement('description', htmlspecialchars($description), $oRootElement);
+		$oWriter->addElement('type', htmlspecialchars($type), $oRootElement);
+		$oWriter->addElement('alias', htmlspecialchars($alias), $oRootElement);
+
+		return $oWriter->saveToFile($this->_modulPath, self::$NAME_OF_INFO_XML);
     }
 
     /**
