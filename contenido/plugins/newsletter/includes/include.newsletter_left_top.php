@@ -10,9 +10,10 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
+ * @package    CONTENIDO Plugins
+ * @subpackage Newsletter
  * @version    1.0.2
- * @author     Bj�rn Behrens (HerrB)
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,9 +21,9 @@
  * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
- *   created 2007-01-01, Bj�rn Behrens (HerrB)
+ *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
- *   modified 2008-08-03, Bj�rn Behrens (HerrB), complete makeover to fix bugs and reduce memory waste
+ *   modified 2008-08-03, Björn Behrens (HerrB), complete makeover to fix bugs and reduce memory waste
  *
  *   $Id: include.newsletter_left_top.php 1909 2012-02-28 23:48:00Z xmurrix $:
  * }}
@@ -43,8 +44,8 @@ if (!is_object($oDB)) {
     $oDB = new DB_Contenido(); // We have really to send a special SQL statement - we need a DB object
 }
 
-$oUser       = new cApiUser($auth->auth["uid"]);
-$oClient     = new cApiClient($client);
+$oUser = new cApiUser($auth->auth["uid"]);
+$oClient = new cApiClient($client);
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 
 ######################################
@@ -104,7 +105,7 @@ unset($sButtonRow);
 ######################################
 # 1.1 Newsletter: Actions folding row
 ######################################
-$sLink       = "actionlink"; // ID for HTML element
+$sLink = "actionlink"; // ID for HTML element
 $oActionsRow = new cFoldingRow("28cf9b31-e6d7-4657-a9a7-db31478e7a5c", i18n("Actions", 'newsletter'), $sLink);
 $oTpl->set('s', 'ACTIONLINK', $sLink);
 
@@ -125,7 +126,7 @@ if ($perm->have_perm_area_action("news", "news_create")) {
 ######################################
 # 1.2 Newsletter: Settings folding row
 ######################################
-$sLink        = "settingslink";
+$sLink = "settingslink";
 $oSettingsRow = new cFoldingRow("d64baf0a-aea9-47b3-8490-54a00fce02b5", i18n("Settings", 'newsletter'), $sLink);
 $oTpl->set('s', 'SETTINGSLINK', $sLink);
 
@@ -141,7 +142,7 @@ $oSelHTMLTemplateIDCat->addOptionElement(0, $oOptionTemplate);
 $oOptionNewsletter = new cHTMLOptionElement("--".i18n("Please select", 'newsletter')."--", 0);
 $oSelHTMLNewsletterIDCat->addOptionElement(0, $oOptionNewsletter);
 
-$sSQL  = "SELECT tblCat.idcat AS idcat, tblCatLang.name AS name, tblCatTree.level AS level, ";
+$sSQL = "SELECT tblCat.idcat AS idcat, tblCatLang.name AS name, tblCatTree.level AS level, ";
 $sSQL .= "tblCatLang.visible AS visible, tblCatLang.public AS public FROM ";
 $sSQL .= $cfg["tab"]["cat"]." AS tblCat, ".$cfg["tab"]["cat_lang"]." AS tblCatLang, ";
 $sSQL .= $cfg["tab"]["cat_tree"]." AS tblCatTree ";
@@ -154,7 +155,7 @@ $oDB->query($sSQL);
 while ($oDB->next_record()) {
     $sSpaces = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $oDB->f("level"));
 
-    $oOptionTemplate   = new cHTMLOptionElement($sSpaces.$oDB->f("name"), $oDB->f("idcat"));
+    $oOptionTemplate = new cHTMLOptionElement($sSpaces.$oDB->f("name"), $oDB->f("idcat"));
     $oOptionNewsletter = new cHTMLOptionElement($sSpaces.$oDB->f("name"), $oDB->f("idcat"));
     if ($oDB->f("visible") == 0 || $oDB->f("public") == 0) {
         $oOptionTemplate->setStyle("color:#666666;");
@@ -300,14 +301,14 @@ $oTextboxFilter->setClass("text_medium text");
 // Search In
 $oSelSearchIn = new cHTMLSelectElement("searchin");
 
-$oOption      = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all--");
+$oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all--");
 $oSelSearchIn->addOptionElement("all", $oOption);
-$oOption      = new cHTMLOptionElement("Name", "name");
+$oOption = new cHTMLOptionElement("Name", "name");
 $oSelSearchIn->addOptionElement($sKey, $oOption);
 $oSelSearchIn->setDefault("name");
 
 // Apply button
-$oBtnApply    = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
+$oBtnApply = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
 
 $sContent = '
 <div class="news_section news_section_listoptions">
@@ -346,7 +347,7 @@ $sContent = '
 ';
 
 // To template
-$sLink           = "listoption";
+$sLink = "listoption";
 $oListOptionsRow = new cFoldingRow("9d0968be-601d-44f8-a666-99d51c9c777d", i18n("List options", 'newsletter'), $sLink);
 $oListOptionsRow->setContentData($sContent);
 $oTpl->set('s', 'LISTOPTIONLINK', $sLink);
@@ -370,16 +371,16 @@ $oPagerLink->setCustom("area",        "news");
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido",   $sess->id);
 
-$sLink      = "pagerlink";
+$sLink = "pagerlink";
 $oTpl->set('s', 'PAGINGLINK', $sLink);
-//$oPagerRow  = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e302", $iItemCount, $iItemsPerPage, 1, $oPagerLink, 'page', $sLink);
-$oPagerRow  = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e302", 0, 1, 1, $oPagerLink, 'page', $sLink);
+//$oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e302", $iItemCount, $iItemsPerPage, 1, $oPagerLink, 'page', $sLink);
+$oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e302", 0, 1, 1, $oPagerLink, 'page', $sLink);
 
 ######################################
 # Newsletter: Container
 ######################################
 $sContainerId = 'cont_newsletter';
-$sContainer  = '';
+$sContainer = '';
 if ($perm->have_perm_area_action("news", "news_create")) {
     $sContainer .= $oActionsRow->render();
 }
@@ -389,7 +390,7 @@ if ($perm->have_perm_area_action("news", "news_html_settings")) {
 $sContainer .= $oListOptionsRow->render();
 $sContainer .= $oPagerRow->render();
 
-$sContainer  = '
+$sContainer = '
 <div id="'.$sContainerId.'">
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
     ' . $sContainer . '
@@ -411,9 +412,9 @@ $oTpl->set('s', 'ID_CNEWSLETTER', $sContainerId);
 // sort:    Element can be used to be sorted by
 // search:  Element can be used to search in
 $aFields = array();
-$aFields["name"]    = array("field" => "name",        "caption" => i18n("Name", 'newsletter'),        "type" => "base,sort,search");
+$aFields["name"] = array("field" => "name",        "caption" => i18n("Name", 'newsletter'),        "type" => "base,sort,search");
 $aFields["created"] = array("field" => "created",     "caption" => i18n("Created", 'newsletter'),     "type" => "base,sort");
-$aFields["status"]  = array("field" => "status",      "caption" => i18n("Status", 'newsletter'),      "type" => "base,sort");
+$aFields["status"] = array("field" => "status",      "caption" => i18n("Status", 'newsletter'),      "type" => "base,sort");
 $aFields["cronjob"] = array("field" => "use_cronjob", "caption" => i18n("Use cronjob", 'newsletter'), "type" => "base");
 
 ######################################
@@ -529,7 +530,7 @@ $sContent = '
 ';
 
 // To template
-$sLink           = "listoptiondisp";
+$sLink = "listoptiondisp";
 $oListOptionsRow = new cFoldingRow("dfa6cc00-0acf-11db-9cd8-0800200c9a66", i18n("List options", 'newsletter'), $sLink);
 $oListOptionsRow->setContentData($sContent);
 $oTpl->set('s', 'LISTOPTIONLINKDISP', $sLink);
@@ -552,7 +553,7 @@ $oPagerLink->setCustom("area",        "news_jobs");
 $oPagerLink->enableAutomaticParameterAppend();
 $oPagerLink->setCustom("contenido",   $sess->id);
 
-$sLink     = "pagerlinkdisp";
+$sLink = "pagerlinkdisp";
 $oTpl->set('s', 'PAGINGLINKDISP', $sLink);
 //$oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e303", $iItemCount, $iItemsPerPage, 1, $oPagerLink, "page", $sLink);
 $oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e303", 0, 1, 1, $oPagerLink, 'page', $sLink);
@@ -561,7 +562,7 @@ $oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e303", 0, 1, 1, $
 # Job dispatch: Container
 ######################################
 $sContainerId = 'cont_dispatch';
-$sContainer  = '<div id="'.$sContainerId.'">
+$sContainer = '<div id="'.$sContainerId.'">
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
         ' . $oListOptionsRow->render() . '
         ' . $oPagerRow->render() . '
@@ -576,9 +577,9 @@ $oTpl->set('s', 'ID_CDISPATCH', $sContainerId);
 ######################################
 // See comment at 2. Job dispatch
 $aFields = array();
-$aFields["name"]        = array("field" => "name",        "caption" => i18n("Name", 'newsletter'),        "type" => "base,sort,search");
-$aFields["email"]       = array("field" => "email",       "caption" => i18n("E-Mail", 'newsletter'),      "type" => "base,sort,search");
-$aFields["confirmed"]   = array("field" => "confirmed",   "caption" => i18n("Confirmed", 'newsletter'),   "type" => "base");
+$aFields["name"] = array("field" => "name",        "caption" => i18n("Name", 'newsletter'),        "type" => "base,sort,search");
+$aFields["email"] = array("field" => "email",       "caption" => i18n("E-Mail", 'newsletter'),      "type" => "base,sort,search");
+$aFields["confirmed"] = array("field" => "confirmed",   "caption" => i18n("Confirmed", 'newsletter'),   "type" => "base");
 $aFields["deactivated"] = array("field" => "deactivated", "caption" => i18n("Deactivated", 'newsletter'), "type" => "base");
 
 ######################################
@@ -623,7 +624,7 @@ if ($iTimeframe <= 0) {
 $oTpl->set('s', 'VALUE_PURGETIMEFRAME', $iTimeframe);
 
 // To template
-$sLink           = "actionrec";
+$sLink = "actionrec";
 $oListActionsRow = new cFoldingRow("f0d7bf80-e73e-11d9-8cd6-0800200c9a66", i18n("Actions", 'newsletter'), $sLink);
 $oListActionsRow->setContentData($sContent);
 $oTpl->set('s', 'ACTIONLINKREC', $sLink);
@@ -632,7 +633,7 @@ $oTpl->set('s', 'ACTIONLINKREC', $sLink);
 # 3.2 Recipients: Settings folding row
 ######################################
 $oTxtTimeframe = new cHTMLTextbox("txtPurgeTimeframe", $iTimeframe, 5);
-$oBtnSave      = new cHTMLButton("submit", i18n("Save", 'newsletter'));
+$oBtnSave = new cHTMLButton("submit", i18n("Save", 'newsletter'));
 
 $sContent = '
 <div class="news_section news_section_recipients_settings">
@@ -661,7 +662,7 @@ $sContent = '
 ';
 
 // To template
-$sLink        = "settingsrec";
+$sLink = "settingsrec";
 $oSettingsRow = new cFoldingRow("5ddbe820-e6f1-11d9-8cd6-0800200c9a69", i18n("Settings", 'newsletter'), $sLink);
 $oSettingsRow->setContentData($sContent);
 $oTpl->set('s', 'SETTINGSLINKREC', $sLink);
@@ -774,7 +775,7 @@ $sContent = '
 ';
 
 // To template
-$sLink           = "listoptionsrec";
+$sLink = "listoptionsrec";
 $oListOptionsRow = new cFoldingRow("5ddbe820-e6f1-11d9-8cd6-0800200c9a66", i18n("List options", 'newsletter'), $sLink);
 $oListOptionsRow->setContentData($sContent);
 $oTpl->set('s', 'LISTOPTIONLINKREC', $sLink);
@@ -806,7 +807,7 @@ $oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e304", 0, 1, 1, $
 # Recipients: Container
 ######################################
 $sContainerId = 'cont_recipients';
-$sContainer  = '';
+$sContainer = '';
 if ($perm->have_perm_area_action('recipients', "recipients_delete") || $perm->have_perm_area_action("recipients", "recipients_create")) {
     $sContainer .= $oListActionsRow->render();
 }
@@ -814,7 +815,7 @@ $sContainer .= $oSettingsRow->render();
 $sContainer .= $oListOptionsRow->render();
 $sContainer .= $oPagerRow->render();
 
-$sContainer  = '
+$sContainer = '
 <div id="' . $sContainerId . '">
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 ' . $sContainer . '
@@ -850,7 +851,7 @@ $sContent = '
 </div>
 ';
 
-$sLink           = "actiongroup";
+$sLink = "actiongroup";
 $oListActionsRow = new cFoldingRow("f0d7bf80-e73e-11d9-8cd6-0800200c9a67", i18n("Actions", 'newsletter'), $sLink);
 $oListActionsRow->setContentData($sContent);
 $oTpl->set('s', 'ACTIONLINKGROUP', $sLink);
@@ -934,7 +935,7 @@ $sContent = '
 ';
 
 // To template
-$sLink           = "listoptionsgroup";
+$sLink = "listoptionsgroup";
 $oListOptionsRow = new cFoldingRow("79efc1fc-111d-11dc-8314-0800200c9a66", i18n("List options", 'newsletter'), $sLink);
 $oListOptionsRow->setContentData($sContent);
 $oTpl->set('s', 'LISTOPTIONLINKGROUP', $sLink);
@@ -965,14 +966,14 @@ $oPagerRow = new cObjectPager("0ed6d632-6adf-4f09-a0c6-1e38ab60e305", 0, 1, 1, $
 # Recipient Groups: Container
 ######################################
 $sContainerId = 'cont_recipientgroup';
-$sContainer  = '';
+$sContainer = '';
 if ($perm->have_perm_area_action("recipientgroups", "recipientgroup_create")) {
     $sContainer .= $oListActionsRow->render();
 }
 $sContainer .= $oListOptionsRow->render();
 $sContainer .= $oPagerRow->render();
 
-$sContainer  = '<div id="' . $sContainerId . '">
+$sContainer = '<div id="' . $sContainerId . '">
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 ' . $sContainer . '
 </table>

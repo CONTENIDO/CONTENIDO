@@ -10,9 +10,10 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
+ * @package    CONTENIDO Plugins
+ * @subpackage Newsletter
  * @version    1.0.3
- * @author     Bj�rn Behrens (HerrB)
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +21,7 @@
  * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
- *   created  2007-01-01, Bj�rn Behrens (HerrB)
+ *   created  2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *

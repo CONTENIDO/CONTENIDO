@@ -10,9 +10,10 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
+ * @package    CONTENIDO Plugins
+ * @subpackage Newsletter
  * @version    1.0.2
- * @author     Bj�rn Behrens (HerrB)
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +21,7 @@
  * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
- *   created 2007-01-01, Bj�rn Behrens (HerrB)
+ *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id: include.newsletter_jobs_details.php 1909 2012-02-28 23:48:00Z xmurrix $:
@@ -38,7 +39,7 @@ $oPage = new cPage();
 
 if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) && is_numeric($_REQUEST["idnewsjob"])) {
     // Run job
-    $oJob       = new cNewsletterJob($_REQUEST["idnewsjob"]);
+    $oJob = new cNewsletterJob($_REQUEST["idnewsjob"]);
     $iSendCount = $oJob->runJob();
 
     if ($oJob->get("dispatch") == 1 && $oJob->get("sendcount") < $oJob->get("rcpcount")) {
@@ -46,7 +47,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
         $sPathNext = $sess->url("main.php?area=$area&action=news_job_run&frame=4&idnewsjob=".$_REQUEST["idnewsjob"]);
 
         // Calculating some statistics
-        $iChunk  = ceil($oJob->get("sendcount") / $oJob->get("dispatch_count"));
+        $iChunk = ceil($oJob->get("sendcount") / $oJob->get("dispatch_count"));
         $iChunks = ceil($oJob->get("rcpcount")  / $oJob->get("dispatch_count"));
 
         // Dispatch count > send/recipient count, set values to 1, at least
@@ -149,8 +150,8 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oSelElements = new cHTMLSelectElement("elemperpage");
     $oSelElements->setEvent("onchange", "document.forms.frmOptions.submit();");
 
-    $aData = array("0"   => i18n("-All-",'newsletter'),
-                   "50"  => "50",
+    $aData = array("0" => i18n("-All-",'newsletter'),
+                   "50" => "50",
                    "100" => "100",
                    "250" => "250",
                    "500" => "500");
@@ -220,11 +221,11 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     unset($oImgDelete);
 
     $iCount = 0;
-    $aNewsType[]  = array(); // Performance
+    $aNewsType[] = array(); // Performance
     $aNewsType[0] = i18n("Text only", 'newsletter');
     $aNewsType[1] = i18n("HTML/Text", 'newsletter');
     while ($oLog = $oLogs->next()) {
-        $sName  = $oLog->get("rcpname");
+        $sName = $oLog->get("rcpname");
         $sEMail = $oLog->get("rcpemail");
 
         switch ($oLog->get("status")) {
@@ -283,7 +284,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oPage->setContent($oFrmOptions->render() . "<br />" . $oList->render() . $sBrowseHTML);
 } else {
     // Just show the job data
-    $oJob  = new cNewsletterJob($_REQUEST["idnewsjob"]);
+    $oJob = new cNewsletterJob($_REQUEST["idnewsjob"]);
 
     $oForm = new UI_Table_Form("properties");
     $oForm->setVar("frame",     $frame);

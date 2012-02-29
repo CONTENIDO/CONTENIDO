@@ -10,9 +10,10 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
+ * @package    CONTENIDO Plugins
+ * @subpackage Newsletter
  * @version    1.0.2
- * @author     Bj�rn Behrens (HerrB)
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +21,7 @@
  * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
- *   created 2007-01-01, Bj�rn Behrens (HerrB)
+ *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id: include.newsletter_jobs_menu.php 1702 2011-11-14 23:34:42Z xmurrix $:
@@ -50,10 +51,10 @@ $oUser = new cApiUser($auth->auth["uid"]);
 // sort:    Element can be used to be sorted by
 // search:  Element can be used to search in
 $aFields = array();
-$aFields["name"]    = array("field" => "name",    "caption" => i18n("Name", 'newsletter'),    "type" => "base,sort,search");
+$aFields["name"] = array("field" => "name",    "caption" => i18n("Name", 'newsletter'),    "type" => "base,sort,search");
 $aFields["created"] = array("field" => "created", "caption" => i18n("Created", 'newsletter'), "type" => "base,sort");
-$aFields["status"]  = array("field" => "status",  "caption" => i18n("Status", 'newsletter'),  "type" => "base,sort");
-// Not needed, as no sort/search, but keep as memo: $aFields["cronjob"]    = array("field" => "use_cronjob", "caption" => i18n("Use cronjob", 'newsletter'), "type" => "base");
+$aFields["status"] = array("field" => "status",  "caption" => i18n("Status", 'newsletter'),  "type" => "base,sort");
+// Not needed, as no sort/search, but keep as memo: $aFields["cronjob"] = array("field" => "use_cronjob", "caption" => i18n("Use cronjob", 'newsletter'), "type" => "base");
 
 ##################################
 # Check external input
@@ -78,18 +79,18 @@ if ($_REQUEST["page"] <= 0 || $_REQUEST["elemperpage"] == 0) {
 }
 // Sort order
 if ($_REQUEST["sortorder"] != "ASC") {
-    $_REQUEST["sortorder"]  = "DESC"; // Note, default is DESC (as default sortby is "created" date)
+    $_REQUEST["sortorder"] = "DESC"; // Note, default is DESC (as default sortby is "created" date)
 }
 
 // Check sort by and search in criteria
-$bSortByFound   = false;
-$bSearchInFound  = false;
+$bSortByFound = false;
+$bSearchInFound = false;
 foreach ($aFields as $sKey => $aData) {
     if ($aData["field"] == $_REQUEST["sortby"] && strpos($aData["type"], "sort") !== false) {
-        $bSortByFound    = true;
+        $bSortByFound = true;
     }
     if ($aData["field"] == $_REQUEST["searchin"] && strpos($aData["type"], "search") !== false) {
-        $bSearchInFound    = true;
+        $bSearchInFound = true;
     }
 }
 
@@ -147,14 +148,14 @@ $oJobs->setOrder($_REQUEST["sortby"] . " " . $_REQUEST["sortorder"]);
 $oJobs->query();
 
 // Output data
-$oMenu       = new UI_Menu();
-$iMenu       = 0;
+$oMenu = new UI_Menu();
+$iMenu = 0;
 $sDateFormat = getEffectiveSetting("backend", "timeformat", "d.m.Y H:i");
 
 // Store messages for repeated use (speeds performance, as i18n translation is only needed once)
 $aMsg = array();
-$aMsg["DelTitle"]  = i18n("Delete dispatch job", 'newsletter');
-$aMsg["DelDescr"]  = i18n("Do you really want to delete the following newsletter dispatch job:<br>", 'newsletter');
+$aMsg["DelTitle"] = i18n("Delete dispatch job", 'newsletter');
+$aMsg["DelDescr"] = i18n("Do you really want to delete the following newsletter dispatch job:<br>", 'newsletter');
 
 $aMsg["SendTitle"] = i18n("Run job", 'newsletter');
 $aMsg["SendDescr"] = i18n("Do you really want to run the following job:<br>", 'newsletter');
@@ -164,7 +165,7 @@ $sTplSend = '<a title="'.$aMsg["SendTitle"].'" href="javascript://" onclick="sho
 
 while ($oJob = $oJobs->next()) {
     $iMenu++;
-    $iID   = $oJob->get("idnewsjob");
+    $iID = $oJob->get("idnewsjob");
     $sName = $oJob->get("name") . " (" . date($sDateFormat, strtotime($oJob->get("created"))) .")";
 
     $oLnk = new cHTMLLink();
@@ -245,7 +246,7 @@ $sExecScript = '
         function runJob(idnewsjob) {
             oForm = parent.parent.left.left_top.document.getElementById("dispatch_listoptionsform");
 
-            url  = "main.php?area=news_jobs";
+            url = "main.php?area=news_jobs";
             url += "&action=news_job_run";
             url += "&frame=4";
             url += "&idnewsjob=" + idnewsjob;
@@ -264,7 +265,7 @@ $sExecScript = '
         function deleteJob(idnewsjob) {
             oForm = parent.parent.left.left_top.document.getElementById("dispatch_listoptionsform");
 
-            url  = "main.php?area=news_jobs";
+            url = "main.php?area=news_jobs";
             url += "&action=news_job_delete";
             url += "&frame=4";
             url += "&idnewsjob=" + idnewsjob;
@@ -287,7 +288,7 @@ $oPage->addScript('exec', $sExecScript);
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
 
 //generate current content for Object Pager
-$sPagerId     = '0ed6d632-6adf-4f09-a0c6-1e38ab60e303';
+$sPagerId = '0ed6d632-6adf-4f09-a0c6-1e38ab60e303';
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');

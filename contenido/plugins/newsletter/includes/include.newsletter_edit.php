@@ -10,9 +10,10 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
+ * @package    CONTENIDO Plugins
+ * @subpackage Newsletter
  * @version    1.2.0
- * @author     Bj�rn Behrens (HerrB)
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +21,7 @@
  * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
- *   created 2007-01-01, Bj�rn Behrens (HerrB)
+ *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2010-12-14, Dominik Ziegler, newsletter encoding is ignored due to wrong parameter values [#CON-374]
  *
@@ -35,9 +36,9 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 // Initialization
-$oPage        = new cPage();
-$oRcpGroups   = new RecipientGroupCollection();
-$oClientLang  = new cApiClientLanguage(false, $client, $lang);
+$oPage = new cPage();
+$oRcpGroups = new RecipientGroupCollection();
+$oClientLang = new cApiClientLanguage(false, $client, $lang);
 $oNewsletters = new NewsletterCollection();
 
 // Ensure to have numeric newsletter id
@@ -54,7 +55,7 @@ if (is_array($cfg['plugins']['newsletters'])) {
 
 if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create")) {
     // Create new newsletter
-    $oNewsletter  = $oNewsletters->create(i18n("-- New newsletter --", 'newsletter'));
+    $oNewsletter = $oNewsletters->create(i18n("-- New newsletter --", 'newsletter'));
     $idnewsletter = $oNewsletter->get("idnews");
     $oPage->setSubnav("idnewsletter=$idnewsletter", "news");
     $oPage->setReload();
@@ -155,7 +156,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     }
 
     // Get encoding
-    $oLang     = new cApiLanguage($lang);
+    $oLang = new cApiLanguage($lang);
     $sEncoding = $oLang->get("encoding");
     unset($oLang);
 
@@ -164,7 +165,7 @@ if ($action == "news_create" && $perm->have_perm_area_action($area, "news_create
     $aRecipients = array();
     if ($iTestIDNewsGroup == 0) {
         // Send test newsletter to current user email address
-        $sName  = $oUser->get("realname");
+        $sName = $oUser->get("realname");
         $sEMail = $oUser->get("email");
 
         $bSend = $oNewsletter->sendEMail($oClientLang->getProperty("newsletter", "idcatart"), $sEMail, $sName, true, $sEncoding);
@@ -222,12 +223,12 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
     if ($action == "news_save" && $perm->have_perm_area_action($area, $action)) {
         // Save changes
         $aMessages = array();
-		
+
         // Changing e.g. \' back to ' (magic_quotes)
-        $sName      = stripslashes($_REQUEST["txtName"]);
+        $sName = stripslashes($_REQUEST["txtName"]);
         $sFromEMail = stripslashes($_REQUEST["txtFromEMail"]);
-        $sFromName  = stripslashes($_REQUEST["txtFromName"]);
-        $sSubject   = stripslashes($_REQUEST["txtSubject"]);
+        $sFromName = stripslashes($_REQUEST["txtFromName"]);
+        $sSubject = stripslashes($_REQUEST["txtSubject"]);
 
         if ($oNewsletter->get("name") != $sName ||
             $oNewsletter->get("welcome") != $_REQUEST["ckbWelcome"] ||
@@ -344,9 +345,9 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         if (count($aMessages) > 0) {
             $notis .= $notification->returnNotification("warning", implode("<br>", $aMessages)) . "<br>";
         }else {
-        	
-        	//show message
-        	$notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!", 'newsletter'));
+
+            //show message
+            $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!", 'newsletter'));
         }
     } else {
         $_REQUEST["selGroup"] = unserialize ($oNewsletter->get("send_ids"));
@@ -377,7 +378,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
     $oForm->add(i18n("Name", 'newsletter'), $oTxtName->render());
 
     $oSelType = new cHTMLSelectElement("selType");
-    $aItems   = array();
+    $aItems = array();
     $aItems[] = array("text", i18n("Text only", 'newsletter'));
     if ($oClientLang->getProperty("newsletter", "html_newsletter") == "true") {
         $aItems[] = array("html", i18n("HTML and text", 'newsletter'));
@@ -391,8 +392,8 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
     $oForm->add(i18n("Type", 'newsletter'), $oSelType->render());
 
     $oTxtFromEMail = new cHTMLTextbox("txtFromEMail", $oNewsletter->get("newsfrom"), 40);
-    $oTxtFromName  = new cHTMLTextbox("txtFromName",  $oNewsletter->get("newsfromname"), 40);
-    $oTxtSubject   = new cHTMLTextarea("txtSubject",  $oNewsletter->get("subject"), 80, 2);
+    $oTxtFromName = new cHTMLTextbox("txtFromName",  $oNewsletter->get("newsfromname"), 40);
+    $oTxtSubject = new cHTMLTextarea("txtSubject",  $oNewsletter->get("subject"), 80, 2);
 
     $oForm->add(i18n("From (E-Mail)", 'newsletter'), $oTxtFromEMail->render());
     $oForm->add(i18n("From (Name)", 'newsletter'),   $oTxtFromName->render()."&nbsp;".i18n("optional", 'newsletter'));
@@ -481,7 +482,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         $ckbCronJob->setAlt(i18n("Option has to be enabled as client setting - see techref for details", 'newsletter'));
     }
 
-    $oCkbDispatch      = new cHTMLCheckbox("ckbDispatch", "enabled");
+    $oCkbDispatch = new cHTMLCheckbox("ckbDispatch", "enabled");
     $oCkbDispatch->setChecked($oNewsletter->get("dispatch"));
     $oTxtDispatchCount = new cHTMLTextbox("txtDispatchCount", $oNewsletter->get("dispatch_count"), 4);
     $oTxtDispatchDelay = new cHTMLTextbox("txtDispatchDelay", $oNewsletter->get("dispatch_delay"), 4);

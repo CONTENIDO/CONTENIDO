@@ -10,9 +10,10 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
+ * @package    CONTENIDO Plugins
+ * @subpackage Newsletter
  * @version    1.0.2
- * @author     Bj�rn Behrens (HerrB)
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +21,7 @@
  * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
- *   created 2007-01-01, Bj�rn Behrens (HerrB)
+ *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id: include.newsletter_edit_message.php 1870 2012-02-15 16:27:15Z rusmir.jusufovic $:
@@ -28,14 +29,14 @@
  *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
 cInclude("includes", "functions.con.php");    // For conDeleteArt and conCopyArt
 
 // Initialization
-$oPage       = new cPage();
+$oPage = new cPage();
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 
 // Ensure to have numeric newsletter id
@@ -185,10 +186,10 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 
     $iTplIDArt = 0; // Used later for on change event
     if ($oNewsletter->get("type") == "html") {
-        $iTplIDArt    = $oNewsletter->get("template_idart");
+        $iTplIDArt = $oNewsletter->get("template_idart");
         $oSelTemplate = new cHTMLSelectElement("selTemplate");
         $oSelTemplate->setEvent("change", "askSubmitOnTplChange(this);");
-        $aOptions     = array("idcat" => $oClientLang->getProperty("newsletter", "html_template_idcat"),
+        $aOptions = array("idcat" => $oClientLang->getProperty("newsletter", "html_template_idcat"),
                               "start" => true,
                               "offline" => true,
                               "order" => "title");

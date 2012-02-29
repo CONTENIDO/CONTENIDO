@@ -10,9 +10,10 @@
  * @con_php_req 5.0
  *
  *
- * @package    CONTENIDO Backend Includes
+ * @package    CONTENIDO Plugins
+ * @subpackage Newsletter
  * @version    1.2.2
- * @author     Bj�rn Behrens (HerrB)
+ * @author     Björn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,7 +21,7 @@
  * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
- *   created 2007-01-01, Bj�rn Behrens (HerrB)
+ *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id: include.newsletter_menu.php 1702 2011-11-14 23:34:42Z xmurrix $:
@@ -36,12 +37,12 @@ if (!defined('CON_FRAMEWORK')) {
 ##################################
 # Initialization
 ##################################
-$oPage       = new cPage();
-$oUser       = new cApiUser($auth->auth["uid"]);
+$oPage = new cPage();
+$oUser = new cApiUser($auth->auth["uid"]);
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 
 // Get idCatArt to check, if we may send a test newsletter
-$lIDCatArt   = (int)$oClientLang->getProperty("newsletter", "idcatart");
+$lIDCatArt = (int)$oClientLang->getProperty("newsletter", "idcatart");
 
 // Specify fields for search, sort and validation. Design makes enhancements
 // using plugins possible (currently not implemented). If you are changing things here,
@@ -95,15 +96,15 @@ if ($_REQUEST["page"] <= 0 || $_REQUEST["elemperpage"] == 0) {
 }
 // Sort order
 if ($_REQUEST["sortorder"] != "DESC") {
-    $_REQUEST["sortorder"]  = "ASC";
+    $_REQUEST["sortorder"] = "ASC";
 }
 
 // Check sort by and search in criteria
-$bSortByFound   = false;
+$bSortByFound = false;
 $bSearchInFound = false;
 foreach ($aFields as $sKey => $aData) {
     if ($aData["field"] == $_REQUEST["sortby"] && strpos($aData["type"], "sort") !== false) {
-        $bSortByFound   = true;
+        $bSortByFound = true;
     }
     if ($aData["field"] == $_REQUEST["searchin"] && strpos($aData["type"], "search") !== false) {
         $bSearchInFound = true;
@@ -111,7 +112,7 @@ foreach ($aFields as $sKey => $aData) {
 }
 
 if (!$bSortByFound) {
-    $_REQUEST["sortby"]   = "name"; // Default sort by field, possible values see above
+    $_REQUEST["sortby"] = "name"; // Default sort by field, possible values see above
 }
 if (!$bSearchInFound) {
     $_REQUEST["searchin"] = "--all--";
@@ -163,13 +164,13 @@ $iMenu = 0;
 
 // Store messages for repeated use (speeds performance, as i18n translation is only needed once)
 $aMsg = array();
-$aMsg["DelTitle"]         = i18n("Delete newsletter", 'newsletter');
-$aMsg["DelDescr"]         = i18n("Do you really want to delete the following newsletter:<br>", 'newsletter');
-$aMsg["SendTestTitle"]    = i18n("Send test newsletter", 'newsletter');
+$aMsg["DelTitle"] = i18n("Delete newsletter", 'newsletter');
+$aMsg["DelDescr"] = i18n("Do you really want to delete the following newsletter:<br>", 'newsletter');
+$aMsg["SendTestTitle"] = i18n("Send test newsletter", 'newsletter');
 $aMsg["SendTestTitleOff"] = i18n("Send test newsletter (disabled, check newsletter sender e-mail address and handler article selection)", 'newsletter');
-$aMsg["AddJobTitle"]      = i18n("Add newsletter dispatch job", 'newsletter');
-$aMsg["AddJobTitleOff"]   = i18n("Add newsletter dispatch job (disabled, check newsletter sender e-mail address and handler article selection)", 'newsletter');
-$aMsg["CopyTitle"]        = i18n("Duplicate newsletter");
+$aMsg["AddJobTitle"] = i18n("Add newsletter dispatch job", 'newsletter');
+$aMsg["AddJobTitleOff"] = i18n("Add newsletter dispatch job (disabled, check newsletter sender e-mail address and handler article selection)", 'newsletter');
+$aMsg["CopyTitle"] = i18n("Duplicate newsletter");
 
 while ($oNewsletter = $oNewsletters->next()) {
     $idnewsletter = $oNewsletter->get("idnews");
@@ -279,7 +280,7 @@ $sExecScript = '
         function sendTestNewsletter(idnewsletter) {
             oForm = top.content.left.left_top.document.getElementById("newsletter_listoptionsform");
 
-            url  = "main.php?area=news";
+            url = "main.php?area=news";
             url += "&action=news_send_test";
             url += "&frame=4";
             url += "&idnewsletter=" + idnewsletter;
@@ -297,7 +298,7 @@ $sExecScript = '
         function deleteNewsletter(idnewsletter) {
             oForm = top.content.left.left_top.document.getElementById("newsletter_listoptionsform");
 
-            url  = "main.php?area=news";
+            url = "main.php?area=news";
             url += "&action=news_delete";
             url += "&frame=4";
             url += "&idnewsletter=" + idnewsletter;
@@ -320,7 +321,7 @@ $oPage->addScript('exec', $sExecScript);
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
 
 // Generate current content for Object Pager
-$sPagerId   = "0ed6d632-6adf-4f09-a0c6-1e38ab60e302";
+$sPagerId = "0ed6d632-6adf-4f09-a0c6-1e38ab60e302";
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
