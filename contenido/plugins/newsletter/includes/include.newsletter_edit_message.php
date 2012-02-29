@@ -142,7 +142,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             'MAIL_DATE: '.i18n("Date, when the mail has been sent", 'newsletter').'<br />'.
             'MAIL_TIME: '.i18n("Time, when the mail has been sent", 'newsletter').'<br />'.
             'MAIL_NUMBER: '.i18n("Number of recipients", 'newsletter').'<br />'.
-            #'MAIL_CHANGE: '.i18n("Link to change the e-mail adress").'<br />'.
+            #'MAIL_CHANGE: '.i18n("Link to change the e-mail address").'<br />'.
             'MAIL_UNSUBSCRIBE: '.i18n("Link to unsubscribe", 'newsletter').'<br />'.
             'MAIL_STOP: '.i18n("Link to pause the subscription", 'newsletter').'<br />'.
             'MAIL_GOON: '.i18n("Link to resume the subscription", 'newsletter');
@@ -153,7 +153,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             '[mail name="date" type="text"]{text}MAIL_DATE{text}[/mail]: '.i18n("Date, when the mail has been sent", 'newsletter')."<br />".
             '[mail name="time" type="text"]{text}MAIL_TIME{text}[/mail]: '.i18n("Time, when the mail has been sent", 'newsletter')."<br />".
             '[mail name="number" type="text"]{text}MAIL_NUMBER{text}[/mail]: '.i18n("Number of recipients", 'newsletter')."<br />".
-            #'[mail name="change" type="link" {text="'.i18n("Link text").'"}]{text}MAIL_CHANGE{text}[/mail]: '.i18n("Link to change the e-mail adress")."<br />".
+            #'[mail name="change" type="link" {text="'.i18n("Link text").'"}]{text}MAIL_CHANGE{text}[/mail]: '.i18n("Link to change the e-mail address")."<br />".
             '[mail name="unsubscribe" type="link" {text="'.i18n("Link text", 'newsletter').'" }]{text}MAIL_UNSUBSCRIBE{text}[/mail]: '.i18n("Link to unsubscribe", 'newsletter')."<br />".
             '[mail name="stop" type="link" {text="'.i18n("Link text", 'newsletter').'" }]{text}MAIL_STOP{text}[/mail]: '.i18n("Link to pause the subscription", 'newsletter')."<br />".
             '[mail name="goon" type="link" {text="'.i18n("Link text", 'newsletter').'" }]{text}MAIL_GOON{text}[/mail]: '.i18n("Link to resume the subscription", 'newsletter');

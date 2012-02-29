@@ -1,0 +1,15 @@
+./includes/include.newsletter_edit.php
+./includes/include.newsletter_edit_message.php
+./includes/include.newsletter_jobs_details.php
+./includes/include.newsletter_jobs_menu.php
+./includes/include.newsletter_jobs_subnav.php
+./includes/include.newsletter_left_top.php
+./includes/include.newsletter_menu.php
+./includes/include.newsletter_subnav.php
+./includes/include.recipients.group.subnav.php
+./includes/include.recipients.group_edit.php
+./includes/include.recipients.group_menu.php
+./includes/include.recipients_edit.php
+./includes/include.recipients_import.php
+./includes/include.recipients_menu.php
+./templates/standard/template.newsletter_left_top.html

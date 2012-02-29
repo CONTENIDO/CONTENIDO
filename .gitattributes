@@ -1457,9 +1457,11 @@ contenido/plugins/newsletter/includes/include.recipients.group_menu.php -text
 contenido/plugins/newsletter/includes/include.recipients_edit.php -text
 contenido/plugins/newsletter/includes/include.recipients_import.php -text
 contenido/plugins/newsletter/includes/include.recipients_menu.php -text
-contenido/plugins/newsletter/locale/de_DE/LC_MESSAGES/newsletter.mo -text
+contenido/plugins/newsletter/locale/de_DE/LC_MESSAGES/newsletter.mo -text svneol=unset#unset
 contenido/plugins/newsletter/locale/de_DE/LC_MESSAGES/newsletter.po -text
 contenido/plugins/newsletter/locale/newsletter.pot -text
+contenido/plugins/newsletter/locale/newsletter_potfiles.txt -text
+contenido/plugins/newsletter/templates/standard/template.newsletter_left_top.html -text
 contenido/plugins/newsletter/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/newsletter/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/newsletter/xml/lang_fr_FR.xml -text svneol=unset#text/plain

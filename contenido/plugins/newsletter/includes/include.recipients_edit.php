@@ -97,7 +97,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
 					$oRecipients->query();
 	    			
 	    			if ($oRecipients->next()) {
-	    				$aMessages[] = i18n("Could not set new e-mail adress: Other recipient with same e-mail address already exists", 'newsletter');
+	    				$aMessages[] = i18n("Could not set new e-mail address: Other recipient with same e-mail address already exists", 'newsletter');
 	    			} else {
 	    				$recipient->set("email", $email);
 		    		}
