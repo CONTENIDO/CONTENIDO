@@ -107,10 +107,7 @@
         </mycontenido>
         <extra>
             <main>Extras</main>
-            <newsletter>Bollettino E-Mail</newsletter>
             <mailing>Mailing</mailing>
-            <recipients>Destinatori</recipients>
-            <recipientgroups>Gruppo Destinatori</recipientgroups>
         </extra>
         <info>Informazione</info>
         <login>Login</login>

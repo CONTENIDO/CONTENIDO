@@ -121,10 +121,7 @@
         </mycontenido>
         <extra>
             <main>Extras</main>
-            <newsletter>Newsletter</newsletter>
             <mailing>Mailing</mailing>
-            <recipients>Recipients</recipients>
-            <recipientgroups>Recipient groups</recipientgroups>
         </extra>
         <info>Info</info>
         <login>Login</login>

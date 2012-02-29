@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.6.0
- * @author     Björn Behrens (HerrB)
+ * @author     Bjï¿½rn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,10 +20,10 @@
  * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
- *   created 2007-01-01, Björn Behrens (HerrB)
+ *   created 2007-01-01, Bjï¿½rn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
- *   $Id$:
+ *   $Id: include.recipients.group_menu.php 1702 2011-11-14 23:34:42Z xmurrix $:
  * }}
  * 
  */
@@ -49,7 +49,7 @@ $oUser	= new cApiUser($auth->auth["uid"]);
 // sort: 	Element can be used to be sorted by
 // search:	Element can be used to search in
 $aFields			= array();
-$aFields["name"]	= array("field" => "groupname", "caption" => i18n("Name"), "type" => "base,sort,search");
+$aFields["name"]	= array("field" => "groupname", "caption" => i18n("Name", 'newsletter'), "type" => "base,sort,search");
 
 ##################################
 # Check external input
@@ -130,8 +130,8 @@ $iMenu		= 0;
 
 // Store messages for repeated use (speeds performance, as i18n translation is only needed once)
 $aMsg = array();
-$aMsg["DelTitle"]	= i18n("Delete recipient group");
-$aMsg["DelDescr"]	= i18n("Do you really want to delete the following newsletter recipient group:<br>"); 
+$aMsg["DelTitle"]	= i18n("Delete recipient group", 'newsletter');
+$aMsg["DelDescr"]	= i18n("Do you really want to delete the following newsletter recipient group:<br>", 'newsletter'); 
 
 while ($oRcpGroup = $oRcpGroups->next())
 {

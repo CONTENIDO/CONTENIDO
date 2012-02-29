@@ -1192,24 +1192,10 @@ contenido/includes/include.mycontenido.tasks.edit.php -text
 contenido/includes/include.mycontenido.tasks.php -text
 contenido/includes/include.mycontenido_lastarticles.php -text
 contenido/includes/include.mycontenido_settings.php -text
-contenido/includes/include.newsletter_edit.php -text
-contenido/includes/include.newsletter_edit_message.php -text
-contenido/includes/include.newsletter_jobs_details.php -text
-contenido/includes/include.newsletter_jobs_menu.php -text
-contenido/includes/include.newsletter_jobs_subnav.php -text
-contenido/includes/include.newsletter_left_top.php -text
-contenido/includes/include.newsletter_menu.php -text
-contenido/includes/include.newsletter_subnav.php -text
 contenido/includes/include.note.display.php -text
 contenido/includes/include.note.popup.php -text
 contenido/includes/include.pretplcfg_edit.php -text
 contenido/includes/include.pretplcfg_edit_form.php -text
-contenido/includes/include.recipients.group.subnav.php -text
-contenido/includes/include.recipients.group_edit.php -text
-contenido/includes/include.recipients.group_menu.php -text
-contenido/includes/include.recipients_edit.php -text
-contenido/includes/include.recipients_import.php -text
-contenido/includes/include.recipients_menu.php -text
 contenido/includes/include.rights_create.php -text
 contenido/includes/include.rights_external.php -text
 contenido/includes/include.rights_left_top.php -text
@@ -1457,6 +1443,29 @@ contenido/plugins/mod_rewrite/templates/contentexpert.html -text
 contenido/plugins/mod_rewrite/templates/contenttest.html -text
 contenido/plugins/mod_rewrite/xml/lang_de_DE.xml -text
 contenido/plugins/mod_rewrite/xml/lang_en_US.xml -text
+contenido/plugins/newsletter/includes/functions.forms.php -text
+contenido/plugins/newsletter/includes/include.newsletter_edit.php -text
+contenido/plugins/newsletter/includes/include.newsletter_edit_message.php -text
+contenido/plugins/newsletter/includes/include.newsletter_jobs_details.php -text
+contenido/plugins/newsletter/includes/include.newsletter_jobs_menu.php -text
+contenido/plugins/newsletter/includes/include.newsletter_jobs_subnav.php -text
+contenido/plugins/newsletter/includes/include.newsletter_left_top.php -text
+contenido/plugins/newsletter/includes/include.newsletter_menu.php -text
+contenido/plugins/newsletter/includes/include.newsletter_subnav.php -text
+contenido/plugins/newsletter/includes/include.recipients.group.subnav.php -text
+contenido/plugins/newsletter/includes/include.recipients.group_edit.php -text
+contenido/plugins/newsletter/includes/include.recipients.group_menu.php -text
+contenido/plugins/newsletter/includes/include.recipients_edit.php -text
+contenido/plugins/newsletter/includes/include.recipients_import.php -text
+contenido/plugins/newsletter/includes/include.recipients_menu.php -text
+contenido/plugins/newsletter/locale/de_DE/LC_MESSAGES/newsletter.mo -text
+contenido/plugins/newsletter/locale/de_DE/LC_MESSAGES/newsletter.po -text
+contenido/plugins/newsletter/locale/newsletter.pot -text
+contenido/plugins/newsletter/xml/lang_de_DE.xml -text svneol=unset#text/plain
+contenido/plugins/newsletter/xml/lang_en_US.xml -text svneol=unset#text/plain
+contenido/plugins/newsletter/xml/lang_fr_FR.xml -text svneol=unset#text/plain
+contenido/plugins/newsletter/xml/lang_it_IT.xml -text svneol=unset#text/plain
+contenido/plugins/newsletter/xml/lang_nl_NL.xml -text svneol=unset#text/plain
 contenido/plugins/repository/custom/FrontendNavigation.php -text
 contenido/plugins/repository/keyword_density.php -text
 contenido/plugins/smarty/README.txt -text svneol=unset#text/plain

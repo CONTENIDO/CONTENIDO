@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.2
- * @author     Björn Behrens (HerrB)
+ * @author     Bjï¿½rn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,10 +20,10 @@
  * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
- *   created 2007-01-01, Björn Behrens (HerrB)
+ *   created 2007-01-01, Bjï¿½rn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
- *   $Id$:
+ *   $Id: include.newsletter_edit_message.php 1870 2012-02-15 16:27:15Z rusmir.jusufovic $:
  * }}
  *
  */
@@ -83,7 +83,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
                  // Template has been changed, but specified: Store template article as new newsletter article
                  $iIDArt = conCopyArticle($_REQUEST["selTemplate"],
                                           $oClientLang->getProperty("newsletter", "html_newsletter_idcat"),
-                                          sprintf(i18n("Newsletter: %s"), $oNewsletter->get("name")));
+                                          sprintf(i18n("Newsletter: %s", 'newsletter'), $oNewsletter->get("name")));
                  conMakeOnline($iIDArt, $lang); // Article has to be online for sending...
              }
 
@@ -92,7 +92,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
          }
 
         $oNewsletter->store();
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
+        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!", 'newsletter'));
     } elseif ($oNewsletter->get("idart") > 0) {
         // Check, if html message article and template article are still available
         $oArticles = new cApiArticleLanguageCollection();
@@ -102,7 +102,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 
         if ($oArticles->count() == 0) {
             // Ups, article lost, reset idart and template_idart for newsletter
-            $notis = $notification->returnNotification("error", sprintf(i18n("The html newsletter article has been deleted (idart: %s), the html message is lost"), $oNewsletter->get("idart"))) . "<br>";
+            $notis = $notification->returnNotification("error", sprintf(i18n("The html newsletter article has been deleted (idart: %s), the html message is lost", 'newsletter'), $oNewsletter->get("idart"))) . "<br>";
 
             $oNewsletter->set("idart", 0);
             $oNewsletter->set("template_idart", 0);
@@ -115,11 +115,11 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 
             if ($oArticles->count() == 0) {
                 // Ups, template has been deleted: Restore from current newsletter message article
-                $notis = $notification->returnNotification("warning", i18n("The html newsletter template article has been deleted, it has been restored using the html message article of this newsletter")) . "<br>";
+                $notis = $notification->returnNotification("warning", i18n("The html newsletter template article has been deleted, it has been restored using the html message article of this newsletter", 'newsletter')) . "<br>";
 
                 $iIDArt = conCopyArticle($oNewsletter->get("idart"),
                                          $oClientLang->getProperty("newsletter", "html_template_idcat"),
-                                         sprintf(i18n("%s (Template restored)"), $oNewsletter->get("name")));
+                                         sprintf(i18n("%s (Template restored)", 'newsletter'), $oNewsletter->get("name")));
                 $oNewsletter->set("template_idart", $iIDArt);
                 $oNewsletter->store();
             }
@@ -133,35 +133,35 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
     $oForm->setVar("idnewsletter", $idnewsletter);
     $oForm->setWidth("100%");
 
-    $oForm->addHeader(sprintf(i18n("Edit newsletter message (%s)"), $oNewsletter->get("name")));
-    $oForm->add(i18n("Subject"), $oNewsletter->get("subject"));
+    $oForm->addHeader(sprintf(i18n("Edit newsletter message (%s)", 'newsletter'), $oNewsletter->get("name")));
+    $oForm->add(i18n("Subject", 'newsletter'), $oNewsletter->get("subject"));
 
-    $sTagInfoText = '<a href="javascript:fncShowHide(\'idTagInfoText\');"><strong>'.i18n("Tag information").'</strong></a>'.
-            '<div id="idTagInfoText" style="display: none"><br /><b>'. i18n("Special message tags (will be replaced when sending)").':</b><br>'.
-            'MAIL_NAME: '.i18n("Name of the recipient").'<br />'.
-            'MAIL_DATE: '.i18n("Date, when the mail has been sent").'<br />'.
-            'MAIL_TIME: '.i18n("Time, when the mail has been sent").'<br />'.
-            'MAIL_NUMBER: '.i18n("Number of recipients").'<br />'.
+    $sTagInfoText = '<a href="javascript:fncShowHide(\'idTagInfoText\');"><strong>'.i18n("Tag information", 'newsletter').'</strong></a>'.
+            '<div id="idTagInfoText" style="display: none"><br /><b>'. i18n("Special message tags (will be replaced when sending)", 'newsletter').':</b><br>'.
+            'MAIL_NAME: '.i18n("Name of the recipient", 'newsletter').'<br />'.
+            'MAIL_DATE: '.i18n("Date, when the mail has been sent", 'newsletter').'<br />'.
+            'MAIL_TIME: '.i18n("Time, when the mail has been sent", 'newsletter').'<br />'.
+            'MAIL_NUMBER: '.i18n("Number of recipients", 'newsletter').'<br />'.
             #'MAIL_CHANGE: '.i18n("Link to change the e-mail adress").'<br />'.
-            'MAIL_UNSUBSCRIBE: '.i18n("Link to unsubscribe").'<br />'.
-            'MAIL_STOP: '.i18n("Link to pause the subscription").'<br />'.
-            'MAIL_GOON: '.i18n("Link to resume the subscription");
+            'MAIL_UNSUBSCRIBE: '.i18n("Link to unsubscribe", 'newsletter').'<br />'.
+            'MAIL_STOP: '.i18n("Link to pause the subscription", 'newsletter').'<br />'.
+            'MAIL_GOON: '.i18n("Link to resume the subscription", 'newsletter');
 
-    $sTagInfoHTML = '<a href="javascript:fncShowHide(\'idTagInfoHTML\');"><strong>'.i18n("Tag information").'</strong></a>'.
-            '<div id="idTagInfoHTML" style="display: none"><br /><b>'.i18n("Special message tags (will be replaced when sending, {..} = optional)").":</b><br />".
-            '[mail name="name" type="text"]{text}MAIL_NAME{text}[/mail]: '.i18n("Name of the recipient")."<br />".
-            '[mail name="date" type="text"]{text}MAIL_DATE{text}[/mail]: '.i18n("Date, when the mail has been sent")."<br />".
-            '[mail name="time" type="text"]{text}MAIL_TIME{text}[/mail]: '.i18n("Time, when the mail has been sent")."<br />".
-            '[mail name="number" type="text"]{text}MAIL_NUMBER{text}[/mail]: '.i18n("Number of recipients")."<br />".
+    $sTagInfoHTML = '<a href="javascript:fncShowHide(\'idTagInfoHTML\');"><strong>'.i18n("Tag information", 'newsletter').'</strong></a>'.
+            '<div id="idTagInfoHTML" style="display: none"><br /><b>'.i18n("Special message tags (will be replaced when sending, {..} = optional)", 'newsletter').":</b><br />".
+            '[mail name="name" type="text"]{text}MAIL_NAME{text}[/mail]: '.i18n("Name of the recipient", 'newsletter')."<br />".
+            '[mail name="date" type="text"]{text}MAIL_DATE{text}[/mail]: '.i18n("Date, when the mail has been sent", 'newsletter')."<br />".
+            '[mail name="time" type="text"]{text}MAIL_TIME{text}[/mail]: '.i18n("Time, when the mail has been sent", 'newsletter')."<br />".
+            '[mail name="number" type="text"]{text}MAIL_NUMBER{text}[/mail]: '.i18n("Number of recipients", 'newsletter')."<br />".
             #'[mail name="change" type="link" {text="'.i18n("Link text").'"}]{text}MAIL_CHANGE{text}[/mail]: '.i18n("Link to change the e-mail adress")."<br />".
-            '[mail name="unsubscribe" type="link" {text="'.i18n("Link text").'" }]{text}MAIL_UNSUBSCRIBE{text}[/mail]: '.i18n("Link to unsubscribe")."<br />".
-            '[mail name="stop" type="link" {text="'.i18n("Link text").'" }]{text}MAIL_STOP{text}[/mail]: '.i18n("Link to pause the subscription")."<br />".
-            '[mail name="goon" type="link" {text="'.i18n("Link text").'" }]{text}MAIL_GOON{text}[/mail]: '.i18n("Link to resume the subscription");
+            '[mail name="unsubscribe" type="link" {text="'.i18n("Link text", 'newsletter').'" }]{text}MAIL_UNSUBSCRIBE{text}[/mail]: '.i18n("Link to unsubscribe", 'newsletter')."<br />".
+            '[mail name="stop" type="link" {text="'.i18n("Link text", 'newsletter').'" }]{text}MAIL_STOP{text}[/mail]: '.i18n("Link to pause the subscription", 'newsletter')."<br />".
+            '[mail name="goon" type="link" {text="'.i18n("Link text", 'newsletter').'" }]{text}MAIL_GOON{text}[/mail]: '.i18n("Link to resume the subscription", 'newsletter');
 
     // Mention plugin interface
     if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
-        $sTagInfoText .= "<br /><br /><strong>".i18n("Additional message tags from recipients plugins:")."</strong><br />";
-        $sTagInfoHTML .= "<br /><br /><strong>".i18n("Additional message tags from recipients plugins:")."</strong><br />";
+        $sTagInfoText .= "<br /><br /><strong>".i18n("Additional message tags from recipients plugins:", 'newsletter')."</strong><br />";
+        $sTagInfoHTML .= "<br /><br /><strong>".i18n("Additional message tags from recipients plugins:", 'newsletter')."</strong><br />";
 
         if (is_array($cfg['plugins']['recipients'])) {
             foreach ($cfg['plugins']['recipients'] as $plugin) {
@@ -195,7 +195,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         $oTemplateArticles = new ArticleCollection($aOptions);
 
         $aItems = array();
-        $aItems[] = array(0, i18n("-- none --"));
+        $aItems[] = array(0, i18n("-- none --", 'newsletter'));
         while ($oArticle = $oTemplateArticles->nextArticle()) {
             $aItems[] = array($oArticle->get("idart"), $oArticle->get("title"));
         }
@@ -204,21 +204,21 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
         $oSelTemplate->setDefault($iTplIDArt);
         unset($aItems, $oArticles, $oTemplateArticles);
 
-        $oForm->add(i18n("HTML Template"), $oSelTemplate->render()."&nbsp;".i18n("Note, that changing the template discards the current html message content"));
+        $oForm->add(i18n("HTML Template", 'newsletter'), $oSelTemplate->render()."&nbsp;".i18n("Note, that changing the template discards the current html message content", 'newsletter'));
 
         if ($iTplIDArt != 0) {
             $sFrameSrc = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?changeview=edit&action=con_editart&idart=".$oNewsletter->get("idart")."&idcat=".$oClientLang->getProperty("newsletter", "html_newsletter_idcat")."&lang=".$lang."&contenido=".$sess->id;
-            $oForm->add(i18n("HTML Message"), '<iframe width="100%" height="600" src="'.$sFrameSrc.'"></iframe><br />'.$sTagInfoHTML);
+            $oForm->add(i18n("HTML Message", 'newsletter'), '<iframe width="100%" height="600" src="'.$sFrameSrc.'"></iframe><br />'.$sTagInfoHTML);
         } else {
             // Add a real note, that a template has to be specified
-            $notis .= $notification->returnNotification("warning", i18n("Newsletter type has been set to HTML/text, please remember to select an html template")) . "<br />";
+            $notis .= $notification->returnNotification("warning", i18n("Newsletter type has been set to HTML/text, please remember to select an html template", 'newsletter')) . "<br />";
 
-            $oForm->add(i18n("HTML Message"), i18n("Please choose a template first"));
+            $oForm->add(i18n("HTML Message", 'newsletter'), i18n("Please choose a template first", 'newsletter'));
         }
     }
 
     $oTxtMessage = new cHTMLTextarea("txtMessage", $oNewsletter->get("message"), 80, 20);
-    $oForm->add(i18n("Text Message"), $oTxtMessage->render()."<br />".$sTagInfoText);
+    $oForm->add(i18n("Text Message", 'newsletter'), $oTxtMessage->render()."<br />".$sTagInfoText);
 
     $sExecScript = '
     <script type="text/javascript">
@@ -248,7 +248,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
                     submitForm();
                 } else {
                     // You may loose information, warn!
-                    box.confirm("'.i18n("HTML newsletter template changed").'", "'.i18n("HTML template has been changed. Do you like to save now to apply changes?<br /><br /><b>Note, that existing HTML newsletter content will get lost!</b>").'", "submitForm()");
+                    box.confirm("'.i18n("HTML newsletter template changed", 'newsletter').'", "'.i18n("HTML template has been changed. Do you like to save now to apply changes?<br /><br /><b>Note, that existing HTML newsletter content will get lost!</b>", 'newsletter').'", "submitForm()");
                 }
             }
         }

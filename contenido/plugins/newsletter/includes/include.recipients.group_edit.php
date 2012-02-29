@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.1.1
- * @author     Björn Behrens (HerrB)
+ * @author     Bjï¿½rn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,10 +20,10 @@
  * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
- *   created 2004-08-01, Björn Behrens (HerrB)
+ *   created 2004-08-01, Bjï¿½rn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
- *   $Id$:
+ *   $Id: include.recipients.group_edit.php 1702 2011-11-14 23:34:42Z xmurrix $:
  * }}
  * 
  */
@@ -40,14 +40,14 @@ $oRGroupMembers	= new RecipientGroupMemberCollection;
 $oRGroup		= new RecipientGroup;
 
 $aFields = array();
-$aFields["name"]  		= array("field" => "name",			"caption" => i18n("Name"), 			"type" => "base,sort,search");
-$aFields["email"] 		= array("field" => "email",			"caption" => i18n("E-Mail"), 		"type" => "base,sort,search");
-$aFields["confirmed"]	= array("field" => "confirmed",		"caption" => i18n("Confirmed"), 	"type" => "base");
-$aFields["deactivated"] = array("field" => "deactivated",	"caption" => i18n("Deactivated"), 	"type" => "base");
+$aFields["name"]  		= array("field" => "name",			"caption" => i18n("Name", 'newsletter'), 			"type" => "base,sort,search");
+$aFields["email"] 		= array("field" => "email",			"caption" => i18n("E-Mail", 'newsletter'), 		"type" => "base,sort,search");
+$aFields["confirmed"]	= array("field" => "confirmed",		"caption" => i18n("Confirmed", 'newsletter'), 	"type" => "base");
+$aFields["deactivated"] = array("field" => "deactivated",	"caption" => i18n("Deactivated", 'newsletter'), 	"type" => "base");
 
 if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $action))
 {
-	$oRGroup = $oRGroups->create(" ".i18n("-- new group --"));
+	$oRGroup = $oRGroups->create(" ".i18n("-- new group --", 'newsletter'));
 	$_REQUEST["idrecipientgroup"] = $oRGroup->get("idnewsgroup");
 	$oPage->setReload();
 	$sRefreshLeftTopScript = '<script type="text/javascript">top.content.left.left_top.refreshGroupOption(\''.$_REQUEST["idrecipientgroup"].'\', \'add\')</script>';
@@ -83,7 +83,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 			$oRGroups->query();
 			
 	 		if ($oRGroups->next()) {
-	 			$aMessages[] = i18n("Could not set new group name: Group already exists");	
+	 			$aMessages[] = i18n("Could not set new group name: Group already exists", 'newsletter');	
 	 		} else {
 	 			$bReload = true;
 	 			
@@ -181,20 +181,20 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	$oForm->setVar("idrecipientgroup", $_REQUEST["idrecipientgroup"]);
 	$oForm->setSubmitJS("append_registered_parameters(this);");
 
-	$oForm->addHeader(i18n("Edit group"));
+	$oForm->addHeader(i18n("Edit group", 'newsletter'));
 	
 	$oTxtGroupName = new cHTMLTextbox("groupname", $oRGroup->get("groupname"),40);
-	$oForm->add(i18n("Group name"), $oTxtGroupName->render());
+	$oForm->add(i18n("Group name", 'newsletter'), $oTxtGroupName->render());
 	
 	$oCkbDefault = new cHTMLCheckbox("defaultgroup", "1");
 	$oCkbDefault->setChecked($oRGroup->get("defaultgroup"));
-	$oForm->add(i18n("Default group"), $oCkbDefault->toHTML(false));
+	$oForm->add(i18n("Default group", 'newsletter'), $oCkbDefault->toHTML(false));
 			
 	// Member list options folding row
-	$oMemberListOptionRow = new cFoldingRow("a91f5540-52db-11db-b0de-0800200c9a66",i18n("Member list options"));
+	$oMemberListOptionRow = new cFoldingRow("a91f5540-52db-11db-b0de-0800200c9a66",i18n("Member list options", 'newsletter'));
 	
 	$oSelItemsPerPage = new cHTMLSelectElement("member_elemperpage");
-	$oSelItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+	$oSelItemsPerPage->autoFill(array(0 => i18n("-- All --", 'newsletter'), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
 	$oSelItemsPerPage->setDefault($_REQUEST["member_elemperpage"]);
 	
 	$oSelSortBy = new cHTMLSelectElement("member_sortby");
@@ -210,13 +210,13 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	$oSelSortBy->setDefault($_REQUEST["member_sortby"]);
 	
 	$oSelSortOrder = new cHTMLSelectElement("member_sortorder");
-	$oSelSortOrder->autoFill(array("ASC" => i18n("Ascending"), "DESC" => i18n("Descending")));
+	$oSelSortOrder->autoFill(array("ASC" => i18n("Ascending", 'newsletter'), "DESC" => i18n("Descending", 'newsletter')));
 	$oSelSortOrder->setDefault($_REQUEST["member_sortorder"]);
 		
 	$oTxtFilter = new cHTMLTextbox("member_filter", $_REQUEST["member_filter"], 16);
 	
 	$oSelSearchIn = new cHTMLSelectElement("member_searchin");
-	$oOption = new cHTMLOptionElement(i18n("-- All fields --"), "--all--");
+	$oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all--");
 	$oSelSearchIn->addOptionElement("all", $oOption);
 	
 	foreach ($aFields as $sKey => $aData) {
@@ -227,28 +227,28 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	}
 	$oSelSearchIn->setDefault($_REQUEST["member_searchin"]);
 	
-	$oSubmit = new cHTMLButton("submit", i18n("Apply"));
+	$oSubmit = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
 	
 	$sContent  = '<div style="border-bottom: 1px solid black; background: '.$cfg['color']['table_dark'].';">'.chr(10);
 	$sContent .= '   <table>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
-	$sContent .= '         <td>'. i18n("Items / page").'</td>'.chr(10);
+	$sContent .= '         <td>'. i18n("Items / page", 'newsletter').'</td>'.chr(10);
 	$sContent .= '         <td>'.$oSelItemsPerPage->render().'</td>'.chr(10);
 	$sContent .= '      </tr>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
-	$sContent .= '         <td>'. i18n("Sort by").'</td>'.chr(10);
+	$sContent .= '         <td>'. i18n("Sort by", 'newsletter').'</td>'.chr(10);
 	$sContent .= '         <td>'.$oSelSortBy->render().'</td>'.chr(10);
 	$sContent .= '      </tr>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
-	$sContent .= '         <td>'. i18n("Sort order").'</td>'.chr(10);
+	$sContent .= '         <td>'. i18n("Sort order", 'newsletter').'</td>'.chr(10);
 	$sContent .= '         <td>'.$oSelSortOrder->render().'</td>'.chr(10);
 	$sContent .= '      </tr>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
-	$sContent .= '         <td>'. i18n("Search for").'</td>'.chr(10);
+	$sContent .= '         <td>'. i18n("Search for", 'newsletter').'</td>'.chr(10);
 	$sContent .= '         <td>'.$oTxtFilter->render().'</td>'.chr(10);
 	$sContent .= '      </tr>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
-	$sContent .= '         <td>'. i18n("Search in").'</td>'.chr(10);
+	$sContent .= '         <td>'. i18n("Search in", 'newsletter').'</td>'.chr(10);
 	$sContent .= '         <td>'.$oSelSearchIn->render().'</td>'.chr(10);
 	$sContent .= '      </tr>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
@@ -264,9 +264,9 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	$oAddedRecipientList->setWidth("100%");
 	$oAddedRecipientList->setBorder(1);
 
-	$oAddedRecipientList->setCell(0, 1, "<strong>".i18n("Name")."</strong>");
+	$oAddedRecipientList->setCell(0, 1, "<strong>".i18n("Name", 'newsletter')."</strong>");
 	$oImgDel = new cHTMLImage("images/but_invert_selection.gif");
-	$sLnkDelIcon = '<a title="'.i18n("Check all").'" href="javascript://" onclick="fncCheckDel(\'deluser[]\');">'.$oImgDel->render().'</a>';
+	$sLnkDelIcon = '<a title="'.i18n("Check all", 'newsletter').'" href="javascript://" onclick="fncCheckDel(\'deluser[]\');">'.$oImgDel->render().'</a>';
 	$oAddedRecipientList->setCell(0, 2, $sLnkDelIcon);
 	$oAddedRecipientList->setCellAlignment(0, 2, "right");
 	
@@ -327,10 +327,10 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 		
 	$iItems = $oInsiders->count();
 	if ($iItems == 0 && $_REQUEST["member_filter"] == "" && ($_REQUEST["member_elemperpage"] == 0 || $iMembers == 0)) {
-		$oAddedRecipientList->setCell(1, 1, i18n("No recipients are added to this group yet"));
+		$oAddedRecipientList->setCell(1, 1, i18n("No recipients are added to this group yet", 'newsletter'));
 		$oAddedRecipientList->setCell(1, 2, '&nbsp;');
 	} else if ($iItems == 0) {
-		$oAddedRecipientList->setCell(1, 1, i18n("No recipients found"));
+		$oAddedRecipientList->setCell(1, 1, i18n("No recipients found", 'newsletter'));
 		$oAddedRecipientList->setCell(1, 2, '&nbsp;');
 	} else {
 		while ($oRcp = $oInsiders->next())
@@ -375,9 +375,9 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	$oPagerLink->setCustom("contenido", $sess->id);
 	
 	$oMemberPager = new cObjectPager("d82a3ff0-52d9-11db-b0de-0800200c9a66", $iMembers, $_REQUEST["member_elemperpage"], $_REQUEST["member_page"], $oPagerLink, "member_page");
-	$oMemberPager->setCaption(i18n("Member navigation"));
+	$oMemberPager->setCaption(i18n("Member navigation", 'newsletter'));
 	
-	$oForm->add(i18n("Recipients in group"), '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
+	$oForm->add(i18n("Recipients in group", 'newsletter'), '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
 											 $oMemberListOptionRow->render().
 											 $oMemberPager->render().
 											 '<tr><td>'.$oAddedRecipientList->render().'</td></tr></table>');
@@ -388,10 +388,10 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	
 	// Outsiders
 	// Outsider list options folding row
-	$oOutsiderListOptionRow = new cFoldingRow("ca633b00-52e9-11db-b0de-0800200c9a66",i18n("Outsider list options"));
+	$oOutsiderListOptionRow = new cFoldingRow("ca633b00-52e9-11db-b0de-0800200c9a66",i18n("Outsider list options", 'newsletter'));
 	
 	$oSelItemsPerPage = new cHTMLSelectElement("outsider_elemperpage");
-	$oSelItemsPerPage->autoFill(array(0 => i18n("-- All --"), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
+	$oSelItemsPerPage->autoFill(array(0 => i18n("-- All --", 'newsletter'), 25 => 25, 50 => 50, 75 => 75, 100 => 100));
 	$oSelItemsPerPage->setDefault($_REQUEST["outsider_elemperpage"]);
 	
 	$oSelSortBy = new cHTMLSelectElement("outsider_sortby");
@@ -407,13 +407,13 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	$oSelSortBy->setDefault($_REQUEST["outsider_sortby"]);
 	
 	$oSelSortOrder = new cHTMLSelectElement("outsider_sortorder");
-	$oSelSortOrder->autoFill(array("ASC" => i18n("Ascending"), "DESC" => i18n("Descending")));
+	$oSelSortOrder->autoFill(array("ASC" => i18n("Ascending", 'newsletter'), "DESC" => i18n("Descending", 'newsletter')));
 	$oSelSortOrder->setDefault($_REQUEST["outsider_sortorder"]);
 		
 	$oTxtFilter = new cHTMLTextbox("outsider_filter", $_REQUEST["outsider_filter"], 16);
 	
 	$oSelSearchIn = new cHTMLSelectElement("outsider_searchin");
-	$oOption = new cHTMLOptionElement(i18n("-- All fields --"), "--all--");
+	$oOption = new cHTMLOptionElement(i18n("-- All fields --", 'newsletter'), "--all--");
 	$oSelSearchIn->addOptionElement("all", $oOption);
 	
 	foreach ($aFields as $sKey => $aData) {
@@ -424,28 +424,28 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	}
 	$oSelSearchIn->setDefault($_REQUEST["outsider_searchin"]);
 	
-	$oSubmit = new cHTMLButton("submit", i18n("Apply"));
+	$oSubmit = new cHTMLButton("submit", i18n("Apply", 'newsletter'));
 	
 	$sContent  = '<div style="border-bottom: 1px solid black; background: '.$cfg['color']['table_dark'].';">'.chr(10);
 	$sContent .= '   <table>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
-	$sContent .= '         <td>'. i18n("Items / page").'</td>'.chr(10);
+	$sContent .= '         <td>'. i18n("Items / page", 'newsletter').'</td>'.chr(10);
 	$sContent .= '         <td>'.$oSelItemsPerPage->render().'</td>'.chr(10);
 	$sContent .= '      </tr>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
-	$sContent .= '         <td>'. i18n("Sort by").'</td>'.chr(10);
+	$sContent .= '         <td>'. i18n("Sort by", 'newsletter').'</td>'.chr(10);
 	$sContent .= '         <td>'.$oSelSortBy->render().'</td>'.chr(10);
 	$sContent .= '      </tr>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
-	$sContent .= '         <td>'. i18n("Sort order").'</td>'.chr(10);
+	$sContent .= '         <td>'. i18n("Sort order", 'newsletter').'</td>'.chr(10);
 	$sContent .= '         <td>'.$oSelSortOrder->render().'</td>'.chr(10);
 	$sContent .= '      </tr>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
-	$sContent .= '         <td>'. i18n("Search for").'</td>'.chr(10);
+	$sContent .= '         <td>'. i18n("Search for", 'newsletter').'</td>'.chr(10);
 	$sContent .= '         <td>'.$oTxtFilter->render().'</td>'.chr(10);
 	$sContent .= '      </tr>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
-	$sContent .= '         <td>'. i18n("Search in").'</td>'.chr(10);
+	$sContent .= '         <td>'. i18n("Search in", 'newsletter').'</td>'.chr(10);
 	$sContent .= '         <td>'.$oSelSearchIn->render().'</td>'.chr(10);
 	$sContent .= '      </tr>'.chr(10);
 	$sContent .= '      <tr>'.chr(10);
@@ -546,12 +546,12 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
 	$oPagerLink->setCustom("contenido", $sess->id);
 	
 	$oOutsiderPager = new cObjectPager("4d3a7330-52eb-11db-b0de-0800200c9a66", $iOutsiders, $_REQUEST["outsider_elemperpage"], $_REQUEST["outsider_page"], $oPagerLink, "outsider_page");
-	$oOutsiderPager->setCaption(i18n("Outsider navigation"));
+	$oOutsiderPager->setCaption(i18n("Outsider navigation", 'newsletter'));
 	
-	$oForm->add(i18n("Add recipients"), '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
+	$oForm->add(i18n("Add recipients", 'newsletter'), '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.
 										$oOutsiderListOptionRow->render().
 										$oOutsiderPager->render().
-										'<tr><td>'.$oSelUser->render().'<br />'.i18n("Note: Hold &lt;Ctrl&gt; to<br>select multiple items.").'</td></tr></table>');	
+										'<tr><td>'.$oSelUser->render().'<br />'.i18n("Note: Hold &lt;Ctrl&gt; to<br>select multiple items.", 'newsletter').'</td></tr></table>');	
 	unset ($oOutsiders);
 	unset ($oOutsiderListOptionRow);
 	unset ($oOutsiderPager);

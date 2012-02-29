@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.2
- * @author     Björn Behrens (HerrB)
+ * @author     Bjï¿½rn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,10 +20,10 @@
  * @since      file available since CONTENIDO release <= 4.6
  *
  * {@internal
- *   created 2007-01-01, Björn Behrens (HerrB)
+ *   created 2007-01-01, Bjï¿½rn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
- *   $Id$:
+ *   $Id: include.newsletter_jobs_menu.php 1702 2011-11-14 23:34:42Z xmurrix $:
  * }}
  *
  */
@@ -50,10 +50,10 @@ $oUser = new cApiUser($auth->auth["uid"]);
 // sort:    Element can be used to be sorted by
 // search:  Element can be used to search in
 $aFields = array();
-$aFields["name"]    = array("field" => "name",    "caption" => i18n("Name"),    "type" => "base,sort,search");
-$aFields["created"] = array("field" => "created", "caption" => i18n("Created"), "type" => "base,sort");
-$aFields["status"]  = array("field" => "status",  "caption" => i18n("Status"),  "type" => "base,sort");
-// Not needed, as no sort/search, but keep as memo: $aFields["cronjob"]    = array("field" => "use_cronjob", "caption" => i18n("Use cronjob"), "type" => "base");
+$aFields["name"]    = array("field" => "name",    "caption" => i18n("Name", 'newsletter'),    "type" => "base,sort,search");
+$aFields["created"] = array("field" => "created", "caption" => i18n("Created", 'newsletter'), "type" => "base,sort");
+$aFields["status"]  = array("field" => "status",  "caption" => i18n("Status", 'newsletter'),  "type" => "base,sort");
+// Not needed, as no sort/search, but keep as memo: $aFields["cronjob"]    = array("field" => "use_cronjob", "caption" => i18n("Use cronjob", 'newsletter'), "type" => "base");
 
 ##################################
 # Check external input
@@ -153,11 +153,11 @@ $sDateFormat = getEffectiveSetting("backend", "timeformat", "d.m.Y H:i");
 
 // Store messages for repeated use (speeds performance, as i18n translation is only needed once)
 $aMsg = array();
-$aMsg["DelTitle"]  = i18n("Delete dispatch job");
-$aMsg["DelDescr"]  = i18n("Do you really want to delete the following newsletter dispatch job:<br>");
+$aMsg["DelTitle"]  = i18n("Delete dispatch job", 'newsletter');
+$aMsg["DelDescr"]  = i18n("Do you really want to delete the following newsletter dispatch job:<br>", 'newsletter');
 
-$aMsg["SendTitle"] = i18n("Run job");
-$aMsg["SendDescr"] = i18n("Do you really want to run the following job:<br>");
+$aMsg["SendTitle"] = i18n("Run job", 'newsletter');
+$aMsg["SendDescr"] = i18n("Do you really want to run the following job:<br>", 'newsletter');
 
 // Prepare "send link" template
 $sTplSend = '<a title="'.$aMsg["SendTitle"].'" href="javascript://" onclick="showSendMsg(\'{ID}\',\'{NAME}\')"><img src="'.$cfg['path']['images'].'newsletter_16.gif" border="0" title="'.$aMsg["SendTitle"].'" alt="'.$aMsg["SendTitle"].'"></a>';

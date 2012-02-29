@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
- * @author     Björn Behrens (HerrB)
+ * @author     Bjï¿½rn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,11 +20,11 @@
  * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
- *   created  2004-08-01, Björn Behrens (HerrB)
+ *   created  2004-08-01, Bjï¿½rn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *
- *   $Id$:
+ *   $Id: include.recipients.group.subnav.php 1702 2011-11-14 23:34:42Z xmurrix $:
  * }}
  * 
  */
@@ -36,7 +36,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 if (isset($_GET['idrecipientgroup']) && (int)$_GET['idrecipientgroup'] > 0)
 {
-	$caption = i18n("Overview");
+	$caption = i18n("Overview", 'newsletter');
 	$tmp_area = "foo2";
 
 	# Set template data

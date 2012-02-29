@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.1.7
- * @author     Björn Behrens (HerrB)
+ * @author     Bjï¿½rn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,10 +20,10 @@
  * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
- *   created 2007-01-01, Björn Behrens (HerrB)
+ *   created 2007-01-01, Bjï¿½rn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
- *   $Id$:
+ *   $Id: include.recipients_edit.php 1909 2012-02-28 23:48:00Z xmurrix $:
  * }}
  * 
  */
@@ -44,7 +44,7 @@ if (is_array($cfg['plugins']['recipients'])) {
 
 // Note, that the object name has to be $recipient for plugins
 if ($action == "recipients_create" && $perm->have_perm_area_action($area, $action)) {
-	$recipient = $oRecipients->create("mail@domain.tld"," ".i18n("-- New recipient --"));
+	$recipient = $oRecipients->create("mail@domain.tld"," ".i18n("-- New recipient --", 'newsletter'));
 	$oPage->setReload();		
 } elseif ($action == "recipients_delete" && $perm->have_perm_area_action($area, $action)) {
 	$oRecipients->delete($idrecipient);
@@ -59,9 +59,9 @@ if ($action == "recipients_create" && $perm->have_perm_area_action($area, $actio
 	$purgedrecipients = $oRecipients->purge($timeframe);
 	/* backslashdollar: There is a problem translating \$ - it is either not recognized or translated correctly (using poEdit) */
 	if ($purgedrecipients > 0) {
-		$sNotis = $notification->messageBox("info", sprintf(str_replace("backslashdollar", "\$", i18n("%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.")),$purgedrecipients,$timeframe),0);
+		$sNotis = $notification->messageBox("info", sprintf(str_replace("backslashdollar", "\$", i18n("%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')),$purgedrecipients,$timeframe),0);
 	} else {
-	    $sNotis = $notification->messageBox("info", sprintf(str_replace("backslashdollar", "\$", i18n("There are no recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.")), 0, $timeframe),0);
+	    $sNotis = $notification->messageBox("info", sprintf(str_replace("backslashdollar", "\$", i18n("There are no recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')), 0, $timeframe),0);
 	}
 	
 	$recipient = new Recipient;	
@@ -85,7 +85,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
 
 		if (!isValidMail($email))
 		{
-			$aMessages[] = i18n("Please specify a valid e-mail address");
+			$aMessages[] = i18n("Please specify a valid e-mail address", 'newsletter');
 		} else {
 			$email	= strtolower($email); // e-mail always in lower case
 			if ($recipient->get("email") != $email) {
@@ -97,7 +97,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
 					$oRecipients->query();
 	    			
 	    			if ($oRecipients->next()) {
-	    				$aMessages[] = i18n("Could not set new e-mail adress: Other recipient with same e-mail address already exists");
+	    				$aMessages[] = i18n("Could not set new e-mail adress: Other recipient with same e-mail address already exists", 'newsletter');
 	    			} else {
 	    				$recipient->set("email", $email);
 		    		}
@@ -155,7 +155,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
 	$oForm->setVar("action", "recipients_save");
 	$oForm->setVar("idrecipient", $recipient->get("idnewsrcp"));
 
-	$oForm->addHeader(i18n("Edit recipient"));
+	$oForm->addHeader(i18n("Edit recipient", 'newsletter'));
 
 	$oTxtName 			= new cHTMLTextbox("name", 	$recipient->get("name"), 40);
 	$oTxtEMail 			= new cHTMLTextbox("email", $recipient->get("email"), 40);
@@ -165,17 +165,17 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
 	$oCkbDeactivated->setChecked($recipient->get("deactivated"));
 	
 	$oSelNewsType 		= new cHTMLSelectElement("newstype");
-	$oOption 			= new cHTMLOptionElement(i18n("Text only"), "0");
+	$oOption 			= new cHTMLOptionElement(i18n("Text only", 'newsletter'), "0");
 	$oSelNewsType->addOptionElement(0, $oOption);
-	$oOption 			= new cHTMLOptionElement(i18n("HTML and text"), "1");
+	$oOption 			= new cHTMLOptionElement(i18n("HTML and text", 'newsletter'), "1");
 	$oSelNewsType->addOptionElement(1, $oOption);
 	$oSelNewsType->setDefault($recipient->get("news_type"));
 	
-	$oForm->add(i18n("Name"), 			$oTxtName->render());
+	$oForm->add(i18n("Name", 'newsletter'), 			$oTxtName->render());
 	$oForm->add(i18n("E-Mail"), 		$oTxtEMail->render());
-	$oForm->add(i18n("Confirmed"), 		$oCkbConfirmed->toHTML(false) . " (" . $recipient->get("confirmeddate") . ")");
-	$oForm->add(i18n("Deactivated"), 	$oCkbDeactivated->toHTML(false));
-	$oForm->add(i18n("Message type"),	$oSelNewsType->render());
+	$oForm->add(i18n("Confirmed", 'newsletter'), 		$oCkbConfirmed->toHTML(false) . " (" . $recipient->get("confirmeddate") . ")");
+	$oForm->add(i18n("Deactivated", 'newsletter'), 	$oCkbDeactivated->toHTML(false));
+	$oForm->add(i18n("Message type", 'newsletter'),	$oSelNewsType->render());
 	
 	$aPluginOrder = trim_array(explode(",",getSystemProperty("plugin", "recipients-pluginorder")));
 	
@@ -193,7 +193,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
     					}
     				} else {
     					if (is_array($aPluginTitle) || is_array($aPluginDisplay)) {
-    						$oForm->add(i18n("WARNING"), sprintf(i18n("The plugin %s delivered an array for the displayed titles, but did not return an array for the contents."), $sPlugin));
+    						$oForm->add(i18n("WARNING", 'newsletter'), sprintf(i18n("The plugin %s delivered an array for the displayed titles, but did not return an array for the contents.", 'newsletter'), $sPlugin));
     					} else {
     						$oForm->add($aPluginTitle, $aPluginDisplay);
 					}
@@ -214,10 +214,10 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
 	
 	if ($oAssocGroups->count() == 0)
 	{
-		$oGroupList->setCell(0, 1, i18n("Recipient is not member of any group"));
+		$oGroupList->setCell(0, 1, i18n("Recipient is not member of any group", 'newsletter'));
 	} else {
 		// Headline
-		$oGroupList->setCell(0, 1, "<strong>".i18n("Groupname")."</strong>");
+		$oGroupList->setCell(0, 1, "<strong>".i18n("Groupname", 'newsletter')."</strong>");
 		$oImgDel = new cHTMLImage("images/delete.gif");
 		$oGroupList->setCell(0, 2, $oImgDel->render());
 		$oGroupList->setCellAlignment(0, 2, "right");
@@ -235,10 +235,10 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
 		}
 	}
 			
-	$oForm->add(i18n("Associated groups"), $oGroupList->render());
+	$oForm->add(i18n("Associated groups", 'newsletter'), $oGroupList->render());
 	
-	$oForm->add(i18n("Author"), $classuser->getUserName($recipient->get("author")) . " (". $recipient->get("created").")" ); 
-	$oForm->add(i18n("Last modified by"), $classuser->getUserName($recipient->get("modifiedby")). " (". $recipient->get("lastmodified").")" );
+	$oForm->add(i18n("Author", 'newsletter'), $classuser->getUserName($recipient->get("author")) . " (". $recipient->get("created").")" ); 
+	$oForm->add(i18n("Last modified by", 'newsletter'), $classuser->getUserName($recipient->get("modifiedby")). " (". $recipient->get("lastmodified").")" );
 	
 	$oPage->setContent($sNotis . $oForm->render(true));
 } else {

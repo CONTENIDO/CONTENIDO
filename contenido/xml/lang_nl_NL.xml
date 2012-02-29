@@ -106,10 +106,7 @@
         </mycontenido>
         <extra>
             <main>Extras</main>
-            <newsletter>Nieuwsbrief</newsletter>
             <mailing>Mailing</mailing>
-            <recipients>Leden</recipients>
-            <recipientgroups>Leden groepen</recipientgroups>
         </extra>
         <info>Info</info>
         <login>Inloggen</login>

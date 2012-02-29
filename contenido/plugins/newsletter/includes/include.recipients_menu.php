@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.2.2
- * @author     Björn Behrens (HerrB)
+ * @author     Bjï¿½rn Behrens (HerrB)
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -20,10 +20,10 @@
  * @since      file available since CONTENIDO release <= 4.6
  * 
  * {@internal 
- *   created 2007-01-01, Björn Behrens (HerrB)
+ *   created 2007-01-01, Bjï¿½rn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
- *   $Id$:
+ *   $Id: include.recipients_menu.php 1702 2011-11-14 23:34:42Z xmurrix $:
  * }}
  * 
  */
@@ -51,10 +51,10 @@ $oUser		= new cApiUser($auth->auth["uid"]);
 // sort: 	Element can be used to be sorted by
 // search:	Element can be used to search in
 $aFields = array();
-$aFields["name"]  		= array("field" => "name", "caption" => i18n("Name"), "type" => "base,sort,search");
-$aFields["email"] 		= array("field" => "email", "caption" => i18n("E-Mail"), "type" => "base,sort,search");
-$aFields["confirmed"]	= array("field" => "confirmed", "caption" => i18n("Confirmed"), "type" => "base");
-$aFields["deactivated"] = array("field" => "deactivated", "caption" => i18n("Deactivated"), "type" => "base");
+$aFields["name"]  		= array("field" => "name", "caption" => i18n("Name", 'newsletter'), "type" => "base,sort,search");
+$aFields["email"] 		= array("field" => "email", "caption" => i18n("E-Mail", 'newsletter'), "type" => "base,sort,search");
+$aFields["confirmed"]	= array("field" => "confirmed", "caption" => i18n("Confirmed", 'newsletter'), "type" => "base");
+$aFields["deactivated"] = array("field" => "deactivated", "caption" => i18n("Deactivated", 'newsletter'), "type" => "base");
 
 ##################################
 # Store settings
@@ -132,7 +132,7 @@ $sMsg = "";
 if (getSystemProperty("newsletter", "updatekeys"))
 {
 	$iUpdatedRecipients = $oRecipients->updateKeys();
-	$sMsg = $notification->returnNotification("info", sprintf(i18n("%d recipients, with no or incompatible key has been updated. Deactivate update function."), $iUpdatedRecipients));
+	$sMsg = $notification->returnNotification("info", sprintf(i18n("%d recipients, with no or incompatible key has been updated. Deactivate update function.", 'newsletter'), $iUpdatedRecipients));
 }
 
 $oRecipients->setWhere("recipientcollection.idclient",	$client);
@@ -188,8 +188,8 @@ $iMenu	= 0;
 
 // Store messages for repeated use (speeds performance, as i18n translation is only needed once)
 $aMsg = array();
-$aMsg["DelTitle"]   = i18n("Delete recipient");
-$aMsg["DelDescr"]   = i18n("Do you really want to delete the following recipient:<br>");
+$aMsg["DelTitle"]   = i18n("Delete recipient", 'newsletter');
+$aMsg["DelDescr"]   = i18n("Do you really want to delete the following recipient:<br>", 'newsletter');
 
 while ($oRecipient = $oRecipients->next())
 {
@@ -256,7 +256,7 @@ $oPage->addScript('exec', $sExecScript);
 $oPage->addScript('parameterCollector.js', '<script language="JavaScript" src="scripts/parameterCollector.js"></script>');
 //$oPage->addScript('refreshTop', $sRefreshTop);
 
-//generate current content for Object Pager´
+//generate current content for Object Pagerï¿½
 $sPagerId 	= '0ed6d632-6adf-4f09-a0c6-1e38ab60e304';
 $oPagerLink = new cHTMLLink;
 $oPagerLink->setLink("main.php");
