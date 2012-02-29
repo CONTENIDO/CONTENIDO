@@ -284,7 +284,6 @@
 ./includes/api/functions.frontend.list.php
 ./includes/cfg_language_de.inc.php
 ./includes/cfg_sql.inc.php
-./includes/cfg_sql_rel.inc.php
 ./includes/config.autoloader.php
 ./includes/config.chains.php
 ./includes/config.clients.php
@@ -315,7 +314,6 @@
 ./includes/functions.pathresolver.php
 ./includes/functions.rights.php
 ./includes/functions.stat.php
-./includes/functions.str - Kopie.php
 ./includes/functions.str.php
 ./includes/functions.system.php
 ./includes/functions.tpl.php
@@ -348,7 +346,6 @@
 ./includes/include.CMS_TEXT.php
 ./includes/include.con_art_overview.php
 ./includes/include.con_editcontent.php
-./includes/include.con_editcontent_org.php
 ./includes/include.con_edit_form.php
 ./includes/include.con_left_top.php
 ./includes/include.con_str_overview.php
@@ -454,7 +451,6 @@
 ./includes/rights_str.inc.php
 ./includes/rights_tpl.inc.php
 ./includes/startup.php
-./includes/startup_mp.php
 ./includes/type/code/include.CMS_DATE.code.php
 ./includes/type/code/include.CMS_EASYIMGEDIT.code.php
 ./includes/type/code/include.CMS_FILELIST.code.php
