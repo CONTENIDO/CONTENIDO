@@ -41,7 +41,6 @@ global $cfg;
 
 $cfg['path']['contenido_html']          = '../contenido/';
 
-$cfg['path']['statfile']                = 'statfile/';
 $cfg['path']['includes']                = 'includes/';
 
 $cfg['path']['xml']                     = 'xml/';
@@ -59,7 +58,6 @@ $cfg['path']['external']                = 'external/';
 
 $cfg['path']['frontendtemplate']        = 'external/frontend/';
 $cfg['path']['templates']               = 'templates/standard/';
-$cfg['path']['xml']                     = 'xml/';
 
 $cfg['path']['repository']				= $cfg["path"]['plugins'] . 'repository/';
 $cfg['path']['modules']					= 'modules/';
