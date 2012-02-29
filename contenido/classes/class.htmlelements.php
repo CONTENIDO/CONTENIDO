@@ -531,6 +531,14 @@ class cHTML extends HTML_Common
 	{
 		return $this->toHtml();
 	}
+	
+	/**
+	 * Direct call of object as string will return its rendered HTML code.
+	 * @return string Rendered HTML
+	 */
+	public function __toString() {
+		return $this->render();
+	}
 }
 
 /**
@@ -555,7 +563,7 @@ class cHTMLFormElement extends cHTML
 	 */
 	public function __construct($name = "", $id = "", $disabled = "", $tabindex = "", $accesskey = "", $class = "text_medium")
 	{
-		cHTML :: __construct();
+		parent::__construct();
 
 		$this->updateAttributes(array ("name" => $name));
 
@@ -655,7 +663,7 @@ class cHTMLHiddenField extends cHTMLFormElement
 	 */
 	function __construct($name, $value = "", $id = "")
 	{
-		cHTMLFormElement :: __construct($name, $id);
+		parent::__construct($name, $id);
 		$this->setContentlessTag();
 		$this->updateAttributes(array ("type" => "hidden"));
 		$this->_tag = "input";
@@ -720,7 +728,7 @@ class cHTMLButton extends cHTMLFormElement
 	 */
 	function __construct($name, $title = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "", $mode = "submit")
 	{
-		cHTMLFormElement :: __construct($name, $id, $disabled, $tabindex, $accesskey);
+		parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
 		$this->_tag = "input";
 		$this->setContentlessTag();
 		$this->setTitle($title);
@@ -824,7 +832,7 @@ class cHTMLTextbox extends cHTMLFormElement
 	 */
 	public function __construct($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
 	{
-		cHTMLFormElement :: __construct($name, $id, $disabled, $tabindex, $accesskey);
+		parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
         
 		$this->_tag = "input";
 		$this->setContentlessTag();
@@ -896,18 +904,6 @@ class cHTMLTextbox extends cHTMLFormElement
 	{
 		$this->updateAttributes(array ("value" => $value));
 	}
-
-	/**
-	 * Renders the textbox
-		 *
-	 * @param none
-	 * @return string Rendered HTML
-	 */
-	public function toHtml()
-	{
-		return parent::toHtml();
-	}
-
 }
 
 /**
@@ -937,7 +933,7 @@ class cHTMLPasswordbox extends cHTMLFormElement
 	 */
 	public function __construct($name, $initvalue = "", $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
 	{
-		cHTMLFormElement :: __construct($name, $id, $disabled, $tabindex, $accesskey);
+		parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
 		$this->_tag = "input";
 		$this->setValue($initvalue);
 
@@ -1007,18 +1003,6 @@ class cHTMLPasswordbox extends cHTMLFormElement
 	{
 		$this->updateAttributes(array ("value" => $value));
 	}
-
-	/**
-	 * Renders the textbox
-		 *
-	 * @param none
-	 * @return string Rendered HTML
-	 */
-	public function toHtml()
-	{
-		return parent::toHTML();
-	}
-
 }
 
 class cHTMLTextarea extends cHTMLFormElement
@@ -1044,7 +1028,7 @@ class cHTMLTextarea extends cHTMLFormElement
 	 */
 	public function __construct($name, $initvalue = "", $width = "", $height = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
 	{
-		cHTMLFormElement :: __construct($name, $id, $disabled, $tabindex, $accesskey);
+		parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
 		$this->_tag = "textarea";
 		$this->setValue($initvalue);
 		$this->setContentlessTag(false);
@@ -1155,7 +1139,7 @@ class cHTMLLabel extends cHTML
 	 */
 	public function __construct($text, $for)
 	{
-		cHTML :: __construct();
+		parent::__construct();
 		$this->_tag = "label";
 		$this->setContentlessTag(false);
 		$this->updateAttributes(array ("for" => $for));
@@ -1212,7 +1196,7 @@ class cHTMLSelectElement extends cHTMLFormElement
 	 */
 	public function __construct($name, $width = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
 	{
-		cHTMLFormElement :: __construct($name, $id, $disabled, $tabindex, $accesskey);
+		parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
 		$this->_tag = "select";
 		$this->setContentlessTag(false);
 	}
@@ -1541,7 +1525,7 @@ class cHTMLRadiobutton extends cHTMLFormElement
 	 */
 	public function __construct($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "")
 	{
-		cHTMLFormElement :: __construct($name, $id, $disabled, $tabindex, $accesskey);
+		parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
 		$this->_tag = "input";
 		$this->_value = $value;
 		$this->setContentlessTag();
@@ -1658,7 +1642,7 @@ class cHTMLCheckbox extends cHTMLFormElement
 	public function __construct($name, $value, $id = "", $checked = false, $disabled = false, $tabindex = null, $accesskey = "")
 	{
 
-		cHTMLFormElement :: __construct($name, $id, $disabled, $tabindex, $accesskey);
+		parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
 		$this->_tag = "input";
 		$this->_value = $value;
 		$this->setContentlessTag();
@@ -1788,7 +1772,7 @@ class cHTMLUpload extends cHTMLFormElement
 	 */
 	function __construct($name, $width = "", $maxlength = "", $id = "", $disabled = false, $tabindex = null, $accesskey = "")
 	{
-		cHTMLFormElement :: __construct($name, $id, $disabled, $tabindex, $accesskey);
+		parent::__construct($name, $id, $disabled, $tabindex, $accesskey);
 		$this->_tag = "input";
 		$this->setContentlessTag();
 
@@ -1889,7 +1873,7 @@ class cHTMLLink extends cHTML
 	public function __construct($href = "")
 	{
 		global $sess;
-		cHTML :: __construct();
+		parent::__construct();
 
 		$this->setLink($href);
 		$this->setContentlessTag(false);
@@ -2105,7 +2089,7 @@ class cHTMLDiv extends cHTML
 	 */
 	public function __construct($content = "")
 	{
-		cHTML :: __construct();
+		parent::__construct();
 		$this->setContent($content);
 		$this->setContentlessTag(false);
 		$this->_tag = "div";
@@ -2128,17 +2112,6 @@ class cHTMLDiv extends cHTML
 	{
 		$this->_setContent($content);
 	}
-
-	/**
-	 * Renders the DIV element
-	 *
-	 * @param none
-	 * @return string Rendered HTML
-	 */
-	public function toHTML()
-	{
-		return parent::toHTML();
-	}
 }
 
 /**
@@ -2155,7 +2128,7 @@ class cHTMLSpan extends cHTML
 	 */
 	public function __construct($content = "")
 	{
-		cHTML :: __construct();
+		parent::__construct();
 		$this->setContent($content);
 		$this->setContentlessTag(false);
 		$this->_tag = "span";
@@ -2228,7 +2201,7 @@ class cHTMLImage extends cHTML
 	 */
 	public function __construct($src = NULL)
 	{
-		cHTML :: __construct();
+		parent::__construct();
 
 		$this->_tag = "img";
 		$this->setContentlessTag();
@@ -2357,7 +2330,7 @@ class cHTMLTable extends cHTML
 {
 	public function __construct()
 	{
-		cHTML :: __construct();
+		parent::__construct();
 
 		$this->_tag = "table";
 		$this->setContentlessTag(false);
@@ -2438,17 +2411,6 @@ class cHTMLTable extends cHTML
 	{
 		$this->updateAttributes(array ("width" => $width));
 	}
-
-	/**
-	 * Renders the Table element
-		 *
-	 * @param none
-	 * @return string Rendered HTML
-	 */
-	public function toHTML()
-	{
-		return parent::toHTML();
-	}
 }
 
 /**
@@ -2460,7 +2422,7 @@ class cHTMLTableBody extends cHTML
 {
 	public function __construct()
 	{
-		cHTML :: __construct();
+		parent::__construct();
 		$this->setContentlessTag(false);
 		$this->_tag = "tbody";
 	}
@@ -2483,17 +2445,6 @@ class cHTMLTableBody extends cHTML
 	{
 		$this->_setContent($content);
 	}
-
-	/**
-	 * Renders the table body element
-		 *
-	 * @param none
-	 * @return string Rendered HTML
-	 */
-	public function toHTML()
-	{
-		return parent::toHTML();
-	}
 }
 
 /**
@@ -2505,7 +2456,7 @@ class cHTMLTableRow extends cHTML
 {
 	public function __construct()
 	{
-		cHTML :: __construct();
+		parent::__construct();
 		$this->setContentlessTag(false);
 		$this->_tag = "tr";
 	}
@@ -2528,17 +2479,6 @@ class cHTMLTableRow extends cHTML
 	{
 		$this->_setContent($content);
 	}
-
-	/**
-	 * Renders the table row element
-		 *
-	 * @param none
-	 * @return string Rendered HTML
-	 */
-	public function toHTML()
-	{
-		return parent::toHTML();
-	}
 }
 
 /**
@@ -2550,7 +2490,7 @@ class cHTMLTableData extends cHTML
 {
 	public function __construct()
 	{
-		cHTML :: __construct();
+		parent::__construct();
 		$this->setContentlessTag(false);
 		$this->_tag = "td";
 	}
@@ -2633,7 +2573,7 @@ class cHTMLTableHead extends cHTML
 {
 	public function __construct()
 	{
-		cHTML :: __construct();
+		parent::__construct();
 		$this->setContentlessTag(false);
 		$this->_tag = "th";
 	}
@@ -2679,7 +2619,7 @@ class cHTMLTableHeader extends cHTML
 {
 	public function __construct()
 	{
-		cHTML :: __construct();
+		parent::__construct();
 		$this->setContentlessTag(false);
 		$this->_tag = "thead";
 	}
@@ -2725,7 +2665,7 @@ class cHTMLIFrame extends cHTML
 {
 	public function __construct()
 	{
-		cHTML :: __construct();
+		parent::__construct();
 		$this->setContentlessTag(false);
 		$this->_tag = "iframe";
 	}
@@ -2799,7 +2739,7 @@ class cHTMLAlignmentTable extends cHTMLTable
 {
 	public function __construct()
 	{
-		cHTMLTable :: __construct();
+		parent::__construct();
 
 		$this->_data = func_get_args();
 		$this->setContentlessTag(false);
@@ -2838,7 +2778,7 @@ class cHTMLForm extends cHTML
 {
 	public function __construct()
 	{
-		cHTML :: __construct();
+		parent::__construct();
 		$this->setContentlessTag(false);
 		$this->_tag = "form";
 	}
@@ -2897,7 +2837,7 @@ class cHTMLScript extends cHTML
 {
 	public function __construct()
 	{
-		cHTML :: __construct();
+		parent::__construct();
 		$this->setContentlessTag(false);
 		$this->_tag = "script";
 	}
