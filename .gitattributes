@@ -1,8 +1,9 @@
 * text=auto !eol
 /CHANGELOG.txt -text
-/FAQ.txt -text
+/INSTALL.txt -text
 /LIZENZ.txt -text
 /README.txt -text
+/UPGRADE.txt -text
 cms/.htaccess_recommended -text
 cms/config.php -text
 cms/css/contenido_sample.css -text

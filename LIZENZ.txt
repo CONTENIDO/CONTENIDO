@@ -1,4 +1,4 @@
-Contenido is written and distributed under the GNU General Public License which
+CONTENIDO is written and distributed under the GNU General Public License which
 means that its source code is freely-distributed and available to the general
 public.
 
@@ -264,7 +264,7 @@ NO WARRANTY
 
 END OF TERMS AND CONDITIONS
 
-Contenido is a Content Management System based on PHP.
+CONTENIDO is a Content Management System based on PHP.
 Copyright (C) 2000-2012 four for business AG. 
 
 This program is free software; you can redistribute it and/or modify it under 
@@ -280,10 +280,10 @@ You should have received a copy of the GNU General Public License along with
 this program; if not, write to the 
 Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-Contenido, versions 0.9-4.9 and higher, 
+CONTENIDO, versions 0.9-4.9 and higher, 
 Copyright (C) 2000-2012 by four for business AG. 
 
-Contenido comes with ABSOLUTELY NO WARRANTY.
+CONTENIDO comes with ABSOLUTELY NO WARRANTY.
 
 four for business AG
 Nordring 82 B
