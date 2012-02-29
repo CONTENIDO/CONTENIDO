@@ -17,7 +17,6 @@
 ./classes/class.chartable.php
 ./classes/class.client.php
 ./classes/class.cms_date.php
-./classes/class.cms_dynamic.php
 ./classes/class.cms_filelist.php
 ./classes/class.cms_image.php
 ./classes/class.cms_linkeditor.php
@@ -202,7 +201,6 @@
 ./classes/xml/class.xml.writer.php
 ./classes/xml/class.xml2array.php
 ./cronjobs/advance_workflow.php
-./cronjobs/CronjobIndexBuilder.php
 ./cronjobs/index.php
 ./cronjobs/linkchecker.php
 ./cronjobs/move_articles.php
@@ -405,24 +403,10 @@
 ./includes/include.mycontenido.tasks.php
 ./includes/include.mycontenido_lastarticles.php
 ./includes/include.mycontenido_settings.php
-./includes/include.newsletter_edit.php
-./includes/include.newsletter_edit_message.php
-./includes/include.newsletter_jobs_details.php
-./includes/include.newsletter_jobs_menu.php
-./includes/include.newsletter_jobs_subnav.php
-./includes/include.newsletter_left_top.php
-./includes/include.newsletter_menu.php
-./includes/include.newsletter_subnav.php
 ./includes/include.note.display.php
 ./includes/include.note.popup.php
 ./includes/include.pretplcfg_edit.php
 ./includes/include.pretplcfg_edit_form.php
-./includes/include.recipients.group.subnav.php
-./includes/include.recipients.group_edit.php
-./includes/include.recipients.group_menu.php
-./includes/include.recipients_edit.php
-./includes/include.recipients_import.php
-./includes/include.recipients_menu.php
 ./includes/include.rights_create.php
 ./includes/include.rights_external.php
 ./includes/include.rights_left_top.php
@@ -472,7 +456,6 @@
 ./includes/startup.php
 ./includes/startup_mp.php
 ./includes/type/code/include.CMS_DATE.code.php
-./includes/type/code/include.CMS_DYNAMIC.code.php
 ./includes/type/code/include.CMS_EASYIMGEDIT.code.php
 ./includes/type/code/include.CMS_FILELIST.code.php
 ./includes/type/code/include.CMS_HEAD.code.php
@@ -543,7 +526,6 @@
 ./logs/index.php
 ./main.loginform.php
 ./main.php
-./main_mp.php
 ./scripts/articleObject.js.php
 ./scripts/help.js.php
 ./scripts/HTMLObj.js.php
@@ -572,9 +554,6 @@
 ./templates/standard/template.client_left_top.html
 ./templates/standard/template.client_menu.html
 ./templates/standard/template.client_subnav.html
-./templates/standard/template.cms_dynamic_content.html
-./templates/standard/template.cms_dynamic_content_action.html
-./templates/standard/template.cms_dynamic_edit.html
 ./templates/standard/template.cms_filelist_dirlistitem.html
 ./templates/standard/template.cms_filelist_edit.html
 ./templates/standard/template.cms_filelist_metadata_limititem.html
@@ -680,4 +659,3 @@
 ./tools/upgrade.php
 ./tools/upgradeseq.php
 ./xml/index.php
-./_t_login.php

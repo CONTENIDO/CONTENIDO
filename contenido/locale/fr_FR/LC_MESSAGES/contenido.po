@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-28 23:48+0100\n"
-"PO-Revision-Date: 2012-02-29 00:53+0100\n"
+"POT-Creation-Date: 2012-03-01 00:24+0100\n"
+"PO-Revision-Date: 2012-03-01 00:27+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -66,14 +66,8 @@ msgstr ""
 #: classes/class.cms_filelist.php:738
 #: classes/class.cms_teaser.php:585
 #: includes/include.con_art_overview.php:79
-#: includes/include.frontend.left_top.php:245
+#: includes/include.frontend.left_top.php:247
 #: includes/include.mod_new.php:129
-#: includes/include.newsletter_left_top.php:328
-#: includes/include.newsletter_left_top.php:511
-#: includes/include.newsletter_left_top.php:752
-#: includes/include.newsletter_left_top.php:916
-#: includes/include.recipients.group_edit.php:243
-#: includes/include.recipients.group_edit.php:440
 #: includes/include.rights_left_top.php:155
 #: includes/include.upl_artlist.php:81
 msgid "Sort order"
@@ -94,12 +88,8 @@ msgstr "Template"
 # e:\timo\contenido_head/contenido/templates/standard/template.str_overview.html:49
 #: backend_search.php:497
 #: includes/include.con_art_overview.php:81
-#: includes/include.frontend.left_top.php:154
+#: includes/include.frontend.left_top.php:156
 #: includes/include.mycontenido.tasks.php:276
-#: includes/include.newsletter_jobs_details.php:174
-#: includes/include.newsletter_left_top.php:108
-#: includes/include.newsletter_left_top.php:627
-#: includes/include.newsletter_left_top.php:854
 #: includes/include.upl_files_overview.php:487
 #: templates/standard/template.str_overview.html:234
 msgid "Actions"
@@ -180,7 +170,6 @@ msgstr "Créer un article"
 #: includes/include.con_art_overview.php:475
 #: includes/include.con_left_top.php:435
 #: includes/include.mycontenido_lastarticles.php:143
-#: includes/include.newsletter_edit.php:174
 #: includes/include.upl_search_results.php:53
 msgid "None"
 msgstr "Rien"
@@ -316,20 +305,6 @@ msgstr ""
 #: includes/include.mod_new.php:60
 #: includes/include.mod_script.php:201
 #: includes/include.mod_style.php:215
-#: includes/include.newsletter_edit.php:377
-#: includes/include.newsletter_jobs_details.php:296
-#: includes/include.newsletter_jobs_menu.php:53
-#: includes/include.newsletter_left_top.php:288
-#: includes/include.newsletter_left_top.php:414
-#: includes/include.newsletter_left_top.php:579
-#: includes/include.newsletter_left_top.php:832
-#: includes/include.newsletter_menu.php:55
-#: includes/include.recipients.group_edit.php:43
-#: includes/include.recipients.group_edit.php:267
-#: includes/include.recipients.group_menu.php:52
-#: includes/include.recipients_edit.php:174
-#: includes/include.recipients_import.php:55
-#: includes/include.recipients_menu.php:54
 #: includes/include.rights_create.php:148
 #: includes/include.rights_left_top.php:116
 #: includes/include.rights_overview.php:199
@@ -364,107 +339,6 @@ msgstr "Début"
 #, fuzzy
 msgid "Please choose a format"
 msgstr "Choisissez s'il vous plait"
-
-#: classes/class.cms_dynamic.php:98
-msgid "HTML"
-msgstr ""
-
-#: classes/class.cms_dynamic.php:99
-msgid "HTML heading"
-msgstr ""
-
-#: classes/class.cms_dynamic.php:100
-msgid "Heading"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.recipients_menu.php:116
-#: classes/class.cms_dynamic.php:101
-#, fuzzy
-msgid "Image"
-msgstr "Page"
-
-# e:\timo\contenido431/contenido/scripts/langref.php:33
-#: classes/class.cms_dynamic.php:102
-#: includes/include.CMS_SIMPLELINK.php:150
-#: scripts/langref.php:31
-msgid "Link"
-msgstr "Lien"
-
-# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:161
-#: classes/class.cms_dynamic.php:112
-#, fuzzy
-msgid "Edit HTML content"
-msgstr "Editer le client"
-
-#: classes/class.cms_dynamic.php:113
-msgid "Edit HTML headng content"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:161
-#: classes/class.cms_dynamic.php:114
-#, fuzzy
-msgid "Edit link"
-msgstr "Editer le client"
-
-# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
-#: classes/class.cms_dynamic.php:115
-#, fuzzy
-msgid "Edit image"
-msgstr "Editer le template"
-
-#: classes/class.cms_dynamic.php:116
-msgid "Edit heading content"
-msgstr ""
-
-#: classes/class.cms_dynamic.php:117
-msgid "Please select a element before!"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:407
-#: classes/class.cms_dynamic.php:148
-#, fuzzy
-msgid "dummy"
-msgstr "Résumé"
-
-#: classes/class.cms_dynamic.php:158
-#: classes/class.cms_teaser.php:645
-msgid "Add"
-msgstr ""
-
-#: classes/class.cms_dynamic.php:159
-#: includes/include.client_artspec.php:131
-#: includes/include.newsletter_left_top.php:236
-#: includes/include.newsletter_left_top.php:635
-msgid "Save"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/templates/standard/template.info.html:22
-#: classes/class.cms_dynamic.php:161
-#, fuzzy
-msgid "HTML template"
-msgstr "Templates HTML"
-
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:375
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:390
-#: classes/class.cms_dynamic.php:225
-#, fuzzy
-msgid "Move"
-msgstr "Déplacer l'arbre"
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
-#: classes/class.cms_dynamic.php:235
-#: includes/include.clientsettings.php:112
-#: includes/include.client_artspec.php:94
-#: includes/include.systemsettings.php:83
-#: includes/include.systemsettings.php:85
-msgid "Delete"
-msgstr "Supprimer"
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
-#: classes/class.cms_dynamic.php:579
-#, fuzzy
-msgid "Default template"
-msgstr "Supprimer le template"
 
 # e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:227
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:227
@@ -504,30 +378,18 @@ msgstr "Modifié le "
 
 #: classes/class.cms_filelist.php:465
 #: classes/class.cms_teaser.php:420
-#: includes/include.frontend.left_top.php:111
-#: includes/include.frontend.user_menu.php:105
+#: includes/include.frontend.left_top.php:113
+#: includes/include.frontend.user_menu.php:107
 #: includes/include.mod_new.php:61
-#: includes/include.newsletter_left_top.php:293
-#: includes/include.newsletter_left_top.php:469
-#: includes/include.newsletter_left_top.php:691
-#: includes/include.newsletter_left_top.php:880
-#: includes/include.recipients.group_edit.php:213
-#: includes/include.recipients.group_edit.php:410
 #: includes/include.rights_left_top.php:118
 msgid "Ascending"
 msgstr ""
 
 #: classes/class.cms_filelist.php:468
 #: classes/class.cms_teaser.php:423
-#: includes/include.frontend.left_top.php:111
-#: includes/include.frontend.user_menu.php:105
+#: includes/include.frontend.left_top.php:113
+#: includes/include.frontend.user_menu.php:107
 #: includes/include.mod_new.php:61
-#: includes/include.newsletter_left_top.php:293
-#: includes/include.newsletter_left_top.php:469
-#: includes/include.newsletter_left_top.php:691
-#: includes/include.newsletter_left_top.php:880
-#: includes/include.recipients.group_edit.php:213
-#: includes/include.recipients.group_edit.php:410
 #: includes/include.rights_left_top.php:119
 msgid "Descending"
 msgstr ""
@@ -1055,6 +917,10 @@ msgstr "Taille de l'image"
 msgid "Image scale"
 msgstr "Taille de l'image"
 
+#: classes/class.cms_teaser.php:645
+msgid "Add"
+msgstr ""
+
 # e:\timo\contenido_head/contenido/classes/class.navigation.php:225
 #: classes/class.navigation.php:336
 #: classes/class.navigation.php:339
@@ -1080,8 +946,6 @@ msgstr ""
 
 # e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
 #: classes/class.newsletter.php:121
-#: includes/include.newsletter_edit.php:260
-#: includes/include.newsletter_edit_message.php:86
 #, fuzzy, php-format
 msgid "Newsletter: %s"
 msgstr "Lettre d'information"
@@ -1797,8 +1661,6 @@ msgstr ""
 #: includes/include.js_edit_form.php:170
 #: includes/include.mod_script.php:164
 #: includes/include.mod_style.php:173
-#: includes/include.newsletter_edit.php:349
-#: includes/include.newsletter_edit_message.php:95
 #: includes/include.pretplcfg_edit.php:107
 #: includes/include.style_edit_form.php:168
 #: includes/include.systemsettings.php:47
@@ -2343,7 +2205,7 @@ msgstr ""
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
 #: includes/cfg_language_de.inc.php:173
 #: includes/cfg_language_de.inc.php:176
-#: includes/include.frontend.left_top.php:167
+#: includes/include.frontend.left_top.php:169
 #: includes/include.rights_left_top.php:103
 #: templates/standard/template.symbolhelp.html:1835
 msgid "Create user"
@@ -2351,8 +2213,8 @@ msgstr "Créer un utilisateur"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
 #: includes/cfg_language_de.inc.php:174
-#: includes/include.frontend.left_top.php:368
-#: includes/include.frontend.user_menu.php:251
+#: includes/include.frontend.left_top.php:376
+#: includes/include.frontend.user_menu.php:259
 #: includes/include.rights_menu.php:135
 msgid "Delete user"
 msgstr "Supprimer un utilisateur"
@@ -2385,15 +2247,13 @@ msgstr "Ajouter les membres du groupe"
 # e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:126
 #: includes/cfg_language_de.inc.php:182
 #: includes/include.frontend.group_edit.php:261
-#: includes/include.recipients.group_edit.php:184
 msgid "Edit group"
 msgstr "Editer le groupe"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
 #: includes/cfg_language_de.inc.php:183
-#: includes/include.frontend.left_top.php:412
+#: includes/include.frontend.left_top.php:420
 #: includes/include.grouprights_left_top.php:90
-#: includes/include.newsletter_left_top.php:843
 msgid "Create group"
 msgstr "Créer un groupe"
 
@@ -2510,32 +2370,27 @@ msgstr "Supprimer le template"
 
 # e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
 #: includes/cfg_language_de.inc.php:218
-#: includes/include.newsletter_edit.php:374
 msgid "Edit newsletter"
 msgstr "Editer la lettre d'information"
 
 # e:\timo\contenido_head/contenido/includes/include.str_overview.php:478
 #: includes/cfg_language_de.inc.php:219
-#: includes/include.newsletter_left_top.php:117
 #: templates/standard/template.symbolhelp.html:1279
 msgid "Create newsletter"
 msgstr "Créer une lettre d'information"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
 #: includes/cfg_language_de.inc.php:220
-#: includes/include.newsletter_menu.php:166
 msgid "Delete newsletter"
 msgstr "Supprimer la lettre d'information"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
 #: includes/cfg_language_de.inc.php:221
-#: includes/include.newsletter_menu.php:172
 #, fuzzy
 msgid "Duplicate newsletter"
 msgstr "Supprimer la lettre d'information"
 
 #: includes/cfg_language_de.inc.php:222
-#: includes/include.newsletter_menu.php:170
 msgid "Add newsletter dispatch job"
 msgstr ""
 
@@ -2551,7 +2406,6 @@ msgstr "Envoyer la lettre"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
 #: includes/cfg_language_de.inc.php:225
-#: includes/include.newsletter_jobs_menu.php:156
 #, fuzzy
 msgid "Delete dispatch job"
 msgstr "Supprimer le script"
@@ -2561,7 +2415,6 @@ msgid "Remove recipient from dispatch job"
 msgstr ""
 
 #: includes/cfg_language_de.inc.php:227
-#: includes/include.newsletter_jobs_menu.php:159
 msgid "Run job"
 msgstr ""
 
@@ -2571,35 +2424,28 @@ msgstr ""
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
 #: includes/cfg_language_de.inc.php:230
-#: includes/include.recipients_edit.php:158
 msgid "Edit recipient"
 msgstr "Editer le destinataire"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
 #: includes/cfg_language_de.inc.php:231
-#: includes/include.newsletter_left_top.php:593
 #: templates/standard/template.symbolhelp.html:1373
 msgid "Create recipient"
 msgstr "Nouveau destinataire"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
 #: includes/cfg_language_de.inc.php:232
-#: includes/include.recipients_menu.php:191
 msgid "Delete recipient"
 msgstr "Supprimer le destinataire"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
 #: includes/cfg_language_de.inc.php:233
-#: includes/include.newsletter_left_top.php:608
-#: includes/include.newsletter_left_top.php:609
 #, fuzzy
 msgid "Purge recipients"
 msgstr "Nouveau destinataire"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
 #: includes/cfg_language_de.inc.php:234
-#: includes/include.newsletter_left_top.php:601
-#: includes/include.recipients_import.php:354
 #, fuzzy
 msgid "Import recipients"
 msgstr "Nouveau destinataire"
@@ -2612,7 +2458,6 @@ msgstr "Supprimer le destinataire"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
 #: includes/cfg_language_de.inc.php:236
-#: includes/include.recipients.group_menu.php:133
 #, fuzzy
 msgid "Delete recipient group"
 msgstr "Supprimer le destinataire"
@@ -3346,7 +3191,6 @@ msgstr "Les modifications ont été enregistrées"
 #: includes/grouprights_mod.inc.php:99
 #: includes/grouprights_str.inc.php:105
 #: includes/grouprights_tpl.inc.php:101
-#: includes/include.recipients.group_edit.php:269
 #: includes/rights_area.inc.php:87
 #: includes/rights_con.inc.php:112
 #: includes/rights_lay.inc.php:100
@@ -3451,10 +3295,6 @@ msgstr ""
 #: includes/include.mod_edit_form.php:408
 #: includes/include.mod_new.php:60
 #: includes/include.mod_new.php:79
-#: includes/include.newsletter_edit.php:391
-#: includes/include.newsletter_jobs_details.php:174
-#: includes/include.newsletter_jobs_details.php:319
-#: includes/include.newsletter_jobs_details.php:326
 #: includes/include.systemsettings.php:65
 #: includes/include.systemsettings.php:173
 #: includes/include.upl_files_overview.php:424
@@ -3483,10 +3323,17 @@ msgstr ""
 msgid "Value"
 msgstr "Valeur"
 
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
+#: includes/include.clientsettings.php:112
+#: includes/include.client_artspec.php:94
+#: includes/include.systemsettings.php:83
+#: includes/include.systemsettings.php:85
+msgid "Delete"
+msgstr "Supprimer"
+
 # e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:121
 #: includes/include.clientsettings.php:118
 #: includes/include.client_artspec.php:90
-#: includes/include.newsletter_subnav.php:45
 #: includes/include.systemsettings.php:76
 #: includes/include.systemsettings.php:80
 #: includes/include.upl_edit.php:63
@@ -3519,11 +3366,13 @@ msgstr "Propriétés de l'article"
 #: includes/include.lay_edit_form.php:260
 #: includes/include.mycontenido.tasks.php:397
 #: includes/include.mycontenido_settings.php:126
-#: includes/include.newsletter_edit.php:491
-#: includes/include.newsletter_jobs_details.php:371
 #, fuzzy
 msgid "Options"
 msgstr "Actions"
+
+#: includes/include.client_artspec.php:131
+msgid "Save"
+msgstr ""
 
 #: includes/include.client_artspec.php:150
 msgid "Make this article specification default"
@@ -3757,6 +3606,12 @@ msgstr "Ouvrir le lien dans une nouvelle fenêtre"
 msgid "Open in new window"
 msgstr "Ouvrir dans une nouvelle fenêtre"
 
+# e:\timo\contenido431/contenido/scripts/langref.php:33
+#: includes/include.CMS_SIMPLELINK.php:150
+#: scripts/langref.php:31
+msgid "Link"
+msgstr "Lien"
+
 #: includes/include.con_art_overview.php:327
 #: includes/include.con_edit_form.php:278
 msgid "not yet published"
@@ -3835,7 +3690,6 @@ msgstr "Etes-vous sûr de vouloir supprimer l'article suivant:<br><br><b>%s</b>"
 
 #: includes/include.con_art_overview.php:701
 #: includes/include.con_art_overview.php:704
-#: includes/include.newsletter_jobs_details.php:279
 #, php-format
 msgid "Go to page: %s"
 msgstr ""
@@ -3873,7 +3727,6 @@ msgid "Sort articles:"
 msgstr "Trier les articles"
 
 #: includes/include.con_art_overview.php:812
-#: includes/include.newsletter_jobs_details.php:165
 msgid "Items per page:"
 msgstr ""
 
@@ -3968,10 +3821,9 @@ msgstr ""
 
 # e:\timo\contenido_head/contenido/templates/standard/template.con_art_overview.html:59
 #: includes/include.con_edit_form.php:265
+#: includes/include.frontend.left_top.php:59
+#: includes/include.frontend.user_menu.php:54
 #: includes/include.mycontenido.tasks.php:276
-#: includes/include.newsletter_jobs_details.php:373
-#: includes/include.newsletter_jobs_menu.php:54
-#: includes/include.newsletter_left_top.php:415
 #: includes/include.upl_artlist.php:81
 #: templates/standard/template.mycontenido_lastarticles.html:64
 msgid "Created"
@@ -4101,10 +3953,6 @@ msgstr "Date"
 # e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:183
 #: includes/include.con_left_top.php:266
 #: includes/include.frontend.user_edit.php:235
-#: includes/include.newsletter_edit.php:499
-#: includes/include.newsletter_jobs_details.php:372
-#: includes/include.newsletter_left_top.php:499
-#: includes/include.recipients_edit.php:240
 #: includes/include.upl_edit.php:97
 msgid "Author"
 msgstr "Auteur"
@@ -4226,13 +4074,11 @@ msgstr "Fermer toutes les catégories"
 
 # e:\timo\contenido_head/contenido/includes/main.login.php:86
 #: includes/include.frontend.group.subnav.php:40
-#: includes/include.recipients.group.subnav.php:39
 #: includes/main.login.php:199
 msgid "Overview"
 msgstr "Vue d'ensemble"
 
 #: includes/include.frontend.group_edit.php:53
-#: includes/include.recipients.group_edit.php:50
 msgid "-- new group --"
 msgstr ""
 
@@ -4251,20 +4097,17 @@ msgid "Deleted group successfully!"
 msgstr "Supprimer les membres du groupe"
 
 #: includes/include.frontend.group_edit.php:114
-#: includes/include.recipients.group_edit.php:86
 msgid "Could not set new group name: Group already exists"
 msgstr ""
 
 # e:\timo\contenido_head/contenido/includes/include.grouprights_create.php:113
 #: includes/include.frontend.group_edit.php:212
 #: includes/include.grouprights_create.php:102
-#: includes/include.recipients.group_edit.php:187
 msgid "Group name"
 msgstr "Nom du groupe"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
 #: includes/include.frontend.group_edit.php:218
-#: includes/include.recipients.group_edit.php:191
 #, fuzzy
 msgid "Default group"
 msgstr "Supprimer le groupe"
@@ -4305,12 +4148,6 @@ msgstr "Aucun article trouvé"
 
 #: includes/include.frontend.left_top.php:58
 #: includes/include.frontend.user_menu.php:53
-#: includes/include.newsletter_left_top.php:303
-#: includes/include.newsletter_left_top.php:478
-#: includes/include.newsletter_left_top.php:723
-#: includes/include.newsletter_left_top.php:887
-#: includes/include.recipients.group_edit.php:219
-#: includes/include.recipients.group_edit.php:416
 msgid "-- All fields --"
 msgstr ""
 
@@ -4324,22 +4161,30 @@ msgstr ""
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
+# e:\timo\contenido_head/contenido/includes/main.login.php:47
+#: includes/include.frontend.left_top.php:59
+#: includes/include.frontend.user_menu.php:54
+#: includes/include.upl_artlist.php:81
+#: templates/standard/template.mycontenido_lastarticles.html:65
+msgid "Modified"
+msgstr "Modifié"
+
 # e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:101
-#: includes/include.frontend.left_top.php:130
+#: includes/include.frontend.left_top.php:132
 #, fuzzy
 msgid "Frontend users"
 msgstr "Accès au Frontend"
 
 # e:\timo\contenido_head/contenido/includes/include.grouprights_left_top.php:41
 # e:\timo\contenido_head/contenido/includes/include.rights_left_top.php:42
-#: includes/include.frontend.left_top.php:137
+#: includes/include.frontend.left_top.php:139
 #, fuzzy
 msgid "Frontend groups"
 msgstr "Frontend seulement"
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
-#: includes/include.frontend.left_top.php:170
-#: includes/include.frontend.left_top.php:415
+#: includes/include.frontend.left_top.php:172
+#: includes/include.frontend.left_top.php:423
 #: includes/include.html_tpl_left_top.php:54
 #: includes/include.js_left_top.php:54
 #: includes/include.lang_left_top.php:82
@@ -4352,66 +4197,42 @@ msgid "No Client selected"
 msgstr "Auncun article n'a été sélectionné"
 
 # e:\timo\contenido_head/contenido/includes/main.login.php:47
-#: includes/include.frontend.left_top.php:182
-#: includes/include.frontend.user_menu.php:107
+#: includes/include.frontend.left_top.php:184
+#: includes/include.frontend.user_menu.php:109
 #: includes/include.mod_new.php:63
-#: includes/include.newsletter_jobs_details.php:147
-#: includes/include.newsletter_left_top.php:350
-#: includes/include.newsletter_left_top.php:533
-#: includes/include.newsletter_left_top.php:778
-#: includes/include.newsletter_left_top.php:938
 #: includes/include.rights_left_top.php:123
 #, fuzzy
 msgid "List options"
 msgstr "Dernier login"
 
-#: includes/include.frontend.left_top.php:217
-#: includes/include.frontend.user_menu.php:132
+#: includes/include.frontend.left_top.php:219
+#: includes/include.frontend.user_menu.php:134
 msgid "-- All Groups --"
 msgstr ""
 
-#: includes/include.frontend.left_top.php:237
+#: includes/include.frontend.left_top.php:239
 #: includes/include.mod_new.php:121
-#: includes/include.newsletter_left_top.php:320
-#: includes/include.newsletter_left_top.php:503
-#: includes/include.newsletter_left_top.php:744
-#: includes/include.newsletter_left_top.php:908
-#: includes/include.recipients.group_edit.php:235
-#: includes/include.recipients.group_edit.php:432
 #: includes/include.rights_left_top.php:147
 msgid "Items / page"
 msgstr ""
 
 # e:\timo\contenido_head/contenido/includes/include.con_edit_form.php:186
-#: includes/include.frontend.left_top.php:241
+#: includes/include.frontend.left_top.php:243
 #: includes/include.mod_new.php:125
-#: includes/include.newsletter_left_top.php:324
-#: includes/include.newsletter_left_top.php:507
-#: includes/include.newsletter_left_top.php:748
-#: includes/include.newsletter_left_top.php:912
-#: includes/include.recipients.group_edit.php:239
-#: includes/include.recipients.group_edit.php:436
 #: includes/include.rights_left_top.php:151
 #, fuzzy
 msgid "Sort by"
 msgstr "Clé de tri"
 
 # e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:126
-#: includes/include.frontend.left_top.php:249
-#: includes/include.newsletter_left_top.php:756
+#: includes/include.frontend.left_top.php:251
 #, fuzzy
 msgid "Show group"
 msgstr "Editer le groupe"
 
 # e:\timo\contenido_head/contenido/includes/functions.general.php:26
-#: includes/include.frontend.left_top.php:253
+#: includes/include.frontend.left_top.php:255
 #: includes/include.mod_new.php:137
-#: includes/include.newsletter_left_top.php:332
-#: includes/include.newsletter_left_top.php:515
-#: includes/include.newsletter_left_top.php:760
-#: includes/include.newsletter_left_top.php:920
-#: includes/include.recipients.group_edit.php:247
-#: includes/include.recipients.group_edit.php:444
 #: includes/include.rights_left_top.php:159
 #: includes/include.upl_left_top.php:74
 #, fuzzy
@@ -4419,35 +4240,23 @@ msgid "Search for"
 msgstr "Recherche"
 
 # e:\timo\contenido_head/contenido/includes/functions.general.php:26
-#: includes/include.frontend.left_top.php:257
+#: includes/include.frontend.left_top.php:259
 #: includes/include.mod_new.php:140
-#: includes/include.newsletter_left_top.php:336
-#: includes/include.newsletter_left_top.php:519
-#: includes/include.newsletter_left_top.php:764
-#: includes/include.newsletter_left_top.php:924
-#: includes/include.recipients.group_edit.php:251
-#: includes/include.recipients.group_edit.php:448
 #, fuzzy
 msgid "Search in"
 msgstr "Recherche"
 
 # e:\timo\contenido_head/contenido/includes/functions.general.php:27
-#: includes/include.frontend.left_top.php:262
+#: includes/include.frontend.left_top.php:264
 #: includes/include.mod_new.php:145
-#: includes/include.newsletter_left_top.php:310
-#: includes/include.newsletter_left_top.php:489
-#: includes/include.newsletter_left_top.php:734
-#: includes/include.newsletter_left_top.php:898
-#: includes/include.recipients.group_edit.php:230
-#: includes/include.recipients.group_edit.php:427
 #: includes/include.rights_left_top.php:164
 #, fuzzy
 msgid "Apply"
 msgstr "Avril"
 
 # e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
-#: includes/include.frontend.left_top.php:366
-#: includes/include.frontend.user_menu.php:249
+#: includes/include.frontend.left_top.php:374
+#: includes/include.frontend.user_menu.php:257
 #: includes/include.rights_menu.php:133
 #, php-format
 msgid "Do you really want to delete the user %s?"
@@ -4511,12 +4320,10 @@ msgid "Active"
 msgstr "Actif"
 
 #: includes/include.frontend.user_edit.php:207
-#: includes/include.recipients_edit.php:196
 msgid "WARNING"
 msgstr ""
 
 #: includes/include.frontend.user_edit.php:207
-#: includes/include.recipients_edit.php:196
 #, php-format
 msgid "The plugin %s delivered an array for the displayed titles, but did not return an array for the contents."
 msgstr ""
@@ -4530,8 +4337,6 @@ msgstr "Membre du groupe"
 
 # e:\timo\contenido_head/contenido/includes/main.login.php:47
 #: includes/include.frontend.user_edit.php:236
-#: includes/include.newsletter_edit.php:500
-#: includes/include.recipients_edit.php:241
 #: includes/include.upl_edit.php:98
 #, fuzzy
 msgid "Last modified by"
@@ -4621,7 +4426,6 @@ msgstr "Les modifications ont été enregistrées"
 
 # e:\timo\contenido_head/contenido/includes/include.grouprights_overview.php:122
 #: includes/include.grouprights_overview.php:112
-#: includes/include.recipients_edit.php:220
 msgid "Groupname"
 msgstr "Nom du groupe"
 
@@ -5145,12 +4949,6 @@ msgstr "Auncun article n'a été sélectionné"
 #: includes/include.mod_new.php:66
 #: includes/include.mod_new.php:76
 #: includes/include.mod_new.php:96
-#: includes/include.newsletter_left_top.php:283
-#: includes/include.newsletter_left_top.php:454
-#: includes/include.newsletter_left_top.php:678
-#: includes/include.newsletter_left_top.php:867
-#: includes/include.recipients.group_edit.php:197
-#: includes/include.recipients.group_edit.php:394
 msgid "-- All --"
 msgstr ""
 
@@ -5252,9 +5050,6 @@ msgstr ""
 # e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:141
 #: includes/include.mycontenido.tasks.edit.php:68
 #: includes/include.mycontenido.tasks.php:276
-#: includes/include.newsletter_edit.php:399
-#: includes/include.newsletter_edit_message.php:137
-#: includes/include.newsletter_jobs_details.php:316
 #: includes/include.todo.popup.php:67
 msgid "Subject"
 msgstr "Sujet"
@@ -5297,12 +5092,6 @@ msgstr "Propriétés"
 # e:\timo\contenido_head/contenido/includes/include.stat_overview.php:74
 #: includes/include.mycontenido.tasks.edit.php:137
 #: includes/include.mycontenido.tasks.php:276
-#: includes/include.newsletter_jobs_details.php:174
-#: includes/include.newsletter_jobs_details.php:301
-#: includes/include.newsletter_jobs_details.php:304
-#: includes/include.newsletter_jobs_details.php:308
-#: includes/include.newsletter_jobs_menu.php:55
-#: includes/include.newsletter_left_top.php:416
 #: includes/include.stat_overview.php:90
 msgid "Status"
 msgstr "Statut"
@@ -5362,7 +5151,6 @@ msgstr ""
 
 # e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
 #: includes/include.mycontenido.tasks.php:338
-#: includes/include.newsletter_jobs_details.php:218
 #, fuzzy
 msgid "Delete item"
 msgstr "Supprimer le fichier"
@@ -5436,11 +5224,6 @@ msgstr "Confirmer le mot de passe"
 # e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:221
 # e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:221
 #: includes/include.mycontenido_settings.php:120
-#: includes/include.newsletter_jobs_details.php:174
-#: includes/include.newsletter_left_top.php:580
-#: includes/include.recipients.group_edit.php:44
-#: includes/include.recipients_edit.php:175
-#: includes/include.recipients_menu.php:55
 #: includes/include.rights_create.php:166
 #: includes/include.rights_overview.php:220
 msgid "E-Mail"
@@ -5460,617 +5243,6 @@ msgstr ""
 #: includes/include.mycontenido_settings.php:130
 msgid "Common date formattings"
 msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
-#: includes/include.newsletter_edit.php:57
-#, fuzzy
-msgid "-- New newsletter --"
-msgstr "Envoyer la lettre"
-
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:478
-#: includes/include.newsletter_edit.php:99
-#, fuzzy
-msgid "Created newsletter successfully!"
-msgstr "Créer une lettre d'information"
-
-#: includes/include.newsletter_edit.php:108
-msgid "Dupplicate newsletter successfully!"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
-#: includes/include.newsletter_edit.php:126
-#, fuzzy
-msgid "Deleted newsletter successfully!"
-msgstr "Supprimer la lettre d'information"
-
-#: includes/include.newsletter_edit.php:134
-msgid "Newsletter dispatch job has been added for this newsletter"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:136
-msgid "Newsletter dispatch job has been not been added! Please check newsletter details"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:172
-#: includes/include.newsletter_edit.php:182
-#, fuzzy
-msgid "Test newsletter has been sent to:"
-msgstr "Heure de l'envoi du message"
-
-#: includes/include.newsletter_edit.php:184
-msgid "Test newsletter has not been sent (partly or completely):"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:185
-msgid "Successful:"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:186
-msgid "Error messages:"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:249
-msgid "Could not set new newsletter name: name already exists"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:298
-msgid "'Send to recipients in selected groups' has been selected, but no group has been specified. Selection has been set to 'Send to all recipients'"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:381
-#: includes/include.newsletter_jobs_details.php:224
-#: includes/include.newsletter_jobs_details.php:326
-#: includes/include.recipients_edit.php:168
-msgid "Text only"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:383
-#: includes/include.newsletter_jobs_details.php:319
-#: includes/include.recipients_edit.php:170
-msgid "HTML and text"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:221
-# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:221
-# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:221
-#: includes/include.newsletter_edit.php:397
-#, fuzzy
-msgid "From (E-Mail)"
-msgstr "E-Mail"
-
-# e:\timo\contenido_head/contenido/templates/standard/template.js_edit_form.html:21
-# e:\timo\contenido_head/contenido/templates/standard/template.lay_edit_form.html:19
-# e:\timo\contenido_head/contenido/templates/standard/template.mod_edit_form.html:20
-# e:\timo\contenido_head/contenido/templates/standard/template.style_edit_form.html:21
-# e:\timo\contenido_head/contenido/templates/standard/template.tpl_edit_form.html:16
-#: includes/include.newsletter_edit.php:398
-#, fuzzy
-msgid "From (Name)"
-msgstr "Prénom"
-
-#: includes/include.newsletter_edit.php:398
-msgid "optional"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:427
-msgid "Note: Hold <Ctrl> to select multiple items."
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
-#: includes/include.newsletter_edit.php:459
-#: includes/include.newsletter_jobs_details.php:357
-#: includes/include.newsletter_left_top.php:79
-#: includes/include.recipients_import.php:381
-#: templates/standard/template.symbolhelp.html:80
-msgid "Recipients"
-msgstr "Destinataires"
-
-# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.newsletter_send.php:80
-#: includes/include.newsletter_edit.php:460
-#: includes/include.newsletter_jobs_details.php:336
-#, fuzzy
-msgid "Send newsletter to all recipients"
-msgstr "La lettre d'information a été envoyé à %s destinataires"
-
-#: includes/include.newsletter_edit.php:461
-#: includes/include.newsletter_jobs_details.php:339
-msgid "Send newsletter to the members of the default group"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:462
-#: includes/include.newsletter_jobs_details.php:342
-msgid "Send newsletter to the members of the selected group(s):"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:481
-msgid "Option has to be enabled as client setting - see techref for details"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:488
-msgid "Note: Set to 0 to send chunks manually."
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
-#: includes/include.newsletter_edit.php:492
-#, fuzzy
-msgid "Welcome-Newsletter"
-msgstr "Lettre d'information"
-
-#: includes/include.newsletter_edit.php:493
-#: includes/include.newsletter_left_top.php:417
-msgid "Use cronjob"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:494
-msgid "Send in blocks:"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
-#: includes/include.newsletter_edit.php:495
-#, fuzzy
-msgid "Recipients per block:"
-msgstr "Destinataires"
-
-#: includes/include.newsletter_edit.php:496
-msgid "Delay between blocks:"
-msgstr ""
-
-#: includes/include.newsletter_edit.php:496
-msgid "sec."
-msgstr ""
-
-#: includes/include.newsletter_edit.php:497
-msgid "Save option settings as default"
-msgstr ""
-
-#: includes/include.newsletter_edit_message.php:105
-#, php-format
-msgid "The html newsletter article has been deleted (idart: %s), the html message is lost"
-msgstr ""
-
-#: includes/include.newsletter_edit_message.php:118
-msgid "The html newsletter template article has been deleted, it has been restored using the html message article of this newsletter"
-msgstr ""
-
-#: includes/include.newsletter_edit_message.php:122
-#, php-format
-msgid "%s (Template restored)"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
-#: includes/include.newsletter_edit_message.php:136
-#, fuzzy, php-format
-msgid "Edit newsletter message (%s)"
-msgstr "Editer la lettre d'information"
-
-#: includes/include.newsletter_edit_message.php:139
-#: includes/include.newsletter_edit_message.php:150
-msgid "Tag information"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:169
-#: includes/include.newsletter_edit_message.php:140
-#, fuzzy
-msgid "Special message tags (will be replaced when sending)"
-msgstr "Etiquettes spéciales dans le corps du message (seront remplacées lors de l'envoi)"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:170
-#: includes/include.newsletter_edit_message.php:141
-#: includes/include.newsletter_edit_message.php:152
-msgid "Name of the recipient"
-msgstr "Nom du destinataire"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:171
-#: includes/include.newsletter_edit_message.php:142
-#: includes/include.newsletter_edit_message.php:153
-#, fuzzy
-msgid "Date, when the mail has been sent"
-msgstr "Date d'envoi du message"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:172
-#: includes/include.newsletter_edit_message.php:143
-#: includes/include.newsletter_edit_message.php:154
-#, fuzzy
-msgid "Time, when the mail has been sent"
-msgstr "Heure de l'envoi du message"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:173
-#: includes/include.newsletter_edit_message.php:144
-#: includes/include.newsletter_edit_message.php:155
-msgid "Number of recipients"
-msgstr "Nombre de destinataires "
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:174
-#: includes/include.newsletter_edit_message.php:146
-#: includes/include.newsletter_edit_message.php:157
-msgid "Link to unsubscribe"
-msgstr "Liens de désinscription"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:175
-#: includes/include.newsletter_edit_message.php:147
-#: includes/include.newsletter_edit_message.php:158
-msgid "Link to pause the subscription"
-msgstr "Lien pour suspendre les inscriptions"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:176
-#: includes/include.newsletter_edit_message.php:148
-#: includes/include.newsletter_edit_message.php:159
-msgid "Link to resume the subscription"
-msgstr "Lien pour reprendre les inscriptions"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:169
-#: includes/include.newsletter_edit_message.php:151
-#, fuzzy
-msgid "Special message tags (will be replaced when sending, {..} = optional)"
-msgstr "Etiquettes spéciales dans le corps du message (seront remplacées lors de l'envoi)"
-
-# e:\timo\contenido431/contenido/scripts/langref.php:33
-#: includes/include.newsletter_edit_message.php:157
-#: includes/include.newsletter_edit_message.php:158
-#: includes/include.newsletter_edit_message.php:159
-#, fuzzy
-msgid "Link text"
-msgstr "Lien"
-
-#: includes/include.newsletter_edit_message.php:163
-#: includes/include.newsletter_edit_message.php:164
-msgid "Additional message tags from recipients plugins:"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:37
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:283
-#: includes/include.newsletter_edit_message.php:198
-#, fuzzy
-msgid "-- none --"
-msgstr "--- Rien ---"
-
-# e:\timo\contenido_head/contenido/templates/standard/template.info.html:22
-#: includes/include.newsletter_edit_message.php:207
-#, fuzzy
-msgid "HTML Template"
-msgstr "Templates HTML"
-
-#: includes/include.newsletter_edit_message.php:207
-msgid "Note, that changing the template discards the current html message content"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:179
-#: includes/include.newsletter_edit_message.php:211
-#: includes/include.newsletter_edit_message.php:216
-#: includes/include.newsletter_jobs_details.php:324
-#, fuzzy
-msgid "HTML Message"
-msgstr "Message"
-
-#: includes/include.newsletter_edit_message.php:214
-msgid "Newsletter type has been set to HTML/text, please remember to select an html template"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_left_top.php:33
-#: includes/include.newsletter_edit_message.php:216
-#, fuzzy
-msgid "Please choose a template first"
-msgstr "Choisir un template"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:179
-#: includes/include.newsletter_edit_message.php:221
-#: includes/include.newsletter_jobs_details.php:331
-#, fuzzy
-msgid "Text Message"
-msgstr "Message"
-
-#: includes/include.newsletter_edit_message.php:251
-msgid "HTML newsletter template changed"
-msgstr ""
-
-#: includes/include.newsletter_edit_message.php:251
-msgid "HTML template has been changed. Do you like to save now to apply changes?<br /><br /><b>Note, that existing HTML newsletter content will get lost!</b>"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.stat_menu.php:18
-#: includes/include.newsletter_jobs_details.php:63
-#: includes/include.newsletter_jobs_details.php:74
-#: includes/include.newsletter_jobs_details.php:87
-#, fuzzy
-msgid "Report:"
-msgstr "Bugreport"
-
-#: includes/include.newsletter_jobs_details.php:66
-#: includes/include.newsletter_jobs_details.php:77
-#, php-format
-msgid "Sending newsletter ... (chunk %s of %s, recipients: %s, sent: %s)"
-msgstr ""
-
-#: includes/include.newsletter_jobs_details.php:69
-#: includes/include.newsletter_jobs_details.php:82
-msgid "Stop sending"
-msgstr ""
-
-#: includes/include.newsletter_jobs_details.php:70
-msgid "Send next chunk"
-msgstr ""
-
-# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.newsletter_send.php:80
-#: includes/include.newsletter_jobs_details.php:90
-#, fuzzy, php-format
-msgid "The newsletter has been sent to %s recipients"
-msgstr "La lettre d'information a été envoyé à %s destinataires"
-
-# e:\timo\contenido_head/contenido/includes/functions.stat.php:759
-# e:\timo\contenido_head/contenido/includes/functions.stat.php:788
-#: includes/include.newsletter_jobs_details.php:152
-#, fuzzy
-msgid "-All-"
-msgstr "Tous"
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
-#: includes/include.newsletter_jobs_details.php:174
-#: templates/standard/template.symbolhelp.html:1330
-#: templates/standard/template.symbolhelp.html:1361
-#, fuzzy
-msgid "Recipient"
-msgstr "Destinataires"
-
-# e:\timo\contenido_head/contenido/classes/class.navigation.php:225
-#: includes/include.newsletter_jobs_details.php:174
-#, fuzzy
-msgid "Sent"
-msgstr "Client"
-
-# e:\timo\contenido_head/contenido/templates/standard/template.info.html:22
-#: includes/include.newsletter_jobs_details.php:225
-#, fuzzy
-msgid "HTML/Text"
-msgstr "Templates HTML"
-
-#: includes/include.newsletter_jobs_details.php:232
-msgid "Waiting for sending"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/main.login.php:87
-#: includes/include.newsletter_jobs_details.php:235
-#, fuzzy
-msgid "Sending"
-msgstr "Paramètres"
-
-#: includes/include.newsletter_jobs_details.php:238
-msgid "Successful"
-msgstr ""
-
-# e:\timo\contenido431/contenido/scripts/langref.php:14
-#: includes/include.newsletter_jobs_details.php:241
-#, fuzzy, php-format
-msgid "Error: %s"
-msgstr "Erreur"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
-#: includes/include.newsletter_jobs_details.php:294
-#, fuzzy
-msgid "Newsletter dispatch job"
-msgstr "Lettre d'information"
-
-# e:\timo\contenido_head/contenido/includes/include.lang_edit.php:118
-#: includes/include.newsletter_jobs_details.php:301
-#, fuzzy
-msgid "Pending"
-msgstr "Encodage"
-
-#: includes/include.newsletter_jobs_details.php:304
-#, php-format
-msgid "Sending (started: %s)"
-msgstr ""
-
-#: includes/include.newsletter_jobs_details.php:308
-#, php-format
-msgid "Finished (started: %s, finished: %s)"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:129
-#: includes/include.newsletter_jobs_details.php:314
-#: templates/standard/template.symbolhelp.html:86
-#: templates/standard/template.symbolhelp.html:1466
-msgid "Statistics"
-msgstr "Statistiques"
-
-#: includes/include.newsletter_jobs_details.php:314
-#, php-format
-msgid "Planned: %s, Send: %s"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:134
-#: includes/include.newsletter_jobs_details.php:315
-msgid "From"
-msgstr "De"
-
-# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/include.newsletter_send.php:80
-#: includes/include.newsletter_jobs_details.php:350
-#, fuzzy
-msgid "Send newsletter to single recipient:"
-msgstr "La lettre d'information a été envoyé à %s destinataires"
-
-#: includes/include.newsletter_jobs_details.php:360
-msgid "Use cronjob: Enabled"
-msgstr ""
-
-#: includes/include.newsletter_jobs_details.php:362
-msgid "Use cronjob: Not enabled"
-msgstr ""
-
-#: includes/include.newsletter_jobs_details.php:366
-#, php-format
-msgid "Dispatch: Enabled (block size: %s, delay: %s sec.)"
-msgstr ""
-
-#: includes/include.newsletter_jobs_details.php:368
-msgid "Dispatch: Disabled"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
-#: includes/include.newsletter_jobs_menu.php:157
-#, fuzzy
-msgid "Do you really want to delete the following newsletter dispatch job:<br>"
-msgstr "Etes-vous sûr de vouloir supprimer la lettre d'information suivante:<br><br><b>%s</b>"
-
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
-#: includes/include.newsletter_jobs_menu.php:160
-#, fuzzy
-msgid "Do you really want to run the following job:<br>"
-msgstr "Etes-vous sûr de vouloir supprimer ce groupe :<br><br><b>%s</b>"
-
-#: includes/include.newsletter_jobs_subnav.php:45
-msgid "View"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
-#: includes/include.newsletter_jobs_subnav.php:52
-#, fuzzy
-msgid "Details"
-msgstr "Supprimer les fichiers"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
-#: includes/include.newsletter_left_top.php:61
-#: templates/standard/template.symbolhelp.html:77
-#: templates/standard/template.symbolhelp.html:1248
-msgid "Newsletter"
-msgstr "Lettre d'information"
-
-#: includes/include.newsletter_left_top.php:70
-msgid "Dispatch"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
-#: includes/include.newsletter_left_top.php:88
-#, fuzzy
-msgid "Recipient groups"
-msgstr "Destinataires"
-
-# e:\timo\contenido_head/contenido/includes/main.login.php:87
-#: includes/include.newsletter_left_top.php:129
-#: includes/include.newsletter_left_top.php:665
-#: includes/main.login.php:202
-msgid "Settings"
-msgstr "Paramètres"
-
-# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:78
-# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:198
-# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:236
-# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:78
-# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:198
-# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:236
-# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:78
-# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:198
-# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:236
-#: includes/include.newsletter_left_top.php:139
-#: includes/include.newsletter_left_top.php:141
-#, fuzzy
-msgid "Please select"
-msgstr "Choisissez s'il vous plait"
-
-# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/templates/standard/template.system_errorreport.html:35
-#: includes/include.newsletter_left_top.php:201
-#, fuzzy
-msgid "My E-Mail address"
-msgstr "Votre adresse email"
-
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:478
-#: includes/include.newsletter_left_top.php:253
-#, fuzzy
-msgid "Enable HTML newsletter"
-msgstr "Créer une lettre d'information"
-
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:331
-#: includes/include.newsletter_left_top.php:256
-#, fuzzy
-msgid "HTML template category:"
-msgstr "Supprimer la catégorie"
-
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:331
-#: includes/include.newsletter_left_top.php:259
-#, fuzzy
-msgid "HTML newsletter category:"
-msgstr "Supprimer la catégorie"
-
-#: includes/include.newsletter_left_top.php:262
-msgid "Send test destination:"
-msgstr ""
-
-# e:\timo\contenido431/contenido/scripts/langref.php:22
-#: includes/include.newsletter_left_top.php:581
-#: includes/include.recipients.group_edit.php:45
-#: includes/include.recipients_edit.php:176
-#: includes/include.recipients_import.php:73
-#: includes/include.recipients_menu.php:56
-#, fuzzy
-msgid "Confirmed"
-msgstr "Confirmer"
-
-# e:\timo\contenido_head/contenido/includes/include.recipients_edit.php:160
-#: includes/include.newsletter_left_top.php:582
-#: includes/include.recipients.group_edit.php:46
-#: includes/include.recipients_edit.php:177
-#: includes/include.recipients_import.php:67
-#: includes/include.recipients_menu.php:57
-msgid "Deactivated"
-msgstr "Désactivé"
-
-#: includes/include.newsletter_left_top.php:608
-#, php-format
-msgid "Do you really want to remove recipients, that have not been confirmed since %s days and over?"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:215
-# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:215
-# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:215
-#: includes/include.newsletter_left_top.php:651
-#, fuzzy
-msgid "Purge timeframe"
-msgstr "Frame cible"
-
-#: includes/include.newsletter_left_top.php:652
-msgid "days"
-msgstr ""
-
-#: includes/include.newsletter_left_top.php:695
-msgid "-- All groups --"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
-#: includes/include.newsletter_menu.php:167
-#, fuzzy
-msgid "Do you really want to delete the following newsletter:<br>"
-msgstr "Etes-vous sûr de vouloir supprimer la lettre d'information suivante:<br><br><b>%s</b>"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
-#: includes/include.newsletter_menu.php:168
-#, fuzzy
-msgid "Send test newsletter"
-msgstr "Envoyer la lettre"
-
-#: includes/include.newsletter_menu.php:169
-msgid "Send test newsletter (disabled, check newsletter sender e-mail address and handler article selection)"
-msgstr ""
-
-#: includes/include.newsletter_menu.php:171
-msgid "Add newsletter dispatch job (disabled, check newsletter sender e-mail address and handler article selection)"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
-#: includes/include.newsletter_menu.php:247
-#, fuzzy, php-format
-msgid "Recipient group: %s"
-msgstr "Destinataires"
-
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
-#: includes/include.newsletter_menu.php:252
-#, fuzzy, php-format
-msgid "Do you really want to send the newsletter to:<br><strong>%s</strong>"
-msgstr "Etes-vous sûr de vouloir envoyer la lettre d'information suivante:<br><br><b>%s</b>"
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:179
-#: includes/include.newsletter_subnav.php:52
-#, fuzzy
-msgid "Edit Message"
-msgstr "Message"
 
 #: includes/include.note.popup.php:60
 msgid "Add note"
@@ -6099,232 +5271,6 @@ msgstr "Module dans le conteneur "
 #, fuzzy
 msgid "Template preconfiguration"
 msgstr "Editer la configuration du template"
-
-#: includes/include.recipients.group_edit.php:194
-msgid "Member list options"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/grouprights_members.inc.php:94
-#: includes/include.recipients.group_edit.php:330
-#, fuzzy
-msgid "No recipients are added to this group yet"
-msgstr "Les utilisateurs suivants ont été ajouté à ce groupe"
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:393
-#: includes/include.recipients.group_edit.php:333
-#, fuzzy
-msgid "No recipients found"
-msgstr "Aucun article trouvé"
-
-#: includes/include.recipients.group_edit.php:378
-msgid "Member navigation"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
-#: includes/include.recipients.group_edit.php:380
-#, fuzzy
-msgid "Recipients in group"
-msgstr "Destinataires"
-
-#: includes/include.recipients.group_edit.php:391
-msgid "Outsider list options"
-msgstr ""
-
-#: includes/include.recipients.group_edit.php:549
-msgid "Outsider navigation"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
-#: includes/include.recipients.group_edit.php:551
-#, fuzzy
-msgid "Add recipients"
-msgstr "Editer le destinataire"
-
-#: includes/include.recipients.group_edit.php:554
-msgid "Note: Hold &lt;Ctrl&gt; to<br>select multiple items."
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
-#: includes/include.recipients.group_menu.php:134
-#, fuzzy
-msgid "Do you really want to delete the following newsletter recipient group:<br>"
-msgstr "Etes-vous sûr de vouloir supprimer la lettre d'information suivante:<br><br><b>%s</b>"
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
-#: includes/include.recipients_edit.php:47
-#, fuzzy
-msgid "-- New recipient --"
-msgstr "Supprimer le destinataire"
-
-#: includes/include.recipients_edit.php:62
-#, php-format
-msgid "%1backslashdollard recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed."
-msgstr ""
-
-#: includes/include.recipients_edit.php:64
-#, php-format
-msgid "There are no recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed."
-msgstr ""
-
-# M:\Projekte_Persoenlich\timo.hummel\contenido_sources\contenido/includes/functions.system.php:423
-#: includes/include.recipients_edit.php:88
-#, fuzzy
-msgid "Please specify a valid e-mail address"
-msgstr "Merci d'entrer une adresse email valide"
-
-#: includes/include.recipients_edit.php:100
-msgid "Could not set new e-mail adress: Other recipient with same e-mail address already exists"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.newsletter_edit.php:179
-#: includes/include.recipients_edit.php:178
-#: includes/include.recipients_import.php:85
-#, fuzzy
-msgid "Message type"
-msgstr "Message"
-
-#: includes/include.recipients_edit.php:217
-msgid "Recipient is not member of any group"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
-#: includes/include.recipients_edit.php:238
-#, fuzzy
-msgid "Associated groups"
-msgstr "Créer un groupe"
-
-# e:\timo\contenido_head/contenido/external/wysiwyg/insert_link.php:228
-# e:\timo\contenido_head/contenido/external/wysiwyg/spaw/insert_link.php:228
-# e:\timo\contenido_head/contenido/external/wysiwyg/htmlarea2/insert_link.php:228
-#: includes/include.recipients_import.php:61
-msgid "Mail"
-msgstr "Mail"
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:253
-#: includes/include.recipients_import.php:79
-#, fuzzy
-msgid "Confirmed Date"
-msgstr "Configurer l'article"
-
-# e:\timo\contenido_head/contenido/includes/include.grouprights_overview.php:122
-#: includes/include.recipients_import.php:138
-#, fuzzy
-msgid "Group"
-msgstr "Groupes"
-
-#: includes/include.recipients_import.php:155
-msgid "The file is empty!"
-msgstr ""
-
-#: includes/include.recipients_import.php:158
-msgid "Wrong mime-type of file!"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
-#: includes/include.recipients_import.php:160
-#, fuzzy
-msgid "Colud not open the file!"
-msgstr "Impossible de supprimer le language"
-
-#: includes/include.recipients_import.php:197
-#, php-format
-msgid "Given column header '%s' unknown, column ignored"
-msgstr ""
-
-#: includes/include.recipients_import.php:206
-#, php-format
-msgid "Mandatory column '%s' wasn't found, import stopped"
-msgstr ""
-
-#: includes/include.recipients_import.php:226
-#, php-format
-msgid "Item with empty mail address found, item ignored (name: %s, row: %s)"
-msgstr ""
-
-#: includes/include.recipients_import.php:230
-#, php-format
-msgid "Mail address '%s' is invalid, item ignored (row: %s)"
-msgstr ""
-
-#: includes/include.recipients_import.php:234
-#, php-format
-msgid "Recipient with mail address '%s' already exists, item skipped (row: %s)"
-msgstr ""
-
-#: includes/include.recipients_import.php:263
-#: includes/include.recipients_import.php:303
-msgid "yes"
-msgstr ""
-
-#: includes/include.recipients_import.php:339
-#, php-format
-msgid "%d recipients added, %d recipients skipped (email already exists) and %d invalid recipients/e-mail adresses ignored. Invalid recipients are shown (if any)."
-msgstr ""
-
-#: includes/include.recipients_import.php:358
-msgid "Tab"
-msgstr ""
-
-#: includes/include.recipients_import.php:359
-msgid "Semicolon"
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:310
-#: includes/include.recipients_import.php:362
-#, fuzzy
-msgid "Delimiter"
-msgstr "Supprimer"
-
-#: includes/include.recipients_import.php:368
-msgid "Import information"
-msgstr ""
-
-#: includes/include.recipients_import.php:370
-msgid "Specify file:"
-msgstr ""
-
-#: includes/include.recipients_import.php:371
-msgid "The file is of type csv and is saved with UTF-8 encoding."
-msgstr ""
-
-#: includes/include.recipients_import.php:372
-msgid "Specify colum types:"
-msgstr ""
-
-#: includes/include.recipients_import.php:373
-msgid "<br />The first line must contain the column names; this specifies the column order.<br />&lt;column name&gt;[delimiter]&lt;column name&gt;..."
-msgstr ""
-
-#: includes/include.recipients_import.php:374
-msgid "Data structure:"
-msgstr ""
-
-#: includes/include.recipients_import.php:375
-msgid "The recipients have to be entered using the following format:<br />&lt;data&gt;[Delimiter]&lt;data&gt;... - each recipient in a new line."
-msgstr ""
-
-#: includes/include.recipients_import.php:376
-msgid "Example:"
-msgstr ""
-
-#: includes/include.recipients_import.php:377
-msgid "<br />name;mail;confirmed<br />Smith;jon.smith@example.org;1"
-msgstr ""
-
-#: includes/include.recipients_import.php:378
-msgid "The following column names will be recognized:"
-msgstr ""
-
-#: includes/include.recipients_menu.php:135
-#, php-format
-msgid "%d recipients, with no or incompatible key has been updated. Deactivate update function."
-msgstr ""
-
-# e:\timo\contenido_head/contenido/includes/include.str_overview.php:330
-#: includes/include.recipients_menu.php:192
-#, fuzzy
-msgid "Do you really want to delete the following recipient:<br>"
-msgstr "Etes-vous sûr de vouloir supprimer le destinataire suivant:<br><br><b>%s</b>"
 
 #: includes/include.rights_create.php:54
 msgid "Username can't be empty"
@@ -7145,12 +6091,6 @@ msgstr "Nouvelle catégorie"
 msgid "Start"
 msgstr "Début"
 
-# e:\timo\contenido_head/contenido/includes/main.login.php:47
-#: includes/include.upl_artlist.php:81
-#: templates/standard/template.mycontenido_lastarticles.html:65
-msgid "Modified"
-msgstr "Modifié"
-
 #: includes/include.upl_artlist.php:81
 msgid "Online"
 msgstr ""
@@ -7444,6 +6384,11 @@ msgstr ""
 #, php-format
 msgid "Reminder list: %d Tasks open"
 msgstr ""
+
+# e:\timo\contenido_head/contenido/includes/main.login.php:87
+#: includes/main.login.php:202
+msgid "Settings"
+msgstr "Paramètres"
 
 # e:\timo\contenido_head/contenido/includes/main.login.php:120
 #: includes/main.login.php:226
@@ -7781,6 +6726,23 @@ msgstr "Nouveau template"
 msgid "Extras"
 msgstr "Extras"
 
+# e:\timo\contenido_head/contenido/includes/include.newsletter_menu.php:87
+#: templates/standard/template.symbolhelp.html:77
+#: templates/standard/template.symbolhelp.html:1248
+msgid "Newsletter"
+msgstr "Lettre d'information"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: templates/standard/template.symbolhelp.html:80
+msgid "Recipients"
+msgstr "Destinataires"
+
+# e:\timo\contenido_head/contenido/includes/cfg_language_de.inc.php:129
+#: templates/standard/template.symbolhelp.html:86
+#: templates/standard/template.symbolhelp.html:1466
+msgid "Statistics"
+msgstr "Statistiques"
+
 # e:\timo\contenido_head/contenido/templates/standard/template.welcome.html:55
 #: templates/standard/template.symbolhelp.html:95
 #: templates/standard/template.symbolhelp.html:1548
@@ -7984,6 +6946,13 @@ msgstr "Templates"
 #, fuzzy
 msgid "Copy newsletter"
 msgstr "Créer une lettre d'information"
+
+# e:\timo\contenido_head/contenido/includes/include.con_art_overview.php:339
+#: templates/standard/template.symbolhelp.html:1330
+#: templates/standard/template.symbolhelp.html:1361
+#, fuzzy
+msgid "Recipient"
+msgstr "Destinataires"
 
 # e:\timo\contenido_head/contenido/includes/main.login.php:74
 #: templates/standard/template.symbolhelp.html:1385
