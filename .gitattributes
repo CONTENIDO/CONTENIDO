@@ -1,7 +1,7 @@
 * text=auto !eol
 /CHANGELOG.txt -text
 /INSTALL.txt -text
-/LIZENZ.txt -text
+/LICENSE.txt -text
 /README.txt -text
 /UPGRADE.txt -text
 cms/.htaccess_recommended -text
