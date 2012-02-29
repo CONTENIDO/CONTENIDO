@@ -56,10 +56,12 @@ if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['pa
 }
 
 $aFieldsToSearch = array("--all--" => i18n("-- All fields --"), "username" => i18n("Username"));
-$aFieldsToSort = array("username" => i18n("Username"));
+$aFieldsToSort = array("username" => i18n("Username"), "created" => i18n("Created"), "modified" => i18n("Modified"));
 
 $aFieldSources = array();
-$aFieldSources["username"] = "base";
+$aFieldSources["username"] = "base"; 
+$aFieldSources["created"] = "created"; 
+$aFieldSources["modified"] = "modified";
 
 $bUsePlugins = getEffectiveSetting("frontendusers", "pluginsearch", "true");
 
@@ -303,9 +305,15 @@ while ($feuser = $oFEUsers->next()) {
         $aUserTable[$idfrontenduser]["idfrontenduser"] = $idfrontenduser;
 
         switch ($field) {
-            case "base":
-                $aUserTable[$idfrontenduser][$key] = $feuser->get("username");
-                break;
+			case "base":
+				$aUserTable[$idfrontenduser][$key] = $feuser->get("username");
+				break;	
+			case "created":
+				$aUserTable[$idfrontenduser][$key] = $feuser->get("created");
+				break;	
+			case "modified":
+				$aUserTable[$idfrontenduser][$key] = $feuser->get("modified");
+				break;	
             default:
                 if ($_REQUEST["filter"] != "") {
                     $aUserTable[$idfrontenduser][$key] = call_user_func("frontendusers_".$field."_getvalue", $key);
