@@ -1,1 +1,1 @@
-INSERT INTO !PREFIX!_nav_sub VALUES('610', '3', '16', '0', 'newsletter/xml/; navigation/extra/newsletter', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('610', '3', '16', '0', 'newsletter/xml/;navigation/extra/newsletter', '1');

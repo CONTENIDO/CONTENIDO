@@ -30,7 +30,7 @@ INSERT INTO !PREFIX!_nav_sub VALUES('33', '0', '42', '1', 'navigation/mycontenid
 INSERT INTO !PREFIX!_nav_sub VALUES('36', '5', '46', '0', 'navigation/administration/clients/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('49', '5', '49', '0', 'navigation/administration/logs', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('37', '0', '4', '1', 'navigation/content/article/preview', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('38', '3', '50', '1', 'newsletter/xml/; navigation/extra/recipients', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('38', '3', '50', '1', 'newsletter/xml/;navigation/extra/recipients', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('41', '0', '61', '1', 'navigation/administration/groups/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('43', '0', '62', '1', 'navigation/administration/groups/areas', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('44', '0', '55', '1', 'navigation/administration/groups/layout', '1');
