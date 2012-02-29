@@ -55,7 +55,6 @@ return array(
     'cCharacterConverter' => 'contenido/classes/class.chartable.php',
     'Client' => 'contenido/classes/contenido/class.client.php',
     'Cms_Date' => 'contenido/classes/class.cms_date.php',
-    'Cms_Dynamic' => 'contenido/classes/class.cms_dynamic.php',
     'Cms_FileList' => 'contenido/classes/class.cms_filelist.php',
     'Cms_Image' => 'contenido/classes/class.cms_image.php',
     'Cms_LinkEditor' => 'contenido/classes/class.cms_linkeditor.php',

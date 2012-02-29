@@ -149,11 +149,6 @@ cms/modules/xing/php/xing_output.php -text
 cms/modules/xing/template/xing_big.html -text
 cms/modules/xing/template/xing_small.html -text
 cms/robots.txt -text
-cms/templates/cms_dynamic_standard_head.html -text
-cms/templates/cms_dynamic_standard_html.html -text
-cms/templates/cms_dynamic_standard_htmlhead.html -text
-cms/templates/cms_dynamic_standard_img.html -text
-cms/templates/cms_dynamic_standard_link.html -text
 cms/templates/cms_filelist_style_default.html -text
 cms/templates/cms_teaser_style_block.html -text
 cms/templates/cms_teaser_style_blog.html -text
@@ -264,7 +259,6 @@ contenido/classes/class.cec_hook.php -text
 contenido/classes/class.chartable.php -text
 contenido/classes/class.client.php -text
 contenido/classes/class.cms_date.php -text
-contenido/classes/class.cms_dynamic.php -text
 contenido/classes/class.cms_filelist.php -text
 contenido/classes/class.cms_image.php -text
 contenido/classes/class.cms_linkeditor.php -text
@@ -1264,7 +1258,6 @@ contenido/includes/rights_str.inc.php -text
 contenido/includes/rights_tpl.inc.php -text
 contenido/includes/startup.php -text
 contenido/includes/type/code/include.CMS_DATE.code.php -text
-contenido/includes/type/code/include.CMS_DYNAMIC.code.php -text
 contenido/includes/type/code/include.CMS_EASYIMGEDIT.code.php -text
 contenido/includes/type/code/include.CMS_FILELIST.code.php -text
 contenido/includes/type/code/include.CMS_HEAD.code.php -text
@@ -1621,7 +1614,6 @@ contenido/scripts/articleObject.js.php -text
 contenido/scripts/browserCheck.js -text
 contenido/scripts/cfoldingrow.js -text
 contenido/scripts/cmsDate.js -text
-contenido/scripts/cmsDynamic.js -text
 contenido/scripts/cmsFileList.js -text
 contenido/scripts/cmsImage.js -text
 contenido/scripts/cmsLinkEditor.js -text
@@ -1701,7 +1693,6 @@ contenido/scripts/rowMark.js -text
 contenido/scripts/setPager.js -text
 contenido/scripts/str_overview.js -text
 contenido/scripts/subnav.js -text
-contenido/styles/cms_dynamic.css -text
 contenido/styles/cms_filelist.css -text
 contenido/styles/cms_image.css -text
 contenido/styles/cms_linkeditor.css -text
@@ -1731,9 +1722,6 @@ contenido/templates/standard/template.client_edit.html -text
 contenido/templates/standard/template.client_left_top.html -text
 contenido/templates/standard/template.client_menu.html -text
 contenido/templates/standard/template.client_subnav.html -text
-contenido/templates/standard/template.cms_dynamic_content.html -text
-contenido/templates/standard/template.cms_dynamic_content_action.html -text
-contenido/templates/standard/template.cms_dynamic_edit.html -text
 contenido/templates/standard/template.cms_filelist_dirlistitem.html -text
 contenido/templates/standard/template.cms_filelist_edit.html -text
 contenido/templates/standard/template.cms_filelist_metadata_limititem.html -text
