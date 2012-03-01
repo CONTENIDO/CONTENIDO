@@ -289,11 +289,6 @@ contenido/classes/class.layout.php -text
 contenido/classes/class.layoutInFile.php -text
 contenido/classes/class.metaobject.php -text
 contenido/classes/class.navigation.php -text
-contenido/classes/class.newsletter.groups.php -text
-contenido/classes/class.newsletter.jobs.php -text
-contenido/classes/class.newsletter.logs.php -text
-contenido/classes/class.newsletter.php -text
-contenido/classes/class.newsletter.recipients.php -text
 contenido/classes/class.note.php -text
 contenido/classes/class.notification.php -text
 contenido/classes/class.phpmailer.php -text
@@ -1444,6 +1439,12 @@ contenido/plugins/mod_rewrite/templates/contentexpert.html -text
 contenido/plugins/mod_rewrite/templates/contenttest.html -text
 contenido/plugins/mod_rewrite/xml/lang_de_DE.xml -text
 contenido/plugins/mod_rewrite/xml/lang_en_US.xml -text
+contenido/plugins/newsletter/classes/class.newsletter.groups.php -text
+contenido/plugins/newsletter/classes/class.newsletter.jobs.php -text
+contenido/plugins/newsletter/classes/class.newsletter.logs.php -text
+contenido/plugins/newsletter/classes/class.newsletter.php -text
+contenido/plugins/newsletter/classes/class.newsletter.recipients.php -text
+contenido/plugins/newsletter/includes/config.plugin.php -text
 contenido/plugins/newsletter/includes/include.newsletter_edit.php -text
 contenido/plugins/newsletter/includes/include.newsletter_edit_message.php -text
 contenido/plugins/newsletter/includes/include.newsletter_jobs_details.php -text

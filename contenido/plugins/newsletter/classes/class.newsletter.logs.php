@@ -24,7 +24,7 @@
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *
- *   $Id$:
+ *   $Id: class.newsletter.logs.php 1843 2012-02-09 16:01:52Z mischa.holz $:
  * }}
  *
  */
@@ -33,11 +33,10 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Collection management class
  */
-class cNewsletterLogCollection extends ItemCollection
+class NewsletterLogCollection extends ItemCollection
 {
     /**
      * Constructor Function
@@ -47,11 +46,11 @@ class cNewsletterLogCollection extends ItemCollection
     {
         global $cfg;
         parent::__construct($cfg["tab"]["news_log"], "idnewslog");
-        $this->_setItemClass("cNewsletterLog");
+        $this->_setItemClass("NewsletterLog");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cNewsletterLogCollection()
+    public function NewsletterLogCollection()
     {
         cDeprecated("Use __construct() instead");
         $this->__construct();
@@ -82,7 +81,7 @@ class cNewsletterLogCollection extends ItemCollection
             return $oItem;
         }
 
-        $oRecipient = new Recipient;
+        $oRecipient = new NewsletterRecipient;
         if ($oRecipient->loadByPrimaryKey($idnewsrcp)) {
             $oItem = parent::create();
 
@@ -185,7 +184,7 @@ class cNewsletterLogCollection extends ItemCollection
             if ($sDestination == "unknown") {
                 return 0;
             } else {
-                $oRecipients = new RecipientCollection;
+                $oRecipients = new NewsletterRecipientCollection;
                 $oRecipients->flexSelect($sDistinct, $sFrom, $sSQL, "", "", "");
 
                 $iRecipients = $oRecipients->count();
@@ -209,11 +208,11 @@ class cNewsletterLogCollection extends ItemCollection
     {
         $idnewslog = Contenido_Security::toInteger($idnewslog);
 
-        $oLog = new cNewsletterLog($idnewslog);
+        $oLog = new NewsletterLog($idnewslog);
         $iIDNewsJob = $oLog->get("idnewsjob");
         unset($oLog);
 
-        $oJob = new cNewsletterJob($iIDNewsJob);
+        $oJob = new NewsletterJob($iIDNewsJob);
         $oJob->set("rcpcount", $oJob->get("rcpcount") - 1);
         $oJob->store();
         unset ($oJob);
@@ -239,7 +238,7 @@ class cNewsletterLogCollection extends ItemCollection
 /**
  * Single NewsletterLog Item
  */
-class cNewsletterLog extends Item
+class NewsletterLog extends Item
 {
     /**
      * Constructor Function
@@ -255,11 +254,45 @@ class cNewsletterLog extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cNewsletterLog($mId = false)
+    public function NewsletterLog($mId = false)
     {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
 }
 
+
+/** @deprecated 2012-03-01 Use NewsletterLogCollection instead */
+class cNewsletterLogCollection extends NewsletterLogCollection {
+	/** @deprecated 2012-03-01 Use NewsletterLogCollection instead */
+    public function __construct()
+    {
+        cDeprecated("Use NewsletterLogCollection instead");
+        $this->__construct();
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function cNewsletterLogCollection()
+    {
+        cDeprecated("Use __construct() instead");
+        $this->__construct();
+    }
+}
+
+/** @deprecated 2012-03-01 Use NewsletterLog instead */
+class cNewsletterLog extends NewsletterLog {
+	/** @deprecated 2012-03-01 Use NewsletterLog instead */
+    public function __construct()
+    {
+        cDeprecated("Use NewsletterLog instead");
+        $this->__construct();
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function cNewsletterLog()
+    {
+        cDeprecated("Use __construct() instead");
+        $this->__construct();
+    }
+}
 ?>

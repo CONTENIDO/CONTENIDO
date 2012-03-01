@@ -24,7 +24,7 @@
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *
- *   $Id$:
+ *   $Id: class.newsletter.recipients.php 1843 2012-02-09 16:01:52Z mischa.holz $:
  * }}
  *
  */
@@ -33,11 +33,10 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 /**
  * Recipient management class
  */
-class RecipientCollection extends ItemCollection
+class NewsletterRecipientCollection extends ItemCollection
 {
     /**
      * Constructor Function
@@ -47,11 +46,11 @@ class RecipientCollection extends ItemCollection
     {
         global $cfg;
         parent::__construct($cfg["tab"]["news_rcp"], "idnewsrcp");
-        $this->_setItemClass("Recipient");
+        $this->_setItemClass("NewsletterRecipient");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function RecipientCollection()
+    public function NewsletterRecipientCollection()
     {
         cDeprecated("Use __construct() instead");
         $this->__construct();
@@ -102,8 +101,8 @@ class RecipientCollection extends ItemCollection
         $iIDRcp = $oItem->get("idnewsrcp"); // Getting internal id of new recipient
 
         // Add this recipient to the default recipient group (if available)
-        $oGroups       = new RecipientGroupCollection();
-        $oGroupMembers = new RecipientGroupMemberCollection();
+        $oGroups       = new NewsletterRecipientGroupCollection();
+        $oGroupMembers = new NewsletterRecipientGroupMemberCollection();
 
         $oGroups->setWhere("idclient", $client);
         $oGroups->setWhere("idlang", $lang);
@@ -137,7 +136,7 @@ class RecipientCollection extends ItemCollection
      */
     public function delete($itemID)
     {
-        $oAssociations = new RecipientGroupMemberCollection();
+        $oAssociations = new NewsletterRecipientGroupMemberCollection();
         $oAssociations->setWhere("idnewsrcp", $itemID);
         $oAssociations->query();
 
@@ -156,7 +155,7 @@ class RecipientCollection extends ItemCollection
     {
         global $client, $lang;
 
-        $oRecipientCollection = new RecipientCollection();
+        $oRecipientCollection = new NewsletterRecipientCollection();
 
         // DATEDIFF(created, NOW()) > 30 would be better, but it's only available in MySQL V4.1.1 and above
         // Note, that, TO_DAYS or NOW may not be available in other database systems than MySQL
@@ -182,7 +181,7 @@ class RecipientCollection extends ItemCollection
     {
         global $client, $lang;
 
-        $oRecipientCollection = new RecipientCollection();
+        $oRecipientCollection = new NewsletterRecipientCollection();
 
         $oRecipientCollection->setWhere("idclient", $client);
         $oRecipientCollection->setWhere("idlang", $lang);
@@ -219,7 +218,7 @@ class RecipientCollection extends ItemCollection
 /**
  * Single Recipient Item
  */
-class Recipient extends Item
+class NewsletterRecipient extends Item
 {
     /**
      * Constructor Function
@@ -235,7 +234,7 @@ class Recipient extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function Recipient($mId = false)
+    public function NewsletterRecipient($mId = false)
     {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
@@ -259,7 +258,7 @@ class Recipient extends Item
         }
         $iNewsType = $this->get("news_type");
 
-        $oLogs = new cNewsletterLogCollection();
+        $oLogs = new NewsletterLogCollection();
         $oLogs->setWhere("idnewsrcp", $this->get($this->primaryKey));
         $oLogs->setWhere("status", "pending");
         $oLogs->query();
@@ -275,4 +274,37 @@ class Recipient extends Item
     }
 }
 
+/** @deprecated 2012-03-01 Use NewsletterRecipientCollection instead */
+class RecipientCollection extends NewsletterRecipientCollection {
+	/** @deprecated 2012-03-01 Use NewsletterRecipientCollection instead */
+    public function __construct()
+    {
+        cDeprecated("Use NewsletterRecipientCollection instead");
+        $this->__construct();
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function RecipientCollection()
+    {
+        cDeprecated("Use __construct() instead");
+        $this->__construct();
+    }
+}
+
+/** @deprecated 2012-03-01 Use NewsletterRecipient instead */
+class Recipient extends NewsletterRecipient {
+	/** @deprecated 2012-03-01 Use NewsletterRecipient instead */
+    public function __construct()
+    {
+        cDeprecated("Use NewsletterRecipient instead");
+        $this->__construct();
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function Recipient()
+    {
+        cDeprecated("Use __construct() instead");
+        $this->__construct();
+    }
+}
 ?>

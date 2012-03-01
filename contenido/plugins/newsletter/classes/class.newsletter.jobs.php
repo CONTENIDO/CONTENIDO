@@ -24,7 +24,7 @@
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *
- *   $Id$:
+ *   $Id: class.newsletter.jobs.php 1843 2012-02-09 16:01:52Z mischa.holz $:
  * }}
  *
  */
@@ -37,7 +37,7 @@ if (!defined('CON_FRAMEWORK')) {
 /**
  * Collection management class
  */
-class cNewsletterJobCollection extends ItemCollection
+class NewsletterJobCollection extends ItemCollection
 {
     /**
      * Constructor Function
@@ -47,11 +47,11 @@ class cNewsletterJobCollection extends ItemCollection
     {
         global $cfg;
         parent::__construct($cfg["tab"]["news_jobs"], "idnewsjob");
-        $this->_setItemClass("cNewsletterJob");
+        $this->_setItemClass("NewsletterJob");
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cNewsletterJobCollection()
+    public function NewsletterJobCollection()
     {
         cDeprecated("Use __construct() instead");
         $this->__construct();
@@ -172,7 +172,7 @@ class cNewsletterJobCollection extends ItemCollection
 
             switch ($oNewsletter->get("send_to")) {
                 case "selection":
-                    $oGroups = new RecipientGroupCollection;
+                    $oGroups = new NewsletterRecipientGroupCollection;
                     $oGroups->setWhere("idnewsgroup", unserialize($oNewsletter->get("send_ids")), "IN");
                     $oGroups->setOrder("groupname");
                     $oGroups->query();
@@ -187,7 +187,7 @@ class cNewsletterJobCollection extends ItemCollection
                     break;
                 case "single":
                     if (is_numeric($oNewsletter->get("send_ids"))) {
-                        $oRcp = new Recipient($oNewsletter->get("send_ids"));
+                        $oRcp = new NewsletterRecipient($oNewsletter->get("send_ids"));
 
                         if ($oRcp->get("name") == "") {
                             $aSendInfo[] = $oRcp->get("email");
@@ -209,7 +209,7 @@ class cNewsletterJobCollection extends ItemCollection
             unset ($oNewsletter); // Not needed anymore
 
             // Adds log items for all recipients and returns recipient count
-            $oLogs = new cNewsletterLogCollection();
+            $oLogs = new NewsletterLogCollection();
             $iRecipientCount = $oLogs->initializeJob($oItem->get($oItem->primaryKey), $iIDNews);
             unset ($oLogs);
 
@@ -233,7 +233,7 @@ class cNewsletterJobCollection extends ItemCollection
      */
     public function delete($iItemID)
     {
-        $oLogs = new cNewsletterLogCollection();
+        $oLogs = new NewsletterLogCollection();
         $oLogs->delete($iItemID);
 
         parent::delete($iItemID);
@@ -244,7 +244,7 @@ class cNewsletterJobCollection extends ItemCollection
 /**
  * Single NewsletterJob Item
  */
-class cNewsletterJob extends Item
+class NewsletterJob extends Item
 {
     /**
      * Constructor Function
@@ -260,7 +260,7 @@ class cNewsletterJob extends Item
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
-    public function cNewsletterJob($mId = false)
+    public function NewsletterJob($mId = false)
     {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
@@ -281,7 +281,7 @@ class cNewsletterJob extends Item
                 $this->set("status", 1);
                 $this->set("started", "0000-00-00 00:00:00", false);
 
-                $oLogs = new cNewsletterLogCollection();
+                $oLogs = new NewsletterLogCollection();
                 $oLogs->setWhere("idnewsjob", $this->get($this->primaryKey));
                 $oLogs->setWhere("status", "sending");
                 $oLogs->query();
@@ -363,7 +363,7 @@ class cNewsletterJob extends Item
 
             // Get recipients (from log table)
             if (!is_object($oLogs)) {
-                $oLogs = new cNewsletterLogCollection;
+                $oLogs = new NewsletterLogCollection;
             } else {
                 $oLogs->resetQuery();
             }
@@ -404,7 +404,7 @@ class cNewsletterJob extends Item
 
                     if ($bPluginEnabled) {
                         // Don't change name of $recipient variable as it is used in plugins!
-                        $recipient = new Recipient();
+                        $recipient = new NewsletterRecipient();
                         $recipient->loadByPrimaryKey($oLog->get("idnewsrcp"));
 
                         foreach ($aPlugins as $sPlugin => $aPluginVar) {
@@ -501,4 +501,38 @@ class cNewsletterJob extends Item
     }
 }
 
+
+/** @deprecated 2012-03-01 Use NewsletterJobCollection instead */
+class cNewsletterJobCollection extends NewsletterJobCollection {
+	/** @deprecated 2012-03-01 Use NewsletterJobCollection instead */
+    public function __construct()
+    {
+        cDeprecated("Use NewsletterJobCollection instead");
+        $this->__construct();
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function cNewsletterJobCollection()
+    {
+        cDeprecated("Use __construct() instead");
+        $this->__construct();
+    }
+}
+
+/** @deprecated 2012-03-01 Use NewsletterJob instead */
+class cNewsletterJob extends NewsletterJob {
+	/** @deprecated 2012-03-01 Use NewsletterJob instead */
+    public function __construct()
+    {
+        cDeprecated("Use NewsletterJob instead");
+        $this->__construct();
+    }
+
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
+    public function cNewsletterJob()
+    {
+        cDeprecated("Use __construct() instead");
+        $this->__construct();
+    }
+}
 ?>
