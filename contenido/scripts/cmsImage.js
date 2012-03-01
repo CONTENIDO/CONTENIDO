@@ -298,7 +298,8 @@ function addSelectAction(sImageFrameId, iImageId){
 				$('#directoryShow_'+iImageId).html('');				
 			} else {
 				var surl = "";
-				surl = sUploadPath+wert;		
+				//surl = sUploadPath+wert;
+				surl = frontend_path + 'upload/' + wert;
 				//$('#directoryShow_'+iImageId).html('<div><img src="'+surl+'" style="max-height:210px;max-width:428px;"/></div>');
 				$.ajax({
 					type: "POST",
