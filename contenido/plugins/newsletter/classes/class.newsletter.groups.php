@@ -378,7 +378,7 @@ class RecipientGroupMemberCollection extends NewsletterRecipientGroupMemberColle
 }
 
 /** @deprecated 2012-03-01 Use NewsletterRecipientGroupMember instead */
-class RecipientGroup extends NewsletterRecipientGroupMember {
+class RecipientGroupMember extends NewsletterRecipientGroupMember {
 	/** @deprecated 2012-03-01 Use NewsletterRecipientGroupMember instead */
     public function __construct()
     {
