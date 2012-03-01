@@ -15,8 +15,6 @@ var sub = {
         if (anchors[0]) {
             anchors[0].className = 'current';
         }
-        
-        alert('hi');
     },
 
     /**
