@@ -35,7 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $oPage = new cPage();
-$oRecipients = new RecipientCollection();
+$oRecipients = new NewsletterRecipientCollection();
 
 if (is_array($cfg['plugins']['recipients'])) {
     foreach ($cfg['plugins']['recipients'] as $plugin) {
@@ -65,10 +65,10 @@ if ($action == "recipients_create" && $perm->have_perm_area_action($area, $actio
         $sNotis = $notification->messageBox("info", sprintf(str_replace("backslashdollar", "\$", i18n("There are no recipients, which hasn't been confirmed since more than %2backslashdollard days has been removed.", 'newsletter')), 0, $timeframe),0);
     }
 
-    $recipient = new Recipient;
+    $recipient = new NewsletterRecipient;
     $oPage->setReload();
 } else {
-    $recipient = new Recipient($idrecipient);
+    $recipient = new NewsletterRecipient($idrecipient);
 }
 
 if ($recipient->virgin == false && $recipient->get("idclient") == $client && $recipient->get("idlang") == $lang) {
@@ -135,7 +135,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
 
         // Remove group associations
         if (isset($_REQUEST["ckbRemove"])) {
-            $oGroupMembers = new RecipientGroupMemberCollection;
+            $oGroupMembers = new NewsletterRecipientGroupMemberCollection;
 
             foreach ($_REQUEST["ckbRemove"] as $iGroupMemberID) {
                 if (is_numeric($iGroupMemberID)) {
@@ -206,7 +206,7 @@ if ($recipient->virgin == false && $recipient->get("idclient") == $client && $re
     $oGroupList->setWidth("100%");
     $oGroupList->setBorder(1);
 
-    $oAssocGroups = new RecipientGroupMemberCollection();
+    $oAssocGroups = new NewsletterRecipientGroupMemberCollection();
     $oAssocGroups->link("RecipientGroupCollection");
     $oAssocGroups->setWhere("recipientgroupmembercollection.idnewsrcp", $recipient->get("idnewsrcp"));
     $oAssocGroups->setOrder("recipientgroupcollection.groupname");

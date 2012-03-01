@@ -39,7 +39,7 @@ if (!defined('CON_FRAMEWORK')) {
 ##################################
 $oPage = new cPage();
 $oMenu = new UI_Menu();
-$oJobs = new cNewsletterJobCollection();
+$oJobs = new NewsletterJobCollection();
 $oUser = new cApiUser($auth->auth["uid"]);
 
 // Specify fields for search, sort and validation. Design makes enhancements

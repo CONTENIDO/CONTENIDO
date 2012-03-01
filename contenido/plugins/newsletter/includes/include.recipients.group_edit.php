@@ -36,9 +36,9 @@ if (!defined('CON_FRAMEWORK')) {
 
 // Initialization
 $oPage = new cPage;
-$oRGroups = new RecipientGroupCollection;
-$oRGroupMembers = new RecipientGroupMemberCollection;
-$oRGroup = new RecipientGroup;
+$oRGroups = new NewsletterRecipientGroupCollection;
+$oRGroupMembers = new NewsletterRecipientGroupMemberCollection;
+$oRGroup = new NewsletterRecipientGroup;
 
 $aFields = array();
 $aFields["name"] = array("field" => "name",            "caption" => i18n("Name", 'newsletter'),             "type" => "base,sort,search");
@@ -59,7 +59,7 @@ if ($action == "recipientgroup_create" && $perm->have_perm_area_action($area, $a
     $oPage->addScript('refreshlefttop', $sRefreshLeftTopScript);
 
     $_REQUEST["idrecipientgroup"] = 0;
-    $oRGroup = new RecipientGroup;
+    $oRGroup = new NewsletterRecipientGroup;
     $oPage->setReload();
 } else {
     $oRGroup->loadByPrimaryKey($_REQUEST["idrecipientgroup"]);
@@ -271,7 +271,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oAddedRecipientList->setCell(0, 2, $sLnkDelIcon);
     $oAddedRecipientList->setCellAlignment(0, 2, "right");
 
-    $oInsiders = new RecipientCollection;
+    $oInsiders = new NewsletterRecipientCollection;
 
     $oInsiders->link("RecipientGroupMemberCollection");
     $oInsiders->setWhere("recipientcollection.idclient", $client);
@@ -458,7 +458,7 @@ if ($oRGroup->virgin == false && $oRGroup->get("idclient") == $client && $oRGrou
     $oOutsiderListOptionRow->setContentData($sContent);
 
     // TODO: Try to enhance genericdb to get this working with the usual objects...
-    $oOutsiders = new RecipientCollection;
+    $oOutsiders = new NewsletterRecipientCollection;
 
     # This requires mySQL V4.1, at least...
     # TODO: Add mySQL server version switch

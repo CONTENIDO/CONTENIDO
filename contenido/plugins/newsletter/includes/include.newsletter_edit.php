@@ -37,7 +37,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 // Initialization
 $oPage = new cPage();
-$oRcpGroups = new RecipientGroupCollection();
+$oRcpGroups = new NewsletterRecipientGroupCollection();
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
 $oNewsletters = new NewsletterCollection();
 

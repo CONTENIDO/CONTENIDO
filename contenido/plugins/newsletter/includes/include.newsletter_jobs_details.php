@@ -39,7 +39,7 @@ $oPage = new cPage();
 
 if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) && is_numeric($_REQUEST["idnewsjob"])) {
     // Run job
-    $oJob = new cNewsletterJob($_REQUEST["idnewsjob"]);
+    $oJob = new NewsletterJob($_REQUEST["idnewsjob"]);
     $iSendCount = $oJob->runJob();
 
     if ($oJob->get("dispatch") == 1 && $oJob->get("sendcount") < $oJob->get("rcpcount")) {
@@ -94,7 +94,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 
     $oPage->setContent($notis . $oForm->render(true));
 } elseif ($action == "news_job_delete" && $perm->have_perm_area_action($area, $action) && is_numeric($_REQUEST["idnewsjob"])) {
-    $oJobs = new cNewsletterJobCollection;
+    $oJobs = new NewsletterJobCollection;
     $oJobs->delete($_REQUEST["idnewsjob"]);
 
     $oPage->setSubnav("blank", "news_jobs");
@@ -103,7 +103,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
 } elseif ($action == "news_job_details" || $action == "news_job_detail_delete") {
     // Show job details (recipients)
 
-    $oLogs = new cNewsletterLogCollection();
+    $oLogs = new NewsletterLogCollection();
 
     // Remove recipient from a job
     if ($action == "news_job_detail_delete" && is_numeric($_REQUEST["idnewslog"]) && $perm->have_perm_area_action($area, "news_job_detail_delete")) {
@@ -284,7 +284,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     $oPage->setContent($oFrmOptions->render() . "<br />" . $oList->render() . $sBrowseHTML);
 } else {
     // Just show the job data
-    $oJob = new cNewsletterJob($_REQUEST["idnewsjob"]);
+    $oJob = new NewsletterJob($_REQUEST["idnewsjob"]);
 
     $oForm = new UI_Table_Form("properties");
     $oForm->setVar("frame",     $frame);

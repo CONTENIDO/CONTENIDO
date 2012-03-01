@@ -35,7 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $oPage = new cPage();
-$oRecipients = new RecipientCollection();
+$oRecipients = new NewsletterRecipientCollection();
 
 if (is_array($cfg['plugins']['recipients'])) {
     foreach ($cfg['plugins']['recipients'] as $plugin) {
@@ -115,7 +115,7 @@ if (is_array($cfg['plugins']['recipients']))
 }
 
 // Get groups
-$oRcpGroups = new RecipientGroupCollection;
+$oRcpGroups = new NewsletterRecipientGroupCollection;
 $oRcpGroups->setWhere("idclient", $client);
 $oRcpGroups->setWhere("idlang", $lang);
 $oRcpGroups->setOrder("groupname");
@@ -181,7 +181,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
         $bStop = false;
         $sMessage = "";
         $aInvalidLines = array();
-        $oGroupMembers = new RecipientGroupMemberCollection;
+        $oGroupMembers = new NewsletterRecipientGroupMemberCollection;
         foreach($aLines as $sLine) {
             $iRow++;
 

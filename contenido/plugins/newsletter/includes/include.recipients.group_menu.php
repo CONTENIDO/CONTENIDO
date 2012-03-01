@@ -87,7 +87,7 @@ unset ($oClient);
 ##################################
 # Get data
 ##################################
-$oRcpGroups = new RecipientGroupCollection;
+$oRcpGroups = new NewsletterRecipientGroupCollection;
 $oRcpGroups->setWhere("idclient", $client);
 $oRcpGroups->setWhere("idlang",   $lang);
 

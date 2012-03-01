@@ -126,7 +126,7 @@ unset ($oClient);
 ##################################
 # Get data
 ##################################
-$oRecipients = new RecipientCollection;
+$oRecipients = new NewsletterRecipientCollection;
 
 // Updating keys, if activated; all recipients of all clients!
 $sMsg = "";

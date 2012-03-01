@@ -238,7 +238,7 @@ while ($oNewsletter = $oNewsletters->next()) {
 
 // Check destination for sending test newsletter
 if ($_REQUEST["selTestDestination"] > 0 && $perm->have_perm_area_action($area, "news_send_test")) {
-    $oRcpGroups = new RecipientGroupCollection();
+    $oRcpGroups = new NewsletterRecipientGroupCollection();
     $oRcpGroups->setWhere("idclient", $client);
     $oRcpGroups->setWhere("idlang",   $lang);
     $oRcpGroups->setWhere($oRcpGroups->primaryKey, $_REQUEST["selTestDestination"]);

@@ -202,7 +202,7 @@ $oSelTestDestination = new cHTMLSelectElement("selTestDestination");
 $oOption = new cHTMLOptionElement(i18n("My E-Mail address", 'newsletter'), 0);
 $oSelTestDestination->addOptionElement(0, $oOption);
 
-$oRcpGroups = new RecipientGroupCollection();
+$oRcpGroups = new NewsletterRecipientGroupCollection();
 $oRcpGroups->setWhere("idclient", (int) $client);
 $oRcpGroups->setWhere("idlang",   (int) $lang);
 $oRcpGroups->setOrder("groupname");
@@ -697,7 +697,7 @@ $oOption = new cHTMLOptionElement(i18n("-- All groups --", 'newsletter'), "--all
 $oSelRestrictGroup->addOptionElement("all", $oOption);
 
 // Fetch recipient groups
-$oRGroups = new RecipientGroupCollection();
+$oRGroups = new NewsletterRecipientGroupCollection();
 $oRGroups->setWhere("idclient", $client);
 $oRGroups->setWhere("idlang",   $lang);
 $oRGroups->setOrder("defaultgroup DESC, groupname ASC");
