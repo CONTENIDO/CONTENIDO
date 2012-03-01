@@ -2,781 +2,789 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO Setup\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-23 00:51+0100\n"
-"PO-Revision-Date: 2011-03-23 00:53+0100\n"
+"POT-Creation-Date: 2012-03-01 01:22+0100\n"
+"PO-Revision-Date: 2012-03-01 01:32+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: CONTENIDO Development\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: C:\\dev\\websites\\contenido\\src\n"
-"X-Poedit-KeywordsList: i18n\n"
-"X-Poedit-Keywords: i18n\n"
-"X-Poedit-SourceCharset: iso-8859-1\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
-"X-Poedit-SearchPath-0: setup\n"
+"X-Poedit-KeywordsList: i18n\n"
+"X-Poedit-Keywords: i18n,trans\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
 
-#: setup/steps/setuptype.php:41
-msgid "Please choose your setup type"
-msgstr "Bitte wählen Sie die Installationsart"
-
-#: setup/steps/setuptype.php:42
-msgid "Install new CONTENIDO version"
-msgstr "CONTENIDO Neuinstallation"
-
-#: setup/steps/setuptype.php:43
-#, php-format
-msgid "Version %s"
-msgstr "Version %s"
-
-#: setup/steps/setuptype.php:44
-#, php-format
-msgid "This setup type will install CONTENIDO %s."
-msgstr "Diese Setupart installiert CONTENIDO %s."
-
-#: setup/steps/setuptype.php:44
-msgid "Please choose this type if you want to start with an empty or an example installation."
-msgstr "Wählen Sie diese Setupart aus, wenn Sie eine leere oder eine Beispielinstallation installieren möchten. "
-
-#: setup/steps/setuptype.php:44
-msgid "Recommended for new projects."
-msgstr "Empfohlen für neue Projekte."
-
-#: setup/steps/setuptype.php:46
-msgid "Upgrade existing installation"
-msgstr "Bestehende CONTENIDO Installation upgraden"
-
-#: setup/steps/setuptype.php:47
-#, php-format
-msgid "Upgrade to %s"
-msgstr "Upgraden auf %s"
-
-#: setup/steps/setuptype.php:48
-msgid "This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required)."
-msgstr "Diese Setupart wird Ihre bestehende CONTENIDO Installation (Version 4.6.x oder höher) upgraden. "
-
-#: setup/steps/setuptype.php:48
-msgid "Recommended for existing projects."
-msgstr "Empfohlen für existierende Projekte."
-
-#: setup/steps/setuptype.php:50
-msgid "Migrate existing installation"
-msgstr "Migration bestehender Installation"
-
-#: setup/steps/setuptype.php:51
-#, php-format
-msgid "Migrate (Version %s)"
-msgstr "Migration (Version %s)"
-
-#: setup/steps/setuptype.php:52
-msgid "This setup type will help you migrating an existing installation to another server."
-msgstr "Diese Setupart hilft Ihnen, eine bestehende CONTENIDO Installation auf einen anderen Server umzuziehen."
-
-#: setup/steps/setuptype.php:52
-msgid "Recommended for moving projects across servers."
-msgstr "Empfohlen für Projektumzüge zwischen Servern."
-
-#: setup/steps/forms/additionalplugins.php:55
-#: setup/steps/forms/additionalplugins.php:56
+#: steps/forms/additionalplugins.php:55
+#: steps/forms/additionalplugins.php:56
+#: steps/forms/setupsummary.php:84
 msgid "Additional Plugins"
-msgstr "Zusätzliche Plugins"
+msgstr "Zus&auml;tzliche Plugins"
 
-#: setup/steps/forms/additionalplugins.php:57
+#: steps/forms/additionalplugins.php:57
 msgid "Please select Plugins to be installed"
-msgstr "Bitte wählen Sie die zu installierenden Plugins"
+msgstr "Bitte w&auml;hlen Sie die zu installierenden Plugins"
 
-#: setup/steps/forms/additionalplugins.php:61
+#: steps/forms/additionalplugins.php:61
+#: steps/forms/setupsummary.php:104
 msgid "Newsletter"
 msgstr "Newsletter"
 
-#: setup/steps/forms/additionalplugins.php:61
+#: steps/forms/additionalplugins.php:61
 msgid "Newsletterfunctionality for dispatching text newsletters and HTML-Newsletters, extensible with professional newsletter extensions. Definition of newsletter recipients and groups of recipients. Layout design of the HTML-Newsletters by CONTENIDO articles."
-msgstr "Newsletterfunktionalität zum Versand von Textnewslettern und HTML-Newslettern, erweiterbar mit professionellen Newsletter Erweiterungen. Definition von Newsletterempfängern und Empfängergruppen. Layouterstellung des HTML-Newsletters mit Hilfe von CONTENIDOartikeln."
+msgstr "Newsletterfunktionalit&auml;t zum Versand von Textnewslettern und HTML-Newslettern, erweiterbar mit professionellen Newsletter Erweiterungen. Definition von Newsletterempf&auml;ngern und Empf&auml;ngergruppen. Layouterstellung des HTML-Newsletters mit Hilfe von CONTENIDOartikeln."
 
-#: setup/steps/forms/additionalplugins.php:62
+#: steps/forms/additionalplugins.php:62
+#: steps/forms/setupsummary.php:107
 msgid "Content Allocation"
 msgstr "Content Allocation"
 
-#: setup/steps/forms/additionalplugins.php:62
+#: steps/forms/additionalplugins.php:62
 msgid "For the representation and administration of content, 4fb developed the Content Allocation and content include technology. This technology dynamically allows on basis of a Template, to put the content in different places and in different formats according to several criteria."
 msgstr "Zur Darstellung und Verwaltung des Contents entwickelte 4fb die Content Allocation und Content include Technik. Diese Technik erlaubt es, auf Basis eines Templates, den Content an unterschiedlichen Stellen und in unterschiedlicher Form dynamisch nach mehreren Kriterien selektiert darzustellen."
 
-#: setup/steps/forms/additionalplugins.php:63
+#: steps/forms/additionalplugins.php:63
+#: steps/forms/setupsummary.php:110
 msgid "Mod Rewrite"
 msgstr "Mod Rewrite"
 
-#: setup/steps/forms/additionalplugins.php:63
+#: steps/forms/additionalplugins.php:63
 msgid "Creates so called Clean URLs for a CONTENIDO installation"
-msgstr "Erstellt sogenannte Clean URLs für eine CONTENIDO-Installation"
+msgstr "Erstellt sogenannte Clean URLs f&uuml;r eine CONTENIDO-Installation"
 
-#: setup/steps/forms/additionalplugins.php:73
-#, fuzzy
+#: steps/forms/additionalplugins.php:73
 msgid "More information"
 msgstr "Information"
 
-#: setup/steps/forms/additionalplugins.php:78
+#: steps/forms/additionalplugins.php:78
 msgid "None available"
-msgstr "Keine verfügbar"
+msgstr "Keine verf&uuml;gbar"
 
-#: setup/steps/forms/clientadjust.php:43
-#: setup/steps/forms/clientadjust.php:44
+#: steps/forms/clientadjust.php:41
+#: steps/forms/clientadjust.php:42
 msgid "Client Settings"
 msgstr "Mandanteneinstellungen"
 
-#: setup/steps/forms/clientadjust.php:45
+#: steps/forms/clientadjust.php:43
 msgid "Please check the directories identified by the system. If you need to change a client path, click on the name and enter your new path in the available input box."
-msgstr "Bitte prüfen Sie die Verzeichnisse. Wenn Sie einen Mandantenpfad ändern müssen, klicken Sie auf den Namen und geben Sie den neuen Pfad in die Eingabebox ein."
+msgstr "Bitte pr&uuml;fen Sie die Verzeichnisse. Wenn Sie einen Mandantenpfad &auml;ndern m&uuml;ssen, klicken Sie auf den Namen und geben Sie den neuen Pfad in die Eingabebox ein."
 
-#: setup/steps/forms/clientadjust.php:92
+#: steps/forms/clientadjust.php:83
 #, php-format
 msgid "Old server path for %s (%s)"
-msgstr "Alter Serverpfad für %s (%s)"
+msgstr "Alter Serverpfad f&uuml;r %s (%s)"
 
-#: setup/steps/forms/clientadjust.php:94
+#: steps/forms/clientadjust.php:85
 #, php-format
 msgid "New server path for %s (%s)"
-msgstr "Neuer Serverpfad für %s (%s)"
+msgstr "Neuer Serverpfad f&uuml;r %s (%s)"
 
-#: setup/steps/forms/clientadjust.php:104
+#: steps/forms/clientadjust.php:95
 #, php-format
 msgid "Old web path for %s (%s)"
-msgstr "Alter Webpfad für %s (%s)"
+msgstr "Alter Webpfad f&uuml;r %s (%s)"
 
-#: setup/steps/forms/clientadjust.php:106
+#: steps/forms/clientadjust.php:97
 #, php-format
 msgid "New web path for %s (%s)"
-msgstr "Neuer Webpfad für %s (%s)"
+msgstr "Neuer Webpfad f&uuml;r %s (%s)"
 
-#: setup/steps/forms/clientmode.php:40
-#: setup/steps/forms/clientmode.php:41
+#: steps/forms/clientmode.php:39
+#: steps/forms/clientmode.php:40
 msgid "Example Client"
 msgstr "Beispielmandant"
 
-#: setup/steps/forms/clientmode.php:42
+#: steps/forms/clientmode.php:41
 msgid "If you are new to CONTENIDO, you should create an example client to start working with."
 msgstr "Wenn Sie zum ersten Mal mit CONTENIDO arbeiten, empfehlen wir Ihnen den Beispielmandanten."
 
-#: setup/steps/forms/clientmode.php:46
-#: setup/steps/forms/setupsummary.php:74
+#: steps/forms/clientmode.php:46
+#: steps/forms/setupsummary.php:73
 msgid "Client with example modules and example content"
 msgstr "Mandant mit Beispielmodulen und -inhalten"
 
-#: setup/steps/forms/clientmode.php:47
+#: steps/forms/clientmode.php:47
 msgid "Client with example modules, but without example content"
 msgstr "Mandant mit Beispielmodulen, aber ohne Beispielinhalte"
 
-#: setup/steps/forms/clientmode.php:48
-#: setup/steps/forms/setupsummary.php:76
+#: steps/forms/clientmode.php:48
+#: steps/forms/setupsummary.php:75
 msgid "Client without examples"
 msgstr "Mandant ohne Beispiele"
 
-#: setup/steps/forms/clientmode.php:49
+#: steps/forms/clientmode.php:49
 msgid "Don't create client"
 msgstr "Mandant nicht anlegen"
 
-#: setup/steps/forms/configmode.php:45
-#: setup/steps/forms/configmode.php:46
+#: steps/forms/configmode.php:43
+#: steps/forms/configmode.php:44
 msgid "config.php mode"
 msgstr "config.php Modus"
 
-#: setup/steps/forms/configmode.php:47
+#: steps/forms/configmode.php:45
 msgid "Please choose 'save' or 'download'"
-msgstr "Bitte wählen Sie 'Speichern' oder 'Download'"
+msgstr "Bitte w&auml;hlen Sie 'Speichern' oder 'Download'"
 
-#: setup/steps/forms/configmode.php:48
+#: steps/forms/configmode.php:46
 msgid "CONTENIDO requires a configuration file called 'config.php'. This file will be generated by the setup automatically if the filesystem permissions are correct. If 'save' is activated by default, setup can save the file config.php. If not, 'download' is activated by default, and you have to place the file in the directory &quot;contenido/includes/&quot; manually when a download prompt appears. The download prompt appears at the end of the setup process."
-msgstr "CONTENIDO benötigt die Konfigurationsdatei 'config.php'. Diese Datei wird durch das Setup automatisch erzeugt, wenn Ihre Berechtigungen für das Dateisystem korrekt gesetzt sind. Falls die Option &quot;Speichern&quot; aktiviert ist, kann die Datei automatisch gespeichert werden. Falls die Option 'Download' aktiviert ist, müssen Sie die Datei manuell in das Verzeichnis 'contenido/includes/' speichern."
+msgstr "CONTENIDO ben&ouml;tigt die Konfigurationsdatei 'config.php'. Diese Datei wird durch das Setup automatisch erzeugt, wenn Ihre Berechtigungen f&uuml;r das Dateisystem korrekt gesetzt sind. Falls die Option &quot;Speichern&quot; aktiviert ist, kann die Datei automatisch gespeichert werden. Falls die Option 'Download' aktiviert ist, m&uuml;ssen Sie die Datei manuell in das Verzeichnis 'contenido/includes/' speichern."
 
-#: setup/steps/forms/configmode.php:66
-#: setup/steps/forms/setupsummary.php:62
+#: steps/forms/configmode.php:63
+#: steps/forms/setupsummary.php:59
 msgid "Save"
 msgstr "Speichern"
 
-#: setup/steps/forms/configmode.php:70
-#: setup/steps/forms/setupsummary.php:65
+#: steps/forms/configmode.php:67
+#: steps/forms/setupsummary.php:62
 msgid "Download"
 msgstr "Herunterladen"
 
-#: setup/steps/forms/installer.php:40
-#: setup/steps/forms/installer.php:41
+#: steps/forms/installer.php:38
+#: steps/forms/installer.php:39
 msgid "System Installation"
 msgstr "Systeminstallation"
 
-#: setup/steps/forms/installer.php:42
+#: steps/forms/installer.php:40
 msgid "CONTENIDO will be installed, please wait ..."
 msgstr "CONTENIDO wird installiert, bitte warten"
 
-#: setup/steps/forms/installer.php:49
+#: steps/forms/installer.php:47
 msgid "Setup completed installing. Click on next to continue."
 msgstr "Setup hat die Installation abgeschlossen. Klicken Sie auf den blauen Pfeil, um fortzufahren."
 
-#: setup/steps/forms/installer.php:50
+#: steps/forms/installer.php:48
 msgid "Setup is installing, please wait..."
 msgstr "Setup installiert, bitte warten"
 
-#: setup/steps/forms/installer.php:55
+#: steps/forms/installer.php:53
 msgid "Setup completed upgrading. Click on next to continue."
 msgstr "Setup hat den Upgradeprozess abgeschlossen. Klicken Sie auf Weiter, um fortzufahren."
 
-#: setup/steps/forms/installer.php:56
+#: steps/forms/installer.php:54
 msgid "Setup is upgrading, please wait..."
 msgstr "Setup aktualisiert, bitte warten"
 
-#: setup/steps/forms/installer.php:61
+#: steps/forms/installer.php:59
 msgid "Setup completed migration. Click on next to continue."
 msgstr "Setup hat die Migration beendet. Klicken Sie auf \"Weiter\", um fortzufahren."
 
-#: setup/steps/forms/installer.php:62
+#: steps/forms/installer.php:60
 msgid "Setup is migrating, please wait..."
 msgstr "Setup migriert, bitte warten"
 
-#: setup/steps/forms/pathinfo.php:40
-#: setup/steps/forms/pathinfo.php:41
+#: steps/forms/pathinfo.php:39
+#: steps/forms/pathinfo.php:40
 msgid "System Directories"
 msgstr "Systemverzeichnisse"
 
-#: setup/steps/forms/pathinfo.php:42
+#: steps/forms/pathinfo.php:41
 msgid "Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box."
-msgstr "Bitte prüfen Sie die Verzeichnisse. Wenn Sie einen Pfad ändern müssen, klicken Sie auf den Namen und geben Sie den neuen Pfad in die Eingabebox ein."
+msgstr "Bitte pr&uuml;fen Sie die Verzeichnisse. Wenn Sie einen Pfad &auml;ndern m&uuml;ssen, klicken Sie auf den Namen und geben Sie den neuen Pfad in die Eingabebox ein."
 
-#: setup/steps/forms/pathinfo.php:58
+#: steps/forms/pathinfo.php:57
 msgid "CONTENIDO Root Path"
 msgstr "CONTENIDO Serverpfad"
 
-#: setup/steps/forms/pathinfo.php:60
+#: steps/forms/pathinfo.php:59
 msgid "CONTENIDO Web Path"
 msgstr "CONTENIDO Webpfad"
 
-#: setup/steps/forms/setupresults.php:38
-#: setup/steps/forms/setupresults.php:44
+#: steps/forms/setupresults.php:38
+#: steps/forms/setupresults.php:43
 msgid "Results"
 msgstr "Setupergebnisse"
 
-#: setup/steps/forms/setupresults.php:45
+#: steps/forms/setupresults.php:44
 msgid "CONTENIDO was installed and configured successfully on your server."
 msgstr "CONTENIDO wurde erfolgreich auf Ihrem Server installiert und konfiguriert."
 
-#: setup/steps/forms/setupresults.php:47
+#: steps/forms/setupresults.php:46
 msgid "Please use username <b>sysadmin</b> and password <b>sysadmin</b> to login into CONTENIDO Backend."
 msgstr "Bitte benutzen Sie den Benutzernamen <b>sysadmin</b> und das Passwort <b>sysadmin</b>, um sich in das Backend von CONTENIDO einzuloggen."
 
-#: setup/steps/forms/setupresults.php:51
+#: steps/forms/setupresults.php:50
 msgid "Please choose an item to start working:"
-msgstr "Bitte wählen Sie einen Eintrag, um mit der Arbeit zu beginnen:"
+msgstr "Bitte w&auml;hlen Sie einen Eintrag, um mit der Arbeit zu beginnen:"
 
-#: setup/steps/forms/setupresults.php:52
+#: steps/forms/setupresults.php:51
 msgid "You can now start using CONTENIDO. Please delete the folder named 'setup'!"
-msgstr "Sie können CONTENIDO nun verwenden. Bitte löschen Sie den Setup-Ordner!"
+msgstr "Sie k&ouml;nnen CONTENIDO nun verwenden. Bitte l&ouml;schen Sie den Setup-Ordner!"
 
-#: setup/steps/forms/setupresults.php:80
+#: steps/forms/setupresults.php:75
 msgid "Setup Results"
 msgstr "Setup Ergebnisse"
 
-#: setup/steps/forms/setupresults.php:93
+#: steps/forms/setupresults.php:85
 #, php-format
 msgid "An error occured during installation. Please take a look at the file %s (located in &quot;contenido/logs/&quot;) for more information."
-msgstr "Setup Fehler während der Installation. Bitte schauen Sie in die Datei %s (befindet sich im Verzeichnis &quot;contenido/logs/&quot) für weitere Informationen."
+msgstr "Setup Fehler w&auml;hrend der Installation. Bitte schauen Sie in die Datei %s (befindet sich im Verzeichnis &quot;contenido/logs/&quot) f&uuml;r weitere Informationen."
 
-#: setup/steps/forms/setupsummary.php:40
-#: setup/steps/forms/setupsummary.php:41
+#: steps/forms/setupsummary.php:39
+#: steps/forms/setupsummary.php:40
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: setup/steps/forms/setupsummary.php:42
+#: steps/forms/setupsummary.php:41
 msgid "Please check your settings and click on the next button to start the installation"
-msgstr "Bitte überprüfen Sie Ihre Einstellungen und klicken Sie auf Weiter um die Installation zu beginnen."
+msgstr "Bitte &uuml;berpr&uuml;fen Sie Ihre Einstellungen und klicken Sie auf Weiter um die Installation zu beginnen."
 
-#: setup/steps/forms/setupsummary.php:49
+#: steps/forms/setupsummary.php:47
 msgid "Setup"
 msgstr "Setup"
 
-#: setup/steps/forms/setupsummary.php:52
+#: steps/forms/setupsummary.php:50
 msgid "Upgrade"
 msgstr "Upgrade"
 
-#: setup/steps/forms/setupsummary.php:55
+#: steps/forms/setupsummary.php:53
 msgid "Migration"
 msgstr "Migration"
 
-#: setup/steps/forms/setupsummary.php:68
+#: steps/forms/setupsummary.php:67
 msgid "Installation type"
 msgstr "Installationsart"
 
-#: setup/steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:68
 msgid "Database parameters"
 msgstr "Datenbank Parameter"
 
-#: setup/steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:68
 msgid "Database host"
 msgstr "Datenbank Host"
 
-#: setup/steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:68
 msgid "Database name"
 msgstr "Datenbank Name"
 
-#: setup/steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:68
 msgid "Database username"
 msgstr "Datenbank Benutzername"
 
-#: setup/steps/forms/setupsummary.php:69
+#: steps/forms/setupsummary.php:68
 msgid "Database prefix"
-msgstr "Datenbank Präfix"
+msgstr "Datenbank Pr&auml;fix"
 
-#: setup/steps/forms/setupsummary.php:70
-msgid "config.php"
-msgstr "config.php"
-
-#: setup/steps/forms/setupsummary.php:75
+#: steps/forms/setupsummary.php:74
 msgid "Client with example modules but without example content"
 msgstr "Mandant mit Beispielmodulen, aber ohne Beispielinhalte"
 
-#: setup/steps/forms/setupsummary.php:77
+#: steps/forms/setupsummary.php:76
 msgid "Don't create a client"
 msgstr "Mandant nicht anlegen"
 
-#: setup/steps/forms/setupsummary.php:78
+#: steps/forms/setupsummary.php:78
 msgid "Client installation"
 msgstr "Mandanteninstallation"
 
-#: setup/steps/forms/systemdata.php:76
-#: setup/steps/forms/systemdata.php:77
+#: steps/forms/systemdata.php:78
+#: steps/forms/systemdata.php:79
 msgid "Database Parameters"
 msgstr "Datenbankparameter"
 
-#: setup/steps/forms/systemdata.php:82
+#: steps/forms/systemdata.php:83
 msgid "Please enter the required database information. If you are unsure about the data, ask your provider or administrator."
-msgstr "Bitte geben Sie die benötigten Datenbankinformationen ein. Wenn Sie nicht sicher sind, ob diese Informationen stimmen, kontaktieren Sie bitte Ihren Provider oder Administrator."
+msgstr "Bitte geben Sie die ben&ouml;tigten Datenbankinformationen ein. Wenn Sie nicht sicher sind, ob diese Informationen stimmen, kontaktieren Sie bitte Ihren Provider oder Administrator."
 
-#: setup/steps/forms/systemdata.php:82
+#: steps/forms/systemdata.php:83
 msgid "If the database does not exist and your database user has the sufficient permissions, setup will create the database automatically."
 msgstr "Wenn die Datenbank nicht existiert und der Datenbankbenutzer ausreichende Rechte besitzt, wird Setup die Datenbank automatisch anlegen."
 
-#: setup/steps/forms/systemdata.php:85
+#: steps/forms/systemdata.php:86
 msgid "Please enter the required database information. If the database data of your previous installation could have been read, the data will be inserted automatically. If you are unsure about the data, please ask your provider or administrator."
-msgstr "Bitte geben Sie die benötigten Datenbankinformationen ein. Wenn die Datenbankinformationen Ihrer vorheriger Installation lesbar waren, werden die Informationen automatisch eingefügt. Wenn Sie nicht sicher sind, ob diese Informationen stimmen, kontaktieren Sie bitte Ihren Provider oder Administrator."
+msgstr "Bitte geben Sie die ben&ouml;tigten Datenbankinformationen ein. Wenn die Datenbankinformationen Ihrer vorheriger Installation lesbar waren, werden die Informationen automatisch eingef&uuml;gt. Wenn Sie nicht sicher sind, ob diese Informationen stimmen, kontaktieren Sie bitte Ihren Provider oder Administrator."
 
-#: setup/steps/forms/systemdata.php:88
+#: steps/forms/systemdata.php:89
 msgid "Please enter the required database information. Make sure you copied the data from your old installation (e.g. development or staging system) into a new database. Please enter the parameters of the new database."
-msgstr "Bitte geben Sie die benötigten Datenbankinformationen ein. Stellen Sie sicher, daß Sie die Daten ihrer alten Installation (z.b. Entwicklungs- oder Stagingsystem) in eine neue Datenbank kopiert haben. Bitte geben Sie die Datenbankinformationen der neuen Datenbank ein."
+msgstr "Bitte geben Sie die ben&ouml;tigten Datenbankinformationen ein. Stellen Sie sicher, da&szlig; Sie die Daten ihrer alten Installation (z.b. Entwicklungs- oder Stagingsystem) in eine neue Datenbank kopiert haben. Bitte geben Sie die Datenbankinformationen der neuen Datenbank ein."
 
-#: setup/steps/forms/systemdata.php:124
+#: steps/forms/systemdata.php:121
 msgid "Database Server (IP or name)"
 msgstr "Datenbankserver (IP oder Name)"
 
-#: setup/steps/forms/systemdata.php:128
-#: setup/steps/forms/systemdata.php:130
+#: steps/forms/systemdata.php:124
+#: steps/forms/systemdata.php:126
 msgid "Database Name"
 msgstr "Datenbankname"
 
-#: setup/steps/forms/systemdata.php:128
+#: steps/forms/systemdata.php:124
 msgid "(use empty or non-existant database)"
 msgstr "(leere oder nicht existierende Datenbank)"
 
-#: setup/steps/forms/systemdata.php:133
+#: steps/forms/systemdata.php:129
 msgid "Database Username"
 msgstr "Datenbankbenutzername"
 
-#: setup/steps/forms/systemdata.php:134
+#: steps/forms/systemdata.php:130
 msgid "Database Password"
 msgstr "Datenbankpasswort"
 
-#: setup/steps/forms/systemdata.php:135
+#: steps/forms/systemdata.php:131
 msgid "Table Prefix"
-msgstr "Tabellenpräfix"
+msgstr "Tabellenpr&auml;fix"
 
-#: setup/steps/forms/systemdata.php:154
+#: steps/forms/systemdata.php:150
 msgid "You need to enter a database host."
-msgstr "Sie müssen den Datenbankhost eingeben."
+msgstr "Sie m&uuml;ssen den Datenbankhost eingeben."
 
-#: setup/steps/forms/systemdata.php:155
+#: steps/forms/systemdata.php:151
 msgid "You need to enter a database name."
-msgstr "Sie müssen den Datenbanknamen eingeben."
+msgstr "Sie m&uuml;ssen den Datenbanknamen eingeben."
 
-#: setup/steps/forms/systemdata.php:156
+#: steps/forms/systemdata.php:152
 msgid "You need to enter a database user."
-msgstr "Sie müssen den Datenbankbenutzer eingeben."
+msgstr "Sie m&uuml;ssen den Datenbankbenutzer eingeben."
 
-#: setup/steps/forms/systemtest.php:51
-#: setup/steps/forms/systemtest.php:52
+#: steps/forms/systemtest.php:53
+#: steps/forms/systemtest.php:54
 msgid "System Test"
-msgstr "Systemüberprüfung"
+msgstr "System&uuml;berpr&uuml;fung"
 
-#: setup/steps/forms/systemtest.php:53
+#: steps/forms/systemtest.php:55
 msgid "Your system has been tested for compatibility with CONTENIDO:"
-msgstr "Ihr System wurde auf Kompatibilität mit CONTENIDO überprüft:"
+msgstr "Ihr System wurde auf Kompatibilit&auml;t mit CONTENIDO &uuml;berpr&uuml;ft:"
 
-#: setup/steps/forms/systemtest.php:74
+#: steps/forms/systemtest.php:72
 msgid "PHP MySQL Extension missing"
 msgstr "PHP MySQL Extension nicht geladen"
 
-#: setup/steps/forms/systemtest.php:75
+#: steps/forms/systemtest.php:73
 msgid "CONTENIDO requires the MySQL or MySQLi extension to access MySQL databases. Please configure PHP to use either MySQL or MySQLi."
-msgstr "CONTENIDO benötigt die MySQL- oder MySQLi-Extension, um auf MySQL-Datenbanken zuzugreifen. Bitte konfigurieren Sie PHP so, daß PHP entweder MySQL oder MySQLi verwendet."
+msgstr "CONTENIDO ben&ouml;tigt die MySQL- oder MySQLi-Extension, um auf MySQL-Datenbanken zuzugreifen. Bitte konfigurieren Sie PHP so, da&szlig; PHP entweder MySQL oder MySQLi verwendet."
 
-#: setup/steps/forms/systemtest.php:93
+#: steps/forms/systemtest.php:90
 msgid "Information"
 msgstr "Information"
 
-#: setup/steps/forms/systemtest.php:96
+#: steps/forms/systemtest.php:94
 msgid "Warning"
 msgstr "Warnung"
 
-#: setup/steps/forms/systemtest.php:99
+#: steps/forms/systemtest.php:98
 msgid "Fatal error"
 msgstr "Schwerer Fehler"
 
-#: setup/steps/forms/systemtest.php:112
+#: steps/forms/systemtest.php:110
 msgid "No problems detected"
 msgstr "Keine Probleme gefunden"
 
-#: setup/steps/forms/systemtest.php:112
+#: steps/forms/systemtest.php:110
 msgid "Setup could not detect any problems with your system environment"
 msgstr "Das Setup konnte keine Probleme mit Ihrer Systemumgebung finden."
 
-#: setup/steps/forms/systemtest.php:157
+#: steps/forms/systemtest.php:157
 #, php-format
 msgid "An old Version of Plugin %s is installed on your system."
 msgstr "Eine alte Version des Plugin %s ist auf Ihrem System installiert."
 
-#: setup/steps/forms/systemtest.php:162
+#: steps/forms/systemtest.php:162
 msgid "Please remove all old plugins before you continue. To transfer old plugin data, please copy the old plugin data tables into the new plugin data tables after the installation. The new plugintable names are the same, but contains the table prefix of CONTENIDO. Also delete the old plugin tables after data transfer."
 msgstr "Bitte entfernen Sie alle alten Plugins bevor Sie fortfahren. Um die alten Plugindaten zu &uuml;bertragen, kopieren Sie bitte die alten Daten aus den Plugintabellen nach der Installation in die neuen Plugintabellen. Die neuen Plugintabellen haben die gleiche Bezeichnung, besitzen jedoch zus&auml;tzlich den CONTENIDO Tabellenpr&auml;fix. Bitte entfernen Sie auch nach der Daten&uuml;bertragung die alten Plugintabellen."
 
-#: setup/steps/forms/systemtest.php:166
+#: steps/forms/systemtest.php:164
 msgid "Old Plugins are still installed"
 msgstr "Alte Plugins sind noch installiert"
 
-#: setup/steps/forms/systemtest.php:209
+#: steps/forms/systemtest.php:185
+#, php-format
 msgid "PHP Version lower than %s"
 msgstr "PHP Version unter %s"
 
-#: setup/steps/forms/systemtest.php:210
+#: steps/forms/systemtest.php:186
+#, php-format
 msgid "CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."
-msgstr "CONTENIDO benötigt PHP %s oder höher für einen reibungslosen Betrieb. Bitte updaten Sie Ihre PHP Version, bzw. wenden Sie sich an Ihren Provider."
+msgstr "CONTENIDO ben&ouml;tigt PHP %s oder h&ouml;her f&uuml;r einen reibungslosen Betrieb. Bitte updaten Sie Ihre PHP Version, bzw. wenden Sie sich an Ihren Provider."
 
-#: setup/steps/forms/systemtest.php:248
+#: steps/forms/systemtest.php:204
 msgid "File uploads disabled"
 msgstr "Upload Dateien deaktiviert"
 
-#: setup/steps/forms/systemtest.php:249
+#: steps/forms/systemtest.php:205
 #, php-format
 msgid "Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"
-msgstr "Ihr PHP ist nicht für den Upload von Dateien konfiguriert. Sie können über CONTENIDO keine Dateien uploaden, wenn Sie nicht Ihr PHP für Datei Uploads konfigurieren. Weitere Informationen finden Sie unter %s"
+msgstr "Ihr PHP ist nicht f&uuml;r den Upload von Dateien konfiguriert. Sie k&ouml;nnen &uuml;ber CONTENIDO keine Dateien uploaden, wenn Sie nicht Ihr PHP f&uuml;r Datei Uploads konfigurieren. Weitere Informationen finden Sie unter %s"
 
-#: setup/steps/forms/systemtest.php:258
+#: steps/forms/systemtest.php:212
 msgid "PHP setting 'magic_quotes_runtime' is turned on"
 msgstr "PHP Einstellung 'magic_quotes_runtime' ist aktiviert."
 
-#: setup/steps/forms/systemtest.php:259
+#: steps/forms/systemtest.php:213
 msgid "The PHP setting 'magic_quotes_runtime' is turned on. CONTENIDO has been developed to comply with magic_quotes_runtime=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."
-msgstr "Die PHP Einstellung 'magic_quotes_runtime' ist aktiviert. CONTENIDO wurde entwickelt mit der deaktivierten Einstellung 'magic_quotes_runtime', da dies die Standardeinstellung von PHP ist. Sie müssen diese Einstellung verändern, damit CONTENIDO läuft."
+msgstr "Die PHP Einstellung 'magic_quotes_runtime' ist aktiviert. CONTENIDO wurde entwickelt mit der deaktivierten Einstellung 'magic_quotes_runtime', da dies die Standardeinstellung von PHP ist. Sie m&uuml;ssen diese Einstellung ver&auml;ndern, damit CONTENIDO l&auml;uft."
 
-#: setup/steps/forms/systemtest.php:263
+#: steps/forms/systemtest.php:217
 msgid "PHP Setting 'magic_quotes_sybase' is turned on"
 msgstr "PHP Einstellung 'magic_quotes_sybase' eingeschalten"
 
-#: setup/steps/forms/systemtest.php:264
+#: steps/forms/systemtest.php:218
 msgid "The PHP Setting 'magic_quotes_sybase' is turned on. CONTENIDO has been developed to comply with magic_quotes_sybase=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work."
-msgstr "Die PHP Einstellung 'magic_quotes_sybase' ist aktiviert. CONTENIDO wurde entwickelt mit der deaktivierten Einstellung 'magic_quotes_sybase', da dies die Standardeinstellung von PHP ist. Sie müssen diese Einstellung verändern, damit CONTENIDO läuft."
+msgstr "Die PHP Einstellung 'magic_quotes_sybase' ist aktiviert. CONTENIDO wurde entwickelt mit der deaktivierten Einstellung 'magic_quotes_sybase', da dies die Standardeinstellung von PHP ist. Sie m&uuml;ssen diese Einstellung ver&auml;ndern, damit CONTENIDO l&auml;uft."
 
-#: setup/steps/forms/systemtest.php:272
+#: steps/forms/systemtest.php:224
 msgid "PHP maximum execution time is less than 30 seconds"
-msgstr "Die PHP Ausführungszeit liegt unter 30 Sekunden."
+msgstr "Die PHP Ausf&uuml;hrungszeit liegt unter 30 Sekunden."
 
-#: setup/steps/forms/systemtest.php:273
+#: steps/forms/systemtest.php:225
 msgid "PHP is configured for a maximum execution time of less than 30 seconds. This could cause problems with slow web servers and/or long operations in the backend. Our recommended execution time is 120 seconds on slow web servers, 60 seconds for medium ones and 30 seconds for fast web servers."
-msgstr "PHP ist konfiguriert für eine maximale Ausführungszeit von weniger als 30 Sekunden. Dies kann Probleme verursachen bei langsamen Webservern und/oder zeitintensiven Aktionen im CONTENIDO Backend. Unsere empfohlene Ausführungszeit liegt bei 120 Sekunden bei langsamen Webservern, 60 Sekunden bei mittleren und 30 Sekunden bei schnellen Webservern."
+msgstr "PHP ist konfiguriert f&uuml;r eine maximale Ausf&uuml;hrungszeit von weniger als 30 Sekunden. Dies kann Probleme verursachen bei langsamen Webservern und/oder zeitintensiven Aktionen im CONTENIDO Backend. Unsere empfohlene Ausf&uuml;hrungszeit liegt bei 120 Sekunden bei langsamen Webservern, 60 Sekunden bei mittleren und 30 Sekunden bei schnellen Webservern."
 
-#: setup/steps/forms/systemtest.php:290
+#: steps/forms/systemtest.php:237
 msgid "open_basedir directive set to '.'"
 msgstr "Die Direktive open_basedir ist auf '.' gesetzt."
 
-#: setup/steps/forms/systemtest.php:291
+#: steps/forms/systemtest.php:238
 msgid "The directive open_basedir is set to '.' (e.g. current directory). This means that CONTENIDO is unable to access files in a logical upper level in the filesystem. This will cause problems managing the CONTENIDO frontends. Either add the full path of this CONTENIDO installation to the open_basedir directive, or turn it off completely."
-msgstr "Die Direktive open_basedir ist auf '.' (aktuelles Verzeichnis) gesetzt. Dies bedeuetet, daß CONTENIDO keine Dateien oberhalb des aktuellen Pfades öffnen kann. Hieraus ergibt sich ein Problem, wenn CONTENIDO seine Frontends verwalten muß. Bitte fügen Sie den kompletten Pfad der CONTENIDO-Installation zur Direktive open_basedir hinzu, oder deaktivieren Sie open_basedir komplett."
+msgstr "Die Direktive open_basedir ist auf '.' (aktuelles Verzeichnis) gesetzt. Dies bedeuetet, da&szlig; CONTENIDO keine Dateien oberhalb des aktuellen Pfades &ouml;ffnen kann. Hieraus ergibt sich ein Problem, wenn CONTENIDO seine Frontends verwalten mu&szlig;. Bitte f&uuml;gen Sie den kompletten Pfad der CONTENIDO-Installation zur Direktive open_basedir hinzu, oder deaktivieren Sie open_basedir komplett."
 
-#: setup/steps/forms/systemtest.php:296
+#: steps/forms/systemtest.php:243
 msgid "open_basedir setting might be insufficient"
-msgstr "open_basedir-Einstellung könnte unzureichend sein"
+msgstr "open_basedir-Einstellung k&ouml;nnte unzureichend sein"
 
-#: setup/steps/forms/systemtest.php:297
+#: steps/forms/systemtest.php:244
 msgid "Setup believes that the PHP directive open_basedir is configured sufficient, however, if you encounter errors like 'open_basedir restriction in effect. File <filename> is not within the allowed path(s): <path>', you have to adjust the open_basedir directive"
-msgstr "Setup hat erkannt, daß die PHP-Direktive vermutlich ausreichend konfiguriert ist. Wenn Sie jedoch Meldungen wie 'open_basedir restriction in effect. File <filename> is not within the allowed path(s): <path>' erhalten, müssen Sie die open_basedir-Direktive anpassen."
+msgstr "Setup hat erkannt, da&szlig; die PHP-Direktive vermutlich ausreichend konfiguriert ist. Wenn Sie jedoch Meldungen wie 'open_basedir restriction in effect. File <filename> is not within the allowed path(s): <path>' erhalten, m&uuml;ssen Sie die open_basedir-Direktive anpassen."
 
-#: setup/steps/forms/systemtest.php:302
+#: steps/forms/systemtest.php:249
 msgid "open_basedir directive incompatible"
 msgstr "open_basedir Directive inkompatibel"
 
-#: setup/steps/forms/systemtest.php:303
+#: steps/forms/systemtest.php:250
 msgid "Setup has checked your PHP open_basedir directive and reckons that it is not sufficient. Please change the directive to include the CONTENIDO installation or turn it off completely."
-msgstr "Setup hat die PHP-Direktive open_basedir geprüft. Diese Direktive ist vermutlich unzureichend konfiguriert. Bitte ändern Sie die Direktive, sodaß sie den kompletten Pfad zur CONTENIDO-Installation enthält, oder deaktivieren Sie die Direktive komplett."
+msgstr "Setup hat die PHP-Direktive open_basedir gepr&uuml;ft. Diese Direktive ist vermutlich unzureichend konfiguriert. Bitte &auml;ndern Sie die Direktive, soda&szlig; sie den kompletten Pfad zur CONTENIDO-Installation enth&auml;lt, oder deaktivieren Sie die Direktive komplett."
 
-#: setup/steps/forms/systemtest.php:314
+#: steps/forms/systemtest.php:259
 msgid "PHP memory_limit directive too small"
 msgstr "PHP memory_limit Directive zu klein"
 
-#: setup/steps/forms/systemtest.php:315
+#: steps/forms/systemtest.php:260
 msgid "The memory_limit directive is set to 32 MB or lower. This might be not enough for CONTENIDO to operate correctly. We recommend to disable this setting completely, as this can cause problems with large CONTENIDO projects."
-msgstr "Die memory_limit Directive ist auf 32 MB oder weniger gesetzt. Dies kann für CONTENIDO nicht ausreichen sein. Wir empfehlen diese Einstellung komplett zu deaktivieren, um Probleme bei grösseren CONTENIDO Projekten zu vermeiden."
+msgstr "Die memory_limit Directive ist auf 32 MB oder weniger gesetzt. Dies kann f&uuml;r CONTENIDO nicht ausreichen sein. Wir empfehlen diese Einstellung komplett zu deaktivieren, um Probleme bei gr&ouml;sseren CONTENIDO Projekten zu vermeiden."
 
-#: setup/steps/forms/systemtest.php:320
+#: steps/forms/systemtest.php:265
 msgid "PHP sql.safe_mode turned on"
 msgstr "PHP Einstellung 'sql.safe_mode' ist aktiviert."
 
-#: setup/steps/forms/systemtest.php:321
+#: steps/forms/systemtest.php:266
 msgid "The PHP directive sql.safe_mode is turned on. This causes problems with the SQL queries issued by CONTENIDO. Please turn that directive off."
 msgstr "Die PHP Directive sql.safe_mode ist aktiviert. Dies kann Probleme mit SQL Abfragen verursachen. Bitte deaktivieren Sie diese Einstellung."
 
-#: setup/steps/forms/systemtest.php:325
+#: steps/forms/systemtest.php:270
 msgid "PHP GD-Extension is not loaded"
 msgstr "PHP GD-Extension nicht geladen"
 
-#: setup/steps/forms/systemtest.php:326
+#: steps/forms/systemtest.php:271
 msgid "The PHP GD-Extension is not loaded. Some third-party modules rely on the GD functionality. If you don't enable the GD extension, you will encounter problems with modules like galleries."
-msgstr "Die PHP GD-Extension ist nicht geladen. Module von Drittanbietern verwenden teilweise die GD-Library für Grafikfunktionen. Wenn Sie diese Extension nicht aktivieren, werden Probleme mit diversen Modulen auftreten, z.b. mit Bildergalerien."
+msgstr "Die PHP GD-Extension ist nicht geladen. Module von Drittanbietern verwenden teilweise die GD-Library f&uuml;r Grafikfunktionen. Wenn Sie diese Extension nicht aktivieren, werden Probleme mit diversen Modulen auftreten, z.b. mit Bildergalerien."
 
-#: setup/steps/forms/systemtest.php:330
+#: steps/forms/systemtest.php:275
 msgid "PHP PCRE Extension is not loaded"
 msgstr "PHP PCRE Extension nicht geladen"
 
-#: setup/steps/forms/systemtest.php:331
+#: steps/forms/systemtest.php:276
 msgid "The PHP PCRE Extension is not loaded. CONTENIDO uses PCRE-functions like preg_repace and preg_match and won't work without the PCRE Extension."
-msgstr "Die PHP PCRE-Extension ist nicht geladen. CONTENIDO benötigt PCRE-Funktionen wie z.b. preg_replace und preg_match und wird ohne die PCRE-Extension nicht funktionieren."
+msgstr "Die PHP PCRE-Extension ist nicht geladen. CONTENIDO ben&ouml;tigt PCRE-Funktionen wie z.b. preg_replace und preg_match und wird ohne die PCRE-Extension nicht funktionieren."
 
-#: setup/steps/forms/systemtest.php:335
-#: setup/steps/forms/systemtest.php:340
+#: steps/forms/systemtest.php:280
+#: steps/forms/systemtest.php:285
+#: steps/forms/systemtest.php:290
 msgid "PHP XML Extension is not loaded"
 msgstr "PHP XML Extension nicht geladen"
 
-#: setup/steps/forms/systemtest.php:336
-#: setup/steps/forms/systemtest.php:341
+#: steps/forms/systemtest.php:281
+#: steps/forms/systemtest.php:286
+#: steps/forms/systemtest.php:291
 msgid "The PHP XML Extension is not loaded. CONTENIDO won't work without the XML Extension."
 msgstr "Die PHP XML-Extension ist nicht geladen. CONTENIDO wird ohne die XML-Extension nicht funktionieren."
 
-#: setup/steps/forms/systemtest.php:351
+#: steps/forms/systemtest.php:299
 msgid "Unable to check for a suitable image resizer"
-msgstr "Überprüfung auf geeignete Bildkomprimierung fehlgeschlagen."
+msgstr "&Uuml;berpr&uuml;fung auf geeignete Bildkomprimierung fehlgeschlagen."
 
-#: setup/steps/forms/systemtest.php:352
+#: steps/forms/systemtest.php:300
 msgid "Setup has tried to check for a suitable image resizer (which is, for exampl, required for thumbnail creation), but was not able to clearly identify one. If thumbnails won't work, make sure you've got either the GD-extension or ImageMagick available."
-msgstr "Setup konnte keine geeignete Bildkomprimierung finden. Falls die Minitaturbilder (Thumbnails) nicht funktionieren, müssen Sie entweder die Erweiterung GD oder ImageMagick installieren."
+msgstr "Setup konnte keine geeignete Bildkomprimierung finden. Falls die Minitaturbilder (Thumbnails) nicht funktionieren, m&uuml;ssen Sie entweder die Erweiterung GD oder ImageMagick installieren."
 
-#: setup/steps/forms/systemtest.php:357
+#: steps/forms/systemtest.php:305
 msgid "No suitable image resizer available"
 msgstr "Keine geeignete Bildkomprimierung vorhanden."
 
-#: setup/steps/forms/systemtest.php:358
+#: steps/forms/systemtest.php:306
 msgid "Setup checked your image resizing support, however, it was unable to find a suitable image resizer. Thumbnails won't work correctly or won't be looking good. Install the GD-Extension or ImageMagick"
 msgstr "Setup hat keine geeignete Bildkomprimierung gefunden. Miniaturbilder werden nicht korrekt komprimiert. Bitte installieren Sie die Erweiterung GD oder ImageMagick."
 
-#: setup/steps/forms/systemtest.php:372
+#: steps/forms/systemtest.php:317
 msgid "GD-Library GIF read support missing"
-msgstr "Gd-Library GIF Leseunterstützung fehlt"
+msgstr "Gd-Library GIF Leseunterst&uuml;tzung fehlt"
 
-#: setup/steps/forms/systemtest.php:373
+#: steps/forms/systemtest.php:318
 msgid "Your GD version doesn't support reading GIF files. This might cause problems with some modules."
-msgstr "Ihre GD Version unterstützt nicht das Lesen von GIF Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+msgstr "Ihre GD Version unterst&uuml;tzt nicht das Lesen von GIF Dateien. Dies kann bei einigen Modulen zu Problemen f&uuml;hren."
 
-#: setup/steps/forms/systemtest.php:377
+#: steps/forms/systemtest.php:322
 msgid "GD-Library GIF write support missing"
-msgstr "GD-Library GIF Schreibunterstützung fehlt"
+msgstr "GD-Library GIF Schreibunterst&uuml;tzung fehlt"
 
-#: setup/steps/forms/systemtest.php:378
+#: steps/forms/systemtest.php:323
 msgid "Your GD version doesn't support writing GIF files. This might cause problems with some modules."
-msgstr "Ihre GD Version unterstützt nicht das Schreiben von GIF Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+msgstr "Ihre GD Version unterst&uuml;tzt nicht das Schreiben von GIF Dateien. Dies kann bei einigen Modulen zu Problemen f&uuml;hren."
 
-#: setup/steps/forms/systemtest.php:382
+#: steps/forms/systemtest.php:327
 msgid "GD-Library JPEG read support missing"
-msgstr "GD-Library JPEG Leseunterstützung fehlt"
+msgstr "GD-Library JPEG Leseunterst&uuml;tzung fehlt"
 
-#: setup/steps/forms/systemtest.php:383
+#: steps/forms/systemtest.php:328
 msgid "Your GD version doesn't support reading JPEG files. This might cause problems with some modules."
-msgstr "Ihre GD Version unterstützt nicht das Lesen von JPEG Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+msgstr "Ihre GD Version unterst&uuml;tzt nicht das Lesen von JPEG Dateien. Dies kann bei einigen Modulen zu Problemen f&uuml;hren."
 
-#: setup/steps/forms/systemtest.php:387
+#: steps/forms/systemtest.php:332
 msgid "GD-Library JPEG write support missing"
-msgstr "GD-Library JPEG Schreibunterstützung fehlt"
+msgstr "GD-Library JPEG Schreibunterst&uuml;tzung fehlt"
 
-#: setup/steps/forms/systemtest.php:388
+#: steps/forms/systemtest.php:333
 msgid "Your GD version doesn't support writing JPEG files. This might cause problems with some modules."
-msgstr "Ihre GD Version unterstützt nicht das Schreiben von JPEG Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+msgstr "Ihre GD Version unterst&uuml;tzt nicht das Schreiben von JPEG Dateien. Dies kann bei einigen Modulen zu Problemen f&uuml;hren."
 
-#: setup/steps/forms/systemtest.php:392
+#: steps/forms/systemtest.php:337
 msgid "GD-Library PNG read support missing"
-msgstr "GD-Library PNG Leseunterstützung fehlt"
+msgstr "GD-Library PNG Leseunterst&uuml;tzung fehlt"
 
-#: setup/steps/forms/systemtest.php:393
+#: steps/forms/systemtest.php:338
 msgid "Your GD version doesn't support reading PNG files. This might cause problems with some modules."
-msgstr "Ihre GD Version unterstützt nicht das Lesen von PNG Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+msgstr "Ihre GD Version unterst&uuml;tzt nicht das Lesen von PNG Dateien. Dies kann bei einigen Modulen zu Problemen f&uuml;hren."
 
-#: setup/steps/forms/systemtest.php:397
+#: steps/forms/systemtest.php:342
 msgid "GD-Library PNG write support missing"
-msgstr "GD-Library PNG Schreibunterstützung fehlt"
+msgstr "GD-Library PNG Schreibunterst&uuml;tzung fehlt"
 
-#: setup/steps/forms/systemtest.php:398
+#: steps/forms/systemtest.php:343
 msgid "Your GD version doesn't support writing PNG files. This might cause problems with some modules."
-msgstr "Ihre GD Version unterstützt nicht das Schreiben von PNG Dateien. Dies kann bei einigen Modulen zu Problemen führen."
+msgstr "Ihre GD Version unterst&uuml;tzt nicht das Schreiben von PNG Dateien. Dies kann bei einigen Modulen zu Problemen f&uuml;hren."
 
-#: setup/steps/forms/systemtest.php:415
+#: steps/forms/systemtest.php:358
 msgid "MySQL database connect failed"
 msgstr "Verbindung zur MySQL Datenbank fehlgeschlagen."
 
-#: setup/steps/forms/systemtest.php:416
+#: steps/forms/systemtest.php:359
 #, php-format
 msgid "Setup was unable to connect to the MySQL Server (Server %s, Username %s). Please correct the MySQL data and try again.<br><br>The error message given was: %s"
-msgstr "Setup konnte nicht mit dem MySQL Server (Server %s, Username %s) verbinden. Bitte überprüfen Sie die Verbindungsdaten zur Datenbank und versuchen es erneut.<br><br>Die Fehlermeldung von MySQL war: %s."
+msgstr "Setup konnte nicht mit dem MySQL Server (Server %s, Username %s) verbinden. Bitte &uuml;berpr&uuml;fen Sie die Verbindungsdaten zur Datenbank und versuchen es erneut.<br><br>Die Fehlermeldung von MySQL war: %s."
 
-#: setup/steps/forms/systemtest.php:456
+#: steps/forms/systemtest.php:372
+msgid "MySQL is running in strict mode"
+msgstr "MySQL l&auml;uft strict Modus"
+
+#: steps/forms/systemtest.php:395
 msgid "MySQL database already exists and seems to be filled"
-msgstr "MySQL-Datenbank existiert bereits und scheint gefüllt zu sein"
+msgstr "MySQL-Datenbank existiert bereits und scheint gef&uuml;llt zu sein"
 
-#: setup/steps/forms/systemtest.php:457
+#: steps/forms/systemtest.php:396
 #, php-format
 msgid "Setup checked the database %s and found the table %s. It seems that you already have a CONTENIDO installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type."
-msgstr "Setup hat die Datenbank %s geprüft und die Tabelle %s gefunden. Es scheint, als ob eine (ältere) CONTENIDO-Version bereits installiert ist. Wenn Sie trotzdem in dieser Datenbank installieren möchten, wählen Sie einen anderen Präfix. Wenn Sie von einer älteren CONTENIDO-Version upgraden möchten, wählen Sie bitte \"Upgrade\" als Setupart."
+msgstr "Setup hat die Datenbank %s gepr&uuml;ft und die Tabelle %s gefunden. Es scheint, als ob eine (&auml;ltere) CONTENIDO-Version bereits installiert ist. Wenn Sie trotzdem in dieser Datenbank installieren m&ouml;chten, w&auml;hlen Sie einen anderen Pr&auml;fix. Wenn Sie von einer &auml;lteren CONTENIDO-Version upgraden m&ouml;chten, w&auml;hlen Sie bitte \"Upgrade\" als Setupart."
 
-#: setup/steps/forms/systemtest.php:471
+#: steps/forms/systemtest.php:406
 msgid "MySQL test table already exists in the database"
 msgstr "MySQL Testtabelle existiert bereits in der Datenbank"
 
-#: setup/steps/forms/systemtest.php:472
+#: steps/forms/systemtest.php:407
 #, php-format
 msgid "Setup checked the database %s and found the test table %s. Please remove it before continuing."
-msgstr "Setup hat die Datenbank %s geprüft und die Testtabelle %s gefunden. Bitte entfernen Sie diese, bevor Sie fortfahren."
+msgstr "Setup hat die Datenbank %s gepr&uuml;ft und die Testtabelle %s gefunden. Bitte entfernen Sie diese, bevor Sie fortfahren."
 
-#: setup/steps/forms/systemtest.php:483
-#: setup/steps/forms/systemtest.php:538
+#: steps/forms/systemtest.php:417
+#: steps/forms/systemtest.php:463
 msgid "Unable to create tables in the selected MySQL database"
-msgstr "Kann keine Tabellen in der gewählten MySQL-Datenbank anlegen"
+msgstr "Kann keine Tabellen in der gew&auml;hlten MySQL-Datenbank anlegen"
 
-#: setup/steps/forms/systemtest.php:484
-#: setup/steps/forms/systemtest.php:539
+#: steps/forms/systemtest.php:418
+#: steps/forms/systemtest.php:464
 #, php-format
 msgid "Setup tried to create a test table in the database %s and failed. Please assign table creation permissions to the database user you entered, or ask an administrator to do so."
 msgstr "Setup hat versucht, eine Testtabelle in der Datenbank %s anzulegen und ist gescheitert. Bitte weisen Sie ihrem Datenbankbenutzer entsprechende Rechte zu, oder fragen Sie einen Administrator."
 
-#: setup/steps/forms/systemtest.php:496
-#: setup/steps/forms/systemtest.php:551
-#: setup/steps/forms/systemtest.php:612
-#: setup/steps/forms/systemtest.php:660
+#: steps/forms/systemtest.php:428
+#: steps/forms/systemtest.php:474
+#: steps/forms/systemtest.php:526
+#: steps/forms/systemtest.php:567
 msgid "Unable to lock tables in the selected MySQL database"
-msgstr "\"LOCK TABLES\" in der gewählten MySQL-Datenbank fehlgeschlagen"
+msgstr "\"LOCK TABLES\" in der gew&auml;hlten MySQL-Datenbank fehlgeschlagen"
 
-#: setup/steps/forms/systemtest.php:497
-#: setup/steps/forms/systemtest.php:552
-#: setup/steps/forms/systemtest.php:613
-#: setup/steps/forms/systemtest.php:661
+#: steps/forms/systemtest.php:429
+#: steps/forms/systemtest.php:475
+#: steps/forms/systemtest.php:527
+#: steps/forms/systemtest.php:568
 #, php-format
 msgid "Setup tried to lock a test table in the database %s and failed. You can continue, however, you should be aware of possible data losses due to missing locking. It is highly recommended that you assign the LOCK TABLES permission to your database user!"
-msgstr "Setup hat versucht, die Testtabelle in der Datenbank %s zu locken. Der Lock konnte aufgrund fehlender Berechtigungen nicht ausgeführt werden. Sie können fortfahren, aber Sie sollten sich bewusst sein, daß es zu Datenverlust kommen kann. Es wird ausdrücklich empfohlen, daß Sie das Recht \"LOCK TABLES\" Ihrem Datenbankbenutzer zuweisen."
+msgstr "Setup hat versucht, die Testtabelle in der Datenbank %s zu locken. Der Lock konnte aufgrund fehlender Berechtigungen nicht ausgef&uuml;hrt werden. Sie k&ouml;nnen fortfahren, aber Sie sollten sich bewusst sein, da&szlig; es zu Datenverlust kommen kann. Es wird ausdr&uuml;cklich empfohlen, da&szlig; Sie das Recht \"LOCK TABLES\" Ihrem Datenbankbenutzer zuweisen."
 
-#: setup/steps/forms/systemtest.php:511
-#: setup/steps/forms/systemtest.php:566
+#: steps/forms/systemtest.php:441
+#: steps/forms/systemtest.php:487
 msgid "Unable to remove the test table"
 msgstr "Konnte die Testtabelle nicht entfernen"
 
-#: setup/steps/forms/systemtest.php:512
-#: setup/steps/forms/systemtest.php:567
+#: steps/forms/systemtest.php:442
+#: steps/forms/systemtest.php:488
 #, php-format
 msgid "Setup tried to remove the test table %s in the database %s and failed due to insufficient permissions. Please remove the table %s manually."
-msgstr "Setup hat die Testtabelle %s in der Datenbank %s erstellt, konnte sie jedoch aufgrund fehlender Berechtigungen nicht löschen. Bitte löschen Sie die Testtabelle %s manuell."
+msgstr "Setup hat die Testtabelle %s in der Datenbank %s erstellt, konnte sie jedoch aufgrund fehlender Berechtigungen nicht l&ouml;schen. Bitte l&ouml;schen Sie die Testtabelle %s manuell."
 
-#: setup/steps/forms/systemtest.php:525
+#: steps/forms/systemtest.php:453
 msgid "Unable to create the database in the MySQL server"
 msgstr "Datenbankerzeugung auf dem MySQL-Server ist fehlgeschlagen"
 
-#: setup/steps/forms/systemtest.php:526
+#: steps/forms/systemtest.php:454
 msgid "Setup tried to create a test database and failed. Please assign database creation permissions to the database user you entered, ask an administrator to do so, or create the database manually."
-msgstr "Setup hat versucht, eine Testdatenbank zu erzeugen, jedoch ist die Datenbankerzeugung fehlgeschlagen. Bitte vergeben Sie passende Berechtigungen für den eingegebenen Datenbankbenutzer, fragen Sie ihre Administrator, oder erstellen Sie die Datenbank händisch."
+msgstr "Setup hat versucht, eine Testdatenbank zu erzeugen, jedoch ist die Datenbankerzeugung fehlgeschlagen. Bitte vergeben Sie passende Berechtigungen f&uuml;r den eingegebenen Datenbankbenutzer, fragen Sie ihre Administrator, oder erstellen Sie die Datenbank h&auml;ndisch."
 
-#: setup/steps/forms/systemtest.php:582
-#: setup/steps/forms/systemtest.php:599
+#: steps/forms/systemtest.php:501
+#: steps/forms/systemtest.php:515
 msgid "No data found for the migration"
-msgstr "Keine Daten für die Migration gefunden"
+msgstr "Keine Daten f&uuml;r die Migration gefunden"
 
-#: setup/steps/forms/systemtest.php:583
+#: steps/forms/systemtest.php:502
 #, php-format
 msgid "Setup tried to locate the data for the migration, however, the database %s doesn't exist. You need to copy your database first before running setup."
-msgstr "Setup hat versucht, die Daten für die Migration zu lokalisieren, jedoch enthält die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank bevor Sie das Setup ausführen."
+msgstr "Setup hat versucht, die Daten f&uuml;r die Migration zu lokalisieren, jedoch enth&auml;lt die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank bevor Sie das Setup ausf&uuml;hren."
 
-#: setup/steps/forms/systemtest.php:600
+#: steps/forms/systemtest.php:516
 #, php-format
 msgid "Setup tried to locate the data for the migration, however, the database %s contains no tables. You need to copy your database first before running setup."
-msgstr "Setup hat versucht, die Daten für die Migration zu lokalisieren, jedoch enthält die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank bevor Sie das Setup ausführen."
+msgstr "Setup hat versucht, die Daten f&uuml;r die Migration zu lokalisieren, jedoch enth&auml;lt die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank bevor Sie das Setup ausf&uuml;hren."
 
-#: setup/steps/forms/systemtest.php:630
-#: setup/steps/forms/systemtest.php:647
+#: steps/forms/systemtest.php:542
+#: steps/forms/systemtest.php:556
 msgid "No data found for the upgrade"
-msgstr "Keine Daten für das Upgrade gefunden"
+msgstr "Keine Daten f&uuml;r das Upgrade gefunden"
 
-#: setup/steps/forms/systemtest.php:631
+#: steps/forms/systemtest.php:543
 #, php-format
 msgid "Setup tried to locate the data for the upgrade, however, the database %s doesn't exist. You need to copy your database first before running setup."
-msgstr "Setup hat versucht, die Daten für das Upgrade zu lokalisieren, jedoch existiert die Datenbank %s nicht. Bitte kopieren Sie die Datenbank bevor Sie das Setup ausführen."
+msgstr "Setup hat versucht, die Daten f&uuml;r das Upgrade zu lokalisieren, jedoch existiert die Datenbank %s nicht. Bitte kopieren Sie die Datenbank bevor Sie das Setup ausf&uuml;hren."
 
-#: setup/steps/forms/systemtest.php:648
+#: steps/forms/systemtest.php:557
 #, php-format
 msgid "Setup tried to locate the data for the upgrade, however, the database %s contains no tables. You need to copy your database first before running setup."
-msgstr "Setup hat versucht, die Daten für das Upgrade zu lokalisieren, jedoch enthält die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank bevor Sie das Setup ausführen."
+msgstr "Setup hat versucht, die Daten f&uuml;r das Upgrade zu lokalisieren, jedoch enth&auml;lt die Datenbank %s keine Tabellen. Bitte kopieren Sie die Datenbank bevor Sie das Setup ausf&uuml;hren."
 
-#: setup/steps/forms/systemtest.php:759
+#: steps/forms/systemtest.php:656
 #, php-format
 msgid "Can't write %s"
 msgstr "Kann %s nicht schreiben"
 
-#: setup/steps/forms/systemtest.php:760
+#: steps/forms/systemtest.php:657
 #, php-format
 msgid "Setup or CONTENIDO can't write to the file %s. Please change the file permissions to correct this problem."
-msgstr "Setup oder CONTENIDO kann nicht die Datei %s schreiben. Bitte ändern Sie die Dateiberechtigungen, um das Problem zu lösen."
+msgstr "Setup oder CONTENIDO kann nicht die Datei %s schreiben. Bitte &auml;ndern Sie die Dateiberechtigungen, um das Problem zu l&ouml;sen."
 
-#: setup/steps/forms/systemtest.php:773
+#: steps/forms/systemtest.php:667
 msgid "Your Server runs Windows. Due to that, Setup can't recommend any file permissions."
-msgstr "Ihr Server läuft mit Windows. Daher kann das Setup keine Dateiberechtigungen empfehlen."
+msgstr "Ihr Server l&auml;uft mit Windows. Daher kann das Setup keine Dateiberechtigungen empfehlen."
 
-#: setup/steps/forms/systemtest.php:776
+#: steps/forms/systemtest.php:670
 #, php-format
 msgid "Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file %s, especially in environments where ACL (Access Control Lists) are used."
-msgstr "Aufgrund einer sehr restriktiven Systemumgebung kann Setup keinen Hinweis auf die richtigen Dateirechte geben. Fragen Sie Ihren Systemadministrator nach Schreibrechten für die Datei %s, insbesondere in Umgebungen, in denen ACL's (Access Control Lists) verwendet werden."
+msgstr "Aufgrund einer sehr restriktiven Systemumgebung kann Setup keinen Hinweis auf die richtigen Dateirechte geben. Fragen Sie Ihren Systemadministrator nach Schreibrechten f&uuml;r die Datei %s, insbesondere in Umgebungen, in denen ACL's (Access Control Lists) verwendet werden."
 
-#: setup/steps/forms/systemtest.php:781
+#: steps/forms/systemtest.php:675
 #, php-format
 msgid "Your web server and the owner of your files are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the file mask to %s or set the owner to allow writing the file."
-msgstr "Der Webserver und der Besitzer der Datei sind identisch. Sie müssen den Schreibzugriff aktivieren, z.b. mit chmod u+rw %s, oder durch das setzen der Rechtemaske auf %s."
+msgstr "Der Webserver und der Besitzer der Datei sind identisch. Sie m&uuml;ssen den Schreibzugriff aktivieren, z.b. mit chmod u+rw %s, oder durch das setzen der Rechtemaske auf %s."
 
-#: setup/steps/forms/systemtest.php:786
+#: steps/forms/systemtest.php:680
 #, php-format
 msgid "Your web server's group and the group of your files are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the file mask to %s or set the group to allow writing the file."
-msgstr "Die Webservergruppe und die Gruppe der Datei ist identisch. Aktivieren Sie Schreibzugriff für die Gruppe, z.b. mit chmod g+rw %s, oder durch das Setzen der Rechtemaske auf %s."
+msgstr "Die Webservergruppe und die Gruppe der Datei ist identisch. Aktivieren Sie Schreibzugriff f&uuml;r die Gruppe, z.b. mit chmod g+rw %s, oder durch das Setzen der Rechtemaske auf %s."
 
-#: setup/steps/forms/systemtest.php:791
+#: steps/forms/systemtest.php:685
 #, php-format
 msgid "Your web server is not equal to the file owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the files. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the file mask to %s or set the others to allow writing the file."
-msgstr "Der Webserver ist ungleich dem Dateibesitzer, und befindet sich nicht in der Webserver-Gruppe. Es wäre unsicher, den \"world\"-Schreibzugriff zu aktivieren. Wenn Sie dennoch installieren möchten, aktivieren Sie den Schreibzugriff für jedermann (world), z.b. mit chmod o+rw %s, oder durch das setzen der Rechtemaske auf %s."
+msgstr "Der Webserver ist ungleich dem Dateibesitzer, und befindet sich nicht in der Webserver-Gruppe. Es w&auml;re unsicher, den \"world\"-Schreibzugriff zu aktivieren. Wenn Sie dennoch installieren m&ouml;chten, aktivieren Sie den Schreibzugriff f&uuml;r jedermann (world), z.b. mit chmod o+rw %s, oder durch das setzen der Rechtemaske auf %s."
 
-#: setup/steps/forms/systemtest.php:802
+#: steps/forms/systemtest.php:695
 msgid "Your Server runs Windows. Due to that, Setup can't recommend any directory permissions."
-msgstr "Ihr Webserver läuft mit Windows. Daher kann das Setup keine Verzeichnisberechtigungen empfehlen."
+msgstr "Ihr Webserver l&auml;uft mit Windows. Daher kann das Setup keine Verzeichnisberechtigungen empfehlen."
 
-#: setup/steps/forms/systemtest.php:805
+#: steps/forms/systemtest.php:698
 #, php-format
 msgid "Due to a very restrictive environment, an advise is not possible. Ask your system administrator to enable write access to the file or directory %s, especially in environments where ACL (Access Control Lists) are used."
 msgstr "Aufgrund einer sehr restriktiven Umgebung kann Setup keinen Hinweis auf die richtigen Dateirechte geben. Fragen Sie Ihren Systemadministrator nach Schreibrechten auf die Datei oder das Verzeichnis %s, insbesondere bei Systemen, bei denen ACL's (Access Control Lists) verwendet werden."
 
-#: setup/steps/forms/systemtest.php:810
+#: steps/forms/systemtest.php:703
 #, php-format
 msgid "Your web server and the owner of your directory are identical. You need to enable write access for the owner, e.g. using chmod u+rw %s, setting the directory mask to %s or set the owner to allow writing the directory."
-msgstr "Der Webserver sowie der Besitzer des Verzeichnisses sind identisch. Sie müssen Schreibzugriff für den Besitzer aktivieren, z.b. mit chmod u+rw %s, oder durch das setzen der Rechtemaske auf %s."
+msgstr "Der Webserver sowie der Besitzer des Verzeichnisses sind identisch. Sie m&uuml;ssen Schreibzugriff f&uuml;r den Besitzer aktivieren, z.b. mit chmod u+rw %s, oder durch das setzen der Rechtemaske auf %s."
 
-#: setup/steps/forms/systemtest.php:815
+#: steps/forms/systemtest.php:708
 #, php-format
 msgid "Your web server's group and the group of your directory are identical. You need to enable write access for the group, e.g. using chmod g+rw %s, setting the directory mask to %s or set the group to allow writing the directory."
-msgstr "Die Webservergruppe sowie die Gruppe des Verzeichnisses sind identisch. Sie müssen den Schreibzugriff für die Gruppe aktivieren, z.b. mit chmod g+rw %s, oder durch setzen der Rechtemaske auf %s."
+msgstr "Die Webservergruppe sowie die Gruppe des Verzeichnisses sind identisch. Sie m&uuml;ssen den Schreibzugriff f&uuml;r die Gruppe aktivieren, z.b. mit chmod g+rw %s, oder durch setzen der Rechtemaske auf %s."
 
-#: setup/steps/forms/systemtest.php:820
+#: steps/forms/systemtest.php:713
 #, php-format
 msgid "Your web server is not equal to the directory owner, and is not in the webserver's group. It would be highly insecure to allow world write acess to the directory. If you want to install anyways, enable write access for all others, e.g. using chmod o+rw %s, setting the directory mask to %s or set the others to allow writing the directory."
-msgstr "Der Webserver ist ungleich dem Verzeichnisbesitzer, und ist nicht in der Webserver-Gruppe. Es wäre unsicher, dem Verzeichnis \"world\"-Schreibzugriff zu erlauben. Wenn Sie dennoch installieren möchten, aktivieren Sie Schreibzugriff für jedermann, z.b. mit chmod o+rw %s oder durch das Setzen der Rechtemaske %s."
+msgstr "Der Webserver ist ungleich dem Verzeichnisbesitzer, und ist nicht in der Webserver-Gruppe. Es w&auml;re unsicher, dem Verzeichnis \"world\"-Schreibzugriff zu erlauben. Wenn Sie dennoch installieren m&ouml;chten, aktivieren Sie Schreibzugriff f&uuml;r jedermann, z.b. mit chmod o+rw %s oder durch das Setzen der Rechtemaske %s."
+
+#: steps/setuptype.php:41
+msgid "Please choose your setup type"
+msgstr "Bitte w&auml;hlen Sie die Installationsart"
+
+#: steps/setuptype.php:42
+msgid "Install new CONTENIDO version"
+msgstr "CONTENIDO Neuinstallation"
+
+#: steps/setuptype.php:43
+#, php-format
+msgid "Version %s"
+msgstr "Version %s"
+
+#: steps/setuptype.php:44
+#, php-format
+msgid "This setup type will install CONTENIDO %s."
+msgstr "Diese Setupart installiert CONTENIDO %s."
+
+#: steps/setuptype.php:44
+msgid "Please choose this type if you want to start with an empty or an example installation."
+msgstr "W&auml;hlen Sie diese Setupart aus, wenn Sie eine leere oder eine Beispielinstallation installieren m&ouml;chten. "
+
+#: steps/setuptype.php:44
+msgid "Recommended for new projects."
+msgstr "Empfohlen f&uuml;r neue Projekte."
+
+#: steps/setuptype.php:46
+msgid "Upgrade existing installation"
+msgstr "Bestehende CONTENIDO Installation upgraden"
+
+#: steps/setuptype.php:47
+#, php-format
+msgid "Upgrade to %s"
+msgstr "Upgraden auf %s"
+
+#: steps/setuptype.php:48
+msgid "This setup type will upgrade your existing installation (CONTENIDO 4.6.x or later required)."
+msgstr "Diese Setupart wird Ihre bestehende CONTENIDO Installation (Version 4.6.x oder h&ouml;her) upgraden. "
+
+#: steps/setuptype.php:48
+msgid "Recommended for existing projects."
+msgstr "Empfohlen f&uuml;r existierende Projekte."
+
+#: steps/setuptype.php:50
+msgid "Migrate existing installation"
+msgstr "Migration bestehender Installation"
+
+#: steps/setuptype.php:51
+#, php-format
+msgid "Migrate (Version %s)"
+msgstr "Migration (Version %s)"
+
+#: steps/setuptype.php:52
+msgid "This setup type will help you migrating an existing installation to another server."
+msgstr "Diese Setupart hilft Ihnen, eine bestehende CONTENIDO Installation auf einen anderen Server umzuziehen."
+
+#: steps/setuptype.php:52
+msgid "Recommended for moving projects across servers."
+msgstr "Empfohlen f&uuml;r Projektumz&uuml;ge zwischen Servern."
+
+#~ msgid "config.php"
+#~ msgstr "config.php"
 
 #~ msgid "CONTENIDO Newsletter"
 #~ msgstr "CONTENIDO Newsletter"
@@ -800,17 +808,17 @@ msgstr "Der Webserver ist ungleich dem Verzeichnisbesitzer, und ist nicht in der
 #~ "Please enter a password for the user  'sysadmin' and don't forget it! The "
 #~ "password is required for your first login!"
 #~ msgstr ""
-#~ "Bitte geben Sie ein Passwort für den Systemadministrator ein. Dieses "
-#~ "Passwort benötigen Sie für Ihr erstes Login!"
+#~ "Bitte geben Sie ein Passwort f&uuml;r den Systemadministrator ein. Dieses "
+#~ "Passwort ben&ouml;tigen Sie f&uuml;r Ihr erstes Login!"
 
 #~ msgid "sysadmin-Password"
 #~ msgstr "Password Systemadministrator"
 
 #~ msgid "sysadmin-Password (Confirmation)"
-#~ msgstr "Password Systemadministrator (Bestätigung)"
+#~ msgstr "Password Systemadministrator (Best&auml;tigung)"
 
 #~ msgid "Passwords don't match"
-#~ msgstr "Passwörter stimmen nicht überein."
+#~ msgstr "Passw&ouml;rter stimmen nicht &uuml;berein."
 
 #~ msgid "You need to enter a password!"
-#~ msgstr "Sie müssen ein Password eingeben."
+#~ msgstr "Sie m&uuml;ssen ein Password eingeben."

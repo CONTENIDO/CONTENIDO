@@ -2014,6 +2014,8 @@ setup/lib/include.index.controller.php -text
 setup/lib/startup.php -text
 setup/locale/de_DE/LC_MESSAGES/contenido.mo -text
 setup/locale/de_DE/LC_MESSAGES/contenido.po -text
+setup/locale/potfiles.txt -text
+setup/locale/setup.pot -text
 setup/script/pluginInfo.js -text
 setup/script/setup.js -text
 setup/steps/forms/additionalplugins.php -text
