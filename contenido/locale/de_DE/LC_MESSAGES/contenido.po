@@ -4519,7 +4519,7 @@ msgid "Default client (ID)"
 msgstr "Standardmandant (ID)"
 
 #: includes/include.system_configuration.php:105
-msgid "Maximum log size in MiB (0 = infnite)"
+msgid "Maximum log size in MiB (0 = infinite)"
 msgstr "Maximale Log Gr&ouml;&szlig;e in MiB (0 = unendlich)"
 
 #: includes/include.system_configuration.php:106

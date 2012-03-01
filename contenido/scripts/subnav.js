@@ -15,6 +15,8 @@ var sub = {
         if (anchors[0]) {
             anchors[0].className = 'current';
         }
+        
+        alert('hi');
     },
 
     /**
@@ -44,7 +46,7 @@ var sub = {
      *                       top.content.right_top       (when there is no left/right frameset)
      */
     highlightById: function(id, frame) {
-        this._reset();
+        this._reset(frame);
         var elem = this._getAnchorById(id, frame);
         if (elem) {
             elem.className = 'current';
