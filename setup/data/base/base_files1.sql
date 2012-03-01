@@ -93,7 +93,7 @@ INSERT INTO !PREFIX!_files VALUES('98', '49', 'include.log_menu.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('99', '49', 'include.logs.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('100', '16', 'newsletter/includes/include.newsletter_menu.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('101', '16', 'newsletter/includes/include.newsletter_edit.php', 'main');
-INSERT INTO !PREFIX!_files VALUES('102', '16', 'newsletter/includes/functions.forms.php', 'inc');
+INSERT INTO !PREFIX!_files VALUES('102', '16', 'functions.forms.php', 'inc');
 INSERT INTO !PREFIX!_files VALUES('103', '50', 'newsletter/includes/include.recipients_left_top.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('104', '50', 'newsletter/includes/include.recipients_menu.php', 'main');
 INSERT INTO !PREFIX!_files VALUES('105', '50', 'include.subnav_blank.php', 'main');
