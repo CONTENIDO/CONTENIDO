@@ -33,4 +33,6 @@ if ($contenido && $edit) {
     }
 }
 
+echo mi18n("TRANSLATE_ME");
+
 ?>
