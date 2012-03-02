@@ -32,7 +32,4 @@ if ($contenido && $edit) {
         $tpl->generate('templates/headline_h1.html');
     }
 }
-
-echo mi18n("TRANSLATE_ME");
-
 ?>
