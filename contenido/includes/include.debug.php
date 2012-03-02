@@ -48,7 +48,7 @@ foreach ($areas as $key => $value)
 
 $areaSelector = $areaSelectTemplate->generate($cfg['path']['templates'].$cfg['templates']['generic_select'], true);
 
-$actionList = new Action();
+$actionList = new cApiActionCollection();
 $actions = $actionList = $actionList->getAvailableActions();
 
 $actionSelectTemplate= new Template;

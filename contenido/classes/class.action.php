@@ -18,6 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
+ * @deprecated [2012-03-01] Use class in contenido/classes/contenido/class.action.php
+ *                          - Use cApiActionCollection
  * 
  * {@internal 
  *   created 2003
@@ -31,118 +33,8 @@
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
-
-class Action {
-
-    /**
-     * Constructor Function
-     * @param
-     */
-    function Action() {
-        // empty
-    } // end function
-
-    /**
-     * getAvailableActions()
-     * Returns all actions available in the system
-     * @return array   Array with id and name entries
-     */
-    function getAvailableActions() {
-        global $cfg;
-
-        $db = new DB_Contenido;
-
-        $sql = "SELECT
-                    action.idaction,
-                    action.name,
-					area.name AS areaname
-                FROM
-                ". $cfg["tab"]["actions"]." AS action
-				LEFT JOIN
-				". $cfg["tab"]["area"]." AS area
-				ON 
-					area.idarea = action.idarea
-    WHERE action.relevant = '1'
-				ORDER BY 
-					action.name;";
-
-        $db->query($sql);
-
-        $actions = array();
-        
-        while ($db->next_record())
-        {
-            
-            $newentry["name"] = $db->f("name");
-			$newentry["areaname"] = $db->f("areaname");
-
-            $actions[$db->f("idaction")] = $newentry;
-
-        }
-
-        return ($actions);
-    } // end function
-
-    /**
-     * getActionName()
-     *
-     * @return string name of given action
-     */
-    function getActionName( $action ) {
-        global $cfg;
-
-        $db = new DB_Contenido;
-
-        $sql = "SELECT
-                    name
-                FROM
-                ". $cfg["tab"]["actions"] ."
-                WHERE
-                    idaction = '".Contenido_Security::toInteger($action)."'";
-
-        $db->query($sql);
-        $db->next_record();
-
-        return ($db->f("name"));
-
-    } // end function
-
-    /**
-     * getAreaForAction()
-     * Returns the area for the given action
-     * @return int   Integer with the area ID for the given action
-     */
-    function getAreaForAction( $action ) {
-        global $cfg;
-        
-        $db = new DB_Contenido;
-        
-        if (!is_numeric($action))
-        {
-        $sql = "SELECT
-                    idarea
-                FROM
-                ". $cfg["tab"]["actions"] ."
-                WHERE
-                    name = '".Contenido_Security::escapeDB($action, $db)."'";
-        } else {
-        $sql = "SELECT
-                    idarea
-                FROM
-                ". $cfg["tab"]["actions"] ."
-                WHERE
-                    idaction = '".Contenido_Security::toInteger($action)."'";
-        }
-
-        $db->query($sql);
-        $db->next_record();
-
-        return ($db->f("idarea"));
-
-    } // end function
-} // end class
 
 ?>

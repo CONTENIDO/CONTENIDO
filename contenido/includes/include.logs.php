@@ -68,7 +68,7 @@ if(!$perm->have_perm_area_action($area))
     $userclass = new Users();
     $structureclass = new Structure();
     $artclass = new Art();
-    $actionclass = new Action();
+    $actionclass = new cApiActionCollection();
 
     $clients = $clientclass->getAccessibleClients();
     $users = $userclass->getAccessibleUsers(explode(',', $auth->auth['perm']));

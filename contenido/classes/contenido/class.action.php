@@ -56,14 +56,24 @@ class cApiActionCollection extends ItemCollection
         $this->__construct();
     }
 
-    public function create($area, $name, $code = '', $location = '', $relevant = 1)
+    /**
+     * Creates a action entry
+     *
+     * @param  string|int  $area
+     * @param  string|int  $name
+     * @param  string|int  $alt_name
+     * @param  string  $code
+     * @param  string  $location
+     * @param  int  $relevant
+     * @return  cApiAction
+     */
+    public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1)
     {
         $item = parent::create();
 
         if (is_string($area)) {
             $c = new cApiArea();
             $c->loadBy('name', $area);
-
             if ($c->virgin) {
                 $area = 0;
                 cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
@@ -72,16 +82,82 @@ class cApiActionCollection extends ItemCollection
             }
         }
 
+        if (is_string($area)) {
+            $area = $this->escape($area);
+        }
+        if (is_string($name)) {
+            $name = $this->escape($name);
+        }
+        if (is_string($alt_name)) {
+            $alt_name = $this->escape($alt_name);
+        }
+
         $item->set('idarea', $area);
         $item->set('name', $name);
+        $item->set('alt_name', $alt_name);
         $item->set('code', $code);
         $item->set('location', $location);
-        $item->set('relevant', $relevant);
+        $item->set('relevant', (int) $relevant);
 
         $item->store();
 
         return $item;
     }
+
+    /**
+     * Returns all actions available in the system
+     * @return array   Array with id and name entries
+     */
+    public function getAvailableActions()
+    {
+        global $cfg;
+
+        $sql = "SELECT action.idaction, action.name, area.name AS areaname
+                FROM `%s` AS action LEFT JOIN `%s` AS area
+                ON area.idarea = action.idarea
+                WHERE action.relevant = 1 ORDER BY action.name;";
+
+        $this->db->query($sql, $this->table, $cfg['tab']['area']);
+
+        $actions = array();
+
+        while ($this->db->next_record()) {
+            $newentry['name'] = $this->db->f('name');
+            $newentry['areaname'] = $this->db->f('areaname');
+            $actions[$this->db->f('idaction')] = $newentry;
+        }
+
+        return $actions;
+    }
+
+    /**
+     * Return name of passed action.
+     *
+     * @param  int  Id of action
+     * @return string|null
+     */
+    public function getActionName($action)
+    {
+        $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
+        return ($this->db->next_record()) ? $this->db->f('name') : null;
+    }
+
+    /**
+     * Returns the area for the given action.
+     * @param  string|int  Name or id of action
+     * @return int|null   Integer with the area ID for the given action or null
+     */
+    function getAreaForAction($action)
+    {
+        if (!is_numeric($action)) {
+            $this->db->query("SELECT idarea FROM `%s` WHERE name = '%s'", $this->table, $action);
+        } else {
+            $this->db->query("SELECT idarea FROM `%s` WHERE idaction = %d", $this->table, $action);
+        }
+
+        return ($this->db->next_record()) ? $this->db->f('idarea') : null;
+    }
+
 }
 
 
@@ -122,6 +198,32 @@ class cApiAction extends Item
     {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
+    }
+}
+
+
+################################################################################
+# Old version of action class
+#
+# NOTE: Class implemetation below is deprecated and the will be removed in
+#       future versions of contenido.
+#       Don't use it, it's still available due to downwards compatibility.
+
+/**
+ * Action
+ * @deprecated  [2012-03-01] Use cApiActionCollection instead of this class.
+ */
+class Action extends cApiActionCollection
+{
+    public function __construct()
+    {
+        cDeprecated("Use class cApiActionCollection instead");
+        parent::__construct();
+    }
+    public function Action()
+    {
+        cDeprecated("Use __construct() instead");
+        $this->__construct();
     }
 }
 
