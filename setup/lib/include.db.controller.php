@@ -142,9 +142,6 @@ list($rootPath, $rootHttpPath) = getSystemDirectories();
 
 if ($_SESSION['setuptype'] == 'setup') {
     switch ($_SESSION['clientmode']) {
-        case 'CLIENT':
-            $fullChunks = array_merge($baseChunks, $sysadminChunk, $clientChunks);
-			break;
         case 'CLIENTMODULES':
             $fullChunks = array_merge($baseChunks, $sysadminChunk, $clientChunks, $moduleChunks);
 			break;
@@ -290,7 +287,6 @@ if ($currentStep < $totalSteps) {
 	
 	if ($_SESSION['setuptype'] == 'setup') {
 		switch ($_SESSION['clientmode']) {
-			case 'CLIENT':
 			case 'CLIENTMODULES':
 			case 'CLIENTEXAMPLES':
 				global $cfgClient;

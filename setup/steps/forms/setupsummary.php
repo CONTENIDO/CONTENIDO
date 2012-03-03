@@ -72,7 +72,6 @@ class cSetupSetupSummary extends cSetupMask
             $aChoices = array(
                 "CLIENTEXAMPLES" => i18n("Client with example modules and example content"),
                 "CLIENTMODULES"  => i18n("Client with example modules but without example content"),
-                "CLIENT"         => i18n("Client without examples"),
                 "NOCLIENT"       => i18n("Don't create a client")
             );
             $messages[i18n("Client installation").":"] = $aChoices[$_SESSION["clientmode"]];
