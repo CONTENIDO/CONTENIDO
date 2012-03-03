@@ -26,11 +26,17 @@ class ContenidoXmlReader extends ContenidoXmlBase {
 	 *
 	 * @param string $sFilename path to the XML document
 	 *
-	 * @return void 
+	 * @return	boolean	load state (true = successfully loaded, false = not found or loaded)
 	 */
 	public function load($sFilename) {
+		if (!file_exists($sFilename)) {
+			return false;
+		}
+		
 		$this->_dom = DOMDocument::load($sFilename);
 		$this->_initXpathInstance();
+		
+		return ($this->_dom instanceof DOMDocument);
 	}
 	
 	/**

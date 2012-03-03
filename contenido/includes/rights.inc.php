@@ -163,12 +163,6 @@ if(!isset($rights_client)){
 
 //set new right_list (=all possible rights)
 if(!is_array($right_list)){
-    # modified 2007-08-03, H. Librenz <holger.librenz@4fb.de> - this breaks, i do not know really know why, the session if storage container for session is other than database!
-    # PS: this is a hard, damn shit area of code -- ARRRGGGHHHH!!!!!!!
-         //register these list fore following sites
-//         $sess->register("right_list");
-
-         $plugxml=new XML_Doc();
 
          //select all rights , actions an theeir locations   without area login
         $sql="SELECT A.idarea, A.parent_id, B.location,A.name FROM ".$cfg["tab"]["area"]." as A LEFT JOIN ".$cfg["tab"]["nav_sub"]." as B ON  A.idarea = B.idarea WHERE A.name!='login' AND A.relevant='1' AND A.online='1' GROUP BY A.name ORDER BY A.idarea";

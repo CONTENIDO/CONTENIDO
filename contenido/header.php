@@ -115,7 +115,6 @@ sendEncodingHeader($db, $cfg, $lang);
 
 $perm->load_permissions();
 
-$xml        = new XML_doc;
 $tpl        = new Template;
 $nav        = new Contenido_Navigation;
 

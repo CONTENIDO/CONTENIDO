@@ -98,7 +98,6 @@ if (!is_numeric($lang) || $lang == "") {
 $perm->load_permissions();
 
 # Create CONTENIDO classes
-$xml        = new XML_doc;
 $tpl        = new Template;
 $backend    = new Contenido_Backend;
 

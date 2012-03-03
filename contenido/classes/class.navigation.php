@@ -65,14 +65,14 @@ class Contenido_Navigation
 
 
     /**
-     * Constructor. Loads the XML language file using XML_Doc.
+     * Constructor. Loads the XML language file using ContenidoXmlReader.
      */
     public function __construct()
     {
         global $cfg, $belang;
 
-        $this->xml = new XML_Doc();
-        $this->plugxml = new XML_Doc();
+        $this->xml = new ContenidoXmlReader();
+        $this->plugxml = new ContenidoXmlReader();
 
         // Load language file
         if ($this->xml->load($cfg['path']['xml'] . $cfg['lang'][$belang]) == false) {
@@ -100,8 +100,7 @@ class Contenido_Navigation
         // If a ";" is found entry is from a plugin -> explode location, first is xml file path,
         // second is xpath location in xml file
         if (strstr($location, ';')) {
-
-            $locs  = explode(';', $location);
+			$locs  = explode(';', $location);
             $file  = trim($locs[0]);
             $xpath = trim($locs[1]);
 
@@ -131,10 +130,10 @@ class Contenido_Navigation
                     die("Unable to load $filepath XML language file");
                 }
             }
-            $caption = $this->plugxml->valueOf($xpath);
+            $caption = $this->plugxml->getXpathValue('/language/' . $xpath);
 
         } else {
-            $caption = $this->xml->valueOf($location);
+            $caption = $this->xml->getXpathValue('/language/' . $location);
         }
 
         return $caption;

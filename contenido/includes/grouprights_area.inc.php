@@ -94,10 +94,9 @@ $sTable .= $oTable->header_cell("<input type=\"checkbox\" name=\"checkall\" valu
 $sTable .= $oTable->end_row();
 
 //Select the itemid´s
-if ($xml->load($cfg['path']['xml'] . $cfg['lang'][$belang]) == false)
-{
-	if ($xml->load($cfg['path']['xml'] . 'lang_en_US.xml') == false)
-	{
+$xml = new ContenidoXmlReader();
+if ($xml->load($cfg['path']['xml'] . $cfg['lang'][$belang]) == false) {
+	if ($xml->load($cfg['path']['xml'] . 'lang_en_US.xml') == false) {
 		die("Unable to load any XML language file");
 	}
 }

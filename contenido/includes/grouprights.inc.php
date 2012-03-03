@@ -42,13 +42,6 @@ $oTpl->reset();
 
 //set new right_list (=all possible rights)
 if(!is_array($right_list)){
-         //register these list fore following sites
-         # same shit like every rights area ;)
-         # commented out by H. Librenz, 2007-08-31
-         //$sess->register("right_list");
-
-         $plugxml=new XML_Doc();
-
          //select all rights , actions an theeir locations   without area login
         $sql="SELECT A.idarea, A.parent_id, B.location,A.name FROM ".$cfg["tab"]["area"]." as A LEFT JOIN ".$cfg["tab"]["nav_sub"]." as B ON  A.idarea = B.idarea WHERE A.name!='login' AND A.relevant='1' AND A.online='1' GROUP BY A.name ORDER BY A.idarea";
          $db->query($sql);

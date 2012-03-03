@@ -58,7 +58,7 @@ abstract class ContenidoXmlBase {
 	 * @return 	void
 	 */
 	protected function _initXpathInstance() {
-		if ($this->_dom === NULL) {
+		if (!($this->_dom instanceof DOMDocument)) {
 			cWarning(__FILE__, __LINE__, "Can not initialize XPath instance: DOMDocument not found.");
 			return;
 		}
