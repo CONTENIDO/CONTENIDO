@@ -447,30 +447,27 @@ class cApiModule extends Item
     }
 
     /**
-     * Parse import xml file, stores data in global variable (-> event handler functions)
+     * Parse import xml file and returns its values.
      *
-     * @param string $sFile Filename including path of import xml file
-	 * @param string $sEncoding Encoding for xml parser
+     * @param	string	$sFile	Filename including path of import xml file
 	 *
-     * @return bool Returns true, if file has been parsed
+     * @return	array	Array with module data from XML file
      */
-    private function _parseImportFile($sFile, $sEncoding = "ISO-8859-1") {
-        global $_mImport;
-
-        $oParser = new XmlParser($sEncoding);
-        $oParser->setEventHandlers(array("/module/name"       => "cHandler_ModuleData",
-										"/module/description" => "cHandler_ModuleData",
-										"/module/type"        => "cHandler_ModuleData",
-										"/module/input"       => "cHandler_ModuleData",
-										"/module/output"      => "cHandler_ModuleData",
-										"/module/alias"		  => "cHandler_ModuleData"));
-
-        if ($oParser->parseFile($sFile)) {
-            return true;
-        } else {
-        	$this->_error = $oParser->error;
-        	return false;
-        }
+    private function _parseImportFile($sFile) {
+		$oXmlReader = new ContenidoXmlReader();
+		$oXmlReader->load($sFile);
+		
+		$aData = array();
+		$aInformation = array('name', 'description', 'type', 'input', 'output', 'alias');
+		
+		foreach ($aInformation as $sInfoName) {
+			$sPath = '/module/' . $sInfoName;
+			
+			$value = $oXmlReader->getXpathValue($sPath);
+			$aData[$sInfoName] = $value;
+		}
+	
+        return $aData;
     }
     
     /**
@@ -480,10 +477,11 @@ class cApiModule extends Item
      * @param string $sFile weher is the modul info.xml file
      */
     private function _getModuleProperties($sFile) {
-    	global $_mImport;
     	$ret = array();
-    	if ($this->_parseImportFile($sFile)){
-			foreach ($_mImport["module"] as $key => $value){
+		
+		$aModuleData = $this->_parseImportFile($sFile);
+    	if (count($aModuleData) > 0) {
+			foreach ($aModuleData as $key => $value) {
 				// the columns input/and outputs dont exist in table
 				if ($key != "output" && $key != "input") {
 					$ret[$key] = addslashes($value);
@@ -556,14 +554,14 @@ class cApiModule extends Item
      */
 	function importModuleFromXML ($sFile)
     {
-    	global $_mImport, $db,$cfgClient, $client, $cfg,$encoding,$lang;
+    	global $db,$cfgClient, $client, $cfg,$encoding,$lang;
     
     	$inputOutput = array();
     	$notification = new Contenido_Notification();
     	
-    	if ($this->_parseImportFile($sFile)){
-			foreach ($_mImport["module"] as $key => $value)
-			{
+		$aModuleData = $this->_parseImportFile($sFile);
+    	if (count($aModuleData) > 0) {
+			foreach ($aModuleData as $key => $value) {
 				if ($this->get($key) != $value)
 				{
 					#the columns input/and outputs dont exist in table
@@ -811,49 +809,43 @@ class cApiModuleTranslation extends Item
     }
 }
 
-
+/** @deprecated 2012-03-03 Not supported any longer. */
 function cHandler_ModuleData($sName, $aAttribs, $sContent)
 {
+	cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["module"][$sName] = $sContent;
 }
 
-
-// The following three functions references all file data (e.g. for css,
-// js and template files) and layout data
-// Note, that first the type is specified (from the "area" information
-// in the xml file).
-// Second, filename is specified based on "name" node content.
-// Third, file content is stored using type, name and node content.
-// You will have to specify individual handler functions, if one of
-// the file areas may store additional data (e.g. a description)
+/** @deprecated 2012-03-03 Not supported any longer. */
 function cHandler_ItemArea($sName, $aAttribs, $sContent)
 {
+	cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["current_item_area"] = $sContent;
 }
 
-
+/** @deprecated 2012-03-03 Not supported any longer. */
 function cHandler_ItemName($sName, $aAttribs, $sContent)
 {
+	cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["current_item_name"] = $sContent;
 }
 
-
+/** @deprecated 2012-03-03 Not supported any longer. */
 function cHandler_ItemData($sName, $aAttribs, $sContent)
 {
+	cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["items"][$_mImport["current_item_area"]][$_mImport["current_item_name"]][$sName] = $sContent;
 }
 
-
-// Separate language area, as someone may specify "cssfiles" or something
-// as language name, funny guy...
+/** @deprecated 2012-03-03 Not supported any longer. */
 function cHandler_Translation($sName, $aAttribs, $sContent)
 {
+	cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["translations"][$_mImport["current_item_area"]][$_mImport["current_item_name"]] = $sContent;
 }
-
 ?>
