@@ -329,7 +329,7 @@ function mi18n($string)
 
     // dont workd by setup/upgrade
     cInclude("classes", "contenido/class.module.php");
-    cInclude("classes", "module/class.contenido.translate.from.file.php");
+    cInclude("classes", "module/class.module.filetranslation.php");
 
     $contenidoTranslateFromFile = new Contenido_Module_FileTranslation($cCurrentModule, true);
     $array = $contenidoTranslateFromFile->getLangarray();

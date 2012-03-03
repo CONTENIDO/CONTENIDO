@@ -29,10 +29,6 @@
  * 
  */
 
-cInclude('classes', 'module/class.contenido.module.search.php');
-
-
-
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
