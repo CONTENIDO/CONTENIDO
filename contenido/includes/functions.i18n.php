@@ -331,7 +331,7 @@ function mi18n($string)
     cInclude("classes", "contenido/class.module.php");
     cInclude("classes", "module/class.contenido.translate.from.file.php");
 
-    $contenidoTranslateFromFile = new Contenido_Translate_From_File($cCurrentModule, true);
+    $contenidoTranslateFromFile = new Contenido_Module_FileTranslation($cCurrentModule, true);
     $array = $contenidoTranslateFromFile->getLangarray();
 
     /*

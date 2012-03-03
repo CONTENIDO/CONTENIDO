@@ -35,22 +35,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 checkAndInclude(dirname(__FILE__)."/../class.security.php");
 checkAndInclude(dirname(__FILE__)."/../../includes/functions.api.string.php");
-checkAndInclude(dirname(__FILE__)."/class.contenido.module.handler.php");
-checkAndInclude(dirname(__FILE__)."/class.contenido.translate.from.file.php");
-
-/*if(file_exists(dirname(__FILE__)."/../class.security.php"))
-    include_once(dirname(__FILE__)."/../class.security.php");
- 
-if(file_exists(dirname(__FILE__)."/../../includes/functions.api.string.php"))
-    include_once(dirname(__FILE__)."/../../includes/functions.api.string.php");        
-     
- if(file_exists(dirname(__FILE__)."/class.contenido.module.handler.php"))
-    include_once(dirname(__FILE__)."/class.contenido.module.handler.php");
-     
- if(file_exists(dirname(__FILE__)."/class.contenido.translate.from.file.php"))
-    include_once(dirname(__FILE__)."/class.contenido.translate.from.file.php");
-*/   
-
+checkAndInclude(dirname(__FILE__)."/class.module.handler.php");
+checkAndInclude(dirname(__FILE__)."/class.module.filetranslation.php");
    
 /**
  * 
@@ -126,7 +112,7 @@ class Contenido_UpgradeJob extends Contenido_Module_Handler {
 						cWarning(__FILE__, __LINE__, sprintf('Can not create module "%s"', $db->f('name'))); 
 					} else {
 						//save translation 
-						$translations = new Contenido_Translate_From_File($db->f("idmod"));
+						$translations = new Contenido_Module_FileTranslation($db->f("idmod"));
 						$translations->saveTranslations();
 					}
 				}

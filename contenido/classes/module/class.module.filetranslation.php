@@ -28,8 +28,8 @@
  *
  */
 
-if(file_exists(dirname(__FILE__)."/class.contenido.module.handler.php"))
-    include_once(dirname(__FILE__)."/class.contenido.module.handler.php");
+if(file_exists(dirname(__FILE__)."/class.module.handler.php"))
+    include_once(dirname(__FILE__)."/class.module.handler.php");
     
 
 if(file_exists(dirname(__FILE__)."/../class.genericdb.php"))
@@ -48,7 +48,7 @@ if(file_exists(dirname(__FILE__)."/../class.lang.php"))
  *
  */
 
-class Contenido_Translate_From_File extends Contenido_Module_Handler{
+class Contenido_Module_FileTranslation extends Contenido_Module_Handler{
     
     /**
      * 
@@ -99,18 +99,18 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
       
         //dont open the translations file for each mi18n call 
       	if($static == true) {
-          if( Contenido_Translate_From_File::$savedIdMod != $idmodul) {
+          if( Contenido_Module_FileTranslation::$savedIdMod != $idmodul) {
           	  //set filename lang_[language]_[Country].txt
               $language = $this->_getValueFromProperties("language","code");
               $country = $this->_getValueFromProperties("country", "code");
               self::$fileName = "lang_".$language."_".strtoupper($country).".txt";
               
-              Contenido_Translate_From_File::$langArray = $this->getTranslationArray();
-              Contenido_Translate_From_File::$savedIdMod = $idmodul;
+              Contenido_Module_FileTranslation::$langArray = $this->getTranslationArray();
+              Contenido_Module_FileTranslation::$savedIdMod = $idmodul;
           }   
       	}
       	else {
-              Contenido_Translate_From_File::$savedIdMod = -1;
+              Contenido_Module_FileTranslation::$savedIdMod = -1;
               
              //set filename lang_[language]_[Country].txt
               $language = $this->_getValueFromProperties("language","code");
@@ -144,7 +144,7 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
      */
     public function getLangArray() {
         
-        return Contenido_Translate_From_File::$langArray;
+        return Contenido_Module_FileTranslation::$langArray;
     }
     
     /**
@@ -161,7 +161,7 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
         $db->query($sql);
         
         while($db->next_record()) {  
-            $contenidoTranslationsFromFile = new Contenido_Translate_From_File($db->f('idmod'));
+            $contenidoTranslationsFromFile = new Contenido_Module_FileTranslation($db->f('idmod'));
             $contenidoTranslationsFromFile->saveTranslations();
             
         }   
@@ -265,7 +265,7 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
         	$value = iconv($this->_encoding,$this->_fileEncoding, $value);
         	$key = iconv($this->_encoding,$this->_fileEncoding, $key);
             //Originall String [Divider] Translation String
-            $retString .= $key.Contenido_Translate_From_File::$originalTranslationDivider.$value."\r\n";
+            $retString .= $key.Contenido_Module_FileTranslation::$originalTranslationDivider.$value."\r\n";
         }
         
         return $retString;
@@ -288,7 +288,7 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
         $words = preg_split('((\r\n)|(\r)|(\n))',$string);
        
         foreach($words as $key => $value) {
-            $oriTrans = explode(Contenido_Translate_From_File::$originalTranslationDivider,$value);
+            $oriTrans = explode(Contenido_Module_FileTranslation::$originalTranslationDivider,$value);
 
             if(!empty($oriTrans[0])) {
                 if(isset($oriTrans[1])) {

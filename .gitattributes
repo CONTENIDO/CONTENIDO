@@ -391,12 +391,12 @@ contenido/classes/module/AbstractModule.php -text
 contenido/classes/module/ModelConConfig.php -text
 contenido/classes/module/ModuleException.php -text
 contenido/classes/module/ModuleInterface.php -text
-contenido/classes/module/class.contenido.modulTemplate.php -text
-contenido/classes/module/class.contenido.module.handler.php -text
-contenido/classes/module/class.contenido.module.search.php -text
-contenido/classes/module/class.contenido.module.synchronizer.php -text
-contenido/classes/module/class.contenido.translate.from.file.php -text
 contenido/classes/module/class.contenido.upgrade.job.php -text
+contenido/classes/module/class.module.filetranslation.php -text
+contenido/classes/module/class.module.handler.php -text
+contenido/classes/module/class.module.search.php -text
+contenido/classes/module/class.module.synchronizer.php -text
+contenido/classes/module/class.module.template.handler.php -text
 contenido/classes/tree/class.ctree.php -text
 contenido/classes/tree/class.ctreeitem.php -text
 contenido/classes/widgets/class.views.advancedmenu.php -text

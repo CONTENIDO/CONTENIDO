@@ -28,10 +28,6 @@ if(!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }  
 
-cInclude('classes','module/class.contenido.module.handler.php');
-cInclude("classes", "class.ui.php");
-cInclude("classes", "widgets/class.widgets.page.php");
-cInclude("classes", "class.htmlvalidator.php");
 cInclude("external", "codemirror/class.codemirror.php");
 cInclude("includes", "functions.file.php");
 
@@ -41,7 +37,7 @@ cInclude("includes", "functions.file.php");
  * @author rusmir.jusufovic
  *
  */
-class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
+class Contenido_Module_Template_Handler extends Contenido_Module_Handler {
 
     //Form fields
     private $_code;
