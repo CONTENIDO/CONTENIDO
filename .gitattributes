@@ -416,6 +416,8 @@ contenido/classes/widgets/class.widgets.switchabledatechooser.php -text
 contenido/classes/widgets/class.widgets.tableedit.php -text
 contenido/classes/widgets/class.widgets.treeview.php -text
 contenido/classes/widgets/class.widgets.views.php -text
+contenido/classes/xml/class.xml.base.php -text
+contenido/classes/xml/class.xml.reader.php -text
 contenido/classes/xml/class.xml.writer.php -text
 contenido/classes/xml/class.xml2array.php -text
 contenido/cronjobs/advance_workflow.php -text

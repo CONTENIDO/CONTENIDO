@@ -4,8 +4,7 @@
  * CONTENIDO Content Management System
  * 
  * Description: 
- * The base XML writer class of CONTENIDO.
- * This class extends DOMDocument to provide its functionality.
+ * The XML writer class of CONTENIDO.
  *
  *
  * @package    CONTENIDO Backend Classes
@@ -18,9 +17,10 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  */
  
-class ContenidoXmlWriter extends DOMDocument {
+class ContenidoXmlWriter extends ContenidoXmlBase {
 	/**
-	 * Class constructor of ContenidoXmlWriter
+	 * Class constructor of ContenidoXmlWriter.
+	 * Creates the XML document.
 	 *
 	 * @param string $sVersion version of XML document (optional, default: 1.0)
 	 * @param string $sEncoding encoding of XML document (optional, default: UTF-8)
@@ -28,19 +28,11 @@ class ContenidoXmlWriter extends DOMDocument {
 	 * @return void
 	 */
 	public function __construct($sVersion = '', $sEncoding = '') {
-		if ($sVersion == '') {
-			$sVersion = '1.0';
-		}
-		
-		if ($sEncoding == '') {
-			$sEncoding = 'UTF-8';
-		}
-		
-		parent::__construct($sVersion, $sEncoding);
+		$this->_createDocument($sVersion, $sEncoding);		
 	}
 	
 	/**
-	 * Adds a new element to XML document.
+	 * Adds a new element to the XML document.
 	 * If no root element is given the element will be appended to the root node.
 	 *
 	 * @param string $sName name of the element
@@ -51,12 +43,12 @@ class ContenidoXmlWriter extends DOMDocument {
 	 * @return DOMElement created DOM element
 	 */
 	public function addElement($sName, $sValue = '', $oRootElement = null, $aAttributes = array()) {
-		$oElement = $this->createElement($sName, $sValue);
+		$oElement = $this->_dom->createElement($sName, $sValue);
 		
 		$oElement = $this->_addElementAttributes($oElement, $aAttributes);
 		
 		if ($oRootElement === null) {
-			$this->appendChild($oElement);
+			$this->_dom->appendChild($oElement);
 		} else {
 			$oRootElement->appendChild($oElement);
 		}
@@ -90,7 +82,7 @@ class ContenidoXmlWriter extends DOMDocument {
 	 * @return string XML tree
 	 */
 	public function saveToString() {
-		return $this->saveXML();
+		return $this->_dom->saveXML();
 	}
 	
 	/**
@@ -103,7 +95,12 @@ class ContenidoXmlWriter extends DOMDocument {
 	 */
 	public function saveToFile($sDirectory, $sFileName) {
 		if (is_writable($sDirectory) === false) {
+			cWarning(__FILE__, __LINE__, "Can not write XML file: Directory is not writable.");
 			return false;
+		}
+		
+		if (substr($sDirectory, 0, -1) != '/') {
+			$sDirectory = $sDirectory . '/';
 		}
 		
 		file_put_contents($sDirectory . $sFileName, $this->saveToString());
