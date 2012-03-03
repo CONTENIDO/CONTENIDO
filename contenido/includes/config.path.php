@@ -60,8 +60,10 @@ $cfg['path']['frontendtemplate']        = 'external/frontend/';
 $cfg['path']['templates']               = 'templates/standard/';
 
 $cfg['path']['repository']				= $cfg["path"]['plugins'] . 'repository/';
-$cfg['path']['modules']					= 'modules/';
 
 $cfg['path']['interfaces']              = $cfg['path']['classes'] . 'interfaces/';
 $cfg['path']['exceptions']              = $cfg['path']['classes'] . 'exceptions/';
+
+$cfg['path']['modules']					= 'modules/';
+$cfg['path']['layouts']					= 'layouts/';
 ?>

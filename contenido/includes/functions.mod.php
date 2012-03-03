@@ -94,11 +94,11 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		 $change=false;
 		 $oldName =$cApiModule->get("alias");
 		
-        if($cApiModule->get("alias") != $alias) {
+        if ($cApiModule->get("alias") != $alias) {
             $change=true;
             
-            #if modul exist show massage 
-            if( Contenido_Module_Handler::existModulInDirectory($alias, $cfgClient)) {
+            // if modul exist show massage 
+            if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
              	$notification->displayNotification('error',i18n("Module name exist in module directory, please choose another name."));
 		        die();
             }
@@ -128,7 +128,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		       }
 
 		       #set the new module name
-		       $contenidoModuleHandler->setNewModulName($alias);
+		       $contenidoModuleHandler->changeModuleName($alias);
 		       #save input and output in file
 		       if( $contenidoModuleHandler->saveInput(stripslashes($input)) == false)
 		       $messageIfError .= "<br/>". i18n("Can't save input !");

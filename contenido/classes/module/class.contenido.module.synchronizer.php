@@ -1,5 +1,4 @@
 <?php 
-
 /**
  * Project:
  * CONTENIDO Content Management System
@@ -33,11 +32,7 @@ if(!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude("classes", "class.security.php");
-cInclude("classes","contenido/class.module.php");
 cInclude("includes","functions.api.string.php");
-
-cInclude("classes","module/class.contenido.module.handler.php");
 cInclude("includes", "functions.con.php");
 
 /**
@@ -48,7 +43,7 @@ cInclude("includes", "functions.con.php");
  * @author rusmir.jusufovic
  *
  */
-class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
+class Contenido_Module_Synchronizer extends Contenido_Module_Handler {
 
    /**
     *The last id of the module that had changed or had added.  
@@ -65,23 +60,21 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
     * @param unknown_type $dir
     * @param unknown_type $oldModulName
     * @param unknown_type $newModulName
-    * @param unknown_type $idclient
     */
-     
-    private function _addOrUpdateModul($dir , $oldModulName , $newModulName , $idclient) {
-         
+    private function _syncModule($dir, $oldModulName, $newModulName) {
+		global $client;
         //if modul dont exist in the $cfg["tab"]["mod"] table.
-        if($this->_isExistInTable($oldModulName, $idclient) == false) {
+        if($this->_isExistInTable($oldModulName, $client) == false) {
 			
              //add new Module in db-tablle     
-             $this->_addModul($newModulName,$idclient);
+             $this->_addModul($newModulName,$client);
              $notification = new Contenido_Notification();
              $notification->displayNotification('info', sprintf(i18n("Module %s successfull synchronized"), $newModulName));                 
           } else {
           	
           		//update the name of the module
           		if($oldModulName != $newModulName) {
-          			$this->_updateModulnameInDb($oldModulName, $newModulName, $idclient);
+          			$this->_updateModulnameInDb($oldModulName, $newModulName, $client);
           		}
           }                    
     }
@@ -150,15 +143,24 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
     	$db->query($sql);
     	$retIdMod = 0;
 		
-		global $cfgClient;
+		global $cfg, $cfgClient;
 		
 		
     	while($db->next_record()) {
     		$frontendPath = $cfgClient[$db->f('idclient')]['path']['frontend'];
+			$modulePath = $frontendPath . $cfg['path']['modules'] . $db->f('alias') . "/" . $this->_directories['php'] . $db->f('alias');
 			
     		$lastmodified = $db->f('lastmodified');
-    		$lastmodInput  = filemtime($frontendPath.self::$MODUL_DIR_NAME.$db->f('alias')."/".$this->_directories['php'].$db->f('alias')."_input.php");
-            $lastmodOutput = filemtime($frontendPath.self::$MODUL_DIR_NAME.$db->f('alias')."/".$this->_directories['php'].$db->f('alias')."_output.php");
+			
+			$lastmodInput = $lastmodOutput = 0;
+			
+			if (file_exists($modulePath . "_input.php")) {
+				$lastmodInput  = filemtime($modulePath . "_input.php");
+			}
+			
+			if (file_exists($modulePath . "_output.php")) {
+				$lastmodOutput  = filemtime($modulePath . "_output.php");
+			}
     		
             if($lastmodInput < $lastmodOutput) {
             	//use output
@@ -203,21 +205,18 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
     private function _synchronizeFilesystemAndDb($db) {
      	  
     	$returnIdMod = 0;
-    	  $this->_initModulHandlerWithModulRow($db);
-          $this->_echoIt("Modul wird gelesen....: ".$db->f("name"));
+    	  $this->_initWithDatabaseRow($db);
           //modul dont exist in filesystem
-          if($this->existModul() == false) {
-             $this->_echoIt("Modul existiert nicht: ".$db->f("name"));
+          if($this->modulePathExists() == false) {
               
              $modul = new cApiModule($db->f("idmod"));
              $returnIdMod = $db->f("idmod");
              if($modul->moduleInUse($db->f("idmod")) == true) {
                  //modul in use, make new modul in filesystem
-                 if( $this->makenewModul()== false ) { 
+                 if( $this->createModule()== false ) { 
                  	$notification = new Contenido_Notification();
-             		$notification->displayNotification('info', i18n("Can't make module: ").$db->f("name"));  
-                 } else 
-                 	$this->_echoIt("Modul angelegt: ".$db->f("name"));
+             		$notification->displayNotification('error', i18n("Can't make module: ").$db->f("name"));  
+                 }
                  
              } else {
                  
@@ -225,9 +224,7 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
                  $sql = sprintf("DELETE  FROM %s WHERE idmod = %s AND idclient = %s", $this->_cfg["tab"]["mod"], $db->f("idmod"),$this->_client);
                  $myDb = new DB_Contenido();
                  $myDb->query($sql);
-                 $this->_echoIt("Modul gelöscht von Db: ".$db->f("name"));
-                 
-                 
+
              }
               
           }
@@ -258,57 +255,47 @@ class Contenido_Moudle_Synchronizer extends Contenido_Module_Handler {
      * 
      */
     public function synchronize() {
-        global $cfgClient;
+        global $cfg, $cfgClient;
 		$frontendPath = $cfgClient[$this->_client]['path']['frontend'];
            
-            //get the path to the modul dir from the client
-            $dir = $frontendPath.self::$MODUL_DIR_NAME; 
-           
-            if (is_dir($dir)) {                 
-                if ($dh = opendir($dir)) {
-                    while (($file = readdir($dh)) !== false) {     
-                       //is file a dir or not
-                        if($this->_isValidFirstChar($file) && is_dir($dir.$file."/") ) {
-                             
-                        $newFile = capiStrCleanURLCharacters($file);
-                        //dir is ok
-                        if($newFile == $file) {
-                            
-                            $this->_addOrUpdateModul($dir , $file, $newFile , $this->_client); 
-                                  
-                        }else { //dir not ok (with not allowed characters)
-                          
-                            if(is_dir($dir.$newFile)) { //exist the new dir name?
-                               
-                            	
-                                //make new dirname
-                                $newDirName =$newFile.substr( md5( time() . rand(0 , time() )) , 0 , 4);
-                                //rename 
-                                if( $this->_renameFileAndDir($dir , $file , $newDirName , $this->_client) != false) {
-                                    $this->_addOrUpdateModul($dir, $file, $newDirName, $this->_client);
-                                }
-                                
-                                   
-                            } else {//$newFile (dir) not exist
-                               
-                                //rename dir old
-                                if( $this->_renameFileAndDir($dir, $file , $newFile , $this->_client) != false) {
-                                	$this->_addOrUpdateModul($dir, $file, $newFile,$this->_client);
-                                }
-                                    
-                               
-                            }       
-                           } 
-                        } 
-                       }
-                    }
-                    //close dir
-                    closedir($dh);
-                }
-            
-           
-            //last Modul Id that will refresh the windows /modul overview
-            return $this->_lastIdMod;
+		//get the path to the modul dir from the client
+		$dir = $frontendPath . $cfg['path']['modules']; 
+	   
+		if (is_dir($dir)) {                 
+			if ($dh = opendir($dir)) {
+				while (($file = readdir($dh)) !== false) {     
+				    //is file a dir or not
+					if ($this->_isValidFirstChar($file) && is_dir($dir . $file."/")) {
+						$newFile = capiStrCleanURLCharacters($file);
+						//dir is ok
+						if ($newFile == $file) {
+							$this->_syncModule($dir, $file, $newFile); 
+						} else { //dir not ok (with not allowed characters)
+							if (is_dir($dir . $newFile)) { //exist the new dir name?
+								//make new dirname
+								$newDirName = $newFile . substr(md5(time() . rand(0, time())), 0, 4);
+							
+								//rename 
+								if ($this->_renameFileAndDir($dir, $file, $newDirName, $this->_client) != false) {
+									$this->_syncModule($dir, $file, $newDirName);
+								}
+							} else { //$newFile (dir) not exist
+								//rename dir old
+								if ($this->_renameFileAndDir($dir, $file, $newFile, $this->_client) != false) {
+									$this->_syncModule($dir, $file, $newFile);
+								}
+							}       
+						} 
+					} 
+				}
+			}
+			
+			//close dir
+			closedir($dh);
+		}
+	   
+		//last Modul Id that will refresh the windows /modul overview
+		return $this->_lastIdMod;
     }
 
      

@@ -55,7 +55,7 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
      * Path to the modul directory
      * @var string
      */ 
-    private $_modulPath;
+    private $_modulePath;
    
    
     /**
@@ -95,7 +95,7 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
        $this->_debug = true;
       
 	 	if($idmodul != null)
-      		$this->_modulPath = $this->getModulPath();
+      		$this->_modulePath = $this->getModulePath();
       
         //dont open the translations file for each mi18n call 
       	if($static == true) {
@@ -220,34 +220,33 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
      **/
     public function saveTranslations() {
      
-    		$dbLanguage = new DB_Contenido();
-    		$sqlLanguage = sprintf("SELECT * FROM %s", $this->_cfg['tab']['lang']);
-    		$dbLanguage->query($sqlLanguage);
-    		 //$this->_echoIt('translation sql: '.$sqlLanguage);
-    		while($dbLanguage->next_record()) {
-    		
-                $db = new DB_Contenido();
-                $sql = sprintf('SELECT * FROM %s WHERE idlang=%s AND idmod=%s' , $this->_cfg['tab']['mod_translations'] , $dbLanguage->f('idlang') , $this->_idmod);
-                //$this->_echoIt('translation sql: '.$sql);
-                $db->query($sql);
-            	
-               $this->_idlang = $dbLanguage->f('idlang');
-               //set filename lang_[language]_[Country].txt
-               $language = $this->_getValueFromProperties("language","code");
-               $country = $this->_getValueFromProperties("country", "code");
-               self::$fileName = "lang_".$language."_".strtoupper($country).".txt";
-            	
-                $translations = array();
-                while( $db->next_record()) { 
-                    //echo htmlspecialchars_decode($db->f('original'))." ohne:". Contenido_Security::unfilter($db->f('original'))."<br/>";    
-                    $translations[Contenido_Security::unfilter($db->f('original'))] = Contenido_Security::unfilter($db->f('translation'));
-                }
-               
-                
-                if(count($translations) != 0)
-                    if( $this->saveTranslationArray($translations) == false)
-                    	$this->errorLog('Could not save translate idmod='.$this->_idmod.' !');
-    		}
+		$dbLanguage = new DB_Contenido();
+		$sqlLanguage = sprintf("SELECT * FROM %s", $this->_cfg['tab']['lang']);
+		$dbLanguage->query($sqlLanguage);
+
+		while ($dbLanguage->next_record()) {
+			$db = new DB_Contenido();
+			$sql = sprintf('SELECT * FROM %s WHERE idlang=%s AND idmod=%s' , $this->_cfg['tab']['mod_translations'] , $dbLanguage->f('idlang') , $this->_idmod);
+
+			$db->query($sql);
+			
+		   $this->_idlang = $dbLanguage->f('idlang');
+		   //set filename lang_[language]_[Country].txt
+		   $language = $this->_getValueFromProperties("language","code");
+		   $country = $this->_getValueFromProperties("country", "code");
+		   self::$fileName = "lang_".$language."_".strtoupper($country).".txt";
+			
+			$translations = array();
+			while ($db->next_record()) { 
+				$translations[Contenido_Security::unfilter($db->f('original'))] = Contenido_Security::unfilter($db->f('translation'));
+			}
+			
+			if (count($translations) != 0) {
+				if ($this->saveTranslationArray($translations) == false) {
+					cWarning(__FILE__, __LINE__, 'Could not save translate idmod='.$this->_idmod.' !');
+				}
+			}
+		}
     }
     
     
@@ -311,8 +310,8 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
      */
     public function saveTranslationArray($wordListArray) {
     	
-       $this->makeDirectoryIfNotExist('lang');
-       if( file_put_contents($this->_modulPath.$this->_directories['lang'].self::$fileName,$this->_serializeArray($wordListArray))=== false)
+       $this->createModuleDirectory('lang');
+       if( file_put_contents($this->_modulePath.$this->_directories['lang'].self::$fileName,$this->_serializeArray($wordListArray))=== false)
            return false;
         else
             return true;    
@@ -325,8 +324,8 @@ class Contenido_Translate_From_File extends Contenido_Module_Handler{
      * @return array
      */
     public function getTranslationArray() {
-        if(file_exists($this->_modulPath.$this->_directories['lang'].self::$fileName)) {
-            $array = $this->_unserializeArray(file_get_contents($this->_modulPath.$this->_directories['lang'].self::$fileName));
+        if(file_exists($this->_modulePath.$this->_directories['lang'].self::$fileName)) {
+            $array = $this->_unserializeArray(file_get_contents($this->_modulePath.$this->_directories['lang'].self::$fileName));
             return $array;
         }
         else 

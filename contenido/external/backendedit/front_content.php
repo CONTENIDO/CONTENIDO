@@ -411,18 +411,6 @@ if ($cfg["cache"]["disable"] != '1') {
 }
 // END: concache
 
-
-  /**
-   * set contenido vars 
-   */
-       Contenido_Vars::setVar('db', $db);
-    Contenido_Vars::setVar('lang', $lang);
-    Contenido_Vars::setVar('cfg', $cfg);
-    Contenido_Vars::setEncoding($db,$cfg,$lang);
-    Contenido_Vars::setVar('cfgClient', $cfgClient);
-    Contenido_Vars::setVar('client', $client);
-    Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding','UTF-8'));
-    
 ##############################################
 # BACKEND / FRONTEND EDITING
 ##############################################

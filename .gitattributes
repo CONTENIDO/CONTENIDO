@@ -397,7 +397,6 @@ contenido/classes/module/class.contenido.module.search.php -text
 contenido/classes/module/class.contenido.module.synchronizer.php -text
 contenido/classes/module/class.contenido.translate.from.file.php -text
 contenido/classes/module/class.contenido.upgrade.job.php -text
-contenido/classes/module/class.contenido.vars.php -text
 contenido/classes/tree/class.ctree.php -text
 contenido/classes/tree/class.ctreeitem.php -text
 contenido/classes/widgets/class.views.advancedmenu.php -text

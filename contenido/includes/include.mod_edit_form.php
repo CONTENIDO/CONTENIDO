@@ -50,7 +50,7 @@ if (!isset($idmod)) $idmod = 0;
 $contenidoModuleHandler = new Contenido_Module_Handler($idmod );
 if ($action == "mod_delete") {
     // if erase had been successfully
-    if ($contenidoModuleHandler->eraseModul() == true) {
+    if ($contenidoModuleHandler->eraseModule() == true) {
         $modules = new cApiModuleCollection;
         $modules->delete($idmod);
         $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted module successfully!"));
@@ -58,7 +58,7 @@ if ($action == "mod_delete") {
 }
 
 if ($action == "mod_sync") {
-    $contenidoModuleSynchronizer = new Contenido_Moudle_Synchronizer();
+    $contenidoModuleSynchronizer = new Contenido_Module_Synchronizer();
     $idmod = $contenidoModuleSynchronizer->synchronize();
 
     $idmodUpdate = $contenidoModuleSynchronizer->compareFileAndModulTimestamp();
@@ -83,7 +83,8 @@ if ($action == "mod_new") {
     $modules = new cApiModuleCollection();
 
     $alias = capiStrCleanURLCharacters(i18n("- Unnamed module -"));
-    if (Contenido_Module_Handler::existModulInDirectory($alias, $cfgClient)) {
+	$contenidoModuleHandler = new Contenido_Module_Handler();
+    if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
         $notification->displayNotification("error", i18n("Modul name exist in module directory, rename the module."));
         die();
     }
@@ -97,7 +98,7 @@ if ($action == "mod_new") {
     // save into the file
     $contenidoModuleHandler = new Contenido_Module_Handler($module->get("idmod"));
 
-    if ($contenidoModuleHandler->makeNewModul() == false) {
+    if ($contenidoModuleHandler->createModule() == false) {
          // logg error
          $notification->displayNotification("error", i18n("Cant make a new modul!"));
          die();
@@ -167,7 +168,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $sOutputData = "";
 
     // Read the input and output for the editing in Backend from file
-    if ($contenidoModuleHandler->existModul() == true) {
+    if ($contenidoModuleHandler->modulePathExists() == true) {
         $sInputData = $contenidoModuleHandler->readInput();
         $sOutputData = $contenidoModuleHandler->readOutput();
     }
@@ -358,7 +359,7 @@ function insertTab(event, obj) {
     $outputModTest = "";
 
     // get input/output from file
-    if ($contenidoModuleHandler->existModul() == true) {
+    if ($contenidoModuleHandler->modulePathExists() == true) {
         $inputModTest = $contenidoModuleHandler->readInput();
         $outputModTest = $contenidoModuleHandler->readOutput();
     } else {
@@ -455,7 +456,7 @@ window.onload = scrolltheother;
         $inputChecked = "";
         $outputChecked = "";
 
-        if ($contenidoModuleHandler->existModul() == true) {
+        if ($contenidoModuleHandler->modulePathExists() == true) {
              $inputChecked = $contenidoModuleHandler->readInput();
              $outputChecked = $contenidoModuleHandler->readOutput();
         }

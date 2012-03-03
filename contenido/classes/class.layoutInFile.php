@@ -545,11 +545,10 @@ class LayoutInFile {
 		$isError = false;
 
 		while($db->next_record()) {
-			#init class var for save
+			// init class var for save
 			$this->initWithDbObject($db);
 			if( $this->saveLayoutByUpgrade($db->f("code")) == false) {
-				#track error in error.log
-				$this->errorLog("Cant save Layout name: " . $this->_layoutName);
+				cWarning(__FILE__, __LINE__, "Can not save layout name: " . $this->_layoutName);
 				$isError = true;
 			}
 			

@@ -197,15 +197,10 @@ class Template
 	 */
 	function generate($template, $return = 0, $note = 0)
 	{
-	  
-		global $cCurrentModule,$cfg,$lang,$client,$encode;
-	
-		Contenido_Vars::setVar('cfg', $cfg);
-		Contenido_Vars::setVar('client', $client);
-		Contenido_Vars::setVar('lang', $lang);
-		Contenido_Vars::setVar('encoding', $encode);
-		Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding','UTF-8'));
+		global $cCurrentModule, $cfg;
 		
+		// @TODO: check if current module > 0
+	
 		$contenidoModuleHandler = new Contenido_Module_Handler($cCurrentModule);
        
 		

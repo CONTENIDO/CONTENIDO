@@ -53,15 +53,6 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
         $this->_debug("conGenerateCode($this->_idcat, $this->_idart, $this->_lang, $this->_client, $this->_layout);<br>");
 
-        // Set CONTENIDO vars for module concepts
-        Contenido_Vars::setVar('db', $db);
-        Contenido_Vars::setVar('lang', $this->_lang);
-        Contenido_Vars::setVar('cfg', $cfg);
-        Contenido_Vars::setEncoding($db,$cfg,$this->_lang);
-        Contenido_Vars::setVar('cfgClient', $cfgClient);
-        Contenido_Vars::setVar('client', $this->_client);
-        Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding', 'UTF-8'));
-
         // Set category article id
         $idcatart = conGetCategoryArticleId($this->_idcat, $this->_idart);
 
@@ -115,7 +106,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
                 $input = '';
 
                 // Get the contents of input and output from files and not from db-table
-                if ($contenidoModuleHandler->existModul() == true) {
+                if ($contenidoModuleHandler->modulePathExists() == true) {
                     $this->_moduleCode = $contenidoModuleHandler->readOutput();
                     // Load css and js content of the js/css files
                     $this->_cssData .= $contenidoModuleHandler->getFilesContent("css", "css");
@@ -155,23 +146,20 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         // Add/replace meta tags
         $this->_processCodeMetaTags();
 
-        // Save the collected css/js data and save it undter the template name ([templatename].css , [templatename].js in cache dir
-        $cssDatei = '';
-        if (($myFileCss = Contenido_Module_Handler::saveContentToFile($cfgClient[$this->_client], $this->_tplName, "css", $this->_cssData)) == false) {
-            $cssDatei = "error error culd not generate css file";
-        } else {
-            $cssDatei = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';
+        // Save the collected css/js data and save it under the template name ([templatename].css , [templatename].js in cache dir
+        $cssFile = '';
+        if (($myFileCss = Contenido_Module_Handler::saveContentToFile($this->_tplName, "css", $this->_cssData))) {
+            $cssFile = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';
         }
-        $jsDatei = '';
-        if (($myFileJs = Contenido_Module_Handler::saveContentToFile($cfgClient[$this->_client], $this->_tplName, "js", $this->_jsData)) == false) {
-            $jsDatei = "error error error culd not generate js file";
-        } else {
-            $jsDatei = '<script src="'.$myFileJs.'" type="text/javascript"></script>';
+		
+        $jsFile = '';
+        if (($myFileJs = Contenido_Module_Handler::saveContentToFile($this->_tplName, "js", $this->_jsData))) {
+            $jsFile = '<script src="'.$myFileJs.'" type="text/javascript"></script>';
         }
 
         // Add meta tags
-        $this->_layoutCode = str_ireplace_once("</head>", $cssDatei . "</head>", $this->_layoutCode);
-	 	$this->_layoutCode = str_ireplace_once("</body>",  $jsDatei . "</body>", $this->_layoutCode);
+        $this->_layoutCode = str_ireplace_once("</head>", $cssFile . "</head>", $this->_layoutCode);
+	 	$this->_layoutCode = str_ireplace_once("</body>",  $jsFile . "</body>", $this->_layoutCode);
 	 
         // Write code into the database
         if ($this->_layout == false && $this->_save == true) {

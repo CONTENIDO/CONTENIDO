@@ -57,7 +57,6 @@ if(empty($action))
     
     
 $page = new cPage;
-$page->setEncoding(Contenido_Vars::getVar('encoding'));
 
 $tpl->reset();
 $premCreate = false;
@@ -77,7 +76,7 @@ if (!$perm->have_perm_area_action('style', $actionRequest)|| $premCreate)
 } else {    
     $path =$contenidoModulHandler->getCssPath();// $cfgClient[$client]["css"]["path"];
      #make automatic a new css file
-    $contenidoModulHandler->makeNewModuleFile('css');
+    $contenidoModulHandler->createModuleFile('css');
     
     if (stripslashes($file)) {
         $sReloadScript = "<script type=\"text/javascript\">
@@ -127,8 +126,10 @@ if (!$perm->have_perm_area_action('style', $actionRequest)|| $premCreate)
     {
     	$sTempFilename = $sFilename;
     	$ret = createFile($sFilename, $path);
+		
+		$fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
     	
-    	$tempCode = iconv(Contenido_Vars::getVar('encoding'), Contenido_Vars::getVar('fileEncoding'), $_REQUEST['code']);
+    	$tempCode = iconv(Contenido_Module_Handler::getEncoding(), $fileEncoding, $_REQUEST['code']);
     	$bEdit = fileEdit($sFilename,$tempCode , $path);
     	
         updateFileInformation($client, $sFilename, 'css', $auth->auth['uid'], $_REQUEST['description'], $db);
@@ -173,7 +174,8 @@ if (!$perm->have_perm_area_action('style', $actionRequest)|| $premCreate)
 			$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
     	
     	
-    	$tempCode = iconv(Contenido_Vars::getVar('encoding'), Contenido_Vars::getVar('fileEncoding'), $_REQUEST['code']);
+		$fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
+    	$tempCode = iconv(Contenido_Module_Handler::getEncoding(), $fileEncoding, $_REQUEST['code']);
     	$bEdit = fileEdit($sFilename,$tempCode , $path);
         
 	}
@@ -182,10 +184,12 @@ if (!$perm->have_perm_area_action('style', $actionRequest)|| $premCreate)
 	if (isset($actionRequest))	{
 		
 		$sAction = ($bEdit) ? $sActionEdit : $actionRequest;
+		
+		$fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
         
         if ($actionRequest == $sActionEdit)
 		{
-			$sCode = iconv(Contenido_Vars::getVar('fileEncoding'), Contenido_Vars::getVar('encoding'),getFileContent($sFilename, $path));
+			$sCode = iconv($fileEncoding, Contenido_Module_Handler::getEncoding(), getFileContent($sFilename, $path));
 		}else
 		{
 			$sCode = stripslashes($_REQUEST['code']); # stripslashes is required here in case of creating a new file

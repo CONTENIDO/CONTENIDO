@@ -54,18 +54,11 @@ $page = new cPage;
 
 $tpl->reset();
 
-
-
-if(! is_object($notification))
+if (!is_object($notification)) {
     $notification = new Contenido_Notification();
-    
-$contenidoModulHandler = new Contenido_Module_Handler($idmod);
+}
 
-//$TmpFileRequest= $contenidoModulHandler->getTemplateFileName();//$contenidoModulHandler->getTemplateMainFile();
-//$fileRequest =    $contenidoModulHandler->getTemplateFileName();// $contenidoModulHandler->getTemplateMainFile();
 //$_REQUEST['action'] = $sActionEdit;
-
-
 
 
 if (!$perm->have_perm_area_action($area, $action))
@@ -75,7 +68,6 @@ if (!$perm->have_perm_area_action($area, $action))
   #if there is no client selected, display empty page
   $page->render();
 } else {
-   
     $contenidoModulTemplateHandler = new Contenido_Modul_Templates_Handler($idmod);
     $contenidoModulTemplateHandler->setAction($action);
     $contenidoModulTemplateHandler->setCode($_REQUEST['code']);
@@ -84,10 +76,7 @@ if (!$perm->have_perm_area_action($area, $action))
     $contenidoModulTemplateHandler->setNewDelete($_REQUEST['new'], $_REQUEST['delete']);
     $contenidoModulTemplateHandler->setSelectedFile($_REQUEST['selectedFile']);
     $contenidoModulTemplateHandler->setStatus($_REQUEST['status']);
-    
     $contenidoModulTemplateHandler->display($perm, $notification, $belang);
-    
-    
-       
+  
 }
 ?> 

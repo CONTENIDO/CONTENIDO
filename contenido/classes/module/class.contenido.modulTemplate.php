@@ -103,7 +103,6 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
     public function __construct($idmod) {
         parent::__construct($idmod);
         $this->_page = new cPage();
-        $this->_page->setEncoding(Contenido_Vars::getVar('encoding'));
        	$this->_notification = new Contenido_Notification();
     }
 
@@ -257,7 +256,7 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
     private function _save() {
         
         //save the contents of file
-       $ret = $this->makeNewModuleFile('template' , $this->_file , $this->_code);
+       $ret = $this->createModuleFile('template' , $this->_file , $this->_code);
        //show message 
        if($ret) {
         	  $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));	
@@ -276,10 +275,10 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
      */
     private function _rename() {
 
-        if( $this->renameModulFile('template',$this->_tmp_file, $this->_file) == false) {
+        if( $this->renameModuleFile('template',$this->_tmp_file, $this->_file) == false) {
             throw new Exception(i18n("Rename of the file failed!"));
         } else { 
-            $this->makeNewModuleFile('template', $this->_file,$this->_code);
+            $this->createModuleFile('template', $this->_file,$this->_code);
 			 $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed the template file successfully!"));	
             $this->_tmp_file = $this->_file;
 
@@ -297,10 +296,10 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
         if($this->existFile('template', $this->_newFileName.'.'.$this->_templateFileEnding)) {
 
             $fileName = $this->_newFileName.$this->getFiveRandomCharacter().".".$this->_templateFileEnding;
-            $this->makeNewModuleFile('template', $fileName ,'');
+            $this->createModuleFile('template', $fileName ,'');
              $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created a new template file successfully!"));	
         } else {
-            $this->makeNewModuleFile('template', $this->_newFileName.'.'.$this->_templateFileEnding ,'');
+            $this->createModuleFile('template', $this->_newFileName.'.'.$this->_templateFileEnding ,'');
              $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created a new template file successfully!"));	
             $fileName = $this->_newFileName.".".$this->_templateFileEnding;
         }
@@ -349,15 +348,15 @@ class Contenido_Modul_Templates_Handler extends Contenido_Module_Handler {
 
         $files = $this->getAllFilesFromDirectory('template');
 
-        //one or more templates files are in template direcotry
+        // one or more templates files are in template direcotry
         if(count($files)> 0) {
              
             $this->_tmp_file = $files[0];
             $this->_file = $files[0];
         } else {
-            //template directory is empty
-            $this->_file = '';//$this->getTemplateFileName();
-            $this->_tmp_file = '';//$this->getTemplateFileName();
+            // template directory is empty
+            $this->_file = '';
+            $this->_tmp_file = '';
              
         }
 

@@ -316,26 +316,20 @@ if ($currentStep < $totalSteps) {
 
         rereadClients();
 
-        Contenido_Vars::setVar('cfg', $cfg);
-        Contenido_Vars::setVar('cfgClient', $cfgClient);
-        Contenido_Vars::setVar('client', $client);
-        Contenido_Vars::setVar('lang', $lang);
-        Contenido_Vars::setVar('encoding', 'ISO-8859-1');
-        Contenido_Vars::setVar('fileEncoding', 'UTF-8');
-        Contenido_Vars::setVar('db', new DB_Contenido());
-
+		Contenido_Module_Handler::setEncoding('ISO-8859-1');
         
         //set default configuration for connection,
         //for all db objects in Contenido_UpgradeJob
         DB_Contenido::setDefaultConfiguration($cfg['db']);
         
+	
         // Save all modules from db-table to the filesystem
-        $contenidoUpgradeJob = new Contenido_UpgradeJob($db);
-        $contenidoUpgradeJob->saveAllModulsToTheFile($_SESSION['setuptype']);
+		$contenidoUpgradeJob = new Contenido_UpgradeJob($db);
+		$contenidoUpgradeJob->convertModulesToFile($_SESSION['setuptype']);
 
         // Save layout from db-table to the file system
-        $layoutInFIle = new LayoutInFile(1, '', $cfg, 1, $db);
-        $layoutInFIle->upgrade();
+        $layoutInFile = new LayoutInFile(1, '', $cfg, 1, $db);
+        $layoutInFile->upgrade();
 
         $client = $clientBackup;
         $lang = $langBackup;

@@ -472,8 +472,6 @@ class cApiModule extends Item
         	return false;
         }
     }
-
-    
     
     /**
      * 
@@ -481,22 +479,21 @@ class cApiModule extends Item
      * 
      * @param string $sFile weher is the modul info.xml file
      */
-    private function _getModulProperties($sFile ) {
+    private function _getModuleProperties($sFile) {
     	global $_mImport;
     	$ret = array();
     	if ($this->_parseImportFile($sFile)){
 			foreach ($_mImport["module"] as $key => $value){
-				#the columns input/and outputs dont exist in table
-				if($key != "output" && $key != "input")
+				// the columns input/and outputs dont exist in table
+				if ($key != "output" && $key != "input") {
 					$ret[$key] = addslashes($value);
+				}
 			}	
     	}
     	
     	return $ret;
     } 
-    
-    
-    
+
     /**
      * import
      * Imports the a module from a XML file
@@ -504,54 +501,53 @@ class cApiModule extends Item
      *
      * @param string	$file 	Filename of data file (full path)
      */
-    function import($sFile,$tempName)
+    function import($sFile, $tempName)
     {
-    	global $cfgClient, $db, $client, $cfg,$encoding,$lang;
+    	global $cfgClient, $db, $client, $cfg, $encoding, $lang;
     	$zip = new ZipArchive();
     	$notification = new Contenido_Notification();
     	$contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
-    	//file name Hello_World.zip => Hello_World
+    	// file name Hello_World.zip => Hello_World
+		// @TODO: fetch file extension correctly
     	$modulName = substr($sFile,0,-4);
+		
+		$sModulePath = $cfgClient[$client]['path']['frontend'] . $cfg['path']['modules'] . $modulName;
     	
-    	#exist the modul in directory
-    	if(is_dir($cfgClient[$client]['path']['frontend'].Contenido_Module_Handler::$MODUL_DIR_NAME.$modulName)) {
+    	// exist the modul in directory
+    	if (is_dir($sModulePath)) {
     		$notification->displayNotification('error', i18n("Module exist!"));
     		return false ;
     	}
     	
-    	if($zip->open($tempName) === TRUE) {
-    		
-    		
-    		if( $zip->extractTo($cfgClient[$client]['path']['frontend'].Contenido_Module_Handler::$MODUL_DIR_NAME.$modulName) === TRUE) {
+    	if ($zip->open($tempName)) {
+    		if ($zip->extractTo($sModulePath)) {
     			$zip->close();
     			
-    			#make new module
+    			// make new module
     			$modules = new cApiModuleCollection;
 		
 				$module = $modules->create($modulName);
-				$modulProperties = $this->_getModulProperties($cfgClient[$client]['path']['frontend'].Contenido_Module_Handler::$MODUL_DIR_NAME.$modulName.'/'.Contenido_Module_Handler::$NAME_OF_INFO_XML);
+				$moduleProperties = $this->_getModuleProperties($sModulePath . '/info.xml');
 				
-				#set module properties and save it
-				foreach($modulProperties as $key=>$value) {
+				// set module properties and save it
+				foreach ($moduleProperties as $key=>$value) {
 					$module->set($key, $value);
 				}
+				
 				$module->store();
-    			
-    		}else {
+    		} else {
     			$notification->displayNotification('error', i18n("Import failed, could not extract zip file!"));
     			return false;
     		}
-    		
-    		
-    	}else  {
+    	} else {
     		$notification->displayNotification('error', i18n("Could not open the zip file!"));
     		return false;
     	}
+		
     	return true;
     }
 	
-    
-/**
+	/**
 	 * importModuleFromXML
      * Imports the a module from a XML file
      * Uses xmlparser and callbacks
@@ -577,31 +573,29 @@ class cApiModule extends Item
 						$this->set($key, addslashes($value));
 				}
 			}
-			
-			
-			$modulAlias = capiStrCleanURLCharacters($this->get('name'));
-			#is alias empty??
-			if($this->get('alias') == '') {
-				$this->set('alias', $modulAlias);
+
+			$moduleAlias = capiStrCleanURLCharacters($this->get('name'));
+			// is alias empty??
+			if ($this->get('alias') == '') {
+				$this->set('alias', $moduleAlias);
 			}
 			
-    		if(is_dir($cfgClient[$client]['path']['frontend'].Contenido_Module_Handler::$MODUL_DIR_NAME.$modulAlias)) {
+    		if (is_dir($cfgClient[$client]['path']['frontend'] . $cfg['path']['modules'] . $moduleAlias)) {
     			$notification->displayNotification('error', i18n("Module exist!"));
-    			return false ;
-    		}else {
-    			
-    			#save it in db-table
+    			return false;
+    		} else {
+    			// save it in db table
     			$this->store();
     			$contenidoModuleHandler = new Contenido_Module_Handler($this->get('idmod'));
-    			if(!$contenidoModuleHandler->makeNewModul($inputOutput["input"], $inputOutput["output"])) {
+    			if (!$contenidoModuleHandler->createModule($inputOutput["input"], $inputOutput["output"])) {
     				$notification->displayNotification('error', i18n("Could not make a module!"));
     				return false;
-				}else {
-					#save the modul data to modul info file
+				} else {
+					// save the modul data to modul info file
 					$contenidoModuleHandler->saveInfoXML();
 				}
     		}
-    	}else {
+    	} else {
     		$notification->displayNotification('error', i18n("Could not parse xml file!"));
     		return false;
     	}
@@ -616,35 +610,31 @@ class cApiModule extends Item
      * @param string $zipArchive name of the archive
      * @param string $zipdir
      */
-    
     private function _addFolderToZip($dir, $zipArchive, $zipdir = ''){
-    if (is_dir($dir)) {
-        if ($dh = opendir($dir)) {
-
-            //Add the directory
-            if(!empty($zipdir)) $zipArchive->addEmptyDir($zipdir);
-          
-            // Loop through all the files
-            while (($file = readdir($dh)) !== false) {
-          
-                //If it's a folder, run the function again!
-                if(!is_file($dir . $file)){
-                    // Skip parent and root directories
-                    if( ($file !== ".") && ($file !== "..")){
-                        $this->_addFolderToZip($dir . $file . "/", $zipArchive, $zipdir . $file . "/");
-                    }
-                  
-                }else{
-                    // Add the files
-                    if( $zipArchive->addFile($dir . $file, $zipdir . $file)=== FALSE)
-                    {
-                    	$notification = new Contenido_Notification();
-                    	$notification->displayNotification('error', sprintf(i18n("Could not add file %s to zip!"), $file));
-                    }
-                  
-                }
-            	}
-       	 }
+		if (is_dir($dir)) {
+			if ($dh = opendir($dir)) {
+				//Add the directory
+				if (!empty($zipdir)) {
+					$zipArchive->addEmptyDir($zipdir);
+				}
+			  
+				// Loop through all the files
+				while (($file = readdir($dh)) !== false) {
+					//If it's a folder, run the function again!
+					if (!is_file($dir . $file)) {
+						// Skip parent and root directories
+						if (($file !== ".") && ($file !== "..")) {
+							$this->_addFolderToZip($dir . $file . "/", $zipArchive, $zipdir . $file . "/");
+						}
+					} else{
+						// Add the files
+						if ($zipArchive->addFile($dir . $file, $zipdir . $file) === FALSE) {
+							$notification = new Contenido_Notification();
+							$notification->displayNotification('error', sprintf(i18n("Could not add file %s to zip!"), $file));
+						}
+					}
+				}
+			}
     	}
 	} 
 
@@ -653,18 +643,17 @@ class cApiModule extends Item
      * Exports the specified module  to a zip file
 	 *
      */    
-    function export ()
-    {
+    function export() {
     	$notification = new Contenido_Notification();
     	$contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
-    	#exist modul 
-    	if($contenidoModuleHandler->existModul() == true ) {
+    	
+		// exist modul 
+    	if ($contenidoModuleHandler->modulePathExists()) {
     		$zip = new ZipArchive();
     		$zipName = $this->get('alias').'.zip';
-    		if($zip->open($zipName,ZipArchive::CREATE) === TRUE) {
-    			$retAddToFolder = $this->_addFolderToZip($contenidoModuleHandler->getModulPath() , $zip);
-    			
-    			
+    		if ($zip->open($zipName, ZipArchive::CREATE)) {
+    			$retAddToFolder = $this->_addFolderToZip($contenidoModuleHandler->getModulePath(), $zip);
+
     			$zip->close();
     			//Stream the file to the client
 				header("Content-Type: application/zip");
@@ -676,12 +665,9 @@ class cApiModule extends Item
     		} else {
     			$notification->displayNotification('error', i18n("Could not open the zip file!"));
     		}
-    		
     	} else {
-    		
     		$notification->displayNotification('error', i18n("Module don't exist on file system!"));
     	}
-    	
     }
     
     /**

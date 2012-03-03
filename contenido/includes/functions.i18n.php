@@ -331,18 +331,6 @@ function mi18n($string)
     cInclude("classes", "contenido/class.module.php");
     cInclude("classes", "module/class.contenido.translate.from.file.php");
 
-    // set vars only if not set
-    if (Contenido_Vars::getVar('client')== null) {
-        // Set CONTENIDO vars ...
-        Contenido_Vars::setVar('db', $db);
-        Contenido_Vars::setVar('lang', $lang);
-        Contenido_Vars::setVar('cfg', $cfg);
-        Contenido_Vars::setEncoding($db,$cfg,$lang);
-        Contenido_Vars::setVar('cfgClient', $cfgClient);
-        Contenido_Vars::setVar('client', $client);
-        Contenido_Vars::setVar('fileEncoding', getEffectiveSetting('encoding', 'file_encoding','UTF-8'));
-    }
-
     $contenidoTranslateFromFile = new Contenido_Translate_From_File($cCurrentModule, true);
     $array = $contenidoTranslateFromFile->getLangarray();
 

@@ -124,9 +124,8 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 	 * @return array result
 	 */
 	public function searchForAllModules() {
-			
-		$cfg = Contenido_Vars::getVar('cfg');
-		$idClient = Contenido_Vars::getVar('client');
+		global $cfg, $client;	
+		$idClient = $client;
 
 		$sql1 = sprintf("(SELECT *, (0) AS search_in_file FROM %s WHERE idclient = %s AND (
 							type LIKE '%s' 
@@ -157,7 +156,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 
 			if($db->f('search_in_file') == 1) {
 				if($this->_findInFiles($this->_filter, $modul)== true) {
-					$this->_initModulHandlerWithModulRow($db);
+					$this->_initWithDatabaseRow($db);
 					$result[$db->f('idmod')] =array('name'=> $db->f('name'),
 														'description'=>$db->f('description'), 
 														'error'=>$db->f('error'),
@@ -166,7 +165,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 						
 				}
 			}else  {
-				$this->_initModulHandlerWithModulRow($db);
+				$this->_initWithDatabaseRow($db);
 				$result[$db->f('idmod')] =array('name'=> $db->f('name'),
 														'description'=>$db->f('description'), 
 														'error'=>$db->f('error'),
@@ -189,7 +188,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 	 */
 	private function _findInFiles($filter, $dbRowModule) {
 			
-		$this->_initModulHandlerWithModulRow($dbRowModule);
+		$this->_initWithDatabaseRow($dbRowModule);
 		if(stripos($this->readInput()." ". $this->readOutput(),$filter) === false)
 		return false;
 		else
@@ -249,10 +248,8 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 	 * @return array result
 	 */
 	public function findeModulWithName() {
-
-
-		$cfg = Contenido_Vars::getVar('cfg');
-		$idClient = Contenido_Vars::getVar('client');
+		global $cfg, $client;	
+		$idClient = $client;
 
 
 		$sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
@@ -266,7 +263,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 		$result = array();
 			
 		while(($module = $db->next_record())) {
-			$this->_initModulHandlerWithModulRow($db);
+			$this->_initWithDatabaseRow($db);
 			$result[$db->f('idmod')] =array('name'=> $db->f('name'),
 														'description'=>$db->f('description'), 
 														'error'=>$db->f('error'),
@@ -283,10 +280,8 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 	 * @return array result
 	 */
 	public function findModulWithInput() {
-			
-			
-		$cfg = Contenido_Vars::getVar('cfg');
-		$idClient = Contenido_Vars::getVar('client');
+		global $cfg, $client;	
+		$idClient = $client;
 
 
 		$sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
@@ -300,7 +295,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 		$result = array();
 			
 		while(($module = $db->next_record())) {
-			$this->_initModulHandlerWithModulRow($db);
+			$this->_initWithDatabaseRow($db);
 
 			if(stripos($this->readInput(),$this->_filter) !== false) {
 				$result[$db->f('idmod')] =array('name'=> $db->f('name'),
@@ -319,10 +314,8 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 	 * @return array result
 	 */
 	public function findModulWithOutput() {
-			
-		$cfg = Contenido_Vars::getVar('cfg');
-		$idClient = Contenido_Vars::getVar('client');
-
+		global $cfg, $client;	
+		$idClient = $client;
 
 		$sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
 							type LIKE '%s' )
@@ -335,7 +328,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 		$result = array();
 			
 		while(($module = $db->next_record())) {
-			$this->_initModulHandlerWithModulRow($db);
+			$this->_initWithDatabaseRow($db);
 
 			if(stripos($this->readOutput(), $this->_filter) !== false) {
 				$result[$db->f('idmod')] =array('name'=> $db->f('name'),
@@ -356,10 +349,8 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 	 *@return array result
 	 */
 	public function findModuleWithType() {
-			
-		$cfg = Contenido_Vars::getVar('cfg');
-		$idClient = Contenido_Vars::getVar('client');
-
+		global $cfg, $client;	
+		$idClient = $client;
 
 		$sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
 							type LIKE '%s' 
@@ -373,7 +364,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 		$result = array();
 			
 		while(($module = $db->next_record())) {
-			$this->_initModulHandlerWithModulRow($db);
+			$this->_initWithDatabaseRow($db);
 			$result[$db->f('idmod')] =array('name'=> $db->f('name'),
 														'description'=>$db->f('description'), 
 														'error'=>$db->f('error'),
@@ -390,9 +381,8 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 	 * @return array result
 	 */
 	public function findModuleWithDescription() {
-			
-		$cfg = Contenido_Vars::getVar('cfg');
-		$idClient = Contenido_Vars::getVar('client');
+		global $cfg, $client;	
+		$idClient = $client;
 
 
 		$sql = sprintf("SELECT * FROM %s WHERE idclient = %s AND (
@@ -406,7 +396,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler {
 		$result = array();
 			
 		while(($module = $db->next_record())) {
-			$this->_initModulHandlerWithModulRow($db);
+			$this->_initWithDatabaseRow($db);
 			$result[$db->f('idmod')] =array('name'=> $db->f('name'),
 														'description'=>$db->f('description'), 
 														'error'=>$db->f('error'),

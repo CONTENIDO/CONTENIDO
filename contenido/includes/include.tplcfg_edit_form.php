@@ -336,7 +336,7 @@ if (isset($a_d) && is_array($a_d)) {
             $contenidoModuleHandler = new Contenido_Module_Handler($db->f('idmod'));
 
             // load data from file
-            if ($contenidoModuleHandler->existModul() == true) {
+            if ($contenidoModuleHandler->modulePathExists() == true) {
                 $input = $contenidoModuleHandler->readInput()."\n";
             }
             $varstring = array();

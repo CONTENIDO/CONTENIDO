@@ -84,12 +84,10 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
 
     switch ($sWhere) {
 
-		case "modul":
-   			#Contenido_Vars::debugg();
+		case "module":
    			$handler = new Contenido_Module_Handler($cCurrentModule);
-   			$sInclude = $handler->getPhpPath().$sWhat;
-   		break;
-
+   			$sInclude = $handler->getPhpPath() . $sWhat;
+			break;
         case 'frontend':
             $sInclude = $cfgClient[$client]['path']['frontend'] . $sWhat;
             break;
