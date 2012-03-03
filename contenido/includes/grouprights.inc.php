@@ -103,7 +103,7 @@ $oTpl->set("s", "RIGHTS_PERMS", $rights_perms);
 //selectbox for clients
 $oHtmlSelect = new 	cHTMLSelectElement ('rights_clientslang', "", "rights_clientslang");
 
-	$clientclass = new Client;
+	$clientclass = new cApiClientCollection;
    	$clientList = $clientclass->getAccessibleClients();
   	$firstsel = false;
   	$i = 0;

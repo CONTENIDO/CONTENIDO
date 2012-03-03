@@ -33,7 +33,7 @@ cInclude('classes', 'class.purge.php');
 $tpl->reset();
 
 $iClientSelectSize = 4;
-$oClient = new Client();
+$oClient = new cApiClientCollection();
 $aAvailableClient = $oClient->getAvailableClients();
 
 $sInfoMsg = '';

@@ -37,7 +37,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$clientclass = new Client;
+$clientclass = new cApiClientCollection;
 
 $db2 = new DB_Contenido;
 

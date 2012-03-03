@@ -57,7 +57,7 @@ $db = new DB_Contenido;
 $notification = new Contenido_Notification;
 $classarea = new cApiAreaCollection();
 $classlayout = new Layout();
-$classclient = new Client();
+$classclient = new cApiClientCollection();
 $classuser = new User();
 
 # change Client

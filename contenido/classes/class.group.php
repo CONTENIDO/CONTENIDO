@@ -121,7 +121,7 @@ class Groups
     {
         global $cfg;
 
-        $clientclass = new Client();
+        $clientclass = new cApiClientCollection();
 
         $allClients = $clientclass->getAvailableClients();
 

@@ -308,7 +308,7 @@ class Contenido_Navigation
         }
 
         $classuser = new User();
-        $classclient = new Client();
+        $classclient = new cApiClientCollection();
 
         if (getEffectiveSetting('system', 'clickmenu') == 'true') {
             // set click menu
