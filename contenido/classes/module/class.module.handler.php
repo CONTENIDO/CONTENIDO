@@ -239,7 +239,7 @@ class Contenido_Module_Handler {
      * @param unknown_type $fileContent
      * @return false or string 
      */
-    static function saveContentToFile($templateName, $fileType, $fileContent, $saveDirectory = "cache") {
+    public function saveContentToFile($templateName, $fileType, $fileContent, $saveDirectory = "cache") {
 		$sSaveDirectory = $this->_cfgClient[$this->_client]["path"]["frontend"] . $saveDirectory. '/';
         if (!is_dir($sSaveDirectory)) {
 			return false;

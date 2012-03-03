@@ -78,6 +78,8 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         $layoutInFile = new LayoutInFile($idlay, '', $cfg, $this->_lang);
         $this->_layoutCode = $layoutInFile->getLayoutCode();
         $this->_layoutCode = capiStrNormalizeLineEndings($this->_layoutCode, "\n");
+		
+		$moduleHandler = new Contenido_Module_Handler();
 
         // Create code for all containers
         if ($idlay) {
@@ -102,17 +104,17 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
                 $this->_modulePrefix[] = '$cCurrentModule = ' . $a_d[$value] . ';';
                 $this->_modulePrefix[] = '$cCurrentContainer = ' . $value . ';';
 
-                $contenidoModuleHandler = new Contenido_Module_Handler($a_d[$value]);
+                $moduleHandler = new Contenido_Module_Handler($a_d[$value]);
                 $input = '';
 
                 // Get the contents of input and output from files and not from db-table
-                if ($contenidoModuleHandler->modulePathExists() == true) {
-                    $this->_moduleCode = $contenidoModuleHandler->readOutput();
+                if ($moduleHandler->modulePathExists() == true) {
+                    $this->_moduleCode = $moduleHandler->readOutput();
                     // Load css and js content of the js/css files
-                    $this->_cssData .= $contenidoModuleHandler->getFilesContent("css", "css");
-                    $this->_jsData .= $contenidoModuleHandler->getFilesContent("js", "js");
+                    $this->_cssData .= $moduleHandler->getFilesContent("css", "css");
+                    $this->_jsData .= $moduleHandler->getFilesContent("js", "js");
 
-                    $input = $contenidoModuleHandler->readInput();
+                    $input = $moduleHandler->readInput();
                 } else {
 
                 }
@@ -148,12 +150,12 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
         // Save the collected css/js data and save it under the template name ([templatename].css , [templatename].js in cache dir
         $cssFile = '';
-        if (($myFileCss = Contenido_Module_Handler::saveContentToFile($this->_tplName, "css", $this->_cssData))) {
+        if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, "css", $this->_cssData))) {
             $cssFile = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';
         }
 		
         $jsFile = '';
-        if (($myFileJs = Contenido_Module_Handler::saveContentToFile($this->_tplName, "js", $this->_jsData))) {
+        if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, "js", $this->_jsData))) {
             $jsFile = '<script src="'.$myFileJs.'" type="text/javascript"></script>';
         }
 
