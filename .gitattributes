@@ -1380,7 +1380,8 @@ contenido/plugins/content_allocation/style/complexlist.css -text
 contenido/plugins/content_allocation/templates/template.tree_article.html -text
 contenido/plugins/content_allocation/templates/template.tree_complexlist.html -text
 contenido/plugins/content_allocation/templates/template.tree_structure.html -text
-contenido/plugins/content_allocation/xml/content_allocation.xml -text
+contenido/plugins/content_allocation/xml/lang_de_DE.xml -text
+contenido/plugins/content_allocation/xml/lang_en_US.xml -text
 contenido/plugins/frontendlogic/category/category.php -text
 contenido/plugins/frontendlogic/category/docs/conlogo.gif -text
 contenido/plugins/frontendlogic/category/docs/frontend.protectedcategories.html -text

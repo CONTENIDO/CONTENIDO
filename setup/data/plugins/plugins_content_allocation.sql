@@ -1,2 +1,2 @@
-INSERT INTO !PREFIX!_nav_sub VALUES('800', '3', '801', '0', 'content_allocation/xml/content_allocation.xml;plugin/main', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('801', '0', '802', '1', 'content_allocation/xml/content_allocation.xml;plugin/contenido/article/content_allocation', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('800', '3', '801', '0', 'content_allocation/xml/;navigation/extra/content_allocation/main', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('801', '0', '802', '1', 'content_allocation/xml/;navigation/contenido/article/content_allocation', '1');
