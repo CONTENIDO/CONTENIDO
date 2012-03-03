@@ -229,7 +229,7 @@ class Contenido_Backend {
 
         if ($this->debug) {
             echo '<pre style="font-family: verdana; font-size: 10px">';
-            echo "<b>Na, wieder scheisse gebaut?? ;-)</b>\n\n";
+            echo "<b>Went something wrong? ;-)</b>\n\n";
             echo "<b>Files:</b>\n\n";
             print_r($this->files);
             echo "\n\n<b>Actions:</b>\n\n";
