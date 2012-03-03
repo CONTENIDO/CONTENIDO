@@ -131,7 +131,7 @@ if(!$perm->have_perm_area_action($area))
 	}
 
 	$years = array();
-	for ($i = 2000; $i < 2020; $i++)
+	for ($i = 2000; $i < (date('Y') + 1); $i++)
 	{
 		$years[$i] = $i;
 	}
