@@ -25,19 +25,19 @@
  * }}
  * 
  */
+ 
 if(!defined('CON_FRAMEWORK')) {
- die('Illegal call');
+	die('Illegal call');
 }
+
 $client = (isset($client)) ? $client : $load_client;
 rereadClients();
 
 plugin_include('smarty', 'classes/class.Contenido_SmartyWrapper.php');
-#plugin_include('smarty', 'classes/class.Contenido_Backend_SmartyWrapper.php');
 
 try {
-	new Contenido_SmartyWrapper( $cfg, $cfgClient[$client], true );
-} catch ( Exception $e ) {
-	die( $e->getMessage() );
+	new Contenido_SmartyWrapper($cfg, $cfgClient[$client], true);
+} catch (Exception $e) {
+	cWarning($e->getMessage());
 }
-
 ?>
