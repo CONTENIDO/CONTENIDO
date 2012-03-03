@@ -2,7 +2,7 @@
    // Initialisation
    $oClientLang = new cApiClientLanguage(false, $client, $lang);
    $oClient     = new cApiClient($client);
-   $oRecipients = new RecipientCollection;
+   $oRecipients = new NewsletterRecipientCollection;
    $sMessage = "&nbsp;";
    unset($recipient); // Unset any existing recipient objects - note, that it must be $recipient for the plugins...
 
@@ -201,7 +201,7 @@
 
          $sMessage = mi18n("Thank you! You have confirmed your subscription to our newsletter!");
 
-         $oNewsletters = New NewsletterCollection;
+         $oNewsletters = new NewsletterCollection;
          $oNewsletters->setWhere("idclient", $client);
          $oNewsletters->setWhere("idlang", $lang);
          $oNewsletters->setWhere("welcome", '1');

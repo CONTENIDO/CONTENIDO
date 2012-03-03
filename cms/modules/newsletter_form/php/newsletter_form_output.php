@@ -44,7 +44,7 @@
    if ($aSettings["JoinSel"] == "UserSelected") {
       // Late include to increase performance
 
-      $oRcpGroups = new RecipientGroupCollection();
+      $oRcpGroups = new NewsletterRecipientGroupCollection();
       $oRcpGroups->setWhere('idclient', $client);
       $oRcpGroups->setWhere('idlang',   $lang);
       $oRcpGroups->setWhere('defaultgroup', '0');

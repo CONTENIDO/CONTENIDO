@@ -89,7 +89,7 @@
    $oCfgTable->setCell('handler', 1, $oHidAction->render().$oSelHandlerCatArt->render()."\n&nbsp;".$oCkbUpdate->toHTML(false).mi18n("Update"));
 
    // Getting newsletter groups (if any)
-   $oRcpGroups = new RecipientGroupCollection();
+   $oRcpGroups = new NewsletterRecipientGroupCollection();
    $oRcpGroups->setWhere('idclient', $client);
    $oRcpGroups->setWhere('idlang',   $lang);
    $oRcpGroups->setWhere('defaultgroup', '0');
