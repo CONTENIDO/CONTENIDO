@@ -75,6 +75,10 @@ abstract class ContenidoXmlBase {
 	 * @return	string	resolved path
 	 */
 	static public function resolvePath($sPath) {
+		if (substr($sPath, 0, 1) != '/') {
+			$sPath = '/' . $sPath;
+		}
+		
 		$aSplits = explode('/', $sPath);
 
 		foreach ($aSplits as $i => $sSplitter) {
