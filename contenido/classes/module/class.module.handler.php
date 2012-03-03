@@ -774,7 +774,7 @@ class Contenido_Module_Handler {
 			return true;
 		}
 		
-		if (is_writable($this->_modulePath) == FALSE || mkdir($this->_modulePath) == FALSE) {
+		if (mkdir($this->_modulePath) == FALSE) {
 			return false;
 		} else {
 			chmod($this->_modulePath, 0777);
