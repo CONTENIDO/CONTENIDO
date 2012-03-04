@@ -1992,9 +1992,10 @@ function notifyOnError($errortitle, $errormessage)
 
             // Notify configured email
             $oMail->Send();
+			
+			// Write last notify log file
+			file_put_contents($cfg["path"]["contenido"]."logs/notify.txt", time());
         }
-        // Write last notify log file
-        file_put_contents($cfg["path"]["contenido"]."logs/notify.txt", time());
     }
 }
 
