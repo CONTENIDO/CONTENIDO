@@ -105,13 +105,11 @@ class Contenido_UpgradeJob extends Contenido_Module_Handler {
 				// inclusive client
 				$this->_initWithDatabaseRow($db);
 				
-				//make new module only if modul not exist in directory
-				
-				if ($this->modulePathExists() != true) { 
-					if ($this->createModule($db->f("input"), $db->f("output")) == false) {
-						cWarning(__FILE__, __LINE__, sprintf('Can not create module "%s"', $db->f('name'))); 
-					} else {
-						//save translation 
+				// make new module only if modul not exist in directory
+				if ($this->modulePathExists() != true) {
+					// we need no error handling here because module could still exist from previous version
+					if ($this->createModule($db->f("input"), $db->f("output")) == true) {
+						// save module translation 
 						$translations = new Contenido_Module_FileTranslation($db->f("idmod"));
 						$translations->saveTranslations();
 					}
