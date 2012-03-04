@@ -35,17 +35,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 cInclude("includes", "functions.i18n.php");
 
-global $lngArea, $lngLogin, $lngErr, $a_description, $lngAct;
-
-$lngLogin["pleaselogin"]                        	= "Bitte geben Sie Ihren Benutzernamen und Ihr Pa&szlig;wort ein.";
-$lngLogin["username"]                        		= "Benutzername";
-$lngLogin["password"]                        		= "Pa&szlig;wort";
-$lngLogin["invalidlogin"]                			= "Entweder ist Ihr Benutzername oder Ihr Pa&szlig;wort ung&uuml;ltig.<br>Bitte versuchen Sie es nochmal!";
-
-$lngLogout["thanksforusingcontenido"]           	= "Vielen Dank, dass sie CONTENIDO benutzt haben. Bis bald.";
-$lngLogout["youareloggedout"]                		= "Sie sind jetzt abgemeldet.";
-$lngLogout["backtologin1"]                			= "Hier kommen Sie wieder zur";
-$lngLogout["backtologin2"]                			= "Anmeldung";
+global $lngArea, $lngAct;
 
 //Datas for Areas which are not in the Navigation
 $lngArea["con_artlist"]                        		= " - Artikelliste";
@@ -54,46 +44,6 @@ $lngArea["lay_edit"]                            	= " - Layout bearbeiten";
 $lngArea["mod_edit"]                            	= " - Modul bearbeiten";
 $lngArea["tpl_edit"]                            	= " - Template bearbeiten";
 $lngArea["news_edit"]                           	= " - Newsletter bearbeiten";
-
-$lngCon["actionsconf"]                         		= "Aktionen";
-$lngCon["allarts"]                        			= "Alle Artikeln";
-$lngCon["artname"]                          		= "Artikelnname";
-$lngCon["artoff"]                        			= "Artikel offline schalten";
-$lngCon["arton"]                        			= "Artikel online schalten";
-$lngCon["artswithoutcategory"]                		= "Artikeln ohne Zuordnung";
-$lngCon["author"]                            		= "Redakteur";
-$lngCon["created"]                            		= "Datum der Erstellung";
-$lngCon["dateend"]                            		= "Enddatum";
-$lngCon["datestart"]                          		= "Startdatum";
-$lngCon["defaulttemplate"]                			= "Template";
-$lngCon["imgagedescription"]                		= "Beschreibung";
-$lngCon["lastmodified"]                    			= "Datum der letzten &Auml;nderung";
-$lngCon["moduleincontainer"]                		= "Modul in Container";
-$lngCon["noarts"]                            		= "Es gibt keine Artikel.";
-$lngCon["noartsinthiscategory"]         			= "Es gibt keine Artikel in dieser Kategorie.";
-$lngCon["nostartingart"]                 			= "Nicht als StartArtikel konfigurieren.";
-$lngCon["online"]                            		= "Online";
-$lngCon["preview"]                        			= "Vorschau";
-$lngCon["properties"]                    			= "Eigenschaften";
-$lngCon["startart"]                           		= "StartArtikel";
-$lngCon["structure"]                            	= "Kategorie";
-$lngCon["structureandarts"]                			= "Kategorie / Artikeln";
-$lngCon["summary"]                            		= "Zusammenfassung";
-$lngCon["redirect"]                        			= "Weiterleitung";
-$lngCon["redirect_url"]                       		= "Weiterleitungsadresse";
-$lngCon["template"]                            		= "Template";
-$lngCon["title"]                           			= "Titel";
-$lngCon["keywordart"]                       		= "Keywords Artikel";
-$lngCon["keywordcat"]                        		= "Keywords Kategorie";
-$lngCon["keywordautoart"]                   		= "Automatisch generiert";
-$lngCon["unconfigured"]                      		= "unkonfiguriert";
-$lngCon["dynhead"]                         			= "&Uuml;berschrift";
-$lngCon["dyntext"]                         			= "Text";
-$lngCon["dynimg"]                         			= "Bild";
-$lngCon["dynlink"]                         			= "Link";
-$lngCon["actions"]["10"]                 			= "Artikeln der gew&auml;hlten Kategorie";
-$lngCon["actions"]["11"]                 			= "Liste aller Artikeln";
-$lngCon["actions"]["12"]                 			= "Liste der Artikeln ohne Zuordnung";
 
 $lngAct["con"]["con_lock"] 							= i18n("Freeze article");
 $lngAct["con"]["con_makecatonline"] 				= i18n("Make category online");
@@ -271,7 +221,7 @@ $lngAct["system_settings"]["systemsettings_save_item"]			= i18n("Save system pro
 
 $lngAct["system"]["emptyLog"]									= i18n("Empty log");
 $lngAct["system_configuration"]["edit_sysconf"]					= i18n("Edit system configration");
-$lngAct["system_purge"]["do_purge"]	 = i18n("Do system purge");
+$lngAct["system_purge"]["do_purge"]	 							= i18n("Do system purge");
 
 $lngAct["logs"]["log_show"] 						= i18n("Show log");
 
@@ -283,40 +233,6 @@ $lngAct["note"]["note_save_item"]					= i18n("Save note");
 
 $lngAct[""]["sendMail"]								= i18n("Send mail");
 $lngAct[""]["fake_permission_action"]				= i18n("Fake permissions");
-
-$lngStr["actions"]["10"]    						= "Neuer Baum";
-$lngStr["structure"]       							= "Kategorie";
-$lngStr["properties"]       						= "Aktionen";
-$lngStr["makeinvisible"]                 			= "Diese Kategorie offline setzen.";
-$lngStr["makevisible"]                        		= "Diese Kategorie online setzen.";
-$lngStr["protect"]                         			= "Diese Kategorie sch&uuml;tzen.";
-$lngStr["makepublic"]                         		= "Diese Kategorie frei zug&auml;nglich machen.";
-$lngStr["moveup"]                         			= "Diese Kategorie eins nachoben verschieben.";
-$lngStr["tofirstlevel"]                         	= "Diese Kategorie in die oberste Ebene umh&auml;ngen.";
-$lngStr["movehere"]                         		= "Die zuvor ausgew&auml;hlte Kategorie hierher umhaengen.";
-$lngStr["movesubtree"]                         		= "Diese Kategorie (und den darunterliegenden Teilbaum) umhaengen.";
-
-$lngLay["lay"]["lay_new"]                 			= "Neues Layout";
-$lngLay["layoutname"]                         		= "Name des Layouts";
-$lngLay["description"]                         		= "Beschreibung";
-$lngLay["code"]                                 	= "Code";
-$lngLay["notemplates"]                         		= "Es gibt keine Layouts.";
-
-$lngMod["actions"]["10"]                 			= "Neues Modul";
-$lngMod["modulename"]                         		= "Name des Moduls";
-$lngMod["description"]                         		= "Beschreibung";
-$lngMod["input"]                                 	= "Input";
-$lngMod["output"]                        			= "Output";
-$lngMod["nomodules"]                         		= "Es gibt keine Module.";
-$lngMod["cmsvariables"]                        		= "CMS_Variablen";
-
-$lngTpl["actions"]["10"]                            = "Neues Template";
-$lngTpl["templatename"]                         	= "Name des Templates";
-$lngTpl["description"]                         		= "Beschreibung";
-$lngTpl["container"]                        		= "Container";
-$lngTpl["notemplates"]                         		= "Es gibt keine Templates.";
-$lngTpl["layout"]                        			= "Layout";
-
 
 $lngUpl["description"]                            	= 'Beschreibung';
 $lngUpl['action']                                	= 'Aktionen';
@@ -335,77 +251,4 @@ $lngUpl['dirisempty']                        		= 'Verzeichnis ist leer';
 $lngUpl['upload']                                	= 'Dateien hochladen';
 $lngUpl['delete']                                	= 'l&ouml;schen';
 $lngUpl["filesize"]                          		= 'Dateigr&ouml;&szlig;e';
-
-$lngUser["username"]                        		= "Benutzername";
-$lngUser["password"]                         		= "Pa�wort";
-$lngUser["level"]                         			= "Berechtigungen";
-$lngUser["action"]                         			= "Aktionen";
-$lngUser["create"]                         			= "Erstellen";
-$lngUser["kill"]                                 	= "L�schen";
-$lngUser["edit"]                         			= "Bearbeiten";
-$lngUser["error"]                               	= "Fehler";
-$lngUser["nopermissiontocreateusers"]           	= "Sie haben keine Berechtigung Benutzer zu erstellen.";
-$lngUser["pleasefilloutusernameandpassword"] 		= "Bitte f&uuml;llen Sie <b>Benutzername</b> und <b>Pa&szlig;wort</b> aus";
-$lngUser["usernamealreadyexists"]        			= "Benutzername existiert bereits";
-$lngUser["failed"]                        			= "<b>Fehlgeschlagen:</b>";
-$lngUser["usercreated"]                        		= "Benutzer erstellt";
-$lngUser["nopermissiontoeditusers"]        			= "Sie haben keine Berechtigung Benutzer zu bearbeiten";
-$lngUser["passwordchanged1"]                		= "Pa&szlig;wort von";
-$lngUser["passwordchanged2"]                		= "ge&auml;ndert";
-$lngUser["nopermissiontodeleteusers"]        		= "Sie haben keine Berechtigung Benutzer zu l&ouml;schen";
-$lngUser["userdeleted"]                        		= "Benutzer gel&ouml;scht";
-
-$lngLang["language"]                            	= "Sprache";
-$lngLang["active"]                              	= "aktiv";
-$lngLang["actions"]                             	= "Aktionen";
-$lngLang["rename"]                              	= "umbenennen";
-$lngLang["delete"]                              	= "l&ouml;schen";
-$lngLang["notactive"]                           	= "deaktiviert";
-$lngLang["newlanguage"]                        		= "Neue Sprache";
-
-$lngStat["structureandarts"]                 		= "Kategorie / Artikeln";
-$lngStat["numberofarts"]                 			= "Anzahl der Artikeln";
-$lngStat["total"]                         			= "Total";
-$lngStat["inthislanguage"]                 			= "In dieser Sprache";
-$lngStat["sum"]                                		= "Summe";
-
-$lngForm["nothing"]                        			= "--- ".i18n("None")." ---";
-$lngForm["all"]                                		= "--- Alles ---";
-
-$lngAll["yes"]                                 		= "ja";
-$lngAll["no"]                                 		= "nein";
-$lngAll["default"]                         			= "default";
-$lngAll["defaultdoesnotexist"]                 		= "Kein Default-Template eingestellt";
-$lngAll["logout"]                       			= "Logout";
-$lngAll["back"]                                		= "Zur&uumlck";
-
-$mod["font"]                                		= "Schriftart";
-$mod["errorfont"]                          			= "Schriftart f&uuml;r Fehlermeldungen";
-$mod["inputformfont"]                          		= "Schriftart f&uuml;r die Eingabefelder";
-$mod["select"]                                  	= "Auswahlm&ouml;glichkeiten";
-$mod["number"]                                		= "Nummer";
-$mod["picforsend"]                        			= "Bild f&uuml;r den Sendebutton";
-
-$modLink["click"]                         			= "Bitte klicken Sie hier.";
-
-$modNews["inputname"]                        		= "Feld f&uuml;r Namen";
-$modNews["email"]                        			= "E-Mail Adresse";
-$modNews["name"]                                	= "Name (freiwillig)";
-$modNews["subcribe"]                          		= "anmelden";
-$modNews["unsubcribe"]                        		= "abmelden";
-$modNews["both"]                                	= "beides";
-$modNews["headline"]                        		= "Stets die neusten Informationen per E-Mail.";
-$modNews["subcribemessage"]                			= "Wir haben Ihre Daten in unsere Datenbank aufgenommen.";
-$modNews["unsubcribemessage"]                		= "Wir haben Sie aus unserem Newsletterverteiler gel&ouml;scht.";
-$modNews["stopmessage"]                        		= "Der Newsletterempfang wurde deaktiviert.";
-$modNews["goonmessage"]                        		= "Der Newsletterempfang wurde aktiviert.";
-
-$modLogin["error"]                        			= "Logindaten sind nicht korrekt.";
-$modLogin["send"]                        			= "Login now";
-$modLogin["sendout"]                        		= "logout";
-$modLogin["name"]                        			= "Bitte Login-Namen eintragen";
-$modLogin["password"]                        		= "Bitte Passwort eintragen";
-$modLogin["login"]                        			= "Bitte klicken um einzuloggen";
-$modLogin["logout"]                        			= "Bitte klicken um auszuloggen";
-$modLogin["picforlogout"]                			= "Bild f&uuml;r Logout";
 ?>
