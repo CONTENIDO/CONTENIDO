@@ -109,11 +109,6 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
         return false;
     }
 
-    $bDebug = false;
-    if (($table == 'pica_alloc') &&  ($field == 'parentid')) {
-        $bDebug = true;
-    }
-
     $parameter = array();
 
     // Parameter checking for $null. If parameter is "" or "NULL" or "YES", we 
@@ -229,7 +224,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
             $createField = "  ALTER TABLE ".Contenido_Security::escapeDB($table, $db)." ADD COLUMN ".Contenido_Security::escapeDB($field, $db)." ".Contenido_Security::escapeDB($type, $db)."
             ".$parameter['NULL']." ".$parameter['DEFAULT']." ".$parameter['KEY'];
             $db->query($createField);
-if ($bDebug) {echo 'createField:'.$createField.'<br />';}
+
             $columnCache[$table] = "";
             return true;
         }
