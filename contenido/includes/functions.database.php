@@ -348,45 +348,8 @@ function dbGetPrimaryKeyName($db, $table)
 }
 
 
-/**
- * Updates the sequence table, stores the highest primary key value of a table in it.
- * Retrieves the primary key field of the table, retrieves the highes value and
- * saves the value in the sequence table.
- *
- * @param   string  $sequencetable  Name of sequence table
- * @param   string  $table  Name of table
- * @param   DB_Contenido|bool  $db  Database instance or false
- */
-function dbUpdateSequence($sequencetable, $table, $db = false)
-{
-    if ($db === false) {
-        $bClose = true;
-        $db = new DB_Upgrade;
-    } else {
-        $bClose = false;
-    }
-
-    $key = dbGetPrimaryKeyName($db, $table);
-
-    if ($key != "" && $key != $sequencetable) {
-        $sql = "SELECT ".Contenido_Security::escapeDB($key, $db)." FROM ". Contenido_Security::escapeDB($table, $db) ." ORDER BY " . Contenido_Security::escapeDB($key, $db) ." DESC";
-        $db->query($sql);
-
-        if ($db->next_record()) {
-            $highestval = $db->f($key);
-        } else {
-            $highestval = 0;
-        }
-
-        #$sql = "DELETE FROM " . Contenido_Security::escapeDB($sequencetable, $db) . " WHERE seq_name = '".Contenido_Security::escapeDB($table, $db)."'";
-        #$db->query($sql);
-
-        #$sql = "INSERT INTO " . Contenido_Security::escapeDB($sequencetable, $db) ." SET seq_name = '".Contenido_Security::escapeDB($table, $db)."', nextid = '".Contenido_Security::toInteger($highestval)."'";
-        #$db->query($sql);
-    }
-
-    if ($bClose == true) {
-        $db->close();
-    }
+/** @deprecated 2012-03-04 This function is not longer supported. */
+function dbUpdateSequence($sequencetable, $table, $db = false) {
+	cDeprecated("This function is not longer supported.");
 }
 ?>

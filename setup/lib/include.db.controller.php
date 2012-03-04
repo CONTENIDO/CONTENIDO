@@ -197,9 +197,6 @@ if ($currentStep < $totalSteps) {
     }
 
 } else {
-    $sql = 'SHOW TABLES';
-    $db->query($sql);
-
     // For import mod_history rows to versioning
     if ($_SESSION['setuptype'] == 'migration' || $_SESSION['setuptype'] == 'upgrade') {
         $cfgClient = array();
@@ -207,16 +204,6 @@ if ($currentStep < $totalSteps) {
 
         $oVersion = new VersionImport($cfg, $cfgClient, $db, $client, $area, $frame);
         $oVersion->CreateHistoryVersion();
-    }
-
-    $tables = array();
-
-    while ($db->next_record()) {
-        $tables[] = $db->f(0);
-    }
-
-    foreach ($tables as $table) {
-        dbUpdateSequence($cfg['sql']['sqlprefix'].'_sequence', $table, $db);
     }
 
     updateContenidoVersion($db, $cfg['tab']['system_prop'], C_SETUP_VERSION);

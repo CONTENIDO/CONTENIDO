@@ -445,20 +445,15 @@ function strRemakeTreeTable() {
             
     }
 
-   // $iNextTreeId = $db->nextid($cfg["tab"]["cat_tree"]);
-
     // build INSERT statement
     $sInsertQuery = "INSERT INTO ".$cfg["tab"]["cat_tree"]." (idcat, level) VALUES ";
     $sInsertQuery = recCats($aCategories[0], $sInsertQuery, $aCategories);
     $sInsertQuery = rtrim($sInsertQuery, " ,");
 
-      // lock db table and execute INSERT query
+    // lock db table and execute INSERT query
     $db->lock($cfg["tab"]["cat_tree"]);
     $db->query($sInsertQuery);
-    //$db->nextid('cat_tree');
-    dbUpdateSequence($cfg["tab"]["sequence"], $cfg["tab"]["cat_tree"], $db);
     $db->unlock($cfg["tab"]["cat_tree"]);
-
 }
 
 function sort_pre_post($arr) {
