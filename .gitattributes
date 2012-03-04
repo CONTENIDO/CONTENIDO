@@ -1928,7 +1928,6 @@ pear/PEAR/Installer.php -text
 pear/PEAR/Packager.php -text
 pear/PEAR/Registry.php -text
 pear/PEAR/Remote.php -text
-pear/README.contenido -text
 pear/Spreadsheet/Excel/Writer.php -text
 pear/Spreadsheet/Excel/Writer/BIFFwriter.php -text
 pear/Spreadsheet/Excel/Writer/Format.php -text
@@ -1945,12 +1944,9 @@ pear/XML/RPC/Server.php -text
 pear/XML/RSS.php -text
 pear/XML/Tree.php -text
 pear/XML/Tree/Node.php -text
-pear/package.dtd -text
-pear/package.xml -text
 pear/scripts/pear.bat -text
 pear/scripts/pear.sh -text
 pear/scripts/pearcmd.php -text
-pear/template.spec -text
 setup/data/base.txt -text
 setup/data/base/base_actions1.sql -text
 setup/data/base/base_area1.sql -text
