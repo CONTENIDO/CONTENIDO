@@ -644,7 +644,7 @@ function strNextDeeperAll($tmp_idcat, $ignore_lang = false) {
 
 /**
  * Renders the category tree a HTML table
- *
+ * @deprecated 2012-03-04 This function is not longer supported.
  * @return  void
  */
 function strShowTreeTable() {
@@ -655,6 +655,8 @@ function strShowTreeTable() {
     global $idcat;
     global $cfg;
     global $lngStr;
+	
+	cDeprecated("This function is not longer supported.");
 
     echo "<br><table cellpadding=$cellpadding cellspacing=$cellspacing border=$border >";
     $sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".Contenido_Security::toInteger($lang)."'
