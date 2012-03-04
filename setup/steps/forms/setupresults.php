@@ -74,15 +74,7 @@ class cSetupResults extends cSetupMask
             cSetupMask::cSetupMask("templates/setup/forms/setupresultsfail.tpl", $step);
             $this->_oStepTemplate->set("s", "TITLE", i18n("Setup Results"));
 
-            list($rootPath, $rootHttpPath) = getSystemDirectories();
-
-            if (file_exists($rootPath . "/contenido/logs/setuplog.txt")) {
-                $sErrorLink = '<a target="_blank" href="' . C_SETUP_CONTENIDO_HTML_PATH . 'logs/setuplog.txt">setuplog.txt</a>';
-            } else {
-                $sErrorLink = 'setuplog.txt';
-            }
-
-            $this->_oStepTemplate->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;contenido/logs/&quot;) for more information."), $sErrorLink));
+            $this->_oStepTemplate->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;contenido/logs/&quot;) for more information."), 'setuplog.txt'));
 
             switch ($_SESSION["setuptype"]) {
                 case "setup":

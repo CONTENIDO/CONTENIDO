@@ -62,7 +62,7 @@ function checkExistingPlugin($db, $sPluginname)
            $sSql = "SELECT * FROM %s WHERE idnavs=610";
            break;
 
-        case 'mod_rewrite':
+        case 'plugin_mod_rewrite':
            $sSql = "SELECT * FROM %s WHERE idnavs=700 OR location='mod_rewrite/xml/;navigation/content/mod_rewrite'";
            break;
 
@@ -88,6 +88,8 @@ function checkExistingPlugin($db, $sPluginname)
  */
 function updateSystemProperties($db, $table)
 {
+	$table = Contenido_Security::escapeDB($table, $db);
+
     $aStandardvalues = array(
         array('type' => 'pw_request', 'name' => 'enable', 'value' => 'true'),
         array('type' => 'system', 'name' => 'mail_sender_name', 'value' => 'info%40contenido.org'),
@@ -106,18 +108,23 @@ function updateSystemProperties($db, $table)
     );
 
     foreach ($aStandardvalues as $aData) {
-        $sql = "SELECT value FROM %s WHERE type='".$aData['type']."' AND name='".$aData['name']."'";
-        $db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db)));
-        if ($db->next_record()) {
+        $sql = "SELECT value FROM %s WHERE type='%s' AND name='%s'";
+        $db->query(sprintf($sql, $table, $aData['type'], $aData['name']));
+		if ($db->next_record()) {
             $sValue = $db->f('value');
             if ($sValue == '') {
                 $sql = "UPDATE %s SET value = '%s' WHERE type='%s' AND name='%s'";
-                $db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db), $aData['value'], $aData['type'], $aData['name']));
+				$sql = sprintf($sql, $table, $aData['value'], $aData['type'], $aData['name']);
+                $db->query($sql);
             }
         } else {
-            //$id = $db->nextid($table);
             $sql = "INSERT INTO %s SET type='%s', name='%s', value='%s'";
-            $db->query(sprintf($sql,  Contenido_Security::escapeDB($table, $db), $aData['type'], $aData['name'], $aData['value']));
+			$sql = sprintf($sql, $table, $aData['type'], $aData['name'], $aData['value']);
+            $db->query($sql);
+        }
+		
+		if ($db->Errno != 0) {
+            logSetupFailure("Unable to execute SQL statement:\n" . $sql . "\nMysql Error: " . $db->Error . " (" . $db->Errno . ")");
         }
     }
 }

@@ -162,24 +162,12 @@ $totalSteps = ceil($fullCount/C_SETUP_MAX_CHUNKS_PER_STEP) + count($fullChunks) 
 foreach ($fullChunks as $fullChunk) {
     $step++;
     if ($step == $currentStep) {
-        $failedChunks = array();
-
         $replacements = array(
             '<!--{contenido_root}-->' => addslashes($rootPath),
             '<!--{contenido_web}-->' => addslashes($rootHttpPath)
         );
 
-        injectSQL($db, $cfg['sql']['sqlprefix'], 'data/' . $fullChunk, $replacements, $failedChunks);
-
-        if (count($failedChunks) > 0) {
-            @$fp = fopen(C_FRONTEND_PATH . 'contenido/logs/setuplog.txt', 'w');
-            foreach ($failedChunks as $failedChunk) {
-                @fwrite($fp, sprintf("Setup was unable to execute SQL. MySQL-Error: %s, MySQL-Message: %s, SQL-Statements:\n%s", $failedChunk['errno'], $failedChunk['error'], $failedChunk['sql']));
-            }
-            @fclose($fp);
-
-            $_SESSION['install_failedchunks'] = true;
-        }
+        injectSQL($db, $cfg['sql']['sqlprefix'], 'data/' . $fullChunk, $replacements);
     }
 }
 
@@ -207,7 +195,6 @@ if ($currentStep < $totalSteps) {
     }
 
     updateContenidoVersion($db, $cfg['tab']['system_prop'], C_SETUP_VERSION);
-    updateSystemProperties($db, $cfg['tab']['system_prop']);
 
     if (isset($_SESSION['sysadminpass']) && $_SESSION['sysadminpass'] != '') {
         updateSysadminPassword($db, $cfg['tab']['phplib_auth_user_md5'], 'sysadmin');
@@ -271,6 +258,9 @@ if ($currentStep < $totalSteps) {
     
     // update to autoincrement
     addAutoIncrementToTables($db, $cfg);
+	
+	// insert or update default system properties
+	updateSystemProperties($db, $cfg['tab']['system_prop']);
 	
 	if ($_SESSION['setuptype'] == 'setup') {
 		switch ($_SESSION['clientmode']) {

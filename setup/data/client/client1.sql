@@ -7,4 +7,4 @@ INSERT INTO !PREFIX!_phplib_auth_user_md5 VALUES ('21232f297a57a5a743894a0e4a801
 INSERT INTO !PREFIX!_properties VALUES (37, 1, 'idlang', '1', 'language', 'code', 'de', '48a365b4ce1e322a55ae9017f3daf0c0', '2010-05-20 10:00:00', '2010-05-20 10:00:00', '48a365b4ce1e322a55ae9017f3daf0c0');
 INSERT INTO !PREFIX!_properties VALUES (38, 1, 'idlang', '1', 'country', 'code', 'de', '48a365b4ce1e322a55ae9017f3daf0c0', '2010-05-20 10:00:00', '2010-05-20 10:00:00', '48a365b4ce1e322a55ae9017f3daf0c0');
 INSERT INTO !PREFIX!_properties VALUES (39, 1, 'idlang', '2', 'language', 'code', 'en', '48a365b4ce1e322a55ae9017f3daf0c0', '2010-05-20 10:00:00', '2010-05-20 10:00:00', '48a365b4ce1e322a55ae9017f3daf0c0');
-INSERT INTO !PREFIX!_properties VALUES (40, 1, 'idlang', '2', 'country', 'code', 'gb', '48a365b4ce1e322a55ae9017f3daf0c0', '2010-05-20 10:00:00', '2010-05-20 10:00:00', '48a365b4ce1e322a55ae9017f3daf0c0');
+INSERT INTO !PREFIX!_properties VALUES (40, 1, 'idlang', '2', 'country', 'code', 'us', '48a365b4ce1e322a55ae9017f3daf0c0', '2010-05-20 10:00:00', '2010-05-20 10:00:00', '48a365b4ce1e322a55ae9017f3daf0c0');

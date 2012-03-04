@@ -56,4 +56,15 @@ function cGenerateSetupStepsDisplay($iCurrentStep)
     }
     return $sStepsPath;
 }
+
+/**
+ * Logs general setup failures into setuplog.txt in logs directory.
+ *
+ * @param	string	$sErrorMessage	message to log in file
+ * 
+ * @return	void
+ */
+function logSetupFailure($sErrorMessage) {
+	file_put_contents(C_FRONTEND_PATH . 'contenido/logs/setuplog.txt', $sErrorMessage . PHP_EOL . PHP_EOL, FILE_APPEND);
+}
 ?>

@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-function injectSQL($db, $prefix, $file, $replacements = array(), &$failedChunks)
+function injectSQL($db, $prefix, $file, $replacements = array())
 {
     $file = trim($file);
 
@@ -56,8 +56,9 @@ function injectSQL($db, $prefix, $file, $replacements = array(), &$failedChunks)
 
         $db->query($sqlChunk);
 
-        if ($db->Errno != 0) {
-            $failedChunks[] = array("sql" => $sqlChunk, "errno" => $db->Errno, "error" => $db->Error);
+		if ($db->Errno != 0) {
+            logSetupFailure("Unable to execute SQL statement:\n" . $sqlChunk . "\nMysql Error: " . $db->Error . " (" . $db->Errno . ")");
+			$_SESSION['install_failedchunks'] = true;
         }
     }
 
@@ -65,7 +66,6 @@ function injectSQL($db, $prefix, $file, $replacements = array(), &$failedChunks)
 }
 
 function addAutoIncrementToTables($db, $cfg) {
-    $errorLogHandle = fopen($cfg['path']['contenido']."logs/errorlog.txt", "wb+");
     $filterTables = array($cfg['sql']['sqlprefix'].'_pica_alloc_con',
                           $cfg['sql']['sqlprefix'].'_pica_lang',
                           $cfg['sql']['sqlprefix'].'_sequence',
@@ -76,40 +76,40 @@ function addAutoIncrementToTables($db, $cfg) {
     $sql = 'SHOW TABLES FROM  '.$cfg['db']['connection']['database'].'';
     $db->query($sql);
     
-    if($db->Error !=0) {
-        fwrite($errorLogHandle, "<pre>" . $sql . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>");
+    if ($db->Error != 0) {
+        logSetupFailure("Unable to execute SQL statement:\n" . $sql . "\nMysql Error: " . $db->Error . " (" . $db->Errno . ")");
+		$_SESSION['install_failedupgradetable'] = true;
     }
     
     $i = 0;
     while ($row = mysql_fetch_row($db->Query_ID)) {
         if(in_array($row[0], $filterTables) === false && strpos($row[0], $cfg['sql']['sqlprefix'].'_') !== false) {
-           alterTableHandling($row, $errorLogHandle);
+           alterTableHandling($row);
            $i++;
         }
     }
+	
+	// @TODO: why 70?!
     if($i > 70) {
-        $sql = 'drop table if exists '.$cfg['sql']['sqlprefix'].'_sequence';
+        $sql = 'DROP TABLE IF EXISTS '.$cfg['sql']['sqlprefix'].'_sequence';
         $db->query($sql);
     }
-    fclose($errorLogHandle);
 }
 
-function alterTableHandling($row, $errorLogHandle) {
+function alterTableHandling($row) {
     $tableName = $row[0];
-    //$nextId = $row[1];
-    //debug($row);
     
     $db = getSetupMySQLDBConnection(false);
     $sql = 'SHOW KEYS FROM '.$tableName.' WHERE Key_name="PRIMARY"';
     $db->query($sql);
-     while ($row = mysql_fetch_row($db->Query_ID)) {
-        
+    while ($row = mysql_fetch_row($db->Query_ID)) {
         $primaryKey = $row[4];
         $dbAlter = getSetupMySQLDBConnection(false);
         $sqlAlter = 'ALTER TABLE `'.$tableName.'` CHANGE `'.$primaryKey.'` `'.$primaryKey.'` INT( 10 ) NOT NULL AUTO_INCREMENT';
         $dbAlter->query($sqlAlter);
-        if($db->Errno !=0) {
-            fwrite($errorLogHandle, "<pre>" . $sql . "\nMysql Error:" . $db->Error . "(" . $db->Errno . ")</pre>");
+        if ($dbAlter->Errno != 0) {
+            logSetupFailure("Unable to execute SQL statement:\n" . $sqlAlter . "\nMysql Error: " . $dbAlter->Error . " (" . $dbAlter->Errno . ")");
+			$_SESSION['install_failedupgradetable'] = true;
         }
     }
 }
