@@ -58,9 +58,11 @@ class cApiTemplateCollection extends ItemCollection
         $this->__construct($select);
     }
 
-    // @todo check this, seems to be wrong and furthermore not used!
+    /** @deprecated 2012-03-05 This function is not longer supported. */
     public function setDefaultTemplate($idtpl)
     {
+		cDeprecated("This function is not longer supported.");
+		
         global $cfg, $client;
 
         $db = new DB_Contenido();
