@@ -146,7 +146,7 @@ function langRenameLanguage($idlang, $name)
  * @param  int  $client  Id of the client
  * @param  int  $idlang  Id of the language
  *
- * @todo  Seems to be not used by CONTENIDO core, remove or keep?
+ * @deprecated 2012-03-05 This function is not longer supported.
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @author Olaf Niemann <Olaf.Niemann@4fb.de>
@@ -154,6 +154,7 @@ function langRenameLanguage($idlang, $name)
  */
 function langDuplicateFromFirstLanguage($client, $idlang)
 {
+	cDeprecated("This function is not longer supported.");
     global $db, $sess, $cfg, $auth;
 
     $client = (int) $client;

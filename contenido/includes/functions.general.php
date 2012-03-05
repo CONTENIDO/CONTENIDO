@@ -494,8 +494,11 @@ function getAllClientsAndLanguages()
     return $aRs;
 }
 
+/** @deprecated 2012-03-05 This function is not longer supported. */
 function fakeheader($time)
 {
+	cDeprecated("This function is not longer supported.");
+	
     global $con_time0;
     if (!isset($con_time0)) {
         $con_time0 = $time;
