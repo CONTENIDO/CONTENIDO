@@ -539,7 +539,7 @@ class cHTML
 		$aAttributes = $this->_parseAttributes($aAttributes);
 	
 		foreach ($aAttributes as $sKey => $sValue) {
-			$this->aAttributes[$sKey] = $sValue;
+			$this->_aAttributes[$sKey] = $sValue;
 		}
     }
 	
