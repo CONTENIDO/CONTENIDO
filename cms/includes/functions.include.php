@@ -33,7 +33,9 @@ if(!defined('CON_FRAMEWORK')) {
   die('Illegal call');
 }
 
+/** @deprecated 2012-03-05 This function is not longer supported. */
 function getTeaserImage ($text,$return = 'path') {
+	cDeprecated("This function is not longer supported.");
 	$regEx  = "/<img[^>]*?>.*?/i";
     $match  = array();
     preg_match($regEx, $text, $match);
