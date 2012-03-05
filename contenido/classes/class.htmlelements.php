@@ -30,15 +30,10 @@
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-// Global ID counter
-$cHTMLIDCount = 0;
-
-// Global generate xhtml setting
-$cHTMLGenerateXHTML = null;
 
 /**
  * Base class for all CONTENIDO HTML classes
@@ -48,71 +43,80 @@ $cHTMLGenerateXHTML = null;
 class cHTML
 {
 	/**
+	 * Id attribute counter, used to generate unique values for id-attributes
+	 * @var int
+	 */
+    protected static $_idCounter = 0;
+
+	/**
+	 * Flag to generate XHTML valid elements
+	 * @var bool
+	 */
+    protected static $_generateXHTML = null;
+
+	/**
 	 * Storage of the open SGML tag template
 	 * @var string 
-	 * @access protected
 	 */
-	protected $_skeleton_open;
+	protected $_skeletonOpen;
 
 	/**
 	 * Storage of a single SGML tag template
 	 * @var string 
-	 * @access protected
 	 */
-	protected $_skeleton_single;
+	protected $_skeletonSingle;
 
 	/**
 	 * Storage of the close SGML tag
 	 * @var string 
-	 * @access protected
 	 */
-	protected $_skeleton_close;
+	protected $_skeletonClose;
 
 	/**
 	 * Defines which tag to use
 	 * @var string 
-	 * @access protected
 	 */
 	protected $_tag;
 
 	/**
 	 * Defines the style definitions
-	 * @var string 
-	 * @access protected
+	 * @var array 
 	 */
-	protected $_styledefs;
+	protected $_styleDefs;
 
 	/**
 	 * Defines all scripts which are required by the current element
 	 * @var array
-	 * @access protected
 	 */
 	protected $_requiredScripts;
 
 	/** 
 	 * Defines if the current tag is a contentless tag
-	 * @var boolean
-	 * @access protected
+	 * @var bool
 	 */
 	protected $_contentlessTag;
 
 	/**
 	 * Defines which JS events contain which scripts
+	 * @var array
 	 */
-	protected $_aEventDefinitions;
+	protected $_eventDefinitions;
 
 	/**
 	 * Style definitions 
+	 * @var array
 	 */
-	protected $_aStyleDefinitions;
+	protected $_styleDefinitions;
 	
 	/**
 	 * Attributes
+	 * @var array
 	 */
-	protected $_aAttributes;
+	protected $_attributes;
 	
 	/**
 	 * The content itself
+     * @var string
 	 */
 	protected $_content;
 	
@@ -127,26 +131,27 @@ class cHTML
 		
 		$this->setAttributes($aAttributes);
 
-		$this->_skeleton_open = '<%s%s>';
-		$this->_skeleton_close = '</%s>';
+		$this->_skeletonOpen = '<%s%s>';
+		$this->_skeletonClose = '</%s>';
 
-        if (null === $cHTMLGenerateXHTML) {
-            $cHTMLGenerateXHTML = getEffectiveSetting('generator', 'xhtml', 'false');
+        if (null === self::$_generateXHTML) {
+            self::$_generateXHTML = getEffectiveSetting('generator', 'xhtml', 'false');
+            self::$_generateXHTML = (self::$_generateXHTML == 'true');
         }
 
-		if ($cHTMLGenerateXHTML == 'true') {
-			$this->_skeleton_single = '<%s%s />';
+		if (true === self::$_generateXHTML) {
+			$this->_skeletonSingle = '<%s%s />';
 		} else {
-			$this->_skeleton_single = '<%s%s>';
+			$this->_skeletonSingle = '<%s%s>';
 		}
 
-		$this->_styledefs = array();
-		$this->_aStyleDefinitions = array();
+		$this->_styleDefs = array();
+		$this->_styleDefinitions = array();
 		$this->setContentlessTag();
 
 		$this->advanceID();
 		$this->_requiredScripts = array();
-		$this->_aEventDefinitions = array();
+		$this->_eventDefinitions = array();
 	}
 	
 	/**
@@ -172,10 +177,8 @@ class cHTML
 	 */
 	public function advanceID()
 	{
-		global $cHTMLIDCount;
-
-		$cHTMLIDCount ++;
-		$this->updateAttributes(array ("id" => "m".$cHTMLIDCount));
+		self::$_idCounter++;
+		$this->updateAttributes(array ("id" => "m".self::$_idCounter));
 	}
 
 	/**
@@ -301,10 +304,10 @@ class cHTML
 	{
 		if ($this->_contentlessTag == true)
 		{
-			return sprintf($this->_skeleton_single, $this->_tag, $attributes);
+			return sprintf($this->_skeletonSingle, $this->_tag, $attributes);
 		} else
 		{
-			return sprintf($this->_skeleton_open, $this->_tag, $attributes);
+			return sprintf($this->_skeletonOpen, $this->_tag, $attributes);
 		}
 
 	}
@@ -317,7 +320,7 @@ class cHTML
 	 */
 	public function fillCloseSkeleton()
 	{
-		return sprintf($this->_skeleton_close, $this->_tag);
+		return sprintf($this->_skeletonClose, $this->_tag);
 	}
 
 	/**
@@ -331,7 +334,7 @@ class cHTML
 	public function setStyleDefinition($entity, $definition)
 	{
         cDeprecated("Use attachStyleDefinition instead");
-		$this->_styledefs[$entity] = $definition;
+		$this->_styleDefs[$entity] = $definition;
 	}
 	
 	/**
@@ -355,7 +358,7 @@ class cHTML
 	 */
 	public function attachStyleDefinition($sName, $sDefinition)
 	{
-		$this->_aStyleDefinitions[$sName] = $sDefinition;
+		$this->_styleDefinitions[$sName] = $sDefinition;
 	}	
 
 	public function addRequiredScript($script)
@@ -441,7 +444,7 @@ class cHTML
 	 */
 	public function attachEventDefinition($sName, $sEvent, $sCode)
 	{
-		$this->_aEventDefinitions[strtolower($sEvent)][$sName] = $sCode;
+		$this->_eventDefinitions[strtolower($sEvent)][$sName] = $sCode;
 
 	}
 
@@ -458,7 +461,7 @@ class cHTML
         if (is_null($sValue)) {
             $sValue = $sAttributeName;
         }
-        $this->_aAttributes[$sAttributeName] = $sValue;
+        $this->_attributes[$sAttributeName] = $sValue;
     }
 
     /**
@@ -467,7 +470,7 @@ class cHTML
      * @return	void
      */
     public function setAttributes($aAttributes) {
-        $this->_aAttributes = $this->_parseAttributes($aAttributes);
+        $this->_attributes = $this->_parseAttributes($aAttributes);
     }
 	
 	/**
@@ -506,8 +509,8 @@ class cHTML
     public function removeAttribute($sAttributeName) {
         $attr = strtolower($sAttributeName);
 		
-        if (isset($this->_aAttributes[$sAttributeName])) {
-            unset($this->_aAttributes[$sAttributeName]);
+        if (isset($this->_attributes[$sAttributeName])) {
+            unset($this->_attributes[$sAttributeName]);
         }
     }
 	
@@ -521,8 +524,8 @@ class cHTML
     public function getAttribute($sAttributeName) {
         $sAttributeName = strtolower($sAttributeName);
 		
-        if (isset($this->_aAttributes[$sAttributeName])) {
-            return $this->_aAttributes[$sAttributeName];
+        if (isset($this->_attributes[$sAttributeName])) {
+            return $this->_attributes[$sAttributeName];
         }
 		
         return null;
@@ -539,7 +542,7 @@ class cHTML
 		$aAttributes = $this->_parseAttributes($aAttributes);
 	
 		foreach ($aAttributes as $sKey => $sValue) {
-			$this->_aAttributes[$sKey] = $sValue;
+			$this->_attributes[$sKey] = $sValue;
 		}
     }
 	
@@ -573,9 +576,9 @@ class cHTML
      */
     public function getAttributes($bReturnAsString = false) {
         if ($bReturnAsString) {
-            return $this->_getAttrString($this->_aAttributes);
+            return $this->_getAttrString($this->_attributes);
         } else {
-            return $this->_aAttributes;
+            return $this->_attributes;
         }
     }
 
@@ -599,7 +602,7 @@ class cHTML
 			}
 		}
 		
-		foreach ($this->_aStyleDefinitions as $sEntry)
+		foreach ($this->_styleDefinitions as $sEntry)
 		{
 			$style .= $sEntry;
 			
@@ -610,7 +613,7 @@ class cHTML
 		}
 
 		
-		foreach ($this->_aEventDefinitions as $sEventName => $sEntry)
+		foreach ($this->_eventDefinitions as $sEventName => $sEntry)
 		{
 			$aFullCode = array();
 			
@@ -623,7 +626,7 @@ class cHTML
 		}
 
 		/* Apply all stored styles */
-		foreach ($this->_styledefs as $key => $value)
+		foreach ($this->_styleDefs as $key => $value)
 		{
 			$style .= "$key: $value;";
 		}
@@ -636,7 +639,6 @@ class cHTML
 		if ($this->_content != "" || $this->_contentlessTag == false)
 		{
 			$attributes = $this->getAttributes(true);
-
 			return $this->fillSkeleton($attributes).$this->_content.$this->fillCloseSkeleton();
 		} else
 		{
