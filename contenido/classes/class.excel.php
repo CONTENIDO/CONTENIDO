@@ -34,6 +34,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 cInclude('pear', 'Spreadsheet/Excel/Writer.php');
 
+/** @deprecated 2012-03-05 This class is not supported any longer. */
 class ExcelWorksheet
 {
 	var $_data = array();
@@ -42,6 +43,7 @@ class ExcelWorksheet
 	
 	function ExcelWorksheet ($title, $filename)
 	{
+		cDeprecated("This class is not supported any longer.");
 		$this->_title 		= Contenido_Security::escapeDB($title, null);
 		$this->_filename 	= Contenido_Security::escapeDB($filename, null);
 	}
