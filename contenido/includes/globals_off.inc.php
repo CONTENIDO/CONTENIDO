@@ -34,20 +34,6 @@
 // set constant value depending on get_magic_quotes_gpc status
 define('CONTENIDO_STRIPSLASHES', (get_magic_quotes_gpc() == 0));
 
-
-// PHP5 with register_long_arrays off?
-if (!isset($HTTP_POST_VARS) && isset($_POST)) {
-    $HTTP_POST_VARS = & $_POST;
-    $HTTP_GET_VARS = & $_GET;
-    $HTTP_COOKIE_VARS = & $_COOKIE;
-    $HTTP_POST_FILES = & $_FILES;
-
-    // _SESSION is the only superglobal which is conditionally set
-    if (isset($_SESSION)) {
-        $HTTP_SESSION_VARS = & $_SESSION;
-    }
-}
-
 // simulate get_magic_quotes_gpc on if turned off
 if (CONTENIDO_STRIPSLASHES) {
 
@@ -86,11 +72,6 @@ if (CONTENIDO_STRIPSLASHES) {
     $cfg['simulate_magic_quotes'] = false;
 }
 
-if (!isset($_REQUEST) || $cfg['simulate_magic_quotes']) {
-    /* Register post,get and cookie variables into $_REQUEST */
-    $_REQUEST = array_merge($_GET, $_POST, $_COOKIE);
-}
-
 // this should be the default setting, but only for PHP older than 5.3.0
 if (!CONTENIDO_STRIPSLASHES && (version_compare(PHP_VERSION, '5.3.0', '<'))) {
     @set_magic_quotes_runtime(0);
@@ -114,7 +95,4 @@ foreach ($types_to_register as $global_type) {
 }
 // save memory
 unset ($types_to_register, $global_type, $arr);
-
-$FORM = $_REQUEST;
-
 ?>

@@ -79,7 +79,6 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
         global $time_target_cat; // Used to indicate the target category
         global $time_online_move; // Used to indicate if the moved article should be online
         global $timemgmt;
-        global $_POST;
 
 		$page_title = addslashes($page_title);
 
@@ -359,7 +358,6 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
         global $time_online_move; // Used to indicate if the moved article should be online
         global $timemgmt;
         global $page_title;
-        global $_POST;
 
         /* Add slashes because single quotes
            will crash the db */

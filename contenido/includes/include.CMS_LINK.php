@@ -35,10 +35,8 @@ if(!defined('CON_FRAMEWORK')) {
 if ($doedit == "1") {
 	global $cfgClient;
 	global $client;
-	global $_FILES;
 	global $upldir;
 	global $uplfile;
-	global $HTTP_POST_FILES;
 
 	cInclude("includes","functions.upl.php");
 		

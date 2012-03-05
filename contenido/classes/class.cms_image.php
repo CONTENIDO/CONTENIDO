@@ -551,7 +551,6 @@ class Cms_Image {
 		//print_r($GLOBALS);
 		global $cfgClient;
 		global $client;
-		global $_FILES;
 		
 		$rootpath = $this->aCfgClient[$this->iClient]['upl']['htmlpath'];	
 		if (count($_FILES) == 1)
