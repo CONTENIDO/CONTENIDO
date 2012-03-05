@@ -213,8 +213,8 @@ class Contenido_ItemCache
 
         if ($this->_iMaxItemsToCache == count($this->_aItemsCache)) {
             // we have reached the maximum number of cached items, remove first entry
-            $firstEntry = array_shift($this->_aItemsCache);
-            unset($firstEntry);
+            $firstEntryKey = array_shift(array_keys($this->_aItemsCache));
+            unset($this->_aItemsCache[$firstEntryKey]);
         }
 
         // add entry
