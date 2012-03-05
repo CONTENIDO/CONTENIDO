@@ -34,11 +34,6 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-if (!class_exists("HTML_Common"))
-{
-	cInclude("pear", "HTML/Common.php");
-}
-
 // Global ID counter
 $cHTMLIDCount = 0;
 
@@ -50,7 +45,7 @@ $cHTMLGenerateXHTML = null;
  *
  * @author      Timo A. Hummel <timo.hummel@4fb.de>
  */
-class cHTML extends HTML_Common
+class cHTML
 {
 	/**
 	 * Storage of the open SGML tag template
@@ -112,6 +107,11 @@ class cHTML extends HTML_Common
 	protected $_aStyleDefinitions;
 	
 	/**
+	 * Attributes
+	 */
+	protected $_aAttributes;
+	
+	/**
 	 * The content itself
 	 */
 	protected $_content;
@@ -119,13 +119,14 @@ class cHTML extends HTML_Common
 	/**
 	 * Constructor Function
 	 * Initializes the SGML open/close tags
-	 * @param none
+     * @param	array	$aAttributes	Associative array of table tag attributes
+	 * @return 	void
 	 */
-	public function __construct()
-	{
+	public function __construct($aAttributes = null) {
 		global $cfg;
+		
+		$this->setAttributes($aAttributes);
 
-		HTML_Common::HTML_Common();
 		$this->_skeleton_open = '<%s%s>';
 		$this->_skeleton_close = '</%s>';
 
@@ -435,6 +436,8 @@ class cHTML extends HTML_Common
 	 * @param $sName string defines the name of the event
 	 * @param $sEvent string defines the event (e.g. onClick)
 	 * @param $sCode string defines the code
+	 *
+	 * @return 	void
 	 */
 	public function attachEventDefinition($sName, $sEvent, $sCode)
 	{
@@ -447,15 +450,138 @@ class cHTML extends HTML_Common
 	 * 
 	 * @param $sAttributeName string Name of the attribute
 	 * @param $sValue string Value of the attribute
+	 *
+	 * @return	void
 	 */
-	public function setAttribute($sAttributeName, $sValue)
-	{
-		$this->updateAttributes(array ($sAttributeName => $sValue));
-	}
+	public function setAttribute($sAttributeName, $sValue) {
+        $sAttributeName = strtolower($sAttributeName);
+        if (is_null($sValue)) {
+            $sValue = $sAttributeName;
+        }
+        $this->_aAttributes[$sAttributeName] = $sValue;
+    }
+
+    /**
+     * Sets the HTML attributes
+     * @param  	array   $aAttributes	Associative array with attributes
+     * @return	void
+     */
+    public function setAttributes($aAttributes) {
+        $this->_aAttributes = $this->_parseAttributes($aAttributes);
+    }
+	
+	/**
+     * Returns a valid atrributes array.
+	 *
+     * @param    array   $aAttributes	Associative array with attributes
+	 *
+     * @return   array
+     */
+    protected function _parseAttributes($aAttributes) {
+        if (!is_array($aAttributes)) {
+			return array();
+		}
+		
+		$aReturn = array();
+		foreach ($aAttributes as $sKey => $sValue) {
+			if (is_int($sKey)) {
+				$sKey = $sValue = strtolower($sValue);
+			} else {
+				$sKey = strtolower($sKey);
+			}
+			
+			$aReturn[$sKey] = $sValue;
+		}
+		
+		return $aReturn;
+    }
+	
+	/**
+     * Removes an attribute
+	 *
+     * @param	string	$sAttributeName	Attribute name
+	 *
+     * @return	void
+     */
+    public function removeAttribute($sAttributeName) {
+        $attr = strtolower($sAttributeName);
+		
+        if (isset($this->_aAttributes[$sAttributeName])) {
+            unset($this->_aAttributes[$sAttributeName]);
+        }
+    }
+	
+	/**
+     * Returns the value of the given attribute.
+     *
+     * @param	string	$sAttributeName	Attribute name
+	 *
+     * @return	string|null	Returns null if the attribute does not exist
+     */
+    public function getAttribute($sAttributeName) {
+        $sAttributeName = strtolower($sAttributeName);
+		
+        if (isset($this->_aAttributes[$sAttributeName])) {
+            return $this->_aAttributes[$sAttributeName];
+        }
+		
+        return null;
+    }
+
+    /**
+     * Updates the passed attributes without changing the other existing attributes
+	 *
+     * @param	array	$aAttributes	Associative array with attributes
+     * 
+	 * @return	void
+     */
+    public function updateAttributes($aAttributes) {
+		$aAttributes = $this->_parseAttributes($aAttributes);
+	
+		foreach ($aAttributes as $sKey => $sValue) {
+			$this->aAttributes[$sKey] = $sValue;
+		}
+    }
+	
+	/**
+     * Returns an HTML formatted attribute string
+	 *
+     * @param	array	$aAttributes	Associative array with attributes
+     * 
+     * @return	string	Attrbiute string in HTML format
+     */
+    protected function _getAttrString($aAttributes) {
+        $sAttrString = '';
+
+        if (!is_array($aAttributes)) {
+			return '';
+		}
+
+		foreach ($aAttributes as $sKey => $sValue) {
+            $sAttrString .= ' ' . $sKey . '="' . $sValue . '"';
+        }
+		
+        return $sAttrString;
+    }
+
+    /**
+     * Returns the assoc array (default) or string of attributes
+     *
+     * @param	bool	Whether to return the attributes as string
+	 *
+     * @return	array|string	attributes
+     */
+    public function getAttributes($bReturnAsString = false) {
+        if ($bReturnAsString) {
+            return $this->_getAttrString($this->_aAttributes);
+        } else {
+            return $this->_aAttributes;
+        }
+    }
 
 	/**
 	 * Renders the output
-	 * If the tag 
+	 * @return	string	rendered output
 	 */
 	public function toHTML()
 	{
@@ -523,8 +649,6 @@ class cHTML extends HTML_Common
 
 	/**
 	 * render(): Alias for toHtml
-	 *
-	 * @param none
 	 * @return string Rendered HTML
 	 */
 	public function render()
@@ -539,6 +663,14 @@ class cHTML extends HTML_Common
 	public function __toString() {
 		return $this->render();
 	}
+	
+	/**
+     * Displays the HTML to the screen
+	 * @return	void
+     */
+    public function display() {
+        echo $this->render();
+    }
 }
 
 /**
