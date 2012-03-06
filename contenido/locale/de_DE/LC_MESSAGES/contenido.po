@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: CONTENIDO 4.8.15\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-01 01:19+0100\n"
-"PO-Revision-Date: 2012-03-01 01:19+0100\n"
+"PO-Revision-Date: 2012-03-06 22:58+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "MIME-Version: 1.0\n"
@@ -4354,7 +4354,7 @@ msgstr "Benutzer gel&ouml;scht"
 
 #: includes/include.rights_overview.php:142
 msgid "An error occured while saving user info."
-msgstr "Ein Fehler ist w&auml;hrend des Sendens des Bugreports aufgetreten! Bitte versuchen Sie es noch einmal"
+msgstr "Ein Fehler ist beim speichern des Benutzers aufgetreten."
 
 #: includes/include.rights_overview.php:426
 msgid "This account is currently inactive."
