@@ -1328,40 +1328,29 @@ class cHTMLSelectElement extends cHTMLFormElement
      * Sets a specific cHTMLOptionElement to the selected state.
      * @param  string  $lvalue  Specifies the "value" of the cHTMLOptionElement to set
      */
-    public function setDefault($lvalue)
-    {
-        $bSet = false;
-
-        if (is_array($this->_options))
-        {
-            foreach ($this->_options as $key => $value)
-            {
-                if (in_array($value->getAttribute("value"), $lvalue))
-                {
-                    $value->setSelected(true);
-                    $this->_options[$key] = $value;
-                    $bSet = true;
-                } else
-                {
-                    $value->setSelected(false);
-                    $this->_options[$key] = $value;
-                }
-            }
-        }
-
-        if ($bSet == false)
-        {
-            if (is_array($this->_options))
-            {
-                foreach ($this->_options as $key => $value)
-                {
-                    $value->setSelected(true);
-                    $this->_options[$key] = $value;
-                    return;
-                }
-            }
-        }
-    }
+    public function setDefault($lvalue) {
+		if (is_array($this->_options) && is_array($lvalue)) {
+			foreach ($this->_options as $key => $value) {
+				if (in_array($value->getAttribute("value"), $lvalue)) {
+					$value->setSelected(true);
+					$this->_options[$key] = $value;
+				} else {
+					$value->setSelected(false);
+					$this->_options[$key] = $value;
+				}
+			}
+		} else {
+			foreach ($this->_options as $key => $value) {
+				if (strcmp($value->getAttribute("value"), $lvalue) == 0) {
+					$value->setSelected(true);
+					$this->_options[$key] = $value;
+				} else {
+					$value->setSelected(false);
+					$this->_options[$key] = $value;
+				}
+			}
+		}
+	}
 
     /**
      * Search for the selected elements
