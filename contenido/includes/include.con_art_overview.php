@@ -384,9 +384,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $nowtimestamp = strtotime($db3->f("TIME"));
 
                 if (($nowtimestamp < $endtimestamp) && ($nowtimestamp > $starttimestamp)) {
-                    $usetime = '<img src="images/but_time_2.gif" alt="Artikel mit Zeitsteuerung online" title="Artikel mit Zeitsteuerung online" style="margin-left:3px;">';
+                    $usetime = '<img src="images/but_time_2.gif" alt="' . i18n("Article with time control online") . '" title="' . i18n("Article with time control online") . '" style="margin-left:3px;">';
                 } else {
-                    $usetime = '<img src="images/but_time_1.gif" alt="Artikel mit Zeitsteuerung offline" title="Artikel mit Zeitsteuerung offline" style="margin-left:3px;">';
+                    $usetime = '<img src="images/but_time_1.gif" alt="' . i18n("Article with time control offline") . '" title="' . i18n("Article with time control offline") . '" style="margin-left:3px;">';
                 }
             } else {
                 $usetime = '';

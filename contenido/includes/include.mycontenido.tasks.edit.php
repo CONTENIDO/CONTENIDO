@@ -71,7 +71,7 @@ $message = new cHTMLTextarea("message", $todoitem->get("message"));
 $ui->add(i18n("Description"), $message->render());
     
 $reminderdue = new cHTMLTextbox("enddate", $todoitem->getProperty("todo", "enddate"), '', '', "enddate");
-$duepopup = '<img src="images/calendar.gif" width="16" height="16" border="0" id="end_date" alt="Endzeitpunkt wählen">';
+$duepopup = '<img src="images/calendar.gif" width="16" height="16" border="0" id="end_date" alt="' . i18n("Choose end date") . '">';
 $ui->add(i18n("End date"),'<table border="0"><tr><td>'.$reminderdue->render().'</td><td>'.$duepopup.'</td></tr></table>');
 
 $notiemail = new cHTMLCheckbox("notiemail", i18n("E-Mail notification"));
@@ -96,7 +96,7 @@ if (!$todoitem->getProperty("todo", "emailnoti"))
 	$reminderdate->setDisabled(true);	
 }
 
-$datepopup = '<img src="images/calendar.gif" width="16" height="16" border="0" id="reminder_date" alt="Endzeitpunkt wählen"></a>';
+$datepopup = '<img src="images/calendar.gif" width="16" height="16" border="0" id="reminder_date" alt="' . i18n("Choose end date") . '"></a>';
 $ui->add(i18n("Reminder date"),'<table border="0"><tr><td>'.$reminderdate->render().'</td><td>'.$datepopup.'</td></tr></table>');
 
 $calscript = '<script language="JavaScript">'."
