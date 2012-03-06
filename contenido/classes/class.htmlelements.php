@@ -540,7 +540,7 @@ class cHTML
         }
 
         foreach ($aAttributes as $sKey => $sValue) {
-            $sAttrString .= ' ' . $sKey . '="' . $sValue . '"';
+            $sAttrString .= ' ' . $sKey . '="' . htmlspecialchars($sValue, ENT_COMPAT) . '"';
         }
 
         return $sAttrString;
