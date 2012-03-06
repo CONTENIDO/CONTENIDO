@@ -637,11 +637,11 @@ class cApiUser extends Item
     /**
      * Setter method to set wysi
      *
-     * @param int $iUseTiny
+     * @param int $iUseWysi
      */
-    public function setUseWysi($iUseTiny)
+    public function setUseWysi($iUseWysi)
     {
-        $this->set('wysi', $iUseTiny);
+        $this->set('wysi', $iUseWysi);
     }
 
     /**

@@ -105,7 +105,7 @@ if ($action == 'user_edit') {
     $ocApiUser->setMail($email);
     $ocApiUser->setTelNumber($telephone);
     $ocApiUser->setAddressData($address_street, $address_city, $address_zip, $address_country);
-    $ocApiUser->setUseTiny($wysi);
+    $ocApiUser->setUseWysi($wysi);
     $ocApiUser->setValidDateFrom($valid_from);
     $ocApiUser->setValidDateTo($valid_to);
     $ocApiUser->setPerms($aPerms);

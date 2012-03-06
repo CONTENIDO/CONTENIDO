@@ -76,7 +76,7 @@ if ($action == 'user_createuser') {
                     $oUser->setCity($address_city);
                     $oUser->setZip($address_zip);
                     $oUser->setCountry($address_country);
-                    $oUser->setUseTiny($wysi);
+                    $oUser->setUseWysi($wysi);
                     $oUser->setValidDateFrom($valid_from);
                     $oUser->setValidDateTo($valid_to);
                     $oUser->setPerms($aPerms);
