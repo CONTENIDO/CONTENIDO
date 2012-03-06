@@ -79,13 +79,19 @@ if (!defined('CON_FRAMEWORK')) {
  */
 class cApiUserCollection extends ItemCollection
 {
-    public function __construct($select = false)
+    /**
+     * Constructor function.
+     * @global type $cfg
+     * @param  string|bool  $where  The where clause in the select, usable to run select
+     *                              by creating the instance
+     */
+    public function __construct($where = false)
     {
         global $cfg;
         parent::__construct($cfg['tab']['phplib_auth_user_md5'], 'user_id');
         $this->_setItemClass('cApiUser');
-        if ($select !== false) {
-            $this->select($select);
+        if ($where !== false) {
+            $this->select($where);
         }
     }
 
@@ -124,98 +130,99 @@ class cApiUserCollection extends ItemCollection
  */
 class cApiUser extends Item
 {
-	/**
-	* Password is ok and stored.
-	*
-	* @var int
-	* @final
-	*/
-	const PASS_OK = 0;
-	
-	/**
-	 * Given password is to short
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_TO_SHORT =  1;
-	
-	/**
-	 * Given password is not strong enough
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_STRONG =  2;
-	
-	/**
-	 * Given password is not complex enough
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_COMPLEX =  3;
-	
-	/**
-	 * Password does not contain enough numbers.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_ENOUGH_NUMBERS =  4;
-	
-	/**
-	 * Password does not contain enough symbols.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_ENOUGH_SYMBOLS =  5;
-	
-	/**
-	 * Password does not contain enough mixed characters.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_ENOUGH_MIXED_CHARS =  6;
-	
-	/**
-	 * Password does not contain enough different characters.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_ENOUGH_DIFFERENT_CHARS =  7;
-	
-	/**
-	 * Exception code, which is used if you try to add an user
-	 * that already exists.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const EXCEPTION_USERNAME_EXISTS =  8;
-	
-	
-	/**
-	 * Exception code, which is used if an password is set to save
-	 * that is not valid.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const EXCEPTION_PASSWORD_INVALID =  9;
-	
-	/**
-	 * This value will be used if no minimum length
-	 * for passwords are set via $cfg['password']['min_length']
-	 *
-	 */
-	const MIN_PASS_LENGTH_DEFAULT = 8;
-	
     /**
-     * Constructor Function
+     * Password is ok and stored.
+     *
+     * @var int
+     * @final
+     */
+    const PASS_OK = 0;
+
+    /**
+     * Given password is to short
+     *
+     * @var int
+     * @final
+     */
+    const PASS_TO_SHORT = 1;
+
+    /**
+     * Given password is not strong enough
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_STRONG = 2;
+
+    /**
+     * Given password is not complex enough
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_COMPLEX = 3;
+
+    /**
+     * Password does not contain enough numbers.
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_ENOUGH_NUMBERS = 4;
+
+    /**
+     * Password does not contain enough symbols.
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_ENOUGH_SYMBOLS = 5;
+
+    /**
+     * Password does not contain enough mixed characters.
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_ENOUGH_MIXED_CHARS = 6;
+
+    /**
+     * Password does not contain enough different characters.
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_ENOUGH_DIFFERENT_CHARS = 7;
+
+    /**
+     * Exception code, which is used if you try to add an user
+     * that already exists.
+     *
+     * @var int
+     * @final
+     */
+    const EXCEPTION_USERNAME_EXISTS = 8;
+
+    /**
+     * Exception code, which is used if an password is set to save
+     * that is not valid.
+     *
+     * @var int
+     * @final
+     */
+    const EXCEPTION_PASSWORD_INVALID = 9;
+
+    /**
+     * This value will be used if no minimum length
+     * for passwords are set via $cfg['password']['min_length']
+     *
+     * @var int
+     * @final
+     */
+    const MIN_PASS_LENGTH_DEFAULT = 8;
+
+    /**
+     * Constructor function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
     public function __construct($mId = false)
@@ -234,7 +241,7 @@ class cApiUser extends Item
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
-    
+
     /**
      * Wrapper for store() for downwards compatibility
      *
@@ -242,11 +249,11 @@ class cApiUser extends Item
      */
     public function save()
     {
-    	cDeprecated("Use self::store() instead.");
-    	
-    	return $this->store();
+        cDeprecated("Use self::store() instead.");
+
+        return $this->store();
     }
-    
+
     /**
      * Checks if a user with the id $userId exists
      *
@@ -254,364 +261,423 @@ class cApiUser extends Item
      */
     public static function userExists($userId)
     {
-    	$test = new cApiUser();
-    	
-    	return $test->loadByPrimaryKey($userId);
+        $test = new cApiUser();
+
+        return $test->loadByPrimaryKey($userId);
     }
-    
+
     /**
      * Checks if a username exists
-     * 
+     *
      * @param string $username the name
      * @return bool username exists or not
      */
     public static function usernameExists($username)
     {
-    	$test = new cApiUser();
-    	
-    	return $test->loadBy("username", $username);
+        $user = new cApiUser();
+        return $user->loadBy('username', $username);
     }
-    
+
+    /**
+     * Encodes a passed password (uses md5 to generate a hash of it).
+     *
+     * @param string $password  The password to encode
+     * @return  string  Encoded password
+     */
     public static function encodePassword($password)
     {
-    	return md5($password);
+        return md5($password);
     }
-    
+
+    /**
+     * Checks a given password against some predefined rules like minimum character
+     * length, required special character, etc...
+     * This behaviour is configurable in global configuration $cfg['password'].
+     *
+     * @param string $password  The password check
+     * @return  int  One of defined PASS_* constants (PASS_OK if everything was ok)
+     */
     public static function checkPasswordMask($password)
     {
-    	global $cfg;
-    	
-    	$iResult = self::PASS_OK;
-    	
-    	if (isset($cfg['password']['check_password_mask']) &&
-    	$cfg['password']['check_password_mask'] == true) {
-    		// any min length in config set?
-    		$iMinLength = self::MIN_PASS_LENGTH_DEFAULT;
-    		if (isset( $cfg ['password'] ['min_length'] )) {
-    			$iMinLength = ( int ) $cfg ['password'] ['min_length'];
-    		}
-    	
-    		// check length...
-    		if (strlen ( $password ) < $iMinLength) {
-    			$iResult = self::PASS_TO_SHORT;
-    		}
-    	
-    		// check password elements
-    	
-    		// numbers.....
-    		if ($iResult == self::PASS_OK && isset($cfg['password']['numbers_mandatory']) &&
-    		(int) $cfg['password']['numbers_mandatory'] > 0) {
-    	
-    			$aNumbersInPassword = array();
-    			preg_match_all("/[0-9]/", $password, $aNumbersInPassword) ;
-    	
-    			if (count($aNumbersInPassword[0]) < (int) $cfg['password']['numbers_mandatory']) {
-    				$iResult = self::PASS_NOT_ENOUGH_NUMBERS;
-    			}
-    		}
-    	
-    		// symbols....
-    		if ($iResult == self::PASS_OK && isset($cfg['password']['symbols_mandatory']) &&
-    		(int) $cfg['password']['symbols_mandatory'] > 0) {
-    	
-    			$aSymbols = array();
-    			$sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/";
-    			if (isset($cfg['password']['symbols_regex']) && !empty($cfg['password']['symbols_regex'])) {
-    				$sSymbolsDefault = $cfg['password']['symbols_regex'];
-    			}
-    	
-    			preg_match_all($sSymbolsDefault, $password, $aSymbols);
-    	
-    			if (count($aSymbols[0]) < (int) $cfg['password']['symbols_mandatory']) {
-    				$iResult = self::PASS_NOT_ENOUGH_SYMBOLS;
-    			}
-    		}
-    	
-    		// mixed case??
-    		if ($iResult == self::PASS_OK && isset($cfg['password']['mixed_case_mandatory']) &&
-    		(int) $cfg['password']['mixed_case_mandatory'] > 0) {
-    	
-    			$aLowerCaseChars = array();
-    			$aUpperCaseChars = array();
-    	
-    			preg_match_all("/[a-z]/", $password, $aLowerCaseChars);
-    			preg_match_all("/[A-Z]/", $password, $aUpperCaseChars);
-    	
-    			if ((count($aLowerCaseChars[0]) < (int) $cfg['password']['mixed_case_mandatory']) ||
-    			(count($aUpperCaseChars[0]) < (int) $cfg['password']['mixed_case_mandatory'])) {
-    				$iResult = self::PASS_NOT_ENOUGH_MIXED_CHARS;
-    			}
-    		}
-    	}
-    	
-    	return $iResult;
+        global $cfg;
+
+        $iResult = self::PASS_OK;
+
+        $cfgPw = $cfg['password'];
+
+        if (!isset($cfgPw['check_password_mask']) || $cfgPw['check_password_mask'] == false) {
+            // no or disabled password check configuration
+            return $iResult;
+        }
+
+        // any min length in config set?
+        $iMinLength = self::MIN_PASS_LENGTH_DEFAULT;
+        if (isset($cfgPw['min_length'])) {
+            $iMinLength = (int) $cfgPw['min_length'];
+        }
+
+        // check length...
+        if (strlen($password) < $iMinLength) {
+            $iResult = self::PASS_TO_SHORT;
+        }
+
+        // check password elements
+
+        // numbers.....
+        if ($iResult == self::PASS_OK && isset($cfgPw['numbers_mandatory']) &&
+            (int) $cfgPw['numbers_mandatory'] > 0) {
+
+            $aNumbersInPassword = array();
+            preg_match_all('/[0-9]/', $password, $aNumbersInPassword);
+
+            if (count($aNumbersInPassword[0]) < (int) $cfgPw['numbers_mandatory']) {
+                $iResult = self::PASS_NOT_ENOUGH_NUMBERS;
+            }
+        }
+
+        // symbols....
+        if ($iResult == self::PASS_OK && isset($cfgPw['symbols_mandatory']) &&
+            (int) $cfgPw['symbols_mandatory'] > 0) {
+
+            $aSymbols = array();
+            $sSymbolsDefault = "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/";
+            if (isset($cfgPw['symbols_regex']) && !empty($cfgPw['symbols_regex'])) {
+                $sSymbolsDefault = $cfgPw['symbols_regex'];
+            }
+
+            preg_match_all($sSymbolsDefault, $password, $aSymbols);
+
+            if (count($aSymbols[0]) < (int) $cfgPw['symbols_mandatory']) {
+                $iResult = self::PASS_NOT_ENOUGH_SYMBOLS;
+            }
+        }
+
+        // mixed case??
+        if ($iResult == self::PASS_OK && isset($cfgPw['mixed_case_mandatory']) &&
+            (int) $cfgPw['mixed_case_mandatory'] > 0) {
+
+            $aLowerCaseChars = array();
+            $aUpperCaseChars = array();
+
+            preg_match_all('/[a-z]/', $password, $aLowerCaseChars);
+            preg_match_all('/[A-Z]/', $password, $aUpperCaseChars);
+
+            if ((count($aLowerCaseChars[0]) < (int) $cfgPw['mixed_case_mandatory']) ||
+                (count($aUpperCaseChars[0]) < (int) $cfgPw['mixed_case_mandatory'])) {
+                $iResult = self::PASS_NOT_ENOUGH_MIXED_CHARS;
+            }
+        }
+
+        return $iResult;
     }
-    
+
     /**
-    * Returns user id, currently set.
-    *
-    * @return string
-    */
+     * Returns user id, currently set.
+     *
+     * @return string
+     */
     public function getUserId()
     {
-    	return $this->get("user_id");
+        return $this->get('user_id');
     }
-    
+
+    /**
+     * User id settter.
+     * NOTE: Setting the user id by this method will load the user model.
+     * @param  string  $uid
+     */
     public function setUserId($uid)
     {
-    	$this->loadByPrimaryKey($uid);
+        $this->loadByPrimaryKey($uid);
     }
-    
-	/**
-	 * Checks password which has to be set and return PASS_* values (i.e.
-	 * on success PASS_OK).
-	 *
-	 * @param string $sPassword
-	 * @return int
-	 */
+
+    /**
+     * Checks password which has to be set and return PASS_* values (i.e.
+     * on success PASS_OK).
+     *
+     * @param string $password
+     * @return int
+     */
     public function setPassword($password)
     {
-    	$result = self::checkPasswordMask($password);
-    	if($result != self::PASS_OK)
-    	{
-    		return $result;
-    	}
-    	
-    	$encPass = self::encodePassword($password);
-    	
-    	$this->set("password", $encPass);
-    	$this->set("using_pw_request", "0");
-    	
-    	return $result;
+        $result = self::checkPasswordMask($password);
+        if ($result != self::PASS_OK) {
+            return $result;
+        }
+
+        $encPass = self::encodePassword($password);
+
+        $this->set('password', $encPass);
+        $this->set('using_pw_request', '0');
+
+        return $result;
     }
-    
+
     /**
-    * This method saves the given password $password. The password
+     * This method saves the given password $password. The password
      * has to be checked, before it is set to the database. The resulting
-    * integer value represents the result code.
-    * Use the PASS_* constants to check what happens.
-    *
-    * @param string $password
-    * @return int|bool returns PASS_* or false if saving fails
-    */
+     * integer value represents the result code.
+     * Use the PASS_* constants to check what happens.
+     *
+     * @param string $password
+     * @return int|bool returns PASS_* or false if saving fails
+     */
     public function savePassword($password)
     {
-    	if($this->get("password") == self::encodePassword($password))
-    	{
-    		return self::PASS_OK;
-    	}
-    	
-    	$result = $this->setPassword($password);
-    	
-    	if($this->store() === false)
-    	{
-    		return false;
-    	}
-    	else
-    	{
-    		return $result;
-    	}
+        if ($this->get('password') == self::encodePassword($password)) {
+            return self::PASS_OK;
+        }
+
+        $result = $this->setPassword($password);
+
+        if ($this->store() === false) {
+            return false;
+        } else {
+            return $result;
+        }
     }
-    
+
     /**
-    * Returns user name, currently set
+     * Returns user name, currently set
      *
-    * @return string
-    */
-    public function getUserName () {
-    	return $this->get("username");
+     * @return string
+     */
+    public function getUserName()
+    {
+        return $this->get('username');
     }
-    
+
     /**
-    * Sets up new user name.
-    *
-    * @param string $sUserName
-    */
-    public function setUserName ($sUserName) {
-    	$this->set("username", $sUserName);
+     * Sets up new user name.
+     *
+     * @param string $sUserName
+     */
+    public function setUserName($sUserName)
+    {
+        $this->set('username', $sUserName);
     }
-    
+
     /**
-    * Getter method to get user realname
-    * @return string Realname of user
-    */
-    public function getRealName() {
-    	return $this->get("realname");
+     * Getter method to get user realname
+     * @return string Realname of user
+     */
+    public function getRealName()
+    {
+        return $this->get('realname');
     }
-    
+
     /**
      * Getter method to get user mail
-     * @return string Realname of user
+     * @return string
      */
-    public function getMail() {
-    	return $this->get("email");
+    public function getMail()
+    {
+        return $this->get('email');
     }
-    
+
     /**
      * Getter method to get user tel number
-     * @return string Realname of user
+     * @return string
      */
-    public function getTelNumber() {
-    	return $this->get("telephone");
+    public function getTelNumber()
+    {
+        return $this->get('telephone');
     }
-    
+
     /**
      * Getter method to get user adress data
-	 * $aAddress['street'], $aAddress['city'], $aAddress['country'],  $aAddress['zip']
-     * @return string Realname of user
+     * @return array Address data array like:
+     * <pre>
+     * $aAddress['street'], $aAddress['city'], $aAddress['country'], $aAddress['zip']
+     * </pre>
      */
-    public function getAddressData() {
-    	$aret = array();
-    	
-    	$aret['street'] = $this->get("address_street");
-    	$aret['city'] = $this->get("address_city");
-    	$aret['country'] = $this->get("address_country");
-    	$aret['zip'] = $this->get("address_zip");
-    	return $aret;
+    public function getAddressData()
+    {
+        $aret = array(
+            'street' => $this->get('address_street'),
+            'city' => $this->get('address_city'),
+            'country' => $this->get('address_country'),
+            'zip' => $this->get('address_zip'),
+        );
+
+        return $aret;
     }
-    
+
+    /** @deprecated  [2012-03-06]  Function name should be more generic */
+    public function getUseTiny()
+    {
+        cDeprecated("Use getUseWysi()");
+        return $this->getUseWysi();
+    }
+
     /**
      * Getter method to get user wysi
-     * @return string Realname of user
+     * @return int
      */
-    public function getUseTiny() {
-    	return $this->get("wysi");
+    public function getUseWysi()
+    {
+        return $this->get('wysi');
     }
-    
+
     /**
      * Getter method to get user valid date from-to
-     * @return string Realname of user
+     * @return string
      */
-    public function getValidDateTo() {
-    	return $this->get("valid_to");
+    public function getValidDateTo()
+    {
+        return $this->get('valid_to');
     }
-    
+
     /**
      * Getter method to get user valid date from-to
-     * @return string Realname of user
+     * @return string
      */
-    public function getValidDateFrom() {
-    	return $this->get("valid_from");
+    public function getValidDateFrom()
+    {
+        return $this->get('valid_from');
     }
-    
+
     /**
      * Getter method to get user perm name
-     * @return string Realname of user
+     * @return string
      */
-    public function getPerms() {
-    	return $this->get("perms");
+    public function getPerms()
+    {
+        return $this->get('perms');
     }
-    
+
     /**
      * Setter method to set user real name
-     * @return void
+     * @param  string  $sRealName
      */
-    public function setRealName($sRealName) {
-    	$this->set("realname", $sRealName);
+    public function setRealName($sRealName)
+    {
+        $this->set('realname', $sRealName);
     }
-    
+
     /**
      * Setter method to set user mail address
-     * @return void
+     * @param  string  $sMail
      */
-    public function setMail($sMail) {
-    	$this->set("email", $sMail);
+    public function setMail($sMail)
+    {
+        $this->set('email', $sMail);
     }
-    
+
     /**
-     * setter method to set user tel number
-     * @return void
+     * Setter method to set user tel number
+     * @param  string  $sTelNumber
      */
-    public function setTelNumber($sTelNumber) {
-    	$this->set("telephone", $sTelNumber);
+    public function setTelNumber($sTelNumber)
+    {
+        $this->set('telephone', $sTelNumber);
     }
-    
+
     /**
-     * Setter method to set Adress Data
-     * @return void
+     * Setter method to set address data
+     * @param  string  $sStreet
+     * @param  string  $sCity
+     * @param  string  $sZip
+     * @param  string  $sCountry
      */
-    public function setAddressData($sAddressStreet, $sAddressCity, $sAddressZip, $sAddressCountry) {
-    	$this->set("address_street", $sAddressStreet);
-    	$this->set("address_city", $sAddressCity);
-    	$this->set("address_zip", $sAddressZip);
-    	$this->set("address_country", $sAddressCountry);
+    public function setAddressData($sStreet, $sCity, $sZip, $sCountry)
+    {
+        $this->set('address_street', $sStreet);
+        $this->set('address_city', $sCity);
+        $this->set('address_zip', $sZip);
+        $this->set('address_country', $sCountry);
     }
-    
+
     /**
      * Sets value for street.
      *
      * @param string $sStreet
      */
-    public function setStreet ($sStreet) {
-    	$this->set("address_street", $sStreet);
+    public function setStreet($sStreet)
+    {
+        $this->set('address_street', $sStreet);
     }
-    
+
     /**
      * Sets value for city.
      *
      * @param string $sCity
      */
-    public function setCity ($sCity) {
-    	$this->set("address_city", $sCity);
+    public function setCity($sCity)
+    {
+        $this->set('address_city', $sCity);
     }
-    
+
     /**
      * Sets value for ZIP.
      *
      * @param string $sZip
      */
-    public function setZip ($sZip) {
-    	$this->set("address_zip", $sZip);
+    public function setZip($sZip)
+    {
+        $this->set('address_zip', $sZip);
     }
-    
+
     /**
      * Sets value for country.
      *
      * @param string $sCountry
      */
-    public function setCountry ($sCountry) {
-    	$this->set("address_country", $sCountry);
+    public function setCountry($sCountry)
+    {
+        $this->set('address_country', $sCountry);
     }
-    
+
+    /** @deprecated  [2012-03-06]  Function name should be more generic */
+    public function setUseTiny($iUseTiny)
+    {
+        $this->setUseWysi($iUseTiny);
+    }
+
     /**
-     * Setter method to set
-     * @return void
+     * Setter method to set wysi
+     *
+     * @param int $iUseTiny
      */
-    public function setUseTiny($iUseTiny) {
-    	$this->set("wysi", $iUseTiny);
+    public function setUseWysi($iUseTiny)
+    {
+        $this->set('wysi', $iUseTiny);
     }
 
     /**
-	 * setter method to set User
-	 *
-	 * @return void
-	 *
-	 * TODO add type check
-	 */
-    public function setValidDateTo($sValidateTo) {
-    	$this->set("valid_to", $sValidateTo);
+     * Setter method to set valid_to
+     *
+     * @param  string  $sValidateTo
+     *
+     * TODO add type check
+     */
+    public function setValidDateTo($sValidateTo)
+    {
+        $this->set('valid_to', $sValidateTo);
     }
 
     /**
-	 * setter method to set
-	 *
-	 * @return void
-	 *
-	 * TODO add type checks
-	 */
-    public function setValidDateFrom($sValidateFrom) {
-    	$this->set("valid_from", $sValidateFrom);
+     * Setter method to set valid_from
+     *
+     * @param  string  $sValidateFrom
+     *
+     * TODO add type checks
+     */
+    public function setValidDateFrom($sValidateFrom)
+    {
+        $this->set('valid_from', $sValidateFrom);
     }
 
     /**
-	 * setter method to set
-	 *
-	 * @return void
-	 *
-	 * TODO add type checks
-	 */
-    public function setPerms($aPerms) {
-        $this->set("perms", implode ( ",", $aPerms ));
+     * Setter method to set perms
+     *
+     * @param  array  $aPerms
+     *
+     * TODO add type checks
+     */
+    public function setPerms(array $aPerms)
+    {
+        $this->set('perms', implode(',', $aPerms));
     }
 
     /**
@@ -634,7 +700,7 @@ class cApiUser extends Item
         if ($group == true) {
             // first get property by existing groups, if desired
             $groups = $perm->getGroupsForUser($this->values['user_id']);
-            
+
             foreach ($groups as $groupid) {
                 $groupPropColl = new cApiGroupPropertyCollection($groupid);
                 $groupProp = $groupPropColl->fetchByGroupIdTypeName($type, $name);
@@ -723,7 +789,7 @@ class cApiUser extends Item
 
         if (true === $beDownwardsCompatible) {
             // @deprecated  [2011-11-03]
-        	cDeprecated("$beDownwardsCompatible should not be true");
+            cDeprecated('Param $beDownwardsCompatible should not be true');
             if (count($userProps) == 0) {
                 return array();
             }
@@ -771,61 +837,62 @@ class cApiUser extends Item
         $userPropColl = new cApiUserPropertyCollection($this->values['user_id']);
         return $userPropColl->deleteByUserIdTypeName($type, $name);
     }
-    
+
     /**
-    * This static method provides a simple way to get error messages depending
+     * This static method provides a simple way to get error messages depending
      * on error code $iErrorCode, which is returned by checkPassword* methods.
-    *
-    * @param int $iErrorCode
-    * @param array $aCfg CONTENIDO configuration array
-    * @return string
-    */
-    public static function getErrorString ($iErrorCode, $aCfg) {
-	    $sError = "";
-	     
-	    switch ($iErrorCode) {
-	    	case self::PASS_NOT_ENOUGH_MIXED_CHARS: {
-		    	$sError = sprintf(i18n("Please use at least %d lower and upper case characters in your password!"),
-		        $aCfg['password']['mixed_case_mandatory']);
-		    	break;
-	    	}
-	    	case self::PASS_NOT_ENOUGH_NUMBERS: {
-	    		$sError = sprintf(i18n("Please use at least %d numbers in your password!"),
-	    		$aCfg['password']['numbers_mandatory']);
-	    		break;
-	    	}
-	        case self::PASS_NOT_ENOUGH_SYMBOLS : {
-	    		$sError = sprintf(i18n("Please use at least %d symbols in your password!"),
-	    		$aCfg['password']['symbols_mandatory']);
-	    		break;
-	    	}
-	    	case self::PASS_TO_SHORT: {
-	    		$sError = sprintf(i18n("Password is too short! Please use at least %d signs."),
-	    		($aCfg['password']['min_length'] >  0 ? $aCfg['password']['min_length'] :
-	    		self::MIN_PASS_LENGTH_DEFAULT));
-	    		break;
-	    	}
-	    	case self::PASS_NOT_ENOUGH_DIFFERENT_CHARS : {
-	    		$sError = sprintf(i18n("Password does not contain enough different characters."));
+     *
+     * @param int $iErrorCode
+     * @param array $aCfg CONTENIDO configuration array
+     * @return string
+     */
+    public static function getErrorString($iErrorCode, array $aCfg)
+    {
+        $sError = "";
+
+        switch ($iErrorCode) {
+            case self::PASS_NOT_ENOUGH_MIXED_CHARS:
+                $sError = sprintf(
+                    i18n("Please use at least %d lower and upper case characters in your password!"),
+                    $aCfg['password']['mixed_case_mandatory']
+                );
                 break;
-	    	}
-	        case self::PASS_NOT_ENOUGH_MIXED_CHARS: {
-		    	$sError = sprintf(i18n("Please use at least %d lower and upper case characters in your password!"),
-		    	$aCfg['password']['mixed_case_mandatory']);
-	            break;
-	        }
-	        case self::PASS_NOT_STRONG: {
-		    	$sError = i18n("Please choose a more secure password!");
-		    	break;
-	    	}
-	    	default: {
-		    	$sError = "I do not really know what has happened. But your password does not match the
-		    	policies! Please consult your administrator. The error code is #" . $iErrorCode;
-	    	}
-	    
-	    }
-	    
-	    return $sError;
+            case self::PASS_NOT_ENOUGH_NUMBERS:
+                $sError = sprintf(
+                    i18n("Please use at least %d numbers in your password!"),
+                    $aCfg['password']['numbers_mandatory']
+                );
+                break;
+            case self::PASS_NOT_ENOUGH_SYMBOLS:
+                $sError = sprintf(
+                    i18n("Please use at least %d symbols in your password!"),
+                    $aCfg['password']['symbols_mandatory']
+                );
+                break;
+            case self::PASS_TO_SHORT:
+                $sError = sprintf(
+                    i18n("Password is too short! Please use at least %d signs."),
+                    ($aCfg['password']['min_length'] >  0 ? $aCfg['password']['min_length'] : self::MIN_PASS_LENGTH_DEFAULT)
+                );
+                break;
+            case self::PASS_NOT_ENOUGH_DIFFERENT_CHARS:
+                $sError = sprintf(i18n("Password does not contain enough different characters."));
+                break;
+            case self::PASS_NOT_ENOUGH_MIXED_CHARS:
+                $sError = sprintf(
+                    i18n("Please use at least %d lower and upper case characters in your password!"),
+                    $aCfg['password']['mixed_case_mandatory']
+                );
+                break;
+            case self::PASS_NOT_STRONG:
+                $sError = i18n("Please choose a more secure password!");
+                break;
+            default:
+                $sError = "I do not really know what has happened. But your password does not match the
+                policies! Please consult your administrator. The error code is #" . $iErrorCode;
+        }
+
+        return $sError;
     }
 }
 
