@@ -1336,7 +1336,7 @@ class cHTMLSelectElement extends cHTMLFormElement
         {
             foreach ($this->_options as $key => $value)
             {
-                if (strcmp($value->getAttribute("value"), $lvalue) == 0)
+                if (in_array($value->getAttribute("value"), $lvalue))
                 {
                     $value->setSelected(true);
                     $this->_options[$key] = $value;
