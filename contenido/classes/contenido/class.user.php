@@ -29,7 +29,7 @@
  *  $cfg['password']['symbols_mandatory'], int && $cfg['password']['symbols_regex'], String
  *      If 'symbols_mandatory' set to a value greater than 0, at least so many symbols has to appear in
  *      given password. What symbols are regcognized can be administrated via 'symbols_regex'. This has
- *      to be a regular expression which is used to "find" the symbols in $sNewPassword. If not set, following
+ *      to be a regular expression which is used to "find" the symbols in $password. If not set, following
  *      RegEx is used: "/[|!@#$%&*\/=?,;.:\-_+~^¨\\\]/"
  *  $cfg['password']['mixed_case_mandatory'], int
  *      If set to a value greater than 0 so many lower and upper case character must appear in the password.
@@ -242,7 +242,7 @@ class cApiUser extends Item
      */
     public function save()
     {
-    	cDeprecated("Use cApiUser::store() instead.");
+    	cDeprecated("Use self::store() instead.");
     	
     	return $this->store();
     }
@@ -281,37 +281,37 @@ class cApiUser extends Item
     {
     	global $cfg;
     	
-    	$iResult = cApiUser::PASS_OK;
+    	$iResult = self::PASS_OK;
     	
     	if (isset($cfg['password']['check_password_mask']) &&
     	$cfg['password']['check_password_mask'] == true) {
     		// any min length in config set?
-    		$iMinLength = cApiUser::MIN_PASS_LENGTH_DEFAULT;
+    		$iMinLength = self::MIN_PASS_LENGTH_DEFAULT;
     		if (isset( $cfg ['password'] ['min_length'] )) {
     			$iMinLength = ( int ) $cfg ['password'] ['min_length'];
     		}
     	
     		// check length...
-    		if (strlen ( $sNewPassword ) < $iMinLength) {
-    			$iResult = cApiUser::PASS_TO_SHORT;
+    		if (strlen ( $password ) < $iMinLength) {
+    			$iResult = self::PASS_TO_SHORT;
     		}
     	
     		// check password elements
     	
     		// numbers.....
-    		if ($iResult == cApiUser::PASS_OK && isset($cfg['password']['numbers_mandatory']) &&
+    		if ($iResult == self::PASS_OK && isset($cfg['password']['numbers_mandatory']) &&
     		(int) $cfg['password']['numbers_mandatory'] > 0) {
     	
     			$aNumbersInPassword = array();
-    			preg_match_all("/[0-9]/", $sNewPassword, $aNumbersInPassword) ;
+    			preg_match_all("/[0-9]/", $password, $aNumbersInPassword) ;
     	
     			if (count($aNumbersInPassword[0]) < (int) $cfg['password']['numbers_mandatory']) {
-    				$iResult = cApiUser::PASS_NOT_ENOUGH_NUMBERS;
+    				$iResult = self::PASS_NOT_ENOUGH_NUMBERS;
     			}
     		}
     	
     		// symbols....
-    		if ($iResult == cApiUser::PASS_OK && isset($cfg['password']['symbols_mandatory']) &&
+    		if ($iResult == self::PASS_OK && isset($cfg['password']['symbols_mandatory']) &&
     		(int) $cfg['password']['symbols_mandatory'] > 0) {
     	
     			$aSymbols = array();
@@ -320,26 +320,26 @@ class cApiUser extends Item
     				$sSymbolsDefault = $cfg['password']['symbols_regex'];
     			}
     	
-    			preg_match_all($sSymbolsDefault, $sNewPassword, $aSymbols);
+    			preg_match_all($sSymbolsDefault, $password, $aSymbols);
     	
     			if (count($aSymbols[0]) < (int) $cfg['password']['symbols_mandatory']) {
-    				$iResult = cApiUser::PASS_NOT_ENOUGH_SYMBOLS;
+    				$iResult = self::PASS_NOT_ENOUGH_SYMBOLS;
     			}
     		}
     	
     		// mixed case??
-    		if ($iResult == cApiUser::PASS_OK && isset($cfg['password']['mixed_case_mandatory']) &&
+    		if ($iResult == self::PASS_OK && isset($cfg['password']['mixed_case_mandatory']) &&
     		(int) $cfg['password']['mixed_case_mandatory'] > 0) {
     	
     			$aLowerCaseChars = array();
     			$aUpperCaseChars = array();
     	
-    			preg_match_all("/[a-z]/", $sNewPassword, $aLowerCaseChars);
-    			preg_match_all("/[A-Z]/", $sNewPassword, $aUpperCaseChars);
+    			preg_match_all("/[a-z]/", $password, $aLowerCaseChars);
+    			preg_match_all("/[A-Z]/", $password, $aUpperCaseChars);
     	
     			if ((count($aLowerCaseChars[0]) < (int) $cfg['password']['mixed_case_mandatory']) ||
     			(count($aUpperCaseChars[0]) < (int) $cfg['password']['mixed_case_mandatory'])) {
-    				$iResult = cApiUser::PASS_NOT_ENOUGH_MIXED_CHARS;
+    				$iResult = self::PASS_NOT_ENOUGH_MIXED_CHARS;
     			}
     		}
     	}
@@ -372,7 +372,7 @@ class cApiUser extends Item
     public function setPassword($password)
     {
     	$result = self::checkPasswordMask($password);
-    	if($result != cApiUser::PASS_OK)
+    	if($result != self::PASS_OK)
     	{
     		return $result;
     	}
@@ -386,7 +386,7 @@ class cApiUser extends Item
     }
     
     /**
-    * This method saves the given password $sNewPassword. The password
+    * This method saves the given password $password. The password
      * has to be checked, before it is set to the database. The resulting
     * integer value represents the result code.
     * Use the PASS_* constants to check what happens.
@@ -398,7 +398,7 @@ class cApiUser extends Item
     {
     	if($this->get("password") == self::encodePassword($password))
     	{
-    		return cApiUser::PASS_OK;
+    		return self::PASS_OK;
     	}
     	
     	$result = $this->setPassword($password);
@@ -436,7 +436,7 @@ class cApiUser extends Item
     * @return string Realname of user
     */
     public function getRealName() {
-    	return $this-get("realname");
+    	return $this->get("realname");
     }
     
     /**
@@ -784,37 +784,37 @@ class cApiUser extends Item
 	    $sError = "";
 	     
 	    switch ($iErrorCode) {
-	    	case cApiUser::PASS_NOT_ENOUGH_MIXED_CHARS: {
+	    	case self::PASS_NOT_ENOUGH_MIXED_CHARS: {
 		    	$sError = sprintf(i18n("Please use at least %d lower and upper case characters in your password!"),
 		        $aCfg['password']['mixed_case_mandatory']);
 		    	break;
 	    	}
-	    	case cApiUser::PASS_NOT_ENOUGH_NUMBERS: {
+	    	case self::PASS_NOT_ENOUGH_NUMBERS: {
 	    		$sError = sprintf(i18n("Please use at least %d numbers in your password!"),
 	    		$aCfg['password']['numbers_mandatory']);
 	    		break;
 	    	}
-	        case cApiUser::PASS_NOT_ENOUGH_SYMBOLS : {
+	        case self::PASS_NOT_ENOUGH_SYMBOLS : {
 	    		$sError = sprintf(i18n("Please use at least %d symbols in your password!"),
 	    		$aCfg['password']['symbols_mandatory']);
 	    		break;
 	    	}
-	    	case cApiUser::PASS_TO_SHORT: {
+	    	case self::PASS_TO_SHORT: {
 	    		$sError = sprintf(i18n("Password is too short! Please use at least %d signs."),
 	    		($aCfg['password']['min_length'] >  0 ? $aCfg['password']['min_length'] :
-	    		cApiUser::MIN_PASS_LENGTH_DEFAULT));
+	    		self::MIN_PASS_LENGTH_DEFAULT));
 	    		break;
 	    	}
-	    	case cApiUser::PASS_NOT_ENOUGH_DIFFERENT_CHARS : {
+	    	case self::PASS_NOT_ENOUGH_DIFFERENT_CHARS : {
 	    		$sError = sprintf(i18n("Password does not contain enough different characters."));
                 break;
 	    	}
-	        case cApiUser::PASS_NOT_ENOUGH_MIXED_CHARS: {
+	        case self::PASS_NOT_ENOUGH_MIXED_CHARS: {
 		    	$sError = sprintf(i18n("Please use at least %d lower and upper case characters in your password!"),
 		    	$aCfg['password']['mixed_case_mandatory']);
 	            break;
 	        }
-	        case cApiUser::PASS_NOT_STRONG: {
+	        case self::PASS_NOT_STRONG: {
 		    	$sError = i18n("Please choose a more secure password!");
 		    	break;
 	    	}
