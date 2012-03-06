@@ -67,6 +67,7 @@ INSERT INTO !PREFIX!_template_conf VALUES (57, 6, 0, 'sysadmin', '20080414162127
 INSERT INTO !PREFIX!_template_conf VALUES (58, 6, 0, 'sysadmin', '20080414162137', '0000-00-00 00:00:00');
 INSERT INTO !PREFIX!_template_conf VALUES (59, 4, 0, 'sysadmin', '20080414162138', '0000-00-00 00:00:00');
 INSERT INTO !PREFIX!_template_conf VALUES (60, 7, 0, 'sysadmin', '20080414162139', '0000-00-00 00:00:00');
+INSERT INTO !PREFIX!_template_conf VALUES (61, 4, 0, 'sysadmin', '20080414162140', '0000-00-00 00:00:00');
 INSERT INTO !PREFIX!_upl VALUES (1, 1, 'header_bsplmandant_01.gif', 'Images_Header/', 'gif', '8719', '', 0, '48a365b4ce1e322a55ae9017f3daf0c0', '2008-04-14 17:25:35', '2008-04-14 17:25:35', '48a365b4ce1e322a55ae9017f3daf0c0');
 INSERT INTO !PREFIX!_upl VALUES (2, 1, 'header_bsplmandant_03.gif', 'Images_Header/', 'gif', '12184', '', 0, '48a365b4ce1e322a55ae9017f3daf0c0', '2008-04-14 17:25:35', '2008-04-14 17:25:35', '48a365b4ce1e322a55ae9017f3daf0c0');
 INSERT INTO !PREFIX!_upl VALUES (3, 1, 'header_bsplmandant_04.gif', 'Images_Header/', 'gif', '6077', '', 0, '48a365b4ce1e322a55ae9017f3daf0c0', '2008-04-14 17:25:35', '2008-04-14 17:25:35', '48a365b4ce1e322a55ae9017f3daf0c0');
