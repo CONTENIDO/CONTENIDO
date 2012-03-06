@@ -80,7 +80,7 @@ if ($action == 'user_createuser') {
                     $oUser->setValidDateFrom($valid_from);
                     $oUser->setValidDateTo($valid_to);
                     $oUser->setPerms($aPerms);
-                    
+
                     if ($oUser->store()) {
                         // save user id and clean "old" values...
                         $sNotification = $notification->returnNotification("info", i18n("User created"));
@@ -101,8 +101,8 @@ if ($action == 'user_createuser') {
                         $password = '';
                     }
                     else {
-                		$sNotification = $notification->returnNotification("error", "Error saving the user to the database.");
-                		$bError = true;
+                        $sNotification = $notification->returnNotification("error", "Error saving the user to the database.");
+                        $bError = true;
                     }
             } else {
                 // oh oh, password is NOT valid. check it...
@@ -122,11 +122,11 @@ $tpl->reset();
 $tpl->set('s','NOTIFICATION', $sNotification);
 
 $form = '<form name="user_properties" method="post" action="' . $sess->url("main.php?") . '">
-                 ' . $sess->hidden_session(true) . '
-                 <input type="hidden" name="area" value="' . $area . '">
-                 <input type="hidden" name="action" value="user_createuser">
-                 <input type="hidden" name="frame" value="' . $frame . '">
-                 <input type="hidden" name="idlang" value="' . $lang . '">';
+         ' . $sess->hidden_session(true) . '
+         <input type="hidden" name="area" value="' . $area . '">
+         <input type="hidden" name="action" value="user_createuser">
+         <input type="hidden" name="frame" value="' . $frame . '">
+         <input type="hidden" name="idlang" value="' . $lang . '">';
 
 $tpl->set('s', 'FORM', $form);
 $tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);

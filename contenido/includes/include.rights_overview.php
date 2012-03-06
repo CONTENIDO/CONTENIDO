@@ -36,13 +36,11 @@
  * TODO export functions to new cApiUser object!
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
-
 cInclude('includes', 'functions.rights.php');
-
 
 if (!($perm->have_perm_area_action($area, $action) || $perm->have_perm_area_action('user', $action))) {
     // access denied
@@ -87,7 +85,7 @@ if ($action == 'user_delete') {
 </body>
 </html>
     ';
-    
+
     $tpl->reset();
     $tpl->set('s', 'NOTIFICATION', $sNotification);
     $tpl->generate($sTemplate);
@@ -117,7 +115,7 @@ if ($action == 'user_edit') {
         if (strcmp($password, $passwordagain) == 0) {
             // set password....
             $iPasswordSaveResult = $ocApiUser->setPassword($password);
-            
+
             // fine, passwords are the same, but is the password valid?
             if ($iPasswordSaveResult != cApiUser::PASS_OK) {
                 // oh oh, password is NOT valid. check it...
@@ -134,12 +132,11 @@ if ($action == 'user_edit') {
     }
 
     if (strlen($password) == 0 || $bPassOk == true) {
-    	if($ocApiUser->store())
-    	{
-    		$sNotification = $notification->returnNotification("info", i18n("Changes saved"));
+        if ($ocApiUser->store()) {
+            $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
             $bError = true;
-    	} else {
-    		$sNotification = $notification->returnNotification("error", i18n("An error occured while saving user info."));
+        } else {
+            $sNotification = $notification->returnNotification("error", i18n("An error occured while saving user info."));
             $bError = true;
         }
     }
@@ -168,12 +165,12 @@ $tpl->set('s','SID', $sess->id);
 $tpl->set('s','NOTIFICATION', $sNotification);
 
 $form = '<form name="user_properties" method="post" action="'.$sess->url("main.php?").'">
-             '.$sess->hidden_session(true).'
-             <input type="hidden" name="area" value="'.$area.'">
-             <input type="hidden" name="action" value="user_edit">
-             <input type="hidden" name="frame" value="'.$frame.'">
-             <input type="hidden" name="userid" value="'.$userid.'">
-             <input type="hidden" name="idlang" value="'.$lang.'">';
+         '.$sess->hidden_session(true).'
+         <input type="hidden" name="area" value="'.$area.'">
+         <input type="hidden" name="action" value="user_edit">
+         <input type="hidden" name="frame" value="'.$frame.'">
+         <input type="hidden" name="userid" value="'.$userid.'">
+         <input type="hidden" name="idlang" value="'.$lang.'">';
 
 $tpl->set('s', 'FORM', $form);
 $tpl->set('s', 'GET_USERID', $userid);
