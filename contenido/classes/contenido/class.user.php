@@ -725,7 +725,7 @@ class cApiUser extends Item
             // @deprecated  [2011-11-03]
         	cDeprecated("$beDownwardsCompatible should not be true");
             if (count($userProps) == 0) {
-                return false;
+                return array();
             }
 
             foreach ($userProps as $userProp) {
