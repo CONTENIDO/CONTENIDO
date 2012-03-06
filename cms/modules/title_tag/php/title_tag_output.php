@@ -15,10 +15,14 @@
 * $Id$
 */
 
+
+$oClient = new cApiClient( $client );
+$sName = $oClient->getField('name');
+
 try {
     $oBread = new Contenido_FrontendNavigation_Breadcrumb($db, $cfg, $client, $lang, $cfgClient);
     $oBreadCats = $oBread->get($idcat, 1);
-    $sBread = 'CONTENIDO - ';
+    $sBread = $sName.' - ';
     $aBread = array();
     foreach ($oBreadCats as $oConCat) {
         $aBread[] = $oConCat->getCategoryLanguage()->getName();
@@ -32,8 +36,8 @@ try {
     }
     echo $sBread;
 } catch (InvalidArgumentException $eI) {
-    echo 'CONTENIDO ';
+    echo $sName;
 } catch (Exception $e) {
-    echo 'CONTENIDO ';
+    echo $sName;
 }
 ?>
