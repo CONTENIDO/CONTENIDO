@@ -1250,7 +1250,7 @@ class cHTMLSelectElement extends cHTMLFormElement
      * Constructor. Creates an HTML select field (aka "DropDown").
      *
      * @param  string  $name  Name of the element
-     * @param  int  $width  Width of the select element
+     * @param  int  $width  Width of the select element (note: not used)
      * @param  string  $id  ID of the element
      * @param  bool  $disabled  Item disabled flag (non-empty to set disabled)
      * @param  string  $tabindex  Tab index for form elements
