@@ -324,15 +324,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 			$this->setSetting("media_external_list_url", $this->_sBaseURL."list.php?mode=media&lang=".$lang."&client=".$client."#", true);
 		}
 	}
-	
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setToolbarMode ($sMode)
-	{
-        cDeprecated();
-		$this->setToolbar($sMode);
-	}
 
 	function setXHTMLMode ($bEnabled = true)
 	{
@@ -352,18 +343,7 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		}	
 	}
 	
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setCustomToolbar ($sToolbar1, $sToolbar2, $sToolbar3, $sPlugins)
-	{
-        cDeprecated();
-		$this->setSetting("toolbar_mode", "custom", true);
-		$this->setSetting("theme_advanced_buttons1", $sToolbar1, true);
-		$this->setSetting("theme_advanced_buttons2", $sToolbar2, true);
-		$this->setSetting("theme_advanced_buttons3", $sToolbar3, true);
-		$this->setSetting("plugins", $sPlugins, true);
-	}
+	
 
 	/**
 	 * For compatibility also accepts "tinymce-toolbar-mode", "tinymce-toolbar1-3" and "tinymce-plugins"
@@ -493,51 +473,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor
               }
 		}
 	}
-	
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setStylesheet ($sStylesheet)
-	{
-        cDeprecated();
-		$this->setSetting("content_css", $sStylesheet, true);
-	}
-	
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setStyles ($sStyles)
-	{
-        cDeprecated();
-		$this->setSetting("theme_advanced_styles", $sStyles, true);
-	}
-
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setWidth ($iWidth)
-	{
-        cDeprecated();
-		$this->setSetting("width", $iWidth, true);	
-	}
-
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */		
-	function setHeight ($iHeight)
-	{
-        cDeprecated();
-		$this->setSetting("width", $iHeight, true);	
-	}
-	
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setDocumentBaseURL ($sDocumentBaseURL)
-	{
-        cDeprecated();
-		$this->setSetting("document_base_url", $sDocumentBaseURL, true);
-	}
 
 	function cleanURLs()
 	{
@@ -601,67 +536,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 	{
 		$this->_sBaseURL = $sBaseUrl;	
 	}
-
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setConvertURLs ($sConvertUrls)
-	{
-        cDeprecated();
-		$this->setSetting("convert_urls", $sConvertUrls, true);
-	}
-
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setRelativeURLs ($sRelativeUrls)
-	{
-        cDeprecated();
-		$this->setSetting("relative_urls", $sRelativeUrls, true);	
-	}
-
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setEditorLanguage ($sLanguage)
-	{
-        cDeprecated();
-		if ($sLanguage != "")
-		{
-			$this->setSetting("language", $sLanguage, true);	
-		}	
-	}
-	
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setTextDirection ($sDirection)
-	{
-        cDeprecated();
-		$this->setSetting("directionality", $sDirection, true);
-		
-		if ($sDirection == "rtl")
-		{
-			$this->setSetting("theme_advanced_toolbar_align", "right", true);
-		} else {
-			$this->setSetting("theme_advanced_toolbar_align", "left", true);
-		}
-	}
-
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setToolbarAlign ($sToolbarAlign)
-	{
-        cDeprecated();
-		if ($sToolbarAlign == 'right')
-		{
-			$this->setSetting("theme_advanced_toolbar_align", "right", true);
-		} else
-		{
-			$this->setSetting("theme_advanced_toolbar_align", "left", true);
-		}
-	}	
 		
 	function getScripts ()
 	{
@@ -673,24 +547,6 @@ class cTinyMCEEditor extends cWYSIWYGEditor
 		}
 		
 		return $sReturn;	
-	}
-	
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setTimeformat ($sTimeformat)
-	{	
-        cDeprecated();
-		$this->setSetting("plugin_insertdate_timeFormat", $this->convertFormat($sTimeformat), true);
-	}
-
-	/**
-	 * @deprecated V4.7 - 13.06.2007
-	 */
-	function setDateformat ($sDateformat)
-	{
-        cDeprecated();
-		$this->setSetting("plugin_insertdate_dateFormat", $this->convertFormat($sDateformat), true);
 	}
 	
 	function getEditor ()
