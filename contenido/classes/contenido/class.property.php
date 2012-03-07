@@ -565,7 +565,7 @@ class cApiPropertyCollection extends ItemCollection
         }
 
         foreach (self::$_cacheItemtypes as $name => $value) {
-            if ($itemtype == $itemtype || $itemid == $itemid) {
+            if ($itemtype == $value['itemtype'] || $itemid == $value['itemid']) {
                 return true;
             }
         }
