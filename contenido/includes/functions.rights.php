@@ -11,8 +11,9 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.0
+ * @version    1.1.0
  * @author     Martin Horwath
+ * @author     Murat Purc <murat@purc.de>
  * @copyright  dayside.net
  * @link       http://www.dayside.net
  * @since      file available since CONTENIDO release <= 4.6
@@ -27,7 +28,7 @@
  *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
@@ -56,13 +57,15 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb)
  * @param int $idlang ID of lang parameter
  *
  * @author Martin Horwath <horwath@dayside.net>
+ * @author Murat Purc <murat@purc.de>
  * @copyright dayside.net <dayside.net>
  */
 function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
 {
-    global $cfg, $perm, $auth, $area_tree;
+    global $perm, $auth, $area_tree;
 
-    $db = new DB_Contenido();
+    $oDestRightCol = new cApiRightCollection();
+    $oSourceRighsColl = new cApiRightCollection();
     $whereUsers = array();
     $whereAreaActions = array();
 
@@ -70,14 +73,13 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
     $userIDContainer = $perm->getGroupsForUser($auth->auth['uid']); // add groups if available
     $userIDContainer[] = $auth->auth['uid']; // add user_id of current user
     foreach ($userIDContainer as $key) {
-        $whereUsers[] = "user_id = '" . $db->escape($key) . "'";
+        $whereUsers[] = "user_id = '" . $oDestRightCol->escape($key) . "'";
     }
     $whereUsers = '(' . implode(' OR ', $whereUsers) . ')'; // only duplicate on user and where user is member of
 
-    // get all idarea values for $area short way
+    // get all idarea values for $area
     $areaContainer = $area_tree[$perm->showareas($area)];
 
-    // long version start
     // get all actions for corresponding area
     $oActionColl = new cApiActionCollection();
     $oActionColl->select('idarea IN (' . implode (',', $areaContainer) . ')');
@@ -86,16 +88,11 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
     }
     $whereAreaActions = '(' . implode(' OR ', $whereAreaActions) . ')'; // only correct area action pairs possible
 
-    // final where statement to get all effected elements in con_right
+    // final where clause to get all effected elements in con_right
     $sWhere = "{$whereAreaActions} AND {$whereUsers} AND idcat = {$iditem}";
-
-    // long version end
     if ($idlang) {
         $sWhere .= ' AND idlang=' . (int) $idlang;
     }
-
-    $oDestRightCol = new cApiRightCollection();
-    $oSourceRighsColl = new cApiRightCollection();
 
     $oSourceRighsColl->select($sWhere);
     while ($oItem = $oSourceRighsColl->next()) {
@@ -116,74 +113,57 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
  * @param int $idlang ID of lang parameter
  *
  * @author Martin Horwath <horwath@dayside.net>
+ * @author Murat Purc <murat@purc.de>
  * @copyright dayside.net <dayside.net>
  */
 function createRightsForElement($area, $iditem, $idlang = false)
 {
-    global $cfg, $perm, $auth, $area_tree, $client;
+    global $perm, $auth, $area_tree, $client;
 
     if (!is_object($perm)) {
         return false;
     }
-
     if (!is_object($auth)) {
         return false;
     }
 
-    $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $oDestRightCol = new cApiRightCollection();
+    $oSourceRighsColl = new cApiRightCollection();
+    $whereUsers = array();
+    $rightsCache = array();
 
     // get all user_id values for con_rights
     $userIDContainer = $perm->getGroupsForUser($auth->auth['uid']); // add groups if available
     $userIDContainer[] = $auth->auth['uid']; // add user_id of current user
     foreach ($userIDContainer as $key) {
-        $whereUsers[] = "user_id = '" . $db->escape($key) . "'";
+        $whereUsers[] = "user_id = '" . $oDestRightCol->escape($key) . "'";
     }
     $whereUsers = '(' . implode(' OR ', $whereUsers) . ')'; // only duplicate on user and where user is member of
 
-    // get all idarea values for $area
-    // short way
+    // get all idarea values for $area short way
     $areaContainer = $area_tree[$perm->showareas($area)];
 
-    $sql = "SELECT
-                *
-            FROM
-                ".$cfg["tab"]["rights"]."
-            WHERE
-                idclient='".Contenido_Security::toInteger($client)."' AND
-                idarea IN (".implode (',', $areaContainer).") AND
-                idcat != 0 AND
-                idaction!='0' AND
-                {$whereUsers}";
-
+    $sWhere = 'idclient=' . (int) $client . ' AND idarea IN (' . implode (',', $areaContainer) . ')'
+            . ' AND idcat != 0 AND idaction != 0 AND ' . $whereUsers;
     if ($idlang) {
-        $sql.= " AND idlang='".Contenido_Security::toInteger($idlang)."'";
+        $sWhere .= ' AND idlang=' . (int) $idlang;
     }
 
-    $db->query($sql);
-
-    $RightsContainer = array();
-
-    while($db->next_record()){
-        $RightsContainer[$db->f('user_id')][$db->f('idlang')][$db->f('type')][$db->f('idaction')] = $db->f('idarea');
-    }
-
-    // i found no better way to set the rights
-    // double entries should not be possible anymore...
-
-    foreach ($RightsContainer as $userid=>$LangContainer) {
-        foreach ($LangContainer as $idlang=>$TypeContainer) {
-            foreach ($TypeContainer as $type=>$ActionContainer) {
-                foreach ($ActionContainer as $idaction=>$idarea) {
-                    $sql = "INSERT INTO ".$cfg["tab"]["rights"]."
-                           (user_id,idarea,idaction,idcat,idclient,idlang,`type`)
-                           VALUES ('".Contenido_Security::toInteger($userid)."', '".Contenido_Security::toInteger($idarea)."',
-                           '".Contenido_Security::toInteger($idaction)."', '".Contenido_Security::toInteger($iditem)."', '".Contenido_Security::toInteger($client)."',
-                           '".Contenido_Security::toInteger($idlang)."', '".Contenido_Security::toInteger($type)."')";
-                    $db2->query($sql);
-                }
-            }
+    $oSourceRighsColl->select($sWhere);
+    while ($oItem = $oSourceRighsColl->next()) {
+        $rs = $oItem->toObject();
+        
+        // concatenate a key to use it to prevent double entries
+        $key = $rs->user_id . '-' . $rs->idarea . '-' . $rs->idaction . '-' . $iditem
+             . '-' . $rs->idclient . '-' . $rs->idlang . '-' . $rs->type;
+        if (isset($rightsCache[$key])) {
+            continue;
         }
+
+        // create new right entry
+        $oDestRightCol->create($rs->user_id, $rs->idarea, $rs->idaction, $iditem, $rs->idclient, $rs->idlang, $rs->type);
+        
+        $rightsCache[$key] = true;
     }
 
     // permissions reloaded...
@@ -199,22 +179,23 @@ function createRightsForElement($area, $iditem, $idlang = false)
  * @param int $idlang ID of lang parameter
  *
  * @author Martin Horwath <horwath@dayside.net>
+ * @author Murat Purc <murat@purc.de>
  * @copyright dayside.net <dayside.net>
  */
 function deleteRightsForElement($area, $iditem, $idlang = false)
 {
-    global $cfg, $perm, $area_tree, $client;
-
-    $db = new DB_Contenido();
+    global $perm, $area_tree, $client;
 
     // get all idarea values for $area
-    $areaContainer = $area_tree[$perm->showareas(Contenido_Security::escapeDB($area, $db))];
+    $areaContainer = $area_tree[$perm->showareas($area)];
 
-    $sql = "DELETE FROM ".$cfg["tab"]["rights"]." WHERE idcat='".Contenido_Security::toInteger($iditem)."' AND idclient='".Contenido_Security::toInteger($client)."' AND idarea IN (".implode (',', $areaContainer).")";
+    $sWhere = "idcat=" . (int) $iditem . " AND idclient=" . (int) $client . " AND idarea IN (" . implode (',', $areaContainer) . ")";
     if ($idlang) {
-        $sql.= " AND idlang='".Contenido_Security::toInteger($idlang)."'";
+        $sWhere .= " AND idlang=". (int) $idlang;
     }
-    $db->query($sql);
+
+    $oRightColl = new cApiRightCollection();
+    $oRightColl->deleteByWhereClause($sWhere);
 
     // permissions reloaded...
     $perm->load_permissions(true);
