@@ -1505,26 +1505,76 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
 
     /**
      * Deletes an item in the table.
+     * Deletes also cached e entry and any existing properties.
      *
      * @param   mixed  $mId  Id of entry to delete
      * @return  bool
      */
     public function delete($mId)
     {
-        $oDb = $this->_getSecondDBInstance();
-        $sql = "DELETE FROM `%s` WHERE %s = '%s'";
-        $oDb->query($sql, $this->table, $this->primaryKey, $mId);
-        $this->_oCache->removeItem($mId);
-
-        // delete the property values
-        $oProperties = $this->_getPropertiesCollectionInstance();
-        $oProperties->deleteProperties($this->primaryKey, $mId);
+        $result = $this->_delete($mId);
 
         // If this object wasn't loaded before, return false
         if ($this->virgin === true) {
             $this->lasterror = 'No item loaded';
             return false;
         }
+
+        return $result;
+    }
+
+    /**
+     * Deletes all found items in the table matching the rules in the passed where clause.
+     * Deletes also cached e entries and any existing properties.
+     *
+     * @param   string  $sWhere  The where clause of the SQL statement
+     * @return  int  Number of deleted entries
+     */
+    public function deleteByWhereClause($sWhere)
+    {
+        $oDb = $this->_getSecondDBInstance();
+
+        $aIds = array();
+        $numDeleted = 0;
+
+        // get all ids
+        $sql = 'SELECT ' . $this->primaryKey . ' AS pk FROM `' . $this->table . '` WHERE ' . $sWhere;
+        $oDb->query($sql);
+        while ($oDb->next_record()) {
+            $aIds[] = $oDb->f('pk');
+        }
+
+        // delete entries by their ids
+        foreach ($aIds as $id) {
+            if ($this->_delete($id)) {
+                $numDeleted++;
+            }
+        }
+
+        return $numDeleted;
+    }
+
+    /**
+     * Deletes an item in the table, deletes also existing cache entries and
+     * properties of the item.
+     *
+     * @param   mixed  $mId  Id of entry to delete
+     * @return  bool
+     */
+    protected function _delete($mId)
+    {
+        $oDb = $this->_getSecondDBInstance();
+
+        // delete db entry
+        $sql = "DELETE FROM `%s` WHERE %s = '%s'";
+        $oDb->query($sql, $this->table, $this->primaryKey, $mId);
+
+        // delete cache entry
+        $this->_oCache->removeItem($mId);
+
+        // delete the property values
+        $oProperties = $this->_getPropertiesCollectionInstance();
+        $oProperties->deleteProperties($this->primaryKey, $mId);
 
         return ($oDb->affected_rows() == 0) ? false : true;
     }
