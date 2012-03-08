@@ -21,7 +21,9 @@ a {
 	line-height: 0;
 
 }
-
+html[xmlns] .clearfix {
+    display: block;
+}
 .cms_image_img {
 	margin-right: 2px; 
 	margin-top: 2px;
@@ -54,7 +56,9 @@ a {
 	margin:0; 
 	float:right;
 }
-
+.cms_image .save_settings {
+	margin-right: 2px;
+}
 .cms_image .head {
     font-weight:bold; 
 	margin:0; 
@@ -76,7 +80,6 @@ a {
 	float:left; 
 	width:194px; 
 	margin-bottom:3px;
-    border: 1px solid #ccc;
 }
 
 .cms_image input[type=hidden]{
@@ -86,9 +89,9 @@ a {
 .cms_image .toolbar {
     position: relative;
 	top:3px;
-    right: 3px;	
+    right: 0px;	
 	text-align: right;
-	width:428px; 
+	width:100%; 
 	font-style:italic; 
 	margin:0; 	
 	clear:both;
@@ -144,7 +147,7 @@ a {
 .cms_image .image_upload .directoryList {
 	display: block;
 	width: 210px;
-	height: 210px;
+	height: 170px;
 	background-color: #FFFFFF;
 	overflow: auto;
 	border: 1px solid #ccc;
@@ -155,7 +158,7 @@ a {
 .cms_image .image_upload .directoryFile{
 	display: block;
 	width:210px;
-	height:210px;
+	height:170px;
 	background-color: #FFFFFF;
 	overflow: auto;
 	border: 1px solid #ccc;
@@ -415,7 +418,8 @@ a {
 	border:1px solid #CCCCCC;
 	display:block;
 	float:left;
-	height:210px;
+	min-height:50px;
+	max-height:210px;
 	overflow:auto;
 	width:428px;
 	margin-top:5px;
@@ -452,6 +456,7 @@ a {
 	margin:10px 0 3px 10px;
     border: 1px solid #ccc;
 	font-size:11px;
+	resize: vertical;
 }
 
 .cms_image select.text_medium {
@@ -459,7 +464,7 @@ a {
 	font-family:Verdana,Arial,Helvetica,Sans-Serif;
 	font-size:11px;
 	width:210px;
-	height:210px;
+	height:170px;
 	border:0;
 }
 .cms_image select.text_medium option {
@@ -481,4 +486,7 @@ a {
 	left: 22%;
     position: absolute;
     top: 17%;
+}
+input.file {
+	width: 100%;
 }

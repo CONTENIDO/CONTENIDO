@@ -21,6 +21,10 @@ a {
 	line-height: 0;
 
 }
+html[xmlns] .clearfix {
+    display: block;
+}
+
 /* Button */
 .cms_linkeditor_img {
 	margin-right: 2px; 
@@ -135,7 +139,7 @@ a {
 }*/
 .cms_linkeditor div.attr input[name="externtitle"],
 .cms_linkeditor .cms_linkeditor_extern input[name="externlink"]{
-    width: 85%;
+    width: 82%;
 	margin-left: 0;
 }
 .cms_linkeditor_intern .directoryList,
@@ -146,7 +150,7 @@ a {
     border: 1px solid #CCCCCC;
     display: block;
     float: left;
-    height: 210px;
+    height: 170px;
     overflow: auto;
     width: 210px;
 	margin-top:10px;
@@ -412,11 +416,14 @@ a {
     color: #000000;
     font-family: Verdana,Arial,Helvetica,Sans-Serif;
     font-size: 11px;
-    height: 210px;
+    height: 170px;
     width: 210px;
 }
 .loading {
     left: 22%;
     position: absolute;
     top: 25%;
+}
+input.file {
+	width: 100%;
 }

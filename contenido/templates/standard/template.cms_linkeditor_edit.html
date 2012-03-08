@@ -17,7 +17,7 @@
 	</div>
 	<div id="cms_linkeditor_{ID}_tabs" class="linkeditor_tabs">
 		<div class="cms_linkeditor_extern" id="cms_linkeditor_{ID}_extern" {style_extern}>   
-			<label style="width: 11%;" for="externlink_{ID}">{HTTP}</label><input type="text" id="externlink_{ID}" name="externlink" value="{extern_value}"/>
+			<label style="width: 14%;" for="externlink_{ID}">{HTTP}</label><input type="text" id="externlink_{ID}" name="externlink" value="{extern_value}"/>
 			<div class="clearfix">&nbsp;</div>
 		</div>
 		<div class="cms_linkeditor_intern" id="cms_linkeditor_{ID}_intern" {style_intern}>
@@ -49,7 +49,7 @@
 					<input type="hidden" value="{CONTENIDO}" name="contenido">
                     <input type="hidden" value="" name="path">
 					<input type="text" name="foldername" style="vertical-align:middle; width:170px;" class="text_small">
-					<span style="margin-left: 5px">
+					<span style="margin-left: 5px;vertical-align: middle;display: inline-block;">
 						<input type="image" src="{CON_PATH}images/submit.gif"></input>
 					</span>
                 </div>
@@ -64,7 +64,7 @@
 				<input type="hidden" value="" name="appendparameters">
 				<input type="hidden" value="{CONTENIDO}" name="contenido">
                 <div><b>{PFAD}</b>: <span id="caption2"></span></div>
-				<input type="file" size="40" class="text_medium" name="file[]" id="cms_linkeditor_m{ID}"></input>
+				<input type="file" size="" class="file" name="file[]" id="cms_linkeditor_m{ID}"></input>
             </form>
 			<img src="{CON_PATH}images/ajax-loader.gif" class="loading" style="display:none;"></img>
 	        <div id="cms_linkeditor_{ID}_directories" class="cms_linkeditor_directories clearfix">
@@ -86,9 +86,10 @@
 	        </div>
 		</div>    
 		<div id="cms_linkeditor_{ID}_attr" class="attr clearfix">		         
-			<label style="width: 11%;" for="externtitle_{ID}">{TITLE}</label><input type="text" id="externtitle_{ID}" name="externtitle" value="{extern_title_value}"/>
+			<label style="width: 14%;" for="externtitle_{ID}">{TITLE}</label>
+			<input type="text" id="externtitle_{ID}" name="externtitle" value="{extern_title_value}"/>
+			<input style="float: left; margin: 10px 8% 3px 10px;"type="checkbox" value="1" id="checkboxlinktarget_{ID}" name="checkboxlinktarget" {checked}>
 			<label style="width: 50%;" for="checkboxlinktarget_{ID}"> {TARGET} </label>
-			<input style="margin: 10px 0 3px 10px;"type="checkbox" value="1" id="checkboxlinktarget_{ID}" name="checkboxlinktarget" {checked}>
 		</div>    
     </div>
     <div class="toolbar">

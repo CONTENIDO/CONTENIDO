@@ -291,7 +291,7 @@ class Cms_LinkEditor {
 		$oTpl->set('s', 'TARGET', 								i18n("Open in a new window"));
 		$oTpl->set('s', 'TITLE', 								i18n("Title"));
 		$oTpl->set('s', 'extern_title_value', 					$this->aLink['link_title']);
-		$oTpl->set('s', 'HTTP', 								i18n("Href"));
+		$oTpl->set('s', 'HTTP', 								i18n("Adresse"));
 		
 		switch ($this->aLink['link_type']){
 			case 'extern':
@@ -757,7 +757,7 @@ class Cms_LinkEditor {
 		if($_REQUEST['changeview'] != 'edit'){
 			return "<a alt='". $aCode[3] . "' href='". $aCode[1] . "' target='". $aCode[2] . "'>". $aCode[3] . "</a>";			
 		} else {
-			return "&lt;a alt='". $aCode[3] . "' href='". $aCode[1] . "' target='". $aCode[2] . "'&gt;". $aCode[3] . "&lt;/a&gt;";	
+			return "<a alt='". $aCode[3] . "' href='". $aCode[1] . "' target='". $aCode[2] . "'>". $aCode[3] . "</a>";	
 		}
 	}
 	

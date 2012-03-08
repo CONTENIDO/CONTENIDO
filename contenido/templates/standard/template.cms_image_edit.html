@@ -34,7 +34,7 @@
 					<input type="hidden" value="{CONTENIDO}" name="contenido">
                     <input type="hidden" value="" name="path">
 					<input type="text" name="foldername" style="vertical-align:middle; width:170px;" class="text_small">
-					<span style="margin-left: 5px">
+					<span style="display: inline-block;margin-left: 5px;vertical-align: middle;">
 						<input type="image" src="{CON_PATH}images/submit.gif"></input>
 					</span>
                 </div>
@@ -49,7 +49,7 @@
 				<input type="hidden" value="" name="appendparameters">
 				<input type="hidden" value="{CONTENIDO}" name="contenido">
                 <div><b>{PFAD}</b>: <span id="caption2"></span></div>
-				<input type="file" size="40" class="text_medium" name="file[]" id="cms_image_m{ID}"></input>
+				<input type="file" size="" class="file" name="file[]" id="cms_image_m{ID}"></input>
             </form>
 			<img src="{CON_PATH}images/ajax-loader.gif" class="loading" style="display:none;"></img>
         </div>
@@ -69,7 +69,7 @@
                 <img src="{DIRECTORY_SRC}" alt=""/>
             </div>
         </div>
-        <div id="image_{ID}_meta" class="image_meta clearfix">
+        <div id="image_{ID}_meta" class="image_meta">
         	<div style="margin: 10px 0 3px 10px;"><b>{META_URL_TEXT}</b>: <span id="image_meta_url_{ID}"></span></div>
             <label for="image_medianame_{ID}">
                 {LABEL_IMAGE_TITLE}:
@@ -95,7 +95,8 @@
         </div>        
     </div>
     <div class="toolbar">
-        <img class="save_settings" src="{CON_PATH}images/but_ok.gif"/><img class="filelist_cancel" src="{CON_PATH}images/but_cancel.gif"/>
+        <img class="save_settings" src="{CON_PATH}images/but_ok.gif"/>
+		<img class="filelist_cancel" src="{CON_PATH}images/but_cancel.gif"/>
     </div>
 </div>
 <script type="text/javascript">
@@ -107,6 +108,9 @@
     	var sSession = '{CONTENIDO}';
     	var iIdArtLang = '{IDARTLANG}';
     	var sUploadPath = '{sUploadPath}';
+		//var frontend_path = "http://localhost/contenido4.9/cms/";
+		//var sUploadPath = 'C:/Projects/workspace/contenido4.9/cms/upload/';
+    	//var sContent1 = 'http://localhost/contenido4.9/cms/upload/';
     	var sContent{ID} = '{sContent}';
 		var createPath = Array();
 		createPath[{ID}] = '';
