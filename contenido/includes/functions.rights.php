@@ -49,12 +49,13 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb)
 }
 
 /**
- * Duplicate rights for any element
+ * Duplicate rights for any element.
  *
- * @param string $area main area name
- * @param int $iditem ID of element to copy
- * @param int $newiditem ID of the new element
- * @param int $idlang ID of lang parameter
+ * @param  string  $area  Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
+ * @param  int  $iditem  ID of element to copy
+ * @param  int  $newiditem  ID of the new element
+ * @param  int  $idlang  ID of language, if passed only  rights for this language will be created, otherwhise for all existing languages
+ * @return  bool  True on success otherwhise false
  *
  * @author Martin Horwath <horwath@dayside.net>
  * @author Murat Purc <murat@purc.de>
@@ -63,6 +64,13 @@ function checkLangInClients($aClients, $iLang, $aCfg, $oDb)
 function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
 {
     global $perm, $auth, $area_tree;
+
+    if (!is_object($perm)) {
+        return false;
+    }
+    if (!is_object($auth)) {
+        return false;
+    }
 
     $oDestRightCol = new cApiRightCollection();
     $oSourceRighsColl = new cApiRightCollection();
@@ -88,7 +96,7 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
     }
     $whereAreaActions = '(' . implode(' OR ', $whereAreaActions) . ')'; // only correct area action pairs possible
 
-    // final where clause to get all effected elements in con_right
+    // final where clause to get all affected elements in con_right
     $sWhere = "{$whereAreaActions} AND {$whereUsers} AND idcat = {$iditem}";
     if ($idlang) {
         $sWhere .= ' AND idlang=' . (int) $idlang;
@@ -102,15 +110,18 @@ function copyRightsForElement($area, $iditem, $newiditem, $idlang = false)
 
     // permissions reloaded...
     $perm->load_permissions(true);
+
+    return true;
 }
 
 
 /**
  * Create rights for any element
  *
- * @param string $area main area name
- * @param int $iditem ID of new element
- * @param int $idlang ID of lang parameter
+ * @param  string  $area  Main area name (e. g. 'lay', 'mod', 'str', 'tpl', etc.)
+ * @param  int  $iditem  ID of new element
+ * @param  int  $idlang  ID of language, if passed only  rights for this language will be created, otherwhise for all existing languages
+ * @return  bool  True on success otherwhise false
  *
  * @author Martin Horwath <horwath@dayside.net>
  * @author Murat Purc <murat@purc.de>
@@ -143,6 +154,8 @@ function createRightsForElement($area, $iditem, $idlang = false)
     // get all idarea values for $area short way
     $areaContainer = $area_tree[$perm->showareas($area)];
 
+    // statement to get all existing actions/areas for corresponding area.
+    // all existing rights for same area will be taken over to new item.
     $sWhere = 'idclient=' . (int) $client . ' AND idarea IN (' . implode (',', $areaContainer) . ')'
             . ' AND idcat != 0 AND idaction != 0 AND ' . $whereUsers;
     if ($idlang) {
@@ -168,6 +181,8 @@ function createRightsForElement($area, $iditem, $idlang = false)
 
     // permissions reloaded...
     $perm->load_permissions(true);
+
+    return true;
 }
 
 
