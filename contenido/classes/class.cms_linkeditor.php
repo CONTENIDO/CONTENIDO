@@ -291,7 +291,7 @@ class Cms_LinkEditor {
 		$oTpl->set('s', 'TARGET', 								i18n("Open in a new window"));
 		$oTpl->set('s', 'TITLE', 								i18n("Title"));
 		$oTpl->set('s', 'extern_title_value', 					$this->aLink['link_title']);
-		$oTpl->set('s', 'HTTP', 								i18n("Adresse"));
+		$oTpl->set('s', 'HTTP', 								i18n("Href"));
 		
 		switch ($this->aLink['link_type']){
 			case 'extern':

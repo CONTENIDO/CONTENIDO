@@ -216,7 +216,7 @@ class cApiInUseCollection extends ItemCollection
     {
         global $sess, $auth, $notification, $area, $frame, $perm;
 
-        if (($obj = $this->checkMark($type, $objectid)) === false) {
+        if ((($obj = $this->checkMark($type, $objectid)) === false)|| ($auth->auth['uid'] == $obj->get('userid'))) {
             $this->markInUse($type, $objectid, $sess->id, $auth->auth['uid']);
             $inUse = false;
             $disabled = '';
