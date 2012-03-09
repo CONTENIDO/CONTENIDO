@@ -329,7 +329,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $modified = date($dateformat,strtotime($modified));
             $alttitle = "idart" . '&#58; '.$idart.' '."idcatart".'&#58; '.$idcatart.' '."idartlang".'&#58; '.$idartlang;
 
-            if (($obj = $col->checkMark("article", $idartlang)) === false) {
+            if ((($obj = $col->checkMark("article", $idartlang)) === false) || $obj->get("userid") == $auth->auth['uid']) {
                 $inUse = false;
             } else {
                 $vuser = new User();

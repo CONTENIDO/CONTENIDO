@@ -564,7 +564,7 @@ msgstr "Im neuen Fenster &ouml;ffnen"
 
 #: classes/class.cms_linkeditor.php:294
 msgid "Href"
-msgstr "Href"
+msgstr "Adresse"
 
 #: classes/class.cms_teaser.php:350
 #: classes/class.cms_teaser.php:379
