@@ -30,13 +30,14 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cDatefield extends cHTMLTextbox
 {
 	var $_oDate;
 	
 	function cDatefield ($name, $initvalue, $width = 10)
 	{
+		cDeprecated("This class is not longer supported.");
 		$this->_oDate = new cDatatypeDateTime;
 		
 		$this->_oDate->set($initvalue);

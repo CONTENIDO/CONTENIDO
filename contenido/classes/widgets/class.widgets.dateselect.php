@@ -30,7 +30,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cDropdownDateSelect
 {
 
@@ -52,6 +52,7 @@ class cDropdownDateSelect
 		
 	function cDropdownDateSelect ($prefix)
 	{
+		cDeprecated("This class is not longer supported.");
 		$this->_daySelect = new cHTMLSelectElement($prefix."_day");
 		$this->_monthSelect = new cHTMLSelectElement($prefix."_month");
 		$this->_yearSelect = new cHTMLSelectElement($prefix."_year");

@@ -1,10 +1,5 @@
 <?php
-
-/**
- * class cDataTextWidget
- * cDataTextWidget generates a textbox widget
- * for use with the data objects.
- */
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cDataTextWidget extends cHTMLTextbox
 {
 	/**
@@ -21,6 +16,7 @@ class cDataTextWidget extends cHTMLTextbox
 	 */
 	function cDataTextWidget ($name, $parameters)
 	{
+		cDeprecated("This class is not longer supported.");
 		cHTMLTextbox::cHTMLTextbox($name);
 		
 		if (array_key_exists("default", $parameters))
@@ -30,11 +26,7 @@ class cDataTextWidget extends cHTMLTextbox
 	}
 }
 
-/**
- * class cDataTextareaWidget
- * cDataTextareaWidget generates a textarea widget for use with the data objects.
- *
- */
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cDataTextareaWidget extends cHTMLTextarea
 {
 	/**
@@ -51,6 +43,7 @@ class cDataTextareaWidget extends cHTMLTextarea
 	 */	
 	function cDataTextareaWidget ($name, $parameters)
 	{
+		cDeprecated("This class is not longer supported.");
 		cHTMLTextarea::cHTMLTextarea($name);
 		
 		if (array_key_exists("default", $parameters))
@@ -61,10 +54,7 @@ class cDataTextareaWidget extends cHTMLTextarea
 	}
 }
 
-/**
- * class cDataCodeTextareaWidget
- * cDataCodeTextareaWidget generates a textarea widget for use with the data objects.
- */
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cDataCodeTextareaWidget extends cHTMLTextarea
 {
 	/**
@@ -83,6 +73,7 @@ class cDataCodeTextareaWidget extends cHTMLTextarea
 	 */		
 	function cDataCodeTextareaWidget ($name, $parameters)
 	{
+		cDeprecated("This class is not longer supported.");
 		cHTMLTextarea::cHTMLTextarea($name);
 		
 		if (array_key_exists("default", $parameters))
@@ -110,10 +101,7 @@ class cDataCodeTextareaWidget extends cHTMLTextarea
 	}
 }
 
-/**
- * class cDataDropdownWidget
- * cDataDropdownWidget generates a dropdown widget for use with the data objects.
- */
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cDataDropdownWidget extends cHTMLSelectElement
 {
 	/**
@@ -132,6 +120,7 @@ class cDataDropdownWidget extends cHTMLSelectElement
 	 */		
 	function cDataDropdownWidget ($name, $parameters)
 	{
+		cDeprecated("This class is not longer supported.");
 		cHTMLSelectElement::cHTMLSelectElement($name);
 		
 		$this->autoFill($parameters["choices"]);
@@ -143,10 +132,7 @@ class cDataDropdownWidget extends cHTMLSelectElement
 	}
 }
 
-/**
- * class cDataForeignTableDropdownWidget
- * cDataForeignTableDropdownWidget generates a dropdown widget out of a foreign table.
- */
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cDataForeignTableDropdownWidget extends cHTMLSelectElement
 {
 	/**
@@ -165,6 +151,7 @@ class cDataForeignTableDropdownWidget extends cHTMLSelectElement
 	 */		
 	function cDataForeignTableDropdownWidget ($name, $parameters)
 	{
+		cDeprecated("This class is not longer supported.");
 		cHTMLSelectElement::cHTMLSelectElement($name);
 		
 		$c = new $parameters["foreignClass"];
@@ -190,10 +177,7 @@ class cDataForeignTableDropdownWidget extends cHTMLSelectElement
 	}
 }
 
-/**
- * class cDataCheckboxWidget
- * cDataCheckboxWidget generates a checkbox for use with the dataobjects
- */
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cDataCheckboxWidget extends cHTMLCheckbox
 {
 	/**
@@ -211,6 +195,7 @@ class cDataCheckboxWidget extends cHTMLCheckbox
 	 */	
 	function cDataCheckboxWidget ($name, $parameters)
 	{
+		cDeprecated("This class is not longer supported.");
 		cHTMLCheckbox::cHTMLCheckbox($name."_stub", "1");
 		
 		if ($parameters["title"] != "")
@@ -235,11 +220,7 @@ class cDataCheckboxWidget extends cHTMLCheckbox
 	}
 }
 
-/**
- * class cDataMultiTextboxWidget
- * cDataMultiTextboxWidget generates a multi-line textbox widget 
-
- */
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cDataMultiTextboxWidget extends cHTMLTable
 {
 	/**
@@ -257,6 +238,7 @@ class cDataMultiTextboxWidget extends cHTMLTable
 	 */		
 	function cDataMultiTextboxWidget ($name, $parameters)
 	{
+		cDeprecated("This class is not longer supported.");
 		cHTMLTable::cHTMLTable();
 
 		$this->name = $name;

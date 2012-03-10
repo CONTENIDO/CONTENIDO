@@ -30,11 +30,12 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cViewAdvancedMenu
 {
 	function cViewAdvancedMenu ()
 	{
+		cDeprecated("This class is not longer supported.");
 	}
 	
 	function render ()
@@ -42,11 +43,12 @@ class cViewAdvancedMenu
 	}
 }
 
-
+/** @deprecated 2012-03-10 This class is not longer supported. */
 class cViewItems extends cHTMLIFrame
 {
 	function cViewItems()
 	{
+		cDeprecated("This class is not longer supported.");
 	}	
 }
 ?>

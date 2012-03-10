@@ -30,7 +30,7 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cDateChooser extends cDatefield
 {
 	var $_oCalendar;
@@ -39,6 +39,7 @@ class cDateChooser extends cDatefield
 	
 	function cDateChooser ($name, $initValue = false)
 	{
+		cDeprecated("This class is not longer supported.");
 		parent::cDatefield($name, "");
 		
 		$this->_oImage = new cHTMLImage;

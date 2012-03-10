@@ -319,11 +319,7 @@ class cPage extends cHTML {
     }
 }
 
-/**
- * Predefined page for use in frame 1
- *
- * @author      Timo A. Hummel <timo.hummel@4fb.de>
- */
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cPageLeftTop extends cPage {
     
     /**
@@ -337,6 +333,7 @@ class cPageLeftTop extends cPage {
      * @param bool $showCloser 
      */
     public function cPageLeftTop($showCloser = true) {
+		cDeprecated("This class is not supported any longer.");
         $this->showCloser($showCloser);
     }
     
@@ -365,11 +362,8 @@ class cPageLeftTop extends cPage {
     }
 }
 
-/**
- * Predefined page for use in frame 1 with a multipane
- *
- * @author      Timo A. Hummel <timo.hummel@4fb.de>
- */
+
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cPageLeftTopMultiPane extends cPageLeftTop
 {
 	/**
@@ -397,6 +391,7 @@ class cPageLeftTopMultiPane extends cPageLeftTop
      */		
 	function cPageLeftTopMultiPane ($items)
 	{
+		cDeprecated("This class is not longer supported.");
 		$this->_items = $items;
 		
 		cPageLeftTop::cPageLeftTop();
@@ -472,10 +467,12 @@ class cPageLeftTopMultiPane extends cPageLeftTop
 	}
 }
 
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cNewPageLeftTopMultiPane extends cPageLeftTopMultiPane
 {
 	function cNewPageLeftTopMultiPane ($items)
 	{
+		cDeprecated("This class is not longer supported.");
 		cPageLeftTopMultiPane::cPageLeftTopMultiPane($items);
 	}
 

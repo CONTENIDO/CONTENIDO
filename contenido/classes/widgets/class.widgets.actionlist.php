@@ -29,10 +29,13 @@
 if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
+
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cWidgetMenuActionList extends cFoldingRow
 {
 	function cWidgetMenuActionList($uuid, $title, $dataClassName)
 	{ 
+		cDeprecated("This class is not longer supported.");
 		global $cfg;
 		
 		if (!class_exists($dataClassName))

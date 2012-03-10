@@ -30,11 +30,13 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cWidgetTableEdit
 {
 	function cWidgetTableEdit ($metaobject, $title)
 	{
+		cDeprecated("This class is not longer supported.");
+	
 		$this->_metaobject = $metaobject;
 		$this->_title = $title;
 		

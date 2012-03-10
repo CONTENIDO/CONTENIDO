@@ -32,11 +32,7 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 
-/**
- * CONTENIDO Table view
- *
- * @author      Timo A. Hummel <timo.hummel@4fb.de>
- */
+/* @deprecated 2012-03-10 This class is not longer supported. */
 class cTableView
 {
 	var $items;
@@ -55,6 +51,10 @@ class cTableView
 	var $header;
 	var $cancelLink;
 	var $submitjs;
+	
+	function cTableView() {
+		cDeprecated("This class is not longer supported.");
+	}
 	
 	
 	function UI_Table_Form ($name, $action = "", $method = "post")
