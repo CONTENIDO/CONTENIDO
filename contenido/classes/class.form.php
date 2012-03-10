@@ -34,10 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-/**
- * Form generator class
- * @package    CONTENIDO Backend Classes
- */
+/* @deprecated 2011-03-10 This class is not longer supported. */
 class Form
 {
 
@@ -106,7 +103,7 @@ class Form
      */
     public function __construct()
     {
-        // empty
+        cDeprecated("This class is not longer supported.");
     }
 
     /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
@@ -428,14 +425,7 @@ class Form
 }
 
 
-/**
- * Class Formfield
- * Class for creating form elements
- * @package    CONTENIDO Backend Classes
- * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
- * @version    1.0
- * @copyright  four for business 2002
- */
+/* @deprecated 2011-03-10 This class is not longer supported. */
 class FormField
 {
     /**
@@ -443,7 +433,7 @@ class FormField
      */
     public function __construct()
     {
-        // do nothing
+        cDeprecated("This class is not longer supported.");
     }
 
     /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
@@ -601,14 +591,7 @@ class FormField
 }
 
 
-/**
- * class FormCheck
- * Class for checking form values
- * @package    CONTENIDO Backend Classes
- * @author     Jan Lengowski <Jan.Lengowski@4fb.de>
- * @version    1.0
- * @copyright  four for business 2002
- */
+/* @deprecated 2011-03-10 This class is not longer supported. */
 class FormCheck
 {
 
@@ -617,7 +600,7 @@ class FormCheck
      */
     public function __construct()
     {
-        // empty
+        cDeprecated("This class is not longer supported.");
     }
 
     /** @deprecated  [2011-11-18] Old constructor function for downwards compatibility */
