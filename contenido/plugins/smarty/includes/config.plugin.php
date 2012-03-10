@@ -38,6 +38,6 @@ plugin_include('smarty', 'classes/class.Contenido_SmartyWrapper.php');
 try {
 	new Contenido_SmartyWrapper($cfg, $cfgClient[$client], true);
 } catch (Exception $e) {
-	cWarning($e->getMessage());
+	cWarning($e->getFile(), $e->getLine(), $e->getMessage());
 }
 ?>
