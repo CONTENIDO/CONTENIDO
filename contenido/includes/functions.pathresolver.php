@@ -84,7 +84,7 @@ function prResolvePathViaURLNames($path) {
                             `idlang` INT( 10 ) NOT NULL ,
                             `lastcached` INT(10) NOT NULL,
                              PRIMARY KEY  (`idpathresolvecache`)
-                            ) TYPE = HEAP;';
+                            ) ENGINE = HEAP;';
 
             $db->query($sql);
         }
