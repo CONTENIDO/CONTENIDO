@@ -83,42 +83,6 @@
  * @subpackage  CEC
  */
 class CEC_Hook {
-
-    /**
-     * Value to break the cec execution at a true result
-     * @deprecated  see CEC_Hook::setConditions()
-     * @var  int
-     */
-    const BREAK_AT_TRUE  = 'true';
-
-    /**
-     * Value to break the cec execution at a false result
-     * @deprecated  see CEC_Hook::setConditions()
-     * @var  int
-     */
-    const BREAK_AT_FALSE = 'false';
-
-    /**
-     * Value to break the cec execution at a null result
-     * @deprecated  see CEC_Hook::setConditions()
-     * @var  int
-     */
-    const BREAK_AT_NULL  = 'null';
-
-    /**
-     * Flag to return the set break condition directly.
-     * @deprecated No more needed
-     * @var  bool
-     */
-    static private $_returnBreakConditionDirectly = false;
-
-    /**
-     * Flag to overwrite arguments.
-     * @deprecated No more needed
-     * @var  bool
-     */
-    static private $_overwriteArguments = true;
-
     /**
      * Temporaly stored break condition.
      * @var  int
@@ -137,67 +101,6 @@ class CEC_Hook {
      * @var  int
      */
     static private $_returnArgumentPos = 1;
-
-
-    /**
-     * Temporaly setting of an execution conditions.
-     *
-     * @deprecated  Function is no more needed, still exists due to downwards compatibility!
-     *
-     * This is usefull, if at least on of defined cec functions returns a specific value and the
-     * execution of further functions is no more needed.
-     *
-     * The defined condition will be reset in execute() method.
-     *
-     * @param   mixed   $condition  One of CEC_Hook constants, with following control mechanism:
-     *                              - CEC_Hook::BREAK_AT_TRUE = Breaks the iteration of cec functions
-     *                                and returns the parameter, if the result of an function is true.
-     *
-     *                              - CEC_Hook::BREAK_AT_FALSE = Breaks the iteration of cec functions
-     *                                and returns the parameter, if the result of an function is false.
-     *
-     *                              - CEC_Hook::BREAK_AT_NULL = Breaks the iteration of cec functions
-     *                                and returns the parameter, if the result of an function is null.
-     *
-     * @param  bool  $overwriteArguments
-     *                                  Flag to prevent overwriting of passed parameter to execute().
-     *                                  Normally the parameter will be overwritten by return value of
-     *                                  executed functions, but this is sometimes a not wanted side effect.
-     *
-     * @param  bool  $returnbreakconditiondirectly
-     *                                  If a break condition is set and a chain function returns the condition
-     *                                  set, setting this option forces the execute method to directly return
-     *                                  that condition instead of the args
-     *
-     * @param  mixed  $defaultReturnValue
-     *
-     * @throws  InvalidArgumentException  If passed type is not one of CEC_Hook constants.
-     */
-    public static function setConditions($condition, $overwriteArguments=true, $returnbreakconditiondirectly=false, $defaultReturnValue=null)
-    {
-        cDeprecated("This function is no longer needed");
-        switch ($condition) {
-            case CEC_Hook::BREAK_AT_TRUE:
-                self::$_breakCondition = CEC_Hook::BREAK_AT_TRUE;
-                break;
-            case CEC_Hook::BREAK_AT_FALSE:
-                self::$_breakCondition = CEC_Hook::BREAK_AT_FALSE;
-                break;
-            case CEC_Hook::BREAK_AT_NULL:
-                self::$_breakCondition = CEC_Hook::BREAK_AT_NULL;
-                break;
-            default:
-                throw new InvalidArgumentException('Condition "' . $condition . '" is not supported!');
-                break;
-        }
-
-        self::$_overwriteArguments = (bool) $overwriteArguments;
-
-        self::$_returnBreakConditionDirectly = (bool) $returnbreakconditiondirectly;
-
-        self::$_defaultReturnValue = $defaultReturnValue;
-    }
-
 
     /**
      * Temporaly setting of break condition and optional the default return value.
@@ -401,6 +304,7 @@ class CEC_Hook {
 
     /**
      * Used to debug some status informations.
+	 * @TODO: Implement cec_hook debug mode for automatic logging when activated.
      *
      * Writes the debug value into a logfile (see contenido/logs/cec_hook_debug.log).
      *
