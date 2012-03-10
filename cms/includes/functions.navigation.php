@@ -89,7 +89,7 @@ function createNavigationArray($start_id, $db)
         if ($visible) {
             $navigation[$cat_id] = array("idcat"  => $cat_id,
                                          "name"   => $db->f("name"),
-                                         "target" => '_self', # you can not call getTarget($cat_id, &$db) at this point with the same db instance!
+                                         "target" => '_self', 
                                          "public" => $db->f("public"));
         }
     } // end while
@@ -98,41 +98,6 @@ function createNavigationArray($start_id, $db)
 
     return  $navigation;
 }
-
-
-/**
- * Return target of a given category id
- *
- * @deprecated [2008-04-14]
- */
-function getTarget($cat_id, $db)
-{
-    global $cfg, $client, $lang;
-	cDeprecated();
-
-// SECURITY-FIX
-    $sql = "SELECT
-                a.external_redirect AS ext
-            FROM
-                ".$cfg["tab"]["art_lang"]." AS a,
-                ".$cfg["tab"]["cat_art"]." AS b,
-                ".$cfg["tab"]["cat"]." AS c
-            WHERE
-                b.idcat    = '".Contenido_Security::escapeDB($cat_id, $db)."' AND
-                c.idclient = '".Contenido_Security::escapeDB($client, $db)."' AND
-                c.idcat    = b.idcat AND
-                a.idart    = b.idart AND
-                a.idlang   = '".Contenido_Security::escapeDB($lang, $db)."'";
-
-    $db->query($sql);
-    $db->next_record();
-
-    $target = ($db->f('ext') == 0) ? '_self' : '_blank';
-
-    $db->free();
-    return $target;
-}
-
 
 /**
  * Return true if $parentid is parent of $catid
