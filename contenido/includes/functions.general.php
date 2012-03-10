@@ -608,55 +608,10 @@ function getGroupOrUserName($uid)
     }
 }
 
-/**
- * getPhpModuleInfo - parses phpinfo() output
- *
- * parses phpinfo() output
- * (1) get informations for a specific module (parameter $modulname)
- * (2) get informations for all modules (no parameter for $modulname needed)
- *
- * if a specified extension doesn't exists or isn't activated an array will be returned:
- * Array (
- *     [error] => extension is not available
- * )
- *
- * to get specified information on one module use (1):
- * getPhpModuleInfo($moduleName = 'gd');
- *
- * to get all informations use (2):
- * getPhpModuleInfo($moduleName);
- *
- *
- * EXAMPLE OUTPUT (1):
- * Array (
- *    [GD Support] => Array (
- *        [0] => enabled
- *    )
- * ...
- * )
- *
- *
- * EXAMPLE OUTPUT (2):
- * Array (
- *     [yp] => Array (
- *         [YP Support] => Array (
- *             [0] => enabled
- *         )
- *     )
- * ...
- * }
- *
- * foreach ($moduleSettings as $setting => $value)
- * $setting contains the modul settings
- * $value contains the settings as an array($value[0] => Local Value && $value[1] => Master Value)
- *
- * @param  string  $modulName  specify modul name or if not get all settings
- *
- * @return array see above for example
- * @author Marco Jahn
- */
+/* @deprecated 2012-03-10 This function is not longer supported. */
 function getPhpModuleInfo($moduleName)
 {
+	cDeprecated("This function is not longer supported");
     $moduleSettings = array();
     ob_start();
     phpinfo(INFO_MODULES); // get information vor modules
