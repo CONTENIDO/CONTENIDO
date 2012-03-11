@@ -843,36 +843,37 @@ class cApiUser extends Item
      * on error code $iErrorCode, which is returned by checkPassword* methods.
      *
      * @param int $iErrorCode
-     * @param array $aCfg CONTENIDO configuration array
      * @return string
      */
-    public static function getErrorString($iErrorCode, array $aCfg)
+    public static function getErrorString($iErrorCode)
     {
-        $sError = "";
+        global $cfg;
+		
+		$sError = "";
 
         switch ($iErrorCode) {
             case self::PASS_NOT_ENOUGH_MIXED_CHARS:
                 $sError = sprintf(
                     i18n("Please use at least %d lower and upper case characters in your password!"),
-                    $aCfg['password']['mixed_case_mandatory']
+                    $cfg['password']['mixed_case_mandatory']
                 );
                 break;
             case self::PASS_NOT_ENOUGH_NUMBERS:
                 $sError = sprintf(
                     i18n("Please use at least %d numbers in your password!"),
-                    $aCfg['password']['numbers_mandatory']
+                    $cfg['password']['numbers_mandatory']
                 );
                 break;
             case self::PASS_NOT_ENOUGH_SYMBOLS:
                 $sError = sprintf(
                     i18n("Please use at least %d symbols in your password!"),
-                    $aCfg['password']['symbols_mandatory']
+                    $cfg['password']['symbols_mandatory']
                 );
                 break;
             case self::PASS_TO_SHORT:
                 $sError = sprintf(
                     i18n("Password is too short! Please use at least %d signs."),
-                    ($aCfg['password']['min_length'] >  0 ? $aCfg['password']['min_length'] : self::MIN_PASS_LENGTH_DEFAULT)
+                    ($cfg['password']['min_length'] >  0 ? $cfg['password']['min_length'] : self::MIN_PASS_LENGTH_DEFAULT)
                 );
                 break;
             case self::PASS_NOT_ENOUGH_DIFFERENT_CHARS:
@@ -881,7 +882,7 @@ class cApiUser extends Item
             case self::PASS_NOT_ENOUGH_MIXED_CHARS:
                 $sError = sprintf(
                     i18n("Please use at least %d lower and upper case characters in your password!"),
-                    $aCfg['password']['mixed_case_mandatory']
+                    $cfg['password']['mixed_case_mandatory']
                 );
                 break;
             case self::PASS_NOT_STRONG:

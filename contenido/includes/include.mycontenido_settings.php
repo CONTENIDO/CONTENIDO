@@ -76,7 +76,7 @@ if ($action == "mycontenido_editself")
             if ( $iResult == cApiUser::PASS_OK ) {
                 $noti = $notification->returnNotification("info", i18n("Password changed"))."<br>";
             } else {
-                $noti = $notification->returnNotification("error", cApiUser::getErrorString($iResult, $cfg));
+                $noti = $notification->returnNotification("error", cApiUser::getErrorString($iResult));
             }
 
     	}

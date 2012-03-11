@@ -119,7 +119,7 @@ if ($action == 'user_edit') {
             // fine, passwords are the same, but is the password valid?
             if ($iPasswordSaveResult != cApiUser::PASS_OK) {
                 // oh oh, password is NOT valid. check it...
-                $sPassError = cApiUser::getErrorString($iPasswordSaveResult, $cfg);
+                $sPassError = cApiUser::getErrorString($iPasswordSaveResult);
                 $sNotification = $notification->returnNotification("error", $sPassError);
                 $bError = true;
             } else {

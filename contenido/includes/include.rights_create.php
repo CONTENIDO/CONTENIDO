@@ -106,7 +106,7 @@ if ($action == 'user_createuser') {
                     }
             } else {
                 // oh oh, password is NOT valid. check it...
-                $sNotification = $notification->returnNotification("warning", cApiUser::getErrorString($iPassCheck, $cfg));
+                $sNotification = $notification->returnNotification("warning", cApiUser::getErrorString($iPassCheck));
                 $bError = true;
             }
 
