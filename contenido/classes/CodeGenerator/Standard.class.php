@@ -106,18 +106,22 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
                 $moduleHandler = new Contenido_Module_Handler($a_d[$value]);
                 $input = '';
-
+                
                 // Get the contents of input and output from files and not from db-table
                 if ($moduleHandler->modulePathExists() == true) {
                     $this->_moduleCode = $moduleHandler->readOutput();
                     // Load css and js content of the js/css files
-                    $this->_cssData .= $moduleHandler->getFilesContent("css", "css");
-                    $this->_jsData .= $moduleHandler->getFilesContent("js", "js");
+                    if($moduleHandler->getFilesContent("css", "css") !== false ) {
+                        $this->_cssData .= $moduleHandler->getFilesContent("css", "css");
+                    }
+                  
+                    if($moduleHandler->getFilesContent("js", "js") !== false ) {
+                        $this->_jsData .= $moduleHandler->getFilesContent("js", "js");
+                    }
 
                     $input = $moduleHandler->readInput();
-                } else {
-
-                }
+                } 
+                
                 $this->_moduleCode = $this->_moduleCode . "\n";
 
                 // Process CMS value tags
@@ -150,13 +154,18 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
         // Save the collected css/js data and save it under the template name ([templatename].css , [templatename].js in cache dir
         $cssFile = '';
-        if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, "css", $this->_cssData))) {
-            $cssFile = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';
+        
+        if(strlen($this->_cssData) > 0) {
+            if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, "css", $this->_cssData))) {
+                $cssFile = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';
+            }
         }
-		
+        
         $jsFile = '';
-        if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, "js", $this->_jsData))) {
-            $jsFile = '<script src="'.$myFileJs.'" type="text/javascript"></script>';
+        if(strlen($this->_jsData) > 0) {
+            if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, "js", $this->_jsData))) {
+                $jsFile = '<script src="'.$myFileJs.'" type="text/javascript"></script>';
+            }
         }
 
         // Add meta tags
