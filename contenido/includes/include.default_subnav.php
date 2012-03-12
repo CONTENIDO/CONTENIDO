@@ -42,7 +42,7 @@ $bDebug = false;
 $sDebugMsg = '';
 
 /*
- * Benötigt alle möglichen vom Frame übergenene GET-Parameter-Names
+ * Benï¿½tigt alle mï¿½glichen vom Frame ï¿½bergenene GET-Parameter-Names
  */
 $aBasicParams = array( 'area', 'frame', 'contenido', 'appendparameters' );
 
@@ -83,7 +83,7 @@ $area = Contenido_Security::escapeDB($area, $db);
 	
 /*
  * is loading from main.php
- * dann ist die Anzahl aller gültigen Variablen mit den in GET identisch
+ * dann ist die Anzahl aller gï¿½ltigen Variablen mit den in GET identisch
  */
 	if( $iCountBasicVal == count($_GET) )
 	{
@@ -142,6 +142,7 @@ $area = Contenido_Security::escapeDB($area, $db);
 	
 	$db->query($sql);
 	
+	
 	while( $db->next_record() )
 	{
 		/* Name */
@@ -163,6 +164,9 @@ $area = Contenido_Security::escapeDB($area, $db);
 			}	
 		}
 		
+		
+		
+		
 		/* Link */
 		$sLink = $sess->url("main.php?area=".$sArea."&frame=4".($appendparameters?'&appendparameters='.$appendparameters:'')."&contenido=".$sess->id.$sUrlParams);
 		
@@ -178,6 +182,19 @@ $area = Contenido_Security::escapeDB($area, $db);
 		$tpl->set("d", "CAPTION",   '<a class="white'.$sClass.'" onclick="sub.clicked(this)" target="right_bottom" href="'.$sLink.'">'.$sCaption.'</a>');
 		$tpl->next();
 	}
+	
+	//Have area a menue
+	if($db->num_rows() == 0) {
+			
+		$sql = sprintf("SELECT menuless FROM %s WHERE name = '%s' AND parent_id = 0", $cfg["tab"]["area"], $area);
+		$db->query($sql);
+			
+		while($db->next_record()) {
+			$bMenuless = $db->f("menuless") ? true : false;
+	
+		}
+	}
+	
 
 	if( !$bVirgin || $bMenuless )
 	{
