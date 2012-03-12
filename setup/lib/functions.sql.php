@@ -71,7 +71,8 @@ function addAutoIncrementToTables($db, $cfg) {
                           $cfg['sql']['sqlprefix'].'_sequence',
                           $cfg['sql']['sqlprefix'].'_phplib_active_sessions',
                           $cfg['sql']['sqlprefix'].'_online_user',
-                          $cfg['sql']['sqlprefix'].'_pi_linkwhitelist',);
+                          $cfg['sql']['sqlprefix'].'_pi_linkwhitelist',
+                          $cfg['sql']['sqlprefix'].'_phplib_auth_user_md5',);
     
     $sql = 'SHOW TABLES FROM  '.$cfg['db']['connection']['database'].'';
     $db->query($sql);
@@ -89,8 +90,8 @@ function addAutoIncrementToTables($db, $cfg) {
         }
     }
 	
-	// @TODO: why 70?!
-    if($i > 70) {
+	// Security reason: Check iterator alter table before drop table. The count of Tables must be not less than 65.   
+    if($i > 65) {
         $sql = 'DROP TABLE IF EXISTS '.$cfg['sql']['sqlprefix'].'_sequence';
         $db->query($sql);
     }
