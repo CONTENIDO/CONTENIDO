@@ -8,13 +8,13 @@
 			+ "piwik.js' type='text/javascript'%3E%3C/script%3E"));
 
 	try {
-		var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+		var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", {/literal} {$idsite} {literal});
 		piwikTracker.trackPageView();
 		piwikTracker.enableLinkTracking();
 	} catch (err) {
 	}
 	{/literal}
 </script>
-<noscript><p><img src="{$noScriptUrl}piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<noscript><p><img src="{$noScriptUrl}piwik.php?idsite={$idsite}" style="border:0" alt="" /></p></noscript>
 
 <!-- End Piwik Tracking Code -->

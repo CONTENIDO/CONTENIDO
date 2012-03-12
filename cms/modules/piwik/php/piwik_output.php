@@ -7,10 +7,12 @@ if (!class_exists('Piwik')) {
 
 		private $_httpsUrl = '';
 		private $_httpUrl = '';
+		private $_idsite = '';
 		public function __construct() {
 
 			$this->_httpsUrl = getEffectiveSetting('piwik', 'https_url', '');
 			$this->_httpUrl = getEffectiveSetting('piwik', 'http_url', '');
+			$this->_idsite = getEffectiveSetting('piwik','idsite', '');
 		}
 		 
 		 
@@ -18,7 +20,7 @@ if (!class_exists('Piwik')) {
 
 			self::$_smarty->assign('httpsUrl', $this->_httpsUrl);
 			self::$_smarty->assign('httpUrl', $this->_httpUrl);
-			
+			self::$_smarty->assign('idsite', $this->_idsite);
 			$noScriptUrl = $this->_httpUrl;
 			if(isset($_SERVER["https"])) {
 				$noScriptUrl = $this->_httpsUrl;
