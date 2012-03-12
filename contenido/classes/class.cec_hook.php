@@ -295,8 +295,6 @@ class CEC_Hook {
     private static function _reset()
     {
         self::$_breakCondition = null;
-        self::$_returnBreakConditionDirectly = false;
-        self::$_overwriteArguments = true;
         self::$_defaultReturnValue = null;
         self::$_returnArgumentPos = 1;
     }
