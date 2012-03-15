@@ -431,7 +431,7 @@ abstract class DB_Sql_Abstract
             $this->free();
         }
 
-        $this->_debug('Debug: query = ' . $sQuery);
+        $this->_debug('query = "' . $sQuery . '"');
 
         if ($this->_bProfile) {
             $fStart = microtime(true);
@@ -1021,8 +1021,6 @@ abstract class DB_Sql_Abstract
      */
     protected function _debug($sMsg)
     {
-        if ($this->Debug) {
-            printf("<pre>" . $sMsg . "</pre>\n");
-        }
+    	cDebug($sMsg);
     }
 }

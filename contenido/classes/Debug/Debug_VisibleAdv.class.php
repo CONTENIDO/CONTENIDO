@@ -41,6 +41,7 @@ class Debug_VisibleAdv implements IDebug, Countable {
 	
 	static private $_instance;
 	private $_aItems;
+	private $_buffer;
 	
 	/** 
 	* Constructor
@@ -85,11 +86,22 @@ class Debug_VisibleAdv implements IDebug, Countable {
 	}
 	
 	/**
+	 * Writes a line
+	 * @see IDebug::out()
+	 */
+	public function out($sText) {
+		$this->_buffer .= $sText."\n";
+	}
+	
+	/**
 	 * Outputs all Debug items in collection to screen in a HTML Box at left top of page.
 	 * @access public
 	 * @return void
 	 */
 	public function showAll() {
+		global $backend;
+		
+		$sHtml = "";
         if ($this->count() > 0) {
             $sHtml = '<script type="text/javascript">
 			function con_dbg_toggle(myItem) {
@@ -133,8 +145,17 @@ class Debug_VisibleAdv implements IDebug, Countable {
             }
             $sHtml .= '</div>
 		</div>';
-            echo $sHtml;
         }
+        $sHtml .= "<script type='text/javascript'> var aheader = null; if(parent.parent.header) {aheader = parent.parent.header;} else if(parent.parent.parent.header) {aheader = parent.parent.parent.header;} var dbg = aheader.document.getElementById('debug_msg'); dbg.innerHTML += \"<pre>";
+        
+        $buffer = str_replace("\'", "\\'", $this->_buffer);
+        $buffer = str_replace("\"", "\\\"", $buffer);
+        $buffer = str_replace("\n",'\n', $buffer);
+        $buffer = str_replace(chr(13), "", $buffer);
+        $sHtml .= $buffer;
+        
+        $sHtml .= "</pre><input type='button' onclick='selectText()' value='Select all'>\"; dbg.scrollTop = dbg.scrollHeight;</script>";
+        echo $sHtml;
 	}
 	
 	/**

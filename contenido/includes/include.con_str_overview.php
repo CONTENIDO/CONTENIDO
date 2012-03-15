@@ -725,11 +725,8 @@ while ($db->next_record()) {
     }
 }
 
-if ($bDebug) {
-    echo '<pre>';
-    var_dump($navigationTree); 
-    echo '</pre>';
-}
+cDebug(print_r($navigationTree, true));
+
 if (count($navigationTree[0])) {
     $sCategories = showTree(0, $aWholelist);
 }

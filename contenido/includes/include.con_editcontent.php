@@ -138,7 +138,7 @@ if ($action == 10) {
     $code = str_ireplace_once("<head>", "<head>\n" . '<base href="' . $cfgClient[$client]["path"]["htmlpath"] . '">', $code);
 
     if ($cfg["debug"]["codeoutput"]) {
-        echo "<textarea>".htmlspecialchars($code)."</textarea>";
+    	cDebug(htmlspecialchars($code));
     }
 
     chdir($cfgClient[$client]["path"]["frontend"]);

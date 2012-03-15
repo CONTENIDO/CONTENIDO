@@ -53,6 +53,10 @@ class DebuggerFactory {
                 include_once('Debug_File.class.php');
                 $oDebugger = Debug_File::getInstance();
                 break;
+            case 'vis_and_file':
+            	include_once('Debug_FileAndVisAdv.php');
+            	$oDebugger = Debug_FileAndVisAdv::getInstance();
+            	break;
             case 'devnull':
                 include_once('Debug_DevNull.class.php');
                 $oDebugger = Debug_DevNull::getInstance();

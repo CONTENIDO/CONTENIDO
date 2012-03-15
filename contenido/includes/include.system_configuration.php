@@ -108,7 +108,9 @@ $aManagedProperties = array(
                           array('type' => 'system', 'name' => 'mail_sender_name', 'value' => '', 'label' => i18n('Mailserver sender name'), 'group' => i18n('Mailserver')),
                           array('type' => 'generator', 'name' => 'xhtml', 'value' => array('false', 'true'), 'label' => i18n('Generate XHTML'), 'group' => i18n('Development')),
                           array('type' => 'generator', 'name' => 'basehref', 'value' => array('false', 'true'), 'label' => i18n('Generate basehref'), 'group' => i18n('Development')),
-                          array('type' => 'imagemagick', 'name' => 'available', 'value' => array('0', '1'), 'label' => i18n('Use image magic (if available)'), 'group' => i18n('Development'))				  
+                          array('type' => 'imagemagick', 'name' => 'available', 'value' => array('0', '1'), 'label' => i18n('Use image magic (if available)'), 'group' => i18n('Development')), 
+                          array('type' => 'debug', 'name' => 'debug_to_file', 'value' => array("false", "true"), 'label' => i18n('Debug to file'), 'group' => i18n('Debug')),
+                          array('type' => 'debug', 'name' => 'debug_to_screen', 'value' => array("false", "true"), 'label' => i18n('Visible debug'), 'group' => i18n('Debug'))				  
 					  );
 
 $aSettings = getSystemProperties(1);

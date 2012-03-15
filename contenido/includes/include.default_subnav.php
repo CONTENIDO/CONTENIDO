@@ -35,13 +35,6 @@ $aExectime = array();
 $aExectime["fullstart"] = getmicrotime();
 
 /*
- * Debug-Modus: on / off
- * and Message as String
- */
-$bDebug = false;
-$sDebugMsg = '';
-
-/*
  * Ben�tigt alle m�glichen vom Frame �bergenene GET-Parameter-Names
  */
 $aBasicParams = array( 'area', 'frame', 'contenido', 'appendparameters' );
@@ -106,7 +99,7 @@ $area = Contenido_Security::escapeDB($area, $db);
 */
 
 /* Debug */
-	$sDebugMsg.= 'Url-Params: '.$sUrlParams."\n";
+cDebug('Url-Params: '.$sUrlParams);
 	
 
 /*
@@ -137,7 +130,7 @@ $area = Contenido_Security::escapeDB($area, $db);
 				navsub.idnavs ASC";
 
 /* Debug */
-	$sDebugMsg.= '<!-- SQL-Select: '."\n".$sql."\n".' -->'."\n";
+cDebug($sql);
 	
 	
 	$db->query($sql);
@@ -203,15 +196,8 @@ $area = Contenido_Security::escapeDB($area, $db);
 		
 		$sTpl = $tpl->generate( $cfg["path"]["templates"] . $cfg['templates']['default_subnav'], true );
 		
-		if($bDebug === true) {
-			
-			$aExectime["fullend"] = getmicrotime();
-			$sExectime = ($aExectime["fullend"] - $aExectime["fullstart"]);
-			$sDebugMsg.= 'sExectime: '.substr($sExectime,0,7)." sec"."\n";
-			
-			$sTpl = str_replace( '</body>', '<div style="position:absolute; right:15px; width: 200px; top:0px; height: 32px; overflow: scroll; background:#fff; color:#000; border:1px dotted #f00; padding:2px;">'.nl2br( $sDebugMsg ).'</div>'.'</body>', $sTpl );
-		}
-		
+		cDebug('sExectime: '.substr($sExectime,0,7)." sec");
+
 		echo $sTpl;
 	}
 	else

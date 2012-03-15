@@ -71,11 +71,13 @@ class Contenido_FrontendNavigation_Base {
     /**
      * @var boolean
      * @access protected
+     * @deprecated No longer needed. The backend chooses the debug mode. This is always true
      */
     protected $bDbg;
     /**
      * @var string
      * @access protected
+     * @deprecated No longer needed. The backend chooses the debug mode.
      */
     protected $sDbgMode;
     /**
@@ -102,8 +104,8 @@ class Contenido_FrontendNavigation_Base {
         $this->aCfgClient = $aCfgClient;
         $this->_iCurrentLoadDepth = 1;
         $this->_aSubCategories = array();
-        $this->bDbg = false;
-        $this->oDbg = null;
+        $this->bDbg = true;
+        $this->oDbg = getDebugger();
     }
     
     /**
@@ -134,6 +136,7 @@ class Contenido_FrontendNavigation_Base {
     
     /**
      * Set internal property for debugging on/off and choose appropriate debug object
+     * @deprecated No longer needed. The backend chooses the debug mode.
      * @access public
      * @param boolean $bDebug
      * @param string $sDebugMode
@@ -141,6 +144,8 @@ class Contenido_FrontendNavigation_Base {
      * @author Rudi Bieller
      */
     public function setDebug($bDebug = true, $sDebugMode = 'visible') {
+    	cDeprecated("This function is no longer needed. \$oDbg gets chosen by the system settings.");
+    	
         if (!in_array($sDebugMode, array('visible', 'hidden'))) {
             $sDebugMode = 'hidden';
         }

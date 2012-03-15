@@ -56,6 +56,12 @@ class Debug_Hidden implements IDebug {
 		return self::$_instance;
 	}
 	
+	public function out($msg) {
+		echo("\n <!-- dbg\n");
+		echo($msg);
+		echo("\n-->");
+	}
+	
 	/**
 	 * Outputs contents of passed variable in a preformatted, readable way
 	 *

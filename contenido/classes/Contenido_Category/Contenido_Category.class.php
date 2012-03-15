@@ -176,7 +176,6 @@ class Contenido_Category extends Contenido_Category_Base {
 	    if ($bIncludeLanguage === true) {
 	        try {
 		        $oCategoryLanguage = new Contenido_Category_Language($this->oDb, $this->aCfg);
-		        $oCategoryLanguage->setDebug($this->bDbg, $this->sDbgMode);
 		        $oCategoryLanguage->setIdCat($this->getIdCat());
 		        $oCategoryLanguage->setIdLang($this->getIdLang());
 		        $oCategoryLanguage->load();
@@ -218,7 +217,6 @@ class Contenido_Category extends Contenido_Category_Base {
         foreach ($aSubCategories as $iIdcatCurrent) {
 	        try {
 	            $oCategory = new Contenido_Category($this->_oDb, $this->aCfg);
-		        $oCategory->setDebug($this->bDbg, $this->sDbgMode);
 		        if ($this->iSubCategoriesLoadDepth > 0) {
 		            $oCategory->setloadSubCategories($this->bLoadSubCategories, ($this->iSubCategoriesLoadDepth - 1));
 		        }
@@ -445,7 +443,6 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
             foreach ($aCategoryIds as $iId) {
                 $iIdLang = $this->getIdLang();
                 $oCategory = new Contenido_Category($this->oDb, $this->aCfg);
-                $oCategory->setDebug($this->bDbg, $this->sDbgMode);
 				if ($this->iSubCategoriesLoadDepth > 0) {
 					$oCategory->setloadSubCategories($this->bLoadSubCategories, $this->iSubCategoriesLoadDepth);
 				}
@@ -846,11 +843,13 @@ class Contenido_Category_Base {
     /**
      * @var boolean
      * @access protected
+     * @deprecated No longer needed. The backend chooses the debug mode. This is always true
      */
     protected $bDbg;
     /**
      * @var string
      * @access protected
+     * @deprecated No longer needed. The backend chooses the debug mode.
      */
     protected $sDbgMode;
     /**
@@ -870,12 +869,13 @@ class Contenido_Category_Base {
     public function __construct(DB_Contenido $oDb, array $aCfg) {
         $this->oDb = $oDb;
         $this->aCfg = $aCfg;
-        $this->bDbg = false;
-        $this->oDbg = null;
+        $this->bDbg = true;
+        $this->oDbg = getDebugger();
     }
     
     /**
      * Set internal property for debugging on/off and choose appropriate debug object
+     * @deprecated No longer needed. The backend chooses the debug mode.
      * @access public
      * @param boolean $bDebug
      * @param string $sDebugMode
@@ -883,6 +883,8 @@ class Contenido_Category_Base {
      * @author Rudi Bieller
      */
     public function setDebug($bDebug = true, $sDebugMode = 'visible') {
+    	cDeprecated("This function is no longer needed. \$oDbg gets chosen by the system settings.");
+    	
         if ($bDebug === false) {
             $this->bDbg = false;
             $this->oDbg = null;

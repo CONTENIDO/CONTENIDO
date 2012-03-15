@@ -126,10 +126,8 @@ include($cfg['path']['contenido'].$cfg['path']['includes'] . 'include.' . $type 
 
 $end = getmicrotime();
 
-if ($cfg['debug']['rendering'] == true) {
-    echo "Rendering this page took: " . ($end - $start)." seconds<br>";
-    echo "Building the complete page took: " . ($end - $fullstart)." seconds<br>";
-}
+cDebug("Rendering this page took: " . ($end - $start)." seconds<br>");
+cDebug("Building the complete page took: " . ($end - $fullstart)." seconds<br>");
 
 page_close();
 

@@ -53,9 +53,10 @@ class Contenido_Navigation
 
     /**
      * Flag to debug this vlass
+     * @deprecated No longer needed. The debug mode gets chosen by the system settings.
      * @var  bool
      */
-    public $debug = 0;
+    public $debug = false;
 
     /**
      * Array storing all data
@@ -192,9 +193,7 @@ class Contenido_Navigation
         }
 
         // debugging information
-        if ($this->debug) {
-            echo '<pre>' . print_r($this->data, true) . '</pre>';
-        }
+        cDebug(print_r($this->data, true));
     }
 
 

@@ -40,8 +40,6 @@ if(!defined('CON_FRAMEWORK')) {
 
 strRemakeTreeTable();
 
-$debug = false;
-
 $tmp_area = "str";
 
 if ($action == "str_duplicate" &&
@@ -339,13 +337,7 @@ if ( $perm->have_perm_area_action($area) ) {
                 idtree";
 
     # Debug info
-    if ( $debug ) {
-
-        echo "<pre>";
-        echo $sql;
-        echo "</pre>";
-
-    }
+    cDebug($sql);
 
     $db->query($sql);
 	

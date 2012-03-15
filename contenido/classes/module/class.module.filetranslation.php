@@ -92,7 +92,7 @@ class Contenido_Module_FileTranslation extends Contenido_Module_Handler{
     public function __construct($idmodul = null, $static = false  ) {
        parent::__construct($idmodul);
        
-       $this->_debug = true;
+       //$this->_debug = true;
       
 	 	if($idmodul != null)
       		$this->_modulePath = $this->getModulePath();

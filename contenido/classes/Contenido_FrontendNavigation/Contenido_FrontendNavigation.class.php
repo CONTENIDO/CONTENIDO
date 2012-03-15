@@ -161,7 +161,6 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
         }
         if ($bAsObjects === true) {
             $oCategories = new Contenido_Categories(new DB_Contenido(), $this->aCfg);
-            $oCategories->setDebug($this->bDbg, $this->sDbgMode);
             $oCategories->setIdLang($this->iLang);
             $oCategories->setloadSubCategories($bWithSubCategories, $iSubCategoriesLoadDepth);
             $oCategories->load($this->aCategories, true, $this->iLang);

@@ -58,6 +58,7 @@ class Form
 
     /**
      * debug
+     * @deprecated No longer needed. The debug mode gets chosen by the system settings.
      * @var bool
      */
     public $debug = false;
@@ -302,11 +303,7 @@ class Form
             echo $tmp_template['complete'];
 
             // debug info
-            if ($this->debug) {
-                echo '<pre>';
-                print_r($this->fields);
-                echo '</pre>';
-            }
+            cDebug(print_r($this->fields, true));
 
         } else {
             // there are no errors

@@ -66,7 +66,6 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save 
 
     // @todo make generator configurable
     $codeGen = Contenido_CodeGenerator_Factory::getInstance('Standard');
-//    $codeGen->setDebug(true);
     if (isset($frontend_debug) && is_array($frontend_debug)) {
         $codeGen->setFrontendDebugOptions($frontend_debug);
     }

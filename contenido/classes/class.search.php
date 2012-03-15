@@ -73,6 +73,7 @@ abstract class SearchBaseAbstract
 
     /**
      * Flag to enable debug
+     * @deprecated No longer needed. The debug mode gets chosen by the system settings.
      * @var bool
      */
     protected $bDebug;
@@ -81,7 +82,7 @@ abstract class SearchBaseAbstract
      * Initialises some properties
      *
      * @param  DB_Contenido  $oDB     Optional database instance
-     * @param  bool          $bDebug  Optional, flag to enable debugging
+     * @param  bool          $bDebug  Optional, flag to enable debugging (no longer needed)
      */
     protected function __construct($oDB = null, $bDebug = false)
     {
@@ -90,8 +91,8 @@ abstract class SearchBaseAbstract
         $this->cfg    = $cfg;
         $this->lang   = $lang;
         $this->client = $client;
-
-        $this->setDebug((bool) $bDebug);
+        
+        $this->bDebug = true;
 
         if ($oDB == null) {
             $this->db = new DB_Contenido();
@@ -103,10 +104,12 @@ abstract class SearchBaseAbstract
     /**
      * Setter for debug
      *
+     * @deprecated No longer needed. The debug mode gets chosen by the system settings.
      * @param  bool $bDebug
      */
     public function setDebug($bDebug)
     {
+    	cDeprecated("This function is no longer needed. cDebug checks the available output methods for itself.");
         $this->bDebug = (bool) $bDebug;
     }
 
@@ -118,17 +121,13 @@ abstract class SearchBaseAbstract
      */
     protected function _debug($msg, $var)
     {
-        if (!$this->bDebug) {
-            return;
-        }
-        $dump = '<pre>' . $msg . ': ';
+        $dump = $msg . ': ';
         if (is_array($var) || is_object($var)) {
             $dump .= print_r($var, true);
         } else {
             $dump .= $var;
         }
-        $dump .= '</pre>' . "\n";
-        echo $dump;
+        cDebug($dump);
     }
 }
 

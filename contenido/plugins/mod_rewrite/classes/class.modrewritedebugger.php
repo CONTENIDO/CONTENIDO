@@ -70,7 +70,7 @@ class ModRewriteDebugger
         if (!self::$_bEnabled) {
             return;
         }
-        $oDebugger = DebuggerFactory::getDebugger('visible_adv');
+        $oDebugger = getDebugger();
         $oDebugger->add($mVar, $sLabel);
     }
 
@@ -83,7 +83,7 @@ class ModRewriteDebugger
         if (!self::$_bEnabled) {
             return '';
         }
-        $oDebugger = DebuggerFactory::getDebugger('visible_adv');
+        $oDebugger = getDebugger();
         ob_start();
         $oDebugger->showAll();
         $sOutput = ob_get_contents();
@@ -103,7 +103,7 @@ class ModRewriteDebugger
         if (!self::$_bEnabled) {
             return;
         }
-        $oDebugger = DebuggerFactory::getDebugger('file');
+        $oDebugger = getDebugger();
         $oDebugger->show($mVar, $sLabel);
     }
 }

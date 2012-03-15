@@ -54,6 +54,7 @@ abstract class Contenido_CodeGenerator_Abstract
     /**
      * Debug flag, prints some status messages if enabled.
      * @var bool
+     * @deprecated No longer needed. The backend chooses the debug mode.
      */
     protected $_debug = false;
 
@@ -158,6 +159,7 @@ abstract class Contenido_CodeGenerator_Abstract
     /**
      * Setter for debug property
      *
+     * @deprecated No longer needed. The backend chooses the debug mode.
      * @param  bool  $debug
      */
     public function setDebug($debug)
@@ -511,8 +513,6 @@ abstract class Contenido_CodeGenerator_Abstract
      */
     protected function _debug($msg)
     {
-        if ($this->_debug) {
-            echo $msg;
-        }
+    	cDebug($msg);
     }
 }

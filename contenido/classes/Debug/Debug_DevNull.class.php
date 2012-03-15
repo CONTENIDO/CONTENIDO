@@ -47,6 +47,11 @@ class Debug_DevNull implements IDebug {
 		
 	}
 	
+	
+	public function out($msg) {
+		#do nothing
+	}
+	
 	/** 
 	* static
 	* @access public

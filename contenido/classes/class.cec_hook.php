@@ -321,6 +321,8 @@ class CEC_Hook {
 
         $sLogPathName = $GLOBALS['cfg']['path']['contenido'] . 'logs/cec_hook_debug.log';
         file_put_contents($sLogPathName, $content . "\n", FILE_APPEND);
+        
+        cDebug($content);
     }
 
 }

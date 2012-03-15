@@ -44,7 +44,6 @@ $idcat = (isset($_GET['idcat']) && is_numeric($_GET['idcat'])) ? $_GET['idcat'] 
 $next  = (isset($_GET['next']) && is_numeric($_GET['next']) && $_GET['next'] > 0) ? $_GET['next'] : 0;
 
 $dateformat = getEffectiveSetting("backend", "timeformat_date", "Y-m-d");
-$debug = false;
 $templateDescription = '';
 
 if (!isset($syncfrom)) {
@@ -256,9 +255,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         }
 
         // Debug info
-        if ($debug) {
-            echo "<pre>" . $sql . "</pre>";
-        }
+        cDebug($sql);
 
         // Getting data
         $db->query($sql);

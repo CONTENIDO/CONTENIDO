@@ -36,6 +36,7 @@ class Contenido_Backend {
 
     /**
      * Debug flag
+     * @deprecated No longer needed. The debug mode gets chosen by the system settings.
      */
     var $debug = 0;
  
@@ -227,22 +228,15 @@ class Contenido_Backend {
             $this->files[$db->f('type')][] = $filepath;
         } # end while
 
-        if ($this->debug) {
-            echo '<pre style="font-family: verdana; font-size: 10px">';
-            echo "<b>Went something wrong? ;-)</b>\n\n";
-            echo "<b>Files:</b>\n\n";
-            print_r($this->files);
-            echo "\n\n<b>Actions:</b>\n\n";
-            print_r($this->actions[$this->area]);
-            echo "\n\n<b>Information:</b>\n\n";
-            echo "Area: $area\n";
-            echo "Action: $action\n";
-            echo "Client: $client\n";
-            echo "Lang: $lang\n";
-            echo '</pre>';
-        }
-
-
+        cDebug("Files:\n");
+        cDebug(print_r($this->files, true));
+        cDebug("\nActions:\n");
+        cDebug(print_r($this->actions[$this->area], true));
+        cDebug("\nInformation:\n");
+        cDebug("Area: $area\n");
+        cDebug("Action: $action\n");
+        cDebug("Client: $client\n");
+        cDebug("Lang: $lang\n");
     } # end function
 
     /**

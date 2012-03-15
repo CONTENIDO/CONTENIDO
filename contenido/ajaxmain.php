@@ -179,12 +179,10 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 
 $cfg['debug']['backend_exectime']['end'] = getmicrotime();
 
-if ($cfg['debug']['rendering'] == true) {
-    echo "Building this page (excluding contenido includes) took: " . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . " seconds<br>";
-    echo "Building the complete page took: " . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . " seconds<br>";
-    echo "Include memory usage: " . human_readable_size(memory_get_usage()-$oldmemusage) . "<br>";
-    echo "Complete memory usage: " . human_readable_size(memory_get_usage()) . "<br>";
-}
+cDebug("Building this page (excluding contenido includes) took: " . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . " seconds");
+cDebug("Building the complete page took: " . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . " seconds");
+cDebug("Include memory usage: " . human_readable_size(memory_get_usage()-$oldmemusage));
+cDebug("Complete memory usage: " . human_readable_size(memory_get_usage()));
 
 // User Tracking (who is online)
 $oActiveUser = new ActiveUsers($db, $cfg, $auth);

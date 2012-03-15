@@ -4504,6 +4504,14 @@ msgstr "Mailserver Host"
 msgid "Mailserver"
 msgstr "Mailserver"
 
+#: includes/include.system_configuration.php:106
+msgid "Debug to file"
+msgstr "Debug Meldungen in einer Datei speichern"
+
+#: includes/include.system_configuration.php:107
+msgid "Visible debug"
+msgstr "Debug Meldungen anzeigen"
+
 #: includes/include.system_configuration.php:107
 msgid "Mailserver sender mail"
 msgstr "Mailserver Sendermail"

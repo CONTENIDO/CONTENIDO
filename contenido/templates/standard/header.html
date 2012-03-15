@@ -59,9 +59,24 @@
     <div id="sub_0" class="head_nav left_dist">&nbsp;</div>
     <div id="submenus">{SUBMENUS}</div>
 </div>
+
+<div style="min-width: 200px; height: 80px; max-width: 100%; overflow: auto;" id='debug_msg'></div>
 <div class="clear"></div>
 
 <script type="text/javascript">
+	function selectText() {
+		if (document.selection) {
+			var range = document.body.createTextRange();
+		    range.moveToElementText(document.getElementById('debug_msg'));
+			range.select();
+		}
+		else if (window.getSelection) {
+			var range = document.createRange();
+			range.selectNode(document.getElementById('debug_msg'));
+			window.getSelection().addRange(range);
+		}
+	}
+	
     $(document).ready(function(){
         // initialize header menu
         {HEADER_MENU_OBJ}.initialize({HEADER_MENU_OPTIONS});

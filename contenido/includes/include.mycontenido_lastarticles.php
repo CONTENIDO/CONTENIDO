@@ -34,8 +34,6 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude("includes", "functions.con.php");
 
-$debug = false;
-
 $sql = "SELECT
             logtimestamp
         FROM
@@ -84,9 +82,7 @@ $sql = "SELECT
         LIMIT 5";
 
 # Debug info
-if ($debug) {
-    echo "<pre>" . $sql . "</pre>";
-}
+cDebug($sql);
 
 $db->query($sql);
 

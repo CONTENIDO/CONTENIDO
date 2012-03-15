@@ -147,7 +147,6 @@ $perm->load_permissions();
 // Create CONTENIDO classes
 $tpl = new Template();
 $backend = new Contenido_Backend();
-//$backend->debug=true;
 
 // Register session variables
 $sess->register('sess_area');
@@ -168,9 +167,7 @@ if ($cfgClient['set'] != 'set') {
 
 // Initialize CONTENIDO_Backend.
 // Load all actions from the DB and check if permission is granted.
-if ($cfg['debug']['rendering'] == true) {
-    $oldmemusage = memory_get_usage();
-}
+$oldmemusage = memory_get_usage();
 
 // Select frameset
 $backend->setFrame($frame);
@@ -200,40 +197,37 @@ if (isset($action) && $action != '') {
 
 if (isset($action)) {
     if ($backend->getCode($action) != '') {
-        if ($backend->debug == 1) {
-            echo '<pre style="font-family: verdana; font-size: 10px"><b>Executing:</b>'."\n";
-            echo $backend->getCode($action)."\n";
-            echo '</pre>';
-        }
+        cDebug("Executing: ".$backend->getCode($action));
         eval($backend->getCode($action));
     } else {
-        if ($backend->debug == 1) {
-            echo '<pre style="font-family: verdana; font-size: 10px"><b>Executing:</b>'."\n";
-            echo "no code available in action\n";
-            echo '</pre>';
-        }
+        cDebug("Exectuing: no code available in action");
     }
 }
 
 // Include the 'main' file for the selected area. Usually there is only one main file
+$sFilename = "";
 if (is_array($backend->getFile('main'))) {
-    foreach ($backend->getFile('main') as $id => $filename) {
-        include_once($cfg['path']['contenido'] . $filename);
-    }
+	foreach ($backend->getFile('main') as $id => $filename) {
+		$sFilename = $filename;
+		include_once($cfg['path']['contenido'].$filename);
+	}
 } elseif ($frame == 3) {
-    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.default_subnav.php');
+	include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.default_subnav.php');
+	$sFilename = "include.default_subnav.php";
 } else {
-    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.blank.php');
+	include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.blank.php');
+	$sFilename = "include.blank.php";
 }
 
 $cfg['debug']['backend_exectime']['end'] = getmicrotime();
 
-if ($cfg['debug']['rendering'] == true) {
-    echo 'Building this page (excluding CONTENIDO includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds<br>';
-    echo 'Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds<br>';
-    echo 'Include memory usage: ' . human_readable_size(memory_get_usage()-$oldmemusage) . '<br>';
-    echo 'Complete memory usage: ' . human_readable_size(memory_get_usage()) . '<br>';
-}
+cDebug('Building this page (excluding CONTENIDO includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']).' seconds');
+cDebug('Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']).' seconds');
+cDebug('Include memory usage: '.human_readable_size(memory_get_usage()-$oldmemusage));
+cDebug('Complete memory usage: '.human_readable_size(memory_get_usage()));
+cDebug("*****".$sFilename."*****");
+
+debugPrint();
 
 // Do user tracking (who is online)
 $oActiveUser = new ActiveUsers($db, $cfg, $auth);

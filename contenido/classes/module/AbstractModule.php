@@ -88,9 +88,7 @@ if (class_exists('AbstractModule')=== false) {
         }
 
         public static function debug($value, $dump = false) {
-            echo '<pre>';
-            $dump== false ? print_r($value) : var_dump($value);
-            echo '</pre>';
+        	cDebug(print_r($value, true));
         }
 
         /**

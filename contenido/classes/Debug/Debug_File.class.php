@@ -84,6 +84,13 @@ class Debug_File implements IDebug {
 		return self::$_instance;
 	}
 	
+	public function out($msg) {
+        if (is_resource(self::$_hFileHandle) && is_writeable($this->_sPathToFile)) {
+			$sDate = date('Y-m-d H:i:s');
+			fwrite(self::$_hFileHandle, $sDate.": ".$msg."\n");
+        }
+	}
+	
 	/**
 	 * Outputs contents of passed variable in a preformatted, readable way
 	 *

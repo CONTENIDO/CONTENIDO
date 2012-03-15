@@ -185,7 +185,7 @@ class UI_Menu
 			}
 		}
 
-		#echo '<br>Debug (B.A.): ' . $scripts;
+		cDebug($scripts);
 		$tpl->set('s', 'JSACTIONS', $scripts);
 		$tpl->set('s', 'CELLPADDING', $this->padding);
 		$tpl->set('s', 'BORDER', $this->border);
@@ -264,7 +264,7 @@ class UI_Menu
         			if ($this->rowmark == true)
         			{
         				$extraadd = 'onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)"';
-        				#echo '<br> Debug(B.A): ' . $extraadd;
+        				cDebug($extraadd);
         			}
         			$tpl->set('d', 'EXTRA', $this->extra[$key] . $extraadd);
         		} else {

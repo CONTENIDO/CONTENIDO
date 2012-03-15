@@ -38,5 +38,6 @@ interface IDebug {
 	public function add($mVariable, $sVariableDescription = '');
 	public function reset();
 	public function showAll();
+	public function out($sText);
 }
 ?>

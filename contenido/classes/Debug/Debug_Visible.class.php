@@ -58,6 +58,10 @@ class Debug_Visible implements IDebug {
 		return self::$_instance;
 	}
 	
+	public function out($msg) {
+		#do nothing
+	}
+	
 	/**
 	 * Outputs contents of passed variable in a preformatted, readable way
 	 *

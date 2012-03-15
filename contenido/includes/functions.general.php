@@ -1727,6 +1727,63 @@ function buildStackString($startlevel = 3)
 }
 
 /**
+ * Returns the debugger for the current system settings
+ * 
+ * @return IDebug
+ */
+function getDebugger()
+{
+	$debugger = DebuggerFactory::getDebugger("devnull");
+	if(getSystemProperty("debug", "debug_to_file") == "true") {
+		$debugger = DebuggerFactory::getDebugger("file");
+	}
+	else if(getSystemProperty("debug", "debug_to_screen") == "true") {
+		$debugger = DebuggerFactory::getDebugger("visible_adv");
+	}
+	if((getSystemProperty("debug", "debug_to_screen") == "true") && (getSystemProperty("debug", "debug_to_file") == "true")) {
+		$debugger = DebuggerFactory::getDebugger("vis_and_file");
+	}
+	
+	return $debugger;
+}
+
+/**
+ * Prints a debug message if the settings allow it. The debug messages will be shown in a textrea in the header and in the file debuglog.txt.
+ * All messages are immediately written to the filesystem but they will only show up when debugPrint() is called.
+ * 
+ * @param string $message Message to display. NOTE: You can use buildStackString to show stacktraces
+ */
+function cDebug($message)
+{
+	$debugger = getDebugger();
+	$debugger->out($message);
+}
+
+/**
+ * Adds a variable to the debugger. This variable will be watched.
+ * 
+ * @param mixed $var A variable or an object
+ * @param string $label An optional description for the variable
+ */
+function debugAdd($var, $label = "")
+{
+	$debugger = getDebugger();
+	$debugger->add($var, $label);
+}
+
+/**
+ * Prints the cached debug messages to the screen
+ * 
+ */
+function debugPrint()
+{
+	$debugger = getDebugger();
+	$debugger->showAll();
+}
+
+
+
+/**
  * cWarning: CONTENIDO warning
  *
  * @param $file       File name   (use __FILE__)
@@ -1750,7 +1807,7 @@ function cWarning($file, $line, $message)
 	
 	file_put_contents($cfg['path']['contenido']."logs/errorlog.txt", $msg, FILE_APPEND);
 	
-    trigger_error("$file $line: $message", E_USER_WARNING);
+    trigger_error($message, E_USER_WARNING);
 }
 
 /**
@@ -1777,7 +1834,7 @@ function cError($file, $line, $message)
 	
 	file_put_contents($cfg['path']['contenido']."logs/errorlog.txt", $msg, FILE_APPEND);
 	
-    trigger_error("$file $line: $message", E_USER_ERROR);
+    trigger_error($message, E_USER_ERROR);
 }
 
 /**
@@ -1911,7 +1968,7 @@ function endAndLogTiming($uuid)
 
     $parameterString = implode(", ", $myparams);
 
-    trigger_error("calling function ".$_timings[$uuid]["function"]."(".$parameterString.") took ".$timeSpent." seconds", E_USER_NOTICE);
+    cDebug("calling function ".$_timings[$uuid]["function"]."(".$parameterString.") took ".$timeSpent." seconds");
 }
 
 /**
