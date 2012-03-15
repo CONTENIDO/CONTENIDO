@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Header File
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend
  * @version    1.2.2
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2003-03-18
  *   modified 2008-06-25, Timo Trautmann, CONTENIDO Framework Constand added
  *   modified 2008-07-02, Frederic Schneider, add security fix and include_security_class
@@ -27,39 +27,36 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
 // CONTENIDO startup process
-include_once ('./includes/startup.php');
+include_once('./includes/startup.php');
 
-$db = new DB_Contenido;
+page_open(array(
+    'sess' => 'Contenido_Session',
+    'auth' => 'Contenido_Challenge_Crypt_Auth',
+    'perm' => 'Contenido_Perm'
+));
 
+i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
 
-page_open(
-    array('sess' => 'Contenido_Session',
-          'auth' => 'Contenido_Challenge_Crypt_Auth',
-          'perm' => 'Contenido_Perm'));
+cInclude('includes', 'cfg_language_de.inc.php');
+cInclude('includes', 'functions.forms.php');
 
-i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
+$db = new DB_Contenido();
 
-cInclude ("includes", 'cfg_language_de.inc.php');
-cInclude ("includes", 'functions.forms.php');
-
-if (isset($killperms))
-{
-    $sess->unregister("right_list");
-    $sess->unregister("area_rights");
-    $sess->unregister("item_rights");
+if (isset($killperms)) {
+    $sess->unregister('right_list');
+    $sess->unregister('area_rights');
+    $sess->unregister('item_rights');
 }
 
-i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
-
-$sess->register("sess_area");
+$sess->register('sess_area');
 
 if (isset($area)) {
     $sess_area = $area;
@@ -68,36 +65,26 @@ if (isset($area)) {
 }
 
 if (is_numeric($changelang)) {
-	unset($area_rights);
-	unset($item_rights);
-	
-    $sess->register("lang");
+    unset($area_rights);
+    unset($item_rights);
+
+    $sess->register('lang');
     $lang = $changelang;
 }
 
-if (!is_numeric($client) || 
-	(!$perm->have_perm_client("client[".$client."]") &&
-	 !$perm->have_perm_client("admin[".$client."]")))
+if (!is_numeric($client) ||
+    (!$perm->have_perm_client('client['.$client.']') &&
+    !$perm->have_perm_client('admin['.$client.']')))
 {
-	 // use first client which is accessible
-    $sess->register("client");
-    $sql = "SELECT idclient FROM ".$cfg["tab"]["clients"]." ORDER BY idclient ASC";
-    $db->query($sql);
-    
-    while ($db->next_record())
-    {
-    	$mclient = $db->f("idclient");
-
-    	if ($perm->have_perm_client("client[".$mclient."]") ||
-    		$perm->have_perm_client("admin[".$mclient."]") )
-    	{
-    		unset($lang);
-    		$client = $mclient;
-    		break;
-    	}
+    // use first client which is accessible
+    $sess->register('client');
+    $oClientColl = new cApiClientCollection();
+    if ($oClient = $oClientColl->getFirstAccessibleClient()) {
+        unset($lang);
+        $client = $oClient->get('idclient');
     }
 } else {
-	$sess->register("client");
+    $sess->register('client');
 }
 
 if (!is_numeric($lang)) { // use first language found
@@ -105,9 +92,9 @@ if (!is_numeric($lang)) { // use first language found
     $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE A.idlang=B.idlang AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idlang ASC";
     $db->query($sql);
     $db->next_record();
-    $lang = $db->f("idlang");
+    $lang = $db->f('idlang');
 } else {
-    $sess->register("lang");
+    $sess->register('lang');
 }
 
 // call http encoding header sending function
@@ -115,8 +102,8 @@ sendEncodingHeader($db, $cfg, $lang);
 
 $perm->load_permissions();
 
-$tpl        = new Template;
-$nav        = new Contenido_Navigation;
+$tpl = new Template();
+$nav = new Contenido_Navigation();
 
 rereadClients();
 

@@ -56,7 +56,11 @@ function trans($string)
  */
 function i18n($string, $domain = "contenido")
 {
+
+#if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) {$stack = @debug_backtrace(); echo "<pre>" . print_r($stack, true) . "</pre>";die();}
+
     global $cfg, $i18nLanguage;
+#if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) echo "<pre>i18n \$i18nLanguage: $i18nLanguage</pre>";
 
     // Auto initialization
     if (!isset($i18nLanguage)) {
@@ -77,12 +81,12 @@ function i18n($string, $domain = "contenido")
 
     if (extension_loaded("gettext")) {
         if (function_exists("dgettext")) {
-            if ($domain != "contenido") {
+#            if ($domain != "contenido") {
                 $translation = dgettext($domain, $string);
                 return $translation;
-            } else {
-                return gettext($string);
-            }
+#            } else {
+#                return gettext($string);
+#            }
         }
     }
 
@@ -170,6 +174,8 @@ function i18nEmulateGettext($string, $domain = "contenido")
  */
 function i18nInit($localePath, $langCode)
 {
+if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) echo "<pre>i18nInit \$localePath: $localePath</pre>";
+if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) echo "<pre>i18nInit \$langCode: $langCode</pre>";
     global $i18nLanguage, $i18nDomains;
 
     if (function_exists("bindtextdomain")) {
@@ -180,15 +186,35 @@ function i18nInit($localePath, $langCode)
         textdomain("contenido");
 
         // Half brute-force to set the locale.
-        if (!ini_get("safe_mode")) {
+#        if (!ini_get("safe_mode")) {
             putenv("LANG=$langCode");
-        }
+            putenv("LANGUAGE=$langCode");
+#        }
 
-        if (defined("LC_MESSAGES")) {
+        defined('LC_MESSAGES') or define('LC_MESSAGES', 6); // windows workaround for LC_MESSAGES 
+#        if (defined("LC_MESSAGES")) {
             setlocale(LC_MESSAGES, $langCode);
-        }
+            setlocale(LC_MESSAGES, $langCode . '.UTF-8');
+#        }
 
         setlocale(LC_CTYPE, $langCode);
+
+/*
+        // Set language to language code
+#        setlocale(LC_ALL, $langCode);
+        defined('LC_MESSAGES') or define('LC_MESSAGES', 6); // windows workaround for LC_MESSAGES 
+        setlocale(LC_MESSAGES, $langCode);
+        setlocale(LC_CTYPE, $langCode);
+
+        // Specify location of translation tables
+        bindtextdomain("contenido", $localePath);
+
+        // Choose domain
+        textdomain("contenido");
+*/
+if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) echo "<pre>i18nInit \LANG: " . getenv('LANG') . "</pre>";
+if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) echo "<pre>i18nInit \LANGUAGE: " . getenv('LANGUAGE') . "</pre>";
+
     }
 
     $i18nDomains["contenido"] = $localePath;
@@ -205,6 +231,8 @@ function i18nInit($localePath, $langCode)
  */
 function i18nRegisterDomain($domain, $localePath)
 {
+if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4 && $domain == 'contenido') echo "<pre>i18nRegisterDomain \$langCode: $domain</pre>";
+if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4 && $domain == 'contenido') echo "<pre>i18nRegisterDomain \$localePath: $localePath</pre>";
     global $i18nDomains;
 
     if (function_exists("bindtextdomain")) {

@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO main file
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend
  * @version    1.2.3
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2003-01-20
  *   modified 2008-06-16, Holger Librenz, Hotfix: added check for illegal calling
  *   modified 2008-06-25, Timo Trautmann, CONTENIDO Framework Constand added
@@ -30,98 +30,90 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
 // CONTENIDO startup process
-include_once ('./includes/startup.php');
+include_once('./includes/startup.php');
 
-include_once ($cfg["path"]["classes"] . 'class.template.php');
+page_open(array(
+    'sess' => 'Contenido_Session',
+    'auth' => 'Contenido_Challenge_Crypt_Auth',
+    'perm' => 'Contenido_Perm'
+));
 
-page_open(
-    array('sess' => 'Contenido_Session',
-          'auth' => 'Contenido_Challenge_Crypt_Auth',
-          'perm' => 'Contenido_Perm'));
+i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
 
-i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
+cInclude('includes', 'cfg_language_de.inc.php');
+cInclude('includes', 'functions.forms.php');
 
-cInclude ("includes", 'cfg_language_de.inc.php');
-cInclude ("includes", 'functions.forms.php');
+// Create CONTENIDO classes
+$db  = new DB_Contenido();
+$tpl = new Template();
 
-# Create CONTENIDO classes
-$db  = new DB_Contenido;
-$tpl = new Template;
-
-# Build the CONTENIDO
-# Content area frameset
+// Build the CONTENIDO content area frameset
 $tpl->reset();
 
-if (isset($_GET["appendparameters"]))
-{
-	$tpl->set('s', 'LEFT', str_replace("&", "&amp;", $sess->url("frameset_left.php?area=$area&appendparameters=".$_GET["appendparameters"])));
-	$tpl->set('s', 'RIGHT', str_replace("&", "&amp;", $sess->url("frameset_right.php?area=$area&appendparameters=".$_GET["appendparameters"])));
-	$tpl->set('s', 'WIDTH', getEffectiveSetting("backend", "leftframewidth", 245));
+if (isset($_GET['appendparameters'])) {
+    $tpl->set('s', 'LEFT', str_replace('&', '&amp;', $sess->url("frameset_left.php?area=$area&appendparameters=" . $_GET['appendparameters'])));
+    $tpl->set('s', 'RIGHT', str_replace('&', '&amp;', $sess->url("frameset_right.php?area=$area&appendparameters=" . $_GET['appendparameters'])));
+    $tpl->set('s', 'WIDTH', getEffectiveSetting('backend', 'leftframewidth', 245));
 } else {
-	$tpl->set('s', 'LEFT', str_replace("&", "&amp;", $sess->url("frameset_left.php?area=$area")));
-	$tpl->set('s', 'RIGHT', str_replace("&", "&amp;", $sess->url("frameset_right.php?area=$area")));
-	$tpl->set('s', 'WIDTH', getEffectiveSetting("backend", "leftframewidth", 245));
+    $tpl->set('s', 'LEFT', str_replace('&', '&amp;', $sess->url("frameset_left.php?area=$area")));
+    $tpl->set('s', 'RIGHT', str_replace('&', '&amp;', $sess->url("frameset_right.php?area=$area")));
+    $tpl->set('s', 'WIDTH', getEffectiveSetting('backend', 'leftframewidth', 245));
 }
 
-$tpl->set('s', 'VERSION', 	$cfg['version']);
-$tpl->set('s', 'LOCATION',	$cfg['path']['contenido_fullhtml']);
+$tpl->set('s', 'VERSION',  $cfg['version']);
+$tpl->set('s', 'LOCATION', $cfg['path']['contenido_fullhtml']);
 
-/* Hide menu-frame for some areas */
+// Hide menu-frame for some areas
 
-/* First of all, fetch the meta data of the area table to check if there's a menuless column */
-$aMetadata = $db->metadata($cfg["tab"]["area"]);
+// First of all, fetch the meta data of the area table to check if there's a menuless column
+$aMetadata = $db->metadata($cfg['tab']['area']);
 $bFound = false;
 
-foreach ($aMetadata as $aFieldDescriptor)
-{
-	if ($aFieldDescriptor["name"] == "menuless")
-	{
-		$bFound = true;
-		break;
-	}
+foreach ($aMetadata as $aFieldDescriptor) {
+    if ($aFieldDescriptor['name'] == 'menuless') {
+        $bFound = true;
+        break;
+    }
 }
 
-$menuless_areas = array();
+$aMenulessAreas = array();
 
-if ($bFound == true)
-{
-	/* Yes, a menuless column does exist */
-	$sql = "SELECT name FROM ".$cfg["tab"]["area"]." WHERE menuless='1'";
-	$db->query($sql);
-
-	while ($db->next_record())
-	{
-	    $menuless_areas[] = $db->f("name");
-	}
+// @TODO: How old are the old style menueless areas???
+if ($bFound == true) {
+    // Yes, a menuless column does exist
+    $oAreaColl = new cApiAreaCollection();
+    $oAreaColl->select('menuless=1');
+    while ($oItem = $oAreaColl->next()) {
+        $aMenulessAreas[] = $oItem->get('name');
+    }
 } else {
-	/* No, use old style hard-coded menuless area stuff */
-	$menuless_areas = array("str", "logs", "debug", "system");
+    // No, use old style hard-coded menuless area stuff
+    $aMenulessAreas = array('str', 'logs', 'debug', 'system');
 }
 
-if ( in_array($area, $menuless_areas) || (isset($menuless) && $menuless == 1)) {
+if (in_array($area, $aMenulessAreas) || (isset($menuless) && $menuless == 1)) {
     $menuless = true;
-    if (isset($_GET["appendparameters"]))
-	{
-		$tpl->set('s', 'FRAME[1]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=1&appendparameters=".$_GET["appendparameters"])));
-		$tpl->set('s', 'FRAME[2]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=2&appendparameters=".$_GET["appendparameters"])));
-		$tpl->set('s', 'FRAME[3]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=3&appendparameters=".$_GET["appendparameters"])));
-		$tpl->set('s', 'FRAME[4]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=4&appendparameters=".$_GET["appendparameters"])));
-	} else {
-		$tpl->set('s', 'FRAME[1]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=1")));
-		$tpl->set('s', 'FRAME[2]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=2")));
-		$tpl->set('s', 'FRAME[3]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=3")));
-		$tpl->set('s', 'FRAME[4]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=4")));
-	}
+    if (isset($_GET['appendparameters'])) {
+        $tpl->set('s', 'FRAME[1]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=1&appendparameters=" . $_GET['appendparameters'])));
+        $tpl->set('s', 'FRAME[2]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=2&appendparameters=" . $_GET['appendparameters'])));
+        $tpl->set('s', 'FRAME[3]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=3&appendparameters=" . $_GET['appendparameters'])));
+        $tpl->set('s', 'FRAME[4]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=4&appendparameters=" . $_GET['appendparameters'])));
+    } else {
+        $tpl->set('s', 'FRAME[1]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=1")));
+        $tpl->set('s', 'FRAME[2]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=2")));
+        $tpl->set('s', 'FRAME[3]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=3")));
+        $tpl->set('s', 'FRAME[4]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=4")));
+    }
 }
-$tpl->set('s', 'CONTENIDOPATH', $cfg["path"]["contenido_fullhtml"]."favicon.ico");
+$tpl->set('s', 'CONTENIDOPATH', $cfg['path']['contenido_fullhtml'] . 'favicon.ico');
 
 if ((isset($menuless) && $menuless == 1)) {
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_menuless_content']);

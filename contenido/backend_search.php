@@ -21,6 +21,7 @@
  *
  * {@internal
  *   created  2007-04-20
+ *   modified 2008-01-16, Thorsten Granz, Added 'store search' function, Added showinng values of search in searchform (Timo Trautmann)
  *   modified 2008-06-15, Rudi Bieller, Bugfix CON-149
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-06-27, Timo.Trautmann, Encoding Header added
@@ -33,19 +34,12 @@
  *
  */
 
-/*
- * 16.01.2008
- * Thorsten Granz
- * Added 'store search' function
- * Added showinng values of search in searchform (Timo Trautmann)
- */
-
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
 // CONTENIDO startup process
-include_once(dirname(__FILE__) . '/includes/startup.php');
+include_once('./includes/startup.php');
 
 page_open(array(
     'sess' => 'Contenido_Session',
@@ -53,7 +47,7 @@ page_open(array(
     'perm' => 'Contenido_Perm'
 ));
 
-i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
+i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
 
 // Initialize variables
 $db = new DB_Contenido();
@@ -95,7 +89,7 @@ $where = '';
 $iLangID = ((int) $lang > 0 ? (int) $lang : 1);
 
 // effektive Einstellung fuer Zeitdarstellung holen
-$dateformat = getEffectiveSetting("backend", "timeformat_date", "Y-m-d");
+$dateformat = getEffectiveSetting('backend', 'timeformat_date', 'Y-m-d');
 
 // fuer das Initialiseren der Sub-Navi benoetigte Werte
 $sLoadSubnavi = '';
@@ -104,9 +98,9 @@ $iIDTpl = 0;
 
 // Session- und Sprachdaten aus Formularanfrage sichern
 if (isset($_POST[$sess->name])) {
-    $sSession_tmp = trim (strip_tags ($_POST[$sess->name]));
+    $sSession_tmp = trim(strip_tags($_POST[$sess->name]));
 } elseif (isset($_GET[$sess->name])) {
-    $sSession_tmp = trim (strip_tags ($_GET[$sess->name]));
+    $sSession_tmp = trim(strip_tags($_GET[$sess->name]));
 }
 
 if (strlen($sSession_tmp) > 0) {
@@ -126,7 +120,7 @@ if (!empty($sSession)) {
         'auth' => 'Contenido_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'
     ));
-    i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
+    i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
 } else {
     //Frontend
     page_open(array(

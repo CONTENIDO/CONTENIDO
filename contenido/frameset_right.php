@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO main file
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend
  * @version    1.2.2
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2003-01-20#
  *   modified 2008-06-25, Timo Trautmann, CONTENIDO Framework Constand added
  *   modified 2008-07-02, Frederic Schneider, new code-header and include security_class
@@ -28,47 +28,44 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
 // CONTENIDO startup process
-include_once ('./includes/startup.php');
+include_once('./includes/startup.php');
 
-include_once ($cfg["path"]["classes"] . 'class.template.php');
+page_open(array(
+    'sess' => 'Contenido_Session',
+    'auth' => 'Contenido_Challenge_Crypt_Auth',
+    'perm' => 'Contenido_Perm'
+));
 
-page_open(
-    array('sess' => 'Contenido_Session',
-          'auth' => 'Contenido_Challenge_Crypt_Auth',
-          'perm' => 'Contenido_Perm'));
+i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
 
-i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
+cInclude('includes', 'cfg_language_de.inc.php');
+cInclude('includes', 'functions.forms.php');
 
-cInclude ("includes", 'cfg_language_de.inc.php');
-cInclude ("includes", 'functions.forms.php');
+// Create CONTENIDO classes
+$db  = new DB_Contenido();
+$tpl = new Template();
 
-# Create CONTENIDO classes
-$db  = new DB_Contenido;
-$tpl = new Template;
-
-# Build the CONTENIDO
-# Content area frameset
+// Build the CONTENIDO content area frameset
 $tpl->reset();
 
-if (isset($_GET["appendparameters"]))
-{
-	$tpl->set('s', 'FRAME[3]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=3&appendparameters=".$_GET["appendparameters"])));
-	$tpl->set('s', 'FRAME[4]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=4&appendparameters=".$_GET["appendparameters"])));
+if (isset($_GET['appendparameters'])) {
+    $tpl->set('s', 'FRAME[3]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=3&appendparameters=" . $_GET['appendparameters'])));
+    $tpl->set('s', 'FRAME[4]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=4&appendparameters=" . $_GET['appendparameters'])));
 } else {
-	$tpl->set('s', 'FRAME[3]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=3")));
-	$tpl->set('s', 'FRAME[4]', str_replace("&", "&amp;", $sess->url("main.php?area=$area&frame=4")));
+    $tpl->set('s', 'FRAME[3]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=3")));
+    $tpl->set('s', 'FRAME[4]', str_replace('&', '&amp;', $sess->url("main.php?area=$area&frame=4")));
 }
 
 $tpl->set('s', 'VERSION', $cfg['version']);
-$tpl->set('s', 'CONTENIDOPATH', $cfg["path"]["contenido_fullhtml"]."favicon.ico");
+$tpl->set('s', 'CONTENIDOPATH', $cfg['path']['contenido_fullhtml'].'favicon.ico');
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_right']);
 
