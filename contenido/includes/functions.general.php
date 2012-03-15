@@ -91,7 +91,7 @@ function getAvailableContentTypes($idartlang)
  */
 function isArtInMultipleUse($idart)
 {
-    global $cfg, $client;
+    global $cfg;
 
     $db = new DB_Contenido();
     $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($idart)."'";
@@ -110,7 +110,7 @@ function isArtInMultipleUse($idart)
 function is_alphanumeric($test, $umlauts = true)
 {
     if ($umlauts == true) {
-        $match = "/^[a-z0-9ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ]+$/i";
+		$match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
     } else {
         $match = "/^[a-z0-9 ]+$/i";
     }
@@ -349,7 +349,7 @@ function showLocation($area)
 {
     global $db, $cfgPath, $lngArea, $cfg, $belang;
 
-	cDeprecated("This function is not supported any longer");
+    cDeprecated("This function is not supported any longer");
     //Create new xml Class and load the file
 
     $xml = new XML_doc();
@@ -387,9 +387,9 @@ function showLocation($area)
 function showTable($tablename)
 {
     global $db;
-	
-	cDeprecated("This function is not supported any longer");
-	
+
+    cDeprecated("This function is not supported any longer");
+
     $sql = "SELECT * FROM $tablename";
     $db->query($sql);
     while ($db->next_record()) {
@@ -497,8 +497,8 @@ function getAllClientsAndLanguages()
 /** @deprecated 2012-03-05 This function is not longer supported. */
 function fakeheader($time)
 {
-	cDeprecated("This function is not longer supported.");
-	
+    cDeprecated("This function is not longer supported.");
+
     global $con_time0;
     if (!isset($con_time0)) {
         $con_time0 = $time;
@@ -611,7 +611,7 @@ function getGroupOrUserName($uid)
 /* @deprecated 2012-03-10 This function is not longer supported. */
 function getPhpModuleInfo($moduleName)
 {
-	cDeprecated("This function is not longer supported");
+    cDeprecated("This function is not longer supported");
     $moduleSettings = array();
     ob_start();
     phpinfo(INFO_MODULES); // get information vor modules
@@ -678,27 +678,27 @@ function htmldecode($string)
 }
 
 function updateClientCache($idclient = 0, $htmlpath = "", $frontendpath = "") {
-	global $cfg, $cfgClient;
-	
-	if ($idclient != 0 && $htmlpath != "" && $frontendpath != "") {
-		$cfgClient[$idclient]['path']['frontend'] = Contenido_Security::escapeDB($frontendpath, null);
-		$cfgClient[$idclient]['path']['htmlpath'] = Contenido_Security::escapeDB($htmlpath, null);
-	}
-	
-	$aConfigFileContent = array();
-	$aConfigFileContent[] = '<?php';
-	
-	foreach ($cfgClient as $iIdClient => $aClient) {
-		if ((int) $iIdClient > 0) {
-			$aConfigFileContent[] = '';
-			$aConfigFileContent[] = '/* ' . $aClient['name'] . ' */';
-			$aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
-			$aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["frontend"] = "' . $aClient['path']['frontend'] . '";';
-		}
-	}
-	
-	$aConfigFileContent[] = '?>';
-	file_put_contents($cfg['path']['contenido'] . $cfg['path']['includes'] . 'config.clients.php', implode(PHP_EOL, $aConfigFileContent));
+    global $cfg, $cfgClient;
+
+    if ($idclient != 0 && $htmlpath != "" && $frontendpath != "") {
+        $cfgClient[$idclient]['path']['frontend'] = Contenido_Security::escapeDB($frontendpath, null);
+        $cfgClient[$idclient]['path']['htmlpath'] = Contenido_Security::escapeDB($htmlpath, null);
+    }
+
+    $aConfigFileContent = array();
+    $aConfigFileContent[] = '<?php';
+
+    foreach ($cfgClient as $iIdClient => $aClient) {
+        if ((int) $iIdClient > 0) {
+            $aConfigFileContent[] = '';
+            $aConfigFileContent[] = '/* ' . $aClient['name'] . ' */';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["htmlpath"] = "' . $aClient['path']['htmlpath'] . '";';
+            $aConfigFileContent[] = '$cfgClient[' . $iIdClient . ']["path"]["frontend"] = "' . $aClient['path']['frontend'] . '";';
+        }
+    }
+
+    $aConfigFileContent[] = '?>';
+    file_put_contents($cfg['path']['contenido'] . $cfg['path']['includes'] . 'config.clients.php', implode(PHP_EOL, $aConfigFileContent));
 }
 
 function rereadClients()
@@ -711,16 +711,16 @@ function rereadClients()
 
     $sql = 'SELECT idclient, name, errsite_cat, errsite_art FROM ' . $cfg['tab']['clients'];
     $db->query($sql);
-	
-	
+
+
 
     while ($db->next_record()) {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
-		
-		$cfgClient[$iClient]['name'] = $db->f('name');
-        
-		$errsite_idcat[$iClient] = $db->f('errsite_cat');
+
+        $cfgClient[$iClient]['name'] = $db->f('name');
+
+        $errsite_idcat[$iClient] = $db->f('errsite_cat');
         $errsite_idart[$iClient] = $db->f('errsite_art');
 
         $cfgClient[$iClient]['images'] = $cfgClient[$iClient]['path']['htmlpath'] . 'images/';
@@ -787,7 +787,7 @@ function deleteSystemProperty($type, $name)
  * $array[$type][$name][value] = $value;
  * $array[$type][$name][idsystemprop] = $idsystemprop;
  *
- * @param  bool  $bGetPropId  If true special mode is activated which generates for 
+ * @param  bool  $bGetPropId  If true special mode is activated which generates for
  *                            each property a third array, which also contains idsystemprop value
  * @return array
  */
@@ -1359,27 +1359,27 @@ function scanDirectory($sDirectory, $bRecursive = false)
     $openDirs = array();
     $closedDirs = array();
     array_push($openDirs, $sDirectory);
-    
+
     while(count(($openDirs)) >= 1)
     {
-    	$sDirectory = array_pop($openDirs);
-   	 	if ($hDirHandle = opendir($sDirectory)) {
-        	while (($sFile = readdir($hDirHandle)) !== false) {
-            	if ($sFile != '.' && $sFile != '..') {
-                	$sFullpathFile = $sDirectory . '/' . $sFile;
-                	if (is_file($sFullpathFile) && is_readable($sFullpathFile)) {
-	                    array_push($aFiles, $sFullpathFile);
-	                } elseif (is_dir($sFullpathFile) && $bRecursive == true) {
-	                	if(!in_array($sFullpathFile, $closedDirs))
-	                	{
-	                		array_push($openDirs, $sFullpathFile);
-	                	}
-	                }
-	            }
-	        }
-	        closedir($hDirHandle);
-	    }
-	    array_push($closedDirs, $sDirectory);
+        $sDirectory = array_pop($openDirs);
+            if ($hDirHandle = opendir($sDirectory)) {
+            while (($sFile = readdir($hDirHandle)) !== false) {
+                if ($sFile != '.' && $sFile != '..') {
+                    $sFullpathFile = $sDirectory . '/' . $sFile;
+                    if (is_file($sFullpathFile) && is_readable($sFullpathFile)) {
+                        array_push($aFiles, $sFullpathFile);
+                    } elseif (is_dir($sFullpathFile) && $bRecursive == true) {
+                        if(!in_array($sFullpathFile, $closedDirs))
+                        {
+                            array_push($openDirs, $sFullpathFile);
+                        }
+                    }
+                }
+            }
+            closedir($hDirHandle);
+        }
+        array_push($closedDirs, $sDirectory);
     }
 
 
@@ -1388,27 +1388,27 @@ function scanDirectory($sDirectory, $bRecursive = false)
 
 /**
  * Returns the size of a directory. AKA the combined filesizes of all files within it. Note that this function uses filesize(). There could be problems with files that are larger than 2GiB
- * 
+ *
  * @param string The directory
  * @param bool true if all the subdirectories should be included in the calculation
- * 
+ *
  * @return bool|int Returns false in case of an error or the size
  */
 function getDirectorySize($sDirectory, $bRecursive = false)
 {
-	$ret = 0;
-	$files = scanDirectory($sDirectory, $bRecursive);
-	if($files === false)
-	{
-		return false;
-	}
-	
-	foreach($files as $file)
-	{
-		$ret += filesize($file);
-	}
-	
-	return $ret;
+    $ret = 0;
+    $files = scanDirectory($sDirectory, $bRecursive);
+    if($files === false)
+    {
+        return false;
+    }
+
+    foreach($files as $file)
+    {
+        $ret += filesize($file);
+    }
+
+    return $ret;
 }
 
 /**
@@ -1583,7 +1583,7 @@ function createRandomName($nameLength)
  *
  * Example:
  * sendPostRequest("hostname", "serverpath/test.php", $data);
- * 
+ *
  * @deprecated 2011-08-23
  *
  * @param $host     Hostname or domain
@@ -1594,8 +1594,8 @@ function createRandomName($nameLength)
  */
 function sendPostRequest($host, $path, $data, $referer = "", $port = 80)
 {
-	cDeprecated("This function is not supported any longer");
-	
+    cDeprecated("This function is not supported any longer");
+
     $fp = fsockopen($host, $port);
 
     fputs($fp, "POST $path HTTP/1.1\n");
@@ -1702,83 +1702,83 @@ function cDie($file, $line, $message)
 
 /**
  * buildStackString: Returns a formatted string with a stack trace ready for output.
- *		"\tfunction1() called in file $filename($line)"
- *		"\tfunction2() called in file $filename($line)"
- *		...
+ *        "\tfunction1() called in file $filename($line)"
+ *        "\tfunction2() called in file $filename($line)"
+ *        ...
  *
  * @param $startlevel int The startlevel. Note that 0 is always buildStackString and 1 is the function called buildStackString (e.g. cWarning)
  * @return string
  */
 function buildStackString($startlevel = 3)
 {
-	$e = new Exception();
-	$stack = $e->getTrace();
-	
-	$msg = "";
-	
-	for($i = $startlevel; $i < count($stack); $i++)
-	{
-		$filename = basename($stack[$i]['file']);
-		
-		$msg .= "\t".$stack[$i]['function']."() called in file ".$filename."(".$stack[$i]['line'].")\n";
-	}
-	
-	return $msg;
+    $e = new Exception();
+    $stack = $e->getTrace();
+
+    $msg = "";
+
+    for($i = $startlevel; $i < count($stack); $i++)
+    {
+        $filename = basename($stack[$i]['file']);
+
+        $msg .= "\t".$stack[$i]['function']."() called in file ".$filename."(".$stack[$i]['line'].")\n";
+    }
+
+    return $msg;
 }
 
 /**
  * Returns the debugger for the current system settings
- * 
+ *
  * @return IDebug
  */
 function getDebugger()
 {
-	$debugger = DebuggerFactory::getDebugger("devnull");
-	if(getSystemProperty("debug", "debug_to_file") == "true") {
-		$debugger = DebuggerFactory::getDebugger("file");
-	}
-	else if(getSystemProperty("debug", "debug_to_screen") == "true") {
-		$debugger = DebuggerFactory::getDebugger("visible_adv");
-	}
-	if((getSystemProperty("debug", "debug_to_screen") == "true") && (getSystemProperty("debug", "debug_to_file") == "true")) {
-		$debugger = DebuggerFactory::getDebugger("vis_and_file");
-	}
-	
-	return $debugger;
+    $debugger = DebuggerFactory::getDebugger("devnull");
+    if(getSystemProperty("debug", "debug_to_file") == "true") {
+        $debugger = DebuggerFactory::getDebugger("file");
+    }
+    else if(getSystemProperty("debug", "debug_to_screen") == "true") {
+        $debugger = DebuggerFactory::getDebugger("visible_adv");
+    }
+    if((getSystemProperty("debug", "debug_to_screen") == "true") && (getSystemProperty("debug", "debug_to_file") == "true")) {
+        $debugger = DebuggerFactory::getDebugger("vis_and_file");
+    }
+
+    return $debugger;
 }
 
 /**
  * Prints a debug message if the settings allow it. The debug messages will be shown in a textrea in the header and in the file debuglog.txt.
  * All messages are immediately written to the filesystem but they will only show up when debugPrint() is called.
- * 
+ *
  * @param string $message Message to display. NOTE: You can use buildStackString to show stacktraces
  */
 function cDebug($message)
 {
-	$debugger = getDebugger();
-	$debugger->out($message);
+    $debugger = getDebugger();
+    $debugger->out($message);
 }
 
 /**
  * Adds a variable to the debugger. This variable will be watched.
- * 
+ *
  * @param mixed $var A variable or an object
  * @param string $label An optional description for the variable
  */
 function debugAdd($var, $label = "")
 {
-	$debugger = getDebugger();
-	$debugger->add($var, $label);
+    $debugger = getDebugger();
+    $debugger->add($var, $label);
 }
 
 /**
  * Prints the cached debug messages to the screen
- * 
+ *
  */
 function debugPrint()
 {
-	$debugger = getDebugger();
-	$debugger->showAll();
+    $debugger = getDebugger();
+    $debugger->showAll();
 }
 
 
@@ -1792,21 +1792,21 @@ function debugPrint()
  */
 function cWarning($file, $line, $message)
 {
-	global $cfg;
-	
-	$msg = "[".date("Y-m-d H:i:s")."] ";
-	$msg .= "Warning: \"".$message."\" at ";
-	
-	$e = new Exception();
-	$stack = $e->getTrace();
-	$function_name = $stack[1]['function'];
-	
-	$msg .= $function_name."() [".basename($stack[0]['file'])."(".$stack[0]['line'].")]\n";
-	$msg .= buildStackString();
-	$msg .= "\n";
-	
-	file_put_contents($cfg['path']['contenido']."logs/errorlog.txt", $msg, FILE_APPEND);
-	
+    global $cfg;
+
+    $msg = "[".date("Y-m-d H:i:s")."] ";
+    $msg .= "Warning: \"".$message."\" at ";
+
+    $e = new Exception();
+    $stack = $e->getTrace();
+    $function_name = $stack[1]['function'];
+
+    $msg .= $function_name."() [".basename($stack[0]['file'])."(".$stack[0]['line'].")]\n";
+    $msg .= buildStackString();
+    $msg .= "\n";
+
+    file_put_contents($cfg['path']['contenido']."logs/errorlog.txt", $msg, FILE_APPEND);
+
     trigger_error($message, E_USER_WARNING);
 }
 
@@ -1819,51 +1819,51 @@ function cWarning($file, $line, $message)
  */
 function cError($file, $line, $message)
 {
-	global $cfg;
-	
-	$msg = "[".date("Y-m-d H:i:s")."] ";
-	$msg .= "Error: \"".$message."\" at ";
-	
-	$e = new Exception();
-	$stack = $e->getTrace();
-	$function_name = $stack[1]['function'];
-	
-	$msg .= $function_name."() called in ".basename($stack[1]['file'])."(".$stack[1]['line'].")\n";
-	$msg .= buildStackString();
-	$msg .= "\n";
-	
-	file_put_contents($cfg['path']['contenido']."logs/errorlog.txt", $msg, FILE_APPEND);
-	
+    global $cfg;
+
+    $msg = "[".date("Y-m-d H:i:s")."] ";
+    $msg .= "Error: \"".$message."\" at ";
+
+    $e = new Exception();
+    $stack = $e->getTrace();
+    $function_name = $stack[1]['function'];
+
+    $msg .= $function_name."() called in ".basename($stack[1]['file'])."(".$stack[1]['line'].")\n";
+    $msg .= buildStackString();
+    $msg .= "\n";
+
+    file_put_contents($cfg['path']['contenido']."logs/errorlog.txt", $msg, FILE_APPEND);
+
     trigger_error($message, E_USER_ERROR);
 }
 
 /**
  * cDeprecated: Writes a note to deprecatedlog.txt
- * 
+ *
  * @param $amsg Optional message (e.g. "Use function XYZ instead")
  * @return void
  */
 function cDeprecated($amsg = "")
 {
-	global $cfg;
-	
-	$e = new Exception();
-	$stack = $e->getTrace();
-	$function_name = $stack[1]['function'];
-	
-	$msg = "Deprecated call: ".$function_name."() [".basename($stack[0]['file'])."(".$stack[0]['line'].")]: ";
-	if($amsg != "")
-	{
-		$msg .= "\"".$amsg."\""."\n";
-	}
-	else
-	{
-		$msg .= "\n";
-	}
-		
-	$msg .= buildStackString(2)."\n";
-	
-	file_put_contents($cfg['path']['contenido']."logs/deprecatedlog.txt", $msg, FILE_APPEND);
+    global $cfg;
+
+    $e = new Exception();
+    $stack = $e->getTrace();
+    $function_name = $stack[1]['function'];
+
+    $msg = "Deprecated call: ".$function_name."() [".basename($stack[0]['file'])."(".$stack[0]['line'].")]: ";
+    if($amsg != "")
+    {
+        $msg .= "\"".$amsg."\""."\n";
+    }
+    else
+    {
+        $msg .= "\n";
+    }
+
+    $msg .= buildStackString(2)."\n";
+
+    file_put_contents($cfg['path']['contenido']."logs/deprecatedlog.txt", $msg, FILE_APPEND);
 }
 
 /**
@@ -1975,7 +1975,7 @@ function endAndLogTiming($uuid)
 * @deprecated [2012-01-18] DB_Contenido performs the check for itself. This method is no longer needed
 */
 function checkMySQLConnectivity() {
-	cDeprecated("DB_Contenido performs the check for itself. This method is no longer needed");
+    cDeprecated("DB_Contenido performs the check for itself. This method is no longer needed");
 }
 
 function notifyOnError($errortitle, $errormessage)
@@ -2007,9 +2007,9 @@ function notifyOnError($errortitle, $errormessage)
 
             // Notify configured email
             $oMail->Send();
-			
-			// Write last notify log file
-			file_put_contents($cfg["path"]["contenido"]."logs/notify.txt", time());
+
+            // Write last notify log file
+            file_put_contents($cfg["path"]["contenido"]."logs/notify.txt", time());
         }
     }
 }
@@ -2019,8 +2019,8 @@ function notifyOnError($errortitle, $errormessage)
  */
 function cIDNAEncode($sourceEncoding, $string)
 {
-	cDeprecated("This function is not supported any longer");
-	
+    cDeprecated("This function is not supported any longer");
+
     if (extension_loaded("iconv")) {
         cInclude('pear', 'Net/IDNA.php');
         $idn = Net_IDNA::getInstance();
@@ -2045,8 +2045,8 @@ function cIDNAEncode($sourceEncoding, $string)
  */
 function cIDNADecode($targetEncoding, $string)
 {
-	cDeprecated("This function is not supported any longer");
-	
+    cDeprecated("This function is not supported any longer");
+
     if (extension_loaded("iconv")) {
         cInclude('pear', 'Net/IDNA.php');
         $idn = Net_IDNA::getInstance();
@@ -2081,7 +2081,7 @@ function cInitializeArrayKey(&$aArray, $sKey, $mDefault = "")
 }
 
 /**
- * Function checks current language and client settings by HTTP-Params and DB 
+ * Function checks current language and client settings by HTTP-Params and DB
  * settings. Based on this informations it will send an HTTP header for right encoding.
  *
  * @param DB_Contenido $db
