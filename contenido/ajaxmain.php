@@ -112,7 +112,6 @@ $perm->load_permissions();
 // Create CONTENIDO classes
 $tpl = new Template();
 $backend = new Contenido_Backend();
-//$backend->debug=true;
 
 // Register session variables
 $sess->register('sess_area');

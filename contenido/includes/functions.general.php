@@ -712,8 +712,6 @@ function rereadClients()
     $sql = 'SELECT idclient, name, errsite_cat, errsite_art FROM ' . $cfg['tab']['clients'];
     $db->query($sql);
 
-
-
     while ($db->next_record()) {
         $iClient = $db->f('idclient');
         $cfgClient['set'] = 'set';
@@ -1387,7 +1385,8 @@ function scanDirectory($sDirectory, $bRecursive = false)
 }
 
 /**
- * Returns the size of a directory. AKA the combined filesizes of all files within it. Note that this function uses filesize(). There could be problems with files that are larger than 2GiB
+ * Returns the size of a directory. AKA the combined filesizes of all files within it.
+ * Note that this function uses filesize(). There could be problems with files that are larger than 2GiB
  *
  * @param string The directory
  * @param bool true if all the subdirectories should be included in the calculation
@@ -1780,8 +1779,6 @@ function debugPrint()
     $debugger = getDebugger();
     $debugger->showAll();
 }
-
-
 
 /**
  * cWarning: CONTENIDO warning
