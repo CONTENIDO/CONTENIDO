@@ -37,7 +37,7 @@
  *   modified 2008-11-18, Murat Purc, add initialization of UrlBuilder configuration
  *   modified 2010-05-20, Murat Purc, taken over security checks (Contenido_Security and HttpInputValidator)
  *                        from various files and some modifications, see [#CON-307]
- *   modified 2010-12-28, Murat Purc, changed order of some includes to provide more user defined 
+ *   modified 2010-12-28, Murat Purc, changed order of some includes to provide more user defined
  *                                    settings in config.local.php
  *   modified 2011-03-03, Murat Purc, Initialize database with settings
  *   modified 2012-01-18, Mischa Holz, moved checkMySQLConnectivity() to the DB_Contenido class itself, see [CON-429]
@@ -60,14 +60,14 @@ if (!defined('CON_FRAMEWORK')) {
  * SetEnv CONTENIDO_ENVIRONMENT development
  */
 if (!defined('CONTENIDO_ENVIRONMENT')) {
-	if (getenv('CONTENIDO_ENVIRONMENT')) {
-		$sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
-	} else {
-		// @TODO: provide a possibility to set the environment value via file
-		$sEnvironment = 'production';
-	}
+    if (getenv('CONTENIDO_ENVIRONMENT')) {
+        $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
+    } else {
+        // @TODO: provide a possibility to set the environment value via file
+        $sEnvironment = 'production';
+    }
 
-	define('CONTENIDO_ENVIRONMENT', $sEnvironment);
+    define('CONTENIDO_ENVIRONMENT', $sEnvironment);
 }
 
 // Security check: Include security class and invoke basic request checks
