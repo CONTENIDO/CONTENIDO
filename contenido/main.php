@@ -50,7 +50,7 @@ page_open(array(
     'perm' => 'Contenido_Perm'
 ));
 
-i18nInit($cfg['path']['contenido'].$cfg['path']['locale'], $belang);
+i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
 
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
@@ -99,7 +99,6 @@ $classuser = new User();
 
 $currentuser = new User();
 $currentuser->loadUserByUserID($auth->auth['uid']);
-
 
 // Change client
 if (isset($changeclient) && is_numeric($changeclient)) {
@@ -167,12 +166,12 @@ if ($cfgClient['set'] != 'set') {
      rereadClients();
 }
 
-// Initialize CONTENIDO_Backend. Load all actions from the DB and check if 
-
-// permission is granted.
+// Initialize CONTENIDO_Backend.
+// Load all actions from the DB and check if permission is granted.
 if ($cfg['debug']['rendering'] == true) {
     $oldmemusage = memory_get_usage();
 }
+
 // Select frameset
 $backend->setFrame($frame);
 

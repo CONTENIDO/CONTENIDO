@@ -96,7 +96,7 @@ if (!is_numeric($client) ||
 if (!is_numeric($lang) || $lang == '') {
     $sess->register('lang');
     // search for the first language of this client
-    $sql = "SELECT * FROM ".$cfg['tab']['lang']." AS A, ".$cfg['tab']['clients_lang']." AS B WHERE A.idlang=B.idlang AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idlang ASC";
+    $sql = "SELECT * FROM ".$cfg['tab']['lang']." AS A, ".$cfg['tab']['clients_lang']." AS B WHERE A.idlang=B.idlang AND idclient=".Contenido_Security::toInteger($client)." ORDER BY A.idlang ASC";
     $db->query($sql);
     $db->next_record();
     $lang = $db->f('idlang');
@@ -128,7 +128,7 @@ $sess->register('errsite_idcat');
 $sess->register('errsite_idart');
 
 if ($cfgClient['set'] != 'set') {
-     rereadClients ();
+     rereadClients();
 }
 
 // Initialize CONTENIDO_Backend.
@@ -144,12 +144,10 @@ $cfg['debug']['backend_exectime']['start'] = getmicrotime();
 
 // If $action is set -> User klicked some button/link
 // get the appopriate code for this action and evaluate it.
-
 if (isset($action) && $action != '') {
     if (!isset($idart)) {
         $idart = 0;
     }
-
     $backend->log($idcat, $idart, $client, $lang, $action);
 }
 
