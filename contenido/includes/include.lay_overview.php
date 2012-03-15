@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -59,21 +59,24 @@ while ($layout = $oLayouts->next()) {
 
     $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')" title="%s" alt="%s">%s</a>';
     $area = 'lay';
-    $mstr = sprintf($tmp_mstr, 'right_top',
-                               $sess->url("main.php?area=$area&frame=3&idlay=$idlay"),
-                               'right_bottom',
-                               $sess->url("main.php?area=lay_edit&frame=4&idlay=$idlay"),
-                               $descr, $descr, $name);
+    $mstr = sprintf(
+        $tmp_mstr, 'right_top',
+        $sess->url("main.php?area=$area&frame=3&idlay=$idlay"),
+        'right_bottom',
+        $sess->url("main.php?area=lay_edit&frame=4&idlay=$idlay"),
+        $descr, $descr, $name
+    );
 
     $tpl->set('d', 'NAME', $mstr);
 
-    $inUse = $classlayout->layoutInUse($idlay);
+    $oLay = new cApiLayout($idlay);
+    $inUse = $oLay->isInUse($idlay);
 
     $bgColor = ($darkrow) ? $cfg['color']['table_dark'] : $cfg['color']['table_light'];
     $darkrow = !$darkrow;
     $tpl->set('d', 'BGCOLOR', $bgColor);
 
-    if ((!$perm->have_perm_area_action_item('lay', 'lay_delete', $idlay)) && 
+    if ((!$perm->have_perm_area_action_item('lay', 'lay_delete', $idlay)) &&
         (!$perm->have_perm_area_action('lay', 'lay_delete'))) {
         $delDescr = i18n("No permission");
     }

@@ -1302,7 +1302,7 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
     /**
      * Advances to the next item in the database.
      *
-     * @return object The next object, or false if no more objects
+     * @return Item|bool  The next object, or false if no more objects
      */
     public function next()
     {

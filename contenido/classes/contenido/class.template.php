@@ -85,6 +85,20 @@ class cApiTemplateCollection extends ItemCollection
         return $this->next();
     }
 
+    /**
+     * Returns all templates having passed layout id.
+     * @param  int  $idlay
+     * @return cApiTemplate[]
+     */
+    public function fetchByIdLay($idlay)
+    {
+        $this->select('idlay = ' . $idlay);
+        $entries = array();
+        while ($entry = $this->next()) {
+            $entries[] = clone $entry;
+        }
+        return $entries;
+    }
 }
 
 

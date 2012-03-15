@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Content Types
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -90,24 +90,26 @@ class Ajax
             case 'inused_layout':
                 //list of used templates for a layout
                 global $cfg;
-                $oLayout = new Layout();
-                if ((int) $_REQUEST['id'] > 0 && $oLayout->layoutInUse((int) $_REQUEST['id'] , true)) {
-                    $oTpl = new Template();
-                    $aUsedTpl = $oLayout->getUsedTemplates();
-                    if (count($aUsedTpl) > 0) {
-                        $sResponse = '<br />';
-                        foreach ($aUsedTpl as $i => $aTpl) {
-                            $oTpl->set('d', 'NAME', $aTpl['tpl_name'] );
-                            $oTpl->next();
-                        }
+                if ((int) $_REQUEST['id'] > 0) {
+                    $oLayout = new cApiLayout((int) $_REQUEST['id']);
+                    if ($oLayout->isInUse(true)) {
+                        $oTpl = new Template();
+                        $aUsedTpl = $oLayout->getUsedTemplates();
+                        if (count($aUsedTpl) > 0) {
+                            $sResponse = '<br />';
+                            foreach ($aUsedTpl as $i => $aTpl) {
+                                $oTpl->set('d', 'NAME', $aTpl['tpl_name'] );
+                                $oTpl->next();
+                            }
 
-                        $oTpl->set('s', 'HEAD_NAME', i18n('Template name'));
-                        $sString = '<div class="inuse_info" >' .
-                                    $oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] .
-                                                    $cfg['templates']['inuse_lay_mod'], true) .
-                                    '</div>';
-                    } else {
-                        $sString = i18n("No data found!");
+                            $oTpl->set('s', 'HEAD_NAME', i18n('Template name'));
+                            $sString = '<div class="inuse_info" >' .
+                                        $oTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] .
+                                                        $cfg['templates']['inuse_lay_mod'], true) .
+                                        '</div>';
+                        } else {
+                            $sString = i18n("No data found!");
+                        }
                     }
                 }
                 break;

@@ -97,6 +97,25 @@ class cApiClientCollection extends ItemCollection
     }
 
     /**
+     * Returns first client available in the system
+     *
+     * @return  cApiClient|null
+     */
+    public function getFirstAccessibleClient()
+    {
+        global $perm;
+        $this->select();
+        while ($oItem = $this->next()) {
+            if ($perm->have_perm_client("client[".$oItem->get('idclient')."]") ||
+                $perm->have_perm_client("admin[".$oItem->get('idclient')."]"))
+            {
+                return $oItem;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns the clientname of the given clientid
      *
      * @param   int   $iIdClient

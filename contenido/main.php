@@ -44,9 +44,11 @@ $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.forms.php');
 
-page_open(array('sess' => 'Contenido_Session',
-                'auth' => 'Contenido_Challenge_Crypt_Auth',
-                'perm' => 'Contenido_Perm'));
+page_open(array(
+    'sess' => 'Contenido_Session',
+    'auth' => 'Contenido_Challenge_Crypt_Auth',
+    'perm' => 'Contenido_Perm'
+));
 
 i18nInit($cfg['path']['contenido'].$cfg['path']['locale'], $belang);
 
@@ -61,7 +63,7 @@ if ($cfg['use_pseudocron'] == true) {
 
         $oldpwd = getcwd();
 
-        chdir($cfg['path']['contenido'].$cfg['path']['cronjobs']);
+        chdir($cfg['path']['contenido'] . $cfg['path']['cronjobs']);
         cInclude('includes', 'pseudo-cron.inc.php');
         chdir($oldpwd);
 
@@ -87,10 +89,11 @@ if (isset($overrideid) && isset($overridetype)) {
 }
 
 // Create CONTENIDO classes
+// FIXME: Correct variable names, instances of classes at objects, not classes!
 $db = new DB_Contenido();
 $notification = new Contenido_Notification();
 $classarea = new cApiAreaCollection();
-$classlayout = new Layout();
+$classlayout = new cApiLayout();
 $classclient = new cApiClientCollection();
 $classuser = new User();
 
@@ -98,14 +101,14 @@ $currentuser = new User();
 $currentuser->loadUserByUserID($auth->auth['uid']);
 
 
-// change Client
-if (isset($changeclient) && is_numeric($changeclient) ) {
+// Change client
+if (isset($changeclient) && is_numeric($changeclient)) {
     $client = $changeclient;
     unset($lang);
 }
 
-// Sprache wechseln
-if (isset($changelang) && is_numeric($changelang) ) {
+// Change language
+if (isset($changelang) && is_numeric($changelang)) {
     unset($area_rights);
     unset($item_rights);
     $lang = $changelang;
@@ -115,21 +118,12 @@ if (!is_numeric($client) ||
     (!$perm->have_perm_client('client['.$client.']') &&
     !$perm->have_perm_client('admin['.$client.']')))
 {
-     // use first client which is accessible
+    // use first client which is accessible
     $sess->register('client');
-    $sql = 'SELECT idclient FROM '.$cfg['tab']['clients'].' ORDER BY idclient ASC';
-    $db->query($sql);
-
-    while ($db->next_record()) {
-        $mclient = $db->f('idclient');
-
-        if ($perm->have_perm_client('client['.$mclient.']') ||
-            $perm->have_perm_client('admin['.$mclient.']') )
-        {
-            unset($lang);
-            $client = $mclient;
-            break;
-        }
+    $oClientColl = new cApiClientCollection();
+    if ($oClient = $oClientColl->getFirstAccessibleClient()) {
+        unset($lang);
+        $client = $oClient->get('idclient');
     }
 } else {
     $sess->register('client');
@@ -152,8 +146,8 @@ sendEncodingHeader($db, $cfg, $lang);
 $perm->load_permissions();
 
 // Create CONTENIDO classes
-$tpl      = new Template();
-$backend  = new Contenido_Backend();
+$tpl = new Template();
+$backend = new Contenido_Backend();
 //$backend->debug=true;
 
 // Register session variables
@@ -225,21 +219,21 @@ if (isset($action)) {
 // Include the 'main' file for the selected area. Usually there is only one main file
 if (is_array($backend->getFile('main'))) {
     foreach ($backend->getFile('main') as $id => $filename) {
-        include_once($cfg['path']['contenido'].$filename);
+        include_once($cfg['path']['contenido'] . $filename);
     }
-} elseif ($frame == 3 ) {
-    include_once($cfg['path']['contenido'].$cfg['path']['includes'] .'include.default_subnav.php' );
+} elseif ($frame == 3) {
+    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.default_subnav.php');
 } else {
-    include_once($cfg['path']['contenido'].$cfg['path']['includes'] .'include.blank.php');
+    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.blank.php');
 }
 
 $cfg['debug']['backend_exectime']['end'] = getmicrotime();
 
 if ($cfg['debug']['rendering'] == true) {
-    echo 'Building this page (excluding CONTENIDO includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']).' seconds<br>';
-    echo 'Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']).' seconds<br>';
-    echo 'Include memory usage: '.human_readable_size(memory_get_usage()-$oldmemusage).'<br>';
-    echo 'Complete memory usage: '.human_readable_size(memory_get_usage()).'<br>';
+    echo 'Building this page (excluding CONTENIDO includes) took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['start']) . ' seconds<br>';
+    echo 'Building the complete page took: ' . ($cfg['debug']['backend_exectime']['end'] - $cfg['debug']['backend_exectime']['fullstart']) . ' seconds<br>';
+    echo 'Include memory usage: ' . human_readable_size(memory_get_usage()-$oldmemusage) . '<br>';
+    echo 'Complete memory usage: ' . human_readable_size(memory_get_usage()) . '<br>';
 }
 
 // Do user tracking (who is online)

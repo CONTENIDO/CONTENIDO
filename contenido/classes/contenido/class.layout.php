@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO API
- * @version    1.1
+ * @version    1.1.1
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -73,6 +73,12 @@ class cApiLayoutCollection extends ItemCollection
 class cApiLayout extends Item
 {
     /**
+     * List of templates being used by current layout
+     * @var array
+     */
+    protected $_aUsedTemplates = array();
+
+    /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
      */
@@ -92,6 +98,47 @@ class cApiLayout extends Item
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
     }
+
+    /**
+     * Checks if the layout is in use in any templates.
+     * @param   bool  $setData  Flag to set used templates data structure
+     * @return  bool
+     * @throws  Exception  If layout item was not loaded before
+     */
+    public function isInUse($setData = false)
+    {
+        if ($this->virgin) {
+            throw new Exception('Layout item not loaded!');
+        }
+
+        $oTplColl = new cApiTemplateCollection();
+        $templates = $oTplColl->fetchByIdLay($this->get('idlay'));
+        if (0 === count($templates)) {
+            return false;
+        }
+
+        if ($setData === true) {
+            $this->_aUsedTemplates = array();
+            foreach ($templates as $i => $template) {
+                $this->_aUsedTemplates[$i] = array(
+                    'tpl_id' => $template->get('idtpl'),
+                    'tpl_name' => $template->get('name')
+                );
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the informations of used templates
+     * @return array template data
+     */
+    public function getUsedTemplates()
+    {
+        return $this->_aUsedTemplates;
+    }
+
 }
 
 ?>
