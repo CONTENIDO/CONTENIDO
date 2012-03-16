@@ -88,6 +88,47 @@ class cApiClientLanguageCollection extends ItemCollection
         $sWhere = 'idlang=' . $iLang . ' AND idclient IN (' . implode(',', $aClientIds) . ')';
         return $this->flexSelect('', '', $sWhere);
     }
+
+    /**
+     * Returns list of languages (language ids) by passed client.
+     * @param  int  $client
+     * @return  array
+     */
+    public function getLanguagesByClient($client)
+    {
+        $list = array();
+        $sql = "SELECT idlang FROM `%s` WHERE idclient=%d";
+        $this->db->query($sql, $this->table, $client);
+        while ($this->db->next_record()) {
+            $list[] = $this->db->f("idlang");
+        }
+        return $list;
+    }
+
+    /**
+     * Returns all languages (language ids and names) of an client
+     *
+     * @param   int  $client
+     * @return  array  List of languages where the key is the language id and value the language name
+     */
+    public function getLanguageNamesByClient($client)
+    {
+        global $cfg;
+
+        $list = array();
+        $sql = "SELECT a.idlang AS idlang, b.name AS name
+                FROM `%s` AS cl, `%s` AS l
+                WHERE idclient=%d AND cl.idlang = l.idlang
+                ORDER BY idlang ASC";
+
+        $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
+        while ($this->db->next_record()) {
+            $list[$this->db->f('idlang')] = $this->db->f('name');
+        }
+
+        return $list;
+    }
+
 }
 
 

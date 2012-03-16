@@ -204,21 +204,15 @@ function getCanonicalDay($iDay)
 /**
  * Returns the id of passed area
  *
- * @param   mixed  $area  Area name
- * @return  int
+ * @param   int|string  $area  Area name or id
+ * @return  int|string
  */
 function getIDForArea($area)
 {
-    global $client, $lang, $cfg, $sess;
-
-    $db = new DB_Contenido();
-
     if (!is_numeric($area)) {
-        $sql = "SELECT idarea FROM ".$cfg["tab"]["area"]." WHERE "
-              . "name = '".Contenido_Security::escapeDB($area, $db)."'";
-        $db->query($sql);
-        if ($db->next_record()) {
-            $area = $db->f(0);
+        $oArea = new cApiArea();
+        if ($oArea->loadBy('name', $area)) {
+            $area = $oArea->get('idarea');
         }
     }
 
@@ -233,37 +227,8 @@ function getIDForArea($area)
  */
 function getParentAreaId($area)
 {
-    global $client, $lang, $cfg, $sess;
-
-    $db = new DB_Contenido();
-
-    if (is_numeric($area)) {
-        $sql = "SELECT
-                    b.name
-                FROM
-                    ".$cfg["tab"]["area"]." AS a,
-                    ".$cfg["tab"]["area"]." AS b
-                WHERE
-                    a.idarea = '".Contenido_Security::toInteger($area)."' AND
-                    b.name = a.parent_id";
-    } else {
-        $sql = "SELECT
-                    b.name
-                FROM
-                    ".$cfg["tab"]["area"]." AS a,
-                    ".$cfg["tab"]["area"]." AS b
-                WHERE
-                    a.name = '".Contenido_Security::escapeDB($area, $db)."' AND
-                    b.name = a.parent_id";
-
-    }
-    $db->query($sql);
-
-    if ($db->next_record()) {
-        return $db->f(0);
-    } else {
-        return $area;
-    }
+    $oAreaColl = new cApiAreaCollection();
+    return $oAreaColl->getParentAreaID($area);
 }
 
 /**
@@ -314,27 +279,15 @@ function backToMainArea($send)
 {
     if ($send) {
         // Global vars
-        global $area, $cfg, $db, $sess, $idart, $idcat, $idartlang, $idcatart, $frame;
+        global $area, $sess, $idart, $idcat, $idartlang, $idcatart, $frame;
 
         // Get main area
-        $sql = "SELECT
-                    a.name
-                FROM
-                    ".$cfg["tab"]["area"]." AS a,
-                    ".$cfg["tab"]["area"]." AS b
-                WHERE
-                    b.name      = '".Contenido_Security::escapeDB($area, $db)."' AND
-                    b.parent_id = a.name";
-
-        $db->query($sql);
-        $db->next_record();
-
-        $parent = $db->f("name");
+        $oAreaColl = new cApiAreaCollection();
+        $parent = $oAreaColl->getParentAreaID($area);
 
         // Create url string
         $url_str = 'main.php?'.'area='.$parent.'&'.'idcat='.$idcat.'&'.'idart='.$idart.'&'.
                    'idartlang='.$idartlang.'&'.'idcatart='.$idcatart.'&'.'force=1&'.'frame='.$frame;
-
         $url = $sess->url($url_str);
 
         // Redirect
@@ -400,17 +353,15 @@ function showTable($tablename)
     }
 }
 
+/**
+ * Returns list of languages (language ids) by passed client.
+ * @param  int  $client
+ * @return  array
+ */
 function getLanguagesByClient($client)
 {
-    global $db, $cfg;
-
-    $sql = "SELECT idlang FROM ".$cfg["tab"]["clients_lang"]." WHERE idclient='".Contenido_Security::toInteger($client)."'";
-    $db->query($sql);
-    while ($db->next_record()) {
-        $list[] = $db->f("idlang");
-    }
-
-    return $list;
+    $oClientLangColl = new cApiClientLanguageCollection();
+    return $oClientLangColl->getLanguagesByClient($client);
 }
 
 /**
@@ -421,26 +372,8 @@ function getLanguagesByClient($client)
  */
 function getLanguageNamesByClient($client)
 {
-    global $db, $cfg;
-
-    $sql = "SELECT
-                a.idlang AS idlang,
-                b.name AS name
-            FROM
-              ".$cfg["tab"]["clients_lang"]." AS a,
-              ".$cfg["tab"]["lang"]." AS b
-            WHERE
-                idclient='".Contenido_Security::toInteger($client)."' AND
-                a.idlang = b.idlang
-            ORDER BY
-                idlang ASC";
-
-    $db->query($sql);
-    while ($db->next_record()) {
-        $list[$db->f("idlang")] = $db->f("name");
-    }
-
-    return $list;
+    $oClientLangColl = new cApiClientLanguageCollection();
+    return $oClientLangColl->getLanguageNamesByClient($client);
 }
 
 function set_magic_quotes_gpc(&$code)

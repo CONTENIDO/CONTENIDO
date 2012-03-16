@@ -83,13 +83,31 @@ class cApiAreaCollection extends ItemCollection
 
         return $item;
     }
-	
-	/**
+
+    /**
+     * Returns the parent id of passed area
+     *
+     * @param   int|string  $area  Area id or name
+     * @return  string|int  Unique name of parent area or passed area
+     */
+    public function getParentAreaID($area)
+    {
+        if (is_numeric($area)) {
+            $sql = "SELECT b.name FROM `%s` AS a, `%s` AS b WHERE a.idarea = %d AND b.name = a.parent_id";
+        } else {
+            $sql = "SELECT b.name FROM `%s` AS a, `%s` AS b WHERE a.name = '%s' AND b.name = a.parent_id";
+        }
+        $this->db->query($sql, $this->table, $this->table, $area);
+        return ($this->db->next_record()) ? $this->db->f('name') : $area;
+    }
+
+    /**
      * Returns all areas available in the system
      *
      * @return  array   Array with id and name entries
      */
-    public function getAvailableAreas() {
+    public function getAvailableAreas()
+    {
         $aClients = array();
 
         $this->select();
@@ -100,25 +118,27 @@ class cApiAreaCollection extends ItemCollection
 
         return ($aAreas);
     }
-	
-	/**
+
+    /**
      * Returns the name for a given areaid
      * @return string   String with the name for the area
      */
-    public function getAreaName($area) {
-		$oItem = new cApiArea($area);
-		return $oItem->get('name');
+    public function getAreaName($area)
+    {
+        $oItem = new cApiArea($area);
+        return $oItem->get('name');
     }
-	
-	/**
+
+    /**
      * Returns the idarea for a given area name
      * @return int     Integer with the ID for the area
      */
-    public function getAreaID($area) {
-		$oItem = new cApiArea();
-		$oItem->loadBy('name', $area);
-		
-		return $oItem->get('idarea');
+    public function getAreaID($area)
+    {
+        $oItem = new cApiArea();
+        $oItem->loadBy('name', $area);
+
+        return $oItem->get('idarea');
     }
 }
 
@@ -155,7 +175,7 @@ class cApiArea extends Item
     public function create($name, $parentid = 0, $relevant = 1, $online = 1, $menuless = 0)
     {
         cDeprecated("Use cApiAreaCollection->create() instead");
-        
+
         $oAreaColl = new cApiAreaCollection();
         return $oAreaColl->create($name, $parentid, $relevant, $online, $menuless);
     }
@@ -163,8 +183,8 @@ class cApiArea extends Item
     /** @deprecated  [2012-02-24] Use cApiAreaCollection->create() */
     public function createAction($area, $name, $code, $location, $relevant)
     {
-		cDeprecated("Use cApiAreaCollection->create() instead");
-		
+        cDeprecated("Use cApiAreaCollection->create() instead");
+
         $ac = new cApiActionCollection();
         $a = $ac->create($area, $name, $code, $location, $relevant);
     }
@@ -178,7 +198,7 @@ class Area extends cApiAreaCollection {
         cDeprecated("Use class cApiAreaCollection instead");
         parent::__construct();
     }
-	
+
     public function Area() {
         cDeprecated("Use __construct() instead");
         $this->__construct();
