@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.2.8
+ * @version    1.2.9
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -34,9 +34,33 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+/** @deprecated [2012-03-16] use global $_conI18nTranslation['language'] */
+global $i18nLanguage;
+
+/** @deprecated [2012-03-16] use global $_conI18nTranslation['domains'] */
+global $i18nDomains;
+
+/** @deprecated [2012-03-16] use global $_conI18nTranslation['files'] */
+global $transFile;
+
+/** @deprecated [2012-03-16] use global $_conI18nTranslation['cache'] */
+global $_i18nTranslationCache;
+
+
+// Global variable containing i18n related data (since 2012-03-16, v4.9)
+global $_i18nTranslation;
+
+$_conI18nTranslation = array(
+    'language' => null,
+    'domains' => array(),
+    'files' => array(),
+    'cache' => array()
+);
+
+
 /**
  * gettext wrapper (for future extensions). Usage:
- * trans("Your text which has to be translated");
+ * trans('Your text which has to be translated');
  *
  * @param $string string The string to translate
  * @return string  Returns the translation
@@ -48,48 +72,51 @@ function trans($string)
 
 /**
  * gettext wrapper (for future extensions). Usage:
- * i18n("Your text which has to be translated");
+ * i18n('Your text which has to be translated');
  *
  * @param  string  $string  The string to translate
  * @param  string  $domain  The domain to look up
  * @return string  Returns the translation
  */
-function i18n($string, $domain = "contenido")
+function i18n($string, $domain = 'contenido')
 {
-
-#if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) {$stack = @debug_backtrace(); echo "<pre>" . print_r($stack, true) . "</pre>";die();}
-
-    global $cfg, $i18nLanguage;
-#if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) echo "<pre>i18n \$i18nLanguage: $i18nLanguage</pre>";
+    global $cfg, $_conI18nTranslation, $belang, $contenido;
 
     // Auto initialization
-    if (!isset($i18nLanguage)) {
-        if (!isset($GLOBALS['belang'])) {
+    if (!$_conI18nTranslation['language']) {
+        if (!isset($belang)) {
             if ($contenido) {
                 // This is backend, we should trigger an error message here
                 $stack = @debug_backtrace();
                 $file = $stack[0]['file'];
                 $line = $stack[0]['line'];
-                cWarning ($file, $line, "i18nInit \$belang is not set");
-            } // only send warning in backend
+                cWarning($file, $line, 'i18nInit $belang is not set');
+            }
 
-            $GLOBALS['belang'] = false; // Needed - otherwise this won't work
+            $belang = false; // Needed - otherwise this won't work
         }
 
-        i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $GLOBALS['belang']);
+        i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
     }
 
-    if (extension_loaded("gettext")) {
-        if (function_exists("dgettext")) {
-#            if ($domain != "contenido") {
+    // Is emulator to use?
+    if (!$cfg['native_i18n']) {
+        return i18nEmulateGettext($string, $domain);
+    }
+
+    // Try to use native gettext implementation
+    if (extension_loaded('gettext')) {
+        if (function_exists('dgettext')) {
+            if ($domain != 'contenido') {
                 $translation = dgettext($domain, $string);
                 return $translation;
-#            } else {
-#                return gettext($string);
-#            }
+            } else {
+                return gettext($string);
+            }
         }
     }
 
+    // Emulator as fallback
     return i18nEmulateGettext($string, $domain);
 }
 
@@ -100,27 +127,29 @@ function i18n($string, $domain = "contenido")
  * @param  string  $domain  The domain to look up
  * @return string  Returns the translation
  */
-function i18nEmulateGettext($string, $domain = "contenido")
+function i18nEmulateGettext($string, $domain = 'contenido')
 {
-    global $cfg, $i18nLanguage, $transFile, $i18nDomains, $_i18nTranslationCache;
+    global $cfg, $_conI18nTranslation;
 
-    if (!is_array($_i18nTranslationCache)) {
-        $_i18nTranslationCache = array();
-    }
-    if (array_key_exists($string, $_i18nTranslationCache)) {
-        return $_i18nTranslationCache[$string];
+    if (isset($_conI18nTranslation['cache'][$string])) {
+        return $_conI18nTranslation['cache'][$string];
     }
 
-    // Bad thing, gettext is not available. Let's emulate it
-    if (!file_exists($i18nDomains[$domain].$i18nLanguage."/LC_MESSAGES/".$domain.".po")) {
+    $translationFile = $_conI18nTranslation['domains'][$domain] . $_conI18nTranslation['language'] . '/LC_MESSAGES/' . $domain . '.po';
+
+    if (!file_exists($translationFile)) {
         return $string;
     }
 
-    if (!isset($transFile[$domain])) {
-        $transFile[$domain] = implode('',file($i18nDomains[$domain].$i18nLanguage."/LC_MESSAGES/".$domain.".po"));
+    if (!isset($_conI18nTranslation['files'][$domain])) {
+        $_conI18nTranslation['files'][$domain] = file_get_contents($translationFile);
 
-        // Remove comments from file
-        $transFile[$domain] = preg_replace('/^#.+/m', '', $transFile[$domain]);
+        // Normalize eol chars
+        $_conI18nTranslation['files'][$domain] = str_replace("\n\r", "\n", $_conI18nTranslation['files'][$domain]);
+        $_conI18nTranslation['files'][$domain] = str_replace("\r\n", "\n", $_conI18nTranslation['files'][$domain]);
+
+        // Remove comment lines
+        $_conI18nTranslation['files'][$domain] = preg_replace('/^#.+\n/m', '', $_conI18nTranslation['files'][$domain]);
 
         // Prepare for special po edit format
         /* Something like:
@@ -144,26 +173,29 @@ function i18nEmulateGettext($string, $domain = "contenido")
             msgid "Hello %s,\n\nyou've got a new reminder for the client '%s' at\n%s:\n\n%s"
             msgstr "Hallo %s,\n\ndu hast eine Wiedervorlage erhalten f�r den Mandanten '%s' at\n%s:\n\n%s"
         */
-        $transFile[$domain] = preg_replace('/\\\n"\\s+"/m', '\\\\n', $transFile[$domain]);
-        $transFile[$domain] = preg_replace('/(""\\s+")/m', '"', $transFile[$domain]);
+        $_conI18nTranslation['files'][$domain] = preg_replace('/\\\n"\\s+"/m', '\\\\n', $_conI18nTranslation['files'][$domain]);
+        $_conI18nTranslation['files'][$domain] = preg_replace('/(""\\s+")/m', '"', $_conI18nTranslation['files'][$domain]);
     }
 
-    $stringStart = strpos($transFile[$domain], '"'.str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $string).'"');
-
+    $stringStart = strpos($_conI18nTranslation['files'][$domain], '"' . str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $string) . '"');
     if ($stringStart === false) {
         return $string;
     }
 
-    $results = array();
-    preg_match("/msgid.*\"(".preg_quote(str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $string),"/").")\"(?:\s*)?\nmsgstr(?:\s*)\"(.*)\"/", $transFile[$domain], $results);
-    # Old: preg_match("/msgid.*\"".preg_quote($string,"/")."\".*\nmsgstr(\s*)\"(.*)\"/", $transFile[$domain], $results);
+    $matches = array();
+    $quotedString = preg_quote(str_replace(array("\n", "\r", "\t"), array('\n', '\r', '\t'), $string), '/');
+    $result = preg_match("/msgid.*\"(" . $quotedString . ")\"(?:\s*)?\nmsgstr(?:\s*)\"(.*)\"/", $_conI18nTranslation['files'][$domain], $matches);
+    # Old: preg_match("/msgid.*\"".preg_quote($string,"/")."\".*\nmsgstr(\s*)\"(.*)\"/", $_conI18nTranslation['files'][$domain], $matches);
 
-    if (array_key_exists(1, $results)) {
-        $_i18nTranslationCache[$string] = stripslashes(str_replace(array('\n', '\r', '\t'), array("\n", "\r", "\t"), $results[2]));
-        return $_i18nTranslationCache[$string];
+    if ($result && !empty($matches[2])) {
+        // Translation found, cache it
+        $_conI18nTranslation['cache'][$string] = stripslashes(str_replace(array('\n', '\r', '\t'), array("\n", "\r", "\t"), $matches[2]));
     } else {
-        return $string;
+        // Translation not found, cache original string
+        $_conI18nTranslation['cache'][$string] = $string;
     }
+
+    return $_conI18nTranslation['cache'][$string];
 }
 
 /**
@@ -174,52 +206,30 @@ function i18nEmulateGettext($string, $domain = "contenido")
  */
 function i18nInit($localePath, $langCode)
 {
-if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) echo "<pre>i18nInit \$localePath: $localePath</pre>";
-if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) echo "<pre>i18nInit \$langCode: $langCode</pre>";
-    global $i18nLanguage, $i18nDomains;
+    global $_conI18nTranslation;
 
-    if (function_exists("bindtextdomain")) {
-        // Bind the domain "contenido" to our locale path
-        bindtextdomain("contenido", $localePath);
+    if (function_exists('bindtextdomain')) {
+        // Bind the domain 'contenido' to our locale path
+        bindtextdomain('contenido', $localePath);
 
-        // Set the default text domain to "contenido"
-        textdomain("contenido");
+        // Set the default text domain to 'contenido'
+        textdomain('contenido');
 
         // Half brute-force to set the locale.
-#        if (!ini_get("safe_mode")) {
+        if (!ini_get('safe_mode')) {
             putenv("LANG=$langCode");
-            putenv("LANGUAGE=$langCode");
-#        }
+        }
 
-        defined('LC_MESSAGES') or define('LC_MESSAGES', 6); // windows workaround for LC_MESSAGES 
-#        if (defined("LC_MESSAGES")) {
+        if (defined('LC_MESSAGES')) {
             setlocale(LC_MESSAGES, $langCode);
-            setlocale(LC_MESSAGES, $langCode . '.UTF-8');
-#        }
+        }
 
         setlocale(LC_CTYPE, $langCode);
-
-/*
-        // Set language to language code
-#        setlocale(LC_ALL, $langCode);
-        defined('LC_MESSAGES') or define('LC_MESSAGES', 6); // windows workaround for LC_MESSAGES 
-        setlocale(LC_MESSAGES, $langCode);
-        setlocale(LC_CTYPE, $langCode);
-
-        // Specify location of translation tables
-        bindtextdomain("contenido", $localePath);
-
-        // Choose domain
-        textdomain("contenido");
-*/
-if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) echo "<pre>i18nInit \LANG: " . getenv('LANG') . "</pre>";
-if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) echo "<pre>i18nInit \LANGUAGE: " . getenv('LANGUAGE') . "</pre>";
-
     }
 
-    $i18nDomains["contenido"] = $localePath;
+    $_conI18nTranslation['domains']['contenido'] = $localePath;
 
-    $i18nLanguage = $langCode;
+    $_conI18nTranslation['language'] = $langCode;
 }
 
 /**
@@ -231,16 +241,14 @@ if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4) echo "<pre>i18nInit \LANGUAGE: 
  */
 function i18nRegisterDomain($domain, $localePath)
 {
-if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4 && $domain == 'contenido') echo "<pre>i18nRegisterDomain \$langCode: $domain</pre>";
-if ($GLOBALS['frame'] && $GLOBALS['frame'] == 4 && $domain == 'contenido') echo "<pre>i18nRegisterDomain \$localePath: $localePath</pre>";
-    global $i18nDomains;
+    global $_conI18nTranslation;
 
-    if (function_exists("bindtextdomain")) {
-        // Bind the domain "contenido" to our locale path
+    if (function_exists('bindtextdomain')) {
+        // Bind the domain 'contenido' to our locale path
         bindtextdomain($domain, $localePath);
     }
 
-    $i18nDomains[$domain] = $localePath;
+    $_conI18nTranslation['domains'][$domain] = $localePath;
 }
 
 /**
@@ -281,7 +289,7 @@ function i18nMatchBrowserAccept($accept)
     }
 
     /* Whoops, we are still here. Let's match the stripped-down string.
-       Example: de-ch isn't in the list. Cut it down after the "-" to "de"
+       Example: de-ch isn't in the list. Cut it down after the '-' to 'de'
        which should be in the list. */
     $accept = substr($accept, 0, 2);
     foreach ($available_languages as $key => $value) {
@@ -356,8 +364,8 @@ function mi18n($string)
     global $cCurrentModule, $db, $cfgClient, $encoding, $lang, $mi18nTranslator, $client, $cfg;
 
     // dont workd by setup/upgrade
-    cInclude("classes", "contenido/class.module.php");
-    cInclude("classes", "module/class.module.filetranslation.php");
+    cInclude('classes', 'contenido/class.module.php');
+    cInclude('classes', 'module/class.module.filetranslation.php');
 
     $contenidoTranslateFromFile = new Contenido_Module_FileTranslation($cCurrentModule, true);
     $array = $contenidoTranslateFromFile->getLangarray();
@@ -367,7 +375,7 @@ function mi18n($string)
         $mi18nTranslator = new cApiModuleTranslationCollection;
     }*/
 
-    return ($array[$string] == "") ? $string : $array[$string];
+    return ($array[$string] == '') ? $string : $array[$string];
 }
 
 ?>
