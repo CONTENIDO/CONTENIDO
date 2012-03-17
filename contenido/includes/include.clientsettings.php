@@ -75,7 +75,6 @@ if (is_numeric($_REQUEST["idclientslang"])) {
 	$oSelRange->setDefault($_REQUEST["idclientslang"]);
 }
 
-$oSelRange->setStyle('border:1px;border-style:solid;border-color:black;');
 $oSelRange->setEvent("onchange", "document.forms.range.submit();");
 $oFrmRange->add(i18n('Range'),$oSelRange->render());
 
@@ -128,21 +127,16 @@ if ($aItems !== false)
     	if (($_GET['action'] == "clientsettings_edit_item") && ($_GET['idprop'] == $iKey))
     	{
     			$oForm = new UI_Form("clientsettings");
-    			$oForm->setVar("area",$area);
+    			$oForm->setVar("area", $area);
     			$oForm->setVar("frame", $frame);
     			$oForm->setVar("action", "clientsettings_save_item");
     			$oForm->setVar("idclient", $idclient);
     			$oForm->setVar("idclientslang", $_REQUEST["idclientslang"]);
     			
-    			$oInputboxValue = new cHTMLTextbox ("csvalue", $aValue['value']);
-    			$oInputboxValue->setStyle("border:1px;border-style:solid;border-color:black;width:200px;");
-                
-                $oInputboxName = new cHTMLTextbox ("csname", $aValue['name']);
-    			$oInputboxName->setStyle("border:1px;border-style:solid;border-color:black;width:200px;");
-                
-                $oInputboxType = new cHTMLTextbox ("cstype", $aValue['type']);
-    			$oInputboxType->setStyle("border:1px;border-style:solid;border-color:black;width:200px;");
-                
+    			$oInputboxValue = new cHTMLTextbox("csvalue", $aValue['value']);
+                $oInputboxName = new cHTMLTextbox("csname", $aValue['name']);
+                $oInputboxType = new cHTMLTextbox("cstype", $aValue['type']);
+    			
                 $hidden = '<input type="hidden" name="csidproperty" value="'.$iKey.'">';
                 $sSubmit = ' <input type="image" style="vertical-align:top;" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif">';
 
@@ -184,17 +178,14 @@ $oForm->setVar('idclient', $idclient);
 $oForm->setVar('idclientslang', $_REQUEST["idclientslang"]);
 $oForm->addHeader(i18n('Add new variable'));
 
-$oInputbox = new cHTMLTextbox ('cstype');
-$oInputbox->setStyle('border:1px;border-style:solid;border-color:black;');
-$oForm->add(i18n('Type'),$oInputbox->render());
+$oInputbox = new cHTMLTextbox('cstype');
+$oForm->add(i18n('Type'), $oInputbox->render());
 
-$oInputbox = new cHTMLTextbox ('csname');
-$oInputbox->setStyle('border:1px;border-style:solid;border-color:black;');
-$oForm->add(i18n('Name'),$oInputbox->render());
+$oInputbox = new cHTMLTextbox('csname');
+$oForm->add(i18n('Name'), $oInputbox->render());
 
-$oInputbox = new cHTMLTextbox ('csvalue');
-$oInputbox->setStyle('border:1px;border-style:solid;border-color:black;');
-$oForm->add(i18n('Value'),$oInputbox->render());
+$oInputbox = new cHTMLTextbox('csvalue');
+$oForm->add(i18n('Value'), $oInputbox->render());
 
 if (($_GET['action'] == "clientsettings_edit_item"))
 {

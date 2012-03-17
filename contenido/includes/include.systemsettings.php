@@ -105,15 +105,10 @@ if (is_array($settings))
                 #ignore record
 				
             } else if (($action == "systemsettings_edit_item") && (stripslashes($systype) == $key) && (stripslashes($sysname) == $type)) {
-                $oInputboxValue = new cHTMLTextbox ("sysvalue", $value['value']);
-    			$oInputboxValue->setStyle("border:1px;border-style:solid;border-color:black;width:200px;");
-                
-                $oInputboxName = new cHTMLTextbox ("sysname", $type);
-    			$oInputboxName->setStyle("border:1px;border-style:solid;border-color:black;width:200px;");
-                
-                $oInputboxType = new cHTMLTextbox ("systype", $key);
-    			$oInputboxType->setStyle("border:1px;border-style:solid;border-color:black;width:200px;");
-                
+                $oInputboxValue = new cHTMLTextbox("sysvalue", $value['value']);
+    			$oInputboxName = new cHTMLTextbox("sysname", $type);
+    			$oInputboxType = new cHTMLTextbox("systype", $key);
+    			
                 $hidden = '<input type="hidden" name="csidsystemprop" value="'.$value['idsystemprop'].'">';
                 $sSubmit = '<input type="image" style="vertical-align:top;" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif">';
                 
@@ -169,15 +164,12 @@ $form->setVar("frame", $frame);
 $form->setVar("action", "systemsettings_save_item");
 $form->addHeader(i18n("Add new variable"));
 $inputbox = new cHTMLTextbox ("systype");
-$inputbox->setStyle("border:1px;border-style:solid;border-color:black;");
 $form->add(i18n("Type"),$inputbox->render());
 
 $inputbox = new cHTMLTextbox ("sysname");
-$inputbox->setStyle("border:1px;border-style:solid;border-color:black;");
 $form->add(i18n("Name"),$inputbox->render());
 
 $inputbox = new cHTMLTextbox ("sysvalue");
-$inputbox->setStyle("border:1px;border-style:solid;border-color:black;");
 $form->add(i18n("Value"),$inputbox->render());
 
 if ($action == "systemsettings_edit_item")

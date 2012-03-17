@@ -126,7 +126,6 @@ if (is_array($artspec))
 				$form->setVar("action", "client_artspec_save");
 				$form->setVar("online", $artspec[$id]['online']);
 				$inputbox = new cHTMLTextbox ("artspectext", urldecode($artspec[$id]['artspec']));
-				$inputbox->setStyle("border:1px;border-style:solid;border-color:black;");
 				$form->add("name",$inputbox->render());
 				$form->add("submit", '<input type="image" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif" alt="'.i18n('Save').'" title="'.i18n('Save').'">');
 
@@ -172,7 +171,6 @@ $form->setVar("frame", $frame);
 $form->setVar("action", "client_artspec_save");
 $form->addHeader(i18n("Create new article specification"));
 $inputbox = new cHTMLTextbox ("artspectext");
-$inputbox->setStyle("border:1px;border-style:solid;border-color:black;");
 $form->add(i18n("Specification name"),$inputbox->render());
 
 $page->setContent($list->render()."<br>".$form->render());
