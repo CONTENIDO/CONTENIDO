@@ -38,10 +38,10 @@ class cDatatypeNumber extends cDatatype
 		
 	public function __construct()
 	{
-		global $_i18nTranslation;
+		global $_conI18n;
 		
 		/* Try to find out the current locale settings */
-		$aLocaleSettings = cLocaleConv($_i18nTranslation['language']);
+		$aLocaleSettings = cLocaleConv($_conI18n['language']);
 		
 		$this->setDecimalPointCharacter($aLocaleSettings["mon_decimal_point"]);
 		$this->setThousandSeparatorCharacter($aLocaleSettings["mon_thousands_sep"]);		
