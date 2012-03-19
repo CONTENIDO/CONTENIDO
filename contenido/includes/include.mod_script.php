@@ -45,8 +45,7 @@ $sActionEdit = 'js_edit';
 
 $file = $contenidoModulHandler->getJsFileName(); 
 $tmpFile = $contenidoModulHandler->getJsFileName();
-
-
+$sFilename = '';
 
 if(empty($action))
     $actionRequest = $sActionEdit;

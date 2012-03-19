@@ -41,7 +41,7 @@ $sFileType = "css";
 
 $sActionCreate = 'style_create';
 $sActionEdit = 'style_edit';
-
+$sFilename = '';
 
 $tmp_file = $contenidoModulHandler->getCssFileName();
 $file = $contenidoModulHandler->getCssFileName();
