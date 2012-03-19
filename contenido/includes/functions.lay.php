@@ -70,7 +70,7 @@ function layEditLayout($idlay, $name, $description, $code) {
     }
     
     #replace all not allowed characters..
-    $layoutAlias = Contenido_Module_Handler::getCleanName($name);
+    $layoutAlias = Contenido_Module_Handler::getCleanName(strtolower($name));
 	
      #constructor for the layout in filesystem
      $layoutInFile = new LayoutInFile($idlay, stripslashes($code), $cfg, $lang);

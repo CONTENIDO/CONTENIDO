@@ -56,7 +56,7 @@ if ($action == "lay_new")
 		
 		
 		
-		$layoutAlias = capiStrCleanURLCharacters(i18n("-- New Layout --"));
+		$layoutAlias = strtolower(capiStrCleanURLCharacters(i18n("-- New Layout --")));
 		
 		#check if layout exist
 		if( LayoutInFile::existLayout($layoutAlias, $cfgClient, $client)) {

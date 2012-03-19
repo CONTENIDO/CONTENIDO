@@ -49,11 +49,11 @@ class SynchronizeLayouts {
      */
     private function _addOrUpdateLayout($dir, $oldLayoutName, $newLayoutName, $idclient)
     {
-        #if layout dont exist in the $cfg["tab"]["lay"] table.
+        //if layout dont exist in the $cfg["tab"]["lay"] table.
         if ($this->_isExistInTable($oldLayoutName, $idclient) == false) {
-             #add new Layout in db-tablle
+             //add new Layout in db-tablle
              $this->_addLayout($newLayoutName,$idclient);
-             #make a layout file if not exist
+             //make a layout file if not exist
              if (!file_exists($dir.$newLayoutName.'/'.$newLayoutName.'.html')) {
                  file_put_contents($dir.$newLayoutName.'/'.$newLayoutName.'.html', '');
              }
@@ -61,7 +61,7 @@ class SynchronizeLayouts {
              //set output message
              $this->_outputMessage['info'][] = sprintf(i18n("Synchronization successfully layout name: %s"),$newLayoutName);
         } else {
-            #update the name of the module
+            //update the name of the module
             if ($oldModulName != $newModulName) {
                 $this->_updateModulnameInDb($oldLayoutName, $newLayoutName, $idclient);
             }
@@ -78,12 +78,12 @@ class SynchronizeLayouts {
     {
         $db = new DB_Contenido();
 
-        #Select depending from idclient all moduls wiht the name $name
+        //Select depending from idclient all moduls wiht the name $name
         $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s" , $this->_cfg["tab"]["lay"] , $oldName ,$idclient);
 
         $db->query($sql);
 
-        #a record is found
+        //a record is found
         if ($db->next_record()) {
             $sqlUpdateName = sprintf("UPDATE %s SET alias='%s' WHERE idlay=%s", $this->_cfg["tab"]["lay"],$newName,$db->f('idlay'));
             $db->query($sqlUpdateName);
@@ -99,11 +99,10 @@ class SynchronizeLayouts {
      private  function _addLayout($name, $idclient)
      {
         $db = new DB_Contenido();
-        #get next id from $cfg["tab"]["mod"]
+        //get next id from $cfg["tab"]["mod"]
         //  $nextId = $db->nextid($this->_cfg["tab"]["lay"]);
-        #insert new modul in con_mod
+        //insert new modul in con_mod
         $sql = sprintf(" INSERT INTO %s (name, alias, idclient, lastmodified) VALUES('%s','%s',%s,'%s') ", $this->_cfg["tab"]["lay"], $name,$name, $idclient , date("Y-m-d H:i:s"));
-
         $db->query($sql);
     }
 
@@ -134,12 +133,12 @@ class SynchronizeLayouts {
     {
         $db = new DB_Contenido();
 
-        #Select depending from idclient all moduls wiht the name $name
+        //Select depending from idclient all moduls wiht the name $name
         $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s" , $this->_cfg["tab"]["lay"] , $alias ,$idclient);
 
         $db->query($sql);
 
-        #a record is found
+        //a record is found
         return ($db->next_record()) ? true : false;
     }
 
@@ -175,7 +174,7 @@ class SynchronizeLayouts {
      */
     private function _compareFileAndLayoutTimestamp()
     {
-        #get all layouts from client
+        //get all layouts from client
         $sql = sprintf("SELECT UNIX_TIMESTAMP(lastmodified) AS lastmodified, alias,name,description, idlay FROM %s WHERE idclient=%s", $this->_cfg['tab']['lay'],$this->_client);
         $notification = new Contenido_Notification();
         $dir = $this->_cfgClient[$this->_client]['path']['frontend'].LayoutInFile::$LAYOUT_DIR_NAME;
@@ -186,15 +185,15 @@ class SynchronizeLayouts {
         while ($db->next_record()) {
             $lastmodified = $db->f('lastmodified');
 
-            #exist layout directory
+            //exist layout directory
             if (is_dir($dir.$db->f('alias').'/')) {
 
                 if (file_exists($dir.$db->f('alias').'/'.$db->f('alias').'.html')) {
                     $lastmodifiedLayout = filemtime($dir.$db->f('alias').'/'.$db->f('alias').'.html');
 
-                    #update layout data
+                    //update layout data
                     if ($lastmodified < $lastmodifiedLayout) {
-                        #update field lastmodified in table lay
+                        //update field lastmodified in table lay
                         $this->setLastModified($lastmodifiedLayout,$db->f('idlay'));
                         $layout = new LayoutInFile($db->f('idlay'), ' ', $this->_cfg, $this->_lang);
                         // Update CODE table
@@ -206,7 +205,7 @@ class SynchronizeLayouts {
                 $oLayout = new cApiLayout($db->f('idlay'));
 
                 $layout = new LayoutInFile($db->f('idlay'), '', $this->_cfg, $this->_lang);
-                #is layout in use
+                //is layout in use
                 if ($oLayout->isInUse()) {
                     //make layout file
                     $layout->saveLayout('');
@@ -231,7 +230,7 @@ class SynchronizeLayouts {
         foreach ($this->_outputMessage as $typ) {
             foreach($typ as $message) {
                 $emptyMessage = false;
-                #show display massage
+                //show display massage
                 $notification->displayNotification($typ, $message);
             }
         }
@@ -247,7 +246,7 @@ class SynchronizeLayouts {
      */
     private function _isValidFirstChar($file)
     {
-        return (!substr($file, 0, 1) == '.');
+        return (!(substr($file, 0, 1) == '.'));
     }
 
    /**
@@ -256,35 +255,35 @@ class SynchronizeLayouts {
     */
     public function synchronize()
     {
-        #update file and layout
+        //update file and layout
         $this->_compareFileAndLayoutTimestamp();
 
-        #get the path to cliets layouts
+        //get the path to cliets layouts
         $dir = $this->_cfgClient[$this->_client]['path']['frontend'].LayoutInFile::$LAYOUT_DIR_NAME;
-
-        #is/exist directory
+		
+        //is/exist directory
         if (!is_dir($dir)) {
             return false;
         }
-
+        
         if ($dh = opendir($dir)) {
             while (($file = readdir($dh)) !== false) {
-                #is file a dir or not
+                //is file a dir or not
                 if ($this->_isValidFirstChar($file) && is_dir($dir.$file."/") ) {
-                    $newFile = capiStrCleanURLCharacters($file);
-                    #dir is ok
+                	$newFile = strtolower(capiStrCleanURLCharacters($file));
+                    //dir is ok
                     if ($newFile == $file) {
                         $this->_addOrUpdateLayout($dir , $file, $newFile , $this->_client);
-                    } else { #dir not ok (with not allowed characters)
-                        if (is_dir($dir.$newFile)) {# exist the new dir name after clean?
-                            #make new dirname
-                            $newDirName =$newFile.substr( md5( time() . rand(0 , time() )) , 0 , 4);
-                            #rename
+                    } else { //dir not ok (with not allowed characters)
+                        if (is_dir($dir.$newFile) && strtolower($file) != $newFile ) {// exist the new dir name after clean?
+                            //make new dirname
+                            $newDirName = $newFile.substr( md5( time() . rand(0 , time() )) , 0 , 4);
+                            //rename
                             if ($this->_renameFileAndDir($dir , $file , $newDirName , $this->_client) != false) {
                                 $this->_addOrUpdateLayout($dir, $file, $newDirName, $this->_client);
                             }
-                        } else {#$newFile (dir) not exist
-                            #rename dir old
+                        } else {//$newFile (dir) not exist
+                            //rename dir old
                             if ($this->_renameFileAndDir($dir, $file , $newFile , $this->_client) != false) {
                                 $this->_addOrUpdateLayout($dir, $file, $newFile,$this->_client);
                             }
@@ -293,7 +292,7 @@ class SynchronizeLayouts {
                 }
             }
         }
-        #close dir
+        //close dir
         closedir($dh);
         $this->_showOutputMessage();
     }
