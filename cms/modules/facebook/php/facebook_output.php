@@ -26,6 +26,7 @@
     $tpl->set("s", "HEIGHT", $height);
     $tpl->set("s", "LAYOUT", $likeButtonLayout);
     
+    $display = new Contenido_Notification();
     switch($facebookPlugin) {
     
         case 'like_button':
@@ -37,7 +38,8 @@
              $tpl->set("s", "URL",$url);
             $tpl->generate("facebook_like_box.html");
         break;
-    
+        default:
+    		$display->displayMessageBox(Contenido_Notification::LEVEL_ERROR, "Please configure facebook plugin!");
     
     }
 

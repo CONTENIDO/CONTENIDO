@@ -2,7 +2,7 @@
 
 <table>
   <tr>
-    <td><?php echo mi18n("URL");?></td>
+    <td><?php echo mi18n("URL");?>*</td>
     <td><input type="text" name="CMS_VAR[0]" value="<?php echo "CMS_VALUE[0]"; ?>"></td>
   </tr>
   <tr>
@@ -60,7 +60,7 @@
     <td><input type="text" name="CMS_VAR[6]" value="<?php echo "CMS_VALUE[6]"; ?>"></td>
   </tr>
   <tr>
-    <td><?php echo mi18n("LOCALE");?></td>
+    <td><?php echo mi18n("LOCALE");?>*</td>
      <td><input type="text" name="CMS_VAR[5]" value="<?php echo "CMS_VALUE[5]"; ?>"></td>
   </tr>
   
