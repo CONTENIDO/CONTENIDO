@@ -14,6 +14,11 @@
     //height of the box
     $height = "CMS_VALUE[6]";
    
+    if($url == "")
+    	$url = "http://de-de.facebook.com/cms.contenido";
+    
+    if($facebookPlugin == "")
+    	$facebookPlugin = "like_box";
     
     cApiPropertyCollection::reset();
     $propColl = new cApiPropertyCollection();
