@@ -59,10 +59,7 @@
     <td><?php echo mi18n("H&ouml;he");?></td>
     <td><input type="text" name="CMS_VAR[6]" value="<?php echo "CMS_VALUE[6]"; ?>"></td>
   </tr>
-  <tr>
-    <td><?php echo mi18n("LOCALE");?>*</td>
-     <td><input type="text" name="CMS_VAR[5]" value="<?php echo "CMS_VALUE[5]"; ?>"></td>
-  </tr>
+
   
  </table>
 

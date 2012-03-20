@@ -13,8 +13,17 @@
     $width = "CMS_VALUE[4]";
     //height of the box
     $height = "CMS_VALUE[6]";
-    //language de_De en_US
-    $locale = "CMS_VALUE[5]";
+   
+    
+    cApiPropertyCollection::reset();
+    $propColl = new cApiPropertyCollection();
+    $propColl->changeClient($client);
+    
+    $language = $propColl->getValue('idlang', $lang, 'language', 'code', '');
+    $country =  $propColl->getValue('idlang', $lang, 'country', 'code', '');;
+    
+    $locale = $language ."_".strtoupper($country);
+    
     
     if($showFaces != "true")
         $showFaces = "false";
@@ -42,5 +51,7 @@
     		$display->displayMessageBox(Contenido_Notification::LEVEL_ERROR, "Please configure facebook plugin!");
     
     }
+    
+ 
 
 ?>
