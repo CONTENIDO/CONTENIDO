@@ -139,7 +139,8 @@ class pApiContentAllocationTreeView extends pApiTree {
 			if ($item_tmp['children']) {
 				$item['ACTION_DELETE'] = '<img src="images/delete_inact.gif" border="0" alt="'.i18n("One or more subcategories exist, unable to delete").'" title="'.i18n("One or more subcategories exist, unable to delete").'">';
 			} else {
-				$item['ACTION_DELETE'] = '<a href="javascript://" onclick="box.confirm(&quot;'.i18n("Delete category").'&quot;, &quot;'.i18n("Are you sure to delete the following category").':<br><br><b>'.str_replace("'", "\'", $item_tmp['name']).'</b>&quot;,&quot;deleteCategory('.$item_tmp['idpica_alloc'].')&quot;);"><img src="images/delete.gif" border="0" alt="'.i18n("Delete category").'" title="'.i18n("Delete category").'"></a>';
+				$name = str_replace("\"", "&amp;quot;", str_replace("'", "\'", $item_tmp['name']));
+				$item['ACTION_DELETE'] = '<a href="javascript://" onclick="box.confirm(&quot;'.i18n("Delete category").'&quot;, &quot;'.i18n("Are you sure to delete the following category").':<br><br><b>'.$name.'</b>&quot;,&quot;deleteCategory('.$item_tmp['idpica_alloc'].')&quot;);"><img src="images/delete.gif" border="0" alt="'.i18n("Delete category").'" title="'.i18n("Delete category").'"></a>';
 			}
 			
 			array_push($result, $item);
