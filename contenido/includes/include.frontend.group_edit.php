@@ -55,7 +55,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
    $sRefreshRightTopLink = $sess->url('main.php?frame=3&area='.$area.'&idfrontendgroup='.$idfrontendgroup);
    $sRefreshRightTopLink = "conMultiLink('right_top', '".$sRefreshRightTopLink."')";
    $sRefreshRightTopLinkJs = "<script type=\"text/javascript\">".$sRefreshRightTopLink."</script>";
-   $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Created new frontend-group successfully"));
+   $successMessage = i18n("Created new frontend-group successfully");
 } else if ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action)) {
     $aDeleteMembers = array();
     if (!is_array($_POST['user_in_group'])) {
