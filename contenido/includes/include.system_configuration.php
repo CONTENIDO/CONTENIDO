@@ -186,6 +186,21 @@ $sJs = '<script type="text/javascript">
               menuItem = top.content.right_top.document.getElementById(\'c_1\');
               top.content.right_top.sub.clicked(menuItem.firstChild);
           }
+          
+          function cls() {
+          		parent.parent.header.document.getElementById("debug_msg").innerHTML = "";
+          }
+          
+          function assignEvent() {
+          		var obj = document.getElementById(\'debug{_}debug_to_screen\');
+          		if(obj == null) {
+          			window.setTimeout("assignEvent()", 50);
+          			return;
+          		}
+          		obj.onchange = cls;
+		  }
+		  assignEvent();
+          		
        </script>';
 
 $oPage = new cPage;
