@@ -1491,16 +1491,23 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
 
     /**
      * Creates a new item in the table and loads it afterwards.
+	 *
+	 * @param	string	$primaryKeyValue	Optional parameter for direct input of primary key value
+	 *
      * @return  Item  The newly created object
      */
-    public function create()
+    public function create($primaryKeyValue = null)
     {
         $oDb     = $this->_getSecondDBInstance();
-      //  $iNextId = $oDb->nextid($this->table);
-        $sql     = 'INSERT INTO `%s` (%s) VALUES (%d)';
-        $oDb->query($sql, $this->table, $this->primaryKey, null);
-        
-        return $this->loadItem($oDb->getLastInsertedId($this->table));
+
+        $sql     = 'INSERT INTO `%s` (%s) VALUES ("%s")';
+        $oDb->query($sql, $this->table, $this->primaryKey, $primaryKeyValue);
+
+		if ($primaryKeyValue === null) {
+			$primaryKeyValue = $oDb->getLastInsertedId($this->table);
+		}
+		
+        return $this->loadItem($primaryKeyValue);
     }
 
     /**
