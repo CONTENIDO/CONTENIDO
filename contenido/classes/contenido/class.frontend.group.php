@@ -1,15 +1,15 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Frontend group classes
  *
  * Code is taken over from file contenido/classes/class.frontend.groups.php in favor of
  * normalizing API.
  *
- * Requirements: 
+ * Requirements:
  * @con_php_req 5.0
  *
  * @package    CONTENIDO API
@@ -20,13 +20,13 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.9.0
- * 
+ *
  * {@internal
  *   created  2011-09-20
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -92,9 +92,9 @@ class cApiFrontendGroupCollection extends ItemCollection
         $associations->select('idfrontendgroup = ' . (int) $itemID);
 
         while ($item = $associations->next()) {
-            $associations->delete($item->get('idfrontendgroupmember')); 
+            $associations->delete($item->get('idfrontendgroupmember'));
         }
-        parent::delete($itemID); 
+        parent::delete($itemID);
     }
 }
 
@@ -124,7 +124,7 @@ class cApiFrontendGroup extends Item
 ################################################################################
 # Old versions of frontend group item collection and frontend group item classes
 #
-# NOTE: Class implemetations below are deprecated and the will be removed in 
+# NOTE: Class implemetations below are deprecated and the will be removed in
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 

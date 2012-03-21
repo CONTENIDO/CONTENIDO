@@ -15,10 +15,10 @@
  * If caching is enabled, see $cfg['properties']['system_prop']['enable_cache'],
  * all entries will be loaded at first time.
  * If enabled, each call of cApiSystemPropertyCollection functions to retrieve properties
- * will return the cached entries without stressing the database.  
+ * will return the cached entries without stressing the database.
  *
  * The cApiSystemPropertyCollection class keeps also track of changed and deleted
- * properties and synchronizes them with cached values, as long as you use the 
+ * properties and synchronizes them with cached values, as long as you use the
  * interface of cApiSystemPropertyCollection to manage the properties.
  *
  * Requirements:
@@ -76,7 +76,7 @@ class cApiSystemPropertyCollection extends ItemCollection
         $this->_setItemClass('cApiSystemProperty');
 
         if (!isset(self::$_enableCache)) {
-            if (isset($cfg['properties']) && isset($cfg['properties']['system_prop']) 
+            if (isset($cfg['properties']) && isset($cfg['properties']['system_prop'])
                 && isset($cfg['properties']['system_prop']['enable_cache']))
             {
                 self::$_enableCache = (bool) $cfg['properties']['system_prop']['enable_cache'];

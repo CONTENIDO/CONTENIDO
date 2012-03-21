@@ -111,7 +111,7 @@ class cApiArticleLanguageCollection extends ItemCollection
  *
  * $headline = $obj->getContent("htmlhead", 1);
  *
- * If the second parameter is ommitted the method returns an array with all available 
+ * If the second parameter is ommitted the method returns an array with all available
  * content of this type. The array has the following schema:
  *
  * array( number => content );
@@ -122,7 +122,7 @@ class cApiArticleLanguageCollection extends ItemCollection
  * $headlines[2] Second headline
  * $headlines[6] Sixth headline
  *
- * Legal content type string are defined in the CONTENIDO system table 'con_type'. 
+ * Legal content type string are defined in the CONTENIDO system table 'con_type'.
  * Default content types are:
  *
  * NOTE: This parameter is case insesitive, you can use html or cms_HTML or CmS_HtMl.
@@ -247,7 +247,7 @@ class cApiArticleLanguage extends Item
         if (null !== $this->content) {
             return;
         }
-        
+
         $sql = 'SELECT
                     b.type, a.typeid, a.value
                 FROM
@@ -310,7 +310,7 @@ class cApiArticleLanguage extends Item
     /**
      * Get content(s) from an article.
      *
-     * Returns the specified content element or an array("id"=>"value") if the 
+     * Returns the specified content element or an array("id"=>"value") if the
      * second parameter is omitted.
      *
      * Legal content type string are defined in the CONTENIDO system table 'con_type'.

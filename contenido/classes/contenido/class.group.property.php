@@ -17,10 +17,10 @@
  * If caching is enabled, see $cfg['properties']['group_prop']['enable_cache'],
  * all entries will be loaded at first time.
  * If enabled, each call of cApiGroupPropertyCollection functions to retrieve properties
- * will return the cached entries without stressing the database.  
+ * will return the cached entries without stressing the database.
  *
  * The cApiGroupPropertyCollection class keeps also track of changed and deleted
- * properties and synchronizes them with cached values, as long as you use the 
+ * properties and synchronizes them with cached values, as long as you use the
  * interface of cApiGroupPropertyCollection to manage the properties.
  *
  * Requirements:
@@ -91,7 +91,7 @@ class cApiGroupPropertyCollection extends ItemCollection
         $this->_setItemClass('cApiGroupProperty');
 
         if (!isset(self::$_enableCache)) {
-            if (isset($cfg['properties']) && isset($cfg['properties']['group_prop']) 
+            if (isset($cfg['properties']) && isset($cfg['properties']['group_prop'])
                 && isset($cfg['properties']['group_prop']['enable_cache']))
             {
                 self::$_enableCache = (bool) $cfg['properties']['group_prop']['enable_cache'];

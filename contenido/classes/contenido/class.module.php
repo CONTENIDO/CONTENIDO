@@ -28,10 +28,10 @@
  *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *
  *   modified 2011-01-11, Rusmir Jusufovic
- *   	- save and load input and output from/in files
- *   	- add new method parseModuleForStringsLoadFromFile
+ *       - save and load input and output from/in files
+ *       - add new method parseModuleForStringsLoadFromFile
  *   modified 2011-06-21, Rusmir Jusufovic, change method inport (add alias)
- *   
+ *
  *   $Id$:
  * }}
  *
@@ -171,95 +171,95 @@ class cApiModule extends Item
         global $lang;
         $this->setProperty("translated-name", $lang, $name);
     }
-	/**
-    *This method get the input and output for translating 
+    /**
+    *This method get the input and output for translating
     *from files and not from db-table.
     *
-    */		
+    */
     function parseModuleForStringsLoadFromFile ($cfg , $client,$lang)
     {
         global $client;
-        
-    	if ($this->virgin == true)
-    	{
-    		return false;
-    	}
-    	
-		/* Fetch the code, append input to output */
-		//$code  = $this->get("output");
-		//$code .= $this->get("input");
-		
-		
-		//Get the code(input,output) from files
-    	 $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));                 
+
+        if ($this->virgin == true)
+        {
+            return false;
+        }
+
+        /* Fetch the code, append input to output */
+        //$code  = $this->get("output");
+        //$code .= $this->get("input");
+
+
+        //Get the code(input,output) from files
+         $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
          $code = $contenidoModuleHandler->readOutput()." ";
          $code.= $contenidoModuleHandler->readInput();
-    	
-    	
-    	
-		/* Initialize array */
-    	$strings = array();
-    	
-    	/* Split the code into mi18n chunks */
-    	$varr = preg_split('/mi18n([\s]*)\(([\s]*)"/', $code, -1);
-    	
-		if (count($varr) > 1)
-    	{
-        	foreach ($varr as $key => $value)
-        	{
-	        	/* Search first closing */
-	        	$closing = strpos($value,'")');
-	        	
-	        	if ($closing === false)
-	        	{
-	        		$closing = strpos($value,'" )');	
-	        	}
-	        	
-	        	if ($closing !== false)
-	        	{
-	        		$value = substr($value,0, $closing).'")';
-	        	}
-	        	
-	        	/* Append mi18n again */
-	        	$varr[$key] = 'mi18n("'.$value;
-	        
-	        	/* Parse for the mi18n stuff */
-	        	preg_match_all('/mi18n([\s]*)\("(.*)"\)/', $varr[$key], $results);
-	    		
-	    		/* Append to strings array if there are any results */
-	    		if (is_array($results[1]) && count($results[2]) > 0)
-	    		{
-	    			$strings = array_merge($strings, $results[2]);	
-	    		}
-	    		
-	    		/* Unset the results for the next run */
-	        	unset($results);
-	        }
-    	}
-		
-		// adding dynamically new module translations by content types
-		// this function was introduced with CONTENIDO 4.8.13
-		
-		// checking if array is set to prevent crashing the module translation page
-		if ( is_array( $cfg['translatable_content_types'] ) && count ( $cfg['translatable_content_types'] ) > 0 ) {
-			// iterate over all defines cms content types
-			foreach ( $cfg['translatable_content_types'] as $sContentType ) {
-				// check if the content type exists and include his class file
-				if ( file_exists ( $cfg['contenido']['path'] . "classes/class." . strtolower ( $sContentType ) . ".php" ) ) {
-					cInclude("classes", "class." . strtolower ( $sContentType ) . ".php" );
-					// if the class exists, has the method "addModuleTranslations" 
-					// and the current module contains this cms content type we 
-					// add the additional translations for the module
-					if ( class_exists ( $sContentType ) && 
-						method_exists( $sContentType, 'addModuleTranslations' ) && 
-						preg_match('/' . strtoupper ( $sContentType ) . '\[\d+\]/', $code) ) {
-						
-						$strings = call_user_func(array($sContentType, 'addModuleTranslations'), $strings);
-					}
-				}
-			}
-		}
-        
+
+
+
+        /* Initialize array */
+        $strings = array();
+
+        /* Split the code into mi18n chunks */
+        $varr = preg_split('/mi18n([\s]*)\(([\s]*)"/', $code, -1);
+
+        if (count($varr) > 1)
+        {
+            foreach ($varr as $key => $value)
+            {
+                /* Search first closing */
+                $closing = strpos($value,'")');
+
+                if ($closing === false)
+                {
+                    $closing = strpos($value,'" )');
+                }
+
+                if ($closing !== false)
+                {
+                    $value = substr($value,0, $closing).'")';
+                }
+
+                /* Append mi18n again */
+                $varr[$key] = 'mi18n("'.$value;
+
+                /* Parse for the mi18n stuff */
+                preg_match_all('/mi18n([\s]*)\("(.*)"\)/', $varr[$key], $results);
+
+                /* Append to strings array if there are any results */
+                if (is_array($results[1]) && count($results[2]) > 0)
+                {
+                    $strings = array_merge($strings, $results[2]);
+                }
+
+                /* Unset the results for the next run */
+                unset($results);
+            }
+        }
+
+        // adding dynamically new module translations by content types
+        // this function was introduced with CONTENIDO 4.8.13
+
+        // checking if array is set to prevent crashing the module translation page
+        if ( is_array( $cfg['translatable_content_types'] ) && count ( $cfg['translatable_content_types'] ) > 0 ) {
+            // iterate over all defines cms content types
+            foreach ( $cfg['translatable_content_types'] as $sContentType ) {
+                // check if the content type exists and include his class file
+                if ( file_exists ( $cfg['contenido']['path'] . "classes/class." . strtolower ( $sContentType ) . ".php" ) ) {
+                    cInclude("classes", "class." . strtolower ( $sContentType ) . ".php" );
+                    // if the class exists, has the method "addModuleTranslations"
+                    // and the current module contains this cms content type we
+                    // add the additional translations for the module
+                    if ( class_exists ( $sContentType ) &&
+                        method_exists( $sContentType, 'addModuleTranslations' ) &&
+                        preg_match('/' . strtoupper ( $sContentType ) . '\[\d+\]/', $code) ) {
+
+                        $strings = call_user_func(array($sContentType, 'addModuleTranslations'), $strings);
+                    }
+                }
+            }
+        }
+
         /* Make the strings unique */
         return array_unique($strings);
     }
@@ -278,9 +278,9 @@ class cApiModule extends Item
         // Fetch the code, append input to output
         //$code  = $this->get("output");
         //$code .= $this->get("input");
-		
-		//Get the code(input,output) from files
-    	 $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));                 
+
+        //Get the code(input,output) from files
+         $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
          $code = $contenidoModuleHandler->readOutput()." ";
          $code.= $contenidoModuleHandler->readInput();
 
@@ -449,231 +449,231 @@ class cApiModule extends Item
     /**
      * Parse import xml file and returns its values.
      *
-     * @param	string	$sFile	Filename including path of import xml file
-	 *
-     * @return	array	Array with module data from XML file
+     * @param    string    $sFile    Filename including path of import xml file
+     *
+     * @return    array    Array with module data from XML file
      */
     private function _parseImportFile($sFile) {
-		$oXmlReader = new ContenidoXmlReader();
-		$oXmlReader->load($sFile);
-		
-		$aData = array();
-		$aInformation = array('name', 'description', 'type', 'input', 'output', 'alias');
-		
-		foreach ($aInformation as $sInfoName) {
-			$sPath = '/module/' . $sInfoName;
-			
-			$value = $oXmlReader->getXpathValue($sPath);
-			$aData[$sInfoName] = $value;
-		}
-	
+        $oXmlReader = new ContenidoXmlReader();
+        $oXmlReader->load($sFile);
+
+        $aData = array();
+        $aInformation = array('name', 'description', 'type', 'input', 'output', 'alias');
+
+        foreach ($aInformation as $sInfoName) {
+            $sPath = '/module/' . $sInfoName;
+
+            $value = $oXmlReader->getXpathValue($sPath);
+            $aData[$sInfoName] = $value;
+        }
+
         return $aData;
     }
-    
+
     /**
-     * 
+     *
      * Save the modul properties (description,type...)
-     * 
+     *
      * @param string $sFile weher is the modul info.xml file
      */
     private function _getModuleProperties($sFile) {
-    	$ret = array();
-		
-		$aModuleData = $this->_parseImportFile($sFile);
-    	if (count($aModuleData) > 0) {
-			foreach ($aModuleData as $key => $value) {
-				// the columns input/and outputs dont exist in table
-				if ($key != "output" && $key != "input") {
-					$ret[$key] = addslashes($value);
-				}
-			}	
-    	}
-    	
-    	return $ret;
-    } 
+        $ret = array();
+
+        $aModuleData = $this->_parseImportFile($sFile);
+        if (count($aModuleData) > 0) {
+            foreach ($aModuleData as $key => $value) {
+                // the columns input/and outputs dont exist in table
+                if ($key != "output" && $key != "input") {
+                    $ret[$key] = addslashes($value);
+                }
+            }
+        }
+
+        return $ret;
+    }
 
     /**
      * import
      * Imports the a module from a XML file
      * Uses xmlparser and callbacks
      *
-     * @param string	$file 	Filename of data file (full path)
+     * @param string    $file     Filename of data file (full path)
      */
     function import($sFile, $tempName)
     {
-    	global $cfgClient, $db, $client, $cfg, $encoding, $lang;
-    	$zip = new ZipArchive();
-    	$notification = new Contenido_Notification();
-    	$contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
-    	// file name Hello_World.zip => Hello_World
-		// @TODO: fetch file extension correctly
-    	$modulName = substr($sFile,0,-4);
-		
-		$sModulePath = $cfgClient[$client]['path']['frontend'] . $cfg['path']['modules'] . $modulName;
-    	
-    	// exist the modul in directory
-    	if (is_dir($sModulePath)) {
-    		$notification->displayNotification('error', i18n("Module exist!"));
-    		return false ;
-    	}
-    	
-    	if ($zip->open($tempName)) {
-    		if ($zip->extractTo($sModulePath)) {
-    			$zip->close();
-    			
-    			// make new module
-    			$modules = new cApiModuleCollection;
-		
-				$module = $modules->create($modulName);
-				$moduleProperties = $this->_getModuleProperties($sModulePath . '/info.xml');
-				
-				// set module properties and save it
-				foreach ($moduleProperties as $key=>$value) {
-					$module->set($key, $value);
-				}
-				
-				$module->store();
-    		} else {
-    			$notification->displayNotification('error', i18n("Import failed, could not extract zip file!"));
-    			return false;
-    		}
-    	} else {
-    		$notification->displayNotification('error', i18n("Could not open the zip file!"));
-    		return false;
-    	}
-		
-    	return true;
+        global $cfgClient, $db, $client, $cfg, $encoding, $lang;
+        $zip = new ZipArchive();
+        $notification = new Contenido_Notification();
+        $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
+        // file name Hello_World.zip => Hello_World
+        // @TODO: fetch file extension correctly
+        $modulName = substr($sFile,0,-4);
+
+        $sModulePath = $cfgClient[$client]['path']['frontend'] . $cfg['path']['modules'] . $modulName;
+
+        // exist the modul in directory
+        if (is_dir($sModulePath)) {
+            $notification->displayNotification('error', i18n("Module exist!"));
+            return false ;
+        }
+
+        if ($zip->open($tempName)) {
+            if ($zip->extractTo($sModulePath)) {
+                $zip->close();
+
+                // make new module
+                $modules = new cApiModuleCollection;
+
+                $module = $modules->create($modulName);
+                $moduleProperties = $this->_getModuleProperties($sModulePath . '/info.xml');
+
+                // set module properties and save it
+                foreach ($moduleProperties as $key=>$value) {
+                    $module->set($key, $value);
+                }
+
+                $module->store();
+            } else {
+                $notification->displayNotification('error', i18n("Import failed, could not extract zip file!"));
+                return false;
+            }
+        } else {
+            $notification->displayNotification('error', i18n("Could not open the zip file!"));
+            return false;
+        }
+
+        return true;
     }
-	
-	/**
-	 * importModuleFromXML
+
+    /**
+     * importModuleFromXML
      * Imports the a module from a XML file
      * Uses xmlparser and callbacks
-	 *
-	 * @param string	$file 	Filename of data file (full path) 
+     *
+     * @param string    $file     Filename of data file (full path)
      */
-	function importModuleFromXML ($sFile)
+    function importModuleFromXML ($sFile)
     {
-    	global $db,$cfgClient, $client, $cfg,$encoding,$lang;
-    
-    	$inputOutput = array();
-    	$notification = new Contenido_Notification();
-    	
-		$aModuleData = $this->_parseImportFile($sFile);
-    	if (count($aModuleData) > 0) {
-			foreach ($aModuleData as $key => $value) {
-				if ($this->get($key) != $value)
-				{
-					#the columns input/and outputs dont exist in table
-					if($key == "output" || $key == "input")
-						$inputOutput[$key] = $value;
-					else	
-						$this->set($key, addslashes($value));
-				}
-			}
+        global $db,$cfgClient, $client, $cfg,$encoding,$lang;
 
-			$moduleAlias = capiStrCleanURLCharacters($this->get('name'));
-			// is alias empty??
-			if ($this->get('alias') == '') {
-				$this->set('alias', $moduleAlias);
-			}
-			
-    		if (is_dir($cfgClient[$client]['path']['frontend'] . $cfg['path']['modules'] . $moduleAlias)) {
-    			$notification->displayNotification('error', i18n("Module exist!"));
-    			return false;
-    		} else {
-    			// save it in db table
-    			$this->store();
-    			$contenidoModuleHandler = new Contenido_Module_Handler($this->get('idmod'));
-    			if (!$contenidoModuleHandler->createModule($inputOutput["input"], $inputOutput["output"])) {
-    				$notification->displayNotification('error', i18n("Could not make a module!"));
-    				return false;
-				} else {
-					// save the modul data to modul info file
-					$contenidoModuleHandler->saveInfoXML();
-				}
-    		}
-    	} else {
-    		$notification->displayNotification('error', i18n("Could not parse xml file!"));
-    		return false;
-    	}
-    	
-    	return true;
+        $inputOutput = array();
+        $notification = new Contenido_Notification();
+
+        $aModuleData = $this->_parseImportFile($sFile);
+        if (count($aModuleData) > 0) {
+            foreach ($aModuleData as $key => $value) {
+                if ($this->get($key) != $value)
+                {
+                    #the columns input/and outputs dont exist in table
+                    if($key == "output" || $key == "input")
+                        $inputOutput[$key] = $value;
+                    else
+                        $this->set($key, addslashes($value));
+                }
+            }
+
+            $moduleAlias = capiStrCleanURLCharacters($this->get('name'));
+            // is alias empty??
+            if ($this->get('alias') == '') {
+                $this->set('alias', $moduleAlias);
+            }
+
+            if (is_dir($cfgClient[$client]['path']['frontend'] . $cfg['path']['modules'] . $moduleAlias)) {
+                $notification->displayNotification('error', i18n("Module exist!"));
+                return false;
+            } else {
+                // save it in db table
+                $this->store();
+                $contenidoModuleHandler = new Contenido_Module_Handler($this->get('idmod'));
+                if (!$contenidoModuleHandler->createModule($inputOutput["input"], $inputOutput["output"])) {
+                    $notification->displayNotification('error', i18n("Could not make a module!"));
+                    return false;
+                } else {
+                    // save the modul data to modul info file
+                    $contenidoModuleHandler->saveInfoXML();
+                }
+            }
+        } else {
+            $notification->displayNotification('error', i18n("Could not parse xml file!"));
+            return false;
+        }
+
+        return true;
     }
-    
+
     /**
-     * 
+     *
      * Add recrusive folder to zip archive
      * @param string $dir direcotry name
      * @param string $zipArchive name of the archive
      * @param string $zipdir
      */
     private function _addFolderToZip($dir, $zipArchive, $zipdir = ''){
-		if (is_dir($dir)) {
-			if ($dh = opendir($dir)) {
-				//Add the directory
-				if (!empty($zipdir)) {
-					$zipArchive->addEmptyDir($zipdir);
-				}
-			  
-				// Loop through all the files
-				while (($file = readdir($dh)) !== false) {
-					//If it's a folder, run the function again!
-					if (!is_file($dir . $file)) {
-						// Skip parent and root directories
-						if (($file !== ".") && ($file !== "..")) {
-							$this->_addFolderToZip($dir . $file . "/", $zipArchive, $zipdir . $file . "/");
-						}
-					} else{
-						// Add the files
-						if ($zipArchive->addFile($dir . $file, $zipdir . $file) === FALSE) {
-							$notification = new Contenido_Notification();
-							$notification->displayNotification('error', sprintf(i18n("Could not add file %s to zip!"), $file));
-						}
-					}
-				}
-			}
-    	}
-	} 
+        if (is_dir($dir)) {
+            if ($dh = opendir($dir)) {
+                //Add the directory
+                if (!empty($zipdir)) {
+                    $zipArchive->addEmptyDir($zipdir);
+                }
 
-	/**
-	 * export
-     * Exports the specified module  to a zip file
-	 *
-     */    
-    function export() {
-    	$notification = new Contenido_Notification();
-    	$contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
-    	
-		// exist modul 
-    	if ($contenidoModuleHandler->modulePathExists()) {
-    		$zip = new ZipArchive();
-    		$zipName = $this->get('alias').'.zip';
-    		if ($zip->open($zipName, ZipArchive::CREATE)) {
-    			$retAddToFolder = $this->_addFolderToZip($contenidoModuleHandler->getModulePath(), $zip);
-
-    			$zip->close();
-    			//Stream the file to the client
-				header("Content-Type: application/zip");
-				header("Content-Length: " . filesize($zipName));
-				header("Content-Disposition: attachment; filename=\"$zipName\"");
-				readfile($zipName);
-				//erase the file  
-    			$ret = unlink($zipName);
-    		} else {
-    			$notification->displayNotification('error', i18n("Could not open the zip file!"));
-    		}
-    	} else {
-    		$notification->displayNotification('error', i18n("Module don't exist on file system!"));
-    	}
+                // Loop through all the files
+                while (($file = readdir($dh)) !== false) {
+                    //If it's a folder, run the function again!
+                    if (!is_file($dir . $file)) {
+                        // Skip parent and root directories
+                        if (($file !== ".") && ($file !== "..")) {
+                            $this->_addFolderToZip($dir . $file . "/", $zipArchive, $zipdir . $file . "/");
+                        }
+                    } else{
+                        // Add the files
+                        if ($zipArchive->addFile($dir . $file, $zipdir . $file) === FALSE) {
+                            $notification = new Contenido_Notification();
+                            $notification->displayNotification('error', sprintf(i18n("Could not add file %s to zip!"), $file));
+                        }
+                    }
+                }
+            }
+        }
     }
-    
+
+    /**
+     * export
+     * Exports the specified module  to a zip file
+     *
+     */
+    function export() {
+        $notification = new Contenido_Notification();
+        $contenidoModuleHandler = new Contenido_Module_Handler($this->get("idmod"));
+
+        // exist modul
+        if ($contenidoModuleHandler->modulePathExists()) {
+            $zip = new ZipArchive();
+            $zipName = $this->get('alias').'.zip';
+            if ($zip->open($zipName, ZipArchive::CREATE)) {
+                $retAddToFolder = $this->_addFolderToZip($contenidoModuleHandler->getModulePath(), $zip);
+
+                $zip->close();
+                //Stream the file to the client
+                header("Content-Type: application/zip");
+                header("Content-Length: " . filesize($zipName));
+                header("Content-Disposition: attachment; filename=\"$zipName\"");
+                readfile($zipName);
+                //erase the file
+                $ret = unlink($zipName);
+            } else {
+                $notification->displayNotification('error', i18n("Could not open the zip file!"));
+            }
+        } else {
+            $notification->displayNotification('error', i18n("Module don't exist on file system!"));
+        }
+    }
+
     /**
      * @deprecated 2012-02-29 This function is not longer supported.
      */
     public function getPackageOverview($sFile) {
         cDeprecated("This function is not longer supported.");
-		return false;
+        return false;
     }
 
     /**
@@ -681,15 +681,15 @@ class cApiModule extends Item
      */
     public function importPackage($sFile, $aOptions = array()) {
         cDeprecated("This function is not longer supported.");
-		return false;
+        return false;
     }
 
-	/**
+    /**
      * @deprecated 2012-02-29 This function is not longer supported.
      */
-    public function exportPackage($sPackageFileName, $bReturn = false) { 
+    public function exportPackage($sPackageFileName, $bReturn = false) {
         cDeprecated("This function is not longer supported.");
-		return false;
+        return false;
     }
 }
 
@@ -770,14 +770,14 @@ class cApiModuleTranslationCollection extends ItemCollection
             return $string;
         }
     }
-    
-	/**
-	 * @deprecated 2012-02-29 This function is not longer supported.
-	 */
+
+    /**
+     * @deprecated 2012-02-29 This function is not longer supported.
+     */
     public function import($idmod, $idlang, $file) {
-		cDeprecated("This function is not longer supported.");
-		$this->_error = "This function is not longer supported.";
-		return false;
+        cDeprecated("This function is not longer supported.");
+        $this->_error = "This function is not longer supported.";
+        return false;
     }
 
     /**
@@ -785,7 +785,7 @@ class cApiModuleTranslationCollection extends ItemCollection
      */
     public function export($idmod, $idlang, $filename, $return = false) {
         cDeprecated("This function is not longer supported.");
-		return false;
+        return false;
     }
 }
 
@@ -812,7 +812,7 @@ class cApiModuleTranslation extends Item
 /** @deprecated 2012-03-03 Not supported any longer. */
 function cHandler_ModuleData($sName, $aAttribs, $sContent)
 {
-	cDeprecated("This function is not longer supported.");
+    cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["module"][$sName] = $sContent;
 }
@@ -820,7 +820,7 @@ function cHandler_ModuleData($sName, $aAttribs, $sContent)
 /** @deprecated 2012-03-03 Not supported any longer. */
 function cHandler_ItemArea($sName, $aAttribs, $sContent)
 {
-	cDeprecated("This function is not longer supported.");
+    cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["current_item_area"] = $sContent;
 }
@@ -828,7 +828,7 @@ function cHandler_ItemArea($sName, $aAttribs, $sContent)
 /** @deprecated 2012-03-03 Not supported any longer. */
 function cHandler_ItemName($sName, $aAttribs, $sContent)
 {
-	cDeprecated("This function is not longer supported.");
+    cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["current_item_name"] = $sContent;
 }
@@ -836,7 +836,7 @@ function cHandler_ItemName($sName, $aAttribs, $sContent)
 /** @deprecated 2012-03-03 Not supported any longer. */
 function cHandler_ItemData($sName, $aAttribs, $sContent)
 {
-	cDeprecated("This function is not longer supported.");
+    cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["items"][$_mImport["current_item_area"]][$_mImport["current_item_name"]][$sName] = $sContent;
 }
@@ -844,7 +844,7 @@ function cHandler_ItemData($sName, $aAttribs, $sContent)
 /** @deprecated 2012-03-03 Not supported any longer. */
 function cHandler_Translation($sName, $aAttribs, $sContent)
 {
-	cDeprecated("This function is not longer supported.");
+    cDeprecated("This function is not longer supported.");
     global $_mImport;
     $_mImport["translations"][$_mImport["current_item_area"]][$_mImport["current_item_name"]] = $sContent;
 }

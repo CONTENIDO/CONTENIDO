@@ -140,7 +140,7 @@ class cApiClientCollection extends ItemCollection
     public function hasLanguageAssigned($iIdClient)
     {
         $oClient = new cApiClient($iIdClient);
-		return $oClient->hasLanguages();
+        return $oClient->hasLanguages();
     }
 }
 
@@ -335,7 +335,7 @@ class cApiClient extends Item
 
 
 ################################################################################
-# NOTE: Class implemetations below are deprecated and the will be removed in 
+# NOTE: Class implemetations below are deprecated and the will be removed in
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
@@ -351,7 +351,7 @@ class Client extends cApiClientCollection
         cDeprecated("Use class cApiClientCollection instead");
         parent::__construct();
     }
-	
+
     public function Client()
     {
         cDeprecated("Use __construct() instead");

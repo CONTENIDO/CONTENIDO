@@ -1,15 +1,15 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Frontend group member classes
  *
  * Code is taken over from file contenido/classes/class.frontend.groups.php in favor of
  * normalizing API.
  *
- * Requirements: 
+ * Requirements:
  * @con_php_req 5.0
  *
  * @package    CONTENIDO API
@@ -20,13 +20,13 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.9.0
- * 
+ *
  * {@internal
  *   created  2011-09-20
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -95,7 +95,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
      * Returns all users in a single group
      * @param  int  $idfrontendgroup  specifies the frontend group
      * @param  bool  $asObjects  Specifies if the function should return objects
-     * @return array List of frontend user ids or cApiFrontendUser items 
+     * @return array List of frontend user ids or cApiFrontendUser items
      */
     public function getUsersInGroup($idfrontendgroup, $asObjects = true)
     {
@@ -144,7 +144,7 @@ class cApiFrontendGroupMember extends Item
 # Old versions of frontend group member item collection and frontend group member
 # item classes
 #
-# NOTE: Class implemetations below are deprecated and the will be removed in 
+# NOTE: Class implemetations below are deprecated and the will be removed in
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 

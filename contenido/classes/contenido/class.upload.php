@@ -84,7 +84,7 @@ class cApiUploadCollection extends ItemCollection
             $iFilesize = cApiUpload::getFileSize($sDirname, $sFilename);
             $oItem = $this->create($sDirname, $sFilename, $sFiletype, $iFilesize, '');
         }
-        
+
         return $oItem;
     }
 
@@ -161,18 +161,18 @@ class cApiUploadCollection extends ItemCollection
         // note: parents delete methos does normally this job, but the properties
         // are stored by using dirname + filename instead of idupl
         $oUpload->deletePropertiesByItemid($sDirFileName);
-        
+
         $this->deleteUploadMetaData($id);
-                
+
         // delete in DB
         return parent::delete($id);
     }
-    
+
     /**
-     * 
-     * Deletes meta-data from con_upl_meta table if file is deleting  
-     * @param int $idupl 
-     * @return bool 
+     *
+     * Deletes meta-data from con_upl_meta table if file is deleting
+     * @param int $idupl
+     * @return bool
      */
     protected function deleteUploadMetaData($idupl)
     {
@@ -343,7 +343,7 @@ class cApiUpload extends Item
 ################################################################################
 # Old versions of upload item collection and upload item classes
 #
-# NOTE: Class implemetations below are deprecated and the will be removed in 
+# NOTE: Class implemetations below are deprecated and the will be removed in
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 

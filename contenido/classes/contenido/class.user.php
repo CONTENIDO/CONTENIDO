@@ -110,14 +110,14 @@ class cApiUserCollection extends ItemCollection
      */
     public function create($username)
     {
-		$primaryKeyValue = md5($username);
-	
-		$item = parent::create($primaryKeyValue);
-		if ($item->usernameExists($username)) {
-			return false;
-		}
+        $primaryKeyValue = md5($username);
 
-		$item->set('username', $username);
+        $item = parent::create($primaryKeyValue);
+        if ($item->usernameExists($username)) {
+            return false;
+        }
+
+        $item->set('username', $username);
         $item->store();
 
         return $item;

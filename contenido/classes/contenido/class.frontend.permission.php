@@ -186,7 +186,7 @@ class cApiFrontendPermission extends Item
 }
 
 ################################################################################
-# Old versions of frontend permission item collection and frontend permission 
+# Old versions of frontend permission item collection and frontend permission
 # item classes
 #
 # NOTE: Class implemetations below are deprecated and the will be removed in

@@ -68,7 +68,7 @@ class cApiCodeCollection extends ItemCollection
 
         return $oItem;
     }
-    
+
     /**
      * Returns a code entry by category article and language.
      * @param int $iIdCatArt

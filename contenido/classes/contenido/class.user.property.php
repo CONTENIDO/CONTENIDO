@@ -17,10 +17,10 @@
  * If caching is enabled, see $cfg['properties']['user_prop']['enable_cache'],
  * all entries will be loaded at first time.
  * If enabled, each call of cApiUserPropertyCollection functions to retrieve properties
- * will return the cached entries without stressing the database.  
+ * will return the cached entries without stressing the database.
  *
  * The cApiUserPropertyCollection class keeps also track of changed and deleted
- * properties and synchronizes them with cached values, as long as you use the 
+ * properties and synchronizes them with cached values, as long as you use the
  * interface of cApiUserPropertyCollection to manage the properties.
  *
  * Requirements:
@@ -85,7 +85,7 @@ class cApiUserPropertyCollection extends ItemCollection
         $this->_setItemClass('cApiUserProperty');
 
         if (!isset(self::$_enableCache)) {
-            if (isset($cfg['properties']) && isset($cfg['properties']['user_prop']) 
+            if (isset($cfg['properties']) && isset($cfg['properties']['user_prop'])
                 && isset($cfg['properties']['user_prop']['enable_cache']))
             {
                 self::$_enableCache = (bool) $cfg['properties']['user_prop']['enable_cache'];

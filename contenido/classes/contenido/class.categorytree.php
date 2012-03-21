@@ -85,7 +85,7 @@ class cApiCategoryTree extends Item
 ################################################################################
 # Old version of category tree class
 #
-# NOTE: Class implemetation below is deprecated and the will be removed in 
+# NOTE: Class implemetation below is deprecated and the will be removed in
 #       future versions of contenido.
 #       Don't use it, it's still available due to downwards compatibility.
 

@@ -432,7 +432,7 @@ class cApiDbfs extends Item
 ################################################################################
 # Old versions of dbfs item collection and dbfs item classes
 #
-# NOTE: Class implemetations below are deprecated and the will be removed in 
+# NOTE: Class implemetations below are deprecated and the will be removed in
 #       future versions of contenido.
 #       Don't use them, they are still available due to downwards compatibility.
 
