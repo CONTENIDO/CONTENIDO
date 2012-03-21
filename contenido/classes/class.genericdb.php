@@ -7,7 +7,7 @@
  * Generic database abstraction functions.
  *
  * NOTE:
- * Because of required downwards compatibilitiy all protected/private member 
+ * Because of required downwards compatibilitiy all protected/private member
  * variables or methods don't have an leading underscore.
  *
  * Requirements:
@@ -491,7 +491,7 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
     protected $_aOperators;
 
     /**
-     * Flag to select all fields in a query. Reduces the number of queries send 
+     * Flag to select all fields in a query. Reduces the number of queries send
      * to the database.
      * @var  bool
      */
@@ -1090,7 +1090,7 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
 
         $result = $this->db->query($sql);
         $this->_lastSQL = $sql;
-        // @todo  disable all mode in this method for the moment. It has to be verified, 
+        // @todo  disable all mode in this method for the moment. It has to be verified,
         //        if enabling will result in negative side effects.
         $this->_bAllMode = false;
         return ($result) ? true : false;
@@ -1462,7 +1462,7 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
 
     /**
      * Loads a single object from the database.
-     * 
+     *
      * @param   mixed   $mItem  The primary key of the item to load or a recordset
      *                          with itemdata (array) to inject to the item object.
      * @return  Item  The newly created object
@@ -1491,22 +1491,21 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
 
     /**
      * Creates a new item in the table and loads it afterwards.
-	 *
-	 * @param	string	$primaryKeyValue	Optional parameter for direct input of primary key value
-	 *
+     *
+     * @param  string  $primaryKeyValue  Optional parameter for direct input of primary key value
      * @return  Item  The newly created object
      */
     public function create($primaryKeyValue = null)
     {
-        $oDb     = $this->_getSecondDBInstance();
+        $oDb = $this->_getSecondDBInstance();
 
-        $sql     = 'INSERT INTO `%s` (%s) VALUES ("%s")';
+        $sql = 'INSERT INTO `%s` (%s) VALUES ("%s")';
         $oDb->query($sql, $this->table, $this->primaryKey, $primaryKeyValue);
 
-		if ($primaryKeyValue === null) {
-			$primaryKeyValue = $oDb->getLastInsertedId($this->table);
-		}
-		
+        if ($primaryKeyValue === null) {
+            $primaryKeyValue = $oDb->getLastInsertedId($this->table);
+        }
+
         return $this->loadItem($primaryKeyValue);
     }
 
@@ -1638,7 +1637,7 @@ abstract class Item extends Contenido_ItemBaseAbstract
     public $values;
 
     /**
-     * Storage of the fields which were modified, where the keys are the 
+     * Storage of the fields which were modified, where the keys are the
      * fieldnames and the values just simple booleans.
      * @var  array
      */
@@ -1715,7 +1714,7 @@ abstract class Item extends Contenido_ItemBaseAbstract
             $this->loadByRecordSet($aRecordSet);
             return true;
         }
-    
+
         // SQL-Statement to select by field
         $sql = "SELECT * FROM %s WHERE %s = '%s'";
 
@@ -1877,7 +1876,7 @@ abstract class Item extends Contenido_ItemBaseAbstract
         $this->db->query($sql);
 
         $this->_lastSQL = $sql;
-        
+
         if ($this->db->affected_rows() > 0) {
             $this->_oCache->addItem($this->oldPrimaryKey, $this->values);
         }
@@ -2009,7 +2008,7 @@ abstract class Item extends Contenido_ItemBaseAbstract
     //}
 
     /**
-     * Define the filter functions used when data is being stored or retrieved 
+     * Define the filter functions used when data is being stored or retrieved
      * from the database.
      *
      * Examples:
