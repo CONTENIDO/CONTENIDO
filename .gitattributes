@@ -2027,12 +2027,6 @@ setup/locale/de_DE/LC_MESSAGES/contenido.mo -text
 setup/locale/de_DE/LC_MESSAGES/contenido.po -text
 setup/locale/potfiles.txt -text
 setup/locale/setup.pot -text
-setup/modules/backend_configuration/info.xml -text svneol=unset#text/plain
-setup/modules/backend_configuration/php/backend_configuration_input.php -text
-setup/modules/backend_configuration/php/backend_configuration_output.php -text
-setup/modules/backend_configuration_save_top/info.xml -text svneol=unset#text/plain
-setup/modules/backend_configuration_save_top/php/backend_configuration_save_top_input.php -text
-setup/modules/backend_configuration_save_top/php/backend_configuration_save_top_output.php -text
 setup/script/pluginInfo.js -text
 setup/script/setup.js -text
 setup/steps/forms/additionalplugins.php -text
