@@ -1520,12 +1520,6 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
     {
         $result = $this->_delete($mId);
 
-        // If this object wasn't loaded before, return false
-        if ($this->virgin === true) {
-            $this->lasterror = 'No item loaded';
-            return false;
-        }
-
         return $result;
     }
 
