@@ -850,8 +850,8 @@ class cApiUser extends Item
     public static function getErrorString($iErrorCode)
     {
         global $cfg;
-		
-		$sError = "";
+
+        $sError = '';
 
         switch ($iErrorCode) {
             case self::PASS_NOT_ENOUGH_MIXED_CHARS:
