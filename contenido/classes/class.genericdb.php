@@ -15,7 +15,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.2.2
+ * @version    1.2.3
  * @author     Timo A. Hummel
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -1540,6 +1540,43 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
         // get all ids
         $sql = 'SELECT ' . $this->primaryKey . ' AS pk FROM `' . $this->table . '` WHERE ' . $sWhere;
         $oDb->query($sql);
+        while ($oDb->next_record()) {
+            $aIds[] = $oDb->f('pk');
+        }
+
+        // delete entries by their ids
+        foreach ($aIds as $id) {
+            if ($this->_delete($id)) {
+                $numDeleted++;
+            }
+        }
+
+        return $numDeleted;
+    }
+
+    /**
+     * Deletes all found items in the table matching the passed field and it's value.
+     * Deletes also cached e entries and any existing properties.
+     *
+     * @param   string  $sField  The field name
+     * @param   mixed  $mValue  The value of the field
+     * @return  int  Number of deleted entries
+     */
+    public function deleteBy($sField, $mValue)
+    {
+        $oDb = $this->_getSecondDBInstance();
+
+        $aIds = array();
+        $numDeleted = 0;
+
+        // get all ids
+        if (is_string($mValue)) {
+            $sql = "SELECT %s AS pk FROM `%s` WHERE `%s` = '%s'";
+        } else {
+            $sql = "SELECT %s AS pk FROM `%s` WHERE `%s` = %d";
+        }
+
+        $oDb->query($sql, $this->primaryKey, $this->table, $sField, $mValue);
         while ($oDb->next_record()) {
             $aIds[] = $oDb->f('pk');
         }
