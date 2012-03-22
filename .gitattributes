@@ -153,6 +153,8 @@ cms/modules/twitter/template/follow_button.html -text
 cms/modules/twitter/template/label_translations.html -text
 cms/modules/twitter/template/tweets.html -text
 cms/modules/twitter/template/twitter.html -text
+cms/modules/twitter/template/twitter.js -text svneol=unset#text/plain
+cms/modules/twitter/template/twitter_no_config.html -text svneol=unset#text/plain
 cms/modules/twitter/template/twitter_small.html -text
 cms/modules/twitter/template/twitter_twitts_big.html -text
 cms/modules/twitter/template/twitter_twitts_small.html -text

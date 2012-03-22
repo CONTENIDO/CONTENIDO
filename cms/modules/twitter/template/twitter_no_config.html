@@ -1,0 +1,1 @@
+<p style="color:red;">Please configure module plugin! </p>

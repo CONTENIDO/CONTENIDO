@@ -5,6 +5,7 @@ $tplFollowButton = new Template();
 $tplTwitts= new Template();
 $tplLableTranslation = new Template();
 $tplTweets = new Template();
+$tpl2 = new Template();
 
 $twitterName = "CMS_VALUE[0]";
 $twitterLook = "CMS_VALUE[1]";
@@ -38,6 +39,10 @@ $tplTwitts->set("s", "USER_NAME", $twitterName);
 $tplTwitts->set("s", "COUNT", $countTwitts);
 
 
+
+$tplTwitts->set("s", "JS_FILE_TWITTER",$tpl2->generate('twitter.js', true));
+
+
         
 switch($twitterLook) {
 
@@ -63,6 +68,7 @@ switch($twitterLook) {
     break;
     case "big":
     
+    	
         if($showFollowButton) {
             $tplFollowButton->set("s", "ALIGN",'left');
             $tplFollowButton->set("s", "LANG", 'de');
@@ -81,6 +87,10 @@ switch($twitterLook) {
         $tpl->set("s","LABEL_TRANSLATIONS",$tplLableTranslation->generate('label_translations.html',true));
         $tpl->generate('twitter.html');
     break;
+    
+    default:
+    	$tpl->generate('twitter_no_config.html');
+    	break;
 
 }
 if($showShareButton) {
