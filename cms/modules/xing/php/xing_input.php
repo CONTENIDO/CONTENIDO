@@ -2,7 +2,7 @@
 
 <table>
   <tr>
-    <td><?php echo mi18n("URL");?></td>
+    <td><?php echo mi18n("URL zum Profil");?></td>
     <td><input type="text" name="CMS_VAR[0]" value="<?php echo "CMS_VALUE[0]"; ?>"></td>
   </tr>
   <tr>
