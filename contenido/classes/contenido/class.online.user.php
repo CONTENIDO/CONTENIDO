@@ -33,18 +33,26 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+/**
+ * Online user collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
 class cApiOnlineUserCollection extends ItemCollection
 {
-
     /**
-     * Constructor function
-     * @param none
+     * Constructor function.
+     *
+     * @param  string  $select  Select statement (see ItemCollection::select())
      */
-    public function __construct()
+    public function __construct($select = false)
     {
         global $cfg;
         parent::__construct($cfg['tab']['online_user'], 'user_id');
         $this->_setItemClass('cApiOnlineUser');
+        if ($select !== false) {
+            $this->select($select);
+        }
     }
 
     /**
