@@ -147,6 +147,7 @@ cms/modules/twitter/css/twitter.css -text
 cms/modules/twitter/image/logo_twitter_withbird.png -text
 cms/modules/twitter/info.xml -text
 cms/modules/twitter/js/twitter.js -text
+cms/modules/twitter/lang/lang_en_GB.txt -text svneol=unset#text/plain
 cms/modules/twitter/php/twitter_input.php -text
 cms/modules/twitter/php/twitter_output.php -text
 cms/modules/twitter/template/follow_button.html -text
