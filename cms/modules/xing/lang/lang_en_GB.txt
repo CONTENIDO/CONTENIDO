@@ -1,0 +1,3 @@
+URL zum Profil=URL to profile
+Aussehen=Look
+Name/Vorname=Lastname/Firstname

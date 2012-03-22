@@ -159,6 +159,8 @@ cms/modules/twitter/template/twitter_small.html -text
 cms/modules/twitter/template/twitter_twitts_big.html -text
 cms/modules/twitter/template/twitter_twitts_small.html -text
 cms/modules/xing/info.xml -text
+cms/modules/xing/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/modules/xing/lang/lang_en_GB.txt -text svneol=unset#text/plain
 cms/modules/xing/php/xing_input.php -text
 cms/modules/xing/php/xing_output.php -text
 cms/modules/xing/template/xing_big.html -text
