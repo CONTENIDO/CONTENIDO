@@ -49,8 +49,8 @@ cInclude('includes', 'functions.forms.php');
 
 $db = new DB_Contenido();
 
-$oActiveUser = new ActiveUsers($db, $cfg, $auth);
 $iUserId = $auth->auth['uid'];
+$oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->deleteUser($iUserId);
 
 $auth->logout();

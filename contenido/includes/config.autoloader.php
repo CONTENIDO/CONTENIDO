@@ -31,14 +31,13 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-03-02
+ *     created  2012-03-22
  * }}
  */
 
 
 return array(
     'ConUser_Abstract' => 'contenido/classes/abstract_classes/class.conuser.php',
-    'ActiveUsers' => 'contenido/classes/class.activeusers.php',
     'Ajax' => 'contenido/classes/class.ajax.php',
     'Art' => 'contenido/classes/class.art.php',
     'Article' => 'contenido/classes/class.article.php',
@@ -253,6 +252,9 @@ return array(
     'cApiModule' => 'contenido/classes/contenido/class.module.php',
     'cApiModuleTranslationCollection' => 'contenido/classes/contenido/class.module.php',
     'cApiModuleTranslation' => 'contenido/classes/contenido/class.module.php',
+    'cApiOnlineUserCollection' => 'contenido/classes/contenido/class.online.user.php',
+    'cApiOnlineUser' => 'contenido/classes/contenido/class.online.user.php',
+    'ActiveUsers' => 'contenido/classes/contenido/class.online.user.php',
     'cApiPropertyCollection' => 'contenido/classes/contenido/class.property.php',
     'cApiProperty' => 'contenido/classes/contenido/class.property.php',
     'PropertyCollection' => 'contenido/classes/contenido/class.property.php',
@@ -292,6 +294,7 @@ return array(
     'DebuggerFactory' => 'contenido/classes/Debug/DebuggerFactory.class.php',
     'Debug_DevNull' => 'contenido/classes/Debug/Debug_DevNull.class.php',
     'Debug_File' => 'contenido/classes/Debug/Debug_File.class.php',
+    'Debug_FileAndVisAdv' => 'contenido/classes/Debug/Debug_FileAndVisAdv.php',
     'Debug_Hidden' => 'contenido/classes/Debug/Debug_Hidden.class.php',
     'Debug_Visible' => 'contenido/classes/Debug/Debug_Visible.class.php',
     'Debug_VisibleAdv' => 'contenido/classes/Debug/Debug_VisibleAdv.class.php',
@@ -305,12 +308,12 @@ return array(
     'cLog' => 'contenido/classes/log/class.log.php',
     'cModuleLog' => 'contenido/classes/log/class.modulelog.php',
     'AbstractModule' => 'contenido/classes/module/AbstractModule.php',
+    'Contenido_UpgradeJob' => 'contenido/classes/module/class.contenido.upgrade.job.php',
+    'Contenido_Module_FileTranslation' => 'contenido/classes/module/class.module.filetranslation.php',
     'Contenido_Module_Handler' => 'contenido/classes/module/class.module.handler.php',
     'Contenido_Module_Search' => 'contenido/classes/module/class.module.search.php',
     'Contenido_Module_Synchronizer' => 'contenido/classes/module/class.module.synchronizer.php',
     'Contenido_Module_Template_Handler' => 'contenido/classes/module/class.module.template.handler.php',
-    'Contenido_Module_FileTranslation' => 'contenido/classes/module/class.module.filetranslation.php',
-    'Contenido_UpgradeJob' => 'contenido/classes/module/class.contenido.upgrade.job.php',
     'ModelConConfig' => 'contenido/classes/module/ModelConConfig.php',
     'ModuleException' => 'contenido/classes/module/ModuleException.php',
     'ModuleInterface' => 'contenido/classes/module/ModuleInterface.php',
@@ -361,8 +364,8 @@ return array(
     'cWidgetTableEdit' => 'contenido/classes/widgets/class.widgets.tableedit.php',
     'cWidgetTreeView' => 'contenido/classes/widgets/class.widgets.treeview.php',
     'cTableView' => 'contenido/classes/widgets/class.widgets.views.php',
-	'ContenidoXmlBase' => 'contenido/classes/xml/class.xml.base.php',
-	'ContenidoXmlReader' => 'contenido/classes/xml/class.xml.reader.php',
+    'ContenidoXmlBase' => 'contenido/classes/xml/class.xml.base.php',
+    'ContenidoXmlReader' => 'contenido/classes/xml/class.xml.reader.php',
     'ContenidoXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
     'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php'
 );

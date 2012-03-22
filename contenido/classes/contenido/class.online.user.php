@@ -1,0 +1,319 @@
+<?php
+/**
+ * Project:
+ * CONTENIDO Content Management System
+ *
+ * Description:
+ * Display current online user
+ *
+ * Requirements:
+ * @con_php_req 5.0
+ *
+ * Code is taken over from file contenido/classes/class.activeusers.php in favor of
+ * normalizing API.
+ *
+ * @package    CONTENIDO API
+ * @version    0.1
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ * @since      file available since CONTENIDO release 4.9.0
+ *
+ * {@internal
+ *   created 2012-03-20
+ *
+ *   $Id$;
+ * }}
+ *
+ */
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
+
+class cApiOnlineUserCollection extends ItemCollection
+{
+
+    /**
+     * Constructor function
+     * @param none
+     */
+    public function __construct()
+    {
+        global $cfg;
+        parent::__construct($cfg['tab']['online_user'], 'user_id');
+        $this->_setItemClass('cApiOnlineUser');
+    }
+
+    /**
+     * Start the User Tracking:
+     * 1) First delete all inactive users with timelimit is off
+     * 2) If find user in the table, do update
+     * 3) Else there is no current user do insert new user
+     *
+     * @param int  $userId  Id of user
+     */
+    public function startUsersTracking($userId = null)
+    {
+        global $auth;
+
+        $userId = (int) $userId;
+        if ($userId <= 0) {
+            $userId = $auth->auth['uid'];
+        }
+
+        // Delete all entries being older than defined timeout
+        $this->deleteInactiveUser();
+
+        $bResult = $this->findUser($userId);
+        if ($bResult) {
+            // Update the curent user
+            $this->updateUser($userId);
+        } else {
+            // User not found, we can insert the new user
+            $this->insertOnlineUser($userId);
+        }
+    }
+
+    /**
+     * Insert this user in online_user table
+     *
+     * @param int  $userId  Id of user
+     * @return  bool  Returns true if successful else false
+     */
+    public function insertOnlineUser($userId)
+    {
+        $oItem = parent::create((int) $userId);
+        if ($oItem) {
+            $created = date('Y-m-d H:i:s');
+            $oItem->set('lastaccessed', $created);
+            $oItem->store();
+        }
+        return ($oItem) ? true : false;
+    }
+
+    /**
+     * Find the this user if exists in the table 'online_user'
+     *
+     * @param  int  $userId  Is the User-Id (get from auth object)
+     * @return  bool  Returns true if this User is found, else false
+     */
+    public function findUser($userId)
+    {
+        $oUser = new cApiOnlineUser((int) $userId);
+        return (!$oUser->virgin);
+    }
+
+    /**
+     * Find all user_ids in the table 'online_user' for get rest information from
+     * table 'con_phplib_auth_user_md5'
+     *
+     * @return  array  Returns array of user-information
+     */
+    public function findAllUser()
+    {
+        // todo use $perm
+
+        $aAllUser = array();
+        $aUser = array();
+        $sClientName = '';
+
+        // get all user_ids
+        $this->select();
+        while ($oItem = $this->next()) {
+            $aUser[] = $oItem->get('user_id');
+        }
+
+        $oClientColl = new cApiClientCollection();
+
+        // get data of those users
+        $where = "user_id IN ('" . implode("', '", $aUser) . "')";
+        $oUserColl = new cApiUserCollection();
+        $oUserColl->select($where);
+        while ($oItem = $oUserColl->next()) {
+            $sClientNames = '';
+            $userId = $oItem->get('user_id');
+            $aAllUser[$userId]['realname'] = $oItem->get('realname');
+            $aAllUser[$userId]['username'] = $oItem->get('username');
+            $aPerms = explode(',', $oItem->get('perms'));
+
+            if (in_array('sysadmin', $aPerms)) {
+                $aAllUser[$userId]['perms'] = 'Systemadministrator';
+            } else {
+                $bIsAdmin = false;
+                $iCounter = 0;
+                foreach ($aPerms as $sPerm) {
+                    $aResults = array();
+                    if (preg_match('/^admin\[(\d+)\]$/', $sPerm, $aResults)) {
+                        $iClientId = $aResults[1];
+                        $bIsAdmin = true;
+                        $sClientName = $oClientColl->getClientname((int) $iClientId);
+                        if ($iCounter == 0 && $sClientName != '') {
+                            $sClientNames .= $sClientName;
+                        } elseif ($sClientName != '') {
+                            $sClientNames .= ', ' . $sClientName;
+                        }
+
+                        $aAllUser[$userId]['perms'] = 'Administrator (' . $sClientNames . ')';
+                        $iCounter++;
+                    } elseif (preg_match('/^client\[(\d+)\]$/', $sPerm, $aResults) && !$bIsAdmin) {
+                        $iClientId = $aResults[1];
+                        $sClientName = $oClientColl->getClientname((int) $iClientId);
+                        if ($iCounter == 0 && $sClientName != '') {
+                            $sClientNames .= $sClientName;
+                        } elseif ($sClientName != '') {
+                            $sClientNames .= ', ' . $sClientName;
+                        }
+
+                        $aAllUser[$userId]['perms'] = '(' . $sClientNames . ')';
+                        $iCounter++;
+                    }
+                }
+            }
+        }
+
+        return $aAllUser;
+    }
+
+    /**
+     * This function do an update of current timestamp in 'online_user'
+     *
+     * @param int $userId - Is the User-Id (get from auth object)
+     * @return  Returns true if successful, else false
+     */
+    public function updateUser($userId)
+    {
+        $oUser = new cApiOnlineUser((int) $userId);
+        if (!$oUser->virgin) {
+            $now = date('Y-m-d H:i:s');
+            $oUser->set('lastaccessed', $now);
+            return $oUser->store();
+        }
+        return false;
+    }
+
+    /**
+     * Delete all Contains in the table 'online_user' that is older as
+     * Backend timeout(currently is $cfg['backend']['timeout'] = 60)
+     *
+     * @return Returns true if successful else false
+     */
+    public function deleteInactiveUser()
+    {
+        global $cfg;
+        cInclude('includes', 'config.misc.php');
+        $iSetTimeOut = (int) $cfg['backend']['timeout'];
+        if ($iSetTimeOut <= 0) {
+            $iSetTimeOut = 10;
+        }
+
+        $aDel = array();
+        $result = false;
+        // NOTE: We could delete outdated entries with one query, but deleteing one by one
+        // gives us the possibility to inject hook (CEC) into each deleted entry.
+        $where = "DATE_SUB(NOW(), INTERVAL '$iSetTimeOut' Minute) >= `lastaccessed`";
+        if ($this->flexSelect('', '', $where)) {
+            while ($this->db->next_record()) {
+                $aDel[] = $this->db->f($this->primaryKey);
+            }
+        }
+        foreach ($aDel as $id) {
+            $result = $this->delete();
+        }
+        return $result;
+    }
+
+    /**
+     * Get the number of users from the table 'online_user'
+     *
+     * @return Returns if exists a number of users
+     */
+    public function getNumberOfUsers()
+    {
+        $sql = 'SELECT COUNT(*) AS cnt FROM `%s`';
+        $result = $this->db->query($sql, $this->table);
+        $this->_lastSQL = $sql;
+        return ($result) ? (int) $this->db->f('num') : 0;
+    }
+
+    /**
+     * Delete this user from 'online user' table
+     *
+     * @param int $userId  Is the User-Id (get from auth object)
+     * @return  Returns true if successful, else false
+     */
+    public function deleteUser($userId)
+    {
+        return $this->delete((int) $userId);
+    }
+
+    /**
+     * Get the website name from table con_clients
+     * @modified Timo Trautmann: Local database instance needed, because this function ist used in
+     *                           findAllUser(). findAllUser() already uses this connection
+     *
+     * @param int $iIdClient is the Client id
+     * @return  string  Returns the name if successful
+     * @deprecated  [2012-03-21] Retrieving client name by client id should not be responsibility of this class
+     */
+    public function getWebsiteName($iIdClient)
+    {
+        cDeprecated('Use cApiClientCollection->getClientname() instead');
+        $oClientColl = new cApiClientCollection();
+        return $oClientColl->getClientname((int) $iIdClient);
+    }
+}
+
+
+/**
+ * Online user item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
+class cApiOnlineUser extends Item
+{
+    /**
+     * Constructor function
+     * @param  mixed  $mId  Specifies the ID of item to load
+     */
+    public function __construct($mId = false)
+    {
+        global $cfg;
+        parent::__construct($cfg['tab']['online_user'], 'user_id');
+        $this->setFilters(array(), array());
+        if ($mId !== false) {
+            $this->loadByPrimaryKey($mId);
+        }
+    }
+}
+
+
+################################################################################
+# Old versions of active users class
+#
+# NOTE: Class implemetation below is deprecated and the will be removed in
+#       future versions of CONTENIDO.
+#       Don't use it, it is still available due to downwards compatibility.
+
+
+/**
+ * Active users
+ * @deprecated  [2012-03-20] Use cApiOnlineUserCollection instead of this class.
+ */
+class ActiveUsers extends cApiOnlineUserCollection
+{
+    public function __construct()
+    {
+        cDeprecated('Use class cApiOnlineUserCollection  instead');
+        parent::__construct();
+    }
+    public function ActiveUsers($oDb, $oCfg, $oAuth)
+    {
+        cDeprecated('Use __construct() instead');
+        $this->__construct();
+    }
+}
+
+?>

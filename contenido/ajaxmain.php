@@ -184,7 +184,7 @@ cDebug("Include memory usage: " . human_readable_size(memory_get_usage()-$oldmem
 cDebug("Complete memory usage: " . human_readable_size(memory_get_usage()));
 
 // User Tracking (who is online)
-$oActiveUser = new ActiveUsers($db, $cfg, $auth);
+$oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->startUsersTracking();
 
 page_close();

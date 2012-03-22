@@ -230,7 +230,7 @@ cDebug("*****".$sFilename."*****");
 debugPrint();
 
 // Do user tracking (who is online)
-$oActiveUser = new ActiveUsers($db, $cfg, $auth);
+$oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->startUsersTracking();
 
 page_close();

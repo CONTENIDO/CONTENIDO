@@ -233,7 +233,7 @@ if (file_exists($cfg["contenido"]["handbook_path"])) {
 
 // For display current online user in CONTENIDO-Backend
 $aMemberList = array();
-$oActiveUsers = new ActiveUsers($db, $cfg, $auth);
+$oActiveUsers = new cApiOnlineUserCollection();
 $iNumberOfUsers = 0;
 
 // Start()
@@ -243,7 +243,7 @@ $oActiveUsers->startUsersTracking();
 $iNumberOfUsers = $oActiveUsers->getNumberOfUsers();
 
 // Find all User who is online
-$aMemberList= $oActiveUsers->findAllUser();
+$aMemberList = $oActiveUsers->findAllUser();
 
 // Template for display current user
 $sTemplate = '';
