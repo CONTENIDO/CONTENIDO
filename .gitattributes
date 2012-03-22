@@ -63,6 +63,7 @@ cms/modules/contenido_header/php/contenido_header_output.php -text
 cms/modules/facebook/css/facebook.css -text
 cms/modules/facebook/info.xml -text
 cms/modules/facebook/lang/lang_de_DE.txt -text
+cms/modules/facebook/lang/lang_en_GB.txt -text svneol=unset#text/plain
 cms/modules/facebook/php/facebook_input.php -text
 cms/modules/facebook/php/facebook_output.php -text
 cms/modules/facebook/template/facebook_like_box.html -text
