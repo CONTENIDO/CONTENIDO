@@ -41,7 +41,7 @@ $sFileType = "css";
 $sActionCreate = 'style_create';
 $sActionEdit = 'style_edit';
 $sActionDelete = 'style_delete';
-
+$sFilename = '';
 $page = new cPage;
 $page->setEncoding("utf-8");
 

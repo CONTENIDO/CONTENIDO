@@ -41,6 +41,7 @@ $sFileType = "js";
 $sActionCreate = 'js_create';
 $sActionEdit = 'js_edit';
 $sActionDelete = 'js_delete';
+$sFilename = '';
 $page = new cPage;
 
 $tpl->reset();

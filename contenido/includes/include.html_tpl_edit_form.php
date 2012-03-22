@@ -41,7 +41,7 @@ $sFileType = "html";
 $sActionCreate = 'htmltpl_create';
 $sActionEdit = 'htmltpl_edit';
 $sActionDelete = 'htmltpl_delete';
-
+$sFilename = '';
 $page = new cPage;
 
 $tpl->reset();
