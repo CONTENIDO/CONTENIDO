@@ -201,7 +201,7 @@ class cSetupSystemtest extends cSetupMask
             i18n("PHP is configured for a maximum execution time of less than 30 seconds. This could cause problems with slow web servers and/or long operations in the backend. Our recommended execution time is 120 seconds on slow web servers, 60 seconds for medium ones and 30 seconds for fast web servers.")
         );
         
-        $this->runTest(class_exists("ZipArchive") && false, C_SEVERITY_WARNING, i18n("The class ZipArchive could not be found"), i18n("This could cause some problems, but CONTENIDO is able to run without it. You should check your PHP installation."));
+        $this->runTest(class_exists("ZipArchive"), C_SEVERITY_WARNING, i18n("The class ZipArchive could not be found"), i18n("This could cause some problems, but CONTENIDO is able to run without it. You should check your PHP installation."));
 
         $iResult = checkOpenBasedirCompatibility();
         switch ($iResult) {
