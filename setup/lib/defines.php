@@ -53,7 +53,7 @@ define('C_SETUP_STEPWIDTH', 28);
 define('C_SETUP_STEPHEIGHT', 28);
 define('C_SETUP_DEBUG', false);
 define('C_SETUP_MAX_CHUNKS_PER_STEP', 50);
-define('C_SETUP_MIN_PHP_VERSION', '5.1.2');
+define('C_SETUP_MIN_PHP_VERSION', '5.2.0');
 define('C_SETUP_VERSION', '4.9.0-alpha1');
 
 ?>

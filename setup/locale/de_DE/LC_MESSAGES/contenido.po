@@ -398,6 +398,14 @@ msgstr "CONTENIDO ben&ouml;tigt PHP %s oder h&ouml;her f&uuml;r einen reibungslo
 msgid "File uploads disabled"
 msgstr "Upload Dateien deaktiviert"
 
+#: steps/forms/systemtest.php:204
+msgid "The class ZipArchive could not be found"
+msgstr "Die Klasse ZipArchive konnte nicht gefunden werden."
+
+#: steps/forms/systemtest.php:204
+msgid "This could cause some problems, but CONTENIDO is able to run without it. You should check your PHP installation."
+msgstr "Das k&ouml;nnte Probleme verursachen, aber CONTENIDO wird auch ohne die Klasse funktionieren. Sie sollten Ihre PHP Installation &uuml;berpr&uuml;fen."
+
 #: steps/forms/systemtest.php:205
 #, php-format
 msgid "Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"

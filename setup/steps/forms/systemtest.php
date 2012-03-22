@@ -175,38 +175,16 @@ class cSetupSystemtest extends cSetupMask
 
     function doPHPTests()
     {
-        $this->runTest(phpversion(), C_SEVERITY_NONE, "PHP Version");
-
-        $this->runTest(php_uname(), C_SEVERITY_NONE, "php_uname()");
-
-        $this->runTest($_SERVER["SERVER_SOFTWARE"], C_SEVERITY_NONE, "Server Software");
-
         $this->runTest(
             isPHPCompatible(), C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), C_SETUP_MIN_PHP_VERSION),
             sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), C_SETUP_MIN_PHP_VERSION)
         );
-
-        $this->runTest(getSafeModeStatus(), C_SEVERITY_NONE, "getSafeModeStatus()");
-
-        $this->runTest(getSafeModeGidStatus(), C_SEVERITY_NONE, "getSafeModeGidStatus()");
-
-        $this->runTest(getSafeModeIncludeDir(), C_SEVERITY_NONE, "getSafeModeIncludeDir()");
-
-        $this->runTest(getOpenBasedir(), C_SEVERITY_NONE, "getOpenBasedir()");
-
-        $this->runTest(getDisabledFunctions(), C_SEVERITY_NONE, "getDisabledFunctions()");
-
-        $this->runTest(canPHPurlfopen(), C_SEVERITY_NONE, "canPHPurlfopen()");
-
-        $this->runTest(getPHPDisplayErrorSetting(), C_SEVERITY_NONE, "getPHPDisplayErrorSetting()");
 
         $this->runTest(
             getPHPFileUploadSetting(), C_SEVERITY_WARNING, i18n("File uploads disabled"),
             sprintf(i18n("Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"),
             '<a target="_blank" href="http://www.php.net/manual/en/ini.core.php#ini.file-uploads">http://www.php.net/manual/en/ini.core.php#ini.file-uploads</a>')
         );
-
-        $this->runTest(getPHPGPCOrder(), C_SEVERITY_NONE, "getPHPGPCOrder()");
 
         $this->runTest(
             !getPHPMagicQuotesRuntime(), C_SEVERITY_ERROR, i18n("PHP setting 'magic_quotes_runtime' is turned on"),
@@ -218,14 +196,12 @@ class cSetupSystemtest extends cSetupMask
             i18n("The PHP Setting 'magic_quotes_sybase' is turned on. CONTENIDO has been developed to comply with magic_quotes_sybase=Off as this is the PHP default setting. You have to change this directive to make CONTENIDO work.")
         );
 
-        $this->runTest(getPHPMaxExecutionTime(), C_SEVERITY_NONE, "getPHPMaxExecutionTime()");
-
         $this->runTest(
             intval(getPHPMaxExecutionTime()) >= 30, C_SEVERITY_WARNING, i18n("PHP maximum execution time is less than 30 seconds"),
             i18n("PHP is configured for a maximum execution time of less than 30 seconds. This could cause problems with slow web servers and/or long operations in the backend. Our recommended execution time is 120 seconds on slow web servers, 60 seconds for medium ones and 30 seconds for fast web servers.")
         );
-
-        $this->runTest(getPHPOpenBasedirSetting(), C_SEVERITY_NONE, "getPHPOpenBasedirSetting()");
+        
+        $this->runTest(class_exists("ZipArchive") && false, C_SEVERITY_WARNING, i18n("The class ZipArchive could not be found"), i18n("This could cause some problems, but CONTENIDO is able to run without it. You should check your PHP installation."));
 
         $iResult = checkOpenBasedirCompatibility();
         switch ($iResult) {
