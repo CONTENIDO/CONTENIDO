@@ -19,7 +19,9 @@ if($look == "small")
     $tpl->generate("xing_small.html");
 elseif($look == "big")
     $tpl->generate("xing_big.html");
-
+else {
+	$tpl->generate("xing_no_config.html");
+}
 
 
 ?>
