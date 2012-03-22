@@ -68,6 +68,7 @@ if(!defined('CON_FRAMEWORK')) {
 			throw new Exception( __CLASS__ . " " . __FUNCTION__ . " Parameter 1 invalid." );		
 		}
 		if(!is_array($aClientCfg)) {
+			return;
 			throw new Exception( __CLASS__ . " " . __FUNCTION__ . " Parameter 2 invalid." );		
 		}
 		// smarty laden

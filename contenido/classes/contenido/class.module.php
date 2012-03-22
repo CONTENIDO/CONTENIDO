@@ -124,9 +124,11 @@ class cApiModule extends Item
             $this->loadByPrimaryKey($mId);
         }
 
-        $this->_packageStructure = array("jsfiles"  => $cfgClient[$client]["js"]["path"],
-                                         "tplfiles" => $cfgClient[$client]["tpl"]["path"],
-                                         "cssfiles" => $cfgClient[$client]["css"]["path"]);
+        if(isset($client) && $client != 0) {
+	        $this->_packageStructure = array("jsfiles"  => $cfgClient[$client]["js"]["path"],
+	                                         "tplfiles" => $cfgClient[$client]["tpl"]["path"],
+	                                         "cssfiles" => $cfgClient[$client]["css"]["path"]);
+        }
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */

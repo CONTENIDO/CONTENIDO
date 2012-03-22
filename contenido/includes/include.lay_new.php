@@ -43,6 +43,7 @@ if ((int) $client > 0) {
     
 } else {
     $tpl->set('s', 'ACTION', i18n('No Client selected'));
+    $tpl->set('s', 'ACTION2', '');
 }
 
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['lay_left_top']);

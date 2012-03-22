@@ -228,7 +228,7 @@ class cApiOnlineUserCollection extends ItemCollection
             }
         }
         foreach ($aDel as $id) {
-            $result = $this->delete();
+            $result = $this->delete($id);
         }
         return $result;
     }

@@ -176,8 +176,12 @@ $db->query($sql);
 
 $db->next_record();
 
-$htmlpath = $cfgClient[$idclient]['path']['htmlpath'];
-$serverpath = $cfgClient[$idclient]['path']['frontend'];
+$htmlpath = "";
+$serverpath = "";
+if(isset($idclient)) {
+	$htmlpath = $cfgClient[$idclient]['path']['htmlpath'];
+	$serverpath = $cfgClient[$idclient]['path']['frontend'];
+}
 
 $form = '<form name="client_properties" method="post" action="'.$sess->url("main.php?").'">
              '.$sess->hidden_session().'

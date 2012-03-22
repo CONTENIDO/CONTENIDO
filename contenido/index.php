@@ -86,7 +86,11 @@ if (!is_numeric($client) || $client == '') {
     $oClientColl = new cApiClientCollection();
     $oClientColl->select('', '', 'idclient ASC', '1');
     $oClient = $oClientColl->next();
-    $client = $oClient->get('idclient');
+    if($oClient == null) {
+    	$client = 0;
+    } else {
+    	$client = $oClient->get('idclient');
+    }
 } else {
     $sess->register('client');
 }
