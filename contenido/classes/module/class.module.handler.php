@@ -649,17 +649,40 @@ class Contenido_Module_Handler {
      */
     protected function createModuleDirectory($type) {
         
-        if (array_key_exists($type, $this->_directories))
+        if (array_key_exists($type, $this->_directories)) {
             if (! is_dir($this->_modulePath. $this->_directories[$type])) {
-                
                 if (mkdir($this->_modulePath. $this->_directories[$type])== false) {
                     return false;
                 } else
                     chmod($this->_modulePath. $this->_directories[$type], 0777);
+            }else {
+            	return true;
             }
+        }
+        
+        return true;
     
     }
-
+	/**
+	 * Can write/create a file
+	 * 
+	 * @param string $fileName file name
+	 * @param string $directory directory where is the file
+	 * @return boolean, success true else false
+	 */
+    public function isWritable($fileName, $directory) {
+    	
+    	if(file_exists($fileName)) {
+    		if(!is_writable($fileName)) {
+    			return false;
+    		}
+    	}else {
+    		if(!is_writable($directory)) {
+    			return false;
+    		}
+    	}
+    	return true;
+    }
     /**
      * 
      * Save a string into the file (_output.php).
@@ -668,22 +691,26 @@ class Contenido_Module_Handler {
      * @return bool if the action (save contents into the file _output.php is success) return true else false
      */
     public function saveOutput($output = NULL) {
-        $this->createModuleDirectory('php');
+        
+    	$fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . "_output.php";
+    	
+    	if(!$this->createModuleDirectory('php') || !$this->isWritable($fileName,$this->_modulePath . $this->_directories['php'] )) {
+    		return false;
+    	}
+    	
+
         if ($output == NULL) {
             $output = $this->_output;
 		}
         
         $output = iconv($this->_encoding, $this->_fileEncoding, $output);
 		
-		$fileOperation = file_put_contents(
-			$this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . "_output.php", 
-			$output, LOCK_EX
-		);
+		$fileOperation = file_put_contents($fileName, $output, LOCK_EX);
 		
         if ($fileOperation === FALSE) {
             return false; //return false if file_put_contents dont work
         } else {
-            chmod($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . "_output.php", 0666);
+            chmod($fileName, 0666);
             return true; //return true if file_put_contents working
         }
     }
@@ -696,7 +723,12 @@ class Contenido_Module_Handler {
      * @return bool if the action (save contents into the file _input.php is success) return true else false
      */
     public function saveInput($input = NULL) {
-        $this->createModuleDirectory('php');
+        
+    	$fileName = $this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . "_input.php";
+    	
+    	if(! $this->createModuleDirectory('php') || !$this->isWritable($fileName,$this->_modulePath . $this->_directories['php'] )) {
+    		return false;
+    	}
 		
         if ($input == NULL) {
             $input = $this->_input;
@@ -704,15 +736,12 @@ class Contenido_Module_Handler {
 		
         $input = iconv($this->_encoding, $this->_fileEncoding, $input);
 		
-		$fileOperation = file_put_contents(
-			$this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . "_input.php", 
-			$input, LOCK_EX
-		);
+		$fileOperation = file_put_contents( $fileName, $input, LOCK_EX);
 		
         if ($fileOperation === FALSE) {
             return false; //return false if file_put_contents dont work
         } else {
-            chmod($this->_modulePath . $this->_directories['php'] . $this->_moduleAlias . "_input.php", 0666);
+            chmod($fileName, 0666);
             return true; //return true if file_put_contents working
         }
     }

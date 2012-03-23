@@ -57,9 +57,12 @@ if ($action == "mod_translation_save")
     
     $transaltionArray[stripslashes($t_orig)] = stripslashes($t_trans);
     //print_r($transaltionArray);
-    $contenidoTranslateFromFile->saveTranslationArray($transaltionArray);
-   	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved translation successfully!"));	
-    	
+    if($contenidoTranslateFromFile->saveTranslationArray($transaltionArray)) {
+   		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved translation successfully!"));	
+    }
+    else {
+    	$notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n("Can't save translation!"));
+    }	
 }
 
 if (!isset($idmodtranslation))

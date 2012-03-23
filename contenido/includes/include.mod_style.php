@@ -73,7 +73,11 @@ if (!$perm->have_perm_area_action('style', $actionRequest)|| $premCreate)
 } else {    
     $path =$contenidoModulHandler->getCssPath();// $cfgClient[$client]["css"]["path"];
      #make automatic a new css file
-    $contenidoModulHandler->createModuleFile('css');
+    if(!$contenidoModulHandler->createModuleFile('css')) {
+    	$notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n("Could not create a new css file!"));
+    	return;
+    }
+    	
     
     if (stripslashes($file)) {
         $sReloadScript = "<script type=\"text/javascript\">
@@ -138,11 +142,13 @@ if (!$perm->have_perm_area_action('style', $actionRequest)|| $premCreate)
                  }
                  </script>";
        
-       if($ret == true)
+       if($ret && $bEdit) {
        		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new css file successfully"));
-      else
+       }
+      else {
       		$notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n("Could not create a new css file!"));
-    }
+      }
+     }
 
 	# edit selected file
     if ( $actionRequest == $sActionEdit AND $_REQUEST['status'] == 'send') 
@@ -165,15 +171,20 @@ if (!$perm->have_perm_area_action('style', $actionRequest)|| $premCreate)
 				
         updateFileInformation($client, $sOrigFileName, 'css', $auth->auth['uid'], $_REQUEST['description'], $db, $sFilename);
 		
-        if($sFilename != $sTempFilename)
+        $fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
+        $tempCode = iconv(Contenido_Module_Handler::getEncoding(), $fileEncoding, $_REQUEST['code']);
+        $bEdit = fileEdit($sFilename,$tempCode , $path);
+        
+        if($sFilename != $sTempFilename && $bEdit) {
         	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed and saved changes successfully!"));
-		else
+        }
+		elseif(!$bEdit) {
+			$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Can't save file!"));
+		}else{
 			$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
+		}
     	
-    	
-		$fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
-    	$tempCode = iconv(Contenido_Module_Handler::getEncoding(), $fileEncoding, $_REQUEST['code']);
-    	$bEdit = fileEdit($sFilename,$tempCode , $path);
+		
         
 	}
 	

@@ -618,6 +618,8 @@ class cSetupSystemtest extends cSetupMask
             $this->logFilePrediction("cms/version/module/", C_SEVERITY_WARNING);
             $this->logFilePrediction("cms/version/templates/", C_SEVERITY_WARNING);
             $this->logFilePrediction("cms/config.php", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/modules/", C_SEVERITY_WARNING);
+            $this->logFilePrediction("cms/layouts/", C_SEVERITY_WARNING);
         }
 
         if ($_SESSION["configmode"] == "save") {

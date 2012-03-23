@@ -122,7 +122,7 @@ if ($action == "mod_importexport_module") {
             } else {
                 // Load the item again (clearing slashes from import)
                 $module->loadByPrimaryKey($module->get($module->primaryKey));
-                $contenidoModuleHandler  = new $contenidoModuleHandler ($module->get('idmod'));
+                $contenidoModuleHandler  = new Contenido_Module_Handler($module->get('idmod'));
             }
         }
     }

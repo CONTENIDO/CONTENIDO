@@ -136,8 +136,10 @@ if (!$perm->have_perm_area_action($area, $action))
                      right_top.location.href = href;
                  }
                  </script>";
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new CSS file successfully!"));
-    }
+        if($bEdit) {
+        	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new CSS file successfully!"));
+        }
+      }
 
 	# edit selected file
     if ( $_REQUEST['action'] == $sActionEdit AND $_REQUEST['status'] == 'send') 
@@ -158,14 +160,17 @@ if (!$perm->have_perm_area_action($area, $action))
     		$sTempFilename = $sFilename;
     	}
 		
-		
+    	$bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
+    	
     	//show message
-    	if($sFilename != $tempTemplate) {
+    	if($sFilename != $tempTemplate && $bEdit) {
     		
     		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed CSS file successfully!"));
-    	}else {
+    	}elseif($bEdit) {
     		
     		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
+    	}else {
+    		$notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n("Can't save file!"));
     	}
         updateFileInformation($client, $sOrigFileName, 'css', $auth->auth['uid'], $_REQUEST['description'], $db, $sFilename);
         
@@ -191,7 +196,7 @@ if (!$perm->have_perm_area_action($area, $action))
 		**/
     	
     	
-    	$bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
+    	
         
 	}
 	

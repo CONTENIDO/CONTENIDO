@@ -309,12 +309,19 @@ class Contenido_Module_FileTranslation extends Contenido_Module_Handler{
      * @return boolean true if success else false
      */
     public function saveTranslationArray($wordListArray) {
+	
+    	$fileName = $this->_modulePath.$this->_directories['lang'].self::$fileName;
     	
-       $this->createModuleDirectory('lang');
-       if( file_put_contents($this->_modulePath.$this->_directories['lang'].self::$fileName,$this->_serializeArray($wordListArray))=== false)
+       if(!$this->createModuleDirectory('lang') || !$this->isWritable($fileName, $this->_modulePath.$this->_directories['lang'])) {
+       		return false;
+       }
+       
+       if( file_put_contents($fileName,$this->_serializeArray($wordListArray))=== false){
            return false;
-        else
-            return true;    
+       }
+        else {
+            return true;  
+        }  
     }
     
     

@@ -120,8 +120,10 @@ if (!$perm->have_perm_area_action($area, $action))
                      right_top.location.href = href;
                  }
                  </script>";
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Crated new JS-File successfully!"));
-    }
+       if($bEdit) {
+        	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Crated new JS-File successfully!"));
+       }
+     }
 
 	# edit selected file
     if ( $_REQUEST['action'] == $sActionEdit AND $_REQUEST['status'] == 'send') 

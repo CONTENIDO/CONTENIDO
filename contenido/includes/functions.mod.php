@@ -171,13 +171,23 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
 		       	if($retInput == true && $retOutput == true) {
 		       		
 		       		 $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved module successfully!"));
+		       	}else {
+		       		$messageIfError = "<br/>". i18n("Can't save input !");
+		       		$messageIfError .= "<br/>". i18n("Can't save output !");
+		       		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, $messageIfError);
+		       		
 		       	}
 		}
     }else {
     	
     	//no changes for save
-    	if($retInput == true && $retOutput == true)
+    	if($retInput == true && $retOutput == true) {
     	 	$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved module successfully!"));
+    	}else {
+    		$messageIfError = i18n("Can't save input !");
+    		$messageIfError .= " ". i18n("Can't save output !");
+    		$notification->displayNotification(Contenido_Notification::LEVEL_ERROR, $messageIfError);
+    	}
     }
 
 	

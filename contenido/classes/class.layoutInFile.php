@@ -300,7 +300,28 @@ class LayoutInFile {
 		}
 
 	}
-
+	
+	/**
+	 * Can write/create a file
+	 *
+	 * @param string $fileName file name
+	 * @param string $directory directory where is the file
+	 * @return boolean, success true else false
+	 */
+	public function isWritable($fileName, $directory) {
+		 
+		if(file_exists($fileName)) {
+			if(!is_writable($fileName)) {
+				return false;
+			}
+		}else {
+			if(!is_writable($directory)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
     
 	/**
 	 * Save Layout 
@@ -311,14 +332,22 @@ class LayoutInFile {
 	 */
 	public function saveLayout($layoutCode = "") {
 		
+		$fileName = $this->_layoutPath . $this->_fileName;
+		
+		if(!$this->isWritable($fileName, $this->_layoutPath)) {
+			return false;
+		}
+			
 		if($layoutCode == "")
 			$layoutCode = $this->_layoutCode;
-		#exist layout path
+		//exist layout path
 		if( is_dir($this->_layoutPath)) {
-			#convert
+			//convert
 			$layoutCode = iconv($this->_encoding, self::$FILE_ENCODING, $layoutCode );
-			if ( file_put_contents($this->_layoutPath . $this->_fileName, $layoutCode) === FALSE )
+		
+			if ( file_put_contents($this->_layoutPath . $this->_fileName, $layoutCode) === FALSE ) {
 				return false;
+			}
 			else { 	
 				chmod($this->_layoutPath . $this->_fileName, 0777);
 			    return true;
@@ -505,17 +534,19 @@ class LayoutInFile {
 	 */
 	public function getLayoutCode() {
 		
-		#exist layout path
-		if( is_dir($this->_layoutPath)) {
-			if ( ($content = file_get_contents($this->_layoutPath . $this->_fileName)) === FALSE )
-				return false;
-			else {
-				#convert 
-				$content = iconv(self::$FILE_ENCODING,$this->_encoding."//IGNORE",$content ); 
-				return $content;
-			}
-		} else 
+		// cant read it dont exist file
+		if (! is_readable ( $this->_layoutPath . $this->_fileName )) {
 			return false;
+		}
+		
+		if (($content = file_get_contents ( $this->_layoutPath . $this->_fileName )) === FALSE)
+			return false;
+		else {
+			// convert
+			$content = iconv ( self::$FILE_ENCODING, $this->_encoding . "//IGNORE", $content );
+			return $content;
+		}
+	
 	}
 	
 	
