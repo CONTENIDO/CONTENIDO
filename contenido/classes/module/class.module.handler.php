@@ -417,7 +417,9 @@ class Contenido_Module_Handler {
      */
     public function createModuleFile($type, $fileName = NULL, $content = '') {
         //make directory if not exist
-        $this->createModuleDirectory($type);
+        if(!$this->createModuleDirectory($type)) {
+        	return false;
+        }
         
         //if not set use default filename
         if ($fileName == NULL || $fileName == '') {
@@ -434,6 +436,10 @@ class Contenido_Module_Handler {
         if ($type == 'css' || $type == 'js' || $type == 'template') {
             if (!$this->existFile($type, $fileName)) {
                 $content = iconv($this->_encoding, $this->_fileEncoding, $content);
+                if(!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName,$this->_modulePath . $this->_directories[$type] )){
+                	return false;
+                }
+                
                 if (file_put_contents($this->_modulePath . $this->_directories[$type] . $fileName, $content) === false) {
                     $notification = new Contenido_Notification();
                     $notification->displayNotification('error', i18n("Can't make file: "). $fileName);
@@ -441,12 +447,17 @@ class Contenido_Module_Handler {
                 }
             } elseif ($content != '') {
                 $content = iconv($this->_encoding, $this->_fileEncoding, $content);
+                if(!$this->isWritable($this->_modulePath . $this->_directories[$type] . $fileName,$this->_modulePath . $this->_directories[$type] )){
+                	return false;
+                }
                 if (file_put_contents($this->_modulePath. $this->_directories[$type]. $fileName, $content) === false) {
                     $notification = new Contenido_Notification();
                     $notification->displayNotification('error', i18n("Can't make file: "). $fileName);
                     return false;
                 }
             }
+        } else {
+        	return false;
         }
 		
         return true;
