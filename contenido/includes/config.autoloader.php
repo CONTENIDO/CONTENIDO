@@ -332,7 +332,6 @@ return array(
     'Contenido_Validator_Email' => 'contenido/classes/Validator/Email.class.php',
     'Contenido_Validator_Factory' => 'contenido/classes/Validator/Factory.class.php',
     'Contenido_Validator_Regex' => 'contenido/classes/Validator/Regex.class.php',
-    'Contenido_Validator_Url' => 'contenido/classes/Validator/Url.class.php',
     'cViewAdvancedMenu' => 'contenido/classes/widgets/class.views.advancedmenu.php',
     'cViewItems' => 'contenido/classes/widgets/class.views.advancedmenu.php',
     'cApiClickableAction' => 'contenido/classes/widgets/class.widgets.actionbutton.php',
