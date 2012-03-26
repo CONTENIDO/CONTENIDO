@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  * @package    CONTENIDO Core
- * @version    0.2
+ * @version    0.3
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -78,18 +78,14 @@ class Contenido_Perm
      */
     public function getGroupsForUser($userId)
     {
-        global $cfg;
-
-        if (!is_object($this->db)) {
-            $this->db = new DB_Contenido();
-        }
-
-        $sql = "SELECT group_id FROM " . $cfg['tab']['groupmembers'] . " WHERE user_id='" . $this->db->escape($userId) . "'";
-        $this->db->query($sql);
         $groups = array();
-        while ($this->db->next_record()) {
-            $groups[] = $this->db->f('group_id');
+
+        $oGroupMemberColl = new cApiGroupMemberCollection();
+        $oGroupMemberColl->select("user_id='" . $oGroupMemberColl->escape($userId) . "'");
+        while ($oItem = $oGroupMemberColl->next()) {
+            $groups[] = $oItem->get('group_id');
         }
+
         return $groups;
     }
 
@@ -100,23 +96,18 @@ class Contenido_Perm
      */
     public function getIDForArea($area)
     {
-        global $cfg;
-
         if (is_numeric($area)) {
             return $area;
         } elseif (isset($this->areacache[$area])) {
             return $this->areacache[$area];
         }
 
-        if (!is_object($this->db_perm)) {
-            $this->db_perm = new DB_Contenido();
+        $oAreaColl = new cApiAreaCollection();
+        $oAreaColl->select("name='" . $oAreaColl->escape($area) . "'");
+        if ($oItem = $oAreaColl->next()) {
+            $this->areacache[$area] = $oItem->get('idarea');
+            $area = $oItem->get('idarea');
         }
-
-        $sql = "SELECT idarea FROM " . $cfg['tab']['area'] . " WHERE name='" . $this->db_perm->escape($area) . "'";
-        $this->db_perm->query($sql);
-        $this->db_perm->next_record();
-        $this->areacache[$area] = $this->db_perm->f('idarea');
-        $area = $this->db_perm->f('idarea');
 
         return $area;
     }
@@ -128,23 +119,18 @@ class Contenido_Perm
      */
     public function getIDForAction($action)
     {
-        global $cfg;
-
         if (is_numeric($action)) {
             return $action;
         } elseif (isset($this->actioncache[$action])) {
             return $this->actioncache[$action];
         }
 
-        if (!is_object($this->db_perm)) {
-            $this->db_perm = new DB_Contenido;
+        $oActionColl = new cApiActionCollection();
+        $oActionColl->select("name='" . $oActionColl->escape($action) . "'");
+        if ($oItem = $oActionColl->next()) {
+            $this->actioncache[$action] = $oItem->get('idaction');
+            $action = $oItem->get('idaction');
         }
-
-        $sql = "SELECT idaction FROM " . $cfg['tab']['actions'] . " WHERE name='" . $this->db_perm->escape($action) . "'";
-        $this->db_perm->query($sql);
-        $this->db_perm->next_record();
-        $this->actioncache[$action] = $this->db_perm->f('idaction');
-        $action = $this->db_perm->f('idaction');
 
         return $action;
     }
@@ -200,33 +186,30 @@ class Contenido_Perm
      */
     public function load_permissions_for_user($user)
     {
-        global $db, $client, $lang, $cfg;
+        global $client, $lang;
         global $area_rights, $item_rights;
 
-        $sql = "SELECT * FROM " . $cfg['tab']['rights'] . " WHERE user_id='".$db->escape($user)."' "
-             . "AND idcat=0 AND idclient=".Contenido_Security::toInteger($client)." AND idlang=".Contenido_Security::toInteger($lang);
-        $db->query($sql);
+        $oRightColl = new cApiRightCollection();
+        $sWhere = "user_id='" . $oRightColl->escape($user) . "' AND idcat=0 AND "
+                . "idclient=" . (int) $client . " AND idlang=" . (int) $lang;
+        $oRightColl->select($sWhere);
+        while ($oItem = $oRightColl->next()) {
+            $area_rights[$oItem->get('idarea')][$oItem->get('idaction')] = true;
+        }
 
-        if (!is_array($area_rights)) {
-            $area_rights = array();
-        }
-        while ($db->next_record()) {
-            $area_rights[$db->f('idarea')][$db->f('idaction')] = true;
-        }
         // Select Rights for Article and Sructure (Attention Hard code Areas)
-        $sql = 'SELECT idarea FROM ' . $cfg['tab']['area'];
-        $db->query($sql);
-        $tmp_area = array();
-        while ($db->next_record()) {
-            $tmp_area[] = $db->f('idarea');
+        $oAreaColl = new cApiAreaCollection();
+        $oAreaColl->select();
+        while ($oItem = $oAreaColl->next()) {
+            $tmp_area[] = $oItem->get('idarea');
         }
 
         $tmp_area_string = implode("','", array_values($tmp_area));
-        $sql = "SELECT idarea, idaction, idcat FROM " . $cfg['tab']['rights'] . " WHERE user_id='".$db->escape($user)."' "
-             . "AND idclient=".Contenido_Security::toInteger($client)." AND idlang=".Contenido_Security::toInteger($lang)." AND idarea IN ('$tmp_area_string') AND idcat != 0";
-        $db->query($sql);
-        while ($db->next_record()) {
-            $item_rights[$db->f(0)][$db->f(1)][$db->f(2)] = $db->f(2);
+        $sWhere = "user_id='" . $oRightColl->escape($user) . "' AND idclient=" . (int) $client
+                . " AND idlang=" . (int) $lang . " AND idarea IN ('$tmp_area_string') AND idcat != 0";
+        $oRightColl->select($sWhere);
+        while ($oItem = $oRightColl->next()) {
+            $item_rights[$oItem->get('idarea')][$oItem->get('idaction')][$oItem->get('idcat')] = $oItem->get('idcat');
         }
     }
 
@@ -542,11 +525,10 @@ class Contenido_Perm
 
         if (!is_object($oUser)) {
             global $auth;
-            $oUser = new User();
-            $oUser->loadUserByUserID($auth->auth['uid']);
+            $oUser = new cApiUser($auth->auth['uid']);
         }
 
-        if (strtolower(get_class($oUser)) != 'user') {
+        if (get_class($oUser) != 'cApiUser') {
             cWarning(__FILE__, __LINE__, 'oUser parameter is not of type User');
         }
 

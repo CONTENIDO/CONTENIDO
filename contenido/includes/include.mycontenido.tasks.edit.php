@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -50,8 +50,8 @@ $ui->setVar("idcommunication", $idcommunication);
 
 $userselect = new cHTMLSelectElement("userassignment");
 
-$userclass = new User();
-foreach ($userclass->getAvailableUsers(explode(',', $auth->auth['perm'])) as $key => $value) {
+$userColl = new cApiUserCollection();
+foreach ($userColl->getAccessibleUsers(explode(',', $auth->auth['perm'])) as $key => $value) {
     $acusers[$key] = $value["username"] . " (".$value["realname"] . ")";
 }
 asort($acusers);

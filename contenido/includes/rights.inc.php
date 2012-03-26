@@ -1,25 +1,25 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Rights
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  unknown
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2008-07-03, Timo Trautmann, moved inline html to template
@@ -27,11 +27,11 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
- 
+
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -141,9 +141,9 @@ function saverightsarea()
 
          //update table
          $sql="UPDATE ".$cfg["tab"]["phplib_auth_user_md5"]." SET perms='".Contenido_Security::escapeDB($rights_perms, $db)."' WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."'";
-                
+
          $db->query($sql);
-         
+
          //save the other rights
          saverights();
 }
@@ -205,8 +205,7 @@ if(!isset($actionarea)){
     $actionarea="area";
 }
 
-$muser = new User;
-$muser->loadUserByUserID($userid);
+$muser = new cApiUser($userid);
 
 $userperms = $muser->getField("perms");
 
@@ -216,54 +215,54 @@ $oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
 
 
 //selectbox for clients
-$oHtmlSelect = new 	cHTMLSelectElement ('rights_clientslang', "", "rights_clientslang");
+$oHtmlSelect = new     cHTMLSelectElement ('rights_clientslang', "", "rights_clientslang");
 
-	$clientclass = new Client;
-   	$clientList = $clientclass->getAccessibleClients();
+    $clientclass = new Client;
+       $clientList = $clientclass->getAccessibleClients();
 
-  	$firstsel = false;
-  	
-	$i = 0;
-   	foreach ($clientList as $key=>$value) {
-   		
-   		$sql="SELECT * FROM ".$cfg["tab"]["lang"]." as A, ".$cfg["tab"]["clients_lang"]." as B WHERE B.idclient='".Contenido_Security::toInteger($key)."' AND A.idlang=B.idlang";
-		$db->query($sql);
+      $firstsel = false;
 
-		while($db->next_record())
-		{
-    		if((strpos($userperms, "client[$key]") !== false) && 
-    		   (strpos($userperms, "lang[".$db->f("idlang")."]") !== false)
-    		   && ($perm->have_perm("lang[".$db->f("idlang")."]"))){
-    		   	
-    		   	if ($firstsel == false)
-    		   	{
-    		   		$firstsel = true;
-    		   		$firstclientslang = $db->f("idclientslang");
-    		   	}
-    		   	
-		       if ($rights_clientslang == $db->f("idclientslang")) {
-			        $oHtmlSelectOption = new cHTMLOptionElement($value["name"] . " -> ".$db->f("name"), $db->f("idclientslang"), true);
+    $i = 0;
+       foreach ($clientList as $key=>$value) {
+
+           $sql="SELECT * FROM ".$cfg["tab"]["lang"]." as A, ".$cfg["tab"]["clients_lang"]." as B WHERE B.idclient='".Contenido_Security::toInteger($key)."' AND A.idlang=B.idlang";
+        $db->query($sql);
+
+        while($db->next_record())
+        {
+            if((strpos($userperms, "client[$key]") !== false) &&
+               (strpos($userperms, "lang[".$db->f("idlang")."]") !== false)
+               && ($perm->have_perm("lang[".$db->f("idlang")."]"))){
+
+                   if ($firstsel == false)
+                   {
+                       $firstsel = true;
+                       $firstclientslang = $db->f("idclientslang");
+                   }
+
+               if ($rights_clientslang == $db->f("idclientslang")) {
+                    $oHtmlSelectOption = new cHTMLOptionElement($value["name"] . " -> ".$db->f("name"), $db->f("idclientslang"), true);
                     $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
-					$i++;
-					
+                    $i++;
+
                     if(!isset($rights_client))
                     {
-                   	    $firstclientslang = $db->f("idclientslang");
+                           $firstclientslang = $db->f("idclientslang");
                     }
                } else {
-			        $oHtmlSelectOption = new cHTMLOptionElement($value["name"] . " -> ".$db->f("name"), $db->f("idclientslang"), false);
+                    $oHtmlSelectOption = new cHTMLOptionElement($value["name"] . " -> ".$db->f("name"), $db->f("idclientslang"), false);
                     $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
-					$i++;
+                    $i++;
                }
-    		}
-		}
+            }
+        }
     }
 
-	$oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
-      
+    $oTpl->set('s', 'INPUT_SELECT_CLIENT', $oHtmlSelect->render());
+
       if ($area == 'user_content') {
         #filter for displaying rights
-        $oHtmlSelect = new 	cHTMLSelectElement ('filter_rights', '', "filter_rights");  
+        $oHtmlSelect = new     cHTMLSelectElement ('filter_rights', '', "filter_rights");
         $oHtmlSelectOption = new cHTMLOptionElement('--- '.i18n("All").' ---', '', false);
         $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
         $oHtmlSelectOption = new cHTMLOptionElement(i18n("Article rights"), 'article', false);
@@ -304,16 +303,16 @@ $oHtmlSelect = new 	cHTMLSelectElement ('rights_clientslang', "", "rights_client
             }
         }
         $oTpl->set('s', 'INPUT_SELECT_RIGHTS', $oHtmlSelect->render());
-		$oTpl->set('s', 'DISPLAY_RIGHTS', 'block');
-	} else {
-	    $oTpl->set('s', 'INPUT_SELECT_RIGHTS', '');
-		$oTpl->set('s', 'DISPLAY_RIGHTS', 'none');
-	}
+        $oTpl->set('s', 'DISPLAY_RIGHTS', 'block');
+    } else {
+        $oTpl->set('s', 'INPUT_SELECT_RIGHTS', '');
+        $oTpl->set('s', 'DISPLAY_RIGHTS', 'none');
+    }
 //navigation
 
 if(!isset($rights_clientslang))
 {
-	$rights_clientslang = $firstclientslang;
+    $rights_clientslang = $firstclientslang;
 }
 
 $sql = "SELECT idclient, idlang FROM ".$cfg["tab"]["clients_lang"]." WHERE idclientslang = '".Contenido_Security::toInteger($rights_clientslang)."'";
@@ -323,46 +322,46 @@ $bEndScript = false;
 
 if ($db->next_record())
 {
-	$rights_client = $db->f("idclient");
-	$rights_lang = $db->f("idlang");
-	$oTpl->set('s', 'NOTIFICATION', '');
-	$oTpl->set('s', 'DISPLAY_FILTER', 'block');
+    $rights_client = $db->f("idclient");
+    $rights_lang = $db->f("idlang");
+    $oTpl->set('s', 'NOTIFICATION', '');
+    $oTpl->set('s', 'DISPLAY_FILTER', 'block');
 } else {
     $bEndScript = true;
-	ob_end_clean();
+    ob_end_clean();
 
-	// Account is sysadmin
-	if (strpos($userperms, "sysadmin") !== false) 
-	{
-		$oTpl->set('s', 'NOTIFICATION', $notification->messageBox("warning", i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."),0));
-	} 
-	// Account is only assigned to clients with admin rights
-	else if (strpos($userperms, "admin[") !== false) 
-	{
-		$oTpl->set('s', 'NOTIFICATION', $notification->messageBox("warning", i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."),0));
-	} 
-	else 
-	{
-		$oTpl->set('s', 'NOTIFICATION', $notification->messageBox("error", i18n("Current user doesn't have any rights to any client/language."),0));
-	}
-	$oTpl->set('s', 'DISPLAY_FILTER', 'none');
+    // Account is sysadmin
+    if (strpos($userperms, "sysadmin") !== false)
+    {
+        $oTpl->set('s', 'NOTIFICATION', $notification->messageBox("warning", i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."),0));
+    }
+    // Account is only assigned to clients with admin rights
+    else if (strpos($userperms, "admin[") !== false)
+    {
+        $oTpl->set('s', 'NOTIFICATION', $notification->messageBox("warning", i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."),0));
+    }
+    else
+    {
+        $oTpl->set('s', 'NOTIFICATION', $notification->messageBox("error", i18n("Current user doesn't have any rights to any client/language."),0));
+    }
+    $oTpl->set('s', 'DISPLAY_FILTER', 'none');
 }
 
 if ($bEndScript != true) {
-	$tmp = ob_get_contents();
-	ob_end_clean();
-	$oTpl->set('s', 'OB_CONTENT', $tmp);
+    $tmp = ob_get_contents();
+    ob_end_clean();
+    $oTpl->set('s', 'OB_CONTENT', $tmp);
 } else {
     $oTpl->set('s', 'OB_CONTENT', '');
 }
 
 if ($bEndScript == true) {
     $oTpl->set('s', 'RIGHTS_CONTENT', '');
-	$oTpl->set('s', 'JS_SCRIPT_BEFORE', '');
-	$oTpl->set('s', 'JS_SCRIPT_AFTER', '');
-	$oTpl->set('s', 'RIGHTS_CONTENT', '');
-	$oTpl->set('s', 'EXTERNAL_SCRIPTS', '');
-	$oTpl->generate('templates/standard/'.$cfg['templates']['rights_inc']);
-	die();
+    $oTpl->set('s', 'JS_SCRIPT_BEFORE', '');
+    $oTpl->set('s', 'JS_SCRIPT_AFTER', '');
+    $oTpl->set('s', 'RIGHTS_CONTENT', '');
+    $oTpl->set('s', 'EXTERNAL_SCRIPTS', '');
+    $oTpl->generate('templates/standard/'.$cfg['templates']['rights_inc']);
+    die();
 }
 ?>

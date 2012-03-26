@@ -90,11 +90,10 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
                     $oMail->WordWrap = 1000;
                     $oMail->IsMail();
 
-                    $user = new User();
-                    $user->loadUserByUserID($todoitem->get('recipient'));
+                    $user = new cApiUser($todoitem->get('recipient'));
 
-                    $oMail->AddAddress($user->getField('email'), '');
-                    $realname = $user->getField('realname');
+                    $oMail->AddAddress($user->get('email'), '');
+                    $realname = $user->get('realname');
                     $oMail->Subject = $todoitem->get('subject');
 
                     $client = $todoitem->get('idclient');

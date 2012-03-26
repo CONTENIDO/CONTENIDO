@@ -1,46 +1,38 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <meta content="text/html; charset=ISO-8859-1"
- http-equiv="content-type">
-  <title>Contenido - Creating login modules</title>
-  <style type="text/css">
-body            {
-                    background-color: #ffffff;
-                    scrollbar-face-color:#C6C6D5;
-                    scrollbar-highlight-color:#FFFFFF;
-                    scrollbar-3dlight-color:#747488;
-                    scrollbar-darkshadow-color:#000000;
-                    scrollbar-shadow-color:#334F77;
-                    scrollbar-arrow-color:#334F77;
-                    scrollbar-track-color:#C7C7D6;
-		    font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
-                }
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>Contenido - Creating login modules</title>
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            scrollbar-face-color:#C6C6D5;
+            scrollbar-highlight-color:#FFFFFF;
+            scrollbar-3dlight-color:#747488;
+            scrollbar-darkshadow-color:#000000;
+            scrollbar-shadow-color:#334F77;
+            scrollbar-arrow-color:#334F77;
+            scrollbar-track-color:#C7C7D6;
+            font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
+        }
 
-h1 {
- font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 20px; color: #000000;
- margin-top: 0px;
-}
+        h1 {
+            font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 20px; color: #000000;
+            margin-top: 0px;
+        }
 
-h2 {
- font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 15px; color: #000000;
-}
-
-  </style>
+        h2 {
+            font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 15px; color: #000000;
+        }
+    </style>
 </head>
-<body alink="#000099" vlink="#990099" link="#000099"
- style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
-<table
- style="border-bottom: 1px solid; text-align: left; background-color: rgb(255, 255, 255); width: 100%;"
- border="0" cellspacing="2" cellpadding="2">
+<body alink="#000099" vlink="#990099" link="#000099" style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<table style="border-bottom: 1px solid; text-align: left; background-color: rgb(255, 255, 255); width: 100%;" border="0" cellspacing="2" cellpadding="2">
   <tbody>
     <tr>
-      <td style="vertical-align: top;"><img
- style="width: 190px; height: 112px; padding-right: 20px;" align="left"
- alt="Contenido" src="conlogo.gif">
+      <td style="vertical-align: top;"><img style="width: 190px; height: 112px; padding-right: 20px;" align="left" alt="Contenido" src="conlogo.gif">
       <h1>Creating a frontend login module using Contenido</h1>
-      <table style="text-align: left;" border="0" cellspacing="2"
- cellpadding="2">
+      <table style="text-align: left;" border="0" cellspacing="2" cellpadding="2">
         <tbody>
           <tr>
             <td style="vertical-align: top;">Author</td>
@@ -139,7 +131,7 @@ The article/category specified has to be public/online.
 Of course, you don't want to create a user in the backend every time.
 You can automate the user creation process using the class "User":<br>
 <br>
-<pre style="margin-left: 40px;">$myUsers = new Users;	// User Collection<br>$myUser = new User;	// Single user<br><br>$ret = $myUsers-&gt;create("nameofuser");<br><br>/* Note the three equal signs: This checks for the boolean type */<br>if ($ret === false)<br>{<br>  /* User already exists */<br>  die("User already exists");<br>} else {<br>  /* User was successfully created, now we can set the password */<br>  $user-&gt;loadUserByUserID($ret);<br>  $user-&gt;setField("password", md5("theuserspassword"));<br>}</pre>
+<pre style="margin-left: 40px;">$myUsers = new cApiUserCollection();    // User Collection<br>$myUser = new cApiUser();    // Single user<br><br>$ret = $myUsers-&gt;create("nameofuser");<br><br>/* Note the three equal signs: This checks for the boolean type */<br>if ($ret === false)<br>{<br>  /* User already exists */<br>  die("User already exists");<br>} else {<br>  /* User was successfully created, now we can set the password */<br>  $user-&gt;loadByPrimaryKey($ret);<br>  $user-&gt;setField("password", md5("theuserspassword"));<br>}</pre>
 <br>
 You can also assign custom properties to your users (to attach almost
 every kind of data to a user) by using the methods "setUserProperty"

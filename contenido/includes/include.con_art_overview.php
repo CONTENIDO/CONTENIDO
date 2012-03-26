@@ -12,7 +12,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -159,7 +159,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $perm->have_perm_area_action_item('con_editart', 'con_edit', $idcat) ||
         $perm->have_perm_area_action_item('con_editart', 'con_newart', $idcat) ||
         $perm->have_perm_area_action_item('con_tplcfg', 'con_tplcfg_edit', $idcat) ||
-        $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat)) 
+        $perm->have_perm_area_action_item('con_editart', 'con_saveart', $idcat))
 
     {
 
@@ -209,7 +209,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     b.idclient  = ".Contenido_Security::toInteger($client)." AND
                     b.idart     = c.idart AND
                     c.idcat     = ".Contenido_Security::toInteger($idcat);
-                    
+
         $sql = str_replace("{ISSTART}", '', $sql);
 
         if ($syncoptions == -1) {
@@ -329,8 +329,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             if ((($obj = $col->checkMark("article", $idartlang)) === false) || $obj->get("userid") == $auth->auth['uid']) {
                 $inUse = false;
             } else {
-                $vuser = new User();
-                $vuser->loadUserByUserID($obj->get("userid"));
+                $vuser = new cApiUser($obj->get("userid"));
                 $inUseUser = $vuser->getField("username");
                 $inUseUserRealName = $vuser->getField("realname");
 

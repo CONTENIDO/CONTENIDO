@@ -497,8 +497,10 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
             i18n("Delay between blocks:", 'newsletter')."&nbsp;".$oTxtDispatchDelay->render()."&nbsp;".i18n("sec.", 'newsletter')."<br />".
             $oCkbSaveAsDefault->toHTML(false)."&nbsp;".i18n("Save option settings as default", 'newsletter'));
 
-    $oForm->add(i18n("Author", 'newsletter'), $classuser->getUserName($oNewsletter->get("author")) . " (". $oNewsletter->get("created").")" );
-    $oForm->add(i18n("Last modified by", 'newsletter'), $classuser->getUserName($oNewsletter->get("modifiedby")). " (". $oNewsletter->get("modified").")" );
+    $oUser = new cApiUser($oNewsletter->get("author"));
+    $oForm->add(i18n("Author", 'newsletter'), $oUser->get('username') . " (". $oNewsletter->get("created").")" );
+    $oUser = new cApiUser($oNewsletter->get("modifiedby"));
+    $oForm->add(i18n("Last modified by", 'newsletter'), $oUser->get('username') . " (". $oNewsletter->get("modified").")" );
 
     $sExecScript = '
     <script type="text/javascript">

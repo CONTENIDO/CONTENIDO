@@ -1,59 +1,58 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Contains workflow editing functions
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Plugins
  * @subpackage Workflow
- * @version    1.3
+ * @version    1.3.1
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-05-20
- *   
+ *
  *   $Id: include.workflow_edit.php,v 1.3 2006/01/13 15:54:41 timo.hummel Exp $
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
 plugin_include('workflow', 'classes/class.workflow.php');
- 
+
 $form = new UI_Table_Form("workflow_edit");
-$userclass = new User;
 $workflows = new Workflows;
 
 $workflow = $workflows->loadItem($idworkflow);
 
 if ($action == "workflow_save")
 {
-	if ($idworkflow == "-1")
-	{
-		$workflow = $workflows->create();
-		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new workflow successfully!"));
-	}elseif ($idworkflow > 0) {
-		$notification->displayNotification(Contenido_Notification::LEVEL_INFO , i18n("Saved changes successfully!"));
-	}
+    if ($idworkflow == "-1")
+    {
+        $workflow = $workflows->create();
+        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new workflow successfully!"));
+    }elseif ($idworkflow > 0) {
+        $notification->displayNotification(Contenido_Notification::LEVEL_INFO , i18n("Saved changes successfully!"));
+    }
 
-	$workflow->set("name",htmlspecialchars($wfname));
-	$workflow->set("description",htmlspecialchars($wfdescription));
-	$idworkflow = $workflow->get("idworkflow");
-	$workflow->store();
+    $workflow->set("name",htmlspecialchars($wfname));
+    $workflow->set("description",htmlspecialchars($wfdescription));
+    $idworkflow = $workflow->get("idworkflow");
+    $workflow->store();
 }
 
 if ((int) $idworkflow == 0) {
@@ -69,7 +68,7 @@ if ($idworkflow) {
                              href = href.replace(/&action=workflow_delete/, '');
                              left_bottom.location.href = href+'&idworkflow='+".$idworkflow.";
                          }
-                         
+
                          if (right_top) {
                             right_top.location.href = right_top.location.href+'&idworkflow='+".$idworkflow.";
                          }
@@ -87,14 +86,15 @@ $form->setVar("frame", $frame);
 
 if ($workflow->virgin)
 {
-	$name = i18n("New Workflow", "workflow");
-	$header = i18n("Create new workflow", "workflow");
+    $name = i18n("New Workflow", "workflow");
+    $header = i18n("Create new workflow", "workflow");
 } else {
-	$header = i18n("Edit workflow", "workflow");
+    $header = i18n("Edit workflow", "workflow");
     $description = $workflow->get("description");
     $name = $workflow->get("name");
     $created = $workflow->get("created");
-    $author = $userclass->getRealname($workflow->get("idauthor"));
+    $userclass = new cApiUser($workflow->get("idauthor"));
+    $author = $userclass->getEffectiveName();
 }
 
 $form->addHeader($header);

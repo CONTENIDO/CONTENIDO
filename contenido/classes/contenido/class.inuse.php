@@ -14,7 +14,7 @@
  *
  *
  * @package    CONTENIDO API
- * @version    0.1
+ * @version    0.1.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -223,8 +223,7 @@ class cApiInUseCollection extends ItemCollection
             $noti = '';
         } else {
             if ($returnWarning == true) {
-                $vuser = new User();
-                $vuser->loadUserByUserID($obj->get('userid'));
+                $vuser = new cApiUser($obj->get('userid'));
                 $inUseUser = $vuser->getField('username');
                 $inUseUserRealName = $vuser->getField('realname');
 

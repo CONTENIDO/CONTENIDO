@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend
- * @version    1.0.5
+ * @version    1.0.6
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -95,10 +95,10 @@ $notification = new Contenido_Notification();
 $classarea = new cApiAreaCollection();
 $classlayout = new cApiLayout();
 $classclient = new cApiClientCollection();
-$classuser = new User();
+/** @deprecated [2012-03-27] Uninitialized global cApiUser instance is no more needed */
+$classuser = new cApiUser();
 
-$currentuser = new User();
-$currentuser->loadUserByUserID($auth->auth['uid']);
+$currentuser = new cApiUser($auth->auth['uid']);
 
 // Change client
 if (isset($changeclient) && is_numeric($changeclient)) {
@@ -207,16 +207,16 @@ if (isset($action)) {
 // Include the 'main' file for the selected area. Usually there is only one main file
 $sFilename = "";
 if (is_array($backend->getFile('main'))) {
-	foreach ($backend->getFile('main') as $id => $filename) {
-		$sFilename = $filename;
-		include_once($cfg['path']['contenido'].$filename);
-	}
+    foreach ($backend->getFile('main') as $id => $filename) {
+        $sFilename = $filename;
+        include_once($cfg['path']['contenido'].$filename);
+    }
 } elseif ($frame == 3) {
-	include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.default_subnav.php');
-	$sFilename = "include.default_subnav.php";
+    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.default_subnav.php');
+    $sFilename = "include.default_subnav.php";
 } else {
-	include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.blank.php');
-	$sFilename = "include.blank.php";
+    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'include.blank.php');
+    $sFilename = "include.blank.php";
 }
 
 $cfg['debug']['backend_exectime']['end'] = getmicrotime();

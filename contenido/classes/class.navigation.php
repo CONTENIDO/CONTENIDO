@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.0.5
+ * @version    1.0.6
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -101,7 +101,7 @@ class Contenido_Navigation
         // If a ";" is found entry is from a plugin -> explode location, first is xml file path,
         // second is xpath location in xml file
         if (strstr($location, ';')) {
-			$locs  = explode(';', $location);
+            $locs  = explode(';', $location);
             $file  = trim($locs[0]);
             $xpath = trim($locs[1]);
 
@@ -305,7 +305,7 @@ class Contenido_Navigation
             $main->set('s', 'HELP', '');
         }
 
-        $classuser = new User();
+        $oUser = new cApiUser($auth->auth["uid"]);
         $classclient = new cApiClientCollection();
 
         if (getEffectiveSetting('system', 'clickmenu') == 'true') {
@@ -351,7 +351,7 @@ class Contenido_Navigation
             }
         }
 
-        $main->set('s', 'CHOSENUSER', "<b>".i18n("User").":</b> ".$classuser->getRealname($auth->auth["uid"], true));
+        $main->set('s', 'CHOSENUSER', "<b>".i18n("User").":</b> " . $oUser->getEffectiveName());
         $main->set('s', 'SID', $sess->id);
         $main->set('s', 'MAINLOGINLINK', $sess->url("frameset.php?area=mycontenido&frame=4"));
 

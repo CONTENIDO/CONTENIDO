@@ -13,7 +13,7 @@
  * normalizing API.
  *
  * @package    CONTENIDO API
- * @version    0.1
+ * @version    0.1.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -61,14 +61,14 @@ class cApiOnlineUserCollection extends ItemCollection
      * 2) If find user in the table, do update
      * 3) Else there is no current user do insert new user
      *
-     * @param int  $userId  Id of user
+     * @param  string  $userId  Id of user
      */
     public function startUsersTracking($userId = null)
     {
         global $auth;
 
-        $userId = (int) $userId;
-        if ($userId <= 0) {
+        $userId = (string) $userId;
+        if (empty($userId)) {
             $userId = $auth->auth['uid'];
         }
 
@@ -88,12 +88,12 @@ class cApiOnlineUserCollection extends ItemCollection
     /**
      * Insert this user in online_user table
      *
-     * @param int  $userId  Id of user
+     * @param  string  $userId  Id of user
      * @return  bool  Returns true if successful else false
      */
     public function insertOnlineUser($userId)
     {
-        $oItem = parent::create((int) $userId);
+        $oItem = parent::create((string) $userId);
         if ($oItem) {
             $created = date('Y-m-d H:i:s');
             $oItem->set('lastaccessed', $created);
@@ -105,12 +105,12 @@ class cApiOnlineUserCollection extends ItemCollection
     /**
      * Find the this user if exists in the table 'online_user'
      *
-     * @param  int  $userId  Is the User-Id (get from auth object)
+     * @param  string  $userId  Is the User-Id (get from auth object)
      * @return  bool  Returns true if this User is found, else false
      */
     public function findUser($userId)
     {
-        $oUser = new cApiOnlineUser((int) $userId);
+        $oUser = new cApiOnlineUser((string) $userId);
         return (!$oUser->virgin);
     }
 
@@ -188,12 +188,12 @@ class cApiOnlineUserCollection extends ItemCollection
     /**
      * This function do an update of current timestamp in 'online_user'
      *
-     * @param int $userId - Is the User-Id (get from auth object)
+     * @param  string  $userId  Is the User-Id (get from auth object)
      * @return  Returns true if successful, else false
      */
     public function updateUser($userId)
     {
-        $oUser = new cApiOnlineUser((int) $userId);
+        $oUser = new cApiOnlineUser((string) $userId);
         if (!$oUser->virgin) {
             $now = date('Y-m-d H:i:s');
             $oUser->set('lastaccessed', $now);
@@ -217,20 +217,11 @@ class cApiOnlineUserCollection extends ItemCollection
             $iSetTimeOut = 10;
         }
 
-        $aDel = array();
-        $result = false;
         // NOTE: We could delete outdated entries with one query, but deleteing one by one
-        // gives us the possibility to inject hook (CEC) into each deleted entry.
+        // gives us the possibility to hook (CEC) into each deleted entry.
         $where = "DATE_SUB(NOW(), INTERVAL '$iSetTimeOut' Minute) >= `lastaccessed`";
-        if ($this->flexSelect('', '', $where)) {
-            while ($this->db->next_record()) {
-                $aDel[] = $this->db->f($this->primaryKey);
-            }
-        }
-        foreach ($aDel as $id) {
-            $result = $this->delete($id);
-        }
-        return $result;
+        $result = $this->deleteByWhereClause($where);
+        return ($result > 0) ? true : false;
     }
 
     /**
@@ -249,12 +240,12 @@ class cApiOnlineUserCollection extends ItemCollection
     /**
      * Delete this user from 'online user' table
      *
-     * @param int $userId  Is the User-Id (get from auth object)
+     * @param  string  $userId  Is the User-Id (get from auth object)
      * @return  Returns true if successful, else false
      */
     public function deleteUser($userId)
     {
-        return $this->delete((int) $userId);
+        return $this->delete((string) $userId);
     }
 
     /**

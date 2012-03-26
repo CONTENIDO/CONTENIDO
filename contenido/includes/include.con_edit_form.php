@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.5.2
+ * @version    1.5.3
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -67,8 +67,8 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idlang=".Contenido_Security::toInteger($lang);
     $db->query($sql);
     $db->next_record();
-	
-	$tmp_is_start = isStartArticle($db->f("idartlang"), $idcat, $lang);
+
+    $tmp_is_start = isStartArticle($db->f("idartlang"), $idcat, $lang);
 
     if ($db->f("created")) {
 
@@ -115,8 +115,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
             $inUse = false;
             $disabled = '';
         } else {
-            $vuser = new User();
-            $vuser->loadUserByUserID($obj->get("userid"));
+            $vuser = new cApiUser($obj->get("userid"));
             $inUseUser = $vuser->getField("username");
             $inUseUserRealName = $vuser->getField("realname");
 
@@ -257,8 +256,10 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     // Author
     $tpl->set('s', 'AUTHOR_CREATOR', i18n("Author (Creator)"));
-    $tpl->set('s', 'AUTOR-ERSTELLUNGS-NAME', $classuser->getRealnameByUserName($tmp_author).'<input type="hidden" class="bb" name="author" value="'.$auth->auth["uname"].'">'.'&nbsp;');
-    $tpl->set('s', 'AUTOR-AENDERUNG-NAME', $classuser->getRealnameByUserName($tmp_modifiedby).'&nbsp;');
+    $oAuthor = cApiUser($tmp_author);
+    $oModifiedBy = cApiUser($tmp_modifiedby);
+    $tpl->set('s', 'AUTOR-ERSTELLUNGS-NAME', $oAuthor->get('realname').'<input type="hidden" class="bb" name="author" value="'.$auth->auth["uname"].'">'.'&nbsp;');
+    $tpl->set('s', 'AUTOR-AENDERUNG-NAME', $oModifiedBy->get('realname').'&nbsp;');
 
     // Created
     $tmp_erstellt = ($tmp_firstedit == 1) ? '<input type="hidden" name="created" value="'.date("Y-m-d H:i:s").'">' : '<input type="hidden" name="created" value="'.$tmp_created.'">';
@@ -279,8 +280,9 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     }
 
     $tpl->set('s', 'PUBLISHER', i18n("Publisher"));
-    if ($classuser->getRealnameByUserName($tmp_publishedby) != '') {
-        $tpl->set('s', 'PUBLISHER_NAME', '<input type="hidden" class="bb" name="publishedby" value="'.$auth->auth["uname"].'">'.$classuser->getRealnameByUserName($tmp_publishedby));
+    $oPublishedBy = cApiUser($tmp_publishedby);
+    if ($oPublishedBy && $oPublishedBy->get('realname') != '') {
+        $tpl->set('s', 'PUBLISHER_NAME', '<input type="hidden" class="bb" name="publishedby" value="'.$auth->auth["uname"].'">'.$oPublishedBy->get('realname'));
     } else {
         $tpl->set('s', 'PUBLISHER_NAME', '<input type="hidden" class="bb" name="publishedby" value="'.$auth->auth["uname"].'">'.'&nbsp;');
     }
@@ -691,10 +693,10 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set('s', 'CAL_LANG', substr(strtolower($belang), 0, 2));
 
     if ($tmp_usetimemgmt == '1') {
-    	if ($tmp_datestart == "0000-00-00 00:00:00" && $tmp_dateend == "0000-00-00 00:00:00") {
-    		$message = sprintf(i18n("Please fill in the start date and/or the end date!"));
+        if ($tmp_datestart == "0000-00-00 00:00:00" && $tmp_dateend == "0000-00-00 00:00:00") {
+            $message = sprintf(i18n("Please fill in the start date and/or the end date!"));
             $notification->displayNotification("warning", $message);
-    	}
+        }
     }
     // Genereate the Template
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_edit_form']);

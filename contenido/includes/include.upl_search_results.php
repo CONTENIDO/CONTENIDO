@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.9.0
+ * @version    1.9.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -272,8 +272,7 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
     // Fetch data
     $files = uplSearch($searchfor);
 
-    $user = new User();
-    $user->loadUserByUserID($auth->auth["uid"]);
+    $user = new cApiUser($auth->auth["uid"]);
 
     if ($thumbnailmode == '') {
         $current_mode = $user->getUserProperty('upload_folder_thumbnailmode', md5('search_results_num_per_page'));

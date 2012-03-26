@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend classes
- * @version    1.0.3
+ * @version    1.0.4
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -60,7 +60,8 @@ $notification = new Contenido_Notification();
 $classarea = new cApiAreaCollection();
 $classlayout = new cApiLayout();
 $classclient = new cApiClientCollection();
-$classuser = new User();
+/** @deprecated [2012-03-27] Uninitialized global cApiUser instance is no more needed */
+$classuser = new cApiUser();
 
 // Change client
 if (is_numeric($changeclient)) {

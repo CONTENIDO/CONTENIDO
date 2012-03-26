@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Plugins
  * @subpackage Chains
- * @version    1.1
+ * @version    1.1.1
  * @author     Andreas Lindner, Unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -206,9 +206,8 @@ function cecCreateMetatags($metatags) {
                         $oArt->loadByArticleAndLanguageId($idart, $lang);
 
                         $lastmodifier = $oArt->getField('modifiedby');
-                        $oUser = new User();
-                        $oUser->loadUserByUserID(md5($lastmodifier));
-                        $lastmodifier_real = $oUser->getRealname(md5($lastmodifier));
+                        $oUser = new cApiUser(md5($lastmodifier));
+                        $lastmodifier_real = $oUser->getRealname();
 
                         $iCheck = CheckIfMetaTagExists($metatags, 'author');
                         $metatags[$iCheck]['name'] = 'author';

@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-03-22
+ *     created  2012-03-27
  * }}
  */
 
@@ -144,8 +144,6 @@ return array(
     'UI_List' => 'contenido/classes/class.ui.php',
     'cScrollList' => 'contenido/classes/class.ui.php',
     'Contenido_UpdateNotifier' => 'contenido/classes/class.update.notifier.php',
-    'Users' => 'contenido/classes/class.user.php',
-    'User' => 'contenido/classes/class.user.php',
     'Version' => 'contenido/classes/class.version.php',
     'VersionFile' => 'contenido/classes/class.versionFile.php',
     'VersionImport' => 'contenido/classes/class.versionImport.php',
@@ -277,6 +275,8 @@ return array(
     'UploadItem' => 'contenido/classes/contenido/class.upload.php',
     'cApiUserCollection' => 'contenido/classes/contenido/class.user.php',
     'cApiUser' => 'contenido/classes/contenido/class.user.php',
+    'Users' => 'contenido/classes/contenido/class.user.php',
+    'User' => 'contenido/classes/contenido/class.user.php',
     'cApiUserPropertyCollection' => 'contenido/classes/contenido/class.user.property.php',
     'cApiUserProperty' => 'contenido/classes/contenido/class.user.property.php',
     'Contenido_Category' => 'contenido/classes/Contenido_Category/Contenido_Category.class.php',
@@ -332,6 +332,7 @@ return array(
     'Contenido_Validator_Email' => 'contenido/classes/Validator/Email.class.php',
     'Contenido_Validator_Factory' => 'contenido/classes/Validator/Factory.class.php',
     'Contenido_Validator_Regex' => 'contenido/classes/Validator/Regex.class.php',
+    'Contenido_Validator_Url' => 'contenido/classes/Validator/Url.class.php',
     'cViewAdvancedMenu' => 'contenido/classes/widgets/class.views.advancedmenu.php',
     'cViewItems' => 'contenido/classes/widgets/class.views.advancedmenu.php',
     'cApiClickableAction' => 'contenido/classes/widgets/class.widgets.actionbutton.php',

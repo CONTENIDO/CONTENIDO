@@ -238,8 +238,10 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
 
         $form->add(i18n("Group membership"), $sTemp );
 
-        $form->add(i18n("Author"), $classuser->getUserName($feuser->get("author")) . " (". $feuser->get("created").")" );
-        $form->add(i18n("Last modified by"), $classuser->getUserName($feuser->get("modifiedby")). " (". $feuser->get("modified").")" );
+        $oUser = new cApiUser($feuser->get("author"));
+        $form->add(i18n("Author"), $oUser->get('username') . " (". $feuser->get("created").")" );
+        $oUser2 = new cApiUser($feuser->get("modifiedby"));
+        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (". $feuser->get("modified").")" );
     }
     $page->setContent($notis . $form->render(true));
     $page->addScript('reload', $sReloadScript);

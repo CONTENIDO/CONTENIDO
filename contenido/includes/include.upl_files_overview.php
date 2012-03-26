@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.5.9
+ * @version    1.6.0
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -514,8 +514,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 
     $uploads->select("idclient = '$client' AND dirname = '$qpath'");
 
-    $user = new User();
-    $user->loadUserByUserID($auth->auth["uid"]);
+    $user = new cApiUser($auth->auth["uid"]);
 
     if ($thumbnailmode == '') {
         $current_mode = $user->getUserProperty('upload_folder_thumbnailmode', md5($path));

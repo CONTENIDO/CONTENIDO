@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.4.0
+ * @version    1.4.1
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -110,7 +110,7 @@ function isArtInMultipleUse($idart)
 function is_alphanumeric($test, $umlauts = true)
 {
     if ($umlauts == true) {
-		$match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
+        $match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
     } else {
         $match = "/^[a-z0-9 ]+$/i";
     }
@@ -517,8 +517,8 @@ function cleanupSessions()
 
 function isGroup($uid)
 {
-    $users = new User();
-    if ($users->loadUserByUserID($uid) == false) {
+    $user = new cApiUser();
+    if ($user->loadByPrimaryKey($uid) === false) {
         return true;
     } else {
         return false;
@@ -527,8 +527,8 @@ function isGroup($uid)
 
 function getGroupOrUserName($uid)
 {
-    $users = new User();
-    if ($users->loadUserByUserID($uid) === false) {
+    $user = new cApiUser();
+    if ($user->loadByPrimaryKey($uid) === false) {
         $groups = new Group;
         // Yes, it's a group. Let's try to load the group members!
         if ($groups->loadGroupByGroupID($uid) === false) {
@@ -537,7 +537,7 @@ function getGroupOrUserName($uid)
             return substr($groups->getField("groupname"), 4);
         }
     } else {
-        return $users->getField("realname");
+        return $user->getField("realname");
     }
 }
 

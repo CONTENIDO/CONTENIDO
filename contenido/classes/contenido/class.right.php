@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO API
- * @version    0.1
+ * @version    0.1.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -75,6 +75,19 @@ class cApiRightCollection extends ItemCollection
         $oItem->store();
 
         return $oItem;
+    }
+
+    /**
+     * Deletes right entries by user id.
+     *
+     * @todo  Implement functions to delete rights by area, action, cat, client, language.
+     * @param  string  $userId
+     * @return  bool
+     */
+    public function deleteByUserId($userId)
+    {
+        $result = $this->deleteBy('user_id', $userId);
+        return ($result > 0) ? true : false;
     }
 
 }

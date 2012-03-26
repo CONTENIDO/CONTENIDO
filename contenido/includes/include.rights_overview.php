@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.3
+ * @version    1.0.4
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -59,16 +59,14 @@ $sNotification = '';
 
 // delete user
 if ($action == 'user_delete') {
-    $oUsers = new Users();
-    $oUsers->deleteUserByID($userid);
+    $oUserColl = new cApiUserCollection();
+    $oUserColl->delete($userid);
 
-    $sql = "DELETE FROM " . $cfg["tab"]["groupmembers"]
-         . " WHERE user_id = '" . Contenido_Security::escapeDB($userid, $db) . "'";
-    $db->query($sql);
+    $oGroupMemberColl = new cApiGroupMemberCollection();
+    $oGroupMemberColl->deleteByUserId($userid);
 
-    $sql = "DELETE FROM " . $cfg["tab"]["rights"]
-         ." WHERE user_id = '" . Contenido_Security::escapeDB($userid, $db) . "'";
-    $db->query($sql);
+    $oRightColl = new cApiRightCollection();
+    $oRightColl->deleteByUserId($userid);
 
     $sNotification = $notification->displayNotification("info", i18n("User deleted"));
     $sTemplate = '
@@ -434,9 +432,8 @@ $tpl->set('d', 'CATFIELD', '<span style="color:'.$sAccountColor.';">'.$sAccountS
 $tpl->next();
 
 // Show backend user's group memberships
-//TODO port this to cApiUser
-$oUser2 = new User();
-$aGroups = $oUser2->getGroupsByUserID($userid);
+$oUser2 = new cApiUser();
+$aGroups = $oUser2->getGroupNamesByUserID($userid);
 if (count($aGroups) > 0) {
     asort($aGroups);
     $sGroups = implode("<br/>", $aGroups);

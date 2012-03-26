@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.5
+ * @version    1.0.6
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -42,12 +42,11 @@ cInclude('pear', 'XML/RSS.php');
 
 $tpl->reset();
 
+$vuser = new cApiUser($auth->auth["uid"]);
+
 if ($saveLoginTime == true) {
     $sess->register("saveLoginTime");
     $saveLoginTime = 0;
-
-    $vuser = new User();
-    $vuser->loadUserByUserID($auth->auth["uid"]);
 
     $lastTime = $vuser->getUserProperty("system", "currentlogintime");
     $timestamp = date("Y-m-d H:i:s");
@@ -55,8 +54,6 @@ if ($saveLoginTime == true) {
     $vuser->setUserProperty("system", "lastlogintime", $lastTime);
 }
 
-$vuser = new User();
-$vuser->loadUserByUserID($auth->auth["uid"]);
 $lastlogin = $vuser->getUserProperty("system", "lastlogintime");
 
 if ($lastlogin == '') {
@@ -79,18 +76,18 @@ if (getSystemProperty('maintenance', 'mode') == 'enabled') {
 $max_log_size = getSystemProperty("backend", "max_log_size");
 if($max_log_size === false)
 {
-	$max_log_size = 10;
+    $max_log_size = 10;
 }
 
 if(in_array("sysadmin", explode(",", $vuser->getEffectiveUserPerms())) && $max_log_size > 0)
 {
-	$log_size = getDirectorySize($cfg['path']['contenido']."logs/");
-	
-	if($log_size > $max_log_size * 1024 * 1024)
-	{
-    	$sNotificationText .= $notification->returnNotification("warning", i18n("The log directory is bigger than")." ".human_readable_size($max_log_size * 1024 * 1024).".".i18n("Current size").": ".human_readable_size($log_size));
-    	$sNotificationText .= '<br />';
-	}
+    $log_size = getDirectorySize($cfg['path']['contenido']."logs/");
+
+    if($log_size > $max_log_size * 1024 * 1024)
+    {
+        $sNotificationText .= $notification->returnNotification("warning", i18n("The log directory is bigger than")." ".human_readable_size($max_log_size * 1024 * 1024).".".i18n("Current size").": ".human_readable_size($log_size));
+        $sNotificationText .= '<br />';
+    }
 }
 
 $tpl->set('s', 'NOTIFICATION', $sNotificationText);
@@ -205,7 +202,6 @@ $tpl->set('s', 'MYCONTENIDO_OVERVIEW', $mycontenido_overview);
 $tpl->set('s', 'MYCONTENIDO_LASTARTICLES', $mycontenido_lastarticles);
 $tpl->set('s', 'MYCONTENIDO_TASKS', $mycontenido_tasks);
 $tpl->set('s', 'MYCONTENIDO_SETTINGS', $mycontenido_settings);
-$admins = $classuser->getSystemAdmins(true);
 
 $sAdminTemplate = '<li class="welcome">%s, %s</li>';
 
@@ -213,10 +209,12 @@ $sAdminName = '';
 $sAdminEmail = '';
 $sOutputAdmin = '';
 
-foreach ($admins as $key => $value) {
-    if ($value["email"] != '') {
-        $sAdminEmail= '<a class="blue" href="mailto:' . $value["email"] . '">' . $value["email"] . '</a>';
-        $sAdminName= $value['realname'];
+$userColl = new cApiUserCollection();
+$admins = $userColl->fetchSystemAdmins(true);
+foreach ($admins as $pos => $item) {
+    if ($item->get("email") != '') {
+        $sAdminEmail= '<a class="blue" href="mailto:' . $item->get("email") . '">' . $item->get("email") . '</a>';
+        $sAdminName= $item->get('realname');
         $sOutputAdmin .= sprintf($sAdminTemplate, $sAdminName, $sAdminEmail);
     }
 }

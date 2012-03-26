@@ -23,7 +23,7 @@
  *   created 2002
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2011-01-11, Rusmir Jusufovic, load input of moduls from files
- *   modified 2012-02-13, Rusmir Jusufovic, show message at success 
+ *   modified 2012-02-13, Rusmir Jusufovic, show message at success
  *   $Id$:
  * }}
  *
@@ -48,8 +48,7 @@ if (isset($idart)) {
             $inUse = false;
             $disabled = '';
         } else {
-            $vuser = new User();
-            $vuser->loadUserByUserID($obj->get('userid'));
+            $vuser = new cApiUser($obj->get('userid'));
             $inUseUser = $vuser->getField('username');
             $inUseUserRealName = $vuser->getField('realname');
 
@@ -67,8 +66,7 @@ if (isset($idart)) {
             $inUse = false;
             $disabled = '';
         } else {
-            $vuser = new User();
-            $vuser->loadUserByUserID($obj->get('userid'));
+            $vuser = new cApiUser($obj->get('userid'));
             $inUseUser = $vuser->getField('username');
             $inUseUserRealName = $vuser->getField('realname');
 
@@ -125,7 +123,7 @@ if ($idart) {
                 $inUse = true;
                 $disabled = 'disabled="disabled"';
             }
-            
+
         } else {
             if ($idtpl) {
                 // create new configuration entry
@@ -134,14 +132,14 @@ if ($idart) {
                 $sql = "INSERT INTO ".$cfg['tab']['tpl_conf']." (idtpl) VALUES (".(int) $idtpl.")";
                 $db->query($sql);
                 $idtplcfg = $db->getLastInsertedId($cfg['tab']['tpl_conf']);
-                
+
                 // update art_lang
                 $sql = "UPDATE ".$cfg['tab']['art_lang']." SET idtplcfg=".(int) $idtplcfg." WHERE idart=".(int) $idart." AND idlang=".(int) $lang;
                 $db->query($sql);
-              
+
             }
-             
-            
+
+
         }
 
     } else {
@@ -179,7 +177,7 @@ if ($idart) {
             $sql = "INSERT INTO ".$cfg['tab']['tpl_conf']." (idtpl) VALUES (".(int) $idtpl.")";
             $db->query($sql);
             $idtplcfg = $db->getLastInsertedId($cfg['tab']['tpl_conf']);
-            
+
             // update cat_lang
             $sql = "UPDATE ".$cfg['tab']['cat_lang']." SET idtplcfg=".(int) $idtplcfg ." WHERE idcat=".(int) $idcat." AND idlang=".(int) $lang;
             $db->query($sql);
@@ -227,8 +225,8 @@ if (!$db->next_record()) {
 }
 
 if(count($_POST) > 0 && $message == '') {
-	
-	 $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Save change successfully!"));
+
+     $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Save change successfully!"));
 }
 
 // Get template configuration from 'con_container_conf' and create configuration data array

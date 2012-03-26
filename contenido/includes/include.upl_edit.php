@@ -269,11 +269,13 @@ if ($upload = $uploads->next()) {
                 break;
 
             case "author":
-                $sCell = $classuser->getUserName($upload->get("author")) . " (". $upload->get("created").")";
+                $oUser = new cApiUser($upload->get("author"));
+                $sCell = $oUser->get('username') . " (". $upload->get("created").")";
                 break;
 
             case "modified":
-                $sCell = $classuser->getUserName($upload->get("modifiedby")). " (". $upload->get("lastmodified").")";
+                $oUser = new cApiUser($upload->get("modifiedby"));
+                $sCell = $oUser->get('username') . " (". $upload->get("lastmodified").")";
                 break;
 
             default:
