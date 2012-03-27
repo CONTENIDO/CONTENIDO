@@ -70,7 +70,7 @@ if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || is_dbfs($path)) &&
     $form->setWidth(500);
     
     $page->setContent("<div id='dropbox_area'>
-			<div class='dropbox' id='dropbox'>Drop your files here</div>
+			<div class='dropbox' id='dropbox'>" . i18n("Drop your files here") . "</div>
 			<div class='shelf' id='shelf'></div>".$form->render()."</div>");
 } else {
 	$page->setContent($notification->returnNotification("error", i18n("Directory not writable") . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')'));
