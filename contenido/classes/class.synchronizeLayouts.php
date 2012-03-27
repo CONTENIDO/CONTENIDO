@@ -177,7 +177,7 @@ class SynchronizeLayouts {
         //get all layouts from client
         $sql = sprintf("SELECT UNIX_TIMESTAMP(lastmodified) AS lastmodified, alias,name,description, idlay FROM %s WHERE idclient=%s", $this->_cfg['tab']['lay'],$this->_client);
         $notification = new Contenido_Notification();
-        $dir = $this->_cfgClient[$this->_client]['path']['frontend'].LayoutInFile::$LAYOUT_DIR_NAME;
+        $dir = $this->_cfgClient[$this->_client]['path']['frontend'] . "layouts/";
 
         $db = new DB_Contenido();
         $db->query($sql);
@@ -259,7 +259,7 @@ class SynchronizeLayouts {
         $this->_compareFileAndLayoutTimestamp();
 
         //get the path to cliets layouts
-        $dir = $this->_cfgClient[$this->_client]['path']['frontend'].LayoutInFile::$LAYOUT_DIR_NAME;
+        $dir = $this->_cfgClient[$this->_client]['path']['frontend'] . "layouts/";
 		
         //is/exist directory
         if (!is_dir($dir)) {
