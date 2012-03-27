@@ -24,8 +24,6 @@
  */
     
 class LayoutInFile {
-	
-	
 	/**
 	 * 
 	 * The html/code of the layout
@@ -35,14 +33,6 @@ class LayoutInFile {
 	protected $_layoutCode = "";
 	
 	protected $_db = null;
-	
-	/**
-	 * 
-	 * File encoding (utf-8) 
-	 * 
-	 * @var string
-	 */
-	static $FILE_ENCODING = 'UTF-8';
 	
 	/**
 	 * 
@@ -94,20 +84,10 @@ class LayoutInFile {
 	
 	/**
 	 * 
-	 * Name of the layout
-	 * 
-	 * @var string
-	 */
-	static $LAYOUT_DIR_NAME = "layouts/";
-	
-	/**
-	 * 
 	 * File name of the layout ([layoutname].html
 	 * @var string
 	 */
 	protected $_fileName = "";
-	
-	
 
 	protected $_frontendPath = "";
 	
@@ -125,10 +105,7 @@ class LayoutInFile {
 		
 		$this->_db = $db;
 		$this->init($layoutId, $layoutCode, $cfg, $lang);
-		
 	}
-	
-	
 	
 	/**
 	 * 
@@ -137,16 +114,10 @@ class LayoutInFile {
 	 * @param string $layoutAlias
 	 * @return boolen if file exist true 
 	 */
-	static function existLayout($layoutAlias, $cfgClient , $client) {
-		
-		$file = $cfgClient[$client]['path']['frontend'].self::$LAYOUT_DIR_NAME.$layoutAlias.'/';
-		if(file_exists($file)) {
-			return true;
-		} else 
-			return false;
-		
+	static function existLayout($layoutAlias, $cfgClient, $client) {
+		$file = $cfgClient[$client]['path']['frontend'] . "layouts/" . $layoutAlias.'/';
+		return file_exists($file);
 	}
-	
 
 	/**
 	 * 
@@ -156,7 +127,7 @@ class LayoutInFile {
 	 * @param array $cfg
 	 * @param string $encoding
 	 */
-	public  function init($layoutId ,$layoutCode, $cfg, $lang) {
+	public function init($layoutId, $layoutCode, $cfg, $lang) {
 		$this->_layoutId = $layoutId;
 		$this->_layoutCode = $layoutCode;
 		$this->_cfg = $cfg;
@@ -177,14 +148,13 @@ class LayoutInFile {
 
 		$this->_layoutName = $db->f('alias');
 		$this->_frontendPath = $frontendPath;
-		$this->_layoutMainPath = $frontendPath . self::$LAYOUT_DIR_NAME;
-		$this->_layoutPath = $frontendPath . self::$LAYOUT_DIR_NAME . $this->_layoutName."/";
+		$this->_layoutMainPath = $frontendPath . "layouts/";
+		$this->_layoutPath = $this->_layoutMainPath . $this->_layoutName."/";
 		$this->_fileName = $this->_layoutName . ".html";
 		
 		#make directoryies for layout
 		$this->_makeDirectories();
 	}
-	
 
 	/**
 	 * init
@@ -192,7 +162,6 @@ class LayoutInFile {
 	 * @return string layoutname
 	 */
 	public function getLayoutName() {
-		
 		return $this->_layoutName;
 	}
 	
@@ -210,63 +179,46 @@ class LayoutInFile {
 		$this->_layoutCode = $dbObject->f("code");
 		$this->_layoutName = $dbObject->f('alias');
 		$this->_frontendPath = $frontendPath;
-		$this->_layoutMainPath = $this->_frontendPath . self::$LAYOUT_DIR_NAME;
-		$this->_layoutPath = $this->_frontendPath . self::$LAYOUT_DIR_NAME . $this->_layoutName . "/";
+		$this->_layoutMainPath = $this->_frontendPath . "layouts/";
+		$this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . "/";
 		$this->_fileName = $this->_layoutName.".html";
 		
 		#make directoryies for layout
 		$this->_makeDirectories();
-		
 	}
 	
 	/**
-	 * 
 	 * Make all directories for layout. Main directory and Layout directory
 	 * @return boolean true if successfully
-	 *
 	 */
 	private function _makeDirectories() {
-	    
-		if($this->_makeDirectory($this->_layoutMainPath)) {
-			if($this->_makeDirectory($this->_layoutPath)) {
+		if ($this->_makeDirectory($this->_layoutMainPath)) {
+			if ($this->_makeDirectory($this->_layoutPath)) {
 				return true;
 			}
 		}
+		
 		return false;
 	}
 	
 	/**
-	 * 
 	 * Make directory
 	 * 
 	 * @param string $directory
 	 * @return boolean true if succssesfully
 	 */
-	private function _makeDirectory ($directory) {
-
-		if(is_dir($directory))
-		return true;
-		else
-		if(mkdir($directory)) {
+	private function _makeDirectory($directory) {
+		if (is_dir($directory)) {
+			return true;
+		}
+		
+		if (mkdir($directory)) {
 		    chmod($directory, 0777);
-			
 		    return true;
-		} else
+		}
+		
 		return false;
 	}
-
-	/**
-	 *
-	 * Wirte a error in the file contenido/logs/errorlog.txt
-	 *
-	 * @param string $message
-	 */
-	protected  function errorLog($message) {
-		 
-		file_put_contents(dirname(__FILE__)."/../logs/errorlog.txt", $message."\r\n", FILE_APPEND);
-		 
-	}
-
 
 	/**
 	 *
@@ -337,13 +289,16 @@ class LayoutInFile {
 		if(!$this->isWritable($fileName, $this->_layoutPath)) {
 			return false;
 		}
+		
+		
 			
 		if($layoutCode == "")
 			$layoutCode = $this->_layoutCode;
 		//exist layout path
 		if( is_dir($this->_layoutPath)) {
 			//convert
-			$layoutCode = iconv($this->_encoding, self::$FILE_ENCODING, $layoutCode );
+			$fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
+			$layoutCode = iconv($this->_encoding, $fileEncoding, $layoutCode);
 		
 			if ( file_put_contents($this->_layoutPath . $this->_fileName, $layoutCode) === FALSE ) {
 				return false;
@@ -380,7 +335,8 @@ class LayoutInFile {
 		#exist layout path
 		if( is_dir($this->_layoutPath)) {
 			#convert
-			$layoutCode = iconv($this->_encoding, self::$FILE_ENCODING, $layoutCode );
+			$fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
+			$layoutCode = iconv($this->_encoding, $fileEncoding, $layoutCode );
 			if ( file_put_contents($this->_layoutPath . $this->_fileName, $layoutCode) === FALSE )
 				return false;
 			else 	
@@ -515,7 +471,7 @@ class LayoutInFile {
                if(rename($newPath . $this->_fileName, $newPath . $newFileName)) {
                	
             	$this->_layoutName = $new;
-				$this->_layoutPath = $this->_frontendPath . self::$LAYOUT_DIR_NAME . $this->_layoutName . "/";
+				$this->_layoutPath = $this->_frontendPath . "layouts/" . $this->_layoutName . "/";
 				$this->_fileName = $this->_layoutName.".html";
 		
                	return true;
@@ -543,7 +499,8 @@ class LayoutInFile {
 			return false;
 		else {
 			// convert
-			$content = iconv ( self::$FILE_ENCODING, $this->_encoding . "//IGNORE", $content );
+			$fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
+			$content = iconv($fileEncoding, $this->_encoding . "//IGNORE", $content );
 			return $content;
 		}
 	
@@ -582,7 +539,6 @@ class LayoutInFile {
 				cWarning(__FILE__, __LINE__, "Can not save layout name: " . $this->_layoutName);
 				$isError = true;
 			}
-			
 		}
 		
 		#all layouts are saved
