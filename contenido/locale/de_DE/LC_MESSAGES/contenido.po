@@ -2868,7 +2868,7 @@ msgstr "Speichern und im Editor bleiben"
 #: includes/include.CMS_HTML.php:99
 #: includes/include.CMS_HTMLHEAD.php:101
 msgid "Save and close editor"
-msgstr "Speichern und Editor schlie&szligen"
+msgstr "Speichern und Editor schlie&szlig;en"
 
 #: includes/include.CMS_IMG.php:192
 msgid "Directory / File"
