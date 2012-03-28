@@ -72,16 +72,23 @@ class cApiCategoryCollection extends ItemCollection
      * @param  int  $postid
      * @param  int  $status
      * @param  string  $author
+     * @param  string  $created
+     * @param  string  $lastmodified
      * @return cApiCategory
      */
-    public function create($idclient, $parentid = 0, $preid = 0, $postid = 0, $status = 0, $author = '')
+    public function create($idclient, $parentid = 0, $preid = 0, $postid = 0, $status = 0, $author = '', $created = '', $lastmodified = '')
     {
         global $auth;
 
         if (empty($author)) {
             $author = $auth->auth['uname'];
         }
-        $created = date('Y-m-d H:i:s');
+        if (empty($created)) {
+            $created = date('Y-m-d H:i:s');
+        }
+        if (empty($lastmodified)) {
+            $lastmodified = date('Y-m-d H:i:s');
+        }
 
         $oItem = parent::create();
 
@@ -91,8 +98,8 @@ class cApiCategoryCollection extends ItemCollection
         $oItem->set('postid', (int) $postid);
         $oItem->set('status', (int) $status);
         $oItem->set('author', $this->escape($author));
-        $oItem->set('created', $created);
-        $oItem->set('lastmodified', $created);
+        $oItem->set('created', $this->escape($created));
+        $oItem->set('lastmodified', $this->escape($lastmodified));
         $oItem->store();
 
         return $oItem;

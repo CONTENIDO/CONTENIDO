@@ -53,12 +53,46 @@ class cApiLayoutCollection extends ItemCollection
         $this->__construct();
     }
 
-    public function create($title)
+    /**
+     * Creates a layout entry.
+     *
+     * @param  string  $name
+     * @param  int  $idclient
+     * @param  string  $alias
+     * @param  string  $description
+     * @param  int  $deletable  Either 1 or 0
+     * @param  string  $author
+     * @param  string  $created
+     * @param  string  $lastmodified
+     * @return cApiLayout
+     */
+    public function create($name, $idclient = null, $alias = '', $description = '', $deletable = 1, $author = '', $created = '', $lastmodified = '')
     {
-        global $client;
+        global $client, $auth;
+
+        if (null === $idclient) {
+            $idclient = $client;
+        }
+        $deletable = ($deletable == 1) ? 1 : 0;
+        if (empty($author)) {
+            $author = $auth->auth['uname'];
+        }
+        if (empty($created)) {
+            $created = date('Y-m-d H:i:s');
+        }
+        if (empty($lastmodified)) {
+            $lastmodified = date('Y-m-d H:i:s');
+        }
+
         $item = parent::create();
-        $item->set('name', $title);
-        $item->set('idclient', $client);
+        $item->set('idclient', (int) $idclient);
+        $item->set('name', $this->escape($name));
+        $item->set('alias', $this->escape($alias));
+        $item->set('description', $this->escape($description));
+        $item->set('deletable', $deletable);
+        $item->set('author', $this->escape($author));
+        $item->set('created', $this->escape($created));
+        $item->set('lastmodified', $this->escape($lastmodified));
         $item->store();
         return ($item);
     }
