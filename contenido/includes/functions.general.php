@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.4.1
+ * @version    1.4.2
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -529,12 +529,12 @@ function getGroupOrUserName($uid)
 {
     $user = new cApiUser();
     if ($user->loadByPrimaryKey($uid) === false) {
-        $groups = new Group;
+        $group = new cApiGroup();
         // Yes, it's a group. Let's try to load the group members!
-        if ($groups->loadGroupByGroupID($uid) === false) {
+        if ($group->loadByPrimaryKey($uid) === false) {
             return false;
         } else {
-            return substr($groups->getField("groupname"), 4);
+            return $group->getGroupName(true);
         }
     } else {
         return $user->getField("realname");

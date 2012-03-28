@@ -50,7 +50,7 @@
  *
  *
  * @package    CONTENIDO API
- * @version    1.9
+ * @version    1.9.1
  * @author     Bjoern Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -154,9 +154,9 @@ class cApiUserCollection extends ItemCollection
      * @param   array  $perms          Permissions array
      * @param   bool    $includeAdmins  Flag to get admins (admin and sysadmin) too
      * @param   string  $orderBy   Order by rule, uses 'realname, username' by default
-     * @return  array  Array of user objects
+     * @return  cApiUser[]  Array of user objects
      */
-    public function getAccessibleUsers($perms, $includeAdmins = false, $orderBy = '')
+    public function fetchAccessibleUsers($perms, $includeAdmins = false, $orderBy = '')
     {
         $users = array();
         $limit = array();
@@ -168,14 +168,14 @@ class cApiUserCollection extends ItemCollection
             $allClients = $clientColl->getAvailableClients();
 
             foreach ($allClients as $key => $value) {
-                if (in_array("client[".$key."]", $perms) || in_array("admin[".$key."]", $perms)) {
-                    $limit[] = 'perms LIKE "%client['.$key.']%"';
+                if (in_array('client[' . $key . ']', $perms) || in_array('admin[' . $key . ']', $perms)) {
+                    $limit[] = 'perms LIKE "%client[' . $$this->escape($key) . ']%"';
                     if ($includeAdmins) {
-                        $limit[] = 'perms LIKE "%admin['.$key.']%"';
+                        $limit[] = 'perms LIKE "%admin[' . $this->escape($key) . ']%"';
                     }
                 }
-                if (in_array("admin[".$key."]", $perms)) {
-                    $limit[] = 'perms LIKE "%admin['.$key.']%"';
+                if (in_array('admin[' . $key . ']', $perms)) {
+                    $limit[] = 'perms LIKE "%admin[' . $key . ']%"';
                 }
             }
 
@@ -194,12 +194,31 @@ class cApiUserCollection extends ItemCollection
 
         $this->select($where, '', $this->escape($orderBy));
         while ($oItem = $this->next()) {
+            $users[] = clone $oItem;
+        }
+
+        return $users;
+    }
+
+    /**
+     * Returns all users which are accessible by the current user.
+     * Is a wrapper of fetchAccessibleUsers() and returns contrary to that function
+     * a multidimensional array instead of a list of objects.
+     * @param   array  $perms          Permissions array
+     * @param   bool    $includeAdmins  Flag to get admins (admin and sysadmin) too
+     * @param   string  $orderBy   Order by rule, uses 'realname, username' by default
+     * @return  array  Array of user like $arr[user_id][username], $arr[user_id][realname]
+     */
+    public function getAccessibleUsers($perms, $includeAdmins = false, $orderBy = '')
+    {
+        $users = array();
+        $oUsers = $this->fetchAccessibleUsers($perms, $includeAdmins, $orderBy);
+        foreach ($oUsers as $oItem) {
             $users[$oItem->get('user_id')] = array(
                 'username' => $oItem->get('username'),
                 'realname' => $oItem->get('realname'),
             );
         }
-
         return $users;
     }
 
@@ -537,6 +556,24 @@ class cApiUser extends Item
     }
 
     /**
+     * User defined field value setter.
+     *
+     * @param  string  $sField  Field name
+     * @param  string  $mValue  Value to set
+     * @param  bool    $bSafe   Flag to run defined inFilter on passed value
+     */
+    public function setField($sField, $mValue, $bSafe = true)
+    {
+        if ('perms' === $sField) {
+            if (is_array($mValue)) {
+                $mValue = implode(',', $mValue);
+            }
+        }
+
+        return parent::setField($sField, $mValue, $bSafe);
+    }
+
+    /**
      * Returns user id, currently set.
      *
      * @return string
@@ -725,6 +762,15 @@ class cApiUser extends Item
     }
 
     /**
+     * Returns list of user permissions.
+     * @return array
+     */
+    public function getPermsArray()
+    {
+        return explode(',', $this->get('perms'));
+    }
+
+    /**
      * Setter method to set user real name
      * @param  string  $sRealName
      */
@@ -850,13 +896,11 @@ class cApiUser extends Item
     /**
      * Setter method to set perms
      *
-     * @param  array  $aPerms
-     *
-     * TODO add type checks
+     * @param  array|string  $perms
      */
-    public function setPerms(array $aPerms)
+    public function setPerms($perms)
     {
-        $this->set('perms', implode(',', $aPerms));
+        $this->set('perms', $perms);
     }
 
     /**
@@ -883,12 +927,10 @@ class cApiUser extends Item
 
         foreach ($groups as $value) {
             //get global group permissions
-            $oGroup = new Group();
-            $oGroup->loadGroupByGroupID($value);
-            $sGroupPerm = $oGroup->getField('perms');
+            $oGroup = new cApiGroup($value);
+            $aGroupPerms = $oGroup->getPermsArray();
 
             //add group permissions to $aUserPerms if they were not alredy defined before
-            $aGroupPerms = explode(',', $sGroupPerm);
             foreach ($aGroupPerms as $sPerm) {
                 if (trim($sPerm) != '' && !in_array($sPerm, $aUserPerms)) {
                     $aUserPerms[] = $sPerm;
@@ -1188,12 +1230,8 @@ class Users
     function Users($table = '')
     {
         cDeprecated("Use cApiUserCollection() instead");
-        if ($table == '') {
-            global $cfg;
-            $this->table = $cfg['tab']['phplib_auth_user_md5'];
-        } else {
-            $this->table = $table;
-        }
+        global $cfg;
+        $this->table = ($table == '') ? $cfg['tab']['phplib_auth_user_md5'] : $table;
         $this->db = new DB_Contenido();
     }
     /** @deprecated [2012-03-22] Use cApiUserCollection->create() instead */
@@ -1241,12 +1279,8 @@ class User
     function User($table = '')
     {
         cDeprecated("Use cApiUser() instead");
-        if ($table == '') {
-            global $cfg;
-            $this->table = $cfg['tab']['phplib_auth_user_md5'];
-        } else {
-            $this->table = $table;
-        }
+        global $cfg;
+        $this->table = ($table == '') ? $cfg['tab']['phplib_auth_user_md5'] : $table;
         $this->db = new DB_Contenido();
     }
     /** @deprecated [2012-03-22] Use cApiUser->loadUserByUsername() instead */

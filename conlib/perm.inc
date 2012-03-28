@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  * @package    CONTENIDO Core
- * @version    0.3
+ * @version    0.3.1
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -257,20 +257,19 @@ class Contenido_Perm
             $groupsForUser = $this->getGroupsForUser($auth->auth['uid']);
             $groupsForUser[] = $auth->auth['uid'];
 
-            $tmp_userstring = implode("','", $groupsForUser);
+            $userIdIn = implode("','", $groupsForUser);
 
-            $sql = "SELECT * FROM " . $cfg['tab']['rights'] . " WHERE user_id IN ('" . $tmp_userstring . "') "
-                 . "AND idclient=" . Contenido_Security::toInteger($client) . " AND idlang=" . Contenido_Security::toInteger($lang) . " AND idarea=$area AND idcat != 0";
-            $this->db->query($sql);
+            $oRightsColl = new cApiRightCollection();
+            $where = "user_id IN ('" . $userIdIn . "') AND idclient=" . (int) $client
+                   . " AND idlang=" . (int) $lang . " AND idarea=$area AND idcat != 0";
 
-            // If there are no rights for this area set the flag norights
-            if ($this->db->nf() == 0) {
+            if (!$oRightsColl->select($where)) {
                 $item_rights[$area] = 'noright';
                 return false;
             }
 
-            while ($this->db->next_record()) {
-                $item_rights[$this->db->f('idarea')][$this->db->f('idaction')][$this->db->f('idcat')] = $this->db->f('idcat');
+            while ($oItem = $$oRightsColl->next()) {
+                $item_rights[$oItem->get('idarea')][$oItem->get('idaction')][$oItem->get('idcat')] = $oItem->get('idcat');
             }
 
             // Check
@@ -416,9 +415,7 @@ class Contenido_Perm
             {
                 foreach ($aGroups as $group)
                 {
-                    $oGroup = new Group;
-                    $oGroup->loadGroupByGroupID ($group);
-
+                    $oGroup = new cApiGroup($group);
                     if ($this->isClientGroup($iClient, $oGroup))
                     {
                         return true;

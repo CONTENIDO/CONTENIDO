@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Plugins
  * @subpackage Workflow
- * @version    1.8.2
+ * @version    1.8.3
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -43,8 +43,8 @@ function getUsers ($listid, $default)
 
     $userColl = new cApiUserCollection();
     $users = $userColl->getAccessibleUsers(explode(',', $auth->auth['perm']));
-    $grouplist = new Groups;
-    $groups = $grouplist->getAccessibleGroups(explode(',', $auth->auth['perm']));
+    $groupColl = new cApiGroupCollection();
+    $groups = $groupColl->getAccessibleGroups(explode(',', $auth->auth['perm']));
 
     $tpl2 = new Template;
     $tpl2->set('s', 'NAME', 'user'.$listid);

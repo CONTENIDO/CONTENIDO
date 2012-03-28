@@ -11,7 +11,7 @@
  * 
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -84,9 +84,7 @@ $oTpl->set("s", "TYPE_ID", "groupid");
 $oTpl->set("s", "USER_ID", $groupid);
 $oTpl->set("s", "AREA", $area);
 
-$mgroup = new Group;
-$mgroup->loadGroupByGroupID($groupid);
-
+$mgroup = new cApiGroup($groupid);
 $userperms = $mgroup->getField("perms");
 
 $oTpl->set("s", "TABLE_BORDER",$cfg["color"]["table_border"]);

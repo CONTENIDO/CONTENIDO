@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-03-27
+ *     created  2012-03-28
  * }}
  */
 
@@ -69,8 +69,6 @@ return array(
     'ItemCollection' => 'contenido/classes/class.genericdb.php',
     'Item' => 'contenido/classes/class.genericdb.php',
     'ConfigGlobals' => 'contenido/classes/class.globals.config.php',
-    'Groups' => 'contenido/classes/class.group.php',
-    'Group' => 'contenido/classes/class.group.php',
     'cHTML' => 'contenido/classes/class.htmlelements.php',
     'cHTMLFormElement' => 'contenido/classes/class.htmlelements.php',
     'cHTMLHiddenField' => 'contenido/classes/class.htmlelements.php',
@@ -232,6 +230,8 @@ return array(
     'cApiGroupMember' => 'contenido/classes/contenido/class.group.member.php',
     'cApiGroupCollection' => 'contenido/classes/contenido/class.group.php',
     'cApiGroup' => 'contenido/classes/contenido/class.group.php',
+    'Groups' => 'contenido/classes/contenido/class.group.php',
+    'Group' => 'contenido/classes/contenido/class.group.php',
     'cApiGroupPropertyCollection' => 'contenido/classes/contenido/class.group.property.php',
     'cApiGroupProperty' => 'contenido/classes/contenido/class.group.property.php',
     'cApiInUseCollection' => 'contenido/classes/contenido/class.inuse.php',

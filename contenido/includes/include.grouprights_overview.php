@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.1.3
+ * @version    1.1.4
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -30,7 +30,7 @@
  *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
@@ -49,8 +49,7 @@ if (!isset($groupid)) {
 }
 
 // create group instance
-$oGroup = new Group();
-$oGroup->loadGroupByGroupID($groupid);
+$oGroup = new cApiGroup($groupid);
 $bError        = false;
 $sNotification = '';
 $aPerms        = array();
@@ -58,8 +57,8 @@ $aPerms        = array();
 // edit group
 if (($action == 'group_edit')) {
     $aPerms = buildUserOrGroupPermsFromRequest();
-    $oGroup->setField('description', Contenido_Security::escapeDB($description, $db));
-    $oGroup->setField('perms', Contenido_Security::escapeDB(implode(',', $aPerms), $db));
+    $oGroup->setField('description', $description);
+    $oGroup->setField('perms', implode(',', $aPerms));
 
     if ($oGroup->store()) {
         $sNotification = $notification->returnNotification("info", i18n("Changes saved"));
@@ -112,13 +111,13 @@ $tpl->next();
 $tpl->set('d', 'CATNAME', i18n("Groupname"));
 $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
 $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'CATFIELD', substr(stripslashes($oGroup->getField('groupname')),4));
+$tpl->set('d', 'CATFIELD', stripslashes($oGroup->getGroupName()));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Description"));
 $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
 $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'description', stripslashes($oGroup->getField('description')), 40, 255));
+$tpl->set('d', 'CATFIELD', formGenerateField('text', 'description', htmlentities(stripslashes($oGroup->getField('description')), ENT_QUOTES), 40, 255));
 $tpl->next();
 
 // permissions of current logged in user
@@ -197,7 +196,7 @@ foreach ($aProperties as $propertyId => $prop) {
         <td>' . $name . '</td>
         <td>' . $value . '</td>
         <td>
-            <a href="' . $sess->url("main.php?area=$area&frame=4&groupid=$groupid&del_groupprop_type=$type&del_groupprop_name=$name") . '"><img src="images/delete.gif" border="0" alt="Eigenschaft löschen" title="Eigenschaft löschen"></a>
+            <a href="' . $sess->url("main.php?area=$area&frame=4&groupid=$groupid&del_groupprop_type=$type&del_groupprop_name=$name") . '"><img src="images/delete.gif" border="0" alt="' . i18n("Delete") . '" title="' . i18n("Delete") . '"></a>
         </td>
     </tr>';
 }

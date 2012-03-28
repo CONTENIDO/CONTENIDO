@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.7.2
+ * @version    1.7.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -30,7 +30,7 @@
  *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
@@ -45,7 +45,6 @@ if (!$perm->have_perm_area_action($area, $action)) {
 
 
 // create group instance
-$oGroup = new Group();
 $bError        = false;
 $sNotification = '';
 $aPerms        = array();
@@ -54,19 +53,12 @@ if ($action == 'group_create') {
     $aPerms = buildUserOrGroupPermsFromRequest();
 
     if ($groupname == '') {
-        $groupname = 'grp_' . i18n("New Group");
+        $groupname = cApiGroup::PREFIX . i18n("New Group");
     }
 
-    if (substr($groupname, 0, 4) != 'grp_') {
-        $groupname = 'grp_' . $groupname;
-    }
-    $newgroupid = md5($groupname);
-
-    $oGroup->setField('groupname', Contenido_Security::escapeDB($groupname, $db));
-    $oGroup->setField('perms', Contenido_Security::escapeDB(implode(',', $aPerms), $db));
-    $oGroup->setField('description', Contenido_Security::escapeDB($description, $db));
-    $oGroup->setField('group_id', Contenido_Security::escapeDB($newgroupid, $db));
-    if ($oGroup->insert()) {
+    $oGroupColl = new cApiGroupCollection();
+    $oGroup = $oGroupColl->create($groupname, implode(',', $aPerms), $description);
+    if (is_object($oGroup)) {
         // clean "old" values...
         $sNotification = $notification->returnNotification("info", i18n("group created"));
         $groupname   = '';
@@ -103,9 +95,9 @@ $tpl->set('d', 'CATNAME', i18n("Group name"));
 $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
 $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 if ($action == 'group_create' && !$bError) {
-    $tpl->set('d', 'CATFIELD', substr($groupname, 4));
+    $tpl->set('d', 'CATFIELD', cApiGroup::getUnprefixedGroupName($groupname));
 } else {
-    $tpl->set('d', 'CATFIELD', formGenerateField('text', 'groupname', stripslashes(substr($groupname, 4)), 40, 32));
+    $tpl->set('d', 'CATFIELD', formGenerateField('text', 'groupname', cApiGroup::getUnprefixedGroupName($groupname), 40, 32));
 }
 $tpl->next();
 
