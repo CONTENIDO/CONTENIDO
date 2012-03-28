@@ -1799,6 +1799,15 @@ abstract class Item extends Contenido_ItemBaseAbstract
     }
 
     /**
+     * Checks if a the item is already loaded.
+     * @return bool
+     */
+    public function isLoaded()
+    {
+        return !$this->virgin;
+    }
+
+    /**
      * Function which is called whenever an item is loaded.
      * Inherited classes should override this function if desired.
      *
