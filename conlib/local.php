@@ -535,7 +535,7 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
 
         if (isset($idcat) && isset($idart)) {
             $catArtColl = new cApiCategoryArticleCollection();
-            if ($rs = $catArtColl->selectByCatAndArt($idcat, $idart)) {
+            if ($rs = $catArtColl->fetchByCategoryIdAndArticleId($idcat, $idart)) {
                 $idcatart = $rs->get('idcatart');
             }
         }

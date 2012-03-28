@@ -64,7 +64,7 @@ class cApiCategoryArticleCollection extends ItemCollection
      * @param int $idart
      * @return cApiCategoryArticle|null
      */
-    public function selectByCatAndArt($idcat, $idart) {
+    public function fetchByCategoryIdAndArticleId($idcat, $idart) {
         $this->select('idcat=' . (int) $idcat . ' AND idart=' . (int) $idart);
         return $this->next();
     }
