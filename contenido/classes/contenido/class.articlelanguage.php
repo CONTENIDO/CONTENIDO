@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO API
- * @version    1.4
+ * @version    1.4.1
  * @author     Bjoern Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -187,17 +187,21 @@ class cApiArticleLanguage extends Item
      * @param  int  $idart   Article id
      * @param  int  $idlang  Language id
      * @param  bool  $fetchContent  Flag to fetch content
+     * @return  bool  true on success, otherwhise false
      */
     public function loadByArticleAndLanguageId($idart, $idlang, $fetchContent = false)
     {
+        $result = true;
         if ($this->virgin == true) {
             $idartlang = $this->_getIdArtLang($idart, $idlang);
-            $this->loadByPrimaryKey($idartlang);
+            $result = $this->loadByPrimaryKey($idartlang);
         }
 
         if (true === $fetchContent) {
             $this->_getArticleContent();
         }
+
+        return $result;
     }
 
     /**
@@ -211,11 +215,8 @@ class cApiArticleLanguage extends Item
     {
         global $cfg;
 
-        $idart = (int) $idart;
-        $idlang = (int) $idlang;
-
-        $sql = 'SELECT idartlang FROM ' . $cfg['tab']['art_lang'] . ' WHERE idart=' . $idart . ' AND idlang=' . $idlang;
-        $this->db->query($sql);
+        $sql = 'SELECT idartlang FROM `%s` WHERE idart = %d AND idlang = %d';
+        $this->db->query($sql, $cfg['tab']['art_lang'], $idart, $idlang);
         $this->db->next_record();
 
         return $this->db->f('idartlang');
@@ -248,18 +249,11 @@ class cApiArticleLanguage extends Item
             return;
         }
 
-        $sql = 'SELECT
-                    b.type, a.typeid, a.value
-                FROM
-                    ' . $cfg['tab']['content'] . ' AS a,
-                    ' . $cfg['tab']['type'] . ' AS b
-                WHERE
-                    a.idartlang = ' . $this->get('idartlang') . ' AND
-                    b.idtype = a.idtype
-                ORDER BY
-                    a.idtype, a.typeid';
+        $sql = 'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b '
+             . 'WHERE a.idartlang = %d AND b.idtype = a.idtype '
+             . 'ORDER BY a.idtype, a.typeid';
 
-        $this->db->query($sql);
+        $this->db->query($sql, $cfg['tab']['content'], $cfg['tab']['type'], $this->get('idartlang'));
 
         $this->content = array();
         while ($this->db->next_record()) {
