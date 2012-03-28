@@ -14,7 +14,7 @@
  *
  *
  * @package    CONTENIDO Content Types
- * @version    1.0.6
+ * @version    1.0.7
  * @author     Timo Trautmann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -809,15 +809,13 @@ class Cms_Teaser {
      * @access private
      */
     private function getArtName($iIdArt) {
-        $iIdArt = (int) $iIdArt;
+        $oArticle = new cApiArticleLanguage();
+        $oArticle->loadByArticleAndLanguageId((int) $iIdArt, $this->iLang);
 
-        //get article name from database
-        $sSql = 'SELECT * FROM '.$this->aCfg['tab']['art_lang'].' WHERE idart = '.$iIdArt;
-        $this->oDb->query($sSql);
-        if ($this->oDb->next_record()) {
-            return $this->oDb->f('title');
+        if ($oArticle->isLoaded() && !empty($oArticle->get('title'))) {
+            return $oArticle->get('title');
         } else {
-            return 'Unknown Article';
+            return i18n('Unknown Article');
         }
     }
 

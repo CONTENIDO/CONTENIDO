@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.6
+ * @version    1.0.7
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -242,19 +242,42 @@ if (!$result) {
 $tpl->set('s', 'NORESULTS', $noresults);
 
 $counter = 0;
+
+$artNames = array();
+$strNames = array();
+
 while ($oItem = $actionLogColl->next()) {
     $counter++;
     $darkrow = !$darkrow;
     $bgcolor = ($darkrow) ? $cfg['color']['table_dark'] : $cfg['color']['table_light'];
 
-    $structureName = $structureclass->getStructureName($structureclass->getStructureIDForCatArt($oItem->get('idcatart')), $oItem->get('idlang'));
-    $artName = $artclass->getArtName($artclass->getArtIDForCatArt($oItem->get('idcatart')), $oItem->get('idlang'));
+    $idcatart = $oItem->get('idcatart');
+    $idlang = $oItem->get('idlang');
+    $key = $idcatart . '_' . $idlang;
 
-    if ($structureName == '') {
-        $structureName = '-';
+    // get structure name
+    if (!isset($strNames[$key])) {
+        $strNames[$key] = $structureclass->getStructureName($structureclass->getStructureIDForCatArt($idcatart), $idlang);
+        if ($strNames[$key] == '') {
+            $strNames[$key] = '-';
+        }
     }
-    if ($artName == '') {
-        $artName = '-';
+
+    // get article name
+    if (!isset($artNames[$key])) {
+        $artNames[$key] = '';
+        $oCategoryArticle = new cApiCategoryArticle($idcatart);
+        if ($oCategoryArticle->get('idart')) {
+            $oArticleLanguage = new cApiArticleLanguage();
+            $oArticleLanguage->loadByArticleAndLanguageId($oCategoryArticle->get('idart'), $idlang);
+            if ($oArticleLanguage->isLoaded()) {
+                $artNames[$key] = $oArticleLanguage->get('title');
+            }
+        }
+
+        if ($artNames[$key] == '') {
+            $artNames[$key] = '-';
+        }
     }
 
     $tpl->set('d', 'ROWNAME', 'row_' . $counter);
@@ -268,9 +291,9 @@ while ($oItem = $actionLogColl->next()) {
     if ($actionDescription == '') {
         $actionDescription = $actionColl->getActionName($oItem->get('idaction'));
     }
-    $tpl->set('d', 'RACTION', $actionDescription );
-    $tpl->set('d', 'RSTR', $structureName);
-    $tpl->set('d', 'RPAGE', $artName);
+    $tpl->set('d', 'RACTION', $actionDescription);
+    $tpl->set('d', 'RSTR', $strNames[$key]);
+    $tpl->set('d', 'RPAGE', $artNames[$key]);
 
     $tpl->next();
 }

@@ -11,13 +11,14 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.0.1
+ * @version    1.0.2
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
+ * @deprecated [2012-03-29] This class is deprecated use cApiArticleLanguage() or cApiCategoryArticle() instead
  *
  * {@internal
  *   created unknown
@@ -32,60 +33,40 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+/** @deprecated [2012-03-29] This class is deprecated use cApiArticleLanguage() or cApiCategoryArticle() instead */
 class Art
 {
-    /**
-     * Constructor of class Art.
-     * @return void
-     */
+    /** @deprecated [2012-03-29] This class is deprecated use cApiArticleLanguage() or cApiCategoryArticle() instead */
     public function __construct()
     {
-        // empty
+        cDeprecated("Use cApiArticleLanguage() or cApiCategoryArticle() instead");
     }
-
-    /**
-     * @deprecated  [2011-09-03] Old constructor function for downwards compatibility
-     */
+    /** @deprecated  [2011-09-03] Old constructor function for downwards compatibility */
     public function Art()
     {
         cDeprecated("Use __construct()");
         $this->__construct();
     }
-
-    /**
-     * Returns a name for the given article
-     *
-     * @param int $iArticleId idart of article
-     * @param int $iLangId idlang for article
-     * @return string|null  Returns the name of the given article
-     */
+    /** @deprecated [2012-03-29] Use cApiArticleLanguage() instead */
     public function getArtName($iArticleId, $iLangId)
     {
+        cDeprecated("Use cApiArticleLanguage() instead");
         $oArticle = new cApiArticleLanguage();
         $oArticle->loadByArticleAndLanguageId((int) $iArticleId, (int) $iLangId);
-
         $sArticleTitle = $oArticle->getField('title');
         if ($sArticleTitle != '') {
             return $sArticleTitle;
         }
-
         return null;
     }
-
-    /**
-     * Returns the idart based on an idcatart.
-     *
-     * @param int $iIdCatArt idcatart to look up
-     * @return int|null  Related idart to given idcatart
-     */
+    /** @deprecated [2012-03-29] Use cApiCategoryArticle() instead */
     public function getArtIDForCatArt($iIdCatArt) {
+        cDeprecated("Use cApiCategoryArticle() instead");
         $oCategoryArticle = new cApiCategoryArticle((int) $iIdCatArt);
         $iIdArt = $oCategoryArticle->getField('idart');
-
         if ($iIdArt != false) {
             return $iIdArt;
         }
-
         return null;
     }
 }
