@@ -296,7 +296,6 @@ contenido/classes/class.frontend.logic.php -text
 contenido/classes/class.frontend.permissions.php -text
 contenido/classes/class.frontend.users.php -text
 contenido/classes/class.genericdb.php -text
-contenido/classes/class.globals.config.php -text
 contenido/classes/class.group.php -text
 contenido/classes/class.htmlelements.php -text
 contenido/classes/class.htmlparser.php -text
@@ -395,10 +394,6 @@ contenido/classes/interfaces/interface.conuser.php -text
 contenido/classes/log/class.bufferedlog.php -text
 contenido/classes/log/class.log.php -text
 contenido/classes/log/class.modulelog.php -text
-contenido/classes/module/AbstractModule.php -text
-contenido/classes/module/ModelConConfig.php -text
-contenido/classes/module/ModuleException.php -text
-contenido/classes/module/ModuleInterface.php -text
 contenido/classes/module/class.contenido.upgrade.job.php -text
 contenido/classes/module/class.module.filetranslation.php -text
 contenido/classes/module/class.module.handler.php -text
