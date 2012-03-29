@@ -256,8 +256,8 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
 
     // Author
     $tpl->set('s', 'AUTHOR_CREATOR', i18n("Author (Creator)"));
-    $oAuthor = cApiUser($tmp_author);
-    $oModifiedBy = cApiUser($tmp_modifiedby);
+    $oAuthor = new cApiUser($tmp_author);
+    $oModifiedBy = new cApiUser($tmp_modifiedby);
     $tpl->set('s', 'AUTOR-ERSTELLUNGS-NAME', $oAuthor->get('realname').'<input type="hidden" class="bb" name="author" value="'.$auth->auth["uname"].'">'.'&nbsp;');
     $tpl->set('s', 'AUTOR-AENDERUNG-NAME', $oModifiedBy->get('realname').'&nbsp;');
 
@@ -280,7 +280,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     }
 
     $tpl->set('s', 'PUBLISHER', i18n("Publisher"));
-    $oPublishedBy = cApiUser($tmp_publishedby);
+    $oPublishedBy = new cApiUser($tmp_publishedby);
     if ($oPublishedBy && $oPublishedBy->get('realname') != '') {
         $tpl->set('s', 'PUBLISHER_NAME', '<input type="hidden" class="bb" name="publishedby" value="'.$auth->auth["uname"].'">'.$oPublishedBy->get('realname'));
     } else {
