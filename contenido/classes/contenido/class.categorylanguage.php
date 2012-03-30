@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO API
- * @version    1.3
+ * @version    1.3.1
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -140,6 +140,19 @@ class cApiCategoryLanguage extends Item
     {
         cDeprecated("Use __construct() instead");
         $this->__construct($mId);
+    }
+
+    /**
+     * Load data by category id and language id
+     *
+     * @param  int  $idcat   Category id
+     * @param  int  $idlang  Language id
+     * @return  bool  true on success, otherwhise false
+     */
+    public function loadByCategoryIdAndLanguageId($idcat, $idlang)
+    {
+        $where = $this->db->prepare('idcat = %d AND idlang = %d', $idcat, $idlang);
+        return $this->_loadByWhereClause($where);
     }
 
     /**

@@ -44,8 +44,6 @@ if (!$perm->have_perm_area_action($area)) {
 
 $clientColl = new cApiClientCollection();
 
-$db2 = new DB_Contenido();
-
 $tpl->reset();
 
 $form = '<form name="log_select" method="post" action="'.$sess->url("main.php?").'">
@@ -65,41 +63,27 @@ $tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4"));
 
 
 $userColl = new cApiUserCollection();
-$structureclass = new Structure();
-$artclass = new Art();
 $actionColl = new cApiActionCollection();
 
 $clients = $clientColl->getAccessibleClients();
 $users = $userColl->getAccessibleUsers(explode(',', $auth->auth['perm']));
-$userselect = "<option value=\"%\">".i18n("All users")."</option>";
+$userselect = '<option value="%">' . i18n("All users") . '</option>';
 $actions = $actionColl->getAvailableActions();
-$actionselect = "<option value=\"%\">".i18n("All actions")."</option>";
+$actionselect = '<option value="%">' . i18n("All actions") . '</option>';
 $clientList = $clientColl->getAccessibleClients();
 
 foreach ($clientList as $key => $value) {
-    if (strcmp($idqclient,$key) == 0) {
-        $selected = "SELECTED";
-    } else {
-        $selected = "";
-    }
-    $clientselect .= "<option value=\"".$key."\" ".$selected.">".$value["name"]."</option>";
+    $selected = (strcmp($idqclient, $key) == 0) ? ' selected="selected"' : '';
+    $clientselect .= '<option value="' . $key . '"' . $selected . '>' . $value['name'] . '</option>';
 }
 
-foreach ($users as $key=>$value) {
-    if (strcmp($idquser,$key) == 0) {
-        $selected = "SELECTED";
-    } else {
-        $selected = "";
-    }
-    $userselect .= "<option value=\"".$key."\" ".$selected.">".$value["username"]." (".$value["realname"].")</option>";
+foreach ($users as $key => $value) {
+    $selected = (strcmp($idquser, $key) == 0) ? ' selected="selected"' : '';
+    $userselect .= '<option value="' . $key . '"' . $selected . '>' . $value['username'] . '(' . $value['realname'] . ')</option>';
 }
 
-foreach ($actions as $key=>$value) {
-    if (strcmp($idqaction,$key) == 0) {
-        $selected = "SELECTED";
-    } else {
-        $selected = "";
-    }
+foreach ($actions as $key => $value) {
+    $selected = (strcmp($idqaction, $key) == 0) ? ' selected="selected"' : '';
 
     // $areaname = $classarea->getAreaName($actionColl->getAreaForAction($value["name"]));
     $areaname = $value["areaname"];
@@ -109,7 +93,7 @@ foreach ($actions as $key=>$value) {
         $actionDescription = $value["name"];
     }
 
-    $actionselect .= "<option value=\"".$key."\" ".$selected.">".$value["name"]." (".$actionDescription.")"."</option>";
+    $actionselect .= '<option value="' . $key . '"' . $selected . '>' . $value['name'] . '(' . $actionDescription . ')</option>';
 }
 
 $days = array();
@@ -255,9 +239,21 @@ while ($oItem = $actionLogColl->next()) {
     $idlang = $oItem->get('idlang');
     $key = $idcatart . '_' . $idlang;
 
+    if (!isset($strNames[$key]) || !isset($artNames[$key])) {
+        // instantiate category article object, we need it later
+        $oCategoryArticle = new cApiCategoryArticle($idcatart);
+    }
+
     // get structure name
     if (!isset($strNames[$key])) {
-        $strNames[$key] = $structureclass->getStructureName($structureclass->getStructureIDForCatArt($idcatart), $idlang);
+        $strNames[$key] = '';
+        if ($oCategoryArticle->get('idcat')) {
+            $oCategoryLanguage = new cApiCategoryLanguage();
+            $oCategoryLanguage->loadByCategoryIdAndLanguageId($oCategoryArticle->get('idcat'), $idlang);
+            if ($oCategoryLanguage->isLoaded()) {
+                $strNames[$key] = $oCategoryLanguage->get('name');
+            }
+        }
         if ($strNames[$key] == '') {
             $strNames[$key] = '-';
         }
@@ -266,7 +262,6 @@ while ($oItem = $actionLogColl->next()) {
     // get article name
     if (!isset($artNames[$key])) {
         $artNames[$key] = '';
-        $oCategoryArticle = new cApiCategoryArticle($idcatart);
         if ($oCategoryArticle->get('idart')) {
             $oArticleLanguage = new cApiArticleLanguage();
             $oArticleLanguage->loadByArticleAndLanguageId($oCategoryArticle->get('idart'), $idlang);
@@ -274,7 +269,6 @@ while ($oItem = $actionLogColl->next()) {
                 $artNames[$key] = $oArticleLanguage->get('title');
             }
         }
-
         if ($artNames[$key] == '') {
             $artNames[$key] = '-';
         }

@@ -18,6 +18,7 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
+ * @deprecated [2012-03-29] This class is deprecated use cApiCategoryLanguage() or cApiCategoryArticle() instead
  * 
  * {@internal 
  *   created 2003
@@ -28,70 +29,35 @@
  * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
-class Structure {
-
-    /**
-     * Constructor Function
-     * @param
-     */
+/** @deprecated [2012-03-29] This class is deprecated use cApiCategoryLanguage() or cApiCategoryArticle() instead */
+class Structure
+{
+    /** @deprecated [2012-03-29] This class is deprecated use cApiCategoryLanguage() or cApiCategoryArticle() instead */
     function Structure() {
-        // empty
-    } // end function
-
-    /**
-     * getStructureName()
-     * Returns a name for the given structure
-     * @return string  Returns the name of the given structure
-     */
-    function getStructureName( $structure, $idlang) {
-        global $cfg;
-
-        $db = new DB_Contenido;
-
-        $sql = "SELECT
-                    name
-                FROM
-                ". $cfg["tab"]["cat_lang"] ."
-                WHERE
-                    idlang = '".Contenido_Security::toInteger($idlang)."' AND
-                    idcat = '".Contenido_Security::toInteger($structure)."'";
-
-        $db->query($sql);
-        $db->next_record();
-
-        return ($db->f("name"));
-
-    } // end function
-
-    /**
-     * getStructureIDForCatArt()
-     * Returns a name for the given structure
-     * @return string  Returns the name of the given structure
-     *
-     */
-    function getStructureIDForCatArt ( $idcatart)
+        cDeprecated("Use cApiArticleLanguage() or cApiCategoryArticle() instead");
+    }
+    /** @deprecated [2012-03-29] Use cApiCategoryLanguage() instead */
+    function getStructureName($structure, $idlang)
     {
-        global $cfg;
-
-        $db = new DB_Contenido;
-
-        $sql = "SELECT
-                    idcat
-                FROM
-                ". $cfg["tab"]["cat_art"] ."
-                WHERE
-                    idcatart = '".Contenido_Security::toInteger($idcatart)."'";
-        $db->query($sql);
-        $db->next_record();
-
-        return ($db->f("idcat"));
-
-    } // End function
-
-} // end class
+        cDeprecated("Use cApiCategoryLanguage() instead");
+        $oCatLang = new cApiCategoryLanguage();
+        if ($oCatLang->loadByCategoryIdAndLanguageId($structure, $idlang)) {
+            return $oCatLang->get('name');
+        } else {
+            return '';
+        }
+    }
+    /** @deprecated [2012-03-29] Use cApiCategoryArticle() instead */
+    function getStructureIDForCatArt($idcatart)
+    {
+        cDeprecated("Use cApiCategoryArticle() instead");
+        $oCatArt = new cApiCategoryArticle($idcatart);
+        return ($oCatArt->isLoaded()) ? $oCatArt->get('idcat') : null;
+    }
+}
 
 ?>
