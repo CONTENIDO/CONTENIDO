@@ -12,7 +12,7 @@
  *
  *
  * @package    CONTENIDO Core
- * @version    0.1.4
+ * @version    0.1.6
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -29,7 +29,7 @@
  *                        added new methods to build insert/update queries, added
  *                        method _getInstanceClone(), documented code
  *   modified 2012-01-18, Mischa Holz, moved checkMySQLConnectivity() to the DB_Contenido class itself, see [CON-429]
- *   $Id:$:
+ *   $Id$:
  * }}
  *
  */
@@ -389,28 +389,41 @@ abstract class DB_Sql_Abstract
 
 
     /**
-     * Executes the query. Accepts multiple parameter, where the first parameter
-     * should be the query and any additional parameter should be the values to
-     * replace in format definitions.
+     * Executes the statement.
+     * If called with one parameter, it executes the statement directly.
+     *
+     * Accepts multiple parameter, where the first parameter should be the query
+     * and any additional parameter should be the values to replace in format definitions.
+     * As an alternative the second parameter cound be also a indexed array with
+     * values to replace in format definitions.
+     *
+     * Other option is to call this function with the statement containing named parameter
+     * and the second parameter as a assoziative array with key/value pairs to set in statement.
      *
      * Examples:
      * <pre>
      * // call with one parameter
      * $obj->query('SELECT * FROM `tablename` WHERE id = 123');
+     *
      * // call with multple parameter
      * $obj->query('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
-     * $obj->query('SELECT * FROM `%s` WHERE id = %d AND user = %d', 'tablename', 123, 3);
+     *
+     * // 2 parameter where the first is the statement with formatting signs and the second the entries array
+     * $obj->query('SELECT * FROM `%s` WHERE id = %d', array('tablename', 123));
+     *
+     * // 2 parameter where the first is the statement with named parameter and the second the assoziative entries array
+     * $obj->query('SELECT * FROM `:mytab` WHERE id = :myid', array('mytab' => 'tablename', 'myid' => 123));
      * </pre>
      *
-     * @param   string    $sQuery  The query to execute.
+     * @param   string    $sStatement  The SQL statement to execute.
      * @param   mixed     Accepts additional unlimited parameter, where the parameter
      *                    will be replaced against formatting sign in query.
      * @return  resource|int|object|bool  Depends on used database driver, false on error
      */
-    public function query($sQuery)
+    public function query($sStatement)
     {
         // No empty queries, please, since PHP4 chokes on them
-        if ($sQuery == '') {
+        if ($sStatement == '') {
             // The empty query string is passed on from the constructor, when calling
             // the class without a query, e.g. in situations '$db = new DB_Sql_Subclass;'
             return false;
@@ -419,7 +432,7 @@ abstract class DB_Sql_Abstract
         $aArgs = func_get_args();
         if (count($aArgs) > 1) {
             array_shift($aArgs);
-            $sQuery = $this->_prepareQueryf($sQuery, $aArgs);
+            $sStatement = $this->_prepareStatement($sStatement, $aArgs);
         }
 
         if (!$this->connect()) {
@@ -431,54 +444,152 @@ abstract class DB_Sql_Abstract
             $this->free();
         }
 
-        $this->_debug('query = "' . $sQuery . '"');
+        $this->_debug('query = "' . $sStatement . '"');
 
         if ($this->_bProfile) {
             $fStart = microtime(true);
         }
 
-        $this->_query($sQuery);
+        $this->_query($sStatement);
 
         if ($this->_bProfile) {
             $fEnd = microtime(true);
-            $this->_addProfileData($fStart, $fEnd, $sQuery);
+            $this->_addProfileData($fStart, $fEnd, $sStatement);
         }
 
         // Will return nada if it fails. That's fine.
         return $this->Query_ID;
     }
 
+    /**
+     * Prepares the statement for execution and returns it back.
+     * Accepts multiple parameter, where the first parameter should be the query
+     * and any additional parameter should be the values to replace in format definitions.
+     * As an alternative the second parameter cound be also a indexed array with
+     * values to replace in format definitions.
+     *
+     * Other option is to call this function with the statement containing named parameter
+     * and the second parameter as a assoziative array with key/value pairs to set in statement.
+     *
+     * Examples:
+     * <pre>
+     * // multple parameter
+     * $sql = $obj->prepare('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
+     *
+     * // 2 parameter where the first is the statement with formatting signs and the second the entries array
+     * $sql = $obj->prepare('SELECT * FROM `%s` WHERE id = %d', array('tablename', 123));
+     *
+     * // 2 parameter where the first is the statement with named parameter and the second the assoziative entries array
+     * $sql = $obj->prepare('SELECT * FROM `:mytab` WHERE id = :myid', array('mytab' => 'tablename', 'myid' => 123));
+     * </pre>
+     *
+     * @param   string    $sStatement  The sql statement to prepare.
+     * @param   mixed     Accepts additional unlimited parameter, where the parameter
+     *                    will be replaced against formatting sign in query.
+     * @return  string    The prepared sql statement
+     * @throws Exception  If statement is empty or function is called with less than 2 parameters
+     */
+    public function prepare($sStatement)
+    {
+        // No empty queries
+        if (empty($sStatement)) {
+            throw new Exception('Empty statement!');
+        }
+
+        $aArgs = func_get_args();
+        if (count($aArgs) <= 1) {
+            throw new Exception('Wrong number of parameter!');
+        }
+
+        array_shift($aArgs);
+        $sStatement = $this->_prepareStatement($sStatement, $aArgs);
+
+        return $sStatement;
+    }
 
     /**
      * Executes the query.
      *
-     * @param   string    $sQuery  The query to execute
+     * @param   string    $sStatement  The query to execute
      * @return  void
      */
-    abstract protected function _query($sQuery);
-
+    abstract protected function _query($sStatement);
 
     /**
-     * Prepares a query with parameter for execution.
-     *
-     * @param   string  $sQuery
-     * @param   array   $aArgs  Arguments array containing the query with formatting
-     *                          signs and the entries.
-     *                          Examples:
-     *                          <pre>
-     *                          $obj->_prepareQueryf('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
-     *                          $obj->_prepareQueryf('SELECT * FROM `%s` WHERE id = %d AND user = %d', 'tablename', 123, 3);
-     *                          </pre>
+     * Prepares the passed statement.
+     * @param  string  $sStatement
+     * @param  array  $aArgs
      * @return  string
      */
-    protected function _prepareQueryf($sQuery, array $aArgs)
+    protected function _prepareStatement($sStatement, array $aArgs)
+    {
+        if (count($aArgs) == 1 && is_array($aArgs[0])) {
+            $aArgs = $aArgs[0];
+            if (count(array_filter(array_keys($aArgs), 'is_string')) > 0) {
+                // we have at least one key being string, it is an assoc array
+                $sStatement = $this->_prepareStatementA($sStatement, $aArgs);
+            } else {
+                // it is an indexed array
+                $sStatement = $this->_prepareStatementF($sStatement, $aArgs);
+            }
+        } else {
+            $sStatement = $this->_prepareStatementF($sStatement, $aArgs);
+        }
+        return $sStatement;
+    }
+
+    /**
+     * Prepares a statement with parameter for execution.
+     *
+     * Examples:
+     * <pre>
+     * $obj->_prepareStatementF('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
+     * $obj->_prepareStatementF('SELECT * FROM `%s` WHERE id = %d AND user = %d', 'tablename', 123, 3);
+     * </pre>
+     *
+     * @param   string  $sStatement
+     * @param   array   $aArgs  Arguments array containing the query with formatting
+     *                          signs and the entries.
+     * @return  string
+     */
+    protected function _prepareStatementF($sStatement, array $aArgs)
     {
         if (count($aArgs) > 0) {
             $aArgs = array_map(array($this, 'escape'), $aArgs);
-            array_unshift($aArgs, $sQuery);
-            $sQuery = call_user_func_array('sprintf', $aArgs);
+            array_unshift($aArgs, $sStatement);
+            $sStatement = call_user_func_array('sprintf', $aArgs);
         }
-        return $sQuery;
+        return $sStatement;
+    }
+
+    /**
+     * Prepares a statement with named parameter for execution.
+     *
+     * Examples:
+     * <pre>
+     * // named parameter and assoziative entries array
+     * $sql = $obj->_prepareStatementA('SELECT * FROM `:mytab` WHERE id = :myid', array('mytab' => 'tablename', 'myid' => 123));
+     * $sql = $obj->_prepareStatementA('SELECT * FROM `:mytab` WHERE id = :myid AND user = :myuser', array('mytab' => 'tablename', 'myid' => 123, 'myuser' => 3));
+     * </pre>
+     *
+     * @param   string  $sStatement
+     * @param   array   $aArgs  Arguments array containing the query with named parameter and assoziative entries array
+     * @return  string
+     */
+    protected function _prepareStatementA($sStatement, array $aArgs)
+    {
+        if (count($aArgs) > 0) {
+            foreach ($aArgs as $key => $value) {
+                $param = ':' . $key;
+                if (is_int($value)) {
+                    $sStatement = str_replace($param, $value, $sStatement);
+                } else {
+                    $param = (string) $param;
+                    $sStatement = str_replace($param, $this->escape($value), $sStatement);
+                }
+            }
+        }
+        return $sStatement;
     }
 
 
@@ -505,8 +616,8 @@ abstract class DB_Sql_Abstract
      */
     public function insert($sTable, array $aFields)
     {
-        $sQuery = $this->_insert($sTable, $aFields);
-        return $this->query($sQuery);
+        $sStatement = $this->_insert($sTable, $aFields);
+        return $this->query($sStatement);
     }
 
 
@@ -524,8 +635,8 @@ abstract class DB_Sql_Abstract
      *     'idclient' => $client,
      *     'code' => "<html>... code n' fun ...</html>",
      * );
-     * $sQuery = $oDB->buildInsert($cfg['tab']['code'], $aFields);
-     * $oDB->query($sQuery);
+     * $sStatement = $oDB->buildInsert($cfg['tab']['code'], $aFields);
+     * $oDB->query($sStatement);
      * </pre>
      *
      * @param   string   $sTable   The table name
@@ -569,8 +680,8 @@ abstract class DB_Sql_Abstract
      */
     public function update($sTable, array $aFields, array $aWhere)
     {
-        $sQuery = $this->_update($sTable, $aFields, $aWhere);
-        return $this->query($sQuery);
+        $sStatement = $this->_update($sTable, $aFields, $aWhere);
+        return $this->query($sStatement);
     }
 
 
@@ -583,8 +694,8 @@ abstract class DB_Sql_Abstract
      * $oDB = new DB_Contenido();
      * $aFields = array('code' => "<html>... some new code n' fun ...</html>");
      * $aWhere = array('idcode' => 123);
-     * $sQuery = $oDB->buildUpdate($cfg['tab']['code'], $aFields, $aWhere);
-     * $oDB->query($sQuery);
+     * $sStatement = $oDB->buildUpdate($cfg['tab']['code'], $aFields, $aWhere);
+     * $oDB->query($sStatement);
      * </pre>
      *
      * @param   string   $sTable   The table name
@@ -973,14 +1084,14 @@ abstract class DB_Sql_Abstract
      *
      * @param   float   $fStartTime
      * @param   float   $fEndTime
-     * @param   string  $sQuery
+     * @param   string  $sStatement
      * @return  void
      */
-    protected static function _addProfileData($fStartTime, $fEndTime, $sQuery)
+    protected static function _addProfileData($fStartTime, $fEndTime, $sStatement)
     {
         self::$_aProfileData[] = array(
             'time'  => $fEndTime - $fStartTime,
-            'query' => $sQuery
+            'query' => $sStatement
         );
     }
 
