@@ -15,7 +15,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.2.3
+ * @version    1.2.4
  * @author     Timo A. Hummel
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -1747,10 +1747,11 @@ abstract class Item extends Contenido_ItemBaseAbstract
         }
 
         // SQL-Statement to select by field
-        $sql = "SELECT * FROM %s WHERE %s = '%s'";
+        $sql = "SELECT * FROM `%s` WHERE %s = '%s'";
+        $sql = $this->db->prepare($sql, $this->table, $sField, $mValue);
 
         // Query the database
-        $this->db->query($sql, $this->table, $sField, $mValue);
+        $this->db->query($sql);
 
         $this->_lastSQL = $sql;
 
@@ -1767,6 +1768,41 @@ abstract class Item extends Contenido_ItemBaseAbstract
 
         $this->loadByRecordSet($this->db->toArray());
         return true;
+    }
+
+    /**
+     * Loads an item by passed where clause from the database.
+     * This function is expensive, since it executes allways a query to the database
+     * to retrieve the primary key, even if the record set is aleady cached.
+     * NOTE: Passed value has to be escaped before. This will not be done by this function.
+     *
+     * @param   string  $sWhere  The where clause like 'idart = 123 AND idlang = 1'
+     * @return  bool    True if the load was successful
+     */
+    protected function _loadByWhereClause($sWhere)
+    {
+        // SQL-Statement to select by whee clause
+        $sql = "SELECT %s AS pk FROM `%s` WHERE " . (string) $sWhere;
+        $sql = $this->db->prepare($sql, $this->primaryKey, $this->table);
+
+        // Query the database
+        $this->db->query($sql);
+
+        $this->_lastSQL = $sql;
+
+        if ($this->db->num_rows() > 1) {
+            $sMsg = "Tried to load a single line with where clause '" . $sWhere . "' from "
+                  . $this->table . " but found more than one row";
+            cWarning(__FILE__, __LINE__, $sMsg);
+        }
+
+        // Advance to the next record, return false if nothing found
+        if (!$this->db->next_record()) {
+            return false;
+        }
+
+        $id = $this->db->f('pk');
+        return $this->loadByPrimaryKey($id);
     }
 
     /**
