@@ -21,7 +21,7 @@
  * {@internal
  *   created  2005-08-30
  *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-10-26, Murat Purc, added functions cApiCategoryCollection->create, cApiCategoryCollection->selectLastCategoryTree
+ *   modified 2011-10-26, Murat Purc, added functions cApiCategoryCollection->create, cApiCategoryCollection->fetchLastCategoryTree
  *                        and cApiCategory->store
  *
  *   $Id$:
@@ -112,7 +112,7 @@ class cApiCategoryCollection extends ItemCollection
      * @param  int  $idclient
      * @return  cApiCategory|null
      */
-    public function selectLastCategoryTree($idclient)
+    public function fetchLastCategoryTree($idclient)
     {
         $where = 'parentid=0 AND postid=0 AND idclient=' . (int) $idclient;
         $this->select($where);
