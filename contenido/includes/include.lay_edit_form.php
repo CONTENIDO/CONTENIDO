@@ -52,34 +52,28 @@ if ($action == "lay_new")
 	if (!$perm->have_perm_area_action_anyitem($area, $action))
 	{
 		$notification->displayNotification("error", i18n("Permission denied"));	
-	} else {
-		
-		
-		
+	} else {	
 		$layoutAlias = strtolower(capiStrCleanURLCharacters(i18n("-- New Layout --")));
 		
-		#check if layout exist
-		if( LayoutInFile::existLayout($layoutAlias, $cfgClient, $client)) {
-			
+		if (LayoutInFile::existLayout($layoutAlias, $cfgClient, $client)) {
 			$notification->displayNotification("error", i18n("Layout name exist, rename the layout!"));
-			die();
-		}
-		
-		
-		$layouts = new cApiLayoutCollection;
-		
-		$layout = $layouts->create(i18n("-- New Layout --"));
-		#save alias
-		$layout->set("alias", $layoutAlias);
-		$layout->store();
-		
-		#make new layout in filesystem
-		$layoutInFile = new LayoutInFile($layout->get("idlay"), "", $cfg, $lang);
-		if( $layoutInFile->saveLayout("") == false)
-			$notification->displayNotification("error", i18n("Cant save layout in filesystem!"));		
-		else 
-			$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created layout succsessfully!"));
+		} else {
+			$layouts = new cApiLayoutCollection;
 			
+			$layout = $layouts->create(i18n("-- New Layout --"));
+			
+			// save alias
+			$layout->set("alias", $layoutAlias);
+			$layout->store();
+			
+			// make new layout in filesystem
+			$layoutInFile = new LayoutInFile($layout->get("idlay"), "", $cfg, $lang);
+			if ($layoutInFile->saveLayout('') == false) {
+				$notification->displayNotification("error", i18n("Cant save layout in filesystem!"));		
+			} else { 
+				$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created layout succsessfully!"));
+			}
+		}
 	}
 	$bReloadSyncSrcipt = true;
 } elseif ($action == "lay_delete")
