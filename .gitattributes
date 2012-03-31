@@ -49,12 +49,12 @@ cms/js/index.php -text
 cms/layouts/Standard/Standard.html -text
 cms/logs/index.php -text
 cms/modules/article_include/info.xml -text
-cms/modules/article_include/lang/lang_en_GB.txt -text svneol=unset#text/plain
+cms/modules/article_include/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/modules/article_include/php/article_include_input.php -text
 cms/modules/article_include/php/article_include_output.php -text
 cms/modules/contact_form/info.xml -text
 cms/modules/contact_form/lang/lang_de_DE.txt -text svneol=unset#text/plain
-cms/modules/contact_form/lang/lang_en_GB.txt -text svneol=unset#text/plain
+cms/modules/contact_form/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/modules/contact_form/php/contact_form_input.php -text
 cms/modules/contact_form/php/contact_form_output.php -text
 cms/modules/contenido_header/info.xml -text
@@ -63,7 +63,7 @@ cms/modules/contenido_header/php/contenido_header_output.php -text
 cms/modules/facebook/css/facebook.css -text
 cms/modules/facebook/info.xml -text
 cms/modules/facebook/lang/lang_de_DE.txt -text
-cms/modules/facebook/lang/lang_en_GB.txt -text svneol=unset#text/plain
+cms/modules/facebook/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/modules/facebook/php/facebook_input.php -text
 cms/modules/facebook/php/facebook_output.php -text
 cms/modules/facebook/template/facebook_like_box.html -text
@@ -84,12 +84,12 @@ cms/modules/header/php/header_input.php -text
 cms/modules/header/php/header_output.php -text
 cms/modules/headline/info.xml -text
 cms/modules/headline/lang/lang_de_DE.txt -text svneol=unset#text/plain
-cms/modules/headline/lang/lang_en_GB.txt -text svneol=unset#text/plain
+cms/modules/headline/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/modules/headline/php/headline_input.php -text
 cms/modules/headline/php/headline_output.php -text
 cms/modules/login_form/info.xml -text
 cms/modules/login_form/lang/lang_de_DE.txt -text svneol=unset#text/plain
-cms/modules/login_form/lang/lang_en_GB.txt -text svneol=unset#text/plain
+cms/modules/login_form/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/modules/login_form/php/login_form_input.php -text
 cms/modules/login_form/php/login_form_output.php -text
 cms/modules/logo_bottom/info.xml -text
@@ -148,7 +148,7 @@ cms/modules/twitter/css/twitter.css -text
 cms/modules/twitter/image/logo_twitter_withbird.png -text
 cms/modules/twitter/info.xml -text
 cms/modules/twitter/js/twitter.js -text
-cms/modules/twitter/lang/lang_en_GB.txt -text svneol=unset#text/plain
+cms/modules/twitter/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/modules/twitter/php/twitter_input.php -text
 cms/modules/twitter/php/twitter_output.php -text
 cms/modules/twitter/template/follow_button.html -text
@@ -162,7 +162,7 @@ cms/modules/twitter/template/twitter_twitts_big.html -text
 cms/modules/twitter/template/twitter_twitts_small.html -text
 cms/modules/xing/info.xml -text
 cms/modules/xing/lang/lang_de_DE.txt -text svneol=unset#text/plain
-cms/modules/xing/lang/lang_en_GB.txt -text svneol=unset#text/plain
+cms/modules/xing/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/modules/xing/php/xing_input.php -text
 cms/modules/xing/php/xing_output.php -text
 cms/modules/xing/template/xing_big.html -text
