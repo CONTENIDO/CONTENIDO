@@ -46,6 +46,7 @@ cms/includes/functions.include.php -text
 cms/includes/functions.navigation.php -text
 cms/index.php -text
 cms/js/index.php -text
+cms/layouts/standard/standard.html -text
 cms/logs/index.php -text
 cms/modules/article_include/info.xml -text
 cms/modules/article_include/lang/lang_en_US.txt -text svneol=unset#text/plain
