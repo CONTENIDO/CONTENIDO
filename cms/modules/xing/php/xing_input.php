@@ -20,7 +20,7 @@
     </td>
   </tr>
   <tr>
-    <td><?php echo mi18n("Name/Vorname");?></td>
+    <td><?php echo mi18n("Name");?></td>
     <td><input type="text" name="CMS_VAR[2]" value="<?php echo "CMS_VALUE[2]"; ?>"></td>
   </tr>
  
