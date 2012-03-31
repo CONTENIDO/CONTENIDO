@@ -176,7 +176,7 @@ while ($db->next_record())
 
         if ($perm->have_perm_area_action('groups',"groups_delete") ) { 
         	    $message = sprintf(i18n("Do you really want to delete the group %s?"),htmlspecialchars($groupname));
-                $deletebutton = "<a onClick=\"event.cancelBubble=true;check=confirm('".$message."'); if (check==true) { location.href='".$sess->url("main.php?area=groups&action=group_delete&frame=$frame&groupid=$groupid&del=")."#deletethis'};\" href=\"#\"><img src=\"".$cfg['path']['images']."delete.gif\" border=\"0\" width=\"13\" height=\"13\" alt=\"".$lngUpl["delfolder"]."\" title=\"".$lngUpl["delgroup"]."\"></a>";
+                $deletebutton = "<a onClick=\"event.cancelBubble=true;check=confirm('".$message."'); if (check==true) { location.href='".$sess->url("main.php?area=groups&action=group_delete&frame=$frame&groupid=$groupid&del=")."#deletethis'};\" href=\"#\"><img src=\"".$cfg['path']['images']."delete.gif\" border=\"0\" width=\"13\" height=\"13\" alt=\"".i18n("Delete group")."\" title=\"".i18n("Delete group")."\"></a>";
             } else {
                 $deletebutton = "";
             }

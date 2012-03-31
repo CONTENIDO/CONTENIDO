@@ -300,7 +300,7 @@ function backToMainArea($send)
  */
 function showLocation($area)
 {
-    global $db, $cfgPath, $lngArea, $cfg, $belang;
+    global $db, $cfgPath, $cfg, $belang;
 
     cDeprecated("This function is not supported any longer");
     //Create new xml Class and load the file
@@ -330,7 +330,7 @@ function showLocation($area)
 
         $db->query($sql);
         $db->next_record();
-        echo "<b>".$xml->valueOf($db->f("location")).$lngArea[$area]."</b>";
+        echo "<b>".$xml->valueOf($db->f("location")).$area."</b>";
     }
 }
 

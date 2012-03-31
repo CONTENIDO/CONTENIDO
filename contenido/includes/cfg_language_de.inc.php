@@ -35,15 +35,7 @@ if(!defined('CON_FRAMEWORK')) {
 
 cInclude("includes", "functions.i18n.php");
 
-global $lngArea, $lngAct;
-
-//Datas for Areas which are not in the Navigation
-$lngArea["con_artlist"]                        		= " - Artikelliste";
-$lngArea["con_editart"]                        		= " - Artikel bearbeiten";
-$lngArea["lay_edit"]                            	= " - Layout bearbeiten";
-$lngArea["mod_edit"]                            	= " - Modul bearbeiten";
-$lngArea["tpl_edit"]                            	= " - Template bearbeiten";
-$lngArea["news_edit"]                           	= " - Newsletter bearbeiten";
+global $lngAct;
 
 $lngAct["con"]["con_lock"] 							= i18n("Freeze article");
 $lngAct["con"]["con_makecatonline"] 				= i18n("Make category online");
@@ -233,22 +225,4 @@ $lngAct["note"]["note_save_item"]					= i18n("Save note");
 
 $lngAct[""]["sendMail"]								= i18n("Send mail");
 $lngAct[""]["fake_permission_action"]				= i18n("Fake permissions");
-
-$lngUpl["description"]                            	= 'Beschreibung';
-$lngUpl['action']                                	= 'Aktionen';
-$lngUpl['delfolder']                         		= 'Verzeichnis l&ouml;schen';
-$lngUpl['delfile']                         			= 'Datei l&ouml;schen';
-$lngUpl['directoriesandfiles']                 		= 'Verzeichnisse / Dateien';
-$lngUpl['opendirectory']                        	= 'Verzeichnis &ouml;ffnen';
-$lngUpl['closedirectory']                   		= 'Verzeichnis schlie&szlig;en';
-$lngUpl['file']                                 	= 'Datei';
-$lngUpl['fileopen']                         		= 'Datei &ouml;ffnen';
-$lngUpl['popupclose']                        		= 'Fenster schliessen';
-$lngUpl['renamefolder']                         	= 'Verzeichnis umbenennen';
-$lngUpl['renamefile']                         		= 'Datei umbenennen';
-$lngUpl['description']                       		= 'Beschreibung';
-$lngUpl['dirisempty']                        		= 'Verzeichnis ist leer';
-$lngUpl['upload']                                	= 'Dateien hochladen';
-$lngUpl['delete']                                	= 'l&ouml;schen';
-$lngUpl["filesize"]                          		= 'Dateigr&ouml;&szlig;e';
 ?>
