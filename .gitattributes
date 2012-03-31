@@ -166,7 +166,6 @@ cms/modules/xing/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/modules/xing/php/xing_input.php -text
 cms/modules/xing/php/xing_output.php -text
 cms/modules/xing/template/xing_big.html -text
-cms/modules/xing/template/xing_no_config.html -text svneol=unset#text/plain
 cms/modules/xing/template/xing_small.html -text
 cms/robots.txt -text
 cms/templates/cms_filelist_style_default.html -text
