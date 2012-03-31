@@ -285,12 +285,10 @@ class Contenido_Module_Handler {
     }
 
     /**
-     * 
      * Init the vars of the class, make a query to the Db
      * 
      * @param int $idmod the id of the modul
      */
-    
     protected function _initByModule($idmod = NULL) {
         if ((int) $idmod == 0) {
 			return;
@@ -354,7 +352,6 @@ class Contenido_Module_Handler {
     }
 
     /**
-     * 
      * Get the js path of the modul
      * @return string
      */
@@ -363,29 +360,26 @@ class Contenido_Module_Handler {
     }
 
     /**
-     * 
      * Get the main css file modulenam.css
      * @return string
      */
     public function getCssFileName() {
-        return $this->_moduleAlias. ".css";
+        return $this->_moduleAlias . ".css";
     }
 
     /**
-     * 
-     * Return 5 random character 
-     * 
+     * Returns random characters
+	 * @param	integer	$count	amount of characters
      * @return string
      */
-    protected function getFiveRandomCharacter() {
+    protected function getRandomCharacters($count) {
         $micro1 = microtime();
         $rand1 = rand(0, time());
         $rand2 = rand(0, time());
-        return substr(md5($micro1 . $rand1 . $rand2), 0, 5);
+        return substr(md5($micro1 . $rand1 . $rand2), 0, $count);
     }
 
     /**
-     * 
      * Check if exist a file 
      * @param string $type js | template | css the directory of the file 
      * @param string $fileName file name
@@ -402,7 +396,7 @@ class Contenido_Module_Handler {
      */
     public function deleteFile($type, $fileName) {
         if ($this->existFile($type, $fileName)) {
-           return unlink($this->_modulePath. $this->_directories[$type]. $fileName);
+           return unlink($this->_modulePath. $this->_directories[$type] . $fileName);
         } else {
         	return false;
 		}

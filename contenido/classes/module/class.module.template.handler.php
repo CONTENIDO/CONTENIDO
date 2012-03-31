@@ -291,7 +291,7 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler {
         $fileName = '';
         if($this->existFile('template', $this->_newFileName.'.'.$this->_templateFileEnding)) {
 
-            $fileName = $this->_newFileName.$this->getFiveRandomCharacter().".".$this->_templateFileEnding;
+            $fileName = $this->_newFileName.$this->getRandomCharacters(5).".".$this->_templateFileEnding;
             $this->createModuleFile('template', $fileName ,'');
              $this->_notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created a new template file successfully!"));	
         } else {
