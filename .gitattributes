@@ -60,7 +60,6 @@ cms/modules/contact_form/php/contact_form_output.php -text
 cms/modules/contenido_header/info.xml -text
 cms/modules/contenido_header/php/contenido_header_input.php -text
 cms/modules/contenido_header/php/contenido_header_output.php -text
-cms/modules/facebook/css/facebook.css -text
 cms/modules/facebook/info.xml -text
 cms/modules/facebook/lang/lang_de_DE.txt -text
 cms/modules/facebook/lang/lang_en_US.txt -text svneol=unset#text/plain
