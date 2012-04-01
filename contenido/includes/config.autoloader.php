@@ -112,6 +112,7 @@ return array(
     'Contenido_Notification' => 'contenido/classes/class.notification.php',
     'PHPMailer' => 'contenido/classes/class.phpmailer.php',
     'Purge' => 'contenido/classes/class.purge.php',
+	'cRegistry' => 'contenido/classes/class.registry.php',
     'RequestPassword' => 'contenido/classes/class.request.password.php',
     'Request' => 'contenido/classes/class.request.php',
     'ValidationError' => 'contenido/classes/class.request.php',
