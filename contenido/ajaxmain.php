@@ -51,7 +51,7 @@ i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
 
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
-cInclude('includes', 'cfg_language_de.inc.php');
+cInclude('includes', 'cfg_actions.inc.php');
 
 // Create CONTENIDO classes
 // FIXME: Correct variable names, instances of classes at objects, not classes!

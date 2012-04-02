@@ -5686,6 +5686,158 @@ msgstr "Benutzer online"
 msgid "Contact System Administrators"
 msgstr "Kontakt Systemadministrator(en)"
 
+#: xml/navigation.xml
+msgid "Content"
+msgstr "Content"
+
+#: xml/navigation.xml
+msgid "Articles"
+msgstr "Artikel"
+
+#: xml/navigation.xml
+msgid "Overview"
+msgstr "Übersicht"
+
+#: xml/navigation.xml
+msgid "Properties"
+msgstr "Eigenschaften"
+
+#: xml/navigation.xml
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: xml/navigation.xml
+msgid "Preview"
+msgstr "Vorschau"
+
+#: xml/navigation.xml
+msgid "Category"
+msgstr "Kategorie"
+
+#: xml/navigation.xml
+msgid "File Manager"
+msgstr "Dateiverwaltung"
+
+#: xml/navigation.xml
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: xml/navigation.xml
+msgid "Upload Files"
+msgstr "Upload"
+
+#: xml/navigation.xml
+msgid "History"
+msgstr "Historie"
+
+#: xml/navigation.xml
+msgid "Modules"
+msgstr "Module"
+
+#: xml/navigation.xml
+msgid "Translation"
+msgstr "&Uuml;bersetzung"
+
+#: xml/navigation.xml
+msgid "Templates"
+msgstr "Vorlagen"
+
+#: xml/navigation.xml
+msgid "Preconfiguration"
+msgstr "Voreinstellungen"
+
+#: xml/navigation.xml
+msgid "Visual edit"
+msgstr "Visuelles Editieren"
+
+#: xml/navigation.xml
+msgid "CSS Editor"
+msgstr "Style Editor"
+
+#: xml/navigation.xml
+msgid "File"
+msgstr "Datei"
+
+#: xml/navigation.xml
+msgid "Module Templates"
+msgstr "Modul-Templates"
+
+#: xml/navigation.xml
+msgid "Statistics"
+msgstr "Statistik"
+
+#: xml/navigation.xml
+msgid "Users"
+msgstr "Benutzer"
+
+#: xml/navigation.xml
+msgid "Areas"
+msgstr "Bereiche"
+
+#: xml/navigation.xml
+msgid "Layouts"
+msgstr "Layout"
+
+#: xml/navigation.xml
+msgid "Categories"
+msgstr "Kategorien"
+
+#: xml/navigation.xml
+msgid "Languages"
+msgstr "Sprachen"
+
+#: xml/navigation.xml
+msgid "Groups"
+msgstr "Gruppen"
+
+#: xml/navigation.xml
+msgid "Members"
+msgstr "Mitglieder"
+
+#: xml/navigation.xml
+msgid "Clients"
+msgstr "Mandanten"
+
+#: xml/navigation.xml
+msgid "Article specifications"
+msgstr "Artikelspezifikationen"
+
+#: xml/navigation.xml
+msgid "Client settings"
+msgstr "Mandanteneinstellungen"
+
+#: xml/navigation.xml
+msgid "Expert settings"
+msgstr "Experteneinstellungen"
+
+#: xml/navigation.xml
+msgid "System variables"
+msgstr "Systemvariablen"
+
+#: xml/navigation.xml
+msgid "System settings"
+msgstr "Systemeinstellungen"
+
+#: xml/navigation.xml
+msgid "Purge"
+msgstr "Bereinigung"
+
+#: xml/navigation.xml
+msgid "Error report"
+msgstr "Fehlerbericht"
+
+#: xml/navigation.xml
+msgid "Recently edited articles"
+msgstr "Zuletzt bearbeitete Artikel"
+
+#: xml/navigation.xml
+msgid "Reminder List"
+msgstr "Wiedervorlage"
+
+#: xml/navigation.xml
+msgid "Settings"
+msgstr "Einstellungen"
+
 #~ msgid "Newsletter: %s"
 #~ msgstr "Newsletter: %s"
 

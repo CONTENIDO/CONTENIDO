@@ -1088,7 +1088,7 @@ contenido/images/workflow_step_delete.gif -text
 contenido/includes/ajax/include.ajax.con.php -text
 contenido/includes/api/functions.api.general.php -text
 contenido/includes/api/functions.frontend.list.php -text
-contenido/includes/cfg_language_de.inc.php -text
+contenido/includes/cfg_actions.inc.php -text
 contenido/includes/cfg_sql.inc.php -text
 contenido/includes/config.autoloader.php -text
 contenido/includes/config.chains.php -text
@@ -1344,12 +1344,6 @@ contenido/locale/de_DE/LC_MESSAGES/contenido.mo -text
 contenido/locale/de_DE/LC_MESSAGES/contenido.po -text
 contenido/locale/en_US/LC_MESSAGES/contenido.mo -text
 contenido/locale/en_US/LC_MESSAGES/contenido.po -text
-contenido/locale/fr_FR/LC_MESSAGES/contenido.mo -text
-contenido/locale/fr_FR/LC_MESSAGES/contenido.po -text
-contenido/locale/it_IT/LC_MESSAGES/contenido.mo -text
-contenido/locale/it_IT/LC_MESSAGES/contenido.po -text
-contenido/locale/nl_NL/LC_MESSAGES/contenido.mo -text
-contenido/locale/nl_NL/LC_MESSAGES/contenido.po -text
 contenido/locale/potfiles.txt svneol=native#text/plain
 contenido/logout.php -text
 contenido/logs/index.php -text
@@ -1854,11 +1848,7 @@ contenido/tools/updateseqruntime.php -text
 contenido/tools/upgrade.php -text
 contenido/tools/upgradeseq.php -text
 contenido/xml/index.php -text
-contenido/xml/lang_de_DE.xml -text
-contenido/xml/lang_en_US.xml -text
-contenido/xml/lang_fr_FR.xml -text
-contenido/xml/lang_it_IT.xml -text
-contenido/xml/lang_nl_NL.xml -text
+contenido/xml/navigation.xml -text
 docs/api/doxy-api.conf -text
 docs/techref/backend/backend.autoloader.html -text
 docs/techref/backend/backend.customizing.1.gif -text

@@ -76,10 +76,8 @@ class Contenido_Navigation
         $this->plugxml = new ContenidoXmlReader();
 
         // Load language file
-        if ($this->xml->load($cfg['path']['xml'] . $cfg['lang'][$belang]) == false) {
-            if ($this->xml->load($cfg['path']['xml'] . 'lang_en_US.xml') == false) {
-                die('Unable to load any XML language file');
-            }
+        if ($this->xml->load($cfg['path']['xml'] . "navigation.xml") == false) {
+        	die('Unable to load any XML language file');
         }
     }
 
@@ -137,7 +135,7 @@ class Contenido_Navigation
             $caption = $this->xml->getXpathValue('/language/' . $location);
         }
 
-        return $caption;
+        return i18n($caption);
     }
 
 
@@ -234,7 +232,7 @@ class Contenido_Navigation
                     $link->setID('sub_' . $value[1]);
                     $link->setLink($sess->url('frameset.php?area=' . $value[1]));
                     $link->setTargetFrame('content');
-                    $link->setContent($value[0]);
+                    $link->setContent(i18n($value[0]));
 
                     if ($cfg['help'] == true) {
                         $sJsEvents .= "\n\t" . '$("#sub_' . $value[1] . '").click(function(){ $("#help").attr("data", "'.$value[0].'"); })';
@@ -252,7 +250,7 @@ class Contenido_Navigation
                 $link->setID('main_' . $id);
                 $link->setLink('javascript://');
                 $link->setAttribute('ident', 'sub_' . $id);
-                $link->setContent($item[0]);
+                $link->setContent(i18n($item[0]));
 
                 $main->set('d', 'CAPTION', $link->render());
                 $main->next();

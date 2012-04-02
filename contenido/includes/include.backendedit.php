@@ -50,7 +50,7 @@ page_open(array(
 
 i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
 
-cInclude('includes', 'cfg_language_de.inc.php');
+cInclude('includes', 'cfg_actions.inc.php');
 
 
 // Create CONTENIDO classes

@@ -34,7 +34,7 @@ define('CON_FRAMEWORK', true);
 // CONTENIDO startup process
 include_once ('../../../includes/startup.php');
 
-cInclude("includes", "cfg_language_de.inc.php");
+cInclude("includes", "cfg_actions.inc.php");
 cInclude("includes", "functions.con.php");
 
 plugin_include('workflow', 'classes/class.workflow.php');

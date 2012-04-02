@@ -54,7 +54,7 @@ i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
 
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
-cInclude('includes', 'cfg_language_de.inc.php');
+cInclude('includes', 'cfg_actions.inc.php');
 
 if ($cfg['use_pseudocron'] == true) {
     // Include cronjob-Emulator, but only for frame 1

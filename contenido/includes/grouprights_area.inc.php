@@ -93,13 +93,6 @@ $sTable .= $oTable->header_cell('&nbsp',"center", '', '', 0);
 $sTable .= $oTable->header_cell("<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAllAreas()\">", "center", '', '', 0);
 $sTable .= $oTable->end_row();
 
-//Select the itemid´s
-$xml = new ContenidoXmlReader();
-if ($xml->load($cfg['path']['xml'] . $cfg['lang'][$belang]) == false) {
-	if ($xml->load($cfg['path']['xml'] . 'lang_en_US.xml') == false) {
-		die("Unable to load any XML language file");
-	}
-}
 
 $nav = new Contenido_Navigation;
 

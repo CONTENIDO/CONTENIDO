@@ -131,8 +131,7 @@ $handle = opendir($cfg['path']['contenido'] . $cfg['path']['locale']);
 while ($locale = readdir($handle)) {
    if (is_dir($cfg['path']['contenido'] . $cfg['path']['locale'] . $locale) && $locale != '..' && $locale != '.') {
       if (file_exists($cfg['path']['contenido'] . $cfg['path']['locale'] . $locale . '/LC_MESSAGES/contenido.po') &&
-         file_exists($cfg['path']['contenido'] . $cfg['path']['locale'] . $locale . '/LC_MESSAGES/contenido.mo') &&
-         file_exists($cfg['path']['contenido'] . $cfg['path']['xml'] . 'lang_'.$locale.'.xml') ) {
+         file_exists($cfg['path']['contenido'] . $cfg['path']['locale'] . $locale . '/LC_MESSAGES/contenido.mo') ) {
 
          $cfg['login_languages'][] = $locale;
          $cfg['lang'][$locale] = 'lang_'.$locale.'.xml';

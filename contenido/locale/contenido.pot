@@ -109,7 +109,7 @@ msgstr ""
 msgid "Unfreeze article"
 msgstr ""
 
-#: backend_search.php:665 includes/cfg_language_de.inc.php:48
+#: backend_search.php:665 includes/cfg_actions.inc.php:48
 #: includes/include.con_art_overview.php:404
 msgid "Freeze article"
 msgstr ""
@@ -132,7 +132,7 @@ msgstr ""
 msgid "Set reminder / add to todo list"
 msgstr ""
 
-#: backend_search.php:679 includes/cfg_language_de.inc.php:58
+#: backend_search.php:679 includes/cfg_actions.inc.php:58
 #: includes/include.con_art_overview.php:518
 #: templates/standard/template.symbolhelp.html:413
 msgid "Duplicate article"
@@ -142,12 +142,12 @@ msgstr ""
 msgid "Article properties"
 msgstr ""
 
-#: backend_search.php:681 includes/cfg_language_de.inc.php:60
+#: backend_search.php:681 includes/cfg_actions.inc.php:60
 #: templates/standard/template.symbolhelp.html:377
 msgid "Configure template"
 msgstr ""
 
-#: backend_search.php:682 includes/cfg_language_de.inc.php:56
+#: backend_search.php:682 includes/cfg_actions.inc.php:56
 #: includes/include.con_art_overview.php:571
 #: templates/standard/template.symbolhelp.html:425
 msgid "Delete article"
@@ -1380,120 +1380,120 @@ msgstr ""
 msgid "Article is in use by %s (%s)"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:49
+#: includes/cfg_actions.inc.php:49
 msgid "Make category online"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:50
+#: includes/cfg_actions.inc.php:50
 msgid "Change template"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:51
+#: includes/cfg_actions.inc.php:51
 msgid "Set start article"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:52
+#: includes/cfg_actions.inc.php:52
 msgid "Make article online"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:53
+#: includes/cfg_actions.inc.php:53
 msgid "Syncronize category"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:54
+#: includes/cfg_actions.inc.php:54
 msgid "Syncronize article"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:55 includes/cfg_language_de.inc.php:74
+#: includes/cfg_actions.inc.php:55 includes/cfg_actions.inc.php:74
 #: includes/include.str_overview.php:965 includes/include.str_overview.php:967
 #: templates/standard/template.str_overview.html:140
 msgid "Protect category"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:57
+#: includes/cfg_actions.inc.php:57
 msgid "Edit template configuration"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:59
+#: includes/cfg_actions.inc.php:59
 msgid "Expand boxes"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:61
+#: includes/cfg_actions.inc.php:61
 msgid "Create article"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:62
+#: includes/cfg_actions.inc.php:62
 msgid "Configure article"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:63
+#: includes/cfg_actions.inc.php:63
 msgid "Save article"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:64 includes/include.con_edit_form.php:363
+#: includes/cfg_actions.inc.php:64 includes/include.con_edit_form.php:363
 msgid "Remove assignments"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:65 includes/cfg_language_de.inc.php:67
+#: includes/cfg_actions.inc.php:65 includes/cfg_actions.inc.php:67
 msgid "Edit article"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:66
+#: includes/cfg_actions.inc.php:66
 msgid "Edit article properties"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:68
+#: includes/cfg_actions.inc.php:68
 msgid "Help"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:70
+#: includes/cfg_actions.inc.php:70
 #: templates/standard/template.symbolhelp.html:524
 msgid "Rename category"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:71
+#: includes/cfg_actions.inc.php:71
 msgid "New category"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:72
+#: includes/cfg_actions.inc.php:72
 msgid "Set category on- or offline"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:73
+#: includes/cfg_actions.inc.php:73
 msgid "Disable category"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:75
+#: includes/cfg_actions.inc.php:75
 msgid "Frontend access"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:76
+#: includes/cfg_actions.inc.php:76
 msgid "Delete category"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:77
+#: includes/cfg_actions.inc.php:77
 msgid "Move category up"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:78
+#: includes/cfg_actions.inc.php:78
 msgid "Move category down"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:79
+#: includes/cfg_actions.inc.php:79
 #: templates/standard/template.symbolhelp.html:665
 msgid "Move category"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:80
+#: includes/cfg_actions.inc.php:80
 msgid "Create new tree"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:81
+#: includes/cfg_actions.inc.php:81
 #: templates/standard/template.symbolhelp.html:701
 msgid "Duplicate category"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:82 includes/include.con_left_top.php:389
+#: includes/cfg_actions.inc.php:82 includes/include.con_left_top.php:389
 #: includes/include.con_left_top.php:390 includes/include.str_overview.php:951
 #: includes/include.str_overview.php:954
 #: templates/standard/template.str_overview.html:149
@@ -1502,484 +1502,484 @@ msgstr ""
 msgid "Configure category"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:83 includes/include.con_left_top.php:365
+#: includes/cfg_actions.inc.php:83 includes/include.con_left_top.php:365
 msgid "Edit category"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:85 includes/cfg_language_de.inc.php:95
+#: includes/cfg_actions.inc.php:85 includes/cfg_actions.inc.php:95
 msgid "Create directory"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:86 includes/cfg_language_de.inc.php:94
+#: includes/cfg_actions.inc.php:86 includes/cfg_actions.inc.php:94
 #: includes/include.upl_files_upload.php:64
 msgid "Upload files"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:87
+#: includes/cfg_actions.inc.php:87
 msgid "Delete files"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:88
+#: includes/cfg_actions.inc.php:88
 msgid "Remove directory"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:89
+#: includes/cfg_actions.inc.php:89
 msgid "Rename directory"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:90
+#: includes/cfg_actions.inc.php:90
 msgid "Modify file"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:91
+#: includes/cfg_actions.inc.php:91
 msgid "Rename file"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:92
+#: includes/cfg_actions.inc.php:92
 msgid "Multidelete files"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:93
+#: includes/cfg_actions.inc.php:93
 #: includes/include.upl_files_overview.php:704
 msgid "Delete file"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:97 includes/include.lay_overview.php:92
+#: includes/cfg_actions.inc.php:97 includes/include.lay_overview.php:92
 msgid "Delete layout"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:98
+#: includes/cfg_actions.inc.php:98
 msgid "Modify layout"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:99
+#: includes/cfg_actions.inc.php:99
 msgid "Create layout"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:100 includes/include.lay_new.php:41
+#: includes/cfg_actions.inc.php:100 includes/include.lay_new.php:41
 msgid "Synchronize layouts"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:101 includes/cfg_language_de.inc.php:106
-#: includes/cfg_language_de.inc.php:153 includes/cfg_language_de.inc.php:159
-#: includes/cfg_language_de.inc.php:165
+#: includes/cfg_actions.inc.php:101 includes/cfg_actions.inc.php:106
+#: includes/cfg_actions.inc.php:153 includes/cfg_actions.inc.php:159
+#: includes/cfg_actions.inc.php:165
 msgid "Manage history"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:102 includes/cfg_language_de.inc.php:107
-#: includes/cfg_language_de.inc.php:154 includes/cfg_language_de.inc.php:160
-#: includes/cfg_language_de.inc.php:166
+#: includes/cfg_actions.inc.php:102 includes/cfg_actions.inc.php:107
+#: includes/cfg_actions.inc.php:154 includes/cfg_actions.inc.php:160
+#: includes/cfg_actions.inc.php:166
 msgid "Truncate history"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:105 includes/include.mod_overview.php:202
+#: includes/cfg_actions.inc.php:105 includes/include.mod_overview.php:202
 msgid "Delete module"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:108 includes/include.mod_edit_form.php:161
+#: includes/cfg_actions.inc.php:108 includes/include.mod_edit_form.php:161
 #: includes/include.mod_history.php:94
 msgid "Edit module"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:109
+#: includes/cfg_actions.inc.php:109
 msgid "Create module"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:110 includes/include.mod_new.php:50
+#: includes/cfg_actions.inc.php:110 includes/include.mod_new.php:50
 msgid "Synchronize modules"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:111
+#: includes/cfg_actions.inc.php:111
 msgid "Import/Export module"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:112
+#: includes/cfg_actions.inc.php:112
 msgid "Translate modules"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:113
+#: includes/cfg_actions.inc.php:113
 msgid "Translation import/export"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:114
+#: includes/cfg_actions.inc.php:114
 msgid "Import/Export package"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:116 includes/include.tpl_overview.php:99
+#: includes/cfg_actions.inc.php:116 includes/include.tpl_overview.php:99
 msgid "Delete template"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:117 includes/include.tpl_edit_form.php:160
+#: includes/cfg_actions.inc.php:117 includes/include.tpl_edit_form.php:160
 msgid "Edit template"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:118
+#: includes/cfg_actions.inc.php:118
 msgid "Create template"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:119 includes/cfg_language_de.inc.php:120
+#: includes/cfg_actions.inc.php:119 includes/cfg_actions.inc.php:120
 #: includes/include.tpl_overview.php:111
 #: templates/standard/template.symbolhelp.html:1016
 msgid "Duplicate template"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:121
+#: includes/cfg_actions.inc.php:121
 msgid "Visual edit"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:123 includes/cfg_language_de.inc.php:126
+#: includes/cfg_actions.inc.php:123 includes/cfg_actions.inc.php:126
 #: includes/include.frontend.left_top.php:169
 #: includes/include.rights_left_top.php:103
 #: templates/standard/template.symbolhelp.html:1835
 msgid "Create user"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:124
+#: includes/cfg_actions.inc.php:124
 #: includes/include.frontend.left_top.php:376
 #: includes/include.frontend.user_menu.php:259
 #: includes/include.rights_menu.php:135
 msgid "Delete user"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:125
+#: includes/cfg_actions.inc.php:125
 msgid "Save user area rights"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:127
+#: includes/cfg_actions.inc.php:127
 msgid "Edit rights"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:128
+#: includes/cfg_actions.inc.php:128
 #: includes/include.frontend.user_edit.php:168
 msgid "Edit user"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:130
+#: includes/cfg_actions.inc.php:130
 msgid "Delete group members"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:131
+#: includes/cfg_actions.inc.php:131
 msgid "Add group members"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:132
+#: includes/cfg_actions.inc.php:132
 #: includes/include.frontend.group_edit.php:261
 msgid "Edit group"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:133
+#: includes/cfg_actions.inc.php:133
 #: includes/include.frontend.left_top.php:420
 #: includes/include.grouprights_left_top.php:90
 msgid "Create group"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:134
+#: includes/cfg_actions.inc.php:134
 #: includes/include.grouprights_menu.php:196
 msgid "Delete group"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:136
+#: includes/cfg_actions.inc.php:136
 msgid "Show statistics"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:138 includes/include.lang_overview.php:68
+#: includes/cfg_actions.inc.php:138 includes/include.lang_overview.php:68
 msgid "Activate language"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:139 includes/include.lang_overview.php:72
+#: includes/cfg_actions.inc.php:139 includes/include.lang_overview.php:72
 msgid "Deactivate language"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:140
+#: includes/cfg_actions.inc.php:140
 msgid "Rename language"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:141
+#: includes/cfg_actions.inc.php:141
 msgid "Create language"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:142 includes/include.lang_overview.php:78
+#: includes/cfg_actions.inc.php:142 includes/include.lang_overview.php:78
 msgid "Delete language"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:143 includes/include.lang_edit.php:241
+#: includes/cfg_actions.inc.php:143 includes/include.lang_edit.php:241
 msgid "Edit language"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:145
+#: includes/cfg_actions.inc.php:145
 msgid "Linkchecker"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:146
+#: includes/cfg_actions.inc.php:146
 msgid "Linkchecker Whitelist"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:148
+#: includes/cfg_actions.inc.php:148
 msgid "Install/Remove plugins"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:150
+#: includes/cfg_actions.inc.php:150
 msgid "Modify CSS"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:151
+#: includes/cfg_actions.inc.php:151
 msgid "Create CSS"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:152
+#: includes/cfg_actions.inc.php:152
 msgid "Delete CSS"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:156
+#: includes/cfg_actions.inc.php:156
 msgid "Edit script"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:157
+#: includes/cfg_actions.inc.php:157
 msgid "Delete script"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:158 includes/include.js_left_top.php:50
+#: includes/cfg_actions.inc.php:158 includes/include.js_left_top.php:50
 msgid "Create script"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:162
+#: includes/cfg_actions.inc.php:162
 msgid "Modify HTML template"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:163
+#: includes/cfg_actions.inc.php:163
 msgid "Create HTML template"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:164
+#: includes/cfg_actions.inc.php:164
 msgid "Delete HTML template"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:168
+#: includes/cfg_actions.inc.php:168
 msgid "Edit newsletter"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:169
+#: includes/cfg_actions.inc.php:169
 #: templates/standard/template.symbolhelp.html:1279
 msgid "Create newsletter"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:170
+#: includes/cfg_actions.inc.php:170
 msgid "Delete newsletter"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:171
+#: includes/cfg_actions.inc.php:171
 msgid "Duplicate newsletter"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:172
+#: includes/cfg_actions.inc.php:172
 msgid "Add newsletter dispatch job"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:173
+#: includes/cfg_actions.inc.php:173
 msgid "Change global HTML newsletter settings"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:174
+#: includes/cfg_actions.inc.php:174
 msgid "Send test newsletter (to groups)"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:175
+#: includes/cfg_actions.inc.php:175
 msgid "Delete dispatch job"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:176
+#: includes/cfg_actions.inc.php:176
 msgid "Remove recipient from dispatch job"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:177
+#: includes/cfg_actions.inc.php:177
 msgid "Run job"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:178
+#: includes/cfg_actions.inc.php:178
 msgid "View dispatch job details"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:180
+#: includes/cfg_actions.inc.php:180
 msgid "Edit recipient"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:181
+#: includes/cfg_actions.inc.php:181
 #: templates/standard/template.symbolhelp.html:1373
 msgid "Create recipient"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:182
+#: includes/cfg_actions.inc.php:182
 msgid "Delete recipient"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:183
+#: includes/cfg_actions.inc.php:183
 msgid "Purge recipients"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:184
+#: includes/cfg_actions.inc.php:184
 msgid "Import recipients"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:185
+#: includes/cfg_actions.inc.php:185
 msgid "Execute recipients import"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:186
+#: includes/cfg_actions.inc.php:186
 msgid "Delete recipient group"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:187
+#: includes/cfg_actions.inc.php:187
 #: templates/standard/template.symbolhelp.html:1409
 msgid "Create recipient group"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:188
+#: includes/cfg_actions.inc.php:188
 msgid "Delete recipient from group"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:189
+#: includes/cfg_actions.inc.php:189
 msgid "Save recipient group"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:191
+#: includes/cfg_actions.inc.php:191
 msgid "Edit own MyContenido settings"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:192
+#: includes/cfg_actions.inc.php:192
 msgid "Delete reminder item"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:193
+#: includes/cfg_actions.inc.php:193
 msgid "Save todo item"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:195
+#: includes/cfg_actions.inc.php:195
 #: includes/include.client_left_top.php:50
 msgid "Create client"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:196
+#: includes/cfg_actions.inc.php:196
 msgid "Edit client"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:197
+#: includes/cfg_actions.inc.php:197
 msgid "Remove client"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:198
+#: includes/cfg_actions.inc.php:198
 msgid "Delete client setting"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:199
+#: includes/cfg_actions.inc.php:199
 msgid "Edit client setting"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:200
+#: includes/cfg_actions.inc.php:200
 msgid "Save client setting"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:201
+#: includes/cfg_actions.inc.php:201
 msgid "Create/Edit article specifications"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:202
+#: includes/cfg_actions.inc.php:202
 msgid "Delete article specifications"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:203
+#: includes/cfg_actions.inc.php:203
 msgid "Define default article specification"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:204
+#: includes/cfg_actions.inc.php:204
 msgid "Edit article specifications"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:205
+#: includes/cfg_actions.inc.php:205
 msgid "Make article specifications online"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:207
+#: includes/cfg_actions.inc.php:207
 msgid "Save frontend user"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:208
+#: includes/cfg_actions.inc.php:208
 msgid "Create frontend user"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:209 includes/cfg_language_de.inc.php:215
+#: includes/cfg_actions.inc.php:209 includes/cfg_actions.inc.php:215
 msgid "Delete frontend user"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:210
+#: includes/cfg_actions.inc.php:210
 #: includes/include.frontend.group_menu.php:51
 msgid "Delete frontend group"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:211
+#: includes/cfg_actions.inc.php:211
 msgid "Save frontend group"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:212 includes/cfg_language_de.inc.php:213
+#: includes/cfg_actions.inc.php:212 includes/cfg_actions.inc.php:213
 msgid "Create frontend group"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:214
+#: includes/cfg_actions.inc.php:214
 msgid "Add frontend users"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:216
+#: includes/cfg_actions.inc.php:216
 msgid "Save frontend group permissions"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:218
+#: includes/cfg_actions.inc.php:218
 msgid "Delete system property"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:219
+#: includes/cfg_actions.inc.php:219
 msgid "Edit system property"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:220
+#: includes/cfg_actions.inc.php:220
 msgid "Save system property"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:222
+#: includes/cfg_actions.inc.php:222
 msgid "Empty log"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:223
+#: includes/cfg_actions.inc.php:223
 msgid "Edit system configration"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:224
+#: includes/cfg_actions.inc.php:224
 msgid "Do system purge"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:226
+#: includes/cfg_actions.inc.php:226
 msgid "Show log"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:228 main.loginform.php:196
+#: includes/cfg_actions.inc.php:228 main.loginform.php:196
 msgid "Login"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:229
+#: includes/cfg_actions.inc.php:229
 msgid "Request password?"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:231
+#: includes/cfg_actions.inc.php:231
 msgid "Delete note"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:232
+#: includes/cfg_actions.inc.php:232
 msgid "Save note"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:234
+#: includes/cfg_actions.inc.php:234
 msgid "Send mail"
 msgstr ""
 
-#: includes/cfg_language_de.inc.php:235
+#: includes/cfg_actions.inc.php:235
 msgid "Fake permissions"
 msgstr ""
 

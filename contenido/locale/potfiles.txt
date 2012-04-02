@@ -278,7 +278,7 @@
 ./includes/ajax/include.ajax.con.php
 ./includes/api/functions.api.general.php
 ./includes/api/functions.frontend.list.php
-./includes/cfg_language_de.inc.php
+./includes/cfg_actions.inc.php
 ./includes/cfg_sql.inc.php
 ./includes/cfg_sql_rel.inc.php
 ./includes/config.autoloader.php
