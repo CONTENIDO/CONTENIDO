@@ -286,13 +286,37 @@ if ($currentStep < $totalSteps) {
         $langBackup = $lang;
         $client = 1;
         $lang = 1;
-
+        
+        if ($_SESSION['setuptype'] == 'upgrade') {
+	        $sql = "SHOW COLUMNS FROM %s LIKE 'frontendpath'";
+	        $sql = sprintf($sql, $cfg['tab']['clients']);
+	        			
+	        $db->query($sql);
+	        if ($db->num_rows() != 0) {
+	        	$sql = "SELECT * FROM ".$cfg['tab']['clients'];
+	        	$db->query($sql);
+	        
+	       	 		while($db->next_record()) {
+	        			updateClientCache($db->f("idclient"), $db->f("htmlpath"), $db->f("frontendpath"));
+	        		}
+	        				
+	        		$sql = sprintf("ALTER TABLE %s DROP htmlpath", $cfg['tab']['clients']);
+	        		$db->query($sql);
+	        				
+	        		$sql = sprintf("ALTER TABLE %s DROP frontendpath", $cfg['tab']['clients']);
+	        		$db->query($sql);
+	        }
+	       	checkAndInclude($cfg["path"]["contenido"]."include/config.clients.php");
+        }
+        
         rereadClients();
 
 		Contenido_Module_Handler::setEncoding('ISO-8859-1');
         
         //set default configuration for connection,
+
         //for all db objects in Contenido_UpgradeJob
+
         DB_Contenido::setDefaultConfiguration($cfg['db']);
         
 	
@@ -303,26 +327,29 @@ if ($currentStep < $totalSteps) {
         // Save layout from db-table to the file system
         $layoutInFile = new LayoutInFile(1, '', $cfg, 1, $db);
         $layoutInFile->upgrade();
-
+        
+		$db2 = getSetupMySQLDBConnection();
+        $sql = "SELECT * FROM ".$cfg['tab']['lay'];
+        $db->query($sql);
+        while($db->next_record()) {
+        	if($db->f("alias") == "") {
+        		$sql = "UPDATE ".$cfg['tab']['lay']." SET `alias`='".$db->f("name")."' WHERE `idlay`='".$db->f("idlay")."';";
+        		$db2->query($sql);
+        	}
+        }
+        
+        $sql = "SELECT * FROM ".$cfg['tab']['mod'];
+        $db->query($sql);
+        while($db->next_record()) {
+       		if($db->f("alias") == "") {
+        		$sql = "UPDATE ".$cfg['tab']['mod']." SET `alias`='".$db->f("name")."' WHERE `idmod`='".$db->f("idmod")."';";
+                $db2->query($sql);
+        	}
+        }
+        
         $client = $clientBackup;
         $lang = $langBackup;
         unset($clientBackup, $langBackup);
-		
-		if ($_SESSION['setuptype'] == 'upgrade') {
-			$sql = "SHOW COLUMNS FROM %s LIKE 'frontendpath'";
-			$sql = sprintf($sql, $cfg['tab']['clients']);
-			
-			$db->query($sql);
-			if ($db->num_rows() != 0) {
-				updateClientCache();
-				
-				$sql = sprintf("ALTER TABLE %s DROP htmlpath", $cfg['tab']['clients']);
-				$db->query($sql);
-				
-				$sql = sprintf("ALTER TABLE %s DROP frontendpath", $cfg['tab']['clients']);
-				$db->query($sql);
-			}
-		}
     }
 
     echo '
