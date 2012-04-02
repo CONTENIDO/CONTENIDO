@@ -13,7 +13,7 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.8.12
+ * @since      file available since CONTENIDO release 4.9
  * 
  * {@internal 
  *   created 2012-01-13
@@ -29,7 +29,9 @@
 * Array keeps track of all the XHR objects
 */
 var uploads = new Array();
-
+var running_upload = null;
+var upload_status = new Array();
+var form_cache = new Array();
 
 /*
 * Function returns wether or not the needed JavaScript standards are supported by the browser
@@ -50,8 +52,19 @@ function abortUpload(id) {
 	var statusDiv = document.getElementById("d_bar_" + id + "_status");
 	var cancelButton = document.getElementById("d_bar_" + id + "_cancelbutton");
 	
-	statusDiv.innerHTML = "Cancelling...";
+	statusDiv.innerHTML = text_aborting;
 	cancelButton.style.display = "none";
+	
+	if(running_upload == uploads[id]) {
+	   	running_upload = null;
+		for(var i = id + 1; i < uploads.length; i++) {
+			if(uploads[i].readyState == 1) {
+				running_upload = uploads[i];
+				uploads[i].send(form_cache[i]);
+				break;
+			}
+		}
+	}
 	uploads[id].abort();
 }
 
@@ -74,9 +87,17 @@ function onXHRLoad(e) {
    	var cancelButton = document.getElementById("d_bar_" + this.upload.uploadId + "_cancelbutton");
    	
    	//change the labels
-   	statusDiv.innerHTML = "Finished.";
+   	statusDiv.innerHTML = text_finished;
    	cancelButton.style.display = "none";
-   	
+
+	running_upload = null;
+	
+	for(var i = 0; i < uploads.length; i++) {
+		if(uploads[i].readyState == 1 && running_upload == null) {
+			running_upload = uploads[i];
+			uploads[i].send(form_cache[i]);
+		}
+	}
    	//if there is a response
    	if(this.responseText) {
    		var loadResponse = true;
@@ -95,9 +116,8 @@ function onXHRLoad(e) {
    		
    		//if all of them are finished, load the response to the frame
    		if(loadResponse) {
-   			document.close();
-   			document.open();
-   			document.write(this.responseText);
+   			self.location.href = "main.php?area=upl&frame=4&path=" + upload_path + "&appendparameters=&contenido=" + contenido_id;
+   			alert(this.responseText);
    		}
    	}
 }
@@ -111,7 +131,7 @@ function onXHRError(e) {
 	var statusDiv = document.getElementById("d_bar_" + this.upload.uploadId + "_status");
    	var cancelButton = document.getElementById("d_bar_" + this.upload.uploadId + "_cancelbutton");
    	
-   	statusDiv.innerHTML = "Uploading failed!";
+   	statusDiv.innerHTML = text_error;
    	cancelButton.style.display = "none";
 }
 
@@ -122,7 +142,7 @@ function onXHRError(e) {
 */
 function onXHRAbort(e) {
 	var statusDiv = document.getElementById("d_bar_" + this.upload.uploadId + "_status");
-	statusDiv.innerHTML = "Cancelled";
+	statusDiv.innerHTML = text_aborted;
 }
 
 /*
@@ -136,7 +156,7 @@ function onXHRUploadProgress(e) {
    	var statusDiv = document.getElementById("d_bar_" + this.uploadId + "_status");
 	    	
    	progressDiv.style.width = percent + "%";
-   	statusDiv.innerHTML = "Uploading...";
+   	statusDiv.innerHTML = text_uploading;
 }
 
 /*
@@ -164,7 +184,7 @@ function onDrop(e) {
 	    xhr.upload.onprogress = onXHRUploadProgress;
 	    
 	    //add the HTML for the progress bar, the labels and the button
-	    shelf.innerHTML = shelf.innerHTML + "<div class='shelf_elem' id='d_bar_" + xhr.upload.uploadId + "'><div class='shelf_elem_titlelabel' id='d_bar_" + xhr.upload.uploadId + "_title'>" + file.name + "...</div><div class='shelf_elem_progressbar_background' id='d_bar_" + xhr.upload.uploadId + "_outbar'><div class='shelf_elem_progressbar_bar' id='d_bar_" + xhr.upload.uploadId + "_bar'>&nbsp;</div></div><input class='shelf_elem_cancelbutton' id='d_bar_" + xhr.upload.uploadId + "_cancelbutton' type='button' onclick='abortUpload(" + xhr.upload.uploadId + ")' value='Abbrechen'><div class='shelf_elem_statuslabel' id='d_bar_" + xhr.upload.uploadId + "_status'>Starting...</div></div><br>";
+	    shelf.innerHTML = shelf.innerHTML + "<div class='shelf_elem' id='d_bar_" + xhr.upload.uploadId + "'><div class='shelf_elem_titlelabel' id='d_bar_" + xhr.upload.uploadId + "_title'>" + file.name + "...</div><div class='shelf_elem_progressbar_background' id='d_bar_" + xhr.upload.uploadId + "_outbar'><div class='shelf_elem_progressbar_bar' id='d_bar_" + xhr.upload.uploadId + "_bar'>&nbsp;</div></div><input class='shelf_elem_cancelbutton' id='d_bar_" + xhr.upload.uploadId + "_cancelbutton' type='button' onclick='abortUpload(" + xhr.upload.uploadId + ")' value='" + text_cancelButton + "'><div class='shelf_elem_statuslabel' id='d_bar_" + xhr.upload.uploadId + "_status'>" + text_waiting + "</div></div><br>";
    		
    		//connect to the server
 	   	xhr.open("POST", getFolderOfDocument() + "main.php", true);
@@ -179,8 +199,13 @@ function onDrop(e) {
     	pData.append("action", "upl_upload");
     	pData.append("path", upload_path);
     	
+    	form_cache.push(pData);
+    	
     	//send the request
-    	xhr.send(pData);
+    	if(running_upload == null) {
+    		xhr.send(pData);
+        	running_upload = xhr;
+    	}
     	
   		e.preventDefault();
     } //end for

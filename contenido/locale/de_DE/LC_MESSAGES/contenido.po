@@ -5061,6 +5061,38 @@ msgstr "Markierung umkehren"
 msgid "Path:"
 msgstr "Pfad:"
 
+#: includes/include.upl_files_upload.php:84
+msgid "Drop your files here"
+msgstr "Dateien hier ablegen"
+
+#: includes/include.upl_files_upload.php:70
+msgid "Cancelling..."
+msgstr "Abbrechen..."
+
+#: includes/include.upl_files_upload.php:71
+msgid "Finished!"
+msgstr "Abgeschlossen"
+
+#: includes/include.upl_files_upload.php:72
+msgid "Upload failed!"
+msgstr "Hochladen fehlgeschlagen!"
+
+#: includes/include.upl_files_upload.php:73
+msgid "Cancelled"
+msgstr "Abgebrochen"
+
+#: includes/include.upl_files_upload.php:74
+msgid "Uploading..."
+msgstr "Hochladen..."
+
+#: includes/include.upl_files_upload.php:75
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: includes/include.upl_files_upload.php:76
+msgid "Waiting..."
+msgstr "Warten..."
+
 #: includes/include.upl_files_overview.php:474
 #: includes/include.upl_search_results.php:238
 msgid "Files per Page"

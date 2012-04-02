@@ -64,8 +64,19 @@ if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || is_dbfs($path)) &&
     $form->add(i18n("Upload files"), str_repeat($uplelement->render()."<br>"	,$num_upload_files));
     
     $page->addScript("jq", "<script type='text/javascript' src='scripts/jquery/jquery.js'></script>");
-    $page->addScript("dnd1", "<script type='text/javascript'>var contenido_id = '".$_REQUEST['contenido']."'; var upload_path = '".$path."';</script>");
-	$page->addScript("dnd2", "<script type='text/javascript' src='scripts/dragAndDropUpload.js'></script>");
+    $page->addScript("dnd1", "<script type='text/javascript'>
+    	var contenido_id = '".$_REQUEST['contenido']."';
+     	var upload_path = '".$path."';
+    	
+    	var text_aborting = \"".i18n("Cancelling...")."\";
+    	var text_finished = \"".i18n("Finished!")."\";
+    	var text_error = \"".i18n("Upload failed!")."\";
+    	var text_aborted = \"".i18n("Cancelled")."\";
+    	var text_uploading = \"".i18n("Uploading...")."\";
+    	var text_cancelButton = \"".i18n("Cancel")."\";
+    	var text_waiting = \"".i18n("Waiting...")."\";
+    	</script>");
+   	$page->addScript("dnd2", "<script type='text/javascript' src='scripts/dragAndDropUpload.js'></script>");
     
     $form->setWidth(500);
     

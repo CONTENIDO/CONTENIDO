@@ -236,6 +236,9 @@ if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action) && $
 if ($action == "upl_upload" && $bDirectoryIsWritable == true) {
     if (count($_FILES) == 1) {
         foreach ($_FILES['file']['name'] as $key => $value) {
+        	if(is_utf8($_FILES['file']['name'][$key])) {
+        		$_FILES['file']['name'][$key] = utf8_decode($_FILES['file']['name'][$key]);
+        	}
             if ($_FILES['file']['tmp_name'][$key] != "") {
                 $tmp_name = $_FILES['file']['tmp_name'][$key];
                 $_cecIterator = $_cecRegistry->getIterator("Contenido.Upload.UploadPreprocess");
