@@ -1426,6 +1426,8 @@ function scanPlugins($entity)
                 unset($plugins[$key]);
             }
         }
+        
+        sort($plugins);
 
         $pluginorder = implode(",", $plugins);
         setSystemProperty("plugin", $entity."-pluginorder", $pluginorder);
