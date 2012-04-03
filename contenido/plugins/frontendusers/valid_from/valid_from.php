@@ -74,6 +74,6 @@ function frontendusers_valid_from_store ($variables)
 {
 	global $feuser;
 	
-	$feuser->set("valid_from", $variables["valid_from"]);
+	$feuser->set("valid_from", $variables["valid_from"], false);
 }
 ?>
