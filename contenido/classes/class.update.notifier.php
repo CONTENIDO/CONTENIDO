@@ -779,11 +779,11 @@ class Contenido_UpdateNotifier
             $sMessage = i18n('You have an unknown or unsupported version of CONTENIDO!');
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->sVendorVersion == "deprecated") {
-            $sMessage = sprintf(i18n('Your version of CONTENIDO is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href="%s" class="blue" target="_blank">Download now!</a>'), 'http://www.contenido.org');
+            $sMessage = sprintf(i18n("Your version of CONTENIDO is deprecated and not longer supported for any updates. Please update to a higher version! <br /> <a href='%s' class='blue' target='_blank'>Download now!</a>"), 'http://www.contenido.org');
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->checkPatchLevel() == "-1") {
             $sVendorDownloadURL = $this->getDownloadURL();
-            $sMessage = sprintf(i18n('A new version of CONTENIDO is available! <br /> <a href="%s" class="blue" target="_blank">Download %s now!</a>'), $sVendorDownloadURL, $this->sVendorVersion);
+            $sMessage = sprintf(i18n("A new version of CONTENIDO is available! <br /> <a href='%s' class='blue' target='_blank'>Download %s now!</a>"), $sVendorDownloadURL, $this->sVendorVersion);
             $sOutput = $this->renderOutput($sMessage);
         } else if ($this->checkPatchLevel() == "1") {
             $sMessage = sprintf(i18n('It seems to be that your version string was manipulated. CONTENIDO %s does not exist!'), $this->aCfg['version']);

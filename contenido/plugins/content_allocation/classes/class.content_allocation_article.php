@@ -109,7 +109,7 @@ class pApiContentAllocationArticle extends pApiTree {
 			$this->tpl->next();
 		}
 		
-		$this->tpl->set('s', "CATEGORY", i18n("Category"));
+		$this->tpl->set('s', "CATEGORY", i18n("Category", 'content_allocation'));
 		
 		if ($return === true) {
 			return $this->tpl->generate($this->template, true);

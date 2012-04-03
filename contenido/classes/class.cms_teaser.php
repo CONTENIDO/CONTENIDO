@@ -811,8 +811,9 @@ class Cms_Teaser {
     private function getArtName($iIdArt) {
         $oArticle = new cApiArticleLanguage();
         $oArticle->loadByArticleAndLanguageId((int) $iIdArt, $this->iLang);
-
-        if ($oArticle->isLoaded() && !empty($oArticle->get('title'))) {
+        
+        $stitle = $oArticle->get('title');
+        if ($oArticle->isLoaded() && !empty($stitle)) {
             return $oArticle->get('title');
         } else {
             return i18n('Unknown Article');

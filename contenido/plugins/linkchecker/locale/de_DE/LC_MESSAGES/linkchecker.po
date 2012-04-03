@@ -30,7 +30,7 @@ msgstr "Es wurden <strong>keine Fehler</strong> gefunden."
 # H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker.php:227
 #, fuzzy
 msgid "Total checked links"
-msgstr "Insgesamt gepr&uuml;fte Links"
+msgstr "Insgesamt geprüfte Links"
 
 # H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_tests.php:24
 msgid "idart"
@@ -100,7 +100,7 @@ msgstr "%d.%m.%Y, %H:%M:%S"
 
 # H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:40
 msgid "Links at whitelist"
-msgstr "Links auf der wei&szlig;en Liste"
+msgstr "Links auf der Whitelist"
 
 # H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:41
 msgid "Delete"
@@ -116,7 +116,16 @@ msgstr "Links"
 
 # H:\frederic.schneider\contenido\plugins\linkchecker\includes/include.linkchecker_whitelist.php:45
 msgid "This links are on the whitelist. Whitelist-links won't be check at linkchecker."
-msgstr "Diese Links befinden sich auf der wei&szlig;en Liste und werden nicht vom Linkchecker &uuml;berpr&uuml;ft."
+msgstr "Diese Links befinden sich auf der Whitelist und werden nicht vom Linkchecker üerprüft."
 
 msgid "View whitelist"
 msgstr "Whitelist anzeigen"
+
+msgid "Interns"
+msgstr "Interne"
+
+msgid "Externs"
+msgstr "Externe"
+
+msgid "Intern/extern Links"
+msgstr "Interne/externe Links"

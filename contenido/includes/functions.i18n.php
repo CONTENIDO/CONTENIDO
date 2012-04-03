@@ -101,7 +101,11 @@ function i18n($string, $domain = 'contenido')
 
     // Is emulator to use?
     if (!$cfg['native_i18n']) {
-        return i18nEmulateGettext($string, $domain);
+    	$ret = i18nEmulateGettext($string, $domain);
+    	if(is_utf8($ret)) {
+    		$ret = utf8_decode($ret);
+    	}
+        return $ret;
     }
 
     // Try to use native gettext implementation
@@ -117,7 +121,11 @@ function i18n($string, $domain = 'contenido')
     }
 
     // Emulator as fallback
-    return i18nEmulateGettext($string, $domain);
+    $ret = i18nEmulateGettext($string, $domain);
+    if(is_utf8($ret)) {
+    	$ret = utf8_decode($ret);
+    }
+    return $ret;
 }
 
 /**
@@ -197,7 +205,7 @@ function i18nEmulateGettext($string, $domain = 'contenido')
         // Translation not found, cache original string
         $_conI18n['cache'][$domain][$string] = $string;
     }
-
+	
     return $_conI18n['cache'][$domain][$string];
 }
 

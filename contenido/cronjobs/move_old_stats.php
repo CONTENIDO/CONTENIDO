@@ -42,7 +42,7 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
-include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'cfg_language_de.inc.php');
+include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'cfg_actions.inc.php');
 include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.stat.php');
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {

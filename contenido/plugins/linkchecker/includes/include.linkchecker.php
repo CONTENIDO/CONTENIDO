@@ -93,11 +93,11 @@ $sLink = $sess->url("main.php?area=linkchecker&frame=4&action=linkchecker") . '&
 
 // Fill Subnav II
 $tpl->set('s', 'INTERNS_HREF', $sLink . '1');
-$tpl->set('s', 'INTERNS_LABEL', i18n("Interns"));
+$tpl->set('s', 'INTERNS_LABEL', i18n("Interns", $plugin_name));
 $tpl->set('s', 'EXTERNS_HREF', $sLink . '2');
-$tpl->set('s', 'EXTERNS_LABEL', i18n("Externs"));
+$tpl->set('s', 'EXTERNS_LABEL', i18n("Externs", $plugin_name));
 $tpl->set('s', 'INTERNS_EXTERNS_HREF', $sLink . '3');
-$tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links"));
+$tpl->set('s', 'INTERNS_EXTERNS_LABEL', i18n("Intern/extern Links", $plugin_name));
 
 // Fill Subnav III
 $tpl->set('s', 'UPDATE_HREF', $sLink . intval($_GET['mode']) . '&live=1');

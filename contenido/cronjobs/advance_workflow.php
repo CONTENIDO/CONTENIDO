@@ -39,7 +39,7 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
-cInclude('includes', 'cfg_language_de.inc.php');
+cInclude('includes', 'cfg_actions.inc.php');
 cInclude('includes', 'functions.con.php');
 
 plugin_include('workflow', 'classes/class.workflow.php');
