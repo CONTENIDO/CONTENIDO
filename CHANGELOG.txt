@@ -6,6 +6,138 @@ CONTENIDO CHANGELOG
 ----------------------------------------------------------------------
 $Id$:
 
+Release 4.9.0 Alpha 1
+----------------------------------------------------------------------	
+** Bug
+    * [CON-266] - Upgrade/Migration not possible without xmlwriter extension
+    * [CON-306] - Inconsistent configuration of integrated caching feature
+    * [CON-331] - Newsletter recipients import and diacritics
+    * [CON-334] - Generic DB does not handle NOT NULL fields
+    * [CON-348] - Garbled con_cat_tree caused by generating a new tree
+    * [CON-354] - PHP-Error in Area Modul-Package if css/js/tpl-dir not exists
+    * [CON-357] - You can't use two instances of CMS-FILELIST within same article
+    * [CON-358] - CMS_TEASER: no output if sort by publisheddate is selected
+    * [CON-359] - Using more than one CMS_TYPE causes multiple jQuery script calls
+    * [CON-362] - Custom file extensions in CMS_FILELIST are ignored
+    * [CON-363] - german umlaute are not replaced in filemanager
+    * [CON-365] - Only logins are logged in administration->logs
+    * [CON-366] - class.update.notifier.php throws multiple fopen errors
+    * [CON-369] - Wrong datatype for in_array haystack in linkchecker
+    * [CON-371] - No reset of template object in some example client modules
+    * [CON-372] - Limited check period of update notifier is displayed wrong in backend settings page when set under 60 minutes
+    * [CON-373] - Multiple replacements of title tags
+    * [CON-374] - Newsletter encoding is ignored due to wrong parameter values
+    * [CON-375] - purgetools: cleaning only one client causes Illegal Call
+    * [CON-378] - Error while trying to get the frontend path of a non existing client in backend header
+    * [CON-380] - MySQL 5.5 is not supported due to deprecated CREATE TABLE syntax
+    * [CON-381] - Various bugs in versioning feature
+    * [CON-385] - Fallback login page front_crcloginform.inc.php does not work
+    * [CON-386] - Redirections in front_content.php are not forced with exit
+    * [CON-391] - CMS_DATE error after Update to 4.8.14
+    * [CON-392] - Article Timeschedule problem in Release: 4.8.12
+    * [CON-395] - Unneeded code in include.lay_overview.inc.php
+    * [CON-396] - CSS issue with CMS_TEASER/CMS_FILELIST within absolute positioned nodes
+    * [CON-399] - Wrong condition in Contenido_Url::parse() function
+    * [CON-401] - Check reported issue with synchronization of renamed/deleted upload folder via FTP
+    * [CON-402] - Groupname shown for frontenduser are broken with german umlaute
+    * [CON-404] - Missing dbfs URL creation in CMS type CMS_IMG
+    * [CON-405] - FEUser-Plugins valide_to and valide_from saving wrong time
+    * [CON-406] - TinyMCE: Idart is missing in url using anchor-feature of TinyMCE
+    * [CON-413] - Item class method loadBy() does not find filtered id values
+    * [CON-414] - Not workings links and not filled template variable in backend statistic
+    * [CON-421] - Users can be added without password
+    * [CON-423] - Empty array breaks SQL query for content allocation matching
+    * [CON-444] - Inconsistent return value store() function in classes extending GenericDB Item
+    * [CON-445] - Calling system overview in BE may throw a db connect error
+    * [CON-446] - Linkchecker whitelist works not correct
+    * [CON-451] - Deleting upload item doesn't deletes entries in upload meta table
+    * [CON-452] - class.request.php transforms arrays to NULL values as of PHP 5.3.0
+    * [CON-453] - Multiple categories switch on/off if one category is toggled
+    * [CON-454] - Special characters in files can cause duplication of entries in con_upl
+    * [CON-463] - Searching for article ID 0 leads into display error
+    * [CON-464] - Removal of upgrade error log display
+    * [CON-470] - Ampersand is displayed wrong in category creation
+    * [CON-471] - Display problem with headline in language creation 
+    * [CON-481] - Gettext extension is never used
+    * [CON-496] - Menu frame in tab "Logs" contains image for left frame
+    * [CON-497] - Multple tab selection on dashboard links
+    * [CON-523] - Special characters in Content Allocation
+
+** Improvement
+    * [CON-251] - Checking write permissions in cms-folder during migration setup
+    * [CON-301] - Reduction of database queries for category tree in "Content -> categories"
+    * [CON-327] - Inconsistent and not performant retrieving of properties
+    * [CON-332] - Old password is overwritten with new one using password-request
+    * [CON-376] - Display error message on database connection failure
+    * [CON-379] - Info in backend home is missing when no clients are available for dropdown box
+    * [CON-382] - Remove integration of old unspported java module editor
+    * [CON-383] - Remove old compatibility functions for PHP versions older 4.3.0
+    * [CON-384] - Move function declaration of IP_match from front_content.php
+    * [CON-387] - Provide error message on database failures
+    * [CON-403] - Show info in dashboard if maintenance is active
+    * [CON-407] - Relabeling from Contenido to CONTENIDO
+    * [CON-416] - Change german translation for template from "Template" to "Vorlage"
+    * [CON-417] - Cleanup of conlib database drivers
+    * [CON-430] - Change default definition for path and url configuration
+    * [CON-456] - Separate DBFS for each client
+    * [CON-457] - Move client path and URL to filesystem
+    * [CON-472] - config.local.php is included too late in frontend
+    * [CON-474] - Replace Tip Baloon and wztooltip with jQuery plugin Tipsy
+    * [CON-477] - Delete offline articles and invisible categories on language deletion, too
+    * [CON-482] - Extend memory_limit check in setup process to 32M
+    * [CON-484] - Merge cApiUser with class ConUser
+    * [CON-485] - Improve error logging
+    * [CON-495] - Redesign of system variable page
+    * [CON-505] - Global debug mode for backend
+    * [CON-506] - Remove own inuse-entries in editor for current object
+    * [CON-507] - Include config.local.php and config.after.php also in dbfs.php
+    * [CON-510] - Return of rendered code in cHTML classes by calling their object as string
+    * [CON-517] - Remove unused entries from cfg_language_de.inc.php
+    * [CON-518] - Change behaviour of example module Title_Tag
+    * [CON-519] - Limit the year selection to current year in log view
+    * [CON-553] - Normalization of API classes
+
+** New Feature
+    * [CON-84] - Integration of mod_rewrite
+    * [CON-335] - Autoloader for contenido classes
+    * [CON-361] - Check permission for FE-User in Navigation_Meta
+    * [CON-412] - Move modules from database to filesystem
+    * [CON-418] - Add new content type CMS_IMAGE
+    * [CON-419] - Add new content type CMS_LINKEDITOR
+    * [CON-462] - Integration of social media modules into example client
+    * [CON-466] - Inconsistent behaviour of feedback messages
+    * [CON-476] - Extend setup checks with maximum PHP version support
+    * [CON-480] - Implement new function cDeprecated
+    * [CON-501] - New standard modules: Piwik and Google Analytics Support
+    * [CON-503] - Notice on big logfiles
+    * [CON-516] - Drag and drop feature for file manager
+    * [CON-534] - Integration of frontend groupmember selection
+
+** Task
+    * [CON-278] - Checkup of whole setup procedure
+    * [CON-355] - delete old SubNavigation-Files and DB-Elements
+    * [CON-360] - Identify the "inuse"-tabledata as a title by Itemname
+    * [CON-367] - Setup: Additional link to Contenido FAQ on resultpage
+    * [CON-389] - Updates of localization
+    * [CON-394] - Check setting include_path configuration for PEAR
+    * [CON-420] - Update of jQuery and jQuery UI
+    * [CON-422] - Remove unused file config.xml.php
+    * [CON-425] - Move newsletter related resources to plugin folder
+    * [CON-426] - Porting cDatatype classes to PHP5
+    * [CON-429] - Move database connectivity check to class constructor
+    * [CON-432] - Removal of con_sequence
+    * [CON-436] - Replacing syntax highlighting editor Editarea with CodeMirror
+    * [CON-439] - Changes in module import and export and removal of package overview
+    * [CON-460] - Removal of is_start compatibility mode
+    * [CON-461] - Removal of "he_SS" as backend language
+    * [CON-473] - Porting cHTML classes to PHP5
+    * [CON-479] - Footnotes in english demo client are not translated
+    * [CON-498] - Removal of old module file storage support
+    * [CON-513] - Test and fix upgrade from 4.8.15 to 4.9.0-alpha1
+    * [CON-524] - Port HTML_Common to cHTML
+    * [CON-545] - Various tasks on localization
+    * [CON-551] - Update system requirement checks
+
 Release 4.8.14
 ----------------------------------------------------------------------	
 ** Bug
