@@ -42,68 +42,60 @@ cInclude('pear', 'XML/RSS.php');
 
 $tpl->reset();
 
-$vuser = new cApiUser($auth->auth["uid"]);
+$vuser = new cApiUser($auth->auth['uid']);
 
 if ($saveLoginTime == true) {
-    $sess->register("saveLoginTime");
+    $sess->register('saveLoginTime');
     $saveLoginTime = 0;
 
-    $lastTime = $vuser->getUserProperty("system", "currentlogintime");
-    $timestamp = date("Y-m-d H:i:s");
-    $vuser->setUserProperty("system", "currentlogintime", $timestamp);
-    $vuser->setUserProperty("system", "lastlogintime", $lastTime);
+    $lastTime = $vuser->getUserProperty('system', 'currentlogintime');
+    $timestamp = date('Y-m-d H:i:s');
+    $vuser->setUserProperty('system', 'currentlogintime', $timestamp);
+    $vuser->setUserProperty('system', 'lastlogintime', $lastTime);
 }
 
-$lastlogin = $vuser->getUserProperty("system", "lastlogintime");
-
+$lastlogin = $vuser->getUserProperty('system', 'lastlogintime');
 if ($lastlogin == '') {
-    $lastlogin= i18n("No Login Information available.");
+    $lastlogin = i18n('No Login Information available.');
 }
 
 // notification for requested password
-$sNotificationText = '';
+$aNotificationText = array();
 if ($vuser->getField('using_pw_request') == 1) {
-    $sNotificationText = $notification->returnNotification("warning", i18n("You're logged in with a temporary password. Please change your password."));
-    $sNotificationText .= '<br />';
+    $aNotificationText[] = $notification->returnNotification('warning', i18n("You're logged in with a temporary password. Please change your password."));
 }
 
 // check for active maintenance mode
 if (getSystemProperty('maintenance', 'mode') == 'enabled') {
-    $sNotificationText .= $notification->returnNotification("warning", i18n("CONTENIDO is in maintenance mode. Only sysadmins are allowed to login."));
-    $sNotificationText .= '<br />';
+    $aNotificationText[] = $notification->returnNotification('warning', i18n('CONTENIDO is in maintenance mode. Only sysadmins are allowed to login.'));
 }
 
-$max_log_size = getSystemProperty("backend", "max_log_size");
-if($max_log_size === false)
-{
+// check for size of log directory
+$max_log_size = getSystemProperty('backend', 'max_log_size');
+if ($max_log_size === false) {
     $max_log_size = 10;
 }
-
-if(in_array("sysadmin", explode(",", $vuser->getEffectiveUserPerms())) && $max_log_size > 0)
-{
-    $log_size = getDirectorySize($cfg['path']['contenido']."logs/");
-
-    if($log_size > $max_log_size * 1024 * 1024)
-    {
-        $sNotificationText .= $notification->returnNotification("warning", i18n("The log directory is bigger than")." ".human_readable_size($max_log_size * 1024 * 1024).".".i18n("Current size").": ".human_readable_size($log_size));
-        $sNotificationText .= '<br />';
+if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_log_size > 0) {
+    $log_size = getDirectorySize($cfg['path']['contenido'] . 'logs/');
+    if ($log_size > $max_log_size * 1024 * 1024) {
+        $aNotificationText[] = $notification->returnNotification('warning', i18n('The log directory is bigger than') . ' ' . human_readable_size($max_log_size * 1024 * 1024) . '.' . i18n('Current size') . ': ' . human_readable_size($log_size));
     }
 }
 
-$tpl->set('s', 'NOTIFICATION', $sNotificationText);
+$tpl->set('s', 'NOTIFICATION', implode('<br>', $aNotificationText));
 
-$userid = $auth->auth["uid"];
+$userid = $auth->auth['uid'];
 
-$tpl->set('s', 'WELCOME', "<b>" . i18n("Welcome") . " </b>" . $vuser->getRealname($userid, true) . ".");
-$tpl->set('s', 'LASTLOGIN', i18n("Last login") . ": " . $lastlogin);
+$tpl->set('s', 'WELCOME', '<b>' . i18n('Welcome') . ' </b>' . $vuser->getRealname($userid, true) . '.');
+$tpl->set('s', 'LASTLOGIN', i18n('Last login') . ': ' . $lastlogin);
 
 $clients= $classclient->getAccessibleClients();
 
 $cApiClient= new cApiClient();
 
 if (count($clients) > 1) {
-    $clientform = '<form style="margin: 0px" name="clientselect" method="post" target="_top" action="' . $sess->url("index.php") . '">';
-    $select = new cHTMLSelectElement("changeclient");
+    $clientform = '<form style="margin: 0px" name="clientselect" method="post" target="_top" action="' . $sess->url('index.php') . '">';
+    $select = new cHTMLSelectElement('changeclient');
     $choices = array();
     $warnings = array();
 
@@ -111,9 +103,9 @@ if (count($clients) > 1) {
         if ($perm->hasClientPermission($key)) {
             $cApiClient->loadByPrimaryKey($key);
             if ($cApiClient->hasLanguages()) {
-                $choices[$key] = $v_client['name'] . " (" . $key . ')';
+                $choices[$key] = $v_client['name'] . ' (' . $key . ')';
             } else {
-                $warnings[] = sprintf(i18n("Client %s (%s) has no languages"), $v_client['name'], $key);
+                $warnings[] = sprintf(i18n('Client %s (%s) has no languages'), $v_client['name'], $key);
             }
         }
     }
@@ -124,15 +116,15 @@ if (count($clients) > 1) {
     $clientselect = $select->render();
 
     $tpl->set('s', 'CLIENTFORM', $clientform);
-    $tpl->set('s', 'CLIENTFORMCLOSE', "</form>");
+    $tpl->set('s', 'CLIENTFORMCLOSE', '</form>');
     $tpl->set('s', 'CLIENTSDROPDOWN', $clientselect);
 
     if ($perm->have_perm() && count($warnings) > 0) {
-        $tpl->set('s', 'WARNINGS', "<br>" . $notification->messageBox("warning", implode("<br>", $warnings), 0));
+        $tpl->set('s', 'WARNINGS', '<br>' . $notification->messageBox('warning', implode('<br>', $warnings), 0));
     } else {
         $tpl->set('s', 'WARNINGS', '');
     }
-    $tpl->set('s', 'OKBUTTON', '<input type="image" src="images/but_ok.gif" alt="' . i18n("Change client") . '" title="' . i18n("Change client") . '" border="0">');
+    $tpl->set('s', 'OKBUTTON', '<input type="image" src="images/but_ok.gif" alt="' . i18n('Change client') . '" title="' . i18n('Change client') . '" border="0">');
 } else {
     $tpl->set('s', 'OKBUTTON', '');
     $sClientForm = '';
@@ -146,15 +138,15 @@ if (count($clients) > 1) {
         if ($perm->hasClientPermission($key)) {
             $cApiClient->loadByPrimaryKey($key);
             if ($cApiClient->hasLanguages()) {
-                $name = $v_client['name'] . " (" . $key . ')';
+                $name = $v_client['name'] . ' (' . $key . ')';
             } else {
-                $warnings[] = sprintf(i18n("Client %s (%s) has no languages"), $v_client['name'], $key);
+                $warnings[] = sprintf(i18n('Client %s (%s) has no languages'), $v_client['name'], $key);
             }
         }
     }
 
     if ($perm->have_perm() && count($warnings) > 0) {
-        $tpl->set('s', 'WARNINGS', "<br>" . $notification->messageBox("warning", implode("<br>", $warnings), 0));
+        $tpl->set('s', 'WARNINGS', '<br>' . $notification->messageBox('warning', implode('<br>', $warnings), 0));
     } else {
         $tpl->set('s', 'WARNINGS', '');
     }
@@ -162,69 +154,66 @@ if (count($clients) > 1) {
     $tpl->set('s', 'CLIENTSDROPDOWN', $name);
 }
 
-$props= new cApiPropertyCollection();
+$props = new cApiPropertyCollection();
 $props->select("itemtype = 'idcommunication' AND idclient='$client' AND type = 'todo' AND name = 'status' AND value != 'done'");
 
 $todoitems = array();
 
 while ($prop = $props->next()) {
-    $todoitems[] = $prop->get("itemid");
+    $todoitems[] = $prop->get('itemid');
 }
 
 if (count($todoitems) > 0) {
-    $in = "idcommunication IN (" . implode(",", $todoitems) . ")";
+    $in = 'idcommunication IN (' . implode(',', $todoitems) . ')';
 } else {
     $in = 1;
 }
 $todoitems = new TODOCollection();
-$recipient = $auth->auth["uid"];
+$recipient = $auth->auth['uid'];
 $todoitems->select("recipient = '$recipient' AND idclient='$client' AND $in");
 
 while ($todo = $todoitems->next()) {
-    if ($todo->getProperty("todo", "status") != "done") {
+    if ($todo->getProperty('todo', 'status') != 'done') {
         $todoitems++;
     }
 }
 
 $sTaskTranslation = '';
 if ($todoitems->count() == 1) {
-  $sTaskTranslation = i18n("Reminder list: %d Task open");
+    $sTaskTranslation = i18n('Reminder list: %d Task open');
 } else {
-  $sTaskTranslation = i18n("Reminder list: %d Tasks open");
+    $sTaskTranslation = i18n('Reminder list: %d Tasks open');
 }
 
-$mycontenido_overview= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido&frame=4") . '">' . i18n("Overview") . '</a>';
-$mycontenido_lastarticles= '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_recent&frame=4") . '">' . i18n("Recently edited articles") . '</a>';
-$mycontenido_tasks= '<a class="blue" onclick="sub.highlightById(\'c_1\', top.content.right_top)" href="' . $sess->url("main.php?area=mycontenido_tasks&frame=4") . '">' . sprintf($sTaskTranslation, $todoitems->count()) . '</a>';
-$mycontenido_settings= '<a class="blue" onclick="sub.highlightById(\'c_2\', top.content.right_top)" href="' . $sess->url("main.php?area=mycontenido_settings&frame=4") . '">' . i18n("Settings") . '</a>';
+$mycontenido_overview = '<a class="blue" href="' . $sess->url("main.php?area=mycontenido&frame=4") . '">' . i18n('Overview') . '</a>';
+$mycontenido_lastarticles = '<a class="blue" href="' . $sess->url("main.php?area=mycontenido_recent&frame=4") . '">' . i18n('Recently edited articles') . '</a>';
+$mycontenido_tasks = '<a class="blue" onclick="sub.highlightById(\'c_1\', top.content.right_top)" href="' . $sess->url("main.php?area=mycontenido_tasks&frame=4") . '">' . sprintf($sTaskTranslation, $todoitems->count()) . '</a>';
+$mycontenido_settings = '<a class="blue" onclick="sub.highlightById(\'c_2\', top.content.right_top)" href="' . $sess->url("main.php?area=mycontenido_settings&frame=4") . '">' . i18n('Settings') . '</a>';
 
 $tpl->set('s', 'MYCONTENIDO_OVERVIEW', $mycontenido_overview);
 $tpl->set('s', 'MYCONTENIDO_LASTARTICLES', $mycontenido_lastarticles);
 $tpl->set('s', 'MYCONTENIDO_TASKS', $mycontenido_tasks);
 $tpl->set('s', 'MYCONTENIDO_SETTINGS', $mycontenido_settings);
 
+// Systemadmins list
 $sAdminTemplate = '<li class="welcome">%s, %s</li>';
-
-$sAdminName = '';
-$sAdminEmail = '';
 $sOutputAdmin = '';
-
 $userColl = new cApiUserCollection();
 $admins = $userColl->fetchSystemAdmins(true);
 foreach ($admins as $pos => $item) {
-    if ($item->get("email") != '') {
-        $sAdminEmail= '<a class="blue" href="mailto:' . $item->get("email") . '">' . $item->get("email") . '</a>';
-        $sAdminName= $item->get('realname');
+    if ($item->get('email') != '') {
+        $sAdminEmail = '<a class="blue" href="mailto:' . $item->get('email') . '">' . $item->get('email') . '</a>';
+        $sAdminName = $item->get('realname');
         $sOutputAdmin .= sprintf($sAdminTemplate, $sAdminName, $sAdminEmail);
     }
 }
 
 $tpl->set('s', 'ADMIN_EMAIL', $sOutputAdmin);
 
-$tpl->set('s', 'SYMBOLHELP', '<a href="' . $sess->url("frameset.php?area=symbolhelp&frame=4") . '">' . i18n("Symbol help") . '</a>');
+$tpl->set('s', 'SYMBOLHELP', '<a href="' . $sess->url("frameset.php?area=symbolhelp&frame=4") . '">' . i18n('Symbol help') . '</a>');
 
-if (file_exists($cfg["contenido"]["handbook_path"])) {
-    $tpl->set('s', 'CONTENIDOMANUAL', '<a href="' . $cfg["contenido"]["handbook_url"] . '" target="_blank">' . i18n("CONTENIDO Manual") . '</a>');
+if (file_exists($cfg['contenido']['handbook_path'])) {
+    $tpl->set('s', 'CONTENIDOMANUAL', '<a href="' . $cfg['contenido']['handbook_url'] . '" target="_blank">' . i18n('CONTENIDO Manual') . '</a>');
 } else {
     $tpl->set('s', 'CONTENIDOMANUAL', '');
 }
@@ -237,32 +226,31 @@ $iNumberOfUsers = 0;
 // Start()
 $oActiveUsers->startUsersTracking();
 
-//Currently User Online
+// Currently User Online
 $iNumberOfUsers = $oActiveUsers->getNumberOfUsers();
 
 // Find all User who is online
 $aMemberList = $oActiveUsers->findAllUser();
 
 // Template for display current user
-$sTemplate = '';
 $sOutput = '';
-$sTemplate= '<li class="welcome">%s, %s</li>';
+$sTemplate = '<li class="welcome">%s, %s</li>';
 
 foreach ($aMemberList as $key) {
-    $sRealName= $key['realname'];
-    $aPerms['0']= $key['perms'];
+    $sRealName = $key['realname'];
+    $aPerms['0'] = $key['perms'];
     $sOutput .= sprintf($sTemplate,  $sRealName, $aPerms['0']);
 }
 
 // set template welcome
 $tpl->set('s', 'USER_ONLINE', $sOutput);
-$tpl->set('s', 'Anzahl', $iNumberOfUsers);
+$tpl->set('s', 'NUMBER', $iNumberOfUsers);
 
 // check for new updates
 $oUpdateNotifier = new Contenido_UpdateNotifier($cfg, $vuser, $perm, $sess, $belang);
 $sUpdateNotifierOutput = $oUpdateNotifier->displayOutput();
 $tpl->set('s', 'UPDATENOTIFICATION', $sUpdateNotifierOutput);
 
-$tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["welcome"]);
+$tpl->generate($cfg['path']['templates'] . $cfg['templates']['welcome']);
 
 ?>
