@@ -1,9 +1,9 @@
 <html>
 <head>
     <title></title>
-	<meta http-equiv="expires" content="0">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="pragma" content="no-cache">    
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/infoBox.js"></script>
     <script type="text/javascript" src="scripts/group_association.js"></script>
@@ -12,15 +12,15 @@
         init('{ADD_ACTION}', '{DELETE_ACTION}');
     </script>
     {RELOADSCRIPT}
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
 </head>
 <body style="margin:10px" onload="filter('user_in_group_filter_value'); filter('newmember_filter_value')">
-    <form name="group_properties" id="group_properties" method="post" action="{FORM_ACTION}">  
+    <form name="group_properties" id="group_properties" method="post" action="{FORM_ACTION}">
         <input type="hidden" name="area" value="{AREA}">
         <input type="hidden" name="action" value="{STANDARD_ACTION}">
         <input type="hidden" name="frame" value="{FRAME}">
         <input type="hidden" name="{RECORD_ID_NAME}" value="{GROUPID}">
-        <input type="hidden" name="idlang" value="{IDLANG}">   
+        <input type="hidden" name="idlang" value="{IDLANG}">
         <table id="stats" style="border:0px; border-top: 0px;border-color: {BORDERCOLOR}; border-style: solid;" cellspacing="0" cellpadding="4" border="0">
             <tr class="text_medium" style="background-color: {BGCOLOR};" >
                 <td colspan="2" valign="top" style="border: 0px; border-left: 1px; border-top:1px;border-bottom:0px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:3px">{CATNAME}</td>
@@ -32,7 +32,7 @@
             </tr>
             <!-- END:BLOCK -->
             <tr class="text_medium" style="background-color: {BGCOLOR_CONTENT};" >
-                <td colspan="2" valign="top" style="border: 0px; border-left: 1px; border-top:1px;border-bottom:0px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:3px">         
+                <td colspan="2" valign="top" style="border: 0px; border-left: 1px; border-top:1px;border-bottom:0px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:3px">
                      <div class="memberselect">
                         <p class="column_header">i18n('Groupmembers')</p>
                         <div style="float:right;">
@@ -47,8 +47,8 @@
                         </select>
                      </div>
                      <div class="memberselect_button">
-                         <input type="button" name="toggle" id="newmember_button" value="<=" onclick="setAction('{ADD_ACTION}')" alt="i18n('Add to group')" title="i18n('Add to group')" DISABLED> 
-                         <input type="button" name="toggle" id="user_in_group_button" value="=>" onclick="setAction('{DELETE_ACTION}')" alt="i18n('Remove from group')" title="i18n('Remove from group')" DISABLED>         
+                         <input type="button" name="toggle" id="newmember_button" value="<=" onclick="setAction('{ADD_ACTION}')" alt="i18n('Add to group')" title="i18n('Add to group')" DISABLED>
+                         <input type="button" name="toggle" id="user_in_group_button" value="=>" onclick="setAction('{DELETE_ACTION}')" alt="i18n('Remove from group')" title="i18n('Remove from group')" DISABLED>
                      </div>
                      <div class="memberselect">
                          <p class="column_header">i18n('Non Groupmembers')</p>
@@ -58,7 +58,7 @@
                          </div>
                          <div style="padding-top:3px;">i18n('Filter'):</div>
                          <select name="newmember[]" id="newmember" size="20" class="memberselect text_medium" multiple>
-                         </select> 
+                         </select>
                          <select id="all_newmember" style="display:none" multiple>
                            {NON_GROUP_OPTIONS}
                         </select>

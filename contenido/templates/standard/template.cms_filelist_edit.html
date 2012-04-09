@@ -1,135 +1,135 @@
-<img id="cms_filelist_{ID}" class="cms_filelist_img cms_filelist_{ID}_EDIT CMS_LINK_EDIT" src="{CON_PATH}images/but_downloadlist.gif" /><br /><br />
+<img id="cms_filelist_{ID}" class="cms_filelist_img cms_filelist_{ID}_EDIT CMS_LINK_EDIT" src="{CON_PATH}images/but_downloadlist.gif"><br><br>
 <div style="display:none" id="cms_filelist_{ID}_settings" class="cms_filelist">
-	<div class="close" id="filelist_close">
-		<img src="{CON_PATH}images/but_cancel.gif"/>
-	</div>
-	<p class="head">{LABEL_FILELIST_SETTINGS}</p>
-	
-	<ul class="menu">
-		<li class="directories">{DIRECTORIES}</li>
-		<li class="general">{GENERAL}</li>
-		<li class="filter">{FILTER}</li>
-		<li class="manual">{MANUAL}</li>
-	</ul>
-	<div id="tabs">
-		<div id="directories">
-			<p class="head_sub">{LABEL_SOURCE_DIRECTORY}</p>
-			
-			<div id="directoryList">
-				<ul id="con_str_tree" dir="ltr">
-					<li id="root" class="last">
-						<em>Uploads</em>
-						{DIRECTORY_LIST}
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div id="general">
-			<p class="head_sub">{LABEL_GENERAL}</p>
-			
-			<label for="filelist_title">{LABEL_FILELIST_TITLE}:</label>
-			<input type="text" name="filelist_title" id="filelist_title" value="{FILELIST_TITLE}">
+    <div class="close" id="filelist_close">
+        <img src="{CON_PATH}images/but_cancel.gif">
+    </div>
+    <p class="head">{LABEL_FILELIST_SETTINGS}</p>
 
-			<label for="filelist_style">{LABEL_STYLE}:</label>
-			{STYLE_SELECT}
-			
-			<label for="filelist_sort">{LABEL_SORT}:</label>
-			{SORT_SELECT}
-			
-			<label for="filelist_sortorder">{LABEL_SORTORDER}:</label>
-			{SORTORDER_SELECT}
-			
-			<label for="filelist_incl_subdirectories">{LABEL_INCLUDE_SUBDIRECTORIES}</label>
-			<input class="no_width" type="checkbox" name="filelist_incl_subdirectories" id="filelist_incl_subdirectories" {FILELIST_INCL_SUBDIRECTORIES}>
-			
-			<label for="filelist_incl_metadata">{LABEL_INCLUDE_METADATA}</label>
-			<input class="no_width" type="checkbox" name="filelist_incl_metadata" id="filelist_incl_metadata" {FILELIST_INCL_METADATA}>
-			
-			<div id="metaDataList">
-				{METADATALIST}
-			</div>
-			
-			<div class="head_sub head_sep">&nbsp;</div>
-		</div>
-		<div id="filter">
-			<p class="head_sub">{LABEL_FILTER}</p>
-			
-			<label for="filelist_extensions">{LABEL_FILE_EXTENSIONS}:</label>
-			{EXTENSION_LIST}
-			<br style="clear:both" /><a id="filelist_all_extensions">{LABEL_SELECTALLENTRIES}</a> - <a id="filelist_ignore_extensions">{LABEL_IGNORESELECTION}</a><br /><br />
-			
-			<label for="filelist_filesizefilter_from">{LABEL_FILELIST_FILESIZE_LIMIT}:</label>
-			<input type="text" class="small" name="filelist_filesizefilter_from" id="filelist_filesizefilter_from" value="{FILELIST_FILESIZEFILTER_FROM}" /><span>&nbsp;-&nbsp;</span><input class="small" type="text" name="filelist_filesizefilter_to" id="filelist_filesizefilter_to" value="{FILELIST_FILESIZEFILTER_TO}" /><span>&nbsp;MB</span>
+    <ul class="menu">
+        <li class="directories">{DIRECTORIES}</li>
+        <li class="general">{GENERAL}</li>
+        <li class="filter">{FILTER}</li>
+        <li class="manual">{MANUAL}</li>
+    </ul>
+    <div id="tabs">
+        <div id="directories">
+            <p class="head_sub">{LABEL_SOURCE_DIRECTORY}</p>
 
-			<br style="clear:both" /><br />
-			
-			<label for="filelist_creationdatefilter_from">{LABEL_FILELIST_CREATIONDATE_LIMIT}:</label>
-			<input type="text" name="filelist_creationdatefilter_from" id="filelist_creationdatefilter_from" class="smalldate" value="{FILELIST_CREATIONDATEFILTER_FROM}" />
-			<span>&nbsp;-&nbsp;</span>
-			<input type="text" name="filelist_creationdatefilter_to" id="filelist_creationdatefilter_to" class="smalldate" value="{FILELIST_CREATIONDATEFILTER_TO}" />
-			
-			<label for="filelist_modifydatefilter_from">{LABEL_FILELIST_MODIFYDATE_LIMIT}:</label>
-			<input type="text" name="filelist_modifydatefilter_from" id="filelist_modifydatefilter_from" class="smalldate" value="{FILELIST_MODIFYDATEFILTER_FROM}" />
-			<span>&nbsp;-&nbsp;</span>
-			<input type="text" name="filelist_modifydatefilter_to" id="filelist_modifydatefilter_to" class="smalldate" value="{FILELIST_MODIFYDATEFILTER_TO}" />
-			
-			<br style="clear:both" /><br />
-			
-			<label for="filelist_filecount">{LABEL_FILECOUNT}:</label>
-			<input type="text" class="small" name="filelist_filecount" id="filelist_filecount" value="{FILELIST_FILECOUNT}" />
-			
-			<div class="head_sub head_sep">&nbsp;</div>
-		</div>
-		<div id="manual">
-			<p class="head_sub">{LABEL_MANUAL}</p>
-			
-			<label for="filelist_manual">{LABEL_MANUAL_FILELIST}</label>
-			<input class="no_width" type="checkbox" name="filelist_manual" id="filelist_manual" {FILELIST_MANUAL}>
-			
-			<div style="clear:both;display:none" id="manual_filelist_setting">
-				<div class="head_sub head_sep">{LABEL_EXISTING_FILES}</div>
-				{MANUAL_OPTIONS}			
-				
-				<div class="head_sub head_sep">{LABEL_ADD_FILE}</div>
-				<label for="teaser_cat">{LABEL_DIRECTORY}:</label>
-				<div id="directoryList">
-					<ul id="con_str_tree" dir="ltr">
-						<li id="root" class="last">
-							<em>Uploads</em>
-							{DIRECTORY_LIST}
-						</li>
-					</ul>
-				</div>
-				<br />
-				<label for="teaser_art" class="small">{LABEL_FILE}:</label>
-				{FILE_SELECT}<span>&nbsp;<img id="add_file" src="{CON_PATH}images/but_art_new.gif" alt="" /></span>
-			</div>
-		</div>
-	</div>
-	
-	<div class="toolbar">
-		<img class="save_settings" src="{CON_PATH}images/but_ok.gif"/>
-		<img class="filelist_cancel" src="{CON_PATH}images/but_cancel.gif"/>
-	</div>
+            <div id="directoryList">
+                <ul id="con_str_tree" dir="ltr">
+                    <li id="root" class="last">
+                        <em>Uploads</em>
+                        {DIRECTORY_LIST}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="general">
+            <p class="head_sub">{LABEL_GENERAL}</p>
+
+            <label for="filelist_title">{LABEL_FILELIST_TITLE}:</label>
+            <input type="text" name="filelist_title" id="filelist_title" value="{FILELIST_TITLE}">
+
+            <label for="filelist_style">{LABEL_STYLE}:</label>
+            {STYLE_SELECT}
+
+            <label for="filelist_sort">{LABEL_SORT}:</label>
+            {SORT_SELECT}
+
+            <label for="filelist_sortorder">{LABEL_SORTORDER}:</label>
+            {SORTORDER_SELECT}
+
+            <label for="filelist_incl_subdirectories">{LABEL_INCLUDE_SUBDIRECTORIES}</label>
+            <input class="no_width" type="checkbox" name="filelist_incl_subdirectories" id="filelist_incl_subdirectories" {FILELIST_INCL_SUBDIRECTORIES}>
+
+            <label for="filelist_incl_metadata">{LABEL_INCLUDE_METADATA}</label>
+            <input class="no_width" type="checkbox" name="filelist_incl_metadata" id="filelist_incl_metadata" {FILELIST_INCL_METADATA}>
+
+            <div id="metaDataList">
+                {METADATALIST}
+            </div>
+
+            <div class="head_sub head_sep">&nbsp;</div>
+        </div>
+        <div id="filter">
+            <p class="head_sub">{LABEL_FILTER}</p>
+
+            <label for="filelist_extensions">{LABEL_FILE_EXTENSIONS}:</label>
+            {EXTENSION_LIST}
+            <br style="clear:both"><a id="filelist_all_extensions">{LABEL_SELECTALLENTRIES}</a> - <a id="filelist_ignore_extensions">{LABEL_IGNORESELECTION}</a><br><br>
+
+            <label for="filelist_filesizefilter_from">{LABEL_FILELIST_FILESIZE_LIMIT}:</label>
+            <input type="text" class="small" name="filelist_filesizefilter_from" id="filelist_filesizefilter_from" value="{FILELIST_FILESIZEFILTER_FROM}"><span>&nbsp;-&nbsp;</span><input class="small" type="text" name="filelist_filesizefilter_to" id="filelist_filesizefilter_to" value="{FILELIST_FILESIZEFILTER_TO}"><span>&nbsp;MB</span>
+
+            <br style="clear:both"><br>
+
+            <label for="filelist_creationdatefilter_from">{LABEL_FILELIST_CREATIONDATE_LIMIT}:</label>
+            <input type="text" name="filelist_creationdatefilter_from" id="filelist_creationdatefilter_from" class="smalldate" value="{FILELIST_CREATIONDATEFILTER_FROM}">
+            <span>&nbsp;-&nbsp;</span>
+            <input type="text" name="filelist_creationdatefilter_to" id="filelist_creationdatefilter_to" class="smalldate" value="{FILELIST_CREATIONDATEFILTER_TO}">
+
+            <label for="filelist_modifydatefilter_from">{LABEL_FILELIST_MODIFYDATE_LIMIT}:</label>
+            <input type="text" name="filelist_modifydatefilter_from" id="filelist_modifydatefilter_from" class="smalldate" value="{FILELIST_MODIFYDATEFILTER_FROM}">
+            <span>&nbsp;-&nbsp;</span>
+            <input type="text" name="filelist_modifydatefilter_to" id="filelist_modifydatefilter_to" class="smalldate" value="{FILELIST_MODIFYDATEFILTER_TO}">
+
+            <br style="clear:both"><br>
+
+            <label for="filelist_filecount">{LABEL_FILECOUNT}:</label>
+            <input type="text" class="small" name="filelist_filecount" id="filelist_filecount" value="{FILELIST_FILECOUNT}">
+
+            <div class="head_sub head_sep">&nbsp;</div>
+        </div>
+        <div id="manual">
+            <p class="head_sub">{LABEL_MANUAL}</p>
+
+            <label for="filelist_manual">{LABEL_MANUAL_FILELIST}</label>
+            <input class="no_width" type="checkbox" name="filelist_manual" id="filelist_manual" {FILELIST_MANUAL}>
+
+            <div style="clear:both;display:none" id="manual_filelist_setting">
+                <div class="head_sub head_sep">{LABEL_EXISTING_FILES}</div>
+                {MANUAL_OPTIONS}
+
+                <div class="head_sub head_sep">{LABEL_ADD_FILE}</div>
+                <label for="teaser_cat">{LABEL_DIRECTORY}:</label>
+                <div id="directoryList">
+                    <ul id="con_str_tree" dir="ltr">
+                        <li id="root" class="last">
+                            <em>Uploads</em>
+                            {DIRECTORY_LIST}
+                        </li>
+                    </ul>
+                </div>
+                <br>
+                <label for="teaser_art" class="small">{LABEL_FILE}:</label>
+                {FILE_SELECT}<span>&nbsp;<img id="add_file" src="{CON_PATH}images/but_art_new.gif" alt=""></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <img class="save_settings" src="{CON_PATH}images/but_ok.gif">
+        <img class="filelist_cancel" src="{CON_PATH}images/but_cancel.gif">
+    </div>
 </div>
 
 <script type="text/javascript">
-	<!--
-	var fileListImage{ID} = '#cms_filelist_{ID}';
-	var fileListFrame{ID} = '#cms_filelist_{ID}_settings';
-	var aFileListData{ID} = Array({FIELDS});
-	var dateFields = Array("filelist_creationdatefilter_from", "filelist_creationdatefilter_to", "filelist_modifydatefilter_from", "filelist_modifydatefilter_to");
-	var sPath = '{CON_PATH}';
-	var sSession = '{CONTENIDO}';
-	var iIdArtLang = '{IDARTLANG}';
-	var sLabelIgnoreExtensionsOn = '{LABEL_SELECTIONWILLBEIGNORED}';
-	var sLabelIgnoreExtensionsOff = '{LABEL_IGNORESELECTION}';
-	var bIgnoreExtensions{ID} = '{IGNOREEXTENSIONS}';
-    
+    <!--
+    var fileListImage{ID} = '#cms_filelist_{ID}';
+    var fileListFrame{ID} = '#cms_filelist_{ID}_settings';
+    var aFileListData{ID} = Array({FIELDS});
+    var dateFields = Array("filelist_creationdatefilter_from", "filelist_creationdatefilter_to", "filelist_modifydatefilter_from", "filelist_modifydatefilter_to");
+    var sPath = '{CON_PATH}';
+    var sSession = '{CONTENIDO}';
+    var iIdArtLang = '{IDARTLANG}';
+    var sLabelIgnoreExtensionsOn = '{LABEL_SELECTIONWILLBEIGNORED}';
+    var sLabelIgnoreExtensionsOff = '{LABEL_IGNORESELECTION}';
+    var bIgnoreExtensions{ID} = '{IGNOREEXTENSIONS}';
+
     conLoadFile(sPath+'scripts/cmsFileList.js', 'addFileListEvents{ID}();');
-    
+
     function addFileListEvents{ID} () {
         addFileListEvents(fileListFrame{ID}, fileListImage{ID}, sPath, sSession, iIdArtLang, {ID}, aFileListData{ID}, bIgnoreExtensions{ID});
     }
-	-->
+    -->
 </script>

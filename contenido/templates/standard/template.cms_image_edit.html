@@ -1,9 +1,9 @@
-<br/>
-<img id="cms_image_{ID}" class="cms_image_img cms_image_{ID}_EDIT CMS_LINK_EDIT" src="{CON_PATH}images/but_editimage.gif" />
-<br/><br/>
+<br>
+<img id="cms_image_{ID}" class="cms_image_img cms_image_{ID}_EDIT CMS_LINK_EDIT" src="{CON_PATH}images/but_editimage.gif">
+<br><br>
 <div style="display:none" id="cms_image_{ID}_settings" class="cms_image">
     <div class="close" id="image_{ID}_close">
-        <img src="{CON_PATH}images/but_cancel.gif"/>
+        <img src="{CON_PATH}images/but_cancel.gif">
     </div>
     <p class="head">
         {LABEL_IMAGE_SETTINGS}
@@ -22,36 +22,36 @@
         </ul>
     </div>
     <div id="image_{ID}_tabs" class="image_tabs">
-    	<div id="image_{ID}_upload" class="image_upload">
-			<br>
+        <div id="image_{ID}_upload" class="image_upload">
+            <br>
             <form name="newdir" class="clearfix" action="{CON_PATH}main.php" method="POST">
-				<div><b>{INDEX}</b>: <span id="caption1"></span></div>
+                <div><b>{INDEX}</b>: <span id="caption1"></span></div>
                 <div>
-					<input type="hidden" value="upl" name="area">
-					<input type="hidden" value="upl_mkdir" name="action">
-					<input type="hidden" value="2" name="frame">
-					<input type="hidden" value="" name="appendparameters">
-					<input type="hidden" value="{CONTENIDO}" name="contenido">
+                    <input type="hidden" value="upl" name="area">
+                    <input type="hidden" value="upl_mkdir" name="action">
+                    <input type="hidden" value="2" name="frame">
+                    <input type="hidden" value="" name="appendparameters">
+                    <input type="hidden" value="{CONTENIDO}" name="contenido">
                     <input type="hidden" value="" name="path">
-					<input type="text" name="foldername" style="vertical-align:middle; width:170px;" class="text_small">
-					<span style="display: inline-block;margin-left: 5px;vertical-align: middle;">
-						<input type="image" src="{CON_PATH}images/submit.gif"></input>
-					</span>
+                    <input type="text" name="foldername" style="vertical-align:middle; width:170px;" class="text_small">
+                    <span style="display: inline-block;margin-left: 5px;vertical-align: middle;">
+                        <input type="image" src="{CON_PATH}images/submit.gif"></input>
+                    </span>
                 </div>
             </form>
-			<br><span id="showInfo"></span>
+            <br><span id="showInfo"></span>
             <form name="properties" id="properties{ID}" class="clearfix" action="{CON_PATH}main.php" method="post" style="margin:0px" enctype="multipart/form-data">
                 <input type="hidden" value="4" name="frame">
-				<input type="hidden" value="upl" name="area">
-				<input type="hidden" value="" name="path">
-				<input type="hidden" value="" name="file">
-				<input type="hidden" value="upl_upload" name="action">
-				<input type="hidden" value="" name="appendparameters">
-				<input type="hidden" value="{CONTENIDO}" name="contenido">
+                <input type="hidden" value="upl" name="area">
+                <input type="hidden" value="" name="path">
+                <input type="hidden" value="" name="file">
+                <input type="hidden" value="upl_upload" name="action">
+                <input type="hidden" value="" name="appendparameters">
+                <input type="hidden" value="{CONTENIDO}" name="contenido">
                 <div><b>{PFAD}</b>: <span id="caption2"></span></div>
-				<input type="file" size="" class="file" name="file[]" id="cms_image_m{ID}"></input>
+                <input type="file" size="" class="file" name="file[]" id="cms_image_m{ID}"></input>
             </form>
-			<img src="{CON_PATH}images/ajax-loader.gif" class="loading" style="display:none;"></img>
+            <img src="{CON_PATH}images/ajax-loader.gif" class="loading" style="display:none;"></img>
         </div>
         <div id="image_{ID}_directories" class="image_directories clearfix">
             <div id="directoryList_{ID}" class="directoryList">
@@ -63,18 +63,18 @@
                 </ul>
             </div>
             <div id="directoryFile_{ID}" class="directoryFile">
-            	{DIRECTORY_FILE}
+                {DIRECTORY_FILE}
             </div>
             <div id="directoryShow_{ID}" class="directoryShow">
-                <img src="{DIRECTORY_SRC}" alt=""/>
+                <img src="{DIRECTORY_SRC}" alt="">
             </div>
         </div>
         <div id="image_{ID}_meta" class="image_meta">
-        	<div style="margin: 10px 0 3px 10px;"><b>{META_URL_TEXT}</b>: <span id="image_meta_url_{ID}"></span></div>
+            <div style="margin: 10px 0 3px 10px;"><b>{META_URL_TEXT}</b>: <span id="image_meta_url_{ID}"></span></div>
             <label for="image_medianame_{ID}">
                 {LABEL_IMAGE_TITLE}:
             </label>
-            <input type="text" name="image_medianame" id="image_medianame_{ID}" value="{IMAGE_TITLE}"/>
+            <input type="text" name="image_medianame" id="image_medianame_{ID}" value="{IMAGE_TITLE}">
             <label for="image_description_{ID}">
                 {LABEL_IMAGE_DESC}:
             </label>
@@ -83,44 +83,44 @@
             <label for="image_keywords_{ID}">
                 {LABEL_IMAGE_KEYWORDS}:
             </label>
-            <input type="text" name="image_keywords" id="image_keywords_{ID}" value="{IMAGE_KEYWORDS}"/>
+            <input type="text" name="image_keywords" id="image_keywords_{ID}" value="{IMAGE_KEYWORDS}">
             <label for="image_internal_notice_{ID}">
                 {LABEL_IMAGE_INTERNAL_NOTICE}:
             </label>
-            <input type="text" name="image_internal_notice" id="image_internal_notice_{ID}" value="{IMAGE_INTERNAL_NOTICE}"/>
+            <input type="text" name="image_internal_notice" id="image_internal_notice_{ID}" value="{IMAGE_INTERNAL_NOTICE}">
             <label for="image_copyright_{ID}">
                 {LABEL_IMAGE_COPYRIGHT}:
             </label>
-            <input type="text" name="image_copyright" id="image_copyright_{ID}" value="{IMAGE_COPYRIGHT}"/>
-        </div>        
+            <input type="text" name="image_copyright" id="image_copyright_{ID}" value="{IMAGE_COPYRIGHT}">
+        </div>
     </div>
     <div class="toolbar">
-        <img class="save_settings" src="{CON_PATH}images/but_ok.gif"/>
-		<img class="filelist_cancel" src="{CON_PATH}images/but_cancel.gif"/>
+        <img class="save_settings" src="{CON_PATH}images/but_ok.gif">
+        <img class="filelist_cancel" src="{CON_PATH}images/but_cancel.gif">
     </div>
 </div>
 <script type="text/javascript">
-    	<!--
-    	var Image{ID} = '#cms_image_{ID}';
-    	var ImageFrame{ID} = '#cms_image_{ID}_settings';
-    	var aImageData{ID} = Array({FIELDS});
-    	var sPath = '{CON_PATH}';
-    	var sSession = '{CONTENIDO}';
-    	var iIdArtLang = '{IDARTLANG}';
-    	var sUploadPath = '{sUploadPath}';
-		//var frontend_path = "http://localhost/contenido4.9/cms/";
-		//var sUploadPath = 'C:/Projects/workspace/contenido4.9/cms/upload/';
-    	//var sContent1 = 'http://localhost/contenido4.9/cms/upload/';
-    	var sContent{ID} = '{sContent}';
-		var createPath = Array();
-		createPath[{ID}] = '';
-		var divContainer = Array();
-		divContainer[{ID}] = '';
-    	
+        <!--
+        var Image{ID} = '#cms_image_{ID}';
+        var ImageFrame{ID} = '#cms_image_{ID}_settings';
+        var aImageData{ID} = Array({FIELDS});
+        var sPath = '{CON_PATH}';
+        var sSession = '{CONTENIDO}';
+        var iIdArtLang = '{IDARTLANG}';
+        var sUploadPath = '{sUploadPath}';
+        //var frontend_path = "http://localhost/contenido4.9/cms/";
+        //var sUploadPath = 'C:/Projects/workspace/contenido4.9/cms/upload/';
+        //var sContent1 = 'http://localhost/contenido4.9/cms/upload/';
+        var sContent{ID} = '{sContent}';
+        var createPath = Array();
+        createPath[{ID}] = '';
+        var divContainer = Array();
+        divContainer[{ID}] = '';
+
         conLoadFile(sPath+'scripts/cmsImage.js', 'addImageEvents{ID}();');
-    
+
         function addImageEvents{ID} () {
             addImageEvents(ImageFrame{ID}, Image{ID}, sPath, sSession, iIdArtLang, {ID}, aImageData{ID}, sContent{ID});
         }
-    	-->
+        -->
 </script>

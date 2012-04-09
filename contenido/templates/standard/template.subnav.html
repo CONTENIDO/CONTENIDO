@@ -24,15 +24,15 @@
 </div>
 
 <script type="text/javascript">
-$(document).ready(function() {
-    if (parent.parent.frames[0].name != "header") {
-        parent.parent.frameResize.init();    
-        sub.init();
-    }
-    $("#toggleimage").click(function(){
-        parent.parent.frameResize.toggle();
+    $(document).ready(function() {
+        if (parent.parent.frames[0].name != "header") {
+            parent.parent.frameResize.init();
+            sub.init();
+        }
+        $("#toggleimage").click(function(){
+            parent.parent.frameResize.toggle();
+        });
     });
-});
 </script>
 
 </body>

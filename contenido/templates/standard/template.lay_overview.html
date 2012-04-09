@@ -1,16 +1,15 @@
 <html>
 <head>
     <title></title>
-	<meta http-equiv="expires" content="0">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="pragma" content="no-cache">    
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript">
-
         /* Session-ID */
         var sid = "{SID}";
 
@@ -20,51 +19,44 @@
 
         /* Function for deleting
            modules */
-
         function deleteLayout(idlay) {
-
-            url  = 'main.php?area=lay_edit';
+            var url = 'main.php?area=lay_edit';
             url += '&action=lay_delete';
             url += '&frame=4';
             url += '&idlay=' + idlay;
             url += '&contenido=' + sid;
-            
             parent.parent.frames["right"].frames["right_bottom"].window.location.href = url;
-
         }
-		
+
         $(document).ready(function() {
             // select a frame with jquery
             //$(parent.parent.frames["right"].frames["right_bottom"].document).find('body').html();
-			
-        	$('.in_used_lay').live('click', function() {
-            	var iId = $(this).attr('rel');
-            	if (iId) {
 
-            		var sTemplateName = $(this).parents().filter('td:first').prev().text();
-            		$.post(
-            		   "{AJAXURL}", 
-      				   { area: "{AREA}", ajax: "inused_layout", id: iId, contenido: sid }, 
-      				   function(data) {
-          				  var sInUseTitle = "{BOX_TITLE}";
-          				  sInUseTitle = sInUseTitle.replace('%s', sTemplateName); 
-      					  box.notify(sInUseTitle, data);
-      				   } 
-      				);
-            	}	
-        	});
+            $('.in_used_lay').live('click', function() {
+                var iId = $(this).attr('rel');
+                if (iId) {
+                    var sTemplateName = $(this).parents().filter('td:first').prev().text();
+                    $.post(
+                       "{AJAXURL}",
+                         { area: "{AREA}", ajax: "inused_layout", id: iId, contenido: sid },
+                         function(data) {
+                            var sInUseTitle = "{BOX_TITLE}";
+                            sInUseTitle = sInUseTitle.replace('%s', sTemplateName);
+                            box.notify(sInUseTitle, data);
+                         }
+                    );
+                }
+            });
         });
-
-		
     </script>
 </head>
-<body bgcolor="#FFFFFF">
+<body>
 
 <table style="margin: 5px 0 0 0;" width="100%" cellspacing="0" cellpadding="2" border="0">
 
     <!-- BEGIN:BLOCK -->
     <tr id="{ID}" bgcolor="{BGCOLOR}" onmouseover="lay.over(this)" onmouseout="lay.out(this)" onclick="lay.click(this)">
-		 <td></td>
+         <td></td>
         <td class="textw_small">{NAME}</td>
         <td align="right">{INUSE}&nbsp;{TODO}&nbsp;{DELETE}&nbsp;</td>
     </tr>
@@ -72,7 +64,7 @@
 
 </table>
 
-<script language="javascript">    
+<script type="text/javascript">
     if (document.getElementById('marked')) {
         lay.click(document.getElementById('marked'));
     }

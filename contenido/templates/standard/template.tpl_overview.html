@@ -1,16 +1,15 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
-	<meta http-equiv="expires" content="0">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="pragma" content="no-cache">    
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
     <script type="text/javascript" src="scripts/general.js"></script>
     <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
     <script type="text/javascript" src="scripts/rowMark.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript">
-
         /* Session-ID */
         var sid = "{SID}";
 
@@ -21,71 +20,61 @@
         /* Function for deleting
            templates */
         function deleteTemplate(idtpl) {
-
-            url  = 'main.php?area=tpl';
+            var url  = 'main.php?area=tpl';
             url += '&action=tpl_delete';
             url += '&frame=2';
             url += '&idtpl=' + idtpl;
             url += '&contenido=' + sid;
 
             window.location.href = url;
-            
+
             var right_bottom = parent.parent.frames['right'].frames['right_bottom'];
-          
-    		if (right_bottom) {
-    		
-    			 url  = 'main.php?area=tpl_edit';
-    	         url += '&action=tpl_delete';
-    	         url += '&frame=4&blubi=blubi';
-    	         url += '&idtpl=' + idtpl;
-    	         url += '&contenido=' + sid;
-    			
-    			right_bottom.location.href = url;
-    	
-    		}
+
+            if (right_bottom) {
+                url  = 'main.php?area=tpl_edit';
+                url += '&action=tpl_delete';
+                url += '&frame=4&blubi=blubi';
+                url += '&idtpl=' + idtpl;
+                url += '&contenido=' + sid;
+                right_bottom.location.href = url;
+            }
         }
 
-		/*
-		  
-		*/
         $(document).ready(function() {
             // select a frame with jquery
             //$(parent.parent.frames["right"].frames["right_bottom"].document).find('body').html();
-        	$('.in_used_tpl').live('click', function() {
-            	var iId = $(this).attr('rel');
-            	if (iId) {
-                	sTemplateName = $(this).parents().filter('td:first').prev().text();
-            		$.post(
-            		   "{AJAXURL}", 
-      				   { area: "{AREA}", ajax: "inused_template", id: iId, contenido: sid }, 
-      				   function(data) {
-          				  var inUseTitle = "{BOX_TITLE}";
-          				  inUseTitle = inUseTitle.replace('%s', sTemplateName);
-      					  box.notify(inUseTitle, data);
-      				   } 
-      				);
-            	}	
-        	});
+            $('.in_used_tpl').live('click', function() {
+                var iId = $(this).attr('rel');
+                if (iId) {
+                    sTemplateName = $(this).parents().filter('td:first').prev().text();
+                    $.post(
+                       "{AJAXURL}",
+                         { area: "{AREA}", ajax: "inused_template", id: iId, contenido: sid },
+                         function(data) {
+                            var inUseTitle = "{BOX_TITLE}";
+                            inUseTitle = inUseTitle.replace('%s', sTemplateName);
+                            box.notify(inUseTitle, data);
+                         }
+                    );
+                }
+            });
         });
-
     </script>
 </head>
-<body bgcolor="#FFFFFF">
+<body >
 
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
     <!-- BEGIN:BLOCK -->
     <tr id="{ID}" bgcolor="{BGCOLOR}" onmouseover="lay.over(this)" onmouseout="lay.out(this)" onclick="lay.click(this)">
-		 <td><img alt="" width="5" height="1" src="images/spacer.gif"></td>
+        <td><img alt="" width="5" height="1" src="images/spacer.gif"></td>
         <td class="textw_small">{NAME}</td>
         <td align="right">{INUSE}&nbsp;{COPY}&nbsp;{DELETE}&nbsp;</td>
     </tr>
     <!-- END:BLOCK -->
 </table>
 
-<script language="javascript">
-
+<script type="text/javascript">
     reMark(parent.parent.frames["left"].frames["left_top"].obj);
-
 </script>
 
 </body>
