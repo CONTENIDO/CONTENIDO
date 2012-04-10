@@ -56,7 +56,7 @@ class cApiStatCollection extends ItemCollection
      */
     public function trackVisit($iIdCatArt, $iIdLang, $iIdClient)
     {
-        $oStat = $this->selectByCatArtAndLang($iIdCatArt, $iIdLang);
+        $oStat = $this->fetchByCatArtAndLang($iIdCatArt, $iIdLang);
         if (is_object($oStat)) {
             $oStat->increment();
         } else {
@@ -90,7 +90,7 @@ class cApiStatCollection extends ItemCollection
      * @param int $iIdLang
      * @return cApiStat|null
      */
-    public function selectByCatArtAndLang($iIdCatArt, $iIdLang)
+    public function fetchByCatArtAndLang($iIdCatArt, $iIdLang)
     {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
         return $this->next();

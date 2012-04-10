@@ -73,7 +73,7 @@ class cApiMetaTagCollection extends ItemCollection
      * @param int $iIdMetaType
      * @return cApiMetaTag|null
      */
-    public function selectByArtLangAndMetaType($iIdArtLang, $iIdMetaType)
+    public function fetchByArtLangAndMetaType($iIdArtLang, $iIdMetaType)
     {
         $this->select('idartlang=' . (int) $iIdArtLang . ' AND idmetatype=' . (int) $iIdMetaType);
         return $this->next();

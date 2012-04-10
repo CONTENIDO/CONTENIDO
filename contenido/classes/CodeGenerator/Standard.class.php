@@ -175,7 +175,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         // Write code into the database
         if ($this->_layout == false && $this->_save == true) {
             $oCodeColl = new cApiCodeCollection();
-            $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $this->_lang);
+            $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $this->_lang);
             if (!is_object($oCode)) {
                 $oCode = $oCodeColl->create($idcatart, $this->_lang, $this->_client, $this->_layoutCode);
             } else {
@@ -202,7 +202,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         $code = '<html><body>No code was created for this art in this category.</body><html>';
 
         $oCodeColl = new cApiCodeCollection();
-        $oCode = $oCodeColl->selectByCatArtAndLang($this->_idcatart, $this->_lang);
+        $oCode = $oCodeColl->fetchByCatArtAndLang($this->_idcatart, $this->_lang);
         if (!is_object($oCode)) {
             $oCode = $oCodeColl->create($idcatart, $this->_lang, $this->_client, $code);
         } else {

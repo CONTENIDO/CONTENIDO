@@ -161,7 +161,7 @@ function conGetMetaValue($idartlang, $idmetatype)
         return '';
     }
 
-    $oMetaTag = $oMetaTagColl->selectByArtLangAndMetaType($idartlang, $idmetatype);
+    $oMetaTag = $oMetaTagColl->fetchByArtLangAndMetaType($idartlang, $idmetatype);
     if (is_object($oMetaTag)) {
         return stripslashes($oMetaTag->get('metavalue'));
     } else {
@@ -183,8 +183,8 @@ function conSetMetaValue($idartlang, $idmetatype, $value)
     if (!isset($oMetaTagColl)) {
         $oMetaTagColl = new cApiMetaTagCollection();
     }
-    
-    $oMetaTag = $oMetaTagColl->selectByArtLangAndMetaType($idartlang, $idmetatype);
+
+    $oMetaTag = $oMetaTagColl->fetchByArtLangAndMetaType($idartlang, $idmetatype);
     if (is_object($oMetaTag)) {
         $oMetaTag->updateMetaValue($value);
     } else {

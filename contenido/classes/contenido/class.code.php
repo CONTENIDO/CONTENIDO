@@ -75,7 +75,7 @@ class cApiCodeCollection extends ItemCollection
      * @param int $iIdLang
      * @return cApiCode|null
      */
-    public function selectByCatArtAndLang($iIdCatArt, $iIdLang)
+    public function fetchByCatArtAndLang($iIdCatArt, $iIdLang)
     {
         $this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
         return $this->next();

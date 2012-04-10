@@ -589,7 +589,7 @@ else
     // Check if code is expired, create new code if needed
     if ($db->f("createcode") == 0 && $force == 0)
     {
-        $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
+        $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $lang);
         if (!is_object($oCode))
         {
             // Include here for performance reasons
@@ -597,7 +597,7 @@ else
 
             conGenerateCode($idcat, $idart, $lang, $client);
 
-            $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
+            $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $lang);
         }
 
         if (is_object($oCode))
@@ -631,7 +631,7 @@ else
 
         conGenerateCode($idcat, $idart, $lang, $client);
 
-        $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
+        $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $lang);
         $code = $oCode->get('code', false);
     }
 
