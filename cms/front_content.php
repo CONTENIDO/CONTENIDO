@@ -51,12 +51,12 @@
  *   modified 2008-09-07, Murat Purc, new chain 'Contenido.Frontend.AfterLoadPlugins'
  *   modified 2008-11-11, Andreas Lindner, added additional option to CEC_Hook::setConditions for frontend user acccess
  *   modified 2008-11-11, Andreas Lindner, Fixed typo in var name $iLangCheck (missing $)
- *   modified 2008-11-11, Andreas Lindner,        
- *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page 
+ *   modified 2008-11-11, Andreas Lindner,
+ *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page
  *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages
  *   modified 2008-12-23, Murat Purc, fixed problems with Contenido_Url
  *   modified 2009-01-13, Murat Purc, changed handling of internal redirects
- *   modified 2009-03-02, Andreas Lindner, prevent $lang being wrongly set to 0 
+ *   modified 2009-03-02, Andreas Lindner, prevent $lang being wrongly set to 0
  *   modified 2009-04-16, OliverL, check return from Contenido.Frontend.HTMLCodeOutput
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
  *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
@@ -167,7 +167,7 @@ if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0)
 Contenido_Security::checkFrontendGlobals();
 
 
-// update urlbuilder set http base path 
+// update urlbuilder set http base path
 Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
 
 
@@ -250,7 +250,7 @@ if (isset($path) && strlen($path) > 1)
 
 // error page
 $aParams = array (
-    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client], 
+    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
     'lang' => $lang, 'error'=> '1'
 );
 $errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
@@ -282,7 +282,7 @@ if (!$idcatart)
     {
         if (!$idcat)
         {
-        	$sql = "SELECT
+            $sql = "SELECT
                         A.idart,
                         B.idcat
                     FROM
@@ -338,9 +338,9 @@ if (!$idcatart)
 
             if ($db->next_record())
             {
-            	if ($db->f("startidartlang") != 0)
+                if ($db->f("startidartlang") != 0)
                 {
-                	$sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".Contenido_Security::toInteger($db->f("startidartlang"))."'";
+                    $sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".Contenido_Security::toInteger($db->f("startidartlang"))."'";
                     $db->query($sql);
                     $db->next_record();
                     $idart = $db->f("idart");
@@ -590,7 +590,7 @@ else
     // Check if code is expired, create new code if needed
     if ($db->f("createcode") == 0 && $force == 0)
     {
-        $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
+        $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $lang);
         if (!is_object($oCode))
         {
             // Include here for performance reasons
@@ -598,7 +598,7 @@ else
 
             conGenerateCode($idcat, $idart, $lang, $client);
 
-            $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
+            $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $lang);
         }
 
         if (is_object($oCode))
@@ -632,7 +632,7 @@ else
 
         conGenerateCode($idcat, $idart, $lang, $client);
 
-        $oCode = $oCodeColl->selectByCatArtAndLang($idcatart, $lang);
+        $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $lang);
         $code = $oCode->get('code', false);
     }
 
@@ -750,44 +750,32 @@ else
     {
         $isstart = 0;
     }
-    
+
     ##############################################
     # time management
     ##############################################
     $sql = "SELECT timemgmt, online, redirect, redirect_url, datestart, dateend FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
     $db->next_record();
-	
+
     $online = $db->f("online");
-	$redirect = $db->f("redirect");
+    $redirect = $db->f("redirect");
     $redirect_url = $db->f("redirect_url");
-	
-	/*if ($db->f("timemgmt") == "1" && $isstart != 1) {
-		$dateStart = $db->f("datestart");
-		$dateEnd = $db->f("dateend");
 
-		if ($dateStart != '0000-00-00 00:00:00' && strtotime($dateStart) > time()) {
-            $online = 0;
-        }
+    if ($db->f("timemgmt") == "1" && $isstart != 1) {
+        $online = 0;
+        $dateStart = $db->f("datestart");
+        $dateEnd = $db->f("dateend");
 
-        if ($dateEnd != '0000-00-00 00:00:00' && strtotime($dateEnd) < time()) {
-            $online = 0;
-        }
-	}*/
-	if ($db->f("timemgmt") == "1" && $isstart != 1) {
-		$online = 0;
-		$dateStart = $db->f("datestart");
-		$dateEnd = $db->f("dateend");
-
-		if ($dateStart != '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00' && (strtotime($dateStart) <= time() || strtotime($dateEnd) > time()) && strtotime($dateStart) < strtotime($dateEnd)) {
-        	$online = 1;
+        if ($dateStart != '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00' && (strtotime($dateStart) <= time() || strtotime($dateEnd) > time()) && strtotime($dateStart) < strtotime($dateEnd)) {
+            $online = 1;
         } else if ($dateStart != '0000-00-00 00:00:00' && $dateEnd == '0000-00-00 00:00:00' && strtotime($dateStart) <= time()) {
-        	$online = 1;
+            $online = 1;
         } else if ($dateStart == '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00' && strtotime($dateEnd) > time()) {
-        	$online = 1;
-        } 
-	}
-	
+            $online = 1;
+        }
+    }
+
     @ eval ("\$"."redirect_url = \"$redirect_url\";"); // transform variables
 
     $insert_base = getEffectiveSetting('generator', 'basehref', "true");

@@ -47,14 +47,14 @@
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *   modified 2008-08-29, Murat Purc, synchronised with /cms/front_content.php
  *   modified 2008-09-07, Murat Purc, new chain 'Contenido.Frontend.AfterLoadPlugins'
- *   modified 2008-11-11, Andreas Lindner, added additional option to CEC_Hook::setConditions for frontend user acccess     
+ *   modified 2008-11-11, Andreas Lindner, added additional option to CEC_Hook::setConditions for frontend user acccess
  *   modified 2008-11-11, Andreas Lindner, Fixed typo in var name $iLangCheck (missing $)
- *   modified 2008-11-11, Andreas Lindner, Fixed typo in var name $iLangCheck (missing $)    
- *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page 
+ *   modified 2008-11-11, Andreas Lindner, Fixed typo in var name $iLangCheck (missing $)
+ *   modified 2008-11-18, Timo Trautmann: in backendeditmode also check if logged in backenduser has permission to view preview of page
  *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages
  *   modified 2009-01-03, Murat Purc, synchronized with cms/front_content.php
  *   modified 2009-01-13, Murat Purc, synchronized with cms/front_content.php
- *   modified 2009-03-02, Andreas Lindner, prevent $lang being wrongly set to 0 
+ *   modified 2009-03-02, Andreas Lindner, prevent $lang being wrongly set to 0
  *   modified 2009-04-16, OliverL, check return from Contenido.Frontend.HTMLCodeOutput
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
  *   modified 2009-12-31, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
@@ -165,7 +165,7 @@ if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0)
 Contenido_Security::checkFrontendGlobals();
 
 
-// update urlbuilder set http base path 
+// update urlbuilder set http base path
 Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
 
 
@@ -248,7 +248,7 @@ if (isset($path) && strlen($path) > 1)
 
 // error page
 $aParams = array (
-    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client], 
+    'client' => $client, 'idcat' => $errsite_idcat[$client], 'idart' => $errsite_idart[$client],
     'lang' => $lang, 'error'=> '1'
 );
 $errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
@@ -280,7 +280,7 @@ if (!$idcatart)
     {
         if (!$idcat)
         {
-        	$sql = "SELECT
+            $sql = "SELECT
                         A.idart,
                         B.idcat
                     FROM
@@ -336,9 +336,9 @@ if (!$idcatart)
 
             if ($db->next_record())
             {
-            	if ($db->f("startidartlang") != 0)
+                if ($db->f("startidartlang") != 0)
                 {
-                	$sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".Contenido_Security::toInteger($db->f("startidartlang"))."'";
+                    $sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".Contenido_Security::toInteger($db->f("startidartlang"))."'";
                     $db->query($sql);
                     $db->next_record();
                     $idart = $db->f("idart");
@@ -422,7 +422,7 @@ if ($cfg["cache"]["disable"] != '1') {
 ##############################################
 
 /**
- * If user has contenido-backend rights.
+ * If user has CONTENIDO-backend rights.
  * $contenido <==> the cotenido backend session as http global
  * In Backend: e.g. contenido/index.php?contenido=dac651142d6a6076247d3afe58c8f8f2
  * Can also be set via front_content.php?contenido=dac651142d6a6076247d3afe58c8f8f2
@@ -507,7 +507,6 @@ if ($contenido)
                             </tr>';
         }
 
-
         /* Display articles */
         $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' ORDER BY idart";
 
@@ -560,7 +559,7 @@ else
 # FRONTEND VIEW
 ##############################################
 
-    /* Mark submenuitem 'Preview' in the Contenido Backend (Area: Contenido --> Articles --> Preview) */
+    /* Mark submenuitem 'Preview' in the CONTENIDO Backend (Area: Contenido --> Articles --> Preview) */
     if ($contenido)
     {
         $markscript = markSubMenuItem(4, true);
@@ -756,23 +755,24 @@ else
     $sql = "SELECT timemgmt, online, redirect, redirect_url, datestart, dateend FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
     $db->next_record();
-	
+
     $online = $db->f("online");
-	$redirect = $db->f("redirect");
+    $redirect = $db->f("redirect");
     $redirect_url = $db->f("redirect_url");
-	
-	if ($db->f("timemgmt") == "1" && $isstart != 1) {
-		$dateStart = $db->f("datestart");
-		$dateEnd = $db->f("dateend");
 
-		if ($dateStart != '0000-00-00 00:00:00' && strtotime($dateStart) > time()) {
-            $online = 0;
-        }
+    if ($db->f("timemgmt") == "1" && $isstart != 1) {
+        $online = 0;
+        $dateStart = $db->f("datestart");
+        $dateEnd = $db->f("dateend");
 
-        if ($dateEnd != '0000-00-00 00:00:00' && strtotime($dateEnd) < time()) {
-            $online = 0;
+        if ($dateStart != '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00' && (strtotime($dateStart) <= time() || strtotime($dateEnd) > time()) && strtotime($dateStart) < strtotime($dateEnd)) {
+            $online = 1;
+        } else if ($dateStart != '0000-00-00 00:00:00' && $dateEnd == '0000-00-00 00:00:00' && strtotime($dateStart) <= time()) {
+            $online = 1;
+        } else if ($dateStart == '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00' && strtotime($dateEnd) > time()) {
+            $online = 1;
         }
-	}
+    }
 
     @ eval ("\$"."redirect_url = \"$redirect_url\";"); // transform variables
 
