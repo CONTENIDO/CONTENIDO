@@ -92,6 +92,17 @@ class cApiCodeCollection extends ItemCollection
             $this->delete($oCode->get('idcode'));
         }
     }
+    /**
+     * Returns a code entry by category article and language.
+     * @param int $iIdCatArt
+     * @param int $iIdLang
+     * @return cApiCode|null
+     */
+    public function selectByCatArtAndLang($iIdCatArt, $iIdLang)
+    {
+    	$this->select('idcatart=' . (int) $iIdCatArt . ' AND idlang=' . (int) $iIdLang);
+    	return $this->next();
+    }
 
 }
 
