@@ -116,7 +116,7 @@ class cApiClientLanguageCollection extends ItemCollection
         global $cfg;
 
         $list = array();
-        $sql = "SELECT a.idlang AS idlang, b.name AS name
+        $sql = "SELECT l.idlang AS idlang, l.name AS name
                 FROM `%s` AS cl, `%s` AS l
                 WHERE idclient=%d AND cl.idlang = l.idlang
                 ORDER BY idlang ASC";
