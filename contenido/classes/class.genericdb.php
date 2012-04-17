@@ -199,6 +199,38 @@ class Contenido_ItemCache
     }
 
     /**
+     * Returns existing entry from cache by matching properties and their values.
+     *
+     * @param   array  $aProperties  Assoziative key value pairs
+     * @return  array|null
+     */
+    public function getItemByProperties(array $aProperties)
+    {
+        if (!$this->_bEnable) {
+            return null;
+        }
+
+        // loop thru all cached entries and try to find a entry by it's property
+        foreach ($this->_aItemsCache as $id => $aEntry) {
+            $mFound = null;
+            foreach ($aProperties as $key => $value) {
+                if (isset($aEntry[$key]) && $aEntry[$key] == $value) {
+                    if (null === $mFound) {
+                        $mFound = true;
+                    }
+                } else {
+                    $mFound = false;
+                    break;
+                }
+                if (true === $mFound) {
+                    return $aEntry;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Adds passed item data to internal cache
      *
      * @param   mixed  $mId
