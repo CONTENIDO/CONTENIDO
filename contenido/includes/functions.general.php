@@ -125,34 +125,35 @@ function is_alphanumeric($test, $umlauts = true)
 * @return boolean
 */
 function is_utf8($input) {
+	$len = strlen($input);
 	
-	//Workaround for longer strings to avoid crashing
-	$inputStrings = array();
-	
-	//Splitting the string into smaller chunks with a max length of 127 characters
-	if(strlen($input) > 127) {
-		$inputStrings = explode("\n", chunk_split($input, 127, "\n"));
-	} else {
-		$inputStrings[] = $input;
-	}
-	
-	foreach($inputStrings as $string) {
-		$isutf8 = preg_match('%^(?:
-			  [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
-	        |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
-	        | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
-	        |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
-	        |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
-	        | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
-	        |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
-	    )*$%xs', $input);
+	for($i = 0; $i < $len; $i++) {
+		$char = ord($input[$i]);
+		$n = 0;
 		
-		if($isutf8) {
-			return true;
+		if($char < 0x80) { //ASCII char
+			continue;
+		} else if(($char & 0xE0) === 0xC0 && $char > 0xC1) { //2 byte long char
+			$n = 1;
+		} else if(($char & 0xF0) === 0xE0) { //3 byte long char
+			$n = 2;
+		} else if(($char & 0xF8) === 0xF0 && $char < 0xF5) { //4 byte long char
+			$n = 3;
+		} else {
+			return false;
+		}
+		
+		for($j = 0; $j < $n; $j++) {
+			$i++;
+			
+			if($i == $len || (ord($input[$i]) & 0xC0) !== 0x80) {
+				return false;
+			}
 		}
 	}
-	return false;
+	return true;
 }
+
 /**
  * Returns multi-language month name (canonical) by its numeric value
  *
