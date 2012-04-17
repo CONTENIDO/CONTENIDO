@@ -117,7 +117,6 @@ function onXHRLoad(e) {
    		//if all of them are finished, load the response to the frame
    		if(loadResponse) {
    			self.location.href = "main.php?area=upl&frame=4&path=" + upload_path + "&appendparameters=&contenido=" + contenido_id;
-   			alert(this.responseText);
    		}
    	}
 }

@@ -125,9 +125,20 @@ function is_alphanumeric($test, $umlauts = true)
 * @return boolean
 */
 function is_utf8($input) {
-	return preg_match('%^(?:
-	          [\x09\x0A\x0D\x20-\x7E]            # ASCII
-	        | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
+	
+	//Workaround for longer strings to avoid crashing
+	$inputStrings = array();
+	
+	//Splitting the string into smaller chunks with a max length of 127 characters
+	if(strlen($input) > 127) {
+		$inputStrings = explode("\n", chunk_split($input, 127, "\n"));
+	} else {
+		$inputStrings[] = $input;
+	}
+	
+	foreach($inputStrings as $string) {
+		$isutf8 = preg_match('%^(?:
+			  [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
 	        |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
 	        | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
 	        |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
@@ -135,6 +146,12 @@ function is_utf8($input) {
 	        | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
 	        |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
 	    )*$%xs', $input);
+		
+		if($isutf8) {
+			return true;
+		}
+	}
+	return false;
 }
 /**
  * Returns multi-language month name (canonical) by its numeric value
