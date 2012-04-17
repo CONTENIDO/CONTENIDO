@@ -129,6 +129,23 @@ class cApiClientLanguageCollection extends ItemCollection
         return $list;
     }
 
+    /**
+     * Returns the id of first language for a specific client.
+     *
+     * @param   int  $client
+     * @return  int|null
+     */
+    public function getFirstLanguageIdByClient($client)
+    {
+        global $cfg;
+
+        $sql = "SELECT l.idlang FROM `%s` AS cl, `%s` AS l "
+             . "WHERE cl.idclient = %d AND cl.idlang = l.idlang LIMIT 0,1";
+
+        $this->db->query($sql, $this->table, $cfg['tab']['lang'], $client);
+
+        return ($this->db->next_record()) ? (int) $this->db->f('idlang') : null;
+    }
 }
 
 

@@ -78,6 +78,35 @@ class cApiRightCollection extends ItemCollection
     }
 
     /**
+     * Checks if a specific user has frontend access to a protected category.
+     *
+     * @param int $idcat
+     * @param string $userId
+     * @return bool
+     */
+    public function hasFrontendAccessByCatIdAndUserId($idcat, $userId)
+    {
+        global $cfg;
+
+        $sql = "SELECT :pk FROM `:rights` AS A, `:actions` AS B, `:area` AS C "
+             . "WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = ':userid' AND "
+             . "A.idcat = :idcat AND A.idarea = C.idarea AND B.idaction = A.idaction LIMIT 1";
+
+        $params = array(
+            'pk' => $this->primaryKey,
+            'rights' => $this->table,
+            'actions' => $cfg['tab']['actions'],
+            'area' => $cfg['tab']['area'],
+            'userid' => $userId,
+            'idcat' => (int) $idcat
+        );
+
+        $sql = $this->db->prepare($sql, $params);
+        $this->db->query($sql);
+        return ($this->db->next_record());
+    }
+
+    /**
      * Deletes right entries by user id.
      *
      * @todo  Implement functions to delete rights by area, action, cat, client, language.

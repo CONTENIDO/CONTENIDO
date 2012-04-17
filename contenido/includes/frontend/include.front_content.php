@@ -38,7 +38,7 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release <= 4.9
+ * @since      file available since CONTENIDO release = 4.9
  *
  *   $Id$:
  * }}
@@ -104,13 +104,14 @@ if ($cfgClient['set'] != 'set') {
     rereadClients();
 }
 
+// Initialize encodings
 if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
     // Get encodings of all languages
     $encoding = array();
-    $sql = "SELECT idlang, encoding FROM " . $cfg["tab"]["lang"];
-    $db->query($sql);
-    while ($db->next_record()) {
-        $encoding[$db->f('idlang')] = $db->f('encoding');
+    $oLangColl = new cApiLanguageCollection();
+    $oLangColl->select('');
+    while ($oLang = $oLangColl->next()) {
+        $encoding[$oLang->get('idlang')] = $oLang->get('encoding');
     }
 }
 
@@ -128,10 +129,8 @@ if (!isset($lang)) {
         // load_client is set in frontend/config.php
         $lang = $load_lang;
     } else {
-        $sql = "SELECT B.idlang FROM ".$cfg["tab"]["clients_lang"]." AS A, ".$cfg["tab"]["lang"]." AS B WHERE A.idclient='".Contenido_Security::toInteger($client)."' AND A.idlang = B.idlang LIMIT 0,1";
-        $db->query($sql);
-        $db->next_record();
-        $lang = $db->f('idlang');
+        $oClientLang = new cApiClientLanguageCollection();
+        $lang = $oClientLang->getFirstLanguageIdByClient($client);
     }
 }
 
@@ -184,11 +183,10 @@ $errsite = 'Location: ' . Contenido_Url::getInstance()->buildRedirect($aParams);
 // Note: These variables can be set via http globals e.g. front_content.php?idcat=41&idart=34&idcatart=35&idartlang=42
 // If not the values will be computed.
 if ($idart && !$idcat && !$idcatart) {
-    // Try to fetch the first idcat
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($idart)."'";
-    $db->query($sql);
-    if ($db->next_record()) {
-        $idcat = $db->f('idcat');
+    // Try to fetch the idcat by idart
+    $oCatArt = new cApiCategoryArticle();
+    if ($oCatArt->loadBy('idart', (int) $idart)) {
+        $idcat = $oCatArt->get('idcat');
     }
 }
 
@@ -197,13 +195,12 @@ unset($code, $markscript);
 if (!$idcatart) {
     if (!$idart) {
         if (!$idcat) {
-            $sql = "SELECT A.idart, B.idcat FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["cat_tree"] . " AS B, " . $cfg["tab"]["cat"] . " AS C, " . $cfg["tab"]["cat_lang"] . " AS D, " . $cfg["tab"]["art_lang"] . " AS E WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND D.startidartlang = E.idartlang AND D.idlang = " . Contenido_Security::toInteger($lang) . " AND E.idart = A.idart AND E.idlang = " . Contenido_Security::toInteger($lang) . " AND idclient = " . Contenido_Security::toInteger($client) . " ORDER BY idtree ASC";
-
-            $db->query($sql);
-
-            if ($db->next_record()) {
-                $idart = $db->f('idart');
-                $idcat = $db->f('idcat');
+            // Try to get caetgory and article id of first item in current clients tree structure
+            $oCatArtColl = new cApiCategoryArticleCollection();
+            $oCatArt = $oCatArtColl->fetchFirstFromTreeByClientIdAndLangId($client, $lang);
+            if ($oCatArt) {
+                $idart = $oCatArt->get('idart');
+                $idcat = $oCatArt->get('idcat');
             } else {
                 if ($contenido) {
                     cInclude('includes', 'functions.i18n.php');
@@ -219,15 +216,13 @@ if (!$idcatart) {
             }
         } else {
             $idart = -1;
-            $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-            $db->query($sql);
 
-            if ($db->next_record()) {
-                if ($db->f('startidartlang') != 0) {
-                    $sql = "SELECT idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".Contenido_Security::toInteger($db->f("startidartlang"))."'";
-                    $db->query($sql);
-                    $db->next_record();
-                    $idart = $db->f('idart');
+            // Try to fetch article by category and language
+            $oCatLang = new cApiCategoryLanguage();
+            if ($oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+                if ($oCatLang->get('startidartlang') != 0) {
+                    $oArtLang = new cApiArticleLanguage($oCatLang->get('startidartlang'));
+                    $idart = $oArtLang->get('idart');
                 }
             }
 
@@ -250,19 +245,20 @@ if (!$idcatart) {
         }
     }
 } else {
-    $sql = "SELECT idcat, idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcatart='".Contenido_Security::toInteger($idcatart)."'";
-    $db->query($sql);
-    $db->next_record();
-    $idcat = $db->f('idcat');
-    $idart = $db->f('idart');
+    // Try to fetch article and category id by idcatart
+    $oCatArt = new cApiCategoryArticle((int) $idcatart);
+    if ($oCatArt->isLoaded()) {
+        $idcat = $oCatArt->get('idcat');
+        $idart = $oCatArt->get('idart');
+    }
 }
 
 // Get idcatart
 if (0 != $idart && 0 != $idcat) {
-    $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($idart)."' AND idcat = '".Contenido_Security::toInteger($idcat)."'";
-    $db->query($sql);
-    $db->next_record();
-    $idcatart = $db->f('idcatart');
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    if ($oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart)) {
+        $idcatart = $oCatArt->get('idcatart');
+    }
 }
 
 $idartlang = getArtLang($idart, $lang);
@@ -310,7 +306,8 @@ if ($contenido) {
     $col->removeSessionMarks($sess->id);
     // If the override flag is set, override a specific cApiInUse
 
-    list($inUse, $message) = $col->checkAndMark('article', $idartlang, true, i18n('Article is in use by %s (%s)'), true, $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?changeview=edit&action=con_editart&idartlang=$idartlang&type=$type&typenr=$typenr&idart=$idart&idcat=$idcat&idcatart=$idcatart&client=$client&lang=$lang");
+    $inUseUrl = $cfg['path']['contenido_fullhtml'] . "external/backendedit/front_content.php?changeview=edit&action=con_editart&idartlang=$idartlang&type=$type&typenr=$typenr&idart=$idart&idcat=$idcat&idcatart=$idcatart&client=$client&lang=$lang";
+    list($inUse, $message) = $col->checkAndMark('article', $idartlang, true, i18n('Article is in use by %s (%s)'), true, $inUseUrl);
 
     $sHtmlInUse = '';
     $sHtmlInUseMessage = '';
@@ -320,10 +317,10 @@ if ($contenido) {
         $sHtmlInUseMessage = $message;
     }
 
-    $sql = "SELECT locked FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
-    $db->query($sql);
-    $db->next_record();
-    $locked = $db->f('locked');
+    // Is article locked?
+    $oArtLang = new cApiArticleLanguage();
+    $oArtLang->loadByArticleAndLanguageId($idart, $lang);
+    $locked = $oArtLang->get('locked');
     if ($locked == 1) {
         $inUse = true;
         $disabled = 'disabled="disabled"';
@@ -336,53 +333,53 @@ if ($contenido) {
     );
 
     if ($perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat) && $inUse == false && $allow == true) {
-        // Create buttons for editing
+        // Start editing table
         $edit_preview = '<table cellspacing="0" cellpadding="4" border="0">';
 
+        // Create buttons for editing
         if ($view == 'edit') {
             $edit_preview = '<tr>
                                 <td width="18">
-                                    <a title="Preview" style="font-family: Verdana; font-size: 10px; color: #000000; text-decoration: none" href="'.$sess->url("front_content.php?changeview=prev&idcat=$idcat&idart=$idart").'"><img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_preview.gif" alt="Preview" title="Preview" border="0"></a>
+                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=prev&idcat=$idcat&idart=$idart") . '"><img src="' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_preview.gif" alt="Preview" title="Preview" border="0"></a>
                                 </td>
                                 <td width="18">
-                                    <a title="Preview" style="font-family: Verdana; font-size: 10px; color: #000000; text-decoration: none" href="'.$sess->url("front_content.php?changeview=prev&idcat=$idcat&idart=$idart").'">Preview</a>
+                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=prev&idcat=$idcat&idart=$idart") . '">Preview</a>
                                 </td>
                             </tr>';
         } else {
             $edit_preview = '<tr>
                                 <td width="18">
-                                    <a title="Preview" style="font-family: Verdana; font-size: 10px; color: #000000; text-decoration: none" href="'.$sess->url("front_content.php?changeview=edit&idcat=$idcat&idart=$idart").'"><img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_edit.gif" alt="Preview" title="Preview" border="0"></a>
+                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=edit&idcat=$idcat&idart=$idart") . '"><img src="' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'but_edit.gif" alt="Preview" title="Preview" border="0"></a>
                                 </td>
                                 <td width="18">
-                                    <a title="Preview" style="font-family: Verdana; font-size: 10px; color: #000000; text-decoration: none" href="'.$sess->url("front_content.php?changeview=edit&idcat=$idcat&idart=$idart").'">Edit</a>
+                                    <a title="Preview" style="font-family:verdana;font-size:10px;color:#000;text-decoration:none" href="' . $sess->url("front_content.php?changeview=edit&idcat=$idcat&idart=$idart") . '">Edit</a>
                                 </td>
                             </tr>';
         }
 
-        // Display articles
-        $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' ORDER BY idart";
-        $db->query($sql);
-
+        // List category articles
         $a = 1;
+        $edit_preview .= '<tr><td colspan="2"><table cellspacing="0" cellpadding="2" border="0"></tr><td style="font-family:verdana;font-size:10;color:#000;text-decoration:none">Articles in category:<br>';
 
-        $edit_preview .= '<tr><td colspan="2"><table cellspacing="0" cellpadding="2" border="0"></tr><td style="font-family: verdana; font-size:10; color:#000000; text-decoration:none">Articles in category:<br>';
-
-        while ($db->next_record() && ($db->affected_rows() != 1)) {
-            $class = "font-family:'Verdana'; font-size:10; color:#000000; text-decoration: underline; font-weight:normal";
-            if (!isset($idart)) {
-                if (isStartArticle(getArtLang($idart, $lang), $idcat, $lang)) {
-                    $class = "font-family: verdana; font-size:10; color:#000000; text-decoration: underline ;font-weight:bold";
+        $oCatArtColl = new cApiCategoryArticleCollection();
+        if ($oCatArtColl->select('idcat = ' . (int) $idcat, '', 'idart')) {
+            while ($oCatArtItem = $oCatArtColl->next()) {
+                $class = 'font-family:verdana;font-size:10;color:#000;text-decoration:underline;font-weight:normal';
+                if (!isset($idart)) {
+                    if (isStartArticle(getArtLang($idart, $lang), $idcat, $lang)) {
+                        $class = 'font-family:verdana;font-size:10;color:#000;text-decoration:underline;font-weight:bold';
+                    }
+                } else {
+                    if ($idart == $oCatArtItem->get('idart')) {
+                        $class = 'font-family:verdana;font-size:10;color:#000;text-decoration:underline;font-weight:bold';
+                    }
                 }
-            } else {
-                if ($idart == $db->f('idart')) {
-                    $class = "font-family: verdana; font-size:10; color:#000000; text-decoration: underline; font-weight:bold";
-                }
+                $edit_preview .= '<a style="' . $class . '" href="' . $sess->url('front_content.php?idart=' . $oCatArtItem->get('idart') . "&idcat=$idcat") . '">' . $a . '</a>&nbsp;';
+                $a++;
             }
-
-            $edit_preview .= "<a style=\"$class\" href=\"".$sess->url("front_content.php?idart=".$db->f("idart")."&idcat=$idcat")."\">$a</a>&nbsp;";
-            $a++;
         }
 
+        // End editing table
         $edit_preview .= '</td></tr></table></td></tr></table>';
     }
 }
@@ -404,15 +401,15 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     unset($edit); // disable editmode
 
     // 'mode' is preview (Area: Contenido --> Articles --> Preview) or article displayed in the front-end
-    $sql = "SELECT createcode FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".Contenido_Security::toInteger($idcat)."' AND idart = '".Contenido_Security::toInteger($idart)."'";
-    $db->query($sql);
-    $db->next_record();
 
     // Code generation
     $oCodeColl = new cApiCodeCollection();
 
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
+
     // Check if code is expired, create new code if needed
-    if ($db->f('createcode') == 0 && $force == 0) {
+    if ($oCatArt->get('createcode') == 0 && $force == 0) {
         $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $lang);
         if (!is_object($oCode)) {
             cInclude('includes', 'functions.tpl.php');
@@ -453,10 +450,9 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     }
 
     // Check if category is public
-    $sql = "SELECT public FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-    $db->query($sql);
-    $db->next_record();
-    $public = $db->f('public');
+    $oCatLang = new cApiCategoryLanguage();
+    $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
+    $public = $oCatLang->get('public');
 
     // Protected categories
     if ($public == 0) {
@@ -477,10 +473,8 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 }
 
                 if (IP_match($network, $netmask, $_SERVER['REMOTE_ADDR'])) {
-                    $sql = "SELECT idright FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["actions"]." AS B, ".$cfg["tab"]["area"]." AS C WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = '".Contenido_Security::escapeDB($user_id, $db2)."' AND A.idcat = '".Contenido_Security::toInteger($idcat)."' AND A.idarea = C.idarea AND B.idaction = A.idaction";
-                    $db2 = new DB_Contenido();
-                    $db2->query($sql);
-                    if ($db2->num_rows() > 0) {
+                    $oRightColl = new cApiRightCollection();
+                    if (true === $oRightColl->hasFrontendAccessByCatIdAndUserId($idcat, $user_id)) {
                         $auth->auth['uid'] = $user_id;
                         $validated = 1;
                     }
@@ -518,30 +512,25 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     $oStat = $oStatColl->trackVisit($idcatart, $lang, $client);
 
     // Check if an article is start article of the category
-    $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
-    $db->query($sql);
-    $db->next_record();
-    if ($db->f('idartlang') == $idartlang) {
-        $isstart = 1;
-    } else {
-        $isstart = 0;
-    }
+    $oCatLang = new cApiCategoryLanguage();
+    $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
+    $isstart = ($oCatLang->get('idartlang') == $idartlang) ? 1 : 0;
 
     // Time management, redirect
-    $sql = "SELECT timemgmt, online, redirect, redirect_url, datestart, dateend FROM ".$cfg["tab"]["art_lang"]." WHERE idart='".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
-    $db->query($sql);
-    $db->next_record();
+    $oArtLang = new cApiArticleLanguage();
+    $oArtLang->loadByArticleAndLanguageId($idart, $lang);
 
-    $online = $db->f('online');
-    $redirect = $db->f('redirect');
-    $redirect_url = $db->f('redirect_url');
+    $online = $oArtLang->get('online');
+    $redirect = $oArtLang->get('redirect');
+    $redirect_url = $oArtLang->get('redirect_url');
 
-    if ($db->f('timemgmt') == '1' && $isstart != 1) {
+    if ($oArtLang->get('timemgmt') == '1' && $isstart != 1) {
         $online = 0;
-        $dateStart = $db->f('datestart');
-        $dateEnd = $db->f('dateend');
+        $dateStart = $oArtLang->get('datestart');
+        $dateEnd = $oArtLang->get('dateend');
 
-        if ($dateStart != '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00' && (strtotime($dateStart) <= time() || strtotime($dateEnd) > time()) && strtotime($dateStart) < strtotime($dateEnd)) {
+        if ($dateStart != '0000-00-00 00:00:00' && $dateEnd != '0000-00-00 00:00:00'
+            && (strtotime($dateStart) <= time() || strtotime($dateEnd) > time()) && strtotime($dateStart) < strtotime($dateEnd)) {
             $online = 1;
         } elseif ($dateStart != '0000-00-00 00:00:00' && $dateEnd == '0000-00-00 00:00:00' && strtotime($dateStart) <= time()) {
             $online = 1;
@@ -550,7 +539,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         }
     }
 
-    @eval("\$"."redirect_url = \"$redirect_url\";"); // transform variables
+    @eval("\$" . "redirect_url = \"$redirect_url\";"); // transform variables
 
     // Generate base url
     $insertBaseHref = getEffectiveSetting('generator', 'basehref', 'true');

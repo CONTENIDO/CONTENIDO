@@ -193,8 +193,15 @@ class cApiArticleLanguage extends Item
     {
         $result = true;
         if ($this->virgin == true) {
-            $idartlang = $this->_getIdArtLang($idart, $idlang);
-            $result = $this->loadByPrimaryKey($idartlang);
+            $aProps = array('idart' => $idart, 'idlang' => $idlang);
+            $aRecordSet = $this->_oCache->getItemByProperties($aProps);
+            if ($aRecordSet) {
+                // entry in cache found, load entry from cache
+                $this->loadByRecordSet($aRecordSet);
+            } else {
+                $idartlang = $this->_getIdArtLang($idart, $idlang);
+                $result = $this->loadByPrimaryKey($idartlang);
+            }
         }
 
         if (true === $fetchContent) {

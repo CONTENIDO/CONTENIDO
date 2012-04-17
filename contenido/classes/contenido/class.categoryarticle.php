@@ -59,14 +59,60 @@ class cApiCategoryArticleCollection extends ItemCollection
     }
 
     /**
+     * Returns the first category article available entry from category tree by client id and language id.
+     * Build a complex query trough several tables to get a ordered tree structure
+     * and returns first available category article item.
+     *
+     * @param int $client
+     * @param int $lang
+     * @return cApiCategoryArticle|null
+     */
+    public function fetchFirstFromTreeByClientIdAndLangId($client, $lang)
+    {
+        global $cfg;
+
+        $sql = "SELECT A.* FROM `:cat_art` AS A, `:cat_tree` AS B, `:cat` AS C, `:cat_lang` AS D, `:art_lang` AS E "
+             . "WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND D.startidartlang = E.idartlang AND D.idlang = :lang AND E.idart = A.idart AND E.idlang = :lang AND idclient = :client "
+             . "ORDER BY idtree ASC LIMIT 1";
+
+        $params = array(
+            'cat_art' => $this->table,
+            'cat_tree' => $cfg['tab']['cat_tree'],
+            'cat' => $cfg['tab']['cat'],
+            'cat_lang' => $cfg['tab']['cat_lang'],
+            'art_lang' => $cfg['tab']['art_lang'],
+            'lang' => (int) $lang,
+            'client' => (int) $client,
+        );
+
+        $sql = $this->db->prepare($sql, $params);
+        $this->db->query($sql);
+        if ($this->db->next_record()) {
+            $oItem = new cApiCategoryArticle();
+            $oItem->loadByRecordSet($this->db->toArray());
+            return $oItem;
+        }
+        return null;
+    }
+
+    /**
      * Returns a category article entry by category id and article id.
      * @param int $idcat
      * @param int $idart
      * @return cApiCategoryArticle|null
      */
     public function fetchByCategoryIdAndArticleId($idcat, $idart) {
-        $this->select('idcat=' . (int) $idcat . ' AND idart=' . (int) $idart);
-        return $this->next();
+        $aProps = array('idcat' => $idcat, 'idart' => $idart);
+        $aRecordSet = $this->_oCache->getItemByProperties($aProps);
+        if ($aRecordSet) {
+            // entry in cache found, load entry from cache
+            $oItem = new cApiCategoryArticle();
+            $oItem->loadByRecordSet($aRecordSet);
+            return $oItem;
+        } else {
+            $this->select('idcat=' . (int) $idcat . ' AND idart=' . (int) $idart);
+            return $this->next();
+        }
     }
 
 }

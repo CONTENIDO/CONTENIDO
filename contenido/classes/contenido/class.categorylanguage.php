@@ -151,8 +151,16 @@ class cApiCategoryLanguage extends Item
      */
     public function loadByCategoryIdAndLanguageId($idcat, $idlang)
     {
-        $where = $this->db->prepare('idcat = %d AND idlang = %d', $idcat, $idlang);
-        return $this->_loadByWhereClause($where);
+        $aProps = array('idcat' => $idcat, 'idlang' => $idlang);
+        $aRecordSet = $this->_oCache->getItemByProperties($aProps);
+        if ($aRecordSet) {
+            // entry in cache found, load entry from cache
+            $this->loadByRecordSet($aRecordSet);
+            return true;
+        } else {
+            $where = $this->db->prepare('idcat = %d AND idlang = %d', $idcat, $idlang);
+            return $this->_loadByWhereClause($where);
+        }
     }
 
     /**
