@@ -5,6 +5,7 @@
  *
  * Description:
  * Central CONTENIDO file to initialize the application. Performs following steps:
+ * - Initial PHP setting
  * - Does basic security check
  * - Includes configurations
  * - Runs validation of request variables
@@ -21,7 +22,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.1.0
+ * @version    1.1.1
  * @author     four for Business AG
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -50,6 +51,19 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
+/* Initial PHP error handling settings
+ * -----------------------------------------------------------------------------
+ */
+// Don't display errors
+@ini_set('display_errors', false);
+
+// Log errors to a file
+@ini_set('log_errors', true);
+
+// Report all errors except warnings
+error_reporting(E_ALL ^E_NOTICE);
+
 
 /*
  * Do not edit this value!
@@ -107,6 +121,12 @@ if (file_exists($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.
     include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.local.php');
 }
 
+// Takeover configured PHP settings
+foreach ($cfg['php_settings'] as $name => $value) {
+    @ini_set($name, $value);
+}
+error_reporting($cfg['php_error_reporting']);
+
 // Various base API functions
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/api/functions.api.general.php');
 
@@ -120,23 +140,19 @@ if ($cfg['http_params_check']['enabled'] === true) {
         new HttpInputValidator($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.http_check.php');
 }
 
-/* Generate arrays for available login languages
- * ---------------------------------------------
- * Author: Martin Horwath
- */
+// Generate arrays for available login languages
+// Author: Martin Horwath
 global $cfg;
-
+$localePath = $cfg['path']['contenido'] . $cfg['path']['locale'];
 $handle = opendir($cfg['path']['contenido'] . $cfg['path']['locale']);
-
 while ($locale = readdir($handle)) {
-   if (is_dir($cfg['path']['contenido'] . $cfg['path']['locale'] . $locale) && $locale != '..' && $locale != '.') {
-      if (file_exists($cfg['path']['contenido'] . $cfg['path']['locale'] . $locale . '/LC_MESSAGES/contenido.po') &&
-         file_exists($cfg['path']['contenido'] . $cfg['path']['locale'] . $locale . '/LC_MESSAGES/contenido.mo') ) {
-
-         $cfg['login_languages'][] = $locale;
-         $cfg['lang'][$locale] = 'lang_'.$locale.'.xml';
-      }
-   }
+    if (is_dir($localePath . $locale) && $locale != '..' && $locale != '.') {
+        if (file_exists($localePath . $locale . '/LC_MESSAGES/contenido.po') &&
+            file_exists($localePath . $locale . '/LC_MESSAGES/contenido.mo')) {
+            $cfg['login_languages'][] = $locale;
+            $cfg['lang'][$locale] = 'lang_' . $locale . '.xml';
+        }
+    }
 }
 
 // Some general includes
