@@ -42,6 +42,9 @@
          $sMessage = mi18n("Please specify a valid e-mail address.");
       } elseif ($oRecipients->emailExists($_POST['email'])) {
          $sMessage = mi18n("This e-mail address has been already registered for the newsletter.");
+      }elseif($_POST['privacy'] != 1){
+      	$sMessage = mi18n("Please acept our privacy policy!");
+      	
       } else {
          $sEMail = preg_replace('/[\r\n]+/', '', stripslashes($_POST['email']));
          $sName  = stripslashes($_POST["emailname"]);

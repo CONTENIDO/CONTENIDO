@@ -106,7 +106,10 @@ cms/modules/navigation_meta/php/navigation_meta_output.php -text
 cms/modules/news/info.xml -text
 cms/modules/news/php/news_input.php -text
 cms/modules/news/php/news_output.php -text
+cms/modules/newsletter_form/css/newsletter_form.css -text svneol=unset#text/plain
 cms/modules/newsletter_form/info.xml -text
+cms/modules/newsletter_form/lang/lang_de_DE.txt -text svneol=unset#text/plain
+cms/modules/newsletter_form/lang/lang_en_US.txt -text svneol=unset#text/plain
 cms/modules/newsletter_form/php/newsletter_form_input.php -text
 cms/modules/newsletter_form/php/newsletter_form_output.php -text
 cms/modules/newsletter_handler/info.xml -text

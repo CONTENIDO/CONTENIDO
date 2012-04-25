@@ -16,9 +16,9 @@
    $aSettings['JoinGroups']      = $oClientLang->getProperty('newsletter', 'joingroups');
    $aSettings['JoinMessageType'] = $oClientLang->getProperty('newsletter', 'joinmessagetype');
    $aSettings['OptNewWindow']    = "CMS_VALUE[4]";
-
+	
    $sTemplate = 'newsletter_form.html';
-
+   $cmsLinkeditor = "CMS_LINKEDITOR[1]";
    if ($aSettings["JoinSel"] == "" || ($aSettings["JoinSel"] == "UserSelected" && $aSettings["JoinGroups"] == "")) {
       $aSettings["JoinSel"]= "Default";
    }
@@ -106,6 +106,10 @@
    $oPage->set("s", "ABSCHICKEN", mi18n("submit"));
    $oPage->set("s", "LOESCHEN", mi18n("delete"));
    $oPage->set('s', 'JOIN', mi18n("Join"));
-
+   $oPage->set('s', 'LINKEDITOR',$cmsLinkeditor );
+   $oPage->set('s', 'PRIVACY_TEXT_PART1', mi18n("Ich habe die"));
+   
+   $oPage->set('s', 'PRIVACY_TEXT_PART2', mi18n(" gelesen und bin damit einverstanden. "));
+  
    $oPage->generate('templates/'.$sTemplate);
 ?>
