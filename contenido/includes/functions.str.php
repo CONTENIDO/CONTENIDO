@@ -464,6 +464,28 @@ function sort_pre_post($arr) {
 
     $curId = $firstElement;
     $array = array();
+    
+    //Test for inifinite loops in the category list (1=>2; 2=>1 || 1=>1)
+    $checkedIds = array();
+    foreach($arr as $row) {
+    	if(in_array($row['postid'], $checkedIds) || $row['idcat'] == $row['postid']) {
+    		die(i18n("The list of categories is messed up. The order in the list creates an infinite loop. Check you database."));
+    	}
+    	$checkedIds[] = $row['idcat'];
+    }
+    
+    //Test for a last element in the category list
+    $fine = false;
+    foreach($arr as $row) {
+    	if($row['postid'] == 0) {
+    		$fine = true;
+    		break;
+    	}
+    }
+    if(!$fine) {
+    	die(i18n("The list of categories is messed up. The order in the list creates an infinite loop. Check you database."));
+    }
+    
     while ($curId != 0) {
         $array[] = $arr[$curId];
         $curId = $arr[$curId]['postid'];

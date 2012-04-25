@@ -5874,6 +5874,10 @@ msgstr "Wiedervorlage"
 msgid "Settings"
 msgstr "Einstellungen"
 
+#: includes/function.str.php
+msgid "The list of categories is messed up. The order in the list creates an infinite loop. Check you database."
+msgstr "Die Liste der Kategorien ist fehlerhaft. Die Reihenfolge erzeugt eine unendliche Schleife. Bitte überprüfen Sie die Datenbank."
+
 #~ msgid "Newsletter: %s"
 #~ msgstr "Newsletter: %s"
 
