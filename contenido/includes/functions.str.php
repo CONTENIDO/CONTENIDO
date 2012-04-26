@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.3.17
+ * @version    1.3.20
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -63,7 +63,6 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
         return;
     }
 
-    $db2 = new DB_Contenido();
     $remakeCatTable = true;
     $remakeStrTable = true;
 
@@ -81,17 +80,21 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     }
 
     $public = ($public == 1) ? 1 : 0;
-    if (!$perm->have_perm_area_action('str', 'str_makepublic') {
+    if (!$perm->have_perm_area_action('str', 'str_makepublic')) {
         $public = 1;
     }
-
-    $aLanguages = array($lang);
 
     $created = date('Y-m-d H:i:s');
 
     // Entry in 'cat_lang'-table
-    $sql = "INSERT INTO ".$cfg['tab']['cat']." (preid, postid, idclient, author, created, lastmodified) VALUES(0, 0,
-            ".$client.", '".$db->escape($auth->auth['uname'])."', '".$created."', '".$created."')";
+    $sql = $db->buildInsert($cfg['tab']['cat'], array(
+        'preid' => 0,
+        'postid' => 0,
+        'idclient' => $client,
+        'author' => $auth->auth['uname'],
+        'created' => $created,
+        'lastmodified' => $created,
+    ));
     $db->query($sql);
     $newIdCat = $db->getLastInsertedId($cfg['tab']['cat']);
 
@@ -102,16 +105,27 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     $rootIdCat = $db->f('idcat');
     if ($rootIdCat) {
         // Update 'cat'-table
-        $sql = 'UPDATE ' . $cfg['tab']['cat'] . ' SET postid=' . $newIdCat . ' WHERE idcat=' . $rootIdCat;
+        $aFields = array('postid' => $newIdCat);
+        $aWhere = array('idcat' => (int) $rootIdCat);
+        $sql = $db->buildUpdate($cfg['tab']['cat'], $aFields, $aWhere);
         $db->query($sql);
     }
 
     // Entry in 'cat_lang'-table
+    $aLanguages = array($lang);
     foreach ($aLanguages as $tmpIdLang) {
-        $sql = "INSERT INTO ".$cfg['tab']['cat_lang']." (idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
-                VALUES(".$newIdCat.", ".$tmpIdLang.",
-                '".htmlspecialchars($catname, ENT_QUOTES)."', ".$visible.", ".$public.", 0,
-                '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".$db->escape($auth->auth['uname'])."', '".$created."', '".$created."')";
+        $sql = $db->buildInsert($cfg['tab']['cat_lang'], array(
+            'idcat' => $newIdCat,
+            'idlang' => $tmpIdLang,
+            'name' => htmlspecialchars($catname, ENT_QUOTES),
+            'visible' => $visible,
+            'public' => $public,
+            'idtplcfg' => 0,
+            'urlname' => htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES),
+            'author' => $auth->auth['uname'],
+            'created' => $created,
+            'lastmodified' => $created,
+        ));
         $db->query($sql);
     }
 
@@ -157,7 +171,6 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
 //        return;
 //    }
 
-    $db2 = new DB_Contenido();
     $remakeCatTable = true;
     $remakeStrTable = true;
 
@@ -175,76 +188,74 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
     }
 
     $public = ($public == 1) ? 1 : 0;
-    if (!$perm->have_perm_area_action('str', 'str_makepublic') {
+    if (!$perm->have_perm_area_action('str', 'str_makepublic')) {
         $public = 1;
     }
 
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid=". (int) $tmp_parentid . " AND postid=0";
+    $sql = "SELECT idcat FROM " . $cfg["tab"]["cat"] . " WHERE parentid=" . (int) $tmp_parentid . " AND postid=0";
     $db->query($sql);
     $db->next_record();
     $tmp_id = $db->f("idcat");
 
+    $created = date('Y-m-d H:i:s');
+
     if (!$tmp_id) {
-        //********** Entry in 'cat'-table ************
-        $sql = "INSERT INTO ".$cfg["tab"]["cat"]." (parentid, preid, postid, idclient, author, created, lastmodified) VALUES(
-                '".Contenido_Security::toInteger($tmp_parentid)."', '0', '0', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."',
-                '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+        // Insert entry in 'cat'-table
+        $sql = $db->buildInsert($cfg['tab']['cat'], array(
+            'parentid' => (int) $tmp_parentid,
+            'preid' => 0,
+            'postid' => 0,
+            'idclient' => (int) $client,
+            'author' => $auth->auth['uname'],
+            'created' => $created,
+            'lastmodified' => $created,
+        ));
         $db->query($sql);
         $tmp_newid = $db->getLastInsertedId($cfg["tab"]["cat"]);
-
-        //********* enter name of cat in 'cat_lang'-table ******
-        $a_languages[] = $lang;
-
-        foreach ($a_languages as $tmp_lang) {
-            if ($tmp_lang == $lang) {
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
-                        VALUES('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($visible)."', '".Contenido_Security::toInteger($public)."', '0',
-                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
-                $db->query($sql);
-            } else {
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." (idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
-                        VALUES('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($visible)."', '".Contenido_Security::toInteger($public)."', '0',
-                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
-                $db->query($sql);
-            }
-        }
     } else {
-        //********** Entry in 'cat'-table ************
-        $sql = "INSERT INTO ".$cfg["tab"]["cat"]." (parentid, preid, postid, idclient, author, created, lastmodified) VALUES(
-                '".Contenido_Security::toInteger($tmp_parentid)."', '".Contenido_Security::toInteger($tmp_id)."', '0', '".Contenido_Security::toInteger($client)."',
-                '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+        // Insert entry in 'cat'-table
+        $sql = $db->buildInsert($cfg['tab']['cat'], array(
+            'parentid' => (int) $tmp_parentid,
+            'preid' => (int) $tmp_id,
+            'postid' => 0,
+            'idclient' => (int) $client,
+            'author' => $auth->auth['uname'],
+            'created' => $created,
+            'lastmodified' => $created,
+        ));
         $db->query($sql);
         $tmp_newid = $db->getLastInsertedId($cfg["tab"]["cat"]);
 
-                //********** Entry in 'cat'-table ************
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='$tmp_newid', lastmodified = '".date("Y-m-d H:i:s")."' WHERE idcat='".Contenido_Security::toInteger($tmp_id)."'";
+        // Update entry in 'cat'-table
+        $aFields = array('postid' => $tmp_newid, 'lastmodified' => $created);
+        $aWhere = array('idcat' => (int) $tmp_id);
+        $sql = $db->buildUpdate($cfg['tab']['cat'], $aFields, $aWhere);
         $db->query($sql);
-        //********* enter name of cat in 'cat_lang'-table ******
-        $a_languages[] = $lang;
-        foreach ($a_languages as $tmp_lang) {
-            if ($tmp_lang == $lang) {
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." ( idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
-                        VALUES('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($visible)."', '".Contenido_Security::toInteger($public)."', '0',
-                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
-                $db->query($sql);
-            } else {
-                $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]." ( idcat, idlang, name, visible, public, idtplcfg, urlname, author, created, lastmodified)
-                        VALUES('".Contenido_Security::toInteger($tmp_newid)."', '".Contenido_Security::toInteger($tmp_lang)."',
-                        '".htmlspecialchars($catname, ENT_QUOTES)."', '".Contenido_Security::toInteger($visible)."', '".Contenido_Security::toInteger($public)."', '0',
-                        '".htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES)."', '".Contenido_Security::escapeDB($auth->auth['uname'], $db)."', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
-                $db->query($sql);
-            }
-        }
+    }
+
+    // Insert entries in 'cat_lang'-table
+    $aLanguages = array($lang);
+    foreach ($aLanguages as $tmpIdLang) {
+        $sql = $db->buildInsert($cfg['tab']['cat_lang'], array(
+            'idcat' => (int) $tmp_newid,
+            'idlang' => $tmpIdLang,
+            'name' => htmlspecialchars($catname, ENT_QUOTES),
+            'visible' => $visible,
+            'public' => $public,
+            'idtplcfg' => 0,
+            'urlname' => htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES),
+            'author' => $auth->auth['uname'],
+            'created' => $created,
+            'lastmodified' => $created,
+        ));
+        $db->query($sql);
     }
 
     // set correct rights for element
     cInclude('includes', 'functions.rights.php');
-    foreach ($a_languages as $tmp_lang) {
-        copyRightsForElement('str', $tmp_parentid, $tmp_newid, $tmp_lang);
-        copyRightsForElement('con', $tmp_parentid, $tmp_newid, $tmp_lang);
+    foreach ($aLanguages as $tmpIdLang) {
+        copyRightsForElement('str', $tmp_parentid, $tmp_newid, $tmpIdLang);
+        copyRightsForElement('con', $tmp_parentid, $tmp_newid, $tmpIdLang);
     }
 
     if ($remakeTree == true) {
@@ -298,7 +309,6 @@ function strRemakeTreeTable()
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $poststring = "";
     $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idclient = ". (int) $client;
     $db->query($sql);
     $idcats = array();
@@ -594,11 +604,11 @@ function strNextDeeperAll($tmp_idcat, $ignore_lang = false)
  */
 function strShowTreeTable()
 {
-    global $db, $sess, $client, $lang, $idcat, $cfg, $lngStr;
+    global $db, $sess, $client, $lang, $cfg, $lngStr;
 
     cDeprecated("This function is not longer supported.");
 
-    echo "<br><table cellpadding=$cellpadding cellspacing=$cellspacing border=$border >";
+    echo "<br><table cellpadding=0 cellspacing=0 border=0>";
     $sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".Contenido_Security::toInteger($lang)."' AND B.idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idtree";
     $db->query($sql);
     while ($db->next_record()) {
@@ -774,94 +784,92 @@ function strDeleteCategory($idcat)
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
+    if (strNextDeeper($idcat)) {
+        // category has subcategories
+        return "0201";
+    } elseif (strHasArticles($idcat)) {
+        // category has arts
+        return "0202";
+    }
+
+    $db2 = new DB_Contenido();
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $db2 = new DB_Contenido();
+    $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+    $db->query($sql);
 
-    if (strNextDeeper($idcat)) {
-        return "0201";        // category has subcategories
-    } else {
+    while ($db->next_record()) {
+        // delete entry in 'tpl_conf'-table
+        $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        $db2->query($sql);
 
-        if (strHasArticles($idcat)) {
-            return "0202";        // category has arts
-        } else {
-            $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-            $db->query($sql);
-
-            while ($db->next_record()) {
-                // delete entry in 'tpl_conf'-table
-                $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
-                $db2->query($sql);
-
-                $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
-                $db2->query($sql);
-            }
-
-            // Delete language dependend part
-            $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-            $db->query($sql);
-
-            // Are there any additional languages?
-            $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-            $db->query($sql);
-
-            if ($db->num_rows() > 0) {
-                // more languages found, delete rights for element
-                cInclude('includes', 'functions.rights.php');
-                deleteRightsForElement('str', $idcat, $lang);
-                deleteRightsForElement('con', $idcat, $lang);
-                return;
-            }
-
-            $sql = "SELECT * FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-            $db->query($sql);
-            $db->next_record();
-            $tmp_preid  = $db->f("preid");
-            $tmp_postid = $db->f("postid");
-
-            // update pre cat set new postid
-            if ($tmp_preid != 0) {
-                $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
-                $db->query($sql);
-            }
-
-            // update post cat set new preid
-            if ($tmp_postid != 0) {
-                $sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
-                $db->query($sql);
-            }
-
-            // delete entry in 'cat'-table
-            $sql = "DELETE FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-            $db->query($sql);
-
-            $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-            $db->query($sql);
-            while ($db->next_record()) {
-                // delete entry in 'tpl_conf'-table
-                $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
-                $db2->query($sql);
-
-                $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
-                echo $sql;
-                $db2->query($sql);
-            }
-
-            ////// delete entry in 'cat_lang'-table
-            $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-            $db->query($sql);
-
-            ////// delete entry in 'cat_tree'-table
-            $sql = "DELETE FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-            $db->query($sql);
-        }
-
-        // delete rights for element
-        cInclude('includes', 'functions.rights.php');
-        deleteRightsForElement('str', $idcat);
-        deleteRightsForElement('con', $idcat);
+        $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        $db2->query($sql);
     }
+
+    // Delete language dependend part
+    $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+    $db->query($sql);
+
+    // Are there any additional languages?
+    $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $db->query($sql);
+
+    if ($db->num_rows() > 0) {
+        // more languages found, delete rights for element
+        cInclude('includes', 'functions.rights.php');
+        deleteRightsForElement('str', $idcat, $lang);
+        deleteRightsForElement('con', $idcat, $lang);
+        return;
+    }
+
+    $sql = "SELECT * FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $db->query($sql);
+    $db->next_record();
+    $tmp_preid  = $db->f("preid");
+    $tmp_postid = $db->f("postid");
+
+    // update pre cat set new postid
+    if ($tmp_preid != 0) {
+        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
+        $db->query($sql);
+    }
+
+    // update post cat set new preid
+    if ($tmp_postid != 0) {
+        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
+        $db->query($sql);
+    }
+
+    // delete entry in 'cat'-table
+    $sql = "DELETE FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $db->query($sql);
+
+    $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $db->query($sql);
+    while ($db->next_record()) {
+        // delete entry in 'tpl_conf'-table
+        $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        $db2->query($sql);
+
+        $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        echo $sql;
+        $db2->query($sql);
+    }
+
+    ////// delete entry in 'cat_lang'-table
+    $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $db->query($sql);
+
+    ////// delete entry in 'cat_tree'-table
+    $sql = "DELETE FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $db->query($sql);
+
+    // delete rights for element
+    cInclude('includes', 'functions.rights.php');
+    deleteRightsForElement('str', $idcat);
+    deleteRightsForElement('con', $idcat);
 }
 
 
@@ -878,9 +886,6 @@ function strMoveUpCategory($idcat)
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
-    $remakeCatTable = true;
-    $remakeStrTable = true;
-
     $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
     $db->query($sql);
     $db->next_record();
@@ -888,40 +893,46 @@ function strMoveUpCategory($idcat)
     $tmp_preid  = $db->f("preid");
     $tmp_postid = $db->f("postid");
 
-    if ($tmp_preid != 0) {
-        $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
-        $db->query($sql);
-        $db->next_record();
-        $tmp_idcat_pre  = $db->f("idcat");
-        $tmp_preid_pre  = $db->f("preid");
-        $tmp_postid_pre = $db->f("postid");
-
-        $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_preid_pre)."'";
-        $db->query($sql);
-        $db->next_record();
-        $tmp_idcat_pre_pre  = $db->f("idcat");
-        $tmp_preid_pre_pre  = $db->f("preid");
-        $tmp_postid_pre_pre = $db->f("postid");
-
-        $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
-        $db->query($sql);
-        $db->next_record();
-        $tmp_idcat_post  = $db->f("idcat");
-        $tmp_preid_post  = $db->f("preid");
-        $tmp_postid_post = $db->f("postid");
-
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  postid='".Contenido_Security::toInteger($tmp_idcat)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid_pre)."'";
-        $db->query($sql);
-
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  preid='".Contenido_Security::toInteger($tmp_idcat)."', postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
-        $db->query($sql);
-
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  preid='".Contenido_Security::toInteger($tmp_preid_pre)."', postid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='$tmp_idcat'";
-        $db->query($sql);
-
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  preid='".Contenido_Security::toInteger($tmp_idcat_pre)."' WHERE idcat='$tmp_postid'";
-        $db->query($sql);
+    if ($tmp_preid == 0) {
+        // No preid, no way to move up
+        return;
     }
+
+    $remakeCatTable = true;
+    $remakeStrTable = true;
+
+    $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
+    $db->query($sql);
+    $db->next_record();
+    $tmp_idcat_pre  = $db->f("idcat");
+    $tmp_preid_pre  = $db->f("preid");
+    $tmp_postid_pre = $db->f("postid");
+
+    $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_preid_pre)."'";
+    $db->query($sql);
+    $db->next_record();
+    $tmp_idcat_pre_pre  = $db->f("idcat");
+    $tmp_preid_pre_pre  = $db->f("preid");
+    $tmp_postid_pre_pre = $db->f("postid");
+
+    $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
+    $db->query($sql);
+    $db->next_record();
+    $tmp_idcat_post  = $db->f("idcat");
+    $tmp_preid_post  = $db->f("preid");
+    $tmp_postid_post = $db->f("postid");
+
+    $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  postid='".Contenido_Security::toInteger($tmp_idcat)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid_pre)."'";
+    $db->query($sql);
+
+    $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  preid='".Contenido_Security::toInteger($tmp_idcat)."', postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
+    $db->query($sql);
+
+    $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  preid='".Contenido_Security::toInteger($tmp_preid_pre)."', postid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='$tmp_idcat'";
+    $db->query($sql);
+
+    $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  preid='".Contenido_Security::toInteger($tmp_idcat_pre)."' WHERE idcat='$tmp_postid'";
+    $db->query($sql);
 }
 
 
@@ -1111,7 +1122,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
 {
     global $cfg;
 
-    $tmpdb = new DB_Contenido();
+    $db2 = new DB_Contenido();
     $bMultiple = (bool) $bMultiple;
 
     $aCatArray = array();
@@ -1124,57 +1135,48 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
     foreach ($aCatArray as $idcat) {
         // Check if category already exists
         $sql = "SELECT * FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $targetlang;
-        $tmpdb->query($sql);
-        if ($tmpdb->next_record()) {
+        $db2->query($sql);
+        if ($db2->next_record()) {
             return false;
         }
 
         $sql = "SELECT * FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $sourcelang;
-        $tmpdb->query($sql);
+        $db2->query($sql);
 
-        if ($tmpdb->next_record()) {
-            if ($tmpdb->f("idtplcfg") != 0) {
+        if ($db2->next_record()) {
+            if ($db2->f("idtplcfg") != 0) {
                 // Copy the template configuration
-                $newidtplcfg = tplcfgDuplicate($tmpdb->f("idtplcfg"));
+                $newidtplcfg = tplcfgDuplicate($db2->f("idtplcfg"));
             } else {
                 $newidtplcfg = 0;
             }
-            //$newidcatlang = $tmpdb->nextid($cfg["tab"]["cat_lang"]);
+            //$newidcatlang = $db2->nextid($cfg["tab"]["cat_lang"]);
 
-            $idcat = $tmpdb->f("idcat");
-            $idlang = $targetlang;
-            $idtplcfg = $newidtplcfg;
-            $name = $tmpdb->f("name");
+            $idcat = $db2->f("idcat");
             $visible = 0;
-            $public = $tmpdb->f("public");
-            $urlname = $tmpdb->f("urlname");
-            $status = $tmpdb->f("status");
-            $author = $tmpdb->f("author");
-            $created = $tmpdb->f("created");
-            $lastmodified = $tmpdb->f("lastmodified");
 
-            $sql = "INSERT INTO ".$cfg["tab"]["cat_lang"]."
-                        (idcat, idlang, idtplcfg, name, visible, public, status, author, created,
-                        lastmodified, urlname)
-                    VALUES
-                        (
-                        '".Contenido_Security::toInteger($idcat)."',
-                        '".Contenido_Security::toInteger($idlang)."',
-                        '".Contenido_Security::toInteger($idtplcfg)."',
-                        '".Contenido_Security::escapeDB($name, $tmpdb)."',
-                        '".Contenido_Security::toInteger($visible)."',
-                        '".Contenido_Security::toInteger($public)."',
-                        '".Contenido_Security::toInteger($status)."',
-                        '".Contenido_Security::escapeDB($author, $tmpdb)."',
-                        '".Contenido_Security::escapeDB($created, $tmpdb)."',
-                        '".Contenido_Security::escapeDB($lastmodified, $tmpdb)."',
-                        '".Contenido_Security::escapeDB($urlname, $tmpdb)."')";
-            $tmpdb->query($sql);
+            $aRs = $db2->toArray();
+
+            $sql = $db2->buildInsert($cfg['tab']['cat_lang'], array(
+                'idcat' => (int) $aRs['idcat'],
+                'idlang' => (int) $targetlang,
+                'idtplcfg' => (int) $newidtplcfg,
+                'name' => $aRs['name'],
+                'visible' => $visible,
+                'public' => $aRs['public'],
+                'status' => (int) $aRs['status'],
+                'urlname' => $aRs['urlname'],
+                'author' => $aRs['author'],
+                'created' => $aRs['created'],
+                'lastmodified' => $aRs['lastmodified'],
+            ));
+
+            $db2->query($sql);
 
             // execute CEC hook
-            $param = $tmpdb->Record;
-            $param['idlang']   = $idlang;
-            $param['idtplcfg'] = $idtplcfg;
+            $param = $aRs;
+            $param['idlang']   = $targetlang;
+            $param['idtplcfg'] = (int) $newidtplcfg;
             $param['visible']  = $visible;
             CEC_Hook::execute('Contenido.Category.strSyncCategory_Loop', $param);
 
@@ -1198,7 +1200,7 @@ function strHasStartArticle($idcat, $idlang)
 {
     global $cfg, $db_str;
 
-    $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = " . (int) $idcat) . " AND idlang = " . (int) $idlang . " AND startidartlang != 0";
+    $sql = "SELECT startidartlang FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $idlang . " AND startidartlang != 0";
 
     $db_str->query($sql);
     return ($db_str->next_record()) ? true : false;
