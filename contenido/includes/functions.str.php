@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.3.16
+ * @version    1.3.17
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,25 +21,6 @@
  *
  * {@internal
  *   created 2002-03-02
- *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2008-08-29, Murat Purc, add new chain execution
- *   modified 2008-09-03, Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann (strRemakeTreeTableFindNext)
- *   modified 2008-10-29, delete from cat_tree only for one Cliente OliverL (strRemakeTreeTable)
- *   modified 2008-11-03, Add cat_tree only for one Cliente OliverL (strRemakeTreeTable)
- *   modified 2009-05-05, Timo Trautmann - optional use for copy label on copy proccess
- *   modified 2009-10-14, Dominik Ziegler - changed functionality of strMoveSubtree and strMoveCatTargetallowed to prevent crashing tree on moving
- *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready), commenting code and some formatting
- *   modified 2009-10-27, Murat Purc, fixed/modified CEC_Hook, see [#CON-256]
- *   modified 2010-01-30, Ingo van Peeren, modified strRemakeTreeTable() to pass only one INSERT statement to the database, see [#CON-299]
- *   modified 2010-03-12, Ingo van Peeren, fixed a bug with last change if more than one client exist [#CON-299]
- *   modified 2010-06-18, Ingo van Peeren, fixed some issues with next id and order of con_cat_tree entries
- *   modified 2010-09-17, Ingo van Peeren, fixed some issues wrong level information causing garbled tree [#CON-348]
- *   modified 2010-10-13, Dominik Ziegler, No copy label per default when copying articles or categories (CON-352)
- *   modified 2011-08-24, Dominik Ziegler, removed deprecated function strRemakeTreeTableFindNext
- *   modified 2011-10-25, Murat Purc, reworked strNewTree
- *   modified 2012-01-17, Mischa Holz, reworked strDeeperCategoriesArray to fix [CON-453]
- *   modified 2012-01-18, Mischa Holz, reworked strDeeperCategoriesArray again to usa a non recursive algorithm
- *
  *   $Id$:
  * }}
  *
@@ -48,26 +29,6 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
-
-/*********************************************************************************
-Functions
-strNewTree($catname)
-strNewCategory($tmp_parentid, $catname)
-strOrderedPostTreeList ($idcat, $poststring)
-strRemakeTreeTable()
-strNextDeeper($tmp_idcat)
-strNextPost($tmp_idcat)
-strNextBackwards($tmp_idcat)
-strShowTreeTable()
-strRenameCategory ($idcat, $lang, $newcategoryname)
-strMakeVisible ($idcat, $lang, $visible)
-strMakePublic ($idcat, $lang, $public)
-strDeleteCategory ($idcat)
-strMoveUpCategory ($idcat)
-strMoveDownCategory ($idcat)
-strMoveSubtree ($idcat, $parentid_new)
-strMoveCatTargetallowed($idcat, $source)
-********************************************************************************/
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.database.php');
@@ -114,12 +75,6 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
 
     $client = (int) $client;
     $lang = (int) $lang;
-
-    if ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) {
-        $iIdtplcfg = (int) $iIdtplcfg;
-    } else  {
-        $iIdtplcfg = 0;
-    }
 
     $visible = (int) $visible;
     if (!(($visible == 0 || $visible == 1) && $perm->have_perm_area_action('str', 'str_makevisible'))) {
@@ -168,29 +123,8 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
         createRightsForElement('con', $newIdCat, $tmpIdLang);
     }
 
-    // Search for default template
-    $templateCollection = new cApiTemplateCollection('defaulttemplate = 1 AND idclient = ' . $client);
-
-    if ($template = $templateCollection->next()) {
-        $idtpl = $template->get('idtpl');
-        if ($iIdtplcfg > 0) {
-            $idtpl = $iIdtplcfg;
-        }
-        // Assign template, if default template exists
-        $catCollection = new cApiCategoryLanguageCollection('idcat = ' . $newIdCat);
-        while ($cat = $catCollection->next()) {
-            $cat->assignTemplate($idtpl);
-        }
-    } else {
-        // 2008-06-25 timo.trautmann also set default template if it is selcted by user and there is no default template
-        if ($iIdtplcfg > 0) {
-            $idtpl = $iIdtplcfg;
-            $catCollection = new cApiCategoryLanguageCollection('idcat = ' . $newIdCat);
-            while ($cat = $catCollection->next()) {
-                $cat->assignTemplate($idtpl);
-            }
-        }
-    }
+    // Assign template
+    strAssignTemplate($newIdCat, $client, $iIdtplcfg);
 
     return $newIdCat;
 }
@@ -224,12 +158,6 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
     $catalias = trim($catalias);
     if ($catalias == '') {
         $catalias = trim($catname);
-    }
-
-    if ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) {
-        $iIdtplcfg = (int) $iIdtplcfg;
-    } else  {
-        $iIdtplcfg = 0;
     }
 
     $bVisible = (int) $bVisible;
@@ -323,31 +251,10 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
         strRemakeTreeTable();
     }
 
-    // Search for default template
-    $templateCollection = new cApiTemplateCollection("defaulttemplate = 1 AND idclient = " . (int) $client);
+    // Assign template
+    strAssignTemplate($tmp_newid, $client, $iIdtplcfg);
 
-    if ($template = $templateCollection->next()) {
-        $idtpl = $template->get('idtpl');
-        if ($iIdtplcfg > 0) {
-            $idtpl = $iIdtplcfg;
-        }
-        // Assign template, if default template exists
-        $catCollection = new cApiCategoryLanguageCollection("idcat = ". (int) $tmp_newid);
-        while ($cat = $catCollection->next()) {
-            $cat->assignTemplate($idtpl);
-        }
-    } else {
-        //2008-06-25 timo.trautmann also set default template if it is selcted by user and there is no default template
-        if ($iIdtplcfg > 0) {
-            $idtpl = $iIdtplcfg;
-            $catCollection = new cApiCategoryLanguageCollection("idcat = ". (int) $tmp_newid);
-            while ($cat = $catCollection->next()) {
-                $cat->assignTemplate($idtpl);
-            }
-        }
-    }
-
-    return($tmp_newid);
+    return $tmp_newid;
 }
 
 
@@ -1430,6 +1337,41 @@ function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true
 
     if ($remakeTree == true) {
         strRemakeTreeTable();
+    }
+}
+
+/**
+ * Assigns a template to passed category.
+ * @param  int  $idcat
+ * @param  int  $client
+ * @param  int  $idTplCfg
+ */
+function strAssignTemplate($idcat, $client, $idTplCfg)
+{
+    global $perm;
+
+    // Template permissition check
+    $iIdtplcfg = ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg')) ? (int) $iIdtplcfg : 0;
+
+    $idtpl = null;
+
+    if ($iIdtplcfg == 0) {
+        // Get default template
+        $templateColl = new cApiTemplateCollection('defaulttemplate = 1 AND idclient = ' . (int) $client);
+        if ($template = $templateColl->next()) {
+            $idtpl = $template->get('idtpl');
+        }
+    } else {
+        // Use passed template
+        $idtpl = $idTplCfg;
+    }
+
+    if ($idtpl) {
+        // Assign template
+        $catColl = new cApiCategoryLanguageCollection('idcat = ' . (int) $idcat);
+        while ($cat = $catColl->next()) {
+            $cat->assignTemplate($idtpl);
+        }
     }
 }
 
