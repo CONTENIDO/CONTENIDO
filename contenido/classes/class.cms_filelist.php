@@ -681,8 +681,8 @@ class Cms_FileList {
 		$aDirectories = array();
 		$oHandle = opendir($sUploadPath);
 		$i = 0;
-        while($sEntry = trim(readdir($oHandle))) {
-			if ( substr($sEntry, 0,1) != "." && is_dir( $sUploadPath . $sEntry ) ) {
+        while($sEntry = readdir($oHandle)) {
+			if ( $sEntry != "." && $sEntry != ".." && is_dir( $sUploadPath . $sEntry ) ) {
 				$aDirectories[$i]['name'] = $sEntry;
 				$aDirectories[$i]['path'] = $sUploadPath;
 				$aDirectories[$i]['sub'] = $this->buildDirectoryList( $sUploadPath . $sEntry );
