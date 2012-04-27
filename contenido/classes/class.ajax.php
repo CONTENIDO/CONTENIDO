@@ -86,22 +86,6 @@ class Ajax
 
                 $sString = $oFileList->getFileSelect($sDirName);
                 break;
-			
-			case 'medialist' :
-				global $cfg, $client, $lang, $cfgClient;
-				
-				$sDirName = ( string ) $_REQUEST ['dir'];
-				$sMediaType = ( string ) $_REQUEST ['media_type'];
-				$iFileListId = ( int ) $_REQUEST ['id'];
-				$iIdArtLang = ( int ) $_REQUEST ['idartlang'];
-				
-				$oArt = new cApiArticleLanguage ( $iIdArtLang, true );
-				$sArtReturn = $oArt->getContent ( 'CMS_FILELIST', $iFileListId );
-				$oFileList = new Cms_Media ( $sArtReturn, $iFileListId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null );
-				
-				$sString = $oFileList->getFileSelect ( $sDirName, $sMediaType );
-				break;
-                	
 
             case 'inused_layout':
                 //list of used templates for a layout
