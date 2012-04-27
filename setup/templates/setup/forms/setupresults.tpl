@@ -7,11 +7,11 @@
     </td>
 </tr>
 <tr>
-<td style="padding-right: 20px;" width="30%" valign="top">{FINISHTEXT}<br>
+<td style="padding-right: 20px;" width="30%" valign="top"><br/>{FINISHTEXT}<br>
 </td>
-<td width="30%" valign="top">{CHOOSENEXTSTEP}
+<td width="30%" valign="top"><br/>{CHOOSENEXTSTEP}
 </td>
-<td style="padding-left: 20px;" width="30%" valign="top">{BACKEND}{FRONTEND}{WEBSITE}{FORUM}{FAQ}
+<td style="padding-left: 20px;" width="30%" valign="top"><br/>{BACKEND}{FRONTEND}{WEBSITE}{FORUM}{FAQ}
 </tr>
 </table>
 <input type="hidden" name="language" value="">

@@ -10,4 +10,4 @@
 <tr><td>{CONTROL_PATHINFO}</td>
 </tr>
 </table>
-</td><td align="right" valign="bottom" style="white-space: nowrap;">{BACK}{NEXT}</td></tr></table>
+</td><td  class="back_next" align="right" valign="bottom" style="white-space: nowrap;">{BACK}{NEXT}</td></tr></table>

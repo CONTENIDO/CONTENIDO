@@ -22,4 +22,4 @@
         <p id="plugin_description"></p>
     </div>
 </td>
-<td align="right" valign="bottom" style="white-space: nowrap;">{BACK}{NEXT}</td></tr></table>
+<td class="back_next" align="right" valign="bottom" style="white-space: nowrap;">{BACK}{NEXT}</td></tr></table>

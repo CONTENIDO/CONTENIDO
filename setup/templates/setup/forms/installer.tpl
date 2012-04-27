@@ -24,7 +24,7 @@
         <iframe class="progressOutput" style="visibility:{IFRAMEVISIBILITY};" src="{DBUPDATESCRIPT}"></iframe>
     </td>
 <tr>
-    <td align="right" valign="bottom">
+    <td  class="back_next" align="right" valign="bottom">
         <div style="visibility:hidden;" id="next">
         {NEXT}
         </div>
