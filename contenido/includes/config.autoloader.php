@@ -363,6 +363,5 @@ return array(
     'ContenidoXmlBase' => 'contenido/classes/xml/class.xml.base.php',
     'ContenidoXmlReader' => 'contenido/classes/xml/class.xml.reader.php',
     'ContenidoXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
-    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php',
-    'Cms_Media'		=> '4fb/CMS_MEDIA/classes/class.cms_media.php',
+    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php'
 );
