@@ -35,6 +35,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude('includes', 'functions.pathresolver.php');
 $message = '';
+$description = '';
 if (isset($idart)) {
     if ($idart > 0) {
         $idartlang = getArtLang($idart, $lang);
@@ -101,6 +102,7 @@ if ($idart) {
         // Article is configured
         $sql = "SELECT
                     c.idtpl AS idtpl,
+                    c.description,
                     b.idtplcfg AS idtplcfg,
                     b.locked AS locked
                 FROM
@@ -119,6 +121,8 @@ if ($idart) {
             // template configuration found
             $idtplcfg = $db->f('idtplcfg');
             $idtpl    = $db->f('idtpl');
+            $description = $db->f('description');
+            
             if ($db->f('locked') == 1) {
                 $inUse = true;
                 $disabled = 'disabled="disabled"';
@@ -152,6 +156,7 @@ if ($idart) {
     // Category is configured
     $sql = "SELECT
                 c.idtpl AS idtpl,
+                c.description,
                 b.idtplcfg AS idtplcfg
             FROM
                 ".$cfg['tab']['tpl_conf']." AS a,
@@ -169,6 +174,7 @@ if ($idart) {
         // template configuration found
         $idtplcfg = $db->f('idtplcfg');
         $idtpl    = $db->f('idtpl');
+        $description = $db->f('description');
     } else {
         if ($idtpl) {
             // create new configuration entry
@@ -196,11 +202,11 @@ $db->query($sql);
 
 if (!$db->next_record()) {
     // There is no configuration for this $idtplcfg, check if template has a pre-configuration
-    $sql = "SELECT idtplcfg FROM ".$cfg['tab']['tpl']." WHERE idtpl=".(int) $idtpl;
+    $sql = "SELECT idtplcfg, description FROM ".$cfg['tab']['tpl']." WHERE idtpl=".(int) $idtpl;
 
     $db->query($sql);
     $db->next_record();
-
+	$description = $db->f('description');
     if (0 != $db->f('idtplcfg')) {
         // Template has a pre-configuration, copy pre-configuration data to
         // category configuration with the $idtplcfg from the category
@@ -280,7 +286,7 @@ if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat)) {
 
 $tpl2->set('s', 'OPTIONS', $disabled.' '.$disabled2.' onchange="tplcfgform.changetemplate.value=1;tplcfgform.send.value=0;tplcfgform.submit();"');
 
-$sql = "SELECT idtpl, name FROM ".$cfg['tab']['tpl']." WHERE idclient=".(int) $client." ORDER BY name";
+$sql = "SELECT idtpl, name, description FROM ".$cfg['tab']['tpl']." WHERE idclient=".(int) $client." ORDER BY name";
 $db->query($sql);
 
 $tpl2->set('d', 'VALUE', 0);
@@ -447,15 +453,29 @@ if ($idtpl != 0 && $inUse == false) {
     $tpl->set('s', 'BUTTONS', '');
 }
 
+
+//Display template description
+if($idtpl) {
+	
+	$tpl->set('s', 'DESCRIPTION',  wordwrap( $description, 80, "<br />\n" ));
+	$tpl->set('s', 'LABLE_DESCRIPTION', i18n("Description"));
+}else {
+	$tpl->set('s', 'DESCRIPTION', '');
+	$tpl->set('s', 'LABLE_DESCRIPTION','');
+}
+
 if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
-    $tpl->set('s', 'HEADER', i18n('Category template configuration'));
+    $tpl->set('s', 'HEADER', i18n('Category template configuration2'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
+   
 } else if ($area == 'con_tplcfg' && (int) $idart > 0) {
-    $tpl->set('s', 'HEADER', i18n('Article template configuration'));
+    $tpl->set('s', 'HEADER', i18n('Article template configuration3'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
+   
 } else {
     $tpl->set('s', 'HEADER', '');
     $tpl->set('s', 'DISPLAY_HEADER', 'none');
+   
 }
 
 // Generate template

@@ -63,7 +63,8 @@ $tpl->set('s', 'HIDDEN', $hidden );
 
 $sql = "SELECT
             idtpl,
-            name
+            name,
+            description
         FROM
             ".$cfg["tab"]["tpl"]."
         WHERE
@@ -72,6 +73,7 @@ $sql = "SELECT
         
 $db->query($sql);
 $db->next_record();
+$description = $db->f('description');
 
 $tpl->set('s', 'TEMPLATECAPTION', i18n("Template"). ": ");
 $tpl->set('s', 'TEMPLATESELECTBOX', $db->f("name"));
@@ -174,6 +176,9 @@ $buttons = '<a href="javascript:history.back()"><img src="images/but_cancel.gif"
             <input type="image" src="images/but_ok.gif">';
 
 $tpl->set('s', 'BUTTONS', $buttons);
+
+$tpl->set('s', 'LABLE_DESCRIPTION', i18n('Description'));
+$tpl->set('s', 'DESCRIPTION',  wordwrap( $description, 80, "<br />\n" ));
 
 # Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tplcfg_edit_form']);
