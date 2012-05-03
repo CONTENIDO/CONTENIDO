@@ -44,6 +44,8 @@ if (!$perm->have_perm_area_action($area)) {
 
 $clientColl = new cApiClientCollection();
 
+
+
 $tpl->reset();
 
 $form = '<form name="log_select" method="post" action="'.$sess->url("main.php?").'">
@@ -110,6 +112,23 @@ $years = array();
 for ($i = 2000; $i < (date('Y') + 1); $i++) {
     $years[$i] = $i;
 }
+
+
+//add language con-561
+
+$aAvailableLangs = i18nGetAvailableLanguages();
+$aDisplayLangauge = array();
+foreach ($aAvailableLangs as $sCode => $aEntry) {
+	if (isset($cfg['login_languages'])) {
+		if (in_array($sCode, $cfg['login_languages'])) {
+			list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
+			$aDisplayLangauge[$sCode] = $sLanguage.' ('.$sCountry.')';
+			
+		}
+	} 
+}
+
+
 
 $fromday = new cHTMLSelectElement('fromday');
 $fromday->autoFill($days);
@@ -182,6 +201,16 @@ if (isset($_REQUEST['limit'])) {
     $olimit->setDefault(10);
 }
 
+$olangauge = new cHTMLSelectElement('display_langauge');
+$olangauge->autoFill($aDisplayLangauge);
+
+if(isset($_REQUEST['display_langauge'])) {
+	$olangauge->setDefault($_REQUEST['display_langauge']);	
+}else  {
+	$olangauge->setDefault($belang);	
+}
+	
+
 $tpl->set('s', 'USERS', $userselect);
 $tpl->set('s', 'CLIENTS', $clientselect);
 $tpl->set('s', 'ACTION', $actionselect);
@@ -192,6 +221,7 @@ $tpl->set('s', 'TODAY', $today->render());
 $tpl->set('s', 'TOMONTH', $tomonth->render());
 $tpl->set('s', 'TOYEAR', $toyear->render());
 $tpl->set('s', 'LIMIT', $olimit->render());
+$tpl->set('s', 'LANGUAGE', $olangauge->render());
 
 $fromdate = $fromyear->getDefault() . '-' . $frommonth->getDefault() . '-' . $fromday->getDefault() . ' 00:00:00';
 $todate = $toyear->getDefault() . '-' . $tomonth->getDefault() . '-' . $today->getDefault() . ' 23:59:59';
@@ -229,6 +259,29 @@ $counter = 0;
 
 $artNames = array();
 $strNames = array();
+
+
+
+//Set manual the language
+$saveBelang = $belang;
+if(isset($_REQUEST['display_langauge'])) {
+	$belang = $_REQUEST['display_langauge'];
+}
+$GLOBALS['belang'] = $_conI18n['language'] = $belang;
+unset($_conI18n['cache']);
+unset($_conI18n['files']);
+//load action strings
+cInclude("includes", "cfg_actions.inc.php", true);
+
+
+
+
+$tpl->set('s', 'LABEL_CLIENT', i18n("Client"));
+$tpl->set('s', 'LABEL_DATE', i18n("Date"));
+$tpl->set('s', 'LABEL_USER', i18n("User"));
+$tpl->set('s', 'LABEL_ACTION', i18n("Action"));
+$tpl->set('s', 'LABEL_CATEGORY', i18n("Category"));
+$tpl->set('s', 'LABEL_ARTICLE', i18n("Article"));
 
 while ($oItem = $actionLogColl->next()) {
     $counter++;
@@ -292,7 +345,16 @@ while ($oItem = $actionLogColl->next()) {
     $tpl->next();
 }
 
+
+//set/reset to selected language
+$GLOBALS['belang'] = $_conI18n['language'] = $saveBelang;
+unset($_conI18n['cache']);
+unset($_conI18n['files']);
+//load action strings 
+cInclude("includes", "cfg_actions.inc.php", true);
+
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['log_main']);
 
+ 
 ?>
