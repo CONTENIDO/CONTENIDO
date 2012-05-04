@@ -5923,3 +5923,8 @@ msgstr "Die Liste der Kategorien ist fehlerhaft. Die Reihenfolge erzeugt eine un
 #~ msgstr ""
 #~ "Keine Empfänger mit der angegebenen Empfänger-/Gruppen-ID %s/%s "
 #~ "gefunden"
+
+#: includes/include.logs.php
+msgid "All languages"
+msgstr "Alle Sprachen"
+

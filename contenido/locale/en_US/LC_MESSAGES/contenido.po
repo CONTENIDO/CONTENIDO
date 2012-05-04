@@ -5607,3 +5607,8 @@ msgstr ""
 msgid "Contact System Administrators"
 msgstr ""
 
+
+#: includes/include.logs.php
+msgid "All languages"
+msgstr "All languages"
+

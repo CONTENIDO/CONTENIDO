@@ -5387,3 +5387,8 @@ msgstr ""
 #: templates/standard/template.welcome.html:50
 msgid "Contact System Administrators"
 msgstr ""
+
+#: templates/standard/template.log_main.html
+msgid "All languages"
+msgid ""
+

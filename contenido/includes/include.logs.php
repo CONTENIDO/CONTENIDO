@@ -116,17 +116,32 @@ for ($i = 2000; $i < (date('Y') + 1); $i++) {
 
 //add language con-561
 
-$aAvailableLangs = i18nGetAvailableLanguages();
+$sql = "SELECT
+*
+FROM
+".$cfg["tab"]["lang"]." AS A,
+".$cfg["tab"]["clients_lang"]." AS B
+WHERE
+A.idlang=B.idlang AND
+B.idclient='".Contenido_Security::toInteger($client)."'
+ORDER BY A.idlang";
+
+$db->query($sql);
+
+
+$iLangCount = 0;
 $aDisplayLangauge = array();
-foreach ($aAvailableLangs as $sCode => $aEntry) {
-	if (isset($cfg['login_languages'])) {
-		if (in_array($sCode, $cfg['login_languages'])) {
-			list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
-			$aDisplayLangauge[$sCode] = $sLanguage.' ('.$sCountry.')';
-			
-		}
-	} 
+$aDisplayLangauge['%'] = i18n('All languages');
+$selectedLangauge = '%';
+
+while ($db->next_record()) {
+	$aDisplayLangauge[$db->f('idlang')] = $db->f('name');
 }
+
+if(key_exists($_REQUEST['display_langauge'], $aDisplayLangauge)) {
+	$selectedLangauge = $_REQUEST['display_langauge'];
+}
+
 
 
 
@@ -239,9 +254,10 @@ if ($idquser == '%') {
     $userquery = "LIKE '" . $idquser . "'";
 }
 
-$where = 'user_id ' . $userquery . ' AND idaction LIKE "' . $db->escape($idqaction) . '" AND '
+$where = 'user_id ' . $userquery . ' AND idlang LIKE "'.$db->escape($selectedLangauge) .'" AND idaction LIKE "' . $db->escape($idqaction) . '" AND '
     . 'logtimestamp > "' . $db->escape($fromdate) . '" AND logtimestamp < "' . $db->escape($todate) . '" AND '
     . 'idclient LIKE "' . $db->escape($idqclient) . '"';
+
 
 $actionLogColl = new cApiActionlogCollection();
 $result = $actionLogColl->select($where, '', 'logtimestamp DESC', $limitsql);
@@ -259,20 +275,6 @@ $counter = 0;
 
 $artNames = array();
 $strNames = array();
-
-
-
-//Set manual the language
-$saveBelang = $belang;
-if(isset($_REQUEST['display_langauge'])) {
-	$belang = $_REQUEST['display_langauge'];
-}
-$GLOBALS['belang'] = $_conI18n['language'] = $belang;
-unset($_conI18n['cache']);
-unset($_conI18n['files']);
-//load action strings
-cInclude("includes", "cfg_actions.inc.php", true);
-
 
 
 
@@ -345,13 +347,6 @@ while ($oItem = $actionLogColl->next()) {
     $tpl->next();
 }
 
-
-//set/reset to selected language
-$GLOBALS['belang'] = $_conI18n['language'] = $saveBelang;
-unset($_conI18n['cache']);
-unset($_conI18n['files']);
-//load action strings 
-cInclude("includes", "cfg_actions.inc.php", true);
 
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['log_main']);
