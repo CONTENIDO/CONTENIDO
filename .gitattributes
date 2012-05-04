@@ -1571,6 +1571,31 @@ contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_utility.php -t
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_wrapper.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_internal_write_file.php -text
 contenido/plugins/smarty/smarty_source/sysplugins/smarty_security.php -text
+contenido/plugins/tagging/classes/class.tagging.php -text
+contenido/plugins/tagging/classes/class.tagging_article.php -text
+contenido/plugins/tagging/classes/class.tagging_complexlist.php -text
+contenido/plugins/tagging/classes/class.tagging_selectbox.php -text
+contenido/plugins/tagging/classes/class.tagging_tree.php -text
+contenido/plugins/tagging/classes/class.tagging_treeview.php -text
+contenido/plugins/tagging/images/arrow.gif -text
+contenido/plugins/tagging/images/call_contentallocation.gif -text
+contenido/plugins/tagging/images/normal.gif -text
+contenido/plugins/tagging/includes/config.plugin.php -text
+contenido/plugins/tagging/includes/functions.chains.php -text
+contenido/plugins/tagging/includes/include.left_bottom.php -text
+contenido/plugins/tagging/includes/include.left_top.php -text
+contenido/plugins/tagging/includes/include.right_bottom.php -text
+contenido/plugins/tagging/includes/include.tagging_article.php -text
+contenido/plugins/tagging/locale/de_DE/LC_MESSAGES/tagging.po -text
+contenido/plugins/tagging/locale/potfiles.txt -text svneol=unset#text/plain
+contenido/plugins/tagging/locale/tagging.pot -text
+contenido/plugins/tagging/scripts/complexlist.js -text svneol=unset#text/plain
+contenido/plugins/tagging/style/complexlist.css -text svneol=unset#text/plain
+contenido/plugins/tagging/templates/template.tree_article.html -text svneol=unset#text/plain
+contenido/plugins/tagging/templates/template.tree_complexlist.html -text svneol=unset#text/plain
+contenido/plugins/tagging/templates/template.tree_structure.html -text svneol=unset#text/plain
+contenido/plugins/tagging/xml/lang_de_DE.xml -text svneol=unset#text/plain
+contenido/plugins/tagging/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/workflow/classes/class.workflow.php -text
 contenido/plugins/workflow/classes/class.workflowactions.php -text
 contenido/plugins/workflow/classes/class.workflowallocation.php -text

@@ -1,0 +1,105 @@
+.domenabled #finderparent {
+	border: 0px solid #000;
+	position: relative;
+	/*min-height: 250px;*/
+	height: 360px;
+	width: 730px;
+	overflow: auto;
+	margin-bottom: 10px;
+}
+
+.domenabled #finder {
+	/*position:absolute;
+	top:1em;
+	left:1em;*/
+}
+
+.domenabled ul#finder,
+.domenabled ul#finder li,
+.domenabled ul#finder ul {
+	width: 180px;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	line-height: 20px;
+}
+
+.domenabled ul#finder ul.hidden {
+	top: 0px;
+	left: -1px;
+	position: absolute;
+	/*display: none;*/
+	visibility: hidden;
+	border-left: 5px #fff solid;
+}
+
+.domenabled ul#finder ul.shown {
+	top: 0px;
+	left: 185px;
+	position: absolute;
+	float: left;
+	/*border-left: 5px #fff solid;*/
+	/*display: block;*/
+	visibility: visible;
+}
+
+.domenabled #finder a.open {
+	background: url(../images/arrow.gif) no-repeat #CCCCCC 140px 50%;
+	padding-right: 16px;
+	padding-left: 0px;
+	display: block;
+}
+
+.domenabled ul#finder li a {
+	color: #000;
+	background: url(../images/normal.gif) no-repeat transparent 0 50%;
+	/*adding-left: 16px;*/
+	text-decoration: none;
+	padding-right: 16px;
+	padding-left: 0px;
+	display: block;
+}
+
+.domenabled ul#finder li a.dark {
+	background: url(../images/arrow.gif) no-repeat #fff 170px 50%;
+}
+
+.domenabled ul#finder li.dark,
+.domenabled ul#finder li a.dark {
+	background-color: #E2E2E2;
+}
+
+.domenabled ul#finder li a.bright {
+	background: url(../images/arrow.gif) no-repeat #ddd 170px 50%;
+}
+
+.domenabled ul#finder li.bright,
+.domenabled ul#finder li a.bright {
+	background-color: #F4F4F7;
+}
+
+.domenabled ul#finder li,
+.domenabled ul#finder ul.hidden li,
+.domenabled ul#finder ul.shown li {
+	border: 1px #B3B3B3 solid;
+	border-bottom: 0px;
+}
+
+.domenabled ul#finder input {
+	float: left;
+}
+
+#choosenList {
+	border: 1px #B3B3B3 solid;
+	background-color: #E2E2E2;
+	width: 730px;
+	padding: 5px;
+}
+
+#choosenList ul {
+	margin: 0;
+}
+
+#choosenList li {
+	list-style-type: square;
+}

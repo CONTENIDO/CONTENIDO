@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<language>
+    <navigation>
+        <extra>
+            <tagging>
+            	<main>Tagging</main>
+            </tagging>
+        </extra>
+		<contenido>
+			<article>
+				<tagging>Tagging</tagging>
+			</article>
+		</contenido>
+    </navigation>
+</language>
