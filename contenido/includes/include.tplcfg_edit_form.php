@@ -44,7 +44,7 @@ if (isset($idart)) {
         $col = new cApiInUseCollection();
         $col->removeSessionMarks($sess->id);
 
-        if (($obj = $col->checkMark('article', $idartlang)) === false) {
+        if (($obj = $col->checkMark('article', $idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) {
             $col->markInUse('article', $idartlang, $sess->id, $auth->auth['uid']);
             $inUse = false;
             $disabled = '';
@@ -62,7 +62,7 @@ if (isset($idart)) {
         // Remove all own marks
         $col = new cApiInUseCollection();
         $col->removeSessionMarks($sess->id);
-        if (($obj = $col->checkMark('categorytpl', $idcat)) === false) {
+        if (($obj = $col->checkMark('categorytpl', $idcat)) === false || $obj->get("userid") == $auth->auth['uid']) {
             $col->markInUse('categorytpl', $idcat, $sess->id, $auth->auth['uid']);
             $inUse = false;
             $disabled = '';
