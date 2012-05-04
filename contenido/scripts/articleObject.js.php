@@ -360,7 +360,37 @@ articleObject.prototype.doAction = function(str)
                 err_str = "<?php echo i18n("Preview can't be displayed")."<br>".i18n("No article was selected"); ?>";
             }
             break;
+            
+        /* Meta article */
+        case 'con_meta':
+            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
+			{
+				err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
+                if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0"))
+                {
+                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
+                    parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
+                }
+			} else {
+                /* Check if required parameters are set  */
+                if ( 0 != this.idart && 0 != this.idcat ) {
+                    url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_meta_edit&idart=" + this.idart + "&idcat=" + this.idcat);
+                    doAction = true;
+                } else {
+                    /* There is no selected article,
+                       we do not have the neccessary
+                       data to display the Article-
+                       properties mask */
+                    err_str = "<?php echo i18n("Article can't be displayed")."<br>".i18n("No article was selected"); ?>";
+
+                    if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
+                        parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
+                    }
+                }
+			}
+            break;
 		default:
 			if (this.customTabs[str])
 			{

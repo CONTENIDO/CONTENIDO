@@ -491,12 +491,12 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
 		}
 		
         //******** update 'art_lang'-table **********
+                    /*pagetitle = '".Contenido_Security::escapeDB($page_title, $db)."',*/
         $sql = "UPDATE
                     ".$cfg["tab"]["art_lang"]."
                 SET
                     title = '".Contenido_Security::escapeDB($title, $db)."',
                     urlname  = '".Contenido_Security::escapeDB($urlname, $db)."',
-                    pagetitle = '".Contenido_Security::escapeDB($page_title, $db)."',
 					summary = '".Contenido_Security::escapeDB($summary, $db)."',
 					artspec = '".Contenido_Security::escapeDB($artspec, $db)."',
                     created = '".Contenido_Security::escapeDB($created, $db)."',
@@ -523,7 +523,7 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
 		$sql .= "WHERE idartlang='".Contenido_Security::toInteger($idartlang)."'";
         $db->query($sql);
 
-        $availableTags = conGetAvailableMetaTagTypes();
+        /*$availableTags = conGetAvailableMetaTagTypes();
 	
 		foreach ($availableTags as $key => $value)
 		{
@@ -531,7 +531,7 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
 							$key,
 							$_POST['META'.$value["name"]]);
 		}
-
+		*/
 }
 
 /**

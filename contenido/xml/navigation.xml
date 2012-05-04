@@ -11,6 +11,7 @@
                 <properties>Properties</properties>
                 <configuration>Configuration</configuration>
                 <preview>Preview</preview>
+				<meta>Meta</meta>
             </article>
             <structure>
             	<main>Category</main>

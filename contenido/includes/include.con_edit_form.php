@@ -110,7 +110,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         // Remove all own marks
         $col->removeSessionMarks($sess->id);
 
-        if (($obj = $col->checkMark("article", $tmp_idartlang)) === false) {
+        if (($obj = $col->checkMark("article", $tmp_idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) {
             $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
             $inUse = false;
             $disabled = '';
@@ -574,6 +574,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $tpl->set("s", "TITLE-INPUT", $title_input);
 
     // Meta-Tags
+    /*
     $availableTags = conGetAvailableMetaTagTypes();
 
     $sMetaDate =   '<script type="text/javascript">
@@ -586,7 +587,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
                             showsTime: true
                         });
                     </script>';
-
+	
     foreach ($availableTags as $key => $value) {
         $tpl->set('d', 'METAINPUT', 'META'.$value);
 
@@ -610,6 +611,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tpl->set('d', 'METATITLE', $value["name"].':');
         $tpl->next();
     }
+    */
 
     // Struktur
     $tpl->set('s', 'MOVETOCATEGORYSELECT', $select);

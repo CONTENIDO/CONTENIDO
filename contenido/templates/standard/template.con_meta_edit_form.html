@@ -1,0 +1,98 @@
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <style type="text/css">@import url(scripts/jscalendar/calendar-contenido.css);</style>
+    <script type="text/javascript" src="scripts/jscalendar/calendar.js"></script>
+    <script type="text/javascript" src="scripts/jscalendar/lang/calendar-{CAL_LANG}.js"></script>
+    <script type="text/javascript" src="scripts/jscalendar/calendar-setup.js"></script>
+    <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript">
+        var sid = "{SID}";
+        box = new messageBox("", "", "", 0, 0);
+    </script>
+</head>
+<body style="margin: 10px">
+	
+<p style="display:block;font-weight:bold;">{TITEL}</p>
+<div class="categorypath">{CATEGORY}</div>
+
+<form method="post" name="art_props" action="{ACTION}">
+
+    <input type="hidden" name="action" value="con_meta_saveart">
+    {HIDDENSESSION}
+    {HIDDENFIELDS}
+    <input type="hidden" name="tmp_firstedit" value="{TMP_FIRSTEDIT}">
+    <input type="hidden" name="idart" value="{IDART}">
+    <input type="hidden" name="idcat" value="{IDCAT}">
+    <input type="hidden" name="idartlang" value="{IDARTLANG}">
+
+    <table cellspacing="0" cellpadding="2" border="0">
+
+    {NOTIFICATION}
+
+    <tr valign="top">
+        <td class="text_medium" style="border: 1px; border-right:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Page title")</td>
+        <td colspan="3" class="text_medium" style="border: 1px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{TITLE-INPUT}</td>
+    </tr>
+	
+    <!-- BEGIN:BLOCK -->
+    <tr valign="top">
+        <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">{METATITLE}</td>
+        <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">{METAFIELDTYPE}</td>
+    </tr>
+    <!-- END:BLOCK -->
+
+    <tr valign="top">
+        <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">&nbsp;</td>
+        <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top" align="right">{ADDMETABTN}</td>
+    </tr>
+	
+	{ADDNEWMETA}
+	
+	<tr><td colspan="4" class="text_medium" align="right"><input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td></tr>
+
+    </table>
+
+</form>
+
+<script type="text/javascript">
+    /* Create a reference to the
+       Article Object in frame 'right_top' */
+    artObj = parent.parent.frames["left"].frames["left_top"].artObj;
+
+    if (parent.parent.frames["right"].frames["right_top"].document.getElementById('c_5')) {
+        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById('c_5');
+        parent.parent.frames["right"].frames["right_top"].sub.clicked(menuItem.firstChild);
+    }
+
+    {DATAPUSH}
+	
+	$('span#addMeta').hover(function(){
+		$(this).css('cursor','pointer');
+	});
+	$('span#addMeta').click(function(){
+		$('tr[name=newMeta]').each(function(){
+			$(this).slideToggle();
+		});
+		
+	});
+	
+	function clearOnFocus(element, default_value) {
+		if(element.value==default_value) {
+			element.value = '';
+		}
+	}
+	
+	function restoreOnBlur(element, default_value) {
+		if(element.value=='') {
+			element.value = default_value;
+		}
+	}
+</script>
+</body>
+</html>

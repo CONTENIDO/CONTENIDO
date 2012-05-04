@@ -63,6 +63,8 @@ $cfg['templates']['right_top_blank']      = 'template.right_top_blank.html';
 $cfg['templates']['admin_frontend']       = 'template.admin_frontend.html';
 
 $cfg['templates']['con_edit_form']        = 'template.con_edit_form.html';
+$cfg['templates']['con_meta_edit_form']   = 'template.con_meta_edit_form.html';
+$cfg['templates']['con_meta_addnew']   	  = 'template.con_meta_addnew.html';
 $cfg['templates']['con_editcontent']      = 'template.con_editcontent.html';
 $cfg['templates']['con_str_overview']     = 'template.con_str_overview.html';
 $cfg['templates']['con_art_overview']     = 'template.con_art_overview.html';
