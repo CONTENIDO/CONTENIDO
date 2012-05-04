@@ -178,3 +178,4 @@ INSERT INTO !PREFIX!_actions VALUES ('806', '415', 'edit_sysconf', 'edit_sysconf
 INSERT INTO !PREFIX!_actions VALUES ('811', '811', 'do_purge', 'do_purge', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('812', '11', '', 'mod_sync', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('813', '9','','lay_sync','','','1');
+INSERT INTO !PREFIX!_actions VALUES('850', '100','','con_meta_saveart','$sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET pagetitle = ''".$_POST["page_title"]."'' WHERE idartlang=".$_POST["idartlang"];$db->query($sql);\r\n\r\n$availableTags = conGetAvailableMetaTagTypes();\r\nforeach ($availableTags as $key => $value){\r\n	conSetMetaValue($idartlang,$key,$_POST["META".$value["name"]]);\r\n}\r\n$notification->displayNotification("info", i18n("Changes saved"));','','0');
