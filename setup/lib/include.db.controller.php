@@ -128,9 +128,9 @@ if ($_SESSION['plugin_newsletter'] == 'true') {
     $pluginChunks = array_merge($pluginChunks, $newsletter);
 }
 
-if ($_SESSION['plugin_content_allocation'] == 'true') {
-    $content_allocation = explode("\n", file_get_contents('data/plugin_content_allocation.txt'));
-    $pluginChunks = array_merge($pluginChunks, $content_allocation);
+if ($_SESSION['plugin_tagging'] == 'true') {
+    $tagging = explode("\n", file_get_contents('data/plugin_tagging.txt'));
+    $pluginChunks = array_merge($pluginChunks, $tagging);
 }
 
 if ($_SESSION['plugin_mod_rewrite'] == 'true') {

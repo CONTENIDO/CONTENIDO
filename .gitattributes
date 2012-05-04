@@ -1976,12 +1976,12 @@ setup/data/examples/examples_misc4.sql -text
 setup/data/examples/examples_misc5.sql -text
 setup/data/examples/examples_misc6.sql -text
 setup/data/indexes.sql -text
-setup/data/plugin_content_allocation.txt -text
 setup/data/plugin_mod_rewrite.txt -text
 setup/data/plugin_newsletter.txt -text
-setup/data/plugins/plugins_content_allocation.sql -text
+setup/data/plugin_tagging.txt -text
 setup/data/plugins/plugins_mod_rewrite.sql -text
 setup/data/plugins/plugins_newsletter.sql -text
+setup/data/plugins/plugins_tagging.sql -text
 setup/data/standard.txt -text
 setup/data/standard/standard_modules1.sql -text
 setup/data/standard/standard_modules_translations1.sql -text

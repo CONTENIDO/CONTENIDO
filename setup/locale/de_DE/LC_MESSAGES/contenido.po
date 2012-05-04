@@ -36,12 +36,12 @@ msgstr "Newsletterfunktionalit&auml;t zum Versand von Textnewslettern und HTML-N
 
 #: steps/forms/additionalplugins.php:62
 #: steps/forms/setupsummary.php:107
-msgid "Content Allocation"
-msgstr "Content Allocation"
+msgid "Tagging"
+msgstr "Tagging"
 
 #: steps/forms/additionalplugins.php:62
-msgid "For the representation and administration of content, 4fb developed the Content Allocation and content include technology. This technology dynamically allows on basis of a Template, to put the content in different places and in different formats according to several criteria."
-msgstr "Zur Darstellung und Verwaltung des Contents entwickelte 4fb die Content Allocation und Content include Technik. Diese Technik erlaubt es, auf Basis eines Templates, den Content an unterschiedlichen Stellen und in unterschiedlicher Form dynamisch nach mehreren Kriterien selektiert darzustellen."
+msgid "For the representation and administration of content, 4fb developed the Tagging and content include technology. This technology dynamically allows on basis of a Template, to put the content in different places and in different formats according to several criteria."
+msgstr "Zur Darstellung und Verwaltung des Contents entwickelte 4fb die Tagging und Content include Technik. Diese Technik erlaubt es, auf Basis eines Templates, den Content an unterschiedlichen Stellen und in unterschiedlicher Form dynamisch nach mehreren Kriterien selektiert darzustellen."
 
 #: steps/forms/additionalplugins.php:63
 #: steps/forms/setupsummary.php:110
@@ -797,8 +797,8 @@ msgstr "Empfohlen f&uuml;r Projektumz&uuml;ge zwischen Servern."
 #~ msgid "CONTENIDO Newsletter"
 #~ msgstr "CONTENIDO Newsletter"
 
-#~ msgid "CONTENIDO Content Allocation"
-#~ msgstr "CONTENIDO Content Allocation"
+#~ msgid "CONTENIDO Tagging"
+#~ msgstr "CONTENIDO Tagging"
 
 #~ msgid "PHP setting 'register_long_arrays' is off"
 #~ msgstr "Die PHP-Einstellung 'register_long_arrays' ist abgeschaltet"

@@ -39,13 +39,13 @@ msgid ""
 msgstr ""
 
 #: steps/forms/additionalplugins.php:62 steps/forms/setupsummary.php:107
-msgid "Content Allocation"
+msgid "Tagging"
 msgstr ""
 
 #: steps/forms/additionalplugins.php:62
 msgid ""
 "For the representation and administration of content, 4fb developed the "
-"Content Allocation and content include technology. This technology "
+"Tagging and content include technology. This technology "
 "dynamically allows on basis of a Template, to put the content in different "
 "places and in different formats according to several criteria."
 msgstr ""
