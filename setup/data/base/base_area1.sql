@@ -100,3 +100,4 @@ INSERT INTO !PREFIX!_area VALUES ('801', '0', 'tagging', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('802', 'con', 'con_tagging', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('415', 'system', 'system_configuration', '1', '1', '0');
 INSERT INTO !PREFIX!_area VALUES ('811', 'system', 'system_purge', '1', '1', '0');
+INSERT INTO !PREFIX!_area VALUES ('100', 'con', 'con_meta', '1', '1', '0');
