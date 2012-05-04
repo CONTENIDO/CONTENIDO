@@ -3746,7 +3746,7 @@ msgstr "Name der Sprache"
 #: includes/include.lang_edit.php:248
 #: main.loginform.php:192
 msgid "Language"
-msgstr "Sprachen"
+msgstr "Sprache"
 
 #: includes/include.lang_edit.php:249
 #: includes/include.rights_create.php:196

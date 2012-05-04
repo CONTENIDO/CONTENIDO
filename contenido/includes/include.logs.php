@@ -264,7 +264,7 @@ $result = $actionLogColl->select($where, '', 'logtimestamp DESC', $limitsql);
 
 if (!$result) {
     $noresults = '<tr class="text_medium" style="background-color:'.$bgcolor.';" >'.
-                 '<td valign="top" colspan="6" style="border:0;border-top:1px;border-right:1px;border-color:'.$cfg["color"]["table_border"].';border-style:solid;">'.i18n("No results").'</td></tr>';
+                 '<td valign="top" colspan="7" style="border:0;border-top:1px;border-right:1px;border-color:'.$cfg["color"]["table_border"].';border-style:solid;">'.i18n("No results").'</td></tr>';
 } else {
     $noresults = "";
 }
@@ -279,6 +279,7 @@ $strNames = array();
 
 
 $tpl->set('s', 'LABEL_CLIENT', i18n("Client"));
+$tpl->set('s', 'LABEL_LANG', i18n("Language"));
 $tpl->set('s', 'LABEL_DATE', i18n("Date"));
 $tpl->set('s', 'LABEL_USER', i18n("User"));
 $tpl->set('s', 'LABEL_ACTION', i18n("Action"));
@@ -335,6 +336,7 @@ while ($oItem = $actionLogColl->next()) {
     $tpl->set('d', 'RCLIENT', $clientList[$oItem->get('idclient')]['name']);
     $tpl->set('d', 'RDATETIME', $oItem->get('logtimestamp'));
     $tpl->set('d', 'RUSER' , $users[$oItem->get('user_id')]['username']);
+    $tpl->set('d', 'RLANG', $aDisplayLangauge[$oItem->get('idlang')]);
     $areaname = $classarea->getAreaName($actionColl->getAreaForAction($oItem->get('idaction')));
     $actionDescription =  $lngAct[$areaname][$actionColl->getActionName($oItem->get('idaction'))];
     if ($actionDescription == '') {
