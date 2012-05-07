@@ -108,16 +108,16 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     // Get id of first category tree
     $sql = "SELECT preid FROM " . $cfg['tab']['cat'] . " WHERE parentid=0 AND postid=0 AND idclient=" . $client;
     $db->query($sql);
-    $db->next_record();
-    $rootIdCat = $db->f('preid');
-    if ($rootIdCat) {
-        // Update 'cat'-table
-        $aFields = array('postid' => $newIdCat);
-        $aWhere = array('idcat' => (int) $rootIdCat);
-        $sql = $db->buildUpdate($cfg['tab']['cat'], $aFields, $aWhere);
-        $db->query($sql);
+    while($db->next_record()){    
+	    $rootIdCat = $db->f('preid');
+	    if ($rootIdCat) {
+	        // Update 'cat'-table
+	        $aFields = array('postid' => $newIdCat);
+	        $aWhere = array('idcat' => (int) $rootIdCat);
+	        $sql = $db->buildUpdate($cfg['tab']['cat'], $aFields, $aWhere);
+	        $db->query($sql);
+	    }
     }
-
     // Entry in 'cat_lang'-table
     $aLanguages = array($lang);
     foreach ($aLanguages as $tmpIdLang) {
