@@ -86,16 +86,16 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
 
     $created = date('Y-m-d H:i:s');
     
-	$tmp_id = 0;
+	$pre_id = 0;
 	$sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='0' AND postid='0' AND idclient='".Contenido_Security::toInteger($client)."'";
     $db->query($sql);
     while($db->next_record()){
-    	$tmp_id = $db->f("idcat");
+    	$pre_id = $db->f("idcat");
     }
     
     // Entry in 'cat_lang'-table
     $sql = $db->buildInsert($cfg['tab']['cat'], array(
-        'preid' => $tmp_id,
+        'preid' => $pre_id,
         'postid' => 0,
         'idclient' => $client,
         'author' => $auth->auth['uname'],
@@ -104,7 +104,16 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     ));
     $db->query($sql);
     $newIdCat = $db->getLastInsertedId($cfg['tab']['cat']);
-
+    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='0' AND idclient='".Contenido_Security::toInteger($client)."'";
+    $db->query($sql);
+    $post_id = array();
+	while($db->next_record()){
+    	$post_id[] = $db->f("idcat");
+    }
+    
+	if(count($post_id) <= 1){
+		$newIdCat = 0;
+	}
     // Get id of first category tree
     $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid=0 AND postid=0 AND idclient=" . $client;
     $db->query($sql);
