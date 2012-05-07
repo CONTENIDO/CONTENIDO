@@ -85,14 +85,14 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     }
 
     $created = date('Y-m-d H:i:s');
-    
-	$pre_id = 0;
-	$sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='0' AND postid='0' AND idclient='".Contenido_Security::toInteger($client)."'";
+
+    $pre_id = 0;
+    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE parentid='0' AND postid='0' AND idclient='".Contenido_Security::toInteger($client)."'";
     $db->query($sql);
     while($db->next_record()){
-    	$pre_id = $db->f("idcat");
+        $pre_id = $db->f("idcat");
     }
-    
+
     // Entry in 'cat_lang'-table
     $sql = $db->buildInsert($cfg['tab']['cat'], array(
         'preid' => $pre_id,
@@ -108,15 +108,15 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     // Get id of first category tree
     $sql = "SELECT preid FROM " . $cfg['tab']['cat'] . " WHERE parentid=0 AND postid=0 AND idclient=" . $client;
     $db->query($sql);
-    while($db->next_record()){    
-	    $rootIdCat = $db->f('preid');
-	    if ($rootIdCat) {
-	        // Update 'cat'-table
-	        $aFields = array('postid' => $newIdCat);
-	        $aWhere = array('idcat' => (int) $rootIdCat);
-	        $sql = $db->buildUpdate($cfg['tab']['cat'], $aFields, $aWhere);
-	        $db->query($sql);
-	    }
+    while($db->next_record()){
+        $rootIdCat = $db->f('preid');
+        if ($rootIdCat) {
+            // Update 'cat'-table
+            $aFields = array('postid' => $newIdCat);
+            $aWhere = array('idcat' => (int) $rootIdCat);
+            $sql = $db->buildUpdate($cfg['tab']['cat'], $aFields, $aWhere);
+            $db->query($sql);
+        }
     }
     // Entry in 'cat_lang'-table
     $aLanguages = array($lang);
@@ -173,7 +173,7 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
         return;
     }
 
-//    $tmp_newid = $db->nextid($cfg["tab"]["cat"]);
+//    $tmp_newid = $db->nextid($cfg['tab']['cat']);
 //    if ($tmp_newid == 0) {
 //        return;
 //    }
@@ -199,7 +199,7 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
         $public = 1;
     }
 
-    $sql = "SELECT idcat FROM " . $cfg["tab"]["cat"] . " WHERE parentid=" . (int) $tmp_parentid . " AND postid=0";
+    $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid=" . (int) $tmp_parentid . " AND postid=0";
     $db->query($sql);
     $db->next_record();
     $tmp_id = $db->f("idcat");
@@ -218,7 +218,7 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
             'lastmodified' => $created,
         ));
         $db->query($sql);
-        $tmp_newid = $db->getLastInsertedId($cfg["tab"]["cat"]);
+        $tmp_newid = $db->getLastInsertedId($cfg['tab']['cat']);
     } else {
         // Insert entry in 'cat'-table
         $sql = $db->buildInsert($cfg['tab']['cat'], array(
@@ -231,7 +231,7 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
             'lastmodified' => $created,
         ));
         $db->query($sql);
-        $tmp_newid = $db->getLastInsertedId($cfg["tab"]["cat"]);
+        $tmp_newid = $db->getLastInsertedId($cfg['tab']['cat']);
 
         // Update entry in 'cat'-table
         $aFields = array('postid' => $tmp_newid, 'lastmodified' => $created);
@@ -287,7 +287,7 @@ function strOrderedPostTreeList($idcat, $poststring)
 {
     global $db, $cfg;
 
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid=0 AND preid='".Contenido_Security::toInteger($idcat)."' AND idcat!=0";
+    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE parentid=0 AND preid='".Contenido_Security::toInteger($idcat)."' AND idcat!=0";
 
     $db->query($sql);
     if ($db->next_record()) {
@@ -316,23 +316,23 @@ function strRemakeTreeTable()
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idclient = ". (int) $client;
+    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE idclient = ". (int) $client;
     $db->query($sql);
     $idcats = array();
     while ($db->next_record()) {
         $idcats[] = $db->f("idcat");
     }
 
-    $sql = "DELETE FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat IN ('" . implode("', '", $idcats) . "')"; // empty 'cat_tree'-table
+    $sql = "DELETE FROM ".$cfg['tab']['cat_tree']." WHERE idcat IN ('" . implode("', '", $idcats) . "')"; // empty 'cat_tree'-table
     $db->query($sql);
 
-    $sql = "DELETE FROM ".$cfg["tab"]["cat"]." WHERE idcat=0";
+    $sql = "DELETE FROM ".$cfg['tab']['cat']." WHERE idcat=0";
     $db->query($sql);
 
-    $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat=0";
+    $sql = "DELETE FROM ".$cfg['tab']['cat_lang']." WHERE idcat=0";
     $db->query($sql);
 
-    $sql = "SELECT idcat, parentid, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idclient = " . (int) $client . " ORDER BY parentid ASC, preid ASC, postid ASC";
+    $sql = "SELECT idcat, parentid, preid, postid FROM ".$cfg['tab']['cat']." WHERE idclient = " . (int) $client . " ORDER BY parentid ASC, preid ASC, postid ASC";
 
     $db->query($sql);
 
@@ -357,14 +357,14 @@ function strRemakeTreeTable()
     }
 
     // build INSERT statement
-    $sInsertQuery = "INSERT INTO " . $cfg["tab"]["cat_tree"] . " (idcat, level) VALUES ";
+    $sInsertQuery = "INSERT INTO " . $cfg['tab']['cat_tree'] . " (idcat, level) VALUES ";
     $sInsertQuery = strBuildSqlValues($aCategories[0], $sInsertQuery, $aCategories);
     $sInsertQuery = rtrim($sInsertQuery, " ,");
 
     // lock db table and execute INSERT query
-    $db->lock($cfg["tab"]["cat_tree"]);
+    $db->lock($cfg['tab']['cat_tree']);
     $db->query($sInsertQuery);
-    $db->unlock($cfg["tab"]["cat_tree"]);
+    $db->unlock($cfg['tab']['cat_tree']);
 }
 
 /**
@@ -461,7 +461,7 @@ function strNextDeeper($tmp_idcat, $ignore_lang = false)
 {
     global $cfg, $db_str, $lang;
 
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid=" . (int) $tmp_idcat  . " AND preid=0";
+    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE parentid=" . (int) $tmp_idcat  . " AND preid=0";
     $db_str->query($sql);
     if ($db_str->next_record()) {
         $midcat = (int) $db_str->f("idcat");
@@ -470,7 +470,7 @@ function strNextDeeper($tmp_idcat, $ignore_lang = false)
         }
 
         // Deeper element exists, check for language dependent part
-        $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat=" . $midcat . " AND idlang=" . (int) $lang;
+        $sql = "SELECT idcatlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat=" . $midcat . " AND idlang=" . (int) $lang;
         $db_str->query($sql);
         return ($db_str->next_record()) ? $midcat : 0;
     } else {
@@ -491,8 +491,8 @@ function strHasArticles($tmp_idcat)
     global $cfg, $db_str, $lang;
 
     $sql = "SELECT b.idartlang AS idartlang FROM
-            ".$cfg["tab"]["cat_art"]." AS a,
-            ".$cfg["tab"]["art_lang"]." AS b
+            ".$cfg['tab']['cat_art']." AS a,
+            ".$cfg['tab']['art_lang']." AS b
             WHERE a.idcat='".Contenido_Security::toInteger($tmp_idcat)."' AND
             a.idart = b.idart AND b.idlang = '".Contenido_Security::toInteger($lang)."'";
 
@@ -506,12 +506,12 @@ function strNextPost($tmp_idcat)
 {
     global $db, $cfg;
 
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE preid='".Contenido_Security::toInteger($tmp_idcat)."'";
+    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE preid='".Contenido_Security::toInteger($tmp_idcat)."'";
     $db->query($sql);
     if ($db->next_record()) {
         // Post element exists
         $tmp_idcat = $db->f("idcat");
-        $sql = "SELECT parentid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_idcat)."'";
+        $sql = "SELECT parentid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($tmp_idcat)."'";
         $db->query($sql);
         if ($db->next_record()) {
             // Parent from post must not be 0
@@ -532,18 +532,18 @@ function strNextBackwards($tmp_idcat)
 
     $tmp_idcat = (int) $tmp_idcat;
 
-    $sql = "SELECT parentid FROM ".$cfg["tab"]["cat"]." WHERE idcat=" . $tmp_idcat;
+    $sql = "SELECT parentid FROM ".$cfg['tab']['cat']." WHERE idcat=" . $tmp_idcat;
     $db->query($sql);
     if ($db->next_record()) {
         // Parent exists
         $tmp_idcat = $db->f("parentid");
         if ($tmp_idcat != 0) {
-            $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE preid=" . $tmp_idcat;
+            $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE preid=" . $tmp_idcat;
             $db->query($sql);
             if ($db->next_record()) {
                 // Parent has post
                 $tmp_idcat = $db->f("idcat");
-                $sql = "SELECT parentid FROM ".$cfg["tab"]["cat"]." WHERE idcat=" . $tmp_idcat;
+                $sql = "SELECT parentid FROM ".$cfg['tab']['cat']." WHERE idcat=" . $tmp_idcat;
                 $db->query($sql);
                 if ($db->next_record()) {
                     // Parent from post must not be 0
@@ -574,7 +574,7 @@ function strNextDeeperAll($tmp_idcat, $ignore_lang = false)
 
     $aCats = array();
     $bLoop = true;
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='".Contenido_Security::toInteger($tmp_idcat)."' AND preid = 0";
+    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE parentid='".Contenido_Security::toInteger($tmp_idcat)."' AND preid = 0";
 
     #echo $sql.'<br>';
     $db_str->query($sql);
@@ -586,7 +586,7 @@ function strNextDeeperAll($tmp_idcat, $ignore_lang = false)
                 array_push($aCats, $midcat);
             } else {
                 // Deeper element exists, check for language dependent part
-                $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($midcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+                $sql = "SELECT idcatlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($midcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
                 $db_str2->query($sql);
 
                 if ($db_str2->next_record()) {
@@ -594,7 +594,7 @@ function strNextDeeperAll($tmp_idcat, $ignore_lang = false)
                 }
             }
 
-            $sql = "SELECT preid, postid, idcat FROM ".$cfg["tab"]["cat"]." WHERE parentid='".Contenido_Security::toInteger($tmp_idcat)."' AND preid = ".Contenido_Security::toInteger($midcat)."";
+            $sql = "SELECT preid, postid, idcat FROM ".$cfg['tab']['cat']." WHERE parentid='".Contenido_Security::toInteger($tmp_idcat)."' AND preid = ".Contenido_Security::toInteger($midcat)."";
             $db_str->query($sql);
             if (!$db_str->next_record()) {
                 $bLoop = false;
@@ -616,7 +616,7 @@ function strShowTreeTable()
     cDeprecated("This function is not longer supported.");
 
     echo "<br><table cellpadding=0 cellspacing=0 border=0>";
-    $sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".Contenido_Security::toInteger($lang)."' AND B.idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idtree";
+    $sql = "SELECT * FROM ".$cfg['tab']['cat_tree']." AS A, ".$cfg['tab']['cat']." AS B, ".$cfg['tab']['cat_lang']." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".Contenido_Security::toInteger($lang)."' AND B.idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idtree";
     $db->query($sql);
     while ($db->next_record()) {
         $tmp_id    = $db->f("idcat");
@@ -659,7 +659,7 @@ function strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias)
     $sName = htmlspecialchars($newcategoryname, ENT_QUOTES);
 
     if (trim($newcategoryalias) != '') {
-        $sql = "SELECT urlname, name FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+        $sql = "SELECT urlname, name FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
         $db->query($sql);
         $sUrlnameNew = htmlspecialchars(capiStrCleanURLCharacters($newcategoryalias), ENT_QUOTES);
         if ($db->next_record()) {
@@ -673,7 +673,7 @@ function strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias)
         @unlink($cfgClient[$client]["path"]["frontend"]."cache/locationstring-url-cache-$lang.txt");
     }
 
-    $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET urlname='".Contenido_Security::escapeDB($sUrlname, $db)."', name='".Contenido_Security::escapeDB($sName, $db)."', lastmodified = '".date("Y-m-d H:i:s")."' WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+    $sql = "UPDATE ".$cfg['tab']['cat_lang']." SET urlname='".Contenido_Security::escapeDB($sUrlname, $db)."', name='".Contenido_Security::escapeDB($sName, $db)."', lastmodified = '".date("Y-m-d H:i:s")."' WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
 }
 
@@ -701,7 +701,7 @@ function strMakeVisible($idcat, $lang, $visible)
 
     $a_catstring = strDeeperCategoriesArray($idcat);
     foreach ($a_catstring as $value) {
-        $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET visible='" . $visible . "', lastmodified='" . date("Y-m-d H:i:s") . "'
+        $sql = "UPDATE ".$cfg['tab']['cat_lang']." SET visible='" . $visible . "', lastmodified='" . date("Y-m-d H:i:s") . "'
                 WHERE idcat=" . (int) $value . " AND idlang=".$lang;
         $db->query($sql);
     }
@@ -735,7 +735,7 @@ function strMakePublic($idcat, $lang, $public)
 
     $a_catstring = strDeeperCategoriesArray($idcat);
     foreach ($a_catstring as $value) {
-        $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET public='$public', lastmodified = '".date("Y-m-d H:i:s")."'
+        $sql = "UPDATE ".$cfg['tab']['cat_lang']." SET public='$public', lastmodified = '".date("Y-m-d H:i:s")."'
                 WHERE idcat='".Contenido_Security::toInteger($value)."' AND idlang='".Contenido_Security::toInteger($lang)."' ";
         $db->query($sql);
     }
@@ -763,7 +763,7 @@ function strDeeperCategoriesArray($idcat_start)
 
         array_push($catstring, $actid);
 
-        $sql = "SELECT * FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B WHERE A.idcat=B.idcat AND B.parentid='".$actid."' AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY idtree";
+        $sql = "SELECT * FROM ".$cfg['tab']['cat_tree']." AS A, ".$cfg['tab']['cat']." AS B WHERE A.idcat=B.idcat AND B.parentid='".$actid."' AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY idtree";
         $db->query($sql);
 
         while ($db->next_record()) {
@@ -803,24 +803,24 @@ function strDeleteCategory($idcat)
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+    $sql = "SELECT idtplcfg FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
 
     while ($db->next_record()) {
         // delete entry in 'tpl_conf'-table
-        $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        $sql = "DELETE FROM ".$cfg['tab']['tpl_conf']." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
         $db2->query($sql);
 
-        $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        $sql = "DELETE FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
         $db2->query($sql);
     }
 
     // Delete language dependend part
-    $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+    $sql = "DELETE FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
 
     // Are there any additional languages?
-    $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "SELECT idcatlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
     $db->query($sql);
 
     if ($db->num_rows() > 0) {
@@ -831,7 +831,7 @@ function strDeleteCategory($idcat)
         return;
     }
 
-    $sql = "SELECT * FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "SELECT * FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
     $db->query($sql);
     $db->next_record();
     $tmp_preid  = $db->f("preid");
@@ -839,38 +839,38 @@ function strDeleteCategory($idcat)
 
     // update pre cat set new postid
     if ($tmp_preid != 0) {
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
+        $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
         $db->query($sql);
     }
 
     // update post cat set new preid
     if ($tmp_postid != 0) {
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
+        $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
         $db->query($sql);
     }
 
     // delete entry in 'cat'-table
-    $sql = "DELETE FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "DELETE FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
     $db->query($sql);
 
-    $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "SELECT idtplcfg FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
     $db->query($sql);
     while ($db->next_record()) {
         // delete entry in 'tpl_conf'-table
-        $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        $sql = "DELETE FROM ".$cfg['tab']['tpl_conf']." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
         $db2->query($sql);
 
-        $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        $sql = "DELETE FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
         echo $sql;
         $db2->query($sql);
     }
 
     ////// delete entry in 'cat_lang'-table
-    $sql = "DELETE FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "DELETE FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
     $db->query($sql);
 
     ////// delete entry in 'cat_tree'-table
-    $sql = "DELETE FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "DELETE FROM ".$cfg['tab']['cat_tree']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
     $db->query($sql);
 
     // delete rights for element
@@ -893,7 +893,7 @@ function strMoveUpCategory($idcat)
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
     $db->query($sql);
     $db->next_record();
     $tmp_idcat  = $db->f("idcat");
@@ -908,37 +908,37 @@ function strMoveUpCategory($idcat)
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
+    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
     $db->query($sql);
     $db->next_record();
     $tmp_idcat_pre  = $db->f("idcat");
     $tmp_preid_pre  = $db->f("preid");
     $tmp_postid_pre = $db->f("postid");
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_preid_pre)."'";
+    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($tmp_preid_pre)."'";
     $db->query($sql);
     $db->next_record();
     $tmp_idcat_pre_pre  = $db->f("idcat");
     $tmp_preid_pre_pre  = $db->f("preid");
     $tmp_postid_pre_pre = $db->f("postid");
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
+    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
     $db->query($sql);
     $db->next_record();
     $tmp_idcat_post  = $db->f("idcat");
     $tmp_preid_post  = $db->f("preid");
     $tmp_postid_post = $db->f("postid");
 
-    $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  postid='".Contenido_Security::toInteger($tmp_idcat)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid_pre)."'";
+    $sql = "UPDATE ".$cfg['tab']['cat']." SET  postid='".Contenido_Security::toInteger($tmp_idcat)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid_pre)."'";
     $db->query($sql);
 
-    $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  preid='".Contenido_Security::toInteger($tmp_idcat)."', postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
+    $sql = "UPDATE ".$cfg['tab']['cat']." SET  preid='".Contenido_Security::toInteger($tmp_idcat)."', postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
     $db->query($sql);
 
-    $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  preid='".Contenido_Security::toInteger($tmp_preid_pre)."', postid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='$tmp_idcat'";
+    $sql = "UPDATE ".$cfg['tab']['cat']." SET  preid='".Contenido_Security::toInteger($tmp_preid_pre)."', postid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='$tmp_idcat'";
     $db->query($sql);
 
-    $sql = "UPDATE ".$cfg["tab"]["cat"]." SET  preid='".Contenido_Security::toInteger($tmp_idcat_pre)."' WHERE idcat='$tmp_postid'";
+    $sql = "UPDATE ".$cfg['tab']['cat']." SET  preid='".Contenido_Security::toInteger($tmp_idcat_pre)."' WHERE idcat='$tmp_postid'";
     $db->query($sql);
 }
 
@@ -961,14 +961,14 @@ function strMoveDownCategory($idcat)
 
     $arrLinks = array();
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
     $db->query($sql);
     $db->next_record();
     $arrLinks['cur']['idcat'] = $db->f("idcat");
     $arrLinks['cur']['pre'] = $db->f("preid");
     $arrLinks['cur']['post'] = $db->f("postid");
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($arrLinks['cur']['pre'])."'";
+    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($arrLinks['cur']['pre'])."'";
     $db->query($sql);
     if ($db->next_record()) {
         $arrLinks['pre']['idcat'] = $db->f("idcat");
@@ -980,7 +980,7 @@ function strMoveDownCategory($idcat)
         $arrLinks['pre']['post'] = 0;
     }
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='".Contenido_Security::toInteger($arrLinks['cur']['post'])."'";
+    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($arrLinks['cur']['post'])."'";
     $db->query($sql);
     if ($db->next_record()) {
         $arrLinks['post']['idcat'] = $db->f("idcat");
@@ -994,24 +994,24 @@ function strMoveDownCategory($idcat)
 
     if ($arrLinks['cur']['post'] != 0) {
         if ($arrLinks['pre']['idcat'] != 0) {
-            $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='".Contenido_Security::toInteger($arrLinks['post']['idcat'])."' WHERE idcat='".Contenido_Security::toInteger($arrLinks['pre']['idcat'])."'";
+            $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='".Contenido_Security::toInteger($arrLinks['post']['idcat'])."' WHERE idcat='".Contenido_Security::toInteger($arrLinks['pre']['idcat'])."'";
             $db->query($sql);
         } else {
-            $sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='".Contenido_Security::toInteger($arrLinks['pre']['idcat'])."' WHERE idcat='".Contenido_Security::toInteger($arrLinks['post']['idcat'])."'";
+            $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".Contenido_Security::toInteger($arrLinks['pre']['idcat'])."' WHERE idcat='".Contenido_Security::toInteger($arrLinks['post']['idcat'])."'";
             $db->query($sql);
         }
 
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='".Contenido_Security::toInteger($arrLinks['cur']['post'])."', postid='".Contenido_Security::toInteger($arrLinks['post']['post'])."'
+        $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".Contenido_Security::toInteger($arrLinks['cur']['post'])."', postid='".Contenido_Security::toInteger($arrLinks['post']['post'])."'
                 WHERE idcat='".Contenido_Security::toInteger($arrLinks['cur']['idcat'])."'";
         $db->query($sql);
 
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='".Contenido_Security::toInteger($arrLinks['pre']['idcat'])."', postid='".Contenido_Security::toInteger($arrLinks['cur']['idcat'])."'
+        $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".Contenido_Security::toInteger($arrLinks['pre']['idcat'])."', postid='".Contenido_Security::toInteger($arrLinks['cur']['idcat'])."'
                 WHERE idcat='".Contenido_Security::toInteger($arrLinks['post']['idcat'])."'";
         $db->query($sql);
     }
 
     if ($arrLinks['post']['post'] != 0) {
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='".Contenido_Security::toInteger($arrLinks['cur']['idcat'])."' WHERE idcat='".Contenido_Security::toInteger($arrLinks['post']['post'])."'";
+        $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".Contenido_Security::toInteger($arrLinks['cur']['idcat'])."' WHERE idcat='".Contenido_Security::toInteger($arrLinks['post']['post'])."'";
         $db->query($sql);
     }
 }
@@ -1041,7 +1041,7 @@ function strMoveSubtree($idcat, $parentid_new)
     if ($iNewParentId == 0 && !is_null($parentid_new)) {
         $movesubtreeidcat = 0;
     } else if ($iNewParentId != 0) {
-        $sql = "SELECT idcat, preid, postid FROM ".$cfg["tab"]["cat"]." WHERE idcat='" . $idcat . "'";
+        $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='" . $idcat . "'";
         $db->query($sql);
         $db->next_record();
         $tmp_idcat  = $db->f("idcat");
@@ -1050,33 +1050,33 @@ function strMoveSubtree($idcat, $parentid_new)
 
         // update predecessor (pre)
         if ($tmp_preid != 0) {
-            $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='" . $tmp_postid . "' WHERE idcat='" . $tmp_preid . "'";
+            $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='" . $tmp_postid . "' WHERE idcat='" . $tmp_preid . "'";
             $db->query($sql);
         }
 
         // update follower (post)
         if ($tmp_postid != 0) {
-            $sql = "UPDATE ".$cfg["tab"]["cat"]." SET preid='" . $tmp_preid . "' WHERE idcat='" . $tmp_postid . "'";
+            $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='" . $tmp_preid . "' WHERE idcat='" . $tmp_postid . "'";
             $db->query($sql);
         }
 
         // find new pre
-        $sql = "SELECT idcat, preid FROM ".$cfg["tab"]["cat"]." WHERE parentid='" . $iNewParentId . "' AND postid='0'";
+        $sql = "SELECT idcat, preid FROM ".$cfg['tab']['cat']." WHERE parentid='" . $iNewParentId . "' AND postid='0'";
         $db->query($sql);
         if ($db->next_record()) {
             $tmp_new_preid = $db->f("idcat");
             $tmp_preid_2   = $db->f("preid");
             if ($tmp_new_preid != $idcat) {
                 // update new pre: set post
-                $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='" . $idcat . "' WHERE idcat='" . $tmp_new_preid . "'";
+                $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='" . $idcat . "' WHERE idcat='" . $tmp_new_preid . "'";
                 $db->query($sql);
             } else {
-                $sql = "SELECT idcat FROM ".$cfg["tab"]["cat"]." WHERE idcat='" . $tmp_preid_2 . "'";
+                $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE idcat='" . $tmp_preid_2 . "'";
                 $db->query($sql);
                 if ($db->next_record()) {
                     $tmp_new_preid = $db->f("idcat");
                     // update new pre: set post
-                    $sql = "UPDATE ".$cfg["tab"]["cat"]." SET postid='" . $idcat . "' WHERE idcat='" . $tmp_new_preid . "'";
+                    $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='" . $idcat . "' WHERE idcat='" . $tmp_new_preid . "'";
                     $db->query($sql);
                 } else {
                     $tmp_new_preid = 0;
@@ -1087,7 +1087,7 @@ function strMoveSubtree($idcat, $parentid_new)
         }
 
         // update idcat
-        $sql = "UPDATE ".$cfg["tab"]["cat"]." SET parentid='" . $iNewParentId . "', preid='" . $tmp_new_preid . "', postid='0' WHERE idcat='" . $idcat . "'";
+        $sql = "UPDATE ".$cfg['tab']['cat']." SET parentid='" . $iNewParentId . "', preid='" . $tmp_new_preid . "', postid='0' WHERE idcat='" . $idcat . "'";
         $db->query($sql);
 
         $movesubtreeidcat = 0;
@@ -1141,13 +1141,13 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
 
     foreach ($aCatArray as $idcat) {
         // Check if category already exists
-        $sql = "SELECT * FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $targetlang;
+        $sql = "SELECT * FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $targetlang;
         $db2->query($sql);
         if ($db2->next_record()) {
             return false;
         }
 
-        $sql = "SELECT * FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $sourcelang;
+        $sql = "SELECT * FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $sourcelang;
         $db2->query($sql);
 
         if ($db2->next_record()) {
@@ -1157,7 +1157,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
             } else {
                 $newidtplcfg = 0;
             }
-            //$newidcatlang = $db2->nextid($cfg["tab"]["cat_lang"]);
+            //$newidcatlang = $db2->nextid($cfg['tab']['cat_lang']);
 
             $idcat = $db2->f("idcat");
             $visible = 0;
@@ -1207,7 +1207,7 @@ function strHasStartArticle($idcat, $idlang)
 {
     global $cfg, $db_str;
 
-    $sql = "SELECT startidartlang FROM " . $cfg["tab"]["cat_lang"] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $idlang . " AND startidartlang != 0";
+    $sql = "SELECT startidartlang FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $idlang . " AND startidartlang != 0";
 
     $db_str->query($sql);
     return ($db_str->next_record()) ? true : false;
@@ -1292,13 +1292,13 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
     $db2 = new DB_Contenido();
 
     // Copy all articles
-    $sql = "SELECT A.idart, B.idartlang FROM " . $cfg["tab"]["cat_art"] . " AS A, " . $cfg["tab"]["art_lang"] . " AS B WHERE A.idcat = " . $idcat . " AND B.idart = A.idart AND B.idlang = " . $lang;
+    $sql = "SELECT A.idart, B.idartlang FROM " . $cfg['tab']['cat_art'] . " AS A, " . $cfg['tab']['art_lang'] . " AS B WHERE A.idcat = " . $idcat . " AND B.idart = A.idart AND B.idlang = " . $lang;
     $db->query($sql);
 
     while ($db->next_record()) {
         $newidart = (int) conCopyArticle($db->f("idart"), $newidcat, "", $bUseCopyLabel);
         if ($db->f("idartlang") == $oldcatlang->get("startidartlang")) {
-            $sql = "SELECT idcatart FROM " . $cfg["tab"]["cat_art"] . " WHERE idcat = " . $newidcat . " AND idart = " . $newidart;
+            $sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'] . " WHERE idcat = " . $newidcat . " AND idart = " . $newidart;
             $db2->query($sql);
             if ($db2->next_record()) {
                 conMakeStart($db2->f("idcatart"), 1);
@@ -1325,7 +1325,7 @@ function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true
     $newidcat = strCopyCategory($idcat, $destcat, false, $bUseCopyLabel);
 
     $db = new DB_Contenido();
-    $db->query("SELECT idcat FROM " . $cfg["tab"]["cat"] . " WHERE parentid = " . (int) $idcat);
+    $db->query("SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid = " . (int) $idcat);
     while ($db->next_record()) {
         strCopyTree($db->f("idcat"), $newidcat, false, $bUseCopyLabel);
     }
