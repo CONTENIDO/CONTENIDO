@@ -521,7 +521,7 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler {
         $this->_page->addScript('codemirror', $oCodeMirror->renderScript());
 
         
-        //$this->_reloadScript = "das ist mein script hello world rusmirus";
+        
         //$this->_page->addScript('reload', $this->_reloadScript);
         $this->_page->render();
          
