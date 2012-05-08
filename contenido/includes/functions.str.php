@@ -106,11 +106,11 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     $newIdCat = $db->getLastInsertedId($cfg['tab']['cat']);
 
     // Get id of first category tree
-    $sql = "SELECT preid FROM " . $cfg['tab']['cat'] . " WHERE parentid=0 AND postid=0 AND idclient=" . $client;
+    $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid=0 AND postid=0 AND idclient=" . $client;
     $db->query($sql);
     while($db->next_record()){
-        $rootIdCat = $db->f('preid');
-        if ($rootIdCat) {
+        $rootIdCat = $db->f('idcat');
+        if ($rootIdCat == $pre_id) {
             // Update 'cat'-table
             $aFields = array('postid' => $newIdCat);
             $aWhere = array('idcat' => (int) $rootIdCat);
