@@ -434,7 +434,7 @@ if (!$idart && $area != "str_tplcfg") {
 }
 
 if ($idart) {
-    $markscript = markSubMenuItem(2, true);
+    $markscript = markSubMenuItem(3, true);
     $tpl->set('s', 'MARKSUBMENU', $markscript);
 } else {
     $tpl->set('s', 'MARKSUBMENU', "");
