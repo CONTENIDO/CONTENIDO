@@ -263,7 +263,7 @@ articleObject.prototype.doAction = function(str)
                 }
 			} else {
                 /* Check if required parameters are set  */
-                if ( 0 != this.idart && 0 != this.idcat ) {
+                if ( 0 != this.idart ) {
                     url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_edit&idart=" + this.idart + "&idcat=" + this.idcat);
                     doAction = true;
                 } else {

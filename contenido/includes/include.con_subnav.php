@@ -33,7 +33,6 @@ if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
-
 //Get sync options
 if (isset($syncoptions))
 {
@@ -45,8 +44,11 @@ if (!isset($syncfrom))
 {
 	$syncfrom = 0;	
 }
+if(!isset($idcat) || $idcat == "") {
+	$idcat = 0;
+}
 
-if ( isset($_GET['idcat']) && $_GET['idcat'] != 0 ) {
+if ( isset($_GET['display_menu']) && $_GET['display_menu'] == 1 ) {
 	$nav = new Contenido_Navigation;
 
     $sql = "SELECT

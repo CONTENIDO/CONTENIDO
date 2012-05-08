@@ -51,7 +51,7 @@
                   var iIdcat = aRowids[0];
                   var iIdtpl = aRowids[1];
                   conInjectData(this.parentNode.parentNode);
-                  conMultiLink('right_top', 'main.php?area={AREA}&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&syncoptions={SYNCOPTIONS}&contenido={SESSION}', 'right_bottom', 'main.php?area={AREA}&frame=4&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&syncoptions={SYNCOPTIONS}&contenido={SESSION}');
+                  conMultiLink('right_top', 'main.php?area={AREA}&frame=3&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&display_menu=1&syncoptions={SYNCOPTIONS}&contenido={SESSION}', 'right_bottom', 'main.php?area={AREA}&frame=4&idcat=' + iIdcat + '&idtpl=' + iIdtpl + '&syncoptions={SYNCOPTIONS}&contenido={SESSION}');
                   if (collapsed) $.post("{AJAXURL}", { area: "{AREA}", action: "expand", idcat: iIdcat, wholelist: scatlist, contenido: "{SESSION}" });
               }
               return false;

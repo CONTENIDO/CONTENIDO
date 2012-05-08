@@ -131,11 +131,15 @@ if ($action == 10) {
 
     // generate code
     $code = conGenerateCode($idcat, $idart, $lang, $client, false, false);
-
-    // inject some additional markup
-    $code = str_ireplace_once("</head>", "$markSubItem $scripts\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$encoding[$lang]\"></head>", $code);
-    $code = str_ireplace_once_reverse("</body>", "$contentform</body>", $code);
-    $code = str_ireplace_once("<head>", "<head>\n" . '<base href="' . $cfgClient[$client]["path"]["htmlpath"] . '">', $code);
+	if($code == "0601") {
+		markSubMenuItem("1");
+		$code = "<script type='text/javascript'>location.href = '".$cfg['path']['contenido_fullhtml']."main.php?frame=4&area=con_editart&action=con_edit&idart=".$idart."&idcat=".$idcat."&contenido=".$contenido."'; console.log(location.href);</script>";
+	} else {
+    	// inject some additional markup
+    	$code = str_ireplace_once("</head>", "$markSubItem $scripts\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$encoding[$lang]\"></head>", $code);
+    	$code = str_ireplace_once_reverse("</body>", "$contentform</body>", $code);
+    	$code = str_ireplace_once("<head>", "<head>\n" . '<base href="' . $cfgClient[$client]["path"]["htmlpath"] . '">', $code);
+	}
 
     if ($cfg["debug"]["codeoutput"]) {
     	cDebug(htmlspecialchars($code));

@@ -294,6 +294,10 @@ $content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle; 
 $searchMyArticles = "javascript:conMultiLink('right_bottom', 'backend_search.php?area=".$area."&frame=4&contenido=".$sess->id."&myarticles=true'); resetSearchForm();";
 $content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif" /><a style="padding-left: 3px;" href="'.$searchMyArticles.'">'.i18n("My articles").'</a></li>';
 
+//Lost and found - not deleteable
+$searchLostFound = "javascript:conMultiLink('right_bottom', 'backend_search.php?area=".$area."&frame=4&contenido=".$sess->id."&lostfound=true'); resetSearchForm();";
+$content .= '<li style="margin-bottom: 3px;"><img style="vertical-align:middle;padding-left: 3px;" src="images/delete_inact.gif" /><a style="padding-left: 3px;" href="'.$searchLostFound.'">'.i18n("Lost and Found").'</a></li>';
+
 // Workflow
 $link = $sess->url("main.php?area=con_workflow&frame=4");
 $sWorflowLink = 'conMultiLink(\'right_bottom\', \''.$link.'\'); resetSearchForm();';

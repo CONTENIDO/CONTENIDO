@@ -83,6 +83,8 @@ $sSearchStrDateFrom_tmp = '';
 $sSearchStrDateTo = NULL;
 $sSearchStrDateTo_tmp = '';
 
+$bLostAndFound = false;
+
 $where = '';
 
 // SprachID ermitteln
@@ -94,6 +96,7 @@ $dateformat = getEffectiveSetting('backend', 'timeformat_date', 'Y-m-d');
 // fuer das Initialiseren der Sub-Navi benoetigte Werte
 $sLoadSubnavi = '';
 $iIDCat = 0;
+$iDisplayMenu = 0;
 $iIDTpl = 0;
 
 // Session- und Sprachdaten aus Formularanfrage sichern
@@ -365,6 +368,8 @@ if (sizeof($_GET) == 0 && isset($_POST['save_search'])) {
         $sSearchStrDateToYear_tmp = date('Y', $actDate);
     } elseif (isset($_GET['myarticles'])) {
         $sSearchStrAuthor_tmp = $auth->auth['uname'];
+    } elseif (isset($_GET['lostfound'])) {
+    	$bLostAndFound = true;
     }
 
 } elseif (sizeof($_GET) == 0 && isset($_POST)) {
@@ -466,6 +471,17 @@ if (!empty($sSearchStrAuthor) && ($sSearchStrAuthor != 'n/a')) {
 if (!empty($where)) {
     $sql_1 .= $where;
     $db->query($sql_1);
+} elseif($bLostAndFound) {
+	$sql_1 = "SELECT 
+          DISTINCT a.idart, a.idartlang, a.title, a.online, a.locked, a.idartlang, a.created, a.published,
+          a.artsort, a.lastmodified, b.idcat, b.idcatart, b.idcatart, c.startidartlang,
+          c.idcatlang, e.name as 'tplname' 
+        FROM ".$cfg['tab']['art_lang']." as a
+          LEFT JOIN ".$cfg['tab']['cat_art']." as b ON a.idart = b.idart
+          LEFT JOIN ".$cfg['tab']['cat_lang']." as c ON a.idartlang = c.startidartlang
+          LEFT JOIN ".$cfg['tab']['tpl_conf']." as d ON a.idtplcfg = d.idtplcfg
+          LEFT JOIN ".$cfg['tab']['tpl']." as e ON d.idtpl = e.`idtpl` WHERE a.idart NOT IN (SELECT ".$cfg['tab']['cat_art'].".idart FROM ".$cfg['tab']['cat_art'].")";
+    $db->query($sql_1);
 }
 
 if (!empty($sSession)) {
@@ -498,18 +514,19 @@ $tpl->set('s', 'SEARCHSTOREDMESSAGE', $saveSuccessfull);
 
 $iAffectedRows = $db->affected_rows();
 
-if ($iAffectedRows <= 0 || empty($where)) {
+if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
     $sNoArticle = i18n("Missing search value.");
     $sNothingFound = i18n("No article found.");
 
-    if ($bNoCriteria) {
+    if ($bNoCriteria && !$bLostAndFound) {
         $sErrOut = $sNoArticle;
     } else {
         $sErrOut = $sNothingFound;
     }
-
+    
     $sRow = '<tr><td colspan="7" class="bordercell">' . $sErrOut . '</td></tr>';
     $tpl->set('d', 'ROWS', $sRow);
+    $sLoadSubnavi = 'parent.parent.frames["right"].frames["right_top"].location.href = \'main.php?area=con&frame=3&idcat=0&idtpl=' . $iIDTpl . '&contenido=' . $sSession . "';";
     $tpl->next();
 } else {
     $bHit = false;
@@ -620,6 +637,7 @@ if ($iAffectedRows <= 0 || empty($where)) {
 
             // fuer den ersten gefundenen Artikel die Werte fuer CategoryID und TemplateID merken
             if ($i == 0) {
+            	$iDisplayMenu = 1;
                 $iIDCat = $idcat;
                 $iIDTpl = $idtpl;
             }
@@ -733,8 +751,11 @@ if ($iAffectedRows <= 0 || empty($where)) {
         $tpl->set('d', 'ROWS', $sRow);
         $tpl->next();
     }
-
-    $sLoadSubnavi = 'parent.parent.frames["right"].frames["right_top"].location.href = \'main.php?area=con&frame=3&idcat=' . $iIDCat . '&idtpl=' . $iIDTpl . '&contenido=' . $sSession . "';";
+    
+    if($bLostAndFound) {
+    	$iDisplayMenu = 1;
+    }
+    $sLoadSubnavi = 'parent.parent.frames["right"].frames["right_top"].location.href = \'main.php?area=con&frame=3&idcat=' . $iIDCat . '&idtpl=' . $iIDTpl . '&display_menu=' . $iDisplayMenu . '&contenido=' . $sSession . "';";
 }
 
 
