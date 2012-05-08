@@ -922,10 +922,13 @@ function strMoveUpCategory($idcat)
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
+    // Load current category
     $oCat = new cApiCategory();
     $oCat->loadByPrimaryKey((int) $idcat);
+    $preid = $oCat->get('preid');
+    $postid = $oCat->get('postid');
 
-    if (0 == $oCat->get('preid')) {
+    if (0 == $preid) {
         // No preid, no way to move up
         return;
     }
@@ -933,22 +936,19 @@ function strMoveUpCategory($idcat)
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $preid  = $oCat->get('preid');
-    $postid = $oCat->get('postid');
-
-    // load previous category
+    // Load previous category
     $oPreCat = new cApiCategory();
     $oPreCat->loadByPrimaryKey((int) $preid);
     $prePreid = $oPreCat->get('preid');
     $preIdcat  = $oPreCat->get('idcat');
 
-    // load category before previous category
+    // Load category before previous category
     $oPrePreCat = new cApiCategory();
     if ((int) $prePreid > 0) {
         $oPrePreCat->loadByPrimaryKey((int) $prePreid);
     }
 
-    // load post cat
+    // Load post category
     $oPostCat = new cApiCategory();
     if ((int) $postid > 0) {
         $oPostCat->loadByPrimaryKey((int) $postid);
@@ -984,68 +984,59 @@ function strMoveUpCategory($idcat)
  */
 function strMoveDownCategory($idcat)
 {
-    global $db, $sess, $cfg;
-
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
+
+    // Load current category
+    $oCat = new cApiCategory();
+    $oCat->loadByPrimaryKey((int) $idcat);
+    $preid = $oCat->get('preid');
+    $postid = $oCat->get('postid');
+
+    if (0 == $postid) {
+        // No post, no way to move down
+        return;
+    }
 
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $arrLinks = array();
-
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-    $db->query($sql);
-    $db->next_record();
-    $arrLinks['cur']['idcat'] = $db->f("idcat");
-    $arrLinks['cur']['pre'] = $db->f("preid");
-    $arrLinks['cur']['post'] = $db->f("postid");
-
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($arrLinks['cur']['pre'])."'";
-    $db->query($sql);
-    if ($db->next_record()) {
-        $arrLinks['pre']['idcat'] = $db->f("idcat");
-        $arrLinks['pre']['pre'] = $db->f("preid");
-        $arrLinks['pre']['post'] = $db->f("postid");
+    // Load previous category
+    $oPreCat = new cApiCategory();
+    if ((int) $preid > 0) {
+        $oPreCat->loadByPrimaryKey((int) $preid);
+        $preIdcat = (int) $oPreCat->get('idcat');
     } else {
-        $arrLinks['pre']['idcat'] = 0;
-        $arrLinks['pre']['pre'] = 0;
-        $arrLinks['pre']['post'] = 0;
+        $preIdcat = 0;
     }
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($arrLinks['cur']['post'])."'";
-    $db->query($sql);
-    if ($db->next_record()) {
-        $arrLinks['post']['idcat'] = $db->f("idcat");
-        $arrLinks['post']['pre'] = $db->f("preid");
-        $arrLinks['post']['post'] = $db->f("postid");
-    } else {
-        $arrLinks['post']['idcat'] = 0;
-        $arrLinks['post']['pre'] = 0;
-        $arrLinks['post']['post'] = 0;
+    // Load post category
+    $oPostCat = new cApiCategory();
+    $oPostCat->loadByPrimaryKey((int) $postid);
+    $postIdcat = $oPostCat->get('idcat');
+    $postPostid = $oPostCat->get('postid');
+
+    if ($preIdcat != 0) {
+        // Update previous category, if exists
+        $oPreCat->set('postid', (int) $postIdcat);
+        $oPreCat->store();
     }
 
-    if ($arrLinks['cur']['post'] != 0) {
-        if ($arrLinks['pre']['idcat'] != 0) {
-            $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='".Contenido_Security::toInteger($arrLinks['post']['idcat'])."' WHERE idcat='".Contenido_Security::toInteger($arrLinks['pre']['idcat'])."'";
-            $db->query($sql);
-        } else {
-            $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".Contenido_Security::toInteger($arrLinks['pre']['idcat'])."' WHERE idcat='".Contenido_Security::toInteger($arrLinks['post']['idcat'])."'";
-            $db->query($sql);
-        }
+    // Update current category
+    $oCat->set('preid', (int) $postid);
+    $oCat->set('postid', (int) $postPostid);
+    $oCat->store();
 
-        $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".Contenido_Security::toInteger($arrLinks['cur']['post'])."', postid='".Contenido_Security::toInteger($arrLinks['post']['post'])."'
-                WHERE idcat='".Contenido_Security::toInteger($arrLinks['cur']['idcat'])."'";
-        $db->query($sql);
+    // Update post category
+    $oPostCat->set('preid', (int) $preIdcat);
+    $oPostCat->set('postid', (int) $idcat);
+    $oPostCat->store();
 
-        $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".Contenido_Security::toInteger($arrLinks['pre']['idcat'])."', postid='".Contenido_Security::toInteger($arrLinks['cur']['idcat'])."'
-                WHERE idcat='".Contenido_Security::toInteger($arrLinks['post']['idcat'])."'";
-        $db->query($sql);
-    }
-
-    if ($arrLinks['post']['post'] != 0) {
-        $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".Contenido_Security::toInteger($arrLinks['cur']['idcat'])."' WHERE idcat='".Contenido_Security::toInteger($arrLinks['post']['post'])."'";
-        $db->query($sql);
+    if ($postPostid != 0) {
+        // Update post post category, if exists
+        $oPostPostCat = new cApiCategory($postPostid);
+        $oPostPostCat->set('preid', (int) $idcat);
+        $oPostPostCat->store();
     }
 }
 
