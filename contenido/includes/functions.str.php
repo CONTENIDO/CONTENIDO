@@ -86,61 +86,37 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
 
     $created = date('Y-m-d H:i:s');
 
-    $pre_id = 0;
-    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE parentid='0' AND postid='0' AND idclient='".Contenido_Security::toInteger($client)."'";
-    $db->query($sql);
-    while($db->next_record()){
-        $pre_id = $db->f("idcat");
+    // Get last category tree
+    $oCatColl = new cApiCategoryCollection();
+    $oLastCatTree = $oCatColl->fetchLastCategoryTree($client);
+    $lasCatTreeId = (is_object($oLastCatTree)) ? $oLastCatTree->get('idcat') : 0;
+
+    // Insert new category tree
+    $oCatColl2 = new cApiCategoryCollection();
+    $oNewCat = $oCatColl2->create($client, 0, $lasCatTreeId, 0);
+    $newIdCat = $oNewCat->get('idcat');
+
+    // Update last category tree
+    if (is_object($oLastCatTree)) {
+        $oLastCatTree->set('postid', $newIdCat);
+        $oLastCatTree->store();
     }
 
-    // Entry in 'cat_lang'-table
-    $sql = $db->buildInsert($cfg['tab']['cat'], array(
-        'preid' => $pre_id,
-        'postid' => 0,
-        'idclient' => $client,
-        'author' => $auth->auth['uname'],
-        'created' => $created,
-        'lastmodified' => $created,
-    ));
-    $db->query($sql);
-    $newIdCat = $db->getLastInsertedId($cfg['tab']['cat']);
-
-    // Get id of first category tree
-    $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid=0 AND postid=0 AND idclient=" . $client;
-    $db->query($sql);
-    while($db->next_record()){
-        $rootIdCat = $db->f('idcat');
-        if ($rootIdCat == $pre_id) {
-            // Update 'cat'-table
-            $aFields = array('postid' => $newIdCat);
-            $aWhere = array('idcat' => (int) $rootIdCat);
-            $sql = $db->buildUpdate($cfg['tab']['cat'], $aFields, $aWhere);
-            $db->query($sql);
-        }
-    }
-    // Entry in 'cat_lang'-table
-    $aLanguages = array($lang);
-    foreach ($aLanguages as $tmpIdLang) {
-        $sql = $db->buildInsert($cfg['tab']['cat_lang'], array(
-            'idcat' => $newIdCat,
-            'idlang' => $tmpIdLang,
-            'name' => htmlspecialchars($catname, ENT_QUOTES),
-            'visible' => $visible,
-            'public' => $public,
-            'idtplcfg' => 0,
-            'urlname' => htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES),
-            'author' => $auth->auth['uname'],
-            'created' => $created,
-            'lastmodified' => $created,
-        ));
-        $db->query($sql);
-    }
-
-    // set correct rights for element
     cInclude('includes', 'functions.rights.php');
-    foreach ($aLanguages as $tmpIdLang) {
-        createRightsForElement('str', $newIdCat, $tmpIdLang);
-        createRightsForElement('con', $newIdCat, $tmpIdLang);
+
+    // Loop through languages
+    $aLanguages = array($lang);
+    foreach ($aLanguages as $curLang) {
+        $name = htmlspecialchars($catname, ENT_QUOTES);
+        $urlname = htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES);
+
+        // Insert new category language entry
+        $oCatLangColl = new cApiCategoryLanguageCollection();
+        $oCatLangColl->create($newIdCat, $curLang, $name, $urlname, '', 0, $visible, $public, 0, '', 0);
+
+        // Set correct rights for element
+        createRightsForElement('str', $newIdCat, $curLang);
+        createRightsForElement('con', $newIdCat, $curLang);
     }
 
     // Assign template
@@ -313,15 +289,20 @@ function strRemakeTreeTable()
     global $remakeCatTable;
     global $remakeStrTable;
 
-    $remakeCatTable = true;
-    $remakeStrTable = true;
-
     $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE idclient = ". (int) $client;
     $db->query($sql);
     $idcats = array();
     while ($db->next_record()) {
         $idcats[] = $db->f("idcat");
     }
+
+    if (0 === count($idcats)) {
+        // There are no categories to build the tree from!
+        return;
+    }
+
+    $remakeCatTable = true;
+    $remakeStrTable = true;
 
     $sql = "DELETE FROM ".$cfg['tab']['cat_tree']." WHERE idcat IN ('" . implode("', '", $idcats) . "')"; // empty 'cat_tree'-table
     $db->query($sql);
