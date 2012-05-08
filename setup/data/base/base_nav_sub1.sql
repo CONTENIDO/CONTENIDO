@@ -15,8 +15,9 @@ INSERT INTO !PREFIX!_nav_sub VALUES('35', '5', '28', '0', 'navigation/administra
 INSERT INTO !PREFIX!_nav_sub VALUES('14', '1', '29', '0', 'plug-ins/langfile/', '0');
 INSERT INTO !PREFIX!_nav_sub VALUES('15', '0', '1', '1', 'navigation/content/article/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('16', '0', '3', '1', 'navigation/content/article/properties', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('17', '0', '5', '1', 'navigation/content/article/configuration', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('18', '0', '2', '1', 'navigation/content/article/editor', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('17', '0', '100', '1', 'navigation/content/article/meta', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('18', '0', '5', '1', 'navigation/content/article/configuration', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('19', '0', '2', '1', 'navigation/content/article/editor', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('22', '0', '13', '1', 'navigation/style/templates/edit', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('23', '0', '33', '1', 'navigation/style/templates/conf', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('24', '0', '40', '1', 'navigation/administration/users/userproperties', '1');
@@ -73,8 +74,8 @@ INSERT INTO !PREFIX!_nav_sub VALUES('503', '0', '501', '1', 'linkchecker/xml/lan
 INSERT INTO !PREFIX!_nav_sub VALUES('600', '3', '600', '0', 'workflow/xml/lang_de_DE.xml;navigation/extra/workflow/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('601', '0', '601', '1', 'workflow/xml/lang_de_DE.xml;navigation/extra/workflow/settings', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('602', '0', '602', '1', 'workflow/xml/lang_de_DE.xml;navigation/extra/workflow/steps', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('19', '2', '31', '0', 'navigation/style/styleeditor/main', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('20', '2', '32', '0', 'navigation/style/jseditor/main', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('20', '2', '31', '0', 'navigation/style/styleeditor/main', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES('21', '2', '32', '0', 'navigation/style/jseditor/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('61', '2', '71', '0', 'navigation/style/tpleditor/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('400', '0', '400', '1', 'navigation/style/layouts/history', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('399', '0', '31', '1', 'navigation/style/styleeditor/file', '1');
@@ -84,4 +85,3 @@ INSERT INTO !PREFIX!_nav_sub VALUES('402', '0', '402', '1', 'navigation/style/js
 INSERT INTO !PREFIX!_nav_sub VALUES('397', '0', '71', '1', 'navigation/style/tpleditor/file', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('403', '0', '403', '1', 'navigation/style/tpleditor/history', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('805', '0', '811', '1', 'navigation/administration/system/purge', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('100', '0', '100', '1', 'navigation/content/article/meta', '1');
