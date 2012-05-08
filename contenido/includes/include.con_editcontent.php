@@ -80,8 +80,8 @@ if ($action == 10) {
     header('Location: ' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['includes']
         . "include.backendedit.php?type=$type&typenr=$typenr&client=$client&lang=$lang&idcat=$idcat&idart=$idart&idartlang=$idartlang&contenido=$contenido&lang=$lang");
 } else {
-
-    $markSubItem = markSubMenuItem(3, true);
+	//@fulai.zhang: Mark submenuitem 'Editor' in the CONTENIDO Backend (Area: Contenido --> Articles --> Editor)
+    $markSubItem = markSubMenuItem(4, true);
 
     //Include tiny class
     include($cfg['path']['contenido'] . 'external/wysiwyg/tinymce3/editorclass.php');
