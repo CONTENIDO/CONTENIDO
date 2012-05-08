@@ -54,7 +54,7 @@ if (class_exists('DB_Contenido')) {
  */
 function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0)
 {
-    global $db, $client, $lang, $cfg, $perm, $auth;
+    global $client, $lang, $perm;
 
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
@@ -83,8 +83,6 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     if (!$perm->have_perm_area_action('str', 'str_makepublic')) {
         $public = 1;
     }
-
-    $created = date('Y-m-d H:i:s');
 
     // Get last category tree
     $oCatColl = new cApiCategoryCollection();
