@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.3.20
+ * @version    1.3.21
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -377,7 +377,8 @@ function sort_pre_post($arr)
 }
 
 /**
- * Sorts passed assoziative categories array
+ * Sorts passed assoziative categories array.
+ * @todo  Check logic, move sorting to db layer, if possible!
  * @param  array  $arr
  * @return array
  */
@@ -397,7 +398,8 @@ function strSortPrePost($arr)
     $checkedIds = array();
     foreach ($arr as $row) {
         if (in_array($row['postid'], $checkedIds) || $row['idcat'] == $row['postid']) {
-            die(i18n("A The list of categories is messed up. The order in the list creates an infinite loop. Check you database."));
+//            die(i18n("A The list of categories is messed up. The order in the list creates an infinite loop. Check you database."));
+            continue;
         }
         $checkedIds[] = $row['idcat'];
     }
@@ -429,7 +431,7 @@ function strSortPrePost($arr)
 function recCats($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
 {
     cDeprecated("This function is not longer supported, use strBuildSqlValues() instead");
-    return strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0);
+    return strBuildSqlValues($aCats, $sInsertQuery, $aAllCats, $iLevel = 0);
 }
 
 /**
@@ -678,6 +680,35 @@ function strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias)
 }
 
 /**
+ * Renames a category alias.
+ *
+ * @param   int     $idcat             Category id
+ * @param   int     $lang              Language id
+ * @param   string  $newcategoryalias  New category alias
+ * @return  void
+ */
+function strRenameCategoryAlias($idcat, $lang, $newcategoryalias)
+{
+    global $db, $cfg, $cfgClient, $client;
+
+    if (trim($newcategoryalias) != '') {
+        $sUrlName = capiStrCleanURLCharacters($newcategoryalias);
+        $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '". $db->escape($sUrlName) ."' WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $lang;
+        $db->query($sql);
+    } else {
+        // Use categoryname as default -> get it escape it save it as urlname
+        $sql = "SELECT name from {$cfg['tab']['cat_lang']} WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $lang;
+        $db->query($sql);
+        if ($db->next_record()) {
+            $sUrlName = capiStrCleanURLCharacters($db->f('name'));
+            $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '" . $sUrlName . "' WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $lang;
+            $db->query($sql);
+            @unlink($cfgClient[$client]['path']['frontend'] . "cache/locationstring-url-cache-$lang.txt");
+        }
+    }
+}
+
+/**
  * Sets the visible status of the category and its childs
  *
  * @param   int  $idcat    Category id
@@ -888,19 +919,13 @@ function strDeleteCategory($idcat)
  */
 function strMoveUpCategory($idcat)
 {
-    global $db, $sess, $cfg;
-
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
-    $db->query($sql);
-    $db->next_record();
-    $tmp_idcat  = $db->f("idcat");
-    $tmp_preid  = $db->f("preid");
-    $tmp_postid = $db->f("postid");
+    $oCat = new cApiCategory();
+    $oCat->loadByPrimaryKey((int) $idcat);
 
-    if ($tmp_preid == 0) {
+    if (0 == $oCat->get('preid')) {
         // No preid, no way to move up
         return;
     }
@@ -908,38 +933,46 @@ function strMoveUpCategory($idcat)
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
-    $db->query($sql);
-    $db->next_record();
-    $tmp_idcat_pre  = $db->f("idcat");
-    $tmp_preid_pre  = $db->f("preid");
-    $tmp_postid_pre = $db->f("postid");
+    $preid  = $oCat->get('preid');
+    $postid = $oCat->get('postid');
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($tmp_preid_pre)."'";
-    $db->query($sql);
-    $db->next_record();
-    $tmp_idcat_pre_pre  = $db->f("idcat");
-    $tmp_preid_pre_pre  = $db->f("preid");
-    $tmp_postid_pre_pre = $db->f("postid");
+    // load previous category
+    $oPreCat = new cApiCategory();
+    $oPreCat->loadByPrimaryKey((int) $preid);
+    $prePreid = $oPreCat->get('preid');
+    $preIdcat  = $oPreCat->get('idcat');
 
-    $sql = "SELECT idcat, preid, postid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
-    $db->query($sql);
-    $db->next_record();
-    $tmp_idcat_post  = $db->f("idcat");
-    $tmp_preid_post  = $db->f("preid");
-    $tmp_postid_post = $db->f("postid");
+    // load category before previous category
+    $oPrePreCat = new cApiCategory();
+    if ((int) $prePreid > 0) {
+        $oPrePreCat->loadByPrimaryKey((int) $prePreid);
+    }
 
-    $sql = "UPDATE ".$cfg['tab']['cat']." SET  postid='".Contenido_Security::toInteger($tmp_idcat)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid_pre)."'";
-    $db->query($sql);
+    // load post cat
+    $oPostCat = new cApiCategory();
+    if ((int) $postid > 0) {
+        $oPostCat->loadByPrimaryKey((int) $postid);
+    }
 
-    $sql = "UPDATE ".$cfg['tab']['cat']." SET  preid='".Contenido_Security::toInteger($tmp_idcat)."', postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
-    $db->query($sql);
+    // Update category before previous, if exists
+    if ($oPrePreCat->isLoaded()) {
+        $oPrePreCat->set('postid', (int) $idcat);
+        $oPrePreCat->store();
+    }
 
-    $sql = "UPDATE ".$cfg['tab']['cat']." SET  preid='".Contenido_Security::toInteger($tmp_preid_pre)."', postid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='$tmp_idcat'";
-    $db->query($sql);
+    // Update previous category
+    $oPreCat->set('preid', (int) $idcat);
+    $oPreCat->set('postid', (int) $postid);
+    $oPreCat->store();
 
-    $sql = "UPDATE ".$cfg['tab']['cat']." SET  preid='".Contenido_Security::toInteger($tmp_idcat_pre)."' WHERE idcat='$tmp_postid'";
-    $db->query($sql);
+    // Update current category
+    $oCat->set('preid', (int) $prePreid);
+    $oCat->set('postid', (int) $preid);
+    $oCat->store();
+
+    // Update post category, if exists!
+    $oPostCat->set('preid', (int) $preIdcat);
+    $oPostCat->store();
 }
 
 
