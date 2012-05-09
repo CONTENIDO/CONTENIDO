@@ -225,13 +225,14 @@ function strOrderedPostTreeList($idcat, $poststring)
 {
     global $db, $cfg;
 
-    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE parentid=0 AND preid='".Contenido_Security::toInteger($idcat)."' AND idcat!=0";
-
+    $sql = 'SELECT idcat FROM `%s` WHERE parentid=0 AND preid=%d AND idcat!=0';
+    $sql = $db->prepare($sql, $cfg['tab']['cat'], $idcat);
     $db->query($sql);
+
     if ($db->next_record()) {
-        $tmp_idcat = $db->f("idcat");
-        $poststring = $poststring . "," . $tmp_idcat;
-        $poststring = strOrderedPostTreeList($tmp_idcat, $poststring);
+        $postIdcat = $db->f('idcat');
+        $poststring = $poststring . ',' . $postIdcat;
+        $poststring = strOrderedPostTreeList($postIdcat, $poststring);
     }
 
     return $poststring;
@@ -245,19 +246,15 @@ function strOrderedPostTreeList($idcat, $poststring)
  */
 function strRemakeTreeTable()
 {
-    global $db, $client, $lang, $cfg;
+    global $db, $client, $cfg;
 
     // Flag to rebuild the category table
     global $remakeCatTable;
     global $remakeStrTable;
 
-    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE idclient = ". (int) $client;
-    $db->query($sql);
-    $idcats = array();
-    while ($db->next_record()) {
-        $idcats[] = $db->f("idcat");
-    }
-
+    // Get all category ids
+    $oCatColl = new cApiCategoryCollection();
+    $idcats = $oCatColl->getCategoryIdsByClient($client);
     if (0 === count($idcats)) {
         // There are no categories to build the tree from!
         return;
@@ -266,45 +263,38 @@ function strRemakeTreeTable()
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $sql = "DELETE FROM ".$cfg['tab']['cat_tree']." WHERE idcat IN ('" . implode("', '", $idcats) . "')"; // empty 'cat_tree'-table
+    // Empty category tree table having specific categories
+    $sql = 'DELETE FROM ' . $cfg['tab']['cat_tree'] . ' WHERE idcat IN (' . implode(', ', $idcats) . ')';
     $db->query($sql);
 
-    $sql = "DELETE FROM ".$cfg['tab']['cat']." WHERE idcat=0";
+    // Delete entries from category table having idcat = 0
+    // @todo: Check this, how it is possible to have an invalid entry with primary key = 0
+    $sql = 'DELETE FROM ' . $cfg['tab']['cat'] . ' WHERE idcat=0';
     $db->query($sql);
 
-    $sql = "DELETE FROM ".$cfg['tab']['cat_lang']." WHERE idcat=0";
+    // Delete entries from category language table having idcat = 0
+    // @todo: Check this, how it is possible to have an invalid entry with primary key = 0
+    $sql = 'DELETE FROM ' . $cfg['tab']['cat_lang'] . ' WHERE idcat=0';
     $db->query($sql);
 
-    $sql = "SELECT idcat, parentid, preid, postid FROM ".$cfg['tab']['cat']." WHERE idclient = " . (int) $client . " ORDER BY parentid ASC, preid ASC, postid ASC";
-
-    $db->query($sql);
-
-    // build cat_tree
+    // Get all categories by client
+    $sql = "SELECT idcat, parentid, preid, postid FROM " . $cfg['tab']['cat'] . " WHERE idclient = " . (int) $client . " ORDER BY parentid ASC, preid ASC, postid ASC";
     $aCategories = array();
+    $db->query($sql);
     while ($db->next_record()) {
-        if ($db->f('parentid') == 0) {
-            $aCategories[0][$db->f('idcat')] = array(
-                'idcat' => $db->f('idcat'),
-                'parentid' => $db->f('parentid'),
-                'preid' => $db->f('preid'),
-                'postid' => $db->f('postid')
-            );
-        } else {
-            $aCategories[$db->f('parentid')][$db->f('idcat')] = array(
-                'idcat' => $db->f('idcat'),
-                'parentid' => $db->f('parentid'),
-                'preid' => $db->f('preid'),
-                'postid' => $db->f('postid')
-            );
+        $rs = $db->toArray();
+        if (!isset($aCategories[$rs['parentid']])) {
+            $aCategories[$rs['parentid']] = array();
         }
+        $aCategories[$rs['parentid']][$rs['idcat']] = $rs;
     }
 
-    // build INSERT statement
+    // Build INSERT statement
     $sInsertQuery = "INSERT INTO " . $cfg['tab']['cat_tree'] . " (idcat, level) VALUES ";
     $sInsertQuery = strBuildSqlValues($aCategories[0], $sInsertQuery, $aCategories);
     $sInsertQuery = rtrim($sInsertQuery, " ,");
 
-    // lock db table and execute INSERT query
+    // Lock db table and execute INSERT query
     $db->lock($cfg['tab']['cat_tree']);
     $db->query($sInsertQuery);
     $db->unlock($cfg['tab']['cat_tree']);
@@ -341,7 +331,7 @@ function strSortPrePost($arr)
     $checkedIds = array();
     foreach ($arr as $row) {
         if (in_array($row['postid'], $checkedIds) || $row['idcat'] == $row['postid']) {
-//            die(i18n("A The list of categories is messed up. The order in the list creates an infinite loop. Check you database."));
+//            die(i18n("The list of categories is messed up. The order in the list creates an infinite loop. Check you database."));
             continue;
         }
         $checkedIds[] = $row['idcat'];
@@ -356,7 +346,7 @@ function strSortPrePost($arr)
         }
     }
     if (!$fine) {
-        die(i18n("B The list of categories is messed up. The order in the list creates an infinite loop. Check you database."));
+        die(i18n("The list of categories is messed up. The order in the list creates an infinite loop. Check you database."));
     }
 
     while ($curId != 0) {

@@ -118,6 +118,22 @@ class cApiCategoryCollection extends ItemCollection
         $this->select($where);
         return $this->next();
     }
+
+    /**
+     * Returns list of categories (category ids) by passed client.
+     * @param  int  $idclient
+     * @return  array
+     */
+    public function getCategoryIdsByClient($idclient)
+    {
+        $list = array();
+        $sql = 'SELECT idcat FROM `%s` WHERE idclient=%d';
+        $this->db->query($sql, $this->table, $idclient);
+        while ($this->db->next_record()) {
+            $list[] = $this->db->f('idcat');
+        }
+        return $list;
+    }
 }
 
 
