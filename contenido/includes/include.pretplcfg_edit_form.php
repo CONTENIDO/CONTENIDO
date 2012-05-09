@@ -178,7 +178,7 @@ $buttons = '<a href="javascript:history.back()"><img src="images/but_cancel.gif"
 $tpl->set('s', 'BUTTONS', $buttons);
 
 $tpl->set('s', 'LABLE_DESCRIPTION', i18n('Description'));
-$tpl->set('s', 'DESCRIPTION',  wordwrap( $description, 80, "<br />\n" ));
+$tpl->set('s', 'DESCRIPTION',  nl2br($description));
 
 # Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['tplcfg_edit_form']);

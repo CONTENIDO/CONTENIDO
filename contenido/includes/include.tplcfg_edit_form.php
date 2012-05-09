@@ -457,7 +457,7 @@ if ($idtpl != 0 && $inUse == false) {
 //Display template description
 if($idtpl) {
 	
-	$tpl->set('s', 'DESCRIPTION',  wordwrap( $description, 80, "<br />\n" ));
+	$tpl->set('s', 'DESCRIPTION',  nl2br($description));
 	$tpl->set('s', 'LABLE_DESCRIPTION', i18n("Description"));
 }else {
 	$tpl->set('s', 'DESCRIPTION', '');
