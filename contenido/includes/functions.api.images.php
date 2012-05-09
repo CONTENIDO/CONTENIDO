@@ -133,6 +133,10 @@ function capiImgScaleLQ ($img, $maxX, $maxY, $crop = false, $expand = false,
 			case ".png":
 				$cfileName = $md5.".png";
 				break;
+			case ".gif":
+				$cfileName = $md5.".gif";
+				break;
+					
 			default:
 				$cfileName = $md5.".jpg";
 		}
@@ -249,6 +253,10 @@ function capiImgScaleLQ ($img, $maxX, $maxY, $crop = false, $expand = false,
 			case ".png":
 				imagepng($targetImage, $cacheFile); // no quality option available
 				break;
+			case ".gif":
+				imagegif($targetImage, $cacheFile); // no quality option available
+				break;
+					
 			default:
 				imagejpeg($targetImage, $cacheFile, $quality);
 		}
@@ -285,7 +293,7 @@ function capiImgScaleLQ ($img, $maxX, $maxY, $crop = false, $expand = false,
  * @return string 	!!!URL!!! to the resulting image (http://...)
  */
 function capiImgScaleHQ ($img, $maxX, $maxY, $crop = false, $expand = false, 
-						 $cacheTime = 10, $quality = 75, $keepType = false)
+						 $cacheTime = 10, $quality = 75, $keepType = true)
 {
 	global $cfgClient, $lang, $client;
 	
@@ -305,6 +313,7 @@ function capiImgScaleHQ ($img, $maxX, $maxY, $crop = false, $expand = false,
 	$filesize	= filesize($img);
 	$md5		= capiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
 	
+	
 	/* Create the target file names for web and server */
 	if ($keepType) // Should we keep the file type?
 	{	
@@ -312,6 +321,9 @@ function capiImgScaleHQ ($img, $maxX, $maxY, $crop = false, $expand = false,
 		{
 			case ".png":
 				$cfileName = $md5.".png";
+				break;
+			case '.gif':
+				$cfileName = $md5.".gif";
 				break;
 			default:
 				$cfileName = $md5.".jpg";
@@ -419,6 +431,16 @@ function capiImgScaleHQ ($img, $maxX, $maxY, $crop = false, $expand = false,
 	} else {
 		/* Create the target image with the target size, resize it afterwards. */
 		$targetImage = imagecreatetruecolor($targetX, $targetY);
+		
+		
+		// preserve transparency
+		if(strtolower($filetype) == ".gif" or strtolower($filetype) == ".png"){
+			imagecolortransparent($targetImage, imagecolorallocatealpha($targetImage, 0, 0, 0, 127));
+			imagealphablending($targetImage, false);
+			imagesavealpha($targetImage, true);
+		}
+		
+		
 		imagecopyresampled($targetImage, $imageHandle, 0, 0, 0, 0, $targetX, $targetY, $x, $y);
 	}
 	
@@ -430,6 +452,10 @@ function capiImgScaleHQ ($img, $maxX, $maxY, $crop = false, $expand = false,
 			case ".png":
 				imagepng($targetImage, $cacheFile); // no quality option available
 				break;
+			case '.gif':
+				imagegif($targetImage, $cacheFile);
+			break;
+					
 			default:
 				imagejpeg($targetImage, $cacheFile, $quality);
 		}
@@ -494,6 +520,9 @@ function capiImgScaleImageMagick ($img, $maxX, $maxY, $crop = false, $expand = f
 			case ".png":
 				$cfileName = $md5.".png";
 				break;
+			case '.gif':
+				$cfileName = $md5.".gif";
+			break;
 			default:
 				$cfileName = $md5.".jpg";
 		}
@@ -651,7 +680,7 @@ function isAnimGif($sFile)
  * @return string Path to the resulting image
  */
 function capiImgScale ($img, $maxX, $maxY, $crop = false, $expand = false, 
-					   $cacheTime = 10, $wantHQ = false, $quality = 75, $keepType = false)
+					   $cacheTime = 10, $wantHQ = false, $quality = 75, $keepType = true)
 {
 	global $client, $db, $cfg, $cfgClient;
 	
