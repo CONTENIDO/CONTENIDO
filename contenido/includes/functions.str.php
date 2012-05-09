@@ -392,20 +392,29 @@ function strBuildSqlValues($aCats, $sInsertQuery, &$aAllCats, $iLevel = 0)
 }
 
 
-function strNextDeeper($tmp_idcat, $ignore_lang = false)
+/**
+ * Returns id of next deeper category.
+ * @global array $cfg
+ * @global DB_Contenido $db_str
+ * @global int $lang
+ * @param int $idcat  Category id to check next deeper item
+ * @param bool $ignoreLang Flag to check for existing entry in category language table
+ * @return int
+ */
+function strNextDeeper($idcat, $ignoreLang = false)
 {
     global $cfg, $db_str, $lang;
 
-    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE parentid=" . (int) $tmp_idcat  . " AND preid=0";
+    $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid=" . (int) $idcat  . " AND preid=0";
     $db_str->query($sql);
     if ($db_str->next_record()) {
-        $midcat = (int) $db_str->f("idcat");
-        if ($ignore_lang == true) {
+        $midcat = (int) $db_str->f('idcat');
+        if ($ignoreLang == true) {
             return $midcat;
         }
 
         // Deeper element exists, check for language dependent part
-        $sql = "SELECT idcatlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat=" . $midcat . " AND idlang=" . (int) $lang;
+        $sql = "SELECT idcatlang FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat=" . $midcat . " AND idlang=" . (int) $lang;
         $db_str->query($sql);
         return ($db_str->next_record()) ? $midcat : 0;
     } else {
@@ -416,42 +425,50 @@ function strNextDeeper($tmp_idcat, $ignore_lang = false)
 
 
 /**
- * Checks, if passed category cotains any articles
+ * Checks, if passed category contains any articles
  *
- * @param   int  $tmp_idcat  ID of category
+ * @param   int  $idcat  ID of category
  * @return  bool
  */
-function strHasArticles($tmp_idcat)
+function strHasArticles($idcat)
 {
     global $cfg, $db_str, $lang;
 
-    $sql = "SELECT b.idartlang AS idartlang FROM
-            ".$cfg['tab']['cat_art']." AS a,
-            ".$cfg['tab']['art_lang']." AS b
-            WHERE a.idcat='".Contenido_Security::toInteger($tmp_idcat)."' AND
-            a.idart = b.idart AND b.idlang = '".Contenido_Security::toInteger($lang)."'";
-
+    $sql = "SELECT b.idartlang AS idartlang FROM `:cat_art` AS a, `:art_lang` AS b "
+         . "WHERE a.idcat = :idcat AND a.idart = b.idart AND b.idlang = :idlang";
+    $sql = $db_str->prepare($sql, array(
+        'cat_art' => $cfg['tab']['cat_art'],
+        'art_lang' => $cfg['tab']['art_lang'],
+        'idcat' => $idcat,
+        'idlang' => $lang
+    ));
     $db_str->query($sql);
 
     return ($db_str->next_record()) ? true : false;
 }
 
 
-function strNextPost($tmp_idcat)
+/**
+ * Returns next post category id
+ *
+ * @param   int  $idcat  ID of category
+ * @return  int
+ */
+function strNextPost($idcat)
 {
     global $db, $cfg;
 
-    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE preid='".Contenido_Security::toInteger($tmp_idcat)."'";
+    $sql = "SELECT idcat FROM `" . $cfg['tab']['cat'] . "` WHERE preid=" . (int) $idcat;
     $db->query($sql);
     if ($db->next_record()) {
         // Post element exists
-        $tmp_idcat = $db->f("idcat");
-        $sql = "SELECT parentid FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($tmp_idcat)."'";
+        $idcat = $db->f('idcat');
+        $sql = "SELECT parentid FROM `" . $cfg['tab']['cat'] . "` WHERE idcat=" . (int) $idcat;
         $db->query($sql);
         if ($db->next_record()) {
             // Parent from post must not be 0
-            $tmp_parentid = (int) $db->f("parentid");
-            return ($tmp_parentid != 0) ? $tmp_idcat : 0;
+            $parentid = (int) $db->f('parentid');
+            return ($parentid != 0) ? $idcat : 0;
         } else {
             return 99;
         }
@@ -461,35 +478,39 @@ function strNextPost($tmp_idcat)
     }
 }
 
-function strNextBackwards($tmp_idcat)
+/**
+ * Returns next backwards category id
+ *
+ * @param   int  $idcat  ID of category
+ * @return  int
+ */
+function strNextBackwards($idcat)
 {
     global $db, $cfg;
 
-    $tmp_idcat = (int) $tmp_idcat;
-
-    $sql = "SELECT parentid FROM ".$cfg['tab']['cat']." WHERE idcat=" . $tmp_idcat;
+    $sql = "SELECT parentid FROM `" . $cfg['tab']['cat'] . "` WHERE idcat=" . (int) $idcat;
     $db->query($sql);
     if ($db->next_record()) {
         // Parent exists
-        $tmp_idcat = $db->f("parentid");
-        if ($tmp_idcat != 0) {
-            $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE preid=" . $tmp_idcat;
+        $idcat = $db->f('parentid');
+        if ($idcat != 0) {
+            $sql = "SELECT idcat FROM `" . $cfg['tab']['cat'] . "` WHERE preid=" . (int) $idcat;
             $db->query($sql);
             if ($db->next_record()) {
                 // Parent has post
-                $tmp_idcat = $db->f("idcat");
-                $sql = "SELECT parentid FROM ".$cfg['tab']['cat']." WHERE idcat=" . $tmp_idcat;
+                $idcat = (int) $db->f('idcat');
+                $sql = "SELECT parentid FROM `" . $cfg['tab']['cat'] . "` WHERE idcat=" . (int) $idcat;
                 $db->query($sql);
                 if ($db->next_record()) {
                     // Parent from post must not be 0
-                    $tmp_parentid = (int) $db->f("parentid");
-                    return ($tmp_parentid != 0) ? $tmp_idcat : 0;
+                    $parentid = (int) $db->f("parentid");
+                    return ($parentid != 0) ? $idcat : 0;
                 } else {
                     return 99;
                 }
             } else {
                 // Parent has no post
-                return strNextBackwards($tmp_idcat);
+                return strNextBackwards($idcat);
             }
         } else {
             return 0;
