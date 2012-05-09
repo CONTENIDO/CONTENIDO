@@ -87,16 +87,16 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
     // Get last category tree
     $oCatColl = new cApiCategoryCollection();
     $oLastCatTree = $oCatColl->fetchLastCategoryTree($client);
-    $lasCatTreeId = (is_object($oLastCatTree)) ? $oLastCatTree->get('idcat') : 0;
+    $lastCatTreeId = (is_object($oLastCatTree)) ? $oLastCatTree->get('idcat') : 0;
 
     // Insert new category tree
     $oCatColl2 = new cApiCategoryCollection();
-    $oNewCat = $oCatColl2->create($client, 0, $lasCatTreeId, 0);
-    $newIdCat = $oNewCat->get('idcat');
+    $oNewCat = $oCatColl2->create($client, 0, $lastCatTreeId, 0);
+    $newIdcat = $oNewCat->get('idcat');
 
     // Update last category tree
     if (is_object($oLastCatTree)) {
-        $oLastCatTree->set('postid', $newIdCat);
+        $oLastCatTree->set('postid', $newIdcat);
         $oLastCatTree->store();
     }
 
@@ -110,35 +110,35 @@ function strNewTree($catname, $catalias = '', $visible = 0, $public = 1, $iIdtpl
 
         // Insert new category language entry
         $oCatLangColl = new cApiCategoryLanguageCollection();
-        $oCatLangColl->create($newIdCat, $curLang, $name, $urlname, '', 0, $visible, $public, 0, '', 0);
+        $oCatLangColl->create($newIdcat, $curLang, $name, $urlname, '', 0, $visible, $public, 0, '', 0);
 
         // Set correct rights for element
-        createRightsForElement('str', $newIdCat, $curLang);
-        createRightsForElement('con', $newIdCat, $curLang);
+        createRightsForElement('str', $newIdcat, $curLang);
+        createRightsForElement('con', $newIdcat, $curLang);
     }
 
     // Assign template
-    strAssignTemplate($newIdCat, $client, $iIdtplcfg);
+    strAssignTemplate($newIdcat, $client, $iIdtplcfg);
 
-    return $newIdCat;
+    return $newIdcat;
 }
 
 
 /**
  * Creates a new category.
  *
- * @param   int     $tmp_parentid  Id of parent category
- * @param   string  $catname       The category name
- * @param   bool    $remakeTree    Flag to rebuild category tree structure
- * @param   string  $catalias      Alias of category
- * @param   int     $visible       Flag about visible status
- * @param   int     $public        Flag about public status
- * @param   int     $iIdtplcfg     Id of template configuration
+ * @param   int     $parentid    Id of parent category
+ * @param   string  $catname     The category name
+ * @param   bool    $remakeTree  Flag to rebuild category tree structure
+ * @param   string  $catalias    Alias of category
+ * @param   int     $visible     Flag about visible status
+ * @param   int     $public      Flag about public status
+ * @param   int     $iIdtplcfg   Id of template configuration
  * @return  (int|void)  Id of new generated category or nothing on failure
  */
-function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0)
+function strNewCategory($parentid, $catname, $remakeTree = true, $catalias = '', $visible = 0, $public = 1, $iIdtplcfg = 0)
 {
-    global $db, $client, $lang, $cfg, $area_tree, $perm, $auth, $tmp_area;
+    global $client, $lang, $perm;
 
     // Flag to rebuild the category table
     global $remakeCatTable, $remakeStrTable;
@@ -146,11 +146,6 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
     if (trim($catname) == '') {
         return;
     }
-
-//    $tmp_newid = $db->nextid($cfg['tab']['cat']);
-//    if ($tmp_newid == 0) {
-//        return;
-//    }
 
     $remakeCatTable = true;
     $remakeStrTable = true;
@@ -173,70 +168,39 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
         $public = 1;
     }
 
-    $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid=" . (int) $tmp_parentid . " AND postid=0";
-    $db->query($sql);
-    $db->next_record();
-    $tmp_id = $db->f("idcat");
+    // Get previous category on same level, if exists
+    $oCatColl = new cApiCategoryCollection();
+    $oCatColl->select('parentid=' . (int) $parentid . ' AND postid=0');
+    $oPrevCat = $oCatColl->next();
+    $preIdcat = (is_object($oPrevCat)) ? $oPrevCat->get('idcat') : 0;
 
-    $created = date('Y-m-d H:i:s');
+    // Insert new category tree
+    $oCatColl2 = new cApiCategoryCollection();
+    $oNewCat = $oCatColl2->create($client, $parentid, $preIdcat, 0);
+    $newIdcat = $oNewCat->get('idcat');
 
-    if (!$tmp_id) {
-        // Insert entry in 'cat'-table
-        $sql = $db->buildInsert($cfg['tab']['cat'], array(
-            'parentid' => (int) $tmp_parentid,
-            'preid' => 0,
-            'postid' => 0,
-            'idclient' => (int) $client,
-            'author' => $auth->auth['uname'],
-            'created' => $created,
-            'lastmodified' => $created,
-        ));
-        $db->query($sql);
-        $tmp_newid = $db->getLastInsertedId($cfg['tab']['cat']);
-    } else {
-        // Insert entry in 'cat'-table
-        $sql = $db->buildInsert($cfg['tab']['cat'], array(
-            'parentid' => (int) $tmp_parentid,
-            'preid' => (int) $tmp_id,
-            'postid' => 0,
-            'idclient' => (int) $client,
-            'author' => $auth->auth['uname'],
-            'created' => $created,
-            'lastmodified' => $created,
-        ));
-        $db->query($sql);
-        $tmp_newid = $db->getLastInsertedId($cfg['tab']['cat']);
-
-        // Update entry in 'cat'-table
-        $aFields = array('postid' => $tmp_newid, 'lastmodified' => $created);
-        $aWhere = array('idcat' => (int) $tmp_id);
-        $sql = $db->buildUpdate($cfg['tab']['cat'], $aFields, $aWhere);
-        $db->query($sql);
+    // Update previous category, if exists
+    if (is_object($oPrevCat)) {
+        $oPrevCat->set('postid', $newIdcat);
+        $oPrevCat->set('lastmodified', date('Y-m-d H:i:s'));
+        $oPrevCat->store();
     }
 
-    // Insert entries in 'cat_lang'-table
-    $aLanguages = array($lang);
-    foreach ($aLanguages as $tmpIdLang) {
-        $sql = $db->buildInsert($cfg['tab']['cat_lang'], array(
-            'idcat' => (int) $tmp_newid,
-            'idlang' => $tmpIdLang,
-            'name' => htmlspecialchars($catname, ENT_QUOTES),
-            'visible' => $visible,
-            'public' => $public,
-            'idtplcfg' => 0,
-            'urlname' => htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES),
-            'author' => $auth->auth['uname'],
-            'created' => $created,
-            'lastmodified' => $created,
-        ));
-        $db->query($sql);
-    }
-
-    // set correct rights for element
     cInclude('includes', 'functions.rights.php');
-    foreach ($aLanguages as $tmpIdLang) {
-        copyRightsForElement('str', $tmp_parentid, $tmp_newid, $tmpIdLang);
-        copyRightsForElement('con', $tmp_parentid, $tmp_newid, $tmpIdLang);
+
+    // Loop through languages
+    $aLanguages = array($lang);
+    foreach ($aLanguages as $curLang) {
+        $name = htmlspecialchars($catname, ENT_QUOTES);
+        $urlname = htmlspecialchars(capiStrCleanURLCharacters($catalias), ENT_QUOTES);
+
+        // Insert new category language entry
+        $oCatLangColl = new cApiCategoryLanguageCollection();
+        $oCatLangColl->create($newIdcat, $curLang, $name, $urlname, '', 0, $visible, $public, 0, '', 0);
+
+        // Set correct rights for element
+        copyRightsForElement('str', $parentid, $newIdcat, $curLang);
+        copyRightsForElement('con', $parentid, $newIdcat, $curLang);
     }
 
     if ($remakeTree == true) {
@@ -244,9 +208,9 @@ function strNewCategory($tmp_parentid, $catname, $remakeTree = true, $catalias =
     }
 
     // Assign template
-    strAssignTemplate($tmp_newid, $client, $iIdtplcfg);
+    strAssignTemplate($newIdcat, $client, $iIdtplcfg);
 
-    return $tmp_newid;
+    return $newIdcat;
 }
 
 
