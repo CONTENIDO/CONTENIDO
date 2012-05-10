@@ -133,7 +133,7 @@ $form->add(i18n("Phone number"), $phone);
 $street = new cHTMLTextbox("street", $user->get("address_street"));
 $form->add(i18n("Street"), $street);
 
-$zipcode = new cHTMLTextbox("zip", $user->get("address_zip"));
+$zipcode = new cHTMLTextbox("zip", $user->get("address_zip"), "10", "10");
 $form->add(i18n("ZIP code"), $zipcode);
 
 $city = new cHTMLTextbox("city", $user->get("address_city"));
