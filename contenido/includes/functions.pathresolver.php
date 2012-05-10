@@ -452,7 +452,7 @@ function prDeleteCacheFileContent($client, $lang)
     if (is_writable($path . $filename)) {
         $res = @unlink($path . $filename);
     }
-var_dump($res);
+
     return ($res) ? true : false;
 }
 
