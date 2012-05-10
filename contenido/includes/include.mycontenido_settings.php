@@ -81,10 +81,15 @@ if ($action == "mycontenido_editself")
 
     	}
 	}
-
-
-
+	
+	$user->set("realname", $name);
 	$user->set("email", $email);
+	$user->set("telephone", $phonenumber);
+	$user->set("address_street", $street);
+	$user->set("address_zip", $zip);
+	$user->set("address_city", $city);
+	$user->set("address_country", $country);	
+	
 	$user->set("wysi", $wysi);
 
 	$user->setUserProperty("backend", "timeformat", $format);
@@ -105,6 +110,9 @@ $form->setVar("frame", $frame);
 
 $form->addHeader($settingsfor);
 
+$realname = new cHTMLTextbox("name", $user->get("realname"));
+$form->add(i18n("Name"), $realname);
+
 // @since 2006-07-04 Display password fields if not authenticated via LDAP/AD, only
 if ($user->get("password") != 'active_directory_auth') {
 	$oldpassword = new cHTMLPasswordbox("oldpassword");
@@ -118,6 +126,21 @@ if ($user->get("password") != 'active_directory_auth') {
 
 $email = new cHTMLTextbox("email", $user->get("email"));
 $form->add(i18n("E-Mail"), $email);
+
+$phone = new cHTMLTextbox("phonenumber", $user->get("telephone"));
+$form->add(i18n("Phone number"), $phone);
+
+$street = new cHTMLTextbox("street", $user->get("address_street"));
+$form->add(i18n("Street"), $street);
+
+$zipcode = new cHTMLTextbox("zip", $user->get("address_zip"));
+$form->add(i18n("ZIP code"), $zipcode);
+
+$city = new cHTMLTextbox("city", $user->get("address_city"));
+$form->add(i18n("City"), $city);
+
+$country = new cHTMLTextbox("country", $user->get("address_country"));
+$form->add(i18n("Country"), $country);
 
 $wysiwyg = new cHTMLCheckbox("wysi", 1);
 $wysiwyg->setChecked($user->get("wysi"));
