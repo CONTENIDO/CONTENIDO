@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.3.21
+ * @version    1.3.22
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -503,7 +503,7 @@ function strNextBackwards($idcat)
                 $db->query($sql);
                 if ($db->next_record()) {
                     // Parent from post must not be 0
-                    $parentid = (int) $db->f("parentid");
+                    $parentid = (int) $db->f('parentid');
                     return ($parentid != 0) ? $idcat : 0;
                 } else {
                     return 99;
@@ -521,36 +521,45 @@ function strNextBackwards($idcat)
     }
 }
 
+
 /**
-    Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann
-**/
-function strNextDeeperAll($tmp_idcat, $ignore_lang = false)
+ * Returns list of categories.
+ *
+ * Hotfix recursive call more than 200 times exit script on hosteurope Timo.Trautmann
+ *
+ * @global array $cfg
+ * @global DB_Contentido $db_str
+ * @global DB_Contentido $db_str2
+ * @global int $lang
+ * @param int $idcat
+ * @param bool $ignoreLang
+ * @return array
+ */
+function strNextDeeperAll($idcat, $ignoreLang = false)
 {
     global $cfg, $db_str, $db_str2, $lang;
 
     $aCats = array();
     $bLoop = true;
-    $sql = "SELECT idcat FROM ".$cfg['tab']['cat']." WHERE parentid='".Contenido_Security::toInteger($tmp_idcat)."' AND preid = 0";
 
-    #echo $sql.'<br>';
+    $sql = "SELECT idcat FROM `" . $cfg['tab']['cat'] . "` WHERE parentid=" . (int) $idcat . " AND preid=0";
     $db_str->query($sql);
     if ($db_str->next_record()) {
         while ($bLoop) {
-            $midcat = $db_str->f("idcat");
+            $midcat = $db_str->f('idcat');
 
-            if ($ignore_lang == true) {
-                array_push($aCats, $midcat);
+            if ($ignoreLang == true) {
+                $aCats[] = $midcat;
             } else {
                 // Deeper element exists, check for language dependent part
-                $sql = "SELECT idcatlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($midcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+                $sql = "SELECT idcatlang FROM `" . $cfg['tab']['cat_lang'] . "` WHERE idcat=" . (int) $midcat . " AND idlang=" . (int) $lang;
                 $db_str2->query($sql);
-
                 if ($db_str2->next_record()) {
-                    array_push($aCats, $midcat);
+                    $aCats[] = $midcat;
                 }
             }
 
-            $sql = "SELECT preid, postid, idcat FROM ".$cfg['tab']['cat']." WHERE parentid='".Contenido_Security::toInteger($tmp_idcat)."' AND preid = ".Contenido_Security::toInteger($midcat)."";
+            $sql = "SELECT idcat FROM `" . $cfg['tab']['cat'] . "` WHERE parentid=" . (int) $idcat . " AND preid=" . (int) $midcat;
             $db_str->query($sql);
             if (!$db_str->next_record()) {
                 $bLoop = false;
@@ -572,7 +581,8 @@ function strShowTreeTable()
     cDeprecated("This function is not longer supported.");
 
     echo "<br><table cellpadding=0 cellspacing=0 border=0>";
-    $sql = "SELECT * FROM ".$cfg['tab']['cat_tree']." AS A, ".$cfg['tab']['cat']." AS B, ".$cfg['tab']['cat_lang']." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".Contenido_Security::toInteger($lang)."' AND B.idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idtree";
+    $sql = "SELECT * FROM `".$cfg['tab']['cat_tree']."` AS A, `".$cfg['tab']['cat']."` AS B, `".$cfg['tab']['cat_lang']."` AS C "
+         . "WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang=".(int) $lang." AND B.idclient=".(int)$client." ORDER BY A.idtree";
     $db->query($sql);
     while ($db->next_record()) {
         $tmp_id    = $db->f("idcat");
@@ -596,41 +606,35 @@ function strShowTreeTable()
  * @param   string  $newcategoryalias  New category alias
  * @return  void
  */
-function strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias)
+function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias)
 {
-    global $db, $cfg, $cfgClient, $client;
+    global $client;
 
-    // Flag to rebuild the category table
-    global $remakeCatTable, $remakeStrTable;
-
-    if (trim($newcategoryname) == '') {
+    if (trim($newCategoryName) == '') {
         return;
     }
 
-    // @todo: Do we really need to rebuild category tree after renaming???
-    $remakeCatTable = true;
-    $remakeStrTable = true;
-
-    $sUrlname = htmlspecialchars(capiStrCleanURLCharacters($newcategoryname), ENT_QUOTES);
-    $sName = htmlspecialchars($newcategoryname, ENT_QUOTES);
-
-    if (trim($newcategoryalias) != '') {
-        $sql = "SELECT urlname, name FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-        $db->query($sql);
-        $sUrlnameNew = htmlspecialchars(capiStrCleanURLCharacters($newcategoryalias), ENT_QUOTES);
-        if ($db->next_record()) {
-            $sOldAlias = $db->f('urlname');
-            $sOldName = $db->f('name');
-        }
-        if ($sOldAlias != $sUrlnameNew) {
-            $sUrlname = $sUrlnameNew;
-        }
-
-        @unlink($cfgClient[$client]["path"]["frontend"]."cache/locationstring-url-cache-$lang.txt");
+    $oCatLang = new cApiCategoryLanguage();
+    if (!$oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+        // Couldn't load category language
+        return;
     }
 
-    $sql = "UPDATE ".$cfg['tab']['cat_lang']." SET urlname='".Contenido_Security::escapeDB($sUrlname, $db)."', name='".Contenido_Security::escapeDB($sName, $db)."', lastmodified = '".date("Y-m-d H:i:s")."' WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
-    $db->query($sql);
+    $name = $newCategoryName;
+    $urlName = (trim($newCategoryAlias) != '') ? trim($newCategoryAlias) : $newCategoryName;
+
+    if (trim($newCategoryAlias) != '') {
+        if ($oCatLang->get('urlname') != $newCategoryAlias) {
+            $urlName = $newCategoryAlias;
+        }
+        cInclude('includes', 'functions.pathresolver.php');
+        prDeleteCacheFileContent($client, $lang);
+    }
+
+    $oCatLang->set('name', $name);
+    $oCatLang->set('urlname', $urlName);
+    $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
+    $oCatLang->store();
 }
 
 /**
@@ -643,23 +647,25 @@ function strRenameCategory($idcat, $lang, $newcategoryname, $newcategoryalias)
  */
 function strRenameCategoryAlias($idcat, $lang, $newcategoryalias)
 {
-    global $db, $cfg, $cfgClient, $client;
+    global $db, $cfg, $client;
 
-    if (trim($newcategoryalias) != '') {
-        $sUrlName = capiStrCleanURLCharacters($newcategoryalias);
-        $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '". $db->escape($sUrlName) ."' WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $lang;
-        $db->query($sql);
-    } else {
-        // Use categoryname as default -> get it escape it save it as urlname
-        $sql = "SELECT name from {$cfg['tab']['cat_lang']} WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $lang;
-        $db->query($sql);
-        if ($db->next_record()) {
-            $sUrlName = capiStrCleanURLCharacters($db->f('name'));
-            $sql = "UPDATE {$cfg['tab']['cat_lang']} SET urlname = '" . $sUrlName . "' WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $lang;
-            $db->query($sql);
-            @unlink($cfgClient[$client]['path']['frontend'] . "cache/locationstring-url-cache-$lang.txt");
-        }
+    $oCatLang = new cApiCategoryLanguage();
+    if (!$oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
+        // Couldn't load category language
+        return;
     }
+
+    if (trim($newcategoryalias) == '') {
+        // Use categoryname as default -> get it escape it save it as urlname
+        $newcategoryalias = $oCatLang->get('name');
+    }
+
+    $oCatLang->set('urlname', $newcategoryalias);
+    $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
+    $oCatLang->store();
+
+    cInclude('includes', 'functions.pathresolver.php');
+    prDeleteCacheFileContent($client, $lang);
 }
 
 /**
@@ -674,27 +680,22 @@ function strMakeVisible($idcat, $lang, $visible)
 {
     global $db, $cfg;
 
-    // Flag to rebuild the category table
-    global $remakeCatTable, $remakeStrTable;
-
-    // @todo: Do we really need to rebuild category tree after changing visibility???
-    $remakeCatTable = true;
-    $remakeStrTable = true;
-
     $visible = (int) $visible;
     $lang = (int) $lang;
 
-    $a_catstring = strDeeperCategoriesArray($idcat);
-    foreach ($a_catstring as $value) {
-        $sql = "UPDATE ".$cfg['tab']['cat_lang']." SET visible='" . $visible . "', lastmodified='" . date("Y-m-d H:i:s") . "'
-                WHERE idcat=" . (int) $value . " AND idlang=".$lang;
-        $db->query($sql);
+    $categories = strDeeperCategoriesArray($idcat);
+    foreach ($categories as $value) {
+        $oCatLang = new cApiCategoryLanguage();
+        $oCatLang->loadByCategoryIdAndLanguageId($value, $lang);
+        $oCatLang->set('visible', $visible);
+        $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
+        $oCatLang->store();
     }
 
-    if ($cfg["pathresolve_heapcache"] == true && $visible = 0) {
-        $pathresolve_tablename = $cfg["sql"]["sqlprefix"]."_pathresolve_cache";
+    if ($cfg['pathresolve_heapcache'] == true && $visible = 0) {
+        $pathresolve_tablename = $cfg['sql']['sqlprefix'] . '_pathresolve_cache';
         $sql = "DELETE FROM %s WHERE idlang = '%s' AND idcat = '%s'";
-        $db->query(sprintf($sql, Contenido_Security::escapeDB($pathresolve_tablename, $db), Contenido_Security::toInteger($lang), $idcat));
+        $db->query(sprintf($sql, $db->escape($pathresolve_tablename), (int) $lang, $idcat));
     }
 }
 
@@ -709,20 +710,16 @@ function strMakeVisible($idcat, $lang, $visible)
  */
 function strMakePublic($idcat, $lang, $public)
 {
-    global $db, $cfg;
+    $public = (int) $public;
+    $lang = (int) $lang;
 
-    // Flag to rebuild the category table
-    global $remakeCatTable, $remakeStrTable;
-
-    // @todo: Do we really need to rebuild category tree after changing public state???
-    $remakeCatTable = true;
-    $remakeStrTable = true;
-
-    $a_catstring = strDeeperCategoriesArray($idcat);
-    foreach ($a_catstring as $value) {
-        $sql = "UPDATE ".$cfg['tab']['cat_lang']." SET public='$public', lastmodified = '".date("Y-m-d H:i:s")."'
-                WHERE idcat='".Contenido_Security::toInteger($value)."' AND idlang='".Contenido_Security::toInteger($lang)."' ";
-        $db->query($sql);
+    $categories = strDeeperCategoriesArray($idcat);
+    foreach ($categories as $value) {
+        $oCatLang = new cApiCategoryLanguage();
+        $oCatLang->loadByCategoryIdAndLanguageId($value, $lang);
+        $oCatLang->set('public', $public);
+        $oCatLang->set('lastmodified', date('Y-m-d H:i:s'));
+        $oCatLang->store();
     }
 }
 
