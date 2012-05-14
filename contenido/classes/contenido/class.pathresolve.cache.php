@@ -1,0 +1,186 @@
+<?php
+/**
+ * Project:
+ * CONTENIDO Content Management System
+ *
+ * Description:
+ * Pathresolve cache heap table management class.
+ *
+ * Requirements:
+ * @con_php_req 5.0
+ *
+ *
+ * @package    CONTENIDO API
+ * @version    0.1
+ * @author     Murat Purc <murat@purc.de>
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ *
+ * {@internal
+ *   created  2012-05-14
+ *
+ *   $Id$:
+ * }}
+ *
+ */
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
+
+/**
+ * Pathresolve cache static helper class
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
+class cApiPathresolveCacheHelper
+{
+    /**
+     * Flag to state state about created heap table.
+     * @var  bool
+     */
+    protected static $_tableCreated = false;
+
+    /**
+     * Checks configuration of heap table creation, it's existance and creates it if needed.
+     * @param  array  $cfg  Global CONTENIDO config array
+     */
+    public static function setup($cfg)
+    {
+        if (true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
+            $db = new DB_Contenido();
+            $tableName = $cfg['sql']['sqlprefix'] . '_pathresolve_cache';
+
+            $sql = "SHOW TABLES LIKE '" . $db->escape($tableName) . "'";
+            $db->query($sql);
+
+            if (!$db->next_record()) {
+                // Important: This is really a hack! Don't use pathresolve_heapcache if you are
+                // not sure what it does.
+                // @TODO: pls insert to this create table statetment MAX_ROWS.
+                $sql = 'CREATE TABLE `' . $db->escape($tableName) . '` (
+                           `idpathresolvecache` INT(10) NOT NULL AUTO_INCREMENT,
+                           `path` VARCHAR(255) NOT NULL,
+                           `idcat` INT(10) NOT NULL,
+                           `idlang` INT(10) NOT NULL,
+                           `lastcached` INT(10) NOT NULL,
+                            PRIMARY KEY (`idpathresolvecache`)
+                        ) ENGINE = HEAP;';
+                $db->query($sql);
+            }
+            self::$_tableCreated = true;
+        }
+    }
+}
+
+/**
+ * Pathresolve cache collection
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
+class cApiPathresolveCacheCollection extends ItemCollection
+{
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        global $cfg;
+        cApiPathresolveCacheHelper::setup($cfg['sql']['sqlprefix'] . '_pathresolve_cache');
+        parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
+        $this->_setItemClass('cApiPathresolveCache');
+    }
+
+    /**
+     * Creates a pathresolve cache entry.
+     * @param string $path
+     * @param int $idcat
+     * @param int $idlang
+     * @param string $lastcached
+     * @return cApiPathresolveCache
+     */
+    public function create($path, $idcat, $idlang, $lastcached = '')
+    {
+        $oItem = parent::create();
+
+        if (empty($lastcached)) {
+            $lastcached = time();
+        }
+
+        $oItem->set('path', $this->db->escape($path), false);
+        $oItem->set('idcat', (int) $idcat, false);
+        $oItem->set('idlang', (int) $idlang, false);
+        $oItem->set('lastcached', $this->escape($lastcached), false);
+        $oItem->store();
+
+        return $oItem;
+    }
+
+    /**
+     * Returns a last cached entry by path and language.
+     * @param string $path
+     * @param int $idlang
+     * @return cApiPathresolveCache|null
+     */
+    public function fetchLatestByPathAndLanguage($path, $idlang)
+    {
+        $this->select("path LIKE '" . $this->db->escape($path) . "' AND idlang=" . (int) $idlang, '', 'lastcached DESC', '1');
+        return $this->next();
+    }
+
+    /**
+     * Deletes entry by category and language.
+     * @param int $idcat
+     * @param int $idlang
+     */
+    public function deleteByCategoryAndLanguage($idcat, $idlang)
+    {
+        $this->select('idcat=' . (int) $idcat . ' AND idlang=' . (int) $idlang);
+        while ($oCode = $this->next()) {
+            $this->delete($oCode->get('idpathresolvecache'));
+        }
+    }
+}
+
+
+/**
+ * Pathresolve cache item
+ * @package    CONTENIDO API
+ * @subpackage Model
+ */
+class cApiPathresolveCache extends Item
+{
+    /**
+     * Constructor Function
+     * @param  mixed  $mId  Specifies the ID of item to load
+     */
+    public function __construct($mId = false)
+    {
+        global $cfg;
+        cApiPathresolveCacheHelper::setup($cfg['sql']['sqlprefix'] . '_pathresolve_cache');
+        parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
+        $this->setFilters(array(), array());
+        if ($mId !== false) {
+            $this->loadByPrimaryKey($mId);
+        }
+    }
+
+    /**
+     * Checks if item's cache time has expired.
+     * @return  bool
+     * @throws Exception  If item was not loaded before
+     */
+    public function isCacheTimeExpired()
+    {
+        global $cfg;
+        if (!$this->isLoaded()) {
+            throw new Exception('Item not loaded!');
+        }
+        $cacheTime = (isset($cfg['pathresolve_heapcache_time'])) ? $cfg['pathresolve_heapcache_time'] : 60 * 60 * 24;
+        return ($this->get('lastcached') + $cacheTime < time());
+    }
+}
+
+?>

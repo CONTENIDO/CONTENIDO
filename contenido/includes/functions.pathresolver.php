@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.2.0
+ * @version    1.2.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -55,49 +55,15 @@ function prResolvePathViaURLNames($path)
     // Pre-process path
     $path = strtolower(str_replace(' ', '', $path));
 
+    // Delete outdated entry in heapcache table, if enabled.
     if ($cfg['pathresolve_heapcache'] == true) {
-        $pathresolve_tablename = $cfg['sql']['sqlprefix'].'_pathresolve_cache';
-
-        $sql = "SHOW TABLES LIKE '".$db->escape($pathresolve_tablename)."'";
-        $db->query($sql);
-
-        if (!$db->next_record()) {
-            /**
-             * @TODO: Externalize table creation
-             *
-             * Important: This is really a hack! Don't use pathresolve_heapcache if you are
-             * not sure what it does.
-             * @TODO: pls insert to this create table statetment MAX_ROWS.
-             */
-            $sql = 'CREATE TABLE `'.$db->escape($pathresolve_tablename).'` (
-                    `idpathresolvecache` INT( 10 ) NOT NULL AUTO_INCREMENT,
-                    `path` VARCHAR( 255 ) NOT NULL ,
-                    `idcat` INT( 10 ) NOT NULL ,
-                    `idlang` INT( 10 ) NOT NULL ,
-                    `lastcached` INT(10) NOT NULL,
-                     PRIMARY KEY  (`idpathresolvecache`)
-                    ) ENGINE = HEAP;';
-
-            $db->query($sql);
-        }
-
-        $sql = "SELECT idpathresolvecache, idcat, lastcached FROM %s WHERE path LIKE '%s' AND idlang='%s' ORDER BY lastcached DESC LIMIT 1";
-        $db->query(sprintf($sql, $db->escape($pathresolve_tablename), $db->escape($path), (int) $lang));
-
-        if ($db->next_record()) {
-            if (isset ($cfg['pathresolve_heapcache_time'])) {
-                $iCacheTime = $cfg['pathresolve_heapcache_time'];
-            } else {
-                $iCacheTime = 60 * 60 * 24;
-            }
-
-            $tmp_idcat = $db->f('idcat');
-
-            if ($db->f('lastcached') + $iCacheTime < time()) {
-                $sql = "DELETE FROM %s WHERE idpathresolvecache = '%s'";
-                $db->query(sprintf($sql, $db->escape($pathresolve_tablename), (int) $db->f('idpathresolvecache')));
-            } else {
-                return $db->f('idcat');
+        $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
+        $oPathresolveCache = $oPathresolveCacheColl->fetchLatestByPathAndLanguage($path, $lang);
+        if (is_object($oPathresolveCache)) {
+            if ($oPathresolveCache->isCacheTimeExpired()) {
+                $cacheIdcat = $oPathresolveCache->get('idcat');
+                $oPathresolveCacheColl->delete($oPathresolveCache->get('idpathresolvecache'));
+                return $cacheIdcat;
             }
         }
     }
@@ -147,9 +113,8 @@ function prResolvePathViaURLNames($path)
     endAndLogTiming($handle);
 
     if ($cfg['pathresolve_heapcache'] == true) {
-        //$nid = $db->nextid($pathresolve_tablename);
-        $sql = "INSERT INTO %s SET path='%s', idcat='%s', idlang='%s', lastcached=%s";
-        $db->query(sprintf($sql, $db->escape($pathresolve_tablename), $db->escape($path), (int) key($results), (int) $lang, time()));
+        $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
+        $oPathresolveCache = $oPathresolveCacheColl->create($path, key($results), $lang, time());
     }
 
     return (int) key($results);

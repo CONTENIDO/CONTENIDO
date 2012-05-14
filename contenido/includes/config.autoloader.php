@@ -31,7 +31,7 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-03-28
+ *     created  2012-05-14
  * }}
  */
 
@@ -112,7 +112,7 @@ return array(
     'Contenido_Notification' => 'contenido/classes/class.notification.php',
     'PHPMailer' => 'contenido/classes/class.phpmailer.php',
     'Purge' => 'contenido/classes/class.purge.php',
-	'cRegistry' => 'contenido/classes/class.registry.php',
+    'cRegistry' => 'contenido/classes/class.registry.php',
     'RequestPassword' => 'contenido/classes/class.request.password.php',
     'Request' => 'contenido/classes/class.request.php',
     'ValidationError' => 'contenido/classes/class.request.php',
@@ -253,6 +253,9 @@ return array(
     'cApiOnlineUserCollection' => 'contenido/classes/contenido/class.online.user.php',
     'cApiOnlineUser' => 'contenido/classes/contenido/class.online.user.php',
     'ActiveUsers' => 'contenido/classes/contenido/class.online.user.php',
+    'cApiPathresolveCacheHelper' => 'contenido/classes/contenido/class.pathresolve.cache.php',
+    'cApiPathresolveCacheCollection' => 'contenido/classes/contenido/class.pathresolve.cache.php',
+    'cApiPathresolveCache' => 'contenido/classes/contenido/class.pathresolve.cache.php',
     'cApiPropertyCollection' => 'contenido/classes/contenido/class.property.php',
     'cApiProperty' => 'contenido/classes/contenido/class.property.php',
     'PropertyCollection' => 'contenido/classes/contenido/class.property.php',

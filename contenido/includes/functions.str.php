@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.3.22
+ * @version    1.3.23
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -693,9 +693,8 @@ function strMakeVisible($idcat, $lang, $visible)
     }
 
     if ($cfg['pathresolve_heapcache'] == true && $visible = 0) {
-        $pathresolve_tablename = $cfg['sql']['sqlprefix'] . '_pathresolve_cache';
-        $sql = "DELETE FROM %s WHERE idlang = '%s' AND idcat = '%s'";
-        $db->query(sprintf($sql, $db->escape($pathresolve_tablename), (int) $lang, $idcat));
+        $oPathresolveCacheColl = new cApiPathresolveCacheCollection();
+        $oPathresolveCacheColl->deleteByCategoryAndLanguage($idcat, $lang);
     }
 }
 
