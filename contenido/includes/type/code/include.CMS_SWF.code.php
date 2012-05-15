@@ -83,7 +83,7 @@ if ($edit) {
     // Process for output with echo
     $finalEditButton = $editAnchor->render();
 
-    $tmp = '<table cellspacing="0" cellpadding="0" border="0"><tr><td>' . $tmp . '</td></tr><tr><td>' . $finalEditButton . '</td></tr></table>';
+    $tmp = '<table cellspacing="0" cellpadding="0" border="0"><tr><td>' . $tmp . '</td></tr><tr><td></td></tr></table>' . $finalEditButton;
 }
 
 $tmp = addslashes($tmp);
