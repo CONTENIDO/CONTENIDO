@@ -12,6 +12,7 @@
                 <configuration>Configuration</configuration>
                 <preview>Preview</preview>
 				<meta>Meta</meta>
+				<content>Content</content>
             </article>
             <structure>
             	<main>Category</main>
