@@ -213,3 +213,4 @@ INSERT INTO !PREFIX!_files VALUES ('403', '403', 'include.html_tpl_history.php',
 INSERT INTO !PREFIX!_files VALUES ('415', '415', 'include.system_configuration.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('813', '811', 'include.system_purge.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('850', '100', 'include.con_meta_form.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('855', '105', 'include.con_content_list.php', 'main');

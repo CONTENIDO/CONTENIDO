@@ -179,3 +179,6 @@ INSERT INTO !PREFIX!_actions VALUES ('811', '811', 'do_purge', 'do_purge', '', '
 INSERT INTO !PREFIX!_actions VALUES('812', '11', '', 'mod_sync', '', '', '1');
 INSERT INTO !PREFIX!_actions VALUES('813', '9','','lay_sync','','','1');
 INSERT INTO !PREFIX!_actions VALUES('850', '100','','con_meta_saveart','$sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET pagetitle = ''".$_POST["page_title"]."'' WHERE idartlang=".$_POST["idartlang"];$db->query($sql);\r\n\r\n$availableTags = conGetAvailableMetaTagTypes();\r\nforeach ($availableTags as $key => $value){\r\n	conSetMetaValue($idartlang,$key,$_POST["META".$value["name"]]);\r\n}\r\n$notification->displayNotification("info", i18n("Changes saved"));','','0');
+INSERT INTO !PREFIX!_actions VALUES('855', '105','','con_content','cInclude("includes", "functions.tpl.php");\r\ninclude($cfg["path"]["contenido"] . $cfg["path"]["includes"] . "include.con_content_list.php");','','1');
+INSERT INTO !PREFIX!_actions VALUES('856', '105','','savecontype','cInclude("includes", "functions.tpl.php");\r\ninclude($cfg["path"]["contenido"] . $cfg["path"]["includes"] . "include.con_content_list.php");','','1');
+INSERT INTO !PREFIX!_actions VALUES('857', '105','','deletecontype','cInclude("includes", "functions.tpl.php");\r\ninclude($cfg["path"]["contenido"] . $cfg["path"]["includes"] . "include.con_content_list.php");','','1');
