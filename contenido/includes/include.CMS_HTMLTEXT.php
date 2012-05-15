@@ -32,11 +32,22 @@ if(!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+if(isset($area) && $area == 'con_content_list'){
+	$tmp_area = $area;
+	$path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
+			'&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
+	$path2 = $path1;
+} else {
+	$tmp_area = "con_editcontent";
+	$path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&changeview=edit&client=$client";
+	$path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang";
+}
+
 if ($doedit == "1") {
 	conSaveContentEntry ($idartlang, "CMS_HTMLTEXT", $typenr, $CMS_HTMLTEXT);
 	conMakeArticleIndex ($idartlang, $idart);
 	conGenerateCodeForArtInAllCategories($idart);
-	header("Location:".$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&changeview=edit&client=$client")."");
+	header("Location:".$sess->url($path1)."");
 }
 header("Content-Type: text/html; charset={$encoding[$lang]}");
 ?>
@@ -76,9 +87,8 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         echo "  <TR><TD valign=top class=text_medium>&nbsp;".$typenr.".&nbsp;".$a_description[$type][$typenr].":&nbsp;</TD><TD class=content>";
         echo "  <TEXTAREA name=CMS_HTMLTEXT ROWS=15 COLS=90>".strip_tags(urldecode($a_content[$type][$typenr]))."</TEXTAREA>";
         echo "  </TD></TR>";
-        $tmp_area = "con_editcontent";
         echo "  <TR valign=top><TD colspan=2><br>
-                      <a href=".$sess->url($cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang")."><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=0></a>
+                      <a href=".$sess->url($path2)."><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=0></a>
                       <INPUT type=image name=submit value=editcontent src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif\" border=0>
                       </TD></TR>";
 

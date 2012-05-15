@@ -36,13 +36,20 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+if(isset($area) && $area == 'con_content_list'){
+	$tmp_area = $area;
+	$path = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
+			'&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
+} else {
+	$path = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
+}
 
 if ($doedit == '1') {
     conSaveContentEntry($idartlang, 'CMS_IMG', $typenr, $CMS_IMG);
     conSaveContentEntry($idartlang, 'CMS_IMGDESCR', $typenr, $CMS_IMGDESCR);
     conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
-    header('location:'.$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client"));
+    header('location:'.$sess->url($path));
 }
 
 ?>

@@ -76,9 +76,13 @@ if ($action == 20 || $action == 10) {
     conGenerateCodeForArtInAllCategories($idart);
 }
 
+$areaCode = '';
+if(isset($area) && $area == 'con_content_list'){	
+	$areaCode = '&area='.$area;
+}
 if ($action == 10) {
     header('Location: ' . $cfg['path']['contenido_fullhtml'] . $cfg['path']['includes']
-        . "include.backendedit.php?type=$type&typenr=$typenr&client=$client&lang=$lang&idcat=$idcat&idart=$idart&idartlang=$idartlang&contenido=$contenido&lang=$lang");
+        . "include.backendedit.php?type=$type&typenr=$typenr&client=$client&lang=$lang&idcat=$idcat&idart=$idart&idartlang=$idartlang&contenido=$contenido&lang=$lang$areaCode");
 } else {
 	//@fulai.zhang: Mark submenuitem 'Editor' in the CONTENIDO Backend (Area: Contenido --> Articles --> Editor)
     $markSubItem = markSubMenuItem(4, true);

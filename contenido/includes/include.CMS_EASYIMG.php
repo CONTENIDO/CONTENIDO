@@ -32,6 +32,18 @@ if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+if(isset($area) && $area == 'con_content_list'){
+	$tmp_area = $area;
+	$path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
+			'&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
+} else {
+	$tmp_area = "con_editcontent";
+	if ($action == "cancel") {
+		$path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
+	} else {
+		$path1 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit";
+	}
+}
 
 if ($doedit == "1") {
 	cInclude("includes","functions.upl.php");
@@ -39,7 +51,7 @@ if ($doedit == "1") {
 	
 	if ($action == "cancel")
 	{
-		header("location:".$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client"));	
+		header("location:".$sess->url($path1));	
 	} else {
     	if (count($_FILES) == 1)
     	{
@@ -68,7 +80,7 @@ if ($doedit == "1") {
     		}
     	}		
 
-        header("location:".$sess->url($cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit"));
+        header("location:".$sess->url($path1));
 	}
 }
 

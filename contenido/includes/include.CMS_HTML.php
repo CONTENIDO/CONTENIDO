@@ -34,6 +34,20 @@ if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
+if(isset($area) && $area == 'con_content_list'){
+	$tmp_area = $area;
+	$href = "&action=10&idartlang=".$idartlang."&frame=4"."&lang=".$lang;
+	$path1 = $cfg['path']['contenido_fullhtml']."main.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client".$href;
+	$path2 = $path1;
+	$inputHTML = "        <input type=hidden name=area value=\"$area\">\n".
+				"        <input type=hidden name=frame value=\"4\">\n".
+				"        <input type=hidden name=client value=\"$client\">\n";
+} else {
+	$tmp_area = 'con_editcontent';
+	$path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
+	$path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang";
+	$inputHTML = "";
+}
 
 if ( $doedit == "1" || $doedit == "2" )
 {
@@ -43,7 +57,7 @@ if ( $doedit == "1" || $doedit == "2" )
 }
 if ( $doedit == "1" )
 {
-    header( "location:".$sess->url($cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client")."");
+    header( "location:".$sess->url($path1)."");
 }
 header("Content-Type: text/html; charset={$encoding[$lang]}");
 ?>
@@ -78,7 +92,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 	echo "        <input type=hidden name=idcat value=\"$idcat\">\n";
 	echo "        <input type=hidden name=idartlang value=\"$idartlang\">\n";
 	echo "        <input type=hidden name=changeview value=\"edit\">\n";
-
+	echo $inputHTML;
 	echo "        <table cellpadding=\"2\" width=\"100%\" cellspacing=\"0\" border=\"0\">\n";
 	echo "          <tr>\n";
 	echo "            <td valign=\"top\" class=\"text_medium\" nowrap>&nbsp;".$typenr.".&nbsp;".$a_description[$type][$typenr].":&nbsp;</td>\n";
@@ -90,11 +104,9 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
 	echo "\n            </td>\n";
 	echo "          </tr>\n";
-
-	$tmp_area = "con_editcontent";
 	echo "          <tr valign=\"top\">\n";
 	echo "            <td colspan=\"2\"><br>\n";
-	echo "              <a href=\"".$sess->url($cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang")."\"><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=\"0\" alt=\"".i18n("Cancel")."\" title=\"".i18n("Cancel")."\"></a>\n";
+	echo "              <a href=\"".$sess->url($path2)."\"><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=\"0\" alt=\"".i18n("Cancel")."\" title=\"".i18n("Cancel")."\"></a>\n";
 	echo "              <input type=\"image\" name=\"save\" value=\"editcontent\" src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_refresh.gif\" border=\"0\" onclick=\"document.forms[0].doedit.value='2';document.forms[0].submit();\" alt=\"".i18n("Save without leaving the editor")."\" title=\"".i18n("Save without leaving the editor")."\" />\n";
 	echo "              <input type=\"image\" name=\"submit\" value=\"editcontent\" src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif\" border=\"0\" alt=\"".i18n("Save and close editor")."\" title=\"".i18n("Save and close editor")."\" />\n";
 	echo "            </td>\n";

@@ -1151,6 +1151,7 @@ contenido/includes/include.client_left_top.php -text
 contenido/includes/include.client_menu.php -text
 contenido/includes/include.clientsettings.php -text
 contenido/includes/include.con_art_overview.php -text
+contenido/includes/include.con_content_list.php -text
 contenido/includes/include.con_edit_form.php -text
 contenido/includes/include.con_editcontent.php -text
 contenido/includes/include.con_left_top.php -text
