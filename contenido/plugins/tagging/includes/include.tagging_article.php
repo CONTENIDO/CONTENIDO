@@ -120,7 +120,7 @@ if ($result == false) {
 }
 
 
-$oPage->setContent($sLocationString.$result . markSubMenuItem(6, true));
+$oPage->setContent($sLocationString.$result . markSubMenuItem(7, true));
 $oPage->render();
 
 ?>
