@@ -693,7 +693,7 @@ class Cms_LinkEditor {
 		$oHandle = opendir($sUploadPath);
 		$i = 0;
         while($sEntry = readdir($oHandle)) {
-			if ( $sEntry != "." && $sEntry != ".." && is_dir( $sUploadPath . $sEntry ) ) {
+			if ( $sEntry != ".svn" && $sEntry != "." && $sEntry != ".." && is_dir( $sUploadPath . $sEntry ) ) {
 				$aDirectories[$i]['name'] = $sEntry;
 				$aDirectories[$i]['path'] = str_replace($this->sUploadPath, '', $sUploadPath);
 				$aDirectories[$i]['sub'] = $this->buildUploadDirectoryList( $sUploadPath . $sEntry );

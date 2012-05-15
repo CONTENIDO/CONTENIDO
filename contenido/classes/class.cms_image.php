@@ -360,7 +360,7 @@ class Cms_Image {
 		$oHandle = opendir($sUploadPath);
 		$i = 0;
         while($sEntry = readdir($oHandle)) {
-			if ( $sEntry != "." && $sEntry != ".." && is_dir( $sUploadPath . $sEntry ) ) {
+			if ( $sEntry != ".svn" && $sEntry != "." && $sEntry != ".." && is_dir( $sUploadPath . $sEntry ) ) {
 				$aDirectories[$i]['name'] = $sEntry;
 				$aDirectories[$i]['path'] = $sUploadPath;
 				$aDirectories[$i]['sub'] = $this->buildDirectoryList( $sUploadPath . $sEntry );
@@ -519,15 +519,15 @@ class Cms_Image {
 		$this->oDb->query($query);
 		$array = array();
 		if($this->oDb->next_record() && $idupl!='') { 	
-			echo $array[$iImageId]['medianame'] = $this->oDb->f('medianame');
+			echo $array[$iImageId]['medianame'] = urldecode($this->oDb->f('medianame'));
 			echo '+++';	
-			echo $array[$iImageId]['description'] = $this->oDb->f('description');
+			echo $array[$iImageId]['description'] = urldecode($this->oDb->f('description'));
 			echo '+++';	
-			echo $array[$iImageId]['keywords'] = $this->oDb->f('keywords');
+			echo $array[$iImageId]['keywords'] = urldecode($this->oDb->f('keywords'));
 			echo '+++';	
-			echo $array[$iImageId]['internal_notice'] = $this->oDb->f('internal_notice');
+			echo $array[$iImageId]['internal_notice'] = urldecode($this->oDb->f('internal_notice'));
 			echo '+++';	
-			echo $array[$iImageId]['copyright'] = $this->oDb->f('copyright');
+			echo $array[$iImageId]['copyright'] = urldecode($this->oDb->f('copyright'));
 			echo '+++';				
 		} else {
 			echo '';
