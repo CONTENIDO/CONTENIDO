@@ -27,7 +27,7 @@ html[xmlns] .clearfix {
 .cms_image_img {
 	margin-right: 2px; 
 	margin-top: 2px;
-    position: absolute;
+    /*position: absolute;*/
     z-index: 999;
 }
 
