@@ -37,6 +37,7 @@
  *   modified 2011-11-08, Murat Purc, usage of cApiSystemProperty classes
  *   modified 2011-11-18, Murat Purc, normalize E-Mail validation [#CON-448]
  *   modified 2012-01-18, Mischa Holz, moved checkMySQLConnectivity() to the DB_Contenido class itself, see [CON-429]
+ *   modified 2012-05-16, Ortwin Pinke, fixed wrong parameter count calling cError in function cDie
  *
  *   $Id$:
  * }}
@@ -1666,7 +1667,7 @@ function array_search_recursive($search, $array, $partial = false, $strict = fal
  */
 function cDie($file, $line, $message)
 {
-    cError("$file $line: $message");
+    cError($file, $line, $message);
     die("$file $line: $message");
 }
 
