@@ -196,12 +196,13 @@ if (isset($action) && $action != '') {
 
 
 if (isset($action)) {
-    if ($backend->getCode($action) != '') {
-        cDebug("Executing: ".$backend->getCode($action));
-        eval($backend->getCode($action));
-    } else {
-        cDebug("Exectuing: no code available in action");
-    }
+	$actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
+	if (file_exists($actionCodeFile)) {
+		cDebug("Including action file for " . $action);
+		include_once $actionCodeFile;
+	} else {
+		cDebug("No action file found for " . $action);
+	}
 }
 
 // Include the 'main' file for the selected area. Usually there is only one main file

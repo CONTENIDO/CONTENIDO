@@ -71,13 +71,6 @@ class Contenido_Backend {
      var $area = '';
 
     /**
-     * Constructor
-     */
-    function Contenido_Backend() {
-        # do nothing
-    } # end function
-
-    /**
      * Set the frame number
      * in which the file is
      * loaded
@@ -247,19 +240,12 @@ class Contenido_Backend {
      * @return $action String Code for selected Action
      */
     function getCode($action) {
-        global $notification;
-
-        if (isset($this->actions[$this->area][$action])) {
-
-            return ($this->actions[$this->area][$action]);
-            
-        } else {
-
-            # There is no action or
-            # user has no access to
-            # it
-        }
-
+		$actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
+		if (file_exists($actionCodeFile)) {
+			return file_get_contents($actionCodeFile);
+		}
+		
+		return '';
     } # end function
 
     /**
@@ -273,20 +259,12 @@ class Contenido_Backend {
      * @param $which String 'inc' / 'main'
      */
     function getFile($which) {
-
         if (isset($this->files[$which])) {
-
             return $this->files[$which];
-            
-        } else {
-
-            # There is no action or
-            # user has no access to
-            # it
         }
-
+		
+		return array();
     } # end function
-
 
     /**
      * Creates a log entry for the specified parameters.
@@ -298,12 +276,10 @@ class Contenido_Backend {
      * @param $action Action (ID or canonical name)
      */
     function log($idcat, $idart, $client, $lang, $idaction) {
-        global $perm, $auth, $cfg, $classarea, $area;
+        global $perm, $auth, $cfg;
 
         $db_log = new DB_Contenido;
-
-        //$lastentry = $db_log->nextid($cfg["tab"]["actionlog"]);
-
+		
         $timestamp = date("Y-m-d H:i:s");
         $idcatart = "0";
 		
@@ -312,13 +288,16 @@ class Contenido_Backend {
 		$client 	= Contenido_Security::toInteger($client);
 		$lang 		= Contenido_Security::toInteger($lang);
 		$idaction 	= Contenido_Security::escapeDB($idaction, $db_log);
-		$area		= Contenido_Security::escapeDB($area, $db_log);
 
-        if (!Contenido_Security::isInteger($client)) { return; }
-        if (!Contenido_Security::isInteger($lang)) { return; }
+        if (!Contenido_Security::isInteger($client)) { 
+			return; 
+		}
+		
+        if (!Contenido_Security::isInteger($lang)) { 
+			return;
+		}
 
-        if (isset($idcat) && isset($idart) && $idcat != "" && $idart != "")
-        {		
+        if (isset($idcat) && isset($idart) && $idcat != "" && $idart != "") {		
             $sql = "SELECT idcatart
                         FROM
                        ". $cfg["tab"]["cat_art"] ."
@@ -335,8 +314,7 @@ class Contenido_Backend {
         $oldaction = $idaction;
         $idaction = $perm->getIDForAction($idaction);    
 		
-        if ($idaction != "") 
-        {
+        if ($idaction != "") {
         $sql = "INSERT INTO
                     ". $cfg["tab"]["actionlog"]."
                 SET
@@ -349,23 +327,9 @@ class Contenido_Backend {
 
         } else {
            echo $oldaction. " is not in the actions table!<br><br>";
-           echo "Use the following statement to insert it with minimal functionsinto the actions table:<br>";
-           echo "<code>";
-           $myareaid = $classarea->getAreaID($area);
-
-            $sql = "SELECT max(idaction) FROM " . $cfg["tab"]["actions"];
-            $db_log->query($sql);
-            $db_log->next_record();
-    
-            $mynextid = $db_log->f(0) + 1;
-
-
-           echo "INSERT INTO ". $cfg["tab"]["actions"]."
-                      SET idaction = '".$mynextid."', idarea = '".$myareaid."', name = '".$oldaction."', relevant = '1'";
-           echo "</code>";
-            
         }
-            $db_log->query($sql);
+		
+        $db_log->query($sql);
     }
 } # end class Contenido_Backend
 ?>

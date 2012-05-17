@@ -152,20 +152,13 @@ if (isset($action) && $action != '') {
 
 
 if (isset($action)) {
-    if ($backend->getCode($action) != '') {
-        if ($backend->debug == 1) {
-            echo '<pre style="font-family: verdana; font-size: 10px"><b>Executing:</b>'."\n";
-            echo $backend->getCode($action)."\n";
-            echo '</pre>';
-        }
-        eval($backend->getCode($action));
-    } else {
-        if ($backend->debug == 1) {
-            echo '<pre style="font-family: verdana; font-size: 10px"><b>Executing:</b>'."\n";
-            echo "no code available in action\n";
-            echo '</pre>';
-        }
-    }
+	$actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
+	if (file_exists($actionCodeFile)) {
+		cDebug("Including action file for " . $action);
+		include_once $actionCodeFile;
+	} else {
+		cDebug("No action file found for " . $action);
+	}
 }
 
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
