@@ -21,9 +21,6 @@
  *
  * {@internal
  *   created 2003-07-03
- *   modified 2008-06-26, Frederic Schneider, add security fix
- *   mofified 2011-02-03, Rusmir Jusufovic, load the translation from file: mi18n();
- *   modified 2012-01-17, Mischa Holz, removed hessisch
  *
  *   $Id$:
  * }}
