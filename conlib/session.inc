@@ -93,18 +93,6 @@ class Session
     public $gc_probability = 5;
 
     /**
-     * Name of the autoinit-File, if any.
-     * @var string
-     */
-    public $auto_init = '';
-
-    /**
-     * Set to 0 only, if all pages call page_close() guaranteed.
-     * @var int
-     */
-    public $secure_auto_init = 1;
-
-    /**
      * 'passive', 'no', 'private' or 'public'
      * @var string
      */

@@ -40,7 +40,7 @@ if (!defined('CON_FRAMEWORK')) {
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-page_open(array(
+cRegistry::bootstrap(array(
     'sess' => 'Contenido_Session',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
     'perm' => 'Contenido_Perm'
@@ -121,6 +121,6 @@ if ((isset($menuless) && $menuless == 1)) {
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_content']);
 }
 
-page_close();
+cRegistry::shutdown();
 
 ?>

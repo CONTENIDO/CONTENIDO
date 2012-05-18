@@ -312,4 +312,58 @@ class cRegistry {
 		
 		return new $apiClassName($objectId);
 	}
+	
+	/**
+	 * Bootstraps the CONTENIDO framework and initializes
+	 * the global variables sess, auth and perm.
+	 *
+	 * @param	$features 	array	array with class name definitions
+	 *
+	 * @return	void
+	 */	
+	public final static function bootstrap($features) {
+		$cfg = self::getConfig();
+		
+		$bootstrapClasses = array();
+		$bootstrapFeatures = array('sess', 'auth', 'perm');
+		foreach ($bootstrapFeatures as $feature) {
+			$varFeatureClass = $feature . 'Class';
+			if (isset($features[$feature])) {
+				$$varFeatureClass = $features[$feature];
+			} else {
+				$$varFeatureClass = $cfg['bootstrap'][$feature];
+			}
+		}
+
+		if (class_exists($sessClass)) {
+			global $sess;
+			$sess = new $sessClass();
+			$sess->start();
+			if (isset($authClass)) {
+				global $auth;
+				if (!isset($auth)) {
+					$auth = new $authClass();
+				}
+				$auth->start();
+				
+				if (isset($permClass)) {
+					global $perm;
+					if (!isset($perm)) {
+						$perm = new $permClass();
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Shutdowns the CONTENIDO framework on page close.
+	 * @return	void
+	 */
+	public final static function shutdown() {
+		$sess = self::_fetchGlobalVariable('sess');
+		if (isset($sess)) {
+			$sess->freeze();
+		}
+	}
 }

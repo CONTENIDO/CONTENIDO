@@ -42,7 +42,7 @@ cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.forms.php');
 cInclude('includes', 'functions.con.php');
 
-page_open(array(
+cRegistry::bootstrap(array(
     'sess' => 'Contenido_Session',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
     'perm' => 'Contenido_Perm'
@@ -130,6 +130,6 @@ $end = getmicrotime();
 cDebug("Rendering this page took: " . ($end - $start)." seconds<br>");
 cDebug("Building the complete page took: " . ($end - $fullstart)." seconds<br>");
 
-page_close();
+cRegistry::shutdown();
 
 ?>

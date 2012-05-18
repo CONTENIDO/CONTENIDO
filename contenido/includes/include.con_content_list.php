@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 if (!isset($idcat)) {
-    page_close();
+    cRegistry::shutdown();
     return;
 }
 
@@ -172,7 +172,7 @@ while ( $db->next_record() ) {
     eval("?>\n".$code."\n<?php\n");
 //}
 
-page_close();
+cRegistry::shutdown();
 
 	function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode) {
         // #####################################################################

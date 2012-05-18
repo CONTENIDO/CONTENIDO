@@ -39,7 +39,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 if (!isset($idcat)) {
-    page_close();
+    cRegistry::shutdown();
     return;
 }
 
@@ -153,6 +153,6 @@ if ($action == 10) {
     eval("?>\n".$code."\n<?php\n");
 }
 
-page_close();
+cRegistry::shutdown();
 
 ?>

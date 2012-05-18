@@ -39,7 +39,7 @@ if (!defined('CON_FRAMEWORK')) {
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-page_open(array(
+cRegistry::bootstrap(array(
     'sess' => 'Contenido_Session',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
     'perm' => 'Contenido_Perm'
@@ -71,6 +71,6 @@ $tpl->set('s', 'VERSION', $cfg['version']);
 $tpl->set('s', 'CONTENIDOPATH', $cfg['path']['contenido_fullhtml'] . 'favicon.ico');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_left']);
 
-page_close();
+cRegistry::shutdown();
 
 ?>

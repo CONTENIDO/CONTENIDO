@@ -79,13 +79,13 @@ if ($cfg["use_pseudocron"] == true)
 if ($contenido)
 {
     //Backend
-    page_open(array ('sess' => 'Contenido_Session', 'auth' => 'Contenido_Challenge_Crypt_Auth', 'perm' => 'Contenido_Perm'));
+    cRegistry::bootstrap(array ('sess' => 'Contenido_Session', 'auth' => 'Contenido_Challenge_Crypt_Auth', 'perm' => 'Contenido_Perm'));
     i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
 }
 else
 {
     //Frontend
-    page_open(array ('sess' => 'Contenido_Frontend_Session', 'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth', 'perm' => 'Contenido_Perm'));
+    cRegistry::bootstrap(array ('sess' => 'Contenido_Frontend_Session', 'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth', 'perm' => 'Contenido_Perm'));
 }
 
 /**

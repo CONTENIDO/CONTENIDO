@@ -72,7 +72,7 @@ if ($cfg['use_pseudocron'] == true) {
 // @see http://sourceforge.net/projects/phplib
 if ($contenido) {
     // Backend
-    page_open(array(
+    cRegistry::bootstrap(array(
         'sess' => 'Contenido_Session',
         'auth' => 'Contenido_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'
@@ -80,7 +80,7 @@ if ($contenido) {
     i18nInit($cfg['path']['contenido'].$cfg['path']['locale'], $belang);
 } else {
     // Frontend
-    page_open(array(
+    cRegistry::bootstrap(array(
         'sess' => 'Contenido_Frontend_Session',
         'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'
@@ -562,7 +562,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Handle online (offline) articles
     if ($online) {
         if ($redirect == '1' && $redirect_url != '') {
-            page_close();
+            cRegistry::shutdown();
             // Redirect to the URL defined in article properties
             $oUrl = Contenido_Url::getInstance();
             if ($oUrl->isIdentifiableFrontContentUrl($redirect_url)) {
@@ -631,6 +631,6 @@ if (isset($savedlang)) {
     $lang = $savedlang;
 }
 
-page_close();
+cRegistry::shutdown();
 
 ?>

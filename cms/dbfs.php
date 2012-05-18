@@ -45,12 +45,12 @@ include_once ($contenido_path . 'includes/startup.php');
 
 if ($contenido)
 {
-    page_open(array('sess' => 'Contenido_Session',
+    cRegistry::bootstrap(array('sess' => 'Contenido_Session',
                     'auth' => 'Contenido_Challenge_Crypt_Auth',
                     'perm' => 'Contenido_Perm'));
 
 } else {
-    page_open(array('sess' => 'Contenido_Frontend_Session',
+    cRegistry::bootstrap(array('sess' => 'Contenido_Frontend_Session',
                     'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
                     'perm' => 'Contenido_Perm'));
 }
@@ -61,6 +61,6 @@ $client = $load_client;
 $dbfs = new cApiDbfsCollection();
 $dbfs->outputFile($file);
 
-page_close();
+cRegistry::shutdown();
 
 ?>

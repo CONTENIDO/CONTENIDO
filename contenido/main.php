@@ -44,7 +44,7 @@ $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.forms.php');
 
-page_open(array(
+cRegistry::bootstrap(array(
     'sess' => 'Contenido_Session',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
     'perm' => 'Contenido_Perm'
@@ -234,6 +234,6 @@ debugPrint();
 $oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->startUsersTracking();
 
-page_close();
+cRegistry::shutdown();
 
 ?>

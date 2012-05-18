@@ -41,7 +41,7 @@ if (!defined('CON_FRAMEWORK')) {
 // CONTENIDO startup process
 include_once('./includes/startup.php');
 
-page_open(array(
+cRegistry::bootstrap(array(
     'sess' => 'Contenido_Session',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
     'perm' => 'Contenido_Perm'
@@ -118,7 +118,7 @@ if (isset($_POST['speach'])) {
 }
 if (!empty($sSession)) {
     //Backend
-    page_open(array(
+    cRegistry::bootstrap(array(
         'sess' => 'Contenido_Session',
         'auth' => 'Contenido_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'
@@ -126,7 +126,7 @@ if (!empty($sSession)) {
     i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
 } else {
     //Frontend
-    page_open(array(
+    cRegistry::bootstrap(array(
         'sess' => 'Contenido_Frontend_Session',
         'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'

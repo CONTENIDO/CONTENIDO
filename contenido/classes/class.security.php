@@ -382,7 +382,7 @@ class Contenido_Security
 
         if (isset($tmpchangelang) && is_numeric($tmpchangelang) && $tmpchangelang > 0) {
             // savelang is needed to set language before closing the page, see
-            // {frontend_clientdir}/front_content.php before page_close()
+            // {frontend_clientdir}/front_content.php before cRegistry::shutdown()
             $savedlang = $lang;
             $lang      = $tmpchangelang;
         }

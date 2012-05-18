@@ -31,101 +31,22 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
-/**
- * Initializes the database abstraction layer, session, authentication and 
- * permissions Handler..
- *
- * Instantiates following global variables if needed:
- * - $db, $sess, $auth, $perm
- *
- * @global  array  $_PHPLIB
- * @global  object  $db    Optional
- * @global  object  $sess  Optional
- * @global  object  $auth  Optional
- * @global  object  $perm  Optional
- */
-function page_open($feature)
-{
-    global $_PHPLIB;
-
-    // Instantiate database feature if needed
-    if (isset($feature['db'])) {
-        global $db;
-        if (!isset($db)) {
-            $db = new $feature['db'];
-        }
-    }
-
-    // Enable sess and all dependent features.
-    if (isset($feature['sess'])) {
-        global $sess;
-        $sess = new $feature['sess'];
-        $sess->start();
-
-        // The auth feature depends on sess
-        if (isset($feature['auth'])) {
-            global $auth;
-
-            if (!isset($auth)) {
-                $auth = new $feature['auth'];
-            }
-            $auth->start();
-
-            // The perm feature depends on auth and sess
-            if (isset($feature['perm'])) {
-                global $perm;
-                if (!isset($perm)) {
-                    $perm = new $feature['perm'];
-                }
-            }
-
-            // The user feature depends on auth and sess
-            if (isset($feature['user'])) {
-                global $user;
-                if (!isset($user)) {
-                    $user = new $feature['user'];
-                }
-                $user->start($auth->auth['uid']);
-            }
-        }
-
-        // Load the auto_init-File, if one is specified.
-        if (($sess->auto_init != '') && !$sess->in) {
-            $sess->in = 1;
-            include($_PHPLIB['libdir'] . $sess->auto_init);
-            if ($sess->secure_auto_init != '') {
-                $sess->freeze();
-            }
-        } 
-    }
+/** @deprecated [2012-05-18] This function is deprecated, use cRegistry::bootstrap() instead */
+function page_open($feature) {
+	cDeprecated("This function is deprecated, use cRegistry::bootstrap() instead");
+	cRegistry::bootstrap($feature);
 }
 
-/**
- * Closes a page, shutting down session and user instances
- *
- * @global  object  $sess
- * @global  object  $user
- */
-function page_close()
-{
-    global $sess, $user;
-
-    if (isset($sess)) {
-        $sess->freeze();
-        if (isset($user) && method_exists($user, 'freeze')) {
-            $user->freeze();
-        }
-    }
+/** @deprecated [2012-05-18] This function is deprecated, use cRegistry::shutdown() instead */
+function page_close() {
+	cDeprecated("This function is deprecated, use cRegistry::shutdown() instead");
+    cRegistry::shutdown();
 }
 
-/**
- * Loads all session instances into superglobal $GLOBALS
- *
- * @param  array  $session
- */
-function sess_load($session)
-{
+/** @deprecated [2012-05-18] This function is not longer supported. */
+function sess_load($session) {
+	cDeprecated("This function is not longer supported.");
+	
     reset($session);
     while (list($k,$v) = each($session)) {
         $GLOBALS[$k] = new $v;
@@ -133,13 +54,10 @@ function sess_load($session)
     }
 }
 
-/**
- * Saves all session instances in available in $GLOBALS
- *
- * @param  array  $session
- */
-function sess_save($session)
-{
+/** @deprecated [2012-05-18] This function is not longer supported. */
+function sess_save($session) {
+	cDeprecated("This function is not longer supported.");
+	
     reset($session);
     while (list(,$v) = each($session)) {
         $GLOBALS[$v]->freeze();

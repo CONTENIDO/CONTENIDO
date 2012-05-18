@@ -55,12 +55,12 @@ cInclude("includes", "functions.general.php");
 
 if ($contenido)
 {
-    page_open(array('sess' => 'Contenido_Session',
+    cRegistry::bootstrap(array('sess' => 'Contenido_Session',
                     'auth' => 'Contenido_Challenge_Crypt_Auth',
                     'perm' => 'Contenido_Perm'));
 
 } else {
-    page_open(array('sess' => 'Contenido_Frontend_Session',
+    cRegistry::bootstrap(array('sess' => 'Contenido_Frontend_Session',
                     'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
                     'perm' => 'Contenido_Perm'));
 }
@@ -78,6 +78,6 @@ if (file_exists("config.after.php"))
 {
 	@ include ("config.after.php");
 }
-page_close();
+cRegistry::shutdown();
 
 ?>

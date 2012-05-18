@@ -153,7 +153,7 @@ $sStatCode = '
 
 $cfgConCache['raiseonevent'] = array(
     'beforeoutput' => array('/* some code here */'), 
-    'afteroutput'  => array($sStatCode, 'page_close();')
+    'afteroutput'  => array($sStatCode, 'cRegistry::shutdown();')
 );
 
 

@@ -41,7 +41,7 @@ $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.forms.php');
 
-page_open(array(
+cRegistry::bootstrap(array(
     'sess' => 'Contenido_Session',
     'auth' => 'Contenido_Challenge_Crypt_Auth',
     'perm' => 'Contenido_Perm'
@@ -180,6 +180,6 @@ cDebug("Complete memory usage: " . human_readable_size(memory_get_usage()));
 $oActiveUser = new cApiOnlineUserCollection();
 $oActiveUser->startUsersTracking();
 
-page_close();
+cRegistry::shutdown();
 
 ?>

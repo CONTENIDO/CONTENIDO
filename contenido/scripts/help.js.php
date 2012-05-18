@@ -40,12 +40,12 @@ include_once ('../includes/startup.php');
 
 header("Content-Type: text/javascript");
 
-page_open(array('sess' => 'Contenido_Session',
+cRegistry::bootstrap(array('sess' => 'Contenido_Session',
                 'auth' => 'Contenido_Challenge_Crypt_Auth',
                 'perm' => 'Contenido_Perm'));
 
 i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
-page_close();
+cRegistry::shutdown();
 
 $baseurl = $cfg["help_url"] . "front_content.php?version=".$cfg['version']."&help=";
 ?>
