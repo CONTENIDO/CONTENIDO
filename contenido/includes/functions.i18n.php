@@ -137,7 +137,7 @@ function i18n($string, $domain = 'contenido')
  */
 function i18nEmulateGettext($string, $domain = 'contenido')
 {
-    global $cfg, $_conI18n;
+    global $_conI18n;
 
     if (!isset($_conI18n['cache'][$domain])) {
         $_conI18n['cache'][$domain] = array();
@@ -272,6 +272,7 @@ function i18nRegisterDomain($domain, $localePath)
 function i18nStripAcceptLanguages($accept)
 {
     $languages = explode(',', $accept);
+    $shortLanguages = array();
     foreach ($languages as $value) {
         $components = explode(';', $value);
         $shortLanguages[] = $components[0];
@@ -372,7 +373,7 @@ function i18nGetAvailableLanguages()
 
 function mi18n($string)
 {
-    global $cCurrentModule, $db, $cfgClient, $encoding, $lang, $mi18nTranslator, $client, $cfg;
+    global $cCurrentModule;
 
     // dont workd by setup/upgrade
     cInclude('classes', 'contenido/class.module.php');
