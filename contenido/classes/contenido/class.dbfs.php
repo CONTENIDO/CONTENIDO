@@ -13,7 +13,7 @@
  * normalizing API.
  *
  * @package    CONTENIDO API
- * @version    0.1
+ * @version    0.1.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -33,6 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.file.php');
 
 /**
  * DFFS item collection
@@ -97,7 +98,7 @@ class cApiDbfsCollection extends ItemCollection
     public function writeFromFile($localfile, $targetfile)
     {
         $targetfile = $this->strip_path($targetfile);
-        $mimetype     = mime_content_type($localfile);
+        $mimetype   = fileGetMimeContentType($localfile);
 
         $this->write($targetfile, file_get_contents($localfile), $mimetype);
     }
