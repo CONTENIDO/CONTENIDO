@@ -1677,7 +1677,7 @@ contenido/plugins/workflow/templates/template.workflow_tasks.html -text
 contenido/plugins/workflow/xml/lang_de_DE.xml -text svneol=unset#text/plain
 contenido/plugins/workflow/xml/lang_en_EN.xml -text svneol=unset#text/plain
 contenido/plugins/workflow/xml/lang_en_US.xml -text svneol=unset#text/plain
-contenido/scripts/HTMLObj.js.php -text
+contenido/scripts/HTMLObj.js -text
 contenido/scripts/addImageTags.js -text
 contenido/scripts/articleObject.js.php -text
 contenido/scripts/browserCheck.js -text
@@ -1756,7 +1756,7 @@ contenido/scripts/md5.js -text
 contenido/scripts/messageBox.js.php -text
 contenido/scripts/parameterCollector.js -text
 contenido/scripts/registerTipsy.js -text
-contenido/scripts/rights.js.php -text
+contenido/scripts/rights.js -text
 contenido/scripts/rowMark.js -text
 contenido/scripts/setPager.js -text
 contenido/scripts/str_overview.js -text

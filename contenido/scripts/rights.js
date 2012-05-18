@@ -1,87 +1,3 @@
-<?php
-/**
- * Project: 
- * CONTENIDO Content Management System
- * 
- * Description: 
- * Returns session-dependent rights javascript
- * 
- * Requirements: 
- * @con_php_req 5.0
- * 
- *
- * @package    CONTENIDO Backend sripts
- * @version    1.0.3
- * @author     unknown
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.8.7
- * 
- * {@internal 
- *   created  unknown
- *   modified 2008-06-25, Frederic Schneider, add security fix
- *   modified 2008-07-02, Frederic Schneider, include security_class
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
- *
- *   $Id$:
- * }}
- * 
- */
-
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
-}
- 
-// CONTENIDO startup process
-include_once ('../includes/startup.php');
-
-header("Content-Type: text/javascript");
-
-page_open(array('sess' => 'Contenido_Session',
-                'auth' => 'Contenido_Challenge_Crypt_Auth',
-                'perm' => 'Contenido_Perm'));
-
-i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
-page_close();
-?>
-
-/**
- * Display an image in a pop-up window
- *
- * @param string image path
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG
- */
-function iZoom(path)
-{
-    var defaultWidth = 640;
-    var defaultHeight = 480;
-
-
-    var xwin = parseInt((screen.availWidth / 2) - (defaultWidth / 2));
-    var ywin = parseInt((screen.availHeight / 2) - (defaultHeight / 2));
-
-    zwin = window.open("","","left="+xwin+",top="+ywin+",width=" + defaultWidth + ",height=" + defaultHeight + "\"");
-    zwin.moveTo(xwin,ywin);
-
-    zcon  = "<html>\n<head>\n<title><?php echo i18n("Click to close"); ?></title>\n</head>\n";
-    zcon  = "<table width=\"100%\" height=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tr><td align=\"center\" valign=\"middle\">";
-    zcon += "<body onload=\"self.resizeTo(zimg.offsetWidth+5,zimg.offsetHeight+20);self.moveTo((screen.availWidth / 2) - (zimg.offsetWidth / 2 + 5),(screen.availHeight / 2) - (zimg.offsetHeight / 2 + 20))\" leftmargin=\"0\" topmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">\n";
-    zcon += "<a href=\"javascript:self.close()\"><img name=\"zimg\" src=\""+path+"\" border=\"0\" alt=\"<?php echo i18n("Click to close"); ?>\" title=\"<?php echo i18n("Click to close"); ?>\"></a>\n";
-    zcon += "</td></tr></table></body>\n</html>";
-
-    zwin.document.open();
-    zwin.document.write(zcon);
-    zwin.document.close();
-
-}
-
-
-
-
-
 function submitrightsform(act,actarea) {
          actarea= actarea||0;
 
@@ -94,11 +10,7 @@ function submitrightsform(act,actarea) {
 
 }
 
-
-
-
 function setRightsForAllAreas(){
-
 // Fixed function to be use in ns/moz JL
 
         checked = document.forms["rightsform"].elements["checkall"].checked;
@@ -148,7 +60,6 @@ function setRightsForArea(key){
          }
 }
 
-
 function setRightsFor(area,act,itemid){
 
          //for one row
@@ -169,21 +80,10 @@ function setRightsFor(area,act,itemid){
                       for(var itemi in itemids){
                             document.forms["rightsform"].elements["rights_list["+area+"|"+act+"|"+itemi+"]"].checked=checked;
                       }
-
          }
-
-
-
-
 }
 
-
-
-
 function setRightsForAll(){
-
-
-
          checked=document.forms["rightsform"].elements["checkall"].checked;
          for (var itemid in itemids){
               for(var act_areas in actareaids){
@@ -196,8 +96,6 @@ function setRightsForAll(){
 
 
 }
-
-
 
 function rightsInheritanceUp(allparentid,allcount){
 
@@ -232,19 +130,9 @@ function rightsInheritanceUp(allparentid,allcount){
                       //set the new parentid
                       parentid=ids[1];
            }
-
 }
 
-
-
-
-
-
-
-
-
 function rightsInheritanceDown(parentid){
-
            //search the array   with area and action ids
            for(var act_areas in actareaids){
                     // act_areas    consits     action|area
@@ -252,15 +140,8 @@ function rightsInheritanceDown(parentid){
 
                     // set for each action and area the checks
                     helpinheritance(act_area,parentid);
-
            }
-
-
-
-
-
 }
-
 
 function helpinheritance(act_area,parentid){
 
@@ -286,35 +167,9 @@ function helpinheritance(act_area,parentid){
 
                //increase the counter for the next field that consits the same parent
                counter++;
-
-
-
          }
-
-
-
 }
-
 
 function setframeset(left,right){
-
          parent.document.getElementById("FramesetContenido").cols = left+","+right;
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

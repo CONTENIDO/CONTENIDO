@@ -1,52 +1,3 @@
-<?php
-/**
- * Project: 
- * CONTENIDO Content Management System
- * 
- * Description: 
- * HTML object
- * 
- * Requirements: 
- * @con_php_req 5.0
- * 
- *
- * @package    CONTENIDO Backend sripts
- * @version    1.0.3
- * @author     Timo A. Hummel
- * @copyright  four for business AG <www.4fb.de>
- * @license    http://www.contenido.org/license/LIZENZ.txt
- * @link       http://www.4fb.de
- * @link       http://www.contenido.org
- * @since      file available since CONTENIDO release 4.8.7
- * 
- * {@internal 
- *   created  2004-04-24
- *   modified 2008-06-25, Frederic Schneider, add security fix
- *   modified 2008-07-02, Frederic Schneider, include security_class
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
- *
- *   $Id$:
- * }}
- * 
- */
-
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
-}
-
-// CONTENIDO startup process
-include_once ('../includes/startup.php');
-
-header("Content-Type: text/javascript");
-
-page_open(array('sess' => 'Contenido_Session',
-                'auth' => 'Contenido_Challenge_Crypt_Auth',
-                'perm' => 'Contenido_Perm'));
-
-i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
-page_close();
-?>
-
 /**
  * HTMLObj Class
  *
@@ -156,14 +107,6 @@ HTMLObj.prototype.setMethods = function(type) {
             	  }
             }
 
-            /* ATTENTION HARDCODED EVENTS =/ */
-            /*
-            this.obj.onmouseover    = showAction;
-            this.obj.onmouseout     = hideAction;
-
-
-            */
-
             this.obj.onclick        = doAction;
 
             //Also make corresponding Labels clickable
@@ -227,33 +170,7 @@ HTMLObj.prototype.setMethods = function(type) {
  * @copyright four for business AG <www.4fb.de>
  */
 function showAction() {
-		//alert("this is the JS function showAction() located in the file HTMLObj.js.php. This should not have been called as it is old style CONTENIDO")
-		/*
-    var str = this.src;
-    //if Label is clicked, get src from previous image
-    if (!str) {
-        var str = this.previousSibling.firstChild.src;
-    }
-
-    if ( str.indexOf('setoffline') != -1 ) {
-        box.show( '<?php echo i18n("Make offline"); ?>' );
-
-    } else if ( str.indexOf('online.gif') != -1 ) {
-        box.show('<?php echo i18n("Make online"); ?>');
-
-    } else if ( str.indexOf('offline.gif') != -1 ) {
-        box.show('<?php echo i18n("Make online"); ?>');
-
-    } else if ( str.indexOf('folder_delock.gif') != -1 ) {
-        box.show('<?php echo i18n("Protect"); ?>');
-
-    } else if ( str.indexOf('folder_lock.gif') != -1 ) {
-        box.show('<?php echo i18n("Remove protection"); ?>');
-
-    } else {
-        box.show('<?php echo i18n("Choose template"); ?>');
-    }
-		*/
+	alert("this is the JS function showAction() located in the file HTMLObj.js.php. This should not have been called as it is old style CONTENIDO")
 }
 
 /**
@@ -396,6 +313,5 @@ function doAction() {
  * @copyright four for business AG <www.4fb.de>
  */
 function hideAction() {
-    //box.show();
-    //alert("this is the JS function hideAction() located in the file HTMLObj.js.php. This should not have been called as it is old style CONTENIDO")
+    alert("this is the JS function hideAction() located in the file HTMLObj.js.php. This should not have been called as it is old style CONTENIDO")
 }
