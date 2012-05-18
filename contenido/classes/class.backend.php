@@ -262,8 +262,6 @@ class Contenido_Backend {
         if (isset($this->files[$which])) {
             return $this->files[$which];
         }
-		
-		return array();
     } # end function
 
     /**
