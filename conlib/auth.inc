@@ -38,8 +38,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO Core
  * @subpackage Authentication
  */
-class Auth
-{
+class Auth {
     const AUTH_UID_NOBODY = 'nobody';
     const AUTH_UID_FORM = 'form';
 
@@ -70,12 +69,6 @@ class Auth
     public $refresh = 0;
 
     /**
-     * 'log' for login only systems, 'reg' for user self registration
-     * @var string
-     */
-    public $mode = 'log';
-
-    /**
      * Used in uniqid() generation
      * @var string
      */
@@ -93,7 +86,7 @@ class Auth
      */
     public $cancel_login = 'cancel_login';
 
-    ## End of user qualifiable settings.
+    // End of user qualifiable settings.
 
     /**
      * Data array
@@ -116,8 +109,7 @@ class Auth
     /**
      * Initialization
      */
-    public function start()
-    {
+    public function start() {
         $cl = $this->cancel_login;
         global $sess, $$cl;
 
@@ -135,11 +127,11 @@ class Auth
         }
 
         /*
-        Check current auth state. Should be one of
-        1) Not logged in (no valid auth info or auth expired)
-        2) Logged in (valid auth info)
-        3) Login in progress (if $$cl, revert to state 1)
-        */
+         * Check current auth state. Should be one of
+         * 1) Not logged in (no valid auth info or auth expired)
+         * 2) Logged in (valid auth info)
+         * 3) Login in progress (if $$cl, revert to state 1)
+         */
         if ($this->is_authenticated()) {
             $uid = $this->auth['uid'];
             switch ($uid) {
@@ -161,7 +153,7 @@ class Auth
                     break;
             }
         } else {
-            # User is not (yet) authenticated
+            // User is not (yet) authenticated
             $this->unauth();
             $state = 1;
         }
@@ -178,108 +170,55 @@ class Auth
                     return true;
                 }
 
-                // Check for 'log' vs. 'reg' mode
-                switch ($this->mode) {
-                    case 'yes':
-                    case 'log':
-                        if ($this->nobody) {
-                            // Authenticate as nobody
-                            $this->auth['uid'] = self::AUTH_UID_NOBODY;
-                            # $this->auth['uname'] = self::AUTH_UID_NOBODY;
-                            $this->auth['exp'] = 0x7fffffff;
-                            $this->auth['refresh'] = 0x7fffffff;
-                            return true;
-                        } else {
-                            // Show the login form
-                            $this->auth_loginform();
-                            $this->auth['uid'] = self::AUTH_UID_FORM;
-                            $this->auth['exp'] = 0x7fffffff;
-                            $this->auth['refresh'] = 0x7fffffff;
-                            $sess->freeze();
-                            exit;
-                        }
-                        break;
-                    case 'reg':
-                        if ($this->nobody) {
-                            // Authenticate as nobody
-                            $this->auth['uid'] = self::AUTH_UID_NOBODY;
-                            # $this->auth['uname'] = self::AUTH_UID_NOBODY;
-                            $this->auth['exp'] = 0x7fffffff;
-                            $this->auth['refresh'] = 0x7fffffff;
-                            return true;
-                        } else {
-                            // Show the registration form
-                            $this->auth_registerform();
-                            $this->auth['uid'] = self::AUTH_UID_FORM;
-                            $this->auth['exp'] = 0x7fffffff;
-                            $this->auth['refresh'] = 0x7fffffff;
-                            $sess->freeze();
-                            exit;
-                        }
-                        break;
-                    default:
-                        // This should never happen. Complain.
-                        echo "Error in auth handling: no valid mode specified.\n";
-                        $sess->freeze();
-                        exit;
-                }
+                if ($this->nobody) {
+					// Authenticate as nobody
+					$this->auth['uid'] = self::AUTH_UID_NOBODY;
+					// $this->auth['uname'] = self::AUTH_UID_NOBODY;
+					$this->auth['exp'] = 0x7fffffff;
+					$this->auth['refresh'] = 0x7fffffff;
+					return true;
+				} else {
+					// Show the login form
+					$this->auth_loginform();
+					$this->auth['uid'] = self::AUTH_UID_FORM;
+					$this->auth['exp'] = 0x7fffffff;
+					$this->auth['refresh'] = 0x7fffffff;
+					$sess->freeze();
+					exit;
+				}
                 break;
             case 2:
                 // Valid auth info
                 // Refresh expire info
-                ## DEFAUTH handling: do not update exp for nobody.
+                // DEFAULT handling: do not update exp for nobody.
                 if ($uid != self::AUTH_UID_NOBODY) {
                     $this->auth['exp'] = time() + (60 * $this->lifetime);
                 }
                 break;
             case 3:
                 // Login in progress, check results and act accordingly
-                switch ($this->mode) {
-                    case 'yes':
-                    case 'log':
-                        #if ($uid = $this->auth_preauth()) {
-                        #    $this->auth['uid'] = $uid;
-                        #    $this->auth['exp'] = time() + (60 * $this->lifetime);
-                        #    $this->auth['refresh'] = time() + (60 * $this->refresh);
-                        #    return true;
-                        #}
+                /*	
+				 *	if ($uid = $this->auth_preauth()) {
+				 *  	$this->auth['uid'] = $uid;
+				 *		$this->auth['exp'] = time() + (60 * $this->lifetime);
+				 *		$this->auth['refresh'] = time() + (60 * $this->refresh);
+				 *		return true;
+				 *	}
+				 */
 
-                        if ($uid = $this->auth_validatelogin()) {
-                            $this->auth['uid'] = $uid;
-                            $this->auth['exp'] = time() + (60 * $this->lifetime);
-                            $this->auth['refresh'] = time() + (60 * $this->refresh);
-                            return true;
-                        } else {
-                            $this->auth_loginform();
-                            $this->auth['uid'] = self::AUTH_UID_FORM;
-                            $this->auth['exp'] = 0x7fffffff;
-                            $this->auth['refresh'] = 0x7fffffff;
-                            $sess->freeze();
-                            exit;
-                        }
-                        break;
-                    case 'reg':
-                        if ($uid = $this->auth_doregister()) {
-                            $this->auth['uid'] = $uid;
-                            $this->auth['exp'] = time() + (60 * $this->lifetime);
-                            $this->auth['refresh'] = time() + (60 * $this->refresh);
-                            return true;
-                        } else {
-                            $this->auth_registerform();
-                            $this->auth['uid'] = self::AUTH_UID_FORM;
-                            $this->auth['exp'] = 0x7fffffff;
-                            $this->auth['refresh'] = 0x7fffffff;
-                            $sess->freeze();
-                            exit;
-                        }
-                        break;
-                    default:
-                        // This should never happen. Complain.
-                        echo "Error in auth handling: no valid mode specified.\n";
-                        $sess->freeze();
-                        exit;
-                        break;
-                }
+				if ($uid = $this->auth_validatelogin()) {
+					$this->auth['uid'] = $uid;
+					$this->auth['exp'] = time() + (60 * $this->lifetime);
+					$this->auth['refresh'] = time() + (60 * $this->refresh);
+					return true;
+				} else {
+					$this->auth_loginform();
+					$this->auth['uid'] = self::AUTH_UID_FORM;
+					$this->auth['exp'] = 0x7fffffff;
+					$this->auth['refresh'] = 0x7fffffff;
+					$sess->freeze();
+					exit;
+				}
                 break;
             default:
                 // This should never happen. Complain.
@@ -290,8 +229,7 @@ class Auth
         }
     }
 
-    public function login_if($t)
-    {
+    public function login_if($t) {
         if ($t) {
             $this->unauth();  // We have to relogin, so clear current auth info
             $this->nobody = false; // We are forcing login, so default auth is disabled
@@ -299,8 +237,7 @@ class Auth
         }
     }
 
-    public function unauth($nobody = false)
-    {
+    public function unauth($nobody = false) {
         $this->auth['uid']  = '';
         $this->auth['perm'] = '';
         $this->auth['exp']  = 0;
@@ -313,8 +250,7 @@ class Auth
         }
     }
 
-    public function logout($nobody = '')
-    {
+    public function logout($nobody = '') {
         global $sess;
         $sess->unregister('auth');
         unset($this->auth['uname']);
@@ -323,17 +259,14 @@ class Auth
         return true;
     }
 
-    public function is_authenticated()
-    {
+    public function is_authenticated(){
         if (isset($this->auth['uid']) && $this->auth['uid']
-            && (($this->lifetime <= 0) || (time() < $this->auth['exp'])))
-        {
+            && (($this->lifetime <= 0) || (time() < $this->auth['exp']))) {
             // If more than $this->refresh minutes are passed since last check,
             // perform auth data refreshing. Refresh is only done when current
             // session is valid (registered, not expired).
             if (($this->refresh > 0) && ($this->auth['refresh'])
-                && ($this->auth['refresh'] < time()))
-            {
+                && ($this->auth['refresh'] < time())) {
                 if ($this->auth_refreshlogin()) {
                     $this->auth['refresh'] = time() + (60 * $this->refresh);
                 } else {
@@ -346,66 +279,50 @@ class Auth
         }
     }
 
-    public function is_auth_nobody_uid()
-    {
+    public function is_auth_nobody_uid() {
         return (isset($this->auth['uid']) && $this->auth['uid'] == self::AUTH_UID_NOBODY);
     }
 
-    public function is_auth_form_uid()
-    {
+    public function is_auth_form_uid() {
         return (isset($this->auth['uid']) && $this->auth['uid'] == self::AUTH_UID_FORM);
     }
 
-    ########################################################################
-    ##
-    ## Helper functions
-    ##
-    public function url()
-    {
+    // Helper functions
+    public function url() {
         return $GLOBALS['sess']->self_url();
     }
 
-    public function purl()
-    {
+    public function purl(){
         print $GLOBALS['sess']->self_url();
     }
 
-    ## This method can authenticate a user before the loginform
-    ## is being displayed. If it does, it must set a valid uid
-    ## (i.e. nobody IS NOT a valid uid) just like auth_validatelogin,
-    ## else it shall return false.
-
-    public function auth_preauth()
-    {
+    /* This method can authenticate a user before the loginform
+     * is being displayed. If it does, it must set a valid uid
+     * (i.e. nobody IS NOT a valid uid) just like auth_validatelogin,
+     * else it shall return false.
+	 */
+    public function auth_preauth() {
         return false;
     }
 
-    ##
-    ## Authentication dummies. Must be overridden by user.
-    ##
-
-    public function auth_loginform()
-    {
+    // Authentication dummies. Must be overridden by user.
+    public function auth_loginform() {
         // donut
     }
 
-    public function auth_validatelogin()
-    {
+    public function auth_validatelogin() {
         // donut
     }
 
-    public function auth_refreshlogin()
-    {
+    public function auth_refreshlogin() {
         // donut
     }
 
-    public function auth_registerform()
-    {
+    public function auth_registerform() {
         // donut
     }
 
-    public function auth_doregister()
-    {
+    public function auth_doregister() {
         // donut
     }
 }
