@@ -178,3 +178,7 @@ INSERT INTO !PREFIX!_frame_files VALUES('206', '87', '4', '198');
 INSERT INTO !PREFIX!_frame_files VALUES('207', '88', '4', '199');
 INSERT INTO !PREFIX!_frame_files VALUES('208', '89', '4', '200');
 INSERT INTO !PREFIX!_frame_files VALUES('209', '90', '2', '201');
+INSERT INTO !PREFIX!_frame_files VALUES ('901', '900', '1', '901');
+INSERT INTO !PREFIX!_frame_files VALUES ('902', '900', '2', '902');
+INSERT INTO !PREFIX!_frame_files VALUES ('903', '900', '3', '903');
+INSERT INTO !PREFIX!_frame_files VALUES ('904', '900', '4', '904');

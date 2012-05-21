@@ -214,3 +214,10 @@ INSERT INTO !PREFIX!_files VALUES ('415', '415', 'include.system_configuration.p
 INSERT INTO !PREFIX!_files VALUES ('813', '811', 'include.system_purge.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('850', '100', 'include.con_meta_form.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('855', '105', 'include.con_content_list.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('901', '900', 'cronjobs_overview/includes/include.left_top.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('902', '900', 'cronjobs_overview/includes/include.left_bottom.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('903', '900', 'cronjobs_overview/includes/include.right_top.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('904', '900', 'cronjobs_overview/includes/include.right_bottom.php', 'main');
+
+
+

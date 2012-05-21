@@ -86,3 +86,4 @@ INSERT INTO !PREFIX!_nav_sub VALUES('402', '0', '402', '1', 'navigation/style/js
 INSERT INTO !PREFIX!_nav_sub VALUES('397', '0', '71', '1', 'navigation/style/tpleditor/file', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('403', '0', '403', '1', 'navigation/style/tpleditor/history', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('805', '0', '811', '1', 'navigation/administration/system/purge', '1');
+INSERT INTO !PREFIX!_nav_sub VALUES ('900', '5', '900', '0', 'cronjobs_overview/xml/cronjobs_overview.xml;plugin/cronjob', '1');
