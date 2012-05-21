@@ -173,8 +173,8 @@ class Cms_Date
         $this->sContent = str_replace("\$", '\\$', $this->sContent);
 
         // Render all Widgetes
-        $this->sContent =  $this->getEditingField() . $this->getCalendarButton() . $this->getOkButton() .  $this->getSelectBox() . $this->getJsScript();
-        return urldecode($this->sContent);
+        $this->sContent =  $this->getEditingField() .$this->getJsScript() . $this->getOkButton();
+        return $this->sContent;
     }
 
     /**
@@ -207,28 +207,37 @@ class Cms_Date
         $iYearShort = date('y');
 
         $this->aFormat = array(
-            array('0', i18n('Please choose a format')),
-            array('%d.%m.%Y', date('d.m.Y')),
-            array('%A, %d.%m.%Y', $sDayName . ', ' . $iDay . '.' . $iMonth . '.' . $iYear),
-            array('%d. %B %Y', $iDay . '. ' . $sMonthName . ' '. $iYear),
-            array('%Y-%m-%d', date('Y-m-d')),
-            array('%y-%m-%d', date('y-m-d')),
-            array('%d/%B/%Y', $iDay . '/' . $sMonthName . '/' . $iYear),
-            array('%d/%m/%y', date('d/m/y')),
-            array('%B %y', $sMonthName . ' ' . $iYearShort),
-            array('%B-%y', $sMonthName . '-' . $iYearShort),
-            array('%d.%m.%Y %H:%M', date('d.m.Y H:i')),
-            array('%m.%d.%Y %H:%M:%S', date('d.m.Y H:i:s')),
-            array('%H:%M', date('H:i')),
-            array('%H:%M:%S', date('H:i:s')),
-            array('%l:%M %P', date('h:i A')),
-            array('%l:%M:%S %P', date('h:i:s A')),
-            array('%s', 'Timestamp')
+           '0' 					=> i18n('Please choose a format'),
+           'd.m.yy' 			=> date('d.m.Y'),
+           'DD, d.m.yy' 		=> $sDayName . ', ' . $iDay . '.' . $iMonth . '.' . $iYear,
+           'd. MM yy' 			=> $iDay . '. ' . $sMonthName . ' '. $iYear,
+           'yy-m-d' 			=> date('Y-m-d'),
+           'd/MM/yy' 			=> $iDay . '/' . $sMonthName . '/' . $iYear,
+           'd/m/yy' 			=> date('d/m/y'),
+           'MM y' 				=> $sMonthName . ' ' . $iYearShort,
+           'MM-y' 				=> $sMonthName . '-' . $iYearShort,
+           'd.m.yy h:m' 		=> date('d.m.Y H:i'),
+           'm.d.yy h:m:s' 		=> date('d.m.Y H:i:s'),
+           'h:m' 				=> date('H:i'),
+           'h:m:s' 			=> date('H:i:s'),
+           'h:m TT' 			=> date('h:i A'),
+           '#h:m:s TT' 			=> date('h:i:s A'),
+           '@' 					=> 'Timestamp'
         );
 
         return $this->aFormat;
     }
 
+    private function getFormatSelect()  {
+    	$options = "";
+    	
+    	foreach($this->getDateFormats() as $format) {	
+    		$options .= sprintf('<option value="%s">%s</option>', $format[0], $format[1]);
+    	}
+    	
+    	return '<select style=\"float:right;\" class=\"cms_date_format_select\">'.$options.'</select>';
+    }
+    
     /**
      * This functions given all js-script, what we need for calendar.
      * Set all js-script here
@@ -237,21 +246,32 @@ class Cms_Date
      */
     public function getJsScript()
     {
-        $this->sJS = "
-<script type=\"text/javascript\">
-    var $this->sCalName;
-    function load_$this->sCalName() {
-        createCmsDate('".$this->sEditAreaId."', '%d.%m.%Y %H:%M', '24', true, '".$this->sDivSelectId."', '".$this->aCfg['path']['contenido_fullhtml']."','".$this->sSelectId."', '".$this->getLanguageContenido()."', '".$this->sCalName."');
-    }
+        $tpl = new Template();
+        $path = $this->aCfg['path']['contenido_fullhtml'];
+        $lang = $this->getLanguageContenido();
+        
+        $tpl->set('s', 'CALL_NAME', $this->sCalName);
+        $tpl->set('s', 'INDEX_OF_CMS_DATE', $this->iNumberOfCms);
+        $tpl->set('s', 'PATH_CONTENIDO_FULLHTML', $path);
+        $tpl->set('s', 'PATH_TO_CALENDER_PIC', $path . $this->aCfg['path']['images'] . 'calendar.gif');
+        //$tpl->set('s', 'SELECT_WITH_ALL_FORMATS', $this->getFormatSelect());
+        $tpl->set('s', 'ID_TYPE', $this->oDB->f('idtype'));  
+        //$tpl->set('s', 'ALL_OPTIONS', json_encode($this->getDateFormats()));
+        //$tpl->set('s', 'LABEL_FORMAT', i18n('Formate'));
+        $load = "conLoadFile('".$path."scripts/jquery/jquery.ui.datepicker-".$lang.".js', 'load2_$this->sCalName()');";
+        //add timepicker language
+        if($this->getLanguageContenido() != 'en') {
+        	$tpl->set('s', 'LOAD_LANG', $load);
+        }else{
+        	$tpl->set('s', 'LOAD_LANG', '');
+        }
+        
+       
+       $this->sJS = $tpl->generate($this->aCfg['path']['contenido'] . 'templates/standard/template.cms_date.html', true);
+       $this->sJS = addslashes($this->sJS);
+       $this->sJS = str_replace("\\'", "'", $this->sJS);
 
-    conLoadFile('".$this->aCfg['path']['contenido_fullhtml']."scripts/cmsDate.js', 'load_$this->sCalName();');
-</script>";
-
-        // output
-        $this->sJS = addslashes($this->sJS);
-        $this->sJS = str_replace("\\'", "'", $this->sJS);
-
-        return $this->sJS;
+       return $this->sJS;
     }
 
     /**
@@ -273,7 +293,7 @@ class Cms_Date
         $oEditButton->setStyleDefinition('margin-right', '2px');
         $oEditButton->setClass('CMS_DATE_' . ($this->iNumberOfCms) . '_EDIT CMS_LINK_EDIT');
         $oEditButton->setID('trigger_start' . $this->iNumberOfCms);
-        $oEditButton->setEvent('Click', "$this->sCalName.showCalendar()");
+       // $oEditButton->setEvent('Click', "$this->sCalName.showCalendar()");
         $oEditAnchor->setContent($oEditButton);
         $sFinalEditButton = $oEditButton->render();
         $sFinalEditButton = addslashes($sFinalEditButton);
@@ -325,6 +345,7 @@ class Cms_Date
         $sFinalEditingDiv = str_replace("\\'", "'", $sFinalEditingDiv);
         $sFinalEditingDiv = str_replace('_REPLACEMENT_', $this->sContent, $sFinalEditingDiv);
 
+       
         return $sFinalEditingDiv;
     }
 
