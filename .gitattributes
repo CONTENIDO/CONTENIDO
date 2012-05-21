@@ -1400,6 +1400,19 @@ contenido/plugins/chains/includes/include.chain.content.createmetatags.php -text
 contenido/plugins/chains/includes/include.chain.frontend.cat_access.php -text
 contenido/plugins/chains/includes/include.chain.frontend.cat_backendaccess.php -text
 contenido/plugins/chains/includes/include.chain.frontend.createbasehref.php -text
+contenido/plugins/cronjobs_overview/classes/class.cronjobs.php -text
+contenido/plugins/cronjobs_overview/includes/config.plugin.php -text
+contenido/plugins/cronjobs_overview/includes/include.left_bottom.php -text
+contenido/plugins/cronjobs_overview/includes/include.left_top.php -text
+contenido/plugins/cronjobs_overview/includes/include.right_bottom.php -text
+contenido/plugins/cronjobs_overview/includes/include.right_top.php -text
+contenido/plugins/cronjobs_overview/templates/left_bottom.html -text svneol=unset#text/plain
+contenido/plugins/cronjobs_overview/templates/left_top.html -text svneol=unset#text/plain
+contenido/plugins/cronjobs_overview/templates/right_bottom_crontab_edit.html -text svneol=unset#text/plain
+contenido/plugins/cronjobs_overview/templates/right_bottom_overview.html -text svneol=unset#text/plain
+contenido/plugins/cronjobs_overview/xml/cronjobs_overview.xml -text svneol=unset#text/plain
+contenido/plugins/cronjobs_overview/xml/lang_de_DE.xml -text svneol=unset#text/plain
+contenido/plugins/cronjobs_overview/xml/lang_en_EN.xml -text svneol=unset#text/plain
 contenido/plugins/frontendlogic/category/category.php -text
 contenido/plugins/frontendlogic/category/docs/conlogo.gif -text
 contenido/plugins/frontendlogic/category/docs/frontend.protectedcategories.html -text
