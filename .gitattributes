@@ -1781,6 +1781,20 @@ contenido/styles/cms_teaser.css -text
 contenido/styles/contenido.css -text
 contenido/styles/index.php -text
 contenido/styles/inuse.css -text
+contenido/styles/smoothness/images/ui-bg_flat_0_aaaaaa_40x100.png -text
+contenido/styles/smoothness/images/ui-bg_flat_75_ffffff_40x100.png -text
+contenido/styles/smoothness/images/ui-bg_glass_55_fbf9ee_1x400.png -text
+contenido/styles/smoothness/images/ui-bg_glass_65_ffffff_1x400.png -text
+contenido/styles/smoothness/images/ui-bg_glass_75_dadada_1x400.png -text
+contenido/styles/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png -text
+contenido/styles/smoothness/images/ui-bg_glass_95_fef1ec_1x400.png -text
+contenido/styles/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png -text
+contenido/styles/smoothness/images/ui-icons_222222_256x240.png -text
+contenido/styles/smoothness/images/ui-icons_2e83ff_256x240.png -text
+contenido/styles/smoothness/images/ui-icons_454545_256x240.png -text
+contenido/styles/smoothness/images/ui-icons_888888_256x240.png -text
+contenido/styles/smoothness/images/ui-icons_cd0a0a_256x240.png -text
+contenido/styles/smoothness/jquery-ui-1.8.20.custom.css -text svneol=unset#text/plain
 contenido/styles/str_overview.css -text
 contenido/styles/tipsy.css -text
 contenido/subnav.php -text
