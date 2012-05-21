@@ -1,0 +1,36 @@
+
+<input type="hidden" id="cms_date{INDEX_OF_CMS_DATE}_format" value="" />
+<input type="hidden" id="cms_date{INDEX_OF_CMS_DATE}"/>
+
+<script type="text/javascript">
+    /**
+    * Load language files
+    */
+    function load1_{CALL_NAME}() {
+    	{LOAD_LANG}
+    }
+    
+    /**
+    *Init the datepicker
+    */
+    function load2_{CALL_NAME}() {
+    	
+     $('#cms_date{INDEX_OF_CMS_DATE}').datepicker({
+        buttonImage: '{PATH_TO_CALENDER_PIC}',
+        buttonImageOnly: true,
+        showOn: 'both',
+        onClose: function(dateText, inst) {
+       
+        	// aEditdata is global from include.con_editcontent.php
+        	aEditdata['DATE_{ID_TYPE}_{INDEX_OF_CMS_DATE}'] = dateText;
+        	//set date to div 
+        	$('#DATE__{INDEX_OF_CMS_DATE}').html(dateText);
+    	}
+     });
+    }
+    
+    //Loade language files and css file 
+    $('head').append('<link rel="stylesheet" id="cms_date" href="{PATH_CONTENIDO_FULLHTML}styles/smoothness/jquery-ui-1.8.20.custom.css" type="text/css" media="all" />');
+    conLoadFile('{PATH_CONTENIDO_FULLHTML}scripts/jquery/jquery-ui.js', 'load1_{CALL_NAME}();');
+   
+</script>

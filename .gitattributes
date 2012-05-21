@@ -1818,6 +1818,7 @@ contenido/templates/standard/template.client_edit.html -text
 contenido/templates/standard/template.client_left_top.html -text
 contenido/templates/standard/template.client_menu.html -text
 contenido/templates/standard/template.client_subnav.html -text
+contenido/templates/standard/template.cms_date.html -text svneol=unset#text/plain
 contenido/templates/standard/template.cms_filelist_dirlistitem.html -text
 contenido/templates/standard/template.cms_filelist_edit.html -text
 contenido/templates/standard/template.cms_filelist_metadata_limititem.html -text
