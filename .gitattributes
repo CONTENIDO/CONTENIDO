@@ -1716,6 +1716,7 @@ contenido/scripts/jquery.tipsy.js -text
 contenido/scripts/jquery/ajaxupload.js -text
 contenido/scripts/jquery/jquery-ui.js -text
 contenido/scripts/jquery/jquery.js -text
+contenido/scripts/jquery/jquery.ui.datepicker-de.js -text svneol=unset#text/plain
 contenido/scripts/jscalendar/calendar-contenido.css -text
 contenido/scripts/jscalendar/calendar-setup.js -text
 contenido/scripts/jscalendar/calendar.js -text
