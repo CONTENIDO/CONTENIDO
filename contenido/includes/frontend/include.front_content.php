@@ -262,9 +262,20 @@ if (0 != $idart && 0 != $idcat) {
 }
 
 $idartlang = getArtLang($idart, $lang);
-
 if ($idartlang === false) {
-    header($errsite);
+    if($_GET['display_errorpage']) {
+    	//show only if $idart > 0  
+    	if($idart > 0) {
+    		$tpl = new Template();
+    		$tpl->set('s', 'CONTENIDO_PATH', $cfg['path']['contenido_fullhtml']);
+    		$tpl->set('s', 'ERROR_TITLE', i18n('Error page'));
+    		$tpl->set('s', 'ERROR_TEXT', i18n('Error article/category not found!'));
+    		$tpl->generate($cfg['path']['contenido']. $cfg['path']['templates'].'template.error_page.html');
+    	}
+    	exit;
+    }else {
+    	header($errsite. '&display_errorpage=1');
+    }
     exit;
 }
 
