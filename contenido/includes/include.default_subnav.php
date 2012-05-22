@@ -31,6 +31,13 @@ if(!defined('CON_FRAMEWORK'))
 	die('Illegal call');
 
 
+//In some cases dont print menue 
+if($dont_print_subnav == 1) {
+	$tpl->reset();
+	$tpl->generate( $cfg["path"]["templates"] . $cfg['templates']['right_top_blank'] );
+	return;
+}
+
 $aExectime = array();
 $aExectime["fullstart"] = getmicrotime();
 
@@ -189,7 +196,7 @@ cDebug($sql);
 	}
 	
 
-	if( !$bVirgin || $bMenuless )
+	if( !$bVirgin || $bMenuless)
 	{
 		$tpl->set('s', 'CLASS', $bMenuless ? 'menuless' : '');
 		$tpl->set('s', 'SESSID', $sess->id);

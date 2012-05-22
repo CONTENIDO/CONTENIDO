@@ -286,7 +286,7 @@ if (!$layout->virgin)
 	$page->setContent("");	
 }
 
-$page->setSubnav("idlay=$idlay", "lay");
+
 
 if (stripslashes($_REQUEST['idlay'] || $bReloadSyncSrcipt)) {
     $sReloadScript = "<script type=\"text/javascript\">
@@ -300,6 +300,11 @@ if (stripslashes($_REQUEST['idlay'] || $bReloadSyncSrcipt)) {
                     </script>";
 } else {
     $sReloadScript = "";
+}
+if($action == "lay_sync") {
+	$page->setSubnav("idlay=".$idlay."&dont_print_subnav=1", "lay");
+}else {
+	$page->setSubnav("idlay=$idlay", "lay");
 }
 $page->addScript('reload', $sReloadScript);
 $page->render();

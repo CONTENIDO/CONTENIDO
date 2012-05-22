@@ -39,6 +39,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+
 cInclude("includes", "functions.upl.php");
 cInclude("external", "codemirror/class.codemirror.php");
 
@@ -72,6 +73,7 @@ if ($action == "mod_sync") {
 
     // the actuly Modul is the last Modul from synchronize
     $contenidoModuleHandler = new Contenido_Module_Handler($idmod);
+    
 }
 
 if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
@@ -152,7 +154,7 @@ if (!$perm->have_perm_area_action_item("mod_edit", "mod_edit", $idmod)) {
     $form->setVar("area","mod_edit");
     $form->setVar("frame", $frame);
     $form->setVar("idmod", $idmod);
-
+    $page->setSubnav('action='+$action);
     if (!$bInUse) {
         $form->setVar("action", "mod_edit");
     }
@@ -496,7 +498,7 @@ window.onload = scrolltheother;
         $page->setContent($noti.$message.$form->render().$applet."<br>");
     }
 
-    $page->setSubnav("idmod=$idmod", "mod");
+   
     if ($action) {
         if (stripslashes($idmod > 0)) {
             $sReloadScript = "<script type=\"text/javascript\">
@@ -504,7 +506,7 @@ window.onload = scrolltheother;
                                  if (left_bottom) {
                                      var href = left_bottom.location.href;
                                      href = href.replace(/&idmod[^&]*/, '');
-                                     left_bottom.location.href = href+'&idmod='+'".$idmod."';
+                                     left_bottom.location.href = href+'&idmod='+'".$idmod."&action='".$action.";
                                  }
                             </script>";
         } else {
@@ -519,7 +521,15 @@ window.onload = scrolltheother;
         $oCodeMirrorOutput = new CodeMirror('output', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
         
 		$page->addScript('codemirror', $oCodeMirrorInput->renderScript().$oCodeMirrorOutput->renderScript());
-        $page->render();
+        
+		//dont print meneu
+		if($action == "mod_sync") {
+			$page->setSubnav("idmod=".$idmod."&dont_print_subnav=1");
+		}
+		else {
+			$page->setSubnav("idmod=".$idmod, "mod");
+		} 
+		$page->render();
     }
 }
 
