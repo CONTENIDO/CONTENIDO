@@ -28,6 +28,7 @@ try {
     $oConCat = new Contenido_Category($db, $cfg);
     $oConCat->load($idcat, true, $lang);
     $sImgEdit = "CMS_IMAGE[1]";
+    $sImgSrc = "CMS_IMG[1]";
 
     $sHeadline = $iIdcatStart != intval($idcat)
                     ? $oConCat->getCategoryLanguage()->getName()
@@ -35,8 +36,9 @@ try {
     $sCssStyle = '';
     if ($contenido && $edit) {
         echo '<div id="modHeaderImgEdit">'.$sImgEdit.'</div>';
+    	$sCssStyle = ' style="background-image:url('.$sImgSrc.');"';
     }
-    elseif($sImgEdit != '') {
+    else {
         $sCssStyle = ' style="background-image:url('.$sImgEdit.');"';
     }
     $tpl->reset();
