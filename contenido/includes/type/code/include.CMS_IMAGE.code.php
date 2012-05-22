@@ -36,7 +36,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $tmp = $a_content['CMS_IMAGE'][$val];
-$oCmsImage = new Cms_Image($tmp, $val, $idartlang, $editLink, $cfg, $db, $belang, $client, $lang, $cfgClient, $sess);
+$oCmsImage = new Cms_Image($tmp, $val, $idartlang, $editLink, $cfg, $db, $belang, $client, $lang, $cfgClient, $sess, $idart, $idcat);
 
 if ($edit) {
     $tmp = $oCmsImage->getAllWidgetEdit();

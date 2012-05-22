@@ -147,7 +147,7 @@ class Cms_Image {
 	 *
 	 * @access public
 	 */	 
-	function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $aCfg, $oDB, $sContenidoLang, $iClient, $iLang, $aCfgClient, $oSess) {
+	function __construct($sContent, $iNumberOfCms, $iIdArtLang, $sEditLink, $aCfg, $oDB, $sContenidoLang, $iClient, $iLang, $aCfgClient, $oSess, $idart = -1, $idcat = -1) {
 		//set arguments to class variables directly
 		$this->aCfg 		= $aCfg;
 		$this->iId 			= $iNumberOfCms;
@@ -169,7 +169,12 @@ class Cms_Image {
 		//if form is submitted there is a need to store current file list settings
 		//notice: there is also a need, that filelist_id is the same (case: more than one cms file list is used on the same page
 		if (isset($_POST['image_action']) && $_POST['image_action'] == 'store' && isset($_POST['image_id']) && (int)$_POST['image_id'] == $this->iId) {
-			$this->storeImage();
+			$this->storeImage($idart);
+			
+			
+			$path = $this->aCfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&changeview=edit&client=$this->iClientt";
+			header('location:'.$this->oSess->url($path));
+			
 		}
 				
 		//in sContent XML Document is stored, which contains files settings, call function which parses this document and store
@@ -187,7 +192,7 @@ class Cms_Image {
 	 * @access 	private
 	 * @return	void
 	 */
-	private function storeImage() {		
+	private function storeImage($idart = -1) {		
 		$aFilenameData['filename'] = basename($_REQUEST['image_filename']);
 		$aFilenameData['dirname'] = dirname($_REQUEST['image_filename']);
 		$query = 'SELECT idupl FROM ' . $this->aCfg['tab']['upl'] . ' WHERE filename=\''.$aFilenameData['filename'].'\' AND dirname=\''.$aFilenameData['dirname'].'/\' AND idclient=\''.$this->iClient.'\'';
@@ -197,7 +202,11 @@ class Cms_Image {
 		}
 		$this->sContent = $this->iUplId;		
 		conSaveContentEntry($this->iIdArtLang, 'CMS_IMAGE', $this->iId, $this->iUplId, true);
-		
+		conSaveContentEntry($this->iIdArtLang, 'CMS_IMG', $this->iId, $this->iUplId, true);
+		if($idart != -1 ) {
+			conMakeArticleIndex($this->iIdArtLang, $idart);
+			conGenerateCodeForArtInAllCategories($idart);
+		}
 		//Insert auf metadatentabelle
 		$idupl = $this->iUplId;
 		$idlang = $this->iLang;
@@ -225,6 +234,8 @@ class Cms_Image {
 			$this->oDb->query($query);
 			//echo '3'.$this->oDb->Error;
 		}
+		
+		
 	}
 	
 	
@@ -459,7 +470,7 @@ class Cms_Image {
 		//generate template
 		$sCode .= $oTpl->generate($this->aCfg['path']['contenido'].'templates/standard/template.cms_image_edit.html', 1);
 		
-		return $this->getAllWidgetView( true ) . $this->encodeForOutput($sCode);
+		return $this->encodeForOutput($sCode);
 	}
 	
 	/**
