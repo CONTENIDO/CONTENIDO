@@ -262,6 +262,8 @@ contenido/classes/Validator/Email.class.php -text
 contenido/classes/Validator/Factory.class.php -text
 contenido/classes/Validator/Regex.class.php -text
 contenido/classes/abstract_classes/class.conuser.php -text
+contenido/classes/cache/class.concache.php -text
+contenido/classes/cache/concache.php -text
 contenido/classes/class.action.php -text
 contenido/classes/class.activeusers.php -text
 contenido/classes/class.ajax.php -text
