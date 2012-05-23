@@ -302,6 +302,7 @@ contenido/classes/class.htmlelements.php -text
 contenido/classes/class.htmlparser.php -text
 contenido/classes/class.htmlvalidator.php -text
 contenido/classes/class.httpinputvalidator.php -text
+contenido/classes/class.input.helper.php -text
 contenido/classes/class.inuse.php -text
 contenido/classes/class.iterator.php -text
 contenido/classes/class.lang.php -text
