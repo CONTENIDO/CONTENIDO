@@ -40,7 +40,6 @@ cms/images/subsubnavi_over.gif -text
 cms/includes/Util/Modules/Contenido_NavMain_Util.class.php -text
 cms/includes/Util/Modules/Contenido_Sitemap_Util.class.php -text
 cms/includes/class.concache.php -text
-cms/includes/class.input.helper.php -text
 cms/includes/concache.php -text
 cms/includes/functions.include.php -text
 cms/includes/functions.navigation.php -text
