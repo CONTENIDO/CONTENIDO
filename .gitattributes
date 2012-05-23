@@ -257,6 +257,8 @@ contenido/classes/UrlBuilder/Contenido_UrlBuilder_CustomPath.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilder_Frontcontent.class.php -text
 contenido/classes/UrlBuilder/Contenido_UrlBuilder_MR.class.php -text
 contenido/classes/UrlBuilder/Sample.php -text
+contenido/classes/Util/Modules/Contenido_NavMain_Util.class.php -text
+contenido/classes/Util/Modules/Contenido_Sitemap_Util.class.php -text
 contenido/classes/Validator/Abstract.class.php -text
 contenido/classes/Validator/Email.class.php -text
 contenido/classes/Validator/Factory.class.php -text
