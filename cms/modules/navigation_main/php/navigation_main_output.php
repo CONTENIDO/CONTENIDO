@@ -12,7 +12,7 @@
 * navigation_main_standard | level_depth
 *
 * To modify the behaviour of the module (e.g. style of URL, CSS classes, ...), you need to edit Contenido_NavMain_Util::loopCats
-* @see {frontend}/includes/Util/Modules/Contenido_NavMain_Util.class.php
+* @see {contenido}/Util/Modules/Contenido_NavMain_Util.class.php
 *
 * @version 1.0.0
 * @author Rudi Bieller
@@ -34,7 +34,7 @@ if (!isset($tpl)) {
 $tpl->reset();
 
 cInclude('classes', 'Contenido_FrontendNavigation/Contenido_FrontendNavigation.class.php');
-cInclude('frontend', 'includes/Util/Modules/Contenido_NavMain_Util.class.php');
+cInclude('classes', 'Util/Modules/Contenido_NavMain_Util.class.php');
 
 $iStartIdcat = getEffectiveSetting('navigation', 'idcat-home', 1);
 $iSelectedDepth = getEffectiveSetting('navigation', 'level-depth', 3);
