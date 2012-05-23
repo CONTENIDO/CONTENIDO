@@ -18,7 +18,7 @@
  * @link       http://www.contenido.org
  * 
  * 
- * @class      cConCache
+ * @class      cOutputCache
  * @file       concache.php
  * @version    0.9
  * @date       2006-07-07

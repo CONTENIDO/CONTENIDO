@@ -17,8 +17,8 @@
  * @link       http://www.contenido.org
  * 
  * 
- * @class      cConCache
- * @brief      Class cConCache. Handles the "PEAR Cache Output" functionality.
+ * @class      cOutputCache
+ * @brief      Class cOutputCache. Handles the "PEAR Cache Output" functionality.
  * @file       class.concache.php
  * @version    0.9
  * @date       2006-07-07
@@ -40,7 +40,7 @@ if(!defined('CON_FRAMEWORK')) {
  * @package    CONTENIDO Frontend
  * @subpackage Cache
  */
-class cConCache{
+class cOutputCache{
 
     /**
     * PEAR Cache Output Object
@@ -164,13 +164,13 @@ VALID UNTIL: %s
 ';
 
     /**
-    * Constructor of cConCache
+    * Constructor of cOutputCache
     *
     * @param   string   $cachedir      Directory 2 cache files
     * @param   string   $cachegroup    Subdirectory 2 cache files
     * @param   string   $cacheprefix   Prefixname 2 add 2 cached files
     */
-    function cConCache($cachedir=null, $cachegroup=null, $cacheprefix=null){
+    function cOutputCache($cachedir=null, $cachegroup=null, $cacheprefix=null){
         // wherever you want the cache files
         if(!is_null($cachedir)){
             $this->_sDir = $cachedir;
@@ -189,7 +189,7 @@ VALID UNTIL: %s
         // config options are passed to the cache as an array
         $this->_aCacheOptions = array('cache_dir' => $this->_sDir, 'filename_prefix' => $this->_sPrefix);
 
-    } // function cConCache()
+    } // function cOutputCache()
 
 
     /**
@@ -421,12 +421,12 @@ VALID UNTIL: %s
         return $mtime;
     } // function _getMicroTime()
 
-} // class cConCache
+} // class cOutputCache
 
 
 
 /**
- * Class cConCacheHandler. This is used to set configuration and to manage caching output.
+ * Class cOutputCacheHandler. This is used to set configuration and to manage caching output.
  *
  * @package    CONTENIDO Frontend
  * @subpackage Cache
@@ -435,10 +435,10 @@ VALID UNTIL: %s
  * @author     Murat Purc <murat@purc.de>
  * @copyright  © Murat Purc 2006
  */
-class cConCacheHandler extends cConCache {
+class cOutputCacheHandler extends cOutputCache {
 
     /**
-    * Constructor of cConCacheHandler.
+    * Constructor of cOutputCacheHandler.
     * Does some checks and sets the configuration of cache object.
     *
     * @param   array    $aConf         Configuration of caching as follows:
@@ -457,7 +457,7 @@ class cConCacheHandler extends cConCache {
     * @param   obj      $db            Reference 2 CONTENIDO database object
     * @param   int      $iCreateCode   Flag of createcode state from table con_cat_art
     */
-    function cConCacheHandler($aConf, &$db, $iCreateCode=null) {
+    function cOutputCacheHandler($aConf, &$db, $iCreateCode=null) {
 
         // check if caching is allowed on CONTENIDO variable
         if ($aConf['excludecontenido'] == true) {
@@ -490,7 +490,7 @@ class cConCacheHandler extends cConCache {
 		$this->_oDB = $db;
 
         // set caching configuration
-        parent::cConCache($aConf['cachedir'], $aConf['cachegroup']);
+        parent::cOutputCache($aConf['cachedir'], $aConf['cachegroup']);
         $this->debug($aConf['debug']);
         $this->htmlComment($aConf['htmlcomment']);
         $this->lifetime($aConf['lifetime']);
@@ -509,7 +509,7 @@ class cConCacheHandler extends cConCache {
             $this->removeFromCache();
         }
 
-    } // function cConCacheHandler()
+    } // function cOutputCacheHandler()
 
 
     /**
@@ -545,6 +545,6 @@ class cConCacheHandler extends cConCache {
     } // function _isCode2Create()
 
 
-} // class cConCacheHandler
+} // class cOutputCacheHandler
 
 ?>
