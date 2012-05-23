@@ -47,7 +47,7 @@ function cecFrontendCategoryAccess($idlang, $idcat, $user)
 
     $groups = $frontendUser->getGroupsForUser();
 
-    $frontendPermissionCollection = new FrontendPermissionCollection();
+    $frontendPermissionCollection = new cApiFrontendPermissionCollection();
 
     $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = " . Contenido_Security::toInteger($idcat) . " AND idlang = " . Contenido_Security::toInteger($idlang);
     $db->query($sql);

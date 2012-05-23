@@ -38,7 +38,7 @@ function frontendusers_groupselect_display () {
 	$iIdfrontenduser = (int)$_REQUEST['idfrontenduser'];	
 	
 	//render select
-	$fegroups = new FrontendGroupCollection;
+	$fegroups = new cApiFrontendGroupCollection();
 	$fegroups->setWhere("idclient", $client);
 	$fegroups->query();
 
@@ -56,7 +56,7 @@ function frontendusers_groupselect_display () {
 	$oSelect->setStyle('width:265px;');
 	
 	//mark groups
-	$oFEGroupMemberCollection = new FrontendGroupMemberCollection;
+	$oFEGroupMemberCollection = new cApiFrontendGroupMemberCollection;
 	$oFEGroupMemberCollection->setWhere('idfrontenduser', $iIdfrontenduser);
 	$oFEGroupMemberCollection->addResultField('idfrontendgroup');
 	$oFEGroupMemberCollection->query();
@@ -85,9 +85,9 @@ function frontendusers_groupselect_store ($variables) {
 		$groups = array();
 	}
 	
-	$groupmembers	= new FrontendGroupMemberCollection();
+	$groupmembers	= new cApiFrontendGroupMemberCollection();
 	
-	$fegroups = new FrontendGroupCollection;
+	$fegroups = new cApiFrontendGroupCollection();
 	$fegroups->setWhere("idclient", $client);
 	$fegroups->query();
 
