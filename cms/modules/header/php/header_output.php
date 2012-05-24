@@ -39,7 +39,7 @@ try {
     	$sCssStyle = ' style="background-image:url('.$sImgSrc.');"';
     }
     else {
-        $sCssStyle = ' style="background-image:url('.$sImgEdit.');"';
+        $sCssStyle = ' style="background-image:url('.$sImgSrc.');"';
     }
     $tpl->reset();
     $tpl->set('s', 'css-style', $sCssStyle);
