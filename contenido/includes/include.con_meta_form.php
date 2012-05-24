@@ -124,6 +124,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
             $col->markInUse("article", $tmp_idartlang, $sess->id, $auth->auth["uid"]);
             $inUse = false;
             $disabled = '';
+            $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 0);
         } else {
             $vuser = new cApiUser($obj->get("userid"));
             $inUseUser = $vuser->getField("username");
@@ -133,11 +134,13 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
             $notification->displayNotification("warning", $message);
             $inUse = true;
             $disabled = 'disabled="disabled"';
+            $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 1);
         }
 
         if ($tmp_locked == 1) {
             $inUse = true;
             $disabled = 'disabled="disabled"';
+            $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 1);
         }
 
     } else {
@@ -213,6 +216,21 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
     $title_input = '<input type="text" '.$disabled.' class="text_medium" name="page_title" style="width:400px;" value="'.htmlspecialchars($tmp_page_title).'">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
     
+    
+    if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+    	 
+    	$langscripts =  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
+    	<script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
+    	$tpl->set('s', 'CAL_LANG', $langscripts);
+    
+    }else {
+    	$tpl->set('s', 'CAL_LANG', '');
+    }
+    
+    $tpl->set('s', 'PATH_TO_CALENDER_PIC',  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif');
+    
+    
+    
     // Meta-Tags
     $availableTags = conGetAvailableMetaTagTypes();
 
@@ -233,8 +251,8 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         switch ($value["fieldtype"]) {
             case "text":
                 if ($value["name"] == 'date') {
-                    $element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:380px;" maxlength='.$value["maxlength"].' value="'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'">
-                                <img src="images/calendar.gif" width="16" height="16" style="vertical-align:top;margin-top:2px;" id="METAdate_button" title="'.i18n("Select date").'" alt="'.i18n("Select date").'">'.$sMetaDate;
+                    $element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:380px;" maxlength='.$value["maxlength"].' value="'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'">';
+                               
                 } else {
                     $element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:400px;" maxlength='.$value["maxlength"].' value="'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'">';
                 }
@@ -330,7 +348,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok.gif');
     }
 
-    $tpl->set('s', 'CAL_LANG', substr(strtolower($belang), 0, 2));
+   
 
     if ($tmp_usetimemgmt == '1') {
         if ($tmp_datestart == "0000-00-00 00:00:00" && $tmp_dateend == "0000-00-00 00:00:00") {

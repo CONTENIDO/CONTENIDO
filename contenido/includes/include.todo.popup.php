@@ -35,7 +35,6 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 $cpage = new cPage();
-
 if ($action == "todo_save_item") {
     $todo = new TODOCollection();
 
@@ -70,34 +69,72 @@ if ($action == "todo_save_item") {
 
     $reminderdate = new cHTMLTextbox("reminderdate", '', '', '', "reminderdate");
 
-    $datepopup = ' <img src="images/calendar.gif" width="16" height="16" alt="' . i18n("Select reminder date") . '" id="reminder_date" style="vertical-align:middle;">';
-    $ui->add(i18n("Reminder date"),$reminderdate->render().$datepopup);
+    $ui->add(i18n("Reminder date"),$reminderdate->render());
 
     $reminderdue = new cHTMLTextbox("enddate", '', '', '', "enddate");
-    $duepopup = ' <img src="images/calendar.gif" width="16" height="16" alt="' . i18n("Select end date") . '" id="end_date" style="vertical-align:middle;">';
-    $ui->add(i18n("End date"),$reminderdue->render().$duepopup);
+    $ui->add(i18n("End date"),$reminderdue->render());
     $notiemail = new cHTMLCheckbox("notiemail", i18n("E-mail notification"));
-
+    $langscripts = '';
+    
+    if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+    		
+    	$langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
+    	<script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
+    }
+    
+    $path_to_calender_pic =  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif';
+    
+    
     $ui->add(i18n("Reminder options"), $notiemail->toHTML());
     $calscript = '
     <script language="JavaScript">
-        Calendar.setup({
-            inputField  : "enddate",
-            ifFormat    : "%Y-%m-%d %H:%M",
-            button      : "end_date",
-            weekNumbers : true,
-            firstDay    : 1,
-            showsTime   : true
-        });
+       $(document).ready(function() {
+	$("#reminderdate").datetimepicker({
+    		 buttonImage:"'. $path_to_calender_pic.'",
+  	        buttonImageOnly: true,
+  	        showOn: "both",
+  	        dateFormat: "yy-mm-dd",  
+    	    onClose: function(dateText, inst) {
+    	        var endDateTextBox = $("#enddate");
+    	        if (endDateTextBox.val() != "") {
+    	            var testStartDate = new Date(dateText);
+    	            var testEndDate = new Date(endDateTextBox.val());
+    	            if (testStartDate > testEndDate)
+    	                endDateTextBox.val(dateText);
+    	        }
+    	        else {
+    	            endDateTextBox.val(dateText);
+    	        }
+    	    },
+    	    onSelect: function (selectedDateTime){
+    	        var start = $(this).datetimepicker("getDate");
+    	        $("#enddate").datetimepicker("option", "minDate", new Date(start.getTime()));
+    	    }
+    	});
+    	$("#enddate").datetimepicker({
+    		 buttonImage: "'. $path_to_calender_pic .'",
+   	        buttonImageOnly: true,
+   	        showOn: "both",
+   	        dateFormat: "yy-mm-dd",
+    	    onClose: function(dateText, inst) {
+    	        var startDateTextBox = $("#reminderdate");
+    	        if (startDateTextBox.val() != "") {
+    	            var testStartDate = new Date(startDateTextBox.val());
+    	            var testEndDate = new Date(dateText);
+    	            if (testStartDate > testEndDate)
+    	                startDateTextBox.val(dateText);
+    	        }
+    	        else {
+    	            startDateTextBox.val(dateText);
+    	        }
+    	    },
+    	    onSelect: function (selectedDateTime){
+    	        var end = $(this).datetimepicker("getDate");
+    	        $("#reminderdate").datetimepicker("option", "maxDate", new Date(end.getTime()) );
+    	    }
+    	});
 
-        Calendar.setup({
-            inputField  : "reminderdate",
-            ifFormat    : "%Y-%m-%d %H:%M",
-            button      : "reminder_date",
-            weekNumbers : true,
-            firstDay    : 1,
-            showsTime   : true
-        });
+});
     </script>';
 
     $userselect = new cHTMLSelectElement("userassignment[]");
@@ -117,10 +154,12 @@ if ($action == "todo_save_item") {
     $ui->add(i18n("Assigned to"), $userselect->render());
     $cpage->setcontent($ui->render().$calscript);
 
-    $cpage->addScript("cal", '<style type="text/css">@import url(scripts/jscalendar/calendar-contenido.css);</style>
-                              <script type="text/javascript" src="scripts/jscalendar/calendar.js"></script>
-                              <script type="text/javascript" src="scripts/jscalendar/lang/calendar-'.substr(strtolower($belang), 0, 2).'.js"></script>
-                              <script type="text/javascript" src="scripts/jscalendar/calendar-setup.js"></script>');
+    $cpage->addScript("cal", '<link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
+    				<link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
+    				<script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    				<script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    				<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>'
+    				. $langscripts);
 }
 $cpage->render();
 

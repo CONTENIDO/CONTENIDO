@@ -199,6 +199,20 @@ $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_country', $address_country, 40, 255));
 $tpl->next();
 
+
+$tpl->set('s', 'PATH_TO_CALENDER_PIC',  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif');
+
+if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+	 
+	$langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
+	<script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
+	$tpl->set('s', 'CAL_LANG', $langscripts);
+
+}else {
+	$tpl->set('s', 'CAL_LANG', '');
+}
+
+
 // permissions of current logged in user
 $aAuthPerms = explode(',', $auth->auth['perm']);
 
@@ -264,20 +278,8 @@ $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
 $tpl->set('d', 'CATFIELD', formGenerateCheckbox('wysi', '1', ((int) $wysi == 1)));
 $tpl->next();
 
-$sInputValidFrom = '<style type="text/css">@import url(./scripts/jscalendar/calendar-contenido.css);</style>
-                <script type="text/javascript" src="./scripts/jscalendar/calendar.js"></script>
-                <script type="text/javascript" src="./scripts/jscalendar/lang/calendar-' . substr(strtolower($belang), 0, 2) . '.js"></script>
-                <script type="text/javascript" src="./scripts/jscalendar/calendar-setup.js"></script>';
-$sInputValidFrom .= '<input type="text" id="valid_from" name="valid_from" value="' . $valid_from . '" />&nbsp;<img src="images/calendar.gif" id="trigger" /">';
-$sInputValidFrom .= '<script type="text/javascript">
-                     Calendar.setup({
-                         inputField:  "valid_from",
-                         ifFormat:    "%Y-%m-%d",
-                         button:      "trigger",
-                         weekNumbers: true,
-                         firstDay:    1
-                     });
-                     </script>';
+$sInputValidFrom = '<input type="text" id="valid_from" name="valid_from" value="' . $valid_from . '" />';
+
 
 $tpl->set('d', 'CATNAME', i18n("Valid from"));
 $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
@@ -285,16 +287,8 @@ $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
 $tpl->set('d', 'CATFIELD', $sInputValidFrom);
 $tpl->next();
 
-$sInputValidTo  = '<input type="text" id="valid_to" name="valid_to" value="' . $valid_to . '" />&nbsp;<img src="images/calendar.gif" id="trigger_to" /">';
-$sInputValidTo .= '<script type="text/javascript">
-                   Calendar.setup({
-                       inputField:  "valid_to",
-                       ifFormat:    "%Y-%m-%d",
-                       button:      "trigger_to",
-                       weekNumbers: true,
-                       firstDay:    1
-                   });
-                   </script>';
+$sInputValidTo  = '<input type="text" id="valid_to" name="valid_to" value="' . $valid_to . '" />';
+
 
 $tpl->set('d', 'CATNAME', i18n("Valid to"));
 $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);

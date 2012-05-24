@@ -5,12 +5,20 @@
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    <style type="text/css">@import url(scripts/jscalendar/calendar-contenido.css);</style>
-    <script type="text/javascript" src="scripts/jscalendar/calendar.js"></script>
-    <script type="text/javascript" src="scripts/jscalendar/lang/calendar-{CAL_LANG}.js"></script>
-    <script type="text/javascript" src="scripts/jscalendar/calendar-setup.js"></script>
-    <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
+    
+  <link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
+    <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+    
+    <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>
+   
+   <!-- get javascript files for language != en -->
+   {CAL_LANG}
+    
+    
+    <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
+   
     <script type="text/javascript">
         var sid = "{SID}";
         box = new messageBox("", "", "", 0, 0);
@@ -93,6 +101,20 @@
 			element.value = default_value;
 		}
 	}
+	
+	
+		
+$(document).ready(function () {
+        	
+        	$('#METAdate').datetimepicker({
+        		buttonImage: '{PATH_TO_CALENDER_PIC}',
+      	        buttonImageOnly: true,
+      	        showOn: 'both',
+      	        dateFormat: 'yy-mm-dd',
+      	        disabled:{IS_DATETIMEPICKER_DISABLED},
+      	       
+        	});
+	});
 </script>
 </body>
 </html>

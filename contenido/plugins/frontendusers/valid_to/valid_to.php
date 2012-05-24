@@ -34,7 +34,12 @@ function frontendusers_valid_to_getTitle ()
 
 function frontendusers_valid_to_display ()
 {
-	global $feuser,$db,$belang;
+	global $feuser,$db,$belang,$cfg;
+	
+	$langscripts = '';
+	
+	
+	$path_to_calender_pic =  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif';
 	
 	$template  = '%s';
     
@@ -46,17 +51,30 @@ function frontendusers_valid_to_display ()
 	$currentValue = str_replace('00:00:00', '', $currentValue);
 	
 	// js-includes are defined in valid_from
-	$sValidFrom = '<input type="text" id="valid_to" name="valid_to" value="'.$currentValue.'" />&nbsp;<img src="images/calendar.gif" id="trigger_to" /">';
+	$sValidFrom = '<input type="text" id="valid_to" name="valid_to" value="'.$currentValue.'" />';
 	$sValidFrom .= '<script type="text/javascript">
-  Calendar.setup(
-    {
-		inputField  : "valid_to",
-		ifFormat    : "%Y-%m-%d",
-		button      : "trigger_to",
-		weekNumbers	: true,
-		firstDay	:	1
-    }
-  );
+ $("#valid_to").datetimepicker({
+    		 buttonImage: "'. $path_to_calender_pic .'",
+   	        buttonImageOnly: true,
+   	        showOn: "both",
+   	        dateFormat: "yy-mm-dd",
+    	    onClose: function(dateText, inst) {
+    	        var startDateTextBox = $("#valid_from");
+    	        if (startDateTextBox.val() != "") {
+    	            var testStartDate = new Date(startDateTextBox.val());
+    	            var testEndDate = new Date(dateText);
+    	            if (testStartDate > testEndDate)
+    	                startDateTextBox.val(dateText);
+    	        }
+    	        else {
+    	            startDateTextBox.val(dateText);
+    	        }
+    	    },
+    	    onSelect: function (selectedDateTime){
+    	        var end = $(this).datetimepicker("getDate");
+    	        $("#valid_from").datetimepicker("option", "maxDate", new Date(end.getTime()) );
+    	    }
+    	});
 </script>';
 	
 	return sprintf($template,$sValidFrom);
