@@ -537,6 +537,7 @@ contenido/external/frontend/front_content.php -text
 contenido/external/frontend/front_crcloginform.inc.php -text
 contenido/external/frontend/images/but_ok.gif -text
 contenido/external/frontend/images/index.php -text
+contenido/external/frontend/includes/concache.php -text
 contenido/external/frontend/includes/index.php -text
 contenido/external/frontend/index.php -text
 contenido/external/frontend/js/index.php -text
