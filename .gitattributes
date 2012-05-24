@@ -1780,6 +1780,7 @@ contenido/styles/cms_image.css -text
 contenido/styles/cms_linkeditor.css -text
 contenido/styles/cms_teaser.css -text
 contenido/styles/contenido.css -text
+contenido/styles/datetimepicker/jquery-ui-timepicker-addon.css -text svneol=unset#text/plain
 contenido/styles/index.php -text
 contenido/styles/inuse.css -text
 contenido/styles/smoothness/images/ui-bg_flat_0_aaaaaa_40x100.png -text
