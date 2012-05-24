@@ -480,7 +480,11 @@ if (!empty($where)) {
           LEFT JOIN ".$cfg['tab']['cat_art']." as b ON a.idart = b.idart
           LEFT JOIN ".$cfg['tab']['cat_lang']." as c ON a.idartlang = c.startidartlang
           LEFT JOIN ".$cfg['tab']['tpl_conf']." as d ON a.idtplcfg = d.idtplcfg
-          LEFT JOIN ".$cfg['tab']['tpl']." as e ON d.idtpl = e.`idtpl` WHERE a.idart NOT IN (SELECT ".$cfg['tab']['cat_art'].".idart FROM ".$cfg['tab']['cat_art'].")";
+          LEFT JOIN ".$cfg['tab']['tpl']." as e ON d.idtpl = e.`idtpl` 
+		WHERE 
+			(a.idart NOT IN (SELECT ".$cfg['tab']['cat_art'].".idart FROM ".$cfg['tab']['cat_art'].")) 
+		OR 
+			(b.idcat NOT IN (SELECT ".$cfg['tab']['cat'].".idcat FROM ".$cfg['tab']['cat']."));";
     $db->query($sql_1);
 }
 
