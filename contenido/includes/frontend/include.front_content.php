@@ -281,7 +281,7 @@ if ($idartlang === false) {
 
 // Start page cache, if enabled
 if ($cfg['cache']['disable'] != '1') {
-    cInclude('classes', 'cache/concache.php');
+    cInclude('frontend', 'includes/concache.php');
     $oCacheHandler = new cOutputCacheHandler($GLOBALS['cfgConCache'], $db);
     $oCacheHandler->start($iStartTime); // $iStartTime ist optional und ist die startzeit des scriptes, z. b. am anfang von fron_content.php
 }
