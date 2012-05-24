@@ -31,13 +31,15 @@
  * @since      file available since CONTENIDO release >= 4.9.0
  *
  * {@internal
- *     created  2012-05-14
+ *     created  2012-05-24
  * }}
  */
 
 
 return array(
     'ConUser_Abstract' => 'contenido/classes/abstract_classes/class.conuser.php',
+    'cOutputCache' => 'contenido/classes/cache/class.outputcache.php',
+    'cOutputCacheHandler' => 'contenido/classes/cache/class.outputcache.php',
     'Ajax' => 'contenido/classes/class.ajax.php',
     'Art' => 'contenido/classes/class.art.php',
     'Article' => 'contenido/classes/class.article.php',
@@ -98,6 +100,8 @@ return array(
     'HtmlParser' => 'contenido/classes/class.htmlparser.php',
     'cHTMLValidator' => 'contenido/classes/class.htmlvalidator.php',
     'HttpInputValidator' => 'contenido/classes/class.httpinputvalidator.php',
+    'cHTMLInputSelectElement' => 'contenido/classes/class.input.helper.php',
+    'UI_Config_Table' => 'contenido/classes/class.input.helper.php',
     'cIterator' => 'contenido/classes/class.iterator.php',
     'Layout' => 'contenido/classes/class.layout.php',
     'LayoutInFile' => 'contenido/classes/class.layoutInFile.php',
@@ -327,6 +331,8 @@ return array(
     'Contenido_UrlBuilder_CustomPath' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_CustomPath.class.php',
     'Contenido_UrlBuilder_Frontcontent' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_Frontcontent.class.php',
     'Contenido_UrlBuilder_MR' => 'contenido/classes/UrlBuilder/Contenido_UrlBuilder_MR.class.php',
+    'Contenido_NavMain_Util' => 'contenido/classes/Util/Modules/Contenido_NavMain_Util.class.php',
+    'Contenido_Sitemap_Util' => 'contenido/classes/Util/Modules/Contenido_Sitemap_Util.class.php',
     'Contenido_Validator_Abstract' => 'contenido/classes/Validator/Abstract.class.php',
     'Contenido_Validator_Email' => 'contenido/classes/Validator/Email.class.php',
     'Contenido_Validator_Factory' => 'contenido/classes/Validator/Factory.class.php',
