@@ -172,7 +172,7 @@ class Cms_Image {
 			$this->storeImage($idart);
 			
 			
-			$path = $this->aCfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&changeview=edit&client=$this->iClientt";
+			$path = $this->aCfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&changeview=edit&client=$this->iClient";
 			header('location:'.$this->oSess->url($path));
 			
 		}
@@ -195,7 +195,15 @@ class Cms_Image {
 	private function storeImage($idart = -1) {		
 		$aFilenameData['filename'] = basename($_REQUEST['image_filename']);
 		$aFilenameData['dirname'] = dirname($_REQUEST['image_filename']);
-		$query = 'SELECT idupl FROM ' . $this->aCfg['tab']['upl'] . ' WHERE filename=\''.$aFilenameData['filename'].'\' AND dirname=\''.$aFilenameData['dirname'].'/\' AND idclient=\''.$this->iClient.'\'';
+		
+		//if one pictures selected from upload directory
+		if($aFilenameData['dirname'] == "\\" || $aFilenameData['dirname'] == '/') {
+			$aFilenameData['dirname'] = '';
+		}else {
+			$aFilenameData['dirname'] .= '/';
+		}
+		$query = 'SELECT idupl FROM ' . $this->aCfg['tab']['upl'] . ' WHERE filename=\''.$aFilenameData['filename'].'\' AND dirname=\''.$aFilenameData['dirname'].'\' AND idclient=\''.$this->iClient.'\'';
+		
 		$this->oDb->query($query);
 		if($this->oDb->next_record()) {
 			$this->iUplId = $this->oDb->f('idupl');                 
