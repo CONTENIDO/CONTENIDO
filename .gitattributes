@@ -37,6 +37,7 @@ cms/images/subnavi_linie.gif -text
 cms/images/subnavi_over.gif -text
 cms/images/subnavi_pfeil_zu.gif -text
 cms/images/subsubnavi_over.gif -text
+cms/includes/concache.php -text
 cms/includes/functions.include.php -text
 cms/includes/functions.navigation.php -text
 cms/index.php -text
