@@ -76,7 +76,7 @@ class cBufferedLog extends cLog
     public function cBufferedLog($oLogger = false)
     {
         cDeprecated("Use __construct() instead");
-        $this->__construct();
+        $this->__construct($oLogger);
     }
 
     /**
