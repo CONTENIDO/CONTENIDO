@@ -11,8 +11,8 @@
  *
  *
  * @package    CONTENIDO Core
- * @version    0.2.3
- * @author     Boris Erdmann, Kristian Koehntopp
+ * @version    0.2.4
+ * @author     Boris Erdmann, Kristian Koehntopp, Murat Purc <murat@purc>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -21,16 +21,6 @@
  *
  * {@internal
  *   created  2002-07-21
- *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready) extended DB_Sql_Abstract, added/optimized some functioms and some formatting
- *   modified 2009-12-18, Murat Purc, Replaced mysql_list_fields() against a SQL statement, see [#CON-262]
- *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
- *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
- *   modified 2011-04-22, Murat Purc, Connect to DB server without database and more
- *                        readable connection settings.
- *   modified 2011-05-17, Ortwin Pinke, bugfix in methode nextid().
- *   modified 2011-07-07, Murat Purc, New _update(), _insert() methods, unified
- *                        execution of multiple queries by using cloned instance.
  *
  *   $Id$:
  * }}
@@ -86,13 +76,13 @@ class DB_Sql extends DB_Sql_Abstract
                 $this->halt('MySQL _connect() Cannot use database ' . $aCon['database']);
                 return null;
             }else {
-            	//set connection charset 
-            	if($aCon['charset'] != '') {
-            		if(!@mysql_query("SET NAMES '" . $aCon['charset'] . "'", $dbh)) {
-            			$this->halt('MySQL _connect Cannot set names to : '.$aCon['charset']);
-            			return null;
-            		}
-            	}
+                //set connection charset
+                if ($aCon['charset'] != '') {
+                    if (!@mysql_query("SET NAMES '" . $aCon['charset'] . "'", $dbh)) {
+                        $this->halt('MySQL _connect Cannot set names to : '.$aCon['charset']);
+                        return null;
+                    }
+                }
             }
             $this->Database = $aCon['database'];
         }
