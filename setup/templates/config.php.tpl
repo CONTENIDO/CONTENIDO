@@ -104,7 +104,7 @@ $cfg['db'] = array(
         'database' => '{MYSQL_DB}',   // (string) The database name which you use
         'user'     => '{MYSQL_USER}', // (string) The username to access the database
         'password' => '{MYSQL_PASS}', // (string) The password to access the database
-        'charset'  => '', 			  // (string) The charset of connection to database
+        'charset'  => '',             // (string) The charset of connection to database
     ),
     'nolock'          => {NOLOCK}, // (bool) Flag to not lock tables
     'sequenceTable'   => '',       // (string) will be set later in startup!
