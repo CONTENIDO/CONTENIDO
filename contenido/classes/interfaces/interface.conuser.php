@@ -37,162 +37,163 @@
  *
  * @deprecated Please use cApiUser instead [2012-02-23]
  */
-interface iConUser {
+interface iConUser
+{
 
-	/**
-	 * Password is ok and stored.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_OK = 0;
+    /**
+     * Password is ok and stored.
+     *
+     * @var int
+     * @final
+     */
+    const PASS_OK = 0;
 
-	/**
-	 * Given password is to short
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_TO_SHORT =  1;
+    /**
+     * Given password is to short
+     *
+     * @var int
+     * @final
+     */
+    const PASS_TO_SHORT =  1;
 
-	/**
-	 * Given password is not strong enough
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_STRONG =  2;
+    /**
+     * Given password is not strong enough
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_STRONG =  2;
 
-	/**
-	 * Given password is not complex enough
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_COMPLEX =  3;
+    /**
+     * Given password is not complex enough
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_COMPLEX =  3;
 
-	/**
-	 * Password does not contain enough numbers.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_ENOUGH_NUMBERS =  4;
+    /**
+     * Password does not contain enough numbers.
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_ENOUGH_NUMBERS =  4;
 
-	/**
-	 * Password does not contain enough symbols.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_ENOUGH_SYMBOLS =  5;
+    /**
+     * Password does not contain enough symbols.
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_ENOUGH_SYMBOLS =  5;
 
-	/**
-	 * Password does not contain enough mixed characters.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_ENOUGH_MIXED_CHARS =  6;
+    /**
+     * Password does not contain enough mixed characters.
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_ENOUGH_MIXED_CHARS =  6;
 
-	/**
-	 * Password does not contain enough different characters.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const PASS_NOT_ENOUGH_DIFFERENT_CHARS =  7;
+    /**
+     * Password does not contain enough different characters.
+     *
+     * @var int
+     * @final
+     */
+    const PASS_NOT_ENOUGH_DIFFERENT_CHARS =  7;
 
-	/**
-	 * Exception code, which is used if you try to add an user
-	 * that already exists.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const EXCEPTION_USERNAME_EXISTS =  8;
+    /**
+     * Exception code, which is used if you try to add an user
+     * that already exists.
+     *
+     * @var int
+     * @final
+     */
+    const EXCEPTION_USERNAME_EXISTS =  8;
 
 
-	/**
-	 * Exception code, which is used if an password is set to save
-	 * that is not valid.
-	 *
-	 * @var int
-	 * @final
-	 */
-	const EXCEPTION_PASSWORD_INVALID =  9;
+    /**
+     * Exception code, which is used if an password is set to save
+     * that is not valid.
+     *
+     * @var int
+     * @final
+     */
+    const EXCEPTION_PASSWORD_INVALID =  9;
 
     /**
      * This value will be used if no minimum length
      * for passwords are set via $cfg['password']['min_length']
      *
      */
-	const MIN_PASS_LENGTH_DEFAULT = 8;
+    const MIN_PASS_LENGTH_DEFAULT = 8;
 
-	/**
-	 * This method saves the given password $sNewPassword. The password
-	 * has to be checked, before it is set to the database. The resulting
-	 * integer value represents the result code.
-	 * Use the PASS_* constants to check what happens.
-	 *
-	 * @param string $sNewPassword
-	 */
-	public function savePassword ($sNewPassword);
+    /**
+     * This method saves the given password $sNewPassword. The password
+     * has to be checked, before it is set to the database. The resulting
+     * integer value represents the result code.
+     * Use the PASS_* constants to check what happens.
+     *
+     * @param string $sNewPassword
+     */
+    public function savePassword($sNewPassword);
 
-	/**
-	 * Checks given password $sNewPassword is complex enough.
-	 *
-	 * This method should check everything the user has to do to
-	 * have a "valid" password. Such a check can be "User has to use
-	 * symbols in password, but not as first sign."
-	 *
-	 * @param string $sNewPassword
-	 * @return int
-	 */
-	public function checkPasswordMask ($sNewPassword);
+    /**
+     * Checks given password $sNewPassword is complex enough.
+     *
+     * This method should check everything the user has to do to
+     * have a "valid" password. Such a check can be "User has to use
+     * symbols in password, but not as first sign."
+     *
+     * @param string $sNewPassword
+     * @return int
+     */
+    public function checkPasswordMask($sNewPassword);
 
-	/**
-	 * Checks given password $sNewPassword has a valid strength.
-	 *
-	 * @param string $sNewPassword
-	 * @return int
-	 */
-	public function checkPasswordStrength ($sNewPassword);
+    /**
+     * Checks given password $sNewPassword has a valid strength.
+     *
+     * @param string $sNewPassword
+     * @return int
+     */
+    public function checkPasswordStrength($sNewPassword);
 
-	/**
-	 * This method tries to save all information collected for an user.
-	 * If everything is fine, it returns true - otherwise false. On fatal
-	 * errors a ConUserException will be thrown.
-	 *
-	 * @return boolean
-	 */
-	public function save ();
+    /**
+     * This method tries to save all information collected for an user.
+     * If everything is fine, it returns true - otherwise false. On fatal
+     * errors a ConUserException will be thrown.
+     *
+     * @return boolean
+     */
+    public function save();
 
-	/**
-	 * Loads data for user $sUserId.
-	 *
-	 * @param string $sUserId
-	 */
-	public function load ($sUserId);
+    /**
+     * Loads data for user $sUserId.
+     *
+     * @param string $sUserId
+     */
+    public function load($sUserId);
 
-	/**
-	 * Simple error messages, depending on error code $iErrorCode.
-	 *
-	 * @param int $iErrorCode
-	 * @param array $aCfg CONTENIDO configuration array
-	 * @return string
-	 */
-	public static function getErrorString ($iErrorCode, $aCfg);
+    /**
+     * Simple error messages, depending on error code $iErrorCode.
+     *
+     * @param int $iErrorCode
+     * @param array $aCfg CONTENIDO configuration array
+     * @return string
+     */
+    public static function getErrorString($iErrorCode, $aCfg);
 
-	/**
-	 * Encodes the password $sPassword. You should use one-way
-	 * encodings or hash-algorithms to ensure that nobody can
-	 * read simply the passwords!
-	 *
-	 * @param string $sPassword
-	 * @return string
-	 */
-	public static function encodePassword ($sPassword);
+    /**
+     * Encodes the password $sPassword. You should use one-way
+     * encodings or hash-algorithms to ensure that nobody can
+     * read simply the passwords!
+     *
+     * @param string $sPassword
+     * @return string
+     */
+    public static function encodePassword($sPassword);
 }
 
 ?>
