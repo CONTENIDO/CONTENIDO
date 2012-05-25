@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Objects for Category handling.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    0.8.2
@@ -17,8 +17,8 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2008-02-15
  *   modified 2008-02-22 Contenido_Categories now implements Countable
  *   modified 2008-08-20 Removed unnecessary/redundant security fixes (typecasting is already done in getter methods) that were made during security fixing phase
@@ -27,11 +27,11 @@
  *   modified 2009-01-14 Removed duplicate row in sql select at method load()
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 
@@ -56,7 +56,7 @@ class Contenido_Category extends Contenido_Category_Base {
     protected $iIdPost;
     protected $iStatus;
     /**#@-*/
-    
+
     /**#@+
      * @var string
      * @access protected
@@ -65,7 +65,7 @@ class Contenido_Category extends Contenido_Category_Base {
     protected $sCreated;
     protected $sModified;
     /**#@-*/
-    
+
     /**
      * @var obj
      * @access protected
@@ -76,44 +76,44 @@ class Contenido_Category extends Contenido_Category_Base {
      * @access protected
      */
     protected $iIdLang;
-    
+
     /**
      * @var boolean
      * @access protected
      */
     protected $bLoadSubCategories;
-    
+
     /**
      * @var obj
      * @access protected
      */
     protected $oSubCategories; // if required, this holds the SubCategories of current Category
-    
+
     /**
      * @var boolean
      * @access protected
      */
     protected $bHasSubCategories;
-    
+
     /**
      * @var int
      * @access protected
      */
     protected $iCurrentSubCategoriesLoadDepth; // current level of SubCategories
-    
+
     /**
      * @var int
      * @access protected
      */
     protected $iSubCategoriesLoadDepth; // up to which level should SubCategories be loaded
-    
+
     /**
      * @var obj DB_Contenido
      * @access private
      */
     private $_oDb;
-    
-    
+
+
     /**
      * Constructor.
      * @access public
@@ -129,7 +129,7 @@ class Contenido_Category extends Contenido_Category_Base {
         $this->iSubCategoriesLoadDepth = 0;
         $this->iCurrentSubCategoriesLoadDepth = 0;
     }
-    
+
     /**
      * Loads properties for a given idcat. Optionally, also properties from catlang will be loaded into object.
      *
@@ -150,46 +150,46 @@ class Contenido_Category extends Contenido_Category_Base {
         if ($bIncludeLanguage === true && $this->getIdLang() == -1) {
             throw new InvalidArgumentException('When setting $bIncludeLanguage to true you must provide an $iIdlang!');
         }
-        $sSql = 'SELECT 
-					idclient, parentid, preid, postid, status, author, created, lastmodified 
-				FROM 
-					' . $this->aCfg['tab']['cat'] . ' 
-				WHERE 
-					idcat = ' . Contenido_Security::toInteger($iIdCat);
-	    if ($this->bDbg === true) {
-	        $this->oDbg->show($sSql, 'Contenido_Category::load($iIdCat, $bIncludeLanguage = false, $iIdlang = -1): $sSql');
-	    }
-	    $this->oDb->query($sSql);
-	    if ($this->oDb->Errno != 0) {
-	        return false;
-	    }
-	    $this->oDb->next_record();
-	    $this->setIdCat($iIdCat);
-	    $this->setIdClient($this->oDb->f('idclient'));
-	    $this->setIdParent($this->oDb->f('parentid'));
-	    $this->setIdPre($this->oDb->f('preid'));
-	    $this->setIdPost($this->oDb->f('postid'));
-	    $this->setStatus($this->oDb->f('status'));
-	    $this->setAuthor($this->oDb->f('author'));
-	    $this->setDateCreated($this->oDb->f('created'));
-	    $this->setDateModified($this->oDb->f('lastmodified'));
-	    if ($bIncludeLanguage === true) {
-	        try {
-		        $oCategoryLanguage = new Contenido_Category_Language($this->oDb, $this->aCfg);
-		        $oCategoryLanguage->setIdCat($this->getIdCat());
-		        $oCategoryLanguage->setIdLang($this->getIdLang());
-		        $oCategoryLanguage->load();
-		        $this->setCategoryLanguage($oCategoryLanguage);
-	        } catch (Exception $e) {
-	            throw $e;
-	        }
-	    }
-	    if ($this->bLoadSubCategories === true) {
+        $sSql = 'SELECT
+                    idclient, parentid, preid, postid, status, author, created, lastmodified
+                FROM
+                    ' . $this->aCfg['tab']['cat'] . '
+                WHERE
+                    idcat = ' . Contenido_Security::toInteger($iIdCat);
+        if ($this->bDbg === true) {
+            $this->oDbg->show($sSql, 'Contenido_Category::load($iIdCat, $bIncludeLanguage = false, $iIdlang = -1): $sSql');
+        }
+        $this->oDb->query($sSql);
+        if ($this->oDb->Errno != 0) {
+            return false;
+        }
+        $this->oDb->next_record();
+        $this->setIdCat($iIdCat);
+        $this->setIdClient($this->oDb->f('idclient'));
+        $this->setIdParent($this->oDb->f('parentid'));
+        $this->setIdPre($this->oDb->f('preid'));
+        $this->setIdPost($this->oDb->f('postid'));
+        $this->setStatus($this->oDb->f('status'));
+        $this->setAuthor($this->oDb->f('author'));
+        $this->setDateCreated($this->oDb->f('created'));
+        $this->setDateModified($this->oDb->f('lastmodified'));
+        if ($bIncludeLanguage === true) {
+            try {
+                $oCategoryLanguage = new Contenido_Category_Language($this->oDb, $this->aCfg);
+                $oCategoryLanguage->setIdCat($this->getIdCat());
+                $oCategoryLanguage->setIdLang($this->getIdLang());
+                $oCategoryLanguage->load();
+                $this->setCategoryLanguage($oCategoryLanguage);
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
+        if ($this->bLoadSubCategories === true) {
             $this->_getSubCategories($iIdCat, $bIncludeLanguage, $iIdlang);
-	    }
-	    return true;
+        }
+        return true;
     }
-    
+
     /**
      * Loads SubCategories depending on values for $this->bLoadSubCategories and $this->iSubCategoriesLoadDepth
      * @access private
@@ -215,19 +215,19 @@ class Contenido_Category extends Contenido_Category_Base {
         // current load depth: $this->iCurrentSubCategoriesLoadDepth
         // load depth to go to: $this->iSubCategoriesLoadDepth
         foreach ($aSubCategories as $iIdcatCurrent) {
-	        try {
-	            $oCategory = new Contenido_Category($this->_oDb, $this->aCfg);
-		        if ($this->iSubCategoriesLoadDepth > 0) {
-		            $oCategory->setloadSubCategories($this->bLoadSubCategories, ($this->iSubCategoriesLoadDepth - 1));
-		        }
-		        $oCategory->load($iIdcatCurrent, $bIncludeLanguage, $iIdlang);
-		        $this->oSubCategories->add($oCategory);
-	        } catch (InvalidArgumentException $e) {
-	            throw $e;
-	        }
+            try {
+                $oCategory = new Contenido_Category($this->_oDb, $this->aCfg);
+                if ($this->iSubCategoriesLoadDepth > 0) {
+                    $oCategory->setloadSubCategories($this->bLoadSubCategories, ($this->iSubCategoriesLoadDepth - 1));
+                }
+                $oCategory->load($iIdcatCurrent, $bIncludeLanguage, $iIdlang);
+                $this->oSubCategories->add($oCategory);
+            } catch (InvalidArgumentException $e) {
+                throw $e;
+            }
         }
     }
-    
+
     /**
      * Return array with idcats of subcategories of given idcat
      * @access private
@@ -241,35 +241,35 @@ class Contenido_Category extends Contenido_Category_Base {
         }
         $aSubCats = array();
         $sSql = 'SELECT
-					cattree.idcat
-				FROM
-					'.$this->aCfg["tab"]["cat_tree"].' AS cattree,
-					'.$this->aCfg["tab"]["cat"].' AS cat,
-					'.$this->aCfg["tab"]["cat_lang"].' AS catlang
-				WHERE
-					cattree.idcat    = cat.idcat AND
-					cat.idcat    = catlang.idcat AND
-					cat.idclient = ' . $this->getIdClient() . ' AND
-					catlang.idlang   = ' . $this->getIdLang() . ' AND
-					catlang.visible  = 1 AND 
-					cat.parentid = ' . Contenido_Security::toInteger($iIdcat) .'
-				ORDER BY
-					cattree.idtree';
+                    cattree.idcat
+                FROM
+                    '.$this->aCfg["tab"]["cat_tree"].' AS cattree,
+                    '.$this->aCfg["tab"]["cat"].' AS cat,
+                    '.$this->aCfg["tab"]["cat_lang"].' AS catlang
+                WHERE
+                    cattree.idcat    = cat.idcat AND
+                    cat.idcat    = catlang.idcat AND
+                    cat.idclient = ' . $this->getIdClient() . ' AND
+                    catlang.idlang   = ' . $this->getIdLang() . ' AND
+                    catlang.visible  = 1 AND
+                    cat.parentid = ' . Contenido_Security::toInteger($iIdcat) .'
+                ORDER BY
+                    cattree.idtree';
         if ($this->bDbg === true) {
-	        $this->oDbg->show($sSql, 'Contenido_Category::_getSubCategoriesAsArray($iIdcat): $sSql');
-	    }
-	    $this->oDb->query($sSql);
-	    if ($this->oDb->Errno != 0) {
-	        return false;
-	    }
-	    while ($this->oDb->next_record()) {
-	        $aSubCats[] = $this->oDb->f('idcat');
-	    }
-	    return $aSubCats;
+            $this->oDbg->show($sSql, 'Contenido_Category::_getSubCategoriesAsArray($iIdcat): $sSql');
+        }
+        $this->oDb->query($sSql);
+        if ($this->oDb->Errno != 0) {
+            return false;
+        }
+        while ($this->oDb->next_record()) {
+            $aSubCats[] = $this->oDb->f('idcat');
+        }
+        return $aSubCats;
     }
-    
+
     // SETTER
-    
+
     /**
      * If you need to load SubCategories, set to true and set how deep SubCategories should be loaded
      * @access public
@@ -282,7 +282,7 @@ class Contenido_Category extends Contenido_Category_Base {
         $this->bLoadSubCategories = (boolean) $bLoad;
         $this->iSubCategoriesLoadDepth = (int) $iLoadDepth;
     }
-    
+
     /**
      * Set internal property with SubCategories of current Category
      * @access public
@@ -293,11 +293,11 @@ class Contenido_Category extends Contenido_Category_Base {
     public function setSubCategories(Contenido_Categories $oCategories) {
         $this->oSubCategories = $oCategories;
     }
-    
+
     public function setCategoryLanguage(Contenido_Category_Language $oCatLang) {
         $this->oCategoryLanguage = $oCatLang;
     }
-    
+
     public function setIdCat($iIdcat) {
         $this->iIdCat = (int) $iIdcat;
     }
@@ -336,17 +336,17 @@ class Contenido_Category extends Contenido_Category_Base {
     public function setIdLang($iIdlang) {
         $this->iIdLang = (int) $iIdlang;
     }
-    
+
     // GETTER
-    
+
     public function getSubCategories() {
         return is_null($this->oSubCategories) ? new Contenido_Categories($this->oDb, $this->aCfg) : $this->oSubCategories;
     }
-    
+
     public function getCategoryLanguage() {
         return !is_null($this->oCategoryLanguage) ? $this->oCategoryLanguage : new Contenido_Category_Language($this->oDb, $this->aCfg);
     }
-    
+
     public function getIdCat() {
         return !is_null($this->iIdCat) ? (int) $this->iIdCat : -1;
     }
@@ -405,13 +405,13 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
      * @access protected
      */
     protected $bLoadSubCategories;
-	    
+
     /**
      * @var int
      * @access protected
      */
     protected $iSubCategoriesLoadDepth; // up to which level should SubCategories be loaded
-    
+
     /**
      * Constructor.
      * @access public
@@ -426,7 +426,7 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
         $this->bLoadSubCategories = false;
         $this->iSubCategoriesLoadDepth = 0;
     }
-    
+
     /**
      * Loads a range of Category-IDs.
      * @access public
@@ -443,27 +443,27 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
             foreach ($aCategoryIds as $iId) {
                 $iIdLang = $this->getIdLang();
                 $oCategory = new Contenido_Category($this->oDb, $this->aCfg);
-				if ($this->iSubCategoriesLoadDepth > 0) {
-					$oCategory->setloadSubCategories($this->bLoadSubCategories, $this->iSubCategoriesLoadDepth);
-				}
+                if ($this->iSubCategoriesLoadDepth > 0) {
+                    $oCategory->setloadSubCategories($this->bLoadSubCategories, $this->iSubCategoriesLoadDepth);
+                }
                 $oCategory->load($iId, $bIncludeLanguage, $iIdLang);
                 $this->add($oCategory);
             }
         }
     }
-    
+
     /**
      * Add a CONTENIDO_Category object into internal array ("Collection")
      * @access public
      * @param Contenido_Category $oContenidoCategory
-     * @param int $iOffset 
+     * @param int $iOffset
      * @return void
      * @author Rudi Bieller
      */
     public function add(Contenido_Category $oContenidoCategory, $iOffset = null) {
         $this->offsetSet($iOffset, $oContenidoCategory);
     }
-    
+
     /**
      * If you need to load SubCategories, set to true and set how deep SubCategories should be loaded
      * @access public
@@ -476,7 +476,7 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
         $this->bLoadSubCategories = (boolean) $bLoad;
         $this->iSubCategoriesLoadDepth = (int) $iLoadDepth;
     }
-    
+
     /**
      * Set internal property for Contenido-Idlang
      * @access public
@@ -487,7 +487,7 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
     public function setIdLang($iIdlang) {
         $this->iIdLang = (int) $iIdlang;
     }
-    
+
     /**
      * Get internal property for Contenido-Idlang
      * @access public
@@ -497,7 +497,7 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
     public function getIdLang() {
         return (!is_null($this->iIdLang) && $this->iIdLang > 0) ? (int) $this->iIdLang : -1;
     }
-    
+
     /**
      * Interface method for Iterator.
      * @access public
@@ -507,7 +507,7 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
     public function getIterator () {
         return new ArrayObject($this->aContenidoCategories);
     }
-    
+
     /**
      * Interface method for Countable.
      * @access public
@@ -517,7 +517,7 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
     public function count () {
         return sizeof($this->aContenidoCategories);
     }
-    
+
     /**
      * Sort list of Contenido_Category objects by assigned key
      * @access public
@@ -527,7 +527,7 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
     public function ksort() {
         ksort($this->aContenidoCategories);
     }
-    
+
     /**
      * Sort list of Contenido_Category objects by assigned key in reverse order
      * @access public
@@ -537,7 +537,7 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
     public function krsort() {
         krsort($this->aContenidoCategories);
     }
-    
+
     /**
      * Sort list of Contenido_Category objects in reverse order
      * @access public
@@ -547,9 +547,9 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
     public function reverse() {
         $this->aContenidoCategories = array_reverse($this->aContenidoCategories);
     }
-    
+
     // Methods for ArrayAccess
-    
+
     /**
      * Interface method for ArrayAccess.
      * @access public
@@ -557,20 +557,20 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
      * @return boolean
      * @author Rudi Bieller
      */
-	public function offsetExists($mOffset) {
+    public function offsetExists($mOffset) {
         return array_key_exists($this->aContenidoCategories, $mOffset);
-	}
-	/**
+    }
+    /**
      * Interface method for ArrayAccess.
      * @access public
      * @param int $mOffset
      * @return obj
      * @author Rudi Bieller
      */
-	public function offsetGet($mOffset) {
+    public function offsetGet($mOffset) {
         return $this->aContenidoCategories[$mOffset];
-	}
-	/**
+    }
+    /**
      * Interface method for ArrayAccess.
      * @access public
      * @param int $mOffset
@@ -578,23 +578,23 @@ class Contenido_Categories extends Contenido_Category_Base implements IteratorAg
      * @return void
      * @author Rudi Bieller
      */
-	public function offsetSet($mOffset, $mValue) {
-		if (is_null($mOffset)) {
+    public function offsetSet($mOffset, $mValue) {
+        if (is_null($mOffset)) {
             $this->aContenidoCategories[] = $mValue;
-		} else {
+        } else {
             $this->aContenidoCategories[$mOffset] = $mValue;
-		}
-	}
-	/**
+        }
+    }
+    /**
      * Interface method for ArrayAccess.
      * @access public
      * @param int $mOffset
      * @return void
      * @author Rudi Bieller
      */
-	public function offsetUnset($mOffset) {
+    public function offsetUnset($mOffset) {
         unset($this->aContenidoCategories[$mOffset]);
-	}
+    }
 }
 
 /**
@@ -616,14 +616,14 @@ class Contenido_Category_Language extends Contenido_Category_Base {
     protected $iIdLang;
     protected $iIdTplcfg;
     /**#@-*/
-    
+
     /**
      * @var string
      * @access protected
      */
     protected $sName;
     protected $sAlias;
-    
+
     /**#@+
      * @var int
      * @access protected
@@ -632,7 +632,7 @@ class Contenido_Category_Language extends Contenido_Category_Base {
     protected $iPublic;
     protected $iStatus;
     /**#@-*/
-    
+
     /**#@+
      * @var string
      * @access protected
@@ -641,7 +641,7 @@ class Contenido_Category_Language extends Contenido_Category_Base {
     protected $sDateCreated;
     protected $sDateModified;
     /**#@-*/
-    
+
     /**
      * @var int
      * @access protected
@@ -652,7 +652,7 @@ class Contenido_Category_Language extends Contenido_Category_Base {
      * @access protected
      */
     protected $sUrlname;
-    
+
     /**
      * Constructor.
      * @access public
@@ -664,7 +664,7 @@ class Contenido_Category_Language extends Contenido_Category_Base {
     public function __construct(DB_Contenido $oDb, array $aCfg) {
         parent::__construct($oDb, $aCfg);
     }
-    
+
     /**
      * Load cat_lang for a given idcat.
      * @access public
@@ -677,45 +677,45 @@ class Contenido_Category_Language extends Contenido_Category_Base {
             throw new Exception('idcat and idlang must be set in order to load from con_cat_lang!');
         }
         if (is_null($iIdCatLang)) {
-	        $sSql = 'SELECT 
-						idcatlang, idtplcfg, name, visible, public, status, author, created, lastmodified, startidartlang, urlname 
-					FROM 
-						' . $this->aCfg["tab"]["cat_lang"] . ' 
-					WHERE 
-						idcat = ' . $this->getIdCat() . ' AND 
-						idlang = ' . $this->getIdLang();
+            $sSql = 'SELECT
+                        idcatlang, idtplcfg, name, visible, public, status, author, created, lastmodified, startidartlang, urlname
+                    FROM
+                        ' . $this->aCfg["tab"]["cat_lang"] . '
+                    WHERE
+                        idcat = ' . $this->getIdCat() . ' AND
+                        idlang = ' . $this->getIdLang();
         } else {
-	        $sSql = 'SELECT 
-						idcatlang, idtplcfg, name, visible, public, status, author, created, lastmodified, startidartlang, urlname 
-					FROM 
-						' . $this->aCfg["tab"]["cat_lang"] . ' 
-					WHERE 
-						idcatlang = ' . Contenido_Security::toInteger($iIdCatLang);
+            $sSql = 'SELECT
+                        idcatlang, idtplcfg, name, visible, public, status, author, created, lastmodified, startidartlang, urlname
+                    FROM
+                        ' . $this->aCfg["tab"]["cat_lang"] . '
+                    WHERE
+                        idcatlang = ' . Contenido_Security::toInteger($iIdCatLang);
         }
-	    $this->oDb->query($sSql);
-	    if ($this->oDb->Errno != 0) {
-	        return false;
-	    }
-	    $this->oDb->next_record();
-	    $this->setIdCatLang($this->oDb->f('idcatlang'));
-	    $this->setIdCat($this->getIdCat());
-	    $this->setIdLang($this->getIdLang());
-	    $this->setIdTemplateConfig($this->oDb->f('idtplcfg'));
-	    $this->setName($this->oDb->f('name'));
+        $this->oDb->query($sSql);
+        if ($this->oDb->Errno != 0) {
+            return false;
+        }
+        $this->oDb->next_record();
+        $this->setIdCatLang($this->oDb->f('idcatlang'));
+        $this->setIdCat($this->getIdCat());
+        $this->setIdLang($this->getIdLang());
+        $this->setIdTemplateConfig($this->oDb->f('idtplcfg'));
+        $this->setName($this->oDb->f('name'));
         $this->setAlias($this->oDb->f('urlname'));
-	    $this->setVisible($this->oDb->f('visible'));
-	    $this->setPublic($this->oDb->f('public'));
-	    $this->setStatus($this->oDb->f('status'));
-	    $this->setAuthor($this->oDb->f('author'));
-	    $this->setDateCreated($this->oDb->f('created'));
-	    $this->setDateLastModified($this->oDb->f('lastmodified'));
-	    $this->setStartIdLang($this->oDb->f('startidartlang'));
-	    $this->setUrlName($this->oDb->f('urlname'));
-	    return true;
+        $this->setVisible($this->oDb->f('visible'));
+        $this->setPublic($this->oDb->f('public'));
+        $this->setStatus($this->oDb->f('status'));
+        $this->setAuthor($this->oDb->f('author'));
+        $this->setDateCreated($this->oDb->f('created'));
+        $this->setDateLastModified($this->oDb->f('lastmodified'));
+        $this->setStartIdLang($this->oDb->f('startidartlang'));
+        $this->setUrlName($this->oDb->f('urlname'));
+        return true;
     }
-    
+
     // SETTER
-    
+
     public function setIdCatLang($iIdcatlang) {
         $this->iIdCatlang = (int) $iIdcatlang;
     }
@@ -773,9 +773,9 @@ class Contenido_Category_Language extends Contenido_Category_Base {
     public function setUrlName($sUrlName) {
         $this->sUrlname = (string) $sUrlName;
     }
-    
+
     // GETTER
-    
+
     public function getIdCatLang() {
         return !is_null($this->iIdCatlang) ? (int) $this->iIdCatlang : -1;
     }
@@ -857,7 +857,7 @@ class Contenido_Category_Base {
      * @access protected
      */
     protected $oDbg;
-    
+
     /**
      * Constructor.
      * @access public
@@ -872,7 +872,7 @@ class Contenido_Category_Base {
         $this->bDbg = true;
         $this->oDbg = getDebugger();
     }
-    
+
     /**
      * Set internal property for debugging on/off and choose appropriate debug object
      * @deprecated No longer needed. The backend chooses the debug mode.
@@ -883,16 +883,16 @@ class Contenido_Category_Base {
      * @author Rudi Bieller
      */
     public function setDebug($bDebug = true, $sDebugMode = 'visible') {
-    	cDeprecated("This function is no longer needed. \$oDbg gets chosen by the system settings.");
-    	
+        cDeprecated("This function is no longer needed. \$oDbg gets chosen by the system settings.");
+
         if ($bDebug === false) {
             $this->bDbg = false;
             $this->oDbg = null;
             $this->sDbgMode = 'hidden';
         } else {
-	        if (!in_array($sDebugMode, array('visible', 'visible_adv', 'file', 'devnull', 'hidden'))) {
-	            $sDebugMode = 'devnull';
-	        }
+            if (!in_array($sDebugMode, array('visible', 'visible_adv', 'file', 'devnull', 'hidden'))) {
+                $sDebugMode = 'devnull';
+            }
             try {
                 $this->sDbgMode = $sDebugMode;
                 $this->bDbg = true;

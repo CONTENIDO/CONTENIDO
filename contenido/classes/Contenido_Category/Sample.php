@@ -36,31 +36,31 @@
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 // SAMPLE Contenido_Category ###
 
 try {
-	// load a single category
-	$oConCat = new Contenido_Category($db, $cfg);
-	//$oConCat->setloadSubCategories(true, 2); // will load subcategories of this idcat until given level
-	$oConCat->load(1, true, $lang); // also load lang
-	echo $oConCat->getIdCat().' :'.$oConCat->getCategoryLanguage()->getName().'<br />';
+    // load a single category
+    $oConCat = new Contenido_Category($db, $cfg);
+    //$oConCat->setloadSubCategories(true, 2); // will load subcategories of this idcat until given level
+    $oConCat->load(1, true, $lang); // also load lang
+    echo $oConCat->getIdCat().' :'.$oConCat->getCategoryLanguage()->getName().'<br />';
 
-	// load several categories
-	$oConCats = new Contenido_Categories($db, $cfg);
-	$oConCats->load(array(1,2,5,10), true, $lang);
-	// add a category
-	$oConCats->add($oConCat);
-	// see how many we've got
-	$iNumCats = $oConCats->count();
-	// sort cats in reverse order
-	$oConCats->reverse();
+    // load several categories
+    $oConCats = new Contenido_Categories($db, $cfg);
+    $oConCats->load(array(1,2,5,10), true, $lang);
+    // add a category
+    $oConCats->add($oConCat);
+    // see how many we've got
+    $iNumCats = $oConCats->count();
+    // sort cats in reverse order
+    $oConCats->reverse();
 
-	foreach ($oConCats as $oConCat) {
-	    echo $oConCat->getIdCat().' :'.$oConCat->getCategoryLanguage()->getName().'<br />';
-	}
+    foreach ($oConCats as $oConCat) {
+        echo $oConCat->getIdCat().' :'.$oConCat->getCategoryLanguage()->getName().'<br />';
+    }
 } catch (InvalidArgumentException $eI) {
     echo 'Some error occured: ' . $eI->getMessage() . ': ' . $eI->getFile() . ' at line '.$eI->getLine() . ' ('.$eI->getTraceAsString().')';
 } catch (Exception $e) {
