@@ -78,8 +78,8 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         $layoutInFile = new LayoutInFile($idlay, '', $cfg, $this->_lang);
         $this->_layoutCode = $layoutInFile->getLayoutCode();
         $this->_layoutCode = capiStrNormalizeLineEndings($this->_layoutCode, "\n");
-		
-		$moduleHandler = new Contenido_Module_Handler();
+
+        $moduleHandler = new Contenido_Module_Handler();
 
         // Create code for all containers
         if ($idlay) {
@@ -106,22 +106,22 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
                 $moduleHandler = new Contenido_Module_Handler($a_d[$value]);
                 $input = '';
-                
+
                 // Get the contents of input and output from files and not from db-table
                 if ($moduleHandler->modulePathExists() == true) {
                     $this->_moduleCode = $moduleHandler->readOutput();
                     // Load css and js content of the js/css files
-                    if($moduleHandler->getFilesContent("css", "css") !== false ) {
+                    if ($moduleHandler->getFilesContent("css", "css") !== false ) {
                         $this->_cssData .= $moduleHandler->getFilesContent("css", "css");
                     }
-                  
-                    if($moduleHandler->getFilesContent("js", "js") !== false ) {
+
+                    if ($moduleHandler->getFilesContent("js", "js") !== false ) {
                         $this->_jsData .= $moduleHandler->getFilesContent("js", "js");
                     }
 
                     $input = $moduleHandler->readInput();
-                } 
-                
+                }
+
                 $this->_moduleCode = $this->_moduleCode . "\n";
 
                 // Process CMS value tags
@@ -154,15 +154,15 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
         // Save the collected css/js data and save it under the template name ([templatename].css , [templatename].js in cache dir
         $cssFile = '';
-        
-        if(strlen($this->_cssData) > 0) {
+
+        if (strlen($this->_cssData) > 0) {
             if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, "css", $this->_cssData))) {
                 $cssFile = '<link rel="stylesheet" type="text/css" href="'.$myFileCss.'"/>';
             }
         }
-        
+
         $jsFile = '';
-        if(strlen($this->_jsData) > 0) {
+        if (strlen($this->_jsData) > 0) {
             if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, "js", $this->_jsData))) {
                 $jsFile = '<script src="'.$myFileJs.'" type="text/javascript"></script>';
             }
@@ -170,8 +170,8 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
         // Add meta tags
         $this->_layoutCode = str_ireplace_once("</head>", $cssFile . "</head>", $this->_layoutCode);
-	 	$this->_layoutCode = str_ireplace_once("</body>",  $jsFile . "</body>", $this->_layoutCode);
-	 
+        $this->_layoutCode = str_ireplace_once("</body>",  $jsFile . "</body>", $this->_layoutCode);
+
         // Write code into the database
         if ($this->_layout == false && $this->_save == true) {
             $oCodeColl = new cApiCodeCollection();
