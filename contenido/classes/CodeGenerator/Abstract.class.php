@@ -513,6 +513,6 @@ abstract class Contenido_CodeGenerator_Abstract
      */
     protected function _debug($msg)
     {
-    	cDebug($msg);
+        cDebug($msg);
     }
 }
