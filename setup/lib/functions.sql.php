@@ -32,6 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
+// @FIXME: Comment me plz!
 function injectSQL($db, $prefix, $file, $replacements = array())
 {
     $file = trim($file);
@@ -56,69 +57,77 @@ function injectSQL($db, $prefix, $file, $replacements = array())
 
         $db->query($sqlChunk);
 
-		if ($db->Errno != 0) {
+        if ($db->Errno != 0) {
             logSetupFailure("Unable to execute SQL statement:\n" . $sqlChunk . "\nMysql Error: " . $db->Error . " (" . $db->Errno . ")");
-			$_SESSION['install_failedchunks'] = true;
+            $_SESSION['install_failedchunks'] = true;
         }
     }
 
     return true;
 }
 
-function addAutoIncrementToTables($db, $cfg) {
-    $filterTables = array($cfg['sql']['sqlprefix'].'_pica_alloc_con',
-                          $cfg['sql']['sqlprefix'].'_pica_lang',
-                          $cfg['sql']['sqlprefix'].'_sequence',
-                          $cfg['sql']['sqlprefix'].'_phplib_active_sessions',
-                          $cfg['sql']['sqlprefix'].'_online_user',
-                          $cfg['sql']['sqlprefix'].'_pi_linkwhitelist',
-                          $cfg['sql']['sqlprefix'].'_phplib_auth_user_md5',);
-    
-    $sql = 'SHOW TABLES FROM  '.$cfg['db']['connection']['database'].'';
+// @FIXME: Comment me plz!
+function addAutoIncrementToTables($db, $cfg)
+{
+    $filterTables = array(
+        $cfg['sql']['sqlprefix'].'_pica_alloc_con',
+        $cfg['sql']['sqlprefix'].'_pica_lang',
+        $cfg['sql']['sqlprefix'].'_sequence',
+        $cfg['sql']['sqlprefix'].'_phplib_active_sessions',
+        $cfg['sql']['sqlprefix'].'_online_user',
+        $cfg['sql']['sqlprefix'].'_pi_linkwhitelist',
+        $cfg['sql']['sqlprefix'].'_phplib_auth_user_md5',
+    );
+
+    $sql = 'SHOW TABLES FROM  ' . $cfg['db']['connection']['database'] . '';
     $db->query($sql);
-    
+
     if ($db->Error != 0) {
         logSetupFailure("Unable to execute SQL statement:\n" . $sql . "\nMysql Error: " . $db->Error . " (" . $db->Errno . ")");
-		$_SESSION['install_failedupgradetable'] = true;
+        $_SESSION['install_failedupgradetable'] = true;
     }
-    
+
     $i = 0;
     while ($row = mysql_fetch_row($db->Query_ID)) {
-        if(in_array($row[0], $filterTables) === false && strpos($row[0], $cfg['sql']['sqlprefix'].'_') !== false) {
+        if (in_array($row[0], $filterTables) === false && strpos($row[0], $cfg['sql']['sqlprefix'].'_') !== false) {
            alterTableHandling($row);
            $i++;
         }
     }
-	
-	// Security reason: Check iterator alter table before drop table. The count of Tables must be not less than 65.   
-    if($i > 65) {
+
+    // Security reason: Check iterator alter table before drop table. The count of Tables must be not less than 65.
+    if ($i > 65) {
         $sql = 'DROP TABLE IF EXISTS '.$cfg['sql']['sqlprefix'].'_sequence';
         $db->query($sql);
     }
 }
 
-function alterTableHandling($row) {
+// @FIXME: Comment me plz!
+function alterTableHandling($row)
+{
     $tableName = $row[0];
-    
+
     $db = getSetupMySQLDBConnection(false);
-    $sql = 'SHOW KEYS FROM '.$tableName.' WHERE Key_name="PRIMARY"';
+    $sql = 'SHOW KEYS FROM `' . $tableName . '` WHERE Key_name="PRIMARY"';
     $db->query($sql);
     while ($row = mysql_fetch_row($db->Query_ID)) {
         $primaryKey = $row[4];
         $dbAlter = getSetupMySQLDBConnection(false);
-        $sqlAlter = 'ALTER TABLE `'.$tableName.'` CHANGE `'.$primaryKey.'` `'.$primaryKey.'` INT( 10 ) NOT NULL AUTO_INCREMENT';
+        $sqlAlter = 'ALTER TABLE `' . $tableName . '` CHANGE `' . $primaryKey . '` `' . $primaryKey . '` INT(10) NOT NULL AUTO_INCREMENT';
         $dbAlter->query($sqlAlter);
         if ($dbAlter->Errno != 0) {
             logSetupFailure("Unable to execute SQL statement:\n" . $sqlAlter . "\nMysql Error: " . $dbAlter->Error . " (" . $dbAlter->Errno . ")");
-			$_SESSION['install_failedupgradetable'] = true;
+            $_SESSION['install_failedupgradetable'] = true;
         }
     }
 }
 
-//
-// remove_comments will strip the sql comment lines out of an uploaded sql file
-// specifically for mssql and postgres type files in the install....
-//
+/**
+ * Remove_comments will strip the sql comment lines out of an uploaded sql file
+ * specifically for mssql and postgres type files in the install....
+ * @param   string  $output
+ * @return  string
+ */
 function remove_comments(&$output)
 {
     $lines = explode("\n", $output);
@@ -146,9 +155,11 @@ function remove_comments(&$output)
     return $output;
 }
 
-//
-// remove_remarks will strip the sql comment lines out of an uploaded sql file
-//
+/**
+ * Remove_remarks will strip the sql comment lines out of an uploaded sql file
+ * @param   string  $sql
+ * @return  string
+ */
 function remove_remarks($sql)
 {
     $lines = explode("\n", $sql);
@@ -174,10 +185,13 @@ function remove_remarks($sql)
     return $output;
 }
 
-//
-// split_sql_file will split an uploaded sql file into single sql statements.
-// Note: expects trim() to have already been run on $sql.
-//
+/**
+ * split_sql_file will split an uploaded sql file into single sql statements.
+ * Note: expects trim() to have already been run on $sql.
+ * @param   string  $sql
+ * @param   string  $delimiter
+ * @return  string
+ */
 function split_sql_file($sql, $delimiter)
 {
     // Split up our string into "possible" SQL statements.
