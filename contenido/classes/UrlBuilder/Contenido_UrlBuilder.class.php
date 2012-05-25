@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Abstract implementation of Contenido_UrlBuilder.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.0
@@ -17,35 +17,37 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2008-02-21
  *   modified 2008-09-29, Murat Purc, added getHttpBasePath() method
- *   
+ *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 
-abstract class Contenido_UrlBuilder {
+abstract class Contenido_UrlBuilder
+{
     /**
      * @var string
      * @access protected
      * @desc Holds final value of built URL
      */
     protected $sUrl; // needed in this context
+
     /**
      * @var string
      * @access protected
      * @desc Holds URL that is used as base for an absolute path, e.g. http://contenido.org/
      */
     protected $sHttpBasePath; // needed in this context
-    
+
     /**
      * Implementation of Singleton. Get instance of concrete Contenido_UrlBuilder_XYZ
      * @access public
@@ -53,25 +55,27 @@ abstract class Contenido_UrlBuilder {
      * @author Rudi Bieller
      */
     abstract public static function getInstance();
-    
+
     /**
      * Set http base path, e.g. http://contenido.org/
      * @access public
      * @return void
      * @author Rudi Bieller
      */
-    public function setHttpBasePath($sBasePath) {
+    public function setHttpBasePath($sBasePath)
+    {
         $this->sHttpBasePath = (string) $sBasePath;
     }
-    
+
     /**
      * Return http base path, e.g. http://contenido.org/
      * @return  string
      */
-    public function getHttpBasePath() {
+    public function getHttpBasePath()
+    {
         return $this->sHttpBasePath;
     }
-    
+
     /**
      * Builds a URL in index-a-1.html style.
      * Index keys of $aParams will be used as "a", corresponding values as "1" in this sample.
@@ -84,15 +88,17 @@ abstract class Contenido_UrlBuilder {
      * @author Rudi Bieller
      */
     abstract public function buildUrl(array $aParams, $bUseAbsolutePath = false);
-    
+
     /**
      * Return built URL
      * @access public
      * @return string
      * @author Rudi Bieller
      */
-    public function getUrl() {
+    public function getUrl()
+    {
         return (string) $this->sUrl;
     }
 }
+
 ?>

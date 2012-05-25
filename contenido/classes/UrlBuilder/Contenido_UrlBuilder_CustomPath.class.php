@@ -1,15 +1,15 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * Implementation of IContenido_Frontend_Navigation_UrlBuilder to build URL in style index-a-1.html 
+ *
+ * Description:
+ * Implementation of IContenido_Frontend_Navigation_UrlBuilder to build URL in style index-a-1.html
  * with category path (/category/subcategory/index-a-1.html).
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.0
@@ -18,52 +18,55 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2008-02-19
  *   modified 2008-02-28 Changed to using Config for URL style
  *   @todo Somehow get around using prCreateURLNameLocationString()
- *   
- *   $Id$: 
+ *
+ *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 
 include_once('Contenido_UrlBuilder.class.php');
 cInclude('includes', 'functions.pathresolver.php');
 
-class Contenido_UrlBuilder_CustomPath extends Contenido_UrlBuilder {
+class Contenido_UrlBuilder_CustomPath extends Contenido_UrlBuilder
+{
     static private $_instance; // object instance
     private $aConfig;
-    
+
     /**
      * Constructor
      * @access private
      * @return void
      * @author Rudi Bieller
      */
-    private function __construct() {
+    private function __construct()
+    {
         $this->sHttpBasePath = '';
     }
-    
+
     /**
      * Get instance of Contenido_UrlBuilder_Frontcontent
      * @access public
      * @return obj Contenido_UrlBuilder_Frontcontent
      * @author Rudi Bieller
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == null) {
             self::$_instance = new Contenido_UrlBuilder_CustomPath();
         }
         return self::$_instance;
     }
-    
+
     /**
      * Builds a URL in index-a-1.html style.
      * Index keys of $aParams will be used as "a", corresponding values as "1" in this sample.
@@ -79,7 +82,8 @@ class Contenido_UrlBuilder_CustomPath extends Contenido_UrlBuilder {
      * @author Rudi Bieller
      * @todo Somehow get around using prCreateURLNameLocationString()
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array())
+    {
         if (!isset($aParams['idcat'])) {
             throw new InvalidArgumentException('$aParams[idcat] must be set!');
         }
@@ -99,20 +103,20 @@ class Contenido_UrlBuilder_CustomPath extends Contenido_UrlBuilder {
             $aConfig = Contenido_UrlBuilderConfig::getConfig();
         }
         $this->aConfig = $aConfig;
-        
+
         $sCategoryString = '';
-		prCreateURLNameLocationString(intval($aParams['idcat']), 
-		                                "/", 
-		                                $sCategoryString, 
-		                                false, 
-		                                "", 
-		                                $aParams['level'], 
-		                                $aParams['lang'], 
-		                                true, 
-		                                false);
-		if (strlen($sCategoryString) > 0 && substr($sCategoryString, -1) != '/') {
-		    $sCategoryString .= '/';
-		}
+        prCreateURLNameLocationString(intval($aParams['idcat']),
+                                        "/",
+                                        $sCategoryString,
+                                        false,
+                                        "",
+                                        $aParams['level'],
+                                        $aParams['lang'],
+                                        true,
+                                        false);
+        if (strlen($sCategoryString) > 0 && substr($sCategoryString, -1) != '/') {
+            $sCategoryString .= '/';
+        }
         $this->sUrl = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';
         $this->sUrl .= $sCategoryString;
         $this->sUrl .= $this->aConfig['prefix'];
@@ -128,4 +132,5 @@ class Contenido_UrlBuilder_CustomPath extends Contenido_UrlBuilder {
         $this->sUrl .= $this->aConfig['suffix'];
     }
 }
+
 ?>

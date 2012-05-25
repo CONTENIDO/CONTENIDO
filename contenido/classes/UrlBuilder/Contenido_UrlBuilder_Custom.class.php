@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Implementation of IContenido_Frontend_Navigation_UrlBuilder to build URL in style index-a-1.html without category path.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.0
@@ -17,50 +17,53 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2008-02-20
  *   modified 2008-02-28 Changed to using Config for URL style
- * 
+ *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 
 include_once('Contenido_UrlBuilder.class.php');
 
-class Contenido_UrlBuilder_Custom extends Contenido_UrlBuilder {
+class Contenido_UrlBuilder_Custom extends Contenido_UrlBuilder
+{
     static private $_instance; // object instance
     private $aConfig;
-    
+
     /**
      * Constructor
      * @access private
      * @return void
      * @author Rudi Bieller
      */
-    private function __construct() {
+    private function __construct()
+    {
         $this->sHttpBasePath = '';
     }
-    
+
     /**
      * Get instance of Contenido_UrlBuilder_Frontcontent
      * @access public
      * @return obj Contenido_UrlBuilder_Frontcontent
      * @author Rudi Bieller
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$_instance == null) {
             self::$_instance = new Contenido_UrlBuilder_Custom();
         }
         return self::$_instance;
     }
-    
+
     /**
      * Builds a URL in index-a-1.html style.
      * Index keys of $aParams will be used as "a", corresponding values as "1" in this sample.
@@ -72,7 +75,8 @@ class Contenido_UrlBuilder_Custom extends Contenido_UrlBuilder {
      * @throws InvalidArgumentException
      * @author Rudi Bieller
      */
-    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array()) {
+    public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array())
+    {
         if (sizeof($aParams) == 0) {
             throw new InvalidArgumentException('$aParams must have at least one entry!');
         }
@@ -82,17 +86,18 @@ class Contenido_UrlBuilder_Custom extends Contenido_UrlBuilder {
             $aConfig = Contenido_UrlBuilderConfig::getConfig();
         }
         $this->aConfig = $aConfig;
-        
+
         $this->sUrl = $bUseAbsolutePath === true ? $this->sHttpBasePath : '';
         $this->sUrl .= $this->aConfig['prefix'];
         foreach ($aParams as $sKey => $mVal) {
-			$sVal = $mVal; // assuming mVal is a string and thus a single value
-			if (is_array($mVal)) { // mVal has more than one value, e.g. index-b-1-2.html
-			    $sVal = implode($this->aConfig['separator'], $mVal);
-			}
+            $sVal = $mVal; // assuming mVal is a string and thus a single value
+            if (is_array($mVal)) { // mVal has more than one value, e.g. index-b-1-2.html
+                $sVal = implode($this->aConfig['separator'], $mVal);
+            }
             $this->sUrl .= $this->aConfig['separator'] . strval($sKey) . $this->aConfig['separator'] . strval($sVal);
         }
         $this->sUrl .= $this->aConfig['suffix'];
     }
 }
+
 ?>
