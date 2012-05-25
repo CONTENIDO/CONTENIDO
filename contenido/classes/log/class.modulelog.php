@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * MySQL Driver for GenericDB 
- * 
- * Requirements: 
+ *
+ * Description:
+ * MySQL Driver for GenericDB
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.3
@@ -17,103 +17,93 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2004-09-28
- *   
+ *
  *   $Id: class.modulelog.php,v 1.3 2006/04/28 09:20:55 timo.hummel Exp $
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 
 class cModuleLog extends cBufferedLog
 {
-	var $_oModule;
-	
+    public $_oModule;
+
     /**
-     * cModuleLog: Creates a new instance of the CONTENIDO ModuleLog mechanism.
+     * Creates a new instance of the CONTENIDO ModuleLog mechanism.
      *
      * cModuleLog is a logging facility which uses cBufferedLog to do its logging,
      * and features automatic module handling.
      *
-     * @param oLogger 	object	The object to use for logging, or false if a new one should be created.
-     * @param idmod		integer	The module ID to use
-     *
-     * @see cBufferedLog
-     *
-     * @access public
-     */		
-	function cModuleLog ($oLogger = false, $idmod = 0)
-	{
-		cBufferedLog::cBufferedLog($oLogger);
+     * @param oLogger     object    The object to use for logging, or false if a new one should be created.
+     * @param idmod        integer    The module ID to use
+     */
+    public function __construct($oLogger = false, $idmod = 0)
+    {
+        parent::__construct($oLogger);
 
-		$this->_setShortcutHandler("module", "_shModule");
-		$this->setLogFormat("[%date] [%module] [%session] [%level] %message");
+        $this->_setShortcutHandler("module", "_shModule");
+        $this->setLogFormat("[%date] [%module] [%session] [%level] %message");
 
-		if ($idmod != 0)
-		{		
-			$this->setModule($idmod);
-		}
-		
-	}	
+        if ($idmod != 0) {
+            $this->setModule($idmod);
+        }
+    }
+
+    /** @deprecated  [2012-05-25] Old constructor function for downwards compatibility */
+    public function cModuleLog($oLogger = false)
+    {
+        cDeprecated("Use __construct() instead");
+        $this->__construct($oLogger);
+    }
 
     /**
-     * setModule: Sets the module to use.
+     * Sets the module to use.
      *
      * setModule automatically buffers basic module information to the log to assist the
-	 * developer in debugging his modules.
+     * developer in debugging his modules.
      *
-     * @param idmod		integer	The module ID to use
-     *
-     * @access public
-     */			
-	function setModule ($idmod)
-	{
-		global $client, $lang, $idcat, $idart;
-				
-		$this->_oModule = new cApiModule($idmod);
+     * @param  int  idmod  The module ID to use
+     */
+    function setModule($idmod)
+    {
+        global $client, $lang, $idcat, $idart;
 
-		$this->buffer("-- REQUEST START --", PEAR_LOG_INFO);
-		$this->buffer("-- MODULE INFO --", PEAR_LOG_DEBUG);		
-		$this->buffer("idmod   : ". $this->_oModule->get("idmod"),PEAR_LOG_DEBUG);
-		$this->buffer("idclient: ". $client,PEAR_LOG_DEBUG);
-		$this->buffer("idlang  : ". $lang,PEAR_LOG_DEBUG);
-		$this->buffer("idcat   : ". $idcat,PEAR_LOG_DEBUG);
-		$this->buffer("idart   : ". $idart,PEAR_LOG_DEBUG);
-		$this->buffer("-- MODULE INFO END --", PEAR_LOG_DEBUG);				
-	}
+        $this->_oModule = new cApiModule($idmod);
+
+        $this->buffer("-- REQUEST START --", PEAR_LOG_INFO);
+        $this->buffer("-- MODULE INFO --", PEAR_LOG_DEBUG);
+        $this->buffer("idmod   : ". $this->_oModule->get("idmod"),PEAR_LOG_DEBUG);
+        $this->buffer("idclient: ". $client,PEAR_LOG_DEBUG);
+        $this->buffer("idlang  : ". $lang,PEAR_LOG_DEBUG);
+        $this->buffer("idcat   : ". $idcat,PEAR_LOG_DEBUG);
+        $this->buffer("idart   : ". $idart,PEAR_LOG_DEBUG);
+        $this->buffer("-- MODULE INFO END --", PEAR_LOG_DEBUG);
+    }
 
     /**
-     * _shModule: shortcut handler for the module id / name
-     *
-     * @param none
+     * Shortcut handler for the module id / name
      * @return id and name of the module
-     *
-     * @access public
-     */		
-	function _shModule ()
-	{
-		return ($this->_oModule->get("idmod").": ".$this->_oModule->get("name"));
-	}
+     */
+    public function _shModule()
+    {
+        return ($this->_oModule->get("idmod").": ".$this->_oModule->get("name"));
+    }
 
     /**
-     * commit: Appends "REQUEST END" to the stack and commits all messages which are queued on the stack
-     *
-     * @param none
-     *
-     * @return none
-     * @access public
-     */		
-	function commit ()
-	{
-		$this->buffer("-- REQUEST END --");
-		parent::commit();	
-	}
+     * Appends "REQUEST END" to the stack and commits all messages which are queued on the stack
+     */
+    public function commit()
+    {
+        $this->buffer("-- REQUEST END --");
+        parent::commit();
+    }
 }
 
 ?>
