@@ -2053,9 +2053,11 @@ setup/data/examples/examples_misc4.sql -text
 setup/data/examples/examples_misc5.sql -text
 setup/data/examples/examples_misc6.sql -text
 setup/data/indexes.sql -text
+setup/data/plugin_cronjob_overview.txt -text svneol=unset#text/plain
 setup/data/plugin_mod_rewrite.txt -text
 setup/data/plugin_newsletter.txt -text
 setup/data/plugin_tagging.txt -text
+setup/data/plugins/plugins_cronjob_overview.sql -text
 setup/data/plugins/plugins_mod_rewrite.sql -text
 setup/data/plugins/plugins_newsletter.sql -text
 setup/data/plugins/plugins_tagging.sql -text

@@ -172,6 +172,4 @@ INSERT INTO !PREFIX!_actions VALUES('850', '100','','con_meta_saveart','','','0'
 INSERT INTO !PREFIX!_actions VALUES('855', '105','','con_content','','','1');
 INSERT INTO !PREFIX!_actions VALUES('856', '105','','savecontype','','','1');
 INSERT INTO !PREFIX!_actions VALUES('857', '105','','deletecontype','','','1');
-INSERT INTO !PREFIX!_actions VALUES('900', '900', '','cronjob_overview','','','1');
-INSERT INTO !PREFIX!_actions VALUES('901', '900', '','crontab_edit', '', '', '1');
-INSERT INTO !PREFIX!_actions VALUES('902', '900', '','cronjob_execute', '','', '1');
+

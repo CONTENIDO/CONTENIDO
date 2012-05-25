@@ -138,6 +138,11 @@ if ($_SESSION['plugin_mod_rewrite'] == 'true') {
     $pluginChunks = array_merge($pluginChunks, $mod_rewrite);
 }
 
+if ($_SESSION['plugin_cronjob_overview'] == 'true') {
+	$cronjob_overview = explode("\n", file_get_contents('data/plugin_cronjob_overview.txt'));
+	$pluginChunks = array_merge($pluginChunks, $cronjob_overview);
+}
+
 list($rootPath, $rootHttpPath) = getSystemDirectories();
 
 if ($_SESSION['setuptype'] == 'setup') {

@@ -50,6 +50,9 @@ function checkExistingPlugin($db, $sPluginname)
     $sSql = '';
 
     switch ($sPluginname) {
+    	case 'plugin_cronjob_overview':
+    		$sSql = "SELECT * FROM %s WHERE idnavs=950";
+    		break;
         case 'plugin_conman':
             $sSql = "SELECT * FROM %s WHERE idnavs=900";
             break;

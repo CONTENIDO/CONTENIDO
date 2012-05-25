@@ -61,7 +61,7 @@ class cSetupAdditionalPlugins extends cSetupMask
         $aPlugins['plugin_newsletter'] = array('label' => i18n('Newsletter'), 'desc' => i18n('Newsletterfunctionality for dispatching text newsletters and HTML-Newsletters, extensible with professional newsletter extensions. Definition of newsletter recipients and groups of recipients. Layout design of the HTML-Newsletters by CONTENIDO articles.'));
         $aPlugins['plugin_tagging'] = array('label' => i18n('Tagging'), 'desc' => i18n('For the representation and administration of content, 4fb developed the Tagging and content include technology. This technology dynamically allows on basis of a Template, to put the content in different places and in different formats according to several criteria.'));
         $aPlugins['plugin_mod_rewrite'] = array('label' => i18n('Mod Rewrite'), 'desc' => i18n('Creates so called Clean URLs for a CONTENIDO installation'));
-
+		$aPlugins['plugin_cronjob_overview'] = array('label' => i18n('Cronjob Overview'), 'desc' => i18n('Get an overview above your cronjobs'));
         $sCheckBoxes = '';
         if (sizeof($aPlugins) > 0) {
             foreach ($aPlugins as $sInternalName => $aPluginData) {
