@@ -139,8 +139,8 @@ if ($_SESSION['plugin_mod_rewrite'] == 'true') {
 }
 
 if ($_SESSION['plugin_cronjob_overview'] == 'true') {
-	$cronjob_overview = explode("\n", file_get_contents('data/plugin_cronjob_overview.txt'));
-	$pluginChunks = array_merge($pluginChunks, $cronjob_overview);
+    $cronjob_overview = explode("\n", file_get_contents('data/plugin_cronjob_overview.txt'));
+    $pluginChunks = array_merge($pluginChunks, $cronjob_overview);
 }
 
 list($rootPath, $rootHttpPath) = getSystemDirectories();
@@ -149,10 +149,10 @@ if ($_SESSION['setuptype'] == 'setup') {
     switch ($_SESSION['clientmode']) {
         case 'CLIENTMODULES':
             $fullChunks = array_merge($baseChunks, $sysadminChunk, $clientChunks, $moduleChunks);
-			break;
+            break;
         case 'CLIENTEXAMPLES':
             $fullChunks = array_merge($baseChunks, $sysadminChunk, $clientChunks, $moduleChunks, $contentChunks);
-			break;
+            break;
         default:
             $fullChunks = array_merge($baseChunks, $sysadminChunk);
             break;
@@ -218,68 +218,62 @@ if ($currentStep < $totalSteps) {
     }
 
     if ($_SESSION['setuptype'] == 'upgrade') {
-		$sql = "SELECT * FROM ".$cfg["tab"]["lang"];
-		$db->query($sql);
+        $sql = "SELECT * FROM ".$cfg["tab"]["lang"];
+        $db->query($sql);
 
-		while ($db->next_record())
-		{
-			$langs[] = $db->f("idlang");
-		}
+        while ($db->next_record()) {
+            $langs[] = $db->f("idlang");
+        }
 
-		$sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE is_start='1'";
-		$db->query($sql);
+        $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE is_start='1'";
+        $db->query($sql);
 
-		$db2 = getSetupMySQLDBConnection();
+        $db2 = getSetupMySQLDBConnection();
 
-		while ($db->next_record())
-		{
-			$startidart = $db->f("idart");
-			$idcat = $db->f("idcat");
-	
-			foreach ($langs as $vlang)
-			{
-				$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart='$startidart' AND idlang='$vlang'";
-				$db2->query($sql);
-				if ($db2->next_record())
-				{
-					$idartlang = $db2->f("idartlang");
-			
-					$sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='$idartlang' WHERE idcat='$idcat' AND idlang='$vlang'";
-					$db2->query($sql);
-				}
-		
-			}
-		
-		}
+        while ($db->next_record()) {
+            $startidart = $db->f("idart");
+            $idcat = $db->f("idcat");
 
-		$sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET is_start='0'";
-		$db->query($sql);
+            foreach ($langs as $vlang) {
+                $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart='$startidart' AND idlang='$vlang'";
+                $db2->query($sql);
+                if ($db2->next_record()) {
+                    $idartlang = $db2->f("idartlang");
+
+                    $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='$idartlang' WHERE idcat='$idcat' AND idlang='$vlang'";
+                    $db2->query($sql);
+                }
+            }
+        }
+
+        $sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET is_start='0'";
+        $db->query($sql);
     }
 
     // Update Keys
     $aNothing = array();
 
     injectSQL($db, $cfg['sql']['sqlprefix'], 'data/indexes.sql', array(), $aNothing);
-    
+
     // update to autoincrement
     addAutoIncrementToTables($db, $cfg);
-	
-	// insert or update default system properties
-	updateSystemProperties($db, $cfg['tab']['system_prop']);
-	
-	if ($_SESSION['setuptype'] == 'setup') {
-		switch ($_SESSION['clientmode']) {
-			case 'CLIENTMODULES':
-			case 'CLIENTEXAMPLES':
-				global $cfgClient;
-				updateClientPath($db, $cfg['tab']['clients'], 1, $rootPath . '/cms/', $rootHttpPath . '/cms/');
-				break;
-			
-			default:
-				break;
-		}
-	}
-	
+
+    // insert or update default system properties
+    updateSystemProperties($db, $cfg['tab']['system_prop']);
+
+    if ($_SESSION['setuptype'] == 'setup') {
+        switch ($_SESSION['clientmode']) {
+            case 'CLIENTMODULES':
+            case 'CLIENTEXAMPLES':
+                global $cfgClient;
+                updateClientPath($db, $cfg['tab']['clients'], 1, $rootPath . '/cms/', $rootHttpPath . '/cms/');
+                break;
+
+            default:
+                break;
+        }
+    }
+
     // Makes the new concept of moduls (save the moduls to the file) save the translation
     if ($_SESSION['setuptype'] == 'upgrade' || $_SESSION['setuptype'] == 'setup') {
 
@@ -291,67 +285,66 @@ if ($currentStep < $totalSteps) {
         $langBackup = $lang;
         $client = 1;
         $lang = 1;
-        
+
         if ($_SESSION['setuptype'] == 'upgrade') {
-	        $sql = "SHOW COLUMNS FROM %s LIKE 'frontendpath'";
-	        $sql = sprintf($sql, $cfg['tab']['clients']);
-	        			
-	        $db->query($sql);
-	        if ($db->num_rows() != 0) {
-	        	$sql = "SELECT * FROM ".$cfg['tab']['clients'];
-	        	$db->query($sql);
-	        
-	       	 		while($db->next_record()) {
-	        			updateClientCache($db->f("idclient"), $db->f("htmlpath"), $db->f("frontendpath"));
-	        		}
-	        				
-	        		$sql = sprintf("ALTER TABLE %s DROP htmlpath", $cfg['tab']['clients']);
-	        		$db->query($sql);
-	        				
-	        		$sql = sprintf("ALTER TABLE %s DROP frontendpath", $cfg['tab']['clients']);
-	        		$db->query($sql);
-	        }
-	       	checkAndInclude($cfg["path"]["contenido"]."include/config.clients.php");
+            $sql = "SHOW COLUMNS FROM %s LIKE 'frontendpath'";
+            $sql = sprintf($sql, $cfg['tab']['clients']);
+
+            $db->query($sql);
+            if ($db->num_rows() != 0) {
+                $sql = "SELECT * FROM ".$cfg['tab']['clients'];
+                $db->query($sql);
+
+                while($db->next_record()) {
+                    updateClientCache($db->f("idclient"), $db->f("htmlpath"), $db->f("frontendpath"));
+                }
+
+                $sql = sprintf("ALTER TABLE %s DROP htmlpath", $cfg['tab']['clients']);
+                $db->query($sql);
+
+                $sql = sprintf("ALTER TABLE %s DROP frontendpath", $cfg['tab']['clients']);
+                $db->query($sql);
+            }
+            checkAndInclude($cfg["path"]["contenido"]."include/config.clients.php");
         }
-        
+
         rereadClients();
 
-		Contenido_Module_Handler::setEncoding('ISO-8859-1');
-        
+        Contenido_Module_Handler::setEncoding('ISO-8859-1');
+
         //set default configuration for connection,
 
         //for all db objects in Contenido_UpgradeJob
 
         DB_Contenido::setDefaultConfiguration($cfg['db']);
-        
-	
+
         // Save all modules from db-table to the filesystem
-		$contenidoUpgradeJob = new Contenido_UpgradeJob($db);
-		$contenidoUpgradeJob->convertModulesToFile($_SESSION['setuptype']);
+        $contenidoUpgradeJob = new Contenido_UpgradeJob($db);
+        $contenidoUpgradeJob->convertModulesToFile($_SESSION['setuptype']);
 
         // Save layout from db-table to the file system
         $layoutInFile = new LayoutInFile(1, '', $cfg, 1, $db);
         $layoutInFile->upgrade();
-        
-		$db2 = getSetupMySQLDBConnection();
+
+        $db2 = getSetupMySQLDBConnection();
         $sql = "SELECT * FROM ".$cfg['tab']['lay'];
         $db->query($sql);
-        while($db->next_record()) {
-        	if($db->f("alias") == "") {
-        		$sql = "UPDATE ".$cfg['tab']['lay']." SET `alias`='".$db->f("name")."' WHERE `idlay`='".$db->f("idlay")."';";
-        		$db2->query($sql);
-        	}
+        while ($db->next_record()) {
+            if($db->f("alias") == "") {
+                $sql = "UPDATE ".$cfg['tab']['lay']." SET `alias`='".$db->f("name")."' WHERE `idlay`='".$db->f("idlay")."';";
+                $db2->query($sql);
+            }
         }
-        
+
         $sql = "SELECT * FROM ".$cfg['tab']['mod'];
         $db->query($sql);
-        while($db->next_record()) {
-       		if($db->f("alias") == "") {
-        		$sql = "UPDATE ".$cfg['tab']['mod']." SET `alias`='".$db->f("name")."' WHERE `idmod`='".$db->f("idmod")."';";
+        while ($db->next_record()) {
+               if($db->f("alias") == "") {
+                $sql = "UPDATE ".$cfg['tab']['mod']." SET `alias`='".$db->f("name")."' WHERE `idmod`='".$db->f("idmod")."';";
                 $db2->query($sql);
-        	}
+            }
         }
-        
+
         $client = $clientBackup;
         $lang = $langBackup;
         unset($clientBackup, $langBackup);
