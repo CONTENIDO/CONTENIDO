@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * 
- * 
- * Requirements: 
+ *
+ * Description:
+ *
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0
@@ -17,111 +17,102 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
- *   created 
- *   
+ *
+ * {@internal
+ *   created
+ *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 /* @deprecated 2012-03-10 This class is not longer supported. */
 class cWidgetMenuActionList extends cFoldingRow
 {
-	function cWidgetMenuActionList($uuid, $title, $dataClassName)
-	{ 
-		cDeprecated("This class is not longer supported.");
-		global $cfg;
-		
-		if (!class_exists($dataClassName))
-		{
-			cWarning(__FILE__, __LINE__, "Could not instanciate class [$dataClassName] for use in class ".get_class($this));
-			return false;
-		} else {
-			$dataClass = new $dataClassName;
-			
-			if (!is_subclass_of($dataClass, "Item"))
-			{
-				cWarning(__FILE__, __LINE__, "Passed class [$dataClassName] should be a subclass of [Item]. Parent class is ".get_parent_class($dataClass));
-				return;
-			}
-			
-			$this->_metaClass = $dataClass->getMetaObject();
-		}
-		
-		cFoldingRow::cFoldingRow($uuid, $title);
-		
-		$this->_headerData->setBackgroundColor($cfg['color']['table_subheader']);
-		$this->_headerData->setStyle("font-weight: bold; text-decoration: none; border-bottom: 1px solid ".$cfg['color']['table_border'].";");
-		$this->_headerData->setHeight(18);
-		$this->_headerData->setWidth("100%");
-		$this->_contentData->setWidth("100%");
-		$this->_link->setStyle("text-decoration: none;");
-		$this->_contentData->setStyle("font-weight: bold; border-bottom: 1px solid ".$cfg['color']['table_border'].";");
-		
-		$this->_dark = true;
-		
-		
-		$actions = array($this->_metaClass->_createAction);
-		
-		$row = array();
-		
-		foreach ($actions as $action)
-		{
-			$row[] = $this->buildAction($action);	
-		}
-		$t = new cHTMLTable;
-		$t->setContent($row);
-		$t->setWidth("100%");
-		
-		$this->_contentData->setContent($t);
-		
-	}
-	
-	function buildAction ($action)
-	{
-		global $cfg;
-		
-		if (class_exists($action))
-		{
-			$this->_dark = !$this->_dark;
-			$class = $this->_metaClass->getAction($action);
-		
-			$row = new cHTMLTableRow;
-			$l = new cHTMLTableData;
-			$r = new cHTMLTableData;
-			
-			$l->setContent($class->render());
-			$r->setContent($class->renderText());
-			$l->setStyle("padding-left: 14px");
-			$r->setStyle("padding-left: 4px");
-			$l->setHeight(18);
-			$r->setHeight(18);
-			$r->setWidth("100%");
-			
-			if ($this->_dark)
-			{
-				$l->setBackgroundColor($cfg["color"]["table_dark"]);
-				$r->setBackgroundColor($cfg["color"]["table_dark"]);
-			} else {
-				$l->setBackgroundColor($cfg["color"]["table_light"]);	
-				$r->setBackgroundColor($cfg["color"]["table_light"]);
-			}
-			
-			$row->setContent(array($l,$r));
-			
-			return $row;
-			
-		}	
-	}
-	
-	
-	
+    function cWidgetMenuActionList($uuid, $title, $dataClassName)
+    {
+        cDeprecated("This class is not longer supported.");
+        global $cfg;
+
+        if (!class_exists($dataClassName)) {
+            cWarning(__FILE__, __LINE__, "Could not instanciate class [$dataClassName] for use in class ".get_class($this));
+            return false;
+        } else {
+            $dataClass = new $dataClassName;
+
+            if (!is_subclass_of($dataClass, "Item"))
+            {
+                cWarning(__FILE__, __LINE__, "Passed class [$dataClassName] should be a subclass of [Item]. Parent class is ".get_parent_class($dataClass));
+                return;
+            }
+
+            $this->_metaClass = $dataClass->getMetaObject();
+        }
+
+        cFoldingRow::cFoldingRow($uuid, $title);
+
+        $this->_headerData->setBackgroundColor($cfg['color']['table_subheader']);
+        $this->_headerData->setStyle("font-weight: bold; text-decoration: none; border-bottom: 1px solid ".$cfg['color']['table_border'].";");
+        $this->_headerData->setHeight(18);
+        $this->_headerData->setWidth("100%");
+        $this->_contentData->setWidth("100%");
+        $this->_link->setStyle("text-decoration: none;");
+        $this->_contentData->setStyle("font-weight: bold; border-bottom: 1px solid ".$cfg['color']['table_border'].";");
+
+        $this->_dark = true;
+
+
+        $actions = array($this->_metaClass->_createAction);
+
+        $row = array();
+
+        foreach ($actions as $action) {
+            $row[] = $this->buildAction($action);
+        }
+        $t = new cHTMLTable;
+        $t->setContent($row);
+        $t->setWidth("100%");
+
+        $this->_contentData->setContent($t);
+    }
+
+    function buildAction($action)
+    {
+        global $cfg;
+
+        if (class_exists($action)) {
+            $this->_dark = !$this->_dark;
+            $class = $this->_metaClass->getAction($action);
+
+            $row = new cHTMLTableRow;
+            $l = new cHTMLTableData;
+            $r = new cHTMLTableData;
+
+            $l->setContent($class->render());
+            $r->setContent($class->renderText());
+            $l->setStyle("padding-left: 14px");
+            $r->setStyle("padding-left: 4px");
+            $l->setHeight(18);
+            $r->setHeight(18);
+            $r->setWidth("100%");
+
+            if ($this->_dark) {
+                $l->setBackgroundColor($cfg["color"]["table_dark"]);
+                $r->setBackgroundColor($cfg["color"]["table_dark"]);
+            } else {
+                $l->setBackgroundColor($cfg["color"]["table_light"]);
+                $r->setBackgroundColor($cfg["color"]["table_light"]);
+            }
+
+            $row->setContent(array($l,$r));
+
+            return $row;
+        }
+    }
 }
 
 ?>

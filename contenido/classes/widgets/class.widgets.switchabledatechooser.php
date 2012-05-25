@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * MySQL Driver for GenericDB 
- * 
- * Requirements: 
+ *
+ * Description:
+ * MySQL Driver for GenericDB
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0
@@ -17,66 +17,65 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
- *   created 
- *   
+ *
+ * {@internal
+ *   created
+ *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 /* @deprecated 2012-03-10 This class is not longer supported. */
 class cSwitchableDateChooser extends cDateChooser
 {
-	var $_oCheckBox;
-	var $_bReadOnly;
-	var $_bDisabled;
-	
-	function cSwitchableDateChooser ($name, $initValue = false)
-	{
-		cDeprecated("This class is not longer supported.");
-		parent::cDateChooser($name, $initValue);
-		
-		$this->_oCheckBox = new cHTMLCheckbox($this->getID()."_check", "true");
-		$this->_oCheckBox->setLabelText("");
-		
-		$this->_oCheckBox->setEvent("click", 'document.getElementById("'.$this->getId().'").disabled = !this.checked; var jstyle = document.getElementById("'.$this->getId().'"); if (this.checked) { jstyle.className = "textbox"; if (x_oldvalue_'.$this->getID().') { jstyle.value = x_oldvalue_'.$this->getID().';} document.getElementById("'.$this->_oImage->getId().'").style.visibility = "";} else { jstyle.className = "textbox_readonly"; x_oldvalue_'.$this->getID().' = jstyle.value; jstyle.value = ""; document.getElementById("'.$this->_oImage->getId().'").style.visibility = "hidden";}');
-		
-		$this->enable();
-	}
-	
-	function disable ()
-	{
-		$this->_bDisabled = true;
-		$this->setDisabled(true);
-		$this->_oCheckBox->setChecked(false);
-		$this->setClass("textbox_readonly");
-		$this->_oImage->setStyle("margin-left: 2px; cursor: pointer; visibility: hidden;");
-	}
-	
-	function enable ()
-	{
-		$this->_bDisabled = false;
-		$this->setDisabled(false);
-		$this->_oCheckBox->setChecked(true);
-		$this->setClass("textbox");
-	}
-	
-	function render ()
-	{
-		$sRender = parent::render();
-		
-		$oAlignmentTable = new cHTMLAlignmentTable($this->_oCheckBox->toHtml(false), $sRender);
-		
-		if ($this->_bDisabled)
-		{
-			$addscript ='document.getElementById("'.$this->getId().'").value = "";';
-		}
-		return  $oAlignmentTable->render() . '<script language="JavaScript">'.$addscript.'x_oldvalue_'.$this->getID().' = "'.$this->_oDate->render().'";</script>';
-	}
+    var $_oCheckBox;
+    var $_bReadOnly;
+    var $_bDisabled;
+
+    function cSwitchableDateChooser($name, $initValue = false)
+    {
+        cDeprecated("This class is not longer supported.");
+        parent::cDateChooser($name, $initValue);
+
+        $this->_oCheckBox = new cHTMLCheckbox($this->getID()."_check", "true");
+        $this->_oCheckBox->setLabelText("");
+
+        $this->_oCheckBox->setEvent("click", 'document.getElementById("'.$this->getId().'").disabled = !this.checked; var jstyle = document.getElementById("'.$this->getId().'"); if (this.checked) { jstyle.className = "textbox"; if (x_oldvalue_'.$this->getID().') { jstyle.value = x_oldvalue_'.$this->getID().';} document.getElementById("'.$this->_oImage->getId().'").style.visibility = "";} else { jstyle.className = "textbox_readonly"; x_oldvalue_'.$this->getID().' = jstyle.value; jstyle.value = ""; document.getElementById("'.$this->_oImage->getId().'").style.visibility = "hidden";}');
+
+        $this->enable();
+    }
+
+    function disable()
+    {
+        $this->_bDisabled = true;
+        $this->setDisabled(true);
+        $this->_oCheckBox->setChecked(false);
+        $this->setClass("textbox_readonly");
+        $this->_oImage->setStyle("margin-left: 2px; cursor: pointer; visibility: hidden;");
+    }
+
+    function enable()
+    {
+        $this->_bDisabled = false;
+        $this->setDisabled(false);
+        $this->_oCheckBox->setChecked(true);
+        $this->setClass("textbox");
+    }
+
+    function render()
+    {
+        $sRender = parent::render();
+
+        $oAlignmentTable = new cHTMLAlignmentTable($this->_oCheckBox->toHtml(false), $sRender);
+
+        if ($this->_bDisabled) {
+            $addscript ='document.getElementById("'.$this->getId().'").value = "";';
+        }
+        return  $oAlignmentTable->render() . '<script language="JavaScript">'.$addscript.'x_oldvalue_'.$this->getID().' = "'.$this->_oDate->render().'";</script>';
+    }
 }
