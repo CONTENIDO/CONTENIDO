@@ -1,9 +1,9 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * The XML writer class of CONTENIDO.
  *
  *
@@ -16,95 +16,101 @@
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release >= 4.9.0
  */
- 
-class ContenidoXmlWriter extends ContenidoXmlBase {
-	/**
-	 * Class constructor of ContenidoXmlWriter.
-	 * Creates the XML document.
-	 *
-	 * @param string $sVersion version of XML document (optional, default: 1.0)
-	 * @param string $sEncoding encoding of XML document (optional, default: UTF-8)
-	 *
-	 * @return void
-	 */
-	public function __construct($sVersion = '', $sEncoding = '') {
-		$this->_createDocument($sVersion, $sEncoding);		
-	}
-	
-	/**
-	 * Adds a new element to the XML document.
-	 * If no root element is given the element will be appended to the root node.
-	 *
-	 * @param string $sName name of the element
-	 * @param string $sValue value of the element (optional)
-	 * @param DOMElement $oRootElement root element (optional)
-	 * @param array $aAttributes array of attributes added to this element (optional)
-	 * 
-	 * @return DOMElement created DOM element
-	 */
-	public function addElement($sName, $sValue = '', $oRootElement = null, $aAttributes = array()) {
-		$oElement = $this->_dom->createElement($sName, $sValue);
-		
-		$oElement = $this->_addElementAttributes($oElement, $aAttributes);
-		
-		if ($oRootElement === null) {
-			$this->_dom->appendChild($oElement);
-		} else {
-			$oRootElement->appendChild($oElement);
-		}
 
-		return $oElement;
-	}
-	
-	/**
-	 * Adds an array of attributes to a specific DOM element.
-	 * @access protected
-	 *
-	 * @param DOMElement $oElement DOM element to add attributes
-	 * @param array $aAttributes array of attributes
-	 *
-	 * @return DOMElement DOM element with assigned attributes
-	 */
-	protected function _addElementAttributes(DOMElement $oElement, array $aAttributes = array()) {
-		if (count($aAttributes) == 0) {
-			return $oElement;
-		}
-		
-		foreach ($aAttributes as $sAttributeName => $sAttributeValue) {
-			$oElement->setAttribute($sAttributeName, $sAttributeValue);
-		}
-		
-		return $oElement;
-	}
-	
-	/**
-	 * Returns the complete XML tree as string.
-	 * @return string XML tree
-	 */
-	public function saveToString() {
-		return $this->_dom->saveXML();
-	}
-	
-	/**
-	 * Saves the XML tree into a file.
-	 * 
-	 * @param string $sDirectory path to destination directory
-	 * @param string $sFileName name of the written file
-	 * 
-	 * @return boolean state of saving process (true if file was created, false otherwise)
-	 */
-	public function saveToFile($sDirectory, $sFileName) {
-		if (is_writable($sDirectory) === false) {
-			cWarning(__FILE__, __LINE__, "Can not write XML file: Directory is not writable.");
-			return false;
-		}
-		
-		if (substr($sDirectory, 0, -1) != '/') {
-			$sDirectory = $sDirectory . '/';
-		}
-		
-		file_put_contents($sDirectory . $sFileName, $this->saveToString());
-		
-		return file_exists($sDirectory . $sFileName);
-	}
+class ContenidoXmlWriter extends ContenidoXmlBase
+{
+    /**
+     * Class constructor of ContenidoXmlWriter.
+     * Creates the XML document.
+     *
+     * @param string $sVersion version of XML document (optional, default: 1.0)
+     * @param string $sEncoding encoding of XML document (optional, default: UTF-8)
+     *
+     * @return void
+     */
+    public function __construct($sVersion = '', $sEncoding = '')
+    {
+        $this->_createDocument($sVersion, $sEncoding);
+    }
+
+    /**
+     * Adds a new element to the XML document.
+     * If no root element is given the element will be appended to the root node.
+     *
+     * @param string $sName name of the element
+     * @param string $sValue value of the element (optional)
+     * @param DOMElement $oRootElement root element (optional)
+     * @param array $aAttributes array of attributes added to this element (optional)
+     *
+     * @return DOMElement created DOM element
+     */
+    public function addElement($sName, $sValue = '', $oRootElement = null, $aAttributes = array())
+    {
+        $oElement = $this->_dom->createElement($sName, $sValue);
+
+        $oElement = $this->_addElementAttributes($oElement, $aAttributes);
+
+        if ($oRootElement === null) {
+            $this->_dom->appendChild($oElement);
+        } else {
+            $oRootElement->appendChild($oElement);
+        }
+
+        return $oElement;
+    }
+
+    /**
+     * Adds an array of attributes to a specific DOM element.
+     * @access protected
+     *
+     * @param DOMElement $oElement DOM element to add attributes
+     * @param array $aAttributes array of attributes
+     *
+     * @return DOMElement DOM element with assigned attributes
+     */
+    protected function _addElementAttributes(DOMElement $oElement, array $aAttributes = array())
+    {
+        if (count($aAttributes) == 0) {
+            return $oElement;
+        }
+
+        foreach ($aAttributes as $sAttributeName => $sAttributeValue) {
+            $oElement->setAttribute($sAttributeName, $sAttributeValue);
+        }
+
+        return $oElement;
+    }
+
+    /**
+     * Returns the complete XML tree as string.
+     * @return string XML tree
+     */
+    public function saveToString()
+    {
+        return $this->_dom->saveXML();
+    }
+
+    /**
+     * Saves the XML tree into a file.
+     *
+     * @param string $sDirectory path to destination directory
+     * @param string $sFileName name of the written file
+     *
+     * @return boolean state of saving process (true if file was created, false otherwise)
+     */
+    public function saveToFile($sDirectory, $sFileName)
+    {
+        if (is_writable($sDirectory) === false) {
+            cWarning(__FILE__, __LINE__, "Can not write XML file: Directory is not writable.");
+            return false;
+        }
+
+        if (substr($sDirectory, 0, -1) != '/') {
+            $sDirectory = $sDirectory . '/';
+        }
+
+        file_put_contents($sDirectory . $sFileName, $this->saveToString());
+
+        return file_exists($sDirectory . $sFileName);
+    }
 }
