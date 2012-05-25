@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Area management class
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    0.2.0
@@ -17,18 +17,18 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2008-02-15
  *   @todo Add possibility to load subcategories
- * 
+ *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -39,19 +39,19 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
      * @desc Used for breadcrumb loop over tree
      */
     private $_iCurrentLevel;
-    
+
     /**
      * @var boolean
      * @access private
      */
     private $_bAsArray;
-    
+
     /**
      * @var array
      * @access private
      */
     private $_aCategories;
-    
+
     /**
      * Constructor.
      * @access public
@@ -67,7 +67,7 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
         $this->oCategories = null;
         $this->_bAsArray = false;
     }
-    
+
     /**
      * Assuming we are in a Sub-Category and need to get the path to it starting at its root.
      * Here, the path starts at root node.
@@ -84,7 +84,7 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
         $this->oCategories->reverse(); // For a breadcrumb, we start at the main category, not the current one.
         return $this->oCategories;
     }
-    
+
     /**
      * Assuming we are in a Sub-Category and need to get the path to it starting at its root.
      * Here, the path starts at root node.
@@ -102,7 +102,7 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
         $this->_aCategories = array_reverse($this->_aCategories); // For a breadcrumb, we start at the main category, not the current one.
         return $this->_aCategories;
     }
-    
+
     /**
      * Assuming we are in a Sub-Category and need to get the path to it starting at its root.
      * This method goes recursively until the desired top level is reached and adds a Contenido_Category with each loop.
@@ -121,46 +121,46 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
         $iRootLevel = (int) $iRootLevel;
         $iBaseCategoryId = (int) $iBaseCategoryId;
         $sSql = 'SELECT
-	                catlang.idcat AS idcat,
-	                cat.parentid AS parentid,
-					cattree.level as level
-	            FROM
-	                '.$this->aCfg["tab"]["cat_lang"].' AS catlang,
-	                '.$this->aCfg["tab"]["cat"].' AS cat,
-					'.$this->aCfg["tab"]["cat_tree"].' AS cattree
-	            WHERE
-	                catlang.idlang = ' . Contenido_Security::escapeDB($this->iLang, $this->oDb) . ' AND
-					cat.idclient  = ' . Contenido_Security::escapeDB($this->iClient, $this->oDb) . ' AND
-	                cat.idcat = ' . Contenido_Security::escapeDB($iBaseCategoryId, $this->oDb) . ' AND
-	                catlang.idcat = cat.idcat AND
-					cattree.idcat = cat.idcat';
+                    catlang.idcat AS idcat,
+                    cat.parentid AS parentid,
+                    cattree.level as level
+                FROM
+                    '.$this->aCfg["tab"]["cat_lang"].' AS catlang,
+                    '.$this->aCfg["tab"]["cat"].' AS cat,
+                    '.$this->aCfg["tab"]["cat_tree"].' AS cattree
+                WHERE
+                    catlang.idlang = ' . Contenido_Security::escapeDB($this->iLang, $this->oDb) . ' AND
+                    cat.idclient  = ' . Contenido_Security::escapeDB($this->iClient, $this->oDb) . ' AND
+                    cat.idcat = ' . Contenido_Security::escapeDB($iBaseCategoryId, $this->oDb) . ' AND
+                    catlang.idcat = cat.idcat AND
+                    cattree.idcat = cat.idcat';
         if ($this->bDbg === true) {
-	        $this->oDbg->show($sSql, 'Contenido_FrontendNavigation_Breadcrumb::getBreadcrumb($iBaseCategoryId, $iRootLevel = 0, $bReset = false): $sSql');
-	    }
-	    $this->oDb->query($sSql);
-	    if ($this->oDb->Errno != 0) {
-	        return false;
-	    }
-	    $this->oDb->next_record();
-	    if ($this->_bAsArray === false) {
-		    $oContenidoCategory = new Contenido_Category(new DB_Contenido(), $this->aCfg);
-		    $oContenidoCategory->load(intval($this->oDb->f('idcat')), true, $this->iLang);
-		    $this->oCategories->add($oContenidoCategory, $oContenidoCategory->getIdCat());
-	    } else {
-	        $this->_aCategories[] = intval($this->oDb->f('idcat'));
-	    }
-	    $this->_iCurrentLevel = (int) $this->oDb->f('level');
-	    // if we are not at level 0, loop until we are
-	    if ($this->_iCurrentLevel > $iRootLevel) {
-	        while ($this->_iCurrentLevel > $iRootLevel) {
-	            $this->getBreadcrumb($this->oDb->f('parentid'), $iRootLevel);
-	        }
-	    }
-	    if ($this->_bAsArray === false) {
-	        return $this->oCategories;
-	    } else {
-	        return $this->_aCategories;
-	    }
+            $this->oDbg->show($sSql, 'Contenido_FrontendNavigation_Breadcrumb::getBreadcrumb($iBaseCategoryId, $iRootLevel = 0, $bReset = false): $sSql');
+        }
+        $this->oDb->query($sSql);
+        if ($this->oDb->Errno != 0) {
+            return false;
+        }
+        $this->oDb->next_record();
+        if ($this->_bAsArray === false) {
+            $oContenidoCategory = new Contenido_Category(new DB_Contenido(), $this->aCfg);
+            $oContenidoCategory->load(intval($this->oDb->f('idcat')), true, $this->iLang);
+            $this->oCategories->add($oContenidoCategory, $oContenidoCategory->getIdCat());
+        } else {
+            $this->_aCategories[] = intval($this->oDb->f('idcat'));
+        }
+        $this->_iCurrentLevel = (int) $this->oDb->f('level');
+        // if we are not at level 0, loop until we are
+        if ($this->_iCurrentLevel > $iRootLevel) {
+            while ($this->_iCurrentLevel > $iRootLevel) {
+                $this->getBreadcrumb($this->oDb->f('parentid'), $iRootLevel);
+            }
+        }
+        if ($this->_bAsArray === false) {
+            return $this->oCategories;
+        } else {
+            return $this->_aCategories;
+        }
     }
 }
 ?>

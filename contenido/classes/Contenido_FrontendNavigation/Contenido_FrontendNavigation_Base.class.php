@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * Object to build a CONTENIDO Frontend Navigation 
- * 
- * Requirements: 
+ *
+ * Description:
+ * Object to build a CONTENIDO Frontend Navigation
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.2
@@ -17,17 +17,17 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2008-02-15
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -39,19 +39,19 @@ class Contenido_FrontendNavigation_Base {
     protected $iLang;
     protected $iClient;
     /**#@-*/
-    
+
     /**
      * @var array
      * @access protected
      */
     protected $aCategories;
-    
+
     /**
      * @var obj
      * @access protected
      */
     protected $oCategories;
-    
+
     // needed properties for db queries
     /**
      * @var obj
@@ -85,7 +85,7 @@ class Contenido_FrontendNavigation_Base {
      * @access protected
      */
     protected $oDbg;
-    
+
     /**
      * Constructor.
      * @access public
@@ -107,7 +107,7 @@ class Contenido_FrontendNavigation_Base {
         $this->bDbg = true;
         $this->oDbg = getDebugger();
     }
-    
+
     /**
      * Get a URL to a Navigation point.
      * Depending on style of URL needed, values of $aParams differ.
@@ -133,7 +133,7 @@ class Contenido_FrontendNavigation_Base {
             throw $e;
         }
     }
-    
+
     /**
      * Set internal property for debugging on/off and choose appropriate debug object
      * @deprecated No longer needed. The backend chooses the debug mode.
@@ -144,8 +144,8 @@ class Contenido_FrontendNavigation_Base {
      * @author Rudi Bieller
      */
     public function setDebug($bDebug = true, $sDebugMode = 'visible') {
-    	cDeprecated("This function is no longer needed. \$oDbg gets chosen by the system settings.");
-    	
+        cDeprecated("This function is no longer needed. \$oDbg gets chosen by the system settings.");
+
         if (!in_array($sDebugMode, array('visible', 'hidden'))) {
             $sDebugMode = 'hidden';
         }

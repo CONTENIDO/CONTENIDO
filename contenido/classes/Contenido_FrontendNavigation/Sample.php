@@ -1,15 +1,15 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Sample on how to use Contenido_FrontendNavigation.
  * This will show you how to create a standard Frontend-Navigation and a standard Breadcrumb-Navigation
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.0
@@ -18,17 +18,17 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2008-02-19
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -38,14 +38,14 @@ if(!defined('CON_FRAMEWORK')) {
 // #####################################################################################################################
 
 try {
-	$oFeNav = new Contenido_FrontendNavigation($db, $cfg, $client, $lang, $cfgClient);
-	$oContenidoCategories = $oFeNav->getSubCategories($idcat, true); // use some valid idcat of "home" or whatever
+    $oFeNav = new Contenido_FrontendNavigation($db, $cfg, $client, $lang, $cfgClient);
+    $oContenidoCategories = $oFeNav->getSubCategories($idcat, true); // use some valid idcat of "home" or whatever
     //$oContenidoCategories = $oFeNav->getSubCategories($idcat, true, true, 2); // for loading subcategories up to level 2
     if ($oContenidoCategories->count() > 0) {
-		foreach ($oContenidoCategories as $oContenidoCategory) {
-		    // output idcat and name of cat
-		    echo '<p>'.$oContenidoCategory->getIdCat().' | '.$oContenidoCategory->getCategoryLanguage()->getName().'</p>';
-		}
+        foreach ($oContenidoCategories as $oContenidoCategory) {
+            // output idcat and name of cat
+            echo '<p>'.$oContenidoCategory->getIdCat().' | '.$oContenidoCategory->getCategoryLanguage()->getName().'</p>';
+        }
     }
 } catch (InvalidArgumentException $eI) {
     echo 'Some error occured: ' . $eI->getMessage() . ': ' . $eI->getFile() . ' at line '.$eI->getLine() . ' ('.$eI->getTraceAsString().')';
@@ -60,11 +60,11 @@ try {
 // #####################################################################################################################
 
 try {
-	$oBreadcrumb = new Contenido_FrontendNavigation_Breadcrumb($db, $cfg, $client, $lang, $cfgClient);
-	$oBreadCategories = $oBreadcrumb->get($idcat);
-	foreach ($oBreadCategories as $oBreadCategory) {
-		echo '<p>Bread '.$oBreadCategory->getIdCat().', '.$oBreadCategory->getCategoryLanguage()->getName().'</p>';
-	}
+    $oBreadcrumb = new Contenido_FrontendNavigation_Breadcrumb($db, $cfg, $client, $lang, $cfgClient);
+    $oBreadCategories = $oBreadcrumb->get($idcat);
+    foreach ($oBreadCategories as $oBreadCategory) {
+        echo '<p>Bread '.$oBreadCategory->getIdCat().', '.$oBreadCategory->getCategoryLanguage()->getName().'</p>';
+    }
 } catch (InvalidArgumentException $eI) {
     echo 'Some error occured: ' . $eI->getMessage() . ': ' . $eI->getFile() . ' at line '.$eI->getLine() . ' ('.$eI->getTraceAsString().')';
 } catch (Exception $e) {
@@ -85,38 +85,38 @@ try {
 // build Navigation with different types of URL style
 $aUrlStyleFunky = array('prefix' => 'rocknroll', 'suffix' => '.4fb', 'separator' => ','); // to create some other style of url
 try {
-	$oFeNav = new Contenido_FrontendNavigation($db, $cfg, $client, $lang, $cfgClient);
-	$oContenidoCategories = $oFeNav->getSubCategories(12, true); // use some valid idcat of "home" or whatever
+    $oFeNav = new Contenido_FrontendNavigation($db, $cfg, $client, $lang, $cfgClient);
+    $oContenidoCategories = $oFeNav->getSubCategories(12, true); // use some valid idcat of "home" or whatever
     if ($oContenidoCategories->count() > 0) {
-		foreach ($oContenidoCategories as $oContenidoCategory) {
-		    // get needed data
-		    $iIdcat = $oContenidoCategory->getIdCat();
-		    $iParentIdcat = $oContenidoCategory->getIdParent();
-		    $sCatName = $oContenidoCategory->getCategoryLanguage()->getName();
-		    
-		    // -> front_content.php?idcat=1
-			$sUrl1 = '<a href="'.$oFeNav->getUrl(array('idcat' => $iIdcat), 'front_content').'" target="_blank">click1</a>';
-			// -> index-a-1.html
-			$sUrl2 = '<a href="'.$oFeNav->getUrl(array('a' => $iIdcat), 'custom').'" target="_blank">click2</a>';
-			// -> cat1/cat2/index-a-1.html
-			$sUrl3 = '<a href="'.$oFeNav->getUrl(array('a' => $iIdcat, 
-														'idcat' => $iIdcat, // needed to build category path
-														'lang' => $lang, // needed to build category path
-														'level' => 0) // needed to build category path
-													).'" target="_blank">click3</a>';
-			// -> http://someurl.com/path0/path1/index-b-13-91.html
-			$sUrl4 = '<a href="'.$oFeNav->getUrl(array('b' => array('13','91')), 'custom', array(), true).'" target="_blank">click4</a>';
-			// -> /cat0/cat1/cat1/rocknroll,members,1,2,3.4fb (where "cat" being languagedependent)
+        foreach ($oContenidoCategories as $oContenidoCategory) {
+            // get needed data
+            $iIdcat = $oContenidoCategory->getIdCat();
+            $iParentIdcat = $oContenidoCategory->getIdParent();
+            $sCatName = $oContenidoCategory->getCategoryLanguage()->getName();
+
+            // -> front_content.php?idcat=1
+            $sUrl1 = '<a href="'.$oFeNav->getUrl(array('idcat' => $iIdcat), 'front_content').'" target="_blank">click1</a>';
+            // -> index-a-1.html
+            $sUrl2 = '<a href="'.$oFeNav->getUrl(array('a' => $iIdcat), 'custom').'" target="_blank">click2</a>';
+            // -> cat1/cat2/index-a-1.html
+            $sUrl3 = '<a href="'.$oFeNav->getUrl(array('a' => $iIdcat,
+                                                        'idcat' => $iIdcat, // needed to build category path
+                                                        'lang' => $lang, // needed to build category path
+                                                        'level' => 0) // needed to build category path
+                                                    ).'" target="_blank">click3</a>';
+            // -> http://someurl.com/path0/path1/index-b-13-91.html
+            $sUrl4 = '<a href="'.$oFeNav->getUrl(array('b' => array('13','91')), 'custom', array(), true).'" target="_blank">click4</a>';
+            // -> /cat0/cat1/cat1/rocknroll,members,1,2,3.4fb (where "cat" being languagedependent)
             $sUrl5 = '<a href="'.$oFeNav->getUrl(
-                                                array('idcat' => $iIdcat, 'lang' => $lang, 'level' => 1, 'members' => array($iIdcat,$iSomeIdart)), 
-                                                'custom_path', 
+                                                array('idcat' => $iIdcat, 'lang' => $lang, 'level' => 1, 'members' => array($iIdcat,$iSomeIdart)),
+                                                'custom_path',
                                                 $aUrlStyleFunky).
                                     '" target="_blank">click5</a>';
             echo '<p><strong>idcat: '.$iIdcat.' | '.
-					'parent idcat: ' . $iParentIdcat.' | '.
-					'category name: ' . $sCatName.' | '.
-					'URL: '.$sUrl1.' - '.$sUrl2.' - '.$sUrl3.' - '.$sUrl4.' - '.$sUrl5.'</strong></p>';
-		}
+                    'parent idcat: ' . $iParentIdcat.' | '.
+                    'category name: ' . $sCatName.' | '.
+                    'URL: '.$sUrl1.' - '.$sUrl2.' - '.$sUrl3.' - '.$sUrl4.' - '.$sUrl5.'</strong></p>';
+        }
     }
 } catch (InvalidArgumentException $eI) {
     echo 'Some error occured: ' . $eI->getMessage() . ': ' . $eI->getFile() . ' at line '.$eI->getLine() . ' ('.$eI->getTraceAsString().')';
