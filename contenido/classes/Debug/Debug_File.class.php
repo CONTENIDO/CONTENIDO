@@ -1,16 +1,16 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Debug object to write info to a file.
- * In case you cannot output directly to screen when debugging a live system, this object writes 
+ * In case you cannot output directly to screen when debugging a live system, this object writes
  * the info to a file located in /contenido/logs/debug.log.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.1.1
@@ -19,89 +19,89 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2007-01-01
  *   modified 2008-05-21 Added methods add(), reset(), showAll()
  *   modified 2010-05-20 Murat Purc, Hey, last change was nearly 2 years ago ;-)... Fixed generated warnings, see [#CON-309]
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
 include_once('IDebug.php');
 
-class Debug_File implements IDebug {
-	
-	static private $_instance;
-	static private $_hFileHandle;
-	private $_sPathToLogs;
-	private $_sFileName;
-	private $_sPathToFile;
-	
-	/** 
-	* Constructor
-	* Opens filehandle for debug-logfile
-	* @access private
-	* @return void
-	*/
-    private function __construct() {
-		global $cfg; // omfg, I know... TODO
+class Debug_File implements IDebug
+{
+
+    static private $_instance;
+    static private $_hFileHandle;
+    private $_sPathToLogs;
+    private $_sFileName;
+    private $_sPathToFile;
+
+    /**
+     * Constructor
+     * Opens filehandle for debug-logfile
+     * @return void
+     */
+    private function __construct()
+    {
+        global $cfg; // omfg, I know... TODO
         $this->_sPathToLogs = $cfg['path']['contenido'].'logs'.DIRECTORY_SEPARATOR;
-		$this->_sFileName = 'debug.log';
-		$this->_sPathToFile = $this->_sPathToLogs.$this->_sFileName;
+        $this->_sFileName = 'debug.log';
+        $this->_sPathToFile = $this->_sPathToLogs.$this->_sFileName;
         if (file_exists($this->_sPathToLogs) && is_writeable($this->_sPathToLogs)) {
-		    self::$_hFileHandle = @fopen($this->_sPathToFile, 'a+'); // keep it quiet, might be used in production systems
-		}
-	}
-	
-	/**
-	 * Closes file handle upon destruction of object
-	 * @access public
-	 * @return void
-	 */
-	public function __destruct() {
-        if (is_resource(self::$_hFileHandle)) {
-	        fclose(self::$_hFileHandle);
-	    }
-	}
-	
-	/** 
-	* static
-	* @access public
-	* @return void
-	*/
-	static public function getInstance() {
-		if (self::$_instance == null) {
-			self::$_instance = new Debug_File();
-		}
-		return self::$_instance;
-	}
-	
-	public function out($msg) {
-        if (is_resource(self::$_hFileHandle) && is_writeable($this->_sPathToFile)) {
-			$sDate = date('Y-m-d H:i:s');
-			fwrite(self::$_hFileHandle, $sDate.": ".$msg."\n");
+            self::$_hFileHandle = @fopen($this->_sPathToFile, 'a+'); // keep it quiet, might be used in production systems
         }
-	}
-	
-	/**
-	 * Outputs contents of passed variable in a preformatted, readable way
-	 *
-	 * @access public
-	 * @param mixed $mVariable The variable to be displayed
-	 * @param string $sVariableDescription The variable's name or description
-	 * @param boolean $bExit If set to true, your app will die() after output of current var
-	 * @return void
-	 */
-	public function show($mVariable, $sVariableDescription='', $bExit = false)
-	{
+    }
+
+    /**
+     * Closes file handle upon destruction of object
+     * @return void
+     */
+    public function __destruct()
+    {
+        if (is_resource(self::$_hFileHandle)) {
+            fclose(self::$_hFileHandle);
+        }
+    }
+
+    /**
+    * static
+    * @return void
+    */
+    static public function getInstance()
+    {
+        if (self::$_instance == null) {
+            self::$_instance = new Debug_File();
+        }
+        return self::$_instance;
+    }
+
+    public function out($msg)
+    {
+        if (is_resource(self::$_hFileHandle) && is_writeable($this->_sPathToFile)) {
+            $sDate = date('Y-m-d H:i:s');
+            fwrite(self::$_hFileHandle, $sDate.": ".$msg."\n");
+        }
+    }
+
+    /**
+     * Outputs contents of passed variable in a preformatted, readable way
+     * @param mixed $mVariable The variable to be displayed
+     * @param string $sVariableDescription The variable's name or description
+     * @param boolean $bExit If set to true, your app will die() after output of current var
+     * @return void
+     */
+    public function show($mVariable, $sVariableDescription='', $bExit = false)
+    {
         if (is_resource(self::$_hFileHandle) && is_writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');
             fwrite(self::$_hFileHandle, '#################### '.$sDate.' ####################'."\n");
@@ -109,27 +109,34 @@ class Debug_File implements IDebug {
             fwrite(self::$_hFileHandle, print_r($mVariable, true)."\n");
             fwrite(self::$_hFileHandle, '#################### /'.$sDate.' ###################'."\n\n");
         }
-	}
-	
+    }
+
     /**
-	 * Interface implementation
-	 * @access public
-	 * @param mixed $mVariable
-	 * @param string $sVariableDescription
-	 * @return void
-	 */
-	public function add($mVariable, $sVariableDescription = '') {}
-	/**
-	 * Interface implementation
-	 * @access public
-	 * @return void
-	 */
-	public function reset() {}
-	/**
-	 * Interface implementation
-	 * @access public
-	 * @return string Here an empty string
-	 */
-	public function showAll() {}
+     * Interface implementation
+     * @param mixed $mVariable
+     * @param string $sVariableDescription
+     * @return void
+     */
+    public function add($mVariable, $sVariableDescription = '')
+    {
+    }
+
+    /**
+     * Interface implementation
+     * @return void
+     */
+    public function reset()
+    {
+    }
+
+    /**
+     * Interface implementation
+     * @return string Here an empty string
+     */
+    public function showAll()
+    {
+    }
+
 }
+
 ?>

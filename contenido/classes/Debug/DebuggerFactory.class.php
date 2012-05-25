@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Static Debugger Factory
- *  
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version 1.0.0
@@ -17,31 +17,33 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2007-03-27
  *   modified 2008-05-07 Added Debug_DevNull, extended Exception message.
  *   modified 2008-05-21 Added Debug_VisibleAdv
- *   
+ *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 
-class DebuggerFactory {
-    public static function getDebugger($sType) {
+class DebuggerFactory
+{
+    public static function getDebugger($sType)
+    {
         $oDebugger = null;
         switch ($sType) {
             case 'visible':
                 include_once('Debug_Visible.class.php');
                 $oDebugger = Debug_Visible::getInstance();
                 break;
-			case 'visible_adv':
+            case 'visible_adv':
                 include_once('Debug_VisibleAdv.class.php');
                 $oDebugger = Debug_VisibleAdv::getInstance();
                 break;
@@ -54,9 +56,9 @@ class DebuggerFactory {
                 $oDebugger = Debug_File::getInstance();
                 break;
             case 'vis_and_file':
-            	include_once('Debug_FileAndVisAdv.php');
-            	$oDebugger = Debug_FileAndVisAdv::getInstance();
-            	break;
+                include_once('Debug_FileAndVisAdv.php');
+                $oDebugger = Debug_FileAndVisAdv::getInstance();
+                break;
             case 'devnull':
                 include_once('Debug_DevNull.class.php');
                 $oDebugger = Debug_DevNull::getInstance();
@@ -67,5 +69,7 @@ class DebuggerFactory {
         }
         return $oDebugger;
     }
+
 }
+
 ?>
