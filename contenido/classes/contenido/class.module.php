@@ -125,9 +125,9 @@ class cApiModule extends Item
         }
 
         if(isset($client) && $client != 0) {
-	        $this->_packageStructure = array("jsfiles"  => $cfgClient[$client]["js"]["path"],
-	                                         "tplfiles" => $cfgClient[$client]["tpl"]["path"],
-	                                         "cssfiles" => $cfgClient[$client]["css"]["path"]);
+            $this->_packageStructure = array("jsfiles"  => $cfgClient[$client]["js"]["path"],
+                                             "tplfiles" => $cfgClient[$client]["tpl"]["path"],
+                                             "cssfiles" => $cfgClient[$client]["css"]["path"]);
         }
     }
 
