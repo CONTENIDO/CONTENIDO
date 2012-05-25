@@ -49,13 +49,24 @@ $sOptionDebugRows = getEffectiveSetting("modules", "show-debug-rows", "never");
 if (!isset($idmod)) $idmod = 0;
 
 $contenidoModuleHandler = new Contenido_Module_Handler($idmod );
+if (($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
+	$notification->displayNotification("error", i18n("No permission"));
+	return;
+}
+
 if ($action == "mod_delete") {
+	
     // if erase had been successfully
     if ($contenidoModuleHandler->eraseModule() == true) {
         $modules = new cApiModuleCollection;
         $modules->delete($idmod);
         $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted module successfully!"));
     }
+}
+
+if (($action == "mod_synch") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
+	$notification->displayNotification("error", i18n("No permission"));
+	return;
 }
 
 if ($action == "mod_sync") {
@@ -500,19 +511,20 @@ window.onload = scrolltheother;
 
    
     if ($action) {
-        if (stripslashes($idmod > 0)) {
+        if (stripslashes($idmod > 0) || $action == "mod_sync") {
             $sReloadScript = "<script type=\"text/javascript\">
                                  var left_bottom = parent.parent.frames['left'].frames['left_bottom'];
                                  if (left_bottom) {
                                      var href = left_bottom.location.href;
                                      href = href.replace(/&idmod[^&]*/, '');
-                                     left_bottom.location.href = href+'&idmod='+'".$idmod."&action='".$action.";
+                                     left_bottom.location.href = href+'&idmod=".$idmod."&action=".$action."';
                                  }
                             </script>";
         } else {
             $sReloadScript = "";
         }
 
+       
         // Only reload overview/menu page, if something may have changed
         $page->addScript('reload', $sReloadScript);
     }
