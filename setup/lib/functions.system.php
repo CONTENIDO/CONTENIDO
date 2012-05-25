@@ -35,7 +35,12 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 
-//Fuction checks if a plugin is already installed
+/**
+ * Checks if a plugin is already installed
+ * @param   DB_Contenido  $db
+ * @param   string  $sPluginname
+ * @return  bool
+ */
 function checkExistingPlugin($db, $sPluginname)
 {
     global $cfg;
@@ -50,25 +55,21 @@ function checkExistingPlugin($db, $sPluginname)
     $sSql = '';
 
     switch ($sPluginname) {
-    	case 'plugin_cronjob_overview':
-    		$sSql = "SELECT * FROM %s WHERE idnavs=950";
-    		break;
+        case 'plugin_cronjob_overview':
+            $sSql = "SELECT * FROM %s WHERE idnavs=950";
+            break;
         case 'plugin_conman':
             $sSql = "SELECT * FROM %s WHERE idnavs=900";
             break;
-
         case 'plugin_tagging':
             $sSql = "SELECT * FROM %s WHERE idnavs=800";
-           break;
-
+            break;
         case 'plugin_newsletter':
-           $sSql = "SELECT * FROM %s WHERE idnavs=610";
-           break;
-
+            $sSql = "SELECT * FROM %s WHERE idnavs=610";
+            break;
         case 'plugin_mod_rewrite':
-           $sSql = "SELECT * FROM %s WHERE idnavs=700 OR location='mod_rewrite/xml/;navigation/content/mod_rewrite'";
-           break;
-
+            $sSql = "SELECT * FROM %s WHERE idnavs=700 OR location='mod_rewrite/xml/;navigation/content/mod_rewrite'";
+            break;
         default:
             $sSql = '';
             break;
@@ -85,13 +86,13 @@ function checkExistingPlugin($db, $sPluginname)
 }
 
 /**
- *
- * @param DB_Contenido $db
- * @param string $table db-table name
+ * Updates system properties
+ * @param  DB_Contenido $db
+ * @param  string  $table  DB table name
  */
 function updateSystemProperties($db, $table)
 {
-	$table = Contenido_Security::escapeDB($table, $db);
+    $table = Contenido_Security::escapeDB($table, $db);
 
     $aStandardvalues = array(
         array('type' => 'pw_request', 'name' => 'enable', 'value' => 'true'),
@@ -113,25 +114,31 @@ function updateSystemProperties($db, $table)
     foreach ($aStandardvalues as $aData) {
         $sql = "SELECT value FROM %s WHERE type='%s' AND name='%s'";
         $db->query(sprintf($sql, $table, $aData['type'], $aData['name']));
-		if ($db->next_record()) {
+        if ($db->next_record()) {
             $sValue = $db->f('value');
             if ($sValue == '') {
                 $sql = "UPDATE %s SET value = '%s' WHERE type='%s' AND name='%s'";
-				$sql = sprintf($sql, $table, $aData['value'], $aData['type'], $aData['name']);
+                $sql = sprintf($sql, $table, $aData['value'], $aData['type'], $aData['name']);
                 $db->query($sql);
             }
         } else {
             $sql = "INSERT INTO %s SET type='%s', name='%s', value='%s'";
-			$sql = sprintf($sql, $table, $aData['type'], $aData['name'], $aData['value']);
+            $sql = sprintf($sql, $table, $aData['type'], $aData['name'], $aData['value']);
             $db->query($sql);
         }
-		
-		if ($db->Errno != 0) {
+
+        if ($db->Errno != 0) {
             logSetupFailure("Unable to execute SQL statement:\n" . $sql . "\nMysql Error: " . $db->Error . " (" . $db->Errno . ")");
         }
     }
 }
 
+/**
+ * Updates contenido version in given table
+ * @param  DB_Contenido $db
+ * @param  string  $table  DB table name
+ * @param  string  $version  Version
+ */
 function updateContenidoVersion($db, $table, $version)
 {
     $sql = "SELECT idsystemprop FROM %s WHERE type='system' AND name='version'";
@@ -147,6 +154,12 @@ function updateContenidoVersion($db, $table, $version)
     }
 }
 
+/**
+ * Returns current version
+ * @param  DB_Contenido $db
+ * @param  string  $table  DB table name
+ * @return string
+ */
 function getContenidoVersion($db, $table)
 {
     $sql = "SELECT value FROM %s WHERE type='system' AND name='version'";
@@ -159,6 +172,7 @@ function getContenidoVersion($db, $table)
     }
 }
 
+// @FIXME: Comment me plz!
 function updateSysadminPassword($db, $table, $password)
 {
     $sql = "SELECT password FROM %s WHERE username='sysadmin'";
@@ -174,9 +188,10 @@ function updateSysadminPassword($db, $table, $password)
     }
 }
 
+// @FIXME: Comment me plz!
 function listClients($db, $table)
 {
-	global $cfgClient;
+    global $cfgClient;
 
     $sql = "SELECT idclient, name FROM %s";
 
@@ -185,23 +200,25 @@ function listClients($db, $table)
     $clients = array();
 
     while ($db->next_record()) {
-		$frontendPath = $cfgClient[$db->f('idclient')]['path']['frontend'];
-		$htmlPath = $cfgClient[$db->f('idclient')]['path']['htmlpath'];
+        $frontendPath = $cfgClient[$db->f('idclient')]['path']['frontend'];
+        $htmlPath = $cfgClient[$db->f('idclient')]['path']['htmlpath'];
         $clients[$db->f("idclient")] = array("name" => $db->f("name"), "frontendpath" => $frontendPath, "htmlpath" => $htmlPath);
     }
 
     return $clients;
 }
 
+// @FIXME: Comment me plz!
 function updateClientPath($db, $table, $idclient, $frontendpath, $htmlpath)
 {
-	global $cfg, $cfgClient;
-	checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
-	
-	rereadClients();
-	updateClientCache($idclient, $htmlpath, $frontendpath);
+    global $cfg, $cfgClient;
+    checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
+
+    rereadClients();
+    updateClientCache($idclient, $htmlpath, $frontendpath);
 }
 
+// @FIXME: Comment me plz!
 function stripLastSlash($sInput)
 {
     if (substr($sInput, strlen($sInput)-1,1) == "/") {
@@ -211,6 +228,7 @@ function stripLastSlash($sInput)
     return $sInput;
 }
 
+// @FIXME: Comment me plz!
 function getSystemDirectories($bOriginalPath = false)
 {
     $root_path = stripLastSlash(C_FRONTEND_PATH);
@@ -231,7 +249,7 @@ function getSystemDirectories($bOriginalPath = false)
 
     $root_http_path = $protocol . $_SERVER["SERVER_NAME"].$port . $root_http_path;
 
-    if (substr($root_http_path, strlen($root_http_path)-1,1) == "/") {
+    if (substr($root_http_path, strlen($root_http_path)-1, 1) == "/") {
       $root_http_path = substr($root_http_path, 0, strlen($root_http_path)-1);
     }
 
@@ -253,6 +271,7 @@ function getSystemDirectories($bOriginalPath = false)
     return array($root_path, $root_http_path);
 }
 
+// @FIXME: Comment me plz!
 function findSimilarText($string1, $string2)
 {
     for ($i=0;$i<strlen($string1);$i++) {
