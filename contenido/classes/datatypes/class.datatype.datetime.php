@@ -1,33 +1,33 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Area management class
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.1
- * @author     
+ * @author
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 
@@ -63,522 +63,479 @@ define("cDateTime_Saturday", 6);
 
 class cDatatypeDateTime extends cDatatype
 {
-	protected $_iFirstDayOfWeek;
-	
-	/* This datatype stores its date format in ISO */
-	
-	public function __construct()
-	{
-		$this->setTargetFormat(cDateTime_Locale);
-		$this->setSourceFormat(cDateTime_UNIX);
-		
-		$this->_iYear = 1970;
-		$this->_iMonth = 1;
-		$this->_iDay = 1;
-		$this->_iHour = 0;
-		$this->_iMinute = 0;
-		$this->_iSecond = 0;
-		
-		$this->setFirstDayOfWeek(cDateTime_Monday);
-		parent::__construct();	
-	}
-	
-	/**
-	* @deprecated [2012-01-19] use __construct instead
-	*/
-	public function cDatatypeDateTime() {
+    protected $_iFirstDayOfWeek;
+
+    /* This datatype stores its date format in ISO */
+
+    public function __construct()
+    {
+        $this->setTargetFormat(cDateTime_Locale);
+        $this->setSourceFormat(cDateTime_UNIX);
+
+        $this->_iYear = 1970;
+        $this->_iMonth = 1;
+        $this->_iDay = 1;
+        $this->_iHour = 0;
+        $this->_iMinute = 0;
+        $this->_iSecond = 0;
+
+        $this->setFirstDayOfWeek(cDateTime_Monday);
+        parent::__construct();
+    }
+
+    /**
+     * @deprecated [2012-01-19] use __construct instead
+     */
+    public function cDatatypeDateTime()
+    {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
-	
-	public function setCustomTargetFormat ($targetFormat)
-	{
-		$this->_sCustomTargetFormat = $targetFormat;
-	}
-	
-	public function setCustomSourceFormat ($sourceFormat)
-	{
-		$this->_sCustomSourceFormat = $sourceFormat;
-	}	
-	
-	public function setSourceFormat ($cSourceFormat)
-	{
-		$this->_cSourceFormat = $cSourceFormat;	
-	}
-	
-	public function setTargetFormat ($cTargetFormat)
-	{
-		$this->_cTargetFormat = $cTargetFormat;	
-	}	
-	
-	public function setYear ($iYear)
-	{
-		$this->_iYear = $iYear;
-	}
-	
-	public function getYear ()
-	{
-		return ($this->_iYear);	
-	}
 
-	public function setMonth ($iMonth)
-	{
-		$this->_iMonth = $iMonth;	
-	}
-	
-	public function getMonth ()
-	{
-		return ($this->_iMonth);
-	}
-	
-	public function setDay ($iDay)
-	{
-		$this->_iDay = $iDay;
-	}
-	
-	public function getDay ()
-	{
-		return ($this->_iDay);	
-	}
+    public function setCustomTargetFormat($targetFormat)
+    {
+        $this->_sCustomTargetFormat = $targetFormat;
+    }
 
-	public function getMonthName ($iMonth)
-	{
-		switch ($iMonth)
-		{
-			case 1:	return i18n("January");
-			case 2: return i18n("February");
-			case 3: return i18n("March");
-			case 4: return i18n("April");
-			case 5: return i18n("May");
-			case 6: return i18n("June");
-			case 7: return i18n("July");
-			case 8: return i18n("August");
-			case 9: return i18n("September");
-			case 10: return i18n("October");
-			case 11: return i18n("November");
-			case 12: return i18n("December");
-		}	
-	}
-	
-	public function getDayName ($iDayOfWeek)
-	{
-		switch ($iDayOfWeek)
-		{
-			case 0:	return i18n("Sunday");
-			case 1:	return i18n("Monday");
-			case 2: return i18n("Tuesday");
-			case 3: return i18n("Wednesday");
-			case 4: return i18n("Thursday");
-			case 5: return i18n("Friday");
-			case 6: return i18n("Saturday");
-			case 7:	return i18n("Sunday");
-			default: return false;
-		}
-	}
-	
-	public function getDayOrder ()
-	{
-		$aDays = array(0, 1, 2, 3, 4, 5, 6);
-		$aRemainderDays = array_splice($aDays, 0, $this->_iFirstDayOfWeek);
-		
-		$aReturnDays = array_merge($aDays, $aRemainderDays);
-		
-		return ($aReturnDays);
-	}
-	
-	public function getNumberOfMonthDays ($iMonth = false, $iYear = false)
-	{
-		if ($iMonth === false)
-		{
-			$iMonth = $this->_iMonth;	
-		}
-		
-		if ($iYear === false)
-		{
-			$iYear = $this->_iYear;	
-		}
-		
-		return date("t", mktime(0,0,0,$iMonth, 1, $iYear));
-	}
-	
-	public function setFirstDayOfWeek ($iDay)
-	{
-		$this->_iFirstDayOfWeek = $iDay;
-	}
-	
-	public function getFirstDayOfWeek ()
-	{
-		return $this->_iFirstDayOfWeek;
-	}
-	
-	public function getLeapDay ()
-	{
-		return end($this->getDayOrder());	
-	}
-	
-	public function set ($value, $iOverrideFormat = false)
-	{
-		if ($value == "")
-		{
-			return;	
-		}
-		
-		if ($iOverrideFormat !== false)
-		{
-			$iFormat = $iOverrideFormat;	
-		} else {
-			$iFormat = $this->_cSourceFormat;
-		}
-		
-		switch ($iFormat)
-		{
-			case cDateTime_UNIX:
-				$sTemporaryTimestamp = $value;
-				$this->_iYear =	date("Y", $sTemporaryTimestamp);
-				$this->_iMonth = date("m", $sTemporaryTimestamp);				
-				$this->_iDay = date("d", $sTemporaryTimestamp);
-				$this->_iHour = date("H", $sTemporaryTimestamp);
-				$this->_iMinute = date("i", $sTemporaryTimestamp);
-				$this->_iSecond = date("s", $sTemporaryTimestamp);								
-			
-				break;
-			case cDateTime_ISO:
-				$sTemporaryTimestamp = strtotime($value);
-				$this->_iYear =	date("Y", $sTemporaryTimestamp);
-				$this->_iMonth = date("m", $sTemporaryTimestamp);				
-				$this->_iDay = date("d", $sTemporaryTimestamp);
-				$this->_iHour = date("H", $sTemporaryTimestamp);
-				$this->_iMinute = date("i", $sTemporaryTimestamp);
-				$this->_iSecond = date("s", $sTemporaryTimestamp);								
-				break;
+    public function setCustomSourceFormat($sourceFormat)
+    {
+        $this->_sCustomSourceFormat = $sourceFormat;
+    }
+
+    public function setSourceFormat($cSourceFormat)
+    {
+        $this->_cSourceFormat = $cSourceFormat;
+    }
+
+    public function setTargetFormat($cTargetFormat)
+    {
+        $this->_cTargetFormat = $cTargetFormat;
+    }
+
+    public function setYear($iYear)
+    {
+        $this->_iYear = $iYear;
+    }
+
+    public function getYear()
+    {
+        return ($this->_iYear);
+    }
+
+    public function setMonth($iMonth)
+    {
+        $this->_iMonth = $iMonth;
+    }
+
+    public function getMonth()
+    {
+        return ($this->_iMonth);
+    }
+
+    public function setDay($iDay)
+    {
+        $this->_iDay = $iDay;
+    }
+
+    public function getDay()
+    {
+        return ($this->_iDay);
+    }
+
+    public function getMonthName($iMonth)
+    {
+        switch ($iMonth) {
+            case 1: return i18n("January");
+            case 2: return i18n("February");
+            case 3: return i18n("March");
+            case 4: return i18n("April");
+            case 5: return i18n("May");
+            case 6: return i18n("June");
+            case 7: return i18n("July");
+            case 8: return i18n("August");
+            case 9: return i18n("September");
+            case 10: return i18n("October");
+            case 11: return i18n("November");
+            case 12: return i18n("December");
+        }
+    }
+
+    public function getDayName($iDayOfWeek)
+    {
+        switch ($iDayOfWeek) {
+            case 0: return i18n("Sunday");
+            case 1: return i18n("Monday");
+            case 2: return i18n("Tuesday");
+            case 3: return i18n("Wednesday");
+            case 4: return i18n("Thursday");
+            case 5: return i18n("Friday");
+            case 6: return i18n("Saturday");
+            case 7: return i18n("Sunday");
+            default: return false;
+        }
+    }
+
+    public function getDayOrder()
+    {
+        $aDays = array(0, 1, 2, 3, 4, 5, 6);
+        $aRemainderDays = array_splice($aDays, 0, $this->_iFirstDayOfWeek);
+
+        $aReturnDays = array_merge($aDays, $aRemainderDays);
+
+        return ($aReturnDays);
+    }
+
+    public function getNumberOfMonthDays($iMonth = false, $iYear = false)
+    {
+        if ($iMonth === false) {
+            $iMonth = $this->_iMonth;
+        }
+
+        if ($iYear === false) {
+            $iYear = $this->_iYear;
+        }
+
+        return date("t", mktime(0,0,0,$iMonth, 1, $iYear));
+    }
+
+    public function setFirstDayOfWeek($iDay)
+    {
+        $this->_iFirstDayOfWeek = $iDay;
+    }
+
+    public function getFirstDayOfWeek()
+    {
+        return $this->_iFirstDayOfWeek;
+    }
+
+    public function getLeapDay()
+    {
+        return end($this->getDayOrder());
+    }
+
+    public function set($value, $iOverrideFormat = false)
+    {
+        if ($value == "") {
+            return;
+        }
+
+        if ($iOverrideFormat !== false) {
+            $iFormat = $iOverrideFormat;
+        } else {
+            $iFormat = $this->_cSourceFormat;
+        }
+
+        switch ($iFormat) {
+            case cDateTime_UNIX:
+                $sTemporaryTimestamp = $value;
+                $this->_iYear =    date("Y", $sTemporaryTimestamp);
+                $this->_iMonth = date("m", $sTemporaryTimestamp);
+                $this->_iDay = date("d", $sTemporaryTimestamp);
+                $this->_iHour = date("H", $sTemporaryTimestamp);
+                $this->_iMinute = date("i", $sTemporaryTimestamp);
+                $this->_iSecond = date("s", $sTemporaryTimestamp);
+
+                break;
+            case cDateTime_ISO:
+                $sTemporaryTimestamp = strtotime($value);
+                $this->_iYear =    date("Y", $sTemporaryTimestamp);
+                $this->_iMonth = date("m", $sTemporaryTimestamp);
+                $this->_iDay = date("d", $sTemporaryTimestamp);
+                $this->_iHour = date("H", $sTemporaryTimestamp);
+                $this->_iMinute = date("i", $sTemporaryTimestamp);
+                $this->_iSecond = date("s", $sTemporaryTimestamp);
+                break;
             case cDateTime_MySQL:
                 $sTimeformat = 'YmdHis';
-				
-				$targetFormat = str_replace('.', '\.', $sTimeformat);
-				$targetFormat = str_replace('d', '([0-9]{2,2})', $targetFormat);
-				$targetFormat = str_replace('m', '([0-9]{2,2})', $targetFormat);
-				$targetFormat = str_replace('Y', '([0-9]{4,4})', $targetFormat);
-				$targetFormat = str_replace('H', '([0-9]{2,2})', $targetFormat);
-				$targetFormat = str_replace('i', '([0-9]{2,2})', $targetFormat);
-				$targetFormat = str_replace('s', '([0-9]{2,2})', $targetFormat);				
-				/* Match the placeholders */
-				preg_match_all('/([a-zA-Z])/', $sTimeformat, $placeholderRegs);
 
-				/* Match the date values */
-				preg_match('/' . $targetFormat . '/', $value, $dateRegs);
-				
-				$finalDate = array();
-				
-				/* Map date entries to placeholders */
-				foreach ($placeholderRegs[0] as $key => $placeholderReg)
-				{
-					if (isset($dateRegs[$key]))
-					{
-						$finalDate[$placeholderReg] = $dateRegs[$key+1];	
-					}
-				}
+                $targetFormat = str_replace('.', '\.', $sTimeformat);
+                $targetFormat = str_replace('d', '([0-9]{2,2})', $targetFormat);
+                $targetFormat = str_replace('m', '([0-9]{2,2})', $targetFormat);
+                $targetFormat = str_replace('Y', '([0-9]{4,4})', $targetFormat);
+                $targetFormat = str_replace('H', '([0-9]{2,2})', $targetFormat);
+                $targetFormat = str_replace('i', '([0-9]{2,2})', $targetFormat);
+                $targetFormat = str_replace('s', '([0-9]{2,2})', $targetFormat);
+                // Match the placeholders
+                preg_match_all('/([a-zA-Z])/', $sTimeformat, $placeholderRegs);
 
-				/* Assign placeholders + data to the object's member variables */
-				foreach ($finalDate as $placeHolder => $value)
-				{
-					switch ($placeHolder)
-					{
-						case "d": 
-							$this->_iDay = $value;
-							break;
-						case "m":
-							$this->_iMonth = $value;
-							break;
-						case "Y":
-							$this->_iYear = $value;
-							break;
-						case "H": 
-							$this->_iHour = $value;
-							break;
-						case "i":
-							$this->_iMinute = $value;
-							break;
-						case "s":
-							$this->_iSecond = $value;
-							break;                            
-						default:
-							break;
-					}
-				}
-				
-				
-				break;
-			case cDateTime_Custom:
-				/* Build a regular expression */
-				
-				$sourceFormat = str_replace('.', '\.', $this->_sCustomSourceFormat);
-				$sourceFormat = str_replace('%d', '([0-9]{2,2})', $sourceFormat);
-				$sourceFormat = str_replace('%m', '([0-9]{2,2})', $sourceFormat);
-				$sourceFormat = str_replace('%Y', '([0-9]{4,4})', $sourceFormat);
-				
-				/* Match the placeholders */
-				preg_match_all('/(%[a-zA-Z])/', $this->_sCustomSourceFormat, $placeholderRegs);
+                // Match the date values
+                preg_match('/' . $targetFormat . '/', $value, $dateRegs);
 
-				
-				/* Match the date values */
-				preg_match('/' . $sourceFormat . '/', $value, $dateRegs);
-				
-				$finalDate = array();
-				
-				/* Map date entries to placeholders */
-				foreach ($placeholderRegs[0] as $key => $placeholderReg)
-				{
-					if (isset($dateRegs[$key]))
-					{
-						$finalDate[$placeholderReg] = $dateRegs[$key+1];	
-					}
-				}
+                $finalDate = array();
 
-				/* Assign placeholders + data to the object's member variables */
-				foreach ($finalDate as $placeHolder => $value)
-				{
-					switch ($placeHolder)
-					{
-						case "%d": 
-							$this->_iDay = $value;
-							break;
-						case "%m":
-							$this->_iMonth = $value;
-							break;
-						case "%Y":
-							$this->_iYear = $value;
-							break;
-						default:
-							break;
-					}
-				}
-				break;
-			default:
-				break;
-		}	
-	}
-	
-	public function get ($iOverrideFormat = false)
-	{
-		if ($iOverrideFormat !== false)
-		{
-			$iFormat = $iOverrideFormat;	
-		} else {
-			$iFormat = $this->_cSourceFormat;
-		}
-		
-				
-		switch ($iFormat)
-		{
-			case cDateTime_ISO:
-				$sTemporaryTimestamp = mktime($this->_iHour, $this->_iMinute, $this->_iSecond , $this->_iMonth, $this->_iDay, $this->_iYear);
-				return date("Y-m-d H:i:s", $sTemporaryTimestamp);
-				break;
-			case cDateTime_UNIX:
-				$sTemporaryTimestamp = mktime($this->_iHour, $this->_iMinute, $this->_iSecond , $this->_iMonth, $this->_iDay, $this->_iYear);
-				return ($sTemporaryTimestamp);
-				break;
-			case cDateTime_Custom:
-				return strftime($this->_sCustomSourceFormat, mktime($this->_iHour, $this->_iMinute, $this->_iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
-				break;
-			case cDateTime_MySQL:
-				$sTemporaryTimestamp = mktime($this->_iHour, $this->_iMinute, $this->_iSecond , $this->_iMonth, $this->_iDay, $this->_iYear);
-				return date("YmdHis", $sTemporaryTimestamp);
-				break;
-			default:
-				cError(__FILE__, __LINE__, "Not supported yet");
-				break;
-		}	
-	}
-	
-	public function render ($iOverrideFormat = false)
-	{
-		if ($iOverrideFormat !== false)
-		{
-			$iFormat = $iOverrideFormat;	
-		} else {
-			$iFormat = $this->_cTargetFormat;	
-		}
-		
-		switch ($iFormat)
-		{
-			case cDateTime_Locale_TimeOnly:
-				$sTimeformat = getEffectiveSetting("backend", "timeformat_time", "H:i:s");
-				
-				return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
+                // Map date entries to placeholders
+                foreach ($placeholderRegs[0] as $key => $placeholderReg) {
+                    if (isset($dateRegs[$key])) {
+                        $finalDate[$placeholderReg] = $dateRegs[$key+1];
+                    }
+                }
 
-			case cDateTime_Locale_DateOnly:
-				$sTimeformat = getEffectiveSetting("backend", "timeformat_date", "Y-m-d");
-				
-				return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
-			case cDateTime_Locale:
-				$sTimeformat = getEffectiveSetting("backend", "timeformat", "Y-m-d H:i:s");
-				
-				return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
-			case cDateTime_Custom:
-				return strftime($this->_sCustomTargetFormat, mktime($this->_iHour, $this->_iMinute, $this->_iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
+                // Assign placeholders + data to the object's member variables
+                foreach ($finalDate as $placeHolder => $value) {
+                    switch ($placeHolder) {
+                        case "d":
+                            $this->_iDay = $value;
+                            break;
+                        case "m":
+                            $this->_iMonth = $value;
+                            break;
+                        case "Y":
+                            $this->_iYear = $value;
+                            break;
+                        case "H":
+                            $this->_iHour = $value;
+                            break;
+                        case "i":
+                            $this->_iMinute = $value;
+                            break;
+                        case "s":
+                            $this->_iSecond = $value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
 
-				break;
-		}	
+                break;
+            case cDateTime_Custom:
+                // Build a regular expression
 
-	}
-	
-	public function parse ($value)
-	{
-		if ($value == "")
-		{	return;
-		}
-		switch ($this->_cTargetFormat)
-		{
-			case cDateTime_ISO:
-				$sTemporaryTimestamp = strtotime($value);
-				$this->_iYear =	date("Y", $sTemporaryTimestamp);
-				$this->_iMonth = date("m", $sTemporaryTimestamp);				
-				$this->_iDay = date("d", $sTemporaryTimestamp);
-				$this->_iHour = date("H", $sTemporaryTimestamp);
-				$this->_iMinute = date("i", $sTemporaryTimestamp);
-				$this->_iSecond = date("s", $sTemporaryTimestamp);								
-				break;
-			case cDateTime_Locale_DateOnly:
-				$sTimeformat = getEffectiveSetting('backend', 'timeformat_date', 'Y-m-d');
-				
-				$targetFormat = str_replace('.', '\.', $sTimeformat);
-				$targetFormat = str_replace('d', '([0-9]{2,2})', $targetFormat);
-				$targetFormat = str_replace('m', '([0-9]{2,2})', $targetFormat);
-				$targetFormat = str_replace('Y', '([0-9]{4,4})', $targetFormat);
-				
-				/* Match the placeholders */
-				preg_match_all('/([a-zA-Z])/', $sTimeformat, $placeholderRegs);
+                $sourceFormat = str_replace('.', '\.', $this->_sCustomSourceFormat);
+                $sourceFormat = str_replace('%d', '([0-9]{2,2})', $sourceFormat);
+                $sourceFormat = str_replace('%m', '([0-9]{2,2})', $sourceFormat);
+                $sourceFormat = str_replace('%Y', '([0-9]{4,4})', $sourceFormat);
 
-				/* Match the date values */
-				preg_match('/' . $targetFormat . '/', $value, $dateRegs);
-				
-				$finalDate = array();
-				
-				/* Map date entries to placeholders */
-				foreach ($placeholderRegs[0] as $key => $placeholderReg)
-				{
-					if (isset($dateRegs[$key]))
-					{
-						$finalDate[$placeholderReg] = $dateRegs[$key+1];	
-					}
-				}
+                // Match the placeholders
+                preg_match_all('/(%[a-zA-Z])/', $this->_sCustomSourceFormat, $placeholderRegs);
 
-				/* Assign placeholders + data to the object's member variables */
-				foreach ($finalDate as $placeHolder => $value)
-				{
-					switch ($placeHolder)
-					{
-						case "d": 
-							$this->_iDay = $value;
-							break;
-						case "m":
-							$this->_iMonth = $value;
-							break;
-						case "Y":
-							$this->_iYear = $value;
-							break;
-						default:
-							break;
-					}
-				}
-				
-				
-				break;
-			case cDateTime_Locale:
-				$sTimeformat = getEffectiveSetting('backend', 'timeformat', 'Y-m-d H:i:s');
-				
-				$targetFormat = str_replace('.', '\.', $sTimeformat);
-				$targetFormat = str_replace('d', '([0-9]{2,2})', $targetFormat);
-				$targetFormat = str_replace('m', '([0-9]{2,2})', $targetFormat);
-				$targetFormat = str_replace('Y', '([0-9]{4,4})', $targetFormat);
-				
-				/* Match the placeholders */
-				preg_match_all('/(%[a-zA-Z])/', $this->_sCustomTargetFormat, $placeholderRegs);
+                // Match the date values
+                preg_match('/' . $sourceFormat . '/', $value, $dateRegs);
 
-				/* Match the date values */
-				preg_match('/' . $targetFormat . '/', $value, $dateRegs);
-				
-				$finalDate = array();
-				
-				/* Map date entries to placeholders */
-				foreach ($placeholderRegs[0] as $key => $placeholderReg)
-				{
-					if (isset($dateRegs[$key]))
-					{
-						$finalDate[$placeholderReg] = $dateRegs[$key+1];	
-					}
-				}
+                $finalDate = array();
 
-				/* Assign placeholders + data to the object's member variables */
-				foreach ($finalDate as $placeHolder => $value)
-				{
-					switch ($placeHolder)
-					{
-						case "%d": 
-							$this->_iDay = $value;
-							break;
-						case "%m":
-							$this->_iMonth = $value;
-							break;
-						case "%Y":
-							$this->_iYear = $value;
-							break;
-						default:
-							break;
-					}
-				}
-				
-				
-				break;
-			case cDateTime_Custom:
-				/* Build a regular expression */
-				
-				$targetFormat = str_replace('.', '\.', $this->_sCustomTargetFormat);
-				$targetFormat = str_replace('%d', '([0-9]{2,2})', $targetFormat);
-				$targetFormat = str_replace('%m', '([0-9]{2,2})', $targetFormat);
-				$targetFormat = str_replace('%Y', '([0-9]{4,4})', $targetFormat);
-				
-				/* Match the placeholders */
-				preg_match_all('/(%[a-zA-Z])/', $this->_sCustomTargetFormat, $placeholderRegs);
+                // Map date entries to placeholders
+                foreach ($placeholderRegs[0] as $key => $placeholderReg) {
+                    if (isset($dateRegs[$key])) {
+                        $finalDate[$placeholderReg] = $dateRegs[$key+1];
+                    }
+                }
 
-				/* Match the date values */
-				preg_match('/' . $targetFormat . '/', $value, $dateRegs);
-				
-				$finalDate = array();
-				
-				/* Map date entries to placeholders */
-				foreach ($placeholderRegs[0] as $key => $placeholderReg)
-				{
-					if (isset($dateRegs[$key]))
-					{
-						$finalDate[$placeholderReg] = $dateRegs[$key+1];	
-					}
-				}
+                // Assign placeholders + data to the object's member variables
+                foreach ($finalDate as $placeHolder => $value) {
+                    switch ($placeHolder) {
+                        case "%d":
+                            $this->_iDay = $value;
+                            break;
+                        case "%m":
+                            $this->_iMonth = $value;
+                            break;
+                        case "%Y":
+                            $this->_iYear = $value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
-				/* Assign placeholders + data to the object's member variables */
-				foreach ($finalDate as $placeHolder => $value)
-				{
-					switch ($placeHolder)
-					{
-						case "%d": 
-							$this->_iDay = $value;
-							break;
-						case "%m":
-							$this->_iMonth = $value;
-							break;
-						case "%Y":
-							$this->_iYear = $value;
-							break;
-						default:
-							break;
-					}
-				}
-				break;
-			default:
-				break;
-		}	
-	}
+    public function get($iOverrideFormat = false)
+    {
+        if ($iOverrideFormat !== false) {
+            $iFormat = $iOverrideFormat;
+        } else {
+            $iFormat = $this->_cSourceFormat;
+        }
+
+        switch ($iFormat) {
+            case cDateTime_ISO:
+                $sTemporaryTimestamp = mktime($this->_iHour, $this->_iMinute, $this->_iSecond , $this->_iMonth, $this->_iDay, $this->_iYear);
+                return date("Y-m-d H:i:s", $sTemporaryTimestamp);
+                break;
+            case cDateTime_UNIX:
+                $sTemporaryTimestamp = mktime($this->_iHour, $this->_iMinute, $this->_iSecond , $this->_iMonth, $this->_iDay, $this->_iYear);
+                return ($sTemporaryTimestamp);
+                break;
+            case cDateTime_Custom:
+                return strftime($this->_sCustomSourceFormat, mktime($this->_iHour, $this->_iMinute, $this->_iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
+                break;
+            case cDateTime_MySQL:
+                $sTemporaryTimestamp = mktime($this->_iHour, $this->_iMinute, $this->_iSecond , $this->_iMonth, $this->_iDay, $this->_iYear);
+                return date("YmdHis", $sTemporaryTimestamp);
+                break;
+            default:
+                cError(__FILE__, __LINE__, "Not supported yet");
+                break;
+        }
+    }
+
+    public function render($iOverrideFormat = false)
+    {
+        if ($iOverrideFormat !== false) {
+            $iFormat = $iOverrideFormat;
+        } else {
+            $iFormat = $this->_cTargetFormat;
+        }
+
+        switch ($iFormat) {
+            case cDateTime_Locale_TimeOnly:
+                $sTimeformat = getEffectiveSetting("backend", "timeformat_time", "H:i:s");
+                return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
+            case cDateTime_Locale_DateOnly:
+                $sTimeformat = getEffectiveSetting("backend", "timeformat_date", "Y-m-d");
+                return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
+            case cDateTime_Locale:
+                $sTimeformat = getEffectiveSetting("backend", "timeformat", "Y-m-d H:i:s");
+                return date($sTimeformat, mktime($this->_iHour, $this->_iMinute, $this->iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
+            case cDateTime_Custom:
+                return strftime($this->_sCustomTargetFormat, mktime($this->_iHour, $this->_iMinute, $this->_iSecond, $this->_iMonth, $this->_iDay, $this->_iYear));
+                break;
+        }
+    }
+
+    public function parse($value)
+    {
+        if ($value == "") {
+            return;
+        }
+
+        switch ($this->_cTargetFormat) {
+            case cDateTime_ISO:
+                $sTemporaryTimestamp = strtotime($value);
+                $this->_iYear =    date("Y", $sTemporaryTimestamp);
+                $this->_iMonth = date("m", $sTemporaryTimestamp);
+                $this->_iDay = date("d", $sTemporaryTimestamp);
+                $this->_iHour = date("H", $sTemporaryTimestamp);
+                $this->_iMinute = date("i", $sTemporaryTimestamp);
+                $this->_iSecond = date("s", $sTemporaryTimestamp);
+                break;
+            case cDateTime_Locale_DateOnly:
+                $sTimeformat = getEffectiveSetting('backend', 'timeformat_date', 'Y-m-d');
+
+                $targetFormat = str_replace('.', '\.', $sTimeformat);
+                $targetFormat = str_replace('d', '([0-9]{2,2})', $targetFormat);
+                $targetFormat = str_replace('m', '([0-9]{2,2})', $targetFormat);
+                $targetFormat = str_replace('Y', '([0-9]{4,4})', $targetFormat);
+
+                // Match the placeholders
+                preg_match_all('/([a-zA-Z])/', $sTimeformat, $placeholderRegs);
+
+                // Match the date values
+                preg_match('/' . $targetFormat . '/', $value, $dateRegs);
+
+                $finalDate = array();
+
+                // Map date entries to placeholders
+                foreach ($placeholderRegs[0] as $key => $placeholderReg) {
+                    if (isset($dateRegs[$key])) {
+                        $finalDate[$placeholderReg] = $dateRegs[$key+1];
+                    }
+                }
+
+                // Assign placeholders + data to the object's member variables
+                foreach ($finalDate as $placeHolder => $value) {
+                    switch ($placeHolder) {
+                        case "d":
+                            $this->_iDay = $value;
+                            break;
+                        case "m":
+                            $this->_iMonth = $value;
+                            break;
+                        case "Y":
+                            $this->_iYear = $value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break;
+            case cDateTime_Locale:
+                $sTimeformat = getEffectiveSetting('backend', 'timeformat', 'Y-m-d H:i:s');
+
+                $targetFormat = str_replace('.', '\.', $sTimeformat);
+                $targetFormat = str_replace('d', '([0-9]{2,2})', $targetFormat);
+                $targetFormat = str_replace('m', '([0-9]{2,2})', $targetFormat);
+                $targetFormat = str_replace('Y', '([0-9]{4,4})', $targetFormat);
+
+                // Match the placeholders
+                preg_match_all('/(%[a-zA-Z])/', $this->_sCustomTargetFormat, $placeholderRegs);
+
+                // Match the date values
+                preg_match('/' . $targetFormat . '/', $value, $dateRegs);
+
+                $finalDate = array();
+
+                // Map date entries to placeholders
+                foreach ($placeholderRegs[0] as $key => $placeholderReg) {
+                    if (isset($dateRegs[$key])) {
+                        $finalDate[$placeholderReg] = $dateRegs[$key+1];
+                    }
+                }
+
+                // Assign placeholders + data to the object's member variables
+                foreach ($finalDate as $placeHolder => $value) {
+                    switch ($placeHolder) {
+                        case "%d":
+                            $this->_iDay = $value;
+                            break;
+                        case "%m":
+                            $this->_iMonth = $value;
+                            break;
+                        case "%Y":
+                            $this->_iYear = $value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break;
+            case cDateTime_Custom:
+                // Build a regular expression
+
+                $targetFormat = str_replace('.', '\.', $this->_sCustomTargetFormat);
+                $targetFormat = str_replace('%d', '([0-9]{2,2})', $targetFormat);
+                $targetFormat = str_replace('%m', '([0-9]{2,2})', $targetFormat);
+                $targetFormat = str_replace('%Y', '([0-9]{4,4})', $targetFormat);
+
+                // Match the placeholders
+                preg_match_all('/(%[a-zA-Z])/', $this->_sCustomTargetFormat, $placeholderRegs);
+
+                // Match the date values
+                preg_match('/' . $targetFormat . '/', $value, $dateRegs);
+
+                $finalDate = array();
+
+                // Map date entries to placeholders
+                foreach ($placeholderRegs[0] as $key => $placeholderReg) {
+                    if (isset($dateRegs[$key])) {
+                        $finalDate[$placeholderReg] = $dateRegs[$key+1];
+                    }
+                }
+
+                // Assign placeholders + data to the object's member variables
+                foreach ($finalDate as $placeHolder => $value) {
+                    switch ($placeHolder) {
+                        case "%d":
+                            $this->_iDay = $value;
+                            break;
+                        case "%m":
+                            $this->_iMonth = $value;
+                            break;
+                        case "%Y":
+                            $this->_iYear = $value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 ?>
