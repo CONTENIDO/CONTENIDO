@@ -40,13 +40,28 @@ if (!defined('CON_FRAMEWORK')) {
 cInclude("includes", "functions.upl.php");
 
 $page = new UI_Page();
-$page->addScript("cal1", '<style type="text/css">@import url(./scripts/jscalendar/calendar-contenido.css);</style>');
-$page->addScript("cal2", '<script type="text/javascript" src="./scripts/jscalendar/calendar.js"></script>');
-$page->addScript("cal3", '<script type="text/javascript" src="./scripts/jscalendar/lang/calendar-'.substr(strtolower($belang),0,2).'.js"></script>');
-$page->addScript("cal4", '<script type="text/javascript" src="./scripts/jscalendar/calendar-setup.js"></script>');
+
+
+//get language js files
+if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
+
+	$langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
+	<script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
+}
+
+$path_to_calender_pic =  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif';
+
+
 $page->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tipsy.css" />');
-$sTooltippScript = '<script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    	            <script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
+$page->addScript("cal", '<link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
+		<link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
+		<script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+		<script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+		<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>'
+		. $langscripts);
+
+
+$sTooltippScript = '<script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
     	            <script type="text/javascript" src="scripts/registerTipsy.js"></script>';
 $page->addScript("tooltip-js", $sTooltippScript);
 
@@ -231,30 +246,60 @@ if ($upload = $uploads->next()) {
                 $sHtmlTimeMng .= "<tr><td colspan='2'>" . $oTimeCheckbox->render() . "</td></tr>\n";
                 $sHtmlTimeMng .= "<tr><td style='padding-left: 20px;'><label for='datestart'>" . i18n("Start date") . "</label></td>\n";
                 $sHtmlTimeMng .= '<td><input type="text" name="datestart" id="datestart" value="' . $sStartDate . '"  size="20" maxlength="40" class="text_medium">' .
-                    '&nbsp;<img src="images/calendar.gif" id="trigger_start" width="16" height="16" border="0" alt="" /></td></tr>';
+                    '</td></tr>';
                 $sHtmlTimeMng .= "<tr><td style='padding-left: 20px;'><label for='dateend'>" . i18n("End date") . "</label></td>\n";
                 $sHtmlTimeMng .= '<td><input type="text" name="dateend" id="dateend" value="' . $sEndDate . '"  size="20" maxlength="40" class="text_medium">' .
-                    '&nbsp;<img src="images/calendar.gif" id="trigger_end" width="16" height="16" border="0" alt="" /></td></tr>';
+                    '</td></tr>';
                 $sHtmlTimeMng .= "</table>\n";
 
                 $sHtmlTimeMng .= '<script type="text/javascript">
-                Calendar.setup({
-                    inputField: "datestart",
-                    ifFormat: "%Y-%m-%d",
-                    button: "trigger_start",
-                    weekNumbers: true,
-                    firstDay: 1
-                });
-                </script>';
+                $(document).ready(function() {
+	$("#datestart").datetimepicker({
+    		 buttonImage:"'. $path_to_calender_pic.'",
+  	        buttonImageOnly: true,
+  	        showOn: "both",
+  	        dateFormat: "yy-mm-dd",  
+    	    onClose: function(dateText, inst) {
+    	        var endDateTextBox = $("#dateend");
+    	        if (endDateTextBox.val() != "") {
+    	            var testStartDate = new Date(dateText);
+    	            var testEndDate = new Date(endDateTextBox.val());
+    	            if (testStartDate > testEndDate)
+    	                endDateTextBox.val(dateText);
+    	        }
+    	        else {
+    	            endDateTextBox.val(dateText);
+    	        }
+    	    },
+    	    onSelect: function (selectedDateTime){
+    	        var start = $(this).datetimepicker("getDate");
+    	        $("#dateend").datetimepicker("option", "minDate", new Date(start.getTime()));
+    	    }
+    	});
+    	$("#dateend").datetimepicker({
+    		 buttonImage: "'. $path_to_calender_pic .'",
+   	        buttonImageOnly: true,
+   	        showOn: "both",
+   	        dateFormat: "yy-mm-dd",
+    	    onClose: function(dateText, inst) {
+    	        var startDateTextBox = $("#datestart");
+    	        if (startDateTextBox.val() != "") {
+    	            var testStartDate = new Date(startDateTextBox.val());
+    	            var testEndDate = new Date(dateText);
+    	            if (testStartDate > testEndDate)
+    	                startDateTextBox.val(dateText);
+    	        }
+    	        else {
+    	            startDateTextBox.val(dateText);
+    	        }
+    	    },
+    	    onSelect: function (selectedDateTime){
+    	        var end = $(this).datetimepicker("getDate");
+    	        $("#datestart").datetimepicker("option", "maxDate", new Date(end.getTime()) );
+    	    }
+    	});
 
-                $sHtmlTimeMng .= '<script type="text/javascript">
-                Calendar.setup({
-                    inputField: "dateend",
-                    ifFormat: "%Y-%m-%d",
-                    button: "trigger_end",
-                    weekNumbers: true,
-                    firstDay: 1
-                });
+});
                 </script>';
 
                 $sCell = $sHtmlTimeMng;

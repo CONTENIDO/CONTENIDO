@@ -234,17 +234,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
     // Meta-Tags
     $availableTags = conGetAvailableMetaTagTypes();
 
-    $sMetaDate =   '<script type="text/javascript">
-                        Calendar.setup({
-                            inputField: "METAdate",
-                            ifFormat: "%Y-%m-%d %H:%M",
-                            button: "METAdate_button",
-                            weekNumbers: true,
-                            firstDay: 1,
-                            showsTime: true
-                        });
-                    </script>';
-
+   
     foreach ($availableTags as $key => $value) {
         $tpl->set('d', 'METAINPUT', 'META'.$value);
 
