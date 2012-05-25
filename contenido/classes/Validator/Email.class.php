@@ -101,7 +101,7 @@ class Contenido_Validator_Email extends Contenido_Validator_Abstract
             $this->addError('Invalid or empty value', 1);
             return false;
         }
-        
+
         $host = substr($value, strpos($value, '@') + 1);
         $tld  = strrchr($value, '.');
 
