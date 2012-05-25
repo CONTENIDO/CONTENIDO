@@ -23,5 +23,5 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-modDeleteModule($idmod);
+//modDeleteModule($idmod);
 ?>

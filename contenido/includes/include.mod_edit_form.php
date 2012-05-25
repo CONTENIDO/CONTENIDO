@@ -61,6 +61,7 @@ if ($action == "mod_delete") {
         $modules = new cApiModuleCollection;
         $modules->delete($idmod);
         $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted module successfully!"));
+    	
     }
 }
 
@@ -505,8 +506,12 @@ window.onload = scrolltheother;
                             document.getElementById(\'scroll\').style.paddingBottom=\'5px\';
                         }
                     </script>';
-        #.$form2->render().$sScript
-        $page->setContent($noti.$message.$form->render().$applet."<br>");
+        //Dont show form if we delete or synchronize a module
+        if($action == "mod_sync" || $action == "mod_delete") {
+        	$page->setContent($noti.$message.$applet."<br>");
+        }else {
+        	$page->setContent($noti.$message.$form->render().$applet."<br>");
+        }
     }
 
    
