@@ -150,6 +150,14 @@ class DB_Sql extends DB_Sql_Abstract
             if (!@mysqli_select_db($dbh, $aCon['database'])) {
                 $this->halt('MySQLi _connect() Cannot use database ' . $aCon['database']);
                 return null;
+            } else {
+                //set connection charset
+                if ($aCon['charset'] != '') {
+                    if (!@mysqli_set_charset($dbh, $aCon['charset'])) {
+                        $this->halt('Could not set database charset to ' . $aCon['charset']);
+                        return null;
+                    }
+                }
             }
             $this->Database = $aCon['database'];
         }

@@ -75,11 +75,11 @@ class DB_Sql extends DB_Sql_Abstract
             if (!@mysql_select_db($aCon['database'], $dbh)) {
                 $this->halt('MySQL _connect() Cannot use database ' . $aCon['database']);
                 return null;
-            }else {
+            } else {
                 //set connection charset
                 if ($aCon['charset'] != '') {
-                    if (!@mysql_query("SET NAMES '" . $aCon['charset'] . "'", $dbh)) {
-                        $this->halt('MySQL _connect Cannot set names to : '.$aCon['charset']);
+                    if (!@mysql_set_charset($aCon['charset'], $dbh)) {
+                        $this->halt('Could not set database charset to ' . $aCon['charset']);
                         return null;
                     }
                 }
