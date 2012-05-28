@@ -6,6 +6,20 @@
  * Description:
  * PDO MySQL database driver
  *
+ * Configurable via global $cfg['db']['connection'] configuration as follows:
+ * <pre>
+ * - host            (string)  Hostname or ip
+ * - database        (string)  Database name
+ * - user            (string)  User name
+ * - password        (string)  User password
+ * - driver_options  (array)   Optional, MySQLi options array
+ *   Example for setting charset:
+ *   $cfg['db']['connection']['driver_options'] = array(
+ *       PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+ *   );
+ * see http://de2.php.net/manual/en/pdo.construct.php
+ * </pre>
+ *
  * NOTE: Is still in development state, don't use it!
  *
  * Requirements:
@@ -23,16 +37,8 @@
  *
  * {@internal
  *   created  2011-02-28
- *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
- *   modified 2011-04-22, Murat Purc, Connect to DB server without database and more
- *                        readable connection settings.
- *   modified 2011-07-07, Murat Purc, New _update(), _insert() methods, unified
- *                        execution of multiple queries by using cloned instance.
- *   modified 2011-07-25, Murat Purc, Use mysql_real_escape_string() in quote() function
- *
- *   $Id: $:
+ *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

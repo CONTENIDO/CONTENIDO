@@ -4,7 +4,21 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * MySQLi database driver
+ * MySQLi database driver.
+ *
+ * Configurable via global $cfg['db']['connection'] configuration as follows:
+ * <pre>
+ * - host      (string)  Hostname or ip
+ * - database  (string)  Database name
+ * - user      (string)  User name
+ * - password  (string)  User password
+ * - options   (array)   Optional, MySQLi options array
+ * - socket    (int)     Optional, socket
+ * - port      (int)     Optional, port
+ * - flags     (int)     Optional, flags
+ * - charset  (string)   Optional, connection charset
+ * see http://www.php.net/manual/en/mysqli.real-connect.php
+ * </pre>
  *
  * Requirements:
  * @con_php_req 5
@@ -13,7 +27,7 @@
  * @package    CONTENIDO Core
  * @subpackage Database
  * @version    0.3.2
- * @author     Boris Erdmann, Kristian Koehntopp
+ * @author     Boris Erdmann, Kristian Koehntopp, Murat Purc <murat@purc>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
@@ -22,19 +36,8 @@
  *
  * {@internal
  *   created  2000-01-01
- *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2009-10-29, Murat Purc, removed deprecated functions (PHP 5.3 ready) extended DB_Sql_Abstract, added/optimized some functioms and some formatting
- *   modified 2009-12-29, Murat Purc, replaced is_resource() against mysqli compatible check [#CON-290]
- *   modified 2011-03-03, Murat Purc, Some redesign and improvements (partial adaption to PHP 5 and extending DB_Sql_Abstract).
- *   modified 2011-03-13, Murat Purc, Cleanup and documentation.
- *   modified 2011-04-22, Murat Purc, Connect to DB server without database and more
- *                        readable connection settings.
- *   modified 2011-07-07, Murat Purc, New _update(), _insert() methods, unified
- *                        execution of multiple queries by using cloned instance.
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -88,19 +91,6 @@ class DB_Sql extends DB_Sql_Abstract
      */
     protected function _connect()
     {
-        // feasible connection values are:
-        // - $options['connection']['host']  (string) Hostname or ip
-        // - $options['connection']['database']  (string) Database name
-        // - $options['connection']['user']  (string) User name
-        // - $options['connection']['password']  (string)  User password
-        // - $options['connection']['options']  (array)  Optional, MySQLi options array
-        // - $options['connection']['socket']  (int)  Optional, socket
-        // - $options['connection']['port']  (int)  Optional, port
-        // - $options['connection']['flags']  (int)  Optional, flags
-        // see http://www.php.net/manual/en/mysqli.real-connect.php
-
-//        extract($this->_aDbCfg['connection']);
-
         if (!extension_loaded('mysqli')) {
             $this->halt('MySQLi _connect() extension not loaded!');
             return null;

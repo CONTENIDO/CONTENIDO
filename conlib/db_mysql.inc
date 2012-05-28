@@ -6,6 +6,16 @@
  * Description:
  * MySQL database driver
  *
+ * Configurable via global $cfg['db']['connection'] configuration as follows:
+ * <pre>
+ * - host      (string)  Hostname or ip (with port, e. g. "example.com:3307")
+ * - database  (string)  Database name
+ * - user      (string)  User name
+ * - password  (string)  User password
+ * - charset   (string)  Optional, connection charset
+ * see http://php.net/manual/en/function.mysql-connect.php
+ * </pre>
+ *
  * Requirements:
  * @con_php_req 5
  *
@@ -21,10 +31,8 @@
  *
  * {@internal
  *   created  2002-07-21
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
