@@ -837,12 +837,9 @@ class Cms_Teaser {
         //split ids, if there is only one id, array has only one place filled, that is also ok
         $aIds = explode(',', $iIdType);
         foreach ($aIds as $iCurIdType) {
-            $sTmp = $oArticle->getContent($sIdType, $iCurIdType);
-            //check for largest result and replace when new value is larger
-            if (strlen($sReturn) < strlen($sTmp)) {
-                $sReturn = $sTmp;
-            }
-        }
+			$sTmp = $oArticle->getContent($sIdType, $iCurIdType);
+			$sReturn .= $sTmp;
+		}
 
         return $sReturn;
     }
