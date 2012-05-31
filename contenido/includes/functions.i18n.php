@@ -77,7 +77,7 @@ function trans($string)
  */
 function i18n($string, $domain = 'contenido')
 {
-    global $cfg, $_conI18n, $belang, $contenido;
+    global $cfg, $_conI18n, $belang, $contenido, $lang;
 
     // Auto initialization
     if (!$_conI18n['language']) {
@@ -99,9 +99,7 @@ function i18n($string, $domain = 'contenido')
     // Is emulator to use?
     if (!$cfg['native_i18n']) {
     	$ret = i18nEmulateGettext($string, $domain);
-    	if(is_utf8($ret)) {
-    		$ret = utf8_decode($ret);
-    	}
+    	$ret = mb_convert_encoding($ret, "HTML-ENTITIES", "utf-8");
         return $ret;
     }
 
