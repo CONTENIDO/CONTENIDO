@@ -36,7 +36,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 if (!$perm->have_perm_area_action($area)) {
     $notification->displayNotification('error', i18n('Permission denied'));
     return;
@@ -73,6 +72,10 @@ $userselect = '<option value="%">' . i18n("All users") . '</option>';
 $actions = $actionColl->getAvailableActions();
 $actionselect = '<option value="%">' . i18n("All actions") . '</option>';
 $clientList = $clientColl->getAccessibleClients();
+
+//select current client per default
+if(!isset($idqclient))
+	$idqclient = $client;
 
 foreach ($clientList as $key => $value) {
     $selected = (strcmp($idqclient, $key) == 0) ? ' selected="selected"' : '';
