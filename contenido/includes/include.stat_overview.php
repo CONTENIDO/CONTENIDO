@@ -34,6 +34,13 @@ if(!defined('CON_FRAMEWORK')) {
 
 $tpl->reset();
 
+//Show message if statistics off
+$cApiClient = new cApiClient($client);
+if ($cApiClient->getProperty("stats", "tracking") == "off") {	
+	$contenidoNotification = new Contenido_Notification();
+	$contenidoNotification->displayNotification('warning', i18n("Tracking was disabled for this client!"));
+}
+
 if ($action == "stat_show")
 {
         if (strlen($yearmonth) < 4)

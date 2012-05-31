@@ -160,6 +160,13 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
     } else {
         $cApiClient->setProperty("generator", "xhtml", "true");
     }
+    
+    //Is statistc on/off
+    if ($_REQUEST["statistic"] == "on") {
+    	$cApiClient->setProperty("stats", "tracking", "on");
+    } else {
+    	$cApiClient->setProperty("stats", "tracking", "off");
+    }
 }
 
 
@@ -297,6 +304,30 @@ $tpl->set('d', 'CATFIELD', $oXHTMLSelect->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->set('d', 'FONT', 'text_medium');
+
+$tpl->next();
+
+$aChoices = array("on" => i18n("On"), "off" => i18n("Off"));
+
+$oXHTMLSelect = new cHTMLSelectElement("statistic");
+$oXHTMLSelect->autoFill($aChoices);
+
+$cApiClient->loadByPrimaryKey($idclient);
+if ($cApiClient->getProperty("stats", "tracking") == "on") {
+	$oXHTMLSelect->setDefault("on");
+} else {
+	$oXHTMLSelect->setDefault("off");
+}
+
+
+$tpl->set('d', 'CATNAME', i18n("Statistic"));
+$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
+$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
+$tpl->set('d', 'CATFIELD', $oXHTMLSelect->render());
+$tpl->set('d', 'BRDRT', 0);
+$tpl->set('d', 'BRDRB', 1);
+$tpl->set('d', 'FONT', 'text_medium');
+
 $tpl->next();
 
 if ($new == true) {
