@@ -146,9 +146,9 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
 
     $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
 
-    // Clear the con_code table
-    $sql = "DELETE FROM ".$cfg["tab"]["code"]." WHERE idclient = '".Contenido_Security::toInteger($idclient)."'";
-    $db->query($sql);
+    // Clear the code cache
+    $mask = $cfgClient[$idclient]["path"]["frontend"]."cache/code/".$idclient."*.php-cache";
+    array_map("unlink", glob($mask));
 
     $notification->displayNotification("info", i18n("Changes saved").$sNewNotification);
 

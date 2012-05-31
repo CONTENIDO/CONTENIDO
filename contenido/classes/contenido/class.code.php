@@ -46,6 +46,7 @@ class cApiCodeCollection extends ItemCollection
         global $cfg;
         parent::__construct($cfg['tab']['code'], 'idcode');
         $this->_setItemClass('cApiCode');
+        die("cApiCodeCollection");
     }
 
     /**
@@ -115,6 +116,7 @@ class cApiCode extends Item
         if ($mId !== false) {
             $this->loadByPrimaryKey($mId);
         }
+        die("cApiCode");
     }
 
     /**

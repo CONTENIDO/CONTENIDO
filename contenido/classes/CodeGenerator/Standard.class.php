@@ -172,17 +172,14 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         $this->_layoutCode = str_ireplace_once("</head>", $cssFile . "</head>", $this->_layoutCode);
         $this->_layoutCode = str_ireplace_once("</body>",  $jsFile . "</body>", $this->_layoutCode);
 
-        // Write code into the database
+        // Write code in the cache of the client. If the folder does not exist create one.
         if ($this->_layout == false && $this->_save == true) {
-            $oCodeColl = new cApiCodeCollection();
-            $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $this->_lang);
-            if (!is_object($oCode)) {
-                $oCode = $oCodeColl->create($idcatart, $this->_lang, $this->_client, $this->_layoutCode);
-            } else {
-                $oCode->updateCode($this->_layoutCode);
-            }
-
-            $db->update($cfg['tab']['cat_art'], array('createcode' => 0), array('idcatart' => (int) $idcatart));
+        	if(!file_exists($cfgClient[$this->_client]["path"]["frontend"]."cache/code")) {
+        		mkdir($cfgClient[$this->_client]["path"]["frontend"]."cache/code");
+        		chmod($cfgClient[$this->_client]["path"]["frontend"]."cache/code", 0777);
+        		file_put_contents($cfgClient[$this->_client]["path"]["frontend"]."cache/code/.htaccess", "Order Deny,Allow\nDeny from all\n");
+        	}
+        	file_put_contents($cfgClient[$this->_client]["path"]["frontend"]."cache/code/".$this->_client.".".$this->_lang.".".$idcatart.".php-cache", $this->_layoutCode);
         }
 
         return $this->_layoutCode;

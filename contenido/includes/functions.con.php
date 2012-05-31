@@ -51,7 +51,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
                           $lastmodified, $author, $online, $datestart, $dateend,
                           $artsort, $keyart=0)
 {
-    global $db, $client, $lang, $cfg, $auth, $urlname, $page_title;
+    global $db, $client, $lang, $cfg, $auth, $urlname, $page_title, $cfgClient;
     //Some stuff for the redirect
     global $redirect, $redirect_url, $external_redirect;
     global $time_move_cat; // Used to indicate "move to cat"
@@ -224,10 +224,11 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
         if (!in_array($value, $idcatnew)) {
             $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($value)."' AND idart='".Contenido_Security::toInteger($idart)."'"; // get all idcatarts that will no longer exist
             $db->query($sql);
+            $db->next_record();
 
             //******** delete from 'code'-table ***************        // and delete corresponding code
-            $sql = "DELETE FROM ".$cfg["tab"]["code"]." WHERE idcatart='".Contenido_Security::toInteger($db->f("idcatart"))."'";
-            $db->query($sql);
+            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$db->f("idcatart").".php-cache";
+            array_map("unlink", glob($mask));
 
             //******* delete from 'stat'-table ****************
             $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($value)."' AND idart='".Contenido_Security::toInteger($idart)."' ";
@@ -320,7 +321,7 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
 {
     $args = func_get_args();
 
-    global $db, $client, $lang, $cfg, $redirect, $redirect_url, $external_redirect, $perm;
+    global $db, $client, $lang, $cfg, $redirect, $redirect_url, $external_redirect, $perm, $cfgClient;
     global $urlname, $page_title;
     global $time_move_cat, $time_target_cat;
     global $time_online_move; // Used to indicate if the moved article should be online
@@ -386,12 +387,13 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
 
     foreach ($tmp_idcat as $value) {
         if (!in_array($value, $idcatnew)) {
-            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($value)."' AND idart='".Contenido_Security::toInteger($idart)."'";  // get all idcatarts that will no longer exist
+            $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($value)."' AND idart='".Contenido_Security::toInteger($idart)."'";  // get all idcatarts that will no longer exist
             $db->query($sql);
-
+			$db->next_record();
+            
             //******** delete from 'code'-table ***************        // and delete corresponding code
-            $sql = "DELETE FROM ".$cfg["tab"]["code"]." WHERE idcatart='".Contenido_Security::toInteger($db->f("idcatart"))."'";
-            $db->query($sql);
+            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$db->f("idcatart").".php-cache";
+            array_map("unlink", glob($mask));
 
             //******* delete from 'stat'-table ****************
             $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($value)."' AND idart='".Contenido_Security::toInteger($idart)."'";
@@ -723,7 +725,7 @@ function conMakePublic($idcat, $lang, $public)
  */
 function conDeleteart($idart)
 {
-    global $db, $cfg, $lang, $_cecRegistry;
+    global $db, $cfg, $lang, $_cecRegistry, $cfgClient, $client;
 
     // Delete current language
     $sql = "SELECT idartlang, idtplcfg FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".Contenido_Security::toInteger($idart)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
@@ -778,12 +780,12 @@ function conDeleteart($idart)
     ##################################################
     # set keywords
     $keycode[1][1] = "";
-
+    
     if (count($idcatart) > 0) {
         foreach ($idcatart as $value) {
             //********* delete from code table **********
-            $sql = "DELETE FROM ".$cfg["tab"]["code"]." WHERE idcatart = '".Contenido_Security::toInteger($value)."'";
-            $db->query($sql);
+            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$value.".php-cache";
+            array_map("unlink", glob($mask));
 
             //****** delete from 'stat'-table ************
             $sql = "DELETE FROM ".$cfg["tab"]["stat"]." WHERE idcatart = '".Contenido_Security::toInteger($value)."'";
@@ -1436,19 +1438,13 @@ function conGenerateCodeForAllArts()
  */
 function conSetCodeFlag($idcatart)
 {
-    global $cfg;
+    global $cfg, $client, $cfgClient;
 
-    $db = new DB_Contenido();
-
-    $sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET createcode = '1' WHERE idcatart='".Contenido_Security::toInteger($idcatart)."'";
-    $db->query($sql);
-
-    /* Setting the createcode flag is not enough due to a bug in the
-     * database structure. Remove all con_code entries for a specific
-     * idcatart in the con_code table.
+    /* 
+     * Remove all cached articles
      */
-     $sql = "DELETE FROM ".$cfg["tab"]["code"] ." WHERE idcatart='".Contenido_Security::toInteger($idcatart)."'";
-     $db->query($sql);
+    $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$idcatart.".php-cache";
+    array_map("unlink", glob($mask));
 }
 
 

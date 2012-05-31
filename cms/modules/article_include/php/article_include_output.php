@@ -115,23 +115,7 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0)
       # front_content, if code for one language will be created). This "bug" may be fixed in future releases.
       if ($iCreateCode == 0)
       {
-         $sql = "SELECT count(*) AS CodeCount FROM " . $cfg["tab"]["code"] . "
-                 WHERE idcatart = '" . $iIDCatArt . "' AND idlang = '" . $lang . "'";
-
-         if ($bDebug)
-         {
-            echo "<pre>";
-            print_r($sql);
-            echo "</pre>";
-         }
-
-         $db->query($sql);
-         $db->next_record();
-
-         if ($db->f("CodeCount") == 0) {
-            $iCreateCode = 1;
-         }
-         $db->free();
+      	$iCreateCode = !file_exists($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$iIDCatArt.".php-cache");
       }
 
       # Create code if necessary
@@ -143,25 +127,9 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0)
 
          conGenerateCode($iIDCat, $iIDArt, $lang, $client);
       }
-
-      # Get code from database and execute it
-      $sql = "SELECT code FROM " . $cfg["tab"]["code"] . "
-              WHERE idcatart = '" . $iIDCatArt . "' AND idlang = '" . $lang . "'";
-
-      if ($bDebug)
-      {
-         echo "<pre>";
-         print_r($sql);
-         echo "</pre>";
-      }
-
-      $db->query($sql);
-
-      if ($db->next_record())
-      {
-         $sCode = stripslashes($db->f("code"));
-         $db->free();
-
+      
+      if(file_exists($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$iIDCatArt.".php-cache")) {
+         $sCode = stripslashes(file_get_contents($cfgClient[$client]["path"]["frontend"]."cache/code/".client.".".$lang.".".$iIDCatArt.".php-cache"));
          ob_start();
          eval("?>
 ".$sCode."

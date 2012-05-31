@@ -414,42 +414,14 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // 'mode' is preview (Area: Contenido --> Articles --> Preview) or article displayed in the front-end
 
     // Code generation
-    $oCodeColl = new cApiCodeCollection();
-
-    $oCatArtColl = new cApiCategoryArticleCollection();
-    $oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
-
-    // Check if code is expired, create new code if needed
-    if ($oCatArt->get('createcode') == 0 && $force == 0) {
-        $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $lang);
-        if (!is_object($oCode)) {
-            cInclude('includes', 'functions.tpl.php');
-            conGenerateCode($idcat, $idart, $lang, $client);
-            $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $lang);
-        }
-
-        if (is_object($oCode)) {
-            $code = $oCode->get('code', false);
-        } else {
-            if ($contenido) {
-                $code = "echo \"No code available.\";";
-            } else {
-                if ($error == 1) {
-                    echo "Fatal error: Could not display error page. Error to display was: 'No code available'";
-                } else {
-                    header($errsite);
-                    exit;
-                }
-            }
-        }
-    } else {
-        $oCodeColl->deleteByCatArt($idcatart);
+    if(!file_exists($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$idcatart.".php-cache")) {
+    	unlink($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$idcatart.".php-cache");
         cInclude('includes', 'functions.tpl.php');
         cInclude('includes', 'functions.mod.php');
         conGenerateCode($idcat, $idart, $lang, $client);
-        $oCode = $oCodeColl->fetchByCatArtAndLang($idcatart, $lang);
-        $code = $oCode->get('code', false);
     }
+    
+    $code = file_get_contents($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$idcatart.".php-cache");
 
     // Add mark Script to code if user is in the backend
     $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);

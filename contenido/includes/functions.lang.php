@@ -323,7 +323,7 @@ function langDuplicateFromFirstLanguage($client, $idlang)
  */
 function langDeleteLanguage($iIdLang, $iIdClient = 0)
 {
-    global $db, $sess, $client, $cfg, $notification;
+    global $db, $sess, $client, $cfg, $notification, $cfgClient;
 
     $deleteok = 1;
     $iIdLang = (int) $iIdLang;
@@ -427,9 +427,9 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
         $sql = "DELETE FROM ".$cfg['tab']['stat']." WHERE idlang=" . $iIdLang . " AND idclient=" . $iIdClient;
         $db->query($sql);
 
-        //********** delete from 'code'-table
-        $sql = "DELETE FROM ".$cfg['tab']['code']." WHERE idlang=" . $iIdLang . " AND idclient=" . $iIdClient;
-        $db->query($sql);
+        //********** delete from 'code'-cache
+        $mask = $cfgClient[$iIdClient]["path"]["frontend"]."cache/code/".$iIdClient.".".$iIdLang.".*.php-cache";
+        array_map("unlink", glob($mask));
 
         foreach ($aIdTplCfg as $tplcfg) {
             $tplcfg = (int) $tplcfg;
