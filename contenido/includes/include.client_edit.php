@@ -313,10 +313,10 @@ $oXHTMLSelect = new cHTMLSelectElement("statistic");
 $oXHTMLSelect->autoFill($aChoices);
 
 $cApiClient->loadByPrimaryKey($idclient);
-if ($cApiClient->getProperty("stats", "tracking") == "on") {
-	$oXHTMLSelect->setDefault("on");
-} else {
+if ($cApiClient->getProperty("stats", "tracking") == "off") {
 	$oXHTMLSelect->setDefault("off");
+} else {
+	$oXHTMLSelect->setDefault("on");
 }
 
 
