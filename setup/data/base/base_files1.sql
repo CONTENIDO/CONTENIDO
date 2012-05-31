@@ -198,11 +198,11 @@ INSERT INTO !PREFIX!_files VALUES ('602', '601', 'workflow/includes/include.work
 INSERT INTO !PREFIX!_files VALUES ('603', '600', 'workflow/includes/include.workflow_subnav.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('604', '602', 'workflow/includes/include.workflow_steps.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('605', '604', 'workflow/includes/include.workflow_tasks.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('800', '801', 'tagging/includes/include.left_top.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('801', '801', 'tagging/includes/include.left_bottom.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('802', '801', 'tagging/includes/include.right_top.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('803', '801', 'tagging/includes/include.right_bottom.php', 'main');
-INSERT INTO !PREFIX!_files VALUES ('804', '802', 'tagging/includes/include.tagging_article.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('800', '801', 'content_allocation/includes/include.left_top.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('801', '801', 'content_allocation/includes/include.left_bottom.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('802', '801', 'content_allocation/includes/include.right_top.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('803', '801', 'content_allocation/includes/include.right_bottom.php', 'main');
+INSERT INTO !PREFIX!_files VALUES ('804', '802', 'content_allocation/includes/include.contentallocation_article.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('400', '400', 'include.lay_history.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('399', '31', 'include.files_subnav.php', 'main');
 INSERT INTO !PREFIX!_files VALUES ('401', '401', 'include.style_history.php', 'main');

@@ -1399,6 +1399,31 @@ contenido/plugins/chains/includes/include.chain.content.createmetatags.php -text
 contenido/plugins/chains/includes/include.chain.frontend.cat_access.php -text
 contenido/plugins/chains/includes/include.chain.frontend.cat_backendaccess.php -text
 contenido/plugins/chains/includes/include.chain.frontend.createbasehref.php -text
+contenido/plugins/content_allocation/classes/class.content_allocation.php -text
+contenido/plugins/content_allocation/classes/class.content_allocation_article.php -text
+contenido/plugins/content_allocation/classes/class.content_allocation_complexlist.php -text
+contenido/plugins/content_allocation/classes/class.content_allocation_selectbox.php -text
+contenido/plugins/content_allocation/classes/class.content_allocation_tree.php -text
+contenido/plugins/content_allocation/classes/class.content_allocation_treeview.php -text
+contenido/plugins/content_allocation/images/arrow.gif -text
+contenido/plugins/content_allocation/images/call_contentallocation.gif -text
+contenido/plugins/content_allocation/images/normal.gif -text
+contenido/plugins/content_allocation/includes/config.plugin.php -text
+contenido/plugins/content_allocation/includes/functions.chains.php -text
+contenido/plugins/content_allocation/includes/include.contentallocation_article.php -text
+contenido/plugins/content_allocation/includes/include.left_bottom.php -text
+contenido/plugins/content_allocation/includes/include.left_top.php -text
+contenido/plugins/content_allocation/includes/include.right_bottom.php -text
+contenido/plugins/content_allocation/locale/content_allocation.pot -text
+contenido/plugins/content_allocation/locale/de_DE/LC_MESSAGES/content_allocation.po -text
+contenido/plugins/content_allocation/locale/potfiles.txt -text svneol=unset#text/plain
+contenido/plugins/content_allocation/scripts/complexlist.js -text svneol=unset#text/plain
+contenido/plugins/content_allocation/style/complexlist.css -text svneol=unset#text/plain
+contenido/plugins/content_allocation/templates/template.tree_article.html -text svneol=unset#text/plain
+contenido/plugins/content_allocation/templates/template.tree_complexlist.html -text svneol=unset#text/plain
+contenido/plugins/content_allocation/templates/template.tree_structure.html -text svneol=unset#text/plain
+contenido/plugins/content_allocation/xml/lang_de_DE.xml -text svneol=unset#text/plain
+contenido/plugins/content_allocation/xml/lang_en_US.xml -text svneol=unset#text/plain
 contenido/plugins/cronjobs_overview/classes/class.cronjobs.php -text
 contenido/plugins/cronjobs_overview/includes/config.plugin.php -text
 contenido/plugins/cronjobs_overview/includes/include.left_bottom.php -text
@@ -2028,14 +2053,14 @@ setup/data/examples/examples_misc4.sql -text
 setup/data/examples/examples_misc5.sql -text
 setup/data/examples/examples_misc6.sql -text
 setup/data/indexes.sql -text
+setup/data/plugin_content_allocation.txt -text
 setup/data/plugin_cronjob_overview.txt -text svneol=unset#text/plain
 setup/data/plugin_mod_rewrite.txt -text
 setup/data/plugin_newsletter.txt -text
-setup/data/plugin_tagging.txt -text
+setup/data/plugins/plugins_content_allocation.sql -text
 setup/data/plugins/plugins_cronjob_overview.sql -text
 setup/data/plugins/plugins_mod_rewrite.sql -text
 setup/data/plugins/plugins_newsletter.sql -text
-setup/data/plugins/plugins_tagging.sql -text
 setup/data/standard.txt -text
 setup/data/standard/standard_modules1.sql -text
 setup/data/standard/standard_modules_translations1.sql -text

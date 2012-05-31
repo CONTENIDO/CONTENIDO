@@ -98,7 +98,7 @@ if (is_array($_REQUEST)) {
     $aSetupOptionalSettingsList = array(
         'setup7' => array(
             'plugin_newsletter',
-            'plugin_tagging',
+            'plugin_content_allocation',
             'plugin_mod_rewrite',
         )
     );

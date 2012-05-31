@@ -128,8 +128,8 @@ if ($_SESSION['plugin_newsletter'] == 'true') {
     $pluginChunks = array_merge($pluginChunks, $newsletter);
 }
 
-if ($_SESSION['plugin_tagging'] == 'true') {
-    $tagging = explode("\n", file_get_contents('data/plugin_tagging.txt'));
+if ($_SESSION['plugin_content_allocation'] == 'true') {
+    $tagging = explode("\n", file_get_contents('data/plugin_content_allocation.txt'));
     $pluginChunks = array_merge($pluginChunks, $tagging);
 }
 

@@ -1,2 +1,0 @@
-INSERT INTO !PREFIX!_nav_sub VALUES('800', '3', '801', '0', 'tagging/xml/;navigation/extra/tagging/main', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('801', '0', '802', '1', 'tagging/xml/;navigation/contenido/article/tagging', '1');

@@ -61,7 +61,7 @@ function checkExistingPlugin($db, $sPluginname)
         case 'plugin_conman':
             $sSql = "SELECT * FROM %s WHERE idnavs=900";
             break;
-        case 'plugin_tagging':
+        case 'plugin_content_allocation':
             $sSql = "SELECT * FROM %s WHERE idnavs=800";
             break;
         case 'plugin_newsletter':

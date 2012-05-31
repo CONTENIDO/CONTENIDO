@@ -102,7 +102,7 @@ class cSetupSetupSummary extends cSetupMask
         if ($_SESSION['plugin_newsletter'] == 'true') {
             $aPlugins[] = i18n('Newsletter');
         }
-        if ($_SESSION['plugin_tagging'] == 'true') {
+        if ($_SESSION['plugin_content_allocation'] == 'true') {
             $aPlugins[] = i18n('Tagging');
         }
         if ($_SESSION['plugin_mod_rewrite'] == 'true') {
