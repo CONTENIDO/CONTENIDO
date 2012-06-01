@@ -1023,7 +1023,7 @@ class ModRewrite extends ModRewriteBase
         );
         $arr['in_contenido_path'] = is_file($arr['contenido_full_path'] . '.htaccess');
         $arr['in_client_path']    = is_file($arr['client_full_path'] . '.htaccess');
-        $arr['has_htaccess']      = ($arr['in_contenido_path'] || $arr['has_htaccess']);
+        $arr['has_htaccess']      = ($arr['in_contenido_path'] || $arr['in_client_path']);
 
         return $arr;
     }
