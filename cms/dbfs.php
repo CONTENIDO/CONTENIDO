@@ -1,16 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * <Description>
- * 
- * Requirements: 
+ *
+ * Description:
+ * Database file system file output.
+ *
+ * Requirements:
  * @con_php_req 5
- * @con_template <Templatefiles>
- * @con_notice <Notice>
- * 
+ *
  *
  * @package    CONTENIDO Frontend
  * @author     unknown
@@ -18,44 +16,36 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * 
- * 
- * {@internal 
- *   created  unknown
- *   modified 2008-06-16, H. Librenz - Hotfix: checking for potential unsecure calling
- *   modified 2008-07-03, bilal arslan, added security fix
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *
+ *
+ * {@internal
+ *   created  unknown
  *   $Id$:
  * }}
- * 
  */
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
 $contenido_path = '';
-# include the config file of the frontend to init the Client and Language Id
-include_once ("config.php");
+// Include the config file of the frontend to init the Client and Language Id
+include_once('config.php');
 
 // CONTENIDO startup process
-include_once ($contenido_path . 'includes/startup.php');
+include_once($contenido_path . 'includes/startup.php');
 
-if ($contenido)
-{
+if ($contenido) {
     cRegistry::bootstrap(array('sess' => 'Contenido_Session',
                     'auth' => 'Contenido_Challenge_Crypt_Auth',
                     'perm' => 'Contenido_Perm'));
-
 } else {
     cRegistry::bootstrap(array('sess' => 'Contenido_Frontend_Session',
                     'auth' => 'Contenido_Frontend_Challenge_Crypt_Auth',
                     'perm' => 'Contenido_Perm'));
 }
 
-/* Shorten load time */
+// Shorten load time
 $client = $load_client;
 
 $dbfs = new cApiDbfsCollection();
