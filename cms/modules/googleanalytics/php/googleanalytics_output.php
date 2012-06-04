@@ -1,5 +1,5 @@
 <?php
-$account = getEffectiveSetting('googleanalytics', 'account', '');
+$account = getEffectiveSetting('stats', 'ga_account', '');
 
 if ($account != '') {
 	$tpl = new Template();

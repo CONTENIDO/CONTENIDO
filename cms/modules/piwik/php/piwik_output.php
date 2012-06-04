@@ -1,6 +1,6 @@
 <?php 
-$url	= getEffectiveSetting('piwik', 'url', '');
-$site	= getEffectiveSetting('piwik', 'site', '');
+$url	= getEffectiveSetting('stats', 'piwik_url', '');
+$site	= getEffectiveSetting('stats', 'piwik_site', '');
 
 if ($url != '' && $site != '') {
 	$tpl = new Template();

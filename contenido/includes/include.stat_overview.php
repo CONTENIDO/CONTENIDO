@@ -33,13 +33,28 @@ if(!defined('CON_FRAMEWORK')) {
 }
 
 $tpl->reset();
-
+$contenidoNotification = new Contenido_Notification();
+$trackingNotification = "";
+$googleNotification = "";
+$piwikNotification = "";
 //Show message if statistics off
 $cApiClient = new cApiClient($client);
 if ($cApiClient->getProperty("stats", "tracking") == "off") {	
-	$contenidoNotification = new Contenido_Notification();
-	$contenidoNotification->displayNotification('warning', i18n("Tracking was disabled for this client!"));
+	$trackingNotification = $contenidoNotification->returnNotification('warning', i18n("Tracking was disabled for this client!"));
 }
+
+//Display google account message
+if(($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != "" ) {
+	$googleNotification = $contenidoNotification->returnNotification('notification', "This client has been configured with Google Analytics account ".$googleAccount.  '. Click <a href="http://www.google.com/intl/'.$belang.'/analytics/">here</a> to visit Google Analytics');
+}
+
+//display piwik account message
+if(($piwikUrl = getEffectiveSetting('stats', 'piwik_url', '')) != "") {
+	if(($piwikSite = getEffectiveSetting('stats', 'piwik_site', '')) != "") {
+		$piwikNotification = $contenidoNotification->returnNotification('notification', "This client has bee configured with Piwik Site ".$piwikSite.'. Click <a href="'.$piwikUrl.'">here</a> to visit the Piwik installation.');
+	}
+}
+
 
 if ($action == "stat_show")
 {
@@ -99,7 +114,10 @@ if ($action == "stat_show")
         $tpl->set('s', 'TITLETOTAL',i18n("Hits"));
         $tpl->set('s', 'TITLEPADDING_LEFT',"5");
         $tpl->set('s', 'TITLEINTHISLANGUAGE', i18n("Hits in this language"));
-
+		
+        $tpl->set('s', 'GOOGLE_NOTIFICATION', $googleNotification.'<br/>');
+        $tpl->set('s', 'PIWIK_NOTIFICATION', $piwikNotification. '<br/>');
+        $tpl->set('s', 'TRACKING_NOTIFICATION', $trackingNotification.'<br/>');
         switch ($displaytype)
         {
             case "all":
@@ -148,7 +166,7 @@ if ($action == "stat_show")
 
 } else {
         $tpl->reset();
-        $tpl->set('s', 'CONTENTS', '');
+        $tpl->set('s', 'CONTENTS',$trackingNotification .'<br/>'.$googleNotification .'<br/>'. $piwikNotification);
         $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);
 }
 ?>
