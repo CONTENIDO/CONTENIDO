@@ -46,7 +46,7 @@ if (version_compare(PHP_VERSION, '5.0.0', '<')) {
 }
 
 // Check version
-//PHP >= 5.0.0 and < 5.4.0
+//PHP >= 5.0.0 and < 6.0.0
 if (version_compare(PHP_VERSION, '6.0.0', '>=')) {
     die("You need PHP >= 5.0.0  < 6.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
 }
@@ -154,7 +154,6 @@ Contenido_Autoload::initialize($cfg);
 
 // Common includes
 checkAndInclude(C_SETUP_PATH . 'lib/defines.php');
-checkAndInclude($cfg['path']['pear'] . 'HTML/Common.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.i18n.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
 checkAndInclude(C_SETUP_PATH . 'lib/class.setupcontrols.php');
