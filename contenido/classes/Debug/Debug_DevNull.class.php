@@ -12,7 +12,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.1.1
+ * @version    1.1.2
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created 2008-05-07
- *   modified 2008-05-21 Added methods add(), reset(), showAll()
- *   modified 2008-06-25 Removed die() from show() method
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

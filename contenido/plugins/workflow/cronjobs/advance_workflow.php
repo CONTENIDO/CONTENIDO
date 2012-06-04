@@ -12,7 +12,7 @@
  *
  * @package    CONTENIDO Plugins
  * @subpackage Workflow
- * @version    1.5.1
+ * @version    1.5.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,11 +21,8 @@
  * 
  * {@internal 
  *   created  2003-05-26
- *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *   
  *   $Id: advance_workflow.php,v 1.5 2004/06/17 15:06:08 timo.hummel Exp $
  * }}
- * 
  */
 
 define('CON_FRAMEWORK', true);
@@ -34,7 +31,7 @@ define('CON_FRAMEWORK', true);
 // CONTENIDO startup process
 include_once ('../../../includes/startup.php');
 
-cInclude("includes", "cfg_actions.inc.php");
+require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 cInclude("includes", "functions.con.php");
 
 plugin_include('workflow', 'classes/class.workflow.php');

@@ -10,7 +10,7 @@
  * @con_php_req 5
  *
  * @package    CONTENIDO Core
- * @version    1.7
+ * @version    1.7.1
  * @author     Boris Erdmann, Kristian Koehntopp
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,18 +20,8 @@
  *
  * {@internal
  *   created  2000-01-01
- *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2010-02-02, Ingo van Peeren, added local method connect() in order
- *                                         to allow only one database connection, see [CON-300]
- *   modified 2010-02-17, Ingo van Peeren, only one connection for mysqli too
- *   modified 2011-03-03, Murat Purc, some redesign/improvements (partial adaption to PHP 5)
- *   modified 2011-03-18, Murat Purc, Fixed occuring "Duplicated entry" errors by using CT_Sql, see [CON-370]
- *   modified 2011-03-21, Murat Purc, added Contenido_CT_Session to uses PHP's session implementation
- *   modified 2012-01-18, Mischa Holz, moved checkMySQLConnectivity() to the DB_Contenido class itself, see [CON-429]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -309,7 +299,7 @@ class Contenido_CT_File extends CT_File
  *
  * NOTE: Is experimental, so don't use this in a production environment.
  *
- * To use this, set session container in contenido/includes/config.misc.php to
+ * To use this, set session container in data/config/{environment}/config.misc.php to
  * $cfg["session_container"] = 'session';
  *
  * @todo  Make session container configurable

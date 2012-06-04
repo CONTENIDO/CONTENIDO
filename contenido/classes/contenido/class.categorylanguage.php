@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO API
- * @version    1.3.1
+ * @version    1.3.2
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,12 +20,8 @@
  *
  * {@internal
  *   created  2005-11-08
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-10-26, Murat Purc, added functions cApiCategoryLanguageCollection->create and cApiCategoryLanguage->store
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -110,6 +106,19 @@ class cApiCategoryLanguageCollection extends ItemCollection
         $oItem->store();
 
         return $oItem;
+    }
+
+    /**
+     * Returns startarticle  id of articlelanguage by category id and language id
+     * @param  int  $idcat
+     * @param  int  $idlang
+     * @return  int
+     */
+    public function getStartIdartlangByIdcatAndIdlang($idcat, $idlang)
+    {
+        $sql = "SELECT startidartlang FROM `" . $this->table . "` WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $idlang . " AND startidartlang != 0";
+        $this->db->query($sql);
+        return ($this->db->next_record()) ? $this->db->f('startidartlang') : 0;
     }
 }
 

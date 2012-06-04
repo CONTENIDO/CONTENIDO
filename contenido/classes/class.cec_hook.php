@@ -12,7 +12,7 @@
  *
  * @package     CONTENIDO Backend Classes
  * @subpackage  CEC
- * @version     0.5
+ * @version     0.5.1
  * @author      Murat Purc <murat@purc.de>
  * @copyright   four for business AG <www.4fb.de>
  * @license     http://www.contenido.org/license/LIZENZ.txt
@@ -22,15 +22,8 @@
  *
  * {@internal
  *   created  2008-08-28, Murat Purc, initial implementation, port from Advanced Mod Rewrite Plugin
- *   modified 2008-09-10, Murat Purc, bugfix: add further condition handling to prevent overwriting of arguments
- *   modified 2008-11-11, Andreas Lindner,  when overwriting of arguments is prevented and break condition is set
- *                        added anoption to return break condition value directly, otherwise the args would be returned, which is not
- *                        desirable under all circumstances
- *   modified 2008-12-26, Murat Purc, bugfix: Not each registered chain function will get the same parameter
- *   modified 2009-12-26, Murat Purc, bugfix/redesign of CEC_Hook, see [#CON-256]
- *
+ *   $Id:$:
  * }}
- *
  */
 
 
@@ -304,7 +297,7 @@ class CEC_Hook {
      * Used to debug some status informations.
 	 * @TODO: Implement cec_hook debug mode for automatic logging when activated.
      *
-     * Writes the debug value into a logfile (see contenido/logs/cec_hook_debug.log).
+     * Writes the debug value into a logfile (see contenido/data/log/cec_hook_debug.log).
      *
      * @param   mixed   $var  The variable to dump
      * @param   string  $msg  Additional message
@@ -312,6 +305,8 @@ class CEC_Hook {
      */
     private static function _debug($var, $msg='')
     {
+        global $cfg;
+
         $content = ($msg !== '') ? $msg . ': ' : '';
         if (is_object($var) || is_array($var)) {
             $content .= print_r($var, true);
@@ -319,9 +314,9 @@ class CEC_Hook {
             $content .= $var . "\n";
         }
 
-        $sLogPathName = $GLOBALS['cfg']['path']['contenido'] . 'logs/cec_hook_debug.log';
+        $sLogPathName = $cfg['path']['contenido_logs'] . 'cec_hook_debug.log';
         file_put_contents($sLogPathName, $content . "\n", FILE_APPEND);
-        
+
         cDebug($content);
     }
 

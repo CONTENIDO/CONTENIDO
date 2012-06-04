@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.2.9
+ * @version    1.3.0
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,7 +21,6 @@
  *
  * {@internal
  *   created 2003-07-03
- *
  *   $Id$:
  * }}
  *
@@ -93,7 +92,7 @@ function i18n($string, $domain = 'contenido')
             $belang = false; // Needed - otherwise this won't work
         }
 
-        i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
+        i18nInit($cfg['path']['contenido_locale'], $belang);
     }
 
     // Is emulator to use?

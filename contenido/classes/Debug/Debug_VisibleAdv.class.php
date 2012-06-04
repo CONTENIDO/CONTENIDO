@@ -16,7 +16,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version 1.0.0
+ * @version    1.0.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -25,10 +25,7 @@
  *
  * {@internal
  *   created 2008-05-20
- *
- *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

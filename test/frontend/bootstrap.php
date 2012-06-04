@@ -80,7 +80,7 @@ if ($contenido)
 {
     //Backend
     cRegistry::bootstrap(array ('sess' => 'Contenido_Session', 'auth' => 'Contenido_Challenge_Crypt_Auth', 'perm' => 'Contenido_Perm'));
-    i18nInit($cfg["path"]["contenido"].$cfg["path"]["locale"], $belang);
+    i18nInit($cfg['path']['contenido_locale'], $belang);
 }
 else
 {

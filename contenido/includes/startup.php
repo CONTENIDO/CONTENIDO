@@ -22,7 +22,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.1.1
+ * @version    1.1.2
  * @author     four for Business AG
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -32,25 +32,15 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-25, Frederic Schneider, add con_framework check and include contenido_secure
- *   modified 2008-07-02, Frederic Schneider, removed contenido_secure include
- *   modified 2008-08-28, Murat Purc, changed instantiation of $_cecRegistry
- *   modified 2008-11-18, Murat Purc, add initialization of UrlBuilder configuration
- *   modified 2010-05-20, Murat Purc, taken over security checks (Contenido_Security and HttpInputValidator)
- *                        from various files and some modifications, see [#CON-307]
- *   modified 2010-12-28, Murat Purc, changed order of some includes to provide more user defined
- *                                    settings in config.local.php
- *   modified 2011-03-03, Murat Purc, Initialize database with settings
- *   modified 2012-01-18, Mischa Holz, moved checkMySQLConnectivity() to the DB_Contenido class itself, see [CON-429]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
+global $cfg;
 
 /* Initial PHP error handling settings
  * -----------------------------------------------------------------------------
@@ -63,7 +53,6 @@ if (!defined('CON_FRAMEWORK')) {
 
 // Report all errors except warnings
 error_reporting(E_ALL ^E_NOTICE);
-
 
 /*
  * Do not edit this value!
@@ -84,8 +73,12 @@ if (!defined('CONTENIDO_ENVIRONMENT')) {
     define('CONTENIDO_ENVIRONMENT', $sEnvironment);
 }
 
+// (string) Path to folder containing all contenido configuration files
+//          Use environment setting!
+$cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../..')) . '/data/config/' . CONTENIDO_ENVIRONMENT . '/';
+
 // Security check: Include security class and invoke basic request checks
-include_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.security.php');
+require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.security.php');
 try {
     Contenido_Security::checkRequests();
 } catch (Exception $e) {
@@ -96,29 +89,30 @@ try {
 require_once(dirname(__FILE__) . '/globals_off.inc.php');
 
 // Check if configuration file exists, this is a basic indicator to find out, if CONTENIDO is installed
-if (!file_exists(dirname(__FILE__) . '/config.php')) {
-    $msg  = "<h1>Fatal Error</h1><br>";
-    $msg .= "Could not open the configuration file <b>config.php</b>.<br><br>";
-    $msg .= "Please make sure that you saved the file in the setup program. If you had to place the file manually on your webserver, make sure that it is placed in your contenido/includes directory.";
+if (!file_exists($cfg['path']['contenido_config'] . 'config.php')) {
+    $msg  = "<h1>Fatal Error</h1><br>"
+          . "Could not open the configuration file <b>config.php</b>.<br><br>"
+          . "Please make sure that you saved the file in the setup program."
+          . "If you had to place the file manually on your webserver, make sure that it is placed in your contenido/data/config/{environment}/ directory.";
     die($msg);
 }
 
 // Include some basic configuration files
-include_once(dirname(__FILE__) . '/config.php');
-include_once(dirname(__FILE__) . '/config.path.php');
-include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.misc.php');
-include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.colors.php');
-include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.templates.php');
-include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/cfg_sql.inc.php');
+require_once($cfg['path']['contenido_config'] . 'config.php');
+require_once($cfg['path']['contenido_config'] . 'config.path.php');
+require_once($cfg['path']['contenido_config'] . 'config.misc.php');
+require_once($cfg['path']['contenido_config'] . 'config.colors.php');
+require_once($cfg['path']['contenido_config'] . 'config.templates.php');
+require_once($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
-if (file_exists($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.clients.php')) {
-    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.clients.php');
+if (file_exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
+    require_once($cfg['path']['contenido_config'] . 'config.clients.php');
 }
 
 // Include userdefined configuration (if available), where you are able to
 // extend/overwrite core settings from included configuration files above
-if (file_exists($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.local.php')) {
-    include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.local.php');
+if (file_exists($cfg['path']['contenido_config'] . 'config.local.php')) {
+    require_once($cfg['path']['contenido_config'] . 'config.local.php');
 }
 
 // Takeover configured PHP settings
@@ -130,23 +124,22 @@ if ($cfg['php_settings'] && is_array($cfg['php_settings'])) {
 error_reporting($cfg['php_error_reporting']);
 
 // Various base API functions
-require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . '/api/functions.api.general.php');
+require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'api/functions.api.general.php');
 
 // Initialization of autoloader
-include_once($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
+require_once($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
 Contenido_Autoload::initialize($cfg);
 
 // Security check: Check HTTP parameters, if requested
 if ($cfg['http_params_check']['enabled'] === true) {
     $oHttpInputValidator =
-        new HttpInputValidator($cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.http_check.php');
+        new HttpInputValidator($cfg['path']['contenido_config'] . 'config.http_check.php');
 }
 
 // Generate arrays for available login languages
 // Author: Martin Horwath
-global $cfg;
-$localePath = $cfg['path']['contenido'] . $cfg['path']['locale'];
-$handle = opendir($cfg['path']['contenido'] . $cfg['path']['locale']);
+$localePath = $cfg['path']['contenido_locale'];
+$handle = opendir($localePath);
 while ($locale = readdir($handle)) {
     if (is_dir($localePath . $locale) && $locale != '..' && $locale != '.') {
         if (file_exists($localePath . $locale . '/LC_MESSAGES/contenido.po') &&
@@ -164,12 +157,12 @@ cInclude('includes', 'functions.i18n.php');
 
 // Initialization of CEC
 $_cecRegistry = cApiCECRegistry::getInstance();
-cInclude('includes', 'config.chains.php');
+require_once($cfg['path']['contenido_config'] . 'config.chains.php');
 
 // Set default database connection parameter
 $cfg['db']['sequenceTable'] = $cfg['tab']['sequence'];
 DB_Contenido::setDefaultConfiguration($cfg['db']);
 
-// Initialize UrlBuilder, configuration is set in /contenido/includes/config.misc.php
+// Initialize UrlBuilder, configuration is set in data/config/{environment}/config.misc.php
 Contenido_UrlBuilderConfig::setConfig($cfg['url_builder']);
 ?>

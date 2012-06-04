@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO setup
- * @version    0.3.1
+ * @version    0.3.2
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,13 +21,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as CONTENIDO now requires at least PHP 5
- *   modified 2011-05-19, Murat Purc, check for defined constant C_SETUP_STEPS to prevent thrown warnings
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -64,7 +59,9 @@ function cGenerateSetupStepsDisplay($iCurrentStep)
  *
  * @return    void
  */
-function logSetupFailure($sErrorMessage) {
-    file_put_contents(C_FRONTEND_PATH . 'contenido/logs/setuplog.txt', $sErrorMessage . PHP_EOL . PHP_EOL, FILE_APPEND);
+function logSetupFailure($sErrorMessage)
+{
+	file_put_contents($cfg['path']['contenido_logs'] . 'setuplog.txt', $sErrorMessage . PHP_EOL . PHP_EOL, FILE_APPEND);
 }
+
 ?>

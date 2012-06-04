@@ -13,7 +13,7 @@
  * normalizing API.
  *
  * @package    CONTENIDO API
- * @version    0.1.1
+ * @version    0.1.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,10 +23,8 @@
  *
  * {@internal
  *   created 2012-03-20
- *
  *   $Id$;
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -211,7 +209,7 @@ class cApiOnlineUserCollection extends ItemCollection
     public function deleteInactiveUser()
     {
         global $cfg;
-        cInclude('includes', 'config.misc.php');
+        include_once($cfg['path']['contenido_config'] . 'config.misc.php');
         $iSetTimeOut = (int) $cfg['backend']['timeout'];
         if ($iSetTimeOut <= 0) {
             $iSetTimeOut = 10;

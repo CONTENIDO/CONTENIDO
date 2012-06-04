@@ -6,14 +6,14 @@
  * Description:
  * Debug object to show info on screen.
  * In case you cannot output directly to screen when debugging a live system, this object writes
- * the info to a file located in /contenido/logs/debug.log.
+ * the info to a file located in /data/log/debug.log.
  *
  * Requirements:
  * @con_php_req 5.0
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.1.0
+ * @version    1.1.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,11 +22,8 @@
  *
  * {@internal
  *   created 2007-01-01
- *   modified 2008-05-21 Added methods add(), reset(), showAll()
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

@@ -1,4 +1,30 @@
 <?php
+/**
+ * Project:
+ * CONTENIDO Content Management System
+ *
+ * Description:
+ * Debug object to write info to a file and to show info on screen.
+ * In case you cannot output directly to screen when debugging a live system, this object writes
+ * the info to a file located in /contenido/logs/debug.log.
+ *
+ * Requirements:
+ * @con_php_req 5.0
+ *
+ *
+ * @package    CONTENIDO Backend Classes
+ * @version    1.0.1
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ * @license    http://www.contenido.org/license/LIZENZ.txt
+ * @link       http://www.4fb.de
+ * @link       http://www.contenido.org
+ *
+ * {@internal
+ *   created  2007-01-01
+ *   $Id: $:
+ * }}
+ */
 
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
@@ -12,10 +38,13 @@ class Debug_FileAndVisAdv extends Debug_VisibleAdv
     static protected $_instance;
     private $_aItems;
     private $_buffer;
+    private $_filePathName;
 
     private function __construct()
     {
+        global $cfg;
         $this->_aItems = array();
+        $this->_filePathName = $cfg['path']['contenido_logs'] . 'debug.log';
     }
 
     static public function getInstance()
@@ -28,31 +57,25 @@ class Debug_FileAndVisAdv extends Debug_VisibleAdv
 
     public function out($msg)
     {
-        global $cfg;
-
         parent::out($msg);
 
-        $file = $cfg['path']['contenido'].'logs'.DIRECTORY_SEPARATOR.'debug.log';
-        if (is_writeable($file)) {
+        if (is_writeable($this->_filePathName)) {
             $sDate = date('Y-m-d H:i:s');
-            file_put_contents($file, $sDate.": ".$msg."\n", FILE_APPEND);
+            file_put_contents($this->_filePathName, $sDate . ": " . $msg . "\n", FILE_APPEND);
         }
     }
 
-    public function show($mVariable, $sVariableDescription='', $bExit = false)
+    public function show($mVariable, $sVariableDescription = '', $bExit = false)
     {
-        global $cfg;
-
         parent::show($mVariable, $sVariableDescription, $bExit);
 
-        $file = $cfg['path']['contenido'].'logs'.DIRECTORY_SEPARATOR.'debug.log';
-
-        if (is_writeable($file)) {
+        if (is_writeable($this->_filePathName)) {
             $sDate = date('Y-m-d H:i:s');
-            file_put_contents($file, '#################### '.$sDate.' ####################'."\n", FILE_APPEND);
-            file_put_contents($file, $sVariableDescription."\n", FILE_APPEND);
-            file_put_contents($file, print_r($mVariable, true)."\n", FILE_APPEND);
-            file_put_contents($file, '#################### /'.$sDate.' ###################'."\n\n", FILE_APPEND);
+            $sContent = '#################### ' . $sDate . ' ####################' . "\n"
+                      . $sVariableDescription . "\n"
+                      . print_r($mVariable, true) . "\n"
+                      . '#################### /' . $sDate . ' ###################' . "\n\n";
+            file_put_contents($file, $sContent, FILE_APPEND);
         }
     }
 }

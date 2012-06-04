@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.3.23
+ * @version    1.3.24
  * @author     Olaf Niemann
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -647,7 +647,7 @@ function strRenameCategory($idcat, $lang, $newCategoryName, $newCategoryAlias)
  */
 function strRenameCategoryAlias($idcat, $lang, $newcategoryalias)
 {
-    global $db, $cfg, $client;
+    global $client;
 
     $oCatLang = new cApiCategoryLanguage();
     if (!$oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang)) {
@@ -678,7 +678,7 @@ function strRenameCategoryAlias($idcat, $lang, $newcategoryalias)
  */
 function strMakeVisible($idcat, $lang, $visible)
 {
-    global $db, $cfg;
+    global $cfg;
 
     $visible = (int) $visible;
     $lang = (int) $lang;
@@ -723,37 +723,42 @@ function strMakePublic($idcat, $lang, $public)
 }
 
 /**
- * Returns all childs and childchidls of $idcat_start
+ * Returns all childs and childchilds of passed category
  *
- * @param    int    $idcat_start the start category
- * @return   array  contains all childs of $idcat_start and $id_cat start itself
+ * @param    int    $startIdcat  The start category
+ * @return   array  Contains all childs of $startIdcat and $startIdcat start itself
  */
-function strDeeperCategoriesArray($idcat_start)
+function strDeeperCategoriesArray($startIdcat)
 {
     global $db, $client, $cfg;
 
-    $catstring = array();
-    $openlist = array();
+    $catList = array();
+    $openList = array();
 
-    array_push($openlist, $idcat_start);
+    array_push($openList, $startIdcat);
 
-    while (($actid = array_pop($openlist)) != null) {
-        if (in_array($actid, $catstring)) {
+    while (($actId = array_pop($openList)) != null) {
+        if (in_array($actId, $catList)) {
             continue;
         }
 
-        array_push($catstring, $actid);
+        array_push($catList, $actId);
 
-        $sql = "SELECT * FROM ".$cfg['tab']['cat_tree']." AS A, ".$cfg['tab']['cat']." AS B WHERE A.idcat=B.idcat AND B.parentid='".$actid."' AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY idtree";
+        $sql = "SELECT * FROM `:cat_tree` AS A, `:cat` AS B WHERE A.idcat=B.idcat AND B.parentid=:parentid AND idclient=:idclient ORDER BY idtree";
+        $db->prepare($sql, array(
+            'cat_tree' => $cfg['tab']['cat_tree'],
+            'cat' => $cfg['tab']['cat'],
+            'parentid' => (int) $actId,
+            'idclient' => (int) $client,
+        ));
         $db->query($sql);
 
         while ($db->next_record()) {
-            $id_cat = $db->f("idcat");
-            array_push($openlist, $id_cat);
+            array_push($openList, $db->f('idcat'));
         }
     }
 
-    return $catstring;
+    return $catList;
 }
 
 
@@ -1169,7 +1174,6 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
     }
 }
 
-
 /**
  * Checks if category has a start article
  *
@@ -1179,14 +1183,9 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
  */
 function strHasStartArticle($idcat, $idlang)
 {
-    global $cfg, $db_str;
-
-    $sql = "SELECT startidartlang FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat = " . (int) $idcat . " AND idlang = " . (int) $idlang . " AND startidartlang != 0";
-
-    $db_str->query($sql);
-    return ($db_str->next_record()) ? true : false;
+    $oCatLangColl = new cApiCategoryLanguageCollection();
+    return ($oCatLangColl->getStartIdartlangByIdcatAndIdlang($idcat, $idlang) > 0);
 }
-
 
 /**
  * Copies the category and it's existing articles into another category.

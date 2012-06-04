@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend
- * @version    1.1.3
+ * @version    1.1.4
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created  2003-05-20
- *   modified 2008-07-02, Frederic Schneider, new code-header and include security_class
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -42,9 +38,9 @@ cRegistry::bootstrap(array(
     'perm' => 'Contenido_Perm'
 ));
 
-i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
+i18nInit($cfg['path']['contenido_locale'], $belang);
 
-cInclude('includes', 'cfg_actions.inc.php');
+require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 cInclude('includes', 'functions.forms.php');
 
 $db = new DB_Contenido();

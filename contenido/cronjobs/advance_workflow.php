@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Cronjob
- * @version    1.5.3
+ * @version    1.5.4
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,13 +20,8 @@
  *
  * {@internal
  *   created  2003-05-26
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
- *   modified 2011-05-12, Dominik Ziegler, forced include of startup.php [#CON-390]
- *   modified 2011-10-12, Murat Purc, absolute path to startup [#CON-447] and some cleanup
- *
  *   $Id: advance_workflow.php,v 1.5 2004/06/17 15:06:08 timo.hummel Exp $
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -39,7 +34,7 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
-cInclude('includes', 'cfg_actions.inc.php');
+require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 cInclude('includes', 'functions.con.php');
 
 plugin_include('workflow', 'classes/class.workflow.php');

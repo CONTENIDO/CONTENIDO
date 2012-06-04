@@ -8,10 +8,8 @@ cms/version/js/*
 cms/version/layout/*
 cms/version/module/*
 cms/version/templates/*
-contenido/cache/*
 contenido/cronjobs/*.job
 contenido/includes/config.clients.php
 contenido/includes/config.local.php
 contenido/includes/config.php
-contenido/logs/*.txt
 /nbproject

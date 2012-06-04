@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend
- * @version    1.2.2
+ * @version    1.2.3
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,16 +21,8 @@
  *
  * {@internal
  *   created  2003-01-20
- *   modified 2008-06-16, Holger Librenz, Hotifx: added check for invalid calls
- *   modified 2008-06-16, Rudi Bieller, Hotifx: added check for XSS at "CONTENIDO" and "belang"
- *   modified 2008-06-25, Timo Trautmann, CONTENIDO Framework Constand added
- *   modified 2008-07-02, Frederic Schneider, add security fix and include security class
- *   modified 2009-10-16, Ortwin Pinke, added rewrite of ampersand in frameset url
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -46,11 +38,11 @@ cRegistry::bootstrap(array(
     'perm' => 'Contenido_Perm'
 ));
 
-i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
+i18nInit($cfg['path']['contenido_locale'], $belang);
 
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
-cInclude('includes', 'cfg_actions.inc.php');
+require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 cInclude('includes', 'functions.forms.php');
 
 $sess->register('belang');

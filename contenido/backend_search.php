@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend
- * @version    1.0.5
+ * @version    1.0.6
  * @author     Holger Librenz, Andreas Lindner
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,17 +21,8 @@
  *
  * {@internal
  *   created  2007-04-20
- *   modified 2008-01-16, Thorsten Granz, Added 'store search' function, Added showinng values of search in searchform (Timo Trautmann)
- *   modified 2008-06-15, Rudi Bieller, Bugfix CON-149
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-06-27, Timo.Trautmann, Encoding Header added
- *   modified 2008-07-02, Frederic Schneider, querys escaped and include security class
- *   modified 2008-09-08, Oliver Lohkemper, Fixed: "Fatal error: Class 'PropertyCollection' not found"
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -47,7 +38,7 @@ cRegistry::bootstrap(array(
     'perm' => 'Contenido_Perm'
 ));
 
-i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
+i18nInit($cfg['path']['contenido_locale'], $belang);
 
 // Initialize variables
 $db = new DB_Contenido();
@@ -123,7 +114,7 @@ if (!empty($sSession)) {
         'auth' => 'Contenido_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'
     ));
-    i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
+    i18nInit($cfg['path']['contenido_locale'], $belang);
 } else {
     //Frontend
     cRegistry::bootstrap(array(

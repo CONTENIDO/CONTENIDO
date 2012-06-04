@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend
- * @version    1.0.6
+ * @version    1.0.7
  * @author     Olaf Niemann, Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,15 +21,8 @@
  *
  * {@internal
  *   created  2003-01-20
- *   modified 2008-06-16, Holger Librenz, Hotfix: added check for invalid calls
- *   modified 2008-06-25, Timo Trautmann, CONTENIDO Framework Constand added
- *   modified 2008-07-02, Frederic Schneider, add security fix and include security_class
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
- *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as CONTENIDO now requires at least PHP 5
- *   modified 2011-06-15, Rusmir Jusufovic, add CONTENIDO Vars for modul
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -50,11 +43,11 @@ cRegistry::bootstrap(array(
     'perm' => 'Contenido_Perm'
 ));
 
-i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
+i18nInit($cfg['path']['contenido_locale'], $belang);
 
 require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.includePluginConf.php');
 
-cInclude('includes', 'cfg_actions.inc.php');
+require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 if ($cfg['use_pseudocron'] == true) {
     // Include cronjob-Emulator, but only for frame 1

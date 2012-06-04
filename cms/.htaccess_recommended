@@ -19,7 +19,7 @@
 
 
 # Protect some directories/files from direct access
-<FilesMatch "\.(inc|mo|po|sh|sql)$|^(cms/includes.*|cms/logs.*|cms/module.*|cms/templates.*|cms/version.*|conlib.*|contenido/cronjobs.*|contenido/includes.*|contenido/locale.*|contenido/logs.*|contenido/templates.*|contenido/xml.*|pear.*|library.*|test.*)$">
+<FilesMatch "\.(inc|mo|po|sh|sql)$|^(cms/includes.*|cms/logs.*|cms/module.*|cms/templates.*|cms/version.*|conlib.*|contenido/cronjobs.*|contenido/includes.*|data.*|contenido/templates.*|contenido/xml.*|pear.*|library.*|test.*)$">
     Order deny,allow
 </FilesMatch>
 

@@ -9,7 +9,7 @@
  * @con_php_req 5
  *
  * @package    CONTENIDO setup
- * @version    0.2
+ * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -19,12 +19,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *   modified 2011-03-21, Murat Purc, usage of new db connection
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -54,7 +50,7 @@ class cSetupClientAdjust extends cSetupMask
 
         list($a_root_path, $a_root_http_path) = getSystemDirectories();
 
-        @include($a_root_path . "/contenido/includes/config.php");
+        @include($cfg['path']['contenido_config'] . 'config.php');
 
         foreach ($aClients as $iIdClient => $aInfo) {
             if ($_SESSION["frontendpath"][$iIdClient] == "") {

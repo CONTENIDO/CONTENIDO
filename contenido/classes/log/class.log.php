@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.2
+ * @version    1.2.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,15 +20,13 @@
  *
  * {@internal
  *   created 2004-09-28
- *
  *   $Id: class.log.php,v 1.2 2006/04/28 09:20:55 timo.hummel Exp $
  * }}
- *
  */
 
  /** Examples **
 
-  Standard logging (file logger, to logs/contenido.log):
+  Standard logging (file logger, to data/log/contenido.log):
 
   $log = new cLog;
   $log->("this is a log message");
@@ -85,8 +83,8 @@ class cLog
      * percentage sign (%) and contain one or more characters. Each placeholder is handled by an own function which
      * decides what to do.
      *
-     * @param oLogger mixed Logger object (any subclass of PEAR::Log), or false if cLog
-     *                        should handle the logger creation
+     * @param  mixed  oLogger  Logger object (any subclass of PEAR::Log), or false if cLog
+     *                         should handle the logger creation
      */
     public function __construct($oLogger = false)
     {
@@ -116,7 +114,7 @@ class cLog
         }
 
         if ($bCreateLogger === true) {
-            $oLogger = &Log::factory("file", $cfg["path"]["contenido"]."/logs/contenido.log");
+            $oLogger = &Log::factory("file", $cfg['path']['contenido_logs'] . 'contenido.log');
             $oLogger->_lineFormat = '%4$s';
         }
 

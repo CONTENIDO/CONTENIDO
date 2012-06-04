@@ -107,7 +107,7 @@ v1.0   01-17-03
 ***************************************************************************/
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -122,12 +122,12 @@ if(!defined('CON_FRAMEWORK')) {
 // the file that contains the job descriptions
 // for a description of the format, see http://www.unixgeeks.org/security/newbie/unix/cron-1.html
 // and http://www.bitfolge.de/pseudocron
-$PC_cronTab = $cfg["path"]["contenido"].$cfg['path']['cronjobs']."crontab.txt";
-$PC_localCronTab = $cfg["path"]["contenido"].$cfg['path']['cronjobs']."crontab.local.txt";
+$PC_cronTab = $cfg['path']['contenido_cronlog'] . 'crontab.txt';
+$PC_localCronTab = $cfg['path']['contenido_cronlog'] . 'crontab.local.txt';
 
 // the directory where the script can store information on completed jobs and its log file
 // include trailing slash
-$PC_writeDir = $cfg["path"]["contenido"].$cfg['path']['cronjobs'];
+$PC_writeDir = $cfg['path']['contenido_cronlog'];
 
 // the directory where the script can store information on completed jobs and its log file
 // include trailing slash
@@ -173,14 +173,14 @@ chdir($PC_jobDir);
 $PC_jobs = parseCronFile($PC_cronTab, $PC_debug);
 
 for ($i=0;$i<count($PC_jobs);$i++) {
-	$bJobRunned = true;
- 	runJob($PC_jobs[$i], $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug);
+    $bJobRunned = true;
+    runJob($PC_jobs[$i], $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug);
 }
 
 $PC_jobs = parseCronFile($PC_localCronTab, $PC_debug);
 for ($i=0;$i<count($PC_jobs);$i++) {
-	$bJobRunned = true;
-   	runJob($PC_jobs[$i], $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug);
+    $bJobRunned = true;
+    runJob($PC_jobs[$i], $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug);
 }
 chdir($PC_reqDir);
 
@@ -188,25 +188,22 @@ if ($PC_debug) echo "\n</pre>";
 
 
 function logMessage($msg, $PC_writeDir, $PC_useLog, $PC_debug) {
-
    if ($PC_useLog==1) {
       $logfile = $PC_writeDir."pseudo-cron.log";
-      
-      if (is_writable($logfile))
-      {
-	      $file = fopen($logfile,"ab");
-	      if ($msg[strlen($msg)-1]!="\n") {
-	         $msg.="\r\n";
-	      }
-	      if ($PC_debug) echo $msg;
-	      fputs($file,date("r",time())."  ".$msg);
-	      fclose($file);
+
+      if (is_writable($logfile)) {
+          $file = fopen($logfile,"ab");
+          if ($msg[strlen($msg)-1]!="\n") {
+             $msg.="\r\n";
+          }
+          if ($PC_debug) echo $msg;
+          fputs($file,date("r",time())."  ".$msg);
+          fclose($file);
       }
    }
 }
 
 function lTrimZeros($number) {
-
    while ($number[0]=='0') {
       $number = substr($number,1);
    }
@@ -214,7 +211,6 @@ function lTrimZeros($number) {
 }
 
 function parseElement($element, &$targetArray, $numberOfElements) {
-
    $subelements = explode(",",$element);
    for ($i=0;$i<$numberOfElements;$i++) {
       $targetArray[$i] = $subelements[0]=="*";
@@ -228,13 +224,12 @@ function parseElement($element, &$targetArray, $numberOfElements) {
          } elseif (!array_key_exists(4,$matches) || $matches[4]=="") {
             $matches[4] = $matches[2];
          }
-         if (array_key_exists(5, $matches))
-         {
+         if (array_key_exists(5, $matches)) {
              if ($matches[5][0]!="/") {
                 $matches[6] = 1;      // step
              }
          } else {
-         	 $matches[6] = 1;      // step
+              $matches[6] = 1;      // step
          }
          for ($j=lTrimZeros($matches[2]);$j<=lTrimZeros($matches[4]);$j+=lTrimZeros($matches[6])) {
             $targetArray[$j] = TRUE;
@@ -244,7 +239,6 @@ function parseElement($element, &$targetArray, $numberOfElements) {
 }
 
 function decDate(&$dateArr, $amount, $unit, $PC_debug) {
-
    if ($PC_debug) echo sprintf("Decreasing from %02d.%02d. %02d:%02d by %d %6s ",$dateArr[mday],$dateArr[mon],$dateArr[hours],$dateArr[minutes],$amount,$unit);
    if ($unit=="mday") {
       $dateArr["hours"] = 23;
@@ -302,7 +296,6 @@ function decDate(&$dateArr, $amount, $unit, $PC_debug) {
 }
 
 function getLastScheduledRunTime($job, $PC_debug) {
-
    $dateArr = getdate();
    $minutesBack = 0;
    while (
@@ -335,13 +328,11 @@ function getLastScheduledRunTime($job, $PC_debug) {
 }
 
 function getJobFileName($jobname, $PC_writeDir) {
-
    $jobfile = $PC_writeDir.urlencode($jobname).".job";
    return $jobfile;
 }
 
 function getLastActialRunTime($jobname, $PC_writeDir) {
-
    $jobfile = getJobFileName($jobname, $PC_writeDir);
    if (file_exists($jobfile)) {
       $file = fopen($jobfile,"rb");
@@ -354,18 +345,15 @@ function getLastActialRunTime($jobname, $PC_writeDir) {
    return 0;
 }
 
-function markLastRun($jobname, $lastRun, $PC_writeDir)
-{
+function markLastRun($jobname, $lastRun, $PC_writeDir) {
+    $jobfile = getJobFileName($jobname, $PC_writeDir);
 
-	$jobfile = getJobFileName($jobname, $PC_writeDir);
-	
-	if ($file = @fopen($jobfile,"w"))
-	{
-		fputs($file,$lastRun);
-		fclose($file);
-	} else {
-		//echo "Could not write into file $jobfile - permission denied.";
-	} 
+    if ($file = @fopen($jobfile,"w")) {
+        fputs($file,$lastRun);
+        fclose($file);
+    } else {
+        //echo "Could not write into file $jobfile - permission denied.";
+    }
 }
 
 function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug=false) {
@@ -391,15 +379,13 @@ function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug=false) {
          echo getcwd();
          include($PC_jobDir.$job[PC_CMD]);      // display errors only when debugging
       } else {
-	      	if (is_object($sess))
-	      	{
-   				$sess->freeze();
-	      	}
-         @include($PC_jobDir.$job[PC_CMD]);      // any error messages are supressed
-	      	if (is_object($sess))
-	      	{
-		  		$sess->thaw();
-	      	}         
+        if (is_object($sess)) {
+            $sess->freeze();
+        }
+        @include($PC_jobDir.$job[PC_CMD]);      // any error messages are supressed
+        if (is_object($sess)) {
+            $sess->thaw();
+        }
       }
       logMessage("Completed   ".$job[PC_CRONLINE], $PC_writeDir, $PC_useLog, $PC_debug);
       return true;
@@ -415,7 +401,6 @@ function runJob($job, $PC_jobDir, $PC_writeDir, $PC_useLog, $PC_debug=false) {
 }
 
 function parseCronFile($PC_cronTabFile, $PC_debug) {
-
    $file = @file($PC_cronTabFile);
    $job = Array();
    $jobs = Array();

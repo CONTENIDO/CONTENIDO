@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.1.1
+ * @version    1.1.2
  * @author     Frederic Schneider
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,20 +24,8 @@
  *
  * {@internal
  *   created  2008-06-25
- *   modified 2008-07-02, Frederic Schneider, added boolean functions and checkRequests()
- *   modified 2008-07-04, Frederic Schneider, added test to valid contenido-session-var
- *   modified 2008-07-23, Frederic Schneider, fixed stripslashes_deep functionality
- *   modified 2008-07-31, Frederic Schneider, added escapeString() with fallback at escapeDB()
- *   modified 2008-11-13, Timo Trautmann also strip slashes, if they were added autmatically by php
- *   modified 2010-05-20, Murat Purc, extended/added request parameter checks which are usable
- *                        by CONTENIDO startup process. Changed script terminations by die() to Exceptions.
- *   modified 2010-09-30, Dominik Ziegler, added optional logging
- *   modified 2010-11-22, Dominik Ziegler, fixed behaviour of isInteger [CON-365]
- *   modified 2011-02-08, Murat Purc, removed not required logic, cleanup and formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -63,11 +51,13 @@ class Contenido_Security_Exception extends Exception
      */
     public function __construct($sMessage, $sParamName)
     {
+        global $cfg;
+
         parent::__construct($sMessage);
 
         // check if logging is enabled
         if ( self::$_logging == true ) {
-            $sLogFile = realpath( dirname(__FILE__) . '/../logs/') . '/security.txt';
+            $sLogFile = $cfg['path']['contenido_config'] . 'security.txt';
 
             $sFileContent = '---------' . PHP_EOL;
             $sFileContent .= "Invalid call caused by parameter '" . $sParamName . "' at " . date("c") . PHP_EOL;

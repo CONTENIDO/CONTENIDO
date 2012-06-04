@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.4.2
+ * @version    1.4.3
  * @author     Bjoern Behrens
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,11 +21,8 @@
  *
  * {@internal
  *   created  2004-02-24
- *   modified 2008-06-25, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {

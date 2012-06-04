@@ -11,7 +11,7 @@
  * @con_php_req 5
  *
  * @package    CONTENIDO setup
- * @version    0.2.5
+ * @version    0.2.6
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,18 +21,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *   modified 2011-02-24, Murat Purc, extended mysql extension detection
- *   modified 2011-02-28, Murat Purc, normalized setup startup process and some cleanup/formatting
- *   modified 2011-03-21, Murat Purc, usage of new db connection
- *   modified 2011-05-17, Ortwin Pinke, del sequencetable cfg, has to be set in connect-function
- *   modified 2011-01-11, rusmir jusufovic,
- *       - save input and output and translations strings from moduls in files
- *   modified 2011-06-20, Rusmir Jusufovic , save layout in filesystem
- *
  *   $Id: dbupdate.php 1656 2011-10-31 23:36:53Z xmurrix $:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -305,7 +295,7 @@ if ($currentStep < $totalSteps) {
                 $sql = sprintf("ALTER TABLE %s DROP frontendpath", $cfg['tab']['clients']);
                 $db->query($sql);
             }
-            checkAndInclude($cfg["path"]["contenido"]."include/config.clients.php");
+            checkAndInclude($cfg['path']['contenido_config'] . 'config.clients.php');
         }
 
         rereadClients();

@@ -7,8 +7,8 @@
  * Implements autoload feature for a CONTENIDO project.
  *
  * Autoloading for CONTENIDO is provided via a generated classmap configuration 
- * file, which is available inside contenido/includes/ folder.
- * - contenido/includes/config.autoloader.php
+ * file, which is available inside contenido/data/config/{environment}/ folder.
+ * - contenido/data/config/{environment}/config.autoloader.php
  *
  * Autoloading is extendable by adding a additional classmap file inside the same 
  * folder, which could contain further classmap settings or could overwrite 
@@ -23,7 +23,7 @@
  * @con_php_req 5.0
  *
  * @package    CONTENIDO Autoloader
- * @version    0.0.2
+ * @version    0.0.3
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -33,12 +33,8 @@
  *
  * {@internal
  *   created  2010-12-27
- *   modified 2011-01-13, Murat Purc, removed autoloading of PEAR classes.
- *   modified 2011-02-23, Murat Purc, added method isAutoloadable()
- *  
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -112,13 +108,13 @@ class Contenido_Autoload
         spl_autoload_register(array(__CLASS__, 'autoload'));
 
         // load n' store autoloader classmap file
-        $file = $cfg['path']['contenido'] . $cfg['path']['includes'] . 'config.autoloader.php';
+        $file = $cfg['path']['contenido_config'] . 'config.autoloader.php';
         if ($arr = include_once($file)) {
             self::$_includeFiles = $arr;
         }
 
         // load n' store additional autoloader classmap file, if exists
-        $file = $cfg['path']['contenido'] . $cfg['path']['includes'] . 'config.autoloader.local.php';
+        $file = $cfg['path']['contenido_config'] . 'config.autoloader.local.php';
         if (is_file($file)) {
             if ($arr = include_once($file)) {
                 self::$_includeFiles = array_merge(self::$_includeFiles, $arr);

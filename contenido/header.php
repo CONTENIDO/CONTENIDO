@@ -43,9 +43,9 @@ cRegistry::bootstrap(array(
     'perm' => 'Contenido_Perm'
 ));
 
-i18nInit($cfg['path']['contenido'] . $cfg['path']['locale'], $belang);
+i18nInit($cfg['path']['contenido_locale'], $belang);
 
-cInclude('includes', 'cfg_actions.inc.php');
+require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 cInclude('includes', 'functions.forms.php');
 
 $db = new DB_Contenido();

@@ -19,7 +19,7 @@
  * @con_php_req 5.0
  *
  * @package    CONTENIDO Autoloader
- * @version    0.0.1
+ * @version    0.0.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -29,15 +29,17 @@
  *
  * {@internal
  *   created  2010-12-27
- *   modified 2010-12-29, Murat Purc, removed parsing of pear folder
  *   $Id$:
  * }}
- *
  */
 
 
 // allow execution only thru cli mode
 (substr(PHP_SAPI, 0, 3) == 'cli') or die('Illegal call');
+
+if (!defined('CONTENIDO_ENVIRONMENT')) {
+    define('CONTENIDO_ENVIRONMENT', getenv('CONTENIDO_ENVIRONMENT') ? getenv('CONTENIDO_ENVIRONMENT') : 'production');
+}
 
 
 ################################################################################
@@ -53,7 +55,7 @@ $context->currentPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')
 $context->contenidoInstallPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../')) . '/';
 
 // the destination file where the class map configuration should be written in
-$context->destinationFile = $context->contenidoInstallPath . '/contenido/includes/config.autoloader.php';
+$context->destinationFile = $context->contenidoInstallPath . '/data/config/' . CONTENIDO_ENVIRONMENT . '/config.autoloader.php';
 
 // list of paths from where all class/interface names should be found
 $context->pathsToParse = array(

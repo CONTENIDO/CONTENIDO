@@ -9,7 +9,7 @@
  * @con_php_req 5
  *
  * @package    CONTENIDO setup
- * @version    0.2
+ * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -19,11 +19,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -74,7 +71,7 @@ class cSetupResults extends cSetupMask
             cSetupMask::cSetupMask("templates/setup/forms/setupresultsfail.tpl", $step);
             $this->_oStepTemplate->set("s", "TITLE", i18n("Setup Results"));
 
-            $this->_oStepTemplate->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;contenido/logs/&quot;) for more information."), 'setuplog.txt'));
+            $this->_oStepTemplate->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;contenido/data/log/&quot;) for more information."), 'setuplog.txt'));
 
             switch ($_SESSION["setuptype"]) {
                 case "setup":

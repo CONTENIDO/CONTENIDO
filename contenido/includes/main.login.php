@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.6
+ * @version    1.0.7
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,16 +21,8 @@
  *
  * {@internal
  *   created 2003-01-21
- *   modified 2008-06-26, Dominik Ziegler, update notifier class added
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2009-12-14, Dominik Ziegler, use User::getRealname() for user name output and provide username fallback
- *   modified 2010-05-20, Oliver Lohkemper, add param true for get active admins
- *   modified 2011-01-28, Dominik Ziegler, added missing notice in backend home when no clients are available [#CON-379]
- *   modified 2011-08-18, Dominik Ziegler, added notification if maintenance mode is active [#CON-403]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -76,7 +68,7 @@ if ($max_log_size === false) {
     $max_log_size = 10;
 }
 if (in_array('sysadmin', explode(',', $vuser->getEffectiveUserPerms())) && $max_log_size > 0) {
-    $log_size = getDirectorySize($cfg['path']['contenido'] . 'logs/');
+    $log_size = getDirectorySize($cfg['path']['contenido_logs']);
     if ($log_size > $max_log_size * 1024 * 1024) {
         $aNotificationText[] = $notification->returnNotification('warning', i18n('The log directory is bigger than') . ' ' . human_readable_size($max_log_size * 1024 * 1024) . '.' . i18n('Current size') . ': ' . human_readable_size($log_size));
     }

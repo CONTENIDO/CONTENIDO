@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Definition of SQL-vars
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,14 +18,11 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
- *   created 2003-01-21
- *   modified 2008-06-25, Frederic Schneider, add security fix
  *
+ * {@internal
+ *   created 2003-01-21
  *   $Id$:
  * }}
- * 
  */
 
 if (!defined('CON_FRAMEWORK')) {

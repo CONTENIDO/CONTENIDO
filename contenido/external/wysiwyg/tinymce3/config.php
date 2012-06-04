@@ -1,57 +1,43 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * TINYMCE 1.45rc1 PHP WYSIWYG editor config
  * Main editor configuration file for CONTENIDO
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5
  *
  * @package    CONTENIDO Backend Editor
- * @version    0.0.3
+ * @version    0.0.4
  * @author     Martin Horwath, horwath@dayside.net
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * 
- * 
- * {@internal 
- *   created  2005-06-10
- *   modified 2008-07-04, bilal arslan, added security fix
  *
+ *
+ * {@internal
+ *   created  2005-06-10
  *   $Id: config.php 739 2008-08-27 10:37:54Z timo.trautmann $:
  * }}
- * 
  */
- if(!defined('CON_FRAMEWORK')) {
-   die('Illegal call');
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
+cInclude('includes', 'functions.con.php');
+cInclude('includes', 'functions.general.php');
+cInclude('includes', 'functions.i18n.php');
+cInclude('includes', 'functions.api.php');
 
-// include CONTENIDO config file
-$contenido_path = implode (DIRECTORY_SEPARATOR , array_slice(explode(DIRECTORY_SEPARATOR , dirname(__FILE__)), 0, -3)) . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR;
+$db = new DB_Contenido();
 
-if (file_exists( $contenido_path . 'startup.php'))
-{
-	@include_once ($contenido_path . 'startup.php');
-} else {
-	@include_once ($contenido_path . 'config.php');
+if ($cfgClient['set'] != 'set') {
+    rereadClients();
 }
 
-cInclude ("includes", 'functions.con.php');
-cInclude ("includes", 'functions.general.php');
-cInclude ("includes", 'functions.i18n.php');
-cInclude ("includes", 'functions.api.php');
-
-$db = new DB_Contenido;
-
-if ($cfgClient["set"] != "set") // CONTENIDO
-{
-	rereadClients();
-}
 ?>

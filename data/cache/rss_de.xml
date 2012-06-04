@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<rss version="2.0">
+<channel>
+<title>Contenido.org RSS feed</title>
+<copyright></copyright>
+<link>http://www.contenido.org/de/</link>
+<description></description>
+<language>de</language>
+<lastBuildDate>Mon, 16 Apr 2012 13:00:40 CEST</lastBuildDate>
+<pubDate>Mon, 16 Apr 2012 13:00:40 CEST</pubDate>
+<generator>Contenido CMS</generator>
+<managingEditor></managingEditor>
+<webMaster></webMaster>
+<ttl></ttl>
+<image>
+<title></title>
+<width></width>
+<height></height>
+<url></url>
+<link></link>
+</image>
+<item>
+<title>CONTENIDO Version 4.9 Alpha 1 jetzt verfügbar!</title>
+<description>Seit mehrerenMonaten gab es keine neue Version von CONTENIDO mehr. Das ändertsich jetzt, denn seit wenigen Minuten steht die erste öffentliche TestversionAlpha 1 von CONTENIDO 4.9</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1874&amp;client=6&amp;lang=3</link>
+<pubDate>Tue, 27 Mar 2012 11:11:05</pubDate>
+<author>Timo Trautmann (4fb)</author>
+</item>
+<item>
+<title>CONTENIDO bekommt mehr Platz </title>
+<description>In den letzten Wochen und Monaten kam er verstärkt zu Ausfällen, die einem Mangel an Performance des genutzten Servers geschuldet waren.Die Website, das Forum und einige andere verbundenen</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1873&amp;client=6&amp;lang=3</link>
+<pubDate>Tue, 27 Mar 2012 11:05:42</pubDate>
+<author>Harald Wirths</author>
+</item>
+<item>
+<title>Immer bestens informiert. Jetzt den CONTENIDO E-Newsletter abonnieren.</title>
+<description>Aktuell und kompakt - so informieren wir Sie in regelmäßigen Abständen über das Wichtigste rund um das Thema CONTENIDO - mit dem E-Newsletter. Neben technischen</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1796&amp;client=6&amp;lang=3</link>
+<pubDate>Mon, 20 Jun 2011 18:12:52</pubDate>
+<author>Timo Trautmann (4fb)</author>
+</item>
+<item>
+<title>Umzug von Subversion abgeschlossen</title>
+<description>Im Rahmen einiger Konsolidierungsbemühungen wurde das Source Control Management von CONTENIDO umgezogen.Die Sourcen von CONTENIDO wurden und werden weiterhin in Subversion verwaltet.Der Umzug</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1793&amp;client=6&amp;lang=3</link>
+<pubDate>Mon, 06 Jun 2011 01:46:00</pubDate>
+<author>Timo Trautmann (4fb)</author>
+</item>
+<item>
+<title>CMS CONTENIDO Version 4.8.15 jetzt verfügbar!</title>
+<description>Mit der neuen Version 4.8.15 des Open Source Content Management Systems CONTENIDO reagieren wir auf eine am heutigen Tag gemeldete kritische Sicherheitslücke. Mit gewissen Server-Konfigurationen</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1789&amp;client=6&amp;lang=3</link>
+<pubDate>Thu, 12 May 2011 12:48:42</pubDate>
+<author>Timo Trautmann (4fb)</author>
+</item>
+<item>
+<title>Communido 2010 - Ein Rückblick</title>
+<description>"Vielen Dank nochmals, wir konnten viel mitnehmen.", "Ich fand es auch sehr gut und möchte nochmal unseren Gastgebern für die 2 Tage mit interessanten Themen, Ausblicken und Diskussionen</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1732&amp;client=6&amp;lang=3</link>
+<pubDate>Mon, 25 Oct 2010 12:44:55</pubDate>
+<author>Timo Trautmann (4fb)</author>
+</item>
+<item>
+<title>CMS Contenido Version 4.8.14 jetzt verfügbar!</title>
+<description>Contenido jetzt mit erweiterten SicherheitsfunktionalitätenUm das Arbeiten mit Contenido, dem bewährten OpenSource-CMS aus dem Hause four for business, noch einfacher, übersichtlicher</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1726&amp;client=6&amp;lang=3</link>
+<pubDate>Wed, 13 Oct 2010 15:47:50</pubDate>
+<author>Cindy Pazera</author>
+</item>
+<item>
+<title>CMS Contenido in Version 4.8.13 erschienen!</title>
+<description>Nach weiteren Bugfixes seit dem Release Candidate 3 der Contenido-Version 4.8.13 erscheint heute die finale Version des Content Management Systems. Im Vergleich zur Vorgängerversion enthält</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1705&amp;client=6&amp;lang=3</link>
+<pubDate>Mon, 23 Aug 2010 10:36:26</pubDate>
+<author>Cindy Pazera</author>
+</item>
+<item>
+<title>Veranstaltung</title>
+<description>Communido Entwicklertreffen 2010 Contenido, das Content Management System, wurde im Jahr 2000 von der four for business AG entwickelt. Ziel war es ein Open Source CMS zu kreieren, das es den</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1693&amp;client=6&amp;lang=3</link>
+<pubDate>Tue, 20 Jul 2010 16:03:53</pubDate>
+<author></author>
+</item>
+<item>
+<title>Testversion 4.8.13 RC 3 verfügbar</title>
+<description>Die neue Version von Contenido enthält umfassende Verbesserungen einzelner Funktionen sowie diverse Performance Updates. Das System führt nun merkbar weniger Datenbankabfragen aus, was zu</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1652&amp;client=6&amp;lang=3</link>
+<pubDate>Tue, 01 Jun 2010 16:35:54</pubDate>
+<author>Cindy Pazera</author>
+</item>
+<item>
+<title>Die All-Inclusive-Sommeraktion</title>
+<description>OXID eShop, CMS Contenido und Hosting in einem Paketfour for business hat gemeinsam mit OXID eSales für die Sommertage einKomplett-Paket für Einsteiger und Umsteiger geschnürt: Die</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1557&amp;client=6&amp;lang=3</link>
+<pubDate>Fri, 24 Jul 2009 10:28:52</pubDate>
+<author>Christian End</author>
+</item>
+<item>
+<title>Contenido SOAP Schnittstelle im PHP Journal</title>
+<description>Timo Trautmann erläutert Aufbau und Anwendung der SchnittstelleDas PHP Journal hat in seiner aktuellen Ausgabe Juli/August 2009 einen Bericht von Timo Trautmann, Webentwickler bei four for</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1537&amp;client=6&amp;lang=3</link>
+<pubDate>Fri, 10 Jul 2009 15:19:18</pubDate>
+<author></author>
+</item>
+<item>
+<title>Lernen Sie die Integration von Webseiten mit dem Open Source CMS Contenido.</title>
+<description>Die redaktionelle und administrative Betreuung einer Website mit dem CMS Contenido ist für Sie kein Problem? Sie bringen Kenntnisse in HTML und Programmierung mit? Sie sind zuständig</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1412&amp;client=6&amp;lang=3</link>
+<pubDate>Thu, 07 May 2009 14:53:10</pubDate>
+<author></author>
+</item>
+<item>
+<title>CMS Contenido steht in Version 4.8.12 zum Download zur Verfügung</title>
+<description>4fb veröffentlicht heute die neue Version 4.8.12 des Content Management Systems Contenido. Neben kleinen Verbesserungen steht vor allem die Integration eines neuen Content Typs CMS Teaser</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1402&amp;client=6&amp;lang=3</link>
+<pubDate>Fri, 24 Apr 2009 09:22:27</pubDate>
+<author></author>
+</item>
+<item>
+<title>CMS Contenido in Version 4.8.11 erschienen!</title>
+<description>Heute erscheint die neue Version 4.8.11 des CMS Contenido. Neben einigen kleinen Verbesserungen lag der Focus der Bearbeitung vor allem auf dem mit ausgelieferten Beispielmandanten.Das</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1342&amp;client=6&amp;lang=3</link>
+<pubDate>Fri, 06 Feb 2009 11:38:31</pubDate>
+<author></author>
+</item>
+<item>
+<title>Überarbeitetes Redakteurshandbuch für die Version 4.8</title>
+<description>Das bestehende Redakteurshandbuch des CMS Contenido wurde überarbeitet und steht nun für die Version 4.8 zur Verfügung. Sie können dieses ab sofort im Downloadbereich</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1262&amp;client=6&amp;lang=3</link>
+<pubDate>Wed, 10 Dec 2008 17:32:50</pubDate>
+<author></author>
+</item>
+<item>
+<title>Ihre Contenido Umsetzung als Referenz auf contenido.org.</title>
+<description>Zeigen Sie Ihre Umsetzungen mit Contenido mit bis zu fünf Screenshots. Teilen Sie Ihr Wissen und berichten Sie anderen Besuchern von den technischen Besonderheiten oder Erweiterungen Ihrer</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=1190&amp;client=6&amp;lang=3</link>
+<pubDate>Fri, 31 Oct 2008 09:30:41</pubDate>
+<author></author>
+</item>
+<item>
+<title>Nutzen Sie das Testsystem</title>
+<description>Sie möchten sich gerne einen ersten Eindruck von Contenido verschaffen? Einen Überblick über die Funktionen bekommen? Die Oberfläche von Contenido kennen lernen? Dazu steht Ihnen</description>
+<link>http://www.contenido.org/de/front_content.php?idcat=107&amp;idart=224&amp;client=6&amp;lang=3</link>
+<pubDate>Tue, 09 Sep 2008 08:47:58</pubDate>
+<author></author>
+</item>
+</channel>
+</rss>

@@ -11,7 +11,7 @@
  * 
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,14 +21,8 @@
  * 
  * {@internal 
  *   created  2003-09-01
- *   modified 2008-06-25, Frederic Schneider, add security fix
- *   modified 2009-10-27, Murat Purc, initialization of variable $bError to prevent PHP strict messages
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
- *   modified 2011-06-14, Rusmir Jusufovic, add a new path to cInclude, "modul" path to the php directory in current modul
- *
  *   $Id$:
  * }}
- * 
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -62,6 +56,7 @@ if (!defined('CON_FRAMEWORK')) {
  * external    Path to the external tools
  * includes    Path to the CONTENIDO includes
  * scripts     Path to the CONTENIDO scripts
+ * module      Path to module
  *
  * NOTE: Since CONTENIDO (since v 4.9.0) provides autoloading of required
  *       class files, there is no need to load CONTENIDO class files of by using
@@ -75,7 +70,7 @@ if (!defined('CON_FRAMEWORK')) {
  */
 function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = false)
 {
-   global $client, $cfg, $cfgClient,$cCurrentModule;
+   global $client, $cfg, $cfgClient, $cCurrentModule;
 
     // Sanity check for $sWhat
     $sWhat  = trim($sWhat);
@@ -83,8 +78,7 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
     $bError = false;
 
     switch ($sWhere) {
-
-		case "module":
+		case 'module':
    			$handler = new Contenido_Module_Handler($cCurrentModule);
    			$sInclude = $handler->getPhpPath() . $sWhat;
 			break;
@@ -100,6 +94,13 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
         case 'conlib':
         case 'phplib':
             $sInclude = $cfg['path']['phplib'] . $sWhat;
+            break;
+        case 'classes':
+            if (Contenido_Autoload::isAutoloadable($cfg['path'][$sWhere] . $sWhat)) {
+                // The class file will be loaded automatically by the autoloader - get out here
+                return;
+            }
+            $sInclude = $cfg['path']['contenido'] . $cfg['path'][$sWhere] . $sWhat;
             break;
         case 'pear':
             $sInclude = $sWhat;
@@ -127,15 +128,6 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
             }
             break;
         default:
-            // FIXME: A workaround to provide inclusion of classes which are not
-            //        handled by the autoloader
-            if ($sWhere === 'classes') {
-                if (Contenido_Autoload::isAutoloadable($cfg['path'][$sWhere] . $sWhat)) {
-                    // it's a class file and it will be loaded automatically by
-                    // the autoloader - get out here
-                    return;
-                }
-            }
             $sInclude = $cfg['path']['contenido'] . $cfg['path'][$sWhere] . $sWhat;
             break;
     }

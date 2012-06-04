@@ -9,7 +9,7 @@
  * @con_php_req 5
  *
  * @package    CONTENIDO setup
- * @version    0.2
+ * @version    0.2.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -19,11 +19,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -35,6 +32,8 @@ class cSetupSystemData extends cSetupMask
 {
     function cSetupSystemData($step, $previous, $next)
     {
+        global $cfg;
+
         cSetupMask::cSetupMask("templates/setup/forms/systemdata.tpl", $step);
 
         list($rootPath, $rootHttpPath) = getSystemDirectories();
@@ -45,9 +44,7 @@ class cSetupSystemData extends cSetupMask
         cInitializeArrayKey($_SESSION, "dbname", "");
         cInitializeArrayKey($_SESSION, "dbpass", "");
 
-        if (file_exists($rootPath . "/contenido/includes/config.php")) {
-            global $cfg;
-
+        if (file_exists($cfg['path']['contenido_config'] . 'config.php')) {
             $contenido_host     = ""; // Just define the variables to avoid warnings in IDE
             $contenido_user     = "";
             $contenido_database = "";
@@ -55,7 +52,7 @@ class cSetupSystemData extends cSetupMask
 
             $cfgBackup = $cfg;
 
-            @include($rootPath . "/contenido/includes/config.php");
+            @include($cfg['path']['contenido_config'] . 'config.php');
 
             $aVars = array(
                 "dbhost" => $contenido_host,

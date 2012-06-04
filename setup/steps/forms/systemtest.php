@@ -9,7 +9,7 @@
  * @con_php_req 5
  *
  * @package    CONTENIDO setup
- * @version    0.3.2
+ * @version    0.3.3
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -19,16 +19,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *   modified 2009-12-17, Dominik Ziegler, added check for write permission on missing cronjob files
- *   modified 2010-07-26, Ortwin Pinke, [CON-329] added check for write permission of temp-folder
- *   modified 2010-10-18, Ingo van Peeren, added check for write permission of advance_workflow.php.job
- *   modified 2011-03-21, Murat Purc, usage of new db connection
- *   modified 2011-10-31, Murat Purc, Frontend write permissions check during migration if default client path is available [#CON-251]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -575,33 +567,35 @@ class cSetupSystemtest extends cSetupMask
 
     function doFilesystemTests()
     {
-        $this->logFilePrediction("contenido/logs/errorlog.txt", C_SEVERITY_WARNING);
+        global $cfg;
 
-        $this->logFilePrediction("contenido/logs/setuplog.txt", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_logs'] . "errorlog.txt", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/cronjobs/pseudo-cron.log", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_logs'] . "setuplog.txt", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/cronjobs/session_cleanup.php.job", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_cronlog'] . "pseudo-cron.log", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/cronjobs/send_reminder.php.job", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_cronlog'] . "session_cleanup.php.job", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/cronjobs/optimize_database.php.job", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_cronlog'] . "send_reminder.php.job", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/cronjobs/move_old_stats.php.job", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_cronlog'] . "optimize_database.php.job", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/cronjobs/move_articles.php.job", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_cronlog'] . "move_old_stats.php.job", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/cronjobs/linkchecker.php.job", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_cronlog'] . "move_articles.php.job", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/cronjobs/run_newsletter_job.php.job", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_cronlog'] . "linkchecker.php.job", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/cronjobs/setfrontenduserstate.php.job", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_cronlog'] . "run_newsletter_job.php.job", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/cronjobs/advance_workflow.php.job", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_cronlog'] . "setfrontenduserstate.php.job", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/cache/", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_cronlog'] . "advance_workflow.php.job", C_SEVERITY_WARNING);
 
-        $this->logFilePrediction("contenido/temp/", C_SEVERITY_WARNING);
+        $this->logFilePrediction($cfg['path']['contenido_cache'], C_SEVERITY_WARNING);
+
+        $this->logFilePrediction($cfg['path']['contenido_temp'], C_SEVERITY_WARNING);
 
         if ($_SESSION["setuptype"] == "setup" || ($_SESSION["setuptype"] == "migration" && is_dir(C_FRONTEND_PATH . "cms/") )) {
             // Setup mode or migration mode with a existing default client frontend path
@@ -623,12 +617,16 @@ class cSetupSystemtest extends cSetupMask
         }
 
         if ($_SESSION["configmode"] == "save") {
-            $this->logFilePrediction("contenido/includes/config.php", C_SEVERITY_ERROR);
+            $this->logFilePrediction($cfg['path']['contenido_config'] . "config.php", C_SEVERITY_ERROR);
         }
     }
 
     function logFilePrediction($sFile, $iSeverity)
     {
+        if (strpos($sFile, C_FRONTEND_PATH) === 0) {
+            $sFile = substr($sFile, strlen(C_FRONTEND_PATH));
+        }
+
         $status = canWriteFile(C_FRONTEND_PATH . $sFile);
 
         $sTitle = sprintf(i18n("Can't write %s"), $sFile);

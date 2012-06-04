@@ -11,7 +11,7 @@
  * @con_php_req 5
  *
  * @package    CONTENIDO setup
- * @version    0.2.5
+ * @version    0.2.6
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *   modified 2011-02-28, Murat Purc, normalized setup startup process and some cleanup/formatting
- *
  *   $Id: makeconfig.php 1649 2011-10-28 00:07:59Z xmurrix $:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -54,13 +50,13 @@ if (hasMySQLiExtension() && !hasMySQLExtension()) {
 $tpl->set('s', 'NOLOCK', $_SESSION['nolock']);
 
 if ($_SESSION['configmode'] == 'save') {
-    @unlink($rootPath . '/contenido/includes/config.php');
+    @unlink($cfg['path']['contenido_config'] . 'config.php');
 
-    @$handle = fopen($rootPath . '/contenido/includes/config.php', 'wb');
+    @$handle = fopen($cfg['path']['contenido_config'] . 'config.php', 'wb');
     @fwrite($handle, $tpl->generate('templates/config.php.tpl', true, false));
     @fclose($handle);
 
-    if (!file_exists($rootPath . '/contenido/includes/config.php')) {
+    if (!file_exists($cfg['path']['contenido_config'] . 'config.php')) {
         $_SESSION['configsavefailed'] = true;
     } else {
         unset($_SESSION['configsavefailed']);

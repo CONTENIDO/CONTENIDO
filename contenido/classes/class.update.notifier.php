@@ -12,7 +12,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,16 +22,8 @@
  *
  * {@internal
  *   created 2008-06-21
- *   modified 2008-07-01 timo trautmann - added rss update functionality
- *   modified 2008-07-02, Dominik Ziegler, added language support for rss
- *   modified 2009-10-01, Dominik Ziegler, added some checks for directory write permissions
- *   modified 2010-10-01, Dominik Ziegler, added resource check of fsockopen stream
- *   modified 2010-10-24, Ortwin Pinke, add function fetchUrl and changed usage in getVendorHostFiles
- *   modified 2011-03-18, Murat Purc, fixed thrown errors while invalid socket handles, see [CON-366]
- *
  *   $Id$:
  * }}
- * 
  */
  
 if (!defined('CON_FRAMEWORK')) {
@@ -348,8 +340,7 @@ class Contenido_UpdateNotifier
 	 */
     protected function setCachePath()
     {
-        $sConPath = $this->aCfg['path']['contenido'];
-        $sCachePath = $sConPath."cache".DIRECTORY_SEPARATOR;
+        $sCachePath = $this->aCfg['path']['contenido_cache'];
         if (!is_dir($sCachePath)) {
             mkdir($sCachePath, 0777);
         }
@@ -715,7 +706,7 @@ class Contenido_UpdateNotifier
                 $oTpl->set("s", "DISPLAY_DISABLED", 'none');
             }
         } else if ($this->bNoWritePermissions == true) {
-            $oTpl->set("s", "NEWS_NOCONTENT", i18n('Your webserver does not have write permissions for the directory /contenido/cache/!'));
+            $oTpl->set("s", "NEWS_NOCONTENT", i18n('Your webserver does not have write permissions for the directory /contenido/data/cache/!'));
         } else {
             $oTpl->set("s", "NEWS_NOCONTENT", i18n("No RSS content available"));
         }
@@ -768,7 +759,7 @@ class Contenido_UpdateNotifier
         if (!$this->bEnableView) {
             $sOutput = "";
         } else if ($this->bNoWritePermissions == true) {
-            $sMessage = i18n('Your webserver does not have write permissions for the directory /contenido/cache/!');
+            $sMessage = i18n('Your webserver does not have write permissions for the directory /contenido/data/cache/!');
             $sOutput = $this->renderOutput($sMessage);
         } else if (!$this->bEnableCheck) {
             $sMessage = i18n('Update notification is disabled! For actual update information, please activate.');

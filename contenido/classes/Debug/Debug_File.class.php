@@ -13,7 +13,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.1.1
+ * @version    1.1.2
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,12 +22,8 @@
  *
  * {@internal
  *   created  2007-01-01
- *   modified 2008-05-21 Added methods add(), reset(), showAll()
- *   modified 2010-05-20 Murat Purc, Hey, last change was nearly 2 years ago ;-)... Fixed generated warnings, see [#CON-309]
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -54,7 +50,7 @@ class Debug_File implements IDebug
     private function __construct()
     {
         global $cfg; // omfg, I know... TODO
-        $this->_sPathToLogs = $cfg['path']['contenido'].'logs'.DIRECTORY_SEPARATOR;
+        $this->_sPathToLogs = $cfg['path']['contenido_logs'];
         $this->_sFileName = 'debug.log';
         $this->_sPathToFile = $this->_sPathToLogs.$this->_sFileName;
         if (file_exists($this->_sPathToLogs) && is_writeable($this->_sPathToLogs)) {
@@ -100,7 +96,7 @@ class Debug_File implements IDebug
      * @param boolean $bExit If set to true, your app will die() after output of current var
      * @return void
      */
-    public function show($mVariable, $sVariableDescription='', $bExit = false)
+    public function show($mVariable, $sVariableDescription = '', $bExit = false)
     {
         if (is_resource(self::$_hFileHandle) && is_writeable($this->_sPathToFile)) {
             $sDate = date('Y-m-d H:i:s');

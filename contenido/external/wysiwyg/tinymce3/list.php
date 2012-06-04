@@ -1,199 +1,197 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * TINYMCE 1.45rc1 PHP WYSIWYG interface
  * Generates file/link list for editor
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5
- * @con_notice 
+ * @con_notice
  * TINYMCE 1.45rc1 Fileversion
  *
  * @package    CONTENIDO Backend Editor
- * @version    0.0.4
+ * @version    0.0.5
  * @author     Martin Horwath, horwath@dayside.net
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * 
- * 
- * {@internal 
- *   created  2005-06-10
- *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2010-01-13, Ingo van Peeren, CON-295
- *   modified 2010-05-20, Murat Purc, standardized CONTENIDO startup and security check invocations, see [#CON-307]
  *
+ *
+ * {@internal
+ *   created  2005-06-10
  *   $Id: list.php 739 2008-08-27 10:37:54Z timo.trautmann $:
  * }}
- * 
  */
- 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
 // CONTENIDO startup process
-include_once ('../../../includes/startup.php');
+$contenido_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../../')) . '/';
+
+include_once($contenido_path . 'includes/startup.php');
 
 // include editor config/combat file
-@include (dirname(__FILE__).DIRECTORY_SEPARATOR."config.php"); // CONTENIDO
+include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php');
 
 $db2 = new DB_Contenido();
 
-$arg_seperator = "&amp;";
+$arg_seperator = '&amp;';
 
-switch($_REQUEST['mode']) {
+$output = '';
 
-	case "link":
-		$sql = "SELECT
-					*
-				FROM
-					".$cfg["tab"]["cat_tree"]." AS a,
-					".$cfg["tab"]["cat_lang"]." AS b,
-					".$cfg["tab"]["cat"]." AS c
-				WHERE
-					a.idcat = b.idcat AND
-					c.idcat = a.idcat AND
-					c.idclient = '".Contenido_Security::toInteger($client)."' AND
-					b.idlang = '".Contenido_Security::toInteger($lang)."'
-				ORDER BY
-					a.idtree";
+switch ($_REQUEST['mode']) {
+    case 'link':
+        $sql = "SELECT
+                    *
+                FROM
+                    ".$cfg["tab"]["cat_tree"]." AS a,
+                    ".$cfg["tab"]["cat_lang"]." AS b,
+                    ".$cfg["tab"]["cat"]." AS c
+                WHERE
+                    a.idcat = b.idcat AND
+                    c.idcat = a.idcat AND
+                    c.idclient = '".Contenido_Security::toInteger($client)."' AND
+                    b.idlang = '".Contenido_Security::toInteger($lang)."'
+                ORDER BY
+                    a.idtree";
 
-		$db->query($sql);
+        $db->query($sql);
 
-		echo "var tinyMCELinkList = new Array(";
+        $output .= "var tinyMCELinkList = new Array(";
 
-		$loop = false;
-				
-		while ( $db->next_record() ) {
-			$tmp_catname  = $db->f("name");
-			$spaces = "";
+        $loop = false;
 
-			for ($i = 0; $i < $db->f("level"); $i++) {
-				$spaces .= "&nbsp;&nbsp;";
-			}
+        while ($db->next_record()) {
+            $tmp_catname = $db->f("name");
+            $spaces = "";
 
-			if ($loop) {
-				echo ",";
-			} else {
-				$loop = true;
-			}
-			
-			if ($db->f("visible") == 0) {
-				$tmp_catname = "[" . $tmp_catname . "]";
-			}
+            $spaces = str_repeat("&nbsp;&nbsp;", $db->f("level"));
 
-			echo "\n\t".'["'.$spaces.$tmp_catname.'", "'."front_content.php?idcat=".$db->f("idcat").'"]';
-			
-			$sql2 = "SELECT
-					 	*
-					 FROM
-					 	".$cfg["tab"]["cat_art"]." AS a,
-						".$cfg["tab"]["art"]." AS b,
-						".$cfg["tab"]["art_lang"]." AS c
-					 WHERE
-						a.idcat = '".$db->f("idcat")."' AND
-						b.idart = a.idart AND
-						c.idart = a.idart AND
-						c.idlang = '".Contenido_Security::toInteger($lang)."' AND
-						b.idclient = '".Contenido_Security::toInteger($client)."'
-					 ORDER BY
-						c.title ASC";
+            if ($loop) {
+                $output .= ",";
+            } else {
+                $loop = true;
+            }
 
-			$db2->query($sql2);
+            if ($db->f("visible") == 0) {
+                $tmp_catname = "[" . $tmp_catname . "]";
+            }
 
-			while ($db2->next_record()) {
+            $output .= "\n\t".'["'.$spaces.$tmp_catname.'", "'."front_content.php?idcat=".$db->f("idcat").'"]';
 
-				$tmp_title = $db2->f("title");
+            $sql2 = "SELECT
+                         *
+                     FROM
+                         ".$cfg["tab"]["cat_art"]." AS a,
+                        ".$cfg["tab"]["art"]." AS b,
+                        ".$cfg["tab"]["art_lang"]." AS c
+                     WHERE
+                        a.idcat = '".$db->f("idcat")."' AND
+                        b.idart = a.idart AND
+                        c.idart = a.idart AND
+                        c.idlang = '".Contenido_Security::toInteger($lang)."' AND
+                        b.idclient = '".Contenido_Security::toInteger($client)."'
+                     ORDER BY
+                        c.title ASC";
 
-				if ( strlen($tmp_title) > 32 ) {
-					$tmp_title = substr($tmp_title, 0, 32);
-				}
+            $db2->query($sql2);
 
-				$is_start = isStartArticle($db2->f("idartlang"), $db2->f("idcat"), $lang);
-				
-				if ($is_start) {
-					$tmp_title .= "*";
-				}
-				if ($db2->f("online") == 0) {
-					$tmp_title = "[" . $tmp_title . "]";
-				}
-				echo ",\n\t".'["&nbsp;&nbsp;'.$spaces.'|&nbsp;&nbsp;'.$tmp_title.'", "'."front_content.php?idart=".$db2->f("idart").'"]';
-			}
-		}
+            while ($db2->next_record()) {
 
-		echo "\n);";
+                $tmp_title = $db2->f("title");
 
-		break;
+                if ( strlen($tmp_title) > 32 ) {
+                    $tmp_title = substr($tmp_title, 0, 32);
+                }
 
-	case "image":
-		$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('gif', 'jpg', 'jpeg', 'png') ORDER BY dirname, filename ASC";
-		$db->query($sql);
+                $is_start = isStartArticle($db2->f("idartlang"), $db2->f("idcat"), $lang);
 
-		echo "var tinyMCEImageList = new Array(";
+                if ($is_start) {
+                    $tmp_title .= "*";
+                }
+                if ($db2->f("online") == 0) {
+                    $tmp_title = "[" . $tmp_title . "]";
+                }
+                $output .= ",\n\t".'["&nbsp;&nbsp;'.$spaces.'|&nbsp;&nbsp;'.$tmp_title.'", "'."front_content.php?idart=".$db2->f("idart").'"]';
+            }
+        }
 
-		$loop = false;
+        $output .= "\n);";
 
-		while ( $db->next_record() ) {
-			if ($loop) {
-				echo ",";
-			} else {
-				$loop = true;
-			}
+        break;
 
-			echo "\n\t".'["'.$db->f("dirname").$db->f("filename").'", "'.$cfgClient[$client]["upload"].$db->f("dirname").$db->f("filename").'"]';
-		}
+    case 'image':
+        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('gif', 'jpg', 'jpeg', 'png') ORDER BY dirname, filename ASC";
+        $db->query($sql);
 
-		echo "\n);";
-		break;
+        $output .= "var tinyMCEImageList = new Array(";
 
-	case "flash":
-		$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('swf') ORDER BY dirname,filename ASC";
-		$db->query($sql);
+        $loop = false;
 
-		echo "var tinyMCEFlashList = new Array(";
+        while ($db->next_record()) {
+            if ($loop) {
+                $output .= ",";
+            } else {
+                $loop = true;
+            }
 
-		$loop = false;
+            $output .= "\n\t".'["'.$db->f("dirname").$db->f("filename").'", "'.$cfgClient[$client]["upload"].$db->f("dirname").$db->f("filename").'"]';
+        }
 
-		while ( $db->next_record() ) {
-			if ($loop) {
-				echo ",";
-			} else {
-				$loop = true;
-			}
+        $output .= "\n);";
+        break;
 
-			echo "\n\t".'["'.$db->f("dirname").$db->f("filename").'", "'.$cfgClient[$client]["upload"].$db->f("dirname").$db->f("filename").'"]';
-		}
+    case 'flash':
+        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('swf') ORDER BY dirname,filename ASC";
+        $db->query($sql);
 
-		echo "\n);";
-		break;
+        $output .= "var tinyMCEFlashList = new Array(";
 
-	case "media":
-		$sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('swf','dcr','mov','qt','mpg','mpg3','mpg4','mpeg','avi','wmv','wm','asf','asx','wmx','wvx','rm','ra','ram') ORDER BY dirname, filename ASC";
-		$db->query($sql);
+        $loop = false;
 
-		echo "var tinyMCEMediaList = new Array(";
+        while ($db->next_record()) {
+            if ($loop) {
+                $output .= ",";
+            } else {
+                $loop = true;
+            }
 
-		$loop = false;
+            $output .= "\n\t".'["'.$db->f("dirname").$db->f("filename").'", "'.$cfgClient[$client]["upload"].$db->f("dirname").$db->f("filename").'"]';
+        }
 
-		while ( $db->next_record() ) {
-			if ($loop) {
-				echo ",";
-			} else {
-				$loop = true;
-			}
+        $output .= "\n);";
+        break;
 
-			echo "\n\t".'["'.$db->f("dirname").$db->f("filename").'", "'.$cfgClient[$client]["upload"].$db->f("dirname").$db->f("filename").'"]';
-		}
+    case 'media':
+        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('swf','dcr','mov','qt','mpg','mpg3','mpg4','mpeg','avi','wmv','wm','asf','asx','wmx','wvx','rm','ra','ram') ORDER BY dirname, filename ASC";
+        $db->query($sql);
 
-		echo "\n);";
-		break;
+        $output .= "var tinyMCEMediaList = new Array(";
 
-	default:
+        $loop = false;
+
+        while ($db->next_record()) {
+            if ($loop) {
+                $output .= ",";
+            } else {
+                $loop = true;
+            }
+
+            $output .= "\n\t".'["'.$db->f("dirname").$db->f("filename").'", "'.$cfgClient[$client]["upload"].$db->f("dirname").$db->f("filename").'"]';
+        }
+
+        $output .= "\n);";
+        break;
+
+    default:
 }
+
+echo $output;
+
 ?>

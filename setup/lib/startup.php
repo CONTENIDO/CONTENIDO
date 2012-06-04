@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO setup bootstrap
- * @version    0.0.1
+ * @version    0.0.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,19 +22,19 @@
  * mofified 2012-02-20, Rusmir Jusufovic, add condition for max PHP_VERSION (JIRA CON 481)
  * {@internal
  *   created  2011-02-28
- *
  *   $Id: $
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }
 
-// uncomment this lines during development if needed
-#@ini_set('display_errors', true);
-#error_reporting(E_ALL);
+// Don't display errors
+@ini_set('display_errors', false);
+
+// Report all errors except warnings
+error_reporting(E_ALL ^E_NOTICE);
 
 
 header('Content-Type: text/html; charset=ISO-8859-1');
@@ -49,6 +49,25 @@ if (version_compare(PHP_VERSION, '5.0.0', '<')) {
 //PHP >= 5.0.0 and < 6.0.0
 if (version_compare(PHP_VERSION, '6.0.0', '>=')) {
     die("You need PHP >= 5.0.0  < 6.0.0 for CONTENIDO. Sorry, even the setup doesn't work otherwise. Your version: " . PHP_VERSION . "\n");
+}
+
+/*
+ * Do not edit this value!
+ *
+ * If you want to set a different enviroment value please define it in your .htaccess file
+ * or in the server configuration.
+ *
+ * SetEnv CONTENIDO_ENVIRONMENT development
+ */
+if (!defined('CONTENIDO_ENVIRONMENT')) {
+    if (getenv('CONTENIDO_ENVIRONMENT')) {
+        $sEnvironment = getenv('CONTENIDO_ENVIRONMENT');
+    } else {
+        // @TODO: provide a possibility to set the environment value via file
+        $sEnvironment = 'production';
+    }
+
+    define('CONTENIDO_ENVIRONMENT', $sEnvironment);
 }
 
 /**
@@ -123,6 +142,7 @@ $cfg['path']['frontend']  = C_FRONTEND_PATH;
 $cfg['path']['contenido'] = $cfg['path']['frontend'] . 'contenido/';
 $cfg['path']['phplib']    = $cfg['path']['frontend'] . 'conlib/';
 $cfg['path']['pear']      = $cfg['path']['frontend'] . 'pear/';
+$cfg['path']['contenido_config'] = C_FRONTEND_PATH . 'data/config/' . CONTENIDO_ENVIRONMENT . '/';
 
 // DB related settings
 $cfg['sql']['sqlprefix']  = (isset($_SESSION['dbprefix'])) ? $_SESSION['dbprefix'] : 'con';
@@ -140,9 +160,9 @@ $cfg['db'] = array(
     'enableProfiling' => false,
 );
 
-checkAndInclude($cfg['path']['contenido'] . 'includes/config.path.php');
-checkAndInclude($cfg['path']['contenido'] . 'includes/config.misc.php');
-checkAndInclude($cfg['path']['contenido'] . 'includes/cfg_sql.inc.php');
+checkAndInclude($cfg['path']['contenido_config'] . 'config.path.php');
+checkAndInclude($cfg['path']['contenido_config'] . 'config.misc.php');
+checkAndInclude($cfg['path']['contenido_config'] . 'cfg_sql.inc.php');
 
 $cfg['db']['sequenceTable'] = $cfg['tab']['sequence'];
 

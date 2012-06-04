@@ -54,7 +54,7 @@ possibility to load the file while trying to use a class/interface.</p>
 <p>The CONTENIDO autoloader will be initialized during the application startup process.
 The autoloading solution in CONTENIDO uses the class map strategy. It uses a generated 
 class map configuration file, which is available inside contenido/includes/ folder.</p>
-<pre>contenido/includes/config.autoloader.php</pre>
+<pre>contenido/data/config/{environment}/config.autoloader.php</pre>
 <p>Each class type name is pointed to a file which contains the implementation of the 
 required class type. By trying to use a class type, the autoloader will load the 
 needed file if not done before.<br />

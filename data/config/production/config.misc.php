@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.4.15
+ * @version    1.4.16
  * @author     Holger Librenz
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,20 +21,8 @@
  *
  * {@internal
  *   created  2004-02-24
- *   modified 2008-06-25, Frederic Schneider, add security fix
- *   modified 2008-07-04, Dominik Ziegler, fixed bug CON-174
- *   modified 2008-11-10 Rudi Bieller Commented out display_errors as this should be handled as defined in php.ini by default
- *   modified 2008-11-18, Murat Purc, add UrlBuilder configuration
- *   modified 2008-12-04, Bilal Arslan, added for config-password examples.
- *   modified 2010-05-20, Murat Purc, documented settings for UrlBuilder and caching.
- *   modified 2011-03-13  Murat Purc, added configuration for GenericDB caching.
- *   modified 2011-08-24, Dominik Ziegler, removed CVS datetag configuration entry
- *   modified 2011-11-10  Murat Purc, added configuration for properties (user, group, system) caching.
- *   modified 2011-11-18  Murat Purc, added configuration for validators.
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -150,7 +138,7 @@ $cfg['php_settings']['display_errors'] = false;
 $cfg['php_settings']['log_errors'] = true;
 
 // (string) Path to log file
-$cfg['php_settings']['error_log'] = $cfg['path']['contenido'] . 'logs/errorlog.txt';
+$cfg['php_settings']['error_log'] = $cfg['path']['contenido_logs'] . 'errorlog.txt';
 
 // (int) PHP error reporting setting
 $cfg['php_error_reporting'] = E_ALL ^E_NOTICE;
@@ -188,7 +176,7 @@ $cfg['session_line_length'] = 99999;
 $cfg['http_params_check']['enabled'] = false;
 
 // (string) Configuration file (whitelist and mode)
-$cfg['http_params_check']['config'] = $cfg['path']['contenido'] . $cfg['path']['includes'] . '/config.http_check.php';
+$cfg['http_params_check']['config'] = $cfg['path']['contenido_config'] . 'config.http_check.php';
 
 
 /* Global cache control flag

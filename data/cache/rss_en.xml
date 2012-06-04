@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<rss version="2.0">
+<channel>
+<title>Contenido.org RSS feed</title>
+<copyright></copyright>
+<link>http://www.contenido.org/en/</link>
+<description></description>
+<language>en</language>
+<lastBuildDate>Mon, 17 Aug 2009 17:15:02 CEST</lastBuildDate>
+<pubDate>Mon, 17 Aug 2009 17:15:02 CEST</pubDate>
+<generator>Contenido CMS</generator>
+<managingEditor></managingEditor>
+<webMaster></webMaster>
+<ttl></ttl>
+<image>
+<title></title>
+<width></width>
+<height></height>
+<url></url>
+<link></link>
+</image>
+<item>
+<title>CMS Contenido Version 4.8.12 is now available for download</title>
+<description>Today 4fb released the new version 4.8.12 of the Content Management System Contenido. Besides small upgrades, the migration of a new content type CMS Teaser (article list) is the main focus of the</description>
+<link>http://www.contenido.org/en/front_content.php?idcat=107&amp;idart=1402&amp;client=6&amp;lang=4</link>
+<pubDate>Fri, 24 Apr 2009 09:22:27</pubDate>
+<author></author>
+</item>
+<item>
+<title>CMS Contenido Version 4.8.11 is released!</title>
+<description>The new version 4.8.11 of the CMS Contenido is released today. Besides a few small enhancements, the main focus was handling delivered sample clients.The main navigation module was customized in a</description>
+<link>http://www.contenido.org/en/front_content.php?idcat=107&amp;idart=1342&amp;client=6&amp;lang=4</link>
+<pubDate>Fri, 06 Feb 2009 11:38:31</pubDate>
+<author></author>
+</item>
+<item>
+<title>Your Contenido implementation as a reference on Contenido.org</title>
+<description>Show your Contenido implementations with up to five screen shots. Share your knowledge and report to other visitors about special technical features or your solution upgrades.A summary page offers a</description>
+<link>http://www.contenido.org/en/front_content.php?idcat=107&amp;idart=1190&amp;client=6&amp;lang=4</link>
+<pubDate>Fri, 31 Oct 2008 09:30:41</pubDate>
+<author></author>
+</item>
+<item>
+<title>Make use of the test system</title>
+<description>You would like to make a first impression of Contenido? Have an overview of the functionalities? Get to know the Contenido interface? You have therefor the Contenido test system. For using the test</description>
+<link>http://www.contenido.org/en/front_content.php?idcat=107&amp;idart=224&amp;client=6&amp;lang=4</link>
+<pubDate>Tue, 09 Sep 2008 08:47:58</pubDate>
+<author></author>
+</item>
+</channel>
+</rss>

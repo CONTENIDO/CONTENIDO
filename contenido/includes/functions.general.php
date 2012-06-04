@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.4.2
+ * @version    1.4.3
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,27 +21,8 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2008-07-03, Dominik Ziegler, fixed bug CON-143
- *   modified 2009-02-15, Murat Purc, fixed bug CON-238
- *   modified 2010-09-29, Ortwin Pinke, fixed bug CON-349
- *   modified 2010-12-16, Dominik Ziegler, display error message on database connection failure [#CON-376]
- *   modified 2011-02-05, Murat Purc, getAllClientsAndLanguages() and some cleanup
- *   modified 2011-02-08, Dominik Ziegler, removed old PHP compatibility stuff as CONTENIDO now requires at least PHP 5
- *   modified 2011-02-10, Dominik Ziegler, moved function declaration of IP_match out of front_content.php
- *   modified 2011-06-24, Murat Purc, corrected logic in scanDirectory(), cleanup and formatting
- *   modified 2011-08-23, Dominik Ziegler, deprecated functions sendPostRequest and showTable
- *   modified 2011-08-24, Dominik Ziegler, removed deprecated function SaveKeywordsforart
- *   modified 2011-08-24, Dominik Ziegler, deprecated function cIDNAEncode and cIDNADecode
- *   modified 2011-11-03, Murat Purc, usage of Contenido_Effective_Setting to retrieve settings
- *   modified 2011-11-08, Murat Purc, usage of cApiSystemProperty classes
- *   modified 2011-11-18, Murat Purc, normalize E-Mail validation [#CON-448]
- *   modified 2012-01-18, Mischa Holz, moved checkMySQLConnectivity() to the DB_Contenido class itself, see [CON-429]
- *   modified 2012-05-16, Ortwin Pinke, fixed wrong parameter count calling cError in function cDie
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -668,7 +649,7 @@ function updateClientCache($idclient = 0, $htmlpath = "", $frontendpath = "") {
     }
 
     $aConfigFileContent[] = '?>';
-    file_put_contents($cfg['path']['contenido'] . $cfg['path']['includes'] . 'config.clients.php', implode(PHP_EOL, $aConfigFileContent));
+    file_put_contents($cfg['path']['contenido_config'] . 'config.clients.php', implode(PHP_EOL, $aConfigFileContent));
 }
 
 function rereadClients()
@@ -1774,7 +1755,7 @@ function cWarning($file, $line, $message)
     $msg .= buildStackString();
     $msg .= "\n";
 
-    file_put_contents($cfg['path']['contenido']."logs/errorlog.txt", $msg, FILE_APPEND);
+    file_put_contents($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, FILE_APPEND);
 
     trigger_error($message, E_USER_WARNING);
 }
@@ -1801,7 +1782,7 @@ function cError($file, $line, $message)
     $msg .= buildStackString();
     $msg .= "\n";
 
-    file_put_contents($cfg['path']['contenido']."logs/errorlog.txt", $msg, FILE_APPEND);
+    file_put_contents($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, FILE_APPEND);
 
     trigger_error($message, E_USER_ERROR);
 }
@@ -1832,7 +1813,7 @@ function cDeprecated($amsg = "")
 
     $msg .= buildStackString(2)."\n";
 
-    file_put_contents($cfg['path']['contenido']."logs/deprecatedlog.txt", $msg, FILE_APPEND);
+    file_put_contents($cfg['path']['contenido_logs'] . 'deprecatedlog.txt', $msg, FILE_APPEND);
 }
 
 /**
@@ -1951,14 +1932,16 @@ function notifyOnError($errortitle, $errormessage)
 {
     global $cfg;
 
-    if (file_exists($cfg["path"]["contenido"]."logs/notify.txt")) {
-        $notifytimestamp = file_get_contents($cfg["path"]["contenido"]."logs/notify.txt");
+    $notifyFile = $cfg['path']['contenido_logs'] . 'notify.txt';
+
+    if (file_exists($notifyFile)) {
+        $notifytimestamp = file_get_contents($notifyFile);
     } else {
         $notifytimestamp = 0;
     }
 
-    if ((time() - $notifytimestamp) > $cfg["contenido"]["notifyinterval"] * 60) {
-        if ($cfg['contenido']['notifyonerror'] != "") {
+    if ((time() - $notifytimestamp) > $cfg['contenido']['notifyinterval'] * 60) {
+        if ($cfg['contenido']['notifyonerror'] != '') {
             $sMailhost = getSystemProperty('system', 'mail_host');
             if ($sMailhost == '') {
                 $sMailhost = 'localhost';
@@ -1970,7 +1953,7 @@ function notifyOnError($errortitle, $errormessage)
             $oMail->WordWrap = 1000;
             $oMail->IsMail();
 
-            $oMail->AddAddress($cfg["contenido"]["notifyonerror"], "");
+            $oMail->AddAddress($cfg['contenido']['notifyonerror'], '');
             $oMail->Subject = $errortitle;
             $oMail->Body = $errormessage;
 
@@ -1978,7 +1961,7 @@ function notifyOnError($errortitle, $errormessage)
             $oMail->Send();
 
             // Write last notify log file
-            file_put_contents($cfg["path"]["contenido"]."logs/notify.txt", time());
+            file_put_contents($notifyFile, time());
         }
     }
 }

@@ -77,7 +77,7 @@ if ($contenido) {
         'auth' => 'Contenido_Challenge_Crypt_Auth',
         'perm' => 'Contenido_Perm'
     ));
-    i18nInit($cfg['path']['contenido'].$cfg['path']['locale'], $belang);
+    i18nInit($cfg['path']['contenido_locale'], $belang);
 } else {
     // Frontend
     cRegistry::bootstrap(array(
@@ -572,11 +572,9 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
             $aExclude = explode(',', getEffectiveSetting('frontend.no_outputbuffer', 'idart', ''));
             if (in_array(Contenido_Security::toInteger($idart), $aExclude)) {
-                eval("?>\n" . $code . "\n<?php\n");
             } else {
                 // Write html output into output buffer and assign it to an variable
                 ob_start();
-                eval("?>\n" . $code . "\n<?php\n");
                 $htmlCode = ob_get_contents();
                 ob_end_clean();
 
@@ -590,7 +588,6 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     } else {
         // If user is in the backend display offline articles
         if ($contenido) {
-            eval("?>\n" . $code . "\n<?php\n");
         } else {
             if ($error == 1) {
                 echo "Fatal error: Could not display error page. Error to display was: 'No CONTENIDO session variable set. Probable error cause: Start article in this category is not set on-line.'";
