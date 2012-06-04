@@ -114,6 +114,7 @@ return array(
     'NoteListItem' => 'contenido/classes/class.note.php',
     'NoteLink' => 'contenido/classes/class.note.php',
     'Contenido_Notification' => 'contenido/classes/class.notification.php',
+	'Contenido_Perm' => 'contenido/classes/class.perm.php',
     'PHPMailer' => 'contenido/classes/class.phpmailer.php',
     'Purge' => 'contenido/classes/class.purge.php',
     'cRegistry' => 'contenido/classes/class.registry.php',

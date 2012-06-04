@@ -311,6 +311,7 @@ contenido/classes/class.metaobject.php -text
 contenido/classes/class.navigation.php -text
 contenido/classes/class.note.php -text
 contenido/classes/class.notification.php -text
+contenido/classes/class.perm.php -text
 contenido/classes/class.phpmailer.php -text
 contenido/classes/class.properties.php -text
 contenido/classes/class.purge.php -text

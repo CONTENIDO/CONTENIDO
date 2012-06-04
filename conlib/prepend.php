@@ -58,7 +58,6 @@ require_once($_PHPLIB['libdir'] . 'ct_session.inc');// Data storage container: s
 
 require_once($_PHPLIB['libdir'] . 'session.inc');   // Session management     
 require_once($_PHPLIB['libdir'] . 'auth.inc');      // Authorization management
-require_once($_PHPLIB['libdir'] . 'perm.inc');      // Permission management
 
 // Additional require statements go before this line
 require_once($_PHPLIB['libdir'] . 'local.php');     // Required, contains your local configuration.
