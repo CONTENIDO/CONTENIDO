@@ -51,7 +51,6 @@ $cfg['templates']['generic_list']         = 'generic_list.html';
 $cfg['templates']['generic_select']       = 'template.select.html';
 $cfg['templates']['generic_left_top']     = 'template.generic_left_top.html';
 $cfg['templates']['generic_menu']         = 'template.generic_menu.html';
-$cfg['templates']['generic_subnav']       = 'template.generic_subnav.html'; // @deprecated [2011-09-23]
 $cfg['templates']['generic_form']         = 'template.generic_form.html';
 $cfg['templates']['generic_table_form']   = 'template.generic_table_form.html';
 $cfg['templates']['generic_page']         = 'template.generic_page.html';
@@ -70,24 +69,19 @@ $cfg['templates']['con_str_overview']     = 'template.con_str_overview.html';
 $cfg['templates']['con_art_overview']     = 'template.con_art_overview.html';
 $cfg['templates']['con_left_top']         = 'template.con_left_top.html';
 $cfg['templates']['con_subnav']           = 'template.con_subnav.html';
-$cfg['templates']['con_subnav_noleft']    = 'template.con_subnav_noleft.html'; // @deprecated [2011-09-23]
 
 $cfg['templates']['str_overview']         = 'template.str_overview.html';
 
 $cfg['templates']['upl_left_top']         = 'template.upl_left_top.html';
 $cfg['templates']['upl_dirs_overview']    = 'template.upl_dirs_overview.html';
-$cfg['templates']['upl_files_overview']   = 'template.upl_files_overview.html';
 
 $cfg['templates']['lay_overview']         = 'template.lay_overview.html';
 $cfg['templates']['lay_edit_form']        = 'template.lay_edit_form.html';
 $cfg['templates']['lay_left_top']         = 'template.lay_left_top.html';
 
-$cfg['templates']['mod_overview']         = 'template.mod_overview.html';
-$cfg['templates']['mod_edit_form']        = 'template.mod_edit_form.html';
 $cfg['templates']['mod_left_top']         = 'template.mod_left_top.html';
 
 $cfg['templates']['tpl_overview']         = 'template.tpl_overview.html';
-$cfg['templates']['tpl_edit_form']        = 'template.tpl_edit_form.html';
 
 $cfg['templates']['files_overview']       = 'template.files_overview.html';
 
@@ -107,7 +101,6 @@ $cfg['templates']['rights_details']       = 'template.rights_details.html';
 $cfg['templates']['rights_create']        = 'template.rights_create.html';
 $cfg['templates']['rights_inc']           = 'template.rights_inc.html';
 
-$cfg['templates']['log_menu']             = 'template.log_menu.html';
 $cfg['templates']['log_main']             = 'template.log_main.html';
 
 $cfg['templates']['left_top_blank']       = 'template.left_top_blank.html';
@@ -116,27 +109,19 @@ $cfg['templates']['subnav_blank']         = 'template.subnav_blank.html';
 $cfg['templates']['tplcfg_edit_form']     = 'template.tplcfg_edit_form.html';
 
 $cfg['templates']['lang_overview']        = 'template.lang_overview.html';
-$cfg['templates']['lang_menu']            = 'template.lang_menu.html';
-$cfg['templates']['lang_edit']            = 'template.lang_edit.html';
 $cfg['templates']['lang_left_top']        = 'template.lang_left_top.html';
 
 $cfg['templates']['client_menu']          = 'template.client_menu.html';
 $cfg['templates']['client_edit']          = 'template.client_edit.html';
 $cfg['templates']['client_left_top']      = 'template.client_left_top.html';
-$cfg['templates']['client_subnav']        = 'template.client_subnav.html'; // @deprecated [2011-09-23]
 
 $cfg['templates']['mycontenido_settings'] = 'template.mycontenido_settings.html';
-$cfg['templates']['mycontenido_overview'] = 'template.mycontenido_overview.html';
-$cfg['templates']['mycontenido_start']    = 'template.mycontenido_start.html';
 $cfg['templates']['mycontenido_lastarticles'] = 'template.mycontenido_lastarticles.html';
-$cfg['templates']['mycontenido_subnav']   = 'template.mycontenido_subnav.html'; // @deprecated [2011-09-23]
 
 $cfg['templates']['grouprights_left_top'] = 'template.grouprights_left_top.html';
 $cfg['templates']['grouprights_create']   = 'template.grouprights_create.html';
-$cfg['templates']['grouprights_subnav']   = 'template.grouprights_subnav.html'; // @deprecated [2011-09-23]
-$cfg['templates']['grouprights_memberlist']   = 'template.grouprights_memberlist.html';
 $cfg['templates']['grouprights_memberselect'] = 'template.grouprights_memberselect.html';
-$cfg['templates']['grouprights_details']  = 'template.grouprights_details.html';
+
 $cfg['templates']['grouprights_menu']     = 'template.grouprights_menu.html';
 $cfg['templates']['grouprights_overview'] = 'template.grouprights_overview.html';
 
@@ -147,12 +132,9 @@ $cfg['templates']['symbolhelp']           = 'template.symbolhelp.html';
 
 $cfg['templates']['system_variables']     = 'template.system_variables.html';
 $cfg['templates']['system_variables_block'] = 'template.system_variables_block.html';
-$cfg['templates']['system_subnav']        = 'template.system_subnav.html'; // @deprecated [2011-09-23]
-$cfg['templates']['system_errorreport']   = 'template.system_errorreport.html';
-$cfg['templates']['systam_variables_mailattach'] = 'template.system_sysval_mailattach.html';
 
 $cfg['templates']['request_password']     = 'template.request_password.html';
-$cfg['templates']['file_subnav']          = 'template.file_subnav.html'; // @deprecated [2011-09-23]
+$cfg['templates']['file_subnav']          = 'template.file_subnav.html'; 
 $cfg['templates']['blank']                = 'template.blank.html';
 $cfg['templates']['system_purge']         = 'template.system_purge.html';
 
