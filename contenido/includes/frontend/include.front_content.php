@@ -414,14 +414,20 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // 'mode' is preview (Area: Contenido --> Articles --> Preview) or article displayed in the front-end
 
     // Code generation
-    if(!file_exists($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$idcatart.".php-cache")) {
-    	unlink($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$idcatart.".php-cache");
+    $oCatArtColl = new cApiCategoryArticleCollection();
+    $oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
+    
+    if(!file_exists($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$idcatart.".php")) {
         cInclude('includes', 'functions.tpl.php');
         cInclude('includes', 'functions.mod.php');
         conGenerateCode($idcat, $idart, $lang, $client);
-    }
-    
-    $code = file_get_contents($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$idcatart.".php-cache");
+    } else if ($oCatArt->get('createcode') == 1 || $force) {        
+    	cInclude('includes', 'functions.tpl.php');
+        cInclude('includes', 'functions.mod.php');
+        conGenerateCode($idcat, $idart, $lang, $client);
+	}
+	
+    $code = file_get_contents($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$idcatart.".php");
 
     // Add mark Script to code if user is in the backend
     $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);

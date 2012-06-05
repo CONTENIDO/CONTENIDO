@@ -226,8 +226,8 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
             $db->query($sql);
             $db->next_record();
 
-            //******** delete from 'code'-table ***************        // and delete corresponding code
-            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$db->f("idcatart").".php-cache";
+            //******** delete frome code cache ***************        // and delete corresponding code
+            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$db->f("idcatart").".php";
             array_map("unlink", glob($mask));
 
             //******* delete from 'stat'-table ****************
@@ -391,8 +391,8 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
             $db->query($sql);
 			$db->next_record();
             
-            //******** delete from 'code'-table ***************        // and delete corresponding code
-            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$db->f("idcatart").".php-cache";
+            //******** delete from code cache ***************        // and delete corresponding code
+            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$db->f("idcatart").".php";
             array_map("unlink", glob($mask));
 
             //******* delete from 'stat'-table ****************
@@ -783,8 +783,8 @@ function conDeleteart($idart)
     
     if (count($idcatart) > 0) {
         foreach ($idcatart as $value) {
-            //********* delete from code table **********
-            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$value.".php-cache";
+            //********* delete from code cache **********
+            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$value.".php";
             array_map("unlink", glob($mask));
 
             //****** delete from 'stat'-table ************
@@ -1438,13 +1438,19 @@ function conGenerateCodeForAllArts()
  */
 function conSetCodeFlag($idcatart)
 {
-    global $cfg, $client, $cfgClient;
+    global $cfg;
 
-    /* 
-     * Remove all cached articles
+    $db = new DB_Contenido();
+
+    $sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET createcode = '1' WHERE idcatart='".Contenido_Security::toInteger($idcatart)."'";
+    $db->query($sql);
+
+    /* Setting the createcode flag is not enough due to a bug in the
+     * database structure. Remove all con_code entries for a specific
+     * idcatart in the con_code table.
      */
-    $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$idcatart.".php-cache";
-    array_map("unlink", glob($mask));
+     $sql = "DELETE FROM ".$cfg["tab"]["code"] ." WHERE idcatart='".Contenido_Security::toInteger($idcatart)."'";
+     $db->query($sql);
 }
 
 

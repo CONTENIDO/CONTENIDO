@@ -107,7 +107,7 @@ class Purge {
 	 * @return boolean
 	 */
 	public function resetClientConCode($iClientId) {
-		$mask = $this->cfgClient[$iClientId]["path"]["frontend"]."cache/code/*.php-cache";
+		$mask = $this->cfgClient[$iClientId]["path"]["frontend"]."cache/code/*.php";
     	$arr = glob($mask);
     	foreach($arr as $file) {
     		if(!unlink($file)) {
@@ -125,15 +125,17 @@ class Purge {
 	 * @return boolean
 	 */
 	public function resetClientConCatArt ($iClientId) {
-		$mask = $this->cfgClient[$iClientId]["path"]["frontend"]."cache/code/*.php-cache";
-    	$arr = glob($mask);
-    	foreach($arr as $file) {
-    		if(!unlink($file)) {
-    			return false;
-    		}
-    	}
+		$sSql = " UPDATE " . $this->cfg['tab']['cat_art'] . " cca, " . 
+						    $this->cfg['tab']['cat'] . " cc, " . 
+						    $this->cfg['tab']['art'] . " ca " . 
+			   " SET cca.createcode=1 " . 			    
+			   " WHERE cc.idcat = cca.idcat " . 
+			   " AND ca.idart = cca.idart " . 
+			   " AND cc.idclient = " . $iClientId .  
+			   " AND ca.idclient =" . $iClientId; 
+		$this->oDb->query($sSql);
 		
-		return true;
+		return ($this->oDb->Error == '') ? true : false;
 	}
 	
 	/**

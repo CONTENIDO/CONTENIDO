@@ -179,7 +179,11 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         		chmod($cfgClient[$this->_client]["path"]["frontend"]."cache/code", 0777);
         		file_put_contents($cfgClient[$this->_client]["path"]["frontend"]."cache/code/.htaccess", "Order Deny,Allow\nDeny from all\n");
         	}
-        	file_put_contents($cfgClient[$this->_client]["path"]["frontend"]."cache/code/".$this->_client.".".$this->_lang.".".$idcatart.".php-cache", $this->_layoutCode);
+        	file_put_contents($cfgClient[$this->_client]["path"]["frontend"]."cache/code/".$this->_client.".".$this->_lang.".".$idcatart.".php", "<?php\nif (!defined('CON_FRAMEWORK')) {\n
+    							die('Illegal call');\n
+							   }\n?>\n".$this->_layoutCode);
+        	
+            $db->update($cfg['tab']['cat_art'], array('createcode' => 0), array('idcatart' => (int) $idcatart));
         }
 
         return $this->_layoutCode;

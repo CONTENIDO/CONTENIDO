@@ -426,7 +426,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
         $db->query($sql);
 
         //********** delete from 'code'-cache
-        $mask = $cfgClient[$iIdClient]["path"]["frontend"]."cache/code/".$iIdClient.".".$iIdLang.".*.php-cache";
+        $mask = $cfgClient[$iIdClient]["path"]["frontend"]."cache/code/".$iIdClient.".".$iIdLang.".*.php";
         array_map("unlink", glob($mask));
 
         foreach ($aIdTplCfg as $tplcfg) {
