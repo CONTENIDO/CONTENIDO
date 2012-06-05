@@ -386,8 +386,6 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
             $db->query($sql);
             $sql = "DELETE FROM ".$cfg['tab']['content']." WHERE idartlang=" . $value;
             $db->query($sql);
-            $sql = "DELETE FROM ".$cfg['tab']['link']." WHERE idartlang=" . $value;
-            $db->query($sql);
         }
 
         if ($lastlanguage == 1) {
