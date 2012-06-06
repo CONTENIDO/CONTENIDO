@@ -21,14 +21,8 @@
  *
  * {@internal
  *   created 2007-10-24
- *   modified 2008-07-04, bilal arslan, added security fix
- *   modified 2009-10-08, Murat Purc, bugfix in function CheckIfMetaTagExists(), see [#CON-271]
- *   modified 2009-12-18, Murat Purc, fixed meta tag generation, see [#CON-272]
- *   modified 2011-06-24, Rusmir Jusufovic remove bug  $oArt->_getIdArtLang is protected
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -44,7 +38,7 @@ function cecCreateMetatags($metatags) {
 
     // Basic settings
     $cachetime = 3600; // measured in seconds
-    $cachedir = $cfgClient[$client]['path']['frontend'] . 'cache/';
+    $cachedir = $cfgClient[$client]['cache_path'];
 
     if (!is_array($metatags)) {
         $metatags = array();

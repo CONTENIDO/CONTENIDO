@@ -20,10 +20,8 @@
  *
  * {@internal
  *   created  2011-08-11
- *
  *   $Id$:
  * }}
- *
  */
 
 
@@ -174,15 +172,14 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
         // Write code in the cache of the client. If the folder does not exist create one.
         if ($this->_layout == false && $this->_save == true) {
-        	if(!file_exists($cfgClient[$this->_client]["path"]["frontend"]."cache/code")) {
-        		mkdir($cfgClient[$this->_client]["path"]["frontend"]."cache/code");
-        		chmod($cfgClient[$this->_client]["path"]["frontend"]."cache/code", 0777);
-        		file_put_contents($cfgClient[$this->_client]["path"]["frontend"]."cache/code/.htaccess", "Order Deny,Allow\nDeny from all\n");
-        	}
-        	file_put_contents($cfgClient[$this->_client]["path"]["frontend"]."cache/code/".$this->_client.".".$this->_lang.".".$idcatart.".php", "<?php\nif (!defined('CON_FRAMEWORK')) {\n
-    							die('Illegal call');\n
-							   }\n?>\n".$this->_layoutCode);
-        	
+            if (!is_dir($cfgClient[$this->_client]['code_path'])) {
+                mkdir($cfgClient[$this->_client]['code_path']);
+                chmod($cfgClient[$this->_client]['code_path'], 0777);
+                file_put_contents($cfgClient[$this->_client]['code_path'] . ".htaccess", "Order Deny,Allow\nDeny from all\n");
+            }
+            $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $this->_layoutCode;
+            file_put_contents($cfgClient[$this->_client]['code_path'].$this->_client.".".$this->_lang.".".$idcatart.".php", $code);
+
             $db->update($cfg['tab']['cat_art'], array('createcode' => 0), array('idcatart' => (int) $idcatart));
         }
 

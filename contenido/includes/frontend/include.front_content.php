@@ -40,9 +40,10 @@
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release = 4.9
  *
+ * {@internal
+ *   created 2003-01-21
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -142,7 +143,7 @@ if (!$sess->is_registered('client')) {
 }
 
 if (isset($username)) {
-    $auth->login_if(true);
+    $auth->login_if (true);
 }
 
 // Send HTTP header with encoding
@@ -263,18 +264,18 @@ if (0 != $idart && 0 != $idcat) {
 
 $idartlang = getArtLang($idart, $lang);
 if ($idartlang === false) {
-    if($_GET['display_errorpage']) {
-    	//show only if $idart > 0  
-    	if($idart > 0) {
-    		$tpl = new Template();
-    		$tpl->set('s', 'CONTENIDO_PATH', $cfg['path']['contenido_fullhtml']);
-    		$tpl->set('s', 'ERROR_TITLE', i18n('Error page'));
-    		$tpl->set('s', 'ERROR_TEXT', i18n('Error article/category not found!'));
-    		$tpl->generate($cfg['path']['contenido']. $cfg['path']['templates'].'template.error_page.html');
-    	}
-    	exit;
+    if ($_GET['display_errorpage']) {
+        //show only if $idart > 0
+        if ($idart > 0) {
+            $tpl = new Template();
+            $tpl->set('s', 'CONTENIDO_PATH', $cfg['path']['contenido_fullhtml']);
+            $tpl->set('s', 'ERROR_TITLE', i18n('Error page'));
+            $tpl->set('s', 'ERROR_TEXT', i18n('Error article/category not found!'));
+            $tpl->generate($cfg['path']['contenido']. $cfg['path']['templates'].'template.error_page.html');
+        }
+        exit;
     }else {
-    	header($errsite. '&display_errorpage=1');
+        header($errsite. '&display_errorpage=1');
     }
     exit;
 }
@@ -416,18 +417,18 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     // Code generation
     $oCatArtColl = new cApiCategoryArticleCollection();
     $oCatArt = $oCatArtColl->fetchByCategoryIdAndArticleId($idcat, $idart);
-    
-    if(!file_exists($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$idcatart.".php")) {
+
+    if (!file_exists($cfgClient[$client]['code_path'].$client.".".$lang.".".$idcatart.".php")) {
         cInclude('includes', 'functions.tpl.php');
         cInclude('includes', 'functions.mod.php');
         conGenerateCode($idcat, $idart, $lang, $client);
-    } else if ($oCatArt->get('createcode') == 1 || $force) {        
-    	cInclude('includes', 'functions.tpl.php');
+    } else if ($oCatArt->get('createcode') == 1 || $force) {
+        cInclude('includes', 'functions.tpl.php');
         cInclude('includes', 'functions.mod.php');
         conGenerateCode($idcat, $idart, $lang, $client);
-	}
-	
-    $code = file_get_contents($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$idcatart.".php");
+    }
+
+    $code = file_get_contents($cfgClient[$client]['code_path'].$client.".".$lang.".".$idcatart.".php");
 
     // Add mark Script to code if user is in the backend
     $code = preg_replace("/<\/head>/i", "$markscript\n</head>", $code, 1);
@@ -475,7 +476,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 $allow = CEC_Hook::executeWhileBreakCondition(
                     'Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']
                 );
-                $auth->login_if(!$allow);
+                $auth->login_if (!$allow);
             }
         } else {
             // CEC to check category access
@@ -497,12 +498,13 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     }
 
     $cApiClient = new cApiClient($client);
-    //Dont track page hit if tracking off 
-    if($cApiClient->getProperty("stats", "tracking") != "off") {
-    	// Statistic, track page hit
-    	$oStatColl = new cApiStatCollection();
-    	$oStat = $oStatColl->trackVisit($idcatart, $lang, $client);
+    // Dont track page hit if tracking off
+    if ($cApiClient->getProperty('stats', 'tracking') != 'off') {
+        // Statistic, track page hit
+        $oStatColl = new cApiStatCollection();
+        $oStat = $oStatColl->trackVisit($idcatart, $lang, $client);
     }
+
     // Check if an article is start article of the category
     $oCatLang = new cApiCategoryLanguage();
     $oCatLang->loadByCategoryIdAndLanguageId($idcat, $lang);
@@ -578,11 +580,11 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
             $aExclude = explode(',', getEffectiveSetting('frontend.no_outputbuffer', 'idart', ''));
             if (in_array(Contenido_Security::toInteger($idart), $aExclude)) {
-				eval("?>\n" . $code . "\n<?php\n");
+                eval("?>\n" . $code . "\n<?php\n");
             } else {
                 // Write html output into output buffer and assign it to an variable
                 ob_start();
-				eval("?>\n" . $code . "\n<?php\n");
+                eval("?>\n" . $code . "\n<?php\n");
                 $htmlCode = ob_get_contents();
                 ob_end_clean();
 
@@ -596,7 +598,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     } else {
         // If user is in the backend display offline articles
         if ($contenido) {
-			eval("?>\n" . $code . "\n<?php\n");
+            eval("?>\n" . $code . "\n<?php\n");
         } else {
             if ($error == 1) {
                 echo "Fatal error: Could not display error page. Error to display was: 'No CONTENIDO session variable set. Probable error cause: Start article in this category is not set on-line.'";

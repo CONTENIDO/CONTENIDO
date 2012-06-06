@@ -21,11 +21,8 @@
  *
  * {@internal
  *   created 2003-04-30
- *   modified 2008-06-26, Dominik Ziegler, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -43,7 +40,7 @@ if ($action == "client_new") {
     $new = true;
 }
 
-          
+
 if (!$perm->have_perm_area_action($area)) {
     $notification->displayNotification("error", i18n("Permission denied"));
     return;
@@ -76,9 +73,9 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                 name = '".Contenido_Security::escapeDB($clientname, $db)."',
                 errsite_cat = '".Contenido_Security::toInteger($errsite_cat)."',
                 errsite_art = '".Contenido_Security::toInteger($errsite_art)."'";
-        
+
         $db->query($sql);
-      
+
         $idclient = $db->getLastInsertedId($cfg["tab"]["clients"]);
         $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
 
@@ -97,7 +94,7 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                         $buffer = fgets($res, 4096);
                         $buffer = str_replace("!CLIENT!", $idclient, $buffer);
                         $buffer = str_replace("!PATH!", $cfg["path"]["contenido"], $buffer);
-						fwrite($res2, $buffer);
+                        fwrite($res2, $buffer);
                     }
                 } else {
                       $notification->displayNotification("error",i18n("Couldn't write the file config.php."));
@@ -113,7 +110,7 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
                 $notification->displayNotification("warning", $message);
             }
         }
-      
+
         rereadClients();
     } else {
         $pathwithoutslash = $frontendpath;
@@ -141,13 +138,13 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
 
     $new = false;
     rereadClients();
-	
-	updateClientCache($idclient, $htmlpath, $frontendpath);
+
+    updateClientCache($idclient, $htmlpath, $frontendpath);
 
     $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
 
     // Clear the code cache
-    $mask = $cfgClient[$idclient]["path"]["frontend"]."cache/code/".$idclient."*.php";
+    $mask = $cfgClient[$idclient]['cache_path'] $cfgClient[$idclient]["path"]["frontend"]."cache/code/".$idclient."*.php";
     array_map("unlink", glob($mask));
 
     $notification->displayNotification("info", i18n("Changes saved").$sNewNotification);
@@ -160,12 +157,12 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
     } else {
         $cApiClient->setProperty("generator", "xhtml", "true");
     }
-    
+
     //Is statistc on/off
     if ($_REQUEST["statistic"] == "on") {
-    	$cApiClient->setProperty("stats", "tracking", "on");
+        $cApiClient->setProperty("stats", "tracking", "on");
     } else {
-    	$cApiClient->setProperty("stats", "tracking", "off");
+        $cApiClient->setProperty("stats", "tracking", "off");
     }
 }
 
@@ -186,8 +183,8 @@ $db->next_record();
 $htmlpath = "";
 $serverpath = "";
 if(isset($idclient)) {
-	$htmlpath = $cfgClient[$idclient]['path']['htmlpath'];
-	$serverpath = $cfgClient[$idclient]['path']['frontend'];
+    $htmlpath = $cfgClient[$idclient]['path']['htmlpath'];
+    $serverpath = $cfgClient[$idclient]['path']['frontend'];
 }
 
 $form = '<form name="client_properties" method="post" action="'.$sess->url("main.php?").'">
@@ -314,9 +311,9 @@ $oXHTMLSelect->autoFill($aChoices);
 
 $cApiClient->loadByPrimaryKey($idclient);
 if ($cApiClient->getProperty("stats", "tracking") == "off") {
-	$oXHTMLSelect->setDefault("off");
+    $oXHTMLSelect->setDefault("off");
 } else {
-	$oXHTMLSelect->setDefault("on");
+    $oXHTMLSelect->setDefault("on");
 }
 
 

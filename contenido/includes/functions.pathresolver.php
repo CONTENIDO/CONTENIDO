@@ -364,7 +364,7 @@ function prWriteCacheFileContent($data, $client, $lang)
 {
     global $cfgClient;
 
-    $path = $cfgClient[$client]['path']['frontend'] . 'cache/';
+    $path = $cfgClient[$client]['cache_path'];
     $filename = "locationstring-url-cache-$lang.txt";
 
     $res = false;
@@ -386,7 +386,7 @@ function prGetCacheFileContent($client, $lang)
 {
     global $cfgClient;
 
-    $path = $cfgClient[$client]['path']['frontend'] . 'cache/';
+    $path = $cfgClient[$client]['cache_path'];
     $filename = "locationstring-url-cache-$lang.txt";
 
     if (file_exists($path . $filename)) {
@@ -410,7 +410,7 @@ function prDeleteCacheFileContent($client, $lang)
 {
     global $cfgClient;
 
-    $path = $cfgClient[$client]['path']['frontend'] . 'cache/';
+    $path = $cfgClient[$client]['cache_path'];
     $filename = "locationstring-url-cache-$lang.txt";
 
     $res = false;

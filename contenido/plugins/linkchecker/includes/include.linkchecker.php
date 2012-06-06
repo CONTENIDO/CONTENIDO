@@ -22,20 +22,11 @@
  * 
  * {@internal 
  *   created 2007-08-08
- *   modified 2008-02-08, Andread Lindner, performance enhancements
- *   modified 2008-04-05, Holger Librenz, fixed wrong include-path for
- *                        PEAR cache module
- *   modified 2008-05-14, Frederic Schneider, new version
- *   modified 2008-06-21, Frederic Schneider, array initalization
- *   modified 2008-07-02, Frederic Schneider, add security fix
- *   modified 2008-07-07, Frederic Schneider, fixed wrong language var
- *
  *   $Id$:
  * }}
- * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
@@ -104,7 +95,7 @@ $tpl->set('s', 'UPDATE_HREF', $sLink . intval($_GET['mode']) . '&live=1');
 
 // Cache options
 $aCacheName = array('errors' => $sess->id, 'errorscount' => $aCacheName['errors'] . "ErrorsCountChecked");
-$oCache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['path']['frontend'] . "cache/", 'caching' => true, 'lifeTime' => 1209600, 'automaticCleaningFactor' => 1));
+$oCache = new Cache_Lite(array('cacheDir' => $cfgClient[$client]['cache_path'], 'caching' => true, 'lifeTime' => 1209600, 'automaticCleaningFactor' => 1));
 
 /* *********
 Program code

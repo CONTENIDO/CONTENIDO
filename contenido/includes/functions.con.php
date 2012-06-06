@@ -227,7 +227,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
             $db->next_record();
 
             //******** delete frome code cache ***************        // and delete corresponding code
-            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$db->f("idcatart").".php";
+            $mask = $cfgClient[$client]['code_path']."*.".$db->f("idcatart").".php";
             array_map("unlink", glob($mask));
 
             //******* delete from 'stat'-table ****************
@@ -392,7 +392,7 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
 			$db->next_record();
             
             //******** delete from code cache ***************        // and delete corresponding code
-            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$db->f("idcatart").".php";
+            $mask = $cfgClient[$client]['code_path']."*.".$db->f("idcatart").".php";
             array_map("unlink", glob($mask));
 
             //******* delete from 'stat'-table ****************
@@ -784,7 +784,7 @@ function conDeleteart($idart)
     if (count($idcatart) > 0) {
         foreach ($idcatart as $value) {
             //********* delete from code cache **********
-            $mask = $cfgClient[$client]["path"]["frontend"]."cache/code/*.".$value.".php";
+            $mask = $cfgClient[$client]['code_path']."*.".$value.".php";
             array_map("unlink", glob($mask));
 
             //****** delete from 'stat'-table ************
@@ -1120,8 +1120,8 @@ function conCreateLocationString($idcat, $seperator, &$cat_str, $makeLink = fals
 
     if ($final == true && $usecache == true) {
         if (!is_array($_locationStringCache)) {
-            if (file_exists($cfgClient[$client]["path"]["frontend"]."cache/locationstring-cache-$uselang.txt")) {
-                $_locationStringCache = unserialize(file_get_contents($cfgClient[$client]["path"]["frontend"]."cache/locationstring-cache-$uselang.txt"));
+            if (file_exists($cfgClient[$client]['cache_path']."locationstring-cache-$uselang.txt")) {
+                $_locationStringCache = unserialize(file_get_contents($cfgClient[$client]['cache_path']."locationstring-cache-$uselang.txt"));
             } else {
                 $_locationStringCache = array();
             }
@@ -1183,8 +1183,8 @@ function conCreateLocationString($idcat, $seperator, &$cat_str, $makeLink = fals
         $_locationStringCache[$idcat]["name"] = $cat_str;
         $_locationStringCache[$idcat]["expires"] = time() + 3600;
 
-        if (is_writable($cfgClient[$client]["path"]["frontend"]."cache/")) {
-            file_put_contents($cfgClient[$client]["path"]["frontend"]."cache/locationstring-cache-$uselang.txt", serialize($_locationStringCache));
+        if (is_writable($cfgClient[$client]['cache_path'])) {
+            file_put_contents($cfgClient[$client]['cache_path']."locationstring-cache-$uselang.txt", serialize($_locationStringCache));
         }
     }
 }

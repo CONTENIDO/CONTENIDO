@@ -21,16 +21,11 @@
  * 
  * {@internal 
  *   	created 	2010-07-22
- *		modified 	2010-08-17		prevent users from clone object
- *		modified 	2010-08-26		added sanity check
- *		modified	2010-09-06		fixed reset function
- * 		modified	2010-11-22		Munkh-Ulzii Balidar, added a check for template directory
  * }}
- * 
  */
  
-if(!defined('CON_FRAMEWORK')) {
- die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
  class Contenido_SmartyWrapper {
@@ -79,8 +74,8 @@ if(!defined('CON_FRAMEWORK')) {
 		Contenido_SmartyWrapper::$oSmarty 	= new Smarty();
 		Contenido_SmartyWrapper::$aDefaultPaths = array(
 				'template_dir'		=>		$aClientCfg["path"]["frontend"] . "modules/",
-				'cache_dir'			=>		$aClientCfg["path"]["frontend"] . "cache/",
-				'compile_dir'		=>		$aClientCfg["path"]["frontend"] . "cache/templates_c"
+				'cache_dir'			=>		$cfgClient[$client]['cache_path'],
+				'compile_dir'		=>		$cfgClient[$client]['cache_path'] . "templates_c"
 			);
 		
 		// check the template directory and create new one if it not exists

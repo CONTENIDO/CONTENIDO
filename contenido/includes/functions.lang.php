@@ -21,14 +21,8 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2008-07-23, Timo Trautmann optional db param added for langGetTextDirection (performance tuning)
- *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready) and some formatting
- *   modified 2011-07-11, Murat Purc, optimized multiple calls of langGetTextDirection(), refactored, documented and formatted code
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -426,7 +420,7 @@ function langDeleteLanguage($iIdLang, $iIdClient = 0)
         $db->query($sql);
 
         //********** delete from 'code'-cache
-        $mask = $cfgClient[$iIdClient]["path"]["frontend"]."cache/code/".$iIdClient.".".$iIdLang.".*.php";
+        $mask = $cfgClient[$iIdClient]['code_path'].$iIdClient.".".$iIdLang.".*.php";
         array_map("unlink", glob($mask));
 
         foreach ($aIdTplCfg as $tplcfg) {

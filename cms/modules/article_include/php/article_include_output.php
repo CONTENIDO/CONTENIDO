@@ -115,7 +115,7 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0)
       # front_content, if code for one language will be created). This "bug" may be fixed in future releases.
       if ($iCreateCode == 0)
       {
-      	$iCreateCode = !file_exists($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$iIDCatArt.".php");
+      	$iCreateCode = !file_exists($cfgClient[$client]['code_path'].$client.".".$lang.".".$iIDCatArt.".php");
       }
 
       # Create code if necessary
@@ -128,8 +128,8 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0)
          conGenerateCode($iIDCat, $iIDArt, $lang, $client);
       }
       
-      if(file_exists($cfgClient[$client]["path"]["frontend"]."cache/code/".$client.".".$lang.".".$iIDCatArt.".php")) {
-         $sCode = stripslashes(file_get_contents($cfgClient[$client]["path"]["frontend"]."cache/code/".client.".".$lang.".".$iIDCatArt.".php"));
+      if(file_exists($cfgClient[$client]['code_path'].$client.".".$lang.".".$iIDCatArt.".php")) {
+         $sCode = stripslashes(file_get_contents($cfgClient[$client]['code_path'].$client.".".$lang.".".$iIDCatArt.".php"));
          ob_start();
          eval("?>
 ".$sCode."

@@ -21,17 +21,8 @@
  *
  * {@internal
  *   created 2003-12-29
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-07-31, Oliver Lohkemper, add CEC
- *   modified 2008-08-11, Timo Trautmann, added urlencode for meta storage in database
- *   modified 2008-10-03, Oliver Lohkemper, delete CEC::Contenido.Upl_edit.SaveRows
- *   modified 2008-10-16, Oliver Lohkemper, add copyright in upl_meta - CON-212
- *   modified 2009-12-04, Dominik Ziegler, added initial set of file variable
- *   modified 2010-09-20, Dominik Ziegler, implemented check of write permissions - CON-319
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -342,7 +333,7 @@ class UploadList extends FrontendList
                 case "wbmp":
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
                     $sCacheName = substr($sCacheThumbnail, strrpos($sCacheThumbnail, "/")+1, strlen($sCacheThumbnail)-(strrchr($sCacheThumbnail, '/')+1));
-                    $sFullPath = $cfgClient[$client]['path']['frontend'].'cache/'.$sCacheName;
+                    $sFullPath = $cfgClient[$client]['cache_path'].$sCacheName;
                     if (file_exists($sFullPath)) {
                         $aDimensions = getimagesize($sFullPath);
                         $iWidth = $aDimensions[0];
@@ -354,18 +345,18 @@ class UploadList extends FrontendList
 
                     if (is_dbfs($data)) {
                         $retValue =
-                            '<a href="JavaScript:iZoom(\''.$sess->url($cfgClient[$client]["path"]["htmlpath"]."dbfs.php?file=".$data).'\');">
-                                <img class="hover" name="smallImage"  onMouseOver="correctPosition(this, '.$iWidth.', '.$iHeight.');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="'.$sCacheThumbnail.'">
+                            '<a href="javascript:iZoom(\''.$sess->url($cfgClient[$client]["path"]["htmlpath"]."dbfs.php?file=".$data).'\');">
+                                <img class="hover" name="smallImage" onmouseover="correctPosition(this, '.$iWidth.', '.$iHeight.');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="'.$sCacheThumbnail.'">
                                 <img class="preview" name="prevImage" src="'.$sCacheThumbnail.'">
                             </a>';
                         return $retValue;
                     } else {
                         $retValue =
-                            '<a href="JavaScript:iZoom(\''.$cfgClient[$client]["path"]["htmlpath"].$cfgClient[$client]["upload"].$data.'\');">
-                                <img class="hover" name="smallImage"  onMouseOver="correctPosition(this, '.$iWidth.', '.$iHeight.');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="'.$sCacheThumbnail.'">
+                            '<a href="javascript:iZoom(\''.$cfgClient[$client]["path"]["htmlpath"].$cfgClient[$client]["upload"].$data.'\');">
+                                <img class="hover" name="smallImage" onmouseover="correctPosition(this, '.$iWidth.', '.$iHeight.');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="'.$sCacheThumbnail.'">
                                 <img class="preview" name="prevImage" src="'.$sCacheThumbnail.'">
                             </a>';
-                        $retValue .= '<a href="JavaScript:iZoom(\''.$cfgClient[$client]["path"]["htmlpath"].$cfgClient[$client]["upload"].$data.'\');"><img class="preview" name="prevImage" src="'.$sCacheThumbnail.'"></a>';
+                        $retValue .= '<a href="javascript:iZoom(\''.$cfgClient[$client]["path"]["htmlpath"].$cfgClient[$client]["upload"].$data.'\');"><img class="preview" name="prevImage" src="'.$sCacheThumbnail.'"></a>';
                         return $retValue;
                     }
                     break;

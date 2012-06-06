@@ -21,11 +21,8 @@
  *
  * {@internal
  *   created 2003-12-29
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -104,7 +101,7 @@ class UploadList extends FrontendList
                 case "wbmp" :
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
                     $sCacheName = substr($sCacheThumbnail, strrpos($sCacheThumbnail, "/")+1, strlen($sCacheThumbnail)-(strrchr($sCacheThumbnail, '/')+1));
-                    $sFullPath = $cfgClient[$client]['path']['frontend'].'cache/'.$sCacheName;
+                    $sFullPath = $cfgClient[$client]['cache_path'].$sCacheName;
                     if (file_exists($sFullPath)) {
                         $aDimensions = getimagesize($sFullPath);
                         $iWidth = $aDimensions[0];
