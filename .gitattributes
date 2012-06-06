@@ -1904,10 +1904,7 @@ contenido/tools/upgrade.php -text
 contenido/tools/upgradeseq.php -text
 contenido/xml/index.php -text
 contenido/xml/navigation.xml -text
-data/cache/rss_de.xml -text
-data/cache/rss_en.xml -text
-data/cache/update.txt -text
-data/cache/vendor.xml -text
+data/.htaccess -text
 data/cronlog/advance_workflow.php.job -text
 data/cronlog/crontab.txt -text
 data/cronlog/linkchecker.php.job -text
