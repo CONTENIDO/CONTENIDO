@@ -823,7 +823,7 @@ function conDeleteart($idart)
     # @see docs/techref/plugins/Contenido Extension Chainer.pdf
     #
     # Usage:
-    # One could define the file contenido/includes/config.local.php
+    # One could define the file data/config/{environment}/config.local.php
     # with following code.
     #
     # global $_cecRegistry;
@@ -1801,7 +1801,7 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = "", $bUseCopyLabe
     # @see docs/techref/plugins/Contenido Extension Chainer.pdf
     #
     # Usage:
-    # One could define the file contenido/includes/config.local.php
+    # One could define the file data/config/{environment}/config.local.php
     # with following code.
     #
     # global $_cecRegistry;
