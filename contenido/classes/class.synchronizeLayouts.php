@@ -18,8 +18,11 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since
- *
  */
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
+}
 
 class SynchronizeLayouts {
     protected $_cfg;
@@ -177,7 +180,7 @@ class SynchronizeLayouts {
         //get all layouts from client
         $sql = sprintf("SELECT UNIX_TIMESTAMP(lastmodified) AS lastmodified, alias,name,description, idlay FROM %s WHERE idclient=%s", $this->_cfg['tab']['lay'],$this->_client);
         $notification = new Contenido_Notification();
-        $dir = $this->_cfgClient[$this->_client]['path']['frontend'] . "layouts/";
+        $dir = $this->_cfgClient[$this->_client]['layout_path'];
 
         $db = new DB_Contenido();
         $db->query($sql);
@@ -259,18 +262,18 @@ class SynchronizeLayouts {
         $this->_compareFileAndLayoutTimestamp();
 
         //get the path to cliets layouts
-        $dir = $this->_cfgClient[$this->_client]['path']['frontend'] . "layouts/";
-		
+        $dir = $this->_cfgClient[$this->_client]['layout_path'];
+
         //is/exist directory
         if (!is_dir($dir)) {
             return false;
         }
-        
+
         if ($dh = opendir($dir)) {
             while (($file = readdir($dh)) !== false) {
                 //is file a dir or not
                 if ($this->_isValidFirstChar($file) && is_dir($dir.$file."/") ) {
-                	$newFile = strtolower(capiStrCleanURLCharacters($file));
+                    $newFile = strtolower(capiStrCleanURLCharacters($file));
                     //dir is ok
                     if ($newFile == $file) {
                         $this->_addOrUpdateLayout($dir , $file, $newFile , $this->_client);

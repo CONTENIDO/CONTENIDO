@@ -623,6 +623,7 @@ class cSetupSystemtest extends cSetupMask
 
     function logFilePrediction($sFile, $iSeverity)
     {
+        // Remove existing frontend path from passed file, will be added later!
         if (strpos($sFile, C_FRONTEND_PATH) === 0) {
             $sFile = substr($sFile, strlen(C_FRONTEND_PATH));
         }

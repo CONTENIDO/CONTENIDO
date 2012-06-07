@@ -13,7 +13,7 @@
  * There are Objects to display the contents of a variable
  * to screen, to html comments and to a file.
  *
- * When using Debug_File, there will be a debug.log created in /contenido/logs/
+ * When using Debug_File, there will be a debug.log created in /data/logs/
  *
  * Using the Factory you can simply change the type of debugger by passing the type to load.
  * By using "devnull" you can keep your debug code while in production systems and turn it on again by changing to "file" or "hidden" if needed.
