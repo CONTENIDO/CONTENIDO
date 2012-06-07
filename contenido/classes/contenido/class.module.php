@@ -12,7 +12,7 @@
  * @todo  Switch to SimpleXML
  *
  * @package    CONTENIDO API
- * @version    1.2
+ * @version    1.2.1
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,20 +21,8 @@
  *
  * {@internal
  *   created  2003-02-26
- *   modified 2010-08-17, Munkh-Ulzii Balidar,
- *        - changed SQL query in method moduleInUse
- *        - added new property aUsedTemplates and saved the information of used templates
- *        - added new method getUsedTemplates
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
- *   modified 2011-01-11, Rusmir Jusufovic
- *       - save and load input and output from/in files
- *       - add new method parseModuleForStringsLoadFromFile
- *   modified 2011-06-21, Rusmir Jusufovic, change method inport (add alias)
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -511,7 +499,7 @@ class cApiModule extends Item
         // @TODO: fetch file extension correctly
         $modulName = substr($sFile,0,-4);
 
-        $sModulePath = $cfgClient[$client]['path']['frontend'] . $cfg['path']['modules'] . $modulName;
+        $sModulePath = $cfgClient[$client]['module_path'] . $modulName;
 
         // exist the modul in directory
         if (is_dir($sModulePath)) {
@@ -580,7 +568,7 @@ class cApiModule extends Item
                 $this->set('alias', $moduleAlias);
             }
 
-            if (is_dir($cfgClient[$client]['path']['frontend'] . $cfg['path']['modules'] . $moduleAlias)) {
+            if (is_dir($cfgClient[$client]['module_path'] . $moduleAlias)) {
                 $notification->displayNotification('error', i18n("Module exist!"));
                 return false;
             } else {

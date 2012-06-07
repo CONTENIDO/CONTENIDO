@@ -23,9 +23,7 @@
  *
  * {@internal
  *   created 2010-12-14
- *
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -141,8 +139,7 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
         $retIdMod = 0;
 
         while ($db->next_record()) {
-            $frontendPath = $cfgClient[$db->f('idclient')]['path']['frontend'];
-            $modulePath = $frontendPath . $cfg['path']['modules'] . $db->f('alias') . "/" . $this->_directories['php'] . $db->f('alias');
+            $modulePath = $cfgClient[$db->f('idclient')]['module_path'] . $db->f('alias') . "/" . $this->_directories['php'] . $db->f('alias');
 
             $lastmodified = $db->f('lastmodified');
 
@@ -238,10 +235,9 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
     public function synchronize()
     {
         global $cfg, $cfgClient;
-        $frontendPath = $cfgClient[$this->_client]['path']['frontend'];
 
         //get the path to the modul dir from the client
-        $dir = $frontendPath . $cfg['path']['modules'];
+        $dir = $cfgClient[$this->_client]['module_path'];
 
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {

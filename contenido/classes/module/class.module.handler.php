@@ -22,10 +22,8 @@
  * @since
  *
  * {@internal
- * created 2010-12-14
- *
+ *    created 2010-12-14
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -33,12 +31,10 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 /**
- *
  * Class for new modul structere. Saves the Modul-Input in a file (input.php) and
  * Modul-Output in a file(output.php).
  * All moduls of a clients are in [frontend]/modules/.
  * @author rusmir.jusufovic
- *
  */
 class Contenido_Module_Handler
 {
@@ -208,7 +204,7 @@ class Contenido_Module_Handler
      */
     public function modulePathExistsInDirectory($name)
     {
-        return is_dir($this->_cfgClient[$this->_client]['path']['frontend'] . $this->_cfg['path']['modules'] . $name. '/');
+        return is_dir($this->_cfgClient[$this->_client]['module_path'] . $name. '/');
     }
 
     /**
@@ -280,11 +276,9 @@ class Contenido_Module_Handler
         $cApiModule = new cApiModule($idmod);
 
         if ($cApiModule->virgin == false) {
-            $frontendPath = $this->_cfgClient[$this->_client]['path']['frontend'];
-
             $this->_moduleAlias = $cApiModule->get('alias');
             $this->_moduleName = $cApiModule->get("name");
-            $this->_path = $frontendPath . $this->_cfg['path']['modules'];
+            $this->_path = $frontendPath . $this->_cfgClient[$this->_client]['module_path'];
             $this->_modulePath = $this->_path . $this->_moduleAlias. "/";
 
             $this->_idmod = $idmod;
@@ -514,8 +508,7 @@ class Contenido_Module_Handler
                 if (is_dir($frontendPath) == false) {
                     cWarning(__FILE__, __LINE__, 'Frontendpath was not found: ' . $frontendPath);
                 } else {
-                    $sModulePath = $frontendPath . $cfg['path']['modules'];
-
+                    $sModulePath = $aClient['module_path'];
                     if (!is_dir($sModulePath)) {
                         //could not make the modul directory in client
                         if (mkdir($sModulePath) == false) {
@@ -540,9 +533,7 @@ class Contenido_Module_Handler
             return true;
         }
 
-        $frontendPath = $this->_cfgClient[$this->_client]['path']['frontend'];
-
-        $sMainModuleDirectory = $frontendPath . $this->_cfg['path']['modules'];
+        $sMainModuleDirectory = $this->_cfgClient[$this->_client]['module_path'];
 
         // make
         if (!is_dir($sMainModuleDirectory)) {
