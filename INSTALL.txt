@@ -44,10 +44,7 @@ die Übertragung via FTP: FileZilla (http://filezilla.sourceforge.net).
 2. 
 Setzen sie die Zugriffsrechte der nachfolgenden Verzeichnisse: 
 
-contenido/logs/ 
-contenido/cache/ 
-contenido/cronjobs/
-contenido/temp/ 
+data/
 
 cms/cache/
 cms/css/

@@ -144,7 +144,7 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
     $properties->setValue("idclient", $idclient, "backend", "clientimage", $clientlogo);
 
     // Clear the code cache
-    $mask = $cfgClient[$idclient]['cache_path'] $cfgClient[$idclient]["path"]["frontend"]."cache/code/".$idclient."*.php";
+    $mask = $cfgClient[$idclient]['cache_path'] . $idclient."*.php";
     array_map("unlink", glob($mask));
 
     $notification->displayNotification("info", i18n("Changes saved").$sNewNotification);

@@ -6,7 +6,7 @@
  * Description:
  * Debug object to write info to a file and to show info on screen.
  * In case you cannot output directly to screen when debugging a live system, this object writes
- * the info to a file located in /contenido/logs/debug.log.
+ * the info to a file located in /data/logs/debug.log.
  *
  * Requirements:
  * @con_php_req 5.0
