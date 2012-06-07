@@ -1,640 +1,635 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * We use super class Version to create a new Version.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.0.2
+ * @version    1.0.3
  * @author     Bilal Arslan, Timo Trautmann
  * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release >= 4.8.8
- * 
- * {@internal 
- *   created 2008-08-12
- *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
- *   modified 2011-02-07, Dominik Ziegler, fixed max number of revisions check and prevent displaying error and creating folders if versioning is not activated
  *
+ * {@internal
+ *   created 2008-08-12
  * }}
- * 
  */
- 
-if(!defined('CON_FRAMEWORK')) {
+
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
 class Version {
 
    /**
-	* Id of Type
-	* @access protected
-	*/	
-	protected $sType;
-	
-   /**
-	* md5 coded name of author 
-	* @access protected
-	*/
-	protected $sAuthor;
-	
-   /**
-	* Time of created
-	* @access protected
-	*/
-	protected $dCreated;
-	
-   /**
-	* Time of last modified
-	* @access protected
-	*/
-	protected $dLastModified;
-	
-   /**
-	* Body data of xml file
-	* @access protected
-	*/
-	protected $aBodyData;
-	
-   /**
-	* For init global variable
-	* @access protected
-	*/
-	protected $aCfg;
-	
-   /**
-	* For init global variable $cfgClient
-	* @access protected
-	*/
-	protected $aCfgClient;
+    * Id of Type
+    * @access protected
+    */
+    protected $sType;
 
    /**
-	* Database object
-	* @access protected
-	*/
-	protected $oDB;
-	
+    * md5 coded name of author
+    * @access protected
+    */
+    protected $sAuthor;
+
    /**
-	* For init global variable $client
-	* @access protected
-	*/
-	protected $iClient;
-	
+    * Time of created
+    * @access protected
+    */
+    protected $dCreated;
+
    /**
-	* Revision files of current file
-	* @access public
-	*/ 
-	public $aRevisionFiles;
-	
+    * Time of last modified
+    * @access protected
+    */
+    protected $dLastModified;
+
    /**
-	* Number of Revision
-	* @access private
-	*/
-	protected $iRevisionNumber;
-	
+    * Body data of xml file
+    * @access protected
+    */
+    protected $aBodyData;
+
    /**
-	* Timestamp
-	* @access protected
-	*/
-	protected $dTimestamp;
-	
+    * For init global variable
+    * @access protected
+    */
+    protected $aCfg;
+
    /**
-	* For init global variable $area
-	* @access protected
-	*/
-	protected $sArea;
-	
+    * For init global variable $cfgClient
+    * @access protected
+    */
+    protected $aCfgClient;
+
    /**
-	* For init global variable $frame
-	* @access protected
-	*/
-	protected $iFrame;
-	
+    * Database object
+    * @access protected
+    */
+    protected $oDB;
+
    /**
-	* For init variables
-	* @access protected
-	*/
-	protected $aVarForm;
-	
+    * For init global variable $client
+    * @access protected
+    */
+    protected $iClient;
+
    /**
-	* Identity the Id of Content Type
-	* @access protected
-	*/
-	protected $iIdentity;
-	
+    * Revision files of current file
+    * @access public
+    */
+    public $aRevisionFiles;
+
    /**
-	* To take control versioning is switched off
-	* @access private
-	*/
-	private $bVersioningActive;
-    
+    * Number of Revision
+    * @access private
+    */
+    protected $iRevisionNumber;
+
    /**
-	* Timestamp
-	* @access protected
-	*/
+    * Timestamp
+    * @access protected
+    */
+    protected $dTimestamp;
+
+   /**
+    * For init global variable $area
+    * @access protected
+    */
+    protected $sArea;
+
+   /**
+    * For init global variable $frame
+    * @access protected
+    */
+    protected $iFrame;
+
+   /**
+    * For init variables
+    * @access protected
+    */
+    protected $aVarForm;
+
+   /**
+    * Identity the Id of Content Type
+    * @access protected
+    */
+    protected $iIdentity;
+
+   /**
+    * To take control versioning is switched off
+    * @access private
+    */
+    private $bVersioningActive;
+
+   /**
+    * Timestamp
+    * @access protected
+    */
     protected $dActualTimestamp;
-   
+
     /**
      * Alternative Path for save version files
-	 * @access protected
+     * @access protected
      */
     protected $sAlternativePath;
-    
+
     /**
      * Displays Notification only onetimes per object
-     * 
+     *
      */
     public static $iDisplayNotification;
-	
-	/**
-	 * The Version object constructor, initializes class variables
-	 * 
-	 * @param array $aCfg
-	 * @param array $aCfgClient
-	 * @param object $oDB	
-	 * @param integer $iClient
-	 * @param object $sArea
-	 * @param object $iFrame
-	 * 
-	 * @return void 
-	 */	
-	public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
-		$this->aBodyData = array ();
-		$this->aRevisionFiles = array ();
-		$this->aCfg = $aCfg;
-		
-		$this->aCfgClient = $aCfgClient;
-		
-		$this->oDB = $oDB;
-		$this->iClient = $iClient;
-		$this->iRevisionNumber = 0;
-		$this->sArea = $sArea;
-		$this->iFrame = $iFrame;
-        
-        $this->dActualTimestamp = time();
-		
-		$this->aVarForm = array();	
-		
-		self::$iDisplayNotification++;
 
-		// Look if versioning is allowed, default is false	
+    /**
+     * The Version object constructor, initializes class variables
+     *
+     * @param array $aCfg
+     * @param array $aCfgClient
+     * @param object $oDB
+     * @param integer $iClient
+     * @param object $sArea
+     * @param object $iFrame
+     *
+     * @return void
+     */
+    public function __construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame) {
+        $this->aBodyData = array();
+        $this->aRevisionFiles = array();
+        $this->aCfg = $aCfg;
+
+        $this->aCfgClient = $aCfgClient;
+
+        $this->oDB = $oDB;
+        $this->iClient = $iClient;
+        $this->iRevisionNumber = 0;
+        $this->sArea = $sArea;
+        $this->iFrame = $iFrame;
+
+        $this->dActualTimestamp = time();
+
+        $this->aVarForm = array();
+
+        self::$iDisplayNotification++;
+
+        // Look if versioning is allowed, default is false
         if (function_exists('getEffectiveSetting')) {
-            $this->bVersioningActive = getEffectiveSetting('versioning', 'activated', 'true'); 
+            $this->bVersioningActive = getEffectiveSetting('versioning', 'activated', 'true');
             $this->sAlternativePath = getEffectiveSetting('versioning', 'path');
-			
-			if ($this->bVersioningActive == 'true') {
-				$this->bVersioningActive = true;
-			} else {
-				$this->bVersioningActive = false;
-			}
+
+            if ($this->bVersioningActive == 'true') {
+                $this->bVersioningActive = true;
+            } else {
+                $this->bVersioningActive = false;
+            }
         } else {
             $this->bVersioningActive = true;
-            $this->sAlternativePath = "";
+            $this->sAlternativePath = '';
         }
 
-		if ($this->bVersioningActive == false){
-			return;
-		}
-		
-		if (is_dir($this->sAlternativePath) == false) {
-			// Alternative Path is not true or is not exist, we use the frontendpath
-			if ($this->sAlternativePath != "" AND self::$iDisplayNotification < 2){
-				$oNotification = new Contenido_Notification();
-				$sNotification = i18n('Alternative path %s does not exist. Version was saved in frondendpath.');    				
-				$oNotification->displayNotification("warning",  sprintf($sNotification, $this->sAlternativePath));
-			}
-			
-			$this->sAlternativePath = "";
-		}
-		
-		// Look if versioning is set alternative path to save
-		$this->checkPaths();
-	}
-	
-	/**
-	 * This function looks if maximum number of stored versions is achieved. If true, it will be delete the first version.
-	 * 
-	 * @return void 
-	 */
+        if ($this->bVersioningActive == false){
+            return;
+        }
+
+        if (is_dir($this->sAlternativePath) == false) {
+            // Alternative Path is not true or is not exist, we use the frontendpath
+            if ($this->sAlternativePath != '' AND self::$iDisplayNotification < 2){
+                $oNotification = new Contenido_Notification();
+                $sNotification = i18n('Alternative path %s does not exist. Version was saved in frondendpath.');
+                $oNotification->displayNotification("warning",  sprintf($sNotification, $this->sAlternativePath));
+            }
+
+            $this->sAlternativePath = '';
+        }
+
+        // Look if versioning is set alternative path to save
+        $this->checkPaths();
+    }
+
+    /**
+     * This function looks if maximum number of stored versions is achieved. If true, it will be delete the first version.
+     *
+     * @return void
+     */
     protected function prune() {
         $this->initRevisions();
         if (function_exists('getEffectiveSetting')) {
             $sVar = getEffectiveSetting('versioning', 'prune_limit', '0');
         } else {
             $sVar = 0;
-        }   
-        
- 		$bDelete = true;
-        
-		while(count($this->aRevisionFiles) >= $sVar AND $bDelete AND (int) $sVar > 0) {
+        }
+
+        $bDelete = true;
+
+        while (count($this->aRevisionFiles) >= $sVar AND $bDelete AND (int) $sVar > 0) {
             $iIndex = end(array_keys($this->aRevisionFiles));
             $bDelete = $this->deleteFile($this->getFirstRevision());
-            unset($this->aRevisionFiles[$iIndex]);	 		
-		}
-    }
-    
-    /**
-	 * This function checks if needed version paths exists and were created if neccessary
-	 * @return void 
-	 */	
-    protected function checkPaths() {
-        $aPath = array('', '/css', '/js', '/layout', '/module', '/templates');
-        $sFrontEndPath = "";
-        if ($this->sAlternativePath == "") {
-        	$sFrontEndPath = $this->aCfgClient[$this->iClient]["path"]["frontend"] . "version";
-        } else {
-        	$sFrontEndPath = $this->sAlternativePath . "/" . $this->iClient;
+            unset($this->aRevisionFiles[$iIndex]);
         }
-        
+    }
+
+    /**
+     * This function checks if needed version paths exists and were created if neccessary
+     * @return void
+     */
+    protected function checkPaths() {
+        $aPath = array('/', 'css/', 'js/', 'layout/', 'module/', 'templates/');
+        $sFrontEndPath = '';
+        if ($this->sAlternativePath == '') {
+            $sFrontEndPath = $this->aCfgClient[$this->iClient]['version_path'];
+        } else {
+            $sFrontEndPath = $this->sAlternativePath . '/' . $this->iClient . '/';
+        }
+
         foreach ($aPath as $sSubPath) {
             if (!is_dir($sFrontEndPath.$sSubPath)) {
-    			mkdir($sFrontEndPath.$sSubPath, 0777);
-    			chmod($sFrontEndPath.$sSubPath, 0777);
-    		}
-        }    
+                mkdir($sFrontEndPath.$sSubPath, 0777);
+                chmod($sFrontEndPath.$sSubPath, 0777);
+            }
+        }
     }
 
-	/**
-	 * This function initialize the body node of xml file
-	 * 
-	 * @param string $sKey
-	 * @param string $sValue
-	 * 
-	 * @return array returns an array for body node
-	 */	
-	public function setData($sKey, $sValue) {
-		$this->aBodyData[$sKey] = $sValue;
-	}
+    /**
+     * This function initialize the body node of xml file
+     *
+     * @param string $sKey
+     * @param string $sValue
+     *
+     * @return array returns an array for body node
+     */
+    public function setData($sKey, $sValue) {
+        $this->aBodyData[$sKey] = $sValue;
+    }
 
-	/**
-	 * This function creats an xml file. XML Writer helps for create this file.
-	 *
-	 * @param string $sFileName name of xml file to create
-	 * 
-	 * @return boolean true if saving file was successful, otherwise false
-	 */	
-	public function createNewXml($sDirectory, $sFileName) {
-		$oWriter = new ContenidoXmlWriter();
-		$oRootElement = $oWriter->addElement('version', '', null, array('xml:lang' => 'de'));
-		$oHeadElement = $oWriter->addElement('head', '', $oRootElement);
+    /**
+     * This function creats an xml file. XML Writer helps for create this file.
+     *
+     * @param string $sFileName name of xml file to create
+     *
+     * @return boolean true if saving file was successful, otherwise false
+     */
+    public function createNewXml($sDirectory, $sFileName) {
+        $oWriter = new ContenidoXmlWriter();
+        $oRootElement = $oWriter->addElement('version', '', null, array('xml:lang' => 'de'));
+        $oHeadElement = $oWriter->addElement('head', '', $oRootElement);
 
-		$oWriter->addElement('version_id', $this->iIdentity . '_' . $this->iVersion, $oHeadElement);
-		$oWriter->addElement('type', $this->sType, $oHeadElement);
-		$oWriter->addElement('date', date("Y-m-d H:i:s"), $oHeadElement);
-		$oWriter->addElement('author', $this->sAuthor, $oHeadElement);
-		$oWriter->addElement('client', $this->iClient, $oHeadElement);
-		$oWriter->addElement('created', $this->dCreated, $oHeadElement);
-		$oWriter->addElement('lastmodified', $this->dLastModified, $oHeadElement);
+        $oWriter->addElement('version_id', $this->iIdentity . '_' . $this->iVersion, $oHeadElement);
+        $oWriter->addElement('type', $this->sType, $oHeadElement);
+        $oWriter->addElement('date', date("Y-m-d H:i:s"), $oHeadElement);
+        $oWriter->addElement('author', $this->sAuthor, $oHeadElement);
+        $oWriter->addElement('client', $this->iClient, $oHeadElement);
+        $oWriter->addElement('created', $this->dCreated, $oHeadElement);
+        $oWriter->addElement('lastmodified', $this->dLastModified, $oHeadElement);
 
-		$oBodyElement = $oWriter->addElement('body', '', $oRootElement);
-		foreach ($this->aBodyData as $sKey => $sValue) {
-			$oWriter->addElement($sKey, $sValue, $oBodyElement);
-		}
-		
-		return $oWriter->saveToFile($sDirectory, $sFileName);
-	}
-	
-	/**
-	 * This function creats new version in right folder.
-	 * 
-	 * @return void
-	 */	
-	public function createNewVersion() {
-		if ($this->bVersioningActive == false) {
-			return false;
-		}
-	
-		// get version name
-		$sRevisionName = $this->getRevision();
-		
-		if (!is_dir($this->getFilePath())) {
-			$bCreate = mkdir($this->getFilePath(), 0777);
-			chmod($this->getFilePath(), 0777);
-		}
-		
-		// Create xml version file
-		$bCreate = $this->createNewXml($this->getFilePath(), $sRevisionName . '.xml');
-						
-		if ($bCreate == false) {
-			cError(__FILE__, __LINE__, 'Could not create new version.');
-		}
-			
-		return $bCreate;
-	}
-	
-	/**
-	 * This function inits version files. Its filter also timestamp and version files
-	 * 
-	 * @return array returns xml file names
-	 */		
-	protected function initRevisions() {	
+        $oBodyElement = $oWriter->addElement('body', '', $oRootElement);
+        foreach ($this->aBodyData as $sKey => $sValue) {
+            $oWriter->addElement($sKey, $sValue, $oBodyElement);
+        }
+
+        return $oWriter->saveToFile($sDirectory, $sFileName);
+    }
+
+    /**
+     * This function creats new version in right folder.
+     *
+     * @return void
+     */
+    public function createNewVersion() {
+        if ($this->bVersioningActive == false) {
+            return false;
+        }
+
+        // get version name
+        $sRevisionName = $this->getRevision();
+
+        if (!is_dir($this->getFilePath())) {
+            $bCreate = mkdir($this->getFilePath(), 0777);
+            chmod($this->getFilePath(), 0777);
+        }
+
+        // Create xml version file
+        $bCreate = $this->createNewXml($this->getFilePath(), $sRevisionName . '.xml');
+
+        if ($bCreate == false) {
+            cError(__FILE__, __LINE__, 'Could not create new version.');
+        }
+
+        return $bCreate;
+    }
+
+    /**
+     * This function inits version files. Its filter also timestamp and version files
+     *
+     * @return array returns xml file names
+     */
+    protected function initRevisions() {
         $this->aRevisionFiles = array();
         $this->dTimestamp = array();
-        
-		// Open this Filepath and read then the content.
-		$sDir = $this->getFilePath();
-		if (is_dir($sDir)) {
-		    if ($dh = opendir($sDir)) {
-		        
-		        while (($file = readdir($dh)) !== false) {
-		        	if ($file != '.' && $file != '..'){
-		           			 $aData = explode('.', $file);
-		           			 $aValues = explode('_', $aData[0]);
-		           			if ($aValues[0] > $this->iRevisionNumber) {
-		           				$this->iRevisionNumber = $aValues[0];
-		           			}
-		        		
-		        		$this->dTimestamp[$aValues[0]] = $aValues[1];
-		        		$this->aRevisionFiles[$aValues[0]] = $file;
-		           	}
-		        }
-		        closedir($dh);
-		    }
-		}
-		return krsort($this->aRevisionFiles);	
-	}
-	
-	/**
-	 * This function deletes files and the the folder, for given path.
-	 * 
-	 * @return bool return true if successful
-	 */		
-	public function deleteFile($sFirstFile = "") {
-		// Open this Filepath and read then the content.
-		$sDir = $this->getFilePath();
 
-		$bDelet = false;
-		if (is_dir($sDir) AND $sFirstFile =="") {
-		    if ($dh = opendir($sDir)) {
-		    	  while (($sFile = readdir($dh)) !== false) {
-					if($sFile != "."  && $sFile !=".."){
-						// Delete the files						
-						$bDelete = unlink($sDir.$sFile);
-					}
-		    	  }
-//		    	  if the files be cleared, the delete the folder
-		    	  	$bDelete = rmdir($sDir);
-		    }
-		} else if($sFirstFile !="") {
-				$bDelete = unlink($sDir . $sFirstFile);
-		}
-		if($bDelete){
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-	 * Get the frontendpath to revision
-	 * 
-	 * @return string returns path to revision file
-	 */		
-	public function getFilePath() {
-		if($this->sAlternativePath =="") { 
-        	$sFrontEndPath = $this->aCfgClient[$this->iClient]["path"]["frontend"] . "version/";
-        } else {
-        	$sFrontEndPath = $this->sAlternativePath . "/" . $this->iClient . "/";
+        // Open this Filepath and read then the content.
+        $sDir = $this->getFilePath();
+        if (is_dir($sDir)) {
+            if ($dh = opendir($sDir)) {
+
+                while (($file = readdir($dh)) !== false) {
+                    if ($file != '.' && $file != '..') {
+                        $aData = explode('.', $file);
+                        $aValues = explode('_', $aData[0]);
+                        if ($aValues[0] > $this->iRevisionNumber) {
+                            $this->iRevisionNumber = $aValues[0];
+                        }
+
+                        $this->dTimestamp[$aValues[0]] = $aValues[1];
+                        $this->aRevisionFiles[$aValues[0]] = $file;
+                    }
+                }
+                closedir($dh);
+            }
         }
-		return $sFrontEndPath . $this->sType.'/'. $this->iIdentity. '/';
-	}
+        return krsort($this->aRevisionFiles);
+    }
 
-	/**
-	 * Get the last revision file
-	 *  
-	 * @return array returns Last Revision
-	 */		
+    /**
+     * This function deletes files and the the folder, for given path.
+     *
+     * @return bool return true if successful
+     */
+    public function deleteFile($sFirstFile = '') {
+        // Open this Filepath and read then the content.
+        $sDir = $this->getFilePath();
+
+        $bDelet = false;
+        if (is_dir($sDir) AND $sFirstFile == '') {
+            if ($dh = opendir($sDir)) {
+                while (($sFile = readdir($dh)) !== false) {
+                    if ($sFile != '.'  && $sFile != '..') {
+                        // Delete the files
+                        $bDelete = unlink($sDir.$sFile);
+                    }
+                }
+//                  if the files be cleared, the delete the folder
+                $bDelete = rmdir($sDir);
+            }
+        } else if ($sFirstFile != '') {
+            $bDelete = unlink($sDir . $sFirstFile);
+        }
+        if ($bDelete){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get the frontendpath to revision
+     *
+     * @return string returns path to revision file
+     */
+    public function getFilePath() {
+        if ($this->sAlternativePath == '') {
+            $sFrontEndPath = $this->aCfgClient[$this->iClient]['version_path'];
+        } else {
+            $sFrontEndPath = $this->sAlternativePath . '/' . $this->iClient . '/';
+        }
+        return $sFrontEndPath . $this->sType.'/'. $this->iIdentity. '/';
+    }
+
+    /**
+     * Get the last revision file
+     *
+     * @return array returns Last Revision
+     */
     public function getLastRevision() {
         return reset($this->aRevisionFiles);
     }
-    
+
     /**
-	 * Makes new and init Revision Name
-	 *  
-	 * @return integer returns number of Revison File
-	 */	
-	private function getRevision() {
-		$this->iVersion = ($this->iRevisionNumber +1 ).'_'.$this->dActualTimestamp;
-		return $this->iVersion;
-	}
-	
-	/**
-	 * Inits the first element of revision files
-	 *  
-	 * @return string the name of xml files
-	 */	
-	protected function getFirstRevision() {
-		$aKey = array();
-		$this->initRevisions();
-		$aKey = $this->aRevisionFiles;
-		$sFirstRevision = "";
-
-//		to take first element, we use right sort
-		ksort($aKey);
-		foreach($aKey as $value){
-			return $sFirstRevision = $value;
-		}
-		return $sFirstRevision;
-	}
-	
-    /**
-	 * Revision Files
-	 *  
-	 * @return array returns all Revison File
-	 */	
-	public function getRevisionFiles() {
-		return $this->aRevisionFiles;
-	}
-	   
-	/**
-	 * This function generate version names for select-box
-	 *  
-	 * @return array returns an array of revision file names
-	 */	
-	public function getFormatTimestamp() {
-		$aTimes = array();
-		if(count($this->dTimestamp) > 0){
-			krsort($this->dTimestamp);
-			foreach($this->dTimestamp as $iKey=>$sTimeValue){
-				$aTimes[$this->aRevisionFiles[$iKey]] = date('d.m.Y H:i:s', $sTimeValue). " - Revision: " .$iKey;
-			}
-		}
-		
-		return $aTimes;
-	}
-
-	/**
-	 * This function generate version names for select-box
-	 *  
-	 * @return array returns an array of revision file names
-	 */	
-	public function setVarForm($sKey, $sValue) {
-		$this->aVarForm[$sKey] = $sValue;
-	}
-	
-	/**
-	 * The general SelectBox function for get Revision. 
-	 * 
-	 * @param string  $sTableForm The name of Table_Form class
-	 * @param string  $sAddHeader The Header Label of SelectBox Widget
-	 * @param string  $sLabelOfSelectBox  The Label of SelectBox Widget
-	 * @param string  $sIdOfSelectBox  Id of Select Box
-	 * 
-	 * return string  if is exists Revision, then returns HTML Code of full SelectBox else returns empty string
-	 */
-    public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox) {
-		$oForm = new UI_Table_Form("lay_history");
-		$aMessage = array();
-		// if exists xml files 
-		if(count($this->dTimestamp) > 0) {
-			
-			foreach($this->aVarForm as $sKey=>$sValue) {
-				$oForm ->setVar($sKey, $sValue);				
-			}
-			$aMessage = $this->getMessages();
-			$oForm ->addHeader(i18n($sAddHeader));	
-			$oForm ->add(i18n($sLabelOfSelectBox),  $this->getSelectBox($this->getFormatTimestamp(), $sIdOfSelectBox));
-			$oForm ->setActionButton("clearhistory", "images/but_delete.gif", $aMessage["alt"], "c", "history_truncate");
-			$oForm ->setConfirm("clearhistory", $aMessage["alt"], $aMessage["popup"]);
-			$oForm ->setActionButton("submit", "images/but_refresh.gif", i18n("Refresh"), "s");
-
-			return $oForm ->render().'<div style="margin-top:20px;"></div>';
-		} else {
-			return '';
-		}
+     * Makes new and init Revision Name
+     *
+     * @return integer returns number of Revison File
+     */
+    private function getRevision() {
+        $this->iVersion = ($this->iRevisionNumber +1 ).'_'.$this->dActualTimestamp;
+        return $this->iVersion;
     }
-    
+
+    /**
+     * Inits the first element of revision files
+     *
+     * @return string the name of xml files
+     */
+    protected function getFirstRevision() {
+        $aKey = array();
+        $this->initRevisions();
+        $aKey = $this->aRevisionFiles;
+        $sFirstRevision = '';
+
+//        to take first element, we use right sort
+        ksort($aKey);
+        foreach ($aKey as $value) {
+            return $sFirstRevision = $value;
+        }
+        return $sFirstRevision;
+    }
+
+    /**
+     * Revision Files
+     *
+     * @return array returns all Revison File
+     */
+    public function getRevisionFiles() {
+        return $this->aRevisionFiles;
+    }
+
+    /**
+     * This function generate version names for select-box
+     *
+     * @return array returns an array of revision file names
+     */
+    public function getFormatTimestamp() {
+        $aTimes = array();
+        if (count($this->dTimestamp) > 0) {
+            krsort($this->dTimestamp);
+            foreach ($this->dTimestamp as $iKey => $sTimeValue) {
+                $aTimes[$this->aRevisionFiles[$iKey]] = date('d.m.Y H:i:s', $sTimeValue) . ' - Revision: ' . $iKey;
+            }
+        }
+
+        return $aTimes;
+    }
+
+    /**
+     * This function generate version names for select-box
+     *
+     * @return array returns an array of revision file names
+     */
+    public function setVarForm($sKey, $sValue) {
+        $this->aVarForm[$sKey] = $sValue;
+    }
+
+    /**
+     * The general SelectBox function for get Revision.
+     *
+     * @param string  $sTableForm The name of Table_Form class
+     * @param string  $sAddHeader The Header Label of SelectBox Widget
+     * @param string  $sLabelOfSelectBox  The Label of SelectBox Widget
+     * @param string  $sIdOfSelectBox  Id of Select Box
+     *
+     * return string  if is exists Revision, then returns HTML Code of full SelectBox else returns empty string
+     */
+    public function buildSelectBox($sTableForm, $sAddHeader, $sLabelOfSelectBox, $sIdOfSelectBox) {
+        $oForm = new UI_Table_Form("lay_history");
+        $aMessage = array();
+        // if exists xml files
+        if (count($this->dTimestamp) > 0) {
+
+            foreach ($this->aVarForm as $sKey => $sValue) {
+                $oForm->setVar($sKey, $sValue);
+            }
+            $aMessage = $this->getMessages();
+            $oForm->addHeader(i18n($sAddHeader));
+            $oForm->add(i18n($sLabelOfSelectBox),  $this->getSelectBox($this->getFormatTimestamp(), $sIdOfSelectBox));
+            $oForm->setActionButton("clearhistory", "images/but_delete.gif", $aMessage["alt"], "c", "history_truncate");
+            $oForm->setConfirm("clearhistory", $aMessage["alt"], $aMessage["popup"]);
+            $oForm->setActionButton("submit", "images/but_refresh.gif", i18n("Refresh"), "s");
+
+            return $oForm ->render().'<div style="margin-top:20px;"></div>';
+        } else {
+            return '';
+        }
+    }
+
     /**
      * Messagebox for build selectBox. Dynamic allocation for type.
-	 * return array the attributes alt and poput returns  
-	 */
-    private function getMessages(){
-    	$aMessage = array();
-    	switch($this->sType){
-    		case 'layout':
-    			$aMessage["alt"] = i18n("Clear layout history");
-    			$aMessage["popup"] = i18n("Do you really want to clear layout history?")."<br><br>".i18n("Note: This only affects the current layout."); 
-    		break;
-    		case 'module':
-    			$aMessage["alt"] = i18n("Clear module history");
-    			$aMessage["popup"] = i18n("Do you really want to clear module history?")."<br><br>".i18n("Note: This only affects the current module.");
-    		break;
-    		case 'css': 
-    			$aMessage["alt"] = i18n("Clear style history");
-    			$aMessage["popup"] = i18n("Do you really want to clear style history?")."<br><br>".i18n("Note: This only affects the current style.");
-    		break;
-    		case 'js':
-    			$aMessage["alt"] = i18n("Clear Java-Script history");
-    			$aMessage["popup"] = i18n("Do you really want to clear Java-Script history?")."<br><br>".i18n("Note: This only affects the current Java-Script.");
-    		break;
-    		case 'templates':
-    			$aMessage["alt"] = i18n("Clear HTML-Template history");
-    			$aMessage["popup"] = i18n("Do you really want to clear HTML-Template history?")."<br><br>".i18n("Note: This only the affects current HTML-Template.");
-    		break; 
-      		default: 
-      			$aMessage["alt"] = i18n("Clear history");
-    			$aMessage["popup"] = i18n("Do you really want to clear history?")."<br><br>".i18n("Note: This only affects the current history.");
-      		break;
-      		
-    	}
-    	return $aMessage;
+     * return array the attributes alt and poput returns
+     */
+    private function getMessages() {
+        $aMessage = array();
+        switch ($this->sType) {
+            case 'layout':
+                $aMessage["alt"] = i18n("Clear layout history");
+                $aMessage["popup"] = i18n("Do you really want to clear layout history?")."<br><br>".i18n("Note: This only affects the current layout.");
+            break;
+            case 'module':
+                $aMessage["alt"] = i18n("Clear module history");
+                $aMessage["popup"] = i18n("Do you really want to clear module history?")."<br><br>".i18n("Note: This only affects the current module.");
+            break;
+            case 'css':
+                $aMessage["alt"] = i18n("Clear style history");
+                $aMessage["popup"] = i18n("Do you really want to clear style history?")."<br><br>".i18n("Note: This only affects the current style.");
+            break;
+            case 'js':
+                $aMessage["alt"] = i18n("Clear Java-Script history");
+                $aMessage["popup"] = i18n("Do you really want to clear Java-Script history?")."<br><br>".i18n("Note: This only affects the current Java-Script.");
+            break;
+            case 'templates':
+                $aMessage["alt"] = i18n("Clear HTML-Template history");
+                $aMessage["popup"] = i18n("Do you really want to clear HTML-Template history?")."<br><br>".i18n("Note: This only the affects current HTML-Template.");
+            break;
+              default:
+                  $aMessage["alt"] = i18n("Clear history");
+                $aMessage["popup"] = i18n("Do you really want to clear history?")."<br><br>".i18n("Note: This only affects the current history.");
+              break;
+
+        }
+        return $aMessage;
     }
-    
-  	/**
-	 * A Class Function for fill version files
-	 * 
-	 * @param string  $sTableForm The name of Table_Form class
-	 * @param string  $sAddHeader The Header Label of SelectBox Widget
-	 * 
-	 * return string  returns select-box with filled files
-	 */
+
+    /**
+     * A Class Function for fill version files
+     *
+     * @param string  $sTableForm The name of Table_Form class
+     * @param string  $sAddHeader The Header Label of SelectBox Widget
+     *
+     * return string  returns select-box with filled files
+     */
     private function getSelectBox($aTempVesions, $sIdOfSelectBox) {
-		$sSelected = $_POST[$sIdOfSelectBox];
-		$oSelectMenue = new cHTMLSelectElement($sIdOfSelectBox);
-		$oSelectMenue->autoFill($aTempVesions);
-		
-		if($sSelected !=""){
-			$oSelectMenue->setDefault($sSelected);
-		}
-	
-		return $oSelectMenue->render();
-	}
+        $sSelected = $_POST[$sIdOfSelectBox];
+        $oSelectMenue = new cHTMLSelectElement($sIdOfSelectBox);
+        $oSelectMenue->autoFill($aTempVesions);
 
-	/**
-	 * Build new Textarea with below parameters
-	 * 
-	 * @param string $sName The name of Textarea.
-	 * @param string $sValue The value of Input Textarea
-	 * @param integer $iWidth width of Textarea
-	 * @param integer $iHeight height of Textarea
-	 * 
-	 * @return string HTML Code of Textarea
-	 */	
-	public function getTextarea($sName, $sInitValue, $iWidth, $iHeight, $sId = "") {
-		if($sId !="") {
-			$oHTMLTextarea = new cHTMLTextarea($sName, $sInitValue, $iWidth, $iHeight, $sId);
-		} else {
-			$oHTMLTextarea = new cHTMLTextarea($sName, $sInitValue, $iWidth, $iHeight);
-		}	
-		
-		$oHTMLTextarea->setStyle("font-family: monospace; width: 100%;");
-		$oHTMLTextarea->updateAttributes(array("wrap" => "off"));
-		
-		return $oHTMLTextarea->render();
-		
-	}
-	
-	/**
-	 * Build new Textfield with below parameters
-	 * 
-	 * @param string $sName The name of Input Textfield.
-	 * @param string $sValue The value of Input Textfield
-	 * @param integer $iWidth width of Input Textfield
-	 * 
-	 * @return string HTML Code of Input Textfield
-	 */		
-	public function getTextBox($sName, $sInitValue, $iWidth, $bDisabled = false) {
-		$oHTMLTextbox = new cHTMLTextbox($sName, html_entity_decode($sInitValue), $iWidth, "", "", $bDisabled);
-		$oHTMLTextbox->setStyle("font-family: monospace; width: 100%;");
-		$oHTMLTextbox->updateAttributes(array("wrap" => "off"));
-		
-		return $oHTMLTextbox->render();
-	}
-	
-	/**
-	 * Displays your notification
-	 * 
-	 * @param string $sOutPut
-	 * 
-	 * @return void
-	 */	
-	public function displayNotification($sOutPut) {
-		if($sOutPut !="") {
-			print $sOutPut;
-		}
-	}
-	
-	 /**
-	  * Set new node for xml file of description
-	  * 
-	  * @param string $sDesc Content of node
-	  * 
-	  */   
-    public function setBodyNodeDescription($sDesc) {
-    	if($sDesc != ""){
-    		$this->sDescripion = htmlentities($sDesc);
-    		$this->setData("description", $this->sDescripion);
-    	}	
+        if ($sSelected != '') {
+            $oSelectMenue->setDefault($sSelected);
+        }
+
+        return $oSelectMenue->render();
     }
 
-} // end of class
+    /**
+     * Build new Textarea with below parameters
+     *
+     * @param string $sName The name of Textarea.
+     * @param string $sValue The value of Input Textarea
+     * @param integer $iWidth width of Textarea
+     * @param integer $iHeight height of Textarea
+     *
+     * @return string HTML Code of Textarea
+     */
+    public function getTextarea($sName, $sInitValue, $iWidth, $iHeight, $sId = '') {
+        if ($sId != '') {
+            $oHTMLTextarea = new cHTMLTextarea($sName, $sInitValue, $iWidth, $iHeight, $sId);
+        } else {
+            $oHTMLTextarea = new cHTMLTextarea($sName, $sInitValue, $iWidth, $iHeight);
+        }
+
+        $oHTMLTextarea->setStyle("font-family: monospace; width: 100%;");
+        $oHTMLTextarea->updateAttributes(array("wrap" => "off"));
+
+        return $oHTMLTextarea->render();
+    }
+
+    /**
+     * Build new Textfield with below parameters
+     *
+     * @param string $sName The name of Input Textfield.
+     * @param string $sValue The value of Input Textfield
+     * @param integer $iWidth width of Input Textfield
+     *
+     * @return string HTML Code of Input Textfield
+     */
+    public function getTextBox($sName, $sInitValue, $iWidth, $bDisabled = false) {
+        $oHTMLTextbox = new cHTMLTextbox($sName, html_entity_decode($sInitValue), $iWidth, '', '', $bDisabled);
+        $oHTMLTextbox->setStyle("font-family:monospace; width:100%;");
+        $oHTMLTextbox->updateAttributes(array("wrap" => "off"));
+
+        return $oHTMLTextbox->render();
+    }
+
+    /**
+     * Displays your notification
+     *
+     * @param string $sOutPut
+     *
+     * @return void
+     */
+    public function displayNotification($sOutPut) {
+        if ($sOutPut != '') {
+            print $sOutPut;
+        }
+    }
+
+    /**
+     * Set new node for xml file of description
+     *
+     * @param string $sDesc Content of node
+     *
+     */
+    public function setBodyNodeDescription($sDesc) {
+        if ($sDesc != '') {
+            $this->sDescripion = htmlentities($sDesc);
+            $this->setData("description", $this->sDescripion);
+        }
+    }
+
+}
 
 ?>
