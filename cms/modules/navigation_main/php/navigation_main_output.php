@@ -22,7 +22,7 @@
 * created 2009-01-12
 * }}
 *
-* $Id: Navigation_Standard.php 3444 2009-01-19 11:42:59Z rudi.bieller $
+* $Id$
 */
 
 if (!isset($db)) {

@@ -1,7 +1,5 @@
 <?php
 /**
- * $RCSfile$
- *
  * Description: Contact Form Output
  *
  * @version 1.0.2
@@ -10,12 +8,8 @@
  *
  * {@internal
  *   created 2005-08-12
- *   modified 2008-04-11 Rudi Bieller Changes concerning new layout
- *   modified 2011-08-03 Murat Purc, bugfix [CON-409]
- *   modified 2011-11-09 Murat Purc, added configuration for SMTP port
+ *   $Id$
  * }}
- *
- * $Id$
  */
 
 if (!isset($tpl) || !is_object($tpl)) {
@@ -47,9 +41,9 @@ if (!isset($_POST['send'])) {
     $tpl->set('s', "ANLIEGEN", mi18n("Nachricht"));
     $tpl->set('s', "PFLICHTFELDER", mi18n("Bitte alle Felder ausfüllen"));
     $tpl->set('s', "ABSCHICKEN", mi18n("abschicken"));
-    $tpl->set('s', "LOESCHEN", mi18n("löschen"));
+    $tpl->set('s', "LOESCHEN", mi18n("l&ouml;schen"));
 
-    $tpl->generate($cfgClient[$client]['path']['frontend'] . 'templates/kontaktformular.html');
+    $tpl->generate('templates/kontaktformular.html');
 } elseif ($_POST['send'] == 1) {
     // Form has been sent, check user input
 
@@ -143,7 +137,7 @@ if (!isset($_POST['send'])) {
         $mail->Send();
 
         // Display message after mail is sent
-        echo mi18n("Ihr Anliegen wurde uns übermittelt. Vielen Dank!") . $br;
+        echo mi18n("Ihr Anliegen wurde uns &uuml;bermittelt. Vielen Dank!") . $br;
     }
 }
 ?>

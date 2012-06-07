@@ -21,7 +21,7 @@
  *
  * {@internal
  *   created 2009-01-05
- *   $Id: Sitemap_Standard_INPUT.php 3410 2009-01-07 15:51:49Z rudi.bieller $
+ *   $Id$
  * }}
  *
  */
