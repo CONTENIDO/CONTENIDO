@@ -23,5 +23,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-conLock ($idart, $lang);
+//conLock ($idart, $lang);
+$idarts = explode('+', $_POST['idarts']);
+$lock = $_POST['invert'] == 1 ? 0 : 1;
+conLockBulkEditing($idarts, $_POST['idlang'], $lock);
 ?>

@@ -615,6 +615,37 @@ function conMakeOnline($idart, $lang)
     $db->query($sql);
 }
 
+
+
+/**
+ * 
+ * Set the status from articles to online or offline.
+ * 
+ * @param array $idarts all articles
+ * @param int $idlang
+ * @param boolean $online
+ */
+
+function conMakeOnlineBulkEditing($idarts, $idlang, $online) {
+	global $db, $cfg, $auth;
+	$where = '1=2';
+	if($online == 1) {
+		 $publisher_info = "published = '".date("Y-m-d H:i:s")."', publishedby='".$auth->auth["uname"]."',";
+	}else  {
+		$online = 0;
+		$publisher_info = '';
+	}
+	
+	foreach($idarts as $idart) {
+		$where .= " OR idart='".Contenido_Security::toInteger($idart)."'";
+	}
+		
+	$sql = "UPDATE ".$cfg["tab"]["art_lang"]."  SET ".$publisher_info." online = '".$online."' WHERE ($where)
+	AND idlang = '".Contenido_Security::toInteger($idlang)."'";
+	$db->query($sql);
+}
+
+
 /**
  * Toggle the lock status
  * of an article
@@ -636,6 +667,28 @@ function conLock($idart, $lang)
 
     $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET locked = '".Contenido_Security::toInteger($set)."' WHERE idart = '".Contenido_Security::toInteger($idart)."' AND idlang = '".Contenido_Security::toInteger($lang)."'";
     $db->query($sql);
+}
+
+
+/**
+ * Freeze/Lock more articles.
+ * @param array $idarts all articles 
+ * @param int $idlang
+ * @param boolean $lock
+ */
+function conLockBulkEditing($idarts, $idlang , $lock) {
+	global $db, $cfg;
+	$where = '1=2';
+	if($lock != 1) {
+		$lock = 0;
+	}
+	
+	foreach($idarts as $idart) {
+		$where .= " OR idart='".Contenido_Security::toInteger($idart)."'";
+	}
+	
+	$sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET locked = '".Contenido_Security::toInteger($lock)."' WHERE ($where) AND idlang = '".Contenido_Security::toInteger($idlang)."'";
+	$db->query($sql);
 }
 
 /**

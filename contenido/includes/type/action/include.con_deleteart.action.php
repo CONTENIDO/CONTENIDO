@@ -23,6 +23,14 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-conDeleteArt ($idart);
+if(isset($_POST['idarts'])) {
+	//delete articles (bulk editing)
+	$idarts = explode('+', $_POST['idarts']);
+	foreach( $idarts as $article) {
+		conDeleteArt ($article);
+	}
+}else  {
+	conDeleteArt ($idart);
+}
 $tmp_notification = $notification->returnNotification("info", i18n("Article deleted"));
 ?>

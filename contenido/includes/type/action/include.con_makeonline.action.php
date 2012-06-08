@@ -23,5 +23,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-conMakeOnline ($idart, $lang);
+$idarts = explode('+', $_POST['idarts']);
+$online = $_POST['invert'] == 1 ? 0 : 1;
+
+conMakeOnlineBulkEditing($idarts, $_POST['idlang'], $online);
 ?>
