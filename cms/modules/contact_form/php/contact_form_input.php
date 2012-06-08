@@ -1,7 +1,5 @@
 ?><?php
 /**
- * $RCSfile$
- *
  * Description: Contact Form Input
  *
  * @version 1.0.2
@@ -10,20 +8,16 @@
  *
  * {@internal
  *   created 2005-08-12
- *   modified 2010-06-09 Ingo van Peeren
- *   modified 2011-11-09 Murat Purc, added configuration for SMTP port
+ *   $Id$
  * }}
- *
- * $Id$
  */
-
 
 // generate unique id, it's used for element id/for attributes in module
 $mId = uniqid('m_');
 
 ?>
 
-<table border="0">
+<table>
     <tr>
         <td><?php echo mi18n("Absender EMail");?></td>
         <td><input type="text" name="<?php echo "CMS_VAR[0]";?>" value="<?php echo "CMS_VALUE[0]"; ?>"></td>
@@ -98,4 +92,5 @@ $mId = uniqid('m_');
         </td>
     </tr>
 </table>
+
 <?php

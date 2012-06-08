@@ -1,20 +1,16 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Output standard h1 headline
-*
-* @version 1.0.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-04-07
-* modified 2008-11-13, Timo Trautman - fixed XHTML validation error, when module displays empty h1 tag
-* }}
-*
-* $Id$
-*/
+ * Description: Output standard h1 headline
+ *
+ * @version    1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ *
+ * {@internal
+ *   created 2008-04-07
+ *   $Id$
+ * }}
+ */
 
 if (!isset($tpl) || !is_object($tpl)) {
     $tpl = new Template();
@@ -32,4 +28,5 @@ if ($contenido && $edit) {
         $tpl->generate('templates/headline_h1.html');
     }
 }
+
 ?>

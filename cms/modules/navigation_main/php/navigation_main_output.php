@@ -1,29 +1,26 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description:
-* Main Navigation, displays Navigation from a starting idcat down to the max. level set.
-* For now (as of 2009-01-12) all subcategories are put inside one <ul> and are assigned css classes
-* to distinguish level depth, first/last and active item property.
-*
-* Module requires two client settings:
-* navigation_main_standard | start_idcat
-* navigation_main_standard | level_depth
-*
-* To modify the behaviour of the module (e.g. style of URL, CSS classes, ...), you need to edit Contenido_NavMain_Util::loopCats
-* @see {contenido}/Util/Modules/Contenido_NavMain_Util.class.php
-*
-* @version 1.0.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2009-01-12
-* }}
-*
-* $Id$
-*/
+ * Description:
+ * Main Navigation, displays Navigation from a starting idcat down to the max. level set.
+ * For now (as of 2009-01-12) all subcategories are put inside one <ul> and are assigned css classes
+ * to distinguish level depth, first/last and active item property.
+ *
+ * Module requires two client settings:
+ * navigation_main_standard | start_idcat
+ * navigation_main_standard | level_depth
+ *
+ * To modify the behaviour of the module (e.g. style of URL, CSS classes, ...), you need to edit Contenido_NavMain_Util::loopCats
+ * @see {contenido}/Util/Modules/Contenido_NavMain_Util.class.php
+ *
+ * @version    1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ *
+ * {@internal
+ *   created 2009-01-12
+ *   $Id$
+ * }}
+ */
 
 if (!isset($db)) {
     $db = new DB_Contenido();
@@ -58,4 +55,5 @@ if ($iStartIdcat > 0) {
 } else {
     echo '<p>Navigation not configured correctly.</p>';
 }
+
 ?>

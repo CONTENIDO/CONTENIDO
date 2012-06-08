@@ -12,21 +12,21 @@ width:225px;
 }
 
     #twitter_head , #twitter_head_small{
-    
+
         display:block;
         height:32px;
         border-bottom:1px solid gray;
         background-image: url(../module/Twitter/image/logo_twitter_withbird.png);
         background-repeat : no-repeat;
     }
- 
+
  #twitter_head_small {
- 
- 	background-image: none;
- 	height:48px;
- 	padding-bottom:2px;
+
+     background-image: none;
+     height:48px;
+     padding-bottom:2px;
  }
-    
+
     .twitter_row {
         display:block;
         border-bottom:1px solid #EBEBEB;
@@ -34,7 +34,7 @@ width:225px;
         padding-bottom:10px;
         clear:both;
     }
-    
+
     .image  {
         float:left;
         display:block;
@@ -42,7 +42,7 @@ width:225px;
         height:48px;
         width:48px;
     }
-    
+
     .display_name, .user_name , .message , .message_date {
         padding:0;
         margin:0;
@@ -56,19 +56,19 @@ width:225px;
         color:black;
         font-size:16px;
     }
-    
+
     a.display_name:hover {
         color:blue;
         text-decoration:underline;
-        
+
     }
-    
+
     .user_name {
         float:left;
         font-size:12px;
         color:gray;
         line-height:14px;
-        
+
     }
     .message {
         display:block;
@@ -77,9 +77,9 @@ width:225px;
         color:#444444;
         font-size:16px;
     }
-    
-    
-   
+
+
+
     .twitter_row .message_date {
         display:block;
         clear:both;
@@ -87,24 +87,24 @@ width:225px;
         font-size:11px;
         margin-left:58px;
         padding-top:5px;
-        float:left;   
+        float:left;
     }
-    
+
      #twitter_small .message {
-    	width:230px;
-    	
+        width:230px;
+
     }
-    
+
     #twitter_small .message_date {
-    	float:left;
-    	margin-left:0;
+        float:left;
+        margin-left:0;
     }
-    
+
     .clearfix:after {
-    content: "."; 
-    display: block; 
-    height: 0; 
-    clear: both; 
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
     visibility: hidden;
 }
 
@@ -122,7 +122,7 @@ width:225px;
     margin-top:5px;
 }
 #twitter_small .folow_button {
-	float:left;
+    float:left;
     display:block;
     margin-top:5px;
     height:32px;

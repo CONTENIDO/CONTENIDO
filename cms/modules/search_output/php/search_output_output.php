@@ -1,44 +1,36 @@
 <?php
 /**
- * $RCSfile$
- *
  * Description: Search output box
  *
- * @version 1.0.2
- * @author Willi Man
- * @copyright four for business AG <www.4fb.de>
+ * @version    1.0.2
+ * @author     Willi Man
+ * @copyright  four for business AG <www.4fb.de>
  *
  * {@internal
- * created 2004-05-04
- * modified 2005-07-12 Andreas Lindner
- * modified 2008-04-11 Rudi Bieller
- * modified 2008-05-06 Rudi Bieller Added CON_SEARCH_MAXLEN_TEASERTEXT; Fixed <nobr> to be xhtml compliant;
- *                       Removed $action, $sCatName = getCategoryName($cat_id, $db); which was not used at all and
- *                       added a default output in case article/module was called directly (strlen(trim($searchterm)) == 0)
+ *   created 2004-05-04
+ *   $Id$
  * }}
- *
- * $Id$
  */
 
-#System properties in use:
-#Type: searchrange, Name: include
-#Contains comma-separated list of cats to be included into search (sub-cats are included automatically)
+// System properties in use:
+// Type: searchrange, Name: include
+// Contains comma-separated list of cats to be included into search (sub-cats are included automatically)
 
-#Logical combination of search terms with AND or OR
+// Logical combination of search terms with AND or OR
 
 define('CON_SEARCH_ITEMSPERPAGE', 10);
 define('CON_SEARCH_MAXLEN_TEASERTEXT', 200);
 
-#Includes
+// Includes
 cInclude('includes', 'functions.api.string.php');
 
-#Initiliaze template object
+// Initiliaze template object
 if (!is_object($tpl)) {
     $tpl = new Template();
 }
 $tpl->reset();
 
-#Settings
+// Settings
 $oArticleProp = new Article_Property($db, $cfg);
 $iArtspecReference = 2;
 
@@ -46,11 +38,11 @@ $cApiClient = new cApiClient($client);
 $sSearchRange = $cApiClient->getProperty('searchrange', 'include');
 $aSearchRange = explode(',', $sSearchRange);
 
-#Multilingual settings
+// Multilingual settings
 $sYourSearchFor = mi18n("Ihre Suche nach");
 $sMore = mi18n("mehr");
 
-#Get search term and pre-process it
+// Get search term and pre-process it
 if (isset ($_GET['searchterm'])) {
     $searchterm = urldecode(htmlentities(strip_tags(stripslashes($_GET['searchterm']))));
 } elseif (isset ($_POST['searchterm'])) {
@@ -60,7 +52,7 @@ $searchterm = str_replace(' + ', ' AND ', $searchterm);
 $searchterm = str_replace(' - ', ' NOT ', $searchterm);
 $searchterm_display = $searchterm;
 
-#Get all article specs
+// Get all article specs
 $sql = "SELECT idartspec, artspec FROM " . $cfg['tab']['art_spec'] . " WHERE "
      . "client=$client AND lang=$lang AND online=1";
 
@@ -77,7 +69,7 @@ while ($db->next_record()) {
 $aArtSpecs[] = 0;
 
 if (strlen(trim($searchterm)) > 0) {
-    #Parse search term and set search options
+    // Parse search term and set search options
     $searchterm = html_entity_decode($searchterm);
 
     if (stristr($searchterm, ' or ') === false) {
@@ -102,19 +94,19 @@ if (strlen(trim($searchterm)) > 0) {
     $cms_options = array('head', 'html', 'htmlhead', 'htmltext', 'text'); // search only in these cms-types
     $search->setCmsOptions($cms_options);
 
-    #Execute search
+    // Execute search
     $aSearchResults = $search->searchIndex($searchterm, '');
 
-    #Build results page
+    // Build results page
     if (count($aSearchResults) > 0) {
         $tpl->set('s', 'result_page', mi18n("Ergebnis-Seite").':');
 
-        #Build meessage
+        // Build meessage
         $message = $sYourSearchFor." '".htmlspecialchars(strip_tags($searchterm_display))."' ".mi18n("hat $$$ Treffer ergeben").":";
         $message = str_replace('$$$', count($aSearchResults), $message);
         $tpl->set('s', 'MESSAGE', $message);
 
-        #Number of results per page
+        // Number of results per page
         $number_of_results = CON_SEARCH_ITEMSPERPAGE;
         $oSearchResults = new SearchResult($aSearchResults, $number_of_results);
 
@@ -122,7 +114,7 @@ if (strlen(trim($searchterm)) > 0) {
         $num_pages = $oSearchResults->getNumberOfPages();
         $oSearchResults->setReplacement('<strong>', '</strong>'); // html-tags to emphasize the located searchterms
 
-        #Get current result page
+        // Get current result page
         if (isset ($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0) {
             $page = $_GET['page'];
             $res_page = $oSearchResults->getSearchResultPage($page);
@@ -131,7 +123,7 @@ if (strlen(trim($searchterm)) > 0) {
             $res_page = $oSearchResults->getSearchResultPage($page);
         }
 
-        #Build links to other result pages
+        // Build links to other result pages
         for ($i = 1; $i <= $num_pages; $i ++) {
             // this is just for sample client - modify to your needs!
             if ($cfg['url_builder']['name'] == 'front_content' || $cfg['url_builder']['name'] == 'MR') {
@@ -161,7 +153,7 @@ if (strlen(trim($searchterm)) > 0) {
         }
         $tpl->set('s', 'PAGES', $nextlinks);
 
-        #Build link to next result page
+        // Build link to next result page
         if ($page < $num_pages) {
             $n = $page +1;
             // this is just for sample client - modify to your needs!
@@ -190,7 +182,7 @@ if (strlen(trim($searchterm)) > 0) {
             $tpl->set('s', 'NEXT', '');
         }
 
-        #Build link to previous result page
+        // Build link to previous result page
         if ($page > 1) {
             $p = $page -1;
             // this is just for sample client - modify to your needs!
@@ -221,12 +213,12 @@ if (strlen(trim($searchterm)) > 0) {
 
         if (count($res_page) > 0) {
             $i = 1;
-            #Build single search result on result page
+            // Build single search result on result page
             foreach ($res_page as $key => $val) {
                 $num = $i + (($page -1) * $number_of_results);
                 $oArt = new cApiArticleLanguage();
                 $oArt->loadByArticleAndLanguageId($key, $lang);
-                #Get publishing date of article
+                // Get publishing date of article
                 $pub_system = $oArt->getField('published');
                 $pub_user = trim(strip_tags($oArt->getContent('HEAD', 90)));
                 if ($pub_user != '') {
@@ -244,7 +236,7 @@ if (strlen(trim($searchterm)) > 0) {
                     $show_pub_date = "[".$show_pub_date;
                 }
 
-                #Get text and headline of current article
+                // Get text and headline of current article
                 $iCurrentArtSpec = $oArticleProp->getArticleSpecification($key, $lang);
                 $aHeadline = $oSearchResults->getSearchContent($key, 'HTMLHEAD', 1);
                 $aSubheadline = $oSearchResults->getSearchContent($key, 'HTMLHEAD', 2);
@@ -258,7 +250,7 @@ if (strlen(trim($searchterm)) > 0) {
 
                 $similarity = sprintf("%.0f", $similarity);
 
-                #Send output to template
+                // Send output to template
                 // this is just for sample client - modify to your needs!
                 if ($cfg['url_builder']['name'] == 'front_content' || $cfg['url_builder']['name'] == 'MR') {
                     $aParams = array('lang' => $lang, 'idcat' => $cat_id, 'idart' => $key);
@@ -292,7 +284,7 @@ if (strlen(trim($searchterm)) > 0) {
             $tpl->generate('templates/search_output.html');
         }
     } else {
-        #No results
+        // No results
         $tpl->set('s', 'MESSAGE', $sYourSearchFor." '".htmlspecialchars(strip_tags($searchterm))."' ".mi18n("hat leider keine Treffer ergeben").".");
         $tpl->set('s', 'NEXT', '');
         $tpl->set('s', 'PREV', '');
@@ -300,7 +292,6 @@ if (strlen(trim($searchterm)) > 0) {
         $tpl->set('s', 'result_page', '');
         $tpl->generate('templates/search_output.html');
     }
-
 } else {
     echo '<div id="searchResults">';
     echo '<h1>'.mi18n("Keine Suchergebnisse - Bitte suchen Sie über das Sucheingabefeld!").'</h1>';
@@ -329,7 +320,6 @@ class Article_Property {
      * @return  id of article specification
      */
     function getArticleSpecification($iArticleId, $iLangId) {
-
         $sql = "SELECT artspec FROM " . $this->globalConfig['tab']['art_lang'] . " WHERE "
              . "idart=" . (int) $iArticleId . " AND idlang=" . (int) $iLangId;
 
@@ -343,4 +333,5 @@ class Article_Property {
         }
     }
 }
+
 ?>

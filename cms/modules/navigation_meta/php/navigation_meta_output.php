@@ -1,46 +1,45 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Meta Navigation on bottom of page
-*
-* @version 1.0.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-04-07
-* }}
-*
-* $Id$
-*/
+ * Description: Meta Navigation on bottom of page
+ *
+ * @version    1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ *
+ * {@internal
+ *   created 2008-04-07
+ *   $Id$
+ * }}
+ */
 
-// get start idcat
+// Get start idcat
 $iIdcatStart = getEffectiveSetting('navigation', 'idcat-meta', 2);
 
-//check if there is a template instance
+// Check if there is a template instance
 if (!isset($tpl) || !is_object($tpl)) {
     $tpl = new Template();
 }
 
-// reset template object
+// Reset template object
 $tpl->reset();
 
-// build navigation
+// Build navigation
 try {
     $oFeNav = new Contenido_FrontendNavigation($db, $cfg, $client, $lang, $cfgClient);
     $oFeNav->setAuth($auth);
     $oContenidoCategories = $oFeNav->getSubCategories($iIdcatStart, true);
     if ($oContenidoCategories->count() > 0) {
         foreach ($oContenidoCategories as $oContenidoCategory) {
-            // this is just for sample client - modify to your needs!
+            // This is just for sample client - modify to your needs!
             if ($cfg['url_builder']['name'] == 'front_content' || $cfg['url_builder']['name'] == 'MR') {
                 $aParams = array('lang' => $lang, 'idcat' => $oContenidoCategory->getIdCat());
             } else {
-                $aParams = array('a' => $oContenidoCategory->getIdCat(),
-                                'idcat' => $oContenidoCategory->getIdCat(), // needed to build category path
-                                'lang' => $lang, // needed to build category path
-                                'level' => 0); // needed to build category path
+                $aParams = array(
+                    'a' => $oContenidoCategory->getIdCat(),
+                    'idcat' => $oContenidoCategory->getIdCat(), // needed to build category path
+                    'lang' => $lang, // needed to build category path
+                    'level' => 0
+                ); // needed to build category path
             }
             try {
                 $tpl->set('d', 'url', Contenido_Url::getInstance()->build($aParams));
@@ -59,4 +58,5 @@ try {
 } catch (Exception $e) {
     echo 'Shit happens: ' . $e->getMessage() . ': ' . $e->getFile() . ' at line '.$e->getLine() . ' ('.$e->getTraceAsString().')';
 }
+
 ?>

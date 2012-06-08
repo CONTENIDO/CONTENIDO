@@ -1,19 +1,16 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Display login form
-*
-* @version 1.0.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-04-07
-* }}
-*
-* $Id$
-*/
+ * Description: Display login form
+ *
+ * @version    1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ *
+ * {@internal
+ *   created 2008-04-07
+ *   $Id$
+ * }}
+ */
 
 if (!isset($tpl) || !is_object($tpl)) {
     $tpl = new Template();
@@ -56,4 +53,5 @@ if ($auth->auth["uid"] == "nobody") {
     $tpl->set('s', 'label_logout', mi18n("ausloggen"));
     $tpl->generate('templates/login_form_loggedin.html');
 }
+
 ?>

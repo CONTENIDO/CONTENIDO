@@ -1,18 +1,10 @@
 <?php
 /**
- * Project:
- * contenido.org
- *
- * Description:
- * Simple sitemap.
+ * Description: Simple sitemap output.
  * Can output all categories in one list or each main category as separate list
  *
  * To modify the behaviour of the module (e.g. style of URL, CSS classes, ...), you need to edit Contenido_Sitemap_Util::loopCats
  * @see {frontend}/includes/Util/Modules/Contenido_Sitemap_Util.class.php
- *
- * Requirements:
- * @con_php_req 5.0
- *
  *
  * @version    0.1.0
  * @author     Rudi Bieller
@@ -22,7 +14,6 @@
  *   created 2009-01-05
  *   $Id$
  * }}
- *
  */
 
 if (!isset($db)) {
@@ -79,4 +70,5 @@ if ($iSelectedCat > 0 && $iSelectedDepth >= 0) {
 } else {
     echo '<p>Sitemap not configured correctly.</p>';
 }
+
 ?>

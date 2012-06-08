@@ -1,20 +1,17 @@
 <?php
 /**
-* $RCSfile$
-*
-* Description: Display Header with CONTENIDO Logo, an image and the current (navigation-) location.
-* If no image is selected, the default one will be used.
-*
-* @version 1.0.0
-* @author Rudi Bieller
-* @copyright four for business AG <www.4fb.de>
-*
-* {@internal
-* created 2008-04-07
-* }}
-*
-* $Id$
-*/
+ * Description: Display Header with CONTENIDO Logo, an image and the current (navigation-) location.
+ * If no image is selected, the default one will be used.
+ *
+ * @version    1.0.0
+ * @author     Rudi Bieller
+ * @copyright  four for business AG <www.4fb.de>
+ *
+ * {@internal
+ *   created 2008-04-07
+ *   $Id$
+ * }}
+ */
 
 if (!isset($tpl) || !is_object($tpl)) {
     $tpl = new Template();
@@ -31,14 +28,13 @@ try {
     $sImgSrc = "CMS_IMG[1]";
 
     $sHeadline = $iIdcatStart != intval($idcat)
-                    ? $oConCat->getCategoryLanguage()->getName()
-                    : mi18n("Willkommen!");
+                 ? $oConCat->getCategoryLanguage()->getName()
+                 : mi18n("Willkommen!");
     $sCssStyle = '';
     if ($contenido && $edit) {
         echo '<div id="modHeaderImgEdit">'.$sImgEdit.'</div>';
-    	$sCssStyle = ' style="background-image:url('.$sImgSrc.');"';
-    }
-    else {
+        $sCssStyle = ' style="background-image:url('.$sImgSrc.');"';
+    } else {
         $sCssStyle = ' style="background-image:url('.$sImgSrc.');"';
     }
     $tpl->reset();
@@ -52,4 +48,5 @@ try {
 } catch (Exception $e) {
     echo 'Some error occured: ' . $e->getMessage() . ': ' . $e->getFile() . ' at line '.$e->getLine() . ' ('.$e->getTraceAsString().')';
 }
+
 ?>

@@ -1,14 +1,6 @@
 ?><?php
 /**
- * Project:
- * contenido.org
- *
- * Description:
- * Simple sitemap
- *
- * Requirements:
- * @con_php_req 5.0
- *
+ * Description: Simple sitemap input
  *
  * @version    0.1.0
  * @author     Rudi Bieller
@@ -16,14 +8,13 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * @todo move function to load all categories somewhere else...
- * @todo use some template instead of html in code...
+ * @todo       move function to load all categories somewhere else...
+ * @todo       use some template instead of html in code...
  *
  * {@internal
  *   created 2009-01-05
  *   $Id$
  * }}
- *
  */
 
 if (!isset($db)) {
@@ -123,10 +114,10 @@ function sitemap_getAllCategories($oDb, array $aCfg, $iLang, $iClient) {
     if ($oDb->Errno == 0 && $oDb->num_rows() > 0) {
         while($oDb->next_record()) {
             $aResult[] = array(
-                                'idcat' => intval($oDb->f('idcat')),
-                                'level' => intval($oDb->f('level')),
-                                'name' => strval($oDb->f('name'))
-                                );
+                'idcat' => intval($oDb->f('idcat')),
+                'level' => intval($oDb->f('level')),
+                'name' => strval($oDb->f('name'))
+            );
         }
     }
     return $aResult;

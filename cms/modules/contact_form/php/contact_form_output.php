@@ -127,7 +127,7 @@ if (!isset($_POST['send'])) {
                 $mail->IsQmail();
                 break;
             default :
-                }
+        }
         $mail->From = "CMS_VALUE[0]";
         $mail->FromName = "CMS_VALUE[2]";
         $mail->AddAddress("CMS_VALUE[1]", "");
@@ -140,4 +140,5 @@ if (!isset($_POST['send'])) {
         echo mi18n("Ihr Anliegen wurde uns &uuml;bermittelt. Vielen Dank!") . $br;
     }
 }
+
 ?>

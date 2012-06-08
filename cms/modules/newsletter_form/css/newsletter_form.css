@@ -1,16 +1,16 @@
 #contactForm .policy {
-	
-	}
-	#contactForm .policy  input{
-		float:left;
-		width:30px;
-		margin-left:70px;
-		border:none;
-	
-	}
-	
+
+    }
+    #contactForm .policy  input{
+        float:left;
+        width:30px;
+        margin-left:70px;
+        border:none;
+
+    }
+
 #contactForm .policy label {
-		float:right !important;
-		width:320px;
-	}
-	
+        float:right !important;
+        width:320px;
+    }
+    
