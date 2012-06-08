@@ -20,7 +20,7 @@ switch($_REQUEST['action']) {
 			$tpl->set('s', 'HEADER', i18n('Cronjob &Uuml;bersicht: ').$cronjobs->getFile());
 			$tpl->set('s', 'LABLE_DIRECTORY',i18n("Ort"));
 			$tpl->set('s', 'DIRECTORY', $cronjobs->getDirectory());
-			$tpl->set('s', 'LABLE_EXECUTION_TIME', i18n("Zur letzt ausgef&uuml;hrt: "));
+			$tpl->set('s', 'LABLE_EXECUTION_TIME', i18n("Zuletzt ausgef&uuml;hrt: "));
 			$tpl->set('s', 'LABLE_LOG', i18n('Log'));
 			$tpl->set('s', 'LOG', $cronjobs->getLastLines());
 			$tpl->set('s', 'EXECUTION_TIME',$cronjobs->getDateLastExecute());
