@@ -74,7 +74,7 @@ class LayoutInFile {
     /**
      * Construct of the class
      */
-    public function __construct($layoutId, $layoutCode, $cfg, $lang, $db = null ) {
+    public function __construct($layoutId, $layoutCode, $cfg, $lang, $db = null) {
         if ($db === null) {
             $db = new DB_Contenido();
         }
@@ -90,7 +90,7 @@ class LayoutInFile {
      * @return boolen if file exist true
      */
     static function existLayout($layoutAlias, $cfgClient, $client) {
-        $file = $cfgClient[$iClient]['layout_path'] . $layoutAlias.'/';
+        $file = $cfgClient[$client]['layout_path'] . $layoutAlias.'/';
         return file_exists($file);
     }
 
@@ -118,7 +118,7 @@ class LayoutInFile {
 
         if ($cApiLayout->virgin == false) {
             $this->_layoutName = $cApiLayout->get('alias');
-            $this->_layoutMainPath = $cfgClient[$iClient]['layout_path'];
+            $this->_layoutMainPath = $cfgClient[$client]['layout_path'];
             $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName."/";
             $this->_fileName = $this->_layoutName . ".html";
 
@@ -145,7 +145,7 @@ class LayoutInFile {
 
         $this->_layoutCode = $dbObject->f("code");
         $this->_layoutName = $dbObject->f('alias');
-        $this->_layoutMainPath = $cfgClient[$iClient]['layout_path'];
+        $this->_layoutMainPath = $cfgClient[$client]['layout_path'];
         $this->_layoutPath = $this->_layoutMainPath . $this->_layoutName . "/";
         $this->_fileName = $this->_layoutName.".html";
 
