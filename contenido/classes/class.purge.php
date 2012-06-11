@@ -102,7 +102,7 @@ class Purge {
      * @return bool
      */
     public function resetClientConCode($iClientId) {
-        $mask = $this->cfgClient[$iClient]['code_path'] . '*.php';
+        $mask = $this->cfgClient[$iClientId]['code_path'] . '*.php';
         $arr = glob($mask);
         foreach ($arr as $file) {
             if (!unlink($file)) {
@@ -125,8 +125,8 @@ class Purge {
                " SET cca.createcode=1 " .
                " WHERE cc.idcat = cca.idcat " .
                " AND ca.idart = cca.idart " .
-               " AND cc.idclient = " . $iClientId .
-               " AND ca.idclient =" . $iClientId;
+               " AND cc.idclient = " . (int) $iClientId .
+               " AND ca.idclient = " . (int) $iClientId;
         $this->oDb->query($sSql);
 
         return ($this->oDb->Error == '') ? true : false;
