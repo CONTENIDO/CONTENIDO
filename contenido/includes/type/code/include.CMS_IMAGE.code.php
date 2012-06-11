@@ -14,7 +14,7 @@
  *
  * @package    CONTENIDO Backend Includes
  * @version    0.0.1
- * @author     Murat Purc <murat@purc.de>
+ * @author     Fulai Zhang <fulai.zhang@4fb.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
