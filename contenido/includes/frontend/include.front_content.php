@@ -407,7 +407,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
     // Mark submenuitem 'Preview' in the CONTENIDO Backend (Area: Contenido --> Articles --> Preview)
     if ($contenido) {
-        $markscript = markSubMenuItem(5, true);
+        $markscript = markSubMenuItem(6, true);
     }
 
     unset($edit); // disable editmode
