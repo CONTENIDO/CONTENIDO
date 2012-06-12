@@ -35,7 +35,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$tmp = $a_content['CMS_IMAGE'][$val];
+if($a_content['CMS_IMAGE'][$val]){
+	$tmp = $a_content['CMS_IMAGE'][$val];
+} else {	
+	$tmp = $a_content['CMS_IMG'][$val];
+}
 $oCmsImage = new Cms_Image($tmp, $val, $idartlang, $editLink, $cfg, $db, $belang, $client, $lang, $cfgClient, $sess, $idart, $idcat);
 
 if ($edit) {

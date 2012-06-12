@@ -433,7 +433,21 @@ class Cms_Image {
 			$this->filename = $this->oDb->f('filename');   
 			$this->dirname = $this->oDb->f('dirname');                
 		}
-		
+		$filename_src = $this->aCfgClient[$this->iClient]['upl']['htmlpath'].$this->dirname.$this->filename;
+		$filename = str_replace($this->aCfgClient[$this->iClient]['path']['htmlpath'], $this->aCfgClient[$this->iClient]['path']['frontend'], $filename_src);
+		$filetype = substr($filename, strlen($filename) -4, 4);
+		switch (strtolower($filetype)){
+			case ".gif": $sString = cApiImgScale($filename, 428, 210); break;
+			case ".png": $sString = cApiImgScale($filename, 428, 210); break;
+			case ".jpg": $sString = cApiImgScale($filename, 428, 210); break;
+			case "jpeg": $sString = cApiImgScale($filename, 428, 210); break;
+			default: $sString = $filename_src; break;
+		}	 
+		//if can not scale, so $sString is null, then show the original image.
+		if($sString == ''){
+			$sString = $filename_src;
+		}
+		$oTpl->set('s', 'DIRECTORY_SRC', 						$sString);
 		$oTpl->set('s', 'sContent', 							$this->aCfgClient[$this->iClient]['upl']['htmlpath'].$this->dirname.$this->filename);
 		$oTpl->set('s', 'DIRECTORY_LIST', 						$this->getDirectoryList( $this->buildDirectoryList() ));
 					
@@ -441,25 +455,9 @@ class Cms_Image {
 		$this->oDb->query($query);
 
 		if($this->oDb->next_record() && $idupl!='') {
-			$id_uplmeta = $this->oDb->f('id_uplmeta');  
-			 	
-			$filename_src = $this->aCfgClient[$this->iClient]['upl']['htmlpath'].$this->dirname.$this->filename;
-			$filename = str_replace($this->aCfgClient[$this->iClient]['path']['htmlpath'], $this->aCfgClient[$this->iClient]['path']['frontend'], $filename_src);
-			$filetype = substr($filename, strlen($filename) -4, 4);
-			switch (strtolower($filetype)){
-				case ".gif": $sString = cApiImgScale($filename, 428, 210); break;
-				case ".png": $sString = cApiImgScale($filename, 428, 210); break;
-				case ".jpg": $sString = cApiImgScale($filename, 428, 210); break;
-				case "jpeg": $sString = cApiImgScale($filename, 428, 210); break;
-				default: $sString = $filename_src; break;
-			}	 
-			//if can not scale, so $sString is null, then show the original image.
-			if($sString == ''){
-				$sString = $filename_src;
-			}
+			$id_uplmeta = $this->oDb->f('id_uplmeta');  	 			
 			
-			$oTpl->set('s', 'DIRECTORY_FILE', 						$this->getFileSelect($this->activeFilename, $this->iId));
-			$oTpl->set('s', 'DIRECTORY_SRC', 						$sString);
+			$oTpl->set('s', 'DIRECTORY_FILE', 						$this->getFileSelect($this->activeFilename, $this->iId));			
 			$oTpl->set('s', 'IMAGE_TITLE', 							$this->oDb->f('medianame'));	
 			$oTpl->set('s', 'IMAGE_DESC',							$this->oDb->f('description'));
 			$oTpl->set('s', 'IMAGE_KEYWORDS', 						$this->oDb->f('keywords'));
@@ -467,7 +465,6 @@ class Cms_Image {
 			$oTpl->set('s', 'IMAGE_COPYRIGHT', 						$this->oDb->f('copyright'));			
 		} else {
 			$oTpl->set('s', 'DIRECTORY_FILE', 						$this->getFileSelect($this->activeFilename, $this->iId));
-			$oTpl->set('s', 'DIRECTORY_SRC', 						'');
 			$oTpl->set('s', 'IMAGE_TITLE', 							'');	
 			$oTpl->set('s', 'IMAGE_DESC', 							'');
 			$oTpl->set('s', 'IMAGE_KEYWORDS', 						'');
