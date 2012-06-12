@@ -13,7 +13,7 @@
  */
 
 
-cInclude("includes", "functions.api.images.php");
+cInclude('includes', 'functions.api.images.php');
 
 // Gallery variables
 $bRecursive = false;
@@ -24,54 +24,49 @@ $sDownImage = mi18n("Bild herunterladen");
 
 $sPath = "CMS_VALUE[5]";
 if ($sPath == '') {
-    $sPath = $cfgClient[$client]["path"]["frontend"] . $cfgClient[$client]["upl"]["frontendpath"] . "bildergalerie/";
+    $sPath = $cfgClient[$client]['path']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . 'bildergalerie/';
 } else {
-    $sPath = $cfgClient[$client]["path"]["frontend"] . $cfgClient[$client]["upl"]["frontendpath"] . "CMS_VALUE[5]";
+    $sPath = $cfgClient[$client]['path']['frontend'] . $cfgClient[$client]['upl']['frontendpath'] . "CMS_VALUE[5]";
 }
 
-$iRows = "CMS_VALUE[3]";
-
+$iRows = (int) "CMS_VALUE[3]";
 if ($iRows == 0) {
     $iRows = 2;
 }
 
-$iColumns = "CMS_VALUE[2]";
-
+$iColumns = (int) "CMS_VALUE[2]";
 if ($iColumns == 0) {
     $iColumns = 2;
 }
 
-$start = $_REQUEST['start'];
-
-if (isset($start) && $start ! = "") {
+$start = (int) $_REQUEST['start'];
+if (isset($start) && $start != '') {
     $iCurrentPage = $start;
 } else {
     $iCurrentPage = 1;
     $start = 1;
 }
 
-$iWidth = "CMS_VALUE[0]";
-$iHeight = "CMS_VALUE[1]";
-
+$iWidth = (int) "CMS_VALUE[0]";
 if ($iWidth == 0) {
     $iWidth = 300;
 }
 
+$iHeight = (int) "CMS_VALUE[1]";
 if ($iHeight == 0) {
     $iHeight = 300;
 }
 
-$iDetailWidth = "CMS_VALUE[4]";
-
+$iDetailWidth = (int) "CMS_VALUE[4]";
 if ($iDetailWidth == 0) {
     $iDetailWidth = 300;
 }
 
-$aValidExtensions = array (
-    "jpg",
-    "jpeg",
-    "gif",
-    "png"
+$aValidExtensions = array(
+    'jpg',
+    'jpeg',
+    'gif',
+    'png'
 );
 
 $iImagesPerPage = $iRows * $iColumns;
@@ -85,7 +80,7 @@ if ($_REQUEST['view'] == '') {
         foreach ($aGalleryFiles as $key => $aGalleryFile) {
             $sExtension = strtolower(getFileExtension($aGalleryFile));
             if (!in_array($sExtension, $aValidExtensions)) {
-                unset ($aGalleryFiles[$key]);
+                unset($aGalleryFiles[$key]);
             }
         }
 
@@ -93,52 +88,48 @@ if ($_REQUEST['view'] == '') {
         $iFileCount = count($aGalleryFiles);
         $iPages = ceil($iFileCount / $iImagesPerPage);
 
-        $aImagesToDisplay = array_slice($aGalleryFiles, ($iCurrentPage -1) * $iImagesPerPage, $iImagesPerPage);
+        $aImagesToDisplay = array_slice($aGalleryFiles, ($iCurrentPage - 1) * $iImagesPerPage, $iImagesPerPage);
 
         $oImageTpl = new Template();
         $oGalleryTpl = new Template();
         $oEmptyImageTpl = new Template();
 
-        $aRenderedImages = array ();
+        $aRenderedImages = array();
 
         $iRow = 0;
         $iImagesRendered = 0;
         $j = 1;
         foreach ($aImagesToDisplay as $sImageToDisplay) {
-            $sDownloadImage = str_replace($cfgClient[$client]['path']['frontend'], '', $sImageToDisplay);
-
             // Do Scaling
             $sScaledImage = cApiImgScale($sImageToDisplay, $iWidth, $iHeight);
+            $sScaledImageHtmlPath = str_replace($cfgClient[$client]['path']['htmlpath'], '', $sScaledImage);
 
-            $link = 'front_content.php?idcatart =' . $idcatart . '&amp;start =' . $_REQUEST['start'] . '&amp;view =' . urlencode(str_replace($cfgClient[$client]['path']['frontend'], '', $sImageToDisplay));
+            $link = 'front_content.php?idcatart=' . $idcatart . '&amp;start=' . $start . '&amp;view=' . urlencode(str_replace($cfgClient[$client]['path']['frontend'], '', $sImageToDisplay));
 
             $description = ig_getImageDescription($sImageToDisplay);
             if ($description == '') {
                 $description = '&nbsp;';
             }
 
-            $download_link = str_replace($cfgClient[$client]['path']['frontend'], $cfgClient[$client]['path']['htmlpath'], $sImageToDisplay);
-
-            $download_size = ig_GetReadableFileSize($sImageToDisplay);
+            $sDownloadLink = str_replace($cfgClient[$client]['path']['frontend'], '', $sImageToDisplay);
+            $sDownloadSize = ig_GetReadableFileSize($sImageToDisplay);
 
             $oImageTpl->reset();
-            $oImageTpl->set("s", "FILE", $sScaledImage);
-            $oImageTpl->set("s", "WIDTH", $iWidth);
-            $oImageTpl->set("s", "HEIGHT", $iHeight);
-            $oImageTpl->set("s", "LINK", $link);
-            $oImageTpl->set("s", "DESCRIPTION", $description);
-            $oImageTpl->set("s", "DOWNLOAD_LINK", $download_link);
-            $oImageTpl->set("s", "DOWNLOAD_SIZE", $download_size);
-            $oImageTpl->set("s", "DOWNLOAD_CAPTION", mi18n("Bild herunterladen"));
-            $oImageTpl->set("s", "PREVIEW_CAPTION", mi18n("Bildvorschau"));
-            $oImageTpl->set("s", "LINK_DOWN", $sDownloadImage); // a href
-            $oImageTpl->set("s", "LINKDESCRIPTION", '');
-            $oImageTpl->set("s", "SEE_IMAGE", $sSeeImage);
-            $oImageTpl->set("s", "DOWN_IMAGE", $sDownImage);
-            $oImageTpl->set("s", "", $sDownImage);
+            $oImageTpl->set('s', 'FILE', $sScaledImageHtmlPath);
+            $oImageTpl->set('s', 'WIDTH', $iWidth);
+            $oImageTpl->set('s', 'HEIGHT', $iHeight);
+            $oImageTpl->set('s', 'LINK', $link);
+            $oImageTpl->set('s', 'DESCRIPTION', $description);
+            $oImageTpl->set('s', 'DOWNLOAD_LINK', $sDownloadLink);
+            $oImageTpl->set('s', 'DOWNLOAD_SIZE', $sDownloadSize);
+            $oImageTpl->set('s', 'DOWNLOAD_CAPTION', mi18n("Bild herunterladen"));
+            $oImageTpl->set('s', 'PREVIEW_CAPTION', mi18n("Bildvorschau"));
+            $oImageTpl->set('s', 'LINKDESCRIPTION', '');
+            $oImageTpl->set('s', 'SEE_IMAGE', $sSeeImage);
+            $oImageTpl->set('s', 'DOWNLOAD_IMAGE', $sDownImage);
 
             // Style links rechts
-            $sStyle = "";
+            $sStyle = '';
             $sStyle2 = '';
 
             if (($j % 2) == 0) {
@@ -149,67 +140,67 @@ if ($_REQUEST['view'] == '') {
                 $sStyle2 = '';
             }
             $j++;
-            $oImageTpl->set("s", "style", $sStyle);
-            $oImageTpl->set("s", "style_2", $sStyle2);
+            $oImageTpl->set('s', 'style', $sStyle);
+            $oImageTpl->set('s', 'style_2', $sStyle2);
 
-            $aRenderedImages[] = $oImageTpl->generate($cfgClient[$client]["path"]["frontend"] . "templates/gallery_image.html", true, false);
+            $aRenderedImages[] = $oImageTpl->generate('gallery_image.html', true, false);
 
             $iImagesRendered++;
 
             if ($iImagesRendered == $iColumns) {
-                $oGalleryTpl->set("d", "COLUMNS", implode("", $aRenderedImages));
+                $oGalleryTpl->set('d', 'COLUMNS', implode('', $aRenderedImages));
                 $oGalleryTpl->next();
                 $iImagesRendered = 0;
-                $aRenderedImages = array ();
+                $aRenderedImages = array();
             }
         }
 
         if (count($aRenderedImages) < $iColumns && count($aRenderedImages) > 0) {
-            $iEmptyCells = $iColumns -count($aRenderedImages);
+            $iEmptyCells = $iColumns - count($aRenderedImages);
 
-            $oEmptyImageTpl->set("s", "WIDTH", $iWidth);
-            $oEmptyImageTpl->set("s", "HEIGHT", $iHeight);
+            $oEmptyImageTpl->set('s', 'WIDTH', $iWidth);
+            $oEmptyImageTpl->set('s', 'HEIGHT', $iHeight);
 
-            $sEmptyCells = str_repeat($oEmptyImageTpl->generate($cfgClient[$client]["path"]["frontend"] . "templates/gallery_empty.html", true, false), $iEmptyCells);
+            $sEmptyCells = str_repeat($oEmptyImageTpl->generate('gallery_empty.html', true, false), $iEmptyCells);
 
-            $oGalleryTpl->set("d", "COLUMNS", implode("", $aRenderedImages) . $sEmptyCells);
+            $oGalleryTpl->set('d', 'COLUMNS', implode('', $aRenderedImages) . $sEmptyCells);
             $oGalleryTpl->next();
         }
 
         // Begin Navigation Bottom
-        $aLinks = array ();
+        $aLinks = array();
 
-        if ($iCurrentPage == "") {
+        if ($iCurrentPage == '') {
             $iCurrentPage = 1;
         }
-        $sBack = $cfgClient[$client]["path"]["htmlpath"] . sprintf("front_content.php?idcatart =%s&amp;start =%s", $idcatart, $iCurrentPage -1);
-        $sNext = $cfgClient[$client]["path"]["htmlpath"] . sprintf("front_content.php?idcatart =%s&amp;start =%s", $idcatart, $iCurrentPage +1);
+        $sBack = sprintf("front_content.php?idcatart=%s&amp;start=%s", $idcatart, $iCurrentPage - 1);
+        $sNext = sprintf("front_content.php?idcatart=%s&amp;start=%s", $idcatart, $iCurrentPage + 1);
 
-        for ($i = 1; $i < = $iPages; $i++) {
+        for ($i = 1; $i <= $iPages; $i++) {
             if ($i == $iCurrentPage) {
                 $aAllLinks[$i] = $i;
             } else {
-                $aAllLinks[$i] = $cfgClient[$client]["path"]["htmlpath"] . sprintf("front_content.php?idcatart =%s&amp;start =%s", $idcatart, $i);
+                $aAllLinks[$i] = sprintf("front_content.php?idcatart=%s&amp;start=%s", $idcatart, $i);
             }
         }
 
-        $sHtml = '<a href ="%s" title ="%s"> %s </a>'; // Template
+        $sHtml = '<a href="%s" title="%s"> %s </a>'; // Template
 
         if ($iPages == 1) { // if pages count is = 1
             $oCurrenTpl = new Template();
 
-            $oCurrenTpl->set("s", "Begin", '');
-            $oCurrenTpl->set("s", "Body", '');
-            $oCurrenTpl->set("s", "End", '');
-            $aLinks[] = $oCurrenTpl->generate($cfgClient[$client]["path"]["frontend"] . "templates/gallery_link.html", true, false);
+            $oCurrenTpl->set('s', 'Begin', '');
+            $oCurrenTpl->set('s', 'Body', '');
+            $oCurrenTpl->set('s', 'End', '');
+            $aLinks[] = $oCurrenTpl->generate('gallery_link.html', true, false);
         }
 
         if ($iCurrentPage == 1 && $iPages > 1) { // current page =1
 
             $oTpl1 = new Template();
 
-            $sNextButton = sprintf($sHtml, $sNext, mi18n("vor"), mi18n("&nbsp;vor&nbsp;") . '<img src ="images/link_pfeil_klein.gif">');
-            $oTpl1->set("s", "Begin", '');
+            $sNextButton = sprintf($sHtml, $sNext, mi18n("vor"), mi18n("&nbsp;vor&nbsp;") . '<img src="images/link_pfeil_klein.gif" />');
+            $oTpl1->set('s', 'Begin', '');
 
             foreach ($aAllLinks as $key => $value) {
                 #echo '<br> value: '.$value;
@@ -221,20 +212,20 @@ if ($_REQUEST['view'] == '') {
 
                 $oTpl1->set('d', 'Body', $sNumber);
                 $oTpl1->next();
-                $sNumber = "";
+                $sNumber = '';
             }
 
-            $oTpl1->set("s", "End", $sNextButton);
-            $aLinks[] = $oTpl1->generate($cfgClient[$client]["path"]["frontend"] . "templates/gallery_link.html", true, false);
+            $oTpl1->set('s', 'End', $sNextButton);
+            $aLinks[] = $oTpl1->generate('gallery_link.html', true, false);
         }
 
-        if ($iCurrentPage > 1 && ($iPages - $iCurrentPage) ! = 0) { // body see all
+        if ($iCurrentPage > 1 && ($iPages - $iCurrentPage) != 0) { // body see all
             $oPreviousTpl = new Template();
 
-            $sBackButton = sprintf($sHtml, $sBack, mi18n("zur&uuml;ck"), "<img src ='images/link_pfeil_klein_links.gif'/>" . mi18n("&nbsp;zur&uuml;ck&nbsp;"));
-            $sNextButton = sprintf($sHtml, $sNext, mi18n("vor"), mi18n("&nbsp;vor&nbsp;") . '<img src ="images/link_pfeil_klein.gif">');
+            $sBackButton = sprintf($sHtml, $sBack, mi18n("zur&uuml;ck"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n("&nbsp;zur&uuml;ck&nbsp;"));
+            $sNextButton = sprintf($sHtml, $sNext, mi18n("vor"), mi18n("&nbsp;vor&nbsp;") . '<img src="images/link_pfeil_klein.gif" />');
 
-            $oPreviousTpl->set("s", "Begin", $sBackButton);
+            $oPreviousTpl->set('s', 'Begin', $sBackButton);
 
             foreach ($aAllLinks as $key => $value) {
                 // Filter current page
@@ -248,59 +239,57 @@ if ($_REQUEST['view'] == '') {
                 $oPreviousTpl->next();
             }
 
-            $oPreviousTpl->set("s", "End", $sNextButton);
+            $oPreviousTpl->set('s', 'End', $sNextButton);
 
-            $aLinks[] = $oPreviousTpl->generate($cfgClient[$client]["path"]["frontend"] . "templates/gallery_link.html", true, false);
-        } else {
-            if ($iPages - $iCurrentPage == 0) { // this is end
-                $oNextTpl = new Template();
-                $oNextTpl->reset();
-                $sBackButton = sprintf($sHtml, $sBack, mi18n("zur&uuml;ck"), "<img src ='images/link_pfeil_klein_links.gif'/>" . mi18n("&nbsp;zur&uuml;ck&nbsp;"));
-                $oNextTpl->set("s", "End", '');
+            $aLinks[] = $oPreviousTpl->generate('gallery_link.html', true, false);
+        } else if ($iPages - $iCurrentPage == 0) { // this is end
+            $oNextTpl = new Template();
+            $oNextTpl->reset();
+            $sBackButton = sprintf($sHtml, $sBack, mi18n("zur&uuml;ck"), "<img src='images/link_pfeil_klein_links.gif' />" . mi18n("&nbsp;zur&uuml;ck&nbsp;"));
+            $oNextTpl->set('s', 'End', '');
 
-                foreach ($aAllLinks as $key => $value) {
-                    // Filter current page
-                    if (strlen($value) > 7) { // longer as url
-                        $sNumber = sprintf($sHtml, $value, $key, $key);
-                    } else {
-                        $sNumber = $key;
-                    }
-
-                    $oNextTpl->set('d', 'Body', $sNumber);
-                    $oNextTpl->next();
+            foreach ($aAllLinks as $key => $value) {
+                // Filter current page
+                if (strlen($value) > 7) { // longer as url
+                    $sNumber = sprintf($sHtml, $value, $key, $key);
+                } else {
+                    $sNumber = $key;
                 }
 
-                $oNextTpl->set("s", "Begin", $sBackButton);
-                $aLinks[] = $oNextTpl->generate($cfgClient[$client]["path"]["frontend"] . "templates/gallery_link.html", true, false);
-
+                $oNextTpl->set('d', 'Body', $sNumber);
+                $oNextTpl->next();
             }
+
+            $oNextTpl->set('s', 'Begin', $sBackButton);
+            $aLinks[] = $oNextTpl->generate('gallery_link.html', true, false);
         }
 
-        $oGalleryTpl->set("s", "NAVIGATION", implode("", $aLinks));
-        $oGalleryTpl->generate($cfgClient[$client]["path"]["frontend"] . "templates/gallery.html", false, false);
+        $oGalleryTpl->set('s', 'NAVIGATION', implode('', $aLinks));
+        $oGalleryTpl->generate('gallery.html', false, false);
         $oGalleryTpl->reset(); // Navigation end
         unset($aAllLinks);
     }
-} else { // See only one Image
+} else {
+    // See only one Image
     $sImageToDisplay = $cfgClient[$client]['path']['frontend'] . $_REQUEST['view'];
     $sScaledImage = cApiImgScale($sImageToDisplay, $iDetailWidth, 1000);
+    $sScaledImageHtmlPath = str_replace($cfgClient[$client]['path']['htmlpath'], '', $sScaledImage);
 
     $description = ig_getImageDescription($sImageToDisplay);
 
-    $download_link = str_replace($cfgClient[$client]['path']['frontend'], $cfgClient[$client]['path']['htmlpath'], $sImageToDisplay);
-
-    $download_size = ig_GetReadableFileSize($sImageToDisplay);
+    $sDownloadLink = str_replace($cfgClient[$client]['path']['frontend'], '', $sImageToDisplay);
+    $sDownloadSize = ig_GetReadableFileSize($sImageToDisplay);
 
     $oImageTpl = new Template();
-    $oImageTpl->set("s", "IMG", $sScaledImage);
-    $oImageTpl->set("s", "BACKLINK", 'front_content.php?idcat =' . $idcat . '&amp;idart =' . $idart . '&amp;start =' . $_REQUEST['start']);
-    $oImageTpl->set("s", "BACKCAPTION", mi18n("&nbsp;zur&uuml;ck"));
-    $oImageTpl->set("s", "DESCRIPTION", $description);
-    $oImageTpl->set("s", "DOWNLOAD_LINK", $download_link);
-    $oImageTpl->set("s", "DOWNLOAD_SIZE", $download_size);
-    $oImageTpl->set("s", "DOWNLOAD_CAPTION", mi18n("Bild herunterladen&nbsp;"));
+    $oImageTpl->set('s', 'IMG', $sScaledImageHtmlPath);
+    $oImageTpl->set('s', 'BACKLINK', 'front_content.php?idcat=' . $idcat . '&amp;idart=' . $idart . '&amp;start=' . $start);
+    $oImageTpl->set('s', 'BACKCAPTION', mi18n("&nbsp;zur&uuml;ck"));
+    $oImageTpl->set('s', 'DESCRIPTION', $description);
+    $oImageTpl->set('s', 'DOWNLOAD_LINK', $sDownloadLink);
+    $oImageTpl->set('s', 'DOWNLOAD_SIZE', $sDownloadSize);
+    $oImageTpl->set('s', 'DOWNLOAD_CAPTION', mi18n("Bild herunterladen&nbsp;"));
 
-    $oImageTpl->generate($cfgClient[$client]["path"]["frontend"] . "templates/gallery_detail.html", false, false);
+    $oImageTpl->generate('gallery_detail.html', false, false);
 }
 
 function ig_getImageDescription($idupl) {
@@ -335,26 +324,26 @@ function ig_getImageDescription($idupl) {
 
 function ig_GetReadableFileSize($path) {
     $filesize = filesize($path);
-    $unit = "bytes";
+    $unit = 'bytes';
 
     if ($filesize > 1024) {
         $filesize = ($filesize / 1024);
-        $unit = "kB";
+        $unit = 'kB';
     }
     if ($filesize > 1024) {
         $filesize = ($filesize / 1024);
-        $unit = "MB";
+        $unit = 'MB';
     }
     if ($filesize > 1024) {
         $filesize = ($filesize / 1024);
-        $unit = "GB";
+        $unit = 'GB';
     }
     if ($filesize > 1024) {
         $filesize = ($filesize / 1024);
-        $unit = "TB";
+        $unit = 'TB';
     }
 
     $filesize = round($filesize, 0);
-    return $filesize . " " . $unit;
+    return $filesize . ' ' . $unit;
 }
 ?>
