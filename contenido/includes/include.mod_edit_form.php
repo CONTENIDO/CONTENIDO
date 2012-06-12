@@ -39,7 +39,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 cInclude("includes", "functions.upl.php");
 cInclude("external", "codemirror/class.codemirror.php");
 
@@ -522,7 +521,7 @@ window.onload = scrolltheother;
                                  if (left_bottom) {
                                      var href = left_bottom.location.href;
                                      href = href.replace(/&idmod[^&]*/, '');
-                                     left_bottom.location.href = href+'&idmod=".$idmod."&action=".$action."';
+                                     left_bottom.location.href = href+'&idmod=".$idmod."';
                                  }
                             </script>";
         } else {
