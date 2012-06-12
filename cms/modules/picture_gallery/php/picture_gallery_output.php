@@ -75,6 +75,8 @@ if ($_REQUEST['view'] == '') {
     // Read all gallery files
     $aGalleryFiles = scanDirectory($sPath, $bRecursive);
 
+    $aAllLinks = array();
+
     if (is_array($aGalleryFiles)) {
         // Filter out non-images
         foreach ($aGalleryFiles as $key => $aGalleryFile) {
@@ -96,9 +98,7 @@ if ($_REQUEST['view'] == '') {
 
         $aRenderedImages = array();
 
-        $iRow = 0;
         $iImagesRendered = 0;
-        $j = 1;
         foreach ($aImagesToDisplay as $sImageToDisplay) {
             // Do Scaling
             $sScaledImage = cApiImgScale($sImageToDisplay, $iWidth, $iHeight);
@@ -132,14 +132,13 @@ if ($_REQUEST['view'] == '') {
             $sStyle = '';
             $sStyle2 = '';
 
-            if (($j % 2) == 0) {
+            if ((($iImagesRendered + 1) % 2) == 0) {
                 $sStyle = 'text-align:right';
                 $sStyle2 = 'padding-left:65px';
             } else {
                 $sStyle = 'text-align:left';
                 $sStyle2 = '';
             }
-            $j++;
             $oImageTpl->set('s', 'style', $sStyle);
             $oImageTpl->set('s', 'style_2', $sStyle2);
 
@@ -295,6 +294,7 @@ if ($_REQUEST['view'] == '') {
 function ig_getImageDescription($idupl) {
     global $cfg, $cfgClient, $db, $client, $lang;
 
+/*
     $cApiClient = new cApiClient($client);
     $language_separator = $cApiClient->getProperty('language', 'separator');
     if ($language_separator == "") {
@@ -302,6 +302,7 @@ function ig_getImageDescription($idupl) {
         $language_separator = "§§§";
         $cApiClient->setProperty('language', 'separator', $language_separator);
     }
+*/
     if (is_numeric($idupl)) {
         //ID is a number
         $query = "SELECT description FROM " . $cfg["tab"]["upl"] . " WHERE idupl = " . $idupl;
