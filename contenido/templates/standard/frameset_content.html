@@ -37,12 +37,14 @@ document.writeln("<\/frameset>");
 
 /* modified 2009-07-10 Ortwin Pinke, using try & catch now for better crossbrowser compability */
 function initFrame() {
+	if(typeof window.frames['left'].left_top != 'undefined'){
     try {
       var iHeight = window.frames['left'].left_top.document.getElementsByTagName('body')[0].offsetHeight;
       frameResize.resizeTopLeftFrame(iHeight+1);
     } catch(e) {
       if(e) window.setTimeout("initFrame()", 250);
     }
+	}
 }
 
 initFrame();
