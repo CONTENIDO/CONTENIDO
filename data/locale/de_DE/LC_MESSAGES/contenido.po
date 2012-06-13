@@ -5945,3 +5945,17 @@ msgstr "Die Liste der Kategorien ist fehlerhaft. Die Reihenfolge erzeugt eine un
 msgid "All languages"
 msgstr "Alle Sprachen"
 
+
+#: includes/include.stat_overview.php: 49
+msgid "This client has been configured with Google Analytics account %s. Click %s to visit Google Analytics"
+msgstr "Dieser Mandant worde mit Google Analytics-Account %s konfiguriert. Drücken Sie bitte %s um Google Analytics zu besuchen."
+
+#: includes/include.stat_overview.php: 48, 55
+msgid "here"
+msgstr "hier"
+
+#: includes/include.stat_overview.php: 56
+msgid "This client has bee configured with Piwik Site %s. Click %s to visit the Piwik installation."
+msgstr "Dieser Mandant worde mit Piwik Seite %s konfiguriert. Drücken Sie bitte %s um Piwik-URL zu öffnen."
+
+

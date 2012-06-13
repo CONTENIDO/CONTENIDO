@@ -45,13 +45,15 @@ if ($cApiClient->getProperty("stats", "tracking") == "off") {
 
 //Display google account message
 if(($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != "" ) {
-	$googleNotification = $contenidoNotification->returnNotification('notification', "This client has been configured with Google Analytics account ".$googleAccount.  '. Click <a href="http://www.google.com/intl/'.$belang.'/analytics/">here</a> to visit Google Analytics');
+	$linkToGoogle = sprintf('<a target="_blank" href="http://www.google.com/intl/'.$belang.'/analytics/">%s</a>', i18n("here"));
+	$googleNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has been configured with Google Analytics account %s. Click %s to visit Google Analytics"),$googleAccount, $linkToGoogle));
 }
 
 //display piwik account message
 if(($piwikUrl = getEffectiveSetting('stats', 'piwik_url', '')) != "") {
 	if(($piwikSite = getEffectiveSetting('stats', 'piwik_site', '')) != "") {
-		$piwikNotification = $contenidoNotification->returnNotification('notification', "This client has bee configured with Piwik Site ".$piwikSite.'. Click <a href="'.$piwikUrl.'">here</a> to visit the Piwik installation.');
+		$linkToPiwik = sprintf('<a target="_blank" href="'.$piwikUrl.'">%s</a>', i18n('here'));
+		$piwikNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has bee configured with Piwik Site %s. Click %s to visit the Piwik installation."), $piwikSite, $linkToPiwik));
 	}
 }
 
