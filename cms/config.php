@@ -4,7 +4,7 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Configuration File
+ * Basic client configuration
  *
  * Requirements:
  * @con_php_req 5
@@ -19,11 +19,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-03, bilal arslan, added security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -44,6 +41,6 @@ $frontend_debug['module_timing']         = false;
 $frontend_debug['module_timing_summary'] = false;
 
 // Set to 1 to brute-force module regeneration
-$force = 0;
+$force = 1;
 
 ?>

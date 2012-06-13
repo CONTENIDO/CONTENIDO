@@ -21,14 +21,11 @@
  * {@internal
  *     $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
     define('CON_FRAMEWORK', true);
 }
-
-$contenido_path = '';
 
 // Include the config file of the frontend to initialize client and language id
 include_once('config.php');

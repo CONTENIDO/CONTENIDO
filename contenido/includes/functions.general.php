@@ -685,7 +685,6 @@ function rereadClients()
 
 // @todo define a common data path
         $cfgClient[$iClient]['cache_path'] = $cfgClient[$iClient]['path']['frontend'] . 'cache/';
-//        $cfgClient[$iClient]['data_path'] = $cfg['path']['data'] . 'clients/' . $iClient . '/';
         $cfgClient[$iClient]['data_path'] = $cfgClient[$iClient]['path']['frontend'];
         $cfgClient[$iClient]['code_path'] = $cfgClient[$iClient]['data_path'] . 'cache/code/';
 #        $cfgClient[$iClient]['config_path'] = $cfgClient[$iClient]['data_path'] . 'config/';

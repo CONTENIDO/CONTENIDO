@@ -1,46 +1,37 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * 
- * Requirements: 
+ *
+ * Description:
+ * Login form
+ *
+ * Requirements:
  * @con_php_req 5
- * 
  *
  * @package    CONTENIDO Frontend
- * @version    0.5
+ * @version    0.5.1
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * 
- * 
+ *
  * {@internal
  *   created  2003-01-2003
- *   modified 2005-09-29, Andreas Lindner
- *   modified 2008-07-03, bilal arslan, added security fix
- *   modified 2008-11-18, Murat Purc, add usage of Contenido_Url to create urls to frontend pages and redesign of HTML markup
- *   modified 2008-12-26, Murat Purc, fixed problems with Contenido_Url and removed usage of asserts (css and image) from backend 
- *   modified 2011-02-07, Dominik Ziegler, fixed check of but_ok.gif and changed input type button to submit
- *
  *   $Id$:
  * }}
- * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
-  die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 global $cfg, $idcat, $idart, $idcatart, $lang, $client, $username, $encoding;
 
-$err_catart = trim(getEffectiveSetting("login_error_page", "idcatart", ""));
-$err_cat    = trim(getEffectiveSetting("login_error_page", "idcat", ""));
-$err_art    = trim(getEffectiveSetting("login_error_page", "idart", ""));
+$err_catart = trim(getEffectiveSetting('login_error_page', 'idcatart', ''));
+$err_cat    = trim(getEffectiveSetting('login_error_page', 'idcat', ''));
+$err_art    = trim(getEffectiveSetting('login_error_page', 'idart', ''));
 
 $oUrl = Contenido_Url::getInstance();
 
@@ -72,28 +63,28 @@ if ($bRedirect) {
     exit();
 }
 
-if (isset($_GET['return']) || isset($_POST['return'])){
+if (isset($_GET['return']) || isset($_POST['return'])) {
     $aLocator = array('lang=' . (int) $lang);
 
     if ($idcat > 0) {
-        $aLocator[] = 'idcat=' . intval($idcat);
+        $aLocator[] = 'idcat=' . (int) $idcat;
     }
     if ($idart > 0) {
-        $aLocator[] = 'idart=' . intval($idart);
+        $aLocator[] = 'idart=' . (int) $idart;
     }
-    if (isset($_POST['username']) || isset($_GET['username'])){
+    if (isset($_POST['username']) || isset($_GET['username'])) {
         $aLocator[] = 'wrongpass=1';
     }
 
     $sErrorUrl = $sUrl . '?' . implode('&', $aLocator);
     $aUrl = $oUrl->parse($sess->url($sErrorUrl));
     $sErrorUrl = $oUrl->buildRedirect($aUrl['params']);
-    header ('Location: ' . $sErrorUrl);
+    header('Location: ' . $sErrorUrl);
     exit();
 }
 
 // set form action
-$sFormAction = $sess->url($sUrl . '?idcat=' . intval($idcat) . '&lang=' . $lang);
+$sFormAction = $sess->url($sUrl . '?idcat=' . (int) $idcat . '&lang=' . $lang);
 $aUrl = $oUrl->parse($sFormAction);
 $sFormAction = $oUrl->build($aUrl['params']);
 
@@ -109,7 +100,7 @@ if ( file_exists($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif') 
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>" /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>" />
     <title>:: :: :: :: CONTENIDO Login</title>
     <script type="text/javascript"><!--
     if (top != self) {
@@ -123,7 +114,7 @@ if ( file_exists($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif') 
     a img {border:none;}
     #loginPageWrap {
         width:230px; height:120px; text-align:center; border:1px solid <?php echo $cfg['color']['table_border'] ?>; background-color:<?php echo $cfg['color']['table_light'] ?>;
-        position:absolute; left:50%; top:50%; margin-left:-115px; margin-top:-60px; 
+        position:absolute; left:50%; top:50%; margin-left:-115px; margin-top:-60px;
     }
     #login {text-align:left;}
     #login label {display:block; float:left; width:70px; }
@@ -142,7 +133,7 @@ if ( file_exists($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif') 
         <input type="hidden" name="idcat" value="<?php echo intval($idcat); ?>" />
         <div class="formHeader">Login</div>
         <div class="formRow">
-            <label for="username">Username:</label><input type="text" class="text" name="username" id="username" size="20" maxlength="32" value="<?php echo ( isset($this->auth['uname']) ) ? $this->auth['uname'] : ''  ?>" /><br class="clear" />
+            <label for="username">Username:</label><input type="text" class="text" name="username" id="username" size="20" maxlength="32" value="<?php echo (isset($this->auth['uname'])) ? $this->auth['uname'] : '' ?>" /><br class="clear" />
         </div>
         <div class="formRow">
             <label for="password">Password:</label><input type="password" class="text" name="password" id="password" size="20" maxlength="32" /><br class="clear" />

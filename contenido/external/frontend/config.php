@@ -4,7 +4,7 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Configuration File
+ * Basic client configuration
  *
  * Requirements:
  * @con_php_req 5
@@ -19,11 +19,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-04, bilal arslan, added security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
