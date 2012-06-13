@@ -47,14 +47,14 @@ class cApiClientCollection extends ItemCollection
     {
         global $cfg;
         parent::__construct($cfg['tab']['clients'], 'idclient');
-        $this->_setItemClass("cApiClient");
-        $this->_setJoinPartner("cApiClientLanguageCollection");
+        $this->_setItemClass('cApiClient');
+        $this->_setJoinPartner('cApiClientLanguageCollection');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function cApiClientCollection()
     {
-        cDeprecated("Use __construct() instead");
+        cDeprecated('Use __construct() instead');
         $this->__construct();
     }
 
