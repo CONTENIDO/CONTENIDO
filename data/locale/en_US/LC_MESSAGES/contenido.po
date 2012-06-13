@@ -631,6 +631,11 @@ msgstr ""
 msgid "Source category"
 msgstr ""
 
+#includes/include.stat_overview.php:43
+msgid "Tracking was disabled for this client!"
+msgstr ""
+
+
 #: classes/class.cms_teaser.php:579
 #: includes/include.stat_overview.php:91
 #: includes/include.system_sysvalues.php:126
@@ -924,6 +929,19 @@ msgstr ""
 #: includes/include.rights_overview.php:179
 msgid "Save changes"
 msgstr ""
+
+#: includes/include.client_edit.php:307
+msgid "On"
+msgstr ""
+
+#: includes/include.client_edit.php:307
+msgid "Off"
+msgstr "" 
+
+#: includes/include.client_edit.php:320
+msgid "Statistic"
+msgstr "" 
+
 
 #: classes/class.update.notifier.php:437
 #: classes/class.update.notifier.php:442

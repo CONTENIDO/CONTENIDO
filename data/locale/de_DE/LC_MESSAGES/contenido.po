@@ -632,6 +632,10 @@ msgstr "Teaser Startartikel"
 msgid "Source category"
 msgstr "Quellkategorie"
 
+#includes/include.stat_overview.php:43
+msgid "Tracking was disabled for this client!"
+msgstr "Tracking worde für diesen Mandanten abgeschaltet!"
+
 #: classes/class.cms_teaser.php:579
 #: includes/include.stat_overview.php:91
 #: includes/include.system_sysvalues.php:126
@@ -932,6 +936,19 @@ msgstr "Sofort"
 #: includes/include.rights_overview.php:179
 msgid "Save changes"
 msgstr "Änderungen speichern"
+
+#: includes/include.client_edit.php:307
+msgid "On"
+msgstr "An"
+
+#: includes/include.client_edit.php:307
+msgid "Off"
+msgstr "Aus" 
+
+#: includes/include.client_edit.php:320
+msgid "Statistic"
+msgstr "Statistik" 
+
 
 #: classes/class.update.notifier.php:437
 #: classes/class.update.notifier.php:442
