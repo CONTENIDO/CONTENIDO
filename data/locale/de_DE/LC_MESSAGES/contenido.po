@@ -5958,4 +5958,35 @@ msgstr "hier"
 msgid "This client has bee configured with Piwik Site %s. Click %s to visit the Piwik installation."
 msgstr "Dieser Mandant worde mit Piwik Seite %s konfiguriert. Drücken Sie bitte %s um Piwik-URL zu öffnen."
 
+#: templates/standard/template.con_art_overview.html 90, 140
+msgid "Apply to all selected articles"
+msgstr "Anwenden für ausgewählte Artikel"
+
+#: templates/standard/template.con_art_overview.html 91, 141
+msgid "Set articles online"
+msgstr "Artikel online stellen"
+
+#: templates/standard/template.con_art_overview.html 92, 42
+msgid "Set articles offline"
+msgstr "Artikel offline stellen"
+
+#: templates/standard/template.con_art_overview.html 93, 143
+msgid "Freeze articles"
+msgstr "Artikel einfrieren"
+
+#: templates/standard/template.con_art_overview.html 94, 144
+msgid "Unfreeze articles"
+msgstr "Artikel auftauen"
+
+#: templates/standard/template.con_art_overview.html 95, 145
+msgid "Delete articles"
+msgstr "Artikel löschen"
+
+#: templates/standard/template.con_art_overview.html 96, 146
+msgid "Flip Selection"
+msgstr ""
+
+
+
+
 

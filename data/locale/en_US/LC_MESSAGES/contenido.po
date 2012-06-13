@@ -5642,5 +5642,34 @@ msgstr ""
 msgid "This client has bee configured with Piwik Site %s. Click %s to visit the Piwik installation."
 msgstr ""
 
+#: templates/standard/template.con_art_overview.html 90, 140
+msgid "Apply to all selected articles"
+msgstr ""
+
+
+#: templates/standard/template.con_art_overview.html 91, 141
+msgid "Set articles online"
+msgstr ""
+
+#: templates/standard/template.con_art_overview.html 92, 42
+msgid "Set articles offline"
+msgstr ""
+
+#: templates/standard/template.con_art_overview.html 93, 143
+msgid "Freeze articles"
+msgstr ""
+
+#: templates/standard/template.con_art_overview.html 94, 144
+msgid "Unfreeze articles"
+msgstr ""
+
+#: templates/standard/template.con_art_overview.html 95, 145
+msgid "Delete articles"
+msgstr ""
+
+#: templates/standard/template.con_art_overview.html 96, 146
+msgid "Flip Selection"
+msgstr ""
+
 
 
