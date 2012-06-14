@@ -408,6 +408,9 @@ contenido/classes/module/class.module.handler.php -text
 contenido/classes/module/class.module.search.php -text
 contenido/classes/module/class.module.synchronizer.php -text
 contenido/classes/module/class.module.template.handler.php -text
+contenido/classes/phpmailer/class.phpmailer.php -text
+contenido/classes/phpmailer/class.smtp.php -text
+contenido/classes/phpmailer/language/phpmailer.lang-de.php -text
 contenido/classes/tree/class.ctree.php -text
 contenido/classes/tree/class.ctreeitem.php -text
 contenido/classes/widgets/class.views.advancedmenu.php -text
