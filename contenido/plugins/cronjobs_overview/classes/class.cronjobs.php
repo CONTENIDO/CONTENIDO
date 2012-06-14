@@ -10,12 +10,6 @@ class Cronjobs {
 	 */
 	protected  $_conVars = array();
 	
-	/**
-	 * 
-	 * The name of cronjobs directory 
-	 * @var string
-	 */
-	public static $NAME_OF_CRONJOB_DIR = 'cronjobs';
 	
 	public static $CRONTAB_FILE = 'crontab.txt';
 	
@@ -34,7 +28,19 @@ class Cronjobs {
 	
 	protected $_cfg = array();
 
+	/**
+	 * Path to the cronjob Directory
+	 * @var string (path)
+	 */
 	protected $_cronjobDirectory = '';
+	
+	/**
+	 * Path to the cronlog Directory
+	 * @var string (path)
+	 */
+	protected $_cronlogDirectory = '';
+	
+	
 	public function __construct(array $contenidoVars, $phpFile = '') {
 		
 		$this->_conVars = $contenidoVars;
@@ -43,9 +49,9 @@ class Cronjobs {
 		if($phpFile != '')
 			$this->_fileName = substr($phpFile,0,-4);
 		
-		$cfg = $this->_conVars['cfg'];
-		$this->_cronjobDirectory = $cfg['path']['contenido'].self::$NAME_OF_CRONJOB_DIR.'/';
-		
+		$this->_cfg = $this->_conVars['cfg'];
+		$this->_cronjobDirectory = $this->_cfg['path']['contenido'] . '/' .$this->_cfg['path']['cronjobs'];
+		$this->_cronlogDirectory = $this->_cfg['path']['contenido_cronlog'];
 	}
 	
 	/**
@@ -63,11 +69,18 @@ class Cronjobs {
 	 * Get the directory path of cronjobs
 	 * @return string 
 	 */
-	public function getDirectory () {
-		
+	public function getCronjobDirectory () {
 		return $this->_cronjobDirectory;
 	}
 	
+	
+	/**
+	 * Get the directory path of cronlog
+	 * @return string
+	 */
+	public function getCronlogDirectory() {
+		return $this->_cronlogDirectory;
+	}
 	
 	/**
 	 * 
@@ -77,8 +90,8 @@ class Cronjobs {
 	public function getDateLastExecute() {
 		
 		$timestamp = ''; 
-		if(file_exists($this->_cronjobDirectory.$this->_phpFile.self::$JOB_ENDING)) 
-		if(($timestamp = file_get_contents($this->_cronjobDirectory.$this->_phpFile.self::$JOB_ENDING))) {
+		if(file_exists($this->_cronlogDirectory .$this->_phpFile.self::$JOB_ENDING)) 
+		if(($timestamp = file_get_contents($this->_cronlogDirectory.$this->_phpFile.self::$JOB_ENDING))) {
 			return date("d.m.Y H:i:s",$timestamp);	
 		}
 		return $timestamp;
@@ -92,9 +105,9 @@ class Cronjobs {
 	 */
 	public function getContentsCrontabFile() {
 		
-		if(file_exists($this->_cronjobDirectory.self::$CRONTAB_FILE)) {
+		if(file_exists($this->_cronlogDirectory.self::$CRONTAB_FILE)) {
 			
-			return file_get_contents($this->_cronjobDirectory.self::$CRONTAB_FILE);
+			return file_get_contents($this->_cronlogDirectory.self::$CRONTAB_FILE);
 		}else 
 			return '';
 	}
@@ -107,7 +120,7 @@ class Cronjobs {
 	 */
 	public function saveCrontabFile($data) {
 		
-		return file_put_contents($this->_cronjobDirectory.self::$CRONTAB_FILE, $data);	
+		return file_put_contents($this->_cronlogDirectory.self::$CRONTAB_FILE, $data);	
 		
 	}
 	
@@ -118,7 +131,7 @@ class Cronjobs {
 	 */
 	public function setRunTime($timestamp) {
 		
-		file_put_contents($this->_cronjobDirectory.$this->_phpFile.self::$JOB_ENDING,$timestamp);
+		file_put_contents($this->_cronlogDirectory.$this->_phpFile.self::$JOB_ENDING,$timestamp);
 	}
 	
 	
@@ -130,8 +143,8 @@ class Cronjobs {
 	 */
 	public function getLastLines($lines = 25) {
 		
-		if(file_exists($this->_cronjobDirectory.$this->_phpFile.self::$LOG_ENDING)) {
-			$content = explode("\n", file_get_contents($this->_cronjobDirectory.$this->_phpFile.self::$LOG_ENDING));
+		if(file_exists($this->_cronlogDirectory . $this->_phpFile.self::$LOG_ENDING)) {
+			$content = explode("\n", file_get_contents($this->_cronlogDirectory . $this->_phpFile.self::$LOG_ENDING));
 			$number = count($content);
         	$pos = $number - $lines;
         	if ($pos < 0) {
@@ -166,7 +179,6 @@ class Cronjobs {
 	public function getAllCronjobs() {
 		
 		$retArray = array();
-       
         if (is_dir($this->_cronjobDirectory)) {
             if ($dh = opendir($this->_cronjobDirectory)) {
                 while (($file = readdir($dh))!== false) {

@@ -19,7 +19,7 @@ switch($_REQUEST['action']) {
 
 			$tpl->set('s', 'HEADER', i18n('Cronjob &Uuml;bersicht: ').$cronjobs->getFile());
 			$tpl->set('s', 'LABLE_DIRECTORY',i18n("Ort"));
-			$tpl->set('s', 'DIRECTORY', $cronjobs->getDirectory());
+			$tpl->set('s', 'DIRECTORY', $cronjobs->getCronjobDirectory());
 			$tpl->set('s', 'LABLE_EXECUTION_TIME', i18n("Zuletzt ausgef&uuml;hrt: "));
 			$tpl->set('s', 'LABLE_LOG', i18n('Log'));
 			$tpl->set('s', 'LOG', $cronjobs->getLastLines());
@@ -46,7 +46,7 @@ switch($_REQUEST['action']) {
 				$notification-> displayNotification('info', i18n('Erfolgreich gespeichert!'));
 			}
 		}
-		$tpl->set('s', 'HEADER', i18n('Crontab bearbeiten: ').$cronjobs->getFile());
+		$tpl->set('s', 'HEADER', i18n('Crontab bearbeiten: ').$cronjobs->getCronlogDirectory(). Cronjobs::$CRONTAB_FILE);
 		$tpl->set('s', 'CONTENTS', $cronjobs->getContentsCrontabFile());
 		$tpl->set('s', 'CONTENIDO', $contenido);
 		$tpl->set('s', 'ALT_TITLE', i18n('Änderung speichern'));
@@ -60,7 +60,8 @@ switch($_REQUEST['action']) {
 		}
 		if($cronjobs->existFile()) {		
 			$area = 'cronjobs';
-			include($cronjobs->getDirectory().$cronjobs->getFile());
+			
+			include($cronjobs->getCronjobDirectory().$cronjobs->getFile());
 			$cronjobs->setRunTime(time());
 			//$cronjobs->executeCronjob();
 			$notification->displayNotification('info', i18n('Datei wurde inkludiert!'));
