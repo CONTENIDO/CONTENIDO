@@ -22,7 +22,22 @@
 '---------------------------------------------------------------------------'
 */
 
+
 /**
+ * 
+ * Project:
+ * CONTENIDO Content Management System
+ *
+ * Description:
+ * PHP email class
+ * Class for sending email using either sendmail,
+ * PHP mail() or SMTP. Methods are based upon
+ * the standard AspEmail(tm) classes.
+ *
+ * Requirements:
+ * @con_php_req 5.0
+ *
+ *
  * PHPMailer - PHP email transport class
  * NOTE: Requires PHP version 5 or later
  * @package PHPMailer
@@ -33,6 +48,7 @@
  * @copyright 2004 - 2009 Andy Prevost
  * @version $Id: class.phpmailer.php 450 2010-06-23 16:46:33Z coolbru $
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @since	file available since CONTENIDO release <= 4.9 
  */
 
 if (version_compare(PHP_VERSION, '5.0.0', '<') ) exit("Sorry, this version of PHPMailer will only run on PHP version 5 or greater!\n");

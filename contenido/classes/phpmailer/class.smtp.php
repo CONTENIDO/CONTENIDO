@@ -23,6 +23,19 @@
 */
 
 /**
+ * Project: 
+ * CONTENIDO Content Management System
+ * 
+ * Description: 
+ * PHP SMTP class
+ * Define an SMTP class that can be used to connect and communicate
+ * with any SMTP server. It implements all the SMTP functions defined in RFC821
+ * except TURN.
+ * 
+ * Requirements: 
+ * @con_php_req 5.0
+ * 
+ * 
  * PHPMailer - PHP SMTP email transport class
  * NOTE: Designed for use with PHP version 5 and up
  * @package PHPMailer
@@ -33,6 +46,7 @@
  * @copyright 2010 - 2012 Jim Jagielski
  * @license http://www.gnu.org/copyleft/lesser.html Distributed under the Lesser General Public License (LGPL)
  * @version $Id: class.smtp.php 450 2010-06-23 16:46:33Z coolbru $
+ * @since      file available since CONTENIDO release <= 4.9 
  */
 
 /**
