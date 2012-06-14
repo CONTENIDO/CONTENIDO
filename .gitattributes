@@ -317,7 +317,6 @@ contenido/classes/class.navigation.php -text
 contenido/classes/class.note.php -text
 contenido/classes/class.notification.php -text
 contenido/classes/class.perm.php -text
-contenido/classes/class.phpmailer.php -text
 contenido/classes/class.properties.php -text
 contenido/classes/class.purge.php -text
 contenido/classes/class.registry.php -text
@@ -325,7 +324,6 @@ contenido/classes/class.request.password.php -text
 contenido/classes/class.request.php -text
 contenido/classes/class.search.php -text
 contenido/classes/class.security.php -text
-contenido/classes/class.smtp.php -text
 contenido/classes/class.structure.php -text
 contenido/classes/class.synchronizeLayouts.php -text
 contenido/classes/class.table.php -text
