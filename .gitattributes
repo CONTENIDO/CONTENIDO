@@ -1926,7 +1926,6 @@ data/locale/de_DE/LC_MESSAGES/contenido.po -text
 data/locale/en_US/LC_MESSAGES/contenido.mo -text
 data/locale/en_US/LC_MESSAGES/contenido.po -text
 data/locale/potfiles.txt -text
-data/logs/deprecatedlog.txt -text svneol=unset#text/plain
 docs/api/doxy-api.conf -text
 docs/techref/backend/backend.autoloader.html -text
 docs/techref/backend/backend.customizing.1.gif -text
