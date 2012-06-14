@@ -10,9 +10,6 @@ INSERT INTO !PREFIX!_nav_sub VALUES('8', '5', '21', '0', 'navigation/administrat
 INSERT INTO !PREFIX!_nav_sub VALUES('13', '5', '22', '0', 'navigation/administration/languages', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('40', '0', '52', '1', 'navigation/info', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('39', '0', '42', '0', 'navigation/mycontenido/main', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('12', '0', '24', '0', 'navigation/login', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('35', '5', '28', '0', 'navigation/administration/plugins', '0');
-INSERT INTO !PREFIX!_nav_sub VALUES('14', '1', '29', '0', 'plug-ins/langfile/', '0');
 INSERT INTO !PREFIX!_nav_sub VALUES('15', '0', '1', '1', 'navigation/content/article/overview', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('16', '0', '3', '1', 'navigation/content/article/properties', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('17', '0', '100', '1', 'navigation/content/article/meta', '1');
@@ -42,7 +39,6 @@ INSERT INTO !PREFIX!_nav_sub VALUES('47', '0', '58', '1', 'navigation/administra
 INSERT INTO !PREFIX!_nav_sub VALUES('48', '0', '59', '1', 'navigation/administration/groups/structure', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('9', '5', '54', '0', 'navigation/administration/groups/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('42', '0', '63', '1', 'navigation/administration/groups/members', '1');
-INSERT INTO !PREFIX!_nav_sub VALUES('50', '5', '64', '0', 'navigation/administration/debug', '0');
 INSERT INTO !PREFIX!_nav_sub VALUES('53', '5', '65', '0', 'navigation/administration/system/main', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('51', '0', '65', '1', 'navigation/administration/system/sysvalues', '1');
 INSERT INTO !PREFIX!_nav_sub VALUES('416', '0', '67', '1', 'navigation/administration/system/syssettings', '1');
