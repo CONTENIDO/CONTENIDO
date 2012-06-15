@@ -78,7 +78,7 @@ if ($action == 'user_delete') {
         parent.parent.frames["left"].frames["left_bottom"].location.reload();
     </script>
 </head>
-<body style="margin:10px">
+<body class="mg10">
 {NOTIFICATION}
 </body>
 </html>

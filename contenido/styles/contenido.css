@@ -1306,3 +1306,38 @@ div.shelf_elem_statuslabel {
 	margin-top:2px;
 	margin-left:5px;
 }
+
+/*modified am 15.06.2012 fulai.zhang*/
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+.mg10 {
+	margin: 10px;
+}
+.mgl5 {
+	margin-left: 5px;
+}
+.pdr20 {
+	padding-right: 20px;
+}
+.fett {
+	font-weight: bold;
+}
+.bgGreydark {
+	background-color: #a9aec2;
+}
+.bgGreyLight {
+	background-color: #F4F4F7;
+}
+.bgGrey {
+	background-color: #E2E2E2;
+}
+.nodisplay {
+	display: none;
+}
+.noborder {
+	border: 0px;
+}

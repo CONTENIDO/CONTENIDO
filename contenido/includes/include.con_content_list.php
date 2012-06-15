@@ -153,7 +153,7 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
 		    }
 		    </style>
 		</head>
-		<body style="margin: 10px">';
+		<body class="mg10">';
 	foreach($result as $key => $cmstype){
 		foreach($cmstype as $index => $value){		
 			if(in_array($key.'['.$index.']',$typeAktuell)){
