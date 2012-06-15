@@ -144,8 +144,9 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
 		    <script type="text/javascript" src="../contenido/scripts/general.js"></script>
 		    <style>
 		    .contypeList {
-		    	border: 1px solid black;
-		    	padding: 15px;
+		    	border: 1px solid #B3B3B3;
+		    	padding: 10px;
+		    	margin: 10px 0;
 		    }
 		    .noactive {
 		    	border: 1px solid red;
@@ -161,7 +162,7 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
 				$class = 'noactive';
 			}
 			$layoutcode .= '<div class="contypeList '.$class.'">
-			<div class="headline">'.$key.' '.$index.':</div>'.$key.'['.$index.']</div><hr/>';
+			<div class="headline">'.$key.' '.$index.':</div>'.$key.'['.$index.']</div>';
 		}
 	}
 	$layoutcode .= '</body></html>';
