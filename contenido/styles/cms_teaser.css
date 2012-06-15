@@ -1,7 +1,7 @@
 .cms_teaser_img {
 	margin-right: 2px; 
 	margin-top: 2px;
-    position: absolute;
+    /*position: absolute;*/
     z-index: 10000;
 }
 

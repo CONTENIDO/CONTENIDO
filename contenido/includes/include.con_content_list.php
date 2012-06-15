@@ -237,7 +237,7 @@ cRegistry::shutdown();
         	if(in_array($type,$aList)){
             // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
             $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $layoutCode, $match);
-
+			
             $a_[$key] = $match[0];
 
             $success = array_walk($a_[$key], 'extractNumber');
@@ -271,7 +271,12 @@ cRegistry::shutdown();
 					
 				$path = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
 				'&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido.'&idcontent='.$idcontent;
-                $replacements[$val] = $tmp.
+                if($_typeItem->idtype==20 || $_typeItem->idtype==21){
+                	 $tmp = str_replace('";?>', '', $tmp);
+                	 $tmp = str_replace('<?php echo "', '', $tmp);
+		 			//echo "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
+			    } 
+				$replacements[$val] = $tmp.
 	                '<a style="text-decoration:none;" href="javascript:setcontent(\'1\',\''.$path.'\');">
 	                <img border="0" src="'.$cfg['path']['contenido_fullhtml'].'images/but_cancel.gif">
 	                </a>';
