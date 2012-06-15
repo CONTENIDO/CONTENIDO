@@ -60,7 +60,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @return string The generated code or "0601" if neither article nor category configuration 
  *                was found
  */
-function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true)
+function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true)
 {
     global $frontend_debug;
 
@@ -70,7 +70,7 @@ function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save 
         $codeGen->setFrontendDebugOptions($frontend_debug);
     }
 
-    $code = $codeGen->generate($idcat, $idart, $lang, $client, $layout, $save);
+    $code = $codeGen->generate($idcat, $idart, $lang, $client, $layout, $save, $contype);
 
     // execute CEC hook
     $code = CEC_Hook::executeAndReturn('Contenido.Content.conGenerateCode', $code);

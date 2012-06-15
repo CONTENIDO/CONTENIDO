@@ -43,7 +43,6 @@ $scripts = '';
 if ($action == 'savecontype' || $action == 10) {
     if ($data != '') {
         $data = explode('||', substr($data, 0, -2));
-//print_r($data);
         foreach ($data as $value) {
             $value = explode('|', $value);
             if ($value[3] == '%$%EMPTY%$%') {
@@ -70,18 +69,21 @@ if ($action == 'savecontype' || $action == 10) {
 	
 }
 
-//get value
+//get active value
 $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b WHERE a.idartlang=".$_REQUEST["idartlang"]." AND a.idtype=b.idtype ORDER BY a.idartlang, a.idtype, a.typeid";
 $db->query($sql);
 $result = array();
 $aList = array();
+$typeAktuell = array();
 while ( $db->next_record() ) {
 		$result[$db->f("name")][$db->f("id")] = $db->f("value");
 		if(!in_array($db->f("name"),$aList)){
 			$aList[$db->f("idtype")] = $db->f("name");
 		}
 }
-//show ContentTypeList
+$typeAktuell = getAktuellType($typeAktuell, $aList);
+
+//create Layoutcode
 //if ($action == 'con_content') {
 	//@fulai.zhang: Mark submenuitem 'Editor' in the CONTENIDO Backend (Area: Contenido --> Articles --> Editor)
     $markSubItem = markSubMenuItem(5, true);
@@ -132,7 +134,6 @@ while ( $db->next_record() ) {
 	</form>
 	';
 
-    //print_r($result);
 	$layoutcode = '<html>
 		<head>
 		    <title></title>
@@ -141,11 +142,19 @@ while ( $db->next_record() ) {
 		    <meta http-equiv="pragma" content="no-cache">
 		    <link rel="stylesheet" type="text/css" href="../contenido/styles/contenido.css">
 		    <script type="text/javascript" src="../contenido/scripts/general.js"></script>
+		    <style>
+		    .noactive *{color: red;}
+		    </style>
 		</head>
 		<body style="margin: 10px">';
 	foreach($result as $key => $cmstype){
 		foreach($cmstype as $index => $value){		
-			$layoutcode .= '<div class="contypeList">
+			if(in_array($key.'['.$index.']',$typeAktuell)){
+				$class = '';
+			} else {
+				$class = 'noactive';
+			}
+			$layoutcode .= '<div class="contypeList '.$class.'">
 			<div class="headline">'.$key.' '.$index.':</div>'.$key.'['.$index.']</div><hr>';
 		}
 	}
@@ -167,13 +176,22 @@ while ( $db->next_record() ) {
     if ($cfg["debug"]["codeoutput"]) {
     	cDebug(htmlspecialchars($code));
     }
-
+    
+	//show ContentTypeList
     chdir($cfgClient[$client]["path"]["frontend"]);
     eval("?>\n".$code."\n<?php\n");
 //}
 
 cRegistry::shutdown();
 
+	/**
+     * Processes replacements of all existing CMS_... tags within passed code
+     *
+     * @param  array   $aList  CMS_...tags list 
+     * @param  array   $contentList  all CMS variables
+     * @param  array   $contentList  Assoziative list of CMS variables
+     * @param  bool    $saveKeywords  Flag to save collected keywords during replacement process.
+     */
 	function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode) {
         // #####################################################################
         // NOTE: Variables below are required in included/evaluated content type codes!
@@ -271,6 +289,45 @@ cRegistry::shutdown();
         	}
 		}
         return $layoutCode;
+    }
+    
+    /**
+     * Processes get all existing active CMS_... tags within passed code
+     *
+     * @param  array   $r  active CMS variables
+     * @param  array   $aList  CMS_...tags list 
+     */
+    function getAktuellType($r, $aList){
+    	$idcat = $_REQUEST['idcat'];
+        $idart = $_REQUEST['idart'];
+        $lang = $_REQUEST['lang'];
+        $client = $_REQUEST['client'];
+        global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
+       
+    	// generate code
+		$templatecode = conGenerateCode($idcat, $idart, $lang, $client, false, false, false);
+		// Select all cms_type entries
+        $sql = 'SELECT idtype, type, code FROM ' . $cfg['tab']['type'];
+        $db->query($sql);
+        $_typeList = array();
+        while ($db->next_record()) {
+            $_typeList[] = $db->toObject();
+        }     
+        // generate code
+   		$code = conGenerateCode($idcat, $idart, $lang, $client, false, false, false);
+        foreach($_typeList as $_typeItem) {
+        	$type = $_typeItem->type;           
+        	if(in_array($type,$aList)){
+	            // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
+	            $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $code, $match);
+	            foreach($match[0] as $s){
+	            if(!in_array($s, $r)){	            	
+	            	array_push($r, $s);
+	            }
+	            }
+        	}
+        }
+        return $r;
     }
     
 ?>

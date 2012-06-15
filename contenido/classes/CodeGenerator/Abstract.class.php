@@ -192,7 +192,7 @@ abstract class Contenido_CodeGenerator_Abstract
      * @return  string  Generated code or error code '0601' if no template
      *                  configuration was found for category or article.
      */
-    public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true)
+    public function generate($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true)
     {
         global $cfg;
 
@@ -211,7 +211,7 @@ abstract class Contenido_CodeGenerator_Abstract
         $this->_idartlang = $this->_db->f('idartlang');
         $this->_pageTitle = stripslashes($this->_db->f('pagetitle'));
 
-        return $this->_generate();
+        return $this->_generate($contype);
     }
 
 
@@ -219,7 +219,7 @@ abstract class Contenido_CodeGenerator_Abstract
      * Generates the code for a specific article (article for a client in a language).
      * @return  string  The generated code
      */
-    abstract function _generate();
+    abstract function _generate($contype = true);
 
 
     /**

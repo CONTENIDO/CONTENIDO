@@ -40,7 +40,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
     /**
      * {@inheritdoc}
      */
-    public function _generate()
+    public function _generate($contype = true)
     {
         global $cfgClient;
         global $db, $cfg, $code;
@@ -142,7 +142,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
         $a_content = $this->_getUsedCmsTypesData();
 
         // Replace all CMS_TAGS[]
-        $this->_processCmsTags($a_content, true);
+        if($contype) $this->_processCmsTags($a_content, true);
 
         // Add/replace title tag
         $this->_processCodeTitleTag();
