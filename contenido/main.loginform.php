@@ -196,7 +196,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
                             }
                          ?>
                     </div>
-                    <div style="clear:both;display:none;"></div>
+                    <div class="clearb nodisplay"></div>
                     <div class="text_medium_bold login_title">&nbsp;</div>
 
                     <label id="lblpasswd" for="passwd"><?php echo i18n('Password'); ?>:</label>
@@ -208,7 +208,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
             </form>
         </div>
 
-        <div id="navcontainer" style="clear:left;">
+        <div id="navcontainer" class="clearl">
         <?php
             //class implements passwort recovery, all functionality is implemented there
             $oRequestPassword = new RequestPassword($db, $cfg);
