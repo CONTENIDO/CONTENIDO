@@ -49,15 +49,15 @@
 
 <table id="contenttable" cellspacing="0" cellpadding="3" border="0">
 <colgroup>
-    <col width="30%" />
-    <col width="70%" />
+    <col class="width30"/>
+    <col class="width70"/>
 </colgroup>
 
 
 <!-- copy .htaccess -->
 <tr style="{COPY_HTACCESS_CSS}">
     <td class="text_medium col-I">{LNG_COPY_HTACCESS_TYPE}</td>
-    <td class="text_medium col-II" align="left">
+    <td class="text_medium col-II vgleft">
         {COPY_HTACCESS_ERROR}
 
         <label for="mr_copy_htaccess_type">{LNG_COPY_HTACCESS_TYPE_LBL}</label><br />
@@ -66,7 +66,7 @@
             <option value="simple">{LNG_COPY_HTACCESS_TYPE2}</option>
         </select>
         <a href="#" id="copyHtaccessInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="copyHtaccessInfo1" style="display:none">
+        <div id="copyHtaccessInfo1" class="nodisplay">
 <strong>{LNG_COPY_HTACCESS_TYPE1}:</strong><br />
 {LNG_COPY_HTACCESS_TYPE_INFO1}<br />
 <br />
@@ -79,28 +79,28 @@
 
         {LNG_COPY_HTACCESS_TO}<br />
         <br />
-        <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('copyhtaccess', 'copy=contenido');">
-            <img src="images/collapsed.gif" width="10" height="9" alt="" /> {LNG_COPY_HTACCESS_TO_CONTENIDO}</a>
+        <a class="blockLeft mgr15" href="javascript:mrPlugin_sendForm('copyhtaccess', 'copy=contenido');">
+            <img src="images/collapsed.gif" class="collapsed" alt="" /> {LNG_COPY_HTACCESS_TO_CONTENIDO}</a>
         <a href="#" id="copyHtaccessInfo2-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="copyHtaccessInfo2" style="display:none">
+        <div id="copyHtaccessInfo2" class="nodisplay">
         {LNG_COPY_HTACCESS_TO_CONTENIDO_INFO}
         </div>
         <br />
 
-        <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('copyhtaccess', 'copy=cms');">
-            <img src="images/collapsed.gif" width="10" height="9" alt="" /> {LNG_COPY_HTACCESS_TO_CLIENT}</a>
+        <a class="blockLeft mgr15" href="javascript:mrPlugin_sendForm('copyhtaccess', 'copy=cms');">
+            <img src="images/collapsed.gif" class="collapsed" alt="" /> {LNG_COPY_HTACCESS_TO_CLIENT}</a>
         <a href="#" id="copyHtaccessInfo3-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="copyHtaccessInfo3" style="display:none">
+        <div id="copyHtaccessInfo3" class="nodisplay">
         {LNG_COPY_HTACCESS_TO_CLIENT_INFO}
         </div>
         <br />
 
         {LNG_OR}<br />
         <br />
-        <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('downloadhtaccess', '');">
-            <img src="images/collapsed.gif" width="10" height="9" alt="" /> {LNG_DOWNLOAD}</a>
+        <a class="blockLeft mgr15" href="javascript:mrPlugin_sendForm('downloadhtaccess', '');">
+            <img src="images/collapsed.gif" class="collapsed" alt="" /> {LNG_DOWNLOAD}</a>
         <a href="#" id="showHtaccessInfo-link1" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="showHtaccessInfo" style="display:none">
+        <div id="showHtaccessInfo" class="nodisplay">
         {LNG_DOWNLOAD_INFO}
         </div>
         <br />
@@ -115,18 +115,18 @@
     {LNG_RESETALIASES}
     </td>
     <td class="text_medium col-II">
-        <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('resetempty', '');">
-            <img src="images/collapsed.gif" width="10" height="9" alt="" /> {LNG_RESETEMPTY_LINK}</a>
+        <a class="blockLeft mgr15" href="javascript:mrPlugin_sendForm('resetempty', '');">
+            <img src="images/collapsed.gif" class="collapsed" alt="" /> {LNG_RESETEMPTY_LINK}</a>
         <a href="#" id="resetAliasesInfo1-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="resetAliasesInfo1" style="display:none">
+        <div id="resetAliasesInfo1" class="nodisplay">
         {LNG_RESETEMPTY_INFO}
         </div>
         <br />
 
-        <a class="blockLeft" style="margin-right:15px;" href="javascript:mrPlugin_sendForm('reset', '');">
-            <img src="images/collapsed.gif" width="10" height="9" alt="" /> {LNG_RESETALL_LINK}</a>
+        <a class="blockLeft mgr15" href="javascript:mrPlugin_sendForm('reset', '');">
+            <img src="images/collapsed.gif" class="collapsed" alt="" /> {LNG_RESETALL_LINK}</a>
         <a href="#" id="resetAliasesInfo2-link2" title="" class="main i-link infoButton"></a><div class="clear"></div>
-        <div id="resetAliasesInfo2" style="display:none">
+        <div id="resetAliasesInfo2" class="nodisplay">
         {LNG_RESETALL_INFO}
         </div>
         <br />
@@ -137,10 +137,10 @@
 
 
 <tr>
-    <td colspan="2" class="text_medium col-I" style="text-align:right">
+    <td colspan="2" class="text_medium col-I tgright">
         <a accesskey="c" href="main.php?area={AREA}&amp;frame=4&amp;idclient={IDCLIENT}&amp;contenido={SESSID}">
             <img src="images/but_cancel.gif" alt="" title="{LNG_DISCARD_CHANGES}" /></a>
-        <input style="margin-left:20px;" accesskey="s" type="image" src="images/but_ok.gif" alt="" title="{LNG_SAVE_CHANGES}" />
+        <input class="mgl20" accesskey="s" type="image" src="images/but_ok.gif" alt="" title="{LNG_SAVE_CHANGES}" />
     </td>
 </tr>
 </table>
