@@ -29,23 +29,23 @@
 {GOOGLE_NOTIFICATION}
 {PIWIK_NOTIFICATION}
 
-<table width="100%" cellspacing="0" cellpadding="2" border="0">
+<table class="width100" cellspacing="0" cellpadding="2" border="0">
     <tr class="text_medium" style="background-color: {BGCOLOR};">
-    <td valign="top">{STATTITLE}</td>
-    <td valign="top" align="right">{DROPDOWN}{YEARMONTH}</td>
+    <td class="vgtop">{STATTITLE}</td>
+    <td class="vgtop tgright">{DROPDOWN}{YEARMONTH}</td>
     </tr>
 </table>
 
-<table style="border:0px; border-left:1px; border-bottom: 1px;border-color: {BORDERCOLOR}; border-style: solid;" width="100%" cellspacing="0" cellpadding="2" border="0">
+<table style="border:0px; border-left:1px; border-bottom: 1px;border-color: {BORDERCOLOR}; border-style: solid;" class="width100" cellspacing="0" cellpadding="2" border="0">
     <tr class="text_medium" style="background-color: {TITLEBGCOLOR};">
         <td style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid; padding-left:{TITLEPADDING_LEFT}px">{TITLETEXT}</td>
-        <td style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right">{TITLETOTAL}</td>
+        <td class="tgright" style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;">{TITLETOTAL}</td>
     </tr>
     <!-- BEGIN:BLOCK -->
     <tr class="text_medium" style="background-color: {BGCOLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
         <td style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid; padding-left:{PADDING_LEFT}px">
         <a style="text-decoration: none;" href="{ULR_TO_PAGE}" title="{PATH}" target="_blank">{TEXT}</a></td>
-        <td style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right">{TOTAL}</td>
+        <td class="tgright" style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;">{TOTAL}</td>
     </tr>
     <!-- END:BLOCK -->
 
