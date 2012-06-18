@@ -35,16 +35,16 @@
 <p class="text_medium"><b>i18n("Your clients"):</br></p>
 
 <table cellspacing="0" cellpadding="0" border="0">
-    <tr><td align="right" class="text_medium"></td><td>
+    <tr><td class="tgright text_medium"></td><td>
         {CLIENTFORM}
             <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td valign="middle" class="text_medium">
+                    <td class="vgmiddle text_medium">
                         {CLIENTSDROPDOWN}
                     </td>
-                    <td valign="middle">
+                    <td class="vgmiddle">
                         <img src="images/spacer.gif" height="3"><br>
-                        <img src="images/spacer.gif" width="5">{OKBUTTON}
+                        <img src="images/spacer.gif" class="widthpx5">{OKBUTTON}
                     </td>
                 </tr>
             </table>
@@ -56,7 +56,7 @@
 
 <p class="text_medium">{LASTARTICLES}</p>
 
-<table class="content" width="100%" cellspacing="0" cellpadding="2" border="0">
+<table class="content width100" cellspacing="0" cellpadding="2" border="0">
     <tr class="textg_medium" style="background-color:#e2e2e2">
         <th class="textg_medium col-first" nowrap="nowrap">i18n("Start")</th>
         <th class="textg_medium col-mid" nowrap="nowrap">i18n("Title")</th>
@@ -69,9 +69,9 @@
 
     <!-- BEGIN:BLOCK -->
     <tr id="{ROWID}" class="text_medium" style="background-color:{BGCOLOR};" >
-        <td class="text_medium col-first" nowrap="nowrap" align="center">{START}</td>
-        <td class="text_medium col-mid" width="50%" nowrap="nowrap">{ARTICLE}</td>
-        <td class="text_medium col-mid" width="50%" nowrap="nowrap">{CATEGORY}</td>
+        <td class="text_medium col-first tgcenter" nowrap="nowrap">{START}</td>
+        <td class="text_medium col-mid width50" nowrap="nowrap">{ARTICLE}</td>
+        <td class="text_medium col-mid width50" nowrap="nowrap">{CATEGORY}</td>
         <td class="text_medium col-mid" nowrap="nowrap">{CREATED}</td>
         <td class="text_medium col-mid" nowrap="nowrap">{LASTMODIFIED}</td>
         <td class="text_medium col-mid" nowrap="nowrap">{TPLNAME}</td>
