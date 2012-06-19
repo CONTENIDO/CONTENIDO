@@ -1319,8 +1319,14 @@ div.shelf_elem_statuslabel {
 .mgt1m {
 	margin-top: -1px;
 }
+.mgt1 {
+	margin-top: 1px;
+}
 .mgt5 {
 	margin-top: 5px;
+}
+.mgt7 {
+	margin-top: 7px;
 }
 .mgt10 {
 	margin-top: 10px;
@@ -1346,11 +1352,17 @@ div.shelf_elem_statuslabel {
 .mgl20 {
 	margin-left: 20px;
 }
+.mgr0 {
+	margin-right: 0px;
+}
 .mgr3 {
 	margin-right: 3px;
 }
 .mgr15 {
 	margin-right: 15px;
+}
+.mgb5 {
+	margin-bottom: 5px;
 }
 .mgb10 {
 	margin-bottom: 10px;
@@ -1369,6 +1381,9 @@ div.shelf_elem_statuslabel {
 }
 .pdt5 {
 	padding-top: 5px;
+}
+.pdt7 {
+	padding-top: 7px;
 }
 .pdt10 {	
 	padding-top: 10px;
@@ -1394,6 +1409,9 @@ div.shelf_elem_statuslabel {
 .pdr5 {
 	padding-right: 5px;
 }
+.pdr10 {
+	padding-right: 10px;
+}
 .pdr20 {
 	padding-right: 20px;
 }
@@ -1407,8 +1425,11 @@ div.shelf_elem_statuslabel {
 .color6 {
 	color: #666666;
 }
-.colorFF {
+.colorF0 {
 	color: #FF0000;
+}
+.red {
+	color:red;
 }
 /*width, height*/
 .width1 {
@@ -1483,17 +1504,86 @@ div.shelf_elem_statuslabel {
 .widthpx40 {
 	width: 40px;
 }
+.widthpx50 {
+	width: 50px;
+}
+.widthpx65 {
+	width: 65px;
+}
+.widthpx200 {
+	width: 200px;
+}
+.widthpx381 {
+	width: 381px;
+}
 .widthpx400 {
 	width: 400px;
+}
+.widthpx450 {
+	width: 450px;
+}
+.widthpx486 {
+	width: 486px;
+}.
+.widthpx500 {
+	width: 500px;
+}
+.widthpx600 {
+	width: 600px;
+}
+.widthpx800 {
+	width: 800px;
 }
 .height100 {
 	height: 100%;
 }
-.heightpx100 {
-	height: 100px;
+.heightpx6 {
+	height: 6px;
+}
+.heightpx8 {
+	height: 8px;
+}
+.heightpx9 {
+	height: 9px;
+}
+.heightpx10 {
+	height: 10px;
+}
+.heightpx15 {
+	height: 15px;
+}
+.heightpx16 {
+	height: 16px;
+}
+.heightpx18 {
+	height: 18px;
+}
+.heightpx20 {
+	height: 20px;
+}
+.heightpx23 {
+	height: 23px;
+}
+.heightpx24 {
+	height: 24px;
 }
 .heightpx25 {
 	height: 25px;
+}
+.heightpx28 {
+	height: 28px;
+}
+.heightpx30 {
+	height: 30px;
+}
+.heightpx35 {
+	height: 35px;
+}
+.heightpx38 {
+	height: 38px;
+}
+.heightpx100 {
+	height: 100px;
 }
 .lheightpx20{
 	line-height:20px;
@@ -1511,10 +1601,13 @@ div.shelf_elem_statuslabel {
 .bgcE2 {
 	background-color: #E2E2E2;
 }
-.bgcF1
+.bgcF1 {
 	background-color:#F1F1F1;
 }
-.bgwhite {
+.bgcCC {
+	background-color: #CCCCCC;
+}
+.bgcwhite {
 	background-color: #FFFFFF;
 }
 
@@ -1598,4 +1691,8 @@ img.spacer {
 img.collapsed {
 	width: 10px;
 	height: 9px;
+}
+a.h1e {
+	height:1em;
+	line-height:1em;
 }
