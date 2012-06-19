@@ -62,9 +62,6 @@ while ( $db->next_record() ) {
         $descr = $db->f('description');
         $idtpl = $db->f("idtpl");
 
-        $bgcolor = ( is_int($tpl->dyn_cnt / 2) ) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
-        $tpl->set('d', 'BGCOLOR', $bgcolor);
-
         # create javascript multilink
         $tmp_mstr = '<a title="%s" href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 

@@ -52,7 +52,10 @@ $cfg['templates']['generic_form']         = 'template.generic_form.html';
 $cfg['templates']['generic_table_form']   = 'template.generic_table_form.html';
 $cfg['templates']['generic_page']         = 'template.generic_page.html';
 $cfg['templates']['generic_list_row']     = 'template.generic_list_row.html';
+$cfg['templates']['generic_list_head']     = 'template.generic_list_head.html';
 $cfg['templates']['generic_list']         = 'template.generic_list.html';
+$cfg['templates']['input_helper_row']     = 'template.input_helper_row.html';
+$cfg['templates']['input_helper']         = 'template.input_helper.html';
 $cfg['templates']['left_top']             = 'template.left_top.html';
 $cfg['templates']['right_top_blank']      = 'template.right_top_blank.html';
 

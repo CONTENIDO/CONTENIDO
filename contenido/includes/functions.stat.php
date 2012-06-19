@@ -186,7 +186,6 @@ function statsOverviewAll($yearmonth)
     while ($db->next_record()) {
         if ($db->f("level") == 0 && $db->f("preid") != 0) {
             $bgcolor = '#FFFFFF';
-            $tpl->set('d', 'BGCOLOR', $bgcolor);
             $tpl->set('d', 'PADDING_LEFT', '10');
             $tpl->set('d', 'TEXT', '&nbsp;');
             $tpl->set('d', 'NUMBEROFARTICLES', '');
@@ -195,7 +194,6 @@ function statsOverviewAll($yearmonth)
             $tpl->set('d', 'STATUS', '');
             $tpl->set('d', 'ONCLICK', '');
             $tpl->set('d', 'ROWNAME', '');
-            $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
             $tpl->set('d', 'INTHISLANGUAGE', '');
             $tpl->set('d', 'EXPAND', '');
             $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
@@ -298,8 +296,6 @@ function statsOverviewAll($yearmonth)
         }
         $db3->free();
 
-        $bgcolor = $cfg["color"]["table_dark"];
-        $tpl->set('d', 'BGCOLOR', $bgcolor);
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
         $tpl->set('d', 'TEXT', $text);
         $tpl->set('d', 'ONCLICK', $onclick);
@@ -319,7 +315,6 @@ function statsOverviewAll($yearmonth)
         } else {
             $tpl->set('d', 'EXPAND', '<img src="'.$cfg['path']['images'].'spacer.gif" width="7">');
         }
-        $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
         $tpl->set('d', 'INTHISLANGUAGE', $inThisLanguage);
         if ($db->f("level") != 0) {
             $tpl->set('d', 'DISPLAY_ROW', 'none');
@@ -400,8 +395,6 @@ function statsOverviewAll($yearmonth)
             }
 
             $icon = '<img src="'.$cfg['path']['images'].'article.gif" style="vertical-align:top;">';
-            $bgcolor = $cfg["color"]["table_light"];
-            $tpl->set('d', 'BGCOLOR', $bgcolor);
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
             $tpl->set('d', 'TEXT', $text);
             $tpl->set('d', 'ONCLICK', "");
@@ -411,7 +404,6 @@ function statsOverviewAll($yearmonth)
             //$tpl->set('d', 'ROWNAME', "HIDE".($db->f("level")+1));
             $tpl->set('d', 'NUMBEROFARTICLES', $numberOfArticles);
             $tpl->set('d', 'TOTAL', $total);
-            $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
             $tpl->set('d', 'INTHISLANGUAGE', $inThisLanguage);
             $tpl->set('d', 'EXPAND', '<img src="'.$cfg['path']['images'].'spacer.gif" width="7">');
             $tpl->set('d', 'DISPLAY_ROW', 'none');
@@ -458,9 +450,6 @@ function statsOverviewAll($yearmonth)
 
     $inThisLanguage = $db->f(0);
 
-    $bgcolor = '#FFFFFF';
-    $tpl->set('d', 'BGCOLOR', $bgcolor);
-    $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('d', 'TEXT', '&nbsp;');
     $tpl->set('d', 'ICON', '');
     $tpl->set('d', 'STATUS', '');
@@ -473,8 +462,6 @@ function statsOverviewAll($yearmonth)
     $tpl->set('d', 'ONCLICK', '');
     $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
 
-    $bgcolor = $cfg["color"]["table_dark"];
-    $tpl->set('s', 'SUMBGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('s', 'SUMTEXT', i18n("Sum"));
     $tpl->set('s', 'SUMNUMBEROFARTICLES', $sumNumberOfArticles);
     $tpl->set('s', 'SUMTOTAL', $total);
@@ -528,8 +515,6 @@ function statsOverviewYear($year)
 
     while ($db->next_record()) {
         if ($db->f("level") == 0 && $db->f("preid") != 0) {
-            $bgcolor = '#FFFFFF';
-            $tpl->set('d', 'BGCOLOR', $bgcolor);
             $tpl->set('d', 'PADDING_LEFT', '10');
             $tpl->set('d', 'TEXT', '&nbsp;');
             $tpl->set('d', 'NUMBEROFARTICLES', '');
@@ -537,7 +522,6 @@ function statsOverviewYear($year)
             $tpl->set('d', 'STATUS', '');
             $tpl->set('d', 'ONCLICK', '');
             $tpl->set('d', 'ICON','');
-            $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
             $tpl->set('d', 'INTHISLANGUAGE', '');
             $tpl->set('d', 'EXPAND', '');
             $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
@@ -619,8 +603,6 @@ function statsOverviewYear($year)
         }
         $db3->free();
 
-        $bgcolor = $cfg["color"]["table_dark"];
-        $tpl->set('d', 'BGCOLOR', $bgcolor);
         $tpl->set('d', 'PADDING_LEFT', $padding_left);
         $tpl->set('d', 'TEXT', $text);
         $tpl->set('d', 'ONCLICK', $onclick);
@@ -629,7 +611,6 @@ function statsOverviewYear($year)
         $tpl->set('d', 'NUMBEROFARTICLES', $numberOfArticles);
         $tpl->set('d', 'TOTAL', $total);
         $tpl->set('d', 'ROWNAME', implode('_', $aRowname));
-        $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
         $tpl->set('d', 'INTHISLANGUAGE', $inThisLanguage);
 
         if ($numrows > 0 || $iSumSubCategories > 0) {
@@ -702,8 +683,6 @@ function statsOverviewYear($year)
             }
 
             $icon = '<img src="'.$cfg['path']['images'].'article.gif" style="vertical-align:top;">';
-            $bgcolor = $cfg["color"]["table_light"];
-            $tpl->set('d', 'BGCOLOR', $bgcolor);
             $tpl->set('d', 'PADDING_LEFT', $padding_left);
             $tpl->set('d', 'TEXT', $text);
             $tpl->set('d', 'ONCLICK', "");
@@ -714,7 +693,6 @@ function statsOverviewYear($year)
             $tpl->set('d', 'TOTAL', $total);
             $tpl->set('d', 'ROWNAME', implode('_', $aRowname));
             $tpl->set('d', 'EXPAND', '<img src="'.$cfg['path']['images'].'spacer.gif" width="7">');
-            $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
             $tpl->set('d', 'INTHISLANGUAGE', $inThisLanguage);
             $tpl->set('d', 'DISPLAY_ROW', 'none');
             $tpl->next();
@@ -740,9 +718,6 @@ function statsOverviewYear($year)
 
     $inThisLanguage = $db->f(0);
 
-    $bgcolor = '#FFFFFF';
-    $tpl->set('d', 'BGCOLOR', $bgcolor);
-    $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('d', 'TEXT', '&nbsp;');
     $tpl->set('d', 'ICON', '');
     $tpl->set('d', 'STATUS', '');
@@ -754,8 +729,6 @@ function statsOverviewYear($year)
     $tpl->set('d', 'ROWNAME', '');
     $tpl->set('d', 'INTHISLANGUAGE', '');
     $tpl->set('d', 'DISPLAY_ROW', $sDisplay);
-    $bgcolor = $cfg["color"]["table_dark"];
-    $tpl->set('s', 'SUMBGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('s', 'SUMTEXT', "Summe");
     $tpl->set('s', 'SUMNUMBEROFARTICLES', $sumNumberOfArticles);
     $tpl->set('s', 'SUMTOTAL', $total);
@@ -818,11 +791,8 @@ function statsOverviewTop($yearmonth, $top)
     while ($db->next_record()) {
         $cat_name = "";
         statCreateLocationString($db->f(2),"&nbsp;/&nbsp;", $cat_name);
-        $bgcolor = $cfg["color"]["table_light"];
-        $tpl->set('d', 'BGCOLOR', $bgcolor);
         $tpl->set('d', 'PADDING_LEFT', '5');
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;".$cat_name);
-        $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
         $tpl->set('d', 'TEXT',  $db->f(0));
         $tpl->set('d', 'TOTAL', $db->f(1));
         $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'].'front_content.php?idart='.$db->f('idart'));
@@ -933,11 +903,8 @@ function statsOverviewTopYear($year, $top)
         $cat_name = '';
         statCreateLocationString($db->f('idcat'),"&nbsp;/&nbsp;", $cat_name);
 
-        $bgcolor = $cfg["color"]["table_light"];
-        $tpl->set('d', 'BGCOLOR', $bgcolor);
         $tpl->set('d', 'PADDING_LEFT', '0');
         $tpl->set('d', 'PATH', i18n("Path") . ":&nbsp;/&nbsp;".$cat_name);
-        $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
         $tpl->set('d', 'TEXT', $db->f(0));
         $tpl->set('d', 'TOTAL', $db->f(1));
         $tpl->set('d', 'ULR_TO_PAGE', $cfgClient[$client]['path']['htmlpath'].'front_content.php?idart='.$db->f('idart'));

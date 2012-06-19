@@ -51,7 +51,7 @@ $aPerms        = array();
 
 if ($action == 'group_create') {
     $aPerms = buildUserOrGroupPermsFromRequest();
-
+    
     if ($groupname == '') {
         $groupname = cApiGroup::PREFIX . i18n("New Group");
     }
@@ -81,19 +81,12 @@ $form = '<form name="group_properties" method="post" action="'.$sess->url("main.
              <input type="hidden" name="idlang" value="'.$lang.'">';
 
 $tpl->set('s', 'FORM', $form);
-$tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('s', 'BGCOLOR', $cfg["color"]["table_dark"]);
 $tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
 
-$tpl->set('d', 'CATNAME', i18n("Property"));
-$tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'CATFIELD', i18n("Value"));
-$tpl->next();
+$tpl->set('s', 'PROPERTY', i18n("Property"));
+$tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Group name"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 if ($action == 'group_create' && !$bError) {
     $tpl->set('d', 'CATFIELD', cApiGroup::getUnprefixedGroupName($groupname));
 } else {
@@ -102,8 +95,6 @@ if ($action == 'group_create' && !$bError) {
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Description"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('text', 'description', stripslashes($description), 40, 255));
 $tpl->next();
 
@@ -113,8 +104,6 @@ $aAuthPerms = explode(',', $auth->auth['perm']);
 // sysadmin perm
 if (in_array('sysadmin', $aAuthPerms)) {
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
-    $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('d', 'CATFIELD', formGenerateCheckbox('msysadmin', '1', in_array('sysadmin', $aPerms)));
     $tpl->next();
 }
@@ -131,8 +120,6 @@ foreach ($aClients as $idclient => $item) {
 
 if ($sClientCheckboxes !== '') {
     $tpl->set('d', 'CATNAME', i18n("Administrator"));
-    $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
-    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
     $tpl->next();
 }
@@ -146,8 +133,6 @@ foreach ($aClients as $idclient => $item) {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Access clients"));
-$tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
 $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
 $tpl->next();
 
@@ -162,8 +147,6 @@ foreach ($aClientsLanguages as $item) {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Access languages"));
-$tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
 $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
 $tpl->next();
 

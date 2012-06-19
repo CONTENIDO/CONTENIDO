@@ -78,7 +78,7 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
 
 $colspan=0;
 
-$oTable = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"]["table_header"], $cfg["color"]["table_light"], $cfg["color"]["table_dark"], 0, 0);
+$oTable = new Table("", "", 0, 2, "", "", "", 0, 0);
 
 $sTable .= $oTable->start_table();
 $sTable .= $oTable->header_row();

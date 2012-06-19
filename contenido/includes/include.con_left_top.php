@@ -228,7 +228,7 @@ if ($_REQUEST["bs_search_author"] !='') {
 
 $oSubmit = new cHTMLButton("submit", i18n("Search"));
 
-$content  = '<div id="artsearch" style="border: 1px solid #B3B3B3; border-top: none; margin:0;padding:0; padding-bottom: 10px;background: '.$cfg['color']['table_dark'].';">';
+$content  = '<div id="artsearch" style="border: 1px solid #B3B3B3; border-top: none; margin:0;padding:0; padding-bottom: 10px;">';
 $content .= '<form action="backend_search.php" method="post" name="backend_search" target="right_bottom" id="backend_search">';
 
 $content .= '<table dir="'.langGetTextDirection($lang).'">';

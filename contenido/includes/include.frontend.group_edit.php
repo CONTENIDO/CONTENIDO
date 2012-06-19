@@ -207,14 +207,10 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
     $defaultgroup = new cHTMLCheckbox("defaultgroup", "1");
     $defaultgroup->setChecked($fegroup->get("defaultgroup"));
 
-    $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
-    $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('d', 'LABEL', i18n("Group name"));
     $tpl->set('d', 'INPUT', $groupname->render());
     $tpl->next();
 
-    $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
-    $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('d', 'LABEL', i18n("Default group"));
     $tpl->set('d', 'INPUT', $defaultgroup->toHTML(false));
     $tpl->next();
@@ -233,22 +229,16 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
 
                 if (is_array($plugTitle) && is_array($display)) {
                     foreach ($plugTitle as $key => $value) {
-                        $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
-                        $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
                         $tpl->set('d', 'LABEL', $value);
                         $tpl->set('d', 'INPUT', $display[$key]);
                         $tpl->next();
                     }
                 } else {
                     if (is_array($plugTitle) || is_array($display)) {
-                        $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
-                        $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
                         $tpl->set('d', 'LABEL', "WARNING");
                         $tpl->set('d', 'INPUT', "The plugin $plugin delivered an array for the displayed titles, but did not return an array for the contents.");
                         $tpl->next();
                     } else {
-                        $tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
-                        $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
                         $tpl->set('d', 'LABEL', $plugTitle);
                         $tpl->set('d', 'INPUT', $display);
                         $tpl->next();
@@ -259,9 +249,6 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
     }
 
     $tpl->set('s', 'CATNAME', i18n("Edit group"));
-    $tpl->set('s', 'BGCOLOR',  $cfg["color"]["table_header"]);
-    $tpl->set('s', 'BGCOLOR_CONTENT',  $cfg["color"]["table_dark"]);
-    $tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
     $tpl->set('s', 'CATFIELD', "&nbsp;");
     $tpl->set('s', 'FORM_ACTION', $sess->url('main.php'));
     $tpl->set('s', 'AREA', $area);

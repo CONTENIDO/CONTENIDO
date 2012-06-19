@@ -96,27 +96,18 @@ $form = '<form name="group_properties" method="post" action="'.$sess->url("main.
 $tpl->set('s', 'FORM', $form);
 $tpl->set('s', 'GET_GROUPID', $groupid);
 
-$tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('s', 'BGCOLOR', $cfg["color"]["table_dark"]);
 $tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
 $tpl->set('s', 'CANCELTEXT', i18n("Discard changes"));
 $tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&groupid=$groupid"));
 
-$tpl->set('d', 'CATNAME', i18n("Property"));
-$tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'CATFIELD', i18n("Value"));
-$tpl->next();
+$tpl->set('s', 'PROPERTY', i18n("Property"));
+$tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Groupname"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', stripslashes($oGroup->getGroupName()));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Description"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('text', 'description', htmlentities(stripslashes($oGroup->getField('description')), ENT_QUOTES), 40, 255));
 $tpl->next();
 
@@ -126,8 +117,6 @@ $aAuthPerms = explode(',', $auth->auth['perm']);
 // sysadmin perm
 if (in_array('sysadmin', $aAuthPerms)) {
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
-    $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('d', 'CATFIELD', formGenerateCheckbox('msysadmin', '1', in_array('sysadmin', $aPerms)));
     $tpl->next();
 }
@@ -144,8 +133,6 @@ foreach ($aClients as $idclient => $item) {
 
 if ($sClientCheckboxes !== '' && !in_array('sysadmin', $aPerms)) {
     $tpl->set('d', 'CATNAME', i18n("Administrator"));
-    $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
-    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
     $tpl->next();
 }
@@ -160,8 +147,6 @@ foreach ($aClients as $idclient => $item) {
 
 if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
     $tpl->set('d', 'CATNAME', i18n("Access clients"));
-    $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
-    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
     $tpl->next();
 }
@@ -177,8 +162,6 @@ foreach ($aClientsLanguages as $item) {
 
 if ($sClientCheckboxes != '' && !in_array('sysadmin', $aPerms)) {
     $tpl->set('d', 'CATNAME', i18n("Access languages"));
-    $tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
-    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
     $tpl->next();
 }
@@ -202,25 +185,21 @@ foreach ($aProperties as $propertyId => $prop) {
 }
 
 $table = '
-    <table width="100%" cellspacing="0" cellpadding="2" style="border:1px solid '.$cfg["color"]["table_border"].';">
-    <tr style="background-color:'.$cfg["color"]["table_header"].'" class="text_medium">
-        <td>'.i18n("Area/Type").'</td>
-        <td>'.i18n("Property").'</td>
-        <td>'.i18n("Value").'</td>
-        <td>&nbsp;</td>
+    <table class="generic" width="100%" cellspacing="0" cellpadding="2">
+    <tr>
+        <th>'.i18n("Area/Type").'</th>
+        <th>'.i18n("Property").'</th>
+        <th>'.i18n("Value").'</th>
     </tr>
     ' . $sPropRows . '
     <tr class="text_medium">
         <td><input class="text_medium"  type="text" size="16" maxlen="32" name="groupprop_type"></td>
         <td><input class="text_medium" type="text" size="16" maxlen="32" name="groupprop_name"></td>
         <td><input class="text_medium" type="text" size="32" name="groupprop_value"></td>
-        <td>&nbsp;</td>
     </tr>
     </table>';
 
 $tpl->set('d', 'CATNAME', i18n("User-defined properties"));
-$tpl->set('d', 'BORDERCOLOR',  $cfg["color"]["table_border"]);
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
 $tpl->set('d', 'CATFIELD', $table);
 $tpl->next();
 

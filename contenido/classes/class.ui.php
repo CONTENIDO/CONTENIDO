@@ -188,9 +188,6 @@ class UI_Menu
 		cDebug($scripts);
 		$tpl->set('s', 'JSACTIONS', $scripts);
 		$tpl->set('s', 'CELLPADDING', $this->padding);
-		$tpl->set('s', 'BORDER', $this->border);
-		$tpl->set('s', 'BORDERCOLOR', $cfg['color']['table_border']);
-
 
 		if (is_array($this->link))
 		{
@@ -224,26 +221,6 @@ class UI_Menu
     				} else {
     					$img = "&nbsp;";
     				}
-    			}
-
-    			if(isset($this->bgColor[$key])) {
-    				$bgColor = $this->bgColor[$key];
-    			} else {
-	        	    $dark = !$dark;
-	            	if ($dark) {
-	                	$bgColor = $cfg["color"]["table_dark"];
-	            	} else {
-	    	            $bgColor = $cfg["color"]["table_light"];
-	            	}
-
-	                if ($_GET['idworkflow'] == $value) {
-        	 		   //$mlist->setExtra($iMenu, 'id="marked" ');
-        	 		   $bgColor = $cfg["color"]["table_light_active"];
-       				 }
-
-	                if ($this->extra[$key] == 'id="marked" ') {
-	                    $bgColor = $cfg["color"]["table_light_active"];
-	                }
     			}
 
         		$tpl->set('d', 'NAME', $link);
@@ -286,7 +263,6 @@ class UI_Menu
         		}
 
         		$tpl->set('d', 'ACTIONS', $fullactions);
-        		$tpl->set('d', 'BGCOLOR',  $bgColor);
         		$tpl->next();
     		}
 
@@ -330,7 +306,6 @@ class UI_Table_Form
 	function UI_Table_Form ($name, $action = "", $method = "post")
 	{
 		global $sess, $cfg;
-
 		$this->formname = $name;
 
 		if ($action == "")
@@ -343,7 +318,6 @@ class UI_Table_Form
 		$this->formmethod = $method;
 
 		$this->tableid = "";
-		$this->tablebordercolor = $cfg['color']['table_border'];
 		$this->setAccessKey('s');
 		$this->custom = array();
 
@@ -500,8 +474,8 @@ class UI_Table_Form
 
 		if ($this->header != "")
 		{
-			$header  = '<tr class="text_medium" style="background-color: '.$cfg["color"]["table_header"].';">';
-			$header .= '<td class="textg_medium" colspan="2" valign="top" style="border: 0px; border-bottom: 0px;border-top:1px; border-right:1px;border-color: '.$cfg["color"]["table_border"].'; border-style: solid;">'.$this->header.'</td></tr>';
+			$header  = '<tr>';
+			$header .= '<th colspan="2" valign="top">'.$this->header.'</td></tr>';
 		}
 
 		$tpl->set('s', 'HEADER', $header);
@@ -514,8 +488,8 @@ class UI_Table_Form
 			{
 				if ($this->itemType[$key] == 'subheader')
 				{
-					$subheader  = '<tr class="text_medium" style="background-color: '.$cfg["color"]["table_header"].';">';
-					$subheader .= '<td colspan="2" valign="top" style="border: 0px;border-top: 0px; border-bottom:0px; border-right:1px;border-color: '.$cfg["color"]["table_border"].'; border-style: solid;">'.$this->captions[$key].'</td></tr>';
+					$subheader  = '<tr>';
+					$subheader .= '<td colspan="2" valign="top">'.$this->captions[$key].'</td></tr>';
 
 					$tpl->set('d', 'SUBHEADER', $subheader);
 				} else
@@ -527,19 +501,6 @@ class UI_Table_Form
 					$tpl->set('d', 'STYLES', $this->styles[$key]);
                     $tpl->set('d', 'PADDING_LEFT', '0');
 
-					$dark = !$dark;
-
-					if ($dark)
-					{
-						$bgColor = $cfg["color"]["table_dark"];
-	        }
-					else
-					{
-						$bgColor = $cfg["color"]["table_light"];
-	        }
-
-					$tpl->set('d', 'BGCOLOR', $bgColor);
-					$tpl->set('d', 'BORDERCOLOR', $this->tablebordercolor);
 					$tpl->next();
 				}
 			}
@@ -1034,10 +995,6 @@ class UI_List
 		$tpl->reset();
 		$tpl->set('s', 'SID', $sess->id);
 
-		$tpl->set('s', 'CELLPADDING', $this->padding);
-		$tpl->set('s', 'BORDER', $this->border);
-		$tpl->set('s', 'BORDERCOLOR', $cfg['color']['table_border']);
-
 		$colcount = 0;
 
 		if (is_array($this->cells))
@@ -1046,60 +1003,16 @@ class UI_List
 			{
 				$thefont='';
 				$unne='';
-                
-				if($colcount == 0)
-				{
-					$thefont='color: #666666;font-weight: normal;';
-				}
 
 				$colcount++;
-
-        	    $dark = !$dark;
-
-            	if ($dark) {
-                	$bgColor = $cfg["color"]["table_dark"];
-            	} else {
-    	            $bgColor = $cfg["color"]["table_light"];
-            	}
-
-            	if ($this->bgcolor[$row] != "")
-            	{
-            		$bgColor = $this->bgcolor[$row];
-            	}
 
             	$content = "";
             	$count = 0;
 
             	foreach ($cells as $key => $value)
             	{
-                    $thefontDispl = $thefont.$this->extra[$row][$key];
             		$count++;
             		$tpl2->reset();
-
-								if ($this->solid)
-            		{
-									if ($count < count($cells))
-										{
-											if ($colcount < count($this->cells))
-											{
-												$tpl2->set('s', 'EXTRA', $thefontDispl.'border: 0px; border-right: 1px; border-color: #B3B3B3; border-style: solid;');
-											} else {
-												$tpl2->set('s', 'EXTRA', $thefontDispl.'border: 0px; border-right: 1px; border-color: #B3B3B3; border-style: solid;');
-											}
-										} else {
-											if ($colcount < count($this->cells))
-											{
-												$tpl2->set('s', 'EXTRA', $thefontDispl.'border: 0px;border-color: #B3B3B3; border-style: solid;');
-											} else {
-												$tpl2->set('s', 'EXTRA', $thefontDispl);
-											}
-										}
-            		}
-
-								if($colcount > 0)
-								{
-									$tpl2->set('s', 'BORDERS', ';border-bottom:1px solid #B3B3B3;');
-								}
 
             		if ($this->cellalignment[$row][$key] != "")
             		{
@@ -1116,19 +1029,18 @@ class UI_List
             		}
 
             		$tpl2->set('s', 'CONTENT', $value);
-            		$content .= $tpl2->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list_row'],true);
+            		if($colcount == 1) {
+            			$content .= $tpl2->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list_head'],true);
+            		} else {
+            			$content .= $tpl2->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list_row'],true);
+            		}
             	}
 
             	$tpl->set('d', 'ROWS', $content);
-        			$tpl->set('d', 'BGCOLOR',  $bgColor);
-        			$tpl->next();
+        		$tpl->next();
     		}
 		}
 
-		if ($this->width)
-		{
-			$tpl->set('s', 'EXTRA', 'width: '.$this->width.';');
-		}
 		$rendered = $tpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['generic_list'],true);
 
 		if ($print == true)
@@ -1229,36 +1141,33 @@ class cScrollList
 		$this->objTable = new cHTMLTable;
 		if ($defaultstyle == true)
 		{
-			$this->objTable->setStyle('border-collapse:collapse;border: 1px; border-style: solid; border-top:0px;border-color: '.$cfg["color"]["table_border"].';');
-			$this->objTable->updateAttributes(array("cellspacing" => 0, "cellpadding" => 2));
+			$this->objTable->setClass("generic");
+			$this->objTable->updateAttributes(array("cellpadding" => "2"));
 		}
 
 		$this->objHeaderRow = new cHTMLTableRow;
 		if ($defaultstyle == true)
 		{
-			$this->objHeaderRow->setClass("text_medium");
-			$this->objHeaderRow->setStyle("background-color: #E2E2E2;white-space:nowrap;");
+			
 		}
 
 
 		$this->objHeaderItem = new cHTMLTableHead;
 		if ($defaultstyle == true)
 		{
-			$this->objHeaderItem->setClass("textg_medium");
-			$this->objHeaderItem->setStyle('white-space:nowrap; border: 1px; border-style: solid;border-bottom: 0px;border-color: '.$cfg["color"]["table_border"].';');
-			$this->objHeaderItem->updateAttributes(array("align" => "left"));
+			
 		}
 
 		$this->objRow = new cHTMLTableRow;
 		if ($defaultstyle == true)
 		{
-			$this->objRow->setClass("text_medium");
+			
 		}
 
 		$this->objItem = new cHTMLTableData;
 		if ($defaultstyle == true)
 		{
-			$this->objItem->setStyle('white-space:nowrap; border: 1px; border-style: solid;border-top:0px;border-color: '.$cfg["color"]["table_border"].';');
+			
 		}
 
 
@@ -1299,16 +1208,7 @@ class cScrollList
      */
 	function onRenderRow ($row)
 	{
-		global $cfg;
-
-		if ($row % 2)
-		{
-			$col = $cfg["color"]["table_dark"];
-		} else {
-			$col = $cfg["color"]["table_light"];
-		}
-
-		$this->objRow->setStyle("white-space:nowrap; background-color: $col;");
+		$this->objRow->setStyle("white-space:nowrap;");
 	}
 
 	/**

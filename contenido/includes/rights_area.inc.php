@@ -77,7 +77,7 @@ if(!isset($rights_perms)||$action==""||!isset($action)){
 
 }
 
-$table = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"]["table_header"], $cfg["color"]["table_light"], $cfg["color"]["table_dark"], 0, 0);
+$table = new Table("", "", 0, 2, "", "", "", 0, 0);
 
 $sTable .= $table->start_table();
 
@@ -104,15 +104,7 @@ foreach($right_list as $key => $value){
                               $checked="checked=\"checked\"";
                        else
                               $checked="";
-
-                        $darkRow = !$darkRow;
-                        if ($darkRow) {
-                            $bgColor = $cfg["color"]["table_dark"];
-                        } else {
-                            $bgColor = $cfg["color"]["table_light"];
-                        }
-						
-                       
+					
 			          /* Extract names from the XML document. */
 			           $main = $nav->getName(str_replace('/overview', '/main', $value2['location']));
 
@@ -145,13 +137,6 @@ foreach($right_list as $key => $value){
                               $checked="checked=\"checked\"";
                           else
                               $checked="";
-
-                            $darkRow = !$darkRow;
-                            if ($darkRow) {
-                                $bgColor = $cfg["color"]["table_dark"];
-                            } else {
-                                $bgColor = $cfg["color"]["table_light"];
-                            }
 					   
                           //set the checkbox    the name consits of      areait+actionid+itemid
 						  $sCellContent = '';

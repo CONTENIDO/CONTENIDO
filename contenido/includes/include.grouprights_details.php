@@ -50,10 +50,8 @@ if ( !isset($useridas) )
 {
 
 } else {
-
     if ($action == "user_edit")
     {
-
         if (strlen($password) > 0)
         {
             if (strcmp($password, $passwordagain) == 0)

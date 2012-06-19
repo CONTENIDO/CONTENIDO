@@ -124,13 +124,6 @@ $aAddedUsers = array();
 $myUser = new cApiUser();
 
 while ($db->next_record()) {
-    $bgColor = !$bgColor;
-
-    if ($bgColor) {
-        $color = $cfg["color"]["table_light"];
-    } else {
-        $color = $cfg["color"]["table_dark"];
-    }
 
     $myUser->loadByPrimaryKey($db->f("user_id"));
     $aAddedUsers[] = $myUser->getField("username");
@@ -143,14 +136,6 @@ while ($db->next_record()) {
 }
 
 $tpl3->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
-
-$bgColor = !$bgColor;
-
-if ($bgColor) {
-    $color = $cfg["color"]["table_light"];
-} else {
-    $color = $cfg["color"]["table_dark"];
-}
 
 //Sort user list by given criteria
 $orderBy = getEffectiveSetting('backend', 'sort_backend_users_by', '');
@@ -176,9 +161,6 @@ if (is_array($users)) {
 $tpl3->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
 
 $tpl3->set('s', 'CATNAME', i18n("Manage group members"));
-$tpl3->set('s', 'BGCOLOR',  $cfg["color"]["table_header"]);
-$tpl3->set('s', 'BGCOLOR_CONTENT',  $cfg["color"]["table_dark"]);
-$tpl3->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl3->set('s', 'CATFIELD', "&nbsp;");
 $tpl3->set('s', 'FORM_ACTION', $sess->url('main.php'));
 $tpl3->set('s', 'AREA', $area);

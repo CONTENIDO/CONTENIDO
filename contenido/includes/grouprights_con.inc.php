@@ -71,7 +71,7 @@ $sJsBefore .= " var itemids=new Array();
 				var actareaids=new Array();";
 $colspan=0;
 
-$oTable = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"]["table_header"], $cfg["color"]["table_light"], $cfg["color"]["table_dark"], 0, 0);
+$oTable = new Table("", "", 0, 2, "", "", "", 0, 0);
 
         $sTable .= $oTable->start_table();
         $sTable .= $oTable->header_row();
@@ -180,14 +180,6 @@ $oTable = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"][
                         }
 
                         $spaces='<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a>';
-                        
-
-                        $darkRow = !$darkRow;
-                        if ($darkRow) {
-                            $bgColor = $cfg["color"]["table_dark"];
-                        } else {
-                            $bgColor = $cfg["color"]["table_light"];
-                        }
 
 						       
 						$sTable .= $oTable->row("id=\"".implode('_', $aRowname)."\"");

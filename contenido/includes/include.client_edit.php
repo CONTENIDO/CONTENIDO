@@ -198,8 +198,6 @@ $form = '<form name="client_properties" method="post" action="'.$sess->url("main
 
 $tpl->set('s', 'JAVASCRIPT', $javascript);
 $tpl->set('s', 'FORM', $form);
-$tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('s', 'BGCOLOR', $cfg["color"]["table_dark"]);
 $tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
 $tpl->set('s', 'CANCELTEXT', i18n("Discard changes"));
 $tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4&idclient=$idclient"));
@@ -208,22 +206,15 @@ if ($error) {
     echo $error;
 }
 
-$tpl->set('d', 'CATNAME', i18n("Property"));
-$tpl->set('d', 'BGCOLOR',  $cfg["color"]["table_header"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'CATFIELD', i18n("Value"));
+$tpl->set('s', 'PROPERTY', i18n("Property"));
+$tpl->set('s', 'VALUE', i18n("Value"));
 $tpl->set('d', 'BRDRT', 1);
 $tpl->set('d', 'BRDRB', 0);
-$tpl->set('d', 'FONT', 'textg_medium');
-$tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Client name"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-$tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField("text", "clientname", htmlspecialchars($db->f("name")), 50, 255));
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
-$tpl->set('d', 'FONT', 'text_medium');
 $tpl->next();
 
 if ($serverpath == "") {
@@ -231,12 +222,9 @@ if ($serverpath == "") {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Server path"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-$tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD',  formGenerateField("text", "frontendpath", htmlspecialchars($serverpath), 50, 255));
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
-$tpl->set('d', 'FONT', 'text_medium');
 $tpl->next();
 
 if ($htmlpath == "") {
@@ -244,41 +232,29 @@ if ($htmlpath == "") {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Web address"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-$tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField("text", "htmlpath", htmlspecialchars($htmlpath), 50, 255));
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
-$tpl->set('d', 'FONT', 'text_medium');
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Error page category"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-$tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField("text", "errsite_cat", $db->f("errsite_cat"), 10, 10));
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
-$tpl->set('d', 'FONT', 'text_medium');
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Error page article"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-$tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField("text", "errsite_art", $db->f("errsite_art"), 10, 10));
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
-$tpl->set('d', 'FONT', 'text_medium');
 $tpl->next();
 
 $clientLogo = $properties->getValue ("idclient", $idclient, "backend", "clientimage");
 
 $tpl->set('d', 'CATNAME', i18n("Client logo"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-$tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField("text", "clientlogo", $clientLogo, 50, 255));
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
-$tpl->set('d', 'FONT', 'text_medium');
 $tpl->next();
 
 $aChoices = array("no" => i18n("No"), "yes" => i18n("Yes"));
@@ -295,12 +271,9 @@ if ($cApiClient->getProperty("generator", "xhtml") == "true") {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Generate XHTML"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', $oXHTMLSelect->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
-$tpl->set('d', 'FONT', 'text_medium');
 
 $tpl->next();
 
@@ -318,19 +291,14 @@ if ($cApiClient->getProperty("stats", "tracking") == "off") {
 
 
 $tpl->set('d', 'CATNAME', i18n("Statistic"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', $oXHTMLSelect->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
-$tpl->set('d', 'FONT', 'text_medium');
 
 $tpl->next();
 
 if ($new == true) {
     $tpl->set('d', 'CATNAME', i18n("Copy frontend template"));
-    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-    $tpl->set('d', "BORDERCOLOR", $cfg["color"]["table_border"]);
     $tpl->set('d', 'CATFIELD', formGenerateCheckbox ("copytemplate", "checked", 1));
     $tpl->next();
 }

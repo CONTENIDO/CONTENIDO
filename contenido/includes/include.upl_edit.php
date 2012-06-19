@@ -36,7 +36,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-
 cInclude("includes", "functions.upl.php");
 
 $page = new UI_Page();
@@ -307,9 +306,9 @@ if ($upload = $uploads->next()) {
 
             case "preview":
                 if (is_dbfs($_REQUEST["path"])) {
-                    $sCell = '<a target="_blank" href="'.$sess->url($cfgClient[$client]["path"]["htmlpath"]."dbfs.php?file=".$qpath.$_REQUEST["file"]).'"><img style="padding: 10px; background: white; border: 1px; border-style: solid; border-color: '.$cfg["color"]["table_border"].';" src="'.uplGetThumbnail($qpath.$_REQUEST["file"], 350).'"></a>';
+                    $sCell = '<a target="_blank" href="'.$sess->url($cfgClient[$client]["path"]["htmlpath"]."dbfs.php?file=".$qpath.$_REQUEST["file"]).'"><img class="bordered" src="'.uplGetThumbnail($qpath.$_REQUEST["file"], 350).'"></a>';
                 } else {
-                    $sCell = '<a target="_blank" href="'.$cfgClient[$client]["upl"]["htmlpath"].$qpath.$_REQUEST["file"].'"><img style="padding: 10px; background: white; border: 1px; border-style: solid; border-color: '.$cfg["color"]["table_border"].';" src="'.uplGetThumbnail($qpath.$_REQUEST["file"], 350).'"></a>';
+                    $sCell = '<a target="_blank" href="'.$cfgClient[$client]["upl"]["htmlpath"].$qpath.$_REQUEST["file"].'"><img class="bordered" src="'.uplGetThumbnail($qpath.$_REQUEST["file"], 350).'"></a>';
                 }
                 break;
 

@@ -129,73 +129,47 @@ $form = '<form name="user_properties" method="post" action="' . $sess->url("main
          <input type="hidden" name="idlang" value="' . $lang . '">';
 
 $tpl->set('s', 'FORM', $form);
-$tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('s', 'BGCOLOR', $cfg["color"]["table_dark"]);
 $tpl->set('s', 'SUBMITTEXT', i18n("Save changes"));
-
-$tpl->set('d', 'CATNAME', i18n("Property"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_header"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'CATFIELD', i18n("Value"));
-$tpl->next();
+$tpl->set('s', 'PROPERTY', i18n("Property"));
+$tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Username"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('text', 'username', $username, 40, 32));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Name"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('text', 'realname', $realname, 40, 255));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("New password"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('password', 'password', '', 40, 255));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Confirm new password"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('password', 'passwordagain', '', 40, 255));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("E-Mail"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('text', 'email', $email, 40, 255));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Phone number"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('text', 'telephone', $telephone, 40, 255));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Street"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_street', $address_street, 40, 255));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("ZIP code"));
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_zip', $address_zip, 10, 10));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("City"));
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_city', $address_city, 40, 255));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Country"));
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
 $tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_country', $address_country, 40, 255));
 $tpl->next();
 
@@ -219,8 +193,6 @@ $aAuthPerms = explode(',', $auth->auth['perm']);
 // sysadmin perm
 if (in_array('sysadmin', $aAuthPerms)) {
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
-    $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('d', 'CATFIELD', formGenerateCheckbox('msysadmin', '1', in_array('sysadmin', $aPerms)));
     $tpl->next();
 }
@@ -237,8 +209,6 @@ foreach ($aClients as $idclient => $item) {
 
 if ($sClientCheckboxes !== '') {
     $tpl->set('d', 'CATNAME', i18n("Administrator"));
-    $tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-    $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
     $tpl->next();
 }
@@ -252,8 +222,6 @@ foreach ($aClients as $idclient => $item) {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Access clients"));
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
 $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
 $tpl->next();
 
@@ -267,14 +235,10 @@ foreach ($aClientsLanguages as $item) {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Access languages"));
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
 $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Use WYSIWYG-Editor"));
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
 $tpl->set('d', 'CATFIELD', formGenerateCheckbox('wysi', '1', ((int) $wysi == 1)));
 $tpl->next();
 
@@ -282,8 +246,6 @@ $sInputValidFrom = '<input type="text" id="valid_from" name="valid_from" value="
 
 
 $tpl->set('d', 'CATNAME', i18n("Valid from"));
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
 $tpl->set('d', 'CATFIELD', $sInputValidFrom);
 $tpl->next();
 
@@ -291,8 +253,6 @@ $sInputValidTo  = '<input type="text" id="valid_to" name="valid_to" value="' . $
 
 
 $tpl->set('d', 'CATNAME', i18n("Valid to"));
-$tpl->set('d', 'BORDERCOLOR', $cfg["color"]["table_border"]);
-$tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
 $tpl->set('d', 'CATFIELD', $sInputValidTo);
 $tpl->next();
 

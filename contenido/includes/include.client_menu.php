@@ -61,13 +61,6 @@ while ($db->next_record()) {
 	if ((strpos($auth->auth["perm"],"admin[$idclient]") !== false) ||
 		(strpos($auth->auth["perm"],"sysadmin") !== false))
 	{
-    	$dark = !$dark;
-    	if ($dark) {
-	        $bgColor = $cfg["color"]["table_dark"];
-	    } else {
-        	$bgColor = $cfg["color"]["table_light"];
-    	}
-
         $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 		$idclient = $db->f("idclient");
         $mstr = sprintf($tmp_mstr, 'right_top',

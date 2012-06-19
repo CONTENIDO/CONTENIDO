@@ -87,8 +87,6 @@ $oTpl->set("s", "AREA", $area);
 $mgroup = new cApiGroup($groupid);
 $userperms = $mgroup->getField("perms");
 
-$oTpl->set("s", "TABLE_BORDER",$cfg["color"]["table_border"]);
-$oTpl->set("s", "TABLE_BGCOLOR", $cfg["color"]["table_dark"]);
 $oTpl->set("s", "RIGHTS_PERMS", $rights_perms);
 
 //selectbox for clients

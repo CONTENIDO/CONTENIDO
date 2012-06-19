@@ -19,17 +19,17 @@
         <input type="hidden" name="frame" value="4">
 
         <div id="filter" style="display:{DISPLAY_FILTER}">
-            <table style="border:0px; border-left:1px; border-bottom: 1px;border-color:{TABLE_BORDER}; border-style: solid;" cellspacing="0" cellpadding="2">
-                <tr class="text_medium" style="background-color:{TABLE_BGCOLOR};">
-                    <td valign="top" style="border: 0px; border-top:1px; border-right:0px; border-color:{TABLE_BORDER}; border-style: solid; vertical-align:middle;" align="left">i18n("Client / Language"):</td>
-                    <td valign="top" style="border: 0px; border-top:1px; border-right:1px; border-color:{TABLE_BORDER}; border-style: solid;" align="right">
+            <table class="generic topborder" cellspacing="0" cellpadding="2">
+                <tr>
+                    <td valign="top" style="vertical-align:middle; border-right-width: 0px;" align="left">i18n("Client / Language"):</td>
+                    <td valign="top" align="right">
                         <input type="hidden" name="rights_perms" value="{RIGHTS_PERMS}">
                         {INPUT_SELECT_CLIENT}
                     </td>
-                    <td style="border: 0px; border-top:1px; border-right:1px; border-color:{TABLE_BORDER}; border-style: solid;padding-left:5px;padding-right:10px; display:{DISPLAY_RIGHTS}">
+                    <td style="padding-left:5px; padding-right:10px; display:{DISPLAY_RIGHTS}">
                         i18n('Rights type'): {INPUT_SELECT_RIGHTS}
                     </td>
-                    <td style="border: 0px; border-top:1px; border-right:1px; border-color:{TABLE_BORDER}; border-style: solid;padding-left:5px;padding-right:10px;">
+                    <td style="adding-left:5px; padding-right:10px;">
                         <input type="image" src="images/submit.gif">
                     </td>
                 </tr>

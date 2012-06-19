@@ -96,6 +96,73 @@ div.login_title {
     width: 135px;
 }
 
+img.bordered {
+	padding: 10px; 
+	background: white;
+	border: 1px solid #b3b3b3;
+}
+
+table.generic {
+	border-left: 1px solid #b3b3b3;
+}
+
+table.fullborder {
+	border: 1px solid #b3b3b3;
+}
+
+table.topborder {
+	border-top: 1px solid #b3b3b3;
+}
+table.generic td {
+	border-bottom: 1px solid #b3b3b3;
+	border-right: 1px solid #b3b3b3;
+}
+
+table.generic th {
+	border-top: 1px solid #b3b3b3;
+	border-right: 1px solid #b3b3b3;
+	background-color: #E2E2E2;
+	
+	text-align: "left";
+	padding: 2px;
+	
+	font-weight: normal;
+	color: #666666;
+}
+
+table.generic th.center {
+	border-top: 1px solid #b3b3b3;
+	border-right: 1px solid #b3b3b3;
+	background-color: #E2E2E2;
+	
+	text-align: center;
+	padding: 2px;
+	
+	font-weight: normal;
+	color: #666666;
+}
+
+table.borderless {
+	border: 0px;
+	border-color: #B3B3B3;
+	border-style: solid;
+	border-bottom: 0px;
+	border-right: 1px;
+}
+
+table.borderless tr.active {
+	background-color: #ECF1B2;
+}
+
+table.borderless tr {
+	background-color: #FFFFFF;
+}
+
+table.borderless tr td {
+	border: 0px;
+	border-style: solid;
+	border-color: 
+}
 
 /**
  * #############################################################################
@@ -1075,7 +1142,7 @@ div#navcontainer ul#navlist li a:visited {
 
 .td_stats1 {
     border: 0;
-    border-left: 1px;
+    border-left: 0px;
     border-bottom: 1px;
     border-right: 1px;
     border-color: #b3b3b3;

@@ -327,11 +327,9 @@ class UI_Config_Table
 
 		$this->_sPadding		= 2;
 		$this->_sBorder			= 0;
-		$this->_sBorderColor	= $cfg['color']['table_border'];
 		$this->_sTplCellCode	= '        <td align="{ALIGN}" valign="{VALIGN}" class="{CLASS}" colspan="{COLSPAN}" style="{EXTRA}white-space:nowrap;" nowrap="nowrap">{CONTENT}</td>'."\n";
-		$this->_sTplTableFile	= $cfg['path']['contenido'].$cfg['path']['templates'].$cfg['templates']['generic_list'];
-		$this->_sColorLight		= $cfg['color']['table_light'];
-		$this->_sColorDark		= $cfg['color']['table_dark'];
+		$this->_sTplTableFile	= $cfg['path']['contenido'].$cfg['path']['templates'].$cfg['templates']['input_helper'];
+		$this->_sTplCellCode 	= $cfg['path']['contenido'].$cfg['path']['templates'].$cfg['templates']['input_helper_row'];
 	}
 
 	function setCellTemplate($sCode)
@@ -345,13 +343,23 @@ class UI_Config_Table
 		$this->_sTplTableFile  = $sPath;
 	}
 	
+	/**
+	 * 
+	 * @deprecated [2012-06-05] This function is no longer supported. Color options are set in the CSS and the template itself.
+	 */
 	function setLightColor($sColor)
 	{
+		cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
 		$this->_sColorLight  = $sColor;
 	}
 	
+	/**
+	*
+	* @deprecated [2012-06-05] This function is no longer supported. Color options are set in the CSS and the template itself.
+	*/
 	function setDarkColor($sColor)
 	{
+		cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
 		$this->_sColorDark  = $sColor;
 	}
 
@@ -359,29 +367,54 @@ class UI_Config_Table
 	{
 		$this->_bAddMultiSelJS = (bool)$bEnabled;
 	}
-
+	
+	/**
+	*
+	* @deprecated [2012-06-05] This function is no longer supported. Color options are set in the CSS and the template itself.
+	*/
 	function setWidth ($sWidth)
 	{
+		cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
 		$this->_sWidth = $sWidth;
 	}
 	
+	/**
+	*
+	* @deprecated [2012-06-05] This function is no longer supported. Color options are set in the CSS and the template itself.
+	*/
 	function setPadding ($sPadding)
 	{
+		cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
 		$this->_sPadding = $sPadding;
 	}
-
+	
+	/**
+	*
+	* @deprecated [2012-06-05] This function is no longer supported. Color options are set in the CSS and the template itself.
+	*/
 	function setBorder ($sBorder)
 	{
+		cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
 		$this->_sBorder = $sBorder;
 	}
-
+	
+	/**
+	*
+	* @deprecated [2012-06-05] This function is no longer supported. Color options are set in the CSS and the template itself.
+	*/
 	function setBorderColor ($sBorderColor)
 	{
+		cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
 		$this->_sBorderColor = $sBorderColor;
 	}
 	
+	/**
+	*
+	* @deprecated [2012-06-05] This function is no longer supported. Color options are set in the CSS and the template itself.
+	*/
 	function setSolidBorder ($bSolidBorder = true)
 	{
+		cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
 		$this->_bSolidBorder = (bool)$bSolidBorder;
 	}
 
@@ -400,24 +433,39 @@ class UI_Config_Table
 	{
 		$this->_aCellVAlignment[$sRow][$sCell] = $sAlignment;
 	}
-
+	
+	/**
+	*
+	* @deprecated [2012-06-05] This function is no longer supported. Color options are set in the CSS and the template itself.
+	*/
 	function setCellColspan ($sRow, $sCell, $iColSpan)
 	{
+		cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
 		$this->_aCellColSpan[$sRow][$sCell] = $iColSpan;
 	}
-
+	
 	function setCellClass ($sRow, $sCell, $sClass)
 	{
 		$this->_aCellClass[$sRow][$sCell] = $sClass;
 	}
-
+	
+	/**
+	*
+	* @deprecated [2012-06-05] This function is no longer supported. Color options are set in the CSS and the template itself.
+	*/
 	function setRowBgColor ($sRow, $sColor)
 	{
+		cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
 		$this->_aRowBgColor[$sRow] = $sColor;
 	}
 	
+	/**
+	*
+	* @deprecated [2012-06-05] This function is no longer supported. Color options are set in the CSS and the template itself.
+	*/
 	function setRowExtra ($sRow, $sExtra)
 	{
+		cDeprecated("This function is no longer supported. Color options are set in the CSS and the template itself.");
 		$this->_aRowExtra[$sRow] = $sExtra;
 	}
 
@@ -462,10 +510,6 @@ class UI_Config_Table
 		$oTable = new Template;
 		$oTable->reset();
 
-		$oTable->set('s', 'CELLPADDING', $this->_sPadding);
-		$oTable->set('s', 'BORDER',      $this->_sBorder);
-		$oTable->set('s', 'BORDERCOLOR', $this->_sBorderColor);
-
 		$iColCount			= 0;
 		$bDark				= false;
 		$sBgColor			= "";
@@ -482,46 +526,25 @@ class UI_Config_Table
 				foreach ($aCells as $sCell => $sData)
 				{
 					$iCount++;
-					$sTplCell = $this->_sTplCellCode;
-
-					if ($this->_bSolidBorder)
-					{
-						if ($iCount < count($aCells))
-						{
-							if ($iColCount < count($this->_aCells)) {
-								$sTplCell = str_replace('{EXTRA}', 'border: 0px; border-right: 1px; border-bottom: 1px; border-color: '.$this->_sBorderColor.'; border-style: solid;', $sTplCell);
-							} else {
-								$sTplCell = str_replace('{EXTRA}', 'border: 0px; border-right: 1px; border-color: '.$this->_sBorderColor.'; border-style: solid;', $sTplCell);
-							}
-						} else if ($iColCount < count($this->_aCells)) {
-							$sTplCell = str_replace('{EXTRA}', 'border: 0px; border-bottom: 1px; border-color: '.$this->_sBorderColor.'; border-style: solid;', $sTplCell);
-						} else {
-							$sTplCell = str_replace('{EXTRA}', '', $sTplCell);
-						}
+					$tplCell = new Template();
+					$tplCell->reset();
+					
+					if($this->_aCellClass[$sRow][$sCell] != "") {
+						$tplCell->set("s", "CLASS", $this->_aCellClass[$sRow][$sCell]);
+					} else {
+						$tplCell->set("s", "CLASS", "");
 					}
             	
 					if ($this->_aCellAlignment[$sRow][$sCell] != "") {
-						$sTplCell = str_replace('{ALIGN}', $this->_aCellAlignment[$sRow][$sCell], $sTplCell);
+						$tplCell->set("s", "ALIGN", $this->_aCellAlignment[$sRow][$sCell]);
 					} else {
-						$sTplCell = str_replace('{ALIGN}', 'left', $sTplCell);
+						$tplCell->set("s", "ALIGN", "left");
 					}
             		
 					if ($this->_aCellVAlignment[$sRow][$sCell] != "") {
-						$sTplCell = str_replace('{VALIGN}', $this->_aCellVAlignment[$sRow][$sCell], $sTplCell);
+						$tplCell->set("s", "VALIGN", $this->_aCellAlignment[$sRow][$sCell]);
 					} else {
-						$sTplCell = str_replace('{VALIGN}', 'top', $sTplCell);
-					}
-
-					if ($this->_aCellColSpan[$sRow][$sCell] != "") {
-						$sTplCell = str_replace('{COLSPAN}', $this->_aCellColSpan[$sRow][$sCell], $sTplCell);
-					} else {
-						$sTplCell = str_replace('{COLSPAN}', '1', $sTplCell);
-					}
-
-					if ($this->_aCellClass[$sRow][$sCell] != "") {
-						$sTplCell = str_replace('{CLASS}', $this->_aCellClass[$sRow][$sCell], $sTplCell);
-					} else {
-						$sTplCell = str_replace('{CLASS}', 'text', $sTplCell);
+						$tplCell->set("s", "VALIGN", "top");
 					}
 
 					// Multi selection javascript
@@ -529,38 +552,16 @@ class UI_Config_Table
 						$sData = $this->_addMultiSelJS() . $sData;
 						$this->_bAddMultiSelJS = false;
 					}
-
-					$sTplCell  = str_replace('{CONTENT}', $sData, $sTplCell);
-					$sLine    .= $sTplCell;
+					
+					$tplCell->set("s", "CONTENT", $sData);
+					$sLine .= $tplCell->generate($this->_sTplCellCode, true, false);
 				}
 				
 				// Row   	
 				$oTable->set('d', 'ROWS', $sLine);
 				
-				if ($this->_aRowBgColor[$sRow] != "") {
-					$sBgColor = $this->_aRowBgColor[$sRow];
-				} else if ($sBgColor == $this->_sColorLight) {
-					$sBgColor = $this->_sColorDark;
-				} else {
-					$sBgColor = $this->_sColorLight;
-				}
-				$oTable->set('d', 'BGCOLOR', $sBgColor);
-				
-				if ($this->_aRowExtra[$sRow] != "") {
-					$oTable->set('d', 'EXTRA', $this->_aRowExtra[$sRow]);
-				} else {
-					$oTable->set('d', 'EXTRA', '');
-				}
-				
 				$oTable->next();
     		}
-		}
-			
-		if ($this->_sWidth) {
-			// Table: Width
-			$oTable->set('s', 'EXTRA', 'width: '.$this->_sWidth.';');
-		} else {
-			$oTable->set('s', 'EXTRA', '');
 		}
 		$sRendered = $oTable->generate($this->_sTplTableFile, true, false);
 						

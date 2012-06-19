@@ -339,18 +339,12 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $alttitle = sprintf(i18n("Article in use by %s (%s)"), $inUseUser, $inUseUserRealName). " " . $alttitle;
             }
 
-            $bgcolor = $cfg["color"]["table_light"];
-            if ($idlang != $lang) {
-                $bgcolor = (is_int($dyn_cnt / 2)) ? $cfg["color"]["table_light_sync"] : $cfg["color"]["table_dark_sync"];
-            }
-
             // Id of the row, stores informations about the article and category
             $tmp_rowid  = $idart."-".$idartlang."-".$lidcat."-".$idcatlang."-".$idcatart."-".$idlang;
             $tpl->set('d', 'ROWID', $tmp_rowid);
 
             $colitem[$tmp_rowid] = $bgcolor;
             // Backgroundcolor of the table row
-            $tpl->set('d', 'BGCOLOR', $bgcolor);
 
             // Article Title
             if ($perm->have_perm_area_action('con_editcontent', 'con_editart' ) ||
@@ -676,9 +670,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         foreach ($listColumns as $key => $listColumn) {
             // Dirty hack to force column widths
             if ($key == "title" || $listColumn == i18n("Title")) {
-                $headers[] = '<td width="100%" class="headerbordercell" nowrap="nowrap">'.$listColumn.'</td>';
+                $headers[] = '<th width="100%" nowrap="nowrap">'.$listColumn.'</th>';
             } else {
-                $headers[] = '<td width="1%" class="headerbordercell" nowrap="nowrap">'.$listColumn.'</td>';
+                $headers[] = '<th width="1%" nowrap="nowrap">'.$listColumn.'</th>';
             }
         }
 
@@ -738,13 +732,6 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     }
                 }
                 $tpl->set('d', 'CELLS', implode("\n", $cells));
-                $tpl->set('d', 'BGCOLOR', $colitem[$key2]);
-
-                if ($colitem[$key2] == $cfg["color"]["table_dark_sync"] || $colitem[$key2] == $cfg["color"]["table_light_sync"]) {
-                    $tpl->set('d', 'CSS_CLASS', 'class="con_sync"');
-                } else {
-                    $tpl->set('d', 'CSS_CLASS', '');
-                }
 
                 $tpl->set('d', 'ROWID', $key2);
                 $tpl->next();

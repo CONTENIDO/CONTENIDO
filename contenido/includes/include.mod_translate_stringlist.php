@@ -42,7 +42,7 @@ $translations->select("idmod = '$idmod' AND idlang='$lang'");
 $page = new cPage;
 $page->setMargin(0);
 
-$v = '<table cellspacing="0" cellpadding="0" width="600">';
+$v = '<table class="borderless" cellspacing="0" cellpadding="0" width="600">';
 
 $link = new cHTMLLink;
 $link->setCLink("mod_translate", 4, "");
@@ -65,23 +65,15 @@ foreach($translationsArray as $key => $value)
     
     $mylink->setLink('javascript:parent.location="'.$href.'"');
     $mylink->setContent($string);
-
-	$dark = !$dark;
-
-	if ($dark)
-	{
-		$bgcol = $cfg["color"]["table_dark"];
-	} else {
-		$bgcol = $cfg["color"]["table_light"];
-	}
-
 	if ($rowCount == $row)// $translation->get("idmodtranslation"))
 	{
-		$bgcol = $cfg["color"]["table_active"];
+		$style = "active";
+	} else {
+		$style = "";
 	}
 	//$v .= '<tr bgcolor="'.$bgcol.'"><td style="padding-left: 2px; padding-top:2px; padding-bottom: 2px;" width="50%"><a name="'.$translation->get("idmodtranslation").'"></a>'.$mylink->render().'</td><td style="padding-left: 2px;">'.$tstring.'</td></tr>';
     
-    $v .= '<tr bgcolor="'.$bgcol.'"><td style="padding-left: 2px; padding-top:2px; padding-bottom: 2px;" width="50%"><a name="'.$rowCount.'"></a>'.$mylink->render().'</td><td style="padding-left: 2px;">'.$tstring.'</td></tr>';
+    $v .= '<tr class="'.$style.'"><td style="padding-left: 2px; padding-top:2px; padding-bottom: 2px;" width="50%"><a name="'.$rowCount.'"></a>'.$mylink->render().'</td><td style="padding-left: 2px;">'.$tstring.'</td></tr>';
     $rowCount++;
 }
 

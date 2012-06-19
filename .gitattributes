@@ -1827,6 +1827,7 @@ contenido/templates/standard/template.files_overview.html -text
 contenido/templates/standard/template.generic_form.html -text
 contenido/templates/standard/template.generic_left_top.html -text
 contenido/templates/standard/template.generic_list.html -text
+contenido/templates/standard/template.generic_list_head.html -text
 contenido/templates/standard/template.generic_list_row.html -text
 contenido/templates/standard/template.generic_menu.html -text
 contenido/templates/standard/template.generic_page.html -text
@@ -1840,6 +1841,8 @@ contenido/templates/standard/template.grouprights_menu.html -text
 contenido/templates/standard/template.grouprights_overview.html -text
 contenido/templates/standard/template.html_tpl_left_top.html -text
 contenido/templates/standard/template.info.html -text
+contenido/templates/standard/template.input_helper.html -text
+contenido/templates/standard/template.input_helper_row.html -text
 contenido/templates/standard/template.inuse_lay_mod.html -text
 contenido/templates/standard/template.inuse_tpl.html -text
 contenido/templates/standard/template.js_left_top.html -text

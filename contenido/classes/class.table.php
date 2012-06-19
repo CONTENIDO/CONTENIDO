@@ -116,7 +116,7 @@ class Table {
     /**
      * Constructor
      */
-    function Table($m_bordercolor = "#EEEEEE", $m_borderstyle = "solid", $m_cellspacing = "0", $m_cellpadding="2", $m_header_color = "#222222", $m_light_color = "#AAAAAA", $m_dark_color = "#777777", $m_fullborder = false, $m_directoutput = true) {
+    function Table($m_bordercolor = "", $m_borderstyle = "", $m_cellspacing = "0", $m_cellpadding="2", $m_header_color = "", $m_light_color = "", $m_dark_color = "", $m_fullborder = false, $m_directoutput = true) {
         $this->border_color = $m_bordercolor;
         $this->border_style = $m_borderstyle;
         $this->cellspacing = $m_cellspacing;
@@ -138,9 +138,9 @@ class Table {
 
         if (!$this->fullborder)
         {
-            $starttable =  '<table style="border: 0px; border-left:1px; border-bottom: 1px; border-color: ' . $this->border_color . '; border-style: ' . $this->border_style . '" cellspacing="'. $this->cellspacing . '" cellpadding="'. $this->cellpadding . '">';
+            $starttable =  '<table class="generic" cellspacing="'. $this->cellspacing . '" cellpadding="'. $this->cellpadding . '">';
         } else {
-            $starttable = '<table style="border: 1px; border-color: ' . $this->border_color . '; border-style: ' . $this->border_style . '" cellspacing="'. $this->cellspacing . '" cellpadding="'. $this->cellpadding . '">';
+            $starttable = '<table class="fullborder" cellspacing="'. $this->cellspacing . '" cellpadding="'. $this->cellpadding . '">';
         }
 
         if ($this->directoutput)
@@ -162,7 +162,7 @@ class Table {
      */
     function header_row($additional="") {
             
-         $headerrow = '<tr class="textw_medium" style="background-color: ' . $this->header_color . '" '.$additional.'>';     
+         $headerrow = '<tr class="textw_medium" style="'.$additional.'">';     
 
          if ($this->directoutput)
          {
@@ -180,16 +180,8 @@ class Table {
      * @return void
      */
     function row($id = '') {
-         if ($this->dark_row)
-         {
-             $bgColor = $this->light_color;
-         } else {
-             $bgColor = $this->dark_color;
-         }
-
-         $this->dark_row = !$this->dark_row;
          
-         $row = '<tr class="text_medium" style="background-color: ' . $bgColor . '" '.$id.'>';
+         $row = '<tr '.$id.'>';
 
          if ($this->directoutput)
          {
@@ -210,8 +202,12 @@ class Table {
      * @return void
      */
     function header_cell($content, $align="center", $valign="top", $additional="", $borderTop = 1){
-
-         $header_cell = '<th class="textg_medium" valign="' . $valign . '" style="border: 0px; border-top:'.$borderTop.'px; border-right:1px; border-color: '. $this->border_color . '; border-style: ' . $this->border_style . '" align="' . $align . '"' . $additional . '>' . $content . '</th>';
+    	 
+    	 $sBorder = "";
+    	 if($borderTop != 1) {
+    	 	$sBorder = "style='border-top-width: ".$borderTop."px;'";
+    	 }
+         $header_cell = '<th class="center" '.$sBorder.' valign="' . $valign . '" align="' . $align . '"' . $additional . '>' . $content . '</th>';
          
          if ($this->first_cell)
          {
@@ -252,7 +248,7 @@ class Table {
 		 }
 		  
 		 if ($bSetStyle) {
-		 	$cell.=' style="border: 0px; border-bottom:1px; border-top:0px; border-right:1px; border-color: '. $this->border_color . '; border-style: ' . $this->border_style . '"'; 
+		 	$cell.=''; 
 		 }
 		 
 		 if ($align != '') {
@@ -323,7 +319,7 @@ class Table {
          {
             $content = "&nbsp;";
          }
-         $sumcell = '<td colspan="'.$this->table_cols.'" valign="' . $valign . '" style="border: 0px; border-top:0px; border-right:1px; border-color: '. $this->border_color . '; border-style: ' . $this->border_style . '" align="' . $align . '">' . $content . '</td>';
+         $sumcell = '<td colspan="'.$this->table_cols.'" valign="' . $valign . '" align="' . $align . '">' . $content . '</td>';
 
          if ($this->directoutput)
          {

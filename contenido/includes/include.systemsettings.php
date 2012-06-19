@@ -66,7 +66,6 @@ $list->setCell(1,1, i18n("Type"));
 $list->setCell(1,2, i18n("Name"));
 $list->setCell(1,3, i18n("Value"));
 $list->setCell(1,4, "&nbsp;");
-$list->setBgColor(1,$cfg['color']['table_header']);
 $list->setBorder(1);
 
 $count = 2;

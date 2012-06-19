@@ -204,9 +204,9 @@
 </div>
 
 <!-- Begin listing of existing categories -->
-<table  cellspacing="0" id="category_list">
-     <tr class="textg_medium">
-        <td colspan="{SUM_COLUMNS}" id="cat_navbar">
+<table class="generic" cellspacing="0" id="category_list">
+     <tr>
+        <th colspan="{SUM_COLUMNS}" id="cat_navbar">
             {NEWCAT}
             <span style="padding-left:15px;">&nbsp;</span>
             {COLLAPSE_ALL}
@@ -215,28 +215,28 @@
             <span style="padding-left:15px;">&nbsp;</span>
             {CANCEL_MOVE_TREE}
             <span style="padding-left:5px;">&nbsp;</span>
-        </td>
+        </th>
      </tr>
      <tr>
-        <td height="10" colspan="{SUM_COLUMNS}"></td>
+        <td style="border-width: 0px;" height="10" colspan="{SUM_COLUMNS}"></td>
      </tr>
      <tr>
-        <td colspan="2" class="header" style="border-left: 1px solid #B3B3B3">
+        <th colspan="2" style="border-left: 1px solid #B3B3B3">
                     <span class="overview_dist_left">i18n("Category")</span>
-        </td>
-        <td class="header">
+        </th>
+        <th class="header">
               i18n("Alias")
-        </td>
-        <td class="header">
+        </th>
+        <th class="header">
               i18n("Template")
-        </td>
-        <td class="header" colspan="8">
+        </th>
+        <th class="header" colspan="8">
               i18n("Actions")
-        </td>
+        </th>
         {ADDITIONALHEADERS}
     </tr>
     <!-- layer for inline editing of existing categories -->
-    <tr style="background-color: {BGCOLOR_EDIT};" id="cat_inline_layer">
+    <tr id="cat_inline_layer">
         <form name="renamecategory" method="post" action="{ACTION_EDIT_URL}">
             {INPUT_ACTION_EDIT}
             {INPUT_IDCAT}

@@ -291,11 +291,11 @@ class UploadList extends FrontendList
     {
         global $cfg, $path, $sess, $cfgClient, $client, $appendparameters;
 
-        if ($field == 5) {
+        if ($field == 4) {
             return human_readable_size($data);
         }
 
-        if ($field == 4) {
+        if ($field == 3) {
             if ($appendparameters == "imagebrowser" || $appendparameters == "filebrowser") {
                 if (is_dbfs($path.'/'.$data)) {
                     $mstr = '<a href="javascript://" onclick="javascript:parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \''.$cfgClient[$client]['htmlpath']['frontend'].'dbfs.php?file='.$path.'/'.$data.'\'; window.returnValue=\''.$cfgClient[$client]['htmlpath']['frontend'].'dbfs.php?file='.$path.'/'.$data.'\'; window.close();"><img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_ok.gif" title="'.i18n("Use file").'">&nbsp;'.$data.'</a>';
@@ -313,11 +313,11 @@ class UploadList extends FrontendList
             return $mstr;
         }
 
-        if ($field == 6) {
+        if ($field == 5) {
             return uplGetFileTypeDescription($data);
         }
 
-        if ($field == 3) {
+        if ($field == 2) {
             // If this file is an image, try to open
             switch (getFileExtension($data))
             {
@@ -364,14 +364,6 @@ class UploadList extends FrontendList
                     $sCacheThumbnail = uplGetThumbnail($data, 150);
                     return '<img class="hover_none" name="smallImage" src="'.$sCacheThumbnail.'">';
             }
-        }
-        if ($field == 1) {
-            if ($this->dark) {
-                $data = $cfg["color"]["table_dark"];
-            } else {
-                $data = $cfg["color"]["table_light"];
-            }
-            $this->dark = !$this->dark;
         }
 
         return $data;
@@ -440,8 +432,8 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 
     $sDisplayPath = generateDisplayFilePath($mpath, 85);
 
-    $sToolsRow = '<tr class="textg_medium">
-                    <td colspan="6" style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; vertical-align:middle; text-align:right; border-style: solid; background-color: #E2E2E2; padding-left:5px;" id="cat_navbar">
+    $sToolsRow = '<tr>
+                    <th colspan="6" style="border-bottom: 1px solid #b3b3b3; height:20px; line-height:20px; vertical-align:middle; text-align:right; adding-left:5px;" id="cat_navbar">
                         <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle; width:400px; padding:0px 5px; text-align:left;">
                             <a href="javascript:invertSelection();"><img style="margin-right:10px; vertical-align:middle;" src="images/but_invert_selection.gif" title="'.i18n("Flip Selection").'" alt="'.i18n("Flip Selection").'" onmouseover="this.style.cursor=\'pointer\'"> '.i18n("Flip Selection").'</a>
                             <span style="padding-left:15px;">&nbsp;</span>
@@ -451,42 +443,42 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
                         '.i18n("Path:")." ". $sDisplayPath.'
 
                         <div style="clear:both;"></div>
-                    </td>
+                    </th>
                 </tr>';
     $sSpacedRow = '<tr height="10">
-                        <td colspan="6"></td>
+                        <td colspan="6" style="border-bottom-width: 0px;"></td>
                    </tr>';
 
 
     // List wraps
 
-    $pagerwrap = '<tr class="textg_medium">
-                    <td colspan="6" style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; vertical-align:middle; border-style: solid; background-color: #E2E2E2; padding-left:5px;" id="cat_navbar">
+    $pagerwrap = '<tr>
+                    <th colspan="6" style="border-top-width: 1px; border-bottom: 1px solid #b3b3b3; padding-left:5px;" id="cat_navbar">
                         <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLRIGHT-</div>
                         <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-PAGE-</div>
                         <div style="float:right; heigth:20px; line-height:20px; vertical-align:middle; width:100px; padding:0px 5px; text-align:right;">-C-SCROLLLEFT-</div>
                         <span style="margin-right:10px; line-height:20px; vertical-align:middle;">'.i18n("Files per Page").'</span> -C-FILESPERPAGE-
                         <div style="clear:both;"></div>
-                    </td>
+                    </th>
                 </tr>';
 
-    $startwrap = '<table class="hoverbox" cellspacing="0" cellpadding="2" border="0">
+    $startwrap = '<table class="hoverbox generic" cellspacing="0" cellpadding="2" border="0">
                     '.$pagerwrap.$sSpacedRow.$sToolsRow.$sSpacedRow.'
-                   <tr bgcolor="#E2E2E2" style="border-color:#B3B3B3; border-style: solid;border-top: 1px;border-bottom: 0px;">
-                        <td align="left" valign="top" class="textg_medium" style="border: 1px; border-color: #B3B3B3; border-bottom: 0px; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.i18n("Mark").'</td>
-                        <td align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.i18n("Preview").'</td>
-                        <td width="100%" align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.$fnsort.'</td>
-                        <td align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.$sizesort.'</td>
-                        <td align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.$typesort.'</td>
-                        <td align="left" valign="top" class="textg_medium" style="border: 0px; border-top: 1px; border-right: 1px; border-bottom: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">'.i18n("Actions").'</td>
+                   <tr>
+                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.i18n("Mark").'</th>
+                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.i18n("Preview").'</th>
+                        <th width="100%" align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.$fnsort.'</th>
+                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.$sizesort.'</th>
+                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.$typesort.'</th>
+                        <th align="left" valign="top" style="white-space:nowrap;" nowrap="nowrap">'.i18n("Actions").'</th>
                     </tr>';
-    $itemwrap = '<tr bgcolor="%s">
-                        <td align="center" valign="top" class="text_medium" style="border: 1px; border-top: 0px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">%s</td>
-                        <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" nowrap="nowrap">%s</td>
-                        <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="200" nowrap="nowrap">%s</td>
-                        <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-                        <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
-                        <td align="left" valign="top" class="text_medium" style="border: 0px; border-right: 1px; border-bottom: 1px; border-color: #B3B3B3; border-style: solid; white-space:nowrap;" width="75" nowrap="nowrap">%s</td>
+    $itemwrap = '<tr>
+                        <td align="center" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
+                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" nowrap="nowrap">%s</td>
+                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="200" nowrap="nowrap">%s</td>
+                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
+                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="60" nowrap="nowrap">%s</td>
+                        <td align="left" valign="top" class="text_medium" style="white-space:nowrap;" width="75" nowrap="nowrap">%s</td>
                     </tr>';
     $endwrap = $sSpacedRow.$sToolsRow.$sSpacedRow.$pagerwrap.'</table>';
 
@@ -596,7 +588,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
 
         if ($bAddFile == true) {
             // 'bgcolor' is just a placeholder...
-            $list2->setData($rownum, 'bgcolor', $mark, $dirname.$filename,
+            $list2->setData($rownum, $mark, $dirname.$filename,
                              $showfilename,
                              $filesize,
                              getFileExtension($filename),

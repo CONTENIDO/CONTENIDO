@@ -76,14 +76,14 @@ if(!isset($rights_perms)||$action==""||!isset($action))
     $rights_perms=$db->f("perms");
 }
 
-$oTable = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"]["table_header"], $cfg["color"]["table_light"], $cfg["color"]["table_dark"], 0, 0);
+$oTable = new Table("", "", 0, 2, "", "", "", false, false);
 
 $sTable .= $oTable->start_table();
 
 $sTable .= $oTable->header_row();
-$sTable .= $oTable->header_cell("&nbsp;","left");
-$sTable .= $oTable->header_cell("&nbsp;","left");
-$sTable .= $oTable->header_cell(i18n("Check all"),"left");
+$sTable .= $oTable->header_cell("&nbsp;");
+$sTable .= $oTable->header_cell("&nbsp;");
+$sTable .= $oTable->header_cell(i18n("Check all"));
 $sTable .= $oTable->end_row();
 
 //checkbox for all rights
@@ -143,14 +143,6 @@ foreach($right_list as $key => $value){
                               $checked="checked=\"checked\"";
                           else
                               $checked="";
-
-                            $darkRow = !$darkRow;
-                            if ($darkRow) {
-                                $bgColor = $cfg["color"]["table_dark"];
-                            } else {
-                                $bgColor = $cfg["color"]["table_light"];
-                            }
-
                           //set the checkbox    the name consits of      areait+actionid+itemid
 							$sCellContent = '';
                           if ($debug)

@@ -72,10 +72,6 @@ while ($layout = $oLayouts->next()) {
     $oLay = new cApiLayout($idlay);
     $inUse = $oLay->isInUse($idlay);
 
-    $bgColor = ($darkrow) ? $cfg['color']['table_dark'] : $cfg['color']['table_light'];
-    $darkrow = !$darkrow;
-    $tpl->set('d', 'BGCOLOR', $bgColor);
-
     if ((!$perm->have_perm_area_action_item('lay', 'lay_delete', $idlay)) &&
         (!$perm->have_perm_area_action('lay', 'lay_delete'))) {
         $delDescr = i18n("No permission");

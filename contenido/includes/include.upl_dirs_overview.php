@@ -212,8 +212,6 @@ $objects = Array ();
 $rootTreeItem->traverse($objects);
 unset ($objects[0]);
 
-$bgcolor = (is_int($tpl->dyn_cnt / 2)) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
-
 if ($appendparameters == "filebrowser")
 {
 	$mtree = new cWidgetTreeView("b58f0ae3-8d4e-4bb3-a754-5f0628863364");
@@ -333,7 +331,6 @@ $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&
                            '<img src="images/ordner_oben.gif" align="middle" alt="" border="0"><img align="middle" src="images/spacer.gif" width="5" border="0">'.$file);
 
 $tpl->set('d', 'PATH', $pathstring);
-$tpl->set('d', 'BGCOLOR', $bgcolor);
 $tpl->set('d', 'INDENT', 3);
 $tpl->set('d', 'DIRNAME', $mstr);
 $tpl->set('d', 'EDITBUTTON', '');
@@ -392,10 +389,7 @@ if (is_array($objects))
 			$deletebutton = "<img style=\"margin-left:10px;\" src=\"".$cfg["path"]["images"]."delete_inact.gif\" border=\"0\" alt=\"".$message."\" title=\"".$message."\">";
 		}
 
-		$bgcolor = (is_int($tpl->dyn_cnt / 2)) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
-
 		$tpl->set('d', 'PATH', $pathstring);
-		$tpl->set('d', 'BGCOLOR', $bgcolor);
 		$tpl->set('d', 'INDENT', 0);
 
 		$gline = "";
@@ -466,15 +460,12 @@ $rootTreeItem->traverse($objects);
 
 unset ($objects[0]);
 
-$bgcolor = (is_int($tpl->dyn_cnt / 2)) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
-
 $tmp_mstr = '<a href="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=$area&frame=3&path=$pathstring&appendparameters=$appendparameters"), 
                            'right_bottom', $sess->url("main.php?area=$area&frame=4&path=$pathstring&appendparameters=$appendparameters"), 
                            '<img src="images/ordner_oben.gif" alt="" border="0"><img align="middle" src="images/spacer.gif" width="5" border="0">'.$file);
 
 $tpl->set('d', 'PATH', $pathstring);
-$tpl->set('d', 'BGCOLOR', $bgcolor);
 $tpl->set('d', 'INDENT', 3);
 $tpl->set('d', 'DIRNAME', $mstr);
 $tpl->set('d', 'EDITBUTTON', '');
@@ -539,10 +530,7 @@ if (is_array($objects))
 			$deletebutton = "<img style=\"margin-left:10px;\" src=\"".$cfg["path"]["images"]."delete_inact.gif\" border=\"0\" alt=\"".$message."\" title=\"".$message."\">";
 		}
 
-		$bgcolor = (is_int($tpl->dyn_cnt / 2)) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
-
 		$tpl->set('d', 'PATH', $pathstring);
-		$tpl->set('d', 'BGCOLOR', $bgcolor);
 		$tpl->set('d', 'INDENT', 0);
 
 		$gline = "";

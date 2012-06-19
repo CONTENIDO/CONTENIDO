@@ -148,13 +148,6 @@ while ($db->next_record())
     if ($allow == true)
     {
 
-        $dark = !$dark;
-        if ($dark) {
-            $bgColor = $cfg["color"]["table_dark"];
-        } else {
-            $bgColor = $cfg["color"]["table_light"];
-        }
-
         $groupid = $db->f("group_id");
         $groupname = $db->f("groupname");
         
@@ -182,13 +175,11 @@ while ($db->next_record())
             }
         
         if ($_GET['groupid'] == $groupid) {
-            $bgColor = $cfg['color']['table_light_active'];
             $tpl->set('d', 'ID_MARKED', 'marked');
         } else {
             $tpl->set('d', 'ID_MARKED', '');
         }
         
-        $tpl->set('d', 'BGCOLOR', $bgColor);
         $tpl->set('d', 'TEXT', $mstr);
         $tpl->set('d', 'ICON', $mstr2);
         

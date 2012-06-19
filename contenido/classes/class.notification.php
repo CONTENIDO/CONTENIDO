@@ -77,12 +77,6 @@ class Contenido_Notification
     const LEVEL_NOTIFICATION = 'notification';
 
     /**
-     * Colors configuration
-     * @var array
-     */
-    protected $_aColors;
-
-    /**
      * HTML path to images
      * @var string
      */
@@ -95,7 +89,6 @@ class Contenido_Notification
     public function __construct()
     {
         global $cfg;
-        $this->_aColors = $cfg['color'];
         $this->_sPathImages = $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'];
     }
 

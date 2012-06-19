@@ -66,7 +66,7 @@ $sJsBefore .= "var itemids=new Array();\n
 // declare new javascript variables;
 $colspan=0;
 
-$table = new Table($cfg["color"]["table_border"], "solid", 0, 2, $cfg["color"]["table_header"], $cfg["color"]["table_light"], $cfg["color"]["table_dark"], 0, 0);
+$table = new Table("", "solid", 0, 2, "", "", "", 0, 0);
 
 $sTable .= $table->start_table();
 $sTable .= $table->header_row();

@@ -198,8 +198,6 @@ $oTpl->set('s', 'ACTION_URL', $sess->url("main.php"));
 $oTpl->set('s', 'TYPE_ID', 'userid');
 $oTpl->set('s', 'USER_ID', $userid);
 $oTpl->set('s', 'AREA', $area);
-$oTpl->set('s', 'TABLE_BORDER', $cfg["color"]["table_border"]);
-$oTpl->set('s', 'TABLE_BGCOLOR', $cfg["color"]["table_dark"]);
 
 if(!isset($actionarea)){
     $actionarea="area";

@@ -77,10 +77,7 @@ while ($db->next_record()) {
     $deleteMsg = sprintf(i18n("Do you really want to delete the language %s?"),htmlspecialchars($db->f("name")));
     $deleteAct = i18n("Delete language");
     $deletebutton = '<a title="'.$deleteAct.'" href="javascript://" onclick="box.confirm(\''.$deleteAct.'\', \''.$deleteMsg.'\', \'deleteLang('.$db->f("idlang").')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$deleteAct.'" alt="'.$deleteAct.'"></a>';
-
-    $bgcolor = ( is_int($tpl->dyn_cnt / 2) ) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
     
-    $tpl->set('d', 'BGCOLOR',       $bgcolor);
     $tpl->set('d', 'LANGUAGE',      '<a target="right_bottom" href="'.$sess->url("main.php?area=lang_edit&idlang=$idlang&frame=4").'">'.$db->f("name").'</a>&nbsp;<span style="font-size:10px">('.$idlang.')</span>');
     $tpl->set('d', 'ACTIVATEBUTTON',  $active);
     $tpl->set('d', 'DELETEBUTTON',  $deletebutton);

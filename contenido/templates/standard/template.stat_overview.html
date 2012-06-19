@@ -129,28 +129,28 @@
     </tr>
 </table>
 
-<table id="stats" style="border:0px; border-bottom: 1px; border-color: {BORDERCOLOR}; border-style: solid;" width="100%" cellspacing="0" cellpadding="2" border="0">
-    <tr class="textg_medium">
-        <td colspan="5" style="border:1px solid {BORDERCOLOR}; background-color: {TITLEBGCOLOR}; padding-left:5px;">
+<table class="generic" id="stats" width="100%" cellspacing="0" cellpadding="2" border="0">
+    <tr>
+        <th colspan="5" style="padding-left:5px;">
         <a class="black" href="javascript:collapseAll();" alt="i18n("Close all categories") title="i18n("Close all categories")"><img src="images/close_all.gif">&nbsp;i18n("Close all categories")</a>
         <span style="padding-left:15px;">&nbsp;</span>
         <a class="black" href="javascript:expandAll();" alt="i18n("Open all categories") title="i18n("Open all categories")"><img src="images/open_all.gif">&nbsp;i18n("Open all categories")</a>
-        </td>
+        </th>
     </tr>
 
-    <tr class="textg_medium">
-            <td colspan="5">&nbsp;</td>
+    <tr>
+            <th style="background-color: #ffffff;"" colspan="5">&nbsp;</th>
     </tr>
 
-    <tr class="textg_medium" style="font-weight:bold; background-color: {TITLEBGCOLOR};">
-        <td class="textg_medium" width="80%" style="border: 0px; border-left:1px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:{TITLEPADDING_LEFT}px" nowrap>{TITLETEXT}</td>
-        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLESTATUS}</td>
-        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLENUMBEROFARTICLES}</td>
-        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLETOTAL}</td>
-        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLEINTHISLANGUAGE}</td>
+    <tr>
+        <th width="80%" style="padding-left:{TITLEPADDING_LEFT}px" nowrap>{TITLETEXT}</th>
+        <th align="right" nowrap>{TITLESTATUS}</th>
+        <th align="right" nowrap>{TITLENUMBEROFARTICLES}</th>
+        <th align="right" nowrap>{TITLETOTAL}</th>
+        <th align="right" nowrap>{TITLEINTHISLANGUAGE}</th>
     </tr>
     <!-- BEGIN:BLOCK -->
-    <tr id="{ROWNAME}" class="text_medium" style="background-color: {BGCOLOR}; display:{DISPLAY_ROW};" onmouseover="row.over(this)" onmouseout="row.out(this)" {ONCLICK}>
+    <tr id="{ROWNAME}" class="text_medium" style="display:{DISPLAY_ROW};" onmouseover="row.over(this)" onmouseout="row.out(this)" {ONCLICK}>
         <td class="td_stats1" style="padding-left:{PADDING_LEFT}px;">{EXPAND} {ICON} {TEXT}</td>
         <td class="td_stats2">{STATUS}&nbsp;</td>
         <td class="td_stats3">{NUMBEROFARTICLES}&nbsp;</td>
@@ -160,18 +160,18 @@
     <!-- END:BLOCK -->
 </table>
 <br>
-<table style="border:0px; border-left:1px; border-bottom: 1px;border-color: {BORDERCOLOR}; border-style: solid;" width="100%" cellspacing="0" cellpadding="2" border="0">
-    <tr class="text_medium" style="font-weight:bold; background-color: {TITLEBGCOLOR};">
-        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:{TITLEPADDING_LEFT}px" nowrap>{TITLETEXT}</td>
-        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLENUMBEROFARTICLES}</td>
-        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLETOTAL}</td>
-        <td class="textg_medium" style="border: 0px; border-top:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{TITLEINTHISLANGUAGE}</td>
+<table class="generic" width="100%" cellspacing="0" cellpadding="2" border="0">
+    <tr>
+        <th style="padding-left:{TITLEPADDING_LEFT}px" nowrap>{TITLETEXT}</th>
+        <th align="right" nowrap>{TITLENUMBEROFARTICLES}</th>
+        <th align="right" nowrap>{TITLETOTAL}</th>
+        <th align="right" nowrap>{TITLEINTHISLANGUAGE}</th>
     </tr>
-    <tr class="text_medium" style="background-color: {SUMBGCOLOR};">
-        <td width="80%" style="border: 0px; border-bottom:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;padding-left:{TITLEPADDING_LEFT}px" nowrap>{SUMTEXT}&nbsp;</td>
-        <td style="border: 0px; border-bottom:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{SUMNUMBEROFARTICLES}&nbsp;</td>
-        <td style="border: 0px; border-bottom:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{SUMTOTAL}&nbsp;</td>
-        <td style="border: 0px; border-bottom:1px; border-right:1px; border-color: {BORDERCOLOR}; border-style: solid;" align="right" nowrap>{SUMINTHISLANGUAGE}&nbsp;</td>
+    <tr>
+        <td width="80%" style="padding-left:{TITLEPADDING_LEFT}px" nowrap>{SUMTEXT}&nbsp;</td>
+        <td align="right" nowrap>{SUMNUMBEROFARTICLES}&nbsp;</td>
+        <td align="right" nowrap>{SUMTOTAL}&nbsp;</td>
+        <td align="right" nowrap>{SUMINTHISLANGUAGE}&nbsp;</td>
     </tr>
 </table>
 </body>

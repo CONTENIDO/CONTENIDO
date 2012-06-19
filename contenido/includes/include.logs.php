@@ -54,11 +54,6 @@ $form = '<form name="log_select" method="post" action="'.$sess->url("main.php?")
              <input type="hidden" name="frame" value="'.$frame.'">';
 
 $tpl->set('s', 'FORM', $form);
-$tpl->set('s', 'BORDERCOLOR', $cfg['color']['table_border']);
-$tpl->set('s', 'SELECTBGCOLOR', $cfg['color']['table_dark']);
-$tpl->set('s', 'SELECTBBGCOLOR', $cfg['color']['table_light']);
-$tpl->set('s', 'HEADERBGCOLOR', $cfg['color']['table_header']);
-$tpl->set('s', 'RHEADERBGCOLOR', $cfg['color']['table_header']);
 $tpl->set('s', 'SUBMITTEXT', i18n('Submit query'));
 $tpl->set('s', 'CANCELLINK', $sess->url("main.php?area=$area&frame=4"));
 
@@ -266,8 +261,8 @@ $actionLogColl = new cApiActionlogCollection();
 $result = $actionLogColl->select($where, '', 'logtimestamp DESC', $limitsql);
 
 if (!$result) {
-    $noresults = '<tr class="text_medium" style="background-color:'.$bgcolor.';" >'.
-                 '<td valign="top" colspan="7" style="border:0;border-top:1px;border-right:1px;border-color:'.$cfg["color"]["table_border"].';border-style:solid;">'.i18n("No results").'</td></tr>';
+    $noresults = '<tr >'.
+                 '<td valign="top" colspan="7">'.i18n("No results").'</td></tr>';
 } else {
     $noresults = "";
 }
@@ -291,8 +286,6 @@ $tpl->set('s', 'LABEL_ARTICLE', i18n("Article"));
 
 while ($oItem = $actionLogColl->next()) {
     $counter++;
-    $darkrow = !$darkrow;
-    $bgcolor = ($darkrow) ? $cfg['color']['table_dark'] : $cfg['color']['table_light'];
 
     $idcatart = $oItem->get('idcatart');
     $idlang = $oItem->get('idlang');
@@ -334,8 +327,6 @@ while ($oItem = $actionLogColl->next()) {
     }
 
     $tpl->set('d', 'ROWNAME', 'row_' . $counter);
-    $tpl->set('d', 'BORDERCOLOR', $cfg['color']['table_border']);
-    $tpl->set('d', 'RBGCOLOR', $bgcolor);
     $tpl->set('d', 'RCLIENT', $clientList[$oItem->get('idclient')]['name']);
     $tpl->set('d', 'RDATETIME', $oItem->get('logtimestamp'));
     $tpl->set('d', 'RUSER' , $users[$oItem->get('user_id')]['username']);

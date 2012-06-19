@@ -536,8 +536,6 @@ foreach ($objects as $key => $value) {
             $tpl->next();
         }
 
-        $bgcolor = (is_int($tpl->dyn_cnt / 2)) ? $cfg["color"]["table_light"] : $cfg["color"]["table_dark"];
-
         $tpl->set('d', 'BGCOLOR', $bgcolor);
         $tpl->set('d', 'BGCOLOR_EDIT', '#F1F1F1');
         $tpl->set('d', 'HEIGTH', 'height:25px');

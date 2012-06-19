@@ -120,6 +120,7 @@ if ($action == "stat_show")
         $tpl->set('s', 'GOOGLE_NOTIFICATION', $googleNotification.'<br/>');
         $tpl->set('s', 'PIWIK_NOTIFICATION', $piwikNotification. '<br/>');
         $tpl->set('s', 'TRACKING_NOTIFICATION', $trackingNotification.'<br/>');
+        
         switch ($displaytype)
         {
             case "all":

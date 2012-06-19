@@ -79,7 +79,6 @@ $list = new UI_List;
 $list->setCell(1,1, i18n("Article specification"));
 $list->setCell(1,2, i18n("Options"));
 
-$list->setBgColor(1,$cfg['color']['table_header']);
 $list->setBorder(1);
 $list->setWidth ("250px");
 

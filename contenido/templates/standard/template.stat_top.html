@@ -36,16 +36,16 @@
     </tr>
 </table>
 
-<table style="border:0px; border-left:1px; border-bottom: 1px;border-color: {BORDERCOLOR}; border-style: solid;" width="100%" cellspacing="0" cellpadding="2" border="0">
-    <tr class="text_medium" style="background-color: {TITLEBGCOLOR};">
-        <td style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid; padding-left:{TITLEPADDING_LEFT}px">{TITLETEXT}</td>
-        <td style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right">{TITLETOTAL}</td>
+<table class="generic" width="100%" cellspacing="0" cellpadding="2">
+    <tr>
+        <th style="padding-left:{TITLEPADDING_LEFT}px">{TITLETEXT}</th>
+        <th align="right">{TITLETOTAL}</th>
     </tr>
     <!-- BEGIN:BLOCK -->
-    <tr class="text_medium" style="background-color: {BGCOLOR};" onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
-        <td style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid; padding-left:{PADDING_LEFT}px">
+    <tr onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)">
+        <td style="padding-left:{PADDING_LEFT}px">
         <a style="text-decoration: none;" href="{ULR_TO_PAGE}" title="{PATH}" target="_blank">{TEXT}</a></td>
-        <td style="border: 0px; border-top:1px; border-right:1px;border-color: {BORDERCOLOR}; border-style: solid;" align="right">{TOTAL}</td>
+        <td align="right">{TOTAL}</td>
     </tr>
     <!-- END:BLOCK -->
 
