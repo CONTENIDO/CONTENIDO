@@ -143,17 +143,10 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
 		    <link rel="stylesheet" type="text/css" href="../contenido/styles/contenido.css">
 		    <script type="text/javascript" src="../contenido/scripts/general.js"></script>
 		    <style>
-		    .contypeList {
-		    	border: 1px solid #B3B3B3;
-		    	padding: 10px;
-		    	margin: 10px 0;
-		    }
-		    .noactive {
-		    	border: 1px solid red;
-		    }
+		    .noactive *{color: red;}
 		    </style>
 		</head>
-		<body class="mg10">';
+		<body style="margin: 10px">';
 	foreach($result as $key => $cmstype){
 		foreach($cmstype as $index => $value){		
 			if(in_array($key.'['.$index.']',$typeAktuell)){
@@ -162,7 +155,7 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
 				$class = 'noactive';
 			}
 			$layoutcode .= '<div class="contypeList '.$class.'">
-			<div class="headline">'.$key.' '.$index.':</div>'.$key.'['.$index.']</div>';
+			<div class="headline">'.$key.' '.$index.':</div>'.$key.'['.$index.']</div><hr>';
 		}
 	}
 	$layoutcode .= '</body></html>';

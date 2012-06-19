@@ -10,11 +10,11 @@
     </script>
 </head>
 
-<body class="mg10">
+<body style="margin: 10px">
 
 <form method="post" name="layform" action="{ACTION}">
 
-<table cellspacing="0" cellpadding="2" border="0" class="width100">
+<table cellspacing="0" cellpadding="2" border="0" width="100%">
 
     <input type="hidden" name="idlay" value="{IDLAY}">
 
@@ -23,10 +23,10 @@
     </tr>
 
     <tr>
-        <td style="border: 1px; border-top:0px; border-color: #747488; border-style: solid; background-color: #F4F4F7"><input name="layname" size="81" style="border: 1px; border-style: solid; border-color:#747488; background: #FFFFFF" type="text" class="code_input width100" value="{NAME}"></td>
+        <td style="border: 1px; border-top:0px; border-color: #747488; border-style: solid; background-color: #F4F4F7"><input name="layname" size="81" width="100%" style="border: 1px; border-style: solid; border-color:#747488; background: #FFFFFF" type="text" class="code_input" value="{NAME}"></td>
     </tr>
 
-    <tr><td><img src="images/spacer.gif" class="spacer"></td></tr>
+    <tr><td><img src="images/spacer.gif" width="1" height="10"></td></tr>
 
     <tr style="font-weight:bold; background-color: #a9aec2">
         <td class="textw_medium" style="border: 1px;border-color: #747488; border-style: solid">i18n("Description"):</td>
@@ -36,7 +36,7 @@
         <td class="text_medium" style="border: 1px; border-top:0px; border-color: #747488; border-style: solid; background-color: #F4F4F7"><textarea name="description" style="border: 1px; border-style: solid; border-color:#747488; background: #FFFFFF" class="{CLASS}" cols="80" rows="3">{DESCR}</textarea></td>
     </tr>
 
-    <tr><td><img src="images/spacer.gif" class="spacer"></td></tr>
+    <tr><td><img src="images/spacer.gif" width="1" height="10"></td></tr>
 
     <!-- BEGIN:BLOCK -->
     <tr style="font-weight:bold; background-color: #a9aec2">
@@ -47,11 +47,11 @@
         <td style="border: 1px; border-top:0px; border-color: #747488; border-style: solid; background-color: #F4F4F7"><textarea class="{CLASS}" name="{NAME}" style="border: 1px; border-style: solid; border-color:#747488; background: #FFFFFF" cols="80" rows="5">{VALUE}</textarea></td>
     </tr>
 
-    <tr><td><img src="images/spacer.gif" class="spacer"></td></tr>
+    <tr><td><img src="images/spacer.gif" width="1" height="10"></td></tr>
     <!-- END:BLOCK -->
 
     <tr>
-        <td class="tgright"><input accesskey="s" type="image" src="images/but_ok.gif"></td>
+        <td align="right"><input accesskey="s" type="image" src="images/but_ok.gif"></td>
     </tr>
 </table>
 </form>

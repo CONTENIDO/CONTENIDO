@@ -215,7 +215,7 @@
         });
     </script>
 </head>
-<body class="mg10">
+<body style="margin: 10px;">
 <b>{TITLE}</b>
 <div id="system_clear_info_box">
     {INFO_MSG_BOX}
@@ -235,7 +235,7 @@
             {GROUP_CLIENT}
         </div>
         <div class="rightCol clearfix">
-            <fieldset class="mgl10">
+            <fieldset style="margin-left: 10px;">
                 <legend>{CLIENT_CHOOSE}</legend>
                 <div class="system_clear_form_row clearfix">
                     <input id="select_all_clients" class="input" name="selectClient" type="radio" value="all">
@@ -245,7 +245,7 @@
                     <input id="available_clients" class="input" name="selectClient" type="radio" value="list">
                     <label class="labelrightCol">{CLIENT_SELECT}</label>
                 </div>
-                <div class="system_clear_form_row nodisplay" id="select_list_clients">
+                <div class="system_clear_form_row" id="select_list_clients" style="display:none;">
                     {SELECT_CLIENT}
                  </div>
             </fieldset>
@@ -278,7 +278,7 @@
             <div class="system_clear_form_row clearfix">
                 <input class="input" name="keepHistory" type="checkbox" value="1">
                 <label class="label_middle">{NUMBER_OF_HISTORY}: </label>
-                <input class="input widthpx25" name="keepHistoryNumber" type="text" value="10" maxlength="5">
+                <input class="input" name="keepHistoryNumber" type="text" value="10" style="width: 25px;" maxlength="5">
             </div>
 
         </div>

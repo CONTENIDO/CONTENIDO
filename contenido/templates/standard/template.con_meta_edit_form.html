@@ -24,7 +24,7 @@
         box = new messageBox("", "", "", 0, 0);
     </script>
 </head>
-<body class="mg10">
+<body style="margin: 10px">
 	
 <p style="display:block;font-weight:bold;">{TITEL}</p>
 <div class="categorypath">{CATEGORY}</div>
@@ -43,26 +43,26 @@
 
     {NOTIFICATION}
 
-    <tr class="vgtop">
+    <tr valign="top">
         <td class="text_medium" style="border: 1px; border-right:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Page title")</td>
         <td colspan="3" class="text_medium" style="border: 1px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{TITLE-INPUT}</td>
     </tr>
 	
     <!-- BEGIN:BLOCK -->
-    <tr class="vgtop">
-        <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium vgtop">{METATITLE}</td>
-        <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium vgtop">{METAFIELDTYPE}</td>
+    <tr valign="top">
+        <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">{METATITLE}</td>
+        <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">{METAFIELDTYPE}</td>
     </tr>
     <!-- END:BLOCK -->
 
-    <tr class="vgtop">
-        <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium vgtop">&nbsp;</td>
-        <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium vgtop tgright">{ADDMETABTN}</td>
+    <tr valign="top">
+        <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">&nbsp;</td>
+        <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top" align="right">{ADDMETABTN}</td>
     </tr>
 	
 	{ADDNEWMETA}
 	
-	<tr><td colspan="4" class="text_medium tgright"><input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td></tr>
+	<tr><td colspan="4" class="text_medium" align="right"><input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td></tr>
 
     </table>
 

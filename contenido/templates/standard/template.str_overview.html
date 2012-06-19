@@ -114,7 +114,7 @@
         </script>
 </head>
 
-<body class="mg10">
+<body style="margin:10px">
 <!-- catnewlayer -->
 <div id="cat_edit" class="cat_new_layer">
    <form style="margin:0px" name="newtree" method="post" action="{HREF_ACTION}" onsubmit="return checkForm();">
@@ -242,7 +242,7 @@
             {INPUT_IDCAT}
             {INPUT_SESSION}
 
-            <td class="str-style-a vgmiddle">&nbsp;</td>
+            <td class="str-style-a" valign="middle">&nbsp;</td>
             <td colspan="{SUM_COLUMNS_EDIT}" class="str-style-c" style="padding-left:15px; vertical-align:middle;">
 
                 <span id="cat_name">i18n('Categoryname') &nbsp; {INPUT_CATNAME_EDIT}<span style="padding-left:15px;">&nbsp;</span></span>
@@ -261,18 +261,18 @@
     </tr>
     <!-- BEGIN:BLOCK -->
     <tr id="cat_{CATID}_row" class="text_medium" style="background-color: {BGCOLOR};{HEIGTH}" {MOUSEOVER}>
-         <td class="str-style-a vgmiddle widthpx3">&nbsp;</td>
-        <td {DIRECTION} class="{BORDER_CLASS} vgmiddle" style="padding-left:{INDENT};" {SHOW_MOUSEOVER_CATEGORY}>{COLLAPSE_CATEGORY_NAME}</td>
-        <td class="{BORDER_CLASS} vgmiddle" {SHOW_MOUSEOVER_ALIAS}>{ALIAS}</td>
-        <td class="{BORDER_CLASS} widthpx30" {SHOW_MOUSEOVER}><span class="overview_dist_right">{TPLNAME}</span></td>
-        <td class="widthpx25">{RENAMEBUTTON}</td>
-        <td class="widthpx25">{VISIBLEBUTTON}</td>
-        <td class="widthpx25">{PUBLICBUTTON}</td>
-        <td class="widthpx25">{UPBUTTON}</td>
-        <td class="widthpx25">{DOWNBUTTON}</td>
-        <td class="widthpx25">{MOVEBUTTON}</td>
-        <td class="widthpx25">{DUPLICATEBUTTON}</td>
-        <td class="{BORDER_CLASS} widthpx25">{DELETEBUTTON}</td>
+         <td width="3" class="str-style-a" valign="middle">&nbsp;</td>
+        <td {DIRECTION} class="{BORDER_CLASS}" style="padding-left:{INDENT};" valign="middle" {SHOW_MOUSEOVER_CATEGORY}>{COLLAPSE_CATEGORY_NAME}</td>
+        <td class="{BORDER_CLASS}" valign="middle" {SHOW_MOUSEOVER_ALIAS}>{ALIAS}</td>
+        <td width="30"  class="{BORDER_CLASS}" {SHOW_MOUSEOVER}><span class="overview_dist_right">{TPLNAME}</span></td>
+        <td width="25">{RENAMEBUTTON}</td>
+        <td width="25">{VISIBLEBUTTON}</td>
+        <td width="25">{PUBLICBUTTON}</td>
+        <td width="25">{UPBUTTON}</td>
+        <td width="25">{DOWNBUTTON}</td>
+        <td width="25">{MOVEBUTTON}</td>
+        <td width="25">{DUPLICATEBUTTON}</td>
+        <td width="25"  class="{BORDER_CLASS}">{DELETEBUTTON}</td>
         {ADDITIONALCOLUMNS}
     </tr>
     <!-- END:BLOCK -->
