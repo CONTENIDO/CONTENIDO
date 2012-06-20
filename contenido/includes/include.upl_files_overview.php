@@ -30,7 +30,8 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("includes", "api/functions.frontend.list.php");
+cInclude('includes', 'api/functions.frontend.list.php');
+cInclude('includes', 'functions.file.php');
 
 if (!(int) $client > 0) {
     // if there is no client selected, display empty page
@@ -319,8 +320,8 @@ class UploadList extends FrontendList
 
         if ($field == 2) {
             // If this file is an image, try to open
-            switch (getFileExtension($data))
-            {
+            $fileType = strtolower(getFileType($data));
+            switch ($fileType) {
                 case "png":
                 case "gif":
                 case "tiff":
@@ -539,10 +540,10 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
         if ($appendparameters == "imagebrowser") {
             $restrictvar = "restrict_".$appendparameters;
             if (array_key_exists($restrictvar, $browserparameters)) {
-                $extension = getFileExtension($filename);
+                $fileType = strtolower(getFileType($filename));
                 if (count($browserparameters[$restrictvar]) > 0) {
                     $bAddFile = false;
-                    if (in_array($extension, $browserparameters[$restrictvar])) {
+                    if (in_array($fileType, $browserparameters[$restrictvar])) {
                         $bAddFile = true;
                     }
                 }
@@ -591,7 +592,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
             $list2->setData($rownum, $mark, $dirname.$filename,
                              $showfilename,
                              $filesize,
-                             getFileExtension($filename),
+                             strtolower(getFileType($filename)),
                              $todo->render().$actions);
             $rownum++;
         }

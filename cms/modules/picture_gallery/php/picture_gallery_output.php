@@ -14,6 +14,7 @@
 
 
 cInclude('includes', 'functions.api.images.php');
+cInclude('includes', 'functions.file.php');
 
 // Gallery variables
 $bRecursive = false;
@@ -80,7 +81,7 @@ if ($_REQUEST['view'] == '') {
     if (is_array($aGalleryFiles)) {
         // Filter out non-images
         foreach ($aGalleryFiles as $key => $aGalleryFile) {
-            $sExtension = strtolower(getFileExtension($aGalleryFile));
+            $sExtension = strtolower(getFileType($aGalleryFile));
             if (!in_array($sExtension, $aValidExtensions)) {
                 unset($aGalleryFiles[$key]);
             }

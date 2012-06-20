@@ -30,8 +30,9 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-cInclude("includes", "api/functions.frontend.list.php");
-cInclude("includes", "functions.upl.php");
+cInclude('includes', 'api/functions.frontend.list.php');
+cInclude('includes', 'functions.upl.php');
+cInclude('includes', 'functions.file.php');
 
 $appendparameters = $_REQUEST["appendparameters"];
 
@@ -87,7 +88,8 @@ class UploadList extends FrontendList
             $this->pathdata = $data;
 
             // If this file is an image, try to open
-            switch (getFileExtension($data)) {
+            $fileType = strtolower(getFileType($data));
+            switch ($fileType) {
                 case "png" :
                 case "psd" :
                 case "gif" :
@@ -349,7 +351,8 @@ function uplRender($searchfor, $sortby, $sortmode, $startpage = 1, $thumbnailmod
         $showfilename = $filename;
         $bgColor = false;
 
-        $list2->setData($rownum, $bgColor, $mydirname.$filename, $showfilename, $mydirname, $filesize, getFileExtension($filename), $rating / 10);
+        $fileType = strtolower(getFileType($data));
+        $list2->setData($rownum, $bgColor, $mydirname.$filename, $showfilename, $mydirname, $filesize, $fileType, $rating / 10);
 
         $rownum ++;
     }

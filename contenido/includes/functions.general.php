@@ -1061,16 +1061,11 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = "")
     return $html;
 }
 
-/**
- * Returns the file extension of a given file
- *
- * @param string $filename Name of the file
- * @return extension on success, false if no extension could be extracted.
- */
+/** @deprecated  [2012-06-20] Use getFileType() from functions.file.php */
 function getFileExtension($filename)
 {
+    cDeprecated("Use getFileType() from functions.file.php");
     $dotposition = strrpos($filename, ".");
-
     if ($dotposition !== false) {
         return (strtolower(substr($filename, $dotposition +1)));
     } else {

@@ -21,6 +21,8 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude('includes', 'functions.file.php');
+
 /**
  * Function reduces long path names and creates a dynamic tooltipp which shows
  * the full path name on mouseover
@@ -494,7 +496,9 @@ function uplGetThumbnail($sFile, $iMaxSize)
         return uplGetFileIcon($sFile);
     }
 
-    switch (getFileExtension($sFile)) {
+    $sFileType = strtolower(getFileType($sFile));
+
+    switch ($sFileType) {
         case "png":
         case "gif":
         case "tiff":
@@ -535,8 +539,9 @@ function uplGetFileIcon($sFile)
     global $cfg;
 
     $sPathFiletypes = $cfg['path']['contenido_fullhtml'] . $cfg['path']['images'] . 'filetypes/';
+    $sFileType = strtolower(getFileType($sFile));
 
-    switch (getFileExtension($sFile)) {
+    switch ($sFileType) {
         case "sxi":
         case "sti":
         case "pps":
@@ -650,8 +655,8 @@ function uplGetFileIcon($sFile)
             $icon = "css.gif";
             break;
         default:
-            if (file_exists($sPathFiletypes . getFileExtension($sFile) . '.gif')) {
-                $icon = getFileExtension($sFile) . '.gif';
+            if (file_exists($sPathFiletypes . $sFileType . '.gif')) {
+                $icon = $sFileType . '.gif';
             } else {
                 $icon = "unknown.gif";
             }

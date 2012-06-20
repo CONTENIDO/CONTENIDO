@@ -42,8 +42,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 global $cfg;
 
-/* Initial PHP error handling settings
- * -----------------------------------------------------------------------------
+/* Initial PHP error handling settings.
+ * NOTE: They will be overwritten below...
  */
 // Don't display errors
 @ini_set('display_errors', false);
