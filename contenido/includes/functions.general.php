@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.4.3
+ * @version    1.4.4
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -28,6 +28,8 @@
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
+
+cInclude('includes', 'functions.file.php');
 
 /**
  * Extracts the available content-types from the database
@@ -314,64 +316,6 @@ function backToMainArea($send)
 }
 
 /**
- * @deprecated 2011-09-02
- */
-function showLocation($area)
-{
-    global $db, $cfgPath, $cfg, $belang;
-
-    cDeprecated("This function is not supported any longer");
-    //Create new xml Class and load the file
-
-    $xml = new XML_doc();
-    if ($xml->load($cfg['path']['xml'].$cfg['lang'][$belang]) == false) {
-        if ($xml->load($cfg['path']['xml'].'lang_en_US.xml') == false) {
-            die("Unable to load any XML language file");
-        }
-    }
-
-    $sql = "SELECT location FROM ".$cfg["tab"]["area"]." as A, ".$cfg["tab"]["nav_sub"]." as B "
-        . "WHERE A.name='".Contenido_Security::escapeDB($area, $db)."' AND A.idarea=B.idarea AND A.online='1'";
-
-    $db->query($sql);
-    if ($db->next_record()) {
-        echo "<b>".$xml->valueOf($db->f("location"))."</b>";
-    } else {
-        $sql = "SELECT parent_id FROM ".$cfg["tab"]["area"]." WHERE "
-             . "name='".Contenido_Security::escapeDB($area, $db)."' AND online='1'";
-        $db->query($sql);
-        $db->next_record();
-        $parent = $db->f("parent_id");
-
-        $sql = "SELECT location FROM ".$cfg["tab"]["area"]." as A, ".$cfg["tab"]["nav_sub"]." as B "
-             . "WHERE A.name='".Contenido_Security::escapeDB($parent, $db)."' AND A.idarea = B.idarea AND A.online='1'";
-
-        $db->query($sql);
-        $db->next_record();
-        echo "<b>".$xml->valueOf($db->f("location")).$area."</b>";
-    }
-}
-
-/**
- * @deprecated 2011-08-23
- */
-function showTable($tablename)
-{
-    global $db;
-
-    cDeprecated("This function is not supported any longer");
-
-    $sql = "SELECT * FROM $tablename";
-    $db->query($sql);
-    while ($db->next_record()) {
-        while (list ($key, $value) = each($db->Record)) {
-            print (is_string($key) ? "<b>$key</b>: $value | " : "");
-        }
-        print ("<br>");
-    }
-}
-
-/**
  * Returns list of languages (language ids) by passed client.
  * @param  int  $client
  * @return  array
@@ -445,49 +389,6 @@ function getAllClientsAndLanguages()
     return $aRs;
 }
 
-/** @deprecated 2012-03-05 This function is not longer supported. */
-function fakeheader($time)
-{
-    cDeprecated("This function is not longer supported.");
-
-    global $con_time0;
-    if (!isset($con_time0)) {
-        $con_time0 = $time;
-    }
-
-    if ($time >= $con_time0 + 1000) {
-        $con_time0 = $time;
-        header('X-pmaPing: Pong');
-    }
-}
-
-function recursive_copy($from_path, $to_path)
-{
-    mkdir($to_path, 0777);
-    $old_path = getcwd();
-    $this_path = getcwd();
-
-    if (is_dir($from_path)) {
-        chdir($from_path);
-        $myhandle = opendir('.');
-
-        while (($myfile = readdir($myhandle)) !== false) {
-            if (($myfile != ".") && ($myfile != "..")) {
-                if (is_dir($myfile)) {
-                    recursive_copy($from_path.$myfile."/", $to_path.$myfile."/");
-                    chdir($from_path);
-                } elseif (file_exists($myfile)) {
-                    copy($from_path.$myfile, $to_path.$myfile);
-                }
-            }
-        }
-        closedir($myhandle);
-    }
-
-    chdir($old_path);
-    return;
-}
-
 function getmicrotime()
 {
     list ($usec, $sec) = explode(" ", microtime());
@@ -557,56 +458,6 @@ function getGroupOrUserName($uid)
     } else {
         return $user->getField("realname");
     }
-}
-
-/* @deprecated 2012-03-10 This function is not longer supported. */
-function getPhpModuleInfo($moduleName)
-{
-    cDeprecated("This function is not longer supported");
-    $moduleSettings = array();
-    ob_start();
-    phpinfo(INFO_MODULES); // get information vor modules
-    $string = ob_get_contents();
-    ob_end_clean();
-
-    $pieces = explode("<h2", $string); // get several modules
-
-    foreach ($pieces as $val) {
-        // perform a regular expression match on every module header
-        preg_match("/<a name=\"module_([^<>]*)\">/", $val, $sub_key);
-
-        // perform a regular expression match on tabs with 2 columns
-        preg_match_all("/<tr[^>]*>
-                <td[^>]*>(.*)<\/td>
-                <td[^>]*>(.*)<\/td>/Ux", $val, $sub);
-
-        // perform a regular expression match on tabs with 3 columns
-        preg_match_all("/<tr[^>]*>
-                <td[^>]*>(.*)<\/td>
-                <td[^>]*>(.*)<\/td>
-                <td[^>]*>(.*)<\/td>/Ux", $val, $sub_ext);
-
-        if (isset($moduleName)) { // if $moduleName is specified
-            if (extension_loaded($moduleName)) { //check if specified extension exists or is loaded
-                if ($sub_key[1] == $moduleName) { //create array only for specified $moduleName
-                    foreach ($sub[0] as $key => $val) {
-                        $moduleSettings[strip_tags($sub[1][$key])] = array(strip_tags($sub[2][$key]));
-                    }
-                }
-            } else { //specified extension is not loaded or doesn't exists
-                $moduleSettings['error'] = 'extension is not available';
-            }
-        } else { // $moduleName isn't specified => get everything
-            foreach ($sub[0] as $key => $val) {
-                $moduleSettings[$sub_key[1]][strip_tags($sub[1][$key])] = array(strip_tags($sub[2][$key]));
-            }
-
-            foreach ($sub_ext[0] as $key => $val) {
-                $moduleSettings[$sub_key[1]][strip_tags($sub_ext[1][$key])] = array(strip_tags($sub_ext[2][$key]), strip_tags($sub_ext[3][$key]));
-            }
-        }
-    }
-    return $moduleSettings;
 }
 
 /**
@@ -1061,18 +912,6 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = "")
     return $html;
 }
 
-/** @deprecated  [2012-06-20] Use getFileType() from functions.file.php */
-function getFileExtension($filename)
-{
-    cDeprecated("Use getFileType() from functions.file.php");
-    $dotposition = strrpos($filename, ".");
-    if ($dotposition !== false) {
-        return (strtolower(substr($filename, $dotposition +1)));
-    } else {
-        return false;
-    }
-}
-
 function human_readable_size($number)
 {
     $base = 1024;
@@ -1294,80 +1133,6 @@ function getClientName($idclient)
 }
 
 /**
- * Scans passed directory and collects all found files
- *
- * @param   string  $sDirectory
- * @param   bool    $bRecursive
- * @return  bool|array  List of found files (full path and name) or false
- */
-function scanDirectory($sDirectory, $bRecursive = false)
-{
-    if (substr($sDirectory, strlen($sDirectory) - 1, 1) == '/') {
-        $sDirectory = substr($sDirectory, 0, strlen($sDirectory) - 1);
-    }
-
-    if (!is_dir($sDirectory)) {
-        return false;
-    }
-
-    $aFiles = array();
-    $openDirs = array();
-    $closedDirs = array();
-    array_push($openDirs, $sDirectory);
-
-    while(count(($openDirs)) >= 1)
-    {
-        $sDirectory = array_pop($openDirs);
-            if ($hDirHandle = opendir($sDirectory)) {
-            while (($sFile = readdir($hDirHandle)) !== false) {
-                if ($sFile != '.' && $sFile != '..') {
-                    $sFullpathFile = $sDirectory . '/' . $sFile;
-                    if (is_file($sFullpathFile) && is_readable($sFullpathFile)) {
-                        array_push($aFiles, $sFullpathFile);
-                    } elseif (is_dir($sFullpathFile) && $bRecursive == true) {
-                        if(!in_array($sFullpathFile, $closedDirs))
-                        {
-                            array_push($openDirs, $sFullpathFile);
-                        }
-                    }
-                }
-            }
-            closedir($hDirHandle);
-        }
-        array_push($closedDirs, $sDirectory);
-    }
-
-
-    return $aFiles;
-}
-
-/**
- * Returns the size of a directory. AKA the combined filesizes of all files within it.
- * Note that this function uses filesize(). There could be problems with files that are larger than 2GiB
- *
- * @param string The directory
- * @param bool true if all the subdirectories should be included in the calculation
- *
- * @return bool|int Returns false in case of an error or the size
- */
-function getDirectorySize($sDirectory, $bRecursive = false)
-{
-    $ret = 0;
-    $files = scanDirectory($sDirectory, $bRecursive);
-    if($files === false)
-    {
-        return false;
-    }
-
-    foreach($files as $file)
-    {
-        $ret += filesize($file);
-    }
-
-    return $ret;
-}
-
-/**
  * scanPlugins: Scans a given plugin directory and places the
  *                 found plugins into the array $cfg['plugins']
  *
@@ -1501,14 +1266,6 @@ function callPluginStore($entity)
 }
 
 /**
- * @deprecated 2012-02-26 Function does not work and is not longer supported
- * @return void
- */
-function displayPlugin($entity, & $form) {
-    cDeprecated("This function does not work and is not longer supported");
-}
-
-/**
  * createRandomName: Creates a random name (example: Passwords)
  *
  * Example:
@@ -1536,42 +1293,6 @@ function createRandomName($nameLength)
     return $Name;
 }
 
-/**
- * sendPostRequest: Sents a HTTP POST request
- *
- * Example:
- * sendPostRequest("hostname", "serverpath/test.php", $data);
- *
- * @deprecated 2011-08-23
- *
- * @param $host     Hostname or domain
- * @param $pathhost Path on the host or domain
- * @param $data        Data to send
- * @param $referer    Referer (optional)
- * @param $port        Port (default: 80)
- */
-function sendPostRequest($host, $path, $data, $referer = "", $port = 80)
-{
-    cDeprecated("This function is not supported any longer");
-
-    $fp = fsockopen($host, $port);
-
-    fputs($fp, "POST $path HTTP/1.1\n");
-    fputs($fp, "Host: $host\n");
-    fputs($fp, "Referer: $referer\n");
-    fputs($fp, "Content-type: application/x-www-form-urlencoded\n");
-    fputs($fp, "Content-length: ".strlen($data)."\n");
-    fputs($fp, "Connection: close\n\n");
-    fputs($fp, "$data\n");
-
-    while (!feof($fp)) {
-        $res .= fgets($fp, 128);
-    }
-
-    fclose($fp);
-
-    return $res;
-}
 
 function is_dbfs($file)
 {
@@ -1927,13 +1648,6 @@ function endAndLogTiming($uuid)
     cDebug("calling function ".$_timings[$uuid]["function"]."(".$parameterString.") took ".$timeSpent." seconds");
 }
 
-/**
-* @deprecated [2012-01-18] DB_Contenido performs the check for itself. This method is no longer needed
-*/
-function checkMySQLConnectivity() {
-    cDeprecated("DB_Contenido performs the check for itself. This method is no longer needed");
-}
-
 function notifyOnError($errortitle, $errormessage)
 {
     global $cfg;
@@ -1970,58 +1684,6 @@ function notifyOnError($errortitle, $errormessage)
             file_put_contents($notifyFile, time());
         }
     }
-}
-
-/**
- * @deprecated 2011-08-24 this function is not supported any longer
- */
-function cIDNAEncode($sourceEncoding, $string)
-{
-    cDeprecated("This function is not supported any longer");
-
-    if (extension_loaded("iconv")) {
-        cInclude('pear', 'Net/IDNA.php');
-        $idn = Net_IDNA::getInstance();
-        $string = iconv("UTF-8", $sourceEncoding, $string);
-        $string = $idn->encode($string);
-        return ($string);
-    }
-
-    if (extension_loaded("recode")) {
-        cInclude('pear', 'Net/IDNA.php');
-        $idn = Net_IDNA::getInstance();
-        $string = $idn->decode($string);
-        $string = recode_string("UTF-8..".$sourceEncoding, $string);
-        return $string;
-    }
-
-    return $string;
-}
-
-/**
- * @deprecated 2011-08-24 this function is not supported any longer
- */
-function cIDNADecode($targetEncoding, $string)
-{
-    cDeprecated("This function is not supported any longer");
-
-    if (extension_loaded("iconv")) {
-        cInclude('pear', 'Net/IDNA.php');
-        $idn = Net_IDNA::getInstance();
-        $string = $idn->decode($string);
-        $string = iconv($targetEncoding, "UTF-8", $string);
-        return ($string);
-    }
-
-    if (extension_loaded("recode")) {
-        cInclude('pear', 'Net/IDNA.php');
-        $idn = Net_IDNA::getInstance();
-        $string = recode_string($targetEncoding."..UTF-8", $string);
-        $string = $idn->decode($string);
-        return $string;
-    }
-
-    return $string;
 }
 
 function cInitializeArrayKey(&$aArray, $sKey, $mDefault = "")
@@ -2127,6 +1789,198 @@ function IP_match($network, $mask, $ip)
         return true;
     } else {
         // fail - this IP is NOT within specified mask
+        return false;
+    }
+}
+
+
+/** @deprecated  [2011-08-24]  This function is not supported any longer */
+function cIDNAEncode($sourceEncoding, $string)
+{
+    cDeprecated("This function is not supported any longer");
+    if (extension_loaded("iconv")) {
+        cInclude('pear', 'Net/IDNA.php');
+        $idn = Net_IDNA::getInstance();
+        $string = iconv("UTF-8", $sourceEncoding, $string);
+        $string = $idn->encode($string);
+        return ($string);
+    }
+    if (extension_loaded("recode")) {
+        cInclude('pear', 'Net/IDNA.php');
+        $idn = Net_IDNA::getInstance();
+        $string = $idn->decode($string);
+        $string = recode_string("UTF-8..".$sourceEncoding, $string);
+        return $string;
+    }
+    return $string;
+}
+
+/** @deprecated  [2011-08-24]  This function is not supported any longer */
+function cIDNADecode($targetEncoding, $string)
+{
+    cDeprecated("This function is not supported any longer");
+    if (extension_loaded("iconv")) {
+        cInclude('pear', 'Net/IDNA.php');
+        $idn = Net_IDNA::getInstance();
+        $string = $idn->decode($string);
+        $string = iconv($targetEncoding, "UTF-8", $string);
+        return ($string);
+    }
+    if (extension_loaded("recode")) {
+        cInclude('pear', 'Net/IDNA.php');
+        $idn = Net_IDNA::getInstance();
+        $string = recode_string($targetEncoding."..UTF-8", $string);
+        $string = $idn->decode($string);
+        return $string;
+    }
+    return $string;
+}
+
+/** @deprecated [2012-01-18] DB_Contenido performs the check for itself. This method is no longer needed */
+function checkMySQLConnectivity()
+{
+    cDeprecated("DB_Contenido performs the check for itself. This method is no longer needed");
+}
+
+/** @deprecated 2011-08-23  This function is not supported any longer */
+function sendPostRequest($host, $path, $data, $referer = "", $port = 80)
+{
+    cDeprecated("This function is not supported any longer");
+    $fp = fsockopen($host, $port);
+    fputs($fp, "POST $path HTTP/1.1\n");
+    fputs($fp, "Host: $host\n");
+    fputs($fp, "Referer: $referer\n");
+    fputs($fp, "Content-type: application/x-www-form-urlencoded\n");
+    fputs($fp, "Content-length: ".strlen($data)."\n");
+    fputs($fp, "Connection: close\n\n");
+    fputs($fp, "$data\n");
+    while (!feof($fp)) {
+        $res .= fgets($fp, 128);
+    }
+    fclose($fp);
+    return $res;
+}
+
+/** @deprecated  [2012-02-26] Function does not work and is not longer supported */
+function displayPlugin($entity, & $form) {
+    cDeprecated("This function does not work and is not longer supported");
+}
+
+/** @deprecated  [2012-03-10] This function is not longer supported. */
+function getPhpModuleInfo($moduleName)
+{
+    cDeprecated("This function is not longer supported");
+    $moduleSettings = array();
+    ob_start();
+    phpinfo(INFO_MODULES);
+    $string = ob_get_contents();
+    ob_end_clean();
+    $pieces = explode("<h2", $string);
+    foreach ($pieces as $val) {
+        preg_match("/<a name=\"module_([^<>]*)\">/", $val, $sub_key);
+        preg_match_all("/<tr[^>]*>
+                <td[^>]*>(.*)<\/td>
+                <td[^>]*>(.*)<\/td>/Ux", $val, $sub);
+        preg_match_all("/<tr[^>]*>
+                <td[^>]*>(.*)<\/td>
+                <td[^>]*>(.*)<\/td>
+                <td[^>]*>(.*)<\/td>/Ux", $val, $sub_ext);
+        if (isset($moduleName)) {
+            if (extension_loaded($moduleName)) {
+                if ($sub_key[1] == $moduleName) {
+                    foreach ($sub[0] as $key => $val) {
+                        $moduleSettings[strip_tags($sub[1][$key])] = array(strip_tags($sub[2][$key]));
+                    }
+                }
+            } else {
+                $moduleSettings['error'] = 'extension is not available';
+            }
+        } else {
+            foreach ($sub[0] as $key => $val) {
+                $moduleSettings[$sub_key[1]][strip_tags($sub[1][$key])] = array(strip_tags($sub[2][$key]));
+            }
+            foreach ($sub_ext[0] as $key => $val) {
+                $moduleSettings[$sub_key[1]][strip_tags($sub_ext[1][$key])] = array(strip_tags($sub_ext[2][$key]), strip_tags($sub_ext[3][$key]));
+            }
+        }
+    }
+    return $moduleSettings;
+}
+
+/** @deprecated  [2012-03-05]  This function is not longer supported. */
+function fakeheader($time)
+{
+    cDeprecated("This function is not longer supported.");
+    global $con_time0;
+    if (!isset($con_time0)) {
+        $con_time0 = $time;
+    }
+    if ($time >= $con_time0 + 1000) {
+        $con_time0 = $time;
+        header('X-pmaPing: Pong');
+    }
+}
+
+/** @deprecated  [2011-09-02] This function is not supported any longer */
+function showLocation($area)
+{
+    cDeprecated("This function is not supported any longer");
+    global $db, $cfgPath, $cfg, $belang;
+    $xml = new XML_doc();
+    if ($xml->load($cfg['path']['xml'].$cfg['lang'][$belang]) == false) {
+        if ($xml->load($cfg['path']['xml'].'lang_en_US.xml') == false) {
+            die("Unable to load any XML language file");
+        }
+    }
+    $sql = "SELECT location FROM ".$cfg["tab"]["area"]." as A, ".$cfg["tab"]["nav_sub"]." as B "
+        . "WHERE A.name='".Contenido_Security::escapeDB($area, $db)."' AND A.idarea=B.idarea AND A.online='1'";
+    $db->query($sql);
+    if ($db->next_record()) {
+        echo "<b>".$xml->valueOf($db->f("location"))."</b>";
+    } else {
+        $sql = "SELECT parent_id FROM ".$cfg["tab"]["area"]." WHERE "
+             . "name='".Contenido_Security::escapeDB($area, $db)."' AND online='1'";
+        $db->query($sql);
+        $db->next_record();
+        $parent = $db->f("parent_id");
+        $sql = "SELECT location FROM ".$cfg["tab"]["area"]." as A, ".$cfg["tab"]["nav_sub"]." as B "
+             . "WHERE A.name='".Contenido_Security::escapeDB($parent, $db)."' AND A.idarea = B.idarea AND A.online='1'";
+        $db->query($sql);
+        $db->next_record();
+        echo "<b>".$xml->valueOf($db->f("location")).$area."</b>";
+    }
+}
+
+/** @deprecated  [2011-08-23] This function is not supported any longer */
+function showTable($tablename)
+{
+    cDeprecated("This function is not supported any longer");
+    global $db;
+    $sql = "SELECT * FROM $tablename";
+    $db->query($sql);
+    while ($db->next_record()) {
+        while (list ($key, $value) = each($db->Record)) {
+            print (is_string($key) ? "<b>$key</b>: $value | " : "");
+        }
+        print ("<br>");
+    }
+}
+
+/** @deprecated  [2012-06-20] Use getFileType() from functions.file.php */
+function recursive_copy($from_path, $to_path)
+{
+    cDeprecated("Use recursiveCopy() from functions.file.php");
+    recursiveCopy($from_path, $to_path);
+}
+
+/** @deprecated  [2012-06-20] Use getFileType() from functions.file.php */
+function getFileExtension($filename)
+{
+    cDeprecated("Use getFileType() from functions.file.php");
+    $dotposition = strrpos($filename, ".");
+    if ($dotposition !== false) {
+        return (strtolower(substr($filename, $dotposition +1)));
+    } else {
         return false;
     }
 }

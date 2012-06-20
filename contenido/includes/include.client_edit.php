@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -85,7 +85,7 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
 
         if ($copytemplate) {
             if (!file_exists($destPath)) {
-                recursive_copy($sourcePath, $destPath);
+                recursiveCopy($sourcePath, $destPath);
                 $res = fopen($destPath."config.php","rb+");
                 $res2 = fopen($destPath."config.php.new", "ab+");
 

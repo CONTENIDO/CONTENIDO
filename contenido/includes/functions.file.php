@@ -7,12 +7,14 @@
  * Functions to edit files. Included in Area style,
  * js, htmltpl in Frame right_bottom.
  *
+ * Contains also common file and directory related functions
+ *
  * Requirements:
  * @con_php_req 5.0
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.4
+ * @version    1.0.5
  * @author     Willi Man
  * @copyright  four for business AG <info@contenido.org>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -22,10 +24,8 @@
  *
  * {@internal
  *   created 2004-07-13
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -379,6 +379,105 @@ function fileGetMimeContentType($file)
     } else {
         return null;
     }
+}
+
+/**
+ * Returns the size of a directory. AKA the combined filesizes of all files within it.
+ * Note that this function uses filesize(). There could be problems with files that are larger than 2GiB
+ *
+ * @param string The directory
+ * @param bool true if all the subdirectories should be included in the calculation
+ * @return bool|int Returns false in case of an error or the size
+ */
+function getDirectorySize($sDirectory, $bRecursive = false)
+{
+    $ret = 0;
+    $files = scanDirectory($sDirectory, $bRecursive);
+    if ($files === false) {
+        return false;
+    }
+
+    foreach($files as $file) {
+        $ret += filesize($file);
+    }
+
+    return $ret;
+}
+
+/**
+ * Scans passed directory and collects all found files
+ *
+ * @param   string  $sDirectory
+ * @param   bool    $bRecursive
+ * @return  bool|array  List of found files (full path and name) or false
+ */
+function scanDirectory($sDirectory, $bRecursive = false)
+{
+    if (substr($sDirectory, strlen($sDirectory) - 1, 1) == '/') {
+        $sDirectory = substr($sDirectory, 0, strlen($sDirectory) - 1);
+    }
+
+    if (!is_dir($sDirectory)) {
+        return false;
+    }
+
+    $aFiles = array();
+    $openDirs = array();
+    $closedDirs = array();
+    array_push($openDirs, $sDirectory);
+
+    while(count(($openDirs)) >= 1) {
+        $sDirectory = array_pop($openDirs);
+            if ($hDirHandle = opendir($sDirectory)) {
+            while (($sFile = readdir($hDirHandle)) !== false) {
+                if ($sFile != '.' && $sFile != '..') {
+                    $sFullpathFile = $sDirectory . '/' . $sFile;
+                    if (is_file($sFullpathFile) && is_readable($sFullpathFile)) {
+                        array_push($aFiles, $sFullpathFile);
+                    } elseif (is_dir($sFullpathFile) && $bRecursive == true) {
+                        if (!in_array($sFullpathFile, $closedDirs)) {
+                            array_push($openDirs, $sFullpathFile);
+                        }
+                    }
+                }
+            }
+            closedir($hDirHandle);
+        }
+        array_push($closedDirs, $sDirectory);
+    }
+
+    return $aFiles;
+}
+
+/**
+ * Copies source directory to destination directory.
+ * @param  string  $sourcePath
+ * @param  string  $destinationPath
+ * @param  int     $mode  Octal representation of file mode (0644, 0750, etc.)
+ */
+function recursiveCopy($sourcePath, $destinationPath, $mode = 0777)
+{
+    mkdir($destinationPath, 0777);
+    $oldPath = getcwd();
+
+    if (is_dir($sourcePath)) {
+        chdir($sourcePath);
+        $myhandle = opendir('.');
+
+        while (($file = readdir($myhandle)) !== false) {
+            if ($file != '.' && $file != '..') {
+                if (is_dir($file)) {
+                    recursiveCopy($sourcePath . $file . '/', $destinationPath . $file . '/');
+                    chdir($sourcePath);
+                } elseif (file_exists($file)) {
+                    copy($sourcePath . $file, $destinationPath . $file);
+                }
+            }
+        }
+        closedir($myhandle);
+    }
+
+    chdir($oldPath);
 }
 
 ?>
