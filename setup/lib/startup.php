@@ -175,6 +175,7 @@ Contenido_Autoload::initialize($cfg);
 // Common includes
 checkAndInclude(C_SETUP_PATH . 'lib/defines.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.i18n.php');
+checkAndInclude($cfg['path']['contenido'] . 'includes/api/functions.api.general.php');
 checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
 checkAndInclude(C_SETUP_PATH . 'lib/class.setupcontrols.php');
 checkAndInclude(C_SETUP_PATH . 'lib/functions.filesystem.php');
