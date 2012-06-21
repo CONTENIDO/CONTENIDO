@@ -23,10 +23,8 @@
  *
  * {@internal
  *   created  2012-02-14
- *
  *   $Id$:
  * }}
- *
  */
 
 
@@ -43,7 +41,7 @@ if ($tmp == '' || $tmp == '0') {
     if (is_numeric($tmp)) {
         $oUplItem = new cApiUpload((int) $tmp);
         if (false !== $oUplItem->get('dirname') && $oUplItem->get('filetype') == 'swf') {
-            if (is_dbfs($oUplItem->get('dirname'))) {
+            if (cApiDbfs::isDbfs($oUplItem->get('dirname'))) {
                 $tmp_swf = $cfgClient[$client]['path']['htmlpath'] . 'dbfs.php?file=' . urlencode($oUplItem->get('dirname') . $oUplItem->get('filename'));
             } else {
                 $tmp_swf = $cfgClient[$client]['path']['htmlpath'] . $cfgClient[$client]['upload'] . $oUplItem->get('dirname') . $oUplItem->get('filename');

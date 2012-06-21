@@ -194,7 +194,7 @@ function uplSyncDirectory($sPath)
 {
     global $cfgClient, $client, $cfg, $db;
 
-    if (is_dbfs($sPath)) {
+    if (cApiDbfs::isDbfs($sPath)) {
         return uplSyncDirectoryDBFS($sPath);
     }
 
@@ -257,7 +257,7 @@ function uplSyncDirectoryDBFS($sPath)
     $oDBFSColl = new cApiDbfsCollection();
 
     if ($oDBFSColl->dir_exists($sPath)) {
-        $sStripPath = $oDBFSColl->strip_path($sPath);
+        $sStripPath = cApiDbfs::stripPath($sPath);
         $oDBFSColl->select("dirname = '$sStripPath'");
         while ($oFile = $oDBFSColl->next()) {
             if ($oFile->get('filename') != '.') {
@@ -296,8 +296,8 @@ function uplmkdir($sPath, $sName)
 {
     global $cfgClient, $client, $action;
 
-    if (is_dbfs($sPath)) {
-        $sPath = str_replace('dbfs:', '', $sPath);
+    if (cApiDbfs::isDbfs($sPath)) {
+        $sPath = cApiDbfs::stripPath($sPath);
         $sFullPath = $sPath . '/' . $sName . '/.';
 
         $dbfs = new cApiDbfsCollection();
@@ -765,27 +765,27 @@ function uplGetFileTypeDescription($sExtension)
  */
 function uplCreateFriendlyName ($filename)
 {
-	global $cfg, $lang;
+    global $cfg, $lang;
 
-	$oLang = new cApiLanguage();
-	$oLang->loadByPrimaryKey($lang);
-	
-	if (!is_array($cfg['upl']['allow_additional_chars'])) {
-		$filename = str_replace(" ", "_", $filename);
-	} elseif (in_array(' ', $cfg['upl']['allow_additional_chars']) === FALSE) {
-		$filename = str_replace(" ", "_", $filename);
-	}
-	
-	$chars = '';
-	if ( is_array($cfg['upl']['allow_additional_chars']) ) {
-		$chars = implode("", $cfg['upl']['allow_additional_chars']);
-		$chars = str_replace( array('-', '[', ']') , '', $chars );
-	}
-	
-	$filename = capiStrReplaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
-	$filename = preg_replace("/[^A-Za-z0-9._\-" . $chars . "]/i", '', $filename);
+    $oLang = new cApiLanguage();
+    $oLang->loadByPrimaryKey($lang);
 
-	return $filename;
+    if (!is_array($cfg['upl']['allow_additional_chars'])) {
+        $filename = str_replace(" ", "_", $filename);
+    } elseif (in_array(' ', $cfg['upl']['allow_additional_chars']) === FALSE) {
+        $filename = str_replace(" ", "_", $filename);
+    }
+
+    $chars = '';
+    if ( is_array($cfg['upl']['allow_additional_chars']) ) {
+        $chars = implode("", $cfg['upl']['allow_additional_chars']);
+        $chars = str_replace( array('-', '[', ']') , '', $chars );
+    }
+
+    $filename = capiStrReplaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
+    $filename = preg_replace("/[^A-Za-z0-9._\-" . $chars . "]/i", '', $filename);
+
+    return $filename;
 }
 
 

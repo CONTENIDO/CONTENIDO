@@ -13,7 +13,7 @@
  * normalizing API.
  *
  * @package    CONTENIDO API
- * @version    0.1.1
+ * @version    0.1.2
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -23,10 +23,8 @@
  *
  * {@internal
  *   created  2011-09-19
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -62,8 +60,8 @@ class cApiDbfsCollection extends ItemCollection
         global $client, $auth;
 
         $path   = Contenido_Security::escapeDB($path, null);
-        $client = Contenido_Security::toInteger($client);
-        $path   = $this->strip_path($path);
+        $client = (int) $client;
+        $path   = cApiDbfs::stripPath($path);
         $dir    = dirname($path);
         $file   = basename($path);
 
@@ -76,7 +74,8 @@ class cApiDbfsCollection extends ItemCollection
         if ($item = $this->next()) {
             $properties = new cApiPropertyCollection();
             // Check if we're allowed to access it
-            if ($properties->getValue('upload', 'dbfs:/' . $dir . '/' . $file, 'file', 'protected') == '1') {
+            $protocol = cApiDbfs::PROTOCOL_DBFS;
+            if ($properties->getValue('upload', $protocol . '/' . $dir . '/' . $file, 'file', 'protected') == '1') {
                 if ($auth->auth['uid'] == 'nobody') {
                     header('HTTP/1.0 403 Forbidden');
                     return;
@@ -97,7 +96,7 @@ class cApiDbfsCollection extends ItemCollection
 
     public function writeFromFile($localfile, $targetfile)
     {
-        $targetfile = $this->strip_path($targetfile);
+        $targetfile = cApiDbfs::stripPath($targetfile);
         $mimetype   = fileGetMimeContentType($localfile);
 
         $this->write($targetfile, file_get_contents($localfile), $mimetype);
@@ -105,14 +104,14 @@ class cApiDbfsCollection extends ItemCollection
 
     public function writeToFile($sourcefile, $localfile)
     {
-        $sourcefile = $this->strip_path($sourcefile);
+        $sourcefile = cApiDbfs::stripPath($sourcefile);
 
         file_put_contents($localfile, $this->read($sourcefile));
     }
 
     public function write($file, $content = '', $mimetype = '')
     {
-        $file = $this->strip_path($file);
+        $file = cApiDbfs::stripPath($file);
 
         if (!$this->file_exists($file)) {
             $this->create($file, $mimetype);
@@ -124,8 +123,8 @@ class cApiDbfsCollection extends ItemCollection
     {
         global $client;
 
-        $path     = $this->strip_path($path);
-        $client = Contenido_Security::toInteger($client);
+        $path   = cApiDbfs::stripPath($path);
+        $client = (int) $client;
 
         // Are there any subdirs?
         $this->select("dirname LIKE '" . $path . "/%' AND idclient = " . $client . " LIMIT 1");
@@ -150,7 +149,7 @@ class cApiDbfsCollection extends ItemCollection
     {
         global $client;
 
-        $path  = $this->strip_path($path);
+        $path  = cApiDbfs::stripPath($path);
         $dir   = dirname($path);
         $file  = basename($path);
 
@@ -158,7 +157,7 @@ class cApiDbfsCollection extends ItemCollection
             $dir = '';
         }
 
-        $client = Contenido_Security::toInteger($client);
+        $client = (int) $client;
 
         $this->select("dirname = '" . $dir . "' AND filename = '" . $file . "' AND idclient = " . $client . " LIMIT 1");
         if ($this->next()) {
@@ -172,13 +171,13 @@ class cApiDbfsCollection extends ItemCollection
     {
         global $client;
 
-        $path = $this->strip_path($path);
+        $path = cApiDbfs::stripPath($path);
 
         if ($path == "") {
             return true;
         }
 
-        $client = Contenido_Security::toInteger($client);
+        $client = (int) $client;
 
         $this->select("dirname = '" . $path . "' AND filename = '.' AND idclient = " . $client . " LIMIT 1");
         if ($this->next()) {
@@ -199,7 +198,7 @@ class cApiDbfsCollection extends ItemCollection
     {
         global $client, $cfg, $auth;
 
-        $client = Contenido_Security::toInteger($client);
+        $client = (int) $client;
 
         if (substr($path,0,1) == '/') {
             $path = substr($path,1);
@@ -257,8 +256,8 @@ class cApiDbfsCollection extends ItemCollection
     {
         global $client;
 
-        $client    = Contenido_Security::toInteger($client);
-        $path      = $this->strip_path($path);
+        $client    = (int) $client;
+        $path      = cApiDbfs::stripPath($path);
         $dirname   = dirname($path);
         $filename  = basename($path);
 
@@ -278,8 +277,8 @@ class cApiDbfsCollection extends ItemCollection
     {
         global $client;
 
-        $client   = Contenido_Security::toInteger($client);
-        $path     = $this->strip_path($path);
+        $client   = (int) $client;
+        $path     = cApiDbfs::stripPath($path);
         $dirname  = dirname($path);
         $filename = basename($path);
 
@@ -297,7 +296,7 @@ class cApiDbfsCollection extends ItemCollection
     {
         global $client;
 
-        $client    = Contenido_Security::toInteger($client);
+        $client    = (int) $client;
         $dirname   = dirname($path);
         $filename  = basename($path);
 
@@ -315,8 +314,8 @@ class cApiDbfsCollection extends ItemCollection
     {
         global $client;
 
-        $client   = Contenido_Security::toInteger($client);
-        $path     = $this->strip_path($path);
+        $client   = (int) $client;
+        $path     = cApiDbfs::stripPath($path);
         $dirname  = dirname($path);
         $filename = basename($path);
 
@@ -330,22 +329,9 @@ class cApiDbfsCollection extends ItemCollection
         }
     }
 
-    public function strip_path($path)
-    {
-        if (substr($path, 0, 5) == 'dbfs:') {
-            $path = substr($path, 5);
-        }
-
-        if (substr($path, 0, 1) == '/') {
-            $path = substr($path, 1);
-        }
-
-        return $path;
-    }
-
     /**
-     * checks if time management is activated and if yes then check if file is in period
-     * @param datatype $sPath
+     * Checks if time management is activated and if yes then check if file is in period
+     * @param  string  $sPath
      * @return bool $bAvailable
      */
     public function checkTimeManagement($sPath, $oProperties)
@@ -382,6 +368,14 @@ class cApiDbfsCollection extends ItemCollection
     {
         return strtotime($sDate);
     }
+
+    /** @deprecated  [2012-06-20] Use cApiDbfs::stripPath() */
+    public function strip_path($path)
+    {
+        cDeprecated("Use cApiDbfs::stripPath()");
+        return cApiDbfs::stripPath($path);
+    }
+
 }
 
 
@@ -392,6 +386,7 @@ class cApiDbfsCollection extends ItemCollection
  */
 class cApiDbfs extends Item
 {
+    const PROTOCOL_DBFS = 'dbfs:';
     /**
      * Constructor Function
      * @param  mixed  $mId  Specifies the ID of item to load
@@ -426,6 +421,33 @@ class cApiDbfs extends Item
         }
 
         parent::setField($field, $value, $safe);
+    }
+
+    public static function stripPath($path)
+    {
+        $path = self::stripProtocol($path);
+        if (substr($path, 0, 1) == '/') {
+            $path = substr($path, 1);
+        }
+        return $path;
+    }
+
+    public static function stripProtocol($path)
+    {
+        if (self::isDbfs($path)) {
+            $path = substr($path, strlen(cApiDbfs::PROTOCOL_DBFS));
+        }
+        return $path;
+    }
+
+    /**
+     * Checks if passed file id a DBFS
+     * @param   string  $file
+     * @return  bool
+     */
+    public static function isDbfs($file)
+    {
+        return (substr($file, 0, 5) == self::PROTOCOL_DBFS);
     }
 }
 

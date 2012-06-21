@@ -12,7 +12,7 @@
  *
  *
  * @package    CONTENIDO API
- * @version    0.1
+ * @version    0.1.1
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -24,12 +24,8 @@
  *
  * {@internal
  *   created  2011-10-11
- *   modified 2011-12-09, Ingo van Peeren, added return of upload object in
- *                        method sync()
- *
  *   $Id: $:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -150,7 +146,7 @@ class cApiUploadCollection extends ItemCollection
         }
 
         // delete from dbfs or filesystem
-        if (is_dbfs($sDirFileName)) {
+        if (cApiDbfs::isDbfs($sDirFileName)) {
             $oDbfs = new cApiDbfsCollection();
             $oDbfs->remove($sDirFileName);
         } elseif (file_exists($cfgClient[$client]['upl']['path'] . $sDirFileName)) {
@@ -300,8 +296,8 @@ class cApiUpload extends Item
     {
         global $client, $cfgClient;
 
-        $bIsDbfs = is_dbfs($sDirname);
-        if (is_dbfs($sDirname)) {
+        $bIsDbfs = cApiDbfs::isDbfs($sDirname);
+        if ($bIsDbfs) {
             $sDirname = $sDirname;
         } else {
             $sDirname = $cfgClient[$client]['upl']['path'] . $sDirname;

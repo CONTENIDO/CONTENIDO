@@ -59,7 +59,7 @@ $uploads = new cApiUploadCollection();
 
 $dbfs = new cApiDbfsCollection();
 
-if (is_dbfs($path)) {
+if (cApiDbfs::isDbfs($path)) {
     $qpath = $path . "/";
 } else {
     $qpath = $path;
@@ -79,7 +79,7 @@ if ($path && $action != '') {
     $sReloadScript = "";
 }
 
-if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || is_dbfs($path)) && (int) $client > 0) {
+if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
     $bDirectoryIsWritable = true;
 } else {
     $bDirectoryIsWritable = false;
@@ -98,7 +98,7 @@ if ($action == "upl_modify_file") {
                 $tmp_name = $cfg["path"]["contenido"] . $cfg["path"]["temp"].$file;
 
                 while ($chainEntry = $_cecIterator->next()) {
-                    if (is_dbfs($path)) {
+                    if (cApiDbfs::isDbfs($path)) {
                         $sPathPrepend = '';
                         $sPathApppend = '/';
                     } else {
@@ -114,7 +114,7 @@ if ($action == "upl_modify_file") {
                 }
             }
 
-            if (is_dbfs($path)) {
+            if (cApiDbfs::isDbfs($path)) {
                 $dbfs->writeFromFile($tmp_name, $qpath.$file);
                 unlink($_FILES['file']['tmp_name']);
             } else {
@@ -185,7 +185,7 @@ if ($action == "upl_multidelete" && $perm->have_perm_area_action($area, $action)
         foreach ($fdelete as $file) {
             $uploads->select("idclient = '$client' AND dirname='$qpath' AND filename='$file'");
             if ($item = $uploads->next()) {
-                if (is_dbfs($qpath)) {
+                if (cApiDbfs::isDbfs($qpath)) {
                     $dbfs->remove($qpath.$file);
                 } else {
                     unlink($cfgClient[$client]['upl']['path'].$qpath.$file);
@@ -208,7 +208,7 @@ if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action) && $
     $uploads->select("idclient = '$client' AND dirname='$qpath' AND filename='$file'");
      // FIXME  Code is similar/redundant to cApiUploadCollection->delete(), in previous version from UploadCollection->delete() too
     if ($uploads->next()) {
-        if (is_dbfs($qpath)) {
+        if (cApiDbfs::isDbfs($qpath)) {
             $dbfs->remove($qpath.$file);
         } else {
             unlink($cfgClient[$client]['upl']['path'].$qpath.$file);
@@ -228,9 +228,9 @@ if ($action == "upl_delete" && $perm->have_perm_area_action($area, $action) && $
 if ($action == "upl_upload" && $bDirectoryIsWritable == true) {
     if (count($_FILES) == 1) {
         foreach ($_FILES['file']['name'] as $key => $value) {
-        	if(is_utf8($_FILES['file']['name'][$key])) {
-        		$_FILES['file']['name'][$key] = utf8_decode($_FILES['file']['name'][$key]);
-        	}
+            if(is_utf8($_FILES['file']['name'][$key])) {
+                $_FILES['file']['name'][$key] = utf8_decode($_FILES['file']['name'][$key]);
+            }
             if ($_FILES['file']['tmp_name'][$key] != "") {
                 $tmp_name = $_FILES['file']['tmp_name'][$key];
                 $_cecIterator = $_cecRegistry->getIterator("Contenido.Upload.UploadPreprocess");
@@ -241,7 +241,7 @@ if ($action == "upl_upload" && $bDirectoryIsWritable == true) {
                     $tmp_name = $cfg["path"]["contenido"] . $cfg["path"]["temp"].$_FILES['file']['name'][$key];
 
                     while ($chainEntry = $_cecIterator->next()) {
-                        if (is_dbfs($path)) {
+                        if (cApiDbfs::isDbfs($path)) {
                             $sPathPrepend = '';
                             $sPathApppend = '/';
                         } else {
@@ -256,7 +256,7 @@ if ($action == "upl_upload" && $bDirectoryIsWritable == true) {
                     }
                 }
 
-                if (is_dbfs($qpath)) {
+                if (cApiDbfs::isDbfs($qpath)) {
                     $dbfs->writeFromFile($tmp_name, $qpath.uplCreateFriendlyName($_FILES['file']['name'][$key]));
                     unlink($tmp_name);
                 } else {
@@ -298,7 +298,7 @@ class UploadList extends FrontendList
 
         if ($field == 3) {
             if ($appendparameters == "imagebrowser" || $appendparameters == "filebrowser") {
-                if (is_dbfs($path.'/'.$data)) {
+                if (cApiDbfs::isDbfs($path.'/'.$data)) {
                     $mstr = '<a href="javascript://" onclick="javascript:parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \''.$cfgClient[$client]['htmlpath']['frontend'].'dbfs.php?file='.$path.'/'.$data.'\'; window.returnValue=\''.$cfgClient[$client]['htmlpath']['frontend'].'dbfs.php?file='.$path.'/'.$data.'\'; window.close();"><img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_ok.gif" title="'.i18n("Use file").'">&nbsp;'.$data.'</a>';
                 } else {
                     $mstr = '<a href="javascript://" onclick="javascript:parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \''.$cfgClient[$client]['htmlpath']['frontend'].$cfgClient[$client]["upl"]["frontendpath"].$path.$data.'\'; window.returnValue=\''.$cfgClient[$client]['htmlpath']['frontend'].$cfgClient[$client]["upl"]["frontendpath"].$path.$data.'\'; window.close();"><img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"].'but_ok.gif" title="'.i18n("Use file").'">&nbsp;'.$data.'</a>';
@@ -344,7 +344,7 @@ class UploadList extends FrontendList
                         $iHeight = 0;
                     }
 
-                    if (is_dbfs($data)) {
+                    if (cApiDbfs::isDbfs($data)) {
                         $retValue =
                             '<a href="javascript:iZoom(\''.$sess->url($cfgClient[$client]["path"]["htmlpath"]."dbfs.php?file=".$data).'\');">
                                 <img class="hover" name="smallImage" onmouseover="correctPosition(this, '.$iWidth.', '.$iHeight.');" onmouseout="if (typeof(previewHideIe6) == \'function\') {previewHideIe6(this)}" src="'.$sCacheThumbnail.'">
@@ -425,7 +425,7 @@ function uplRender($path, $sortby, $sortmode, $startpage = 1,$thumbnailmode)
         $sDelete = '';
     }
 
-    if (is_dbfs($path)) {
+    if (cApiDbfs::isDbfs($path)) {
         $mpath = $path."/";
     } else {
         $mpath = "upload/".$path;

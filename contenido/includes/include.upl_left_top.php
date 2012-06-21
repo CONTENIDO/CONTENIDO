@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Left top
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,18 +18,15 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
- *   created 2003-04-01
- *   modified 2008-06-27, Frederic Schneider, add security fix
  *
+ * {@internal
+ *   created 2003-04-01
  *   $Id$:
  * }}
- * 
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -41,7 +38,7 @@ $tpl->set('s', 'FORMACTION', '');
 $sDisplayPath = '';
 if (isset($_REQUEST['path'])) {
     $sDisplayPath = $_REQUEST['path'];
-} else { 
+} else {
     $sDisplayPath = $sCurrentPathInfo;
 }
 
@@ -78,27 +75,27 @@ if ($appendparameters != 'filebrowser' && (int) $client > 0) {
     $tpl->set('s', 'SEARCHTITLE', '');
     $tpl->set('s', 'DISPLAY_SEARCH', 'none');
 }
-    
+
 if ($perm->have_perm_area_action("upl", "upl_mkdir") && (int) $client > 0)
-{		
+{
     $sCurrentPathInfo = "";
     if ($sess->is_registered("upl_last_path") && !isset($path))
     {
-        $path = $upl_last_path; 
+        $path = $upl_last_path;
     }
 
-    if ($path == "" || is_dbfs($path))
+    if ($path == "" || cApiDbfs::isDbfs($path))
     {
         $sCurrentPathInfo = $path;
-    } 
-    else 
+    }
+    else
     {
         $sCurrentPathInfo = str_replace($cfgClient[$client]['upl']['path'], "", $path);
     }
 
-	###########################
-	# Form for 'New Directory'
-	###########################
+    ###########################
+    # Form for 'New Directory'
+    ###########################
   $inputfield = '<input type="hidden" name="path" value="'.$path.'">
                  <input type="hidden" name="contenido" value="'.$sess->id.'">
                  <input type="hidden" name="frame" value="1">
@@ -106,23 +103,23 @@ if ($perm->have_perm_area_action("upl", "upl_mkdir") && (int) $client > 0)
                  <input class="text_small" style="vertical-align:middle; width:170px;" type="text" name="foldername" onChange="document.newdir.submit();">';
   $tpl->set('s', 'ACTION', $inputfield);
   $sessURL = $sess->url("main.php?area=upl_mkdir&frame=2&appendparameters=$appendparameters");
-  $tpl->set('s', 'TARGET',	'onsubmit="parent.frames[2].location.href=\''.$sess->url("main.php?area=upl&action=upl_mkdir&frame=2&appendparameters=$appendparameters").
+  $tpl->set('s', 'TARGET',    'onsubmit="parent.frames[2].location.href=\''.$sess->url("main.php?area=upl&action=upl_mkdir&frame=2&appendparameters=$appendparameters").
                             '&path=\'+document.newdir.path.value+\'&foldername=\'+document.newdir.foldername.value;"');
-  $tpl->set('s', 'SUBMIT',	'<input type="image" src="'.$cfg["path"]["htmlpath"].'images/submit.gif" style="vertical-align:middle;">');
+  $tpl->set('s', 'SUBMIT',    '<input type="image" src="'.$cfg["path"]["htmlpath"].'images/submit.gif" style="vertical-align:middle;">');
   $tpl->set('s', 'CAPTION', i18n("Create directory in"));
   $tpl->set('s', 'DEBUG', '<script>console.log(document.newdir.path.value)</script>');
-  $tpl->set('s', 'DISPLAY_DIR',	'block');
-} 
+  $tpl->set('s', 'DISPLAY_DIR',    'block');
+}
 // No permission with current rights
-else 
+else
 {
-  $tpl->set('s', 'CAPTION',	'');
-  $tpl->set('s', 'CAPTION2',	'');
+  $tpl->set('s', 'CAPTION',    '');
+  $tpl->set('s', 'CAPTION2',    '');
   $inputfield = '';
-  $tpl->set('s', 'TARGET',	'');
-  $tpl->set('s', 'SUBMIT',	'');
-  $tpl->set('s', 'ACTION',	'');
-  $tpl->set('s', 'DISPLAY_DIR',	'none');
+  $tpl->set('s', 'TARGET',    '');
+  $tpl->set('s', 'SUBMIT',    '');
+  $tpl->set('s', 'ACTION',    '');
+  $tpl->set('s', 'DISPLAY_DIR',    'none');
 }
 
 #############
@@ -130,13 +127,13 @@ else
 #############
 if ($searchfor != "")
 {
-	$items = uplSearch($searchfor);
+    $items = uplSearch($searchfor);
 
     $tmp_mstr = 'conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')';
-    $mstr = sprintf($tmp_mstr, 
-      'right_bottom', 
-      $sess->url("main.php?area=upl_search_results&frame=4&searchfor=$searchfor&appendparameters=$appendparameters"), 
-      'right_top', 
+    $mstr = sprintf($tmp_mstr,
+      'right_bottom',
+      $sess->url("main.php?area=upl_search_results&frame=4&searchfor=$searchfor&appendparameters=$appendparameters"),
+      'right_top',
       $sess->url("main.php?area=$area&frame=3&appendparameters=$appendparameters"));
     $refreshMenu = "\n".'if (top.content.left.left_bottom) top.content.left.left_bottom.refreshMenu()';
     $tpl->set('s', 'RESULT', $mstr.$refreshMenu);

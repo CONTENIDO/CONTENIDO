@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.4.4
+ * @version    1.4.5
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -57,7 +57,7 @@ function getAvailableContentTypes($idartlang)
             WHERE
                 a.idtype    = c.idtype AND
                 a.idartlang = b.idartlang AND
-                b.idartlang = '".Contenido_Security::toInteger($idartlang)."'";
+                b.idartlang = " . (int) $idartlang;
 
     $db->query($sql);
 
@@ -78,7 +78,7 @@ function isArtInMultipleUse($idart)
     global $cfg;
 
     $db = new DB_Contenido();
-    $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($idart)."'";
+    $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = ".(int) $idart;
     $db->query($sql);
 
     return ($db->affected_rows() > 1);
@@ -109,33 +109,33 @@ function is_alphanumeric($test, $umlauts = true)
 * @return boolean
 */
 function is_utf8($input) {
-	$len = strlen($input);
-	
-	for($i = 0; $i < $len; $i++) {
-		$char = ord($input[$i]);
-		$n = 0;
-		
-		if($char < 0x80) { //ASCII char
-			continue;
-		} else if(($char & 0xE0) === 0xC0 && $char > 0xC1) { //2 byte long char
-			$n = 1;
-		} else if(($char & 0xF0) === 0xE0) { //3 byte long char
-			$n = 2;
-		} else if(($char & 0xF8) === 0xF0 && $char < 0xF5) { //4 byte long char
-			$n = 3;
-		} else {
-			return false;
-		}
-		
-		for($j = 0; $j < $n; $j++) {
-			$i++;
-			
-			if($i == $len || (ord($input[$i]) & 0xC0) !== 0x80) {
-				return false;
-			}
-		}
-	}
-	return true;
+    $len = strlen($input);
+
+    for ($i = 0; $i < $len; $i++) {
+        $char = ord($input[$i]);
+        $n = 0;
+
+        if ($char < 0x80) { //ASCII char
+            continue;
+        } else if (($char & 0xE0) === 0xC0 && $char > 0xC1) { //2 byte long char
+            $n = 1;
+        } else if (($char & 0xF0) === 0xE0) { //3 byte long char
+            $n = 2;
+        } else if (($char & 0xF8) === 0xF0 && $char < 0xF5) { //4 byte long char
+            $n = 3;
+        } else {
+            return false;
+        }
+
+        for ($j = 0; $j < $n; $j++) {
+            $i++;
+
+            if ($i == $len || (ord($input[$i]) & 0xC0) !== 0x80) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 /**
@@ -416,7 +416,7 @@ function cleanupSessions()
 
     while ($db->next_record()) {
         if ($db->f("changed") < $maxdate) {
-            $sql = "DELETE FROM ".$cfg["tab"]["phplib_active_sessions"]." WHERE sid = '".Contenido_Security::escapeDB($db->f("sid"), $db2)."'";
+            $sql = "DELETE FROM ".$cfg["tab"]["phplib_active_sessions"]." WHERE sid = '".$db2->escape($db->f("sid"))."'";
             $db2->query($sql);
             $col->removeSessionMarks($db->f("sid"));
         }
@@ -426,7 +426,7 @@ function cleanupSessions()
     $col->select();
 
     while ($c = $col->next()) {
-        $sql = "SELECT sid FROM ".$cfg["tab"]["phplib_active_sessions"]." WHERE sid = '".Contenido_Security::escapeDB($c->get("session"), $db2)."'";
+        $sql = "SELECT sid FROM ".$cfg["tab"]["phplib_active_sessions"]." WHERE sid = '".$db2->escape($c->get("session"))."'";
         $db2->query($sql);
         if (!$db2->next_record()) {
             $col->delete($c->get("idinuse"));
@@ -479,12 +479,12 @@ function htmldecode($string)
     return $ret;
 }
 
-function updateClientCache($idclient = 0, $htmlpath = "", $frontendpath = "") {
+function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
     global $cfg, $cfgClient;
 
-    if ($idclient != 0 && $htmlpath != "" && $frontendpath != "") {
-        $cfgClient[$idclient]['path']['frontend'] = Contenido_Security::escapeDB($frontendpath, null);
-        $cfgClient[$idclient]['path']['htmlpath'] = Contenido_Security::escapeDB($htmlpath, null);
+    if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
+        $cfgClient[$idclient]['path']['frontend'] = Contenido_Security::escapeString($frontendpath);
+        $cfgClient[$idclient]['path']['htmlpath'] = Contenido_Security::escapeString($htmlpath);
     }
 
     $aConfigFileContent = array();
@@ -703,7 +703,7 @@ function getArtspec()
 {
     global $db, $cfg, $lang, $client;
     $sql = "SELECT artspec, idartspec, online, artspecdefault FROM ".$cfg['tab']['art_spec']."
-            WHERE client='".Contenido_Security::toInteger($client)."' AND lang='".Contenido_Security::toInteger($lang)."' ORDER BY artspec ASC";
+            WHERE client=".(int) $client." AND lang=".(int) $lang." ORDER BY artspec ASC";
     $db->query($sql);
 
     $artspec = array();
@@ -730,16 +730,16 @@ function addArtspec($artspectext, $online)
 
     if (isset($_POST['idartspec'])) { //update
         $sql = "UPDATE ".$cfg['tab']['art_spec']." SET
-                artspec='".Contenido_Security::escapeDB(urldecode($artspectext), $db)."',
-                online='".Contenido_Security::toInteger($online)."'
-                WHERE idartspec=".Contenido_Security::toInteger($_POST['idartspec'])."";
+                artspec='".$db->escape(urldecode($artspectext))."',
+                online=".(int) $online."
+                WHERE idartspec=".(int) $_POST['idartspec'];
         $db->query($sql);
     } else {
         $sql = "INSERT INTO ".$cfg['tab']['art_spec']."
                 (client, lang, artspec, online, artspecdefault)
                 VALUES
-                ('".Contenido_Security::toInteger($client)."', '".Contenido_Security::toInteger($lang)."',
-                '".Contenido_Security::escapeDB(urldecode($artspectext), $db)."', 0, 0)";
+                (".(int) $client.", ".(int) $lang.",
+                '".$db->escape(urldecode($artspectext))."', 0, 0)";
         $db->query($sql);
     }
 }
@@ -754,10 +754,10 @@ function addArtspec($artspectext, $online)
 function deleteArtspec($idartspec)
 {
     global $db, $cfg;
-    $sql = "DELETE FROM ".$cfg['tab']['art_spec']." WHERE idartspec = '".Contenido_Security::toInteger($idartspec)."'";
+    $sql = "DELETE FROM ".$cfg['tab']['art_spec']." WHERE idartspec = ".(int) $idartspec;
     $db->query($sql);
 
-    $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET artspec = '0' WHERE artspec = '".Contenido_Security::toInteger($idartspec)."'";
+    $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET artspec = '0' WHERE artspec = ".(int) $idartspec;
     $db->query($sql);
 }
 
@@ -774,7 +774,7 @@ function deleteArtspec($idartspec)
 function setArtspecOnline($idartspec, $online)
 {
     global $db, $cfg;
-    $sql = "UPDATE ".$cfg['tab']['art_spec']." SET online=".Contenido_Security::toInteger($online)." WHERE idartspec=".Contenido_Security::toInteger($idartspec)."";
+    $sql = "UPDATE ".$cfg['tab']['art_spec']." SET online=".(int) $online." WHERE idartspec=".(int) $idartspec;
     $db->query($sql);
 }
 
@@ -790,10 +790,10 @@ function setArtspecOnline($idartspec, $online)
 function setArtspecDefault($idartspec)
 {
     global $db, $cfg, $lang, $client;
-    $sql = "UPDATE ".$cfg['tab']['art_spec']." SET artspecdefault=0 WHERE client='".Contenido_Security::toInteger($client)."' AND lang='".Contenido_Security::toInteger($lang)."'";
+    $sql = "UPDATE ".$cfg['tab']['art_spec']." SET artspecdefault=0 WHERE client=".(int) $client." AND lang=".(int) $lang;
     $db->query($sql);
 
-    $sql = "UPDATE ".$cfg['tab']['art_spec']." SET artspecdefault=1 WHERE idartspec='".Contenido_Security::toInteger($idartspec)."'";
+    $sql = "UPDATE ".$cfg['tab']['art_spec']." SET artspecdefault=1 WHERE idartspec=".(int) $idartspec;
     $db->query($sql);
 }
 
@@ -816,8 +816,8 @@ function buildArticleSelect($sName, $iIdCat, $sValue)
 
     $sql = "SELECT b.title, b.idart FROM
                ".$cfg["tab"]["art"]." AS a, ".$cfg["tab"]["art_lang"]." AS b, ".$cfg["tab"]["cat_art"]." AS c
-               WHERE c.idcat = '".Contenido_Security::toInteger($iIdCat)."'
-               AND b.idlang = '".Contenido_Security::toInteger($lang)."' AND b.idart = a.idart and b.idart = c.idart
+               WHERE c.idcat = ".(int) $iIdCat."
+               AND b.idlang = ".(int) $lang." AND b.idart = a.idart and b.idart = c.idart
                ORDER BY b.title";
 
     $db->query($sql);
@@ -838,13 +838,13 @@ function buildArticleSelect($sName, $iIdCat, $sValue)
 /**
  * Build a Category / Article select Box
  *
- * @param String Name of the SelectBox
- * @param String Value of the SelectBox
- * @param Integer Value of highest level that should be shown
- * @param String Optional style informations for select
- * @return String HTML
+ * @param  string  Name of the SelectBox
+ * @param  string  Value of the SelectBox
+ * @param  int  Value of highest level that should be shown
+ * @param  string  Optional style informations for select
+ * @return  string  HTML
  */
-function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = "")
+function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = '')
 {
     global $cfg, $client, $lang, $idcat;
 
@@ -856,13 +856,13 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = "")
     $html .= '  <option value="">'.i18n("Please choose").'</option>';
 
     if ($sLevel > 0) {
-        $addString = "AND c.level<$sLevel";
+        $addString = "AND c.level < " . (int) $sLevel;
     }
 
     $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level FROM
            ".$cfg["tab"]["cat"]." AS a, ".$cfg["tab"]["cat_lang"]." AS b,
-           ".$cfg["tab"]["cat_tree"]." AS c WHERE a.idclient = '".Contenido_Security::toInteger($client)."'
-           AND b.idlang = '".Contenido_Security::toInteger($lang)."' AND b.idcat = a.idcat AND c.idcat = a.idcat ".Contenido_Security::escapeDB($addString, $db)."
+           ".$cfg["tab"]["cat_tree"]." AS c WHERE a.idclient = ".(int) $client."
+           AND b.idlang = ".(int) $lang." AND b.idcat = a.idcat AND c.idcat = a.idcat ".$addString."
            ORDER BY c.idtree";
 
     $db->query($sql);
@@ -872,7 +872,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = "")
     while ($db->next_record()) {
         $categories[$db->f("idcat")]["name"] = $db->f("name");
 
-        $sql2 = "SELECT level FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat = '".Contenido_Security::toInteger($db->f("idcat"))."'";
+        $sql2 = "SELECT level FROM ".$cfg["tab"]["cat_tree"]." WHERE idcat = ".(int) $db->f("idcat");
         $db2->query($sql2);
 
         if ($db2->next_record()) {
@@ -882,7 +882,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = "")
         $sql2 = "SELECT a.title AS title, b.idcatart AS idcatart FROM
                 ".$cfg["tab"]["art_lang"]." AS a,  ".$cfg["tab"]["cat_art"]." AS b
                 WHERE b.idcat = '".$db->f("idcat")."' AND a.idart = b.idart AND
-                a.idlang = '".Contenido_Security::toInteger($lang)."'";
+                a.idlang = ".(int) $lang;
 
         $db2->query($sql2);
 
@@ -926,7 +926,7 @@ function human_readable_size($number)
 
     $places = 2 - floor(log10($n));
     $places = max($places, 0);
-    $retval = number_format($n, $places, ".", "").$suffixes[$usesuf];
+    $retval = number_format($n, $places, ".", '').$suffixes[$usesuf];
     return $retval;
 }
 
@@ -1097,13 +1097,13 @@ function isImageMagickAvailable()
 }
 
 /**
- * isRunningFromWeb - checks if the script is being runned from the web
+ * Checks if the script is being runned from the web
  *
- * @return boolean true if the script is running from the web
+ * @return  bool  True if the script is running from the web
  */
 function isRunningFromWeb()
 {
-    if ($_SERVER["PHP_SELF"] == "" || php_sapi_name() == "cgi" || php_sapi_name() == "cli") {
+    if ($_SERVER['PHP_SELF'] == '' || php_sapi_name() == 'cgi' || php_sapi_name() == 'cli') {
         return false;
     }
 
@@ -1111,9 +1111,9 @@ function isRunningFromWeb()
 }
 
 /**
- * getClientName: Returns the client name for a given ID
+ * Returns the client name for a given ID
  *
- * @return string client name
+ * @return  string  Client name
  */
 function getClientName($idclient)
 {
@@ -1121,7 +1121,7 @@ function getClientName($idclient)
 
     $db = new DB_Contenido();
 
-    $sql = "SELECT name FROM ".$cfg["tab"]["clients"]." WHERE idclient='".Contenido_Security::toInteger($idclient)."'";
+    $sql = "SELECT name FROM ".$cfg["tab"]["clients"]." WHERE idclient=".(int) $idclient;
 
     $db->query($sql);
 
@@ -1133,9 +1133,7 @@ function getClientName($idclient)
 }
 
 /**
- * scanPlugins: Scans a given plugin directory and places the
- *                 found plugins into the array $cfg['plugins']
- *
+ * Scans a given plugin directory and places the found plugins into the array $cfg['plugins']
  *
  * Example:
  * scanPlugins("frontendusers");
@@ -1153,39 +1151,39 @@ function getClientName($idclient)
  * The plugin's directory and file name have to be the
  * same, otherwise the function won't find them!
  *
- * @param $entity Name of the directory to scan
- * @return string client name
+ * @param  string  $entity Name of the directory to scan
+ * @return  string
  */
 function scanPlugins($entity)
 {
     global $cfg;
 
-    $pluginorder = getSystemProperty("plugin", $entity."-pluginorder");
-    $lastscantime = getSystemProperty("plugin", $entity."-lastscantime");
+    $pluginorder = getSystemProperty('plugin', $entity . '-pluginorder');
+    $lastscantime = getSystemProperty('plugin', $entity . '-lastscantime');
 
     $plugins = array();
 
     // Fetch and trim the plugin order
-    if ($pluginorder != "") {
-        $plugins = explode(",", $pluginorder);
+    if ($pluginorder != '') {
+        $plugins = explode(',', $pluginorder);
 
         foreach ($plugins as $key => $plugin) {
             $plugins[$key] = trim($plugin);
         }
     }
 
-    $basedir = $cfg["path"]["contenido"].$cfg["path"]["plugins"]."$entity/";
+    $basedir = $cfg['path']['contenido'] . $cfg['path']['plugins']."$entity/";
 
     // Don't scan all the time, but each 60 seconds
     if ($lastscantime +60 < time()) {
-        setSystemProperty("plugin", $entity."-lastscantime", time());
+        setSystemProperty('plugin', $entity . '-lastscantime', time());
 
         $dh = opendir($basedir);
 
         while (($file = readdir($dh)) !== false) {
-            if (is_dir($basedir.$file) && $file != "includes" && $file != "." && $file != "..") {
+            if (is_dir($basedir . $file) && $file != 'includes' && $file != '.' && $file != '..') {
                 if (!in_array($file, $plugins)) {
-                    if (file_exists($basedir.$file."/".$file.".php")) {
+                    if (file_exists($basedir . $file . '/' . $file . '.php')) {
                         $plugins[] = $file;
                     }
                 }
@@ -1193,22 +1191,22 @@ function scanPlugins($entity)
         }
 
         foreach ($plugins as $key => $value) {
-            if (!is_dir($basedir.$value) || !file_exists($basedir.$value."/".$value.".php")) {
+            if (!is_dir($basedir . $value) || !file_exists($basedir . $value . '/' . $value . '.php')) {
                 unset($plugins[$key]);
             }
         }
-        
+
         sort($plugins);
 
-        $pluginorder = implode(",", $plugins);
-        setSystemProperty("plugin", $entity."-pluginorder", $pluginorder);
+        $pluginorder = implode(',', $plugins);
+        setSystemProperty('plugin', $entity . '-pluginorder', $pluginorder);
     }
 
     foreach ($plugins as $key => $value) {
-        if (!is_dir($basedir.$value) || !file_exists($basedir.$value."/".$value.".php")) {
+        if (!is_dir($basedir . $value) || !file_exists($basedir . $value . '/' . $value . '.php')) {
             unset($plugins[$key]);
         } else {
-            i18nRegisterDomain($entity . "_" . $value, $basedir.$value."/locale/");
+            i18nRegisterDomain($entity . '_' . $value, $basedir . $value . '/locale/');
         }
     }
 
@@ -1235,12 +1233,12 @@ function includePlugins($entity)
 }
 
 /**
- * callPluginStore: Calls the plugin's store methods
+ * Calls the plugin's store methods
  *
  * Example:
  * callPluginStore("frontendusers");
  *
- * @param $entity Name of the directory to scan
+ * @param  string  $entity  Name of the directory to scan
  */
 function callPluginStore($entity)
 {
@@ -1249,36 +1247,35 @@ function callPluginStore($entity)
     // Check out if there are any plugins
     if (is_array($cfg['plugins'][$entity])) {
         foreach ($cfg['plugins'][$entity] as $plugin) {
-            if (function_exists($entity."_".$plugin."_wantedVariables") && function_exists($entity."_".$plugin."_store")) {
-                $wantVariables = call_user_func($entity."_".$plugin."_wantedVariables");
+            if (function_exists($entity . '_' . $plugin . '_wantedVariables') && function_exists($entity . '_' . $plugin . '_store')) {
+                $wantVariables = call_user_func($entity . '_' . $plugin . '_wantedVariables');
 
                 if (is_array($wantVariables)) {
                     $varArray = array();
-
                     foreach ($wantVariables as $value) {
                         $varArray[$value] = stripslashes($GLOBALS[$value]);
                     }
                 }
-                $store = call_user_func($entity."_".$plugin."_store", $varArray);
+                $store = call_user_func($entity . '_' . $plugin . '_store', $varArray);
             }
         }
     }
 }
 
 /**
- * createRandomName: Creates a random name (example: Passwords)
+ * Creates a random name (example: Passwords)
  *
  * Example:
  * echo createRandomName(8);
  *
- * @param $nameLength Length of the generated string
- * @return string random name
+ * @param  int  $nameLength  Length of the generated string
+ * @return string  Random name
  */
 function createRandomName($nameLength)
 {
     $NameChars = 'abcdefghijklmnopqrstuvwxyz';
     $Vouel = 'aeiou';
-    $Name = "";
+    $Name = '';
 
     for ($index = 1; $index <= $nameLength; $index ++) {
         if ($index % 3 == 0) {
@@ -1293,14 +1290,6 @@ function createRandomName($nameLength)
     return $Name;
 }
 
-
-function is_dbfs($file)
-{
-    if (substr($file, 0, 5) == "dbfs:") {
-        return true;
-    }
-}
-
 function setHelpContext($area)
 {
     global $cfg;
@@ -1308,7 +1297,7 @@ function setHelpContext($area)
     if ($cfg['help'] == true) {
         $hc = "parent.parent.parent.frames[0].document.getElementById('help').setAttribute('data', '$area');";
     } else {
-        $hc = "";
+        $hc = '';
     }
 
     return $hc;
@@ -1393,10 +1382,9 @@ function buildStackString($startlevel = 3)
     $e = new Exception();
     $stack = $e->getTrace();
 
-    $msg = "";
+    $msg = '';
 
-    for($i = $startlevel; $i < count($stack); $i++)
-    {
+    for ($i = $startlevel; $i < count($stack); $i++) {
         $filename = basename($stack[$i]['file']);
 
         $msg .= "\t".$stack[$i]['function']."() called in file ".$filename."(".$stack[$i]['line'].")\n";
@@ -1413,13 +1401,12 @@ function buildStackString($startlevel = 3)
 function getDebugger()
 {
     $debugger = DebuggerFactory::getDebugger("devnull");
-    if(getSystemProperty("debug", "debug_to_file") == "true") {
+    if (getSystemProperty("debug", "debug_to_file") == "true") {
         $debugger = DebuggerFactory::getDebugger("file");
-    }
-    else if(getSystemProperty("debug", "debug_to_screen") == "true") {
+    } else if (getSystemProperty("debug", "debug_to_screen") == "true") {
         $debugger = DebuggerFactory::getDebugger("visible_adv");
     }
-    if((getSystemProperty("debug", "debug_to_screen") == "true") && (getSystemProperty("debug", "debug_to_file") == "true")) {
+    if ((getSystemProperty("debug", "debug_to_screen") == "true") && (getSystemProperty("debug", "debug_to_file") == "true")) {
         $debugger = DebuggerFactory::getDebugger("vis_and_file");
     }
 
@@ -1444,7 +1431,7 @@ function cDebug($message)
  * @param mixed $var A variable or an object
  * @param string $label An optional description for the variable
  */
-function debugAdd($var, $label = "")
+function debugAdd($var, $label = '')
 {
     $debugger = getDebugger();
     $debugger->add($var, $label);
@@ -1520,7 +1507,7 @@ function cError($file, $line, $message)
  * @param $amsg Optional message (e.g. "Use function XYZ instead")
  * @return void
  */
-function cDeprecated($amsg = "")
+function cDeprecated($amsg = '')
 {
     global $cfg;
 
@@ -1529,7 +1516,7 @@ function cDeprecated($amsg = "")
     $function_name = $stack[1]['function'];
 
     $msg = "Deprecated call: ".$function_name."() [".basename($stack[0]['file'])."(".$stack[0]['line'].")]: ";
-    if($amsg != "")
+    if ($amsg != '')
     {
         $msg .= "\"".$amsg."\""."\n";
     }
@@ -1565,7 +1552,7 @@ function getNamedFrame($frame)
             return ("right_bottom");
             break;
         default :
-            return ("");
+            return ('');
             break;
     }
 }
@@ -1635,7 +1622,7 @@ function endAndLogTiming($uuid)
                 }
                 break;
             default :
-                if ($parameter == "") {
+                if ($parameter == '') {
                     $myparams[] = '"'.$parameter.'"';
                 } else {
                     $myparams[] = $parameter;
@@ -1686,7 +1673,7 @@ function notifyOnError($errortitle, $errormessage)
     }
 }
 
-function cInitializeArrayKey(&$aArray, $sKey, $mDefault = "")
+function cInitializeArrayKey(&$aArray, $sKey, $mDefault = '')
 {
     if (!is_array($aArray)) {
         if (isset($aArray)) {
@@ -1843,7 +1830,7 @@ function checkMySQLConnectivity()
 }
 
 /** @deprecated 2011-08-23  This function is not supported any longer */
-function sendPostRequest($host, $path, $data, $referer = "", $port = 80)
+function sendPostRequest($host, $path, $data, $referer = '', $port = 80)
 {
     cDeprecated("This function is not supported any longer");
     $fp = fsockopen($host, $port);
@@ -1960,7 +1947,7 @@ function showTable($tablename)
     $db->query($sql);
     while ($db->next_record()) {
         while (list ($key, $value) = each($db->Record)) {
-            print (is_string($key) ? "<b>$key</b>: $value | " : "");
+            print (is_string($key) ? "<b>$key</b>: $value | " : '');
         }
         print ("<br>");
     }
@@ -1983,6 +1970,13 @@ function getFileExtension($filename)
     } else {
         return false;
     }
+}
+
+/** @deprecated  [2012-06-20] Use cApiDbfs::isDbfs() */
+function is_dbfs($file)
+{
+    cDeprecated("Use cApiDbfs::isDbfs()");
+    return cApiDbfs::isDbfs($file);
 }
 
 ?>

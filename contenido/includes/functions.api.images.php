@@ -417,7 +417,7 @@ function capiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
     $deleteAfter = false;
 
     $sRelativeImg = str_replace($cfgClient[$client]['upl']['path'], '', $img);
-    if (is_dbfs($sRelativeImg)) {
+    if (cApiDbfs::isDbfs($sRelativeImg)) {
         // This check should be faster than a file existance check
         $dbfs = new cApiDbfsCollection();
 
@@ -527,7 +527,7 @@ function checkImageEditingPosibility() {
  * @param   int   $maxX
  * @param   int   $maxY
  * @param   bool  $expand
- * @return  array  Index 0 is target X and index 1 is target Y 
+ * @return  array  Index 0 is target X and index 1 is target Y
  */
 function capiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand) {
     // Calculate the aspect ratio

@@ -21,15 +21,8 @@
  *
  * {@internal
  *   created 2003-12-30
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-07-31, Oliver Lohkemper, add CEC
- *   modified 2008-08-11, Timo Trautmann, added urlencode for meta storage in database
- *   modified 2008-10-16, Oliver Lohkemper, add copyright in upl_meta - CON-212
- *   modified 2010-09-20, Dominik Ziegler, implemented check for write permissions - CON-319
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -44,8 +37,8 @@ $page = new UI_Page();
 //get language js files
 if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
 
-	$langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
-	<script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
+    $langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
 }
 
 $path_to_calender_pic =  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif';
@@ -53,15 +46,15 @@ $path_to_calender_pic =  $cfg['path']['contenido_fullhtml']. $cfg['path']['image
 
 $page->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tipsy.css" />');
 $page->addScript("cal", '<link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
-		<link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
-		<script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-		<script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-		<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>'
-		. $langscripts);
+        <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
+        <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+        <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+        <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>'
+        . $langscripts);
 
 
 $sTooltippScript = '<script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
-    	            <script type="text/javascript" src="scripts/registerTipsy.js"></script>';
+                    <script type="text/javascript" src="scripts/registerTipsy.js"></script>';
 $page->addScript("tooltip-js", $sTooltippScript);
 
 $form = new UI_Table_Form("properties");
@@ -79,13 +72,13 @@ $form->addHeader(i18n("Edit"));
 $properties = new cApiPropertyCollection();
 $uploads    = new cApiUploadCollection();
 
-if (is_dbfs($_REQUEST["path"])) {
+if (cApiDbfs::isDbfs($_REQUEST["path"])) {
     $qpath = $_REQUEST["path"] . "/";
 } else {
     $qpath = $_REQUEST["path"];
 }
 
-if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || is_dbfs($path)) && (int) $client > 0) {
+if ((is_writable($cfgClient[$client]["upl"]["path"].$path) || cApiDbfs::isDbfs($path)) && (int) $client > 0) {
     $bDirectoryIsWritable = true;
 } else {
     $bDirectoryIsWritable = false;
@@ -112,7 +105,7 @@ if ($upload = $uploads->next()) {
     $aListRows["modified"]    = i18n("Last modified by");
 
     // Delete dbfs specific rows
-    if (!is_dbfs($_REQUEST["path"])) {
+    if (!cApiDbfs::isDbfs($_REQUEST["path"])) {
         unset($aListRows['protected']);
         unset($aListRows['timecontrol']);
     }
@@ -253,50 +246,50 @@ if ($upload = $uploads->next()) {
 
                 $sHtmlTimeMng .= '<script type="text/javascript">
                 $(document).ready(function() {
-	$("#datestart").datetimepicker({
-    		 buttonImage:"'. $path_to_calender_pic.'",
-  	        buttonImageOnly: true,
-  	        showOn: "both",
-  	        dateFormat: "yy-mm-dd",  
-    	    onClose: function(dateText, inst) {
-    	        var endDateTextBox = $("#dateend");
-    	        if (endDateTextBox.val() != "") {
-    	            var testStartDate = new Date(dateText);
-    	            var testEndDate = new Date(endDateTextBox.val());
-    	            if (testStartDate > testEndDate)
-    	                endDateTextBox.val(dateText);
-    	        }
-    	        else {
-    	            endDateTextBox.val(dateText);
-    	        }
-    	    },
-    	    onSelect: function (selectedDateTime){
-    	        var start = $(this).datetimepicker("getDate");
-    	        $("#dateend").datetimepicker("option", "minDate", new Date(start.getTime()));
-    	    }
-    	});
-    	$("#dateend").datetimepicker({
-    		 buttonImage: "'. $path_to_calender_pic .'",
-   	        buttonImageOnly: true,
-   	        showOn: "both",
-   	        dateFormat: "yy-mm-dd",
-    	    onClose: function(dateText, inst) {
-    	        var startDateTextBox = $("#datestart");
-    	        if (startDateTextBox.val() != "") {
-    	            var testStartDate = new Date(startDateTextBox.val());
-    	            var testEndDate = new Date(dateText);
-    	            if (testStartDate > testEndDate)
-    	                startDateTextBox.val(dateText);
-    	        }
-    	        else {
-    	            startDateTextBox.val(dateText);
-    	        }
-    	    },
-    	    onSelect: function (selectedDateTime){
-    	        var end = $(this).datetimepicker("getDate");
-    	        $("#datestart").datetimepicker("option", "maxDate", new Date(end.getTime()) );
-    	    }
-    	});
+    $("#datestart").datetimepicker({
+             buttonImage:"'. $path_to_calender_pic.'",
+              buttonImageOnly: true,
+              showOn: "both",
+              dateFormat: "yy-mm-dd",
+            onClose: function(dateText, inst) {
+                var endDateTextBox = $("#dateend");
+                if (endDateTextBox.val() != "") {
+                    var testStartDate = new Date(dateText);
+                    var testEndDate = new Date(endDateTextBox.val());
+                    if (testStartDate > testEndDate)
+                        endDateTextBox.val(dateText);
+                }
+                else {
+                    endDateTextBox.val(dateText);
+                }
+            },
+            onSelect: function (selectedDateTime){
+                var start = $(this).datetimepicker("getDate");
+                $("#dateend").datetimepicker("option", "minDate", new Date(start.getTime()));
+            }
+        });
+        $("#dateend").datetimepicker({
+             buttonImage: "'. $path_to_calender_pic .'",
+               buttonImageOnly: true,
+               showOn: "both",
+               dateFormat: "yy-mm-dd",
+            onClose: function(dateText, inst) {
+                var startDateTextBox = $("#datestart");
+                if (startDateTextBox.val() != "") {
+                    var testStartDate = new Date(startDateTextBox.val());
+                    var testEndDate = new Date(dateText);
+                    if (testStartDate > testEndDate)
+                        startDateTextBox.val(dateText);
+                }
+                else {
+                    startDateTextBox.val(dateText);
+                }
+            },
+            onSelect: function (selectedDateTime){
+                var end = $(this).datetimepicker("getDate");
+                $("#datestart").datetimepicker("option", "maxDate", new Date(end.getTime()) );
+            }
+        });
 
 });
                 </script>';
@@ -305,7 +298,7 @@ if ($upload = $uploads->next()) {
                 break;
 
             case "preview":
-                if (is_dbfs($_REQUEST["path"])) {
+                if (cApiDbfs::isDbfs($_REQUEST["path"])) {
                     $sCell = '<a target="_blank" href="'.$sess->url($cfgClient[$client]["path"]["htmlpath"]."dbfs.php?file=".$qpath.$_REQUEST["file"]).'"><img class="bordered" src="'.uplGetThumbnail($qpath.$_REQUEST["file"], 350).'"></a>';
                 } else {
                     $sCell = '<a target="_blank" href="'.$cfgClient[$client]["upl"]["htmlpath"].$qpath.$_REQUEST["file"].'"><img class="bordered" src="'.uplGetThumbnail($qpath.$_REQUEST["file"], 350).'"></a>';
@@ -339,7 +332,7 @@ if ($upload = $uploads->next()) {
     }
 
     $sScript = "";
-    if (is_dbfs($_REQUEST["path"])) {
+    if (cApiDbfs::isDbfs($_REQUEST["path"])) {
         $sScript = '
 
         <script type="text/javascript">
@@ -354,7 +347,7 @@ if ($upload = $uploads->next()) {
 
         ';
     }
-    
+
     if ($bDirectoryIsWritable == false) {
         $sErrorMessage = $notification->returnNotification("error", i18n("Directory not writable")  . ' (' . $cfgClient[$client]["upl"]["path"].$path . ')');
         $sErrorMessage .= '<br />';

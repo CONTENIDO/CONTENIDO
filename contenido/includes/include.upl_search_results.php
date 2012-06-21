@@ -113,7 +113,7 @@ class UploadList extends FrontendList
                         $iHeight = 0;
                     }
 
-                    if (is_dbfs($data)) {
+                    if (cApiDbfs::isDbfs($data)) {
                         $retValue =
                             '<a href="JavaScript:iZoom(\''.$sess->url($cfgClient[$client]["path"]["htmlpath"]."dbfs.php?file=".$data).'\');">
                                 <img class="hover" name="smallImage" src="'.$sCacheThumbnail.'">

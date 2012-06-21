@@ -21,15 +21,8 @@
  *
  * {@internal
  *   created  2003-12-10
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-07-07, Dominik Ziegler, fixed language bug
- *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
- *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *   modified 2011-06-16, Murat Purc, added missing dbfs URL creation [#CON-404] and some refactoring/cleanup
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -37,11 +30,11 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 if(isset($area) && $area == 'con_content_list'){
-	$tmp_area = $area;
-	$path = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
-			'&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
+    $tmp_area = $area;
+    $path = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
+            '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
 } else {
-	$path = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
+    $path = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
 }
 
 if ($doedit == '1') {
@@ -213,7 +206,7 @@ $form->render(false);
 // create images javascript array
 $script = '    var imglnk = new Array();' . "\n";
 foreach ($aImages as $pos => $item) {
-    if (is_dbfs($img_dir)) {
+    if (cApiDbfs::isDbfs($img_dir)) {
         $link = $cfgClient[$client]['path']['htmlpath'] . 'dbfs.php?file=' . urlencode($img_dir . $item['filename']);
     } else {
         $link = $cfgClient[$client]['path']['htmlpath'] . $cfgClient[$client]['upl']['frontendpath'] . $img_dir . $item['filename'];
@@ -257,7 +250,7 @@ $(document).ready(function() {
     $img.change(function(){
         _dispPreview();
     });
-    
+
     // display preview delayed on document ready
     window.setTimeout(function(){
         _dispPreview();
