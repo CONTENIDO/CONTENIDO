@@ -94,6 +94,11 @@ class cApiDbfsCollection extends ItemCollection
         }
     }
 
+    /**
+     * Writes physical existing file into dbfs
+     * @param  string  $localfile
+     * @param  string $targetfile
+     */
     public function writeFromFile($localfile, $targetfile)
     {
         $targetfile = cApiDbfs::stripPath($targetfile);
@@ -102,6 +107,11 @@ class cApiDbfsCollection extends ItemCollection
         $this->write($targetfile, file_get_contents($localfile), $mimetype);
     }
 
+    /**
+     * Writes dbfs file into phsical file system
+     * @param  string  $sourcefile
+     * @param  string $localfile
+     */
     public function writeToFile($sourcefile, $localfile)
     {
         $sourcefile = cApiDbfs::stripPath($sourcefile);
@@ -109,6 +119,12 @@ class cApiDbfsCollection extends ItemCollection
         file_put_contents($localfile, $this->read($sourcefile));
     }
 
+    /**
+     * Writes dbfs file, creates if if not exists.
+     * @param  string  $file
+     * @param  string $content
+     * @param  string $mimetype
+     */
     public function write($file, $content = '', $mimetype = '')
     {
         $file = cApiDbfs::stripPath($file);
@@ -119,6 +135,12 @@ class cApiDbfsCollection extends ItemCollection
         $this->setContent($file, $content);
     }
 
+    /**
+     * Checks if passed dbfs path has any files.
+     * @global  int  $client
+     * @param  string  $path
+     * @return bool 
+     */
     public function hasFiles($path)
     {
         global $client;
@@ -140,11 +162,22 @@ class cApiDbfsCollection extends ItemCollection
         }
     }
 
+    /**
+     * Reads content from dbfs file.
+     * @param  string  $file
+     * @return string
+     */
     public function read($file)
     {
         return ($this->getContent($file));
     }
 
+    /**
+     * Checks, if a dbfs file exists.
+     * @global int $client
+     * @param  string  $path
+     * @return bool
+     */
     public function file_exists($path)
     {
         global $client;
@@ -167,6 +200,12 @@ class cApiDbfsCollection extends ItemCollection
         }
     }
 
+    /**
+     * Checks, if a dbfs directory exists.
+     * @global int $client
+     * @param  string  $path
+     * @return bool
+     */
     public function dir_exists($path)
     {
         global $client;
@@ -304,7 +343,7 @@ class cApiDbfsCollection extends ItemCollection
             $dirname = '';
         }
 
-        $this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = '".$client."' LIMIT 1");
+        $this->select("dirname = '".$dirname."' AND filename = '".$filename."' AND idclient = " . $client . " LIMIT 1");
         if ($item = $this->next()) {
             return ($item->get("content"));
         }
@@ -423,6 +462,11 @@ class cApiDbfs extends Item
         parent::setField($field, $value, $safe);
     }
 
+    /**
+     * Removes the DBFS protocol and leading '/' from received path.
+     * @param   string  $path
+     * @return  string
+     */
     public static function stripPath($path)
     {
         $path = self::stripProtocol($path);
@@ -432,6 +476,11 @@ class cApiDbfs extends Item
         return $path;
     }
 
+    /**
+     * Removes the DBFS protocol received path.
+     * @param   string  $path
+     * @return  string
+     */
     public static function stripProtocol($path)
     {
         if (self::isDbfs($path)) {
