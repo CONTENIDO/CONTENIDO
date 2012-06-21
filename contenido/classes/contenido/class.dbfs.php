@@ -196,7 +196,7 @@ class cApiDbfsCollection extends ItemCollection
 
     public function create($path, $mimetype = '', $content = '')
     {
-        global $client, $cfg, $auth;
+        global $client, $auth;
 
         $client = (int) $client;
 
@@ -488,7 +488,7 @@ class DBFSItem extends cApiDbfs
     public function __construct($mId = false)
     {
         cDeprecated("Use class cApiDbfs instead");
-        parent::__construct();
+        parent::__construct($mId);
     }
     public function DBFSItem($mId = false)
     {
