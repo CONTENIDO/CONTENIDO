@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO API
- * @version    1.2
+ * @version    1.2.1
  * @author     Dominik Ziegler
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -55,9 +55,7 @@ class cApiGroupCollection extends ItemCollection
             return null;
         }
 
-        if (substr($groupname, 0, strlen(cApiGroup::PREFIX)) != cApiGroup::PREFIX) {
-            $groupname = cApiGroup::PREFIX . $groupname;
-        }
+        $groupname = cApiGroup::prefixedGroupName($groupname);
 
         $item->set('groupname', $this->escape($groupname));
         $item->set('perms', $this->escape($perms));
@@ -123,6 +121,7 @@ class cApiGroupCollection extends ItemCollection
      */
     public function deleteGroupByGroupname($groupname)
     {
+        $groupname = cApiGroup::prefixedGroupName($groupname);
         $result = $this->deleteBy('groupname', $groupname);
         return ($result > 0) ? true : false;
     }
@@ -232,6 +231,7 @@ class cApiGroup extends Item
      */
     public function loadGroupByGroupname($groupname)
     {
+        $groupname = cApiGroup::prefixedGroupName($groupname);
         return $this->loadBy('groupname', $groupname);
     }
 
@@ -280,6 +280,19 @@ class cApiGroup extends Item
     public static function getUnprefixedGroupName($groupname)
     {
         return substr($groupname, strlen(self::PREFIX));
+    }
+
+    /**
+     * Returns the passed groupname prefixed with "grp_", if not exists.
+     * @param  string  $groupname
+     * @return  string
+     */
+    public static function prefixedGroupName($groupname)
+    {
+        if (substr($groupname, 0, strlen(cApiGroup::PREFIX)) != cApiGroup::PREFIX) {
+            return cApiGroup::PREFIX . $groupname;
+        }
+        return $groupname;
     }
 
     /**

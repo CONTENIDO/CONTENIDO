@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.7.3
+ * @version    1.7.4
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,13 +21,8 @@
  *
  * {@internal
  *   created  2003-05-30
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
- *   modified 2011-02-07, Murat Purc, Cleanup, optimization and formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -56,17 +51,24 @@ if ($action == 'group_create') {
         $groupname = cApiGroup::PREFIX . i18n("New Group");
     }
 
-    $oGroupColl = new cApiGroupCollection();
-    $oGroup = $oGroupColl->create($groupname, implode(',', $aPerms), $description);
-    if (is_object($oGroup)) {
-        // clean "old" values...
-        $sNotification = $notification->returnNotification("info", i18n("group created"));
-        $groupname   = '';
-        $aPerms      = array();
-        $description = '';
-    } else {
-        $sNotification = $notification->returnNotification("info", i18n("Group couldn't created"));
+    $oGroup = new cApiGroup();
+    $oGroup->loadGroupByGroupname($groupname);
+    if ($oGroup->isLoaded()) {
+        $sNotification = $notification->returnNotification("info", i18n("Groupname already exists"));
         $bError = true;
+    } else {
+        $oGroupColl = new cApiGroupCollection();
+        $oGroup = $oGroupColl->create($groupname, implode(',', $aPerms), $description);
+        if (is_object($oGroup)) {
+            // clean "old" values...
+            $sNotification = $notification->returnNotification("info", i18n("group created"));
+            $groupname   = '';
+            $aPerms      = array();
+            $description = '';
+        } else {
+            $sNotification = $notification->returnNotification("info", i18n("Group couldn't created"));
+            $bError = true;
+        }
     }
 }
 
@@ -150,7 +152,7 @@ $tpl->set('d', 'CATNAME', i18n("Access languages"));
 $tpl->set('d', 'CATFIELD', $sClientCheckboxes);
 $tpl->next();
 
-# Generate template
+// Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['grouprights_create']);
 
 ?>

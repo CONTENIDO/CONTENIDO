@@ -1257,7 +1257,7 @@ function setHelpContext($area)
  * Defines a constant if not defined before.
  *
  * @param  string  $constant  Name of constant to define
- * @param  string  $value  It's value
+ * @param  mixed  $value  It's value
  */
 function define_if($constant, $value)
 {
