@@ -29,7 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude('includes', 'functions.file.php');
+checkAndInclude($cfg['path']['contenido'] . 'includes/api/functions.api.general.php');
 
 /**
  * Extracts the available content-types from the database
@@ -94,7 +94,7 @@ function isArtInMultipleUse($idart)
 function is_alphanumeric($test, $umlauts = true)
 {
     if ($umlauts == true) {
-        $match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
+        $match = "/^[a-z0-9ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ]+$/i";
     } else {
         $match = "/^[a-z0-9 ]+$/i";
     }
