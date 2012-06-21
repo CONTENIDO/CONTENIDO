@@ -650,12 +650,12 @@ abstract class DB_Sql_Abstract
 
 
     /**
-     * Builds and executes a insert query. String values in passed aFields
+     * Builds a insert query. String values in passed aFields
      * parameter will be escaped automatically.
      *
      * @param   string   $sTable   The table name
      * @param   array    $aFields  Assoziative array of fields to insert
-     * @return  bool
+     * @return  string  The INSERT SQL query
      */
     abstract protected function _insert($sTable, array $aFields);
 
@@ -711,14 +711,14 @@ abstract class DB_Sql_Abstract
 
 
     /**
-     * Builds and executes a update query. String values in passed aFields
+     * Builds a update query. String values in passed aFields
      * and aWhere parameter will be escaped automatically.
      *
      * @param   string   $sTable   The table name
      * @param   array    $aFields  Assoziative array of fields to update
      * @param   array    $aWhere   Assoziative array of field in where clause.
      *                             Multiple entries will be concatenated with AND
-     * @return  bool
+     * @return  string  The UPDATE query
      */
     abstract protected function _update($sTable, array $aFields, array $aWhere);
 

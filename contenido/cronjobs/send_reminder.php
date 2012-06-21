@@ -54,6 +54,7 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $db->query($sql);
 
     $clients = array();
+    $clientNames = array();
 
     while ($db->next_record()) {
         $clients[] = $db->f('idclient');
@@ -97,7 +98,11 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
                     $oMail->Subject = $todoitem->get('subject');
 
                     $client = $todoitem->get('idclient');
-                    $clientname = getClientName($client);
+                    if (!isset($clientNames[$client])) {
+                        $oClientColl = new cApiClientCollection();
+                        $clientNames[$client] = $oClientColl->getClientname($idclient);
+                    }
+                    $clientname = $clientNames[$client];
 
                     $todoitem->setProperty('todo', 'emailnoti-sent', '1');
                     $todoitem->setProperty('todo', 'emailnoti', '0');
