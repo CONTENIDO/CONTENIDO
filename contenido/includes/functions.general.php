@@ -62,8 +62,8 @@ function getAvailableContentTypes($idartlang)
     $db->query($sql);
 
     while ($db->next_record()) {
-        $a_content[$db->f("type")][$db->f("typeid")] = urldecode($db->f("value"));
-        $a_description[$db->f("type")][$db->f("typeid")] = i18n($db->f("description"));
+        $a_content[$db->f('type')][$db->f('typeid')] = urldecode($db->f('value'));
+        $a_description[$db->f('type')][$db->f('typeid')] = i18n($db->f('description'));
     }
 }
 
@@ -78,7 +78,7 @@ function isArtInMultipleUse($idart)
     global $cfg;
 
     $db = new DB_Contenido();
-    $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = ".(int) $idart;
+    $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = ". (int) $idart;
     $db->query($sql);
 
     return ($db->affected_rows() > 1);
@@ -94,7 +94,7 @@ function isArtInMultipleUse($idart)
 function is_alphanumeric($test, $umlauts = true)
 {
     if ($umlauts == true) {
-        $match = "/^[a-z0-9������� ]+$/i";
+        $match = "/^[a-z0-9ÄäÖöÜüß ]+$/i";
     } else {
         $match = "/^[a-z0-9 ]+$/i";
     }
@@ -103,11 +103,11 @@ function is_alphanumeric($test, $umlauts = true)
 }
 
 /**
-* Returns wether a string is UTF-8 encoded or not
-*
-* @param string $input
-* @return boolean
-*/
+ * Returns wether a string is UTF-8 encoded or not
+ *
+ * @param string $input
+ * @return boolean
+ */
 function is_utf8($input) {
     $len = strlen($input);
 
@@ -256,9 +256,6 @@ function getParentAreaId($area)
  *
  * @param int $menuitem Which menuitem to mark
  * @param bool $return Return or echo script
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
  */
 function markSubMenuItem($menuitem, $return = false)
 {
@@ -291,9 +288,6 @@ function markSubMenuItem($menuitem, $return = false)
  * Redirect to main area
  *
  * @param bool $send Redirect Yes/No
- *
- * @author Jan Lengowski <Jan.Lengowski@4fb.de>
- * @copyright four for business AG <www.4fb.de>
  */
 function backToMainArea($send)
 {
@@ -338,17 +332,19 @@ function getLanguageNamesByClient($client)
     return $oClientLangColl->getLanguageNamesByClient($client);
 }
 
+/**
+ * Adds slashes to passed string if PHP setting for magic quotes is disabled
+ * @param  string  $code  String by reference
+ */
 function set_magic_quotes_gpc(&$code)
 {
     global $cfg;
-
     if (!$cfg['simulate_magic_quotes']) {
         if (get_magic_quotes_gpc() == 0) {
             $code = addslashes($code);
         }
     }
 }
-
 
 /**
  * Returns a list with all clients and languages.
@@ -695,7 +691,7 @@ function getEffectiveSettingsByType($type)
 }
 
 /**
- * retrieve list of article specifications for current client and language
+ * Retrieve list of article specifications for current client and language
  *
  * @return array list of article specifications
  */
@@ -717,11 +713,10 @@ function getArtspec()
 }
 
 /**
- * add new article specification
+ * Add new article specification
  *
  * @param string $artspectext specification text
  * @param  int  $online  Online status (1 or 0)
- *
  * @return void
  */
 function addArtspec($artspectext, $online)
@@ -729,26 +724,26 @@ function addArtspec($artspectext, $online)
     global $db, $cfg, $lang, $client;
 
     if (isset($_POST['idartspec'])) { //update
-        $sql = "UPDATE ".$cfg['tab']['art_spec']." SET
-                artspec='".$db->escape(urldecode($artspectext))."',
-                online=".(int) $online."
-                WHERE idartspec=".(int) $_POST['idartspec'];
-        $db->query($sql);
+        $fields = array('artspec' => urldecode($artspectext), 'online' => (int) $online);
+        $where = array('idartspec' => (int) $_POST['idartspec']);
+        $sql = $db->buildUpdate($cfg['tab']['art_spec'], $fields, $where);
     } else {
-        $sql = "INSERT INTO ".$cfg['tab']['art_spec']."
-                (client, lang, artspec, online, artspecdefault)
-                VALUES
-                (".(int) $client.", ".(int) $lang.",
-                '".$db->escape(urldecode($artspectext))."', 0, 0)";
-        $db->query($sql);
+        $fields = array(
+            'client' => (int) $client,
+            'lang' => (int) $lang,
+            'artspec' => urldecode($artspectext),
+            'online' => 0,
+            'artspecdefault' => 0
+        );
+        $sql = $db->buildInsert($cfg['tab']['art_spec'], $fields);
     }
+    $db->query($sql);
 }
 
 /**
- * delete specified article specification
+ * Delete specified article specification
  *
- * @param integer  $idartspec  article specification id
- *
+ * @param int  $idartspec  article specification id
  * @return void
  */
 function deleteArtspec($idartspec)
@@ -757,18 +752,17 @@ function deleteArtspec($idartspec)
     $sql = "DELETE FROM ".$cfg['tab']['art_spec']." WHERE idartspec = ".(int) $idartspec;
     $db->query($sql);
 
-    $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET artspec = '0' WHERE artspec = ".(int) $idartspec;
+    $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET artspec = 0 WHERE artspec = ".(int) $idartspec;
     $db->query($sql);
 }
 
 /**
- * set article specifications online
+ * Set article specifications online
  *
- * flag to switch if an article specification should be shown the frontend or not
+ * Flag to switch if an article specification should be shown the frontend or not
  *
- * @param integer  $idartspec  article specification id
- * @param integer  $online  0/1 switch the status between on an offline
- *
+ * @param int  $idartspec  article specification id
+ * @param int  $online  0/1 switch the status between on an offline
  * @return void
  */
 function setArtspecOnline($idartspec, $online)
@@ -779,12 +773,11 @@ function setArtspecOnline($idartspec, $online)
 }
 
 /**
- * set a default article specification
+ * Set a default article specification
  *
- * while creating a new article this defined article specification will be default setting
+ * While creating a new article this defined article specification will be default setting
  *
- * @param integer  $idartspec  article specification id
- *
+ * @param int  $idartspec  Article specification id
  * @return void
  */
 function setArtspecDefault($idartspec)
@@ -915,7 +908,7 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = '')
 function human_readable_size($number)
 {
     $base = 1024;
-    $suffixes = array(" Bytes", " KiB", " MiB", " GiB", " TiB", " PiB", " EiB");
+    $suffixes = array('Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB');
 
     $usesuf = 0;
     $n = (float) $number; //Appears to be necessary to avoid rounding
@@ -926,7 +919,7 @@ function human_readable_size($number)
 
     $places = 2 - floor(log10($n));
     $places = max($places, 0);
-    $retval = number_format($n, $places, ".", '').$suffixes[$usesuf];
+    $retval = number_format($n, $places, '.', '') . ' ' . $suffixes[$usesuf];
     return $retval;
 }
 
@@ -955,8 +948,7 @@ function array_csort()
     $marray = array_shift($args);
     $msortline = "return(array_multisort(";
     $i = 0;
-    foreach ($args as $arg)
-    {
+    foreach ($args as $arg) {
         $i ++;
         if (is_string($arg)) {
             foreach ($marray as $row) {
@@ -974,14 +966,13 @@ function array_csort()
 }
 
 /**
- * str_ireplace_once - Replaces a string only once
+ * Replaces a string only once
  *
- * Caution: This function only takes strings as parameters,
- *          not arrays!
- * @param $find string String to find
- * @param $replace string String to replace
- * @param $subject string String to process
+ * Caution: This function only takes strings as parameters, not arrays!
  *
+ * @param  string  $find  String to find
+ * @param  string  $replace  String to replace
+ * @param  string  $subject String to process
  * @return string Processed string
  */
 function str_ireplace_once($find, $replace, $subject)
@@ -993,24 +984,21 @@ function str_ireplace_once($find, $replace, $subject)
     }
 
     $end = $start +strlen($find);
-
     $first = substr($subject, 0, $start);
     $last = substr($subject, $end, strlen($subject) - $end);
 
     $result = $first.$replace.$last;
 
-    return ($result);
+    return $result;
 }
 
 /**
- * str_ireplace_once_reverse - Replaces a string only once, in reverse direction
+ * Replaces a string only once, in reverse direction
  *
- * Caution: This function only takes strings as parameters,
- *          not arrays!
- * @param $find string String to find
- * @param $replace string String to replace
- * @param $subject string String to process
- *
+ * Caution: This function only takes strings as parameters, not arrays!
+ * @param  string  $find  String to find
+ * @param  string  $replace  String to replace
+ * @param  string  $subject  String to process
  * @return string Processed string
  */
 function str_ireplace_once_reverse($find, $replace, $subject)
@@ -1032,15 +1020,13 @@ function str_ireplace_once_reverse($find, $replace, $subject)
 }
 
 /**
- * str_rpos - Finds a string position in reverse direction
+ * Finds a string position in reverse direction
  *
- * NOTE: The original strrpos-Function of PHP4 only finds
- *         a single character as needle.
+ * NOTE: The original strrpos-Function of PHP4 only finds a single character as needle.
  *
- * @param $haystack string  String to search in
- * @param $needle   string  String to search for
- * @param $start    integer Offset
- *
+ * @param  string  $haystack   String to search in
+ * @param  string  $needle     String to search for
+ * @param  int     $start     Offset
  * @return string Processed string
  */
 function str_rpos($haystack, $needle, $start = 0)
@@ -1062,9 +1048,9 @@ function str_rpos($haystack, $needle, $start = 0)
 }
 
 /**
- * isImageMagickAvailable - checks if ImageMagick is available
+ * Checks if ImageMagick is available
  *
- * @return boolean true if ImageMagick is available
+ * @return bool  true if ImageMagick is available
  */
 function isImageMagickAvailable()
 {
@@ -1111,48 +1097,22 @@ function isRunningFromWeb()
 }
 
 /**
- * Returns the client name for a given ID
- *
- * @return  string  Client name
- */
-function getClientName($idclient)
-{
-    global $cfg;
-
-    $db = new DB_Contenido();
-
-    $sql = "SELECT name FROM ".$cfg["tab"]["clients"]." WHERE idclient=".(int) $idclient;
-
-    $db->query($sql);
-
-    if ($db->next_record()) {
-        return $db->f("name");
-    } else {
-        return false;
-    }
-}
-
-/**
- * Scans a given plugin directory and places the found plugins into the array $cfg['plugins']
- *
- * Example:
- * scanPlugins("frontendusers");
+ * Scans a given plugin directory and places the found plugins into the array $cfg['plugins'].
  *
  * Result:
  * $cfg['plugins']['frontendusers'] => array with all found plugins
  *
- * Note: Plugins are only "found" if the following directory structure
- *       if found:
+ * Note: Plugins are only "found" if the following directory structure if found:
  *
  * entity/
  *        plugin1/plugin1.php
  *        plugin2/plugin2.php
  *
- * The plugin's directory and file name have to be the
- * same, otherwise the function won't find them!
+ * The plugin's directory and file name have to be the same, otherwise the function
+ * won't find them!
  *
  * @param  string  $entity Name of the directory to scan
- * @return  string
+ * @return  void
  */
 function scanPlugins($entity)
 {
@@ -1166,16 +1126,15 @@ function scanPlugins($entity)
     // Fetch and trim the plugin order
     if ($pluginorder != '') {
         $plugins = explode(',', $pluginorder);
-
         foreach ($plugins as $key => $plugin) {
             $plugins[$key] = trim($plugin);
         }
     }
 
-    $basedir = $cfg['path']['contenido'] . $cfg['path']['plugins']."$entity/";
+    $basedir = $cfg['path']['contenido'] . $cfg['path']['plugins'] . $entity . '/';
 
     // Don't scan all the time, but each 60 seconds
-    if ($lastscantime +60 < time()) {
+    if ($lastscantime + 60 < time()) {
         setSystemProperty('plugin', $entity . '-lastscantime', time());
 
         $dh = opendir($basedir);
@@ -1214,10 +1173,7 @@ function scanPlugins($entity)
 }
 
 /**
- * includePlugins: Includes plugins for a given entity
- *
- * Example:
- * includePlugins("frontendusers");
+ * Includes plugins for a given entity.
  *
  * @param $entity Name of the directory to scan
  */
@@ -1227,16 +1183,13 @@ function includePlugins($entity)
 
     if (is_array($cfg['plugins'][$entity])) {
         foreach ($cfg['plugins'][$entity] as $plugin) {
-            plugin_include($entity, $plugin."/".$plugin.".php");
+            plugin_include($entity, $plugin . '/' . $plugin . '.php');
         }
     }
 }
 
 /**
- * Calls the plugin's store methods
- *
- * Example:
- * callPluginStore("frontendusers");
+ * Calls the plugin's store methods.
  *
  * @param  string  $entity  Name of the directory to scan
  */
@@ -1263,10 +1216,7 @@ function callPluginStore($entity)
 }
 
 /**
- * Creates a random name (example: Passwords)
- *
- * Example:
- * echo createRandomName(8);
+ * Creates a random name (example: Passwords).
  *
  * @param  int  $nameLength  Length of the generated string
  * @return string  Random name
@@ -1303,6 +1253,12 @@ function setHelpContext($area)
     return $hc;
 }
 
+/**
+ * Defines a constant if not defined before.
+ *
+ * @param  string  $constant  Name of constant to define
+ * @param  string  $value  It's value
+ */
 function define_if($constant, $value)
 {
     if (!defined($constant)) {
@@ -1315,11 +1271,11 @@ function locale_arsort($locale, $array)
     $oldlocale = setlocale(LC_COLLATE, 0);
     setlocale(LC_COLLATE, $locale);
 
-    uasort($array, "strcoll");
+    uasort($array, 'strcoll');
 
     setlocale(LC_COLLATE, $oldlocale);
 
-    return ($array);
+    return $array;
 }
 
 /* TODO: Ask timo to document this. */
@@ -1356,11 +1312,11 @@ function array_search_recursive($search, $array, $partial = false, $strict = fal
 }
 
 /**
- * cDie: CONTENIDO die-alternative
+ * CONTENIDO die-alternative. Logs the message and calls die().
  *
- * @param $file       File name   (use __FILE__)
- * @param $line    Line number (use __LINE__)
- * @param $message Message to display
+ * @param   string  $file     File name   (use __FILE__)
+ * @param   int     $line     Line number (use __LINE__)
+ * @param   string  $message  Message to display
  */
 function cDie($file, $line, $message)
 {
@@ -1369,12 +1325,13 @@ function cDie($file, $line, $message)
 }
 
 /**
- * buildStackString: Returns a formatted string with a stack trace ready for output.
+ * Returns a formatted string with a stack trace ready for output.
  *        "\tfunction1() called in file $filename($line)"
  *        "\tfunction2() called in file $filename($line)"
  *        ...
  *
- * @param $startlevel int The startlevel. Note that 0 is always buildStackString and 1 is the function called buildStackString (e.g. cWarning)
+ * @param  int  $startlevel  The startlevel. Note that 0 is always buildStackString
+ *     and 1 is the function called buildStackString (e.g. cWarning)
  * @return string
  */
 function buildStackString($startlevel = 3)
@@ -1400,24 +1357,25 @@ function buildStackString($startlevel = 3)
  */
 function getDebugger()
 {
-    $debugger = DebuggerFactory::getDebugger("devnull");
-    if (getSystemProperty("debug", "debug_to_file") == "true") {
-        $debugger = DebuggerFactory::getDebugger("file");
-    } else if (getSystemProperty("debug", "debug_to_screen") == "true") {
-        $debugger = DebuggerFactory::getDebugger("visible_adv");
+    $debugger = DebuggerFactory::getDebugger('devnull');
+    if (getSystemProperty('debug', 'debug_to_file') == 'true') {
+        $debugger = DebuggerFactory::getDebugger('file');
+    } else if (getSystemProperty('debug', 'debug_to_screen') == 'true') {
+        $debugger = DebuggerFactory::getDebugger('visible_adv');
     }
-    if ((getSystemProperty("debug", "debug_to_screen") == "true") && (getSystemProperty("debug", "debug_to_file") == "true")) {
-        $debugger = DebuggerFactory::getDebugger("vis_and_file");
+    if ((getSystemProperty('debug', 'debug_to_screen') == 'true') && (getSystemProperty('debug', 'debug_to_file') == 'true')) {
+        $debugger = DebuggerFactory::getDebugger('vis_and_file');
     }
 
     return $debugger;
 }
 
 /**
- * Prints a debug message if the settings allow it. The debug messages will be shown in a textrea in the header and in the file debuglog.txt.
- * All messages are immediately written to the filesystem but they will only show up when debugPrint() is called.
+ * Prints a debug message if the settings allow it. The debug messages will be
+ * in a textrea in the header and in the file debuglog.txt. All messages are immediately
+ * written to the filesystem but they will only show up when debugPrint() is called.
  *
- * @param string $message Message to display. NOTE: You can use buildStackString to show stacktraces
+ * @param  string  $message  Message to display. NOTE: You can use buildStackString to show stacktraces
  */
 function cDebug($message)
 {
@@ -1439,7 +1397,6 @@ function debugAdd($var, $label = '')
 
 /**
  * Prints the cached debug messages to the screen
- *
  */
 function debugPrint()
 {
@@ -1448,11 +1405,11 @@ function debugPrint()
 }
 
 /**
- * cWarning: CONTENIDO warning
+ * CONTENIDO warning
  *
- * @param $file       File name   (use __FILE__)
- * @param $line    Line number (use __LINE__)
- * @param $message Message to display
+ * @param   string  $file     File name   (use __FILE__)
+ * @param   int     $line     Line number (use __LINE__)
+ * @param   string  $message  Message to display
  */
 function cWarning($file, $line, $message)
 {
@@ -1475,11 +1432,11 @@ function cWarning($file, $line, $message)
 }
 
 /**
- * cError: CONTENIDO error
+ * CONTENIDO error
  *
- * @param $file       File name   (use __FILE__)
- * @param $line    Line number (use __LINE__)
- * @param $message Message to display
+ * @param   string  $file     File name   (use __FILE__)
+ * @param   int     $line     Line number (use __LINE__)
+ * @param   string  $message  Message to display
  */
 function cError($file, $line, $message)
 {
@@ -1502,9 +1459,9 @@ function cError($file, $line, $message)
 }
 
 /**
- * cDeprecated: Writes a note to deprecatedlog.txt
+ * Writes a note to deprecatedlog.txt
  *
- * @param $amsg Optional message (e.g. "Use function XYZ instead")
+ * @param  string  $amsg  Optional message (e.g. "Use function XYZ instead")
  * @return void
  */
 function cDeprecated($amsg = '')
@@ -1516,12 +1473,9 @@ function cDeprecated($amsg = '')
     $function_name = $stack[1]['function'];
 
     $msg = "Deprecated call: ".$function_name."() [".basename($stack[0]['file'])."(".$stack[0]['line'].")]: ";
-    if ($amsg != '')
-    {
+    if ($amsg != '') {
         $msg .= "\"".$amsg."\""."\n";
-    }
-    else
-    {
+    } else {
         $msg .= "\n";
     }
 
@@ -1531,45 +1485,44 @@ function cDeprecated($amsg = '')
 }
 
 /**
- * getNamedFrame: Returns the name of the numeric frame given
+ * Returns the name of the numeric frame given
  *
- * @param $frame   Frame number
+ * @param   int  $frame   Frame number
  * @return string  Canonical name of the frame
  */
 function getNamedFrame($frame)
 {
     switch ($frame) {
-        case 1 :
-            return ("left_top");
+        case 1:
+            return 'left_top';
             break;
-        case 2 :
-            return ("left_bottom");
+        case 2:
+            return 'left_bottom';
             break;
-        case 3 :
-            return ("right_top");
+        case 3:
+            return 'right_top';
             break;
-        case 4 :
-            return ("right_bottom");
+        case 4:
+            return 'right_bottom';
             break;
-        default :
-            return ('');
+        default:
+            return '';
             break;
     }
 }
 
 /**
- * startTiming: Starts the timing for a specific function
+ * Starts the timing for a specific function
  *
- * @param function string Name of the function
- * @param parameters array All parameters for the function to measure
- *
+ * @param  string  $function  Name of the function
+ * @param  array  $parameters  All parameters for the function to measure
  * @return int uuid for this measure process
  */
 function startTiming($function, $parameters = array())
 {
     global $_timings, $cfg;
 
-    if ($cfg["debug"]["functiontiming"] == false) {
+    if ($cfg['debug']['functiontiming'] == false) {
         return;
     }
 
@@ -1581,44 +1534,44 @@ function startTiming($function, $parameters = array())
         $parameters = array();
     }
 
-    $_timings[$uuid]["parameters"] = $parameters;
-    $_timings[$uuid]["function"] = $function;
+    $_timings[$uuid]['parameters'] = $parameters;
+    $_timings[$uuid]['function'] = $function;
 
-    $_timings[$uuid]["start"] = getmicrotime();
+    $_timings[$uuid]['start'] = getmicrotime();
 
     return $uuid;
 }
 
 /**
- * endAndLogTiming: Ends the timing process and logs it to the timings file
+ * Ends the timing process and logs it to the timings file
  *
- * @param uuid int UUID which has been used for timing
+ * @param  $uuid  int  UUID which has been used for timing
  */
 function endAndLogTiming($uuid)
 {
     global $_timings, $cfg;
 
-    if ($cfg["debug"]["functiontiming"] == false) {
+    if ($cfg['debug']['functiontiming'] == false) {
         return;
     }
 
-    $_timings[$uuid]["end"] = getmicrotime();
+    $_timings[$uuid]['end'] = getmicrotime();
 
-    $timeSpent = $_timings[$uuid]["end"] - $_timings[$uuid]["start"];
+    $timeSpent = $_timings[$uuid]['end'] - $_timings[$uuid]['start'];
 
     $myparams = array();
 
     // Build nice representation of the function
-    foreach ($_timings[$uuid]["parameters"] as $parameter) {
+    foreach ($_timings[$uuid]['parameters'] as $parameter) {
         switch (gettype($parameter)) {
-            case "string" :
+            case 'string':
                 $myparams[] = '"'.$parameter.'"';
                 break;
-            case "boolean" :
+            case 'boolean':
                 if ($parameter == true) {
-                    $myparams[] = "true";
+                    $myparams[] = 'true';
                 } else {
-                    $myparams[] = "false";
+                    $myparams[] = 'false';
                 }
                 break;
             default :
@@ -1630,9 +1583,9 @@ function endAndLogTiming($uuid)
         }
     }
 
-    $parameterString = implode(", ", $myparams);
+    $parameterString = implode(', ', $myparams);
 
-    cDebug("calling function ".$_timings[$uuid]["function"]."(".$parameterString.") took ".$timeSpent." seconds");
+    cDebug('calling function ' . $_timings[$uuid]['function'] . '(' . $parameterString . ') took ' . $timeSpent . ' seconds');
 }
 
 function notifyOnError($errortitle, $errormessage)
@@ -1691,56 +1644,41 @@ function cInitializeArrayKey(&$aArray, $sKey, $mDefault = '')
  * Function checks current language and client settings by HTTP-Params and DB
  * settings. Based on this informations it will send an HTTP header for right encoding.
  *
- * @param DB_Contenido $db
- * @param array $cfg global cfg-array
- * @param int $lang global language id
- *
- * @since 4.6.18
- *
- * @version 1.0.0
- * @author Holger Librenz
+ * @param  DB_Contenido  $db  NO MORE NEEDED
+ * @param  array $cfg  Global cfg-array
+ * @param  int $lang  Global language id
+ * @param  string   $contentType  Mime type
  */
-function sendEncodingHeader($db, $cfg, $lang)
+function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html')
 {
-    if (isset($_GET["use_encoding"])) {
-        $use_encoding = trim(strip_tags($_GET["use_encoding"]));
-    }
-
-    if (isset($_POST["use_encoding"])) {
-        $use_encoding = trim(strip_tags($_POST["use_encoding"]));
-    }
-
-    if (!isset($use_encoding)) {
+    if (isset($_GET['use_encoding'])) {
+        $use_encoding = trim(strip_tags($_GET['use_encoding']));
+    } elseif (isset($_POST['use_encoding'])) {
+        $use_encoding = trim(strip_tags($_POST['use_encoding']));
+    } else {
         $use_encoding = true;
     }
 
     if (is_string($use_encoding)) {
-        if ($use_encoding == "false") {
-            $use_encoding = false;
-        } else {
-            $use_encoding = true;
-        }
+        $use_encoding = ($use_encoding == 'false') ? false : true;
     }
 
     if ($use_encoding != false) {
-        $sql = "SELECT idlang, encoding FROM ".$cfg["tab"]["lang"];
-        $db->query($sql);
-
         $aLanguageEncodings = array();
 
-        while ($db->next_record()) {
-            $aLanguageEncodings[$db->f("idlang")] = $db->f("encoding");
+        $oLangColl = new cApiLanguageCollection();
+        $oLangColl->select();
+        while($oItem = $oLangColl->next()) {
+            $aLanguageEncodings[$oItem->get('idlang')] = $oItem->get('encoding');
         }
 
-        if (array_key_exists($lang, $aLanguageEncodings)) {
-            if (!in_array($aLanguageEncodings[$lang], $cfg['AvailableCharsets'])) {
-                header("Content-Type: text/html; charset=ISO-8859-1");
-            } else {
-                header("Content-Type: text/html; charset={$aLanguageEncodings[$lang]}");
+        $charset = 'ISO-8859-1';
+        if (isset($aLanguageEncodings[$lang])) {
+            if (in_array($aLanguageEncodings[$lang], $cfg['AvailableCharsets'])) {
+                $charset = $aLanguageEncodings[$lang];
             }
-        } else {
-            header("Content-Type: text/html; charset=ISO-8859-1");
         }
+        header('Content-Type: ' . $contentType . '; charset=' . $charset);
     }
 }
 
@@ -1780,6 +1718,14 @@ function IP_match($network, $mask, $ip)
     }
 }
 
+
+/** @deprecated  [2012-06-21]  Use cApiClientCollection->getClientname() */
+function getClientName($idclient)
+{
+    cDeprecated("Use cApiClientCollection->getClientname()");
+    $oClientColl = new cApiClientCollection();
+    return $oClientColl->getClientname($idclient);
+}
 
 /** @deprecated  [2011-08-24]  This function is not supported any longer */
 function cIDNAEncode($sourceEncoding, $string)
