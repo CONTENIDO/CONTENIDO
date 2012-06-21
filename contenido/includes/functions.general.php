@@ -29,7 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-checkAndInclude($cfg['path']['contenido'] . 'includes/api/functions.api.general.php');
+cInclude('includes', 'functions.file.php');
 
 /**
  * Extracts the available content-types from the database
