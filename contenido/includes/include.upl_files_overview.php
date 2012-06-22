@@ -134,7 +134,7 @@ if ($action == "upl_modify_file") {
     $uploads->select("idclient = '$client' AND dirname = '$qpath' AND filename='$file'");
     $upload = $uploads->next();
 
-    $upload->set("description", stripslashes($description));
+    //$upload->set("description", stripslashes($description));
     $upload->store();
 
     $properties = new cApiPropertyCollection();
