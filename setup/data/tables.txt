@@ -445,7 +445,6 @@
 "upl";"dirname";"varchar(255)";"";"";"";"";""
 "upl";"filetype";"varchar(255)";"";"";"";"";""
 "upl";"size";"int(10)";"";"";"";"";""
-"upl";"description";"text";"";"";"";"";""
 "upl";"status";"int(11)";"";"";"0";"";""
 "upl";"author";"varchar(32)";"";"";"";"";""
 "upl";"created";"datetime";"";"";"0000-00-00 00:00:00";"";""
