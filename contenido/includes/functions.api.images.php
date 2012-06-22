@@ -101,6 +101,8 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
     }
 
     $filename  = $img;
+    $maxX      = (int) $maxX;
+    $maxY      = (int) $maxY;
     $cacheTime = (int) $cacheTime;
     $quality   = (int) $quality;
 
@@ -110,11 +112,11 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
 
     $filetype  = substr($filename, strlen($filename) -4, 4);
     $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
-    $cfileName = capiImageGetCacheFileName($md5, $filetype, $keepType);
+    $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache_path'] . $cfileName;
     $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
 
-    if (capiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
+    if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
         return $webFile;
     }
 
@@ -139,7 +141,7 @@ function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
     $x = imagesx($imageHandle);
     $y = imagesy($imageHandle);
 
-    list($targetX, $targetY) = capiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand);
+    list($targetX, $targetY) = cApiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand);
 
     // Create the target image with the target size, resize it afterwards.
     if ($crop) {
@@ -205,6 +207,8 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
     }
 
     $filename  = $img;
+    $maxX      = (int) $maxX;
+    $maxY      = (int) $maxY;
     $cacheTime = (int) $cacheTime;
     $quality   = (int) $quality;
 
@@ -214,11 +218,11 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
 
     $filetype  = substr($filename, strlen($filename) -4, 4);
     $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
-    $cfileName = capiImageGetCacheFileName($md5, $filetype, $keepType);
+    $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache_path'] . $cfileName;
     $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
 
-    if (capiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
+    if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
         return $webFile;
     }
 
@@ -243,7 +247,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
     $x = imagesx($imageHandle);
     $y = imagesy($imageHandle);
 
-    list($targetX, $targetY) = capiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand);
+    list($targetX, $targetY) = cApiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand);
 
     // Create the target image with the target size, resize it afterwards.
     if ($crop) {
@@ -280,7 +284,7 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
         imagejpeg($targetImage, $cacheFile, $quality);
     }
 
-    return ($webFile);
+    return $webFile;
 }
 
 /**
@@ -310,13 +314,15 @@ function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
 function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = false,
                                   $cacheTime = 10, $quality = 75, $keepType = false)
 {
-    global $cfgClient, $client;
+    global $cfg, $cfgClient, $client;
 
     if (!file_exists($img)) {
         return false;
     }
 
     $filename  = $img;
+    $maxX      = (int) $maxX;
+    $maxY      = (int) $maxY;
     $cacheTime = (int) $cacheTime;
     $quality   = (int) $quality;
 
@@ -326,11 +332,11 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
 
     $filetype  = substr($filename, strlen($filename) -4, 4);
     $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
-    $cfileName = capiImageGetCacheFileName($md5, $filetype, $keepType);
+    $cfileName = cApiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache_path'] . $cfileName;
     $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
 
-    if (capiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
+    if (cApiImageCheckCachedImageValidity($cacheFile, $cacheTime)) {
         return $webFile;
     }
 
@@ -339,7 +345,7 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
         return false;
     }
 
-    list($targetX, $targetY) = capiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand);
+    list($targetX, $targetY) = cApiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand);
 
     // If is animated gif resize first frame
     if ($filetype == '.gif') {
@@ -351,16 +357,22 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
     // Try to execute convert
     $output = array();
     $retVal = 0;
+    $imPath = $cfg['images']['image_magick']['path'];
+    $program = escapeshellarg($imPath . 'convert');
+    $source = escapeshellarg($filename);
+    $destination = escapeshellarg($cacheFile);
     if ($crop) {
-        exec("convert -gravity center -quality ".$quality." -crop {$maxX}x{$maxY}+1+1 \"$filename\" $cacheFile", $output, $retVal);
+        $cmd = "{$program} -gravity center -quality {$quality} -crop {$maxX}x{$maxY}+1+1 {$source} {$destination}";
     } else {
-        exec("convert -quality ".$quality." -geometry {$targetX}x{$targetY} \"$filename\" $cacheFile", $output, $retVal );
+        $cmd = "{$program} -quality {$quality} -geometry {$targetX}x{$targetY} {$source} {$destination}";
     }
+
+    exec($cmd, $output, $retVal);
 
     if (!file_exists($cacheFile)) {
         return false;
     } else {
-        return ($webFile);
+        return $webFile;
     }
 }
 
@@ -492,15 +504,19 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
  *
  * @return  mixed  Information about installed image editing extensions/tools
  * <pre>
- * - 'im'  ImageMagick is available
+ * - 'im'  ImageMagick is available and usage is enabled
  * - '2'   GD library version 2 is available
  * - '1'   GD library version 1 is available
  * - '0'   Nothing could detected
  * </pre>
  */
 function checkImageEditingPosibility() {
-    if (capiIsImageMagickAvailable()) {
-        return 'im';
+    global $cfg;
+
+    if (cApiIsImageMagickAvailable()) {
+        if ($cfg['images']['image_magick']['use']) {
+            return 'im';
+        }
     }
 
     if (!extension_loaded('gd')) {
@@ -529,11 +545,7 @@ function checkImageEditingPosibility() {
  * @param   bool  $expand
  * @return  array  Index 0 is target X and index 1 is target Y
  */
-function capiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand) {
-    // Calculate the aspect ratio
-#    $aspectXY = $x / $y;
-#    $aspectYX = $y / $x;
-
+function cApiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand) {
     if (($maxX / $x) < ($maxY / $y)) {
         $targetY = $y * ($maxX / $x);
         $targetX = round($maxX);
@@ -574,7 +586,7 @@ function capiImageGetTragetDimensions($x, $y, $maxX, $maxY, $expand) {
  * @param   bool    $keepType
  * @return  string
  */
-function capiImageGetCacheFileName($md5, $filetype, $keepType) {
+function cApiImageGetCacheFileName($md5, $filetype, $keepType) {
     // Create the target file names for web and server
     if ($keepType) {
         // Should we keep the file type?
@@ -601,7 +613,7 @@ function capiImageGetCacheFileName($md5, $filetype, $keepType) {
  * @param   int    $cacheTime
  * @return  bool   Returns true, if cache file exists and7or is still valid or false
  */
-function capiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
+function cApiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
     // Check if the file exists. If it does, check if the file is valid.
     if (file_exists($cacheFile)) {
         if ($cacheTime == 0) {
@@ -629,8 +641,9 @@ function capiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
  *
  * @return bool  true if ImageMagick is available
  */
-function capiIsImageMagickAvailable()
+function cApiIsImageMagickAvailable()
 {
+    global $cfg;
     static $imagemagickAvailable;
 
     if (isset($imagemagickAvailable)) {
@@ -639,8 +652,10 @@ function capiIsImageMagickAvailable()
 
     $output = array();
     $retval = 0;
+    $imPath = $cfg['images']['image_magick']['path'];
+    $program = escapeshellarg($imPath . 'convert');
 
-    @exec('convert', $output, $retval);
+    @exec($program, $output, $retval);
 
     if (!is_array($output) || count($output) == 0) {
         $imagemagickAvailable = true;

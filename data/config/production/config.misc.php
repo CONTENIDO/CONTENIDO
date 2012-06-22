@@ -323,4 +323,19 @@ $cfg['validator']['email']['disallow_host'] = array('example.com', 'example.org'
 $cfg['validator']['email']['mx_check'] = false;
 
 
+/* Images settings
+ * -----------------------------------------------------------------------------
+ */
+
+// (bool) Flag to use ImageMagick, if available.
+//        If disabled, the image functions will try to use PHP GD library.
+$cfg['images']['image_magick']['use'] = true;
+
+// (string) Optional, path to ImageMagick binary directory, with ending slash
+//          e. g. C:/Program Files/ImageMagick/
+// NOTE: You should set this on a windows os, otherwhise the system could execute
+//       the "convert.exe" from system32 folder. This executable does not belongs
+//       to ImageMagick.
+$cfg['images']['image_magick']['path'] = '';
+
 ?>
