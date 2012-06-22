@@ -172,7 +172,7 @@ if ($upload = $uploads->next()) {
                     $sDescription = Contenido_Security::unFilter($db->f('description'));
                 } else {
 
-                    $sDescription = $upload->get("description");
+                    $sDescription = "";
                 }
 
                 $dsedit = new cHTMLTextarea("description", $sDescription);

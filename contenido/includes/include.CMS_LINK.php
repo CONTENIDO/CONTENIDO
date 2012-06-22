@@ -228,7 +228,13 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         $db->query($sql);
 
         while ($db->next_record()) {
-            $pdflink.= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".$db->f("description")."]</option>";
+        	//get description from con_upl_meta pro id
+        	$db2 = new DB_Contenido();
+			$sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
+			     . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
+			$db2->query($sql);
+			$db2->next_record();
+            $pdflink.= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
         $pdflink.= "</SELECT>";
@@ -244,7 +250,13 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         $db->query($sql);
 
         while ($db->next_record()) {
-            $imglink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".$db->f("description")."]</option>";
+        	//get description from con_upl_meta pro id
+        	$db2 = new DB_Contenido();
+			$sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
+			     . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
+			$db2->query($sql);
+			$db2->next_record();
+            $imglink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
         $imglink .= "</SELECT>";
@@ -259,7 +271,13 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         $db->query($sql);
 
         while ($db->next_record()) {
-            $ziplink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".$db->f("description")."]</option>";
+        	//get description from con_upl_meta pro id
+        	$db2 = new DB_Contenido();
+			$sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
+			     . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
+			$db2->query($sql);
+			$db2->next_record();
+            $ziplink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
         $ziplink .= "</SELECT>";
@@ -274,7 +292,13 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         $db->query($sql);
 
         while ($db->next_record()) {
-            $audiolink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".$db->f("description")."]</option>";
+        	//get description from con_upl_meta pro id
+        	$db2 = new DB_Contenido();
+			$sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
+			     . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
+			$db2->query($sql);
+			$db2->next_record();
+            $audiolink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
         $audiolink .= "</SELECT>";
@@ -290,7 +314,13 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         $db->query($sql);
 
         while ($db->next_record()) {
-            $anylink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".$db->f("description")."]</option>";
+        	//get description from con_upl_meta pro id
+        	$db2 = new DB_Contenido();
+			$sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
+			     . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
+			$db2->query($sql);
+			$db2->next_record();
+            $anylink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
         $anylink .= "</SELECT>";

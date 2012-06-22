@@ -102,18 +102,23 @@ while ($db->next_record()) {
 
 // all images in current directory
 $aImages = array();
+$aDescription = array();
 $oUploadColl = new cApiUploadCollection();
 $sWhere = "idclient='".$client."' AND dirname='" . $db->escape($img_dir) . "' AND filetype IN (" . $filetypes . ")";
 $oUploadColl->select($sWhere, '', 'filename ASC');
 while ($oItem = $oUploadColl->next()) {
+	//get description from con_upl_meta pro id
+	$sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
+	     . "idlang='".$lang."' AND idupl=".$oItem->get('idupl')." ORDER BY id_uplmeta";
+	$db->query($sql);
+	$db->next_record();
     $aImages[] = array(
         'selected' => ($a_content['CMS_IMG'][$typenr] == $oItem->get('idupl')),
         'idupl' => $oItem->get('idupl'),
-        'description' => $oItem->get('description'),
+        'description' => urldecode($db->f('description')),
         'filename' => $oItem->get('filename'),
     );
 }
-
 
 $form = new UI_Table_Form('editcontent', $cfg['path']['contenido_fullhtml'] . $cfg['path']['includes'] . 'include.backendedit.php');
 $form->setVar('lang', $lang);
