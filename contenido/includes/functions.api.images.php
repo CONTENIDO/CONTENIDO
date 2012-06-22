@@ -349,7 +349,7 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
 
     // If is animated gif resize first frame
     if ($filetype == '.gif') {
-        if (isAnimGif($filename)) {
+        if (cApiImageIsAnimGif($filename)) {
             $filename .= '[0]';
         }
     }
@@ -377,16 +377,26 @@ function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
 }
 
 /**
- * Check if gif is animated
+ * Check if gif is animated, uses "identify" of ImageMagick.
  *
  * @param   string  $sFile  file path
  * @return  bool  True (gif is animated)/ false (single frame gif)
  */
-function isAnimGif($sFile) {
+function cApiImageIsAnimGif($sFile) {
+    global $cfg;
+
+    if ('im' != cApiImageCheckImageEditingPosibility()) {
+        // ImageMagick ist not available
+        return false;
+    }
+
     $output = array();
     $retval = 0;
+    $imPath = $cfg['images']['image_magick']['path'];
+    $program = escapeshellarg($imPath . 'identify');
+    $source = escapeshellarg($sFile);
 
-    exec('identify ' . $sFile, $output, $retval);
+    exec("{$program} {$source}", $output, $retval);
 
     if (count($output) == 1) {
         return false;
@@ -452,7 +462,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
     $filename = $img;
     $filetype = substr($filename, strlen($filename) -4,4);
 
-    $mxdAvImgEditingPosibility = checkImageEditingPosibility();
+    $mxdAvImgEditingPosibility = cApiImageCheckImageEditingPosibility();
     switch ($mxdAvImgEditingPosibility) {
         case '1': // gd1
             $method = 'gd1';
@@ -510,7 +520,7 @@ function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
  * - '0'   Nothing could detected
  * </pre>
  */
-function checkImageEditingPosibility() {
+function cApiImageCheckImageEditingPosibility() {
     global $cfg;
 
     if (cApiIsImageMagickAvailable()) {
@@ -524,9 +534,10 @@ function checkImageEditingPosibility() {
     }
 
     if (function_exists('gd_info')) {
-        $arrGDInformations = gd_info();
-        if (preg_match('#([0-9\.])+#', $arrGDInformations['GD Version'], $strGDVersion)) {
-            if ($strGDVersion[0] >= '2') {
+        $sGDVersion = '';
+        $aGDInformations = gd_info();
+        if (preg_match('#([0-9\.])+#', $aGDInformations['GD Version'], $sGDVersion)) {
+            if ($sGDVersion[0] >= '2') {
                 return '2';
             }
             return '1';
@@ -668,6 +679,18 @@ function cApiIsImageMagickAvailable()
     }
 
     return $imagemagickAvailable;
+}
+
+/** @deprecated  [2012-06-23] Use cApiImageIsAnimGif() */
+function isAnimGif($sFile) {
+    cDeprecated('Use cApiImageIsAnimGif()');
+    return cApiImageIsAnimGif($sFile);
+}
+
+/** @deprecated  [2012-06-23] Use cApiImageCheckImageEditingPosibility() */
+function checkImageEditingPosibility() {
+    cDeprecated('Use cApiImageCheckImageEditingPosibility()');
+    return cApiImageCheckImageEditingPosibility();
 }
 
 ?>
