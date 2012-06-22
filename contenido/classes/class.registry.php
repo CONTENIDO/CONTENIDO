@@ -20,6 +20,7 @@
  * This class contains functions for global interaction in CONTENIDO.
  */
 class cRegistry {
+
 	/**
 	 * Returns the CONTENIDO Session ID stored in the global variable "contenido"
 	 * @return string
@@ -27,7 +28,15 @@ class cRegistry {
 	public static function getBackendSessionId() {
 		return self::_fetchGlobalVariable('contenido');
 	}
-	
+
+	/**
+	 * Returns the CONTENIDO backend language stored in the global variable "belang"
+	 * @return string
+	 */
+	public static function getBackendLanguage() {
+		return self::_fetchGlobalVariable('belang');
+	}
+
 	/**
 	 * Checks if the edit mode in backend is active or not stored in the global variable "edit"
 	 * @return boolean
@@ -35,7 +44,7 @@ class cRegistry {
 	public static function isBackendEditMode() {
 		return self::_fetchGlobalVariable('edit', false);
 	}
-	
+
 	/**
 	 * Returns the current language ID stored in the global variable "lang".
 	 * @return integer
@@ -43,7 +52,7 @@ class cRegistry {
 	public static function getLanguageId() {
 		return self::_fetchGlobalVariable('lang', 0);
 	}
-	
+
 	/**
 	 * Returns the loaded cApiLanguage object for the current language.
 	 * @return cApiLanguage
@@ -51,7 +60,7 @@ class cRegistry {
 	public static function getLanguage() {
 		return self::_fetchItemObject('cApiLanguage', self::getLanguageId());
 	}
-	
+
 	/**
 	 * Returns the current client ID stored in the global variable "client".
 	 * @return integer
@@ -59,7 +68,7 @@ class cRegistry {
 	public static function getClientId() {
 		return self::_fetchGlobalVariable('client', 0);
 	}
-	
+
 	/**
 	 * Returns the loaded cApiClient object for the current client.
 	 * @return cApiClient
@@ -67,7 +76,7 @@ class cRegistry {
 	public static function getClient() {
 		return self::_fetchItemObject('cApiClient', self::getClientId());
 	}
-	
+
 	/**
 	 * Returns the article id stored in the global variable "idart".
 	 * 
@@ -80,7 +89,7 @@ class cRegistry {
 		
 		return self::_fetchGlobalVariable('idart', 0);
 	}
-	
+
 	/**
 	 * Returns the loaded cApiArticle object for the current article.
 	 * @return cApiArticle
@@ -88,7 +97,7 @@ class cRegistry {
 	public static function getArticle() {
 		return self::_fetchItemObject('cApiArticle', self::getArticleId());
 	}
-	
+
 	/**
 	 * Returns the article language id stored in the global variable "idartlang".
 	 * 
@@ -101,7 +110,7 @@ class cRegistry {
 	
 		return self::_fetchGlobalVariable('idartlang', 0);
 	}
-	
+
 	/**
 	 * Returns the loaded cApiArticleLanguage object for the current article.
 	 * @return cApiArticleLanguage
@@ -109,7 +118,7 @@ class cRegistry {
 	public static function getArticleLanguage() {
 		return self::_fetchItemObject('cApiArticleLanguage', self::getArticleLanguageId());
 	}
-	
+
 	/**
 	 * Returns the category id stored in the global variable "idcat".
 	 * 
@@ -122,7 +131,7 @@ class cRegistry {
 		
 		return self::_fetchGlobalVariable('idcat', 0);
 	}
-	
+
 	/**
 	 * Returns the loaded cApiCategory object for the current category.
 	 * @return cApiCategory
@@ -130,7 +139,7 @@ class cRegistry {
 	public static function getCategory() {
 		return self::_fetchItemObject('cApiCategory', self::getCategoryId());
 	}
-	
+
 	/**
 	 * Returns the category language id stored in the global variable "idcatlang".
 	 * 
@@ -143,7 +152,7 @@ class cRegistry {
 		
 		return self::_fetchGlobalVariable('idcatlang', 0);
 	}
-	
+
 	/**
 	 * Returns the loaded cApiCategoryLanguage object for the current category.
 	 * @return cApiCategoryLanguage
@@ -151,7 +160,7 @@ class cRegistry {
 	public static function getCategoryLanguage() {
 		return self::_fetchItemObject('cApiCategoryLanguage', self::getCategoryLanguageId());
 	}
-	
+
 	/**
 	 * Returns the category/article relation id stored in the global variable "idcatart".
 	 * 
@@ -164,7 +173,7 @@ class cRegistry {
 		
 		return self::_fetchGlobalVariable('idcatart', 0);
 	}
-	
+
 	/**
 	 * Returns the loaded cApiCategoryArticle object for the current category/article relation.
 	 * @return cApiCategoryArticle
@@ -172,7 +181,7 @@ class cRegistry {
 	public static function getCategoryArticle() {
 		return self::_fetchItemObject('cApiCategoryArticle', self::getCategoryArticleId());
 	}
-	
+
 	/** 
 	 * Returns the current module ID.
 	 * Note: This function will work only within module code.
@@ -190,7 +199,7 @@ class cRegistry {
 	public static function getCurrentContainerId() {
 		return self::_fetchGlobalVariable('cCurrentContainer', 0);
 	}
-	
+
 	/**
 	 * Return the session object stored in the global variable "sess".
 	 * @return Contenido_Session
@@ -198,7 +207,7 @@ class cRegistry {
 	public static function getSession() {
 		return self::_fetchGlobalVariable('sess');
 	}
-	
+
 	/**
 	 * Returns the auth object stored in the global variable "auth".
 	 * @return Auth
@@ -206,7 +215,7 @@ class cRegistry {
 	public static function getAuth() {
 		return self::_fetchGlobalVariable('auth');
 	}
-	
+
 	/**
 	 * Returns the permission object stored in the global variable "perm".
 	 * @return Contenido_Perm
@@ -214,7 +223,7 @@ class cRegistry {
 	public static function getPerm() {
 		return self::_fetchGlobalVariable('perm');
 	}
-	
+
 	/**
 	 * Returns the configuration array stored in the global variable "cfg".
 	 * @return array
@@ -240,7 +249,7 @@ class cRegistry {
 		
 		return (isset($clientConfig[$clientId]) ? $clientConfig[$clientId] : array());
 	}
-	
+
 	/**
 	 * Returns a new CONTENIDO database object.
 	 * @TODO: Perhaps its better to instantiate only one object and reset it on call.
@@ -249,7 +258,7 @@ class cRegistry {
 	public static function getDb() {
 		return new DB_Contenido();
 	}
-	
+
 	/**
 	 * Fetches the database table name with its prefix.
 	 *
@@ -266,7 +275,7 @@ class cRegistry {
 		
 		return $cfg['tab'][$index];
 	}
-	
+
 	/**
 	 * Return the global CONTENIDO Execution Chain Registry.
 	 * @return cApiCECRegistry
@@ -274,7 +283,7 @@ class cRegistry {
 	public static function getCecRegistry() {
 		return self::_fetchGlobalVariable('_cecRegistry');
 	}
-	
+
 	/**
 	 * Fetches the global variable requested. If variable is not set, the default value is returned.
 	 *
@@ -290,7 +299,7 @@ class cRegistry {
 		
 		return $GLOBALS[$variableName];
 	}
-	
+
 	/**
 	 * Fetches the corresponding Item object for the specific class name and its primary key value.
 	 *
@@ -312,7 +321,7 @@ class cRegistry {
 		
 		return new $apiClassName($objectId);
 	}
-	
+
 	/**
 	 * Bootstraps the CONTENIDO framework and initializes
 	 * the global variables sess, auth and perm.
@@ -355,7 +364,7 @@ class cRegistry {
 			}
 		}
 	}
-	
+
 	/**
 	 * Shutdowns the CONTENIDO framework on page close.
 	 * @return	void
@@ -366,4 +375,5 @@ class cRegistry {
 			$sess->freeze();
 		}
 	}
+
 }
