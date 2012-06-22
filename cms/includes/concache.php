@@ -25,7 +25,7 @@
  *
  * {@internal
  *   created  2006-07-07
- *   $Id: concache.php 2194 2012-05-18 21:20:59Z dominik.ziegler $:
+ *   $Id$:
  * }}
  */
 
