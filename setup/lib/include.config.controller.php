@@ -21,7 +21,7 @@
  *
  * {@internal
  *   created  unknown
- *   $Id: makeconfig.php 1649 2011-10-28 00:07:59Z xmurrix $:
+ *   $Id$:
  * }}
  */
 

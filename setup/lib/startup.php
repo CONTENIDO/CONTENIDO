@@ -22,7 +22,7 @@
  * mofified 2012-02-20, Rusmir Jusufovic, add condition for max PHP_VERSION (JIRA CON 481)
  * {@internal
  *   created  2011-02-28
- *   $Id: $
+ *   $Id$
  * }}
  */
 

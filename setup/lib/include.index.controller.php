@@ -25,7 +25,7 @@
  *   modified 2011-02-24, Murat Purc, extended mysql extension detection and some other changes
  *   modified 2011-02-28, Murat Purc, normalized setup startup process and some cleanup/formatting
  *
- *   $Id: index.php 1649 2011-10-28 00:07:59Z xmurrix $:
+ *   $Id$:
  * }}
  *
  */

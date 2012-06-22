@@ -21,7 +21,7 @@
  *
  * {@internal
  *   created  unknown
- *   $Id: dbupdate.php 1656 2011-10-31 23:36:53Z xmurrix $:
+ *   $Id$:
  * }}
  */
 

@@ -1,6 +1,6 @@
 /*****************************************
 *
-* $Id: pluginInfo.js,v 1.0 2008/04/03 13:11:21 timo.trautmann Exp $
+* $Id$
 *
 * File      : $RCSfile: pluginInfo.js,v $
 * Project   : CONTENIDO
