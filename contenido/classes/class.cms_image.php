@@ -459,7 +459,7 @@ class Cms_Image {
 			
 			$oTpl->set('s', 'DIRECTORY_FILE', 						$this->getFileSelect($this->activeFilename, $this->iId));			
 			$oTpl->set('s', 'IMAGE_TITLE', 							$this->oDb->f('medianame'));	
-			$oTpl->set('s', 'IMAGE_DESC',							$this->oDb->f('description'));
+			$oTpl->set('s', 'IMAGE_DESC',							urldecode($this->oDb->f('description')));
 			$oTpl->set('s', 'IMAGE_KEYWORDS', 						$this->oDb->f('keywords'));
 			$oTpl->set('s', 'IMAGE_INTERNAL_NOTICE', 				$this->oDb->f('internal_notice'));
 			$oTpl->set('s', 'IMAGE_COPYRIGHT', 						$this->oDb->f('copyright'));			
@@ -527,14 +527,10 @@ class Cms_Image {
 	}
 	
 	public function getImageMeta( $filename, $dirname, $iImageId ){
-		$this->oDb->query('SELECT idupl FROM ' . $this->aCfg['tab']['upl'] . ' WHERE filename=\''.$filename.'\' AND dirname=\''.$dirname.'/\' AND idclient=\''.$this->iClient.'\'');
-		if($this->oDb->next_record()) {
-			$idupl = $this->oDb->f('idupl');                 
-		}
-		$query = "SELECT * FROM " . $this->aCfg['tab']['upl_meta'] . " WHERE idupl='".$idupl."' AND idlang='".$this->iLang."'";
+		$query = "SELECT * FROM " . $this->aCfg['tab']['upl']." a,". $this->aCfg['tab']['upl_meta'] . " b WHERE a.filename='".$filename."' AND a.dirname='".$dirname."' AND a.idclient=".$this->iClient." AND a.idupl=b.idupl AND b.idlang=".$this->iLang;
 		$this->oDb->query($query);
 		$array = array();
-		if($this->oDb->next_record() && $idupl!='') { 	
+		if($this->oDb->next_record()) { 	
 			echo $array[$iImageId]['medianame'] = urldecode($this->oDb->f('medianame'));
 			echo '+++';	
 			echo $array[$iImageId]['description'] = urldecode($this->oDb->f('description'));
