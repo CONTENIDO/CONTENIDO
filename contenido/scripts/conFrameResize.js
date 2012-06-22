@@ -1,5 +1,5 @@
 /**
- * conFrameResize Class $Id: conFrameResize.js,v 1.6 2005/08/22 12:21:18 timo.hummel Exp $
+ * conFrameResize Class $Id$
  *
  * Controls the CONTENIDO frame toggling and resizing
  *

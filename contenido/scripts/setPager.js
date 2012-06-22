@@ -6,7 +6,7 @@
 *
 * © four for business AG, www.4fb.de
 *
-* $Id: setPager.js,v 1.0 2008/08/02 13:41:45 HerrB Exp $
+* $Id$
 ******************************************/
 
 function fncSetPager(sId, sCurPage)

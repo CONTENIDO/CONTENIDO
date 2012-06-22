@@ -22,7 +22,7 @@
  * {@internal 
  *   created  Unknown
  *
- *   $Id: config.plugin.php 1709 2011-11-17 00:50:30Z xmurrix $: 
+ *   $Id$: 
  * }}
  * 
  */

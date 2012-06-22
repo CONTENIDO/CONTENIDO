@@ -22,7 +22,7 @@
  * {@internal
  *   created 2012-04-30
  *
- *   $Id: include.con_edit_form.php 2082 2012-03-29 22:04:25Z xmurrix $:
+ *   $Id$:
  * }}
  *
  */

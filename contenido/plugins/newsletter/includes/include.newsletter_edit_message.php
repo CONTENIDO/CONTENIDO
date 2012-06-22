@@ -24,7 +24,7 @@
  *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
- *   $Id: include.newsletter_edit_message.php 1870 2012-02-15 16:27:15Z rusmir.jusufovic $:
+ *   $Id$:
  * }}
  *
  */

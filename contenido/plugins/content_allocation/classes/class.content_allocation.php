@@ -29,7 +29,7 @@
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *   modified 2011-08-23, Dominik Ziegler, added check for empty arrays [#CON-423]
  *
- *   $Id: class.ContentAllocation.php 1711 2011-11-17 23:17:27Z xmurrix $:
+ *   $Id$:
  * }}
  * 
  */

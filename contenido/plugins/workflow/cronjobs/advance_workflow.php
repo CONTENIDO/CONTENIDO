@@ -21,7 +21,7 @@
  * 
  * {@internal 
  *   created  2003-05-26
- *   $Id: advance_workflow.php,v 1.5 2004/06/17 15:06:08 timo.hummel Exp $
+ *   $Id$
  * }}
  */
 

@@ -25,7 +25,7 @@
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *
- *   $Id: include.newsletter_jobs_subnav.php 1702 2011-11-14 23:34:42Z xmurrix $:
+ *   $Id$:
  * }}
  *
  */

@@ -1,6 +1,6 @@
 /*****************************************
 *
-* $Id: contenidoConfig.js,v 1.6 2003/10/15 09:44:24 jan Exp $
+* $Id$
 *
 * File      :   $RCSfile: contenidoConfig.js,v $
 * Project   :

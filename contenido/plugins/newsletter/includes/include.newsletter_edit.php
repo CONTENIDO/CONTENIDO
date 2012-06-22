@@ -25,7 +25,7 @@
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2010-12-14, Dominik Ziegler, newsletter encoding is ignored due to wrong parameter values [#CON-374]
  *
- *   $Id: include.newsletter_edit.php 1909 2012-02-28 23:48:00Z xmurrix $:
+ *   $Id$:
  * }}
  *
  */

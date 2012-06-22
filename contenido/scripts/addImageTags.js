@@ -1,6 +1,6 @@
 /*****************************************
 *
-* $Id: addImageTags.js,v 1.0 2008/02/25 13:41:52 timo.trautmann Exp $
+* $Id$
 *
 * File      :   $RCSfile: addImageTags.js,v $
 * Project   : CONTENIDO

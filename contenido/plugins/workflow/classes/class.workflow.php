@@ -22,7 +22,7 @@
  * {@internal 
  *   created 2003-07-18
  *   
- *   $Id: class.workflow.php,v 1.6 2003/08/18 11:59:22 timo.hummel Exp $
+ *   $Id$
  * }}
  * 
  */

@@ -23,7 +23,7 @@
  *   created 2003-07-18
  *   modified 2008-07-04, Dominik Ziegler, fixed bug CON-169
  *   
- *   $Id: class.workflowallocation.php,v 1.5 2006/01/13 15:54:41 timo.hummel Exp $
+ *   $Id$
  * }}
  * 
  */

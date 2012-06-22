@@ -22,7 +22,7 @@
  * {@internal 
  *   created 2010-08-23
  *
- *   $Id: include.default_subnav.php 338 2008-06-27 09:02:23Z frederic.schneider $:
+ *   $Id$:
  * }}
  * 
  */

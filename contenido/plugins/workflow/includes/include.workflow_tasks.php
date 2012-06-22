@@ -22,7 +22,7 @@
  * {@internal
  *   created 2003-07-30
  *
- *   $Id: include.workflow_tasks.php,v 1.4 2003/08/14 13:07:32 timo.hummel Exp $
+ *   $Id$
  * }}
  *
  */

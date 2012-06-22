@@ -6,7 +6,7 @@
 *
 * © four for business AG, www.4fb.de
 *
-* $Id: class.article.php,v 1.1.2.1 2004/07/02 10:59:20 timo.hummel Exp $
+* $Id$
 ******************************************/
 
 var m_documentParameters = new Array();

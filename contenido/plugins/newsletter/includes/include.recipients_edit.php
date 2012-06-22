@@ -24,7 +24,7 @@
  *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
- *   $Id: include.recipients_edit.php 1909 2012-02-28 23:48:00Z xmurrix $:
+ *   $Id$:
  * }}
  *
  */

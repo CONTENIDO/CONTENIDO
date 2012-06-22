@@ -24,7 +24,7 @@
  *   created unknown
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *
- *   $Id: include.right_bottom.php 2101 2012-04-03 12:46:11Z mischa.holz $:
+ *   $Id$:
  * }}
  * 
  */

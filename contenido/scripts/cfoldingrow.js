@@ -6,7 +6,7 @@
 *
 * © four for business AG, www.4fb.de
 *
-* $Id: class.frontend.groups.php,v 1.2 2004/03/16 13:41:45 timo.hummel Exp $
+* $Id$
 ******************************************/
 
 function cFoldingRow_expandCollapse (image, row, hidden, uuid)

@@ -22,7 +22,7 @@
  * {@internal 
  *   created 2003-07-18
  *   
- *   $Id: class.workflowusersequence.php,v 1.3 2006/01/13 15:54:41 timo.hummel Exp $
+ *   $Id$
  * }}
  * 
  */

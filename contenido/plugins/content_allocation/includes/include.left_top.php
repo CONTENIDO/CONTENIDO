@@ -24,7 +24,7 @@
  *   created unknown
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *
- *   $Id: include.left_top.php 1711 2011-11-17 23:17:27Z xmurrix $:
+ *   $Id$:
  * }}
  * 
  */

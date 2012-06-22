@@ -1,6 +1,6 @@
 /*****************************************
 *
-* $Id: group_association.js,v 1.0 2008/02/15 13:41:52 timo.trautmann Exp $
+* $Id$
 *
 * File      :   $RCSfile: group_association.js,v $
 * Project   : CONTENIDO

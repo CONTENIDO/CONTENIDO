@@ -24,7 +24,7 @@
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-08-14, Timo Trautmann, Bilal Arslan - Functions for versionning and storing file meta data added
  *
- *   $Id: include.html_tpl_edit_form.php 713 2008-08-21 14:01:51Z timo.trautmann $:
+ *   $Id$:
  * }}
  * 
  */

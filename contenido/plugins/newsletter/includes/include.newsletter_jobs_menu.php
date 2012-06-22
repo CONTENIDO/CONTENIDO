@@ -24,7 +24,7 @@
  *   created 2007-01-01, Björn Behrens (HerrB)
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
- *   $Id: include.newsletter_jobs_menu.php 1702 2011-11-14 23:34:42Z xmurrix $:
+ *   $Id$:
  * }}
  *
  */

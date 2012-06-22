@@ -23,7 +23,7 @@
  *   created unknown
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *
- *   $Id: class.ContentAllocation_tree.php 1821 2012-02-06 14:19:12Z bilal.arslan $:
+ *   $Id$:
  * }}
  * 
  */

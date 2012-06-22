@@ -14,7 +14,7 @@
  * Of course, this soft is provided "as is" without express or implied
  * warranty of any kind.
  *
- * $Id: md5.js,v 1.2 2003/06/23 16:26:40 timo.hummel Exp $
+ * $Id$
  *
  */
 

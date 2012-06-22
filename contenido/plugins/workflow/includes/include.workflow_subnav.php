@@ -23,7 +23,7 @@
  *   created  2003-05-20
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
  *   
- *   $Id: include.workflow_subnav.php,v 1.1 2003/07/31 13:44:03 timo.hummel Exp $
+ *   $Id$
  * }}
  * 
  */

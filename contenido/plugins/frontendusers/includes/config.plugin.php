@@ -24,7 +24,7 @@
  *   modified 2005-05-24
  *   modified 2008-06-26 Timo Trautmann - Plugin include replaced with existing generic function
  *
- *   $Id: config.plugin.php 1709 2011-11-17 00:50:30Z xmurrix $: 
+ *   $Id$: 
  * }}
  * 
  */

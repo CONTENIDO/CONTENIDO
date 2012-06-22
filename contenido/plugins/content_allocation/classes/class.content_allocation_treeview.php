@@ -24,7 +24,7 @@
  *   modified 2008-06-26, Timo Trautmann, changed post var from treeItem to treeItemPost (security issue)
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *
- *   $Id: class.ContentAllocation_treeview.php 2101 2012-04-03 12:46:11Z mischa.holz $:
+ *   $Id$:
  * }}
  * 
  */

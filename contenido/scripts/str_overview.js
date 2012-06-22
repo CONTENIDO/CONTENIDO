@@ -1,6 +1,6 @@
 /*****************************************
 *
-* $Id: str_overview.js,v 1.0 2008/02/15 13:41:52 timo.trautmann Exp $
+* $Id$
 *
 * File      :   $RCSfile: str_overview.js,v $
 * Project   : CONTENIDO

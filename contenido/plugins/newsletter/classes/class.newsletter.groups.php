@@ -24,7 +24,7 @@
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
  *
- *   $Id: class.newsletter.groups.php 1843 2012-02-09 16:01:52Z mischa.holz $:
+ *   $Id$:
  * }}
  *
  */

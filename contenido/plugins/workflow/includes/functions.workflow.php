@@ -23,7 +23,7 @@
  *   created 2003-07-28
  *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
  *
- *   $Id: functions.workflow.php,v 1.8 2006/01/13 15:54:41 timo.hummel Exp $
+ *   $Id$
  * }}
  *
  */
