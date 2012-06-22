@@ -39,6 +39,8 @@ define('E_IMAGERESIZE_NOTHINGAVAILABLE', 4);
 
 function checkImageResizer()
 {
+    global $cfg;
+
     $iGDStatus = isPHPExtensionLoaded('gd');
 
     if ($iGDStatus == E_EXTENSION_AVAILABLE) {
@@ -49,7 +51,8 @@ function checkImageResizer()
         return E_IMAGERESIZE_GD;
     }
 
-    if (isImageMagickAvailable()) {
+    checkAndInclude($cfg['path']['contenido'] . 'includes/functions.api.images.php');
+    if (capiIsImageMagickAvailable()) {
         return E_IMAGERESIZE_IMAGEMAGICK;
     }
 

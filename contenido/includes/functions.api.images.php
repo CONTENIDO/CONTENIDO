@@ -499,7 +499,7 @@ function capiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
  * </pre>
  */
 function checkImageEditingPosibility() {
-    if (isImageMagickAvailable()) {
+    if (capiIsImageMagickAvailable()) {
         return 'im';
     }
 
@@ -622,6 +622,37 @@ function capiImageCheckCachedImageValidity($cacheFile, $cacheTime) {
     }
 
     return false;
+}
+
+/**
+ * Checks if ImageMagick is available
+ *
+ * @return bool  true if ImageMagick is available
+ */
+function capiIsImageMagickAvailable()
+{
+    static $imagemagickAvailable;
+
+    if (isset($imagemagickAvailable)) {
+        return ($imagemagickAvailable === true);
+    }
+
+    $output = array();
+    $retval = 0;
+
+    @exec('convert', $output, $retval);
+
+    if (!is_array($output) || count($output) == 0) {
+        return false;
+    }
+
+    if (strpos($output[0], 'ImageMagick') !== false) {
+        $imagemagickAvailable = true;
+    } else {
+        $imagemagickAvailable = false;
+    }
+
+    return $imagemagickAvailable;
 }
 
 ?>

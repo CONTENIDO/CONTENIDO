@@ -1048,41 +1048,6 @@ function str_rpos($haystack, $needle, $start = 0)
 }
 
 /**
- * Checks if ImageMagick is available
- *
- * @return bool  true if ImageMagick is available
- */
-function isImageMagickAvailable()
-{
-    global $_imagemagickAvailable;
-
-    if (is_bool($_imagemagickAvailable)) {
-        if ($_imagemagickAvailable === true) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    $output = array();
-    $retval = 0;
-
-    @exec("convert", $output, $retval);
-
-    if (!is_array($output) || count($output) == 0) {
-        return false;
-    }
-
-    if (strpos($output[0], "ImageMagick") !== false) {
-        $_imagemagickAvailable = true;
-        return true;
-    } else {
-        $_imagemagickAvailable = false;
-        return false;
-    }
-}
-
-/**
  * Checks if the script is being runned from the web
  *
  * @return  bool  True if the script is running from the web
@@ -1718,6 +1683,14 @@ function IP_match($network, $mask, $ip)
     }
 }
 
+
+/** @deprecated  [2012-06-21]  Use capiIsImageMagickAvailable() from functions.api.images.php */
+function isImageMagickAvailable()
+{
+    cDeprecated('Use capiIsImageMagickAvailable() from functions.api.images.php');
+    cInclude('includes', 'functions.api.images.php');
+    return capiIsImageMagickAvailable();
+}
 
 /** @deprecated  [2012-06-21]  Use cApiClientCollection->getClientname() */
 function getClientName($idclient)
