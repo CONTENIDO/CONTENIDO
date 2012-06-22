@@ -17,7 +17,7 @@
  * {@internal
  *   created 2009-01-15
  *
- *   $Id: Contenido_NavMain_Util.class.php 1555 2011-09-07 22:35:07Z xmurrix $
+ *   $Id$
  * }}
  *
  */

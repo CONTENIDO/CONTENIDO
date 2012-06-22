@@ -22,7 +22,7 @@
  *
  * {@internal
  *   created  2008-08-28, Murat Purc, initial implementation, port from Advanced Mod Rewrite Plugin
- *   $Id:$:
+ *   $Id$:
  * }}
  */
 

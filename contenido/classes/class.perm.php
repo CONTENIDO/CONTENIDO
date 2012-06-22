@@ -24,7 +24,7 @@
  *   modified 2009-10-29, Murat Purc, replaced deprecated functions (PHP 5.3 ready) and some formatting
  *   modified 2011-10-09, Murat Purc, Partly ported to PHP 5 and formatted/documented code
  *
- *   $Id: perm.inc 2074 2012-03-28 21:41:09Z xmurrix $:
+ *   $Id$:
  * }}
  *
  */

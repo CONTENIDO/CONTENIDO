@@ -28,7 +28,7 @@
  *   created  2011-11-10, Murat Purc, added caching method getValuesOnlyByTypeName()
  *   modified 2012-02-27, restet did'nt work
  *
- *   $Id: $:
+ *   $Id$:
  * }}
  *
  */

@@ -21,7 +21,7 @@
  * {@internal
  *   created 205-09-15
  *
- *   $Id: class.widgets.dateselect.php,v 1.6 2005/09/15 12:15:17 timo.hummel Exp $
+ *   $Id$
  * }}
  *
  */

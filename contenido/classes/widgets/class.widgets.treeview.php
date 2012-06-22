@@ -7,7 +7,7 @@
 *
 * © four for business AG, www.4fb.de
 *
-* $Id: class.widgets.treeview.php,v 1.5 2006/10/05 23:47:21 bjoern.behrens Exp $
+* $Id$
 ******************************************/
 
 define("TREEVIEW_GRIDLINE_SOLID" , "solid");

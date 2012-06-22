@@ -27,7 +27,7 @@
  *   created  2006-07-07
  *   modified 2008-07-03, bilal arslan, added security fix
  *
- *   $Id: class.concache.php 1724 2011-12-22 23:19:15Z xmurrix $:
+ *   $Id$:
  * }}
  *
  */

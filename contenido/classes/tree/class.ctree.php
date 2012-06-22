@@ -21,7 +21,7 @@
  * {@internal
  *   created 2004-08-04
  *
- *   $Id: class.ctree.php,v 1.2 2004/08/04 07:56:19 timo.hummel Exp $
+ *   $Id$
  * }}
  *
  */

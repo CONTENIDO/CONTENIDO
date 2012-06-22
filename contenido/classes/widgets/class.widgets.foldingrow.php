@@ -21,7 +21,7 @@
  * {@internal
  *   created 2004-08-04
  *
- *   $Id: class.widgets.foldingrow.php,v 1.3 2004/08/04 07:56:19 timo.hummel Exp $
+ *   $Id$
  * }}
  *
  */

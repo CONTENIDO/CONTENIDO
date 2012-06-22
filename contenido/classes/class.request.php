@@ -3,7 +3,7 @@
 
 /**
  * Request class
- * @version $Id: request.class.php 2289 2008-09-29 13:46:08Z atelierq $
+ * @version $Id$
  * @author Andreas Kummer, w3concepts AG
  * @copyright Copyright &copy; 2008, w3concepts AG
  */

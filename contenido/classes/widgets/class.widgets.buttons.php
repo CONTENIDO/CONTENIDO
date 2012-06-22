@@ -21,7 +21,7 @@
  * {@internal
  *   created 2005-08-22
  *
- *   $Id: class.widgets.buttons.php,v 1.6 2005/08/22 12:20:23 timo.hummel Exp $
+ *   $Id$
  * }}
  *
  */

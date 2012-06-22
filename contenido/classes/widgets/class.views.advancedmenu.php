@@ -21,7 +21,7 @@
  * {@internal
  *   created 2004-08-04
  *
- *   $Id: class.views.advancedmenu.php,v 1.1 2004/08/04 07:15:30 timo.hummel Exp $
+ *   $Id$
  * }}
  *
  */

@@ -22,7 +22,7 @@
  *   created 2005-08-29
  *   modified 2008-05-23 Added Debug_DevNull and Debug_VisibleAdv
  *
- *   $Id: class.gdb.driver.php,v 1.3 2005/08/29 15:41:07 timo.hummel Exp $
+ *   $Id$
  * }}
  *
  */

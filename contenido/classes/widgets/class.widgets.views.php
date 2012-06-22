@@ -22,7 +22,7 @@
  *   created 2004-08-04
  *   modified 2010-05-11, Dominik Ziegler, removed output of "foo"
  *
- *   $Id: class.widgets.views.php,v 1.1 2004/08/04 07:15:30 timo.hummel Exp $
+ *   $Id$
  * }}
  *
  */

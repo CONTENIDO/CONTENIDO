@@ -20,7 +20,7 @@
  *
  * {@internal
  *   created 2004-09-28
- *   $Id: class.log.php,v 1.2 2006/04/28 09:20:55 timo.hummel Exp $
+ *   $Id$
  * }}
  */
 

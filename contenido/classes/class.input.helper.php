@@ -29,7 +29,7 @@
  *   created  2007-06-18
  *   modified 2008-07-03, bilal arslan, added security fix
  *
- *   $Id: class.input.helper.php 1789 2012-01-18 14:19:40Z mischa.holz $:
+ *   $Id$:
  * }}
  * 
  */

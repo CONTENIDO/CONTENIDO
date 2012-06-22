@@ -22,7 +22,7 @@
  *   created 2006-05-10
  *   modified 2008-05-23 Added Debug_DevNull and Debug_VisibleAdv
  *
- *   $Id: class.gdb.mysql.php,v 1.12 2006/10/05 23:44:43 bjoern.behrens Exp $
+ *   $Id$
  * }}
  *
  */

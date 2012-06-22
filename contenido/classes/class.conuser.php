@@ -62,7 +62,7 @@
  *  modified 2008-12-04, Timo Trautman, Added CONTENIDO $cfg as param for getErrorString()
  *  modified 2011-02-26, Ortwin Pinke, added unset for pw-request-marker, changed header svn-id and version declaration
  *
- *  $Id:$
+ *  $Id$
  * }}
  *
  **/

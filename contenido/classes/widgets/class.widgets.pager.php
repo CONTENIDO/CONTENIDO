@@ -21,7 +21,7 @@
  * {@internal
  *   created 2005-05-11
  *
- *   $Id: class.widgets.pager.php,v 1.2 2005/05/11 13:28:17 timo.hummel Exp $
+ *   $Id$
  * }}
  *
  */

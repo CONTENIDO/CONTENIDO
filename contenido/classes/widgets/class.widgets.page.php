@@ -9,7 +9,7 @@
  *
  * @package    CONTENIDO Backend Classes
  * @subpackage cPage widgets
- * @version    $Id:$
+ * @version    $Id$
  * @author     Bjoern Behrens
  * @author     Ortwin Pinke
  * @copyright  four for business AG <www.4fb.de>

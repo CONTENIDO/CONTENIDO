@@ -21,7 +21,7 @@
  * {@internal
  *   created 2004-09-28
  *
- *   $Id: class.modulelog.php,v 1.3 2006/04/28 09:20:55 timo.hummel Exp $
+ *   $Id$
  * }}
  *
  */
