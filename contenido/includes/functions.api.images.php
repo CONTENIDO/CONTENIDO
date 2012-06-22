@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.4.6
+ * @version    1.4.7
  * @author     Timo A. Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -123,7 +123,7 @@ function capiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
         case '.gif': $function = 'imagecreatefromgif'; break;
         case '.png': $function = 'imagecreatefrompng'; break;
         case '.jpg': $function = 'imagecreatefromjpeg'; break;
-        case "jpeg": $function = 'imagecreatefromjpeg'; break;
+        case 'jpeg': $function = 'imagecreatefromjpeg'; break;
         default: return false;
     }
 
@@ -227,7 +227,7 @@ function capiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
         case '.gif': $function = 'imagecreatefromgif'; break;
         case '.png': $function = 'imagecreatefrompng'; break;
         case '.jpg': $function = 'imagecreatefromjpeg'; break;
-        case "jpeg": $function = 'imagecreatefromjpeg'; break;
+        case 'jpeg': $function = 'imagecreatefromjpeg'; break;
         default: return false;
     }
 
@@ -634,7 +634,7 @@ function capiIsImageMagickAvailable()
     static $imagemagickAvailable;
 
     if (isset($imagemagickAvailable)) {
-        return ($imagemagickAvailable === true);
+        return $imagemagickAvailable;
     }
 
     $output = array();
@@ -643,13 +643,13 @@ function capiIsImageMagickAvailable()
     @exec('convert', $output, $retval);
 
     if (!is_array($output) || count($output) == 0) {
-        return false;
-    }
-
-    if (strpos($output[0], 'ImageMagick') !== false) {
         $imagemagickAvailable = true;
     } else {
-        $imagemagickAvailable = false;
+        if (strpos($output[0], 'ImageMagick') !== false) {
+            $imagemagickAvailable = true;
+        } else {
+            $imagemagickAvailable = false;
+        }
     }
 
     return $imagemagickAvailable;
