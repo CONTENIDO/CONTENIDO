@@ -55,7 +55,7 @@ function cecCreateMetatags($metatags) {
     if (file_exists($cachefilename)) {
         $fileexists = true;
 
-        $diff =  mktime() - filemtime($cachefilename);
+        $diff =  time() - filemtime($cachefilename);
 
         if ($diff > $cachetime) {
             $reload = true;
