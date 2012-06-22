@@ -784,8 +784,8 @@ class Cms_Teaser {
 
         //scale image if exists and return it
         if (file_exists($sTeaserImage)) {
-             //Scale Image using capiImgScale
-            $sImgSrc = capiImgScale ($sTeaserImage, $iMaxX, $iMaxY, $bCropped);
+             //Scale Image using cApiImgScale
+            $sImgSrc = cApiImgScale($sTeaserImage, $iMaxX, $iMaxY, $bCropped);
 
             if ($this->sUseXHTML == 'true' ) {
                 $sLetter = ' /';

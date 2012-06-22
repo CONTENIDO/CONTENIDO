@@ -49,7 +49,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @param   bool    $bExpand  Flag to expand image
  * @return  string  Path to the resulting image
  */
-function capiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
+function cApiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
     if (!file_exists($sImg)) {
         return false;
     }
@@ -91,7 +91,7 @@ function capiImgScaleGetMD5CacheFile($sImg, $iMaxX, $iMaxY, $bCrop, $bExpand) {
  * @param  bool     $keepType   If true and a png file is source, output file is also png
  * @return string   url to the resulting image (http://...
  */
-function capiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
+function cApiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
                          $cacheTime = 10, $quality = 75, $keepType = false)
 {
     global $cfgClient,  $client;
@@ -109,7 +109,7 @@ function capiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
     }
 
     $filetype  = substr($filename, strlen($filename) -4, 4);
-    $md5       = capiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
+    $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = capiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache_path'] . $cfileName;
     $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
@@ -195,7 +195,7 @@ function capiImgScaleLQ($img, $maxX, $maxY, $crop = false, $expand = false,
  * @param   bool    $keepType   If true and a png file is source, output file is also png
  * @return  string  Url to the resulting image (http://...)
  */
-function capiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
+function cApiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
                          $cacheTime = 10, $quality = 75, $keepType = true)
 {
     global $cfgClient, $client;
@@ -213,7 +213,7 @@ function capiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
     }
 
     $filetype  = substr($filename, strlen($filename) -4, 4);
-    $md5       = capiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
+    $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = capiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache_path'] . $cfileName;
     $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
@@ -307,7 +307,7 @@ function capiImgScaleHQ($img, $maxX, $maxY, $crop = false, $expand = false,
  * @param   bool    $keepType   If true and a png file is source, output file is also png
  * @return  string  Url to the resulting image (http://...)
  */
-function capiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = false,
+function cApiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = false,
                                   $cacheTime = 10, $quality = 75, $keepType = false)
 {
     global $cfgClient, $client;
@@ -325,7 +325,7 @@ function capiImgScaleImageMagick($img, $maxX, $maxY, $crop = false, $expand = fa
     }
 
     $filetype  = substr($filename, strlen($filename) -4, 4);
-    $md5       = capiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
+    $md5       = cApiImgScaleGetMD5CacheFile($img, $maxX, $maxY, $crop, $expand);
     $cfileName = capiImageGetCacheFileName($md5, $filetype, $keepType);
     $cacheFile = $cfgClient[$client]['cache_path'] . $cfileName;
     $webFile   = $cfgClient[$client]['path']['htmlpath'] . 'cache/' . $cfileName;
@@ -409,7 +409,7 @@ function isAnimGif($sFile) {
  * @param   bool     $keepType   If true and a png file is source, output file is also png
  * @return  string  Path to the resulting image
  */
-function capiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
+function cApiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
                        $cacheTime = 10, $wantHQ = false, $quality = 75, $keepType = true)
 {
     global $client, $cfgClient;
@@ -467,13 +467,13 @@ function capiImgScale($img, $maxX, $maxY, $crop = false, $expand = false,
 
     switch ($method) {
         case 'gd1':
-            $return = capiImgScaleLQ($img, $maxX, $maxY, $crop, $expand, $cacheTime, $quality, $keepType);
+            $return = cApiImgScaleLQ($img, $maxX, $maxY, $crop, $expand, $cacheTime, $quality, $keepType);
             break;
         case 'gd2':
-            $return = capiImgScaleHQ($img, $maxX, $maxY, $crop, $expand, $cacheTime, $quality, $keepType);
+            $return = cApiImgScaleHQ($img, $maxX, $maxY, $crop, $expand, $cacheTime, $quality, $keepType);
             break;
         case 'im':
-            $return = capiImgScaleImageMagick($img, $maxX, $maxY, $crop, $expand, $cacheTime, $quality, $keepType);
+            $return = cApiImgScaleImageMagick($img, $maxX, $maxY, $crop, $expand, $cacheTime, $quality, $keepType);
             break;
         case 'failure':
             $return = str_replace($cfgClient[$client]['path']['frontend'], $cfgClient[$client]['path']['htmlpath'], $img);

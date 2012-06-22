@@ -940,9 +940,9 @@ Release 4.8.1
 ----------------------------------------------------------------------
 - Einbau von TinyMCE 2.0.1. Die neue Version des TinyMCE unterstützt
   nun auch Safari und Firefox 1.5.
-- capiImgScale funktioniert jetzt auch richtig, wenn ein Verzeichnis
+- cApiImgScale funktioniert jetzt auch richtig, wenn ein Verzeichnis
   angegeben wird.
-- capiImgScale verwendet jetzt md5_file (sofern die Funktion in PHP
+- cApiImgScale verwendet jetzt md5_file (sofern die Funktion in PHP
   vorhanden ist), um eine Datei nur dann erneut zu verkleinern, wenn
   sie wirklich geändert wurde. Löst Performanceprobleme bei großen
   Webauftritten mit vielen skalierten Bildern.

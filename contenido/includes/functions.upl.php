@@ -510,11 +510,11 @@ function uplGetThumbnail($sFile, $iMaxSize)
         case "iff":
         case "xbm":
         case "wbmp":
-            $img = capiImgScale($cfgClient[$client]['upl']['path'] . $sFile, $iMaxSize, $iMaxSize, false, false, 50);
+            $img = cApiImgScale($cfgClient[$client]['upl']['path'] . $sFile, $iMaxSize, $iMaxSize, false, false, 50);
             if ($img !== false) {
                 return $img;
             }
-            $img = capiImgScale($cfg['path']['contenido'] . 'images/unknown.jpg', $iMaxSize, $iMaxSize, false, false, 50);
+            $img = cApiImgScale($cfg['path']['contenido'] . 'images/unknown.jpg', $iMaxSize, $iMaxSize, false, false, 50);
             if ($img !== false) {
                 return $img;
             } else {

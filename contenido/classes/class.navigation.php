@@ -340,7 +340,7 @@ class Contenido_Navigation
             if ($clientImage !== false && $clientImage != "" && file_exists($cfgClient[$client]['path']['frontend'].$clientImage)) {
                 $sClientImageTemplate = '<img src="%s" alt="%s" title="%s" />';
 
-                $sThumbnailPath  = capiImgScale($cfgClient[$client]['path']['frontend'].$clientImage, 80, 25, 0, 1);
+                $sThumbnailPath  = cApiImgScale($cfgClient[$client]['path']['frontend'].$clientImage, 80, 25, 0, 1);
                 $sClientImageTag = sprintf($sClientImageTemplate, $sThumbnailPath, $sClientName, $sClientName);
 
                 $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientUrl, $sClientImageTag));
