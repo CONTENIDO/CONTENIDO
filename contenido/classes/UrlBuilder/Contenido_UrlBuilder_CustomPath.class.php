@@ -12,7 +12,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created 2008-02-19
- *   modified 2008-02-28 Changed to using Config for URL style
- *   @todo Somehow get around using prCreateURLNameLocationString()
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -39,14 +35,21 @@ cInclude('includes', 'functions.pathresolver.php');
 
 class Contenido_UrlBuilder_CustomPath extends Contenido_UrlBuilder
 {
-    static private $_instance; // object instance
+    /**
+     * Self instance
+     * @var  Contenido_UrlBuilder_CustomPath
+     */
+    static private $_instance;
+
+    /**
+     * Configuration
+     * @var array
+     */
     private $aConfig;
 
     /**
      * Constructor
-     * @access private
      * @return void
-     * @author Rudi Bieller
      */
     private function __construct()
     {
@@ -54,15 +57,13 @@ class Contenido_UrlBuilder_CustomPath extends Contenido_UrlBuilder
     }
 
     /**
-     * Get instance of Contenido_UrlBuilder_Frontcontent
-     * @access public
+     * Get instance of self
      * @return obj Contenido_UrlBuilder_Frontcontent
-     * @author Rudi Bieller
      */
     public static function getInstance()
     {
         if (self::$_instance == null) {
-            self::$_instance = new Contenido_UrlBuilder_CustomPath();
+            self::$_instance = new self();
         }
         return self::$_instance;
     }
@@ -73,13 +74,12 @@ class Contenido_UrlBuilder_CustomPath extends Contenido_UrlBuilder
      * For creating the location string $aParams needs to have keys idcat, level, lang and at least one custom key.
      * If level is not set, level 0 will be used as default.
      *
-     * @param array $aParams Required keys are: idcat, level, lang and at least one custom key.
-     * @param boolean $bUseAbsolutePath
-     * @param array $aConfig If not set, will use UrlBuilderConfig::getConfig()
+     * @param  array  $aParams  Required keys are: idcat, level, lang and at least one custom key.
+     * @param  bool  $bUseAbsolutePath
+     * @param  array  $aConfig  If not set, will use UrlBuilderConfig::getConfig()
      * @return void
      * @throws InvalidArgumentException
      * @throws Exception
-     * @author Rudi Bieller
      * @todo Somehow get around using prCreateURLNameLocationString()
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array())

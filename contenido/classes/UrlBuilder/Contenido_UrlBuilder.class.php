@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,11 +20,8 @@
  *
  * {@internal
  *   created  2008-02-21
- *   modified 2008-09-29, Murat Purc, added getHttpBasePath() method
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -35,32 +32,31 @@ if (!defined('CON_FRAMEWORK')) {
 abstract class Contenido_UrlBuilder
 {
     /**
+     * Holds final value of built URL
      * @var string
-     * @access protected
-     * @desc Holds final value of built URL
      */
     protected $sUrl; // needed in this context
 
     /**
+     * Holds URL that is used as base for an absolute path, e.g. http://contenido.org/
      * @var string
-     * @access protected
-     * @desc Holds URL that is used as base for an absolute path, e.g. http://contenido.org/
      */
     protected $sHttpBasePath; // needed in this context
 
     /**
-     * Implementation of Singleton. Get instance of concrete Contenido_UrlBuilder_XYZ
-     * @access public
-     * @return obj Contenido_UrlBuilder_Frontcontent
-     * @author Rudi Bieller
+     * Implementation of Singleton.
+     * It is meant to be an abstract function but not declared as abstract,
+     * because PHP Strict Standards are against abstract static functions.
+     * @throws  Exception  If child class has not implemented this function
      */
-    abstract public static function getInstance();
+    public static function getInstance()
+    {
+        throw new Exception("Child class has to implement this function");
+    }
 
     /**
      * Set http base path, e.g. http://contenido.org/
-     * @access public
      * @return void
-     * @author Rudi Bieller
      */
     public function setHttpBasePath($sBasePath)
     {
@@ -80,20 +76,17 @@ abstract class Contenido_UrlBuilder
      * Builds a URL in index-a-1.html style.
      * Index keys of $aParams will be used as "a", corresponding values as "1" in this sample.
      *
-     * @param array $aParams
-     * @param boolean $bUseAbsolutePath
-     * @param string $sSeparator
+     * @param  array   $aParams
+     * @param  bool    $bUseAbsolutePath
+     * @param  string  $sSeparator
      * @return void
      * @throws InvalidArgumentException
-     * @author Rudi Bieller
      */
     abstract public function buildUrl(array $aParams, $bUseAbsolutePath = false);
 
     /**
      * Return built URL
-     * @access public
      * @return string
-     * @author Rudi Bieller
      */
     public function getUrl()
     {

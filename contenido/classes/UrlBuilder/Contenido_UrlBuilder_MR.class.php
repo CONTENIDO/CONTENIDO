@@ -139,6 +139,7 @@ class Contenido_UrlBuilder_MR extends Contenido_UrlBuilder
         global $cfgClient, $client;
 
         ModRewriteDebugger::add($params, 'Contenido_UrlBuilder_MR::buildUrl() $params');
+        $urlDebug = array();
         $urlDebug['in'] = $params;
 
         $url = self::_buildUrl($params);

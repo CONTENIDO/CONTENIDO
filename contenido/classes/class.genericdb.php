@@ -245,7 +245,8 @@ class Contenido_ItemCache
 
         if ($this->_iMaxItemsToCache == count($this->_aItemsCache)) {
             // we have reached the maximum number of cached items, remove first entry
-            $firstEntryKey = array_shift(array_keys($this->_aItemsCache));
+            $keys = array_keys($this->_aItemsCache);
+            $firstEntryKey = array_shift($keys);
             unset($this->_aItemsCache[$firstEntryKey]);
         }
 
@@ -306,7 +307,7 @@ abstract class Contenido_ItemBaseAbstract
      * Item cache instance
      * @var  Contenido_ItemCache
      */
-    protected static $_oCache;
+    protected $_oCache;
 
     /**
      * GenericDB settings, see $cfg['sql']

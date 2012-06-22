@@ -36,7 +36,7 @@
  * {@internal
  *   created 2011-11-03
  *
- *   $Id: $:
+ *   $Id$:
  * }}
  *
  */
@@ -217,7 +217,7 @@ class Contenido_Effective_Setting
      *
      * @return  cApiUser
      */
-    protected function _getUserInstance()
+    protected static function _getUserInstance()
     {
         global $auth;
 
@@ -233,7 +233,7 @@ class Contenido_Effective_Setting
      *
      * @return  cApiClientLanguage
      */
-    protected function _getClientLanguageInstance()
+    protected static function _getClientLanguageInstance()
     {
         global $client, $lang;
 
@@ -249,7 +249,7 @@ class Contenido_Effective_Setting
      *
      * @return  cApiClient
      */
-    protected function _getClientInstance()
+    protected static function _getClientInstance()
     {
         global $client;
 

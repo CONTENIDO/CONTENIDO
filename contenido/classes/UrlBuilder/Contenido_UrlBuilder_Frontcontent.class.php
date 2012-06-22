@@ -54,9 +54,7 @@ class Contenido_UrlBuilder_Frontcontent extends Contenido_UrlBuilder
 
     /**
      * Constructor
-     * @access private
      * @return void
-     * @author Rudi Bieller
      */
     private function __construct()
     {
@@ -64,15 +62,13 @@ class Contenido_UrlBuilder_Frontcontent extends Contenido_UrlBuilder
     }
 
     /**
-     * Get instance of Contenido_UrlBuilder_Frontcontent
-     * @access public
-     * @return obj Contenido_UrlBuilder_Frontcontent
-     * @author Rudi Bieller
+     * Get instance of self
+     * @return Contenido_UrlBuilder_Frontcontent
      */
     public static function getInstance()
     {
         if (self::$_instance == null) {
-            self::$_instance = new Contenido_UrlBuilder_Frontcontent();
+            self::$_instance = new self();
         }
         return self::$_instance;
     }
@@ -88,13 +84,12 @@ class Contenido_UrlBuilder_Frontcontent extends Contenido_UrlBuilder
      * front_content.php?idart=1
      * front_content.php?idcatart=1
      *
-     * @param array $aParams
-     * @param boolean $bUseAbsolutePath
-     * @param array  $aConfig Is not used at the moment
+     * @param  array  $aParams
+     * @param  bool   $bUseAbsolutePath
+     * @param  array  $aConfig  Is not used at the moment
      * @return void
      * @throws InvalidArgumentException
      * @throws Exception
-     * @author Rudi Bieller
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array())
     {

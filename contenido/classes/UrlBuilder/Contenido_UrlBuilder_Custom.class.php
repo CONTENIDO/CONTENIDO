@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     Rudi Bieller
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -20,11 +20,8 @@
  *
  * {@internal
  *   created 2008-02-20
- *   modified 2008-02-28 Changed to using Config for URL style
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -36,14 +33,21 @@ include_once('Contenido_UrlBuilder.class.php');
 
 class Contenido_UrlBuilder_Custom extends Contenido_UrlBuilder
 {
-    static private $_instance; // object instance
+    /**
+     * Self instance
+     * @var  Contenido_UrlBuilder_Custom
+     */
+    static private $_instance;
+
+    /**
+     * Configuration
+     * @var array
+     */
     private $aConfig;
 
     /**
      * Constructor
-     * @access private
      * @return void
-     * @author Rudi Bieller
      */
     private function __construct()
     {
@@ -51,15 +55,13 @@ class Contenido_UrlBuilder_Custom extends Contenido_UrlBuilder
     }
 
     /**
-     * Get instance of Contenido_UrlBuilder_Frontcontent
-     * @access public
-     * @return obj Contenido_UrlBuilder_Frontcontent
-     * @author Rudi Bieller
+     * Get instance of self
+     * @return Contenido_UrlBuilder_Custom
      */
     public static function getInstance()
     {
         if (self::$_instance == null) {
-            self::$_instance = new Contenido_UrlBuilder_Custom();
+            self::$_instance = new self();
         }
         return self::$_instance;
     }
@@ -68,12 +70,11 @@ class Contenido_UrlBuilder_Custom extends Contenido_UrlBuilder
      * Builds a URL in index-a-1.html style.
      * Index keys of $aParams will be used as "a", corresponding values as "1" in this sample.
      *
-     * @param array $aParams
-     * @param boolean $bUseAbsolutePath
-     * @param array $aConfig If not set, will use UrlBuilderConfig::getConfig()
+     * @param  array  $aParams
+     * @param  bool   $bUseAbsolutePath
+     * @param  array  $aConfig  If not set, will use UrlBuilderConfig::getConfig()
      * @return void
      * @throws InvalidArgumentException
-     * @author Rudi Bieller
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = array())
     {
