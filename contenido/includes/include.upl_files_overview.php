@@ -72,7 +72,9 @@ if ($path && $action != '') {
                              var href = left_bottom.location.href;
                              href = href.replace(/&path.*/, '');
                              left_bottom.location.href = href+'&path='+'".$path."';
+                             if(window.top.content.left.left_top.refresh()){
                              top.content.left.left_top.refresh();
+                             }
                          }
                      </script>";
 } else {

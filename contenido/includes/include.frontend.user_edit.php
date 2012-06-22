@@ -74,7 +74,9 @@ if ($idfrontenduser && $action != '') {
                              var href = left_bottom.location.href;
                              href = href.replace(/&frontenduser.*/, '');
                              left_bottom.location.href = href+'&frontenduser='+".$idfrontenduser.";
+                             if(window.top.content.left.left_top.refresh()){
                              top.content.left.left_top.refresh();
+                             }
                          }
                      </script>";
 } else {

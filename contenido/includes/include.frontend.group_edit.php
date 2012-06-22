@@ -97,7 +97,9 @@ if ($action != '') {
                              href = href.replace(/&idfrontendgroup[^&]*/, '');
                              href = href.replace(/&action[^&]*/, '');
                              left_bottom.location.href = href+'&idfrontendgroup='+".$idfrontendgroup.";
+                             if(window.top.content.left.left_top.refresh()){
                              top.content.left.left_top.refresh();
+                             }
                          }
                      </script>";
 } else {
