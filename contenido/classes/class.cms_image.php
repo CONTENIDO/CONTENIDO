@@ -197,7 +197,7 @@ class Cms_Image {
 		$aFilenameData['dirname'] = dirname($_REQUEST['image_filename']);
 		
 		//if one pictures selected from upload directory
-		if($aFilenameData['dirname'] == "\\" || $aFilenameData['dirname'] == '/') {
+		if($aFilenameData['dirname'] == "\\" || $aFilenameData['dirname'] == '/' || $aFilenameData['dirname'] == '.') {
 			$aFilenameData['dirname'] = '';
 		}else {
 			$aFilenameData['dirname'] .= '/';
@@ -267,7 +267,11 @@ class Cms_Image {
 			$oHandle = opendir($sUploadPath.$sDirectoryPath);
 			while($sEntry = readdir($oHandle)) {
 				if ( $sEntry != "." && $sEntry != ".." && file_exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) && !is_dir( $sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
-					$oHtmlSelectOption = new cHTMLOptionElement($sEntry, $sDirectoryPath."/".$sEntry);					
+					if($sDirectoryPath=='/' || $sDirectoryPath==''){
+						$oHtmlSelectOption = new cHTMLOptionElement($sEntry, $sEntry);	
+					} else {
+						$oHtmlSelectOption = new cHTMLOptionElement($sEntry, $sDirectoryPath."/".$sEntry);					
+					}
 					$oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
 					$i++;
 				}
@@ -282,10 +286,13 @@ class Cms_Image {
 			$oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);	
 			$oHtmlSelect->setDisabled( true );
 		} 
-		
 		//set default value
-		if(isset($this->activeFilename)){
-			$oHtmlSelect->setDefault($this->activeFilename."/".$this->filename);
+		if(isset($this->filename)){
+			if(isset($this->activeFilename)){
+				$oHtmlSelect->setDefault($this->activeFilename."/".$this->filename);
+			} else {				
+				$oHtmlSelect->setDefault($this->filename);
+			}
 		} else {
 			$oHtmlSelect->setDefault('');
 		}

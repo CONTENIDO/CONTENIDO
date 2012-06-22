@@ -235,7 +235,12 @@ class Ajax
                 $oImage = new Cms_Image($sArtReturn, $iImageId, 0, '', $cfg, null, '', $client, $lang, $cfgClient, null);
 
                 $sFilename = (string) basename($_REQUEST['filename']);
-                $sDirname = (string) dirname($_REQUEST['filename']).'/';
+                $sDirname = (string) dirname($_REQUEST['filename']);
+                if($sDirname != '.'){
+                	$sDirname .= "/";
+                } else {
+                	$sDirname = "";
+                }
 
                 $sString = $oImage->getImageMeta($sFilename, $sDirname, $iImageId);
                 break;
