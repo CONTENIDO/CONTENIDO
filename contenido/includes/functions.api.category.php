@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO Category API functions
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.4.0
@@ -18,18 +18,15 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
- *   created 2003-08-08
- *   modified 2008-06-25, Frederic Schneider, add security fix
  *
+ * {@internal
+ *   created 2003-08-08
  *   $Id$:
  * }}
- * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 /* Info:
@@ -44,63 +41,65 @@ if(!defined('CON_FRAMEWORK')) {
 
 
 /**
- * capiCatGetLevelNode: Seeks through the category
- * tree and returns the node on a specific level.
+ * Seeks through the category tree and returns the node on a specific level.
  *
  * Example:
- *
  * + Category A (15)
  * |-+ News (16)
  * | |- News A (17)
  * + Category B (18)
  * |-+ Internal (19)
  *
- * Given you are in the leaf "News A" (idcat 17),
- * and you want to get out in which "main" tree you
- * are, you can call the function like this:
+ * Given you are in the leaf "News A" (idcat 17), and you want to get out in which
+ * "main" tree you are, you can call the function like this:
  *
- * capi_cat_getlevelnode(17,1);
- * 
- * The example would return "Category A" (idcat 15).
- * If you specify an invalid level, the results are
- * undefined.
+ * cApiCatGetLevelNode(17,1);
  *
- * @param $int idcat The category number
- * @param $minLevel int The level to extract 
+ * The example would return "Category A" (idcat 15). If you specify an invalid level,
+ * the results are undefined.
  *
- * @return int The category node on a specific level
+ * @param  int  $idcat     The category number
+ * @param  int  $minLevel  The level to extract
+ * @return int  The category node on a specific level
  */
-function capi_cat_getlevelnode($idcat, $minLevel = 0)
+function cApiCatGetLevelNode($idcat, $minLevel = 0)
 {
     global $cfg, $client, $lang;
 
-    $db = new DB_Contenido;
-    
+    $db = new DB_Contenido();
+
     $sql = "SELECT
                 a.name AS name,
                 a.idcat AS idcat,
                 b.parentid AS parentid,
-				c.level AS level
+                c.level AS level
             FROM
-                ".$cfg["tab"]["cat_lang"]." AS a,
-                ".$cfg["tab"]["cat"]." AS b,
-				".$cfg["tab"]["cat_tree"]." AS c
+                " . $cfg['tab']['cat_lang'] . " AS a,
+                " . $cfg['tab']['cat'] . " AS b,
+                " . $cfg['tab']['cat_tree'] . " AS c
             WHERE
-                a.idlang    = '".$lang."' AND
-                b.idclient  = '".$client."' AND
-                b.idcat     = '".$idcat."' AND
-				c.idcat		= b.idcat AND
-                a.idcat     = b.idcat";
-                
+                a.idlang   = " . (int) $lang . " AND
+                b.idclient = " . (int) $client . " AND
+                b.idcat    = " . (int) $idcat . " AND
+                c.idcat    = b.idcat AND
+                a.idcat    = b.idcat";
+
     $db->query($sql);
     $db->next_record();
 
-    $parentid   = $db->f("parentid");
-	$thislevel = $db->f("level");
-	
-    if ( $parentid != 0 && $thislevel >= $minLevel) {
-        return capi_cat_getlevelnode($parentid, $minLevel);
+    $parentid  = $db->f('parentid');
+    $thislevel = $db->f('level');
+
+    if ($parentid != 0 && $thislevel >= $minLevel) {
+        return cApiCatGetLevelNode($parentid, $minLevel);
     } else {
-		return $idcat;
-	}
+        return $idcat;
+    }
+}
+
+/** @deprecated  [2012-06-23] Use cApiCatGetLevelNode() */
+function capi_cat_getlevelnode($idcat, $minLevel = 0)
+{
+    cDeprecated('Use cApiCatGetLevelNode()');
+    return cApiCatGetLevelNode($idcat, $minLevel);
 }
