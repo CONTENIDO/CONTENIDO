@@ -241,9 +241,9 @@ if (strlen(trim($searchterm)) > 0) {
                 $aHeadline = $oSearchResults->getSearchContent($key, 'HTMLHEAD', 1);
                 $aSubheadline = $oSearchResults->getSearchContent($key, 'HTMLHEAD', 2);
                 $text = $oSearchResults->getSearchContent($key, 'HTML', 1);
-                $text = capiStrTrimAfterWord($text[0], CON_SEARCH_MAXLEN_TEASERTEXT);
-                $headline = capiStrTrimAfterWord($aHeadline[0], CON_SEARCH_MAXLEN_TEASERTEXT); # conflict with capiStrTrimAfterWord and setReplacement('<strong>', '</strong>')
-                $subheadline = capiStrTrimAfterWord($aSubheadline[0], CON_SEARCH_MAXLEN_TEASERTEXT);
+                $text = cApiStrTrimAfterWord($text[0], CON_SEARCH_MAXLEN_TEASERTEXT);
+                $headline = cApiStrTrimAfterWord($aHeadline[0], CON_SEARCH_MAXLEN_TEASERTEXT); # conflict with cApiStrTrimAfterWord and setReplacement('<strong>', '</strong>')
+                $subheadline = cApiStrTrimAfterWord($aSubheadline[0], CON_SEARCH_MAXLEN_TEASERTEXT);
 
                 $cat_id = $oSearchResults->getArtCat($key);
                 $similarity = $oSearchResults->getSimilarity($key);

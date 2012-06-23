@@ -53,7 +53,7 @@ if ($action == "lay_new")
 	{
 		$notification->displayNotification("error", i18n("Permission denied"));	
 	} else {	
-		$layoutAlias = strtolower(capiStrCleanURLCharacters(i18n("-- New Layout --")));
+		$layoutAlias = strtolower(cApiStrCleanURLCharacters(i18n("-- New Layout --")));
 		
 		if (LayoutInFile::existLayout($layoutAlias, $cfgClient, $client)) {
 			$notification->displayNotification("error", i18n("Layout name exist, rename the layout!"));

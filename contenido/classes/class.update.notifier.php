@@ -682,7 +682,7 @@ class Contenido_UpdateNotifier
 			foreach ($oRss->getItems() as $aItem) {
                 $sText = htmlentities($aItem['description'],ENT_QUOTES);
                 if (strlen($sText) > 150) {
-                    $sText = capiStrTrimAfterWord($sText, 150).'...';
+                    $sText = cApiStrTrimAfterWord($sText, 150).'...';
                 }
 
                 $oTpl->set("d", "NEWS_DATE", $aItem['pubdate']);

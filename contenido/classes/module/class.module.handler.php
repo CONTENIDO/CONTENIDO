@@ -239,7 +239,7 @@ class Contenido_Module_Handler
     static function getCleanName($name, $defaultChar = '_')
     {
         //the first character of modul/Layut name should be [a-zA-Z0-9]|_|-
-        $name = capiStrCleanURLCharacters($name);
+        $name = cApiStrCleanURLCharacters($name);
         //get the first charcte
         $firstChar = substr($name, 0, 1);
         if (!preg_match('/^[a-zA-Z0-9]|_|-$/', $firstChar)) {

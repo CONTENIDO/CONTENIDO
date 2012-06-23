@@ -168,7 +168,7 @@ Release 4.8.13
 ** Bug
     * [CON-249] - Bug in Contenido_FrontendNavigation::isActiveChild
     * [CON-250] - Changing template to none not working right under Artikel->Kategorie bearbeiten
-    * [CON-252] - Missing german umlaut ü in function capiStrReplaceDiacritics
+    * [CON-252] - Missing german umlaut ü in function cApiStrReplaceDiacritics
     * [CON-254] - Tinymce does not support ancor links
     * [CON-255] - Tiny does not store content, which cointains plain "|" character
     * [CON-256] - The usage of CEC_Hook::execute brings more problems as advantages
@@ -191,7 +191,7 @@ Release 4.8.13
     * [CON-288] - Offline articles are shown in CMS_TEASER
     * [CON-289] - Article time management does not work properly when end date is missing
     * [CON-292] - Usage of wrong variable in linkchecker plugin (file: include.linkchecker_tests.php, line: 258)
-    * [CON-293] - Argument in capiStrTrimHard() set hard in function
+    * [CON-293] - Argument in cApiStrTrimHard() set hard in function
     * [CON-294] - Cache_Lite produces PHP deprecated error
     * [CON-295] - TinyMCE lists don't work cause of security fixes
     * [CON-303] - SQL-Error with fresh democlient without content

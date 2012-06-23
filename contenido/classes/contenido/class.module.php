@@ -562,7 +562,7 @@ class cApiModule extends Item
                 }
             }
 
-            $moduleAlias = capiStrCleanURLCharacters($this->get('name'));
+            $moduleAlias = cApiStrCleanURLCharacters($this->get('name'));
             // is alias empty??
             if ($this->get('alias') == '') {
                 $this->set('alias', $moduleAlias);

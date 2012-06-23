@@ -39,7 +39,7 @@ function generateDisplayFilePath($sDisplayPath, $iLimit)
     $iLimit = (int) $iLimit;
 
     if (strlen($sDisplayPath) > $iLimit) {
-        $sDisplayPathShort = capiStrTrimHard($sDisplayPath, $iLimit);
+        $sDisplayPathShort = cApiStrTrimHard($sDisplayPath, $iLimit);
 
         $sTooltippString = '';
         $iCharcount = 0;
@@ -49,7 +49,7 @@ function generateDisplayFilePath($sDisplayPath, $iLimit)
         foreach ($aPathFragments as $sFragment) {
             if ($sFragment != '') {
                 if (strlen($sFragment) > ($iLimit-5)) {
-                    $sFragment = capiStrTrimHard($sFragment, $iLimit);
+                    $sFragment = cApiStrTrimHard($sFragment, $iLimit);
                 }
 
                 if ($iCharcount+strlen($sFragment)+1 > $iLimit) {
@@ -782,7 +782,7 @@ function uplCreateFriendlyName ($filename)
         $chars = str_replace( array('-', '[', ']') , '', $chars );
     }
 
-    $filename = capiStrReplaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
+    $filename = cApiStrReplaceDiacritics($filename, strtoupper($oLang->getField('encoding')));
     $filename = preg_replace("/[^A-Za-z0-9._\-" . $chars . "]/i", '', $filename);
 
     return $filename;

@@ -324,7 +324,7 @@ class Contenido_Navigation
 
         $sClientName = $classclient->getClientName($client);
         if (strlen($sClientName) > 25) {
-            $sClientName = capiStrTrimHard($sClientName, 25);
+            $sClientName = cApiStrTrimHard($sClientName, 25);
         }
 
         $client = Contenido_Security::toInteger($client);
@@ -411,7 +411,7 @@ class Contenido_Navigation
                         }
 
                         if (strlen($value) > 20) {
-                            $value = capiStrTrimHard($value, 20);
+                            $value = cApiStrTrimHard($value, 20);
                         }
 
                         $tpl->set('d', 'VALUE', $key);

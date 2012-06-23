@@ -120,7 +120,7 @@ while ($db->next_record()) {
                 foreach ($modules as $key => $val) {
                     if ($val['name'] == $default) {
                         if (strlen($val['name']) > 20) {
-                            $short_name = capiStrTrimHard($val['name'], 20);
+                            $short_name = cApiStrTrimHard($val['name'], 20);
                             $option = new cHTMLOptionElement($short_name, $key);
                             $option->setAttribute('title', "Container $value ($name) " . $val['name']);
                         } else {
@@ -156,7 +156,7 @@ while ($db->next_record()) {
                 foreach ($modules as $key => $val) {
                     $short_name = $val['name'];
                     if (strlen($val['name']) > 20) {
-                        $short_name = capiStrTrimHard($val['name'], 20);
+                        $short_name = cApiStrTrimHard($val['name'], 20);
                     }
 
                     $option = new cHTMLOptionElement($short_name, $key);

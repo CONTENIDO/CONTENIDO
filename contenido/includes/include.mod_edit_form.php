@@ -95,7 +95,7 @@ if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 if ($action == "mod_new") {
     $modules = new cApiModuleCollection();
 
-    $alias = capiStrCleanURLCharacters(i18n("- Unnamed module -"));
+    $alias = cApiStrCleanURLCharacters(i18n("- Unnamed module -"));
 	$contenidoModuleHandler = new Contenido_Module_Handler();
     if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
         $notification->displayNotification("error", i18n("Modul name exist in module directory, rename the module."));

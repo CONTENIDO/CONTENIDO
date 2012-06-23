@@ -111,7 +111,7 @@ function buildCategorySelectRights()
         }
 
         $sCategoryname = $props['name'];
-        $sCategoryname = capiStrTrimHard($sCategoryname, 30);
+        $sCategoryname = cApiStrTrimHard($sCategoryname, 30);
         $oHtmlSelectOption = new cHTMLOptionElement($spaces.">".$sCategoryname, $tmpidcat, false, !$props['perm']);
         $oHtmlSelect->addOptionElement($j, $oHtmlSelectOption);
         $j++;
@@ -544,7 +544,7 @@ foreach ($objects as $key => $value) {
         $tpl->set('d', 'INDENT', ($value->custom['level'] * 16) . "px");
         $sCategoryname = $value->name;
         if (strlen($value->name) > 30) {
-            $sCategoryname = capiStrTrimHard($sCategoryname, 30);
+            $sCategoryname = cApiStrTrimHard($sCategoryname, 30);
         }
 
         //$tpl->set('d', 'CATEGORY', $sCategoryname);
@@ -558,7 +558,7 @@ foreach ($objects as $key => $value) {
         if ($value->custom['alias']) {
             $sCategoryalias = $value->custom['alias'];
             if (strlen($value->custom['alias']) > 30) {
-                $sCategoryalias = capiStrTrimHard($sCategoryalias, 30);
+                $sCategoryalias = cApiStrTrimHard($sCategoryalias, 30);
             }
             $tpl->set('d', 'ALIAS', $sCategoryalias);
             if (strlen($value->custom['alias']) > 30) {
@@ -589,7 +589,7 @@ foreach ($objects as $key => $value) {
 
         $sTemplatename = $template;
         if (strlen($template) > 20) {
-            $sTemplatename = capiStrTrimHard($sTemplatename, 20);
+            $sTemplatename = cApiStrTrimHard($sTemplatename, 20);
         }
 
         $tpl->set('d', 'TPLNAME', $sTemplatename);

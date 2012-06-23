@@ -25,7 +25,7 @@
  *   modified 2008-09-15, Murat Purc, added replacement of characters with diacritics
  *   modified 2009-04-30, Ortwin Pinke, CON-252
  *   modified 2010-01-07, Ingo van Peren, CON-293
- *   modified 2011-07-21, Murat Purc, added capiStrNormalizeLineEndings(), some cleanup and documenting
+ *   modified 2011-07-21, Murat Purc, added cApiStrNormalizeLineEndings(), some cleanup and documenting
  *
  *   $Id$:
  * }}
@@ -57,7 +57,7 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * Example:
  * $string = "This is a simple test";
- * echo capiStrTrimAfterWord ($string, 15);
+ * echo cApiStrTrimAfterWord ($string, 15);
  *
  * This would output "This is a", since this function respects word boundaries
  * and doesn't operate beyond the limit given by $maxlen.
@@ -66,7 +66,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @param   int     $maxlen  The maximum number of characters
  * @return  string  The resulting string
  */
-function capiStrTrimAfterWord($string, $maxlen)
+function cApiStrTrimAfterWord($string, $maxlen)
 {
     // If the string is smaller than the maximum lenght, it makes no sense to
     // process it any further. Return it.
@@ -97,7 +97,7 @@ function capiStrTrimAfterWord($string, $maxlen)
  *
  * Example:
  * $string = "This is a simple test";
- * echo capiStrTrimHard ($string, 15);
+ * echo cApiStrTrimHard ($string, 15);
  *
  * This would output "This is a si...", since the string is longer than $maxlen
  * and the resulting string matches 15 characters including the dots.
@@ -106,7 +106,7 @@ function capiStrTrimAfterWord($string, $maxlen)
  * @param   int     $maxlen  The maximum number of characters
  * @return  string  The resulting string
  */
-function capiStrTrimHard($string, $maxlen, $fillup = "...")
+function cApiStrTrimHard($string, $maxlen, $fillup = "...")
 {
     // If the string is smaller than the maximum lenght, it makes no sense to
     // process it any further. Return it.
@@ -139,8 +139,8 @@ function capiStrTrimHard($string, $maxlen, $fillup = "...")
  * $string  = "This contains two sentences. ";
  * $string .= "Lets play around with them. ";
  *
- * echo capiStrTrimSentence($string, 40);
- * echo capiStrTrimSentence($string, 50);
+ * echo cApiStrTrimSentence($string, 40);
+ * echo cApiStrTrimSentence($string, 50);
  *
  * The first example would only output the first sentence, the second example both
  * sentences.
@@ -165,7 +165,7 @@ function capiStrTrimHard($string, $maxlen, $fillup = "...")
  * @param  bool    $hard       If true, use a hard limit for the number of characters
  * @return string  The resulting string
  */
-function capiStrTrimSentence($string, $approxlen, $hard = false)
+function cApiStrTrimSentence($string, $approxlen, $hard = false)
 {
     // If the string is smaller than the maximum lenght, it makes no sense to
     // process it any further. Return it.
@@ -224,7 +224,7 @@ function capiStrTrimSentence($string, $approxlen, $hard = false)
 }
 
 /**
- * capiStrReplaceDiacritics: Converts diactritics to english characters whenever possible.
+ * cApiStrReplaceDiacritics: Converts diactritics to english characters whenever possible.
  *
  * For german umlauts, this function converts the umlauts to their ASCII
  * equalients (e.g. ä => ae).
@@ -242,7 +242,7 @@ function capiStrTrimSentence($string, $approxlen, $hard = false)
  * @author Timo A. Hummel
  * @copyright four for business AG, http://www.4fb.de
  */
-function capiStrReplaceDiacritics($sString, $sourceEncoding = "ISO-8859-1", $targetEncoding = "ISO-8859-1")
+function cApiStrReplaceDiacritics($sString, $sourceEncoding = "ISO-8859-1", $targetEncoding = "ISO-8859-1")
 {
 	if ($sourceEncoding == 'UTF-8') {
 		$sString = utf8_decode($sString);
@@ -293,7 +293,7 @@ function capiStrReplaceDiacritics($sString, $sourceEncoding = "ISO-8859-1", $tar
  * @author Timo A. Hummel
  * @copyright four for business AG, http://www.4fb.de
  */
-function capiStrRecodeString($sString, $sourceEncoding, $targetEncoding)
+function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding)
 {
     // If sourceEncoding and targetEncoding are the same, return
     if ($sourceEncoding == $targetEncoding)
@@ -318,7 +318,7 @@ function capiStrRecodeString($sString, $sourceEncoding, $targetEncoding)
     }
 
     // No charset converters found; return with warning
-    cWarning(__FILE__, __LINE__, "capiStrRecodeString could not find either recode or iconv to do charset conversion.");
+    cWarning(__FILE__, __LINE__, "cApiStrRecodeString could not find either recode or iconv to do charset conversion.");
     return ($sString);
 }
 
@@ -337,9 +337,9 @@ function capiStrRecodeString($sString, $sourceEncoding, $targetEncoding)
  * @author Timo A. Hummel
  * @copyright four for business AG, http://www.4fb.de
  */
-function capiStrCleanURLCharacters($sString, $bReplace = false)
+function cApiStrCleanURLCharacters($sString, $bReplace = false)
 {
-    $sString = capiStrReplaceDiacritics($sString);
+    $sString = cApiStrReplaceDiacritics($sString);
     $sString = str_replace(" ", "-", $sString);
     $sString = str_replace("/", "-", $sString);
     $sString = str_replace("&", "-", $sString);
@@ -373,7 +373,7 @@ function capiStrCleanURLCharacters($sString, $bReplace = false)
  * @param  string  $sLineEnding  Feasible values are "\n", "\r" or "\r\n"
  * @return string
  */
-function capiStrNormalizeLineEndings($sString, $sLineEnding = "\n")
+function cApiStrNormalizeLineEndings($sString, $sLineEnding = "\n")
 {
     if ($sLineEnding !== "\n" && $sLineEnding !== "\r" && $sLineEnding !== "\r\n") {
         $sLineEnding = "\n";

@@ -77,7 +77,7 @@ class Contenido_UpgradeJob extends Contenido_Module_Handler
 
         while ($db->next_record()) {
             //clear name  from not allow charecters
-            $newName = capiStrCleanURLCharacters($db->f("name"));
+            $newName = cApiStrCleanURLCharacters($db->f("name"));
             if ($newName != $db->f("name")) {
                 $mySql = sprintf("UPDATE %s SET name='%s' WHERE idmod=%s", $this->_cfg["tab"]["mod"], $newName, $db->f("idmod"));
                 $myDb->query($mySql);

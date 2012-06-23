@@ -1113,7 +1113,7 @@ class Cms_FileList {
 							
 							foreach ( $this->aMetaDataIdents as $sIdentName => $sTranslation ) {
 								if ( $this->aSettings['filelist_md_' . $sIdentName . '_limit'] > 0 ) {
-									$aMetaData[$sIdentName] = capiStrTrimAfterWord(	Contenido_Security::unFilter( $this->oDb->f($sIdentName) ), 
+									$aMetaData[$sIdentName] = cApiStrTrimAfterWord(	Contenido_Security::unFilter( $this->oDb->f($sIdentName) ), 
 																					$this->aSettings['filelist_md_' . $sIdentName . '_limit'] ) . '...';
 								} else {
 									$aMetaData[$sIdentName] = Contenido_Security::unFilter( $this->oDb->f($sIdentName) );

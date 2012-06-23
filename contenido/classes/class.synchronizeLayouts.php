@@ -273,7 +273,7 @@ class SynchronizeLayouts {
             while (($file = readdir($dh)) !== false) {
                 //is file a dir or not
                 if ($this->_isValidFirstChar($file) && is_dir($dir.$file."/") ) {
-                    $newFile = strtolower(capiStrCleanURLCharacters($file));
+                    $newFile = strtolower(cApiStrCleanURLCharacters($file));
                     //dir is ok
                     if ($newFile == $file) {
                         $this->_addOrUpdateLayout($dir , $file, $newFile , $this->_client);

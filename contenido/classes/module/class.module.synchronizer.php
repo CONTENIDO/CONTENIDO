@@ -244,7 +244,7 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
                 while (($file = readdir($dh)) !== false) {
                     //is file a dir or not
                     if ($this->_isValidFirstChar($file) && is_dir($dir . $file."/")) {
-                        $newFile = capiStrCleanURLCharacters($file);
+                        $newFile = cApiStrCleanURLCharacters($file);
                         //dir is ok
                         if ($newFile == $file) {
                             $this->_syncModule($dir, $file, $newFile);

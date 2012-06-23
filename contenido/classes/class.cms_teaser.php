@@ -920,7 +920,7 @@ class Cms_Teaser {
             $sTitle = trim(strip_tags($sTitle));
             $sText = trim(strip_tags($sText));
             if (strlen($sText) >  $this->aSettings['teaser_character_limit']) {
-                $sText = capiStrTrimAfterWord($sText, $this->aSettings['teaser_character_limit']).'...';
+                $sText = cApiStrTrimAfterWord($sText, $this->aSettings['teaser_character_limit']).'...';
             }
 
             //try to get a teaser image directly from cms_img or try to extract if a content type is given, wich contains html
