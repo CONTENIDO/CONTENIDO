@@ -373,5 +373,8 @@ return array(
     'ContenidoXmlBase' => 'contenido/classes/xml/class.xml.base.php',
     'ContenidoXmlReader' => 'contenido/classes/xml/class.xml.reader.php',
     'ContenidoXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
-    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php'
+    'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php',
+    'cApiMailLogCollection' =>'contenido/classes/class.maillog.php',
+    'cApiMailLog'		=> 'contenido/classes/class.maillog.php',
+    'cMail' => 'contenido/classes/class.mail.php',
 );

@@ -94,5 +94,5 @@ $cfg['tab']['type']                      = $cfg['sql']['sqlprefix'] . '_type';
 $cfg['tab']['upl_meta']                  = $cfg['sql']['sqlprefix'] . '_upl_meta';
 $cfg['tab']['upl']                       = $cfg['sql']['sqlprefix'] . '_upl';
 $cfg['tab']['user_prop']                 = $cfg['sql']['sqlprefix'] . '_user_prop';
-
+$cfg['tab']['mail_log']					 = $cfg['sql']['sqlprefix'] . '_mail_log';
 ?>

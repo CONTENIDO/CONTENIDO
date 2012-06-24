@@ -68,6 +68,10 @@ $cfg['path']['contenido_logs']      = $cfg['path']['frontend'] . '/' . $cfg['pat
 $cfg['path']['cronlog']             = 'data/cronlog/';
 $cfg['path']['contenido_cronlog']   = $cfg['path']['frontend'] . '/' . $cfg['path']['cronlog'];
 
+$cfg['path']['maillog']				= 'data/maillog';
+$cfg['path']['contenido_maillog']	= $cfg['path']['frontend'] .'/' . $cfg['path']['maillog'];
+
+
 $cfg['path']['cache']               = 'data/cache/';
 $cfg['path']['contenido_cache']     = $cfg['path']['frontend'] . '/' . $cfg['path']['cache'];
 
