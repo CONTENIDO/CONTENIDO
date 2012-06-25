@@ -1,13 +1,13 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * 
- * Requirements: 
+ *
+ * Description:
+ *
+ * Requirements:
  * @con_php_req 5
- * 
+ *
  *
  * @package    CONTENIDO Frontend
  * @subpackage Functions
@@ -17,16 +17,16 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * 
- * 
- * {@internal 
+ *
+ *
+ *
+ * {@internal
  *   created   unknown
  *   modified  2008-07-03, bilal arslan, added security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -35,19 +35,19 @@ if(!defined('CON_FRAMEWORK')) {
 
 /** @deprecated 2012-03-05 This function is not longer supported. */
 function getTeaserImage ($text,$return = 'path') {
-	cDeprecated("This function is not longer supported.");
-	$regEx  = "/<img[^>]*?>.*?/i";
+    cDeprecated("This function is not longer supported.");
+    $regEx  = "/<img[^>]*?>.*?/i";
     $match  = array();
     preg_match($regEx, $text, $match);
-	
-	$regEx = "/(src)(=)(['\"]?)([^\"']*)(['\"]?)/i";
+
+    $regEx = "/(src)(=)(['\"]?)([^\"']*)(['\"]?)/i";
     $img = array();
     preg_match($regEx, $match[0], $img);
-    
+
     if ($return == 'path') {
-	    return $img[4];
+        return $img[4];
     } else {
-    	return $match[0];
+        return $match[0];
     }
 }
 ?>

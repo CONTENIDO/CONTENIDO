@@ -89,7 +89,7 @@ function createNavigationArray($start_id, $db)
         if ($visible) {
             $navigation[$cat_id] = array("idcat"  => $cat_id,
                                          "name"   => $db->f("name"),
-                                         "target" => '_self', 
+                                         "target" => '_self',
                                          "public" => $db->f("public"));
         }
     } // end while

@@ -640,7 +640,7 @@ table.gallery {
 }
 
 table.gallery td.gallery-navigation {
-    /*font-size: 0.6875em;*/    
+    /*font-size: 0.6875em;*/
 }
 
 table.gallery tr.thumbnails td {
@@ -676,7 +676,7 @@ td.gallery_image {
     height: 220px;
     padding: 0px;
     width:49%;
-    
+
 }
 td.gallery_image div.link_image {
     padding: 0;
