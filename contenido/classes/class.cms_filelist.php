@@ -755,19 +755,19 @@ class Cms_FileList {
 		$oTpl->set('s', 'DIRECTORY_LIST', 						$this->getDirectoryList( $this->buildDirectoryList() ));
 		$oTpl->set('s', 'EXTENSION_LIST', 						$this->getExtensionSelect($this->aSettings['filelist_extensions']));
 		
-		if ( $this->aSettings['filelist_incl_subdirectories'] == 'true' ) {
+		if ( $this->aSettings['filelist_incl_subdirectories'] == 'checked' ) {
 			$oTpl->set('s', 'FILELIST_INCL_SUBDIRECTORIES', 	'checked="checked"');
 		} else {
 			$oTpl->set('s', 'FILELIST_INCL_SUBDIRECTORIES', 	'');
 		}
 		
-		if ( $this->aSettings['filelist_incl_metadata'] == 'true' ) {
+		if ( $this->aSettings['filelist_incl_metadata'] == 'checked' ) {
 			$oTpl->set('s', 'FILELIST_INCL_METADATA', 			'checked="checked"');
 		} else {
 			$oTpl->set('s', 'FILELIST_INCL_METADATA', 			'');
 		}
 		
-		if ( $this->aSettings['filelist_manual'] == 'true' ) {
+		if ( $this->aSettings['filelist_manual'] == 'checked' ) {
 			$oTpl->set('s', 'FILELIST_MANUAL', 					'checked="checked"');
 		} else {
 			$oTpl->set('s', 'FILELIST_MANUAL', 					'');
@@ -874,7 +874,7 @@ class Cms_FileList {
 		
 		$sFilesize = number_format( $iFilesize, 2, ',', '.');
 		
-		if ( $this->aSettings['filelist_incl_metadata'] == 'true' && count ( $aMetaData ) != 0 ) {
+		if ( $this->aSettings['filelist_incl_metadata'] == 'checked' && count ( $aMetaData ) != 0 ) {
 			$oTpl->set('d', 'FILEMETA_DESCRIPTION', 	$aMetaData['description']);
 			$oTpl->set('d', 'FILEMETA_MEDIANAME', 		$aMetaData['medianame']);
 			$oTpl->set('d', 'FILEMETA_KEYWORDS',		$aMetaData['keywords']);
@@ -1062,13 +1062,13 @@ class Cms_FileList {
 			$oTpl->set('s', 'TITLE', $this->aSettings['filelist_title']);
 			$oTpl->set('s', 'ERROR', '-', 1);
 			
-			if ( $this->aSettings['filelist_manual'] == 'true' && count( $this->aSettings['filelist_manual_files'] ) > 0 ) {
+			if ( $this->aSettings['filelist_manual'] == 'checked' && count( $this->aSettings['filelist_manual_files'] ) > 0 ) {
 				$aFileList = $this->aSettings['filelist_manual_files'];
 			} else {
 				if ( count ( $this->aSettings['filelist_directories'] ) > 0 ) {
 					$aDirectories = $this->aSettings['filelist_directories'];
 					
-					if ( $this->aSettings['filelist_incl_subdirectories'] == 'true' ) {
+					if ( $this->aSettings['filelist_incl_subdirectories'] == 'checked' ) {
 						foreach ( $aDirectories as $sDirectoryName ) {
 							$aDirectories = $this->recursiveCheckForSubdirectories($sDirectoryName, $aDirectories);
 						}
@@ -1106,7 +1106,7 @@ class Cms_FileList {
 				foreach ( $aFiles as $aFilenameData ) {
 					if ( ( $this->aSettings['filelist_filecount'] != 0 && $i <= $this->aSettings['filelist_filecount'] ) || 
 						$this->aSettings['filelist_filecount'] == 0 ) {
-						if ( $this->aSettings['filelist_incl_metadata'] == 'true' ) {
+						if ( $this->aSettings['filelist_incl_metadata'] == 'checked' ) {
 							$aMetaData = array();
 							$this->oDb->query('SELECT upl.idupl, uplmeta.* FROM ' . $this->aCfg['tab']['upl'] . ' AS upl, ' . $this->aCfg['tab']['upl_meta'] . ' AS uplmeta WHERE upl.idupl = uplmeta.idupl AND upl.filename=\''.$aFilenameData['filename'].'\' AND upl.dirname=\''.$aFilenameData['path'].'/\' AND upl.idclient=\''.$this->iClient.'\' AND uplmeta.idlang=\''.$this->iLang.'\'');
 							$this->oDb->next_record();

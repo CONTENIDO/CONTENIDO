@@ -339,7 +339,7 @@ function cmsFileList_addClickEvent(sFrameId, iFileListId) {
 	cmsFileList_addNaviActions(sFrameId, iFileListId);
 	cmsFileList_addExtensionActions(sFrameId, iFileListId);
 	
-	if ( $(sFrameId+' #filelist_manual').attr('checked') == true ) {
+	if ( $(sFrameId+' #filelist_manual').attr('checked') == 'checked' ) {
 		$(sFrameId+' #manual_filelist_setting').css("display", "block");
 	} else {
 		$(sFrameId+' #manual_filelist_setting').css("display", "none");
@@ -349,7 +349,7 @@ function cmsFileList_addClickEvent(sFrameId, iFileListId) {
 		$(sFrameId+' #manual_filelist_setting').slideToggle();
 	});
 	
-	if ( $(sFrameId+' #filelist_incl_metadata').attr('checked') == true ) {
+	if ( $(sFrameId+' #filelist_incl_metadata').attr('checked') == 'checked' ) {
 		$(sFrameId+' #metaDataList').css("display", "block");
 	} else {
 		$(sFrameId+' #metaDataList').css("display", "none");
