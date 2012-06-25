@@ -375,6 +375,6 @@ return array(
     'ContenidoXmlWriter' => 'contenido/classes/xml/class.xml.writer.php',
     'cApiXml2Array' => 'contenido/classes/xml/class.xml2array.php',
     'cApiMailLogCollection' =>'contenido/classes/class.maillog.php',
-    'cApiMailLog'		=> 'contenido/classes/class.maillog.php',
+    'cApiMailLog' => 'contenido/classes/class.maillog.php',
     'cMail' => 'contenido/classes/class.mail.php',
 );
