@@ -161,11 +161,11 @@ class Contenido_Notification
     public function returnNotification($sLevel, $sMessage)
     {
 
-		$oNotifySpan = new cHTMLSpan($sMessage);
+        $oNotifySpan = new cHTMLSpan($sMessage);
 
         switch ($sLevel) {
             case self::LEVEL_ERROR:
-				$oNotifySpan->setClass('notify_general notify_error');
+                $oNotifySpan->setClass('notify_general notify_error');
                 break;
             case self::LEVEL_WARNING:
                 $oNotifySpan->setClass('notify_general notify_warning');
@@ -179,7 +179,7 @@ class Contenido_Notification
         }
 
         $sNoti = '<div id="contenido_notification" style="position:relative;left:0;top:0;z-index:10;">';
-		$sNoti .= $oNotifySpan->toHTML();
+        $sNoti .= $oNotifySpan->toHTML();
         $sNoti .= '</div>';
 
         return $sNoti;

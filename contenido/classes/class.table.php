@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Generic table builder
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.2
@@ -18,19 +18,19 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-30, Frederic Schneider, add security fix
  *   modified 2008-07-03, Timo.Trautmann, added linebreaks for readable source code
  *
- *   $Id$: 
+ *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 class Table {
@@ -52,7 +52,7 @@ class Table {
      * @var string
      */
      var $cell_spacing = '';
-        
+
 
     /**
      * Table cell padding
@@ -79,7 +79,7 @@ class Table {
      * Table dark row color
      * @var string
      */
-     var $dark_color = '';     
+     var $dark_color = '';
 
 
     /**
@@ -150,7 +150,7 @@ class Table {
             return $starttable."\n";
         }
 
-     
+
     } # end function
 
 
@@ -161,8 +161,8 @@ class Table {
      * @return void
      */
     function header_row($additional="") {
-            
-         $headerrow = '<tr class="textw_medium" style="'.$additional.'">';     
+
+         $headerrow = '<tr class="textw_medium" style="'.$additional.'">';
 
          if ($this->directoutput)
          {
@@ -180,7 +180,7 @@ class Table {
      * @return void
      */
     function row($id = '') {
-         
+
          $row = '<tr '.$id.'>';
 
          if ($this->directoutput)
@@ -202,19 +202,19 @@ class Table {
      * @return void
      */
     function header_cell($content, $align="center", $valign="top", $additional="", $borderTop = 1){
-    	 
-    	 $sBorder = "";
-    	 if($borderTop != 1) {
-    	 	$sBorder = "style='border-top-width: ".$borderTop."px;'";
-    	 }
+
+         $sBorder = "";
+         if($borderTop != 1) {
+             $sBorder = "style='border-top-width: ".$borderTop."px;'";
+         }
          $header_cell = '<th class="center" '.$sBorder.' valign="' . $valign . '" align="' . $align . '"' . $additional . '>' . $content . '</th>';
-         
+
          if ($this->first_cell)
          {
              $this->table_cols = 0;
              $this->first_cell = false;
          }
-         
+
          $this->table_cols++;
 
          if ($this->directoutput)
@@ -223,7 +223,7 @@ class Table {
          } else {
             return $header_cell."\n";
          }
-         
+
     } # end function
 
 
@@ -232,7 +232,7 @@ class Table {
      * Outputs a regular cell
      * @param $content The content which will fill the cell
      * @param $align   The horizontal alignment of the cell, default "center"
-     * @param $valign  The vertical alignment of the cell, default "top"    
+     * @param $valign  The vertical alignment of the cell, default "top"
      * @param $additional Additional flags for the table
      */
     function cell($content, $align="center", $valign="top", $additional = "", $bSetStyle = true){
@@ -242,27 +242,27 @@ class Table {
             $content = "&nbsp;";
          }
          $cell = '<td '. $additional;
-		 
-		 if ($valign != '') {
-		 	$cell.=' valign="'.$valign .'"';
-		 }
-		  
-		 if ($bSetStyle) {
-		 	$cell.=''; 
-		 }
-		 
-		 if ($align != '') {
-		 	$cell.=' align="'.$align .'"';
-		 }
-		 
-		 $cell.='>'.$content.'</td>';
+
+         if ($valign != '') {
+             $cell.=' valign="'.$valign .'"';
+         }
+
+         if ($bSetStyle) {
+             $cell.='';
+         }
+
+         if ($align != '') {
+             $cell.=' align="'.$align .'"';
+         }
+
+         $cell.='>'.$content.'</td>';
 
          if ($this->first_cell)
          {
              $this->table_cols = 0;
              $this->first_cell = false;
          }
-         
+
          $this->table_cols++;
 
          if ($this->directoutput)
@@ -278,7 +278,7 @@ class Table {
      * Outputs a borderless cell
      * @param $content The content which will fill the cell
      * @param $align   The horizontal alignment of the cell, default "center"
-     * @param $valign  The vertical alignment of the cell, default "top"    
+     * @param $valign  The vertical alignment of the cell, default "top"
      * @param $additional Additional flags for the table
      */
     function borderless_cell($content, $align="center", $valign="top", $additional = ""){
@@ -294,7 +294,7 @@ class Table {
              $this->table_cols = 0;
              $this->first_cell = false;
          }
-         
+
          $this->table_cols++;
 
          if ($this->directoutput)
@@ -306,12 +306,12 @@ class Table {
 
     } # end function
 
-    
+
     /**
      * Outputs a sum cell
      * @param $content The content which will fill the cell
      * @param $align   The horizontal alignment of the cell, default "center"
-     * @param $valign  The vertical alignment of the cell, default "top"     
+     * @param $valign  The vertical alignment of the cell, default "top"
      */
     function sumcell($content, $align="center", $valign="top"){
 
@@ -336,7 +336,7 @@ class Table {
      * @param none
      * @return void
      */
-     
+
     function end_row()
     {
          $end_row = '</tr>';
@@ -349,7 +349,7 @@ class Table {
         } else {
             return $end_row."\n";
         }
-         
+
     }
 
 

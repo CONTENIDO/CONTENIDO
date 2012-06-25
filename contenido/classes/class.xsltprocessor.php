@@ -1,23 +1,23 @@
 <?php
 /**
 
- * Project: 
+ * Project:
 
  * CONTENIDO Content Management System
 
- * 
+ *
 
- * Description: 
+ * Description:
 
  * XSLT_Processor class
 
- * 
+ *
 
- * Requirements: 
+ * Requirements:
 
  * @con_php_req 5.0
 
- * 
+ *
 
  *
 
@@ -37,9 +37,9 @@
 
  * @since      file available since CONTENIDO release <= 4.6
 
- * 
+ *
 
- * {@internal 
+ * {@internal
 
  *   created unknown
 
@@ -51,7 +51,7 @@
 
  * }}
 
- * 
+ *
 
  */
 
@@ -59,26 +59,26 @@
 
 if(!defined('CON_FRAMEWORK')) {
 
-	die('Illegal call');
+    die('Illegal call');
 
 }
 
 
 
 /**
- * XSLT_Processor 
- * 
+ * XSLT_Processor
+ *
  * Wrapper class for the Sablotron XSLT extension
  *
  * !!! _REQUIRES_ Installed Sablotron to run !!!
  *
  * Example:
- * 
+ *
  * $xslt = new XSLT_Processor;
- * 
+ *
  * $xslt->setXmlFile("foo.xml");
  * $xslt->setXslFile("bar.xslt");
- *  
+ *
  * $html = $xslt->process();
  *
  * @deprecated 2011-09-02 this class is not supported any longer
@@ -98,7 +98,7 @@ class XsltProcessor
      * @access private
      */
     var $error = "";
-    
+
     /**
      * Error number
      * @var int
@@ -112,14 +112,14 @@ class XsltProcessor
      * @access private
      */
     var $result = "";
-    
+
     /**
      * The XML String for the Transformation
      * @var string
      * @access private
      */
     var $xml = "";
-    
+
     /**
      * The XSLT String for the Transformation
      * @var string
@@ -133,21 +133,21 @@ class XsltProcessor
      * @access private
      */
     var $processor;
-    
+
     /**
      * XSLT Process arguments array
      * @var array
      * @access private
      */
     var $arguments = array();
-    
+
     /**
      * XSLT Process parameters array
      * @var array
      * @access private
      */
     var $parameters = array();
-    
+
     /**
      * Constructor
      * @access private
@@ -155,10 +155,10 @@ class XsltProcessor
     function XsltProcessor()
     {
         cDeprecated("This class is not supported any longer");
-        
+
         $this->_init();
     }
-    
+
     /**
      * Initialize the class
      * @access private
@@ -170,18 +170,18 @@ class XsltProcessor
         {
             die ("Cannot instantiate XSLT Class \n XSLT not supported");
         }
-        
+
         $this->processor = xslt_create();
     }
-    
+
     /**
      * Translate literal to numeric entities to avoid
      * the 'undefined entity error' that a literal
      * entity would cause.
-	 * 
+     *
      * @param string XML String with literal entities
      * @return string XML string with numeric entites
-	 * @access private
+     * @access private
      */
     function literal2NumericEntities($stringXml) {
 
@@ -200,35 +200,35 @@ class XsltProcessor
 
         return strtr($stringXml, $literal2NumericEntity);
     }
-    
-    
+
+
     /**
      * Set the XML to be Transformed
      * @param string The XML String
      * @return void
-	 * @access public
+     * @access public
      */
     function setXml($xml)
     {
         $this->arguments["/_xml"] = $this->literal2NumericEntities($xml);
     }
-    
+
     /**
      * Set the XSLT for the Transformation
      * @param string The XML String
      * @return void
-	 * @access public
+     * @access public
      */
     function setXsl($xsl)
     {
         $this->arguments["/_xsl"] = $this->literal2NumericEntities($xsl);
     }
-    
+
      /**
      * Set the XML-File to be Transformed
      * @param string Location of the XML file
      * @return void
-	 * @access public
+     * @access public
      */
     function setXmlFile($file)
     {
@@ -240,21 +240,21 @@ class XsltProcessor
      * Set the XSL-File for the Transformation
      * @param string Location of the XSL file
      * @return void
-	 * @access public
+     * @access public
      */
     function setXslFile($file)
     {
         $xsl = $this->readFromFile($file);
         $this->arguments["/_xsl"] = $this->literal2NumericEntities($xsl);
     }
-    
+
     /**
      * Return the contents of a file if
      * the passed parameter is a file.
-	 *
+     *
      * @param string File location
-     * @return string File contents	
- 	 * @access private
+     * @return string File contents
+      * @access private
      */
     function readFromFile($file)
     {
@@ -267,12 +267,12 @@ class XsltProcessor
 
         die ("<span style=\"color: red\"><b>ERROR:</b></span> File not found: <b>$file</b>");
     }
-    
+
     /**
      * Pass top level parameters to the XSLT processor.
-	 * The parameters can be accessed in XSL 
-	 * with <xsl:param name="paramname"/>
-	 * 
+     * The parameters can be accessed in XSL
+     * with <xsl:param name="paramname"/>
+     *
      * @param string Name
      * @param string Value
      * @return void
@@ -281,75 +281,75 @@ class XsltProcessor
     {
         $this->parameters[$name] = utf8_encode($value);
     }
-    
+
     /**
-	 * Define external scheme handlers for the XSLT Processor.
-	 *  
-	 * Example param array: 
-	 * 	
-	 * array("get_all", "mySchemeHandler")
-	 * 
-	 * Example scheme handler function:
-	 * 
-	 * function mySchemeHandler($processor, $scheme, $param) 
-	 * {
-	 *     // to remove the first slash added by Sablotron
-	 *	   $param = substr($param, 1);    
-	 *
-	 * 	   if ($scheme == 'file_exists')
-	 * 	   {   // result is returned as valid xml string 
-	 *	       return '<?xml version="1.0" encoding="UTF-8"?><root>'.(file_exists($param) ? "true" : "false")."</root>";
-	 *     }   	    
-	 * }
-	 *  
-	 * To use the schema handler use:
-	 * <xsl:if test="document('file_exists:somefile.xml’)/root = 'true'">
-	 *     do something 
-	 * </xsl:if>
-	 *	
-	 * To call the external function use the 'document()' XSLT-Function.
-	 *
-	 * <xsl:value-of select="document('schemename:parameter')/root"/>
-	 *  
-	 * Schemename and parameter will be passed to the handler function as second and third parameter.
-	 * The return value of the function must be valid XML to access it using XPath.
- 	 *
-	 * @param array array("scheme"=>"schemeHandlerName");
-	 * @return void
-	 * @access public
-	 */
-	function setSchemeHandlers($aHandlers)
-	{
-		xslt_set_scheme_handlers($this->processor, $aHandlers);	
-	}
+     * Define external scheme handlers for the XSLT Processor.
+     *
+     * Example param array:
+     *
+     * array("get_all", "mySchemeHandler")
+     *
+     * Example scheme handler function:
+     *
+     * function mySchemeHandler($processor, $scheme, $param)
+     * {
+     *     // to remove the first slash added by Sablotron
+     *       $param = substr($param, 1);
+     *
+     *        if ($scheme == 'file_exists')
+     *        {   // result is returned as valid xml string
+     *           return '<?xml version="1.0" encoding="UTF-8"?><root>'.(file_exists($param) ? "true" : "false")."</root>";
+     *     }
+     * }
+     *
+     * To use the schema handler use:
+     * <xsl:if test="document('file_exists:somefile.xml’)/root = 'true'">
+     *     do something
+     * </xsl:if>
+     *
+     * To call the external function use the 'document()' XSLT-Function.
+     *
+     * <xsl:value-of select="document('schemename:parameter')/root"/>
+     *
+     * Schemename and parameter will be passed to the handler function as second and third parameter.
+     * The return value of the function must be valid XML to access it using XPath.
+      *
+     * @param array array("scheme"=>"schemeHandlerName");
+     * @return void
+     * @access public
+     */
+    function setSchemeHandlers($aHandlers)
+    {
+        xslt_set_scheme_handlers($this->processor, $aHandlers);
+    }
 
     /**
      * Transform the XML data using the XSL and
-	 * return the results of the transformation 
-	 *
+     * return the results of the transformation
+     *
      * @return string Transformed data
-	 * @access public
+     * @access public
      */
     function process()
     {
         $this->result = xslt_process($this->processor, "arg:/_xml", "arg:/_xsl", NULL, $this->arguments, $this->parameters);
         $this->error = xslt_error($this->processor);
         $this->errno = xslt_errno($this->processor);
-        
+
         if ($this->autofree)
         {
             xslt_free($this->processor);
         }
-        
+
         return $this->result;
     }
-	
+
     /**
      * Prints the Error message and number
      * if an error occured
-	 *
+     *
      * @return void
-	 * @access public
+     * @access public
      */
     function printErrors()
     {
@@ -359,7 +359,7 @@ class XsltProcessor
             echo "<b>Error Message: </b><span style=\"color:red\">".$this->error."</span>";
         }
     }
-    
+
     /**
      * Manual free of the parser
      * @return void
@@ -369,7 +369,7 @@ class XsltProcessor
         xslt_free($this->processor);
     }
 
-    
+
 } // XSLT_Processor
 
 ?>

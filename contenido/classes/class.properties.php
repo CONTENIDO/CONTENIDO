@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Custom properties
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.2
@@ -21,8 +21,8 @@
  * @deprecated [2011-10-11] Use new classes in contenido/classes/contenido/class.property.php
  *                          - Use cApiPropertyCollection instead of PropertyCollection
  *                          - Use cApiProperty instead of PropertyItem
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-12-21
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *   modified 2009-09-27, Dominik Ziegler, fixed wrong (un)escaping
@@ -32,7 +32,7 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {

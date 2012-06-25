@@ -139,7 +139,7 @@ class cApiDbfsCollection extends ItemCollection
      * Checks if passed dbfs path has any files.
      * @global  int  $client
      * @param  string  $path
-     * @return bool 
+     * @return bool
      */
     public function hasFiles($path)
     {

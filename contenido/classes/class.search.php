@@ -91,7 +91,7 @@ abstract class SearchBaseAbstract
         $this->cfg    = $cfg;
         $this->lang   = $lang;
         $this->client = $client;
-        
+
         $this->bDebug = true;
 
         if ($oDB == null) {
@@ -109,7 +109,7 @@ abstract class SearchBaseAbstract
      */
     public function setDebug($bDebug)
     {
-    	cDeprecated("This function is no longer needed. cDebug checks the available output methods for itself.");
+        cDeprecated("This function is no longer needed. cDebug checks the available output methods for itself.");
         $this->bDebug = (bool) $bDebug;
     }
 
@@ -139,11 +139,11 @@ class Index extends SearchIndex {
     public function Index($oDB = null) {
         $this->__construct($oDB);
     }
-	
-	public function __construct($oDB = null) {
-		cDeprecated('Use SearchIndex instead.');
-		parent::SearchIndex($oDB);
-	}
+
+    public function __construct($oDB = null) {
+        cDeprecated('Use SearchIndex instead.');
+        parent::SearchIndex($oDB);
+    }
 }
 
 

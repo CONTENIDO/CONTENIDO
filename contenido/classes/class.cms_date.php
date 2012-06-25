@@ -207,37 +207,37 @@ class Cms_Date
         $iYearShort = date('y');
 
         $this->aFormat = array(
-           '0' 					=> i18n('Please choose a format'),
-           'd.m.yy' 			=> date('d.m.Y'),
-           'DD, d.m.yy' 		=> $sDayName . ', ' . $iDay . '.' . $iMonth . '.' . $iYear,
-           'd. MM yy' 			=> $iDay . '. ' . $sMonthName . ' '. $iYear,
-           'yy-m-d' 			=> date('Y-m-d'),
-           'd/MM/yy' 			=> $iDay . '/' . $sMonthName . '/' . $iYear,
-           'd/m/yy' 			=> date('d/m/y'),
-           'MM y' 				=> $sMonthName . ' ' . $iYearShort,
-           'MM-y' 				=> $sMonthName . '-' . $iYearShort,
-           'd.m.yy h:m' 		=> date('d.m.Y H:i'),
-           'm.d.yy h:m:s' 		=> date('d.m.Y H:i:s'),
-           'h:m' 				=> date('H:i'),
-           'h:m:s' 			=> date('H:i:s'),
-           'h:m TT' 			=> date('h:i A'),
-           '#h:m:s TT' 			=> date('h:i:s A'),
-           '@' 					=> 'Timestamp'
+           '0'                     => i18n('Please choose a format'),
+           'd.m.yy'             => date('d.m.Y'),
+           'DD, d.m.yy'         => $sDayName . ', ' . $iDay . '.' . $iMonth . '.' . $iYear,
+           'd. MM yy'             => $iDay . '. ' . $sMonthName . ' '. $iYear,
+           'yy-m-d'             => date('Y-m-d'),
+           'd/MM/yy'             => $iDay . '/' . $sMonthName . '/' . $iYear,
+           'd/m/yy'             => date('d/m/y'),
+           'MM y'                 => $sMonthName . ' ' . $iYearShort,
+           'MM-y'                 => $sMonthName . '-' . $iYearShort,
+           'd.m.yy h:m'         => date('d.m.Y H:i'),
+           'm.d.yy h:m:s'         => date('d.m.Y H:i:s'),
+           'h:m'                 => date('H:i'),
+           'h:m:s'             => date('H:i:s'),
+           'h:m TT'             => date('h:i A'),
+           '#h:m:s TT'             => date('h:i:s A'),
+           '@'                     => 'Timestamp'
         );
 
         return $this->aFormat;
     }
 
     private function getFormatSelect()  {
-    	$options = "";
-    	
-    	foreach($this->getDateFormats() as $format) {	
-    		$options .= sprintf('<option value="%s">%s</option>', $format[0], $format[1]);
-    	}
-    	
-    	return '<select style=\"float:right;\" class=\"cms_date_format_select\">'.$options.'</select>';
+        $options = "";
+
+        foreach($this->getDateFormats() as $format) {
+            $options .= sprintf('<option value="%s">%s</option>', $format[0], $format[1]);
+        }
+
+        return '<select style=\"float:right;\" class=\"cms_date_format_select\">'.$options.'</select>';
     }
-    
+
     /**
      * This functions given all js-script, what we need for calendar.
      * Set all js-script here
@@ -249,24 +249,24 @@ class Cms_Date
         $tpl = new Template();
         $path = $this->aCfg['path']['contenido_fullhtml'];
         $lang = $this->getLanguageContenido();
-        
+
         $tpl->set('s', 'CALL_NAME', $this->sCalName);
         $tpl->set('s', 'INDEX_OF_CMS_DATE', $this->iNumberOfCms);
         $tpl->set('s', 'PATH_CONTENIDO_FULLHTML', $path);
         $tpl->set('s', 'PATH_TO_CALENDER_PIC', $path . $this->aCfg['path']['images'] . 'calendar.gif');
         //$tpl->set('s', 'SELECT_WITH_ALL_FORMATS', $this->getFormatSelect());
-        $tpl->set('s', 'ID_TYPE', $this->oDB->f('idtype'));  
+        $tpl->set('s', 'ID_TYPE', $this->oDB->f('idtype'));
         //$tpl->set('s', 'ALL_OPTIONS', json_encode($this->getDateFormats()));
         //$tpl->set('s', 'LABEL_FORMAT', i18n('Formate'));
         $load = "conLoadFile('".$path."scripts/jquery/jquery.ui.datepicker-".$lang.".js', 'load2_$this->sCalName()');";
         //add timepicker language
         if($this->getLanguageContenido() != 'en') {
-        	$tpl->set('s', 'LOAD_LANG', $load);
+            $tpl->set('s', 'LOAD_LANG', $load);
         }else{
-        	$tpl->set('s', 'LOAD_LANG', '');
+            $tpl->set('s', 'LOAD_LANG', '');
         }
-        
-       
+
+
        $this->sJS = $tpl->generate($this->aCfg['path']['contenido'] . 'templates/standard/template.cms_date.html', true);
        $this->sJS = addslashes($this->sJS);
        $this->sJS = str_replace("\\'", "'", $this->sJS);
@@ -345,7 +345,7 @@ class Cms_Date
         $sFinalEditingDiv = str_replace("\\'", "'", $sFinalEditingDiv);
         $sFinalEditingDiv = str_replace('_REPLACEMENT_', $this->sContent, $sFinalEditingDiv);
 
-       
+
         return $sFinalEditingDiv;
     }
 

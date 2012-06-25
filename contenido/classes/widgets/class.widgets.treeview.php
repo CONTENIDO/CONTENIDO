@@ -185,7 +185,7 @@ class cWidgetTreeView extends cTree
     /**
      * Applies an action to all items with a certain attribute set.
      *
-     * @param array attributes Values which need to match. The array key is the attribute name. Multiple array 
+     * @param array attributes Values which need to match. The array key is the attribute name. Multiple array
      *        entries are connected with "AND".
      * @param cApiClickableAction action Action to apply
      * @return void

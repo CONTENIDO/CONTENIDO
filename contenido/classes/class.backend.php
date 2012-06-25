@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Controls all CONTENIDO backend actions
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    0.1.0
@@ -18,18 +18,18 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 class Contenido_Backend {
@@ -39,7 +39,7 @@ class Contenido_Backend {
      * @deprecated No longer needed. The debug mode gets chosen by the system settings.
      */
     var $debug = 0;
- 
+
     /**
      * Possible actions
      * @var array
@@ -77,9 +77,9 @@ class Contenido_Backend {
      * @return void
      */
     function setFrame($frame_nr = 0) {
-		$frame_nr = Contenido_Security::toInteger($frame_nr);
+        $frame_nr = Contenido_Security::toInteger($frame_nr);
         $this->frame = $frame_nr;
-        
+
     } # end function
 
 
@@ -107,10 +107,10 @@ class Contenido_Backend {
         } else {
             $itemid = 0;
         }
-		
-		$itemid = Contenido_Security::toInteger($itemid);
-		$area	= Contenido_Security::escapeDB($area, $db);
-        
+
+        $itemid = Contenido_Security::toInteger($itemid);
+        $area    = Contenido_Security::escapeDB($area, $db);
+
         # Store Area
         $this->area = $area;
 
@@ -151,7 +151,7 @@ class Contenido_Backend {
 
                 if ($db->f("relevant_action") == 1 && $db->f("relevant_area") == 1) {
 
-					if ($perm->have_perm_area_action_item($area, $db->f("name"), $itemid)) {
+                    if ($perm->have_perm_area_action_item($area, $db->f("name"), $itemid)) {
                         $this->actions[$area][$db->f('name')] = $db->f('code');
                     }
 
@@ -170,10 +170,10 @@ class Contenido_Backend {
 
                 }
 
-                
+
         } # end while
 
-		$sql = "SELECT
+        $sql = "SELECT
                     b.filename AS name,
                     b.filetype AS type,
                     a.parent_id AS parent_id
@@ -188,7 +188,7 @@ class Contenido_Backend {
                     c.idarea  = a.idarea AND
                     c.idframe = '".$this->frame."' AND
                     a.online  = '1'";
-               
+
           # Check if the user has
         # access to this area.
         # Yes -> Extract all files
@@ -217,7 +217,7 @@ class Contenido_Backend {
             if ($db->f('parent_id') != 0 && $db->f('type') == 'main'){
                 $this->files['sub'][] = $filepath;
             }
-            
+
             $this->files[$db->f('type')][] = $filepath;
         } # end while
 
@@ -240,12 +240,12 @@ class Contenido_Backend {
      * @return $action String Code for selected Action
      */
     function getCode($action) {
-		$actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
-		if (file_exists($actionCodeFile)) {
-			return file_get_contents($actionCodeFile);
-		}
-		
-		return '';
+        $actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
+        if (file_exists($actionCodeFile)) {
+            return file_get_contents($actionCodeFile);
+        }
+
+        return '';
     } # end function
 
     /**
@@ -277,41 +277,41 @@ class Contenido_Backend {
         global $perm, $auth, $cfg;
 
         $db_log = new DB_Contenido;
-		
+
         $timestamp = date("Y-m-d H:i:s");
         $idcatart = "0";
-		
-		$idcat 		= Contenido_Security::toInteger($idcat);
-		$idart 		= Contenido_Security::toInteger($idart);
-		$client 	= Contenido_Security::toInteger($client);
-		$lang 		= Contenido_Security::toInteger($lang);
-		$idaction 	= Contenido_Security::escapeDB($idaction, $db_log);
 
-        if (!Contenido_Security::isInteger($client)) { 
-			return; 
-		}
-		
-        if (!Contenido_Security::isInteger($lang)) { 
-			return;
-		}
+        $idcat         = Contenido_Security::toInteger($idcat);
+        $idart         = Contenido_Security::toInteger($idart);
+        $client     = Contenido_Security::toInteger($client);
+        $lang         = Contenido_Security::toInteger($lang);
+        $idaction     = Contenido_Security::escapeDB($idaction, $db_log);
 
-        if (isset($idcat) && isset($idart) && $idcat != "" && $idart != "") {		
+        if (!Contenido_Security::isInteger($client)) {
+            return;
+        }
+
+        if (!Contenido_Security::isInteger($lang)) {
+            return;
+        }
+
+        if (isset($idcat) && isset($idart) && $idcat != "" && $idart != "") {
             $sql = "SELECT idcatart
                         FROM
                        ". $cfg["tab"]["cat_art"] ."
                     WHERE
                         idcat = '".$idcat."' AND
                         idart = '".$idart."'";
-    
+
             $db_log->query($sql);
-    
+
             $db_log->next_record();
             $idcatart = $db_log->f("idcatart");
         }
-   
+
         $oldaction = $idaction;
-        $idaction = $perm->getIDForAction($idaction);    
-		
+        $idaction = $perm->getIDForAction($idaction);
+
         if ($idaction != "") {
         $sql = "INSERT INTO
                     ". $cfg["tab"]["actionlog"]."
@@ -326,7 +326,7 @@ class Contenido_Backend {
         } else {
            echo $oldaction. " is not in the actions table!<br><br>";
         }
-		
+
         $db_log->query($sql);
     }
 } # end class Contenido_Backend

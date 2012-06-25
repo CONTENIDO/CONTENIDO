@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Frontend groups class
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.7
@@ -24,7 +24,7 @@
  *                          and new classes in contenido/classes/contenido/class.frontend.group.member.php
  *                          - Use cApiFrontendGroupMemberCollection instead of FrontendGroupMemberCollection
  *                          - Use cApiFrontendGroupMember instead of FrontendGroupMember
- * 
+ *
  * {@internal
  *   created  unknown
  *   modified 2008-06-30, Frederic Schneider, add security fix
@@ -33,7 +33,7 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {

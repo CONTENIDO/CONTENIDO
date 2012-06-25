@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Class for structure information and management
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.1
@@ -19,14 +19,14 @@
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
  * @deprecated [2012-03-29] This class is deprecated use cApiCategoryLanguage() or cApiCategoryArticle() instead
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003
  *   modified 2008-06-30, Frederic Schneider, add security fix
  *
- *   $Id$: 
+ *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {

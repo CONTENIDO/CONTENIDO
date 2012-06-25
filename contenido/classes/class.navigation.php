@@ -77,7 +77,7 @@ class Contenido_Navigation
 
         // Load language file
         if ($this->xml->load($cfg['path']['xml'] . "navigation.xml") == false) {
-        	die('Unable to load any XML language file');
+            die('Unable to load any XML language file');
         }
     }
 

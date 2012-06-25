@@ -228,7 +228,7 @@ class Contenido_Perm
         if ($this->have_perm()) {
             return true;
         }
-		
+
         $area = $this->getIDForArea($area);
         $action = $this->getIDForAction($action);
 
@@ -274,7 +274,7 @@ class Contenido_Perm
     public function getParentAreaId($area)
     {
         $oAreaColl = new cApiAreaCollection();
-		return $oAreaColl->getParentAreaID($area);
+        return $oAreaColl->getParentAreaID($area);
     }
 
     public function have_perm_area_action($area, $action = 0)

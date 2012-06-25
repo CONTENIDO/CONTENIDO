@@ -5,7 +5,7 @@
 */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 $PHPMAILER_LANG['authenticate']         = 'SMTP Fehler: Authentifizierung fehlgeschlagen.';

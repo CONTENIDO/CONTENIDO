@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO client class
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.0
@@ -20,17 +20,17 @@
  * @since      file available since CONTENIDO release <= 4.6
  * @deprecated [2012-02-09] Use new classes in contenido/classes/contenido/class.client.php
  *                          - Use cApiClient instead of Client
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 ?>

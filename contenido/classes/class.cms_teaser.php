@@ -811,7 +811,7 @@ class Cms_Teaser {
     private function getArtName($iIdArt) {
         $oArticle = new cApiArticleLanguage();
         $oArticle->loadByArticleAndLanguageId((int) $iIdArt, $this->iLang);
-        
+
         $stitle = $oArticle->get('title');
         if ($oArticle->isLoaded() && !empty($stitle)) {
             return $oArticle->get('title');
@@ -837,9 +837,9 @@ class Cms_Teaser {
         //split ids, if there is only one id, array has only one place filled, that is also ok
         $aIds = explode(',', $iIdType);
         foreach ($aIds as $iCurIdType) {
-			$sTmp = $oArticle->getContent($sIdType, $iCurIdType);
-			$sReturn .= $sTmp;
-		}
+            $sTmp = $oArticle->getContent($sIdType, $iCurIdType);
+            $sReturn .= $sTmp;
+        }
 
         return $sReturn;
     }

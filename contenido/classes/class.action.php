@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Class for action information and management
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.2
@@ -20,8 +20,8 @@
  * @since      file available since CONTENIDO release <= 4.6
  * @deprecated [2012-03-01] Use class in contenido/classes/contenido/class.action.php
  *                          - Use cApiActionCollection
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003
  *   modified 2008-06-30, Frederic Schneider, add security fix
  *   modified 2009-10-15, Dominik Ziegler, getAvailableActions() now also returns the areaname
@@ -30,11 +30,11 @@
  *
  *   $Id$;
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 ?>

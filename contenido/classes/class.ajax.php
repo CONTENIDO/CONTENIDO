@@ -236,10 +236,10 @@ class Ajax
 
                 $sFilename = (string) basename($_REQUEST['filename']);
                 $sDirname = (string) dirname($_REQUEST['filename']);
-                if($sDirname != '.'){
-                	$sDirname .= "/";
+                if ($sDirname != '.'){
+                    $sDirname .= "/";
                 } else {
-                	$sDirname = "";
+                    $sDirname = "";
                 }
 
                 $sString = $oImage->getImageMeta($sFilename, $sDirname, $iImageId);

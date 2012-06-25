@@ -81,7 +81,7 @@ class Contenido_CodeGenerator_Standard extends Contenido_CodeGenerator_Abstract
 
         // Create code for all containers
         if ($idlay) {
-			cInclude ("includes", "functions.tpl.php");
+            cInclude ("includes", "functions.tpl.php");
             tplPreparseLayout($idlay);
             $tmp_returnstring = tplBrowseLayoutForContainers($idlay);
             $a_container = explode('&', $tmp_returnstring);

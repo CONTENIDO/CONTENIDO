@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Iterator class
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.2
@@ -18,18 +18,18 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 /**
@@ -42,7 +42,7 @@ if(!defined('CON_FRAMEWORK')) {
  * An instance of an iterator is usually created by a class returning multiple
  * items and automatically filled using the $aItems parameter of the constructor,
  * and then returned to the caller.
- * 
+ *
  * The caller receives the iterator object and can step trough all items using
  * the "next" method.
  *
@@ -54,10 +54,10 @@ class cIterator
     /**
      * Holds the items which should be iterated
      * @var array
-     */	
-	var $_aIteratorItems;
-	
-	/**
+     */
+    var $_aIteratorItems;
+
+    /**
      * Iterator constructor
      *
      * This function initializes the constructor, adds the passed items
@@ -65,59 +65,59 @@ class cIterator
      *
      * @param $aItems array Items to add
      * @return none
-     */	
-	function cIterator ($aItems)
-	{
-		if (is_array($aItems))
-		{
-			$this->_aIteratorItems = $aItems;	
-		} else {
-			$this->_aIteratorItems = array();	
-		}
-		
-		$this->reset();
-	}
+     */
+    function cIterator ($aItems)
+    {
+        if (is_array($aItems))
+        {
+            $this->_aIteratorItems = $aItems;
+        } else {
+            $this->_aIteratorItems = array();
+        }
 
-	/**
+        $this->reset();
+    }
+
+    /**
      * reset: Resets the iterator to the first element
      *
      * This function moves the iterator to the first element
-	 * 
+     *
      * @return none
-     */		
-	function reset ()
-	{
-		reset($this->_aIteratorItems);	
-	}
+     */
+    function reset ()
+    {
+        reset($this->_aIteratorItems);
+    }
 
-	/**
+    /**
      * next: Returns the next item in the iterator
      *
      * This function returns the item, or false if no
      * items are left.
-	 * 
+     *
      * @return mixed item or false if nothing was found
-     */			
-	function next ()
-	{
-		$item = each($this->_aIteratorItems);
+     */
+    function next ()
+    {
+        $item = each($this->_aIteratorItems);
 
-		if ($item === false)
-		{
-			return false;
-		} else {
-			return $item["value"];	
-		}
-	}
+        if ($item === false)
+        {
+            return false;
+        } else {
+            return $item["value"];
+        }
+    }
 
-	/**
+    /**
      * count: Returns the number of items in the iterator
-	 * 
+     *
      * @return int Number of items
-     */		
-	function count ()
-	{
-		return count($this->_aIteratorItems);
-	}
+     */
+    function count ()
+    {
+        return count($this->_aIteratorItems);
+    }
 }
 ?>

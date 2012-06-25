@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * HTML parser for CONTENIDO
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.2
@@ -16,19 +16,19 @@
  * @copyright  Starnetsys, LLC.
  * @link       http://starnetsys.com
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 /*
@@ -80,7 +80,7 @@ class HtmlParser {
      */
     var $iNodeAttributes;
 
-    // The following fields should be 
+    // The following fields should be
     // considered private:
 
     var $iHtmlText;
@@ -132,12 +132,12 @@ class HtmlParser {
             $this->iNodeType = NODE_TYPE_ENDELEMENT;
             $this->iNodeName = substr ($name, 1);
             $this->iNodeValue = "";
-        } 
+        }
         else {
             if (!$this->isValidTagIdentifier ($name)) {
                 $comment = false;
                 if ($name == "!--") {
-                    $rest = $this->skipToStringInTag ("-->");    
+                    $rest = $this->skipToStringInTag ("-->");
                     if ($rest != "") {
                         $this->iNodeType = NODE_TYPE_COMMENT;
                         $this->iNodeName = "Comment";
@@ -156,13 +156,13 @@ class HtmlParser {
                 $this->iNodeType = NODE_TYPE_ELEMENT;
                 $this->iNodeValue = "";
                 $nameLength = strlen($name);
-                if ($nameLength > 0 && substr($name, $nameLength - 1, 1) == "/") { 
+                if ($nameLength > 0 && substr($name, $nameLength - 1, 1) == "/") {
                     $this->iNodeName = substr($name, 0, $nameLength - 1);
                 }
                 else {
                     $this->iNodeName = $name;
                 }
-            } 
+            }
         }
         while ($this->skipBlanksInTag()) {
             $attrName = $this->skipToBlanksOrEqualsInTag();
@@ -180,13 +180,13 @@ class HtmlParser {
             }
         }
         $this->skipEndOfTag();
-        return true;            
+        return true;
     }
 
     function isValidTagIdentifier ($name) {
         return preg_match('/[A-Za-z0-9]+/', $name);
     }
-    
+
     function skipBlanksInTag() {
         return "" != ($this->skipInTag (array (" ", "\t", "\r", "\n" )));
     }
@@ -215,7 +215,7 @@ class HtmlParser {
             $this->skipInTag (array ( "\'" ));
             $value = $this->skipToInTag (array ( "\'" ));
             $this->skipInTag (array ( "\'" ));
-        }                
+        }
         else {
             $value = $this->skipToBlanksInTag();
         }
@@ -305,7 +305,7 @@ class HtmlParser {
             $sb .= $ch;
             $this->moveNext();
         }
-        return $sb;             
+        return $sb;
     }
 
     /**

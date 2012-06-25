@@ -295,7 +295,7 @@ class CEC_Hook {
 
     /**
      * Used to debug some status informations.
-	 * @TODO: Implement cec_hook debug mode for automatic logging when activated.
+     * @TODO: Implement cec_hook debug mode for automatic logging when activated.
      *
      * Writes the debug value into a logfile (see contenido/data/log/cec_hook_debug.log).
      *

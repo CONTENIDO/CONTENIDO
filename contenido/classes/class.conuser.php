@@ -97,7 +97,7 @@ cInclude ( "exceptions", "exception.conuser.php" );
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release => 4.8.8
- * 
+ *
  * @deprecated Use cApiUser instead [2012-02-23]
  *
  */
@@ -105,38 +105,38 @@ cInclude ( "exceptions", "exception.conuser.php" );
 class ConUser extends cApiUser {
 
     public function load($sUserId) {
-    	cDeprecated("Deprecated class. Please use cApiUser instead");
-    	
-    	$this->loadByPrimaryKey($sUserId);
-    	
+        cDeprecated("Deprecated class. Please use cApiUser instead");
+
+        $this->loadByPrimaryKey($sUserId);
+
         return true;
     }
 
     /**
-	 * Calls constructor in base class.
-	 *
-	 * @param array $aCfg
-	 * @param DB_Contenido $oDB
-	 * @param string $sIdUser User ID the instnace of this class represents
-	 *
-	 * @return ConUser
-	 * @throws ConUserException
-	 */
+     * Calls constructor in base class.
+     *
+     * @param array $aCfg
+     * @param DB_Contenido $oDB
+     * @param string $sIdUser User ID the instnace of this class represents
+     *
+     * @return ConUser
+     * @throws ConUserException
+     */
     public function __construct($aCfg, $oDb = null, $sUserId = null) {
-    	cDeprecated("Deprecated class. Please use cApiUser instead");
-    	
+        cDeprecated("Deprecated class. Please use cApiUser instead");
+
         parent::__construct ($sUserId);
     }
 
     /**
-	 * This function does update without password column to all columns of con_phplib_auth_user_md5 table.
-	 *
-	 * @return void
-	 */
+     * This function does update without password column to all columns of con_phplib_auth_user_md5 table.
+     *
+     * @return void
+     */
     public function saveUser() {
-    	cDeprecated("Deprecated class. Please use cApiUser instead");
-    	
-    	$this->store();
+        cDeprecated("Deprecated class. Please use cApiUser instead");
+
+        $this->store();
     }
 }
 ?>

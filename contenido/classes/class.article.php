@@ -309,10 +309,10 @@ class ArticleCollection
         $sArtSpecs = (count($this->artspecs) > 0) ? " a.artspec IN ('".implode("','", $this->artspecs)."') AND " : '';
 
         $sql = 'SELECT
-        	        a.idart,
-            	    a.idartlang,
-                	c.is_start
-              	FROM
+                    a.idart,
+                    a.idartlang,
+                    c.is_start
+                  FROM
                     '.$this->tab['art_lang'].' AS a,
                     '.$this->tab['art'].' AS b,
                     '.$this->tab['cat_art'].' AS c
@@ -347,8 +347,8 @@ class ArticleCollection
          }
 
         while ($this->db->next_record()) {
-        	if ($this->db->f('idart') == $this->startId) {
-            	if ($this->start) {
+            if ($this->db->f('idart') == $this->startId) {
+                if ($this->start) {
                     $this->articles[] = $this->db->f('idart');
                 }
             } else {

@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Class for category information and management
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.0.0
@@ -19,18 +19,18 @@
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
  * @deprecated [2011-11-15] Class Cat is nowhere used in CONTENIDO core. If Cat is still used in your modules/plugins, please switch to cApiCategoryLanguage.
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-30, Dominik Ziegler, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 class Cat {
@@ -45,9 +45,9 @@ class Cat {
 
         $db = new DB_Contenido;
 
-		$idlang 	= Contenido_Security::toInteger($idlang);
+        $idlang     = Contenido_Security::toInteger($idlang);
 
-		$category 	= Contenido_Security::toInteger($category);
+        $category     = Contenido_Security::toInteger($category);
 
         $sql = "SELECT
                     name

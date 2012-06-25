@@ -6,12 +6,12 @@
  * Description:
  * Implements autoload feature for a CONTENIDO project.
  *
- * Autoloading for CONTENIDO is provided via a generated classmap configuration 
+ * Autoloading for CONTENIDO is provided via a generated classmap configuration
  * file, which is available inside contenido/data/config/{environment}/ folder.
  * - contenido/data/config/{environment}/config.autoloader.php
  *
- * Autoloading is extendable by adding a additional classmap file inside the same 
- * folder, which could contain further classmap settings or could overwrite 
+ * Autoloading is extendable by adding a additional classmap file inside the same
+ * folder, which could contain further classmap settings or could overwrite
  * settings of main classmap file.
  * - contenido/includes/config.autoloader.local.php
  *
@@ -90,7 +90,7 @@ class Contenido_Autoload
     /**
      * Initialization of CONTENIDO autoloader, is to call at least once.
      *
-     * Registers itself as a __autoload implementation, includes the classmap file, 
+     * Registers itself as a __autoload implementation, includes the classmap file,
      * and if exists, the user defined class map file, containing the includes.
      *
      * @param   array  $cfg  The CONTENIDO cfg array
