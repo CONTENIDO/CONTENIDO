@@ -1,0 +1,89 @@
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <link rel="stylesheet" type="text/css" href="styles/contenido.css">
+    <script type="text/javascript" src="scripts/rowMark.js"></script>
+    <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
+    <script type="text/javascript" src="scripts/articleObject.js.php?contenido={SID}"></script>
+    <link rel="stylesheet" type="text/css" href="styles/tipsy.css">
+    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery.tipsy.js"></script>
+    <script type="text/javascript" src="scripts/registerTipsy.js"></script>
+    <script type="text/javascript">
+        /* CONTENIDO Session-ID */
+        var sid = "{SESSID}";
+
+        /* New messageBox
+           instance */
+        box = new messageBox("", "", "", 0, 0);
+
+        
+        
+    </script>
+
+</head>
+<body >
+
+<form action="{URL}" method="post" class="bulk_editing_form" >
+<input type="hidden" name="contenido" value="{SID}"/>
+<input type="hidden" name="action" value=""/>
+<input type="hidden" name="idmails" value="{IDMAIL}"/>
+<input type="hidden" name="idmail" value="{IDMAIL}"/>
+<input type="hidden" name="area" value="mail_log"/>
+<input type="hidden" name="frame" value="4" />
+<input type="submit" name="submit" value="submit" style="display:none" />
+
+
+
+
+<table class="bordered" width="100%" border="0" cellspacing="0" cellpadding="2">
+    <tr>
+        <td colspan="2" class="bordercell">{HEADER_TEXT}</td>
+    </tr>
+
+    <!-- BEGIN:BLOCK -->
+    <tr id="{ROWID}" {CSS_CLASS} class="con_sync" style="background-color: {BGCOLOR};" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
+       <td class="bordercell">{NAME} &nbsp;</td>
+		<td class="bordercell">{VALUE} &nbsp;</td>
+    </tr>
+    <!-- END:BLOCK -->
+    
+    <tr id="{ROWID}" {CSS_CLASS} class="con_sync" style="background-color: {BGCOLOR};" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
+       <td class="bordercell">i18n('Action')</td>
+		<td class="bordercell">
+		&nbsp;
+			<a class="con_deleteart"  onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteEmails()');" > <img src="images/delete.gif" title='i18n("Delete email log")' alt='i18n("Delete email log")' border="0" ></a>
+			{RESEND_EMAIL_LINK}
+		</td>
+    </tr>
+    
+</table>
+
+
+
+
+</form>
+
+<script type="text/javascript">
+function deleteEmails() {
+	//set action
+	$('form.bulk_editing_form input[name="action"]').val('delete');
+	//send form
+	$('form.bulk_editing_form input[name="submit"]').click();
+	
+}
+
+function resendEmail() {
+	//set action
+	$('form.bulk_editing_form input[name="action"]').val('resend_email');
+	//send form
+	$('form.bulk_editing_form input[name="submit"]').click();
+	
+}
+</script>
+
+</body>
+</html>

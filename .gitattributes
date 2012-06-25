@@ -1811,6 +1811,7 @@ contenido/templates/standard/template.left_top.html -text
 contenido/templates/standard/template.left_top_blank.html -text
 contenido/templates/standard/template.log_main.html -text
 contenido/templates/standard/template.log_menu.html -text
+contenido/templates/standard/template.mail_log.detail.html -text svneol=unset#text/plain
 contenido/templates/standard/template.mail_log.left_bottom.html -text
 contenido/templates/standard/template.mail_log.right_bottom.html -text
 contenido/templates/standard/template.mod_edit_form.html -text

@@ -34,6 +34,50 @@
 			$this->_setItemClass('cApiMailLog');
 		}
 		
+		/**
+		 * Delete body and head files of email.
+		 * @param cApiMailLog $oItem
+		 */
+		public function deleteFiles(cApiMailLog $oItem) {
+	
+			$fileName = md5($oItem->getField('idmail'). $oItem->getField('created'));
+			unlink($this->mailLogDirectory . 'body_'. $fileName .'.'. $this->mailLogEnding);
+			unlink($this->mailLogDirectory . 'head_'. $fileName .'.'. $this->mailLogEnding);
+		}
+		
+		/**
+		 * Get the body content of email
+		 * @param cApiMailLog $oItem
+		 * @return string content of the file of body
+		 */
+		public function getBody(cApiMailLog $oItem){
+			$fileName = md5($oItem->getField('idmail'). $oItem->getField('created'));
+			return file_get_contents($this->mailLogDirectory . 'body_'. $fileName .'.'. $this->mailLogEnding);
+		}
+		
+		
+		/**
+		 * Get the head content of email
+		 * @param cApiMailLog $oItem
+		 * @return string content of the file of head
+		 */
+		public function getHeader(cApiMailLog $oItem) {
+			
+			$fileName = md5($oItem->getField('idmail'). $oItem->getField('created'));
+			return file_get_contents($this->mailLogDirectory . 'header_'. $fileName .'.'. $this->mailLogEnding);
+		}
+		
+		/**
+		 * Save Email log
+		 * 
+		 * @param unknown_type $success
+		 * @param unknown_type $header
+		 * @param unknown_type $body
+		 * @param unknown_type $mailer
+		 * @param unknown_type $address
+		 * @param unknown_type $subject
+		 * @param unknown_type $exception
+		 */
 		public function saveLog($success, $header, $body, $mailer, $address, $subject,  $exception = '') {
 			
 			$item = parent::create();
@@ -48,14 +92,11 @@
 			$item->set('cc', implode('+', $address['cc']));
 			$item->set('bcc', implode('+', $address['bcc']));
 			$item->set('reply_to', $address['reply_to']);
-			$item->set('created', $date);
+			$item->set('created', $date, false);
 			$item->set('subject', $subject);
 			$item->set('exception', $exception);
-			
 			$fileName = md5($item->getField('idmail'). $date);
-			
-			echo "<br/>file and directory: ". $this->mailLogDirectory . $fileName . $this->mailLogEnding. "<br/>";
-			
+					
 			if( file_put_contents($this->mailLogDirectory . 'body_'. $fileName .'.'. $this->mailLogEnding, $body) === false) {
 				return false;
 			}
