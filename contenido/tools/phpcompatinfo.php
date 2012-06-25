@@ -9,7 +9,7 @@
  * Uses PEAR package PHP_CompatInfo, see http://pear.php.net/package/PHP_CompatInfo
  * Requires the PEAR package PHP_CompatInfo!
  *
- * PHP_CompatInfo parses the complete CONTENIDO project folder recursively and 
+ * PHP_CompatInfo parses the complete CONTENIDO project folder recursively and
  * collects all dependency informations.
  *
  * Usage:

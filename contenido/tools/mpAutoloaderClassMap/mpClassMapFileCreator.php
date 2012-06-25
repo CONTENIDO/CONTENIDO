@@ -3,8 +3,8 @@
  * Contains class to create a class map file.
  *
  * @category    Development
- * @package 	mpAutoloaderClassMap
- * @author		Murat Purc <murat@purc.de>
+ * @package     mpAutoloaderClassMap
+ * @author        Murat Purc <murat@purc.de>
  * @copyright   Copyright (c) 2009-2010 Murat Purc (http://www.purc.de)
  * @license     http://www.gnu.org/licenses/gpl-2.0.html - GNU General Public License, version 2
  * @version     $Id$
@@ -23,8 +23,8 @@
  * </code>
  *
  * @category    Development
- * @package 	mpAutoloaderClassMap
- * @author		Murat Purc <murat@purc.de>
+ * @package     mpAutoloaderClassMap
+ * @author        Murat Purc <murat@purc.de>
  */
 class mpClassMapFileCreator
 {
@@ -66,7 +66,7 @@ class mpClassMapFileCreator
         $this->_data = new stdClass();
         $this->_data->content     = '';
         $this->_data->description = trim('
- * Autoloader classmap file. Contains all available classes/interfaces and 
+ * Autoloader classmap file. Contains all available classes/interfaces and
  * related class files.
  *
  * NOTES:
@@ -87,7 +87,7 @@ class mpClassMapFileCreator
     /**
      * Creates classmap file with passed data list
      *
-     * @param   array  $data   Assoziative list which contains class type tokens and 
+     * @param   array  $data   Assoziative list which contains class type tokens and
      *                         the related path to the class file.
      * @param   string  $file  Destination class map file
      * @return  void

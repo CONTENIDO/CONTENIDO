@@ -3,8 +3,8 @@
  * Contains class type token finder.
  *
  * @category    Development
- * @package 	mpAutoloaderClassMap
- * @author		Murat Purc <murat@purc.de>
+ * @package     mpAutoloaderClassMap
+ * @author        Murat Purc <murat@purc.de>
  * @copyright   Copyright (c) 2009-2010 Murat Purc (http://www.purc.de)
  * @license     http://www.gnu.org/licenses/gpl-2.0.html - GNU General Public License, version 2
  * @version     $Id$
@@ -15,8 +15,8 @@
  * Class to find class type tokens
  *
  * @category    Development
- * @package 	mpAutoloaderClassMap
- * @author		Murat Purc <murat@purc.de>
+ * @package     mpAutoloaderClassMap
+ * @author        Murat Purc <murat@purc.de>
  */
 class mpClassTypeFinder
 {
@@ -165,7 +165,7 @@ class mpClassTypeFinder
      *
      * @param   SplFileInfo    $fileInfo
      * @param   bool           $recursive  Flag to parse directory recursive
-     * @return  array|null     Either a assoziative array where the key is the class 
+     * @return  array|null     Either a assoziative array where the key is the class
      *                         type token and the value is the path or null.
      */
     public function findInDir(SplFileInfo $fileInfo, $recursive=true)
@@ -197,7 +197,7 @@ class mpClassTypeFinder
      * Detects all available class type tokens in passed file
      *
      * @param   SplFileInfo    $fileInfo
-     * @return  array|null     Either a assoziative array where the key is the class 
+     * @return  array|null     Either a assoziative array where the key is the class
      *                         type token and the value is the path or null.
      */
     public function findInFile(SplFileInfo $fileInfo)
@@ -250,7 +250,7 @@ class mpClassTypeFinder
      * Returns debug messages in a formatted way.
      *
      * @param   string  $delemiter  Delemiter between each message
-     * @param   string  $wrap       String with %s type specifier used to wrap all 
+     * @param   string  $wrap       String with %s type specifier used to wrap all
      *                              messages
      * @return  string  Formatted string
      */

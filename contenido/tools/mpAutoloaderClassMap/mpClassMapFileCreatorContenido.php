@@ -3,8 +3,8 @@
  * Contains class to create a class map file.
  *
  * @category    Development
- * @package 	mpAutoloaderClassMap
- * @author		Murat Purc <murat@purc.de>
+ * @package     mpAutoloaderClassMap
+ * @author        Murat Purc <murat@purc.de>
  * @copyright   Copyright (c) 2010 Murat Purc (http://www.purc.de)
  * @license     http://www.gnu.org/licenses/gpl-2.0.html - GNU General Public License, version 2
  * @version     $Id$
@@ -24,18 +24,18 @@ include_once('mpClassMapFileCreator.php');
  * </code>
  *
  * @category    Development
- * @package 	mpAutoloaderClassMap
- * @author		Murat Purc <murat@purc.de>
+ * @package     mpAutoloaderClassMap
+ * @author        Murat Purc <murat@purc.de>
  */
 class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
 {
-	private $_contenidoInstallPath;
+    private $_contenidoInstallPath;
 
     public function __construct($contenidoInstallPath)
     {
         parent::__construct();
 
-		$this->_contenidoInstallPath = $contenidoInstallPath;
+        $this->_contenidoInstallPath = $contenidoInstallPath;
 
         $this->_template = trim('
 <?php
@@ -66,7 +66,7 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
 {CONTENT}
 ');
         $this->_data->description = ' ' . trim('
- * CONTENIDO autoloader classmap file. Contains all available classes and 
+ * CONTENIDO autoloader classmap file. Contains all available classes and
  * related class files in several CONTENIDO folder.
  *
  * NOTES:
@@ -94,22 +94,22 @@ class mpClassMapFileCreatorContenido extends mpClassMapFileCreator
 
 
     /**
-     * Creates classmap file with passed data list. Prepares the classmap entries 
-	 * before passing them to parents create function.
+     * Creates classmap file with passed data list. Prepares the classmap entries
+     * before passing them to parents create function.
      *
-     * @param   array  $data   Assoziative list which contains class type tokens and 
+     * @param   array  $data   Assoziative list which contains class type tokens and
      *                         the related path to the class file.
      * @param   string  $file  Destination class map file
      * @return  void
      */
     public function create(array $data, $file)
     {
-		// remove path from root to CONTENIDO installation
-		foreach ($data as $k => $v) {
-			$data[$k] = str_replace($this->_contenidoInstallPath, '', $v);
-		}
+        // remove path from root to CONTENIDO installation
+        foreach ($data as $k => $v) {
+            $data[$k] = str_replace($this->_contenidoInstallPath, '', $v);
+        }
 
-		return parent::create($data, $file);
+        return parent::create($data, $file);
     }
 
 }
