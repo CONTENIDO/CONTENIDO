@@ -17,8 +17,8 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * 
+ *
+ *
  *
  * {@internal
  *   created  2000-01-01
@@ -56,7 +56,7 @@ require_once($_PHPLIB['libdir'] . 'ct_sql.inc');    // Data storage container: d
 require_once($_PHPLIB['libdir'] . 'ct_file.inc');   // Data storage container: file
 require_once($_PHPLIB['libdir'] . 'ct_session.inc');// Data storage container: session
 
-require_once($_PHPLIB['libdir'] . 'session.inc');   // Session management     
+require_once($_PHPLIB['libdir'] . 'session.inc');   // Session management
 require_once($_PHPLIB['libdir'] . 'auth.inc');      // Authorization management
 
 // Additional require statements go before this line

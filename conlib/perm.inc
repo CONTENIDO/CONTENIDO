@@ -5,7 +5,7 @@
  * You can find its functionality
  * in contenido/classes/class.perm.php
  *
- * Note: 
+ * Note:
  * This class and this file will be removed
  * in a further version of CONTENIDO. Please change
  * your scripts accordingly to the new file name.

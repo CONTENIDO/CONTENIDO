@@ -171,21 +171,21 @@ class Auth {
                 }
 
                 if ($this->nobody) {
-					// Authenticate as nobody
-					$this->auth['uid'] = self::AUTH_UID_NOBODY;
-					// $this->auth['uname'] = self::AUTH_UID_NOBODY;
-					$this->auth['exp'] = 0x7fffffff;
-					$this->auth['refresh'] = 0x7fffffff;
-					return true;
-				} else {
-					// Show the login form
-					$this->auth_loginform();
-					$this->auth['uid'] = self::AUTH_UID_FORM;
-					$this->auth['exp'] = 0x7fffffff;
-					$this->auth['refresh'] = 0x7fffffff;
-					$sess->freeze();
-					exit;
-				}
+                    // Authenticate as nobody
+                    $this->auth['uid'] = self::AUTH_UID_NOBODY;
+                    // $this->auth['uname'] = self::AUTH_UID_NOBODY;
+                    $this->auth['exp'] = 0x7fffffff;
+                    $this->auth['refresh'] = 0x7fffffff;
+                    return true;
+                } else {
+                    // Show the login form
+                    $this->auth_loginform();
+                    $this->auth['uid'] = self::AUTH_UID_FORM;
+                    $this->auth['exp'] = 0x7fffffff;
+                    $this->auth['refresh'] = 0x7fffffff;
+                    $sess->freeze();
+                    exit;
+                }
                 break;
             case 2:
                 // Valid auth info
@@ -197,28 +197,28 @@ class Auth {
                 break;
             case 3:
                 // Login in progress, check results and act accordingly
-                /*	
-				 *	if ($uid = $this->auth_preauth()) {
-				 *  	$this->auth['uid'] = $uid;
-				 *		$this->auth['exp'] = time() + (60 * $this->lifetime);
-				 *		$this->auth['refresh'] = time() + (60 * $this->refresh);
-				 *		return true;
-				 *	}
-				 */
+                /*
+                 *    if ($uid = $this->auth_preauth()) {
+                 *      $this->auth['uid'] = $uid;
+                 *        $this->auth['exp'] = time() + (60 * $this->lifetime);
+                 *        $this->auth['refresh'] = time() + (60 * $this->refresh);
+                 *        return true;
+                 *    }
+                 */
 
-				if ($uid = $this->auth_validatelogin()) {
-					$this->auth['uid'] = $uid;
-					$this->auth['exp'] = time() + (60 * $this->lifetime);
-					$this->auth['refresh'] = time() + (60 * $this->refresh);
-					return true;
-				} else {
-					$this->auth_loginform();
-					$this->auth['uid'] = self::AUTH_UID_FORM;
-					$this->auth['exp'] = 0x7fffffff;
-					$this->auth['refresh'] = 0x7fffffff;
-					$sess->freeze();
-					exit;
-				}
+                if ($uid = $this->auth_validatelogin()) {
+                    $this->auth['uid'] = $uid;
+                    $this->auth['exp'] = time() + (60 * $this->lifetime);
+                    $this->auth['refresh'] = time() + (60 * $this->refresh);
+                    return true;
+                } else {
+                    $this->auth_loginform();
+                    $this->auth['uid'] = self::AUTH_UID_FORM;
+                    $this->auth['exp'] = 0x7fffffff;
+                    $this->auth['refresh'] = 0x7fffffff;
+                    $sess->freeze();
+                    exit;
+                }
                 break;
             default:
                 // This should never happen. Complain.
@@ -300,7 +300,7 @@ class Auth {
      * is being displayed. If it does, it must set a valid uid
      * (i.e. nobody IS NOT a valid uid) just like auth_validatelogin,
      * else it shall return false.
-	 */
+     */
     public function auth_preauth() {
         return false;
     }

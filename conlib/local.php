@@ -57,7 +57,7 @@ class DB_Contenido extends DB_Sql
         global $cfg;
 
         parent::__construct($options);
-        
+
         if (!is_array($cachemeta)) {
             $cachemeta = array();
         }
@@ -77,7 +77,7 @@ class DB_Contenido extends DB_Sql
                 header("Location: ".$cfg["contenido"]["errorpage"]);
             } else {
                 //The script should not die if we are in the setup process. The setup has to make sure the connection works
-            	if(strrpos(C_SETUP_PATH, "setup") != (strlen(C_SETUP_PATH) - strlen("/setup"))) {
+                if(strrpos(C_SETUP_PATH, "setup") != (strlen(C_SETUP_PATH) - strlen("/setup"))) {
                     die("Could not connect to database wtih this configuration");
                 }
             }
@@ -114,9 +114,9 @@ class DB_Contenido extends DB_Sql
         return parent::next_record();
     }
     /**
-     * 
+     *
      * Get last inserted id of given tablename
-     * 
+     *
      * @param string $tableName
      * @return int|null last id of table
      */
@@ -144,8 +144,8 @@ class DB_Contenido extends DB_Sql
     public function copyResultToArray($sTable = '')
     {
         global $cachemeta;
-		cDeprecated("Use db drivers toArray() method instead");
-		
+        cDeprecated("Use db drivers toArray() method instead");
+
         $aValues = array();
 
         if ($sTable != '') {
@@ -199,7 +199,7 @@ class Contenido_CT_Sql extends CT_Sql
     /**
      * Stores the session data in database table.
      *
-     * Overwrites parents and uses MySQLs REPLACE statement, to prevent race 
+     * Overwrites parents and uses MySQLs REPLACE statement, to prevent race
      * conditions while executing INSERT statements by multiple frames in backend.
      *
      * - Existing entry will be overwritten

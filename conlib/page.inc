@@ -1,12 +1,12 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Base page setup for CONTENIDO.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5
  *
  * @package    CONTENIDO Core
@@ -16,15 +16,15 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2002-07-21
  *   modified 2008-07-04, bilal arslan, added security fix
  *   modified 2011-07-22, Murat Purc, added instantiation of db in page_open(), documenting and formatting.
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -33,20 +33,20 @@ if (!defined('CON_FRAMEWORK')) {
 
 /** @deprecated [2012-05-18] This function is deprecated, use cRegistry::bootstrap() instead */
 function page_open($feature) {
-	cDeprecated("This function is deprecated, use cRegistry::bootstrap() instead");
-	cRegistry::bootstrap($feature);
+    cDeprecated("This function is deprecated, use cRegistry::bootstrap() instead");
+    cRegistry::bootstrap($feature);
 }
 
 /** @deprecated [2012-05-18] This function is deprecated, use cRegistry::shutdown() instead */
 function page_close() {
-	cDeprecated("This function is deprecated, use cRegistry::shutdown() instead");
+    cDeprecated("This function is deprecated, use cRegistry::shutdown() instead");
     cRegistry::shutdown();
 }
 
 /** @deprecated [2012-05-18] This function is not longer supported. */
 function sess_load($session) {
-	cDeprecated("This function is not longer supported.");
-	
+    cDeprecated("This function is not longer supported.");
+
     reset($session);
     while (list($k,$v) = each($session)) {
         $GLOBALS[$k] = new $v;
@@ -56,8 +56,8 @@ function sess_load($session) {
 
 /** @deprecated [2012-05-18] This function is not longer supported. */
 function sess_save($session) {
-	cDeprecated("This function is not longer supported.");
-	
+    cDeprecated("This function is not longer supported.");
+
     reset($session);
     while (list(,$v) = each($session)) {
         $GLOBALS[$v]->freeze();

@@ -276,8 +276,8 @@ abstract class DB_Sql_Abstract
         }
 
         if($this->connect() == null) {
-        	$this->Errno = 1;
-        	$this->Error = "Could not connect to database";
+            $this->Errno = 1;
+            $this->Error = "Could not connect to database";
         }
     }
 
@@ -1132,6 +1132,6 @@ abstract class DB_Sql_Abstract
      */
     protected function _debug($sMsg)
     {
-    	cDebug($sMsg);
+        cDebug($sMsg);
     }
 }
