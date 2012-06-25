@@ -148,13 +148,13 @@ if (isset($action) && $action != '') {
 
 
 if (isset($action)) {
-	$actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
-	if (file_exists($actionCodeFile)) {
-		cDebug("Including action file for " . $action);
-		include_once $actionCodeFile;
-	} else {
-		cDebug("No action file found for " . $action);
-	}
+    $actionCodeFile = $cfg['path']['contenido'] . 'includes/type/action/include.' . $action . '.action.php';
+    if (file_exists($actionCodeFile)) {
+        cDebug("Including action file for " . $action);
+        include_once $actionCodeFile;
+    } else {
+        cDebug("No action file found for " . $action);
+    }
 }
 
 if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {

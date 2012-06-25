@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * HTML-code for subnav
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend
  * @version    1.0.1
@@ -18,18 +18,18 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-07-02, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 ?>
 
@@ -45,15 +45,15 @@ if(!defined('CON_FRAMEWORK')) {
 </div>
 
 <script type="text/javascript">
-    
+
     // First sub menu item
     /* DEs: when does this fire?
-    if (cObj = document.getElementById('c_0')) 
+    if (cObj = document.getElementById('c_0'))
     {
         sub.click(cObj);
     }
     */
-    
+
 </script>
 <!--{DEFAULT}-->
 

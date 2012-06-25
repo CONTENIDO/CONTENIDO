@@ -79,9 +79,9 @@ if (!is_numeric($client) || $client == '') {
     $oClientColl->select('', '', 'idclient ASC', '1');
     $oClient = $oClientColl->next();
     if($oClient == null) {
-    	$client = 0;
+        $client = 0;
     } else {
-    	$client = $oClient->get('idclient');
+        $client = $oClient->get('idclient');
     }
 } else {
     $sess->register('client');
