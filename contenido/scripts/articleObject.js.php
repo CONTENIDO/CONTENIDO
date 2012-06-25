@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Moving article related logic to the front_end
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend sripts
  * @version    1.0.4
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.7
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2003-05-23
  *   $Id$:
  * }}
@@ -51,13 +51,13 @@ echo "//itsameA";
 $aTabs = array();
 while ($chainEntry = $iterator->next())
 {
-	$aTmpArray = $chainEntry->execute();
+    $aTmpArray = $chainEntry->execute();
 
-	if (is_array($aTmpArray))
-	{
-		echo "//itsame";
-		$aTabs = array_merge($aTabs, $aTmpArray);
-	}
+    if (is_array($aTmpArray))
+    {
+        echo "//itsame";
+        $aTabs = array_merge($aTabs, $aTmpArray);
+    }
 }
 ?>
 
@@ -102,7 +102,7 @@ function articleObject(actionFrameName, frameNumber)
     this.idcat      = 0;
     this.idcatlang  = 0;
     this.idcatart   = 0;
-	this.idlang	    = 0;
+    this.idlang        = 0;
 
     /* Menu visible / invisible */
     this.vis        = 1;
@@ -117,23 +117,23 @@ function articleObject(actionFrameName, frameNumber)
 
     foreach ($aTabs as $key => $sTab)
     {
-    	echo 'this.customTabs[\''.$sTab.'\'] = new Object();'."\n";
+        echo 'this.customTabs[\''.$sTab.'\'] = new Object();'."\n";
 
-    	$iterator = $_cecRegistry->getIterator("Contenido.Article.GetCustomTabProperties");
+        $iterator = $_cecRegistry->getIterator("Contenido.Article.GetCustomTabProperties");
 
-		$aTabs = array();
-		while ($chainEntry = $iterator->next())
-		{
-			$aTmpArray = $chainEntry->execute($sTab);
+        $aTabs = array();
+        while ($chainEntry = $iterator->next())
+        {
+            $aTmpArray = $chainEntry->execute($sTab);
 
-			if (is_array($aTmpArray))
-			{
-				break;
-			}
-		}
-    	echo 'this.customTabs[\''.$sTab.'\'][\'area\'] = "'.$aTmpArray[0].'";'."\n";
-		echo 'this.customTabs[\''.$sTab.'\'][\'action\'] = "'.$aTmpArray[1].'";'."\n";
-		echo 'this.customTabs[\''.$sTab.'\'][\'custom\'] = "'.$aTmpArray[2].'";'."\n";
+            if (is_array($aTmpArray))
+            {
+                break;
+            }
+        }
+        echo 'this.customTabs[\''.$sTab.'\'][\'area\'] = "'.$aTmpArray[0].'";'."\n";
+        echo 'this.customTabs[\''.$sTab.'\'][\'action\'] = "'.$aTmpArray[1].'";'."\n";
+        echo 'this.customTabs[\''.$sTab.'\'][\'custom\'] = "'.$aTmpArray[2].'";'."\n";
     }
     ?>
 }
@@ -185,7 +185,7 @@ articleObject.prototype.reset = function()
     this.idartlang  = 0;
     this.idcatlang  = 0;
     this.idcatart   = 0;
-	this.idlang     = 0;
+    this.idlang     = 0;
 }
 
 /**
@@ -247,16 +247,16 @@ articleObject.prototype.doAction = function(str)
 
         /* Edit article properties */
         case 'con_editart':
-			if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
-			{
-				err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
+            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
+            {
+                err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
                 if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0"))
                 {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                 }
-			} else {
+            } else {
                 /* Check if required parameters are set  */
                 if ( 0 != this.idart ) {
                     url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_edit&idart=" + this.idart + "&idcat=" + this.idcat);
@@ -273,22 +273,22 @@ articleObject.prototype.doAction = function(str)
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                     }
                 }
-			}
+            }
             break;
 
         /* Template configuration */
         case 'con_tplcfg':
 
             /* Check if required parameters are set  */
-			if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
-			{
-				err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
+            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
+            {
+                err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
                 if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                 }
-			} else {
+            } else {
                 if ( 0 != this.idart && 0 != this.idcat ) {
                     url_str = this.sessUrl(this.filename + "area=" + str + "&action=tplcfg_edit&idart=" + this.idart + "&idcat=" + this.idcat);
                     doAction = true;
@@ -299,25 +299,25 @@ articleObject.prototype.doAction = function(str)
                        configuration mask */
                     err_str = "<?php echo i18n("Template configuration can't be displayed")."<br>".i18n("No article was selected"); ?>";
 
-    				if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                    if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
                         menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                     }
                 }
-			}
+            }
             break;
 
         /* Edit article */
         case 'con_editcontent':
-			if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
-			{
-				err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
+            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
+            {
+                err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
                 if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                 }
-			} else {
+            } else {
 
                 /* Check if required parameters are set  */
                 if ( 0 != this.idart && 0 != this.idartlang && 0 != this.idcat ) {
@@ -334,7 +334,7 @@ articleObject.prototype.doAction = function(str)
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                     }
                 }
-			}
+            }
             break;
 
         /* Preview article */
@@ -355,19 +355,19 @@ articleObject.prototype.doAction = function(str)
                 err_str = "<?php echo i18n("Preview can't be displayed")."<br>".i18n("No article was selected"); ?>";
             }
             break;
-            
+
         /* Meta article */
         case 'con_meta':
             if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
-			{
-				err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
+            {
+                err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
                 if (parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0"))
                 {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                 }
-			} else {
+            } else {
                 /* Check if required parameters are set  */
                 if ( 0 != this.idart && 0 != this.idcat ) {
                     url_str = this.sessUrl(this.filename + "area=" + str + "&action=con_meta_edit&idart=" + this.idart + "&idcat=" + this.idcat);
@@ -384,20 +384,20 @@ articleObject.prototype.doAction = function(str)
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                     }
                 }
-			}
+            }
             break;
-            
+
         /* Content: list of all content_type */
         case 'con_content_list':
-        	if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
-			{
-				err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
+            if (this.lang != 0 && this.idlang != 0 && this.lang != this.idlang)
+            {
+                err_str = "<?php echo i18n("Editor can't be displayed")."<br>".i18n("Can't edit articles in foreign languages."); ?>";
 
                 if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
                     menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
                     parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                 }
-			} else {
+            } else {
 
                 /* Check if required parameters are set  */
                 if ( 0 != this.idart && 0 != this.idartlang && 0 != this.idcat ) {
@@ -414,28 +414,28 @@ articleObject.prototype.doAction = function(str)
                         parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
                     }
                 }
-			}
+            }
             break;
-        	
-		default:
-			if (this.customTabs[str])
-			{
-				var obj = this.customTabs[str];
-				if ( 0 != this.idart && 0 != this.idartlang && 0 != this.idcat ) {
-	                url_str = this.sessUrl(this.filename + "area=" + obj["area"] + "&action=" + obj["action"] + "&idart=" + this.idart + "&idartlang=" + this.idartlang + "&idcat=" + this.idcat + "&tmpchangelang="+ this.idlang + "&" + obj["custom"]);
-	                doAction = true;
-	            } else {
-	                /* There is no selected article,
-	                   we do not have the neccessary
-	                   data to display the Editor */
-	                if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
-	                    menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
-	                    parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
-	                }
-	                err_str = "<?php echo i18n("Tab can't be displayed")."<br>".i18n("No article was selected"); ?>";
-				}
-			}
-			break;
+
+        default:
+            if (this.customTabs[str])
+            {
+                var obj = this.customTabs[str];
+                if ( 0 != this.idart && 0 != this.idartlang && 0 != this.idcat ) {
+                    url_str = this.sessUrl(this.filename + "area=" + obj["area"] + "&action=" + obj["action"] + "&idart=" + this.idart + "&idartlang=" + this.idartlang + "&idcat=" + this.idcat + "&tmpchangelang="+ this.idlang + "&" + obj["custom"]);
+                    doAction = true;
+                } else {
+                    /* There is no selected article,
+                       we do not have the neccessary
+                       data to display the Editor */
+                    if ( parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0") ) {
+                        menuItem = parent.parent.frames["right"].frames["right_top"].document.getElementById("c_0");
+                        parent.parent.frames["right"].frames["right_top"].sub.click(menuItem);
+                    }
+                    err_str = "<?php echo i18n("Tab can't be displayed")."<br>".i18n("No article was selected"); ?>";
+                }
+            }
+            break;
     }
 
     if (doAction) {
@@ -462,7 +462,7 @@ articleObject.prototype.setProperties = function()
     this.idcat      = arguments[2];
     this.idcatlang  = arguments[3];
     this.idcatart   = arguments[4];
-	this.idlang		= arguments[5];
+    this.idlang        = arguments[5];
 }
 
 /**
@@ -489,7 +489,7 @@ articleObject.prototype.disable = function()
             links = oRef[i].getElementsByTagName("a");
             links[0].style.visibility = "hidden";
         }
-		parent.parent.frames["right"].frames["right_top"].sub.clicked(oRef[0].getElementsByTagName('a')[0]);
+        parent.parent.frames["right"].frames["right_top"].sub.clicked(oRef[0].getElementsByTagName('a')[0]);
 
         // This deselects the selected submenu item
         // parent.parent.frames["right"].frames["right_top"].sub.click(oRef[0]);
@@ -515,7 +515,7 @@ articleObject.prototype.enable = function()
     oRef[2] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_2" );
     oRef[3] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_3" );
     oRef[4] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_4" );
-	oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_5" );
+    oRef[5] = parent.parent.frames["right"].frames["right_top"].document.getElementById( "c_5" );
 
     if ( this.vis == 0 )
     {

@@ -10,7 +10,7 @@ i18n("Make online");
 i18n("Protect");
 i18n("Remove protection");
 i18n("Choose template");
-i18n("Overview cannot be displayed"); 
+i18n("Overview cannot be displayed");
 i18n("Error");
 i18n("Article can't be displayed");
 i18n("No article was selected");

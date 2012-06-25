@@ -11,20 +11,20 @@
 
 function fncSetPager(sId, sCurPage)
 {
-	var oLeftTop = parent.left_top;
+    var oLeftTop = parent.left_top;
 
-	if (oLeftTop.document)
-	{
-		var oPager = oLeftTop.document.getElementById(sId);
-		
-		if (oPager)
-		{
-			oInsert = oPager.firstChild;
-			oInsert.innerHTML = sNavigation;
-			oLeftTop.newsletter_listoptionsform_curPage = sCurPage;
-			oLeftTop.toggle_pager(sId);
+    if (oLeftTop.document)
+    {
+        var oPager = oLeftTop.document.getElementById(sId);
 
-			window.clearInterval(oTimer);
-		}
-	}
+        if (oPager)
+        {
+            oInsert = oPager.firstChild;
+            oInsert.innerHTML = sNavigation;
+            oLeftTop.newsletter_listoptionsform_curPage = sCurPage;
+            oLeftTop.toggle_pager(sId);
+
+            window.clearInterval(oTimer);
+        }
+    }
 }

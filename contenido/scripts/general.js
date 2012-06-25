@@ -18,14 +18,14 @@
  *
  *  Example:
  *  <code>
- *	conMultiLink (
- *	 	"frame",
- *		"link",
- * 		"frame",
- *		"link",
- *		 ...,
- *		"simpleFrame"
- *	)
+ *    conMultiLink (
+ *         "frame",
+ *        "link",
+ *         "frame",
+ *        "link",
+ *         ...,
+ *        "simpleFrame"
+ *    )
  * </code>
  *
  * @param [arguments*] optional amount of arguments used pairwise for assigning URLs to frame names in CONTENIDO.
@@ -46,9 +46,9 @@ function conMultiLink()
     // change for-loop counter if last parameter is used to identify simple frame multilinks
     var len = (simpleFrame) ? arguments.length - 1 : arguments.length;
 
-	for (var i = 0; i < len; i += 2) {
-		f = arguments[i];
-		l = arguments[i + 1];
+    for (var i = 0; i < len; i += 2) {
+        f = arguments[i];
+        l = arguments[i + 1];
 
         if (f == "left_bottom" || f == "left_top") {
             parent.parent.frames["left"].frames[f].location.href = l;
@@ -59,7 +59,7 @@ function conMultiLink()
                 parent.parent.frames["right"].frames[f].location.href = l;
             }
         }
-	}
+    }
 }
 
 function handleErrors() {

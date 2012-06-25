@@ -1,10 +1,10 @@
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * JavaScript CMS Type Teaser
- * 
+ *
  *
  * @package    CONTENIDO Content Types
  * @version    1.0.0
@@ -14,13 +14,13 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.12
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2009-04-08
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 
@@ -37,18 +37,18 @@
  */
 function addTeaserEvents(sFrameId, sImageId, sPath, sSession, iIdArtLang, iId) {
     cmsTeaser_initialize(sFrameId);
-	cmsTeaser_loadExternalScripts(sFrameId, sPath);
-	cmsTeaser_addTabbingEvents(sFrameId);
-	cmsTeaser_addFrameShowEvent(sFrameId, sImageId);
-	cmsTeaser_addSaveEvent(sFrameId, iIdArtLang, iId);
-	cmsTeaser_addFrameCloseEvents(sFrameId);
-	cmsTeaser_addAjaxGetArticleListEvent(sFrameId, sPath, sSession);
-	cmsTeaser_addManualTeaserEvent(sFrameId);
-	cmsTeaser_addClickEvent(sFrameId);
+    cmsTeaser_loadExternalScripts(sFrameId, sPath);
+    cmsTeaser_addTabbingEvents(sFrameId);
+    cmsTeaser_addFrameShowEvent(sFrameId, sImageId);
+    cmsTeaser_addSaveEvent(sFrameId, iIdArtLang, iId);
+    cmsTeaser_addFrameCloseEvents(sFrameId);
+    cmsTeaser_addAjaxGetArticleListEvent(sFrameId, sPath, sSession);
+    cmsTeaser_addManualTeaserEvent(sFrameId);
+    cmsTeaser_addClickEvent(sFrameId);
 }
 
 /**
- * Appends the passed node to the end of body tag. This is necessary to have more 
+ * Appends the passed node to the end of body tag. This is necessary to have more
  * control during positioninig.
  *
  * @param string sFrameId
@@ -65,7 +65,7 @@ function cmsTeaser_initialize(sFrameId) {
  * @param string sValue
  */
 function cmsTeaser_appendTeaserValue(sName, sValue) {
-	$("form[name='editcontent']").append('<input type="hidden" value="'+sValue+'" name="'+sName+'"/>');
+    $("form[name='editcontent']").append('<input type="hidden" value="'+sValue+'" name="'+sName+'"/>');
 }
 
 /**
@@ -75,12 +75,12 @@ function cmsTeaser_appendTeaserValue(sName, sValue) {
  * @param string sImageId
  */
 function cmsTeaser_addFrameShowEvent(sFrameId, sImageId) {
-	$(sImageId).css('cursor', 'pointer');
-	$(sImageId).click(function () {
-		$(sFrameId).fadeIn("normal");
-		$(sFrameId).css('top', $(sImageId).offset().top);
-		$(sFrameId).css('left', $(sImageId).offset().left+$(sImageId).width()+3);
-	});
+    $(sImageId).css('cursor', 'pointer');
+    $(sImageId).click(function () {
+        $(sFrameId).fadeIn("normal");
+        $(sFrameId).css('top', $(sImageId).offset().top);
+        $(sFrameId).css('left', $(sImageId).offset().left+$(sImageId).width()+3);
+    });
 }
 
 /**
@@ -90,18 +90,18 @@ function cmsTeaser_addFrameShowEvent(sFrameId, sImageId) {
  * @param string sFrameId
  */
 function cmsTeaser_addTabbingEvents(sFrameId) {
-	$(sFrameId+" .menu li").css('cursor', 'pointer');
-	//add layer click events
-	$(sFrameId+" .menu li").click(function(){
-		$(sFrameId+" .menu li").css('font-weight', 'normal');
-		
-		$(sFrameId+" #manual").css("display", "none");
-		$(sFrameId+" #advanced").css("display", "none");
-		$(sFrameId+" #general").css("display", "none");
-		//add smooth animation
-		$(sFrameId+" #"+$(this).attr('class')).fadeIn("normal");
-		$(this).css('font-weight', 'bold');
-	});
+    $(sFrameId+" .menu li").css('cursor', 'pointer');
+    //add layer click events
+    $(sFrameId+" .menu li").click(function(){
+        $(sFrameId+" .menu li").css('font-weight', 'normal');
+
+        $(sFrameId+" #manual").css("display", "none");
+        $(sFrameId+" #advanced").css("display", "none");
+        $(sFrameId+" #general").css("display", "none");
+        //add smooth animation
+        $(sFrameId+" #"+$(this).attr('class')).fadeIn("normal");
+        $(this).css('font-weight', 'bold');
+    });
 }
 
 /**
@@ -112,35 +112,35 @@ function cmsTeaser_addTabbingEvents(sFrameId) {
  * @param integer iId
  */
 function cmsTeaser_addSaveEvent(sFrameId, iIdArtLang, iId) {
-	$(sFrameId+' .save_settings').css('cursor', 'pointer');
-	$(sFrameId+' .save_settings').click(function() {
-		cmsTeaser_addManualTeaserEntry(sFrameId);
-		var sValue = '';
-		//iterate over all teaser properties
-		for (var i = 0; i < aData.length; i++) {
-		  if (aData[i] == 'teaser_start' || aData[i] == 'teaser_manual') {
-			//special behaviour for checkboxes
-			sValue = $(sFrameId+' #'+aData[i]).attr('checked');
-		  } else if (aData[i] == 'teaser_manual_art') {
-			//in case of manual arts implode them use , as separator
-			sValue = '';
-			$(sFrameId+' #teaser_manual_art option').each(function() {
-				if (sValue == '') {
-					sValue = $(this).attr('value');
-				} else {
-					sValue = sValue+';'+$(this).attr('value');
-				}
-			});
-		  } else {
-		    //default value for select boxes and text boxes
-			sValue = $(sFrameId+' #'+aData[i]).attr('value');
-		  }
-		  cmsTeaser_appendTeaserValue(aData[i], sValue);
-		}
-		cmsTeaser_appendTeaserValue('teaser_action', 'store');
-		cmsTeaser_appendTeaserValue('teaser_id', iId);
-		setcontent(iIdArtLang,'0');
-	});
+    $(sFrameId+' .save_settings').css('cursor', 'pointer');
+    $(sFrameId+' .save_settings').click(function() {
+        cmsTeaser_addManualTeaserEntry(sFrameId);
+        var sValue = '';
+        //iterate over all teaser properties
+        for (var i = 0; i < aData.length; i++) {
+          if (aData[i] == 'teaser_start' || aData[i] == 'teaser_manual') {
+            //special behaviour for checkboxes
+            sValue = $(sFrameId+' #'+aData[i]).attr('checked');
+          } else if (aData[i] == 'teaser_manual_art') {
+            //in case of manual arts implode them use , as separator
+            sValue = '';
+            $(sFrameId+' #teaser_manual_art option').each(function() {
+                if (sValue == '') {
+                    sValue = $(this).attr('value');
+                } else {
+                    sValue = sValue+';'+$(this).attr('value');
+                }
+            });
+          } else {
+            //default value for select boxes and text boxes
+            sValue = $(sFrameId+' #'+aData[i]).attr('value');
+          }
+          cmsTeaser_appendTeaserValue(aData[i], sValue);
+        }
+        cmsTeaser_appendTeaserValue('teaser_action', 'store');
+        cmsTeaser_appendTeaserValue('teaser_id', iId);
+        setcontent(iIdArtLang,'0');
+    });
 }
 
 /**
@@ -149,17 +149,17 @@ function cmsTeaser_addSaveEvent(sFrameId, iIdArtLang, iId) {
  * @param string sFrameId
  */
 function cmsTeaser_addFrameCloseEvents(sFrameId) {
-	//add cancel image event
-	$(sFrameId+' .close').css('cursor', 'pointer');
-	$(sFrameId+' .close').click(function () {
-		$(sFrameId).fadeOut("normal");
-	});
-	
-	//add cancel button event
-	$(sFrameId+' .teaser_cancel').css('cursor', 'pointer');
-	$(sFrameId+' .teaser_cancel').click(function () {
-		$(sFrameId).fadeOut("normal");
-	});
+    //add cancel image event
+    $(sFrameId+' .close').css('cursor', 'pointer');
+    $(sFrameId+' .close').click(function () {
+        $(sFrameId).fadeOut("normal");
+    });
+
+    //add cancel button event
+    $(sFrameId+' .teaser_cancel').css('cursor', 'pointer');
+    $(sFrameId+' .teaser_cancel').click(function () {
+        $(sFrameId).fadeOut("normal");
+    });
 }
 
 /**
@@ -172,17 +172,17 @@ function cmsTeaser_addFrameCloseEvents(sFrameId) {
  * @param string sSession
  */
 function cmsTeaser_addAjaxGetArticleListEvent(sFrameId, sPath, sSession) {
-	$(sFrameId+' #teaser_cat').change(function() {
-		//get new article select and replace it with default value
-		$.ajax({
-		  type: "POST",
-		  url: sPath+"ajaxmain.php",
-		  data: "ajax=artsel&name=teaser_art&contenido="+sSession+"&idcat="+$(this).attr('value'),
-		  success: function(msg){
-			$(sFrameId+' #teaser_art').replaceWith(msg);
-		  }
-		});
-	});
+    $(sFrameId+' #teaser_cat').change(function() {
+        //get new article select and replace it with default value
+        $.ajax({
+          type: "POST",
+          url: sPath+"ajaxmain.php",
+          data: "ajax=artsel&name=teaser_art&contenido="+sSession+"&idcat="+$(this).attr('value'),
+          success: function(msg){
+            $(sFrameId+' #teaser_art').replaceWith(msg);
+          }
+        });
+    });
 }
 
 /**
@@ -196,7 +196,7 @@ function cmsTeaser_loadExternalScripts(sFrameId, sPath) {
     if ($('#cms_teaser').length == 0) {
         $('head').append('<link rel="stylesheet" id="cms_teaser" href="'+sPath+'styles/cms_teaser.css" type="text/css" media="all" />');
     }
-	
+
     conLoadFile(sPath+'scripts/jquery/jquery-ui.js', 'cmsTeaser_loadExternalScriptsCallback(\''+sFrameId+'\');');
 }
 
@@ -212,11 +212,11 @@ function cmsTeaser_loadExternalScriptsCallback(sFrameId) {
  * @param string sFrameId
  */
 function cmsTeaser_addManualTeaserEvent(sFrameId) {
-	$(sFrameId+' #add_art').css('cursor', 'pointer');
-		$(sFrameId+' #add_art').click(function() {
-			//call internal add function
-			cmsTeaser_addManualTeaserEntry(sFrameId);
-		});
+    $(sFrameId+' #add_art').css('cursor', 'pointer');
+        $(sFrameId+' #add_art').click(function() {
+            //call internal add function
+            cmsTeaser_addManualTeaserEntry(sFrameId);
+        });
 }
 
 /**
@@ -226,32 +226,32 @@ function cmsTeaser_addManualTeaserEvent(sFrameId) {
  * @param string sFrameId
  */
 function cmsTeaser_addManualTeaserEntry(sFrameId) {
-	var oArt = $(sFrameId+' #teaser_art');
-	var iIdArt = oArt.attr('value');
-	var sName = '';
-	var bExists = 0;
-	
-	//if an article was selected
-	if (iIdArt > 0) {
-		//check if article already exists in view list
-		$(sFrameId+' #teaser_manual_art option').each(function() {
-			if (iIdArt == $(this).attr('value')) {
-				bExists = 1;
-			}
-		});
-		
-		//get name of selected article
-		$(sFrameId+' #teaser_art option').each(function() {
-			if (iIdArt == $(this).attr('value')) {
-				sName = $(this).html();
-			}
-		});
-		
-		//if it is not in list, add article to list
-		if (bExists == 0) {
-			$(sFrameId+' #teaser_manual_art').append('<option value="'+iIdArt+'">'+sName+'</option>');
-		}
-	}
+    var oArt = $(sFrameId+' #teaser_art');
+    var iIdArt = oArt.attr('value');
+    var sName = '';
+    var bExists = 0;
+
+    //if an article was selected
+    if (iIdArt > 0) {
+        //check if article already exists in view list
+        $(sFrameId+' #teaser_manual_art option').each(function() {
+            if (iIdArt == $(this).attr('value')) {
+                bExists = 1;
+            }
+        });
+
+        //get name of selected article
+        $(sFrameId+' #teaser_art option').each(function() {
+            if (iIdArt == $(this).attr('value')) {
+                sName = $(this).html();
+            }
+        });
+
+        //if it is not in list, add article to list
+        if (bExists == 0) {
+            $(sFrameId+' #teaser_manual_art').append('<option value="'+iIdArt+'">'+sName+'</option>');
+        }
+    }
 }
 
 /**
@@ -261,12 +261,12 @@ function cmsTeaser_addManualTeaserEntry(sFrameId) {
  * @param string sFrameId
  */
 function cmsTeaser_addClickEvent(sFrameId) {
-	$(sFrameId+' #teaser_manual_art').dblclick(function() {
-		$(sFrameId+' #teaser_manual_art option').each(function() {
-			if($(this).attr('selected')) {
-				$(this).remove();
-			};
-		});
-	});
-	
+    $(sFrameId+' #teaser_manual_art').dblclick(function() {
+        $(sFrameId+' #teaser_manual_art option').each(function() {
+            if($(this).attr('selected')) {
+                $(this).remove();
+            };
+        });
+    });
+
 }

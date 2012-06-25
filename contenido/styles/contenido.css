@@ -1,8 +1,8 @@
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
  *
- * Description: 
+ * Description:
  * Backend styles
  *
  * @package    CONTENIDO Backend styles
@@ -97,71 +97,71 @@ div.login_title {
 }
 
 img.bordered {
-	padding: 10px; 
-	background: white;
-	border: 1px solid #b3b3b3;
+    padding: 10px;
+    background: white;
+    border: 1px solid #b3b3b3;
 }
 
 table.generic {
-	border-left: 1px solid #b3b3b3;
+    border-left: 1px solid #b3b3b3;
 }
 
 table.fullborder {
-	border: 1px solid #b3b3b3;
+    border: 1px solid #b3b3b3;
 }
 
 table.topborder {
-	border-top: 1px solid #b3b3b3;
+    border-top: 1px solid #b3b3b3;
 }
 table.generic td {
-	border-bottom: 1px solid #b3b3b3;
-	border-right: 1px solid #b3b3b3;
+    border-bottom: 1px solid #b3b3b3;
+    border-right: 1px solid #b3b3b3;
 }
 
 table.generic th {
-	border-top: 1px solid #b3b3b3;
-	border-right: 1px solid #b3b3b3;
-	background-color: #E2E2E2;
-	
-	text-align: "left";
-	padding: 2px;
-	
-	font-weight: normal;
-	color: #666666;
+    border-top: 1px solid #b3b3b3;
+    border-right: 1px solid #b3b3b3;
+    background-color: #E2E2E2;
+
+    text-align: "left";
+    padding: 2px;
+
+    font-weight: normal;
+    color: #666666;
 }
 
 table.generic th.center {
-	border-top: 1px solid #b3b3b3;
-	border-right: 1px solid #b3b3b3;
-	background-color: #E2E2E2;
-	
-	text-align: center;
-	padding: 2px;
-	
-	font-weight: normal;
-	color: #666666;
+    border-top: 1px solid #b3b3b3;
+    border-right: 1px solid #b3b3b3;
+    background-color: #E2E2E2;
+
+    text-align: center;
+    padding: 2px;
+
+    font-weight: normal;
+    color: #666666;
 }
 
 table.borderless {
-	border: 0px;
-	border-color: #B3B3B3;
-	border-style: solid;
-	border-bottom: 0px;
-	border-right: 1px;
+    border: 0px;
+    border-color: #B3B3B3;
+    border-style: solid;
+    border-bottom: 0px;
+    border-right: 1px;
 }
 
 table.borderless tr.active {
-	background-color: #ECF1B2;
+    background-color: #ECF1B2;
 }
 
 table.borderless tr {
-	background-color: #FFFFFF;
+    background-color: #FFFFFF;
 }
 
 table.borderless tr td {
-	border: 0px;
-	border-style: solid;
-	border-color: 
+    border: 0px;
+    border-style: solid;
+    border-color:
 }
 
 /**
@@ -639,37 +639,37 @@ ul#con_str_tree {
 }
 
 .notify_general {
-	border: 1px solid;
-	padding: 4px 4px 4px 22px;
-	background-repeat: no-repeat;
-	background-position: 2px 2px;
+    border: 1px solid;
+    padding: 4px 4px 4px 22px;
+    background-repeat: no-repeat;
+    background-position: 2px 2px;
 }
 
 .notify_default {
-	border-color: #006600;
-	background-image:url(../images/but_ok.gif);
-	color: #435d06;
+    border-color: #006600;
+    background-image:url(../images/but_ok.gif);
+    color: #435d06;
 }
 
 .notify_info {
-	border-color: #bfcf00;
-	background-image:url(../images/but_ok.gif);
-	color: #435d06;
-	display:inline-block;
+    border-color: #bfcf00;
+    background-image:url(../images/but_ok.gif);
+    color: #435d06;
+    display:inline-block;
 }
 
 .notify_warning {
-	border-color: #fea513;
-	background-image:url(../images/icon_warning.gif);
-	color: #fea513;
-	display:inline-block;
+    border-color: #fea513;
+    background-image:url(../images/icon_warning.gif);
+    color: #fea513;
+    display:inline-block;
 }
 
 .notify_error {
-	border-color: #d73211;
-	background-image:url(../images/icon_fatalerror.gif);
-	color: #d73211;
-	display:inline-block;
+    border-color: #d73211;
+    background-image:url(../images/icon_fatalerror.gif);
+    color: #d73211;
+    display:inline-block;
 }
 
 
@@ -1312,64 +1312,64 @@ p.column_header {padding: 0; font-weight: bold;}
  */
 
 #dropbox {
-	
-	width: 500px;
-	height: 100px;
-	line-height: 99px;
-	
-	background-color: #FFFFFF;
-	
-	border: 1px solid #D0D0D0;
-	
-	text-align: center;
-	padding: 0px;
+
+    width: 500px;
+    height: 100px;
+    line-height: 99px;
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #D0D0D0;
+
+    text-align: center;
+    padding: 0px;
 }
 
 #shelf {
-	width: 480px;
+    width: 480px;
 }
 
 div.shelf_elem {
-	width: 100%;
-	
-	margin-bottom: 10px;
-	padding: 5px;
+    width: 100%;
+
+    margin-bottom: 10px;
+    padding: 5px;
 }
 
 div.shelf_elem_titlelabel {
-	width: 100%;
+    width: 100%;
 }
 
 div.shelf_elem_progressbar_background {
-	margin-top: 5px;
-	
-	height: 20px;
-	background-color: black;
+    margin-top: 5px;
+
+    height: 20px;
+    background-color: black;
 }
 
 div.shelf_elem_progressbar_bar {
-	width: 0%;
-	
-	height: 100%;
-	background-color: green;
+    width: 0%;
+
+    height: 100%;
+    background-color: green;
 }
 
 input.shelf_elem_cancelbutton {
-	float: left;
+    float: left;
 }
 
 div.shelf_elem_statuslabel {
-	float: right;
+    float: right;
 }
 
 
 /*for datetimepicker*/
 
 .ui-datepicker {
-   		width: 24em !important;
+           width: 24em !important;
 }
 .ui-datepicker-trigger {
-	vertical-align:top;
-	margin-top:2px;
-	margin-left:5px;
+    vertical-align:top;
+    margin-top:2px;
+    margin-left:5px;
 }

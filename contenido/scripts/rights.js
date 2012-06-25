@@ -14,13 +14,13 @@ function setRightsForAllAreas(){
 // Fixed function to be use in ns/moz JL
 
         checked = document.forms["rightsform"].elements["checkall"].checked;
-		var elements = document.getElementsByTagName("INPUT");
+        var elements = document.getElementsByTagName("INPUT");
 
-		for (i=0; i<elements.length; i++)
-		{
-			if (elements[i].type == "checkbox")
-				elements[i].checked = checked;
-		}
+        for (i=0; i<elements.length; i++)
+        {
+            if (elements[i].type == "checkbox")
+                elements[i].checked = checked;
+        }
 }
 
 function setRightsForArea(key){
@@ -28,35 +28,35 @@ function setRightsForArea(key){
          checked=document.forms["rightsform"].elements["checkall_"+key].checked;
 
 
-		 flag = true;
+         flag = true;
 
-		 var foo = document.forms["rightsform"].elements["checkall_"+key];
+         var foo = document.forms["rightsform"].elements["checkall_"+key];
 
-		var str = "";
+        var str = "";
 
-	for (var p in areatree[key])
+    for (var p in areatree[key])
     {
-    	str += p + "\n";
+        str += p + "\n";
     }
 
 //alert(str);
 
          for(var key2 in areatree[key]){
-			 try {
-				if (flag)
-				{
-					row = foo.offsetParent.parentNode;
-					cboxes = row.getElementsByTagName('INPUT');
-					cboxes[0].checked = !cboxes[0].checked;
-					flag = false;
-				}
+             try {
+                if (flag)
+                {
+                    row = foo.offsetParent.parentNode;
+                    cboxes = row.getElementsByTagName('INPUT');
+                    cboxes[0].checked = !cboxes[0].checked;
+                    flag = false;
+                }
 
 //alert(areatree[key][key2]);
 
-             	document.getElementById(areatree[key][key2]).checked = checked;
+                 document.getElementById(areatree[key][key2]).checked = checked;
 
-			} catch(e) {
-			}
+            } catch(e) {
+            }
          }
 }
 

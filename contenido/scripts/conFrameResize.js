@@ -14,13 +14,13 @@ function conFrameResize(parentFrameId, frameOne, frameTwo, frameThree, frameFour
 {
     /* Class correctly initialized */
     this.ok = false;
-    
+
     /* Is the user dragging the frame */
     this.drag = false;
 
     /* Mouse cursor position */
     this.x = 0;
-    
+
     /* Cursor offset */
     this.dragDiff = 15;
 
@@ -29,10 +29,10 @@ function conFrameResize(parentFrameId, frameOne, frameTwo, frameThree, frameFour
 
     /* Default frame size */
     this.defaultSize = 200;
-    
+
     /* Optimal size (Without scrollbars) */
     this.optimalSize = 200;
-    
+
     /* Id of the frameset, CONTENIDO default
        is 'contentFrame' */
     this.frameSetId = parentFrameId || 'contentFrame';
@@ -53,40 +53,40 @@ function conFrameResize(parentFrameId, frameOne, frameTwo, frameThree, frameFour
 
     /* Object reference to the left image */
     this.imgLeft = document.getElementById( 'toggleImage' );
-    
+
     /* Left image source */
     this.imgLeftSrc = 'images/toggle_frame_left.gif';
-    
+
     /* Right image source */
     this.imgRightSrc = 'images/toggle_frame_right.gif';
-    
+
     /* Neutral image src */
     this.spacerImage = 'images/spacer.gif'
-    
+
     /* Object reference to the right image */
     this.imgRight = '';
-    
+
     /* Status of the frame 'hidden', 'normal' or 'drag' */
     this.status = 'normal';
 
     /* Value of the col attribute in normal pos */
     this.colValHidden = '*,100%';
-    
+
     /* Value of the col attribute in hidden pos */
     this.colValNormal = '200,100%';
-    
+
     /* Value of the col attribute in resizable pos */
     this.colValDrag = ',100%';
-    
+
     /* Value of the col attribute in resizable pos */
-    this.colValPrevious = '';    
+    this.colValPrevious = '';
 
     /* Number of frames initialized */
     this.count = 0;
 
     /* Drag cell id - defaults to 'dragcell' */
     this.dragCellId = 'dragcell';
-    
+
     /* Object reference to the drag cell */
     this.dragObj = false;
 }
@@ -103,46 +103,46 @@ conFrameResize.prototype.toggle = function()
     {
         if (this.status == 'normal')
         {
-					this.size = 0;
-					this.colValPrevious = this.frameSet.cols;
-					this.frameSet.cols = this.colValHidden;
-					this.imgRight.src = this.imgRightSrc;
-					this.imgRight.style.cursor = "pointer";
-					this.status = 'hidden';
-        } 
-				else if (this.status == 'hidden') 
-				{
-					/* Change image sources */
-					this.imgRight.src = this.spacerImage;
+                    this.size = 0;
+                    this.colValPrevious = this.frameSet.cols;
+                    this.frameSet.cols = this.colValHidden;
+                    this.imgRight.src = this.imgRightSrc;
+                    this.imgRight.style.cursor = "pointer";
+                    this.status = 'hidden';
+        }
+                else if (this.status == 'hidden')
+                {
+                    /* Change image sources */
+                    this.imgRight.src = this.spacerImage;
 
-					/* Cursor style */
-					this.imgRight.style.cursor = "default";
+                    /* Cursor style */
+                    this.imgRight.style.cursor = "default";
 
-					/* Resize frameset */
-					this.frameSet.cols = this.colValPrevious;
+                    /* Resize frameset */
+                    this.frameSet.cols = this.colValPrevious;
 
-					/* Set status to normal */
-					this.status = 'normal';
+                    /* Set status to normal */
+                    this.status = 'normal';
 
-					/* Resetting drag size */
-					this.dragSize = this.defaultSize;
-        } 
-				else if (this.status == 'dragged') 
-				{
-					/* Change image sources */
-					this.imgRight.src = this.spacerImage;
+                    /* Resetting drag size */
+                    this.dragSize = this.defaultSize;
+        }
+                else if (this.status == 'dragged')
+                {
+                    /* Change image sources */
+                    this.imgRight.src = this.spacerImage;
 
-					/* Cursor style */
-					this.imgRight.style.cursor = "default";
+                    /* Cursor style */
+                    this.imgRight.style.cursor = "default";
 
-					/* Resize frameset */
-					this.frameSet.cols = this.colValNormal;
+                    /* Resize frameset */
+                    this.frameSet.cols = this.colValNormal;
 
-					/* Set status to normal */
-					this.status = 'normal';
+                    /* Set status to normal */
+                    this.status = 'normal';
 
-					/* Resetting drag size */
-					this.size = this.defaultSize;
+                    /* Resetting drag size */
+                    this.size = this.defaultSize;
         }
     }
 }
@@ -158,7 +158,7 @@ conFrameResize.prototype.init = function()
     /* Create reference to other frames with this
        init method because of different load times */
     this.frameSet = document.getElementById(this.frameSetId);
-    
+
     /* Reference to the "show" image */
     this.imgRight = window.frames["right"][this.frameNames[3]].document.getElementById('toggleimage');
 
@@ -217,12 +217,12 @@ conFrameResize.prototype.dragTo = function(px)
 {
     this.size = px;
     this.status = 'dragged';
-    
+
     if (this.size < this.defaultSize)
     {   // Smallest size is default size
         this.size = this.defaultSize;
     }
-    
+
     this.frameSet.cols = this.size + this.colValDrag;
 }
 
@@ -249,7 +249,7 @@ conFrameResize.prototype.captureMousePosition = function()
             {
                 frameResize.dragTo(frameResize.dragDiff + frameResize.x);
             }
-            
+
             return true;
         }
 
@@ -281,10 +281,10 @@ conFrameResize.prototype.setDragEvents = function(id)
         this.dragObj.onmousedown = function()
         {
             this.style.cursor = 'move';
-            
+
             frameResize.drag = true;
             frameResize.dragPosX = frameResize.x;
-            frameResize.dragDiff = frameResize.size - frameResize.dragPosX;            
+            frameResize.dragDiff = frameResize.size - frameResize.dragPosX;
         }
 
         this.dragObj.onmouseup = function()
@@ -303,12 +303,12 @@ conFrameResize.prototype.setDragEvents = function(id)
     if (is.IE)
     {
         this.dragObj = window.frames[this.frameNames[1]].document.getElementById(id);
-        
+
         this.dragObj.onmouseover = function()
         {
             this.style.cursor = 'hand';
         }
-        
+
         this.dragObj.onclick = function()
         {
             frameResize.toggle();
@@ -332,12 +332,12 @@ conFrameResize.prototype.stopDrag = function()
  **/
 conFrameResize.prototype.totalHeight = function(elements)
  {
-	 var sum=0;
-	 for(var i=0; i<elements.length; i++)
-	 {
-		 sum += elements[i].offsetHeight;
-	 }
-	 return sum;
+     var sum=0;
+     for(var i=0; i<elements.length; i++)
+     {
+         sum += elements[i].offsetHeight;
+     }
+     return sum;
  }
 
 /**
@@ -346,7 +346,7 @@ conFrameResize.prototype.totalHeight = function(elements)
  **/
 conFrameResize.prototype.resizeTopLeftFrame = function(height)
  {
-	 var framesetDimension = window.frames['left'].document.getElementById('framesetleft').rows;
-	 var dimensionList = framesetDimension.split(',');
-	 window.frames['left'].document.getElementById('framesetleft').rows = dimensionList[0] + "," + height + "," + dimensionList[2];
+     var framesetDimension = window.frames['left'].document.getElementById('framesetleft').rows;
+     var dimensionList = framesetDimension.split(',');
+     window.frames['left'].document.getElementById('framesetleft').rows = dimensionList[0] + "," + height + "," + dimensionList[2];
  }

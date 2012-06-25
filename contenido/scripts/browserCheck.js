@@ -27,7 +27,7 @@ function browserCheck()
         this.version = parseInt(agent.appVersion);
         return;
     }
-    
+
 } // browserCheck
 
 is = new browserCheck();

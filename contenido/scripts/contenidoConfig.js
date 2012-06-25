@@ -51,19 +51,19 @@ function contenidoConfig( instanceName ,actionFrameName ) {
 
     /* Template ID */
     this.tplId = 0;
-    
+
     /* New template id */
     this.nTplId = null;
 
     /* Online flag */
     this.isOnline = 0;
-    
+
     /* Public flag */
     this.isPublic = 0;
-    
+
     /* Category ID */
     this.catId = 0;
-    
+
     /* idString */
     this.idString = 0;
 
@@ -90,14 +90,14 @@ contenidoConfig.prototype.init = function( imgOnlineId, imgPublicId, imgSelectId
         this.objRef[1].setId('online');
         this.objRef[2].setId('lock');
         this.objRef[3].setId('template_cfg');
-        
+
         // HARDCODED STUFF
         this.objRef[1].setImgSrc( 'images/online.gif', 'images/offline.gif' );
         this.objRef[2].setImgSrc( 'images/folder_delock.gif', 'images/folder_lock.gif');
         this.objRef[3].setImgSrc( 'images/but_cat_conf2.gif', 'images/but_cat_conf2.gif' );
         return true;
     }
-    
+
 } // end function
 
 /**
@@ -120,7 +120,7 @@ contenidoConfig.prototype.load = function( Idcat, Idtpl, Online, Public, RightTp
     this.hasRight['online']   = RightOn;
     this.hasRight['public']   = RightPublic;
     this.hasRight['syncable']   = RightIsSyncable;
-    
+
     this.updateScreen();
 
 } // end function
@@ -169,10 +169,10 @@ contenidoConfig.prototype.updateScreen = function() {
         /* On-/Offline */
         if ( 0 == this.isOnline && this.hasRight['online'] == 1 ) {
             this.objRef[1].over();
-            
+
         } else if ( 1 == this.isOnline && this.hasRight['online'] == 1 ) {
             this.objRef[1].out();
-            
+
         } else if ( 0 == this.hasRight['online'] ) {
             this.objRef[1].lock();
         }
@@ -183,9 +183,9 @@ contenidoConfig.prototype.updateScreen = function() {
         } else if ( 1 == this.isPublic && 1 == this.hasRight['public'] ) {
             this.objRef[2].out() ;
         } else {
-            this.objRef[2].lock();			
+            this.objRef[2].lock();
         }
-        
+
         /* Template Config button */
         if (this.hasRight['template_cfg'] == 1) {
             this.objRef[3].out();
@@ -194,7 +194,7 @@ contenidoConfig.prototype.updateScreen = function() {
         }
 
     } // end if this.status
-    
+
 } // end function
 
 /**
@@ -263,12 +263,12 @@ contenidoConfig.prototype.getRowId = function() {
     3 -> category public
     4 -> has right for: template
     5 -> has right for: online
-    6 -> has right for: public 
+    6 -> has right for: public
     7->   has right for template_cfg
     8->   category is syncable*/
-        
+
     var sRowId = "";
-    
+
     sRowId += this.catId    + "-";
     sRowId += this.tplId    + "-";
     sRowId += this.isOnline + "-";
@@ -293,7 +293,7 @@ contenidoConfig.prototype.reset = function() {
     this.tplId    = 0;
     this.isOnline = 0;
     this.isPublic = 0;
-    
+
     this.hasRight['template_cfg']   = 0;
     this.hasRight['template'] = 0;
     this.hasRight['online']   = 0;

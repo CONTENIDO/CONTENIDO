@@ -15,16 +15,16 @@
 
 /**
  * Function sets alt and title tag of a html image tag
- * 
+ *
  * @param object oImg - reference to corresponding image tag
  * @param string sName - labeltext to append
- * 
- */   
+ *
+ */
 function setImgAltTitle (oImg, sName) {
     if (!oImg.title) {
         oImg.title = sName;
     }
-    
+
     if (!oImg.alt) {
         oImg.alt = sName;
     }
@@ -32,15 +32,15 @@ function setImgAltTitle (oImg, sName) {
 
 /**
  * Function sets alt and title tag for all image tags in actual document
- * 
+ *
  * @param array aImageTitles - assocaiative array, which contains a label for image
                                                     aImageTitles['test.gif'] = 'This is a test'
- * 
- */  
+ *
+ */
 function setImageTags (aImageTitles) {
     //get all images
     var images = document.getElementsByTagName('img');
-  
+
     for (var i = 0; i < images.length; i++) {
         var sImgSrc = images[i].src;
         if (sImgSrc != '') {
@@ -51,10 +51,10 @@ function setImageTags (aImageTitles) {
             } else {
                 var sImgName = sImgSrc;
             }
-            
+
             //if there is a imagetitle for actual image, set it
             if (aImageTitles[sImgName]) {
-                setImgAltTitle(images[i], aImageTitles[sImgName]);   
+                setImgAltTitle(images[i], aImageTitles[sImgName]);
             }
         }
     }

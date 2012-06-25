@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Message box for errors and / or confirms
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend sripts
  * @version    1.0.4
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.7
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2003-05-08
  *   $Id$:
  * }}
@@ -278,7 +278,7 @@ messageBox.prototype.confirm = function(head, msg, callback) {
     template = template.replace(/{MESSAGE}/,    msg);
     template = template.replace(/{IMAGE}/,      button['warn']);
 
-	var sCallback = "";
+    var sCallback = "";
 
     actionFrame = null;
     if (top.content.frames["right"] && this.actionFrameName.match(/right/g)) {
@@ -289,16 +289,16 @@ messageBox.prototype.confirm = function(head, msg, callback) {
         actionFrame = 'top.content.frames["'+this.actionFrameName+'"]';
     }
 
-	/* Check if the callback functions are passed as array */
-	if (typeof(callback) == "object")
-	{
-		for (var i=0; i < callback.length; i++)
-		{
-			sCallback += actionFrame+"." + callback[i] + ";";
-		}
-	} else {
-		sCallback = actionFrame+"." + callback + ";";
-	}
+    /* Check if the callback functions are passed as array */
+    if (typeof(callback) == "object")
+    {
+        for (var i=0; i < callback.length; i++)
+        {
+            sCallback += actionFrame+"." + callback[i] + ";";
+        }
+    } else {
+        sCallback = actionFrame+"." + callback + ";";
+    }
 
     script = script.replace(/{CALLBACK}/,   sCallback);
     template = template.replace(/{CANCEL}/,     button['cancel']);
@@ -369,20 +369,20 @@ function performAction (area, action, frame, itemtype, itemid, sid)
     url += '&' + itemtype + '=' + itemid;
     url += '&contenido=' + sid;
 
-	if (frame == 1)
+    if (frame == 1)
     {
-		parent.parent.left.left_top.location.href = url;
+        parent.parent.left.left_top.location.href = url;
     }
-	if (frame == 2)
+    if (frame == 2)
     {
-		parent.parent.left.left_bottom.location.href = url;
+        parent.parent.left.left_bottom.location.href = url;
     }
-	if (frame == 3)
+    if (frame == 3)
     {
-		parent.parent.right.right_top.location.href = url;
+        parent.parent.right.right_top.location.href = url;
     }
-	if (frame == 4)
+    if (frame == 4)
     {
-		parent.parent.right.right_bottom.location.href = url;
+        parent.parent.right.right_bottom.location.href = url;
     }
 }

@@ -10,15 +10,15 @@ a {
     text-decoration: none;
 }
 .clearfix{
-	display:block;
+    display:block;
 }
 .clearfix:after{
-	content:".";
-	display:block;
-	clear: both;
-	height:0px;
-	visibility:hidden;
-	line-height: 0;
+    content:".";
+    display:block;
+    clear: both;
+    height:0px;
+    visibility:hidden;
+    line-height: 0;
 
 }
 html[xmlns] .clearfix {
@@ -27,8 +27,8 @@ html[xmlns] .clearfix {
 
 /* Button */
 .cms_linkeditor_img {
-	margin-right: 2px; 
-	margin-top: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
     /*position: absolute;*/
     z-index: 999;
 }
@@ -40,42 +40,42 @@ html[xmlns] .clearfix {
 }
 
 .cms_linkeditor {
-	padding: 3px;
-	position:absolute!important; 
-	width: 432px;	
-	height:auto;
-	background-color:#F1F1F1; 
-	border:1px solid #B3B3B3; 
-	display:none;
-	top: 40px;
-	left: 40px;	
-	z-index: 1000;
+    padding: 3px;
+    position:absolute!important;
+    width: 432px;
+    height:auto;
+    background-color:#F1F1F1;
+    border:1px solid #B3B3B3;
+    display:none;
+    top: 40px;
+    left: 40px;
+    z-index: 1000;
     margin: 0;
-	font-size:12px;
+    font-size:12px;
 }
 /* Editor close Button */
 .cms_linkeditor .close {
-	margin:0; 
-	float:right;
+    margin:0;
+    float:right;
 }
 
 .cms_linkeditor .toolbar {
     position: relative;
-	top:3px;
-    right: 0px;	
-	text-align: right;
-	width:100%; 
-	font-style:italic; 
-	margin:0; 	
-	clear:both;
-	height: 20px;
+    top:3px;
+    right: 0px;
+    text-align: right;
+    width:100%;
+    font-style:italic;
+    margin:0;
+    clear:both;
+    height: 20px;
 }
 /* Editor header */
 .cms_linkeditor .head {
-    font-weight:bold; 
-	margin:0; 
-	padding: 0;
-	margin-bottom: 5px;
+    font-weight:bold;
+    margin:0;
+    padding: 0;
+    margin-bottom: 5px;
     margin-top: 5px;
 }
 
@@ -140,7 +140,7 @@ html[xmlns] .clearfix {
 .cms_linkeditor div.attr input[name="externtitle"],
 .cms_linkeditor .cms_linkeditor_extern input[name="externlink"]{
     width: 82%;
-	margin-left: 0;
+    margin-left: 0;
 }
 .cms_linkeditor_intern .directoryList,
 .cms_linkeditor_intern .directoryFile,
@@ -153,28 +153,28 @@ html[xmlns] .clearfix {
     height: 170px;
     overflow: auto;
     width: 210px;
-	margin-top:10px;
+    margin-top:10px;
 }
 .cms_linkeditor_intern .directoryList,
 .cms_linkeditor_directories .directoryList{
     margin-right: 5px;
 }
 .directoryList ul {
-	margin: 0px;
-	padding: 0px;
-	list-style: none;
-	display: block;
-	background: #FFFFFF;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    display: block;
+    background: #FFFFFF;
 }
 
 .directoryList  ul li {
-	line-height: 20px;
-	display: block;
-	padding-left: 0px;
-	width: 100%;
-	float: left;
-	white-space: nowrap;
-	background-color: #FFFFFF;
+    line-height: 20px;
+    display: block;
+    padding-left: 0px;
+    width: 100%;
+    float: left;
+    white-space: nowrap;
+    background-color: #FFFFFF;
 }
 
 .directoryList ul li div {
@@ -183,7 +183,7 @@ html[xmlns] .clearfix {
     display: block;
     background: #FFF url("../images/dash.gif") no-repeat 16px 8px;
     white-space: nowrap;
-}    
+}
 .directoryList ul li li li div {
     background-position: 36px 8px;
 }
@@ -210,7 +210,7 @@ html[xmlns] .clearfix {
 }
 .directoryList ul li li li li li li li li li li li div {
     background-position: 196px 8px;
-}         
+}
 .directoryList ul li li li div {
     background-color: #FFF;
 }
@@ -242,70 +242,70 @@ html[xmlns] .clearfix {
     width: 200px;
 }
 .directoryList ul li div.active,
-.directoryList ul li#root li div.active a, 
-.directoryList ul li#root li div.active em a, 
+.directoryList ul li#root li div.active a,
+.directoryList ul li#root li div.active em a,
 .directoryList ul li#root li div.active em span {
-	background-color: #ECF1B2 !important;
+    background-color: #ECF1B2 !important;
 }
-.directoryList ul li div:focus ul, 
+.directoryList ul li div:focus ul,
 .directoryList ul lidiv:active ul {
-	background-color: #FFF;
+    background-color: #FFF;
 }
 .directoryList ul li div:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
-.directoryList ul li div:hover, 
-.directoryList ul li div:hover a, 
-.directoryList ul li#root li div:hover a, 
-.directoryList ul li#root li div:hover em a, 
-.directoryList ul li#root li div:hover em span, 
-.directoryList div.hover, .directoryList div.hover a, 
-.directoryList ul li#root li div.hover a, 
-.directoryList ul li#root li div.hover em a, 
+.directoryList ul li div:hover,
+.directoryList ul li div:hover a,
+.directoryList ul li#root li div:hover a,
+.directoryList ul li#root li div:hover em a,
+.directoryList ul li#root li div:hover em span,
+.directoryList div.hover, .directoryList div.hover a,
+.directoryList ul li#root li div.hover a,
+.directoryList ul li#root li div.hover em a,
 .directoryList ul li#root li div.hover em span {
-	background-color: #F8FDDC !important;
+    background-color: #F8FDDC !important;
 }
 .directoryList ul li div:hover ul {
-	background-color: #FFF;
+    background-color: #FFF;
 }
 
 .directoryList ul li a:hover{
-	background-color: #F8FDDC !important;
-	color: #0060B1 !important;
-	text-decoration: none;
+    background-color: #F8FDDC !important;
+    color: #0060B1 !important;
+    text-decoration: none;
 }
 
 .directoryList ul li li li {
-	margin-left: 0;
+    margin-left: 0;
 }
 
 .directoryList ul li a {
-	padding: 4px 5px 4px 20px;
+    padding: 4px 5px 4px 20px;
     width: auto;
     line-height: 20px;
     display: inline;
     background: #FFF;
-	color: #000000;
+    color: #000000;
 }
 .directoryList ul li#root em {
-	width: auto;
-	height: 20px;
-	display: block;
-	float: left;
-	padding-left: 20px;
+    width: auto;
+    height: 20px;
+    display: block;
+    float: left;
+    padding-left: 20px;
 }
 .directoryList ul li#root li em {
-	/*background: transparent url("../images/vert-neu.gif") no-repeat right top;*/
-	margin-right: 0px;
-	padding: 0 0 0 0;
-	width: 20px;
-	height: 20px;
-	display: block;
-	float: left;
+    /*background: transparent url("../images/vert-neu.gif") no-repeat right top;*/
+    margin-right: 0px;
+    padding: 0 0 0 0;
+    width: 20px;
+    height: 20px;
+    display: block;
+    float: left;
 }
 .directoryList ul li#root li.last ul em {
     background-position: -1000px 0px;
-	
+
 }
 .directoryList ul li#root li li.last ul em {
     background-position: -980px 0px;
@@ -336,23 +336,23 @@ html[xmlns] .clearfix {
 }
 .directoryList ul li#root li em a,
 .directoryList ul li#root li em span{
-	background: #FFF url("../images/but_minus.gif") no-repeat 0 0;
-	float: right;
-	width: 16px;
-	height: 20px;
-	padding: 0;
-	margin: 0 4px 0 0;
-	display: block;
+    background: #FFF url("../images/but_minus.gif") no-repeat 0 0;
+    float: right;
+    width: 16px;
+    height: 20px;
+    padding: 0;
+    margin: 0 4px 0 0;
+    display: block;
 }
 .directoryList ul li#root li.collapsed em a,
 .directoryList ul li#root li.collapsed em span {
-	background: #FFF url("../images/but_plus.gif") no-repeat 0 0;
+    background: #FFF url("../images/but_plus.gif") no-repeat 0 0;
 }
 .directoryList ul li#root li.last em a,
 .directoryList ul li#root li.last li.last em a,
 .directoryList ul li#root li.last em span,
 .directoryList ul li#root li.last li.last em span {
-	background: #FFF url("../images/but_lastnode.gif") no-repeat 0 0;
+    background: #FFF url("../images/but_lastnode.gif") no-repeat 0 0;
 }
 .directoryList ul li#root li.last li em a,
 .directoryList ul li#root li.collapsed li em a,
@@ -360,55 +360,55 @@ html[xmlns] .clearfix {
 .directoryList ul li#root li.last li em span,
 .directoryList ul li#root li.collapsed li em span,
 .directoryList ul li#root li.last li.collapsed li em span {
-	background: #FFF url("../images/but_minus.gif") no-repeat 0 0;
+    background: #FFF url("../images/but_minus.gif") no-repeat 0 0;
 }
 .directoryList ul li#root li.last li.collapsed em a,
 .directoryList ul li#root li.last.collapsed em a,
 .directoryList ul li#root li.last li.collapsed em span,
 .directoryList ul li#root li.last.collapsed em span {
-	background: #FFF url("../images/but_plus.gif") no-repeat 0 0;
+    background: #FFF url("../images/but_plus.gif") no-repeat 0 0;
 }
 .directoryList ul li#root li.last {
 
 }
 .directoryList ul li#root li.collapsed ul {
-	display: none;
+    display: none;
 }
 .directoryList ul li#root>div>a {
-	background: transparent url("../images/ordner_oben.gif") no-repeat 0px 2px;
+    background: transparent url("../images/ordner_oben.gif") no-repeat 0px 2px;
 }
 .directoryList ul li#root>div>em>a{
-	padding:0;
-	background:none;
+    padding:0;
+    background:none;
 }
 .directoryList ul li#root>div>em{
-	padding:0;
+    padding:0;
 }
 .directoryList ul li#root>div {
-	background: none;
+    background: none;
 }
 .directoryList ul li a {
-	background: #FFF url("../images/folder_on.gif") no-repeat 0px 2px;
+    background: #FFF url("../images/folder_on.gif") no-repeat 0px 2px;
 }
 .directoryList ul li a.on {
-	background-image: url("../images/folder_on.gif");
+    background-image: url("../images/folder_on.gif");
 }
 .directoryList ul li ul {
-	list-style: none;
-	display: block;
-	padding-left: 0px;
-	margin-left: 0px;
-	float: left;
-	clear: left;
-	width: 100%;
-	position: relative;
+    list-style: none;
+    display: block;
+    padding-left: 0px;
+    margin-left: 0px;
+    float: left;
+    clear: left;
+    width: 100%;
+    position: relative;
 }
 .directoryList ul li ul ul {
-	margin-left: 0px;
+    margin-left: 0px;
 }
 .cms_linkeditor .cms_linkeditor_intern,
 .cms_linkeditor .cms_linkeditor_upload{
-	display:none;
+    display:none;
 }
 
 .cms_linkeditor select.text_medium{
@@ -425,5 +425,5 @@ html[xmlns] .clearfix {
     top: 25%;
 }
 input.file {
-	width: 100%;
+    width: 100%;
 }

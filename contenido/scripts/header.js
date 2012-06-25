@@ -68,45 +68,45 @@ function hide(id)
  * @param    {Integer}  idlang
  */
 function changeContenidoLanguage(idlang) {
-	if (top.content.left) {
-		if (top.content.left.left_top) {
-			top.content.left.left_top.location.href = replaceQueryString(top.content.left.left_top.location.href, 'changelang', idlang);
-		}
+    if (top.content.left) {
+        if (top.content.left.left_top) {
+            top.content.left.left_top.location.href = replaceQueryString(top.content.left.left_top.location.href, 'changelang', idlang);
+        }
 
-		if (top.content.left.left_bottom) {
-			top.content.left.left_bottom.location.href = replaceQueryString(top.content.left.left_bottom.location.href, 'changelang', idlang);
-		}
-	}
+        if (top.content.left.left_bottom) {
+            top.content.left.left_bottom.location.href = replaceQueryString(top.content.left.left_bottom.location.href, 'changelang', idlang);
+        }
+    }
 
-	if (top.content.right) {
-		if (top.content.right.right_top) {
-			top.content.right.right_top.location.href = replaceQueryString(top.content.right.right_top.location.href, 'changelang', idlang);
-		}
+    if (top.content.right) {
+        if (top.content.right.right_top) {
+            top.content.right.right_top.location.href = replaceQueryString(top.content.right.right_top.location.href, 'changelang', idlang);
+        }
 
-		if (top.content.right.right_bottom) {
-			top.content.right.right_bottom.location.href = replaceQueryString(top.content.right.right_bottom.location.href, 'changelang', idlang);
-		}
-	}
+        if (top.content.right.right_bottom) {
+            top.content.right.right_bottom.location.href = replaceQueryString(top.content.right.right_bottom.location.href, 'changelang', idlang);
+        }
+    }
 
-	top.header.location.href = replaceQueryString(top.header.location.href, 'changelang', idlang);
+    top.header.location.href = replaceQueryString(top.header.location.href, 'changelang', idlang);
 }
 
 /**
  * Replaces or adds a variable in a URL.
  *
- * @param    {String}	url
- * @param    {String}	param
- * @param    {String}	value
+ * @param    {String}    url
+ * @param    {String}    param
+ * @param    {String}    value
  *
  * @returns  {String}
  */
 function replaceQueryString(url, param, value) {
-	var re = new RegExp("([?|&])" + param + "=.*?(&|$)", "i");
-	if (url.match(re)) {
-		return url.replace(re, '$1' + param + "=" + value + '$2');
-	} else {
-		return url + '&' + param + "=" + value;
-	}
+    var re = new RegExp("([?|&])" + param + "=.*?(&|$)", "i");
+    if (url.match(re)) {
+        return url.replace(re, '$1' + param + "=" + value + '$2');
+    } else {
+        return url + '&' + param + "=" + value;
+    }
 }
 
 /**

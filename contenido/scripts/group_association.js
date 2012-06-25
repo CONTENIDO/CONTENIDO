@@ -19,11 +19,11 @@ var addAction = ''; //CONTENIDO action for adding user to group - (different fpr
 var deleteAction = ''; //CONTENIDO action for removing user from group - (different fpr frontentgroups and backendgroups)
 
 /**
- * Initialization of previous defined variables 
- * 
+ * Initialization of previous defined variables
+ *
  * @param string add - adding user CONTENIDO action
  * @param string del - removing user CONTENIDO action
- * 
+ *
  */
 function init(add, del) {
     addAction = add;
@@ -32,14 +32,14 @@ function init(add, del) {
 
 /**
  * Function submits form when users were added to group or removed from group
- * 
+ *
  * @param string isAdded - CONTENIDO action string
- * 
+ *
  */
 function setAction(isAdded) {
     var selectId = null;
     //case of adding new members
-    if (isAdded == addAction) { 
+    if (isAdded == addAction) {
         selectId = 'newmember';
         document.group_properties.action.value = addAction;
     //case of removing existing members
@@ -57,38 +57,38 @@ function setAction(isAdded) {
 
 /**
  * Function filters entries in select box and shows only relevant users for selection
- * 
+ *
  * @param string id - id of textbox, which contains the search string
- * 
+ *
  */
 function filter (id) {
     //get search string ans buid regular expression
     var sFilterValue = document.getElementById(id).value;
     var oReg = new RegExp(sFilterValue,"gi");
-    
+
     //build id of corresponding select box
     var sSelectId = id.replace(/_filter_value/, '');
-    
+
     //get select box and corresponding options
     var sSelectBox = document.getElementById(sSelectId);
     var oOptions = sSelectBox.getElementsByTagName('option');
-   
+
     //remove all options
     var iLen = oOptions.length;
     for (var i=0; i <iLen; i++) {
         sSelectBox.removeChild(oOptions[0]);
     }
-    
+
     //get all options which where avariable in hidden select box
     var sSelectBoxAll = document.getElementById('all_'+sSelectId);
     var oOptionsAll = sSelectBoxAll.getElementsByTagName('option');
-    
+
     //iterate over all hidden options
     var count = 0;
     for (var i=0; i<oOptionsAll.length; i++) {
         //get the label of the option
         var label = oOptionsAll[i].firstChild.nodeValue;
-        
+
         //if option label matches to search string
         if (label.match(oReg)) {
             //generate new option element, fill it with the hidden values and append it to the select box which is viewable
@@ -100,20 +100,20 @@ function filter (id) {
             count++;
         }
     }
-    
+
     //if there are no options, deactivate corresponding move button
     if(count == 0) {
         document.getElementById(sSelectId+'_button').disabled = true;
     } else {
         document.getElementById(sSelectId+'_button').disabled = false;
-    }   
+    }
 }
 
 /**
  * Function is callend when user types into the filter inputs
- * 
+ *
  * @param string id - id of textbox, which contains the search string
- * 
+ *
  */
 function keyHandler(id)  {
     //if user pressed enter key into filter input, js function filter is called
@@ -124,9 +124,9 @@ function keyHandler(id)  {
 
 /**
  * Function is callend when user presses a key
- * 
+ *
  * @param object event - event object
- * 
+ *
  */
 function setKeyCode (event) {
     if (!event)

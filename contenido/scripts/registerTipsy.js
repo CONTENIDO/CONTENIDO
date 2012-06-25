@@ -2,7 +2,7 @@
 
 function registerTipsy()
 {
-	$(".tooltip").tipsy({gravity: $.fn.tipsy.autoWE, html: true });
+    $(".tooltip").tipsy({gravity: $.fn.tipsy.autoWE, html: true });
 }
 
 

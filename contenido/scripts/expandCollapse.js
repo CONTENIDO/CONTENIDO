@@ -1,5 +1,5 @@
 var bMsie = (document.all) ? true : false;
-    
+
 var sExpandString = '';
 var sCollapseString = '';
 var sCollapseButton = './images/close_all.gif';
@@ -8,10 +8,10 @@ var sExpandButton = './images/open_all.gif';
 function init(transOpen, transClose) {
     sCollapseString = transClose;
     sExpandString = transOpen;
-    
+
     var aStatrows = document.getElementsByTagName('tr');
     var sDisplay = '';
-    
+
     if (bMsie) {
         sDisplay = 'block';
     } else {
@@ -19,15 +19,15 @@ function init(transOpen, transClose) {
     }
     var preButton = null;
     var preAIds = null;
-    var level = 1;  
-    
+    var level = 1;
+
     for (var i = 0; i < aStatrows.length; i++) {
         if (aStatrows[i].id) {
             aStatrows[i].style.display = sDisplay;
-            
+
             var oButton = aStatrows[i].getElementsByTagName('img')[1];
             var aIds = aStatrows[i].id.split('_');
-       
+
             if (oButton && oButton.id == aStatrows[i].id+'_img') {
                 if (aIds.length > level ) {
                     preButton.src = sCollapseButton;
@@ -46,9 +46,9 @@ function init(transOpen, transClose) {
 function changeVisibility (sIdClicked, iLevel, iIdCat) {
     var sDisplay = '';
     var aIdsClicked = sIdClicked.split('_');
-    
+
     var oButton = document.getElementById (sIdClicked+'_img');
-    
+
     if (oButton.src.match(/open_all.gif/)) {
         oButton.src = sCollapseButton;
         oButton.title = sCollapseString;
@@ -64,7 +64,7 @@ function changeVisibility (sIdClicked, iLevel, iIdCat) {
         oButton.alt = sExpandString;
         sDisplay = 'none';
     }
-    
+
     var preButton = null;
     var level = iLevel;
     var aStatrows = document.getElementsByTagName('tr');
@@ -75,7 +75,7 @@ function changeVisibility (sIdClicked, iLevel, iIdCat) {
         if (aIds[iLevel] == iIdCat) {
             if (sDisplay == 'none' && aIds.length > aIdsClicked.length) {
                 aStatrows[i].style.display = sDisplay;
-                
+
                 var oButton = aStatrows[i].getElementsByTagName('img')[1];
                 if (oButton && oButton.id == aStatrows[i].id+'_img') {
                     if (aIds.length > level && preButton) {

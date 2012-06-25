@@ -1,6 +1,6 @@
 .alertbox_line{
    border: 1px solid;
-   width: 350px; 
+   width: 350px;
    border-color: #fea513;
    color: #fea513;
    font-family: Verdana, Arial, Helvetica, Sans-Serif;
@@ -10,9 +10,9 @@
 }
 
 .alertbox_head{
-    font-family: Verdana, Arial, Helvetica, Sans-Serif; 
+    font-family: Verdana, Arial, Helvetica, Sans-Serif;
     font-size: 11px;
-    line-height: 30px; 
+    line-height: 30px;
     font-weight: bold;
     border-bottom: 1px solid #fea513;
     padding-left: 40px;

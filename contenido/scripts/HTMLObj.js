@@ -67,8 +67,8 @@ HTMLObj.prototype.setMethods = function(type) {
                     this.status = "over";
                     /* If there is a corresponding label, show it */
                     if (document.getElementById(this.objId+'_label')) {
-				         document.getElementById(this.objId+'_label').style.display = 'block';
-            		  }
+                         document.getElementById(this.objId+'_label').style.display = 'block';
+                      }
                 }
             }
 
@@ -79,8 +79,8 @@ HTMLObj.prototype.setMethods = function(type) {
                     this.status = "out";
                     /* If there is a corresponding label, show it */
                     if (document.getElementById(this.objId+'_label')) {
-				         document.getElementById(this.objId+'_label').style.display = 'block';
-            		  }
+                         document.getElementById(this.objId+'_label').style.display = 'block';
+                      }
                 }
             }
 
@@ -103,8 +103,8 @@ HTMLObj.prototype.setMethods = function(type) {
                 this.obj.src = "images/spacer.gif";
                 /* If there is a corresponding label, hide it */
                 if (document.getElementById(this.objId+'_label')) {
-				      document.getElementById(this.objId+'_label').style.display = 'none';
-            	  }
+                      document.getElementById(this.objId+'_label').style.display = 'none';
+                  }
             }
 
             this.obj.onclick        = doAction;
@@ -170,7 +170,7 @@ HTMLObj.prototype.setMethods = function(type) {
  * @copyright four for business AG <www.4fb.de>
  */
 function showAction() {
-	alert("this is the JS function showAction() located in the file HTMLObj.js.php. This should not have been called as it is old style CONTENIDO")
+    alert("this is the JS function showAction() located in the file HTMLObj.js.php. This should not have been called as it is old style CONTENIDO")
 }
 
 /**
@@ -190,7 +190,7 @@ function doAction() {
         var str = this.previousSibling.firstChild.src;
     }
 
-		// Set Category Offline
+        // Set Category Offline
     if ( str.indexOf('online.gif') != -1 )
     {
         str  = "";
