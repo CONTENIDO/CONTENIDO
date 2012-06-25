@@ -36,6 +36,7 @@ global $cfg;
 
 $cfg['templates']['widgets']['left_top']  = 'widgets/template.widgets.left_top.html';
 
+$cfg['templates']['main_loginform']       = 'main.loginform.html';
 $cfg['templates']['frameset']             = 'frameset.html';
 $cfg['templates']['frameset_content']     = 'frameset_content.html';
 $cfg['templates']['frameset_menuless_content'] = 'frameset_menuless_content.html';

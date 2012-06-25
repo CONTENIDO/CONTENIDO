@@ -1748,6 +1748,7 @@ contenido/templates/standard/frameset_menuless_content.html -text
 contenido/templates/standard/generic_list.html -text
 contenido/templates/standard/header.html -text
 contenido/templates/standard/index.php -text
+contenido/templates/standard/main.loginform.html -text
 contenido/templates/standard/submenu.html -text
 contenido/templates/standard/template.admin_frontend.html -text
 contenido/templates/standard/template.backend_search_results.html -text

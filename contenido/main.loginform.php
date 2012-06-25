@@ -93,143 +93,69 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
     }
 }
 
-?>
-<html>
-<head>
-    <base href="<?php echo $cfg['path']['contenido_fullhtml'] ?>" />
-    <title>:: :: :: :: CONTENIDO Login</title>
-    <link rel="stylesheet" type="text/css" href="styles/contenido.css" />
-    <link rel="shortcut icon" href="<?php echo $cfg['path']['contenido_fullhtml'].'favicon.ico'; ?>" />
-    <script type="text/javascript" src="scripts/md5.js"></script>
-    <script type="text/javascript" src="scripts/str_overview.js"></script>
-    <script type="text/javascript">
-        if (top != self) {
-            top.location = "index.php";
+//Template erfüllen
+$tpl = new Template();
+$tpl->reset();
+
+$tpl->set('s', 'BASEPATH', $cfg['path']['contenido_fullhtml']);
+$tpl->set('s', 'TITEL', ':: :: :: :: CONTENIDO Login');
+$tpl->set('s', 'ACTION', $this->url());
+
+$aAvailableLangs = i18nGetAvailableLanguages();
+$str = '';
+foreach ($aAvailableLangs as $sCode => $aEntry) {
+    if (isset($cfg['login_languages'])) {
+        if (in_array($sCode, $cfg['login_languages'])) {
+            list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
+            if ($sSelectedLang) {
+                if ($sSelectedLang == $sCode) {
+                    $sSelected = ' selected="selected"';
+                } else {
+                    $sSelected = '';
+                }
+            } elseif ($sCode == $sEncoding) {
+                $sSelected = ' selected="selected"';
+            } else {
+                $sSelected = '';
+            }
+            $str.= '<option value="'.$sCode.'"'.$sSelected.'>'.$sLanguage.' ('.$sCountry.')</option>';
         }
-
-        function doChallengeResponse()
-        {
-            str = document.login.username.value + ":"
-                + MD5(document.login.password.value) + ":"
-                + document.login.challenge.value;
-            document.login.response.value = MD5(str);
-            document.login.password.value = "";
-            document.login.submit();
-        }
-    </script>
-    <style type="text/css">
-        #page {border-top:1px solid #0060b1;height:110px;overflow:hidden;}
-        #lblusername {width:75px; display:block; float:left;}
-        #lblpasswd {width:75px; display:block; float:left;}
-        #navcontainer {border-top:1px solid #666;}
-        .text_login_error {float:right; margin-right:25px;}
-        .style1 {background-color:#f1f1f1;height:80px;}
-    </style>
-</head>
-
-<body>
-
-<div id="page">
-    <div id="head">
-        <a id="head_logo" href="http://www.contenido.org"><img title="CONTENIDO Website." alt="CONTENIDO Website." src="images/conlogo.gif" /></a>
-
-        <div id="head_content" class="left_menu_dist">
-            <div id="head_info" class="left_dist">
-                &nbsp;
-            </div>
-            <form name="login" method="post" action="<?php echo $this->url() ?>">
-                <div id="head_nav1" class="left_dist head_nav_login">
-
-                    <select id="lang" name="belang" tabindex="3" class="text_medium" onchange="document.login.submit();">
-                        <?php
-
-                        $aAvailableLangs = i18nGetAvailableLanguages();
-
-                        foreach ($aAvailableLangs as $sCode => $aEntry) {
-                            if (isset($cfg['login_languages'])) {
-                                if (in_array($sCode, $cfg['login_languages'])) {
-                                    list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
-                                    if ($sSelectedLang) {
-                                        if ($sSelectedLang == $sCode) {
-                                            $sSelected = ' selected="selected"';
-                                        } else {
-                                            $sSelected = '';
-                                        }
-                                    } elseif ($sCode == $sEncoding) {
-                                        $sSelected = ' selected="selected"';
-                                    } else {
-                                        $sSelected = '';
-                                    }
-                                    echo '<option value="'.$sCode.'"'.$sSelected.'>'.$sLanguage.' ('.$sCountry.')</option>';
-                                }
-                            } else {
-                                list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
-                                if ($sSelectedLang) {
-                                    if ($sSelectedLang == $sCode) {
-                                        $sSelected = ' selected="selected"';
-                                    } else {
-                                        $sSelected = '';
-                                    }
-                                } elseif ($sCode == $sEncoding) {
-                                    $sSelected = ' selected="selected"';
-                                } else {
-                                    $sSelected = '';
-                                }
-                                echo '<option value="'.$sCode.'"'.$sSelected.'>'.$sLanguage.' ('.$sCountry.')</option>';
-                            }
-                        }
-                        ?>
-                    </select>
-                    <label id="lbllang" for="lang"><?php echo i18n('Language'); ?></label>
-
-                    <div class="text_medium_bold login_title"><?php echo i18n('CONTENIDO Backend'); ?></div>
-
-                    <label id="lblusername" for="username"><?php echo i18n('Login'); ?>:</label>
-                    <input id="username" tabindex="1" type="text" class="text_medium" name="username" size="25" maxlength="32" value="<?php echo (isset($this->auth["uname"])) ? htmlentities(strip_tags($this->auth["uname"])) : ""  ?>" />
-                </div>
-                <div id="head_nav2" class="head_nav_login left_dist">
-                    <input id="okbutton" tabindex="4" type="image" title="Login" alt="Login" src="images/but_ok.gif" />
-                    <div class="text_error text_login_error">
-                        <?php
-                            if (isset($username) && $username != '') {
-                                echo i18n('Invalid Login or Password!');
-                            }
-                         ?>
-                    </div>
-                    <div style="clear:both;display:none;"></div>
-                    <div class="text_medium_bold login_title">&nbsp;</div>
-
-                    <label id="lblpasswd" for="passwd"><?php echo i18n('Password'); ?>:</label>
-                    <input id="passwd" tabindex="2" type="password" class="text_medium" name="password" size="25" />
-
-                    <input type="hidden" name="vaction" value="login" />
-                    <input type="hidden" name="formtimestamp" value="<?php echo time(); ?>" />
-                </div>
-            </form>
-        </div>
-
-        <div id="navcontainer" style="clear:left;">
-        <?php
-            //class implements passwort recovery, all functionality is implemented there
-            $oRequestPassword = new RequestPassword($db, $cfg);
-            $oRequestPassword->renderForm();
-        ?>
-        </div>
-    </div>
-
-    <div class="style1"></div>
-    <div id="navcontainer"></div>
-</div>
-<div id="alertbox">
-    <?php echo $noti; ?>
-</div>
-
-<script type="text/javascript">
-    if (document.login.username.value == '') {
-        document.login.username.focus();
     } else {
-        document.login.password.focus();
+        list($sLanguage, $sCountry, $sCodeSet, $sAcceptTag) = $aEntry;
+        if ($sSelectedLang) {
+            if ($sSelectedLang == $sCode) {
+                $sSelected = ' selected="selected"';
+            } else {
+                $sSelected = '';
+            }
+        } elseif ($sCode == $sEncoding) {
+            $sSelected = ' selected="selected"';
+        } else {
+            $sSelected = '';
+        }
+        $str.= '<option value="'.$sCode.'"'.$sSelected.'>'.$sLanguage.' ('.$sCountry.')</option>';
     }
-</script>
-</body>
-</html>
+}
+$tpl->set('s', 'OPTIONS', $str);
+$tpl->set('s', 'LANGUAGE', i18n('Language'));
+$tpl->set('s', 'BACKEND', i18n('CONTENIDO Backend'));
+$tpl->set('s', 'LOGIN', i18n('Login'));
+$tpl->set('s', 'USERNAME', (isset($this->auth["uname"])) ? htmlentities(strip_tags($this->auth["uname"])) : "");
+
+if (isset($username) && $username != '') {
+	$err = i18n('Invalid Login or Password!');
+}
+$tpl->set('s', 'ERROR', $err);
+$tpl->set('s', 'PASSWORD', i18n('Password'));
+$tpl->set('s', 'TIME', time());
+
+//class implements passwort recovery, all functionality is implemented there
+$oRequestPassword = new RequestPassword($db, $cfg);
+$str = $oRequestPassword->renderForm(1);
+$tpl->set('s', 'FORM', $str);
+
+$tpl->set('s', 'NOTI', $noti);
+
+$tpl->generate($cfg['path']['templates'] . $cfg['templates']['main_loginform']);
+
+?>

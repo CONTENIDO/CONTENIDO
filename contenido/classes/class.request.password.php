@@ -210,8 +210,9 @@ class RequestPassword {
       * also starts the passwort change an sending process
       *
       * @access public
+      * @param  bool    $return    Return or print template
       */
-    function renderForm () {
+    function renderForm ($return = 0) {
         //if feature is not enabled, do nothing
         if (!$this->bIsEnabled) {
             return;
@@ -251,7 +252,11 @@ class RequestPassword {
         $this->oTpl->set('s', 'LABEL', i18n('Please enter your login').':');
 
         //if handleNewPassword() returns a message, display it
-        $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates'].$this->aCfg['templates']['request_password']);
+    	if ($return) {
+        	return $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates'].$this->aCfg['templates']['request_password'], 1);
+        } else {
+        	return $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates'].$this->aCfg['templates']['request_password']);
+        }
     }
 
     /**
