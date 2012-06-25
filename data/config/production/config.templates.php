@@ -53,7 +53,7 @@ $cfg['templates']['generic_form']         = 'template.generic_form.html';
 $cfg['templates']['generic_table_form']   = 'template.generic_table_form.html';
 $cfg['templates']['generic_page']         = 'template.generic_page.html';
 $cfg['templates']['generic_list_row']     = 'template.generic_list_row.html';
-$cfg['templates']['generic_list_head']     = 'template.generic_list_head.html';
+$cfg['templates']['generic_list_head']    = 'template.generic_list_head.html';
 $cfg['templates']['generic_list']         = 'template.generic_list.html';
 $cfg['templates']['input_helper_row']     = 'template.input_helper_row.html';
 $cfg['templates']['input_helper']         = 'template.input_helper.html';
@@ -64,7 +64,7 @@ $cfg['templates']['admin_frontend']       = 'template.admin_frontend.html';
 
 $cfg['templates']['con_edit_form']        = 'template.con_edit_form.html';
 $cfg['templates']['con_meta_edit_form']   = 'template.con_meta_edit_form.html';
-$cfg['templates']['con_meta_addnew']   	  = 'template.con_meta_addnew.html';
+$cfg['templates']['con_meta_addnew']      = 'template.con_meta_addnew.html';
 $cfg['templates']['con_editcontent']      = 'template.con_editcontent.html';
 $cfg['templates']['con_str_overview']     = 'template.con_str_overview.html';
 $cfg['templates']['con_art_overview']     = 'template.con_art_overview.html';
@@ -135,7 +135,7 @@ $cfg['templates']['system_variables']     = 'template.system_variables.html';
 $cfg['templates']['system_variables_block'] = 'template.system_variables_block.html';
 
 $cfg['templates']['request_password']     = 'template.request_password.html';
-$cfg['templates']['file_subnav']          = 'template.file_subnav.html'; 
+$cfg['templates']['file_subnav']          = 'template.file_subnav.html';
 $cfg['templates']['blank']                = 'template.blank.html';
 $cfg['templates']['system_purge']         = 'template.system_purge.html';
 
