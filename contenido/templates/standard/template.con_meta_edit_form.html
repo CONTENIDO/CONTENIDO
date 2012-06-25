@@ -5,27 +5,27 @@
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    
+
   <link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
     <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-    
+
     <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>
-   
+
    <!-- get javascript files for language != en -->
    {CAL_LANG}
-    
-    
+
+
     <script type="text/javascript" src="scripts/messageBox.js.php?contenido={SID}"></script>
-   
+
     <script type="text/javascript">
         var sid = "{SID}";
         box = new messageBox("", "", "", 0, 0);
     </script>
 </head>
 <body style="margin: 10px">
-	
+
 <p style="display:block;font-weight:bold;">{TITEL}</p>
 <div class="categorypath">{CATEGORY}</div>
 
@@ -47,7 +47,7 @@
         <td class="text_medium" style="border: 1px; border-right:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">i18n("Page title")</td>
         <td colspan="3" class="text_medium" style="border: 1px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF">{TITLE-INPUT}</td>
     </tr>
-	
+
     <!-- BEGIN:BLOCK -->
     <tr valign="top">
         <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">{METATITLE}</td>
@@ -59,10 +59,10 @@
         <td style="border: 1px; border-right: 0px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top">&nbsp;</td>
         <td colspan="3" style="border: 1px; border-top:0px; border-color: #B3B3B3; border-style: solid; background-color: #FFFFFF" class="text_medium" valign="top" align="right">{ADDMETABTN}</td>
     </tr>
-	
-	{ADDNEWMETA}
-	
-	<tr><td colspan="4" class="text_medium" align="right"><input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td></tr>
+
+    {ADDNEWMETA}
+
+    <tr><td colspan="4" class="text_medium" align="right"><input accesskey="s" type="image" {BUTTONDISABLE} src="images/{BUTTONIMAGE}"></td></tr>
 
     </table>
 
@@ -79,42 +79,42 @@
     }
 
     {DATAPUSH}
-	
-	$('span#addMeta').hover(function(){
-		$(this).css('cursor','pointer');
-	});
-	$('span#addMeta').click(function(){
-		$('tr[name=newMeta]').each(function(){
-			$(this).slideToggle();
-		});
-		
-	});
-	
-	function clearOnFocus(element, default_value) {
-		if(element.value==default_value) {
-			element.value = '';
-		}
-	}
-	
-	function restoreOnBlur(element, default_value) {
-		if(element.value=='') {
-			element.value = default_value;
-		}
-	}
-	
-	
-		
+
+    $('span#addMeta').hover(function(){
+        $(this).css('cursor','pointer');
+    });
+    $('span#addMeta').click(function(){
+        $('tr[name=newMeta]').each(function(){
+            $(this).slideToggle();
+        });
+
+    });
+
+    function clearOnFocus(element, default_value) {
+        if(element.value==default_value) {
+            element.value = '';
+        }
+    }
+
+    function restoreOnBlur(element, default_value) {
+        if(element.value=='') {
+            element.value = default_value;
+        }
+    }
+
+
+
 $(document).ready(function () {
-        	
-        	$('#METAdate').datetimepicker({
-        		buttonImage: '{PATH_TO_CALENDER_PIC}',
-      	        buttonImageOnly: true,
-      	        showOn: 'both',
-      	        dateFormat: 'yy-mm-dd',
-      	        disabled:{IS_DATETIMEPICKER_DISABLED},
-      	       
-        	});
-	});
+
+            $('#METAdate').datetimepicker({
+                buttonImage: '{PATH_TO_CALENDER_PIC}',
+                  buttonImageOnly: true,
+                  showOn: 'both',
+                  dateFormat: 'yy-mm-dd',
+                  disabled:{IS_DATETIMEPICKER_DISABLED},
+
+            });
+    });
 </script>
 </body>
 </html>

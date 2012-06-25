@@ -10,17 +10,17 @@
         parent.parent.frames["left"].frames["left_bottom"].location.reload();
     </script>
     <link rel="stylesheet" type="text/css" href="styles/contenido.css">
-    
+
     <link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
     <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
     <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
     <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-    
+
     <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>
-   
+
    <!-- get javascript files for language != en -->
    {CAL_LANG}
-   
+
     <style type="text/css">
     #contenido_notification {margin-bottom:5px;}
     table.content { border:0px; border-left:1px; border-bottom:1px; border-style:solid; }
@@ -28,52 +28,52 @@
     </style>
     <script type="text/javascript">
     $(document).ready(function () {
-    	
-    	$('#valid_from').datetimepicker({
-    		 buttonImage: '{PATH_TO_CALENDER_PIC}',
-  	        buttonImageOnly: true,
-  	        showOn: 'both',
-  	        dateFormat: 'yy-mm-dd',  
-    	    onClose: function(dateText, inst) {
-    	        var endDateTextBox = $('#valid_to');
-    	        if (endDateTextBox.val() != '') {
-    	            var testStartDate = new Date(dateText);
-    	            var testEndDate = new Date(endDateTextBox.val());
-    	            if (testStartDate > testEndDate)
-    	                endDateTextBox.val(dateText);
-    	        }
-    	        else {
-    	            endDateTextBox.val(dateText);
-    	        }
-    	    },
-    	    onSelect: function (selectedDateTime){
-    	        var start = $(this).datetimepicker('getDate');
-    	        $('#valid_to').datetimepicker('option', 'minDate', new Date(start.getTime()));
-    	    }
-    	});
-    	
-    	$('#valid_to').datetimepicker({
-    		 buttonImage: '{PATH_TO_CALENDER_PIC}',
-   	        buttonImageOnly: true,
-   	        showOn: 'both',
-   	        dateFormat: 'yy-mm-dd',
-    	    onClose: function(dateText, inst) {
-    	        var startDateTextBox = $('#valid_from');
-    	        if (startDateTextBox.val() != '') {
-    	            var testStartDate = new Date(startDateTextBox.val());
-    	            var testEndDate = new Date(dateText);
-    	            if (testStartDate > testEndDate)
-    	                startDateTextBox.val(dateText);
-    	        }
-    	        else {
-    	            startDateTextBox.val(dateText);
-    	        }
-    	    },
-    	    onSelect: function (selectedDateTime){
-    	        var end = $(this).datetimepicker('getDate');
-    	        $('#valid_from').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
-    	    }
-    	});
+
+        $('#valid_from').datetimepicker({
+             buttonImage: '{PATH_TO_CALENDER_PIC}',
+              buttonImageOnly: true,
+              showOn: 'both',
+              dateFormat: 'yy-mm-dd',
+            onClose: function(dateText, inst) {
+                var endDateTextBox = $('#valid_to');
+                if (endDateTextBox.val() != '') {
+                    var testStartDate = new Date(dateText);
+                    var testEndDate = new Date(endDateTextBox.val());
+                    if (testStartDate > testEndDate)
+                        endDateTextBox.val(dateText);
+                }
+                else {
+                    endDateTextBox.val(dateText);
+                }
+            },
+            onSelect: function (selectedDateTime){
+                var start = $(this).datetimepicker('getDate');
+                $('#valid_to').datetimepicker('option', 'minDate', new Date(start.getTime()));
+            }
+        });
+
+        $('#valid_to').datetimepicker({
+             buttonImage: '{PATH_TO_CALENDER_PIC}',
+               buttonImageOnly: true,
+               showOn: 'both',
+               dateFormat: 'yy-mm-dd',
+            onClose: function(dateText, inst) {
+                var startDateTextBox = $('#valid_from');
+                if (startDateTextBox.val() != '') {
+                    var testStartDate = new Date(startDateTextBox.val());
+                    var testEndDate = new Date(dateText);
+                    if (testStartDate > testEndDate)
+                        startDateTextBox.val(dateText);
+                }
+                else {
+                    startDateTextBox.val(dateText);
+                }
+            },
+            onSelect: function (selectedDateTime){
+                var end = $(this).datetimepicker('getDate');
+                $('#valid_from').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
+            }
+        });
     });
     </script>
 </head>
