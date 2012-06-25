@@ -1,17 +1,17 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Class for handling passwort recovery for backend users. If a user has set his e-mail address, this class
  * generates a new Password for user and submits to his e-mail adress. Submitting a new Password is
  * only possible every 30 minutes Mailsender, Mailsendername and Mailserver are set into system properties.
  * There it is also possible to deactivate this feature.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Classes
  * @version    1.1.0
@@ -21,20 +21,15 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since 2008-03-20
- * 
- * {@internal 
- *   created 2008-03-20
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2010-05-27, Oliver Lohkemper, check if user activ in handleNewPassword()
- *   modified 2011-02-26, Ortwin Pinke, added temporary pw request behaviour, so user may login with old and/or requested pw
  *
+ * {@internal
+ *   created 2008-03-20
  *   $Id$:
  * }}
- * 
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -252,10 +247,10 @@ class RequestPassword {
         $this->oTpl->set('s', 'LABEL', i18n('Please enter your login').':');
 
         //if handleNewPassword() returns a message, display it
-    	if ($return) {
-        	return $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates'].$this->aCfg['templates']['request_password'], 1);
+        if ($return) {
+            return $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates'].$this->aCfg['templates']['request_password'], 1);
         } else {
-        	return $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates'].$this->aCfg['templates']['request_password']);
+            return $this->oTpl->generate($this->aCfg['path']['contenido'].$this->aCfg['path']['templates'].$this->aCfg['templates']['request_password']);
         }
     }
 
@@ -272,12 +267,12 @@ class RequestPassword {
 
         //check if requested username exists, also get email and  timestamp when user last requests a new password (last_pw_request)
         $sSql = "SELECT username, last_pw_request, email FROM ".$this->aCfg["tab"]["phplib_auth_user_md5"]."
-			     WHERE username = '".$this->oDb->escape($this->sUsername)."'
-				 AND ( valid_from <= NOW() OR valid_from = '0000-00-00')
+                 WHERE username = '".$this->oDb->escape($this->sUsername)."'
+                 AND ( valid_from <= NOW() OR valid_from = '0000-00-00')
                  AND ( valid_to >= NOW() OR valid_to = '0000-00-00' )";
 
-    	$this->oDb->query($sSql);
-    	if ($this->oDb->next_record() && md5($this->sUsername) == md5($this->oDb->f('username'))) {
+        $this->oDb->query($sSql);
+        if ($this->oDb->next_record() && md5($this->sUsername) == md5($this->oDb->f('username'))) {
             //by default user is allowed to request new password
             $bIsAllowed = true;
             $sLast_pw_request = $this->oDb->f('last_pw_request');
@@ -333,7 +328,7 @@ class RequestPassword {
         $sSql = "UPDATE ".$this->aCfg["tab"]["phplib_auth_user_md5"]."
                          SET last_pw_request = '".date('Y-m-d H:i:s')."',
                              tmp_pw_request = '".md5($sPassword)."'
-			             WHERE username = '".$this->sUsername."'";
+                         WHERE username = '".$this->sUsername."'";
         $this->oDb->query($sSql);
 
         //call function submitMail(), which sends new password to user
@@ -384,16 +379,16 @@ class RequestPassword {
       */
     function generatePassword () {
        //possible chars which were used in password
-	   $sChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz123456789";
+       $sChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz123456789";
 
-		$sPw = "";
+        $sPw = "";
 
         //for each character of password choose one from $sChars randomly
-		for ($i = 0; $i < $this->iPassLength; $i++) {
-			$sPw.= $sChars[rand(0, strlen($sChars))];
-		}
+        for ($i = 0; $i < $this->iPassLength; $i++) {
+            $sPw.= $sChars[rand(0, strlen($sChars))];
+        }
 
-		return $sPw;
+        return $sPw;
     }
 }
 ?>

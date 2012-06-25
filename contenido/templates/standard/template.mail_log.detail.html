@@ -20,8 +20,8 @@
            instance */
         box = new messageBox("", "", "", 0, 0);
 
-        
-        
+
+
     </script>
 
 </head>
@@ -47,19 +47,19 @@
     <!-- BEGIN:BLOCK -->
     <tr id="{ROWID}" {CSS_CLASS} class="con_sync" style="background-color: {BGCOLOR};" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
        <td class="bordercell">{NAME} &nbsp;</td>
-		<td class="bordercell">{VALUE} &nbsp;</td>
+        <td class="bordercell">{VALUE} &nbsp;</td>
     </tr>
     <!-- END:BLOCK -->
-    
+
     <tr id="{ROWID}" {CSS_CLASS} class="con_sync" style="background-color: {BGCOLOR};" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
        <td class="bordercell">i18n('Action')</td>
-		<td class="bordercell">
-		&nbsp;
-			<a class="con_deleteart"  onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteEmails()');" > <img src="images/delete.gif" title='i18n("Delete email log")' alt='i18n("Delete email log")' border="0" ></a>
-			{RESEND_EMAIL_LINK}
-		</td>
+        <td class="bordercell">
+        &nbsp;
+            <a class="con_deleteart"  onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteEmails()');" > <img src="images/delete.gif" title='i18n("Delete email log")' alt='i18n("Delete email log")' border="0" ></a>
+            {RESEND_EMAIL_LINK}
+        </td>
     </tr>
-    
+
 </table>
 
 
@@ -69,19 +69,19 @@
 
 <script type="text/javascript">
 function deleteEmails() {
-	//set action
-	$('form.bulk_editing_form input[name="action"]').val('delete');
-	//send form
-	$('form.bulk_editing_form input[name="submit"]').click();
-	
+    //set action
+    $('form.bulk_editing_form input[name="action"]').val('delete');
+    //send form
+    $('form.bulk_editing_form input[name="submit"]').click();
+
 }
 
 function resendEmail() {
-	//set action
-	$('form.bulk_editing_form input[name="action"]').val('resend_email');
-	//send form
-	$('form.bulk_editing_form input[name="submit"]').click();
-	
+    //set action
+    $('form.bulk_editing_form input[name="action"]').val('resend_email');
+    //send form
+    $('form.bulk_editing_form input[name="submit"]').click();
+
 }
 </script>
 

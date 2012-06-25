@@ -11,37 +11,37 @@
                 <properties>Properties</properties>
                 <configuration>Configuration</configuration>
                 <preview>Preview</preview>
-				<meta>Meta</meta>
-				<content>Content</content>
+                <meta>Meta</meta>
+                <content>Content</content>
             </article>
             <structure>
-            	<main>Category</main>
-            	<overview>Overview</overview>
+                <main>Category</main>
+                <overview>Overview</overview>
             </structure>
             <upload>
-            	<main>File Manager</main>
-            	<overview>Overview</overview>
-            	<edit>Edit</edit>
-            	<fileupload>Upload Files</fileupload>
+                <main>File Manager</main>
+                <overview>Overview</overview>
+                <edit>Edit</edit>
+                <fileupload>Upload Files</fileupload>
             </upload>
         </content>
         <style>
             <main>Style</main>
             <layouts>
-            	<main>Layouts</main>
-            	<edit>Edit</edit>
-            	<preview>Preview</preview>
+                <main>Layouts</main>
+                <edit>Edit</edit>
+                <preview>Preview</preview>
                 <history>History</history>
             </layouts>
             <modules>
-            	<main>Modules</main>
-            	<edit>Edit</edit>
-            	<history>History</history>
-            	<translation>Translation</translation>
-            	<template>Template</template>
-            	<style>CSS</style>
-            	<script>Script</script>
-            	<import-export>Import/Export</import-export>
+                <main>Modules</main>
+                <edit>Edit</edit>
+                <history>History</history>
+                <translation>Translation</translation>
+                <template>Template</template>
+                <style>CSS</style>
+                <script>Script</script>
+                <import-export>Import/Export</import-export>
             </modules>
             <templates>
                 <main>Templates</main>
@@ -95,27 +95,27 @@
             <languages>Languages</languages>
             <plugins>Plugins</plugins>
             <clients>
-            	<main>Clients</main>
-            	<clientproperties>Properties</clientproperties>
-            	<clientartspec>Article specifications</clientartspec>
-            	<clientsettings>Client settings</clientsettings>
+                <main>Clients</main>
+                <clientproperties>Properties</clientproperties>
+                <clientartspec>Article specifications</clientartspec>
+                <clientsettings>Client settings</clientsettings>
             </clients>
             <logs>Logs</logs>
             <debug>Debug</debug>
             <system>
-            	<main>System</main>
-             	<syssettings>Expert settings</syssettings>
-            	<sysvalues>System variables</sysvalues>
+                <main>System</main>
+                 <syssettings>Expert settings</syssettings>
+                <sysvalues>System variables</sysvalues>
                 <configuration>System settings</configuration>
                 <purge>Purge</purge>
-            	<syserrorreport>Error report</syserrorreport>
+                <syserrorreport>Error report</syserrorreport>
             </system>
             <frontend>
-            	<main>Frontend</main>
+                <main>Frontend</main>
             </frontend>
-            
+
             <mail_log>E-Mail-Log
-            			
+
             </mail_log>
         </administration>
         <mycontenido>

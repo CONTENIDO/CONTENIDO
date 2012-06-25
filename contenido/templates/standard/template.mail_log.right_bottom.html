@@ -25,62 +25,62 @@
             var url = "main.php?area=con&action=con_deleteart&frame=4&idcat="+idcat+"&idart="+idart+"&next="+next+"&contenido="+sid;
             window.location.href = url;
         }
-        
+
     </script>
     <style>
-		.bulk_editing_functions a, a.flip_mark {
-				cursor:pointer;
-		}
-		
-		.bulk_editing_functions a img, a.flip_mark img {
-    		vertical-align:middle;
-			margin-right:3px;
-		}
-		
+        .bulk_editing_functions a, a.flip_mark {
+                cursor:pointer;
+        }
+
+        .bulk_editing_functions a img, a.flip_mark img {
+            vertical-align:middle;
+            margin-right:3px;
+        }
+
     </style>
 </head>
 <body style="margin:10px">
 
 <form action ="main.php" name="bulk_editing" class="bulk_editing_form" method="post">
 
-	<input type="hidden" name="area" value="mail_log"/>
-	<input type="hidden" name="action" value=""/>
-	<input type="hidden" name="frame" value="4"/>
-	<input type="hidden" name="contenido" value="{SID}"/>
-	<input type="hidden" name="idmails" value=""/>
-	<input type="hidden" name="mail_status" value="{MAIL_STATUS}"/>
-	<input type="hidden" name="mail_client" value="{MAIL_CLIENT}"/>
-	<input type="hidden" name="idmail" value="{IDMAIL}" />
-	<input type="submit" name="submit" value="senden" style="display:none;"/>
+    <input type="hidden" name="area" value="mail_log"/>
+    <input type="hidden" name="action" value=""/>
+    <input type="hidden" name="frame" value="4"/>
+    <input type="hidden" name="contenido" value="{SID}"/>
+    <input type="hidden" name="idmails" value=""/>
+    <input type="hidden" name="mail_status" value="{MAIL_STATUS}"/>
+    <input type="hidden" name="mail_client" value="{MAIL_CLIENT}"/>
+    <input type="hidden" name="idmail" value="{IDMAIL}" />
+    <input type="submit" name="submit" value="senden" style="display:none;"/>
 </form>
 
 
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
-  
-                   
+
+
        <tr valign="middle">
                     <td  style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; text-align:right; border-style: solid; background-color: #E2E2E2; " colspan="7">
                         <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle;  width:600px; text-align:left;">
-                            
+
                             <div class="bulk_editing_functions" style="float:left;height:16px; display:none;">
-                            	<span> i18n("Apply to all selected emails"):</span>
-                            	<a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteEmails()');" > <img src="images/delete.gif" title='i18n("Delete articles")' alt='i18n("Delete articles")' border="0" ></a>
-                            	<span style="padding-left:15px;">&nbsp;</span>
+                                <span> i18n("Apply to all selected emails"):</span>
+                                <a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteEmails()');" > <img src="images/delete.gif" title='i18n("Delete articles")' alt='i18n("Delete articles")' border="0" ></a>
+                                <span style="padding-left:15px;">&nbsp;</span>
                             </div>
                             <a  onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip Selection')" title="Markierung umkehren" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip Selection")</a>
-                           
-                            
+
+
                         </div>
 
-                       
+
 
                         <div style="clear:both;"></div>
                     </td>
                 </tr>
-                
+
       <tr height="10">
                         <td colspan="7"></td>
-                   </tr> 
+                   </tr>
 </table>
 
 <table class="bordered" width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -98,33 +98,33 @@
 
 
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
-  
+
              <tr height="10">
                         <td colspan="7"></td>
-                   </tr>         
+                   </tr>
        <tr valign="middle">
                     <td  style="border:1px; border-color: #B3B3B3; height:20px; line-height:20px; text-align:right; border-style: solid; background-color: #E2E2E2; " colspan="7">
                         <div style="float:left; heigth:20px; line-height:20px; vertical-align:middle;  width:600px; text-align:left;">
-                            
+
                             <div class="bulk_editing_functions" style="float:left;height:16px; display:none;">
-                            	<span> i18n("Apply to all selected emails"):</span>
-                            	<a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteEmails()');" > <img src="images/delete.gif" title='i18n("Delete articles")' alt='i18n("Delete articles")' border="0" ></a>
-                            	<span style="padding-left:15px;">&nbsp;</span>
+                                <span> i18n("Apply to all selected emails"):</span>
+                                <a class="con_deleteart" onclick="box.confirm('{DELETE_TITLE}', '{DELETE_TEXT}','deleteEmails()');" > <img src="images/delete.gif" title='i18n("Delete articles")' alt='i18n("Delete articles")' border="0" ></a>
+                                <span style="padding-left:15px;">&nbsp;</span>
                             </div>
                             <a  onmouseover="this.style.cursor='pointer'" class="flip_mark"><img onmouseover="this.style.cursor='pointer'" alt="i18n('Flip Selection')" title="Markierung umkehren" src="images/but_invert_selection.gif" style="margin-right:0px; vertical-align:middle;"> i18n("Flip Selection")</a>
-                           
-                            
+
+
                         </div>
 
-                       
+
 
                         <div style="clear:both;"></div>
                     </td>
                 </tr>
-                
+
       <tr height="10">
                         <td colspan="7"></td>
-                   </tr> 
+                   </tr>
 </table>
 
 
@@ -134,70 +134,70 @@
 <script type="text/javascript">
 
 $(document).ready(function () {
-	
-         //flip mark 
-    	$('a.flip_mark').click(function () {
-    	$('div.bulk_editing_functions').css('display', 'none');
-    	$('input.mark_emails').each(function (index, value){
-    		
-    		if( $(this).attr('checked') == "checked") {
-    			$(this).removeAttr('checked');
-    		}else {
-    			$('div.bulk_editing_functions').css('display', 'block');
-    			$(this).attr('checked', 'checked');
-    		}
-    		
-    	});
+
+         //flip mark
+        $('a.flip_mark').click(function () {
+        $('div.bulk_editing_functions').css('display', 'none');
+        $('input.mark_emails').each(function (index, value){
+
+            if( $(this).attr('checked') == "checked") {
+                $(this).removeAttr('checked');
+            }else {
+                $('div.bulk_editing_functions').css('display', 'block');
+                $(this).attr('checked', 'checked');
+            }
+
+        });
     });
-    
+
     //show mark function or hidde
     $('input.mark_emails').click(function () {
-    	
-    	$('div.bulk_editing_functions').css('display', 'none');
-    	if( $(this).attr('checked') == "checked") {
-    		$('div.bulk_editing_functions').css('display', 'block');	
-    	}else  {
-    	 	if($('input.mark_emails:checked').length > 0) {
-    			$('div.bulk_editing_functions').css('display', 'block');
-    		}
-    	}
-    	
+
+        $('div.bulk_editing_functions').css('display', 'none');
+        if( $(this).attr('checked') == "checked") {
+            $('div.bulk_editing_functions').css('display', 'block');
+        }else  {
+             if($('input.mark_emails:checked').length > 0) {
+                $('div.bulk_editing_functions').css('display', 'block');
+            }
+        }
+
     });
-    
-    
+
+
     $('a.get_info').click(function () {
-    
-   		var id = $(this).attr('id');
-   		;
-    	
-    	//set action
-    	$('form.bulk_editing_form input[name="action"]').val('detail');
-    	//set idmails
-    	$('form.bulk_editing_form input[name="idmail"]').val($('input.'+id).val());
-    	//send form
-   	 	$('form.bulk_editing_form input[name="submit"]').click();
-   	 	
-    	return false;
-    }); 
-    
+
+           var id = $(this).attr('id');
+           ;
+
+        //set action
+        $('form.bulk_editing_form input[name="action"]').val('detail');
+        //set idmails
+        $('form.bulk_editing_form input[name="idmail"]').val($('input.'+id).val());
+        //send form
+            $('form.bulk_editing_form input[name="submit"]').click();
+
+        return false;
+    });
+
 });
 function deleteEmails() {
-    	var idmails = '';
-    	$('input.mark_emails').each(function (index, value){
-    		
-    		if( $(this).attr('checked') == "checked") {
-    			idmails +='+'+$(this).val();
-    		}
-    		
-    	});
-    	
-    	//set action
-    	$('form.bulk_editing_form input[name="action"]').val('delete');
-    	//set idmails
-    	$('form.bulk_editing_form input[name="idmails"]').val(idmails);
-    	//send form
-   	 	$('form.bulk_editing_form input[name="submit"]').click();
-    	
+        var idmails = '';
+        $('input.mark_emails').each(function (index, value){
+
+            if( $(this).attr('checked') == "checked") {
+                idmails +='+'+$(this).val();
+            }
+
+        });
+
+        //set action
+        $('form.bulk_editing_form input[name="action"]').val('delete');
+        //set idmails
+        $('form.bulk_editing_form input[name="idmails"]').val(idmails);
+        //send form
+            $('form.bulk_editing_form input[name="submit"]').click();
+
     }
 </script>
 
