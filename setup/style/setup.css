@@ -1,11 +1,11 @@
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CSS styles for CONTENIDO setup.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * -/-
  *
  * @package    CONTENIDO setup
@@ -15,13 +15,13 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  YYYY-MM-DD
  *   modified 2011-10-27, Murat Purc, progress bar and progress output
  *   $Id
  * }}
- * 
+ *
  */
 
 body {
@@ -308,16 +308,16 @@ table.setupBodyOuterTableSystemData td.nav {
     text-align: right;
     vertical-align: bottom;
     white-space: nowrap;
-	
-	
+
+
 }
 
 table.setupBodyOuterTableSystemData td.nav a, td.back_next a {
-	width:16px;
-	height:16px;
-	margin-right:10px;
-	
-	
+    width:16px;
+    height:16px;
+    margin-right:10px;
+
+
 }
 
 /*Styles for plugin information layer and other elements in step five timo.trautmann*/

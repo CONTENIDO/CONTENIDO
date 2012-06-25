@@ -108,9 +108,9 @@ class cSetupSetupSummary extends cSetupMask
         if ($_SESSION['plugin_mod_rewrite'] == 'true') {
             $aPlugins[] = i18n('Mod Rewrite');
         }
-        
+
         if ($_SESSION['plugin_cronjob_overview'] == 'true') {
-        	$aPlugins[] = i18n('Cronjob Overview');
+            $aPlugins[] = i18n('Cronjob Overview');
         }
         return $aPlugins;
     }

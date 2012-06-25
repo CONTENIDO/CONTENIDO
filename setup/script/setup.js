@@ -1,11 +1,11 @@
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO setup script
- * 
- * Requirements: 
+ *
+ * Requirements:
  * -/-
  *
  * @package    CONTENIDO setup
@@ -16,12 +16,12 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since contenido release 4.9.0
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2011-01-11  Murat Purc, moved JS code from template to this new file
  *   $Id
  * }}
- * 
+ *
  */
 
 
