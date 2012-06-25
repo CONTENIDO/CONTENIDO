@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  *  Workflow allocation class
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Plugins
  * @subpackage Workflow
@@ -18,18 +18,18 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-07-18
  *   modified 2008-07-04, Dominik Ziegler, fixed bug CON-169
- *   
+ *
  *   $Id$
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -70,387 +70,387 @@ $_cecRegistry->addChainFunction("Contenido.Frontend.AllowEdit", "piworkflowAllow
 function prepareWorkflowItems ()
 {
 
-	global $action, $lang, $modidcat, $workflowSelectBox, $workflowworkflows, $client, $tpl, $cfg;
-	
-	$workflowworkflows = new Workflows;
+    global $action, $lang, $modidcat, $workflowSelectBox, $workflowworkflows, $client, $tpl, $cfg;
 
-	if ($action === 'workflow_inherit_down')
-	{
-		$tmp = strDeeperCategoriesArray($modidcat);
-		$asworkflow = getWorkflowForCat($modidcat);
-		
-		$wfa = new WorkflowAllocations;
-		
-		foreach ($tmp as $tmp_cat)
-		{
-			$idcatlang = getCatLang ($tmp_cat, $lang);
-			
-			if ($asworkflow == 0)
-			{
-				$wfa->select("idcatlang = '$idcatlang'");
-			
-				if ($item = $wfa->next())
-				{
-					$wfa->delete($item->get("idallocation"));
+    $workflowworkflows = new Workflows;
+
+    if ($action === 'workflow_inherit_down')
+    {
+        $tmp = strDeeperCategoriesArray($modidcat);
+        $asworkflow = getWorkflowForCat($modidcat);
+
+        $wfa = new WorkflowAllocations;
+
+        foreach ($tmp as $tmp_cat)
+        {
+            $idcatlang = getCatLang ($tmp_cat, $lang);
+
+            if ($asworkflow == 0)
+            {
+                $wfa->select("idcatlang = '$idcatlang'");
+
+                if ($item = $wfa->next())
+                {
+                    $wfa->delete($item->get("idallocation"));
                     # delete user sequences for listing in tasklist for each included article
                     $oArticles = new ArticleCollection(array('idcat' => $idcatlang, 'start' => true, 'offline' => true));
                     while ($oArticle = $oArticles->nextArticle()) {
-                       setUserSequence($oArticle->getField('idartlang'), -1); 
+                       setUserSequence($oArticle->getField('idartlang'), -1);
                     }
-				}
-			} else {
-				$wfa->select("idcatlang = '$idcatlang'");
-			
-				if ($item = $wfa->next())
-				{
-					$item->setWorkflow($asworkflow);
-					$item->store();
-				} else {
-					$wfa->create($asworkflow, $idcatlang);
+                }
+            } else {
+                $wfa->select("idcatlang = '$idcatlang'");
+
+                if ($item = $wfa->next())
+                {
+                    $item->setWorkflow($asworkflow);
+                    $item->store();
+                } else {
+                    $wfa->create($asworkflow, $idcatlang);
                     # generate user sequences for listing in tasklist for each included article
                     $oArticles = new ArticleCollection(array('idcat' => $tmp_cat, 'start' => true, 'offline' => true));
                     while ($oArticle = $oArticles->nextArticle()) {
-                       setUserSequence($oArticle->getField('idartlang'), $asworkflow); 
+                       setUserSequence($oArticle->getField('idartlang'), $asworkflow);
                     }
-				}
-			}			
-		}
-	}
-	if ($action == "workflow_cat_assign")
-	{
-		$seltpl = "wfselect".$modidcat;
-	
-		$wfa = new WorkflowAllocations;
-		$idcatlang = getCatLang($modidcat, $lang);
-		
+                }
+            }
+        }
+    }
+    if ($action == "workflow_cat_assign")
+    {
+        $seltpl = "wfselect".$modidcat;
+
+        $wfa = new WorkflowAllocations;
+        $idcatlang = getCatLang($modidcat, $lang);
+
         #associate workflow with category
-		if ($GLOBALS[$seltpl] != 0)
-		{
-			$wfa->select("idcatlang = '$idcatlang'");
-			if ($item = $wfa->next())
-			{
-				$item->setWorkflow($GLOBALS[$seltpl]);
-				$item->store();
-			} else {
-				$wfa->create($GLOBALS[$seltpl], $idcatlang);
-			}
-            
+        if ($GLOBALS[$seltpl] != 0)
+        {
+            $wfa->select("idcatlang = '$idcatlang'");
+            if ($item = $wfa->next())
+            {
+                $item->setWorkflow($GLOBALS[$seltpl]);
+                $item->store();
+            } else {
+                $wfa->create($GLOBALS[$seltpl], $idcatlang);
+            }
+
             # generate user sequences for listing in tasklist for each included article
             $oArticles = new ArticleCollection(array('idcat' => $modidcat, 'start' => true, 'offline' => true));
             while ($oArticle = $oArticles->nextArticle()) {
-               setUserSequence($oArticle->getField('idartlang'), $GLOBALS[$seltpl]); 
+               setUserSequence($oArticle->getField('idartlang'), $GLOBALS[$seltpl]);
             }
         #unlink workflow with category
-		} else {
-			$wfa->select("idcatlang = '$idcatlang'");
-			
-			if ($item = $wfa->next())
-			{
-				$alloc = $item->get("idallocation");
-			}
-			$wfa->delete($alloc);
-            
+        } else {
+            $wfa->select("idcatlang = '$idcatlang'");
+
+            if ($item = $wfa->next())
+            {
+                $alloc = $item->get("idallocation");
+            }
+            $wfa->delete($alloc);
+
             # delete user sequences for listing in tasklist for each included article
             $oArticles = new ArticleCollection(array('idcat' => $modidcat, 'start' => true, 'offline' => true));
             while ($oArticle = $oArticles->nextArticle()) {
-               setUserSequence($oArticle->getField('idartlang'), -1); 
+               setUserSequence($oArticle->getField('idartlang'), -1);
             }
-            
-		}
-	}
-	
-	$workflowSelectBox = new cHTMLSelectElement("foo");
-	$workflowSelectBox->setClass("text_medium");
-	$workflowworkflows->select("idclient = '$client' AND idlang = '".Contenido_Security::escapeDB($lang, null)."'");
-	
-	$workflowOption = new cHTMLOptionElement("--- ".i18n("None", "workflow")." ---", 0);
-	$workflowSelectBox->addOptionElement(0,$workflowOption);
-		
-	while ($workflow = $workflowworkflows->next())
-	{
-		$workflowOption = new cHTMLOptionElement($workflow->get("name"), $workflow->get("idworkflow"));
-		$workflowSelectBox->addOptionElement($workflow->get("idworkflow"),$workflowOption);
-	}	
-    
+
+        }
+    }
+
+    $workflowSelectBox = new cHTMLSelectElement("foo");
+    $workflowSelectBox->setClass("text_medium");
+    $workflowworkflows->select("idclient = '$client' AND idlang = '".Contenido_Security::escapeDB($lang, null)."'");
+
+    $workflowOption = new cHTMLOptionElement("--- ".i18n("None", "workflow")." ---", 0);
+    $workflowSelectBox->addOptionElement(0,$workflowOption);
+
+    while ($workflow = $workflowworkflows->next())
+    {
+        $workflowOption = new cHTMLOptionElement($workflow->get("name"), $workflow->get("idworkflow"));
+        $workflowSelectBox->addOptionElement($workflow->get("idworkflow"),$workflowOption);
+    }
+
     $workflowSelectBox->updateAttributes(array("id" => "wfselect{IDCAT}"));
-	$workflowSelectBox->updateAttributes(array("name" => "wfselect{IDCAT}"));
-    
+    $workflowSelectBox->updateAttributes(array("name" => "wfselect{IDCAT}"));
+
     $tpl->set('s', 'PLUGIN_WORKFLOW', $workflowSelectBox->render().'<a href="javascript:setWorkflow({IDCAT}, \\\'wfselect{IDCAT}\\\')"><img src="'.$cfg["path"]["images"].'submit.gif" class="spaced"></a>');
     $tpl->set('s', 'PLUGIN_WORKFLOW_TRANSLATION', i18n("Inherit workflow down", "workflow"));
 }
- 
+
 function piworkflowCategoryRenderColumn ($idcat, $type)
 {
 
-	switch ($type)
-	{
-		case "workflow":
+    switch ($type)
+    {
+        case "workflow":
             $value = workflowInherit($idcat).'<script type="text/javascript" id="wf'.$idcat.'">printWorkflowSelect('.$idcat.', '.(int)getWorkflowForCat($idcat).');</script>';
-			break;	
-	}
-	
-	return ($value);
+            break;
+    }
+
+    return ($value);
 }
 
 function piworkflowCategoryColumns ($array)
 {
-	prepareWorkflowItems();
-	$myarray = array("workflow" => i18n("Workflow", "workflow"));
-	
-	return ($myarray);	
+    prepareWorkflowItems();
+    $myarray = array("workflow" => i18n("Workflow", "workflow"));
+
+    return ($myarray);
 }
 
 function piworkflowProcessActions ($array)
 {
-	global $idcat;
-	$defaultidworkflow = getWorkflowForCat($idcat);
-	
-	if ($defaultidworkflow != 0)
-	{	
-		$narray = array("todo",
-						"wfartconf",
-						"wftplconf",
-						"wfonline",
-						"wflocked",
-						"duplicate",
-						"delete",
-						"usetime");
-	} else {
-		$narray = $array;	
-	}
-	
-	return ($narray);
+    global $idcat;
+    $defaultidworkflow = getWorkflowForCat($idcat);
+
+    if ($defaultidworkflow != 0)
+    {
+        $narray = array("todo",
+                        "wfartconf",
+                        "wftplconf",
+                        "wfonline",
+                        "wflocked",
+                        "duplicate",
+                        "delete",
+                        "usetime");
+    } else {
+        $narray = $array;
+    }
+
+    return ($narray);
 }
 
 function piworkflowRenderAction ($idcat, $idart, $idartlang, $type)
 {
-	global $area, $frame, $idtpl, $cfg, $alttitle, $tmp_articletitle;
-	global $tmp_artconf, $onlinelink, $lockedlink, $tplconf_link;
+    global $area, $frame, $idtpl, $cfg, $alttitle, $tmp_articletitle;
+    global $tmp_artconf, $onlinelink, $lockedlink, $tplconf_link;
 
-	$defaultidworkflow = getWorkflowForCat($idcat);
-	
-	$idusersequence = getCurrentUserSequence($idartlang,$defaultidworkflow);
-	$associatedUserSequence = new WorkflowUserSequence;
-	$associatedUserSequence->loadByPrimaryKey($idusersequence);
-	
-	$currentEditor = $associatedUserSequence->get("iduser");	
-	$workflowItem = $associatedUserSequence->getWorkflowItem();
-	
-	if (isCurrentEditor($associatedUserSequence->get("iduser")))
+    $defaultidworkflow = getWorkflowForCat($idcat);
+
+    $idusersequence = getCurrentUserSequence($idartlang,$defaultidworkflow);
+    $associatedUserSequence = new WorkflowUserSequence;
+    $associatedUserSequence->loadByPrimaryKey($idusersequence);
+
+    $currentEditor = $associatedUserSequence->get("iduser");
+    $workflowItem = $associatedUserSequence->getWorkflowItem();
+
+    if (isCurrentEditor($associatedUserSequence->get("iduser")))
     {
-    	/* Query rights for this user */
-    	$wfRights = $workflowItem->getStepRights();
-    	$mayEdit = true;
+        /* Query rights for this user */
+        $wfRights = $workflowItem->getStepRights();
+        $mayEdit = true;
     } else {
-    	$wfRights = "";
-    	$mayEdit = false;
+        $wfRights = "";
+        $mayEdit = false;
     }
-   
-	switch ($type)
-	{
-		case "wfartconf":
-			if ($wfRights["propertyedit"] == true)
-			{
-				return $tmp_artconf;
-			}
-			break;
-		case "wfonline":
-			if ($wfRights["publish"] == true)
-			{
-				return $onlinelink;
-			}
-			break;
-		case "wflocked":
-			if ($wfRights["lock"] == true)
-			{
-				return $lockedlink;	
-			}
-			break;
-		case "wftplconf":
-			if ($wfRights["templateedit"] == true)
-			{
-				return $tplconf_link;	
-			}
-		default:
-			break;	
-	}
-	
-	return "";
-} 
+
+    switch ($type)
+    {
+        case "wfartconf":
+            if ($wfRights["propertyedit"] == true)
+            {
+                return $tmp_artconf;
+            }
+            break;
+        case "wfonline":
+            if ($wfRights["publish"] == true)
+            {
+                return $onlinelink;
+            }
+            break;
+        case "wflocked":
+            if ($wfRights["lock"] == true)
+            {
+                return $lockedlink;
+            }
+            break;
+        case "wftplconf":
+            if ($wfRights["templateedit"] == true)
+            {
+                return $tplconf_link;
+            }
+        default:
+            break;
+    }
+
+    return "";
+}
 function piworkflowProcessArticleColumns ($array)
 {
-	global $idcat, $action, $modidartlang;
-	
-	if ($action == "workflow_do_action")
-	    {
-	    	$selectedAction = "wfselect".$modidartlang;
-	      doWorkflowAction($modidartlang, $GLOBALS[$selectedAction]);
-	    
-	    }	
-	
-	$defaultidworkflow = getWorkflowForCat($idcat);
-	
-	if ($defaultidworkflow != 0)
-	{
-		$narray = array();
-		$bInserted = false;
-		foreach ($array as $sKey => $sValue) {
-			$narray[$sKey] = $sValue;
-			if ($sKey == 'title' && !$bInserted) {
-				$narray["wftitle"] = $array["title"];
-				$narray["wfstep"] = i18n("Workflow Step", "workflow");
-				$narray["wfaction"] = i18n("Workflow Action", "workflow");
-				$narray["wfeditor"] = i18n("Workflow Editor", "workflow");
-				$narray["wflaststatus"] = i18n("Last status", "workflow");
-				$bInserted = true;
-			}
-		}		
+    global $idcat, $action, $modidartlang;
+
+    if ($action == "workflow_do_action")
+        {
+            $selectedAction = "wfselect".$modidartlang;
+          doWorkflowAction($modidartlang, $GLOBALS[$selectedAction]);
+
+        }
+
+    $defaultidworkflow = getWorkflowForCat($idcat);
+
+    if ($defaultidworkflow != 0)
+    {
+        $narray = array();
+        $bInserted = false;
+        foreach ($array as $sKey => $sValue) {
+            $narray[$sKey] = $sValue;
+            if ($sKey == 'title' && !$bInserted) {
+                $narray["wftitle"] = $array["title"];
+                $narray["wfstep"] = i18n("Workflow Step", "workflow");
+                $narray["wfaction"] = i18n("Workflow Action", "workflow");
+                $narray["wfeditor"] = i18n("Workflow Editor", "workflow");
+                $narray["wflaststatus"] = i18n("Last status", "workflow");
+                $bInserted = true;
+            }
+        }
         unset ($narray['title']);
-		unset ($narray['changeddate']);
-		unset ($narray['publisheddate']);
-		unset ($narray['sortorder']);
-	} else {
-		$narray = $array;	
-	}
-	
-	return ($narray);
+        unset ($narray['changeddate']);
+        unset ($narray['publisheddate']);
+        unset ($narray['sortorder']);
+    } else {
+        $narray = $array;
+    }
+
+    return ($narray);
 }
 
 function piworkflowAllowArticleEdit ($idlang, $idcat, $idart, $user)
 {
-	$defaultidworkflow = getWorkflowForCat($idcat);
-	
-	if ($defaultidworkflow == 0)
-	{
-		return true;
-	}
-	
-	$idartlang = getArtLang($idart, $idlang);
-	$idusersequence = getCurrentUserSequence($idartlang,$defaultidworkflow);
-	$associatedUserSequence = new WorkflowUserSequence;
-	$associatedUserSequence->loadByPrimaryKey($idusersequence);
-	
-	$currentEditor = $associatedUserSequence->get("iduser");
-	
-	$workflowItem = $associatedUserSequence->getWorkflowItem();
-	
-	if (isCurrentEditor($associatedUserSequence->get("iduser")))
+    $defaultidworkflow = getWorkflowForCat($idcat);
+
+    if ($defaultidworkflow == 0)
     {
-    	$wfRights = $workflowItem->getStepRights();
-    	$mayEdit = true;
-    } else {
-    	$wfRights = "";
-    	$mayEdit = false;
+        return true;
     }
-    
+
+    $idartlang = getArtLang($idart, $idlang);
+    $idusersequence = getCurrentUserSequence($idartlang,$defaultidworkflow);
+    $associatedUserSequence = new WorkflowUserSequence;
+    $associatedUserSequence->loadByPrimaryKey($idusersequence);
+
+    $currentEditor = $associatedUserSequence->get("iduser");
+
+    $workflowItem = $associatedUserSequence->getWorkflowItem();
+
+    if (isCurrentEditor($associatedUserSequence->get("iduser")))
+    {
+        $wfRights = $workflowItem->getStepRights();
+        $mayEdit = true;
+    } else {
+        $wfRights = "";
+        $mayEdit = false;
+    }
+
     if ($wfRights["articleedit"] == true)
     {
-    	return true;	
+        return true;
     } else {
-    	return false;	
+        return false;
     }
-    
+
 }
 function piworkflowRenderColumn ($idcat, $idart, $idartlang, $column)
 {
-	global $area, $frame, $idtpl, $cfg, $alttitle, $tmp_articletitle;
-	$defaultidworkflow = getWorkflowForCat($idcat);
-	 
-	$idusersequence = getCurrentUserSequence($idartlang,$defaultidworkflow);
-	$associatedUserSequence = new WorkflowUserSequence;
-	$associatedUserSequence->loadByPrimaryKey($idusersequence);
-	
-	$currentEditor = $associatedUserSequence->get("iduser");
-	
-	$workflowItem = $associatedUserSequence->getWorkflowItem();
-	
-	if (isCurrentEditor($associatedUserSequence->get("iduser")))
+    global $area, $frame, $idtpl, $cfg, $alttitle, $tmp_articletitle;
+    $defaultidworkflow = getWorkflowForCat($idcat);
+
+    $idusersequence = getCurrentUserSequence($idartlang,$defaultidworkflow);
+    $associatedUserSequence = new WorkflowUserSequence;
+    $associatedUserSequence->loadByPrimaryKey($idusersequence);
+
+    $currentEditor = $associatedUserSequence->get("iduser");
+
+    $workflowItem = $associatedUserSequence->getWorkflowItem();
+
+    if (isCurrentEditor($associatedUserSequence->get("iduser")))
     {
-    	$wfRights = $workflowItem->getStepRights();
-    	$mayEdit = true;
+        $wfRights = $workflowItem->getStepRights();
+        $mayEdit = true;
     } else {
-    	$wfRights = "";
-    	$mayEdit = false;
+        $wfRights = "";
+        $mayEdit = false;
     }
-      	
-	switch ($column)
-	{	
-		case "wftitle":
-			if ($wfRights["articleedit"] == true)
-			{
-				$mtitle = $tmp_articletitle;	
-			} else {
-				$mtitle = strip_tags($tmp_articletitle);	
-			}
-			return ($mtitle);
-		case "wfstep":
-			if ($workflowItem === false)
-			{
-				return "nobody";				
-			}
-			
-				return ($workflowItem->get("position").".) ".$workflowItem->get("name"));
-		case "wfeditor":
+
+    switch ($column)
+    {
+        case "wftitle":
+            if ($wfRights["articleedit"] == true)
+            {
+                $mtitle = $tmp_articletitle;
+            } else {
+                $mtitle = strip_tags($tmp_articletitle);
+            }
+            return ($mtitle);
+        case "wfstep":
+            if ($workflowItem === false)
+            {
+                return "nobody";
+            }
+
+                return ($workflowItem->get("position").".) ".$workflowItem->get("name"));
+        case "wfeditor":
                 $sEditor = getGroupOrUserName($currentEditor);
                 if (!$sEditor) {
                     $sEditor = "nobody";
                 }
                 return $sEditor;
         case "wfaction":
-			$defaultidworkflow = getWorkflowForCat($idcat);
-    		$idusersequence = getCurrentUserSequence($idartlang,$defaultidworkflow);
-                       
+            $defaultidworkflow = getWorkflowForCat($idcat);
+            $idusersequence = getCurrentUserSequence($idartlang,$defaultidworkflow);
+
             $sActionSelect = getActionSelect($idartlang, $idusersequence);
             if (!$sActionSelect) {
                 $mayEdit = false;
             }
-    
-			$form = new UI_Form("wfaction".$idartlang, "main.php", "get");
-			$form->setVar("area",$area);
-			$form->setVar("action","workflow_do_action");
-			$form->setVar("frame", $frame);
-			$form->setVar("idcat", $idcat);
-			$form->setVar("modidartlang", $idartlang);
-			$form->setVar("idtpl", $idtpl);
-			$form->add("select", '<table cellspacing="0" border="0"><tr><td>'.$sActionSelect.'</td><td>');
-			$form->add("button", '<input type="image" src="'.$cfg["path"]["htmlpath"].$cfg["path"]["images"]."submit.gif".'"></tr></table>');
-			
-			if ($mayEdit == true)
-			{        	
-				return ($form->render(true));
-			} else {
-				return '--- ' . i18n("None") . ' ---';
-			}
-            
-		case "wflaststatus":
+
+            $form = new UI_Form("wfaction".$idartlang, "main.php", "get");
+            $form->setVar("area",$area);
+            $form->setVar("action","workflow_do_action");
+            $form->setVar("frame", $frame);
+            $form->setVar("idcat", $idcat);
+            $form->setVar("modidartlang", $idartlang);
+            $form->setVar("idtpl", $idtpl);
+            $form->add("select", '<table cellspacing="0" border="0"><tr><td>'.$sActionSelect.'</td><td>');
+            $form->add("button", '<input type="image" src="'.$cfg["path"]["htmlpath"].$cfg["path"]["images"]."submit.gif".'"></tr></table>');
+
+            if ($mayEdit == true)
+            {
+                return ($form->render(true));
+            } else {
+                return '--- ' . i18n("None") . ' ---';
+            }
+
+        case "wflaststatus":
             $sStatus = getLastWorkflowStatus($idartlang);
             if (!$sStatus) {
                 $sStatus = '--- ' . i18n("None") . ' ---';
             }
-			return $sStatus;
+            return $sStatus;
 
-	}	
+    }
 }
 
 function piworkflowCreateTasksFolder ()
 {
-	global $sess, $cfg;
-	
-	$item = array();
-	/* Create workflow tasks folder */
-	$tmp_mstr = '<a href="javascript://" onclick="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
-	
-	$mstr = sprintf($tmp_mstr, 'right_bottom',
-	                           $sess->url("main.php?area=con_workflow&frame=4"),
-	                           'right_top',
-	                           $sess->url("main.php?area=con_workflow&frame=3"),
-	                           'Workflow / Todo');
-	
-	$item["image"] = '<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["plugins"].'workflow/images/workflow_erstellen.gif">';
-	$item["title"] = $mstr;
-	
-	
-	return ($item);
+    global $sess, $cfg;
+
+    $item = array();
+    /* Create workflow tasks folder */
+    $tmp_mstr = '<a href="javascript://" onclick="javascript:conMultiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+
+    $mstr = sprintf($tmp_mstr, 'right_bottom',
+                               $sess->url("main.php?area=con_workflow&frame=4"),
+                               'right_top',
+                               $sess->url("main.php?area=con_workflow&frame=3"),
+                               'Workflow / Todo');
+
+    $item["image"] = '<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg["path"]["plugins"].'workflow/images/workflow_erstellen.gif">';
+    $item["title"] = $mstr;
+
+
+    return ($item);
 }
 
 

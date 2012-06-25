@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Workflow items
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Plugins
  * @subpackage Workflow
@@ -18,15 +18,15 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-07-18
  *   $Id$
  * }}
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -40,18 +40,18 @@ if (!defined('CON_FRAMEWORK')) {
  * @copyright four for business 2003
  */
 class WorkflowItems extends ItemCollection {
-	
-	/**
+
+    /**
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function __construct()
-	{
-		global $cfg;
-		parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
+    function __construct()
+    {
+        global $cfg;
+        parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
         $this->_setItemClass("WorkflowItem");
-	}
-	
+    }
+
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     function WorkflowItems()
     {
@@ -59,22 +59,22 @@ class WorkflowItems extends ItemCollection {
         $this->__construct();
     }
 
-	function delete ($id)
-	{
+    function delete ($id)
+    {
         global $cfg;
-		$item = new WorkflowItem;
-		$item->loadByPrimaryKey($id);
-		$pos = $item->get("position");
-		$idworkflow = $item->get("idworkflow");
-		$oDb = new DB_Contenido();
-		
-		$this->select("position > $pos AND idworkflow = '".Contenido_Security::escapeDB($idworkflow, $oDb)."'");
-		while ($obj = $this->next())
-		{
-			$obj->setPosition($obj->get("position")-1);
-			$obj->store();
-		}
-        
+        $item = new WorkflowItem;
+        $item->loadByPrimaryKey($id);
+        $pos = $item->get("position");
+        $idworkflow = $item->get("idworkflow");
+        $oDb = new DB_Contenido();
+
+        $this->select("position > $pos AND idworkflow = '".Contenido_Security::escapeDB($idworkflow, $oDb)."'");
+        while ($obj = $this->next())
+        {
+            $obj->setPosition($obj->get("position")-1);
+            $obj->store();
+        }
+
         $aUserSequencesDelete = array();
         $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem = '.$id.';';
         $oDb->query($sSql);
@@ -86,17 +86,17 @@ class WorkflowItems extends ItemCollection {
         $oDb->query($sSql);
 
         $this->updateArtAllocation($id, 1);
-        
+
         if (count($aUserSequencesDelete) > 0) {
             $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idusersequence in ('.implode(',', $aUserSequencesDelete).');';
             $oDb->query($sSql);
         }
-	}
-    
+    }
+
     function updateArtAllocation ($idworkflowitem, $delete = false) {
         global $idworkflow, $cfg;
         $oDb = new DB_Contenido();
-        
+
         $aUserSequences = array();
         $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem = '.Contenido_Security::escapeDB($idworkflowitem, $oDb).';';
 
@@ -104,7 +104,7 @@ class WorkflowItems extends ItemCollection {
         while ($oDb->next_record()) {
             array_push($aUserSequences, Contenido_Security::escapeDB($oDb->f('idusersequence'), $oDb));
         }
-        
+
         $aIdArtLang = array();
         if (count($aUserSequences) > 0) {
             $sSql = 'SELECT idartlang FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence in ('.implode(',', $aUserSequences).');';
@@ -115,87 +115,87 @@ class WorkflowItems extends ItemCollection {
             $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence in ('.implode(',', $aUserSequences).');';
             $oDb->query($sSql);
         }
-        
+
         if ($delete) {
             parent::delete($idworkflowitem);
         }
-        
+
         foreach ($aIdArtLang as $iIdArtLang) {
             setUserSequence($iIdArtLang, $idworkflow);
-        } 
+        }
     }
-	
-	
-	function swap ($idworkflow, $pos1, $pos2)
-	{
-		$this->select("idworkflow = '$idworkflow' AND position = '$pos1'");
-		if (($item = $this->next()) === false)
-		{
-			$this->lasterror = i18n("Swapping items failed: Item doesn't exist", "workflow");
-			return false;
-		}
-		
-		$pos1ID = $item->getField("idworkflowitem");
 
-		$this->select("idworkflow = '$idworkflow' AND position = '$pos2'");
-		if (($item = $this->next()) === false)
-		{
-			$this->lasterror = i18n("Swapping items failed: Item doesn't exist", "workflow");
-			return false;
-		}
-		
-		$pos2ID = $item->getField("idworkflowitem");
-				
-		$item = new WorkflowItem();
-		$item->loadByPrimaryKey($pos1ID);
-		$item->setPosition($pos2);
-		$item->store();
-		$item->loadByPrimaryKey($pos2ID);
-		$item->setPosition($pos1);
-		$item->store();
-        
+
+    function swap ($idworkflow, $pos1, $pos2)
+    {
+        $this->select("idworkflow = '$idworkflow' AND position = '$pos1'");
+        if (($item = $this->next()) === false)
+        {
+            $this->lasterror = i18n("Swapping items failed: Item doesn't exist", "workflow");
+            return false;
+        }
+
+        $pos1ID = $item->getField("idworkflowitem");
+
+        $this->select("idworkflow = '$idworkflow' AND position = '$pos2'");
+        if (($item = $this->next()) === false)
+        {
+            $this->lasterror = i18n("Swapping items failed: Item doesn't exist", "workflow");
+            return false;
+        }
+
+        $pos2ID = $item->getField("idworkflowitem");
+
+        $item = new WorkflowItem();
+        $item->loadByPrimaryKey($pos1ID);
+        $item->setPosition($pos2);
+        $item->store();
+        $item->loadByPrimaryKey($pos2ID);
+        $item->setPosition($pos1);
+        $item->store();
+
         $this->updateArtAllocation($pos1ID);
         $this->updateArtAllocation($pos2ID);
-		return (true);
-	}
-	
-	function create ($idworkflow)
-	{
-		$workflows = new Workflows;
-		
-		$workflows->select("idworkflow = '$idworkflow'");
+        return (true);
+    }
 
-		if ($workflows->next() === false)
-		{
-			$this->lasterror = i18n("Can't add item to workflow: Workflow doesn't exist", "workflow");
-			return false;
-		}
-				
-		$this->select("idworkflow = '$idworkflow'","","position DESC","1");
-		
-		$item = $this->next();
-		
-		if ($item === false)
-		{
-			$lastPos = 1;
-		} else {
-			$lastPos = $item->getField("position") + 1;
-		}
-		
-		$newItem = parent::createNewItem();
-		if ($newItem->init($idworkflow, $lastPos) === false)
-		{
-			$this->delete($newItem->getField("idworkflowitem"));
-			$this->lasterror = $newItem->lasterror;
-			return false;
-		}
-        
+    function create ($idworkflow)
+    {
+        $workflows = new Workflows;
+
+        $workflows->select("idworkflow = '$idworkflow'");
+
+        if ($workflows->next() === false)
+        {
+            $this->lasterror = i18n("Can't add item to workflow: Workflow doesn't exist", "workflow");
+            return false;
+        }
+
+        $this->select("idworkflow = '$idworkflow'","","position DESC","1");
+
+        $item = $this->next();
+
+        if ($item === false)
+        {
+            $lastPos = 1;
+        } else {
+            $lastPos = $item->getField("position") + 1;
+        }
+
+        $newItem = parent::createNewItem();
+        if ($newItem->init($idworkflow, $lastPos) === false)
+        {
+            $this->delete($newItem->getField("idworkflowitem"));
+            $this->lasterror = $newItem->lasterror;
+            return false;
+        }
+
         if ($item === false) {
             $this->updateArtAllocation(0);
         }
-		
-		return ($newItem);
-	}
+
+        return ($newItem);
+    }
 }
 
 /**
@@ -208,17 +208,17 @@ class WorkflowItems extends ItemCollection {
  * @copyright four for business 2003
  */
 class WorkflowItem extends Item {
-	
-	/**
+
+    /**
      * Constructor Function
      * @param string $table The table to use as information source
      */
-	function __construct()
-	{
-		global $cfg;
-		
-		parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
-	}
+    function __construct()
+    {
+        global $cfg;
+
+        parent::__construct($cfg["tab"]["workflow_items"], "idworkflowitem");
+    }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     function WorkflowItem()
@@ -227,106 +227,106 @@ class WorkflowItem extends Item {
         $this->__construct();
     }
 
-	function getStepRights ()
-	{
-		$idwfi = $this->values["idworkflowitem"];
-		$workflowActions = new WorkflowActions;
-		
-		$actions = WorkflowActions::getAvailableWorkflowActions();
-		
-		foreach ($actions as $key => $value)
-		{
-			$rights[$key] = $workflowActions->get($idwfi, $key);
-		}
-		
-		return $rights;
-	}
+    function getStepRights ()
+    {
+        $idwfi = $this->values["idworkflowitem"];
+        $workflowActions = new WorkflowActions;
 
-	/**
+        $actions = WorkflowActions::getAvailableWorkflowActions();
+
+        foreach ($actions as $key => $value)
+        {
+            $rights[$key] = $workflowActions->get($idwfi, $key);
+        }
+
+        return $rights;
+    }
+
+    /**
      * Overridden setField function.
      * @param string $field Void field since we override the usual setField function
      * @param string $value Void field since we override the usual setField function
-     */	
-	function setField($field, $value)
-	{
-		if ($this->virgin == true)
-		{
-			$this->lasterror = i18n("No item loaded", "workflow");
-			return false;
-		}
-		
-		if ($field == "idsequence")
-		{
-			die("You can't set the idsequence field using this method. Use 'create' in the WorkflowItems class.");
-		}
-		
-		if ($field == "idworkflow")
-		{
-			die("You can't set the workflow ID using this method. Use 'create' in the WorkflowItems class!");
-		}
-		
-		if ($field == "position")
-		{
-			die("You can't set the position ID using this method. Use 'create' or 'swap' to create or move items!");
-		}
-		
-		if ($field == "idtask" && $value != 0)
-		{
-			$taskCollection = new WorkflowTasks;
-			$taskCollection->select("idtask = '$value'");
-			if ($taskCollection->next() === false)
-			{
-				$this->lasterror = i18n("Requested task doesn't exist, can't assign", "workflow");
-				return false;
-			}
-		}
+     */
+    function setField($field, $value)
+    {
+        if ($this->virgin == true)
+        {
+            $this->lasterror = i18n("No item loaded", "workflow");
+            return false;
+        }
 
-		parent::setField($field, $value);
-	}
-	
-	/**
+        if ($field == "idsequence")
+        {
+            die("You can't set the idsequence field using this method. Use 'create' in the WorkflowItems class.");
+        }
+
+        if ($field == "idworkflow")
+        {
+            die("You can't set the workflow ID using this method. Use 'create' in the WorkflowItems class!");
+        }
+
+        if ($field == "position")
+        {
+            die("You can't set the position ID using this method. Use 'create' or 'swap' to create or move items!");
+        }
+
+        if ($field == "idtask" && $value != 0)
+        {
+            $taskCollection = new WorkflowTasks;
+            $taskCollection->select("idtask = '$value'");
+            if ($taskCollection->next() === false)
+            {
+                $this->lasterror = i18n("Requested task doesn't exist, can't assign", "workflow");
+                return false;
+            }
+        }
+
+        parent::setField($field, $value);
+    }
+
+    /**
      * init initializes a new wf_items entry. Should
-	 * only be called by the create function.
+     * only be called by the create function.
      * @param int $idworkflow The workflow to set the item to
-     */	
-	function init ($idworkflow, $idposition)
-	{
-		global $cfg;
-		
-		$workflows = new Workflows;
-		
-		$workflows->select("idworkflow = '$idworkflow'");
-		
-		if ($workflows->next() === false)
-		{
-			$this->lasterror = i18n("Workflow doesn't exist", "workflow");
-			return false;
-		}
-		
-		$workflowItems = new WorkflowItems;
-		$workflowItems->select("position = '$idposition' AND idworkflow = '$idworkflow'");
-		if ($workflowItems->next())
-		{
-			$this->lasterror = i18n("Position in this workflow already exists.", "workflow");
-			return false;
-		}
-		
-		parent::setField("idworkflow", $idworkflow);
-		parent::setField("position", $idposition);
-		parent::store();
-		return true;
-	}	
+     */
+    function init ($idworkflow, $idposition)
+    {
+        global $cfg;
 
-	/**
-     * setPosition Sets the position for an item. Should only be 
-	 * called by the "swap" function
+        $workflows = new Workflows;
+
+        $workflows->select("idworkflow = '$idworkflow'");
+
+        if ($workflows->next() === false)
+        {
+            $this->lasterror = i18n("Workflow doesn't exist", "workflow");
+            return false;
+        }
+
+        $workflowItems = new WorkflowItems;
+        $workflowItems->select("position = '$idposition' AND idworkflow = '$idworkflow'");
+        if ($workflowItems->next())
+        {
+            $this->lasterror = i18n("Position in this workflow already exists.", "workflow");
+            return false;
+        }
+
+        parent::setField("idworkflow", $idworkflow);
+        parent::setField("position", $idposition);
+        parent::store();
+        return true;
+    }
+
+    /**
+     * setPosition Sets the position for an item. Should only be
+     * called by the "swap" function
      * @param int $idposition The new position ID
-     */	
-	function setPosition ($idposition)
-	{
-		parent::setField("position", $idposition);
-		parent::store();
-		return true;
-	}
+     */
+    function setPosition ($idposition)
+    {
+        parent::setField("position", $idposition);
+        parent::store();
+        return true;
+    }
 }
 ?>

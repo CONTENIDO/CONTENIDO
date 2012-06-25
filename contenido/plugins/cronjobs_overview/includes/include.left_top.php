@@ -1,12 +1,12 @@
-<?php 
+<?php
 
 //Has the user permission for crontab_edit
 if (!$perm->have_perm_area_action($area, 'crontab_edit'))
 {
-	$notification->displayNotification("error", i18n("Permission denied"));
-	return -1;
+    $notification->displayNotification("error", i18n("Permission denied"));
+    return -1;
 }
-		
+
 $tpl = new Template();
 
 

@@ -982,7 +982,7 @@ class Newsletter extends Item
     {
         // What should we do with this deprecated method?
         cDeprecated();
-        
+
         $aResult = array();
         $aResult[] = 0;
         $aResult[] = "Newsletter->send() not supported anymore (class.newsletter.php)";

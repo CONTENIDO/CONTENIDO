@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Checks userrights for cats
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Plugins
  * @subpackage Linkchecker
@@ -19,8 +19,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.7
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2006-06-08
  *   modified 2007-11-07, Frederic Schneider, Linkchecker-Edition
  *   modified 2008-02-08, Andreas Lindner, Performance enhancements
@@ -28,63 +28,63 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 function cCatPerm($widcat, $db = null)
 {
-	global $cfg, $sess, $auth, $group_id, $_arrCatIDs_cCP;
+    global $cfg, $sess, $auth, $group_id, $_arrCatIDs_cCP;
 
-	if (strpos($auth->auth['perm'], 'admin') !== FALSE) {
-		return true;
-	}
-	
-	if (is_null($db) || !is_object($db)) {
-		$db = new DB_Contenido;
-	}
+    if (strpos($auth->auth['perm'], 'admin') !== FALSE) {
+        return true;
+    }
 
-	$group_ids = getGroupIDs($db);
-	$group_ids[] = Contenido_Security::escapeDB($auth->auth['uid'], $db);
+    if (is_null($db) || !is_object($db)) {
+        $db = new DB_Contenido;
+    }
 
-	if (!is_array($_arrCatIDs_cCP)) {
-		$_arrCatIDs_cCP = array();
+    $group_ids = getGroupIDs($db);
+    $group_ids[] = Contenido_Security::escapeDB($auth->auth['uid'], $db);
 
-		$sql_inc = " user_id='";
-		$sql_inc .= implode("' OR user_id='", $group_ids) . "' ";
-		$sql = "SELECT idcat FROM ".$cfg['tab']['rights']."
-				WHERE idarea=6 AND idaction=359 AND ($sql_inc)";
+    if (!is_array($_arrCatIDs_cCP)) {
+        $_arrCatIDs_cCP = array();
 
-		$db->query($sql);
-		
-		while ($db->next_record()) {
-			$_arrCatIDs_cCP[$db->f('idcat')] = ''; 
-		}
-	}
-	
-	return array_key_exists($widcat, $_arrCatIDs_cCP);
+        $sql_inc = " user_id='";
+        $sql_inc .= implode("' OR user_id='", $group_ids) . "' ";
+        $sql = "SELECT idcat FROM ".$cfg['tab']['rights']."
+                WHERE idarea=6 AND idaction=359 AND ($sql_inc)";
+
+        $db->query($sql);
+
+        while ($db->next_record()) {
+            $_arrCatIDs_cCP[$db->f('idcat')] = '';
+        }
+    }
+
+    return array_key_exists($widcat, $_arrCatIDs_cCP);
 }
 
 function getGroupIDs(&$db)
 {
-	global $cfg, $sess, $auth, $group_id, $_arrGroupIDs_gGI;
+    global $cfg, $sess, $auth, $group_id, $_arrGroupIDs_gGI;
 
-	if (is_array($_arrGroupIDs_gGI)) {
-		return $_arrGroupIDs_gGI;
-	}
-	
-	$sql = "SELECT group_id FROM ".$cfg["tab"]["groupmembers"]." WHERE user_id='".Contenido_Security::escapeDB($auth->auth["uid"], $db)."'";
-	$db->query($sql);
+    if (is_array($_arrGroupIDs_gGI)) {
+        return $_arrGroupIDs_gGI;
+    }
 
-	$_arrGroupIDs_gGI = array();
+    $sql = "SELECT group_id FROM ".$cfg["tab"]["groupmembers"]." WHERE user_id='".Contenido_Security::escapeDB($auth->auth["uid"], $db)."'";
+    $db->query($sql);
 
-	while ($db->next_record())
-		$_arrGroupIDs_gGI[] = $db->f('group_id');
+    $_arrGroupIDs_gGI = array();
 
-	return $_arrGroupIDs_gGI;
+    while ($db->next_record())
+        $_arrGroupIDs_gGI[] = $db->f('group_id');
+
+    return $_arrGroupIDs_gGI;
 }
 
 ?>

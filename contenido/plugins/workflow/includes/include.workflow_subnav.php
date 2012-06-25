@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Builds the third navigation layer
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Plugins
  * @subpackage Workflow
@@ -18,22 +18,22 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2003-05-20
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- *   
+ *
  *   $Id$
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
-	$nav = new Contenido_Navigation;
+    $nav = new Contenido_Navigation;
 
     $parentarea = getParentAreaID($area);
     $sql = "SELECT
@@ -80,7 +80,7 @@ if (!defined('CON_FRAMEWORK')) {
         $caption = $nav->getName($db->f("location"));
 
         $tmp_area = $db->f("name");
-        
+
         # Set template data
         $tpl->set("d", "ID",        'c_'.$tpl->dyn_cnt);
         $tpl->set("d", "CLASS",     '');
@@ -99,16 +99,16 @@ if (!defined('CON_FRAMEWORK')) {
     $tpl->set('s', 'SESSID', $sess->id);
     $tpl->set('s', 'CLIENT', $client);
     $tpl->set('s', 'LANG', $lang);
-    
+
 
     # Generate the third
     # navigation layer
-	if ($idworkflow <= 0)
-	{
-		$tpl->generate($cfg["path"]["templates"].$cfg["templates"]["subnav_blank"]);
-	} else {
-		$tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
-	}
+    if ($idworkflow <= 0)
+    {
+        $tpl->generate($cfg["path"]["templates"].$cfg["templates"]["subnav_blank"]);
+    } else {
+        $tpl->generate($cfg["path"]["templates"] . $cfg["templates"]["subnav"]);
+    }
 
 
 ?>

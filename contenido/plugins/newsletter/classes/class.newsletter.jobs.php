@@ -500,7 +500,7 @@ class NewsletterJob extends Item
 
 /** @deprecated 2012-03-01 Use NewsletterJobCollection instead */
 class cNewsletterJobCollection extends NewsletterJobCollection {
-	/** @deprecated 2012-03-01 Use NewsletterJobCollection instead */
+    /** @deprecated 2012-03-01 Use NewsletterJobCollection instead */
     public function __construct()
     {
         cDeprecated("Use NewsletterJobCollection instead");
@@ -517,7 +517,7 @@ class cNewsletterJobCollection extends NewsletterJobCollection {
 
 /** @deprecated 2012-03-01 Use NewsletterJob instead */
 class cNewsletterJob extends NewsletterJob {
-	/** @deprecated 2012-03-01 Use NewsletterJob instead */
+    /** @deprecated 2012-03-01 Use NewsletterJob instead */
     public function __construct()
     {
         cDeprecated("Use NewsletterJob instead");

@@ -245,7 +245,7 @@ class NewsletterRecipient extends Item
         $success = parent::store();
 
         // @todo do update below only if code from abve was successfull
-        
+
         // Update name, email and newsletter type for recipients in pending newsletter jobs
         $sName  = $this->get("name");
         $sEmail = $this->get("email");
@@ -272,7 +272,7 @@ class NewsletterRecipient extends Item
 
 /** @deprecated 2012-03-01 Use NewsletterRecipientCollection instead */
 class RecipientCollection extends NewsletterRecipientCollection {
-	/** @deprecated 2012-03-01 Use NewsletterRecipientCollection instead */
+    /** @deprecated 2012-03-01 Use NewsletterRecipientCollection instead */
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipientCollection instead");
@@ -289,7 +289,7 @@ class RecipientCollection extends NewsletterRecipientCollection {
 
 /** @deprecated 2012-03-01 Use NewsletterRecipient instead */
 class Recipient extends NewsletterRecipient {
-	/** @deprecated 2012-03-01 Use NewsletterRecipient instead */
+    /** @deprecated 2012-03-01 Use NewsletterRecipient instead */
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipient instead");

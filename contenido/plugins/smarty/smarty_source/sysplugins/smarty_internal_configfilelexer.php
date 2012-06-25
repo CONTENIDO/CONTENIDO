@@ -2,10 +2,10 @@
 /**
 * Smarty Internal Plugin Configfilelexer
 *
-* This is the lexer to break the config file source into tokens 
+* This is the lexer to break the config file source into tokens
 * @package Smarty
 * @subpackage Config
-* @author Uwe Tews 
+* @author Uwe Tews
 */
 /**
 * Smarty Internal Plugin Configfilelexer
@@ -20,18 +20,18 @@ class Smarty_Internal_Configfilelexer
     public $node;
     public $line;
     private $state = 1;
-    public $smarty_token_names = array (		// Text for parser error messages
-   				);
-    				
-    				
+    public $smarty_token_names = array (        // Text for parser error messages
+                   );
+
+
     function __construct($data, $smarty)
     {
         // set instance object
-        self::instance($this); 
+        self::instance($this);
         $this->data = $data . "\n"; //now all lines are \n-terminated
         $this->counter = 0;
         $this->line = 1;
-        $this->smarty = $smarty; 
+        $this->smarty = $smarty;
      }
     public static function &instance($new_instance = null)
     {
@@ -39,7 +39,7 @@ class Smarty_Internal_Configfilelexer
         if (isset($new_instance) && is_object($new_instance))
             $instance = $new_instance;
         return $instance;
-    } 
+    }
 
 
 

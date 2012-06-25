@@ -260,7 +260,7 @@ class NewsletterLog extends Item
 
 /** @deprecated 2012-03-01 Use NewsletterLogCollection instead */
 class cNewsletterLogCollection extends NewsletterLogCollection {
-	/** @deprecated 2012-03-01 Use NewsletterLogCollection instead */
+    /** @deprecated 2012-03-01 Use NewsletterLogCollection instead */
     public function __construct()
     {
         cDeprecated("Use NewsletterLogCollection instead");
@@ -277,7 +277,7 @@ class cNewsletterLogCollection extends NewsletterLogCollection {
 
 /** @deprecated 2012-03-01 Use NewsletterLog instead */
 class cNewsletterLog extends NewsletterLog {
-	/** @deprecated 2012-03-01 Use NewsletterLog instead */
+    /** @deprecated 2012-03-01 Use NewsletterLog instead */
     public function __construct()
     {
         cDeprecated("Use NewsletterLog instead");

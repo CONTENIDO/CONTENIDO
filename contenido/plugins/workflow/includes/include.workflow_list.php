@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Workflow list
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Plugins
  * @subpackage Workflow
@@ -18,17 +18,17 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2006-01-13
- *   
+ *
  *   $Id$
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -40,7 +40,7 @@ $workflows = new Workflows;
 $sScript = '';
 if ($action == "workflow_delete")
 {
-	$workflows->delete($idworkflow);
+    $workflows->delete($idworkflow);
     $sScript = '<script type="text/javascript">
                     var right_top = top.content.frames["right"].frames["right_top"];
                     var right_bottom = top.content.frames["right"].frames["right_bottom"];
@@ -59,36 +59,36 @@ $workflows->select("idclient = '$client' AND idlang = '$lang'");
 
 while ($workflow = $workflows->next())
 {
-	$wfid = $workflow->getField("idworkflow");
-	$wfname = $workflow->getField("name");
-	$wfdescription = $workflow->getField("description");
-	
-	/* Create the link to show/edit the workflow */
-	$link = new Link;
-	$link->setMultiLink("workflow","","workflow_common","workflow_show");
-	$link->setAlt($wfdescription);
-	$link->setCustom("idworkflow",$wfid);
+    $wfid = $workflow->getField("idworkflow");
+    $wfname = $workflow->getField("name");
+    $wfdescription = $workflow->getField("description");
 
- 	$delTitle = i18n("Delete workflow", "workflow");
-  	$delDescr = sprintf(i18n("Do you really want to delete the following workflow:<br><br>%s<br>", "workflow"),$wfname);
-	$delete = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteWorkflow(\\\''.$wfid.'\\\')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';	
-	
-	$ui->setTitle($wfid, $wfname);
-	$ui->setLink($wfid, $link);	
-	
-	$ui->setActions($wfid, 'delete', $delete);
-		
-	if ($wfid == $iIdMarked) {
-		$ui->setExtra ($wfid, 'id="marked" ');
-	}
-	
+    /* Create the link to show/edit the workflow */
+    $link = new Link;
+    $link->setMultiLink("workflow","","workflow_common","workflow_show");
+    $link->setAlt($wfdescription);
+    $link->setCustom("idworkflow",$wfid);
+
+     $delTitle = i18n("Delete workflow", "workflow");
+      $delDescr = sprintf(i18n("Do you really want to delete the following workflow:<br><br>%s<br>", "workflow"),$wfname);
+    $delete = '<a title="'.$delTitle.'" href="javascript://" onclick="box.confirm(\''.$delTitle.'\', \''.$delDescr.'\', \'deleteWorkflow(\\\''.$wfid.'\\\')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$delTitle.'" alt="'.$delTitle.'"></a>';
+
+    $ui->setTitle($wfid, $wfname);
+    $ui->setLink($wfid, $link);
+
+    $ui->setActions($wfid, 'delete', $delete);
+
+    if ($wfid == $iIdMarked) {
+        $ui->setExtra ($wfid, 'id="marked" ');
+    }
+
 }
 $content = $ui->render(false);
 
 $delScript = '
     <script type="text/javascript">
 
-        
+
         function foo(){return true;}
 
         /* Session-ID */
@@ -110,15 +110,15 @@ $delScript = '
             parent.left_bottom.location.href = url;
 
         }
-		</script>';
-		
+        </script>';
+
 $sInitRowMark = "<script type=\"text/javascript\">
                      if (document.getElementById('marked')) {
                          row.markedRow = document.getElementById('marked');
                      }
                  </script>";
 
-$msgboxInclude = '    <script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>';        
+$msgboxInclude = '    <script type="text/javascript" src="scripts/messageBox.js.php?contenido='.$sess->id.'"></script>';
 $page = new UI_Page;
 $page->addScript('include', $msgboxInclude);
 $page->addScript('del',$delScript);

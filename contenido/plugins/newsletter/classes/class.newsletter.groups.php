@@ -324,7 +324,7 @@ class NewsletterRecipientGroupMember extends Item
 
 /** @deprecated 2012-03-01 Use NewsletterRecipientGroupCollection instead */
 class RecipientGroupCollection extends NewsletterRecipientGroupCollection {
-	/** @deprecated 2012-03-01 Use NewsletterRecipientGroupCollection instead */
+    /** @deprecated 2012-03-01 Use NewsletterRecipientGroupCollection instead */
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipientGroupCollection instead");
@@ -341,7 +341,7 @@ class RecipientGroupCollection extends NewsletterRecipientGroupCollection {
 
 /** @deprecated 2012-03-01 Use NewsletterRecipientGroup instead */
 class RecipientGroup extends NewsletterRecipientGroup {
-	/** @deprecated 2012-03-01 Use NewsletterRecipientGroup instead */
+    /** @deprecated 2012-03-01 Use NewsletterRecipientGroup instead */
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipientGroup instead");
@@ -358,7 +358,7 @@ class RecipientGroup extends NewsletterRecipientGroup {
 
 /** @deprecated 2012-03-01 Use NewsletterRecipientGroupMemberCollection instead */
 class RecipientGroupMemberCollection extends NewsletterRecipientGroupMemberCollection {
-	/** @deprecated 2012-03-01 Use NewsletterRecipientGroupMemberCollection instead */
+    /** @deprecated 2012-03-01 Use NewsletterRecipientGroupMemberCollection instead */
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipientGroupMemberCollection instead");
@@ -375,7 +375,7 @@ class RecipientGroupMemberCollection extends NewsletterRecipientGroupMemberColle
 
 /** @deprecated 2012-03-01 Use NewsletterRecipientGroupMember instead */
 class RecipientGroupMember extends NewsletterRecipientGroupMember {
-	/** @deprecated 2012-03-01 Use NewsletterRecipientGroupMember instead */
+    /** @deprecated 2012-03-01 Use NewsletterRecipientGroupMember instead */
     public function __construct()
     {
         cDeprecated("Use NewsletterRecipientGroupMember instead");

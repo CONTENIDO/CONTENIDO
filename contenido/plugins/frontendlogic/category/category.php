@@ -1,13 +1,13 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * 
- * Requirements: 
+ *
+ * Description:
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Plugins
  * @subpackage Frontendlogic
@@ -17,18 +17,18 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created
  *   modified 2008-08-06, Ingo van Peeren - replaced genericdb-code due to performance issues (ticket #)
  *
- *   $Id$: 
+ *   $Id$:
  * }}
- * 
+ *
  */
- 
+
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -38,27 +38,27 @@ if(!defined('CON_FRAMEWORK')) {
  */
 class frontendlogic_category extends FrontendLogic
 {
-	function getFriendlyName ()
-	{
-		return i18n("Category", "frontendlogic_category");	
-	}
-	
-	function listActions ()
-	{
-		$actions = array();
-		$actions["access"] = i18n("Access category", "frontendlogic_category");
-		
-		return ($actions);	
-	}
-	
-	function listItems ()
-	{
-		global $lang, $db, $cfg;
-		
-		if (!is_object($db)) {
+    function getFriendlyName ()
+    {
+        return i18n("Category", "frontendlogic_category");
+    }
+
+    function listActions ()
+    {
+        $actions = array();
+        $actions["access"] = i18n("Access category", "frontendlogic_category");
+
+        return ($actions);
+    }
+
+    function listItems ()
+    {
+        global $lang, $db, $cfg;
+
+        if (!is_object($db)) {
             $db = new DB_Contenido;
         }
-        
+
         $sSQL = "SELECT
                    b.idcatlang,
                    b.name,
@@ -76,12 +76,12 @@ class frontendlogic_category extends FrontendLogic
 
         $db->query($sSQL);
         while ($db->next_record()) {
-            $items[$db->f("idcatlang")] = 
-				'<span style="padding-left: '.($db->f("level")*10).'px;">'.htmldecode($db->f("name")).'</span>';
-			
+            $items[$db->f("idcatlang")] =
+                '<span style="padding-left: '.($db->f("level")*10).'px;">'.htmldecode($db->f("name")).'</span>';
+
         }
-		
-		return ($items);
-	}
+
+        return ($items);
+    }
 }
 ?>

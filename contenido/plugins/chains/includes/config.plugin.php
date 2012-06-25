@@ -1,13 +1,13 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * 
- * Requirements: 
+ *
+ * Description:
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Plugins
  * @subpackage Chains
@@ -17,17 +17,17 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
- *   created 
  *
- *   $Id$: 
+ * {@internal
+ *   created
+ *
+ *   $Id$:
  * }}
- * 
+ *
  */
- 
+
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 global $_cecRegistry, $cfg;
 

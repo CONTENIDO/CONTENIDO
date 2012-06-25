@@ -249,7 +249,7 @@ abstract class ModRewrite_ControllerAbstract
      * Returns rendered notification markup by using global $notification variable.
      * @param   string  $type  One of Contenido_Notification::LEVEL_* constants
      * @param   string  $msg   The message to display
-     * @return  string 
+     * @return  string
      */
     protected function _notifyBox($type, $msg)
     {

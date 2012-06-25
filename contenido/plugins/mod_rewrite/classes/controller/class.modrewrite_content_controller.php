@@ -33,7 +33,7 @@ defined('CON_FRAMEWORK') or die('Illegal call');
 
 
 plugin_include(
-	'mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php'
+    'mod_rewrite', 'classes/controller/class.modrewrite_controller_abstract.php'
 );
 
 
@@ -96,7 +96,7 @@ class ModRewrite_ContentController extends ModRewrite_ControllerAbstract
                     $this->_oView->rootdir_error = $this->_notifyBox('error', $sMsg);
                     $bError = true;
                 } else {
-                    // root dir check ist disabled, take over the setting and 
+                    // root dir check ist disabled, take over the setting and
                     // output a warning.
                     $sMsg = i18n('The specified directory "%s" does not exists in DOCUMENT_ROOT "%s". this could happen, if clients DOCUMENT_ROOT differs from CONTENIDO backends DOCUMENT_ROOT. However, the setting will be taken over because of disabled check.', 'mod_rewrite');
                     $sMsg = sprintf($sMsg, $request['rootdir'], $_SERVER['DOCUMENT_ROOT']);

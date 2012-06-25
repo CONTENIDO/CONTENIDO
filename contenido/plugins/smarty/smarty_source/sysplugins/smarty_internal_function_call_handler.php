@@ -1,10 +1,10 @@
 <?php
 /**
  * Smarty Internal Plugin Function Call Handler
- * 
+ *
  * @package Smarty
  * @subpackage PluginsInternal
- * @author Uwe Tews 
+ * @author Uwe Tews
  */
 
 /**
@@ -18,7 +18,7 @@ class Smarty_Internal_Function_Call_Handler extends Smarty_Internal_Template {
             $_template->smarty->template_functions[$_name]['called_nocache'] = true;
         } else {
             $_function = "smarty_template_function_{$_hash}_{$_name}";
-        } 
+        }
         if (!is_callable($_function)) {
             $_code = "function {$_function}(\$_smarty_tpl,\$params) {
     \$saved_tpl_vars = \$_smarty_tpl->tpl_vars;
@@ -29,12 +29,12 @@ class Smarty_Internal_Function_Call_Handler extends Smarty_Internal_Template {
                         "!\\\'!"), array('', "'"), $_template->smarty->template_functions[$_name]['compiled']);
             } else {
                 $_code .= preg_replace("/{$_template->smarty->template_functions[$_name]['nocache_hash']}/", $_template->properties['nocache_hash'], $_template->smarty->template_functions[$_name]['compiled']);
-            } 
+            }
             $_code .= "<?php \$_smarty_tpl->tpl_vars = \$saved_tpl_vars;}";
             eval($_code);
-        } 
+        }
         $_function($_template, $_params);
-    } 
-} 
+    }
+}
 
 ?>

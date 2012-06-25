@@ -1,13 +1,13 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
- * 
- * Requirements: 
+ *
+ * Description:
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Plugins
  * @subpackage Frontendlogic
@@ -17,15 +17,15 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
- * 
- * {@internal 
+ *
+ * {@internal
  *   created
  *
- *   $Id$: 
+ *   $Id$:
  * }}
- * 
+ *
  */
- 
+
 cInclude("includes", "functions.general.php");
 
 scanPlugins("frontendlogic");

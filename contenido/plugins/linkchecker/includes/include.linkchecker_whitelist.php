@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Whitelist for the Linkchecker
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Plugins
  * @subpackage Linkchecker
@@ -19,19 +19,19 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.7
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2007-11-02
  *   modified 2007-12-13, 2008-05-09, 2008-05-15, Frederic Schneider
  *   modified 2008-06-02, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 $plugin_name = "linkchecker";
@@ -39,7 +39,7 @@ $iWhitelist_timeout = 2592000; // 30 days
 global $perm;
 
 if(!$perm->have_perm_area_action($plugin_name, $plugin_name)) {
-	exit;
+    exit;
 }
 
 // Template-definition
@@ -48,28 +48,28 @@ $tpl->set('s', 'SID', $sess->id);
 
 /* Whitelist: Delete */
 if(!empty($_GET['url_to_delete'])) {
-	$sql = "DELETE FROM " . $cfg['tab']['whitelist'] . " WHERE url = '" . Contenido_Security::escapeDB(base64_decode($_GET['url_to_delete']), $db) . "'";
-	$db->query($sql);
+    $sql = "DELETE FROM " . $cfg['tab']['whitelist'] . " WHERE url = '" . Contenido_Security::escapeDB(base64_decode($_GET['url_to_delete']), $db) . "'";
+    $db->query($sql);
 }
 
 // Get whitelist
 $sql = "SELECT url, lastview FROM " . $cfg['tab']['whitelist'] . " WHERE lastview < " . (time() + $iWhitelist_timeout) . "
-		AND lastview > " . (time() - $iWhitelist_timeout) . " ORDER BY lastview DESC";
+        AND lastview > " . (time() - $iWhitelist_timeout) . " ORDER BY lastview DESC";
 $db->query($sql);
 
 while($db->next_record()) {
 
-	$tpl2 = new Template;
-	$tpl2->reset();
-    
-	$tpl2->set('s', 'CONTENIDO_URL', $cfg['path']['contenido_fullhtml']);
-	$tpl2->set('s', 'SID', $sess->id);
-	$tpl2->set('s', 'URL', $db->f("url"));
-	$tpl2->set('s', 'URL_ENCODE', base64_encode($db->f("url")));
-	$tpl2->set('s', 'ENTRY', strftime(i18n('%Y-%m-%d, %I:%M%S %p', $plugin_name), $db->f("lastview")));
+    $tpl2 = new Template;
+    $tpl2->reset();
 
-	$aWhitelist .= $tpl2->generate($cfg['templates']['linkchecker_whitelist_urls'], 1);
-    
+    $tpl2->set('s', 'CONTENIDO_URL', $cfg['path']['contenido_fullhtml']);
+    $tpl2->set('s', 'SID', $sess->id);
+    $tpl2->set('s', 'URL', $db->f("url"));
+    $tpl2->set('s', 'URL_ENCODE', base64_encode($db->f("url")));
+    $tpl2->set('s', 'ENTRY', strftime(i18n('%Y-%m-%d, %I:%M%S %p', $plugin_name), $db->f("lastview")));
+
+    $aWhitelist .= $tpl2->generate($cfg['templates']['linkchecker_whitelist_urls'], 1);
+
 }
 
 // Template- and languagevars
