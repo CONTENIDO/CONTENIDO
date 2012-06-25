@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO Group Rights
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.0
@@ -18,18 +18,18 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-26, Dominik Ziegler, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 //notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
@@ -60,7 +60,7 @@ $sTable = '';
 
 // declare new javascript variables;
 $sJsBefore .= "  var itemids = new Array();
-				var actareaids = new Array();
+                var actareaids = new Array();
 ";
 
 $colspan=0;
@@ -87,9 +87,9 @@ foreach($right_list["tpl"] as $value2)
 
                          $colspan++;
                          //set  the possible areas and actions for this areas
-							$sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\"; \n";	
+                            $sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\"; \n";
 
-						
+
                          //checkbox for the whole action
                         $sTable .= $table->header_cell($lngAct[$value2["perm"]][$value3]);
                          array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
@@ -126,7 +126,7 @@ while ($db->next_record()) {
 
         $sTable .= $table->row();
         $sTable .= $table->cell($tplname,"", "", " class=\"td_rights0\"", false);
-        $sTable .= $table->cell($description,"", "", " class=\"td_rights1\" style=\"white-space:normal;\"", false); 
+        $sTable .= $table->cell($description,"", "", " class=\"td_rights1\" style=\"white-space:normal;\"", false);
 
         //set javscript array for itemids
         $sJsAfter .= "itemids[\"".$db->f("idtpl")."\"]=\"x\";\n";

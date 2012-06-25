@@ -70,7 +70,7 @@ $clientList = $clientColl->getAccessibleClients();
 
 //select current client per default
 if(!isset($idqclient))
-	$idqclient = $client;
+    $idqclient = $client;
 
 foreach ($clientList as $key => $value) {
     $selected = (strcmp($idqclient, $key) == 0) ? ' selected="selected"' : '';
@@ -133,11 +133,11 @@ $aDisplayLangauge['%'] = i18n('All languages');
 $selectedLangauge = '%';
 
 while ($db->next_record()) {
-	$aDisplayLangauge[$db->f('idlang')] = $db->f('name');
+    $aDisplayLangauge[$db->f('idlang')] = $db->f('name');
 }
 
 if(key_exists($_REQUEST['display_langauge'], $aDisplayLangauge)) {
-	$selectedLangauge = $_REQUEST['display_langauge'];
+    $selectedLangauge = $_REQUEST['display_langauge'];
 }
 
 
@@ -218,11 +218,11 @@ $olangauge = new cHTMLSelectElement('display_langauge');
 $olangauge->autoFill($aDisplayLangauge);
 
 if(isset($_REQUEST['display_langauge'])) {
-	$olangauge->setDefault($_REQUEST['display_langauge']);	
+    $olangauge->setDefault($_REQUEST['display_langauge']);
 }else  {
-	$olangauge->setDefault($belang);	
+    $olangauge->setDefault($belang);
 }
-	
+
 
 $tpl->set('s', 'USERS', $userselect);
 $tpl->set('s', 'CLIENTS', $clientselect);
@@ -347,5 +347,5 @@ while ($oItem = $actionLogColl->next()) {
 // Generate template
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['log_main']);
 
- 
+
 ?>

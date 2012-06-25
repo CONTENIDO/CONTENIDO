@@ -24,8 +24,8 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 if (!is_numeric($targetclient)) {
-	$targetclient = $client;
-} 
+    $targetclient = $client;
+}
 
 $errno = langDeleteLanguage($idlang, $targetclient);
 ?>

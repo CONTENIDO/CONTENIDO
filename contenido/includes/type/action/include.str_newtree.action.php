@@ -27,10 +27,10 @@ $tmp_newid = strNewTree($categoryname, $categoryalias, $visible, $public, $idtpl
 strRemakeTreeTable();
 CEC_Hook::execute("Contenido.Action.str_newtree.AfterCall", array(
     'newcategoryid' => $tmp_newid,
-    'categoryname'  => $categoryname, 
-    'categoryalias' => $categoryalias, 
-    'visible'       => $visible, 
-    'public'        => $public, 
+    'categoryname'  => $categoryname,
+    'categoryalias' => $categoryalias,
+    'visible'       => $visible,
+    'public'        => $public,
     'idtplcfg'      => $idtplcfg,
 ));
 ?>

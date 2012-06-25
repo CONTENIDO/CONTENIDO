@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO Group Rights Mod
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.0
@@ -18,19 +18,19 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-26, Dominik Ziegler, add security fix
  *   modified 2008-07-29, Bilal Arslan, moved inline html to template
- * 
+ *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 //notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
@@ -63,7 +63,7 @@ $sTable = '';
 
 // declare new javascript variables;
 $sJsBefore .= "var itemids=new Array();
-			   var actareaids=new Array();";
+               var actareaids=new Array();";
 $colspan=0;
 
 $table = new Table("", "", 0, 2, "", "", "", 0, 0);
@@ -121,7 +121,7 @@ while ($db->next_record()) {
 
         $sTable .= $table->row();
         $sTable .= $table->cell($tplname,"", "", " class=\"td_rights0\"", false);
-        $sTable .= $table->cell($description,"", "", " class=\"td_rights1\" style=\"white-space:normal;\"", false); 
+        $sTable .= $table->cell($description,"", "", " class=\"td_rights1\" style=\"white-space:normal;\"", false);
 
         //set javscript array for itemids
         $sJsAfter .= "itemids[\"".$db->f("idmod")."\"]=\"x\";\n";

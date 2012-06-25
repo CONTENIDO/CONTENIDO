@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Displays languages
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.0
@@ -18,18 +18,18 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-04-29
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 $tpl->reset();
@@ -39,22 +39,22 @@ $googleNotification = "";
 $piwikNotification = "";
 //Show message if statistics off
 $cApiClient = new cApiClient($client);
-if ($cApiClient->getProperty("stats", "tracking") == "off") {	
-	$trackingNotification = $contenidoNotification->returnNotification('warning', i18n("Tracking was disabled for this client!"));
+if ($cApiClient->getProperty("stats", "tracking") == "off") {
+    $trackingNotification = $contenidoNotification->returnNotification('warning', i18n("Tracking was disabled for this client!"));
 }
 
 //Display google account message
 if(($googleAccount = getEffectiveSetting('stats', 'ga_account', '')) != "" ) {
-	$linkToGoogle = sprintf('<a target="_blank" href="http://www.google.com/intl/'.$belang.'/analytics/">%s</a>', i18n("here"));
-	$googleNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has been configured with Google Analytics account %s. Click %s to visit Google Analytics"),$googleAccount, $linkToGoogle));
+    $linkToGoogle = sprintf('<a target="_blank" href="http://www.google.com/intl/'.$belang.'/analytics/">%s</a>', i18n("here"));
+    $googleNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has been configured with Google Analytics account %s. Click %s to visit Google Analytics"),$googleAccount, $linkToGoogle));
 }
 
 //display piwik account message
 if(($piwikUrl = getEffectiveSetting('stats', 'piwik_url', '')) != "") {
-	if(($piwikSite = getEffectiveSetting('stats', 'piwik_site', '')) != "") {
-		$linkToPiwik = sprintf('<a target="_blank" href="'.$piwikUrl.'">%s</a>', i18n('here'));
-		$piwikNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has bee configured with Piwik Site %s. Click %s to visit the Piwik installation."), $piwikSite, $linkToPiwik));
-	}
+    if(($piwikSite = getEffectiveSetting('stats', 'piwik_site', '')) != "") {
+        $linkToPiwik = sprintf('<a target="_blank" href="'.$piwikUrl.'">%s</a>', i18n('here'));
+        $piwikNotification = $contenidoNotification->returnNotification('warning', sprintf(i18n("This client has bee configured with Piwik Site %s. Click %s to visit the Piwik installation."), $piwikSite, $linkToPiwik));
+    }
 }
 
 
@@ -116,11 +116,11 @@ if ($action == "stat_show")
         $tpl->set('s', 'TITLETOTAL',i18n("Hits"));
         $tpl->set('s', 'TITLEPADDING_LEFT',"5");
         $tpl->set('s', 'TITLEINTHISLANGUAGE', i18n("Hits in this language"));
-		
+
         $tpl->set('s', 'GOOGLE_NOTIFICATION', $googleNotification.'<br/>');
         $tpl->set('s', 'PIWIK_NOTIFICATION', $piwikNotification. '<br/>');
         $tpl->set('s', 'TRACKING_NOTIFICATION', $trackingNotification.'<br/>');
-        
+
         switch ($displaytype)
         {
             case "all":
@@ -133,7 +133,7 @@ if ($action == "stat_show")
                 }
                 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['stat_overview']);
                 break;
-                
+
             case "top10":
                 if ($showYear == 1)
                 {
@@ -144,7 +144,7 @@ if ($action == "stat_show")
 
                 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['stat_top']);
                 break;
-                
+
             case "top20":
                 if ($showYear == 1)
                 {
@@ -152,10 +152,10 @@ if ($action == "stat_show")
                 }else {
                     statsOverviewTop($yearmonth,20);
                 }
-                
+
                 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['stat_top']);
                 break;
-                
+
             case "top30":
                 if ($showYear == 1)
                 {

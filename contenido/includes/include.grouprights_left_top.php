@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Left_top frame for grouprights
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,21 +18,21 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-04-29
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
-// The following lines unset all right objects since 
+// The following lines unset all right objects since
 // I don't know (or I was unable to find out) if they
 // are global and/or session variables - so if you are
 // switching between groups and user management, we are
@@ -56,18 +56,18 @@ $tpl2->set('s', 'CLASS', 'text_medium');
 $tpl2->set('s', 'OPTIONS', 'onchange="groupChangeRestriction()"');
 
 $limit = array(
-			"2" => i18n("All"),
-			"1" => i18n("Frontend only"),
-			"3" => i18n("Backend only"));
-			
+            "2" => i18n("All"),
+            "1" => i18n("Frontend only"),
+            "3" => i18n("Backend only"));
+
 foreach ($limit as $key => $value) {
 
         if ($restrict == $key)
         {
-        	$selected = "selected";
+            $selected = "selected";
         } else {
-        	$selected = "";
-        } 
+            $selected = "";
+        }
 
         $tpl2->set('d', 'VALUE',    $key);
         $tpl2->set('d', 'CAPTION',  $value);

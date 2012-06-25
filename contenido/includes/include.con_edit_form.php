@@ -248,7 +248,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $select->addOptionElement(2, $option[2]);
     $select->addOptionElement(3, $option[3]);
     $select->addOptionElement(4, $option[4]);
-   
+
     $tpl->set('s', 'DIRECTLINK', $select->render().'<br><br><input style="width:400px;" class="text_medium" type="text" id="linkhint">');
 
     $tpl->set('s', 'ZUORDNUNGSID', "idcatart");
@@ -477,7 +477,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     }
 
     $tpl->set('s', 'PATH_TO_CALENDER_PIC',  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif');
-    
+
     if (($perm->have_perm_area_action("con", "con_makeonline") ||
         $perm->have_perm_area_action_item("con", "con_makeonline", $idcat)) && $inUse == false)
     {
@@ -488,7 +488,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 1);
     }
 
-   
+
     $tpl->set('s', 'SDOPTS', $allow_usetimemgmt);
     $tpl->set('s', 'EDOPTS', $allow_usetimemgmt);
 
@@ -552,7 +552,7 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     $title_input = '<input type="text" '.$disabled.' class="text_medium" name="page_title" style="width:400px;" value="'.htmlspecialchars($tmp_page_title).'">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
 
-   
+
     // Struktur
     $tpl->set('s', 'MOVETOCATEGORYSELECT', $select);
 
@@ -633,13 +633,13 @@ if ($perm->have_perm_area_action($area, "con_edit") ||
     }
 
     if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-    	
-    	$langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
-    			 <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
-    	$tpl->set('s', 'CAL_LANG', $langscripts);
-    
+
+        $langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
+                 <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
+        $tpl->set('s', 'CAL_LANG', $langscripts);
+
     }else {
-    	$tpl->set('s', 'CAL_LANG', '');
+        $tpl->set('s', 'CAL_LANG', '');
     }
 
     if ($tmp_usetimemgmt == '1') {

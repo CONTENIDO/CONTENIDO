@@ -99,7 +99,7 @@ function dbGetIndexes($db, $table)
  * @param  bool  $bRemoveIndexes  Flag to remove all indexes
  * @return  bool
  */
-function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extra, 
+function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extra,
                         $upgradeStatement, $bRemoveIndexes = false)
 {
     global $columnCache;
@@ -111,7 +111,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 
     $parameter = array();
 
-    // Parameter checking for $null. If parameter is "" or "NULL" or "YES", we 
+    // Parameter checking for $null. If parameter is "" or "NULL" or "YES", we
     // know that we want the colum to forbid null entries.
     if ($null == "NULL" || $null == "YES") {
         $parameter['NULL'] = "NULL";
@@ -121,7 +121,7 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
         $null = "";
     }
 
-    // Parameter checking for $key. If parameter is "" or "NULL" or "YES", we 
+    // Parameter checking for $key. If parameter is "" or "NULL" or "YES", we
     // know that we want the primary key.
     if ($key == "PRI") {
         $parameter['KEY'] = "PRIMARY KEY";
@@ -345,6 +345,6 @@ function dbGetPrimaryKeyName($db, $table)
 
 /** @deprecated 2012-03-04 This function is not longer supported. */
 function dbUpdateSequence($sequencetable, $table, $db = false) {
-	cDeprecated("This function is not longer supported.");
+    cDeprecated("This function is not longer supported.");
 }
 ?>

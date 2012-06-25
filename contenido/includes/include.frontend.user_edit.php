@@ -143,13 +143,13 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
                             $varArray = array();
 
                             foreach ($wantVariables as $value) {
-								if (is_array($GLOBALS[$value])) {
-									foreach ($GLOBALS[$value] as $globKey => $globValue) {
-										$GLOBALS[$value][$globKey] = stripslashes($globValue);
-									}
-								} else {
-									$varArray[$value] = stripslashes($GLOBALS[$value]);
-								}
+                                if (is_array($GLOBALS[$value])) {
+                                    foreach ($GLOBALS[$value] as $globKey => $globValue) {
+                                        $GLOBALS[$value][$globKey] = stripslashes($globValue);
+                                    }
+                                } else {
+                                    $varArray[$value] = stripslashes($GLOBALS[$value]);
+                                }
                             }
                         }
                         $store = call_user_func("frontendusers_".$plugin."_store", $varArray);

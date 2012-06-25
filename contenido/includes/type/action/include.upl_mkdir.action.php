@@ -23,5 +23,5 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$errno = uplmkdir($path,$foldername);  
+$errno = uplmkdir($path,$foldername);
 ?>

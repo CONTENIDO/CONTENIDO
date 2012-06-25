@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Some AJAX functions of area con
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,62 +18,62 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release 4.8.9
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2008-09-08
  *   modified 2009-06-25, Ingo van Peeren, added some array checks and initializing
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 if (!$idcat) {
-	$idcat = Contenido_Security::toInteger($_REQUEST['idcat']);
+    $idcat = Contenido_Security::toInteger($_REQUEST['idcat']);
 }
 
 $sCatlist = Contenido_Security::toString($_REQUEST['wholelist']);
 if ($sCatlist != '') {
-	$aCatlist = explode(',', $sCatlist);
+    $aCatlist = explode(',', $sCatlist);
 } else {
-	$aCatlist = array();
+    $aCatlist = array();
 }
 
 $aConexpandedList = unserialize($currentuser->getUserProperty("system", "con_cat_expandstate"));
 if (!is_array($aConexpandedList))  {
-	$aConexpandedList = array();
+    $aConexpandedList = array();
 }
 
 if ($bDebug) {
-	print_r($aConexpandedList);
-	print_r($aCatlist);
+    print_r($aConexpandedList);
+    print_r($aCatlist);
 }
 
 if ($action == 'toggle') {
-	$sKey = array_search($idcat, $aConexpandedList);
-	if ($sKey !== false) {
-		unset($aConexpandedList[$sKey]);
-	} elseif (in_array($idcat, $aCatlist)) {
-		$aConexpandedList[] = $idcat;
-	}
+    $sKey = array_search($idcat, $aConexpandedList);
+    if ($sKey !== false) {
+        unset($aConexpandedList[$sKey]);
+    } elseif (in_array($idcat, $aCatlist)) {
+        $aConexpandedList[] = $idcat;
+    }
 } elseif ($action == 'expand') {
-	if (!in_array($idcat, $aConexpandedList) && in_array($idcat, $aCatlist)) {
-		$aConexpandedList[] = $idcat;
-	}
+    if (!in_array($idcat, $aConexpandedList) && in_array($idcat, $aCatlist)) {
+        $aConexpandedList[] = $idcat;
+    }
 } elseif ($action == 'collapse') {
-	$sKey = array_search($idcat, $aConexpandedList);
-	if ($sKey !== false) {
-		unset($aConexpandedList[$sKey]);
-	}
+    $sKey = array_search($idcat, $aConexpandedList);
+    if ($sKey !== false) {
+        unset($aConexpandedList[$sKey]);
+    }
 } elseif ($action == 'collapseall') {
-	if (count($aConexpandedList)) {
-		$aConexpandedList = array();
-	}
+    if (count($aConexpandedList)) {
+        $aConexpandedList = array();
+    }
 } elseif ($action == 'expandall') {
-	$aConexpandedList = $aCatlist;
+    $aConexpandedList = $aCatlist;
 }
 
 $currentuser->setUserProperty("system", "con_cat_expandstate", serialize($aConexpandedList));

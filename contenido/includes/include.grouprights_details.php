@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Display rights
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,18 +18,18 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-04-30
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 $idclient = 2;
@@ -68,7 +68,7 @@ if ( !isset($useridas) )
                 $error = "Passwords don't match";
             }
         }
-        
+
         $sql = 'UPDATE
                     '.$cfg["tab"]["phplib_auth_user_md5"].'
                 SET
@@ -81,12 +81,12 @@ if ( !isset($useridas) )
                     wysi="'.Contenido_Security::toInteger($wysi).'"
                 WHERE
                     user_id = "'.Contenido_Security::escapeDB($userid, $db).'"';
-                    
+
         $db->query($sql);
     }
 
     $tpl->reset();
-    
+
     $sql = "SELECT
                 username, password, realname, email, telephone,
                 address_street, address_city, address_country, wysi
@@ -104,10 +104,10 @@ if ( !isset($useridas) )
                  <input type="hidden" name="frame" value="'.$frame.'">
                  <input type="hidden" name="userid" value="'.$userid.'">
                  <input type="hidden" name="idlang" value="'.$lang.'">';
-                 
+
     $db->next_record();
-    
-    
+
+
     $tpl->set('s', 'USERNAME', $db->f("username"));
     $tpl->set('s', 'EDITSTRING', "Benutzer editieren:");
     $tpl->set('s', 'FORM', $form);
@@ -122,12 +122,12 @@ if ( !isset($useridas) )
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "realname", $db->f("realname"), 40, 255));
     $tpl->next();
-    
+
     $tpl->set('d', 'CATNAME', "Neues Passwort");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("password", "password", "", 40, 255));
     $tpl->next();
-    
+
     $tpl->set('d', 'CATNAME', "Neues Passwort (Bestätigung)");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("password", "passwordagain", "", 40, 255));
@@ -137,27 +137,27 @@ if ( !isset($useridas) )
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "email", $db->f("email"), 40, 255));
     $tpl->next();
-    
+
     $tpl->set('d', 'CATNAME', "Telefon");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "telephone", $db->f("telephone"), 40, 255));
     $tpl->next();
-    
+
     $tpl->set('d', 'CATNAME', "Strasse");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "address_street", $db->f("address_street"), 40, 255));
     $tpl->next();
-    
+
     $tpl->set('d', 'CATNAME', "Stadt");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "address_city", $db->f("address_city"), 40, 255));
     $tpl->next();
-    
+
     $tpl->set('d', 'CATNAME', "Land");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
     $tpl->set('d', 'CATFIELD', formGenerateField ("text", "address_country", $db->f("address_country"), 40, 255));
     $tpl->next();
-    
+
     $tpl->set('d', 'CATNAME', "WYSIWYG-Editor");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
     $tpl->set('d', 'CATFIELD', formGenerateCheckbox("wysi", "1", $db->f("wysi")));

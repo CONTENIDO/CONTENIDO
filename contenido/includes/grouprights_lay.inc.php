@@ -1,14 +1,14 @@
  <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO Group Rights
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,20 +18,20 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  unknown
  *   modified 2008-06-26, Dominik Ziegler, add security fix
  *   modified 2008-07-29, Bilal Arslan, moved inline html to template
  *   modified 2010-05-20, Murat Purc, removed request check during processing ticket [#CON-307]
- * 
+ *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -44,16 +44,16 @@ $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"][
 $db->query($sql);
 $rights_list_old = array ();
 while ($db->next_record()) { //set a new rights list fore this user
-	$rights_list_old[$db->f(3)."|".$db->f(4)."|".$db->f("idcat")] = "x";
+    $rights_list_old[$db->f(3)."|".$db->f(4)."|".$db->f("idcat")] = "x";
 }
 if (($perm->have_perm_area_action($area, $action)) && ($action == "user_edit"))
 {
-	saverights();
+    saverights();
 }else {
-	if (!$perm->have_perm_area_action($area, $action))
-	{
-	$notification->displayNotification("error", i18n("Permission denied"));
-	}
+    if (!$perm->have_perm_area_action($area, $action))
+    {
+    $notification->displayNotification("error", i18n("Permission denied"));
+    }
 }
 
 // declare temp variables
@@ -67,12 +67,12 @@ $sJsBefore .= "var itemids=new Array();
 
 if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
 {
-	saverights();
+    saverights();
 }else {
-	if (!$perm->have_perm_area_action($area, $action))
-	{
-		$notification->displayNotification("error", i18n("Permission denied"));
-	}
+    if (!$perm->have_perm_area_action($area, $action))
+    {
+        $notification->displayNotification("error", i18n("Permission denied"));
+    }
 }
 
 
@@ -83,7 +83,7 @@ $oTable = new Table("", "", 0, 2, "", "", "", 0, 0);
 $sTable .= $oTable->start_table();
 $sTable .= $oTable->header_row();
 $sTable .= $oTable->header_cell(i18n("Layout name"));
-$sTable .= $oTable->header_cell(i18n("Description")); 
+$sTable .= $oTable->header_cell(i18n("Description"));
 
 $possible_areas=array();
 $sCheckboxesRow = '';
@@ -92,25 +92,25 @@ $aSecondHeaderRow = array();
 // look for possible actions   in mainarea []
 foreach($right_list["lay"] as $value2)
 {
-	//if there are some actions
-	if(is_array($value2["action"]))
-	//set the areas that are in use
-	foreach($value2["action"] as $key3 => $value3)
-	{
-		$possible_areas[$value2["perm"]]="";
-		$colspan++;
-		//set  the possible areas and actions for this areas
-		$sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";\n"; 
-		
-		//checkbox for the whole action
-		$sTable .= $oTable->header_cell($lngAct[$value2["perm"]][$value3]);
-		array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
+    //if there are some actions
+    if(is_array($value2["action"]))
+    //set the areas that are in use
+    foreach($value2["action"] as $key3 => $value3)
+    {
+        $possible_areas[$value2["perm"]]="";
+        $colspan++;
+        //set  the possible areas and actions for this areas
+        $sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";\n";
 
-	}
+        //checkbox for the whole action
+        $sTable .= $oTable->header_cell($lngAct[$value2["perm"]][$value3]);
+        array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
+
+    }
 }
 
         //checkbox for all rights
-$sTable .= $oTable->header_cell(i18n("Check all"));  
+$sTable .= $oTable->header_cell(i18n("Check all"));
 array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
 $sTable .= $oTable->end_row();
 
@@ -122,7 +122,7 @@ $sTable .= $oTable->header_cell('&nbsp', 'center', '', '', 0);
 
 // Put the checkbox in the table
 foreach($aSecondHeaderRow as $value){
-	$sTable .= $oTable->header_cell($value, "center", "", "", 0);
+    $sTable .= $oTable->header_cell($value, "center", "", "", 0);
 }
 $sTable .= $oTable->end_row();
 
@@ -133,44 +133,44 @@ $db->query($sql);
 
 while ($db->next_record()) {
 
-	$sTplName     = htmlentities($db->f("name"));
-	$sDescription = htmlentities($db->f("description"));
+    $sTplName     = htmlentities($db->f("name"));
+    $sDescription = htmlentities($db->f("description"));
 
 
-	$sTable .= $oTable->row();
-	$sTable .= $oTable->cell($sTplName, "", "", " class=\"td_rights0\"", false);
-	$sTable .= $oTable->cell($sDescription, "", "", " class=\"td_rights1\" style=\"white-space:normal; \"", false);
+    $sTable .= $oTable->row();
+    $sTable .= $oTable->cell($sTplName, "", "", " class=\"td_rights0\"", false);
+    $sTable .= $oTable->cell($sDescription, "", "", " class=\"td_rights1\" style=\"white-space:normal; \"", false);
 
 
-	//set javscript array for itemids
-	$sJsBefore .= "itemids[\"".$db->f("idlay")."\"]=\"x\";\n";
+    //set javscript array for itemids
+    $sJsBefore .= "itemids[\"".$db->f("idlay")."\"]=\"x\";\n";
 
-	// look for possible actions in mainarea[]
-	foreach($right_list["lay"] as $value2)
-	{
+    // look for possible actions in mainarea[]
+    foreach($right_list["lay"] as $value2)
+    {
 
-		//if there area some
-		if(is_array($value2["action"]))
-		foreach($value2["action"] as $key3 => $value3)
-		{
-		//does the user have the right
-		if(in_array($value2["perm"]."|$value3|".$db->f("idlay"),array_keys($rights_list_old)))
-		$checked="checked=\"checked\"";
-		else
-		$checked="";
-		
-		
-		//set the checkbox    the name consits of      areait+actionid+itemid
-		//"<input type=\"checkbox\"  name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>
-		 $sTable .= $oTable->cell("<input type=\"checkbox\"  name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>", "", "", " class=\"td_rights3\"", false );
-	
-		}
-	
-	
-	}
+        //if there area some
+        if(is_array($value2["action"]))
+        foreach($value2["action"] as $key3 => $value3)
+        {
+        //does the user have the right
+        if(in_array($value2["perm"]."|$value3|".$db->f("idlay"),array_keys($rights_list_old)))
+        $checked="checked=\"checked\"";
+        else
+        $checked="";
+
+
+        //set the checkbox    the name consits of      areait+actionid+itemid
+        //"<input type=\"checkbox\"  name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>
+         $sTable .= $oTable->cell("<input type=\"checkbox\"  name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>", "", "", " class=\"td_rights3\"", false );
+
+        }
+
+
+    }
 //checkbox for checking all actions fore this itemid
-	$sTable .= $oTable->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idlay")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idlay")."')\">","", "", " class=\"td_rights3\"", false);
-	$sTable .= $oTable->end_row();
+    $sTable .= $oTable->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idlay")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idlay")."')\">","", "", " class=\"td_rights3\"", false);
+    $sTable .= $oTable->end_row();
 
 }
 

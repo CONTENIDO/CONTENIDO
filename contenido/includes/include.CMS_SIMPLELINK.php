@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Include file for editiing content of type CMS_LINK
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,47 +18,47 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-05-07
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 if(isset($area) && $area == 'con_content_list'){
-	$tmp_area = $area;
-	$path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
-			'&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
-	$path2 = $path1;
+    $tmp_area = $area;
+    $path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
+            '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
+    $path2 = $path1;
 } else {
-	$tmp_area = "con_editcontent";
-	$path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
-	$path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat";
+    $tmp_area = "con_editcontent";
+    $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
+    $path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat";
 }
 
 if ($doedit == "1") {
-	global $cfgClient;
-	global $client;
-	global $upldir;
-	global $uplfile;
+    global $cfgClient;
+    global $client;
+    global $upldir;
+    global $uplfile;
 
-	cInclude("includes","functions.upl.php");
-		
-	$rootpath = $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"];
-	
-	$CMS_LINK = $CMS_LINKextern;
+    cInclude("includes","functions.upl.php");
 
-	if ($CMS_LINKintern)
-	{
-		$CMS_LINK = $CMS_LINKintern;
-	}
-	
+    $rootpath = $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"];
+
+    $CMS_LINK = $CMS_LINKextern;
+
+    if ($CMS_LINKintern)
+    {
+        $CMS_LINK = $CMS_LINKintern;
+    }
+
     if($selectpdf){
         $CMS_LINK = $rootpath . $selectpdf;
     }
@@ -67,38 +67,38 @@ if ($doedit == "1") {
     }
     if($selectzip){
         $CMS_LINK = $rootpath . $selectzip;
-    }        
+    }
     if($selectaudio){
         $CMS_LINK = $rootpath . $selectaudio;
     }
     if($selectany){
         $CMS_LINK = $rootpath . $selectany;
     }
-    
-	if (count($_FILES) == 1)
-	{
-		foreach ($_FILES['uplfile']['name'] as $key => $value)
-		{
-			if (file_exists($_FILES['uplfile']['tmp_name'][$key]))
-			{
-    			$friendlyName = uplCreateFriendlyName($_FILES['uplfile']['name'][$key]);
-    			move_uploaded_file($_FILES['uplfile']['tmp_name'][$key], $cfgClient[$client]['upl']['path'].$upldir.$friendlyName);
-    			
-    			uplSyncDirectory($upldir);
-    			
-        		if ($path == "") { $path = "/"; }
-        		
-        		$sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='".Contenido_Security::escapeDB($upldir, $db)."' AND filename='".Contenido_Security::escapeDB($friendlyName, $db)."'";
-        		$db->query($sql);
-        		$db->next_record();
-        		
-        		$CMS_LINK = $rootpath . $upldir. $friendlyName;
-			}
-    			
-		}
-	}
-	
-	
+
+    if (count($_FILES) == 1)
+    {
+        foreach ($_FILES['uplfile']['name'] as $key => $value)
+        {
+            if (file_exists($_FILES['uplfile']['tmp_name'][$key]))
+            {
+                $friendlyName = uplCreateFriendlyName($_FILES['uplfile']['name'][$key]);
+                move_uploaded_file($_FILES['uplfile']['tmp_name'][$key], $cfgClient[$client]['upl']['path'].$upldir.$friendlyName);
+
+                uplSyncDirectory($upldir);
+
+                if ($path == "") { $path = "/"; }
+
+                $sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='".Contenido_Security::escapeDB($upldir, $db)."' AND filename='".Contenido_Security::escapeDB($friendlyName, $db)."'";
+                $db->query($sql);
+                $db->next_record();
+
+                $CMS_LINK = $rootpath . $upldir. $friendlyName;
+            }
+
+        }
+    }
+
+
     conSaveContentEntry ($idartlang, "CMS_LINK", $typenr, $CMS_LINK);
     conSaveContentEntry ($idartlang, "CMS_LINKDESCR", $typenr, $CMS_LINKDESCR);
     conSaveContentEntry ($idartlang, "CMS_LINKTARGET", $typenr, $CMS_LINKTARGET);
@@ -124,29 +124,29 @@ if ($doedit == "1") {
   <tr>
     <td>
     <?php
-		
+
         getAvailableContentTypes($idartlang);
 
-		cInclude("includes","functions.forms.php");
-		global $typenr;
-		
-		$form = new UI_Table_Form("editcontent", $cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php");
-		
-		$form->setVar("lang",$lang);
-		$form->setVar("typenr",$typenr);
-		$form->setVar("idart",$idart);
-		$form->setVar("idcat",$idcat);
-		$form->setVar("idartlang",$idartlang);
-		$form->setVar("contenido",$sess->id);
-		$form->setVar("action",10);
-		$form->setVar("doedit",1);
-		$form->setVar("type",$type);
-		$form->setVar("changeview","edit");
-		$form->setVar("CMS_LINK", $a_content["CMS_LINK"][$typenr]);
-		
-		$header = sprintf(i18n("Edit link for container %s"),$typenr);
-		$form->addHeader($header);
-		
+        cInclude("includes","functions.forms.php");
+        global $typenr;
+
+        $form = new UI_Table_Form("editcontent", $cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php");
+
+        $form->setVar("lang",$lang);
+        $form->setVar("typenr",$typenr);
+        $form->setVar("idart",$idart);
+        $form->setVar("idcat",$idcat);
+        $form->setVar("idartlang",$idartlang);
+        $form->setVar("contenido",$sess->id);
+        $form->setVar("action",10);
+        $form->setVar("doedit",1);
+        $form->setVar("type",$type);
+        $form->setVar("changeview","edit");
+        $form->setVar("CMS_LINK", $a_content["CMS_LINK"][$typenr]);
+
+        $header = sprintf(i18n("Edit link for container %s"),$typenr);
+        $form->addHeader($header);
+
         if (is_numeric($a_content["CMS_LINK"][$typenr])) {
                 $a_link_intern_value = $a_content["CMS_LINK"][$typenr];
                 $a_link_extern_value = "";
@@ -154,19 +154,19 @@ if ($doedit == "1") {
                 $a_link_intern_value = "0";
                 $a_link_extern_value = $a_content["CMS_LINK"][$typenr];
         }
-        
-		$form->add(i18n("Link"),formGenerateField ("text", "CMS_LINKextern", $a_link_extern_value, 60, 255));
-        
-      
+
+        $form->add(i18n("Link"),formGenerateField ("text", "CMS_LINKextern", $a_link_extern_value, 60, 255));
+
+
         $form->add(i18n("Description"),"<TEXTAREA name=CMS_LINKDESCR ROWS=3 COLS=60>".htmlspecialchars($a_content["CMS_LINKDESCR"][$typenr])."</TEXTAREA>");
-        
-        
-		
-		$form->addCancel($sess->url($path2));        
-        echo $form->render(); 
-                      
+
+
+
+        $form->addCancel($sess->url($path2));
+        echo $form->render();
+
         echo "  </TD></TR>";
-        
+
 
         echo "  </TABLE>
                       </FORM>";

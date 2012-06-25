@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Include file for editiing content of type CMS_TEXT
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,41 +18,41 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-05-07
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2011-06-24, Rusmir Jusufovic loactioni: external/backendedit/front_content.php and not cms/front_content.php
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 if(isset($area) && $area == 'con_content_list'){
-	$tmp_area = $area;
-	$href = "&action=10&idartlang=".$idartlang."&frame=4"."&lang=".$lang;
-	$path1 = $cfg['path']['contenido_fullhtml']."main.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client".$href;
-	$path2 = $path1;
-	$inputHTML = "        <input type=hidden name=area value=\"$area\">\n".
-				"        <input type=hidden name=frame value=\"4\">\n".
-				"        <input type=hidden name=client value=\"$client\">\n";
+    $tmp_area = $area;
+    $href = "&action=10&idartlang=".$idartlang."&frame=4"."&lang=".$lang;
+    $path1 = $cfg['path']['contenido_fullhtml']."main.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client".$href;
+    $path2 = $path1;
+    $inputHTML = "        <input type=hidden name=area value=\"$area\">\n".
+                "        <input type=hidden name=frame value=\"4\">\n".
+                "        <input type=hidden name=client value=\"$client\">\n";
 } else {
-	$tmp_area = 'con_editcontent';
-	$path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
-	$path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang";
-	$inputHTML = "";
+    $tmp_area = 'con_editcontent';
+    $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
+    $path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang";
+    $inputHTML = "";
 }
 
 if ($doedit == "1") {
-	conSaveContentEntry ($idartlang, "CMS_TEXT", $typenr, $CMS_TEXT);
-	conMakeArticleIndex ($idartlang, $idart);
-	conGenerateCodeForArtInAllCategories($idart);
-	header( "location:".$sess->url($path1)."");
+    conSaveContentEntry ($idartlang, "CMS_TEXT", $typenr, $CMS_TEXT);
+    conMakeArticleIndex ($idartlang, $idart);
+    conGenerateCodeForArtInAllCategories($idart);
+    header( "location:".$sess->url($path1)."");
 }
 header("Content-Type: text/html; charset={$encoding[$lang]}");
 ?>
@@ -74,7 +74,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
 <?php
        getAvailableContentTypes($idartlang);
-        
+
         echo "  <FORM name=\"editcontent\" method=\"post\" action=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php\">";
         $sess->hidden_session();
         echo "  <INPUT type=hidden name=lang value=\"$lang\">";
@@ -82,7 +82,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         echo "  <INPUT type=hidden name=idart value=\"$idart\">";
         echo "  <INPUT type=hidden name=action value=\"10\">";
         echo "  <INPUT type=hidden name=type value=\"$type\">";
-        echo "<INPUT type=hidden name=doedit value=1>";        
+        echo "<INPUT type=hidden name=doedit value=1>";
         echo "  <INPUT type=hidden name=idcat value=\"$idcat\">";
         echo "  <INPUT type=hidden name=idartlang value=\"$idartlang\">";
         echo "<INPUT type=hidden name=changeview value=\"edit\">";

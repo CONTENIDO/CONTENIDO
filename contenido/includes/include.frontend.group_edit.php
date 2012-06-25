@@ -78,14 +78,14 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
             $groupmembers->create($idfrontendgroup, $add);
         }
     }
-	$successMessage = i18n("Added user to group successfully!");
+    $successMessage = i18n("Added user to group successfully!");
     # also save other variables
     $action = "frontendgroup_save_group";
 } else if ($action == "frontendgroup_delete" && $perm->have_perm_area_action($area, $action)) {
    $fegroups->delete($idfrontendgroup);
    $idfrontendgroup= 0;
    $fegroup = new cApiFrontendGroup();
-   
+
   $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted group successfully!"));
 }
 
@@ -116,9 +116,9 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
                 $messages[] = i18n("Could not set new group name: Group already exists");
             } else {
                 $fegroup->set("groupname", stripslashes($groupname));
-               
+
                 if(!isset($successMessage))
-               		$successMessage = i18n("Saved changes successfully!");
+                       $successMessage = i18n("Saved changes successfully!");
             }
         }
 
@@ -155,10 +155,10 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
     if (count($messages) > 0) {
         $notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
     }else {
-    	if(strlen($successMessage) > 0)
-    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO,$successMessage);
-    	elseif(strlen($action) > 0)
-    		$notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
+        if(strlen($successMessage) > 0)
+            $notification->displayNotification(Contenido_Notification::LEVEL_INFO,$successMessage);
+        elseif(strlen($action) > 0)
+            $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
     }
 
     $tpl->reset();
@@ -271,7 +271,7 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
     $page = new UI_Page();
     $page->setContent("");
     $page->addScript('reload', $sReloadScript);
-   
+
     $page->render();
 }
 ?>

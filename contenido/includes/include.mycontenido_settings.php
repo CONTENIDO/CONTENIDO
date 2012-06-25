@@ -32,7 +32,7 @@
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -43,32 +43,32 @@ $noti = "";
 if ($action == "mycontenido_editself")
 {
 
-	if (!isset($wysi))
-	{
-		$wysi = false;
-	}
+    if (!isset($wysi))
+    {
+        $wysi = false;
+    }
 
-	$error = false;
+    $error = false;
 
-	if ($newpassword != "")
-	{
-    	if (cApiUser::encodePassword($oldpassword) != $user->get("password"))
-    	{
-    		$error = i18n("Old password incorrect");
-    	}
+    if ($newpassword != "")
+    {
+        if (cApiUser::encodePassword($oldpassword) != $user->get("password"))
+        {
+            $error = i18n("Old password incorrect");
+        }
 
-    	if (strcmp($newpassword, $newpassword2) != 0)
-    	{
-    		$error = i18n("Passwords don't match");
-    	}
+        if (strcmp($newpassword, $newpassword2) != 0)
+        {
+            $error = i18n("Passwords don't match");
+        }
 
 
-    	if ($error !== false)
-    	{
-    		$noti = $notification->returnNotification("error", $error)."<br>";
-    	} else {
+        if ($error !== false)
+        {
+            $noti = $notification->returnNotification("error", $error)."<br>";
+        } else {
             // New Class User, update password
-            
+
             $iResult = $user->savePassword($newpassword);
 
             #$user->set("password", md5($newpassword));
@@ -79,22 +79,22 @@ if ($action == "mycontenido_editself")
                 $noti = $notification->returnNotification("error", cApiUser::getErrorString($iResult));
             }
 
-    	}
-	}
-	
-	$user->set("realname", $name);
-	$user->set("email", $email);
-	$user->set("telephone", $phonenumber);
-	$user->set("address_street", $street);
-	$user->set("address_zip", $zip);
-	$user->set("address_city", $city);
-	$user->set("address_country", $country);	
-	
-	$user->set("wysi", $wysi);
+        }
+    }
 
-	$user->setUserProperty("backend", "timeformat", $format);
-	$user->setUserProperty("backend", "timeformat_date", $formatdate);
-	$user->setUserProperty("backend", "timeformat_time", $formattime);
+    $user->set("realname", $name);
+    $user->set("email", $email);
+    $user->set("telephone", $phonenumber);
+    $user->set("address_street", $street);
+    $user->set("address_zip", $zip);
+    $user->set("address_city", $city);
+    $user->set("address_country", $country);
+
+    $user->set("wysi", $wysi);
+
+    $user->setUserProperty("backend", "timeformat", $format);
+    $user->setUserProperty("backend", "timeformat_date", $formatdate);
+    $user->setUserProperty("backend", "timeformat_time", $formattime);
     $user->store();
 }
 
@@ -115,13 +115,13 @@ $form->add(i18n("Name"), $realname);
 
 // @since 2006-07-04 Display password fields if not authenticated via LDAP/AD, only
 if ($user->get("password") != 'active_directory_auth') {
-	$oldpassword = new cHTMLPasswordbox("oldpassword");
-	$newpassword = new cHTMLPasswordbox("newpassword");
-	$newpassword2 = new cHTMLPasswordbox("newpassword2");
+    $oldpassword = new cHTMLPasswordbox("oldpassword");
+    $newpassword = new cHTMLPasswordbox("newpassword");
+    $newpassword2 = new cHTMLPasswordbox("newpassword2");
 
-	$form->add(i18n("Old password"), $oldpassword);
-	$form->add(i18n("New password"), $newpassword);
-	$form->add(i18n("Confirm new password"), $newpassword2);
+    $form->add(i18n("Old password"), $oldpassword);
+    $form->add(i18n("New password"), $newpassword);
+    $form->add(i18n("Confirm new password"), $newpassword2);
 }
 
 $email = new cHTMLTextbox("email", $user->get("email"));

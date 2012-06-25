@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Define the Template related functions
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-01-21
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *   modified 2008-06-30 timo.trautmann added fix module settings were also copied in function tplDuplicateTemplate
@@ -28,11 +28,11 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 cInclude ("includes", "functions.con.php");
@@ -53,7 +53,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         global $cfg;
         global $area_tree;
         global $perm;
-        
+
         $db2= new DB_Contenido;
         $date = date("YmdHis");
         $author = "".$auth->auth["uname"]."";
@@ -61,9 +61,9 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         //******** entry in 'tpl'-table ***************
         set_magic_quotes_gpc($name);
         set_magic_quotes_gpc($description);
-		
+
         $name = cApiStrCleanURLCharacters($name);
-       
+
         if (!$idtpl) {
 
 //            $idtpl = $db->nextid($cfg["tab"]["tpl"]);
@@ -79,7 +79,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
             $db->query($sql);
             $idtpl = $db->getLastInsertedId($cfg["tab"]["tpl"]);
-             
+
             /* Insert new entry in the
                Template Conf table  */
             $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]."
@@ -88,16 +88,16 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
             $db->query($sql);
             $idtplcfg = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
-            
+
             /* Update new idtplconf*/
-            $sql = "UPDATE ".$cfg["tab"]["tpl_conf"]." SET idtplcfg='".Contenido_Security::toInteger($idtplcfg)."' 
+            $sql = "UPDATE ".$cfg["tab"]["tpl_conf"]." SET idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'
             WHERE idtpl='".Contenido_Security::toInteger($idtpl)."'";
             $db->query($sql);
 
             // set correct rights for element
             cInclude ("includes", "functions.rights.php");
             createRightsForElement("tpl", $idtpl);
-           
+
 
         } else {
 
@@ -108,7 +108,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
             if (is_array($c)) {
 
-				/* Delete all container assigned to this template */
+                /* Delete all container assigned to this template */
                   $sql = "DELETE FROM ".$cfg["tab"]["container"]." WHERE idtpl='".Contenido_Security::toInteger($idtpl, $db)."'";
                   $db->query($sql);
 
@@ -127,22 +127,22 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
             /* Generate code */
             conGenerateCodeForAllartsUsingTemplate($idtpl);
-           
+
         }
 
-		if ($default == 1)
-		{
-    		$sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '0' WHERE idclient = '".Contenido_Security::toInteger($client)."'";
-    		$db->query($sql);
+        if ($default == 1)
+        {
+            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '0' WHERE idclient = '".Contenido_Security::toInteger($client)."'";
+            $db->query($sql);
 
-    		$sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '1' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND idclient = '".Contenido_Security::toInteger($client)."'";
-    		$db->query($sql);
-		} else {
-			$sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '0' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND idclient = '".Contenido_Security::toInteger($client)."'";
-    		$db->query($sql);
-		}
-		
-		
+            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '1' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND idclient = '".Contenido_Security::toInteger($client)."'";
+            $db->query($sql);
+        } else {
+            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '0' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND idclient = '".Contenido_Security::toInteger($client)."'";
+            $db->query($sql);
+        }
+
+
         //******** if layout is changed stay at 'tpl_edit' otherwise go to 'tpl'
         //if ($changelayout != 1) {
          //   $url = $sess->url("main.php?area=tpl_edit&idtpl=$idtpl&frame=4&blubi=blubxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
@@ -179,16 +179,16 @@ function tplDeleteTemplate($idtpl) {
         $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
         $db->query($sql);
         while ( $db->next_record() ) {
-        	$idsToDelete[] = $db->f("idtplcfg");
+            $idsToDelete[] = $db->f("idtplcfg");
         }
 
         foreach ( $idsToDelete as $id ) {
 
-        	$sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($id)."'";
-        	$db->query($sql);
+            $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($id)."'";
+            $db->query($sql);
 
-        	$sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($id)."'";
-        	$db->query($sql);
+            $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($id)."'";
+            $db->query($sql);
 
         }
 
@@ -211,45 +211,45 @@ function tplDeleteTemplate($idtpl) {
 function tplBrowseLayoutForContainers($idlay) {
         global $db;
         global $cfg;
-		global $containerinf;
-		global $lang;
-		
-		$layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
-		$code = $layoutInFile->getLayoutCode();
-	
+        global $containerinf;
+        global $lang;
+
+        $layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
+        $code = $layoutInFile->getLayoutCode();
+
 
         preg_match_all ("/CMS_CONTAINER\[([0-9]*)\]/", $code, $a_container);
-		$iPosBody = stripos($code, '<body>');
-		$sCodeBeforeHeader = substr($code, 0, $iPosBody);
-		
-		foreach ($a_container[1] as $value) {
-			if (preg_match("/CMS_CONTAINER\[$value\]/", $sCodeBeforeHeader)) {
-				$containerinf[$idlay][$value]["is_body"] = false;
-			} else {
-				$containerinf[$idlay][$value]["is_body"] = true;
-			}
-		}
-		
-		if (is_array($containerinf[$idlay]))
-		{
-			foreach ($containerinf[$idlay] as $key => $value)
-			{
-				$a_container[1][] = $key;
-			}
-		}
+        $iPosBody = stripos($code, '<body>');
+        $sCodeBeforeHeader = substr($code, 0, $iPosBody);
 
-		$container = Array();
-		
-		foreach ($a_container[1] as $value)
-		{
-			if (!in_array($value, $container))
-			{
-				$container[] = $value;
-			}
-		}
-		
-		asort($container);
-		
+        foreach ($a_container[1] as $value) {
+            if (preg_match("/CMS_CONTAINER\[$value\]/", $sCodeBeforeHeader)) {
+                $containerinf[$idlay][$value]["is_body"] = false;
+            } else {
+                $containerinf[$idlay][$value]["is_body"] = true;
+            }
+        }
+
+        if (is_array($containerinf[$idlay]))
+        {
+            foreach ($containerinf[$idlay] as $key => $value)
+            {
+                $a_container[1][] = $key;
+            }
+        }
+
+        $container = Array();
+
+        foreach ($a_container[1] as $value)
+        {
+            if (!in_array($value, $container))
+            {
+                $container[] = $value;
+            }
+        }
+
+        asort($container);
+
         if (is_array($container)) {
             $tmp_returnstring = implode("&",$container);
         }
@@ -264,19 +264,19 @@ function tplBrowseLayoutForContainers($idlay) {
  *
  * @return string Container name
  */
-function tplGetContainerName($idlay, $container) 
+function tplGetContainerName($idlay, $container)
 {
         global $db;
         global $cfg;
-		global $containerinf;
-		
-		if (is_array($containerinf[$idlay]))
-		{
-    		if (array_key_exists($container, $containerinf[$idlay]))
-    		{
-    			return $containerinf[$idlay][$container]["name"];
-    		}
-		}
+        global $containerinf;
+
+        if (is_array($containerinf[$idlay]))
+        {
+            if (array_key_exists($container, $containerinf[$idlay]))
+            {
+                return $containerinf[$idlay][$container]["name"];
+            }
+        }
 }
 
 /**
@@ -287,19 +287,19 @@ function tplGetContainerName($idlay, $container)
  *
  * @return string Container name
  */
-function tplGetContainerMode($idlay, $container) 
+function tplGetContainerMode($idlay, $container)
 {
         global $db;
         global $cfg;
-		global $containerinf;
-		
-		if (is_array($containerinf[$idlay]))
-		{
-    		if (array_key_exists($container, $containerinf[$idlay]))
-    		{
-    			return $containerinf[$idlay][$container]["mode"];
-    		}
-		}
+        global $containerinf;
+
+        if (is_array($containerinf[$idlay]))
+        {
+            if (array_key_exists($container, $containerinf[$idlay]))
+            {
+                return $containerinf[$idlay][$container]["mode"];
+            }
+        }
 }
 
 /**
@@ -310,28 +310,28 @@ function tplGetContainerMode($idlay, $container)
  *
  * @return array Allowed container types
  */
-function tplGetContainerTypes($idlay, $container) 
+function tplGetContainerTypes($idlay, $container)
 {
         global $db;
         global $cfg;
-		global $containerinf;
-		
-		if (is_array($containerinf[$idlay]))
-		{
-    		if (array_key_exists($container, $containerinf[$idlay]))
-    		{
-    			if ($containerinf[$idlay][$container]["types"] != "")
-    			{
-        			$list = explode(",",$containerinf[$idlay][$container]["types"]);
-        			
-        			foreach ($list as $key => $value)
-        			{
-        				$list[$key] = trim($value);
-        			}
-        			return $list;
-    			}
-    		}
-		}
+        global $containerinf;
+
+        if (is_array($containerinf[$idlay]))
+        {
+            if (array_key_exists($container, $containerinf[$idlay]))
+            {
+                if ($containerinf[$idlay][$container]["types"] != "")
+                {
+                    $list = explode(",",$containerinf[$idlay][$container]["types"]);
+
+                    foreach ($list as $key => $value)
+                    {
+                        $list[$key] = trim($value);
+                    }
+                    return $list;
+                }
+            }
+        }
 }
 
 /**
@@ -342,19 +342,19 @@ function tplGetContainerTypes($idlay, $container)
  *
  * @return array Allowed container types
  */
-function tplGetContainerDefault($idlay, $container) 
+function tplGetContainerDefault($idlay, $container)
 {
         global $db;
         global $cfg;
-		global $containerinf;
-		
-		if (is_array($containerinf[$idlay]))
-		{
-    		if (array_key_exists($container, $containerinf[$idlay]))
-    		{
-    			return $containerinf[$idlay][$container]["default"];
-    		}
-		}
+        global $containerinf;
+
+        if (is_array($containerinf[$idlay]))
+        {
+            if (array_key_exists($container, $containerinf[$idlay]))
+            {
+                return $containerinf[$idlay][$container]["default"];
+            }
+        }
 }
 
 /**
@@ -366,40 +366,40 @@ function tplGetContainerDefault($idlay, $container)
  */
 function tplPreparseLayout ($idlay)
 {
-	global $containerinf;
-	global $db;
-	global $cfg;
-	global $lang;
-	
-	$layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
-	$code = $layoutInFile->getLayoutCode();
-    
+    global $containerinf;
+    global $db;
+    global $cfg;
+    global $lang;
+
+    $layoutInFile = new LayoutInFile($idlay, "", $cfg, $lang);
+    $code = $layoutInFile->getLayoutCode();
+
     $parser = new HtmlParser($code);
     $bIsBody = false;
-	while ($parser->parse())
-	{
-		if (strtolower($parser->iNodeName) == 'body') {
-			$bIsBody = true;
-		}
+    while ($parser->parse())
+    {
+        if (strtolower($parser->iNodeName) == 'body') {
+            $bIsBody = true;
+        }
 
-		if ($parser->iNodeName == "container" && $parser->iNodeType == NODE_TYPE_ELEMENT)
-		{
-			$idcontainer = $parser->iNodeAttributes["id"];
-			
-			$mode = $parser->iNodeAttributes["mode"];
-			
-			if ($mode == "")
-			{
-				$mode = "optional";
-			}
-			
-			$containerinf[$idlay][$idcontainer]["name"] = $parser->iNodeAttributes["name"];
-			$containerinf[$idlay][$idcontainer]["mode"] = $mode;
-			$containerinf[$idlay][$idcontainer]["default"] = $parser->iNodeAttributes["default"];
-			$containerinf[$idlay][$idcontainer]["types"] = $parser->iNodeAttributes["types"];
-			$containerinf[$idlay][$idcontainer]["is_body"] = $bIsBody;
-		}
-	}
+        if ($parser->iNodeName == "container" && $parser->iNodeType == NODE_TYPE_ELEMENT)
+        {
+            $idcontainer = $parser->iNodeAttributes["id"];
+
+            $mode = $parser->iNodeAttributes["mode"];
+
+            if ($mode == "")
+            {
+                $mode = "optional";
+            }
+
+            $containerinf[$idlay][$idcontainer]["name"] = $parser->iNodeAttributes["name"];
+            $containerinf[$idlay][$idcontainer]["mode"] = $mode;
+            $containerinf[$idlay][$idcontainer]["default"] = $parser->iNodeAttributes["default"];
+            $containerinf[$idlay][$idcontainer]["types"] = $parser->iNodeAttributes["types"];
+            $containerinf[$idlay][$idcontainer]["is_body"] = $bIsBody;
+        }
+    }
 }
 
 /**
@@ -431,13 +431,13 @@ function tplDuplicateTemplate($idtpl) {
     $idclient   = $db->f("idclient");
     $idlay      = $db->f("idlay");
     //$new_idtpl  = $db->nextid($cfg["tab"]["tpl"]);
-	
+
     $name       = sprintf(i18n("%s (Copy)"), $db->f("name"));
     $descr      = $db->f("description");
     $author     = $auth->auth["uname"];
     $created    = time();
     $lastmod    = time();
-    
+
     $idtpl_conf = $db->f("idtplcfg");
     if($idtpl_conf) {
         // after inserted con_template, we have to update idptl
@@ -445,7 +445,7 @@ function tplDuplicateTemplate($idtpl) {
         $db->insert($cfg["tab"]["tpl_conf"], $templateConf);
         $new_idtpl_conf = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
     }
-    
+
     $sql = "INSERT INTO
                 ".$cfg["tab"]["tpl"]."
                 (idclient, idlay, ".($idtpl_conf?'idtplcfg,':'')." name, description, deletable,author, created, lastmodified)
@@ -457,7 +457,7 @@ function tplDuplicateTemplate($idtpl) {
 
     // update template_conf, set idtpl width right value.
     $db->update($cfg["tab"]["tpl_conf"], array('idtpl'=>$new_idtpl), array('idtplcfg'=>$new_idtpl_conf));
-    
+
     $a_containers = array();
 
     $sql = "SELECT
@@ -485,42 +485,42 @@ function tplDuplicateTemplate($idtpl) {
         $db->query($sql);
 
     }
-	
-	//modified (added) 2008-06-30 timo.trautmann added fix module settings were also copied
-	if($idtpl_conf) {
+
+    //modified (added) 2008-06-30 timo.trautmann added fix module settings were also copied
+    if($idtpl_conf) {
         $a_container_cfg = array();
         $sql = "SELECT
-					   *
-				 FROM
-					   ".$cfg["tab"]["container_conf"]."
-				 WHERE
-					   idtplcfg = '".Contenido_Security::toInteger($idtpl_conf)."'
-				 ORDER BY
-					   number";
-   
+                       *
+                 FROM
+                       ".$cfg["tab"]["container_conf"]."
+                 WHERE
+                       idtplcfg = '".Contenido_Security::toInteger($idtpl_conf)."'
+                 ORDER BY
+                       number";
+
         $db->query($sql);
-   
+
         while ($db->next_record()) {
-		   $a_container_cfg[$db->f("number")] = $db->f("container");
+           $a_container_cfg[$db->f("number")] = $db->f("container");
         }
-   
+
         foreach ($a_container_cfg as $key => $value) {
-   
-		  
 
-		   $sql = "INSERT INTO ".$cfg["tab"]["container_conf"]."
-					   (idtplcfg, number, container) VALUES 
-					   ( '".Contenido_Security::toInteger($new_idtpl_conf)."', '".Contenido_Security::escapeDB($key, $db)."', '".Contenido_Security::escapeDB($value, $db)."')";
 
-		   $db->query($sql);
-   
+
+           $sql = "INSERT INTO ".$cfg["tab"]["container_conf"]."
+                       (idtplcfg, number, container) VALUES
+                       ( '".Contenido_Security::toInteger($new_idtpl_conf)."', '".Contenido_Security::escapeDB($key, $db)."', '".Contenido_Security::escapeDB($value, $db)."')";
+
+           $db->query($sql);
+
         }
-    } 
-	//modified (added) 2008-06-30 end
+    }
+    //modified (added) 2008-06-30 end
 
     cInclude ("includes", "functions.rights.php");
     copyRightsForElement("tpl", $idtpl, $new_idtpl);
-    
+
     return $new_idtpl;
 
 }
@@ -534,7 +534,7 @@ function tplDuplicateTemplate($idtpl) {
  *
  * @author Jan Lengowski <Jan.Lengowski@4fb.de>
  * @copyright four for business AG <www.4fb.de>
- * 
+ *
  * modified Munkh-Ulzii Balidar, improved the sql query without while loop
  */
 function tplIsTemplateInUse($idtpl) {
@@ -542,40 +542,40 @@ function tplIsTemplateInUse($idtpl) {
     global $cfg, $client, $lang;
 
     $db = new DB_Contenido;
-    // Check categorys 
+    // Check categorys
     $sql = "SELECT
-               	b.idcatlang, b.name, b.idlang, b.idcat   
+                   b.idcatlang, b.name, b.idlang, b.idcat
             FROM
                 ".$cfg["tab"]["cat"]." AS a,
-            	".$cfg["tab"]["cat_lang"]." AS b
+                ".$cfg["tab"]["cat_lang"]." AS b
             WHERE
                 a.idclient  = '".Contenido_Security::toInteger($client)."' AND
                 a.idcat     = b.idcat AND
-                b.idtplcfg  IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')  
+                b.idtplcfg  IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')
             ORDER BY b.idlang ASC, b.name ASC ";
     $db->query($sql);
     if ($db->Errno == '' && $db->num_rows() > 0) {
-    	return true;
+        return true;
     }
 
-    // Check articles 
+    // Check articles
     $sql = "SELECT
-           		b.idartlang, b.title, b.idlang, b.idart   
+                   b.idartlang, b.title, b.idlang, b.idart
             FROM
                 ".$cfg["tab"]["art"]." AS a,
                 ".$cfg["tab"]["art_lang"]." AS b
             WHERE
                 a.idclient  = '".Contenido_Security::toInteger($client)."' AND
                 a.idart     = b.idart AND
-                b.idtplcfg IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')  
+                b.idtplcfg IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')
             ORDER BY b.idlang ASC, b.title ASC ";
 
     $db->query($sql);
 
     if ($db->Errno == '' && $db->num_rows() > 0) {
-    	return true;
+        return true;
     }
-    
+
     return false;
 
 }
@@ -595,53 +595,53 @@ function tplGetInUsedData($idtpl) {
     global $cfg, $client, $lang;
 
     $db = new DB_Contenido;
-    
+
     $aUsedData = array();
 
-    // Check categorys 
+    // Check categorys
     $sql = "SELECT
-               	b.idcatlang, b.name, b.idlang, b.idcat   
+                   b.idcatlang, b.name, b.idlang, b.idcat
             FROM
                 ".$cfg["tab"]["cat"]." AS a,
-            	".$cfg["tab"]["cat_lang"]." AS b
+                ".$cfg["tab"]["cat_lang"]." AS b
             WHERE
                 a.idclient  = '".Contenido_Security::toInteger($client)."' AND
                 a.idcat     = b.idcat AND
-                b.idtplcfg  IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')  
+                b.idtplcfg  IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')
             ORDER BY b.idlang ASC, b.name ASC ";
     $db->query($sql);
     if ($db->Errno == 0 && $db->num_rows() > 0) {
-    	while ($db->next_record()) {
-	    	$aUsedData['cat'][] = array(
-	        'name' => $db->f('name'),
-	        'lang' => $db->f('idlang'),
-	        'idcat' => $db->f('idcat'),
-	        );
-    	}
+        while ($db->next_record()) {
+            $aUsedData['cat'][] = array(
+            'name' => $db->f('name'),
+            'lang' => $db->f('idlang'),
+            'idcat' => $db->f('idcat'),
+            );
+        }
     }
 
     // Check articles
     $sql = "SELECT
-           		b.idartlang, b.title, b.idlang, b.idart   
+                   b.idartlang, b.title, b.idlang, b.idart
             FROM
                 ".$cfg["tab"]["art"]." AS a,
                 ".$cfg["tab"]["art_lang"]." AS b
             WHERE
                 a.idclient  = '".Contenido_Security::toInteger($client)."' AND
                 a.idart     = b.idart AND
-                b.idtplcfg IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')  
+                b.idtplcfg IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')
             ORDER BY b.idlang ASC, b.title ASC ";
 
     $db->query($sql);
 
     if ($db->Errno == '' && $db->num_rows() > 0) {
-    	while ($db->next_record()) {
-	        $aUsedData['art'][] = array(
-	        'title' => $db->f('title'), 
-	        'lang' => $db->f('idlang'),
-	        'idart' => $db->f('idart'),
-	        );
-    	}
+        while ($db->next_record()) {
+            $aUsedData['art'][] = array(
+            'title' => $db->f('title'),
+            'lang' => $db->f('idlang'),
+            'idart' => $db->f('idart'),
+            );
+        }
     }
 
     return $aUsedData;
@@ -658,184 +658,184 @@ function tplGetInUsedData($idtpl) {
  */
 function tplcfgDuplicate ($idtplcfg)
 {
-	global $cfg;
-	
-	$db = new DB_Contenido;
-	$db2 = new DB_Contenido;
-	
-	$sql = "SELECT
-				idtpl, status, author, created, lastmodified
-			FROM
-				".$cfg["tab"]["tpl_conf"]."
-			WHERE
-				idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
-	
-	$db->query($sql);
-	
-	if ($db->next_record())
-	{
-		//$newidtplcfg = $db2->nextid($cfg["tab"]["tpl_conf"]);
-		$idtpl = $db->f("idtpl");
-		$status = $db->f("status");
-		$author = $db->f("author");
-		$created = $db->f("created");
-		$lastmodified = $db->f("lastmodified");
-		
-		$sql = "INSERT INTO
-				".$cfg["tab"]["tpl_conf"]."
-				(idtpl, status, author, created, lastmodified)
-				VALUES
-				('".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::toInteger($status)."', '".Contenido_Security::escapeDB($author, $db2)."',
-				'".Contenido_Security::escapeDB($created, $db2)."', '".Contenido_Security::escapeDB($lastmodified, $db2)."')";
-				
-		$db2->query($sql);
-		$newidtplcfg = $db2->getLastInsertedId($cfg["tab"]["tpl_conf"]);
-		
-		/* Copy container configuration */
-    	$sql = "SELECT 
-    				number, container
-    			FROM
-    				".$cfg["tab"]["container_conf"]."
-    			WHERE idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
-    			
-    	$db->query($sql);
-    	
-    	while ($db->next_record())
-    	{
-    		//$newidcontainerc = $db2->nextid($cfg["tab"]["container_conf"]);
-    		$number = $db->f("number");
-    		$container = $db->f("container");
-    		
-    		$sql = "INSERT INTO
-    				".$cfg["tab"]["container_conf"]."
-    				( idtplcfg, number, container)
-    				VALUES
-    				('".Contenido_Security::toInteger($newidtplcfg)."', '".Contenido_Security::toInteger($number)."', '".Contenido_Security::escapeDB($container, $db2)."')";
-    		$db2->query($sql);	
-    	}
-	}
-	
-	return ($newidtplcfg);
-	
+    global $cfg;
+
+    $db = new DB_Contenido;
+    $db2 = new DB_Contenido;
+
+    $sql = "SELECT
+                idtpl, status, author, created, lastmodified
+            FROM
+                ".$cfg["tab"]["tpl_conf"]."
+            WHERE
+                idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
+
+    $db->query($sql);
+
+    if ($db->next_record())
+    {
+        //$newidtplcfg = $db2->nextid($cfg["tab"]["tpl_conf"]);
+        $idtpl = $db->f("idtpl");
+        $status = $db->f("status");
+        $author = $db->f("author");
+        $created = $db->f("created");
+        $lastmodified = $db->f("lastmodified");
+
+        $sql = "INSERT INTO
+                ".$cfg["tab"]["tpl_conf"]."
+                (idtpl, status, author, created, lastmodified)
+                VALUES
+                ('".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::toInteger($status)."', '".Contenido_Security::escapeDB($author, $db2)."',
+                '".Contenido_Security::escapeDB($created, $db2)."', '".Contenido_Security::escapeDB($lastmodified, $db2)."')";
+
+        $db2->query($sql);
+        $newidtplcfg = $db2->getLastInsertedId($cfg["tab"]["tpl_conf"]);
+
+        /* Copy container configuration */
+        $sql = "SELECT
+                    number, container
+                FROM
+                    ".$cfg["tab"]["container_conf"]."
+                WHERE idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
+
+        $db->query($sql);
+
+        while ($db->next_record())
+        {
+            //$newidcontainerc = $db2->nextid($cfg["tab"]["container_conf"]);
+            $number = $db->f("number");
+            $container = $db->f("container");
+
+            $sql = "INSERT INTO
+                    ".$cfg["tab"]["container_conf"]."
+                    ( idtplcfg, number, container)
+                    VALUES
+                    ('".Contenido_Security::toInteger($newidtplcfg)."', '".Contenido_Security::toInteger($number)."', '".Contenido_Security::escapeDB($container, $db2)."')";
+            $db2->query($sql);
+        }
+    }
+
+    return ($newidtplcfg);
+
 }
 
 /*
  * tplAutoFillModules
- * 
+ *
  * This function fills in modules automatically using this logic:
- * 
+ *
  * - If the container mode is fixed, insert the named module (if exists)
  * - If the container mode is mandatory, insert the "default" module (if exists)
- * 
+ *
  * TODO: The default module is only inserted in mandatory mode if the container
- *       is empty. We need a better logic for handling "changes". 
+ *       is empty. We need a better logic for handling "changes".
  */
 
 function tplAutoFillModules ($idtpl)
 {
-	global $cfg;
-	global $db_autofill;
-	global $containerinf;
-	global $_autoFillcontainerCache;
+    global $cfg;
+    global $db_autofill;
+    global $containerinf;
+    global $_autoFillcontainerCache;
 
-	if (!is_object($db_autofill))
-	{
-		$db_autofill = new DB_Contenido;
-	}
-	
-	$sql = "SELECT idlay FROM ".$cfg["tab"]["tpl"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
-	$db_autofill->query($sql);
-	
-	if (!$db_autofill->next_record())
-	{
-		return false;	
-	}
+    if (!is_object($db_autofill))
+    {
+        $db_autofill = new DB_Contenido;
+    }
 
-	$idlay = $db_autofill->f("idlay");
-	
-	if (!(is_array($containerinf) && array_key_exists($idlay, $containerinf) && array_key_exists($idlay, $_autoFillcontainerCache)))
-	{
-		tplPreparseLayout($idlay);
-		$_autoFillcontainerCache[$idlay] = tplBrowseLayoutForContainers($idlay);
-	}
-	
-	$a_container = explode("&",$_autoFillcontainerCache[$idlay]);	
+    $sql = "SELECT idlay FROM ".$cfg["tab"]["tpl"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
+    $db_autofill->query($sql);
 
-	foreach ($a_container as $container)
-	{
-		switch ($containerinf[$idlay][$container]["mode"])
-		{
-			/* Fixed mode */
-			case "fixed":
-			if ($containerinf[$idlay][$container]["default"] != "")
-			{
-				$sql = 	"SELECT idmod FROM ".$cfg["tab"]["mod"]
-						." WHERE name = '".
-						Contenido_Security::escapeDB($containerinf[$idlay][$container]["default"], $db_autofill)."'";
-						
-				$db_autofill->query($sql);
-				
-				if ($db_autofill->next_record())
-				{
-					$idmod = $db_autofill->f("idmod");	
-					
-					
-					$sql = "SELECT idcontainer FROM ".$cfg["tab"]["container"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND number = '".Contenido_Security::toInteger($container)."'";
-							
-					$db_autofill->query($sql);
-					
-					if ($db_autofill->next_record())
-					{
-						$sql = 	"UPDATE ".$cfg["tab"]["container"].
-								" SET idmod = '".Contenido_Security::toInteger($idmod)."' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'".
-								" AND number = '".Contenido_Security::toInteger($container)."' AND ".
-								" idcontainer = '".Contenido_Security::toInteger($db_autofill->f("idcontainer"))."'";
-						$db_autofill->query($sql);
-					} else {
-						$sql = 	"INSERT INTO ".$cfg["tab"]["container"].
-							  	" (idtpl, number, idmod) ".
-							  	" VALUES ( ".
-							  	" '$idtpl', '$container', '$idmod')";
-						$db_autofill->query($sql);
-					}
-				}
-			}
-			
-						
-			case "mandatory":	
-			
-			if ($containerinf[$idlay][$container]["default"] != "")
-			{
-				$sql = 	"SELECT idmod FROM ".$cfg["tab"]["mod"]
-						." WHERE name = '".
-						Contenido_Security::escapeDB($containerinf[$idlay][$container]["default"], $db)."'";
-						
-				$db_autofill->query($sql);
-				
-				if ($db_autofill->next_record())
-				{
-					$idmod = $db_autofill->f("idmod");	
-					
-					
-					$sql = 	"SELECT idcontainer, idmod FROM ".$cfg["tab"]["container"]
-							." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND number = '".Contenido_Security::toInteger($container)."'";
-							
-					$db_autofill->query($sql);
-					
-					if ($db_autofill->next_record())
-					{
-					
-					} else {
-						$sql = 	"INSERT INTO ".$cfg["tab"]["container"].
-							  	" (idtpl, number, idmod) ".
-							  	" VALUES ( ".
-							  	" '".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::toInteger($container)."', '".Contenido_Security::toInteger($idmod)."')";
-						$db_autofill->query($sql);
-					}
-				}
-			}			
-		}
-	}
+    if (!$db_autofill->next_record())
+    {
+        return false;
+    }
+
+    $idlay = $db_autofill->f("idlay");
+
+    if (!(is_array($containerinf) && array_key_exists($idlay, $containerinf) && array_key_exists($idlay, $_autoFillcontainerCache)))
+    {
+        tplPreparseLayout($idlay);
+        $_autoFillcontainerCache[$idlay] = tplBrowseLayoutForContainers($idlay);
+    }
+
+    $a_container = explode("&",$_autoFillcontainerCache[$idlay]);
+
+    foreach ($a_container as $container)
+    {
+        switch ($containerinf[$idlay][$container]["mode"])
+        {
+            /* Fixed mode */
+            case "fixed":
+            if ($containerinf[$idlay][$container]["default"] != "")
+            {
+                $sql =     "SELECT idmod FROM ".$cfg["tab"]["mod"]
+                        ." WHERE name = '".
+                        Contenido_Security::escapeDB($containerinf[$idlay][$container]["default"], $db_autofill)."'";
+
+                $db_autofill->query($sql);
+
+                if ($db_autofill->next_record())
+                {
+                    $idmod = $db_autofill->f("idmod");
+
+
+                    $sql = "SELECT idcontainer FROM ".$cfg["tab"]["container"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND number = '".Contenido_Security::toInteger($container)."'";
+
+                    $db_autofill->query($sql);
+
+                    if ($db_autofill->next_record())
+                    {
+                        $sql =     "UPDATE ".$cfg["tab"]["container"].
+                                " SET idmod = '".Contenido_Security::toInteger($idmod)."' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'".
+                                " AND number = '".Contenido_Security::toInteger($container)."' AND ".
+                                " idcontainer = '".Contenido_Security::toInteger($db_autofill->f("idcontainer"))."'";
+                        $db_autofill->query($sql);
+                    } else {
+                        $sql =     "INSERT INTO ".$cfg["tab"]["container"].
+                                  " (idtpl, number, idmod) ".
+                                  " VALUES ( ".
+                                  " '$idtpl', '$container', '$idmod')";
+                        $db_autofill->query($sql);
+                    }
+                }
+            }
+
+
+            case "mandatory":
+
+            if ($containerinf[$idlay][$container]["default"] != "")
+            {
+                $sql =     "SELECT idmod FROM ".$cfg["tab"]["mod"]
+                        ." WHERE name = '".
+                        Contenido_Security::escapeDB($containerinf[$idlay][$container]["default"], $db)."'";
+
+                $db_autofill->query($sql);
+
+                if ($db_autofill->next_record())
+                {
+                    $idmod = $db_autofill->f("idmod");
+
+
+                    $sql =     "SELECT idcontainer, idmod FROM ".$cfg["tab"]["container"]
+                            ." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND number = '".Contenido_Security::toInteger($container)."'";
+
+                    $db_autofill->query($sql);
+
+                    if ($db_autofill->next_record())
+                    {
+
+                    } else {
+                        $sql =     "INSERT INTO ".$cfg["tab"]["container"].
+                                  " (idtpl, number, idmod) ".
+                                  " VALUES ( ".
+                                  " '".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::toInteger($container)."', '".Contenido_Security::toInteger($idmod)."')";
+                        $db_autofill->query($sql);
+                    }
+                }
+            }
+        }
+    }
 
 }
 

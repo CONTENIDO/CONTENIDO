@@ -389,8 +389,8 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
         if (!in_array($value, $idcatnew)) {
             $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($value)."' AND idart='".Contenido_Security::toInteger($idart)."'";  // get all idcatarts that will no longer exist
             $db->query($sql);
-			$db->next_record();
-            
+            $db->next_record();
+
             //******** delete from code cache ***************        // and delete corresponding code
             $mask = $cfgClient[$client]['code_path']."*.".$db->f("idcatart").".php";
             array_map("unlink", glob($mask));
@@ -618,31 +618,31 @@ function conMakeOnline($idart, $lang)
 
 
 /**
- * 
+ *
  * Set the status from articles to online or offline.
- * 
+ *
  * @param array $idarts all articles
  * @param int $idlang
  * @param boolean $online
  */
 
 function conMakeOnlineBulkEditing($idarts, $idlang, $online) {
-	global $db, $cfg, $auth;
-	$where = '1=2';
-	if($online == 1) {
-		 $publisher_info = "published = '".date("Y-m-d H:i:s")."', publishedby='".$auth->auth["uname"]."',";
-	}else  {
-		$online = 0;
-		$publisher_info = '';
-	}
-	
-	foreach($idarts as $idart) {
-		$where .= " OR idart='".Contenido_Security::toInteger($idart)."'";
-	}
-		
-	$sql = "UPDATE ".$cfg["tab"]["art_lang"]."  SET ".$publisher_info." online = '".$online."' WHERE ($where)
-	AND idlang = '".Contenido_Security::toInteger($idlang)."'";
-	$db->query($sql);
+    global $db, $cfg, $auth;
+    $where = '1=2';
+    if($online == 1) {
+         $publisher_info = "published = '".date("Y-m-d H:i:s")."', publishedby='".$auth->auth["uname"]."',";
+    }else  {
+        $online = 0;
+        $publisher_info = '';
+    }
+
+    foreach($idarts as $idart) {
+        $where .= " OR idart='".Contenido_Security::toInteger($idart)."'";
+    }
+
+    $sql = "UPDATE ".$cfg["tab"]["art_lang"]."  SET ".$publisher_info." online = '".$online."' WHERE ($where)
+    AND idlang = '".Contenido_Security::toInteger($idlang)."'";
+    $db->query($sql);
 }
 
 
@@ -672,23 +672,23 @@ function conLock($idart, $lang)
 
 /**
  * Freeze/Lock more articles.
- * @param array $idarts all articles 
+ * @param array $idarts all articles
  * @param int $idlang
  * @param boolean $lock
  */
 function conLockBulkEditing($idarts, $idlang , $lock) {
-	global $db, $cfg;
-	$where = '1=2';
-	if($lock != 1) {
-		$lock = 0;
-	}
-	
-	foreach($idarts as $idart) {
-		$where .= " OR idart='".Contenido_Security::toInteger($idart)."'";
-	}
-	
-	$sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET locked = '".Contenido_Security::toInteger($lock)."' WHERE ($where) AND idlang = '".Contenido_Security::toInteger($idlang)."'";
-	$db->query($sql);
+    global $db, $cfg;
+    $where = '1=2';
+    if($lock != 1) {
+        $lock = 0;
+    }
+
+    foreach($idarts as $idart) {
+        $where .= " OR idart='".Contenido_Security::toInteger($idart)."'";
+    }
+
+    $sql = "UPDATE ".$cfg["tab"]["art_lang"]." SET locked = '".Contenido_Security::toInteger($lock)."' WHERE ($where) AND idlang = '".Contenido_Security::toInteger($idlang)."'";
+    $db->query($sql);
 }
 
 /**
@@ -833,7 +833,7 @@ function conDeleteart($idart)
     ##################################################
     # set keywords
     $keycode[1][1] = "";
-    
+
     if (count($idcatart) > 0) {
         foreach ($idcatart as $value) {
             //********* delete from code cache **********
@@ -1034,7 +1034,7 @@ function conChangeTemplateForCat($idcat, $idtpl)
             $db->query($sql);
         }
     }
-    
+
     conGenerateCodeForAllartsInCategory($idcat);
 }
 

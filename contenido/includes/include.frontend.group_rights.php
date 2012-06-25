@@ -75,7 +75,7 @@ if ($action == 'fegroups_save_perm') {
             } else {
                 $varname = 'item_' . $item . '_' . $action;
             }
-			
+
             if ($_POST[$varname] == 1) {
                 $perms->setPerm($idfrontendgroup, $useplugin, $action, $item);
             } else {

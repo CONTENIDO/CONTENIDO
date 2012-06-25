@@ -103,7 +103,7 @@ if (file_exists($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) 
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>" /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $encoding[$lang] ?>" />
     <title>:: :: :: :: CONTENIDO Login</title>
     <script type="text/javascript"><!--
     if (top != self) {
@@ -117,7 +117,7 @@ if (file_exists($cfgClient[$client]['path']['frontend'] . 'images/but_ok.gif')) 
     a img {border:none;}
     #loginPageWrap {
         width:230px; height:120px; text-align:center; border:1px solid #B3B3B3; background-color: #FFFFFF;
-        position:absolute; left:50%; top:50%; margin-left:-115px; margin-top:-60px; 
+        position:absolute; left:50%; top:50%; margin-left:-115px; margin-top:-60px;
     }
     #login {text-align:left;}
     #login label {display:block; float:left; width:70px; }

@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * left_top frame
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,19 +18,19 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-05-08
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2012-01-17, Mischa Holz, fixed errors with the translation
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');
@@ -55,15 +55,15 @@ foreach ($clients as $key => $value) {
 
         if ($client == $key)
         {
-        	$selected = "selected";
+            $selected = "selected";
         } else {
-        	$selected = "";
+            $selected = "";
         }
 
-		if (strlen($value['name']) > 15)
-		{
-			$value['name'] = substr($value['name'],0,12). "...";
-		}
+        if (strlen($value['name']) > 15)
+        {
+            $value['name'] = substr($value['name'],0,12). "...";
+        }
 
         $tpl2->set('d', 'VALUE',    $key);
         $tpl2->set('d', 'CAPTION',  $value['name']);

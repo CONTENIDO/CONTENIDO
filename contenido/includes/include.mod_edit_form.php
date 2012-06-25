@@ -49,24 +49,24 @@ if (!isset($idmod)) $idmod = 0;
 
 $contenidoModuleHandler = new Contenido_Module_Handler($idmod );
 if (($action == "mod_delete") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
-	$notification->displayNotification("error", i18n("No permission"));
-	return;
+    $notification->displayNotification("error", i18n("No permission"));
+    return;
 }
 
 if ($action == "mod_delete") {
-	
+
     // if erase had been successfully
     if ($contenidoModuleHandler->eraseModule() == true) {
         $modules = new cApiModuleCollection;
         $modules->delete($idmod);
         $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Deleted module successfully!"));
-    	
+
     }
 }
 
 if (($action == "mod_synch") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
-	$notification->displayNotification("error", i18n("No permission"));
-	return;
+    $notification->displayNotification("error", i18n("No permission"));
+    return;
 }
 
 if ($action == "mod_sync") {
@@ -84,7 +84,7 @@ if ($action == "mod_sync") {
 
     // the actuly Modul is the last Modul from synchronize
     $contenidoModuleHandler = new Contenido_Module_Handler($idmod);
-    
+
 }
 
 if (($action == "mod_new") && (!$perm->have_perm_area_action_anyitem($area, $action))) {
@@ -96,7 +96,7 @@ if ($action == "mod_new") {
     $modules = new cApiModuleCollection();
 
     $alias = cApiStrCleanURLCharacters(i18n("- Unnamed module -"));
-	$contenidoModuleHandler = new Contenido_Module_Handler();
+    $contenidoModuleHandler = new Contenido_Module_Handler();
     if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
         $notification->displayNotification("error", i18n("Modul name exist in module directory, rename the module."));
         die();
@@ -116,8 +116,8 @@ if ($action == "mod_new") {
          $notification->displayNotification("error", i18n("Cant make a new modul!"));
          die();
     }else {
-    	
-    	 $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new module successfuly!"));
+
+         $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new module successfuly!"));
     }
 } else {
     $module = new cApiModule();
@@ -507,13 +507,13 @@ window.onload = scrolltheother;
                     </script>';
         //Dont show form if we delete or synchronize a module
         if($action == "mod_sync" || $action == "mod_delete") {
-        	$page->setContent($noti.$message.$applet."<br>");
+            $page->setContent($noti.$message.$applet."<br>");
         }else {
-        	$page->setContent($noti.$message.$form->render().$applet."<br>");
+            $page->setContent($noti.$message.$form->render().$applet."<br>");
         }
     }
 
-   
+
     if ($action) {
         if (stripslashes($idmod > 0) || $action == "mod_sync") {
             $sReloadScript = "<script type=\"text/javascript\">
@@ -528,24 +528,24 @@ window.onload = scrolltheother;
             $sReloadScript = "";
         }
 
-       
+
         // Only reload overview/menu page, if something may have changed
         $page->addScript('reload', $sReloadScript);
     }
     if (!($action == "mod_importexport_module" && $mode == "export")) {
         $oCodeMirrorInput = new CodeMirror('input', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
         $oCodeMirrorOutput = new CodeMirror('output', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
-        
-		$page->addScript('codemirror', $oCodeMirrorInput->renderScript().$oCodeMirrorOutput->renderScript());
-        
-		//dont print meneu
-		if($action == "mod_sync") {
-			$page->setSubnav("idmod=".$idmod."&dont_print_subnav=1");
-		}
-		else {
-			$page->setSubnav("idmod=".$idmod, "mod");
-		} 
-		$page->render();
+
+        $page->addScript('codemirror', $oCodeMirrorInput->renderScript().$oCodeMirrorOutput->renderScript());
+
+        //dont print meneu
+        if($action == "mod_sync") {
+            $page->setSubnav("idmod=".$idmod."&dont_print_subnav=1");
+        }
+        else {
+            $page->setSubnav("idmod=".$idmod, "mod");
+        }
+        $page->render();
     }
 }
 

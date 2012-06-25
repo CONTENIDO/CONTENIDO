@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO General API functions
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.3
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2003-09-01
  *   $Id$:
  * }}
@@ -78,10 +78,10 @@ function contenido_include($sWhere, $sWhat, $bForce = false, $bReturnPath = fals
     $bError = false;
 
     switch ($sWhere) {
-		case 'module':
-   			$handler = new Contenido_Module_Handler($cCurrentModule);
-   			$sInclude = $handler->getPhpPath() . $sWhat;
-			break;
+        case 'module':
+               $handler = new Contenido_Module_Handler($cCurrentModule);
+               $sInclude = $handler->getPhpPath() . $sWhat;
+            break;
         case 'frontend':
             $sInclude = $cfgClient[$client]['path']['frontend'] . $sWhat;
             break;

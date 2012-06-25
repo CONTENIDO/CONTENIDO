@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Functions for tplcfg, use in combination with include.tplcfg_edit_form.php
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  2002
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2009-10-23, Ortwin Pinke, deleted not needed idcat/idart part for better performance
@@ -27,11 +27,11 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -46,7 +46,7 @@ if ( !isset($idtplcfg) ) {
 
     $db->query($sql);
     $db->next_record();
-    
+
     $idtplcfg = $db->f("idtplcfg");
 
     if ( $idtplcfg == 0 ) {
@@ -57,13 +57,13 @@ if ( !isset($idtplcfg) ) {
                     (idtpl, status, author, created, lastmodified)
                 VALUES
                     ('".Contenido_Security::toInteger($idtpl)."', '', '', '".$timestamp."', '".$timestamp."')";
-        
-		$db->query($sql);
+
+        $db->query($sql);
         $idtplcfg = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
-        
+
         $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
         $db->query($sql);
-        
+
     }
 
 }
@@ -104,6 +104,6 @@ if (isset($idtplcfg)) {
         }
         //is form send
         if($x>0)
-        	$notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
+            $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
 }
 ?>

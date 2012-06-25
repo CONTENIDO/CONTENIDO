@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Article list for upload
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,18 +18,18 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 die("Trixie");
@@ -45,20 +45,20 @@ $mcatlink = "";
 $_cecIterator = $_cecRegistry->getIterator("Contenido.Content.CreateCategoryLink");
 if ($_cecIterator->count() > 0)
 {
-	while ($chainEntry = $_cecIterator->next())
-	{
-	    $catlink = $chainEntry->execute($idcat);
-	    
-	    if ($catlink != "")
-	    {
-	    	$mcatlink = $catlink;	
-	    }				    
-	}
+    while ($chainEntry = $_cecIterator->next())
+    {
+        $catlink = $chainEntry->execute($idcat);
+
+        if ($catlink != "")
+        {
+            $mcatlink = $catlink;
+        }
+    }
 }
 
 if ($mcatlink == "")
 {
-	$mcatlink = "front_content.php?idcat=$idcat";
+    $mcatlink = "front_content.php?idcat=$idcat";
 }
 
 $jslink = 'parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \''.$mcatlink.'\'; window.returnValue=\''.$mcatlink.'\'; window.close();';
@@ -86,7 +86,7 @@ $content[] = '<table width="100%" style="margin-top: 10px; border-left: 1px soli
 
 foreach ($headlines as $headline)
 {
-	$content[] = '<td nowrap="nowrap" style="padding: 2px; white-space: nowrap; color: white; background: '.$cfg['color']['table_header'].'; border-bottom: 1px solid '.$cfg['color']['table_border'].';  border-right: 1px solid '.$cfg['color']['table_border'].';">'.$headline.'</td>';	
+    $content[] = '<td nowrap="nowrap" style="padding: 2px; white-space: nowrap; color: white; background: '.$cfg['color']['table_header'].'; border-bottom: 1px solid '.$cfg['color']['table_border'].';  border-right: 1px solid '.$cfg['color']['table_border'].';">'.$headline.'</td>';
 }
 
 $content[] = '</tr>';
@@ -97,87 +97,87 @@ $odd = false;
 
 while ($cApiCategoryArticle = $cApiCategoryArticleCollection->next())
 {
-	$obj = $cApiCategoryArticleCollection->fetchObject("cApiArticleLanguageCollection");
-	
-	$odd = !$odd;
-	
-	if ($odd)
-	{
-		$mcol = $cfg['color']['table_light'];
-	} else {
-		$mcol = $cfg['color']['table_dark'];
-	}
+    $obj = $cApiCategoryArticleCollection->fetchObject("cApiArticleLanguageCollection");
 
-	$content[] = '<tr>';	
+    $odd = !$odd;
 
-	$martlink = "";
-	$idart = $obj->get("idart");
+    if ($odd)
+    {
+        $mcol = $cfg['color']['table_light'];
+    } else {
+        $mcol = $cfg['color']['table_dark'];
+    }
 
-	$_cecIterator = $_cecRegistry->getIterator("Contenido.Content.CreateArticleLink");
-	if ($_cecIterator->count() > 0)
-	{
-		while ($chainEntry = $_cecIterator->next())
-		{
-		    $artlink = $chainEntry->execute($idart, $idcat);
-		    
-		    if ($artlink != "")
-		    {
-		    	$martlink = $artlink;	
-		    }				    
-		}
-	}
-	
-	if ($martlink == "")
-	{
-		$martlink = "front_content.php?idart=$idart";
-	}	
-	
-	$jslink = 'parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \''.$martlink.'\'; window.returnValue=\''.$martlink.'\'; window.close();';
-	
-	foreach ($fields as $field)
-	{
-		switch ($field)
-		{
-			case "is_start":
-				$value = isStartArticle($obj->get("idartlang"), $idcat, $lang);
-				
-				if ($value == true)
-				{
-					$value = '<img src="images/isstart1.gif">';	
-				} else {
-					$value = '<img src="images/isstart0.gif">';
-				}
-				break;
-			case "created":
-			case "modified":
-				$value = date($dateformat,strtotime($obj->get($field)));
-				break;
-			case "online":
-				if ($obj->get("online") == true)
-				{
-					$value = '<img src="images/online.gif">';
-				} else {
-					$value = '<img src="images/offline.gif">';	
-				}
-				break;
-				
-			default:
-				$value = $obj->get($field);
-				break;	
-		}
-		
+    $content[] = '<tr>';
 
-		if ($field == "title")
-		{
-			$xwidth = 'width="100%"';	
-		} else {
-			$xwidth = 'width="1%"';	
-		}
-		
-		$content[] = '<td onclick="'.$jslink.'" nowrap="nowrap" '.$xwidth.' style="cursor: pointer; padding: 2px; white-space: nowrap; background: '.$mcol.'; border-bottom: 1px solid '.$cfg['color']['table_border'].'; border-right: 1px solid '.$cfg['color']['table_border'].';">'.$value.'</td>';	
-	}
-	
-	$content[] = '</tr>';
+    $martlink = "";
+    $idart = $obj->get("idart");
+
+    $_cecIterator = $_cecRegistry->getIterator("Contenido.Content.CreateArticleLink");
+    if ($_cecIterator->count() > 0)
+    {
+        while ($chainEntry = $_cecIterator->next())
+        {
+            $artlink = $chainEntry->execute($idart, $idcat);
+
+            if ($artlink != "")
+            {
+                $martlink = $artlink;
+            }
+        }
+    }
+
+    if ($martlink == "")
+    {
+        $martlink = "front_content.php?idart=$idart";
+    }
+
+    $jslink = 'parent.parent.frames[\'left\'].frames[\'left_top\'].document.getElementById(\'selectedfile\').value= \''.$martlink.'\'; window.returnValue=\''.$martlink.'\'; window.close();';
+
+    foreach ($fields as $field)
+    {
+        switch ($field)
+        {
+            case "is_start":
+                $value = isStartArticle($obj->get("idartlang"), $idcat, $lang);
+
+                if ($value == true)
+                {
+                    $value = '<img src="images/isstart1.gif">';
+                } else {
+                    $value = '<img src="images/isstart0.gif">';
+                }
+                break;
+            case "created":
+            case "modified":
+                $value = date($dateformat,strtotime($obj->get($field)));
+                break;
+            case "online":
+                if ($obj->get("online") == true)
+                {
+                    $value = '<img src="images/online.gif">';
+                } else {
+                    $value = '<img src="images/offline.gif">';
+                }
+                break;
+
+            default:
+                $value = $obj->get($field);
+                break;
+        }
+
+
+        if ($field == "title")
+        {
+            $xwidth = 'width="100%"';
+        } else {
+            $xwidth = 'width="1%"';
+        }
+
+        $content[] = '<td onclick="'.$jslink.'" nowrap="nowrap" '.$xwidth.' style="cursor: pointer; padding: 2px; white-space: nowrap; background: '.$mcol.'; border-bottom: 1px solid '.$cfg['color']['table_border'].'; border-right: 1px solid '.$cfg['color']['table_border'].';">'.$value.'</td>';
+    }
+
+    $content[] = '</tr>';
 }
 
 $content[] = '</table>';

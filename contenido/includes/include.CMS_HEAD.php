@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Include file for editing content of type CMS_HEAD
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,30 +18,30 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-05-07
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-01-05, Timo Trautmann, add htmlspecialchars() instead of htmlentitydecode() because of UTF-8 Bug
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 if(isset($area) && $area == 'con_content_list'){
-	$tmp_area = $area;
-	$path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
-			'&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
-	$path2 = $path1;
+    $tmp_area = $area;
+    $path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
+            '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
+    $path2 = $path1;
 } else {
     $tmp_area = "con_editcontent";
-	$path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&action=con_editart&idart=$idart&idartlang=$idartlang&idcat=$idcat&changeview=edit&client=$client";
-	$path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang";
+    $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&action=con_editart&idart=$idart&idartlang=$idartlang&idcat=$idcat&changeview=edit&client=$client";
+    $path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang";
 }
 
 if ( $doedit == "1" ) {
@@ -49,7 +49,7 @@ if ( $doedit == "1" ) {
     conMakeArticleIndex ($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
     header("location:".$sess->url($path1)."");
-    
+
 }
 header("Content-Type: text/html; charset={$encoding[$lang]}");
 ?>
@@ -72,7 +72,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 <?php
 
         getAvailableContentTypes($idartlang);
-        
+
         echo "  <FORM method=\"post\" action=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php\">";
         $sess->hidden_session();
         echo "  <INPUT type=hidden name=lang value=\"$lang\">";
@@ -93,7 +93,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                 echo "  <INPUT type=text name=\"CMS_HEAD\" VALUE=\"".htmlspecialchars(urldecode($a_content[$type][$typenr]))."\" SIZE=90>";
                 echo "  </TD></TR>";
         }
-        
+
         echo "  <TR valign=top><TD colspan=2><br>
                       <a href=".$sess->url($path2)."><img src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_cancel.gif\" border=0></a>
                       <INPUT type=image name=submit value=editcontent src=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["images"]."but_ok.gif\" border=0>

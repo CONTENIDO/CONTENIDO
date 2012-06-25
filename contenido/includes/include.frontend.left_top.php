@@ -59,8 +59,8 @@ $aFieldsToSearch = array("--all--" => i18n("-- All fields --"), "username" => i1
 $aFieldsToSort = array("username" => i18n("Username"), "created" => i18n("Created"), "modified" => i18n("Modified"));
 
 $aFieldSources = array();
-$aFieldSources["username"] = "base"; 
-$aFieldSources["created"] = "created"; 
+$aFieldSources["username"] = "base";
+$aFieldSources["created"] = "created";
 $aFieldSources["modified"] = "modified";
 
 $bUsePlugins = getEffectiveSetting("frontendusers", "pluginsearch", "true");
@@ -88,7 +88,7 @@ if ($bUsePlugins == true) {
         $_iCountValidPlugins = sizeof($_aValidPlugins);
         foreach ($cfg['plugins']['frontendusers'] as $plugin) {
             if ($_iCountValidPlugins == 0 || in_array($plugin, $_aValidPlugins)) {
-                if (function_exists("frontendusers_".$plugin."_wantedVariables") && 
+                if (function_exists("frontendusers_".$plugin."_wantedVariables") &&
                     function_exists("frontendusers_".$plugin."_canonicalVariables"))
                 {
                     $aVariableNames = call_user_func("frontendusers_".$plugin."_canonicalVariables");
@@ -305,15 +305,15 @@ while ($feuser = $oFEUsers->next()) {
         $aUserTable[$idfrontenduser]["idfrontenduser"] = $idfrontenduser;
 
         switch ($field) {
-			case "base":
-				$aUserTable[$idfrontenduser][$key] = $feuser->get("username");
-				break;	
-			case "created":
-				$aUserTable[$idfrontenduser][$key] = $feuser->get("created");
-				break;	
-			case "modified":
-				$aUserTable[$idfrontenduser][$key] = $feuser->get("modified");
-				break;	
+            case "base":
+                $aUserTable[$idfrontenduser][$key] = $feuser->get("username");
+                break;
+            case "created":
+                $aUserTable[$idfrontenduser][$key] = $feuser->get("created");
+                break;
+            case "modified":
+                $aUserTable[$idfrontenduser][$key] = $feuser->get("modified");
+                break;
             default:
                 if ($_REQUEST["filter"] != "") {
                     $aUserTable[$idfrontenduser][$key] = call_user_func("frontendusers_".$field."_getvalue", $key);

@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Add new module
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.7.0
@@ -18,27 +18,27 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-03-21
  *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2011-01-11, Rusmir Jusufovic, add snyc-button 
+ *   modified 2011-01-11, Rusmir Jusufovic, add snyc-button
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
 $oUser = new cApiUser($auth->auth["uid"]);
-if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0) 
+if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0)
 {
-	$_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
+    $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
 }
-   
+
 $tpl->reset();
 
 #################
@@ -57,8 +57,8 @@ if ((int) $client > 0) {
     ###############
     # List Options
     ###############
-    $aSortByOptions		    = array ("name" => i18n("Name"), "type" => i18n("Type"));
-    $aSortOrderOptions  	= array ("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
+    $aSortByOptions            = array ("name" => i18n("Name"), "type" => i18n("Type"));
+    $aSortOrderOptions      = array ("asc" => i18n("Ascending"), "desc" => i18n("Descending"));
     $listoplink="listoptions";
     $oListOptionRow = new cFoldingRow("e9ddf415-4b2d-4a75-8060-c3cd88b6ff98", i18n("List options"), $listoplink);
     $tpl->set('s', 'LISTOPLINK', $listoplink);
@@ -73,13 +73,13 @@ if ((int) $client > 0) {
     $oSelectSortOrder->setDefault($_REQUEST["sortorder"]);
 
     $oSelectSearchIn = new cHTMLSelectElement("searchin");
-    $oSelectSearchIn->autoFill(array('' => i18n("-- All --"), 
-                                     'name' => i18n("Module name"), 
-                                     'description' => i18n("Description"), 
-                                     'type' => i18n("Type"), 
-                                     'input' => i18n("Input"), 
+    $oSelectSearchIn->autoFill(array('' => i18n("-- All --"),
+                                     'name' => i18n("Module name"),
+                                     'description' => i18n("Description"),
+                                     'type' => i18n("Type"),
+                                     'input' => i18n("Input"),
                                      'output' => i18n("Output")));
-                                     
+
     $oSelectSearchIn->setDefault($_REQUEST["searchin"]);
 
     // build list with filter types
@@ -98,10 +98,10 @@ if ((int) $client > 0) {
 
     while ($db->next_record())
     {
-    	if (trim($db->f("type")) != "")
-    	{
-    		$aFilterType[$db->f("type")] = $db->f("type");
-    	}	
+        if (trim($db->f("type")) != "")
+        {
+            $aFilterType[$db->f("type")] = $db->f("type");
+        }
     }
 
     $oSelectTypeFilter = new cHTMLSelectElement("filtertype");
@@ -152,7 +152,7 @@ if ((int) $client > 0) {
     #######
     # Pager
     #######
-    $cApiModuleCollection	= new cApiModuleCollection;
+    $cApiModuleCollection    = new cApiModuleCollection;
     $cApiModuleCollection->setWhere("idclient", $client);
 
     $cApiModuleCollection->query();
@@ -173,7 +173,7 @@ if ((int) $client > 0) {
     $oPager = new cObjectPager("02420d6b-a77e-4a97-9395-7f6be480f497", $iItemCount, $_REQUEST["elemperpage"], $_REQUEST["page"], $oPagerLink, "page", $pagerl);
 
     $tpl->set('s', 'PAGINGLINK', $pagerl);
-    
+
 
     $tpl->set('s', 'ACTION', $str.$strSync.'<table style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');
      //$tpl->set('s', 'ACTION2', $str.'<table style="margin-top:1px" border="0" cellspacing="0" cellpadding="0" width="100%">'.$oListOptionRow->render().$oPager ->render().'</table>');

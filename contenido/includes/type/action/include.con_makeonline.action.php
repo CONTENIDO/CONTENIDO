@@ -25,10 +25,10 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 if(isset($_POST['idarts'])) {
-	$idarts = explode('+', $_POST['idarts']);
-	$online = $_POST['invert'] == 1 ? 0 : 1;
-	conMakeOnlineBulkEditing($idarts, $_POST['idlang'], $online);
+    $idarts = explode('+', $_POST['idarts']);
+    $online = $_POST['invert'] == 1 ? 0 : 1;
+    conMakeOnlineBulkEditing($idarts, $_POST['idlang'], $online);
 }else {
-	conMakeOnline($idart, $lang);
+    conMakeOnline($idart, $lang);
 }
 ?>

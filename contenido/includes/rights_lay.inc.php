@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Layouts rights
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,19 +18,19 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-07-03, Timo Trautmann, moved inline html to template
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 //notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
@@ -81,20 +81,20 @@ $aSecondHeaderRow = array();
 // look for possible actions   in mainarea []
 foreach($right_list["lay"] as $value2)
 {
-	 //if there are some actions
-	 if(is_array($value2["action"]))
-		 foreach($value2["action"] as $key3 => $value3)
-		 {   //set the areas that are in use
-			 $possible_areas[$value2["perm"]]="";
+     //if there are some actions
+     if(is_array($value2["action"]))
+         foreach($value2["action"] as $key3 => $value3)
+         {   //set the areas that are in use
+             $possible_areas[$value2["perm"]]="";
 
-			 $colspan++;
-			 //set  the possible areas and actions for this areas
-			 $sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";\n";
+             $colspan++;
+             //set  the possible areas and actions for this areas
+             $sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\";\n";
 
-			 //checkbox for the whole action
-			 $sTable .= $table->header_cell($lngAct[$value2["perm"]][$value3]);
-			 array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
-		 }
+             //checkbox for the whole action
+             $sTable .= $table->header_cell($lngAct[$value2["perm"]][$value3]);
+             array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
+         }
 }
 //checkbox for all rights
 $sTable .= $table->header_cell(i18n('Check all'));
@@ -120,10 +120,10 @@ while ($db->next_record()) {
         $tplname     = htmlentities($db->f("name"));
         $description = htmlentities($db->f("description"));
 
-		$sTable .= $table->row();
+        $sTable .= $table->row();
         $sTable .= $table->cell($tplname,"", "", " class=\"td_rights0\"", false);
-        $sTable .= $table->cell($description,"", "", " class=\"td_rights1\" style=\"white-space:normal; \"", false); 
-		
+        $sTable .= $table->cell($description,"", "", " class=\"td_rights1\" style=\"white-space:normal; \"", false);
+
         $darkrow = !$darkrow;
 
         //set javscript array for itemids
@@ -137,18 +137,18 @@ while ($db->next_record()) {
                if(is_array($value2["action"]))
                  foreach($value2["action"] as $key3 => $value3)
                  {
-					  //does the user have the right
-					  if(in_array($value2["perm"]."|$value3|".$db->f("idlay"),array_keys($rights_list_old)))
-						  $checked="checked=\"checked\"";
-					  else
-						  $checked="";
-					  
-					  $sTable .= $table->cell("<input type=\"checkbox\"  name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>","", "", " class=\"td_rights2\"", false);
+                      //does the user have the right
+                      if(in_array($value2["perm"]."|$value3|".$db->f("idlay"),array_keys($rights_list_old)))
+                          $checked="checked=\"checked\"";
+                      else
+                          $checked="";
+
+                      $sTable .= $table->cell("<input type=\"checkbox\"  name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idlay")."]\" value=\"x\" $checked>","", "", " class=\"td_rights2\"", false);
                  }
         }
         //checkbox for checking all actions fore this itemid
         $sTable .= $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idlay")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idlay")."')\">","", "", " class=\"td_rights3\"", false);
-		$sTable .= $table->end_row();
+        $sTable .= $table->end_row();
 }
 
 $sTable .= $table->end_row();

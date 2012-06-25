@@ -165,7 +165,7 @@ function createRightsForElement($area, $iditem, $idlang = false)
     $oSourceRighsColl->select($sWhere);
     while ($oItem = $oSourceRighsColl->next()) {
         $rs = $oItem->toObject();
-        
+
         // concatenate a key to use it to prevent double entries
         $key = $rs->user_id . '-' . $rs->idarea . '-' . $rs->idaction . '-' . $iditem
              . '-' . $rs->idclient . '-' . $rs->idlang . '-' . $rs->type;
@@ -175,7 +175,7 @@ function createRightsForElement($area, $iditem, $idlang = false)
 
         // create new right entry
         $oDestRightCol->create($rs->user_id, $rs->idarea, $rs->idaction, $iditem, $rs->idclient, $rs->idlang, $rs->type);
-        
+
         $rightsCache[$key] = true;
     }
 

@@ -122,7 +122,7 @@ if ($idart) {
             $idtplcfg = $db->f('idtplcfg');
             $idtpl    = $db->f('idtpl');
             $description = $db->f('description');
-            
+
             if ($db->f('locked') == 1) {
                 $inUse = true;
                 $disabled = 'disabled="disabled"';
@@ -206,7 +206,7 @@ if (!$db->next_record()) {
 
     $db->query($sql);
     $db->next_record();
-	$description = $db->f('description');
+    $description = $db->f('description');
     if (0 != $db->f('idtplcfg')) {
         // Template has a pre-configuration, copy pre-configuration data to
         // category configuration with the $idtplcfg from the category
@@ -456,26 +456,26 @@ if ($idtpl != 0 && $inUse == false) {
 
 //Display template description
 if($idtpl) {
-	
-	$tpl->set('s', 'DESCRIPTION',  nl2br($description));
-	$tpl->set('s', 'LABLE_DESCRIPTION', i18n("Description"));
+
+    $tpl->set('s', 'DESCRIPTION',  nl2br($description));
+    $tpl->set('s', 'LABLE_DESCRIPTION', i18n("Description"));
 }else {
-	$tpl->set('s', 'DESCRIPTION', '');
-	$tpl->set('s', 'LABLE_DESCRIPTION','');
+    $tpl->set('s', 'DESCRIPTION', '');
+    $tpl->set('s', 'LABLE_DESCRIPTION','');
 }
 
 if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
     $tpl->set('s', 'HEADER', i18n('Category template configuration2'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
-   
+
 } else if ($area == 'con_tplcfg' && (int) $idart > 0) {
     $tpl->set('s', 'HEADER', i18n('Article template configuration3'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
-   
+
 } else {
     $tpl->set('s', 'HEADER', '');
     $tpl->set('s', 'DISPLAY_HEADER', 'none');
-   
+
 }
 
 // Generate template

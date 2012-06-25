@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Left top frame
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,25 +18,25 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-04-29
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
 $oUser = new cApiUser($auth->auth["uid"]);
-if (!isset($elemperpage) || !is_numeric($elemperpage) || $elemperpage < 0) 
+if (!isset($elemperpage) || !is_numeric($elemperpage) || $elemperpage < 0)
 {
-	$elemperpage = $oUser->getProperty("itemsperpage", $area);
+    $elemperpage = $oUser->getProperty("itemsperpage", $area);
     $_REQUEST['elemperpage'] = $elemperpage;
     if ((int) $elemperpage <= 0) {
         $oUser->setProperty("itemsperpage", $area, 25);
@@ -48,7 +48,7 @@ if (!isset($elemperpage) || !is_numeric($elemperpage) || $elemperpage < 0)
     $_REQUEST['elemperpage'] = $elemperpage;
 }
 
-// The following lines unset all right objects since 
+// The following lines unset all right objects since
 // I don't know (or I was unable to find out) if they
 // are global and/or session variables - so if you are
 // switching between groups and user management, we are
@@ -73,18 +73,18 @@ $tpl2->set('s', 'CLASS', 'text_medium');
 $tpl2->set('s', 'OPTIONS', 'onchange="userChangeRestriction()"');
 
 $limit = array(
-			"2" => i18n("All"),
-			"1" => i18n("Frontend only"),
-			"3" => i18n("Backend only"));
-			
+            "2" => i18n("All"),
+            "1" => i18n("Frontend only"),
+            "3" => i18n("Backend only"));
+
 foreach ($limit as $key => $value) {
 
         if ($restrict == $key)
         {
-        	$selected = "selected";
+            $selected = "selected";
         } else {
-        	$selected = "";
-        } 
+            $selected = "";
+        }
 
         $tpl2->set('d', 'VALUE',    $key);
         $tpl2->set('d', 'CAPTION',  $value);
@@ -102,7 +102,7 @@ $tmp_mstr = '<div style="margin: 0pt 0pt 0pt 17px; height: 2em; padding-bottom: 
 $area = "user";
 $mstr = sprintf($tmp_mstr, 'right_bottom',$sess->url("main.php?area=user_create&frame=4"),i18n("Create user"));
 
-if ($perm->have_perm_area_action('user_create', "user_createuser")) {                                   
+if ($perm->have_perm_area_action('user_create', "user_createuser")) {
     $tpl->set('s', 'NEWUSER', $mstr);
 } else {
     $tpl->set('s', 'NEWUSER', '');
@@ -112,15 +112,15 @@ $tpl->set('s', 'CAPTION', '');
 #################
 # List Options
 #################
-$aSortByOptions = array(	"username" => i18n("User name"),
-							"realname" => i18n("Name"));
-						
-$aSortOrderOptions = array(	"asc" => i18n("Ascending"),
-							"desc" => i18n("Descending"));
+$aSortByOptions = array(    "username" => i18n("User name"),
+                            "realname" => i18n("Name"));
+
+$aSortOrderOptions = array(    "asc" => i18n("Ascending"),
+                            "desc" => i18n("Descending"));
 
 $listOptionId="listoption";
 $tpl->set('s', 'LISTOPLINK', $listOptionId);
-$oListOptionRow = new cFoldingRow(	"5498dbba-ed4a-4618-8e49-3a3635396e22",	i18n("List options"), $listOptionId);
+$oListOptionRow = new cFoldingRow(    "5498dbba-ed4a-4618-8e49-3a3635396e22",    i18n("List options"), $listOptionId);
 $oListOptionRow->setExpanded('true');
 $oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
 $oSelectItemsPerPage->autoFill(array(25 => 25, 50 => 50, 75 => 75, 100 => 100));
@@ -172,7 +172,7 @@ $tpl->set('s', 'LISTOPTIONS', $oListOptionRow->render());
 #########
 # Paging
 #########
-$cApiUserCollection	= new cApiUserCollection;
+$cApiUserCollection    = new cApiUserCollection;
 $cApiUserCollection->query();
 $iItemCount = $cApiUserCollection->count();
 

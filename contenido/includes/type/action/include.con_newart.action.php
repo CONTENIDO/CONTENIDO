@@ -41,7 +41,7 @@ $db->query($sql);
 $db->next_record();
 
 if ($db->f("idtplcfg") != 0) {
-	$newart = true;
+    $newart = true;
 } else {
     $noti_html = '<table cellspacing="0" cellpadding="2" border="0">
 

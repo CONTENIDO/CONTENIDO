@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Some little function to retrieving current encoding.
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.3.1
@@ -18,19 +18,19 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2008-11-12, Andreas Lindner, add function htmlentities_iso88592    
+ *   modified 2008-11-12, Andreas Lindner, add function htmlentities_iso88592
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 /**
@@ -40,56 +40,56 @@ if(!defined('CON_FRAMEWORK')) {
  * If no encoding is found or any parameter is not valid, the function will return
  * false, otherwise the encoding as string like it is stored in database.
  * modified 18.03.2008 - Removed special mySQl behaviour (using db object instead) Timo Trautmann
- * 
+ *
  * @param DB_Contenido $oDb
  * @param int $iLang
  * @param array $cfg
  * @return string
  */
 function getEncodingByLanguage (&$oDb, $iLang, $cfg) {
-	$sResult = false;
+    $sResult = false;
 
-	if (!is_object($oDb)) {
-		$oDb = new DB_Contenido();
-	}
+    if (!is_object($oDb)) {
+        $oDb = new DB_Contenido();
+    }
 
-	$iLang = (int) $iLang;
-	if ($iLang > 0 && is_array($cfg) && is_array($cfg['tab'])) {
-		// prepare query
-		$sQuery = "
-		SELECT 
-			encoding 
-		FROM 
-			" .  $cfg["tab"]["lang"] . "
-		WHERE 
-			idlang = " . Contenido_Security::toInteger($iLang);
+    $iLang = (int) $iLang;
+    if ($iLang > 0 && is_array($cfg) && is_array($cfg['tab'])) {
+        // prepare query
+        $sQuery = "
+        SELECT
+            encoding
+        FROM
+            " .  $cfg["tab"]["lang"] . "
+        WHERE
+            idlang = " . Contenido_Security::toInteger($iLang);
 
-		if ($oDb->query($sQuery)) {
-			if ($oDb->next_record()) {
-				$sResult = trim($oDb->f('encoding'));
-			}
-		}
-	}
+        if ($oDb->query($sQuery)) {
+            if ($oDb->next_record()) {
+                $sResult = trim($oDb->f('encoding'));
+            }
+        }
+    }
 
-	return $sResult;
+    return $sResult;
 }
 
 /**
  * Special version of htmlentites for iso-8859-2
- * Returns transformed string  
- * 
+ * Returns transformed string
+ *
  * @param string $sInput
  * @return string
  */
 
 function htmlentities_iso88592 ($sInput = '') {
-    
-	$arrEntities_pl = array('&ecirc;', '&oacute;', '&plusmn;', '&para;', '&sup3;', '&iquest;', '&frac14;', '&aelig;', '&ntilde;', '&Ecirc;', '&Oacute;', '&iexcl;', '&brvbar;', '&pound;', '&not;', '&macr;', '&AElig;', '&Ntilde;');   
+
+    $arrEntities_pl = array('&ecirc;', '&oacute;', '&plusmn;', '&para;', '&sup3;', '&iquest;', '&frac14;', '&aelig;', '&ntilde;', '&Ecirc;', '&Oacute;', '&iexcl;', '&brvbar;', '&pound;', '&not;', '&macr;', '&AElig;', '&Ntilde;');
     $arrEntities = get_html_translation_table(HTML_ENTITIES);
     $arrEntities = array_diff($arrEntities, $arrEntities_pl);
 
     return strtr($sInput, $arrEntities);
-    
+
 }
 
 ?>

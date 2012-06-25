@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Include file for editiing content of type CMS_LINK
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,48 +18,48 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-05-07
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 if(isset($area) && $area == 'con_content_list'){
-	$tmp_area = $area;
-	$path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
-			'&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
-	$path2 = $path1;
+    $tmp_area = $area;
+    $path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
+            '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
+    $path2 = $path1;
 } else {
-	$tmp_area = "con_editcontent";
-	$path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
-	$path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat";
+    $tmp_area = "con_editcontent";
+    $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client";
+    $path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat";
 }
 
 if ($doedit == "1") {
-	global $cfgClient;
-	global $client;
-	global $upldir;
-	global $uplfile;
+    global $cfgClient;
+    global $client;
+    global $upldir;
+    global $uplfile;
 
-	cInclude("includes","functions.upl.php");
-		
-	$rootpath = $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"];
-	
-	$CMS_LINK = $CMS_LINKextern;
+    cInclude("includes","functions.upl.php");
 
-	if ($CMS_LINKintern)
-	{
-		$CMS_LINK = $CMS_LINKintern;
-	}
-	
+    $rootpath = $cfgClient[$client]["path"]["htmlpath"] . $cfgClient[$client]["upload"];
+
+    $CMS_LINK = $CMS_LINKextern;
+
+    if ($CMS_LINKintern)
+    {
+        $CMS_LINK = $CMS_LINKintern;
+    }
+
     if($selectpdf){
         $CMS_LINK = $rootpath . $selectpdf;
     }
@@ -68,38 +68,38 @@ if ($doedit == "1") {
     }
     if($selectzip){
         $CMS_LINK = $rootpath . $selectzip;
-    }        
+    }
     if($selectaudio){
         $CMS_LINK = $rootpath . $selectaudio;
     }
     if($selectany){
         $CMS_LINK = $rootpath . $selectany;
     }
-    
-	if (count($_FILES) == 1)
-	{
-		foreach ($_FILES['uplfile']['name'] as $key => $value)
-		{
-			if (file_exists($_FILES['uplfile']['tmp_name'][$key]))
-			{
-    			$friendlyName = uplCreateFriendlyName($_FILES['uplfile']['name'][$key]);
-    			move_uploaded_file($_FILES['uplfile']['tmp_name'][$key], $cfgClient[$client]['upl']['path'].$upldir.$friendlyName);
-    			
-    			uplSyncDirectory($upldir);
-    			
-        		if ($path == "") { $path = "/"; }
-        		
-        		$sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='".Contenido_Security::escapeDB($upldir, $db)."' AND filename='".Contenido_Security::escapeDB($friendlyName, $db)."'";
-        		$db->query($sql);
-        		$db->next_record();
-        		
-        		$CMS_LINK = $rootpath . $upldir. $friendlyName;
-			}
-    			
-		}
-	}
-	
-	
+
+    if (count($_FILES) == 1)
+    {
+        foreach ($_FILES['uplfile']['name'] as $key => $value)
+        {
+            if (file_exists($_FILES['uplfile']['tmp_name'][$key]))
+            {
+                $friendlyName = uplCreateFriendlyName($_FILES['uplfile']['name'][$key]);
+                move_uploaded_file($_FILES['uplfile']['tmp_name'][$key], $cfgClient[$client]['upl']['path'].$upldir.$friendlyName);
+
+                uplSyncDirectory($upldir);
+
+                if ($path == "") { $path = "/"; }
+
+                $sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='".Contenido_Security::escapeDB($upldir, $db)."' AND filename='".Contenido_Security::escapeDB($friendlyName, $db)."'";
+                $db->query($sql);
+                $db->next_record();
+
+                $CMS_LINK = $rootpath . $upldir. $friendlyName;
+            }
+
+        }
+    }
+
+
     conSaveContentEntry ($idartlang, "CMS_LINK", $typenr, $CMS_LINK);
     conSaveContentEntry ($idartlang, "CMS_LINKDESCR", $typenr, $CMS_LINKDESCR);
     conSaveContentEntry ($idartlang, "CMS_LINKTARGET", $typenr, $CMS_LINKTARGET);
@@ -128,29 +128,29 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
   <tr>
     <td>
     <?php
-		
+
         getAvailableContentTypes($idartlang);
 
-		cInclude("includes","functions.forms.php");
-		global $typenr;
-		
-		$form = new UI_Table_Form("editcontent", $cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php");
-		
-		$form->setVar("lang",$lang);
-		$form->setVar("typenr",$typenr);
-		$form->setVar("idart",$idart);
-		$form->setVar("idcat",$idcat);
-		$form->setVar("idartlang",$idartlang);
-		$form->setVar("contenido",$sess->id);
-		$form->setVar("action",10);
-		$form->setVar("doedit",1);
-		$form->setVar("type",$type);
-		$form->setVar("changeview","edit");
-		$form->setVar("CMS_LINK", $a_content["CMS_LINK"][$typenr]);
-		
-		$header = sprintf(i18n("Edit link for container %s"),$typenr);
-		$form->addHeader($header);
-		
+        cInclude("includes","functions.forms.php");
+        global $typenr;
+
+        $form = new UI_Table_Form("editcontent", $cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php");
+
+        $form->setVar("lang",$lang);
+        $form->setVar("typenr",$typenr);
+        $form->setVar("idart",$idart);
+        $form->setVar("idcat",$idcat);
+        $form->setVar("idartlang",$idartlang);
+        $form->setVar("contenido",$sess->id);
+        $form->setVar("action",10);
+        $form->setVar("doedit",1);
+        $form->setVar("type",$type);
+        $form->setVar("changeview","edit");
+        $form->setVar("CMS_LINK", $a_content["CMS_LINK"][$typenr]);
+
+        $header = sprintf(i18n("Edit link for container %s"),$typenr);
+        $form->addHeader($header);
+
         if (is_numeric($a_content["CMS_LINK"][$typenr])) {
                 $a_link_intern_value = $a_content["CMS_LINK"][$typenr];
                 $a_link_extern_value = "";
@@ -158,9 +158,9 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                 $a_link_intern_value = "0";
                 $a_link_extern_value = $a_content["CMS_LINK"][$typenr];
         }
-        
-		$form->add(i18n("External link"),formGenerateField ("text", "CMS_LINKextern", $a_link_extern_value, 60, 255));
-        
+
+        $form->add(i18n("External link"),formGenerateField ("text", "CMS_LINKextern", $a_link_extern_value, 60, 255));
+
         $sql = "SELECT
                     *
                 FROM
@@ -176,11 +176,11 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                     b.idart  = e.idart AND
                     c.idcat = a.idcat AND
                     c.idclient = '".Contenido_Security::toInteger($client)."' AND
-					e.idlang = '".Contenido_Security::toInteger($lang)."'
+                    e.idlang = '".Contenido_Security::toInteger($lang)."'
                 ORDER BY
                     a.idtree";
-        
-        
+
+
         $db->query($sql);
 
         $intlink .= "<SELECT name=CMS_LINKintern SIZE=1 onChange=\"editcontent.CMS_LINK.value=this.value; editcontent.CMS_LINKextern.value='';\">";
@@ -194,17 +194,17 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                 while ( $db->next_record() ) {
 
                         $spaces = "";
-                        
+
                         for ($i=0; $i<$db->f("level"); $i++) {
                             $spaces .= "&nbsp;&nbsp;&nbsp;&nbsp;";
                         }
-                        
+
                         $tmp_title = $db->f("title");
 
                         if ( strlen($tmp_title) > 32 ) {
                             $tmp_title = substr($tmp_title, 0, 32);
                         }
-                        
+
                         $spaces .= "> ";
 
                         if ( $db->f("idcatart") != $a_link_intern_value ) {
@@ -213,157 +213,157 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                                 $intlink .= "<option value=\"".$db->f("idcatart")."\" selected>$spaces ".$db->f("name")."---".$tmp_title."</option>";
                         }
                 }
-                        
+
                 $intlink .= "</SELECT>";
-                
+
         $form->add(i18n("Internal link"),$intlink);
-		
+
 
 
         $pdflink.= "<SELECT name=\"selectpdf\" SIZE=1>";
         $pdflink.= "<option value=\"\" selected>".i18n("Please choose")."</option>";
-        
+
         $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('pdf','doc','ppt','xls','rtf','dot') ORDER BY dirname, filename";
-        
+
         $db->query($sql);
 
         while ($db->next_record()) {
-        	//get description from con_upl_meta pro id
-        	$db2 = new DB_Contenido();
-			$sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
-			     . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
-			$db2->query($sql);
-			$db2->next_record();
+            //get description from con_upl_meta pro id
+            $db2 = new DB_Contenido();
+            $sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
+                 . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
+            $db2->query($sql);
+            $db2->next_record();
             $pdflink.= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
         $pdflink.= "</SELECT>";
 
-		$form->add(i18n("Link to a document"),$pdflink);
-		
-		
+        $form->add(i18n("Link to a document"),$pdflink);
+
+
         $imglink .= "<SELECT name=\"selectimg\" SIZE=1>";
         $imglink .= "<option value=\"\" selected>".i18n("Please choose")."</option>";
-        
+
         $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('png','gif','tif','jpg','jpeg','psd','pdd','iff','bmp','rle','eps','fpx','pcx','jpe','pct','pic','pxr','tga') ORDER BY dirname, filename";
-        
+
         $db->query($sql);
 
         while ($db->next_record()) {
-        	//get description from con_upl_meta pro id
-        	$db2 = new DB_Contenido();
-			$sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
-			     . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
-			$db2->query($sql);
-			$db2->next_record();
+            //get description from con_upl_meta pro id
+            $db2 = new DB_Contenido();
+            $sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
+                 . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
+            $db2->query($sql);
+            $db2->next_record();
             $imglink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
         $imglink .= "</SELECT>";
-        
+
         $form->add(i18n("Link to an image"),$imglink);
-        
+
         $ziplink .= "<SELECT name=\"selectzip\" SIZE=1>";
         $ziplink .= "<option value=\"\" selected>".i18n("Please choose")."</option>";
-        
+
         $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".$client."' AND filetype IN ('zip','arj','lha','lhx','tar','tgz','rar','gz') ORDER BY dirname, filename";
-        
+
         $db->query($sql);
 
         while ($db->next_record()) {
-        	//get description from con_upl_meta pro id
-        	$db2 = new DB_Contenido();
-			$sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
-			     . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
-			$db2->query($sql);
-			$db2->next_record();
+            //get description from con_upl_meta pro id
+            $db2 = new DB_Contenido();
+            $sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
+                 . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
+            $db2->query($sql);
+            $db2->next_record();
             $ziplink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
         $ziplink .= "</SELECT>";
-        
+
         $form->add(i18n("Link to an archive"),$ziplink);
-        
+
         $audiolink .= "<SELECT name=\"selectaudio\" SIZE=1>";
         $audiolink .= "<option value=\"\" selected>".i18n("Please choose")."</option>";
-        
+
         $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('mp3','mp2','avi','mpg','mpeg','mid','wav','mov','wmv') ORDER BY dirname, filename";
-        
+
         $db->query($sql);
 
         while ($db->next_record()) {
-        	//get description from con_upl_meta pro id
-        	$db2 = new DB_Contenido();
-			$sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
-			     . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
-			$db2->query($sql);
-			$db2->next_record();
+            //get description from con_upl_meta pro id
+            $db2 = new DB_Contenido();
+            $sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
+                 . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
+            $db2->query($sql);
+            $db2->next_record();
             $audiolink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
         $audiolink .= "</SELECT>";
-        
+
         $form->add(i18n("Link to a media file"),$audiolink);
-        
-                 
+
+
         $anylink .= "<SELECT name=\"selectany\" SIZE=1>";
         $anylink .= "<option value=\"\" selected>".i18n("Please choose")."</option>";
-        
+
         $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' ORDER BY dirname, filename";
-        
+
         $db->query($sql);
 
         while ($db->next_record()) {
-        	//get description from con_upl_meta pro id
-        	$db2 = new DB_Contenido();
-			$sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
-			     . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
-			$db2->query($sql);
-			$db2->next_record();
+            //get description from con_upl_meta pro id
+            $db2 = new DB_Contenido();
+            $sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
+                 . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
+            $db2->query($sql);
+            $db2->next_record();
             $anylink .= "<option value=\"".$db->f("dirname").$db->f("filename")."\">".$db->f("dirname").$db->f("filename")." [".urldecode($db2->f("description"))."]</option>";
         }
 
         $anylink .= "</SELECT>";
-        
+
         $form->add(i18n("Link to any file"),$anylink);
-        
-        
+
+
        cInclude("includes","functions.upl.php");
 
         // Laden der Verzeichnisse und Dateien in separate Arrays
         $olddir = getcwd();
         chdir($cfgClient[$client]['upl']['path'].rawurldecode($path));
-        
+
         $dirlist = uplDirectoryListRecursive($cfgClient[$client]['upl']['path'].rawurldecode($path));
 
 
-		chdir($olddir);
+        chdir($olddir);
 
-		$upldirs = '<select name="upldir">';
+        $upldirs = '<select name="upldir">';
         $upldirs .= '<option value="/">&lt;upload&gt;/</option>';
 
         foreach ($dirlist as $key => $value)
         {
                 $upldirs .= '<option value="'.$value["pathstring"].'">'."&lt;upload&gt;/".$value["pathstring"].'</option>';
         }
-        
+
         $upldirs .= "</select>";
-	
+
         $form->add(i18n("Upload file"),$upldirs.'<input name="uplfile[]" type="file">');
         $form->add(i18n("Description"),"<TEXTAREA name=CMS_LINKDESCR ROWS=3 COLS=60>".htmlspecialchars($a_content["CMS_LINKDESCR"][$typenr])."</TEXTAREA>");
-        
+
         $linktarget = "  <INPUT class=text_medium type=text name=CMS_LINKTARGET VALUE=\"".$a_content["CMS_LINKTARGET"][$typenr]."\" SIZE=60 onChange=\"setlinktargettosomething();\">";
-        
+
         $form->add(i18n("Target frame"),$linktarget);
 
               $newwindow =  "  <INPUT TYPE=checkbox name=checkboxlinktarget value=\"1\" onClick=\"setlinktargettoblank();\" ";
-              
-              if ($a_content["CMS_LINKTARGET"][$typenr]=="_blank") 
+
+              if ($a_content["CMS_LINKTARGET"][$typenr]=="_blank")
               {
-              	$newwindow .= " checked";
+                  $newwindow .= " checked";
               }
-              	$newwindow .= ">".i18n("Open link in new window")."</INPUT>";
-              $newwindow .= "	
+                  $newwindow .= ">".i18n("Open link in new window")."</INPUT>";
+              $newwindow .= "
                     <!---------JavaScript-------------------->
                            <script language=\"JavaScript\">
                 <!--
@@ -384,13 +384,13 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                 </SCRIPT>
                 ";
 
-		$form->add(i18n("Open in new window"),$newwindow);
-		
-		$form->addCancel($sess->url($path2));        
-        echo $form->render(); 
-                      
+        $form->add(i18n("Open in new window"),$newwindow);
+
+        $form->addCancel($sess->url($path2));
+        echo $form->render();
+
         echo "  </TD></TR>";
-        
+
 
         echo "  </TABLE>
                       </FORM>";

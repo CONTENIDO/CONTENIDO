@@ -50,16 +50,16 @@ if ($action == "con_newart" && $newart != true) {
 
 //Add a new Meta Tag in DB
 if($METAmetatype){
-	$sql = "INSERT INTO `".$cfg["tab"]["meta_type"]."` (
-	    `metatype` ,
-	    `fieldtype` ,
-	    `maxlength` ,
-	    `fieldname`
-	    )
-	    VALUES (
-	    '".$METAmetatype."', '".$METAfieldtype."', '".$METAmaxlength."', '".$METAfieldname."'
-	    );";
-	$db->query($sql);
+    $sql = "INSERT INTO `".$cfg["tab"]["meta_type"]."` (
+        `metatype` ,
+        `fieldtype` ,
+        `maxlength` ,
+        `fieldname`
+        )
+        VALUES (
+        '".$METAmetatype."', '".$METAfieldtype."', '".$METAmaxlength."', '".$METAfieldname."'
+        );";
+    $db->query($sql);
 }
 
 $disabled = '';
@@ -200,41 +200,41 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
     // Show path of selected category to user
     $catString = '';
     prCreateURLNameLocationString($idcat, '/', $catString);
-    
+
     $tpl->set('s', 'TITEL', i18n("Meta-Tags Verwaltung"));
     $tpl->set('s', 'CATEGORY', $catString.'/'.htmlspecialchars($tmp_title));
 
     // Title
     $tpl->set('s', 'TITEL', i18n("Title"));
-    
-	if (isset($tmp_notification)) {
+
+    if (isset($tmp_notification)) {
         $tpl->set('s', 'NOTIFICATION', '<tr><td colspan="4">'.$tmp_notification.'<br></td></tr>');
     } else {
         $tpl->set('s', 'NOTIFICATION', '');
     }
-	// Seitentitel
+    // Seitentitel
     $title_input = '<input type="text" '.$disabled.' class="text_medium" name="page_title" style="width:400px;" value="'.htmlspecialchars($tmp_page_title).'">';
     $tpl->set("s", "TITLE-INPUT", $title_input);
-    
-    
+
+
     if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-    	 
-    	$langscripts =  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
-    	<script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
-    	$tpl->set('s', 'CAL_LANG', $langscripts);
-    
+
+        $langscripts =  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
+        <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
+        $tpl->set('s', 'CAL_LANG', $langscripts);
+
     }else {
-    	$tpl->set('s', 'CAL_LANG', '');
+        $tpl->set('s', 'CAL_LANG', '');
     }
-    
+
     $tpl->set('s', 'PATH_TO_CALENDER_PIC',  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif');
-    
-    
-    
+
+
+
     // Meta-Tags
     $availableTags = conGetAvailableMetaTagTypes();
 
-   
+
     foreach ($availableTags as $key => $value) {
         $tpl->set('d', 'METAINPUT', 'META'.$value);
 
@@ -242,7 +242,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
             case "text":
                 if ($value["name"] == 'date') {
                     $element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:380px;" maxlength='.$value["maxlength"].' value="'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'">';
-                               
+
                 } else {
                     $element = '<input '.$disabled.' class="text_medium" type="text" name="META'.$value["name"].'" id="META'.$value["name"].'" style="width:400px;" maxlength='.$value["maxlength"].' value="'.htmlspecialchars(conGetMetaValue($tmp_idartlang,$key)).'">';
                 }
@@ -338,7 +338,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok.gif');
     }
 
-   
+
 
     if ($tmp_usetimemgmt == '1') {
         if ($tmp_datestart == "0000-00-00 00:00:00" && $tmp_dateend == "0000-00-00 00:00:00") {
@@ -346,42 +346,42 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
             $notification->displayNotification("warning", $message);
         }
     }
-    
+
     //add new meta in DB
     unset($tpl2);
-	$result = array(
-		"metatype"=>"",
-		"fieldtype"=>"text",
-		"maxlength"=>"255",
-		"fieldname"=>"name"
-	);
-    $tpl2 = new Template();   
+    $result = array(
+        "metatype"=>"",
+        "fieldtype"=>"text",
+        "maxlength"=>"255",
+        "fieldname"=>"name"
+    );
+    $tpl2 = new Template();
     $tpl2->set('s', 'METATITLE', i18n("Neue Meta_Tag"));
-	
+
     $sql = "SHOW FIELDS FROM `".$cfg['tab']['meta_type']."`";
 
     $db->query($sql);
 
     while ($db->next_record()) {
-    	if($db->f("Field") != 'idmetatype'){
-	        $tpl2->set('d', 'METATITLE', $db->f("Field"));
-	        $tpl2->set('d', 'METAFIELDTYPE', '<input type="text" onblur="restoreOnBlur(this, \''.$result[$db->f("Field")].'\')" onfocus="clearOnFocus(this, \''.$result[$db->f("Field")].'\');" value="'.$result[$db->f("Field")].'" maxlength="255" style="width:400px;" id="META'.$db->f("Field").'" name="META'.$db->f("Field").'" class="text_medium"/>');
-	        $tpl2->next();
-    	}
+        if($db->f("Field") != 'idmetatype'){
+            $tpl2->set('d', 'METATITLE', $db->f("Field"));
+            $tpl2->set('d', 'METAFIELDTYPE', '<input type="text" onblur="restoreOnBlur(this, \''.$result[$db->f("Field")].'\')" onfocus="clearOnFocus(this, \''.$result[$db->f("Field")].'\');" value="'.$result[$db->f("Field")].'" maxlength="255" style="width:400px;" id="META'.$db->f("Field").'" name="META'.$db->f("Field").'" class="text_medium"/>');
+            $tpl2->next();
+        }
     }
 
     $select = $tpl2->generate($cfg["path"]["templates"] . $cfg["templates"]["con_meta_addnew"], true);
- 
-	// accessible by the current user (sysadmin client admin) anymore.
-	$aUserPerm = explode(',', $auth->auth['perm']);
-	if (!in_array('sysadmin', $aUserPerm)) {
-	    $tpl->set('s', 'ADDMETABTN', '&nbsp;');
-    	$tpl->set('s', 'ADDNEWMETA', '&nbsp;');
-    } else { 
-	    $tpl->set('s', 'ADDMETABTN', '<span id="addMeta" style="color: green;">+</span>');
-    	$tpl->set('s', 'ADDNEWMETA', $select);
-	}
-    
+
+    // accessible by the current user (sysadmin client admin) anymore.
+    $aUserPerm = explode(',', $auth->auth['perm']);
+    if (!in_array('sysadmin', $aUserPerm)) {
+        $tpl->set('s', 'ADDMETABTN', '&nbsp;');
+        $tpl->set('s', 'ADDNEWMETA', '&nbsp;');
+    } else {
+        $tpl->set('s', 'ADDMETABTN', '<span id="addMeta" style="color: green;">+</span>');
+        $tpl->set('s', 'ADDNEWMETA', $select);
+    }
+
     // Genereate the Template
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['con_meta_edit_form']);
 

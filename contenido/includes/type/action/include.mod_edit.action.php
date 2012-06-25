@@ -24,8 +24,8 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 if (empty($type)) {
-	$type = $customtype;
+    $type = $customtype;
 }
 
-$idmod = modEditModule($idmod, $name, $descr, $input, $output, $template, $type);        
+$idmod = modEditModule($idmod, $name, $descr, $input, $output, $template, $type);
 ?>

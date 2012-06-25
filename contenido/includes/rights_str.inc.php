@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Rights for str
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,19 +18,19 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-07-03, Timo Trautmann, moved inline html to template
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 //notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
@@ -62,7 +62,7 @@ $sTable = '';
 
         $sJsExternal .= '<script type="text/javascript" src="scripts/addImageTags.js"></script>'."\n";
         $sJsExternal .= '<script type="text/javascript" src="scripts/expandCollapse.js"></script>'."\n";
- 
+
         // declare new javascript variables;
         $sJsBefore .= "
               var itemids=new Array(); \n
@@ -75,7 +75,7 @@ $sTable = '';
         $sTable .= $table->start_table();
         $sTable .= $table->header_row();
         $sTable .= $table->header_cell(i18n("Category"),"left");
-		$sTable .= $table->header_cell("&nbsp;","left");
+        $sTable .= $table->header_cell("&nbsp;","left");
         $possible_areas=array();
         $aSecondHeaderRow = array();
 
@@ -107,11 +107,11 @@ $sTable = '';
         array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
         $sTable .= $table->end_row();
         $colspan++;
-        
+
         $sTable .= $table->header_row();
         $sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
         $sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
-        
+
         foreach ($aSecondHeaderRow as $value) {
             $sTable .= $table->header_cell($value,"center", '', '', 0);
         }
@@ -123,16 +123,16 @@ $sTable = '';
 
         $counter=array();
         $parentid="leer";
-        
+
         $aRowname = array();
         $iLevel = 0;
-        
+
         while ($db->next_record()) {
 
                 if ($db->f("level") == 0 && $db->f("preid") != 0) {
                     $sTable .= $table->row();
-					$sTable .= $table->sumcell("&nbsp;","right");
-					$sTable .= $table->end_row();
+                    $sTable .= $table->sumcell("&nbsp;","right");
+                    $sTable .= $table->end_row();
                 }else {
                         if ($db->f("level") < $iLevel) {
                             $iDistance = $iLevel-$db->f("level");
@@ -142,7 +142,7 @@ $sTable = '';
                             }
                             $iLevel = $db->f("level");
                         }
-                        
+
                         if ($db->f("level") >= $iLevel) {
                             if ($db->f("level") == $iLevel) {
                                 array_pop($aRowname);
@@ -151,7 +151,7 @@ $sTable = '';
                             }
                             array_push($aRowname, $db->f("idcat"));
                         }
-                
+
                         //find out parentid for inheritance
                         //if parentid is the same increase the counter
                         if($parentid==$db->f("parentid")) {
@@ -170,7 +170,7 @@ $sTable = '';
                         //set javscript array for itemids
                         $sJsAfter.="itemids[\"".$db->f("idcat")."\"]=\"x\";\n";
 
-						$spaces='<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a>';
+                        $spaces='<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a>';
 
                         $sTable .= $table->row("id=\"".implode('_', $aRowname)."\"");
                         $sTable .= $table->cell('<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a> '.$db->f("name"),"", "", " class=\"td_rights0\"", false);
@@ -203,8 +203,8 @@ $sTable = '';
 
                          //checkbox for checking all actions fore this itemid
                          $sTable .= $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idcat")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idcat")."')\">","", "", " class=\"td_rights3\"", false);
-						 $sTable .= $table->end_row();
-				}
+                         $sTable .= $table->end_row();
+                }
 }
 $sTable .= $table->end_row();
 $sTable .= $table->row();
@@ -217,7 +217,7 @@ $sJsAfter .= "
     aTranslations['pfeil_links.gif'] = '".i18n("Apply rights for this category to all categories on the same level or above")."';
     aTranslations['pfeil_runter.gif'] = '".i18n("Apply rights for this category to all categories below the current category")."';
     setImageTags(aTranslations);
-        
+
     init('".i18n("Open category")."', '".i18n("Close category")."');\n";
 
 $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);

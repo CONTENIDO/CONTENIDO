@@ -27,10 +27,10 @@ $tmp_newid  = strNewCategory($idcat, $categoryname, true, $categoryalias, $visib
 CEC_Hook::execute("Contenido.Action.str_newcat.AfterCall", array(
     'newcategoryid' => $tmp_newid,
     'idcat'         => $idcat,
-    'categoryname'  => $categoryname, 
-    'categoryalias' => $categoryalias, 
-    'visible'       => $visible, 
-    'public'        => $public, 
+    'categoryname'  => $categoryname,
+    'categoryalias' => $categoryalias,
+    'visible'       => $visible,
+    'public'        => $public,
     'idtplcfg'      => $idtplcfg,
-)); 
+));
 ?>

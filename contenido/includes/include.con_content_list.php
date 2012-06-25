@@ -62,11 +62,11 @@ if ($action == 'savecontype' || $action == 10) {
 
     conGenerateCodeForArtInAllCategories($idart);
 } else if($action == 'deletecontype'){
-	 if(isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
-		$sql = "DELETE FROM ".$cfg["tab"]["content"]." WHERE idcontent='".Contenido_Security::toInteger($_REQUEST['idcontent'])."' LIMIT 1";
-		$db->query($sql);
-	 }
-	
+     if(isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
+        $sql = "DELETE FROM ".$cfg["tab"]["content"]." WHERE idcontent='".Contenido_Security::toInteger($_REQUEST['idcontent'])."' LIMIT 1";
+        $db->query($sql);
+     }
+
 }
 
 //get active value
@@ -76,16 +76,16 @@ $result = array();
 $aList = array();
 $typeAktuell = array();
 while ( $db->next_record() ) {
-		$result[$db->f("name")][$db->f("id")] = $db->f("value");
-		if(!in_array($db->f("name"),$aList)){
-			$aList[$db->f("idtype")] = $db->f("name");
-		}
+        $result[$db->f("name")][$db->f("id")] = $db->f("value");
+        if(!in_array($db->f("name"),$aList)){
+            $aList[$db->f("idtype")] = $db->f("name");
+        }
 }
 $typeAktuell = getAktuellType($typeAktuell, $aList);
 
 //create Layoutcode
 //if ($action == 'con_content') {
-	//@fulai.zhang: Mark submenuitem 'Editor' in the CONTENIDO Backend (Area: Contenido --> Articles --> Editor)
+    //@fulai.zhang: Mark submenuitem 'Editor' in the CONTENIDO Backend (Area: Contenido --> Articles --> Editor)
     $markSubItem = markSubMenuItem(5, true);
 
     //Include tiny class
@@ -128,78 +128,78 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
     $scripts = $oScriptTpl->generate($cfg['path']['contenido'] . $cfg['path']['templates'] . $cfg['templates']['con_editcontent'], 1);
 
     $contentform  = '
-	<form name="editcontent" method="post" action="' . $sess->url($cfg['path']['contenido_fullhtml'] . "main.php?area=con_content_list&action=savecontype&idart=$idart&idcat=$idcat&lang=$lang&idartlang=$idartlang&frame=4&client=$client") . '">
-	    <input type="hidden" name="changeview" value="edit">
-	    <input type="hidden" name="data" value="">
-	</form>
-	';
+    <form name="editcontent" method="post" action="' . $sess->url($cfg['path']['contenido_fullhtml'] . "main.php?area=con_content_list&action=savecontype&idart=$idart&idcat=$idcat&lang=$lang&idartlang=$idartlang&frame=4&client=$client") . '">
+        <input type="hidden" name="changeview" value="edit">
+        <input type="hidden" name="data" value="">
+    </form>
+    ';
 
-	$layoutcode = '<html>
-		<head>
-		    <title></title>
-		    <meta http-equiv="expires" content="0">
-		    <meta http-equiv="cache-control" content="no-cache">
-		    <meta http-equiv="pragma" content="no-cache">
-		    <link rel="stylesheet" type="text/css" href="../contenido/styles/contenido.css">
-		    <script type="text/javascript" src="../contenido/scripts/general.js"></script>
-		    <style>
-		    .contypeList {
-		    	border: 1px solid #B3B3B3;
-		    	padding: 10px;
-		    	margin: 10px 0;
-		    }
-		    .noactive {
-		    	border: 1px solid red;
-		    }
-		    </style>
-		</head>
-		<body style="margin: 10px">';
-	foreach($result as $key => $cmstype){
-		foreach($cmstype as $index => $value){		
-			if(in_array($key.'['.$index.']',$typeAktuell)){
-				$class = '';
-			} else {
-				$class = 'noactive';
-			}
-			$layoutcode .= '<div class="contypeList '.$class.'">
-			<div class="headline">'.$key.' '.$index.':</div>'.$key.'['.$index.']</div>';
-		}
-	}
-	$layoutcode .= '</body></html>';
+    $layoutcode = '<html>
+        <head>
+            <title></title>
+            <meta http-equiv="expires" content="0">
+            <meta http-equiv="cache-control" content="no-cache">
+            <meta http-equiv="pragma" content="no-cache">
+            <link rel="stylesheet" type="text/css" href="../contenido/styles/contenido.css">
+            <script type="text/javascript" src="../contenido/scripts/general.js"></script>
+            <style>
+            .contypeList {
+                border: 1px solid #B3B3B3;
+                padding: 10px;
+                margin: 10px 0;
+            }
+            .noactive {
+                border: 1px solid red;
+            }
+            </style>
+        </head>
+        <body style="margin: 10px">';
+    foreach($result as $key => $cmstype){
+        foreach($cmstype as $index => $value){
+            if(in_array($key.'['.$index.']',$typeAktuell)){
+                $class = '';
+            } else {
+                $class = 'noactive';
+            }
+            $layoutcode .= '<div class="contypeList '.$class.'">
+            <div class="headline">'.$key.' '.$index.':</div>'.$key.'['.$index.']</div>';
+        }
+    }
+    $layoutcode .= '</body></html>';
 
     // generate code
     $code = _processCmsTags($aList, $result, true, $layoutcode);
 
-	if($code == "0601") {
-		markSubMenuItem("1");
-		$code = "<script type='text/javascript'>location.href = '".$cfg['path']['contenido_fullhtml']."main.php?frame=4&area=con_content_list&action=con_content&idart=".$idart."&idcat=".$idcat."&contenido=".$contenido."'; console.log(location.href);</script>";
-	} else {
-    	// inject some additional markup
-    	$code = str_ireplace_once("</head>", "$markSubItem $scripts\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$encoding[$lang]\"></head>", $code);
-    	$code = str_ireplace_once_reverse("</body>", "$contentform</body>", $code);
-    	$code = str_ireplace_once("<head>", "<head>\n" . '<base href="' . $cfgClient[$client]["path"]["htmlpath"] . '">', $code);
-	}
+    if($code == "0601") {
+        markSubMenuItem("1");
+        $code = "<script type='text/javascript'>location.href = '".$cfg['path']['contenido_fullhtml']."main.php?frame=4&area=con_content_list&action=con_content&idart=".$idart."&idcat=".$idcat."&contenido=".$contenido."'; console.log(location.href);</script>";
+    } else {
+        // inject some additional markup
+        $code = str_ireplace_once("</head>", "$markSubItem $scripts\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=$encoding[$lang]\"></head>", $code);
+        $code = str_ireplace_once_reverse("</body>", "$contentform</body>", $code);
+        $code = str_ireplace_once("<head>", "<head>\n" . '<base href="' . $cfgClient[$client]["path"]["htmlpath"] . '">', $code);
+    }
 
     if ($cfg["debug"]["codeoutput"]) {
-    	cDebug(htmlspecialchars($code));
+        cDebug(htmlspecialchars($code));
     }
-    
-	//show ContentTypeList
+
+    //show ContentTypeList
     chdir($cfgClient[$client]["path"]["frontend"]);
     eval("?>\n".$code."\n<?php\n");
 //}
 
 cRegistry::shutdown();
 
-	/**
+    /**
      * Processes replacements of all existing CMS_... tags within passed code
      *
-     * @param  array   $aList  CMS_...tags list 
+     * @param  array   $aList  CMS_...tags list
      * @param  array   $contentList  all CMS variables
      * @param  array   $contentList  Assoziative list of CMS variables
      * @param  bool    $saveKeywords  Flag to save collected keywords during replacement process.
      */
-	function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode) {
+    function _processCmsTags($aList, $contentList, $saveKeywords = true, $layoutCode) {
         // #####################################################################
         // NOTE: Variables below are required in included/evaluated content type codes!
         global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
@@ -207,13 +207,13 @@ cRegistry::shutdown();
         // NOTE: Variables below are additionally required in included/evaluated
         //       content type codes within backend edit mode!
         global $edit, $editLink, $belang;
-        
-		$idcat = $_REQUEST['idcat'];
+
+        $idcat = $_REQUEST['idcat'];
         $idart = $_REQUEST['idart'];
         $lang = $_REQUEST['lang'];
         $client = $_REQUEST['client'];
         $idartlang = $_REQUEST['idartlang'];
-		$contenido = $_REQUEST['contenido'];
+        $contenido = $_REQUEST['contenido'];
 
         if (!is_object($db2)) {
             $db2 = new DB_Contenido();
@@ -234,17 +234,17 @@ cRegistry::shutdown();
         while ($db->next_record()) {
             $_typeList[] = $db->toObject();
         }
-        
-		$html = '';
+
+        $html = '';
         // Replace all CMS_TAGS[]
         foreach($_typeList as $_typeItem) {
             $key = strtolower($_typeItem->type);
             $type = $_typeItem->type;
-           
-        	if(in_array($type,$aList)){
+
+            if(in_array($type,$aList)){
             // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
             $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $layoutCode, $match);
-			
+
             $a_[$key] = $match[0];
 
             $success = array_walk($a_[$key], 'extractNumber');
@@ -263,83 +263,83 @@ cRegistry::shutdown();
                     cDeprecated("Move code for $type from table into file system (contenido/includes/cms/code/)");
                     eval($_typeItem->code);
                 }
-                
-				$sql = "SELECT a.idcontent 
-						FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b 
-						WHERE a.idartlang=".$_REQUEST["idartlang"].
-						" AND a.idtype=b.idtype AND a.typeid = ".$val." AND b.type = '".$type."'
-						ORDER BY a.idartlang, a.idtype, a.typeid";
-				$db->query($sql);
-		        while ($db->next_record()) {
-		            $idcontent = $db->f("idcontent");
-		        }
-				
-                $search[$val] = sprintf('%s[%s]', $type, $val);				
-					
-				$path = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
-				'&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido.'&idcontent='.$idcontent;
+
+                $sql = "SELECT a.idcontent
+                        FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b
+                        WHERE a.idartlang=".$_REQUEST["idartlang"].
+                        " AND a.idtype=b.idtype AND a.typeid = ".$val." AND b.type = '".$type."'
+                        ORDER BY a.idartlang, a.idtype, a.typeid";
+                $db->query($sql);
+                while ($db->next_record()) {
+                    $idcontent = $db->f("idcontent");
+                }
+
+                $search[$val] = sprintf('%s[%s]', $type, $val);
+
+                $path = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
+                '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido.'&idcontent='.$idcontent;
                 if($_typeItem->idtype==20 || $_typeItem->idtype==21){
-                	 $tmp = str_replace('";?>', '', $tmp);
-                	 $tmp = str_replace('<?php echo "', '', $tmp);
-		 			//echo "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
-			    } 
-				$replacements[$val] = $tmp.
-	                '<a style="text-decoration:none;" href="javascript:setcontent(\'1\',\''.$path.'\');">
-	                <img border="0" src="'.$cfg['path']['contenido_fullhtml'].'images/but_cancel.gif">
-	                </a>';
-                $keycode[$type][$val] = $tmp.                                                                                  
-	                '<a style="text-decoration:none;" href="javascript:setcontent(\'1\',\''.$path.'\');">
-	                <img border="0" src="'.$cfg['path']['contenido_fullhtml'].'images/but_cancel.gif">
-	                </a>';
+                     $tmp = str_replace('";?>', '', $tmp);
+                     $tmp = str_replace('<?php echo "', '', $tmp);
+                     //echo "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
+                }
+                $replacements[$val] = $tmp.
+                    '<a style="text-decoration:none;" href="javascript:setcontent(\'1\',\''.$path.'\');">
+                    <img border="0" src="'.$cfg['path']['contenido_fullhtml'].'images/but_cancel.gif">
+                    </a>';
+                $keycode[$type][$val] = $tmp.
+                    '<a style="text-decoration:none;" href="javascript:setcontent(\'1\',\''.$path.'\');">
+                    <img border="0" src="'.$cfg['path']['contenido_fullhtml'].'images/but_cancel.gif">
+                    </a>';
             }
 
-			$code = str_ireplace($search, $replacements, $layoutCode);
-			// execute CEC hook
-			$code = CEC_Hook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
-			$layoutCode = stripslashes($code);
+            $code = str_ireplace($search, $replacements, $layoutCode);
+            // execute CEC hook
+            $code = CEC_Hook::executeAndReturn('Contenido.Content.conGenerateCode', $code);
+            $layoutCode = stripslashes($code);
 
-        	}
-		}
+            }
+        }
         return $layoutCode;
     }
-    
+
     /**
      * Processes get all existing active CMS_... tags within passed code
      *
      * @param  array   $r  active CMS variables
-     * @param  array   $aList  CMS_...tags list 
+     * @param  array   $aList  CMS_...tags list
      */
     function getAktuellType($r, $aList){
-    	$idcat = $_REQUEST['idcat'];
+        $idcat = $_REQUEST['idcat'];
         $idart = $_REQUEST['idart'];
         $lang = $_REQUEST['lang'];
         $client = $_REQUEST['client'];
         global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
-       
-    	// generate code
-		$templatecode = conGenerateCode($idcat, $idart, $lang, $client, false, false, false);
-		// Select all cms_type entries
+
+        // generate code
+        $templatecode = conGenerateCode($idcat, $idart, $lang, $client, false, false, false);
+        // Select all cms_type entries
         $sql = 'SELECT idtype, type, code FROM ' . $cfg['tab']['type'];
         $db->query($sql);
         $_typeList = array();
         while ($db->next_record()) {
             $_typeList[] = $db->toObject();
-        }     
+        }
         // generate code
-   		$code = conGenerateCode($idcat, $idart, $lang, $client, false, false, false);
+           $code = conGenerateCode($idcat, $idart, $lang, $client, false, false, false);
         foreach($_typeList as $_typeItem) {
-        	$type = $_typeItem->type;           
-        	if(in_array($type,$aList)){
-	            // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
-	            $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $code, $match);
-	            foreach($match[0] as $s){
-	            if(!in_array($s, $r)){	            	
-	            	array_push($r, $s);
-	            }
-	            }
-        	}
+            $type = $_typeItem->type;
+            if(in_array($type,$aList)){
+                // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
+                $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $code, $match);
+                foreach($match[0] as $s){
+                if(!in_array($s, $r)){
+                    array_push($r, $s);
+                }
+                }
+            }
         }
         return $r;
     }
-    
+
 ?>

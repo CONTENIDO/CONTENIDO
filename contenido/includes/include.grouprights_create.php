@@ -46,7 +46,7 @@ $aPerms        = array();
 
 if ($action == 'group_create') {
     $aPerms = buildUserOrGroupPermsFromRequest();
-    
+
     if ($groupname == '') {
         $groupname = cApiGroup::PREFIX . i18n("New Group");
     }

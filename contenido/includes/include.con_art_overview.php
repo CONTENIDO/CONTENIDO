@@ -70,7 +70,7 @@ if ($action == 'con_syncarticle') {
 
 // Which columns to display?
 $listColumns = array(
-	"mark"	=> i18n("Mark"),
+    "mark"    => i18n("Mark"),
     "start" => i18n("Article"),
     "title" => i18n("Title"),
     "changeddate" => i18n("Changed"),
@@ -78,7 +78,7 @@ $listColumns = array(
     "sortorder" => i18n("Sort order"),
     "template" => i18n("Template"),
     "actions" => i18n("Actions")
-		
+
 
 );
 
@@ -580,9 +580,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $no_article = false;
             foreach ($listColumns as $listColumn => $ctitle) {
                 switch ($listColumn) {
-                	case "mark":
-                		$value = '<input type="checkbox" name="mark" value="'.$idart.'" class="mark_articles"/>';
-                		break;
+                    case "mark":
+                        $value = '<input type="checkbox" name="mark" value="'.$idart.'" class="mark_articles"/>';
+                        break;
                     case "start":
                         $value = $tmp_start;
                         break;
@@ -756,7 +756,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
         $tpl2->set('s', 'NAME', 'sort');
         $tpl2->set('s', 'CLASS', 'text_medium');
         $tpl2->set('s', 'OPTIONS', 'onchange="artSort(this)"');
-	
+
         foreach ($s_types as $key => $value) {
             $selected = ($sort == $key) ? 'selected="selected"' : '';
             $tpl2->set('d', 'VALUE',    $key);
@@ -800,13 +800,13 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
         $tpl->set('s', 'ELEMPERPAGECAPTION', $caption);
         $tpl->set('s', 'ELEMPERPAGE', $select);
-		
+
         $tpl->set('s', 'IDCAT', $idcat);
         $tpl->set('s', 'IDLANG', $idlang);
-        
+
         $tpl->set('s', 'DELETE_TITLE', i18n('Delete marked articles'));
         $tpl->set('s', 'DELETE_TEXT', i18n('Are you sure to delete the selected articles'));
-       
+
         // Extract Category and Catcfg
         $sql = "SELECT
                     b.name AS name,

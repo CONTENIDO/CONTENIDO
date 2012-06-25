@@ -1,15 +1,15 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Layout history.
  * We use SimpleXml to read the xml nodes
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @version    1.0.0
  * @author     Bilal Arslan
@@ -18,28 +18,28 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release >= 5.0
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2008-08-12
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
 // For Editor syntax highlighting
 cInclude("external", "codemirror/class.codemirror.php");
 
-// 
+//
 cInclude("includes", "functions.mod.php");
 
 
 if($idmod =="") {
-	$idmod = $_REQUEST['idmod'];	
+    $idmod = $_REQUEST['idmod'];
 }
 
 $bDeleteFile = false;
@@ -58,25 +58,25 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
   $oPage->render();
 } else {
 
-    if ($_POST["mod_send"] == true && ($_POST["CodeOut"] !="" || $_POST["CodeIn"] !="") ) { // save button 
-    	$oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
-    	$sName = $_POST["modname"];
-    	$sCodeInput = $_POST["CodeIn"];
-    	$sCodeOutput = $_POST["CodeOut"];
-    	$sDescription = $_POST["moddesc"];
-
-    //	save and mak new revision
-        $oPage->addScript('refresh', $oVersion->renderReloadScript('mod', $idmod, $sess));
-    	modEditModule($idmod, $sName, $sDescription, $sCodeInput, $sCodeOutput, $oVersion->sTemplate, $oVersion->sModType);
-    	unset($oVersion);
-    }
-	
-	// [action] => history_truncate delete all current history
-  	if($_POST["action"] == "history_truncate") {
+    if ($_POST["mod_send"] == true && ($_POST["CodeOut"] !="" || $_POST["CodeIn"] !="") ) { // save button
         $oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
-  		$bDeleteFile = $oVersion->deleteFile();
+        $sName = $_POST["modname"];
+        $sCodeInput = $_POST["CodeIn"];
+        $sCodeOutput = $_POST["CodeOut"];
+        $sDescription = $_POST["moddesc"];
+
+    //    save and mak new revision
+        $oPage->addScript('refresh', $oVersion->renderReloadScript('mod', $idmod, $sess));
+        modEditModule($idmod, $sName, $sDescription, $sCodeInput, $sCodeOutput, $oVersion->sTemplate, $oVersion->sModType);
         unset($oVersion);
-  	}
+    }
+
+    // [action] => history_truncate delete all current history
+      if($_POST["action"] == "history_truncate") {
+        $oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+          $bDeleteFile = $oVersion->deleteFile();
+        unset($oVersion);
+      }
 
     $oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
 
@@ -106,53 +106,53 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
     } else {
         $sRevision = $oVersion->getLastRevision();
     }
-        
+
     if ($sRevision != '' && $_POST["action"] != "history_truncate") {
-    	// File Path	
+        // File Path
         $sPath = $oVersion->getFilePath() . $sRevision;
-    	
-    	// Read XML Nodes  and get an array 
-    	$aNodes = array();
-    	$aNodes = $oVersion->initXmlReader($sPath);
 
-    	if (count($aNodes) > 1) {
-    				
-    			//	if choose xml file read value an set it						
-    			$sName = $oVersion->getTextBox("modname", $aNodes["name"], 60);
-    			$sDescription = $oVersion->getTextarea("moddesc", $aNodes["desc"], 100, 10);
-    			$sCodeInput = $oVersion->getTextarea("CodeIn", $aNodes["code_input"], 100, 30, "IdCodeIn");
-    			$sCodeOutput = $oVersion->getTextarea("CodeOut", $aNodes["code_output"], 100, 30, "IdCodeOut");
-    			
-    		
-    	}
-    } 
+        // Read XML Nodes  and get an array
+        $aNodes = array();
+        $aNodes = $oVersion->initXmlReader($sPath);
 
-	if($sSelectBox !="") {
-		// Add new Elements of Form
-		$oForm->add(i18n("Name"), $sName);
-		$oForm->add(i18n("Description"), $sDescription);
-		$oForm->add(i18n("Code input"), $sCodeInput);
-		$oForm->add(i18n("Code output"), $sCodeOutput);
-		$oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c"/*, "mod_history_takeover"*/); //modified it 
-		$oForm->unsetActionButton("submit");
-	
-		// Render and handle History Area
-		$oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
-		$oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
-		$oPage->addScript('IdCodeIn', $oCodeMirrorIn->renderScript());
-		$oPage->addScript('IdCodeOut', $oCodeMirrorOutput->renderScript());
-    
-    	$oPage->setContent($sSelectBox . $oForm->render());
+        if (count($aNodes) > 1) {
+
+                //    if choose xml file read value an set it
+                $sName = $oVersion->getTextBox("modname", $aNodes["name"], 60);
+                $sDescription = $oVersion->getTextarea("moddesc", $aNodes["desc"], 100, 10);
+                $sCodeInput = $oVersion->getTextarea("CodeIn", $aNodes["code_input"], 100, 30, "IdCodeIn");
+                $sCodeOutput = $oVersion->getTextarea("CodeOut", $aNodes["code_output"], 100, 30, "IdCodeOut");
+
+
+        }
+    }
+
+    if($sSelectBox !="") {
+        // Add new Elements of Form
+        $oForm->add(i18n("Name"), $sName);
+        $oForm->add(i18n("Description"), $sDescription);
+        $oForm->add(i18n("Code input"), $sCodeInput);
+        $oForm->add(i18n("Code output"), $sCodeOutput);
+        $oForm->setActionButton("apply", "images/but_ok.gif", i18n("Copy to current"), "c"/*, "mod_history_takeover"*/); //modified it
+        $oForm->unsetActionButton("submit");
+
+        // Render and handle History Area
+        $oCodeMirrorIn = new CodeMirror('IdCodeIn', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+        $oCodeMirrorOutput = new CodeMirror('IdCodeOut', 'php', substr(strtolower($belang), 0, 2), false, $cfg, !$bInUse);
+        $oPage->addScript('IdCodeIn', $oCodeMirrorIn->renderScript());
+        $oPage->addScript('IdCodeOut', $oCodeMirrorOutput->renderScript());
+
+        $oPage->setContent($sSelectBox . $oForm->render());
 
     } else {
-    	if($bDeleteFile){
-    		$notification->displayNotification("warning", i18n("Version history was cleared"));
-    	} else {
-    		$notification->displayNotification("warning", i18n("No module history available"));	
-    	}
-    	
-    
-    }	
+        if($bDeleteFile){
+            $notification->displayNotification("warning", i18n("Version history was cleared"));
+        } else {
+            $notification->displayNotification("warning", i18n("No module history available"));
+        }
+
+
+    }
     $oPage->render();
 }
 ?>

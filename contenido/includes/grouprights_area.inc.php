@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO Group Rights
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.2
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  unknown
  *   modified 2008-06-26, Dominik Ziegler, add security fix
  *   modified 2008-07-28, Bilal Arslan, moved inline html to template
@@ -27,11 +27,11 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -70,7 +70,7 @@ if(!isset($rights_perms)||$action==""||!isset($action))
 {
     //search for the permissions of this user
     $sql="SELECT perms FROM ".$cfg["tab"]["groups"]." WHERE group_id='".Contenido_Security::escapeDB($groupid, $db)."'";
-    
+
     $db->query($sql);
     $db->next_record();
     $rights_perms=$db->f("perms");
@@ -110,29 +110,29 @@ foreach($right_list as $key => $value){
                        else
                               $checked="";
 
-					/* Extract names from the XML document. */
-			          $main = $nav->getName(str_replace('/overview', '/main', $value2['location']));
-                        
+                    /* Extract names from the XML document. */
+                      $main = $nav->getName(str_replace('/overview', '/main', $value2['location']));
+
                        if ($debug)
                        {
-                       	  $locationString = $value2["location"] . " " . $value2["perm"].  "-->".$main;
+                             $locationString = $value2["location"] . " " . $value2["perm"].  "-->".$main;
                        } else {
                           $locationString = $main;
                        }
-					   
-					   $sTable .= $oTable->row();
-					   $sTable .= $oTable->cell($locationString,"", "", " class=\"td_rights1\"", false);
-					   $sTable .= $oTable->cell("<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\" value=\"x\" $checked>" ,"", "", " class=\"td_rights2\"", false);
-					   $sTable .= $oTable->cell("<input type=\"checkbox\" name=\"checkall_$key\" value=\"\" onClick=\"setRightsForArea('$key')\">","", "", " class=\"td_rights2\"", false);
+
+                       $sTable .= $oTable->row();
+                       $sTable .= $oTable->cell($locationString,"", "", " class=\"td_rights1\"", false);
+                       $sTable .= $oTable->cell("<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\" value=\"x\" $checked>" ,"", "", " class=\"td_rights2\"", false);
+                       $sTable .= $oTable->cell("<input type=\"checkbox\" name=\"checkall_$key\" value=\"\" onClick=\"setRightsForArea('$key')\">","", "", " class=\"td_rights2\"", false);
                        $sTable .= $oTable->end_row();
 
                         //set javscript array for areatree
                         $sJsBefore .= "
-								areatree[\"$key\"]=new Array();
-								areatree[\"$key\"][\"".$value2["perm"]."0\"]=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\";\n";
-						
+                                areatree[\"$key\"]=new Array();
+                                areatree[\"$key\"][\"".$value2["perm"]."0\"]=\"rights_list[".$value2["perm"]."|fake_permission_action|0]\";\n";
+
                }
-			   
+
                //if there area some
                if(is_array($value2["action"]))
                  foreach($value2["action"] as $key3 => $value3)
@@ -144,25 +144,25 @@ foreach($right_list as $key => $value){
                           else
                               $checked="";
                           //set the checkbox    the name consits of      areait+actionid+itemid
-							$sCellContent = '';
+                            $sCellContent = '';
                           if ($debug)
                           {
-                         		$sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | ". $value3 . "-->".$lngAct[$value2["perm"]][$value3]."&nbsp;&nbsp;&nbsp;&nbsp;";
+                                 $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | ". $value3 . "-->".$lngAct[$value2["perm"]][$value3]."&nbsp;&nbsp;&nbsp;&nbsp;";
                           } else {
-                          		if ($lngAct[$value2["perm"]][$value3] == "")
-                          		{
-                          			$sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . "|" .$value3 ."&nbsp;&nbsp;&nbsp;&nbsp;";
-                          	   		
-                          		} else {
-                          			$sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $lngAct[$value2["perm"]][$value3]."&nbsp;&nbsp;&nbsp;&nbsp;";
-                          		}
+                                  if ($lngAct[$value2["perm"]][$value3] == "")
+                                  {
+                                      $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . "|" .$value3 ."&nbsp;&nbsp;&nbsp;&nbsp;";
+
+                                  } else {
+                                      $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $lngAct[$value2["perm"]][$value3]."&nbsp;&nbsp;&nbsp;&nbsp;";
+                                  }
                           }
-							$sTable .= $oTable->row();
-							$sTable .= $oTable->cell($sCellContent,"left", "", " class=\"td_rights1\"", false);
-							$sTable .= $oTable->cell("<input type=\"checkbox\" id=\"rights_list[".$value2["perm"]."|$value3|0]\" name=\"rights_list[".$value2["perm"]."|$value3|0]\" value=\"x\" $checked>", false);
-							$sTable .= $oTable->cell("&nbsp;", false);
-	                        $sTable .= $oTable->end_row();
-							
+                            $sTable .= $oTable->row();
+                            $sTable .= $oTable->cell($sCellContent,"left", "", " class=\"td_rights1\"", false);
+                            $sTable .= $oTable->cell("<input type=\"checkbox\" id=\"rights_list[".$value2["perm"]."|$value3|0]\" name=\"rights_list[".$value2["perm"]."|$value3|0]\" value=\"x\" $checked>", false);
+                            $sTable .= $oTable->cell("&nbsp;", false);
+                            $sTable .= $oTable->end_row();
+
                           //set javscript array for areatree
                           $sJsBefore .= "areatree[\"$key\"][\"".$value2["perm"]."$value3\"]=\"rights_list[".$value2["perm"]."|$value3|0]\";";
 

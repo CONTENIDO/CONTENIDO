@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * External grouprights
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.2
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  unknown
  *   modified 2008-06-16, Holger Librenz, Hotifc: added check for invalid calls
  *   modified 2008-06-27, Frederic Schneider, add security fix
@@ -27,11 +27,11 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 // @TODO: check the code beneath is necessary
@@ -47,13 +47,13 @@ while ($chainEntry = $_cecIterator->next())
     $aInfo = $chainEntry->execute($_REQUEST["external_area"]);
     if ($aInfo !== false)
     {
-    	$sAreaFilename = $aInfo;
-    	break;
+        $sAreaFilename = $aInfo;
+        break;
     }
 }
 
 if ($sAreaFilename !== false)
 {
-	include($sAreaFilename);
+    include($sAreaFilename);
 }
 ?>

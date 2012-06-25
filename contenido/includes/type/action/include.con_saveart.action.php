@@ -36,125 +36,125 @@ if (!isset($online)) {
 }
 
 if (isset($title)) {
-	if (1 == $tmp_firstedit) {
-		$idart = conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort);
-		$tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
-		
-		if (!isset($idartlang)) {
-			$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = $idart AND idlang = $lang";
-			$db->query($sql);
-			$db->next_record();
-			$idartlang = $db->f("idartlang");
-		}
-		
-		if (in_array($idcat, $idcatnew)) {
-			$sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".$idcat."' AND idart = '".$idart."'";
-			
-			$db->query($sql);
-			$db->next_record();
-			
-			$tmp_idcatart = $db->f("idcatart");
-			
-			if ($is_start == 1) {
-				conMakeStart($tmp_idcatart, $is_start);
-			}
-			
-			if (!isset($is_start)) {
-				$sql = "SELECT * FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
-				$db->query($sql);
-				if ($db->next_record()) {
-					$tmp_startidartlang = $db->f('startidartlang');
-					if ($idartlang == $tmp_startidartlang) {
-						conMakeStart($tmp_idcatart, 0);
-					}
-				} else {
-					conMakeStart($tmp_idcatart, 0);
-				}
-			}
-		}
-	
-		if (is_array($idcatnew)) {
-			foreach ($idcatnew as $idcat) {
-				$sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = $idcat AND idart = $idart";
-				
-				$db->query($sql);
-				$db->next_record();
-				
-				conSetCodeFlag( $db->f("idcatart") );
-			}
-		}
-	
-	} else {
-		conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort);
-		
-		$tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
-		
-		if (!isset($idartlang)) {
-			$sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = $idart AND idlang = $lang";
-			$db->query($sql);
-			$db->next_record();
-			$idartlang = $db->f("idartlang");
-		}
-		
-		if (is_array($idcatnew)) {
-			if (in_array($idcat, $idcatnew)) {
-				$sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".$idcat."' AND idart = '".$idart."'";
-				
-				$db->query($sql);
-				$db->next_record();
-				
-				$tmp_idcatart = $db->f("idcatart");
-				
-				if ($is_start == 1) {
-					conMakeStart($tmp_idcatart, $is_start);
-				}
-				
-				if (!isset($is_start)) {
-					$sql = "SELECT * FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
-					$db->query($sql);
-					if ($db->next_record()) {
-						$tmp_startidartlang = $db->f('startidartlang');
-						if ($idartlang == $tmp_startidartlang) {
-							conMakeStart($tmp_idcatart, 0);
-						}	
-					} else {
-						conMakeStart($tmp_idcatart, 0);
-					}
-				}
-			}
-		}
-		
-		if (is_array($idcatnew)) {
-			foreach ($idcatnew as $idcat) {
-				$sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = $idcat AND idart = $idart";
-				
-				$db->query($sql);
-				$db->next_record();
-				
-				conSetCodeFlag($db->f("idcatart"));
-			}
-		}
-	}
+    if (1 == $tmp_firstedit) {
+        $idart = conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort);
+        $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
+
+        if (!isset($idartlang)) {
+            $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = $idart AND idlang = $lang";
+            $db->query($sql);
+            $db->next_record();
+            $idartlang = $db->f("idartlang");
+        }
+
+        if (in_array($idcat, $idcatnew)) {
+            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".$idcat."' AND idart = '".$idart."'";
+
+            $db->query($sql);
+            $db->next_record();
+
+            $tmp_idcatart = $db->f("idcatart");
+
+            if ($is_start == 1) {
+                conMakeStart($tmp_idcatart, $is_start);
+            }
+
+            if (!isset($is_start)) {
+                $sql = "SELECT * FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
+                $db->query($sql);
+                if ($db->next_record()) {
+                    $tmp_startidartlang = $db->f('startidartlang');
+                    if ($idartlang == $tmp_startidartlang) {
+                        conMakeStart($tmp_idcatart, 0);
+                    }
+                } else {
+                    conMakeStart($tmp_idcatart, 0);
+                }
+            }
+        }
+
+        if (is_array($idcatnew)) {
+            foreach ($idcatnew as $idcat) {
+                $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = $idcat AND idart = $idart";
+
+                $db->query($sql);
+                $db->next_record();
+
+                conSetCodeFlag( $db->f("idcatart") );
+            }
+        }
+
+    } else {
+        conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang, $lang, $title, $summary, $artspec, $created, $lastmodified, $author, $online, $datestart, $dateend, $artsort);
+
+        $tmp_notification = $notification->returnNotification("info", i18n("Changes saved"));
+
+        if (!isset($idartlang)) {
+            $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = $idart AND idlang = $lang";
+            $db->query($sql);
+            $db->next_record();
+            $idartlang = $db->f("idartlang");
+        }
+
+        if (is_array($idcatnew)) {
+            if (in_array($idcat, $idcatnew)) {
+                $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".$idcat."' AND idart = '".$idart."'";
+
+                $db->query($sql);
+                $db->next_record();
+
+                $tmp_idcatart = $db->f("idcatart");
+
+                if ($is_start == 1) {
+                    conMakeStart($tmp_idcatart, $is_start);
+                }
+
+                if (!isset($is_start)) {
+                    $sql = "SELECT * FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat = '$idcat' AND idlang = '$lang' AND startidartlang != '0' ";
+                    $db->query($sql);
+                    if ($db->next_record()) {
+                        $tmp_startidartlang = $db->f('startidartlang');
+                        if ($idartlang == $tmp_startidartlang) {
+                            conMakeStart($tmp_idcatart, 0);
+                        }
+                    } else {
+                        conMakeStart($tmp_idcatart, 0);
+                    }
+                }
+            }
+        }
+
+        if (is_array($idcatnew)) {
+            foreach ($idcatnew as $idcat) {
+                $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = $idcat AND idart = $idart";
+
+                $db->query($sql);
+                $db->next_record();
+
+                conSetCodeFlag($db->f("idcatart"));
+            }
+        }
+    }
 }
 
 CEC_Hook::execute("Contenido.Action.con_saveart.AfterCall", array(
-    'idcat'        => $idcat, 
-    'idcatnew'     => $idcatnew, 
-    'idart'        => $idart, 
-    'is_start'     => $is_start, 
-    'idtpl'        => $idtpl, 
-    'idartlang'    => $idartlang, 
-    'lang'         => $lang, 
-    'title'        => $title, 
+    'idcat'        => $idcat,
+    'idcatnew'     => $idcatnew,
+    'idart'        => $idart,
+    'is_start'     => $is_start,
+    'idtpl'        => $idtpl,
+    'idartlang'    => $idartlang,
+    'lang'         => $lang,
+    'title'        => $title,
     'urlname'      => $urlname,
-    'summary'      => $summary, 
-    'artspec'      => $artspec, 
-    'created'      => $created, 
-    'lastmodified' => $lastmodified, 
-    'author'       => $author, 
-    'online'       => $online, 
-    'datestart'    => $datestart, 
-    'dateend'      => $dateend, 
+    'summary'      => $summary,
+    'artspec'      => $artspec,
+    'created'      => $created,
+    'lastmodified' => $lastmodified,
+    'author'       => $author,
+    'online'       => $online,
+    'datestart'    => $datestart,
+    'dateend'      => $dateend,
     'artsort'      => $artsort
 ));
 ?>

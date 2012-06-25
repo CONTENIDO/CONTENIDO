@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Display languages
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,18 +18,18 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-04-02
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 $area="lang";
@@ -38,7 +38,7 @@ if (!isset($action)) $action = "";
 
 if (!is_numeric($targetclient))
 {
-	$targetclient = $client;
+    $targetclient = $client;
 }
 
 $iGetIdlang = $idlang;
@@ -52,7 +52,7 @@ $sql = "SELECT
         A.idlang=B.idlang AND
         B.idclient='".Contenido_Security::toInteger($targetclient)."'
         ORDER BY A.idlang";
-        
+
 $db->query($sql);
 
 $tpl->set('s','TARGETCLIENT',$targetclient);
@@ -60,7 +60,7 @@ $tpl->set('s','TARGETCLIENT',$targetclient);
 $iLangCount = 0;
 while ($db->next_record()) {
     $iLangCount++;
-    
+
     $idlang = $db->f("idlang");
 
     if ($db->f("active") == 0) {
@@ -69,7 +69,7 @@ while ($db->next_record()) {
         $active = "<a title=\"$message\" href=\"".$sess->url("main.php?area=$area&action=lang_activatelanguage&frame=$frame&targetclient=$targetclient&idlang=".$db->f("idlang"))."#clickedhere\"><img src=\"".$cfg["path"]["images"]."offline.gif"."\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
     } else {
         //deactivate
-		$message = i18n("Deactivate language");
+        $message = i18n("Deactivate language");
         $active = "<a title=\"$message\" class=action href=\"".$sess->url("main.php?area=$area&action=lang_deactivatelanguage&frame=$frame&targetclient=$targetclient&idlang=".$db->f("idlang"))."#clickedhere\"><img src=\"".$cfg["path"]["images"]."online.gif"."\" border=\"0\" title=\"$message\" alt=\"$message\"></a>";
     }
 
@@ -77,19 +77,19 @@ while ($db->next_record()) {
     $deleteMsg = sprintf(i18n("Do you really want to delete the language %s?"),htmlspecialchars($db->f("name")));
     $deleteAct = i18n("Delete language");
     $deletebutton = '<a title="'.$deleteAct.'" href="javascript://" onclick="box.confirm(\''.$deleteAct.'\', \''.$deleteMsg.'\', \'deleteLang('.$db->f("idlang").')\')"><img src="'.$cfg['path']['images'].'delete.gif" border="0" title="'.$deleteAct.'" alt="'.$deleteAct.'"></a>';
-    
+
     $tpl->set('d', 'LANGUAGE',      '<a target="right_bottom" href="'.$sess->url("main.php?area=lang_edit&idlang=$idlang&frame=4").'">'.$db->f("name").'</a>&nbsp;<span style="font-size:10px">('.$idlang.')</span>');
     $tpl->set('d', 'ACTIVATEBUTTON',  $active);
     $tpl->set('d', 'DELETEBUTTON',  $deletebutton);
     //$tpl->set('d', 'ICON', '<a target="right_bottom" href="'.$sess->url("main.php?area=lang_edit&idlang=$idlang&frame=4").'"><img src="images/language.gif" border="0"></a>');
     $tpl->set('d', 'ICON', '');
-    
+
     if ($iGetIdlang == $idlang) {
         $tpl->set('d', 'MARKED', ' id="marked" ');
     } else {
         $tpl->set('d', 'MARKED', '');
     }
-    
+
     $tpl->next();
 }
 
@@ -113,10 +113,10 @@ if ( $tmp_notification ) {
 } else {
 
     $tmp_notification = $notification->returnNotification("info", i18n("Language deleted"));
-    
+
     $noti_html = '<tr><td colspan="3">'.$tmp_notification.'</td></tr>';
     $tpl->set('s', 'NOTIFICATION', '');
-    
+
 }
 
 $tpl->set('s', 'LANG_COUNT', $iLangCount);

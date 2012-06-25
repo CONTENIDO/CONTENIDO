@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Include file for editiing content of type CMS_HTMLTEXT
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,36 +18,36 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-05-07
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 if(isset($area) && $area == 'con_content_list'){
-	$tmp_area = $area;
-	$path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
-			'&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
-	$path2 = $path1;
+    $tmp_area = $area;
+    $path1 = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=10&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
+            '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido;
+    $path2 = $path1;
 } else {
-	$tmp_area = "con_editcontent";
-	$path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&changeview=edit&client=$client";
-	$path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang";
+    $tmp_area = "con_editcontent";
+    $path1 = $cfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang&changeview=edit&client=$client";
+    $path2 = $cfgClient[$client]["path"]["htmlpath"]."front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&lang=$lang";
 }
 
 if ($doedit == "1") {
-	conSaveContentEntry ($idartlang, "CMS_HTMLTEXT", $typenr, $CMS_HTMLTEXT);
-	conMakeArticleIndex ($idartlang, $idart);
-	conGenerateCodeForArtInAllCategories($idart);
-	header("Location:".$sess->url($path1)."");
+    conSaveContentEntry ($idartlang, "CMS_HTMLTEXT", $typenr, $CMS_HTMLTEXT);
+    conMakeArticleIndex ($idartlang, $idart);
+    conGenerateCodeForArtInAllCategories($idart);
+    header("Location:".$sess->url($path1)."");
 }
 header("Content-Type: text/html; charset={$encoding[$lang]}");
 ?>
@@ -69,7 +69,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
 <?php
        getAvailableContentTypes($idartlang);
-        
+
         echo "  <FORM name=\"editcontent\" method=\"post\" action=\"".$cfg["path"]["contenido_fullhtml"].$cfg["path"]["includes"]."include.backendedit.php\">";
         $sess->hidden_session();
         echo "  <INPUT type=hidden name=lang value=\"$lang\">";
@@ -78,7 +78,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
         echo "  <INPUT type=hidden name=idart value=\"$idart\">";
         echo "  <INPUT type=hidden name=action value=\"10\">";
         echo "  <INPUT type=hidden name=type value=\"$type\">";
-        echo "<INPUT type=hidden name=doedit value=1>";        
+        echo "<INPUT type=hidden name=doedit value=1>";
         echo "  <INPUT type=hidden name=idcat value=\"$idcat\">";
         echo "  <INPUT type=hidden name=idartlang value=\"$idartlang\">";
         echo "<INPUT type=hidden name=changeview value=\"edit\">";

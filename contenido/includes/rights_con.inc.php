@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO Rights
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.1
@@ -18,8 +18,8 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created  unknown
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *   modified 2008-07-03, Timo Trautmann, moved inline html to template
@@ -27,11 +27,11 @@
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -68,56 +68,56 @@ $sTable = '';
         $sJsBefore .="
               var itemids=new Array();
               var actareaids=new Array();\n";
-        
+
         $colspan=0;
-        
-		$table = new Table("", "", 0, 2, "", "", "", 0, 0);
+
+        $table = new Table("", "", 0, 2, "", "", "", 0, 0);
 
         $sTable .= $table->start_table();
         $sTable .= $table->header_row();
         $sTable .= $table->header_cell(i18n("Category"),"left");
-		$sTable .= $table->header_cell("&nbsp;","left");
-		
+        $sTable .= $table->header_cell("&nbsp;","left");
+
         $sCheckboxesRow = '';
         $possible_areas=array();
-		$aSecondHeaderRow=array();
+        $aSecondHeaderRow=array();
         // look for possible actions   in mainarea []   in str and con
         foreach($right_list["con"] as $value2)
         {
                //if there are some actions
                if(is_array($value2["action"]))
                  foreach($value2["action"] as $key3 => $value3)
-                 {       
-                    if ((in_array($value3, $aViewRights) && !$bExclusive) || 
+                 {
+                    if ((in_array($value3, $aViewRights) && !$bExclusive) ||
                         (!in_array($value3, $aViewRights) && $bExclusive) ||
                         (count($aViewRights) == 0)) {
                         //set the areas that are in use
                          $possible_areas[$value2["perm"]]="";
-                       
+
 
                          $colspan++;
                          //set  the possible areas and actions for this areas
 
                          //checkbox for the whole action
-						 $sTable .= $table->header_cell($lngAct[$value2["perm"]][$value3]);
+                         $sTable .= $table->header_cell($lngAct[$value2["perm"]][$value3]);
                          $sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\"\n";
 
-						 array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
-					}
+                         array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
+                    }
 
                  }
         }
 
         //checkbox for all rights
-		$sTable .= $table->header_cell(i18n("Check all"));
+        $sTable .= $table->header_cell(i18n("Check all"));
         array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
         $sTable .= $table->end_row();
         $colspan++;
-        
+
         $sTable .= $table->header_row();
         $sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
         $sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
-        
+
         foreach ($aSecondHeaderRow as $value) {
             $sTable .= $table->header_cell($value,"center", '', '', 0);
         }
@@ -128,17 +128,17 @@ $sTable = '';
         $db->query($sql);
         $counter=array();
         $parentid="leer";
-		
+
         $aRowname = array();
         $iLevel = 0;
 
         while ($db->next_record()) {
-        		$iCurrentIdCat = $db->f('idcat');
-        		
+                $iCurrentIdCat = $db->f('idcat');
+
                 if ($db->f("level") == 0 && $db->f("preid") != 0) {
                     $sTable .= $table->row();
-					$sTable .= $table->sumcell("&nbsp;","right");
-					$sTable .= $table->end_row();
+                    $sTable .= $table->sumcell("&nbsp;","right");
+                    $sTable .= $table->end_row();
                 }else {
                         if ($db->f("level") < $iLevel) {
                             $iDistance = $iLevel-$db->f("level");
@@ -148,7 +148,7 @@ $sTable = '';
                             }
                             $iLevel = $db->f("level");
                         }
-                        
+
                         if ($db->f("level") >= $iLevel) {
                             if ($db->f("level") == $iLevel) {
                                 array_pop($aRowname);
@@ -157,7 +157,7 @@ $sTable = '';
                             }
                             array_push($aRowname, $db->f("idcat"));
                         }
-                
+
                         //find out parentid for inheritance
                         //if parentid is the same increase the counter
                         if($parentid==$db->f("parentid")){
@@ -176,12 +176,12 @@ $sTable = '';
                         }
 
                         $spaces = '<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a>';
-                        
-						$sTable .= $table->row("id=\"".implode('_', $aRowname)."\"");
+
+                        $sTable .= $table->row("id=\"".implode('_', $aRowname)."\"");
                         $sTable .= $table->cell($spaces.$db->f("name"),"", "", " class=\"td_rights0\"", false);
                         $sTable .= $table->cell("<a href=\"javascript:rightsInheritanceUp('$parentid','$counter[$parentid]')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_links.gif\"></a><img src=\"images/spacer.gif\" width=\"3\"><a href=\"javascript:rightsInheritanceDown('".$db->f("idcat")."')\" class=\"action\"><img border=\"0\" src=\"images/pfeil_runter.gif\"></a>","", "", " class=\"td_rights1\"", false);
 
-						$sJsAfter.="itemids[\"".$db->f("idcat")."\"]=\"x\";\n";
+                        $sJsAfter.="itemids[\"".$db->f("idcat")."\"]=\"x\";\n";
 
                         // look for possible actions in mainarea[]
 
@@ -191,7 +191,7 @@ $sTable = '';
                                 if(is_array($value2["action"]))
                                   foreach($value2["action"] as $key3 => $value3)
                                   {
-                                        if ((in_array($value3, $aViewRights) && !$bExclusive) || 
+                                        if ((in_array($value3, $aViewRights) && !$bExclusive) ||
                                             (!in_array($value3, $aViewRights) && $bExclusive) ||
                                             (count($aViewRights) == 0)) {
                                            //does the user have the right
@@ -207,9 +207,9 @@ $sTable = '';
                         }
 
                          //checkbox for checking all actions fore this itemid
-						 $sTable .= $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idcat")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idcat")."')\">","", "", " class=\"td_rights3\"", false);
-						 $sTable .= $table->end_row();
-				}
+                         $sTable .= $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idcat")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idcat")."')\">","", "", " class=\"td_rights3\"", false);
+                         $sTable .= $table->end_row();
+                }
 }
 
 $sTable .= $table->end_row();
@@ -223,7 +223,7 @@ $sJsAfter .= "
     aTranslations['pfeil_links.gif'] = '".i18n("Apply rights for this category to all categories on the same level or above")."';
     aTranslations['pfeil_runter.gif'] = '".i18n("Apply rights for this category to all categories below the current category")."';
     setImageTags(aTranslations);
-        
+
     init('".i18n("Open category")."', '".i18n("Close category")."');\n";
 
 $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);

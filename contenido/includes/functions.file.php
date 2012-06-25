@@ -371,8 +371,8 @@ function fileGetMimeContentType($file)
 {
     if (function_exists('finfo_file')) {
         // Since PHP >= 5.3.0
-        $finfo = finfo_open(FILEINFO_MIME_TYPE); 
-        return finfo_file($finfo, $file); 
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        return finfo_file($finfo, $file);
     } elseif (function_exists('mime_content_type')) {
         // Deprecated version
         return mime_content_type($file);

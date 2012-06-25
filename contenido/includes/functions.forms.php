@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO Form Element Generator
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.5
@@ -18,18 +18,18 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-05-20
  *   modified 2008-06-26, Frederic Schneider, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 /**
@@ -63,7 +63,7 @@ function formGenerateField ($type, $name, $initvalue, $width, $maxlen)
             return('');
             break;
     }
-        
+
 
 }
 
@@ -81,13 +81,13 @@ function formGenerateField ($type, $name, $initvalue, $width, $maxlen)
  */
 function formGenerateCheckbox ($name, $value, $checked, $caption = "")
 {
-	if (strlen($caption) > 0)
-	{
-		$label = '<label for="'.$name.$value.'">'.$caption.'</label>';
-	} else {
-		$label = "";
-	}
-	
+    if (strlen($caption) > 0)
+    {
+        $label = '<label for="'.$name.$value.'">'.$caption.'</label>';
+    } else {
+        $label = "";
+    }
+
     if ($checked) {
         return('<input class="text_medium" id="'.$name.$value.'" type="checkbox" name="'.$name.'" value="'.$value.'" checked>'.$label);
     } else {

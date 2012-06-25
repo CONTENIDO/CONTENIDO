@@ -105,7 +105,7 @@ function langNewLanguage($name, $client)
             rename($destPath . 'config.php.new', $destPath . 'config.php');
         }
     } else {
-        $notification->displayNotification('error', 
+        $notification->displayNotification('error',
             i18n("Could not set the language-ID in the file 'config.php'. Please set the language manually.")
         );
     }
@@ -148,7 +148,7 @@ function langRenameLanguage($idlang, $name)
  */
 function langDuplicateFromFirstLanguage($client, $idlang)
 {
-	cDeprecated("This function is not longer supported.");
+    cDeprecated("This function is not longer supported.");
     global $db, $sess, $cfg, $auth;
 
     $client = (int) $client;
@@ -189,7 +189,7 @@ function langDuplicateFromFirstLanguage($client, $idlang)
             unset($aRs['idclient']);
             $db2->insert($cfg['tab']['art_lang'], $aRs);
             $iIdartLangNew = $db2->getLastInsertedId($cfg['tab']['art_lang']);
-            
+
             // duplicate entries in 'content' table
             $sql = "SELECT * FROM ".$cfg['tab']['content']." WHERE idartlang=" . (int) $iIdartLangOld;
             $db2->query($sql);
@@ -218,7 +218,7 @@ function langDuplicateFromFirstLanguage($client, $idlang)
             $aRs['author'] = $auth->auth['uname'];
             unset($aRs['idclient'], $aRs['parentid'], $aRs['preid'], $aRs['postid']);
             $db2->insert($cfg['tab']['cat_lang'], $aRs);
-            
+
             $aCfgCat[] = array('idcatlang' => $db2->getLastInsertedId($cfg['tab']['cat_lang']), 'idtplcfg' => (int) $db->f('idtplcfg'));
         }
 
@@ -246,7 +246,7 @@ function langDuplicateFromFirstLanguage($client, $idlang)
            // $nextid = (int) $db2->nextid($cfg['tab']['tpl_conf']);
             $aRs = $db->toArray();
             $db2->insert($cfg['tab']['tpl_conf'], $aRs);
-            
+
             $aCfgOldNew[] = array('oldidtplcfg' => (int) $db->f('idtplcfg'), 'newidtplcfg' => $db2->getLastInsertedId($cfg['tab']['tpl_conf']));
         }
 

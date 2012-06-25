@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO System Settings Screen
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.7.0
@@ -18,35 +18,35 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-11-18
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2008-11-13,  Timo Trautmann - Fixed wron escaping of chars
- *	 modified 2012-02-15, Rusmir Jusufovic show messages 
+ *     modified 2012-02-15, Rusmir Jusufovic show messages
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
-$aManagedValues = array('versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated', 
+$aManagedValues = array('versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated',
                         'update_check_period', 'system_clickmenu', 'system_mail_host', 'system_mail_sender',
                         'system_mail_sender_name', 'pw_request_enable', 'maintenance_mode', 'codemirror_activated',
                         'backend_preferred_idclient', 'generator_basehref', 'generator_xhtml', 'imagemagick_available',
-						'system_insight_editing_activated');
+                        'system_insight_editing_activated');
 
 if ($action == "systemsettings_save_item")
 {
     if (!in_array($systype.'_'.$sysname, $aManagedValues)) {
         setSystemProperty ($systype, $sysname, $sysvalue, $csidsystemprop);
         if(isset($x))
-        	$sWarning = $notification->returnNotification("info", i18n('Saved changes successfully!'), 1).'<br>';
+            $sWarning = $notification->returnNotification("info", i18n('Saved changes successfully!'), 1).'<br>';
         else
-        	$sWarning = $notification->returnNotification("info", i18n('Created new item successfully!'), 1).'<br>';
+            $sWarning = $notification->returnNotification("info", i18n('Created new item successfully!'), 1).'<br>';
     } else {
        $sWarning = $notification->returnNotification("warning", i18n('Please set this property in systemsettings directly'), 1).'<br>';
     }
@@ -54,8 +54,8 @@ if ($action == "systemsettings_save_item")
 
 if ($action == "systemsettings_delete_item")
 {
-	deleteSystemProperty($systype, $sysname);	
-	$sWarning = $notification->returnNotification("info", i18n('Deleted item successfully!'), 1).'<br>';
+    deleteSystemProperty($systype, $sysname);
+    $sWarning = $notification->returnNotification("info", i18n('Deleted item successfully!'), 1).'<br>';
 }
 
 $settings = getSystemProperties(1);
@@ -89,71 +89,71 @@ if (is_array($settings))
 {
     foreach ($settings as $key => $types)
     {
-    	foreach ($types as $type => $value)
-    	{
-    		$oLinkEdit->setCustom("sysname", urlencode($type));
-    		$oLinkEdit->setCustom("systype", urlencode($key));
-    		
-			$oLinkDelete->setCustom("sysname", urlencode($type));
-    		$oLinkDelete->setCustom("systype", urlencode($key));
+        foreach ($types as $type => $value)
+        {
+            $oLinkEdit->setCustom("sysname", urlencode($type));
+            $oLinkEdit->setCustom("systype", urlencode($key));
+
+            $oLinkDelete->setCustom("sysname", urlencode($type));
+            $oLinkDelete->setCustom("systype", urlencode($key));
 
             $link = $oLinkEdit;
             $dlink = $oLinkDelete->render();
 
             if (in_array($key.'_'.$type, $aManagedValues)) {
                 #ignore record
-				
+
             } else if (($action == "systemsettings_edit_item") && (stripslashes($systype) == $key) && (stripslashes($sysname) == $type)) {
                 $oInputboxValue = new cHTMLTextbox("sysvalue", $value['value']);
-    			$oInputboxName = new cHTMLTextbox("sysname", $type);
-    			$oInputboxType = new cHTMLTextbox("systype", $key);
-    			
+                $oInputboxName = new cHTMLTextbox("sysname", $type);
+                $oInputboxType = new cHTMLTextbox("systype", $key);
+
                 $hidden = '<input type="hidden" name="csidsystemprop" value="'.$value['idsystemprop'].'">';
                 $sSubmit = '<input type="image" style="vertical-align:top;" value="submit" src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'submit.gif">';
-                
+
                 $list->setCell($count,1, $oInputboxType->render(true));
-    		    $list->setCell($count,2, $oInputboxName->render(true));
+                $list->setCell($count,2, $oInputboxName->render(true));
                 $list->setCell($count,3, $oInputboxValue->render(true).$hidden.$sSubmit);
-                
-    		} else {
+
+            } else {
                 $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
-            
+
                 if (strlen($type) > 35) {
                     $sShort = htmlspecialchars(cApiStrTrimHard($type, 35));
                     $type = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($type), ENT_QUOTES), $sShort);
                 }
-                
+
                 if (strlen($value['value']) > 35) {
                     $sShort = htmlspecialchars(cApiStrTrimHard($value['value'], 35));
                     $value['value'] = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($value['value']), ENT_QUOTES), $sShort);
                 }
-                
+
                 if (strlen($key) > 35) {
                     $sShort = htmlspecialchars(cApiStrTrimHard($key, 35));
                     $key = sprintf($sMouseoverTemplate, htmlspecialchars(addslashes($key), ENT_QUOTES), $sShort);
                 }
-				
-				!strlen(trim($value['value'])) ? $sValue = '&nbsp;' : $sValue = $value['value'];
-				
+
+                !strlen(trim($value['value'])) ? $sValue = '&nbsp;' : $sValue = $value['value'];
+
                 $list->setCell($count,1, $key);
                 $list->setCell($count,2, $type);
-                $list->setCell($count,3, $sValue);	
-    		}
-            
+                $list->setCell($count,3, $sValue);
+            }
+
             if (!in_array($key.'_'.$type, $aManagedValues)) {
                 $list->setCell($count,4, $spacer->render().$link->render().$spacer->render().$dlink.$spacer->render());
                 $count++;
             }
-    	}
+        }
     }
 }
 
 if ($count == 2)
 {
-	$list->setCell($count, 4, "");
-	$list->setCell($count, 1, i18n("No defined properties"));
-	$list->setCell($count, 2, "");
-	$list->setCell($count, 3, "");
+    $list->setCell($count, 4, "");
+    $list->setCell($count, 1, i18n("No defined properties"));
+    $list->setCell($count, 2, "");
+    $list->setCell($count, 3, "");
 }
 unset($form);
 

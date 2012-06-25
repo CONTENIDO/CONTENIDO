@@ -756,7 +756,7 @@ function statsOverviewTop($yearmonth, $top)
     if (strcmp($yearmonth,"current") == 0) {
         $sql = "SELECT DISTINCT
                     C.title, A.visited, C.idart
-                FROM 
+                FROM
                     ".$cfg["tab"]["stat"]." AS A,
                     ".$cfg["tab"]["cat_art"]." AS B,
                     ".$cfg["tab"]["art_lang"]." AS C
@@ -771,7 +771,7 @@ function statsOverviewTop($yearmonth, $top)
     } else {
         $sql = "SELECT DISTINCT
                     C.title, A.visited, B.idcat, C.idart
-                FROM 
+                FROM
                     ".$cfg["tab"]["stat_archive"]." AS A,
                     ".$cfg["tab"]["cat_art"]." AS B,
                     ".$cfg["tab"]["art_lang"]." AS C
@@ -812,7 +812,7 @@ function statsOverviewTop($yearmonth, $top)
  */
 function statReturnCanonicalMonth($month)
 {
-	cDeprecated("This function is not supported any longer.");
+    cDeprecated("This function is not supported any longer.");
     return getCanonicalMonth($month);
 }
 
@@ -883,7 +883,7 @@ function statsOverviewTopYear($year, $top)
 
     $sql = "SELECT
                 C.title, SUM(A.visited) as visited, B.idcat AS idcat, C.idart AS idart
-            FROM 
+            FROM
                 ".$cfg["tab"]["stat_archive"]." AS A,
                 ".$cfg["tab"]["cat_art"]." AS B,
                 ".$cfg["tab"]["art_lang"]." AS C

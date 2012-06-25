@@ -57,7 +57,7 @@ if (!defined('CON_FRAMEWORK')) {
  * @param int $client Id of client
  * @param int $layout Layout-ID of alternate Layout (if false, use associated layout)
  * @param bool $save  Flag to persist generated code in database
- * @return string The generated code or "0601" if neither article nor category configuration 
+ * @return string The generated code or "0601" if neither article nor category configuration
  *                was found
  */
 function conGenerateCode($idcat, $idart, $lang, $client, $layout = false, $save = true, $contype = true)
@@ -294,7 +294,7 @@ function conGetUsedModules($idtpl)
  * Returns list of all configured container by template configuration id
  *
  * @param  int  $idtplcfg  Template configuration id
- * @return  array  Assoziative array where the key is the number and value the container 
+ * @return  array  Assoziative array where the key is the number and value the container
  *                 configuration
  */
 function conGetContainerConfiguration($idtplcfg)

@@ -87,8 +87,8 @@ if ($remindertimestamp != 0) {
 
 if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
 
-	$langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
-	<script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
+    $langscripts=  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
+    <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
 }
 
 $path_to_calender_pic =  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif';
@@ -104,50 +104,50 @@ $ui->add(i18n("Reminder date"), '<table border="0"><tr><td>' . $reminderdate->re
 
 $calscript = '<script language="JavaScript">
  $(document).ready(function() {
-	$("#reminderdate").datetimepicker({
-    		 buttonImage:"'. $path_to_calender_pic.'",
-  	        buttonImageOnly: true,
-  	        showOn: "both",
-  	        dateFormat: "yy-mm-dd",  
-    	    onClose: function(dateText, inst) {
-    	        var endDateTextBox = $("#enddate");
-    	        if (endDateTextBox.val() != "") {
-    	            var testStartDate = new Date(dateText);
-    	            var testEndDate = new Date(endDateTextBox.val());
-    	            if (testStartDate > testEndDate)
-    	                endDateTextBox.val(dateText);
-    	        }
-    	        else {
-    	            endDateTextBox.val(dateText);
-    	        }
-    	    },
-    	    onSelect: function (selectedDateTime){
-    	        var start = $(this).datetimepicker("getDate");
-    	        $("#enddate").datetimepicker("option", "minDate", new Date(start.getTime()));
-    	    }
-    	});
-    	$("#enddate").datetimepicker({
-    		 buttonImage: "'. $path_to_calender_pic .'",
-   	        buttonImageOnly: true,
-   	        showOn: "both",
-   	        dateFormat: "yy-mm-dd",
-    	    onClose: function(dateText, inst) {
-    	        var startDateTextBox = $("#reminderdate");
-    	        if (startDateTextBox.val() != "") {
-    	            var testStartDate = new Date(startDateTextBox.val());
-    	            var testEndDate = new Date(dateText);
-    	            if (testStartDate > testEndDate)
-    	                startDateTextBox.val(dateText);
-    	        }
-    	        else {
-    	            startDateTextBox.val(dateText);
-    	        }
-    	    },
-    	    onSelect: function (selectedDateTime){
-    	        var end = $(this).datetimepicker("getDate");
-    	        $("#reminderdate").datetimepicker("option", "maxDate", new Date(end.getTime()) );
-    	    }
-    	});
+    $("#reminderdate").datetimepicker({
+             buttonImage:"'. $path_to_calender_pic.'",
+              buttonImageOnly: true,
+              showOn: "both",
+              dateFormat: "yy-mm-dd",
+            onClose: function(dateText, inst) {
+                var endDateTextBox = $("#enddate");
+                if (endDateTextBox.val() != "") {
+                    var testStartDate = new Date(dateText);
+                    var testEndDate = new Date(endDateTextBox.val());
+                    if (testStartDate > testEndDate)
+                        endDateTextBox.val(dateText);
+                }
+                else {
+                    endDateTextBox.val(dateText);
+                }
+            },
+            onSelect: function (selectedDateTime){
+                var start = $(this).datetimepicker("getDate");
+                $("#enddate").datetimepicker("option", "minDate", new Date(start.getTime()));
+            }
+        });
+        $("#enddate").datetimepicker({
+             buttonImage: "'. $path_to_calender_pic .'",
+               buttonImageOnly: true,
+               showOn: "both",
+               dateFormat: "yy-mm-dd",
+            onClose: function(dateText, inst) {
+                var startDateTextBox = $("#reminderdate");
+                if (startDateTextBox.val() != "") {
+                    var testStartDate = new Date(startDateTextBox.val());
+                    var testEndDate = new Date(dateText);
+                    if (testStartDate > testEndDate)
+                        startDateTextBox.val(dateText);
+                }
+                else {
+                    startDateTextBox.val(dateText);
+                }
+            },
+            onSelect: function (selectedDateTime){
+                var end = $(this).datetimepicker("getDate");
+                $("#reminderdate").datetimepicker("option", "maxDate", new Date(end.getTime()) );
+            }
+        });
 
 });
 </script>';
@@ -170,11 +170,11 @@ $ui->add(i18n("Progress"), $progress->render()."%");
 $cpage->setcontent($ui->render().$calscript);
 
 $cpage->addScript("cal", '<link rel="stylesheet" type="text/css" href="styles/datetimepicker/jquery-ui-timepicker-addon.css">
-    				<link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
-    				<script type="text/javascript" src="scripts/jquery/jquery.js"></script>
-    				<script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
-    				<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>'
-					.$langscripts);
+                    <link rel="stylesheet" type="text/css" href="styles/smoothness/jquery-ui-1.8.20.custom.css">
+                    <script type="text/javascript" src="scripts/jquery/jquery.js"></script>
+                    <script type="text/javascript" src="scripts/jquery/jquery-ui.js"></script>
+                    <script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-addon.js"></script>'
+                    .$langscripts);
 
 $cpage->render();
 ?>

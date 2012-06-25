@@ -23,9 +23,9 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-if (!is_numeric($targetclient)) { 
-	$targetclient = $client; 
-} 
+if (!is_numeric($targetclient)) {
+    $targetclient = $client;
+}
 
 $errno = langNewLanguage("-- ".i18n("New language")." --", $targetclient);
 ?>

@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Module translation editor
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.1.3
@@ -18,21 +18,21 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-27, Frederic Schneider, add security fix
  *   modified 2010-09-22, Murat Purc, Fixed setting of wrong initial translation id [#CON-347]
  *   modified 2011-01-11, Rusmir Jusufovic, load code for translating from files ( function: parseModuleForStringsLoadFromFile)
- *   modified 2111-02-03, Rusmir Jusufovic, load and save the translation in/from file 
- *	 modified 2012-02-12, Rusmir Jusufovic, show message at edit
+ *   modified 2111-02-03, Rusmir Jusufovic, load and save the translation in/from file
+ *     modified 2012-02-12, Rusmir Jusufovic, show message at edit
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if (!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 
@@ -48,26 +48,26 @@ $uebersetztungString = "";
 $contenidoTranslateFromFile = new Contenido_Module_FileTranslation($idmod);
 if ($action == "mod_translation_save")
 {
-   
-    
+
+
     $orginalString = $t_orig;
     $uebersetztungString = $t_trans;
-    
+
     $transaltionArray = $contenidoTranslateFromFile->getTranslationArray();
-    
+
     $transaltionArray[stripslashes($t_orig)] = stripslashes($t_trans);
     //print_r($transaltionArray);
     if($contenidoTranslateFromFile->saveTranslationArray($transaltionArray)) {
-   		$notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved translation successfully!"));	
+           $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved translation successfully!"));
     }
     else {
-    	$notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n("Can't save translation!"));
-    }	
+        $notification->displayNotification(Contenido_Notification::LEVEL_ERROR, i18n("Can't save translation!"));
+    }
 }
 
 if (!isset($idmodtranslation))
 {
-	$idmodtranslation = 0;
+    $idmodtranslation = 0;
 }
 #get the mi18n strings from modul input/output
 $strings = $module->parseModuleForStringsLoadFromFile($cfg , $client,$lang);
@@ -84,18 +84,18 @@ foreach ($strings as $string)
     if( isset($transaltionArray[$string]))
         $myTrans[$string] = $transaltionArray[$string];
     else {
-        $myTrans[$string] = '';	
-    	
+        $myTrans[$string] = '';
+
     }
 }
 
 #if changed save in file
 if(count(array_diff_assoc($myTrans, $transaltionArray))>0 || count(array_diff_assoc($transaltionArray,$myTrans))>0 )
-	$contenidoTranslateFromFile->saveTranslationArray($myTrans);	
+    $contenidoTranslateFromFile->saveTranslationArray($myTrans);
 
 if(!isset($row)) {
     $row = count($strings)-1;//last string
-    
+
     $lastString = end($strings);
     $lastUebersetzung = $myTrans[$lastString];
 
@@ -108,9 +108,9 @@ if(!isset($row)) {
                 $lastUebersetzung = $value;
                 break;
         }
-        
+
         $index++;
-    }  
+    }
 }
 $page = new cPage;
 

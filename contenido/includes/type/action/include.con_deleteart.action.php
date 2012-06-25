@@ -24,13 +24,13 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 if(isset($_POST['idarts'])) {
-	//delete articles (bulk editing)
-	$idarts = explode('+', $_POST['idarts']);
-	foreach( $idarts as $article) {
-		conDeleteArt ($article);
-	}
+    //delete articles (bulk editing)
+    $idarts = explode('+', $_POST['idarts']);
+    foreach( $idarts as $article) {
+        conDeleteArt ($article);
+    }
 }else  {
-	conDeleteArt ($idart);
+    conDeleteArt ($idart);
 }
 $tmp_notification = $notification->returnNotification("info", i18n("Article deleted"));
 ?>

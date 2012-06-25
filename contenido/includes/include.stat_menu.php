@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * Displays languages
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.0
@@ -18,18 +18,18 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created 2003-04-23
  *   modified 2008-06-27, Dominik Ziegler, add security fix
  *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 $tpl->reset();
@@ -51,8 +51,8 @@ $tpl->set('s', 'PADDING_LEFT', '17');
 $bgcolor = '#FFFFFF';
 $text = '&nbsp;';
 if (count($availableYears) != 0) {
-	$bgcolor = $cfg["color"]["table_header"];
-	$text = '<b>' . i18n("Archived Statistics") . '</b>';
+    $bgcolor = $cfg["color"]["table_header"];
+    $text = '<b>' . i18n("Archived Statistics") . '</b>';
 }
 
 $tpl->set('s', 'ARCHIVEBGCOLOR', $bgcolor);
@@ -66,14 +66,14 @@ foreach ($availableYears as $yearIterator)
         $tpl->set('d', 'TEXT', $yearLink);
         $tpl->set('d', 'PADDING_LEFT', '17');
         $tpl->next();
-        
+
         $availableMonths = statGetAvailableMonths($yearIterator,$client,$lang);
-        
+
         foreach ($availableMonths as $monthIterator)
         {
                 $monthCanonical = getCanonicalMonth($monthIterator);
                 $monthLink = '<a target="right_bottom" href="'.$sess->url("main.php?area=stat&frame=4&action=stat_show&displaytype=top10&yearmonth=".$yearIterator . $monthIterator).'">'."$monthCanonical".'</a>';
-                
+
                 $tpl->set('d', 'TEXT', $monthLink);
                 $tpl->set('d', 'PADDING_LEFT', '20');
                 $tpl->next();

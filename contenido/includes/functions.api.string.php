@@ -49,7 +49,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 /**
- * Trims a string to a given length and makes sure that all words up to $maxlen 
+ * Trims a string to a given length and makes sure that all words up to $maxlen
  * are preserved, without exceeding $maxlen.
  *
  * Warning: Currently, this function uses a regular ASCII-Whitespace to do the
@@ -92,7 +92,7 @@ function cApiStrTrimAfterWord($string, $maxlen)
 }
 
 /**
- * Trims a string to a specific length. If the string is longer than $maxlen, 
+ * Trims a string to a specific length. If the string is longer than $maxlen,
  * dots are inserted ("...") right before $maxlen.
  *
  * Example:
@@ -244,9 +244,9 @@ function cApiStrTrimSentence($string, $approxlen, $hard = false)
  */
 function cApiStrReplaceDiacritics($sString, $sourceEncoding = "ISO-8859-1", $targetEncoding = "ISO-8859-1")
 {
-	if ($sourceEncoding == 'UTF-8') {
-		$sString = utf8_decode($sString);
-	}
+    if ($sourceEncoding == 'UTF-8') {
+        $sString = utf8_decode($sString);
+    }
 
     // replace regular german umlauts and other common characters with diacritics
     static $aSearch, $aReplace;
@@ -263,7 +263,7 @@ function cApiStrReplaceDiacritics($sString, $sourceEncoding = "ISO-8859-1", $tar
 
 
 /**
- * Converts a string to another encoding. This function tries to detect which function 
+ * Converts a string to another encoding. This function tries to detect which function
  * to use (either recode or iconv).
  *
  * If $sourceEncoding and $targetEncoding are the same, this function returns immediately.
@@ -323,7 +323,7 @@ function cApiStrRecodeString($sString, $sourceEncoding, $targetEncoding)
 }
 
 /**
- * Removes or converts all "evil" URL characters. This function removes or converts 
+ * Removes or converts all "evil" URL characters. This function removes or converts
  * all characters which can make an URL invalid.
  *
  * Clean characters include:

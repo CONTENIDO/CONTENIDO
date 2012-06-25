@@ -1,14 +1,14 @@
 <?php
 /**
- * Project: 
+ * Project:
  * CONTENIDO Content Management System
- * 
- * Description: 
+ *
+ * Description:
  * CONTENIDO Group Rights
- * 
- * Requirements: 
+ *
+ * Requirements:
  * @con_php_req 5.0
- * 
+ *
  *
  * @package    CONTENIDO Backend Includes
  * @version    1.0.0
@@ -18,19 +18,19 @@
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
  * @since      file available since CONTENIDO release <= 4.6
- * 
- * {@internal 
+ *
+ * {@internal
  *   created unknown
  *   modified 2008-06-26, Dominik Ziegler, add security fix
  *   modified 2008-07-29, Bilal Arslan, moved inline html to template
- * 
+ *
  *   $Id$:
  * }}
- * 
+ *
  */
 
 if(!defined('CON_FRAMEWORK')) {
-	die('Illegal call');
+    die('Illegal call');
 }
 
 //notice $oTpl is filled and generated in file rights.inc.php this file renders $oTpl to browser
@@ -59,14 +59,14 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
 $sJsBefore = '';
 $sJsAfter = '';
 $sJsExternal = '';
-$sTable = ''; 
- 
+$sTable = '';
+
         $sJsExternal = '<script type="text/javascript" src="scripts/addImageTags.js"></script>';
         $sJsExternal .= '<script type="text/javascript" src="scripts/expandCollapse.js"></script>';
 
         // declare new javascript variables;
        $sJsBefore = " var itemids=new Array();
-              		  var actareaids=new Array();";
+                        var actareaids=new Array();";
         $colspan=0;
 
         $table = new Table("", "", 0, 2, "", "", "", 0, 0);
@@ -74,15 +74,15 @@ $sTable = '';
      $sTable .=   $table->start_table();
      $sTable .=   $table->header_row();
      $sTable .=   $table->header_cell(i18n("Category"),"left");
-	 $sTable .=	  $table->header_cell("&nbsp;","left");
+     $sTable .=      $table->header_cell("&nbsp;","left");
 
      $possible_areas=array();
      $aSecondHeaderRow = array();
      // look for possible actions   in mainarea []   in str and con
      foreach($right_list["str"] as $value2) {
              //if there are some actions
-     	if(is_array($value2["action"]))
-        	foreach($value2["action"] as $key3 => $value3)
+         if(is_array($value2["action"]))
+            foreach($value2["action"] as $key3 => $value3)
                {       //set the areas that are in use
 
                         # HACK!
@@ -106,11 +106,11 @@ $sTable = '';
         array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall\" value=\"\" onClick=\"setRightsForAll()\">");
         $sTable .= $table->end_row();
         $colspan++;
-        
+
        $sTable .= $table->header_row();
        $sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
        $sTable .= $table->header_cell('&nbsp',"center", '', '', 0);
-        
+
         foreach ($aSecondHeaderRow as $value) {
             $sTable .= $table->header_cell($value,"center", '', '', 0);
         }
@@ -120,7 +120,7 @@ $sTable = '';
         $db->query($sql);
         $counter=array();
         $parentid="leer";
-        
+
         $aRowname = array();
         $iLevel = 0;
 
@@ -137,7 +137,7 @@ $sTable = '';
                             }
                             $iLevel = $db->f("level");
                         }
-                        
+
                         if ($db->f("level") >= $iLevel) {
                             if ($db->f("level") == $iLevel) {
                                 array_pop($aRowname);
@@ -146,7 +146,7 @@ $sTable = '';
                             }
                             array_push($aRowname, $db->f("idcat"));
                         }
-                
+
                         //find out parentid for inheritance
                         //if parentid is the same increase the counter
                         if($parentid==$db->f("parentid")){
@@ -165,7 +165,7 @@ $sTable = '';
                         }
                         //set javscript array for itemids
                         $sJsAfter .= "itemids[\"".$db->f("idcat")."\"]=\"x\";";
-                        
+
                         $spaces = "";
 
                         for ($i=0; $i<$db->f("level"); $i++) {
@@ -192,7 +192,7 @@ $sTable = '';
 
                                            //set the checkbox    the name consits of      areaid+actionid+itemid        the    id  =  parebntid+couter for these parentid+areaid+actionid
                                            $sTable .= $table->cell("<input type=\"checkbox\" id=\"str_".$parentid."_".$counter[$parentid]."_".$value2["perm"]."_$value3\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idcat")."]\" value=\"x\" $checked>", "", "",  " class=\"td_rights2\"", false);
-                                  		}
+                                          }
                                   }
                         }
 
@@ -207,12 +207,12 @@ $sTable .= $table->row();
 $sTable .= $table->sumcell("<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('group_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>","right");
 $sTable .= $table->end_row();
 $sTable .= $table->end_table();
-$sJsAfter .="   
- 		    aTranslations = new Object();
- 		    aTranslations['pfeil_links.gif'] = '".i18n("Apply rights for this category to all categories on the same level or above")."';
-    		aTranslations['pfeil_runter.gif'] = '".i18n("Apply rights for this category to all categories below the current category")."';
-    		setImageTags(aTranslations);
-    		init('".i18n("Open category")."', '".i18n("Close category")."');";
+$sJsAfter .="
+             aTranslations = new Object();
+             aTranslations['pfeil_links.gif'] = '".i18n("Apply rights for this category to all categories on the same level or above")."';
+            aTranslations['pfeil_runter.gif'] = '".i18n("Apply rights for this category to all categories below the current category")."';
+            setImageTags(aTranslations);
+            init('".i18n("Open category")."', '".i18n("Close category")."');";
 
 $oTpl->set("s", "NOTIFICATION","" );
 $oTpl->set("s", "OB_CONTENT", "");
