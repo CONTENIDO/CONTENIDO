@@ -20,10 +20,8 @@
  *
  * {@internal
  *   created  2011-07-20
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -73,7 +71,7 @@ class cApiStatCollection extends ItemCollection
      */
     public function create($iIdCatArt, $iIdLang, $iIdClient)
     {
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
 
         $oItem->set('visited', 1);
         $oItem->set('idcatart', (int) $iIdCatArt);

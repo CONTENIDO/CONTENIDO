@@ -23,10 +23,8 @@
  *
  * {@internal
  *   created  2011-09-20
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -68,7 +66,7 @@ class cApiFrontendGroupMemberCollection extends ItemCollection
             return false;
         }
 
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         $item->set('idfrontenduser', $idfrontenduser);
         $item->set('idfrontendgroup', $idfrontendgroup);

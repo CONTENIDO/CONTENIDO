@@ -15,7 +15,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.2.4
+ * @version    1.2.5
  * @author     Timo A. Hummel
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
@@ -26,17 +26,8 @@
  *
  * {@internal
  *   created  2003-07-18
- *   modified 2008-07-02, Frederic Schneider, add security fix
- *   modified 2010-05-20, Murat Purc, Removed check of $_REQUEST['cfg'] during processing ticket [#CON-307]
- *   modified 2011-03-10, Murat Purc, Refactoring of Item and ItemCollection, partly port to PHP 5,
- *                        new Contenido_ItemException and Contenido_ItemBaseAbstract, documentation and formatting.
- *   modified 2011-03-13  Murat Purc, added Contenido_ItemCache() to enable caching of result sets.
- *   modified 2011-05-20  Murat Purc, fixed wrong caching behavior in Contenido_ItemCache.
- *   modified 2011-06-28  Murat Purc, added function escape().
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -1523,12 +1514,29 @@ abstract class ItemCollection extends Contenido_ItemBaseAbstract
     }
 
     /**
+     * Magic method to invoke inaccessible methods.
+     * Currently it works as a fallback for the not supported method create() which
+     * creates a PHP Strict warning.
+     * @param  string  $name
+     * @param  array   $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        if ('create' === $name) {
+            // Catch old and not supported create() method
+            cDeprecated('Use ItemCollection->createNewItem() instead ItemCollection->create()');
+            return call_user_func_array(array($this, 'createNewItem'), $arguments);
+        }
+    }
+
+    /**
      * Creates a new item in the table and loads it afterwards.
      *
      * @param  string  $primaryKeyValue  Optional parameter for direct input of primary key value
      * @return  Item  The newly created object
      */
-    public function create($primaryKeyValue = null)
+    public function createNewItem($primaryKeyValue = null)
     {
         $oDb = $this->_getSecondDBInstance();
 

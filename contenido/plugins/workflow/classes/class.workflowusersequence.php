@@ -21,13 +21,11 @@
  * 
  * {@internal 
  *   created 2003-07-18
- *   
  *   $Id$
  * }}
- * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
@@ -106,7 +104,7 @@ class WorkflowUserSequences extends ItemCollection {
 	function create ($idworkflowitem)
 	{
 		global $auth, $client, $idworkflow;
-		$newitem = parent::create();
+		$newitem = parent::createNewItem();
 		
 		$workflowitems = new WorkflowItems;
 		if (!$workflowitems->exists($idworkflowitem))

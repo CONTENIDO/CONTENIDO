@@ -24,10 +24,8 @@
  *
  * {@internal
  *   created  2011-10-07
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -87,7 +85,7 @@ class cApiFrontendUserCollection extends ItemCollection
             return $this->create($username . '_' . substr(md5(rand()), 0, 10), $password);
         }
 
-        $item = parent::create();
+        $item = parent::createNewItem();
         $item->set('idclient', $client);
         $item->set('username', $username);
         $item->set('password', $password);

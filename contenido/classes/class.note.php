@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -82,7 +78,7 @@ class NoteCollection extends cApiCommunicationCollection
      */
     public function create($itemtype, $itemid, $idlang, $message, $category = "")
     {
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         $item->set("subject", "Note Item");
         $item->set("message", $message);

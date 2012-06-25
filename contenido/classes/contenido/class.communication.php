@@ -25,7 +25,6 @@
  *   created  2011-09-14
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -57,7 +56,7 @@ class cApiCommunicationCollection extends ItemCollection
     public function create()
     {
         global $auth, $client;
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         $client = Contenido_Security::toInteger($client);
 

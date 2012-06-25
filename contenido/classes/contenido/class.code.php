@@ -20,10 +20,8 @@
  *
  * {@internal
  *   created  2011-07-19
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -58,7 +56,7 @@ class cApiCodeCollection extends ItemCollection
      */
     public function create($iIdCatArt, $iIdLang, $iIdClient, $sCode)
     {
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
 
         $oItem->set('idcatart', (int) $iIdCatArt, false);
         $oItem->set('idlang', (int) $iIdLang, false);

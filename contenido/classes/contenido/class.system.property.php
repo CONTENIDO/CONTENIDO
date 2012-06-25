@@ -35,11 +35,8 @@
  *
  * {@internal
  *   created  2011-11-03
- *   created  2011-11-10, Murat Purc, added caching feature
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -158,7 +155,7 @@ class cApiSystemPropertyCollection extends ItemCollection
      */
     public function create($type, $name, $value)
     {
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         $item->set('type', $this->escape($type));
         $item->set('name', $this->escape($name));

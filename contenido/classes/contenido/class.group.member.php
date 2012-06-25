@@ -46,7 +46,7 @@ class cApiGroupMemberCollection extends ItemCollection {
      */
     public function create($userId, $groupId)
     {
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
 
         $oItem->set('user_id', $this->escape($userId));
         $oItem->set('group_id', $this->escape($groupId));

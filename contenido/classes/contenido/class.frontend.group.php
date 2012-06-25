@@ -23,10 +23,8 @@
  *
  * {@internal
  *   created  2011-09-20
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -71,7 +69,7 @@ class cApiFrontendGroupCollection extends ItemCollection
             $groupname = $groupname. md5(rand());
         }
 
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         $item->set('idclient', $client);
         $item->set('groupname', $groupname);

@@ -50,7 +50,7 @@ class cApiGroupCollection extends ItemCollection
     {
         $primaryKeyValue = md5($groupname);
 
-        $item = parent::create($primaryKeyValue);
+        $item = parent::createNewItem($primaryKeyValue);
         if (!is_object($item)) {
             return null;
         }

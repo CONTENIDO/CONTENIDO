@@ -88,7 +88,7 @@ class cApiCategoryLanguageCollection extends ItemCollection
         $visible = (1 == $visible) ? 1 : 0;
         $public = (1 == $public) ? 1 : 0;
 
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
 
         $oItem->set('idcat', (int) $idcat);
         $oItem->set('idlang', (int) $idlang);

@@ -20,10 +20,8 @@
  *
  * {@internal
  *   created  2011-07-20
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -57,7 +55,7 @@ class cApiMetaTagCollection extends ItemCollection
      */
     public function create($iIdArtLang, $iIdMetaType, $sMetaValue)
     {
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
 
         $oItem->set('idartlang', (int) $iIdArtLang, false);
         $oItem->set('idmetatype', (int) $iIdMetaType, false);

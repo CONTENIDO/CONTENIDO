@@ -21,13 +21,11 @@
  * 
  * {@internal 
  *   created 2003-07-18
- *   
  *   $Id$
  * }}
- * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
@@ -63,7 +61,7 @@ class WorkflowTasks extends ItemCollection {
 
 	function create ()
 	{
-		$newitem = parent::create();
+		$newitem = parent::createNewItem();
 		return ($newitem);
 	}
 	

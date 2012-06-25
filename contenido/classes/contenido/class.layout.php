@@ -20,11 +20,8 @@
  *
  * {@internal
  *   created  2004-08-07
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -84,7 +81,7 @@ class cApiLayoutCollection extends ItemCollection
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $item = parent::create();
+        $item = parent::createNewItem();
         $item->set('idclient', (int) $idclient);
         $item->set('name', $this->escape($name));
         $item->set('alias', $this->escape($alias));

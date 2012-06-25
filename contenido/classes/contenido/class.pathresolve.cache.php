@@ -20,10 +20,8 @@
  *
  * {@internal
  *   created  2012-05-14
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -103,7 +101,7 @@ class cApiPathresolveCacheCollection extends ItemCollection
      */
     public function create($path, $idcat, $idlang, $lastcached = '')
     {
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
 
         if (empty($lastcached)) {
             $lastcached = time();

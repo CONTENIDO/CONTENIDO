@@ -20,13 +20,8 @@
  *
  * {@internal
  *   created  2005-08-30
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-10-26, Murat Purc, added functions cApiCategoryCollection->create, cApiCategoryCollection->fetchLastCategoryTree
- *                        and cApiCategory->store
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -90,7 +85,7 @@ class cApiCategoryCollection extends ItemCollection
             $lastmodified = date('Y-m-d H:i:s');
         }
 
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
 
         $oItem->set('idclient', (int) $idclient);
         $oItem->set('parentid', (int) $parentid);

@@ -20,12 +20,8 @@
  *
  * {@internal
  *   created  2004-08-04
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-10-25, Murat Purc, Fixed creation of a cApiItem entry
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -71,7 +67,7 @@ class cApiAreaCollection extends ItemCollection
     {
         $parentid = (is_string($parentid)) ? $this->escape($parentid) : (int) $parentid;
 
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         $item->set('parent_id', $parentid);
         $item->set('name', $this->escape($name));

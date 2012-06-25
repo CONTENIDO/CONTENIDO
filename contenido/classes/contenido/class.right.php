@@ -20,10 +20,8 @@
  *
  * {@internal
  *   created  2011-10-25
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -62,7 +60,7 @@ class cApiRightCollection extends ItemCollection
      */
     public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type)
     {
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
 
         $oItem->set('user_id', $this->escape($userId));
         $oItem->set('idarea', (int) $idarea);

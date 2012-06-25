@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created  2004-08-01
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -80,7 +76,7 @@ class NewsletterCollection extends ItemCollection
             return $this->create($sName."_".substr(md5(rand()), 0, 10));
         }
 
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
         $oItem->set("idclient", $client);
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);
@@ -108,7 +104,7 @@ class NewsletterCollection extends ItemCollection
         $oBaseItem = new Newsletter();
         $oBaseItem->loadByPrimaryKey($iItemID);
 
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
         $oItem->set("name", $oBaseItem->get("name")."_".substr(md5(rand()), 0, 10));
 
         $iIDArt = 0;

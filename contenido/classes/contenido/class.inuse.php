@@ -24,10 +24,8 @@
  *
  * {@internal
  *   created  2011-10-07
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -83,7 +81,7 @@ class cApiInUseCollection extends ItemCollection
 
         $newitem = null;
         if (!$this->next()) {
-            $newitem = parent::create();
+            $newitem = parent::createNewItem();
             $newitem->set('type', $type);
             $newitem->set('objectid', $objectid);
             $newitem->set('session', $session);

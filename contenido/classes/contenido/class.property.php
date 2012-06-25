@@ -25,12 +25,8 @@
  *
  * {@internal
  *   created  2011-10-11
- *   created  2011-11-10, Murat Purc, added caching method getValuesOnlyByTypeName()
- *   modified 2012-02-27, restet did'nt work
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -194,7 +190,7 @@ class cApiPropertyCollection extends ItemCollection
     {
         global $cfg, $auth;
 
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         if (!$bInternally) {
             $itemtype   = $this->db->escape($itemtype);

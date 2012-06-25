@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created  2004-08-01
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -82,7 +78,7 @@ class NewsletterRecipientGroupCollection extends ItemCollection
             $groupname = $groupname . md5(rand());
         }
 
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         $item->set("idclient", $client);
         $item->set("idlang", $lang);
@@ -209,7 +205,7 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
             return false;
         }
 
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
 
         $oItem->set("idnewsrcp", $idrecipient);
         $oItem->set("idnewsgroup", $idrecipientgroup);

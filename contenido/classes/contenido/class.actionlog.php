@@ -23,7 +23,6 @@
  *   created  2012-01-24
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -61,7 +60,7 @@ class cApiActionlogCollection extends ItemCollection
      */
     public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '')
     {
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         if (empty($logtimestamp)) {
             $logtimestamp = date('Y-m-d H:i:s');

@@ -80,7 +80,7 @@
 		 */
 		public function saveLog($success, $header, $body, $mailer, $address, $subject,  $exception = '') {
 			
-			$item = parent::create();
+			$item = parent::createNewItem();
 			$success = ($success == true);
 			$item->set('success', $success);
 			$item->set('mailer', $mailer);

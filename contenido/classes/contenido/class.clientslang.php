@@ -20,14 +20,8 @@
  *
  * {@internal
  *   created  2007-05-25
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-05-20, Murat Purc, renamed _getPropertyCollection() to _getPropertiesCollectionInstance()
- *   modified 2011-07-07, Murat Purc, added function cApiClientLanguageCollection::create()
- *   modified 2011-10-25, Murat Purc, added function cApiClientLanguageCollection::hasLanguageInClients()
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -67,7 +61,7 @@ class cApiClientLanguageCollection extends ItemCollection
      */
     public function create($iClient, $iLang)
     {
-        $oItem = parent::create();
+        $oItem = parent::createNewItem();
         $oItem->set('idclient', (int) $iClient, false);
         $oItem->set('idlang', (int) $iLang, false);
         $oItem->store();

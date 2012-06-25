@@ -20,11 +20,8 @@
  *
  * {@internal
  *   created  2004-08-04
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -58,7 +55,7 @@ class cApiFrameFileCollection extends ItemCollection
 
     public function create($area, $idframe, $idfile)
     {
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         if (is_string($area)) {
             $c = new cApiArea();

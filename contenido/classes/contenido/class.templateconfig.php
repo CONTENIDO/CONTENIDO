@@ -20,11 +20,8 @@
  *
  * {@internal
  *   created  2004-08-04
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -75,7 +72,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     {
         global $auth;
 
-        $item = parent::create();
+        $item = parent::createNewItem();
         $item->set('idtpl', $idtpl);
         $item->set('author', $auth->auth['uname']);
         $item->set('status', 0);

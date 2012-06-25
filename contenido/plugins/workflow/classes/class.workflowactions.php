@@ -21,10 +21,8 @@
  * 
  * {@internal 
  *   created 2003-07-18
- *   
  *   $Id$
  * }}
- * 
  */
 
 if(!defined('CON_FRAMEWORK')) {
@@ -91,7 +89,7 @@ class WorkflowActions extends ItemCollection {
 		$this->select("idworkflowitem = '".Contenido_Security::escapeDB($idworkflowitem, NULL)."' AND action = '".Contenido_Security::escapeDB($action, NULL)."'");
 		if (!$this->next())
 		{
-			$newitem = parent::create();
+			$newitem = parent::createNewItem();
 			$newitem->setField("idworkflowitem",$idworkflowitem);
 			$newitem->setField("action",$action);
 			$newitem->store();

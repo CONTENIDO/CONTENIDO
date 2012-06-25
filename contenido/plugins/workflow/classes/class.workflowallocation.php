@@ -21,13 +21,11 @@
  * 
  * {@internal 
  *   created 2003-07-18
- *   
  *   $Id$
  * }}
- * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
@@ -129,7 +127,7 @@ class WorkflowAllocations extends ItemCollection {
 			$this->lasterror = i18n("Workflow doesn't exist", "workflow");
 			return false;
 		} 
-		$newitem = parent::create();
+		$newitem = parent::createNewItem();
 		if (!$newitem->setWorkflow($idworkflow))
 		{
 			$this->lasterror = $newitem->lasterror;

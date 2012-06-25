@@ -24,10 +24,8 @@
  *
  * {@internal
  *   created  2011-10-06
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -73,7 +71,7 @@ class cApiFrontendPermissionCollection extends ItemCollection
 
         $perm = null;
         if (!$this->checkPerm($group, $plugin, $action, $item)) {
-            $perm = parent::create();
+            $perm = parent::createNewItem();
             $perm->set('idlang', $lang);
             $perm->set('idfrontendgroup', $group);
             $perm->set('plugin', $plugin);

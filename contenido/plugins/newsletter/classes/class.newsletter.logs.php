@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created  2004-08-01
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -83,7 +79,7 @@ class NewsletterLogCollection extends ItemCollection
 
         $oRecipient = new NewsletterRecipient;
         if ($oRecipient->loadByPrimaryKey($idnewsrcp)) {
-            $oItem = parent::create();
+            $oItem = parent::createNewItem();
 
             $oItem->set("idnewsjob", $idnewsjob);
             $oItem->set("idnewsrcp", $idnewsrcp);

@@ -21,13 +21,11 @@
  * 
  * {@internal 
  *   created 2003-07-18
- *   
  *   $Id$
  * }}
- * 
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
 	die('Illegal call');
 }
 
@@ -184,7 +182,7 @@ class WorkflowItems extends ItemCollection {
 			$lastPos = $item->getField("position") + 1;
 		}
 		
-		$newItem = parent::create();
+		$newItem = parent::createNewItem();
 		if ($newItem->init($idworkflow, $lastPos) === false)
 		{
 			$this->delete($newItem->getField("idworkflowitem"));

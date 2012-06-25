@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created  2007-05-25
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-07-07, Murat Purc, added functions cApiLanguageCollection::create() and cApiLanguage::store()
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -73,7 +69,7 @@ class cApiLanguageCollection extends ItemCollection
     {
         global $auth;
 
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         $item->set('name', $this->escape($name), false);
         $item->set('active', (int) $active, false);

@@ -20,11 +20,8 @@
  *
  * {@internal
  *   created  2006-06-09
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -69,7 +66,7 @@ class cApiActionCollection extends ItemCollection
      */
     public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1)
     {
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         if (is_string($area)) {
             $c = new cApiArea();

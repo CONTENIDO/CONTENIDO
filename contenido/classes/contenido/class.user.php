@@ -59,12 +59,8 @@
  *
  * {@internal
  *   created  2007-06-24
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-02-05, Murat Purc, takeover roperty management from User class
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -112,7 +108,7 @@ class cApiUserCollection extends ItemCollection
     {
         $primaryKeyValue = md5($username);
 
-        $item = parent::create($primaryKeyValue);
+        $item = parent::createNewItem($primaryKeyValue);
         if ($item->usernameExists($username)) {
             return false;
         }

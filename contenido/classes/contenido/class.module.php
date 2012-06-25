@@ -61,7 +61,7 @@ class cApiModuleCollection extends ItemCollection
     public function create($name)
     {
         global $auth, $client;
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         $item->set("idclient", $client);
         $item->set("name", $name);
@@ -718,7 +718,7 @@ class cApiModuleTranslationCollection extends ItemCollection
             }
             return $item;
         } else {
-            $item = parent::create();
+            $item = parent::createNewItem();
             $item->set("idmod", $idmod);
             $item->set("idlang", $idlang);
             $item->set("original", $original);

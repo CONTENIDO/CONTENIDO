@@ -20,11 +20,8 @@
  *
  * {@internal
  *   created  2004-08-04
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -77,7 +74,7 @@ class cApiContainerCollection extends ItemCollection
 
     public function create($idtpl, $number, $idmod)
     {
-        $item = parent::create();
+        $item = parent::createNewItem();
         $item->set('idtpl', (int) $idtpl);
         $item->set('number', (int) $number);
         $item->set('idmod', (int) $idmod);

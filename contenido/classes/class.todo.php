@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-06-30, Frederic Schneider, add security fix
- *   modified 2011-03-14, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -65,7 +61,7 @@ class TODOCollection extends cApiCommunicationCollection
      */
     public function create($itemtype, $itemid, $reminderdate, $subject, $content, $notimail, $notibackend, $recipient)
     {
-        $item = parent::create();
+        $item = parent::createNewItem();
 
         $item->set("subject", $subject);
         $item->set("message", $content);
