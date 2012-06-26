@@ -47,7 +47,7 @@ include_once($cfg['path']['contenido'] . 'plugins/linkchecker/includes/config.pl
 global $cfg;
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     // Start linkchecker
     $cronjob = true;

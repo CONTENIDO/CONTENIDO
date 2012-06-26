@@ -46,7 +46,7 @@ include_once($contenidoPath . 'includes/startup.php');
 require_once($cfg['path']['contenido'].$cfg['path']['includes'] . 'pseudo-cron.inc.php');
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sSql = "UPDATE " . $cfg['tab']['frontendusers'] . "
             SET active = 0

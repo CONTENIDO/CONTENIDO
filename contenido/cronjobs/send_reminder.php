@@ -48,7 +48,7 @@ global $cfg, $client;
 $oldclient = $client;
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = 'SELECT idclient FROM '.$cfg['tab']['clients'];
     $db->query($sql);

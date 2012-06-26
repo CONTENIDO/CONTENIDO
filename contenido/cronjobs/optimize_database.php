@@ -44,7 +44,7 @@ include_once($contenidoPath . 'includes/startup.php');
 global $cfg;
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     foreach ($cfg['tab'] as $key => $value) {
         $sql = 'OPTIMIZE TABLE ' . $value;

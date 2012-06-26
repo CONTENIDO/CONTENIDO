@@ -11,7 +11,7 @@ $contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . 
 include_once($contenidoPath . 'includes/startup.php');
 
 
-$db = new DB_Contenido();
+$db = cRegistry::getDb();
 $db->free();
 
 
@@ -47,13 +47,13 @@ function getNextId($row) {
     //$nextId = $row[1];
     debug($row);
     
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
     $sql = 'SHOW KEYS FROM '.$tableName.' WHERE Key_name="PRIMARY"';
     $db->query($sql);
      while ($row = mysql_fetch_row($db->Query_ID)) {
         
         $primaryKey = $row[4];
-        $dbAlter = new DB_Contenido();
+        $dbAlter = cRegistry::getDb();
         $sqlAlter = 'ALTER TABLE `'.$tableName.'` CHANGE `'.$primaryKey.'` `'.$primaryKey.'` INT( 10 ) NOT NULL AUTO_INCREMENT';
         #echo '<br/>query:'.$sqlAlter;
         $dbAlter->query($sqlAlter);

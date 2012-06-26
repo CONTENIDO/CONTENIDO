@@ -39,7 +39,7 @@ require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 include_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.stat.php');
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
     $year = date('Y');
     $month = date('m');
 
