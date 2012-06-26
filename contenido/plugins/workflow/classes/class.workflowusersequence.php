@@ -52,14 +52,14 @@ class WorkflowUserSequences extends ItemCollection {
         $this->_setItemClass("WorkflowUserSequence");
     }
 
-    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     function WorkflowUserSequences()
+    /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     {
         cDeprecated("Use __construct() instead");
         $this->__construct();
     }
 
-    function delete ($id)
+    function delete($id)
     {
         global $cfg, $idworkflow;
 
@@ -81,7 +81,8 @@ class WorkflowUserSequences extends ItemCollection {
         $this->updateArtAllocation($id);
     }
 
-    function updateArtAllocation ($idusersequence) {
+    function updateArtAllocation($idusersequence)
+    {
         global $idworkflow, $cfg;
         $oDb = new DB_Contenido();
 
@@ -101,7 +102,7 @@ class WorkflowUserSequences extends ItemCollection {
         }
     }
 
-    function create ($idworkflowitem)
+    function create($idworkflowitem)
     {
         global $auth, $client, $idworkflow;
         $newitem = parent::createNewItem();
@@ -132,7 +133,7 @@ class WorkflowUserSequences extends ItemCollection {
         return ($newitem);
     }
 
-    function swap ($idworkflowitem, $pos1, $pos2)
+    function swap($idworkflowitem, $pos1, $pos2)
     {
         $this->select("idworkflowitem = '$idworkflowitem' AND position = '".Contenido_Security::escapeDB($pos1, NULL)."'");
         if (($item = $this->next()) === false)
@@ -198,10 +199,11 @@ class WorkflowUserSequence extends Item {
     /**
      * Override setField Function to prevent that somebody modifies
      * idsequence.
-     * @param string $field Field to set
-     * @param string $valie Value to set
+     * @param  string  $field Field to set
+     * @param  string  $value Value to set
+     * @param  bool  $safe
      */
-    function setField($field, $value)
+    function setField($field, $value, $safe = true)
     {
         global $cfg;
 
@@ -238,7 +240,7 @@ class WorkflowUserSequence extends Item {
 
         }
 
-        parent::setField($field, $value);
+        parent::setField($field, $value, $safe);
         if ($idusersquence) {
             WorkflowUserSequences::updateArtAllocation(0);
         }
@@ -248,7 +250,7 @@ class WorkflowUserSequence extends Item {
      * Returns the associated workflowItem for this user sequence
      * @param none
      */
-    function getWorkflowItem ()
+    function getWorkflowItem()
     {
         if (!$this->virgin)
         {

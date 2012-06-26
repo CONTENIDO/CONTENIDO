@@ -456,7 +456,7 @@ class Group
         return ($this->values[$field]);
     }
     /** @deprecated  [2012-03-27]  Use cApiGroup() instead */
-    function setField($field, $value)
+    function setField($field, $value, $safe = true)
     {
         cDeprecated("Use cApiGroup() instead");
         $this->modifiedValues[$field] = true;

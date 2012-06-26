@@ -1315,7 +1315,7 @@ class User
         return ($this->values[$field]);
     }
     /** @deprecated [2012-03-22] Use cApiUser() instead */
-    function setField($field, $value)
+    function setField($field, $value, $safe = true)
     {
         cDeprecated("Use cApiUser() instead");
         $this->modifiedValues[$field] = true;

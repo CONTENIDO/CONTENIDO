@@ -59,7 +59,7 @@ class WorkflowItems extends ItemCollection {
         $this->__construct();
     }
 
-    function delete ($id)
+    function delete($id)
     {
         global $cfg;
         $item = new WorkflowItem;
@@ -93,7 +93,8 @@ class WorkflowItems extends ItemCollection {
         }
     }
 
-    function updateArtAllocation ($idworkflowitem, $delete = false) {
+    function updateArtAllocation($idworkflowitem, $delete = false)
+    {
         global $idworkflow, $cfg;
         $oDb = new DB_Contenido();
 
@@ -126,7 +127,7 @@ class WorkflowItems extends ItemCollection {
     }
 
 
-    function swap ($idworkflow, $pos1, $pos2)
+    function swap($idworkflow, $pos1, $pos2)
     {
         $this->select("idworkflow = '$idworkflow' AND position = '$pos1'");
         if (($item = $this->next()) === false)
@@ -159,7 +160,7 @@ class WorkflowItems extends ItemCollection {
         return (true);
     }
 
-    function create ($idworkflow)
+    function create($idworkflow)
     {
         $workflows = new Workflows;
 
@@ -227,7 +228,7 @@ class WorkflowItem extends Item {
         $this->__construct();
     }
 
-    function getStepRights ()
+    function getStepRights()
     {
         $idwfi = $this->values["idworkflowitem"];
         $workflowActions = new WorkflowActions;
@@ -247,7 +248,7 @@ class WorkflowItem extends Item {
      * @param string $field Void field since we override the usual setField function
      * @param string $value Void field since we override the usual setField function
      */
-    function setField($field, $value)
+    function setField($field, $value, $safe = true)
     {
         if ($this->virgin == true)
         {
@@ -281,7 +282,7 @@ class WorkflowItem extends Item {
             }
         }
 
-        parent::setField($field, $value);
+        parent::setField($field, $value, $safe);
     }
 
     /**
@@ -289,11 +290,11 @@ class WorkflowItem extends Item {
      * only be called by the create function.
      * @param int $idworkflow The workflow to set the item to
      */
-    function init ($idworkflow, $idposition)
+    function init($idworkflow, $idposition)
     {
         global $cfg;
 
-        $workflows = new Workflows;
+        $workflows = new Workflows();
 
         $workflows->select("idworkflow = '$idworkflow'");
 
@@ -303,7 +304,7 @@ class WorkflowItem extends Item {
             return false;
         }
 
-        $workflowItems = new WorkflowItems;
+        $workflowItems = new WorkflowItems();
         $workflowItems->select("position = '$idposition' AND idworkflow = '$idworkflow'");
         if ($workflowItems->next())
         {
@@ -322,7 +323,7 @@ class WorkflowItem extends Item {
      * called by the "swap" function
      * @param int $idposition The new position ID
      */
-    function setPosition ($idposition)
+    function setPosition($idposition)
     {
         parent::setField("position", $idposition);
         parent::store();

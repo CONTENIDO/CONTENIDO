@@ -59,7 +59,7 @@ class WorkflowAllocations extends ItemCollection {
         $this->__construct();
     }
 
-    function delete ($idallocation)
+    function delete($idallocation)
     {
         global $cfg, $lang;
 
@@ -109,7 +109,7 @@ class WorkflowAllocations extends ItemCollection {
         parent::delete($idallocation);
     }
 
-    function create ($idworkflow, $idcatlang)
+    function create($idworkflow, $idcatlang)
     {
         $this->select("idcatlang = '$idcatlang'");
 
@@ -182,7 +182,7 @@ class WorkflowAllocation extends Item {
      * @param string $field Void field since we override the usual setField function
      * @param string $value Void field since we override the usual setField function
      */
-    function setField($field, $value)
+    function setField($field, $value, $safe = true)
     {
         die("Don't use setField for WorkflowAllocation items! Use setWorkflow instead!");
     }
@@ -191,9 +191,9 @@ class WorkflowAllocation extends Item {
      * setWorkflow sets the workflow for the current item.
      * @param int $idworkflow Workflow-ID to set the item to
      */
-    function setWorkflow ($idworkflow)
+    function setWorkflow($idworkflow)
     {
-        $workflows = new Workflows;
+        $workflows = new Workflows();
 
         $workflows->select("idworkflow = '$idworkflow'");
 
@@ -213,11 +213,11 @@ class WorkflowAllocation extends Item {
      * only be called by the create function.
      * @param int $idcatlang idcatlang to set.
      */
-    function setCatLang ($idcatlang)
+    function setCatLang($idcatlang)
     {
         global $cfg;
 
-        $allocations = new WorkflowAllocations;
+        $allocations = new WorkflowAllocations();
 
         $allocations->select("idcatlang = '$idcatlang'");
 
@@ -227,7 +227,7 @@ class WorkflowAllocation extends Item {
             return false;
         }
 
-        $db = new DB_Contenido;
+        $db = new DB_Contenido();
         $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcatlang = '".Contenido_Security::toInteger($idcatlang)."'";
         $db->query($sql);
 

@@ -90,8 +90,8 @@ class WorkflowActions extends ItemCollection {
         if (!$this->next())
         {
             $newitem = parent::createNewItem();
-            $newitem->setField("idworkflowitem",$idworkflowitem);
-            $newitem->setField("action",$action);
+            $newitem->setField("idworkflowitem", $idworkflowitem);
+            $newitem->setField("action", $action);
             $newitem->store();
         }
     }
