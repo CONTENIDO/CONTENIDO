@@ -65,7 +65,7 @@ if (getenv('CONTENIDO_IGNORE_SETUP') != 'true') {
     }
 
     // Check, if sysadmin and/or admin accounts are still using well-known default passwords
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sDate = date('Y-m-d');
     $sSQL = "SELECT * FROM ".$cfg['tab']['phplib_auth_user_md5']."

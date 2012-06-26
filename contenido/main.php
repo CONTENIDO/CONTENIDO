@@ -83,7 +83,7 @@ if (isset($overrideid) && isset($overridetype)) {
 
 // Create CONTENIDO classes
 // FIXME: Correct variable names, instances of classes at objects, not classes!
-$db = new DB_Contenido();
+$db = cRegistry::getDb();
 $notification = new Contenido_Notification();
 $classarea = new cApiAreaCollection();
 $classlayout = new cApiLayout();

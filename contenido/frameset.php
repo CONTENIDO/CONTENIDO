@@ -52,7 +52,7 @@ require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 cInclude('includes', 'functions.forms.php');
 
 // Create CONTENIDO classes
-$db  = new DB_Contenido();
+$db  = cRegistry::getDb();
 $tpl = new Template();
 
 // Build the CONTENIDO content area frameset

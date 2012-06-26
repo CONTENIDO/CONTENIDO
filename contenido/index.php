@@ -48,7 +48,7 @@ cInclude('includes', 'functions.forms.php');
 $sess->register('belang');
 
 // Create CONTENIDO classes
-$db  = new DB_Contenido();
+$db  = cRegistry::getDb();
 $tpl = new Template();
 
 // Sprache wechseln
