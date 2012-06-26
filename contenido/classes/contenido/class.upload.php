@@ -109,7 +109,7 @@ class cApiUploadCollection extends ItemCollection
         $oItem->set('filetype', $sFiletype, false);
         $oItem->set('size', $iFileSize, false);
         $oItem->set('dirname', $sDirname, false);
-        $oItem->set('description', $sDescription, false);
+        //$oItem->set('description', $sDescription, false);
         $oItem->set('status', $iStatus, false);
         $oItem->set('author', $auth->auth['uid']);
         $oItem->set('created', date('Y-m-d H:i:s'), false);
