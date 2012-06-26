@@ -609,13 +609,13 @@ class Cms_Teaser {
         /*End set a lot of translations*/
 
         /*Start set values into configuration array and generate select boxes used previous defined values CASE CHECKBOXES*/
-        if ($this->aSettings['teaser_start'] == 'true') {
+        if ($this->aSettings['teaser_start'] == 'checked') {
             $oTpl->set('s', 'START_CHECKED', 'checked');
         } else {
             $oTpl->set('s', 'START_CHECKED', '');
         }
 
-        if ($this->aSettings['teaser_manual'] == 'true') {
+        if ($this->aSettings['teaser_manual'] == 'checked') {
             $oTpl->set('s', 'MANUAL_CHECKED', 'checked');
         } else {
             $oTpl->set('s', 'MANUAL_CHECKED', '');
@@ -980,7 +980,7 @@ class Cms_Teaser {
         $oTpl->set('s', 'TITLE', $this->aSettings['teaser_title']);
 
         //decide if it is a manual or category teaser
-        if ($this->aSettings['teaser_manual'] == 'true' && count($this->aSettings['teaser_manual_art']) > 0) {
+        if ($this->aSettings['teaser_manual'] == 'checked' && count($this->aSettings['teaser_manual_art']) > 0) {
             $i = 0;
             //in manual case get all art to display and generate article objects manually
             foreach ($this->aSettings['teaser_manual_art'] as $iIdArt) {
@@ -1000,7 +1000,7 @@ class Cms_Teaser {
             //in case of autmatic teaser use class Contenido_Category_Articles for getting all arts in category
             $oConCatArt = new Contenido_Category_Articles($this->oDb, $this->aCfg, $this->iClient, $this->iLang);
             //decide to teaser articles or not
-            if ($this->aSettings['teaser_start'] == 'true') {
+            if ($this->aSettings['teaser_start'] == 'checked') {
                 $aArticles = $oConCatArt->getArticlesInCategory($this->aSettings['teaser_category'], $this->aSettings['teaser_sort'], $this->aSettings['teaser_sort_order']);
             } else {
                 $aArticles = $oConCatArt->getNonStartArticlesInCategory($this->aSettings['teaser_category'], $this->aSettings['teaser_sort'], $this->aSettings['teaser_sort_order']);
