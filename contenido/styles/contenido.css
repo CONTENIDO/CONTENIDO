@@ -15,7 +15,6 @@
  *
  * {@internal
  *   created  Long time ago
- *
  *   $Id$
  * }}
  */
@@ -155,7 +154,7 @@ table.borderless tr.active {
 }
 
 table.borderless tr {
-    background-color: #FFFFFF;
+    background-color: #fff;
 }
 
 table.borderless tr td {
@@ -662,14 +661,14 @@ ul#con_str_tree {
     border-color: #fea513;
     background-image:url(../images/icon_warning.gif);
     color: #fea513;
-    display:inline-block;
+    display: inline-block;
 }
 
 .notify_error {
     border-color: #d73211;
-    background-image:url(../images/icon_fatalerror.gif);
+    background-image: url(../images/icon_fatalerror.gif);
     color: #d73211;
-    display:inline-block;
+    display: inline-block;
 }
 
 
@@ -839,35 +838,35 @@ p, table, tr, td, th {
  * @section Links
  */
 
-/* Links Generell */
+/* Common links */
 a:link,
 a:visited,
 a:active,
 a:hover    {font-family: verdana, arial, helvetica, sans-serif; color: #000; text-decoration: none; font-size: 11px}
 a:hover    {color: #0060b1;}
 
-/* Links Weiss */
+/* White links */
 a.white:link,
 a.white:visited,
 a.white:active,
 a.white:hover    {font-family: verdana, arial, helvetica, sans-serif; color: #fff; text-decoration: none; font-size: 11px}
 a.white:hover    {color: #0060b1;}
 
-/* Links Schwarz */
+/* Black links */
 a.black:link,
 a.black:visited,
 a.black:active,
 a.black:hover    {font-family: verdana, arial, helvetica, sans-serif; color: #000; text-decoration: none; font-size: 11px}
 a.black:hover    {color: #0060b1;}
 
-/* Links blau */
+/* Blue links */
 a.blue:link,
 a.blue:visited,
 a.blue:active,
 a.blue:hover    {font-family: verdana, arial, helvetica, sans-serif; color: #0060b1; text-decoration: none; font-size: 11px}
 a.blue:hover    {text-decoration: underline;}
 
-/* Links grau */
+/* Grey links */
 a.gray:link,
 a.gray:visited,
 a.gray:active,
@@ -875,14 +874,14 @@ a.gray:hover     {font-family: verdana, arial, helvetica, sans-serif; font-size:
 a.gray:hover     {color: #0060b1;}
 
 
-/* Hauptlinks fuer die Navigation */
+/* Main links for menu */
 a.main:link,
 a.main:visited,
 a.main:active,
 a.main:hover   {font-family: verdana, arial, helvetica, sans-serif; color: #000; text-decoration: none; font-size: 11px; font-weight: bold;}
 a.main:hover   {color: #0060b1;}
 
-/* Sublinks fuer die Navigation */
+/* Sub-links for menu */
 a.sub:link,
 a.sub:visited,
 a.sub:active,
@@ -901,26 +900,26 @@ a.activemenu:hover    {font-family: verdana, arial, helvetica, sans-serif; font-
  * @section Text
  */
 
-/* Texte */
+/* Texts */
 .text_small        {font-family: verdana, arial, helvetica, sans-serif; font-size: 10px; color: #000}
 .text_medium       {font-family: verdana, arial, helvetica, sans-serif; font-size: 11px; color: #000}
 .text_medium_bold  {font-family: verdana, arial, helvetica, sans-serif; font-size: 11px; color: #000; font-weight: bold;}
 .text_large        {font-family: verdana, arial, helvetica, sans-serif; font-size: 12px; color: #000}
 
-/* Blauer Text */
+/* Blue text */
 .textb_medium   {font-family: verdana, arial, helvetica, sans-serif; font-size: 11px; color: #334f77}
 
-/* Weisse Texte */
+/* White text */
 .textw_small    {font-family: verdana, arial, helvetica, sans-serif; font-size: 10px; color: #fff}
 .textw_medium   {font-family: verdana, arial, helvetica, sans-serif; font-size: 11px; color: #fff}
 .textw_large    {font-family: verdana, arial, helvetica, sans-serif; font-size: 12px; color: #fff}
 
-/* Grauer Text */
+/* Grey text */
 .textg_small    {font-family: verdana, arial, helvetica, sans-serif; font-size: 10px; color: #666; font-weight: normal;}
 .textg_medium   {font-family: verdana, arial, helvetica, sans-serif; font-size: 11px; color: #666; font-weight: normal;}
 .textg_large    {font-family: verdana, arial, helvetica, sans-serif; font-size: 12px; color: #666; font-weight: normal;}
 
-/* Fehlermeldungen */
+/* Error messages */
 .text_error    {font-family: verdana, arial, helvetica, sans-serif; font-size: 11px; color: #f00}
 
 /* Code areas */
@@ -931,7 +930,7 @@ a.activemenu:hover    {font-family: verdana, arial, helvetica, sans-serif; font-
 .code_sfullwidth {font-family: verdana; font-size: 11px; color: #000; width: 100%; height: 150px}
 .code_input  {font-family: verdana; font-size: 11px; color: #000; width: 100%;}
 
-/* Form Elemente */
+/* Form elements */
 input.bb       {font-family: verdana, helvetica, arial; font-size: 11px; color: #000; border: 1px solid #000}
 input.txt      {font-family: verdana, helvetica, arial; font-size: 11px; color: #000; border: 1px solid #000; width: 250px;}
 
@@ -988,11 +987,11 @@ div#navcontainer ul#navlist li a {
     border-right: 1px solid #e2e2e2;
     border-top: 1px solid #e2e2e2;
     border-bottom: none;
-  cursor: pointer;
+    cursor: pointer;
 }
 
 div#navcontainer ul#navlist li a:hover {
-  color: #0060b1;
+    color: #0060b1;
 }
 
 div#navcontainer ul#navlist li a.current,
@@ -1308,21 +1307,17 @@ p.column_header {padding: 0; font-weight: bold;}
 
 /**
  * #############################################################################
- * @section File Upload
+ * @section File_Upload
  */
 
 #dropbox {
-
     width: 500px;
     height: 100px;
     line-height: 99px;
-
-    background-color: #FFFFFF;
-
+    background-color: #fff;
     border: 1px solid #D0D0D0;
-
     text-align: center;
-    padding: 0px;
+    padding: 0;
 }
 
 #shelf {
@@ -1331,7 +1326,6 @@ p.column_header {padding: 0; font-weight: bold;}
 
 div.shelf_elem {
     width: 100%;
-
     margin-bottom: 10px;
     padding: 5px;
 }
@@ -1342,14 +1336,12 @@ div.shelf_elem_titlelabel {
 
 div.shelf_elem_progressbar_background {
     margin-top: 5px;
-
     height: 20px;
     background-color: black;
 }
 
 div.shelf_elem_progressbar_bar {
     width: 0%;
-
     height: 100%;
     background-color: green;
 }
@@ -1363,454 +1355,501 @@ div.shelf_elem_statuslabel {
 }
 
 
-/*for datetimepicker*/
+/**
+ * #############################################################################
+ * @section Datetime_Picker
+ */
 
 .ui-datepicker {
-           width: 24em !important;
+    width: 24em !important;
 }
 .ui-datepicker-trigger {
-    vertical-align:top;
-    margin-top:2px;
-    margin-left:5px;
+    vertical-align: top;
+    margin-top: 2px;
+    margin-left: 5px;
 }
 
-/*modified am 15.06.2012 fulai.zhang*/
 
-/*margin, padding*/
+/**
+ * #############################################################################
+ * @section Margin_Padding
+ */
+
 .mg0 {
-	margin: 0px;
+    margin: 0;
 }
 .mg10 {
-	margin: 10px;
+    margin: 10px;
 }
 .mgt1m {
-	margin-top: -1px;
+    margin-top: -1px;
 }
 .mgt1 {
-	margin-top: 1px;
+    margin-top: 1px;
 }
 .mgt5 {
-	margin-top: 5px;
+    margin-top: 5px;
 }
 .mgt7 {
-	margin-top: 7px;
+    margin-top: 7px;
 }
 .mgt10 {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 .mgt20 {
-	margin-top: 20px;
+    margin-top: 20px;
 }
 .mgl3 {
-	margin-left: 3px;
+    margin-left: 3px;
 }
 .mgl5 {
-	margin-left: 5px;
+    margin-left: 5px;
 }
 .mgl10 {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 .mgl15 {
-	margin-left: 15px;
+    margin-left: 15px;
 }
 .mgl17 {
-	margin-left: 17px;
+    margin-left: 17px;
 }
 .mgl20 {
-	margin-left: 20px;
+    margin-left: 20px;
 }
 .mgr0 {
-	margin-right: 0px;
+    margin-right: 0;
 }
 .mgr3 {
-	margin-right: 3px;
+    margin-right: 3px;
 }
 .mgr15 {
-	margin-right: 15px;
+    margin-right: 15px;
 }
 .mgr30 {
-	margin-right: 30px;
+    margin-right: 30px;
 }
 .mgb2 {
-	margin-bottom: 2px;
+    margin-bottom: 2px;
 }
 .mgb5 {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 .mgb10 {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 .mgb20 {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 .pd0 {
-	padding: 0px;
+    padding: 0;
 }
 .pd2 {
-	padding: 2px;
+    padding: 2px;
 }
 .pd5 {
-	padding: 5px;
+    padding: 5px;
 }
 .pdt3 {
-	padding-top: 3px;
+    padding-top: 3px;
 }
 .pdt5 {
-	padding-top: 5px;
+    padding-top: 5px;
 }
 .pdt7 {
-	padding-top: 7px;
+    padding-top: 7px;
 }
-.pdt10 {	
-	padding-top: 10px;
+.pdt10 {
+    padding-top: 10px;
 }
 .pdl0 {
-	padding-left: 0px;
+    padding-left: 0;
 }
 .pdl2 {
-	padding-left: 2px;
+    padding-left: 2px;
 }
 .pdl5 {
-	padding-left: 5px;
+    padding-left: 5px;
 }
 .pdl10 {
-	padding-left: 10px;
+    padding-left: 10px;
 }
 .pdl15 {
-	padding-left: 15px;
+    padding-left: 15px;
 }
 .pdl250 {
-	padding-left: 250px;
+    padding-left: 250px;
 }
 .pdr2 {
-	padding-right: 2px;
+    padding-right: 2px;
 }
 .pdr5 {
-	padding-right: 5px;
+    padding-right: 5px;
 }
 .pdr10 {
-	padding-right: 10px;
+    padding-right: 10px;
 }
 .pdr15 {
-	padding-right: 15px;
+    padding-right: 15px;
 }
 .pdr20 {
-	padding-right: 20px;
+    padding-right: 20px;
 }
 .pdb5 {
-	padding-bottom: 5px;
+    padding-bottom: 5px;
 }
 .pdb15 {
-	padding-bottom: 15px;
+    padding-bottom: 15px;
 }
-/*font*/
-.fett {
-	font-weight: bold;
+
+
+/**
+ * #############################################################################
+ * @section Font
+ */
+
+/** @deprecated  Use bold instead of fett */
+.fett,
+.bold {
+    font-weight: bold;
 }
 .color6 {
-	color: #666666;
+    color: #666;
 }
 .colorF0 {
-	color: #FF0000;
+    color: #ff0000;
 }
 .red {
-	color:red;
+    color:red;
 }
-/*width, height*/
+
+
+/**
+ * #############################################################################
+ * @section Width_Height
+ */
+
 .width1 {
-	width: 1%;
+    width: 1%;
 }
 .width10 {
-	width: 10%;
+    width: 10%;
 }
 .width15 {
-	width: 15%;
+    width: 15%;
 }
 .width20 {
-	width: 20%;
+    width: 20%;
 }
 .width25 {
-	width: 25%;
+    width: 25%;
 }
 .width30 {
-	width: 30%;
+    width: 30%;
 }
 .width40 {
-	width: 40%;
+    width: 40%;
 }
 .width49 {
-	width: 49%;
+    width: 49%;
 }
 .width50 {
-	width: 50%;
+    width: 50%;
 }
 .width70 {
-	width: 70%;
+    width: 70%;
 }
 .width75 {
-	width: 75%;
+    width: 75%;
 }
 .width80 {
-	width: 80%;
+    width: 80%;
 }
 .width87 {
-	width: 87%;
+    width: 87%;
 }
 .width100 {
-	width: 100%;
+    width: 100%;
 }
 .maxw100 {
-	max-width: 100%;
+    max-width: 100%;
 }
 .widthpx1 {
-	width: 1px;
+    width: 1px;
 }
 .widthpx3 {
-	width: 3px;
+    width: 3px;
 }
 .widthpx5 {
-	width: 5px;
+    width: 5px;
 }
 .widthpx10 {
-	width: 10px;
+    width: 10px;
 }
 .widthpx16 {
-	width: 16px;
+    width: 16px;
 }
 .widthpx20 {
-	width: 20px;
+    width: 20px;
 }
 .widthpx22 {
-	width: 22px;
+    width: 22px;
 }
 .widthpx25 {
-	width: 25px;
+    width: 25px;
 }
 .widthpx30 {
-	width: 30px;
+    width: 30px;
 }
 .widthpx35 {
-	width: 35px;
+    width: 35px;
 }
 .widthpx40 {
-	width: 40px;
+    width: 40px;
 }
 .widthpx50 {
-	width: 50px;
+    width: 50px;
 }
 .widthpx65 {
-	width: 65px;
+    width: 65px;
 }
 .widthpx200 {
-	width: 200px;
+    width: 200px;
 }
 .minwpx200 {
-	min-width: 200px;
+    min-width: 200px;
 }
 .widthpx250 {
-	width: 250px;
+    width: 250px;
 }
 .widthpx300 {
-	width: 300px;
+    width: 300px;
 }
 .widthpx381 {
-	width: 381px;
+    width: 381px;
 }
 .widthpx400 {
-	width: 400px;
+    width: 400px;
 }
 .widthpx450 {
-	width: 450px;
+    width: 450px;
 }
 .widthpx486 {
-	width: 486px;
+    width: 486px;
 }.
 .widthpx500 {
-	width: 500px;
+    width: 500px;
 }
 .widthpx600 {
-	width: 600px;
+    width: 600px;
 }
 .widthpx800 {
-	width: 800px;
+    width: 800px;
 }
 .height100 {
-	height: 100%;
+    height: 100%;
 }
 .heightpx6 {
-	height: 6px;
+    height: 6px;
 }
 .heightpx8 {
-	height: 8px;
+    height: 8px;
 }
 .heightpx9 {
-	height: 9px;
+    height: 9px;
 }
 .heightpx10 {
-	height: 10px;
+    height: 10px;
 }
 .heightpx15 {
-	height: 15px;
+    height: 15px;
 }
 .heightpx16 {
-	height: 16px;
+    height: 16px;
 }
 .heightpx18 {
-	height: 18px;
+    height: 18px;
 }
 .heightpx19 {
-	height: 19px;
+    height: 19px;
 }
 .heightpx20 {
-	height: 20px;
+    height: 20px;
 }
 .heightpx23 {
-	height: 23px;
+    height: 23px;
 }
 .heightpx24 {
-	height: 24px;
+    height: 24px;
 }
 .heightpx25 {
-	height: 25px;
+    height: 25px;
 }
 .heightpx28 {
-	height: 28px;
+    height: 28px;
 }
 .heightpx30 {
-	height: 30px;
+    height: 30px;
 }
 .heightpx35 {
-	height: 35px;
+    height: 35px;
 }
 .heightpx38 {
-	height: 38px;
+    height: 38px;
 }
 .heightpx80{
-	height: 80px;
+    height: 80px;
 }
 .heightpx100 {
-	height: 100px;
+    height: 100px;
 }
-.lheightpx20{
-	line-height:20px;
+.lheightpx20 {
+    line-height: 20px;
 }
 .lheightpx25 {
-	line-height: 25px;
+    line-height: 25px;
 }
-/*background color*/
+
+
+/**
+ * #############################################################################
+ * @section Background_Color
+ */
+
 .bgcA9 {
-	background-color: #a9aec2;
+    background-color: #a9aec2;
 }
 .bgcF4 {
-	background-color: #F4F4F7;
+    background-color: #f4f4f7;
 }
 .bgcE2 {
-	background-color: #E2E2E2;
+    background-color: #e2e2e2;
 }
 .bgcF1 {
-	background-color:#F1F1F1;
+    background-color:#f1f1f1;
 }
 .bgcCC {
-	background-color: #CCCCCC;
+    background-color: #ccc;
 }
 .bgcwhite {
-	background-color: #FFFFFF;
+    background-color: #fff;
 }
 .bgct{
-	background-color:transparent;
+    background-color: transparent;
 }
-/*border*/
+
+/**
+ * #############################################################################
+ * @section Border
+ */
+
 .noborder {
-	border: 0px;
+    border: 0px;
 }
 .borderB5 {
-	border: 1px solid #B5B5B5; 
+    border: 1px solid #B5B5B5;
 }
 .borderB3 {
-	border: 1px solid #B3B3B3; 
+    border: 1px solid #B3B3B3;
 }
 .border74 {
-	border: 1px solid #747488; 
+    border: 1px solid #747488;
 }
 .bordert06 {
-	border-top: 1px solid #0060b1;
+    border-top: 1px solid #0060b1;
 }
 .border169 {
-	border-style: solid; 
-	border-color: rgb(169, 174, 194); 
-	border-width: 1px 0px 0px;
+    border-style: solid;
+    border-color: rgb(169, 174, 194);
+    border-width: 1px 0px 0px;
 }
 .nobordert {
-	border-top: 0px; 
+    border-top: 0px;
 }
 .noborderr {
-	border-right: 0px; 
+    border-right: 0px;
 }
 .noborderb {
-	border-bottom: 0px; 
+    border-bottom: 0px;
 }
 .noborderl {
-	border-left: 0px; 
+    border-left: 0px;
 }
-/*direction*/
+
+
+/**
+ * #############################################################################
+ * @section Direction
+ */
+
 .left {
-	float: left;
+    float: left;
 }
 .right {
-	float: right;
+    float: right;
 }
 .clearb {
-	clear: both;
+    clear: both;
 }
 .clearl {
-	clear: left;
+    clear: left;
 }
 .clearr {
-	clear: right;
+    clear: right;
 }
 
-/*text align*/
-.vgmiddle{
-	vertical-align: middle;
+
+/**
+ * #############################################################################
+ * @section Text_align
+ */
+
+.vgmiddle {
+    vertical-align: middle;
 }
-.vgtop{
-	vertical-align: top;
+.vgtop {
+    vertical-align: top;
 }
-.tgcenter{
-	text-align: center;
+.tgcenter {
+    text-align: center;
 }
-.tgleft{
-	text-align: left;
+.tgleft {
+    text-align: left;
 }
 .tgright{
-	text-align: right;
+    text-align: right;
 }
 
-/*andere*/
+
+/**
+ * #############################################################################
+ * @section Other
+ */
+
 .nodisplay {
-	display: none;
+    display: none;
 }
 .block {
-	display: block;
+    display: block;
 }
 .nowrap {
-	white-space: nowrap;
+    white-space: nowrap;
 }
 .noresize {
-	resize:none;
+    resize: none;
 }
 img.spacer {
-	width: 1px;
-	height: 10px;
+    width: 1px;
+    height: 10px;
 }
 img.collapsed {
-	width: 10px;
-	height: 9px;
+    width: 10px;
+    height: 9px;
 }
 a.h1e {
-	height:1em;
-	line-height:1em;
+    height: 1em;
+    line-height: 1em;
 }
-.ofauto{
-	overflow: auto;
+.ofauto {
+    overflow: auto;
 }
