@@ -23,15 +23,8 @@
  *
  * {@internal
  *   created  2004-01-15
- *   modified 2008-06-30, Frederic Schneider, add security fix
- *   modified 2008-07-11, Dominik Ziegler, marked class search_helper as deprecated
- *   modified 2008-11-12, Andreas Lindner, add special treatment for iso-8859-2
- *   modified 2011-02-08, Murat Purc, removed PHP 4.3 related code, cleanup and formatting, created SearchBaseAbstract class
- *   modified 2011-08-24, Dominik Ziegler, removed deprecated class search_helper
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -136,13 +129,12 @@ abstract class SearchBaseAbstract
   * @deprecated [2012-02-25] Use SearchIndex instead.
   */
 class Index extends SearchIndex {
-    public function Index($oDB = null) {
-        $this->__construct($oDB);
-    }
-
     public function __construct($oDB = null) {
         cDeprecated('Use SearchIndex instead.');
         parent::SearchIndex($oDB);
+    }
+    public function Index($oDB = null) {
+        $this->__construct($oDB);
     }
 }
 

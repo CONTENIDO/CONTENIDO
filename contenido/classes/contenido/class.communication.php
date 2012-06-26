@@ -13,7 +13,7 @@
  * normalizing API.
  *
  * @package    CONTENIDO API
- * @version    0.1
+ * @version    0.1.1
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -50,7 +50,7 @@ class cApiCommunicationCollection extends ItemCollection
     }
 
     /**
-     * Creates a new communication item
+     * Creates a new communication item.
      * @return cApiCommunication
      */
     public function create()
@@ -58,9 +58,7 @@ class cApiCommunicationCollection extends ItemCollection
         global $auth, $client;
         $item = parent::createNewItem();
 
-        $client = Contenido_Security::toInteger($client);
-
-        $item->set('idclient', $client);
+        $item->set('idclient', (int) $client);
         $item->set('author', $auth->auth['uid']);
         $item->set('created', date('Y-m-d H:i:s'), false);
 

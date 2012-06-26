@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.0
+ * @version    1.0.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -21,11 +21,8 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -48,7 +45,7 @@ if ($action == 'note_save_item') {
         $categoryname = $categoryentry;
     }
 
-    $item = $notes->create($itemtype, $itemid, $lang, $note, $categoryname);
+    $item = $notes->createItem($itemtype, $itemid, $lang, $note, $categoryname);
     $item->store();
 
     $cpage->setContent('<script>window.close();</script>');

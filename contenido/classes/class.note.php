@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.0.6
+ * @version    1.0.7
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -35,28 +35,27 @@ class NoteCollection extends cApiCommunicationCollection
     public function __construct()
     {
         parent::__construct();
-        $this->_setItemClass("NoteItem");
+        $this->_setItemClass('NoteItem');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     function NoteCollection()
     {
-        cDeprecated("Use __construct() instead");
+        cDeprecated('Use __construct() instead');
         $this->__construct();
     }
 
     /**
-     * select: Selects one or more items from the database
+     * Selects one or more items from the database
      *
      * This function only extends the where statement. See the
      * original function for the parameters.
      *
-     * @access public
      * @see ItemCollection
      */
-    public function select($where = "", $group_by = "", $order_by = "", $limit = "")
+    public function select($where = '', $group_by = '', $order_by = '', $limit = '')
     {
-        if ($where == "") {
+        if ($where == '') {
             $where = "comtype='note'";
         } else {
             $where .= " AND comtype='note'";
@@ -66,31 +65,46 @@ class NoteCollection extends cApiCommunicationCollection
     }
 
     /**
-     * create: Creates a new note item.
+     * Magic method to invoke inaccessible methods.
+     * Currently it works as a fallback for the not supported method create() which
+     * creates a PHP Strict warning.
+     * @param  string  $name
+     * @param  array   $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        if ('create' === $name) {
+            // Catch old and not supported create() method
+            cDeprecated('Use NoteCollection->createItem() instead NoteCollection->create()');
+            return call_user_func_array(array($this, 'createItem'), $arguments);
+        }
+    }
+
+    /**
+     * Creates a new note item.
      *
      * @param $itemtype  string   Item type (usually the class name)
      * @param $itemid    mixed    Item ID (usually the primary key)
      * @param $idlang    int      Language-ID
      * @param $message   string   Message to store
-     *
      * @return object    The new item
-     * @access public
      */
-    public function create($itemtype, $itemid, $idlang, $message, $category = "")
+    public function createItem($itemtype, $itemid, $idlang, $message, $category = '')
     {
-        $item = parent::createNewItem();
+        $item = parent::create();
 
-        $item->set("subject", "Note Item");
-        $item->set("message", $message);
-        $item->set("comtype", "note");
+        $item->set('subject', 'Note Item');
+        $item->set('message', $message);
+        $item->set('comtype', 'note');
         $item->store();
 
-        $item->setProperty("note", "itemtype", $itemtype);
-        $item->setProperty("note", "itemid", $itemid);
-        $item->setProperty("note", "idlang", $idlang);
+        $item->setProperty('note', 'itemtype', $itemtype);
+        $item->setProperty('note', 'itemid', $itemid);
+        $item->setProperty('note', 'idlang', $idlang);
 
-        if ($category != "") {
-            $item->setProperty("note", "category", $category);
+        if ($category != '') {
+            $item->setProperty('note', 'category', $category);
         }
 
         return $item;
@@ -112,7 +126,7 @@ class NoteView extends cHTMLIFrame
         cHTMLIFrame::cHTMLIFrame();
         $this->setSrc($sess->url("main.php?itemtype=$sItemType&itemid=$sItemId&area=note&frame=2"));
         $this->setBorder(0);
-        $this->setStyleDefinition("border", "1px solid ".$cfg['color']['table_border']);
+        $this->setStyleDefinition('border', '1px solid '.$cfg['color']['table_border']);
     }
 }
 
@@ -126,7 +140,7 @@ class NoteList extends cHTMLDiv
         $this->_sItemType = $sItemType;
         $this->_sItemId = $sItemId;
 
-        $this->setStyleDefinition("width", "100%");
+        $this->setStyleDefinition('width', '100%');
     }
 
     public function setDeleteable($bDeleteable)
@@ -141,38 +155,36 @@ class NoteList extends cHTMLDiv
         $sItemType = $this->_sItemType;
         $sItemId = $this->_sItemId;
 
-        $this->setStyleDefinition("background", $cfg['color']['table_light']);
+        $this->setStyleDefinition('background', $cfg['color']['table_light']);
 
         $oPropertyCollection = new cApiPropertyCollection();
-        $oPropertyCollection->select("itemtype = 'idcommunication' AND type = 'note' AND name = 'idlang' AND value = '$lang'");
+        $oPropertyCollection->select("itemtype = 'idcommunication' AND type = 'note' AND name = 'idlang' AND value = " . (int) $lang);
 
         $items = array();
 
         while ($oProperty = $oPropertyCollection->next()) {
-            $items[] = $oProperty->get("itemid");
+            $items[] = $oProperty->get('itemid');
         }
 
-        $oNoteItems = new NoteCollection;
+        $oNoteItems = new NoteCollection();
 
         if (count($items) == 0) {
             $items[] = 0;
         }
 
-        $oNoteItems->select("idcommunication IN (".implode(", ", $items).')',"", "created DESC");
+        $oNoteItems->select('idcommunication IN (' . implode(', ', $items) . ')', '', 'created DESC');
 
         $i       = array();
         $dark    = false;
         while ($oNoteItem = $oNoteItems->next()) {
-            if ($oNoteItem->getProperty("note", "itemtype") == $sItemType && $oNoteItem->getProperty("note", "itemid") == $sItemId) {
-                $j = new NoteListItem($sItemType, $sItemId, $oNoteItem->get("idcommunication"));
-                $j->setAuthor($oNoteItem->get("author"));
-                $j->setDate($oNoteItem->get("created"));
-                $j->setMessage($oNoteItem->get("message"));
+            if ($oNoteItem->getProperty('note', 'itemtype') == $sItemType && $oNoteItem->getProperty('note', 'itemid') == $sItemId) {
+                $j = new NoteListItem($sItemType, $sItemId, $oNoteItem->get('idcommunication'));
+                $j->setAuthor($oNoteItem->get('author'));
+                $j->setDate($oNoteItem->get('created'));
+                $j->setMessage($oNoteItem->get('message'));
                 $j->setBackground($dark);
                 $j->setDeleteable($this->_bDeleteable);
-
                 $dark = !$dark;
-
                 $i[] = $j;
             }
         }
@@ -191,7 +203,7 @@ class NoteListItem extends cHTMLDiv
     public function NoteListItem($sItemType, $sItemId, $iDeleteItem)
     {
         cHTMLDiv::cHTMLDiv();
-        $this->setStyleDefinition("padding", "2px");
+        $this->setStyleDefinition('padding', '2px');
         $this->setBackground();
         $this->setDeleteable(true);
 
@@ -211,9 +223,9 @@ class NoteListItem extends cHTMLDiv
         global $cfg;
 
         if ($dark) {
-            $this->setStyleDefinition("background", $cfg['color']['table_dark']);
+            $this->setStyleDefinition('background', $cfg['color']['table_dark']);
         } else {
-            $this->setStyleDefinition("background", $cfg['color']['table_light']);
+            $this->setStyleDefinition('background', $cfg['color']['table_light']);
         }
     }
 
@@ -232,7 +244,7 @@ class NoteListItem extends cHTMLDiv
 
     public function setDate($iDate)
     {
-        $dateformat = getEffectiveSetting("backend", "timeformat", "Y-m-d H:i:s");
+        $dateformat = getEffectiveSetting('backend', 'timeformat', 'Y-m-d H:i:s');
 
         if (is_string($iDate)) {
             $iDate = strtotime($iDate);
@@ -260,11 +272,11 @@ class NoteListItem extends cHTMLDiv
 
         if ($this->_bDeleteable == true) {
             $oDeleteable = new cHTMLLink();
-            $oDeletePic = new cHTMLImage($cfg["path"]["contenido_fullhtml"]."/images/delete.gif");
+            $oDeletePic = new cHTMLImage($cfg['path']['contenido_fullhtml'].'/images/delete.gif');
             $oDeleteable->setContent($oDeletePic);
             $oDeleteable->setLink($sess->url("main.php?frame=2&area=note&itemtype=$itemtype&itemid=$itemid&action=note_delete&deleteitem=$deleteitem"));
 
-            $table .= '</td><td style="padding-left: 4px;" width="1">'.$oDeleteable->render();
+            $table .= '</td><td style="padding-left:4px;" width="1">'.$oDeleteable->render();
         }
         $table .= '</td></tr></table>';
 
@@ -272,7 +284,7 @@ class NoteListItem extends cHTMLDiv
         $oMessage->setContent($this->_sMessage);
         $oMessage->setStyle("padding-bottom: 8px;");
 
-        $this->setContent(array($table, '<hr style="margin-top: 2px; margin-bottom: 2px; border: 0px; border-top: 1px solid' . $cfg['color']['table_border'].';">',$oMessage));
+        $this->setContent(array($table, '<hr style="margin-top:2px;margin-bottom:2px;border:0px;border-top:1px solid' . $cfg['color']['table_border'].';">',$oMessage));
 
         return parent::render();
     }
@@ -283,51 +295,45 @@ class NoteLink extends cHTMLLink
 {
     /**
      * @var string Object type
-     * @access private
      */
     private $_sItemType;
 
     /**
      * @var string Object ID
-     * @access private
      */
     private $_sItemID;
 
     /**
      * @var boolean If true, shows the note history
-     * @access private
      */
     private $_bShowHistory;
 
     /**
      * @var boolean If true, history items can be deleted
-     * @access private
      */
     private $_bDeleteHistoryItems;
 
     /**
-     * NoteLink: Creates a new note link item.
+     * Creates a new note link item.
      *
      * This link is used to show the popup from any position within the system.
      * The link contains the note image.
      *
      * @param $sItemType    string    Item type (usually the class name)
      * @param $sItemId        mixed    Item ID (usually the primary key)
-     *
-     * @return none
-     * @access public
+     * @return void
      */
     public function NoteLink($sItemType, $sItemID)
     {
         parent::cHTMLLink();
 
-        $img = new cHTMLImage("images/note.gif");
-        $img->setStyle("padding-left: 2px; padding-right: 2px;");
+        $img = new cHTMLImage('images/note.gif');
+        $img->setStyle('padding-left: 2px; padding-right: 2px;');
 
-        $img->setAlt(i18n("View notes / add note"));
-        $this->setLink("#");
+        $img->setAlt(i18n('View notes / add note'));
+        $this->setLink('#');
         $this->setContent($img->render());
-        $this->setAlt(i18n("View notes / add note"));
+        $this->setAlt(i18n('View notes / add note'));
 
         $this->_sItemType = $sItemType;
         $this->_sItemID = $sItemID;
@@ -336,10 +342,9 @@ class NoteLink extends cHTMLLink
     }
 
     /**
-     * enableHistory: Enables the display of all note items
+     * Enables the display of all note items
      *
-     * @return none
-     * @access public
+     * @return void
      */
     public function enableHistory()
     {
@@ -347,10 +352,9 @@ class NoteLink extends cHTMLLink
     }
 
     /**
-     * disableHistory: Disables the display of all note items
+     * Disables the display of all note items
      *
-     * @return none
-     * @access public
+     * @return void
      */
     public function disableHistory()
     {
@@ -358,10 +362,9 @@ class NoteLink extends cHTMLLink
     }
 
     /**
-     * enableHistoryDelete: Enables the delete function in the history view
+     * Enables the delete function in the history view
      *
-     * @return none
-     * @access public
+     * @return void
      */
     public function enableHistoryDelete()
     {
@@ -369,10 +372,9 @@ class NoteLink extends cHTMLLink
     }
 
     /**
-     * disableHistoryDelete: Disables the delete function in the history view
+     * Disables the delete function in the history view
      *
-     * @return none
-     * @access public
+     * @return void
      */
     public function disableHistoryDelete()
     {
@@ -380,10 +382,9 @@ class NoteLink extends cHTMLLink
     }
 
     /**
-     * render: Renders the resulting link
+     * Renders the resulting link
      *
-     * @return none
-     * @access public
+     * @return void
      */
     public function render($return = false)
     {
@@ -392,7 +393,7 @@ class NoteLink extends cHTMLLink
         $itemtype = $this->_sItemType;
         $itemid = $this->_sItemID;
 
-        $this->setEvent("click",  'javascript:window.open('."'".$sess->url("main.php?area=note&frame=1&itemtype=$itemtype&itemid=$itemid")."', 'todo', 'resizable=yes, scrollbars=yes, height=360, width=550');");
+        $this->setEvent('click', 'javascript:window.open('."'".$sess->url("main.php?area=note&frame=1&itemtype=$itemtype&itemid=$itemid")."', 'todo', 'resizable=yes,scrollbars=yes,height=360,width=550');");
         return parent::render($return);
     }
 }

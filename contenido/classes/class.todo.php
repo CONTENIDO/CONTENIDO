@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Classes
- * @version    1.1
+ * @version    1.1.1
  * @author     unknown
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -35,19 +35,19 @@ class TODOCollection extends cApiCommunicationCollection
     public function __construct()
     {
         parent::__construct();
-        $this->_setItemClass("TODOItem");
+        $this->_setItemClass('TODOItem');
     }
 
     /** @deprecated  [2011-03-15] Old constructor function for downwards compatibility */
     public function TODOCollection()
     {
-        cDeprecated("Use __construct() instead");
+        cDeprecated('Use __construct() instead');
         $this->__construct();
     }
 
-    public function select($where = "", $group_by = "", $order_by = "", $limit = "")
+    public function select($where = '', $group_by = '', $order_by = '', $limit = '')
     {
-        if ($where == "") {
+        if ($where == '') {
             $where = "comtype='todo'";
         } else {
             $where .= " AND comtype='todo'";
@@ -57,16 +57,33 @@ class TODOCollection extends cApiCommunicationCollection
     }
 
     /**
+     * Magic method to invoke inaccessible methods.
+     * Currently it works as a fallback for the not supported method create() which
+     * creates a PHP Strict warning.
+     * @param  string  $name
+     * @param  array   $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        if ('create' === $name) {
+            // Catch old and not supported create() method
+            cDeprecated('Use TODOCollection->createItem() instead TODOCollection->create()');
+            return call_user_func_array(array($this, 'createItem'), $arguments);
+        }
+    }
+
+    /**
      * Creates a new communication item
      */
-    public function create($itemtype, $itemid, $reminderdate, $subject, $content, $notimail, $notibackend, $recipient)
+    public function createItem($itemtype, $itemid, $reminderdate, $subject, $content, $notimail, $notibackend, $recipient)
     {
-        $item = parent::createNewItem();
+        $item = parent::create();
 
-        $item->set("subject", $subject);
-        $item->set("message", $content);
-        $item->set("comtype", "todo");
-        $item->set("recipient", $recipient);
+        $item->set('subject', $subject);
+        $item->set('message', $content);
+        $item->set('comtype', 'todo');
+        $item->set('recipient', $recipient);
         $item->store();
 
         if ($notimail === true) {
@@ -79,14 +96,14 @@ class TODOCollection extends cApiCommunicationCollection
             $reminderdate = strtotime($reminderdate);
         }
 
-        $item->setProperty("todo", "reminderdate", $reminderdate);
-        $item->setProperty("todo", "itemtype", $itemtype);
-        $item->setProperty("todo", "itemid", $itemid);
-        $item->setProperty("todo", "emailnoti", $notimail);
-        $item->setProperty("todo", "backendnoti", $notibackend);
-        $item->setProperty("todo", "status", "new");
-        $item->setProperty("todo", "priority", "medium");
-        $item->setProperty("todo", "progress", "0");
+        $item->setProperty('todo', 'reminderdate', $reminderdate);
+        $item->setProperty('todo', 'itemtype', $itemtype);
+        $item->setProperty('todo', 'itemid', $itemid);
+        $item->setProperty('todo', 'emailnoti', $notimail);
+        $item->setProperty('todo', 'backendnoti', $notibackend);
+        $item->setProperty('todo', 'status', 'new');
+        $item->setProperty('todo', 'priority', 'medium');
+        $item->setProperty('todo', 'progress', '0');
 
         return $item;
     }
@@ -94,11 +111,11 @@ class TODOCollection extends cApiCommunicationCollection
     public function getStatusTypes()
     {
         $statusTypes = array(
-            "new" => i18n("New"),
-            "progress" => i18n("In progress"),
-            "done" => i18n("Done"),
-            "waiting" => i18n("Waiting for action"),
-            "deferred" => i18n("Deferred")
+            'new' => i18n('New'),
+            'progress' => i18n('In progress'),
+            'done' => i18n('Done'),
+            'waiting' => i18n('Waiting for action'),
+            'deferred' => i18n('Deferred')
         );
         return ($statusTypes);
     }
@@ -106,10 +123,10 @@ class TODOCollection extends cApiCommunicationCollection
     public function getPriorityTypes()
     {
         $priorityTypes = array(
-            "low" => i18n("Low"),
-            "medium" => i18n("Medium"),
-            "high" => i18n("High"),
-            "immediately" => i18n("Immediately")
+            'low' => i18n('Low'),
+            'medium' => i18n('Medium'),
+            'high' => i18n('High'),
+            'immediately' => i18n('Immediately')
         );
         return ($priorityTypes);
     }
@@ -120,9 +137,9 @@ class TODOItem extends cApiCommunication
 {
     public function setProperty ($type, $name, $value)
     {
-        if ($type == "todo" && $name == "emailnoti") {
+        if ($type == 'todo' && $name == 'emailnoti') {
             if ($value) {
-                parent::setProperty("todo", "emailnoti-sent", false);
+                parent::setProperty('todo', 'emailnoti-sent', false);
                 $value = true;
             } else {
                 $value = false;
@@ -145,16 +162,16 @@ class TODOLink extends cHTMLLink
         $subject = urlencode($subject);
         $message = urlencode($message);
 
-        $this->setEvent("click",  'javascript:window.open('."'".$sess->url("main.php?subject=$subject&message=$message&area=todo&frame=1&itemtype=$itemtype&itemid=$itemid")."', 'todo', 'scrollbars=yes, resizable=yes, height=350, width=550');");
-        $this->setEvent("mouseover",  "this.style.cursor='pointer'");
+        $this->setEvent('click', 'javascript:window.open('."'".$sess->url("main.php?subject=$subject&message=$message&area=todo&frame=1&itemtype=$itemtype&itemid=$itemid")."', 'todo', 'scrollbars=yes,resizable=yes,height=350,width=550');");
+        $this->setEvent('mouseover', "this.style.cursor='pointer'");
 
-        $img = new cHTMLImage("images/but_setreminder.gif");
-        $img->setStyle("padding-left: 2px; padding-right: 2px;");
+        $img = new cHTMLImage('images/but_setreminder.gif');
+        $img->setStyle('padding-left:2px;padding-right:2px;');
 
-        $img->setAlt(i18n("Set reminder / add to todo list"));
-        $this->setLink("#");
+        $img->setAlt(i18n('Set reminder / add to todo list'));
+        $this->setLink('#');
         $this->setContent($img->render());
-        $this->setAlt(i18n("Set reminder / add to todo list"));
+        $this->setAlt(i18n('Set reminder / add to todo list'));
     }
 }
 

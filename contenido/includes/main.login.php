@@ -11,7 +11,7 @@
  *
  *
  * @package    CONTENIDO Backend Includes
- * @version    1.0.7
+ * @version    1.0.8
  * @author     Jan Lengowski
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -147,7 +147,7 @@ if (count($clients) > 1) {
 }
 
 $props = new cApiPropertyCollection();
-$props->select("itemtype = 'idcommunication' AND idclient='$client' AND type = 'todo' AND name = 'status' AND value != 'done'");
+$props->select("itemtype = 'idcommunication' AND idclient = " . (int) $client . " AND type = 'todo' AND name = 'status' AND value != 'done'");
 
 $todoitems = array();
 
@@ -162,7 +162,7 @@ if (count($todoitems) > 0) {
 }
 $todoitems = new TODOCollection();
 $recipient = $auth->auth['uid'];
-$todoitems->select("recipient = '$recipient' AND idclient='$client' AND $in");
+$todoitems->select("recipient = '$recipient' AND idclient = " . (int) $client . " AND $in");
 
 while ($todo = $todoitems->next()) {
     if ($todo->getProperty('todo', 'status') != 'done') {

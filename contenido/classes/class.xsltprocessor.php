@@ -1,69 +1,33 @@
 <?php
 /**
-
  * Project:
-
  * CONTENIDO Content Management System
-
  *
-
  * Description:
-
  * XSLT_Processor class
-
  *
-
  * Requirements:
-
  * @con_php_req 5.0
-
  *
-
  *
-
  * @package    4fb_XML
-
  * @version    1.0.0
-
  * @author     Jan Lengowski
-
  * @copyright  four for business AG <www.4fb.de>
-
  * @license    http://www.contenido.org/license/LIZENZ.txt
-
  * @link       http://www.4fb.de
-
  * @link       http://www.contenido.org
-
  * @since      file available since CONTENIDO release <= 4.6
-
  *
-
  * {@internal
-
  *   created unknown
-
- *   modified 2008-06-30, Dominik Ziegler, add security fix
-
- *
-
  *   $Id$:
-
  * }}
-
- *
-
  */
 
-
-
-if(!defined('CON_FRAMEWORK')) {
-
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
-
 }
-
-
 
 /**
  * XSLT_Processor
@@ -91,63 +55,54 @@ class XsltProcessor
      * @access private
      */
     var $autofree = true;
-
     /**
      * Error message string
      * @var string
      * @access private
      */
     var $error = "";
-
     /**
      * Error number
      * @var int
      * @access private
      */
     var $errno = 0;
-
     /**
      * The result of the XSLT Transformation
      * @var string
      * @access private
      */
     var $result = "";
-
     /**
      * The XML String for the Transformation
      * @var string
      * @access private
      */
     var $xml = "";
-
     /**
      * The XSLT String for the Transformation
      * @var string
      * @access private
      */
     var $xslt = "";
-
     /**
      * XSLT Processor
      * @var object
      * @access private
      */
     var $processor;
-
     /**
      * XSLT Process arguments array
      * @var array
      * @access private
      */
     var $arguments = array();
-
     /**
      * XSLT Process parameters array
      * @var array
      * @access private
      */
     var $parameters = array();
-
     /**
      * Constructor
      * @access private
@@ -155,10 +110,8 @@ class XsltProcessor
     function XsltProcessor()
     {
         cDeprecated("This class is not supported any longer");
-
         $this->_init();
     }
-
     /**
      * Initialize the class
      * @access private
@@ -170,10 +123,8 @@ class XsltProcessor
         {
             die ("Cannot instantiate XSLT Class \n XSLT not supported");
         }
-
         $this->processor = xslt_create();
     }
-
     /**
      * Translate literal to numeric entities to avoid
      * the 'undefined entity error' that a literal
@@ -184,23 +135,18 @@ class XsltProcessor
      * @access private
      */
     function literal2NumericEntities($stringXml) {
-
         $literal2NumericEntity = array();
-
         if (empty($literal2NumericEntity))
         {
             $transTbl = get_html_translation_table(HTML_ENTITIES);
-
             foreach ($transTbl as $char => $entity)
             {
                 if (strpos('&"<>', $char) !== FALSE) continue;
                 $literal2NumericEntity[$entity] = '&#'.ord($char).';';
             }
         }
-
         return strtr($stringXml, $literal2NumericEntity);
     }
-
 
     /**
      * Set the XML to be Transformed
@@ -212,7 +158,6 @@ class XsltProcessor
     {
         $this->arguments["/_xml"] = $this->literal2NumericEntities($xml);
     }
-
     /**
      * Set the XSLT for the Transformation
      * @param string The XML String
@@ -223,7 +168,6 @@ class XsltProcessor
     {
         $this->arguments["/_xsl"] = $this->literal2NumericEntities($xsl);
     }
-
      /**
      * Set the XML-File to be Transformed
      * @param string Location of the XML file
@@ -235,7 +179,6 @@ class XsltProcessor
         $xml = $this->readFromFile($file);
         $this->arguments["/_xml"] = $this->literal2NumericEntities($xml);
     }
-
     /**
      * Set the XSL-File for the Transformation
      * @param string Location of the XSL file
@@ -247,7 +190,6 @@ class XsltProcessor
         $xsl = $this->readFromFile($file);
         $this->arguments["/_xsl"] = $this->literal2NumericEntities($xsl);
     }
-
     /**
      * Return the contents of a file if
      * the passed parameter is a file.
@@ -264,10 +206,8 @@ class XsltProcessor
             $data = join($data, "");
             return $data;
         }
-
         die ("<span style=\"color: red\"><b>ERROR:</b></span> File not found: <b>$file</b>");
     }
-
     /**
      * Pass top level parameters to the XSLT processor.
      * The parameters can be accessed in XSL
@@ -281,7 +221,6 @@ class XsltProcessor
     {
         $this->parameters[$name] = utf8_encode($value);
     }
-
     /**
      * Define external scheme handlers for the XSLT Processor.
      *
@@ -322,7 +261,6 @@ class XsltProcessor
     {
         xslt_set_scheme_handlers($this->processor, $aHandlers);
     }
-
     /**
      * Transform the XML data using the XSL and
      * return the results of the transformation
@@ -335,15 +273,12 @@ class XsltProcessor
         $this->result = xslt_process($this->processor, "arg:/_xml", "arg:/_xsl", NULL, $this->arguments, $this->parameters);
         $this->error = xslt_error($this->processor);
         $this->errno = xslt_errno($this->processor);
-
         if ($this->autofree)
         {
             xslt_free($this->processor);
         }
-
         return $this->result;
     }
-
     /**
      * Prints the Error message and number
      * if an error occured
@@ -359,7 +294,6 @@ class XsltProcessor
             echo "<b>Error Message: </b><span style=\"color:red\">".$this->error."</span>";
         }
     }
-
     /**
      * Manual free of the parser
      * @return void
@@ -369,7 +303,6 @@ class XsltProcessor
         xslt_free($this->processor);
     }
 
-
-} // XSLT_Processor
+}
 
 ?>
