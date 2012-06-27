@@ -1,94 +1,68 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <meta content="text/html; charset=ISO-8859-1"
- http-equiv="content-type">
-  <title>Contenido - Frontend Session Information</title>
-  <style type="text/css">
-body            {
-                    background-color: #ffffff;
-                    scrollbar-face-color:#C6C6D5;
-                    scrollbar-highlight-color:#FFFFFF;
-                    scrollbar-3dlight-color:#747488;
-                    scrollbar-darkshadow-color:#000000;
-                    scrollbar-shadow-color:#334F77;
-                    scrollbar-arrow-color:#334F77;
-                    scrollbar-track-color:#C7C7D6;
-		    font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px; color: #000000;
-                }
-
-h1 {
- font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 20px; color: #000000;
- margin-top: 0px;
-}
-
-h2 {
- font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 15px; color: #000000;
-}
-
-  </style>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>CONTENIDO - Protected frontend categories</title>
+    <link rel="stylesheet" href="../assets/techref.css" type="text/css" media="all">
 </head>
-<body alink="#000099" vlink="#990099" link="#000099"
- style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
-<table
- style="border-bottom: 1px solid; text-align: left; background-color: rgb(255, 255, 255); width: 100%;"
- border="0" cellspacing="2" cellpadding="2">
-  <tbody>
-    <tr>
-      <td style="vertical-align: top;"><img
- style="width: 190px; height: 112px; padding-right: 20px;" align="left"
- alt="Contenido" src="conlogo.gif">
-      <h1>Protected frontend categories<br>
-      </h1>
-      <table style="text-align: left;" border="0" cellspacing="2"
- cellpadding="2">
-        <tbody>
-          <tr>
-            <td style="vertical-align: top;">Author</td>
-            <td style="vertical-align: top;">Timo A. Hummel</td>
-          </tr>
-          <tr>
-            <td style="vertical-align: top;">Created</td>
-            <td style="vertical-align: top;">20th May 2005</td>
-          </tr>
-          <tr>
-            <td style="vertical-align: top;">Audience<br>
-            </td>
-            <td style="vertical-align: top;">Site Integrators, Module Developers<br>
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align: top;">Applies to<br>
-            </td>
-            <td style="vertical-align: top;">Contenido 4.6 or later<br>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<br>
+
+<body>
+
+<div id="header">
+    <img src="../assets/conlogo.gif" alt="CONTENIDO Logo">
+    <h1>Protected frontend categories</h1>
+</div>
+
+<div class="section">
+  <table class="info" border="0" cellpadding="2" cellspacing="2">
+    <tbody>
+      <tr>
+        <td>Author</td>
+        <td>Timo A. Hummel</td>
+      </tr>
+      <tr>
+        <td>Created</td>
+        <td>20th May 2005</td>
+      </tr>
+      <tr>
+        <td>Audience</td>
+        <td>Site Integrators, Module Developers</td>
+      </tr>
+      <tr>
+        <td>Applies to</td>
+        <td>CONTENIDO 4.6 or later</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
 <h2>Introduction</h2>
-Contenido 4.6 introduces a updated concept for protecting frontend categories
+CONTENIDO 4.6 introduces a updated concept for protecting frontend categories
 and enabling access to them.<br>
+</div>
+
+<div class="section">
 <h2>Installation and configuration</h2>
-<p>Download the plugin &quot;Frontend Category Permissions&quot; from the Contenido website.
+<p>Download the plugin &quot;Frontend Category Permissions&quot; from the CONTENIDO website.
   Extract the archive to your plugins directory. Open (or create) the file config.plugin.php in the directory contenido/plugins/chains/includes/
   and add the necessary includes and chain entries (see below). Afterwards, open the file
   config.local.php in your contenido/includes directory (create the file if it doesn't exist) and add the following line at the end:</p>
 <p>NOTE: Since CONTENIDO 4.9 this file has been moved to data/config/{environment}/ directory.</p>
-<p><font face="Courier New, Courier, mono">$cfg['plugins']['frontendlogic'][]
-= &quot;category&quot;;</font></p>
+<pre>$cfg['plugins']['frontendlogic'][]
+= &quot;category&quot;;</pre>
+
 <p>Example config.plugin.php:</p>
-<p><font face="Courier New, Courier, mono">&lt;?php<br>
-  global $_cecRegistry;<br>
-  cInclude(&quot;plugins&quot;, &quot;chains/includes/include.chain.frontend.cat_backendaccess.php&quot;);<br>
-cInclude(&quot;plugins&quot;, &quot;chains/includes/include.chain.frontend.cat_access.php&quot;);</font></p>
-<p><font face="Courier New, Courier, mono">$_cecRegistry-&gt;addChainFunction(&quot;Contenido.Frontend.CategoryAccess&quot;, &quot;cecFrontendCategoryAccess&quot;);<br>
-  $_cecRegistry-&gt;addChainFunction(&quot;Contenido.Frontend.CategoryAccess&quot;, &quot;cecFrontendCategoryAccess_Backend&quot;);<br>
-  ?&gt;</font></p>
+<pre>
+&lt;?php
+global $_cecRegistry;<br>
+cInclude(&quot;plugins&quot;, &quot;chains/includes/include.chain.frontend.cat_backendaccess.php&quot;);
+cInclude(&quot;plugins&quot;, &quot;chains/includes/include.chain.frontend.cat_access.php&quot;);
+
+$_cecRegistry-&gt;addChainFunction(&quot;Contenido.Frontend.CategoryAccess&quot;, &quot;cecFrontendCategoryAccess&quot;);
+$_cecRegistry-&gt;addChainFunction(&quot;Contenido.Frontend.CategoryAccess&quot;, &quot;cecFrontendCategoryAccess_Backend&quot;);
+?&gt;
+</pre>
 <p>The chain <font face="Courier New, Courier, mono">Contenido.Frontend.CategoryAccess</font> is
   called everytime a protected category is accessed. If the chain functions return
   true, access is granted. The function <font face="Courier New, Courier, mono">cecFrontendCategoryAccess</font> validates
@@ -97,6 +71,6 @@ cInclude(&quot;plugins&quot;, &quot;chains/includes/include.chain.frontend.cat_a
   users for access frontend categories, remove the line which contains <font face="Courier New, Courier, mono">cecFrontendCategoryAccess_Backend</font>.
   You can also define chains for more custom checks, please refer to the chains
   documentation for more information.</p>
-<h2>&nbsp;</h2>
+
 </body>
 </html>
