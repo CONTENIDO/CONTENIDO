@@ -7,13 +7,13 @@
  * Implements autoload feature for a CONTENIDO project.
  *
  * Autoloading for CONTENIDO is provided via a generated class map configuration
- * file, which is available inside contenido/data/config/{environment}/ folder.
- * - contenido/data/config/{environment}/config.autoloader.php
+ * file, which is available inside data/config/{environment}/ folder.
+ * - data/config/{environment}/config.autoloader.php
  *
  * Autoloading is extendable by adding a additional class map file inside the same
  * folder, which could contain further class map settings or could overwrite
  * settings of main class map file.
- * - contenido/data/config/{environment}/contenido/includes/config.autoloader.local.php
+ * - data/config/{environment}/contenido/includes/config.autoloader.local.php
  *
  * You can also add additional class map configuration by using function following
  * functions:
