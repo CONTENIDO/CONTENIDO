@@ -20,12 +20,8 @@
  *
  * {@internal
  *   created  2007-06-24
- *   modified 2011-03-15, Murat Purc, adapted to new GenericDB, partly ported to PHP 5, formatting
- *   modified 2011-05-20, Murat Purc, renamed _getPropertyCollection() to _getPropertiesCollectionInstance()
- *
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -252,9 +248,10 @@ class cApiClient extends Item
      * Delete client property
      *
      * @param   int  $iIdProp  Id of property
+     * @param   string  $p2  Not used, is here to prevent PHP Strict warnings
      * @return  void
      */
-    public function deleteProperty($iIdProp)
+    public function deleteProperty($iIdProp, $p2)
     {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->delete($iIdProp);

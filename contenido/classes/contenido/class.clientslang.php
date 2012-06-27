@@ -255,9 +255,10 @@ class cApiClientLanguage extends Item
      * @todo  Use parents method @see Item::deleteProperty(), but be carefull, different parameter!
      *
      * @param   int  $idprop   Id of property
+     * @param   string  $p2  Not used, is here to prevent PHP Strict warnings
      * @return  void
      */
-    public function deleteProperty($idprop)
+    public function deleteProperty($idprop, $p2)
     {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->delete($idprop);
