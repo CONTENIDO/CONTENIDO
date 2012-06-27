@@ -26,17 +26,17 @@ try {
     $oConCat->load($idcat, true, $lang);
     $sImgEdit = "CMS_IMAGE[1]";
     $sImgSrc = "CMS_IMG[1]";
-
     $sHeadline = $iIdcatStart != intval($idcat)
                  ? $oConCat->getCategoryLanguage()->getName()
                  : mi18n("Willkommen!");
     $sCssStyle = '';
     if ($contenido && $edit) {
         echo '<div id="modHeaderImgEdit">'.$sImgEdit.'</div>';
-        $sCssStyle = ' style="background-image:url('.$sImgSrc.');"';
-    } else {
+    }
+    if ($sImgSrc != '') {
         $sCssStyle = ' style="background-image:url('.$sImgSrc.');"';
     }
+
     $tpl->reset();
     $tpl->set('s', 'css-style', $sCssStyle);
     $tpl->set('s', 'url', 'front_content.php');
