@@ -19,7 +19,11 @@
 
 abstract class ContenidoXmlBase
 {
-    /**
+
+    protected $_dom = null;
+    protected $_xpath = null;
+	
+		/**
      * Creates a new XML document using DOMDocument.
      * @access    protected
      *
