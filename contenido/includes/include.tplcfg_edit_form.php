@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created 2002
- *   modified 2008-06-27, Dominik Ziegler, add security fix
- *   modified 2011-01-11, Rusmir Jusufovic, load input of moduls from files
- *   modified 2012-02-13, Rusmir Jusufovic, show message at success
  *   $Id$:
  * }}
- *
  */
 
 if (!defined('CON_FRAMEWORK')) {
@@ -230,8 +226,7 @@ if (!$db->next_record()) {
     }
 }
 
-if(count($_POST) > 0 && $message == '') {
-
+if (count($_POST) > 0 && $message == '') {
      $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Save change successfully!"));
 }
 
@@ -454,28 +449,24 @@ if ($idtpl != 0 && $inUse == false) {
 }
 
 
-//Display template description
-if($idtpl) {
-
+// Display template description
+if ($idtpl) {
     $tpl->set('s', 'DESCRIPTION',  nl2br($description));
     $tpl->set('s', 'LABLE_DESCRIPTION', i18n("Description"));
-}else {
+} else {
     $tpl->set('s', 'DESCRIPTION', '');
     $tpl->set('s', 'LABLE_DESCRIPTION','');
 }
 
 if ($area == 'str_tplcfg' || $area == 'con_tplcfg' && (int) $idart == 0) {
-    $tpl->set('s', 'HEADER', i18n('Category template configuration2'));
+    $tpl->set('s', 'HEADER', i18n('Category template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
-
 } else if ($area == 'con_tplcfg' && (int) $idart > 0) {
-    $tpl->set('s', 'HEADER', i18n('Article template configuration3'));
+    $tpl->set('s', 'HEADER', i18n('Article template configuration'));
     $tpl->set('s', 'DISPLAY_HEADER', 'block');
-
 } else {
     $tpl->set('s', 'HEADER', '');
     $tpl->set('s', 'DISPLAY_HEADER', 'none');
-
 }
 
 // Generate template
