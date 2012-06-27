@@ -25,14 +25,14 @@
  * }}
  */
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
 // CONTENIDO startup process
-include_once ('../includes/startup.php');
+include_once('../includes/startup.php');
 
-header("Content-Type: text/javascript");
+header('Content-Type: text/javascript');
 
 cRegistry::bootstrap(array('sess' => 'Contenido_Session',
                 'auth' => 'Contenido_Challenge_Crypt_Auth',
@@ -41,7 +41,7 @@ cRegistry::bootstrap(array('sess' => 'Contenido_Session',
 i18nInit($cfg['path']['contenido_locale'], $belang);
 cRegistry::shutdown();
 
-$baseurl = $cfg["help_url"] . "front_content.php?version=".$cfg['version']."&help=";
+$baseurl = $cfg['help_url'] . 'front_content.php?version='.$cfg['version'].'&help=';
 ?>
 
 function callHelp (path)

@@ -20,21 +20,11 @@
  *
  * {@internal
  *   created 2008-02-15
- *   modified 2008-04-25 added method getLevel() and property aLevel, modified loadSubCategories() accordingly
- *   modified 2008-09-22 Bugfix in loading protected subcategories when logged in as backenduser
- *   modified 2009-01-05 Timo Trautmann L:138 commented out not neccessary condidion which makes categories visible which shouldn't be displayed
- *   modified 2009-01-05 Rudi Bieller Fixed bug in permission check at strpos() call line 138ff
- *   modified 2009-01-13 Rudi Bieller Added methods isActiveChild() and isActiveParent()
- *   modified 2009-01-14 Rudi Bieller Changed contenido_security escaping to intval
- *                                      Added method isActiveChildOfRootOfCategory()
- *   modified 2009-04-29 Rudi Bieller Bugfix in isActiveChild()
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

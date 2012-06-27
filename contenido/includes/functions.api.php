@@ -21,14 +21,11 @@
  *
  * {@internal
  *   created 2003-08-08
- *   modified 2008-06-25, Frederic Schneider, add security fix
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

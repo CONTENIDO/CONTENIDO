@@ -19,18 +19,14 @@
  * @link       http://www.contenido.org
  *
  *
- *
  * {@internal
  *   created   unknown
- *   modified  2008-07-03, bilal arslan, added security fix
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
-  die('Illegal call');
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 /** @deprecated 2012-03-05 This function is not longer supported. */

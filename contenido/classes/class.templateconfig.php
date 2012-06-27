@@ -21,12 +21,8 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-30, Frederic Schneider, add security fix
- *   modified 2009-12-16, Dominik Ziegler, fixed sql table name
- *
  *   $Id$:
  * }}
- *
  */
 
 /**
@@ -56,7 +52,7 @@
  * @package Contenido_API
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

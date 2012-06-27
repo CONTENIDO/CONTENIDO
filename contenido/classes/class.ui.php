@@ -21,15 +21,11 @@
  *
  * {@internal
  *  created 2003-05-20
- *  modified 2008-06-30, Dominik Ziegler, add security fix
- *  modified 2010-12-13, Ortwin Pinke, count up object id's in cScrollList while rendering
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

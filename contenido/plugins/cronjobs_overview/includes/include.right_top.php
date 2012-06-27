@@ -27,7 +27,7 @@
  * $Id: include.right_top.php,v 1.0.0 18.06.2007 16:08:02 mario.diaz$
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 if (isset($_REQUEST['cfg'])) {

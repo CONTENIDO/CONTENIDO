@@ -25,28 +25,28 @@
  * }}
  */
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
 // CONTENIDO startup process
-include_once ('../includes/startup.php');
+include_once('../includes/startup.php');
 
-header("Content-Type: text/javascript");
+header('Content-Type: text/javascript');
 
 cRegistry::bootstrap(array('sess' => 'Contenido_Session',
                 'auth' => 'Contenido_Challenge_Crypt_Auth',
                 'perm' => 'Contenido_Perm'));
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
-require($cfg["path"]["contenido"].'includes/functions.includePluginConf.php');
+require($cfg['path']['contenido'].'includes/functions.includePluginConf.php');
 cRegistry::shutdown();
 
 
 /* Fetch chains */
-$iterator = $_cecRegistry->getIterator("Contenido.Article.RegisterCustomTab");
+$iterator = $_cecRegistry->getIterator('Contenido.Article.RegisterCustomTab');
 
-echo "//itsameA";
+echo '//itsameA';
 
 $aTabs = array();
 while ($chainEntry = $iterator->next())
@@ -55,7 +55,7 @@ while ($chainEntry = $iterator->next())
 
     if (is_array($aTmpArray))
     {
-        echo "//itsame";
+        echo '//itsame';
         $aTabs = array_merge($aTabs, $aTmpArray);
     }
 }

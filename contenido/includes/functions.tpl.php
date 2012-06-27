@@ -21,17 +21,11 @@
  *
  * {@internal
  *   created 2003-01-21
- *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2008-06-30 timo.trautmann added fix module settings were also copied in function tplDuplicateTemplate
- *   modified 2009-01-08, Timo Trautmann fixed bug: Changes in Head Containers in visualedit were not stored
- *   modified 2011-06-20, Rusmir Jusufovic , load layout code from file and not from db
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

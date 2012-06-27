@@ -21,16 +21,11 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-26, Dominik Ziegler, add security fix
- *   modified 2008-11-13,  Timo Trautmann - Fixed wron escaping of chars
- *   modified 2012-02-15, Rusmir Jusufovic, show messages
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

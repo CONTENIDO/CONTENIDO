@@ -24,17 +24,13 @@
  * @link       http://www.contenido.org
  *
  *
- *
  * {@internal
  *   created  2007-06-18
- *   modified 2008-07-03, bilal arslan, added security fix
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
      die('Illegal call');
 }
 

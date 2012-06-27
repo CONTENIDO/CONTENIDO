@@ -28,7 +28,7 @@
  *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 if(isset($area) && $area == 'con_content_list'){

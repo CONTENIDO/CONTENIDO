@@ -26,14 +26,14 @@
  * }}
  */
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
 // CONTENIDO startup process
-include_once ('../includes/startup.php');
+include_once('../includes/startup.php');
 
-header("Content-Type: text/javascript");
+header('Content-Type: text/javascript');
 
 cRegistry::bootstrap(array('sess' => 'Contenido_Session',
                 'auth' => 'Contenido_Challenge_Crypt_Auth',

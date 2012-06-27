@@ -20,13 +20,11 @@
  *
  * {@internal
  *   created 2008-02-15
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

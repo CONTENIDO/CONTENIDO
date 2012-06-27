@@ -21,14 +21,11 @@
  *
  * {@internal
  *   created 2009-10-01
- *   modified 2010-10-29, Dominik Ziegler - fixed CON-362 (removed whitespace from client setting)
- *   $Id$:
  * }}
- *
  */
 
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

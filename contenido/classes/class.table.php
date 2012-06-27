@@ -21,15 +21,11 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-30, Frederic Schneider, add security fix
- *   modified 2008-07-03, Timo.Trautmann, added linebreaks for readable source code
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

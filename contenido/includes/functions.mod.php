@@ -21,20 +21,11 @@
  *
  * {@internal
  *   created 2003
- *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2010-08-13, Dominik Ziegler, fixed CON-337 - added update of lastmodified
- *   modified 2011-01-11, Rusmir Jusufovic
- *       - save and load input and output of moduls from/in files
- *       - save the modul infos in to the xml file
- *
- *   modified 2011-06-22, Rusmir Jusufovic add alias as modul names
- *   modified 2012-02-13, Rusmir Jusufovic display message for editing
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

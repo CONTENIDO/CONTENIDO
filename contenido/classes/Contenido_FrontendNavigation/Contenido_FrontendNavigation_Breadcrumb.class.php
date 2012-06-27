@@ -17,17 +17,16 @@
  * @license    http://www.contenido.org/license/LIZENZ.txt
  * @link       http://www.4fb.de
  * @link       http://www.contenido.org
+ * @todo Add possibility to load subcategories
+ *
  *
  * {@internal
  *   created 2008-02-15
- *   @todo Add possibility to load subcategories
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

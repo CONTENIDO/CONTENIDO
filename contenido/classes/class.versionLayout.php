@@ -21,15 +21,13 @@
  * @since      file available since CONTENIDO release >= 4.8.8
  *
  *
- * modified 2011-06-20, Rusmir Jusufovic , add method setCode (load code of layout from file).
  * {@internal
  *   created 2008-08-05
- *
+ *   $Id$
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
  die('Illegal call');
 }
 

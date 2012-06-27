@@ -19,15 +19,11 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-07-02, Frederic Schneider, add security fix
- *   modified 2009-10-23, Murat Purc, removed deprecated function (PHP 5.3 ready)
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

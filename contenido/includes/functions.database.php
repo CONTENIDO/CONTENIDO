@@ -21,17 +21,11 @@
  *
  * {@internal
  *   created 2003-06-04
- *   modified 2008-06-25, Frederic Schneider, add security fix
- *   modified 2008-07-11, Dominik Ziegler, removed deprecated functions
- *   modified 2011-05-17, Murat Purc, documented functions and some optimizations
- *   modified 2011-08-24, Dominik Ziegler, removed deprecated functions
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

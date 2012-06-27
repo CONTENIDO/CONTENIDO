@@ -19,20 +19,17 @@
  *
  * {@internal
  *   created  unknown
- *   modified 2008-07-07, bilal arslan, added security fix
- *
  *   $Id$:
  * }}
- *
  */
 
 
-if (!defined("CON_FRAMEWORK")) {
-    define("CON_FRAMEWORK", true);
+if (!defined('CON_FRAMEWORK')) {
+    define('CON_FRAMEWORK', true);
 }
 
 
-checkAndInclude("steps/forms/installer.php");
+checkAndInclude('steps/forms/installer.php');
 
 $cSetupInstaller = new cSetupInstaller(7);
 $cSetupInstaller->render();

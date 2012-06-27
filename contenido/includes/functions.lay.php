@@ -21,16 +21,11 @@
  *
  * {@internal
  *   created 2003
- *   modified 2008-06-26, Frederic Schneider, add security fix
- *   modified 2011-06-20, Rusmir Jusufovic , save code of the layout in file
- *   modified 2012-02-13, add messages for editing
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

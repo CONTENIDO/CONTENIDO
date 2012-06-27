@@ -21,7 +21,7 @@
  * @since      file available since CONTENIDO release <= 4.6
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

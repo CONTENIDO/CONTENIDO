@@ -28,14 +28,12 @@
  * @link       http://www.contenido.org
  *
  * {@internal
- *  created 2008-02-19
- *  modified 2008-08-25 Added samples for Contenido_CategoryArticle
- *  $Id$:
+ *   created 2008-02-19
+ *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

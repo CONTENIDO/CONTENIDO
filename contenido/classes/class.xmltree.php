@@ -21,15 +21,11 @@
  *
  * {@internal
  *   created unknown
- *   modified 2008-06-30, Dominik Ziegler, add security fix
- *   modified 2010-07-03, Ortwin Pinke, removed '=&', causes deprecated runtime error with PHP >= 5.3
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

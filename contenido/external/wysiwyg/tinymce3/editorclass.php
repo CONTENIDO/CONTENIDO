@@ -41,28 +41,14 @@
  * @link       http://www.contenido.org
  * 
  * 
- * 
- * {@internal 
+ * {@internal
  *   created  <date>
- *   modified 2007-06-13 Bj�rn Behrens/Stefan??? Using setting by type to use all tinyMCE settings (even, if they are not covered here)
- *   
- *   modified 2006-10-24 Willi Man, added new tinyMCE attribute 'article_url_suffix'.
- *   It will be used in plugin advlink ./contenido/external/wysiwyg/tinymce2/jscripts/tiny_mce/plugins/advlink/jscripts/functions.js
- *   to build the anchorlist.  
- *   
- *   modified 2008-07-04, bilal arslan, added security fix
- *   
- *   modified 2008-07-21, Ingo van Peeren, fixed path for property 'content_css' default value  
- *   modified 2009-11-06, Murat Purc, replaced deprecated functions (PHP 5.3 ready)
- *   modified 2010-09-03, Murat Purc, fixed invalid inline editor option, see [#CON-345]
- *   modified 2011-07-18, Ortwin Pinke, fixed missing idart with anchors, see [CON-406] 
- *
  *   $Id$:
  * }}
- * 
  */
- if(!defined('CON_FRAMEWORK')) {
-   die('Illegal call');
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 cInclude("includes", "functions.lang.php");

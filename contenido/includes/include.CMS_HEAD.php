@@ -21,15 +21,11 @@
  *
  * {@internal
  *   created 2003-05-07
- *   modified 2008-06-27, Frederic Schneider, add security fix
- *   modified 2008-01-05, Timo Trautmann, add htmlspecialchars() instead of htmlentitydecode() because of UTF-8 Bug
- *
  *   $Id$:
  * }}
- *
  */
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

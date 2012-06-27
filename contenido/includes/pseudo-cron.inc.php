@@ -106,7 +106,7 @@ v1.0   01-17-03
 
 ***************************************************************************/
 
-if(!defined('CON_FRAMEWORK')) {
+if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 

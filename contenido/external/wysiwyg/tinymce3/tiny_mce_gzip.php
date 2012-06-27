@@ -20,17 +20,14 @@
  * @link       http://www.contenido.org
  * 
  * 
- * 
  * {@internal 
  *   created  2005-06-06
- *   modified 2008-07-04, bilal arslan, added security fix
- *
  *   $Id: tiny_mce_gzip.php 739 2008-08-27 10:37:54Z timo.trautmann $:
  * }}
- * 
  */
- if(!defined('CON_FRAMEWORK')) {
-   die('Illegal call');
+
+if (!defined('CON_FRAMEWORK')) {
+    die('Illegal call');
 }
 
 	// Set the error reporting to minimal.
