@@ -34,7 +34,6 @@ if (!defined('CON_FRAMEWORK')) {
  *
  * @param   int  iCurrentStep  The current step to display active.
  * @return  string
- * @modified 2008-02-26 Rudi Bieller
  */
 function cGenerateSetupStepsDisplay($iCurrentStep)
 {
@@ -55,12 +54,12 @@ function cGenerateSetupStepsDisplay($iCurrentStep)
 /**
  * Logs general setup failures into setuplog.txt in logs directory.
  *
- * @param    string    $sErrorMessage    message to log in file
- *
- * @return    void
+ * @param   string  $sErrorMessage  Message to log in file
+ * @return  void
  */
 function logSetupFailure($sErrorMessage)
 {
+    global $cfg;
     file_put_contents($cfg['path']['contenido_logs'] . 'setuplog.txt', $sErrorMessage . PHP_EOL . PHP_EOL, FILE_APPEND);
 }
 

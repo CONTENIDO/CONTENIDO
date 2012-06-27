@@ -71,7 +71,7 @@ class cSetupResults extends cSetupMask
             cSetupMask::cSetupMask("templates/setup/forms/setupresultsfail.tpl", $step);
             $this->_oStepTemplate->set("s", "TITLE", i18n("Setup Results"));
 
-            $this->_oStepTemplate->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;contenido/data/log/&quot;) for more information."), 'setuplog.txt'));
+            $this->_oStepTemplate->set("s", "DESCRIPTION", sprintf(i18n("An error occured during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information."), 'setuplog.txt'));
 
             switch ($_SESSION["setuptype"]) {
                 case "setup":

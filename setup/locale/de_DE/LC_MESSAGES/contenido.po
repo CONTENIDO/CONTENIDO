@@ -216,8 +216,8 @@ msgstr "Setup Ergebnisse"
 
 #: steps/forms/setupresults.php:85
 #, php-format
-msgid "An error occured during installation. Please take a look at the file %s (located in &quot;contenido/logs/&quot;) for more information."
-msgstr "Setup Fehler w&auml;hrend der Installation. Bitte schauen Sie in die Datei %s (befindet sich im Verzeichnis &quot;contenido/logs/&quot) f&uuml;r weitere Informationen."
+msgid "An error occured during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information."
+msgstr "Setup Fehler w&auml;hrend der Installation. Bitte schauen Sie in die Datei %s (befindet sich im Verzeichnis &quot;data/logs/&quot) f&uuml;r weitere Informationen."
 
 #: steps/forms/setupsummary.php:39
 #: steps/forms/setupsummary.php:40
