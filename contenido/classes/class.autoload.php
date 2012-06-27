@@ -6,14 +6,19 @@
  * Description:
  * Implements autoload feature for a CONTENIDO project.
  *
- * Autoloading for CONTENIDO is provided via a generated classmap configuration
+ * Autoloading for CONTENIDO is provided via a generated class map configuration
  * file, which is available inside contenido/data/config/{environment}/ folder.
  * - contenido/data/config/{environment}/config.autoloader.php
  *
- * Autoloading is extendable by adding a additional classmap file inside the same
- * folder, which could contain further classmap settings or could overwrite
- * settings of main classmap file.
- * - contenido/includes/config.autoloader.local.php
+ * Autoloading is extendable by adding a additional class map file inside the same
+ * folder, which could contain further class map settings or could overwrite
+ * settings of main class map file.
+ * - contenido/data/config/{environment}/contenido/includes/config.autoloader.local.php
+ *
+ * You can also add additional class map configuration by using function following
+ * functions:
+ * - Contenido_Autoload::addClassmapConfig(array $config)
+ * - Contenido_Autoload::addClassmapConfigFile($configFile)
  *
  * Read also docs/techref/backend/backend.autoloader.html to get involved in
  * CONTENIDO autoloader mechanism.
@@ -23,7 +28,7 @@
  * @con_php_req 5.0
  *
  * @package    CONTENIDO Autoloader
- * @version    0.0.3
+ * @version    0.1.0
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    http://www.contenido.org/license/LIZENZ.txt
@@ -90,7 +95,7 @@ class Contenido_Autoload
     /**
      * Initialization of CONTENIDO autoloader, is to call at least once.
      *
-     * Registers itself as a __autoload implementation, includes the classmap file,
+     * Registers itself as a __autoload implementation, includes the class map file,
      * and if exists, the user defined class map file, containing the includes.
      *
      * @param   array  $cfg  The CONTENIDO cfg array
@@ -107,21 +112,66 @@ class Contenido_Autoload
 
         spl_autoload_register(array(__CLASS__, 'autoload'));
 
-        // load n' store autoloader classmap file
+        // load n' store autoloader class map file
         $file = $cfg['path']['contenido_config'] . 'config.autoloader.php';
         if ($arr = include_once($file)) {
             self::$_includeFiles = $arr;
         }
 
-        // load n' store additional autoloader classmap file, if exists
+        // load n' store additional autoloader class map file, if exists
         $file = $cfg['path']['contenido_config'] . 'config.autoloader.local.php';
         if (is_file($file)) {
-            if ($arr = include_once($file)) {
-                self::$_includeFiles = array_merge(self::$_includeFiles, $arr);
-            }
+            self::addClassmapConfigFile($file);
         }
     }
 
+    /**
+     * Adding additional autoloader class map configuration.
+     * NOTE:
+     * Since this autoloader is implemented for CONTENIDO, it doesn't support to
+     * load classfiles being located outside of the CONTENIDO installation folder.
+     *
+     * @param  array  $config  Assoziative class map array as follows:
+     * <pre>
+     * // Structure is: "Classname" => "Path to classfile from CONTENIDO installation folder"
+     * $config = array(
+     *     'myPluginsClass' => 'contenido/plugins/myplugin/classes/class.myPluginClass.php',
+     *     'myPluginsOtherClass' => 'contenido/plugins/myplugin/classes/class.myPluginsOtherClass.php',
+     * );
+     * </pre>
+     * @return  void
+     */
+    public static function addClassmapConfig(array $config)
+    {
+        self::$_includeFiles = array_merge(self::$_includeFiles, $config);
+    }
+
+    /**
+     * Adding additional autoloader class map configuration file.
+     * NOTE:
+     * Since this autoloader is implemented for CONTENIDO, it doesn't support to
+     * load classfiles being located outside of the CONTENIDO installation folder.
+     *
+     * @param  string  $configFile  Full path to class map configuration file.
+     *                              The provided file must return a class map configuration array as follows:
+     * <pre>
+     * // Structure is: "Classname" => "Path to classfile from CONTENIDO installation folder"
+     * return array(
+     *     'myPluginsClass' => 'contenido/plugins/myplugin/classes/class.myPluginClass.php',
+     *     'myPluginsOtherClass' => 'contenido/plugins/myplugin/classes/class.myPluginsOtherClass.php',
+     *     'myCmsClass' => 'cms/includes/class.myCmsClass.php',
+     * );
+     * </pre>
+     * @return  void
+     */
+    public static function addClassmapConfigFile($configFile)
+    {
+        if (is_file($configFile)) {
+            if ($arr = include_once($configFile)) {
+                self::addClassmapConfig($arr);
+            }
+        }
+    }
 
     /**
      * The main __autoload() implementation.
@@ -150,7 +200,6 @@ class Contenido_Autoload
 
         self::$_loadedClasses[$className] = str_replace(self::$_conRootPath, '', $file);
     }
-
 
     /**
      * Checks, if passed filename is a file, which will be included by the autoloader.
@@ -181,7 +230,6 @@ class Contenido_Autoload
         return self::$_loadedClasses;
     }
 
-
     /**
      * Returns the errorlist containing invalid classes (@see Contenido_Autoload::$_errors)
      *
@@ -191,7 +239,6 @@ class Contenido_Autoload
     {
         return self::$_errors;
     }
-
 
     /**
      * Returns the path to a CONTENIDO class file by processing the given classname
@@ -204,7 +251,6 @@ class Contenido_Autoload
         $file = isset(self::$_includeFiles[$className]) ? self::$_conRootPath . self::$_includeFiles[$className] : null;
         return self::_validateClassAndFile($className, $file);
     }
-
 
     /**
      * Validates the given class and the file
@@ -233,7 +279,6 @@ class Contenido_Autoload
 
         return $filePathName;
     }
-
 
     /**
      * Loads the desired file by invoking require_once method
