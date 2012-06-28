@@ -4,7 +4,7 @@
  * CONTENIDO Content Management System
  *
  * Description:
- * Rights
+ * CONTENIDO User Rights
  *
  * Requirements:
  * @con_php_req 5.0
@@ -30,137 +30,27 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-function saverights() {
-    global $rights_list, $rights_list_old, $db;
-    global $cfg, $userid, $rights_client, $rights_lang;
-    global $perm, $sess, $notification;
-
-    // If no checkbox is checked
-    if (!is_array($rights_list)) {
-        $rights_list = array();
-    }
-
-    // Search all checks which are not in the new rights_list for deleting
-    $arraydel = array_diff(array_keys($rights_list_old), array_keys($rights_list));
-
-    // Search all checks which are not in the rights_list_old for saving
-    $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
-
-    if (is_array($arraydel)) {
-        foreach ($arraydel as $value) {
-            $data = explode('|', $value);
-            $data[0] = $perm->getIDForArea($data[0]);
-            $data[1] = $perm->getIDForAction($data[1]);
-
-            $where = "user_id = '" . $db->escape($userid) . "' AND idclient = " . (int) $rights_client
-                   . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0] 
-                   . " AND idcat = " . (int) $data[2] . " AND idaction = " . (int) $data[1] . " AND type = 0";
-            $oRightColl = new cApiRightCollection();
-            $oRightColl->deleteByWhereClause($where);
-        }
-    }
-
-    unset($data);
-
-    // Search for all mentioned checkboxes
-    if (is_array($arraysave)) {
-        foreach ($arraysave as $value) {
-            // Explodes the key it consits areait+actionid+itemid
-            $data = explode('|', $value);
-
-            // Since areas are stored in a numeric form in the rights table, we have
-            // to convert them from strings into numbers
-            $data[0] = $perm->getIDForArea($data[0]);
-            $data[1] = $perm->getIDForAction($data[1]);
-
-            if (!isset($data[1])) {
-                $data[1] = 0;
-            }
-
-            // Insert new right
-            $oRightColl = new cApiRightCollection();
-            $oRightColl->create($userid, $data[0], $data[1], $data[2], $rights_client, $rights_lang, 0);
-        }
-    }
-
-    $rights_list_old = $rights_list;
-    $notification->displayNotification('info', i18n('Changes saved'));
-}
-
-function saverightsarea()
-{
-    global $db, $cfg, $userid;
-    global $rights_client, $rights_lang, $rights_admin, $rights_sysadmin, $rights_perms, $rights_list;
-
-    $oUser = new cApiUser($userid);
-    if (!$oUser->isLoaded()) {
-        return;
-    }
-
-    if (!isset($rights_perms)) {
-        // Get permissions of this user
-        $rights_perms = $oUser->get('perms');
-    }
-
-    // If there are no permissions, delete permissions for lan and client
-    if (!is_array($rights_list)) {
-        $rights_perms = preg_replace("/,+client\[$rights_client\]/", '', $rights_perms);
-        $rights_perms = preg_replace("/,+lang\[$rights_lang\]/", '', $rights_perms);
-    } else {
-        if (!strstr($rights_perms, "client[$rights_client]")) {
-            $rights_perms .= ",client[$rights_client]";
-        }
-        if (!strstr($rights_perms, "lang[$rights_lang]")) {
-            $rights_perms .= ",lang[$rights_lang]";
-        }
-    }
-
-    // If admin is checked
-    if ($rights_admin == 1) {
-        // If admin is not set
-        if (!strstr($rights_perms, "admin[$rights_client]")) {
-            $rights_perms .= ",admin[$rights_client]";
-        }
-    } else {
-        // Cut admin from the string
-        $rights_perms = preg_replace("/,*admin\[$rights_client\]/", '', $rights_perms);
-    }
-
-    // If sysadmin is checked
-    if ($rights_sysadmin == 1) {
-        // If sysadmin is not set
-        if (!strstr($rights_perms, 'sysadmin')) {
-            $rights_perms .= ',sysadmin';
-        }
-    } else {
-        // Cat sysadmin from string
-        $rights_perms = preg_replace('/,*sysadmin/', '', $rights_perms);
-    }
-
-    // Cut ',' in front of the string
-    $rights_perms = preg_replace('/^,/', '', $rights_perms);
-
-    // Update table
-    $oUser->set('perms', $db->escape($rights_perms));
-    $oUser->store();
-
-    // Save the other rights
-    saverights();
-}
-
-if (!is_object($oTpl)) {
-    $oTpl = new Template();
-}
-$oTpl->reset();
-
-if (!is_object($db2)) {
-    $db2 = new DB_Contenido();
+if (!isset($actionarea)) {
+    $actionarea = 'area';
 }
 
 if (!isset($rights_client)) {
     $rights_client = $client;
     $rights_lang = $lang;
 }
+
+if (!isset($rights_clientslang)) {
+    $rights_clientslang = $firstclientslang;
+}
+
+if (!is_object($db2)) {
+    $db2 = new DB_Contenido();
+}
+
+if (!is_object($oTpl)) {
+    $oTpl = new Template();
+}
+$oTpl->reset();
 
 // Set new right_list (=all possible rights)
 if (!is_array($right_list)) {
@@ -189,10 +79,6 @@ if (!is_array($right_list)) {
             }
         }
     }
-}
-
-if (!isset($actionarea)) {
-    $actionarea = 'area';
 }
 
 $oTpl->set('s', 'SESS_ID', $sess->id);
@@ -276,7 +162,7 @@ if ($area != 'user_content') {
     $aViewRights = array();
     $bExclusive = false;
     if (isset($_POST['filter_rights'])) {
-        switch($_POST['filter_rights']) {
+        switch ($_POST['filter_rights']) {
             case 'article':
                 $aViewRights = $aArticleRights;
                 break;
@@ -296,11 +182,6 @@ if ($area != 'user_content') {
     }
     $oTpl->set('s', 'INPUT_SELECT_RIGHTS', $oHtmlSelect->render());
     $oTpl->set('s', 'DISPLAY_RIGHTS', 'block');
-}
-
-
-if (!isset($rights_clientslang)) {
-    $rights_clientslang = $firstclientslang;
 }
 
 
@@ -344,6 +225,126 @@ if ($bEndScript == true) {
     $oTpl->set('s', 'EXTERNAL_SCRIPTS', '');
     $oTpl->generate('templates/standard/'.$cfg['templates']['rights_inc']);
     die();
+}
+
+
+function saverightsarea()
+{
+    global $db, $cfg, $userid;
+    global $rights_client, $rights_lang, $rights_admin, $rights_sysadmin, $rights_perms, $rights_list;
+
+    $oUser = new cApiUser($userid);
+    if (!$oUser->isLoaded()) {
+        return;
+    }
+
+    if (!isset($rights_perms)) {
+        // Get permissions of this user
+        $rights_perms = $oUser->get('perms');
+    }
+
+    // If there are no permissions, delete permissions for lan and client
+    if (!is_array($rights_list)) {
+        $rights_perms = preg_replace("/,+client\[$rights_client\]/", '', $rights_perms);
+        $rights_perms = preg_replace("/,+lang\[$rights_lang\]/", '', $rights_perms);
+    } else {
+        if (!strstr($rights_perms, "client[$rights_client]")) {
+            $rights_perms .= ",client[$rights_client]";
+        }
+        if (!strstr($rights_perms, "lang[$rights_lang]")) {
+            $rights_perms .= ",lang[$rights_lang]";
+        }
+    }
+
+    // If admin is checked
+    if ($rights_admin == 1) {
+        // If admin is not set
+        if (!strstr($rights_perms, "admin[$rights_client]")) {
+            $rights_perms .= ",admin[$rights_client]";
+        }
+    } else {
+        // Cut admin from the string
+        $rights_perms = preg_replace("/,*admin\[$rights_client\]/", '', $rights_perms);
+    }
+
+    // If sysadmin is checked
+    if ($rights_sysadmin == 1) {
+        // If sysadmin is not set
+        if (!strstr($rights_perms, 'sysadmin')) {
+            $rights_perms .= ',sysadmin';
+        }
+    } else {
+        // Cat sysadmin from string
+        $rights_perms = preg_replace('/,*sysadmin/', '', $rights_perms);
+    }
+
+    // Cut ',' in front of the string
+    $rights_perms = preg_replace('/^,/', '', $rights_perms);
+
+    // Update table
+    $oUser->set('perms', $db->escape($rights_perms));
+    $oUser->store();
+
+    // Save the other rights
+    saverights();
+}
+
+function saverights()
+{
+    global $rights_list, $rights_list_old, $db;
+    global $cfg, $userid, $rights_client, $rights_lang;
+    global $perm, $sess, $notification;
+
+    // If no checkbox is checked
+    if (!is_array($rights_list)) {
+        $rights_list = array();
+    }
+
+    // Search all checks which are not in the new rights_list for deleting
+    $arraydel = array_diff(array_keys($rights_list_old), array_keys($rights_list));
+
+    // Search all checks which are not in the rights_list_old for saving
+    $arraysave = array_diff(array_keys($rights_list), array_keys($rights_list_old));
+
+    if (is_array($arraydel)) {
+        foreach ($arraydel as $value) {
+            $data = explode('|', $value);
+            $data[0] = $perm->getIDForArea($data[0]);
+            $data[1] = $perm->getIDForAction($data[1]);
+
+            $where = "user_id = '" . $db->escape($userid) . "' AND idclient = " . (int) $rights_client
+                   . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0]
+                   . " AND idcat = " . (int) $data[2] . " AND idaction = " . (int) $data[1] . " AND type = 0";
+            $oRightColl = new cApiRightCollection();
+            $oRightColl->deleteByWhereClause($where);
+        }
+    }
+
+    unset($data);
+
+    // Search for all mentioned checkboxes
+    if (is_array($arraysave)) {
+        foreach ($arraysave as $value) {
+            // Explodes the key it consits areaid+actionid+itemid
+            $data = explode('|', $value);
+
+            // Since areas are stored in a numeric form in the rights table, we have
+            // to convert them from strings into numbers
+            $data[0] = $perm->getIDForArea($data[0]);
+            $data[1] = $perm->getIDForAction($data[1]);
+
+            if (!isset($data[1])) {
+                $data[1] = 0;
+            }
+
+            // Insert new right
+            $oRightColl = new cApiRightCollection();
+            $oRightColl->create($userid, $data[0], $data[1], $data[2], $rights_client, $rights_lang, 0);
+        }
+    }
+
+    $rights_list_old = $rights_list;
+    $notification->displayNotification('info', i18n('Changes saved'));
 }
 
 ?>

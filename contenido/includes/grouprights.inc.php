@@ -29,14 +29,23 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+
+if (!isset($actionarea)) {
+    $actionarea = 'area';
+}
+
+if (!isset($rights_clientslang)) {
+    $rights_clientslang = $firstclientslang;
+}
+
 if (!is_object($db2)) {
     $db2 = new DB_Contenido();
 }
 
 if (!is_object($oTpl)) {
     $oTpl = new Template();
-    $oTpl->reset();
 }
+$oTpl->reset();
 
 // Set new right_list (=all possible rights)
 if (!is_array($right_list)) {
@@ -65,10 +74,6 @@ if (!is_array($right_list)) {
             }
         }
     }
-}
-
-if (!isset($actionarea)) {
-    $actionarea = 'area';
 }
 
 $oTpl->set('s', 'SESS_ID', $sess->id);
@@ -173,10 +178,6 @@ if ($area != 'groups_content') {
 }
 
 
-if (!isset($rights_clientslang)) {
-    $rights_clientslang = $firstclientslang;
-}
-
 $oClientLang = new cApiClientLanguage((int) $rights_clientslang);
 if ($oClientLang->isLoaded()) {
     $rights_client = $oClientLang->get('idclient');
@@ -252,7 +253,8 @@ function saverightsarea()
     saverights();
 }
 
-function saverights() {
+function saverights()
+{
     global $rights_list, $rights_list_old, $db;
     global $cfg, $groupid, $rights_client, $rights_lang;
     global $perm, $sess, $notification;
@@ -275,7 +277,7 @@ function saverights() {
             $data[1] = $perm->getIDForAction($data[1]);
 
             $where = "user_id = '" . $db->escape($groupid) . "' AND idclient = " . (int) $rights_client
-                   . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0] 
+                   . " AND idlang = " . (int) $rights_lang . " AND idarea = " . (int) $data[0]
                    . " AND idcat = " . (int) $data[2] . " AND idaction = " . (int) $data[1] . " AND type = 1";
             $oRightColl = new cApiRightCollection();
             $oRightColl->deleteByWhereClause($where);
