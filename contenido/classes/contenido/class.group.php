@@ -110,7 +110,7 @@ class cApiGroupCollection extends ItemCollection
     public function deleteGroupByID($groupid)
     {
         cDeprecated("Use cApiGroupCollection->delete() instead");
-        return $this->delete($userid);
+        return $this->delete($groupid);
     }
 
     /**
