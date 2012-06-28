@@ -1708,9 +1708,7 @@ contenido/scripts/setPager.js -text
 contenido/scripts/str_overview.js -text
 contenido/scripts/subnav.js -text
 contenido/styles/cms_filelist.css -text
-contenido/styles/cms_image.css -text
 contenido/styles/cms_linkeditor.css -text
-contenido/styles/cms_teaser.css -text
 contenido/styles/contenido.css -text
 contenido/styles/datetimepicker/jquery-ui-timepicker-addon.css -text svneol=unset#text/plain
 contenido/styles/index.php -text
