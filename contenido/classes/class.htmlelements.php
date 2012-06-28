@@ -1735,7 +1735,7 @@ class cHTMLCheckbox extends cHTMLFormElement
 
             }
 
-            return '<table border="0" cellspacing="0" cellpadding="0"><tr><td nowrap="nowrap">'.parent::toHTML().'</td><td nowrap="nowrap">'.$renderedLabel.'</td></tr></table>';
+            return '<table class="borderless" border="0" cellspacing="0" cellpadding="0"><tr><td nowrap="nowrap">'.parent::toHTML().'</td><td nowrap="nowrap">'.$renderedLabel.'</td></tr></table>';
         } else
         {
             return parent::toHTML();
