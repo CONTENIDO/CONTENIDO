@@ -284,11 +284,7 @@ contenido/classes/class.cec.php -text
 contenido/classes/class.cec_hook.php -text
 contenido/classes/class.chartable.php -text
 contenido/classes/class.client.php -text
-contenido/classes/class.cms_date.php -text
 contenido/classes/class.cms_filelist.php -text
-contenido/classes/class.cms_image.php -text
-contenido/classes/class.cms_linkeditor.php -text
-contenido/classes/class.cms_teaser.php -text
 contenido/classes/class.communications.php -text
 contenido/classes/class.conuser.php -text
 contenido/classes/class.csv.php -text
