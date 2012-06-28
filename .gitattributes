@@ -284,7 +284,11 @@ contenido/classes/class.cec.php -text
 contenido/classes/class.cec_hook.php -text
 contenido/classes/class.chartable.php -text
 contenido/classes/class.client.php -text
+contenido/classes/class.cms_date.php -text
 contenido/classes/class.cms_filelist.php -text
+contenido/classes/class.cms_image.php -text
+contenido/classes/class.cms_linkeditor.php -text
+contenido/classes/class.cms_teaser.php -text
 contenido/classes/class.communications.php -text
 contenido/classes/class.conuser.php -text
 contenido/classes/class.csv.php -text
@@ -1677,7 +1681,9 @@ contenido/scripts/articleObject.js.php -text
 contenido/scripts/browserCheck.js -text
 contenido/scripts/cfoldingrow.js -text
 contenido/scripts/cmsFileList.js -text
+contenido/scripts/cmsImage.js -text
 contenido/scripts/cmsLinkEditor.js -text
+contenido/scripts/cmsTeaser.js -text
 contenido/scripts/conFrameResize.js -text
 contenido/scripts/con_tiny.js -text
 contenido/scripts/contenidoConfig.js -text
@@ -1708,7 +1714,9 @@ contenido/scripts/setPager.js -text
 contenido/scripts/str_overview.js -text
 contenido/scripts/subnav.js -text
 contenido/styles/cms_filelist.css -text
+contenido/styles/cms_image.css -text
 contenido/styles/cms_linkeditor.css -text
+contenido/styles/cms_teaser.css -text
 contenido/styles/contenido.css -text
 contenido/styles/datetimepicker/jquery-ui-timepicker-addon.css -text svneol=unset#text/plain
 contenido/styles/index.php -text
