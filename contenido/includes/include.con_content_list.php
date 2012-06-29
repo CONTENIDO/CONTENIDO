@@ -70,19 +70,44 @@ if ($action == 'savecontype' || $action == 10) {
 }
 
 //get active value
-$sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b WHERE a.idartlang=".$_REQUEST["idartlang"]." AND a.idtype=b.idtype ORDER BY a.idartlang, a.idtype, a.typeid";
-$db->query($sql);
+
 $result = array();
 $aList = array();
 $typeAktuell = array();
+$sortID = array("CMS_HTMLHEAD","CMS_HEAD","CMS_HTML","CMS_HTMLTEXT","CMS_TEXT",
+				"CMS_IMG","CMS_IMGDESCR","CMS_IMGTITLE","CMS_IMGEDIT","CMS_IMAGE",
+				"CMS_EASYIMGEDIT","CMS_LINK","CMS_LINKTARGET","CMS_LINKDESCR","CMS_LINKTITLE",
+				"CMS_LINKEDIT","CMS_SIMPLELINKEDIT","CMS_LINKEDITOR","CMS_RAWLINK","CMS_SWF",
+				"CMS_DATE","CMS_TEASER","CMS_FILELIST");
+/*$sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b WHERE a.idartlang=".$_REQUEST["idartlang"]." AND a.idtype=b.idtype ORDER BY a.idartlang, a.idtype, a.typeid";
+$db->query($sql);
 while ( $db->next_record() ) {
+		echo $sortID[$db->f("name")];
         $result[$db->f("name")][$db->f("id")] = $db->f("value");
         if(!in_array($db->f("name"),$aList)){
             $aList[$db->f("idtype")] = $db->f("name");
         }
+}*/
+$aIdtype = array();
+$sql = "SELECT DISTINCT typeid FROM ".$cfg["tab"]["content"]." WHERE idartlang=".$_REQUEST["idartlang"]." ORDER BY typeid";
+$db->query($sql);
+while ( $db->next_record() ) {
+	$aIdtype[] = $db->f("typeid");
 }
-$typeAktuell = getAktuellType($typeAktuell, $aList);
 
+foreach($sortID as $name){
+	$sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b WHERE a.idartlang=".$_REQUEST["idartlang"]." AND a.idtype=b.idtype AND b.type = '".$name."' ORDER BY idtype,typeid,idcontent";
+	$db->query($sql);
+	while ( $db->next_record() ) {
+	        $result[$db->f("name")][$db->f("id")] = $db->f("value");
+	        if(!in_array($db->f("name"),$aList)){
+	            $aList[$db->f("idtype")] = $db->f("name");
+	        }
+	}
+}
+
+$typeAktuell = getAktuellType($typeAktuell, $aList);
+//print_r($result);
 //create Layoutcode
 //if ($action == 'con_content') {
     //@fulai.zhang: Mark submenuitem 'Editor' in the CONTENIDO Backend (Area: Contenido --> Articles --> Editor)
@@ -154,7 +179,22 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
             </style>
         </head>
         <body style="margin: 10px">';
-    foreach($result as $key => $cmstype){
+
+    foreach($aIdtype as $idtype){
+    	foreach($sortID as $name){
+    		if(in_array($name, array_keys($result)) && count($result[$name])>=$idtype){
+
+	            if(in_array($name."[".$idtype."]",$typeAktuell)){
+	                $class = '';
+	            } else {
+	                $class = ' noactive';
+	            }
+	            $layoutcode .= '<div class="contypeList '.$class.'">
+	            <div class="headline">'.$name.' '.$idtype.':</div>'.$name.'['.$idtype.']</div>';
+	    	}
+    	}
+    }
+    /*foreach($result as $key => $cmstype){
         foreach($cmstype as $index => $value){
             if(in_array($key.'['.$index.']',$typeAktuell)){
                 $class = '';
@@ -164,7 +204,7 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
             $layoutcode .= '<div class="contypeList '.$class.'">
             <div class="headline">'.$key.' '.$index.':</div>'.$key.'['.$index.']</div>';
         }
-    }
+    }*/
     $layoutcode .= '</body></html>';
 
     // generate code
