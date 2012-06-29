@@ -599,7 +599,7 @@ abstract class DB_Sql_Abstract
      *
      * Example:
      * <pre>
-     * $oDB = new DB_Contenido();
+     * $oDB = cRegistry::getDb();
      * $aFields = array(
      *     'idcode' => $oDB->nextid($cfg['tab']['code']),
      *     'idcatart' => $idcatart,
@@ -627,7 +627,7 @@ abstract class DB_Sql_Abstract
      *
      * Example:
      * <pre>
-     * $oDB = new DB_Contenido();
+     * $oDB = cRegistry::getDb();
      * $aFields = array(
      *     'idcode' => $oDB->nextid($cfg['tab']['code']),
      *     'idcatart' => $idcatart,
@@ -666,7 +666,7 @@ abstract class DB_Sql_Abstract
      *
      * Example:
      * <pre>
-     * $oDB = new DB_Contenido();
+     * $oDB = cRegistry::getDb();
      * $aFields = array('code' => "<html>... some new code n' fun ...</html>");
      * $aWhere = array('idcode' => 123);
      * $bResult = $oDB->update($cfg['tab']['code'], $aFields, $aWhere);
@@ -691,7 +691,7 @@ abstract class DB_Sql_Abstract
      *
      * Example:
      * <pre>
-     * $oDB = new DB_Contenido();
+     * $oDB = cRegistry::getDb();
      * $aFields = array('code' => "<html>... some new code n' fun ...</html>");
      * $aWhere = array('idcode' => 123);
      * $sStatement = $oDB->buildUpdate($cfg['tab']['code'], $aFields, $aWhere);

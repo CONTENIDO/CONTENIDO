@@ -39,7 +39,7 @@ include_once($contenido_path . 'includes/startup.php');
 // include editor config/combat file
 include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php');
 
-$db2 = new DB_Contenido();
+$db2 = cRegistry::getDb();
 
 $arg_seperator = '&amp;';
 

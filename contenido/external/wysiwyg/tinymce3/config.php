@@ -34,7 +34,7 @@ cInclude('includes', 'functions.general.php');
 cInclude('includes', 'functions.i18n.php');
 cInclude('includes', 'functions.api.php');
 
-$db = new DB_Contenido();
+$db = cRegistry::getDb();
 
 if ($cfgClient['set'] != 'set') {
     rereadClients();
