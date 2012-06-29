@@ -44,7 +44,7 @@ function cCatPerm($widcat, $db = null)
     }
 
     if (is_null($db) || !is_object($db)) {
-        $db = new DB_Contenido;
+        $db = cRegistry::getDb();
     }
 
     $group_ids = getGroupIDs($db);

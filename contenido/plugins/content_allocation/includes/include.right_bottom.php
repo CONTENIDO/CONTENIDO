@@ -40,7 +40,7 @@ if (isset($_REQUEST['treeItem'])) {
 #added 24.06.08 timo.trautmann security fix filter submitted treeItemPost array before insertion, name also changed according to security fix
 $aPostTreeItem = array();
 if (!is_object($db)) {
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 }
 
 if (isset($_REQUEST['treeItemPost']['idpica_alloc'])) {

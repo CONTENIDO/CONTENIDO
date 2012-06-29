@@ -190,7 +190,7 @@ class WorkflowArtAllocation extends Item {
                 $timeunit = $usersequence->get("timeunit");
                 $timelimit = $usersequence->get("timelimit");
 
-                $db = new DB_Contenido;
+                $db = cRegistry::getDb();
                 $sql = "SELECT author, title, idart FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang = '".Contenido_Security::escapeDB($idartlang, $db)."'";
 
                 $db->query($sql);

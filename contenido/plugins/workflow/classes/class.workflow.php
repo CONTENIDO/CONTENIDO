@@ -92,7 +92,7 @@ class Workflows extends ItemCollection {
      */
     function delete($idWorkflow) {
         global $cfg;
-        $oDb = new DB_Contenido();
+        $oDb = cRegistry::getDb();
 
         $aItemIdsDelete = array();
         $sSql = 'SELECT idworkflowitem FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '. Contenido_Security::toInteger($idWorkflow) .';';
@@ -187,7 +187,7 @@ function getWorkflowForCat ($idcat)
 function getCatLang ($idcat, $idlang)
 {
     global $lang, $cfg;
-    $db = new DB_Contenido;
+    $db = cRegistry::getDb();
 
     /* Get the idcatlang */
     $sql = "SELECT idcatlang FROM "

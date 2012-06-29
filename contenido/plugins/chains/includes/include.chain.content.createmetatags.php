@@ -66,7 +66,7 @@ function cecCreateMetatags($metatags) {
 
     if ($reload) {
         //(Re)build metatags
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
 
         // Get encoding
         $oLang = new cApiLanguage((int) $lang);

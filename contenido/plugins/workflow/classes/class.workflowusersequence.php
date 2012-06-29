@@ -84,7 +84,7 @@ class WorkflowUserSequences extends ItemCollection {
     function updateArtAllocation($idusersequence)
     {
         global $idworkflow, $cfg;
-        $oDb = new DB_Contenido();
+        $oDb = cRegistry::getDb();
 
         $aIdArtLang = array();
         $sSql = 'SELECT idartlang FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence = '.Contenido_Security::escapeDB($idusersequence, $oDb).';';
@@ -218,7 +218,7 @@ class WorkflowUserSequence extends Item {
             case "iduser":
                 if ($value != 0)
                 {
-                    $db = new DB_Contenido;
+                    $db = cRegistry::getDb();
                     $sql = "SELECT user_id FROM " . $cfg["tab"]["phplib_auth_user_md5"] .
                            " WHERE user_id = '".Contenido_Security::escapeDB($value, $db)."'";
                     $db->query($sql);

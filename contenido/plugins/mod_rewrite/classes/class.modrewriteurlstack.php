@@ -125,7 +125,7 @@ class ModRewriteUrlStack
     private function __construct()
     {
         global $cfg, $lang;
-        $this->_oDb    = new DB_Contenido();
+        $this->_oDb    = cRegistry::getDb();
         $this->_aTab   = $cfg['tab'];
         $this->_idLang = $lang;
     }

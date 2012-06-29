@@ -36,7 +36,7 @@ function cecFrontendCategoryAccess($idlang, $idcat, $user)
 {
     global $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $frontendUser = new cApiFrontendUser();
     $frontendUser->loadByPrimaryKey($user);

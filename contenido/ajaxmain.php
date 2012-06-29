@@ -51,7 +51,7 @@ require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
 // Create CONTENIDO classes
 // FIXME: Correct variable names, instances of classes are objects, not classes!
-$db = new DB_Contenido();
+$db = cRegistry::getDb();
 $notification = new Contenido_Notification();
 $classarea = new cApiAreaCollection();
 $classlayout = new cApiLayout();

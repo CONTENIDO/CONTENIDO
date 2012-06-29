@@ -41,7 +41,7 @@ $sSession = $sess->id;
 $wfa = new WorkflowArtAllocations;
 $wfu = new WorkflowUserSequences;
 $user = new cApiUser();
-$db2 = new DB_Contenido;
+$db2 = cRegistry::getDb();
 
 ob_start();
 

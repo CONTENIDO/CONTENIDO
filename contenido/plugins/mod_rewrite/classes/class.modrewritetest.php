@@ -125,8 +125,8 @@ class ModRewriteTest
     {
         global $client, $lang;
 
-        $db  = new DB_Contenido();
-        $db2 = new DB_Contenido();
+        $db  = cRegistry::getDb();
+        $db2 = cRegistry::getDb();
 
         if (!$idclient || (int) $idclient == 0) {
             $idclient = $client;

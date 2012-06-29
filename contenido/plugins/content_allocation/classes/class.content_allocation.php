@@ -65,7 +65,7 @@ class pApiContentAllocation {
     function pApiContentAllocation () {
         global $db, $cfg, $lang, $client;
 
-        $this->db = new DB_Contenido;
+        $this->db = cRegistry::getDb();
         $this->table = $cfg['tab'];
         $this->lang = $lang;
         $this->client = $client;

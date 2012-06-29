@@ -68,7 +68,7 @@ class WorkflowAllocations extends ItemCollection {
 
         $idcatlang = $obj->get("idcatlang");
 
-        $db = new DB_Contenido;
+        $db = cRegistry::getDb();
         $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_lang"]." WHERE idcatlang = '".Contenido_Security::toInteger($idcatlang)."'";
         $db->query($sql);
         $db->next_record();
@@ -227,7 +227,7 @@ class WorkflowAllocation extends Item {
             return false;
         }
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcatlang = '".Contenido_Security::toInteger($idcatlang)."'";
         $db->query($sql);
 

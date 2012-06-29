@@ -66,7 +66,7 @@ class ModRewrite extends ModRewriteBase
     public static function initialize($clientId)
     {
         mr_loadConfiguration($clientId, true);
-        self::$_db = new DB_Contenido();
+        self::$_db = cRegistry::getDb();
     }
 
 
@@ -888,7 +888,7 @@ class ModRewrite extends ModRewriteBase
     {
         global $cfg;
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
 
         $aCats = array();
 
@@ -937,7 +937,7 @@ class ModRewrite extends ModRewriteBase
     {
         global $cfg;
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
 
         // get all or only empty articles
         $sql = "SELECT title, idart, idlang FROM " . $cfg['tab']['art_lang'];

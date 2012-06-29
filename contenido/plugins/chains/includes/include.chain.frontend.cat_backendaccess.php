@@ -42,7 +42,7 @@ function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
         return true;
     }
 
-    $db2 = new DB_Contenido;
+    $db2 = cRegistry::getDb();
 
     $arrSearchFor = array("'".Contenido_Security::escapeDB($user, $db2)."'");
 

@@ -41,7 +41,7 @@ if (!is_object($oTpl)) {
     $oTpl = new Template();
 }
 if (!is_object($oDB)) {
-    $oDB = new DB_Contenido(); // We have really to send a special SQL statement - we need a DB object
+    $oDB = cRegistry::getDb(); // We have really to send a special SQL statement - we need a DB object
 }
 
 $oUser = new cApiUser($auth->auth["uid"]);

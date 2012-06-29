@@ -41,8 +41,8 @@ cRegistry::bootstrap(array(
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
 // Initialize variables
-$db = new DB_Contenido();
-$db2 = new DB_Contenido();
+$db = cRegistry::getDb();
+$db2 = cRegistry::getDb();
 
 // Session
 $sSession = '';

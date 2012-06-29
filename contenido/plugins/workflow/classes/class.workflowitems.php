@@ -66,7 +66,7 @@ class WorkflowItems extends ItemCollection {
         $item->loadByPrimaryKey($id);
         $pos = $item->get("position");
         $idworkflow = $item->get("idworkflow");
-        $oDb = new DB_Contenido();
+        $oDb = cRegistry::getDb();
 
         $this->select("position > $pos AND idworkflow = '".Contenido_Security::escapeDB($idworkflow, $oDb)."'");
         while ($obj = $this->next())
@@ -96,7 +96,7 @@ class WorkflowItems extends ItemCollection {
     function updateArtAllocation($idworkflowitem, $delete = false)
     {
         global $idworkflow, $cfg;
-        $oDb = new DB_Contenido();
+        $oDb = cRegistry::getDb();
 
         $aUserSequences = array();
         $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem = '.Contenido_Security::escapeDB($idworkflowitem, $oDb).';';

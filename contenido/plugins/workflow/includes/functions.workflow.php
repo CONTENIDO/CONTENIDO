@@ -119,7 +119,7 @@ function isCurrentEditor ($uid)
     $user = new cApiUser();
     if ($user->loadByPrimaryKey($uid) == false)
     {
-        $db2 = new DB_Contenido;
+        $db2 = cRegistry::getDb();
 
         /* Yes, it's a group. Let's try to load the group members! */
         $sql = "SELECT user_id FROM "
@@ -497,7 +497,7 @@ function doWorkflowAction ($idartlang, $action)
             break;
 
         case "revise":
-            $db = new DB_Contenido;
+            $db = cRegistry::getDb();
             $sql = "SELECT idart, idlang FROM ".$cfg["tab"]["art_lang"] ." WHERE idartlang = '".Contenido_Security::escapeDB($idartlang, $db)."'";
             $db->query($sql);
             $db->next_record();

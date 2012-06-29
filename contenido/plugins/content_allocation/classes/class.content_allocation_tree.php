@@ -102,7 +102,7 @@ class pApiTree {
     function pApiTree ($uuid) {
         global $db, $cfg, $lang, $client, $auth;
 
-        $this->db = new DB_Contenido;
+        $this->db = cRegistry::getDb();
         $this->table = $cfg['tab'];
         $this->lang = $lang;
         $this->client = $client;
@@ -446,7 +446,7 @@ class pApiTree {
     }
 
     function _fetchItemNameLang ($idpica_alloc) {
-        $oDB = new DB_Contenido; // temp instance
+        $oDB = cRegistry::getDb(); // temp instance
 
         $sSQL = "SELECT name, idlang, online FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . Contenido_Security::toInteger($idpica_alloc) . " AND idlang = " . Contenido_Security::toInteger($this->lang);
         $oDB->query($sSQL);

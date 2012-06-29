@@ -760,7 +760,7 @@ function mr_i18n($key)
  * Minimizes following code:
  * <code>
  * // default way
- * $db  = new DB_Contenido();
+ * $db  = cRegistry::getDb();
  * $sql = "SELECT * FROM foo WHERE bar='foobar'";
  * $db->query($sql);
  * $db->next_record();
@@ -778,7 +778,7 @@ function mr_queryAndNextRecord($query)
 {
     static $db;
     if (!isset($db)) {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
     }
     if (!$db->query($query)) {
         return null;
