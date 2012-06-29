@@ -34,10 +34,6 @@ if (!isset($actionarea)) {
     $actionarea = 'area';
 }
 
-if (!isset($rights_clientslang)) {
-    $rights_clientslang = $firstclientslang;
-}
-
 if (!is_object($db2)) {
     $db2 = new DB_Contenido();
 }
@@ -82,47 +78,51 @@ $oTpl->set('s', 'TYPE_ID', 'groupid');
 $oTpl->set('s', 'USER_ID', $groupid);
 $oTpl->set('s', 'AREA', $area);
 
-$mgroup = new cApiGroup($groupid);
-$userperms = $mgroup->getField('perms');
+$oGroup = new cApiGroup($groupid);
+$userPerms = $oGroup->getField('perms');
 
 $oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
 
 // Selectbox for clients
 $oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang');
 
-$clientclass = new cApiClientCollection;
-$clientList = $clientclass->getAccessibleClients();
-$firstsel = false;
-$i = 0;
+$oClientColl = new cApiClientCollection();
+$clientList = $oClientColl->getAccessibleClients();
+$firstSel = false;
+$firstClientsLang = 0;
+$counter = 0;
 
 foreach ($clientList as $key => $value) {
     $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE B.idclient=" . (int) $key . " AND A.idlang=B.idlang";
     $db->query($sql);
 
     while ($db->next_record()) {
-        if ((strpos($userperms, "client[$key]") !== false) &&
-            (strpos($userperms, "lang[".$db->f("idlang")."]") !== false) &&
+        if ((strpos($userPerms, "client[$key]") !== false) &&
+            (strpos($userPerms, "lang[".$db->f("idlang")."]") !== false) &&
             ($perm->have_perm("lang[".$db->f("idlang")."]")))
         {
-            if ($firstsel == false) {
-                $firstsel = true;
-                $firstclientslang = $db->f('idclientslang');
+            if ($firstSel == false) {
+                $firstSel = true;
+                $firstClientsLang = $db->f('idclientslang');
             }
 
             if ($rights_clientslang == $db->f('idclientslang')) {
                 $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> '.$db->f('name'), $db->f('idclientslang'), true);
-                $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
-                $i++;
+                $oHtmlSelect->addOptionElement($counter, $oHtmlSelectOption);
                 if (!isset($rights_client)) {
-                    $firstclientslang = $db->f('idclientslang');
+                    $firstClientsLang = $db->f('idclientslang');
                 }
             } else {
                 $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> '.$db->f('name'), $db->f('idclientslang'), false);
-                $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
-                $i++;
+                $oHtmlSelect->addOptionElement($counter, $oHtmlSelectOption);
             }
+            $counter++;
         }
     }
+}
+
+if (!isset($rights_clientslang)) {
+    $rights_clientslang = $firstClientsLang;
 }
 
 // Render Select Box
@@ -194,7 +194,7 @@ $oTpl->set('s', 'OB_CONTENT', '');
 
 function saverightsarea()
 {
-    global $db, $cfg, $groupid;
+    global $groupid;
     global $rights_client, $rights_lang, $rights_admin, $rights_sysadmin, $rights_perms, $rights_list;
 
     $oGroup = new cApiGroup($groupid);
@@ -246,7 +246,7 @@ function saverightsarea()
     $rights_perms = preg_replace('/^,/', '', $rights_perms);
 
     // Update table
-    $oGroup->set('perms', $db->escape($rights_perms));
+    $oGroup->set('perms', $oGroup->escape($rights_perms));
     $oGroup->store();
 
     // Save the other rights
@@ -255,9 +255,8 @@ function saverightsarea()
 
 function saverights()
 {
-    global $rights_list, $rights_list_old, $db;
-    global $cfg, $groupid, $rights_client, $rights_lang;
-    global $perm, $sess, $notification;
+    global $perm, $notification, $db, $groupid;
+    global $rights_list, $rights_list_old, $rights_client, $rights_lang;
 
     // If no checkbox is checked
     if (!is_array($rights_list)) {

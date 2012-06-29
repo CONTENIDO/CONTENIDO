@@ -39,10 +39,6 @@ if (!isset($rights_client)) {
     $rights_lang = $lang;
 }
 
-if (!isset($rights_clientslang)) {
-    $rights_clientslang = $firstclientslang;
-}
-
 if (!is_object($db2)) {
     $db2 = new DB_Contenido();
 }
@@ -87,8 +83,8 @@ $oTpl->set('s', 'TYPE_ID', 'userid');
 $oTpl->set('s', 'USER_ID', $userid);
 $oTpl->set('s', 'AREA', $area);
 
-$muser = new cApiUser($userid);
-$userperms = $muser->getField('perms');
+$oUser = new cApiUser($userid);
+$userPerms = $oUser->getField('perms');
 
 ob_start();
 
@@ -97,39 +93,43 @@ $oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
 // Selectbox for clients
 $oHtmlSelect = new cHTMLSelectElement('rights_clientslang', '', 'rights_clientslang');
 
-$clientclass = new cApiClientCollection;
-$clientList = $clientclass->getAccessibleClients();
-$firstsel = false;
-$i = 0;
+$oClientColl = new cApiClientCollection();
+$clientList = $oClientColl->getAccessibleClients();
+$firstSel = false;
+$firstClientsLang = 0;
+$counter = 0;
 
 foreach ($clientList as $key => $value) {
     $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE B.idclient=" . (int) $key . " AND A.idlang=B.idlang";
     $db->query($sql);
 
     while ($db->next_record()) {
-        if ((strpos($userperms, "client[$key]") !== false) &&
-            (strpos($userperms, "lang[".$db->f("idlang")."]") !== false) &&
+        if ((strpos($userPerms, "client[$key]") !== false) &&
+            (strpos($userPerms, "lang[".$db->f("idlang")."]") !== false) &&
             ($perm->have_perm("lang[".$db->f("idlang")."]")))
         {
-            if ($firstsel == false) {
-                $firstsel = true;
-                $firstclientslang = $db->f('idclientslang');
+            if ($firstSel == false) {
+                $firstSel = true;
+                $firstClientsLang = $db->f('idclientslang');
             }
 
             if ($rights_clientslang == $db->f('idclientslang')) {
                 $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> '.$db->f('name'), $db->f('idclientslang'), true);
-                $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
-                $i++;
+                $oHtmlSelect->addOptionElement($counter, $oHtmlSelectOption);
                 if (!isset($rights_client)) {
-                    $firstclientslang = $db->f('idclientslang');
+                    $firstClientsLang = $db->f('idclientslang');
                 }
             } else {
                 $oHtmlSelectOption = new cHTMLOptionElement($value['name'] . ' -> '.$db->f('name'), $db->f('idclientslang'), false);
-                $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
-                $i++;
+                $oHtmlSelect->addOptionElement($counter, $oHtmlSelectOption);
             }
+            $counter++;
         }
     }
+}
+
+if (!isset($rights_clientslang)) {
+    $rights_clientslang = $firstClientsLang;
 }
 
 // Render Select Box
@@ -198,9 +198,9 @@ if ($oClientLang->isLoaded()) {
     ob_end_clean();
 
     // Account is sysadmin
-    if (strpos($userperms, 'sysadmin') !== false) {
+    if (strpos($userPerms, 'sysadmin') !== false) {
         $oTpl->set('s', 'NOTIFICATION', $notification->messageBox('warning', i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."), 0));
-    } else if (strpos($userperms, 'admin[') !== false) {
+    } else if (strpos($userPerms, 'admin[') !== false) {
         // Account is only assigned to clients with admin rights
         $oTpl->set('s', 'NOTIFICATION', $notification->messageBox('warning', i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."), 0));
     } else {
@@ -230,7 +230,7 @@ if ($bEndScript == true) {
 
 function saverightsarea()
 {
-    global $db, $cfg, $userid;
+    global $userid;
     global $rights_client, $rights_lang, $rights_admin, $rights_sysadmin, $rights_perms, $rights_list;
 
     $oUser = new cApiUser($userid);
@@ -282,7 +282,7 @@ function saverightsarea()
     $rights_perms = preg_replace('/^,/', '', $rights_perms);
 
     // Update table
-    $oUser->set('perms', $db->escape($rights_perms));
+    $oUser->set('perms', $oUser->escape($rights_perms));
     $oUser->store();
 
     // Save the other rights
@@ -291,9 +291,8 @@ function saverightsarea()
 
 function saverights()
 {
-    global $rights_list, $rights_list_old, $db;
-    global $cfg, $userid, $rights_client, $rights_lang;
-    global $perm, $sess, $notification;
+    global $perm, $notification, $db, $userid;
+    global $rights_list, $rights_list_old, $rights_client, $rights_lang;
 
     // If no checkbox is checked
     if (!is_array($rights_list)) {
