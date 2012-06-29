@@ -42,7 +42,7 @@ class ContenidoTestHelper
     private static function _getDatabase()
     {
         if (self::$_db == null) {
-            self::$_db = new DB_Contenido();
+            self::$_db = cRegistry::getDb();
         }
         return self::$_db;
     }
