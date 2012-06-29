@@ -475,7 +475,7 @@ function checkCatPermission($idcatlang, $public)
 
     global $auth;
 
-    $oDB = new DB_Contenido();
+    $oDB = cRegistry::getDb();
 
     $frontendPermissionCollection = new cApiFrontendPermissionCollection();
     $visible=false;

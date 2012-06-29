@@ -23,7 +23,7 @@
  */
 
 if (!isset($db)) {
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 }
 if (!isset($tpl)) {
     $tpl = new Template();

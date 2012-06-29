@@ -18,7 +18,7 @@
  */
 
 if (!isset($db)) {
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 }
 
 $iSelectedCat = intval("CMS_VALUE[1]");
