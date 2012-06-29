@@ -157,7 +157,7 @@ class Cms_Image {
         $this->oSess         = $oSess;
 
         //init other variables with default values
-        $this->oDb             = new DB_Contenido();
+        $this->oDb             = cRegistry::getDb();
         $this->sUploadPath     = $this->aCfgClient[$this->iClient]['upl']['path'];
 
         //define class array which contains all names of the image properties. They were also base for generating dynamic javascripts for

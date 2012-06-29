@@ -40,7 +40,7 @@ class Cat {
 
         cDeprecated("Use class cApiCategoryLanguage instead.");
 
-        $db = new DB_Contenido;
+        $db = cRegistry::getDb();
 
         $idlang     = Contenido_Security::toInteger($idlang);
 

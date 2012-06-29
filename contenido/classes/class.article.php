@@ -244,7 +244,7 @@ class ArticleCollection
         global $cfg;
 
         $this->tab = $cfg['tab'];
-        $this->db = new DB_Contenido();
+        $this->db = cRegistry::getDb();
 
         if (!is_numeric($options['idcat'])) {
             return 'idcat has to be defined';
@@ -332,7 +332,7 @@ class ArticleCollection
 
         $this->db->query($sql);
 
-        $db2 = new DB_Contenido();
+        $db2 = cRegistry::getDb();
         $sql = "SELECT startidartlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat=".$idcat." AND idlang=".$this->lang;
         $db2->query($sql);
         $db2->next_record();

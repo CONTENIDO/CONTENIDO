@@ -202,7 +202,7 @@ class Cms_Teaser {
         //init other variables with default values
         $this->aCMSTypes = null;
         $this->aSettings = array();
-        $this->oDb = new DB_Contenido();
+        $this->oDb = cRegistry::getDb();
 
         //define class array which contains all names of teaser properties. They were also base for generating dynamic javascripts for
         //retrival this properties out of html forms and retriving their values to screen
@@ -342,7 +342,7 @@ class Cms_Teaser {
      * @access private
      */
     private function getCountSelect($sSelected) {
-        $this->oDb = new DB_Contenido();
+        $this->oDb = cRegistry::getDb();
 
         $oHtmlSelect = new cHTMLSelectElement ('teaser_count', "", 'teaser_count');
 

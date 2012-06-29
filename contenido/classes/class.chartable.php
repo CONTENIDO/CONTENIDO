@@ -51,7 +51,7 @@ class cCharacterConverter
 
     function cCharacterConverter ()
     {
-        $this->_oDB = new DB_Contenido;
+        $this->_oDB = cRegistry::getDb();
         $this->_aAliasCache = array();
         $this->_aCharCache = array();
     }

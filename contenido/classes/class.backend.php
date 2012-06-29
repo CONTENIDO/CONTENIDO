@@ -273,7 +273,7 @@ class Contenido_Backend {
     function log($idcat, $idart, $client, $lang, $idaction) {
         global $perm, $auth, $cfg;
 
-        $db_log = new DB_Contenido;
+        $db_log = cRegistry::getDb();
 
         $timestamp = date("Y-m-d H:i:s");
         $idcatart = "0";

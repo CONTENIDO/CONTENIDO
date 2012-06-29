@@ -88,7 +88,7 @@ abstract class SearchBaseAbstract
         $this->bDebug = true;
 
         if ($oDB == null) {
-            $this->db = new DB_Contenido();
+            $this->db = cRegistry::getDb();
         } elseif (is_object($oDB)) {
             $this->db = $oDB;
         }

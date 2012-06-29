@@ -367,7 +367,7 @@ abstract class Contenido_ItemBaseAbstract
     {
         global $cfg;
 
-        $this->db = new DB_Contenido();
+        $this->db = cRegistry::getDb();
 
         if ($sTable == '') {
             $sMsg = "$sClassName: No table specified. Inherited classes *need* to set a table";
@@ -411,7 +411,7 @@ abstract class Contenido_ItemBaseAbstract
     protected function _getSecondDBInstance()
     {
         if (!isset($this->secondDb) || !($this->secondDb instanceof DB_Contenido)) {
-            $this->secondDb = new DB_Contenido();
+            $this->secondDb = cRegistry::getDb();
         }
         return $this->secondDb;
     }

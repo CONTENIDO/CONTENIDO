@@ -151,7 +151,7 @@ class Cms_LinkEditor {
         $this->oSess         = $oSess;
 
         //init other variables with default values
-        $this->oDb             = new DB_Contenido();
+        $this->oDb             = cRegistry::getDb();
         $this->iRootLevelId    = 0;
         $this->iRootIdcat     = 0;
         $this->imaxLevel     = $this->getMaxLevel();
@@ -245,7 +245,7 @@ class Cms_LinkEditor {
     private function getParentIdcatByIdcat($idcat, $aIdcat){
         array_push($aIdcat, $idcat);
         //print_r($aIdcat);
-        $sqlDb = new DB_Contenido;
+        $sqlDb = cRegistry::getDb();
         $sql = "SELECT distinct
                         *
                     FROM
@@ -440,7 +440,7 @@ class Cms_LinkEditor {
       */
     public function buildDirectoryList( $iLevelId = 0, $iParentidcat = 0, $aDirectories = array() ) {
 
-        $sqlDb = new DB_Contenido;
+        $sqlDb = cRegistry::getDb();
         $sql = "SELECT distinct
                     *
                 FROM
@@ -489,7 +489,7 @@ class Cms_LinkEditor {
         $oHtmlSelectOption = new cHTMLOptionElement('Kein', '', false);
         $oHtmlSelect->addOptionElement(0, $oHtmlSelectOption);
         if($this->aLink['link_type'] == 'intern' && $iIdCat == $this->aLink['link_src']){//exist really a value, search for reload
-            $sqlDb = new DB_Contenido;
+            $sqlDb = cRegistry::getDb();
             $sql = "SELECT distinct
                         e.*
                     FROM
@@ -520,7 +520,7 @@ class Cms_LinkEditor {
             //set default value
             $oHtmlSelect->setDefault($this->aLink['link_src']);
         } else if($iIdCat != 0){// first, if not value saved, search from js
-            $sqlDb = new DB_Contenido;
+            $sqlDb = cRegistry::getDb();
             $sql = "SELECT distinct
                         e.*
                     FROM

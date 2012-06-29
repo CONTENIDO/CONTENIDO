@@ -97,7 +97,7 @@ class TemplateConfig
     {
         global $cfg, $lang, $client;
 
-        $this->db = new DB_Contenido;
+        $this->db = cRegistry::getDb();
 
         $this->cfg = &$cfg;
         $this->lang = &$lang;

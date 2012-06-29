@@ -79,7 +79,7 @@ class SynchronizeLayouts {
      */
     private function _updateModulnameInDb($oldName, $newName, $idclient)
     {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
 
         //Select depending from idclient all moduls wiht the name $name
         $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s" , $this->_cfg["tab"]["lay"] , $oldName ,$idclient);
@@ -101,7 +101,7 @@ class SynchronizeLayouts {
      */
      private  function _addLayout($name, $idclient)
      {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         //get next id from $cfg["tab"]["mod"]
         //  $nextId = $db->nextid($this->_cfg["tab"]["lay"]);
         //insert new modul in con_mod
@@ -134,7 +134,7 @@ class SynchronizeLayouts {
      */
     private  function _isExistInTable($alias, $idclient)
     {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
 
         //Select depending from idclient all moduls wiht the name $name
         $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s" , $this->_cfg["tab"]["lay"] , $alias ,$idclient);
@@ -167,7 +167,7 @@ class SynchronizeLayouts {
     public function setLastModified($timestamp, $idlay)
     {
         $sql = sprintf("UPDATE %s SET lastmodified ='%s' WHERE idlay=%s ", $this->_cfg["tab"]["lay"],date("Y-m-d H:i:s",$timestamp),$idlay);
-        $myDb = new DB_Contenido();
+        $myDb = cRegistry::getDb();
         $myDb->query($sql);
     }
 
@@ -182,7 +182,7 @@ class SynchronizeLayouts {
         $notification = new Contenido_Notification();
         $dir = $this->_cfgClient[$this->_client]['layout_path'];
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $db->query($sql);
         $retIdMod = 0;
         while ($db->next_record()) {

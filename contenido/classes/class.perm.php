@@ -570,7 +570,7 @@ class Contenido_Perm
         // If is not admin or sysadmin
 
         if (!is_object($this->db)) {
-            $this->db = new DB_Contenido();
+            $this->db = cRegistry::getDb();
         }
 
         $this->showareas($mainarea);
@@ -627,7 +627,7 @@ class Contenido_Perm
         global $area_tree, $sess, $perm, $cfg;
 
         if (!is_object($this->db)) {
-            $this->db = new DB_Contenido;
+            $this->db = cRegistry::getDb();
         }
 
         $mainarea = $this->getIDForArea($mainarea);

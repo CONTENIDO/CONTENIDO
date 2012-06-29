@@ -148,8 +148,8 @@ class Contenido_Navigation
     {
         global $cfg, $perm, $belang;
 
-        $db  = new DB_Contenido();
-        $db2 = new DB_Contenido();
+        $db  = cRegistry::getDb();
+        $db2 = cRegistry::getDb();
 
         // Load main items
         $sql = "SELECT idnavm, location FROM " . $cfg['tab']['nav_main'] . " ORDER BY idnavm";
@@ -388,7 +388,7 @@ class Contenido_Navigation
             $availableLanguages->select('', '', 'idlang ASC');
         }
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
 
         if ($availableLanguages->count() > 0) {
             while ($myLang = $availableLanguages->nextAccessible()) {

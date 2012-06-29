@@ -76,7 +76,7 @@ class LayoutInFile {
      */
     public function __construct($layoutId, $layoutCode, $cfg, $lang, $db = null) {
         if ($db === null) {
-            $db = new DB_Contenido();
+            $db = cRegistry::getDb();
         }
 
         $this->_db = $db;
