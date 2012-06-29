@@ -169,9 +169,12 @@ class Cms_Image {
         if (isset($_POST['image_action']) && $_POST['image_action'] == 'store' && isset($_POST['image_id']) && (int)$_POST['image_id'] == $this->iId) {
             $this->storeImage($idart);
 
-
-            $path = $this->aCfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&changeview=edit&client=$this->iClient";
-            header('location:'.$this->oSess->url($path));
+        	if(isset($_REQUEST['area']) && $_REQUEST['area'] == 'con_content_list'){
+				$path = $this->aCfg['path']['contenido_fullhtml']."main.php?area=con_content_list&action=con_content&changeview=edit&idart=$idart&idartlang=$iIdArtLang&idcat=$idcat&client=$iClient&lang=$iLang&frame=4&contenido=".$_REQUEST['contenido'];
+			} else {
+				$path = $this->aCfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&changeview=edit&client=$this->iClient";
+			}
+			header('location:'.$this->oSess->url($path));
 
         }
 
