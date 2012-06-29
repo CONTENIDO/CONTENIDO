@@ -82,10 +82,10 @@ if (!isset($idlay)) {
     $idlay = 0;
 }
 if (!isset($db2) || !is_object($db2)) {
-    $db2 = new DB_Contenido();
+    $db2 = cRegistry::getDb();
 }
 if (!isset($db3) || !is_object($db3)) {
-    $db3 = new DB_Contenido();
+    $db3 = cRegistry::getDb();
 }
 
 $tpl->reset();

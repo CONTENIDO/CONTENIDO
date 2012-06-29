@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$db2 = new DB_Contenido();
+$db2 = cRegistry::getDb();
 $tpl3 = new Template();
 
 if (!$perm->have_perm_area_action($area, $action)) {

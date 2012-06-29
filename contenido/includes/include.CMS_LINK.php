@@ -229,7 +229,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
         while ($db->next_record()) {
             //get description from con_upl_meta pro id
-            $db2 = new DB_Contenido();
+            $db2 = cRegistry::getDb();
             $sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
                  . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
             $db2->query($sql);
@@ -251,7 +251,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
         while ($db->next_record()) {
             //get description from con_upl_meta pro id
-            $db2 = new DB_Contenido();
+            $db2 = cRegistry::getDb();
             $sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
                  . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
             $db2->query($sql);
@@ -272,7 +272,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
         while ($db->next_record()) {
             //get description from con_upl_meta pro id
-            $db2 = new DB_Contenido();
+            $db2 = cRegistry::getDb();
             $sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
                  . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
             $db2->query($sql);
@@ -293,7 +293,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
         while ($db->next_record()) {
             //get description from con_upl_meta pro id
-            $db2 = new DB_Contenido();
+            $db2 = cRegistry::getDb();
             $sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
                  . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
             $db2->query($sql);
@@ -315,7 +315,7 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 
         while ($db->next_record()) {
             //get description from con_upl_meta pro id
-            $db2 = new DB_Contenido();
+            $db2 = cRegistry::getDb();
             $sql = "SELECT DISTINCT(description) FROM ".$cfg['tab']['upl_meta']." WHERE "
                  . "idlang='".$lang."' AND idupl=".$db->f('idupl')." ORDER BY id_uplmeta";
             $db2->query($sql);

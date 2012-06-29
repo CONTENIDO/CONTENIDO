@@ -299,8 +299,8 @@ global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client
     return $tpl->generate($cfg['path']['templates'] . 'template.con_str_overview.list.html', 1);
 }
 
-$db2 = new DB_Contenido;
-$db3 = new DB_Contenido;
+$db2 = cRegistry::getDb();
+$db3 = cRegistry::getDb();
 
 //Refresh or reset right frames, when a synclang is changed or a category is synchronized
 $tpl->reset();
@@ -317,7 +317,7 @@ if ($action == "con_synccat")
     $remakeStrTable = true;
 }
 
-if ( !is_object($db2) ) $db2 = new DB_Contenido;
+if ( !is_object($db2) ) $db2 = cRegistry::getDb();
 
 if (!isset($remakeStrTable))
 {

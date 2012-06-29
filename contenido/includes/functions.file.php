@@ -46,7 +46,7 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
     global $cfg;
 
     if (!isset($oDb) || !is_object($oDb)) {
-        $oDb = new DB_Contenido();
+        $oDb = cRegistry::getDb();
     }
 
     $iIdClient = Contenido_Security::toInteger($iIdClient);
@@ -82,7 +82,7 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
     global $cfg;
 
     if (!isset($oDb) || !is_object($oDb)) {
-        $oDb = new DB_Contenido();
+        $oDb = cRegistry::getDb();
     }
 
     $iIdClient = Contenido_Security::toInteger($iIdClient);
@@ -127,7 +127,7 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
     global $cfg;
 
     if (!isset($oDb) || !is_object($oDb)) {
-        $oDb = new DB_Contenido();
+        $oDb = cRegistry::getDb();
     }
 
     if ($sFilenameNew == '') {

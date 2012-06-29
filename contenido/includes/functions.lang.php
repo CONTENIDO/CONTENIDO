@@ -160,8 +160,8 @@ function langDuplicateFromFirstLanguage($client, $idlang)
     if ($db->next_record()) {
         // if there is already a language copy from it
 
-        $db2 = new DB_Contenido();
-        $db3 = new DB_Contenido();
+        $db2 = cRegistry::getDb();
+        $db3 = cRegistry::getDb();
 
         $firstlang = (int) $db->f('idlang');
 

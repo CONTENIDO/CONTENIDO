@@ -49,7 +49,7 @@ if ($action == 'str_renamecat' && isset($_POST['newcategoryalias'])) {
 }
 
 
-$oDirectionDb = new DB_Contenido();
+$oDirectionDb = cRegistry::getDb();
 
 /**
  * Build a Category select Box containg all categories which user is allowed to create new categories
@@ -60,7 +60,7 @@ function buildCategorySelectRights()
 {
     global $cfg, $client, $lang, $idcat, $perm, $tmp_area;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $oHtmlSelect = new cHTMLSelectElement('idcat', '', 'new_idcat');
 

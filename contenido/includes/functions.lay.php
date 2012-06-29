@@ -48,8 +48,8 @@ function layEditLayout($idlay, $name, $description, $code) {
 
     global $client, $auth, $cfg, $sess, $lang, $area_tree, $perm, $cfgClient;
 
-    $db2= new DB_Contenido;
-    $db = new DB_Contenido;
+    $db2= cRegistry::getDb();
+    $db = cRegistry::getDb();
 
     $date = date("Y-m-d H:i:s");
     $author = "".$auth->auth["uname"]."";

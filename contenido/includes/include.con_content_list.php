@@ -271,7 +271,7 @@ cRegistry::shutdown();
         $contenido = $_REQUEST['contenido'];
 
         if (!is_object($db2)) {
-            $db2 = new DB_Contenido();
+            $db2 = cRegistry::getDb();
         }
         // End: Variables required in content type codes
         // #####################################################################

@@ -35,7 +35,7 @@ if (!isset($actionarea)) {
 }
 
 if (!is_object($db2)) {
-    $db2 = new DB_Contenido();
+    $db2 = cRegistry::getDb();
 }
 
 if (!is_object($oTpl)) {

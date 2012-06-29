@@ -38,7 +38,7 @@ cInclude("includes", "functions.tpl.php");
 cInclude("includes", "functions.str.php");
 cInclude("includes", "functions.pathresolver.php");
 $firstMark = false;
-$db2 = new DB_Contenido();
+$db2 = cRegistry::getDb();
 
 $idcat = (isset($_REQUEST['idcat']) && is_numeric($_REQUEST['idcat'])) ? $_REQUEST['idcat'] : -1;
 $next  = (isset($_REQUEST['next']) && is_numeric($_REQUEST['next']) && $_REQUEST['next'] > 0) ? $_REQUEST['next'] : 0;
@@ -365,7 +365,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             if ($timemgmt == "1") {
                 $sql = "SELECT NOW() AS TIME";
 
-                $db3 = new DB_Contenido();
+                $db3 = cRegistry::getDb();
 
                 $db3->query($sql);
                 $db3->next_record();
@@ -440,7 +440,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             // Article Template
             if (!is_object($db2)) {
-                $db2 = new DB_Contenido();
+                $db2 = cRegistry::getDb();
             }
 
             $sql2 = "SELECT

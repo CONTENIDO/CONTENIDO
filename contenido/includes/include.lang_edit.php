@@ -42,7 +42,7 @@ $clang = new cApiLanguage($idlang);
 #Script for refreshing Language Box in Header
 $newOption = '';
 
-$db2 = new DB_Contenido;
+$db2 = cRegistry::getDb();
 
 $sReload = '<script language="javascript">
                 var left_bottom = top.content.left.left_bottom;

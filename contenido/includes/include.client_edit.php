@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 $properties = new cApiPropertyCollection();
 
-$db2 = new DB_Contenido();
+$db2 = cRegistry::getDb();
 
 if ($action == "client_new") {
    // $nextid = $db->nextid($cfg["tab"]["clients"]);

@@ -45,7 +45,7 @@ if (!isset($idcat)) {
 
 
 $edit = 'true';
-$db2 = new DB_Contenido();
+$db2 = cRegistry::getDb();
 $scripts = '';
 $cssData = '';
 $jsData = '';

@@ -285,7 +285,7 @@ function buildUserOrGroupPermsFromRequest($bAddUserToClient = false)
 
     if (count($aLang) > 0 && count($aClient) > 0) {
         // adding language perms makes sense if we have also at least one selected client
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         foreach ($aLang as $value) {
             if (checkLangInClients($aClient, $value, $cfg, $db)) {
                 $aPerms[] = sprintf('lang[%s]', $value);

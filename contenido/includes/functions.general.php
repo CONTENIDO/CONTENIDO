@@ -77,7 +77,7 @@ function isArtInMultipleUse($idart)
 {
     global $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
     $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = ". (int) $idart;
     $db->query($sql);
 
@@ -399,8 +399,8 @@ function cleanupSessions()
 {
     global $cfg;
 
-    $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $db = cRegistry::getDb();
+    $db2 = cRegistry::getDb();
     $col = new cApiInUseCollection();
     $auth = new Contenido_Challenge_Crypt_Auth();
 
@@ -504,7 +504,7 @@ function rereadClients()
     global $cfgClient, $errsite_idcat, $errsite_idart, $db, $cfg;
 
     if (!is_object($db)) {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
     }
 
     $sql = 'SELECT idclient, name, errsite_cat, errsite_art FROM ' . $cfg['tab']['clients'];
@@ -801,7 +801,7 @@ function setArtspecDefault($idartspec)
 function buildArticleSelect($sName, $iIdCat, $sValue)
 {
     global $cfg, $client, $lang, $idcat;
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $html = '';
     $html .= '<select id="'.$sName.'" name="'.$sName.'">';
@@ -841,8 +841,8 @@ function buildCategorySelect($sName, $sValue, $sLevel = 0, $sStyle = '')
 {
     global $cfg, $client, $lang, $idcat;
 
-    $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $db = cRegistry::getDb();
+    $db2 = cRegistry::getDb();
 
     $html = '';
     $html .= '<select id="'.$sName.'" style="'.$sStyle.'" name="'.$sName.'">';

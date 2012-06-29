@@ -46,7 +46,7 @@ function getEncodingByLanguage (&$oDb, $iLang, $cfg) {
     $sResult = false;
 
     if (!is_object($oDb)) {
-        $oDb = new DB_Contenido();
+        $oDb = cRegistry::getDb();
     }
 
     $iLang = (int) $iLang;

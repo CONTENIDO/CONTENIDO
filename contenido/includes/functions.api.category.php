@@ -66,7 +66,7 @@ function cApiCatGetLevelNode($idcat, $minLevel = 0)
 {
     global $cfg, $client, $lang;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT
                 a.name AS name,

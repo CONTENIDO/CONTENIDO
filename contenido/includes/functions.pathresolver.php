@@ -48,7 +48,7 @@ function prResolvePathViaURLNames($path)
     $handle = startTiming('prResolvePathViaURLNames', array($path));
 
     // Initialize variables
-    $db = new DB_Contenido;
+    $db = cRegistry::getDb();
     $categories = array();
     $results = array();
 
@@ -139,7 +139,7 @@ function prResolvePathViaCategoryNames($path, &$iLangCheck)
     $handle = startTiming('prResolvePathViaCategoryNames', array($path));
 
     // Initialize variables
-    $db = new DB_Contenido;
+    $db = cRegistry::getDb();
     $categories = array ();
     $results = array();
     $iLangCheckOrg = $iLangCheck;
@@ -293,7 +293,7 @@ function prCreateURLNameLocationString($idcat, $seperator, & $cat_str, $makeLink
         }
     }
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT
                 a.urlname AS urlname,

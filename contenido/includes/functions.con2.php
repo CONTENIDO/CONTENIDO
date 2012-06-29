@@ -95,7 +95,7 @@ function getArtLang($idart, $idlang)
 
     static $oDB;
     if (!isset($oDB)) {
-        $oDB = new DB_Contenido();
+        $oDB = cRegistry::getDb();
     }
 
     $sql = 'SELECT idartlang FROM ' . $cfg['tab']['art_lang'] . '
@@ -121,7 +121,7 @@ function conGetAvailableMetaTagTypes()
 
     static $oDB;
     if (!isset($oDB)) {
-        $oDB = new DB_Contenido();
+        $oDB = cRegistry::getDb();
     }
 
     $sql = 'SELECT idmetatype, metatype, fieldtype, maxlength, fieldname
@@ -210,7 +210,7 @@ function conGenerateKeywords($client, $lang)
 
     static $oDB;
     if (!isset($oDB)) {
-        $oDB = new DB_Contenido();
+        $oDB = cRegistry::getDb();
     }
 
     $options = array('img', 'link', 'linktarget', 'swf'); // cms types to be excluded from indexing
@@ -253,7 +253,7 @@ function conGetContentFromArticle($iIdArtLang)
 
     static $oDB;
     if (!isset($oDB)) {
-        $oDB = new DB_Contenido();
+        $oDB = cRegistry::getDb();
     }
 
     $aContent = array();

@@ -94,7 +94,7 @@ require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'functions.i
 // Call hook after plugins are loaded
 CEC_Hook::execute('Contenido.Frontend.AfterLoadPlugins');
 
-$db = new DB_Contenido();
+$db = cRegistry::getDb();
 
 $sess->register('cfgClient');
 $sess->register('errsite_idcat');

@@ -37,8 +37,8 @@ global $db_str;
 global $db_str2;
 
 if (class_exists('DB_Contenido')) {
-    $db_str = new DB_Contenido();
-    $db_str2 = new DB_Contenido();
+    $db_str = cRegistry::getDb();
+    $db_str2 = cRegistry::getDb();
 }
 
 
@@ -785,7 +785,7 @@ function strDeleteCategory($idcat)
         return "0202";
     }
 
-    $db2 = new DB_Contenido();
+    $db2 = cRegistry::getDb();
     $remakeCatTable = true;
     $remakeStrTable = true;
 
@@ -1108,7 +1108,7 @@ function strSyncCategory($idcatParam, $sourcelang, $targetlang, $bMultiple = fal
 {
     global $cfg;
 
-    $db2 = new DB_Contenido();
+    $db2 = cRegistry::getDb();
     $bMultiple = (bool) $bMultiple;
 
     $aCatArray = array();
@@ -1261,8 +1261,8 @@ function strCopyCategory($idcat, $destidcat, $remakeTree = true, $bUseCopyLabel 
         }
     }
 
-    $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $db = cRegistry::getDb();
+    $db2 = cRegistry::getDb();
 
     // Copy all articles
     $sql = "SELECT A.idart, B.idartlang FROM " . $cfg['tab']['cat_art'] . " AS A, " . $cfg['tab']['art_lang'] . " AS B WHERE A.idcat = " . $idcat . " AND B.idart = A.idart AND B.idlang = " . $lang;
@@ -1297,7 +1297,7 @@ function strCopyTree($idcat, $destcat, $remakeTree = true, $bUseCopyLabel = true
 
     $newidcat = strCopyCategory($idcat, $destcat, false, $bUseCopyLabel);
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
     $db->query("SELECT idcat FROM " . $cfg['tab']['cat'] . " WHERE parentid = " . (int) $idcat);
     while ($db->next_record()) {
         strCopyTree($db->f("idcat"), $newidcat, false, $bUseCopyLabel);

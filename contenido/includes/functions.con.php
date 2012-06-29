@@ -507,7 +507,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     global $auth, $cfg, $cfgClient, $client, $lang, $_cecRegistry;
 
     if ($bForce == true) {
-        $db = new DB_Contenido;
+        $db = cRegistry::getDb();
     } else {
         global $db;
     }
@@ -958,7 +958,7 @@ function conChangeTemplateForCat($idcat, $idtpl)
     } else {
 
         if (!is_object($db2)) {
-            $db2 = new DB_Contenido();
+            $db2 = cRegistry::getDb();
         }
 
         // check if a pre-configuration is assigned
@@ -1188,7 +1188,7 @@ function conCreateLocationString($idcat, $seperator, &$cat_str, $makeLink = fals
         }
     }
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT
                 a.name AS name,
@@ -1305,7 +1305,7 @@ function conGenerateCodeForArtInAllCategories($idart)
 {
     global $lang, $client, $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($idart)."'";
     $db->query($sql);
@@ -1326,7 +1326,7 @@ function conGenerateCodeForAllArtsInCategory($idcat)
 {
     global $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
     $db->query($sql);
@@ -1345,7 +1345,7 @@ function conGenerateCodeForClient()
 {
     global $client, $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT A.idcatart
             FROM ".$cfg["tab"]["cat_art"]." as A, ".$cfg["tab"]["cat"]." as B
@@ -1368,7 +1368,7 @@ function conGenerateCodeForAllartsUsingLayout($idlay)
 {
     global $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT idtpl FROM ".$cfg["tab"]["tpl"]." WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
     $db->query($sql);
@@ -1389,7 +1389,7 @@ function conGenerateCodeForAllartsUsingMod($idmod)
 {
     global $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT idtpl FROM ".$cfg["tab"]["container"]." WHERE idmod = '".Contenido_Security::toInteger($idmod)."'";
     $db->query($sql);
@@ -1410,8 +1410,8 @@ function conGenerateCodeForAllArtsUsingTemplate($idtpl)
 {
     global $cfg, $lang, $client;
 
-    $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $db = cRegistry::getDb();
+    $db2 = cRegistry::getDb();
 
     // Search all categories
     $sql = "SELECT
@@ -1472,7 +1472,7 @@ function conGenerateCodeForAllArts()
 {
     global $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"];
     $db->query($sql);
@@ -1493,7 +1493,7 @@ function conSetCodeFlag($idcatart)
 {
     global $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "UPDATE ".$cfg["tab"]["cat_art"]." SET createcode = '1' WHERE idcatart='".Contenido_Security::toInteger($idcatart)."'";
     $db->query($sql);
@@ -1519,8 +1519,8 @@ function conFlagOnOffline()
 {
     global $cfg;
 
-    $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $db = cRegistry::getDb();
+    $db2 = cRegistry::getDb();
 
     // Set all articles which are before our starttime to offline
     $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE NOW() < datestart AND datestart != '0000-00-00 00:00:00' AND datestart IS NOT NULL AND timemgmt = 1";
@@ -1561,8 +1561,8 @@ function conMoveArticles()
 {
     global $cfg;
 
-    $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $db = cRegistry::getDb();
+    $db2 = cRegistry::getDb();
 
     // Perform after-end updates
     $sql = "SELECT idartlang, idart, time_move_cat, time_target_cat, time_online_move FROM ".$cfg["tab"]["art_lang"]." WHERE NOW() > dateend AND dateend != '0000-00-00 00:00:00' AND timemgmt = 1";
@@ -1595,7 +1595,7 @@ function conCopyTemplateConfiguration($srcidtplcfg)
 {
     global $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT idtpl FROM ".$cfg["tab"]["tpl_conf"] ." WHERE idtplcfg = '".Contenido_Security::toInteger($srcidtplcfg)."'";
     $db->query($sql);
@@ -1616,7 +1616,7 @@ function conCopyContainerConf($srcidtplcfg, $dstidtplcfg)
 {
     global $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT number, container FROM ".$cfg["tab"]["container_conf"] . " WHERE idtplcfg = '".Contenido_Security::toInteger($srcidtplcfg)."'";
     $db->query($sql);
@@ -1643,7 +1643,7 @@ function conCopyContent($srcidartlang, $dstidartlang)
 {
     global $cfg;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT idtype, typeid, value, version, author FROM ".$cfg["tab"]["content"]." WHERE idartlang = '".Contenido_Security::toInteger($srcidartlang)."'";
     $db->query($sql);
@@ -1684,8 +1684,8 @@ function conCopyArtLang($srcidart, $dstidart, $newtitle, $bUseCopyLabel = true)
 {
     global $cfg, $lang;
 
-    $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $db = cRegistry::getDb();
+    $db2 = cRegistry::getDb();
 
     $sql = "SELECT idartlang, idlang, idtplcfg, title, pagetitle, summary,
             author, online, redirect, redirect, redirect_url,
@@ -1809,8 +1809,8 @@ function conCopyArticle($srcidart, $targetcat = 0, $newtitle = "", $bUseCopyLabe
 {
     global $cfg, $_cecRegistry;
 
-    $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $db = cRegistry::getDb();
+    $db2 = cRegistry::getDb();
 
     $sql = "SELECT idclient FROM ".$cfg["tab"]["art"] ." WHERE idart = '".Contenido_Security::toInteger($srcidart)."'";
     $db->query($sql);
@@ -1876,7 +1876,7 @@ function conGetTopmostCat($idcat, $minLevel = 0)
 {
     global $cfg, $client, $lang;
 
-    $db = new DB_Contenido();
+    $db = cRegistry::getDb();
 
     $sql = "SELECT
                 a.name AS name,
@@ -1912,8 +1912,8 @@ function conSyncArticle($idart, $srclang, $dstlang)
 {
     global $cfg;
 
-    $db = new DB_Contenido();
-    $db2 = new DB_Contenido();
+    $db = cRegistry::getDb();
+    $db2 = cRegistry::getDb();
 
     // Check if article has already been synced to target language
     $sql = "SELECT * FROM ".$cfg['tab']['art_lang']." WHERE (idart = ".Contenido_Security::toInteger($idart).") AND (idlang= ".Contenido_Security::toInteger($dstlang).")";
@@ -2045,7 +2045,7 @@ function isStartArticle($idartlang, $idcat, $idlang, $db = null)
     global $cfg;
 
     if (!is_object($db)) {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
     }
 
     $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]."
@@ -2070,7 +2070,7 @@ function conGetCategoryAssignments($idart, $db = false)
     global $cfg;
 
     if ($db === false) {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
     }
 
     $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".Contenido_Security::toInteger($idart)."'";
