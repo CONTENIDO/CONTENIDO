@@ -209,7 +209,7 @@ class Contenido_Category extends Contenido_Category_Base {
         // if we don't have a Contenido_Categories object created yet, do it now
         if (is_null($this->oSubCategories)) {
             $this->oSubCategories = new Contenido_Categories($this->oDb, $this->aCfg);
-            $this->_oDb = new DB_Contenido();
+            $this->_oDb = cRegistry::getDb();
         }
         $aSubCategories = $this->_getSubCategoriesAsArray($iIdcat);
         // current load depth: $this->iCurrentSubCategoriesLoadDepth

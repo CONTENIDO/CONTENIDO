@@ -65,7 +65,7 @@ class cApiTemplateCollection extends ItemCollection
 
         global $cfg, $client;
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $sql = 'UPDATE '.$cfg['tab']['tpl'].' SET defaulttemplate=0 WHERE idclient=' . (int) $client;
         $db->query($sql);
 

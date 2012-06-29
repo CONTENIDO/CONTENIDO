@@ -142,7 +142,7 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
         }
         $this->oDb->next_record();
         if ($this->_bAsArray === false) {
-            $oContenidoCategory = new Contenido_Category(new DB_Contenido(), $this->aCfg);
+            $oContenidoCategory = new Contenido_Category(cRegistry::getDb(), $this->aCfg);
             $oContenidoCategory->load(intval($this->oDb->f('idcat')), true, $this->iLang);
             $this->oCategories->add($oContenidoCategory, $oContenidoCategory->getIdCat());
         } else {

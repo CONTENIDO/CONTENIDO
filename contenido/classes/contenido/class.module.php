@@ -344,7 +344,7 @@ class cApiModule extends Item
     {
         global $cfg;
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
 
         $sql = "SELECT
                     c.idmod, c.idtpl, t.name

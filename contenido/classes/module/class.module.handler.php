@@ -164,7 +164,7 @@ class Contenido_Module_Handler
         $this->_encoding = self::getEncoding();
         $this->_fileEncoding = getEffectiveSetting('encoding', 'file_encoding', 'UTF-8');
 
-        $this->_db = new DB_Contenido();
+        $this->_db = cRegistry::getDb();
 
         $this->_idmod = $idmod;
 

@@ -134,7 +134,7 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
                         $this->_client);
         $notification = new Contenido_Notification();
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $db->query($sql);
         $retIdMod = 0;
 
@@ -204,7 +204,7 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
             } else {
                 //modul not in use, delete it
                 $sql = sprintf("DELETE  FROM %s WHERE idmod = %s AND idclient = %s", $this->_cfg["tab"]["mod"], $db->f("idmod"),$this->_client);
-                $myDb = new DB_Contenido();
+                $myDb = cRegistry::getDb();
                 $myDb->query($sql);
             }
         }
@@ -286,7 +286,7 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
      */
     private  function _isExistInTable($alias, $idclient)
     {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
 
         //Select depending from idclient all moduls wiht the name $name
         $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s" , $this->_cfg["tab"]["mod"] , $alias ,$idclient);
@@ -309,7 +309,7 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
      */
     private function _updateModulnameInDb($oldName, $newName, $idclient)
     {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
 
         //Select depending from idclient all moduls wiht the name $name
         $sql = sprintf("SELECT * FROM %s WHERE alias='%s' AND idclient=%s" , $this->_cfg["tab"]["mod"] , $oldName ,$idclient);
@@ -333,7 +333,7 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
     private function _addModul($name, $idclient)
     {
         //insert new modul in con_mod
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $sql = sprintf(" INSERT INTO %s (name,alias,idclient) VALUES('%s','%s',%s) ",
         $this->_cfg["tab"]["mod"], $name,$name, $idclient);
         $db->query($sql);
@@ -351,7 +351,7 @@ class Contenido_Module_Synchronizer extends Contenido_Module_Handler
     public function setLastModified($timestamp,$idmod)
     {
         $sql = sprintf("UPDATE %s SET lastmodified ='%s' WHERE idmod=%s ", $this->_cfg["tab"]["mod"],date("Y-m-d H:i:s",$timestamp),$idmod);
-        $myDb = new DB_Contenido();
+        $myDb = cRegistry::getDb();
         $myDb->query($sql);
     }
 

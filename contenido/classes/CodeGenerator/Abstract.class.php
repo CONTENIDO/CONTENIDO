@@ -152,7 +152,7 @@ abstract class Contenido_CodeGenerator_Abstract
     public function __construct()
     {
         global $cfg, $cfgClient;
-        $this->_db = new DB_Contenido();
+        $this->_db = cRegistry::getDb();
     }
 
 
@@ -295,7 +295,7 @@ abstract class Contenido_CodeGenerator_Abstract
         $idartlang = $this->_idartlang;
 
         if (!is_object($db2)) {
-            $db2 = new DB_Contenido();
+            $db2 = cRegistry::getDb();
         }
         // End: Variables required in content type codes
         // #####################################################################

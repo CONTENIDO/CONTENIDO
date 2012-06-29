@@ -384,7 +384,7 @@ class Groups
         cDeprecated("Use cApiGroupCollection() instead");
         global $cfg;
         $this->table = ($table == '') ? $cfg['tab']['groups'] : $table;
-        $this->db = new DB_Contenido();
+        $this->db = cRegistry::getDb();
     }
     /** @deprecated  [2012-03-27]  Use cApiGroupCollection->delete() instead */
     function deleteGroupByID($groupid)
@@ -425,7 +425,7 @@ class Group
         cDeprecated("Use cApiGroup() instead");
         global $cfg;
         $this->table = ($table == '') ? $cfg['tab']['groups'] : $table;
-        $this->db = new DB_Contenido();
+        $this->db = cRegistry::getDb();
     }
     /** @deprecated  [2012-03-27]  Use cApiGroup->loadGroupByGroupname() instead */
     function loadGroupByGroupname($groupname)

@@ -1228,7 +1228,7 @@ class Users
         cDeprecated("Use cApiUserCollection() instead");
         global $cfg;
         $this->table = ($table == '') ? $cfg['tab']['phplib_auth_user_md5'] : $table;
-        $this->db = new DB_Contenido();
+        $this->db = cRegistry::getDb();
     }
     /** @deprecated [2012-03-22] Use cApiUserCollection->create() instead */
     function create($username)
@@ -1277,7 +1277,7 @@ class User
         cDeprecated("Use cApiUser() instead");
         global $cfg;
         $this->table = ($table == '') ? $cfg['tab']['phplib_auth_user_md5'] : $table;
-        $this->db = new DB_Contenido();
+        $this->db = cRegistry::getDb();
     }
     /** @deprecated [2012-03-22] Use cApiUser->loadUserByUsername() instead */
     function loadUserByUsername($username)

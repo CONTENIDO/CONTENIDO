@@ -138,7 +138,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler
                             ORDER BY %s %s ",
         $cfg['tab']['mod'], $idClient,  $this->_moduleType, '%'.$this->_filter.'%', '%'.$this->_filter.'%', '%'.$this->_filter.'%', $this->_orderBy, $this->_sortOrder);
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
 
         $db->query($sql1 . $sql2);
 
@@ -246,7 +246,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler
                             ORDER BY %s %s ",
         $cfg['tab']['mod'], $idClient,  $this->_moduleType,'%'.$this->_filter.'%', $this->_orderBy, $this->_sortOrder);
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $db->query($sql);
         $result = array();
 
@@ -277,7 +277,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler
                             ORDER BY %s %s ",
         $cfg['tab']['mod'], $idClient,  $this->_moduleType, $this->_orderBy, $this->_sortOrder);
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $db->query($sql);
         $result = array();
 
@@ -311,7 +311,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler
                             ORDER BY %s %s ",
         $cfg['tab']['mod'], $idClient,  $this->_moduleType, $this->_orderBy, $this->_sortOrder);
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $db->query($sql);
         $result = array();
 
@@ -346,7 +346,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler
                             ORDER BY %s %s ",
         $cfg['tab']['mod'], $idClient,  $this->_moduleType, '%'.$this->_filter.'%', $this->_orderBy, $this->_sortOrder);
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $db->query($sql);
         $result = array();
 
@@ -379,7 +379,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler
                             ORDER BY %s %s ",
         $cfg['tab']['mod'], $idClient,  $this->_moduleType, '%'.$this->_filter.'%', $this->_orderBy, $this->_sortOrder);
 
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $db->query($sql);
         $result = array();
 

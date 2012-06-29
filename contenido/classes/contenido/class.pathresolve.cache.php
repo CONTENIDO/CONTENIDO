@@ -48,7 +48,7 @@ class cApiPathresolveCacheHelper
     public static function setup($cfg)
     {
         if (true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
-            $db = new DB_Contenido();
+            $db = cRegistry::getDb();
             $tableName = $cfg['sql']['sqlprefix'] . '_pathresolve_cache';
 
             $sql = "SHOW TABLES LIKE '" . $db->escape($tableName) . "'";

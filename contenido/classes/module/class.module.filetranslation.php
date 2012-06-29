@@ -149,7 +149,7 @@ class Contenido_Module_FileTranslation extends Contenido_Module_Handler
      */
     public function saveTranslationsFromDbToFile()
     {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $sql = sprintf('SELECT clang.idlang as idlang,client.idclient as idclient,modul.idmod as idmod FROM %s as clang , %s as modul, %s as client WHERE clang.idclient=client.idclient ', $this->_cfg['tab']['clients_lang'],$this->_cfg['tab']['mod'],$this->_cfg['tab']['clients']);
 
         $db->query($sql);
@@ -166,7 +166,7 @@ class Contenido_Module_FileTranslation extends Contenido_Module_Handler
 
     public function saveAllTranslations()
     {
-        $db = new DB_Contenido();
+        $db = cRegistry::getDb();
         $sql = "SELECT module.idmod,
                         translation.idlang,
                         translation.original,
@@ -207,12 +207,12 @@ class Contenido_Module_FileTranslation extends Contenido_Module_Handler
      */
     public function saveTranslations()
     {
-        $dbLanguage = new DB_Contenido();
+        $dbLanguage = cRegistry::getDb();
         $sqlLanguage = sprintf("SELECT * FROM %s", $this->_cfg['tab']['lang']);
         $dbLanguage->query($sqlLanguage);
 
         while ($dbLanguage->next_record()) {
-            $db = new DB_Contenido();
+            $db = cRegistry::getDb();
             $sql = sprintf('SELECT * FROM %s WHERE idlang=%s AND idmod=%s' , $this->_cfg['tab']['mod_translations'] , $dbLanguage->f('idlang') , $this->_idmod);
 
             $db->query($sql);
