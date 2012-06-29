@@ -113,7 +113,7 @@ if (!defined('CON_FRAMEWORK')) {
      private function setLayoutTable(){
 
          if(!is_object($this->oDB))
-          $this->oDB = new DB_Contenido;
+          $this->oDB = cRegistry::getDb();
 
         $sSql = "";
         $aLayout = array();
