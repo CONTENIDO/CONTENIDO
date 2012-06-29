@@ -31,6 +31,9 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
+cInclude("includes", "functions.str.php");
+cInclude("includes", "functions.pathresolver.php");
+
 if (!isset($idcat)) {
     cRegistry::shutdown();
     return;
@@ -179,7 +182,18 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
             </style>
         </head>
         <body style="margin: 10px">';
+    //Show path of selected category to user
+    $catString = '';
+    prCreateURLNameLocationString($idcat, '/', $catString);
+	$sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idlang=".Contenido_Security::toInteger($lang);
+    $db->query($sql);
+    $db->next_record();
+    $layoutcode .= '<p style="display:block;font-weight:bold;">'.i18n("Content Verwaltung").'</p>
+		<div class="categorypath">'.$catString.'/'.htmlspecialchars($db->f("title")).'</div>';
 
+if(count($result)<=0){
+	$layoutcode .= '<div>--- '.i18n("kein").' ---</div>';
+} else {
     foreach($aIdtype as $idtype){
     	foreach($sortID as $name){
     		if(in_array($name, array_keys($result)) && count($result[$name])>=$idtype){
@@ -194,6 +208,7 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
 	    	}
     	}
     }
+}
     /*foreach($result as $key => $cmstype){
         foreach($cmstype as $index => $value){
             if(in_array($key.'['.$index.']',$typeAktuell)){
