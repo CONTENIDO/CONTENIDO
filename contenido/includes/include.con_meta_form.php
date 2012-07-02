@@ -217,13 +217,11 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
     $tpl->set("s", "TITLE-INPUT", $title_input);
 
 
-    if(($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
-
+    if (($lang_short = substr(strtolower($belang), 0, 2)) != "en") {
         $langscripts =  '<script type="text/javascript" src="scripts/datetimepicker/jquery-ui-timepicker-'.$lang_short.'.js"></script>
         <script type="text/javascript" src="scripts/jquery/jquery.ui.datepicker-'.$lang_short.'.js"></script>';
         $tpl->set('s', 'CAL_LANG', $langscripts);
-
-    }else {
+    } else {
         $tpl->set('s', 'CAL_LANG', '');
     }
 

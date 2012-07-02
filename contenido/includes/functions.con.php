@@ -629,19 +629,19 @@ function conMakeOnline($idart, $lang)
 function conMakeOnlineBulkEditing($idarts, $idlang, $online) {
     global $db, $cfg, $auth;
     $where = '1=2';
-    if($online == 1) {
+    if ($online == 1) {
          $publisher_info = "published = '".date("Y-m-d H:i:s")."', publishedby='".$auth->auth["uname"]."',";
-    }else  {
+    } else  {
         $online = 0;
         $publisher_info = '';
     }
 
-    foreach($idarts as $idart) {
+    foreach ($idarts as $idart) {
         $where .= " OR idart='".Contenido_Security::toInteger($idart)."'";
     }
 
     $sql = "UPDATE ".$cfg["tab"]["art_lang"]."  SET ".$publisher_info." online = '".$online."' WHERE ($where)
-    AND idlang = '".Contenido_Security::toInteger($idlang)."'";
+        AND idlang = '".Contenido_Security::toInteger($idlang)."'";
     $db->query($sql);
 }
 
@@ -679,11 +679,11 @@ function conLock($idart, $lang)
 function conLockBulkEditing($idarts, $idlang , $lock) {
     global $db, $cfg;
     $where = '1=2';
-    if($lock != 1) {
+    if ($lock != 1) {
         $lock = 0;
     }
 
-    foreach($idarts as $idart) {
+    foreach ($idarts as $idart) {
         $where .= " OR idart='".Contenido_Security::toInteger($idart)."'";
     }
 

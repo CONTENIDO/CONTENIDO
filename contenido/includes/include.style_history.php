@@ -169,16 +169,15 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
         $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'css', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
         $oPage->addScript('IdLaycode', $oCodeMirrorOutput->renderScript());
 
-        if($sSelectBox !="") {
+        if ($sSelectBox !="") {
             $oPage->setContent($sSelectBox . $oForm->render());
-
         } else {
             $notification->displayNotification("warning", i18n("No style history available"));
         }
         $oPage->render();
 
-    }else{
-        if($bDeleteFile) {
+    } else {
+        if ($bDeleteFile) {
             $notification->displayNotification("warning", i18n("Version history was cleared"));
         } else {
             $notification->displayNotification("warning", i18n("No style history available"));

@@ -42,24 +42,27 @@ $sActionCreate = 'htmltpl_create';
 $sActionEdit = 'htmltpl_edit';
 $sActionDelete = 'htmltpl_delete';
 $sFilename = '';
-$page = new cPage;
+$page = new cPage();
 
 $tpl->reset();
 
-if (!$perm->have_perm_area_action($area, $action))
-{
+if (!$perm->have_perm_area_action($area, $action)) {
     $notification->displayNotification("error", i18n("Permission denied"));
-} else if (!(int) $client > 0) {
-  #if there is no client selected, display empty page
-  $page->render();
-}elseif($action == $sActionDelete){
+    return;
+}
+
+if (!(int) $client > 0) {
+    // If there is no client selected, display empty page
+    $page->render();
+    return;
+}
+
+if ($action == $sActionDelete) {
 
     $path = $cfgClient[$client]["tpl"]["path"];
     # delete file
-    if (!strrchr($_REQUEST['delfile'], "/"))
-    {
-        if (file_exists($path.$_REQUEST['delfile']))
-        {
+    if (!strrchr($_REQUEST['delfile'], "/")) {
+        if (file_exists($path.$_REQUEST['delfile'])) {
             unlink($path.$_REQUEST['delfile']);
             removeFileInformation($client, $_REQUEST['delfile'], 'templates', $db);
             $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Deleted template file successfully!"));
@@ -82,11 +85,9 @@ if (!$perm->have_perm_area_action($area, $action))
     $sTempFilename = stripslashes($_REQUEST['tmp_file']);
     $sOrigFileName = $sTempFilename;
 
-    if (getFileType($_REQUEST['file']) != $sFileType AND strlen(stripslashes(trim($_REQUEST['file']))) > 0)
-    {
-        $sFilename .= stripslashes($_REQUEST['file']).".$sFileType";
-    } else
-    {
+    if (getFileType($_REQUEST['file']) != $sFileType && strlen(stripslashes(trim($_REQUEST['file']))) > 0) {
+        $sFilename .= stripslashes($_REQUEST['file']) . '.' . $sFileType;
+    } else {
         $sFilename .= stripslashes($_REQUEST['file']);
     }
 
@@ -107,9 +108,8 @@ if (!$perm->have_perm_area_action($area, $action))
     $sTypeContent = "templates";
     $aFileInfo = getFileInformation ($client, $sTempFilename, $sTypeContent, $db);
 
-    # create new file
-    if ( $_REQUEST['action'] == $sActionCreate AND $_REQUEST['status'] == 'send')
-    {
+    // Create new file
+    if ($_REQUEST['action'] == $sActionCreate && $_REQUEST['status'] == 'send') {
         $sTempFilename = $sFilename;
         $ret = createFile($sFilename, $path);
         $bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
@@ -124,12 +124,10 @@ if (!$perm->have_perm_area_action($area, $action))
         $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Created new template file successfully!"));
     }
 
-    # edit selected file
-    if ( $_REQUEST['action'] == $sActionEdit AND $_REQUEST['status'] == 'send')
-    {
+    // Edit selected file
+    if ($_REQUEST['action'] == $sActionEdit && $_REQUEST['status'] == 'send') {
         $sTempTempFilename = $sTempFilename;
-        if ($sFilename != $sTempFilename)
-        {
+        if ($sFilename != $sTempFilename) {
             $sTempFilename = renameFile($sTempFilename, $sFilename, $path);
             $sReloadScript .= "<script type=\"text/javascript\">
                  var right_top = top.content.right.right_top;
@@ -138,88 +136,72 @@ if (!$perm->have_perm_area_action($area, $action))
                      right_top.location.href = href;
                  }
                  </script>";
-        } else
-        {
+        } else {
             $sTempFilename = $sFilename;
         }
 
-        if($sFilename != $sTempTempFilename) {
+        if ($sFilename != $sTempTempFilename) {
             $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Renamed template file successfully!"));
-        }else {
+        } else {
             $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
         }
-        updateFileInformation($client,  $sOrigFileName, 'templates', $auth->auth['uid'], $_REQUEST['description'], $db, $sFilename);
+        updateFileInformation($client, $sOrigFileName, 'templates', $auth->auth['uid'], $_REQUEST['description'], $db, $sFilename);
 
-       /**
-        * START TRACK VERSION
-        **/
+        // Track version
         $sTypeContent = "templates";
 
-        if((count($aFileInfo) == 0) || ((int)$aFileInfo["idsfi"] == 0)) {
+        if ((count($aFileInfo) == 0) || ((int)$aFileInfo["idsfi"] == 0)) {
             $aFileInfo = getFileInformation ($client, $sTempFilename, $sTypeContent, $db);
             $aFileInfo['description'] = '';
         }
 
-        if((count($aFileInfo) > 0) && ($aFileInfo["idsfi"] !="")) {
+        if ((count($aFileInfo) > 0) && ($aFileInfo["idsfi"] !="")) {
             $oVersion = new cVersionFile($aFileInfo["idsfi"], $aFileInfo,  $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
             // Create new Layout Version in cms/version/css/ folder
             $oVersion->createNewVersion();
         }
-       /**
-        * END TRACK VERSION
-        **/
 
         $bEdit = fileEdit($sFilename, $_REQUEST['code'], $path);
-
     }
 
-    # generate edit form
-    if (isset($_REQUEST['action']))
-    {
+    // Generate edit form
+    if (isset($_REQUEST['action'])) {
         $sAction = ($bEdit) ? $sActionEdit : $_REQUEST['action'];
 
-        if ($_REQUEST['action'] == $sActionEdit)
-        {
+        if ($_REQUEST['action'] == $sActionEdit) {
             $sCode = getFileContent($sFilename, $path);
-        } else
-        {
+        } else {
             $sCode = stripslashes($_REQUEST['code']); # stripslashes is required here in case of creating a new file
         }
 
-        /* Try to validate html */
-        if (getEffectiveSetting("layout", "htmlvalidator", "true") == "true" && $sCode !== "")
-        {
+        // Try to validate html
+        if (getEffectiveSetting("layout", "htmlvalidator", "true") == "true" && $sCode !== "") {
             $v = new cHTMLValidator;
             $v->validate($sCode);
             $msg = "";
 
-            foreach ($v->missingNodes as $value)
-            {
+            foreach ($v->missingNodes as $value) {
                 $idqualifier = "";
 
                 $attr = array();
 
-                if ($value["name"] != "")
-                {
+                if ($value["name"] != "") {
                     $attr["name"] = "name '".$value["name"]."'";
                 }
 
-                if ($value["id"] != "")
-                {
+                if ($value["id"] != "") {
                     $attr["id"] = "id '".$value["id"]."'";
                 }
 
                 $idqualifier = implode(", ",$attr);
 
-                if ($idqualifier != "")
-                {
+                if ($idqualifier != "") {
                     $idqualifier = "($idqualifier)";
                 }
                 $msg .= sprintf(i18n("Tag '%s' %s has no end tag (start tag is on line %s char %s)"), $value["tag"], $idqualifier, $value["line"],$value["char"]) . "<br />";
             }
 
-            if ($msg != "")
-            {
+            if ($msg != "") {
                 $notis = $notification->returnNotification("warning", $msg) . "<br />";
             }
         }
@@ -237,15 +219,15 @@ if (!$perm->have_perm_area_action($area, $action))
 
         $tb_name = new cHTMLTextbox("file", $sFilename, 60);
         $ta_code = new cHTMLTextarea("code", htmlspecialchars($sCode), 100, 35, "code");
-        $descr     = new cHTMLTextarea("description", htmlspecialchars($aFileInfo["description"]), 100, 5);
+        $descr  = new cHTMLTextarea("description", htmlspecialchars($aFileInfo["description"]), 100, 5);
 
         $ta_code->setStyle("font-family: monospace;width: 100%;");
         $descr->setStyle("font-family: monospace;width: 100%;");
         $ta_code->updateAttributes(array("wrap" => getEffectiveSetting('html_editor', 'wrap', 'off')));
 
-        $form->add(i18n("Name"),$tb_name);
+        $form->add(i18n("Name"), $tb_name);
         $form->add(i18n("Description"), $descr->render());
-        $form->add(i18n("Code"),$ta_code);
+        $form->add(i18n("Code"), $ta_code);
 
         $page->setContent($notis . $form->render());
 
@@ -255,7 +237,6 @@ if (!$perm->have_perm_area_action($area, $action))
         $page->addScript('reload', $sReloadScript);
         $page->render();
     }
-
-
 }
+
 ?>

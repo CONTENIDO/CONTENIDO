@@ -115,8 +115,7 @@ if ($action == "mod_new") {
          // logg error
          $notification->displayNotification("error", i18n("Cant make a new modul!"));
          die();
-    }else {
-
+    } else {
          $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new module successfuly!"));
     }
 } else {
@@ -506,9 +505,9 @@ window.onload = scrolltheother;
                         }
                     </script>';
         //Dont show form if we delete or synchronize a module
-        if($action == "mod_sync" || $action == "mod_delete") {
+        if ($action == "mod_sync" || $action == "mod_delete") {
             $page->setContent($noti.$message.$applet."<br>");
-        }else {
+        } else {
             $page->setContent($noti.$message.$form->render().$applet."<br>");
         }
     }

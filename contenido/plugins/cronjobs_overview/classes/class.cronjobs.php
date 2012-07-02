@@ -104,12 +104,11 @@ class Cronjobs {
      * @return string, contents of the file or ''
      */
     public function getContentsCrontabFile() {
-
-        if(file_exists($this->_cronlogDirectory.self::$CRONTAB_FILE)) {
-
+        if (file_exists($this->_cronlogDirectory.self::$CRONTAB_FILE)) {
             return file_get_contents($this->_cronlogDirectory.self::$CRONTAB_FILE);
-        }else
+        } else {
             return '';
+        }
     }
 
     /**

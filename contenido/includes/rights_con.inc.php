@@ -139,7 +139,7 @@ $sTable = '';
                     $sTable .= $table->row();
                     $sTable .= $table->sumcell("&nbsp;","right");
                     $sTable .= $table->end_row();
-                }else {
+                } else {
                         if ($db->f("level") < $iLevel) {
                             $iDistance = $iLevel-$db->f("level");
 
@@ -160,19 +160,16 @@ $sTable = '';
 
                         //find out parentid for inheritance
                         //if parentid is the same increase the counter
-                        if($parentid==$db->f("parentid")){
-
+                        if ($parentid == $db->f("parentid")){
                            $counter[$parentid]++;
-                        }else{
+                        } else {
                            $parentid=$db->f("parentid");
                            // if these parentid is in use increase the counter
-                           if(isset($counter[$parentid])){
+                           if (isset($counter[$parentid])) {
                                  $counter[$parentid]++;
-                           }else{
-                                 $counter[$parentid]=0;
+                           } else {
+                                 $counter[$parentid] = 0;
                            }
-
-
                         }
 
                         $spaces = '<img src="images/spacer.gif" height="1" width="'.($db->f("level")*15).'"><a><img src="images/spacer.gif" width="7" id="'.implode('_', $aRowname).'_img"></a>';

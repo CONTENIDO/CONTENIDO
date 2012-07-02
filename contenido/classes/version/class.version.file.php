@@ -88,7 +88,7 @@ if (!defined('CON_FRAMEWORK')) {
         $this->dCreated = $aFileInfo["created"];
 
 //         Frontendpath to files
-        if($sTypeContent == "templates"){
+        if ($sTypeContent == "templates"){
             $sTypeContent = "tpl";
         }
 
@@ -126,19 +126,21 @@ if (!defined('CON_FRAMEWORK')) {
     */
     protected function initFileContent() {
         if (file_exists($this->sPath.$this->sFileName)) {
-        if (!$handle = fopen( $this->sPath.$this->sFileName, "rb")) {
-        print i18n("Can not open file "). $this->sPath.$this->sFileName;
-            return;
-        } do {
-              $_data = fread($handle, 4096);
-              if (strlen($_data) == 0) {
-                  break;
-              }
-               $this->sCode .=  $_data;
-          } while(true);
-         fclose($handle);
-        }else{
-              echo "<br>File not exists " . $this->sPath.$this->sFileName;
+            if (!$handle = fopen( $this->sPath.$this->sFileName, "rb")) {
+                print i18n("Can not open file "). $this->sPath.$this->sFileName;
+                return;
+            }
+            
+            do {
+                $_data = fread($handle, 4096);
+                if (strlen($_data) == 0) {
+                    break;
+                }
+                $this->sCode .=  $_data;
+            } while(true);
+            fclose($handle);
+        } else {
+            echo "<br>File not exists " . $this->sPath.$this->sFileName;
         }
     }
 
@@ -152,20 +154,17 @@ if (!defined('CON_FRAMEWORK')) {
    */
     public function initXmlReader($sPath) {
         $aResult = array();
-        if($sPath !=""){
-                // Output this xml file
+        if ($sPath != "") {
+            // Output this xml file
             $sXML = simplexml_load_file($sPath);
-
             if ($sXML) {
                 foreach ($sXML->body as $oBodyValues) {
-                    //    if choose xml file read value an set it
+                    // If choose xml file read value an set it
                     $aResult["name"] = $oBodyValues->name;
                     $aResult["desc"] = $oBodyValues->description;
                     $aResult["code"] = $oBodyValues->code;
                 }
-
             }
-
         }
 
         return $aResult;
@@ -203,7 +202,7 @@ if (!defined('CON_FRAMEWORK')) {
                      right_top.location.href = href;
                  }
 
-                 if(left_bottom){
+                 if (left_bottom){
                     var href = '".$sess->url("main.php?area=$sArea&frame=2&file=$sFilename")."';
                     left_bottom.location.href = href;
                  }

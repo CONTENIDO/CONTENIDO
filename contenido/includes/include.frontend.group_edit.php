@@ -154,11 +154,12 @@ if ($fegroup->virgin == false && $fegroup->get("idclient") == $client) {
 
     if (count($messages) > 0) {
         $notis = $notification->returnNotification("warning", implode("<br>", $messages)) . "<br>";
-    }else {
-        if(strlen($successMessage) > 0)
+    } else {
+        if (strlen($successMessage) > 0) {
             $notification->displayNotification(Contenido_Notification::LEVEL_INFO,$successMessage);
-        elseif(strlen($action) > 0)
+        } elseif (strlen($action) > 0) {
             $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!"));
+        }
     }
 
     $tpl->reset();

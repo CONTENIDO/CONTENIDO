@@ -7,16 +7,14 @@ $contenidoVars = array('cfg'=>$cfg);
 $cronjobs = new Cronjobs($contenidoVars, $_REQUEST['file']);
 $notification = new Contenido_Notification();
 
-switch($_REQUEST['action']) {
-
+switch ($_REQUEST['action']) {
     case 'cronjob_overview':
-        if (!$perm->have_perm_area_action($area, 'cronjob_overview'))
-        {
+        if (!$perm->have_perm_area_action($area, 'cronjob_overview')) {
             $notification->displayNotification("error", i18n("Permission denied"));
             return -1;
         }
-        if($cronjobs->existFile()) {
 
+        if ($cronjobs->existFile()) {
             $tpl->set('s', 'HEADER', i18n('Cronjob &Uuml;bersicht: ').$cronjobs->getFile());
             $tpl->set('s', 'LABLE_DIRECTORY',i18n("Ort"));
             $tpl->set('s', 'DIRECTORY', $cronjobs->getCronjobDirectory());
@@ -26,23 +24,22 @@ switch($_REQUEST['action']) {
             $tpl->set('s', 'EXECUTION_TIME',$cronjobs->getDateLastExecute());
             $tpl->set('s', 'CONTENIDO', $contenido);
             $tpl->set('s', 'LABLE_EXECUTE',i18n("Cronjob ausf&uuml;hren:"));
-             $tpl->set('s', 'ALT_TITLE', i18n('Cronjob ausf&uuml;hren'));
-             $tpl->set('s', 'FILE', $cronjobs->getFile());
-             $tpl->generate($dir_plugin.'templates/right_bottom_overview.html');
+            $tpl->set('s', 'ALT_TITLE', i18n('Cronjob ausf&uuml;hren'));
+            $tpl->set('s', 'FILE', $cronjobs->getFile());
+            $tpl->generate($dir_plugin.'templates/right_bottom_overview.html');
         }
-
         break;
+
     case 'crontab_edit':
-        if (!$perm->have_perm_area_action($area, 'crontab_edit'))
-        {
+        if (!$perm->have_perm_area_action($area, 'crontab_edit')) {
             $notification->displayNotification("error", i18n("Permission denied"));
             return -1;
         }
-        if(!empty($_POST['crontab_contents'])) {
+        if (!empty($_POST['crontab_contents'])) {
             //save contents
-            if($cronjobs->saveCrontabFile($_POST['crontab_contents']) === FALSE) {
+            if ($cronjobs->saveCrontabFile($_POST['crontab_contents']) === FALSE) {
                 $notification-> displayNotification('info', i18n('Könnte nicht gespeichert werden!'));
-            }else {
+            } else {
                 $notification-> displayNotification('info', i18n('Erfolgreich gespeichert!'));
             }
         }
@@ -52,21 +49,21 @@ switch($_REQUEST['action']) {
         $tpl->set('s', 'ALT_TITLE', i18n('Änderung speichern'));
         $tpl->generate($dir_plugin.'templates/right_bottom_crontab_edit.html');
         break;
+
     case 'cronjob_execute':
-        if (!$perm->have_perm_area_action($area, 'cronjob_execute'))
-        {
+        if (!$perm->have_perm_area_action($area, 'cronjob_execute')) {
             $notification->displayNotification("error", i18n("Permission denied"));
             return -1;
         }
-        if($cronjobs->existFile()) {
-            $area = 'cronjobs';
 
+        if ($cronjobs->existFile()) {
+            $area = 'cronjobs';
             include($cronjobs->getCronjobDirectory().$cronjobs->getFile());
             $cronjobs->setRunTime(time());
             //$cronjobs->executeCronjob();
             $notification->displayNotification('info', i18n('Datei wurde inkludiert!'));
         }
-
         break;
 }
+
 ?>

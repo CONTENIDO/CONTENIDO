@@ -91,16 +91,12 @@ $aFieldDetails["news_type"]["link"] = false;
 $aFieldDetails["news_type"]["col"] = -1;
 
 // Check out if there are any plugins
-if (is_array($cfg['plugins']['recipients']))
-{
-    foreach ($cfg['plugins']['recipients'] as $sPlugin)
-    {
-        if (function_exists("recipients_".$sPlugin."_wantedVariables") && function_exists("recipients_".$sPlugin."_canonicalVariables"))
-        {
+if (is_array($cfg['plugins']['recipients'])) {
+    foreach ($cfg['plugins']['recipients'] as $sPlugin) {
+        if (function_exists("recipients_".$sPlugin."_wantedVariables") && function_exists("recipients_".$sPlugin."_canonicalVariables")) {
             $aPluginTitles = call_user_func("recipients_".$sPlugin."_canonicalVariables");
             $aPluginFields = call_user_func("recipients_".$sPlugin."_wantedVariables");
-            foreach ($aPluginFields as $sField)
-            {
+            foreach ($aPluginFields as $sField) {
                 //if ($_REQUEST["ckb".$sField]) {
                     $aFields[$sField] = strtolower(str_replace(" ","", $aPluginTitles[$sField]));
                     $aFieldDetails[$sField]["fieldtype"]= "plugin";
@@ -115,13 +111,13 @@ if (is_array($cfg['plugins']['recipients']))
 }
 
 // Get groups
-$oRcpGroups = new NewsletterRecipientGroupCollection;
+$oRcpGroups = new NewsletterRecipientGroupCollection();
 $oRcpGroups->setWhere("idclient", $client);
 $oRcpGroups->setWhere("idlang", $lang);
 $oRcpGroups->setOrder("groupname");
 $oRcpGroups->query();
 
-while ($oRcpGroup = $oRcpGroups->next())
+while ($oRcpGroup = $oRcpGroups->next()) 
 {
     $sField = "g" . $oRcpGroup->get($oRcpGroup->primaryKey);
 
@@ -149,21 +145,22 @@ while ($oRcpGroup = $oRcpGroups->next())
 if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipients", "recipients_create")) {
 
     //get content from uploaded file
-    if (file_exists($_FILES['receptionis_file']['tmp_name'])){
-        if(strtolower(substr($_FILES['receptionis_file']['name'], -3)) == 'csv') {
+    if (file_exists($_FILES['receptionis_file']['tmp_name'])) {
+        if (strtolower(substr($_FILES['receptionis_file']['name'], -3)) == 'csv') {
             $sFileData = file_get_contents($_FILES['receptionis_file']['tmp_name']);
-            if($sFileData == '')
+            if ($sFileData == '') {
                 $aMessage[] = i18n("The file is empty!", 'newsletter');
-        }
-        else
+            }
+        } else {
             $aMessage[] = i18n("Wrong mime-type of file!", 'newsletter');
-    }else
+        }
+    } else {
         $aMessage[] = i18n("Could not open the file!", 'newsletter');
+    }
 
 
     if ($sFileData) {
-        switch ($_REQUEST["selDelimiter"])
-        {
+        switch ($_REQUEST["selDelimiter"]) {
             case "semicolon":
                 $sDelimiter = ";";
                 break;
@@ -182,7 +179,8 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
         $sMessage = "";
         $aInvalidLines = array();
         $oGroupMembers = new NewsletterRecipientGroupMemberCollection;
-        foreach($aLines as $sLine) {
+
+        foreach ($aLines as $sLine) {
             $iRow++;
 
             $aParts = explode($sDelimiter, trim($sLine));
@@ -239,23 +237,18 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                     unset ($sLine);
 
                     // Must be $recipient for plugins
-                    if ($recipient = $oRecipients->create($sEMail, $sName))
-                    {
+                    if ($recipient = $oRecipients->create($sEMail, $sName)) {
                         $iID = $recipient->get($recipient->primaryKey);
                         $iAdded++;
 
                         unset($aPluginValue);
                         $aPluginValue = array();
 
-                        foreach ($aFieldDetails as $sKey => $aDetails)
-                        {
-                            if ($aDetails["col"] > -1)
-                            {
-                                switch ($aDetails["fieldtype"])
-                                {
+                        foreach ($aFieldDetails as $sKey => $aDetails) {
+                            if ($aDetails["col"] > -1) {
+                                switch ($aDetails["fieldtype"]) {
                                     case "field":
-                                        switch ($aDetails["type"])
-                                        {
+                                        switch ($aDetails["type"]) {
                                             case "boolean":
                                                 $sValue = strtolower(trim($aParts[$aDetails["col"]]));
 
@@ -316,8 +309,7 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
                         // Store plugin data (to store plugin data, only, where the column has been found in the data
                         // should be faster than going through all plugins and store mostly empty arrays)
                         $sCurrentPlugin = "";
-                        foreach ($aFieldDetails as $sKey => $aDetails)
-                        {
+                        foreach ($aFieldDetails as $sKey => $aDetails) {
                             if ($aDetails["col"] > -1 &&
                                 $aDetails["fieldtype"] == "plugin" &&
                                 $aDetails["link"] !== $sCurrentPlugin)
@@ -341,9 +333,9 @@ if ($action == "recipients_import_exec" && $perm->have_perm_area_action("recipie
         if ($iAdded > 0) {
             $oPage->setReload();
         }
-    }else {
-            //
-            $sMessage = $sMessage = $notification->returnNotification("error", implode("<br />", $aMessage))."<br />";
+    } else {
+        //
+        $sMessage = $sMessage = $notification->returnNotification("error", implode("<br />", $aMessage))."<br />";
     }
 }
 

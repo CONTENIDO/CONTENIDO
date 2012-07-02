@@ -344,8 +344,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
 
         if (count($aMessages) > 0) {
             $notis .= $notification->returnNotification("warning", implode("<br>", $aMessages)) . "<br>";
-        }else {
-
+        } else {
             //show message
             $notification->displayNotification(Contenido_Notification::LEVEL_INFO,i18n("Saved changes successfully!", 'newsletter'));
         }

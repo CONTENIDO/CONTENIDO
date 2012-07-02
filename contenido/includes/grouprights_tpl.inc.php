@@ -41,13 +41,11 @@ while ($db->next_record()) { //set a new rights list fore this user
    $rights_list_old[$db->f(3)."|".$db->f(4)."|".$db->f("idcat")] = "x";
 }
 
-if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
-{
+if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit")) {
     saverights();
-}else {
-    if (!$perm->have_perm_area_action($area, $action))
-    {
-    $notification->displayNotification("error", i18n("Permission denied"));
+} else {
+    if (!$perm->have_perm_area_action($area, $action)) {
+        $notification->displayNotification("error", i18n("Permission denied"));
     }
 }
 // Temp variables
@@ -60,7 +58,7 @@ $sJsBefore .= "  var itemids = new Array();
                 var actareaids = new Array();
 ";
 
-$colspan=0;
+$colspan = 0;
 
 $table = new Table("", "", 0, 2, "", "", "", 0, 0);
 
@@ -71,26 +69,24 @@ $sTable .= $table->header_cell(i18n("Description"));
 
 
 $aSecondHeaderRow = array();
-$possible_areas=array();
-// look for possible actions   in mainarea []
+$possible_areas = array();
+// Look for possible actions   in mainarea []
 
-foreach($right_list["tpl"] as $value2)
-{
-               //if there are some actions
-               if(is_array($value2["action"]))
-                 foreach($value2["action"] as $key3 => $value3)
-                 {       //set the areas that are in use
-                         $possible_areas[$value2["perm"]]="";
+foreach ($right_list["tpl"] as $value2) {
+    //if there are some actions
+    if (is_array($value2["action"])) {
+        foreach ($value2["action"] as $key3 => $value3) {       //set the areas that are in use
+            $possible_areas[$value2["perm"]]="";
 
-                         $colspan++;
-                         //set  the possible areas and actions for this areas
-                            $sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\"; \n";
+            $colspan++;
+            //set  the possible areas and actions for this areas
+            $sJsBefore .= "actareaids[\"$value3|".$value2["perm"]."\"]=\"x\"; \n";
 
-
-                         //checkbox for the whole action
-                        $sTable .= $table->header_cell($lngAct[$value2["perm"]][$value3]);
-                         array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
-                 }
+            //checkbox for the whole action
+            $sTable .= $table->header_cell($lngAct[$value2["perm"]][$value3]);
+            array_push($aSecondHeaderRow, "<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_$value3\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','')\">");
+        }
+    }
 }
 
 
@@ -117,46 +113,41 @@ $db->query($sql);
 
 
 while ($db->next_record()) {
+    $tplname     = htmlentities($db->f("name"));
+    $description = htmlentities($db->f("description"));
 
-        $tplname     = htmlentities($db->f("name"));
-        $description = htmlentities($db->f("description"));
+    $sTable .= $table->row();
+    $sTable .= $table->cell($tplname,"", "", " class=\"td_rights0\"", false);
+    $sTable .= $table->cell($description,"", "", " class=\"td_rights1\" style=\"white-space:normal;\"", false);
 
-        $sTable .= $table->row();
-        $sTable .= $table->cell($tplname,"", "", " class=\"td_rights0\"", false);
-        $sTable .= $table->cell($description,"", "", " class=\"td_rights1\" style=\"white-space:normal;\"", false);
+    //set javscript array for itemids
+    $sJsAfter .= "itemids[\"".$db->f("idtpl")."\"]=\"x\";\n";
 
-        //set javscript array for itemids
-        $sJsAfter .= "itemids[\"".$db->f("idtpl")."\"]=\"x\";\n";
+    // look for possible actions in mainarea[]
+    foreach ($right_list["tpl"] as $value2) {
+        //if there area some
+        if (is_array($value2["action"])) {
+            foreach ($value2["action"] as $key3 => $value3) {
+                //does the user have the right
+                if (in_array($value2["perm"]."|$value3|".$db->f("idtpl"),array_keys($rights_list_old))) {
+                    $checked = "checked=\"checked\"";
+                } else {
+                    $checked = "";
+                }
 
-        // look for possible actions in mainarea[]
-        foreach($right_list["tpl"] as $value2)
-              {
-
-               //if there area some
-               if(is_array($value2["action"]))
-                 foreach($value2["action"] as $key3 => $value3)
-                 {
-                          //does the user have the right
-                          if(in_array($value2["perm"]."|$value3|".$db->f("idtpl"),array_keys($rights_list_old)))
-                              $checked="checked=\"checked\"";
-                          else
-                              $checked="";
-
-                          //set the checkbox    the name consits of      areait+actionid+itemid
-                          $sTable .= $table->cell("<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idtpl")."]\" value=\"x\" $checked>","", "", " class=\"td_rights2\"", false);
-
-
-                 }
+                //set the checkbox the name consits of areait+actionid+itemid
+                $sTable .= $table->cell("<input type=\"checkbox\" name=\"rights_list[".$value2["perm"]."|$value3|".$db->f("idtpl")."]\" value=\"x\" $checked>","", "", " class=\"td_rights2\"", false);
+            }
         }
-        //checkbox for checking all actions fore this itemid
-        $sTable .= $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idtpl")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idtpl")."')\">","", "", " class=\"td_rights3\"", false);
+    }
+    //checkbox for checking all actions fore this itemid
+    $sTable .= $table->cell("<input type=\"checkbox\" name=\"checkall_".$value2["perm"]."_".$value3."_".$db->f("idtpl")."\" value=\"\" onClick=\"setRightsFor('".$value2["perm"]."','$value3','".$db->f("idtpl")."')\">","", "", " class=\"td_rights3\"", false);
 }
-$sTable .=$table->end_row();
-$sTable .=$table->row();
-$sTable .=$table->sumcell("<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('group_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>","right");
-$sTable .=$table->end_row();
-$sTable .=$table->end_table();
-
+$sTable .= $table->end_row();
+$sTable .= $table->row();
+$sTable .= $table->sumcell("<a href=javascript:submitrightsform('','area')><img src=\"".$cfg['path']['images']."but_cancel.gif\" border=0></a><img src=\"images/spacer.gif\" width=\"20\"> <a href=javascript:submitrightsform('group_edit','')><img src=\"".$cfg['path']['images']."but_ok.gif\" border=0></a>","right");
+$sTable .= $table->end_row();
+$sTable .= $table->end_table();
 
 $oTpl->set('s', 'JS_SCRIPT_BEFORE', $sJsBefore);
 $oTpl->set('s', 'JS_SCRIPT_AFTER', $sJsAfter);

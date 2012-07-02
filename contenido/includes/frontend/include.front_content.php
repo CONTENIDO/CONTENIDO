@@ -274,7 +274,7 @@ if ($idartlang === false) {
             $tpl->generate($cfg['path']['contenido']. $cfg['path']['templates'].'template.error_page.html');
         }
         exit;
-    }else {
+    } else {
         header($errsite. '&display_errorpage=1');
     }
     exit;

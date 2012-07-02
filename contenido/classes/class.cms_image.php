@@ -169,7 +169,7 @@ class Cms_Image {
         if (isset($_POST['image_action']) && $_POST['image_action'] == 'store' && isset($_POST['image_id']) && (int)$_POST['image_id'] == $this->iId) {
             $this->storeImage($idart);
 
-            if(isset($_REQUEST['area']) && $_REQUEST['area'] == 'con_content_list'){
+            if (isset($_REQUEST['area']) && $_REQUEST['area'] == 'con_content_list'){
                 $path = $this->aCfg['path']['contenido_fullhtml']."main.php?area=con_content_list&action=con_content&changeview=edit&idart=$idart&idartlang=$iIdArtLang&idcat=$idcat&client=$iClient&lang=$iLang&frame=4&contenido=".$_REQUEST['contenido'];
             } else {
                 $path = $this->aCfg['path']['contenido_fullhtml']."external/backendedit/front_content.php?area=con_editcontent&idart=$idart&idcat=$idcat&changeview=edit&client=$this->iClient";
@@ -198,21 +198,21 @@ class Cms_Image {
         $aFilenameData['dirname'] = dirname($_REQUEST['image_filename']);
 
         //if one pictures selected from upload directory
-        if($aFilenameData['dirname'] == "\\" || $aFilenameData['dirname'] == '/' || $aFilenameData['dirname'] == '.') {
+        if ($aFilenameData['dirname'] == "\\" || $aFilenameData['dirname'] == '/' || $aFilenameData['dirname'] == '.') {
             $aFilenameData['dirname'] = '';
-        }else {
+        } else {
             $aFilenameData['dirname'] .= '/';
         }
         $query = 'SELECT idupl FROM ' . $this->aCfg['tab']['upl'] . ' WHERE filename=\''.$aFilenameData['filename'].'\' AND dirname=\''.$aFilenameData['dirname'].'\' AND idclient=\''.$this->iClient.'\'';
 
         $this->oDb->query($query);
-        if($this->oDb->next_record()) {
+        if ($this->oDb->next_record()) {
             $this->iUplId = $this->oDb->f('idupl');
         }
         $this->sContent = $this->iUplId;
         conSaveContentEntry($this->iIdArtLang, 'CMS_IMAGE', $this->iId, $this->iUplId, true);
         conSaveContentEntry($this->iIdArtLang, 'CMS_IMG', $this->iId, $this->iUplId, true);
-        if($idart != -1 ) {
+        if ($idart != -1 ) {
             conMakeArticleIndex($this->iIdArtLang, $idart);
             conGenerateCodeForArtInAllCategories($idart);
         }
@@ -227,10 +227,10 @@ class Cms_Image {
         $query = "SELECT id_uplmeta FROM " . $this->aCfg['tab']['upl_meta'] . " WHERE idupl='".$idupl."' AND idlang='".$idlang."'";
         $this->oDb->query($query);
         //echo '1'.$this->oDb->Error;
-        if($this->oDb->next_record()) {
+        if ($this->oDb->next_record()) {
             $id_uplmeta = $this->oDb->f('id_uplmeta');
         }
-        if(!isset($id_uplmeta)){
+        if (!isset($id_uplmeta)){
             //$id = $this->oDb->nextid($this->aCfg['tab']['upl_meta']);
             $query = "INSERT INTO ".$this->aCfg['tab']['upl_meta']."( idupl, idlang, medianame, description, keywords, internal_notice, copyright)
             VALUES('".$idupl."', '".$idlang."', '".$medianame."', '".$description."', '".$keywords."', '".$internal_notice."', '".$copyright."')";
@@ -268,7 +268,7 @@ class Cms_Image {
             $oHandle = opendir($sUploadPath.$sDirectoryPath);
             while($sEntry = readdir($oHandle)) {
                 if ( $sEntry != "." && $sEntry != ".." && file_exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) && !is_dir( $sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
-                    if($sDirectoryPath=='/' || $sDirectoryPath==''){
+                    if ($sDirectoryPath=='/' || $sDirectoryPath==''){
                         $oHtmlSelectOption = new cHTMLOptionElement($sEntry, $sEntry);
                     } else {
                         $oHtmlSelectOption = new cHTMLOptionElement($sEntry, $sDirectoryPath."/".$sEntry);
@@ -288,8 +288,8 @@ class Cms_Image {
             $oHtmlSelect->setDisabled( true );
         }
         //set default value
-        if(isset($this->filename)){
-            if(isset($this->activeFilename)){
+        if (isset($this->filename)){
+            if (isset($this->activeFilename)){
                 $oHtmlSelect->setDefault($this->activeFilename."/".$this->filename);
             } else {
                 $oHtmlSelect->setDefault($this->filename);
@@ -362,7 +362,7 @@ class Cms_Image {
         $error = false;
         foreach ($aLevelPath as $levelPath){
             $sLevelPath .= '/'. $levelPath;
-            if($sLevelPath == '/'.$activeFile){
+            if ($sLevelPath == '/'.$activeFile){
                 $error = true;
             }
         }
@@ -437,7 +437,7 @@ class Cms_Image {
         $idupl = $this->sContent;
         $idlang = $this->iLang;
         $this->oDb->query('SELECT filename,dirname FROM ' . $this->aCfg['tab']['upl'] . ' WHERE idupl=\''.$idupl.'\' AND idclient=\''.$this->iClient.'\'');
-        if($this->oDb->next_record()) {
+        if ($this->oDb->next_record()) {
             $this->filename = $this->oDb->f('filename');
             $this->dirname = $this->oDb->f('dirname');
         }
@@ -452,7 +452,7 @@ class Cms_Image {
             default: $sString = $filename_src; break;
         }
         //if can not scale, so $sString is null, then show the original image.
-        if($sString == ''){
+        if ($sString == ''){
             $sString = $filename_src;
         }
         $oTpl->set('s', 'DIRECTORY_SRC',                         $sString);
@@ -462,7 +462,7 @@ class Cms_Image {
         $query = "SELECT * FROM " . $this->aCfg['tab']['upl_meta'] . " WHERE idupl='".$idupl."' AND idlang='".$idlang."'";
         $this->oDb->query($query);
 
-        if($this->oDb->next_record() && $idupl!='') {
+        if ($this->oDb->next_record() && $idupl!='') {
             $id_uplmeta = $this->oDb->f('id_uplmeta');
 
             $oTpl->set('s', 'DIRECTORY_FILE',                         $this->getFileSelect($this->activeFilename, $this->iId));
@@ -519,7 +519,7 @@ class Cms_Image {
         if ($this->oDb->next_record()) {
             //set title of teaser
             $oTpl->set('s', 'TITLE', $this->oDb->f('filename'));
-            if($this->oDb->f('dirname')!='' && $this->oDb->f('filename')!=''){
+            if ($this->oDb->f('dirname')!='' && $this->oDb->f('filename')!=''){
                 $oTpl->set('s', 'SRC', $this->aCfgClient[$this->iClient]['upl']['htmlpath'].$this->oDb->f('dirname').$this->oDb->f('filename'));
                 $sCode = $this->aCfgClient[$this->iClient]['upl']['htmlpath'].$this->oDb->f('dirname').$this->oDb->f('filename');
             } else {
@@ -538,7 +538,7 @@ class Cms_Image {
         $query = "SELECT * FROM " . $this->aCfg['tab']['upl']." a,". $this->aCfg['tab']['upl_meta'] . " b WHERE a.filename='".$filename."' AND a.dirname='".$dirname."' AND a.idclient=".$this->iClient." AND a.idupl=b.idupl AND b.idlang=".$this->iLang;
         $this->oDb->query($query);
         $array = array();
-        if($this->oDb->next_record()) {
+        if ($this->oDb->next_record()) {
             echo $array[$iImageId]['medianame'] = urldecode($this->oDb->f('medianame'));
             echo '+++';
             echo $array[$iImageId]['description'] = urldecode($this->oDb->f('description'));
@@ -586,7 +586,7 @@ class Cms_Image {
 
                     $sql = "SELECT * FROM ".$this->aCfg["tab"]["upl"]." WHERE dirname='".$sPath."' AND filename='".$_FILES['file']['name'][$key]."'";
                     $this->oDb->query($sql);
-                    if($this->oDb->next_record()) {
+                    if ($this->oDb->next_record()) {
                         $uplfilename = $rootpath . $this->oDb->f('dirname'). $this->oDb->f('filename');
                     } else {
                         $uplfilename = 'error';

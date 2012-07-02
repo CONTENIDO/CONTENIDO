@@ -24,11 +24,12 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-if($_POST['idarts']) {
+if ($_POST['idarts']) {
     $idarts = explode('+', $_POST['idarts']);
     $lock = $_POST['invert'] == 1 ? 0 : 1;
     conLockBulkEditing($idarts, $_POST['idlang'], $lock);
-}else  {
+} else {
     conLock($idart, $lang);
 }
+
 ?>

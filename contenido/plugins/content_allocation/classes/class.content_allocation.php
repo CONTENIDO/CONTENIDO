@@ -179,8 +179,7 @@ class pApiContentAllocation {
             } else {
                 $tables[] = " LEFT JOIN ".$cfg['tab']['pica_alloc_con']." AS " . $sql_concat[$i] . " USING (idartlang)";
             }
-            if (is_int((int)$restrictions[$i]) AND $restrictions[$i] > 0)
-            {
+            if (is_int((int)$restrictions[$i]) AND $restrictions[$i] > 0) {
                 $where[] =  $sql_concat[$i] . ".idpica_alloc = " . $restrictions[$i];
             }
         }
@@ -189,8 +188,7 @@ class pApiContentAllocation {
         $where[] = 'cal.online = 1';
 
         # fetch only articles which are not in following categories
-        if (count($aCategoriesToExclude) > 0)
-        {
+        if (count($aCategoriesToExclude) > 0) {
             $where[] = "cat.idcat NOT IN (".implode(',', $aCategoriesToExclude).")";
         }
 
@@ -227,18 +225,14 @@ class pApiContentAllocation {
     {
         if (!is_array($aContentAllocation) || count($aContentAllocation) == 0) { return array(); }
 
-        for ($i = 0; $i < count($aContentAllocation); $i++)
-        {
-            if (!is_int((int)$aContentAllocation[$i]) OR !$aContentAllocation[$i] > 0)
-            {
+        for ($i = 0; $i < count($aContentAllocation); $i++) {
+            if (!is_int((int)$aContentAllocation[$i]) OR !$aContentAllocation[$i] > 0) {
                 return array();
             }
         }
 
-        for ($i = 0; $i < count($aCategories); $i++)
-        {
-            if (!is_int((int)$aCategories[$i]) OR !$aCategories[$i] > 0)
-            {
+        for ($i = 0; $i < count($aCategories); $i++) {
+            if (!is_int((int)$aCategories[$i]) OR !$aCategories[$i] > 0) {
                 return array();
             }
         }
@@ -248,8 +242,7 @@ class pApiContentAllocation {
         $this->db->query($sql);
 
         $aResult = array();
-        while($oRow = $this->db->getResultObject())
-        {
+        while($oRow = $this->db->getResultObject()) {
             $aResult[] = $oRow;
         }
         return $aResult;
@@ -273,16 +266,13 @@ class pApiContentAllocation {
         $tables = array();
         $where = array();
 
-        for ($i = 0; $i < $size; $i++)
-        {
-            if ($i == 0)
-            { // first
+        for ($i = 0; $i < $size; $i++) {
+            if ($i == 0) { // first
                 $tables[] = " ".$cfg['tab']['pica_alloc_con']." AS " . $sql_concat[$i];
             } else {
                 $tables[] = " LEFT JOIN ".$cfg['tab']['pica_alloc_con']." AS " . $sql_concat[$i] . " USING (idartlang)";
             }
-            if (is_int((int)$aContentAllocation[$i]) AND $aContentAllocation[$i] > 0)
-            {
+            if (is_int((int)$aContentAllocation[$i]) AND $aContentAllocation[$i] > 0) {
                 $where[] =  $sql_concat[$i] . ".idpica_alloc = " . $aContentAllocation[$i];
             }
         }
@@ -291,8 +281,7 @@ class pApiContentAllocation {
         $where[] = 'cal.online = 1';
 
         # fetch only articles in following categories
-        if (count($aCategories) > 0)
-        {
+        if (count($aCategories) > 0) {
             $where[] = "cat.idcat IN (".implode(',', $aCategories).")";
         }
 
@@ -333,8 +322,7 @@ class pApiContentAllocation {
 
         for ($i = 0; $i < count($aCategories); $i++)
         {
-            if (!is_int((int)$aCategories[$i]) OR !$aCategories[$i] > 0)
-            {
+            if (!is_int((int)$aCategories[$i]) OR !$aCategories[$i] > 0) {
                 return array();
             }
         }
@@ -345,13 +333,10 @@ class pApiContentAllocation {
 
         $aResult = array();
 
-        while($oRow = $this->db->getResultObject())
-        {
-            if ($sResultType == 'article_language_id')
-            {
+        while ($oRow = $this->db->getResultObject()) {
+            if ($sResultType == 'article_language_id') {
                 $aResult[] = $oRow->idartlang;
-            }else
-            {
+            } else {
                 $aResult[] = $oRow;
             }
         }
@@ -366,18 +351,14 @@ class pApiContentAllocation {
     function _buildQuery_MatchingContentByCategories ($aCategories, $iOffset, $iNumOfRows)
     {
 
-        if (count($aCategories) > 0)
-        {
+        if (count($aCategories) > 0) {
             $sWHERE_Category_IN = " c.idcat IN (".implode(',', $aCategories).") AND ";
-        }else
-        {
+        } else {
             $sWHERE_Category_IN = '';
         }
-        if (is_integer($iNumOfRows) AND $iNumOfRows > 0)
-        {
+        if (is_integer($iNumOfRows) AND $iNumOfRows > 0) {
             $sLimit = " LIMIT ". Contenido_Security::toInteger($iOffset) .", " . Contenido_Security::toInteger($iNumOfRows);
-        }else
-        {
+        } else {
             $sLimit = '';
         }
 

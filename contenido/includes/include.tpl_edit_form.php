@@ -269,7 +269,7 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
     }
     </script>";
 
-    $page = new cPage;
+    $page = new cPage();
     $page->addScript('reload', $sReloadScript);
 
     $page->setSubnav("idtpl=$idtpl", "tpl");
@@ -280,18 +280,13 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
 
     $notification = new Contenido_Notification();
 
-    if($_POST["idtpl"] === "" && $idtpl > 0) {
+    if ($_POST["idtpl"] === "" && $idtpl > 0) {
         $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new Template successfully!"));
-    }elseif(isset($_POST["submit_x"]) || ($_POST["idtpl"] == $idtpl && $action != 'tpl_new' )) {
-
+    } elseif (isset($_POST["submit_x"]) || ($_POST["idtpl"] == $idtpl && $action != 'tpl_new' )) {
         $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
     }
 
-
-
-
-
-
     $page->render();
 }
+
 ?>

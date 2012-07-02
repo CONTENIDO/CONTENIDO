@@ -934,7 +934,7 @@ class Cms_Teaser {
                 } else {
                     $oTpl->set('d', 'IMAGE', '');
                 }
-            }else{
+            } else{
                 $oTpl->set('d', 'IMAGE', '');
             }
 

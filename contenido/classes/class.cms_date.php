@@ -260,9 +260,9 @@ class Cms_Date
         //$tpl->set('s', 'LABEL_FORMAT', i18n('Formate'));
         $load = "conLoadFile('".$path."scripts/jquery/jquery.ui.datepicker-".$lang.".js', 'load2_$this->sCalName()');";
         //add timepicker language
-        if($this->getLanguageContenido() != 'en') {
+        if ($this->getLanguageContenido() != 'en') {
             $tpl->set('s', 'LOAD_LANG', $load);
-        }else{
+        } else{
             $tpl->set('s', 'LOAD_LANG', '');
         }
 

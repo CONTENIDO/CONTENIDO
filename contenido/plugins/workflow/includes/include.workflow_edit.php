@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project:
  * CONTENIDO Content Management System
@@ -26,7 +27,6 @@
  * }}
  *
  */
-
 if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
@@ -39,18 +39,16 @@ $workflows = new Workflows;
 
 $workflow = $workflows->loadItem($idworkflow);
 
-if ($action == "workflow_save")
-{
-    if ($idworkflow == "-1")
-    {
+if ($action == "workflow_save") {
+    if ($idworkflow == "-1") {
         $workflow = $workflows->create();
         $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Created new workflow successfully!"));
-    }elseif ($idworkflow > 0) {
-        $notification->displayNotification(Contenido_Notification::LEVEL_INFO , i18n("Saved changes successfully!"));
+    } elseif ($idworkflow > 0) {
+        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved changes successfully!"));
     }
 
-    $workflow->set("name",htmlspecialchars($wfname));
-    $workflow->set("description",htmlspecialchars($wfdescription));
+    $workflow->set("name", htmlspecialchars($wfname));
+    $workflow->set("description", htmlspecialchars($wfdescription));
     $idworkflow = $workflow->get("idworkflow");
     $workflow->store();
 }
@@ -66,11 +64,11 @@ if ($idworkflow) {
                          if (left_bottom) {
                              var href = left_bottom.location.href;
                              href = href.replace(/&action=workflow_delete/, '');
-                             left_bottom.location.href = href+'&idworkflow='+".$idworkflow.";
+                             left_bottom.location.href = href+'&idworkflow='+" . $idworkflow . ";
                          }
 
                          if (right_top) {
-                            right_top.location.href = right_top.location.href+'&idworkflow='+".$idworkflow.";
+                            right_top.location.href = right_top.location.href+'&idworkflow='+" . $idworkflow . ";
                          }
                      </script>";
 } else {
@@ -79,13 +77,12 @@ if ($idworkflow) {
 
 
 //function formGenerateField ($type, $name, $initvalue, $width, $maxlen)
-$form->setVar("area",$area);
-$form->setVar("action","workflow_save");
+$form->setVar("area", $area);
+$form->setVar("action", "workflow_save");
 $form->setVar("idworkflow", $idworkflow);
 $form->setVar("frame", $frame);
 
-if ($workflow->virgin)
-{
+if ($workflow->virgin) {
     $name = i18n("New Workflow", "workflow");
     $header = i18n("Create new workflow", "workflow");
 } else {
@@ -98,16 +95,15 @@ if ($workflow->virgin)
 }
 
 $form->addHeader($header);
-$form->add(i18n("Workflow name", "workflow"),formGenerateField("text","wfname",$name,40,255));
-$form->add(i18n("Description", "workflow"),formGenerateField("textbox","wfdescription",$description,50,10));
-$form->add(i18n("Author", "workflow"),$author);
-$form->add(i18n("Created", "workflow"),$created);
+$form->add(i18n("Workflow name", "workflow"), formGenerateField("text", "wfname", $name, 40, 255));
+$form->add(i18n("Description", "workflow"), formGenerateField("textbox", "wfdescription", $description, 50, 10));
+$form->add(i18n("Author", "workflow"), $author);
+$form->add(i18n("Created", "workflow"), $created);
 
 $page = new UI_Page;
 $page->setContent($form->render(true));
 $page->addScript('reload', $sReloadScript);
 
 $page->render();
-
 
 ?>
