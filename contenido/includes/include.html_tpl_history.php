@@ -169,7 +169,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
         // Render and handle History Area
         $oPage->setEncoding("utf-8");
 
-        $oCodeMirrorOutput = new EditArea('IdLaycode', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
+        $oCodeMirrorOutput = new CodeMirror('IdLaycode', 'php', substr(strtolower($belang), 0, 2), true, $cfg, !$bInUse);
         $oPage->addScript('IdLaycode', $oCodeMirrorOutput->renderScript());
 
         if($sSelectBox !="") {
