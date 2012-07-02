@@ -106,7 +106,7 @@ function linksort($sErrors) {
 
     if($_GET['sort'] == "nameart") {
 
-        foreach($sErrors as $key => $aRow) {
+        foreach ($sErrors as $key => $aRow) {
             $aNameart[$key] = $aRow['nameart'];
         }
 
@@ -114,7 +114,7 @@ function linksort($sErrors) {
 
     } elseif($_GET['sort'] == "namecat") {
 
-        foreach($sErrors as $key => $aRow) {
+        foreach ($sErrors as $key => $aRow) {
             $aNamecat[$key] = $aRow['namecat'];
         }
 
@@ -122,7 +122,7 @@ function linksort($sErrors) {
 
     } elseif($_GET['sort'] == "wronglink") {
 
-        foreach($sErrors as $key => $aRow) {
+        foreach ($sErrors as $key => $aRow) {
             $aWronglink[$key] = $aRow['url'];
         }
 
@@ -130,7 +130,7 @@ function linksort($sErrors) {
 
     } elseif($_GET['sort'] == "error_type") {
 
-        foreach($sErrors as $key => $aRow) {
+        foreach ($sErrors as $key => $aRow) {
             $aError_type[$key] = $aRow['error_type'];
         }
 
@@ -190,7 +190,7 @@ $sql = "SELECT url FROM " . $cfg['tab']['whitelist'] . " WHERE lastview < " . (t
 $db->query($sql);
 
 $aWhitelist = array();
-while($db->next_record()) {
+while ($db->next_record()) {
     $aWhitelist[] = $db->f("url");
 }
 
@@ -207,7 +207,7 @@ if($sCache_errors && $_GET['live'] != 1) {
     $sql = "SELECT idcat FROM " . $cfg['tab']['cat'] . " GROUP BY idcat";
     $db->query($sql);
 
-    while($db->next_record()) {
+    while ($db->next_record()) {
 
         if($cronjob != true) { // Check userrights, if no cronjob
 
@@ -240,7 +240,7 @@ if($sCache_errors && $_GET['live'] != 1) {
             AND art.online = '1' AND art.redirect = '0'";
     $db->query($sql);
 
-    while($db->next_record()) {
+    while ($db->next_record()) {
 
         // Text decode
         $value = urldecode($db->f("value"));
@@ -263,7 +263,7 @@ if($sCache_errors && $_GET['live'] != 1) {
             AND art.online = '1' AND art.redirect = '1'";
     $db->query($sql);
 
-    while($db->next_record()) {
+    while ($db->next_record()) {
 
         // Search links
         searchLinks($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"), "Redirect");
@@ -309,7 +309,7 @@ if(empty($aErrors) && $cronjob != true) {
     // error_output initialization
     $aError_output = array('art' => '', 'cat' => '', 'docimages' => '', 'others' => '');
 
-    foreach($aErrors as $sKey => $aRow) {
+    foreach ($aErrors as $sKey => $aRow) {
 
         $aRow = linksort($aRow);
 
@@ -360,7 +360,7 @@ if(empty($aErrors) && $cronjob != true) {
     }
 
     // Count errors
-    foreach($aErrors as $sKey => $aRow) {
+    foreach ($aErrors as $sKey => $aRow) {
         $iErrors_counted += count($aErrors[$sKey]);
     }
 
@@ -369,7 +369,7 @@ if(empty($aErrors) && $cronjob != true) {
     $tpl->set('s', 'ERRORS_COUNT_ERRORS_PERCENT', round(($iErrors_counted * 100) / $iErrors_count_checked, 2));
 
     /* Template output */
-    foreach($aError_output as $sKey => $sValue) {
+    foreach ($aError_output as $sKey => $sValue) {
 
         if(empty($aError_output[$sKey])) { // Errors for this type?
             $tpl2->set('s', 'ERRORS_NOTHING', i18n("No errors for this type.", $plugin_name));

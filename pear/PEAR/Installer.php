@@ -814,7 +814,7 @@ class PEAR_Installer extends PEAR_Common
         $error = $errors = '';
         $failed_deps = $optional_deps = array();
         if (is_array($pkginfo['release_deps'])) {
-            foreach($pkginfo['release_deps'] as $dep) {
+            foreach ($pkginfo['release_deps'] as $dep) {
                 $code = $depchecker->callCheckMethod($error, $dep);
                 if ($code) {
                     if (isset($dep['optional']) && $dep['optional'] == 'yes') {

@@ -302,7 +302,7 @@ class OLE_PPS_Root extends OLE_PPS
                     {
                         $iLen = 0;
                         fseek($raList[$i]->_PPS_FILE, 0); // To The Top
-                        while($sBuff = fread($raList[$i]->_PPS_FILE, 4096))
+                        while ($sBuff = fread($raList[$i]->_PPS_FILE, 4096))
                         {
                             $iLen += strlen($sBuff);
                             fwrite($FILE, $sBuff);

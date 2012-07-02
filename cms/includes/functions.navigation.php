@@ -211,7 +211,7 @@ function getLocationString($iStartCat, $level, $seperator, $sLinkStyleClass, $sT
 
     if (is_array($aCatPath) AND count($aCatPath) > 0) {
         $aLocation = array();
-        foreach($aCatPath as $value) {
+        foreach ($aCatPath as $value) {
             if (!$fullweblink) {
                 if ($mod_rewrite == true) {
                     $linkUrl = $sess->url("index-a-$value.html");

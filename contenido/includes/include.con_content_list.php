@@ -64,8 +64,8 @@ if ($action == 'savecontype' || $action == 10) {
     }
 
     conGenerateCodeForArtInAllCategories($idart);
-} else if($action == 'deletecontype'){
-     if(isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
+} else if ($action == 'deletecontype') {
+     if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
         $sql = "DELETE FROM ".$cfg["tab"]["content"]." WHERE idcontent='".Contenido_Security::toInteger($_REQUEST['idcontent'])."' LIMIT 1";
         $db->query($sql);
      }
@@ -87,23 +87,23 @@ $db->query($sql);
 while ( $db->next_record() ) {
         echo $sortID[$db->f("name")];
         $result[$db->f("name")][$db->f("id")] = $db->f("value");
-        if(!in_array($db->f("name"),$aList)){
+        if (!in_array($db->f("name"),$aList)) {
             $aList[$db->f("idtype")] = $db->f("name");
         }
 }*/
 $aIdtype = array();
 $sql = "SELECT DISTINCT typeid FROM ".$cfg["tab"]["content"]." WHERE idartlang=".$_REQUEST["idartlang"]." ORDER BY typeid";
 $db->query($sql);
-while ( $db->next_record() ) {
+while ($db->next_record()) {
     $aIdtype[] = $db->f("typeid");
 }
 
-foreach($sortID as $name){
+foreach ($sortID as $name) {
     $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b WHERE a.idartlang=".$_REQUEST["idartlang"]." AND a.idtype=b.idtype AND b.type = '".$name."' ORDER BY idtype,typeid,idcontent";
     $db->query($sql);
-    while ( $db->next_record() ) {
+    while ($db->next_record()) {
             $result[$db->f("name")][$db->f("id")] = $db->f("value");
-            if(!in_array($db->f("name"),$aList)){
+            if (!in_array($db->f("name"),$aList)) {
                 $aList[$db->f("idtype")] = $db->f("name");
             }
     }
@@ -191,14 +191,14 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
     $layoutcode .= '<p style="display:block;font-weight:bold;">'.i18n("Content Verwaltung").'</p>
         <div class="categorypath">'.$catString.'/'.htmlspecialchars($db->f("title")).'</div>';
 
-if(count($result)<=0){
+if (count($result)<=0) {
     $layoutcode .= '<div>--- '.i18n("kein").' ---</div>';
 } else {
-    foreach($aIdtype as $idtype){
-        foreach($sortID as $name){
-            if(in_array($name, array_keys($result)) && count($result[$name])>=$idtype){
+    foreach ($aIdtype as $idtype) {
+        foreach ($sortID as $name) {
+            if (in_array($name, array_keys($result)) && count($result[$name])>=$idtype) {
 
-                if(in_array($name."[".$idtype."]",$typeAktuell)){
+                if (in_array($name."[".$idtype."]",$typeAktuell)) {
                     $class = '';
                 } else {
                     $class = ' noactive';
@@ -209,9 +209,9 @@ if(count($result)<=0){
         }
     }
 }
-    /*foreach($result as $key => $cmstype){
-        foreach($cmstype as $index => $value){
-            if(in_array($key.'['.$index.']',$typeAktuell)){
+    /*foreach ($result as $key => $cmstype) {
+        foreach ($cmstype as $index => $value) {
+            if (in_array($key.'['.$index.']',$typeAktuell)) {
                 $class = '';
             } else {
                 $class = 'noactive';
@@ -225,7 +225,7 @@ if(count($result)<=0){
     // generate code
     $code = _processCmsTags($aList, $result, true, $layoutcode);
 
-    if($code == "0601") {
+    if ($code == "0601") {
         markSubMenuItem("1");
         $code = "<script type='text/javascript'>location.href = '".$cfg['path']['contenido_fullhtml']."main.php?frame=4&area=con_content_list&action=con_content&idart=".$idart."&idcat=".$idcat."&contenido=".$contenido."'; console.log(location.href);</script>";
     } else {
@@ -292,11 +292,11 @@ cRegistry::shutdown();
 
         $html = '';
         // Replace all CMS_TAGS[]
-        foreach($_typeList as $_typeItem) {
+        foreach ($_typeList as $_typeItem) {
             $key = strtolower($_typeItem->type);
             $type = $_typeItem->type;
 
-            if(in_array($type,$aList)){
+            if (in_array($type,$aList)) {
             // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
             $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $layoutCode, $match);
 
@@ -333,7 +333,7 @@ cRegistry::shutdown();
 
                 $path = $cfg['path']['contenido_fullhtml'].'main.php?area=con_content_list&action=deletecontype&changeview=edit&idart='.$idart.'&idartlang='.$idartlang.
                 '&idcat='.$idcat.'&client='.$client.'&lang='.$lang.'&frame=4&contenido='.$contenido.'&idcontent='.$idcontent;
-                if($_typeItem->idtype==20 || $_typeItem->idtype==21){
+                if ($_typeItem->idtype==20 || $_typeItem->idtype==21) {
                      $tmp = str_replace('";?>', '', $tmp);
                      $tmp = str_replace('<?php echo "', '', $tmp);
                      //echo "<textarea>"."?".">\n".stripslashes($tmp)."\n\";?"."><"."?php\n"."</textarea>";
@@ -364,7 +364,7 @@ cRegistry::shutdown();
      * @param  array   $r  active CMS variables
      * @param  array   $aList  CMS_...tags list
      */
-    function getAktuellType($r, $aList){
+    function getAktuellType($r, $aList) {
         $idcat = $_REQUEST['idcat'];
         $idart = $_REQUEST['idart'];
         $lang = $_REQUEST['lang'];
@@ -382,13 +382,13 @@ cRegistry::shutdown();
         }
         // generate code
            $code = conGenerateCode($idcat, $idart, $lang, $client, false, false, false);
-        foreach($_typeList as $_typeItem) {
+        foreach ($_typeList as $_typeItem) {
             $type = $_typeItem->type;
-            if(in_array($type,$aList)){
+            if (in_array($type,$aList)) {
                 // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]
                 $tmp = preg_match_all('/(' . $type . '\[+(\d)+\])/i', $code, $match);
-                foreach($match[0] as $s){
-                if(!in_array($s, $r)){
+                foreach ($match[0] as $s) {
+                if (!in_array($s, $r)) {
                     array_push($r, $s);
                 }
                 }

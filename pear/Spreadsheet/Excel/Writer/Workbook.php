@@ -1292,9 +1292,9 @@ class Spreadsheet_Excel_Writer_Workbook extends Spreadsheet_Excel_Writer_BIFFwri
         $data = '';                                // The RGB data
     
         // Pack the RGB data
-        foreach($aref as $color)
+        foreach ($aref as $color)
         {
-            foreach($color as $byte) {
+            foreach ($color as $byte) {
                 $data .= pack("C",$byte);
             }
         }

@@ -162,7 +162,7 @@ while ($db->next_record()) {
 if ($db->num_rows() == 0) {
     $sql = sprintf("SELECT menuless FROM %s WHERE name = '%s' AND parent_id = 0", $cfg["tab"]["area"], $area);
     $db->query($sql);
-    while($db->next_record()) {
+    while ($db->next_record()) {
         $bMenuless = $db->f("menuless") ? true : false;
     }
 }

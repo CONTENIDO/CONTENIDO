@@ -285,7 +285,7 @@ if ($currentStep < $totalSteps) {
                 $sql = "SELECT * FROM ".$cfg['tab']['clients'];
                 $db->query($sql);
 
-                while($db->next_record()) {
+                while ($db->next_record()) {
                     updateClientCache($db->f("idclient"), $db->f("htmlpath"), $db->f("frontendpath"));
                 }
 

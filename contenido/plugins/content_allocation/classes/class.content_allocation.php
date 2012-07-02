@@ -242,7 +242,7 @@ class pApiContentAllocation {
         $this->db->query($sql);
 
         $aResult = array();
-        while($oRow = $this->db->getResultObject()) {
+        while ($oRow = $this->db->getResultObject()) {
             $aResult[] = $oRow;
         }
         return $aResult;

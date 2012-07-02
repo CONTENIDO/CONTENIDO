@@ -58,7 +58,7 @@ function checkLinks() {
         $sql = "SELECT idart, online FROM " . $cfg['tab']['art_lang'] . " WHERE idart IN (" . $sSearch . ")";
         $db->query($sql);
 
-        while($db->next_record()) {
+        while ($db->next_record()) {
             $aFind[$db->f("idart")] = array("online" => $db->f("online"));
         }
 
@@ -92,7 +92,7 @@ function checkLinks() {
         $sql = "SELECT idcat, startidartlang, visible FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat IN (" . $sSearch . ") AND idlang = '" . Contenido_Security::toInteger($lang) . "'";
         $db->query($sql);
 
-        while($db->next_record()) {
+        while ($db->next_record()) {
             $aFind[$db->f("idcat")] = array("online" => $db->f("visible"), "startidart" => $db->f("startidartlang"));
         }
 
@@ -139,7 +139,7 @@ function checkLinks() {
         $sql = "SELECT idcatart FROM " . $cfg['tab']['cat_art'] . " WHERE idcatart IN (" . $sSearch . ")";
         $db->query($sql);
 
-        while($db->next_record()) {
+        while ($db->next_record()) {
             $aFind[] = $db->f("idcatart");
         }
 

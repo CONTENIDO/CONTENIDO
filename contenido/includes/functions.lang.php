@@ -271,7 +271,7 @@ function langDuplicateFromFirstLanguage($client, $idlang)
         }
 
         // Reallocate the category -> templatecfg allocations
-        foreach($aCfgCat as $data) {
+        foreach ($aCfgCat as $data) {
             if ($data['idtplcfg'] != 0) {
                 // Category has a configuration
                 foreach ($aCfgOldNew as $arr) {
@@ -285,7 +285,7 @@ function langDuplicateFromFirstLanguage($client, $idlang)
         }
 
         // Reallocate the article -> templatecfg allocations
-        foreach($aCfgArt as $data) {
+        foreach ($aCfgArt as $data) {
             if ($data['idtplcfg'] != 0) {
                 // Category has a configuration
                 foreach ($aCfgOldNew as $arr) {

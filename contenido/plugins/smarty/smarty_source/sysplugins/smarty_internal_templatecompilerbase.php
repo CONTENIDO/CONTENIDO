@@ -321,7 +321,7 @@ class Smarty_Internal_TemplateCompilerBase {
         // loop through plugin dirs and find the plugin
         $function = 'smarty_' . $type . '_' . $plugin_name;
         $found = false;
-        foreach((array)$this->smarty->plugins_dir as $_plugin_dir) {
+        foreach ((array)$this->smarty->plugins_dir as $_plugin_dir) {
             $file = rtrim($_plugin_dir, '/\\') . DS . $type . '.' . $plugin_name . '.php';
             if (file_exists($file)) {
                 // require_once($file);

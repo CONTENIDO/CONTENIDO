@@ -137,7 +137,7 @@ function getAsBytes($val) {
     }
     $val = trim($val);
     $last = $val{strlen($val)-1};
-    switch($last) {
+    switch ($last) {
         case 'k':
         case 'K':
             return (int) $val * 1024;

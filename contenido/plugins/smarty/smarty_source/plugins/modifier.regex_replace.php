@@ -23,7 +23,7 @@
 function smarty_modifier_regex_replace($string, $search, $replace)
 {
     if(is_array($search)) {
-      foreach($search as $idx => $s)
+      foreach ($search as $idx => $s)
         $search[$idx] = _smarty_regex_replace_check($s);
     } else {
       $search = _smarty_regex_replace_check($search);

@@ -93,7 +93,7 @@ class Contenido_Category_Articles extends Contenido_Category_Base
 
         $bHasErrors = $this->oDb->Errno == 0 ? $bHasErrors = false : $bHasErrors = true;
         if ($bHasErrors === false && $this->oDb->num_rows() > 0) {
-            while($this->oDb->next_record()) {
+            while ($this->oDb->next_record()) {
                 $oArticle = new cApiArticleLanguage();
                 $oArticle->loadByArticleAndLanguageId($this->oDb->f('idart'), $this->getLang());
                 if ($bArticleIdAsKey === false) {
@@ -175,7 +175,7 @@ class Contenido_Category_Articles extends Contenido_Category_Base
         $this->oDb->query($sSql);
         $bHasErrors = $this->oDb->Errno == 0 ? false : true;
         if ($bHasErrors === false && $this->oDb->num_rows() > 0) {
-            while($this->oDb->next_record()) {
+            while ($this->oDb->next_record()) {
                 $oArticle = new cApiArticleLanguage();
                 $oArticle->loadByArticleAndLanguageId($this->oDb->f('idart'), $this->getLang());
                 if ($bArticleIdAsKey === false) {

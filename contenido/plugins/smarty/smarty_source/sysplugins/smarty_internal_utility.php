@@ -59,7 +59,7 @@ class Smarty_Internal_Utility {
         $_count = 0;
         $_error_count = 0;
         // loop over array of template directories
-        foreach((array)$this->smarty->template_dir as $_dir) {
+        foreach ((array)$this->smarty->template_dir as $_dir) {
             if (strpos('/\\', substr($_dir, -1)) === false) {
                 $_dir .= DS;
             }
@@ -124,7 +124,7 @@ class Smarty_Internal_Utility {
         $_count = 0;
         $_error_count = 0;
         // loop over array of template directories
-        foreach((array)$this->smarty->config_dir as $_dir) {
+        foreach ((array)$this->smarty->config_dir as $_dir) {
             if (strpos('/\\', substr($_dir, -1)) === false) {
                 $_dir .= DS;
             }
@@ -239,7 +239,7 @@ class Smarty_Internal_Utility {
 
         echo "Testing template directory...\n";
 
-        foreach((array)$this->smarty->template_dir as $template_dir) {
+        foreach ((array)$this->smarty->template_dir as $template_dir) {
             if (!is_dir($template_dir))
                 echo "FAILED: $template_dir is not a directory.\n";
             elseif (!is_readable($template_dir))
@@ -261,7 +261,7 @@ class Smarty_Internal_Utility {
 
         echo "Testing plugins directory...\n";
 
-        foreach((array)$this->smarty->plugins_dir as $plugin_dir) {
+        foreach ((array)$this->smarty->plugins_dir as $plugin_dir) {
             if (!is_dir($plugin_dir))
                 echo "FAILED: $plugin_dir is not a directory.\n";
             elseif (!is_readable($plugin_dir))

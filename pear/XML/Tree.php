@@ -131,7 +131,7 @@ class XML_Tree extends XML_Parser
     function &insertChild($path,$pos,$child, $content = '', $attributes = array()) {
         // update namespace to maintain namespace integrity
         $count=count($path);
-        foreach($this->namespace as $key => $val) {
+        foreach ($this->namespace as $key => $val) {
             if ((array_slice($val,0,$count)==$path) && ($val[$count]>=$pos))
                 $this->namespace[$key][$count]++;
         }
@@ -161,7 +161,7 @@ class XML_Tree extends XML_Parser
     function &removeChild($path,$pos) {
         // update namespace to maintain namespace integrity
         $count=count($path);
-        foreach($this->namespace as $key => $val) {
+        foreach ($this->namespace as $key => $val) {
             if (array_slice($val,0,$count)==$path) {
                 if ($val[$count]==$pos) { unset($this->namespace[$key]); break; }
                 if ($val[$count]>$pos)
@@ -303,7 +303,7 @@ class XML_Tree extends XML_Parser
 
         // clone all other vars
         $temp=get_object_vars($this);
-        foreach($temp as $varname => $value)
+        foreach ($temp as $varname => $value)
             if (!in_array($varname,array('filename','version','root')))
                 $clone->$varname=$value;
 

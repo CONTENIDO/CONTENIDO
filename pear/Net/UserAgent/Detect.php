@@ -201,7 +201,7 @@ class Net_UserAgent_Detect {
                 NET_USERAGENT_DETECT_ALL);
         $detect = is_null($in_detect) ? NET_USERAGENT_DETECT_ALL : $in_detect;
         settype($detect, 'array');
-        foreach($detectOptions as $option) {
+        foreach ($detectOptions as $option) {
             if (in_array($option, $detect)) {
                 $detectFlags[$option] = true; 
             }
@@ -462,7 +462,7 @@ class Net_UserAgent_Detect {
     {
         Net_UserAgent_Detect::detect();
         $browser = &Net_UserAgent_Detect::_getStaticProperty('browser');
-        foreach((array) $in_expectList as $brwsr) {
+        foreach ((array) $in_expectList as $brwsr) {
             if (!empty($browser[strtolower($brwsr)])) {
                 return $brwsr;
             }
@@ -501,7 +501,7 @@ class Net_UserAgent_Detect {
     {
         Net_UserAgent_Detect::detect();
         $browser = &Net_UserAgent_Detect::_getStaticProperty('browser');
-        foreach((array) $in_vendorStrings as $flag => $string) {
+        foreach ((array) $in_vendorStrings as $flag => $string) {
             if (!empty($browser[$flag])) {
                 $vendorString = $string;
             }
@@ -605,7 +605,7 @@ class Net_UserAgent_Detect {
     {
         Net_UserAgent_Detect::detect();
         $os = &Net_UserAgent_Detect::_getStaticProperty('os');
-        foreach((array) $in_expectList as $expectOs) {
+        foreach ((array) $in_expectList as $expectOs) {
             if (!empty($os[strtolower($expectOs)])) {
                 return $expectOs;
             }
@@ -644,7 +644,7 @@ class Net_UserAgent_Detect {
         $osString = 'Unknown';
 
         $os = &Net_UserAgent_Detect::_getStaticProperty('os');
-        foreach((array) $in_osStrings as $flag => $string) {
+        foreach ((array) $in_osStrings as $flag => $string) {
             if (!empty($os[$flag])) {
                 $osString = $string;
             }
@@ -798,7 +798,7 @@ class Net_UserAgent_Detect {
 
         if ($type == 'mimetype' || $type == 'language' || $type == 'charset' || $type == 'encoding') {
             $typeArray = &Net_UserAgent_Detect::_getStaticProperty($type);
-            foreach((array) $in_expectList as $match) {
+            foreach ((array) $in_expectList as $match) {
                 if (!empty($typeArray[$match])) {
                     return $match;
                 }
@@ -831,7 +831,7 @@ class Net_UserAgent_Detect {
 
         if ($type == 'mimetype' || $type == 'language' || $type == 'charset' || $type == 'encoding') {
             $typeArray = &Net_UserAgent_Detect::_getStaticProperty($type);
-            foreach((array) $in_values as $value) {
+            foreach ((array) $in_values as $value) {
                 $typeArray[$value] = true;
             }
         }

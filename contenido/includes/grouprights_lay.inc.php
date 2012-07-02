@@ -87,7 +87,7 @@ foreach ($right_list["lay"] as $value2)
     //if there are some actions
     if(is_array($value2["action"])) {
         //set the areas that are in use
-        foreach($value2["action"] as $key3 => $value3) {
+        foreach ($value2["action"] as $key3 => $value3) {
             $possible_areas[$value2["perm"]]="";
             $colspan++;
             //set  the possible areas and actions for this areas

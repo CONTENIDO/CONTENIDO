@@ -56,7 +56,7 @@ $oFEGroupMemberCollection->query();
 # Fetch all groups the user belongs to (no goup, one group, more than one group).
 # The array $aFEGroup can be used in frontenduser plugins to display selfdefined user properties group dependent.
 $aFEGroup = array();
-while($oFEGroup = $oFEGroupMemberCollection->next()) {
+while ($oFEGroup = $oFEGroupMemberCollection->next()) {
     $aFEGroup[] = $oFEGroup->get("idfrontendgroup");
 }
 
@@ -226,7 +226,7 @@ if ($feuser->virgin == false && $feuser->get("idclient") == $client) {
         if (count($arrGroups) > 0) {
             $aMemberGroups = array();
 
-            foreach($arrGroups as $iGroup) {
+            foreach ($arrGroups as $iGroup) {
                 $oMemberGroup = new cApiFrontendGroup($iGroup);
                 $aMemberGroups[] = $oMemberGroup->get("groupname");
             }

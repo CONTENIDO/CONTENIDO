@@ -279,7 +279,7 @@ class Cache_Lite
     */
     function Cache_Lite($options = array(NULL))
     {
-        foreach($options as $key => $value) {
+        foreach ($options as $key => $value) {
             $this->setOption($key, $value);
         }
     }
@@ -599,7 +599,7 @@ class Cache_Lite
             $motif = ($group) ? 'cache_'.$group.'_' : 'cache_';
         }
         if ($this->_memoryCaching) {
-	    foreach($this->_memoryCachingArray as $key => $v) {
+	    foreach ($this->_memoryCachingArray as $key => $v) {
                 if (strpos($key, $motif) !== false) {
                     unset($this->_memoryCachingArray[$key]);
                     $this->_memoryCachingCounter = $this->_memoryCachingCounter - 1;

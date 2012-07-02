@@ -77,11 +77,11 @@ $possible_areas=array();
 $sCheckboxesRow = '';
 $aSecondHeaderRow = array();
 // look for possible actions   in mainarea []
-foreach($right_list["lay"] as $value2)
+foreach ($right_list["lay"] as $value2)
 {
      //if there are some actions
      if(is_array($value2["action"]))
-         foreach($value2["action"] as $key3 => $value3)
+         foreach ($value2["action"] as $key3 => $value3)
          {   //set the areas that are in use
              $possible_areas[$value2["perm"]]="";
 
@@ -128,12 +128,12 @@ while ($db->next_record()) {
         $sJsBefore .= "itemids[\"".$db->f("idlay")."\"]=\"x\"\n";
 
         // look for possible actions in mainarea[]
-        foreach($right_list["lay"] as $value2)
+        foreach ($right_list["lay"] as $value2)
         {
 
                //if there area some
                if(is_array($value2["action"]))
-                 foreach($value2["action"] as $key3 => $value3)
+                 foreach ($value2["action"] as $key3 => $value3)
                  {
                       //does the user have the right
                       if(in_array($value2["perm"]."|$value3|".$db->f("idlay"),array_keys($rights_list_old)))

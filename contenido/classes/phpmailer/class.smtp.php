@@ -407,13 +407,13 @@ class SMTP {
 
     $max_line_length = 998; // used below; set here for ease in change
 
-    while(list(,$line) = @each($lines)) {
+    while (list(,$line) = @each($lines)) {
       $lines_out = null;
       if($line == "" && $in_headers) {
         $in_headers = false;
       }
       // ok we need to break this line up into several smaller lines
-      while(strlen($line) > $max_line_length) {
+      while (strlen($line) > $max_line_length) {
         $pos = strrpos(substr($line,0,$max_line_length)," ");
 
         // Patch to fix DOS attack
@@ -436,7 +436,7 @@ class SMTP {
       $lines_out[] = $line;
 
       // send the lines to the server
-      while(list(,$line_out) = @each($lines_out)) {
+      while (list(,$line_out) = @each($lines_out)) {
         if(strlen($line_out) > 0)
         {
           if(substr($line_out, 0, 1) == ".") {
@@ -816,7 +816,7 @@ class SMTP {
    */
   private function get_lines() {
     $data = "";
-    while(!feof($this->smtp_conn)) {
+    while (!feof($this->smtp_conn)) {
       $str = @fgets($this->smtp_conn,515);
       if($this->do_debug >= 4) {
         echo "SMTP -> get_lines(): \$data was \"$data\"" . $this->CRLF . '<br />';

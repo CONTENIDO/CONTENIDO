@@ -123,7 +123,7 @@ class XML_Tree_Node {
         /* for future use....
             // clone all other vars
             $temp=get_object_vars($this);
-            foreach($temp as $varname => $value)
+            foreach ($temp as $varname => $value)
                 if (!in_array($varname,array('name','content','attributes','children')))
                     $clone->$varname=$value;
         */

@@ -383,7 +383,7 @@ class Contenido_Module_Search extends Contenido_Module_Handler
         $db->query($sql);
         $result = array();
 
-        while(($module = $db->next_record())) {
+        while (($module = $db->next_record())) {
             $this->_initWithDatabaseRow($db);
             $result[$db->f('idmod')] = array(
                 'name'=> $db->f('name'),

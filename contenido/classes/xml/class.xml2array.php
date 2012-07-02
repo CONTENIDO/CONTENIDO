@@ -153,7 +153,7 @@ class cApiXml2Array
                 $childs = array();
             }
 
-            foreach($childs as $child) {
+            foreach ($childs as $child) {
                 switch ($child->node_type()) {
                     case XML_ELEMENT_NODE:
                         if (is_array($aMergeTags)) {

@@ -83,7 +83,7 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
             idtpl='" . Contenido_Security::toInteger($idtpl) . "'";
 
     $db->query($sql);
-    while( $db->next_record() ) {
+    while ( $db->next_record() ) {
         $a_c[$db->f("number")] = $db->f("idmod");
     }
 

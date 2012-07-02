@@ -35,7 +35,7 @@ $notification = new Contenido_Notification();
 $sScript = '';
 if($action == "mod_importexport_module") {
 
-    switch($mode) {
+    switch ($mode) {
 
         case 'export':
             if($idmod != 0)

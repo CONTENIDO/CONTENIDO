@@ -62,7 +62,7 @@ function frontendusers_groupselect_display () {
     $oFEGroupMemberCollection->query();
 
     $aFEGroup = array();
-    while($oFEGroup = $oFEGroupMemberCollection->next())
+    while ($oFEGroup = $oFEGroupMemberCollection->next())
     {
         $aFEGroup[] = $oFEGroup->get("idfrontendgroup");
     }

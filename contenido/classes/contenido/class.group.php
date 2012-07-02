@@ -322,7 +322,7 @@ class cApiGroup extends Item
 
         $groupPropColl = new cApiGroupPropertyCollection($this->values['group_id']);
         $groupProps = $groupPropColl->fetchByGroupId();
-        foreach($groupProps as $groupProp) {
+        foreach ($groupProps as $groupProp) {
             $props[$groupProp->get('idgroupprop')] = array(
                 'name'  => $groupProp->get('name'),
                 'type'  => $groupProp->get('type'),

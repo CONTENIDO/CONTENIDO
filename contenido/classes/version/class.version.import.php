@@ -161,12 +161,12 @@ if (!defined('CON_FRAMEWORK')) {
              ksort($this->aCreateVersion);
 
         //         All array read
-             foreach( $this->aCreateVersion as $sKey=>$sLevelOne) {
-                 foreach($sLevelOne as $sKey2=>$sLevelTwo) {
+             foreach ($this->aCreateVersion as $sKey=>$sLevelOne) {
+                 foreach ($sLevelOne as $sKey2=>$sLevelTwo) {
                     if (is_array($this->aCfgClient[$sKey])) {
                          parent::__construct($aCfg, $this->aCfgClient, $this->oDB, $sKey, $sArea, $iFrame);
 
-                         foreach($sLevelTwo as $sKey3=>$sLevelThree) {
+                         foreach ($sLevelTwo as $sKey3=>$sLevelThree) {
                             $this->iIdentity = $sKey2;
                             $this->sName = Contenido_Security::unFilter($sLevelThree["name"]);
                             $this->sModType = Contenido_Security::unFilter($sLevelThree["type"]);
@@ -216,7 +216,7 @@ if (!defined('CON_FRAMEWORK')) {
         $this->oDB->query($sSql);
 
 //        save mod_history in three dimension array
-        while($this->oDB->next_record()) {
+        while ($this->oDB->next_record()) {
              $this->aCreateVersion[$this->oDB->f("idclient")][$this->oDB->f("idmod")][$this->oDB->f("idmodhistory")] =
              array("idmodhistory"=>$this->oDB->f("idmodhistory"), "idmod"=>$this->oDB->f("idmod"),
                     "idclient"=>$this->oDB->f("idclient"), "name"=>$this->oDB->f("name"),

@@ -1063,7 +1063,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     */
     function setHPagebreaks($breaks)
     {
-        foreach($breaks as $break) {
+        foreach ($breaks as $break) {
             array_push($this->_hbreaks,$break);
         }
     }
@@ -1077,7 +1077,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     */
     function setVPagebreaks($breaks)
     {
-        foreach($breaks as $break) {
+        foreach ($breaks as $break) {
             array_push($this->_vbreaks,$break);
         }
     }
@@ -1189,7 +1189,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     {   
         $retval = '';
         if (is_array($val)) {
-            foreach($val as $v) {
+            foreach ($val as $v) {
                 if (is_array($v)) {
                     $this->writeCol($row, $col, $v, $format);
                 } else {
@@ -1218,7 +1218,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
     {
         $retval = '';
         if (is_array($val)) {
-            foreach($val as $v) { 
+            foreach ($val as $v) { 
                 $this->write($row, $col, $v, $format);
                 $row++;
             }
@@ -1360,7 +1360,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
  
         // split the plain text password in its component characters
         $chars = preg_split('//', $plaintext, -1, PREG_SPLIT_NO_EMPTY);
-        foreach($chars as $char)
+        foreach ($chars as $char)
         {
             $value        = ord($char) << $i;   // shifted ASCII value 
             $rotated_bits = $value >> 15;       // rotated bits beyond bit 15
@@ -2989,7 +2989,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         $data    = pack("v",  $cbrk);
     
         // Append each page break
-        foreach($breaks as $break) {
+        foreach ($breaks as $break) {
             if ($this->_BIFF_version == 0x0600) {
                 $data .= pack("vvv", $break, 0x0000, 0x00ff);
             }
@@ -3511,7 +3511,7 @@ class Spreadsheet_Excel_Writer_Worksheet extends Spreadsheet_Excel_Writer_BIFFwr
         $this->_append($header.$data);
       
         $record = 0x01be;              // Record identifier
-        foreach($this->_dv as $dv)
+        foreach ($this->_dv as $dv)
         {
             $length = strlen($dv);      // Bytes to follow
             $header = pack("vv", $record, $length);

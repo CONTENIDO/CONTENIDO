@@ -582,7 +582,7 @@ class Cms_LinkEditor {
             $sUploadPath = $this->aCfgClient[$this->iClient]['upl']['path'];
             if(is_dir($sUploadPath.$sDirectoryPath)){
             $oHandle = opendir($sUploadPath.$sDirectoryPath);
-            while($sEntry = readdir($oHandle)) {
+            while ($sEntry = readdir($oHandle)) {
                 if ( $sEntry != "." && $sEntry != ".." && file_exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) && !is_dir( $sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
                     $oHtmlSelectOption = new cHTMLOptionElement($sEntry, $sDirectoryPath."/".$sEntry);
                     $oHtmlSelect->addOptionElement($i, $oHtmlSelectOption);
@@ -690,7 +690,7 @@ class Cms_LinkEditor {
         $aDirectories = array();
         $oHandle = opendir($sUploadPath);
         $i = 0;
-        while($sEntry = readdir($oHandle)) {
+        while ($sEntry = readdir($oHandle)) {
             if ( $sEntry != ".svn" && $sEntry != "." && $sEntry != ".." && is_dir( $sUploadPath . $sEntry ) ) {
                 $aDirectories[$i]['name'] = $sEntry;
                 $aDirectories[$i]['path'] = str_replace($this->sUploadPath, '', $sUploadPath);

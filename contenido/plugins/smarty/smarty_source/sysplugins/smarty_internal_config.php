@@ -74,7 +74,7 @@ class Smarty_Internal_Config {
      */
     public function buildConfigFilepath ()
     {
-        foreach((array)$this->smarty->config_dir as $_config_dir) {
+        foreach ((array)$this->smarty->config_dir as $_config_dir) {
             if (strpos('/\\', substr($_config_dir, -1)) === false) {
                 $_config_dir .= DS;
             }

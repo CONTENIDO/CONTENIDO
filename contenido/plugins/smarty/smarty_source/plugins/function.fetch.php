@@ -35,7 +35,7 @@ function smarty_function_fetch($params, $template)
 
         // fetch the file
         if($fp = @fopen($params['file'],'r')) {
-            while(!feof($fp)) {
+            while (!feof($fp)) {
                 $content .= fgets ($fp,4096);
             }
             fclose($fp);
@@ -69,8 +69,8 @@ function smarty_function_fetch($params, $template)
                     $pass = $uri_parts['pass'];
                 }
                 // loop through parameters, setup headers
-                foreach($params as $param_key => $param_value) {
-                    switch($param_key) {
+                foreach ($params as $param_key => $param_value) {
+                    switch ($param_key) {
                         case "file":
                         case "assign":
                         case "assign_headers":
@@ -165,7 +165,7 @@ function smarty_function_fetch($params, $template)
                         fputs($fp, "Referer: $referer\r\n");
                     }
                     if(isset($extra_headers) && is_array($extra_headers)) {
-                        foreach($extra_headers as $curr_header) {
+                        foreach ($extra_headers as $curr_header) {
                             fputs($fp, $curr_header."\r\n");
                         }
                     }
@@ -174,7 +174,7 @@ function smarty_function_fetch($params, $template)
                     }
 
                     fputs($fp, "\r\n");
-                    while(!feof($fp)) {
+                    while (!feof($fp)) {
                         $content .= fgets($fp,4096);
                     }
                     fclose($fp);
@@ -193,7 +193,7 @@ function smarty_function_fetch($params, $template)
         } else {
             // ftp fetch
             if($fp = @fopen($params['file'],'r')) {
-                while(!feof($fp)) {
+                while (!feof($fp)) {
                     $content .= fgets ($fp,4096);
                 }
                 fclose($fp);

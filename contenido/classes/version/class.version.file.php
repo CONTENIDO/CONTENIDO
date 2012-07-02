@@ -137,7 +137,7 @@ if (!defined('CON_FRAMEWORK')) {
                     break;
                 }
                 $this->sCode .=  $_data;
-            } while(true);
+            } while (true);
             fclose($handle);
         } else {
             echo "<br>File not exists " . $this->sPath.$this->sFileName;

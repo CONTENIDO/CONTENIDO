@@ -2253,7 +2253,7 @@ class Net_IDNA_php4
         $output = '';
         foreach ($decoded as $k => $v) {
             // Make sure to use just the plain dot
-            switch($v) {
+            switch ($v) {
             case 0x3002:
             case 0xFF0E:
             case 0xFF61:

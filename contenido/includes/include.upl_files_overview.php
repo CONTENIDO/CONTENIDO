@@ -877,9 +877,9 @@ function updateUpl2Meta(){
 	}
 	$bError = true;
 	$j=0;
-	foreach($aUpl as $idupl => $elem){
+	foreach ($aUpl as $idupl => $elem){
 		if($elem['description'] != ''){
-			foreach($aLang as $idlang){
+			foreach ($aLang as $idlang){
 				$aUplMeta = array();
 				$sSql = "SELECT * FROM " . $cfg['tab']['upl_meta'] . " WHERE idlang = $idlang  AND idupl = $idupl ORDER BY idupl ASC";
 				$db->query($sSql);

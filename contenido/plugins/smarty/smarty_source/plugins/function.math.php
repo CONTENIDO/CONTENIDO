@@ -41,14 +41,14 @@ function smarty_function_math($params, $template)
     $allowed_funcs = array('int','abs','ceil','cos','exp','floor','log','log10',
                            'max','min','pi','pow','rand','round','sin','sqrt','srand','tan');
 
-    foreach($match[1] as $curr_var) {
+    foreach ($match[1] as $curr_var) {
         if ($curr_var && !in_array($curr_var, array_keys($params)) && !in_array($curr_var, $allowed_funcs)) {
             trigger_error("math: function call $curr_var not allowed",E_USER_WARNING);
             return;
         }
     }
 
-    foreach($params as $key => $val) {
+    foreach ($params as $key => $val) {
         if ($key != "equation" && $key != "format" && $key != "assign") {
             // make sure value is not empty
             if (strlen($val)==0) {

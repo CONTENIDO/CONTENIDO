@@ -405,7 +405,7 @@ class TreeItem
         $flat_tree = array();
         $this->getFlatTree($this, $flat_tree);
 
-        foreach($flat_tree as $key => $value)
+        foreach ($flat_tree as $key => $value)
         {
             if($value->id != $stop_id)
             {
@@ -428,7 +428,7 @@ class TreeItem
         $cleared_list=array();
 
         // remove all nodes that have no subnodes
-        foreach($list as $key)
+        foreach ($list as $key)
         {
             $item=$this->getItemByID($key);
             if(sizeof($item->subitems) > 0)

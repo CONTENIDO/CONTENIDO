@@ -86,7 +86,7 @@ class PEAR_Command_Mirror extends PEAR_Command_Common
 	if(PEAR::isError($cmd)) {
 		return $cmd;
 	}	
-	foreach($remoteInfo as $pkgn=>$pkg) {   
+	foreach ($remoteInfo as $pkgn=>$pkg) {   
 		// error handling not neccesary, because
 		// already done by the download command
 		$cmd->run("download", array(), array($pkgn));       

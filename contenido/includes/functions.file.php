@@ -397,7 +397,7 @@ function getDirectorySize($sDirectory, $bRecursive = false)
         return false;
     }
 
-    foreach($files as $file) {
+    foreach ($files as $file) {
         $ret += filesize($file);
     }
 
@@ -426,7 +426,7 @@ function scanDirectory($sDirectory, $bRecursive = false)
     $closedDirs = array();
     array_push($openDirs, $sDirectory);
 
-    while(count(($openDirs)) >= 1) {
+    while (count(($openDirs)) >= 1) {
         $sDirectory = array_pop($openDirs);
             if ($hDirHandle = opendir($sDirectory)) {
             while (($sFile = readdir($hDirHandle)) !== false) {

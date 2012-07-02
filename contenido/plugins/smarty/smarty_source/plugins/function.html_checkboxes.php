@@ -52,8 +52,8 @@ function smarty_function_html_checkboxes($params, $template)
 
     $extra = '';
 
-    foreach($params as $_key => $_val) {
-        switch($_key) {
+    foreach ($params as $_key => $_val) {
+        switch ($_key) {
             case 'name':
             case 'separator':
                 $$_key = $_val;

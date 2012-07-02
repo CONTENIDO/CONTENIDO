@@ -106,7 +106,7 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
                   $sql = "DELETE FROM ".$cfg["tab"]["container"]." WHERE idtpl='".Contenido_Security::toInteger($idtpl, $db)."'";
                   $db->query($sql);
 
-               foreach($c as $idcontainer => $dummyval) {
+               foreach ($c as $idcontainer => $dummyval) {
 
                   $sql = "INSERT INTO ".$cfg["tab"]["container"]." (idtpl, number, idmod) VALUES ";
                   $sql .= "(";

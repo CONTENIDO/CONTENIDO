@@ -29,11 +29,11 @@ class cMail extends PHPMailer {
         $address['from']    = $this->From;
 
         //extract email address
-        foreach($this->cc as $item) {
+        foreach ($this->cc as $item) {
             $cc[] = $item[0];
         }
         //extract email address
-        foreach($this->bcc as $item) {
+        foreach ($this->bcc as $item) {
             $bcc[] = $item[0];
         }
 

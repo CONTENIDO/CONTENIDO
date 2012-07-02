@@ -124,7 +124,7 @@ class PEAR_Remote extends PEAR
         $username = $this->config->get('username');
         $password = $this->config->get('password');
         $eargs = array();
-        foreach($args as $arg) $eargs[] = $this->_encode($arg);
+        foreach ($args as $arg) $eargs[] = $this->_encode($arg);
         $f = new XML_RPC_Message($method, $eargs);
         if ($this->cache !== null) {
             $maxAge = '?maxAge='.$this->cache['lastChange'];
@@ -329,7 +329,7 @@ class PEAR_Remote extends PEAR
         $type = gettype($php_val);
         $xmlrpcval = new XML_RPC_Value;
 
-        switch($type) {
+        switch ($type) {
             case "array":
                 reset($php_val);
                 $firstkey = key($php_val);

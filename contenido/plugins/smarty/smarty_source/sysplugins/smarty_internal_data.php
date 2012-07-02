@@ -105,7 +105,7 @@ class Smarty_Internal_Data {
                         settype($this->tpl_vars[$_key]->value, 'array');
                     }
                     if ($merge && is_array($_val)) {
-                        foreach($_val as $_mkey => $_mval) {
+                        foreach ($_val as $_mkey => $_mval) {
                             $this->tpl_vars[$_key]->value[$_mkey] = $_mval;
                         }
                     } else {
@@ -127,7 +127,7 @@ class Smarty_Internal_Data {
                     settype($this->tpl_vars[$tpl_var]->value, 'array');
                 }
                 if ($merge && is_array($value)) {
-                    foreach($value as $_mkey => $_mval) {
+                    foreach ($value as $_mkey => $_mval) {
                         $this->tpl_vars[$tpl_var]->value[$_mkey] = $_mval;
                     }
                 } else {
@@ -154,7 +154,7 @@ class Smarty_Internal_Data {
                 settype($this->tpl_vars[$tpl_var]->value, 'array');
             }
             if ($merge && is_array($value)) {
-                foreach($value as $_key => $_val) {
+                foreach ($value as $_key => $_val) {
                     $this->tpl_vars[$tpl_var]->value[$_key] = &$value[$_key];
                 }
             } else {

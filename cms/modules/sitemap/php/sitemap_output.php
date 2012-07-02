@@ -45,7 +45,7 @@ if ($iSelectedCat > 0 && $iSelectedDepth >= 0) {
             $sMainCats = '';
         }
         foreach ($oSubCategories as $oSubCategory) {
-            switch($iHtmlOutputType) {
+            switch ($iHtmlOutputType) {
                 case 0:
                     Contenido_Sitemap_Util::loopCats($oSubCategory, $oFeNav, $tpl, $sUrlStyle, $cfg, $lang, $aDepthInfo);
                     break;

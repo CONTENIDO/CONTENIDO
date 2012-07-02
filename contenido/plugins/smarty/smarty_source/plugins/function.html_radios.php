@@ -53,7 +53,7 @@ function smarty_function_html_radios($params, $template)
     $output = null;
     $extra = '';
 
-    foreach($params as $_key => $_val) {
+    foreach ($params as $_key => $_val) {
         switch ($_key) {
             case 'name':
             case 'separator':

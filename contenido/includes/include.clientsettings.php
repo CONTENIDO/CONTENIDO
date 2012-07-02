@@ -114,8 +114,7 @@ if ($aItems !== false)
     $oLnkEdit->setCustom("idclientslang", $_REQUEST["idclientslang"]);
 
     $iCounter = 0;
-    foreach($aItems as $iKey => $aValue)
-    {
+    foreach ($aItems as $iKey => $aValue) {
         $oLnkDelete->setCustom("idprop", $iKey);
         $oLnkEdit->setCustom("idprop", $iKey);
 

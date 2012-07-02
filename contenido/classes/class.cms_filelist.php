@@ -239,7 +239,7 @@ class Cms_FileList {
      * @return    array    Translation strings
      */
     static public function addModuleTranslations($aTranslationStrings) {
-        foreach(self::$aTranslations as $sValue) {
+        foreach (self::$aTranslations as $sValue) {
             $aTranslationStrings[] = $sValue;
         }
 
@@ -267,7 +267,7 @@ class Cms_FileList {
         $this->aSettings['filelist_directories']     = array();
         $this->aSettings['filelist_manual_files']     = array();
 
-        while($oXmlReader->read()) {
+        while ($oXmlReader->read()) {
             switch ($oXmlReader->nodeType) {
               //read property name (ignore root node or block of manual arts for teaser)
               case XMLReader::ELEMENT:
@@ -520,7 +520,7 @@ class Cms_FileList {
         if ($sDirectoryPath != "" ) {
             $sUploadPath = $this->aCfgClient[$this->iClient]['upl']['path'];
             $oHandle = opendir($sUploadPath.$sDirectoryPath);
-            while($sEntry = readdir($oHandle)) {
+            while ($sEntry = readdir($oHandle)) {
                 if ( $sEntry != "." && $sEntry != ".." &&
                      file_exists( $sUploadPath.$sDirectoryPath."/".$sEntry ) &&
                      !is_dir( $sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
@@ -678,7 +678,7 @@ class Cms_FileList {
         $aDirectories = array();
         $oHandle = opendir($sUploadPath);
         $i = 0;
-        while($sEntry = readdir($oHandle)) {
+        while ($sEntry = readdir($oHandle)) {
             if ( $sEntry != "." && $sEntry != ".." && is_dir( $sUploadPath . $sEntry ) ) {
                 $aDirectories[$i]['name'] = $sEntry;
                 $aDirectories[$i]['path'] = $sUploadPath;
@@ -894,7 +894,7 @@ class Cms_FileList {
         $oTpl->set('d', 'FILEDIRECTORY',     $sDirectoryName);
         $oTpl->set('d', 'FILELINK',             $sFileLink);
 
-        foreach( self::$aTranslations as $sKey => $sValue ) {
+        foreach (self::$aTranslations as $sKey => $sValue ) {
             $oTpl->set('d', $sKey, mi18n( $sValue ));
         }
 
@@ -929,7 +929,7 @@ class Cms_FileList {
      */
     public function recursiveCheckForSubdirectories( $sDirectoryPath, $aDirectories ) {
         $oHandle = opendir($this->sUploadPath.$sDirectoryPath);
-        while($sEntry = readdir($oHandle)) {
+        while ($sEntry = readdir($oHandle)) {
             if ( $sEntry != "." && $sEntry != ".." &&
                 is_dir( $this->sUploadPath.$sDirectoryPath."/".$sEntry ) ) {
                 $aDirectories[] = $sDirectoryPath."/".$sEntry;
@@ -1077,7 +1077,7 @@ class Cms_FileList {
                     foreach ( $aDirectories as $sDirectoryName ) {
                         $oHandle = opendir( $this->sUploadPath . $sDirectoryName );
 
-                        while( $sEntry = readdir( $oHandle ) ) {
+                        while ( $sEntry = readdir( $oHandle ) ) {
                             // checking if entry is file and is not a directory
                             if ( $sEntry != "." && $sEntry != ".." && !is_dir( $this->sUploadPath . $sDirectoryName . "/" . $sEntry ) ) {
                                 $aFileList[] = $sDirectoryName . "/" . $sEntry;

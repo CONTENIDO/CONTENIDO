@@ -700,7 +700,7 @@ class Smarty extends Smarty_Internal_Data {
         // plugin filename is expected to be: [type].[name].php
         $_plugin_filename = "{$_name_parts[1]}.{$_name_parts[2]}.php";
         // loop through plugin dirs and find the plugin
-        foreach((array)$this->plugins_dir as $_plugin_dir) {
+        foreach ((array)$this->plugins_dir as $_plugin_dir) {
             if (strpos('/\\', substr($_plugin_dir, -1)) === false) {
                 $_plugin_dir .= DS;
             }
@@ -765,7 +765,7 @@ class Smarty extends Smarty_Internal_Data {
             return $this->wrapper->convert($name, $args);
         }
         // external Smarty methods ?
-        foreach(array('filter','register') as $external) {
+        foreach (array('filter','register') as $external) {
             if (method_exists("Smarty_Internal_{$external}",$name)) {
                 if (!isset($this->$external)) {
                     $class = "Smarty_Internal_{$external}";

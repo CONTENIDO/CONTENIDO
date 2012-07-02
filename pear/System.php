@@ -123,7 +123,7 @@ class System
         }
         closedir($dir);
         sort($list);
-        foreach($list as $val) {
+        foreach ($list as $val) {
             $path = $sPath . DIRECTORY_SEPARATOR . $val;
             if (is_dir($path)) {
                 if ($aktinst < $maxinst || $maxinst == 0) {
@@ -173,7 +173,7 @@ class System
         if (PEAR::isError($opts)) {
             return System::raiseError($opts);
         }
-        foreach($opts[0] as $opt) {
+        foreach ($opts[0] as $opt) {
             if ($opt[0] == 'r') {
                 $do_recursive = true;
             }
@@ -181,12 +181,12 @@ class System
         $ret = true;
         if (isset($do_recursive)) {
             $struct = System::_multipleToStruct($opts[1]);
-            foreach($struct['files'] as $file) {
+            foreach ($struct['files'] as $file) {
                 if (!@unlink($file)) {
                     $ret = false;
                 }
             }
-            foreach($struct['dirs'] as $dir) {
+            foreach ($struct['dirs'] as $dir) {
                 if (!@rmdir($dir)) {
                     $ret = false;
                 }
@@ -217,7 +217,7 @@ class System
             return System::raiseError($opts);
         }
         $mode = 0777; // default mode
-        foreach($opts[0] as $opt) {
+        foreach ($opts[0] as $opt) {
             if ($opt[0] == 'p') {
                 $create_parents = true;
             } elseif($opt[0] == 'm') {
@@ -226,7 +226,7 @@ class System
         }
         $ret = true;
         if (isset($create_parents)) {
-            foreach($opts[1] as $dir) {
+            foreach ($opts[1] as $dir) {
                 $dirstack = array();
                 while (!@is_dir($dir) && $dir != DIRECTORY_SEPARATOR) {
                     array_unshift($dirstack, $dir);
@@ -239,7 +239,7 @@ class System
                 }
             }
         } else {
-            foreach($opts[1] as $dir) {
+            foreach ($opts[1] as $dir) {
                 if (!@is_dir($dir) && !call_user_func('mkdir', $dir, $mode)) {
                     $ret = false;
                 }
@@ -338,7 +338,7 @@ class System
         if (PEAR::isError($opts)) {
             return System::raiseError($opts);
         }
-        foreach($opts[0] as $opt) {
+        foreach ($opts[0] as $opt) {
             if($opt[0] == 'd') {
                 $tmp_is_dir = true;
             } elseif($opt[0] == 't') {

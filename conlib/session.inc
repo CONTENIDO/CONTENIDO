@@ -533,7 +533,7 @@ class Session
         }
 
         reset($$arrayname);
-        while(list($key, $val) = each($$arrayname)) {
+        while (list($key, $val) = each($$arrayname)) {
             $GLOBALS[$key] = $val;
         }
     }

@@ -62,7 +62,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
             array_push($aDelContainerConfIds, $oContainerConf->get('idcontainerc'));
         }
 
-        foreach($aDelContainerConfIds as $iDelContainerConfId) {
+        foreach ($aDelContainerConfIds as $iDelContainerConfId) {
             $oContainerConfCollection->delete($iDelContainerConfId);
         }
         return $result;

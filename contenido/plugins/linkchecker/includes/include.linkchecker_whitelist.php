@@ -57,7 +57,7 @@ $sql = "SELECT url, lastview FROM " . $cfg['tab']['whitelist'] . " WHERE lastvie
         AND lastview > " . (time() - $iWhitelist_timeout) . " ORDER BY lastview DESC";
 $db->query($sql);
 
-while($db->next_record()) {
+while ($db->next_record()) {
 
     $tpl2 = new Template;
     $tpl2->reset();

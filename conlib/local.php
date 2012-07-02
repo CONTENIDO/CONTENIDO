@@ -575,7 +575,7 @@ class Contenido_Challenge_Crypt_Auth extends Contenido_Auth
         $this->db->query($sql, $this->database_table, $username, $sDate, $sDate);
 
         $sMaintenanceMode = getSystemProperty('maintenance', 'mode');
-        while($this->db->next_record()) {
+        while ($this->db->next_record()) {
             $uid   = $this->db->f('user_id');
             $perm  = $this->db->f('perms');
             $pass  = $this->db->f('password'); // Password is stored as a md5 hash
@@ -730,7 +730,7 @@ class Contenido_Frontend_Challenge_Crypt_Auth extends Contenido_Auth
             $sql = "SELECT user_id, perms, password FROM %s WHERE username = '%s'";
             $this->db->query($sql, $this->database_table, $username);
 
-            while($this->db->next_record()) {
+            while ($this->db->next_record()) {
                 $uid   = $this->db->f('user_id');
                 $perm  = $this->db->f('perms');
                 $pass  = $this->db->f('password');   ## Password is stored as a md5 hash

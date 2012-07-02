@@ -315,7 +315,7 @@ abstract class Contenido_CodeGenerator_Abstract
         }
 
         // Replace all CMS_TAGS[]
-        foreach($_typeList as $_typeItem) {
+        foreach ($_typeList as $_typeItem) {
             $key = strtolower($_typeItem->type);
             $type = $_typeItem->type;
             // Try to find all CMS_{type}[{number}] values, e. g. CMS_HTML[1]

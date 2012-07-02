@@ -486,7 +486,7 @@ class Contenido_Module_Template_Handler extends Contenido_Module_Handler
         }
 
         try {
-            switch($myAction) {
+            switch ($myAction) {
                 case 'save':
                     $this->_save();
                     break;

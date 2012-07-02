@@ -191,9 +191,9 @@ function cecCreateMetatags($metatags) {
         foreach ($availableTags as $key => $value) {
             $metavalue = conGetMetaValue($idartlang, $key);
 
-            if (strlen($metavalue) == 0){
+            if (strlen($metavalue) == 0) {
                 // Add values for metatags that don't have a value in the current article
-                switch(strtolower($value['name'])){
+                switch (strtolower($value['name'])) {
                     case 'author':
                         // Build author metatag from name of last modifier
                         $oArt = new cApiArticleLanguage();

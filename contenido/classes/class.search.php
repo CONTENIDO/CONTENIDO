@@ -324,9 +324,9 @@ class SearchIndex extends SearchBaseAbstract
 
         // Only create keycodes, if some are available
         if (is_array($this->keycode)) {
-            foreach($this->keycode as $idtype => $data) {
+            foreach ($this->keycode as $idtype => $data) {
                 if ($this->checkCmsType($idtype)) {
-                    foreach($data as $typeid => $code) {
+                    foreach ($data as $typeid => $code) {
                         $this->_debug('code', $code);
 
                         $code = stripslashes($code); // remove backslash
@@ -572,7 +572,7 @@ class SearchIndex extends SearchBaseAbstract
     function setCmsOptions($cms_options)
     {
         if (is_array($cms_options) && count($cms_options) > 0) {
-            foreach($cms_options as $opt) {
+            foreach ($cms_options as $opt) {
                 $opt = strtoupper($opt);
 
                 if (strlen($opt) > 0) {
@@ -865,7 +865,7 @@ class Search extends SearchBaseAbstract
         }
 
         if (count($this->search_words_exclude) > 0) {
-            foreach($this->search_words_exclude as $word) {
+            foreach ($this->search_words_exclude as $word) {
                 if ($this->search_option == 'like') {
                     $word = "'%" . $word . "%'";
                 } elseif ($this->search_option == 'exact') {
@@ -1076,7 +1076,7 @@ class Search extends SearchBaseAbstract
         $cat_range = array();
         if (array_key_exists('cat_tree', $search_range) && is_array($search_range['cat_tree'])) {
             if (count($search_range['cat_tree']) > 0) {
-                foreach($search_range['cat_tree'] as $cat) {
+                foreach ($search_range['cat_tree'] as $cat) {
                     $cat_range = array_merge($cat_range, $this->getSubTree($cat));
                 }
             }
@@ -1406,7 +1406,7 @@ class SearchResult extends SearchBaseAbstract
                 //build consistent escaped string(Timo Trautmann) 2008-04-17
                 $cms_content = htmlentities(html_entity_decode(strip_tags($article->getContent($cms_type, $cms_nr))));
                 if (count($this->replacement) == 2) {
-                    foreach($search_words as $word) {
+                    foreach ($search_words as $word) {
                         //build consistent escaped string, replace ae ue .. with original html entities (Timo Trautmann) 2008-04-17
                         $word = htmlentities(html_entity_decode($this->index->addSpecialUmlauts($word)));
                         $match = array();
@@ -1425,7 +1425,7 @@ class SearchResult extends SearchBaseAbstract
                     $cms_content = strip_tags($article->getContent($cms_type, $id));
 
                     if (count($this->replacement) == 2) {
-                        foreach($search_words as $word) {
+                        foreach ($search_words as $word) {
                             preg_match("/$word/i", $cms_content, $match);
                             if (isset($match[0])) {
                                 $pattern = $match[0];

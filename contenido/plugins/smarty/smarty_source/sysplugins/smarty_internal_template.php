@@ -477,9 +477,9 @@ class Smarty_Internal_Template extends Smarty_Internal_Data {
         }
         if ($this->parent instanceof Smarty_Internal_Template) {
             $this->parent->properties['file_dependency'] = array_merge($this->parent->properties['file_dependency'], $this->properties['file_dependency']);
-            foreach($this->required_plugins as $code => $tmp1) {
-                foreach($tmp1 as $name => $tmp) {
-                    foreach($tmp as $type => $data) {
+            foreach ($this->required_plugins as $code => $tmp1) {
+                foreach ($tmp1 as $name => $tmp) {
+                    foreach ($tmp as $type => $data) {
                         $this->parent->required_plugins[$code][$name][$type] = $data;
                     }
                 }
@@ -500,7 +500,7 @@ class Smarty_Internal_Template extends Smarty_Internal_Data {
             preg_match_all("!/\*%%SmartyNocache:{$this->properties['nocache_hash']}%%\*\/(.+?)/\*/%%SmartyNocache:{$this->properties['nocache_hash']}%%\*/!s", $this->rendered_content, $cache_parts);
             $output = '';
             // loop over items, stitch back together
-            foreach($cache_split as $curr_idx => $curr_split) {
+            foreach ($cache_split as $curr_idx => $curr_split) {
                 // escape PHP tags in template content
                 $output .= preg_replace('/(<%|%>|<\?php|<\?|\?>)/', '<?php echo \'$1\'; ?>', $curr_split);
                 if (isset($cache_parts[0][$curr_idx])) {
@@ -605,7 +605,7 @@ class Smarty_Internal_Template extends Smarty_Internal_Data {
         }
         // relative file name?
         if (!preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', $file)) {
-            foreach((array)$this->smarty->template_dir as $_template_dir) {
+            foreach ((array)$this->smarty->template_dir as $_template_dir) {
                    if (strpos('/\\', substr($_template_dir, -1)) === false) {
                     $_template_dir .= DS;
                 }
@@ -771,8 +771,8 @@ class Smarty_Internal_Template extends Smarty_Internal_Data {
         if (!$cache) {
             if (!empty($this->required_plugins['compiled'])) {
                 $plugins_string = '<?php ';
-                foreach($this->required_plugins['compiled'] as $tmp) {
-                    foreach($tmp as $data) {
+                foreach ($this->required_plugins['compiled'] as $tmp) {
+                    foreach ($tmp as $data) {
                         $plugins_string .= "if (!is_callable('{$data['function']}')) include '{$data['file']}';\n";
                     }
                 }
@@ -781,8 +781,8 @@ class Smarty_Internal_Template extends Smarty_Internal_Data {
             if (!empty($this->required_plugins['nocache'])) {
                 $this->has_nocache_code = true;
                 $plugins_string .= "<?php echo '/*%%SmartyNocache:{$this->properties['nocache_hash']}%%*/<?php ";
-                foreach($this->required_plugins['nocache'] as $tmp) {
-                    foreach($tmp as $data) {
+                foreach ($this->required_plugins['nocache'] as $tmp) {
+                    foreach ($tmp as $data) {
                         $plugins_string .= "if (!is_callable(\'{$data['function']}\')) include \'{$data['file']}\';\n";
                     }
                 }

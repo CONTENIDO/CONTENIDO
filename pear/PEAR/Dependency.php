@@ -341,7 +341,7 @@ class PEAR_Dependency
      */
     function signOperator($operator)
     {
-        switch($operator) {
+        switch ($operator) {
             case 'lt': return '<';
             case 'le': return '<=';
             case 'gt': return '>';

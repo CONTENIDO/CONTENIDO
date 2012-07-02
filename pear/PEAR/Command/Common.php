@@ -172,7 +172,7 @@ class PEAR_Command_Common extends PEAR
             }
         }
         if (preg_match_all('/{config\s+([^\}]+)}/e', $help, $matches)) {
-            foreach($matches[0] as $k => $v) {
+            foreach ($matches[0] as $k => $v) {
                 $help = preg_replace("/$v/", $config->get($matches[1][$k]), $help);
             }
         }

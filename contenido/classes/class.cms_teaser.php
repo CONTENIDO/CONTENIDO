@@ -236,7 +236,7 @@ class Cms_Teaser {
      * @return    array    Translation strings
      */
     static public function addModuleTranslations($aTranslationStrings) {
-        foreach(self::$aTranslations as $sValue) {
+        foreach (self::$aTranslations as $sValue) {
             $aTranslationStrings[] = $sValue;
         }
 
@@ -262,7 +262,7 @@ class Cms_Teaser {
         //array for previous described manual art array
         $this->aSettings['teaser_manual_art'] = array();
 
-        while($oXmlReader->read()) {
+        while ($oXmlReader->read()) {
             switch ($oXmlReader->nodeType) {
               //read property name (ignore root node or block of manual arts for teaser)
               case XMLReader::ELEMENT:
@@ -956,7 +956,7 @@ class Cms_Teaser {
                 $oTpl->set('d', 'PUBLISHED_COMBINED', $iPublished);
             }
 
-            foreach( self::$aTranslations as $sKey => $sValue ) {
+            foreach (self::$aTranslations as $sKey => $sValue ) {
                 $oTpl->set('d', $sKey, mi18n( $sValue ));
             }
 

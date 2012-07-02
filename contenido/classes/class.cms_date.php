@@ -231,7 +231,7 @@ class Cms_Date
     private function getFormatSelect()  {
         $options = "";
 
-        foreach($this->getDateFormats() as $format) {
+        foreach ($this->getDateFormats() as $format) {
             $options .= sprintf('<option value="%s">%s</option>', $format[0], $format[1]);
         }
 

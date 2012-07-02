@@ -1194,8 +1194,7 @@ class Spreadsheet_Excel_Writer_Parser extends PEAR
     */
     function _match($token)
     {
-        switch($token)
-        {
+        switch ($token) {
             case SPREADSHEET_EXCEL_WRITER_ADD:
                 return $token;
                 break;

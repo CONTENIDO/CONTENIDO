@@ -57,10 +57,10 @@ class Smarty_Internal_Wrapper {
          trigger_error("function call '$name' is unknown or deprecated.",E_USER_NOTICE);
        // get first and last part of function name
        $name_parts = explode('_',$name,2);
-       switch($name_parts[0]) {
+       switch ($name_parts[0]) {
          case 'register':
          case 'unregister':
-           switch($name_parts[1]) {
+           switch ($name_parts[1]) {
               case 'object':
                  return call_user_func_array(array($this->smarty,"{$name_parts[0]}Object"),$args);
               case 'compiler_function':
@@ -77,7 +77,7 @@ class Smarty_Internal_Wrapper {
                  return call_user_func_array(array($this->smarty,"{$name_parts[0]}Plugin"),array_merge(array($name_parts[1]),$args));
            }
            case 'get':
-           switch($name_parts[1]) {
+           switch ($name_parts[1]) {
               case 'template_vars':
                  return call_user_func_array(array($this->smarty,'getTemplateVars'),$args);
               case 'config_vars':
@@ -86,7 +86,7 @@ class Smarty_Internal_Wrapper {
                  return call_user_func_array(array($myobj,$name_parts[1]),$args);
            }
            case 'clear':
-           switch($name_parts[1]) {
+           switch ($name_parts[1]) {
               case 'all_assign':
                  return call_user_func_array(array($this->smarty,'clearAllAssign'),$args);
               case 'assign':
@@ -99,17 +99,17 @@ class Smarty_Internal_Wrapper {
                  return call_user_func_array(array($this->smarty,'clearCompiledTemplate'),$args);
            }
            case 'config':
-           switch($name_parts[1]) {
+           switch ($name_parts[1]) {
               case 'load':
                  return call_user_func_array(array($this->smarty,'configLoad'),$args);
            }
            case 'trigger':
-           switch($name_parts[1]) {
+           switch ($name_parts[1]) {
               case 'error':
                  return call_user_func_array('trigger_error',$args);
            }
            case 'load':
-           switch($name_parts[1]) {
+           switch ($name_parts[1]) {
               case 'filter':
                  return call_user_func_array(array($this->smarty,'loadFilter'),$args);
            }

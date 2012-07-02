@@ -51,7 +51,7 @@ $mylink = new cHTMLLink;
 
 $rowCount = 0;
 
-foreach($translationsArray as $key => $value)
+foreach ($translationsArray as $key => $value)
 //while ($translation = $translations->next())
 {
     $string = $key;// $translation->get("original");

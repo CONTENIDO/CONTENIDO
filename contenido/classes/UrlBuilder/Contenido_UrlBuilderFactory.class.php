@@ -49,7 +49,7 @@ class Contenido_UrlBuilderFactory
      */
     public static function getUrlBuilder($sBuilder)
     {
-        switch($sBuilder) {
+        switch ($sBuilder) {
             case 'front_content':
                 return Contenido_UrlBuilder_Frontcontent::getInstance();
                 break;

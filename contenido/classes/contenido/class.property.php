@@ -500,7 +500,7 @@ class cApiPropertyCollection extends ItemCollection
             $deleteProperties[] = $item->get('idproperty');
         }
 
-        foreach($deleteProperties as $idproperty) {
+        foreach ($deleteProperties as $idproperty) {
             $this->delete($idproperty);
             if ($this->_useCache()) {
                 $this->_deleteFromCache($idproperty);

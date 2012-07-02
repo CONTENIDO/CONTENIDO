@@ -296,7 +296,7 @@ class Spreadsheet_Excel_Writer_Format extends PEAR
         $this->_diag_color     = 0x40;
     
         // Set properties passed to Spreadsheet_Excel_Writer_Workbook::addFormat()
-        foreach($properties as $property => $value)
+        foreach ($properties as $property => $value)
         {
             if(method_exists($this,'set'.ucwords($property)))
             {

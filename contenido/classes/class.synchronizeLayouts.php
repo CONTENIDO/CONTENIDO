@@ -231,7 +231,7 @@ class SynchronizeLayouts {
         $emptyMessage = true;
         $notification = new Contenido_Notification();
         foreach ($this->_outputMessage as $typ) {
-            foreach($typ as $message) {
+            foreach ($typ as $message) {
                 $emptyMessage = false;
                 //show display massage
                 $notification->displayNotification($typ, $message);

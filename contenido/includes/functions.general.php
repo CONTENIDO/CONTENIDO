@@ -1633,7 +1633,7 @@ function sendEncodingHeader($db, $cfg, $lang, $contentType = 'text/html')
 
         $oLangColl = new cApiLanguageCollection();
         $oLangColl->select();
-        while($oItem = $oLangColl->next()) {
+        while ($oItem = $oLangColl->next()) {
             $aLanguageEncodings[$oItem->get('idlang')] = $oItem->get('encoding');
         }
 

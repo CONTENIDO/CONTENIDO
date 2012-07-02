@@ -49,7 +49,7 @@ class Smarty_Internal_Compile_Include_Php extends Smarty_Internal_CompileBase {
                 $_dir = $this->compiler->smarty->trusted_dir;
             }
             if (!empty($_dir)) {
-                foreach((array)$_dir as $_script_dir) {
+                foreach ((array)$_dir as $_script_dir) {
                     if (strpos('/\\', substr($_script_dir, -1)) === false) {
                         $_script_dir .= DS;
                     }

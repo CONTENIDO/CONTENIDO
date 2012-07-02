@@ -96,13 +96,9 @@ $sTable .= $oTable->end_row();
 
 $nav = new Contenido_Navigation;
 
-foreach($right_list as $key => $value){
-
-
-
+foreach ($right_list as $key => $value) {
         // look for possible actions in mainarea
-        foreach($value as $key2 =>$value2)
-              {
+        foreach ($value as $key2 =>$value2) {
                if($key==$key2){
                        //does the user have the right
                                      if(in_array($value2["perm"]."|fake_permission_action|0",array_keys($rights_list_old)))
@@ -135,7 +131,7 @@ foreach($right_list as $key => $value){
 
                //if there area some
                if(is_array($value2["action"]))
-                 foreach($value2["action"] as $key3 => $value3)
+                 foreach ($value2["action"] as $key3 => $value3)
                  {
                                              $idaction = $value3;
                           //does the user have the right

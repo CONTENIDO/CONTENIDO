@@ -74,7 +74,7 @@ $sTable .= $oTable->header_cell("&nbsp;","left");
 $possible_areas=array();
 $aSecondHeaderRow=array();
 // look for possible actions   in mainarea []   in str and con
-foreach($right_list["con"] as $value2) {
+foreach ($right_list["con"] as $value2) {
     // if there are some actions
     if (is_array($value2["action"])) {
         foreach ($value2["action"] as $key3 => $value3) {
@@ -177,7 +177,7 @@ while ($db->next_record()) {
         foreach ($right_list["con"] as $value2) {
             // if there area some
             if (is_array($value2["action"])) {
-                foreach($value2["action"] as $key3 => $value3) {
+                foreach ($value2["action"] as $key3 => $value3) {
                     if ((in_array($value3, $aViewRights) && !$bExclusive) ||
                         (!in_array($value3, $aViewRights) && $bExclusive) ||
                         (count($aViewRights) == 0))

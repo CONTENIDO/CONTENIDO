@@ -379,8 +379,8 @@ class PEAR_Frontend_CLI extends PEAR
                 if (isset($data['headline']) && is_array($data['headline']))
                     $this->_tableRow($data['headline'], array('bold' => true), array(1 => array('wrap' => 55)));
 
-                foreach($data['data'] as $category) {
-                    foreach($category as $pkg) {
+                foreach ($data['data'] as $category) {
+                    foreach ($category as $pkg) {
                         $this->_tableRow($pkg, null, array(1 => array('wrap' => 55)));
                     }
                 };
@@ -391,8 +391,8 @@ class PEAR_Frontend_CLI extends PEAR
                 if (isset($data['headline']) && is_array($data['headline']))
                     $this->_tableRow($data['headline'], array('bold' => true), array(1 => array('wrap' => 55)));
 
-                foreach($data['data'] as $category) {
-                    foreach($category as $pkg) {
+                foreach ($data['data'] as $category) {
+                    foreach ($category as $pkg) {
                         unset($pkg[3]);
                         unset($pkg[4]);
                         $this->_tableRow($pkg, null, array(1 => array('wrap' => 55)));
@@ -411,8 +411,8 @@ class PEAR_Frontend_CLI extends PEAR
                                      array('bold' => true),
                                      $opts);
                 }
-                foreach($data['data'] as $group) {
-                    foreach($group as $value) {
+                foreach ($data['data'] as $group) {
+                    foreach ($group as $value) {
                         if ($value[2] == '') {
                             $value[2] = "<not set>";
                         }
@@ -457,7 +457,7 @@ class PEAR_Frontend_CLI extends PEAR
                                          array('bold' => true),
                                          $opts);
                     }
-                    foreach($data['data'] as $row) {
+                    foreach ($data['data'] as $row) {
                         $this->_tableRow($row, null, $opts);
                     }
                     $this->_endTable();

@@ -50,7 +50,7 @@ class Ajax
     public function handle($sAction)
     {
         $sString = '';
-        switch($sAction) {
+        switch ($sAction) {
             //case to get an article select box param name value and idcat were neded (name= name of select box value=selected item)
             case 'artsel':
                 $sName = (string) $_REQUEST['name'];

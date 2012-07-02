@@ -168,7 +168,7 @@ while ($db->next_record()) {
         foreach ($right_list["str"] as $value2) {
             //if there area some
             if (is_array($value2["action"])) {
-                foreach($value2["action"] as $key3 => $value3) {
+                foreach ($value2["action"] as $key3 => $value3) {
                     # HACK!
                     if ($value3 != "str_newtree") {
                         //does the user have the right

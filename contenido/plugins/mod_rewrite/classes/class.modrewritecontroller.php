@@ -344,7 +344,7 @@ class ModRewriteController extends ModRewriteBase
 
         // loop parts array and remove existing 'front_content.php'
         if ($this->_hasPartArrayItems()) {
-            foreach($this->_aParts as $p => $item) {
+            foreach ($this->_aParts as $p => $item) {
                 if ($item == 'front_content.php') {
                     unset($this->_aParts[$p]);
                 }
