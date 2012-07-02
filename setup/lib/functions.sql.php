@@ -43,12 +43,12 @@ function injectSQL($db, $prefix, $file, $replacements = array())
 
     $sqlFile = file_get_contents($file);
 
-    $sqlFile = remove_comments($sqlFile);
-    $sqlFile = remove_remarks($sqlFile);
+    $sqlFile = removeComments($sqlFile);
+    $sqlFile = removeRemarks($sqlFile);
     $sqlFile = str_replace("!PREFIX!", $prefix, $sqlFile);
     $sqlFile = trim($sqlFile);
 
-    $sqlChunks = split_sql_file(trim($sqlFile), ";");
+    $sqlChunks = splitSqlFile(trim($sqlFile), ";");
 
     foreach ($sqlChunks as $sqlChunk) {
         foreach ($replacements as $find => $replace) {
@@ -123,12 +123,12 @@ function alterTableHandling($row)
 }
 
 /**
- * Remove_comments will strip the sql comment lines out of an uploaded sql file
+ * Will strip the sql comment lines out of an uploaded sql file
  * specifically for mssql and postgres type files in the install....
  * @param   string  $output
  * @return  string
  */
-function remove_comments(&$output)
+function removeComments(&$output)
 {
     $lines = explode("\n", $output);
     $output = "";
@@ -156,11 +156,11 @@ function remove_comments(&$output)
 }
 
 /**
- * Remove_remarks will strip the sql comment lines out of an uploaded sql file
+ * Will strip the sql comment lines out of an uploaded sql file
  * @param   string  $sql
  * @return  string
  */
-function remove_remarks($sql)
+function removeRemarks($sql)
 {
     $lines = explode("\n", $sql);
 
@@ -186,13 +186,13 @@ function remove_remarks($sql)
 }
 
 /**
- * split_sql_file will split an uploaded sql file into single sql statements.
+ * Will split an uploaded sql file into single sql statements.
  * Note: expects trim() to have already been run on $sql.
  * @param   string  $sql
  * @param   string  $delimiter
  * @return  string
  */
-function split_sql_file($sql, $delimiter)
+function splitSqlFile($sql, $delimiter)
 {
     // Split up our string into "possible" SQL statements.
     $tokens = explode($delimiter, $sql);
