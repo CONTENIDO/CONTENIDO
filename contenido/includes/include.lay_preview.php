@@ -34,16 +34,17 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$layoutInFile = new LayoutInFile(Contenido_Security::toInteger($_GET['idlay']), "", $cfg, $lang);
-if( ($code = $layoutInFile->getLayoutCode()) == false)
+$layoutInFile = new LayoutInFile(Contenido_Security::toInteger($_GET['idlay']), '', $cfg, $lang);
+if (($code = $layoutInFile->getLayoutCode()) == false) {
     echo i18n("No such layout");
+}
 
-    /* Insert base href */
-    $base = '<base href="'.$cfgClient[$client]["path"]["htmlpath"].'">';
-    $tags = $base;
+// Insert base href
+$base = '<base href="' . $cfgClient[$client]["path"]["htmlpath"] . '">';
+$tags = $base;
 
-    $code = str_replace("<head>", "<head>\n".$tags, $code);
+$code = str_replace("<head>", "<head>\n".$tags, $code);
 
-    eval("?>\n".Contenido_Security::unescapeDB($code)."\n<?php\n");
+eval("?>\n".Contenido_Security::unescapeDB($code)."\n<?php\n");
 
 ?>

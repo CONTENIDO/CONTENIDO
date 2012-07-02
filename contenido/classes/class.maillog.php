@@ -97,11 +97,11 @@
             $item->set('exception', $exception);
             $fileName = md5($item->getField('idmail'). $date);
 
-            if( file_put_contents($this->mailLogDirectory . 'body_'. $fileName .'.'. $this->mailLogEnding, $body) === false) {
+            if (file_put_contents($this->mailLogDirectory . 'body_'. $fileName .'.'. $this->mailLogEnding, $body) === false) {
                 return false;
             }
 
-            if( file_put_contents($this->mailLogDirectory . 'header_'.$fileName .'.'. $this->mailLogEnding, $header) === false) {
+            if (file_put_contents($this->mailLogDirectory . 'header_'.$fileName .'.'. $this->mailLogEnding, $header) === false) {
                 return false;
             }
 

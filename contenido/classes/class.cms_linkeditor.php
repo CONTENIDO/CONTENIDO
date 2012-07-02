@@ -177,7 +177,7 @@ class Cms_LinkEditor {
 
         // Is the user using HTTPS or HTTP?
         $this->hostName = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) ? 'https://' : 'http://';
-        if( substr_count(strtolower($this->aLink['link_src']) , "https")){
+        if (substr_count(strtolower($this->aLink['link_src']) , "https")) {
             $this->hostName = 'https://';
         }
     }
@@ -377,9 +377,9 @@ class Cms_LinkEditor {
             if(isset($this->activeIdcat) && in_array($aDirData['idcat'],$this->activeIdcat)){
                 $bGo = true;
             }
-            if( $bGo == true && $aDirData['sub'] != '' ){
-                $oTpl->set('d', 'SUBDIRLIST', $this->getDirectoryList( $aDirData['sub'] ) );
-            } else if($aDirData['sub'] != '' && count( $aDirData['sub'] ) > 0 ){
+            if ($bGo == true && $aDirData['sub'] != '' ) {
+                $oTpl->set('d', 'SUBDIRLIST', $this->getDirectoryList($aDirData['sub']));
+            } else if ($aDirData['sub'] != '' && count( $aDirData['sub']) > 0) {
                 $sLiClasses .= " collapsed";
                 $oTpl->set('d', 'SUBDIRLIST', '');
             } else {
@@ -390,7 +390,7 @@ class Cms_LinkEditor {
                 $sLiClasses .= " last";
             }
 
-            if ( $sLiClasses != "" ) {
+            if ($sLiClasses != "") {
                 $oTpl->set('d', 'LICLASS', ' class="'.substr($sLiClasses, 1).'"');
             } else {
                 $oTpl->set('d', 'LICLASS', '');

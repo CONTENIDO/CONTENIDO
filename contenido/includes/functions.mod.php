@@ -29,182 +29,156 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-cInclude ("includes", "functions.tpl.php");
-cInclude ("includes", "functions.con.php");
+cInclude('includes', 'functions.tpl.php');
+cInclude('includes', 'functions.con.php');
 
-function modEditModule($idmod, $name, $description, $input, $output, $template, $type = "")
+// @fixme: Document me!
+function modEditModule($idmod, $name, $description, $input, $output, $template, $type = '')
 {
     global $db, $client, $cfgClient, $auth, $cfg, $sess, $area_tree, $perm, $frame;
 
-    $date   = date("Y-m-d H:i:s");
-    $author = $auth->auth["uname"];
-    $contenidoModuleHandler="";
+    $date   = date('Y-m-d H:i:s');
+    $author = $auth->auth['uname'];
+    $contenidoModuleHandler = '';
     $notification = new Contenido_Notification();
-    $messageIfError = "";
+    $messageIfError = '';
 
-    #alias for modul name for the file system
+    // Alias for modul name for the file system
     $alias = strtolower(Contenido_Module_Handler::getCleanName($name));
 
-
-
-    /**
-    * START TRACK VERSION
-    **/
+    // Track version
     $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
-    // Create new Module Version in cms/version/module/
     $oVersion->createNewVersion();
 
-    /**
-    * END TRACK VERSION
-    **/
-
-    if (!$idmod)
-    {
-        $cApiModuleCollection = new cApiModuleCollection;
+    if (!$idmod) {
+        $cApiModuleCollection = new cApiModuleCollection();
         $cApiModule = $cApiModuleCollection->create($name);
 
-        $idmod = $cApiModule->get("idmod");
+        $idmod = $cApiModule->get('idmod');
 
-        cInclude ("includes", "functions.rights.php");
-        createRightsForElement("mod", $idmod);
+        cInclude('includes', 'functions.rights.php');
+        createRightsForElement('mod', $idmod);
         $contenidoModuleHandler = new Contenido_Module_Handler($idmod);
     } else {
-        $cApiModule = new cApiModule;
+        $cApiModule = new cApiModule();
         $cApiModule->loadByPrimaryKey($idmod);
         $contenidoModuleHandler = new Contenido_Module_Handler($idmod);
     }
 
-      #save contents of input or output
-      $retInput = $contenidoModuleHandler->saveInput(stripslashes($input));
-      $retOutput = $contenidoModuleHandler->saveOutput(stripslashes($output));
+    // Save contents of input or output
+    $retInput = $contenidoModuleHandler->saveInput(stripslashes($input));
+    $retOutput = $contenidoModuleHandler->saveOutput(stripslashes($output));
 
-    if (    $cApiModule->get("alias") != stripslashes($alias) || $cApiModule->get("template") != stripslashes($template) ||
-            $cApiModule->get("description") != stripslashes($description) ||$cApiModule->get("type") != stripslashes($type))
+    if ($cApiModule->get('alias') != stripslashes($alias) || $cApiModule->get('template') != stripslashes($template) ||
+        $cApiModule->get('description') != stripslashes($description) ||$cApiModule->get('type') != stripslashes($type))
     {
-        #rename the module if the name changed
-         $change=false;
-         $oldName =$cApiModule->get("alias");
+        // Rename the module if the name changed
+        $change = false;
+        $oldName = $cApiModule->get('alias');
 
-        if ($cApiModule->get("alias") != $alias) {
-            $change=true;
-
+        if ($cApiModule->get('alias') != $alias) {
+            $change = true;
             // if modul exist show massage
             if ($contenidoModuleHandler->modulePathExistsInDirectory($alias)) {
-                 $notification->displayNotification('error',i18n("Module name exist in module directory, please choose another name."));
+                $notification->displayNotification('error', i18n('Module name exist in module directory, please choose another name.'));
                 die();
             }
         }
 
-
-
-
-
-
-        #name of modul changed
-        if($change == true){
-               #the new name of modul dont exist im modul dir
-               if( $contenidoModuleHandler->renameModul($oldName,$alias) == false) {
-                   $notification->displayNotification('error',i18n("Can't rename module, is a module file open ??? !"));
-                   die();
-               } else {
-                       $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed module successfully!"));
-                       $cApiModule->set("name", $name);
-                    $cApiModule->set("template", $template);
-                    $cApiModule->set("description", $description);
-                    $cApiModule->set("type",$type);
-                    $cApiModule->set("lastmodified",$date);
-                      $cApiModule->set("alias", $alias);
-                    $cApiModule->store();
-
-               }
-
-               #set the new module name
-               $contenidoModuleHandler->changeModuleName($alias);
-               #save input and output in file
-               if( $contenidoModuleHandler->saveInput(stripslashes($input)) == false)
-               $messageIfError .= "<br/>". i18n("Can't save input !");
-
-                   if($contenidoModuleHandler->saveOutput(stripslashes($output)) == false)
-                   $messageIfError .= "<br/>". i18n("Can't save output !");
-
-
-               if($contenidoModuleHandler->saveInfoXML($name , $description, $type, $alias) == false)
-                       $messageIfError .= "<br/>". i18n("Can't save xml module info file!");
-
-
-                   #display error
-                   if(     $messageIfError != "") {
-                       $notification->displayNotification('error',$messageIfError);
-                       #set the old name because modul could not rename
-                    $cApiModule->set("name",$oldName);
-                    $cApiModule->store();
-                   }
-
-
-
-
-
-        } else {
-
-
-                $cApiModule->set("name", $name);
-                $cApiModule->set("template", $template);
-                $cApiModule->set("description", $description);
-                $cApiModule->set("type",$type);
-                $cApiModule->set("lastmodified",$date);
-                  $cApiModule->set("alias", $alias);
+        // Name of modul changed
+        if ($change == true) {
+            // The new name of modul dont exist im modul dir
+            if ($contenidoModuleHandler->renameModul($oldName, $alias) == false) {
+                $notification->displayNotification('error', i18n("Can't rename module, is a module file open ??? !"));
+                die();
+            } else {
+                $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Renamed module successfully!'));
+                $cApiModule->set('name', $name);
+                $cApiModule->set('template', $template);
+                $cApiModule->set('description', $description);
+                $cApiModule->set('type', $type);
+                $cApiModule->set('lastmodified', $date);
+                $cApiModule->set('alias', $alias);
                 $cApiModule->store();
+            }
 
-             if($contenidoModuleHandler->saveInfoXML($name , $description, $type, $alias) == false)
-                       $notification->displayNotification('error',i18n("Can't save xml module info file!"));
+            // Set the new module name
+            $contenidoModuleHandler->changeModuleName($alias);
+            // Ssave input and output in file
+            if ($contenidoModuleHandler->saveInput(stripslashes($input)) == false) {
+                $messageIfError .= '<br/>' . i18n("Can't save input !");
+            }
 
+            if ($contenidoModuleHandler->saveOutput(stripslashes($output)) == false) {
+                $messageIfError .= '<br/>' . i18n("Can't save output !");
+            }
 
-                   if($retInput == true && $retOutput == true) {
+            if ($contenidoModuleHandler->saveInfoXML($name, $description, $type, $alias) == false) {
+                $messageIfError .= '<br/>' . i18n("Can't save xml module info file!");
+            }
 
-                        $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved module successfully!"));
-                   }else {
-                       $messageIfError = "<br/>". i18n("Can't save input !");
-                       $messageIfError .= "<br/>". i18n("Can't save output !");
-                       $notification->displayNotification(Contenido_Notification::LEVEL_INFO, $messageIfError);
+            // Display error
+            if ($messageIfError != '') {
+                $notification->displayNotification('error', $messageIfError);
+                // Set the old name because module could not rename
+                $cApiModule->set('name', $oldName);
+                $cApiModule->store();
+            }
+        } else {
+            $cApiModule->set('name', $name);
+            $cApiModule->set('template', $template);
+            $cApiModule->set('description', $description);
+            $cApiModule->set('type', $type);
+            $cApiModule->set('lastmodified', $date);
+            $cApiModule->set('alias', $alias);
+            $cApiModule->store();
 
-                   }
+            if ($contenidoModuleHandler->saveInfoXML($name, $description, $type, $alias) == false) {
+                $notification->displayNotification('error', i18n("Can't save xml module info file!"));
+            }
+
+            if ($retInput == true && $retOutput == true) {
+                $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Saved module successfully!'));
+            } else {
+                $messageIfError = '<br/>' . i18n("Can't save input !");
+                $messageIfError .= '<br/>' . i18n("Can't save output !");
+                $notification->displayNotification(Contenido_Notification::LEVEL_INFO, $messageIfError);
+            }
         }
-    }else {
+    } else {
 
-        //no changes for save
-        if($retInput == true && $retOutput == true) {
-             $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved module successfully!"));
-        }else {
+        // No changes for save
+        if ($retInput == true && $retOutput == true) {
+            $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n('Saved module successfully!'));
+        } else {
             $messageIfError = i18n("Can't save input !");
-            $messageIfError .= " ". i18n("Can't save output !");
+            $messageIfError .= ' '. i18n("Can't save output !");
             $notification->displayNotification(Contenido_Notification::LEVEL_ERROR, $messageIfError);
         }
     }
-
-
     return $idmod;
 }
 
+
+// @fixme: Document me!
 function modDeleteModule($idmod)
 {
-    # Global vars
     global $db, $sess, $client, $cfg, $area_tree, $perm;
 
-    $sql = "DELETE FROM ".$cfg["tab"]["mod"]." WHERE idmod = '".Contenido_Security::toInteger($idmod)."' AND idclient = '".Contenido_Security::toInteger($client)."'";
+    $sql = 'DELETE FROM '.$cfg['tab']['mod'].' WHERE idmod = ' . (int) $idmod . ' AND idclient = ' . (int) $client;
     $db->query($sql);
 
-
-    // delete rights for element
-    cInclude ("includes", "functions.rights.php");
-    deleteRightsForElement("mod", $idmod);
+    // Delete rights for element
+    cInclude('includes', 'functions.rights.php');
+    deleteRightsForElement('mod', $idmod);
 }
 
 // $code: Code to evaluate
 // $id: Unique ID for the test function
 // $mode: true if start in php mode, otherwise false
 // Returns true or false
-
-function modTestModule ($code, $id, $output = false)
+// @fixme: Document me!
+function modTestModule($code, $id, $output = false)
 {
     global $cfg, $modErrorMessage;
 
@@ -212,95 +186,80 @@ function modTestModule ($code, $id, $output = false)
 
     $db = cRegistry::getDb();
 
-    /* Put a $ in front of all CMS variables
-       to prevent PHP error messages */
-    $sql = "SELECT type FROM ".$cfg["tab"]["type"];
+    // Put a $ in front of all CMS variables to prevent PHP error messages
+    $sql = 'SELECT type FROM '.$cfg['tab']['type'];
     $db->query($sql);
-
-    while ($db->next_record())
-    {
-       $code = str_replace($db->f("type").'[','$'.$db->f("type").'[', $code);
+    while ($db->next_record()) {
+        $code = str_replace($db->f('type').'[','$'.$db->f('type').'[', $code);
     }
 
     $code = preg_replace(',\[(\d+)?CMS_VALUE\[(\d+)\](\d+)?\],i', '[\1\2\3]', $code);
-
     $code = str_replace('CMS_VALUE','$CMS_VALUE', $code);
     $code = str_replace('CMS_VAR','$CMS_VAR', $code);
 
-    /* If the module is an output module, escape PHP since
-       all output modules enter php mode */
-    if ($output == true)
-    {
+    // If the module is an output module, escape PHP since all output modules enter php mode
+    if ($output == true) {
         $code = "?>\n" . $code . "\n<?php";
     }
 
-
-    /* Looks ugly: Paste a function declarator
-       in front of the code */
-    $code = "function foo".$id." () {" . $code;
+    // Looks ugly: Paste a function declarator in front of the code
+    $code = 'function foo'.$id.' () {' . $code;
     $code .= "\n}\n";
 
-
-    /* Set the magic value */
+    // Set the magic value
     $code .= '$magicvalue = 941;';
 
-    /* To parse the error message, we prepend and
-       append a phperror tag in front of the output */
-    $sErs = ini_get("error_prepend_string"); // Save current setting (see below)
-    $sEas = ini_get("error_append_string");  // Save current setting (see below)
-    @ini_set("error_prepend_string","<phperror>");
-    @ini_set("error_append_string","</phperror>");
+    // To parse the error message, we prepend and append a phperror tag in front of the output
+    $sErs = ini_get('error_prepend_string'); // Save current setting (see below)
+    $sEas = ini_get('error_append_string');  // Save current setting (see below)
+    @ini_set('error_prepend_string', '<phperror>');
+    @ini_set('error_append_string', '</phperror>');
 
-    /* Turn off output buffering and error reporting, eval the code */
+    // Turn off output buffering and error reporting, eval the code
     ob_start();
-    $display_errors = ini_get("display_errors");
-    @ini_set("display_errors", true);
+    $display_errors = ini_get('display_errors');
+    @ini_set('display_errors', true);
     $output = eval($code);
-    @ini_set("display_errors", $display_errors);
+    @ini_set('display_errors', $display_errors);
 
-    /* Get the buffer contents and turn it on again */
+    // Get the buffer contents and turn it on again
     $output = ob_get_contents();
     ob_end_clean();
 
-    /* Remove the prepend and append settings */
+    // Remove the prepend and append settings
     /* 19.09.2006: Following lines have been disabled, as ini_restore has been disabled
-       by some hosters as there is a security leak in PHP (PHP <= 5.1.6 & <= 4.4.4) */
-    //ini_restore("error_prepend_string");
-    //ini_restore("error_append_string");
-    @ini_set("error_prepend_string", $sErs); // Restoring settings (see above)
-    @ini_set("error_append_string",  $sEas); // Restoring settings (see above)
+    by some hosters as there is a security leak in PHP (PHP <= 5.1.6 & <= 4.4.4) */
+    //ini_restore('error_prepend_string');
+    //ini_restore('error_append_string');
+    @ini_set('error_prepend_string', $sErs); // Restoring settings (see above)
+    @ini_set('error_append_string', $sEas); // Restoring settings (see above)
 
-    /* Strip out the error message */
-    $start = strpos($output, "<phperror>");
-    $end = strpos($output, "</phperror>");
+    // Strip out the error message
+    $start = strpos($output, '<phperror>');
+    $end = strpos($output, '</phperror>');
 
-    /* More stripping: Users shouldnt see where the file
-       is located, but they should see the error line */
-    if ($start !== false)
-    {
-        $start = strpos($output, "eval()");
+    // More stripping: Users shouldnt see where the file is located, but they should see the error line
+    if ($start !== false) {
+        $start = strpos($output, 'eval()');
 
         $modErrorMessage = substr($output, $start, $end - $start);
 
-        /* Kill that HTML formatting */
-        $modErrorMessage = str_replace("<b>","",$modErrorMessage);
-        $modErrorMessage = str_replace("</b>","",$modErrorMessage);
-        $modErrorMessage = str_replace("<br>","",$modErrorMessage);
-        $modErrorMessage = str_replace("<br />","",$modErrorMessage);
+        // Kill that HTML formatting
+        $modErrorMessage = str_replace('<b>', '', $modErrorMessage);
+        $modErrorMessage = str_replace('</b>', '', $modErrorMessage);
+        $modErrorMessage = str_replace('<br>', '', $modErrorMessage);
+        $modErrorMessage = str_replace('<br />', '', $modErrorMessage);
     }
 
-    /* check if there are any php short tags in code, and display error*/
+    // Check if there are any php short tags in code, and display error
     $bHasShortTags = false;
     if (preg_match('/<\?\s+/', $code) && $magicvalue == 941) {
         $bHasShortTags = true;
         $modErrorMessage = i18n('Please do not use short open tags. (Use <?php instead of <?).');
     }
 
-
-    /* Now, check if the magic value is 941. If not, the function
-       didn't compile */
-    if ($magicvalue != 941 || $bHasShortTags)
-    {
+    // Now, check if the magic value is 941. If not, the function didn't compile 
+    if ($magicvalue != 941 || $bHasShortTags) {
         return false;
     } else {
         return true;
