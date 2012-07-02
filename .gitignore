@@ -14,4 +14,6 @@ contenido/includes/config.local.php
 contenido/includes/config.php
 data/config/production/config.clients.php
 data/config/production/config.php
+data/logs/deprecatedlog.txt
+data/logs/errorlog.txt
 /nbproject
