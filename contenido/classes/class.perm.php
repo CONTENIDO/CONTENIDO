@@ -172,38 +172,52 @@ class Contenido_Perm
 
 
     /**
-     * Loads all permissions foe a specific user or group.
+     * Loads all permissions for a specific user or group.
      * Stores area rights in global variable $area_rights.
      * Stores item rights in global variable $item_rights.
      *
-     * @param  string  $user  User Id hash
+     * @param string $user User Id hash
      */
-    public function load_permissions_for_user($user)
-    {
+    public function load_permissions_for_user($user) {
         global $client, $lang;
         global $area_rights, $item_rights;
 
         $oRightColl = new cApiRightCollection();
-        $sWhere = "user_id='" . $oRightColl->escape($user) . "' AND idcat=0 AND "
-                . "idclient=" . (int) $client . " AND idlang=" . (int) $lang;
+        $sWhere = "user_id='" . $oRightColl->escape($user) . "'";
+        $sWhere .= " AND idcat=0 AND " . "idclient=" . (int) $client;
+        $sWhere .= " AND idlang=" . (int) $lang;
         $oRightColl->select($sWhere);
+
+        // define $area_rights if not already done so
+        if (!is_array($area_rights)) {
+            $area_rights = array();
+        }
         while ($oItem = $oRightColl->next()) {
-            $area_rights[$oItem->get('idarea')][$oItem->get('idaction')] = true;
+            $idarea = $oItem->get('idarea');
+            $idaction = $oItem->get('idaction');
+            $area_rights[$idarea][$idaction] = true;
         }
 
         // Select Rights for Article and Sructure (Attention Hard code Areas)
         $oAreaColl = new cApiAreaCollection();
         $oAreaColl->select();
         while ($oItem = $oAreaColl->next()) {
-            $tmp_area[] = $oItem->get('idarea');
+            $idarea = $oItem->get('idarea');
+            $tmp_area[] = $idarea;
         }
 
         $tmp_area_string = implode("','", array_values($tmp_area));
-        $sWhere = "user_id='" . $oRightColl->escape($user) . "' AND idclient=" . (int) $client
-                . " AND idlang=" . (int) $lang . " AND idarea IN ('$tmp_area_string') AND idcat != 0";
+        $sWhere = "user_id='" . $oRightColl->escape($user) . "'";
+        $sWhere .= " AND idclient=" . (int) $client;
+        $sWhere .= " AND idlang=" . (int) $lang;
+        $sWhere .= " AND idarea IN ('$tmp_area_string')";
+        $sWhere .= "AND idcat != 0";
         $oRightColl->select($sWhere);
         while ($oItem = $oRightColl->next()) {
-            $item_rights[$oItem->get('idarea')][$oItem->get('idaction')][$oItem->get('idcat')] = $oItem->get('idcat');
+            $idarea = $oItem->get('idarea');
+            $idaction = $oItem->get('idaction');
+            $idcat = $oItem->get('idcat');
+            $item_rights[$idarea][$idaction][$idcat] = $idcat;
         }
     }
 
