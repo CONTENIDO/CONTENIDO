@@ -78,14 +78,14 @@ $result = array();
 $aList = array();
 $typeAktuell = array();
 $sortID = array("CMS_HTMLHEAD","CMS_HEAD","CMS_HTML","CMS_HTMLTEXT","CMS_TEXT",
-				"CMS_IMG","CMS_IMGDESCR","CMS_IMGTITLE","CMS_IMGEDIT","CMS_IMAGE",
-				"CMS_EASYIMGEDIT","CMS_LINK","CMS_LINKTARGET","CMS_LINKDESCR","CMS_LINKTITLE",
-				"CMS_LINKEDIT","CMS_SIMPLELINKEDIT","CMS_LINKEDITOR","CMS_RAWLINK","CMS_SWF",
-				"CMS_DATE","CMS_TEASER","CMS_FILELIST");
+                "CMS_IMG","CMS_IMGDESCR","CMS_IMGTITLE","CMS_IMGEDIT","CMS_IMAGE",
+                "CMS_EASYIMGEDIT","CMS_LINK","CMS_LINKTARGET","CMS_LINKDESCR","CMS_LINKTITLE",
+                "CMS_LINKEDIT","CMS_SIMPLELINKEDIT","CMS_LINKEDITOR","CMS_RAWLINK","CMS_SWF",
+                "CMS_DATE","CMS_TEASER","CMS_FILELIST");
 /*$sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b WHERE a.idartlang=".$_REQUEST["idartlang"]." AND a.idtype=b.idtype ORDER BY a.idartlang, a.idtype, a.typeid";
 $db->query($sql);
 while ( $db->next_record() ) {
-		echo $sortID[$db->f("name")];
+        echo $sortID[$db->f("name")];
         $result[$db->f("name")][$db->f("id")] = $db->f("value");
         if(!in_array($db->f("name"),$aList)){
             $aList[$db->f("idtype")] = $db->f("name");
@@ -95,18 +95,18 @@ $aIdtype = array();
 $sql = "SELECT DISTINCT typeid FROM ".$cfg["tab"]["content"]." WHERE idartlang=".$_REQUEST["idartlang"]." ORDER BY typeid";
 $db->query($sql);
 while ( $db->next_record() ) {
-	$aIdtype[] = $db->f("typeid");
+    $aIdtype[] = $db->f("typeid");
 }
 
 foreach($sortID as $name){
-	$sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b WHERE a.idartlang=".$_REQUEST["idartlang"]." AND a.idtype=b.idtype AND b.type = '".$name."' ORDER BY idtype,typeid,idcontent";
-	$db->query($sql);
-	while ( $db->next_record() ) {
-	        $result[$db->f("name")][$db->f("id")] = $db->f("value");
-	        if(!in_array($db->f("name"),$aList)){
-	            $aList[$db->f("idtype")] = $db->f("name");
-	        }
-	}
+    $sql = "SELECT b.idtype as idtype, b.type as name, a.typeid as id, a.value as value FROM ".$cfg["tab"]["content"]." as a, ".$cfg["tab"]["type"]." as b WHERE a.idartlang=".$_REQUEST["idartlang"]." AND a.idtype=b.idtype AND b.type = '".$name."' ORDER BY idtype,typeid,idcontent";
+    $db->query($sql);
+    while ( $db->next_record() ) {
+            $result[$db->f("name")][$db->f("id")] = $db->f("value");
+            if(!in_array($db->f("name"),$aList)){
+                $aList[$db->f("idtype")] = $db->f("name");
+            }
+    }
 }
 
 $typeAktuell = getAktuellType($typeAktuell, $aList);
@@ -185,28 +185,28 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
     //Show path of selected category to user
     $catString = '';
     prCreateURLNameLocationString($idcat, '/', $catString);
-	$sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idlang=".Contenido_Security::toInteger($lang);
+    $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idlang=".Contenido_Security::toInteger($lang);
     $db->query($sql);
     $db->next_record();
     $layoutcode .= '<p style="display:block;font-weight:bold;">'.i18n("Content Verwaltung").'</p>
-		<div class="categorypath">'.$catString.'/'.htmlspecialchars($db->f("title")).'</div>';
+        <div class="categorypath">'.$catString.'/'.htmlspecialchars($db->f("title")).'</div>';
 
 if(count($result)<=0){
-	$layoutcode .= '<div>--- '.i18n("kein").' ---</div>';
+    $layoutcode .= '<div>--- '.i18n("kein").' ---</div>';
 } else {
     foreach($aIdtype as $idtype){
-    	foreach($sortID as $name){
-    		if(in_array($name, array_keys($result)) && count($result[$name])>=$idtype){
+        foreach($sortID as $name){
+            if(in_array($name, array_keys($result)) && count($result[$name])>=$idtype){
 
-	            if(in_array($name."[".$idtype."]",$typeAktuell)){
-	                $class = '';
-	            } else {
-	                $class = ' noactive';
-	            }
-	            $layoutcode .= '<div class="contypeList '.$class.'">
-	            <div class="headline">'.$name.' '.$idtype.':</div>'.$name.'['.$idtype.']</div>';
-	    	}
-    	}
+                if(in_array($name."[".$idtype."]",$typeAktuell)){
+                    $class = '';
+                } else {
+                    $class = ' noactive';
+                }
+                $layoutcode .= '<div class="contypeList '.$class.'">
+                <div class="headline">'.$name.' '.$idtype.':</div>'.$name.'['.$idtype.']</div>';
+            }
+        }
     }
 }
     /*foreach($result as $key => $cmstype){

@@ -32,7 +32,7 @@ if (!defined('CON_FRAMEWORK')) {
 
 
 function renderBooleanProperty($sName, $aPossValues, $sValue, $sLabel) {
-	global $auth;
+    global $auth;
 
     $aReturn = array();
 
@@ -46,7 +46,7 @@ function renderBooleanProperty($sName, $aPossValues, $sValue, $sLabel) {
     $oCheckbox->setLabelText('&nbsp;&nbsp;'.$sLabel);
     $oCheckbox->setStyle('margin:0; padding:0px;margin-left:3px;');
     if(strpos($auth->auth["perm"], "sysadmin") === false) {
- 	   	$oCheckbox->updateAttributes(array('disabled' => 'true'));
+            $oCheckbox->updateAttributes(array('disabled' => 'true'));
     }
 
     $aReturn['input'] = $oCheckbox->render();
@@ -62,12 +62,12 @@ function renderLabel($sLabel, $sName, $iWidth = 250, $sSeperator = ':') {
 }
 
 function renderTextProperty($sName, $sValue, $sLabel) {
-	global $auth;
+    global $auth;
 
     $oTextbox = new cHTMLTextbox($sName, $sValue, "50", "96");
     $oTextbox->setStyle('width:320px;');
     if(strpos($auth->auth["perm"], "sysadmin") === false) {
- 	   	$oTextbox->updateAttributes(array('disabled' => 'true'));
+            $oTextbox->updateAttributes(array('disabled' => 'true'));
     }
     $aReturn['input'] = $oTextbox->render();
     $aReturn['label'] = renderLabel($sLabel, $sName);
@@ -126,29 +126,29 @@ $aManagedProperties = array(
 $aSettings = getSystemProperties(1);
 
 if (isset($_POST['action']) && $_POST['action'] == 'edit_sysconf' && $perm->have_perm_area_action($area, 'edit_sysconf')) {
-	if(strpos($auth->auth["perm"],"sysadmin") === false) {
-		$sNotification = $notification->displayNotification("error", i18n("You don't have the permission to make changes here."));
-	} else {
-		$bStored = false;
-		foreach ($aManagedProperties as $aProperty) {
-			$sValue = getPostValue($aProperty);
-			$sStoredValue = $aSettings[$aProperty['type']][$aProperty['name']]['value'];
+    if(strpos($auth->auth["perm"],"sysadmin") === false) {
+        $sNotification = $notification->displayNotification("error", i18n("You don't have the permission to make changes here."));
+    } else {
+        $bStored = false;
+        foreach ($aManagedProperties as $aProperty) {
+            $sValue = getPostValue($aProperty);
+            $sStoredValue = $aSettings[$aProperty['type']][$aProperty['name']]['value'];
 
-			if ($sStoredValue != $sValue &&  (is_array($aProperty['value']) && $sValue != '' || !is_array($aProperty['value']))) {
-				if ( $aProperty['type'] == 'update' && $aProperty['name'] == 'check_period' && (int) $sValue < 60 ) {
-					$sNotification = $notification->displayNotification("error", i18n("Update check period must be at least 60 minutes."));
-					$bStored = false;
-					break;
-				} else {
-					setSystemProperty($aProperty['type'], $aProperty['name'], $sValue);
-					$bStored = true;
-				}
-			}
-		}
-		if ($bStored) {
-			$sNotification = $notification->displayNotification("info", i18n("Changes saved"));
-		}
-	}
+            if ($sStoredValue != $sValue &&  (is_array($aProperty['value']) && $sValue != '' || !is_array($aProperty['value']))) {
+                if ( $aProperty['type'] == 'update' && $aProperty['name'] == 'check_period' && (int) $sValue < 60 ) {
+                    $sNotification = $notification->displayNotification("error", i18n("Update check period must be at least 60 minutes."));
+                    $bStored = false;
+                    break;
+                } else {
+                    setSystemProperty($aProperty['type'], $aProperty['name'], $sValue);
+                    $bStored = true;
+                }
+            }
+        }
+        if ($bStored) {
+            $sNotification = $notification->displayNotification("info", i18n("Changes saved"));
+        }
+    }
 }
 
 
@@ -163,7 +163,7 @@ $oForm->setVar("frame", $frame);
 $oForm->setVar("action", 'edit_sysconf');
 
 if(strpos($auth->auth["perm"],"sysadmin") === false) {
-	$oForm->setActionButton("submit", $cfg['path']['contenido_fullhtml']."images/but_ok_off.gif", i18n("Save changes"), "s");
+    $oForm->setActionButton("submit", $cfg['path']['contenido_fullhtml']."images/but_ok_off.gif", i18n("Save changes"), "s");
 }
 
 $sCurGroup = '';

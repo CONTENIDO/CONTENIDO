@@ -102,20 +102,20 @@ class Purge {
      * @return bool
      */
     public function resetClientConCode($iClientId) {
-    	global $perm, $currentuser;
+        global $perm, $currentuser;
 
-    	if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-	        $mask = $this->cfgClient[$iClientId]['code_path'] . '*.php';
-	        $arr = glob($mask);
-	        foreach ($arr as $file) {
-	            if (!unlink($file)) {
-	                return false;
-	            }
-	        }
-	        return true;
-    	} else {
-    		return false;
-    	}
+        if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $mask = $this->cfgClient[$iClientId]['code_path'] . '*.php';
+            $arr = glob($mask);
+            foreach ($arr as $file) {
+                if (!unlink($file)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -125,23 +125,23 @@ class Purge {
      * @return bool
      */
     public function resetClientConCatArt($iClientId) {
-    	global $perm, $currentuser;
+        global $perm, $currentuser;
 
-    	if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-	        $sSql = " UPDATE " . $this->cfg['tab']['cat_art'] . " cca, " .
-	                            $this->cfg['tab']['cat'] . " cc, " .
-	                            $this->cfg['tab']['art'] . " ca " .
-	               " SET cca.createcode=1 " .
-	               " WHERE cc.idcat = cca.idcat " .
-	               " AND ca.idart = cca.idart " .
-	               " AND cc.idclient = " . (int) $iClientId .
-	               " AND ca.idclient = " . (int) $iClientId;
-	        $this->oDb->query($sSql);
+        if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $sSql = " UPDATE " . $this->cfg['tab']['cat_art'] . " cca, " .
+                                $this->cfg['tab']['cat'] . " cc, " .
+                                $this->cfg['tab']['art'] . " ca " .
+                   " SET cca.createcode=1 " .
+                   " WHERE cc.idcat = cca.idcat " .
+                   " AND ca.idart = cca.idart " .
+                   " AND cc.idclient = " . (int) $iClientId .
+                   " AND ca.idclient = " . (int) $iClientId;
+            $this->oDb->query($sSql);
 
-	        return ($this->oDb->Error == '') ? true : false;
-    	} else {
-    		return false;
-    	}
+            return ($this->oDb->Error == '') ? true : false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -150,16 +150,16 @@ class Purge {
      * @return bool
      */
     public function resetConInuse() {
-    	global $perm, $currentuser;
+        global $perm, $currentuser;
 
-    	if($perm->isSysadmin($currentuser)) {
-	        $sSql = "DELETE FROM " . $this->cfg['tab']['inuse'];
-	        $this->oDb->query($sSql);
+        if($perm->isSysadmin($currentuser)) {
+            $sSql = "DELETE FROM " . $this->cfg['tab']['inuse'];
+            $this->oDb->query($sSql);
 
-	        return ($this->oDb->Error == '') ? true : false;
-    	} else {
-    		return false;
-    	}
+            return ($this->oDb->Error == '') ? true : false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -168,16 +168,16 @@ class Purge {
      * @return bool
      */
     public function resetPHPLibActiveSession() {
-    	global $perm, $currentuser;
+        global $perm, $currentuser;
 
-    	if($perm->isSysadmin($currentuser)) {
-	        $sSql = "DELETE FROM " . $this->cfg['tab']['phplib_active_sessions'];
-	        $this->oDb->query($sSql);
+        if($perm->isSysadmin($currentuser)) {
+            $sSql = "DELETE FROM " . $this->cfg['tab']['phplib_active_sessions'];
+            $this->oDb->query($sSql);
 
-	        return ($this->oDb->Error == '') ? true : false;
-    	} else {
-    		return false;
-    	}
+            return ($this->oDb->Error == '') ? true : false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -186,16 +186,16 @@ class Purge {
      * @return bool
      */
     public function resetUnusedSession() {
-    	global $perm, $currentuser;
+        global $perm, $currentuser;
 
-    	if($perm->isSysadmin($currentuser)) {
-	        $sSql = "DELETE FROM " . $this->cfg['tab']['inuse'];
-	        $this->oDb->query($sSql);
+        if($perm->isSysadmin($currentuser)) {
+            $sSql = "DELETE FROM " . $this->cfg['tab']['inuse'];
+            $this->oDb->query($sSql);
 
-	        return ($this->oDb->Error == '') ? true : false;
-    	} else {
-    		return false;
-    	}
+            return ($this->oDb->Error == '') ? true : false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -205,22 +205,22 @@ class Purge {
      * @return bool
      */
     public function clearClientCache($iClientId, $sCacheDir = 'cache/') {
-    	global $perm, $currentuser;
+        global $perm, $currentuser;
 
-    	if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-	//        $sClientDir = $this->getClientDir($iClientId);
-	        $sClientDir = $this->cfgClient[$iClientId]['data_path'];
+        if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+    //        $sClientDir = $this->getClientDir($iClientId);
+            $sClientDir = $this->cfgClient[$iClientId]['data_path'];
 
-	        $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->sDefaultCacheDir : $sCacheDir;
-	        if (is_dir($sClientDir . $sCacheDir)) {
-	            $sCachePath = $sClientDir . $sCacheDir;
-	            return ($this->clearDir($sCachePath, $sCachePath) ? true : false);
-	        }
+            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->sDefaultCacheDir : $sCacheDir;
+            if (is_dir($sClientDir . $sCacheDir)) {
+                $sCachePath = $sClientDir . $sCacheDir;
+                return ($this->clearDir($sCachePath, $sCachePath) ? true : false);
+            }
 
-	        return false;
-    	} else {
-    		return false;
-    	}
+            return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -230,41 +230,41 @@ class Purge {
      * @return bool
      */
     public function clearClientHistory($iClientId, $bKeep, $iFileNumber, $sVersionDir = 'version/') {
-    	global $perm, $currentuser;
+        global $perm, $currentuser;
 
-    	if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-	        $sClientDir = $this->getClientDir($iClientId);
+        if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $sClientDir = $this->getClientDir($iClientId);
 
-	        $sCacheDir = (trim($sVersionDir) == '' || trim($sVersionDir) == '/') ? $this->sDefaultVersionDir : $sVersionDir;
+            $sCacheDir = (trim($sVersionDir) == '' || trim($sVersionDir) == '/') ? $this->sDefaultVersionDir : $sVersionDir;
 
-	        if (is_dir($sClientDir . $sVersionDir)) {
-	            $sVersionPath = $sClientDir . $sVersionDir;
-	            $aTmpFile = array();
-	            $this->clearDir($sVersionPath, $sVersionPath, $bKeep, $aTmpFile);
-	            if (count($aTmpFile) > 0) {
-	                foreach ($aTmpFile as $sKey => $aFiles) {
-	                    // sort the history files with filename
-	                    array_multisort($aTmpFile[$sKey]);
+            if (is_dir($sClientDir . $sVersionDir)) {
+                $sVersionPath = $sClientDir . $sVersionDir;
+                $aTmpFile = array();
+                $this->clearDir($sVersionPath, $sVersionPath, $bKeep, $aTmpFile);
+                if (count($aTmpFile) > 0) {
+                    foreach ($aTmpFile as $sKey => $aFiles) {
+                        // sort the history files with filename
+                        array_multisort($aTmpFile[$sKey]);
 
-	                    $iCount = count($aTmpFile[$sKey]);
-	                    // find the total number to delete
-	                    $iCountDelete = ($iCount <= $iFileNumber) ? 0 : ($iCount - $iFileNumber);
-	                    // delete the files
-	                    for ($i = 0; $i < $iCountDelete; $i++) {
-	                        if (file_exists($aTmpFile[$sKey][$i]) && is_writable($aTmpFile[$sKey][$i])) {
-	                            unlink($aTmpFile[$sKey][$i]);
-	                        }
-	                    }
-	                }
-	            }
+                        $iCount = count($aTmpFile[$sKey]);
+                        // find the total number to delete
+                        $iCountDelete = ($iCount <= $iFileNumber) ? 0 : ($iCount - $iFileNumber);
+                        // delete the files
+                        for ($i = 0; $i < $iCountDelete; $i++) {
+                            if (file_exists($aTmpFile[$sKey][$i]) && is_writable($aTmpFile[$sKey][$i])) {
+                                unlink($aTmpFile[$sKey][$i]);
+                            }
+                        }
+                    }
+                }
 
-	            return true;
-	        }
+                return true;
+            }
 
-	        return false;
-    	} else {
-    		return false;
-    	}
+            return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -275,21 +275,21 @@ class Purge {
      * @return bool
      */
     public function clearClientLog($iClientId, $sLogDir = 'logs/') {
-    	global $perm, $currentuser;
+        global $perm, $currentuser;
 
-    	if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-	        $sClientDir = $this->getClientDir($iClientId);
+        if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $sClientDir = $this->getClientDir($iClientId);
 
-	        $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->sDefaultLogDir : $sLogDir;
+            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->sDefaultLogDir : $sLogDir;
 
-	        if (is_dir($sClientDir . $sLogDir)) {
-	            return $this->emptyFile($sClientDir . $sLogDir, $this->aLogFileTypes);
-	        }
+            if (is_dir($sClientDir . $sLogDir)) {
+                return $this->emptyFile($sClientDir . $sLogDir, $this->aLogFileTypes);
+            }
 
-	        return false;
-    	} else {
-    		return false;
-    	}
+            return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -299,23 +299,23 @@ class Purge {
      * @return bool
      */
     public function clearConLog($sLogDir = '') {
-    	global $perm, $currentuser;
+        global $perm, $currentuser;
 
-    	if($sLogDir == "") {
-    		$sLogDir = $this->cfg['path']['data']."logs/";
-    	}
+        if($sLogDir == "") {
+            $sLogDir = $this->cfg['path']['data']."logs/";
+        }
 
-    	if($perm->isSysadmin($currentuser)) {
-	        $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->sDefaultLogDir : $sLogDir;
+        if($perm->isSysadmin($currentuser)) {
+            $sLogDir = (trim($sLogDir) == '' || trim($sLogDir) == '/') ? $this->sDefaultLogDir : $sLogDir;
 
-	        if (is_dir($sLogDir)) {
-	            return $this->emptyFile($sLogDir, $this->aLogFileTypes);
-	        }
+            if (is_dir($sLogDir)) {
+                return $this->emptyFile($sLogDir, $this->aLogFileTypes);
+            }
 
-	        return false;
-    	} else {
-    		return false;
-    	}
+            return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -325,19 +325,19 @@ class Purge {
      * @return bool
      */
     public function clearConCronjob($sCronjobDir = 'cronjobs/') {
-    	global $perm, $currentuser;
+        global $perm, $currentuser;
 
-    	if($perm->isSysadmin($currentuser)) {
-	        $sCronjobDir = (trim($sCronjobDir) == '' || trim($sCronjobDir) == '/') ? $this->sDefaultCronjobDir : $sCronjobDir;
+        if($perm->isSysadmin($currentuser)) {
+            $sCronjobDir = (trim($sCronjobDir) == '' || trim($sCronjobDir) == '/') ? $this->sDefaultCronjobDir : $sCronjobDir;
 
-	        if (is_dir($sCronjobDir)) {
-	            return $this->emptyFile($sCronjobDir, $this->aCronjobFileTypes);
-	        }
+            if (is_dir($sCronjobDir)) {
+                return $this->emptyFile($sCronjobDir, $this->aCronjobFileTypes);
+            }
 
-	        return false;
-    	} else {
-    		return false;
-    	}
+            return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -347,19 +347,19 @@ class Purge {
      * @return bool
      */
     public function clearConCache($sCacheDir = 'cache/') {
-    	global $perm, $currentuser;
+        global $perm, $currentuser;
 
-    	if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
-	        $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->sDefaultCacheDir : $sCacheDir;
+        if($perm->isClientAdmin($iClientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $sCacheDir = (trim($sCacheDir) == '' || trim($sCacheDir) == '/') ? $this->sDefaultCacheDir : $sCacheDir;
 
-	        if (is_dir($sCacheDir)) {
-	            return ($this->clearDir($sCacheDir, $sCacheDir) ? true : false);
-	        }
+            if (is_dir($sCacheDir)) {
+                return ($this->clearDir($sCacheDir, $sCacheDir) ? true : false);
+            }
 
-	        return false;
-    	} else {
-    		return false;
-    	}
+            return false;
+        } else {
+            return false;
+        }
     }
 
     /**

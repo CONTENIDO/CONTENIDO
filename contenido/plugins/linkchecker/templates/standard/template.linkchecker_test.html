@@ -17,17 +17,17 @@
         </script>
         <script type="text/javascript">
             function toggleTableBody(tableId){
-            
+
                 var collapseButton = 'images/close_all.gif';
                 var expandButton = 'images/open_all.gif';
                 var curTable = document.getElementById(tableId);
                 var curButton = document.getElementById(tableId + '_img');
-                
+
                 if (curTable.style.display == "inline" || curTable.style.display == "") {
                     curTable.style.display = "none";
                     curButton.src = expandButton;
                 }
-                else 
+                else
                     if (curTable.style.display == "none") {
                         curTable.style.display = "inline";
                         curButton.src = collapseButton;

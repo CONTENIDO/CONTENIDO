@@ -140,7 +140,7 @@ class cPasswordRequest {
     /*################################################################*/
     /*################################################################*/
 
- 	/** @deprecated  [2012-07-02] Old constructor function for downwards compatibility */
+     /** @deprecated  [2012-07-02] Old constructor function for downwards compatibility */
     public function cPasswordRequest($oDb, $aCfg)
     {
         cDeprecated("Use __construct() instead");
