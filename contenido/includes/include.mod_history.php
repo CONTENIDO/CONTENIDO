@@ -59,7 +59,7 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
 } else {
 
     if ($_POST["mod_send"] == true && ($_POST["CodeOut"] !="" || $_POST["CodeIn"] !="") ) { // save button
-        $oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
         $sName = $_POST["modname"];
         $sCodeInput = $_POST["CodeIn"];
         $sCodeOutput = $_POST["CodeOut"];
@@ -73,12 +73,12 @@ if (!$perm->have_perm_area_action($area, 'mod_history_manage'))
 
     // [action] => history_truncate delete all current history
       if($_POST["action"] == "history_truncate") {
-        $oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
           $bDeleteFile = $oVersion->deleteFile();
         unset($oVersion);
       }
 
-    $oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+    $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
 
     // Init Form variables of SelectBox
     $sSelectBox = "";

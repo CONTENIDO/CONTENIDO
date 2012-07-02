@@ -68,13 +68,13 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
 
        // [action] => history_truncate delete all current history
       if($_POST["action"] == "history_truncate") {
-        $oVersionJScript = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $oVersionJScript = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
            $bDeleteFile = $oVersionJScript->deleteFile();
         unset($oVersionJScript);
       }
 
     if ($_POST["jscript_send"] == true && $_POST["jscriptcode"] !="" && $sFileName != "" && $aFileInfo["idsfi"]!="") { // save button
-            $oVersionJScript = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+            $oVersionJScript = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
         //    Get Post variables
             $sJScriptCode = $_POST["jscriptcode"];
@@ -107,7 +107,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage'))
     }
 
     if($sFileName != "" && $aFileInfo["idsfi"]!=""  && $_POST["action"] != "history_truncate") {
-        $oVersionJScript = new VersionFile($aFileInfo["idsfi"], $aFileInfo,$sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $oVersionJScript = new cVersionFile($aFileInfo["idsfi"], $aFileInfo,$sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
 
         // Init Form variables of SelectBox

@@ -50,7 +50,7 @@ function modEditModule($idmod, $name, $description, $input, $output, $template, 
     /**
     * START TRACK VERSION
     **/
-    $oVersion = new VersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
+    $oVersion = new cVersionModule($idmod, $cfg, $cfgClient, $db, $client, $area, $frame);
     // Create new Module Version in cms/version/module/
     $oVersion->createNewVersion();
 

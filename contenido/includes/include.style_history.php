@@ -69,14 +69,14 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
 
     // [action] => history_truncate delete all current history
       if($_POST["action"] == "history_truncate") {
-        $oVersionStyle = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $oVersionStyle = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
            $bDeleteFile = $oVersionStyle->deleteFile();
         unset($oVersionStyle);
       }
 
     if ($_POST["style_send"] == true && $_POST["stylecode"] !="" && $sFileName != "" && $aFileInfo["idsfi"]!="") { // save button
         //        Get Post variables
-        $oVersionStyle = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $oVersionStyle = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
         $sStyleCode = $_POST["stylecode"];
         $sStyleName = $_POST["stylename"];
@@ -109,7 +109,7 @@ if (!$perm->have_perm_area_action($area, 'style_history_manage'))
     }
 
     if($sFileName != "" && $aFileInfo["idsfi"]!="" && $_POST["action"] != "history_truncate") {
-        $oVersionStyle = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $oVersionStyle = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
         // Init Form variables of SelectBox
         $sSelectBox = "";

@@ -73,7 +73,7 @@ function layEditLayout($idlay, $name, $description, $code) {
     /**
     * START TRACK VERSION
     **/
-    $oVersion = new VersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
+    $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
     #save layout from file and not from db
     $oVersion->setCode($layoutInFile->getLayoutCode());
     // Create new Layout Version in cms/version/layout/

@@ -318,6 +318,7 @@ contenido/classes/class.metaobject.php -text
 contenido/classes/class.navigation.php -text
 contenido/classes/class.note.php -text
 contenido/classes/class.notification.php -text
+contenido/classes/class.password.request.php -text
 contenido/classes/class.perm.php -text
 contenido/classes/class.properties.php -text
 contenido/classes/class.purge.php -text
@@ -413,6 +414,11 @@ contenido/classes/phpmailer/class.smtp.php -text
 contenido/classes/phpmailer/language/phpmailer.lang-de.php -text
 contenido/classes/tree/class.ctree.php -text
 contenido/classes/tree/class.ctreeitem.php -text
+contenido/classes/version/class.version.file.php -text
+contenido/classes/version/class.version.import.php -text
+contenido/classes/version/class.version.layout.php -text
+contenido/classes/version/class.version.module.php -text
+contenido/classes/version/class.version.php -text
 contenido/classes/widgets/class.views.advancedmenu.php -text
 contenido/classes/widgets/class.widgets.actionbutton.php -text
 contenido/classes/widgets/class.widgets.actionlist.php -text

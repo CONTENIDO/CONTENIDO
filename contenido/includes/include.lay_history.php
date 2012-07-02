@@ -52,7 +52,7 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
   $oPage->render();
 } else {
     if ($_POST["lay_send"] == true && $_POST["layname"]!="" && $_POST["laycode"] !="" && (int) $idlay > 0) { // save button
-        $oVersion = new VersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
         $sLayoutName = $_POST["layname"];
         $sLayoutCode = $_POST["laycode"];
         $sLayoutDescription = $_POST["laydesc"];
@@ -65,13 +65,13 @@ if (!$perm->have_perm_area_action($area, 'lay_history_manage')) {
 
     // [action] => history_truncate delete all current modul history
       if($_POST["action"] == "history_truncate") {
-        $oVersion = new VersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
           $bDeleteFile = $oVersion->deleteFile();
         unset($oVersion);
       }
 
     // Init construct with CONTENIDO variables, in class.VersionLayout
-    $oVersion = new VersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
+    $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
 
     // Init Form variables of SelectBox
     $sSelectBox = "";

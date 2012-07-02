@@ -150,7 +150,7 @@ $tpl->set('s', 'PASSWORD', i18n('Password'));
 $tpl->set('s', 'TIME', time());
 
 //class implements passwort recovery, all functionality is implemented there
-$oRequestPassword = new RequestPassword($db, $cfg);
+$oRequestPassword = new cPasswordRequest($db, $cfg);
 $str = $oRequestPassword->renderForm(1);
 $tpl->set('s', 'FORM', $str);
 

@@ -186,7 +186,7 @@ if (!$perm->have_perm_area_action($area, $action))
         }
 
         if((count($aFileInfo) == 0) || ($aFileInfo["idsfi"] !="")) {
-            $oVersion = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
+            $oVersion = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFilename, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame, $sOrigFileName);
             // Create new version
             $oVersion->createNewVersion();
         }
@@ -248,4 +248,4 @@ if (!$perm->have_perm_area_action($area, $action))
     }
 }
 
-?> 
+?>

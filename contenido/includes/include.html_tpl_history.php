@@ -74,12 +74,12 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
 
     // [action] => history_truncate delete all current history
       if($_POST["action"] == "history_truncate") {
-        $oVersionHtmlTemp = new VersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $oVersionHtmlTemp = new cVersionFile($aFileInfo["idsfi"], $aFileInfo, $sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
            $bDeleteFile = $oVersionHtmlTemp->deleteFile();
         unset($oVersionHtmlTemp);
       }
     if ($_POST["html_tpl_send"] == true && $_POST["html_tpl_code"] !="" && $sFileName != "" && $aFileInfo["idsfi"]!="" ) { // save button
-            $oVersionHtmlTemp = new VersionFile($aFileInfo["idsfi"], $aFileInfo,$sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+            $oVersionHtmlTemp = new cVersionFile($aFileInfo["idsfi"], $aFileInfo,$sFileName ,$sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
     //        Get Post variables
             $sHTMLCode = $_POST["html_tpl_code"];
@@ -112,7 +112,7 @@ if (!$perm->have_perm_area_action($area, 'htmltpl_history_manage'))
     }
 
     if($sFileName != "" && $aFileInfo["idsfi"]!="" && $_POST["action"] != "history_truncate" ) {
-        $oVersionHtmlTemp= new VersionFile($aFileInfo["idsfi"],$aFileInfo["description"] ,$sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
+        $oVersionHtmlTemp= new cVersionFile($aFileInfo["idsfi"],$aFileInfo["description"] ,$sFileName, $sTypeContent, $cfg, $cfgClient, $db, $client, $area, $frame);
 
         // Init Form variables of SelectBox
         $sSelectBox = "";
