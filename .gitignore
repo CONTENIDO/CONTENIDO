@@ -12,4 +12,6 @@ contenido/cronjobs/*.job
 contenido/includes/config.clients.php
 contenido/includes/config.local.php
 contenido/includes/config.php
+data/config/production/config.clients.php
+data/config/production/config.php
 /nbproject
