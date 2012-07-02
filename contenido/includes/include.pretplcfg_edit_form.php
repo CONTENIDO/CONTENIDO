@@ -81,7 +81,7 @@ if (isset($a_d) && is_array($a_d)) {
     foreach ($a_d as $cnumber => $value) {
         // nur die Container anzeigen, in denen auch ein Modul enthalten ist
         if ($value != 0) {
-            $sql = "SELECT * FROM " . $cfg["tab"]["mod"] . " WHERE idmod = " . (int) $a_d[$cnumber]);
+            $sql = "SELECT * FROM " . $cfg["tab"]["mod"] . " WHERE idmod = " . (int) $a_d[$cnumber];
             $db->query($sql);
             $db->next_record();
 
