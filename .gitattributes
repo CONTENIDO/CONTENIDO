@@ -1875,8 +1875,6 @@ contenido/tools/upgradeseq.php -text
 contenido/xml/index.php -text
 contenido/xml/navigation.xml -text
 data/.htaccess -text
-data/config/production/config.clients.php -text
-data/config/production/config.php -text
 data/cronlog/advance_workflow.php.job -text
 data/cronlog/crontab.txt -text
 data/cronlog/linkchecker.php.job -text
