@@ -72,7 +72,7 @@ if (! defined ( 'CON_FRAMEWORK' )) {
 }
 
 // Exception classes
-cInclude ( "exceptions", "exception.conuser.php" );
+cInclude( "exceptions", "exception.conuser.php" );
 
 /**
  * Project:
