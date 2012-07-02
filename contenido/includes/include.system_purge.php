@@ -34,7 +34,7 @@ $tpl->reset();
 
 $iClientSelectSize = 4;
 $oClient = new cApiClientCollection();
-$aAvailableClient = $oClient->getAvailableClients();
+$aAvailableClient = $oClient->getAccessibleClients();
 
 $sInfoMsg = '';
 
@@ -196,8 +196,8 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
     $tpl->set('s', 'CLIENT_SELECT_ALL', i18n("all clients"));
     $tpl->set('s', 'CLIENT_SELECT', i18n("from list"));
     $tpl->set('s', 'CLIENT_CHOOSE', i18n("Select clients"));
-    $tpl->set('s', 'CON_CODE', sprintf(i18n("Reset the table %s"), $cfg['tab']['code']));
-    $tpl->set('s', 'CON_CAT_ART', sprintf(i18n("Activate the code generation in %s"), $cfg['tab']['code'], $cfg['tab']['cat_art']));
+    $tpl->set('s', 'CON_CODE', i18n("Delete the code cache"));
+    $tpl->set('s', 'CON_CAT_ART', i18n("Force code generation"));
     $tpl->set('s', 'CON_INUSE', sprintf(i18n("Reset the table %s"), $cfg['tab']['inuse']));
     $tpl->set('s', 'CLIENT_CACHE', i18n("Clear client cache"));
     $tpl->set('s', 'CLIENT_LOG', i18n("Clear client log file"));
@@ -220,6 +220,12 @@ if (($action == "do_purge") && (!$perm->have_perm_area_action_anyitem($area, $ac
 
     $tpl->set('s', 'SUBMIT_TEXT', i18n("Send"));
     $tpl->set('s', 'NO_CLIENT_SELECTED', i18n("Please select a client or all clients."));
+
+	if(strpos($auth->auth["perm"], "sysadmin") === false) {
+		$tpl->set('s', 'DEACTIVATED', "disabled");
+	} else {
+		$tpl->set('s', 'DEACTIVATED', "");
+	}
 
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['system_purge']);
 

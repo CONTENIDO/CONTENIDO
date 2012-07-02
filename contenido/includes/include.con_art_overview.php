@@ -343,9 +343,6 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $tmp_rowid  = $idart."-".$idartlang."-".$lidcat."-".$idcatlang."-".$idcatart."-".$idlang;
             $tpl->set('d', 'ROWID', $tmp_rowid);
 
-            $colitem[$tmp_rowid] = $bgcolor;
-            // Backgroundcolor of the table row
-
             // Article Title
             if ($perm->have_perm_area_action('con_editcontent', 'con_editart' ) ||
                 $perm->have_perm_area_action_item('con_editcontent', 'con_editart' ,$idcat))

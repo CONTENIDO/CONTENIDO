@@ -41,21 +41,29 @@ $aManagedValues = array('versioning_prune_limit', 'update_check', 'update_news_f
 
 if ($action == "systemsettings_save_item")
 {
-    if (!in_array($systype.'_'.$sysname, $aManagedValues)) {
-        setSystemProperty ($systype, $sysname, $sysvalue, $csidsystemprop);
-        if(isset($x))
-            $sWarning = $notification->returnNotification("info", i18n('Saved changes successfully!'), 1).'<br>';
-        else
-            $sWarning = $notification->returnNotification("info", i18n('Created new item successfully!'), 1).'<br>';
-    } else {
-       $sWarning = $notification->returnNotification("warning", i18n('Please set this property in systemsettings directly'), 1).'<br>';
-    }
+	if(strpos($auth->auth["perm"], "sysadmin") === false) {
+		$sWarning = $notification->returnNotification("error", i18n("You don't have the permission to make changes here."), 1).'<br>';
+	} else {
+	    if (!in_array($systype.'_'.$sysname, $aManagedValues)) {
+	        setSystemProperty ($systype, $sysname, $sysvalue, $csidsystemprop);
+	        if(isset($x))
+	            $sWarning = $notification->returnNotification("info", i18n('Saved changes successfully!'), 1).'<br>';
+	        else
+	            $sWarning = $notification->returnNotification("info", i18n('Created new item successfully!'), 1).'<br>';
+	    } else {
+	       $sWarning = $notification->returnNotification("warning", i18n('Please set this property in systemsettings directly'), 1).'<br>';
+	    }
+	}
 }
 
 if ($action == "systemsettings_delete_item")
 {
-    deleteSystemProperty($systype, $sysname);
-    $sWarning = $notification->returnNotification("info", i18n('Deleted item successfully!'), 1).'<br>';
+	if(strpos($auth->auth["perm"], "sysadmin") === false) {
+		$sWarning = $notification->returnNotification("error", i18n("You don't have the permission to make changes here."), 1).'<br>';
+	} else {
+    	deleteSystemProperty($systype, $sysname);
+    	$sWarning = $notification->returnNotification("info", i18n('Deleted item successfully!'), 1).'<br>';
+	}
 }
 
 $settings = getSystemProperties(1);
@@ -72,16 +80,16 @@ $count = 2;
 
 $oLinkEdit = new Link;
 $oLinkEdit->setCLink($area, $frame, "systemsettings_edit_item");
-$oLinkEdit->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
-
-$oLinkForward = new Link;
-$oLinkForward->setCLink('system_configuration', $frame, "");
-$oLinkForward->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
 $oLinkDelete = new Link;
 $oLinkDelete->setCLink($area, $frame, "systemsettings_delete_item");
-$oLinkDelete->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">');
+if(strpos($auth->auth["perm"], "sysadmin") === false) {
+	$oLinkEdit->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren_off.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
+	$oLinkDelete->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete_inact.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">');
+} else {
+	$oLinkEdit->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'editieren.gif" alt="'.i18n("Edit").'" title="'.i18n("Edit").'">');
+	$oLinkDelete->setContent('<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">');
+}
 
-$oLinkDeleteForward = '<img src="'.$cfg["path"]["contenido_fullhtml"].$cfg['path']['images'].'delete_inact.gif" alt="'.i18n("Delete").'" title="'.i18n("Delete").'">';
 $spacer = new cHTMLImage;
 $spacer->setWidth(5);
 
@@ -103,7 +111,7 @@ if (is_array($settings))
             if (in_array($key.'_'.$type, $aManagedValues)) {
                 #ignore record
 
-            } else if (($action == "systemsettings_edit_item") && (stripslashes($systype) == $key) && (stripslashes($sysname) == $type)) {
+            } else if (($action == "systemsettings_edit_item") && (stripslashes($systype) == $key) && (stripslashes($sysname) == $type) && (strpos($auth->auth["perm"], "sysadmin") !== false)) {
                 $oInputboxValue = new cHTMLTextbox("sysvalue", $value['value']);
                 $oInputboxName = new cHTMLTextbox("sysname", $type);
                 $oInputboxType = new cHTMLTextbox("systype", $key);
@@ -171,14 +179,20 @@ $form->add(i18n("Name"),$inputbox->render());
 $inputbox = new cHTMLTextbox ("sysvalue");
 $form->add(i18n("Value"),$inputbox->render());
 
+
 if ($action == "systemsettings_edit_item")
 {
-    $form2 = new UI_Form("systemsettings");
-    $form2->setVar("area",$area);
-    $form2->setVar("frame", $frame);
-    $form2->setVar("action", "systemsettings_save_item");
-    $form2->add('list', $list->render());
-    $sListstring = $form2->render();
+	if(strpos($auth->auth["perm"], "sysadmin") === false) {
+		$sWarning = $notification->returnNotification("error", i18n("You don't have the permission to make changes here."), 1).'<br>';
+		$sListstring = $list->render();
+	} else {
+	    $form2 = new UI_Form("systemsettings");
+	    $form2->setVar("area",$area);
+	    $form2->setVar("frame", $frame);
+	    $form2->setVar("action", "systemsettings_save_item");
+	    $form2->add('list', $list->render());
+	    $sListstring = $form2->render();
+	}
 } else {
     $sListstring = $list->render();
 }
@@ -191,7 +205,12 @@ $sTooltippScript = '<script type="text/javascript" src="scripts/jquery/jquery.js
 $page->addScript('tooltippstyle', '<link rel="stylesheet" type="text/css" href="styles/tipsy.css" />');
 $page->addScript('tooltip-js', $sTooltippScript);
 
-$page->setContent($sWarning."\n".$sListstring."<br>".$form->render());
+$content = $sWarning."\n".$sListstring."<br>";
+if(strpos($auth->auth["perm"], "sysadmin") !== false) {
+	$content .= $form->render();
+}
+
+$page->setContent($content);
 $page->render();
 
 ?>

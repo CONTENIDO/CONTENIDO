@@ -35,7 +35,11 @@ if (!defined('CON_FRAMEWORK')) {
  * @return string returns message if clearing was successfull or not
  */
 function emptyLogFile() {
-    global $cfg, $notification;
+    global $cfg, $notification, $auth;
+
+    if(strpos($auth->auth["perm"],"sysadmin") === false) {
+        return $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
+    }
 
     $tmp_notification = false;
 
