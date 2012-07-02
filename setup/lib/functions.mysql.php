@@ -35,27 +35,25 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-function hasMySQLExtension ()
+function hasMySQLExtension()
 {
-    if (isPHPExtensionLoaded("mysql") == E_EXTENSION_AVAILABLE)
-    {
+    if (isPHPExtensionLoaded("mysql") == E_EXTENSION_AVAILABLE) {
         return true;
     } else {
         return false;
     }
 }
 
-function hasMySQLiExtension ()
+function hasMySQLiExtension()
 {
-    if (isPHPExtensionLoaded("mysqli") == E_EXTENSION_AVAILABLE)
-    {
+    if (isPHPExtensionLoaded("mysqli") == E_EXTENSION_AVAILABLE) {
         return true;
     } else {
         return false;
     }
 }
 
-function doMySQLConnect ($host, $username, $password)
+function doMySQLConnect($host, $username, $password)
 {
     $aOptions = array(
         'connection' => array(
@@ -66,8 +64,7 @@ function doMySQLConnect ($host, $username, $password)
     );
     $db = new DB_Contenido($aOptions);
 
-    if ($db->connect() == 0)
-    {
+    if ($db->connect() == 0) {
         return array($db, false);
     } else {
         return array($db, true);
@@ -94,39 +91,31 @@ function fetchMySQLVersion($db)
 {
     $db->query("SELECT VERSION()");
 
-    if ($db->next_record())
-    {
+    if ($db->next_record()) {
         return $db->f(0);
     } else {
         return false;
     }
 }
 
-function fetchMySQLUser ($db)
+function fetchMySQLUser($db)
 {
     $db->query("SELECT USER()");
 
-    if ($db->next_record())
-    {
+    if ($db->next_record()) {
         return ($db->f(0));
-    }      else {
+    } else {
         return false;
     }
 }
 
-function checkMySQLDatabaseCreation ($db, $database)
+function checkMySQLDatabaseCreation($db, $database)
 {
-
-
-    if (checkMySQLDatabaseExists($db,  $database))
-    {
+    if (checkMySQLDatabaseExists($db,  $database)) {
         return true;
     } else {
-
         $db->query("CREATE DATABASE $database");
-
-        if ($db->Errno != 0)
-        {
+        if ($db->Errno != 0) {
             return false;
         } else {
             return true;
@@ -134,34 +123,27 @@ function checkMySQLDatabaseCreation ($db, $database)
     }
 }
 
-function checkMySQLDatabaseExists ($db, $database)
+function checkMySQLDatabaseExists($db, $database)
 {
     $db->connect();
 
-    if (hasMySQLiExtension() && !hasMySQLExtension())
-    {
-        if (@mysqli_select_db($database, $db->Link_ID))
-        {
+    if (hasMySQLiExtension() && !hasMySQLExtension()) {
+        if (@mysqli_select_db($database, $db->Link_ID)) {
             return true;
         } else {
             $db->query("SHOW DATABASES LIKE '$database'");
-
-            if ($db->next_record())
-            {
+            if ($db->next_record()) {
                 return true;
             } else {
                 return false;
             }
         }
     } else {
-        if (@mysql_select_db($database, $db->Link_ID))
-        {
+        if (@mysql_select_db($database, $db->Link_ID)) {
             return true;
         } else {
             $db->query("SHOW DATABASES LIKE '$database'");
-
-            if ($db->next_record())
-            {
+            if ($db->next_record()) {
                 return true;
             } else {
                 return false;
@@ -170,21 +152,18 @@ function checkMySQLDatabaseExists ($db, $database)
     }
 }
 
-function checkMySQLDatabaseUse ($db, $database)
+function checkMySQLDatabaseUse($db, $database)
 {
     $db->connect();
 
-    if (hasMySQLiExtension() && !hasMySQLExtension())
-    {
-        if (@mysqli_select_db($database, $db->Link_ID))
-        {
+    if (hasMySQLiExtension() && !hasMySQLExtension()) {
+        if (@mysqli_select_db($database, $db->Link_ID)) {
             return true;
         } else {
             return false;
         }
     } else {
-        if (@mysql_select_db($database, $db->Link_ID))
-        {
+        if (@mysql_select_db($database, $db->Link_ID)) {
             return true;
         } else {
             return false;
@@ -192,95 +171,84 @@ function checkMySQLDatabaseUse ($db, $database)
     }
 }
 
-function checkMySQLTableCreation ($db, $database, $table)
+function checkMySQLTableCreation($db, $database, $table)
 {
-    if (checkMySQLDatabaseUse($db, $database) == false)
-    {
+    if (checkMySQLDatabaseUse($db, $database) == false) {
         return false;
     }
 
     $db->query("CREATE TABLE $table (test INT( 1 ) NOT NULL) ENGINE = MYISAM ;");
 
-    if ($db->Errno == 0)
-    {
+    if ($db->Errno == 0) {
         return true;
     } else {
         return false;
     }
 }
 
-function checkMySQLLockTable ($db, $database, $table)
+function checkMySQLLockTable($db, $database, $table)
 {
-    if (checkMySQLDatabaseUse($db, $database) == false)
-    {
+    if (checkMySQLDatabaseUse($db, $database) == false) {
         return false;
     }
 
     $db->query("LOCK TABLES $table WRITE");
 
-    if ($db->Errno == 0)
-    {
-
+    if ($db->Errno == 0) {
         return true;
     } else {
         return false;
     }
 }
 
-function checkMySQLUnlockTables ($db, $database)
+function checkMySQLUnlockTables($db, $database)
 {
-    if (checkMySQLDatabaseUse($db, $database) == false)
-    {
+    if (checkMySQLDatabaseUse($db, $database) == false) {
         return false;
     }
 
     $db->query("UNLOCK TABLES");
 
-    if ($db->Errno == 0)
-    {
+    if ($db->Errno == 0) {
         return true;
     } else {
         return false;
     }
 }
 
-function checkMySQLDropTable ($db, $database, $table)
+function checkMySQLDropTable($db, $database, $table)
 {
-    if (checkMySQLDatabaseUse($db, $database) == false)
-    {
+    if (checkMySQLDatabaseUse($db, $database) == false) {
         return false;
     }
 
     $db->query("DROP TABLE $table");
 
-    if ($db->Errno == 0)
-    {
+    if ($db->Errno == 0) {
         return true;
     } else {
         return false;
     }
 }
 
-function checkMySQLDropDatabase ($db, $database)
+function checkMySQLDropDatabase($db, $database)
 {
     $db->query("DROP DATABASE $database");
 
-    if ($db->Errno == 0)
-    {
+    if ($db->Errno == 0) {
         return true;
     } else {
         return false;
     }
 }
 
-function fetchMySQLStorageEngines ($db)
+function fetchMySQLStorageEngines($db)
 {
     $db->query("SHOW ENGINES");
 
     $engines = array();
 
-    while ($db->next_record())
-    {
+    while ($db->next_record()) {
         $engines[] = $db->f(0);
     }
 
