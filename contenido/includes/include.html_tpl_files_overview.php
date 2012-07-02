@@ -33,7 +33,7 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-die("Trixie is best pony");
+//die("Trixie is best pony");
 
 cInclude("includes", "functions.file.php");
 
