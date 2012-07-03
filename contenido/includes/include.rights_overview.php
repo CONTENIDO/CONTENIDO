@@ -247,7 +247,8 @@ $aAuthPerms = explode(',', $auth->auth['perm']);
 // sysadmin perm
 if (in_array('sysadmin', $aAuthPerms)) {
     $tpl->set('d', 'CATNAME', i18n("System administrator"));
-    $tpl->set('d', 'CATFIELD', formGenerateCheckbox('msysadmin', '1', in_array('sysadmin', $aPerms)));
+    $oCheckbox = new cHTMLCheckbox('msysadmin', '1', 'msysadmin1', in_array('sysadmin', $aPerms));
+    $tpl->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
     $tpl->next();
 }
 
@@ -257,7 +258,9 @@ $aClients = $oClientsCollection->getAvailableClients();
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if (in_array("admin[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms)){
-        $sClientCheckboxes .= formGenerateCheckbox("madmin[".$idclient."]", $idclient, in_array("admin[".$idclient."]", $aPerms), $item['name']." (".$idclient.")")."<br>";
+    	$oCheckbox = new cHTMLCheckbox("madmin[".$idclient."]", $idclient, "madmin[".$idclient."]".$idclient, in_array("admin[".$idclient."]", $aPerms));
+    	$oCheckbox->setLabelText($item['name']." (".$idclient.")");
+        $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
 
@@ -271,7 +274,9 @@ if ($sClientCheckboxes !== '' && !in_array('sysadmin', $aPerms)) {
 $sClientCheckboxes = '';
 foreach ($aClients as $idclient => $item) {
     if ((in_array("client[".$idclient."]", $aAuthPerms) || in_array('sysadmin', $aAuthPerms) || in_array("admin[".$idclient."]", $aAuthPerms)) && !in_array("admin[".$idclient."]", $aPerms)) {
-        $sClientCheckboxes .= formGenerateCheckbox("mclient[".$idclient."]", $idclient, in_array("client[".$idclient."]", $aPerms), $item['name']." (". $idclient . ")")."<br>";
+	    $oCheckbox = new cHTMLCheckbox("mclient[".$idclient."]", $idclient, "mclient[".$idclient."]".$idclient, in_array("client[".$idclient."]", $aPerms));
+	    $oCheckbox->setLabelText($item['name']." (". $idclient . ")");
+        $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
 
@@ -286,7 +291,9 @@ $aClientsLanguages = getAllClientsAndLanguages();
 $sClientCheckboxes = '';
 foreach ($aClientsLanguages as $item) {
     if (($perm->have_perm_client("lang[".$item['idlang']."]") || $perm->have_perm_client("admin[".$item['idclient']."]")) && !in_array("admin[".$item['idclient']."]", $aPerms)) {
-        $sClientCheckboxes .= formGenerateCheckbox("mlang[".$item['idlang']."]", $item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms), $item['langname']." (". $item['clientname'] .")") ."<br>";
+    	$oCheckbox = new cHTMLCheckbox("mlang[".$item['idlang']."]", $item['idlang'], "mlang[".$item['idlang']."]".$item['idlang'], in_array("lang[".$item['idlang']."]", $aPerms));
+    	$oCheckbox->setLabelText( $item['langname']." (". $item['clientname'] .")");
+        $sClientCheckboxes .= $oCheckbox->toHTML();
     }
 }
 
@@ -337,7 +344,8 @@ $tpl->next();
 
 // wysiwyg
 $tpl->set('d', 'CATNAME', i18n("Use WYSIWYG-Editor"));
-$tpl->set('d', 'CATFIELD', formGenerateCheckbox('wysi', '1', $oUser->getField('wysi')));
+$oCheckbox = new cHTMLCheckbox('wysi', '1', 'wysi1', $oUser->getField('wysi'));
+$tpl->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
 $tpl->next();
 
 // account active data (from-to)
