@@ -33,9 +33,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-// check requests
-cSecurity::checkRequests();
-
 cInclude('includes', 'functions.pathresolver.php');
 
 function str_replace_recursive($array) {
