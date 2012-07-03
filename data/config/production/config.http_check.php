@@ -95,53 +95,28 @@ $aCheck['GET']['path'] = CON_CHECK_PATHSTRING;
 
 
 $aCheck['POST']['idart'] = CON_CHECK_INTEGER;
-
 $aCheck['POST']['idcat'] = CON_CHECK_INTEGER;
-
 $aCheck['POST']['idartlang'] = CON_CHECK_INTEGER;
-
 $aCheck['POST']['idcatart'] = CON_CHECK_INTEGER;
-
 $aCheck['POST']['lang'] = CON_CHECK_INTEGER;
-
 $aCheck['POST']['changelang'] = CON_CHECK_INTEGER;
-
 $aCheck['POST']['idcatlang'] = CON_CHECK_INTEGER;
 
-
-
 $aCheck['POST']['client'] = CON_CHECK_INTEGER;
-
 $aCheck['POST']['area'] = CON_CHECK_AREASTRING;
-
 $aCheck['POST']['frame'] = CON_CHECK_INTEGER;
 
-
-
 $aCheck['POST']['tmpchangelang'] = CON_CHECK_INTEGER;
-
 $aCheck['POST']['changeview'] = CON_CHECK_PRIMITIVESTRING;
-
 $aCheck['POST']['action'] = CON_CHECK_PRIMITIVESTRING;
-
 $aCheck['POST']['changeclient'] = CON_CHECK_INTEGER;
-
-
-
 $aCheck['POST']['page'] = CON_CHECK_INTEGER;
 
-
-
 $aCheck['POST']['catname'] = CON_CHECK_PRIMITIVESTRING;
-
 $aCheck['POST']['contenido'] = CON_CHECK_HASH32;
 
-
-
 $aCheck['POST']['belang'] = CON_CHECK_BELANG;
-
 $aCheck['POST']['path'] = CON_CHECK_PATHSTRING;
-
 /*
  * If one of these parameters is set (either get or post) the script will halt.
  */
