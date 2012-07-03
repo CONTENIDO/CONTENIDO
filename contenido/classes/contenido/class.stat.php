@@ -67,13 +67,14 @@ class cApiStatCollection extends ItemCollection
      * @param int $iIdCatArt
      * @param int $iIdLang
      * @param int $iIdClient
+     * @param int $iVisited
      * @return cApiStat
      */
-    public function create($iIdCatArt, $iIdLang, $iIdClient)
+    public function create($iIdCatArt, $iIdLang, $iIdClient, $iVisited = 1)
     {
         $oItem = parent::createNewItem();
 
-        $oItem->set('visited', 1);
+        $oItem->set('visited', (int) $iVisited);
         $oItem->set('idcatart', (int) $iIdCatArt);
         $oItem->set('idlang', (int) $iIdLang);
         $oItem->set('idclient', (int) $iIdClient);
