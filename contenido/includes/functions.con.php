@@ -76,7 +76,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
 
     // Table 'con_art'
     $db->free();
-    $sql = "INSERT INTO ".$cfg["tab"]["art"]." (idclient) VALUES ('".cSecurity::toInteger($client)."')";
+    $sql = "INSERT INTO ".$cfg["tab"]["art"]." (idclient) VALUES (". (int) $client . ")";
     $db->query($sql);
     // $new_idart = $db->nextid($cfg["tab"]["art"]);
     $new_idart = $db->getLastInsertedId($cfg["tab"]["art"]);
@@ -88,21 +88,20 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
 
     // Table 'con_stat'
     $db->free();
-    $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE 'idcat' = '".cSecurity::toInteger($idcat)."' AND 'idart' = '".cSecurity::toInteger($new_idart)."'";
+    $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE 'idcat' = ". (int) $idcat . " AND 'idart' = ". (int) $new_idart;
     $db->query($sql);
     $db->next_record();
     $idcatart = $db->f("idcatart");
 
     $a_languages[] = $lang;
     foreach ($a_languages as $tmp_lang) {
-        $sql = "INSERT INTO ".$cfg["tab"]["stat"]." (idcatart, idlang, idclient, visited) VALUES (
-                '".cSecurity::toInteger($idcatart)."', '".cSecurity::toInteger($tmp_lang)."', '".cSecurity::toInteger($client)."', '0')";
-        $db->query($sql);
+        $oStatColl = new cApiStatCollection();
+        $oStatColl->create($idcatart, $tmp_lang, $client, 0);
     }
 
     // Table 'con_art_lang', one entry for every language
     foreach ($a_languages as $tmp_lang) {
-        $lastmodified = ( $lang == $tmp_lang ) ? $lastmodified : 0;
+        $lastmodified = ($lang == $tmp_lang) ? $lastmodified : 0;
 
         //$nextidartlang = $db->nextid($cfg["tab"]["art_lang"]);
         if ($online == 1) {
@@ -113,57 +112,34 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
             $publishedby_value = '';
         }
 
-        $sql = "INSERT INTO
-                    ".$cfg["tab"]["art_lang"]." (
-                    idart,
-                    idlang,
-                    title,
-                    urlname,
-                    pagetitle,
-                    summary,
-                    artspec,
-                    created,
-                    lastmodified,
-                    author,
-                    published,
-                    publishedby,
-                    online,
-                    redirect,
-                    redirect_url,
-                    external_redirect,
-                    artsort,
-                    timemgmt,
-                    datestart,
-                    dateend,
-                    status,
-                    time_move_cat,
-                    time_target_cat,
-                    time_online_move
-                    ) VALUES (
-                    '".cSecurity::toInteger($new_idart)."',
-                    '".cSecurity::toInteger($tmp_lang)."',
-                    '".cSecurity::escapeDB($title, $db)."',
-                    '".cSecurity::escapeDB($urlname, $db)."',
-                    '".cSecurity::escapeDB($page_title, $db)."',
-                    '".cSecurity::escapeDB($summary, $db)."',
-                    '".cSecurity::escapeDB($artspec, $db)."',
-                    '".cSecurity::escapeDB($created, $db)."',
-                    '".cSecurity::escapeDB($lastmodified, $db)."',
-                    '".cSecurity::escapeDB($auth->auth["uname"], $db)."',
-                    '".cSecurity::escapeDB($published_value, $db)."',
-                    '".cSecurity::escapeDB($publishedby_value, $db)."',
-                    '".cSecurity::escapeDB($online, $db)."',
-                    '".cSecurity::escapeDB($redirect, $db)."',
-                    '".cSecurity::escapeDB($redirect_url, $db)."',
-                    '".cSecurity::escapeDB($external_redirect, $db)."',
-                    '".cSecurity::escapeDB($artsort, $db)."',
-                    '".cSecurity::escapeDB($usetimemgmt, $db)."',
-                    '".cSecurity::escapeDB($datestart, $db)."',
-                    '".cSecurity::escapeDB($dateend, $db)."',
-                    '0',
-                    '".cSecurity::escapeDB($movetocat, $db)."',
-                    '".cSecurity::escapeDB($time_target_cat, $db)."',
-                    '".cSecurity::escapeDB($onlineaftermove, $db)."')";
+        $aFields = array(
+            'idart' => (int) $new_idart,
+            'idlang' => (int) $tmp_lang,
+            'title' => $title,
+            'urlname' => $urlname,
+            'pagetitle' => $page_title,
+            'summary' => $summary,
+            'artspec' => $artspec,
+            'created' => $created,
+            'lastmodified' => $lastmodified,
+            'author' => $auth->auth['uname'],
+            'published' => $published_value,
+            'publishedby' => $publishedby_value,
+            'online' => (int) $online,
+            'redirect' => (int) $redirect,
+            'redirect_url' => $redirect_url,
+            'external_redirect' => (int) $external_redirect,
+            'artsort' => (int) $artsort,
+            'timemgmt' => (int) $usetimemgmt,
+            'datestart' => $datestart,
+            'dateend' => $dateend,
+            'status' => 0,
+            'time_move_cat' => (int) $movetocat,
+            'time_target_cat' => (int) $time_target_cat,
+            'time_online_move' => (int) $onlineaftermove,
+        );
+
+        $sql = $db->buildInsert($cfg["tab"]["art_lang"], $aFields);
 
         $db->query($sql);
 
@@ -181,7 +157,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
     $idart = $new_idart;
 
     // Table 'cat_art'
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart='".cSecurity::toInteger($idart)."'"; // get all idcats that contain art
+    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart=". (int) $idart; // get all idcats that contain art
     $db->query($sql);
 
     $tmp_idcat = array();
@@ -199,30 +175,27 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
     foreach ($idcatnew as $value) {
         if (!in_array($value, $tmp_idcat)) {
             // INSERT -> Table 'cat_art'
-            $sql = "INSERT INTO ".$cfg["tab"]["cat_art"]." (idcat, idart) VALUES ('".cSecurity::toInteger($value)."',
-                    '".cSecurity::toInteger($idart)."')";
+            $sql = "INSERT INTO ".$cfg["tab"]["cat_art"]." (idcat, idart) VALUES (" . (int) $value . ", " . (int) $idart . ")";
             $db->query($sql);
 
             // Entry in 'stat'-table for all languages
-            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".cSecurity::toInteger($value)."' AND idart='".cSecurity::toInteger($idart)."'";
+            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat=" . (int) $value . " AND idart=" . (int) $idart;
             $db->query($sql);
 
             $db->next_record();
             $tmp_idcatart = $db->f("idcatart");
 
             $a_languages = getLanguagesByClient($client);
-
             foreach ($a_languages as $tmp_lang) {
-                $sql = "INSERT INTO ".$cfg["tab"]["stat"]." (idcatart, idlang, idclient, visited) VALUES (
-                        '".cSecurity::toInteger($tmp_idcatart)."', '".cSecurity::toInteger($tmp_lang)."', '".cSecurity::toInteger($client)."', '0')";
-                $db->query($sql);
+                $oStatColl = new cApiStatCollection();
+                $oStatColl->create($tmp_idcatart, $tmp_lang, $client, 0);
             }
         }
     }
 
     foreach ($tmp_idcat as $value) {
         if (!in_array($value, $idcatnew)) {
-            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".cSecurity::toInteger($value)."' AND idart='".cSecurity::toInteger($idart)."'"; // get all idcatarts that will no longer exist
+            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat=" . (int) $value . " AND idart=" . (int) $idart; // get all idcatarts that will no longer exist
             $db->query($sql);
             $db->next_record();
 
@@ -231,7 +204,7 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
             array_map("unlink", glob($mask));
 
             //******* delete from 'stat'-table ****************
-            $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".cSecurity::toInteger($value)."' AND idart='".cSecurity::toInteger($idart)."' ";
+            $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat=".(int) $value . " AND idart=". (int) $idart;
             $db->query($sql);
 
             while ($db->next_record()) {
@@ -241,28 +214,28 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
             if (is_array($a_idcatart)) {
                 foreach ($a_idcatart AS $value2) {
                     //****** delete from 'stat'-table ************
-                    $sql = "DELETE FROM ".$cfg["tab"]["stat"]." WHERE idcatart='".cSecurity::toInteger($value2)."'";
+                    $sql = "DELETE FROM ".$cfg["tab"]["stat"]." WHERE idcatart=". (int) $value2;
                     $db->query($sql);
                 }
             }
 
             //******** delete from 'cat_art'-table ***************
-            $sql = "DELETE FROM ".$cfg["tab"]["cat_art"]." WHERE idart='".cSecurity::toInteger($idart)."' AND idcat='".cSecurity::toInteger($value)."'";
+            $sql = "DELETE FROM ".$cfg["tab"]["cat_art"]." WHERE idart=". (int) $idart . " AND idcat=". (int) $value;
             $db->query($sql);
 
             // Remove startidartlang
             if (isStartArticle($idartlang, $idcat, $lang)) {
-                $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='0' WHERE idcat='".cSecurity::toInteger($value)."' AND idlang='".cSecurity::toInteger($lang)."'";
+                $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='0' WHERE idcat=". (int) $value . " AND idlang=" . (int) $lang;
                 $db->query($sql);
             }
 
             //******** delete from 'tpl_conf'-table ***************
-            $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".cSecurity::toInteger($idart)."' AND idlang = '".cSecurity::toInteger($lang)."'";
+            $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["art_lang"]." WHERE idart = ". (int) $idart . " AND idlang = ". (int) $lang;
             $db->query($sql);
             $db->next_record();
             $tmp_idtplcfg = $db->f('idtplcfg');
 
-            $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".cSecurity::toInteger($tmp_idtplcfg)."'";
+            $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = ". (int) $tmp_idtplcfg;
             $db->query($sql);
         }
     }
@@ -277,27 +250,26 @@ function conEditFirstTime($idcat, $idcatnew, $idart, $is_start, $idtpl,
         $tmp_online       = ($lang == $tmp_lang) ? $online : 0;
         $tmp_lastmodified = ($lang == $tmp_lang) ? $lastmodified : 0;
 
-        $sql = "UPDATE
-                ".$cfg["tab"]["art_lang"]."
-                SET
-                title           = '".cSecurity::escapeDB($title, $db)."',
-                urlname         = '".cSecurity::escapeDB($urlname, $db)."',
-                pagetitle       = '".cSecurity::escapeDB($page_title, $db)."',
-                summary         = '".cSecurity::escapeDB($summary, $db)."',
-                artspec         = '".cSecurity::escapeDB($artspec, $db)."',
-                created         = '".cSecurity::escapeDB($created, $db)."',
-                lastmodified    = '".cSecurity::escapeDB($tmp_lastmodified, $db)."',
-                modifiedby      = '".cSecurity::escapeDB($author, $db)."',
-                online          = '".cSecurity::toInteger($tmp_online)."',
-                datestart       = '".cSecurity::escapeDB($datestart, $db)."',
-                dateend         = '".cSecurity::escapeDB($dateend, $db)."',
-                redirect        = '".cSecurity::escapeDB($redirect, $db)."',
-                external_redirect = '".cSecurity::escapeDB($external_redirect, $db)."',
-                redirect_url    = '".cSecurity::escapeDB($redirect_url, $db)."',
-                artsort         = '".cSecurity::escapeDB($artsort, $db)."'
-                WHERE
-                idart           = '".cSecurity::toInteger($new_idart)."' AND
-                idlang          = '".cSecurity::toInteger($tmp_lang)."'";
+        $aFields = array(
+            'title' => $title,
+            'urlname' => $urlname,
+            'pagetitle' => $page_title,
+            'summary' => $summary,
+            'artspec' => $artspec,
+            'created' => $created,
+            'lastmodified' => $tmp_lastmodified,
+            'modifiedby' => $author,
+            'online' => (int) $tmp_online,
+            'redirect' => (int) $redirect,
+            'redirect_url' => $redirect_url,
+            'external_redirect' => (int) $external_redirect,
+            'artsort' => (int) $artsort,
+            'datestart' => $datestart,
+            'dateend' => $dateend,
+        );
+        $aWhere = array('idart' => (int) $new_idart, idlang => $tmp_lang);
+
+        $sql = $db->buildUpdate($cfg["tab"]["art_lang"], $aFields, $aWhere);
 
         $db->query($sql);
     }
@@ -346,7 +318,7 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
         $usetimemgmt = "0";
     }
 
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart='".cSecurity::toInteger($idart)."'"; // get all idcats that contain art
+    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart=" . (int) $idart; // get all idcats that contain art
     $db->query($sql);
     while ($db->next_record()) {
         $tmp_idcat[] = $db->f("idcat");
@@ -364,30 +336,27 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
     foreach ($idcatnew as $value) {
         if (!in_array($value, $tmp_idcat) ) {
             // INSERT insert 'cat_art' table
-            $sql = "INSERT INTO ".$cfg["tab"]["cat_art"]." (idcat, idart) VALUES ('".cSecurity::toInteger($value)."',
-                    '".cSecurity::toInteger($idart)."')";
+            $sql = "INSERT INTO ".$cfg["tab"]["cat_art"]." (idcat, idart) VALUES (" . (int) $value . ", ". (int) $idart . ")";
             $db->query($sql);
 
             // entry in 'stat'-table for all languages
-            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".cSecurity::toInteger($value)."' AND idart='".cSecurity::toInteger($idart)."'";
+            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat=" . (int) $value . " AND idart=" . (int) $idart;
             $db->query($sql);
             $db->next_record();
 
             $tmp_idcatart = $db->f("idcatart");
 
             $a_languages = getLanguagesByClient($client);
-
             foreach ($a_languages as $tmp_lang) {
-                $sql = "INSERT INTO ".$cfg["tab"]["stat"]." (idcatart, idlang, idclient, visited) VALUES (
-                        '".cSecurity::toInteger($tmp_idcatart)."', '".cSecurity::toInteger($tmp_lang)."', '".cSecurity::toInteger($client)."', '0')";
-                $db->query($sql);
+                $oStatColl = new cApiStatCollection();
+                $oStatColl->create($tmp_idcatart, $tmp_lang, $client, 0);
             }
         }
     }
 
     foreach ($tmp_idcat as $value) {
         if (!in_array($value, $idcatnew)) {
-            $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".cSecurity::toInteger($value)."' AND idart='".cSecurity::toInteger($idart)."'";  // get all idcatarts that will no longer exist
+            $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat=" . (int) $value . " AND idart=" . (int) $idart;  // get all idcatarts that will no longer exist
             $db->query($sql);
             $db->next_record();
 
@@ -396,7 +365,7 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
             array_map("unlink", glob($mask));
 
             //******* delete from 'stat'-table ****************
-            $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat='".cSecurity::toInteger($value)."' AND idart='".cSecurity::toInteger($idart)."'";
+            $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idcat=" . (int) $value . " AND idart=" . (int) $idart;
             $db->query($sql);
 
             while ($db->next_record()) {
@@ -406,38 +375,38 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
             if (is_array($a_idcatart)) {
                 foreach ($a_idcatart as $value2) {
                     //****** delete from 'stat'-table ************
-                    $sql = "DELETE FROM ".$cfg["tab"]["stat"]." WHERE idcatart='".cSecurity::toInteger($value2)."'";
+                    $sql = "DELETE FROM ".$cfg["tab"]["stat"]." WHERE idcatart=" . (int) $value2;
                     $db->query($sql);
                 }
             }
 
             //******** delete from 'cat_art'-table ***************
-            $sql = "DELETE FROM ".$cfg["tab"]["cat_art"]." WHERE idart='".cSecurity::toInteger($idart)."' AND idcat='".cSecurity::toInteger($value)."'";
+            $sql = "DELETE FROM ".$cfg["tab"]["cat_art"]." WHERE idart=" . (int) $idart . " AND idcat= " . (int) $value;
             $db->query($sql);
 
-            // Remove startidartlang
+            // Update startidartlang
             if (isStartArticle($idartlang, $idcat, $lang)) {
-                $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='0' WHERE idcat='".cSecurity::toInteger($value)."' AND idlang='".cSecurity::toInteger($lang)."'";
+                $sql = "UPDATE ".$cfg["tab"]["cat_lang"]." SET startidartlang='0' WHERE idcat=" . (int) $value . " AND idlang=" . (int) $lang;
                 $db->query($sql);
             }
         }
     }
 
     // If the user has no right for makeonline, don't update it.
-    if (!$perm->have_perm_area_action("con","con_makeonline") &&
-        !$perm->have_perm_area_action_item("con","con_makeonline", $idcat))
+    if (!$perm->have_perm_area_action("con", "con_makeonline") &&
+        !$perm->have_perm_area_action_item("con", "con_makeonline", $idcat))
     {
         $sqlonline = "";
     } else {
-        $sqlonline = "online = '".cSecurity::escapeDB($online, $db)."',";
+        $sqlonline = "online = " . (int) $online . ",";
         if ($online == '1') {
             // Check if online id is currently 0
-            $sql = "SELECT online FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang='".cSecurity::toInteger($idartlang)."'";
+            $sql = "SELECT online FROM ".$cfg["tab"]["art_lang"]." WHERE idartlang=". (int) $idartlang;
             $db->query($sql);
             if ($db->next_record()) {
                 if ($db->f("online") == 0) {
                     // Only update if value changed from 0 to 1
-                    $sqlonline .= "published = '".date("Y-m-d H:i:s")."', publishedby='".cSecurity::escapeDB($author, $db)."',";
+                    $sqlonline .= "published = '".date("Y-m-d H:i:s")."', publishedby='" . $db->escape($author) . "',";
                 }
             }
         }
@@ -452,31 +421,31 @@ function conEditArt($idcat, $idcatnew, $idart, $is_start, $idtpl, $idartlang,
     $sql = "UPDATE
                 ".$cfg["tab"]["art_lang"]."
             SET
-                title = '".cSecurity::escapeDB($title, $db)."',
-                urlname = '".cSecurity::escapeDB($urlname, $db)."',
-                summary = '".cSecurity::escapeDB($summary, $db)."',
-                artspec = '".cSecurity::escapeDB($artspec, $db)."',
-                created = '".cSecurity::escapeDB($created, $db)."',
-                lastmodified = '".cSecurity::escapeDB($lastmodified, $db)."',
-                modifiedby = '".cSecurity::escapeDB($author, $db)."',
+                title = '".$db->escape($title)."',
+                urlname = '".$db->escape($urlname)."',
+                summary = '".$db->escape($summary)."',
+                artspec = '".$db->escape($artspec)."',
+                created = '".$db->escape($created)."',
+                lastmodified = '".$db->escape($lastmodified)."',
+                modifiedby = '".$db->escape($author)."',
                 $sqlonline
-                timemgmt = '".cSecurity::escapeDB($usetimemgmt, $db)."',
-                redirect = '".cSecurity::escapeDB($redirect, $db)."',
-                external_redirect = '".cSecurity::escapeDB($external_redirect, $db)."',
-                redirect_url = '".cSecurity::escapeDB($redirect_url, $db)."',
-                artsort = '".cSecurity::toInteger($artsort)."'";
+                timemgmt = ". (int) $usetimemgmt.",
+                redirect = ". (int) $redirect.",
+                external_redirect = " . (int) $external_redirect.",
+                redirect_url = '".$db->escape($redirect_url)."',
+                artsort = ". (int) $artsort;
 
     if ($perm->have_perm_area_action("con", "con_makeonline") ||
         $perm->have_perm_area_action_item("con","con_makeonline", $idcat))
     {
-        $sql .= ", datestart = '".cSecurity::escapeDB($datestart, $db)."',
-        dateend = '".cSecurity::escapeDB($dateend, $db)."',
-        time_move_cat = '".cSecurity::toInteger($movetocat)."',
-        time_target_cat = '".cSecurity::toInteger($time_target_cat)."',
-        time_online_move = '".cSecurity::toInteger($onlineaftermove)."'";
+        $sql .= ", datestart = '".$db->escape($datestart)."',
+        dateend = '".$db->escape($dateend)."',
+        time_move_cat = " . (int) $movetocat.",
+        time_target_cat = " . (int) $time_target_cat.",
+        time_online_move = " . (int) $onlineaftermove;
     }
 
-    $sql .= "WHERE idartlang='".cSecurity::toInteger($idartlang)."'";
+    $sql .= "WHERE idartlang=". (int) $idartlang;
     $db->query($sql);
 
     /*$availableTags = conGetAvailableMetaTagTypes();
@@ -527,7 +496,7 @@ function conSaveContentEntry($idartlang, $type, $typeid, $value, $bForce = false
     }
     $value = urlencode($value);
 
-    $sql = "SELECT * FROM ".$cfg["tab"]["type"]." WHERE type = '".cSecurity::escapeDB($type, $db)."'";
+    $sql = "SELECT * FROM ".$cfg["tab"]["type"]." WHERE type = '".$db->escape($type)."'";
     $db->query($sql);
     $db->next_record();
     $idtype=$db->f("idtype");
@@ -1888,9 +1857,9 @@ function conGetTopmostCat($idcat, $minLevel = 0)
                 ".$cfg["tab"]["cat"]." AS b,
                 ".$cfg["tab"]["cat_tree"]." AS c
             WHERE
-                a.idlang    = '".cSecurity::toInteger($lang)."' AND
-                b.idclient  = '".cSecurity::toInteger($client)."' AND
-                b.idcat     = '".cSecurity::toInteger($idcat)."' AND
+                a.idlang    = " . (int) $lang . " AND
+                b.idclient  = " . (int) $client . " AND
+                b.idcat     = " . (int) $idcat . " AND
                 c.idcat     = b.idcat AND
                 a.idcat     = b.idcat";
 
@@ -1916,64 +1885,43 @@ function conSyncArticle($idart, $srclang, $dstlang)
     $db2 = cRegistry::getDb();
 
     // Check if article has already been synced to target language
-    $sql = "SELECT * FROM ".$cfg['tab']['art_lang']." WHERE (idart = ".cSecurity::toInteger($idart).") AND (idlang= ".cSecurity::toInteger($dstlang).")";
+    $sql = "SELECT * FROM ".$cfg['tab']['art_lang']." WHERE idart = " . (int) $idart . " AND idlang = " . (int) $dstlang;
     $db2->query($sql);
 
-    $sql = "SELECT idartlang, idart, idlang, idtplcfg, title, urlname, pagetitle,
-               summary, created, lastmodified, redirect, redirect_url,
-               artsort, status, external_redirect
-            FROM
-                ".$cfg["tab"]["art_lang"]."
-            WHERE
-                idart = '".cSecurity::toInteger($idart)."' AND idlang = '".cSecurity::toInteger($srclang)."'";
+    $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart = " . (int) $idart . " AND idlang = " . (int) $srclang;
     $db->query($sql);
 
     if ($db->next_record() && ($db2->num_rows() == 0)) {
-        if ($db->f("idtplcfg") != 0) {
-            $newidtplcfg = tplcfgDuplicate($db->f("idtplcfg"));
+        $rsSrc = $db->toArray();
+
+        if ($rsSrc["idtplcfg"] != 0) {
+            $newidtplcfg = tplcfgDuplicate($rsSrc["idtplcfg"]);
         } else {
             $newidtplcfg = 0;
         }
 
-        $idartlang = $db->f("idartlang");
-        $idart = $db->f("idart");
-        $idlang = $db->f("idlang");
-        $title = addslashes($db->f("title"));
-        $urlname = addslashes($db->f("urlname"));
-        $pagetitle = addslashes($db->f("pagetitle"));
-        $summary = addslashes($db->f("summary"));
-        $created = $db->f("created");
-        $lastmodified = $db->f("lastmodified");
-        $redirect = $db->f("redirect");
-        $redirect_url = $db->f("redirect_url");
-        $artsort = $db->f("artsort");
-        $status = $db->f("status");
-        $external_redirect = $db->f("external_redirect");
+        // Build fields to insert. NOTE: We don't need to sync the whole record set
+        $aFields = array(
+            'idart' => $rsSrc['idart'],
+            'idlang' => (int) $dstlang,
+            'idtplcfg' => (int) $newidtplcfg,
+            'title' => $rsSrc['title'],
+            'urlname' => $rsSrc['urlname'],
+            'pagetitle' => $rsSrc['pagetitle'],
+            'summary' => $rsSrc['summary'],
+            'created' => $rsSrc['created'],
+            'lastmodified' => $rsSrc['lastmodified'],
+            'author' => $rsSrc['author'],
+            'modifiedby' => $rsSrc['modifiedby'],
+            'online' => $rsSrc['online'],
+            'redirect' => $rsSrc['redirect'],
+            'redirect_url' => $rsSrc['redirect_url'],
+            'artsort' => $rsSrc['artsort'],
+            'status' => $rsSrc['status'],
+            'external_redirect' => $rsSrc['external_redirect'],
+        );
 
-        $sql = "INSERT INTO
-                    ".$cfg["tab"]["art_lang"]."
-                (idart, idlang, idtplcfg, title,urlname,
-                 pagetitle, summary, created, lastmodified,
-                 author, modifiedby, online, redirect, redirect_url,
-                 artsort, status, external_redirect)
-                VALUES
-                ( '".cSecurity::toInteger($idart)."',
-                '".cSecurity::toInteger($dstlang)."',
-                '".cSecurity::toInteger($newidtplcfg)."',
-                '".cSecurity::escapeDB($title, $db2)."',
-                '".cSecurity::escapeDB($urlname, $db2)."',
-                '".cSecurity::escapeDB($pagetitle, $db2)."',
-                '".cSecurity::escapeDB($summary, $db2)."',
-                '".cSecurity::escapeDB($created, $db2)."',
-                '".cSecurity::escapeDB($lastmodified, $db2)."',
-                '".cSecurity::escapeDB($author, $db2)."',
-                '".cSecurity::escapeDB($modifiedby, $db2)."',
-                '".cSecurity::toInteger($online)."',
-                '".cSecurity::escapeDB($redirect, $db2)."',
-                '".cSecurity::escapeDB($redirect_url, $db2)."',
-                '".cSecurity::toInteger($artsort)."',
-                '".cSecurity::toInteger($status)."',
-                '".cSecurity::escapeDB($external_redirect, $db2)."')";
+        $sql = $db2->buildInsert($cfg["tab"]["art_lang"], $aFields);
         $db2->query($sql);
         $newidartlang = $db2->getLastInsertedId($cfg["tab"]["art_lang"]);
 
@@ -1981,61 +1929,27 @@ function conSyncArticle($idart, $srclang, $dstlang)
         $param = array();
         $param['src_art_lang']  = $db->Record;
         $param['dest_art_lang'] = $db2->Record;
-        $param['dest_art_lang']['idartlang'] = cSecurity::toInteger($newidartlang);
-        $param['dest_art_lang']['idlang']    = cSecurity::toInteger($dstlang);
-        $param['dest_art_lang']['idtplcfg']  = cSecurity::toInteger($newidtplcfg);
+        $param['dest_art_lang']['idartlang'] = (int) $newidartlang;
+        $param['dest_art_lang']['idlang']    = (int) $dstlang;
+        $param['dest_art_lang']['idtplcfg']  = (int) $newidtplcfg;
         CEC_Hook::execute('Contenido.Article.conSyncArticle_AfterInsert', $param);
 
         // Copy content
-        $sql = "SELECT
-                    idtype, typeid, value, version, author,
-                    created, lastmodified
-                FROM
-                    ".$cfg["tab"]["content"]."
-                WHERE
-                    idartlang = '".cSecurity::toInteger($idartlang)."'";
-
+        $sql = "SELECT * FROM " . $cfg["tab"]["content"] . " WHERE idartlang = ". (int) $idartlang;
         $db->query($sql);
-
         while ($db->next_record()) {
-            //$newidcontent = $db2->nextid($cfg["tab"]["content"]);
-            $idtype = $db->f("idtype");
-            $typeid = $db->f("typeid");
-            $value = $db->f("value");
-            $version = $db->f("version");
-            $author = $db->f("author");
-            $created = $db->f("created");
-            $lastmodified = $db->f("lastmodified");
-
-            $sql = "INSERT INTO
-                        ".$cfg["tab"]["content"]."
-                    (idartlang, idtype, typeid,
-                     value, version, author, created, lastmodified)
-                    VALUES
-                    ('".cSecurity::toInteger($newidartlang)."',
-                    '".cSecurity::toInteger($idtype)."', '".cSecurity::toInteger($typeid)."',
-                    '".cSecurity::escapeDB($value, $db2)."',
-                    '".cSecurity::escapeDB($version, $db2)."',
-                    '".cSecurity::escapeDB($author, $db2)."',
-                    '".cSecurity::escapeDB($created, $db2)."',
-                    '".cSecurity::escapeDB($lastmodified, $db2)."')";
-
-            $db2->query($sql);
+            $rs = $db->toArray();
+            $oContentColl = new cApiContentCollection();
+            $oContentColl->create((int) $newidartlang, $rs['idtype'], $rs['typeid'], $rs['value'], $rs['version'], $rs['author'], $rs['created'], $rs['lastmodified']);
         }
 
         // Copy meta tags
         $sql = "SELECT idmetatype, metavalue FROM ".$cfg["tab"]["meta_tag"]." WHERE idartlang = '$idartlang'";
         $db->query($sql);
-
         while ($db->next_record()) {
-            //$nextidmetatag = $db2->nextid($cfg["tab"]["meta_tag"]);
-            $metatype = $db->f("idmetatype");
-            $metavalue = $db->f("metavalue");
-            $sql = "INSERT INTO ".$cfg["tab"]["meta_tag"]."
-                        (idartlang, idmetatype, metavalue)
-                        VALUES
-                        ('".cSecurity::toInteger($newidartlang)."', '".cSecurity::toInteger($metatype)."', '".cSecurity::escapeDB($metavalue, $db2)."')";
-            $db2->query($sql);
+            $rs = $db->toArray();
+            $oMetaTagColl = new cApiMetaTagCollection();
+            $oMetaTagColl->create((int) $newidartlang, $rs['idmetatype'], $rs['metavalue']);
         }
     }
 }
@@ -2049,7 +1963,7 @@ function isStartArticle($idartlang, $idcat, $idlang, $db = null)
     }
 
     $sql = "SELECT startidartlang FROM ".$cfg["tab"]["cat_lang"]."
-            WHERE startidartlang='".cSecurity::toInteger($idartlang)."' AND idcat='".cSecurity::toInteger($idcat)."' AND idlang='".cSecurity::toInteger($idlang)."'";
+            WHERE startidartlang=". (int) $idartlang . " AND idcat=" . (int) $idcat . " AND idlang=" . (int) $idlang;
     $db->query($sql);
     if ($db->next_record()) {
         return true;
@@ -2061,22 +1975,22 @@ function isStartArticle($idartlang, $idcat, $idlang, $db = null)
 /**
  * Returns all categories in which the given article is in.
  *
- * @param idart int Article ID
- * @param db    object Optional; if specified, uses the given db object
- * @return array Flat array which contains all category id's
+ * @param   int  $idart  Article ID
+ * @param   DB_Contenido|null  $db  If specified, uses the given db object
+ * @return  array  Flat array which contains all category id's
  */
-function conGetCategoryAssignments($idart, $db = false)
+function conGetCategoryAssignments($idart, $db = null)
 {
     global $cfg;
 
-    if ($db === false) {
+    if (!is_object($db)) {
         $db = cRegistry::getDb();
     }
 
-    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart = '".cSecurity::toInteger($idart)."'";
-    $db->query($sql);
-
     $categories = array();
+
+    $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_art"]." WHERE idart = ". (int) $idart;
+    $db->query($sql);
 
     while ($db->next_record()) {
         $categories[] = $db->f("idcat");
