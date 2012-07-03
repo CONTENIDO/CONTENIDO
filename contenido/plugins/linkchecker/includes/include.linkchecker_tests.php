@@ -47,9 +47,9 @@ function checkLinks() {
         for($i = 0; $i < count($aSearchIDInfosArt); $i++) {
 
             if($i == 0) {
-                $sSearch = Contenido_Security::toInteger($aSearchIDInfosArt[$i]['id']);
+                $sSearch = cSecurity::toInteger($aSearchIDInfosArt[$i]['id']);
             } else {
-                $sSearch .= ", " . Contenido_Security::toInteger($aSearchIDInfosArt[$i]['id']);
+                $sSearch .= ", " . cSecurity::toInteger($aSearchIDInfosArt[$i]['id']);
             }
 
         }
@@ -89,7 +89,7 @@ function checkLinks() {
         $aFind = array();
 
         // Check categorys
-        $sql = "SELECT idcat, startidartlang, visible FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat IN (" . $sSearch . ") AND idlang = '" . Contenido_Security::toInteger($lang) . "'";
+        $sql = "SELECT idcat, startidartlang, visible FROM " . $cfg['tab']['cat_lang'] . " WHERE idcat IN (" . $sSearch . ") AND idlang = '" . cSecurity::toInteger($lang) . "'";
         $db->query($sql);
 
         while ($db->next_record()) {
@@ -126,9 +126,9 @@ function checkLinks() {
         for($i = 0; $i < count($aSearchIDInfosCatArt); $i++) {
 
             if($i == 0) {
-                $sSearch = Contenido_Security::toInteger($aSearchIDInfosCatArt[$i]['id']);
+                $sSearch = cSecurity::toInteger($aSearchIDInfosCatArt[$i]['id']);
             } else {
-                $sSearch .= ", " . Contenido_Security::toInteger($aSearchIDInfosCatArt[$i]['id']);
+                $sSearch .= ", " . cSecurity::toInteger($aSearchIDInfosCatArt[$i]['id']);
             }
 
         }
@@ -156,7 +156,7 @@ function checkLinks() {
     if(count($aSearchIDInfosNonID) != 0) { // Checks other links (e. g. http, www, dfbs)
 
         // Select userrights (is the user admin or sysadmin?)
-        $sql = "SELECT username FROM " . $cfg['tab']['phplib_auth_user_md5'] . " WHERE user_id='" . Contenido_Security::escapeDB($auth->auth['uid'], $db) . "' AND perms LIKE '%admin%'";
+        $sql = "SELECT username FROM " . $cfg['tab']['phplib_auth_user_md5'] . " WHERE user_id='" . cSecurity::escapeDB($auth->auth['uid'], $db) . "' AND perms LIKE '%admin%'";
         $db->query($sql);
 
         if($db->num_rows() > 0 || $cronjob == true) { // User is admin when he is or when he run the cronjob

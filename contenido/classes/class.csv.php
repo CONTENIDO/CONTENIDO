@@ -57,9 +57,9 @@ class CSV
 
     function setCell($row, $cell, $data)
     {
-        $row     = Contenido_Security::escapeDB($row);
-        $cell     = Contenido_Security::escapeDB($cell);
-        $data     = Contenido_Security::escapeDB($data);
+        $row     = cSecurity::escapeDB($row);
+        $cell     = cSecurity::escapeDB($cell);
+        $data     = cSecurity::escapeDB($data);
 
         $data = str_replace('"', '""', $data);
         $this->_data[$row][$cell] = '"'.$data.'"';

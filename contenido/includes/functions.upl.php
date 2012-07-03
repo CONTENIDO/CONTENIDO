@@ -438,7 +438,7 @@ function uplRecursiveDBDirectoryList($directory, TreeItem $oRootItem, $level, $c
 {
 
     $dbfs = new cApiDbfsCollection();
-    $dbfs->select("filename = '.' AND idclient=".Contenido_Security::toInteger($client), 'dirname', 'dirname ASC');
+    $dbfs->select("filename = '.' AND idclient=".cSecurity::toInteger($client), 'dirname', 'dirname ASC');
     $count = 0;
     $lastlevel = 0;
     $item['.'] = $oRootItem;
@@ -796,7 +796,7 @@ function uplSearch($searchfor)
     $oPropertiesCol = new cApiPropertyCollection();
     $oUploadsCol = new cApiUploadCollection();
 
-    $clientdb = Contenido_Security::toInteger($client);
+    $clientdb = cSecurity::toInteger($client);
     $searchfordb = $oPropertiesCol->escape(urlencode($searchfor));
 
     // Search for keywords first, ranking +5

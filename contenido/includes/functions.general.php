@@ -479,8 +479,8 @@ function updateClientCache($idclient = 0, $htmlpath = '', $frontendpath = '') {
     global $cfg, $cfgClient;
 
     if ($idclient != 0 && $htmlpath != '' && $frontendpath != '') {
-        $cfgClient[$idclient]['path']['frontend'] = Contenido_Security::escapeString($frontendpath);
-        $cfgClient[$idclient]['path']['htmlpath'] = Contenido_Security::escapeString($htmlpath);
+        $cfgClient[$idclient]['path']['frontend'] = cSecurity::escapeString($frontendpath);
+        $cfgClient[$idclient]['path']['htmlpath'] = cSecurity::escapeString($htmlpath);
     }
 
     $aConfigFileContent = array();
@@ -1839,18 +1839,18 @@ function showLocation($area)
         }
     }
     $sql = "SELECT location FROM ".$cfg["tab"]["area"]." as A, ".$cfg["tab"]["nav_sub"]." as B "
-        . "WHERE A.name='".Contenido_Security::escapeDB($area, $db)."' AND A.idarea=B.idarea AND A.online='1'";
+        . "WHERE A.name='".cSecurity::escapeDB($area, $db)."' AND A.idarea=B.idarea AND A.online='1'";
     $db->query($sql);
     if ($db->next_record()) {
         echo "<b>".$xml->valueOf($db->f("location"))."</b>";
     } else {
         $sql = "SELECT parent_id FROM ".$cfg["tab"]["area"]." WHERE "
-             . "name='".Contenido_Security::escapeDB($area, $db)."' AND online='1'";
+             . "name='".cSecurity::escapeDB($area, $db)."' AND online='1'";
         $db->query($sql);
         $db->next_record();
         $parent = $db->f("parent_id");
         $sql = "SELECT location FROM ".$cfg["tab"]["area"]." as A, ".$cfg["tab"]["nav_sub"]." as B "
-             . "WHERE A.name='".Contenido_Security::escapeDB($parent, $db)."' AND A.idarea = B.idarea AND A.online='1'";
+             . "WHERE A.name='".cSecurity::escapeDB($parent, $db)."' AND A.idarea = B.idarea AND A.online='1'";
         $db->query($sql);
         $db->next_record();
         echo "<b>".$xml->valueOf($db->f("location")).$area."</b>";

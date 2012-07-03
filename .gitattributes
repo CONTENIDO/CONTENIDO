@@ -325,6 +325,7 @@ contenido/classes/class.purge.php -text
 contenido/classes/class.registry.php -text
 contenido/classes/class.request.password.php -text
 contenido/classes/class.request.php -text
+contenido/classes/class.requestvalidator.php -text
 contenido/classes/class.search.php -text
 contenido/classes/class.security.php -text
 contenido/classes/class.structure.php -text

@@ -95,17 +95,17 @@ class Workflows extends ItemCollection {
         $oDb = cRegistry::getDb();
 
         $aItemIdsDelete = array();
-        $sSql = 'SELECT idworkflowitem FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '. Contenido_Security::toInteger($idWorkflow) .';';
+        $sSql = 'SELECT idworkflowitem FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '. cSecurity::toInteger($idWorkflow) .';';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
-            array_push($aItemIdsDelete, Contenido_Security::escapeDB($oDb->f('idworkflowitem'), $oDb));
+            array_push($aItemIdsDelete, cSecurity::escapeDB($oDb->f('idworkflowitem'), $oDb));
         }
 
         $aUserSequencesDelete = array();
         $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem in ('.implode(',', $aItemIdsDelete).');';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
-            array_push($aUserSequencesDelete, Contenido_Security::escapeDB($oDb->f('idusersequence'), $oDb));
+            array_push($aUserSequencesDelete, cSecurity::escapeDB($oDb->f('idusersequence'), $oDb));
         }
 
         $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem in ('.implode(',', $aItemIdsDelete).');';
@@ -114,10 +114,10 @@ class Workflows extends ItemCollection {
         $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_actions"].' WHERE idworkflowitem in ('.implode(',', $aItemIdsDelete).');';
         $oDb->query($sSql);
 
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '.Contenido_Security::toInteger($idWorkflow).';';
+        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_items"].' WHERE idworkflow = '.cSecurity::toInteger($idWorkflow).';';
         $oDb->query($sSql);
 
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_allocation"].' WHERE idworkflow = '.Contenido_Security::toInteger($idWorkflow).';';
+        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_allocation"].' WHERE idworkflow = '.cSecurity::toInteger($idWorkflow).';';
         $oDb->query($sSql);
 
         $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_art_allocation"].' WHERE idusersequence in ('.implode(',', $aUserSequencesDelete).');';
@@ -192,8 +192,8 @@ function getCatLang ($idcat, $idlang)
     /* Get the idcatlang */
     $sql = "SELECT idcatlang FROM "
             .$cfg["tab"]["cat_lang"].
-           " WHERE idlang = '". Contenido_Security::escapeDB($idlang, $db)."' AND
-             idcat = '".Contenido_Security::escapeDB($idcat, $db)."'";
+           " WHERE idlang = '". cSecurity::escapeDB($idlang, $db)."' AND
+             idcat = '".cSecurity::escapeDB($idcat, $db)."'";
 
    $db->query($sql);
 

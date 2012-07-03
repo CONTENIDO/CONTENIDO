@@ -64,11 +64,11 @@ class NewsletterJobCollection extends ItemCollection
 
         $oNewsletter = new Newsletter;
         if ($oNewsletter->loadByPrimaryKey($iIDNews)) {
-            $iIDNews   = Contenido_Security::toInteger($iIDNews);
-            $iIDCatArt = Contenido_Security::toInteger($iIDCatArt);
-            $lang      = Contenido_Security::toInteger($lang);
-            $client    = Contenido_Security::toInteger($client);
-            $sName     = Contenido_Security::escapeDB($sName, null);
+            $iIDNews   = cSecurity::toInteger($iIDNews);
+            $iIDCatArt = cSecurity::toInteger($iIDCatArt);
+            $lang      = cSecurity::toInteger($lang);
+            $client    = cSecurity::toInteger($client);
+            $sName     = cSecurity::escapeDB($sName, null);
 
             $oItem = parent::createNewItem();
 

@@ -61,9 +61,9 @@ class NewsletterCollection extends ItemCollection
     {
         global $client, $lang, $auth;
 
-        $sName  = Contenido_Security::escapeDB($sName, null);
-        $client = Contenido_Security::toInteger($client);
-        $lang   = Contenido_Security::toInteger($lang);
+        $sName  = cSecurity::escapeDB($sName, null);
+        $client = cSecurity::toInteger($client);
+        $lang   = cSecurity::toInteger($lang);
 
         // Check if the newsletter name already exists
         $this->resetQuery;
@@ -81,7 +81,7 @@ class NewsletterCollection extends ItemCollection
         $oItem->set("idlang", $lang);
         $oItem->set("name", $sName);
         $oItem->set("created", date("Y-m-d H:i:s"), false);
-        $oItem->set("author", Contenido_Security::escapeDB($auth->auth["uid"], null));
+        $oItem->set("author", cSecurity::escapeDB($auth->auth["uid"], null));
 
         $oItem->store();
 
@@ -96,8 +96,8 @@ class NewsletterCollection extends ItemCollection
     {
         global $client, $lang, $auth;
 
-        $client = Contenido_Security::toInteger($client);
-        $lang   = Contenido_Security::toInteger($lang);
+        $client = cSecurity::toInteger($client);
+        $lang   = cSecurity::toInteger($lang);
 
         cInclude("includes", "functions.con.php");
 
@@ -198,8 +198,8 @@ class Newsletter extends Item
     {
         global $client, $lang, $auth;
 
-        $client = Contenido_Security::toInteger($client);
-        $lang     = Contenido_Security::toInteger($lang);
+        $client = cSecurity::toInteger($client);
+        $lang     = cSecurity::toInteger($lang);
 
         $this->set("modified", date("Y-m-d H:i:s"), false);
         $this->set("modifiedby", $auth->auth["uid"]);

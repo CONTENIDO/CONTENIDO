@@ -83,24 +83,24 @@ class pApiContentAllocation {
 
         if (is_array($allocations)) {
             foreach ($allocations as $value) {
-                $sql = "INSERT INTO ".$this->table['pica_alloc_con']." (idpica_alloc, idartlang) VALUES (".Contenido_Security::toInteger($value).", ".Contenido_Security::toInteger($idartlang).")";
+                $sql = "INSERT INTO ".$this->table['pica_alloc_con']." (idpica_alloc, idartlang) VALUES (".cSecurity::toInteger($value).", ".cSecurity::toInteger($idartlang).")";
                 $this->db->query($sql);
             }
         }
     }
 
     function deleteAllocations ($idpica_alloc) {
-        $sql = "DELETE FROM ".$this->table['pica_alloc_con']." WHERE idpica_alloc = " . Contenido_Security::toInteger($idpica_alloc);
+        $sql = "DELETE FROM ".$this->table['pica_alloc_con']." WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc);
         $this->db->query($sql);
     }
 
     function deleteAllocationsByIdartlang ($idartlang) {
-        $sql = "DELETE FROM ".$this->table['pica_alloc_con']." WHERE idartlang = " . Contenido_Security::toInteger($idartlang);
+        $sql = "DELETE FROM ".$this->table['pica_alloc_con']." WHERE idartlang = " . cSecurity::toInteger($idartlang);
         $this->db->query($sql);
     }
 
     function loadAllocations ($idartlang) {
-        $sql = "SELECT idpica_alloc FROM ".$this->table['pica_alloc_con']." WHERE idartlang = " . Contenido_Security::toInteger($idartlang);
+        $sql = "SELECT idpica_alloc FROM ".$this->table['pica_alloc_con']." WHERE idartlang = " . cSecurity::toInteger($idartlang);
         $this->db->query($sql);
 
         $items = array();
@@ -118,7 +118,7 @@ class pApiContentAllocation {
         $sql = "SELECT ".$cfg['tab']['pica_alloc'].".idpica_alloc FROM ".$cfg['tab']['pica_alloc']."
                     INNER JOIN ".$cfg['tab']['pica_alloc_con']." ON
                     ".$cfg['tab']['pica_alloc'].".idpica_alloc = ".$cfg['tab']['pica_alloc_con'].".idpica_alloc
-                    WHERE (".$cfg['tab']['pica_alloc'].".parentid = ".Contenido_Security::toInteger($parent).") AND (".$cfg['tab']['pica_alloc_con'].".idartlang=".Contenido_Security::toInteger($idartlang).")
+                    WHERE (".$cfg['tab']['pica_alloc'].".parentid = ".cSecurity::toInteger($parent).") AND (".$cfg['tab']['pica_alloc_con'].".idartlang=".cSecurity::toInteger($idartlang).")
                     ORDER BY ".$cfg['tab']['pica_alloc'].".sortorder";
 
         $this->db->query($sql);
@@ -357,7 +357,7 @@ class pApiContentAllocation {
             $sWHERE_Category_IN = '';
         }
         if (is_integer($iNumOfRows) AND $iNumOfRows > 0) {
-            $sLimit = " LIMIT ". Contenido_Security::toInteger($iOffset) .", " . Contenido_Security::toInteger($iNumOfRows);
+            $sLimit = " LIMIT ". cSecurity::toInteger($iOffset) .", " . cSecurity::toInteger($iNumOfRows);
         } else {
             $sLimit = '';
         }
@@ -372,8 +372,8 @@ class pApiContentAllocation {
             '.$this->table['cat_lang'].' AS d
         WHERE
             '.$sWHERE_Category_IN.'
-            b.idclient = '.Contenido_Security::toInteger($this->client).' AND
-            a.idlang = '.Contenido_Security::toInteger($this->lang).' AND
+            b.idclient = '.cSecurity::toInteger($this->client).' AND
+            a.idlang = '.cSecurity::toInteger($this->lang).' AND
             a.idartlang != d.startidartlang AND
             a.online = 1 AND
             c.idcat = d.idcat AND

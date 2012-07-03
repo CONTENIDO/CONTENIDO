@@ -132,7 +132,7 @@ class pApiTree {
         if ($parentId === false) { // fetch from root node
             $sql .= " WHERE tree.parentid = '0'";
         } else { // fetch by given id
-            $sql .= " WHERE tree.parentid = " . Contenido_Security::toInteger($parentId);
+            $sql .= " WHERE tree.parentid = " . cSecurity::toInteger($parentId);
         }
 
         $sql .= " ORDER BY sortorder ASC";
@@ -204,7 +204,7 @@ class pApiTree {
         if ($parentId === false) { // fetch from root node
             $sql .= " WHERE tree.parentid IS NULL";
         } else { // fetch by given id
-            $sql .= " WHERE tree.parentid = " . Contenido_Security::toInteger($parentId);
+            $sql .= " WHERE tree.parentid = " . cSecurity::toInteger($parentId);
         }
 
         $sql .= " ORDER BY sortorder ASC";
@@ -263,7 +263,7 @@ class pApiTree {
     }
 
     function fetchParent ($idpica_alloc) {
-        $sql = "SELECT idpica_alloc FROM ".$this->table['pica_alloc']." WHERE parentId = " . Contenido_Security::toInteger($idpica_alloc);
+        $sql = "SELECT idpica_alloc FROM ".$this->table['pica_alloc']." WHERE parentId = " . cSecurity::toInteger($idpica_alloc);
         $this->db->query($sql);
 
         if ($this->db->next_record()) {
@@ -286,7 +286,7 @@ class pApiTree {
         if ($parentId === false) { // fetch from root node
             $sql .= " WHERE tree.parentid IS NULL";
         } else { // fetch by given id
-            $sql .= " WHERE tree.parentid = " . Contenido_Security::toInteger($parentId);
+            $sql .= " WHERE tree.parentid = " . cSecurity::toInteger($parentId);
         }
 
         if ($showOffline === false) {
@@ -338,25 +338,25 @@ class pApiTree {
             $sql = "INSERT INTO " . $this->table['pica_alloc'] . "
                     ( parentid, sortorder)
                     VALUES
-                    (" . Contenido_Security::toInteger($treeItem['parentid']) . ", " . Contenido_Security::toInteger($treeItem['sortorder']) . ")";
+                    (" . cSecurity::toInteger($treeItem['parentid']) . ", " . cSecurity::toInteger($treeItem['sortorder']) . ")";
             $this->db->query($sql);
             $treeItem['idpica_alloc'] = $this->db->getLastInsertedId($this->table['pica_alloc']);
             $sql = "INSERT INTO " . $this->table['pica_lang'] . "
                     (idpica_alloc, idlang, name)
                     VALUES
-                    (" . Contenido_Security::toInteger($treeItem['idpica_alloc']) . ", " . Contenido_Security::toInteger($this->lang) . ", '" . Contenido_Security::escapeDB($treeItem['name'], $this->db) . "')";
+                    (" . cSecurity::toInteger($treeItem['idpica_alloc']) . ", " . cSecurity::toInteger($this->lang) . ", '" . cSecurity::escapeDB($treeItem['name'], $this->db) . "')";
             $this->db->query($sql);
 
         } else { // update
             $treeItem['name'] = $this->_inFilter($treeItem['name']);
 
-            $sql = "SELECT * FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . Contenido_Security::toInteger($treeItem['idpica_alloc']) . " AND idlang = " . Contenido_Security::toInteger($this->lang);
+            $sql = "SELECT * FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . cSecurity::toInteger($treeItem['idpica_alloc']) . " AND idlang = " . cSecurity::toInteger($this->lang);
             $this->db->query($sql);
 
             if ($this->db->num_rows() > 0) {
                 #Update existing translation
-                $sql = "UPDATE " . $this->table['pica_lang'] . " SET name = '" . Contenido_Security::escapeDB($treeItem['name'], $this->db) . "' WHERE idpica_alloc = " . Contenido_Security::toInteger($treeItem['idpica_alloc']) . "
-                        AND idlang = " . Contenido_Security::toInteger($this->lang);
+                $sql = "UPDATE " . $this->table['pica_lang'] . " SET name = '" . cSecurity::escapeDB($treeItem['name'], $this->db) . "' WHERE idpica_alloc = " . cSecurity::toInteger($treeItem['idpica_alloc']) . "
+                        AND idlang = " . cSecurity::toInteger($this->lang);
             } else {
                 #Get current online status for item
                 $sql = "SELECT * FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . $treeItem['idpica_alloc'] . " ORDER BY idlang";
@@ -369,8 +369,8 @@ class pApiTree {
                 }
 
                 #Insert new translation
-                $sql = "INSERT INTO " . $this->table['pica_lang'] . "(idpica_alloc, idlang, name, online) VALUES ( ".Contenido_Security::toInteger($treeItem['idpica_alloc']).", ".Contenido_Security::toInteger($this->lang).",
-                        '".Contenido_Security::escapeDB($treeItem['name'], $this->db)."', ".Contenido_Security::toInteger($online_status).")";
+                $sql = "INSERT INTO " . $this->table['pica_lang'] . "(idpica_alloc, idlang, name, online) VALUES ( ".cSecurity::toInteger($treeItem['idpica_alloc']).", ".cSecurity::toInteger($this->lang).",
+                        '".cSecurity::escapeDB($treeItem['name'], $this->db)."', ".cSecurity::toInteger($online_status).")";
             }
 
             $this->db->query($sql);
@@ -388,8 +388,8 @@ class pApiTree {
     }
 
     function _switchOnOffline ($idpica_alloc, $status) {
-        $sql = "UPDATE " . $this->table['pica_lang'] . " SET online = " . Contenido_Security::toInteger($status) . " WHERE idpica_alloc = " . Contenido_Security::toInteger($idpica_alloc) . "
-                AND idlang = " . Contenido_Security::toInteger($this->lang);
+        $sql = "UPDATE " . $this->table['pica_lang'] . " SET online = " . cSecurity::toInteger($status) . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc) . "
+                AND idlang = " . cSecurity::toInteger($this->lang);
         $this->db->query($sql);
     }
 
@@ -407,20 +407,20 @@ class pApiTree {
             }
         }
 
-        $sql = "UPDATE " . $this->table['pica_alloc'] . " SET sortorder = " . $treeItem['sortorder'] . " WHERE idpica_alloc = " . Contenido_Security::toInteger($idpica_alloc);
+        $sql = "UPDATE " . $this->table['pica_alloc'] . " SET sortorder = " . $treeItem['sortorder'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc);
         $this->db->query($sql);
     }
 
     function itemMoveDown () {}
 
     function deleteItem ($idpica_alloc) {
-        $sql = "DELETE FROM " . $this->table['pica_alloc'] . " WHERE idpica_alloc = " . Contenido_Security::toInteger($idpica_alloc);
+        $sql = "DELETE FROM " . $this->table['pica_alloc'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc);
         $this->db->query($sql);
 
-        $sql = "DELETE FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . Contenido_Security::toInteger($idpica_alloc);
+        $sql = "DELETE FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc);
         $this->db->query($sql);
 
-        $sql = "DELETE FROM " . $this->table['pica_alloc_con'] . " WHERE idpica_alloc = " . Contenido_Security::toInteger($idpica_alloc);
+        $sql = "DELETE FROM " . $this->table['pica_alloc_con'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc);
         $this->db->query($sql);
     }
 
@@ -448,7 +448,7 @@ class pApiTree {
     function _fetchItemNameLang ($idpica_alloc) {
         $oDB = cRegistry::getDb(); // temp instance
 
-        $sSQL = "SELECT name, idlang, online FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . Contenido_Security::toInteger($idpica_alloc) . " AND idlang = " . Contenido_Security::toInteger($this->lang);
+        $sSQL = "SELECT name, idlang, online FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc) . " AND idlang = " . cSecurity::toInteger($this->lang);
         $oDB->query($sSQL);
 
         $aResult = array();
@@ -464,7 +464,7 @@ class pApiTree {
             // first available, otherwise. Only using defaultLang results in "ghost" elements, if
             // created in a non-default language. See CON-110 for details.
 
-            $sSQL = "SELECT name, idlang, online FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . Contenido_Security::toInteger($idpica_alloc) . " ORDER BY idlang";
+            $sSQL = "SELECT name, idlang, online FROM " . $this->table['pica_lang'] . " WHERE idpica_alloc = " . cSecurity::toInteger($idpica_alloc) . " ORDER BY idlang";
             $oDB->query($sSQL);
 
             $aNames = array();
@@ -501,7 +501,7 @@ class pApiTree {
         if ($parentId === false) {
             $sql .= " WHERE parentid = 0";
         } else {
-            $sql .= " WHERE parentid = " . Contenido_Security::toInteger($parentId);
+            $sql .= " WHERE parentid = " . cSecurity::toInteger($parentId);
         }
         $this->db->query($sql);
         if ($this->db->next_record()) {
@@ -512,21 +512,21 @@ class pApiTree {
     }
 
     function _decreaseOrder ($parentId = false, $fromOrder) {
-        $sql = "UPDATE " . $this->table['pica_alloc'] . " SET sortorder = sortorder - 1 WHERE sortorder >= " . Contenido_Security::toInteger($fromOrder);
+        $sql = "UPDATE " . $this->table['pica_alloc'] . " SET sortorder = sortorder - 1 WHERE sortorder >= " . cSecurity::toInteger($fromOrder);
         if ($parentId === false) {
             $sql .= " AND parentid IS NULL";
         } else {
-            $sql .= " AND parentid = " . Contenido_Security::toInteger($parentId);
+            $sql .= " AND parentid = " . cSecurity::toInteger($parentId);
         }
         $this->db->query($sql);
     }
 
     function _increaseOrder ($parentId = false, $fromOrder) {
-        $sql = "UPDATE " . $this->table['pica_alloc'] . " SET sortorder = sortorder + 1 WHERE sortorder >= " . Contenido_Security::toInteger($fromOrder);
+        $sql = "UPDATE " . $this->table['pica_alloc'] . " SET sortorder = sortorder + 1 WHERE sortorder >= " . cSecurity::toInteger($fromOrder);
         if ($parentId === false) {
             $sql .= " AND parentid IS NULL";
         } else {
-            $sql .= " AND parentid = " . Contenido_Security::toInteger($parentId);
+            $sql .= " AND parentid = " . cSecurity::toInteger($parentId);
         }
         $this->db->query($sql);
     }

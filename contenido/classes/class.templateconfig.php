@@ -175,11 +175,11 @@ class TemplateConfig
 
         if ($idtplcfg) {
             #Article or cat is assigned to a template
-            $sql = "SELECT * FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
+            $sql = "SELECT * FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".cSecurity::toInteger($idtplcfg)."'";
             $this->db->query($sql);
             if ($this->db->next_record()) {
                 $idtpl = $this->db->f("idtpl");
-                $sql = "SELECT * FROM ".$cfg["tab"]["tpl"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
+                $sql = "SELECT * FROM ".$cfg["tab"]["tpl"]." WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
                 $this->db->query($sql);
                 if ($this->db->next_record()) {
                     $idtplcfg = $this->db->f("idtplcfg");
@@ -216,9 +216,9 @@ class TemplateConfig
             idtplcfg
          FROM ".$this->cfg['tab']['art_lang']."
             WHERE
-                  idart='".Contenido_Security::toInteger($idart)."'
+                  idart='".cSecurity::toInteger($idart)."'
                AND
-                  idlang='".Contenido_Security::toInteger($this->lang)."'";
+                  idlang='".cSecurity::toInteger($this->lang)."'";
 
       //query
       $this->db->query($sql);
@@ -252,7 +252,7 @@ class TemplateConfig
 
     function _getIdCatByIdArt($idart)
     {
-        $sql = "SELECT idcat FROM ".$this->cfg['tab']['cat_art']." WHERE idart='".Contenido_Security::toInteger($idart)."' ORDER BY idcat ASC LIMIT 1";
+        $sql = "SELECT idcat FROM ".$this->cfg['tab']['cat_art']." WHERE idart='".cSecurity::toInteger($idart)."' ORDER BY idcat ASC LIMIT 1";
         $this->db->query($sql);
         if ($this->db->next_record())
         {
@@ -271,8 +271,8 @@ class TemplateConfig
      */
     function _getTplCfgByCatId ($idcat)
     {
-        $sql = "SELECT idtplcfg FROM ".$this->cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'
-                AND idlang='".Contenido_Security::toInteger($this->lang)."'";
+        $sql = "SELECT idtplcfg FROM ".$this->cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."'
+                AND idlang='".cSecurity::toInteger($this->lang)."'";
         $this->db->query($sql);
         if ($this->db->next_record())
         {
@@ -295,7 +295,7 @@ class TemplateConfig
             SELECT
                 number, container
             FROM ".$this->cfg['tab']['container_conf']."
-                WHERE idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'
+                WHERE idtplcfg='".cSecurity::toInteger($idtplcfg)."'
             ORDER BY
                 number ASC";
         $this->db->query($sql);

@@ -153,8 +153,8 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
                         ".$cfg["tab"]["lang"]." AS A,
                         ".$cfg["tab"]["clients_lang"]." AS B
                     WHERE
-                        A.idlang = '".Contenido_Security::toInteger($idlang)."' AND
-                        B.idlang = '".Contenido_Security::toInteger($idlang)."'";
+                        A.idlang = '".cSecurity::toInteger($idlang)."' AND
+                        B.idlang = '".cSecurity::toInteger($idlang)."'";
 
             $db->query($sql);
             $db->next_record();

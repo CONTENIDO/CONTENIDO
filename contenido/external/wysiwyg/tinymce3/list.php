@@ -56,8 +56,8 @@ switch ($_REQUEST['mode']) {
                 WHERE
                     a.idcat = b.idcat AND
                     c.idcat = a.idcat AND
-                    c.idclient = '".Contenido_Security::toInteger($client)."' AND
-                    b.idlang = '".Contenido_Security::toInteger($lang)."'
+                    c.idclient = '".cSecurity::toInteger($client)."' AND
+                    b.idlang = '".cSecurity::toInteger($lang)."'
                 ORDER BY
                     a.idtree";
 
@@ -95,8 +95,8 @@ switch ($_REQUEST['mode']) {
                         a.idcat = '".$db->f("idcat")."' AND
                         b.idart = a.idart AND
                         c.idart = a.idart AND
-                        c.idlang = '".Contenido_Security::toInteger($lang)."' AND
-                        b.idclient = '".Contenido_Security::toInteger($client)."'
+                        c.idlang = '".cSecurity::toInteger($lang)."' AND
+                        b.idclient = '".cSecurity::toInteger($client)."'
                      ORDER BY
                         c.title ASC";
 
@@ -127,7 +127,7 @@ switch ($_REQUEST['mode']) {
         break;
 
     case 'image':
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('gif', 'jpg', 'jpeg', 'png') ORDER BY dirname, filename ASC";
+        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('gif', 'jpg', 'jpeg', 'png') ORDER BY dirname, filename ASC";
         $db->query($sql);
 
         $output .= "var tinyMCEImageList = new Array(";
@@ -148,7 +148,7 @@ switch ($_REQUEST['mode']) {
         break;
 
     case 'flash':
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('swf') ORDER BY dirname,filename ASC";
+        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('swf') ORDER BY dirname,filename ASC";
         $db->query($sql);
 
         $output .= "var tinyMCEFlashList = new Array(";
@@ -169,7 +169,7 @@ switch ($_REQUEST['mode']) {
         break;
 
     case 'media':
-        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype IN ('swf','dcr','mov','qt','mpg','mpg3','mpg4','mpeg','avi','wmv','wm','asf','asx','wmx','wvx','rm','ra','ram') ORDER BY dirname, filename ASC";
+        $sql = "SELECT * FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype IN ('swf','dcr','mov','qt','mpg','mpg3','mpg4','mpeg','avi','wmv','wm','asf','asx','wmx','wvx','rm','ra','ram') ORDER BY dirname, filename ASC";
         $db->query($sql);
 
         $output .= "var tinyMCEMediaList = new Array(";

@@ -32,10 +32,10 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 if (!$idcat) {
-    $idcat = Contenido_Security::toInteger($_REQUEST['idcat']);
+    $idcat = cSecurity::toInteger($_REQUEST['idcat']);
 }
 
-$sCatlist = Contenido_Security::toString($_REQUEST['wholelist']);
+$sCatlist = cSecurity::toString($_REQUEST['wholelist']);
 if ($sCatlist != '') {
     $aCatlist = explode(',', $sCatlist);
 } else {

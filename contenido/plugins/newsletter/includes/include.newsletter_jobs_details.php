@@ -111,7 +111,7 @@ if ($action == "news_job_run" && $perm->have_perm_area_action($area, $action) &&
     }
 
     // Initialize
-    $iNextPage = Contenido_Security::toInteger($_GET['nextpage']);
+    $iNextPage = cSecurity::toInteger($_GET['nextpage']);
     if ($iNextPage <= 0) {
         $iNextPage = 1;
     }

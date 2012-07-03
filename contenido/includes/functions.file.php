@@ -49,9 +49,9 @@ function removeFileInformation($iIdClient, $sFilename, $sType, $oDb)
         $oDb = cRegistry::getDb();
     }
 
-    $iIdClient = Contenido_Security::toInteger($iIdClient);
-    $sFilename = Contenido_Security::filter((string) $sFilename, $oDb);
-    $sType = Contenido_Security::filter((string) $sType, $oDb);
+    $iIdClient = cSecurity::toInteger($iIdClient);
+    $sFilename = cSecurity::filter((string) $sFilename, $oDb);
+    $sType = cSecurity::filter((string) $sType, $oDb);
 
     $sSql = "DELETE FROM `".$cfg["tab"]["file_information"]."` WHERE idclient=$iIdClient AND
                                                             filename='$sFilename' AND
@@ -85,9 +85,9 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
         $oDb = cRegistry::getDb();
     }
 
-    $iIdClient = Contenido_Security::toInteger($iIdClient);
-    $sFilename = Contenido_Security::filter((string) $sFilename, $oDb);
-    $sType = Contenido_Security::filter((string) $sType, $oDb);
+    $iIdClient = cSecurity::toInteger($iIdClient);
+    $sFilename = cSecurity::filter((string) $sFilename, $oDb);
+    $sType = cSecurity::filter((string) $sType, $oDb);
 
     $aFileInformation = array();
     $sSql = "SELECT * FROM `".$cfg["tab"]["file_information"]."` WHERE idclient=$iIdClient AND
@@ -99,9 +99,9 @@ function getFileInformation($iIdClient, $sFilename, $sType, $oDb)
         $aFileInformation['idsfi'] = $oDb->f('idsfi');
         $aFileInformation['created'] = $oDb->f('created');
         $aFileInformation['lastmodified'] = $oDb->f('lastmodified');
-        $aFileInformation['author'] = Contenido_Security::unFilter($oDb->f('author'));
+        $aFileInformation['author'] = cSecurity::unFilter($oDb->f('author'));
         $aFileInformation['modifiedby'] = $oDb->f('modifiedby');
-        $aFileInformation['description'] = Contenido_Security::unFilter($oDb->f('description'));
+        $aFileInformation['description'] = cSecurity::unFilter($oDb->f('description'));
     }
     $oDb->free();
 
@@ -134,11 +134,11 @@ function updateFileInformation($iIdClient, $sFilename, $sType, $sAuthor, $sDescr
         $sFilenameNew = $sFilename;
     }
 
-    $iIdClient = Contenido_Security::toInteger($iIdClient);
-    $sFilename = Contenido_Security::filter((string) $sFilename, $oDb);
-    $sType = Contenido_Security::filter((string) $sType, $oDb);
-    $sDescription = Contenido_Security::filter((string) stripslashes($sDescription), $oDb);
-    $sAuthor = Contenido_Security::filter((string) $sAuthor, $oDb);
+    $iIdClient = cSecurity::toInteger($iIdClient);
+    $sFilename = cSecurity::filter((string) $sFilename, $oDb);
+    $sType = cSecurity::filter((string) $sType, $oDb);
+    $sDescription = cSecurity::filter((string) stripslashes($sDescription), $oDb);
+    $sAuthor = cSecurity::filter((string) $sAuthor, $oDb);
 
     $sSql = "SELECT * from `".$cfg["tab"]["file_information"]."` WHERE idclient=$iIdClient AND
                                                             filename='$sFilename' AND

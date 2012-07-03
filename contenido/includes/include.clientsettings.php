@@ -55,7 +55,7 @@ $sSQL = "SELECT A.name AS name, A.idlang AS idlang, B.idclientslang AS idclients
         ".$cfg["tab"]["clients_lang"]." AS B
         WHERE
         A.idlang=B.idlang AND
-        B.idclient='".Contenido_Security::toInteger($idclient)."'
+        B.idclient='".cSecurity::toInteger($idclient)."'
         ORDER BY A.idlang";
 
 $db->query($sSQL);

@@ -343,7 +343,7 @@ $sql = "SELECT
         FROM
             ".$cfg['tab']['tpl']."
         WHERE
-            idclient = '".Contenido_Security::toInteger($client)."'
+            idclient = '".cSecurity::toInteger($client)."'
         ORDER BY
             name";
 

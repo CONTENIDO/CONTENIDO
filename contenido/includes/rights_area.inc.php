@@ -41,7 +41,7 @@ $debug = (getDebugger() != DebuggerFactory::getDebugger("devnull"));
 
 //set the areas which are in use for selecting these
 
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".Contenido_Security::escapeDB($userid, $db)."' AND idclient='".Contenido_Security::toInteger($rights_client)."' AND idlang='".Contenido_Security::toInteger($rights_lang)."' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".cSecurity::escapeDB($userid, $db)."' AND idclient='".cSecurity::toInteger($rights_client)."' AND idlang='".cSecurity::toInteger($rights_lang)."' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
 $db->query($sql);
 
 $rights_list_old = array ();

@@ -327,7 +327,7 @@ class Contenido_Navigation
             $sClientName = cApiStrTrimHard($sClientName, 25);
         }
 
-        $client = Contenido_Security::toInteger($client);
+        $client = cSecurity::toInteger($client);
         if ( $client == 0 ) {
             $sClientNameTemplate = '<b>' . i18n("Client") . ':</b> %s';
             $main->set('s', 'CHOSENCLIENT', sprintf($sClientNameTemplate, $sClientName));
@@ -398,7 +398,7 @@ class Contenido_Navigation
                 // I want to get rid of such silly constructs very soon :)
 
                 $sql = "SELECT idclient FROM ".$cfg['tab']['clients_lang']." WHERE
-                        idlang = '".Contenido_Security::toInteger($key)."'";
+                        idlang = '".cSecurity::toInteger($key)."'";
 
                 $db->query($sql);
 

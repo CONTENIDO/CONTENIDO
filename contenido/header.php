@@ -89,7 +89,7 @@ if (!is_numeric($client) ||
 
 if (!is_numeric($lang)) { // use first language found
     $sess->register("lang");
-    $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE A.idlang=B.idlang AND idclient='".Contenido_Security::toInteger($client)."' ORDER BY A.idlang ASC";
+    $sql = "SELECT * FROM ".$cfg["tab"]["lang"]." AS A, ".$cfg["tab"]["clients_lang"]." AS B WHERE A.idlang=B.idlang AND idclient='".cSecurity::toInteger($client)."' ORDER BY A.idlang ASC";
     $db->query($sql);
     $db->next_record();
     $lang = $db->f('idlang');

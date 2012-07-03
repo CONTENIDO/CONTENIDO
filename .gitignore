@@ -16,4 +16,5 @@ data/config/production/config.clients.php
 data/config/production/config.php
 data/logs/deprecatedlog.txt
 data/logs/errorlog.txt
+data/logs/security.txt
 /nbproject

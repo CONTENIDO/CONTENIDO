@@ -120,7 +120,7 @@ class Form
      */
     public function Add($name)
     {
-        $name = Contenido_Security::escapeDB($name, null);
+        $name = cSecurity::escapeDB($name, null);
         $this->counter ++;
         $this->fields[$this->counter]['name'] = $name;
     }
@@ -132,8 +132,8 @@ class Form
      */
     public function SetDefault($name, $value)
     {
-        $name = Contenido_Security::escapeDB($name, null);
-        $value = Contenido_Security::escapeDB($value, null);
+        $name = cSecurity::escapeDB($name, null);
+        $value = cSecurity::escapeDB($value, null);
         $this->default[$name] = $value;
     }
 
@@ -144,8 +144,8 @@ class Form
      */
     public function Define($which, $value)
     {
-        $which = Contenido_Security::escapeDB($which, null);
-        $value = Contenido_Security::escapeDB($value, null);
+        $which = cSecurity::escapeDB($which, null);
+        $value = cSecurity::escapeDB($value, null);
         if (0 == $this->counter) {
             $this->$which = $value;
         } else {
@@ -168,7 +168,7 @@ class Form
      */
     public function Generate($template)
     {
-        $template = Contenido_Security::escapeDB($template);
+        $template = cSecurity::escapeDB($template);
 
         // get form values
         $this->GetFormValues();

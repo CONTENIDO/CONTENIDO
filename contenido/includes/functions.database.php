@@ -42,7 +42,7 @@ function dbGetIndexes($db, $table)
         return false;
     }
 
-    $sql = 'SHOW INDEX FROM '.Contenido_Security::escapeDB($table, $db);
+    $sql = 'SHOW INDEX FROM '.cSecurity::escapeDB($table, $db);
     $db->query($sql);
 
     $indexes = array();

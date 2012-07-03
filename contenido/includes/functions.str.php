@@ -789,24 +789,24 @@ function strDeleteCategory($idcat)
     $remakeCatTable = true;
     $remakeStrTable = true;
 
-    $sql = "SELECT idtplcfg FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+    $sql = "SELECT idtplcfg FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."' AND idlang='".cSecurity::toInteger($lang)."'";
     $db->query($sql);
 
     while ($db->next_record()) {
         // delete entry in 'tpl_conf'-table
-        $sql = "DELETE FROM ".$cfg['tab']['tpl_conf']." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        $sql = "DELETE FROM ".$cfg['tab']['tpl_conf']." WHERE idtplcfg='".cSecurity::toInteger($db->f("idtplcfg"))."'";
         $db2->query($sql);
 
-        $sql = "DELETE FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        $sql = "DELETE FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg = '".cSecurity::toInteger($db->f("idtplcfg"))."'";
         $db2->query($sql);
     }
 
     // Delete language dependend part
-    $sql = "DELETE FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+    $sql = "DELETE FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."' AND idlang='".cSecurity::toInteger($lang)."'";
     $db->query($sql);
 
     // Are there any additional languages?
-    $sql = "SELECT idcatlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "SELECT idcatlang FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
     $db->query($sql);
 
     if ($db->num_rows() > 0) {
@@ -817,7 +817,7 @@ function strDeleteCategory($idcat)
         return;
     }
 
-    $sql = "SELECT * FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "SELECT * FROM ".$cfg['tab']['cat']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
     $db->query($sql);
     $db->next_record();
     $tmp_preid  = $db->f("preid");
@@ -825,38 +825,38 @@ function strDeleteCategory($idcat)
 
     // update pre cat set new postid
     if ($tmp_preid != 0) {
-        $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='".Contenido_Security::toInteger($tmp_postid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_preid)."'";
+        $sql = "UPDATE ".$cfg['tab']['cat']." SET postid='".cSecurity::toInteger($tmp_postid)."' WHERE idcat='".cSecurity::toInteger($tmp_preid)."'";
         $db->query($sql);
     }
 
     // update post cat set new preid
     if ($tmp_postid != 0) {
-        $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".Contenido_Security::toInteger($tmp_preid)."' WHERE idcat='".Contenido_Security::toInteger($tmp_postid)."'";
+        $sql = "UPDATE ".$cfg['tab']['cat']." SET preid='".cSecurity::toInteger($tmp_preid)."' WHERE idcat='".cSecurity::toInteger($tmp_postid)."'";
         $db->query($sql);
     }
 
     // delete entry in 'cat'-table
-    $sql = "DELETE FROM ".$cfg['tab']['cat']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "DELETE FROM ".$cfg['tab']['cat']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
     $db->query($sql);
 
-    $sql = "SELECT idtplcfg FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "SELECT idtplcfg FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
     $db->query($sql);
     while ($db->next_record()) {
         // delete entry in 'tpl_conf'-table
-        $sql = "DELETE FROM ".$cfg['tab']['tpl_conf']." WHERE idtplcfg='".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        $sql = "DELETE FROM ".$cfg['tab']['tpl_conf']." WHERE idtplcfg='".cSecurity::toInteger($db->f("idtplcfg"))."'";
         $db2->query($sql);
 
-        $sql = "DELETE FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg = '".Contenido_Security::toInteger($db->f("idtplcfg"))."'";
+        $sql = "DELETE FROM ".$cfg['tab']['container_conf']." WHERE idtplcfg = '".cSecurity::toInteger($db->f("idtplcfg"))."'";
         echo $sql;
         $db2->query($sql);
     }
 
     ////// delete entry in 'cat_lang'-table
-    $sql = "DELETE FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "DELETE FROM ".$cfg['tab']['cat_lang']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
     $db->query($sql);
 
     ////// delete entry in 'cat_tree'-table
-    $sql = "DELETE FROM ".$cfg['tab']['cat_tree']." WHERE idcat='".Contenido_Security::toInteger($idcat)."'";
+    $sql = "DELETE FROM ".$cfg['tab']['cat_tree']." WHERE idcat='".cSecurity::toInteger($idcat)."'";
     $db->query($sql);
 
     // delete rights for element

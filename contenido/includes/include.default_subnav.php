@@ -46,7 +46,7 @@ $aBasicParams = array('area', 'frame', 'contenido', 'appendparameters');
 // Flag to check is file is loading from Main-Frame
 $bVirgin = false;
 
-$area = Contenido_Security::escapeDB($area, $db);
+$area = cSecurity::escapeDB($area, $db);
 
 
 // Basic-Url-Params with Key: like 'id%' or '%id' and Value: are integer or strlen=32 (for md5)

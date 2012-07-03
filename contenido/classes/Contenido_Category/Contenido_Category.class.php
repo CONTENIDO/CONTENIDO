@@ -155,7 +155,7 @@ class Contenido_Category extends Contenido_Category_Base {
                 FROM
                     ' . $this->aCfg['tab']['cat'] . '
                 WHERE
-                    idcat = ' . Contenido_Security::toInteger($iIdCat);
+                    idcat = ' . cSecurity::toInteger($iIdCat);
         if ($this->bDbg === true) {
             $this->oDbg->show($sSql, 'Contenido_Category::load($iIdCat, $bIncludeLanguage = false, $iIdlang = -1): $sSql');
         }
@@ -252,7 +252,7 @@ class Contenido_Category extends Contenido_Category_Base {
                     cat.idclient = ' . $this->getIdClient() . ' AND
                     catlang.idlang   = ' . $this->getIdLang() . ' AND
                     catlang.visible  = 1 AND
-                    cat.parentid = ' . Contenido_Security::toInteger($iIdcat) .'
+                    cat.parentid = ' . cSecurity::toInteger($iIdcat) .'
                 ORDER BY
                     cattree.idtree';
         if ($this->bDbg === true) {
@@ -690,7 +690,7 @@ class Contenido_Category_Language extends Contenido_Category_Base {
                     FROM
                         ' . $this->aCfg["tab"]["cat_lang"] . '
                     WHERE
-                        idcatlang = ' . Contenido_Security::toInteger($iIdCatLang);
+                        idcatlang = ' . cSecurity::toInteger($iIdCatLang);
         }
         $this->oDb->query($sSql);
         if ($this->oDb->Errno != 0) {

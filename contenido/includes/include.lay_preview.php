@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 
-$layoutInFile = new LayoutInFile(Contenido_Security::toInteger($_GET['idlay']), '', $cfg, $lang);
+$layoutInFile = new LayoutInFile(cSecurity::toInteger($_GET['idlay']), '', $cfg, $lang);
 if (($code = $layoutInFile->getLayoutCode()) == false) {
     echo i18n("No such layout");
 }
@@ -45,6 +45,6 @@ $tags = $base;
 
 $code = str_replace("<head>", "<head>\n".$tags, $code);
 
-eval("?>\n".Contenido_Security::unescapeDB($code)."\n<?php\n");
+eval("?>\n".cSecurity::unescapeDB($code)."\n<?php\n");
 
 ?>

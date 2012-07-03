@@ -67,9 +67,9 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
                Template table  */
             $sql = "INSERT INTO ".$cfg["tab"]["tpl"]."
                     (idtplcfg, name, description, deletable, idlay, idclient, author, created, lastmodified) VALUES
-                    ('".Contenido_Security::toInteger(0)."', '".Contenido_Security::escapeDB($name, $db)."', '".Contenido_Security::escapeDB($description, $db)."',
-                    '1', '".Contenido_Security::toInteger($idlay)."', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($author, $db)."', '".Contenido_Security::escapeDB($date, $db)."',
-                    '".Contenido_Security::escapeDB($date, $db)."')";
+                    ('".cSecurity::toInteger(0)."', '".cSecurity::escapeDB($name, $db)."', '".cSecurity::escapeDB($description, $db)."',
+                    '1', '".cSecurity::toInteger($idlay)."', '".cSecurity::toInteger($client)."', '".cSecurity::escapeDB($author, $db)."', '".cSecurity::escapeDB($date, $db)."',
+                    '".cSecurity::escapeDB($date, $db)."')";
 
             $db->query($sql);
             $idtpl = $db->getLastInsertedId($cfg["tab"]["tpl"]);
@@ -78,14 +78,14 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
                Template Conf table  */
             $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]."
                     (idtpl, author) VALUES
-                   ('".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::escapeDB($auth->auth["uname"], $db)."')";
+                   ('".cSecurity::toInteger($idtpl)."', '".cSecurity::escapeDB($auth->auth["uname"], $db)."')";
 
             $db->query($sql);
             $idtplcfg = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
 
             /* Update new idtplconf*/
-            $sql = "UPDATE ".$cfg["tab"]["tpl_conf"]." SET idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'
-            WHERE idtpl='".Contenido_Security::toInteger($idtpl)."'";
+            $sql = "UPDATE ".$cfg["tab"]["tpl_conf"]." SET idtplcfg='".cSecurity::toInteger($idtplcfg)."'
+            WHERE idtpl='".cSecurity::toInteger($idtpl)."'";
             $db->query($sql);
 
             // set correct rights for element
@@ -96,23 +96,23 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
         } else {
 
             /* Update */
-            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET name='".Contenido_Security::escapeDB($name, $db)."', description='".Contenido_Security::escapeDB($description, $db)."', idlay='".Contenido_Security::toInteger($idlay)."',
-                    author='".Contenido_Security::escapeDB($author, $db)."', lastmodified='".Contenido_Security::escapeDB($date, $db)."' WHERE idtpl='".Contenido_Security::toInteger($idtpl)."'";
+            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET name='".cSecurity::escapeDB($name, $db)."', description='".cSecurity::escapeDB($description, $db)."', idlay='".cSecurity::toInteger($idlay)."',
+                    author='".cSecurity::escapeDB($author, $db)."', lastmodified='".cSecurity::escapeDB($date, $db)."' WHERE idtpl='".cSecurity::toInteger($idtpl)."'";
             $db->query($sql);
 
             if (is_array($c)) {
 
                 /* Delete all container assigned to this template */
-                  $sql = "DELETE FROM ".$cfg["tab"]["container"]." WHERE idtpl='".Contenido_Security::toInteger($idtpl, $db)."'";
+                  $sql = "DELETE FROM ".$cfg["tab"]["container"]." WHERE idtpl='".cSecurity::toInteger($idtpl, $db)."'";
                   $db->query($sql);
 
                foreach ($c as $idcontainer => $dummyval) {
 
                   $sql = "INSERT INTO ".$cfg["tab"]["container"]." (idtpl, number, idmod) VALUES ";
                   $sql .= "(";
-                  $sql .= "'".Contenido_Security::toInteger($idtpl)."', ";
-                  $sql .= "'".Contenido_Security::toInteger($idcontainer)."', ";
-                  $sql .= "'".Contenido_Security::toInteger($c[$idcontainer])."'";
+                  $sql .= "'".cSecurity::toInteger($idtpl)."', ";
+                  $sql .= "'".cSecurity::toInteger($idcontainer)."', ";
+                  $sql .= "'".cSecurity::toInteger($c[$idcontainer])."'";
                   $sql .= ") ";
                   $db->query($sql);
 
@@ -126,13 +126,13 @@ function tplEditTemplate($changelayout, $idtpl, $name, $description, $idlay, $c,
 
         if ($default == 1)
         {
-            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '0' WHERE idclient = '".Contenido_Security::toInteger($client)."'";
+            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '0' WHERE idclient = '".cSecurity::toInteger($client)."'";
             $db->query($sql);
 
-            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '1' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND idclient = '".Contenido_Security::toInteger($client)."'";
+            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '1' WHERE idtpl = '".cSecurity::toInteger($idtpl)."' AND idclient = '".cSecurity::toInteger($client)."'";
             $db->query($sql);
         } else {
-            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '0' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND idclient = '".Contenido_Security::toInteger($client)."'";
+            $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET defaulttemplate = '0' WHERE idtpl = '".cSecurity::toInteger($idtpl)."' AND idclient = '".cSecurity::toInteger($client)."'";
             $db->query($sql);
         }
 
@@ -161,16 +161,16 @@ function tplDeleteTemplate($idtpl) {
 
         global $db, $client, $lang, $cfg, $area_tree, $perm;
 
-        $sql = "DELETE FROM ".$cfg["tab"]["tpl"]." WHERE idtpl='".Contenido_Security::toInteger($idtpl)."'";
+        $sql = "DELETE FROM ".$cfg["tab"]["tpl"]." WHERE idtpl='".cSecurity::toInteger($idtpl)."'";
         $db->query($sql);
 
         /* JL 160603 : Delete all unnecessary entries */
 
-        $sql = "DELETE FROM ".$cfg["tab"]["container"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
+        $sql = "DELETE FROM ".$cfg["tab"]["container"]." WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
         $db->query($sql);
 
         $idsToDelete = array();
-        $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
+        $sql = "SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
         $db->query($sql);
         while ( $db->next_record() ) {
             $idsToDelete[] = $db->f("idtplcfg");
@@ -178,10 +178,10 @@ function tplDeleteTemplate($idtpl) {
 
         foreach ( $idsToDelete as $id ) {
 
-            $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($id)."'";
+            $sql = "DELETE FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtplcfg = '".cSecurity::toInteger($id)."'";
             $db->query($sql);
 
-            $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".Contenido_Security::toInteger($id)."'";
+            $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg = '".cSecurity::toInteger($id)."'";
             $db->query($sql);
 
         }
@@ -417,7 +417,7 @@ function tplDuplicateTemplate($idtpl) {
             FROM
                 ".$cfg["tab"]["tpl"]."
             WHERE
-                idtpl = '".Contenido_Security::toInteger($idtpl)."'";
+                idtpl = '".cSecurity::toInteger($idtpl)."'";
 
     $db->query($sql);
     $db->next_record();
@@ -444,8 +444,8 @@ function tplDuplicateTemplate($idtpl) {
                 ".$cfg["tab"]["tpl"]."
                 (idclient, idlay, ".($idtpl_conf?'idtplcfg,':'')." name, description, deletable,author, created, lastmodified)
             VALUES
-                ('".Contenido_Security::toInteger($idclient)."', '".Contenido_Security::toInteger($idlay)."', ".($idtpl_conf?"'".Contenido_Security::toInteger($new_idtpl_conf)."', ":'')." '".Contenido_Security::escapeDB($name, $db)."',
-                 '".Contenido_Security::escapeDB($descr, $db)."', '1', '".Contenido_Security::escapeDB($author, $db)."', '".Contenido_Security::escapeDB($created, $db)."', '".Contenido_Security::escapeDB($lastmod, $db)."')";
+                ('".cSecurity::toInteger($idclient)."', '".cSecurity::toInteger($idlay)."', ".($idtpl_conf?"'".cSecurity::toInteger($new_idtpl_conf)."', ":'')." '".cSecurity::escapeDB($name, $db)."',
+                 '".cSecurity::escapeDB($descr, $db)."', '1', '".cSecurity::escapeDB($author, $db)."', '".cSecurity::escapeDB($created, $db)."', '".cSecurity::escapeDB($lastmod, $db)."')";
     $db->query($sql);
     $new_idtpl = $db->getLastInsertedId($cfg["tab"]["tpl"]);
 
@@ -459,7 +459,7 @@ function tplDuplicateTemplate($idtpl) {
             FROM
                 ".$cfg["tab"]["container"]."
             WHERE
-                idtpl = '".Contenido_Security::toInteger($idtpl)."'
+                idtpl = '".cSecurity::toInteger($idtpl)."'
             ORDER BY
                 number";
 
@@ -474,7 +474,7 @@ function tplDuplicateTemplate($idtpl) {
         //$nextid = $db->nextid($cfg["tab"]["container"]);
 
         $sql = "INSERT INTO ".$cfg["tab"]["container"]."
-                (idtpl, number, idmod) VALUES ('".Contenido_Security::toInteger($new_idtpl)."', '".Contenido_Security::toInteger($key)."', '".Contenido_Security::toInteger($value)."')";
+                (idtpl, number, idmod) VALUES ('".cSecurity::toInteger($new_idtpl)."', '".cSecurity::toInteger($key)."', '".cSecurity::toInteger($value)."')";
 
         $db->query($sql);
 
@@ -488,7 +488,7 @@ function tplDuplicateTemplate($idtpl) {
                  FROM
                        ".$cfg["tab"]["container_conf"]."
                  WHERE
-                       idtplcfg = '".Contenido_Security::toInteger($idtpl_conf)."'
+                       idtplcfg = '".cSecurity::toInteger($idtpl_conf)."'
                  ORDER BY
                        number";
 
@@ -504,7 +504,7 @@ function tplDuplicateTemplate($idtpl) {
 
            $sql = "INSERT INTO ".$cfg["tab"]["container_conf"]."
                        (idtplcfg, number, container) VALUES
-                       ( '".Contenido_Security::toInteger($new_idtpl_conf)."', '".Contenido_Security::escapeDB($key, $db)."', '".Contenido_Security::escapeDB($value, $db)."')";
+                       ( '".cSecurity::toInteger($new_idtpl_conf)."', '".cSecurity::escapeDB($key, $db)."', '".cSecurity::escapeDB($value, $db)."')";
 
            $db->query($sql);
 
@@ -543,7 +543,7 @@ function tplIsTemplateInUse($idtpl) {
                 ".$cfg["tab"]["cat"]." AS a,
                 ".$cfg["tab"]["cat_lang"]." AS b
             WHERE
-                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
+                a.idclient  = '".cSecurity::toInteger($client)."' AND
                 a.idcat     = b.idcat AND
                 b.idtplcfg  IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')
             ORDER BY b.idlang ASC, b.name ASC ";
@@ -559,7 +559,7 @@ function tplIsTemplateInUse($idtpl) {
                 ".$cfg["tab"]["art"]." AS a,
                 ".$cfg["tab"]["art_lang"]." AS b
             WHERE
-                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
+                a.idclient  = '".cSecurity::toInteger($client)."' AND
                 a.idart     = b.idart AND
                 b.idtplcfg IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')
             ORDER BY b.idlang ASC, b.title ASC ";
@@ -599,7 +599,7 @@ function tplGetInUsedData($idtpl) {
                 ".$cfg["tab"]["cat"]." AS a,
                 ".$cfg["tab"]["cat_lang"]." AS b
             WHERE
-                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
+                a.idclient  = '".cSecurity::toInteger($client)."' AND
                 a.idcat     = b.idcat AND
                 b.idtplcfg  IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')
             ORDER BY b.idlang ASC, b.name ASC ";
@@ -621,7 +621,7 @@ function tplGetInUsedData($idtpl) {
                 ".$cfg["tab"]["art"]." AS a,
                 ".$cfg["tab"]["art_lang"]." AS b
             WHERE
-                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
+                a.idclient  = '".cSecurity::toInteger($client)."' AND
                 a.idart     = b.idart AND
                 b.idtplcfg IN (SELECT idtplcfg FROM ".$cfg["tab"]["tpl_conf"]." WHERE idtpl = '".$idtpl."')
             ORDER BY b.idlang ASC, b.title ASC ";
@@ -662,7 +662,7 @@ function tplcfgDuplicate ($idtplcfg)
             FROM
                 ".$cfg["tab"]["tpl_conf"]."
             WHERE
-                idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
+                idtplcfg = '".cSecurity::toInteger($idtplcfg)."'";
 
     $db->query($sql);
 
@@ -679,8 +679,8 @@ function tplcfgDuplicate ($idtplcfg)
                 ".$cfg["tab"]["tpl_conf"]."
                 (idtpl, status, author, created, lastmodified)
                 VALUES
-                ('".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::toInteger($status)."', '".Contenido_Security::escapeDB($author, $db2)."',
-                '".Contenido_Security::escapeDB($created, $db2)."', '".Contenido_Security::escapeDB($lastmodified, $db2)."')";
+                ('".cSecurity::toInteger($idtpl)."', '".cSecurity::toInteger($status)."', '".cSecurity::escapeDB($author, $db2)."',
+                '".cSecurity::escapeDB($created, $db2)."', '".cSecurity::escapeDB($lastmodified, $db2)."')";
 
         $db2->query($sql);
         $newidtplcfg = $db2->getLastInsertedId($cfg["tab"]["tpl_conf"]);
@@ -690,7 +690,7 @@ function tplcfgDuplicate ($idtplcfg)
                     number, container
                 FROM
                     ".$cfg["tab"]["container_conf"]."
-                WHERE idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."'";
+                WHERE idtplcfg = '".cSecurity::toInteger($idtplcfg)."'";
 
         $db->query($sql);
 
@@ -704,7 +704,7 @@ function tplcfgDuplicate ($idtplcfg)
                     ".$cfg["tab"]["container_conf"]."
                     ( idtplcfg, number, container)
                     VALUES
-                    ('".Contenido_Security::toInteger($newidtplcfg)."', '".Contenido_Security::toInteger($number)."', '".Contenido_Security::escapeDB($container, $db2)."')";
+                    ('".cSecurity::toInteger($newidtplcfg)."', '".cSecurity::toInteger($number)."', '".cSecurity::escapeDB($container, $db2)."')";
             $db2->query($sql);
         }
     }
@@ -737,7 +737,7 @@ function tplAutoFillModules ($idtpl)
         $db_autofill = cRegistry::getDb();
     }
 
-    $sql = "SELECT idlay FROM ".$cfg["tab"]["tpl"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
+    $sql = "SELECT idlay FROM ".$cfg["tab"]["tpl"]." WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
     $db_autofill->query($sql);
 
     if (!$db_autofill->next_record())
@@ -765,7 +765,7 @@ function tplAutoFillModules ($idtpl)
             {
                 $sql =     "SELECT idmod FROM ".$cfg["tab"]["mod"]
                         ." WHERE name = '".
-                        Contenido_Security::escapeDB($containerinf[$idlay][$container]["default"], $db_autofill)."'";
+                        cSecurity::escapeDB($containerinf[$idlay][$container]["default"], $db_autofill)."'";
 
                 $db_autofill->query($sql);
 
@@ -774,16 +774,16 @@ function tplAutoFillModules ($idtpl)
                     $idmod = $db_autofill->f("idmod");
 
 
-                    $sql = "SELECT idcontainer FROM ".$cfg["tab"]["container"]." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND number = '".Contenido_Security::toInteger($container)."'";
+                    $sql = "SELECT idcontainer FROM ".$cfg["tab"]["container"]." WHERE idtpl = '".cSecurity::toInteger($idtpl)."' AND number = '".cSecurity::toInteger($container)."'";
 
                     $db_autofill->query($sql);
 
                     if ($db_autofill->next_record())
                     {
                         $sql =     "UPDATE ".$cfg["tab"]["container"].
-                                " SET idmod = '".Contenido_Security::toInteger($idmod)."' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'".
-                                " AND number = '".Contenido_Security::toInteger($container)."' AND ".
-                                " idcontainer = '".Contenido_Security::toInteger($db_autofill->f("idcontainer"))."'";
+                                " SET idmod = '".cSecurity::toInteger($idmod)."' WHERE idtpl = '".cSecurity::toInteger($idtpl)."'".
+                                " AND number = '".cSecurity::toInteger($container)."' AND ".
+                                " idcontainer = '".cSecurity::toInteger($db_autofill->f("idcontainer"))."'";
                         $db_autofill->query($sql);
                     } else {
                         $sql =     "INSERT INTO ".$cfg["tab"]["container"].
@@ -802,7 +802,7 @@ function tplAutoFillModules ($idtpl)
             {
                 $sql =     "SELECT idmod FROM ".$cfg["tab"]["mod"]
                         ." WHERE name = '".
-                        Contenido_Security::escapeDB($containerinf[$idlay][$container]["default"], $db)."'";
+                        cSecurity::escapeDB($containerinf[$idlay][$container]["default"], $db)."'";
 
                 $db_autofill->query($sql);
 
@@ -812,7 +812,7 @@ function tplAutoFillModules ($idtpl)
 
 
                     $sql =     "SELECT idcontainer, idmod FROM ".$cfg["tab"]["container"]
-                            ." WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."' AND number = '".Contenido_Security::toInteger($container)."'";
+                            ." WHERE idtpl = '".cSecurity::toInteger($idtpl)."' AND number = '".cSecurity::toInteger($container)."'";
 
                     $db_autofill->query($sql);
 
@@ -823,7 +823,7 @@ function tplAutoFillModules ($idtpl)
                         $sql =     "INSERT INTO ".$cfg["tab"]["container"].
                                   " (idtpl, number, idmod) ".
                                   " VALUES ( ".
-                                  " '".Contenido_Security::toInteger($idtpl)."', '".Contenido_Security::toInteger($container)."', '".Contenido_Security::toInteger($idmod)."')";
+                                  " '".cSecurity::toInteger($idtpl)."', '".cSecurity::toInteger($container)."', '".cSecurity::toInteger($idmod)."')";
                         $db_autofill->query($sql);
                     }
                 }

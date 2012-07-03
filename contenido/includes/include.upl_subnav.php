@@ -52,8 +52,8 @@ if ( isset($_GET['path']) )
             FROM
                 ".$cfg["tab"]["area"]." AS a
             WHERE
-                a.name = '".Contenido_Security::escapeDB($area, $db)."' OR
-                a.parent_id = '".Contenido_Security::escapeDB($area, $db)."'
+                a.name = '".cSecurity::escapeDB($area, $db)."' OR
+                a.parent_id = '".cSecurity::escapeDB($area, $db)."'
             ORDER BY
                 idarea";
 

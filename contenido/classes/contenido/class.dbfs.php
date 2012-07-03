@@ -59,7 +59,7 @@ class cApiDbfsCollection extends ItemCollection
     {
         global $client, $auth;
 
-        $path   = Contenido_Security::escapeDB($path, null);
+        $path   = cSecurity::escapeDB($path, null);
         $client = (int) $client;
         $path   = cApiDbfs::stripPath($path);
         $dir    = dirname($path);
@@ -379,9 +379,9 @@ class cApiDbfsCollection extends ItemCollection
         if ($contenido) {
             return true;
         }
-        $sPath      = Contenido_Security::toString($sPath);
+        $sPath      = cSecurity::toString($sPath);
         $bAvailable = true;
-        $iTimeMng   = Contenido_Security::toInteger($oProperties->getValue('upload', $sPath, 'file', 'timemgmt'));
+        $iTimeMng   = cSecurity::toInteger($oProperties->getValue('upload', $sPath, 'file', 'timemgmt'));
         if ($iTimeMng == 0) {
             return true;
         }

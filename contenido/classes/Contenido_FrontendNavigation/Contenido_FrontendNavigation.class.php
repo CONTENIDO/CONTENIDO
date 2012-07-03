@@ -185,7 +185,7 @@ class Contenido_FrontendNavigation extends Contenido_FrontendNavigation_Base {
         if (isset($this->aLevel[intval($iIdcat)])) {
             return $this->aLevel[intval($iIdcat)];
         }
-        $sSql = 'SELECT level FROM ' . $this->aCfg["tab"]["cat_tree"] . ' WHERE idcat = ' . Contenido_Security::escapeDB(intval($iIdcat), $this->oDb);
+        $sSql = 'SELECT level FROM ' . $this->aCfg["tab"]["cat_tree"] . ' WHERE idcat = ' . cSecurity::escapeDB(intval($iIdcat), $this->oDb);
         $this->oDb->query($sSql);
         if ($this->oDb->Errno != 0) {
             return -1;

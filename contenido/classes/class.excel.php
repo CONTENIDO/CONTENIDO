@@ -41,13 +41,13 @@ class ExcelWorksheet
     function ExcelWorksheet ($title, $filename)
     {
         cDeprecated("This class is not supported any longer.");
-        $this->_title         = Contenido_Security::escapeDB($title, null);
-        $this->_filename     = Contenido_Security::escapeDB($filename, null);
+        $this->_title         = cSecurity::escapeDB($title, null);
+        $this->_filename     = cSecurity::escapeDB($filename, null);
     }
 
     function setRow ($row)
     {
-        $row = Contenido_Security::escapeDB($row, null);
+        $row = cSecurity::escapeDB($row, null);
         $args = func_num_args();
 
         for ($arg=1;$arg<$args;$arg++)
@@ -59,9 +59,9 @@ class ExcelWorksheet
 
     function setCell($row, $cell, $data)
     {
-        $row     = Contenido_Security::escapeDB($row, null);
-        $cell     = Contenido_Security::escapeDB($cell, null);
-        $data     = Contenido_Security::escapeDB($data, null);
+        $row     = cSecurity::escapeDB($row, null);
+        $cell     = cSecurity::escapeDB($cell, null);
+        $data     = cSecurity::escapeDB($data, null);
         $this->_data[$row][$cell] = $data;
     }
 

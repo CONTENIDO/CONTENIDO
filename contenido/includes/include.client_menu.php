@@ -40,7 +40,7 @@ if ($action == "client_delete")
    $sql = "DELETE FROM "
              .$cfg["tab"]["clients"].
           " WHERE
-             idclient = '".Contenido_Security::toInteger($idclient)."'";
+             idclient = '".cSecurity::toInteger($idclient)."'";
    $db->query($sql);
     }
 

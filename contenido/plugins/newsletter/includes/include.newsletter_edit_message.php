@@ -69,7 +69,7 @@ if ($oNewsletter->virgin == false && $oNewsletter->get("idclient") == $client &&
     // article category - the article will be shown also, if he doesn't have any rights at all...
     if ($action == "news_save" && $perm->have_perm_area_action("news", $action)) { // Don't use $area!
         // Changing e.g. \' back to ' (magic_quotes)
-        $sMessage = Contenido_Security::unescapeDB($_REQUEST["txtMessage"]);
+        $sMessage = cSecurity::unescapeDB($_REQUEST["txtMessage"]);
         $oNewsletter->set("message", $sMessage);
 
         if ($oNewsletter->get("template_idart") != $_REQUEST["selTemplate"]) {

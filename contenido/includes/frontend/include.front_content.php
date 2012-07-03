@@ -118,7 +118,30 @@ if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
 
 // Check frontend globals
 // @TODO: Should be outsourced into startup process but requires a better detection (frontend or backend)
-Contenido_Security::checkFrontendGlobals();
+if (isset($tmpchangelang) && $tmpchangelang > 0) {
+	// savelang is needed to set language before closing the page, see
+	// {frontend_clientdir}/front_content.php before cRegistry::shutdown()
+	$savedlang = $lang;
+	$lang      = $tmpchangelang;
+}
+
+// Change client
+if (isset($changeclient)){
+	$client = $changeclient;
+	unset($lang);
+	unset($load_lang);
+}
+
+// Change language
+if (isset($changelang)) {
+	$lang = $changelang;
+}
+
+// Initialize client
+if (!isset($client)) {
+	// load_client defined in {frontend_clientdir}/config.php
+	$client = $load_client;
+}
 
 // Update urlbuilder, set http base path
 Contenido_Url::getInstance()->getUrlBuilder()->setHttpBasePath($cfgClient[$client]['htmlpath']['frontend']);
@@ -579,7 +602,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             // Layout and Modules are merged depending on the Container definitions of the Template.
 
             $aExclude = explode(',', getEffectiveSetting('frontend.no_outputbuffer', 'idart', ''));
-            if (in_array(Contenido_Security::toInteger($idart), $aExclude)) {
+            if (in_array(cSecurity::toInteger($idart), $aExclude)) {
                 eval("?>\n" . $code . "\n<?php\n");
             } else {
                 // Write html output into output buffer and assign it to an variable

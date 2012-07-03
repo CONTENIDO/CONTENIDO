@@ -35,6 +35,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 /**
  * CONTENIDO Security exception class
+ *
+ * @deprecated [2012-07-03] This class is no longer needed
  */
 class Contenido_Security_Exception extends Exception
 {
@@ -48,10 +50,13 @@ class Contenido_Security_Exception extends Exception
 
     /**
      * @see Exception::__construct()
+ 	 * @deprecated [2012-07-03] This class is no longer needed
      */
     public function __construct($sMessage, $sParamName)
     {
         global $cfg;
+
+		cDeprecated("Contenido_Security_Exception is no longer needed");
 
         parent::__construct($sMessage);
 
@@ -73,66 +78,11 @@ class Contenido_Security_Exception extends Exception
     }
 }
 
-
 /**
  * CONTENIDO Security class
  */
-class Contenido_Security
+class cSecurity
 {
-    /**
-     * Accepted backend languages
-     * @var  array
-     */
-    protected static $_acceptedBelangValues = array('de_DE', 'en_US', 'fr_FR', 'it_IT', 'nl_NL');
-
-    /**
-     * Request paramaters, which must be numeric
-     * @var  array
-     */
-    protected static $_mustbeNumericParameters = array(
-        'client', 'changeclient', 'lang', 'changelang', 'idcat', 'idcatlang', 'idart', 'idartlang',
-        'idcatart'
-    );
-
-    /**
-     * Request paramaters, which are strictly forbidden
-     * @var  array
-     */
-    protected static $_forbiddenParameters = array('cfg', 'cfgClient', 'contenido_path', '_PHPLIB', 'db', 'sess');
-
-
-    /**
-     * Returns accepted backend language values
-     *
-     * @return  array
-     */
-    public static function getAcceptedBelangValues()
-    {
-        return self::$_acceptedBelangValues;
-    }
-
-
-    /**
-     * Returns must be numeric request parameters
-     *
-     * @return  array
-     */
-    public static function getMustbeNumericParameters()
-    {
-        return self::$_mustbeNumericParameters;
-    }
-
-
-    /**
-     * Returns forbidden request parameters
-     *
-     * @return  array
-     */
-    public static function getForbiddenParameters()
-    {
-        return self::$_forbiddenParameters;
-    }
-
     /**
      * Escapes string using CONTENIDO urlencoding method and escapes string for inserting
      * @static
@@ -244,173 +194,6 @@ class Contenido_Security
     }
 
     /**
-     * Checks some CONTENIDO core related request parameters against XSS
-     *
-     * @access  public
-     * @return  bool|void  True on success otherwhise nothing.
-     * @throws  Contenido_Security_Exception if one of the checks fails
-     */
-    public static function checkRequests()
-    {
-        // Check backend language
-        self::checkRequestBelang();
-
-        // Check for forbidden parameters
-        self::checkRequestForbiddenParameter();
-
-        // Check for parameters who must be numeric
-        self::checkRequestMustbeNumericParameter();
-
-        // Check session id
-        self::checkRequestSession();
-
-        return true;
-    }
-
-    /**
-     * Checks backend language parameter in request.
-     *
-     * @return  bool|void  True on success otherwhise nothing.
-     * @throws  Contenido_Security_Exception if existing backend language parameter is not valid
-     */
-    public static function checkRequestBelang()
-    {
-        if (isset($_REQUEST['belang'])) {
-            $_REQUEST['belang'] = strval($_REQUEST['belang']);
-            if (!in_array($_REQUEST['belang'], self::$_acceptedBelangValues)) {
-                throw new Contenido_Security_Exception('Please use a valid language!', 'belang');
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks for forbidden parameters in request.
-     *
-     * @return  bool|void  True on success otherwhise nothing.
-     * @throws  Contenido_Security_Exception if the request contains one of forbidden parameters.
-     */
-    public static function checkRequestForbiddenParameter()
-    {
-        foreach (self::$_forbiddenParameters as $param) {
-            if (isset($_REQUEST[$param])) {
-                throw new Contenido_Security_Exception('Invalid call!', $param);
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks for parameters in request who must be numeric.
-     *
-     * Contrary to other request checks, this method don't throws a exception. It just insures that
-     * incomming values are really numeric, by type casting them to an integer.
-     *
-     * @return  bool  Just true
-     */
-    public static function checkRequestMustbeNumericParameter()
-    {
-        foreach (self::$_mustbeNumericParameters as $sParamName) {
-            if ( isset($_REQUEST[$sParamName]) ) {
-                $sValue = $_REQUEST[$sParamName];
-                if ( strlen($sValue) > 0 && self::isInteger($sValue) == false ) {
-                    throw new Contenido_Security_Exception('Invalid call', $sParamName);
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks/Validates existing CONTENIDO session request parameter.
-     *
-     * @return  bool|void  True on success otherwhise nothing.
-     * @throws  Contenido_Security_Exception if CONTENIDO parameter in request don't matches the required format
-     */
-    public static function checkRequestSession()
-    {
-        if (isset($_REQUEST['contenido']) && !preg_match('/^[0-9a-f]{32}$/', $_REQUEST['contenido'])) {
-            if ($_REQUEST['contenido'] != '') {
-                throw new Contenido_Security_Exception('Invalid call', 'contenido');
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Checks also contenido-var (session) to ascii, but works as a wrapper to checkRequestSession().
-     *
-     * @access public
-     * @return  true
-     * @throws  Contenido_Security_Exception if CONTENIDO parameter in request don't matches the required format
-     * @deprecated  Use checkRequestSession() instead due to better naming conventions
-     * @TODO:  Should be removed, but later in few years...
-     */
-    public static function checkSession()
-    {
-        cDeprecated("Use checkRequestSession() instead");
-
-        return self::checkRequestSession();
-    }
-
-    /**
-     * Checks some global variables at frontend like $lang, $client, $changelang, $changeclient,
-     * $tmpchangelang.
-     *
-     * Validates client and language related variables and takes care that their content is
-     * really a numeric value.
-     *
-     * Logic in this function is taken over from front_content.php (v 4.8.12, line 164 - 192).
-     *
-     * @TODO:  Need a solution for used globals
-     *
-     * @return  void
-     */
-    public static function checkFrontendGlobals()
-    {
-        global $tmpchangelang, $savedlang, $lang, $changelang, $load_lang, $changeclient, $client, $load_client;
-
-        if (isset($tmpchangelang) && is_numeric($tmpchangelang) && $tmpchangelang > 0) {
-            // savelang is needed to set language before closing the page, see
-            // {frontend_clientdir}/front_content.php before cRegistry::shutdown()
-            $savedlang = $lang;
-            $lang      = $tmpchangelang;
-        }
-
-        // Check basic incomming data
-        if (isset($changeclient) && !is_numeric($changeclient)) {
-            unset($changeclient);
-        }
-        if (isset($client) && !is_numeric($client)) {
-            unset($client);
-        }
-        if (isset($changelang) && !is_numeric($changelang)) {
-            unset($changelang);
-        }
-        if (isset($lang) && !is_numeric($lang)) {
-            unset($lang);
-        }
-
-        // Change client
-        if (isset($changeclient)){
-            $client = $changeclient;
-            unset($lang);
-            unset($load_lang);
-        }
-
-        // Change language
-        if (isset($changelang)) {
-            $lang = $changelang;
-        }
-
-        // Initialize client
-        if (!isset($client)) {
-            // load_client defined in {frontend_clientdir}/config.php
-            $client = $load_client;
-        }
-    }
-
-    /**
      * Escaped an query-string with mysql_real_escape_string
      * @static
      *
@@ -461,4 +244,271 @@ class Contenido_Security
 
 }
 
+class Contenido_Security extends cSecurity {
+
+	/**
+	 * Returns accepted backend language values
+	 * @deprecated [2012-07-02] This class was replaced by cRequestValidator
+	 * @return  array
+	 */
+	public static function getAcceptedBelangValues()
+	{
+		cDeprecated("Please use cSecurity instead");
+		return array();
+	}
+
+
+	/**
+	 * Returns must be numeric request parameters
+	 * @deprecated [2012-07-02] This class was replaced by cRequestValidator
+	 * @return  array
+	 */
+	public static function getMustbeNumericParameters()
+	{
+		cDeprecated("Please use cSecurity instead");
+		return array();
+	}
+
+
+	/**
+	 * Returns forbidden request parameters
+	 * @deprecated [2012-07-02] This class was replaced by cRequestValidator
+	 * @return  array
+	 */
+	public static function getForbiddenParameters()
+	{
+		cDeprecated("Please use cSecurity instead");
+		return array();
+	}
+
+	/**
+	 * Checks some CONTENIDO core related request parameters against XSS
+	 *
+	 * @deprecated [2012-07-02] This function is now executed by cRequestValidator
+	 * @access  public
+	 * @return  bool|void  True on success otherwhise nothing.
+	 */
+	public static function checkRequests()
+	{
+		global $oRequestValidator;
+
+		cDeprecated("Please use cSecurity instead");
+		return $oRequestValidator->checkParams();
+	}
+
+	/**
+	 * Checks backend language parameter in request.
+	 *
+	 * @deprecated [2012-07-02] This function is now executed by cRequestValidator
+	 * @return  bool|void  True on success otherwhise nothing.
+	 */
+	public static function checkRequestBelang()
+	{
+		global $oRequestValidator;
+
+		cDeprecated("Please use cSecurity instead");
+		return $oRequestValidator->checkParams();
+	}
+	/**
+	 * Checks for forbidden parameters in request.
+	 *
+	 * @deprecated [2012-07-02] This function is now executed by cRequestValidator
+	 * @return  bool|void  True on success otherwhise nothing.
+	 */
+	public static function checkRequestForbiddenParameter()
+	{
+		global $oRequestValidator;
+
+		cDeprecated("Please use cSecurity instead");
+		return $oRequestValidator->checkParams();
+	}
+
+	/**
+	 * Checks for parameters in request who must be numeric.
+	 *
+	 * Contrary to other request checks, this method don't throws a exception. It just insures that
+	 * incomming values are really numeric, by type casting them to an integer.
+	 *
+	 * @deprecated [2012-07-02] This function is now executed by cRequestValidator
+	 * @return  bool  Just true
+	 */
+	public static function checkRequestMustbeNumericParameter()
+	{
+		global $oRequestValidator;
+
+		cDeprecated("Please use cSecurity instead");
+		return $oRequestValidator->checkParams();
+	}
+
+	/**
+	 * Checks/Validates existing CONTENIDO session request parameter.
+	 *
+	 * @deprecated [2012-07-02] This function is now executed by cRequestValidator
+	 * @return  bool|void  True on success otherwhise nothing.
+	 */
+	public static function checkRequestSession()
+	{
+		global $oRequestValidator;
+
+		cDeprecated("Please use cSecurity instead");
+		return $oRequestValidator->checkParams();
+	}
+
+	/**
+	 * Checks also contenido-var (session) to ascii, but works as a wrapper to checkRequestSession().
+	 *
+	 * @access public
+	 * @return  true
+	 * @deprecated  Use checkRequestSession() instead due to better naming conventions
+	 * @TODO:  Should be removed, but later in few years...
+	 */
+	public static function checkSession()
+	{
+		cDeprecated("Use checkRequestSession() instead");
+
+		cDeprecated("Please use cSecurity instead");
+		return self::checkRequestSession();
+	}
+
+	/**
+	 * Escapes string using CONTENIDO urlencoding method and escapes string for inserting
+	 * @static
+	 *
+	 * @deprecated [2012-07-02] This function is now executed by cSecurity
+	 * @param   string        $sString  Input string
+	 * @param   DB_Contenido  $oDb      CONTENIDO database object
+	 * @return  string   Filtered string
+	 */
+	public static function filter($sString, $oDb)
+	{
+		cDeprecated("Please use cSecurity instead");
+
+		return parent::filter($sString, $oDb);
+	}
+
+	/**
+	 * Reverts effect of method filter()
+	 * @deprecated [2012-07-02] This function is now executed by cSecurity
+	 * @static
+	 *
+	 * @param   string  $sString  Input string
+	 * @return  string  Unfiltered string
+	 */
+	public static function unFilter($sString)
+	{
+		cDeprecated("Please use cSecurity instead");
+
+		return parent::unFilter($sString);
+	}
+
+	/**
+	 * Check: Has the variable an boolean value?
+	 * @deprecated [2012-07-02] This function is now executed by cSecurity
+	 * @static
+	 *
+	 * @param   string   $sVar  Input string
+	 * @return  boolean  Check state
+	 */
+	public static function isBoolean($sVar)
+	{
+		cDeprecated("Please use cSecurity instead");
+
+		return parent::isBoolean($sVar);
+	}
+
+	/**
+	 * Check: Is the variable an integer?
+	 * @deprecated [2012-07-02] This function is now executed by cSecurity
+	 * @static
+	 *
+	 * @param   string   $sVar  Input string
+	 * @return  boolean  Check state
+	 */
+	public static function isInteger($sVar)
+	{
+		cDeprecated("Please use cSecurity instead");
+
+		return parent::isInteger($sVar);
+	}
+
+	/**
+	 * Check: Is the variable an string?
+	 * @deprecated [2012-07-02] This function is now executed by cSecurity
+	 * @static
+	 *
+	 * @param   string   $sVar  Input string
+	 * @return  boolean  Check state
+	 */
+	public static function isString($sVar)
+	{
+		cDeprecated("Please use cSecurity instead");
+
+		return parent::isString($sVar);
+	}
+
+	/**
+	 * Convert an string to an boolean
+	 * @deprecated [2012-07-02] This function is now executed by cSecurity
+	 * @static
+	 *
+	 * @param   string   $sString   Input string
+	 * @return  boolean  Type casted input string
+	 */
+	public static function toBoolean($sString)
+	{
+		cDeprecated("Please use cSecurity instead");
+
+		return parent::toBoolean($sString);
+	}
+
+	/**
+	 * Convert an string to an integer
+	 * @deprecated [2012-07-02] This function is now executed by cSecurity
+	 * @static
+	 *
+	 * @param   string   $sString   Input string
+	 * @return  integer  Type casted input string
+	 */
+	public static function toInteger($sString)
+	{
+		cDeprecated("Please use cSecurity instead");
+
+		return parent::toInteger($sString);
+	}
+
+	/**
+	 * Convert an string
+	 * @deprecated [2012-07-02] This function is now executed by cSecurity
+	 * @static
+	 *
+	 * @param   string   $sString         Input string
+	 * @param   boolean  $bHTML           If true check with strip_tags and stripslashes
+	 * @param   string   $sAllowableTags  Allowable tags if $bHTML is true
+	 * @return  string  Converted string
+	 */
+	public static function toString($sString, $bHTML = false, $sAllowableTags = '')
+	{
+		cDeprecated("Please use cSecurity instead");
+
+		return parent::toString($sString, $bHTML, $sAllowableTags);
+	}
+
+	/**
+	 * Checks some global variables at frontend like $lang, $client, $changelang, $changeclient,
+	 * $tmpchangelang.
+	 *
+	 * Validates client and language related variables and takes care that their content is
+	 * really a numeric value.
+	 *
+	 * Logic in this function is taken over from front_content.php (v 4.8.12, line 164 - 192).
+	 *
+	 * @TODO:  Need a solution for used globals
+	 *
+	 * @return  void
+	 */
+	public static function checkFrontendGlobals()
+	{
+		cDeprecated("This function was removed from cSecurity. The checks are performred by cRequestValidator now");
+	}
+}
 ?>

@@ -66,7 +66,7 @@ if (!defined('CON_FRAMEWORK')) {
      }
 
     protected function _storeModuleInformation() {
-        $iIdMod = Contenido_Security::toInteger($this->iIdentity);
+        $iIdMod = cSecurity::toInteger($this->iIdentity);
 
         $oModule = new cApiModule($iIdMod);
 

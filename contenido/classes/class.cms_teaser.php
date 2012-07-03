@@ -281,9 +281,9 @@ class Cms_Teaser {
               case XMLReader::TEXT:
                 if ($bPutInArtArray == true) {
                     $bPutInArtArray = false;
-                    array_push($this->aSettings['teaser_manual_art'], Contenido_Security::unfilter($oXmlReader->value));
+                    array_push($this->aSettings['teaser_manual_art'], cSecurity::unfilter($oXmlReader->value));
                 } else {
-                    $this->aSettings[$sLastNode] = Contenido_Security::unfilter($oXmlReader->value);
+                    $this->aSettings[$sLastNode] = cSecurity::unfilter($oXmlReader->value);
                 }
                 break;
           }
@@ -310,7 +310,7 @@ class Cms_Teaser {
             if ($sParam == 'teaser_manual_art') {
                 $oParam = $oXmlDom->createElement(str_replace('teaser_', '', $sParam));
                 //split all arts to array
-                $aArts = explode(';', Contenido_Security::toString($_POST[$sParam]));
+                $aArts = explode(';', cSecurity::toString($_POST[$sParam]));
                 //for each artid generate subnote in xml document and store its value
                 foreach ($aArts as $iArt) {
                     $iArt = (int) $iArt;
@@ -321,7 +321,7 @@ class Cms_Teaser {
                 }
             } else {
                 //generate xml node for current property and store its value
-                $oParam = $oXmlDom->createElement(str_replace('teaser_', '', $sParam), Contenido_Security::filter($_POST[$sParam], $this->oDb));
+                $oParam = $oXmlDom->createElement(str_replace('teaser_', '', $sParam), cSecurity::filter($_POST[$sParam], $this->oDb));
             }
 
             $oXmlDom->firstChild->appendChild($oParam);

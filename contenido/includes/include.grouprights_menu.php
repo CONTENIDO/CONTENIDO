@@ -41,19 +41,19 @@ if (($action == "group_delete") && ($perm->have_perm_area_action($area, $action)
    $sql = "DELETE FROM "
              .$cfg["tab"]["groups"].
           " WHERE
-             group_id = \"" .Contenido_Security::escapeDB($groupid, $db)."\"";
+             group_id = \"" .cSecurity::escapeDB($groupid, $db)."\"";
    $db->query($sql);
 
    $sql = "DELETE FROM ".
                $cfg["tab"]["groupmembers"].
-               " WHERE group_id = \"" .Contenido_Security::escapeDB($groupid, $db)."\"";
+               " WHERE group_id = \"" .cSecurity::escapeDB($groupid, $db)."\"";
 
    $db->query($sql);
 
 
    $sql = "DELETE FROM ".
                $cfg["tab"]["rights"].
-               " WHERE user_id = \"" .Contenido_Security::escapeDB($groupid, $db)."\"";
+               " WHERE user_id = \"" .cSecurity::escapeDB($groupid, $db)."\"";
 
    $db->query($sql);
 }

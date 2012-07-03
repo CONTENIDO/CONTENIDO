@@ -125,7 +125,7 @@ class cApiPropertyCollection extends ItemCollection
     public function __construct()
     {
         global $cfg, $client, $lang;
-        $this->client = Contenido_Security::toInteger($client);
+        $this->client = cSecurity::toInteger($client);
         parent::__construct($cfg['tab']['properties'], 'idproperty');
         $this->_setItemClass('cApiProperty');
 
@@ -250,7 +250,7 @@ class cApiPropertyCollection extends ItemCollection
         }
 
         if ($item = $this->next()) {
-            return (Contenido_Security::unescapeDB($item->get('value')));
+            return (cSecurity::unescapeDB($item->get('value')));
         }
 
         return $default;
@@ -287,7 +287,7 @@ class cApiPropertyCollection extends ItemCollection
         }
 
         while ($item = $this->next()) {
-            $aResult[$item->get('name')] = Contenido_Security::unescapeDB($item->get('value'));
+            $aResult[$item->get('name')] = cSecurity::unescapeDB($item->get('value'));
         }
 
         return $aResult;
@@ -314,7 +314,7 @@ class cApiPropertyCollection extends ItemCollection
         $this->select("type = '" . $type . "' AND name = '" . $name . "");
 
         while ($item = $this->next()) {
-            $aResult[] = Contenido_Security::unescapeDB($item->get('value'));
+            $aResult[] = cSecurity::unescapeDB($item->get('value'));
         }
 
         return $aResult;
@@ -607,7 +607,7 @@ class cApiPropertyCollection extends ItemCollection
             if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid
                 && $entry['type'] == $type && $entry['name'] == $name)
             {
-                return Contenido_Security::unescapeDB($entry['value']);
+                return cSecurity::unescapeDB($entry['value']);
             }
         }
 
@@ -631,7 +631,7 @@ class cApiPropertyCollection extends ItemCollection
             if ($entry['itemtype'] == $itemtype && $entry['itemid'] == $itemid
                 && $entry['type'] == $type)
             {
-                $result[$entry['name']] = Contenido_Security::unescapeDB($entry['value']);
+                $result[$entry['name']] = cSecurity::unescapeDB($entry['value']);
             }
         }
 

@@ -121,7 +121,7 @@ FROM
 ".$cfg["tab"]["clients_lang"]." AS B
 WHERE
 A.idlang=B.idlang AND
-B.idclient='".Contenido_Security::toInteger($client)."'
+B.idclient='".cSecurity::toInteger($client)."'
 ORDER BY A.idlang";
 
 $db->query($sql);

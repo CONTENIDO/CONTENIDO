@@ -82,13 +82,13 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
             $sSQL .= "tblCatLang.startidartlang as idstartartlang ";
             $sSQL .= "FROM ".$cfg["tab"]["art_lang"]." AS tblArtLang, ".$cfg["tab"]["cat_art"]." AS tblCatArt, ";
             $sSQL .= $cfg["tab"]["cat_lang"]." AS tblCatLang ";
-            $sSQL .= "WHERE tblCatArt.idcat = '".Contenido_Security::toInteger($iIDCat)."' AND tblCatLang.idcat = tblCatArt.idcat AND tblCatLang.idlang = tblArtLang.idlang AND ";
+            $sSQL .= "WHERE tblCatArt.idcat = '".cSecurity::toInteger($iIDCat)."' AND tblCatLang.idcat = tblCatArt.idcat AND tblCatLang.idlang = tblArtLang.idlang AND ";
 
             if ($bArtOnline) {
                 $sSQL .= "tblArtLang.online = '1' AND ";
             }
 
-            $sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '".Contenido_Security::escapeDB($lang, $oDB)."' ORDER BY tblArtLang.title";
+            $sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '".cSecurity::escapeDB($lang, $oDB)."' ORDER BY tblArtLang.title";
 
             $oDB->query($sSQL);
 
@@ -155,11 +155,11 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
         $sSQL .= "tblCatLang.visible AS visible, tblCatLang.public AS public, tblCatTree.level AS level ";
         $sSQL .= "FROM ".$cfg["tab"]["cat"]." AS tblCat, ".$cfg["tab"]["cat_lang"]." AS tblCatLang, ";
         $sSQL .= $cfg["tab"]["cat_tree"]." AS tblCatTree ";
-        $sSQL .= "WHERE tblCat.idclient = '".Contenido_Security::escapeDB($client, $oDB)."' AND tblCatLang.idlang = '".Contenido_Security::escapeDB($lang, $oDB)."' AND ";
+        $sSQL .= "WHERE tblCat.idclient = '".cSecurity::escapeDB($client, $oDB)."' AND tblCatLang.idlang = '".cSecurity::escapeDB($lang, $oDB)."' AND ";
         $sSQL .= "tblCatLang.idcat = tblCat.idcat AND tblCatTree.idcat = tblCat.idcat ";
 
         if ($iMaxLevel > 0) {
-            $sSQL .= "AND tblCatTree.level < '".Contenido_Security::escapeDB($iMaxLevel, $oDB)."' ";
+            $sSQL .= "AND tblCatTree.level < '".cSecurity::escapeDB($iMaxLevel, $oDB)."' ";
         }
         $sSQL .= "ORDER BY tblCatTree.idtree";
 
@@ -234,10 +234,10 @@ class cHTMLInputSelectElement extends cHTMLSelectElement
             $sSQL .= "FROM ".$cfg["tab"]["content"]." AS tblContent, ".$cfg["tab"]["art_lang"]." AS tblArtLang, ";
             $sSQL .= $cfg["tab"]["cat_art"]." AS tblCatArt, ".$cfg["tab"]["type"]." AS tblType ";
             $sSQL .= "WHERE tblContent.idtype = tblType.idtype AND tblContent.idartlang = tblArtLang.idartlang AND ";
-            $sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '". Contenido_Security::escapeDB($lang, $oDB)."' AND tblCatArt.idcatart = '". Contenido_Security::toInteger($iIDCatArt)."' ";
+            $sSQL .= "tblArtLang.idart = tblCatArt.idart AND tblArtLang.idlang = '". cSecurity::escapeDB($lang, $oDB)."' AND tblCatArt.idcatart = '". cSecurity::toInteger($iIDCatArt)."' ";
 
             if ($sTypeRange != "") {
-                $sSQL .= "AND tblContent.idtype IN (". Contenido_Security::escapeDB($sTypeRange, $oDB).") ";
+                $sSQL .= "AND tblContent.idtype IN (". cSecurity::escapeDB($sTypeRange, $oDB).") ";
             }
 
             $sql .= "ORDER BY tblContent.idtype, tblContent.typeid";

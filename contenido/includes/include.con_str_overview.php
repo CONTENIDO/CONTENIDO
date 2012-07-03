@@ -230,7 +230,7 @@ global $check_global_rights, $sess, $cfg, $perm, $db, $db2, $db3, $area, $client
                    {
                        $parentid = $db->f("parentid");
                        $sql = "SELECT idcatlang FROM %s WHERE idcat = '%s' AND idlang = '%s'";
-                       $db->query(sprintf($sql, $cfg["tab"]["cat_lang"], Contenido_Security::toInteger($parentid), Contenido_Security::toInteger($lang)));
+                       $db->query(sprintf($sql, $cfg["tab"]["cat_lang"], cSecurity::toInteger($parentid), cSecurity::toInteger($lang)));
 
                        if ($db->next_record())
                        {
@@ -393,8 +393,8 @@ if ($syncoptions == -1)
                 ".$cfg["tab"]["tpl_conf"]." AS d
                 ON d.idtplcfg = b.idtplcfg
             WHERE
-                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
-                b.idlang    = '".Contenido_Security::toInteger($lang)."' AND
+                a.idclient  = '".cSecurity::toInteger($client)."' AND
+                b.idlang    = '".cSecurity::toInteger($lang)."' AND
                 c.idcat     = b.idcat AND
                 b.idcat     = a.idcat
             ORDER BY
@@ -419,9 +419,9 @@ if ($syncoptions == -1)
                 ".$cfg["tab"]["tpl_conf"]." AS d
                 ON d.idtplcfg = b.idtplcfg
             WHERE
-                a.idclient  = '".Contenido_Security::toInteger($client)."' AND
-                (b.idlang    = '".Contenido_Security::toInteger($lang)."' OR
-                 b.idlang     = '".Contenido_Security::toInteger($syncoptions)."') AND
+                a.idclient  = '".cSecurity::toInteger($client)."' AND
+                (b.idlang    = '".cSecurity::toInteger($lang)."' OR
+                 b.idlang     = '".cSecurity::toInteger($syncoptions)."') AND
                 c.idcat     = b.idcat AND
                 b.idcat     = a.idcat
             ORDER BY
@@ -468,7 +468,7 @@ if (count($arrIn) > 0) {
 
     $sql2 = "SELECT b.idcat, a.idart, idlang FROM ".$cfg["tab"]["art_lang"]." AS a,
                                   ".$cfg["tab"]["cat_art"]." AS b
-            WHERE b.idcat IN (".Contenido_Security::escapeDB($sIn, $db).") AND (a.idlang = '".Contenido_Security::toInteger($syncoptions)."' OR a.idlang = '".Contenido_Security::toInteger($lang)."')
+            WHERE b.idcat IN (".cSecurity::escapeDB($sIn, $db).") AND (a.idlang = '".cSecurity::toInteger($syncoptions)."' OR a.idlang = '".cSecurity::toInteger($lang)."')
             AND b.idart = a.idart";
     $db->query($sql2);
 
@@ -521,9 +521,9 @@ if ($syncoptions == -1) {
                     ".$cfg["tab"]["cat_art"]." AS c,
                     ".$cfg["tab"]["cat_lang"]." AS d
                 WHERE
-                    a.idlang = ".Contenido_Security::toInteger($lang)." AND
+                    a.idlang = ".cSecurity::toInteger($lang)." AND
                     a.idart = b.idart AND
-                    b.idclient = '".Contenido_Security::toInteger($client)."' AND
+                    b.idclient = '".cSecurity::toInteger($client)."' AND
                     b.idart = c.idart AND
                     c.idcat = d.idcat
                 GROUP BY c.idcat
@@ -540,7 +540,7 @@ if ($syncoptions == -1) {
                     ".$cfg["tab"]["cat_lang"]." AS d
                 WHERE
                     a.idart = b.idart AND
-                    b.idclient = '".Contenido_Security::toInteger($client)."' AND
+                    b.idclient = '".cSecurity::toInteger($client)."' AND
                     b.idart = c.idart AND
                     c.idcat = d.idcat
                 GROUP BY c.idcat";

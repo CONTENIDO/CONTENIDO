@@ -35,7 +35,7 @@ include_once($cfg['path']['contenido'].'includes/grouprights.inc.php');
 
 //set the areas which are in use fore selecting these
 $possible_area = "'".implode("','", $area_tree[$perm->showareas("con")])."'";
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".Contenido_Security::escapeDB($groupid, $db)."' AND idclient='".Contenido_Security::toInteger($rights_client)."' AND A.type = 1 AND idlang='".Contenido_Security::toInteger($rights_lang)."' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".cSecurity::escapeDB($groupid, $db)."' AND idclient='".cSecurity::toInteger($rights_client)."' AND A.type = 1 AND idlang='".cSecurity::toInteger($rights_lang)."' AND B.idarea IN ($possible_area) AND idcat!='0' AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
 $db->query($sql);
 $rights_list_old = array ();
 while ($db->next_record()) { //set a new rights list fore this user
@@ -114,7 +114,7 @@ $sTable .= $oTable->end_row();
 
 $colspan++;
 
-$sql = "SELECT A.idcat, level, name,parentid FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".Contenido_Security::toInteger($rights_lang)."' AND B.idclient='".Contenido_Security::toInteger($rights_client)."' ORDER BY idtree";
+$sql = "SELECT A.idcat, level, name,parentid FROM ".$cfg["tab"]["cat_tree"]." AS A, ".$cfg["tab"]["cat"]." AS B, ".$cfg["tab"]["cat_lang"]." AS C WHERE A.idcat=B.idcat AND B.idcat=C.idcat AND C.idlang='".cSecurity::toInteger($rights_lang)."' AND B.idclient='".cSecurity::toInteger($rights_client)."' ORDER BY idtree";
 
 $db->query($sql);
 $counter = array();

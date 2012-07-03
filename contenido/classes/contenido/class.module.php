@@ -352,7 +352,7 @@ class cApiModule extends Item
                 ". $cfg["tab"]["container"] . " as c,
                 ". $cfg["tab"]["tpl"] . " as t
                 WHERE
-                    c.idmod = '" . Contenido_Security::toInteger($module) . "' AND
+                    c.idmod = '" . cSecurity::toInteger($module) . "' AND
                     t.idtpl=c.idtpl
                 GROUP BY c.idtpl
                 ORDER BY t.name";

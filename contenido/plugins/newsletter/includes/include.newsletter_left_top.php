@@ -146,7 +146,7 @@ $sSQL = "SELECT tblCat.idcat AS idcat, tblCatLang.name AS name, tblCatTree.level
 $sSQL .= "tblCatLang.visible AS visible, tblCatLang.public AS public FROM ";
 $sSQL .= $cfg["tab"]["cat"]." AS tblCat, ".$cfg["tab"]["cat_lang"]." AS tblCatLang, ";
 $sSQL .= $cfg["tab"]["cat_tree"]." AS tblCatTree ";
-$sSQL .= "WHERE tblCat.idclient = '".Contenido_Security::toInteger($client)."' AND tblCatLang.idlang = '".Contenido_Security::toInteger($lang)."' AND ";
+$sSQL .= "WHERE tblCat.idclient = '".cSecurity::toInteger($client)."' AND tblCatLang.idlang = '".cSecurity::toInteger($lang)."' AND ";
 $sSQL .= "tblCatLang.idcat = tblCat.idcat AND tblCatTree.idcat = tblCat.idcat ";
 $sSQL .= "ORDER BY tblCatTree.idtree";
 

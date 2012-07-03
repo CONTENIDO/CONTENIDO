@@ -389,7 +389,7 @@ class SearchIndex extends SearchBaseAbstract
                 $sql = "INSERT INTO ".$this->cfg['tab']['keywords']."
                             (keyword, ".$this->place.", idlang)
                         VALUES
-                            ('".Contenido_Security::escapeDB($keyword, $this->db)."', '".Contenido_Security::escapeDB($index_string, $this->db)."', ".Contenido_Security::toInteger($this->lang).")";
+                            ('".cSecurity::escapeDB($keyword, $this->db)."', '".cSecurity::escapeDB($index_string, $this->db)."', ".cSecurity::toInteger($this->lang).")";
             } else {
                 // if keyword allready exists, create new index_string
                 if (preg_match("/&$this->idart=/", $this->keywords_old[$keyword])) {
@@ -400,7 +400,7 @@ class SearchIndex extends SearchBaseAbstract
 
                 $sql = "UPDATE ".$this->cfg['tab']['keywords']."
                         SET ".$this->place." = '".$index_string."'
-                        WHERE idlang='".Contenido_Security::toInteger($this->lang)."' AND keyword='".Contenido_Security::escapeDB($keyword, $this->db)."'";
+                        WHERE idlang='".cSecurity::toInteger($this->lang)."' AND keyword='".cSecurity::escapeDB($keyword, $this->db)."'";
             }
             $this->_debug('sql', $sql);
 
@@ -421,11 +421,11 @@ class SearchIndex extends SearchBaseAbstract
             if (strlen($index_string) == 0) {
                 // keyword is not referenced by any article
                 $sql = "DELETE FROM ".$this->cfg['tab']['keywords']."
-                    WHERE idlang='".Contenido_Security::toInteger($this->lang)."' AND keyword='".Contenido_Security::escapeDB($key_del, $this->db)."'";
+                    WHERE idlang='".cSecurity::toInteger($this->lang)."' AND keyword='".cSecurity::escapeDB($key_del, $this->db)."'";
             } else {
                 $sql = "UPDATE ".$this->cfg['tab']['keywords']."
                     SET ".$this->place." = '".$index_string."'
-                    WHERE idlang='".Contenido_Security::toInteger($this->lang)."' AND keyword='".Contenido_Security::escapeDB($key_del, $this->db)."'";
+                    WHERE idlang='".cSecurity::toInteger($this->lang)."' AND keyword='".cSecurity::escapeDB($key_del, $this->db)."'";
             }
             $this->_debug('sql', $sql);
             $this->db->query($sql);
@@ -446,8 +446,8 @@ class SearchIndex extends SearchBaseAbstract
                 FROM
                     ".$this->cfg['tab']['keywords']."
                 WHERE
-                    idlang=".Contenido_Security::toInteger($this->lang)."  AND
-                    (keyword IN ('".$keys."')  OR ".$this->place." REGEXP '&".Contenido_Security::toInteger($this->idart)."=')";
+                    idlang=".cSecurity::toInteger($this->lang)."  AND
+                    (keyword IN ('".$keys."')  OR ".$this->place." REGEXP '&".cSecurity::toInteger($this->idart)."=')";
 
         $this->_debug('sql', $sql);
 
@@ -881,16 +881,16 @@ class Search extends SearchBaseAbstract
             $kwSql = "keyword REGEXP '" . implode('|', $tmp_searchwords) . "'";
         } elseif ($this->search_option == 'like') {
             // like search
-            $search_like = implode(" OR keyword LIKE ", Contenido_Security::escapeDB($tmp_searchwords, $this->db));
+            $search_like = implode(" OR keyword LIKE ", cSecurity::escapeDB($tmp_searchwords, $this->db));
             $kwSql = "keyword LIKE '" . $search_like;
         } elseif ($this->search_option == 'exact') {
             // exact match
-            $search_exact = implode(" OR keyword = ", Contenido_Security::escapeDB($tmp_searchwords, $this->db));
+            $search_exact = implode(" OR keyword = ", cSecurity::escapeDB($tmp_searchwords, $this->db));
             $kwSql = "keyword LIKE '" . $search_exact;
         }
 
         $sql = "SELECT keyword, auto FROM " . $this->cfg['tab']['keywords']
-             . " WHERE idlang=" . Contenido_Security::toInteger($this->lang) . " AND " . $kwSql . " ";
+             . " WHERE idlang=" . cSecurity::toInteger($this->lang) . " AND " . $kwSql . " ";
         $this->_debug('sql', $sql);
         $this->db->query($sql);
 
@@ -1036,8 +1036,8 @@ class Search extends SearchBaseAbstract
             WHERE
                 A.idcat  = B.idcat AND
                 B.idcat  = C.idcat AND
-                C.idlang = '".Contenido_Security::toInteger($this->lang)."' AND
-                B.idclient = '".Contenido_Security::toInteger($this->client)."'
+                C.idlang = '".cSecurity::toInteger($this->lang)."' AND
+                B.idclient = '".cSecurity::toInteger($this->client)."'
             ORDER BY
                 idtree";
         $this->_debug('sql', $sql);
@@ -1137,8 +1137,8 @@ class Search extends SearchBaseAbstract
                     ".$this->cfg["tab"]["cat_lang"]." as C
                 WHERE
                     ".$sSearchRange."
-                    B.idlang = '".Contenido_Security::toInteger($this->lang)."' AND
-                    C.idlang = '".Contenido_Security::toInteger($this->lang)."' AND
+                    B.idlang = '".cSecurity::toInteger($this->lang)."' AND
+                    C.idlang = '".cSecurity::toInteger($this->lang)."' AND
                     A.idart = B.idart AND
                     A.idcat = C.idcat AND
                     ".$sArtSpecs."
@@ -1163,8 +1163,8 @@ class Search extends SearchBaseAbstract
                 FROM
                     ".$this->cfg['tab']['art_spec']."
                 WHERE
-                    client = ".Contenido_Security::toInteger($this->client)." AND
-                    lang = ".Contenido_Security::toInteger($this->lang)." AND
+                    client = ".cSecurity::toInteger($this->client)." AND
+                    lang = ".cSecurity::toInteger($this->lang)." AND
                     online = 1 ";
         $this->_debug('sql', $sql);
         $this->db->query($sql);
@@ -1201,8 +1201,8 @@ class Search extends SearchBaseAbstract
                 FROM
                     ".$this->cfg['tab']['art_spec']."
                 WHERE
-                    client = ".Contenido_Security::toInteger($this->client)." AND
-                    artspec = '".Contenido_Security::escapeDB($sArtSpecName, $this->db)."' ";
+                    client = ".cSecurity::toInteger($this->client)." AND
+                    artspec = '".cSecurity::escapeDB($sArtSpecName, $this->db)."' ";
         $this->_debug('sql', $sql);
         $this->db->query($sql);
         while ($this->db->next_record()) {
@@ -1530,7 +1530,7 @@ class SearchResult extends SearchBaseAbstract
     function getArtCat($artid)
     {
         $sql = "SELECT idcat FROM ".$this->cfg['tab']['cat_art']."
-                WHERE idart = ".Contenido_Security::toInteger($artid)." ";
+                WHERE idart = ".cSecurity::toInteger($artid)." ";
         $this->db->query($sql);
         if ($this->db->next_record()) {
             return $this->db->f('idcat');

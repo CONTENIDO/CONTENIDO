@@ -270,7 +270,7 @@ class Contenido_UpdateNotifier
             $sPropUpdate     = getSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name']);
             $sPropRSS        = getSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name']);
             $sPeriod         = getSystemProperty($this->aSysPropConfPeriod['type'], $this->aSysPropConfPeriod['name']);
-            $iPeriod         = Contenido_Security::toInteger($sPeriod);
+            $iPeriod         = cSecurity::toInteger($sPeriod);
 
             if ($sPropUpdate == "true" || $sPropRSS == "true") {
 

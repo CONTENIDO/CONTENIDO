@@ -34,7 +34,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // check requests
-Contenido_Security::checkRequests();
+cSecurity::checkRequests();
 
 cInclude('includes', 'functions.pathresolver.php');
 

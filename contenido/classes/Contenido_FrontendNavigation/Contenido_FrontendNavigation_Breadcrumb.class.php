@@ -128,9 +128,9 @@ class Contenido_FrontendNavigation_Breadcrumb extends Contenido_FrontendNavigati
                     '.$this->aCfg["tab"]["cat"].' AS cat,
                     '.$this->aCfg["tab"]["cat_tree"].' AS cattree
                 WHERE
-                    catlang.idlang = ' . Contenido_Security::escapeDB($this->iLang, $this->oDb) . ' AND
-                    cat.idclient  = ' . Contenido_Security::escapeDB($this->iClient, $this->oDb) . ' AND
-                    cat.idcat = ' . Contenido_Security::escapeDB($iBaseCategoryId, $this->oDb) . ' AND
+                    catlang.idlang = ' . cSecurity::escapeDB($this->iLang, $this->oDb) . ' AND
+                    cat.idclient  = ' . cSecurity::escapeDB($this->iClient, $this->oDb) . ' AND
+                    cat.idcat = ' . cSecurity::escapeDB($iBaseCategoryId, $this->oDb) . ' AND
                     catlang.idcat = cat.idcat AND
                     cattree.idcat = cat.idcat';
         if ($this->bDbg === true) {

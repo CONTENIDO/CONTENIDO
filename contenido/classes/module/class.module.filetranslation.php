@@ -183,7 +183,7 @@ class Contenido_Module_FileTranslation extends Contenido_Module_Handler
         $saveLangId = -1;
         while ($db->next_record()) {
 
-            $transArray[Contenido_Security::unfilter($db->f('original'))] = Contenido_Security::unfilter($db->f('translation'));
+            $transArray[cSecurity::unfilter($db->f('original'))] = cSecurity::unfilter($db->f('translation'));
 
             if ($saveLangId != $db->f('idlang') || $saveModId != $db->f('idmod')) {
 
@@ -225,7 +225,7 @@ class Contenido_Module_FileTranslation extends Contenido_Module_Handler
 
             $translations = array();
             while ($db->next_record()) {
-                $translations[Contenido_Security::unfilter($db->f('original'))] = Contenido_Security::unfilter($db->f('translation'));
+                $translations[cSecurity::unfilter($db->f('original'))] = cSecurity::unfilter($db->f('translation'));
             }
 
             if (count($translations) != 0) {

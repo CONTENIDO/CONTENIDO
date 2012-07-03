@@ -285,8 +285,8 @@ class cApiClientLanguage extends Item
      */
     public function getProperties()
     {
-        $itemtype = Contenido_Security::escapeDB($this->primaryKey, $this->db);
-        $itemid   = Contenido_Security::escapeDB($this->get($this->primaryKey), $this->db);
+        $itemtype = cSecurity::escapeDB($this->primaryKey, $this->db);
+        $itemid   = cSecurity::escapeDB($this->get($this->primaryKey), $this->db);
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
         $oPropertyColl->select("itemtype='".$itemtype."' AND itemid='".$itemid."'", '', 'type, value ASC');
 

@@ -58,7 +58,7 @@ if ($action == 'con_duplicate') {
 
 if ($action == 'con_syncarticle') {
     // Verify that the category is available in this language
-    $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat=".Contenido_Security::toInteger($idcat)." AND idlang=".Contenido_Security::toInteger($lang);
+    $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat=".cSecurity::toInteger($idcat)." AND idlang=".cSecurity::toInteger($lang);
     $db->query($sql);
     if ($db->next_record()) {
         conSyncArticle($syncarticle, $sourcelanguage, $lang);
@@ -205,11 +205,11 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                     ".$cfg["tab"]["art"]." AS b,
                     ".$cfg["tab"]["cat_art"]." AS c
                  WHERE
-                    (a.idlang   = ".Contenido_Security::toInteger($lang)." {SYNCOPTIONS}) AND
+                    (a.idlang   = ".cSecurity::toInteger($lang)." {SYNCOPTIONS}) AND
                     a.idart     = b.idart AND
-                    b.idclient  = ".Contenido_Security::toInteger($client)." AND
+                    b.idclient  = ".cSecurity::toInteger($client)." AND
                     b.idart     = c.idart AND
-                    c.idcat     = ".Contenido_Security::toInteger($idcat);
+                    c.idcat     = ".cSecurity::toInteger($idcat);
 
         $sql = str_replace("{ISSTART}", '', $sql);
 
@@ -426,7 +426,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
 
             $tmp_sync = '';
             if ($idlang != $lang) {
-                $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".Contenido_Security::toInteger($idcat)."' AND idlang='".Contenido_Security::toInteger($lang)."'";
+                $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat='".cSecurity::toInteger($idcat)."' AND idlang='".cSecurity::toInteger($lang)."'";
                 $db->query($sql);
                 if ($db->next_record()) {
                     $tmp_sync = '<a href="'.$sess->url("main.php?area=con&action=con_syncarticle&syncarticle=$idart&sourcelanguage=$idlang&frame=4&idcat=$idcat&next=$next").'" title="'.i18n("Copy article to the current language").'"><img src="'.$cfg["path"]["images"].'but_sync_art.gif" alt="'.i18n("Copy article to the current language").'" title="'.i18n("Copy article to the current language").'" border="0" style="margin-left:3px;"></a>';
@@ -448,7 +448,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         ".$cfg["tab"]["tpl_conf"]." AS a,
                         ".$cfg["tab"]["tpl"]." AS b
                      WHERE
-                        a.idtplcfg = ".Contenido_Security::toInteger($idtplcfg)." AND
+                        a.idtplcfg = ".cSecurity::toInteger($idtplcfg)." AND
                         a.idtpl = b.idtpl";
 
             $db2->query($sql2);
@@ -817,9 +817,9 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 ON
                     d.idtpl = c.idtpl
                 WHERE
-                    a.idclient = ".Contenido_Security::toInteger($client)." AND
-                    a.idcat    = ".Contenido_Security::toInteger($idcat)." AND
-                    b.idlang   = ".Contenido_Security::toInteger($lang)." AND
+                    a.idclient = ".cSecurity::toInteger($client)." AND
+                    a.idcat    = ".cSecurity::toInteger($idcat)." AND
+                    b.idlang   = ".cSecurity::toInteger($lang)." AND
                     b.idcat    = a.idcat AND
                     c.idtplcfg = b.idtplcfg";
 

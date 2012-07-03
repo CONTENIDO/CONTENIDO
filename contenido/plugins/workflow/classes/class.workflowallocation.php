@@ -69,12 +69,12 @@ class WorkflowAllocations extends ItemCollection {
         $idcatlang = $obj->get("idcatlang");
 
         $db = cRegistry::getDb();
-        $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_lang"]." WHERE idcatlang = '".Contenido_Security::toInteger($idcatlang)."'";
+        $sql = "SELECT idcat FROM ".$cfg["tab"]["cat_lang"]." WHERE idcatlang = '".cSecurity::toInteger($idcatlang)."'";
         $db->query($sql);
         $db->next_record();
         $idcat = $db->f("idcat");
 
-        $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".Contenido_Security::toInteger($idcat)."'";
+        $sql = "SELECT idart FROM ".$cfg["tab"]["cat_art"]." WHERE idcat = '".cSecurity::toInteger($idcat)."'";
         $db->query($sql);
 
         while ($db->next_record())
@@ -88,7 +88,7 @@ class WorkflowAllocations extends ItemCollection {
         {
             foreach ($idarts as $idart)
             {
-                $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".Contenido_Security::toInteger($idart)."' and idlang = '".Contenido_Security::toInteger($lang)."'";
+                $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart = '".cSecurity::toInteger($idart)."' and idlang = '".cSecurity::toInteger($lang)."'";
                 $db->query($sql);
                 if ($db->next_record())
                 {
@@ -228,7 +228,7 @@ class WorkflowAllocation extends Item {
         }
 
         $db = cRegistry::getDb();
-        $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcatlang = '".Contenido_Security::toInteger($idcatlang)."'";
+        $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcatlang = '".cSecurity::toInteger($idcatlang)."'";
         $db->query($sql);
 
         if (!$db->next_record())

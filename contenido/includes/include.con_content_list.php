@@ -66,7 +66,7 @@ if ($action == 'savecontype' || $action == 10) {
     conGenerateCodeForArtInAllCategories($idart);
 } else if ($action == 'deletecontype') {
      if (isset($_REQUEST['idcontent']) && is_numeric($_REQUEST['idcontent'])) {
-        $sql = "DELETE FROM ".$cfg["tab"]["content"]." WHERE idcontent='".Contenido_Security::toInteger($_REQUEST['idcontent'])."' LIMIT 1";
+        $sql = "DELETE FROM ".$cfg["tab"]["content"]." WHERE idcontent='".cSecurity::toInteger($_REQUEST['idcontent'])."' LIMIT 1";
         $db->query($sql);
      }
 
@@ -185,7 +185,7 @@ $typeAktuell = getAktuellType($typeAktuell, $aList);
     //Show path of selected category to user
     $catString = '';
     prCreateURLNameLocationString($idcat, '/', $catString);
-    $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idlang=".Contenido_Security::toInteger($lang);
+    $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".cSecurity::toInteger($idart)." AND idlang=".cSecurity::toInteger($lang);
     $db->query($sql);
     $db->next_record();
     $layoutcode .= '<p style="display:block;font-weight:bold;">'.i18n("Content Verwaltung").'</p>

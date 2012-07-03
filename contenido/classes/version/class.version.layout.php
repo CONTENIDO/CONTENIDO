@@ -123,7 +123,7 @@ if (!defined('CON_FRAMEWORK')) {
                 FROM
                 ". $this->aCfg["tab"]["lay"] ."
                 WHERE
-                    idlay = '".Contenido_Security::toInteger($this->iIdentity)."'";
+                    idlay = '".cSecurity::toInteger($this->iIdentity)."'";
 
         if($this->oDB->query($sSql)) {
             $this->oDB->next_record();

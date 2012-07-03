@@ -42,9 +42,9 @@ class Cat {
 
         $db = cRegistry::getDb();
 
-        $idlang     = Contenido_Security::toInteger($idlang);
+        $idlang     = cSecurity::toInteger($idlang);
 
-        $category     = Contenido_Security::toInteger($category);
+        $category     = cSecurity::toInteger($category);
 
         $sql = "SELECT
                     name

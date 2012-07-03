@@ -56,8 +56,8 @@ if ( isset($_GET['display_menu']) && $_GET['display_menu'] == 1 ) {
             FROM
                 ".$cfg["tab"]["area"]." AS a
             WHERE
-                a.name = '".Contenido_Security::escapeDB($area, $db)."' OR
-                a.parent_id = '".Contenido_Security::escapeDB($area, $db)."'
+                a.name = '".cSecurity::escapeDB($area, $db)."' OR
+                a.parent_id = '".cSecurity::escapeDB($area, $db)."'
             ORDER BY
                 idarea";
 
@@ -81,7 +81,7 @@ if ( isset($_GET['display_menu']) && $_GET['display_menu'] == 1 ) {
                 ".$cfg["tab"]["area"]." AS a,
                 ".$cfg["tab"]["nav_sub"]." AS b
             WHERE
-                b.idarea IN ".Contenido_Security::escapeDB($in_str, $db)." AND
+                b.idarea IN ".cSecurity::escapeDB($in_str, $db)." AND
                 b.idarea = a.idarea AND
                 b.level = 1 AND
                 b.online = 1

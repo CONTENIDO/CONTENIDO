@@ -107,7 +107,7 @@ class cMetaObject
      */
     function setIcon ($icon = false)
     {
-        $icon = Contenido_Security::escapeDB($icon, null);
+        $icon = cSecurity::escapeDB($icon, null);
         $this->_iconFilename = $icon;
     }
 

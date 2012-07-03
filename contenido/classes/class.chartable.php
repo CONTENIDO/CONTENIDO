@@ -60,8 +60,8 @@ class cCharacterConverter
     {
         global $cfg;
 
-        $cNormalizedChar     = Contenido_Security::escapeDB($cNormalizedChar, $this->_oDB);
-        $sEncoding             = Contenido_Security::escapeDB($sEncoding, $this->_oDB);
+        $cNormalizedChar     = cSecurity::escapeDB($cNormalizedChar, $this->_oDB);
+        $sEncoding             = cSecurity::escapeDB($sEncoding, $this->_oDB);
         $sEncoding             = $this->correctEncoding($sEncoding);
 
         if (!array_key_exists($sEncoding, $this->_aCharCache))
@@ -94,8 +94,8 @@ class cCharacterConverter
     {
         global $cfg;
 
-        $cCharacter            = Contenido_Security::escapeDB($cCharacter, $this->_oDB);
-        $sEncoding             = Contenido_Security::escapeDB($sEncoding, $this->_oDB);
+        $cCharacter            = cSecurity::escapeDB($cCharacter, $this->_oDB);
+        $sEncoding             = cSecurity::escapeDB($sEncoding, $this->_oDB);
         $sEncoding            = $this->correctEncoding($sEncoding);
 
         if (strlen($cCharacter) > 1)

@@ -124,8 +124,8 @@ if ($upload = $uploads->next()) {
 
     $iIdupl = $upload->get("idupl");
     $sSql = "SELECT * FROM " . $cfg['tab']['upl_meta'] . "
-             WHERE idupl = " . Contenido_Security::toInteger($iIdupl) . "
-             AND idlang = " . Contenido_Security::toInteger($lang) . "
+             WHERE idupl = " . cSecurity::toInteger($iIdupl) . "
+             AND idlang = " . cSecurity::toInteger($lang) . "
              LIMIT 0, 1";
     $db->query($sSql);
 
@@ -154,7 +154,7 @@ if ($upload = $uploads->next()) {
             case "medianame":
                 if ($db->f('medianame')) {
 
-                    $medianame = Contenido_Security::unFilter($db->f('medianame'));
+                    $medianame = cSecurity::unFilter($db->f('medianame'));
 
                 } else {
 
@@ -169,7 +169,7 @@ if ($upload = $uploads->next()) {
             case "description":
                 if ($db->f('description')) {
 
-                    $sDescription = Contenido_Security::unFilter($db->f('description'));
+                    $sDescription = cSecurity::unFilter($db->f('description'));
                 } else {
 
                     $sDescription = "";
@@ -182,7 +182,7 @@ if ($upload = $uploads->next()) {
             case "keywords":
                 if ($db->f('keywords')) {
 
-                    $keywords = Contenido_Security::unFilter($db->f('keywords'));
+                    $keywords = cSecurity::unFilter($db->f('keywords'));
                 } else {
 
                     $keywords = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "keywords");
@@ -195,7 +195,7 @@ if ($upload = $uploads->next()) {
             case "medianotes":
                 if ($db->f('internal_notice')) {
 
-                    $medianotes = Contenido_Security::unFilter($db->f('internal_notice'));
+                    $medianotes = cSecurity::unFilter($db->f('internal_notice'));
                 } else {
 
                     $medianotes = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "medianotes");
@@ -208,7 +208,7 @@ if ($upload = $uploads->next()) {
             case "copyright":
                 if ($db->f('copyright')) {
 
-                    $copyright = Contenido_Security::unFilter($db->f('copyright'));
+                    $copyright = cSecurity::unFilter($db->f('copyright'));
                 } else {
 
                     $copyright = $properties->getValue("upload", $qpath.$_REQUEST["file"], "file", "copyright");

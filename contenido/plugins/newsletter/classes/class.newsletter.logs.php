@@ -63,10 +63,10 @@ class NewsletterLogCollection extends ItemCollection
     {
         global $client, $lang, $auth;
 
-        $idnewsjob  = Contenido_Security::toInteger($idnewsjob);
-        $idnewsrcp  = Contenido_Security::toInteger($idnewsrcp);
-        $client     = Contenido_Security::toInteger($client);
-        $lang       = Contenido_Security::toInteger($lang);
+        $idnewsjob  = cSecurity::toInteger($idnewsjob);
+        $idnewsrcp  = cSecurity::toInteger($idnewsrcp);
+        $client     = cSecurity::toInteger($client);
+        $lang       = cSecurity::toInteger($lang);
 
         $this->resetQuery();
         $this->setWhere("idnewsjob", $idnewsjob);
@@ -117,8 +117,8 @@ class NewsletterLogCollection extends ItemCollection
     {
         global $cfg;
 
-        $idnewsjob = Contenido_Security::toInteger($idnewsjob);
-        $idnews    = Contenido_Security::toInteger($idnews);
+        $idnewsjob = cSecurity::toInteger($idnewsjob);
+        $idnews    = cSecurity::toInteger($idnews);
 
         $oNewsletter = new Newsletter();
         if ($oNewsletter->loadByPrimaryKey($idnews)) {
@@ -202,7 +202,7 @@ class NewsletterLogCollection extends ItemCollection
      */
     public function delete($idnewslog)
     {
-        $idnewslog = Contenido_Security::toInteger($idnewslog);
+        $idnewslog = cSecurity::toInteger($idnewslog);
 
         $oLog = new NewsletterLog($idnewslog);
         $iIDNewsJob = $oLog->get("idnewsjob");
@@ -218,7 +218,7 @@ class NewsletterLogCollection extends ItemCollection
 
     public function deleteJob($idnewsjob)
     {
-        $idnewsjob = Contenido_Security::toInteger($idnewsjob);
+        $idnewsjob = cSecurity::toInteger($idnewsjob);
         $this->setWhere("idnewsjob", $idnewsjob);
         $this->query();
 

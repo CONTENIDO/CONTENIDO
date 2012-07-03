@@ -88,7 +88,7 @@ if ((int) $client > 0) {
             FROM
                ".$cfg["tab"]["mod"]."
             WHERE
-               idclient = '".Contenido_Security::toInteger($client)."'
+               idclient = '".cSecurity::toInteger($client)."'
             GROUP BY type";
 
     $db->query($sql);

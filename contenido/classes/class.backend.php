@@ -74,7 +74,7 @@ class Contenido_Backend {
      * @return void
      */
     function setFrame($frame_nr = 0) {
-        $frame_nr = Contenido_Security::toInteger($frame_nr);
+        $frame_nr = cSecurity::toInteger($frame_nr);
         $this->frame = $frame_nr;
 
     } # end function
@@ -105,8 +105,8 @@ class Contenido_Backend {
             $itemid = 0;
         }
 
-        $itemid = Contenido_Security::toInteger($itemid);
-        $area    = Contenido_Security::escapeDB($area, $db);
+        $itemid = cSecurity::toInteger($itemid);
+        $area    = cSecurity::escapeDB($area, $db);
 
         # Store Area
         $this->area = $area;
@@ -278,17 +278,17 @@ class Contenido_Backend {
         $timestamp = date("Y-m-d H:i:s");
         $idcatart = "0";
 
-        $idcat         = Contenido_Security::toInteger($idcat);
-        $idart         = Contenido_Security::toInteger($idart);
-        $client     = Contenido_Security::toInteger($client);
-        $lang         = Contenido_Security::toInteger($lang);
-        $idaction     = Contenido_Security::escapeDB($idaction, $db_log);
+        $idcat         = cSecurity::toInteger($idcat);
+        $idart         = cSecurity::toInteger($idart);
+        $client     = cSecurity::toInteger($client);
+        $lang         = cSecurity::toInteger($lang);
+        $idaction     = cSecurity::escapeDB($idaction, $db_log);
 
-        if (!Contenido_Security::isInteger($client)) {
+        if (!cSecurity::isInteger($client)) {
             return;
         }
 
-        if (!Contenido_Security::isInteger($lang)) {
+        if (!cSecurity::isInteger($lang)) {
             return;
         }
 

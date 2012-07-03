@@ -86,7 +86,7 @@ if (is_array($userids)) {
         if ($user->loadByPrimaryKey($value) == false) {
             // Yes, it's a group. Let's try to load the group members!
             $sql = "SELECT user_id FROM " . $cfg["tab"]["groupmembers"]." WHERE group_id = '".$value."'";
-            $db2->query(Contenido_Security::escapeDB($sql, $db2));
+            $db2->query(cSecurity::escapeDB($sql, $db2));
 
             while ($db2->next_record()) {
                 if ($db2->f("user_id") == $usershow) {
@@ -145,9 +145,9 @@ $currentUserSequence = new WorkflowUserSequence();
 if (is_array($isCurrent)) {
     foreach ($isCurrent as $key => $value) {
         if ($value == true) {
-            $idartlang = Contenido_Security::toInteger($article[$key]);
-            $lang = Contenido_Security::toInteger($lang);
-            $client = Contenido_Security::toInteger($client);
+            $idartlang = cSecurity::toInteger($article[$key]);
+            $lang = cSecurity::toInteger($lang);
+            $client = cSecurity::toInteger($client);
 
             $sql = "SELECT B.idcat AS idcat, A.title AS title, A.created AS created, A.lastmodified AS changed,
                            A.idart as idart, E.name as tpl_name, A.idartlang as idartlang, F.idcatlang as idcatlang,

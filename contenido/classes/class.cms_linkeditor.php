@@ -230,8 +230,8 @@ class Cms_LinkEditor {
                         a.idcat = d.idcat AND
                         b.idcat = c.idcat AND
                         c.idcat = a.idcat AND
-                        d.idlang = '".Contenido_Security::toInteger($this->iLang)."' AND
-                        c.idclient = '".Contenido_Security::toInteger($this->iClient)."'
+                        d.idlang = '".cSecurity::toInteger($this->iLang)."' AND
+                        c.idclient = '".cSecurity::toInteger($this->iClient)."'
                     ORDER BY
                         a.idtree";
             $this->oDb->query($sql);
@@ -416,11 +416,11 @@ class Cms_LinkEditor {
                     e.online = 1 AND
                     a.idcat = b.idcat AND
                     b.idcat = d.idcat AND
-                    d.idlang = '".Contenido_Security::toInteger($this->iLang)."' AND
+                    d.idlang = '".cSecurity::toInteger($this->iLang)."' AND
                     b.idart  = e.idart AND
                     c.idcat = a.idcat AND
-                    c.idclient = '".Contenido_Security::toInteger($this->iClient)."' AND
-                e.idlang = '".Contenido_Security::toInteger($this->iLang)."'
+                    c.idclient = '".cSecurity::toInteger($this->iClient)."' AND
+                e.idlang = '".cSecurity::toInteger($this->iLang)."'
                 ORDER BY
                     a.idtree";
 
@@ -452,8 +452,8 @@ class Cms_LinkEditor {
                     c.parentid = " . $iParentidcat . " AND
                     a.idcat = d.idcat AND
                     c.idcat = a.idcat AND
-                    d.idlang = '".Contenido_Security::toInteger($this->iLang)."' AND
-                    c.idclient = '".Contenido_Security::toInteger($this->iClient)."'
+                    d.idlang = '".cSecurity::toInteger($this->iLang)."' AND
+                    c.idclient = '".cSecurity::toInteger($this->iClient)."'
                 ORDER BY
                     a.idtree";
         $sqlDb->query($sql);
@@ -503,11 +503,11 @@ class Cms_LinkEditor {
                         e.online = 1 AND
                         a.idcat = b.idcat AND
                         b.idcat = d.idcat AND
-                        d.idlang = '".Contenido_Security::toInteger($this->iLang)."' AND
+                        d.idlang = '".cSecurity::toInteger($this->iLang)."' AND
                         b.idart  = e.idart AND
                         c.idcat = a.idcat AND
-                        c.idclient = '".Contenido_Security::toInteger($this->iClient)."' AND
-                    e.idlang = '".Contenido_Security::toInteger($this->iLang)."'
+                        c.idclient = '".cSecurity::toInteger($this->iClient)."' AND
+                    e.idlang = '".cSecurity::toInteger($this->iLang)."'
                     ORDER BY
                         a.idtree";
             $sqlDb->query($sql);
@@ -534,11 +534,11 @@ class Cms_LinkEditor {
                         e.online = 1 AND
                         a.idcat = b.idcat AND
                         b.idcat = d.idcat AND
-                        d.idlang = '".Contenido_Security::toInteger($this->iLang)."' AND
+                        d.idlang = '".cSecurity::toInteger($this->iLang)."' AND
                         b.idart  = e.idart AND
                         c.idcat = a.idcat AND
-                        c.idclient = '".Contenido_Security::toInteger($this->iClient)."' AND
-                    e.idlang = '".Contenido_Security::toInteger($this->iLang)."'
+                        c.idclient = '".cSecurity::toInteger($this->iClient)."' AND
+                    e.idlang = '".cSecurity::toInteger($this->iLang)."'
                     ORDER BY
                         a.idtree";
             $sqlDb->query($sql);

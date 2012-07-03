@@ -39,7 +39,7 @@ cInclude("includes", "functions.pathresolver.php");
 $tpl->reset();
 
 if ($action == "remove_assignments") {
-    $sql = "DELETE FROM ".$cfg["tab"]["cat_art"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idcat != ".Contenido_Security::toInteger($idcat);
+    $sql = "DELETE FROM ".$cfg["tab"]["cat_art"]." WHERE idart=".cSecurity::toInteger($idart)." AND idcat != ".cSecurity::toInteger($idcat);
     $db->query($sql);
 }
 if ($action == "con_newart" && $newart != true) {
@@ -68,13 +68,13 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
     $perm->have_perm_area_action_item($area,"con_meta_edit", $idcat))
 
 {
-    $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idcat=".Contenido_Security::toInteger($idcat);
+    $sql = "SELECT * FROM ".$cfg["tab"]["cat_art"]." WHERE idart=".cSecurity::toInteger($idart)." AND idcat=".cSecurity::toInteger($idcat);
     $db->query($sql);
     $db->next_record();
 
     $tmp_cat_art = $db->f("idcatart");
 
-    $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idlang=".Contenido_Security::toInteger($lang);
+    $sql = "SELECT * FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".cSecurity::toInteger($idart)." AND idlang=".cSecurity::toInteger($lang);
     $db->query($sql);
     $db->next_record();
 
@@ -85,12 +85,12 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
         //****************** this art was edited before ********************
         $tmp_firstedit    = 0;
         $tmp_idartlang    = $db->f("idartlang");
-        $tmp_page_title   = Contenido_Security::unFilter(stripslashes($db->f("pagetitle")));
+        $tmp_page_title   = cSecurity::unFilter(stripslashes($db->f("pagetitle")));
         $tmp_idlang       = $db->f("idlang");
-        $tmp_title        = Contenido_Security::unFilter($db->f("title"));
-        $tmp_urlname      = Contenido_Security::unFilter($db->f("urlname"));      // plugin Advanced Mod Rewrite - edit by stese
+        $tmp_title        = cSecurity::unFilter($db->f("title"));
+        $tmp_urlname      = cSecurity::unFilter($db->f("urlname"));      // plugin Advanced Mod Rewrite - edit by stese
         $tmp_artspec      = $db->f("artspec");
-        $tmp_summary      = Contenido_Security::unFilter($db->f("summary"));
+        $tmp_summary      = cSecurity::unFilter($db->f("summary"));
         $tmp_created      = $db->f("created");
         $tmp_lastmodified = $db->f("lastmodified");
         $tmp_author       = $db->f("author");
@@ -283,10 +283,10 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
                 ".$cfg["tab"]["cat_lang"]." AS b,
                 ".$cfg["tab"]["cat_art"]." AS c
             WHERE
-                a.idclient = ".Contenido_Security::toInteger($client)." AND
+                a.idclient = ".cSecurity::toInteger($client)." AND
                 a.idcat    = b.idcat AND
                 c.idcat    = b.idcat AND
-                c.idart    = ".Contenido_Security::toInteger($idart);
+                c.idart    = ".cSecurity::toInteger($idart);
 
     $db->query($sql);
     $db->next_record();
@@ -295,7 +295,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
 
     if (isset($idart)) {
         if (!isset($idartlang) || 0 == $idartlang) {
-            $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idlang=".Contenido_Security::toInteger($lang);
+            $sql = "SELECT idartlang FROM ".$cfg["tab"]["art_lang"]." WHERE idart=".cSecurity::toInteger($idart)." AND idlang=".cSecurity::toInteger($lang);
             $db->query($sql);
             $db->next_record();
             $idartlang = $db->f("idartlang");
@@ -304,7 +304,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
 
     if (isset($midcat)) {
         if (!isset($idcatlang) || 0 == $idcatlang) {
-            $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat=".Contenido_Security::toInteger($midcat)." AND idlang=".Contenido_Security::toInteger($lang);
+            $sql = "SELECT idcatlang FROM ".$cfg["tab"]["cat_lang"]." WHERE idcat=".cSecurity::toInteger($midcat)." AND idlang=".cSecurity::toInteger($lang);
             $db->query($sql);
             $db->next_record();
             $idcatlang = $db->f("idcatlang");
@@ -313,7 +313,7 @@ if ($perm->have_perm_area_action($area, "con_meta_edit") ||
 
     if (isset($midcat) && isset($idart)) {
         if (!isset($idcatart) || 0 == $idcatart) {
-            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idart=".Contenido_Security::toInteger($idart)." AND idcat=".Contenido_Security::toInteger($midcat);
+            $sql = "SELECT idcatart FROM ".$cfg["tab"]["cat_art"]." WHERE idart=".cSecurity::toInteger($idart)." AND idcat=".cSecurity::toInteger($midcat);
             $db->query($sql);
             $db->next_record();
             $idcatart = $db->f("idcatart");

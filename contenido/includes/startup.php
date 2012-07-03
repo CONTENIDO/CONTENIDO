@@ -79,11 +79,8 @@ $cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(dirname(__FIL
 
 // Security check: Include security class and invoke basic request checks
 require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.security.php');
-try {
-    Contenido_Security::checkRequests();
-} catch (Exception $e) {
-    die($e->getMessage());
-}
+require_once(str_replace('\\', '/', realpath(dirname(__FILE__) . '/..')) . '/classes/class.requestvalidator.php');
+$oRequestValidator = new cRequestValidator(realpath(dirname(__FILE__) . '/../..') . '/data/config/' . CONTENIDO_ENVIRONMENT);
 
 // "Workaround" for register_globals=off settings.
 require_once(dirname(__FILE__) . '/globals_off.inc.php');
@@ -129,12 +126,6 @@ require_once($cfg['path']['contenido'] . $cfg['path']['includes'] . 'api/functio
 // Initialization of autoloader
 require_once($cfg['path']['contenido'] . $cfg['path']['classes'] . 'class.autoload.php');
 Contenido_Autoload::initialize($cfg);
-
-// Security check: Check HTTP parameters, if requested
-if ($cfg['http_params_check']['enabled'] === true) {
-    $oHttpInputValidator =
-        new HttpInputValidator($cfg['path']['contenido_config'] . 'config.http_check.php');
-}
 
 // Generate arrays for available login languages
 // Author: Martin Horwath

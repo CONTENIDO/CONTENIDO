@@ -81,9 +81,9 @@ function layEditLayout($idlay, $name, $description, $code)
     if (!$idlay) {
         //$tmp_newid = $db->nextid($cfg['tab']['lay']);
 
-        $sql = "INSERT INTO ".$cfg["tab"]["lay"]." (name,alias, description, deletable, idclient, author, created, lastmodified) VALUES ('".Contenido_Security::escapeDB($name, $db)."',
-                '".Contenido_Security::escapeDB($layoutAlias, $db)."','".Contenido_Security::escapeDB($description, $db)."', '1', '".Contenido_Security::toInteger($client)."', '".Contenido_Security::escapeDB($author, $db)."',
-                '".Contenido_Security::escapeDB($date, $db)."', '".Contenido_Security::escapeDB($date, $db)."')";
+        $sql = "INSERT INTO ".$cfg["tab"]["lay"]." (name,alias, description, deletable, idclient, author, created, lastmodified) VALUES ('".cSecurity::escapeDB($name, $db)."',
+                '".cSecurity::escapeDB($layoutAlias, $db)."','".cSecurity::escapeDB($description, $db)."', '1', '".cSecurity::toInteger($client)."', '".cSecurity::escapeDB($author, $db)."',
+                '".cSecurity::escapeDB($date, $db)."', '".cSecurity::escapeDB($date, $db)."')";
         $db->query($sql);
         $idlay = $db->getLastInsertedId($cfg["tab"]["lay"]);
 
@@ -124,8 +124,8 @@ function layEditLayout($idlay, $name, $description, $code)
                     $notification->displayNotification("error", i18n("Can't save layout in file!"));
                 } else {
                     $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Renamed layout succsessfully!"));
-                     $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".Contenido_Security::escapeDB($name, $db)."', alias='".Contenido_Security::escapeDB($layoutAlias, $db)."' , description='".Contenido_Security::escapeDB($description, $db)."',
-                            author='".Contenido_Security::escapeDB($author, $db)."', lastmodified='".Contenido_Security::escapeDB($date, $db)."' WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
+                     $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".cSecurity::escapeDB($name, $db)."', alias='".cSecurity::escapeDB($layoutAlias, $db)."' , description='".cSecurity::escapeDB($description, $db)."',
+                            author='".cSecurity::escapeDB($author, $db)."', lastmodified='".cSecurity::escapeDB($date, $db)."' WHERE idlay='".cSecurity::toInteger($idlay)."'";
                 }
             } else {
                 // Rename not successfully
@@ -140,8 +140,8 @@ function layEditLayout($idlay, $name, $description, $code)
                 $notification->displayNotification("error", i18n("Can't save layout in file!"));
             } else {
                 $notification->displayNotification(Contenido_Notification::LEVEL_INFO, i18n("Saved layout succsessfully!"));
-                $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".Contenido_Security::escapeDB($name, $db)."', alias='".Contenido_Security::escapeDB($layoutAlias, $db)."' , description='".Contenido_Security::escapeDB($description, $db)."',
-                    author='".Contenido_Security::escapeDB($author, $db)."', lastmodified='".Contenido_Security::escapeDB($date, $db)."' WHERE idlay='".Contenido_Security::toInteger($idlay)."'";
+                $sql = "UPDATE ".$cfg["tab"]["lay"]." SET name='".cSecurity::escapeDB($name, $db)."', alias='".cSecurity::escapeDB($layoutAlias, $db)."' , description='".cSecurity::escapeDB($description, $db)."',
+                    author='".cSecurity::escapeDB($author, $db)."', lastmodified='".cSecurity::escapeDB($date, $db)."' WHERE idlay='".cSecurity::toInteger($idlay)."'";
             }
         }
 

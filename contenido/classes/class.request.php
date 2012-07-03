@@ -6,6 +6,7 @@
  * @version $Id$
  * @author Andreas Kummer, w3concepts AG
  * @copyright Copyright &copy; 2008, w3concepts AG
+ * @deprecated [2012-07-03] This class was replaced by cRequestValidator
  */
 
 /*
@@ -59,8 +60,11 @@ class Request {
     /**
      * Constructor.
      * @access private
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      */
     private function __construct() {
+
+    	cDeprecated("This class was replaced by cRequestValidator");
 
         $this->POST = array ();
         $this->COOKIE = array ();
@@ -71,9 +75,12 @@ class Request {
      * Factory.
      * @static
      * @access public
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @return Object Reference to the current single instance of the class.
      */
     public static function getInstance() {
+
+    	cDeprecated("This class was replaced by cRequestValidator");
 
         static $oCurrentInstance;
 
@@ -86,6 +93,7 @@ class Request {
 
     /**
      * Registers a request variable with the request class.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @access public
      * @param String sRequestType Either POST, GET or COOKIE.
      * @param String sName Parameter name.
@@ -154,6 +162,7 @@ class Request {
 
     /**
      * Callback function for validating items of arrays.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access private
      * @param Reference mItem Reference to the item of the array to be validated.
@@ -168,6 +177,7 @@ class Request {
 
     /**
      * Callback function to clear the resulting arrays from ValidationError objects.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access private
      * @param Reference mItem Reference to the item of the array to be cleared.
@@ -183,6 +193,7 @@ class Request {
 
     /**
      * Sets the member bValidationError to the given value.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @param Boolean bValidationError True, if a validation error occured.
      * @return Void
      */
@@ -193,6 +204,7 @@ class Request {
     /**
      * Returns true, if one of the specified parameters has given a
      * validation error.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @param String sRequestType Request type.
      * @param Array aParams Array of parameters to be checked.
      * @return Boolean True if no validation errors occured. False otherwise.
@@ -230,6 +242,7 @@ class Request {
     /**
      * Callback function to check whether a validation error
      * occured or not.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access private
      * @param Reference mItem Reference to the current item.
@@ -250,6 +263,7 @@ class Request {
     /**
      * Replaces all error objects with null. Must be called after registering
      * the required parameters.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @return Object Reference to the current instance.
      */
     public function finish() {
@@ -278,6 +292,7 @@ class Request {
 
     /**
      * Validates the value against type, range, pattern, optionally after a transformation process.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access private
      * @param Mixed mValue Value to be validated.
@@ -343,6 +358,7 @@ class Request {
 
     /**
      * Transforms the value according to the given rules.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access private
      * @param String sValue Value to be transformed.
@@ -363,11 +379,12 @@ class Request {
     }
 
     /**
-     * Checks whether or not the given value is a integer value.
+     * Checks whether or not the given value is an integer value.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access private
      * @param Mixed mValue Value to be checked.
-     * @return Boolean True if the value is a integer value.
+     * @return Boolean True if the value is an integer value.
      */
     private static function isInteger($mValue) {
 
@@ -380,6 +397,7 @@ class Request {
 
     /**
      * Checks whether or not the given value is a double value.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access private
      * @param Mixed mValue Value to be checked.
@@ -393,6 +411,7 @@ class Request {
     /**
      * Returns the parameter specified by sName and the request type sRequestType.
      * The method throws an exception if the specified paramter has not yet been registered.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @access private
      * @param String sRequestType Request type (GET, POST or COOKIE).
      * @param String sName Name of the parameter.
@@ -420,6 +439,7 @@ class Request {
     /**
      * Returns the GET value of the specified parameter. Null if it does
      * not exist or if it is not valid.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access public
      * @param String sName Name of the parameter.
@@ -432,6 +452,7 @@ class Request {
     /**
      * Returns the POST value of the specified parameter. Null if it does
      * not exist or if it is not valid.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access public
      * @param String sName Name of the parameter.
@@ -444,6 +465,7 @@ class Request {
     /**
      * Returns the COOKIE value of the specified parameter. Null if it does
      * not exist or if it is not valid.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access public
      * @param String sName Name of the parameter.
@@ -456,6 +478,7 @@ class Request {
     /**
      * Returns the REQUEST value of the specified parameter. Null if it does
      * not exist or if it is not valid.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access private
      * @param String sName Name of the parameter.
@@ -482,7 +505,9 @@ class Request {
         return null;
     }
 }
-
+/**
+ * @deprecated [2012-07-03] This class was replaced by cRequestValidator
+ */
 class ValidationError {
 
     const NOT_INTEGER = 1;
@@ -500,6 +525,7 @@ class ValidationError {
 
     /**
      * Constructor.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @access private
      * @param Integer iType Error type (see constants).
      * @param String sMessage Error message.
@@ -514,6 +540,7 @@ class ValidationError {
 
     /**
      * Returns the error type.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @access public
      * @return Integer Error type.
      */
@@ -523,6 +550,7 @@ class ValidationError {
 
     /**
      * Returns the error message.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @access public
      * @return String Error message.
      */
@@ -532,6 +560,7 @@ class ValidationError {
 
     /**
      * Returns the eventually transformed value.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @access public
      * @return Mixed Transformed value.
      */
@@ -541,6 +570,7 @@ class ValidationError {
 
     /**
      * Returns an object reference of the given type.
+ 	 * @deprecated [2012-07-03] This class was replaced by cRequestValidator
      * @static
      * @access public
      * @param Integer iType Error type.

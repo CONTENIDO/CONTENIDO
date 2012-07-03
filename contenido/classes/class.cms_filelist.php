@@ -334,7 +334,7 @@ class Cms_FileList {
             if ($sParam == 'filelist_extensions') {
                 $oParam = $oXmlDom->createElement(str_replace('filelist_', '', $sParam));
                 //split all arts to array
-                $aExts = explode(';', Contenido_Security::toString($_POST[$sParam]));
+                $aExts = explode(';', cSecurity::toString($_POST[$sParam]));
 
                 //for each artid generate subnote in xml document and store its value
                 foreach ($aExts as $sExt) {
@@ -347,7 +347,7 @@ class Cms_FileList {
             } else if ($sParam == 'filelist_directories') {
                 $oParam = $oXmlDom->createElement(str_replace('filelist_', '', $sParam));
                 //split all arts to array
-                $aDirs = explode(';', Contenido_Security::toString($_POST[$sParam]));
+                $aDirs = explode(';', cSecurity::toString($_POST[$sParam]));
 
                 //for each artid generate subnote in xml document and store its value
                 foreach ($aDirs as $sDir) {
@@ -360,7 +360,7 @@ class Cms_FileList {
             } else if ($sParam == 'filelist_manual_files') {
                 $oParam = $oXmlDom->createElement(str_replace('filelist_', '', $sParam));
                 //split all arts to array
-                $aFiles = explode(';', Contenido_Security::toString($_POST[$sParam]));
+                $aFiles = explode(';', cSecurity::toString($_POST[$sParam]));
 
                 //for each artid generate subnote in xml document and store its value
                 foreach ($aFiles as $sFile) {
@@ -373,7 +373,7 @@ class Cms_FileList {
             } else if ( $sParam == 'filelist_creationdatefilter_from' || $sParam == 'filelist_creationdatefilter_to' ||
                         $sParam == 'filelist_modifydatefilter_from' || $sParam == 'filelist_modifydatefilter_to' ) {
 
-                $sValue = Contenido_Security::toString($_POST[$sParam]);
+                $sValue = cSecurity::toString($_POST[$sParam]);
                 // check if value is set and if its length equals ten characters
                 // (two for day, two for month, four for year and two for the points)
                 if ( $sValue != "" && $sValue != "DD.MM.YYYY" && strlen( $sValue ) == 10 ) {
@@ -386,7 +386,7 @@ class Cms_FileList {
                 $oParam = $oXmlDom->createElement(str_replace('filelist_', '', $sParam), $iTimestamp);
             } else {
                 //generate xml node for current property and store its value
-                $oParam = $oXmlDom->createElement(str_replace('filelist_', '', $sParam), Contenido_Security::toString($_POST[$sParam]));
+                $oParam = $oXmlDom->createElement(str_replace('filelist_', '', $sParam), cSecurity::toString($_POST[$sParam]));
             }
 
             $oXmlDom->firstChild->appendChild($oParam);
@@ -1110,10 +1110,10 @@ class Cms_FileList {
 
                             foreach ( $this->aMetaDataIdents as $sIdentName => $sTranslation ) {
                                 if ( $this->aSettings['filelist_md_' . $sIdentName . '_limit'] > 0 ) {
-                                    $aMetaData[$sIdentName] = cApiStrTrimAfterWord(    Contenido_Security::unFilter( $this->oDb->f($sIdentName) ),
+                                    $aMetaData[$sIdentName] = cApiStrTrimAfterWord(    cSecurity::unFilter( $this->oDb->f($sIdentName) ),
                                                                                     $this->aSettings['filelist_md_' . $sIdentName . '_limit'] ) . '...';
                                 } else {
-                                    $aMetaData[$sIdentName] = Contenido_Security::unFilter( $this->oDb->f($sIdentName) );
+                                    $aMetaData[$sIdentName] = cSecurity::unFilter( $this->oDb->f($sIdentName) );
                                 }
                             }
 

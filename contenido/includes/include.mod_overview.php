@@ -98,9 +98,9 @@ if($_REQUEST['filtertype'] == '--wotype--')
     $searchOptions['moduleType'] = '';
 
 if(!empty($_REQUEST['filtertype']) && $_REQUEST['filtertype'] != '--wotype--' &&  $_REQUEST['filtertype'] != '--all--')
-    $searchOptions['moduleType'] = Contenido_Security::escapeDB($_REQUEST['filtertype'], $db);
+    $searchOptions['moduleType'] = cSecurity::escapeDB($_REQUEST['filtertype'], $db);
 
-$searchOptions['filter']            =  Contenido_Security::escapeDB($_REQUEST['filter'], $db);
+$searchOptions['filter']            =  cSecurity::escapeDB($_REQUEST['filter'], $db);
 
 //search in
 $searchOptions['searchIn'] = 'all';

@@ -58,7 +58,7 @@ function getEncodingByLanguage (&$oDb, $iLang, $cfg) {
         FROM
             " .  $cfg["tab"]["lang"] . "
         WHERE
-            idlang = " . Contenido_Security::toInteger($iLang);
+            idlang = " . cSecurity::toInteger($iLang);
 
         if ($oDb->query($sQuery)) {
             if ($oDb->next_record()) {

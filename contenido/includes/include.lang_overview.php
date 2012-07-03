@@ -50,7 +50,7 @@ $sql = "SELECT
         ".$cfg["tab"]["clients_lang"]." AS B
         WHERE
         A.idlang=B.idlang AND
-        B.idclient='".Contenido_Security::toInteger($targetclient)."'
+        B.idclient='".cSecurity::toInteger($targetclient)."'
         ORDER BY A.idlang";
 
 $db->query($sql);

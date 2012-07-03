@@ -157,11 +157,11 @@ if ($action == "upl_modify_file") {
             //$iNextId = $db->nextid($cfg['tab']['upl_meta']);
             $sSql = "INSERT INTO " . $cfg['tab']['upl_meta'] . " " .
                     "SET idupl = $iIdupl, idlang = $lang, " .
-                    "medianame = '" . Contenido_Security::filter($medianame, $db) . "', " .
-                    "description = '" . Contenido_Security::filter($description, $db) . "', " .
-                    "keywords = '" . Contenido_Security::filter($keywords, $db) . "', " .
-                    "internal_notice = '" . Contenido_Security::filter($medianotes, $db) . "', " .
-                    "copyright = '" . Contenido_Security::filter($copyright, $db) . "', " .
+                    "medianame = '" . cSecurity::filter($medianame, $db) . "', " .
+                    "description = '" . cSecurity::filter($description, $db) . "', " .
+                    "keywords = '" . cSecurity::filter($keywords, $db) . "', " .
+                    "internal_notice = '" . cSecurity::filter($medianotes, $db) . "', " .
+                    "copyright = '" . cSecurity::filter($copyright, $db) . "', " .
                     "author = '" . $auth->auth['uid'] . "', " .
                     "created = NOW(), modified = NOW(), modifiedby = '" . $auth->auth['uid'] . "'";
         } else {    // update entry
@@ -169,11 +169,11 @@ if ($action == "upl_modify_file") {
             $iIduplmeta = $db->f('id_uplmeta');
             $sSql = "UPDATE " . $cfg['tab']['upl_meta'] . " " .
                     "SET " .
-                    "medianame = '" . Contenido_Security::filter($medianame, $db) . "', " .
-                    "description = '" . Contenido_Security::filter($description, $db) . "', " .
-                    "keywords = '" . Contenido_Security::filter($keywords, $db) . "', " .
-                    "internal_notice = '" . Contenido_Security::filter($medianotes, $db) . "', " .
-                    "copyright = '" . Contenido_Security::filter($copyright, $db) . "', " .
+                    "medianame = '" . cSecurity::filter($medianame, $db) . "', " .
+                    "description = '" . cSecurity::filter($description, $db) . "', " .
+                    "keywords = '" . cSecurity::filter($keywords, $db) . "', " .
+                    "internal_notice = '" . cSecurity::filter($medianotes, $db) . "', " .
+                    "copyright = '" . cSecurity::filter($copyright, $db) . "', " .
                     "modified = NOW(), modifiedby = '" . $auth->auth['uid'] . "' " .
                     "WHERE id_uplmeta = " . $iIduplmeta;
         }

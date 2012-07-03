@@ -88,7 +88,7 @@ if ($doedit == "1") {
 
                 if ($path == "") { $path = "/"; }
 
-                $sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='".Contenido_Security::escapeDB($upldir, $db)."' AND filename='".Contenido_Security::escapeDB($friendlyName, $db)."'";
+                $sql = "SELECT idupl FROM ".$cfg["tab"]["upl"]." WHERE dirname='".cSecurity::escapeDB($upldir, $db)."' AND filename='".cSecurity::escapeDB($friendlyName, $db)."'";
                 $db->query($sql);
                 $db->next_record();
 

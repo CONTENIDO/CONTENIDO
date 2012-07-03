@@ -49,7 +49,7 @@ $sJsBefore .= "var areatree=new Array();\n";
 
 //set the areas which are in use fore selecting these
 
-$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".Contenido_Security::escapeDB($groupid, $db)."' AND idclient='".Contenido_Security::toInteger($rights_client)."' AND idlang='".Contenido_Security::toInteger($rights_lang)."' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
+$sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name FROM ".$cfg["tab"]["rights"]." AS A, ".$cfg["tab"]["area"]." AS B, ".$cfg["tab"]["actions"]." AS C WHERE user_id='".cSecurity::escapeDB($groupid, $db)."' AND idclient='".cSecurity::toInteger($rights_client)."' AND idlang='".cSecurity::toInteger($rights_lang)."' AND idcat='0' AND A.idaction = C.idaction AND A.idarea = B.idarea";
 $db->query($sql);
 $rights_list_old = array ();
 while ($db->next_record()) { //set a new rights list fore this user
@@ -69,7 +69,7 @@ if (($perm->have_perm_area_action($area, $action)) && ($action == "group_edit"))
 if(!isset($rights_perms)||$action==""||!isset($action))
 {
     //search for the permissions of this user
-    $sql="SELECT perms FROM ".$cfg["tab"]["groups"]." WHERE group_id='".Contenido_Security::escapeDB($groupid, $db)."'";
+    $sql="SELECT perms FROM ".$cfg["tab"]["groups"]." WHERE group_id='".cSecurity::escapeDB($groupid, $db)."'";
 
     $db->query($sql);
     $db->next_record();

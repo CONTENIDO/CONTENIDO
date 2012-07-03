@@ -91,7 +91,7 @@ function checkAndInclude($filename)
 
 // Include security class and check request variables
 checkAndInclude(C_FRONTEND_PATH . 'contenido/classes/class.security.php');
-Contenido_Security::checkRequests();
+cSecurity::checkRequests();
 
 
 session_start();

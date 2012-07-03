@@ -68,7 +68,7 @@ class WorkflowItems extends ItemCollection {
         $idworkflow = $item->get("idworkflow");
         $oDb = cRegistry::getDb();
 
-        $this->select("position > $pos AND idworkflow = '".Contenido_Security::escapeDB($idworkflow, $oDb)."'");
+        $this->select("position > $pos AND idworkflow = '".cSecurity::escapeDB($idworkflow, $oDb)."'");
         while ($obj = $this->next())
         {
             $obj->setPosition($obj->get("position")-1);
@@ -79,10 +79,10 @@ class WorkflowItems extends ItemCollection {
         $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem = '.$id.';';
         $oDb->query($sSql);
         while ($oDb->next_record()) {
-            array_push($aUserSequencesDelete, Contenido_Security::escapeDB($oDb->f('idusersequence'), $oDb));
+            array_push($aUserSequencesDelete, cSecurity::escapeDB($oDb->f('idusersequence'), $oDb));
         }
 
-        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_actions"].' WHERE idworkflowitem = '.Contenido_Security::escapeDB($id, $oDb).';';
+        $sSql = 'DELETE FROM '.$cfg["tab"]["workflow_actions"].' WHERE idworkflowitem = '.cSecurity::escapeDB($id, $oDb).';';
         $oDb->query($sSql);
 
         $this->updateArtAllocation($id, 1);
@@ -99,11 +99,11 @@ class WorkflowItems extends ItemCollection {
         $oDb = cRegistry::getDb();
 
         $aUserSequences = array();
-        $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem = '.Contenido_Security::escapeDB($idworkflowitem, $oDb).';';
+        $sSql = 'SELECT idusersequence FROM '.$cfg["tab"]["workflow_user_sequences"].' WHERE idworkflowitem = '.cSecurity::escapeDB($idworkflowitem, $oDb).';';
 
         $oDb->query($sSql);
         while ($oDb->next_record()) {
-            array_push($aUserSequences, Contenido_Security::escapeDB($oDb->f('idusersequence'), $oDb));
+            array_push($aUserSequences, cSecurity::escapeDB($oDb->f('idusersequence'), $oDb));
         }
 
         $aIdArtLang = array();

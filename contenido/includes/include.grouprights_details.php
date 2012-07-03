@@ -36,7 +36,7 @@ $idclient = 2;
 $idlang = 2;
 die;
 
-$sql = 'SELECT * FROM '.$cfg["tab"]["rights"].' WHERE idlang = 2 AND idclient = 2 AND user_id = \"'.Contenido_Security::escapeDB($userid, $db).'\"';
+$sql = 'SELECT * FROM '.$cfg["tab"]["rights"].' WHERE idlang = 2 AND idclient = 2 AND user_id = \"'.cSecurity::escapeDB($userid, $db).'\"';
 echo $sql;
 
 $db->query($sql);
@@ -61,7 +61,7 @@ if ( !isset($useridas) )
                         SET
                             password="'.md5($password).'"
                         WHERE
-                            user_id = "'.Contenido_Security::escapeDB($userid, $db).'"';
+                            user_id = "'.cSecurity::escapeDB($userid, $db).'"';
 
                 $db->query($sql);
             } else {
@@ -72,15 +72,15 @@ if ( !isset($useridas) )
         $sql = 'UPDATE
                     '.$cfg["tab"]["phplib_auth_user_md5"].'
                 SET
-                    realname="'.Contenido_Security::escapeDB($realname, $db).'",
-                    email="'.Contenido_Security::escapeDB($email, $db).'",
-                    telephone="'.Contenido_Security::escapeDB($telephone, $db).'",
-                    address_street="'.Contenido_Security::escapeDB($address_street, $db).'",
-                    address_city="'.Contenido_Security::escapeDB($address_city, $db).'",
-                    address_country="'.Contenido_Security::escapeDB($address_country, $db).'",
-                    wysi="'.Contenido_Security::toInteger($wysi).'"
+                    realname="'.cSecurity::escapeDB($realname, $db).'",
+                    email="'.cSecurity::escapeDB($email, $db).'",
+                    telephone="'.cSecurity::escapeDB($telephone, $db).'",
+                    address_street="'.cSecurity::escapeDB($address_street, $db).'",
+                    address_city="'.cSecurity::escapeDB($address_city, $db).'",
+                    address_country="'.cSecurity::escapeDB($address_country, $db).'",
+                    wysi="'.cSecurity::toInteger($wysi).'"
                 WHERE
-                    user_id = "'.Contenido_Security::escapeDB($userid, $db).'"';
+                    user_id = "'.cSecurity::escapeDB($userid, $db).'"';
 
         $db->query($sql);
     }
@@ -93,7 +93,7 @@ if ( !isset($useridas) )
             FROM
                 ".$cfg["tab"]["phplib_auth_user_md5"]."
             WHERE
-                user_id = '".Contenido_Security::escapeDB($userid, $db)."'";
+                user_id = '".cSecurity::escapeDB($userid, $db)."'";
 
     $db->query($sql);
 

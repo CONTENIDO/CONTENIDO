@@ -52,10 +52,10 @@ function createNavigationArray($start_id, $db)
             WHERE
                 A.idcat    = B.idcat   AND
                 B.idcat    = C.idcat   AND
-                B.idclient = '".Contenido_Security::escapeDB($client, $db)."' AND
-                C.idlang   = '".Contenido_Security::escapeDB($lang, $db)."' AND
+                B.idclient = '".cSecurity::escapeDB($client, $db)."' AND
+                C.idlang   = '".cSecurity::escapeDB($lang, $db)."' AND
                 C.visible  = '1'       AND
-                B.parentid = '".Contenido_Security::escapeDB($start_id, $db)."'
+                B.parentid = '".cSecurity::escapeDB($start_id, $db)."'
             ORDER BY
                 A.idtree";
     $db->query($sql);
@@ -109,10 +109,10 @@ function isParent($parentid, $catid, $db)
                 ".$cfg["tab"]["cat"]." AS a,
                 ".$cfg["tab"]["cat_lang"]." AS b
             WHERE
-                a.idclient = '". Contenido_Security::escapeDB($client, $db)."' AND
-                b.idlang   = '".Contenido_Security::escapeDB($lang, $db)."' AND
+                a.idclient = '". cSecurity::escapeDB($client, $db)."' AND
+                b.idlang   = '".cSecurity::escapeDB($lang, $db)."' AND
                 a.idcat    = b.idcat AND
-                a.idcat    = '".Contenido_Security::escapeDB($catid, $db)."'";
+                a.idcat    = '".cSecurity::escapeDB($catid, $db)."'";
 
     $db->query($sql);
     $db->next_record();
@@ -138,10 +138,10 @@ function getParent($preid, &$db)
                 ".$cfg["tab"]["cat"]." AS a,
                 ".$cfg["tab"]["cat_lang"]." AS b
             WHERE
-                a.idclient = '".Contenido_Security::escapeDB($client, $db)."' AND
-                b.idlang   = '".Contenido_Security::escapeDB($lang, $db)."' AND
+                a.idclient = '".cSecurity::escapeDB($client, $db)."' AND
+                b.idlang   = '".cSecurity::escapeDB($lang, $db)."' AND
                 a.idcat    = b.idcat AND
-                a.idcat    = '".Contenido_Security::escapeDB($preid, $db)."'";
+                a.idcat    = '".cSecurity::escapeDB($preid, $db)."'";
 
     $db->query($sql);
 
@@ -163,7 +163,7 @@ function getLevel($catid, &$db)
             FROM
                 ".$cfg["tab"]["cat_tree"]."
             WHERE
-                idcat = '". Contenido_Security::escapeDB($catid, $db)."' ";
+                idcat = '". cSecurity::escapeDB($catid, $db)."' ";
 
     $db->query($sql);
 
@@ -257,7 +257,7 @@ function getSubTree($idcat_start, $db)
                 ".$cfg["tab"]["cat"]." AS B
             WHERE
                 A.idcat  = B.idcat AND
-                idclient = '". Contenido_Security::escapeDB($client, $db)."'
+                idclient = '". cSecurity::escapeDB($client, $db)."'
             ORDER BY
                 idtree";
 
@@ -295,9 +295,9 @@ function getTeaserDeeperCategories($iIdcat, $db)
             WHERE
                 A.idcat  = B.idcat AND
                 B.idcat  = C.idcat AND
-                C.idlang = '". Contenido_Security::escapeDB($lang, $db)."' AND
+                C.idlang = '". cSecurity::escapeDB($lang, $db)."' AND
                 C.visible = '1' AND
-                B.idclient = '". Contenido_Security::escapeDB($client, $db) ."'
+                B.idclient = '". cSecurity::escapeDB($client, $db) ."'
             ORDER BY
                 idtree";
     $db->query($sql);
@@ -342,10 +342,10 @@ function getProtectedSubTree($idcat_start, $db)
             WHERE
                 A.idcat  = B.idcat AND
                 B.idcat  = C.idcat AND
-                C.idlang = '".Contenido_Security::escapeDB($lang, $db)."' AND
+                C.idlang = '".cSecurity::escapeDB($lang, $db)."' AND
                 C.visible = '1' AND
                 C.public = '1' AND
-                B.idclient = '".Contenido_Security::escapeDB($client, $db)."'
+                B.idclient = '".cSecurity::escapeDB($client, $db)."'
             ORDER BY
                 idtree";
 
@@ -384,9 +384,9 @@ function getCategoryName($cat_id, &$db)
                 ".$cfg["tab"]["cat_lang"]." AS B
             WHERE
                 A.idcat     = B.idcat   AND
-                A.idcat     = '". Contenido_Security::escapeDB($cat_id, $db)."' AND
-                A.idclient  = '".Contenido_Security::escapeDB($client, $db)."' AND
-                B.idlang    = '".Contenido_Security::escapeDB($lang, $db)."'
+                A.idcat     = '". cSecurity::escapeDB($cat_id, $db)."' AND
+                A.idclient  = '".cSecurity::escapeDB($client, $db)."' AND
+                B.idlang    = '".cSecurity::escapeDB($lang, $db)."'
             ";
 
     $db->query($sql);
@@ -417,11 +417,11 @@ function getSubCategories($parent_id, $db)
             WHERE
                 A.idcat     = B.idcat   AND
                 B.idcat     = C.idcat   AND
-                B.idclient  = '". Contenido_Security::escapeDB($client, $db)."' AND
-                C.idlang    = '".Contenido_Security::escapeDB($lang, $db)."'   AND
+                B.idclient  = '". cSecurity::escapeDB($client, $db)."' AND
+                C.idlang    = '".cSecurity::escapeDB($lang, $db)."'   AND
                 C.visible   = '1'       AND
                 C.public    = '1'       AND
-                B.parentid  = '".Contenido_Security::escapeDB($parent_id, $db)."'
+                B.parentid  = '".cSecurity::escapeDB($parent_id, $db)."'
             ORDER BY
                 A.idtree";
 
@@ -453,9 +453,9 @@ function getProtectedSubCategories($parent_id, $db)
             WHERE
                 A.idcat     = B.idcat   AND
                 B.idcat     = C.idcat   AND
-                B.idclient  = '".Contenido_Security::escapeDB($client, $db)."' AND
-                C.idlang    = '".Contenido_Security::escapeDB($lang, $db)."'   AND
-                B.parentid  = '".Contenido_Security::escapeDB($parent_id, $db)."'
+                B.idclient  = '".cSecurity::escapeDB($client, $db)."' AND
+                C.idlang    = '".cSecurity::escapeDB($lang, $db)."'   AND
+                B.parentid  = '".cSecurity::escapeDB($parent_id, $db)."'
             ORDER BY
                 A.idtree";
 

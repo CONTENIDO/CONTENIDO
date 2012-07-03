@@ -90,7 +90,7 @@ if ($doedit == "1") {
                 echo "<SELECT name=CMS_SWF SIZE=1>";
                 echo "<option value=0>-- ".i18n("None")." --</option>";
 
-                $sql = "SELECT idupl, dirname, filename FROM ".$cfg["tab"]["upl"]." WHERE idclient='".Contenido_Security::toInteger($client)."' AND filetype = 'swf' ORDER BY filename";
+                $sql = "SELECT idupl, dirname, filename FROM ".$cfg["tab"]["upl"]." WHERE idclient='".cSecurity::toInteger($client)."' AND filetype = 'swf' ORDER BY filename";
 
                 $db->query($sql);
 

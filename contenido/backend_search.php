@@ -423,7 +423,7 @@ $sql_1 = "SELECT
           LEFT JOIN ".$cfg['tab']['tpl']." as e ON d.idtpl = e.`idtpl`
           LEFT JOIN ".$cfg['tab']['content']." as f ON f.idartlang = a.idartlang
         WHERE
-          (a.idlang = ".Contenido_Security::toInteger($iSpeachID).")
+          (a.idlang = ".cSecurity::toInteger($iSpeachID).")
         ";
 
 $where = "";
@@ -432,30 +432,30 @@ $bNoCriteria = true;
 
 // Article ID
 if (!is_null($iSearchID)) {
-    $where.= " AND (a.idart = ".Contenido_Security::toInteger($iSearchID).")";
+    $where.= " AND (a.idart = ".cSecurity::toInteger($iSearchID).")";
     $bNoCriteria = false;
 }
 
 // es soll nach Text gesucht werden
 if (!empty($sSearchStr)) {
-    $where.= " AND ((a.title LIKE '%" . mask(Contenido_Security::escapeDB($sSearchStr, $db)) .  "%')";
-    $where.= " OR (f.value LIKE '%" . mask(Contenido_Security::escapeDB($sSearchStr, $db)) .  "%'))";
+    $where.= " AND ((a.title LIKE '%" . mask(cSecurity::escapeDB($sSearchStr, $db)) .  "%')";
+    $where.= " OR (f.value LIKE '%" . mask(cSecurity::escapeDB($sSearchStr, $db)) .  "%'))";
     $bNoCriteria = false;
 }
 
 if (!empty($sSearchStrDateFrom) && ($sDateFieldName != '')) {
-    $where.= " AND (a.".Contenido_Security::escapeDB($sDateFieldName, $db)." >= '".mask(Contenido_Security::escapeDB($sSearchStrDateFrom, $db))."')";
+    $where.= " AND (a.".cSecurity::escapeDB($sDateFieldName, $db)." >= '".mask(cSecurity::escapeDB($sSearchStrDateFrom, $db))."')";
     $bNoCriteria = false;
 }
 
 if (!empty($sSearchStrDateTo) && ($sDateFieldName != '')) {
-    $where.= " AND (a.".$sDateFieldName." <= '".mask(Contenido_Security::escapeDB($sSearchStrDateTo, $db))."')";
+    $where.= " AND (a.".$sDateFieldName." <= '".mask(cSecurity::escapeDB($sSearchStrDateTo, $db))."')";
     $bNoCriteria = false;
 }
 
 if (!empty($sSearchStrAuthor) && ($sSearchStrAuthor != 'n/a')) {
     // es soll nach Autor gesucht werden
-    $where.= " AND ((a.author = '" . mask(Contenido_Security::escapeDB($sSearchStrAuthor, $db)) .  "') OR (a.modifiedby = '" . mask(Contenido_Security::escapeDB($sSearchStrAuthor, $db))."'))";
+    $where.= " AND ((a.author = '" . mask(cSecurity::escapeDB($sSearchStrAuthor, $db)) .  "') OR (a.modifiedby = '" . mask(cSecurity::escapeDB($sSearchStrAuthor, $db))."'))";
     $bNoCriteria = false;
 }
 
@@ -575,7 +575,7 @@ if ($iAffectedRows <= 0 || (empty($where) && !$bLostAndFound)) {
             // Check if any rights are applied to current user or his groups
             $sql = "SELECT *
                     FROM ".$cfg["tab"]["rights"]."
-                    WHERE user_id IN ('".$sTmpUserString."') AND idclient = '".Contenido_Security::toInteger($client)."' AND idlang = '".Contenido_Security::toInteger($lang)."' AND idcat = '".Contenido_Security::toInteger($idcat)."'";
+                    WHERE user_id IN ('".$sTmpUserString."') AND idclient = '".cSecurity::toInteger($client)."' AND idlang = '".cSecurity::toInteger($lang)."' AND idcat = '".cSecurity::toInteger($idcat)."'";
             $db2->query($sql);
 
             if ($db2->num_rows() != 0) {

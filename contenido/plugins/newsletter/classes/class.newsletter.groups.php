@@ -61,8 +61,8 @@ class NewsletterRecipientGroupCollection extends ItemCollection
     {
         global $client, $lang;
 
-        $client = Contenido_Security::toInteger($client);
-        $lang   = Contenido_Security::toInteger($lang);
+        $client = cSecurity::toInteger($client);
+        $lang   = cSecurity::toInteger($lang);
 
         $group = new NewsletterRecipientGroup();
 
@@ -141,8 +141,8 @@ class NewsletterRecipientGroup extends Item
     {
         global $client, $lang;
 
-        $client = Contenido_Security::toInteger($client);
-        $lang   = Contenido_Security::toInteger($lang);
+        $client = cSecurity::toInteger($client);
+        $lang   = cSecurity::toInteger($lang);
 
         if ($this->get("defaultgroup") == 1) {
             $oItems = new NewsletterRecipientGroupCollection();
@@ -194,8 +194,8 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
      */
     public function create($idrecipientgroup, $idrecipient)
     {
-        $idrecipientgroup = Contenido_Security::toInteger($idrecipientgroup);
-        $idrecipient      = Contenido_Security::toInteger($idrecipient);
+        $idrecipientgroup = cSecurity::toInteger($idrecipientgroup);
+        $idrecipient      = cSecurity::toInteger($idrecipient);
 
         $this->setWhere("idnewsgroup", $idrecipientgroup);
         $this->setWhere("idnewsrcp", $idrecipient);
@@ -221,8 +221,8 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
      */
     public function remove($idrecipientgroup, $idrecipient)
     {
-        $idrecipientgroup = Contenido_Security::toInteger($idrecipientgroup);
-        $idrecipient      = Contenido_Security::toInteger($idrecipient);
+        $idrecipientgroup = cSecurity::toInteger($idrecipientgroup);
+        $idrecipient      = cSecurity::toInteger($idrecipient);
 
         $this->setWhere("idnewsgroup", $idrecipientgroup);
         $this->setWhere("idnewsrcp", $idrecipient);
@@ -239,7 +239,7 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
      */
     public function removeRecipientFromGroups($idrecipient)
     {
-        $idrecipient = Contenido_Security::toInteger($idrecipient);
+        $idrecipient = cSecurity::toInteger($idrecipient);
 
         $this->setWhere("idnewsrcp", $idrecipient);
         $this->query();
@@ -255,7 +255,7 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
      */
     public function removeGroup($idgroup)
     {
-        $idgroup = Contenido_Security::toInteger($idgroup);
+        $idgroup = cSecurity::toInteger($idgroup);
 
         $this->setWhere("idnewsgroup", $idgroup);
         $this->query();
@@ -273,7 +273,7 @@ class NewsletterRecipientGroupMemberCollection extends ItemCollection
      */
     public function getRecipientsInGroup($idrecipientgroup, $asObjects = true)
     {
-        $idrecipientgroup = Contenido_Security::toInteger($idrecipientgroup);
+        $idrecipientgroup = cSecurity::toInteger($idrecipientgroup);
 
         $this->setWhere("idnewsgroup", $idrecipientgroup);
         $this->query();

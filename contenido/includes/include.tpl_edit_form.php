@@ -61,7 +61,7 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
             LEFT JOIN
             " . $cfg['tab']['lay'] . " AS b
             ON a.idlay=b.idlay
-            WHERE a.idtpl='" . Contenido_Security::toInteger($idtpl) . "'
+            WHERE a.idtpl='" . cSecurity::toInteger($idtpl) . "'
             ORDER BY name";
 
     $db->query($sql);
@@ -80,7 +80,7 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
             FROM
             " . $cfg['tab']['container'] . "
             WHERE
-            idtpl='" . Contenido_Security::toInteger($idtpl) . "'";
+            idtpl='" . cSecurity::toInteger($idtpl) . "'";
 
     $db->query($sql);
     while ( $db->next_record() ) {
@@ -108,7 +108,7 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
             FROM
             " . $cfg['tab']['lay'] . "
             WHERE
-            idclient='" . Contenido_Security::toInteger($client) . "'
+            idclient='" . cSecurity::toInteger($client) . "'
             ORDER BY name";
 
     $db->query($sql);
@@ -134,7 +134,7 @@ if (($action == "tpl_new") && (!$perm->have_perm_area_action_anyitem($area, $act
             FROM
             " . $cfg['tab']['mod'] . "
             WHERE
-            idclient='" . Contenido_Security::toInteger($client) . "'
+            idclient='" . cSecurity::toInteger($client) . "'
             ORDER BY name";
 
     $db->query($sql);

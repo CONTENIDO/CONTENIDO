@@ -70,11 +70,11 @@ $sql = "SELECT
             ".$cfg["tab"]["cat_art"]." AS c,
             ".$cfg["tab"]["actionlog"]." AS d
         WHERE
-            a.idlang    = '".Contenido_Security::toInteger($lang)."' AND
+            a.idlang    = '".cSecurity::toInteger($lang)."' AND
             a.idart     = b.idart AND
-            b.idclient  = '".Contenido_Security::toInteger($client)."' AND
+            b.idclient  = '".cSecurity::toInteger($client)."' AND
             b.idart     = c.idart AND
-            d.idaction  = '".Contenido_Security::toInteger($idaction)."' AND
+            d.idaction  = '".cSecurity::toInteger($idaction)."' AND
             d.user_id    = '".$db->escape($auth->auth["uid"])."' AND
             d.idcatart  = c.idcatart
         GROUP BY
@@ -151,7 +151,7 @@ while ( $db->next_record() ) {
                     ".$cfg["tab"]["tpl_conf"]." AS a,
                     ".$cfg["tab"]["tpl"]." AS b
                  WHERE
-                    a.idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."' AND
+                    a.idtplcfg = '".cSecurity::toInteger($idtplcfg)."' AND
                     a.idtpl = b.idtpl";
 
         $db2->query($sql2);
@@ -225,9 +225,9 @@ $sql = "SELECT
         ON
             d.idtpl = c.idtpl
         WHERE
-            a.idclient = '".Contenido_Security::toInteger($client)."' AND
-            a.idcat = '".Contenido_Security::toInteger($idcat)."' AND
-            b.idlang = '".Contenido_Security::toInteger($lang)."' AND
+            a.idclient = '".cSecurity::toInteger($client)."' AND
+            a.idcat = '".cSecurity::toInteger($idcat)."' AND
+            b.idlang = '".cSecurity::toInteger($lang)."' AND
             b.idcat = a.idcat AND
             c.idtplcfg = b.idtplcfg";
 

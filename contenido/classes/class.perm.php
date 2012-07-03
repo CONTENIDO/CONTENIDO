@@ -613,8 +613,8 @@ class Contenido_Perm
                             ".$cfg['tab']['rights']."
                          WHERE
                             user_id IN ('".implode("','", $groupsForUser)."') AND
-                            idclient = ". Contenido_Security::toInteger($client)." AND
-                            idlang = ". Contenido_Security::toInteger($lang)." AND
+                            idclient = ". cSecurity::toInteger($client)." AND
+                            idlang = ". cSecurity::toInteger($lang)." AND
                             idarea = '$value' AND
                             idcat != 0";
                 $this->db->query($sql);

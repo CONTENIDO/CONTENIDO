@@ -92,7 +92,7 @@ if ($action == "lay_new") {
 
 if ($refreshtemplates != "") {
     // Update all templates for containers with mode fixed and mandatory
-    $sql = "SELECT idtpl FROM ".$cfg["tab"]["tpl"]." WHERE idlay = '".Contenido_Security::toInteger($idlay)."'";
+    $sql = "SELECT idtpl FROM ".$cfg["tab"]["tpl"]." WHERE idlay = '".cSecurity::toInteger($idlay)."'";
     $db->query($sql);
 
     $fillTemplates = array();

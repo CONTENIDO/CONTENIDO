@@ -92,7 +92,7 @@ function checkExistingPlugin($db, $sPluginname)
  */
 function updateSystemProperties($db, $table)
 {
-    $table = Contenido_Security::escapeDB($table, $db);
+    $table = cSecurity::escapeDB($table, $db);
 
     $aStandardvalues = array(
         array('type' => 'pw_request', 'name' => 'enable', 'value' => 'true'),
@@ -142,15 +142,15 @@ function updateSystemProperties($db, $table)
 function updateContenidoVersion($db, $table, $version)
 {
     $sql = "SELECT idsystemprop FROM %s WHERE type='system' AND name='version'";
-    $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db)));
+    $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
     if ($db->next_record()) {
         $sql = "UPDATE %s SET value = '%s' WHERE type='system' AND name='version'";
-        $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db), Contenido_Security::escapeDB($version, $db)));
+        $db->query(sprintf($sql, cSecurity::escapeDB($table, $db), cSecurity::escapeDB($version, $db)));
     } else {
         //$id = $db->nextid($table);
         $sql = "INSERT INTO %s SET type='system', name='version', value='%s'";
-        $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db), Contenido_Security::escapeDB($version, $db)));
+        $db->query(sprintf($sql, cSecurity::escapeDB($table, $db), cSecurity::escapeDB($version, $db)));
     }
 }
 
@@ -163,7 +163,7 @@ function updateContenidoVersion($db, $table, $version)
 function getContenidoVersion($db, $table)
 {
     $sql = "SELECT value FROM %s WHERE type='system' AND name='version'";
-    $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db)));
+    $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
     if ($db->next_record()) {
         return $db->f("value");
@@ -176,11 +176,11 @@ function getContenidoVersion($db, $table)
 function updateSysadminPassword($db, $table, $password)
 {
     $sql = "SELECT password FROM %s WHERE username='sysadmin'";
-    $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db)));
+    $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
     if ($db->next_record()) {
         $sql = "UPDATE %s SET password='%s' WHERE username='sysadmin'";
-        $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db), md5($password)));
+        $db->query(sprintf($sql, cSecurity::escapeDB($table, $db), md5($password)));
         return true;
     } else {
 
@@ -195,7 +195,7 @@ function listClients($db, $table)
 
     $sql = "SELECT idclient, name FROM %s";
 
-    $db->query(sprintf($sql, Contenido_Security::escapeDB($table, $db)));
+    $db->query(sprintf($sql, cSecurity::escapeDB($table, $db)));
 
     $clients = array();
 

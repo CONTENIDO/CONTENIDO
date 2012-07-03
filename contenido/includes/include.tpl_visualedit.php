@@ -38,8 +38,8 @@ if (!defined('CON_FRAMEWORK')) {
 
 cInclude('includes', 'functions.tpl.php');
 
-$idtpl  = Contenido_Security::toInteger($idtpl);
-$client = Contenido_Security::toInteger($client);
+$idtpl  = cSecurity::toInteger($idtpl);
+$client = cSecurity::toInteger($client);
 
 $sql = "SELECT
         a.idtpl, a.name as name, a.description, a.idlay, b.description as laydescription, defaulttemplate

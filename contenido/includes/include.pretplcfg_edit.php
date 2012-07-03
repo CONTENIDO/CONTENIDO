@@ -42,7 +42,7 @@ if ( !isset($idtplcfg) ) {
             FROM
                 ".$cfg["tab"]["tpl"]."
             WHERE
-                idtpl = '".Contenido_Security::toInteger($idtpl)."'";
+                idtpl = '".cSecurity::toInteger($idtpl)."'";
 
     $db->query($sql);
     $db->next_record();
@@ -56,12 +56,12 @@ if ( !isset($idtplcfg) ) {
         $sql = "INSERT INTO ".$cfg["tab"]["tpl_conf"]."
                     (idtpl, status, author, created, lastmodified)
                 VALUES
-                    ('".Contenido_Security::toInteger($idtpl)."', '', '', '".$timestamp."', '".$timestamp."')";
+                    ('".cSecurity::toInteger($idtpl)."', '', '', '".$timestamp."', '".$timestamp."')";
 
         $db->query($sql);
         $idtplcfg = $db->getLastInsertedId($cfg["tab"]["tpl_conf"]);
 
-        $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET idtplcfg = '".Contenido_Security::toInteger($idtplcfg)."' WHERE idtpl = '".Contenido_Security::toInteger($idtpl)."'";
+        $sql = "UPDATE ".$cfg["tab"]["tpl"]." SET idtplcfg = '".cSecurity::toInteger($idtplcfg)."' WHERE idtpl = '".cSecurity::toInteger($idtpl)."'";
         $db->query($sql);
 
     }
@@ -69,7 +69,7 @@ if ( !isset($idtplcfg) ) {
 }
 
 if (isset($idtplcfg)) {
-        $sql = "SELECT number FROM ".$cfg["tab"]["container"]." WHERE idtpl='".Contenido_Security::toInteger($idtpl)."'";
+        $sql = "SELECT number FROM ".$cfg["tab"]["container"]." WHERE idtpl='".cSecurity::toInteger($idtpl)."'";
         $db->query($sql);
         while ($db->next_record()) {
                 $i = $db->f("number");
@@ -92,13 +92,13 @@ if (isset($idtplcfg)) {
         // update/insert in container_conf
         if (isset($varstring) && is_array($varstring)) {
             // delete all containers
-            $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg='".Contenido_Security::toInteger($idtplcfg)."'";
+            $sql = "DELETE FROM ".$cfg["tab"]["container_conf"]." WHERE idtplcfg='".cSecurity::toInteger($idtplcfg)."'";
             $db->query($sql);
 
             foreach ($varstring as $col=>$val) {
                 // insert all containers
                 $sql  = "INSERT INTO ".$cfg["tab"]["container_conf"]." (idtplcfg, number, container) ".
-                        "VALUES ('".Contenido_Security::toInteger($idtplcfg)."', '".Contenido_Security::toInteger($col)."', '".Contenido_Security::escapeDB($val, $db)."') ";
+                        "VALUES ('".cSecurity::toInteger($idtplcfg)."', '".cSecurity::toInteger($col)."', '".cSecurity::escapeDB($val, $db)."') ";
                 $db->query($sql);
             }
         }

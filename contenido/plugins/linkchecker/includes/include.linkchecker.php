@@ -180,7 +180,7 @@ $sql = "SELECT lastmodified FROM " . $cfg['tab']['content'] . " content
 
 /* Whitelist: Add */
 if(!empty($_GET['whitelist'])) {
-    $sql = "REPLACE INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . Contenido_Security::escapeDB(base64_decode($_GET['whitelist']), $db) . "', '" . time() . "')";
+    $sql = "REPLACE INTO " . $cfg['tab']['whitelist'] . " VALUES ('" . cSecurity::escapeDB(base64_decode($_GET['whitelist']), $db) . "', '" . time() . "')";
     $db->query($sql);
 }
 
@@ -214,20 +214,20 @@ if($sCache_errors && $_GET['live'] != 1) {
             $iCheck = cCatPerm($db->f("idcat"), $db2);
 
             if($iCheck == true) {
-                $aCats[] = Contenido_Security::toInteger($db->f("idcat"));
+                $aCats[] = cSecurity::toInteger($db->f("idcat"));
             }
 
         } else {
-            $aCats[] = Contenido_Security::toInteger($db->f("idcat"));
+            $aCats[] = cSecurity::toInteger($db->f("idcat"));
         }
 
     }
 
     // Use SQL-WHERE if lang is not zero
     if($langart != 0) {
-        $sLang_where = "AND art.idlang = '" . Contenido_Security::toInteger($langart) . "' AND catName.idlang = '" . Contenido_Security::toInteger($langart) . "'";
+        $sLang_where = "AND art.idlang = '" . cSecurity::toInteger($langart) . "' AND catName.idlang = '" . cSecurity::toInteger($langart) . "'";
     } elseif(!isset($langart)) {
-        $sLang_where = "AND art.idlang = '" . Contenido_Security::toInteger($lang) . "' AND catName.idlang = '" . Contenido_Security::toInteger($lang) . "'";
+        $sLang_where = "AND art.idlang = '" . cSecurity::toInteger($lang) . "' AND catName.idlang = '" . cSecurity::toInteger($lang) . "'";
     }
 
     // How many articles exists? [Text]

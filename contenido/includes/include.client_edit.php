@@ -70,9 +70,9 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
         $sql = "INSERT INTO
             ".$cfg["tab"]["clients"]."
             SET
-                name = '".Contenido_Security::escapeDB($clientname, $db)."',
-                errsite_cat = '".Contenido_Security::toInteger($errsite_cat)."',
-                errsite_art = '".Contenido_Security::toInteger($errsite_art)."'";
+                name = '".cSecurity::escapeDB($clientname, $db)."',
+                errsite_cat = '".cSecurity::toInteger($errsite_cat)."',
+                errsite_art = '".cSecurity::toInteger($errsite_art)."'";
 
         $db->query($sql);
 
@@ -128,11 +128,11 @@ if (($action == "client_edit") && ($perm->have_perm_area_action($area, $action))
         $sql = "UPDATE
                 ".$cfg["tab"]["clients"]."
                 SET
-                    name = '".Contenido_Security::escapeDB($clientname, $db)."',
-                    errsite_cat = '".Contenido_Security::toInteger($errsite_cat)."',
-                    errsite_art = '".Contenido_Security::toInteger($errsite_art)."'
+                    name = '".cSecurity::escapeDB($clientname, $db)."',
+                    errsite_cat = '".cSecurity::toInteger($errsite_cat)."',
+                    errsite_art = '".cSecurity::toInteger($errsite_art)."'
                 WHERE
-                    idclient = '".Contenido_Security::toInteger($idclient)."'";
+                    idclient = '".cSecurity::toInteger($idclient)."'";
         $db->query($sql);
     }
 
@@ -174,7 +174,7 @@ $sql = "SELECT
         FROM
             ".$cfg["tab"]["clients"]."
         WHERE
-            idclient = '".Contenido_Security::toInteger($idclient)."'";
+            idclient = '".cSecurity::toInteger($idclient)."'";
 
 $db->query($sql);
 

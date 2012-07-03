@@ -32,8 +32,6 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-die("Trixie");
-
 cInclude("includes", "functions.con.php");
 
 $page = new cPage;

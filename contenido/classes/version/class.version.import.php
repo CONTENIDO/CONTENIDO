@@ -168,21 +168,21 @@ if (!defined('CON_FRAMEWORK')) {
 
                          foreach ($sLevelTwo as $sKey3=>$sLevelThree) {
                             $this->iIdentity = $sKey2;
-                            $this->sName = Contenido_Security::unFilter($sLevelThree["name"]);
-                            $this->sModType = Contenido_Security::unFilter($sLevelThree["type"]);
-                            $this->sError = Contenido_Security::unFilter($sLevelThree["error"]);
-                            $this->sDescripion = Contenido_Security::unFilter($sLevelThree["description"]);
-                            $this->sDeletabel = Contenido_Security::unFilter($sLevelThree ["deletable"]);
-                            $this->sCodeInput = Contenido_Security::unFilter($sLevelThree ["input"]);
-                            $this->sCodeOutput = Contenido_Security::unFilter($sLevelThree ["output"]);
-                            $this->sTemplate = Contenido_Security::unFilter($sLevelThree["template"]);
-                            $this->sStatic = Contenido_Security::unFilter($sLevelThree["static"]);
-                            $this->sPackageGuid = Contenido_Security::unFilter($sLevelThree["package_guid"]);
-                            $this->sPackageData = Contenido_Security::unFilter($sLevelThree["package_data"]);
-                            $this->sAuthor = Contenido_Security::unFilter($sLevelThree["changedby"]);
-                            $this->dCreated = Contenido_Security::unFilter($sLevelThree["created"]);
-                            $this->dLastModified = Contenido_Security::unFilter($sLevelThree["changed"]);
-                            $this->dActualTimestamp = Contenido_Security::unFilter($sLevelThree["changed"]);
+                            $this->sName = cSecurity::unFilter($sLevelThree["name"]);
+                            $this->sModType = cSecurity::unFilter($sLevelThree["type"]);
+                            $this->sError = cSecurity::unFilter($sLevelThree["error"]);
+                            $this->sDescripion = cSecurity::unFilter($sLevelThree["description"]);
+                            $this->sDeletabel = cSecurity::unFilter($sLevelThree ["deletable"]);
+                            $this->sCodeInput = cSecurity::unFilter($sLevelThree ["input"]);
+                            $this->sCodeOutput = cSecurity::unFilter($sLevelThree ["output"]);
+                            $this->sTemplate = cSecurity::unFilter($sLevelThree["template"]);
+                            $this->sStatic = cSecurity::unFilter($sLevelThree["static"]);
+                            $this->sPackageGuid = cSecurity::unFilter($sLevelThree["package_guid"]);
+                            $this->sPackageData = cSecurity::unFilter($sLevelThree["package_data"]);
+                            $this->sAuthor = cSecurity::unFilter($sLevelThree["changedby"]);
+                            $this->dCreated = cSecurity::unFilter($sLevelThree["created"]);
+                            $this->dLastModified = cSecurity::unFilter($sLevelThree["changed"]);
+                            $this->dActualTimestamp = cSecurity::unFilter($sLevelThree["changed"]);
 
                             $this->initRevisions();
 
@@ -280,7 +280,7 @@ if (!defined('CON_FRAMEWORK')) {
       * @return void
       */
      public function deleteRows($iModHistory)   {
-        $iModHistory = Contenido_Security::unFilter($iModHistory);
+        $iModHistory = cSecurity::unFilter($iModHistory);
         $sSql2 = "DELETE  FROM ". $this->sTableName .
          " WHERE idmodhistory = ". $iModHistory;
         $this->oDB->query($sSql2);

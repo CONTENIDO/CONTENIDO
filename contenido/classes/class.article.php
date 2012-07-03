@@ -280,8 +280,8 @@ class ArticleCollection
     {
         global $client, $lang;
 
-        $lang   = Contenido_Security::toInteger($lang);
-        $client = Contenido_Security::toInteger($client);
+        $lang   = cSecurity::toInteger($lang);
+        $client = cSecurity::toInteger($client);
 
         $this->idcat     = $options['idcat'];
         $this->lang      = (array_key_exists('lang',   $options))    ? $options['lang']      : $lang;
@@ -304,7 +304,7 @@ class ArticleCollection
     {
         global $cfg;
 
-        $idcat = Contenido_Security::toInteger($idcat);
+        $idcat = cSecurity::toInteger($idcat);
 
         $sArtSpecs = (count($this->artspecs) > 0) ? " a.artspec IN ('".implode("','", $this->artspecs)."') AND " : '';
 
