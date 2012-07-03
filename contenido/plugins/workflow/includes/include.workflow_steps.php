@@ -412,7 +412,6 @@ $tpl= new Template;
 $tpl->set('s', 'NEW', createNewWorkflow());
 $tpl->set('s', 'STEPS', getWorkflowList());
 $tpl->set('s', 'EDITSTEP', editWorkflowStep($idworkflowitem));
-$tpl->set('s', 'BORDERCOLOR', $cfg["color"]["table_border"]);
 $frame= $tpl->generate($cfg["path"]["contenido"] . $cfg["path"]["plugins"] . "workflow/templates/template.workflow_steps.html", true);
 
 $page= new UI_Page;

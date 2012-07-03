@@ -154,13 +154,11 @@ table.borderless tr.active {
 }
 
 table.borderless tr {
-    background-color: #fff;
+    /*background-color: #fff;*/
 }
 
 table.borderless tr td {
     border: 0px;
-    border-style: solid;
-    border-color:
 }
 
 /**

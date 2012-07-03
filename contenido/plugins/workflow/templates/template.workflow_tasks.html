@@ -41,28 +41,28 @@
 
 
 
-    <table width="100%" border="0" cellspacing="0" cellpadding="2" class="bordered" style="display:{DISPLAY}">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2" class="generic" style="display:{DISPLAY}">
     <tr>
-        <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_START}</td>
-        <td width="100%" class="headerbordercell" nowrap="nowrap">{TH_TITLE}</td>
-        <td width="100%" class="headerbordercell" nowrap="nowrap">{TH_WORKFLOW_STEP}</td>
-        <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_WORKFLOW_ACTION}</td>
-        <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_WORKFLOW_EDITOR}</td>
-        <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_LAST_STATUS}</td>
-        <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_TEMPLATE}</td>
-        <td width="1%" class="headerbordercell" nowrap="nowrap">{TH_ACTIONS}</td>
+        <th width="1%" nowrap="nowrap">{TH_START}</th>
+        <th width="100%" nowrap="nowrap">{TH_TITLE}</th>
+        <th width="100%"nowrap="nowrap">{TH_WORKFLOW_STEP}</th>
+        <th width="1%" nowrap="nowrap">{TH_WORKFLOW_ACTION}</th>
+        <th width="1%" nowrap="nowrap">{TH_WORKFLOW_EDITOR}</th>
+        <th width="1%" nowrap="nowrap">{TH_LAST_STATUS}</th>
+        <th width="1%" nowrap="nowrap">{TH_TEMPLATE}</th>
+        <th width="1%" nowrap="nowrap">{TH_ACTIONS}</th>
     </tr>
 
     <!-- BEGIN:BLOCK -->
-    <tr id="{ROWID}" class="text_medium" style="{BGCOLOR}" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
-        <td nowrap="nowrap" class="bordercell">{START}</td>
-        <td nowrap="nowrap" class="bordercell">{TITLE}</td>
-        <td nowrap="nowrap" class="bordercell">{WORKFLOW_STEP}</td>
-        <td nowrap="nowrap" class="bordercell">{WORKFLOW_ACTION}</td>
-        <td nowrap="nowrap" class="bordercell">{WORKFLOW_EDITOR}</td>
-        <td nowrap="nowrap" class="bordercell">{LAST_STATUS}</td>
-        <td nowrap="nowrap" class="bordercell">{TEMPLATE}</td>
-        <td nowrap="nowrap" class="bordercell">{ACTIONS}</td>
+    <tr id="{ROWID}" class="text_medium" onmouseover="artRow.over(this)" onmouseout="artRow.out(this)" onclick="artRow.click(this)">
+        <td nowrap="nowrap">{START}</td>
+        <td nowrap="nowrap">{TITLE}</td>
+        <td nowrap="nowrap">{WORKFLOW_STEP}</td>
+        <td nowrap="nowrap">{WORKFLOW_ACTION}</td>
+        <td nowrap="nowrap">{WORKFLOW_EDITOR}</td>
+        <td nowrap="nowrap">{LAST_STATUS}</td>
+        <td nowrap="nowrap">{TEMPLATE}</td>
+        <td nowrap="nowrap">{ACTIONS}</td>
     </tr>
     <!-- END:BLOCK -->
 

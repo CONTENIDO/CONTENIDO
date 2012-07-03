@@ -237,7 +237,6 @@ class UI_Menu
                     if ($this->rowmark == true)
                     {
                         $extraadd = 'onmouseover="row.over(this)" onmouseout="row.out(this)" onclick="row.click(this)"';
-                        cDebug($extraadd);
                     }
                     $tpl->set('d', 'EXTRA', $this->extra[$key] . $extraadd);
                 } else {
