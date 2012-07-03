@@ -291,11 +291,16 @@ function editWorkflowStep($idworkflowitem) {
     $form->setVar("frame", $frame);
 
     $form->addHeader(i18n("Edit workflow step", "workflow"));
-    $form->add(i18n("Step name", "workflow"), formGenerateField("text", "wfstepname", $stepname, 40, 255));
-    $form->add(i18n("Step description", "workflow"), formGenerateField("textbox", "wfstepdescription", $stepdescription, 60, 10));
+	$oTxtStep = new cHTMLTextbox("wfstepname", $stepname, 40, 255);
+    $form->add(i18n("Step name", "workflow"), $oTxtStep->render());
+	$oTxtStepDesc = new cHTMLTextarea("wfstepdescription", $stepdescription, 60, 10);
+    $form->add(i18n("Step description", "workflow"), $oTxtStepDesc->render());
 
     foreach ($availableWorkflowActions as $key => $value) {
-        $actions .= formGenerateCheckbox("wfactions[" . $key . "]", "1", $workflowactions->get($id, $key)) . '<label for="wfactions[' . $key . ']1">' . $value . '</label>' . "<br>";
+		$oCheckbox = new cHTMLCheckbox("wfactions[" . $key . "]", "1", "wfactions[" . $key . "]1", $workflowactions->get($id, $key));
+		$oCheckbox->setLabelText($value);
+	    $actions .= $oCheckbox->toHTML();
+        //$actions .= formGenerateCheckbox("wfactions[" . $key . "]", "1", $workflowactions->get($id, $key)) . '<label for="wfactions[' . $key . ']1">' . $value . '</label>' . "<br>";
     }
 
     $form->add(i18n("Actions", "workflow"), $actions);
@@ -351,12 +356,22 @@ function getWorkflowUsers($idworkflowitem) {
         $deletestep->setContent('<img style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/workflow_step_delete.gif" . '">');
 
         $title= "$pos. " . getUsers($id, $iduser);
-        $title .= formGenerateField("text", "wftimelimit" . $id, $timelimit, 3, 6);
+
+		$oTxtTime = new cHTMLTextbox("wftimelimit" . $id, $timelimit, 3, 6);
+        $title .= $oTxtTime->render();
         $title .= getTimeUnitSelector($id, $timeunit);
         $altmail= i18n("Notify this user via E-Mail", "workflow");
         $altnoti= i18n("Escalate to this user via E-Mail", "workflow");
-        $title .= formGenerateCheckbox("wfemailnoti[" . $id . "]", "1", $email) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/workflow_email_noti.gif" . '"></label>';
-        $title .= formGenerateCheckbox("wfescalnoti[" . $id . "]", "1", $escalation) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/workflow_escal_noti.gif" . '"></label>';
+
+		$oCheckbox = new cHTMLCheckbox("wfemailnoti[" . $id . "]", "1", "wfemailnoti[" . $id . "]1", $email);
+		//$oCheckbox->setLabelText('<img alt="' . $altmail . '" title="' . $altmail . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_email_noti.gif"/>');
+        $title .= $oCheckbox->toHTML(false).'<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_email_noti.gif"/></label>';
+		//$title .= formGenerateCheckbox("wfemailnoti[" . $id . "]", "1", $email) . '<label for="wfemailnoti[' . $id . ']1"><img alt="' . $altmail . '" title="' . $altmail . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/workflow_email_noti.gif" . '"></label>';
+
+		$oCheckbox = new cHTMLCheckbox("wfescalnoti[" . $id . "]", "1", "wfescalnoti[" . $id . "]1", $escalation);
+		//$oCheckbox->setLabelText('<img alt="' . $altnoti . '" title="' . $altnoti . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_escal_noti.gif"/>');
+		$title .= $oCheckbox->toHTML(false). '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . 'workflow/images/workflow_escal_noti.gif"/></label>';
+		//$title .= formGenerateCheckbox("wfescalnoti[" . $id . "]", "1", $escalation) . '<label for="wfescalnoti[' . $id . ']1"><img alt="' . $altnoti . '" title="' . $altnoti . '" style="padding-left: 2px" border="0" src="' . $cfg["path"]["contenido_fullhtml"] . $cfg["path"]["plugins"] . "workflow/images/workflow_escal_noti.gif" . '"></label>';
 
         $ui->setTitle($id, $title);
         $ui->setLink($id, NULL);

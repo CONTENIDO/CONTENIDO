@@ -108,7 +108,8 @@ $tpl->set('d', 'CATFIELD', stripslashes($oGroup->getGroupName()));
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Description"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'description', htmlentities(stripslashes($oGroup->getField('description')), ENT_QUOTES), 40, 255));
+$oTxtDesc = new cHTMLTextbox('description', htmlentities(stripslashes($oGroup->getField('description')), ENT_QUOTES), 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtDesc->render());
 $tpl->next();
 
 // permissions of current logged in user

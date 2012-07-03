@@ -134,43 +134,53 @@ $tpl->set('s', 'PROPERTY', i18n("Property"));
 $tpl->set('s', 'VALUE', i18n("Value"));
 
 $tpl->set('d', 'CATNAME', i18n("Username"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'username', $username, 40, 32));
+$oTxtUser = new cHTMLTextbox('username', $username, 40, 32);
+$tpl->set('d', 'CATFIELD', $oTxtUser->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Name"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'realname', $realname, 40, 255));
+$oTxtName = new cHTMLTextbox('realname', $realname, 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtName->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("New password"));
-$tpl->set('d', 'CATFIELD', formGenerateField('password', 'password', '', 40, 255));
+$oTxtPass = new cHTMLPasswordbox('password', '', 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtPass->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Confirm new password"));
-$tpl->set('d', 'CATFIELD', formGenerateField('password', 'passwordagain', '', 40, 255));
+$oTxtWord = new cHTMLPasswordbox('passwordagain', '', 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtWord->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("E-Mail"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'email', $email, 40, 255));
+$oTxtEmail = new cHTMLTextbox('email', $email, 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtEmail->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Phone number"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'telephone', $telephone, 40, 255));
+$oTxtTel = new cHTMLTextbox('telephone', $telephone, 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtTel->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Street"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_street', $address_street, 40, 255));
+$oTxtStreet = new cHTMLTextbox('address_street', $address_street, 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtStreet->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("ZIP code"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_zip', $address_zip, 10, 10));
+$oTxtZip = new cHTMLTextbox('address_zip', $address_zip, 10, 10);
+$tpl->set('d', 'CATFIELD', $oTxtZip->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("City"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_city', $address_city, 40, 255));
+$oTxtCity = new cHTMLTextbox('address_city', $address_city, 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtCity->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Country"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_country', $address_country, 40, 255));
+$oTxtLand = new cHTMLTextbox('address_country', $address_country, 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtLand->render());
 $tpl->next();
 
 

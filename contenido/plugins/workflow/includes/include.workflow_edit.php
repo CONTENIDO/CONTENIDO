@@ -76,7 +76,6 @@ if ($idworkflow) {
 }
 
 
-//function formGenerateField ($type, $name, $initvalue, $width, $maxlen)
 $form->setVar("area", $area);
 $form->setVar("action", "workflow_save");
 $form->setVar("idworkflow", $idworkflow);
@@ -95,8 +94,10 @@ if ($workflow->virgin) {
 }
 
 $form->addHeader($header);
-$form->add(i18n("Workflow name", "workflow"), formGenerateField("text", "wfname", $name, 40, 255));
-$form->add(i18n("Description", "workflow"), formGenerateField("textbox", "wfdescription", $description, 50, 10));
+$oTxtWFName = new cHTMLTextbox("wfname", $name, 40, 255);
+$form->add(i18n("Workflow name", "workflow"), $oTxtWFName->render());
+$oTxtWFDesc = new cHTMLTextarea("wfdescription", $description, 50, 10);
+$form->add(i18n("Description", "workflow"), $oTxtWFDesc->render());
 $form->add(i18n("Author", "workflow"), $author);
 $form->add(i18n("Created", "workflow"), $created);
 

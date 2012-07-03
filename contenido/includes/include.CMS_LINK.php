@@ -158,8 +158,8 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
                 $a_link_intern_value = "0";
                 $a_link_extern_value = $a_content["CMS_LINK"][$typenr];
         }
-
-        $form->add(i18n("External link"),formGenerateField ("text", "CMS_LINKextern", $a_link_extern_value, 60, 255));
+		$oTxtEXLink = new cHTMLTextbox("CMS_LINKextern", $a_link_extern_value, 60, 255);
+        $form->add(i18n("External link"), $oTxtEXLink->render());
 
         $sql = "SELECT
                     *

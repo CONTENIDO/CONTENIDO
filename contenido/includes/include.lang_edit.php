@@ -239,9 +239,10 @@ if ($action == "lang_newlanguage" || $action == "lang_deletelanguage")
             $timeformat = new cHTMLTextbox("timeformat", $clang->getProperty("dateformat", "time"), 40);
 
             $form->addHeader(i18n("Edit language"));
-
-            $form->add(i18n("Language name"), formGenerateField ("text", "langname", htmlspecialchars($db->f("name")), 40, 255));
-            $form->add(i18n("Active"), formGenerateCheckbox ("active", "1",$db->f("active")));
+			$oTxtLang = new cHTMLTextBox("langname", htmlspecialchars($db->f("name")), 40, 255);
+            $form->add(i18n("Language name"), $oTxtLang->render());
+			$oCheckbox = new cHTMLCheckbox("active", "1", "active1",$db->f("active"));
+            $form->add(i18n("Active"), $oCheckbox->toHTML(false));
 
             $form->addSubHeader(i18n("Language"));
             $form->add(i18n("Encoding"), $eselect);

@@ -212,7 +212,8 @@ $tpl->set('d', 'BRDRT', 1);
 $tpl->set('d', 'BRDRB', 0);
 
 $tpl->set('d', 'CATNAME', i18n("Client name"));
-$tpl->set('d', 'CATFIELD', formGenerateField("text", "clientname", htmlspecialchars($db->f("name")), 50, 255));
+$oTxtClient = new cHTMLTextbox("clientname", htmlspecialchars($db->f("name")), 50, 255);
+$tpl->set('d', 'CATFIELD', $oTxtClient->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
@@ -222,7 +223,8 @@ if ($serverpath == "") {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Server path"));
-$tpl->set('d', 'CATFIELD',  formGenerateField("text", "frontendpath", htmlspecialchars($serverpath), 50, 255));
+$oTxtServer = new cHTMLTextbox("frontendpath", htmlspecialchars($serverpath), 50, 255);
+$tpl->set('d', 'CATFIELD', $oTxtServer->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
@@ -232,27 +234,30 @@ if ($htmlpath == "") {
 }
 
 $tpl->set('d', 'CATNAME', i18n("Web address"));
-$tpl->set('d', 'CATFIELD', formGenerateField("text", "htmlpath", htmlspecialchars($htmlpath), 50, 255));
+$oTxtWeb = new cHTMLTextbox("htmlpath", htmlspecialchars($htmlpath), 50, 255);
+$tpl->set('d', 'CATFIELD', $oTxtWeb->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Error page category"));
-$tpl->set('d', 'CATFIELD', formGenerateField("text", "errsite_cat", $db->f("errsite_cat"), 10, 10));
+$oTxtErrorCat = new cHTMLTextbox("errsite_cat", $db->f("errsite_cat"), 10, 10);
+$tpl->set('d', 'CATFIELD', $oTxtErrorCat->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Error page article"));
-$tpl->set('d', 'CATFIELD', formGenerateField("text", "errsite_art", $db->f("errsite_art"), 10, 10));
+$oTxtErrorArt = new cHTMLTextbox("errsite_art", $db->f("errsite_art"), 10, 10);
+$tpl->set('d', 'CATFIELD', $oTxtErrorArt->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
 
 $clientLogo = $properties->getValue ("idclient", $idclient, "backend", "clientimage");
-
 $tpl->set('d', 'CATNAME', i18n("Client logo"));
-$tpl->set('d', 'CATFIELD', formGenerateField("text", "clientlogo", $clientLogo, 50, 255));
+$oTxtLogo = new cHTMLTextbox("clientlogo", $clientLogo, 50, 255);
+$tpl->set('d', 'CATFIELD', $oTxtLogo->render());
 $tpl->set('d', 'BRDRT', 0);
 $tpl->set('d', 'BRDRB', 1);
 $tpl->next();
@@ -299,10 +304,10 @@ $tpl->next();
 
 if ($new == true) {
     $tpl->set('d', 'CATNAME', i18n("Copy frontend template"));
-    $tpl->set('d', 'CATFIELD', formGenerateCheckbox ("copytemplate", "checked", 1));
+	$defaultform = new cHTMLCheckbox("copytemplate", "checked", "copytemplatechecked", true);
+    $tpl->set('d', 'CATFIELD', $defaultform->toHTML(false));
     $tpl->next();
 }
-
 $tpl->set('s', 'IDCLIENT', $idclient);
 
 // Generate template

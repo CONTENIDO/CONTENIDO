@@ -183,42 +183,51 @@ $tpl->set('d', 'CATFIELD', $oUser->getField('username').'<img align="top" src="i
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Name"));
-$tpl->set('d', 'CATFIELD', formGenerateField("text", "realname", $oUser->getField('realname'), 40, 255));
+$oTxtName = new cHTMLTextbox("realname", $oUser->getField('realname'), 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtName->render());
 $tpl->next();
 
 // @since 2006-07-04 Display password fields only if not authenticated via LDAP/AD
 if ($msysadmin || $oUser->getField('password') != 'active_directory_auth') {
     $tpl->set('d', 'CATNAME', i18n("New password"));
-    $tpl->set('d', 'CATFIELD', formGenerateField('password', 'password', '', 40, 255));
+	$oTxtPass = new cHTMLPasswordbox('password', '', 40, 255);
+    $tpl->set('d', 'CATFIELD', $oTxtPass->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', i18n("Confirm new password"));
-    $tpl->set('d', 'CATFIELD', formGenerateField('password', 'passwordagain', '', 40, 255));
+	$oTxtWord = new cHTMLPasswordbox('passwordagain', '', 40, 255);
+    $tpl->set('d', 'CATFIELD', $oTxtWord->render());
     $tpl->next();
 }
 
 $tpl->set('d', 'CATNAME', i18n("E-Mail"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'email', $oUser->getField('email'), 40, 255));
+$oTxtEmail = new cHTMLTextbox('email', $oUser->getField('email'), 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtEmail->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Phone number"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'telephone', $oUser->getField('telephone'), 40, 255));
+$oTxtTel = new cHTMLTextbox('telephone', $oUser->getField('telephone'), 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtTel->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Street"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_street', $oUser->getField('address_street'), 40, 255));
+$oTxtStreet = new cHTMLTextbox('address_street', $oUser->getField('address_street'), 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtStreet->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("ZIP code"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_zip', $oUser->getField('address_zip'), 10, 10));
+$oTxtZip= new cHTMLTextbox('address_zip', $oUser->getField('address_zip'), 10, 10);
+$tpl->set('d', 'CATFIELD', $oTxtZip->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("City"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_city', $oUser->getField('address_city'), 40, 255));
+$oTxtCity= new cHTMLTextbox('address_city', $oUser->getField('address_city'), 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtCity->render());
 $tpl->next();
 
 $tpl->set('d', 'CATNAME', i18n("Country"));
-$tpl->set('d', 'CATFIELD', formGenerateField('text', 'address_country', $oUser->getField('address_country'), 40, 255));
+$oTxtLand= new cHTMLTextbox('address_country', $oUser->getField('address_country'), 40, 255);
+$tpl->set('d', 'CATFIELD', $oTxtLand->render());
 $tpl->next();
 
 $tpl->set('s', 'PATH_TO_CALENDER_PIC',  $cfg['path']['contenido_fullhtml']. $cfg['path']['images'] . 'calendar.gif');

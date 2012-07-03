@@ -120,47 +120,56 @@ if ( !isset($useridas) )
     }
     $tpl->set('d', 'CATNAME', "Name");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-    $tpl->set('d', 'CATFIELD', formGenerateField ("text", "realname", $db->f("realname"), 40, 255));
+	$oTxtName = new cHTMLTextbox("realname", $db->f("realname"), 40, 255);
+    $tpl->set('d', 'CATFIELD', $oTxtName->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Neues Passwort");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-    $tpl->set('d', 'CATFIELD', formGenerateField ("password", "password", "", 40, 255));
+	$oTxtPass = new cHTMLPasswordbox("password", "", 40, 255);
+    $tpl->set('d', 'CATFIELD', $oTxtPass->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Neues Passwort (Bestätigung)");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-    $tpl->set('d', 'CATFIELD', formGenerateField ("password", "passwordagain", "", 40, 255));
+	$oTxtWord = new cHTMLPasswordbox("passwordagain", "", 40, 255);
+    $tpl->set('d', 'CATFIELD', $oTxtWord->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "E-Mail");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-    $tpl->set('d', 'CATFIELD', formGenerateField ("text", "email", $db->f("email"), 40, 255));
+	$oTxtEmail = new cHTMLTextbox("email", $db->f("email"), 40, 255);
+    $tpl->set('d', 'CATFIELD', $oTxtEmail->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Telefon");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-    $tpl->set('d', 'CATFIELD', formGenerateField ("text", "telephone", $db->f("telephone"), 40, 255));
+	$oTxtTel= new cHTMLTextbox("telephone", $db->f("telephone"), 40, 255);
+    $tpl->set('d', 'CATFIELD', $oTxtTel->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Strasse");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-    $tpl->set('d', 'CATFIELD', formGenerateField ("text", "address_street", $db->f("address_street"), 40, 255));
+	$oTxtStreet = new cHTMLTextbox("address_street", $db->f("address_street"), 40, 255);
+    $tpl->set('d', 'CATFIELD', $oTxtStreet->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Stadt");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-    $tpl->set('d', 'CATFIELD', formGenerateField ("text", "address_city", $db->f("address_city"), 40, 255));
+	$oTxtCity = new cHTMLTextbox("address_city", $db->f("address_city"), 40, 255);
+    $tpl->set('d', 'CATFIELD', $oTxtCity->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "Land");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_light"]);
-    $tpl->set('d', 'CATFIELD', formGenerateField ("text", "address_country", $db->f("address_country"), 40, 255));
+	$oTxtLand = new cHTMLTextbox("address_country", $db->f("address_country"), 40, 255);
+    $tpl->set('d', 'CATFIELD', $oTxtLand->render());
     $tpl->next();
 
     $tpl->set('d', 'CATNAME', "WYSIWYG-Editor");
     $tpl->set('d', 'BGCOLOR', $cfg["color"]["table_dark"]);
-    $tpl->set('d', 'CATFIELD', formGenerateCheckbox("wysi", "1", $db->f("wysi")));
+	$oCheckbox = new cHTMLCheckbox("wysi", "1", "wysi1", $db->f("wysi"));
+    $tpl->set('d', 'CATFIELD', $oCheckbox->toHTML(false));
     $tpl->next();
 
     # Generate template
