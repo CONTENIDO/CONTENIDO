@@ -1882,16 +1882,7 @@ contenido/tools/upgradeseq.php -text
 contenido/xml/index.php -text
 contenido/xml/navigation.xml -text
 data/.htaccess -text
-data/cronlog/advance_workflow.php.job -text
 data/cronlog/crontab.txt -text
-data/cronlog/linkchecker.php.job -text
-data/cronlog/move_articles.php.job -text
-data/cronlog/move_old_stats.php.job -text
-data/cronlog/optimize_database.php.job -text
-data/cronlog/run_newsletter_job.php.job -text
-data/cronlog/send_reminder.php.job -text
-data/cronlog/session_cleanup.php.job -text
-data/cronlog/setfrontenduserstate.php.job -text
 data/locale/contenido.pot -text
 data/locale/de_DE/LC_MESSAGES/contenido.mo -text
 data/locale/de_DE/LC_MESSAGES/contenido.po -text
